@@ -7,9 +7,9 @@ var React = require('react');
 window.React = React;
 
 var Modal = require('react-modal/dist/react-modal');
-var routes = require('routes')
+var routes = require('routes');
 
-var appElt = $('.contents')[0]
+var appElt = $('#react-root')[0]
 
 
 Modal.setAppElement(appElt);

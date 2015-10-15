@@ -76,16 +76,8 @@ app.on('ready', function() {
 
   mainWindow.on('focus', function() {
     dialog.showOpenDialog(mainWindow, { properties: [ 'openFile', 'openDirectory', 'createDirectory' ]}, function(filename){
-      // Open file here
-      // callback function filename returns an array of filenames, so we get the first and only one here
-      fs.readFile(filename[0], 'utf-8', function (err, data) {
-        var json = JSON.parse(data);
-        // Rudimentary console tests that loading was successful
-        console.log(json);
-        console.log(json.Protagonist);
-        //TBD: Loads JSon onto the board
-        //BoardListStore.load
-
+      // Open file here onto a wholeBoardStore
+      wholeBoardStore.load(filename)
       });
     });
 

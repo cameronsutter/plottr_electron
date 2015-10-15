@@ -73,8 +73,12 @@ app.on('ready', function() {
   mainWindow.setMenu(menu);
 
 
+  mainWindow.on('focus', function() {
+    // dialog.showOpenDialog(mainWindow, { properties: [ 'openFile', 'openDirectory', 'createDirectory' ]}, function(filename){
+    //   // Open file here
+    // });
 
-  dialog.showOpenDialog(mainWindow, { properties: [ 'openFile', 'openDirectory', 'createDirectory' ]}, callback: function(filename){
-  // Open file here 
-  })
+
+  });
+
 });

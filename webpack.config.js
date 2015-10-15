@@ -2,7 +2,7 @@ module.exports = {
   context: __dirname + '/app',
   entry: './web_modules/entry',
   output: {
-    path: __dirname + '/public/javascripts',
+    path: __dirname + '/',
     filename: 'plottr.js'
   },
   module: {
@@ -13,6 +13,6 @@ module.exports = {
   },
   resolve: {
     extensions: ["", ".js", ".jsx"],
-    root: __dirname + '/app',
+    root: __dirname + '/components',
   }
 };

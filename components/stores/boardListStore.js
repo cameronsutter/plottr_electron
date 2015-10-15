@@ -4,6 +4,7 @@ var createStore = require('stores/createStore');
 
 var BoardList = _.extend(createStore(), {
   load: function() {
+    // need to change this to accept file loading instead of db loading
     $.getJSON('/api/boards')
     .done(this.boardsLoaded.bind(this));
   },

@@ -9,6 +9,9 @@ module.exports = {
     loaders: [{
       test: /\.jsx$/,
       loader: 'jsx-loader'
+    }, {
+      test: /\.scss$/,
+      loaders: ["style", "css", "sass"]
     }]
   },
   resolve: {

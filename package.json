@@ -7,7 +7,7 @@
     "react": "~0.11.2",
     "react-bootstrap": "~0.12.0",
     "react-router": "~0.9.4",
-    "react-modal": "~0.0.2",
+    "react-modal": "0.0.2",
     "lodash": "~2.4.1",
     "pagedown": "~1.1.0"
   },

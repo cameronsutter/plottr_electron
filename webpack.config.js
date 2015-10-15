@@ -1,6 +1,6 @@
 module.exports = {
-  context: __dirname + '/app',
-  entry: './web_modules/entry',
+  context: __dirname + '/',
+  entry: './components/entry',
   output: {
     path: __dirname + '/',
     filename: 'plottr.js'

@@ -77,10 +77,8 @@ app.on('ready', function() {
   mainWindow.on('focus', function() {
     dialog.showOpenDialog(mainWindow, { properties: [ 'openFile', 'openDirectory', 'createDirectory' ]}, function(filename){
       // Open file here onto a wholeBoardStore
-      wholeBoardStore.load(filename)
-      });
+      //wholeBoardStore.load(filename)
     });
-
   });
 
 });

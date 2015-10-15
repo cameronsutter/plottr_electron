@@ -1,0 +1,16 @@
+@import "client";
+
+.slide {
+  text-align: left;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  overflow-y: scroll;
+  padding: 20px;
+  border-radius: 4px;
+  flex-basis: 70%;
+}
+
+.slide__card-description {
+  border-top: 1px solid #eee;
+  padding: 5px;
+}

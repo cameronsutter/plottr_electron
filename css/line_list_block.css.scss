@@ -1,0 +1,70 @@
+@import "client";
+
+.line-list {
+  margin-top: 10px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.line-list__new {
+  height: $height;
+  width: $width;
+}
+
+.line-list__new:hover {
+  background: $new-item-background;
+  border: $new-item-border;
+  cursor: pointer;
+}
+
+.line {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  flex-basis: $height;
+  height: $height;
+}
+
+.line__svg-line-box {
+  position: relative;
+  top: -$height;
+  left: $width;
+  height: 0px;
+}
+
+.line__svg-line {
+  stroke-width: $svg-line-width;
+}
+
+.line__title-box {
+  width: $width;
+  height: $height;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.line__title-box:hover {
+  @include hover-box;
+}
+
+.line__title {
+  @include sub-header-font;
+  width: $width;
+  padding: 5px 10px 5px 10px;
+}
+
+.line__title-box__modal {
+  width: 50%;
+  height: 50%;
+}
+
+.line__title-box__edit {
+  margin: 30px;
+}
+
+.line__title-box__button-bar {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+}

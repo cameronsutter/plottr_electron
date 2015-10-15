@@ -1,0 +1,44 @@
+@import "client";
+
+.note {
+  border: 1px solid #eee;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.note-navigator__box {
+  border: 1px solid #eee;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 5px;
+  text-align: center;
+}
+
+.note-navigator__node {
+  display: flex;
+  text-align: left;
+  margin-top: 2px;
+}
+
+.note-navigator__title {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.note-navigator__title:hover {
+  background-color: #eee;
+}
+
+.note-navigator__children {
+  display: flex;
+}
+
+.note-navigator__placeholder {
+  width: 20px;
+}
+
+.note-navigator__placeholder .glyphicon {
+  vertical-align: -60%;
+  padding-left: 5px;
+}

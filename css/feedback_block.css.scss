@@ -1,0 +1,15 @@
+@import "client";
+
+.feedback__container {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  overflow-y: scroll;
+  padding: 20px;
+  border-radius: 4px;
+  margin-left: 5px;
+  flex-basis: 30%;
+}
+
+.feedback__form {
+
+}

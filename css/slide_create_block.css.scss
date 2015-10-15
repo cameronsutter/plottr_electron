@@ -1,0 +1,21 @@
+@import "client";
+
+.slide-create__button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.slide-create__slide-container {
+  text-align: center;
+}
+
+.slide-create__slide {
+  text-align: center;
+}
+
+.slide-create__slide-contents {
+  display: flex;
+  flex-direction: row;
+}

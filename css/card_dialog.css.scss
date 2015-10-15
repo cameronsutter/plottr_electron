@@ -1,0 +1,85 @@
+@import "client";
+
+.card-dialog {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-dialog__position-details, .card-dialog__description {
+  display: flex;
+  flex-direction: row;
+}
+
+.card-dialog__position-details {
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  padding-top: 5px;
+  margin-bottom: 10px;
+}
+
+.card-dialog__line, .card-dialog__beat {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-dialog__beat-label, .card-dialog__line-label {
+  @include sub-header-font;
+  min-width: 150px;
+}
+
+.card-dialog__beat {
+  margin-left: 10px;
+}
+
+.card-dialog__description {
+  flex-grow: 1;
+  max-height: 80%;
+  overflow-y: scroll;
+}
+
+.card-dialog__button-bar-create, .card-dialog__button-bar-edit {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.card-dialog__button-bar-edit {
+  justify-content: space-between;
+}
+
+.card-dialog__select-line, .card-dialog__select-beat {
+  margin-left: 10px !important;
+}
+
+.card-title-editor, .card-description-editor {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title-editor {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.card-title-editor__display, .card-description-editor__display {
+  margin: 0;
+  flex-grow: 1;
+}
+
+.card-title-editor__display:hover, .card-description-editor__display:hover {
+  cursor: pointer;
+}
+
+.card-title-editor__button-bar, .card-description-editor__button-bar {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.ReactModal__Content {
+  top: 60px;
+}

@@ -1,0 +1,47 @@
+@import "client";
+
+.card__box {
+  position: relative;
+  top: -$height;
+  left: $width;
+}
+
+.card {
+  display: inline-block;
+  height: $height;
+  width: $width;
+  margin: $margin-left;
+}
+
+.card:hover {
+  cursor: pointer;
+}
+
+.card__real {
+  @extend .card;
+  border: 3px solid black;
+  border-radius: $border-radius;
+  background: $card-background;
+}
+
+.card__blank {
+  @extend .card;
+  margin-bottom: 3px;
+}
+
+.card__hover {
+  border: $new-item-border;
+  border-radius: $border-radius;
+  background: $new-item-background;
+}
+
+.card__blank:hover {
+  @extend .card__hover;
+}
+
+.card__title {
+  padding: $padding;
+  height: $height;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

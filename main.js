@@ -75,6 +75,6 @@ app.on('ready', function() {
 
 
   dialog.showOpenDialog(mainWindow, { properties: [ 'openFile', 'openDirectory', 'createDirectory' ]}, callback: function(filename){
-
+  // Open file here 
   })
 });

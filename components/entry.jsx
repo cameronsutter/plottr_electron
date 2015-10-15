@@ -11,7 +11,6 @@ var routes = require('routes');
 
 var appElt = $('#react-root')[0];
 
-
 Modal.setAppElement(appElt);
 Modal.injectCSS();
 

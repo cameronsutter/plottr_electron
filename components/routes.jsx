@@ -20,7 +20,7 @@ var NoteViewerView = require('notes/NoteViewerView');
 
 module.exports = (
   <Routes location="history">
-    <Route name="root" path="/" handler={Plottr}>
+    <Route name="root" path={window.location.pathname} handler={Plottr}>
       <DefaultRoute name="boardList" handler={BoardList} />
       <Route name="boardView" handler={BoardView} path="boards/:boardId" />
       <Route name="boardEditor" handler={BoardEditor} path="boards/:boardId/edit" />

@@ -1,8 +1,8 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var BeatView = require('beatView');
-var WholeBoardStore = require('stores/wholeBoardStore');
+var BeatView = require('components/beatView');
+var WholeBoardStore = require('../stores/wholeBoardStore');
 
 var RBS = require('react-bootstrap');
 var Button = RBS.Button;

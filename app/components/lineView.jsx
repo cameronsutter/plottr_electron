@@ -3,8 +3,8 @@
 var React = require('react');
 var $ = require('jquery');
 var _ = require('lodash');
-var CardView = require('cardView');
-var WholeBoardStore = require('stores/wholeBoardStore');
+var CardView = require('components/cardView');
+var WholeBoardStore = require('../stores/wholeBoardStore');
 
 var RBS = require('react-bootstrap');
 var Button = RBS.Button;

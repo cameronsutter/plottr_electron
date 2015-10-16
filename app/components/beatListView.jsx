@@ -2,8 +2,8 @@
 
 var _ = require('lodash');
 var React = require('react');
-var BeatView = require('beatView');
-var WholeBoardStore = require('stores/wholeBoardStore');
+var BeatView = require('components/beatView');
+var WholeBoardStore = require('../stores/wholeBoardStore');
 
 var RBS = require('react-bootstrap');
 var Icon = RBS.Glyphicon;

@@ -1,8 +1,8 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var NavBar = require('navbar');
-var WholeBoardStore = require('stores/wholeBoardStore');
+var NavBar = require('components/navbar');
+var WholeBoardStore = require('../../stores/wholeBoardStore');
 var MarkDown = require("pagedown").getSanitizingConverter();
 
 var RBS = require('react-bootstrap');

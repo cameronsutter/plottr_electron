@@ -11,9 +11,9 @@ var ButtonToolbar = RBS.ButtonToolbar;
 var DropdownButton = RBS.DropdownButton;
 var MenuItem = RBS.MenuItem;
 
-var WholeBoardStore = require('stores/wholeBoardStore');
-var CardTitleEditor = require('cardTitleEditor');
-var CardDescriptionEditor = require('cardDescriptionEditor');
+var WholeBoardStore = require('../stores/wholeBoardStore');
+var CardTitleEditor = require('components/cardTitleEditor');
+var CardDescriptionEditor = require('components/cardDescriptionEditor');
 
 var CardDialog = React.createClass({
   mixins: [Router.Navigation],

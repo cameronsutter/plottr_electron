@@ -2,9 +2,9 @@
 
 var $ = require('jquery');
 var React = require('react');
-var BeatListView = require('beatListView');
-var LineListView = require('lineListView');
-var WholeBoardStore = require('stores/wholeBoardStore');
+var BeatListView = require('components/beatListView');
+var LineListView = require('components/lineListView');
+var WholeBoardStore = require('../stores/wholeBoardStore');
 
 var Router = require('react-router');
 var Link = Router.Link;

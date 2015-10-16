@@ -2,9 +2,9 @@
 
 var React = require('react');
 var $ = require('jquery');
-var CardDialog = require('cardDialog');
+var CardDialog = require('components/cardDialog');
 
-var WholeBoardStore = require('stores/wholeBoardStore');
+var WholeBoardStore = require('../stores/wholeBoardStore');
 
 var CardView = React.createClass({
 

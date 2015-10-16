@@ -1,15 +1,41 @@
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
+var remote = require('remote');
+var fs = require('fs');
+var dialog = remote.require('dialog');
+var win = remote.getCurrentWindow();
 
 var WholeBoardStore = {
   load: function(boardId) {
-    if (boardId === this._state.board.id) {
+    if (boardId === this._state.board) {
       this.emitChange();
     }
     else {
-      $.getJSON('/api/boards/' + boardId + '/whole_board')
-        .done(this._handleWholeBoardResponse.bind(this));
+      this.openFile();
     }
+  },
+
+  openFile: function() {
+    var filename = window.localStorage.getItem("recentFileName");
+    if(filename){
+      this.readJSON(filename);
+    } else {
+      var _this = this;
+      dialog.showOpenDialog(win, { properties: [ 'openFile', 'openDirectory', 'createDirectory' ]}, function(chosenFileName){
+        window.localStorage.setItem("recentFileName", chosenFileName[0]);
+        _this.readJSON(chosenFileName[0]);
+      });
+    }
+
+  },
+
+  readJSON: function(filename) {
+    var json = "";
+    var _this = this;
+    fs.readFile(filename, 'utf-8', function (err, data) {
+      json = JSON.parse(data);
+      _this._handleWholeBoardResponse(json);
+    });
   },
 
   getWholeBoard: function() {
@@ -113,10 +139,10 @@ var WholeBoardStore = {
   _handleWholeBoardResponse: function(response) {
     this._state = {
       board: response.board,
-      beats: this._convertToIdMap(response.beats),
-      lines: this._convertToIdMap(response.lines),
-      cards: this._convertToIdMap(response.cards),
-      notes: this._convertToIdMap(response.notes)
+      beats: this._convertToIdMap(response.board.beats),
+      lines: this._convertToIdMap(response.board.lines),
+      cards: this._convertToIdMap(response.board.cards),
+      notes: this._convertToIdMap(response.board.notes)
     }
     this.emitChange();
   },

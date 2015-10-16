@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var NavBar = require('navbar');
+var NavBar = require('components/navbar');
 
 var Plottr = React.createClass({
 

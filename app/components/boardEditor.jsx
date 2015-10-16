@@ -3,7 +3,6 @@
 var _ = require('lodash');
 var React = require('react');
 var Router = require('react-router');
-var BoardListStore = require('stores/boardListStore');
 
 var BoardEditor = React.createClass({
 
@@ -20,16 +19,14 @@ var BoardEditor = React.createClass({
       this.setState({board: {title: 'New Board'}});
     }
     else {
-      BoardListStore.subscribe(this.setBoardState);
+      // BoardList
     }
   },
 
   componentWillUnmount: function() {
-    BoardListStore.removeChangeListener(this.setBoardState);
   },
 
   setBoardState: function() {
-    this.setState({board: BoardListStore.getBoard(parseInt(this.props.params.boardId))});
   },
 
   handleChange: function(e) {
@@ -40,7 +37,7 @@ var BoardEditor = React.createClass({
 
   handleSubmit: function(e) {
     e.preventDefault();
-    BoardListStore.saveBoard(this.state.board);
+    // BoardListStore.saveBoard(this.state.board);
     this.transitionTo('boardList');
   },
 

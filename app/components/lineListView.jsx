@@ -2,8 +2,8 @@
 
 var _ = require('lodash');
 var React = require('react');
-var LineView = require('lineView');
-var WholeBoardStore = require('stores/wholeBoardStore');
+var LineView = require('components/lineView');
+var WholeBoardStore = require('../stores/wholeBoardStore');
 
 var LineListView = React.createClass({
 

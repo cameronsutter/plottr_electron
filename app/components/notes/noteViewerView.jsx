@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var WholeBoardStore = require('stores/wholeBoardStore');
-var NoteNavigator = require('notes/noteNavigator');
-var NoteView = require('notes/noteView');
+var WholeBoardStore = require('../../stores/wholeBoardStore');
+var NoteNavigator = require('components/notes/noteNavigator');
+var NoteView = require('components/notes/noteView');
 
 
 var NoteViewerView = React.createClass({

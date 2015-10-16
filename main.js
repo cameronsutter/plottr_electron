@@ -1,8 +1,6 @@
 var app = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var Menu = require('menu');
-var dialog = require('dialog');
-var fs = require('fs');
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -72,13 +70,4 @@ app.on('ready', function() {
 
   menu = Menu.buildFromTemplate(template);
   mainWindow.setMenu(menu);
-
-
-  mainWindow.on('focus', function() {
-    dialog.showOpenDialog(mainWindow, { properties: [ 'openFile', 'openDirectory', 'createDirectory' ]}, function(filename){
-      // Open file here onto a wholeBoardStore
-      //wholeBoardStore.load(filename)
-    });
-  });
-
 });

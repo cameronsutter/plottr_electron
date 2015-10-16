@@ -4,9 +4,9 @@ var _ = require('lodash');
 var React = require('react');
 var Router = require('react-router');
 
-var SlideView = require('slides/slideView');
-var SlideFeedbackView = require('slides/slideFeedbackView');
-var WholeBoardStore = require('stores/wholeBoardStore');
+var SlideView = require('components/slides/slideView');
+var SlideFeedbackView = require('components/slides/slideFeedbackView');
+var WholeBoardStore = require('../../stores/wholeBoardStore');
 
 var RBS = require('react-bootstrap');
 var Button = RBS.Button;

@@ -3,9 +3,9 @@
 var _ = require('lodash');
 var React = require('react');
 
-var SlideView = require('slides/slideView');
-var SlideFeedbackView = require('slides/slideFeedbackView');
-var WholeBoardStore = require('stores/wholeBoardStore');
+var SlideView = require('components/slides/slideView');
+var SlideFeedbackView = require('components/slides/slideFeedbackView');
+var WholeBoardStore = require('../../stores/wholeBoardStore');
 
 var RBS = require('react-bootstrap');
 var Button = RBS.Button;
@@ -14,7 +14,7 @@ var MenuItem = RBS.MenuItem;
 var Icon = RBS.Glyphicon;
 
 
-var PrintSlidesView = React.createClass({
+var PresentSlidesView = React.createClass({
 
   getInitialState: function() {
     return {
@@ -25,8 +25,7 @@ var PrintSlidesView = React.createClass({
       currentLineId: +this.props.params.lineId,
       beatIdsForLine: null,
       currentBeatIdIndex: 0,
-      finished: false,
-      cardsWithPosition: null
+      finished: false
     };
   },
 
@@ -50,14 +49,15 @@ var PrintSlidesView = React.createClass({
       lines: WholeBoardStore.getLines(),
       cards: WholeBoardStore.getCards()
     });
-    this.sortCards();
+    this.initBeatState();
   },
 
-  sortCards: function() {
+  initBeatState: function() {
     var cards = this.getCardsForCurrentLine();
     var cardsWithPosition = this.addPositionToCards(cards);
     var sorted = _.sortBy(cardsWithPosition, 'position');
-    this.setState({cardsWithPosition: sorted});
+    var beatIds = _.pluck(sorted, 'beat_id');
+    this.setState({beatIdsForLine: beatIds});
   },
 
   addPositionToCards: function(cards) {
@@ -123,30 +123,48 @@ var PrintSlidesView = React.createClass({
     return (
       <div>
         <h1>{this.state.board.title}</h1>
-        <h3>{currentLine.title}</h3>
+        <h3>{currentLine.title}{this.renderProgress()}</h3>
         <div className="slide-create__slide-container">
-          {this.renderCards()}
+          {this.renderStartOverButton()}
+          {this.renderCardsForLine()}
         </div>
       </div>
     );
+  },
+
+  renderProgress: function() {
+    if (this.state.beatIdsForLine){
+      return <span> – ({this.state.currentBeatIdIndex + 1}/{this.state.beatIdsForLine.length})</span>;
+    }
   },
 
   renderLoading: function() {
     return <p>Loading...</p>;
   },
 
-  renderCards: function() {
-    var cards = this.state.cardsWithPosition;
-    if(!cards) return this.renderLoading();
-    beats = this.state.beats;
-    return cards.map(function(card){
-      return (<div className="slide-print__slide">
-        <h3>{_.find(beats, {id: card.beat_id}).title}</h3>
+  renderStartOverButton: function() {
+    if(this.state.finished){
+      return <Button bsSize='large' bsStyle='success' onClick={this.startOver}>Start Over!</Button>;
+    }
+  },
+
+  renderCardsForLine: function() {
+    var beatIdIndex = this.state.currentBeatIdIndex;
+    var cards = this.getCardsForCurrentLine();
+    var beatIds = this.state.beatIdsForLine;
+    if(!beatIds) return this.renderLoading();
+    var card = this.getCardForBeat(cards, beatIds[beatIdIndex]);
+    var beat = this.getBeat(beatIds[beatIdIndex]);
+    if(beat && card){
+      return (<div className="slide-create__slide" onClick={this.advanceSlide} onDoubleClick={this.regressSlide}>
+        <h3>{beat.title}</h3>
         <SlideView key={card.id} card={card} />
       </div>)
-    });
+    } else {
+      return <div>Loading...</div>;
+    }
   },
 
 });
 
-module.exports = PrintSlidesView;
+module.exports = PresentSlidesView;

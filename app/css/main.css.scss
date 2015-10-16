@@ -2,6 +2,21 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "bootstrap_configuration";
+
+@import "bootstrap-sprockets";
+
+@import "bootstrap";
+
+// Give everything in 'yield' margin to separate it.
+#react-root {
+  margin: 30px;
+}
+
+body {
+  padding-top: 55px;
+}
+
 
 $body-background-color: #efefee;
 

@@ -11,13 +11,12 @@ module.exports = {
       loader: 'jsx-loader'
     }, {
       test: /\.scss$/,
-      loaders: ["style", "css", "sass"]
+      loaders: 'style!css!sass'
     }]
   },
   resolve: {
     extensions: ["", ".js", ".jsx"],
     root: __dirname + '/app',
   },
-  IgnorePlugin: ["vertx"],
   target: "atom"
 };

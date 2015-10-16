@@ -139,10 +139,10 @@ var WholeBoardStore = {
   _handleWholeBoardResponse: function(response) {
     this._state = {
       board: response.board,
-      beats: this._convertToIdMap(response.board.beats),
-      lines: this._convertToIdMap(response.board.lines),
-      cards: this._convertToIdMap(response.board.cards),
-      notes: this._convertToIdMap(response.board.notes)
+      beats: this._convertToIdMap(response.beats),
+      lines: this._convertToIdMap(response.lines),
+      cards: this._convertToIdMap(response.cards),
+      notes: this._convertToIdMap(response.notes)
     }
     this.emitChange();
   },

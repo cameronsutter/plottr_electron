@@ -1,0 +1,59 @@
+@import "main";
+
+.chapter-list {
+  display: flex;
+  flex-direction: row;
+
+  margin: 0;
+  padding: 0;
+  margin-top: 30px;
+  list-style: none;
+}
+
+.chapter-list__placeholder {
+  width: $width;
+  min-width: $width;
+  border: 2px solid transparent;
+  margin: $margin;
+}
+
+.chapter-list__new {
+  height: $scene-height;
+  width: $width;
+  min-width: $width;
+}
+
+.chapter-list__new:hover {
+  background: $new-item-background;
+  border: $new-item-border;
+  cursor: pointer;
+}
+
+.chapter-list__item {
+  @include sub-header-font;
+  // min-width: $width;
+  min-width: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  padding: $padding;
+  margin: $margin;
+  // width: $width;
+  width: 500px;
+  height: $chapter-height;
+  div {
+    position: relative;
+    left: 225px;
+  }
+}
+
+.chapter-list__item:hover {
+  @include hover-box;
+}
+
+.chapter-list__item__editing {
+  @extend .chapter-list__item;
+}

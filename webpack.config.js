@@ -1,22 +1,27 @@
 module.exports = {
   context: __dirname + '/',
-  entry: './app/entry',
+  entry: './app/index',
   output: {
     path: __dirname + '/',
-    filename: 'plottr.js'
+    filename: 'bundle.js',
+    publicPath: '/compiled/'
   },
   module: {
     loaders: [{
-      test: /\.jsx$/,
-      loader: 'jsx-loader'
+      test: /\.js$/,
+      loader: 'babel',
+      exclude: /node_modules/,
+      include: __dirname
     }, {
       test: /\.scss$/,
-      loaders: 'style!css!sass'
+      loader: 'style-loader!css-loader!sass-loader',
+      include: __dirname + './app/css',
+      exclude: /node_modules/
     }]
   },
   resolve: {
-    extensions: ["", ".js", ".jsx"],
-    root: __dirname + '/app',
+    extensions: ['', '.js', '.jsx', '.css', '.scss'],
+    root: __dirname + '/app'
   },
-  target: "atom"
-};
+  target: 'atom'
+}

@@ -1,0 +1,53 @@
+@import "main";
+
+.scene-list {
+  display: flex;
+  flex-direction: row;
+  height: $scene-height;
+
+  margin: 0;
+  padding: 0;
+  margin-top: 30px;
+  list-style: none;
+}
+
+.scene-list__placeholder {
+  width: $width;
+  min-width: $width;
+  border: 2px solid transparent;
+  margin: $margin;
+}
+
+.scene-list__new {
+  height: $scene-height;
+  width: $width;
+  min-width: $width;
+}
+
+.scene-list__new:hover {
+  background: $new-item-background;
+  border: $new-item-border;
+  cursor: pointer;
+}
+
+.scene-list__item {
+  @include sub-header-font;
+  min-width: $width;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  padding: $padding;
+  margin: $margin;
+  width: $width;
+}
+
+.scene-list__item:hover {
+  @include hover-box;
+}
+
+.scene-list__item__editing {
+  @extend .scene-list__item;
+}

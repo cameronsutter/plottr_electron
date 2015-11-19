@@ -1,12 +1,4 @@
-// Place all the styles related to the Client controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 @import "bootstrap_configuration";
-
-@import "bootstrap-sprockets";
-
-@import "bootstrap";
 
 // Give everything in 'yield' margin to separate it.
 #react-root {
@@ -23,7 +15,9 @@ $body-background-color: #efefee;
 $height: 66px;
 $width: 150px;
 
-$beat-height: $height;
+$scene-height: $height;
+$chapter-height: $height / 2;
+// $chapter-width: 
 
 $margin: 0px 25px 0px 0px;
 $margin-left: 0px 0px 0px 25px;

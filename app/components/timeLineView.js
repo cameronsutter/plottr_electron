@@ -11,7 +11,7 @@ class TimeLineView extends Component {
 
   renderBoard () {
     return (
-      <div>
+      <div id='timelineview-root'>
           <SceneListView />
           <LineListView sceneMap={this.sceneMapping()} />
       </div>

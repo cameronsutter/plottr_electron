@@ -1,17 +1,29 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import CardDialog from 'components/cardDialog'
+import * as CardActions from '../actions/cards'
 import 'style!css!sass!../css/card_block.css.scss'
 
 class CardView extends Component {
-  render () {
-    return this.props.card ? this.renderNormalCard() : this.renderBlank()
+  constructor (props) {
+    super(props)
+    this.state = {dialogOpen: false, creating: false}
   }
 
-  renderNormalCard () {
+  render () {
+    return this.state.dialogOpen ? this.renderDialog() : this.renderShape()
+  }
+
+  renderShape () {
+    return this.props.card ? this.renderCard() : this.renderBlank()
+  }
+
+  renderCard () {
     var cardStyle = {
       borderColor: this.props.color
     }
-    return (<div className='card__real' style={cardStyle} >
+    return (<div className='card__real' style={cardStyle} onClick={() => this.setState({dialogOpen: true})} >
         <div className='card__title'>{this.props.card.title}</div>
     </div>)
   }
@@ -27,6 +39,20 @@ class CardView extends Component {
       ></div>
     )
   }
+
+  renderDialog () {
+    const { card, sceneId, lineId } = this.props
+    var key = 'new' + sceneId + lineId
+    if (card) key = card.id
+    return (<CardDialog
+      key={key}
+      card={card}
+      sceneId={sceneId}
+      lineId={lineId}
+      isNewCard={this.state.creating}
+      closeEditor={this.closeEditor} />)
+  }
+
 }
 
 CardView.propTypes = {
@@ -37,13 +63,13 @@ CardView.propTypes = {
 }
 
 function mapStateToProps (state) {
-  return {
-    scenes: state.scenes
-  }
+  return {}
 }
 
 function mapDispatchToProps (dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(CardActions, dispatch)
+  }
 }
 
 export default connect(

@@ -1,6 +1,15 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as UIActions from '../actions/ui'
+import $ from 'jquery'
 
 class Navigation extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {editing: false}
+  }
+
   render () {
     return (
       <div>
@@ -12,7 +21,7 @@ class Navigation extends Component {
               <span className='icon-bar'></span>
               <span className='icon-bar'></span>
             </button>
-            <a className='navbar-brand'>{this.props.storyName || 'Plottr'}</a>
+            {this.renderStoryName()}
           </div>
           <div className='collapse navbar-collapse'>
             <ul className='nav navbar-nav'>
@@ -35,6 +44,24 @@ class Navigation extends Component {
     )
   }
 
+  saveEdit (event) {
+    var newName = $(event.target).parent().find('input').val()
+    this.props.actions.changeStoryName(newName)
+    this.setState({editing: false})
+  }
+
+  renderStoryName () {
+    return this.state.editing ? this.renderEditingStoryName() : this.renderNormalStoryName()
+  }
+
+  renderEditingStoryName () {
+    return <div><input className='input' type='text' placeholder={this.props.storyName || 'Plottr'} autoFocus='true' /><button className='btn btn-primary' onClick={this.saveEdit.bind(this)} onBlur={() => this.setState({editing: false})} >done</button></div>
+  }
+
+  renderNormalStoryName () {
+    return <a className='navbar-brand' onClick={() => this.setState({editing: true})} >{this.props.storyName || 'Plottr'}</a>
+  }
+
   isActive (currentLink) {
     if (currentLink === this.props.currentView) {
       return 'active'
@@ -45,7 +72,21 @@ class Navigation extends Component {
 Navigation.propTypes = {
   storyName: PropTypes.string.isRequired,
   currentView: PropTypes.string.isRequired,
-  changeView: PropTypes.func.isRequired
+  changeView: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
-export default Navigation
+function mapStateToProps (state) {
+  return {}
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    actions: bindActionCreators(UIActions, dispatch)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navigation)

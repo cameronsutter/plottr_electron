@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import Modal from 'react-modal'
 import _ from 'lodash'
 import * as CardActions from '../actions/cards'
+import { ButtonToolbar, Button, DropdownButton } from 'react-bootstrap'
 
 Modal.setAppElement('#timelineview-root')
 
@@ -15,13 +16,25 @@ class CardDialog extends Component {
     this.state = {editing: false}
   }
 
+  closeDialog () {
+    this.props.closeDialog()
+  }
+
+  handleCreate () {
+
+  }
+
+  deleteCard () {
+    
+  }
+
   render () {
     var ids = {
       beat: _.uniqueId('select-beat-'),
       line: _.uniqueId('select-line-')
     }
 
-    return (<Modal isOpen={true} onRequestClose={this.closeModal} style={customStyles}>
+    return (<Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
       <div className='card-dialog'>
         <div className='card-dialog__title'>
           {this.props.card.title}
@@ -39,8 +52,40 @@ class CardDialog extends Component {
         <div className='card-dialog__description'>
           {this.props.card.description}
         </div>
+        {this.renderButtonBar()}
       </div>
     </Modal>)
+  }
+
+  renderButtonBar () {
+    if (this.props.isNewCard) {
+      return (
+        <ButtonToolbar className='card-dialog__button-bar-create'>
+          <Button className='card-dialog__create' bsStyle='success'
+            onClick={this.handleCreate.bind(this)}>
+            Create
+          </Button>
+          <Button className='card-dialog__cancel' bsStyle='danger'
+            onClick={this.closeDialog.bind(this)}>
+            Cancel
+          </Button>
+        </ButtonToolbar>
+      )
+    } else {
+      return (
+        <div className='card-dialog__button-bar-edit'>
+          <Button className='card-dialog__close'
+            bsStyle='primary'
+            onClick={this.closeDialog.bind(this)}>
+            Close
+          </Button>
+          <Button className='card-dialog__delete' bsStyle='danger'
+            onClick={this.deleteCard.bind(this)} >
+            Delete
+          </Button>
+        </div>
+      )
+    }
   }
 }
               // <DropdownButton id={ids.line} className='card-dialog__select-line' title={this.getCurrentLine().title}>
@@ -51,14 +96,13 @@ class CardDialog extends Component {
               //   {this.renderBeatItems()}
               // </DropdownButton>
 
-        // {this.renderButtonBar()}
 
 CardDialog.propTypes = {
   card: PropTypes.object,
   sceneId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   isNewCard: PropTypes.bool.isRequired,
-  closeEditor: PropTypes.func
+  closeDialog: PropTypes.func
 }
 
 function mapStateToProps (state) {

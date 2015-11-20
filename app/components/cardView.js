@@ -11,6 +11,10 @@ class CardView extends Component {
     this.state = {dialogOpen: false, creating: false}
   }
 
+  closeDialog () {
+    this.setState({dialogOpen: false})
+  }
+
   render () {
     return this.state.dialogOpen ? this.renderDialog() : this.renderShape()
   }
@@ -50,7 +54,7 @@ class CardView extends Component {
       sceneId={sceneId}
       lineId={lineId}
       isNewCard={this.state.creating}
-      closeEditor={this.closeEditor} />)
+      closeDialog={this.closeDialog.bind(this)} />)
   }
 
 }

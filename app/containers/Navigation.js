@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as UIActions from '../actions/ui'
 import $ from 'jquery'
+import { Button } from 'react-bootstrap'
 
 class Navigation extends Component {
   constructor (props) {
@@ -55,7 +56,9 @@ class Navigation extends Component {
   }
 
   renderEditingStoryName () {
-    return <div><input className='input' type='text' placeholder={this.props.storyName || 'Plottr'} autoFocus='true' /><button className='btn btn-primary' onClick={this.saveEdit.bind(this)} onBlur={() => this.setState({editing: false})} >done</button></div>
+    return (<div><input className='input' type='text' placeholder={this.props.storyName || 'Plottr'} autoFocus='true' />
+      <Button bsStyle='primary' onClick={this.saveEdit.bind(this)} >save</Button>
+    </div>)
   }
 
   renderNormalStoryName () {

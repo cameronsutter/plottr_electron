@@ -27,16 +27,16 @@ class Navigation extends Component {
           <div className='collapse navbar-collapse'>
             <ul className='nav navbar-nav'>
               <li className={this.isActive('timeline')}>
-                <a href='#' onClick={() => this.props.changeView('timeline')} >Timeline</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('timeline')} >Timeline</a>
               </li>
               <li className={this.isActive('notes')}>
-                <a href='#' onClick={() => this.props.changeView('notes')} >Notes</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('notes')} >Notes</a>
               </li>
               <li className={this.isActive('outline')}>
-                <a href='#' onClick={() => this.props.changeView('outline')} >Outline</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('outline')} >Outline</a>
               </li>
               <li className={this.isActive('slides')}>
-                <a href='#' onClick={() => this.props.changeView('slides')} >Slides</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('slides')} >Slides</a>
               </li>
             </ul>
             <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>
@@ -78,14 +78,15 @@ class Navigation extends Component {
 Navigation.propTypes = {
   storyName: PropTypes.string.isRequired,
   currentView: PropTypes.string.isRequired,
-  changeView: PropTypes.func.isRequired,
   file: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
   return {
-    file: state.file
+    file: state.file,
+    storyName: state.storyName,
+    currentView: state.ui.currentView
   }
 }
 

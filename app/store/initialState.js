@@ -1,5 +1,12 @@
 // data structure
 
+export const scene = {
+  id: 0,
+  chapterId: 0,
+  title: 'new scene',
+  position: 0
+}
+
 // {
 //   ui: {
 //     currentView: ""

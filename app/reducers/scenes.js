@@ -1,11 +1,7 @@
 import { ADD_SCENE, EDIT_SCENE_TITLE, CHANGE_CHAPTER, FILE_LOADED } from '../constants/ActionTypes'
+import { scene } from 'store/initialState'
 
-const initialState = [{
-  id: 0,
-  chapterId: 0,
-  title: '',
-  position: 0
-}]
+const initialState = [scene]
 
 export default function scenes (state = initialState, action) {
   switch (action.type) {
@@ -13,7 +9,8 @@ export default function scenes (state = initialState, action) {
       return [{
         id: state.reduce((maxId, scene) => Math.max(scene.id, maxId), -1) + 1,
         title: action.title,
-        chapterId: action.chapterId
+        chapterId: action.chapterId,
+        position: action.position || state.reduce((maxPosition, scene) => Math.max(scene.position, maxPosition), -1) + 1
       }, ...state]
 
     case EDIT_SCENE_TITLE:

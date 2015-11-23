@@ -10,7 +10,7 @@ export default function scenes (state = initialState, action) {
         id: state.reduce((maxId, scene) => Math.max(scene.id, maxId), -1) + 1,
         title: action.title,
         chapterId: action.chapterId,
-        position: action.position || state.reduce((maxPosition, scene) => Math.max(scene.position, maxPosition), -1) + 1
+        position: state.reduce((maxPosition, scene) => Math.max(scene.position, maxPosition), -1) + 1
       }, ...state]
 
     case EDIT_SCENE_TITLE:

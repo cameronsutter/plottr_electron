@@ -9,7 +9,8 @@ import 'style!css!sass!../css/scene_list_block.css.scss'
 class SceneListView extends Component {
 
   handleCreateNewScene () {
-    this.props.actions.addScene(0, null)
+    var chapterId = 0 // eventually i'll implement this
+    this.props.actions.addScene(chapterId)
   }
 
   render () {

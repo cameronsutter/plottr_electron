@@ -1,20 +1,28 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import _ from 'lodash'
+import * as LineActions from '../actions/lines'
 import LineView from 'components/lineView'
 import 'style!css!sass!../css/line_list_block.css.scss'
 
 class LineListView extends Component {
+
+  handleCreateNewLine () {
+    this.props.actions.addLine()
+  }
+
   render () {
     var lineViews = this.renderLines()
     return (<div className='line-list'>
       {lineViews}
-      <div className='line-list__new' onClick={this.handleNewLineClick} />
+      <div className='line-list__new' onClick={this.handleCreateNewLine.bind(this)} />
     </div>)
   }
 
   renderLines () {
-    return this.props.lines.map((line) => {
+    const lines = _.sortBy(this.props.lines, 'position')
+    return lines.map((line) => {
       return (
         <LineView key={'lineId-' + line.id} line={line} sceneMap={this.props.sceneMap} />
       )
@@ -24,7 +32,8 @@ class LineListView extends Component {
 
 LineListView.propTypes = {
   lines: PropTypes.array.isRequired,
-  sceneMap: PropTypes.object.isRequired
+  sceneMap: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
@@ -34,7 +43,9 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(LineActions, dispatch)
+  }
 }
 
 export default connect(

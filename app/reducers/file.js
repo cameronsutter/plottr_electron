@@ -1,12 +1,7 @@
 import { FILE_LOADED, FILE_SAVED } from '../constants/ActionTypes'
+import { file as defaultFile } from 'store/initialState'
 
-const initialState = {
-  fileName: '',
-  loaded: false,
-  dirty: false
-}
-
-export default function file (state = initialState, action) {
+export default function file (state = defaultFile, action) {
   switch (action.type) {
     case FILE_LOADED:
       saveToLocalStorage(action.fileName)

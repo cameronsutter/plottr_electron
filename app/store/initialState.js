@@ -7,58 +7,57 @@ export const scene = {
   position: 0
 }
 
-// {
-//   ui: {
-//     currentView: ""
-//   },
-//   registeredViews: [{
-//     name: "",
-//     displayName: "",
-//   }],
-//   userOptions: {},
-//   file: {
-//     fileName: "",
-//     loaded: false,
-//     dirty: true
-//   },
-//   storyName: "",
-//   characters: [{
-//     id: 0,
-//     name: "",
-//     description: ""
-//   }],
-//   places:[{
-//     id: 0,
-//     name: "",
-//     description: "",
-//   }],
-//   tags: [{
-//     id: 0,
-//     title: "",
-//   }],
-//   cards: [{
-//     id: 0,
-//     lineId: 0,
-//     sceneId: 0,
-//     title: "",
-//     description: "",
-//     tags: [],
-//   }],
-//   chapters: [{
-//     id: 0,
-//     title: "",
-//     position: 0
-//   }],
-//   scenes: [{
-//     id: 0,
-//     chapterId: 0,
-//     title: "",
-//     position: 0
-//   }],
-//   lines: [{
-//     id: 0,
-//     color: "",
-//     title: "",
-//     position: 0
-//   }]
-// }
+export const ui = {
+  currentView: 'timeline'
+}
+
+export const userOptions = {}
+
+export const file = {
+  fileName: '',
+  loaded: false,
+  dirty: false
+}
+
+export const storyName = ''
+
+export const character = {
+  id: 0,
+  name: 'main character',
+  description: 'she is the coolest'
+}
+
+export const place = {
+  id: 0,
+  name: 'first place',
+  description: 'my favorite place'
+}
+
+export const tag = {
+  id: 0,
+  title: 'First tag :)'
+}
+
+export const card = {
+  id: 0,
+  lineId: 0,
+  sceneId: 0,
+  title: 'a new card',
+  description: 'add description here',
+  tags: [],
+  characters: [],
+  places: []
+}
+
+export const chapter = {
+  id: 0,
+  title: 'chapter 1',
+  position: 0
+}
+
+export const line = {
+  id: 0,
+  color: '#000000',
+  title: 'Character Name',
+  position: 0
+}

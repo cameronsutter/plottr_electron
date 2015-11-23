@@ -1,11 +1,7 @@
 import { ADD_PLACE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, FILE_LOADED } from '../constants/ActionTypes'
+import { line } from 'store/initialState'
 
-const initialState = [{
-  id: 0,
-  color: '#000000',
-  title: 'Character Name',
-  position: 0
-}]
+const initialState = [line]
 
 export default function lines (state = initialState, action) {
   switch (action.type) {

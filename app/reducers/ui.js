@@ -1,10 +1,7 @@
 import { CHANGE_CURRENT_VIEW, FILE_LOADED } from '../constants/ActionTypes'
+import { ui as defaultUI } from 'store/initialState'
 
-const initialState = {
-  currentView: 'timeline'
-}
-
-export default function ui (state = initialState, action) {
+export default function ui (state = defaultUI, action) {
   switch (action.type) {
     case CHANGE_CURRENT_VIEW:
       return { currentView: action.view }

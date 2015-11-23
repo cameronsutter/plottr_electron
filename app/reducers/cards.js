@@ -1,16 +1,9 @@
 import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION,
   CHANGE_LINE, CHANGE_SCENE, EDIT_CHARACTERS, EDIT_TAGS, EDIT_PLACES, FILE_LOADED } from '../constants/ActionTypes'
 
-const initialState = [{
-  id: 0,
-  lineId: 0,
-  sceneId: 0,
-  title: '',
-  description: '',
-  tags: [],
-  characters: [],
-  places: []
-}]
+import { card } from 'store/initialState'
+
+const initialState = [card]
 
 export default function cards (state = initialState, action) {
   switch (action.type) {

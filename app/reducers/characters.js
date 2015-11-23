@@ -1,10 +1,7 @@
 import { ADD_CHARACTER, EDIT_CHARACTER_NAME, EDIT_CHARACTER_DESCRIPTION, FILE_LOADED } from '../constants/ActionTypes'
+import { character } from 'store/initialState'
 
-const initialState = [{
-  id: 0,
-  name: '',
-  description: ''
-}]
+const initialState = [character]
 
 export default function characters (state = initialState, action) {
   switch (action.type) {

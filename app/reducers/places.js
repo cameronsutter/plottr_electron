@@ -1,10 +1,7 @@
 import { ADD_PLACE, EDIT_PLACE_NAME, EDIT_PLACE_DESCRIPTION, FILE_LOADED } from '../constants/ActionTypes'
+import { place } from 'store/initialState'
 
-const initialState = [{
-  id: 0,
-  name: '',
-  description: ''
-}]
+const initialState = [place]
 
 export default function places (state = initialState, action) {
   switch (action.type) {

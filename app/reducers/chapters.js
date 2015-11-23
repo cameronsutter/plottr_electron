@@ -1,10 +1,7 @@
 import { ADD_CHAPTER, EDIT_CHAPTER_TITLE, FILE_LOADED } from '../constants/ActionTypes'
+import { chapter } from 'store/initialState'
 
-const initialState = [{
-  id: 0,
-  title: '',
-  position: 0
-}]
+const initialState = [chapter]
 
 export default function chapters (state = initialState, action) {
   switch (action.type) {

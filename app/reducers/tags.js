@@ -1,9 +1,7 @@
 import { ADD_TAG, EDIT_TAG_TITLE, FILE_LOADED } from '../constants/ActionTypes'
+import { tag } from 'store/initialState'
 
-const initialState = [{
-  id: 0,
-  title: ''
-}]
+const initialState = [tag]
 
 export default function tags (state = initialState, action) {
   switch (action.type) {

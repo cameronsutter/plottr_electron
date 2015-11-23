@@ -39,6 +39,9 @@ class Navigation extends Component {
                 <a href='#' onClick={() => this.props.changeView('slides')} >Slides</a>
               </li>
             </ul>
+            <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>
+              <span className='label label-warning'>{this.props.file.dirty ? 'unsaved changes' : ''}</span>
+            </p>
           </div>
         </nav>
       </div>
@@ -76,11 +79,14 @@ Navigation.propTypes = {
   storyName: PropTypes.string.isRequired,
   currentView: PropTypes.string.isRequired,
   changeView: PropTypes.func.isRequired,
+  file: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
-  return {}
+  return {
+    file: state.file
+  }
 }
 
 function mapDispatchToProps (dispatch) {

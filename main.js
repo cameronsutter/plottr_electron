@@ -3,6 +3,7 @@ var BrowserWindow = require('browser-window') // Module to create native browser
 var Menu = require('menu')
 var fs = require('fs')
 var ipc = require('ipc')
+var dialog = require('dialog')
 
 // Report crashes to our server.
 require('crash-reporter').start()
@@ -13,6 +14,9 @@ var mainWindow = null
 
 // state of the app to be saved
 var stateOfApp = {}
+
+// app's entry file
+var entryFile = 'file://' + __dirname + '/index.html'
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -35,7 +39,7 @@ app.on('ready', function () {
   mainWindow = new BrowserWindow({width: 1000, height: 800})
 
   // and load the index.html of the app.
-  mainWindow.loadUrl('file://' + __dirname + '/index.html')
+  mainWindow.loadUrl(entryFile)
 
   if (process.env.NODE_ENV === 'dev') {
     // Open the DevTools.
@@ -54,34 +58,43 @@ app.on('ready', function () {
     stateOfApp = state
   })
 
-  var template = [{
-    label: 'Plottr',
-    submenu: [{
-      label: 'Quit',
-      accelerator: 'Command+Q',
-      click: function () {
-        app.quit()
-      }
-    }]
-  }, {
-    label: 'File',
-    submenu: [{
-      label: 'Save',
-      click: function () {
-        var stringState = JSON.stringify(stateOfApp)
-        fs.writeFile(stateOfApp.file.fileName, stringState, (err) => {
-          if (err) throw err
-          mainWindow.webContents.send('state-saved')
-        })
-      }
+  var template = [
+    {
+      label: 'Plottr',
+      submenu: [{
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click: function () {
+          app.quit()
+        }
+      }]
     }, {
-      label: 'Open',
-      role: 'openFile'
-    }, {
-      label: 'New',
-      role: 'newFile'
-    }]
-  }
+      label: 'File',
+      submenu: [{
+        label: 'Save',
+        accelerator: 'Command+S',
+        click: function () {
+          var stringState = JSON.stringify(stateOfApp)
+          fs.writeFile(stateOfApp.file.fileName, stringState, (err) => {
+            if (err) throw err
+            mainWindow.webContents.send('state-saved')
+          })
+        }
+      }, {
+        label: 'Open',
+        role: 'openFile'
+      }, {
+        label: 'New',
+        accelerator: 'Command+N',
+        click: function () {
+          dialog.showSaveDialog({title: 'Where would you like to start your new file?'}, function (fileName) {
+            if (fileName) {
+              mainWindow.webContents.send('new-file', fileName + '.plottr')
+            }
+          })
+        }
+      }]
+    }
   ]
 
   var menu = Menu.buildFromTemplate(template)

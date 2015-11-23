@@ -17,7 +17,8 @@ class App extends Component {
       } else {
         const _this = this
         var dialog = remote.require('dialog')
-        dialog.showOpenDialog(win, { properties: [ 'openFile', 'openDirectory', 'createDirectory' ] }, (chosenFileName) => {
+        var properties = [ 'openFile', 'openDirectory', 'createDirectory' ]
+        dialog.showOpenDialog(win, { properties: properties }, (chosenFileName) => {
           _this.readJSON(chosenFileName[0])
         })
       }

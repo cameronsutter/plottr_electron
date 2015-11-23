@@ -1,5 +1,6 @@
 export const FILE_LOADED = 'FILE_LOADED'
 export const FILE_SAVED = 'FILE_SAVED'
+export const NEW_FILE = 'NEW_FILE'
 export const CHANGE_CURRENT_VIEW = 'CHANGE_CURRENT_VIEW'
 
 // story actions

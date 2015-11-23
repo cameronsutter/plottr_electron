@@ -1,4 +1,4 @@
-import { ADD_PLACE, EDIT_PLACE_NAME, EDIT_PLACE_DESCRIPTION, FILE_LOADED } from '../constants/ActionTypes'
+import { ADD_PLACE, EDIT_PLACE_NAME, EDIT_PLACE_DESCRIPTION, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { place } from 'store/initialState'
 
 const initialState = [place]
@@ -24,6 +24,9 @@ export default function places (state = initialState, action) {
 
     case FILE_LOADED:
       return action.data.places
+
+    case NEW_FILE:
+      return initialState
 
     default:
       return state

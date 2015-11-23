@@ -1,4 +1,4 @@
-import { ADD_CHARACTER, EDIT_CHARACTER_NAME, EDIT_CHARACTER_DESCRIPTION, FILE_LOADED } from '../constants/ActionTypes'
+import { ADD_CHARACTER, EDIT_CHARACTER_NAME, EDIT_CHARACTER_DESCRIPTION, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { character } from 'store/initialState'
 
 const initialState = [character]
@@ -24,6 +24,9 @@ export default function characters (state = initialState, action) {
 
     case FILE_LOADED:
       return action.data.characters
+
+    case NEW_FILE:
+      return initialState
 
     default:
       return state

@@ -1,4 +1,4 @@
-import { CHANGE_CURRENT_VIEW, FILE_LOADED } from '../constants/ActionTypes'
+import { CHANGE_CURRENT_VIEW, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { ui as defaultUI } from 'store/initialState'
 
 export default function ui (state = defaultUI, action) {
@@ -8,6 +8,9 @@ export default function ui (state = defaultUI, action) {
 
     case FILE_LOADED:
       return action.data.ui
+
+    case NEW_FILE:
+      return defaultUI
 
     default:
       return state

@@ -1,4 +1,4 @@
-import { ADD_CHAPTER, EDIT_CHAPTER_TITLE, FILE_LOADED } from '../constants/ActionTypes'
+import { ADD_CHAPTER, EDIT_CHAPTER_TITLE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { chapter } from 'store/initialState'
 
 const initialState = [chapter]
@@ -18,6 +18,9 @@ export default function chapters (state = initialState, action) {
 
     case FILE_LOADED:
       return action.data.chapters
+
+    case NEW_FILE:
+      return initialState
 
     default:
       return state

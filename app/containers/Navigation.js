@@ -59,13 +59,13 @@ class Navigation extends Component {
   }
 
   renderEditingStoryName () {
-    return (<div><input className='input' type='text' placeholder={this.props.storyName || 'Plottr'} autoFocus='true' />
+    return (<div><input className='input' type='text' placeholder={this.props.storyName} autoFocus='true' />
       <Button bsStyle='primary' onClick={this.saveEdit.bind(this)} >save</Button>
     </div>)
   }
 
   renderNormalStoryName () {
-    return <a className='navbar-brand' onClick={() => this.setState({editing: true})} >{this.props.storyName || 'Plottr'}</a>
+    return <a className='navbar-brand' onClick={() => this.setState({editing: true})} >{this.props.storyName}</a>
   }
 
   isActive (currentLink) {

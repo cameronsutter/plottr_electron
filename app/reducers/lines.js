@@ -1,4 +1,4 @@
-import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, FILE_LOADED } from '../constants/ActionTypes'
+import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { line } from 'store/initialState'
 
 const initialState = [line]
@@ -25,6 +25,9 @@ export default function lines (state = initialState, action) {
 
     case FILE_LOADED:
       return action.data.lines
+
+    case NEW_FILE:
+      return initialState
 
     default:
       return state

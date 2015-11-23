@@ -1,5 +1,6 @@
 import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION,
-  CHANGE_LINE, CHANGE_SCENE, EDIT_CHARACTERS, EDIT_TAGS, EDIT_PLACES, FILE_LOADED } from '../constants/ActionTypes'
+  CHANGE_LINE, CHANGE_SCENE, EDIT_CHARACTERS, EDIT_TAGS, EDIT_PLACES,
+  FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 
 import { card } from 'store/initialState'
 
@@ -56,6 +57,9 @@ export default function cards (state = initialState, action) {
 
     case FILE_LOADED:
       return action.data.cards
+
+    case NEW_FILE:
+      return initialState
 
     default:
       return state

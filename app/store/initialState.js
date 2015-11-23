@@ -19,7 +19,7 @@ export const file = {
   dirty: false
 }
 
-export const storyName = ''
+export const storyName = 'My awesome story'
 
 export const character = {
   id: 0,

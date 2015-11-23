@@ -1,4 +1,4 @@
-import { EDIT_STORY_NAME, FILE_LOADED } from '../constants/ActionTypes'
+import { EDIT_STORY_NAME, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { storyName as defaultStoryName } from 'store/initialState'
 
 export default function storyName (state = defaultStoryName, action) {
@@ -8,6 +8,9 @@ export default function storyName (state = defaultStoryName, action) {
 
     case FILE_LOADED:
       return action.data.storyName
+
+    case NEW_FILE:
+      return defaultStoryName
 
     default:
       return state

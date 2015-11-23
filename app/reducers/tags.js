@@ -1,4 +1,4 @@
-import { ADD_TAG, EDIT_TAG_TITLE, FILE_LOADED } from '../constants/ActionTypes'
+import { ADD_TAG, EDIT_TAG_TITLE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { tag } from 'store/initialState'
 
 const initialState = [tag]
@@ -18,6 +18,9 @@ export default function tags (state = initialState, action) {
 
     case FILE_LOADED:
       return action.data.tags
+
+    case NEW_FILE:
+      return initialState
 
     default:
       return state

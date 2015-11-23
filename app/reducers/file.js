@@ -1,4 +1,4 @@
-import { FILE_LOADED, FILE_SAVED } from '../constants/ActionTypes'
+import { FILE_LOADED, FILE_SAVED, NEW_FILE } from '../constants/ActionTypes'
 import { file as defaultFile } from 'store/initialState'
 
 export default function file (state = defaultFile, action) {
@@ -9,6 +9,10 @@ export default function file (state = defaultFile, action) {
 
     case FILE_SAVED:
       return Object.assign({}, state, {dirty: false})
+
+    case NEW_FILE:
+      saveToLocalStorage(action.fileName)
+      return { fileName: action.fileName, loaded: true, dirty: true }
 
     default:
       return Object.assign({}, state, {dirty: true})

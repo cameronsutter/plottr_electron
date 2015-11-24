@@ -2,13 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as UIActions from '../actions/ui'
-import $ from 'jquery'
-import { Button } from 'react-bootstrap'
+import { Glyphicon, Input } from 'react-bootstrap'
 
 class Navigation extends Component {
   constructor (props) {
     super(props)
     this.state = {editing: false}
+  }
+
+  renderUnsavedChanges () {
+    if (!this.props.file.dirty) return
+    return <span className='alert alert-danger' role='alert'><Glyphicon glyph='exclamation-sign' /> unsaved changes</span>
   }
 
   render () {
@@ -40,7 +44,7 @@ class Navigation extends Component {
               </li>
             </ul>
             <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>
-              <span className='label label-warning'>{this.props.file.dirty ? 'unsaved changes' : ''}</span>
+              {this.renderUnsavedChanges()}
             </p>
           </div>
         </nav>
@@ -48,10 +52,12 @@ class Navigation extends Component {
     )
   }
 
-  saveEdit (event) {
-    var newName = $(event.target).parent().find('input').val()
-    this.props.actions.changeStoryName(newName)
-    this.setState({editing: false})
+  handleFinishEditing (event) {
+    if (event.which === 13) {
+      var newName = this.refs.storyNameInput.getValue()
+      this.props.actions.changeStoryName(newName)
+      this.setState({editing: false})
+    }
   }
 
   renderStoryName () {
@@ -59,9 +65,13 @@ class Navigation extends Component {
   }
 
   renderEditingStoryName () {
-    return (<div><input className='input' type='text' placeholder={this.props.storyName} autoFocus='true' />
-      <Button bsStyle='primary' onClick={this.saveEdit.bind(this)} >save</Button>
-    </div>)
+    return <Input
+      type='text'
+      placeholder={this.props.storyName}
+      ref='storyNameInput'
+      autoFocus
+      onBlur={() => this.setState({editing: false})}
+      onKeyPress={this.handleFinishEditing.bind(this)} />
   }
 
   renderNormalStoryName () {

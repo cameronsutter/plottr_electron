@@ -1,11 +1,35 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
 import 'style!css!sass!../css/scene_list_block.css.scss'
 
 class SceneView extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {hovering: true}
+  }
+
+  toggleHoverOptions () {
+    // var hovering = !this.state.hovering === true
+    // this.setState({hovering: hovering})
+  }
+
+  renderHoverOptions () {
+    if (!this.state.hovering) return
+    return (<div className='scene-list__item__hover-options'>
+      <ButtonGroup>
+        <Button><Glyphicon glyph='edit' /></Button>
+        <Button><Glyphicon glyph='trash' /></Button>
+      </ButtonGroup>
+    </div>)
+  }
+
   render () {
-    return (<li className='scene-list__item'>
-      {this.props.scene.title}
+    return (<li className='scene-list__item' onMouseOver={this.toggleHoverOptions.bind(this)}>
+      {this.renderHoverOptions()}
+      <div className='scene-list__item__title'>
+        <span>{this.props.scene.title}</span>
+      </div>
     </li>)
   }
 }

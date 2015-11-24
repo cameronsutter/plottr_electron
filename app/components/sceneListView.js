@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import SceneView from 'components/sceneView'
-import * as SceneActions from '../actions/scenes'
+import * as SceneActions from 'actions/scenes'
 import _ from 'lodash'
 import 'style!css!sass!../css/scene_list_block.css.scss'
 

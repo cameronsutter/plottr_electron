@@ -36,6 +36,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
 
   padding: $padding;
   margin: $margin;
@@ -61,7 +62,7 @@
 .scene-list__item__hover-options {
   position: absolute;
   margin-top: -45px;
-  margin-left: -7px;
+  margin-left: 25px;
   // top: -50px;
   // height: 50px;
   // border: 1px solid #eee;

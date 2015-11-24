@@ -6,12 +6,12 @@ import 'style!css!sass!../css/scene_list_block.css.scss'
 class SceneView extends Component {
   constructor (props) {
     super(props)
-    this.state = {hovering: true}
+    this.state = {hovering: false}
   }
 
   toggleHoverOptions () {
-    // var hovering = !this.state.hovering === true
-    // this.setState({hovering: hovering})
+    var hovering = !this.state.hovering === true
+    this.setState({hovering: hovering})
   }
 
   renderHoverOptions () {
@@ -19,13 +19,15 @@ class SceneView extends Component {
     return (<div className='scene-list__item__hover-options'>
       <ButtonGroup>
         <Button><Glyphicon glyph='edit' /></Button>
-        <Button><Glyphicon glyph='trash' /></Button>
+        <Button bsStyle='danger'><Glyphicon glyph='trash' /></Button>
       </ButtonGroup>
     </div>)
   }
 
   render () {
-    return (<li className='scene-list__item' onMouseOver={this.toggleHoverOptions.bind(this)}>
+    return (<li className='scene-list__item'
+      onMouseEnter={() => this.setState({hovering: true})}
+      onMouseLeave={() => this.setState({hovering: false})} >
       {this.renderHoverOptions()}
       <div className='scene-list__item__title'>
         <span>{this.props.scene.title}</span>

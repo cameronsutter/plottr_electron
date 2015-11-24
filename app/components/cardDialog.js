@@ -3,10 +3,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Modal from 'react-modal'
 import _ from 'lodash'
+import MarkDown from 'pagedown'
 import * as CardActions from '../actions/cards'
 import { ButtonToolbar, Button, DropdownButton } from 'react-bootstrap'
 
 Modal.setAppElement('#timelineview-root')
+const md = MarkDown.getSanitizingConverter()
 
 const customStyles = {content: {top: '70px'}}
 
@@ -25,7 +27,7 @@ class CardDialog extends Component {
   }
 
   deleteCard () {
-    
+
   }
 
   render () {
@@ -50,7 +52,10 @@ class CardDialog extends Component {
           </div>
         </div>
         <div className='card-dialog__description'>
-          {this.props.card.description}
+          <div
+            className='card-description-editor__display'
+            dangerouslySetInnerHTML={{__html: md.makeHtml(this.props.card.description)}} >
+          </div>
         </div>
         {this.renderButtonBar()}
       </div>

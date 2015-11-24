@@ -102,6 +102,15 @@ app.on('ready', function () {
           })
         }
       }]
+    }, {
+      label: 'View',
+      submenu: [{
+        label: 'Reload',
+        accelerator: 'Command+R',
+        click: function () {
+          mainWindow.webContents.reload()
+        }
+      }]
     }
   ]
 

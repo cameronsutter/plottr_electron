@@ -1,5 +1,6 @@
 import { FILE_LOADED, FILE_SAVED, NEW_FILE } from '../constants/ActionTypes'
 import { file as defaultFile } from 'store/initialState'
+import { saveToLocalStorage } from 'store/localStorage'
 
 export default function file (state = defaultFile, action) {
   switch (action.type) {
@@ -17,8 +18,4 @@ export default function file (state = defaultFile, action) {
     default:
       return Object.assign({}, state, {dirty: true})
   }
-}
-
-function saveToLocalStorage (fileName) {
-  window.localStorage.setItem('recentFileName', fileName)
 }

@@ -82,7 +82,15 @@ app.on('ready', function () {
         }
       }, {
         label: 'Open',
-        role: 'openFile'
+        accelerator: 'Command+O',
+        click: function () {
+          var properties = [ 'openFile', 'openDirectory', 'createDirectory' ]
+          dialog.showOpenDialog(mainWindow, { properties: properties }, (chosenFileName) => {
+            if (chosenFileName.length > 0) {
+              mainWindow.webContents.send('open-file', chosenFileName[0])
+            }
+          })
+        }
       }, {
         label: 'New',
         accelerator: 'Command+N',

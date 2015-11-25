@@ -39,7 +39,9 @@ class CardDialog extends Component {
     return (<Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
       <div className='card-dialog'>
         <div className='card-dialog__title'>
-          {this.props.card.title}
+          <h2>
+            {this.props.card.title}
+          </h2>
         </div>
         <div className='card-dialog__position-details'>
           <div className='card-dialog__line'>

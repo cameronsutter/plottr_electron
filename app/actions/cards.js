@@ -12,10 +12,10 @@ export function editCardDescription (newDesc) {
   return { type: EDIT_CARD_DESCRIPTION, description: newDesc }
 }
 
-export function changeLine (newLineId) {
-  return { type: CHANGE_LINE, lineId: newLineId }
+export function changeLine (id, lineId) {
+  return { type: CHANGE_LINE, id, lineId }
 }
 
-export function changeScene (newSceneId) {
-  return { type: CHANGE_SCENE, sceneId: newSceneId }
+export function changeScene (id, sceneId) {
+  return { type: CHANGE_SCENE, id, sceneId }
 }

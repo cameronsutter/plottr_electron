@@ -5,6 +5,7 @@ import Modal from 'react-modal'
 import _ from 'lodash'
 import MarkDown from 'pagedown'
 import * as CardActions from '../actions/cards'
+import { card } from 'store/initialState'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bootstrap'
 import 'style!css!sass!../css/card_dialog.css.scss'
 
@@ -16,7 +17,7 @@ const customStyles = {content: {top: '70px'}}
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false, editedCard: {}}
+    this.state = {editing: this.props.isNewCard}
   }
 
   closeDialog () {
@@ -24,7 +25,20 @@ class CardDialog extends Component {
   }
 
   handleCreate () {
+    var title = this.refs.titleInput.getValue()
+    var desc = this.refs.descriptionInput.getValue()
+    var newCard = this.buildCard(title, desc)
+    this.props.actions.addCard(newCard)
+    this.closeDialog()
+  }
 
+  buildCard (title, description) {
+    return {
+      title: title || card.title,
+      description: description || card.description,
+      lineId: this.props.lineId,
+      sceneId: this.props.sceneId
+    }
   }
 
   deleteCard () {
@@ -134,13 +148,18 @@ class CardDialog extends Component {
   }
 
   renderTitle () {
+    var title = 'Cool thing happens'
+    if (!this.props.isNewCard) {
+      title = this.props.card.title
+    }
+
     if (this.state.editing) {
-      return <Input type='text' ref='titleInput' placeholder={this.props.card.title} />
+      return <Input type='text' ref='titleInput' placeholder={title} />
     } else {
       return (
         <div className='card-dialog__title'>
           <h2 className='card-title-editor__display'>
-            {this.props.card.title}
+            {title}
           </h2>
         </div>
       )
@@ -148,12 +167,17 @@ class CardDialog extends Component {
   }
 
   renderDescription () {
+    var description = 'Desciption of cool thing happening'
+    if (!this.props.isNewCard) {
+      description = this.props.card.description
+    }
+
     if (this.state.editing) {
-      return <Input type='textarea' rows='13' ref='descriptionInput' placeholder={this.props.card.description} />
+      return <Input type='textarea' rows='13' ref='descriptionInput' placeholder={description} />
     } else {
       return (
         <div
-          dangerouslySetInnerHTML={{__html: md.makeHtml(this.props.card.description)}} >
+          dangerouslySetInnerHTML={{__html: md.makeHtml(description)}} >
         </div>
       )
     }

@@ -11,13 +11,13 @@ export default function cards (state = initialState, action) {
     case ADD_CARD:
       return [{
         id: state.reduce((maxId, card) => Math.max(card.id, maxId), -1) + 1,
-        lineId: action.lineId,
-        sceneId: action.sceneId,
-        title: action.title,
-        description: action.description,
-        tags: action.tags,
-        characters: action.characters,
-        places: action.places
+        lineId: action.card.lineId,
+        sceneId: action.card.sceneId,
+        title: action.card.title,
+        description: action.card.description,
+        tags: action.card.tags,
+        characters: action.card.characters,
+        places: action.card.places
       }, ...state]
 
     case EDIT_CARD_TITLE:

@@ -39,6 +39,7 @@ class CardView extends Component {
 
     return (
       <div className={cardClass}
+        onClick={ () => { this.setState({creating: true, dialogOpen: true}) } }
         style={{borderColor: this.props.color}}
       ></div>
     )
@@ -48,13 +49,15 @@ class CardView extends Component {
     const { card, sceneId, lineId } = this.props
     var key = 'new' + sceneId + lineId
     if (card) key = card.id
-    return (<CardDialog
-      key={key}
-      card={card}
-      sceneId={sceneId}
-      lineId={lineId}
-      isNewCard={this.state.creating}
-      closeDialog={this.closeDialog.bind(this)} />)
+    return (
+      <CardDialog
+        key={key}
+        card={card}
+        sceneId={sceneId}
+        lineId={lineId}
+        isNewCard={this.state.creating}
+        closeDialog={this.closeDialog.bind(this)} />
+    )
   }
 
 }

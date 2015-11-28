@@ -45,6 +45,7 @@
 
 .scene-list__item:hover {
   @include hover-box;
+  cursor: auto;
 }
 
 .scene-list__item__title {
@@ -63,11 +64,6 @@
   position: absolute;
   margin-top: -45px;
   margin-left: 25px;
-  // top: -50px;
-  // height: 50px;
-  // border: 1px solid #eee;
-  // border-radius: 4px;
-  // background-color: white;
   width: $width;
   z-index: 2000;
 }

@@ -1,15 +1,19 @@
-import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION, CHANGE_LINE, CHANGE_SCENE } from '../constants/ActionTypes'
+import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION, EDIT_CARD_DETAILS, CHANGE_LINE, CHANGE_SCENE } from '../constants/ActionTypes'
 
 export function addCard (card) {
   return { type: ADD_CARD, card }
 }
 
-export function editCardTitle (newTitle) {
-  return { type: EDIT_CARD_TITLE, title: newTitle }
+export function editCardTitle (id, title) {
+  return { type: EDIT_CARD_TITLE, id, title }
 }
 
-export function editCardDescription (newDesc) {
-  return { type: EDIT_CARD_DESCRIPTION, description: newDesc }
+export function editCardDescription (id, description) {
+  return { type: EDIT_CARD_DESCRIPTION, id, description }
+}
+
+export function editCard (id, title, description) {
+  return { type: EDIT_CARD_DETAILS, id, title, description }
 }
 
 export function changeLine (id, lineId) {

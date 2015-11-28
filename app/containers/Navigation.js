@@ -61,7 +61,7 @@ class Navigation extends Component {
   }
 
   renderStoryName () {
-    return this.state.editing ? this.renderEditingStoryName() : this.renderNormalStoryName()
+    return this.state.editing ? this.renderEditingStoryName() : this.renderStoryName()
   }
 
   renderEditingStoryName () {
@@ -74,7 +74,7 @@ class Navigation extends Component {
       onKeyPress={this.handleFinishEditing.bind(this)} />
   }
 
-  renderNormalStoryName () {
+  renderStoryName () {
     return <a className='navbar-brand' onClick={() => this.setState({editing: true})} >{this.props.storyName}</a>
   }
 

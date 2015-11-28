@@ -1,4 +1,4 @@
-import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION,
+import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION, EDIT_CARD_DETAILS,
   CHANGE_LINE, CHANGE_SCENE, EDIT_CHARACTERS, EDIT_TAGS, EDIT_PLACES,
   FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 
@@ -28,6 +28,11 @@ export default function cards (state = initialState, action) {
     case EDIT_CARD_DESCRIPTION:
       return state.map(card =>
         card.id === action.id ? Object.assign({}, card, {description: action.description}) : card
+      )
+
+    case EDIT_CARD_DETAILS:
+      return state.map(card =>
+        card.id === action.id ? Object.assign({}, card, {title: action.title, description: action.description}) : card
       )
 
     case CHANGE_LINE:

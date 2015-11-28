@@ -14,11 +14,14 @@
   border-bottom: 1px solid #eee;
   border-top: 1px solid #eee;
   padding-top: 5px;
-  margin-bottom: 10px;
+  padding-bottom: 15px;
+  // margin-bottom: 10px;
 }
 
 .card-dialog__description {
   flex-grow: 1;
+  overflow-y:scroll;
+  border-bottom: 1px solid #eee;
 }
 
 .card-dialog__line, .card-dialog__scene {
@@ -39,6 +42,8 @@
   margin-top: 10px;
   display: flex;
   flex-direction: row-reverse;
+  // outline-top: 1px solid #eee;
+  // padding-top: 3px;
 }
 
 .card-dialog__button-bar-edit {

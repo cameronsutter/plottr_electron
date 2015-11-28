@@ -17,6 +17,7 @@ export const CHANGE_CHAPTER = 'CHANGE_CHAPTER'
 
 // card actions
 export const ADD_CARD = 'ADD_CARD'
+export const EDIT_CARD_DETAILS = 'EDIT_CARD_DETAILS'
 export const EDIT_CARD_TITLE = 'EDIT_CARD_TITLE'
 export const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION'
 export const CHANGE_LINE = 'CHANGE_LINE'

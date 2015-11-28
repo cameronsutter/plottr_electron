@@ -5,7 +5,7 @@ import Modal from 'react-modal'
 import _ from 'lodash'
 import MarkDown from 'pagedown'
 import * as CardActions from '../actions/cards'
-import { ButtonToolbar, Button, DropdownButton, MenuItem } from 'react-bootstrap'
+import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bootstrap'
 import 'style!css!sass!../css/card_dialog.css.scss'
 
 Modal.setAppElement('#timelineview-root')
@@ -29,6 +29,17 @@ class CardDialog extends Component {
 
   deleteCard () {
 
+  }
+
+  startEdit () {
+    this.setState({editing: true})
+  }
+
+  saveEdit () {
+    var newTitle = this.refs.titleInput.getValue() || this.props.card.title
+    var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
+    this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
+    this.setState({editing: false})
   }
 
   changeScene (sceneId) {
@@ -87,6 +98,19 @@ class CardDialog extends Component {
           </Button>
         </ButtonToolbar>
       )
+    } else if (this.state.editing) {
+      return (
+        <div className='card-dialog__button-bar-edit'>
+          <Button bsStyle='danger'
+            onClick={() => { this.setState({editing: false}) }} >
+            Cancel
+          </Button>
+          <Button bsStyle='success'
+            onClick={this.saveEdit.bind(this)}>
+            Save
+          </Button>
+        </div>
+      )
     } else {
       return (
         <div className='card-dialog__button-bar-edit'>
@@ -94,6 +118,11 @@ class CardDialog extends Component {
             bsStyle='primary'
             onClick={this.closeDialog.bind(this)}>
             Close
+          </Button>
+          <Button className='card-dialog__edit'
+            bsStyle='success'
+            onClick={this.startEdit.bind(this)}>
+            Edit
           </Button>
           <Button className='card-dialog__delete' bsStyle='danger'
             onClick={this.deleteCard.bind(this)} >
@@ -104,43 +133,71 @@ class CardDialog extends Component {
     }
   }
 
-  render () {
-    var ids = {
-      scene: _.uniqueId('select-scene-'),
-      line: _.uniqueId('select-line-')
-    }
-
-    return (<Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
-      <div className='card-dialog'>
+  renderTitle () {
+    if (this.state.editing) {
+      return <Input type='text' ref='titleInput' placeholder={this.props.card.title} />
+    } else {
+      return (
         <div className='card-dialog__title'>
           <h2 className='card-title-editor__display'>
             {this.props.card.title}
           </h2>
         </div>
-        <div className='card-dialog__position-details'>
-          <div className='card-dialog__line'>
-            <label className='card-dialog__line-label' htmlFor={ids.line}>Line:
-              <DropdownButton id={ids.line} className='card-dialog__select-line' title={this.getCurrentLine().title}>
-                {this.renderLineItems()}
-              </DropdownButton>
-            </label>
-          </div>
-          <div className='card-dialog__scene'>
-            <label className='card-dialog__scene-label' htmlFor={ids.scene}>Scene:
-              <DropdownButton id={ids.scene} className='card-dialog__select-scene' title={this.getCurrentScene().title}>
-                {this.renderSceneItems()}
-              </DropdownButton>
-            </label>
-          </div>
+      )
+    }
+  }
+
+  renderDescription () {
+    if (this.state.editing) {
+      return <Input type='textarea' rows='13' ref='descriptionInput' placeholder={this.props.card.description} />
+    } else {
+      return (
+        <div
+          dangerouslySetInnerHTML={{__html: md.makeHtml(this.props.card.description)}} >
         </div>
-        <div className='card-dialog__description'>
-          <div
-            dangerouslySetInnerHTML={{__html: md.makeHtml(this.props.card.description)}} >
-          </div>
+      )
+    }
+  }
+
+  renderPositionDetails () {
+    var ids = {
+      scene: _.uniqueId('select-scene-'),
+      line: _.uniqueId('select-line-')
+    }
+
+    return (
+      <div className='card-dialog__position-details'>
+        <div className='card-dialog__line'>
+          <label className='card-dialog__line-label' htmlFor={ids.line}>Line:
+            <DropdownButton id={ids.line} className='card-dialog__select-line' title={this.getCurrentLine().title}>
+              {this.renderLineItems()}
+            </DropdownButton>
+          </label>
         </div>
-        {this.renderButtonBar()}
+        <div className='card-dialog__scene'>
+          <label className='card-dialog__scene-label' htmlFor={ids.scene}>Scene:
+            <DropdownButton id={ids.scene} className='card-dialog__select-scene' title={this.getCurrentScene().title}>
+              {this.renderSceneItems()}
+            </DropdownButton>
+          </label>
+        </div>
       </div>
-    </Modal>)
+    )
+  }
+
+  render () {
+    return (
+      <Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
+        <div className='card-dialog'>
+          {this.renderTitle()}
+          {this.renderPositionDetails()}
+          <div className='card-dialog__description'>
+            {this.renderDescription()}
+          </div>
+          {this.renderButtonBar()}
+        </div>
+      </Modal>
+    )
   }
 }
 

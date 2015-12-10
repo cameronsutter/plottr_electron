@@ -1,5 +1,5 @@
 import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION, EDIT_CARD_DETAILS,
-  CHANGE_LINE, CHANGE_SCENE, EDIT_CHARACTERS, EDIT_TAGS, EDIT_PLACES,
+  EDIT_CARD_POSITION, EDIT_CHARACTERS, EDIT_TAGS, EDIT_PLACES,
   FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 
 import { card } from 'store/initialState'
@@ -35,14 +35,9 @@ export default function cards (state = initialState, action) {
         card.id === action.id ? Object.assign({}, card, {title: action.title, description: action.description}) : card
       )
 
-    case CHANGE_LINE:
+    case EDIT_CARD_POSITION:
       return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {lineId: action.lineId}) : card
-      )
-
-    case CHANGE_SCENE:
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {sceneId: action.sceneId}) : card
+        card.id === action.id ? Object.assign({}, card, {lineId: action.lineId, sceneId: action.sceneId}) : card
       )
 
     case EDIT_CHARACTERS:

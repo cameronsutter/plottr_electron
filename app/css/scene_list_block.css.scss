@@ -14,13 +14,17 @@
   min-width: $width;
   border: 2px solid transparent;
   margin: $margin;
+  margin-left: 40px; // because hover option buttons (story lines)
 }
 
 .scene-list__new {
   height: $height;
   width: $width;
   min-width: $width;
-  margin-top: 40px; // because the scene-list__items have the hover_options
+  margin-top: 40px; // because hover option buttons
+  line-height: $height;
+  color: $new-item-border-color;
+  text-align: center;
 }
 
 .scene-list__new:hover {
@@ -49,7 +53,7 @@
 
 .scene-list__item__body.hover {
   @include hover-box;
-  cursor: auto;
+  cursor: move;
 }
 
 .scene-list__item__title {

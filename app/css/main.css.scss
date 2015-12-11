@@ -29,7 +29,8 @@ $card-background: $body-background-color;
 $svg-line-width: 3;
 
 $new-item-background: #ddd;
-$new-item-border: 2px dashed #aaa;
+$new-item-border-color: #aaa;
+$new-item-border: 2px dashed $new-item-border-color;
 
 @mixin header-font {
   font-family: 'Playfair Display', serif !important;

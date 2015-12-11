@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import * as LineActions from '../actions/lines'
 import LineView from 'components/lineView'
@@ -16,7 +17,9 @@ class LineListView extends Component {
     var lineViews = this.renderLines()
     return (<div className='line-list'>
       {lineViews}
-      <div className='line-list__new' onClick={this.handleCreateNewLine.bind(this)} />
+      <div className='line-list__new' onClick={this.handleCreateNewLine.bind(this)} >
+        <Glyphicon glyph='plus' />
+      </div>
     </div>)
   }
 

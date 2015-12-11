@@ -1,19 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Glyphicon, Button, Input } from 'react-bootstrap'
+import * as LineActions from 'actions/lines'
 import CardView from 'components/cardView'
 import _ from 'lodash'
-import $ from 'jquery'
-
-// import CardView from 'components/cardView'
-
-// var RBS = require('react-bootstrap');
-// var Button = RBS.Button;
-// var Input = RBS.Input;
-// var ButtonToolbar = RBS.ButtonToolbar;
-// var Icon = RBS.Glyphicon;
-// var Modal = require('react-modal/dist/react-modal');
 
 class LineView extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      hovering: false,
+      editing: false,
+      dragging: false,
+      dropping: false,
+      editingWhat: ''
+    }
+  }
 
   findCard (sceneId) {
     return _.find(this.cards(), (card) => {
@@ -44,6 +47,24 @@ class LineView extends Component {
     return _.sortBy(cards, 'position')
   }
 
+  handleFinishEditingTitle (event) {
+    if (event.which === 13) {
+      var id = this.props.line.id
+      var newTitle = this.refs.titleInput.getValue()
+      this.props.actions.editLineTitle(id, newTitle)
+      this.setState({editing: false})
+    }
+  }
+
+  handleFinishEditingColor (event) {
+    if (event.which === 13) {
+      var id = this.props.line.id
+      var newColor = this.refs.colorInput.getValue()
+      this.props.actions.editLineColor(id, newColor)
+      this.setState({editing: false})
+    }
+  }
+
   renderCards () {
     var sceneMap = this.props.sceneMap
 
@@ -58,17 +79,66 @@ class LineView extends Component {
     })
   }
 
+  renderHoverOptions () {
+    var style = {visibility: 'hidden'}
+    if (this.state.hovering) style.visibility = 'visible'
+    return (<div className='line__hover-options' style={style}>
+      <Button block onClick={() => this.setState({editing: true, editingWhat: 'title'})}><Glyphicon glyph='edit' /></Button>
+      <Button block bsStyle='info' onClick={() => this.setState({editing: true, editingWhat: 'color'})}><Glyphicon glyph='tint' /></Button>
+      <Button block bsStyle='danger'><Glyphicon glyph='trash' /></Button>
+    </div>)
+  }
+
+  renderBody () {
+    var classes = 'line__body'
+    if (this.state.hovering) classes += ' hover'
+    var toRender = <div className='line__title'>{this.props.line.title}</div>
+    if (this.state.editing) {
+      switch (this.state.editingWhat) {
+        case 'title':
+          toRender = (<Input
+            type='text'
+            placeholder={this.props.line.title}
+            label='Story line name'
+            ref='titleInput'
+            autoFocus
+            onBlur={() => this.setState({editing: false})}
+            onKeyPress={this.handleFinishEditingTitle.bind(this)} />)
+          break
+        case 'color':
+          toRender = (<Input
+            type='color'
+            placeholder={this.props.line.color}
+            defaultValue={this.props.line.color}
+            label='Story line color'
+            ref='colorInput'
+            autoFocus
+            onBlur={() => this.setState({editing: false})}
+            onKeyPress={this.handleFinishEditingColor.bind(this)} />)
+          break
+        default:
+          return null
+      }
+    }
+    return (
+      <div className={classes}>
+        {toRender}
+      </div>
+    )
+  }
+
   render () {
     var lineLength = this.lineLength()
-    const { line } = this.props
     return (
-      <div className='line' style={{width: (lineLength + this.width())}}>
-        <div className='line__title-box'>
-          <div className='line__title'>{line.title}</div>
-        </div>
+      <div className='line'
+        style={{width: (lineLength + this.width())}}
+        onMouseEnter={() => this.setState({hovering: true})}
+        onMouseLeave={() => this.setState({hovering: false})}>
+        {this.renderHoverOptions()}
+        {this.renderBody()}
         <div className='line__svg-line-box'>
           <svg width={lineLength} >
-            <line x1='0' y1={this.height()} x2={lineLength} y2={this.height()} className='line__svg-line' style={{stroke: line.color}} />
+            <line x1='0' y1={this.height()} x2={lineLength} y2={this.height()} className='line__svg-line' style={{stroke: this.props.line.color}} />
           </svg>
         </div>
         <div className='card__box'>
@@ -83,7 +153,8 @@ LineView.propTypes = {
   line: PropTypes.object.isRequired,
   scenes: PropTypes.array.isRequired,
   sceneMap: PropTypes.object.isRequired,
-  cards: PropTypes.array.isRequired
+  cards: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
@@ -95,7 +166,9 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(LineActions, dispatch)
+  }
 }
 
 export default connect(

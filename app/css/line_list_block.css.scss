@@ -10,6 +10,10 @@
 .line-list__new {
   height: $height;
   width: $width;
+  margin-left: 40px; // because hover option buttons
+  text-align: center;
+  color: $new-item-border-color;
+  line-height: $height;
 }
 
 .line-list__new:hover {
@@ -36,7 +40,16 @@
   stroke-width: $svg-line-width;
 }
 
-.line__title-box {
+.line__hover-options {
+  float:left;
+  margin-top: -20px;
+  margin-right: 1px;
+  button.btn-block {
+    margin-top: 1px;
+  }
+}
+
+.line__body {
   width: $width;
   height: $height;
   display: flex;
@@ -44,27 +57,13 @@
   align-items: center;
 }
 
-.line__title-box:hover {
+.line__body.hover {
   @include hover-box;
+  cursor: move;
 }
 
 .line__title {
   @include sub-header-font;
   width: $width;
   padding: 5px 10px 5px 10px;
-}
-
-.line__title-box__modal {
-  width: 50%;
-  height: 50%;
-}
-
-.line__title-box__edit {
-  margin: 30px;
-}
-
-.line__title-box__button-bar {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row-reverse;
 }

@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import SceneView from 'components/sceneView'
-import * as SceneActions from 'actions/scenes'
+import { Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
+import * as SceneActions from 'actions/scenes'
 import 'style!css!sass!../css/scene_list_block.css.scss'
 
 class SceneListView extends Component {
@@ -34,7 +35,9 @@ class SceneListView extends Component {
       <ul className='scene-list'>
         <li className='scene-list__placeholder' />
         {scenes}
-        <li className='scene-list__new' onClick={this.handleCreateNewScene.bind(this)} />
+        <li className='scene-list__new' onClick={this.handleCreateNewScene.bind(this)} >
+          <Glyphicon glyph='plus' />
+        </li>
       </ul>
     )
   }

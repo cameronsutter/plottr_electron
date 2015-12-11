@@ -58,6 +58,6 @@ export const chapter = {
 export const line = {
   id: 0,
   color: '#000000',
-  title: 'Character Name',
+  title: 'Story Line',
   position: 0
 }

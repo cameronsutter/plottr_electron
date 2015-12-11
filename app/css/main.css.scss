@@ -2,7 +2,7 @@
 
 // Give everything in 'yield' margin to separate it.
 #react-root {
-  margin: 30px;
+  margin: 0px 30px 30px 30px;
 }
 
 body {
@@ -14,8 +14,8 @@ $body-background-color: #efefee;
 $height: 66px;
 $width: 150px;
 
-$scene-height: $height;
-$chapter-height: $height / 2;
+// $scene-height: $height + 50;
+// $chapter-height: $height / 2;
 // $chapter-width:
 
 $margin: 0px 25px 0px 0px;

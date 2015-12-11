@@ -55,8 +55,9 @@ class SceneView extends Component {
   }
 
   renderHoverOptions () {
-    if (!this.state.hovering) return
-    return (<div className='scene-list__item__hover-options'>
+    var style = {visibility: 'hidden'}
+    if (this.state.hovering) style.visibility = 'visible'
+    return (<div className='scene-list__item__hover-options' style={style}>
       <ButtonGroup>
         <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
         <Button bsStyle='danger'><Glyphicon glyph='trash' /></Button>
@@ -77,10 +78,9 @@ class SceneView extends Component {
   }
 
   render () {
-    var style = {}
-    if (this.state.hovering) style = {justifyContent: 'space-between'}
+    var classes = 'scene-list__item__body'
+    if (this.state.hovering) classes += ' hover'
     return (<li className='scene-list__item'
-      style={style}
       draggable={true}
       onMouseEnter={() => this.setState({hovering: true})}
       onMouseLeave={() => this.setState({hovering: false})}
@@ -91,8 +91,10 @@ class SceneView extends Component {
       onDragLeave={this.handleDragLeave.bind(this)}
       onDrop={this.handleDrop.bind(this)} >
       {this.renderHoverOptions()}
-      <div className='scene-list__item__title'>
-        {this.renderTitle()}
+      <div className={classes}>
+        <div className='scene-list__item__title'>
+          {this.renderTitle()}
+        </div>
       </div>
     </li>)
   }

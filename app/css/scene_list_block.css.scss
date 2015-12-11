@@ -3,11 +3,9 @@
 .scene-list {
   display: flex;
   flex-direction: row;
-  height: $scene-height;
 
   margin: 0;
   padding: 0;
-  margin-top: 30px;
   list-style: none;
 }
 
@@ -19,9 +17,10 @@
 }
 
 .scene-list__new {
-  height: $scene-height;
+  height: $height;
   width: $width;
   min-width: $width;
+  margin-top: 40px; // because the scene-list__items have the hover_options
 }
 
 .scene-list__new:hover {
@@ -32,18 +31,23 @@
 
 .scene-list__item {
   @include sub-header-font;
-  min-width: $width;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
 
+  min-width: $width;
   padding: $padding;
   margin: $margin;
   width: $width;
 }
 
-.scene-list__item:hover {
+.scene-list__item__body {
+  max-height: $height;
+  height: $height;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.scene-list__item__body.hover {
   @include hover-box;
   cursor: auto;
 }
@@ -61,9 +65,6 @@
 }
 
 .scene-list__item__hover-options {
-  position: absolute;
-  margin-top: -45px;
-  margin-left: 25px;
-  width: $width;
-  z-index: 2000;
+  text-align: center;
+  visibility: hidden;
 }

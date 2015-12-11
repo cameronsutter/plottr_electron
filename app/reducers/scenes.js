@@ -1,4 +1,4 @@
-import { ADD_SCENE, EDIT_SCENE_TITLE, CHANGE_CHAPTER, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_SCENE, EDIT_SCENE_TITLE, CHANGE_CHAPTER, REORDER_SCENES, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { scene } from 'store/initialState'
 
 const initialState = [scene]
@@ -22,6 +22,9 @@ export default function scenes (state = initialState, action) {
       return state.map(scene =>
         scene.id === action.id ? Object.assign({}, scene, {chapterId: action.chapterId}) : scene
       )
+
+    case REORDER_SCENES:
+      return action.scenes
 
     case FILE_LOADED:
       return action.data.scenes

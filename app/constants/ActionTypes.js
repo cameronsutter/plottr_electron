@@ -14,6 +14,7 @@ export const EDIT_CHAPTER_TITLE = 'EDIT_CHAPTER_TITLE'
 export const ADD_SCENE = 'ADD_SCENE'
 export const EDIT_SCENE_TITLE = 'EDIT_SCENE_TITLE'
 export const CHANGE_CHAPTER = 'CHANGE_CHAPTER'
+export const REORDER_SCENES = 'REORDER_SCENES'
 
 // card actions
 export const ADD_CARD = 'ADD_CARD'

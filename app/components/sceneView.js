@@ -8,7 +8,7 @@ import 'style!css!sass!../css/scene_list_block.css.scss'
 class SceneView extends Component {
   constructor (props) {
     super(props)
-    this.state = {hovering: false, editing: false}
+    this.state = {hovering: false, editing: false, dragging: false, dropping: false}
   }
 
   handleFinishEditing (event) {
@@ -18,6 +18,40 @@ class SceneView extends Component {
       this.props.actions.editSceneTitle(id, newTitle)
       this.setState({editing: false})
     }
+  }
+
+  handleDragStart (e) {
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/json', JSON.stringify(this.props.scene))
+    this.setState({dragging: true})
+  }
+
+  handleDragEnd () {
+    this.setState({dragging: false})
+  }
+
+  handleDragEnter (e) {
+    this.setState({dropping: true})
+  }
+
+  handleDragOver (e) {
+    e.preventDefault()
+    return false
+  }
+
+  handleDragLeave (e) {
+    this.setState({dropping: false})
+  }
+
+  handleDrop (e) {
+    e.stopPropagation()
+    this.handleDragLeave()
+
+    var json = e.dataTransfer.getData('text/json')
+    var droppedScene = JSON.parse(json)
+    if (!droppedScene.id) return
+
+    this.props.handleReorder(this.props.scene.position, droppedScene.position)
   }
 
   renderHoverOptions () {
@@ -47,8 +81,15 @@ class SceneView extends Component {
     if (this.state.hovering) style = {justifyContent: 'space-between'}
     return (<li className='scene-list__item'
       style={style}
+      draggable={true}
       onMouseEnter={() => this.setState({hovering: true})}
-      onMouseLeave={() => this.setState({hovering: false})} >
+      onMouseLeave={() => this.setState({hovering: false})}
+      onDragStart={this.handleDragStart.bind(this)}
+      onDragEnd={this.handleDragEnd.bind(this)}
+      onDragEnter={this.handleDragEnter.bind(this)}
+      onDragOver={this.handleDragOver.bind(this)}
+      onDragLeave={this.handleDragLeave.bind(this)}
+      onDrop={this.handleDrop.bind(this)} >
       {this.renderHoverOptions()}
       <div className='scene-list__item__title'>
         {this.renderTitle()}
@@ -59,13 +100,12 @@ class SceneView extends Component {
 
 SceneView.propTypes = {
   scene: PropTypes.object.isRequired,
+  handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
-  return {
-    scenes: state.scenes
-  }
+  return {}
 }
 
 function mapDispatchToProps (dispatch) {

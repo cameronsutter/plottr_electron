@@ -13,6 +13,21 @@ class SceneListView extends Component {
     this.props.actions.addScene(chapterId)
   }
 
+  handleReorder (originalScenePosition, droppedScenePosition) {
+    var scenesArray = []
+    this.props.scenes.forEach((s) => {
+      var newScene = _.clone(s)
+      if (s.position >= originalScenePosition && s.position !== droppedScenePosition) {
+        newScene.position += 1
+      } else if (s.position === droppedScenePosition) {
+        newScene.position = originalScenePosition
+      }
+      scenesArray.push(newScene)
+    })
+    // potentially we'd want to reset all the positions so there aren't any gaps
+    this.props.actions.reorderScenes(scenesArray)
+  }
+
   render () {
     var scenes = this.renderScenes()
     return (
@@ -28,7 +43,7 @@ class SceneListView extends Component {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map((scene) => {
       return (
-        <SceneView key={'sceneId-' + scene.id} scene={scene} />
+        <SceneView key={'sceneId-' + scene.id} scene={scene} handleReorder={this.handleReorder.bind(this)} />
       )
     })
   }

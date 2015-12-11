@@ -1,4 +1,4 @@
-import { ADD_SCENE, EDIT_SCENE_TITLE, CHANGE_CHAPTER } from '../constants/ActionTypes'
+import { ADD_SCENE, EDIT_SCENE_TITLE, CHANGE_CHAPTER, REORDER_SCENES } from '../constants/ActionTypes'
 import { scene } from 'store/initialState'
 
 export function addScene (chapterId) {
@@ -11,4 +11,8 @@ export function editSceneTitle (id, title) {
 
 export function changeChapter (id, chapterId) {
   return { type: CHANGE_CHAPTER, id, chapterId }
+}
+
+export function reorderScenes (scenes) {
+  return { type: REORDER_SCENES, scenes }
 }

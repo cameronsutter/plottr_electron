@@ -46,7 +46,7 @@ class CardView extends Component {
     var droppedCard = JSON.parse(json)
     if (!droppedCard.id) return
 
-    this.props.actions.editCardPosition(droppedCard.id, this.props.lineId, this.props.sceneId)
+    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.sceneId)
   }
 
   render () {

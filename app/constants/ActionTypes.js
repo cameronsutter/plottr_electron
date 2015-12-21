@@ -31,6 +31,7 @@ export const ADD_LINE = 'ADD_LINE'
 export const EDIT_LINE_TITLE = 'EDIT_LINE_TITLE'
 export const EDIT_LINE_COLOR = 'EDIT_LINE_COLOR'
 export const REORDER_LINES = 'REORDER_LINES'
+export const DELETE_LINE = 'DELETE_LINE'
 
 // places actions
 export const ADD_PLACE = 'ADD_PLACE'

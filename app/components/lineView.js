@@ -99,6 +99,12 @@ class LineView extends Component {
     this.props.handleReorder(this.props.line.position, droppedLine.position)
   }
 
+  handleDelete () {
+    if (window.confirm(`Do you want to delete this story line: '${this.props.line.title}'?`)) {
+      this.props.actions.deleteLine(this.props.line.id)
+    }
+  }
+
   renderCards () {
     var sceneMap = this.props.sceneMap
 
@@ -119,7 +125,7 @@ class LineView extends Component {
     return (<div className='line__hover-options' style={style}>
       <Button block onClick={() => this.setState({editing: true, editingWhat: 'title'})}><Glyphicon glyph='edit' /></Button>
       <Button block bsStyle='info' onClick={() => this.setState({editing: true, editingWhat: 'color'})}><Glyphicon glyph='tint' /></Button>
-      <Button block bsStyle='danger'><Glyphicon glyph='trash' /></Button>
+      <Button block bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
     </div>)
   }
 

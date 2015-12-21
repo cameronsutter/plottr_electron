@@ -1,4 +1,4 @@
-import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { line } from 'store/initialState'
 
 const initialState = [line]
@@ -21,6 +21,11 @@ export default function lines (state = initialState, action) {
     case EDIT_LINE_COLOR:
       return state.map(line =>
         line.id === action.id ? Object.assign({}, line, {color: action.color}) : line
+      )
+
+    case DELETE_LINE:
+      return state.filter(line =>
+        line.id !== action.id
       )
 
     case REORDER_LINES:

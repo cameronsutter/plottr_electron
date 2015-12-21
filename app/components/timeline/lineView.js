@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, Input } from 'react-bootstrap'
 import * as LineActions from 'actions/lines'
-import CardView from 'components/cardView'
+import CardView from 'components/timeline/cardView'
 import _ from 'lodash'
 
 class LineView extends Component {
@@ -161,7 +161,17 @@ class LineView extends Component {
       }
     }
     return (
-      <div className={classes}>
+      <div
+        className={classes}
+        draggable={true}
+        onMouseEnter={() => this.setState({hovering: true})}
+        onMouseLeave={() => this.setState({hovering: false})}
+        onDragStart={this.handleDragStart.bind(this)}
+        onDragEnd={this.handleDragEnd.bind(this)}
+        onDragEnter={this.handleDragEnter.bind(this)}
+        onDragOver={this.handleDragOver.bind(this)}
+        onDragLeave={this.handleDragLeave.bind(this)}
+        onDrop={this.handleDrop.bind(this)}>
         {toRender}
       </div>
     )
@@ -173,16 +183,7 @@ class LineView extends Component {
       <div className='line'
         style={{width: (lineLength + this.width())}}
         onMouseEnter={() => this.setState({hovering: true})}
-        onMouseLeave={() => this.setState({hovering: false})}
-        draggable={true}
-        onMouseEnter={() => this.setState({hovering: true})}
-        onMouseLeave={() => this.setState({hovering: false})}
-        onDragStart={this.handleDragStart.bind(this)}
-        onDragEnd={this.handleDragEnd.bind(this)}
-        onDragEnter={this.handleDragEnter.bind(this)}
-        onDragOver={this.handleDragOver.bind(this)}
-        onDragLeave={this.handleDragLeave.bind(this)}
-        onDrop={this.handleDrop.bind(this)} >
+        onMouseLeave={() => this.setState({hovering: false})} >
         {this.renderHoverOptions()}
         {this.renderBody()}
         <div className='line__svg-line-box'>

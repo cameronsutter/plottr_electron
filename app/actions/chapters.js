@@ -1,4 +1,4 @@
-import { ADD_CHAPTER, EDIT_CHAPTER_TITLE } from '../constants/ActionTypes'
+import { ADD_CHAPTER, EDIT_CHAPTER_TITLE } from 'constants/ActionTypes'
 
 export function addChapter (title) {
   return { type: ADD_CHAPTER, title }

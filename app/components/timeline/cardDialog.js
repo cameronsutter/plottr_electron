@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux'
 import Modal from 'react-modal'
 import _ from 'lodash'
 import MarkDown from 'pagedown'
-import * as CardActions from '../actions/cards'
+import * as CardActions from 'actions/cards'
 import { card } from 'store/initialState'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bootstrap'
-import 'style!css!sass!../css/card_dialog.css.scss'
+import 'style!css!sass!css/card_dialog.css.scss'
 
 Modal.setAppElement('#timelineview-root')
 const md = MarkDown.getSanitizingConverter()

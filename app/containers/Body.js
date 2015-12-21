@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import TimeLineView from 'components/timeLineView'
+import TimeLineView from 'components/timeline/timeLineView'
 
 class Body extends Component {
   render () {

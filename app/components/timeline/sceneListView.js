@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import SceneView from 'components/sceneView'
+import SceneView from 'components/timeline/sceneView'
 import { Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import * as SceneActions from 'actions/scenes'
-import 'style!css!sass!../css/scene_list_block.css.scss'
+import 'style!css!sass!css/scene_list_block.css.scss'
 
 class SceneListView extends Component {
 

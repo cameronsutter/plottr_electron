@@ -1,4 +1,4 @@
-import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION, EDIT_CARD_DETAILS, EDIT_CARD_COORDINATES, DELETE_CARD } from '../constants/ActionTypes'
+import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION, EDIT_CARD_DETAILS, EDIT_CARD_COORDINATES, DELETE_CARD } from 'constants/ActionTypes'
 
 export function addCard (card) {
   return { type: ADD_CARD, card }

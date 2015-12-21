@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as UIActions from '../actions/ui'
+import * as UIActions from 'actions/ui'
 import { Glyphicon, Input } from 'react-bootstrap'
 
 class Navigation extends Component {

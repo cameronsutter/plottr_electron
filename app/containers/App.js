@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getFileNameFromLocalStorage, readJSON } from 'store/localStorage'
-import Navigation from '../containers/Navigation'
-import Body from '../containers/Body'
-import * as UIActions from '../actions/ui'
+import Navigation from 'containers/Navigation'
+import Body from 'containers/Body'
+import * as UIActions from 'actions/ui'
 import remote from 'remote'
 const win = remote.getCurrentWindow()
 

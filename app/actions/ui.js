@@ -1,4 +1,4 @@
-import { CHANGE_CURRENT_VIEW, FILE_LOADED, EDIT_STORY_NAME } from '../constants/ActionTypes'
+import { CHANGE_CURRENT_VIEW, FILE_LOADED, EDIT_STORY_NAME } from 'constants/ActionTypes'
 
 export function changeCurrentView (view) {
   return { type: CHANGE_CURRENT_VIEW, view }

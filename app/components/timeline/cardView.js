@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import CardDialog from 'components/cardDialog'
-import * as CardActions from '../actions/cards'
-import 'style!css!sass!../css/card_block.css.scss'
+import CardDialog from 'components/timeline/cardDialog'
+import * as CardActions from 'actions/cards'
+import 'style!css!sass!css/card_block.css.scss'
 
 class CardView extends Component {
   constructor (props) {

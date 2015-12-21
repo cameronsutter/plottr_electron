@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
-import * as LineActions from '../actions/lines'
-import LineView from 'components/lineView'
-import 'style!css!sass!../css/line_list_block.css.scss'
+import * as LineActions from 'actions/lines'
+import LineView from 'components/timeline/lineView'
+import 'style!css!sass!css/line_list_block.css.scss'
 
 class LineListView extends Component {
 

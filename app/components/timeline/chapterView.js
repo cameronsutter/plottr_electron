@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import SceneView from 'components/sceneView'
+import SceneView from 'components/timeline/sceneView'
 import _ from 'lodash'
 
 class ChapterView extends Component {

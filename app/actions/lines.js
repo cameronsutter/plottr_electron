@@ -1,4 +1,4 @@
-import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE } from '../constants/ActionTypes'
+import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE } from 'constants/ActionTypes'
 import { line } from 'store/initialState'
 
 export function addLine () {

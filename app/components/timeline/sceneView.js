@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, Input } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
-import 'style!css!sass!../css/scene_list_block.css.scss'
+import 'style!css!sass!css/scene_list_block.css.scss'
 
 class SceneView extends Component {
   constructor (props) {

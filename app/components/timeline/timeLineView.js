@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import SceneListView from 'components/sceneListView'
-import LineListView from 'components/lineListView'
+import SceneListView from 'components/timeline/sceneListView'
+import LineListView from 'components/timeline/lineListView'
 
 class TimeLineView extends Component {
   render () {

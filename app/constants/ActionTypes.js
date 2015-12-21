@@ -26,6 +26,7 @@ export const EDIT_CARD_COORDINATES = 'EDIT_CARD_COORDINATES'
 export const EDIT_CHARACTERS = 'EDIT_CHARACTERS'
 export const EDIT_TAGS = 'EDIT_TAGS'
 export const EDIT_PLACES = 'EDIT_PLACES'
+export const DELETE_CARD = 'DELETE_CARD'
 
 // line actions
 export const ADD_LINE = 'ADD_LINE'

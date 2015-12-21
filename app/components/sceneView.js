@@ -54,13 +54,19 @@ class SceneView extends Component {
     this.props.handleReorder(this.props.scene.position, droppedScene.position)
   }
 
+  handleDelete () {
+    if (window.confirm(`Do you want to delete this scene: '${this.props.scene.title}'?`)) {
+      this.props.actions.deleteScene(this.props.scene.id)
+    }
+  }
+
   renderHoverOptions () {
     var style = {visibility: 'hidden'}
     if (this.state.hovering) style.visibility = 'visible'
     return (<div className='scene-list__item__hover-options' style={style}>
       <ButtonGroup>
         <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-        <Button bsStyle='danger'><Glyphicon glyph='trash' /></Button>
+        <Button bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
       </ButtonGroup>
     </div>)
   }

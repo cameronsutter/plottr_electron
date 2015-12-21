@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import TimeLineView from 'components/timeline/timeLineView'
+import OutlineView from 'components/outline/outlineView'
 
 class Body extends Component {
   render () {
@@ -8,9 +9,17 @@ class Body extends Component {
   }
 
   renderBody () {
-    // eventually this will be a switch statement which will load
-    // different bodies based on different currentView's
-    return <TimeLineView />
+    switch (this.props.currentView) {
+      case 'timeline':
+        return <TimeLineView />
+
+      case 'outline':
+        return <OutlineView />
+
+      default:
+        return <TimeLineView />
+
+    }
   }
 
   renderLoading () {

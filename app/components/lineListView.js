@@ -13,6 +13,21 @@ class LineListView extends Component {
     this.props.actions.addLine()
   }
 
+  handleReorder (originalLinePosition, droppedLinePosition) {
+    var linesArray = []
+    this.props.lines.forEach((l) => {
+      var newLine = _.clone(l)
+      if (l.position >= originalLinePosition && l.position !== droppedLinePosition) {
+        newLine.position += 1
+      } else if (l.position === droppedLinePosition) {
+        newLine.position = originalLinePosition
+      }
+      linesArray.push(newLine)
+    })
+    // potentially we'd want to reset all the positions so there aren't any gaps
+    this.props.actions.reorderLines(linesArray)
+  }
+
   render () {
     var lineViews = this.renderLines()
     return (<div className='line-list'>
@@ -27,7 +42,7 @@ class LineListView extends Component {
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map((line) => {
       return (
-        <LineView key={'lineId-' + line.id} line={line} sceneMap={this.props.sceneMap} />
+        <LineView key={'lineId-' + line.id} line={line} sceneMap={this.props.sceneMap} handleReorder={this.handleReorder.bind(this)} />
       )
     })
   }

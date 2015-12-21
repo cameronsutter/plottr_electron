@@ -65,6 +65,40 @@ class LineView extends Component {
     }
   }
 
+  handleDragStart (e) {
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/json', JSON.stringify(this.props.line))
+    this.setState({dragging: true})
+  }
+
+  handleDragEnd () {
+    this.setState({dragging: false})
+  }
+
+  handleDragEnter (e) {
+    this.setState({dropping: true})
+  }
+
+  handleDragOver (e) {
+    e.preventDefault()
+    return false
+  }
+
+  handleDragLeave (e) {
+    this.setState({dropping: false})
+  }
+
+  handleDrop (e) {
+    e.stopPropagation()
+    this.handleDragLeave()
+
+    var json = e.dataTransfer.getData('text/json')
+    var droppedLine = JSON.parse(json)
+    if (!droppedLine.id) return
+
+    this.props.handleReorder(this.props.line.position, droppedLine.position)
+  }
+
   renderCards () {
     var sceneMap = this.props.sceneMap
 
@@ -133,7 +167,16 @@ class LineView extends Component {
       <div className='line'
         style={{width: (lineLength + this.width())}}
         onMouseEnter={() => this.setState({hovering: true})}
-        onMouseLeave={() => this.setState({hovering: false})}>
+        onMouseLeave={() => this.setState({hovering: false})}
+        draggable={true}
+        onMouseEnter={() => this.setState({hovering: true})}
+        onMouseLeave={() => this.setState({hovering: false})}
+        onDragStart={this.handleDragStart.bind(this)}
+        onDragEnd={this.handleDragEnd.bind(this)}
+        onDragEnter={this.handleDragEnter.bind(this)}
+        onDragOver={this.handleDragOver.bind(this)}
+        onDragLeave={this.handleDragLeave.bind(this)}
+        onDrop={this.handleDrop.bind(this)} >
         {this.renderHoverOptions()}
         {this.renderBody()}
         <div className='line__svg-line-box'>
@@ -154,7 +197,8 @@ LineView.propTypes = {
   scenes: PropTypes.array.isRequired,
   sceneMap: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  handleReorder: PropTypes.func.isRequired
 }
 
 function mapStateToProps (state) {

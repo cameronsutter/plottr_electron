@@ -17,7 +17,7 @@ const customStyles = {content: {top: '70px'}}
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: this.props.isNewCard}
+    this.state = {editing: props.isNewCard}
   }
 
   closeDialog () {
@@ -103,7 +103,7 @@ class CardDialog extends Component {
   renderButtonBar () {
     if (this.props.isNewCard) {
       return (
-        <ButtonToolbar className='card-dialog__button-bar-create'>
+        <ButtonToolbar className='card-dialog__button-bar-edit'>
           <Button className='card-dialog__create' bsStyle='success'
             onClick={this.handleCreate.bind(this)}>
             Create
@@ -116,20 +116,20 @@ class CardDialog extends Component {
       )
     } else if (this.state.editing) {
       return (
-        <div className='card-dialog__button-bar-edit'>
+        <ButtonToolbar className='card-dialog__button-bar-edit'>
           <Button bsStyle='danger'
-            onClick={() => { this.setState({editing: false}) }} >
+            onClick={() => this.setState({editing: false})} >
             Cancel
           </Button>
           <Button bsStyle='success'
             onClick={this.saveEdit.bind(this)}>
             Save
           </Button>
-        </div>
+        </ButtonToolbar>
       )
     } else {
       return (
-        <div className='card-dialog__button-bar-edit'>
+        <ButtonToolbar className='card-dialog__button-bar-edit'>
           <Button className='card-dialog__close'
             bsStyle='primary'
             onClick={this.closeDialog.bind(this)}>
@@ -144,7 +144,7 @@ class CardDialog extends Component {
             onClick={this.deleteCard.bind(this)} >
             Delete
           </Button>
-        </div>
+        </ButtonToolbar>
       )
     }
   }

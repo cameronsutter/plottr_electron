@@ -132,11 +132,11 @@ class LineView extends Component {
   renderBody () {
     var classes = 'line__body'
     if (this.state.hovering) classes += ' hover'
-    var toRender = <div className='line__title'>{this.props.line.title}</div>
+    var body = <div className='line__title'>{this.props.line.title}</div>
     if (this.state.editing) {
       switch (this.state.editingWhat) {
         case 'title':
-          toRender = (<Input
+          body = (<Input
             type='text'
             placeholder={this.props.line.title}
             label='Story line name'
@@ -146,7 +146,7 @@ class LineView extends Component {
             onKeyPress={this.handleFinishEditingTitle.bind(this)} />)
           break
         case 'color':
-          toRender = (<Input
+          body = (<Input
             type='color'
             placeholder={this.props.line.color}
             defaultValue={this.props.line.color}
@@ -170,7 +170,7 @@ class LineView extends Component {
         onDragOver={this.handleDragOver.bind(this)}
         onDragLeave={this.handleDragLeave.bind(this)}
         onDrop={this.handleDrop.bind(this)}>
-        {toRender}
+        {body}
       </div>
     )
   }

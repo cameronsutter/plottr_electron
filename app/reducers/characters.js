@@ -1,4 +1,4 @@
-import { ADD_CHARACTER, EDIT_CHARACTER_NAME, EDIT_CHARACTER_DESCRIPTION, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { character } from 'store/initialState'
 
 const initialState = [character]
@@ -12,14 +12,9 @@ export default function characters (state = initialState, action) {
         description: action.description
       }, ...state]
 
-    case EDIT_CHARACTER_NAME:
+    case EDIT_CHARACTER:
       return state.map(character =>
-        character.id === action.id ? Object.assign({}, character, {name: action.name}) : character
-      )
-
-    case EDIT_CHARACTER_DESCRIPTION:
-      return state.map(character =>
-        character.id === action.id ? Object.assign({}, character, {description: action.description}) : character
+        character.id === action.id ? Object.assign({}, character, {name: action.name, description: action.description}) : character
       )
 
     case FILE_LOADED:

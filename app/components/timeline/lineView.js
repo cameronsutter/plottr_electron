@@ -164,8 +164,6 @@ class LineView extends Component {
       <div
         className={classes}
         draggable={true}
-        onMouseEnter={() => this.setState({hovering: true})}
-        onMouseLeave={() => this.setState({hovering: false})}
         onDragStart={this.handleDragStart.bind(this)}
         onDragEnd={this.handleDragEnd.bind(this)}
         onDragEnter={this.handleDragEnter.bind(this)}

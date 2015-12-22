@@ -6,17 +6,6 @@
   justify-content: space-between;
 }
 
-.notes__tag-list {
-  margin: 10px;
-  h3 {
-    text-align: center;
-  }
-}
-
-.notes__tag {
-  @include well;
-}
-
 @mixin new_item {
   height: $height;
   width: $width;

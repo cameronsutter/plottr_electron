@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import TimeLineView from 'components/timeline/timeLineView'
 import OutlineView from 'components/outline/outlineView'
+import NotesView from 'components/notes/notesView'
 
 class Body extends Component {
   render () {
@@ -15,6 +16,9 @@ class Body extends Component {
 
       case 'outline':
         return <OutlineView />
+
+      case 'notes':
+        return <NotesView />
 
       default:
         return <TimeLineView />

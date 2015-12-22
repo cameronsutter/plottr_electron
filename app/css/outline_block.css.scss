@@ -1,8 +1,8 @@
+@import "main";
+
 .outline__card {
-  border: 1px solid #ddd;
+  @include well;
   margin: 20px;
-  background-color: white;
-  padding: 7px;
 }
 
 .outline__card__line-title {

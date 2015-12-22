@@ -1,0 +1,35 @@
+@import "main";
+
+.notes-view {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.notes__tag-list {
+  margin: 10px;
+  h3 {
+    text-align: center;
+  }
+}
+
+.notes__tag {
+  @include well;
+}
+
+@mixin new_item {
+  height: $height;
+  width: $width;
+  min-width: $width;
+  line-height: $height;
+  color: $new-item-border-color;
+  text-align: center;
+  margin: auto;
+  margin-top: 10px;
+}
+
+@mixin new_item_hover {
+  background: $new-item-background;
+  border: $new-item-border;
+  cursor: pointer;
+}

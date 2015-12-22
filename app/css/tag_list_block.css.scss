@@ -1,0 +1,21 @@
+@import "main";
+@import "notes_block";
+
+.tag-list {
+  margin: 10px;
+  h3 {
+    text-align: center;
+  }
+}
+
+.tag-list__new {
+  @include new_item;
+}
+
+.tag-list__new:hover {
+  @include new_item_hover;
+}
+
+.tag {
+  @include well;
+}

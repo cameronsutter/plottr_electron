@@ -1,0 +1,21 @@
+@import "main";
+@import "notes_block";
+
+.place-list {
+  margin: 10px;
+  h3 {
+    text-align: center;
+  }
+}
+
+.place-list__new {
+  @include new_item;
+}
+
+.place-list__new:hover {
+  @include new_item_hover;
+}
+
+.place {
+  @include well;
+}

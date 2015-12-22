@@ -55,6 +55,13 @@ $new-item-border: 2px dashed $new-item-border-color;
   cursor: pointer;
 }
 
+@mixin well {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  padding: 7px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   @include header-font;
 }

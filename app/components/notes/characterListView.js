@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
+import * as CharacterActions from 'actions/characters'
 import CharacterView from 'components/notes/characterView'
 import 'style!css!sass!css/character_list_block.css.scss'
 
 class CharacterListView extends Component {
 
   handleCreateNewCharacter () {
-
+    this.props.actions.addCharacter()
   }
 
   renderCharacters () {
@@ -30,7 +32,8 @@ class CharacterListView extends Component {
 }
 
 CharacterListView.propTypes = {
-  characters: PropTypes.array.isRequired
+  characters: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
@@ -40,7 +43,9 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(CharacterActions, dispatch)
+  }
 }
 
 export default connect(

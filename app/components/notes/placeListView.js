@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
+import * as PlaceActions from 'actions/places'
 import PlaceView from 'components/notes/placeView'
 import 'style!css!sass!css/place_list_block.css.scss'
 
 class PlaceListView extends Component {
 
   handleCreateNewPlace () {
-
+    this.props.actions.addPlace()
   }
 
   renderPlaces () {
@@ -30,7 +32,8 @@ class PlaceListView extends Component {
 }
 
 PlaceListView.propTypes = {
-  places: PropTypes.array.isRequired
+  places: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
@@ -40,7 +43,9 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(PlaceActions, dispatch)
+  }
 }
 
 export default connect(

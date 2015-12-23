@@ -54,7 +54,13 @@ class CardDialog extends Component {
   saveEdit () {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
     var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
-    this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
+    var characters = this.refs.characterSelect.getValue() || this.props.card.characters
+    characters = characters === 'none' ? [] : characters.map(Number)
+    var places = this.refs.placeSelect.getValue() || this.props.card.places
+    places = places === 'none' ? [] : places.map(Number)
+    var tags = this.refs.tagSelect.getValue() || this.props.card.tags
+    tags = tags === 'none' ? [] : tags.map(Number)
+    this.props.actions.editCard(this.props.card.id, newTitle, newDescription, characters, places.map(Number), tags.map(Number))
     this.setState({editing: false})
   }
 
@@ -156,7 +162,7 @@ class CardDialog extends Component {
     }
 
     if (this.state.editing) {
-      return <Input type='text' ref='titleInput' placeholder={title} />
+      return <Input type='text' label='title' ref='titleInput' placeholder={title} />
     } else {
       return (
         <div className='card-dialog__title'>
@@ -175,7 +181,7 @@ class CardDialog extends Component {
     }
 
     if (this.state.editing) {
-      return <Input type='textarea' rows='13' ref='descriptionInput' placeholder={description} />
+      return <Input type='textarea' label='description' rows='13' ref='descriptionInput' placeholder={description} />
     } else {
       return (
         <div
@@ -186,6 +192,7 @@ class CardDialog extends Component {
   }
 
   renderLabels () {
+    if (this.state.editing) return null
     var characters = this.renderCharacters()
     var places = this.renderPlaces()
     var tags = this.renderTags()
@@ -216,7 +223,46 @@ class CardDialog extends Component {
     )
   }
 
+  renderEditingLabels () {
+    if (!this.state.editing) return null
+    return (
+      <div className='card-dialog__label-select'>
+        <Input type='select' ref='characterSelect' label='select characters' defaultValue={this.props.card.characters} multiple>
+          <option key={'none0'} value='none'>none</option>
+          {this.renderCharacterOptions()}
+        </Input>
+        <Input type='select' ref='placeSelect' label='select places' defaultValue={this.props.card.places} multiple>
+        <option key={'none1'} value='none'>none</option>
+          {this.renderPlaceOptions()}
+        </Input>
+        <Input type='select' ref='tagSelect' label='select tags' defaultValue={this.props.card.tags} multiple>
+        <option key={'none2'} value='none'>none</option>
+          {this.renderTagOptions()}
+        </Input>
+      </div>
+    )
+  }
+
+  renderCharacterOptions () {
+    return this.props.characters.map(ch =>
+      <option value={ch.id} key={ch.id}>{ch.name}</option>
+    )
+  }
+
+  renderPlaceOptions () {
+    return this.props.places.map(p =>
+      <option value={p.id} key={p.id}>{p.name}</option>
+    )
+  }
+
+  renderTagOptions () {
+    return this.props.tags.map(t =>
+      <option value={t.id} key={t.id}>{t.title}</option>
+    )
+  }
+
   renderPositionDetails () {
+    if (this.state.editing) return null
     var ids = {
       scene: _.uniqueId('select-scene-'),
       line: _.uniqueId('select-line-')
@@ -249,6 +295,7 @@ class CardDialog extends Component {
         <div className='card-dialog'>
           {this.renderTitle()}
           {this.renderPositionDetails()}
+          {this.renderEditingLabels()}
           <div className='card-dialog__description'>
             {this.renderDescription()}
           </div>

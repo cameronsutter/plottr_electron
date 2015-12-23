@@ -20,12 +20,7 @@ export const DELETE_SCENE = 'DELETE_SCENE'
 // card actions
 export const ADD_CARD = 'ADD_CARD'
 export const EDIT_CARD_DETAILS = 'EDIT_CARD_DETAILS'
-export const EDIT_CARD_TITLE = 'EDIT_CARD_TITLE'
-export const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION'
 export const EDIT_CARD_COORDINATES = 'EDIT_CARD_COORDINATES'
-export const EDIT_CHARACTERS = 'EDIT_CHARACTERS'
-export const EDIT_TAGS = 'EDIT_TAGS'
-export const EDIT_PLACES = 'EDIT_PLACES'
 export const DELETE_CARD = 'DELETE_CARD'
 
 // line actions

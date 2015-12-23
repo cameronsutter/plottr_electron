@@ -99,3 +99,12 @@
   margin: 10px;
   font-size: 12pt;
 }
+
+.card-dialog__label-select {
+  width: 100%;
+  display: flex;
+  align-content: space-around;
+  div {
+    margin: 10px;
+  }
+}

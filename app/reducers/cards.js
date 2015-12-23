@@ -20,19 +20,16 @@ export default function cards (state = initialState, action) {
         places: action.card.places
       }, ...state]
 
-    case EDIT_CARD_TITLE:
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {title: action.title}) : card
-      )
-
-    case EDIT_CARD_DESCRIPTION:
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {description: action.description}) : card
-      )
-
     case EDIT_CARD_DETAILS:
+      var newCardDetails = {
+        title: action.title,
+        description: action.description,
+        characters: action.characters,
+        places: action.places,
+        tags: action.tags
+      }
       return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {title: action.title, description: action.description}) : card
+        card.id === action.id ? Object.assign({}, card, newCardDetails) : card
       )
 
     case EDIT_CARD_COORDINATES:

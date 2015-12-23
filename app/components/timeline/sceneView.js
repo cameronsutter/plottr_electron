@@ -86,7 +86,7 @@ class SceneView extends Component {
   render () {
     var classes = 'scene-list__item__body'
     if (this.state.hovering) classes += ' hover'
-    return (<li className='scene-list__item'
+    return (<div className='scene-list__item'
       draggable={true}
       onMouseEnter={() => this.setState({hovering: true})}
       onMouseLeave={() => this.setState({hovering: false})}
@@ -102,7 +102,7 @@ class SceneView extends Component {
           {this.renderTitle()}
         </div>
       </div>
-    </li>)
+    </div>)
   }
 }
 

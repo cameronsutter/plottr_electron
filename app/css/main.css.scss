@@ -18,8 +18,9 @@ $width: 150px;
 // $chapter-height: $height / 2;
 // $chapter-width:
 
-$margin: 0px 25px 0px 0px;
-$margin-left: 0px 0px 0px 25px;
+$margin-width: 25px;
+$margin: 0px $margin-width 0px 0px;
+$margin-left: 0px 0px 0px $margin-width;
 $padding: 10px 10px 10px 10px;
 
 $border-radius: 4px;

@@ -1,19 +1,25 @@
 @import "main";
 
+$extra-width: 25px;
+$extra-height: 34px;
+
 .scene-list {
   display: flex;
   flex-direction: row;
 
   margin: 0;
   padding: 0;
-  list-style: none;
+}
+
+.scene-list__item-container {
+  min-width: $width + $extra-width;
+  width: $width + $extra-width;
 }
 
 .scene-list__placeholder {
   width: $width;
   min-width: $width;
   border: 2px solid transparent;
-  margin: $margin;
   margin-left: 40px; // because hover option buttons (story lines)
 }
 
@@ -36,10 +42,23 @@
 .scene-list__item {
   @include sub-header-font;
 
-  min-width: $width;
-  padding: $padding;
-  margin: $margin;
-  width: $width;
+  width: 100%;
+}
+
+.scene-list__insert {
+  width: $margin-width;
+  float: left;
+  line-height: $height;
+  text-align: center;
+  height: $height;
+  margin-top: $extra-height;
+  color: $body-background-color;
+}
+
+.scene-list__insert:hover {
+  @include hover-box;
+  border: $new-item-border;
+  color: $new-item-border-color;
 }
 
 .scene-list__item__body {
@@ -49,6 +68,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  padding: 2px;
 }
 
 .scene-list__item__body.hover {

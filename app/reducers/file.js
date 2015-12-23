@@ -13,7 +13,7 @@ export default function file (state = defaultFile, action) {
 
     case NEW_FILE:
       saveToLocalStorage(action.fileName)
-      return { fileName: action.fileName, loaded: true, dirty: true }
+      return { fileName: action.fileName, loaded: true, dirty: false }
 
     default:
       return Object.assign({}, state, {dirty: true})

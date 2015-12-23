@@ -7,8 +7,7 @@ import configureStore from 'store/configureStore'
 import { saveToLocalStorage, readJSONsync } from 'store/localStorage'
 import 'style!css!sass!css/main.css.scss'
 import ipc from 'ipc'
-import { FILE_SAVED, NEW_FILE } from 'constants/ActionTypes'
-import { loadFile } from 'actions/ui'
+import { loadFile, newFile, fileSaved } from 'actions/ui'
 // import Modal from 'react-modal'
 
 const root = document.getElementById('react-root')
@@ -17,11 +16,11 @@ const root = document.getElementById('react-root')
 const store = configureStore()
 
 ipc.on('state-saved', (_arg) => {
-  store.dispatch({type: FILE_SAVED, dirty: false})
+  store.dispatch(fileSaved())
 })
 
 ipc.on('new-file', (fileName) => {
-  store.dispatch({type: NEW_FILE, fileName: fileName})
+  store.dispatch(newFile(fileName))
 })
 
 ipc.on('open-file', (fileName) => {

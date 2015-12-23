@@ -41,7 +41,7 @@ export const EDIT_PLACE = 'EDIT_PLACE'
 
 // tags actions
 export const ADD_TAG = 'ADD_TAG'
-export const EDIT_TAG_TITLE = 'EDIT_TAG_TITLE'
+export const EDIT_TAG = 'EDIT_TAG'
 
 // characters actions
 export const ADD_CHARACTER = 'ADD_CHARACTER'

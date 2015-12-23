@@ -1,4 +1,4 @@
-import { ADD_TAG, EDIT_TAG_TITLE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_TAG, EDIT_TAG, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { tag } from 'store/initialState'
 
 const initialState = [tag]
@@ -11,7 +11,7 @@ export default function tags (state = initialState, action) {
         title: action.title
       }, ...state]
 
-    case EDIT_TAG_TITLE:
+    case EDIT_TAG:
       return state.map(tag =>
         tag.id === action.id ? Object.assign({}, tag, {title: action.title}) : tag
       )

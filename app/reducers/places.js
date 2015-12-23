@@ -1,4 +1,4 @@
-import { ADD_PLACE, EDIT_PLACE_NAME, EDIT_PLACE_DESCRIPTION, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { place } from 'store/initialState'
 
 const initialState = [place]
@@ -12,14 +12,9 @@ export default function places (state = initialState, action) {
         description: action.description
       }, ...state]
 
-    case EDIT_PLACE_NAME:
+    case EDIT_PLACE:
       return state.map(place =>
-        place.id === action.id ? Object.assign({}, place, {name: action.name}) : place
-      )
-
-    case EDIT_PLACE_DESCRIPTION:
-      return state.map(place =>
-        place.id === action.id ? Object.assign({}, place, {description: action.description}) : place
+        place.id === action.id ? Object.assign({}, place, {name: action.name, description: action.description}) : place
       )
 
     case FILE_LOADED:

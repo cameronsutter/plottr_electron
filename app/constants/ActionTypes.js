@@ -37,8 +37,7 @@ export const DELETE_LINE = 'DELETE_LINE'
 
 // places actions
 export const ADD_PLACE = 'ADD_PLACE'
-export const EDIT_PLACE_NAME = 'EDIT_PLACE_NAME'
-export const EDIT_PLACE_DESCRIPTION = 'EDIT_PLACE_DESCRIPTION'
+export const EDIT_PLACE = 'EDIT_PLACE'
 
 // tags actions
 export const ADD_TAG = 'ADD_TAG'

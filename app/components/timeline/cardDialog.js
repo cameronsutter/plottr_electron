@@ -6,7 +6,7 @@ import _ from 'lodash'
 import MarkDown from 'pagedown'
 import * as CardActions from 'actions/cards'
 import { card } from 'store/initialState'
-import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bootstrap'
+import { ButtonToolbar, Button, DropdownButton, MenuItem, Input, Label } from 'react-bootstrap'
 import 'style!css!sass!css/card_dialog.css.scss'
 
 Modal.setAppElement('#timelineview-root')
@@ -185,6 +185,37 @@ class CardDialog extends Component {
     }
   }
 
+  renderLabels () {
+    var characters = this.renderCharacters()
+    var places = this.renderPlaces()
+    var tags = this.renderTags()
+    return (
+      <div className='card-dialog__labels'>
+        {characters}
+        {places}
+        {tags}
+      </div>
+    )
+  }
+
+  renderTags () {
+    return this.props.card.tags.map(tId =>
+      <Label bsStyle='info' key={tId}>{_.result(_.find(this.props.tags, 'id', tId), 'title')}</Label>
+    )
+  }
+
+  renderPlaces () {
+    return this.props.card.places.map(pId =>
+      <Label bsStyle='info' key={pId}>{_.result(_.find(this.props.places, 'id', pId), 'name')}</Label>
+    )
+  }
+
+  renderCharacters () {
+    return this.props.card.characters.map(cId =>
+      <Label bsStyle='info' key={cId}>{_.result(_.find(this.props.characters, 'id', cId), 'name')}</Label>
+    )
+  }
+
   renderPositionDetails () {
     var ids = {
       scene: _.uniqueId('select-scene-'),
@@ -207,6 +238,7 @@ class CardDialog extends Component {
             </DropdownButton>
           </label>
         </div>
+        {this.renderLabels()}
       </div>
     )
   }
@@ -235,13 +267,19 @@ CardDialog.propTypes = {
   closeDialog: PropTypes.func,
   lines: PropTypes.array.isRequired,
   scenes: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  tags: PropTypes.array.isRequired,
+  characters: PropTypes.array.isRequired,
+  places: PropTypes.array.isRequired
 }
 
 function mapStateToProps (state) {
   return {
     lines: state.lines,
-    scenes: state.scenes
+    scenes: state.scenes,
+    tags: state.tags,
+    characters: state.characters,
+    places: state.places
   }
 }
 

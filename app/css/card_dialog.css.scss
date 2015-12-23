@@ -88,3 +88,14 @@
 .ReactModal__Content {
   top: 60px;
 }
+
+.card-dialog__labels {
+  align-self: center;
+  padding-bottom: 7px;
+  margin-left: 10px;
+}
+
+.card-dialog__labels .label {
+  margin: 10px;
+  font-size: 12pt;
+}

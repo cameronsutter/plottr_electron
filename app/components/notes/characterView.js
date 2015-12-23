@@ -19,7 +19,7 @@ class CharacterView extends Component {
 
   renderEditing () {
     return (
-      <div>
+      <div className='character'>
         <Input type='text' ref='nameInput' label='character name' placeholder={this.props.character.name} />
         <Input type='text' ref='descriptionInput' label='character description' placeholder={this.props.character.description} />
         <ButtonToolbar>
@@ -38,7 +38,7 @@ class CharacterView extends Component {
 
   renderCharacter () {
     return (
-      <div>
+      <div className='character' onClick={() => this.setState({editing: true})}>
         <h4>{this.props.character.name}</h4>
         <p>{this.props.character.description}</p>
       </div>
@@ -46,12 +46,7 @@ class CharacterView extends Component {
   }
 
   render () {
-    var body = this.state.editing ? this.renderEditing() : this.renderCharacter()
-    return (
-      <div className='character' onClick={() => this.setState({editing: true})} >
-        {body}
-      </div>
-    )
+    return this.state.editing ? this.renderEditing() : this.renderCharacter()
   }
 }
 

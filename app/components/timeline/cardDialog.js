@@ -181,7 +181,7 @@ class CardDialog extends Component {
     }
 
     if (this.state.editing) {
-      return <Input type='textarea' label='description' rows='13' ref='descriptionInput' placeholder={description} />
+      return <Input type='textarea' label='description' rows='13' ref='descriptionInput' defaultValue={description} />
     } else {
       return (
         <div

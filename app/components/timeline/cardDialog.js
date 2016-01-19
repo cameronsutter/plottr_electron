@@ -162,7 +162,7 @@ class CardDialog extends Component {
     }
 
     if (this.state.editing) {
-      return <Input type='text' label='title' ref='titleInput' placeholder={title} />
+      return <Input type='text' label='title' ref='titleInput' defaultValue={title} />
     } else {
       return (
         <div className='card-dialog__title'>

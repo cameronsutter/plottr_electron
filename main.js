@@ -103,6 +103,21 @@ app.on('ready', function () {
         }
       }]
     }, {
+      label: 'Edit',
+      submenu: [{
+        label: 'Cut',
+        accelerator: 'Command+X',
+        role: 'cut'
+      }, {
+        label: 'Copy',
+        accelerator: 'Command+C',
+        role: 'copy'
+      }, {
+        label: 'Paste',
+        accelerator: 'Command+V',
+        role: 'paste'
+      }]
+    }, {
       label: 'View',
       submenu: [{
         label: 'Reload',

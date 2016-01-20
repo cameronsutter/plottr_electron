@@ -56,6 +56,8 @@ app.on('ready', function () {
 
   ipc.on('save-state', (event, state) => {
     stateOfApp = state
+    // TODO: this
+    // mainWindow.setDocumentEdited(true)
   })
 
   var template = [
@@ -78,6 +80,8 @@ app.on('ready', function () {
           fs.writeFile(stateOfApp.file.fileName, stringState, (err) => {
             if (err) throw err
             mainWindow.webContents.send('state-saved')
+            // TODO: this
+            // mainWindow.setDocumentEdited(false)
           })
         }
       }, {
@@ -124,6 +128,12 @@ app.on('ready', function () {
         accelerator: 'Command+R',
         click: function () {
           mainWindow.webContents.reload()
+        }
+      }, {
+        label: 'Show Dev Tools',
+        accelerator: '',
+        click: function () {
+          mainWindow.openDevTools()
         }
       }]
     }

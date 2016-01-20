@@ -225,17 +225,18 @@ class CardDialog extends Component {
 
   renderEditingLabels () {
     if (!this.state.editing) return null
+    var card = this.props.card || {characters: [], places: [], tags: []}
     return (
       <div className='card-dialog__label-select'>
-        <Input type='select' ref='characterSelect' label='select characters' defaultValue={this.props.card.characters} multiple>
+        <Input type='select' ref='characterSelect' label='select characters' defaultValue={card.characters} multiple>
           <option key={'none0'} value='none'>none</option>
           {this.renderCharacterOptions()}
         </Input>
-        <Input type='select' ref='placeSelect' label='select places' defaultValue={this.props.card.places} multiple>
+        <Input type='select' ref='placeSelect' label='select places' defaultValue={card.places} multiple>
         <option key={'none1'} value='none'>none</option>
           {this.renderPlaceOptions()}
         </Input>
-        <Input type='select' ref='tagSelect' label='select tags' defaultValue={this.props.card.tags} multiple>
+        <Input type='select' ref='tagSelect' label='select tags' defaultValue={card.tags} multiple>
         <option key={'none2'} value='none'>none</option>
           {this.renderTagOptions()}
         </Input>

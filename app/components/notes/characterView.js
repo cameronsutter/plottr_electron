@@ -20,8 +20,8 @@ class CharacterView extends Component {
   renderEditing () {
     return (
       <div className='character'>
-        <Input type='text' ref='nameInput' label='character name' placeholder={this.props.character.name} />
-        <Input type='text' ref='descriptionInput' label='character description' placeholder={this.props.character.description} />
+        <Input type='text' ref='nameInput' label='character name' defaultValue={this.props.character.name} />
+        <Input type='text' ref='descriptionInput' label='character description' defaultValue={this.props.character.description} />
         <ButtonToolbar>
           <Button bsStyle='danger'
             onClick={() => this.setState({editing: false})} >

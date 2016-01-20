@@ -138,7 +138,7 @@ class LineView extends Component {
         case 'title':
           body = (<Input
             type='text'
-            placeholder={this.props.line.title}
+            defaultValue={this.props.line.title}
             label='Story line name'
             ref='titleInput'
             autoFocus

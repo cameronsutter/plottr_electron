@@ -75,7 +75,7 @@ class SceneView extends Component {
     if (!this.state.editing) return <span>{this.props.scene.title}</span>
     return (<Input
         type='text'
-        placeholder={this.props.scene.title}
+        defaultValue={this.props.scene.title}
         label='Scene name'
         ref='titleInput'
         autoFocus

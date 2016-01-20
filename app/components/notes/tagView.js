@@ -19,7 +19,7 @@ class TagView extends Component {
   renderEditing () {
     return (
       <div className='character'>
-        <Input type='text' ref='titleInput' label='tag name' placeholder={this.props.tag.title} />
+        <Input type='text' ref='titleInput' label='tag name' defaultValue={this.props.tag.title} />
         <ButtonToolbar>
           <Button bsStyle='danger'
             onClick={() => this.setState({editing: false})} >

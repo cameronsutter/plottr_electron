@@ -20,8 +20,8 @@ class PlaceView extends Component {
   renderEditing () {
     return (
       <div className='place'>
-        <Input type='text' ref='nameInput' label='place name' placeholder={this.props.place.name} />
-        <Input type='text' ref='descriptionInput' label='place description' placeholder={this.props.place.description} />
+        <Input type='text' ref='nameInput' label='place name' defaultValue={this.props.place.name} />
+        <Input type='text' ref='descriptionInput' label='place description' defaultValue={this.props.place.description} />
         <ButtonToolbar>
           <Button bsStyle='danger'
             onClick={() => this.setState({editing: false})} >

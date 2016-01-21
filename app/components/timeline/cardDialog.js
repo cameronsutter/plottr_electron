@@ -206,18 +206,27 @@ class CardDialog extends Component {
   }
 
   renderTags () {
+    if (!this.props.card.tags) {
+      return null
+    }
     return this.props.card.tags.map(tId =>
       <Label bsStyle='info' key={tId}>{_.result(_.find(this.props.tags, 'id', tId), 'title')}</Label>
     )
   }
 
   renderPlaces () {
+    if (!this.props.card.places) {
+      return null
+    }
     return this.props.card.places.map(pId =>
       <Label bsStyle='info' key={pId}>{_.result(_.find(this.props.places, 'id', pId), 'name')}</Label>
     )
   }
 
   renderCharacters () {
+    if (!this.props.card.characters) {
+      return null
+    }
     return this.props.card.characters.map(cId =>
       <Label bsStyle='info' key={cId}>{_.result(_.find(this.props.characters, 'id', cId), 'name')}</Label>
     )

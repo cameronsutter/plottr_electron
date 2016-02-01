@@ -1,6 +1,6 @@
-import { ADD_CARD, EDIT_CARD_TITLE, EDIT_CARD_DESCRIPTION, EDIT_CARD_DETAILS,
-  EDIT_CARD_COORDINATES, EDIT_CHARACTERS, EDIT_TAGS, EDIT_PLACES,
-  DELETE_CARD, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_CARD, EDIT_CARD_DETAILS,
+  DELETE_LINE, DELETE_SCENE,
+  EDIT_CARD_COORDINATES, DELETE_CARD, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 
 import { card } from 'store/initialState'
 
@@ -42,19 +42,14 @@ export default function cards (state = initialState, action) {
         card.id !== action.id
       )
 
-    case EDIT_CHARACTERS:
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {characters: action.characters}) : card
+    case DELETE_SCENE:
+      return state.filter(card =>
+        card.sceneId !== action.id
       )
 
-    case EDIT_TAGS:
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {tags: action.tags}) : card
-      )
-
-    case EDIT_PLACES:
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {places: action.places}) : card
+    case DELETE_LINE:
+      return state.filter(card =>
+        card.lineId !== action.id
       )
 
     case FILE_LOADED:

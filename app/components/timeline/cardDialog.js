@@ -17,7 +17,7 @@ const customStyles = {content: {top: '70px'}}
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.isNewCard}
+    this.state = {editing: props.isNewCard, showMarkdownHelp: false}
   }
 
   closeDialog () {
@@ -181,7 +181,12 @@ class CardDialog extends Component {
     }
 
     if (this.state.editing) {
-      return <Input type='textarea' label='description' rows='13' ref='descriptionInput' defaultValue={description} />
+      return (
+        <div>
+          <Input type='textarea' label='description' rows='13' ref='descriptionInput' defaultValue={description} />
+          <small>Format with markdown! <a href='#' onClick={() => this.setState({showMarkdownHelp: true})}>learn how</a></small>
+        </div>
+      )
     } else {
       return (
         <div
@@ -299,6 +304,19 @@ class CardDialog extends Component {
     )
   }
 
+  renderMarkDownHelp () {
+    return (
+      <Modal isOpen={this.state.showMarkdownHelp} onRequestClose={() => this.setState({showMarkdownHelp: false})} style={customStyles}>
+        <Button bsStyle='primary' className='pull-right' onClick={() => this.setState({showMarkdownHelp: false})}>
+          Close
+        </Button>
+        <mark>your help will display below</mark>
+        <hr/>
+        <webview src='https://daringfireball.net/projects/markdown/syntax'></webview>
+      </Modal>
+    )
+  }
+
   render () {
     return (
       <Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
@@ -311,6 +329,7 @@ class CardDialog extends Component {
           </div>
           {this.renderButtonBar()}
         </div>
+        {this.renderMarkDownHelp()}
       </Modal>
     )
   }

@@ -22,9 +22,11 @@ var entryFile = 'file://' + __dirname + '/index.html'
 app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  // if (process.platform != 'darwin') {
-  //   app.quit();
+  // if (process.platform !== 'darwin') {
+  //   app.quit()
   // }
+  // if (process.env.NODE_ENV === 'dev') app.quit()
+
   app.quit()
 })
 
@@ -51,7 +53,26 @@ app.on('ready', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
+
     mainWindow = null
+  })
+
+  mainWindow.on('close', function (e) {
+    // ask to save
+    if (stateOfApp.file.dirty) {
+      e.preventDefault()
+      dialog.showMessageBox(mainWindow, {type: 'question', buttons: ['yes, save!', 'no, just exit'], defaultId: 0, message: 'Would you like to save before exiting?'}, (choice) => {
+        if (choice === 0) {
+          console.log('saving!')
+          saveFile(stateOfApp.file.fileName, stateOfApp, (err) => {
+            if (err) throw err
+            mainWindow.destroy()
+          })
+        } else {
+          mainWindow.destroy()
+        }
+      })
+    }
   })
 
   ipc.on('save-state', (event, state) => {
@@ -76,8 +97,7 @@ app.on('ready', function () {
         label: 'Save',
         accelerator: 'Command+S',
         click: function () {
-          var stringState = JSON.stringify(stateOfApp)
-          fs.writeFile(stateOfApp.file.fileName, stringState, (err) => {
+          saveFile(stateOfApp.file.fileName, stateOfApp, (err) => {
             if (err) throw err
             mainWindow.webContents.send('state-saved')
             // TODO: this
@@ -142,3 +162,8 @@ app.on('ready', function () {
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 })
+
+function saveFile (fileName, data, callback) {
+  var stringState = JSON.stringify(data)
+  fs.writeFile(fileName, stringState, callback)
+}

@@ -15,6 +15,10 @@ var mainWindow = null
 // state of the app to be saved
 var stateOfApp = {}
 
+// version
+var version = process.env.npm_package_version
+var versionArray = version.split('.')
+
 // app's entry file
 var entryFile = 'file://' + __dirname + '/index.html'
 
@@ -164,6 +168,22 @@ app.on('ready', function () {
 })
 
 function saveFile (fileName, data, callback) {
+  data.file.version = version
   var stringState = JSON.stringify(data)
   fs.writeFile(fileName, stringState, callback)
+}
+
+function checkVersion (given) {
+  if (given === version) {
+    return true
+  } else {
+    var givenArray = given.split('.')
+    if (givenArray[0] === versionArray[0]) {
+      // major version is the same
+      if (givenArray[1] === versionArray[1]) {
+        // minor version is the same
+        return true
+      }
+    }
+  }
 }

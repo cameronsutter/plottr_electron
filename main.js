@@ -15,10 +15,6 @@ var mainWindow = null
 // state of the app to be saved
 var stateOfApp = {}
 
-// version
-var version = process.env.npm_package_version
-var versionArray = version.split('.')
-
 // app's entry file
 var entryFile = 'file://' + __dirname + '/index.html'
 
@@ -90,7 +86,7 @@ app.on('ready', function () {
       label: 'Plottr',
       submenu: [{
         label: 'Quit',
-        accelerator: 'Command+Q',
+        accelerator: 'Cmd+Q',
         click: function () {
           app.quit()
         }
@@ -99,7 +95,7 @@ app.on('ready', function () {
       label: 'File',
       submenu: [{
         label: 'Save',
-        accelerator: 'Command+S',
+        accelerator: 'CmdOrCtrl+S',
         click: function () {
           saveFile(stateOfApp.file.fileName, stateOfApp, (err) => {
             if (err) throw err
@@ -110,7 +106,7 @@ app.on('ready', function () {
         }
       }, {
         label: 'Open',
-        accelerator: 'Command+O',
+        accelerator: 'CmdOrCtrl+O',
         click: function () {
           var properties = [ 'openFile', 'openDirectory', 'createDirectory' ]
           dialog.showOpenDialog(mainWindow, { properties: properties }, (chosenFileName) => {
@@ -121,7 +117,7 @@ app.on('ready', function () {
         }
       }, {
         label: 'New',
-        accelerator: 'Command+N',
+        accelerator: 'CmdOrCtrl+N',
         click: function () {
           dialog.showSaveDialog({title: 'Where would you like to start your new file?'}, function (fileName) {
             if (fileName) {
@@ -134,22 +130,22 @@ app.on('ready', function () {
       label: 'Edit',
       submenu: [{
         label: 'Cut',
-        accelerator: 'Command+X',
+        accelerator: 'CmdOrCtrl+X',
         role: 'cut'
       }, {
         label: 'Copy',
-        accelerator: 'Command+C',
+        accelerator: 'CmdOrCtrl+C',
         role: 'copy'
       }, {
         label: 'Paste',
-        accelerator: 'Command+V',
+        accelerator: 'CmdOrCtrl+V',
         role: 'paste'
       }]
     }, {
       label: 'View',
       submenu: [{
         label: 'Reload',
-        accelerator: 'Command+R',
+        accelerator: 'CmdOrCtrl+R',
         click: function () {
           mainWindow.webContents.reload()
         }
@@ -168,16 +164,17 @@ app.on('ready', function () {
 })
 
 function saveFile (fileName, data, callback) {
-  data.file.version = version
+  data.file.version = app.getVersion()
   var stringState = JSON.stringify(data)
   fs.writeFile(fileName, stringState, callback)
 }
 
-function checkVersion (given) {
-  if (given === version) {
+function checkVersion (given, appVersion) {
+  if (given === appVersion) {
     return true
   } else {
     var givenArray = given.split('.')
+    var versionArray = appVersion.split('.')
     if (givenArray[0] === versionArray[0]) {
       // major version is the same
       if (givenArray[1] === versionArray[1]) {

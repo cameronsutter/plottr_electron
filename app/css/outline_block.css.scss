@@ -8,3 +8,13 @@
 .outline__card__line-title {
   float:right;
 }
+
+.outline__card__label-list {
+  float:right;
+  margin-right: 10px;
+
+  .label {
+    margin: 5px;
+    vertical-align: text-top;
+  }
+}

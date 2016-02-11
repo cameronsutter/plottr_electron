@@ -84,7 +84,10 @@ app.on('ready', function () {
   var template = [
     {
       label: 'Plottr',
-      submenu: [{
+      submenu: [ {
+        label: 'About Plottr',
+        role: 'about'
+      }, {
         label: 'Quit',
         accelerator: 'Cmd+Q',
         click: function () {

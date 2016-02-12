@@ -78,7 +78,8 @@ app.on('ready', function () {
   ipc.on('save-state', (event, state) => {
     stateOfApp = state
     // TODO: this
-    // mainWindow.setDocumentEdited(true)
+    // mainWindow.setRepresentedFilename('example.plottr')
+    if (state.file.dirty) mainWindow.setDocumentEdited(true)
   })
 
   var template = [
@@ -87,6 +88,27 @@ app.on('ready', function () {
       submenu: [ {
         label: 'About Plottr',
         role: 'about'
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Services',
+        role: 'services',
+        submenu: []
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Hide Plottr',
+        accelerator: 'Command+H',
+        role: 'hide'
+      }, {
+        label: 'Hide Others',
+        accelerator: 'Command+Alt+H',
+        role: 'hideothers'
+      }, {
+        label: 'Show All',
+        role: 'unhide'
+      }, {
+        type: 'separator'
       }, {
         label: 'Quit',
         accelerator: 'Cmd+Q',
@@ -104,7 +126,7 @@ app.on('ready', function () {
             if (err) throw err
             mainWindow.webContents.send('state-saved')
             // TODO: this
-            // mainWindow.setDocumentEdited(false)
+            mainWindow.setDocumentEdited(false)
           })
         }
       }, {
@@ -143,6 +165,10 @@ app.on('ready', function () {
         label: 'Paste',
         accelerator: 'CmdOrCtrl+V',
         role: 'paste'
+      }, {
+        label: 'Select All',
+        accelerator: 'CmdOrCtrl+A',
+        role: 'selectall'
       }]
     }, {
       label: 'View',
@@ -159,6 +185,30 @@ app.on('ready', function () {
           mainWindow.openDevTools()
         }
       }]
+    }, {
+      label: 'Window',
+      role: 'window',
+      submenu: [
+        {
+          label: 'Minimize',
+          accelerator: 'CmdOrCtrl+M',
+          role: 'minimize'
+        },
+        {
+          label: 'Close',
+          accelerator: 'CmdOrCtrl+W',
+          role: 'close'
+        }, {
+          type: 'separator'
+        }, {
+          label: 'Bring All to Front',
+          role: 'front'
+        }
+      ]
+    }, {
+      label: 'Help',
+      role: 'help',
+      submenu: []
     }
   ]
 

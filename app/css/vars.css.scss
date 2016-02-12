@@ -1,14 +1,3 @@
-@import "bootstrap_configuration";
-
-// Give everything in 'yield' margin to separate it.
-#react-root {
-  margin: 0px 30px 30px 30px;
-}
-
-body {
-  padding-top: 55px;
-}
-
 $body-background-color: #efefee;
 
 $height: 66px;
@@ -61,36 +50,4 @@ $new-item-border: 2px dashed $new-item-border-color;
   border-radius: 4px;
   background-color: white;
   padding: 7px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  @include header-font;
-}
-
-h1 {
-  font-size: 36pt !important;
-}
-
-h2 {
-  font-size: 32pt !important;
-}
-
-h3 {
-  font-size: 28pt !important;
-}
-
-h4 {
-  font-size: 24pt !important;
-}
-
-h5 {
-  font-size: 20pt !important;
-}
-
-h6 {
-  font-size: 16pt !important;
-}
-
-body {
-  @include body-text-font;
 }

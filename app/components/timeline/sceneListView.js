@@ -7,7 +7,6 @@ import _ from 'lodash'
 import * as SceneActions from 'actions/scenes'
 import { scene } from 'store/initialState'
 import { sceneId, chapterId } from 'store/newIds'
-import 'style!css!sass!css/scene_list_block.css.scss'
 
 class SceneListView extends Component {
 

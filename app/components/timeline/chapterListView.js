@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import ChapterView from 'components/timeline/chapterView'
-import 'style!css!sass!css/chapter_list_block.css.scss'
 
 class ChapterListView extends Component {
   render () {

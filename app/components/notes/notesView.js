@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import CharacterListView from 'components/notes/characterListView'
 import PlaceListView from 'components/notes/placeListView'
 import TagListView from 'components/notes/tagListView'
-import 'style!css!sass!css/notes_block.css.scss'
 
 class NotesView extends Component {
 

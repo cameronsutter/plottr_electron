@@ -5,7 +5,6 @@ import { Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import * as LineActions from 'actions/lines'
 import LineView from 'components/timeline/lineView'
-import 'style!css!sass!css/line_list_block.css.scss'
 
 class LineListView extends Component {
 

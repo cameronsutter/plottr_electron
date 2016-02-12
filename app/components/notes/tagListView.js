@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as TagActions from 'actions/tags'
 import TagView from 'components/notes/tagView'
-import 'style!css!sass!css/tag_list_block.css.scss'
 
 class TagListView extends Component {
 

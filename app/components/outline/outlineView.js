@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import SceneView from 'components/outline/sceneView'
-import 'style!css!sass!css/outline_block.css.scss'
 
 class OutlineView extends Component {
 

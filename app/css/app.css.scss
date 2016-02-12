@@ -1,0 +1,52 @@
+@import "bootstrap_configuration";
+@import "card_block";
+@import "card_dialog";
+// @import "chapter_list_block";
+@import "character_list_block";
+@import "line_list_block";
+@import "notes_block";
+@import "outline_block";
+@import "place_list_block";
+@import "scene_list_block";
+@import "tag_list_block";
+
+// Give everything in 'yield' margin to separate it.
+#react-root {
+  margin: 0px 0px 30px 20px;
+}
+
+body {
+  padding-top: 55px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @include header-font;
+}
+
+h1 {
+  font-size: 36pt !important;
+}
+
+h2 {
+  font-size: 32pt !important;
+}
+
+h3 {
+  font-size: 28pt !important;
+}
+
+h4 {
+  font-size: 24pt !important;
+}
+
+h5 {
+  font-size: 20pt !important;
+}
+
+h6 {
+  font-size: 16pt !important;
+}
+
+body {
+  @include body-text-font;
+}

@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
 import CharacterView from 'components/notes/characterView'
-import 'style!css!sass!css/character_list_block.css.scss'
 
 class CharacterListView extends Component {
 

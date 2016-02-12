@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
 import PlaceView from 'components/notes/placeView'
-import 'style!css!sass!css/place_list_block.css.scss'
 
 class PlaceListView extends Component {
 

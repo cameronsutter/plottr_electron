@@ -33,7 +33,7 @@
     "start": "NODE_ENV=dev electron .",
     "compile": "node_modules/.bin/webpack",
     "watch": "node_modules/.bin/webpack -w",
-    "build:mac": "electron-packager . Plottr --platform=darwin --arch=x64 --version=0.34.2 --out=dist --icon=penguin_icon.icns",
+    "build:mac": "electron-packager . Plottr --platform=darwin --arch=x64 --version=0.34.2 --out=dist --app-category-type=public.app-category.productivity --icon=penguin_icon.icns",
     "build:win32": "electron-packager . Plottr --platform=win32 --arch=ia32 --version=0.34.2 --out=dist --icon=penguin_icon.ico",
     "build:win64": "electron-packager . Plottr --platform=win32 --arch=x64 --version=0.34.2 --out=dist --icon=penguin_icon.ico"
   }

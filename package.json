@@ -1,8 +1,13 @@
 {
   "name": "plottr",
+  "description": "Author writing tool that helps organize plotlines",
+  "repository": "github.com/cameronsutter/plottr_electron",
+  "private": true,
+  "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
   "version": "0.5.1",
   "main": "main.js",
   "dependencies": {
+    "changelog": "^1.0.7",
     "electron": "^0.4.1",
     "electron-json-storage": "^1.0.0",
     "jquery": "^2.1.4",
@@ -33,6 +38,7 @@
     "start": "NODE_ENV=dev electron .",
     "compile": "node_modules/.bin/webpack",
     "watch": "node_modules/.bin/webpack -w",
+    "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "build:mac": "electron-packager . Plottr --platform=darwin --arch=x64 --version=0.34.2 --out=dist --app-category-type=public.app-category.productivity --icon=icons/penguin_icon.icns",
     "build:win32": "electron-packager . Plottr --platform=win32 --arch=ia32 --version=0.34.2 --out=dist --icon=icons/penguin_icon.ico",
     "build:win64": "electron-packager . Plottr --platform=win32 --arch=x64 --version=0.34.2 --out=dist --icon=icons/penguin_icon.ico"

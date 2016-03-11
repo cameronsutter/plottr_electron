@@ -77,8 +77,7 @@ app.on('ready', function () {
 
   ipc.on('save-state', (event, state) => {
     stateOfApp = state
-    // TODO: this
-    // mainWindow.setRepresentedFilename('example.plottr')
+    mainWindow.setTitle(displayFileName(state.file.fileName))
     if (state.file.dirty) mainWindow.setDocumentEdited(true)
   })
 
@@ -220,6 +219,11 @@ function saveFile (fileName, data, callback) {
   data.file.version = app.getVersion()
   var stringState = JSON.stringify(data)
   fs.writeFile(fileName, stringState, callback)
+}
+
+function displayFileName (path) {
+  var matches = path.match(/.*\/(.*\.plottr)/)
+  return `Plottr — ${matches[1]}`
 }
 
 function checkVersion (given, appVersion) {

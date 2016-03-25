@@ -51,3 +51,20 @@ $new-item-border: 2px dashed $new-item-border-color;
   background-color: white;
   padding: 7px;
 }
+
+@mixin new_item {
+  height: $height;
+  width: $width;
+  min-width: $width;
+  line-height: $height;
+  color: $new-item-border-color;
+  text-align: center;
+  margin: auto;
+  margin-top: 10px;
+}
+
+@mixin new_item_hover {
+  background: $new-item-background;
+  border: $new-item-border;
+  cursor: pointer;
+}

@@ -36,8 +36,14 @@ class Navigation extends Component {
               <li className={this.isActive('outline')}>
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('outline')} >Outline</a>
               </li>
-              <li className={this.isActive('notes')}>
-                <a href='#' onClick={() => this.props.actions.changeCurrentView('notes')} >Notes</a>
+              <li className={this.isActive('characters')}>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('characters')} >Characters</a>
+              </li>
+              <li className={this.isActive('places')}>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('places')} >Places</a>
+              </li>
+              <li className={this.isActive('tags')}>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('tags')} >Tags</a>
               </li>
             </ul>
             <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>

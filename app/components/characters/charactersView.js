@@ -1,23 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import CharacterListView from 'components/notes/characterListView'
-import PlaceListView from 'components/notes/placeListView'
-import TagListView from 'components/notes/tagListView'
+import CharacterListView from 'components/characters/characterListView'
 
-class NotesView extends Component {
+class CharactersView extends Component {
 
   render () {
     return (
-      <div className='notes-view'>
+      <div className='characters-view'>
         <CharacterListView />
-        <PlaceListView />
-        <TagListView />
       </div>
     )
   }
 }
 
-NotesView.propTypes = {}
+CharactersView.propTypes = {}
 
 function mapStateToProps (state) {
   return {}
@@ -30,4 +26,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NotesView)
+)(CharactersView)

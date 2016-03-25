@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
-import PlaceView from 'components/notes/placeView'
+import PlaceView from 'components/places/placeView'
 
 class PlaceListView extends Component {
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as TagActions from 'actions/tags'
-import TagView from 'components/notes/tagView'
+import TagView from 'components/tag/tagView'
 
 class TagListView extends Component {
 

@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import TimeLineView from 'components/timeline/timeLineView'
 import OutlineView from 'components/outline/outlineView'
-import NotesView from 'components/notes/notesView'
+import TagsView from 'components/tag/TagsView'
+import CharactersView from 'components/characters/charactersView'
+import PlacesView from 'components/places/placesView'
 
 class Body extends Component {
   render () {
@@ -17,8 +19,14 @@ class Body extends Component {
       case 'outline':
         return <OutlineView />
 
-      case 'notes':
-        return <NotesView />
+      case 'tags':
+        return <TagsView />
+
+      case 'characters':
+        return <CharactersView />
+
+      case 'places':
+        return <PlacesView />
 
       default:
         return <TimeLineView />

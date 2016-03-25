@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
-import CharacterView from 'components/notes/characterView'
+import CharacterView from 'components/characters/characterView'
 
 class CharacterListView extends Component {
 

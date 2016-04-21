@@ -44,4 +44,11 @@
   height: $height;
   overflow: hidden;
   text-overflow: ellipsis;
+  .labels {
+    position: relative;
+    top: -10px;
+    .label {
+      margin-right: 3px;
+    }
+  }
 }

@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import _ from 'lodash'
+import { Label } from 'react-bootstrap'
 import CardDialog from 'components/timeline/cardDialog'
 import * as CardActions from 'actions/cards'
 
 class CardView extends Component {
   constructor (props) {
     super(props)
-    this.state = {dialogOpen: false, creating: false, dropping: false, dragging: false}
+    this.state = {dialogOpen: false, creating: false, dropping: false, dragging: false, hovering: false}
   }
 
   closeDialog () {
@@ -63,14 +65,17 @@ class CardView extends Component {
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'
     }
+    var titleStyle = (this.state.hovering && this.hasLabels()) ? {overflow: 'scroll'} : {}
 
     return (<div className='card__real'
       draggable={true}
       onDragStart={this.handleDragStart.bind(this)}
       onDragEnd={this.handleDragEnd.bind(this)}
+      onMouseEnter={() => this.setState({hovering: true})}
+      onMouseLeave={() => this.setState({hovering: false})}
       style={cardStyle}
       onClick={() => this.setState({dialogOpen: true})} >
-        <div className='card__title'>{this.props.card.title}</div>
+        <div className='card__title' style={titleStyle}>{this.renderTitle()}</div>
     </div>)
   }
 
@@ -107,17 +112,83 @@ class CardView extends Component {
     )
   }
 
+  renderTitle () {
+    if (this.state.hovering && this.hasLabels()) {
+      return this.renderLabels()
+    } else {
+      return this.props.card.title
+    }
+  }
+
+  hasLabels () {
+    const { card } = this.props
+    return (card.characters && card.characters.length > 0) || (card.places && card.places.length > 0) || (card.tags && card.tags.length > 0)
+  }
+
+  renderLabels () {
+    var characters = this.renderCharacters()
+    var places = this.renderPlaces()
+    var tags = this.renderTags()
+    return (<div className='labels'>
+      {characters}
+      {places}
+      {tags}
+    </div>)
+  }
+
+  renderCharacters () {
+    var characters = null
+    if (this.props.card.characters) {
+      characters = this.props.card.characters.map(cId =>
+        <Label bsStyle='info' key={cId}>{_.result(_.find(this.props.characters, 'id', cId), 'name')}</Label>
+      )
+    }
+    return (<div>
+      {characters}
+    </div>)
+  }
+
+  renderPlaces () {
+    var places = null
+    if (this.props.card.places) {
+      places = this.props.card.places.map(pId =>
+        <Label bsStyle='info' key={pId}>{_.result(_.find(this.props.places, 'id', pId), 'name')}</Label>
+      )
+    }
+    return (<div>
+      {places}
+    </div>)
+  }
+
+  renderTags () {
+    var tags = null
+    if (this.props.card.tags) {
+      tags = this.props.card.tags.map(tId =>
+        <Label bsStyle='info' key={tId}>{_.result(_.find(this.props.tags, 'id', tId), 'title')}</Label>
+      )
+    }
+    return (<div>
+      {tags}
+    </div>)
+  }
 }
 
 CardView.propTypes = {
   card: PropTypes.object,
   sceneId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired
+  color: PropTypes.string.isRequired,
+  characters: PropTypes.array,
+  places: PropTypes.array,
+  tags: PropTypes.array
 }
 
 function mapStateToProps (state) {
-  return {}
+  return {
+    characters: state.characters,
+    places: state.places,
+    tags: state.tags
+  }
 }
 
 function mapDispatchToProps (dispatch) {

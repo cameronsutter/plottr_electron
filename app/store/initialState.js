@@ -35,7 +35,8 @@ export const place = {
 
 export const tag = {
   id: 0,
-  title: 'First tag :)'
+  title: 'First tag :)',
+  color: null
 }
 
 export const card = {

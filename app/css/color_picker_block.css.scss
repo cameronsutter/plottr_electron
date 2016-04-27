@@ -1,0 +1,14 @@
+.color-picker__box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .color-picker__choice {
+    margin: 3px;
+    button {
+      color: white;
+    }
+    button:hover {
+      color: black;
+    }
+  }
+}

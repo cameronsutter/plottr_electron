@@ -19,11 +19,13 @@ class TagListView extends Component {
 
   render () {
     return (
-      <div className='tag-list'>
+      <div className='tag-list__container'>
         <h3>Tags</h3>
-        {this.renderTags()}
-        <div className='tag-list__new' onClick={this.handleCreateNewTag.bind(this)} >
-          <Glyphicon glyph='plus' />
+        <div className='tag-list__tags'>
+          {this.renderTags()}
+          <div className='tag-list__new' onClick={this.handleCreateNewTag.bind(this)} >
+            <Glyphicon glyph='plus' />
+          </div>
         </div>
       </div>
     )

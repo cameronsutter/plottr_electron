@@ -1,6 +1,6 @@
 @import "vars";
 
-.tag-list {
+.tag-list__container {
   margin: 10px;
   h3 {
     text-align: center;
@@ -8,13 +8,30 @@
 }
 
 .tag-list__new {
-  @include new_item;
+  @include well;
+  line-height: 50px;
+  width: 40px;
+  text-align: center;
 }
 
 .tag-list__new:hover {
   @include new_item_hover;
 }
 
-.tag {
+.tag-list__tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tag-list__tag {
   @include well;
+  margin: 3px;
+  .tag-list__color-label {
+    margin-top: 5px;
+    .label {
+      vertical-align: middle;
+      padding-top: 5px;
+    }
+  }
 }

@@ -163,9 +163,12 @@ class CardView extends Component {
   renderTags () {
     var tags = null
     if (this.props.card.tags) {
-      tags = this.props.card.tags.map(tId =>
-        <Label bsStyle='info' key={tId}>{_.result(_.find(this.props.tags, 'id', tId), 'title')}</Label>
-      )
+      tags = this.props.card.tags.map(tId => {
+        var tag = _.find(this.props.tags, 'id', tId)
+        var style = {}
+        if (tag.color) style = {backgroundColor: tag.color}
+        return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>
+      })
     }
     return (<div>
       {tags}

@@ -6,7 +6,7 @@ class TagsView extends Component {
 
   render () {
     return (
-      <div className='tags-view'>
+      <div className='tag-list'>
         <TagListView />
       </div>
     )

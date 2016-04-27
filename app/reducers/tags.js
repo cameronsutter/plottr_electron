@@ -9,12 +9,13 @@ export default function tags (state = initialState, action) {
     case ADD_TAG:
       return [...state, {
         id: tagId(state),
-        title: action.title
+        title: action.title,
+        color: tag.color
       }]
 
     case EDIT_TAG:
       return state.map(tag =>
-        tag.id === action.id ? Object.assign({}, tag, {title: action.title}) : tag
+        tag.id === action.id ? Object.assign({}, tag, {title: action.title, color: action.color}) : tag
       )
 
     case FILE_LOADED:

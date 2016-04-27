@@ -1,25 +1,56 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button, Input } from 'react-bootstrap'
+import { ButtonToolbar, Button, Input, Label, Glyphicon } from 'react-bootstrap'
+import ColorPicker from '../colorpicker'
 import * as TagActions from 'actions/tags'
 
 class TagView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false}
+    this.state = {editing: false, showColorPicker: false, newColor: null}
   }
 
   saveEdit () {
     var newTitle = this.refs.titleInput.getValue() || this.props.tag.title
-    this.props.actions.editTag(this.props.tag.id, newTitle)
+    var newColor = this.state.newColor || this.props.tag.color
+    this.props.actions.editTag(this.props.tag.id, newTitle, newColor)
     this.setState({editing: false})
   }
 
+  changeColor (color) {
+    console.log(color)
+    this.setState({showColorPicker: false, newColor: color})
+  }
+
+  renderColorPicker () {
+    if (this.state.showColorPicker) {
+      var key = 'colorPicker-' + this.props.tag.id
+      return <ColorPicker key={key} closeDialog={this.changeColor.bind(this)} />
+    } else {
+      return null
+    }
+  }
+
+  renderColorLabel (color) {
+    var colorLabel = null
+    if (color) {
+      var style = {backgroundColor: color}
+      colorLabel = <Label bsStyle='info' style={style}>{color}</Label>
+    }
+    return <span>{colorLabel || 'none'}</span>
+  }
+
   renderEditing () {
+    const { tag } = this.props
     return (
-      <div className='character'>
-        <Input type='text' ref='titleInput' label='tag name' defaultValue={this.props.tag.title} />
+      <div className='tag-list__tag'>
+        <Input type='text' ref='titleInput' label='tag name' defaultValue={tag.title} />
+        <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
+        {this.renderColorPicker()}
+        <div className='form-group tag-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(tag.color)}</label></div>
+        <div className='form-group tag-list__color-label'><label className='control-label'>New color: {this.renderColorLabel(this.state.newColor)}</label></div>
+        <hr />
         <ButtonToolbar>
           <Button bsStyle='danger'
             onClick={() => this.setState({editing: false})} >
@@ -36,8 +67,8 @@ class TagView extends Component {
 
   renderTag () {
     return (
-      <div className='tag' onClick={() => this.setState({editing: true})}>
-        <h6>{this.props.tag.title}</h6>
+      <div className='tag-list__tag' onClick={() => this.setState({editing: true})}>
+        <h6>{this.props.tag.title} {this.renderColorLabel(this.props.tag.color)}</h6>
       </div>
     )
   }

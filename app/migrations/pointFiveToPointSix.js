@@ -6,6 +6,10 @@ export default function migrate (data) {
   // add version
   obj.file.version = '0.5.0'
 
+  obj.tags.forEach((t) => {
+    t['color'] = null
+  })
+
   // remove userOptions
   delete obj.userOptions
 

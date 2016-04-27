@@ -5,6 +5,6 @@ export function addTag () {
   return { type: ADD_TAG, title: tag.title }
 }
 
-export function editTag (id, title) {
-  return { type: EDIT_TAG, id, title }
+export function editTag (id, title, color) {
+  return { type: EDIT_TAG, id, title, color }
 }

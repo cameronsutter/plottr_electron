@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import Waypoint from 'react-waypoint'
 import CardView from 'components/outline/cardView'
 
 class SceneView extends Component {
@@ -11,7 +12,8 @@ class SceneView extends Component {
 
   render () {
     return (
-      <div>
+      <div id={this.props.scene.title}>
+        <Waypoint onEnter={() => this.props.waypoint(this.props.scene.title)} threshold={-0.75} />
         <h3>{this.props.scene.title}</h3>
         {this.renderCards()}
       </div>
@@ -21,7 +23,8 @@ class SceneView extends Component {
 
 SceneView.propTypes = {
   scene: PropTypes.object.isRequired,
-  cards: PropTypes.array.isRequired
+  cards: PropTypes.array.isRequired,
+  waypoint: PropTypes.func.isRequired
 }
 
 function mapStateToProps (state) {

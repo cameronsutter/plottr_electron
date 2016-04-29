@@ -1,5 +1,10 @@
 @import "vars";
 
+.outline__container {
+  display: flex;
+  flex-direction: row;
+}
+
 .outline__card {
   @include well;
   margin: 20px;
@@ -17,4 +22,54 @@
     margin: 5px;
     vertical-align: text-top;
   }
+}
+
+li.outline__minimap__card-title > a {
+  padding: 0px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  padding-left: 13px;
+}
+
+li.outline__minimap__scene-title > a {
+  padding: 0px;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-left: 5px;
+}
+
+li.outline__minimap__card-title > a:hover, li.outline__minimap__scene-title > a:hover {
+  color: $new-item-border-color;
+  text-decoration: underline;
+  background-color: #fffffb;
+}
+
+.outline__minimap {
+  width: 250px;
+  border-left: 1px solid $new-item-border-color;
+  border-bottom: 1px solid $new-item-border-color;
+  padding-top: 5px;
+  padding-left: 5px;
+  margin-left: 10px;
+  margin-top: -5px;
+  background-color: #fffffb;
+}
+
+.outline_affixed {
+  padding-top: 26px;
+  right:0px;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.outline__minimap__placeholder {
+  width: 800px;
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+.active {
+  background-color: $new-item-background;
 }

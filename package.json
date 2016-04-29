@@ -17,7 +17,9 @@
     "react-bootstrap": "^0.27.3",
     "react-dom": "^0.14.0",
     "react-modal": "^0.6.1",
+    "react-overlays": "^0.6.3",
     "react-redux": "^4.0.0",
+    "react-waypoint": "^2.0.1",
     "redux": "^3.0.4"
   },
   "devDependencies": {

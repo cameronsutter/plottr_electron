@@ -58,7 +58,7 @@ class CardView extends Component {
     const { title, description } = this.props.card
     var line = this.line()
     return (
-      <div className='outline__card'>
+      <div id={title} className='outline__card'>
         <div className='outline__card__line-title'>{line.title}</div>
         {this.renderLabels()}
         <h6>{title}</h6>

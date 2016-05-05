@@ -50,7 +50,10 @@ class App extends Component {
 
   migrateIfNeeded (json, fileName, loadFileAction) {
     var m = new Migrator(json, json.file.version, app.getVersion())
-    if (!m.areSameVersion()) {
+    if (m.areSameVersion()) {
+      loadFileAction(fileName, json)
+    } else {
+      // not the same version, start migration process
       if (m.plottrBehindFile()) {
         dialog.showErrorBox('Update Plottr', 'It looks like your file was saved with a newer version of Plottr than you\'re using now. That could cause problems. Try updating Plottr and starting it again.')
       } else {

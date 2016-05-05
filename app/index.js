@@ -33,7 +33,9 @@ ipc.on('open-file', (fileName) => {
   saveToLocalStorage(fileName)
   var json = readJSONsync(fileName)
   var m = new Migrator(json, json.file.version, app.getVersion())
-  if (!m.areSameVersion()) {
+  if (m.areSameVersion()) {
+    store.dispatch(loadFile(fileName, json))
+  } else {
     if (m.plottrBehindFile()) {
       dialog.showErrorBox('Update Plottr', 'It looks like your file was saved with a newer version of Plottr than you\'re using now. That could cause problems. Try updating Plottr and starting it again.')
     } else {

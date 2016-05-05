@@ -6,10 +6,6 @@ export const CHANGE_CURRENT_VIEW = 'CHANGE_CURRENT_VIEW'
 // story actions
 export const EDIT_STORY_NAME = 'EDIT_STORY_NAME'
 
-// chapter actions
-export const ADD_CHAPTER = 'ADD_CHAPTER'
-export const EDIT_CHAPTER_TITLE = 'EDIT_CHAPTER_TITLE'
-
 // scene actions
 export const ADD_SCENE = 'ADD_SCENE'
 export const EDIT_SCENE_TITLE = 'EDIT_SCENE_TITLE'

@@ -63,7 +63,6 @@ app.on('ready', function () {
       e.preventDefault()
       dialog.showMessageBox(mainWindow, {type: 'question', buttons: ['yes, save!', 'no, just exit'], defaultId: 0, message: 'Would you like to save before exiting?'}, (choice) => {
         if (choice === 0) {
-          console.log('saving!')
           saveFile(stateOfApp.file.fileName, stateOfApp, (err) => {
             if (err) throw err
             mainWindow.destroy()
@@ -224,20 +223,4 @@ function saveFile (fileName, data, callback) {
 function displayFileName (path) {
   var matches = path.match(/.*\/(.*\.plottr)/)
   return `Plottr — ${matches[1]}`
-}
-
-function checkVersion (given, appVersion) {
-  if (given === appVersion) {
-    return true
-  } else {
-    var givenArray = given.split('.')
-    var versionArray = appVersion.split('.')
-    if (givenArray[0] === versionArray[0]) {
-      // major version is the same
-      if (givenArray[1] === versionArray[1]) {
-        // minor version is the same
-        return true
-      }
-    }
-  }
 }

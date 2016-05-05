@@ -52,9 +52,12 @@ class CardView extends Component {
     if (!this.props.card.characters) {
       return null
     }
-    return this.props.card.characters.map(cId =>
-      <Label bsStyle='info' key={cId}>{_.result(_.find(this.props.characters, 'id', cId), 'name')}</Label>
-    )
+    return this.props.card.characters.map(cId => {
+      var character = _.find(this.props.characters, 'id', cId)
+      var style = {}
+      if (character.color) style = {backgroundColor: character.color}
+      return <Label bsStyle='info' style={style} key={cId}>{character.name}</Label>
+    })
   }
 
   render () {

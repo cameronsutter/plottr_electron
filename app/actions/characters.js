@@ -5,6 +5,6 @@ export function addCharacter () {
   return { type: ADD_CHARACTER, name: character.name, description: character.description }
 }
 
-export function editCharacter (id, name, description) {
-  return { type: EDIT_CHARACTER, id, name, description }
+export function editCharacter (id, name, description, color) {
+  return { type: EDIT_CHARACTER, id, name, description, color }
 }

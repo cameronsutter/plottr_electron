@@ -18,6 +18,14 @@ function migrate (data) {
     p['color'] = p['color'] || null
   })
 
+  // add colors to characters
+  obj.characters.forEach((c) => {
+    c['color'] = c['color'] || null
+  })
+
+  // remove chapters
+  delete obj.chapters
+
   // remove userOptions
   delete obj.userOptions
 

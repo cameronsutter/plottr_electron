@@ -10,12 +10,13 @@ export default function characters (state = initialState, action) {
       return [...state, {
         id: characterId(state),
         name: action.name,
-        description: action.description
+        description: action.description,
+        color: character.color
       }]
 
     case EDIT_CHARACTER:
       return state.map(character =>
-        character.id === action.id ? Object.assign({}, character, {name: action.name, description: action.description}) : character
+        character.id === action.id ? Object.assign({}, character, {name: action.name, description: action.description, color: action.color}) : character
       )
 
     case FILE_LOADED:

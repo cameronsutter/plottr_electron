@@ -24,7 +24,8 @@ export const storyName = 'My awesome story'
 export const character = {
   id: 0,
   name: 'main character',
-  description: 'she is the coolest'
+  description: 'she is the coolest',
+  color: null
 }
 
 export const place = {

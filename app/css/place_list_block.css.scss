@@ -15,7 +15,7 @@
   @include new_item_hover;
 }
 
-.place {
+.place-list__place {
   @include well;
   .place-list__color-label {
     margin-top: 5px;

@@ -44,7 +44,7 @@ class PlaceView extends Component {
   renderEditing () {
     const { place } = this.props
     return (
-      <div className='place'>
+      <div className='place-list__place'>
         <Input type='text' ref='nameInput' label='place name' defaultValue={place.name} />
         <Input type='text' ref='descriptionInput' label='place description' defaultValue={place.description} />
         <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
@@ -68,7 +68,7 @@ class PlaceView extends Component {
 
   renderPlace () {
     return (
-      <div className='place' onClick={() => this.setState({editing: true})}>
+      <div className='place-list__place' onClick={() => this.setState({editing: true})}>
         <h4>{this.props.place.name}</h4>
         <p>{this.renderColorLabel(this.props.place.color)} {this.props.place.description}</p>
       </div>

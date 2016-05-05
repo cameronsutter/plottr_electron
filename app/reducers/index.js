@@ -3,7 +3,6 @@ import ui from './ui'
 import userOptions from './userOptions'
 import file from './file'
 import storyName from './storyName'
-import chapters from './chapters'
 import places from './places'
 import tags from './tags'
 import characters from './characters'
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({
   userOptions,
   file,
   storyName,
-  chapters,
   places,
   tags,
   characters,

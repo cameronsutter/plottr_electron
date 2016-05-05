@@ -10,12 +10,13 @@ export default function places (state = initialState, action) {
       return [...state, {
         id: placeId(state),
         name: action.name,
-        description: action.description
+        description: action.description,
+        place: place.color
       }]
 
     case EDIT_PLACE:
       return state.map(place =>
-        place.id === action.id ? Object.assign({}, place, {name: action.name, description: action.description}) : place
+        place.id === action.id ? Object.assign({}, place, {name: action.name, description: action.description, color: action.color}) : place
       )
 
     case FILE_LOADED:

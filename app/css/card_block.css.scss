@@ -43,12 +43,13 @@
   padding: $padding;
   height: $height;
   overflow: hidden;
-  text-overflow: ellipsis;
   .labels {
+    display: flex;
+    flex-wrap: wrap;
     position: relative;
     top: -10px;
     .label {
-      margin-right: 3px;
+      margin: 2px;
     }
   }
 }

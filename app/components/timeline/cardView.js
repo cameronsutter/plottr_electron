@@ -114,7 +114,7 @@ class CardView extends Component {
 
   renderTitle () {
     if (this.state.hovering && this.hasLabels()) {
-      return this.renderLabels()
+      return this.renderTags()
     } else {
       return this.props.card.title
     }
@@ -122,42 +122,7 @@ class CardView extends Component {
 
   hasLabels () {
     const { card } = this.props
-    return (card.characters && card.characters.length > 0) || (card.places && card.places.length > 0) || (card.tags && card.tags.length > 0)
-  }
-
-  renderLabels () {
-    var characters = this.renderCharacters()
-    var places = this.renderPlaces()
-    var tags = this.renderTags()
-    return (<div className='labels'>
-      {characters}
-      {places}
-      {tags}
-    </div>)
-  }
-
-  renderCharacters () {
-    var characters = null
-    if (this.props.card.characters) {
-      characters = this.props.card.characters.map(cId =>
-        <Label bsStyle='info' key={cId}>{_.result(_.find(this.props.characters, 'id', cId), 'name')}</Label>
-      )
-    }
-    return (<div>
-      {characters}
-    </div>)
-  }
-
-  renderPlaces () {
-    var places = null
-    if (this.props.card.places) {
-      places = this.props.card.places.map(pId =>
-        <Label bsStyle='info' key={pId}>{_.result(_.find(this.props.places, 'id', pId), 'name')}</Label>
-      )
-    }
-    return (<div>
-      {places}
-    </div>)
+    return card.tags && card.tags.length > 0
   }
 
   renderTags () {
@@ -170,7 +135,7 @@ class CardView extends Component {
         return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>
       })
     }
-    return (<div>
+    return (<div className='labels'>
       {tags}
     </div>)
   }
@@ -181,15 +146,11 @@ CardView.propTypes = {
   sceneId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  characters: PropTypes.array,
-  places: PropTypes.array,
   tags: PropTypes.array
 }
 
 function mapStateToProps (state) {
   return {
-    characters: state.characters,
-    places: state.places,
     tags: state.tags
   }
 }

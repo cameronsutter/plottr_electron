@@ -10,7 +10,12 @@ function migrate (data) {
 
   // add tag colors
   obj.tags.forEach((t) => {
-    t['color'] = null
+    t['color'] = t['color'] || null
+  })
+
+  // add colors to places
+  obj.places.forEach((p) => {
+    p['color'] = p['color'] || null
   })
 
   // remove userOptions

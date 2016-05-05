@@ -5,6 +5,6 @@ export function addPlace () {
   return { type: ADD_PLACE, name: place.name, description: place.description }
 }
 
-export function editPlace (id, name, description) {
-  return { type: EDIT_PLACE, id, name, description }
+export function editPlace (id, name, description, color) {
+  return { type: EDIT_PLACE, id, name, description, color }
 }

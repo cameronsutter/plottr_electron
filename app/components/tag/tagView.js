@@ -19,7 +19,6 @@ class TagView extends Component {
   }
 
   changeColor (color) {
-    console.log(color)
     this.setState({showColorPicker: false, newColor: color})
   }
 
@@ -38,7 +37,7 @@ class TagView extends Component {
       var style = {backgroundColor: color}
       colorLabel = <Label bsStyle='info' style={style}>{color}</Label>
     }
-    return <span>{colorLabel || 'none'}</span>
+    return <span>{colorLabel || ''}</span>
   }
 
   renderEditing () {

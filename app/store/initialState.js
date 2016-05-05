@@ -30,7 +30,8 @@ export const character = {
 export const place = {
   id: 0,
   name: 'first place',
-  description: 'my favorite place'
+  description: 'my favorite place',
+  color: null
 }
 
 export const tag = {

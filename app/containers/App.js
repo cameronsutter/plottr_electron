@@ -64,11 +64,12 @@ class App extends Component {
               if (err === 'backup') {
                 dialog.showErrorBox('Problem saving backup', 'Plottr couldn\'t save a backup. It hasn\'t touched your file yet, so don\'t worry. Try quitting Plottr and starting it again.')
               } else {
-                // tell the user that Plottr migrated versions and saved a backup file
-                fs.saveFile(fileName, json, (err) => {
+                // save the new updated file
+                fs.writeFile(fileName, JSON.stringify(json), (err) => {
                   if (err) {
                     dialog.showErrorBox('Problem saving updated file', 'Plottr updated your file, but couldn\'t save it for some reason. Your old file is still intact though. Try quitting Plottr and starting it again.')
                   } else {
+                    // tell the user that Plottr migrated versions and saved a backup file
                     dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr updated your file without a problem'})
                     loadFileAction(fileName, json)
                   }
@@ -77,7 +78,7 @@ class App extends Component {
             })
           } else {
             // open file without migrating
-            fs.saveFile(`${fileName}.backup`, json, (err) => {
+            fs.writeFile(`${fileName}.backup`, JSON.stringify(json), (err) => {
               if (err) {
                 dialog.showErrorBox('Problem saving backup', 'Plottr tried saving a backup just in case, but it didn\'t work. Try quitting Plottr and starting it again.')
               } else {

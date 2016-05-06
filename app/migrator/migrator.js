@@ -6,10 +6,17 @@ export default class Migrator {
     this.data = data
     this.given = givenVersion
     this.target = targetVersion
-    this.majorGiven = this.getMajor(this.given)
-    this.majorTarget = this.getMajor(this.target)
-    this.minorGiven = this.getMinor(this.given)
-    this.minorTarget = this.getMinor(this.target)
+    if (givenVersion) {
+      this.majorGiven = this.getMajor(this.given)
+      this.majorTarget = this.getMajor(this.target)
+      this.minorGiven = this.getMinor(this.given)
+      this.minorTarget = this.getMinor(this.target)
+    } else {
+      this.majorGiven = null
+      this.majorTarget = null
+      this.minorGiven = null
+      this.minorTarget = null
+    }
   }
 
   migrate (callback) {
@@ -64,6 +71,7 @@ export default class Migrator {
   getMigrations () {
     var files = fs.readdirSync(path.resolve(process.cwd(), 'app', 'migrator', 'migrations'))
     return files.filter((f) => {
+      if (!this.given) return true
       var fParts = f.split('.').map(Number)
       if (fParts[0] < this.majorGiven) return false
       if (fParts[0] === this.majorGiven) {

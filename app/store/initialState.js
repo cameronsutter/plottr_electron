@@ -11,8 +11,6 @@ export const ui = {
   currentView: 'timeline'
 }
 
-export const userOptions = {}
-
 export const file = {
   fileName: '',
   loaded: false,

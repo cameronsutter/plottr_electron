@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import ui from './ui'
-import userOptions from './userOptions'
 import file from './file'
 import storyName from './storyName'
 import places from './places'
@@ -12,7 +11,6 @@ import lines from './lines'
 
 const rootReducer = combineReducers({
   ui,
-  userOptions,
   file,
   storyName,
   places,

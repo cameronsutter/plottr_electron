@@ -22,7 +22,7 @@ export default class Migrator {
   migrate (callback) {
     // save a backup file
     var backupName = this.data.file.fileName.replace('.plottr', '.backup.plottr')
-    fs.writeFile(backupName, JSON.stringify(this.data), (err) => {
+    fs.writeFile(backupName, JSON.stringify(this.data, null, 2), (err) => {
       if (err) {
         console.log(err)
         callback('backup', false)

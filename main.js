@@ -216,7 +216,7 @@ app.on('ready', function () {
 
 function saveFile (fileName, data, callback) {
   data.file.version = app.getVersion()
-  var stringState = JSON.stringify(data)
+  var stringState = JSON.stringify(data, null, 2)
   fs.writeFile(fileName, stringState, callback)
 }
 

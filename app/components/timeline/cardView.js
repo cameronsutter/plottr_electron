@@ -65,6 +65,9 @@ class CardView extends Component {
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'
     }
+    if (this.props.filtered) {
+      cardStyle.opacity = '0.1'
+    }
     var titleStyle = (this.state.hovering && this.hasLabels()) ? {overflow: 'scroll'} : {}
 
     return (<div className='card__real'
@@ -146,6 +149,7 @@ CardView.propTypes = {
   sceneId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
+  filtered: PropTypes.bool.isRequired,
   tags: PropTypes.array
 }
 

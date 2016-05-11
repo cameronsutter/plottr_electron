@@ -105,6 +105,33 @@ class LineView extends Component {
     }
   }
 
+  filterIsNotEmpty () {
+    var filter = this.props.filteredItems
+    return filter['tag'].length > 0 || filter['character'].length > 0 || filter['place'].length > 0
+  }
+
+  cardIsFiltered (card) {
+    if (!card) return false
+    const filter = this.props.filteredItems
+    var filtered = true
+    if (card.tags) {
+      card.tags.forEach((tId) => {
+        if (filter['tag'].indexOf(tId) !== -1) filtered = false
+      })
+    }
+    if (card.characters) {
+      card.characters.forEach((cId) => {
+        if (filter['character'].indexOf(cId) !== -1) filtered = false
+      })
+    }
+    if (card.places) {
+      card.places.forEach((pId) => {
+        if (filter['place'].indexOf(pId) !== -1) filtered = false
+      })
+    }
+    return filtered
+  }
+
   renderCards () {
     var sceneMap = this.props.sceneMap
 
@@ -112,9 +139,13 @@ class LineView extends Component {
       var sceneId = sceneMap[scenePosition]
       var card = this.findCard(sceneId)
       var id = card ? card.id : '' + sceneId + scenePosition
+      var filtered = false
+      if (this.filterIsNotEmpty() && this.cardIsFiltered(card)) {
+        filtered = true
+      }
       return (<CardView key={id} card={card}
         sceneId={sceneId} lineId={this.props.line.id}
-        color={this.props.line.color} />
+        color={this.props.line.color} filtered={filtered} />
       )
     })
   }
@@ -203,7 +234,8 @@ LineView.propTypes = {
   sceneMap: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  handleReorder: PropTypes.func.isRequired
+  handleReorder: PropTypes.func.isRequired,
+  filteredItems: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {

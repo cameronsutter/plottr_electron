@@ -11,6 +11,7 @@ require('crash-reporter').start()
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var mainWindow = null
+var aboutWindow = null
 
 // state of the app to be saved
 var stateOfApp = {}
@@ -85,7 +86,14 @@ app.on('ready', function () {
       label: 'Plottr',
       submenu: [ {
         label: 'About Plottr',
-        role: 'about'
+        click: function () {
+          var aboutFile = 'file://' + __dirname + '/about.html'
+          aboutWindow = new BrowserWindow({width: 400, height: 550})
+          aboutWindow.loadUrl(aboutFile)
+          aboutWindow.on('closed', function () {
+            aboutWindow = null
+          })
+        }
       }, {
         type: 'separator'
       }, {

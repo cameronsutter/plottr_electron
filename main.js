@@ -38,42 +38,7 @@ app.on('open-file', function (event, path) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1200, height: 800})
-
-  // and load the index.html of the app.
-  mainWindow.loadUrl(entryFile)
-
-  if (process.env.NODE_ENV === 'dev') {
-    // Open the DevTools.
-    mainWindow.openDevTools()
-  }
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-
-    mainWindow = null
-  })
-
-  mainWindow.on('close', function (e) {
-    // ask to save
-    if (stateOfApp.file.dirty) {
-      e.preventDefault()
-      dialog.showMessageBox(mainWindow, {type: 'question', buttons: ['yes, save!', 'no, just exit'], defaultId: 0, message: 'Would you like to save before exiting?'}, (choice) => {
-        if (choice === 0) {
-          saveFile(stateOfApp.file.fileName, stateOfApp, (err) => {
-            if (err) throw err
-            mainWindow.destroy()
-          })
-        } else {
-          mainWindow.destroy()
-        }
-      })
-    }
-  })
+  openWindow()
 
   ipc.on('save-state', (event, state) => {
     stateOfApp = state
@@ -141,7 +106,10 @@ app.on('ready', function () {
         click: function () {
           var properties = [ 'openFile', 'openDirectory', 'createDirectory' ]
           dialog.showOpenDialog(mainWindow, { properties: properties }, (chosenFileName) => {
-            if (chosenFileName.length > 0) {
+            if (chosenFileName && chosenFileName.length > 0) {
+              if (mainWindow === null) {
+                openWindow()
+              }
               mainWindow.webContents.send('open-file', chosenFileName[0])
             }
           })
@@ -152,6 +120,9 @@ app.on('ready', function () {
         click: function () {
           dialog.showSaveDialog({title: 'Where would you like to start your new file?'}, function (fileName) {
             if (fileName) {
+              if (mainWindow === null) {
+                openWindow()
+              }
               mainWindow.webContents.send('new-file', fileName + '.plottr')
             }
           })
@@ -231,4 +202,43 @@ function saveFile (fileName, data, callback) {
 function displayFileName (path) {
   var matches = path.match(/.*\/(.*\.plottr)/)
   return `Plottr — ${matches[1]}`
+}
+
+function openWindow () {
+  // Create the browser window.
+  mainWindow = new BrowserWindow({width: 1200, height: 800})
+
+  // and load the index.html of the app.
+  mainWindow.loadUrl(entryFile)
+
+  if (process.env.NODE_ENV === 'dev') {
+    // Open the DevTools.
+    mainWindow.openDevTools()
+  }
+
+  // Emitted when the window is closed.
+  mainWindow.on('closed', function () {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+
+    mainWindow = null
+  })
+
+  mainWindow.on('close', function (e) {
+    // ask to save
+    if (stateOfApp.file.dirty) {
+      e.preventDefault()
+      dialog.showMessageBox(mainWindow, {type: 'question', buttons: ['yes, save!', 'no, just exit'], defaultId: 0, message: 'Would you like to save before exiting?'}, (choice) => {
+        if (choice === 0) {
+          saveFile(stateOfApp.file.fileName, stateOfApp, (err) => {
+            if (err) throw err
+            mainWindow.destroy()
+          })
+        } else {
+          mainWindow.destroy()
+        }
+      })
+    }
+  })
 }

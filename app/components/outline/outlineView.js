@@ -69,7 +69,7 @@ class OutlineView extends Component {
           onAffixTop={() => this.setState({affixed: false})}
           bottomClassName='outline_affixed' topClassName=''>
           <div>
-            <MiniMap cardMapping={cardMapping} active={this.state.active} />
+            <MiniMap active={this.state.active} />
           </div>
         </AutoAffix>
         {this.renderPlaceholder()}

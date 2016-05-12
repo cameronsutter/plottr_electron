@@ -24,26 +24,14 @@
   }
 }
 
-li.outline__minimap__card-title > a {
-  padding: 0px;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  padding-left: 13px;
-}
-
 li.outline__minimap__scene-title > a {
-  padding: 0px;
   color: inherit;
-  text-decoration: underline;
   cursor: pointer;
-  padding-left: 5px;
+  padding: 3px 10px 3px 10px;
 }
 
-li.outline__minimap__card-title > a:hover, li.outline__minimap__scene-title > a:hover {
-  color: $new-item-border-color;
-  text-decoration: underline;
-  background-color: #fffffb;
+li.outline__minimap__scene-title > a:hover {
+  background-color: $body-background-color;
 }
 
 .outline__minimap {

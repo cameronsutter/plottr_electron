@@ -104,7 +104,7 @@ app.on('ready', function () {
         label: 'Open',
         accelerator: 'CmdOrCtrl+O',
         click: function () {
-          var properties = [ 'openFile', 'openDirectory', 'createDirectory' ]
+          var properties = [ 'openFile', 'createDirectory' ]
           dialog.showOpenDialog(mainWindow, { properties: properties }, (chosenFileName) => {
             if (chosenFileName && chosenFileName.length > 0) {
               if (mainWindow === null) {

@@ -29,7 +29,7 @@ class App extends Component {
         dialog.showMessageBox(win, {type: 'question', buttons: ['open', 'new'], message: 'Would you like to open an existing file or start a new file?'}, (choice) => {
           if (choice === 0) {
             // open file
-            var properties = [ 'openFile', 'openDirectory', 'createDirectory' ]
+            var properties = [ 'openFile', 'createDirectory' ]
             dialog.showOpenDialog(win, { properties: properties }, (chosenFileName) => {
               readJSON(chosenFileName[0], (fileName, json) => {
                 _this.migrateIfNeeded(json, fileName, _this.props.actions.loadFile)

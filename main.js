@@ -201,7 +201,8 @@ function saveFile (fileName, data, callback) {
 
 function displayFileName (path) {
   var matches = path.match(/.*\/(.*\.plottr)/)
-  return `Plottr — ${matches[1]}`
+  if (matches) return `Plottr — ${matches[1]}`
+  return 'Plottr'
 }
 
 function openWindow () {

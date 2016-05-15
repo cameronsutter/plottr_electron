@@ -42,8 +42,8 @@
     "watch": "node_modules/.bin/webpack -w",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "build": "npm run build:mac & npm run build:win32 & npm run build:win64",
-    "build:mac": "electron-packager . Plottr --platform=darwin --arch=x64 --version=0.34.2 --out=dist --app-category-type=public.app-category.productivity --icon=icons/penguin_icon.icns",
-    "build:win32": "electron-packager . Plottr --platform=win32 --arch=ia32 --version=0.34.2 --out=dist --icon=icons/penguin_icon.ico",
-    "build:win64": "electron-packager . Plottr --platform=win32 --arch=x64 --version=0.34.2 --out=dist --icon=icons/penguin_icon.ico"
+    "build:mac": "electron-packager . Plottr --platform=darwin --arch=x64 --version=0.34.2 --out=/Users/csutter/plottr_dist --app-category-type=public.app-category.productivity --icon=icons/penguin_icon.icns",
+    "build:win32": "electron-packager . Plottr --platform=win32 --arch=ia32 --version=0.34.2 --out=/Users/csutter/plottr_dist --icon=icons/penguin_icon.ico",
+    "build:win64": "electron-packager . Plottr --platform=win32 --arch=x64 --version=0.34.2 --out=/Users/csutter/plottr_dist --icon=icons/penguin_icon.ico"
   }
 }

@@ -1,5 +1,7 @@
 import fs from 'fs'
 import path from 'path'
+import remote from 'remote'
+const app = remote.require('app')
 
 export default class Migrator {
   constructor (data, givenVersion, targetVersion) {
@@ -69,7 +71,7 @@ export default class Migrator {
   }
 
   getMigrations () {
-    var files = fs.readdirSync(path.resolve(process.cwd(), 'app', 'migrator', 'migrations'))
+    var files = fs.readdirSync(this.getPath())
     return files.filter((f) => {
       if (!this.given) return true
       var fParts = f.split('.').map(Number)
@@ -89,5 +91,12 @@ export default class Migrator {
       }
       return -1
     })
+  }
+
+  getPath () {
+    var appPath = app.getAppPath()
+    var thing = path.resolve(appPath, 'app', 'migrator', 'migrations')
+    console.log(thing)
+    return thing
   }
 }

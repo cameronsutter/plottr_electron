@@ -1,11 +1,11 @@
 import fs from 'fs'
 
 export function saveToLocalStorage (fileName) {
-  window.localStorage.setItem('recentFileName', fileName)
+  window.localStorage.setItem(localStorageKey(), fileName)
 }
 
 export function getFileNameFromLocalStorage () {
-  return window.localStorage.getItem('recentFileName') || null
+  return window.localStorage.getItem(localStorageKey()) || null
 }
 
 export function readJSON (fileName, callback, noSuchFileCallback) {
@@ -21,4 +21,12 @@ export function readJSON (fileName, callback, noSuchFileCallback) {
 export function readJSONsync (fileName) {
   var data = fs.readFileSync(fileName, 'utf-8')
   return JSON.parse(data)
+}
+
+function localStorageKey () {
+  if (process.env.NODE_ENV === 'dev') {
+    return 'devRecentFileName'
+  } else {
+    return 'recentFileName'
+  }
 }

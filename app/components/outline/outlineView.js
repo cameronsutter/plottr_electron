@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { AutoAffix } from 'react-overlays'
 import _ from 'lodash'
 import SceneView from 'components/outline/sceneView'
 import MiniMap from 'components/outline/miniMap'
@@ -49,30 +48,15 @@ class OutlineView extends Component {
     )
   }
 
-  renderPlaceholder () {
-    if (this.state.affixed) {
-      return <div className='outline__minimap__placeholder'>you didn&apos;t see anything</div>
-    } else {
-      return null
-    }
-  }
-
   render () {
     var cardMapping = this.cardMapping()
     return (
       <div className='outline__container'>
-        <div className='outline_scenes-container'>
+        <div className='outline__scenes-container'>
           {this.renderScenes(cardMapping)}
         </div>
-        <AutoAffix affixClassName='outline_affixed' viewportOffsetTop={30} offsetTop={30} container={this} autoWidth={false}
-          onAffix={() => this.setState({affixed: true})}
-          onAffixTop={() => this.setState({affixed: false})}
-          bottomClassName='outline_affixed' topClassName=''>
-          <div>
-            <MiniMap active={this.state.active} />
-          </div>
-        </AutoAffix>
-        {this.renderPlaceholder()}
+        <MiniMap active={this.state.active} />
+        <div className='outline__minimap__placeholder'>you didn&apos;t see anything</div>
       </div>
     )
   }

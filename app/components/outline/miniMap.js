@@ -5,6 +5,11 @@ import ReactDOM from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
 
 class MiniMap extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {mouseOver: false}
+  }
+
   selectNav (key, href) {
     window.location = `#${href}`
     window.scrollBy(0, -55)
@@ -21,16 +26,23 @@ class MiniMap extends Component {
 
   render () {
     return (
-      <Nav activeHref={this.props.active} onSelect={this.selectNav.bind(this)} className='outline__minimap'>
+      <Nav
+        className='outline__minimap'
+        activeHref={this.props.active}
+        onSelect={this.selectNav.bind(this)}
+        onMouseEnter={() => this.setState({mouseOver: true})}
+        onMouseLeave={() => this.setState({mouseOver: false})}>
         {this.renderScenes()}
       </Nav>
     )
   }
 
   componentDidUpdate () {
-    var domNode = ReactDOM.findDOMNode(this.refs[this.props.active])
-    if (domNode) {
-      domNode.scrollIntoViewIfNeeded()
+    if (!this.state.mouseOver) {
+      var domNode = ReactDOM.findDOMNode(this.refs[this.props.active])
+      if (domNode) {
+        domNode.scrollIntoViewIfNeeded()
+      }
     }
   }
 }

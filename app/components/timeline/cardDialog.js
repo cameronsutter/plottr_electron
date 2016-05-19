@@ -26,17 +26,21 @@ class CardDialog extends Component {
   handleCreate () {
     var title = this.refs.titleInput.getValue()
     var desc = this.refs.descriptionInput.getValue()
-    var newCard = this.buildCard(title, desc)
+    const { characters, places, tags } = this.getSelectedLabels()
+    var newCard = this.buildCard(title, desc, characters, places, tags)
     this.props.actions.addCard(newCard)
     this.closeDialog()
   }
 
-  buildCard (title, description) {
+  buildCard (title, description, characters, places, tags) {
     return {
       title: title || card.title,
       description: description || card.description,
       lineId: this.props.lineId,
-      sceneId: this.props.sceneId
+      sceneId: this.props.sceneId,
+      characters: characters || card.characters,
+      places: places || card.places,
+      tags: tags || card.tags
     }
   }
 
@@ -53,14 +57,19 @@ class CardDialog extends Component {
   saveEdit () {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
     var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
-    var characters = this.refs.characterSelect.getValue() || this.props.card.characters
-    characters = characters === 'none' ? [] : characters.map(Number)
-    var places = this.refs.placeSelect.getValue() || this.props.card.places
-    places = places === 'none' ? [] : places.map(Number)
-    var tags = this.refs.tagSelect.getValue() || this.props.card.tags
-    tags = tags === 'none' ? [] : tags.map(Number)
-    this.props.actions.editCard(this.props.card.id, newTitle, newDescription, characters, places.map(Number), tags.map(Number))
+    const { characters, places, tags } = this.getSelectedLabels()
+    this.props.actions.editCard(this.props.card.id, newTitle, newDescription, characters, places, tags)
     this.setState({editing: false})
+  }
+
+  getSelectedLabels () {
+    var characters = this.refs.characterSelect.getValue() || this.props.card.characters
+    characters = characters[0] === 'none' ? [] : characters.map(Number)
+    var places = this.refs.placeSelect.getValue() || this.props.card.places
+    places = places[0] === 'none' ? [] : places.map(Number)
+    var tags = this.refs.tagSelect.getValue() || this.props.card.tags
+    tags = tags[0] === 'none' ? [] : tags.map(Number)
+    return {characters: characters, places: places, tags: tags}
   }
 
   changeScene (sceneId) {
@@ -215,6 +224,7 @@ class CardDialog extends Component {
     }
     return this.props.card.tags.map(tId => {
       var tag = _.find(this.props.tags, 'id', tId)
+      if (!tag) return null
       var style = {}
       if (tag.color) style = {backgroundColor: tag.color}
       return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>

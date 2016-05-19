@@ -18,6 +18,8 @@ export const ADD_CARD = 'ADD_CARD'
 export const EDIT_CARD_DETAILS = 'EDIT_CARD_DETAILS'
 export const EDIT_CARD_COORDINATES = 'EDIT_CARD_COORDINATES'
 export const DELETE_CARD = 'DELETE_CARD'
+export const CHANGE_LINE = 'CHANGE_LINE'
+export const CHANGE_SCENE = 'CHANGE_SCENE'
 
 // line actions
 export const ADD_LINE = 'ADD_LINE'

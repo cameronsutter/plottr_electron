@@ -1,6 +1,6 @@
-import { ADD_SCENE, EDIT_SCENE_TITLE, CHANGE_CHAPTER, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { scene } from 'store/initialState'
-import { sceneId } from 'store/newIds'
+import { sceneId, scenePosition } from 'store/newIds'
 
 const initialState = [scene]
 
@@ -10,18 +10,12 @@ export default function scenes (state = initialState, action) {
       return [{
         id: sceneId(state),
         title: action.title,
-        chapterId: action.chapterId,
-        position: state.reduce((maxPosition, scene) => Math.max(scene.position, maxPosition), -1) + 1
+        position: scenePosition(state)
       }, ...state]
 
     case EDIT_SCENE_TITLE:
       return state.map(scene =>
         scene.id === action.id ? Object.assign({}, scene, {title: action.title}) : scene
-      )
-
-    case CHANGE_CHAPTER:
-      return state.map(scene =>
-        scene.id === action.id ? Object.assign({}, scene, {chapterId: action.chapterId}) : scene
       )
 
     case DELETE_SCENE:

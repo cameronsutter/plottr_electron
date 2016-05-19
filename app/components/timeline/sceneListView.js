@@ -6,7 +6,7 @@ import { Button, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import * as SceneActions from 'actions/scenes'
 import { scene } from 'store/initialState'
-import { sceneId, chapterId } from 'store/newIds'
+import { sceneId } from 'store/newIds'
 
 class SceneListView extends Component {
 
@@ -16,14 +16,13 @@ class SceneListView extends Component {
   }
 
   handleCreateNewScene () {
-    this.props.actions.addScene(chapterId())
+    this.props.actions.addScene()
   }
 
   handleInsertNewScene (nextPosition) {
     var newId = sceneId(this.props.scenes)
     var newScene = _.clone(scene)
     newScene['id'] = newId
-    newScene['chapterId'] = chapterId()
     newScene['position'] = nextPosition
 
     var scenesArray = []

@@ -1,5 +1,6 @@
 import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { line } from 'store/initialState'
+import { lineId, linePosition } from 'store/newIds'
 
 const initialState = [line]
 
@@ -7,10 +8,10 @@ export default function lines (state = initialState, action) {
   switch (action.type) {
     case ADD_LINE:
       return [{
-        id: state.reduce((maxId, line) => Math.max(line.id, maxId), -1) + 1,
+        id: lineId(state),
         title: action.title,
         color: action.color,
-        position: state.reduce((maxPosition, line) => Math.max(line.position, maxPosition), -1) + 1
+        position: linePosition(state)
       }, ...state]
 
     case EDIT_LINE_TITLE:

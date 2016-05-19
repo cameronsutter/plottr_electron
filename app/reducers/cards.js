@@ -2,8 +2,8 @@ import { ADD_CARD, EDIT_CARD_DETAILS,
   DELETE_LINE, DELETE_SCENE,
   EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE,
   DELETE_CARD, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
-
 import { card } from 'store/initialState'
+import { cardId } from 'store/newIds'
 
 const initialState = [card]
 
@@ -11,7 +11,7 @@ export default function cards (state = initialState, action) {
   switch (action.type) {
     case ADD_CARD:
       return [{
-        id: state.reduce((maxId, card) => Math.max(card.id, maxId), -1) + 1,
+        id: cardId(state),
         lineId: action.card.lineId,
         sceneId: action.card.sceneId,
         title: action.card.title,

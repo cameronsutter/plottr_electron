@@ -2,7 +2,6 @@
 
 export const scene = {
   id: 0,
-  chapterId: 0,
   title: 'new scene',
   position: 0
 }
@@ -48,12 +47,6 @@ export const card = {
   tags: [],
   characters: [],
   places: []
-}
-
-export const chapter = {
-  id: 0,
-  title: 'chapter 1',
-  position: 0
 }
 
 export const line = {

@@ -235,18 +235,26 @@ class CardDialog extends Component {
     if (!this.props.card.places) {
       return null
     }
-    return this.props.card.places.map(pId =>
-      <Label bsStyle='info' key={pId}>{_.result(_.find(this.props.places, 'id', pId), 'name')}</Label>
-    )
+    return this.props.card.places.map(pId => {
+      var place = _.find(this.props.places, 'id', pId)
+      if (!place) return null
+      var style = {}
+      if (place.color) style = {backgroundColor: place.color}
+      return <Label bsStyle='info' style={style} key={pId}>{place.name}</Label>
+    })
   }
 
   renderCharacters () {
     if (!this.props.card.characters) {
       return null
     }
-    return this.props.card.characters.map(cId =>
-      <Label bsStyle='info' key={cId}>{_.result(_.find(this.props.characters, 'id', cId), 'name')}</Label>
-    )
+    return this.props.card.characters.map(cId => {
+      var character = _.find(this.props.characters, 'id', cId)
+      if (!character) return null
+      var style = {}
+      if (character.color) style = {backgroundColor: character.color}
+      return <Label bsStyle='info' style={style} key={cId}>{character.name}</Label>
+    })
   }
 
   renderEditingLabels () {

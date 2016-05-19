@@ -20,9 +20,11 @@
     </style>
   </head>
   <body>
-
+    <script>
+      var app = require('remote').require('app')
+    </script>
     <h1><img src='icons/penguin_icon.png' height='100' width='100'/> Plottr</h1>
-    <p>Version <script>document.write(process.env.npm_package_version)</script></p>
+    <p>Version <script>document.write(app.getVersion())</script></p>
     <h2>Creators</h2>
     <p>C. Louis S.&mdash;development</p>
     <p>Steve Shepherd&mdash;concept &amp; QA</p>

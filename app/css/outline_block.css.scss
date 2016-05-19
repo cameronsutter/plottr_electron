@@ -55,12 +55,6 @@ li.outline__minimap__scene-title > a:hover {
   background-color: #fffffb;
 }
 
-.outline_affixed {
-  padding-top: 26px;
-  right:0px;
-  height: 100%;
-}
-
 .outline__minimap__placeholder {
   width: 25%;
   height: 100%;
@@ -69,4 +63,17 @@ li.outline__minimap__scene-title > a:hover {
 
 .active {
   background-color: $new-item-background;
+}
+
+.outline__minimap__dots {
+  display: inline-block;
+  float: right;
+  margin-top: 4px;
+}
+
+.outline__minimap__card-dot {
+  height: 7px;
+  width: 7px;
+  float:right;
+  margin: 1px;
 }

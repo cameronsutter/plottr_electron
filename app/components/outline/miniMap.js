@@ -15,11 +15,20 @@ class MiniMap extends Component {
     window.scrollBy(0, -55)
   }
 
+  renderCardDots (sceneCards) {
+    const cards = _.cloneDeep(sceneCards).reverse()
+    return cards.map((c) => {
+      var line = _.find(this.props.lines, 'id', c.lineId)
+      var style = {backgroundColor: line.color}
+      return <div key={`dot-${line.id}-${c.id}`} style={style} className='outline__minimap__card-dot'></div>
+    })
+  }
+
   renderScenes () {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map(s =>
       <NavItem ref={s.title} key={s.id} href={s.title} className='outline__minimap__scene-title'>
-        {s.title}
+        {s.title} <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[s.id])}</div>
       </NavItem>
     )
   }
@@ -49,12 +58,15 @@ class MiniMap extends Component {
 
 MiniMap.propTypes = {
   scenes: PropTypes.array.isRequired,
-  active: PropTypes.string.isRequired
+  active: PropTypes.string.isRequired,
+  lines: PropTypes.array.isRequired,
+  cardMapping: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
   return {
-    scenes: state.scenes
+    scenes: state.scenes,
+    lines: state.lines
   }
 }
 

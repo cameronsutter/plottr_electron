@@ -63,9 +63,10 @@ class CardView extends Component {
   render () {
     const { title, description } = this.props.card
     var line = this.line()
+    var style = {color: line.color}
     return (
       <div className='outline__card'>
-        <div className='outline__card__line-title'>{line.title}</div>
+        <div style={style} className='outline__card__line-title'>{line.title}</div>
         {this.renderLabels()}
         <h6>{title}</h6>
         <div

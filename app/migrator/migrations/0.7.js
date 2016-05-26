@@ -8,6 +8,11 @@ function migrate (data) {
   // remove chapters ... yes again
   delete obj.chapters
 
+  // remove chapter ids from scenes
+  data.scenes.forEach((s) => {
+    delete s.chapterId
+  })
+
   return obj
 }
 

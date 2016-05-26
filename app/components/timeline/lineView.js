@@ -138,7 +138,7 @@ class LineView extends Component {
     return Object.keys(sceneMap).map((scenePosition) => {
       var sceneId = sceneMap[scenePosition]
       var card = this.findCard(sceneId)
-      var id = card ? card.id : '' + sceneId + scenePosition
+      var id = card ? card.id : 'blank' + sceneId + scenePosition
       var filtered = false
       if (this.filterIsNotEmpty() && this.cardIsFiltered(card)) {
         filtered = true

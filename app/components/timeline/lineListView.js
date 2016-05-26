@@ -8,6 +8,20 @@ import LineView from 'components/timeline/lineView'
 
 class LineListView extends Component {
 
+  labelMap () {
+    var mapping = {}
+    this.props.tags.forEach((t) => {
+      mapping[t.title.toLowerCase()] = t.color
+    })
+    this.props.characters.forEach((c) => {
+      mapping[c.name.toLowerCase()] = c.color
+    })
+    this.props.places.forEach((p) => {
+      mapping[p.name.toLowerCase()] = p.color
+    })
+    return mapping
+  }
+
   handleCreateNewLine () {
     this.props.actions.addLine()
   }
@@ -43,6 +57,7 @@ class LineListView extends Component {
       return (
         <LineView key={'lineId-' + line.id} line={line}
           sceneMap={this.props.sceneMap}
+          labelMap={this.labelMap()}
           handleReorder={this.handleReorder.bind(this)}
           filteredItems={this.props.filteredItems}
           />
@@ -55,12 +70,18 @@ LineListView.propTypes = {
   lines: PropTypes.array.isRequired,
   sceneMap: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  filteredItems: PropTypes.object.isRequired
+  filteredItems: PropTypes.object.isRequired,
+  tags: PropTypes.array.isRequired,
+  characters: PropTypes.array.isRequired,
+  places: PropTypes.array.isRequired
 }
 
 function mapStateToProps (state) {
   return {
-    lines: state.lines
+    lines: state.lines,
+    places: state.places,
+    characters: state.characters,
+    tags: state.tags
   }
 }
 

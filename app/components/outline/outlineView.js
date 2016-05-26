@@ -18,6 +18,20 @@ class OutlineView extends Component {
     return mapping
   }
 
+  labelMap () {
+    var mapping = {}
+    this.props.tags.forEach((t) => {
+      mapping[t.title.toLowerCase()] = t.color
+    })
+    this.props.characters.forEach((c) => {
+      mapping[c.name.toLowerCase()] = c.color
+    })
+    this.props.places.forEach((p) => {
+      mapping[p.name.toLowerCase()] = p.color
+    })
+    return mapping
+  }
+
   sortedSceneCards (sceneId) {
     var cards = this.findSceneCards(sceneId)
     const lines = _.sortBy(this.props.lines, 'position')
@@ -44,7 +58,7 @@ class OutlineView extends Component {
   renderScenes (cardMapping) {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map(s =>
-      <SceneView key={s.id} scene={s} cards={cardMapping[s.id]} waypoint={this.setActive.bind(this)} />
+      <SceneView key={s.id} scene={s} cards={cardMapping[s.id]} labelMap={this.labelMap()} waypoint={this.setActive.bind(this)} />
     )
   }
 
@@ -65,14 +79,20 @@ class OutlineView extends Component {
 OutlineView.propTypes = {
   scenes: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
-  cards: PropTypes.array.isRequired
+  cards: PropTypes.array.isRequired,
+  tags: PropTypes.array.isRequired,
+  characters: PropTypes.array.isRequired,
+  places: PropTypes.array.isRequired
 }
 
 function mapStateToProps (state) {
   return {
     scenes: state.scenes,
     lines: state.lines,
-    cards: state.cards
+    cards: state.cards,
+    tags: state.tags,
+    characters: state.characters,
+    places: state.places
   }
 }
 

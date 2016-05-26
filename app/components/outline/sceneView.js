@@ -6,7 +6,7 @@ import CardView from 'components/outline/cardView'
 class SceneView extends Component {
   renderCards () {
     return this.props.cards.map(c =>
-      <CardView key={c.id} card={c} />
+      <CardView key={c.id} card={c} labelMap={this.props.labelMap} />
     )
   }
 
@@ -24,7 +24,8 @@ class SceneView extends Component {
 SceneView.propTypes = {
   scene: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
-  waypoint: PropTypes.func.isRequired
+  waypoint: PropTypes.func.isRequired,
+  labelMap: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {

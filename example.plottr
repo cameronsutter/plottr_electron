@@ -342,7 +342,7 @@
     },
     {
       "characters": [],
-      "description": "Valia, running out of power, finds a suitable vessel in princess Anna and makes a deal with Princess Anna to help bring",
+      "description": "Valia, running out of power, finds a suitable {{sad}} vessel in princess Anna and makes a deal with Princess Anna to help bring  \n{{sad}}  \n{{happy}}  \n{{scary}}",
       "id": 146,
       "lineId": 27,
       "places": [],
@@ -516,7 +516,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example.plottr",
     "loaded": true,
-    "version": "0.6.1"
+    "version": "0.6.3"
   },
   "lines": [
     {
@@ -834,9 +834,14 @@
       "color": "cornflowerblue",
       "id": 7,
       "title": "action"
+    },
+    {
+      "color": null,
+      "id": 8,
+      "title": "nocolor"
     }
   ],
   "ui": {
-    "currentView": "outline"
+    "currentView": "tags"
   }
 }

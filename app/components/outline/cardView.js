@@ -11,6 +11,19 @@ class CardView extends Component {
     return _.find(this.props.lines, 'id', this.props.card.lineId)
   }
 
+  makeLabels (html) {
+    var regex = /{{([\w\s]*)}}/gi
+    var matches
+    while ((matches = regex.exec(html)) !== null) {
+      var labelText = matches[1].toLowerCase()
+      if (this.props.labelMap[labelText] !== undefined) {
+        var color = this.props.labelMap[labelText]
+        html = html.replace(matches[0], `<span style='background-color:${color}' class='label label-info'>${labelText}</span>`)
+      }
+    }
+    return html
+  }
+
   renderLabels () {
     var characters = this.renderCharacters()
     var places = this.renderPlaces()
@@ -70,7 +83,7 @@ class CardView extends Component {
         {this.renderLabels()}
         <h6>{title}</h6>
         <div
-          dangerouslySetInnerHTML={{__html: md.makeHtml(description)}} >
+          dangerouslySetInnerHTML={{__html: this.makeLabels(md.makeHtml(description))}} >
         </div>
       </div>
     )
@@ -82,7 +95,8 @@ CardView.propTypes = {
   lines: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired
+  places: PropTypes.array.isRequired,
+  labelMap: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {

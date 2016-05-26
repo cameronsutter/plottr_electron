@@ -145,6 +145,7 @@ class LineView extends Component {
       }
       return (<CardView key={id} card={card}
         sceneId={sceneId} lineId={this.props.line.id}
+        labelMap={this.props.labelMap}
         color={this.props.line.color} filtered={filtered} />
       )
     })
@@ -235,7 +236,8 @@ LineView.propTypes = {
   cards: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
-  filteredItems: PropTypes.object.isRequired
+  filteredItems: PropTypes.object.isRequired,
+  labelMap: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {

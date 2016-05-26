@@ -111,6 +111,7 @@ class CardView extends Component {
         sceneId={sceneId}
         lineId={lineId}
         isNewCard={this.state.creating}
+        labelMap={this.props.labelMap}
         closeDialog={this.closeDialog.bind(this)} />
     )
   }
@@ -151,6 +152,7 @@ CardView.propTypes = {
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   filtered: PropTypes.bool.isRequired,
+  labelMap: PropTypes.object.isRequired,
   tags: PropTypes.array
 }
 

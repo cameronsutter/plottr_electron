@@ -4,6 +4,7 @@ var Menu = require('menu')
 var fs = require('fs')
 var ipc = require('ipc')
 var dialog = require('dialog')
+var deep = require('deep-diff')
 
 // Report crashes to our server.
 require('crash-reporter').start()
@@ -15,6 +16,7 @@ var aboutWindow = null
 
 // state of the app to be saved
 var stateOfApp = {}
+var lastSave = {}
 
 // app's entry file
 var entryFile = 'file://' + __dirname + '/index.html'
@@ -40,10 +42,19 @@ app.on('open-file', function (event, path) {
 app.on('ready', function () {
   openWindow()
 
-  ipc.on('save-state', (event, state) => {
-    stateOfApp = state
+  ipc.on('save-state', function (event, state) {
+    if (!lastSave['file']) {
+      lastSave = state
+      lastSave['file']['dirty'] = true
+    }
+    var edited = checkDirty(state)
+    mainWindow.setDocumentEdited(edited)
     mainWindow.setTitle(displayFileName(state.file.fileName))
-    if (state.file.dirty) mainWindow.setDocumentEdited(true)
+    stateOfApp = state
+  })
+
+  ipc.on('error-on-open', function (event) {
+    askToOpenFile()
   })
 
   var template = [
@@ -93,39 +104,33 @@ app.on('ready', function () {
         label: 'Save',
         accelerator: 'CmdOrCtrl+S',
         click: function () {
-          saveFile(stateOfApp.file.fileName, stateOfApp, (err) => {
+          saveFile(stateOfApp.file.fileName, stateOfApp, function (err) {
             if (err) throw err
-            mainWindow.webContents.send('state-saved')
-            // TODO: this
-            mainWindow.setDocumentEdited(false)
+            else {
+              mainWindow.webContents.send('state-saved')
+              lastSave = stateOfApp
+              // TODO: this
+              mainWindow.setDocumentEdited(false)
+            }
           })
         }
       }, {
         label: 'Open',
         accelerator: 'CmdOrCtrl+O',
         click: function () {
-          var properties = [ 'openFile', 'createDirectory' ]
-          dialog.showOpenDialog(mainWindow, { properties: properties }, (chosenFileName) => {
-            if (chosenFileName && chosenFileName.length > 0) {
-              if (mainWindow === null) {
-                openWindow()
-              }
-              mainWindow.webContents.send('open-file', chosenFileName[0])
-            }
-          })
+          if (!process.env.NODE_ENV === 'dev') {
+            if (mainWindow && checkDirty(stateOfApp)) askToSave(stateOfApp, askToOpenFile)
+            else askToOpenFile()
+          } else askToOpenFile()
         }
       }, {
         label: 'New',
         accelerator: 'CmdOrCtrl+N',
         click: function () {
-          dialog.showSaveDialog({title: 'Where would you like to start your new file?'}, function (fileName) {
-            if (fileName) {
-              if (mainWindow === null) {
-                openWindow()
-              }
-              mainWindow.webContents.send('new-file', fileName + '.plottr')
-            }
-          })
+          if (!process.env.NODE_ENV === 'dev') {
+            if (mainWindow && checkDirty(stateOfApp)) askToSave(stateOfApp, askToCreateFile)
+            else askToCreateFile()
+          } else askToCreateFile()
         }
       }]
     }, {
@@ -153,7 +158,15 @@ app.on('ready', function () {
         label: 'Reload',
         accelerator: 'CmdOrCtrl+R',
         click: function () {
-          mainWindow.webContents.reload()
+          if (!process.env.NODE_ENV === 'dev') {
+            if (checkDirty(stateOfApp)) {
+              askToSave(stateOfApp, mainWindow.webContents.reload)
+            } else {
+              mainWindow.webContents.reload()
+            }
+          } else {
+            mainWindow.webContents.reload()
+          }
         }
       }, {
         label: 'Show Dev Tools',
@@ -194,7 +207,7 @@ app.on('ready', function () {
 })
 
 function saveFile (fileName, data, callback) {
-  data.file.version = app.getVersion()
+  if (data.file) data.file.version = app.getVersion()
   var stringState = JSON.stringify(data, null, 2)
   fs.writeFile(fileName, stringState, callback)
 }
@@ -203,6 +216,59 @@ function displayFileName (path) {
   var matches = path.match(/.*\/(.*\.plottr)/)
   if (matches) return `Plottr — ${matches[1]}`
   return 'Plottr'
+}
+
+function checkDirty (state) {
+  var diff = deep.diff(lastSave, state) || []
+  var edited = false
+  if (state.file && state.file.dirty && diff.length > 0) edited = true
+  return edited
+}
+
+function askToSave (state, callback) {
+  dialog.showMessageBox(mainWindow, {type: 'question', buttons: ['yes, save!', 'no, just exit'], defaultId: 0, message: 'Would you like to save before exiting?'}, function (choice) {
+    if (choice === 0) {
+      saveFile(state.file.fileName, state, function (err) {
+        if (err) throw err
+        else {
+          if (typeof callback === 'string') mainWindow[callback]()
+          else callback()
+        }
+      })
+    } else {
+      if (typeof callback === 'string') mainWindow[callback]()
+      else callback()
+    }
+  })
+}
+
+function askToCreateFile () {
+  dialog.showSaveDialog({title: 'Where would you like to start your new file?'}, function (fileName) {
+    if (fileName) {
+      if (mainWindow === null) {
+        openWindow()
+      }
+      lastSave = {}
+      stateOfApp = {}
+      var fullName = fileName + '.plottr'
+      mainWindow.webContents.send('new-file', fullName)
+      saveFile(fullName, stateOfApp, function (err) {
+        if (err) throw err
+      })
+    }
+  })
+}
+
+function askToOpenFile () {
+  var properties = [ 'openFile', 'createDirectory' ]
+  dialog.showOpenDialog(mainWindow, { properties: properties }, function (chosenFileName) {
+    if (chosenFileName && chosenFileName.length > 0) {
+      if (mainWindow === null) {
+        openWindow()
+      }
+      mainWindow.webContents.send('open-file', chosenFileName[0])
+    }
+  })
 }
 
 function openWindow () {
@@ -227,19 +293,9 @@ function openWindow () {
   })
 
   mainWindow.on('close', function (e) {
-    // ask to save
-    if (stateOfApp.file.dirty) {
+    if (checkDirty(stateOfApp)) {
       e.preventDefault()
-      dialog.showMessageBox(mainWindow, {type: 'question', buttons: ['yes, save!', 'no, just exit'], defaultId: 0, message: 'Would you like to save before exiting?'}, (choice) => {
-        if (choice === 0) {
-          saveFile(stateOfApp.file.fileName, stateOfApp, (err) => {
-            if (err) throw err
-            mainWindow.destroy()
-          })
-        } else {
-          mainWindow.destroy()
-        }
-      })
+      askToSave(stateOfApp, 'destroy')
     }
   })
 }

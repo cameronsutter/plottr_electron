@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getFileNameFromLocalStorage, readJSON, saveToLocalStorage } from 'store/localStorage'
+import { getFileNameFromLocalStorage, readJSON } from 'store/localStorage'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import * as UIActions from 'actions/ui'
@@ -19,8 +19,6 @@ class App extends Component {
       if (fileName) {
         readJSON(fileName, (fileName, json) => {
           this.migrateIfNeeded(json, fileName, this.props.actions.loadFile)
-        }, () => {
-          saveToLocalStorage('')
         })
       } else {
         const _this = this

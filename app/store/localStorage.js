@@ -1,4 +1,5 @@
 import fs from 'fs'
+import ipc from 'ipc'
 
 export function saveToLocalStorage (fileName) {
   window.localStorage.setItem(localStorageKey(), fileName)
@@ -11,10 +12,12 @@ export function getFileNameFromLocalStorage () {
 export function readJSON (fileName, callback, noSuchFileCallback) {
   var json = ''
   fs.readFile(fileName, 'utf-8', (err, data) => {
-    if (err && err.message.indexOf('no such file') !== -1) noSuchFileCallback(fileName)
-    if (err) throw err
-    json = JSON.parse(data)
-    callback(fileName, json)
+    if (err) {
+      ipc.send('error-on-open')
+    } else {
+      json = JSON.parse(data)
+      callback(fileName, json)
+    }
   })
 }
 

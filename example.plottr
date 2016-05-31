@@ -516,7 +516,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example.plottr",
     "loaded": true,
-    "version": "0.6.3"
+    "version": "0.6.4"
   },
   "lines": [
     {
@@ -842,6 +842,6 @@
     }
   ],
   "ui": {
-    "currentView": "tags"
+    "currentView": "timeline"
   }
 }

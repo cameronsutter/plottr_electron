@@ -8,6 +8,7 @@
 @import "scene_list_block";
 @import "tag_list_block";
 @import "color_picker_block";
+@import "subnav_block";
 
 // Give everything in 'yield' margin to separate it.
 #react-root {
@@ -48,4 +49,8 @@ h6 {
 
 body {
   @include body-text-font;
+}
+
+.glyphicon {
+  vertical-align: text-top;
 }

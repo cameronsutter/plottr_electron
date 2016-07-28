@@ -8,8 +8,8 @@ echo "organizing..."
 # move all the builds to one folder
 mkdir $npm_package_version
 mv Plottr-darwin-x64 $npm_package_version/OSX
-# mv Plottr-win32-ia32 $npm_package_version/win32
-# mv Plottr-win32-x64 $npm_package_version/win64
+mv Plottr-win32-ia32 $npm_package_version/win32
+mv Plottr-win32-x64 $npm_package_version/win64
 
 echo "zipping..."
 # zip all the builds

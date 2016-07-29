@@ -1,8 +1,8 @@
-import ipc from 'ipc'
+import { ipcRenderer } from 'electron'
 
 const saver = store => next => action => {
   const result = next(action)
-  ipc.send('save-state', store.getState())
+  ipcRenderer.send('save-state', store.getState())
   return result
 }
 

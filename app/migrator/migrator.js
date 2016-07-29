@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-import remote from 'remote'
-const app = remote.require('app')
+import { remote } from 'electron'
+const { app } = remote
 
 export default class Migrator {
   constructor (data, givenVersion, targetVersion) {

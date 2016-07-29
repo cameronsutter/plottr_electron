@@ -7,9 +7,8 @@ import Body from 'containers/Body'
 import * as UIActions from 'actions/ui'
 import Migrator from 'migrator/migrator'
 import fs from 'fs'
-import remote from 'remote'
-const app = remote.require('app')
-const dialog = remote.require('dialog')
+import { remote } from 'electron'
+const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 
 class App extends Component {

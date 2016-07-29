@@ -7,10 +7,8 @@ import configureStore from 'store/configureStore'
 import { saveToLocalStorage, readJSONsync } from 'store/localStorage'
 import 'style!css!sass!css/app.css.scss'
 import fs from 'fs'
-import ipc from 'ipc'
-import remote from 'remote'
-const app = remote.require('app')
-const dialog = remote.require('dialog')
+import { ipcRenderer, remote } from 'electron'
+const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 import Migrator from 'migrator/migrator'
 import { loadFile, newFile, fileSaved } from 'actions/ui'
@@ -21,15 +19,15 @@ const root = document.getElementById('react-root')
 
 const store = configureStore()
 
-ipc.on('state-saved', (_arg) => {
+ipcRenderer.on('state-saved', (_arg) => {
   store.dispatch(fileSaved())
 })
 
-ipc.on('new-file', (fileName) => {
+ipcRenderer.on('new-file', (fileName) => {
   store.dispatch(newFile(fileName))
 })
 
-ipc.on('open-file', (fileName) => {
+ipcRenderer.on('open-file', (fileName) => {
   saveToLocalStorage(fileName)
   var json = readJSONsync(fileName)
   var m = new Migrator(json, json.file.version, app.getVersion())

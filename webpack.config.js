@@ -27,5 +27,18 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.css', '.scss'],
     root: __dirname + '/app'
   },
-  target: 'atom'
+  target: 'atom',
+  externals: [
+    (function () {
+      var IGNORES = [
+        'electron'
+      ]
+      return function (context, request, callback) {
+        if (IGNORES.indexOf(request) >= 0) {
+          return callback(null, 'require("' + request + '")')
+        }
+        return callback()
+      }
+    })()
+  ]
 }

@@ -25,7 +25,7 @@
   </head>
   <body>
     <script>
-      var app = require('remote').require('app')
+      const app = require('electron').remote.app
     </script>
     <h1><img src='icons/penguin_icon.png' height='100' width='100'/> Plotter</h1>
     <p>Version <script>document.write(app.getVersion())</script></p>

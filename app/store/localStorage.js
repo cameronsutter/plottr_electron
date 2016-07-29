@@ -1,5 +1,5 @@
 import fs from 'fs'
-import ipc from 'ipc'
+import { ipcRenderer } from 'electron'
 
 export function saveToLocalStorage (fileName) {
   window.localStorage.setItem(localStorageKey(), fileName)
@@ -13,7 +13,7 @@ export function readJSON (fileName, callback, noSuchFileCallback) {
   var json = ''
   fs.readFile(fileName, 'utf-8', (err, data) => {
     if (err) {
-      ipc.send('error-on-open')
+      ipcRenderer.send('error-on-open')
     } else {
       json = JSON.parse(data)
       callback(fileName, json)

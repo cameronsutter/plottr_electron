@@ -1,13 +1,8 @@
-var app = require('app')  // Module to control application life.
-var BrowserWindow = require('browser-window') // Module to create native browser window.
-var Menu = require('menu')
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
 var fs = require('fs')
-var ipc = require('ipc')
-var dialog = require('dialog')
 var deep = require('deep-diff')
 
-// Report crashes to our server.
-require('crash-reporter').start()
+// TODO: Report crashes to our server.
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -42,7 +37,7 @@ app.on('open-file', function (event, path) {
 app.on('ready', function () {
   openWindow()
 
-  ipc.on('save-state', function (event, state) {
+  ipcMain.on('save-state', function (event, state) {
     if (!lastSave['file']) {
       lastSave = state
       lastSave['file']['dirty'] = true
@@ -53,7 +48,7 @@ app.on('ready', function () {
     stateOfApp = state
   })
 
-  ipc.on('error-on-open', function (event) {
+  ipcMain.on('error-on-open', function (event) {
     askToOpenFile()
   })
 
@@ -276,7 +271,7 @@ function openWindow () {
   mainWindow = new BrowserWindow({width: 1200, height: 800})
 
   // and load the index.html of the app.
-  mainWindow.loadUrl(entryFile)
+  mainWindow.loadURL(entryFile)
 
   if (process.env.NODE_ENV === 'dev') {
     // Open the DevTools.

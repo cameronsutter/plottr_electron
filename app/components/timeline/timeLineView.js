@@ -9,10 +9,12 @@ const INITIAL_ZOOM_INDEX = 4
 const INITIAL_ZOOM_STATE = 'initial'
 const FIT_ZOOM_STATE = 'fit'
 
+var scrollInterval = null
+
 class TimeLineView extends Component {
   constructor (props) {
     super(props)
-    this.state = {filteredItems: this.defaultFilteredItemsObj(), zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX}
+    this.state = {filteredItems: this.defaultFilteredItemsObj(), zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX, scrollTarget: 0}
   }
 
   defaultFilteredItemsObj () {
@@ -61,6 +63,52 @@ class TimeLineView extends Component {
     this.setState({zoomState: null, zoomIndex: newIndex})
   }
 
+  scrollRight () {
+    this.setState({scrollTarget: this.state.scrollTarget + 700})
+    scrollInterval = setInterval(this.increaseScroll.bind(this), 25)
+    setTimeout(() => { clearInterval(scrollInterval) }, 500)
+  }
+
+  scrollLeft () {
+    this.setState({scrollTarget: this.state.scrollTarget - 700})
+    scrollInterval = setInterval(this.decreaseScroll.bind(this), 25)
+    setTimeout(() => { clearInterval(scrollInterval) }, 500)
+  }
+
+  scrollBeginning () {
+    this.setState({scrollTarget: 0})
+    scrollInterval = setInterval(this.decreaseScroll.bind(this), 25)
+    setTimeout(() => { clearInterval(scrollInterval) }, 3000)
+  }
+
+  scrollMiddle () {
+    var middle = (this.refs.timeline.scrollWidth / 2) - (window.outerWidth / 2)
+    this.setState({scrollTarget: middle})
+    if (document.body.scrollLeft > middle) {
+      scrollInterval = setInterval(this.decreaseScroll.bind(this), 25)
+    } else {
+      scrollInterval = setInterval(this.increaseScroll.bind(this), 25)
+    }
+    setTimeout(() => { clearInterval(scrollInterval) }, 1500)
+  }
+
+  scrollEnd () {
+    var end = this.refs.timeline.scrollWidth - window.outerWidth
+    this.setState({scrollTarget: end})
+    scrollInterval = setInterval(this.increaseScroll.bind(this), 25)
+    setTimeout(() => { clearInterval(scrollInterval) }, 3000)
+  }
+
+  increaseScroll () {
+    if (document.body.scrollLeft >= this.state.scrollTarget) clearInterval(scrollInterval)
+    else document.body.scrollLeft += 100
+  }
+
+  decreaseScroll () {
+    if (document.body.scrollLeft <= this.state.scrollTarget) clearInterval(scrollInterval)
+    else document.body.scrollLeft -= 100
+  }
+
   render () {
     var styles = this.makeTransform()
     return (
@@ -71,12 +119,22 @@ class TimeLineView extends Component {
               <Button bsSize='small' ><Glyphicon glyph='filter' /> Filter</Button>
             </NavItem>
             <NavItem>
-              <span>Zoom: </span>
+              <span className='subnav__container__label'>Zoom: </span>
               <ButtonGroup bsSize='small'>
                 <Button onClick={this.increaseZoomFactor.bind(this)} ><Glyphicon glyph='plus-sign' /></Button>
                 <Button onClick={this.decreaseZoomFactor.bind(this)} ><Glyphicon glyph='minus-sign' /></Button>
                 <Button onClick={() => this.setState({zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Fit</Button>
                 <Button onClick={() => this.setState({zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Reset</Button>
+              </ButtonGroup>
+            </NavItem>
+            <NavItem>
+              <span className='subnav__container__label'>Scroll: </span>
+              <ButtonGroup bsSize='small'>
+                <Button onClick={this.scrollLeft.bind(this)} ><Glyphicon glyph='menu-left' /></Button>
+                <Button onClick={this.scrollRight.bind(this)} ><Glyphicon glyph='menu-right' /></Button>
+                <Button onClick={this.scrollBeginning.bind(this)} >Beginning</Button>
+                <Button onClick={this.scrollMiddle.bind(this)} >Middle</Button>
+                <Button onClick={this.scrollEnd.bind(this)} >End</Button>
               </ButtonGroup>
             </NavItem>
           </Nav>

@@ -2,18 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import SceneView from 'components/timeline/sceneView'
-import { Button, Glyphicon } from 'react-bootstrap'
+import { Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import * as SceneActions from 'actions/scenes'
 import { scene } from 'store/initialState'
 import { sceneId } from 'store/newIds'
 
 class SceneListView extends Component {
-
-  constructor (props) {
-    super(props)
-    this.state = {filterOpen: false}
-  }
 
   handleCreateNewScene () {
     this.props.actions.addScene()
@@ -65,31 +60,11 @@ class SceneListView extends Component {
     return newScenes
   }
 
-  toggleFilter () {
-    this.setState({filterOpen: !this.state.filterOpen})
-  }
-
-  isChecked (type, id) {
-    return this.props.filteredItems[type].indexOf(id) !== -1
-  }
-
   render () {
     var scenes = this.renderScenes()
-    var style = {}
-    if (this.state.filterOpen) style = {display: 'block'}
     return (
       <div className='scene-list'>
-        <div className='scene-list__placeholder' >
-          <Button bsSize='small' onClick={this.toggleFilter.bind(this)}><Glyphicon glyph='filter' /> Filter</Button>
-          <div style={style} className='scene-list__filter'>
-            <p onClick={() => this.props.filterList('tag', this.props.tags)}><em>Tags</em></p>
-              {this.renderFilterList(this.props.tags, 'tag', 'title')}
-            <p onClick={() => this.props.filterList('character', this.props.characters)}><em>Characters</em></p>
-              {this.renderFilterList(this.props.characters, 'character', 'name')}
-            <p onClick={() => this.props.filterList('place', this.props.places)}><em>Places</em></p>
-              {this.renderFilterList(this.props.places, 'place', 'name')}
-          </div>
-        </div>
+        <div className='scene-list__placeholder' />
         {scenes}
         <div className='scene-list__new' onClick={this.handleCreateNewScene.bind(this)} >
           <Glyphicon glyph='plus' />
@@ -111,47 +86,17 @@ class SceneListView extends Component {
       )
     })
   }
-
-  renderFilterList (array, type, attr) {
-    var items = array.map((i) => {
-      return this.renderFilterItem(i, type, attr)
-    })
-    return (
-      <ul className='scene-list__filter-list'>
-        {items}
-      </ul>
-    )
-  }
-
-  renderFilterItem (item, type, attr) {
-    var checked = 'unchecked'
-    if (this.isChecked(type, item.id)) {
-      checked = 'eye-open'
-    }
-    return (<li key={`${type}-${item.id}`} onMouseDown={() => this.props.filterItem(type, item.id)}>
-        <Glyphicon glyph={checked} /> {item[attr]}
-      </li>
-    )
-  }
 }
 
 SceneListView.propTypes = {
   scenes: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  tags: PropTypes.array.isRequired,
-  characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired,
-  filterItem: PropTypes.func.isRequired,
-  filterList: PropTypes.func.isRequired,
   filteredItems: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
   return {
-    scenes: state.scenes,
-    tags: state.tags,
-    characters: state.characters,
-    places: state.places
+    scenes: state.scenes
   }
 }
 

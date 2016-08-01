@@ -22,46 +22,6 @@ $extra-height: 34px;
   border: 2px solid transparent;
   margin-left: 40px; // because hover option buttons (story lines)
   padding-top: 50px;
-
-  // for the filter input
-  .btn {
-    background-color: $new-item-background;
-  }
-  .form-group {
-    margin-bottom: 0px;
-  }
-  .scene-list__filter {
-    position: absolute;
-    display: none;
-    overflow-y: scroll;
-    background-color: white;
-    border: 1px solid $new-item-border-color;
-    border-radius: 4px;
-    padding: 7px 15px 7px 10px;
-    z-index: 100;
-    p {
-      margin: 0px;
-      padding-top: 3px;
-      padding-bottom: 3px;
-      padding-left: 1px;
-      cursor: pointer;
-    }
-    p:hover {
-      background-color: $body-background-color
-    }
-    .scene-list__filter-list {
-      list-style: none;
-      padding-left: 10px;
-      li {
-        cursor: pointer;
-        padding-top: 2px;
-        padding-bottom: 2px;
-      }
-      li:hover {
-        background-color: $body-background-color
-      }
-    }
-  }
 }
 
 .scene-list__new {

@@ -14,8 +14,18 @@ var scrollInterval = null
 class TimeLineView extends Component {
   constructor (props) {
     super(props)
-    this.state = {filteredItems: this.defaultFilteredItemsObj(), zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX, scrollTarget: 0}
+    this.state = {
+      filteredItems: this.defaultFilteredItemsObj(),
+      zoomState: INITIAL_ZOOM_STATE,
+      zoomIndex: INITIAL_ZOOM_INDEX,
+      scrollTarget: 0,
+      filterOpen: false
+    }
   }
+
+  // ////////////////
+  //  filtering   //
+  // //////////////
 
   defaultFilteredItemsObj () {
     return {tag: [], character: [], place: []}
@@ -42,6 +52,18 @@ class TimeLineView extends Component {
     this.setState({filteredItems: filteredItems})
   }
 
+  toggleFilter () {
+    this.setState({filterOpen: !this.state.filterOpen})
+  }
+
+  isChecked (type, id) {
+    return this.state.filteredItems[type].indexOf(id) !== -1
+  }
+
+  // ////////////////
+  //   zooming    //
+  // //////////////
+
   makeTransform () {
     var elem = this.refs.timeline
     var scale = ZOOM_STATES[this.state.zoomIndex]
@@ -62,6 +84,10 @@ class TimeLineView extends Component {
     if (newIndex > 0) newIndex--
     this.setState({zoomState: null, zoomIndex: newIndex})
   }
+
+  // ////////////////
+  //  scrolling   //
+  // //////////////
 
   scrollRight () {
     this.setState({scrollTarget: this.state.scrollTarget + 700})
@@ -109,49 +135,85 @@ class TimeLineView extends Component {
     else document.body.scrollLeft -= 100
   }
 
+  // ///////////////
+  //  rendering   //
+  // //////////////
+
+  renderSubNav () {
+    var style = {}
+    if (this.state.filterOpen) style = {display: 'block'}
+    return (
+      <Navbar className='subnav__container'>
+        <Nav bsStyle='pills' >
+          <NavItem>
+            <Button bsSize='small' onClick={this.toggleFilter.bind(this)}><Glyphicon glyph='filter' /> Filter</Button>
+            <div style={style} className='timeline__filter'>
+              <p onClick={() => this.filterList('tag', this.props.tags)}><em>Tags</em></p>
+                {this.renderFilterList(this.props.tags, 'tag', 'title')}
+              <p onClick={() => this.filterList('character', this.props.characters)}><em>Characters</em></p>
+                {this.renderFilterList(this.props.characters, 'character', 'name')}
+              <p onClick={() => this.filterList('place', this.props.places)}><em>Places</em></p>
+                {this.renderFilterList(this.props.places, 'place', 'name')}
+            </div>
+          </NavItem>
+          <NavItem>
+            <span className='subnav__container__label'>Zoom: </span>
+            <ButtonGroup bsSize='small'>
+              <Button onClick={this.increaseZoomFactor.bind(this)} ><Glyphicon glyph='plus-sign' /></Button>
+              <Button onClick={this.decreaseZoomFactor.bind(this)} ><Glyphicon glyph='minus-sign' /></Button>
+              <Button onClick={() => this.setState({zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Fit</Button>
+              <Button onClick={() => this.setState({zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Reset</Button>
+            </ButtonGroup>
+          </NavItem>
+          <NavItem>
+            <span className='subnav__container__label'>Scroll: </span>
+            <ButtonGroup bsSize='small'>
+              <Button onClick={this.scrollLeft.bind(this)} ><Glyphicon glyph='menu-left' /></Button>
+              <Button onClick={this.scrollRight.bind(this)} ><Glyphicon glyph='menu-right' /></Button>
+              <Button onClick={this.scrollBeginning.bind(this)} >Beginning</Button>
+              <Button onClick={this.scrollMiddle.bind(this)} >Middle</Button>
+              <Button onClick={this.scrollEnd.bind(this)} >End</Button>
+            </ButtonGroup>
+          </NavItem>
+        </Nav>
+      </Navbar>
+    )
+  }
+
+  renderFilterList (array, type, attr) {
+    var items = array.map((i) => {
+      return this.renderFilterItem(i, type, attr)
+    })
+    return (
+      <ul className='timeline__filter-list'>
+        {items}
+      </ul>
+    )
+  }
+
+  renderFilterItem (item, type, attr) {
+    var checked = 'unchecked'
+    if (this.isChecked(type, item.id)) {
+      checked = 'eye-open'
+    }
+    return (<li key={`${type}-${item.id}`} onMouseDown={() => this.filterItem(type, item.id)}>
+        <Glyphicon glyph={checked} /> {item[attr]}
+      </li>
+    )
+  }
+
   render () {
     var styles = this.makeTransform()
     return (
       <div id='timelineview__container' className='container-with-sub-nav'>
-        <Navbar className='subnav__container'>
-          <Nav bsStyle='pills' >
-            <NavItem>
-              <Button bsSize='small' ><Glyphicon glyph='filter' /> Filter</Button>
-            </NavItem>
-            <NavItem>
-              <span className='subnav__container__label'>Zoom: </span>
-              <ButtonGroup bsSize='small'>
-                <Button onClick={this.increaseZoomFactor.bind(this)} ><Glyphicon glyph='plus-sign' /></Button>
-                <Button onClick={this.decreaseZoomFactor.bind(this)} ><Glyphicon glyph='minus-sign' /></Button>
-                <Button onClick={() => this.setState({zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Fit</Button>
-                <Button onClick={() => this.setState({zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Reset</Button>
-              </ButtonGroup>
-            </NavItem>
-            <NavItem>
-              <span className='subnav__container__label'>Scroll: </span>
-              <ButtonGroup bsSize='small'>
-                <Button onClick={this.scrollLeft.bind(this)} ><Glyphicon glyph='menu-left' /></Button>
-                <Button onClick={this.scrollRight.bind(this)} ><Glyphicon glyph='menu-right' /></Button>
-                <Button onClick={this.scrollBeginning.bind(this)} >Beginning</Button>
-                <Button onClick={this.scrollMiddle.bind(this)} >Middle</Button>
-                <Button onClick={this.scrollEnd.bind(this)} >End</Button>
-              </ButtonGroup>
-            </NavItem>
-          </Nav>
-        </Navbar>
+        {this.renderSubNav()}
         <div id='timelineview__root' ref='timeline' style={styles}>
-          <SceneListView filterItem={this.filterItem.bind(this)} filterList={this.filterList.bind(this)} filteredItems={this.state.filteredItems} />
+          <SceneListView filteredItems={this.state.filteredItems} />
           <LineListView sceneMap={this.sceneMapping()} filteredItems={this.state.filteredItems} />
         </div>
       </div>
     )
   }
-  // <div className='subnav__container well'>
-  // <Button bsSize='small' ><Glyphicon glyph='filter' /> Filter</Button>
-  // <Button bsSize='small' ><Glyphicon glyph='zoom-in' /> Zoom In</Button>
-  // <Button bsSize='small' ><Glyphicon glyph='search' /> Normal</Button>
-  // <Button bsSize='small' ><Glyphicon glyph='zoom-out' /> Zoom Out</Button>
-  // </div>
 
   sceneMapping () {
     var mapping = {}
@@ -163,12 +225,18 @@ class TimeLineView extends Component {
 }
 
 TimeLineView.propTypes = {
-  scenes: PropTypes.array.isRequired
+  scenes: PropTypes.array.isRequired,
+  tags: PropTypes.array.isRequired,
+  characters: PropTypes.array.isRequired,
+  places: PropTypes.array.isRequired
 }
 
 function mapStateToProps (state) {
   return {
-    scenes: state.scenes
+    scenes: state.scenes,
+    tags: state.tags,
+    characters: state.characters,
+    places: state.places
   }
 }
 

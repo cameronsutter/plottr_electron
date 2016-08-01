@@ -1,6 +1,6 @@
 
 .container-with-sub-nav {
-  margin-top: 60px;
+  margin-top: 50px;
 }
 
 .subnav__container {
@@ -9,8 +9,14 @@
   left: 0px;
   width: 100%;
   z-index: 1000;
+  min-height: 30px;
 }
 
 .subnav__container__label {
   vertical-align: text-top;
+}
+
+nav.subnav__container .container .nav li a {
+  padding-top: 7px;
+  padding-bottom: 7px;
 }

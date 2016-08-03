@@ -7,7 +7,8 @@ import { cardId } from 'store/newIds'
 
 const initialState = [card]
 
-export default function cards (state = initialState, action) {
+export default function cards (state, action) {
+  console.log(action, state)
   switch (action.type) {
     case ADD_CARD:
       return [{
@@ -70,6 +71,6 @@ export default function cards (state = initialState, action) {
       return initialState
 
     default:
-      return state
+      return state || []
   }
 }

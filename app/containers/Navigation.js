@@ -2,12 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as UIActions from 'actions/ui'
-import { Glyphicon, Input } from 'react-bootstrap'
+import { Glyphicon, Input, Button } from 'react-bootstrap'
+import HistoryComponent from 'components/history/historyComponent'
 
 class Navigation extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false}
+    this.state = {editing: false, showHistory: false}
+  }
+
+  toggleShowHistory () {
+    this.setState({showHistory: !this.state.showHistory})
   }
 
   renderUnsavedChanges () {
@@ -46,6 +51,10 @@ class Navigation extends Component {
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('tags')} >Tags</a>
               </li>
             </ul>
+            <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>
+              <Button onClick={this.toggleShowHistory.bind(this)}><Glyphicon glyph='erase' /> Undo</Button>
+              <HistoryComponent show={this.state.showHistory} />
+            </div>
             <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>
               {this.renderUnsavedChanges()}
             </p>

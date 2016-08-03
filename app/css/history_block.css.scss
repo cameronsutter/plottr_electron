@@ -1,0 +1,64 @@
+@import "vars";
+
+.history-component__container {
+  display: none;
+  position: absolute;
+  right: 30px;
+  width: 400px;
+  background-color: white;
+  border: 1px solid $new-item-border-color;
+  border-radius: 4px;
+  padding: 15px;
+  z-index: 100;
+  flex-direction: column;
+}
+
+.history-component__item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 3px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.history-component__item:hover {
+  background-color: $body-background-color;
+}
+
+.history-component__item__container {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.history-component__item__container.redo {
+  color: gray;
+  font-style: italic;
+}
+
+.history-component__type {
+  padding: 7px;
+}
+
+.history-component__details {
+  display: none;
+  padding: 10px;
+  p {
+    padding-left: 20px;
+  }
+}
+
+.history-component__item__before {
+  padding-left: 3px;
+  text-decoration: line-through;
+  color: red;
+}
+
+.history-component__item__after {
+  padding-left: 3px;
+  color: green;
+}
+
+.history-component__item-identifier {
+  margin-bottom: 10px;
+}

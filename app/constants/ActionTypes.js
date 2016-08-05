@@ -2,6 +2,7 @@ export const FILE_LOADED = 'FILE_LOADED'
 export const FILE_SAVED = 'FILE_SAVED'
 export const NEW_FILE = 'NEW_FILE'
 export const CHANGE_CURRENT_VIEW = 'CHANGE_CURRENT_VIEW'
+export const RESET = 'RESET'
 
 // story actions
 export const EDIT_STORY_NAME = 'EDIT_STORY_NAME'

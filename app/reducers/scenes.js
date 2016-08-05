@@ -1,4 +1,4 @@
-import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { scene } from 'store/initialState'
 import { sceneId, scenePosition } from 'store/newIds'
 
@@ -26,6 +26,7 @@ export default function scenes (state = initialState, action) {
     case REORDER_SCENES:
       return action.scenes
 
+    case RESET:
     case FILE_LOADED:
       return action.data.scenes
 

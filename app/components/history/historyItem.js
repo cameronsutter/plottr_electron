@@ -12,6 +12,10 @@ class HistoryItem extends Component {
     this.state = {showDetails: false, redo: false}
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.undone) this.setState({redo: true})
+  }
+
   toggleDetails (e) {
     this.setState({showDetails: !this.state.showDetails})
   }
@@ -19,13 +23,13 @@ class HistoryItem extends Component {
   undo (e) {
     e.stopPropagation()
     this.setState({redo: true})
-    this.props.undo(this.props.index)
+    this.props.undo(this.props.item.id)
   }
 
   redo (e) {
     e.stopPropagation()
     this.setState({redo: false})
-    this.props.redo(this.props.index)
+    this.props.redo(this.props.item.id)
   }
 
   renderTypeName (type) {
@@ -79,7 +83,7 @@ class HistoryItem extends Component {
 
 HistoryItem.propTypes = {
   item: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
+  undone: PropTypes.bool.isRequired,
   undo: PropTypes.func.isRequired,
   redo: PropTypes.func.isRequired
 }

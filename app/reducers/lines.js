@@ -1,4 +1,4 @@
-import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { line } from 'store/initialState'
 import { lineId, linePosition } from 'store/newIds'
 
@@ -32,6 +32,7 @@ export default function lines (state = initialState, action) {
     case REORDER_LINES:
       return action.lines
 
+    case RESET:
     case FILE_LOADED:
       return action.data.lines
 

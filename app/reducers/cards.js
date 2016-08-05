@@ -1,14 +1,13 @@
 import { ADD_CARD, EDIT_CARD_DETAILS,
   DELETE_LINE, DELETE_SCENE,
   EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE,
-  DELETE_CARD, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+  DELETE_CARD, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { card } from 'store/initialState'
 import { cardId } from 'store/newIds'
 
 const initialState = [card]
 
 export default function cards (state, action) {
-  console.log(action, state)
   switch (action.type) {
     case ADD_CARD:
       return [{
@@ -64,6 +63,7 @@ export default function cards (state, action) {
         card.lineId !== action.id
       )
 
+    case RESET:
     case FILE_LOADED:
       return action.data.cards
 

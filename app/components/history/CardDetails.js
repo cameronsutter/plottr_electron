@@ -54,7 +54,7 @@ class CardDetails extends Component {
   render () {
     const item = this.props.item
     var diffs = item.diff.map(this.renderDiff, this)
-    var card = this.props.cards[item.diff[0].path[1]]
+    var card = this.props.cards[item.diff[0].path[1]] || {title: ''}
     return (
       <div>
         <div className='history-component__item-identifier'>Card: "{card.title}"</div>

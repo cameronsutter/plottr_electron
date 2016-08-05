@@ -1,9 +1,14 @@
 import deep from 'deep-diff'
+import { FILE_LOADED, RESET } from 'constants/ActionTypes'
+
+const BLACKLIST = [FILE_LOADED, RESET]
+const CLEARHISTORY = [FILE_LOADED]
 
 const history = store => next => action => {
   var before = store.getState()
   const result = next(action)
-  if (action.type !== 'FILE_LOADED') {
+
+  if (BLACKLIST.indexOf(action.type) === -1) {
     var after = store.getState()
     var diff = deep.diff(before, after)
 
@@ -14,17 +19,25 @@ const history = store => next => action => {
       })
       if (diff.length > 0) {
         var historyList = JSON.parse(window.localStorage.getItem('history')) || []
-        historyList.unshift({action: action, diff: diff, before: before, after: after})
-        // console.log(historyList)
-
-        window.localStorage.setItem('history', JSON.stringify(historyList.slice(0, 10)))
+        historyList.push({id: nextId.id(), action: action, diff: diff, before: before, after: after})
+        window.localStorage.setItem('history', JSON.stringify(historyList.slice(-10)))
       }
     }
-  } else {
-    // window.localStorage.setItem('history', JSON.stringify([]))
+  }
+
+  if (CLEARHISTORY.indexOf(action.type) !== -1) {
+    window.localStorage.setItem('history', JSON.stringify([]))
   }
 
   return result
 }
+
+function NextId () {
+  var nextId = 0
+  this.id = function () {
+    return nextId++
+  }
+}
+var nextId = new NextId()
 
 export default history

@@ -1,4 +1,4 @@
-import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { place } from 'store/initialState'
 import { placeId } from 'store/newIds'
 
@@ -19,6 +19,7 @@ export default function places (state = initialState, action) {
         place.id === action.id ? Object.assign({}, place, {name: action.name, description: action.description, color: action.color}) : place
       )
 
+    case RESET:
     case FILE_LOADED:
       return action.data.places
 

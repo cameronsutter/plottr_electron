@@ -1,4 +1,4 @@
-import { ADD_TAG, EDIT_TAG, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_TAG, EDIT_TAG, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { tag } from 'store/initialState'
 import { tagId } from 'store/newIds'
 
@@ -18,6 +18,7 @@ export default function tags (state = initialState, action) {
         tag.id === action.id ? Object.assign({}, tag, {title: action.title, color: action.color}) : tag
       )
 
+    case RESET:
     case FILE_LOADED:
       return action.data.tags
 

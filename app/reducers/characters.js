@@ -1,4 +1,4 @@
-import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { character } from 'store/initialState'
 import { characterId } from 'store/newIds'
 
@@ -19,6 +19,7 @@ export default function characters (state = initialState, action) {
         character.id === action.id ? Object.assign({}, character, {name: action.name, description: action.description, color: action.color}) : character
       )
 
+    case RESET:
     case FILE_LOADED:
       return action.data.characters
 

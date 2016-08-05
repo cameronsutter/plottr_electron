@@ -4,9 +4,6 @@ import saver from '../middlewares/saver'
 import history from '../middlewares/history'
 
 export default function configureStore (initialState) {
-  console.log('configure', initialState)
-  let createStoreWithMiddleware = applyMiddleware(saver, history)(createStore)
-  const store = createStoreWithMiddleware(rootReducer, initialState)
-
+  const store = createStore(rootReducer, initialState, applyMiddleware(saver, history))
   return store
 }

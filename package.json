@@ -18,9 +18,9 @@
     "react-dom": "^0.14.0",
     "react-modal": "^0.6.1",
     "react-overlays": "^0.6.3",
-    "react-redux": "^4.0.0",
+    "react-redux": "^4.4.5",
     "react-waypoint": "^2.0.1",
-    "redux": "^3.0.4"
+    "redux": "^3.5.2"
   },
   "devDependencies": {
     "babel-core": "^5.8.29",

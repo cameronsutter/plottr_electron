@@ -1,8 +1,8 @@
 import deep from 'deep-diff'
-import { FILE_LOADED, RESET } from 'constants/ActionTypes'
+import { FILE_LOADED, RESET, NEW_FILE, CHANGE_CURRENT_VIEW } from 'constants/ActionTypes'
 
-const BLACKLIST = [FILE_LOADED, RESET]
-const CLEARHISTORY = [FILE_LOADED]
+const BLACKLIST = [FILE_LOADED, NEW_FILE, CHANGE_CURRENT_VIEW, RESET]
+const CLEARHISTORY = [FILE_LOADED, NEW_FILE]
 
 const history = store => next => action => {
   var before = store.getState()

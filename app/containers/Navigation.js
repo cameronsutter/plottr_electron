@@ -16,8 +16,11 @@ class Navigation extends Component {
   }
 
   renderUnsavedChanges () {
-    if (!this.props.file.dirty) return
-    return <span className='alert alert-danger' role='alert'><Glyphicon glyph='exclamation-sign' /> unsaved changes</span>
+    if (this.props.file.dirty) {
+      return <span className='alert alert-danger' role='alert'><Glyphicon glyph='exclamation-sign' /> unsaved changes</span>
+    } else {
+      return <span className='alert alert-success' role='alert'><Glyphicon bsStyle={{verticalAlign: 'baseline'}} glyph='ok' /> changes saved</span>
+    }
   }
 
   render () {

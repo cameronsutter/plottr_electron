@@ -9,6 +9,8 @@ var deep = require('deep-diff')
 var mainWindow = null
 var aboutWindow = null
 
+var autosave = null
+
 // state of the app to be saved
 var stateOfApp = {}
 var lastSave = {}
@@ -30,6 +32,14 @@ app.on('window-all-closed', function () {
 
 app.on('open-file', function (event, path) {
   // do the file opening here
+})
+
+app.on('activate', () => {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) {
+    openWindow()
+  }
 })
 
 // This method will be called when Electron has finished
@@ -277,6 +287,44 @@ function openWindow () {
     // Open the DevTools.
     mainWindow.openDevTools()
   }
+
+  if (process.env.NODE_ENV !== 'dev') {
+    autosave = setInterval(function () {
+      if (checkDirty(stateOfApp)) {
+        saveFile(stateOfApp.file.fileName, stateOfApp, function (err) {
+          if (err) throw err
+          else {
+            mainWindow.webContents.send('state-saved')
+            lastSave = stateOfApp
+            // TODO: this
+            mainWindow.setDocumentEdited(false)
+          }
+        })
+      }
+    }, 1000 * 60 * 5) // every 5 minutes
+  }
+
+  mainWindow.on('blur', function () {
+    if (autosave) clearInterval(autosave)
+  })
+
+  mainWindow.on('focus', function () {
+    if (!autosave && process.env.NODE_ENV !== 'dev') {
+      autosave = setInterval(function () {
+        if (checkDirty(stateOfApp)) {
+          saveFile(stateOfApp.file.fileName, stateOfApp, function (err) {
+            if (err) throw err
+            else {
+              mainWindow.webContents.send('state-saved')
+              lastSave = stateOfApp
+              // TODO: this
+              mainWindow.setDocumentEdited(false)
+            }
+          })
+        }
+      }, 1000 * 60 * 5) // every 5 minutes
+    }
+  })
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

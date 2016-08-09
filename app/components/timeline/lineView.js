@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, Input } from 'react-bootstrap'
 import * as LineActions from 'actions/lines'
 import CardView from 'components/timeline/cardView'
+import ColorPicker from '../colorpicker'
 import _ from 'lodash'
 
 class LineView extends Component {
@@ -14,7 +15,7 @@ class LineView extends Component {
       editing: false,
       dragging: false,
       dropping: false,
-      editingWhat: ''
+      showColorPicker: false
     }
   }
 
@@ -52,15 +53,6 @@ class LineView extends Component {
       var id = this.props.line.id
       var newTitle = this.refs.titleInput.getValue()
       this.props.actions.editLineTitle(id, newTitle)
-      this.setState({editing: false})
-    }
-  }
-
-  handleFinishEditingColor (event) {
-    if (event.which === 13) {
-      var id = this.props.line.id
-      var newColor = this.refs.colorInput.getValue()
-      this.props.actions.editLineColor(id, newColor)
       this.setState({editing: false})
     }
   }
@@ -132,6 +124,22 @@ class LineView extends Component {
     return filtered
   }
 
+  changeColor (newColor) {
+    if (newColor) {
+      this.props.actions.editLineColor(this.props.line.id, newColor)
+    }
+    this.setState({showColorPicker: false})
+  }
+
+  renderColorPicker () {
+    if (this.state.showColorPicker) {
+      var key = 'colorPicker-' + this.props.line.id
+      return <ColorPicker key={key} closeDialog={this.changeColor.bind(this)} />
+    } else {
+      return null
+    }
+  }
+
   renderCards () {
     var sceneMap = this.props.sceneMap
 
@@ -156,8 +164,8 @@ class LineView extends Component {
     var style = {visibility: 'hidden'}
     if (this.state.hovering) style.visibility = 'visible'
     return (<div className='line__hover-options' style={style}>
-      <Button block onClick={() => this.setState({editing: true, editingWhat: 'title'})}><Glyphicon glyph='edit' /></Button>
-      <Button block bsStyle='info' onClick={() => this.setState({editing: true, editingWhat: 'color'})}><Glyphicon glyph='tint' /></Button>
+      <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
+      <Button block bsStyle='info' onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
       <Button block bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
     </div>)
   }
@@ -172,30 +180,14 @@ class LineView extends Component {
     }
     var body = <div className='line__title'>{this.props.line.title}</div>
     if (this.state.editing) {
-      switch (this.state.editingWhat) {
-        case 'title':
-          body = (<Input
-            type='text'
-            defaultValue={this.props.line.title}
-            label='Story line name'
-            ref='titleInput'
-            autoFocus
-            onBlur={() => this.setState({editing: false})}
-            onKeyPress={this.handleFinishEditingTitle.bind(this)} />)
-          break
-        case 'color':
-          body = (<Input
-            type='color'
-            placeholder={this.props.line.color}
-            defaultValue={this.props.line.color}
-            label='Story line color'
-            ref='colorInput'
-            autoFocus
-            onKeyPress={this.handleFinishEditingColor.bind(this)} />)
-          break
-        default:
-          return null
-      }
+      body = (<Input
+        type='text'
+        defaultValue={this.props.line.title}
+        label='Story line name'
+        ref='titleInput'
+        autoFocus
+        onBlur={() => this.setState({editing: false})}
+        onKeyPress={this.handleFinishEditingTitle.bind(this)} />)
     }
     return (
       <div
@@ -209,6 +201,7 @@ class LineView extends Component {
         onDragLeave={this.handleDragLeave.bind(this)}
         onDrop={this.handleDrop.bind(this)}>
         {body}
+        {this.renderColorPicker()}
       </div>
     )
   }

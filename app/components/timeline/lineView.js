@@ -185,7 +185,6 @@ class LineView extends Component {
             label='Story line color'
             ref='colorInput'
             autoFocus
-            onBlur={() => this.setState({editing: false})}
             onKeyPress={this.handleFinishEditingColor.bind(this)} />)
           break
         default:

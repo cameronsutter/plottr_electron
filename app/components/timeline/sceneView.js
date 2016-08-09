@@ -85,7 +85,13 @@ class SceneView extends Component {
   render () {
     var classes = 'scene-list__item__body'
     if (this.state.hovering) classes += ' hover'
+    var style = {}
+    if (this.props.isZoomed && this.state.hovering) {
+      style.transform = 'scale(5, 5)'
+      style.transformOrigin = 'center center'
+    }
     return (<div className='scene-list__item'
+      style={style}
       draggable={true}
       onMouseEnter={() => this.setState({hovering: true})}
       onMouseLeave={() => this.setState({hovering: false})}
@@ -108,7 +114,8 @@ class SceneView extends Component {
 SceneView.propTypes = {
   scene: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  isZoomed: PropTypes.bool.isRequired
 }
 
 function mapStateToProps (state) {

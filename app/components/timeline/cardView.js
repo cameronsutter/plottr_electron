@@ -50,6 +50,15 @@ class CardView extends Component {
     this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.sceneId)
   }
 
+  handleCardClick () {
+    if (this.props.isZoomed) {
+      var box = this.refs.card.getBoundingClientRect()
+      this.props.zoomIn(box.left, box.top)
+    } else {
+      this.setState({dialogOpen: true})
+    }
+  }
+
   render () {
     return this.state.dialogOpen ? this.renderDialog() : this.renderShape()
   }
@@ -68,16 +77,20 @@ class CardView extends Component {
     if (this.props.filtered) {
       cardStyle.opacity = '0.1'
     }
-    var titleStyle = (this.state.hovering && this.hasLabels()) ? {overflow: 'scroll'} : {}
+    if (this.props.isZoomed && this.state.hovering) {
+      cardStyle.transform = 'scale(5, 5)'
+    }
+    var titleStyle = (!this.props.isZoomed && this.state.hovering && this.hasLabels()) ? {overflow: 'scroll'} : {}
 
     return (<div className='card__real'
+      ref='card'
       draggable={true}
       onDragStart={this.handleDragStart.bind(this)}
       onDragEnd={this.handleDragEnd.bind(this)}
       onMouseEnter={() => this.setState({hovering: true})}
       onMouseLeave={() => this.setState({hovering: false})}
       style={cardStyle}
-      onClick={() => this.setState({dialogOpen: true})} >
+      onClick={this.handleCardClick.bind(this)} >
         <div className='card__title' style={titleStyle}>{this.renderTitle()}</div>
     </div>)
   }
@@ -153,7 +166,9 @@ CardView.propTypes = {
   color: PropTypes.string.isRequired,
   filtered: PropTypes.bool.isRequired,
   labelMap: PropTypes.object.isRequired,
-  tags: PropTypes.array
+  tags: PropTypes.array,
+  isZoomed: PropTypes.bool.isRequired,
+  zoomIn: PropTypes.func.isRequired
 }
 
 function mapStateToProps (state) {

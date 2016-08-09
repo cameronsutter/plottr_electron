@@ -64,12 +64,16 @@ class TimeLineView extends Component {
   //   zooming    //
   // //////////////
 
-  makeTransform () {
+  scale () {
     var elem = this.refs.timeline
     var scale = ZOOM_STATES[this.state.zoomIndex]
-    if (this.state.zoomState === INITIAL_ZOOM_STATE) return {transform: INITIAL_ZOOM_STATE}
-    else if (this.state.zoomState === FIT_ZOOM_STATE) scale = window.outerWidth / elem.scrollWidth
+    if (this.state.zoomState === FIT_ZOOM_STATE) scale = window.outerWidth / elem.scrollWidth
+    return scale
+  }
 
+  makeTransform () {
+    if (this.state.zoomState === INITIAL_ZOOM_STATE) return {transform: INITIAL_ZOOM_STATE}
+    var scale = this.scale()
     return {transform: `scale(${scale}, ${scale})`, transformOrigin: 'left top'}
   }
 
@@ -83,6 +87,21 @@ class TimeLineView extends Component {
     var newIndex = this.state.zoomIndex
     if (newIndex > 0) newIndex--
     this.setState({zoomState: null, zoomIndex: newIndex})
+  }
+
+  resetZoom () {
+    this.setState({zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})
+  }
+
+  zoomIntoCard (x, y) {
+    var scale = this.scale()
+    if (scale >= 1) {
+      x *= scale
+    } else {
+      x /= scale
+    }
+    this.resetZoom()
+    this.scrollTo(x, y)
   }
 
   // ////////////////
@@ -135,6 +154,13 @@ class TimeLineView extends Component {
     else document.body.scrollLeft -= 100
   }
 
+  scrollTo (x, y) {
+    setTimeout(() => {
+      document.body.scrollTop = y
+      document.body.scrollLeft = x + 300 - (window.outerWidth / 2)
+    }, 10)
+  }
+
   // ///////////////
   //  rendering   //
   // //////////////
@@ -162,7 +188,7 @@ class TimeLineView extends Component {
               <Button onClick={this.increaseZoomFactor.bind(this)} ><Glyphicon glyph='plus-sign' /></Button>
               <Button onClick={this.decreaseZoomFactor.bind(this)} ><Glyphicon glyph='minus-sign' /></Button>
               <Button onClick={() => this.setState({zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Fit</Button>
-              <Button onClick={() => this.setState({zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Reset</Button>
+              <Button onClick={this.resetZoom.bind(this)} >Reset</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
@@ -204,12 +230,13 @@ class TimeLineView extends Component {
 
   render () {
     var styles = this.makeTransform()
+    var isZoomed = (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
     return (
       <div id='timelineview__container' className='container-with-sub-nav'>
         {this.renderSubNav()}
         <div id='timelineview__root' ref='timeline' style={styles}>
-          <SceneListView filteredItems={this.state.filteredItems} />
-          <LineListView sceneMap={this.sceneMapping()} filteredItems={this.state.filteredItems} />
+          <SceneListView filteredItems={this.state.filteredItems} isZoomed={isZoomed} />
+          <LineListView sceneMap={this.sceneMapping()} filteredItems={this.state.filteredItems} isZoomed={isZoomed} zoomIn={this.zoomIntoCard.bind(this)} />
         </div>
       </div>
     )

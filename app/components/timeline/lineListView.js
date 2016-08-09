@@ -60,6 +60,8 @@ class LineListView extends Component {
           labelMap={this.labelMap()}
           handleReorder={this.handleReorder.bind(this)}
           filteredItems={this.props.filteredItems}
+          isZoomed={this.props.isZoomed}
+          zoomIn={this.props.zoomIn}
           />
       )
     })
@@ -73,7 +75,9 @@ LineListView.propTypes = {
   filteredItems: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired
+  places: PropTypes.array.isRequired,
+  isZoomed: PropTypes.bool.isRequired,
+  zoomIn: PropTypes.func.isRequired
 }
 
 function mapStateToProps (state) {

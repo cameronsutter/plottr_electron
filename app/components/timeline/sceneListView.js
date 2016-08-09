@@ -81,7 +81,7 @@ class SceneListView extends Component {
           <div className='scene-list__insert' onClick={() => this.handleInsertNewScene(scene.position, this)}>
             <Glyphicon glyph='plus' />
           </div>
-          <SceneView scene={scene} handleReorder={this.handleReorder.bind(this)} />
+          <SceneView scene={scene} handleReorder={this.handleReorder.bind(this)} isZoomed={this.props.isZoomed} />
         </div>
       )
     })
@@ -91,7 +91,8 @@ class SceneListView extends Component {
 SceneListView.propTypes = {
   scenes: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  filteredItems: PropTypes.object.isRequired
+  filteredItems: PropTypes.object.isRequired,
+  isZoomed: PropTypes.bool.isRequired
 }
 
 function mapStateToProps (state) {

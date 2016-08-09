@@ -146,7 +146,8 @@ class LineView extends Component {
       return (<CardView key={id} card={card}
         sceneId={sceneId} lineId={this.props.line.id}
         labelMap={this.props.labelMap}
-        color={this.props.line.color} filtered={filtered} />
+        color={this.props.line.color} filtered={filtered}
+        isZoomed={this.props.isZoomed} zoomIn={this.props.zoomIn} />
       )
     })
   }
@@ -164,6 +165,11 @@ class LineView extends Component {
   renderBody () {
     var classes = 'line__body'
     if (this.state.hovering) classes += ' hover'
+    var style = {}
+    if (this.props.isZoomed && this.state.hovering) {
+      style.transform = 'scale(5, 5)'
+      style.transformOrigin = 'left center'
+    }
     var body = <div className='line__title'>{this.props.line.title}</div>
     if (this.state.editing) {
       switch (this.state.editingWhat) {
@@ -194,6 +200,7 @@ class LineView extends Component {
     return (
       <div
         className={classes}
+        style={style}
         draggable={true}
         onDragStart={this.handleDragStart.bind(this)}
         onDragEnd={this.handleDragEnd.bind(this)}
@@ -236,7 +243,9 @@ LineView.propTypes = {
   actions: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
   filteredItems: PropTypes.object.isRequired,
-  labelMap: PropTypes.object.isRequired
+  labelMap: PropTypes.object.isRequired,
+  isZoomed: PropTypes.bool.isRequired,
+  zoomIn: PropTypes.func.isRequired
 }
 
 function mapStateToProps (state) {

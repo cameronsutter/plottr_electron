@@ -4,7 +4,20 @@ import { connect } from 'react-redux'
 import { Glyphicon, Button } from 'react-bootstrap'
 import * as types from 'constants/ActionTypes'
 import StoryName from 'components/history/StoryName'
+import AddScene from 'components/history/AddScene'
+import EditScene from 'components/history/EditScene'
+import DeleteScene from 'components/history/DeleteScene'
+import AddCard from 'components/history/AddCard'
 import CardDetails from 'components/history/CardDetails'
+import CardCoordinates from 'components/history/CardCoordinates'
+import DeleteCard from 'components/history/DeleteCard'
+import AddLine from 'components/history/AddLine'
+import LineTitle from 'components/history/LineTitle'
+import LineColor from 'components/history/LineColor'
+import Reorder from 'components/history/Reorder'
+import DeleteLine from 'components/history/DeleteLine'
+import AddPlace from 'components/history/AddPlace'
+import EditPlace from 'components/history/EditPlace'
 
 class HistoryItem extends Component {
   constructor (props) {
@@ -48,18 +61,47 @@ class HistoryItem extends Component {
   }
 
   renderDetailsByType (type, item) {
-    var details = null
     switch (type) {
       case types.EDIT_STORY_NAME:
-        details = <StoryName item={item} />
-        break
+        return <StoryName item={item} />
+      case types.ADD_SCENE:
+        return <AddScene item={item} />
+      case types.EDIT_SCENE_TITLE:
+        return <EditScene item={item} />
+      case types.DELETE_SCENE:
+        return <DeleteScene item={item} />
+      case types.REORDER_SCENES:
+      case types.REORDER_LINES:
+        return <Reorder item={item} />
+      case types.ADD_CARD:
+        return <AddCard item={item} />
       case types.EDIT_CARD_DETAILS:
-        details = <CardDetails item={item} />
-        break
+        return <CardDetails item={item} />
+      case types.CHANGE_LINE:
+      case types.CHANGE_SCENE:
+      case types.EDIT_CARD_COORDINATES:
+        return <CardCoordinates item={item} />
+      case types.DELETE_CARD:
+        return <DeleteCard item={item} />
+      case types.ADD_LINE:
+        return <AddLine item={item} />
+      case types.EDIT_LINE_TITLE:
+        return <LineTitle item={item} />
+      case types.EDIT_LINE_COLOR:
+        return <LineColor item={item} />
+      case types.DELETE_LINE:
+        return <DeleteLine item={item} />
+      case types.ADD_PLACE:
+      case types.ADD_CHARACTER:
+      case types.ADD_TAG:
+        return <AddPlace item={item} />
+      case types.EDIT_PLACE:
+      case types.EDIT_CHARACTER:
+      case types.EDIT_TAG:
+        return <EditPlace item={item} />
       default:
-        details = <div>{type}</div>
+        return <div>{type}</div>
     }
-    return details
   }
 
   render () {

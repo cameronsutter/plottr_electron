@@ -20,7 +20,7 @@ const history = store => next => action => {
       if (diff.length > 0) {
         var historyList = JSON.parse(window.localStorage.getItem('history')) || []
         historyList.push({id: nextId.id(), action: action, diff: diff, before: before, after: after})
-        window.localStorage.setItem('history', JSON.stringify(historyList.slice(-10)))
+        window.localStorage.setItem('history', JSON.stringify(historyList.slice(-15)))
       }
     }
   }

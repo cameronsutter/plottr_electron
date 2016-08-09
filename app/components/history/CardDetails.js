@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-// import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import { connect } from 'react-redux'
 

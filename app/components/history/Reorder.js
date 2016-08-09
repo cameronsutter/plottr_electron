@@ -1,21 +1,24 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-class StoryName extends Component {
+class Reorder extends Component {
 
   render () {
     const item = this.props.item
+    if (item.action.type.indexOf('SCENES') !== -1) {
+      var things = 'scenes'
+    } else {
+      things = 'storylines'
+    }
     return (
       <div>
-        <span>story name</span>
-        <p>Before: <span className='history-component__item__before'>{item.diff[0].lhs}</span></p>
-        <p>After: <span className='history-component__item__after'>{item.diff[0].rhs}</span></p>
+        <p>a lot of {things} moved around</p>
       </div>
     )
   }
 }
 
-StoryName.propTypes = {
+Reorder.propTypes = {
   item: PropTypes.object.isRequired
 }
 
@@ -32,4 +35,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(StoryName)
+)(Reorder)

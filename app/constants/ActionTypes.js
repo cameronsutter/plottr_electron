@@ -18,15 +18,15 @@ export const ADD_CARD = 'ADD_CARD'
 export const EDIT_CARD_DETAILS = 'EDIT_CARD_DETAILS'
 export const EDIT_CARD_COORDINATES = 'EDIT_CARD_COORDINATES'
 export const DELETE_CARD = 'DELETE_CARD'
-export const CHANGE_LINE = 'CHANGE_LINE'
+export const CHANGE_LINE = 'CHANGE_STORYLINE'
 export const CHANGE_SCENE = 'CHANGE_SCENE'
 
 // line actions
-export const ADD_LINE = 'ADD_LINE'
-export const EDIT_LINE_TITLE = 'EDIT_LINE_TITLE'
-export const EDIT_LINE_COLOR = 'EDIT_LINE_COLOR'
-export const REORDER_LINES = 'REORDER_LINES'
-export const DELETE_LINE = 'DELETE_LINE'
+export const ADD_LINE = 'ADD_STORYLINE'
+export const EDIT_LINE_TITLE = 'EDIT_STORYLINE_TITLE'
+export const EDIT_LINE_COLOR = 'EDIT_STORYLINE_COLOR'
+export const REORDER_LINES = 'REORDER_STORYLINES'
+export const DELETE_LINE = 'DELETE_STORYLINE'
 
 // places actions
 export const ADD_PLACE = 'ADD_PLACE'

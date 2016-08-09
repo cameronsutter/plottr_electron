@@ -1,21 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-class StoryName extends Component {
+class EditScene extends Component {
 
   render () {
     const item = this.props.item
+    const diff = item.diff[0]
     return (
       <div>
-        <span>story name</span>
-        <p>Before: <span className='history-component__item__before'>{item.diff[0].lhs}</span></p>
-        <p>After: <span className='history-component__item__after'>{item.diff[0].rhs}</span></p>
+        <span>storyline: "{item.action.title}"</span>
+        <p>Before: <span className='history-component__item__before'>{diff.lhs}</span></p>
+        <p>After: <span className='history-component__item__after'>{diff.rhs}</span></p>
       </div>
     )
   }
 }
 
-StoryName.propTypes = {
+EditScene.propTypes = {
   item: PropTypes.object.isRequired
 }
 
@@ -32,4 +33,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(StoryName)
+)(EditScene)

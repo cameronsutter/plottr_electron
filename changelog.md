@@ -1,6 +1,240 @@
+2016-08-22
+==========
+
+  * bump version number to 0.7.0
+
+2016-08-16
+==========
+
+  * fix build size
+    get the build back down to a good size. It was up past 200MB and now
+    it’s back around 60MB
+
+2016-08-15
+==========
+
+  * copy/paste right-click menu
+    closes [#9](https://github.com/cameronsutter/plottr_electron/issues/9)
+
+2016-08-08
+==========
+
+  * better color picker for storylines
+    closes [#36](https://github.com/cameronsutter/plottr_electron/issues/36)
+    changing colors for storylines is no longer a pain. It’s fun and
+    there’s so many choices
+  * click to zoom in
+    closes [#29](https://github.com/cameronsutter/plottr_electron/issues/29)
+    when zoomed out, click on a card to zoom into that location
+  * bug: storyline color editing
+    changing the color of storylines was impossible because of this bug
+  * finish undo/redo
+    closes [#8](https://github.com/cameronsutter/plottr_electron/issues/8)
+    every action has a helpful details view in the undo menu
+
+2016-08-07
+==========
+
+  * ignore change_current_view actions
+    change_current_view actions now don’t prompt the user that there are
+    unsaved changes
+  * autosave
+    closes [#19](https://github.com/cameronsutter/plottr_electron/issues/19)
+  * fix build
+
+2016-08-04
+==========
+
+  * bump version number to 0.6.5
+  * undo/redo
+    refs [#8](https://github.com/cameronsutter/plottr_electron/issues/8)
+    the last piece that is still missing is showing details of changes for
+    most actions such as editing scene names, changing the position of
+    cards, etc.
+  * upgrade redux
+
+2016-08-02
+==========
+
+  * groundwork for undo/redo
+    refs [#8](https://github.com/cameronsutter/plottr_electron/issues/8)
+    middleware to track changes, basic UI to see changes, no functionality
+    … it’s almost in a broken state. Had to break to update redux
+
+2016-07-31
+==========
+
+  * fix subnav styles
+  * change icon
+    icon may change again, but a new icon/logo to try out
+  * move the filter button
+    functionality remains the same, but now it’s on the subnav bar instead
+    of in the timeline
+
+2016-07-28
+==========
+
+  * faster scrolling
+    closes [#43](https://github.com/cameronsutter/plottr_electron/issues/43)
+    scroll buttons in the subnav menu and keyboard shortcuts to scroll
+    around faster
+  * simple zoom in and out
+    refs [#29](https://github.com/cameronsutter/plottr_electron/issues/29)
+    lets you zoom in and out, fit the whole plot in the view, and reset
+    back to normal zoom
+  * upgrade to Electron 1.3
+    closes [#55](https://github.com/cameronsutter/plottr_electron/issues/55)
+    Fixed incompatibilities with older versions … hopefully I got
+    everything.
+    Added Devtron & React to Chrome devTools
+
+2016-07-27
+==========
+
+  * sub navigation menu
+    non-functional menu buttons
+  * fixed build script
+    I had accidentally commented out some important parts of the build
+    script
+
+2016-05-30
+==========
+
+  * some rebranding
+    changing the font of the word Plottr in the about menu
+  * improved build
+    the zipped OS X version of Plottr was always much bigger with the new
+    build script than before. To fix this, I  made the script compress it
+    to a .dmg instead of a .zip which is slightly more annoying but much
+    smaller
+
+2016-05-29
+==========
+
+  * bug: didn't ask to save
+    fixes [#40](https://github.com/cameronsutter/plottr_electron/issues/40)
+    and a lot more error possibilities
+
+2016-05-25
+==========
+
+  * bug: displaying cards
+    fixed how it does children ids for great justice … and an addition to
+    the migration … and bumped build version number
+  * show labels in card description
+    Now if you type a character/place/tag within two curly braces (e.g.
+    {{coolDude}}) in the card description, it will render with a label of
+    that color
+
+2016-05-24
+==========
+
+  * better build script
+    all but the uploading is done automatically with one command
+
+2016-05-18
+==========
+
+  * color line labels
+    closes [#45](https://github.com/cameronsutter/plottr_electron/issues/45)
+    also adds a cool little colored square to the outline minimap for each
+    line with a card in that scene
+  * remove unneeded extra example file
+    oops, didn’t mean to commit this
+  * bug: dragging and dropping the first card
+    fixes [#34](https://github.com/cameronsutter/plottr_electron/issues/34)
+    The first card in a new file wouldn’t drag anywhere, but after a good
+    whipping it’s behaving well again
+  * clean up chapters
+    once and for all clean up remnants of chapters. Also did a little bit
+    of cleanup around new ids for most objects
+  * bug: change lines/scenes in card dialog
+    fixes [#47](https://github.com/cameronsutter/plottr_electron/issues/47)
+  * show color for character/place labels in card dialog
+    closes [#53](https://github.com/cameronsutter/plottr_electron/issues/53)
+  * bug: about menu - version undefined
+    fixes [#56](https://github.com/cameronsutter/plottr_electron/issues/56)
+
+2016-05-17
+==========
+
+  * bug: choosing "none" tag/character/place in card edit
+    fixes [#54](https://github.com/cameronsutter/plottr_electron/issues/54)
+    this also fixes choosing tags/characters/places when creating a card.
+  * bug: outline minimap overlapping cards
+    closes [#52](https://github.com/cameronsutter/plottr_electron/issues/52)
+    outline minimap no longer overlaps cards when you resize the window
+
+2016-05-15
+==========
+
+  * file migration bug
+    closes [#48](https://github.com/cameronsutter/plottr_electron/issues/48)
+    closes [#50](https://github.com/cameronsutter/plottr_electron/issues/50)
+    fix file migrations by finding the right directory that the app is
+    installed in
+    and build the app into an .asar file to make the build better
+    (especially for windows)
+  * separate dev & prod more
+    use a different key during development to save the recent file in
+    localStorage so that those two environments are more separate
+  * prune dev dependencies in build
+    closes [#49](https://github.com/cameronsutter/plottr_electron/issues/49)
+
+2016-05-13
+==========
+
+  * stop building in parallel … for now
+    parallel builds were screwing things up
+  * bug fix: display file name
+    If there was no file name (which shouldn’t happen, but sometimes did
+    because of other errors (see last bug)) it would throw an error every
+    time you did anything
+  * bug fix: windows — can't open files
+    It wouldn’t let you open files, it would only prompt you to open a
+    folder. This fixes that for windows
+  * improved build process
+    before i was building to this directory but each time that caused the
+    build to get bigger and bigger … that’s bad. Now i’m building to an
+    external directory (hardcoded which is bad) which makes the builds much
+    much smaller … which is good
+
+2016-05-11
+==========
+
+  * fix bug when all windows are closed
+    closes [#16](https://github.com/cameronsutter/plottr_electron/issues/16)
+    right now this shouldn’t happen, but sometimes things get in a weird
+    state with no windows open and if so, you can’t open any files. This
+    solves that and also helps us get to being able to support multiple
+    open windows
+  * remove cards from outline minimap
+    closes [#44](https://github.com/cameronsutter/plottr_electron/issues/44)
+    the mini outline in the outline view was too cluttered with every card
+    there, so now it only shows scenes in favor of a cleaner, hopefully
+    more useful mini outline
+  * improved about menu
+    closes [#25](https://github.com/cameronsutter/plottr_electron/issues/25)
+    An envious about menu with credit for the creators
+
+2016-05-10
+==========
+
+  * filter by tags/characters/places
+    closes [#12](https://github.com/cameronsutter/plottr_electron/issues/12)
+    filters cards on the timeline by tags/characters/places. Does not
+    filter lines/scenes
+
+2016-05-08
+==========
+
+  * pretty print files
+    save files with pretty formatted JSON instead of all on one line
+
 2016-05-05
 ==========
 
+  * update changelog
   * bug fix: files without a version don't update
     if a file didn’t have a version saved in it, they wouldn’t be able to
     update, but I fixed that no prob
@@ -195,102 +429,3 @@
   * cleaned up some css files
   * add new tags
   * add new places
-  * add characters
-  * display notes
-  * fixed hover-over options for story lines disappearing
-
-2015-12-20
-==========
-
-  * basic outline view
-  * beginnings of outline
-  * reorganized stuff
-    also fixed story line drag n drop bug
-  * delete card
-  * delete scenes
-  * delete story line
-  * line drag n drop
-
-2015-12-10
-==========
-
-  * moved scene hover options up 1 pixel
-  * editing line title and color
-    also glyphicon plus for new lines and new scenes. Changed cursor to
-    indicate drag’n’drop
-  * increased the default size of the window
-  * changed default line to say 'Story Line'
-  * fixed story name editing
-  * remove slides from navigation
-  * better hover options
-
-2015-12-09
-==========
-
-  * changed some function names
-  * scene drag n drop
-  * drag and drop cards
-
-2015-11-26
-==========
-
-  * changed cursor on hover over scenes
-  * create a new card
-  * edit cards in dialog
-
-2015-11-25
-==========
-
-  * change line/scene from card dialog
-    also improved look of card dialog
-
-2015-11-23
-==========
-
-  * card dialog title
-  * mark down rendering of card description
-  * better storyName editing
-  * edit scene title
-  * fix hover buttons over scenes
-  * new menu item: reload
-  * hover buttons that do nothing and don't disappear
-  * open a file
-    did some clean up of the interactions with localStorage
-
-2015-11-22
-==========
-
-  * start a new file
-  * cleaned up classes
-  * add new line
-  * fixed saving bug
-    It was always behind by one change
-  * unsaved changes label on the top right
-  * organized initial states
-  * add a new scene
-    also: render scenes in order of position
-  * ignore dist directory for distribution
-
-2015-11-19
-==========
-
-  * build!
-  * bootstrap'd button
-  * close card dialog
-  * open a card
-  * really did gitignore for bundle js file
-  * gitignore the bundle js file
-  * edit story name
-
-2015-11-18
-==========
-
-  * restart
-    Removed all old code which was branched into a new branch called
-    old-app. Inserted new app completely done from electron/react/redux
-
-2015-10-15
-==========
-
-  * work on getting webpack more stable
-  * board is loading!

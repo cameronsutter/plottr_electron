@@ -95,8 +95,6 @@ export default class Migrator {
 
   getPath () {
     var appPath = app.getAppPath()
-    var thing = path.resolve(appPath, 'app', 'migrator', 'migrations')
-    console.log(thing)
-    return thing
+    return path.resolve(appPath, 'app', 'migrator', 'migrations')
   }
 }

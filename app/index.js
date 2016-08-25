@@ -27,7 +27,7 @@ ipcRenderer.on('new-file', (fileName) => {
   store.dispatch(newFile(fileName))
 })
 
-ipcRenderer.on('open-file', (fileName) => {
+ipcRenderer.on('open-file', (e, fileName) => {
   saveToLocalStorage(fileName)
   var json = readJSONsync(fileName)
   var m = new Migrator(json, json.file.version, app.getVersion())

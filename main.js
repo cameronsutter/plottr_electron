@@ -70,7 +70,7 @@ app.on('ready', function () {
         click: function () {
           var aboutFile = 'file://' + __dirname + '/about.html'
           aboutWindow = new BrowserWindow({width: 400, height: 550})
-          aboutWindow.loadUrl(aboutFile)
+          aboutWindow.loadURL(aboutFile)
           aboutWindow.on('closed', function () {
             aboutWindow = null
           })

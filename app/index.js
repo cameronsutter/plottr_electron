@@ -23,7 +23,7 @@ ipcRenderer.on('state-saved', (_arg) => {
   store.dispatch(fileSaved())
 })
 
-ipcRenderer.on('new-file', (fileName) => {
+ipcRenderer.on('new-file', (e, fileName) => {
   store.dispatch(newFile(fileName))
 })
 

@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import deep from 'deep-diff'
 import _ from 'lodash'
+import storageKey from 'middlewares/helpers'
 import * as UndoActions from 'actions/undo'
 // import { Glyphicon, Input, Button } from 'react-bootstrap'
 import HistoryItem from 'components/history/historyItem'
@@ -18,7 +19,7 @@ class HistoryComponent extends Component {
   }
 
   readHistory () {
-    return JSON.parse(window.localStorage.getItem('history'))
+    return JSON.parse(window.localStorage.getItem(storageKey(this.props.file.fileName))) || []
   }
 
   undo (changeId) {

@@ -1,0 +1,67 @@
+{
+  "cards": [
+    {
+      "characters": [],
+      "description": "boom",
+      "id": 0,
+      "lineId": 0,
+      "places": [],
+      "sceneId": 0,
+      "tags": [],
+      "title": "a new card"
+    }
+  ],
+  "characters": [
+    {
+      "color": null,
+      "description": "she is the coolest",
+      "id": 0,
+      "name": "main character"
+    }
+  ],
+  "file": {
+    "dirty": true,
+    "fileName": "/Users/csutter/github/plottr_electron/example2.plottr",
+    "loaded": true,
+    "version": "0.7.2"
+  },
+  "lines": [
+    {
+      "color": "#000000",
+      "id": 0,
+      "position": 0,
+      "title": "Story Line"
+    }
+  ],
+  "places": [
+    {
+      "color": null,
+      "description": "my favorite place",
+      "id": 0,
+      "name": "first place"
+    }
+  ],
+  "scenes": [
+    {
+      "id": 1,
+      "position": 1,
+      "title": "new scene"
+    },
+    {
+      "id": 0,
+      "position": 0,
+      "title": "new scene"
+    }
+  ],
+  "storyName": "example2",
+  "tags": [
+    {
+      "color": null,
+      "id": 0,
+      "title": "First tag :)"
+    }
+  ],
+  "ui": {
+    "currentView": "timeline"
+  }
+}

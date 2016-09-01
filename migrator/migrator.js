@@ -1,30 +1,11 @@
-import fs from 'fs'
-import path from 'path'
-import { remote } from 'electron'
-const { app } = remote
+const { app } = require('electron')
+var fs = require('fs')
+var path = require('path')
 
-export default class Migrator {
-  constructor (data, givenVersion, targetVersion) {
-    this.data = data
-    this.given = givenVersion
-    this.target = targetVersion
-    if (givenVersion) {
-      this.majorGiven = this.getMajor(this.given)
-      this.majorTarget = this.getMajor(this.target)
-      this.minorGiven = this.getMinor(this.given)
-      this.minorTarget = this.getMinor(this.target)
-    } else {
-      this.majorGiven = null
-      this.majorTarget = null
-      this.minorGiven = null
-      this.minorTarget = null
-    }
-  }
-
-  migrate (callback) {
+function Migrator (data, givenVersion, targetVersion) {
+  this.migrate = function (callback) {
     // save a backup file
-    var backupName = this.data.file.fileName.replace('.plottr', '.backup.plottr')
-    fs.writeFile(backupName, JSON.stringify(this.data, null, 2), (err) => {
+    fs.writeFile(`${this.data.file.fileName}.backup`, JSON.stringify(this.data, null, 2), (err) => {
       if (err) {
         console.log(err)
         callback('backup', false)
@@ -40,17 +21,17 @@ export default class Migrator {
     })
   }
 
-  getMajor (versionString) {
+  this.getMajor = function (versionString) {
     var versionArray = versionString.split('.')
     return parseInt(versionArray[0], 10)
   }
 
-  getMinor (versionString) {
+  this.getMinor = function (versionString) {
     var versionArray = versionString.split('.')
     return parseInt(versionArray[1], 10)
   }
 
-  areSameVersion () {
+  this.areSameVersion = function () {
     if (!this.given) return false
     if (this.given === this.target) {
       return true
@@ -66,11 +47,11 @@ export default class Migrator {
     return false
   }
 
-  plottrBehindFile () {
+  this.plottrBehindFile = function () {
     return this.majorTarget < this.majorGiven || (this.majorTarget === this.majorGiven && this.minorTarget < this.minorGiven)
   }
 
-  getMigrations () {
+  this.getMigrations = function () {
     var files = fs.readdirSync(this.getPath())
     return files.filter((f) => {
       if (!this.given) return true
@@ -93,8 +74,18 @@ export default class Migrator {
     })
   }
 
-  getPath () {
+  this.getPath = function () {
     var appPath = app.getAppPath()
-    return path.resolve(appPath, 'app', 'migrator', 'migrations')
+    return path.resolve(appPath, 'migrator', 'migrations')
   }
+
+  this.data = data
+  this.given = givenVersion
+  this.target = targetVersion
+  this.majorGiven = givenVersion ? this.getMajor(this.given) : null
+  this.majorTarget = givenVersion ? this.getMajor(this.target) : null
+  this.minorGiven = givenVersion ? this.getMinor(this.given) : null
+  this.minorTarget = givenVersion ? this.getMinor(this.target) : null
 }
+
+module.exports = Migrator

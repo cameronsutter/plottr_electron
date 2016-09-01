@@ -59,9 +59,9 @@ ipcMain.on('fetch-state', (event, id) => {
     win.window.setRepresentedFilename(win.state.file.fileName)
   }
 
-  migrateIfNeeded (win.window, win.state, win.fileName, function(err, json) {
+  migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
     if (err) console.log(err)
-    event.sender.send('state-fetched', json, win.fileName)
+    event.sender.send('state-fetched', json, win.fileName, dirty)
   })
 })
 
@@ -96,6 +96,7 @@ var template = [
       label: 'Quit',
       accelerator: 'Cmd+Q',
       click: function () {
+        // TODO: check for dirty files open
         app.quit()
       }
     }]
@@ -131,7 +132,7 @@ var template = [
         let win = BrowserWindow.getFocusedWindow()
         if (win) {
           let winObj = _.find(windows, {id: win.id})
-          if (!process.env.NODE_ENV === 'dev') {
+          if (process.env.NODE_ENV !== 'dev') {
             if (checkDirty(winObj.state, winObj.lastSave)) {
               askToSave(win, winObj.state, function () { closeWindow(win.id) })
             } else {
@@ -170,7 +171,7 @@ var template = [
       click: function () {
         let win = BrowserWindow.getFocusedWindow()
         let winObj = _.find(windows, {id: win.id})
-        if (!process.env.NODE_ENV === 'dev') {
+        if (process.env.NODE_ENV !== 'dev') {
           if (checkDirty(winObj.state, winObj.lastSave)) {
             askToSave(win, winObj.state, win.webContents.reload)
           } else {
@@ -223,7 +224,6 @@ app.on('ready', function () {
 })
 
 function saveFile (fileName, data, callback) {
-  if (data.file) data.file.version = app.getVersion()
   var stringState = JSON.stringify(data, null, 2)
   fs.writeFile(fileName, stringState, callback)
 }
@@ -446,14 +446,18 @@ function openAboutWindow () {
 }
 
 function migrateIfNeeded (win, json, fileName, callback) {
+  if (!json.file) {
+    callback(null, false, json)
+    return
+  }
   var m = new Migrator(json, json.file.version, app.getVersion())
   if (m.areSameVersion()) {
-    callback(null, json)
+    callback(null, false, json)
   } else {
     // not the same version, start migration process
     if (m.plottrBehindFile()) {
       dialog.showErrorBox('Update Plottr', 'It looks like your file was saved with a newer version of Plottr than you\'re using now. That could cause problems. Try updating Plottr and starting it again.')
-      callback('Update Plottr', json)
+      callback('Update Plottr', false, json)
     } else {
       // ask user to try to migrate
       dialog.showMessageBox(win, {type: 'question', buttons: ['yes, update the file', 'no, open the file as-is'], defaultId: 0, message: 'It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?', detail: '(It will save a backup first which will be saved to the same folder as this file)'}, (choice) => {
@@ -461,11 +465,11 @@ function migrateIfNeeded (win, json, fileName, callback) {
           m.migrate((err, json) => {
             if (err === 'backup') {
               dialog.showErrorBox('Problem saving backup', 'Plottr couldn\'t save a backup. It hasn\'t touched your file yet, so don\'t worry. Try quitting Plottr and starting it again.')
-              callback('problem saving backup', json)
+              callback('problem saving backup', false, json)
             } else {
               // tell the user that Plottr migrated versions and saved a backup file
               dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr updated your file without a problem. Don\'t forget to save your file.'})
-              callback(null, json)
+              callback(null, true, json)
             }
           })
         } else {
@@ -475,7 +479,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
               dialog.showErrorBox('Problem saving backup', 'Plottr tried saving a backup just in case, but it didn\'t work. Try quitting Plottr and starting it again.')
             } else {
               dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr saved a backup just in case and now on with the show (To use the backup, remove \'.backup\' from the file name)'})
-              callback(null, json)
+              callback(null, false, json)
             }
           })
         }

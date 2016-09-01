@@ -43,6 +43,11 @@
   ],
   "scenes": [
     {
+      "id": 2,
+      "position": 2,
+      "title": "new scene"
+    },
+    {
       "id": 1,
       "position": 1,
       "title": "new scene"

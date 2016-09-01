@@ -16,6 +16,7 @@ function Migrator (data, givenVersion, targetVersion) {
           var migration = require(`./migrations/${m}`)
           this.data = migration(this.data)
         })
+        this.data.file.version = this.target
         callback(null, this.data)
       }
     })

@@ -4,8 +4,8 @@ export function changeCurrentView (view) {
   return { type: CHANGE_CURRENT_VIEW, view }
 }
 
-export function loadFile (fileName, payload) {
-  return { type: FILE_LOADED, fileName: fileName, data: payload }
+export function loadFile (fileName, dirty, payload) {
+  return { type: FILE_LOADED, data: payload, fileName, dirty }
 }
 
 export function newFile (fileName) {

@@ -7,20 +7,20 @@ import configureStore from 'store/configureStore'
 import 'style!css!sass!css/app.css.scss'
 import { ipcRenderer, remote } from 'electron'
 const win = remote.getCurrentWindow()
-import { newFile, fileSaved } from 'actions/ui'
+import { newFile, fileSaved, loadFile } from 'actions/ui'
 
 const root = document.getElementById('react-root')
-var store = configureStore()
+const store = configureStore()
 
 ipcRenderer.on('state-saved', (_arg) => {
   store.dispatch(fileSaved())
 })
 
 ipcRenderer.send('fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, state, fileName) => {
-  store = configureStore(state)
-
-  if (!state || state === {} || Object.keys(state).length === 0) {
+ipcRenderer.on('state-fetched', (event, state, fileName, dirty) => {
+  if (state && Object.keys(state).length > 0) {
+    store.dispatch(loadFile(fileName, dirty, state))
+  } else {
     store.dispatch(newFile(fileName))
   }
 

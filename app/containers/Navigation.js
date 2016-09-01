@@ -19,7 +19,7 @@ class Navigation extends Component {
     if (this.props.file.dirty) {
       return <span className='alert alert-danger' role='alert'><Glyphicon glyph='exclamation-sign' /> unsaved changes</span>
     } else {
-      return <span className='alert alert-success' role='alert'><Glyphicon bsStyle={{verticalAlign: 'baseline'}} glyph='ok' /> changes saved</span>
+      return <span className='alert alert-success' role='alert'><Glyphicon bsStyle={{verticalAlign: 'baseline'}} glyph='ok' /> everything saved</span>
     }
   }
 

@@ -8,6 +8,8 @@ import 'style!css!sass!css/app.css.scss'
 import { ipcRenderer, remote } from 'electron'
 const win = remote.getCurrentWindow()
 import { newFile, fileSaved, loadFile } from 'actions/ui'
+import mixpanel from 'mixpanel-browser'
+import { MPQ } from 'middlewares/helpers'
 
 const root = document.getElementById('react-root')
 const store = configureStore()
@@ -30,4 +32,10 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty) => {
     </Provider>,
     root
   )
+})
+
+ipcRenderer.once('init-tracker', (event) => {
+  mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
+  MPQ.push('Launch', {online: navigator.onLine})
+  ipcRenderer.send('tracker-initialized')
 })

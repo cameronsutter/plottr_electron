@@ -1,5 +1,5 @@
 import deep from 'deep-diff'
-import storageKey from './helpers'
+import { storageKey } from './helpers'
 import { FILE_LOADED, RESET, NEW_FILE, CHANGE_CURRENT_VIEW } from 'constants/ActionTypes'
 
 const BLACKLIST = [FILE_LOADED, NEW_FILE, CHANGE_CURRENT_VIEW, RESET]

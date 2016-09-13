@@ -16,6 +16,9 @@ var aboutWindow = null
 const entryFile = 'file://' + __dirname + '/index.html'
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
 
+// mixpanel tracking
+var tracker = false
+
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
   // On macOS it is common for applications and their menu bar
@@ -63,6 +66,10 @@ ipcMain.on('fetch-state', (event, id) => {
     if (err) console.log(err)
     event.sender.send('state-fetched', json, win.fileName, dirty)
   })
+})
+
+ipcMain.on('tracker-initialized', (event) => {
+  tracker = true
 })
 
 var template = [
@@ -317,6 +324,12 @@ function openWindow (fileName, newFile = false) {
 
   // and load the index.html of the app.
   newWindow.loadURL(entryFile)
+
+  newWindow.webContents.on('did-finish-load', () => {
+    if (!tracker) {
+      newWindow.webContents.send('init-tracker')
+    }
+  })
 
   if (process.env.NODE_ENV === 'dev') {
     // Open the DevTools.

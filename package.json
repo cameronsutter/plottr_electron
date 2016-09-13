@@ -12,6 +12,7 @@
     "electron-json-storage": "^2.0.0",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
+    "mixpanel-browser": "^2.9.14",
     "pagedown": "^1.1.0",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.3",

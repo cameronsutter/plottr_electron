@@ -1,29 +1,40 @@
+var path = require('path')
+var webpack = require('webpack')
+
+var ignore = new webpack.IgnorePlugin(/main/, /bin/)
+
 module.exports = {
-  context: __dirname + '/',
-  entry: './app/index',
+  context: __dirname + '/src',
+  entry: {
+    app: './app/index',
+    css: './css/index',
+    verify: './verify/index'
+  },
   output: {
-    path: __dirname + '/',
-    filename: 'bundle.js'
+    path: __dirname + '/bin/',
+    filename: '[name].bundle.js'
   },
   module: {
     loaders: [{
+      test: /\.json$/,
+      loader: 'json'
+    }, {
       test: /\.js$/,
       loader: 'babel',
-      exclude: /node_modules/,
-      include: __dirname
+      include: path.resolve(__dirname, 'src')
     }, {
       test: /\.scss$/,
       loader: 'style-loader!css-loader!sass-loader',
-      include: __dirname + './app/css',
-      exclude: /node_modules/
-    }, { 
+      include: __dirname + './src/css'
+    }, {
       test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
       loader: 'url?limit=10000&mimetype=application/font-woff'
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css', '.scss'],
-    root: __dirname + '/app'
+    extensions: ['', '.js', '.jsx', '.css', '.scss', '.json'],
+    root: __dirname + './src',
+    modulesDirectories: ['node_modules', 'src/app', 'src/verify', 'src/css']
   },
   target: 'atom',
   externals: [
@@ -38,5 +49,6 @@ module.exports = {
         return callback()
       }
     })()
-  ]
+  ],
+  plugins: [ignore]
 }

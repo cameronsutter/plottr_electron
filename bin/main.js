@@ -5,15 +5,18 @@ var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
 
+const USER_INFO = 'user_info'
+
 // TODO: Report crashes to our server.
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var windows = []
 var aboutWindow = null
+var verifyWindow = null
 
 // app's entry file
-const entryFile = 'file://' + __dirname + '/index.html'
+const entryFile = 'file://' + __dirname + '/app.html'
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
 
 // mixpanel tracking
@@ -36,11 +39,11 @@ app.on('open-file', function (event, path) {
   openWindow(path)
 })
 
-app.on('activate', () => {
+app.on('activate', function () {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (windows.length === 0) {
-    openRecentFiles()
+    checkLicense()
   }
 })
 
@@ -55,7 +58,7 @@ ipcMain.on('save-state', function (event, state, winId) {
   winObj.state = state
 })
 
-ipcMain.on('fetch-state', (event, id) => {
+ipcMain.on('fetch-state', function (event, id) {
   var win = _.find(windows, {id: id})
   if (win.state.file) {
     win.window.setTitle(displayFileName(win.state.file.fileName))
@@ -68,8 +71,13 @@ ipcMain.on('fetch-state', (event, id) => {
   })
 })
 
-ipcMain.on('tracker-initialized', (event) => {
+ipcMain.on('tracker-initialized', function (event) {
   tracker = true
+})
+
+ipcMain.on('license-verified', function () {
+  verifyWindow.close()
+  openRecentFiles()
 })
 
 var template = [
@@ -224,11 +232,34 @@ var template = [
 ]
 
 app.on('ready', function () {
-  var menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
+  if (process.env.NODE_ENV === 'license') {
+    const fakeData = require('./devLicense')
+    storage.set(USER_INFO, fakeData, function(err) {
+      if (err) console.log(err)
+      else console.log('dev license created')
+      app.quit()
+    })
+  } else {
+    var menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
 
-  openRecentFiles()
+    checkLicense()
+  }
 })
+
+function checkLicense () {
+  storage.has(USER_INFO, function (err, hasKey) {
+    if (err) console.log(err)
+    if (hasKey) {
+      storage.get(USER_INFO, function (err, data) {
+        if (data.success) openRecentFiles()
+        else openVerifyWindow()
+      })
+    } else {
+      openVerifyWindow()
+    }
+  })
+}
 
 function saveFile (fileName, data, callback) {
   var stringState = JSON.stringify(data, null, 2)
@@ -455,6 +486,18 @@ function openAboutWindow () {
   aboutWindow.loadURL(aboutFile)
   aboutWindow.on('closed', function () {
     aboutWindow = null
+  })
+}
+
+function openVerifyWindow () {
+  var verifyFile = 'file://' + __dirname + '/verify.html'
+  verifyWindow = new BrowserWindow({frame: false, height: 425, show: false})
+  verifyWindow.loadURL(verifyFile)
+  verifyWindow.once('ready-to-show', function() {
+    this.show()
+  })
+  verifyWindow.on('close', function () {
+    verifyWindow = null
   })
 }
 

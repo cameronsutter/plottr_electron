@@ -18,7 +18,7 @@ class MixpanelQueue {
     }
   }
 
-  push (event, attrs) {
+  push (event, attrs={}) {
     // TODO: save to localStorage
     attrs.online = navigator.onLine
     this.queue.push({title: event, attributes: attrs})

@@ -15,8 +15,6 @@ var windows = []
 var aboutWindow = null
 var verifyWindow = null
 
-// app's entry file
-const entryFile = 'file://' + __dirname + '/app.html'
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
 
 // mixpanel tracking
@@ -351,10 +349,15 @@ function askToOpenFile () {
 
 function openWindow (fileName, newFile = false) {
   // Create the browser window.
-  let newWindow = new BrowserWindow({width: 1200, height: 800, backgroundColor: '#efefee', webPreferences: {scrollBounce: true}})
+  let newWindow = new BrowserWindow({width: 1200, height: 800, show: false, backgroundColor: '#efefee', webPreferences: {scrollBounce: true}})
 
-  // and load the index.html of the app.
+  // and load the app.html of the app.
+  const entryFile = 'file://' + __dirname + '/app.html'
   newWindow.loadURL(entryFile)
+
+  newWindow.once('ready-to-show', function() {
+    this.show()
+  })
 
   newWindow.webContents.on('did-finish-load', () => {
     if (!tracker) {

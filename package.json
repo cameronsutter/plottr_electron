@@ -47,7 +47,7 @@
     "watch": "node_modules/.bin/webpack -w",
     "createDevLicense": "NODE_ENV=license electron .",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
-    "build": "npm run build:mac && npm run build:win32 && npm run build:win64",
+    "build": "node bin/build.js",
     "build:all": "bin/build.sh",
     "build:mac": "electron-packager . Plottr --platform=darwin --arch=x64 --version=1.3.2 --out=/Users/csutter/plottr_dist --app-category-type=public.app-category.productivity --icon=icons/pblack.icns --prune --asar",
     "build:win32": "electron-packager . Plottr --platform=win32 --arch=ia32 --version=1.3.2 --out=/Users/csutter/plottr_dist --icon=icons/pblack.ico --prune --asar",

@@ -3,23 +3,29 @@ var path = require('path')
 
 var options = {
   name: 'Plottr',
-  dir: path.resolve('..'),
+  dir: path.resolve('.'),
   asar: true,
   prune: true,
   version: '1.3.2',
-  icons: 'icons/pblack',
+  icon: 'icons/pblack',
   out: path.resolve('/', 'Users', 'csutter', 'plottr_dist'),
   protocol: ['plottr'],
   'app-copyright': 'Copyright 2016 C. Louis S. (Cameron Sutter)',
   'app-category-type': 'public.app-category.productivity',
   'protocol-name': ['Plottr'],
   arch: 'x64',
-  platform: 'darwin'
+  platform: 'darwin',
+  ignore: [
+    /src/,
+    /\.gitignore/,
+    /.*\.(md|MD)/,
+    /webpack\.config\.js/
+  ]
 }
 
 // macOS
 packager(options, function (errMac, appPaths) {
-  if (errMac) console.log('error building macOS:' + errMac)
+  if (errMac) console.log('error building macOS:' + errMac, errMac.stack)
   else {
     // win64
     options.platform = 'win32'

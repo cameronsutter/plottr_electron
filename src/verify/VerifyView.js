@@ -67,12 +67,12 @@ class VerifyView extends Component {
                 if (err) {
                   view.setState({showAlert: true, alertText: this.makeAlertText(SAVE2)})
                 } else {
-                  view.setState({showAlert: true, alertText: this.makeAlertText(SUCCESS)})
+                  view.setState({showAlert: true, alertClass: GREEN, alertText: this.makeAlertText(SUCCESS)})
                   ipcRenderer.send('license-verified')
                 }
               })
             } else {
-              view.setState({showAlert: true, alertText: this.makeAlertText(SUCCESS)})
+              view.setState({showAlert: true, alertClass: GREEN, alertText: this.makeAlertText(SUCCESS)})
               ipcRenderer.send('license-verified')
             }
           })

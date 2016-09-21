@@ -14,6 +14,7 @@ const USER_INFO = 'user_info'
 var windows = []
 var aboutWindow = null
 var verifyWindow = null
+var reportWindow = null
 
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
 
@@ -78,12 +79,17 @@ ipcMain.on('license-verified', function () {
   openRecentFiles()
 })
 
+ipcMain.on('report-window-requested', openReportWindow)
+
 var template = [
   {
     label: 'Plottr',
     submenu: [ {
       label: 'About Plottr',
       click: openAboutWindow
+    }, {
+      label: 'Report a Problem',
+      click: openReportWindow
     }, {
       type: 'separator'
     }, {
@@ -121,14 +127,16 @@ var template = [
       click: function () {
         let win = BrowserWindow.getFocusedWindow()
         let winObj = _.find(windows, {id: win.id})
-        saveFile(winObj.state.file.fileName, winObj.state, function (err) {
-          if (err) throw err
-          else {
-            win.webContents.send('state-saved')
-            winObj.lastSave = winObj.state
-            win.setDocumentEdited(false)
-          }
-        })
+        if (winObj) {
+          saveFile(winObj.state.file.fileName, winObj.state, function (err) {
+            if (err) throw err
+            else {
+              win.webContents.send('state-saved')
+              winObj.lastSave = winObj.state
+              win.setDocumentEdited(false)
+            }
+          })
+        }
       }
     }, {
       label: 'Open',
@@ -145,14 +153,18 @@ var template = [
         let win = BrowserWindow.getFocusedWindow()
         if (win) {
           let winObj = _.find(windows, {id: win.id})
-          if (process.env.NODE_ENV !== 'dev') {
-            if (checkDirty(winObj.state, winObj.lastSave)) {
-              askToSave(win, winObj.state, function () { closeWindow(win.id) })
+          if (winObj) {
+            if (process.env.NODE_ENV !== 'dev') {
+              if (checkDirty(winObj.state, winObj.lastSave)) {
+                askToSave(win, winObj.state, function () { closeWindow(win.id) })
+              } else {
+                closeWindow(win.id)
+              }
             } else {
               closeWindow(win.id)
             }
           } else {
-            closeWindow(win.id)
+            win.close()
           }
         }
       }
@@ -210,11 +222,6 @@ var template = [
         label: 'Minimize',
         accelerator: 'CmdOrCtrl+M',
         role: 'minimize'
-      },
-      {
-        label: 'Close',
-        accelerator: 'CmdOrCtrl+W',
-        role: 'close'
       }, {
         type: 'separator'
       }, {
@@ -225,7 +232,12 @@ var template = [
   }, {
     label: 'Help',
     role: 'help',
-    submenu: []
+    submenu: [
+      {
+        label: 'Report a Problem',
+        click: openReportWindow
+      }
+    ]
   }
 ]
 
@@ -484,16 +496,19 @@ function removeRecentFile (currentWindowFile) {
 }
 
 function openAboutWindow () {
-  var aboutFile = 'file://' + __dirname + '/about.html'
-  aboutWindow = new BrowserWindow({width: 400, height: 550})
+  const aboutFile = 'file://' + __dirname + '/about.html'
+  aboutWindow = new BrowserWindow({width: 400, height: 550, show: false})
   aboutWindow.loadURL(aboutFile)
+  aboutWindow.once('ready-to-show', function() {
+    this.show()
+  })
   aboutWindow.on('closed', function () {
     aboutWindow = null
   })
 }
 
 function openVerifyWindow () {
-  var verifyFile = 'file://' + __dirname + '/verify.html'
+  const verifyFile = 'file://' + __dirname + '/verify.html'
   verifyWindow = new BrowserWindow({frame: false, height: 425, show: false})
   verifyWindow.loadURL(verifyFile)
   verifyWindow.once('ready-to-show', function() {
@@ -501,6 +516,18 @@ function openVerifyWindow () {
   })
   verifyWindow.on('close', function () {
     verifyWindow = null
+  })
+}
+
+function openReportWindow () {
+  const reportFile = 'file://' + __dirname + '/report.html'
+  reportWindow = new BrowserWindow({frame: false, show: false})
+  reportWindow.loadURL(reportFile)
+  reportWindow.once('ready-to-show', function() {
+    this.show()
+  })
+  reportWindow.on('close', function () {
+    reportWindow = null
   })
 }
 

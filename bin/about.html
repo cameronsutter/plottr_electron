@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>About Plottr</title>
+    <script src="css.bundle.js"></script>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
     <style>
       body {
@@ -9,6 +10,7 @@
         background-color: #efefee;
         font-family: 'Quattrocento', serif;
         font-weight: 400;
+        padding-top: 0px;
       }
       h1 {
         font-family: 'Yellowtail' !important;
@@ -19,15 +21,19 @@
         font-weight: 400 !important;
       }
       img {
-        vertical-align: middle;
+        vertical-align: -60%;
       }
     </style>
   </head>
   <body>
     <script>
-      const app = require('electron').remote.app
+      const { remote, ipcRenderer } = require('electron')
+      const app = remote.app
+      function handleReportProblem () {
+        ipcRenderer.send('report-window-requested')
+      }
     </script>
-    <h1><img src='icons/pblack.png' height='100' width='100'/> Plottr</h1>
+    <h1><img src='../icons/pblack.png' height='100' width='100'/> Plottr</h1>
     <p>Version <script>document.write(app.getVersion())</script></p>
     <h2>Creators</h2>
     <p>C. Louis S.&mdash;development</p>
@@ -36,6 +42,9 @@
     <p>Mary Anderson&mdash;design</p>
     <h2>Contact</h2>
     <p>cameronsutter0@gmail.com</p>
-    <p>Report a bug or request a feature: <br/>http://bit.ly/1T61u8R</p>
+    <p>
+      <button class='btn btn-default' onClick='handleReportProblem()'>Report a problem</button>
+      <br/><small>(or request a feature)</small>
+    </p>
   </body>
 </html>

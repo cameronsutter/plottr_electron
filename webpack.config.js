@@ -8,7 +8,8 @@ module.exports = {
   entry: {
     app: './app/index',
     css: './css/index',
-    verify: './verify/index'
+    verify: './verify/index',
+    report: './report/index'
   },
   output: {
     path: __dirname + '/bin/',
@@ -34,7 +35,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.css', '.scss', '.json'],
     root: __dirname + './src',
-    modulesDirectories: ['node_modules', 'src/app', 'src/verify', 'src/css']
+    modulesDirectories: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/report']
   },
   target: 'atom',
   externals: [

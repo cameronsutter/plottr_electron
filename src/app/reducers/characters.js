@@ -11,12 +11,13 @@ export default function characters (state = initialState, action) {
         id: characterId(state),
         name: action.name,
         description: action.description,
+        sketch: action.sketch,
         color: character.color
       }]
 
     case EDIT_CHARACTER:
       return state.map(character =>
-        character.id === action.id ? Object.assign({}, character, {name: action.name, description: action.description, color: action.color}) : character
+        character.id === action.id ? Object.assign({}, character, {name: action.name, description: action.description, sketch: action.sketch, color: action.color}) : character
       )
 
     case RESET:

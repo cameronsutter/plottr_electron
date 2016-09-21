@@ -22,6 +22,7 @@ export const character = {
   id: 0,
   name: 'main character',
   description: 'she is the coolest',
+  sketch: 'this is why she is the coolest',
   color: null
 }
 

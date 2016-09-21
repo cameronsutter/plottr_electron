@@ -2,9 +2,9 @@ import { ADD_CHARACTER, EDIT_CHARACTER } from 'constants/ActionTypes'
 import { character } from 'store/initialState'
 
 export function addCharacter () {
-  return { type: ADD_CHARACTER, name: character.name, description: character.description }
+  return { type: ADD_CHARACTER, name: character.name, description: character.description, sketch: character.sketch  }
 }
 
-export function editCharacter (id, name, description, color) {
-  return { type: EDIT_CHARACTER, id, name, description, color }
+export function editCharacter (id, name, description, sketch, color) {
+  return { type: EDIT_CHARACTER, id, name, description, sketch, color }
 }

@@ -14,8 +14,9 @@ class CharacterView extends Component {
   saveEdit () {
     var newName = this.refs.nameInput.getValue() || this.props.character.name
     var newDescription = this.refs.descriptionInput.getValue() || this.props.character.description
+    var newSketch = this.refs.sketchInput.getValue() || this.props.character.sketch
     var newColor = this.state.newColor || this.props.character.color
-    this.props.actions.editCharacter(this.props.character.id, newName, newDescription, newColor)
+    this.props.actions.editCharacter(this.props.character.id, newName, newDescription, newSketch, newColor)
     this.setState({editing: false})
   }
 
@@ -45,8 +46,9 @@ class CharacterView extends Component {
     const { character } = this.props
     return (
       <div className='character-list__character'>
-        <Input type='text' ref='nameInput' label='character name' defaultValue={character.name} />
-        <Input type='text' ref='descriptionInput' label='character description' defaultValue={character.description} />
+        <Input type='text' ref='nameInput' label='Name' defaultValue={character.name} />
+        <Input type='text' ref='descriptionInput' label='Short Description' defaultValue={character.description} />
+        <Input type='textarea' rows="10" ref='sketchInput' label='Notes' defaultValue={character.sketch} />
         <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}
         <div className='form-group character-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(character.color)}</label></div>
@@ -71,7 +73,7 @@ class CharacterView extends Component {
     return (
       <div className='character-list__character' onClick={() => this.setState({editing: true})}>
         <h4>{character.name}</h4>
-        <p>{this.renderColorLabel(character.color)} {character.description}</p>
+        <p>{this.renderColorLabel(character.color)} {character.description} </p>
       </div>
     )
   }

@@ -14,9 +14,9 @@ class CharacterView extends Component {
   saveEdit () {
     var newName = this.refs.nameInput.getValue() || this.props.character.name
     var newDescription = this.refs.descriptionInput.getValue() || this.props.character.description
-    var newSketch = this.refs.sketchInput.getValue() || this.props.character.sketch
+    var newNotes = this.refs.notesInput.getValue() || this.props.character.notes
     var newColor = this.state.newColor || this.props.character.color
-    this.props.actions.editCharacter(this.props.character.id, newName, newDescription, newSketch, newColor)
+    this.props.actions.editCharacter(this.props.character.id, newName, newDescription, newNotes, newColor)
     this.setState({editing: false})
   }
 
@@ -48,7 +48,7 @@ class CharacterView extends Component {
       <div className='character-list__character'>
         <Input type='text' ref='nameInput' label='Name' defaultValue={character.name} />
         <Input type='text' ref='descriptionInput' label='Short Description' defaultValue={character.description} />
-        <Input type='textarea' rows="10" ref='sketchInput' label='Notes' defaultValue={character.sketch} />
+        <Input type='textarea' rows="10" ref='notesInput' label='Notes' defaultValue={character.notes} />
         <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}
         <div className='form-group character-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(character.color)}</label></div>

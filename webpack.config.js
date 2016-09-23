@@ -1,7 +1,17 @@
 var path = require('path')
 var webpack = require('webpack')
 
-var ignore = new webpack.IgnorePlugin(/main/, /bin/)
+var plugins = [
+  new webpack.IgnorePlugin(/main/, /bin/),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'common',
+    chunks: ['app', 'verify', 'report']
+  })
+]
+
+if (process.env.NODE_ENV !== 'dev') {
+  plugins.push(new webpack.optimize.UglifyJsPlugin({compressor: {screw_ie8: true, warnings: false}}))
+}
 
 module.exports = {
   context: __dirname + '/src',
@@ -27,9 +37,6 @@ module.exports = {
       test: /\.scss$/,
       loader: 'style-loader!css-loader!sass-loader',
       include: __dirname + './src/css'
-    }, {
-      test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'url?limit=10000&mimetype=application/font-woff'
     }]
   },
   resolve: {
@@ -37,7 +44,7 @@ module.exports = {
     root: __dirname + './src',
     modulesDirectories: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/report']
   },
-  target: 'atom',
+  target: 'electron-renderer',
   externals: [
     (function () {
       var IGNORES = [
@@ -51,5 +58,5 @@ module.exports = {
       }
     })()
   ],
-  plugins: [ignore]
+  plugins: plugins
 }

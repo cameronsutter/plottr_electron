@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "building $npm_package_version..."
+node_modules/.bin/webpack 1> /dev/null
 npm run build 1> /dev/null
 cd ~/plottr_dist
 

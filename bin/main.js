@@ -16,6 +16,8 @@ var aboutWindow = null
 var verifyWindow = null
 var reportWindow = null
 
+
+const filePrefix = 'file://' + __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
 
 // mixpanel tracking
@@ -364,7 +366,7 @@ function openWindow (fileName, newFile = false) {
   let newWindow = new BrowserWindow({width: 1200, height: 800, show: false, backgroundColor: '#efefee', webPreferences: {scrollBounce: true}})
 
   // and load the app.html of the app.
-  const entryFile = 'file://' + __dirname + '/app.html'
+  const entryFile = filePrefix + '/app.html'
   newWindow.loadURL(entryFile)
 
   newWindow.once('ready-to-show', function() {
@@ -496,7 +498,7 @@ function removeRecentFile (currentWindowFile) {
 }
 
 function openAboutWindow () {
-  const aboutFile = 'file://' + __dirname + '/about.html'
+  const aboutFile = filePrefix + '/about.html'
   aboutWindow = new BrowserWindow({width: 400, height: 550, show: false})
   aboutWindow.loadURL(aboutFile)
   aboutWindow.once('ready-to-show', function() {
@@ -508,7 +510,7 @@ function openAboutWindow () {
 }
 
 function openVerifyWindow () {
-  const verifyFile = 'file://' + __dirname + '/verify.html'
+  const verifyFile = filePrefix + '/verify.html'
   verifyWindow = new BrowserWindow({frame: false, height: 425, show: false})
   verifyWindow.loadURL(verifyFile)
   verifyWindow.once('ready-to-show', function() {
@@ -520,7 +522,7 @@ function openVerifyWindow () {
 }
 
 function openReportWindow () {
-  const reportFile = 'file://' + __dirname + '/report.html'
+  const reportFile = filePrefix + '/report.html'
   reportWindow = new BrowserWindow({frame: false, show: false})
   reportWindow.loadURL(reportFile)
   reportWindow.once('ready-to-show', function() {

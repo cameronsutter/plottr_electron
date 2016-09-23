@@ -39,12 +39,12 @@
     "sass-loader": "^3.1.1",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.2"
+    "webpack": "^1.13.2"
   },
   "scripts": {
     "start": "NODE_ENV=dev electron .",
     "compile": "node_modules/.bin/webpack",
-    "watch": "node_modules/.bin/webpack -w",
+    "watch": "NODE_ENV=dev node_modules/.bin/webpack -w",
     "createDevLicense": "NODE_ENV=license electron .",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "build": "node bin/build.js",

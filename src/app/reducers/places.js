@@ -11,12 +11,13 @@ export default function places (state = initialState, action) {
         id: placeId(state),
         name: action.name,
         description: action.description,
+        notes: action.notes,
         place: place.color
       }]
 
     case EDIT_PLACE:
       return state.map(place =>
-        place.id === action.id ? Object.assign({}, place, {name: action.name, description: action.description, color: action.color}) : place
+        place.id === action.id ? Object.assign({}, place, {name: action.name, description: action.description, notes: action.notes, color: action.color}) : place
       )
 
     case RESET:

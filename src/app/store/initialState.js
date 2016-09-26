@@ -22,6 +22,7 @@ export const character = {
   id: 0,
   name: 'main character',
   description: 'she is the coolest',
+  notes: 'this is why she is the coolest',
   color: null
 }
 
@@ -29,6 +30,7 @@ export const place = {
   id: 0,
   name: 'first place',
   description: 'my favorite place',
+  notes: 'about this place',
   color: null
 }
 

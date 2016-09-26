@@ -41,32 +41,31 @@ class ReportView extends Component {
     else tags.push('bug')
 
     var req = {
-      url: 'https://api.github.com/repos/cameronsutter/plottr_electron/issues',
+      url: 'https://maker.ifttt.com/trigger/plottr_electron_issue/with/key/cRXNfmbMn9nBIU8G7S964r',
       method: 'POST',
       json: true,
       headers: {
         'Content-Type': 'application/json',
-        'User-Agent': 'Plottr',
-        Authorization: 'token 4cb9cbf71f2695992f49a6d2b4d85e40d6a6f4c1'
+        'User-Agent': 'Plottr'
       },
       body: {
-        title: title,
-        body: body,
-        labels: tags
+        value1: title,
+        value2: body,
+        value3: tags
       }
     }
 
     const view = this
     request(req, function (err, response, body) {
       var newState = {spinnerHidden: true}
-      if (err || response.statusCode !== 201) {
+      if (err || response.statusCode !== 200) {
         Object.assign(newState, {showAlert: true, alertText: view.makeAlertText(ERROR)})
       } else {
         var state = {
           showAlert: true,
           alertClass: GREEN,
           alertText: view.makeAlertText(SUCCESS),
-          issueURL: body.html_url
+          issueURL: 'https://github.com/cameronsutter/plottr_electron/issues'
         }
         Object.assign(newState, state)
       }
@@ -161,7 +160,7 @@ class ReportView extends Component {
         { this.renderAlert() }
       </Row>
       <Row>
-        <p>You can view this issue here:</p>
+        <p>You can view all known issues here:</p>
         <Button onClick={this.handleLink.bind(this)} bsStyle='link' bsSize='large'>{this.state.issueURL}</Button>
       </Row>
     </div>)

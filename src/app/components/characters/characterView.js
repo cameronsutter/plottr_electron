@@ -48,7 +48,7 @@ class CharacterView extends Component {
       <div className='character-list__character'>
         <Input type='text' ref='nameInput' label='Name' defaultValue={character.name} />
         <Input type='text' ref='descriptionInput' label='Short Description' defaultValue={character.description} />
-        <Input type='textarea' rows="10" ref='notesInput' label='Notes' defaultValue={character.notes} />
+        <Input type='textarea' rows='10' ref='notesInput' label='Notes' defaultValue={character.notes} />
         <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}
         <div className='form-group character-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(character.color)}</label></div>

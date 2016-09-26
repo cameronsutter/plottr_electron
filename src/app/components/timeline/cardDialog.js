@@ -6,6 +6,7 @@ import _ from 'lodash'
 import MarkDown from 'pagedown'
 import * as CardActions from 'actions/cards'
 import { card } from 'store/initialState'
+import { shell } from 'electron'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, Input, Label } from 'react-bootstrap'
 
 Modal.setAppElement('#timelineview-root')
@@ -16,7 +17,7 @@ const customStyles = {content: {top: '70px'}}
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.isNewCard, showMarkdownHelp: false}
+    this.state = {editing: props.isNewCard}
   }
 
   closeDialog () {
@@ -189,10 +190,11 @@ class CardDialog extends Component {
     }
 
     if (this.state.editing) {
+      const url = 'https://daringfireball.net/projects/markdown/syntax'
       return (
         <div>
           <Input type='textarea' label='description' rows='13' ref='descriptionInput' defaultValue={description} />
-          <small>Format with markdown! <a href='#' onClick={() => this.setState({showMarkdownHelp: true})}>learn how</a></small>
+          <small>Format with markdown! <a href='#' onClick={() => shell.openExternal(url)}>learn how</a></small>
         </div>
       )
     } else {
@@ -337,19 +339,6 @@ class CardDialog extends Component {
     )
   }
 
-  renderMarkDownHelp () {
-    return (
-      <Modal isOpen={this.state.showMarkdownHelp} onRequestClose={() => this.setState({showMarkdownHelp: false})} style={customStyles}>
-        <Button bsStyle='primary' className='pull-right' onClick={() => this.setState({showMarkdownHelp: false})}>
-          Close
-        </Button>
-        <mark>your help will display below</mark>
-        <hr/>
-        <webview src='https://daringfireball.net/projects/markdown/syntax'></webview>
-      </Modal>
-    )
-  }
-
   render () {
     return (
       <Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
@@ -362,7 +351,6 @@ class CardDialog extends Component {
           </div>
           {this.renderButtonBar()}
         </div>
-        {this.renderMarkDownHelp()}
       </Modal>
     )
   }

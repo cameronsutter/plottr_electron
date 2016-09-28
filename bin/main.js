@@ -301,7 +301,7 @@ function openRecentFiles () {
       })
     } else {
       openAboutWindow()
-      askToOpenOrCreate()
+      openWindow(__dirname + '/tour.plottr')
     }
   })
 }

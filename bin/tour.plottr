@@ -1,0 +1,178 @@
+{
+  "cards": [
+    {
+      "characters": [
+        2
+      ],
+      "description": "You can select tags which show up when you hover over cards. You can also select characters and places, but they don't show up when you hover. I did this so it wouldn't look as cluttered",
+      "id": 2,
+      "lineId": 1,
+      "places": [],
+      "sceneId": 3,
+      "tags": [
+        0,
+        3
+      ],
+      "title": "Hover over this card"
+    },
+    {
+      "characters": [
+        1
+      ],
+      "description": "###You can drag cards from one subplot or scene to another.  \n\n\n- You can also change the dropdowns above to move a card.\n- **Be careful not to choose a plotline and scene where another card already is** or you could lose this card",
+      "id": 1,
+      "lineId": 2,
+      "places": [
+        1
+      ],
+      "sceneId": 1,
+      "tags": [],
+      "title": "Drag this card"
+    },
+    {
+      "characters": [
+        0
+      ],
+      "description": "# About Cards\n\n##General\nCards let you keep details about each scene and the people/places/things/emotions in them\n\n##Edit\nEdit by clicking the button below.  \n\n\n## You have the power\n\n- You can use markdown syntax\n- You can tag characters, places, and tags\n- by typing two of these {} around the name of a character/place/thing it will show that color in the description itself\n- like so {{happy}} {{dark}} {{Main Character}}",
+      "id": 0,
+      "lineId": 0,
+      "places": [
+        0
+      ],
+      "sceneId": 0,
+      "tags": [],
+      "title": "Click this card"
+    }
+  ],
+  "characters": [
+    {
+      "color": null,
+      "description": "she is the coolest",
+      "id": 0,
+      "name": "Main Character"
+    },
+    {
+      "color": "deeppink",
+      "description": "Click on a character's name to edit it or choose a color",
+      "id": 1,
+      "name": "Love interest"
+    },
+    {
+      "color": null,
+      "description": "Characters, places, and tags show up on the filter menu in the timeline view. You can filter which cards are visible by which of these you have tagged to that card",
+      "id": 2,
+      "name": "Filter in the Timeline"
+    }
+  ],
+  "file": {
+    "dirty": false,
+    "fileName": "/Users/csutter/github/plottr_electron/tour.plottr",
+    "loaded": true,
+    "version": "0.7.2"
+  },
+  "lines": [
+    {
+      "color": "#000000",
+      "id": 4,
+      "position": 4,
+      "title": "New plotline ↓"
+    },
+    {
+      "color": "#000000",
+      "id": 3,
+      "position": 3,
+      "title": "Drag this plotline"
+    },
+    {
+      "color": "mediumvioletred",
+      "id": 2,
+      "position": 2,
+      "title": "Hover over this plotline"
+    },
+    {
+      "color": "seagreen",
+      "id": 1,
+      "position": 1,
+      "title": "Subplot"
+    },
+    {
+      "color": "cornflowerblue",
+      "id": 0,
+      "position": 0,
+      "title": "Main Plot"
+    }
+  ],
+  "places": [
+    {
+      "color": null,
+      "description": "her favorite place",
+      "id": 0,
+      "name": "MC's home"
+    },
+    {
+      "color": "springgreen",
+      "description": "Click on a place's box to edit it or choose a color",
+      "id": 1,
+      "name": "Another place in your story",
+      "place": null
+    }
+  ],
+  "scenes": [
+    {
+      "id": 4,
+      "position": 4,
+      "title": "New scene -->"
+    },
+    {
+      "id": 3,
+      "position": 3,
+      "title": "Hover over this scene"
+    },
+    {
+      "id": 0,
+      "position": 0,
+      "title": "Scene 1"
+    },
+    {
+      "id": 1,
+      "position": 1,
+      "title": "Scene 2"
+    },
+    {
+      "id": 2,
+      "position": 2,
+      "title": "Drag this scene"
+    }
+  ],
+  "storyName": "Click your story's title",
+  "tags": [
+    {
+      "color": "crimson",
+      "id": 0,
+      "title": "happy"
+    },
+    {
+      "color": "powderblue",
+      "id": 1,
+      "title": "sad"
+    },
+    {
+      "color": "midnightblue",
+      "id": 2,
+      "title": "dark"
+    },
+    {
+      "color": "paleturquoise",
+      "id": 3,
+      "title": "uplifting"
+    },
+    {
+      "color": "hotpink",
+      "id": 4,
+      "title": "romantic"
+    }
+  ],
+  "ui": {
+    "currentView": "timeline"
+  }
+}

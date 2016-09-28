@@ -19,7 +19,8 @@ var options = {
     /src/,
     /\.gitignore/,
     /.*\.(md|MD)/,
-    /webpack\.config\.js/
+    /webpack\.config\.js/,
+    /example.{0,3}\.plottr/
   ]
 }
 

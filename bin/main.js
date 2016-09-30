@@ -6,6 +6,10 @@ var _ = require('lodash')
 var storage = require('electron-json-storage')
 
 const USER_INFO = 'user_info'
+var TRIALMODE = false
+if (require('../trialmode.json')) {
+  TRIALMODE = true
+}
 
 // TODO: Report crashes to our server.
 
@@ -22,6 +26,10 @@ const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFil
 
 // mixpanel tracking
 var tracker = false
+
+////////////////////////////////
+///////     EVENTS    //////////
+////////////////////////////////
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -83,166 +91,6 @@ ipcMain.on('license-verified', function () {
 
 ipcMain.on('report-window-requested', openReportWindow)
 
-var template = [
-  {
-    label: 'Plottr',
-    submenu: [ {
-      label: 'About Plottr',
-      click: openAboutWindow
-    }, {
-      label: 'Report a Problem',
-      click: openReportWindow
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Services',
-      role: 'services',
-      submenu: []
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Hide Plottr',
-      accelerator: 'Command+H',
-      role: 'hide'
-    }, {
-      label: 'Hide Others',
-      accelerator: 'Command+Alt+H',
-      role: 'hideothers'
-    }, {
-      label: 'Show All',
-      role: 'unhide'
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Quit',
-      accelerator: 'Cmd+Q',
-      click: function () {
-        // TODO: check for dirty files open
-        app.quit()
-      }
-    }]
-  }, {
-    label: 'File',
-    submenu: [{
-      label: 'Save',
-      accelerator: 'CmdOrCtrl+S',
-      click: function () {
-        let win = BrowserWindow.getFocusedWindow()
-        let winObj = _.find(windows, {id: win.id})
-        if (winObj) {
-          saveFile(winObj.state.file.fileName, winObj.state, function (err) {
-            if (err) throw err
-            else {
-              win.webContents.send('state-saved')
-              winObj.lastSave = winObj.state
-              win.setDocumentEdited(false)
-            }
-          })
-        }
-      }
-    }, {
-      label: 'Open',
-      accelerator: 'CmdOrCtrl+O',
-      click: askToOpenFile
-    }, {
-      label: 'New',
-      accelerator: 'CmdOrCtrl+N',
-      click: askToCreateFile
-    }, {
-      label: 'Close',
-      accelerator: 'CmdOrCtrl+W',
-      click: function () {
-        let win = BrowserWindow.getFocusedWindow()
-        if (win) {
-          let winObj = _.find(windows, {id: win.id})
-          if (winObj) {
-            if (process.env.NODE_ENV !== 'dev') {
-              if (checkDirty(winObj.state, winObj.lastSave)) {
-                askToSave(win, winObj.state, function () { closeWindow(win.id) })
-              } else {
-                closeWindow(win.id)
-              }
-            } else {
-              closeWindow(win.id)
-            }
-          } else {
-            win.close()
-          }
-        }
-      }
-    }]
-  }, {
-    label: 'Edit',
-    submenu: [{
-      label: 'Cut',
-      accelerator: 'CmdOrCtrl+X',
-      role: 'cut'
-    }, {
-      label: 'Copy',
-      accelerator: 'CmdOrCtrl+C',
-      role: 'copy'
-    }, {
-      label: 'Paste',
-      accelerator: 'CmdOrCtrl+V',
-      role: 'paste'
-    }, {
-      label: 'Select All',
-      accelerator: 'CmdOrCtrl+A',
-      role: 'selectall'
-    }]
-  }, {
-    label: 'View',
-    submenu: [{
-      label: 'Reload',
-      accelerator: 'CmdOrCtrl+R',
-      click: function () {
-        let win = BrowserWindow.getFocusedWindow()
-        let winObj = _.find(windows, {id: win.id})
-        if (process.env.NODE_ENV !== 'dev') {
-          if (checkDirty(winObj.state, winObj.lastSave)) {
-            askToSave(win, winObj.state, win.webContents.reload)
-          } else {
-            win.webContents.reload()
-          }
-        } else {
-          win.webContents.reload()
-        }
-      }
-    }, {
-      label: 'Show Dev Tools',
-      accelerator: '',
-      click: function () {
-        let win = BrowserWindow.getFocusedWindow()
-        win.openDevTools()
-      }
-    }]
-  }, {
-    label: 'Window',
-    role: 'window',
-    submenu: [
-      {
-        label: 'Minimize',
-        accelerator: 'CmdOrCtrl+M',
-        role: 'minimize'
-      }, {
-        type: 'separator'
-      }, {
-        label: 'Bring All to Front',
-        role: 'front'
-      }
-    ]
-  }, {
-    label: 'Help',
-    role: 'help',
-    submenu: [
-      {
-        label: 'Report a Problem',
-        click: openReportWindow
-      }
-    ]
-  }
-]
-
 app.on('ready', function () {
   if (process.env.NODE_ENV === 'license') {
     const fakeData = require('./devLicense')
@@ -252,6 +100,7 @@ app.on('ready', function () {
       app.quit()
     })
   } else {
+    var template = buildMenu()
     var menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
 
@@ -259,18 +108,27 @@ app.on('ready', function () {
   }
 })
 
+////////////////////////////////
+///////   FUNCTIONS   //////////
+////////////////////////////////
+
 function checkLicense () {
-  storage.has(USER_INFO, function (err, hasKey) {
-    if (err) console.log(err)
-    if (hasKey) {
-      storage.get(USER_INFO, function (err, data) {
-        if (data.success) openRecentFiles()
-        else openVerifyWindow()
-      })
-    } else {
-      openVerifyWindow()
-    }
-  })
+  if (TRIALMODE) {
+    openWindow(__dirname + '/tour.plottr')
+    openAboutWindow()
+  } else {
+    storage.has(USER_INFO, function (err, hasKey) {
+      if (err) console.log(err)
+      if (hasKey) {
+        storage.get(USER_INFO, function (err, data) {
+          if (data.success) openRecentFiles()
+          else openVerifyWindow()
+        })
+      } else {
+        openVerifyWindow()
+      }
+    })
+  }
 }
 
 function saveFile (fileName, data, callback) {
@@ -279,9 +137,11 @@ function saveFile (fileName, data, callback) {
 }
 
 function displayFileName (path) {
+  var stringBase = 'Plottr'
+  if (TRIALMODE) stringBase += ' — TRIAL VERSION'
   var matches = path.match(/.*\/(.*\.plottr)/)
-  if (matches) return `Plottr — ${matches[1]}`
-  return 'Plottr'
+  if (matches) stringBase += ` — ${matches[1]}`
+  return stringBase
 }
 
 function checkDirty (state, lastSave) {
@@ -533,6 +393,10 @@ function openReportWindow () {
   })
 }
 
+////////////////////////////////
+///////    MIGRATE    //////////
+////////////////////////////////
+
 function migrateIfNeeded (win, json, fileName, callback) {
   if (!json.file) {
     callback(null, false, json)
@@ -573,5 +437,207 @@ function migrateIfNeeded (win, json, fileName, callback) {
         }
       })
     }
+  }
+}
+
+////////////////////////////////
+///////   BUILD MENU  //////////
+////////////////////////////////
+
+function buildMenu () {
+  return [
+    buildPlottrMenu(),
+    buildFileMenu(),
+    buildEditMenu(),
+    buildViewMenu(),
+    buildWindowMenu(),
+    buildHelpMenu()
+  ]
+}
+
+function buildPlottrMenu () {
+  return {
+    label: 'Plottr',
+    submenu: [ {
+      label: 'About Plottr',
+      click: openAboutWindow
+    }, {
+      label: 'Report a Problem',
+      click: openReportWindow
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Services',
+      role: 'services',
+      submenu: []
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Hide Plottr',
+      accelerator: 'Command+H',
+      role: 'hide'
+    }, {
+      label: 'Hide Others',
+      accelerator: 'Command+Alt+H',
+      role: 'hideothers'
+    }, {
+      label: 'Show All',
+      role: 'unhide'
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Quit',
+      accelerator: 'Cmd+Q',
+      click: function () {
+        // TODO: check for dirty files open
+        app.quit()
+      }
+    }]
+  }
+}
+
+function buildFileMenu () {
+  var submenu = [{
+    label: 'Close',
+    accelerator: 'CmdOrCtrl+W',
+    click: function () {
+      let win = BrowserWindow.getFocusedWindow()
+      if (win) {
+        let winObj = _.find(windows, {id: win.id})
+        if (winObj) {
+          if (process.env.NODE_ENV !== 'dev') {
+            if (checkDirty(winObj.state, winObj.lastSave)) {
+              askToSave(win, winObj.state, function () { closeWindow(win.id) })
+            } else {
+              closeWindow(win.id)
+            }
+          } else {
+            closeWindow(win.id)
+          }
+        } else {
+          win.close()
+        }
+      }
+    }
+  }]
+  if (!TRIALMODE) {
+    var submenu = [].concat({
+      label: 'Save',
+      accelerator: 'CmdOrCtrl+S',
+      click: function () {
+        let win = BrowserWindow.getFocusedWindow()
+        let winObj = _.find(windows, {id: win.id})
+        if (winObj) {
+          saveFile(winObj.state.file.fileName, winObj.state, function (err) {
+            if (err) throw err
+            else {
+              win.webContents.send('state-saved')
+              winObj.lastSave = winObj.state
+              win.setDocumentEdited(false)
+            }
+          })
+        }
+      }
+    }, {
+      label: 'Open',
+      accelerator: 'CmdOrCtrl+O',
+      click: askToOpenFile
+    }, {
+      label: 'New',
+      accelerator: 'CmdOrCtrl+N',
+      click: askToCreateFile
+    },
+    submenu)
+  }
+  return {
+    label: 'File',
+    submenu: submenu
+  }
+}
+
+function buildEditMenu () {
+  return {
+    label: 'Edit',
+    submenu: [{
+      label: 'Cut',
+      accelerator: 'CmdOrCtrl+X',
+      role: 'cut'
+    }, {
+      label: 'Copy',
+      accelerator: 'CmdOrCtrl+C',
+      role: 'copy'
+    }, {
+      label: 'Paste',
+      accelerator: 'CmdOrCtrl+V',
+      role: 'paste'
+    }, {
+      label: 'Select All',
+      accelerator: 'CmdOrCtrl+A',
+      role: 'selectall'
+    }]
+  }
+}
+
+function buildViewMenu () {
+  var submenu = [{
+    label: 'Reload',
+    accelerator: 'CmdOrCtrl+R',
+    click: function () {
+      let win = BrowserWindow.getFocusedWindow()
+      let winObj = _.find(windows, {id: win.id})
+      if (process.env.NODE_ENV !== 'dev') {
+        if (checkDirty(winObj.state, winObj.lastSave)) {
+          askToSave(win, winObj.state, win.webContents.reload)
+        } else {
+          win.webContents.reload()
+        }
+      } else {
+        win.webContents.reload()
+      }
+    }
+  }]
+  if (!TRIALMODE) submenu.push({
+    label: 'Show Dev Tools',
+    accelerator: '',
+    click: function () {
+      let win = BrowserWindow.getFocusedWindow()
+      win.openDevTools()
+    }
+  })
+  return {
+    label: 'View',
+    submenu: submenu
+  }
+}
+
+function buildWindowMenu () {
+  return {
+    label: 'Window',
+    role: 'window',
+    submenu: [
+      {
+        label: 'Minimize',
+        accelerator: 'CmdOrCtrl+M',
+        role: 'minimize'
+      }, {
+        type: 'separator'
+      }, {
+        label: 'Bring All to Front',
+        role: 'front'
+      }
+    ]
+  }
+}
+
+function buildHelpMenu () {
+  return {
+    label: 'Help',
+    role: 'help',
+    submenu: [
+      {
+        label: 'Report a Problem',
+        click: openReportWindow
+      }
+    ]
   }
 }

@@ -1,5 +1,11 @@
 var packager = require('electron-packager')
 var path = require('path')
+var fs = require('fs')
+
+if (process.argv[2] === 'TRIALMODE') {
+  var json = {trialmode: true}
+  fs.writeFileSync('trialmode.json', JSON.stringify(json))
+}
 
 var options = {
   name: 'Plottr',
@@ -26,17 +32,22 @@ var options = {
 
 // macOS
 packager(options, function (errMac, appPaths) {
-  if (errMac) console.log('error building macOS:' + errMac, errMac.stack)
-  else {
+  if (errMac) {
+    console.log('error building macOS:' + errMac, errMac.stack)
+    fs.unlinkSync('trialmode.json')
+  } else {
     // win64
     options.platform = 'win32'
     packager(options, function (errWin64, appPaths) {
-      if (errWin64) console.log('error building win64:' + errWin64)
-      else {
+      if (errWin64) {
+        console.log('error building win64:' + errWin64)
+        fs.unlinkSync('trialmode.json')
+      } else {
         // win32
         options.arch = 'ia32'
         packager(options, function (errWin32, appPaths) {
           if (errWin32) console.log('error building win32:' + errWin32)
+          fs.unlinkSync('trialmode.json')
         })
       }
     })

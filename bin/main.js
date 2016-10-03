@@ -7,8 +7,11 @@ var storage = require('electron-json-storage')
 
 const USER_INFO = 'user_info'
 var TRIALMODE = false
-if (require('../trialmode.json')) {
+try {
+  require('../trialmode.json')
   TRIALMODE = true
+} catch (e) {
+  // not in trial mode
 }
 
 // TODO: Report crashes to our server.
@@ -20,6 +23,7 @@ var aboutWindow = null
 var verifyWindow = null
 var reportWindow = null
 
+var fileToOpen = null
 
 const filePrefix = 'file://' + __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
@@ -45,7 +49,12 @@ app.on('window-all-closed', function () {
 
 app.on('open-file', function (event, path) {
   // do the file opening here
-  openWindow(path)
+  if (app.isReady()) {
+    openWindow(path)
+  } else {
+    fileToOpen = path
+  }
+  event.preventDefault()
 })
 
 app.on('activate', function () {
@@ -152,18 +161,26 @@ function checkDirty (state, lastSave) {
 }
 
 function openRecentFiles () {
-  storage.has(recentKey, function (err, hasKey) {
-    if (err) console.log(err)
-    if (hasKey) {
-      storage.get(recentKey, function (err, fileName) {
-        if (err) console.log(err)
-        openWindow(fileName)
-      })
-    } else {
-      openAboutWindow()
-      openWindow(__dirname + '/tour.plottr')
-    }
-  })
+  // open-file for windows
+  if (process.platform === 'win32' && process.argv.length >= 2) {
+    openWindow(process.argv[1])
+  } else if (fileToOpen) {
+    openWindow(fileToOpen)
+    fileToOpen = null
+  } else {
+    storage.has(recentKey, function (err, hasKey) {
+      if (err) console.log(err)
+      if (hasKey) {
+        storage.get(recentKey, function (err, fileName) {
+          if (err) console.log(err)
+          openWindow(fileName)
+        })
+      } else {
+        openAboutWindow()
+        openWindow(__dirname + '/tour.plottr')
+      }
+    })
+  }
 }
 
 function askToSave (win, state, callback) {

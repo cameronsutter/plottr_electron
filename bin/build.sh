@@ -29,7 +29,6 @@ cp -R Plottr-win32-ia32 $plottr_dir/win32 && rm -R Plottr-win32-ia32
 cp -R Plottr-win32-x64 $plottr_dir/win64 && rm -R Plottr-win32-x64
 
 echo "zipping..."
-# zip all the builds
 # tar -zcf Plottr-$plottr_dir.tar.gz $plottr_dir/macOS/Plottr.app 1> /dev/null
 hdiutil create -format UDZO -srcfolder $plottr_dir/macOS/Plottr.app Plottr-$plottr_dir.dmg 1> /dev/null
 zip -r -X Plottr-$plottr_dir-win64.zip $plottr_dir/win64 1> /dev/null

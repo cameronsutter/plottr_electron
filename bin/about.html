@@ -33,8 +33,11 @@
         ipcRenderer.send('report-window-requested')
       }
       var TRIALMODE = false
-      if (require('../trialmode.json')) {
+      try {
+        require('../trialmode.json')
         TRIALMODE = true
+      } catch (e) {
+        // not in trial mode
       }
       var versionString = 'Version '
       if (TRIALMODE) versionString = 'TRIAL VERSION '

@@ -1,6 +1,123 @@
+2016-10-02
+==========
+
+  * bump minor version number
+  * [mac] associate .plottr with Plottr
+    refs [#28](https://github.com/cameronsutter/plottr_electron/issues/28)
+    on macOS, the .plottr files will have a cool Plottr icon and you can
+    open Plottr by double clicking them
+
+2016-09-29
+==========
+
+  * trial version
+    closes [#42](https://github.com/cameronsutter/plottr_electron/issues/42)
+    enables a trial version build
+
+2016-09-27
+==========
+
+  * open tour file on first use
+    refs [#42](https://github.com/cameronsutter/plottr_electron/issues/42)
+
+2016-09-25
+==========
+
+  * migration for 0.8
+    start a migrator file for 0.8 which adds notes to places/characters
+  * open markdown help in a real browser
+    fixes [#67](https://github.com/cameronsutter/plottr_electron/issues/67)
+  * improve role descriptions
+    improve the description of our roles in the Creators section of the
+    about window
+  * fix bug reporting
+    fixes [#85](https://github.com/cameronsutter/plottr_electron/issues/85)
+    removes the insecure call to github and instead reports bugs in a more
+    secure way
+  * decrease build size
+    refs [#64](https://github.com/cameronsutter/plottr_electron/issues/64)
+    by making a common bundle and minifying the js files for production,
+    the builds should be smaller :)
+  * Merge pull request [#89](https://github.com/cameronsutter/plottr_electron/issues/89) from cameronsutter/dev
+    Dev: Issue 69 fix
+
+2016-09-20
+==========
+
+  * Add Notes field to Character and Settings
+    Fixes Issue [#69](https://github.com/cameronsutter/plottr_electron/issues/69)
+    Additionally:
+    * Changes "character description" label to say "Short Description"
+    * Changes "place description" label to say "Short Description"
+    * Changes "character name" label to say "Name"
+    * Changes "character description" label to say "Short Description"
+    * Fixes spelling error for Jon Willesen's name on About page
+    * Adds dev to Steve Shepherd's credits
+  * Changes:
+    * Updated
+  * report a bug
+    closes [#26](https://github.com/cameronsutter/plottr_electron/issues/26)
+    Now you can report a bug or request a feature
+
+2016-09-18
+==========
+
+  * improve startup time
+  * optimize build
+
+2016-09-16
+==========
+
+  * verify licenses
+    closes [#27](https://github.com/cameronsutter/plottr_electron/issues/27)
+    I had to reorganize the whole project to get this to work, mainly to
+    get webpack to play nicely but it’s better as a result
+
+2016-09-12
+==========
+
+  * track usage
+    closes [#39](https://github.com/cameronsutter/plottr_electron/issues/39)
+    tracks simple actions (when online) so that we can measure engagement
+    with Plottr. No
+    story data is tracked/captured/transferred
+
+2016-08-31
+==========
+
+  * cleanup from multiple windows
+    fixes [#71](https://github.com/cameronsutter/plottr_electron/issues/71)
+    after a migration it will say that there are unsaved changes.
+  * multiple windows
+    closes [#15](https://github.com/cameronsutter/plottr_electron/issues/15)
+    More than one window open at a time
+
+2016-08-29
+==========
+
+  * remove unnecessary glyphicon fonts
+
+2016-08-28
+==========
+
+  * bug fix: new files
+    fixes [#66](https://github.com/cameronsutter/plottr_electron/issues/66)
+
+2016-08-23
+==========
+
+  * fix a few bugs
+    node-sass needed to be updated, opening files wasn’t working, and the
+    about window wasn’t showing.
+    bumped build number
+  * fix build … again
+    also started a js build script that isn’t currently working, but it
+    will be useful in the future
+
 2016-08-22
 ==========
 
+  * update changelog
   * bump version number to 0.7.0
 
 2016-08-16
@@ -357,75 +474,3 @@
   * simple file migration framework
     refs [#20](https://github.com/cameronsutter/plottr_electron/issues/20)
     needs testing before it’s ready
-
-2016-02-04
-==========
-
-  * bump version number
-  * link to markdown syntax
-    help text at the bottom of the description editor to tell you that you
-    can format with markdown syntax with a link to the syntax
-    closes [#10](https://github.com/cameronsutter/plottr_electron/issues/10)
-  * prompt to save
-    if you have unsaved changes when you close the window, it will prompt
-    you to save.
-    closes [#6](https://github.com/cameronsutter/plottr_electron/issues/6)
-  * penguin icon :)
-    closes [#14](https://github.com/cameronsutter/plottr_electron/issues/14)
-
-2016-01-31
-==========
-
-  * delete cards when line or scene is deleted
-
-2016-01-20
-==========
-
-  * fixes opening new cards
-    fixes [#13](https://github.com/cameronsutter/plottr_electron/issues/13)
-
-2016-01-19
-==========
-
-  * change placeholder in all inputs
-    fixes [#5](https://github.com/cameronsutter/plottr_electron/issues/5) in more places
-  * handle new cards in label editor mode
-    fixes [#13](https://github.com/cameronsutter/plottr_electron/issues/13)
-  * show dev tools for debugging
-    fixes [#7](https://github.com/cameronsutter/plottr_electron/issues/7)
-
-2016-01-18
-==========
-
-  * card dialog title text editing
-    fixes [#5](https://github.com/cameronsutter/plottr_electron/issues/5)
-    when editing a card in the dialog, instead of making the current title
-    just a placeholder, it now puts the title in the input box for easy
-    editing
-  * copy and paste
-    fixes [#4](https://github.com/cameronsutter/plottr_electron/issues/4)
-
-2016-01-05
-==========
-
-  * fixed bug with editing descriptions
-
-2015-12-22
-==========
-
-  * fixed file flow
-  * fixed weird tag behavior
-  * add,remove tags from cards
-  * view tags, characters, places on card
-  * edit tags
-  * edit places
-  * edit characters
-  * insert scenes
-
-2015-12-21
-==========
-
-  * editing a character
-  * cleaned up some css files
-  * add new tags
-  * add new places

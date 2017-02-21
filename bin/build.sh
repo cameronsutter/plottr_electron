@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "packing..."
-node_modules/.bin/webpack 1> /dev/null
+NODE_ENV=production node_modules/.bin/webpack 1> /dev/null
 
 echo "building $npm_package_version $1..."
 if [ "$1" = "TRIALMODE" ]; then

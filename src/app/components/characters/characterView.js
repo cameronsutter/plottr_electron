@@ -8,7 +8,13 @@ import * as CharacterActions from 'actions/characters'
 class CharacterView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false, showColorPicker: false, newColor: null}
+    this.state = {editing: props.character.name === '', showColorPicker: false, newColor: null}
+  }
+
+  handleEnter (event) {
+    if (event.which === 13) {
+      this.saveEdit()
+    }
   }
 
   saveEdit () {
@@ -46,8 +52,8 @@ class CharacterView extends Component {
     const { character } = this.props
     return (
       <div className='character-list__character'>
-        <Input type='text' ref='nameInput' label='Name' defaultValue={character.name} />
-        <Input type='text' ref='descriptionInput' label='Short Description' defaultValue={character.description} />
+        <Input type='text' ref='nameInput' autoFocus onKeyPress={this.handleEnter.bind(this)} label='Name' defaultValue={character.name} />
+        <Input type='text' ref='descriptionInput' onKeyPress={this.handleEnter.bind(this)} label='Short Description' defaultValue={character.description} />
         <Input type='textarea' rows='10' ref='notesInput' label='Notes' defaultValue={character.notes} />
         <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}

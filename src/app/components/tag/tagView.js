@@ -8,7 +8,13 @@ import * as TagActions from 'actions/tags'
 class TagView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false, showColorPicker: false, newColor: null}
+    this.state = {editing: props.tag.title === '', showColorPicker: false, newColor: null}
+  }
+
+  handleEnter (event) {
+    if (event.which === 13) {
+      this.saveEdit()
+    }
   }
 
   saveEdit () {
@@ -44,7 +50,7 @@ class TagView extends Component {
     const { tag } = this.props
     return (
       <div className='tag-list__tag'>
-        <Input type='text' ref='titleInput' label='tag name' defaultValue={tag.title} />
+        <Input type='text' ref='titleInput' autoFocus onKeyPress={this.handleEnter.bind(this)} label='tag name' defaultValue={tag.title} />
         <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}
         <div className='form-group tag-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(tag.color)}</label></div>

@@ -20,23 +20,23 @@ export const storyName = 'My awesome story'
 
 export const character = {
   id: 0,
-  name: 'main character',
-  description: 'she is the coolest',
-  notes: 'this is why she is the coolest',
+  name: '',
+  description: '',
+  notes: '',
   color: null
 }
 
 export const place = {
   id: 0,
-  name: 'first place',
-  description: 'my favorite place',
-  notes: 'about this place',
+  name: '',
+  description: '',
+  notes: '',
   color: null
 }
 
 export const tag = {
   id: 0,
-  title: 'First tag :)',
+  title: '',
   color: null
 }
 

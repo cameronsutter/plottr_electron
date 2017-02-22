@@ -504,14 +504,14 @@
       "description": "she is the coolest",
       "id": 1,
       "name": "main character",
-      "notes": null
+      "notes": ""
     },
     {
       "color": "gold",
       "description": "she is the coolest",
       "id": 0,
       "name": "second character",
-      "notes": null
+      "notes": ""
     }
   ],
   "file": {
@@ -570,14 +570,14 @@
       "description": "my favorite place",
       "id": 1,
       "name": "first place",
-      "notes": null
+      "notes": ""
     },
     {
       "color": "darkorchid",
       "description": "my favorite place",
       "id": 0,
       "name": "second place",
-      "notes": null
+      "notes": ""
     }
   ],
   "scenes": [

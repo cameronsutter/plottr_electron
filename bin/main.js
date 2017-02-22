@@ -74,6 +74,16 @@ ipcMain.on('save-state', function (event, state, winId) {
 
   // save the new state
   winObj.state = state
+  if (edited) {
+    saveFile(state.file.fileName, state, function (err) {
+      if (err) throw err
+      else {
+        winObj.window.webContents.send('state-saved')
+        winObj.lastSave = winObj.state
+        winObj.window.setDocumentEdited(false)
+      }
+    })
+  }
 })
 
 ipcMain.on('fetch-state', function (event, id) {
@@ -261,26 +271,6 @@ function openWindow (fileName, newFile = false) {
     newWindow.openDevTools()
   }
 
-  newWindow.on('blur', function () {
-    let win = _.find(windows, {id: this.id})
-
-    if (win.autosave) {
-      clearInterval(win.autosave)
-      win.autosave = null
-    }
-  })
-
-  newWindow.on('focus', function () {
-    let win = _.find(windows, {id: this.id})
-    if (win) {
-      if (!win.autosave && process.env.NODE_ENV !== 'dev') {
-        win.autosave = setInterval(function() {
-          autoSaveWindow(win)
-        }, 1000 * 60 * 5) // every 5 minutes
-      }
-    }
-  })
-
   newWindow.on('closed', function () {
   })
 
@@ -311,8 +301,7 @@ function openWindow (fileName, newFile = false) {
       window: newWindow,
       fileName: fileName,
       state: json,
-      lastSave: json,
-      autosave: null
+      lastSave: json
     })
 
     newWindow.setTitle(displayFileName(fileName))
@@ -320,31 +309,14 @@ function openWindow (fileName, newFile = false) {
   } catch (err) {
     console.log(err)
     newWindow.close()
-    if (autosave) clearInterval(autosave)
     askToOpenOrCreate()
   }
 }
 
 function dereferenceWindow (winObj) {
-  if (winObj.autosave) {
-    clearInterval(winObj.autosave)
-  }
   windows = _.reject(windows, function (win) {
     return win.id === winObj.id
   })
-}
-
-function autoSaveWindow (winObj) {
-  if (checkDirty(winObj.state, winObj.lastSave)) {
-    saveFile(winObj.state.file.fileName, winObj.state, function (err) {
-      if (err) throw err
-      else {
-        winObj.window.webContents.send('state-saved')
-        winObj.lastSave = winObj.state
-        winObj.window.setDocumentEdited(false)
-      }
-    })
-  }
 }
 
 function closeWindow (id) {

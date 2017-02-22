@@ -77,7 +77,7 @@ function Migrator (data, givenVersion, targetVersion) {
 
   this.getPath = function () {
     var appPath = app.getAppPath()
-    return path.resolve(appPath, 'migrator', 'migrations')
+    return path.resolve(appPath, 'bin', 'migrator', 'migrations')
   }
 
   this.data = data

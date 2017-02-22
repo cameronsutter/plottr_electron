@@ -12,7 +12,7 @@ class LineView extends Component {
     super(props)
     this.state = {
       hovering: false,
-      editing: false,
+      editing: props.line.title === '',
       dragging: false,
       dropping: false,
       showColorPicker: false

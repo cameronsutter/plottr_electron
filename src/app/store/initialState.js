@@ -54,6 +54,6 @@ export const card = {
 export const line = {
   id: 0,
   color: '#000000',
-  title: 'Story Line',
+  title: '',
   position: 0
 }

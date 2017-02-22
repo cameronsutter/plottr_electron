@@ -503,20 +503,22 @@
       "color": "lightpink",
       "description": "she is the coolest",
       "id": 1,
-      "name": "main character"
+      "name": "main character",
+      "notes": null
     },
     {
       "color": "gold",
       "description": "she is the coolest",
       "id": 0,
-      "name": "second character"
+      "name": "second character",
+      "notes": null
     }
   ],
   "file": {
-    "dirty": true,
+    "dirty": false,
     "fileName": "/Users/csutter/github/plottr_electron/example.plottr",
     "loaded": true,
-    "version": "0.7.2"
+    "version": "0.8.1"
   },
   "lines": [
     {
@@ -567,13 +569,15 @@
       "color": "indianred",
       "description": "my favorite place",
       "id": 1,
-      "name": "first place"
+      "name": "first place",
+      "notes": null
     },
     {
       "color": "darkorchid",
       "description": "my favorite place",
       "id": 0,
-      "name": "second place"
+      "name": "second place",
+      "notes": null
     }
   ],
   "scenes": [

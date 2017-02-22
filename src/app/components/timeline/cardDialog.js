@@ -17,32 +17,11 @@ const customStyles = {content: {top: '70px'}}
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.isNewCard}
+    this.state = {editing: false}
   }
 
   closeDialog () {
     this.props.closeDialog()
-  }
-
-  handleCreate () {
-    var title = this.refs.titleInput.getValue()
-    var desc = this.refs.descriptionInput.getValue()
-    const { characters, places, tags } = this.getSelectedLabels()
-    var newCard = this.buildCard(title, desc, characters, places, tags)
-    this.props.actions.addCard(newCard)
-    this.closeDialog()
-  }
-
-  buildCard (title, description, characters, places, tags) {
-    return {
-      title: title || card.title,
-      description: description || card.description,
-      lineId: this.props.lineId,
-      sceneId: this.props.sceneId,
-      characters: characters || card.characters,
-      places: places || card.places,
-      tags: tags || card.tags
-    }
   }
 
   deleteCard () {
@@ -116,20 +95,7 @@ class CardDialog extends Component {
   }
 
   renderButtonBar () {
-    if (this.props.isNewCard) {
-      return (
-        <ButtonToolbar className='card-dialog__button-bar-edit'>
-          <Button className='card-dialog__create' bsStyle='success'
-            onClick={this.handleCreate.bind(this)}>
-            Create
-          </Button>
-          <Button className='card-dialog__cancel' bsStyle='danger'
-            onClick={this.closeDialog.bind(this)}>
-            Cancel
-          </Button>
-        </ButtonToolbar>
-      )
-    } else if (this.state.editing) {
+    if (this.state.editing) {
       return (
         <ButtonToolbar className='card-dialog__button-bar-edit'>
           <Button bsStyle='danger'
@@ -165,11 +131,7 @@ class CardDialog extends Component {
   }
 
   renderTitle () {
-    var title = 'Cool thing happens'
-    if (!this.props.isNewCard) {
-      title = this.props.card.title
-    }
-
+    var title = this.props.card.title
     if (this.state.editing) {
       return <Input type='text' label='title' ref='titleInput' defaultValue={title} />
     } else {
@@ -184,10 +146,7 @@ class CardDialog extends Component {
   }
 
   renderDescription () {
-    var description = 'Desciption of cool thing happening'
-    if (!this.props.isNewCard) {
-      description = this.props.card.description
-    }
+    var description = this.props.card.description
 
     if (this.state.editing) {
       const url = 'https://daringfireball.net/projects/markdown/syntax'
@@ -360,7 +319,6 @@ CardDialog.propTypes = {
   card: PropTypes.object,
   sceneId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
-  isNewCard: PropTypes.bool.isRequired,
   closeDialog: PropTypes.func,
   lines: PropTypes.array.isRequired,
   scenes: PropTypes.array.isRequired,

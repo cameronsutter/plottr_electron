@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
-import { Label } from 'react-bootstrap'
+import { Label, Input } from 'react-bootstrap'
 import CardDialog from 'components/timeline/cardDialog'
 import * as CardActions from 'actions/cards'
 
@@ -59,6 +59,32 @@ class CardView extends Component {
     }
   }
 
+  handleFinishCreate (event) {
+    if (event.which === 13) {
+      var newCard = this.buildCard(this.refs.titleInput.getValue())
+      this.props.actions.addCard(newCard)
+      this.setState({creating: false})
+    }
+  }
+
+  buildCard (title) {
+    return {
+      title: title,
+      sceneId: this.props.sceneId,
+      lineId: this.props.lineId,
+      description: '',
+      characters: [],
+      places: [],
+      tags: []
+    }
+  }
+
+  handleCancelCreate (event) {
+    if (event.which === 27) {
+      this.setState({creating: false})
+    }
+  }
+
   render () {
     return this.state.dialogOpen ? this.renderDialog() : this.renderShape()
   }
@@ -96,6 +122,10 @@ class CardView extends Component {
   }
 
   renderBlank () {
+    return this.state.creating ? this.renderCreateNew() : this.renderBlankShape()
+  }
+
+  renderBlankShape () {
     var cardClass = 'card__blank'
     if (this.state.dropping) {
       cardClass += ' card__hover'
@@ -107,9 +137,27 @@ class CardView extends Component {
         onDragOver={this.handleDragOver.bind(this)}
         onDragLeave={this.handleDragLeave.bind(this)}
         onDrop={this.handleDrop.bind(this)}
-        onClick={ () => { this.setState({creating: true, dialogOpen: true}) } }
+        onClick={ () => { this.setState({creating: true}) } }
         style={{borderColor: this.props.color}}
       ></div>
+    )
+  }
+
+  renderCreateNew () {
+    return (
+      <div className='card__real card__creating' style={{borderColor: this.props.color}}>
+        <div className='card__creating__inner-wrapper'>
+          <Input
+            type='text'
+            autoFocus
+            label='Card Title'
+            ref='titleInput'
+            bsSize='small'
+            onBlur={() => this.setState({creating: false})}
+            onKeyDown={this.handleCancelCreate.bind(this)}
+            onKeyPress={this.handleFinishCreate.bind(this)} />
+        </div>
+      </div>
     )
   }
 
@@ -123,7 +171,6 @@ class CardView extends Component {
         card={card}
         sceneId={sceneId}
         lineId={lineId}
-        isNewCard={this.state.creating}
         labelMap={this.props.labelMap}
         closeDialog={this.closeDialog.bind(this)} />
     )

@@ -39,6 +39,14 @@
   @extend .card__hover;
 }
 
+.card__creating {
+  position: relative;
+  top: -$height*1/3;
+  .card__creating__inner-wrapper {
+    padding: 2px 5px 5px 5px;
+  }
+}
+
 .card__title {
   padding: $padding;
   height: $height;

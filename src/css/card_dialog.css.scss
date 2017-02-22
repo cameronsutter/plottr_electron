@@ -42,16 +42,12 @@
   margin-left: 10px;
 }
 
-.card-dialog__button-bar-create, .card-dialog__button-bar-edit {
+.card-dialog__button-bar-create {
   margin-top: 10px;
   display: flex;
   flex-direction: row-reverse;
   // outline-top: 1px solid #eee;
   // padding-top: 3px;
-}
-
-.card-dialog__button-bar-edit {
-  justify-content: space-between;
 }
 
 .card-dialog__select-line, .card-dialog__select-scene {

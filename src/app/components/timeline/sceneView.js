@@ -7,7 +7,8 @@ import * as SceneActions from 'actions/scenes'
 class SceneView extends Component {
   constructor (props) {
     super(props)
-    this.state = {hovering: false, editing: false, dragging: false, dropping: false}
+    let editing = props.scene.title === ''
+    this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
   }
 
   handleFinishEditing (event) {

@@ -2,7 +2,7 @@
 
 export const scene = {
   id: 0,
-  title: 'new scene',
+  title: '',
   position: 0
 }
 
@@ -45,7 +45,7 @@ export const card = {
   lineId: 0,
   sceneId: 0,
   title: 'a new card',
-  description: 'add description here',
+  description: '',
   tags: [],
   characters: [],
   places: []

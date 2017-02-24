@@ -129,6 +129,9 @@ class TimeLineView extends Component {
 
   scrollMiddle () {
     var middle = (this.refs.timeline.scrollWidth / 2) - (window.outerWidth / 2)
+    if (this.state.orientation === 'vertical') {
+      middle = (this.refs.timeline.scrollHeight / 2)
+    }
     this.setState({scrollTarget: middle})
     if (document.body.scrollLeft > middle) {
       scrollInterval = setInterval(this.decreaseScroll.bind(this), 25)
@@ -140,19 +143,32 @@ class TimeLineView extends Component {
 
   scrollEnd () {
     var end = this.refs.timeline.scrollWidth - window.outerWidth
+    if (this.state.orientation === 'vertical') {
+      end = this.refs.timeline.scrollHeight
+    }
     this.setState({scrollTarget: end})
     scrollInterval = setInterval(this.increaseScroll.bind(this), 25)
     setTimeout(() => { clearInterval(scrollInterval) }, 3000)
   }
 
   increaseScroll () {
-    if (document.body.scrollLeft >= this.state.scrollTarget) clearInterval(scrollInterval)
-    else document.body.scrollLeft += 100
+    if (this.state.orientation === 'vertical') {
+      if (document.body.scrollTop >= this.state.scrollTarget) clearInterval(scrollInterval)
+      else document.body.scrollTop += 100
+    } else {
+      if (document.body.scrollLeft >= this.state.scrollTarget) clearInterval(scrollInterval)
+      else document.body.scrollLeft += 100
+    }
   }
 
   decreaseScroll () {
-    if (document.body.scrollLeft <= this.state.scrollTarget) clearInterval(scrollInterval)
-    else document.body.scrollLeft -= 100
+    if (this.state.orientation === 'vertical') {
+      if (document.body.scrollTop <= this.state.scrollTarget) clearInterval(scrollInterval)
+      else document.body.scrollTop -= 100
+    } else {
+      if (document.body.scrollLeft <= this.state.scrollTarget) clearInterval(scrollInterval)
+      else document.body.scrollLeft -= 100
+    }
   }
 
   scrollTo (x, y) {
@@ -171,9 +187,13 @@ class TimeLineView extends Component {
     if (this.state.filterOpen) style = {display: 'block'}
     let glyph = 'option-vertical'
     let orientation = 'vertical'
+    let scrollDirectionFirst = 'menu-left'
+    let scrollDirectionSecond = 'menu-right'
     if (this.state.orientation === 'vertical') {
       orientation = 'horizontal'
       glyph = 'option-horizontal'
+      scrollDirectionFirst = 'menu-up'
+      scrollDirectionSecond = 'menu-down'
     }
     return (
       <Navbar className='subnav__container'>
@@ -204,8 +224,8 @@ class TimeLineView extends Component {
           <NavItem>
             <span className='subnav__container__label'>Scroll: </span>
             <ButtonGroup bsSize='small'>
-              <Button onClick={this.scrollLeft.bind(this)} ><Glyphicon glyph='menu-left' /></Button>
-              <Button onClick={this.scrollRight.bind(this)} ><Glyphicon glyph='menu-right' /></Button>
+              <Button onClick={this.scrollLeft.bind(this)} ><Glyphicon glyph={scrollDirectionFirst} /></Button>
+              <Button onClick={this.scrollRight.bind(this)} ><Glyphicon glyph={scrollDirectionSecond} /></Button>
               <Button onClick={this.scrollBeginning.bind(this)} >Beginning</Button>
               <Button onClick={this.scrollMiddle.bind(this)} >Middle</Button>
               <Button onClick={this.scrollEnd.bind(this)} >End</Button>

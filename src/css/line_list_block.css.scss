@@ -7,10 +7,24 @@
   flex-direction: column;
 }
 
+.vertical-line-list {
+  display: flex;
+  flex-direction: row;
+}
+
 .line-list__new {
   height: $height;
   width: $width;
   margin-left: 40px; // because hover option buttons
+  text-align: center;
+  color: $new-item-border-color;
+  line-height: $height;
+}
+
+.vertical-line-list__new {
+  height: $height;
+  width: $width;
+  margin-top: 33px;
   text-align: center;
   color: $new-item-border-color;
   line-height: $height;
@@ -22,6 +36,10 @@
   cursor: pointer;
 }
 
+.vertical-line-list__new:hover {
+  @extend .line-list__new:hover;
+}
+
 .line {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -29,10 +47,20 @@
   height: $height;
 }
 
+.vertical-line {
+  width: $width;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 .line__svg-line-box {
   position: relative;
   top: -$height;
   left: $width;
+  height: 0px;
+}
+
+.vertical-line__svg-line-box {
   height: 0px;
 }
 
@@ -47,6 +75,11 @@
   button.btn-block {
     margin-top: 1px;
   }
+}
+
+.vertical-line__hover-options {
+  text-align: center;
+  margin-bottom: 1px;
 }
 
 .line__body {
@@ -66,4 +99,9 @@
   @include sub-header-font;
   width: $width;
   padding: 5px 10px 5px 10px;
+}
+
+.vertical-line__title {
+  @extend .line__title;
+  text-align: center;
 }

@@ -5,6 +5,7 @@ import { Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import * as LineActions from 'actions/lines'
 import LineView from 'components/timeline/lineView'
+import orientedClassName from 'helpers/orientedClassName'
 
 class LineListView extends Component {
 
@@ -43,9 +44,9 @@ class LineListView extends Component {
 
   render () {
     var lineViews = this.renderLines()
-    return (<div className='line-list'>
+    return (<div className={orientedClassName('line-list', this.props.orientation)}>
       {lineViews}
-      <div className='line-list__new' onClick={this.handleCreateNewLine.bind(this)} >
+      <div className={orientedClassName('line-list__new', this.props.orientation)} onClick={this.handleCreateNewLine.bind(this)} >
         <Glyphicon glyph='plus' />
       </div>
     </div>)
@@ -55,7 +56,9 @@ class LineListView extends Component {
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map((line) => {
       return (
-        <LineView key={'lineId-' + line.id} line={line}
+        <LineView key={'lineId-' + line.id}
+          line={line}
+          orientation={this.props.orientation}
           sceneMap={this.props.sceneMap}
           labelMap={this.labelMap()}
           handleReorder={this.handleReorder.bind(this)}
@@ -77,7 +80,8 @@ LineListView.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   isZoomed: PropTypes.bool.isRequired,
-  zoomIn: PropTypes.func.isRequired
+  zoomIn: PropTypes.func.isRequired,
+  orientation: PropTypes.string.isRequired
 }
 
 function mapStateToProps (state) {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, Input } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
+import orientedClassName from 'helpers/orientedClassName'
 
 class SceneView extends Component {
   constructor (props) {
@@ -63,12 +64,21 @@ class SceneView extends Component {
   renderHoverOptions () {
     var style = {visibility: 'hidden'}
     if (this.state.hovering) style.visibility = 'visible'
-    return (<div className='scene-list__item__hover-options' style={style}>
-      <ButtonGroup>
-        <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-        <Button bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
-      </ButtonGroup>
-    </div>)
+    if (this.props.orientation === 'vertical') {
+      return (
+        <div className={orientedClassName('scene-list__item__hover-options', this.props.orientation)} style={style}>
+          <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
+          <Button block bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+        </div>
+      )
+    } else {
+      return (<div className={orientedClassName('scene-list__item__hover-options', this.props.orientation)} style={style}>
+        <ButtonGroup>
+          <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
+          <Button bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+        </ButtonGroup>
+      </div>)
+    }
   }
 
   renderTitle () {
@@ -91,7 +101,7 @@ class SceneView extends Component {
       style.transform = 'scale(5, 5)'
       style.transformOrigin = 'center center'
     }
-    return (<div className='scene-list__item'
+    return (<div className={orientedClassName('scene-list__item', this.props.orientation)}
       style={style}
       draggable={true}
       onMouseEnter={() => this.setState({hovering: true})}
@@ -116,7 +126,8 @@ SceneView.propTypes = {
   scene: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
-  isZoomed: PropTypes.bool.isRequired
+  isZoomed: PropTypes.bool.isRequired,
+  orientation: PropTypes.string.isRequired
 }
 
 function mapStateToProps (state) {

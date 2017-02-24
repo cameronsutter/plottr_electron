@@ -11,7 +11,20 @@ $extra-height: 34px;
   padding: 0;
 }
 
+.vertical-scene-list {
+  display: flex;
+  flex-direction: column;
+
+  margin: 0;
+  padding: 0;
+}
+
 .scene-list__item-container {
+  min-width: $width + $extra-width;
+  width: $width + $extra-width;
+}
+
+.vertical-scene-list__item-container {
   min-width: $width + $extra-width;
   width: $width + $extra-width;
 }
@@ -24,11 +37,29 @@ $extra-height: 34px;
   padding-top: 50px;
 }
 
+.vertical-scene-list__placeholder {
+  height: $height;
+  min-height: $height;
+  margin-top: 26px;
+}
+
 .scene-list__new {
   height: $height;
   width: $width;
   min-width: $width;
   margin-top: 40px; // because hover option buttons
+  line-height: $height;
+  color: $new-item-border-color;
+  text-align: center;
+}
+
+.vertical-scene-list__new {
+  height: $height;
+  width: $width;
+  min-width: $width;
+  min-height: $height;
+  margin-top: 40px; // because hover option buttons
+  margin-left: 40px;
   line-height: $height;
   color: $new-item-border-color;
   text-align: center;
@@ -40,10 +71,22 @@ $extra-height: 34px;
   cursor: pointer;
 }
 
+.vertical-scene-list__new:hover {
+  background: $new-item-background;
+  border: $new-item-border;
+  cursor: pointer;
+}
+
 .scene-list__item {
   @include sub-header-font;
 
   width: 100%;
+}
+
+.vertical-scene-list__item {
+  @include sub-header-font;
+  width: 100%;
+  height: 100%;
 }
 
 .scene-list__insert {
@@ -56,7 +99,22 @@ $extra-height: 34px;
   color: $body-background-color;
 }
 
+.vertical-scene-list__insert {
+  height: $margin-width;
+  min-height: $margin-width;
+  line-height: $margin-width - 5;
+  margin-left: $extra-width; //maybe
+  text-align: center;
+  color: $body-background-color;
+}
+
 .scene-list__insert:hover {
+  @include hover-box;
+  border: $new-item-border;
+  color: $new-item-border-color;
+}
+
+.vertical-scene-list__insert:hover {
   @include hover-box;
   border: $new-item-border;
   color: $new-item-border-color;
@@ -93,4 +151,13 @@ $extra-height: 34px;
   text-align: center;
   visibility: hidden;
   margin-bottom: 1px;
+}
+
+.vertical-scene-list__item__hover-options {
+  float:left;
+  margin-top: -2px;
+  margin-right: 1px;
+  button.btn-block {
+    margin-top: 1px;
+  }
 }

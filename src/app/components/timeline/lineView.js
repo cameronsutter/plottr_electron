@@ -1,11 +1,12 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Button, Input } from 'react-bootstrap'
+import { Glyphicon, Button, Input, ButtonGroup } from 'react-bootstrap'
 import * as LineActions from 'actions/lines'
 import CardView from 'components/timeline/cardView'
 import ColorPicker from '../colorpicker'
-import _ from 'lodash'
+import orientedClassName from 'helpers/orientedClassName'
 
 class LineView extends Component {
   constructor (props) {
@@ -26,7 +27,11 @@ class LineView extends Component {
   }
 
   lineLength () {
-    return this.numberOfScenes() * this.width() + 25
+    let multiplier = this.width()
+    if (this.props.orientation === 'vertical') {
+      multiplier = this.verticalHeight()
+    }
+    return this.numberOfScenes() * multiplier + 25
   }
 
   numberOfScenes () {
@@ -37,8 +42,16 @@ class LineView extends Component {
     return 66 / 2
   }
 
+  verticalHeight () {
+    return 66 + 25
+  }
+
   width () {
     return 150 + 25
+  }
+
+  widthForVertical () {
+    return 75
   }
 
   cards () {
@@ -140,6 +153,20 @@ class LineView extends Component {
     }
   }
 
+  renderSVGLine () {
+    let lineLength = this.lineLength()
+    let style = {stroke: this.props.line.color}
+    if (this.props.orientation === 'vertical') {
+      return (<svg height={lineLength} >
+        <line y1='0' x1={this.widthForVertical()} y2={lineLength} x2={this.widthForVertical()} className='line__svg-line' style={style} />
+      </svg>)
+    } else {
+      return (<svg width={lineLength} >
+        <line x1='0' y1={this.height()} x2={lineLength} y2={this.height()} className='line__svg-line' style={style} />
+      </svg>)
+    }
+  }
+
   renderCards () {
     var sceneMap = this.props.sceneMap
 
@@ -152,6 +179,7 @@ class LineView extends Component {
         filtered = true
       }
       return (<CardView key={id} card={card}
+        orientation={this.props.orientation}
         sceneId={sceneId} lineId={this.props.line.id}
         labelMap={this.props.labelMap}
         color={this.props.line.color} filtered={filtered}
@@ -163,11 +191,21 @@ class LineView extends Component {
   renderHoverOptions () {
     var style = {visibility: 'hidden'}
     if (this.state.hovering) style.visibility = 'visible'
-    return (<div className='line__hover-options' style={style}>
-      <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-      <Button block bsStyle='info' onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
-      <Button block bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
-    </div>)
+    if (this.props.orientation === 'vertical') {
+      return (<div className={orientedClassName('line__hover-options', this.props.orientation)} style={style}>
+        <ButtonGroup>
+          <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
+          <Button bsStyle='info' onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
+          <Button bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+        </ButtonGroup>
+      </div>)
+    } else {
+      return (<div className='line__hover-options' style={style}>
+        <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
+        <Button block bsStyle='info' onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
+        <Button block bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+      </div>)
+    }
   }
 
   renderBody () {
@@ -178,7 +216,8 @@ class LineView extends Component {
       style.transform = 'scale(5, 5)'
       style.transformOrigin = 'left center'
     }
-    var body = <div className='line__title'>{this.props.line.title}</div>
+    let titleClass = orientedClassName('line__title', this.props.orientation)
+    var body = <div className={titleClass}>{this.props.line.title}</div>
     if (this.state.editing) {
       body = (<Input
         type='text'
@@ -207,20 +246,22 @@ class LineView extends Component {
   }
 
   render () {
-    var lineLength = this.lineLength()
+    let lineLength = this.lineLength()
+    let lineStyle = {width: (lineLength + this.width())}
+    if (this.props.orientation === 'vertical') {
+      lineStyle = {height: (lineLength + this.height())}
+    }
     return (
-      <div className='line'
-        style={{width: (lineLength + this.width())}}
+      <div className={orientedClassName('line', this.props.orientation)}
+        style={lineStyle}
         onMouseEnter={() => this.setState({hovering: true})}
         onMouseLeave={() => this.setState({hovering: false})} >
         {this.renderHoverOptions()}
         {this.renderBody()}
-        <div className='line__svg-line-box'>
-          <svg width={lineLength} >
-            <line x1='0' y1={this.height()} x2={lineLength} y2={this.height()} className='line__svg-line' style={{stroke: this.props.line.color}} />
-          </svg>
+        <div className={orientedClassName('line__svg-line-box', this.props.orientation)}>
+          {this.renderSVGLine()}
         </div>
-        <div className='card__box'>
+        <div className={orientedClassName('card__box', this.props.orientation)}>
           {this.renderCards()}
         </div>
       </div>
@@ -238,7 +279,8 @@ LineView.propTypes = {
   filteredItems: PropTypes.object.isRequired,
   labelMap: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
-  zoomIn: PropTypes.func.isRequired
+  zoomIn: PropTypes.func.isRequired,
+  orientation: PropTypes.string.isRequired
 }
 
 function mapStateToProps (state) {

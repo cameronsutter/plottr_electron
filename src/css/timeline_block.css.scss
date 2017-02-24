@@ -1,5 +1,10 @@
 @import "vars";
 
+#timelineview__root.vertical {
+  display: flex;
+  flex-direction: row;
+}
+
 .timeline__filter {
   position: absolute;
   display: none;

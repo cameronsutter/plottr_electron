@@ -6,6 +6,12 @@
   left: $width;
 }
 
+.vertical-card__box {
+  position: relative;
+  left: -25px;
+  top: 17px;
+}
+
 .card {
   display: inline-block;
   height: $height;
@@ -24,9 +30,21 @@
   background: $card-background;
 }
 
+.vertical-card__real {
+  @extend .card__real;
+  display: block;
+  margin-bottom: 25px;
+}
+
 .card__blank {
   @extend .card;
   margin-bottom: 3px;
+}
+
+.vertical-card__blank {
+  @extend .card__blank;
+  display: block;
+  margin-bottom: 25px;
 }
 
 .card__hover {
@@ -42,6 +60,13 @@
 .card__creating {
   position: relative;
   top: -$height*1/3;
+  .card__creating__inner-wrapper {
+    padding: 2px 5px 5px 5px;
+  }
+}
+
+.vertical-card__real.card__creating {
+  top: 0px;
   .card__creating__inner-wrapper {
     padding: 2px 5px 5px 5px;
   }

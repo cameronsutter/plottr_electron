@@ -19,7 +19,8 @@ class TimeLineView extends Component {
       zoomState: INITIAL_ZOOM_STATE,
       zoomIndex: INITIAL_ZOOM_INDEX,
       scrollTarget: 0,
-      filterOpen: false
+      filterOpen: false,
+      orientation: 'horizontal'
     }
   }
 
@@ -168,6 +169,12 @@ class TimeLineView extends Component {
   renderSubNav () {
     var style = {}
     if (this.state.filterOpen) style = {display: 'block'}
+    let glyph = 'option-vertical'
+    let orientation = 'vertical'
+    if (this.state.orientation === 'vertical') {
+      orientation = 'horizontal'
+      glyph = 'option-horizontal'
+    }
     return (
       <Navbar className='subnav__container'>
         <Nav bsStyle='pills' >
@@ -181,6 +188,9 @@ class TimeLineView extends Component {
               <p onClick={() => this.filterList('place', this.props.places)}><em>Places</em></p>
                 {this.renderFilterList(this.props.places, 'place', 'name')}
             </div>
+          </NavItem>
+          <NavItem>
+            <Button bsSize='small' onClick={() => this.setState({orientation: orientation})}><Glyphicon glyph={glyph} /> Flip</Button>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>Zoom: </span>
@@ -229,14 +239,23 @@ class TimeLineView extends Component {
   }
 
   render () {
-    var styles = this.makeTransform()
-    var isZoomed = (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
+    let styles = this.makeTransform()
+    let isZoomed = (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
+    let orientation = this.state.orientation === 'vertical' ? 'vertical' : ''
     return (
       <div id='timelineview__container' className='container-with-sub-nav'>
         {this.renderSubNav()}
-        <div id='timelineview__root' ref='timeline' style={styles}>
-          <SceneListView filteredItems={this.state.filteredItems} isZoomed={isZoomed} />
-          <LineListView sceneMap={this.sceneMapping()} filteredItems={this.state.filteredItems} isZoomed={isZoomed} zoomIn={this.zoomIntoCard.bind(this)} />
+        <div id='timelineview__root' className={orientation} ref='timeline' style={styles}>
+          <SceneListView
+            orientation={this.state.orientation}
+            filteredItems={this.state.filteredItems}
+            isZoomed={isZoomed} />
+          <LineListView
+            orientation={this.state.orientation}
+            sceneMap={this.sceneMapping()}
+            filteredItems={this.state.filteredItems}
+            isZoomed={isZoomed}
+            zoomIn={this.zoomIntoCard.bind(this)} />
         </div>
       </div>
     )

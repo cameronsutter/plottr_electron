@@ -7,6 +7,7 @@ import _ from 'lodash'
 import * as SceneActions from 'actions/scenes'
 import { scene } from 'store/initialState'
 import { sceneId } from 'store/newIds'
+import orientedClassName from 'helpers/orientedClassName'
 
 class SceneListView extends Component {
 
@@ -63,10 +64,10 @@ class SceneListView extends Component {
   render () {
     var scenes = this.renderScenes()
     return (
-      <div className='scene-list'>
-        <div className='scene-list__placeholder' />
+      <div className={orientedClassName('scene-list', this.props.orientation)}>
+        <div className={orientedClassName('scene-list__placeholder', this.props.orientation)} />
         {scenes}
-        <div className='scene-list__new' onClick={this.handleCreateNewScene.bind(this)} >
+        <div className={orientedClassName('scene-list__new', this.props.orientation)} onClick={this.handleCreateNewScene.bind(this)} >
           <Glyphicon glyph='plus' />
         </div>
       </div>
@@ -77,11 +78,15 @@ class SceneListView extends Component {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map((scene) => {
       return (
-        <div className='scene-list__item-container' key={'sceneId-' + scene.id}>
-          <div className='scene-list__insert' onClick={() => this.handleInsertNewScene(scene.position, this)}>
+        <div className={orientedClassName('scene-list__item-container', this.props.orientation)} key={'sceneId-' + scene.id}>
+          <div className={orientedClassName('scene-list__insert', this.props.orientation)} onClick={() => this.handleInsertNewScene(scene.position, this)}>
             <Glyphicon glyph='plus' />
           </div>
-          <SceneView scene={scene} handleReorder={this.handleReorder.bind(this)} isZoomed={this.props.isZoomed} />
+          <SceneView
+            scene={scene}
+            orientation={this.props.orientation}
+            handleReorder={this.handleReorder.bind(this)}
+            isZoomed={this.props.isZoomed} />
         </div>
       )
     })
@@ -92,7 +97,8 @@ SceneListView.propTypes = {
   scenes: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   filteredItems: PropTypes.object.isRequired,
-  isZoomed: PropTypes.bool.isRequired
+  isZoomed: PropTypes.bool.isRequired,
+  orientation: PropTypes.string.isRequired
 }
 
 function mapStateToProps (state) {

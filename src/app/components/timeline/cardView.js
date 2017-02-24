@@ -5,6 +5,7 @@ import _ from 'lodash'
 import { Label, Input } from 'react-bootstrap'
 import CardDialog from 'components/timeline/cardDialog'
 import * as CardActions from 'actions/cards'
+import orientedClassName from 'helpers/orientedClassName'
 
 class CardView extends Component {
   constructor (props) {
@@ -108,7 +109,8 @@ class CardView extends Component {
     }
     var titleStyle = (!this.props.isZoomed && this.state.hovering && this.hasLabels()) ? {overflow: 'scroll'} : {}
 
-    return (<div className='card__real'
+    return (<div
+      className={orientedClassName('card__real', this.props.orientation)}
       ref='card'
       draggable={true}
       onDragStart={this.handleDragStart.bind(this)}
@@ -132,7 +134,8 @@ class CardView extends Component {
     }
 
     return (
-      <div className={cardClass}
+      <div
+        className={orientedClassName(cardClass, this.props.orientation)}
         onDragEnter={this.handleDragEnter.bind(this)}
         onDragOver={this.handleDragOver.bind(this)}
         onDragLeave={this.handleDragLeave.bind(this)}
@@ -145,7 +148,7 @@ class CardView extends Component {
 
   renderCreateNew () {
     return (
-      <div className='card__real card__creating' style={{borderColor: this.props.color}}>
+      <div className={orientedClassName('card__real card__creating', this.props.orientation)} style={{borderColor: this.props.color}}>
         <div className='card__creating__inner-wrapper'>
           <Input
             type='text'
@@ -215,7 +218,8 @@ CardView.propTypes = {
   labelMap: PropTypes.object.isRequired,
   tags: PropTypes.array,
   isZoomed: PropTypes.bool.isRequired,
-  zoomIn: PropTypes.func.isRequired
+  zoomIn: PropTypes.func.isRequired,
+  orientation: PropTypes.string.isRequired
 }
 
 function mapStateToProps (state) {

@@ -225,6 +225,7 @@ class LineView extends Component {
         label='Story line name'
         ref='titleInput'
         autoFocus
+        onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
         onBlur={() => this.setState({editing: false})}
         onKeyPress={this.handleFinishEditingTitle.bind(this)} />)
     }

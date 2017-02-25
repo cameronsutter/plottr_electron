@@ -52,9 +52,18 @@ class CharacterView extends Component {
     const { character } = this.props
     return (
       <div className='character-list__character'>
-        <Input type='text' ref='nameInput' autoFocus onKeyPress={this.handleEnter.bind(this)} label='Name' defaultValue={character.name} />
-        <Input type='text' ref='descriptionInput' onKeyPress={this.handleEnter.bind(this)} label='Short Description' defaultValue={character.description} />
-        <Input type='textarea' rows='10' ref='notesInput' label='Notes' defaultValue={character.notes} />
+        <Input
+          type='text' ref='nameInput' autoFocus
+          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+          onKeyPress={this.handleEnter.bind(this)}
+          label='Name' defaultValue={character.name} />
+        <Input type='text' ref='descriptionInput'
+          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+          onKeyPress={this.handleEnter.bind(this)}
+          label='Short Description' defaultValue={character.description} />
+        <Input type='textarea' rows='10' ref='notesInput'
+          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+          label='Notes' defaultValue={character.notes} />
         <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}
         <div className='form-group character-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(character.color)}</label></div>

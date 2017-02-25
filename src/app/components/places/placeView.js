@@ -52,9 +52,17 @@ class PlaceView extends Component {
     const { place } = this.props
     return (
       <div className='place-list__place'>
-        <Input type='text' ref='nameInput' autoFocus onKeyPress={this.handleEnter.bind(this)} label='Name' defaultValue={place.name} />
-        <Input type='text' ref='descriptionInput' onKeyPress={this.handleEnter.bind(this)} label='Short Description' defaultValue={place.description} />
-        <Input type='textarea' rows="10" ref='notesInput' label='Notes' defaultValue={place.notes} />
+        <Input type='text' ref='nameInput' autoFocus
+          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+          onKeyPress={this.handleEnter.bind(this)}
+          label='Name' defaultValue={place.name} />
+        <Input type='text' ref='descriptionInput'
+          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+          onKeyPress={this.handleEnter.bind(this)}
+          label='Short Description' defaultValue={place.description} />
+        <Input type='textarea' rows="10" ref='notesInput'
+          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+          label='Notes' defaultValue={place.notes} />
         <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}
         <div className='form-group place-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(place.color)}</label></div>

@@ -89,6 +89,7 @@ class SceneView extends Component {
         label='Scene name'
         ref='titleInput'
         autoFocus
+        onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
         onBlur={() => this.setState({editing: false})}
         onKeyPress={this.handleFinishEditing.bind(this)} />)
   }

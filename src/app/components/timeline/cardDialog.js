@@ -42,6 +42,12 @@ class CardDialog extends Component {
     this.setState({editing: false})
   }
 
+  handleEnter (event) {
+    if (event.which === 13) {
+      this.saveEdit()
+    }
+  }
+
   getSelectedLabels () {
     var characters = this.refs.characterSelect.getValue() || this.props.card.characters
     characters = characters[0] === 'none' ? [] : characters.map(Number)
@@ -133,10 +139,16 @@ class CardDialog extends Component {
   renderTitle () {
     var title = this.props.card.title
     if (this.state.editing) {
-      return <Input type='text' label='title' ref='titleInput' defaultValue={title} />
+      return <Input
+        onKeyPress={this.handleEnter.bind(this)}
+        type='text' autoFocus
+        label='title' ref='titleInput'
+        defaultValue={title} />
     } else {
       return (
-        <div className='card-dialog__title'>
+        <div
+          onClick={() => this.setState({editing: true})}
+          className='card-dialog__title'>
           <h2 className='card-title-editor__display'>
             {title}
           </h2>
@@ -159,6 +171,7 @@ class CardDialog extends Component {
     } else {
       return (
         <div
+          onClick={() => this.setState({editing: true})}
           dangerouslySetInnerHTML={{__html: this.makeLabels(md.makeHtml(description))}} >
         </div>
       )

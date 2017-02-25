@@ -232,6 +232,7 @@ class LineView extends Component {
       <div
         className={classes}
         style={style}
+        onClick={() => this.setState({editing: true})}
         draggable={true}
         onDragStart={this.handleDragStart.bind(this)}
         onDragEnd={this.handleDragEnd.bind(this)}

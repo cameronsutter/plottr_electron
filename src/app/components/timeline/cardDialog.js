@@ -197,7 +197,9 @@ class CardDialog extends Component {
     var places = this.renderPlaces()
     var tags = this.renderTags()
     return (
-      <div className='card-dialog__labels'>
+      <div
+        onClick={() => this.setState({editing: true})}
+        className='card-dialog__labels'>
         {characters}
         {places}
         {tags}

@@ -104,6 +104,7 @@ class SceneView extends Component {
     return (<div className={orientedClassName('scene-list__item', this.props.orientation)}
       style={style}
       draggable={true}
+      onClick={() => this.setState({editing: true})}
       onMouseEnter={() => this.setState({hovering: true})}
       onMouseLeave={() => this.setState({hovering: false})}
       onDragStart={this.handleDragStart.bind(this)}

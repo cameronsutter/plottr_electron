@@ -500,17 +500,33 @@
   ],
   "characters": [
     {
+      "age": "12",
       "color": "lightpink",
       "description": "she is the coolest",
       "id": 1,
       "name": "main character",
-      "notes": ""
+      "notes": "She is the main character and a really strong female.",
+      "power": "lantern"
     },
     {
       "color": "gold",
       "description": "she is the coolest",
       "id": 0,
       "name": "second character",
+      "notes": ""
+    },
+    {
+      "color": null,
+      "description": "nothing big",
+      "id": 2,
+      "name": "third character",
+      "notes": ""
+    },
+    {
+      "color": null,
+      "description": "short description",
+      "id": 3,
+      "name": "another character",
       "notes": ""
     }
   ],

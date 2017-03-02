@@ -8,7 +8,7 @@ import * as CharacterActions from 'actions/characters'
 class CharacterView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.character.name === '', showColorPicker: false, newColor: null}
+    this.state = {editing: props.character.name === ''}
   }
 
   handleEnter (event) {
@@ -18,56 +18,51 @@ class CharacterView extends Component {
   }
 
   saveEdit () {
-    var newName = this.refs.nameInput.getValue() || this.props.character.name
-    var newDescription = this.refs.descriptionInput.getValue() || this.props.character.description
-    var newNotes = this.refs.notesInput.getValue() || this.props.character.notes
-    var newColor = this.state.newColor || this.props.character.color
-    this.props.actions.editCharacter(this.props.character.id, newName, newDescription, newNotes, newColor)
+    var name = this.refs.nameInput.getValue() || this.props.character.name
+    var description = this.refs.descriptionInput.getValue() || this.props.character.description
+    var notes = this.refs.notesInput.getValue() || this.props.character.notes
+    var attrs = {}
+    this.props.customAttributes.forEach(attr => {
+      const val = this.refs[`${attr}Input`].getValue() || this.props.character[attr]
+      attrs[attr] = val
+    })
+    this.props.actions.editCharacter(this.props.character.id, {name, description, notes, ...attrs})
     this.setState({editing: false})
   }
 
-  changeColor (color) {
-    this.setState({showColorPicker: false, newColor: color})
-  }
-
-  renderColorPicker () {
-    if (this.state.showColorPicker) {
-      var key = 'colorPicker-' + this.props.character.id
-      return <ColorPicker key={key} closeDialog={this.changeColor.bind(this)} />
-    } else {
-      return null
-    }
-  }
-
-  renderColorLabel (color) {
-    var colorLabel = null
-    if (color) {
-      var style = {backgroundColor: color}
-      colorLabel = <Label bsStyle='info' style={style}>{color}</Label>
-    }
-    return <span>{colorLabel || ''}</span>
+  renderEditingCustomAttributes () {
+    return this.props.customAttributes.map((attr, idx) =>
+      <Input key={idx}
+        type='text' label={attr} ref={`${attr}Input`}
+        defaultValue={this.props.character[attr]}
+        onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+        onKeyPress={this.handleEnter.bind(this)} />
+    )
   }
 
   renderEditing () {
     const { character } = this.props
     return (
       <div className='character-list__character'>
-        <Input
-          type='text' ref='nameInput' autoFocus
-          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-          onKeyPress={this.handleEnter.bind(this)}
-          label='Name' defaultValue={character.name} />
-        <Input type='text' ref='descriptionInput'
-          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-          onKeyPress={this.handleEnter.bind(this)}
-          label='Short Description' defaultValue={character.description} />
-        <Input type='textarea' rows='10' ref='notesInput'
-          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-          label='Notes' defaultValue={character.notes} />
-        <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
-        {this.renderColorPicker()}
-        <div className='form-group character-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(character.color)}</label></div>
-        <div className='form-group character-list__color-label'><label className='control-label'>New color: {this.renderColorLabel(this.state.newColor)}</label></div>
+        <div className='character-list__character__edit-form'>
+          <div className='character-list__inputs__normal'>
+            <Input
+              type='text' ref='nameInput' autoFocus
+              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyPress={this.handleEnter.bind(this)}
+              label='Name' defaultValue={character.name} />
+            <Input type='text' ref='descriptionInput'
+              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyPress={this.handleEnter.bind(this)}
+              label='Short Description' defaultValue={character.description} />
+            <Input type='textarea' rows='10' ref='notesInput'
+              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              label='Notes' defaultValue={character.notes} />
+          </div>
+          <div className='character-list__inputs__custom'>
+            {this.renderEditingCustomAttributes()}
+          </div>
+        </div>
         <hr />
         <ButtonToolbar>
           <Button bsStyle='danger'
@@ -85,10 +80,24 @@ class CharacterView extends Component {
 
   renderCharacter () {
     const { character } = this.props
+    const details = this.props.customAttributes.map((attr, idx) =>
+      <dl key={idx} className='dl-horizontal'>
+        <dt>{attr}</dt>
+        <dd>{character[attr]}</dd>
+      </dl>
+    )
     return (
       <div className='character-list__character' onClick={() => this.setState({editing: true})}>
-        <h4>{character.name}</h4>
-        <p>{this.renderColorLabel(character.color)} {character.description} </p>
+        <h4 className='text-center'>{character.name}</h4>
+        <dl className='dl-horizontal'>
+          <dt>Description</dt>
+          <dd>{character.description}</dd>
+        </dl>
+        {details}
+        <dl className='dl-horizontal'>
+          <dt>Notes</dt>
+          <dd>{character.notes}</dd>
+        </dl>
       </div>
     )
   }
@@ -100,11 +109,14 @@ class CharacterView extends Component {
 
 CharacterView.propTypes = {
   character: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  customAttributes: PropTypes.array.isRequired
 }
 
 function mapStateToProps (state) {
-  return {}
+  return {
+    customAttributes: state.customAttributes['characters']
+  }
 }
 
 function mapDispatchToProps (dispatch) {

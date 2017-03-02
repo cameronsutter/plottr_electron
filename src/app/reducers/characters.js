@@ -17,7 +17,7 @@ export default function characters (state = initialState, action) {
 
     case EDIT_CHARACTER:
       return state.map(character =>
-        character.id === action.id ? Object.assign({}, character, {name: action.name, description: action.description, notes: action.notes, color: action.color}) : character
+        character.id === action.id ? Object.assign({}, character, action.attributes) : character
       )
 
     case RESET:

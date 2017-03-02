@@ -2,27 +2,44 @@
 
 .character-list {
   margin: 10px;
-  h3 {
+  h1 {
     text-align: center;
   }
 }
 
+.character-list__list {
+  width: 25%;
+  .list-group-item {
+    cursor: pointer;
+  }
+}
+
 .character-list__new {
-  @include new_item;
+  text-align: center;
+  cursor: pointer;
+  color: $new-item-border-color;
 }
 
 .character-list__new:hover {
-  @include new_item_hover;
+  background: $new-item-background;
 }
 
 .character-list__character {
   @include well;
-  width: 25%;
-  .character-list__color-label {
-    margin-top: 5px;
-    .label {
-      vertical-align: middle;
-      padding-top: 5px;
+  width: 75%;
+  float: right;
+  .character-list__character__edit-form {
+    padding-left: 5px;
+    display: flex;
+    .character-list__inputs__normal {
+      width: 50%;
+      padding-right: 3%;
+      border-right: solid 1px $new-item-border-color;
+    }
+    .character-list__inputs__custom {
+      width: 50%;
+      padding-right: 3%;
+      padding-left: 3%;
     }
   }
 }
@@ -45,16 +62,7 @@
     }
   }
 }
-// .character-list__custom-attributes-list {
-//   display: flex;
-//   flex-wrap: wrap;
-//
-//   .label {
-//     font-size: 12pt;
-//     margin: 3px;
-//   }
-// }
-//
+
 .character-list__custom-attributes-add-button {
   width: 25%;
 }

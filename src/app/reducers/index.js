@@ -8,6 +8,7 @@ import characters from './characters'
 import scenes from './scenes'
 import cards from './cards'
 import lines from './lines'
+import customAttributes from './customAttributes'
 
 const rootReducer = combineReducers({
   ui,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   characters,
   scenes,
   cards,
-  lines
+  lines,
+  customAttributes
 })
 
 export default rootReducer

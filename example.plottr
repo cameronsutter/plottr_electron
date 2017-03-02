@@ -514,54 +514,64 @@
       "notes": ""
     }
   ],
+  "customAttributes": {
+    "cards": [],
+    "characters": [
+      "power",
+      "age"
+    ],
+    "lines": [],
+    "places": [],
+    "scenes": []
+  },
   "file": {
-    "dirty": false,
+    "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example.plottr",
     "loaded": true,
-    "version": "0.8.1"
+    "version": "0.9.0"
   },
   "lines": [
     {
-      "color": "#ff80ff",
+      "color": "#ff7f32",
       "id": 33,
       "position": 4,
       "title": "Anna/Valia"
     },
     {
-      "color": "#0000ff",
+      "color": "#6cace4",
       "id": 27,
       "position": 1,
       "title": "Main Story Arc"
     },
     {
-      "color": "#000000",
+      "color": "#ffc72c",
       "id": 34,
       "position": 5,
       "title": "Rivan"
     },
     {
-      "color": "#ff0000",
+      "color": "#0b1117",
       "id": 35,
       "position": 6,
       "title": "Maltheus"
     },
     {
-      "color": "#008000",
+      "color": "#78be20",
       "id": 28,
       "position": 2,
       "title": "Jared Cole"
     },
     {
-      "color": "#804040",
+      "color": "#e5554f",
       "id": 29,
       "position": 3,
       "title": "Kevan"
     },
     {
-      "color": "#aac505",
+      "color": "darkorchid",
       "id": 36,
       "position": 7,
-      "title": "Burp"
+      "title": "Burph"
     }
   ],
   "places": [
@@ -846,6 +856,6 @@
     }
   ],
   "ui": {
-    "currentView": "timeline"
+    "currentView": "characters"
   }
 }

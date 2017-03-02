@@ -57,3 +57,11 @@ export const line = {
   title: '',
   position: 0
 }
+
+export const customAttributes = {
+  characters: [],
+  places: [],
+  cards: [],
+  scenes: [],
+  lines: []
+}

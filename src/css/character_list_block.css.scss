@@ -17,6 +17,7 @@
 
 .character-list__character {
   @include well;
+  width: 25%;
   .character-list__color-label {
     margin-top: 5px;
     .label {
@@ -24,4 +25,36 @@
       padding-top: 5px;
     }
   }
+}
+
+.character-list__custom-attributes-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: 400px;
+
+  li.list-group-item {
+    width: 50%;
+    margin-right: 5px;
+    display: flex;
+    justify-content: space-between;
+
+    .character-list__attribute-name {
+      align-self: center;
+      margin: 0;
+    }
+  }
+}
+// .character-list__custom-attributes-list {
+//   display: flex;
+//   flex-wrap: wrap;
+//
+//   .label {
+//     font-size: 12pt;
+//     margin: 3px;
+//   }
+// }
+//
+.character-list__custom-attributes-add-button {
+  width: 25%;
 }

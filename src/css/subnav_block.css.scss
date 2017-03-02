@@ -10,6 +10,10 @@
   width: 100%;
   z-index: 1000;
   min-height: 30px;
+
+  button span {
+    vertical-align: text-top;
+  }
 }
 
 .subnav__container__label {

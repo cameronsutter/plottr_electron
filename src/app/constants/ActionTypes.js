@@ -39,3 +39,16 @@ export const EDIT_TAG = 'EDIT_TAG'
 // characters actions
 export const ADD_CHARACTER = 'ADD_CHARACTER'
 export const EDIT_CHARACTER = 'EDIT_CHARACTER'
+
+// custom attribute actions
+export const ADD_CHARACTER_ATTR = 'ADD_CHARACTER_ATTR'
+export const ADD_PLACES_ATTR = 'ADD_PLACES_ATTR'
+export const ADD_CARDS_ATTR = 'ADD_CARDS_ATTR'
+export const ADD_LINES_ATTR = 'ADD_LINES_ATTR'
+export const ADD_SCENES_ATTR = 'ADD_SCENES_ATTR'
+
+export const REMOVE_CHARACTER_ATTR = 'REMOVE_CHARACTER_ATTR'
+export const REMOVE_PLACES_ATTR = 'REMOVE_PLACES_ATTR'
+export const REMOVE_CARDS_ATTR = 'REMOVE_CARDS_ATTR'
+export const REMOVE_LINES_ATTR = 'REMOVE_LINES_ATTR'
+export const REMOVE_SCENES_ATTR = 'REMOVE_SCENES_ATTR'

@@ -24,6 +24,11 @@ class Navigation extends Component {
   }
 
   render () {
+    if (this.state.editing) {
+      window.SCROLLWITHKEYS = false
+    } else {
+      window.SCROLLWITHKEYS = true
+    }
     return (
       <div>
         <nav className='navbar navbar-default navbar-fixed-top' role='navigation'>

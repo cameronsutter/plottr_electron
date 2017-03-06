@@ -95,6 +95,11 @@ class SceneView extends Component {
   }
 
   render () {
+    if (this.state.editing) {
+      window.SCROLLWITHKEYS = false
+    } else {
+      window.SCROLLWITHKEYS = true
+    }
     var classes = 'scene-list__item__body'
     if (this.state.hovering) classes += ' hover'
     var style = {}

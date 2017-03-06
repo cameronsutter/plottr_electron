@@ -248,6 +248,11 @@ class LineView extends Component {
   }
 
   render () {
+    if (this.state.editing) {
+      window.SCROLLWITHKEYS = false
+    } else {
+      window.SCROLLWITHKEYS = true
+    }
     let lineLength = this.lineLength()
     let lineStyle = {width: (lineLength + this.width())}
     if (this.props.orientation === 'vertical') {

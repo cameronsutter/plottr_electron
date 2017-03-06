@@ -313,6 +313,11 @@ class CardDialog extends Component {
   }
 
   render () {
+    if (this.state.editing) {
+      window.SCROLLWITHKEYS = false
+    } else {
+      window.SCROLLWITHKEYS = true
+    }
     return (
       <Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
         <div className='card-dialog'>

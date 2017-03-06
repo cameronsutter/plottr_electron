@@ -124,7 +124,13 @@ class CardView extends Component {
   }
 
   renderBlank () {
-    return this.state.creating ? this.renderCreateNew() : this.renderBlankShape()
+    if (this.state.creating) {
+      window.SCROLLWITHKEYS = false
+      return this.renderCreateNew()
+    } else {
+      window.SCROLLWITHKEYS = true
+      return this.renderBlankShape()
+    }
   }
 
   renderBlankShape () {

@@ -16,14 +16,22 @@
       "color": null,
       "description": "she is the coolest",
       "id": 0,
-      "name": "main character"
+      "name": "main character",
+      "notes": null
     }
   ],
+  "customAttributes": {
+    "cards": [],
+    "characters": [],
+    "lines": [],
+    "places": [],
+    "scenes": []
+  },
   "file": {
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example2.plottr",
     "loaded": true,
-    "version": "0.7.2"
+    "version": "0.9.0"
   },
   "lines": [
     {
@@ -38,7 +46,8 @@
       "color": null,
       "description": "my favorite place",
       "id": 0,
-      "name": "first place"
+      "name": "first place",
+      "notes": null
     }
   ],
   "scenes": [

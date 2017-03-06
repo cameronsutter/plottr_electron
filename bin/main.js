@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
 var Migrator = require('./migrator/migrator')
 var fs = require('fs')
+var path = require('path')
 var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
@@ -25,7 +26,7 @@ var reportWindow = null
 
 var fileToOpen = null
 
-const filePrefix = 'file://' + __dirname
+const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
 
 // mixpanel tracking
@@ -69,13 +70,13 @@ ipcMain.on('save-state', function (event, state, winId) {
   var winObj = _.find(windows, {id: winId})
   let edited = checkDirty(state, winObj.lastSave)
   winObj.window.setDocumentEdited(edited)
-  winObj.window.setTitle(displayFileName(state.file.fileName))
-  winObj.window.setRepresentedFilename(state.file.fileName)
+  winObj.window.setTitle(displayFileName(winObj.fileName))
+  winObj.window.setRepresentedFilename(winObj.fileName)
 
   // save the new state
   winObj.state = state
   if (edited) {
-    saveFile(state.file.fileName, state, function (err) {
+    saveFile(winObj.fileName, state, function (err) {
       if (err) throw err
       else {
         winObj.window.webContents.send('state-saved')
@@ -89,14 +90,23 @@ ipcMain.on('save-state', function (event, state, winId) {
 ipcMain.on('fetch-state', function (event, id) {
   var win = _.find(windows, {id: id})
   if (win.state.file) {
-    win.window.setTitle(displayFileName(win.state.file.fileName))
-    win.window.setRepresentedFilename(win.state.file.fileName)
+    win.window.setTitle(displayFileName(win.fileName))
+    win.window.setRepresentedFilename(win.fileName)
   }
 
-  migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-    if (err) console.log(err)
-    event.sender.send('state-fetched', json, win.fileName, dirty)
-  })
+  if (win.window.isVisible()) {
+    migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
+      if (err) console.log(err)
+      event.sender.send('state-fetched', json, win.fileName, dirty)
+    })
+  } else {
+    win.window.on('show', () => {
+      migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
+        if (err) console.log(err)
+        event.sender.send('state-fetched', json, win.fileName, dirty)
+      })
+    })
+  }
 })
 
 ipcMain.on('tracker-initialized', function (event) {
@@ -196,7 +206,7 @@ function openRecentFiles () {
 function askToSave (win, state, callback) {
   dialog.showMessageBox(win, {type: 'question', buttons: ['yes, save!', 'no, just exit'], defaultId: 0, message: 'Would you like to save before exiting?'}, function (choice) {
     if (choice === 0) {
-      saveFile(state.file.fileName, state, function (err) {
+      saveFile(win.fileName, state, function (err) {
         if (err) throw err
         else {
           if (typeof callback === 'string') win[callback]()
@@ -253,7 +263,7 @@ function openWindow (fileName, newFile = false) {
   let newWindow = new BrowserWindow({width: 1200, height: 800, show: false, backgroundColor: '#efefee', webPreferences: {scrollBounce: true}})
 
   // and load the app.html of the app.
-  const entryFile = filePrefix + '/app.html'
+  const entryFile = path.join(filePrefix, 'app.html')
   newWindow.loadURL(entryFile)
 
   newWindow.once('ready-to-show', function() {
@@ -321,7 +331,7 @@ function dereferenceWindow (winObj) {
 
 function closeWindow (id) {
   let win = _.find(windows, {id: id})
-  let windowFile = win.state.file.fileName
+  let windowFile = win.fileName
   win.window.close()
   removeRecentFile(windowFile)
 }
@@ -332,7 +342,7 @@ function removeRecentFile (currentWindowFile) {
     if (currentWindowFile !== fileName) {
       let newFileName = ''
       for (let i = 0; i < windows.length; i++) {
-        let thisWindowFile = windows[i].state.file.fileName
+        let thisWindowFile = windows[i].fileName
         if (thisWindowFile !== currentWindowFile && thisWindowFile !== fileName) {
           newFileName = thisWindowFile
         }
@@ -347,7 +357,7 @@ function removeRecentFile (currentWindowFile) {
 }
 
 function openAboutWindow () {
-  const aboutFile = filePrefix + '/about.html'
+  const aboutFile = path.join(filePrefix, 'about.html')
   aboutWindow = new BrowserWindow({width: 400, height: 550, show: false})
   aboutWindow.loadURL(aboutFile)
   aboutWindow.once('ready-to-show', function() {
@@ -359,7 +369,7 @@ function openAboutWindow () {
 }
 
 function openVerifyWindow () {
-  const verifyFile = filePrefix + '/verify.html'
+  const verifyFile = path.join(filePrefix, 'verify.html')
   verifyWindow = new BrowserWindow({frame: false, height: 425, show: false})
   verifyWindow.loadURL(verifyFile)
   verifyWindow.once('ready-to-show', function() {
@@ -371,7 +381,7 @@ function openVerifyWindow () {
 }
 
 function openReportWindow () {
-  const reportFile = filePrefix + '/report.html'
+  const reportFile = path.join(filePrefix, 'report.html')
   reportWindow = new BrowserWindow({frame: false, show: false})
   reportWindow.loadURL(reportFile)
   reportWindow.once('ready-to-show', function() {

@@ -103,8 +103,8 @@ class CardDialog extends Component {
   renderButtonBar () {
     if (this.state.editing) {
       return (
-        <ButtonToolbar className='card-dialog__button-bar-edit'>
-          <Button bsStyle='danger'
+        <ButtonToolbar className='card-dialog__button-bar'>
+          <Button
             onClick={() => this.setState({editing: false})} >
             Cancel
           </Button>
@@ -116,9 +116,8 @@ class CardDialog extends Component {
       )
     } else {
       return (
-        <ButtonToolbar className='card-dialog__button-bar-edit'>
+        <ButtonToolbar className='card-dialog__button-bar'>
           <Button className='card-dialog__close'
-            bsStyle='primary'
             onClick={this.closeDialog.bind(this)}>
             Close
           </Button>
@@ -127,7 +126,7 @@ class CardDialog extends Component {
             onClick={this.startEdit.bind(this)}>
             Edit
           </Button>
-          <Button className='card-dialog__delete' bsStyle='danger'
+          <Button className='card-dialog__delete'
             onClick={this.deleteCard.bind(this)} >
             Delete
           </Button>

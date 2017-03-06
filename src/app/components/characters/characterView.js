@@ -63,9 +63,8 @@ class CharacterView extends Component {
             {this.renderEditingCustomAttributes()}
           </div>
         </div>
-        <hr />
         <ButtonToolbar>
-          <Button bsStyle='danger'
+          <Button
             onClick={() => this.setState({editing: false})} >
             Cancel
           </Button>
@@ -88,7 +87,7 @@ class CharacterView extends Component {
     )
     return (
       <div className='character-list__character' onClick={() => this.setState({editing: true})}>
-        <h4 className='text-center'>{character.name}</h4>
+        <h4 className='text-center secondary-text'>{character.name}</h4>
         <dl className='dl-horizontal'>
           <dt>Description</dt>
           <dd>{character.description}</dd>

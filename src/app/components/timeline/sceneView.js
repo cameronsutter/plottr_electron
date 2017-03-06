@@ -68,14 +68,14 @@ class SceneView extends Component {
       return (
         <div className={orientedClassName('scene-list__item__hover-options', this.props.orientation)} style={style}>
           <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-          <Button block bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+          <Button block onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
         </div>
       )
     } else {
       return (<div className={orientedClassName('scene-list__item__hover-options', this.props.orientation)} style={style}>
         <ButtonGroup>
           <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-          <Button bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+          <Button onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
       </div>)
     }

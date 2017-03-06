@@ -34,13 +34,17 @@
     .character-list__inputs__normal {
       width: 50%;
       padding-right: 3%;
-      border-right: solid 1px $new-item-border-color;
+      border-right: solid 1px #eee;
     }
     .character-list__inputs__custom {
       width: 50%;
       padding-right: 3%;
       padding-left: 3%;
     }
+  }
+  .btn-toolbar {
+    display: flex;
+    flex-direction: row-reverse;
   }
 }
 

@@ -82,7 +82,7 @@ class Navigation extends Component {
   renderEditingStoryName () {
     return <Input
       type='text'
-      placeholder={this.props.storyName}
+      defaultValue={this.props.storyName}
       ref='storyNameInput'
       autoFocus
       onBlur={() => this.setState({editing: false})}

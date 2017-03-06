@@ -8,7 +8,7 @@ import * as PlaceActions from 'actions/places'
 class PlaceView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.place.name === '', showColorPicker: false, newColor: null}
+    this.state = {editing: props.place.name === ''}
   }
 
   handleEnter (event) {
@@ -26,28 +26,6 @@ class PlaceView extends Component {
     this.setState({editing: false})
   }
 
-  changeColor (color) {
-    this.setState({showColorPicker: false, newColor: color})
-  }
-
-  renderColorPicker () {
-    if (this.state.showColorPicker) {
-      var key = 'colorPicker-' + this.props.place.id
-      return <ColorPicker key={key} closeDialog={this.changeColor.bind(this)} />
-    } else {
-      return null
-    }
-  }
-
-  renderColorLabel (color) {
-    var colorLabel = null
-    if (color) {
-      var style = {backgroundColor: color}
-      colorLabel = <Label bsStyle='info' style={style}>{color}</Label>
-    }
-    return <span>{colorLabel || ''}</span>
-  }
-
   renderEditing () {
     const { place } = this.props
     return (
@@ -63,13 +41,9 @@ class PlaceView extends Component {
         <Input type='textarea' rows="10" ref='notesInput'
           onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
           label='Notes' defaultValue={place.notes} />
-        <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
-        {this.renderColorPicker()}
-        <div className='form-group place-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(place.color)}</label></div>
-        <div className='form-group place-list__color-label'><label className='control-label'>New color: {this.renderColorLabel(this.state.newColor)}</label></div>
         <hr />
         <ButtonToolbar>
-          <Button bsStyle='danger'
+          <Button
             onClick={() => this.setState({editing: false})} >
             Cancel
           </Button>
@@ -86,7 +60,6 @@ class PlaceView extends Component {
     return (
       <div className='place-list__place' onClick={() => this.setState({editing: true})}>
         <h4>{this.props.place.name}</h4>
-        <p>{this.renderColorLabel(this.props.place.color)} {this.props.place.description}</p>
       </div>
     )
   }

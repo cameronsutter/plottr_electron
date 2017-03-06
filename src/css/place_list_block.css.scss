@@ -17,11 +17,8 @@
 
 .place-list__place {
   @include well;
-  .place-list__color-label {
-    margin-top: 5px;
-    .label {
-      vertical-align: middle;
-      padding-top: 5px;
-    }
+  .btn-toolbar {
+    display: flex;
+    flex-direction: row-reverse;
   }
 }

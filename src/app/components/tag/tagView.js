@@ -54,13 +54,13 @@ class TagView extends Component {
           onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
           onKeyPress={this.handleEnter.bind(this)}
           label='tag name' defaultValue={tag.title} />
-        <Button bsStyle='primary' bsSize='large' onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
+        <Button onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}
         <div className='form-group tag-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(tag.color)}</label></div>
         <div className='form-group tag-list__color-label'><label className='control-label'>New color: {this.renderColorLabel(this.state.newColor)}</label></div>
         <hr />
         <ButtonToolbar>
-          <Button bsStyle='danger'
+          <Button
             onClick={() => this.setState({editing: false})} >
             Cancel
           </Button>

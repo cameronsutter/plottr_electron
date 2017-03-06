@@ -75,10 +75,14 @@
   cursor: pointer;
 }
 
-.card-title-editor__button-bar, .card-description-editor__button-bar {
-  margin-top: 5px;
+.card-dialog__button-bar {
+  margin-top: 10px;
   display: flex;
   flex-direction: row-reverse;
+}
+
+.card-dialog__delete {
+  margin-right: auto;
 }
 
 .ReactModal__Content--after-open {

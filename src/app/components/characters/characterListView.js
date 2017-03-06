@@ -93,7 +93,7 @@ class CharacterListView extends Component {
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog.bind(this)} style={modalStyles}>
       <div>
         <h3>Custom Attributes for Characters</h3>
-        <p className='lead'>Choose what you want to track about your characters</p>
+        <p className='sub-header'>Choose what you want to track about your characters</p>
         <div className='character-list__custom-attributes-add-button'>
           <Input type='text' ref='attrInput' label='Add attributes' value={this.state.addAttrText} onChange={this.handleType.bind(this)} onKeyDown={this.handleAddCustomAttr.bind(this)} />
         </div>
@@ -109,7 +109,7 @@ class CharacterListView extends Component {
       <div className='character-list container-with-sub-nav'>
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        <h1>Characters</h1>
+        <h1 className='secondary-text'>Characters</h1>
         {this.renderCharacterDetails()}
         {this.renderCharacters()}
       </div>

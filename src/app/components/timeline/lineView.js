@@ -195,15 +195,15 @@ class LineView extends Component {
       return (<div className={orientedClassName('line__hover-options', this.props.orientation)} style={style}>
         <ButtonGroup>
           <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-          <Button bsStyle='info' onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
-          <Button bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+          <Button onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
+          <Button onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
       </div>)
     } else {
       return (<div className='line__hover-options' style={style}>
         <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-        <Button block bsStyle='info' onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
-        <Button block bsStyle='danger' onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+        <Button block onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
+        <Button block onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
       </div>)
     }
   }

@@ -1,5 +1,6 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { ui as defaultUI } from 'store/initialState'
+import { newFileUI } from 'store/newFileState'
 
 export default function ui (state = defaultUI, action) {
   switch (action.type) {
@@ -13,7 +14,7 @@ export default function ui (state = defaultUI, action) {
       return action.data.ui
 
     case NEW_FILE:
-      return defaultUI
+      return newFileUI
 
     default:
       return state

@@ -1,5 +1,6 @@
 import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { character } from 'store/initialState'
+import { newFileCharacters } from 'store/newFileState'
 import { characterId } from 'store/newIds'
 
 const initialState = [character]
@@ -25,7 +26,7 @@ export default function characters (state = initialState, action) {
       return action.data.characters
 
     case NEW_FILE:
-      return initialState
+      return newFileCharacters
 
     default:
       return state

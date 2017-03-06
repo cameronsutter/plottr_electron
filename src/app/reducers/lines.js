@@ -1,5 +1,6 @@
 import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { line } from 'store/initialState'
+import { newFileLines } from 'store/newFileState'
 import { lineId, linePosition } from 'store/newIds'
 
 const initialState = [line]
@@ -37,7 +38,7 @@ export default function lines (state = initialState, action) {
       return action.data.lines
 
     case NEW_FILE:
-      return initialState
+      return newFileLines
 
     default:
       return state

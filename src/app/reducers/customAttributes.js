@@ -4,6 +4,7 @@ import { ADD_CHARACTER_ATTR, ADD_PLACES_ATTR,
   REMOVE_CARDS_ATTR, REMOVE_PLACES_ATTR, REMOVE_LINES_ATTR,
   REMOVE_SCENES_ATTR, RESET, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { combineReducers } from 'redux'
+import { newFileCustomAttributes } from 'store/newFileState'
 
 function characters (state = [], action) {
   switch (action.type) {
@@ -15,7 +16,7 @@ function characters (state = [], action) {
       return [...state]
 
     case NEW_FILE:
-      return []
+      return newFileCustomAttributes['characters']
 
     case FILE_LOADED:
       return action.data.customAttributes['characters']
@@ -35,7 +36,7 @@ function places (state = [], action) {
       return [...state]
 
     case NEW_FILE:
-      return []
+      return newFileCustomAttributes['places']
 
     case FILE_LOADED:
       return action.data.customAttributes['places']
@@ -55,7 +56,7 @@ function cards (state = [], action) {
       return [...state]
 
     case NEW_FILE:
-      return []
+      return newFileCustomAttributes['cards']
 
     case FILE_LOADED:
       return action.data.customAttributes['cards']
@@ -75,7 +76,7 @@ function scenes (state = [], action) {
       return [...state]
 
     case NEW_FILE:
-      return []
+      return newFileCustomAttributes['scenes']
 
     case FILE_LOADED:
       return action.data.customAttributes['scenes']
@@ -95,7 +96,7 @@ function lines (state = [], action) {
       return [...state]
 
     case NEW_FILE:
-      return []
+      return newFileCustomAttributes['lines']
 
     case FILE_LOADED:
       return action.data.customAttributes['lines']

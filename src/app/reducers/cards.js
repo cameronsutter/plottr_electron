@@ -3,6 +3,7 @@ import { ADD_CARD, EDIT_CARD_DETAILS,
   EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE,
   DELETE_CARD, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { card } from 'store/initialState'
+import { newFileCards } from 'store/newFileState'
 import { cardId } from 'store/newIds'
 
 const initialState = [card]
@@ -68,7 +69,7 @@ export default function cards (state, action) {
       return action.data.cards
 
     case NEW_FILE:
-      return initialState
+      return newFileCards
 
     default:
       return state || []

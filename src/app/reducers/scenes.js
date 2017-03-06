@@ -1,5 +1,6 @@
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { scene } from 'store/initialState'
+import { newFileScenes } from 'store/newFileState'
 import { sceneId, scenePosition } from 'store/newIds'
 
 const initialState = [scene]
@@ -31,7 +32,7 @@ export default function scenes (state = initialState, action) {
       return action.data.scenes
 
     case NEW_FILE:
-      return initialState
+      return newFileScenes
 
     default:
       return state

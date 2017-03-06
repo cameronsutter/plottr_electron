@@ -11,7 +11,8 @@ export default function storyName (state = defaultStoryName, action) {
       return action.data.storyName
 
     case NEW_FILE:
-      return action.fileName.substr(action.fileName.lastIndexOf('/') + 1).replace('.plottr', '')
+      const separator = process.platform === 'darwin' ? '/' : '\\'
+      return action.fileName.substr(action.fileName.lastIndexOf(separator) + 1).replace('.plottr', '')
 
     default:
       return state

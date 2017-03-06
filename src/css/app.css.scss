@@ -50,6 +50,24 @@ h6 {
   font-size: 16pt !important;
 }
 
+.secondary-text {
+  @include secondary-text;
+}
+
+.disabled-text {
+  @include disabled-text;
+}
+
+.accented-text {
+  @include accented-text;
+}
+
+.sub-header {
+  @extend .secondary-text;
+  font-size: 16pt;
+  margin-bottom: 20px;
+}
+
 .glyphicon {
   vertical-align: text-top;
 }

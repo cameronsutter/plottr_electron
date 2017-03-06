@@ -872,6 +872,6 @@
     }
   ],
   "ui": {
-    "currentView": "characters"
+    "currentView": "timeline"
   }
 }

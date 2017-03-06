@@ -37,6 +37,18 @@ $new-item-border: 2px dashed $new-item-border-color;
   font-size: 10pt !important;
 }
 
+@mixin secondary-text {
+  color: rgba(22,34,45, 0.7); // #16222d
+}
+
+@mixin disabled-text {
+  color: rgba(22,34,45, 0.2); // #16222d
+}
+
+@mixin accented-text {
+  color: rgba(108,172,228, 0.9); // #6cace4
+}
+
 @mixin hover-box {
   background-color: $new-item-background;
   border-radius: $border-radius;

@@ -58,7 +58,6 @@ class LineListView extends Component {
       return (
         <LineView key={'lineId-' + line.id}
           line={line}
-          orientation={this.props.orientation}
           sceneMap={this.props.sceneMap}
           labelMap={this.labelMap()}
           handleReorder={this.handleReorder.bind(this)}
@@ -89,7 +88,8 @@ function mapStateToProps (state) {
     lines: state.lines,
     places: state.places,
     characters: state.characters,
-    tags: state.tags
+    tags: state.tags,
+    orientation: state.ui.orientation
   }
 }
 

@@ -84,7 +84,6 @@ class SceneListView extends Component {
           </div>
           <SceneView
             scene={scene}
-            orientation={this.props.orientation}
             handleReorder={this.handleReorder.bind(this)}
             isZoomed={this.props.isZoomed} />
         </div>
@@ -103,7 +102,8 @@ SceneListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    scenes: state.scenes
+    scenes: state.scenes,
+    orientation: state.ui.orientation
   }
 }
 

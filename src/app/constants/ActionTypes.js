@@ -2,6 +2,7 @@ export const FILE_LOADED = 'FILE_LOADED'
 export const FILE_SAVED = 'FILE_SAVED'
 export const NEW_FILE = 'NEW_FILE'
 export const CHANGE_CURRENT_VIEW = 'CHANGE_CURRENT_VIEW'
+export const CHANGE_ORIENTATION = 'CHANGE_ORIENTATION'
 export const RESET = 'RESET'
 
 // story actions

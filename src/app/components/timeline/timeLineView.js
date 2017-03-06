@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon } from 'react-bootstrap'
 import SceneListView from 'components/timeline/sceneListView'
 import LineListView from 'components/timeline/lineListView'
+import * as UIActions from 'actions/ui'
 
 const ZOOM_STATES = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3]
 const INITIAL_ZOOM_INDEX = 4
@@ -19,8 +21,7 @@ class TimeLineView extends Component {
       zoomState: INITIAL_ZOOM_STATE,
       zoomIndex: INITIAL_ZOOM_INDEX,
       scrollTarget: 0,
-      filterOpen: false,
-      orientation: 'horizontal'
+      filterOpen: false
     }
   }
 
@@ -129,7 +130,7 @@ class TimeLineView extends Component {
 
   scrollMiddle () {
     var middle = (this.refs.timeline.scrollWidth / 2) - (window.outerWidth / 2)
-    if (this.state.orientation === 'vertical') {
+    if (this.props.orientation === 'vertical') {
       middle = (this.refs.timeline.scrollHeight / 2)
     }
     this.setState({scrollTarget: middle})
@@ -143,7 +144,7 @@ class TimeLineView extends Component {
 
   scrollEnd () {
     var end = this.refs.timeline.scrollWidth - window.outerWidth
-    if (this.state.orientation === 'vertical') {
+    if (this.props.orientation === 'vertical') {
       end = this.refs.timeline.scrollHeight
     }
     this.setState({scrollTarget: end})
@@ -152,7 +153,7 @@ class TimeLineView extends Component {
   }
 
   increaseScroll () {
-    if (this.state.orientation === 'vertical') {
+    if (this.props.orientation === 'vertical') {
       if (document.body.scrollTop >= this.state.scrollTarget) clearInterval(scrollInterval)
       else document.body.scrollTop += 100
     } else {
@@ -162,7 +163,7 @@ class TimeLineView extends Component {
   }
 
   decreaseScroll () {
-    if (this.state.orientation === 'vertical') {
+    if (this.props.orientation === 'vertical') {
       if (document.body.scrollTop <= this.state.scrollTarget) clearInterval(scrollInterval)
       else document.body.scrollTop -= 100
     } else {
@@ -189,7 +190,7 @@ class TimeLineView extends Component {
     let orientation = 'vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
-    if (this.state.orientation === 'vertical') {
+    if (this.props.orientation === 'vertical') {
       orientation = 'horizontal'
       glyph = 'option-horizontal'
       scrollDirectionFirst = 'menu-up'
@@ -210,7 +211,7 @@ class TimeLineView extends Component {
             </div>
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={() => this.setState({orientation: orientation})}><Glyphicon glyph={glyph} /> Flip</Button>
+            <Button bsSize='small' onClick={() => this.props.actions.changeOrientation(orientation)}><Glyphicon glyph={glyph} /> Flip</Button>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>Zoom: </span>
@@ -261,17 +262,15 @@ class TimeLineView extends Component {
   render () {
     let styles = this.makeTransform()
     let isZoomed = (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
-    let orientation = this.state.orientation === 'vertical' ? 'vertical' : ''
+    let orientation = this.props.orientation === 'vertical' ? 'vertical' : ''
     return (
       <div id='timelineview__container' className='container-with-sub-nav'>
         {this.renderSubNav()}
         <div id='timelineview__root' className={orientation} ref='timeline' style={styles}>
           <SceneListView
-            orientation={this.state.orientation}
             filteredItems={this.state.filteredItems}
             isZoomed={isZoomed} />
           <LineListView
-            orientation={this.state.orientation}
             sceneMap={this.sceneMapping()}
             filteredItems={this.state.filteredItems}
             isZoomed={isZoomed}
@@ -294,7 +293,8 @@ TimeLineView.propTypes = {
   scenes: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired
+  places: PropTypes.array.isRequired,
+  orientation: PropTypes.string.isRequired
 }
 
 function mapStateToProps (state) {
@@ -302,12 +302,15 @@ function mapStateToProps (state) {
     scenes: state.scenes,
     tags: state.tags,
     characters: state.characters,
-    places: state.places
+    places: state.places,
+    orientation: state.ui.orientation
   }
 }
 
 function mapDispatchToProps (dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(UIActions, dispatch)
+  }
 }
 
 export default connect(

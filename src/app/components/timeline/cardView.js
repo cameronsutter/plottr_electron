@@ -230,7 +230,8 @@ CardView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    tags: state.tags
+    tags: state.tags,
+    orientation: state.ui.orientation
   }
 }
 

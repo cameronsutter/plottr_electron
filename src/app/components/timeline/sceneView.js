@@ -138,7 +138,9 @@ SceneView.propTypes = {
 }
 
 function mapStateToProps (state) {
-  return {}
+  return {
+    orientation: state.ui.orientation
+  }
 }
 
 function mapDispatchToProps (dispatch) {

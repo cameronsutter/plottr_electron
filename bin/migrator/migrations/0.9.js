@@ -14,6 +14,8 @@ function migrate (data) {
     lines: []
   }
 
+  obj['ui']['orientation'] = 'horizontal'
+
 
   return obj
 }

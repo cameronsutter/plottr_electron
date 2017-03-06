@@ -7,7 +7,8 @@ export const scene = {
 }
 
 export const ui = {
-  currentView: 'timeline'
+  currentView: 'timeline',
+  orientation: 'horizontal'
 }
 
 export const file = {
@@ -53,7 +54,7 @@ export const card = {
 
 export const line = {
   id: 0,
-  color: '#000000',
+  color: '#6cace4',
   title: '',
   position: 0
 }

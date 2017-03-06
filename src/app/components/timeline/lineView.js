@@ -179,7 +179,6 @@ class LineView extends Component {
         filtered = true
       }
       return (<CardView key={id} card={card}
-        orientation={this.props.orientation}
         sceneId={sceneId} lineId={this.props.line.id}
         labelMap={this.props.labelMap}
         color={this.props.line.color} filtered={filtered}
@@ -294,7 +293,8 @@ function mapStateToProps (state) {
   return {
     lines: state.lines,
     scenes: state.scenes,
-    cards: state.cards
+    cards: state.cards,
+    orientation: state.ui.orientation
   }
 }
 

@@ -76,6 +76,7 @@
     }
   ],
   "ui": {
-    "currentView": "timeline"
+    "currentView": "timeline",
+    "orientation": "horizontal"
   }
 }

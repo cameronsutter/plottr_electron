@@ -26,10 +26,8 @@
   .color-picker__choice {
     margin: 3px;
     button {
-      color: white;
-    }
-    button:hover {
-      color: black;
+      height: 50px;
+      width: 50px;
     }
   }
 }

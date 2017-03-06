@@ -59,7 +59,7 @@ class ColorPicker extends Component {
   }
 
   renderColor (color) {
-    return <Button bsSize='small' onClick={() => this.closeDialog(color)} style={{backgroundColor: color}}>{color}</Button>
+    return <Button title={color} onClick={() => this.closeDialog(color)} style={{backgroundColor: color}}></Button>
   }
 }
 

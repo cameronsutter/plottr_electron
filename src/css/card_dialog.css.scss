@@ -5,27 +5,51 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: auto;
 }
 
 .card-dialog__title {
   padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
 }
 
-.card-dialog__position-details, {
+.card-dialog__body {
+  flex-grow: 1;
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
+  align-items: stretch;
+}
+
+.card-dialog__left-side {
+  width: 20%;
+  border-right: 1px solid #eee;
   padding-top: 10px;
   padding-bottom: 10px;
-  margin-bottom: 5px;
+  overflow-y: scroll;
+}
+
+.card-dialog__item-select-list {
+  list-style-type: none;
+  padding-left: 10px;
+  li {
+    cursor: pointer;
+    padding: 5px;
+    span.colored {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 3px;
+    }
+  }
+  li:hover {
+    background-color: $body-background-color;
+  }
 }
 
 .card-dialog__description {
-  flex-grow: 1;
+  width: 80%;
+  padding-left: 10px;
   overflow-y:scroll;
-  border-bottom: 1px solid #eee;
 }
 
 .card-dialog__line, .card-dialog__scene {
@@ -33,25 +57,19 @@
   flex-direction: column;
 }
 
-.card-dialog__scene-label, .card-dialog__line-label {
+.card-dialog__details-label {
   @include sub-header-font;
   min-width: 150px;
-}
-
-.card-dialog__scene {
-  margin-left: 10px;
 }
 
 .card-dialog__button-bar-create {
   margin-top: 10px;
   display: flex;
   flex-direction: row-reverse;
-  // outline-top: 1px solid #eee;
-  // padding-top: 3px;
 }
 
 .card-dialog__select-line, .card-dialog__select-scene {
-  margin-left: 10px !important;
+  margin-left: 5px !important;
 }
 
 .card-title-editor, .card-description-editor {
@@ -77,8 +95,10 @@
 
 .card-dialog__button-bar {
   margin-top: 10px;
+  padding-top: 10px;
   display: flex;
   flex-direction: row-reverse;
+  border-top: 1px solid #eee;
 }
 
 .card-dialog__delete {
@@ -94,22 +114,39 @@
   z-index: 1000;
 }
 
+.card-dialog__characters, .card-dialog__places, .card-dialog__labels-wrapper {
+  label {
+    button {
+      margin-left: 2px;
+      visibility: hidden;
+    }
+  }
+  label:hover {
+    button {
+      visibility: visible;
+    }
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 10px;
+    li {
+      button {
+        margin-right: 2px;
+        visibility: hidden;
+      }
+    }
+    li:hover {
+      button {
+        visibility: visible;
+      }
+    }
+  }
+}
+
 .card-dialog__labels {
-  align-self: center;
-  padding-bottom: 7px;
-  margin-left: 10px;
-}
-
-.card-dialog__labels .label {
-  margin: 10px;
-  font-size: 12pt;
-}
-
-.card-dialog__label-select {
-  width: 100%;
-  display: flex;
-  align-content: space-around;
-  div {
-    margin: 10px;
+  .label {
+    font-size: 10pt;
+    font-weight: normal;
+    margin: 1px;
   }
 }

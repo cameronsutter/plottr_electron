@@ -7,7 +7,8 @@ import MarkDown from 'pagedown'
 import * as CardActions from 'actions/cards'
 import { card } from 'store/initialState'
 import { shell } from 'electron'
-import { ButtonToolbar, Button, DropdownButton, MenuItem, Input, Label } from 'react-bootstrap'
+import { ButtonToolbar, Button, DropdownButton,
+  MenuItem, Input, Label, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 
 Modal.setAppElement('#timelineview-root')
 const md = MarkDown.getSanitizingConverter()
@@ -37,8 +38,7 @@ class CardDialog extends Component {
   saveEdit () {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
     var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
-    const { characters, places, tags } = this.getSelectedLabels()
-    this.props.actions.editCard(this.props.card.id, newTitle, newDescription, characters, places, tags)
+    this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
     this.setState({editing: false})
   }
 
@@ -46,16 +46,6 @@ class CardDialog extends Component {
     if (event.which === 13) {
       this.saveEdit()
     }
-  }
-
-  getSelectedLabels () {
-    var characters = this.refs.characterSelect.getValue() || this.props.card.characters
-    characters = characters[0] === 'none' ? [] : characters.map(Number)
-    var places = this.refs.placeSelect.getValue() || this.props.card.places
-    places = places[0] === 'none' ? [] : places.map(Number)
-    var tags = this.refs.tagSelect.getValue() || this.props.card.tags
-    tags = tags[0] === 'none' ? [] : tags.map(Number)
-    return {characters: characters, places: places, tags: tags}
   }
 
   changeScene (sceneId) {
@@ -163,7 +153,7 @@ class CardDialog extends Component {
       const url = 'https://daringfireball.net/projects/markdown/syntax'
       return (
         <div>
-          <Input type='textarea' label='description' rows='13' ref='descriptionInput' defaultValue={description} />
+          <Input type='textarea' label='description' rows='20' ref='descriptionInput' defaultValue={description} />
           <small>Format with markdown! <a href='#' onClick={() => shell.openExternal(url)}>learn how</a></small>
         </div>
       )
@@ -192,15 +182,9 @@ class CardDialog extends Component {
 
   renderLabels () {
     if (this.state.editing) return null
-    var characters = this.renderCharacters()
-    var places = this.renderPlaces()
     var tags = this.renderTags()
     return (
-      <div
-        onClick={() => this.setState({editing: true})}
-        className='card-dialog__labels'>
-        {characters}
-        {places}
+      <div className='card-dialog__labels'>
         {tags}
       </div>
     )
@@ -215,99 +199,126 @@ class CardDialog extends Component {
       if (!tag) return null
       var style = {}
       if (tag.color) style = {backgroundColor: tag.color}
-      return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>
+      return <li key={tId}>
+        <Button onClick={() => this.props.actions.removeTag(this.props.card.id, tId)} bsSize='xsmall'>
+          <Glyphicon glyph='remove'/>
+        </Button>
+        <Label bsStyle='info' style={style}>{tag.title}</Label>
+      </li>
     })
   }
 
-  renderPlaces () {
-    if (!this.props.card.places) {
-      return null
-    }
-    return this.props.card.places.map(pId => {
-      var place = _.find(this.props.places, 'id', pId)
-      if (!place) return null
-      var style = {}
-      if (place.color) style = {backgroundColor: place.color}
-      return <Label bsStyle='info' style={style} key={pId}>{place.name}</Label>
+  renderDisplayList (itemIds, fullList, action) {
+    return itemIds.map(itemId => {
+      var item = _.find(fullList, 'id', itemId)
+      if (!item) return null
+      return <li key={itemId}>
+        <Button onClick={() => action(this.props.card.id, itemId)} bsSize='xsmall'><Glyphicon glyph='remove'/></Button>
+        {item.name}
+      </li>
     })
   }
 
   renderCharacters () {
-    if (!this.props.card.characters) {
-      return null
+    return this.renderDisplayList(this.props.card.characters, this.props.characters, this.props.actions.removeCharacter)
+  }
+
+  renderPlaces () {
+    return this.renderDisplayList(this.props.card.places, this.props.places, this.props.actions.removePlace)
+  }
+
+  renderSelectList (type, items, usedItems, action) {
+    const itemsToList = items.filter(i =>
+      !usedItems.includes(i.id)
+    )
+    let listItems = <small><i>no more to add</i></small>
+    if (type === 'tag') {
+
     }
-    return this.props.card.characters.map(cId => {
-      var character = _.find(this.props.characters, 'id', cId)
-      if (!character) return null
-      var style = {}
-      if (character.color) style = {backgroundColor: character.color}
-      return <Label bsStyle='info' style={style} key={cId}>{character.name}</Label>
-    })
+    if (itemsToList.length > 0) {
+      listItems = itemsToList.map(i => {
+        let colorSpan = <span></span>
+        if (type === 'tag') {
+          colorSpan = <span className='colored' style={{backgroundColor: i.color}}></span>
+        }
+        return <li key={i.id} onClick={() => action(this.props.card.id, i.id)}>{colorSpan}{i.name || i.title}</li>
+      })
+    }
+    return <Popover id='list-popover' title={`${type} list`}>
+      <ul className='card-dialog__item-select-list'>{listItems}</ul>
+    </Popover>
   }
 
-  renderEditingLabels () {
-    if (!this.state.editing) return null
-    var card = this.props.card || {characters: [], places: [], tags: []}
-    return (
-      <div className='card-dialog__label-select'>
-        <Input type='select' ref='characterSelect' label='select characters' defaultValue={card.characters} multiple>
-          <option key={'none0'} value='none'>none</option>
-          {this.renderCharacterOptions()}
-        </Input>
-        <Input type='select' ref='placeSelect' label='select places' defaultValue={card.places} multiple>
-        <option key={'none1'} value='none'>none</option>
-          {this.renderPlaceOptions()}
-        </Input>
-        <Input type='select' ref='tagSelect' label='select tags' defaultValue={card.tags} multiple>
-        <option key={'none2'} value='none'>none</option>
-          {this.renderTagOptions()}
-        </Input>
-      </div>
-    )
+  renderCharacterList () {
+    return this.renderSelectList('character', this.props.characters, this.props.card.characters, this.props.actions.addCharacter)
   }
 
-  renderCharacterOptions () {
-    return this.props.characters.map(ch =>
-      <option value={ch.id} key={ch.id}>{ch.name}</option>
-    )
+  renderPlaceList () {
+    return this.renderSelectList('place', this.props.places, this.props.card.places, this.props.actions.addPlace)
   }
 
-  renderPlaceOptions () {
-    return this.props.places.map(p =>
-      <option value={p.id} key={p.id}>{p.name}</option>
-    )
+  renderTagList () {
+    return this.renderSelectList('tag', this.props.tags, this.props.card.tags, this.props.actions.addTag)
   }
 
-  renderTagOptions () {
-    return this.props.tags.map(t =>
-      <option value={t.id} key={t.id}>{t.title}</option>
-    )
-  }
-
-  renderPositionDetails () {
-    if (this.state.editing) return null
+  renderLeftSide () {
     var ids = {
       scene: _.uniqueId('select-scene-'),
       line: _.uniqueId('select-line-')
     }
 
     return (
-      <div className='card-dialog__position-details'>
+      <div className='card-dialog__left-side'>
         <div className='card-dialog__line'>
-          <label className='card-dialog__line-label' htmlFor={ids.line}>Line:
+          <label className='card-dialog__details-label' htmlFor={ids.line}>Line:
             <DropdownButton id={ids.line} className='card-dialog__select-line' title={this.getCurrentLine().title}>
               {this.renderLineItems()}
             </DropdownButton>
           </label>
         </div>
         <div className='card-dialog__scene'>
-          <label className='card-dialog__scene-label' htmlFor={ids.scene}>Scene:
+          <label className='card-dialog__details-label' htmlFor={ids.scene}>Scene:
             <DropdownButton id={ids.scene} className='card-dialog__select-scene' title={this.getCurrentScene().title}>
               {this.renderSceneItems()}
             </DropdownButton>
           </label>
         </div>
-        {this.renderLabels()}
+        <div className='card-dialog__characters'>
+          <label className='card-dialog__details-label'>Characters:
+            <OverlayTrigger trigger="click" rootClose placement="right" overlay={this.renderCharacterList()}>
+              <Button ref='characterList' bsSize='xsmall'>
+                <Glyphicon glyph='plus'/>
+              </Button>
+            </OverlayTrigger>
+          </label>
+          <ul>
+            {this.renderCharacters()}
+          </ul>
+        </div>
+        <div className='card-dialog__places'>
+          <label className='card-dialog__details-label'>Places:
+            <OverlayTrigger trigger="click" rootClose placement="right" overlay={this.renderPlaceList()}>
+              <Button ref='placesList' bsSize='xsmall'>
+                <Glyphicon glyph='plus'/>
+              </Button>
+            </OverlayTrigger>
+          </label>
+          <ul>
+            {this.renderPlaces()}
+          </ul>
+        </div>
+        <div className='card-dialog__labels-wrapper'>
+          <label className='card-dialog__details-label'>Tags:
+            <OverlayTrigger trigger="click" rootClose placement="right" overlay={this.renderTagList()}>
+              <Button ref='tagsList' bsSize='xsmall'>
+                <Glyphicon glyph='plus'/>
+              </Button>
+            </OverlayTrigger>
+          </label>
+          <ul>
+            {this.renderLabels()}
+          </ul>
+        </div>
       </div>
     )
   }
@@ -322,10 +333,12 @@ class CardDialog extends Component {
       <Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
         <div className='card-dialog'>
           {this.renderTitle()}
-          {this.renderPositionDetails()}
-          {this.renderEditingLabels()}
-          <div className='card-dialog__description'>
-            {this.renderDescription()}
+          <div className='card-dialog__body'>
+            {this.renderLeftSide()}
+            <div className='card-dialog__description'>
+              <p className='card-dialog__details-label text-center'>Description:</p>
+              {this.renderDescription()}
+            </div>
           </div>
           {this.renderButtonBar()}
         </div>

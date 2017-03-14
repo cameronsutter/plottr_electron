@@ -1,17 +1,23 @@
 {
   "cards": [
     {
+      "characters": [],
       "description": "Desciption of cool thing happening",
       "id": 161,
       "lineId": 35,
+      "places": [],
       "sceneId": 60,
+      "tags": [],
       "title": "Cool thing happens"
     },
     {
+      "characters": [],
       "description": "Desciption of cool thing happening",
       "id": 160,
       "lineId": 33,
+      "places": [],
       "sceneId": 98,
+      "tags": [],
       "title": "Cool thing happens"
     },
     {
@@ -326,7 +332,8 @@
     },
     {
       "characters": [
-        0
+        0,
+        1
       ],
       "description": "Click to edit",
       "id": 145,
@@ -336,7 +343,8 @@
       ],
       "sceneId": 60,
       "tags": [
-        0
+        0,
+        4
       ],
       "title": "The Last Great War"
     },
@@ -448,7 +456,9 @@
       "title": "Plotting and Leading the Remnants"
     },
     {
-      "characters": [],
+      "characters": [
+        1
+      ],
       "description": "Click to edit",
       "id": 144,
       "lineId": 28,

@@ -180,19 +180,7 @@ class CardDialog extends Component {
     return html
   }
 
-  renderLabels () {
-    var tags = this.renderTags()
-    return (
-      <div className='card-dialog__labels'>
-        {tags}
-      </div>
-    )
-  }
-
   renderTags () {
-    if (!this.props.card.tags) {
-      return null
-    }
     return this.props.card.tags.map(tId => {
       var tag = _.find(this.props.tags, 'id', tId)
       if (!tag) return null
@@ -314,8 +302,8 @@ class CardDialog extends Component {
               </Button>
             </OverlayTrigger>
           </label>
-          <ul>
-            {this.renderLabels()}
+          <ul className='card-dialog__labels'>
+            {this.renderTags()}
           </ul>
         </div>
       </div>

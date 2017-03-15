@@ -144,9 +144,15 @@
 }
 
 .card-dialog__labels {
-  .label {
-    font-size: 10pt;
-    font-weight: normal;
-    margin: 1px;
+  li {
+    padding-bottom: 5px;
+    button {
+      vertical-align: bottom;
+    }
+    .label {
+      font-size: 10pt;
+      font-weight: normal;
+      padding-top: 5px;
+    }
   }
 }

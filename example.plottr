@@ -542,13 +542,15 @@
   ],
   "customAttributes": {
     "cards": [],
-    "characters": [],
+    "characters": [
+      "age"
+    ],
     "lines": [],
     "places": [],
     "scenes": []
   },
   "file": {
-    "dirty": true,
+    "dirty": false,
     "fileName": "/Users/csutter/github/plottr_electron/example.plottr",
     "loaded": true,
     "version": "0.9.0"

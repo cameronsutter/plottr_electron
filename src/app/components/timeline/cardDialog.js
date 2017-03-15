@@ -181,7 +181,6 @@ class CardDialog extends Component {
   }
 
   renderLabels () {
-    if (this.state.editing) return null
     var tags = this.renderTags()
     return (
       <div className='card-dialog__labels'>

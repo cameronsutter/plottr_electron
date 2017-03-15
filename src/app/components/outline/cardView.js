@@ -24,52 +24,12 @@ class CardView extends Component {
     return html
   }
 
-  renderLabels () {
-    var characters = this.renderCharacters()
-    var places = this.renderPlaces()
-    var tags = this.renderTags()
-    return (
-      <div className='outline__card__label-list'>
-        {characters}
-        {places}
-        {tags}
-      </div>
-    )
-  }
-
   renderTags () {
-    if (!this.props.card.tags) {
-      return null
-    }
     return this.props.card.tags.map(tId => {
       var tag = _.find(this.props.tags, 'id', tId)
       var style = {}
       if (tag.color) style = {backgroundColor: tag.color}
       return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>
-    })
-  }
-
-  renderPlaces () {
-    if (!this.props.card.places) {
-      return null
-    }
-    return this.props.card.places.map(pId => {
-      var place = _.find(this.props.places, 'id', pId)
-      var style = {}
-      if (place.color) style = {backgroundColor: place.color}
-      return <Label bsStyle='info' style={style} key={pId}>{place.name}</Label>
-    })
-  }
-
-  renderCharacters () {
-    if (!this.props.card.characters) {
-      return null
-    }
-    return this.props.card.characters.map(cId => {
-      var character = _.find(this.props.characters, 'id', cId)
-      var style = {}
-      if (character.color) style = {backgroundColor: character.color}
-      return <Label bsStyle='info' style={style} key={cId}>{character.name}</Label>
     })
   }
 
@@ -80,10 +40,12 @@ class CardView extends Component {
     return (
       <div className='outline__card'>
         <div style={style} className='outline__card__line-title'>{line.title}</div>
-        {this.renderLabels()}
         <h6>{title}</h6>
         <div
           dangerouslySetInnerHTML={{__html: this.makeLabels(md.makeHtml(description))}} >
+        </div>
+        <div className='outline__card__label-list'>
+          {this.renderTags()}
         </div>
       </div>
     )

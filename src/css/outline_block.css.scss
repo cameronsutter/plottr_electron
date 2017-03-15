@@ -8,6 +8,11 @@
 .outline__card {
   @include well;
   margin: 20px;
+  display: flex;
+  flex-direction: column;
+  h6 {
+    margin-top: -15px;
+  }
 }
 
 .outline__scenes-container {
@@ -15,16 +20,13 @@
 }
 
 .outline__card__line-title {
-  float:right;
+  align-self: flex-end;
 }
 
 .outline__card__label-list {
-  float:right;
-  margin-right: 10px;
-
   .label {
-    margin: 5px;
-    vertical-align: text-top;
+    margin-right: 5px;
+    padding-top: 4px;
   }
 }
 
@@ -32,6 +34,21 @@ li.outline__minimap__scene-title > a {
   color: inherit;
   cursor: pointer;
   padding: 3px 10px 3px 10px;
+  display: flex;
+  justify-content: space-between;
+
+  .outline__minimap__dots {
+    display: inline-block;
+    margin-top: 4px;
+    margin-left: 5px;
+  }
+
+  .outline__minimap__card-dot {
+    height: 7px;
+    width: 7px;
+    float:right;
+    margin: 1px;
+  }
 }
 
 li.outline__minimap__scene-title > a:hover {
@@ -39,20 +56,19 @@ li.outline__minimap__scene-title > a:hover {
 }
 
 .outline__minimap {
+  @include well;
   display: block;
   position: fixed;
-  right: 0px;
+  left: 0px;
   top: 55px;
   width: 25%;
-  height:90%;
+  height:94%;
   overflow-y: scroll;
-  border-left: 1px solid $new-item-border-color;
-  border-bottom: 1px solid $new-item-border-color;
   padding-top: 5px;
-  padding-left: 5px;
-  margin-left: 10px;
+  padding-right: 5px;
+  margin-right: 10px;
   margin-top: -5px;
-  background-color: #fffffb;
+  border-radius: 0px;
 }
 
 .outline__minimap__placeholder {
@@ -63,17 +79,4 @@ li.outline__minimap__scene-title > a:hover {
 
 .active {
   background-color: $new-item-background;
-}
-
-.outline__minimap__dots {
-  display: inline-block;
-  float: right;
-  margin-top: 4px;
-}
-
-.outline__minimap__card-dot {
-  height: 7px;
-  width: 7px;
-  float:right;
-  margin: 1px;
 }

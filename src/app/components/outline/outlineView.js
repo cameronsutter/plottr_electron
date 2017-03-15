@@ -66,11 +66,11 @@ class OutlineView extends Component {
     var cardMapping = this.cardMapping()
     return (
       <div className='outline__container'>
+        <div className='outline__minimap__placeholder'>you didn&apos;t see anything</div>
+        <MiniMap active={this.state.active} cardMapping={cardMapping} />
         <div className='outline__scenes-container'>
           {this.renderScenes(cardMapping)}
         </div>
-        <MiniMap active={this.state.active} cardMapping={cardMapping} />
-        <div className='outline__minimap__placeholder'>you didn&apos;t see anything</div>
       </div>
     )
   }

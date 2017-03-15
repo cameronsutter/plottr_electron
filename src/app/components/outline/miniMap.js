@@ -20,7 +20,7 @@ class MiniMap extends Component {
     return cards.map((c) => {
       var line = _.find(this.props.lines, 'id', c.lineId)
       var style = {backgroundColor: line.color}
-      return <div key={`dot-${line.id}-${c.id}`} style={style} className='outline__minimap__card-dot'></div>
+      return <div key={`dot-${line.id}-${c.id}`} title={line.title} style={style} className='outline__minimap__card-dot'></div>
     })
   }
 
@@ -28,7 +28,8 @@ class MiniMap extends Component {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map(s =>
       <NavItem ref={s.title} key={s.id} href={s.title} className='outline__minimap__scene-title'>
-        {s.title} <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[s.id])}</div>
+        <span>{s.title}</span>
+        <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[s.id])}</div>
       </NavItem>
     )
   }

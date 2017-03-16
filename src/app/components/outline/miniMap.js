@@ -12,7 +12,7 @@ class MiniMap extends Component {
 
   selectNav (key, href) {
     window.location = `#${href}`
-    window.scrollBy(0, -55)
+    window.scrollBy(0, -105)
   }
 
   renderCardDots (sceneCards) {

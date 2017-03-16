@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { Glyphicon, Nav, Navbar, NavItem, Button } from 'react-bootstrap'
 import SceneView from 'components/outline/sceneView'
 import MiniMap from 'components/outline/miniMap'
 
 class OutlineView extends Component {
   constructor (props) {
     super(props)
-    this.state = {affixed: false, active: ''}
+    this.state = {affixed: false, active: '', currentLine: null}
   }
 
   cardMapping () {
@@ -32,13 +33,17 @@ class OutlineView extends Component {
     return mapping
   }
 
+  lineIsVisible (id) {
+    return this.state.currentLine ? id === this.state.currentLine : true
+  }
+
   sortedSceneCards (sceneId) {
     var cards = this.findSceneCards(sceneId)
     const lines = _.sortBy(this.props.lines, 'position')
     var sorted = []
     lines.forEach((l) => {
       var card = _.find(cards, {lineId: l.id})
-      if (card) {
+      if (card && this.lineIsVisible(l.id)) {
         sorted.push(card)
       }
     })
@@ -55,6 +60,58 @@ class OutlineView extends Component {
     this.setState({active: title})
   }
 
+  toggleFilter () {
+    this.setState({filterOpen: !this.state.filterOpen})
+  }
+
+  filterItem (id) {
+    if (this.state.currentLine === id) {
+      this.setState({currentLine: null})
+    } else {
+      this.setState({currentLine: id})
+    }
+  }
+
+  renderFilterList () {
+    var items = this.props.lines.map((i) => {
+      return this.renderFilterItem(i)
+    })
+    return (
+      <ul className='timeline__filter-list'>
+        {items}
+      </ul>
+    )
+  }
+
+  renderFilterItem (item) {
+    var placeholder = <span className='filter-list__placeholder'></span>
+    if (this.state.currentLine === item.id) {
+      placeholder = <Glyphicon glyph='eye-open' />
+    }
+    return (<li key={item.id} onMouseDown={() => this.filterItem(item.id)}>
+        {placeholder}{item.title}
+      </li>
+    )
+  }
+
+  renderSubNav () {
+    var style = {}
+    if (this.state.filterOpen) style = {display: 'block'}
+    return (
+      <Navbar className='subnav__container'>
+        <Nav bsStyle='pills' >
+          <NavItem>
+            <Button bsSize='small' onClick={this.toggleFilter.bind(this)}>
+              <Glyphicon glyph='filter' /> Filter by storyline</Button>
+            <div style={style} className='timeline__filter'>
+              {this.renderFilterList()}
+            </div>
+          </NavItem>
+        </Nav>
+      </Navbar>
+    )
+  }
+
   renderScenes (cardMapping) {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map(s =>
@@ -65,7 +122,8 @@ class OutlineView extends Component {
   render () {
     var cardMapping = this.cardMapping()
     return (
-      <div className='outline__container'>
+      <div className='outline__container container-with-sub-nav'>
+        {this.renderSubNav()}
         <div className='outline__minimap__placeholder'>you didn&apos;t see anything</div>
         <MiniMap active={this.state.active} cardMapping={cardMapping} />
         <div className='outline__scenes-container'>

@@ -3,6 +3,18 @@
 .outline__container {
   display: flex;
   flex-direction: row;
+
+  .timeline__filter-list li {
+    span.filter-list__placeholder {
+      display: inline-block;
+      width: 14px;
+      margin-right: 4px;
+    }
+    span.glyphicon {
+      width: 14px;
+      margin-right: 4px;
+    }
+  }
 }
 
 .outline__card {
@@ -61,9 +73,9 @@ li.outline__minimap__scene-title > a:hover {
   display: block;
   position: fixed;
   left: 0px;
-  top: 55px;
+  top: 102px;
   width: 25%;
-  height:94%;
+  height:88%;
   overflow-y: scroll;
   padding-top: 5px;
   padding-right: 5px;

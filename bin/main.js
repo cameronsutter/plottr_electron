@@ -318,12 +318,14 @@ function openWindow (fileName, newFile = false) {
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {
     console.log(err)
-    newWindow.close()
+    removeRecentFile(fileName)
+    newWindow.destroy()
     askToOpenOrCreate()
   }
 }
 
 function dereferenceWindow (winObj) {
+  removeRecentFile(winObj.fileName)
   windows = _.reject(windows, function (win) {
     return win.id === winObj.id
   })
@@ -333,24 +335,25 @@ function closeWindow (id) {
   let win = _.find(windows, {id: id})
   let windowFile = win.fileName
   win.window.close()
-  removeRecentFile(windowFile)
 }
 
-function removeRecentFile (currentWindowFile) {
-  storage.get(recentKey, function (err, fileName) {
+function removeRecentFile (fileNameToRemove) {
+  storage.get(recentKey, function (err, storedFileName) {
     if (err) console.log(err)
-    if (currentWindowFile !== fileName) {
-      let newFileName = ''
-      for (let i = 0; i < windows.length; i++) {
-        let thisWindowFile = windows[i].fileName
-        if (thisWindowFile !== currentWindowFile && thisWindowFile !== fileName) {
-          newFileName = thisWindowFile
+    if (fileNameToRemove === storedFileName) {
+      if (windows.length > 1) {
+        let newFileName = ''
+        for (let i = 0; i < windows.length; i++) {
+          let thisWindowFile = windows[i].fileName
+          if (thisWindowFile !== fileNameToRemove && thisWindowFile !== storedFileName) {
+            newFileName = thisWindowFile
+          }
         }
-      }
-      if (newFileName !== '') {
-        storage.set(recentKey, newFileName, function (err, _) {
-          if (err) console.log(err)
-        })
+        if (newFileName !== '') {
+          storage.set(recentKey, newFileName, function (err, _) {
+            if (err) console.log(err)
+          })
+        }
       }
     }
   })

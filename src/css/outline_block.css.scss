@@ -12,6 +12,7 @@
   flex-direction: column;
   h6 {
     margin-top: -15px;
+    cursor: pointer;
   }
 }
 
@@ -79,4 +80,14 @@ li.outline__minimap__scene-title > a:hover {
 
 .active {
   background-color: $new-item-background;
+}
+
+.outline__description {
+  cursor: pointer;
+}
+
+.outline__description__editing {
+  textarea {
+    font-size: 15px;
+  }
 }

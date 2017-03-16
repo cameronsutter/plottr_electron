@@ -594,6 +594,29 @@ function buildViewMenu () {
         win.webContents.reload()
       }
     }
+  },{
+    label: 'Take Screenshot',
+    accelerator: 'CmdOrCtrl+P',
+    click: function () {
+      let win = BrowserWindow.getFocusedWindow()
+      if (win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
+      win.capturePage(function (image) {
+        if (process.env.NODE_ENV === 'dev') {
+          var version = app.getVersion()
+          var folderPath = path.join(__dirname, '..', 'screenshots', version)
+          fs.mkdirSync(folderPath)
+          var date = new Date()
+          var timestamp = '' + date.getMinutes() + date.getSeconds()
+          var fileName = 'shot' + timestamp + '.png'
+          var filePath = path.join(folderPath, fileName)
+          fs.writeFile(filePath, image.toPNG())
+        } else {
+          dialog.showSaveDialog(win, function(fileName) {
+            if (fileName) fs.writeFile(fileName + '.png', image.toPNG())
+          })
+        }
+      })
+    }
   }]
   if (!TRIALMODE) submenu.push({
     label: 'Show Dev Tools',

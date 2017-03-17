@@ -50,6 +50,9 @@
   width: 80%;
   padding-left: 10px;
   overflow-y:scroll;
+  textarea {
+    font-size: 15px;
+  }
 }
 
 .card-dialog__line, .card-dialog__scene {

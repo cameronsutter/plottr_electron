@@ -153,7 +153,7 @@ class CardDialog extends Component {
       const url = 'https://daringfireball.net/projects/markdown/syntax'
       return (
         <div>
-          <Input type='textarea' label='description' rows='20' ref='descriptionInput' defaultValue={description} />
+          <Input type='textarea' rows='20' ref='descriptionInput' defaultValue={description} />
           <small>Format with markdown! <a href='#' onClick={() => shell.openExternal(url)}>learn how</a></small>
         </div>
       )

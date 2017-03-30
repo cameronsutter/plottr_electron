@@ -350,9 +350,7 @@
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper.\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.",
       "id": 145,
       "lineId": 27,
-      "places": [
-        0
-      ],
+      "places": [],
       "sceneId": 60,
       "tags": [
         0,
@@ -476,7 +474,9 @@
       "description": "Click to edit",
       "id": 144,
       "lineId": 28,
-      "places": [],
+      "places": [
+        0
+      ],
       "sceneId": 68,
       "tags": [],
       "title": "Seeking an Escape"
@@ -486,7 +486,9 @@
       "description": "Kevan enters the world of Rivalia",
       "id": 112,
       "lineId": 29,
-      "places": [],
+      "places": [
+        0
+      ],
       "sceneId": 60,
       "tags": [],
       "title": "Keven Enters the World of Rivalia"
@@ -506,7 +508,9 @@
       "description": "- After defeating the last Dark Lord, Kevan is on a grand hunt alongside his Paladins to vanquish or capture what's left of Rivan's hosts, in hopes of stopping them from ever gathering strength again. He lost too many friends in the last war. \n\n- Currently, he and several of his knights are responding to a tip that a crafty hoglin has been sneaking up to the city of Bask and spying.\n- Kevan has located the hoglin and gives chase, though the creature is difficult to catch since it has an Equine Speed enchantment on its shoes and uses thickets and brush to make pursuit via horseback difficult (Runs about 25 mph. boots were stolen from the previous dark lord's now abandoned armory)",
       "id": 140,
       "lineId": 29,
-      "places": [],
+      "places": [
+        1
+      ],
       "sceneId": 68,
       "tags": [],
       "title": "Hunting and Maintaining Order"
@@ -633,6 +637,9 @@
   ],
   "places": [
     {
+      "cards": [
+        140
+      ],
       "color": "indianred",
       "description": "my favorite place",
       "id": 1,
@@ -641,6 +648,10 @@
       "weather": "stormy"
     },
     {
+      "cards": [
+        144,
+        112
+      ],
       "color": "darkorchid",
       "description": "my favorite place",
       "id": 0,
@@ -648,6 +659,7 @@
       "notes": ""
     },
     {
+      "cards": [],
       "color": null,
       "description": "",
       "id": 2,

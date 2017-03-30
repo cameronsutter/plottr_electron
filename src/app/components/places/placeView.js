@@ -77,6 +77,12 @@ class PlaceView extends Component {
     )
   }
 
+  renderCardAssociations () {
+    return this.props.place.cards.map(cId =>
+      _.find(this.props.cards, {'id': cId}).title
+    ).join(', ')
+  }
+
   renderPlace () {
     const { place } = this.props
     const details = this.props.customAttributes.map((attr, idx) =>
@@ -97,6 +103,10 @@ class PlaceView extends Component {
           <dt>Notes</dt>
           <dd>{place.notes}</dd>
         </dl>
+        <dl className='dl-horizontal'>
+          <dt>Attached to</dt>
+          <dd title={this.renderCardAssociations()}>{place.cards.length} cards</dd>
+        </dl>
       </div>
     )
   }
@@ -116,11 +126,13 @@ PlaceView.propTypes = {
   place: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributes: PropTypes.array.isRequired,
+  cards: PropTypes.array.isRequired
 }
 
 function mapStateToProps (state) {
   return {
     customAttributes: state.customAttributes['places'],
+    cards: state.cards
   }
 }
 

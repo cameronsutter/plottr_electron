@@ -19,6 +19,11 @@ function migrate (data) {
     c['cards'] = c['cards'] || []
   })
 
+  // add scenes (via cards) to places
+  obj.places.forEach((c) => {
+    c['cards'] = c['cards'] || []
+  })
+
   // add the default orientation
   obj['ui']['orientation'] = 'horizontal'
 

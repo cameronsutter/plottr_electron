@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -77,6 +78,12 @@ class CharacterView extends Component {
     )
   }
 
+  renderCardAssociations () {
+    return this.props.character.cards.map(cId =>
+      _.find(this.props.cards, {'id': cId}).title
+    ).join(', ')
+  }
+
   renderCharacter () {
     const { character } = this.props
     const details = this.props.customAttributes.map((attr, idx) =>
@@ -97,6 +104,10 @@ class CharacterView extends Component {
           <dt>Notes</dt>
           <dd>{character.notes}</dd>
         </dl>
+        <dl className='dl-horizontal'>
+          <dt>Attached to</dt>
+          <dd title={this.renderCardAssociations()}>{character.cards.length} cards</dd>
+        </dl>
       </div>
     )
   }
@@ -115,12 +126,14 @@ class CharacterView extends Component {
 CharacterView.propTypes = {
   character: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  customAttributes: PropTypes.array.isRequired
+  customAttributes: PropTypes.array.isRequired,
+  cards: PropTypes.array.isRequired
 }
 
 function mapStateToProps (state) {
   return {
-    customAttributes: state.customAttributes['characters']
+    customAttributes: state.customAttributes['characters'],
+    cards: state.cards
   }
 }
 

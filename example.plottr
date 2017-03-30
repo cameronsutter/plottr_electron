@@ -91,7 +91,9 @@
       "title": "Mantle of Power"
     },
     {
-      "characters": [],
+      "characters": [
+        1
+      ],
       "description": "**Setting:** Marshy Forest\n\nThe Storm begins in earnest as Jared searches the surrounding trees for the source of the cry for help, calling out to the girl. She replies and calls him to a wooded ravine. As he approaches and descends the ravine, the clouds continue to darken and the rain and wind pick up. He asks where he is, and hears a voice behind him saying \"here\" He turns, and a bolt of lighting strikes him, causing him to black out and pulling him into Rivalia (it also marks him as Rivan's chosen.",
       "id": 117,
       "lineId": 27,
@@ -111,7 +113,9 @@
       "title": "Testing the Dark Lord"
     },
     {
-      "characters": [],
+      "characters": [
+        1
+      ],
       "description": "With Kevan's forces catching up and hot on his heels, Jared tires of carrying Burp across the plains and thickets. Jared says they need to ditch them and he's tiring out. Burp looks around and realizes they are close to the Ashwood Forest, and suggests they lay low in a forest tavern called the Executioner's Blockhouse/The Goblin's Pimple/The Gobblin' Goblin. The forest should provide a great chance to lose the paladins even though it will take a little extra time to get to Malgard. Jared agrees and changes course to the southeast.",
       "id": 127,
       "lineId": 27,
@@ -141,7 +145,9 @@
       "title": "Faded Hope"
     },
     {
-      "characters": [],
+      "characters": [
+        1
+      ],
       "description": "Jared and Burp flee from the knights into a nearby thicket.\n\"The trees won't stop them for long\" Jared asks. \"How do we lose them?\"\n- Burp says they need to get to Malgard and asks jared to try on his shoes.\n- Jared asks why and protests that they won't fit. Burp says they are Magic, and tells him just to do it.\n- Jared places them on and asks \"what now?\" \n- Burp tells Jared to \"hold me\" and tries to jump into his arms\n- Jared recoils, but hears the Knights dismounting and sees them entering the thicket. \"there they are!\" One of them says.\n- Jared runs quickly through the thicket, nearly tripping a few times as he gets used to the shoes, as the Knights calling after him.\n\n** Objectives **\n- Show burp's loveable personality",
       "id": 122,
       "lineId": 27,
@@ -271,7 +277,9 @@
       "title": "Maltheus's Divination"
     },
     {
-      "characters": [],
+      "characters": [
+        1
+      ],
       "description": "**Setting:** Duxbury bogs\n\nDeep in thought Jared finds he has ridden to the city limits, but a storm brewing causes him to reconsider going further.  As he is ready to turn back, he hears  a girl crying for help from the old marshy fields behind him. He decides to investigate.",
       "id": 118,
       "lineId": 27,
@@ -311,7 +319,9 @@
       "title": "A rude awakening"
     },
     {
-      "characters": [],
+      "characters": [
+        1
+      ],
       "description": "**Setting:** Duxbury, MA\n\nAfter hearing his parent fight for the umpteenth time, Jared hops on his bike and runs off to think somewhere quiet. He considers his friend Marc's house but realizes they'd look for him there so he just rides wherever his bike takes him.\n\n**Emotional Beats:**\n\nLoneliness\nFrustration\nFear\nHope",
       "id": 114,
       "lineId": 27,
@@ -321,7 +331,9 @@
       "title": "Running Away Again"
     },
     {
-      "characters": [],
+      "characters": [
+        1
+      ],
       "description": "**Setting: Rivanian field**\n\n- Jared Wakes up in the middle of a crater in the road, running a bright green plain disoriented. A creature stands over him, excitedly calling him master\n- Jared freaks out at the sight of the strange creature and tries to crawl back, but then hears a man calling out to him, he turns to see several knights getting up off the ground, grass stuck in some of their armor, and the one callout out to him, who has scuffed up armor.\n- The creature tells him that just as prophesied/expected, Jared fell from the sky like a comet and knocked all those knights down, and that they must flee. \n- Jared rejects the idea until the lead knight starts talking about a mark, and draws his sword, telling his men to \"Bring me that kid. Dead or alive!\"\n- Jared gets up and protests, \"Wait! I didn't mean any harm and I have no idea where I am. can't we talk about this?\"\n- The man replies: \"Sure! Come right on over here. We'll talk all about how you got here and why you side with the enemy.\" Jared hesitates and burp pulls his arm the other way. \"No! He'll capture you, or kill you! Mustn't have that!\" Jared hurriedly asks the creature if he can explain what's going on and where he is, and the creature says \"later. tell you later, come on please. Not wanting to be caught by angry knights.\" \n- Jared looks back and gives into the creatures pleas to escape somewhere safe to answer questions. \"Don't let him escape!\" the knight says when Jared starts turning to run.  Jared follows the creature as the knights mount.\n",
       "id": 116,
       "lineId": 27,
@@ -349,7 +361,9 @@
       "title": "The Last Great War"
     },
     {
-      "characters": [],
+      "characters": [
+        1
+      ],
       "description": "Valia, running out of power, finds a suitable vessel in princess Anna and makes a deal with Princess Anna to help bring  \nLorem ipsum dolor sit amet, consectetur adipiscing elit. {{sad}} In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. {{happy}} Maecenas euismod magna in tortor tempus ullamcorper.\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam {{scary}} et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.  ",
       "id": 146,
       "lineId": 27,
@@ -511,6 +525,17 @@
   "characters": [
     {
       "age": "12",
+      "cards": [
+        145,
+        146,
+        144,
+        114,
+        118,
+        117,
+        116,
+        122,
+        127
+      ],
       "color": "lightpink",
       "description": "she is the coolest",
       "id": 1,
@@ -519,6 +544,9 @@
       "power": "lantern"
     },
     {
+      "cards": [
+        145
+      ],
       "color": "gold",
       "description": "she is the coolest",
       "id": 0,
@@ -526,6 +554,7 @@
       "notes": ""
     },
     {
+      "cards": [],
       "color": null,
       "description": "nothing big",
       "id": 2,
@@ -533,6 +562,7 @@
       "notes": ""
     },
     {
+      "cards": [],
       "color": null,
       "description": "short description",
       "id": 3,

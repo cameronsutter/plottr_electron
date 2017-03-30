@@ -14,6 +14,12 @@ function migrate (data) {
     lines: []
   }
 
+  // add scenes (via cards) to characters
+  obj.characters.forEach((c) => {
+    c['cards'] = c['cards'] || []
+  })
+
+  // add the default orientation
   obj['ui']['orientation'] = 'horizontal'
 
 

@@ -2,21 +2,46 @@
 
 .place-list {
   margin: 10px;
-  h3 {
+  h1 {
     text-align: center;
   }
 }
 
+.place-list__list {
+  width: 25%;
+  .list-group-item {
+    cursor: pointer;
+  }
+}
+
 .place-list__new {
-  @include new_item;
+  text-align: center;
+  cursor: pointer;
+  color: $new-item-border-color;
 }
 
 .place-list__new:hover {
-  @include new_item_hover;
+  background: $new-item-background;
 }
 
 .place-list__place {
   @include well;
+  width: 75%;
+  float: right;
+  .place-list__place__edit-form {
+    padding-left: 5px;
+    display: flex;
+    .place-list__inputs__normal {
+      width: 50%;
+      padding-right: 3%;
+      border-right: solid 1px #eee;
+    }
+    .place-list__inputs__custom {
+      width: 50%;
+      padding-right: 3%;
+      padding-left: 3%;
+    }
+  }
   .btn-toolbar {
     display: flex;
     flex-direction: row-reverse;

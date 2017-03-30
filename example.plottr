@@ -911,7 +911,7 @@
     }
   ],
   "ui": {
-    "currentView": "timeline",
+    "currentView": "places",
     "orientation": "horizontal"
   }
 }

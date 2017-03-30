@@ -30,18 +30,22 @@ class PlaceView extends Component {
     const { place } = this.props
     return (
       <div className='place-list__place'>
-        <Input type='text' ref='nameInput' autoFocus
-          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-          onKeyPress={this.handleEnter.bind(this)}
-          label='Name' defaultValue={place.name} />
-        <Input type='text' ref='descriptionInput'
-          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-          onKeyPress={this.handleEnter.bind(this)}
-          label='Short Description' defaultValue={place.description} />
-        <Input type='textarea' rows="10" ref='notesInput'
-          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-          label='Notes' defaultValue={place.notes} />
-        <hr />
+        <div className='place-list__place__edit-form'>
+          <div className='place-list__inputs__normal'>
+            <Input
+              type='text' ref='nameInput' autoFocus
+              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyPress={this.handleEnter.bind(this)}
+              label='Name' defaultValue={place.name} />
+            <Input type='text' ref='descriptionInput'
+              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyPress={this.handleEnter.bind(this)}
+              label='Short Description' defaultValue={place.description} />
+            <Input type='textarea' rows='10' ref='notesInput'
+              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              label='Notes' defaultValue={place.notes} />
+          </div>
+        </div>
         <ButtonToolbar>
           <Button
             onClick={() => this.setState({editing: false})} >
@@ -57,9 +61,18 @@ class PlaceView extends Component {
   }
 
   renderPlace () {
+    const { place } = this.props
     return (
-      <div className='place-list__place' onClick={() => this.setState({editing: true})}>
-        <h4>{this.props.place.name}</h4>
+      <div className='character-list__character' onClick={() => this.setState({editing: true})}>
+        <h4 className='text-center secondary-text'>{place.name}</h4>
+        <dl className='dl-horizontal'>
+          <dt>Description</dt>
+          <dd>{place.description}</dd>
+        </dl>
+        <dl className='dl-horizontal'>
+          <dt>Notes</dt>
+          <dd>{place.notes}</dd>
+        </dl>
       </div>
     )
   }

@@ -7,24 +7,44 @@ import PlaceView from 'components/places/placeView'
 
 class PlaceListView extends Component {
 
+  constructor (props) {
+    super(props)
+    this.state = {placeDetailId: props.places[0].id}
+  }
+
   handleCreateNewPlace () {
     this.props.actions.addPlace()
   }
 
   renderPlaces () {
-    return this.props.places.map(p =>
-      <PlaceView key={p.id} place={p} />
+    const places = this.props.places.map((pl, idx) =>
+      <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
+        <h6 className='list-group-item-heading'>{pl.name}</h6>
+        <p className='list-group-item-text'>{pl.description}</p>
+      </a>
     )
+    return (<div className='place-list__list list-group'>
+        {places}
+        <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace.bind(this)} >
+          <Glyphicon glyph='plus' />
+        </a>
+      </div>
+    )
+  }
+
+  renderPlaceDetails () {
+    const place = this.props.places.find(pl =>
+      pl.id === this.state.placeDetailId
+    )
+    return <PlaceView key={`place-${place.id}`} place={place} />
   }
 
   render () {
     return (
-      <div className='place-list'>
-        <h3>Places</h3>
+      <div className='place-list container-with-sub-nav'>
+        <h1 className='secondary-text'>Places</h1>
+        {this.renderPlaceDetails()}
         {this.renderPlaces()}
-        <div className='place-list__new' onClick={this.handleCreateNewPlace.bind(this)} >
-          <Glyphicon glyph='plus' />
-        </div>
       </div>
     )
   }

@@ -189,7 +189,7 @@ class CardView extends Component {
     if (this.state.hovering && this.hasLabels()) {
       return this.renderTags()
     } else {
-      return this.props.card.title
+      return <p>{this.props.card.title}</p>
     }
   }
 

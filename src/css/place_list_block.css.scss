@@ -47,3 +47,26 @@
     flex-direction: row-reverse;
   }
 }
+
+.place-list__custom-attributes-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: 400px;
+
+  li.list-group-item {
+    width: 50%;
+    margin-right: 5px;
+    display: flex;
+    justify-content: space-between;
+
+    .place-list__attribute-name {
+      align-self: center;
+      margin: 0;
+    }
+  }
+}
+
+.place-list__custom-attributes-add-button {
+  width: 25%;
+}

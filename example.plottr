@@ -576,11 +576,13 @@
       "age"
     ],
     "lines": [],
-    "places": [],
+    "places": [
+      "weather"
+    ],
     "scenes": []
   },
   "file": {
-    "dirty": true,
+    "dirty": false,
     "fileName": "/Users/csutter/github/plottr_electron/example.plottr",
     "loaded": true,
     "version": "0.9.0"
@@ -635,13 +637,21 @@
       "description": "my favorite place",
       "id": 1,
       "name": "first place",
-      "notes": ""
+      "notes": "",
+      "weather": "stormy"
     },
     {
       "color": "darkorchid",
       "description": "my favorite place",
       "id": 0,
       "name": "second place",
+      "notes": ""
+    },
+    {
+      "color": null,
+      "description": "",
+      "id": 2,
+      "name": "third place",
       "notes": ""
     }
   ],

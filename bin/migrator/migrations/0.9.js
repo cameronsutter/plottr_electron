@@ -5,7 +5,7 @@ function migrate (data) {
 
   var obj = _.cloneDeep(data)
 
-  // add custom character attributes
+  // add custom attributes
   obj['customAttributes'] = {
     characters: [],
     places: [],

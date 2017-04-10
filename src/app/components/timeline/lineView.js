@@ -182,7 +182,8 @@ class LineView extends Component {
         sceneId={sceneId} lineId={this.props.line.id}
         labelMap={this.props.labelMap}
         color={this.props.line.color} filtered={filtered}
-        isZoomed={this.props.isZoomed} zoomIn={this.props.zoomIn} />
+        isZoomed={this.props.isZoomed} zoomIn={this.props.zoomIn}
+        zoomFactor={this.props.zoomFactor} />
       )
     })
   }
@@ -211,8 +212,21 @@ class LineView extends Component {
     var classes = 'line__body'
     if (this.state.hovering) classes += ' hover'
     var style = {}
+    var zoomFactor = this.props.zoomFactor
     if (this.props.isZoomed && this.state.hovering) {
-      style.transform = 'scale(5, 5)'
+      switch(true) {
+        case zoomFactor === 0.1:
+          style.transform = 'scale(4, 4)';
+          break;
+        case zoomFactor > 0.1 && zoomFactor < 0.75:
+          style.transform = 'scale(2, 2)';
+          break;
+        case zoomFactor >= 0.75:
+          style.transform = 'scale(1, 1)'
+          break;
+        default:
+          style.transform = 'scale(3, 3)' // This is for fit
+      }
       style.transformOrigin = 'left center'
     }
     let titleClass = orientedClassName('line__title', this.props.orientation)
@@ -285,6 +299,7 @@ LineView.propTypes = {
   filteredItems: PropTypes.object.isRequired,
   labelMap: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
+  zoomFactor: PropTypes.any.isRequired,
   zoomIn: PropTypes.func.isRequired,
   orientation: PropTypes.string.isRequired
 }

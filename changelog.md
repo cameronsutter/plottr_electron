@@ -1,3 +1,155 @@
+2017-04-10
+==========
+
+  * Merge pull request [#106](https://github.com/cameronsutter/plottr_electron/issues/106) from cameronsutter/dev
+    Fix zoom popover effect scale
+
+2017-04-09
+==========
+
+  * Fix zoom popover effect scale
+    fixes: [#70](https://github.com/cameronsutter/plottr_electron/issues/70)
+
+2017-03-29
+==========
+
+  * show what cards a place is attached to
+  * custom attributes for places
+  * redesign the place tab
+  * show what cards a character is attached to
+    closes [#68](https://github.com/cameronsutter/plottr_electron/issues/68)
+  * better ellipses on cards
+    closes [#92](https://github.com/cameronsutter/plottr_electron/issues/92)
+    the small cards on the timeline stop the text at the appropriate time
+    and show an ellipsis instead of running out of the box
+
+2017-03-16
+==========
+
+  * increase font size in card description editor
+    closes [#76](https://github.com/cameronsutter/plottr_electron/issues/76)
+
+2017-03-15
+==========
+
+  * fix recent files bugs
+    Fix these 2 behaviors that weren’t working:
+    1) when a file no longer exists but is in the recent files key, handle
+    not trying to open that gracefully and ask the user to open or create a
+    file.
+    2) when a window is closed and there are other windows open, remove
+    that window from the recent files key and put in one of the other
+    windows
+  * ability to take screenshots
+  * filter outline by storyline
+    closes [#97](https://github.com/cameronsutter/plottr_electron/issues/97)
+
+2017-03-14
+==========
+
+  * editable outline view
+    closes [#98](https://github.com/cameronsutter/plottr_electron/issues/98)
+  * put outline minimap on left side
+    closes [#103](https://github.com/cameronsutter/plottr_electron/issues/103)
+  * improve label padding on card dialog
+    closes [#37](https://github.com/cameronsutter/plottr_electron/issues/37)
+
+2017-03-13
+==========
+
+  * fixed card dialog editing bug
+    tags no longer disappear when a card is in editing mode
+  * card dialog makeover
+    closes [#99](https://github.com/cameronsutter/plottr_electron/issues/99)
+
+2017-03-05
+==========
+
+  * better initial state for new files
+    closes [#59](https://github.com/cameronsutter/plottr_electron/issues/59)
+  * track timeline orientation
+    when an event is registered, track what timeline orientation they are in
+  * improvements to the color picker
+    colors don’t say a name anymore except on the title (hover over), they
+    are just a square of that color
+  * fix scrolling
+    no longer scrolls in the background when using the arrow keys to edit
+    text
+  * better windows & mac handling
+    closes [#65](https://github.com/cameronsutter/plottr_electron/issues/65)
+    Can now create and open files in windows/mac without cross-platform
+    problems.
+    Improved handling of workflow when migrating files
+  * only primary buttons have colors
+    closes [#95](https://github.com/cameronsutter/plottr_electron/issues/95)
+  * more branding
+    improvement to css text classes
+
+2017-03-01
+==========
+
+  * display custom character attributes
+    refs [#41](https://github.com/cameronsutter/plottr_electron/issues/41)
+    Redesign the character page. Display and edit custom character
+    attributes
+  * reworking UI
+    first step in reworking the UI — colors
+  * custom character attributes
+    refs [#41](https://github.com/cameronsutter/plottr_electron/issues/41)
+    add custom attributes
+
+2017-02-23
+==========
+
+  * press esc to cancel editing
+    refs [#78](https://github.com/cameronsutter/plottr_electron/issues/78)
+    characters, places, tags, story lines, scenes
+  * click to edit scenes, lines, cards
+    closes [#94](https://github.com/cameronsutter/plottr_electron/issues/94)
+  * card dialog editing
+    closes [#78](https://github.com/cameronsutter/plottr_electron/issues/78)
+    refs [#94](https://github.com/cameronsutter/plottr_electron/issues/94)
+  * vertical timeline scrolling
+    refs [#96](https://github.com/cameronsutter/plottr_electron/issues/96)
+    fixes scrolling when in vertical orientation
+  * vertical timeline
+    closes [#96](https://github.com/cameronsutter/plottr_electron/issues/96)
+    adds a button on the timeline to flip the orientation from horizontal
+    to vertical
+
+2017-02-21
+==========
+
+  * better workflows for characters/places/tags
+    closes [#38](https://github.com/cameronsutter/plottr_electron/issues/38)
+    characters/places/tags now can be edited as soon as adding a new one
+    and the user can hit Enter after editing the title/name to finish
+    editing
+  * better workflow for adding lines
+    refs [#38](https://github.com/cameronsutter/plottr_electron/issues/38)
+    adding lines goes right into editing the title
+  * better workflow for adding scenes
+    refs [#38](https://github.com/cameronsutter/plottr_electron/issues/38)
+    adding scenes is much more smooth now
+  * better workflow for adding a card
+    refs [#38](https://github.com/cameronsutter/plottr_electron/issues/38)
+    adding a card is much smoother and requires less clicks
+  * fix migration issue
+
+2017-02-20
+==========
+
+  * autosave every change
+    closes [#74](https://github.com/cameronsutter/plottr_electron/issues/74)
+    no longer autosaves on a 5 minute interval. Instead it saves after
+    every change
+  * production build handling
+
+2016-10-03
+==========
+
+  * update changelog
+
 2016-10-02
 ==========
 
@@ -281,196 +433,3 @@
   * bug: outline minimap overlapping cards
     closes [#52](https://github.com/cameronsutter/plottr_electron/issues/52)
     outline minimap no longer overlaps cards when you resize the window
-
-2016-05-15
-==========
-
-  * file migration bug
-    closes [#48](https://github.com/cameronsutter/plottr_electron/issues/48)
-    closes [#50](https://github.com/cameronsutter/plottr_electron/issues/50)
-    fix file migrations by finding the right directory that the app is
-    installed in
-    and build the app into an .asar file to make the build better
-    (especially for windows)
-  * separate dev & prod more
-    use a different key during development to save the recent file in
-    localStorage so that those two environments are more separate
-  * prune dev dependencies in build
-    closes [#49](https://github.com/cameronsutter/plottr_electron/issues/49)
-
-2016-05-13
-==========
-
-  * stop building in parallel … for now
-    parallel builds were screwing things up
-  * bug fix: display file name
-    If there was no file name (which shouldn’t happen, but sometimes did
-    because of other errors (see last bug)) it would throw an error every
-    time you did anything
-  * bug fix: windows — can't open files
-    It wouldn’t let you open files, it would only prompt you to open a
-    folder. This fixes that for windows
-  * improved build process
-    before i was building to this directory but each time that caused the
-    build to get bigger and bigger … that’s bad. Now i’m building to an
-    external directory (hardcoded which is bad) which makes the builds much
-    much smaller … which is good
-
-2016-05-11
-==========
-
-  * fix bug when all windows are closed
-    closes [#16](https://github.com/cameronsutter/plottr_electron/issues/16)
-    right now this shouldn’t happen, but sometimes things get in a weird
-    state with no windows open and if so, you can’t open any files. This
-    solves that and also helps us get to being able to support multiple
-    open windows
-  * remove cards from outline minimap
-    closes [#44](https://github.com/cameronsutter/plottr_electron/issues/44)
-    the mini outline in the outline view was too cluttered with every card
-    there, so now it only shows scenes in favor of a cleaner, hopefully
-    more useful mini outline
-  * improved about menu
-    closes [#25](https://github.com/cameronsutter/plottr_electron/issues/25)
-    An envious about menu with credit for the creators
-
-2016-05-10
-==========
-
-  * filter by tags/characters/places
-    closes [#12](https://github.com/cameronsutter/plottr_electron/issues/12)
-    filters cards on the timeline by tags/characters/places. Does not
-    filter lines/scenes
-
-2016-05-08
-==========
-
-  * pretty print files
-    save files with pretty formatted JSON instead of all on one line
-
-2016-05-05
-==========
-
-  * update changelog
-  * bug fix: files without a version don't update
-    if a file didn’t have a version saved in it, they wouldn’t be able to
-    update, but I fixed that no prob
-  * Bump version to 0.6.0
-    closes [#17](https://github.com/cameronsutter/plottr_electron/issues/17)
-    updated example file to version 0.6.0
-    also adds convenient build script
-  * bug: file migrating
-    it wasn’t saving the files after updating
-    and then it was saving the json directly instead of stringifying it
-    first
-  * remove userOptions
-    removes userOptions everywhere in preparation for doing this
-    differently.
-    The plan is to save this to a user’s user data storage instead of to
-    the plottr file
-
-2016-05-04
-==========
-
-  * character colors
-    closes [#3](https://github.com/cameronsutter/plottr_electron/issues/3)
-    also cleans up a little that was left over from chapters still and some
-    places things
-  * remove remnants of chapters
-  * colors for places
-    refs [#3](https://github.com/cameronsutter/plottr_electron/issues/3)
-    also removes places/characters from the timeline cards on hover
-  * bugfix: open files that are the right version
-    refs [#20](https://github.com/cameronsutter/plottr_electron/issues/20)
-    Oops … during the migration commit, I caused files of the right version
-    to never be opened. This fixes that
-  * File migrations frd
-    fixes [#20](https://github.com/cameronsutter/plottr_electron/issues/20)
-    File migrator and the first migration to v0.6. Subsequent migrations
-    will need to follow the pattern of this migration.
-
-2016-04-28
-==========
-
-  * minimal on outline view
-    closes [#33](https://github.com/cameronsutter/plottr_electron/issues/33)
-    shows a mini outline on the right side of the outline view
-
-2016-04-26
-==========
-
-  * tag colors
-    refs [#3](https://github.com/cameronsutter/plottr_electron/issues/3)
-    color choosing and displaying for tags. Improved tag page that shows
-    the selected color. Updated example file to have several tags with
-    color.
-
-2016-04-20
-==========
-
-  * show card tags on hover
-    fixes [#11](https://github.com/cameronsutter/plottr_electron/issues/11)
-    when the mouse hovers over a card, it shows its tags. You can scroll to
-    see the overflow which is kind of janky but I don’t have a better
-    solution right now
-
-2016-03-24
-==========
-
-  * foundation changes for characters/places/tags
-    characters/places/tags are on their own separate navigation item now.
-    Functionality is the same and the design on each needs to be improved
-
-2016-03-10
-==========
-
-  * changelogs
-    fixes [#31](https://github.com/cameronsutter/plottr_electron/issues/31)
-    To make a changelog run “npm run changelog”
-  * display current file name
-    fixes [#30](https://github.com/cameronsutter/plottr_electron/issues/30)
-
-2016-02-11
-==========
-
-  * google fonts locally & css improvements
-    fixes [#21](https://github.com/cameronsutter/plottr_electron/issues/21)
-    the css was loading like 8 times on the page, so i reworked that and
-    now it only loads once.
-    Moved icons to their own folder
-    Downloaded google fonts and now it’s pulling them locally so when you
-    don’t have an internet connection Plottr doesn’t take forever to load
-  * OS X menu improvements
-    fixes [#23](https://github.com/cameronsutter/plottr_electron/issues/23)
-    I punted on moving the menu creation to another file because of the
-    click functions. I also didn’t separate windows and mac things, so
-    windows users may have some non-working menu items.
-  * newest file version
-  * app category
-    fixes [#18](https://github.com/cameronsutter/plottr_electron/issues/18)
-  * simple example file
-
-2016-02-09
-==========
-
-  * view tags on cards in outline view
-    closes [#2](https://github.com/cameronsutter/plottr_electron/issues/2)
-  * simple about window (mac)
-    refs [#25](https://github.com/cameronsutter/plottr_electron/issues/25)
-    adds a simple about window using the built-in mac menu item. Still
-    needs more to close this issue
-  * windows build :)
-    quick and dirty windows build
-
-2016-02-07
-==========
-
-  * added electron-json-storage
-    refs [#19](https://github.com/cameronsutter/plottr_electron/issues/19)
-    this will be used to for user options
-  * save with version
-    refs [#20](https://github.com/cameronsutter/plottr_electron/issues/20)
-    every time the file is saved, it will have the app version on it
-  * simple file migration framework
-    refs [#20](https://github.com/cameronsutter/plottr_electron/issues/20)
-    needs testing before it’s ready

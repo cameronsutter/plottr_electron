@@ -85,7 +85,8 @@ class SceneListView extends Component {
           <SceneView
             scene={scene}
             handleReorder={this.handleReorder.bind(this)}
-            isZoomed={this.props.isZoomed} />
+            isZoomed={this.props.isZoomed}
+            zoomFactor={this.props.zoomFactor} />
         </div>
       )
     })
@@ -97,6 +98,7 @@ SceneListView.propTypes = {
   actions: PropTypes.object.isRequired,
   filteredItems: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
+  zoomFactor: PropTypes.any.isRequired,
   orientation: PropTypes.string.isRequired
 }
 

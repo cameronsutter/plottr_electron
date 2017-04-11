@@ -104,8 +104,24 @@ class CardView extends Component {
     if (this.props.filtered) {
       cardStyle.opacity = '0.1'
     }
+    var zoomFactor = this.props.zoomFactor
     if (this.props.isZoomed && this.state.hovering) {
-      cardStyle.transform = 'scale(5, 5)'
+      switch(true) {
+        case zoomFactor < 0.25:
+          cardStyle.transform = 'scale(6, 6)'
+          break;
+        case zoomFactor === 0.25:
+          cardStyle.transform = 'scale(3, 3)';
+          break;
+        case zoomFactor === 0.50:
+          cardStyle.transform = 'scale(2, 2)';
+          break;
+        case zoomFactor > 0.50:
+          cardStyle.transform = 'scale(1, 1)'
+          break;
+        default:
+          cardStyle.transform = 'scale(4, 4)' // This is for fit
+      }
     }
     var titleStyle = (!this.props.isZoomed && this.state.hovering && this.hasLabels()) ? {overflow: 'scroll'} : {}
 
@@ -224,6 +240,7 @@ CardView.propTypes = {
   labelMap: PropTypes.object.isRequired,
   tags: PropTypes.array,
   isZoomed: PropTypes.bool.isRequired,
+  zoomFactor: PropTypes.any.isRequired,
   zoomIn: PropTypes.func.isRequired,
   orientation: PropTypes.string.isRequired
 }

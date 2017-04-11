@@ -263,17 +263,21 @@ class TimeLineView extends Component {
     let styles = this.makeTransform()
     let isZoomed = (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
     let orientation = this.props.orientation === 'vertical' ? 'vertical' : ''
+    // zoomFactor allows us to scale cards and scenes in a ratio that fits the scale determined by zoomState
+    let zoomFactor = this.state.zoomState === FIT_ZOOM_STATE ? FIT_ZOOM_STATE : ZOOM_STATES[this.state.zoomIndex]
     return (
       <div id='timelineview__container' className='container-with-sub-nav'>
         {this.renderSubNav()}
         <div id='timelineview__root' className={orientation} ref='timeline' style={styles}>
           <SceneListView
             filteredItems={this.state.filteredItems}
-            isZoomed={isZoomed} />
+            isZoomed={isZoomed}
+            zoomFactor={zoomFactor} />
           <LineListView
             sceneMap={this.sceneMapping()}
             filteredItems={this.state.filteredItems}
             isZoomed={isZoomed}
+            zoomFactor={zoomFactor}
             zoomIn={this.zoomIntoCard.bind(this)} />
         </div>
       </div>

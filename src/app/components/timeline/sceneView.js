@@ -103,8 +103,18 @@ class SceneView extends Component {
     var classes = 'scene-list__item__body'
     if (this.state.hovering) classes += ' hover'
     var style = {}
+    var zoomFactor = this.props.zoomFactor
     if (this.props.isZoomed && this.state.hovering) {
-      style.transform = 'scale(5, 5)'
+      switch(true) {
+        case zoomFactor > 0.1 && zoomFactor < 0.75:
+          style.transform = 'scale(2, 2)';
+          break;
+        case zoomFactor >= 0.75:
+          style.transform = 'scale(1, 1)'
+          break;
+        default:
+          style.transform = 'scale(5, 5)' // This is for fit
+      }
       style.transformOrigin = 'center center'
     }
     return (<div className={orientedClassName('scene-list__item', this.props.orientation)}
@@ -134,6 +144,7 @@ SceneView.propTypes = {
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
+  zoomFactor: PropTypes.any.isRequired,
   orientation: PropTypes.string.isRequired
 }
 

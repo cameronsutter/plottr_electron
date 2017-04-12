@@ -606,13 +606,26 @@ function buildViewMenu () {
       win.capturePage(function (image) {
         if (process.env.NODE_ENV === 'dev') {
           var version = app.getVersion()
-          var folderPath = path.join(__dirname, '..', 'screenshots', version)
-          fs.mkdirSync(folderPath)
+          var folderPath = path.join(process.env.HOME, 'plottr_dist', version, 'screenshots')
           var date = new Date()
           var timestamp = '' + date.getMinutes() + date.getSeconds()
           var fileName = 'shot' + timestamp + '.png'
           var filePath = path.join(folderPath, fileName)
-          fs.writeFile(filePath, image.toPNG())
+          let stat = fs.stat(folderPath, (err, stat) => {
+            if (err) {
+              fs.mkdir(folderPath, (err) => {
+                if(err) {
+                  console.log(err)
+                } else {
+                  fs.writeFile(filePath, image.toPNG())
+                }
+              })
+            } else {
+              if (stat.isDirectory()) {
+                fs.writeFile(filePath, image.toPNG())
+              }
+            }
+          })
         } else {
           dialog.showSaveDialog(win, function(fileName) {
             if (fileName) fs.writeFile(fileName + '.png', image.toPNG())

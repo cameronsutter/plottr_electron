@@ -24,7 +24,8 @@ export const newFileCharacters = [{
   name: 'Main Character',
   description: 'the main character',
   notes: '',
-  color: null
+  color: null,
+  cards: []
 }]
 
 export const newFilePlaces = [{
@@ -32,7 +33,8 @@ export const newFilePlaces = [{
   name: 'First Place',
   description: 'somewhere cool',
   notes: '',
-  color: null
+  color: null,
+  cards: []
 }]
 
 export const newFileTags = [{

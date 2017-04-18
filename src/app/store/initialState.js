@@ -24,7 +24,8 @@ export const character = {
   name: '',
   description: '',
   notes: '',
-  color: null
+  color: null,
+  cards: []
 }
 
 export const place = {
@@ -32,7 +33,8 @@ export const place = {
   name: '',
   description: '',
   notes: '',
-  color: null
+  color: null,
+  cards: []
 }
 
 export const tag = {

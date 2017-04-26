@@ -21,9 +21,7 @@ class LineView extends Component {
   }
 
   findCard (sceneId) {
-    return _.find(this.cards(), (card) => {
-      return card.sceneId === sceneId
-    })
+    return _.find(this.cards(), {sceneId: sceneId})
   }
 
   lineLength () {

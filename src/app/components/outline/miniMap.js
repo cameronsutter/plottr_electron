@@ -18,7 +18,7 @@ class MiniMap extends Component {
   renderCardDots (sceneCards) {
     const cards = _.cloneDeep(sceneCards).reverse()
     return cards.map((c) => {
-      var line = _.find(this.props.lines, 'id', c.lineId)
+      var line = _.find(this.props.lines, {id: c.lineId})
       var style = {backgroundColor: line.color}
       return <div key={`dot-${line.id}-${c.id}`} title={line.title} style={style} className='outline__minimap__card-dot'></div>
     })

@@ -79,7 +79,7 @@ class PlaceView extends Component {
 
   renderCardAssociations () {
     return this.props.place.cards.map(cId =>
-      _.find(this.props.cards, {'id': cId}).title
+      _.find(this.props.cards, {id: cId}).title
     ).join(', ')
   }
 

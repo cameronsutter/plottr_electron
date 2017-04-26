@@ -16,7 +16,7 @@ class CardView extends Component {
   }
 
   line () {
-    return _.find(this.props.lines, 'id', this.props.card.lineId)
+    return _.find(this.props.lines, {id: this.props.card.lineId})
   }
 
   saveEdit () {
@@ -92,7 +92,7 @@ class CardView extends Component {
 
   renderTags () {
     return this.props.card.tags.map(tId => {
-      var tag = _.find(this.props.tags, 'id', tId)
+      var tag = _.find(this.props.tags, {id: tId})
       var style = {}
       if (tag.color) style = {backgroundColor: tag.color}
       return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>

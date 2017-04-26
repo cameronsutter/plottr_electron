@@ -218,7 +218,7 @@ class CardView extends Component {
     var tags = null
     if (this.props.card.tags) {
       tags = this.props.card.tags.map(tId => {
-        var tag = _.find(this.props.tags, 'id', tId)
+        var tag = _.find(this.props.tags, {id: tId})
         if (!tag) return null
         var style = {}
         if (tag.color) style = {backgroundColor: tag.color}

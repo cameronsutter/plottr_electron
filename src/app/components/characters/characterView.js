@@ -80,7 +80,7 @@ class CharacterView extends Component {
 
   renderCardAssociations () {
     return this.props.character.cards.map(cId =>
-      _.find(this.props.cards, {'id': cId}).title
+      _.find(this.props.cards, {id: cId}).title
     ).join(', ')
   }
 

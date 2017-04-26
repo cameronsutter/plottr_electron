@@ -58,15 +58,11 @@ class CardDialog extends Component {
   }
 
   getCurrentScene () {
-    return _.find(this.props.scenes, (scene) => {
-      return scene.id === this.props.sceneId
-    })
+    return _.find(this.props.scenes, {id: this.props.sceneId})
   }
 
   getCurrentLine () {
-    return _.find(this.props.lines, (line) => {
-      return line.id === this.props.lineId
-    })
+    return _.find(this.props.lines, {id: this.props.lineId})
   }
 
   renderSceneItems () {

@@ -48,6 +48,18 @@ export const EDIT_TAG = 'EDIT_TAG'
 export const ADD_CHARACTER = 'ADD_CHARACTER'
 export const EDIT_CHARACTER = 'EDIT_CHARACTER'
 
+// notes actions
+export const ADD_NOTE = 'ADD_NOTE'
+export const EDIT_NOTE = 'EDIT_NOTE'
+export const DELETE_NOTE = 'DELETE_NOTE'
+
+export const ADD_CHARACTER_TO_NOTE = 'ADD_CHARACTER_TO_NOTE'
+export const ADD_PLACE_TO_NOTE = 'ADD_PLACE_TO_NOTE'
+export const ADD_TAG_TO_NOTE = 'ADD_TAG_TO_NOTE'
+export const REMOVE_CHARACTER_FROM_NOTE = 'REMOVE_CHARACTER_FROM_NOTE'
+export const REMOVE_PLACE_FROM_NOTE = 'REMOVE_PLACE_FROM_NOTE'
+export const REMOVE_TAG_FROM_NOTE = 'REMOVE_TAG_FROM_NOTE'
+
 // custom attribute actions
 export const ADD_CHARACTER_ATTR = 'ADD_CHARACTER_ATTR'
 export const ADD_PLACES_ATTR = 'ADD_PLACES_ATTR'

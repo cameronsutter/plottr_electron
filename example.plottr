@@ -350,7 +350,9 @@
       "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper.\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.",
       "id": 145,
       "lineId": 27,
-      "places": [],
+      "places": [
+        1
+      ],
       "sceneId": 60,
       "tags": [
         0,
@@ -544,6 +546,9 @@
       "description": "she is the coolest",
       "id": 1,
       "name": "main character",
+      "noteIds": [
+        0
+      ],
       "notes": "She is the main character and a really strong female.",
       "power": "lantern"
     },
@@ -555,7 +560,10 @@
       "description": "she is the coolest",
       "id": 0,
       "name": "second character",
-      "notes": ""
+      "noteIds": [
+        0
+      ],
+      "notes": []
     },
     {
       "cards": [],
@@ -563,7 +571,10 @@
       "description": "nothing big",
       "id": 2,
       "name": "third character",
-      "notes": ""
+      "noteIds": [
+        1
+      ],
+      "notes": []
     },
     {
       "cards": [],
@@ -571,7 +582,10 @@
       "description": "short description",
       "id": 3,
       "name": "another character",
-      "notes": ""
+      "noteIds": [
+        1
+      ],
+      "notes": []
     }
   ],
   "customAttributes": {
@@ -586,10 +600,10 @@
     "scenes": []
   },
   "file": {
-    "dirty": false,
+    "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example.plottr",
     "loaded": true,
-    "version": "0.9.0"
+    "version": "1.0.0"
   },
   "lines": [
     {
@@ -635,28 +649,82 @@
       "title": "Burph"
     }
   ],
+  "notes": [
+    {
+      "characters": [
+        1,
+        0
+      ],
+      "content": "- step 1\n- step 2\n- step 3\n- step 4",
+      "description": "",
+      "id": 0,
+      "lastEdited": 1493246501158,
+      "places": [
+        0
+      ],
+      "tags": [
+        4,
+        3,
+        1,
+        0
+      ],
+      "title": "Another Note"
+    },
+    {
+      "characters": [
+        2,
+        3
+      ],
+      "content": "- step 1\n- step 2\n- step 3",
+      "id": 1,
+      "lastEdited": 1493245375389,
+      "places": [
+        0,
+        2
+      ],
+      "tags": [
+        2,
+        3,
+        0
+      ],
+      "title": "Brainstorming"
+    }
+  ],
   "places": [
     {
       "cards": [
-        140
+        140,
+        145
       ],
       "color": "indianred",
       "description": "my favorite place",
       "id": 1,
       "name": "first place",
-      "notes": "",
+      "noteIds": [],
+      "notes": [
+        0
+      ],
       "weather": "stormy"
     },
     {
       "cards": [
-        144,
-        112
+        112,
+        144
       ],
       "color": "darkorchid",
       "description": "my favorite place",
       "id": 0,
       "name": "second place",
-      "notes": ""
+      "noteIds": [
+        0,
+        1
+      ],
+      "notes": [
+        0,
+        0,
+        0,
+        0
+      ]
     },
     {
       "cards": [],
@@ -664,7 +732,10 @@
       "description": "",
       "id": 2,
       "name": "third place",
-      "notes": ""
+      "noteIds": [
+        1
+      ],
+      "notes": []
     }
   ],
   "scenes": [
@@ -933,7 +1004,7 @@
     }
   ],
   "ui": {
-    "currentView": "places",
+    "currentView": "notes",
     "orientation": "horizontal"
   }
 }

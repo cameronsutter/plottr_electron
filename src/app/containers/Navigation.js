@@ -49,6 +49,9 @@ class Navigation extends Component {
               <li className={this.isActive('outline')}>
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('outline')} >Outline</a>
               </li>
+              <li className={this.isActive('notes')}>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('notes')} >Notes</a>
+              </li>
               <li className={this.isActive('characters')}>
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('characters')} >Characters</a>
               </li>

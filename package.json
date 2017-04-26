@@ -4,7 +4,7 @@
   "repository": "github.com/cameronsutter/plottr_electron",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "0.9.1",
+  "version": "1.0.0",
   "main": "bin/main.js",
   "scripts": {
     "start": "NODE_ENV=dev electron .",
@@ -27,6 +27,7 @@
     "lodash": "^3.10.1",
     "mixpanel-browser": "^2.9.14",
     "pagedown": "^1.1.0",
+    "pretty-date": "^0.2.0",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.3",
     "react-dom": "^0.14.0",

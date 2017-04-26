@@ -29,3 +29,7 @@ export function lineId (lines) {
 export function linePosition (lines) {
   return lines.reduce((maxPosition, line) => Math.max(line.position, maxPosition), -1) + 1
 }
+
+export function noteId (notes) {
+  return notes.reduce((maxId, note) => Math.max(note.id, maxId), -1) + 1
+}

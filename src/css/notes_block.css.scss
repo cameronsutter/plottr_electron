@@ -1,0 +1,60 @@
+@import "vars";
+
+.note-list {
+  margin: 10px;
+  h1 {
+    text-align: center;
+  }
+}
+
+.note-list__list {
+  width: 25%;
+  .list-group-item {
+    cursor: pointer;
+  }
+}
+
+.note-list__new {
+  text-align: center;
+  cursor: pointer;
+  color: $new-item-border-color;
+}
+
+.note-list__new:hover {
+  background: $new-item-background;
+}
+
+.note-list__note {
+  @include well;
+  width: 75%;
+  float: right;
+  .note-list__body {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    .note-list__left-side {
+      width: 20%;
+      border-right: 1px solid #eee;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      overflow-y: scroll;
+    }
+
+    .note-list__content {
+      width: 80%;
+      padding-left: 10px;
+      overflow-y:scroll;
+    }
+  }
+  .note-list__note__edit-form {
+    padding-left: 5px;
+    textarea {
+      font-size: 15px;
+    }
+  }
+  .btn-toolbar {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}

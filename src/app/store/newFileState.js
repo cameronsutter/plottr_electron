@@ -25,7 +25,8 @@ export const newFileCharacters = [{
   description: 'the main character',
   notes: '',
   color: null,
-  cards: []
+  cards: [],
+  noteIds: []
 }]
 
 export const newFilePlaces = [{
@@ -34,7 +35,8 @@ export const newFilePlaces = [{
   description: 'somewhere cool',
   notes: '',
   color: null,
-  cards: []
+  cards: [],
+  noteIds: []
 }]
 
 export const newFileTags = [{
@@ -68,3 +70,13 @@ export const newFileCustomAttributes = {
   scenes: [],
   lines: []
 }
+
+export const newFileNotes = [{
+  id: 0,
+  title: 'Note 1',
+  content: '',
+  tags: [],
+  characters: [],
+  places: [],
+  lastEdited: null
+}]

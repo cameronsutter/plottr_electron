@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button, Input, Label, Glyphicon } from 'react-bootstrap'
+import { ButtonToolbar, Button, Input, Label, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import ColorPicker from '../colorpicker'
 import * as CharacterActions from 'actions/characters'
 
@@ -78,10 +78,44 @@ class CharacterView extends Component {
     )
   }
 
+  renderAssociations () {
+    let cards = null
+    let notes = null
+    if (this.props.character.cards.length > 0) {
+      cards = this.renderCardAssociations()
+    }
+    if (this.props.character.noteIds.length > 0) {
+      notes = this.renderNoteAssociations()
+    }
+    if (cards && notes) {
+      return [cards, <span key='ampersand'> & </span>, notes]
+    } else {
+      return cards || notes
+    }
+  }
+
   renderCardAssociations () {
-    return this.props.character.cards.map(cId =>
+    let label = 'cards'
+    if (this.props.character.cards.length === 1) label = 'card'
+    let cardsAssoc = this.props.character.cards.map(cId =>
       _.find(this.props.cards, {id: cId}).title
     ).join(', ')
+    let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
+    return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
+      <span>{this.props.character.cards.length} {label}</span>
+    </OverlayTrigger>
+  }
+
+  renderNoteAssociations () {
+    let label = 'notes'
+    if (this.props.character.noteIds.length === 1) label = 'note'
+    let noteAssoc = this.props.character.noteIds.map(nId =>
+      _.find(this.props.notes, {id: nId}).title
+    ).join(', ')
+    let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
+    return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
+      <span>{this.props.character.noteIds.length} {label}</span>
+    </OverlayTrigger>
   }
 
   renderCharacter () {
@@ -106,7 +140,7 @@ class CharacterView extends Component {
         </dl>
         <dl className='dl-horizontal'>
           <dt>Attached to</dt>
-          <dd title={this.renderCardAssociations()}>{character.cards.length} cards</dd>
+          <dd>{this.renderAssociations()}</dd>
         </dl>
       </div>
     )
@@ -127,13 +161,15 @@ CharacterView.propTypes = {
   character: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributes: PropTypes.array.isRequired,
-  cards: PropTypes.array.isRequired
+  cards: PropTypes.array.isRequired,
+  notes: PropTypes.array.isRequired
 }
 
 function mapStateToProps (state) {
   return {
     customAttributes: state.customAttributes['characters'],
-    cards: state.cards
+    cards: state.cards,
+    notes: state.notes
   }
 }
 

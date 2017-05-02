@@ -2,10 +2,10 @@ const { app } = require('electron')
 var fs = require('fs')
 var path = require('path')
 
-function Migrator (data, givenVersion, targetVersion) {
+function Migrator (data, fileName, givenVersion, targetVersion) {
   this.migrate = function (callback) {
     // save a backup file
-    fs.writeFile(`${this.data.file.fileName}.backup`, JSON.stringify(this.data, null, 2), (err) => {
+    fs.writeFile(`${fileName}.backup`, JSON.stringify(this.data, null, 2), (err) => {
       if (err) {
         console.log(err)
         callback('backup', false)

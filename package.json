@@ -23,7 +23,6 @@
     "changelog": "^1.0.7",
     "deep-diff": "^0.3.4",
     "electron-json-storage": "^2.0.0",
-    "jquery": "^2.1.4",
     "lodash": "^4.17.4",
     "mixpanel-browser": "^2.9.14",
     "pagedown": "^1.1.0",

@@ -4,7 +4,7 @@
       "characters": [
         2
       ],
-      "description": "You can select tags which show up when you hover over cards. You can also select characters and places, but they don't show up when you hover. I did this so it wouldn't look as cluttered",
+      "description": "You can attach tags to cards which show up when you hover over cards. You can also attach characters and places, but they don't show up when you hover. I did this so it wouldn't look as cluttered",
       "id": 2,
       "lineId": 1,
       "places": [],
@@ -33,7 +33,7 @@
       "characters": [
         0
       ],
-      "description": "# About Cards\n\n##General\nCards let you keep details about each scene and the people/places/things/emotions in them\n\n##Edit\nEdit by clicking the button below.  \n\n\n## You have the power\n\n- You can use markdown syntax\n- You can tag characters, places, and tags\n- by typing two of these {} around the name of a character/place/thing it will show that color in the description itself\n- like so {{happy}} {{dark}} {{Main Character}}",
+      "description": "# About Cards\n\n##General\nCards let you keep details about each scene and the people/places/things in them\n\n##Edit\nEdit by tapping anywhere on the description or title, or by clicking the button below  \nYou can attach characters, places, & tags on the left side there  \nYou can change the story line or scene using one of those dropdowns above on the left there\n\n\n## You have the power\n\n- You can use markdown syntax\n- You can tag characters, places, and tags\n- by typing two of these {} around the name of a character/place/thing it will show that color in the description itself\n- like so {{happy}} {{dark}} {{Main Character}}",
       "id": 0,
       "lineId": 0,
       "places": [
@@ -46,29 +46,56 @@
   ],
   "characters": [
     {
+      "cards": [
+        0
+      ],
       "color": null,
       "description": "she is the coolest",
       "id": 0,
-      "name": "Main Character"
+      "name": "Main Character",
+      "notes": null
     },
     {
+      "cards": [
+        1
+      ],
       "color": "deeppink",
-      "description": "Click on a character's name to edit it or choose a color",
+      "description": "there's always a love interest",
       "id": 1,
-      "name": "Love interest"
+      "it's easy to add them": "just click the button in the navigation above that says \"Custom Attributes\"",
+      "name": "Love interest",
+      "notes": "Click anywhere on a character's details to edit",
+      "this is a custom attribute": "and here is it's value"
     },
     {
+      "cards": [
+        2
+      ],
       "color": null,
-      "description": "Characters, places, and tags show up on the filter menu in the timeline view. You can filter which cards are visible by which of these you have tagged to that card",
+      "description": "that's a terrible name for a character",
       "id": 2,
-      "name": "Filter in the Timeline"
+      "name": "Filter in the Timeline",
+      "notes": "Characters, places, and tags show up on the filter menu in the timeline view. You can filter which cards are visible by which of these you have attached to that card"
     }
   ],
+  "customAttributes": {
+    "cards": [],
+    "characters": [
+      "this is a custom attribute",
+      "it's easy to add them"
+    ],
+    "lines": [],
+    "places": [
+      "weather",
+      "custom attribute!"
+    ],
+    "scenes": []
+  },
   "file": {
     "dirty": false,
-    "fileName": "/Users/csutter/github/plottr_electron/tour.plottr",
+    "fileName": "/Users/csutter/github/plottr_electron/bin/tour.plottr",
     "loaded": true,
-    "version": "0.7.2"
+    "version": "0.9.2"
   },
   "lines": [
     {
@@ -104,16 +131,25 @@
   ],
   "places": [
     {
+      "cards": [
+        0
+      ],
       "color": null,
       "description": "her favorite place",
       "id": 0,
-      "name": "MC's home"
+      "name": "MC's home",
+      "notes": null,
+      "weather": "peachy"
     },
     {
+      "cards": [
+        1
+      ],
       "color": "springgreen",
-      "description": "Click on a place's box to edit it or choose a color",
+      "description": "Click antwhere on a place's details to edit",
       "id": 1,
       "name": "Another place in your story",
+      "notes": null,
       "place": null
     }
   ],
@@ -173,6 +209,7 @@
     }
   ],
   "ui": {
-    "currentView": "timeline"
+    "currentView": "places",
+    "orientation": "horizontal"
   }
 }

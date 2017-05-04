@@ -174,7 +174,7 @@ class CardDialog extends Component {
       var labelText = matches[1].toLowerCase()
       if (this.props.labelMap[labelText] !== undefined) {
         var color = this.props.labelMap[labelText]
-        html = html.replace(matches[0], `<span style='background-color:${color}' class='label label-info'>${labelText}</span>`)
+        html = html.replace(matches[0], `<span style='background-color:${color}' class='label label-default'>${labelText}</span>`)
       }
     }
     return html

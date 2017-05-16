@@ -15,13 +15,21 @@ function migrate (data) {
   }
 
   // add scenes (via cards) to characters
-  obj.characters.forEach((c) => {
-    c['cards'] = c['cards'] || []
+  obj.characters.forEach((ch) => {
+    ch['cards'] = ch['cards'] || []
   })
 
   // add scenes (via cards) to places
-  obj.places.forEach((c) => {
-    c['cards'] = c['cards'] || []
+  obj.places.forEach((p) => {
+    p['cards'] = p['cards'] || []
+  })
+
+  // for some reason, some cards end up without these
+  // so this is just to ensure all cards do
+  obj.cards.forEach((c) => {
+    c['characters'] = c['characters'] || []
+    c['places'] = c['places'] || []
+    c['tags'] = c['tags'] || []
   })
 
   // add the default orientation

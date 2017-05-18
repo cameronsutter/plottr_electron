@@ -82,7 +82,6 @@
       "name": "Plottr",
       "description": "An elegant writing tool to organize plotlines"
     },
-    "compression": "maximum",
     "mac": {
       "category": "public.app-category.productivity",
       "target": "dmg"

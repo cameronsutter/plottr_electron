@@ -1,10 +1,10 @@
 {
   "name": "plottr",
   "description": "An elegant writing tool that helps organize plotlines",
-  "repository": "github.com/cameronsutter/plottr_electron",
+  "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -62,6 +62,7 @@
   },
   "build": {
     "appId": "com.plottr.app",
+    "publish": ["github"],
     "files": [
       "**/*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}",

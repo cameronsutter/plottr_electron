@@ -3,6 +3,7 @@ osx_image: xcode7.3
 # dist: trusty
 # sudo: false
 
+os: osx
 language: node_js
 node_js:
   - "7"

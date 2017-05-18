@@ -1,22 +1,21 @@
 osx_image: xcode7.3
 
-dist: trusty
-sudo: false
+# dist: trusty
+# sudo: false
 
 language: node_js
 node_js:
-  - "iojs"
   - "7"
 
 env:
   - ELECTRON_CACHE=$HOME/.electron
 
-matrix:
-  include:
-    - os: osx
-    # - os: linux
-    #   env: CC=clang CXX=clang++ npm_config_clang=1
-    #   compiler: clang
+# matrix:
+#   include:
+#     - os: osx
+#     - os: linux
+#       env: CC=clang CXX=clang++ npm_config_clang=1
+#       compiler: clang
 
 cache:
   directories:

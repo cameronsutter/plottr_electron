@@ -17,7 +17,8 @@ install:
   # - yarn add electron-builder@next --dev # force install next version to test electron-builder
 
 build_script:
-  - npm run dist
+  - ps: set NODE_ENV=production
+  - npm run dist:windows
 
 test: off
 

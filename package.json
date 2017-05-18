@@ -21,7 +21,9 @@
     "build:all": "bin/build.sh",
     "build:trial": "bin/build.sh TRIALMODE",
     "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
+    "pack:windows": "node_modules\\.bin\\webpack",
     "dist": "npm run pack && build",
+    "dist:windows": "npm run pack:windows && build",
     "dist:all": "npm run pack && build -mw"
   },
   "dependencies": {

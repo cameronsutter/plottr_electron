@@ -17,10 +17,10 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: {
-    app: './app/index',
-    css: './css/index',
-    verify: './verify/index',
-    report: './report/index'
+    app: path.join('app', 'index'),
+    css: path.join('css', 'index'),
+    verify: path.join('verify', 'index'),
+    report: path.join('report', 'index')
   },
   output: {
     path: path.resolve(__dirname, 'bin'),
@@ -37,7 +37,7 @@ module.exports = {
     }, {
       test: /\.scss$/,
       loader: 'style-loader!css-loader!sass-loader',
-      include: path.resolve(__dirname, 'src', 'css')
+      include: path.join('src', 'css')
     }]
   },
   resolve: {

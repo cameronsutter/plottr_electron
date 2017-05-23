@@ -15,3 +15,4 @@ script:
 branches:
   only:
     - v1.0
+    - master

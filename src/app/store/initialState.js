@@ -25,7 +25,8 @@ export const character = {
   description: '',
   notes: '',
   color: null,
-  cards: []
+  cards: [],
+  noteIds: []
 }
 
 export const place = {
@@ -34,7 +35,8 @@ export const place = {
   description: '',
   notes: '',
   color: null,
-  cards: []
+  cards: [],
+  noteIds: []
 }
 
 export const tag = {
@@ -67,4 +69,14 @@ export const customAttributes = {
   cards: [],
   scenes: [],
   lines: []
+}
+
+export const note = {
+  id: 0,
+  title: '',
+  content: '',
+  tags: [],
+  characters: [],
+  places: [],
+  lastEdited: new Date().getTime()
 }

@@ -9,6 +9,7 @@ import { card } from 'store/initialState'
 import { shell } from 'electron'
 import { ButtonToolbar, Button, DropdownButton,
   MenuItem, Input, Label, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+import SelectList from 'components/selectList'
 
 Modal.setAppElement('#timelineview-root')
 const md = MarkDown.getSanitizingConverter()
@@ -57,15 +58,11 @@ class CardDialog extends Component {
   }
 
   getCurrentScene () {
-    return _.find(this.props.scenes, (scene) => {
-      return scene.id === this.props.sceneId
-    })
+    return _.find(this.props.scenes, {id: this.props.sceneId})
   }
 
   getCurrentLine () {
-    return _.find(this.props.lines, (line) => {
-      return line.id === this.props.lineId
-    })
+    return _.find(this.props.lines, {id: this.props.lineId})
   }
 
   renderSceneItems () {
@@ -180,74 +177,6 @@ class CardDialog extends Component {
     return html
   }
 
-  renderTags () {
-    return this.props.card.tags.map(tId => {
-      var tag = _.find(this.props.tags, 'id', tId)
-      if (!tag) return null
-      var style = {}
-      if (tag.color) style = {backgroundColor: tag.color}
-      return <li key={tId}>
-        <Button onClick={() => this.props.actions.removeTag(this.props.card.id, tId)} bsSize='xsmall'>
-          <Glyphicon glyph='remove'/>
-        </Button>
-        <Label bsStyle='info' style={style}>{tag.title}</Label>
-      </li>
-    })
-  }
-
-  renderDisplayList (itemIds, fullList, action) {
-    return itemIds.map(itemId => {
-      var item = _.find(fullList, 'id', itemId)
-      if (!item) return null
-      return <li key={itemId}>
-        <Button onClick={() => action(this.props.card.id, itemId)} bsSize='xsmall'><Glyphicon glyph='remove'/></Button>
-        {item.name}
-      </li>
-    })
-  }
-
-  renderCharacters () {
-    return this.renderDisplayList(this.props.card.characters, this.props.characters, this.props.actions.removeCharacter)
-  }
-
-  renderPlaces () {
-    return this.renderDisplayList(this.props.card.places, this.props.places, this.props.actions.removePlace)
-  }
-
-  renderSelectList (type, items, usedItems, action) {
-    const itemsToList = items.filter(i =>
-      !usedItems.includes(i.id)
-    )
-    let listItems = <small><i>no more to add</i></small>
-    if (type === 'tag') {
-
-    }
-    if (itemsToList.length > 0) {
-      listItems = itemsToList.map(i => {
-        let colorSpan = <span></span>
-        if (type === 'tag') {
-          colorSpan = <span className='colored' style={{backgroundColor: i.color}}></span>
-        }
-        return <li key={i.id} onClick={() => action(this.props.card.id, i.id)}>{colorSpan}{i.name || i.title}</li>
-      })
-    }
-    return <Popover id='list-popover' title={`${type} list`}>
-      <ul className='card-dialog__item-select-list'>{listItems}</ul>
-    </Popover>
-  }
-
-  renderCharacterList () {
-    return this.renderSelectList('character', this.props.characters, this.props.card.characters, this.props.actions.addCharacter)
-  }
-
-  renderPlaceList () {
-    return this.renderSelectList('place', this.props.places, this.props.card.places, this.props.actions.addPlace)
-  }
-
-  renderTagList () {
-    return this.renderSelectList('tag', this.props.tags, this.props.card.tags, this.props.actions.addTag)
-  }
-
   renderLeftSide () {
     var ids = {
       scene: _.uniqueId('select-scene-'),
@@ -270,42 +199,24 @@ class CardDialog extends Component {
             </DropdownButton>
           </label>
         </div>
-        <div className='card-dialog__characters'>
-          <label className='card-dialog__details-label'>Characters:
-            <OverlayTrigger trigger="click" rootClose placement="right" overlay={this.renderCharacterList()}>
-              <Button ref='characterList' bsSize='xsmall'>
-                <Glyphicon glyph='plus'/>
-              </Button>
-            </OverlayTrigger>
-          </label>
-          <ul>
-            {this.renderCharacters()}
-          </ul>
-        </div>
-        <div className='card-dialog__places'>
-          <label className='card-dialog__details-label'>Places:
-            <OverlayTrigger trigger="click" rootClose placement="right" overlay={this.renderPlaceList()}>
-              <Button ref='placesList' bsSize='xsmall'>
-                <Glyphicon glyph='plus'/>
-              </Button>
-            </OverlayTrigger>
-          </label>
-          <ul>
-            {this.renderPlaces()}
-          </ul>
-        </div>
-        <div className='card-dialog__labels-wrapper'>
-          <label className='card-dialog__details-label'>Tags:
-            <OverlayTrigger trigger="click" rootClose placement="right" overlay={this.renderTagList()}>
-              <Button ref='tagsList' bsSize='xsmall'>
-                <Glyphicon glyph='plus'/>
-              </Button>
-            </OverlayTrigger>
-          </label>
-          <ul className='card-dialog__labels'>
-            {this.renderTags()}
-          </ul>
-        </div>
+        <SelectList
+          parentId={this.props.card.id} type={'Characters'}
+          selectedItems={this.props.card.characters}
+          allItems={this.props.characters}
+          add={this.props.actions.addCharacter}
+          remove={this.props.actions.removeCharacter} />
+        <SelectList
+          parentId={this.props.card.id} type={'Places'}
+          selectedItems={this.props.card.places}
+          allItems={this.props.places}
+          add={this.props.actions.addPlace}
+          remove={this.props.actions.removePlace} />
+        <SelectList
+          parentId={this.props.card.id} type={'Tags'}
+          selectedItems={this.props.card.tags}
+          allItems={this.props.tags}
+          add={this.props.actions.addTag}
+          remove={this.props.actions.removeTag} />
       </div>
     )
   }

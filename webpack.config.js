@@ -15,15 +15,15 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  context: __dirname + '/src',
+  context: path.resolve(__dirname, 'src'),
   entry: {
-    app: './app/index',
-    css: './css/index',
-    verify: './verify/index',
-    report: './report/index'
+    app: path.join('app', 'index'),
+    css: path.join('css', 'index'),
+    verify: path.join('verify', 'index'),
+    report: path.join('report', 'index')
   },
   output: {
-    path: __dirname + '/bin/',
+    path: path.resolve(__dirname, 'bin'),
     filename: '[name].bundle.js'
   },
   module: {
@@ -37,12 +37,12 @@ module.exports = {
     }, {
       test: /\.scss$/,
       loader: 'style-loader!css-loader!sass-loader',
-      include: __dirname + './src/css'
+      include: path.join('src', 'css')
     }]
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.css', '.scss', '.json'],
-    root: __dirname + './src',
+    root: path.resolve(__dirname, 'src'),
     modulesDirectories: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/report']
   },
   target: 'electron-renderer',

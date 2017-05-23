@@ -1,10 +1,15 @@
 {
   "name": "plottr",
-  "description": "Author writing tool that helps organize plotlines",
-  "repository": "github.com/cameronsutter/plottr_electron",
+  "description": "An elegant writing tool that helps organize plotlines",
+  "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "0.9.3",
+  "version": "1.0.6",
+  "author": {
+    "name": "C. Louis S.",
+    "email": "cameronsutter0@gmail.com",
+    "url": "https://medium.com/@camsutter"
+  },
   "main": "bin/main.js",
   "scripts": {
     "start": "NODE_ENV=dev electron .",
@@ -12,21 +17,23 @@
     "watch": "NODE_ENV=dev node_modules/.bin/webpack -w",
     "createDevLicense": "NODE_ENV=license electron .",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
-    "build": "node bin/build.js",
+    "build:js": "node bin/build.js",
     "build:all": "bin/build.sh",
     "build:trial": "bin/build.sh TRIALMODE",
-    "build:mac": "electron-packager . Plottr --platform=darwin --arch=x64 --version=1.3.2 --out=/Users/csutter/plottr_dist --app-category-type=public.app-category.productivity --icon=icons/pblack.icns --prune --asar",
-    "build:win32": "electron-packager . Plottr --platform=win32 --arch=ia32 --version=1.3.2 --out=/Users/csutter/plottr_dist --icon=icons/pblack.ico --prune --asar",
-    "build:win64": "electron-packager . Plottr --platform=win32 --arch=x64 --version=1.3.2 --out=/Users/csutter/plottr_dist --icon=icons/pblack.ico --prune --asar"
+    "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
+    "pack:windows": "node_modules\\.bin\\webpack",
+    "dist": "npm run pack && build",
+    "dist:windows": "npm run pack:windows && build",
+    "dist:all": "npm run pack && build -mw"
   },
   "dependencies": {
     "changelog": "^1.0.7",
     "deep-diff": "^0.3.4",
     "electron-json-storage": "^2.0.0",
-    "jquery": "^2.1.4",
-    "lodash": "^3.10.1",
+    "lodash": "^4.17.4",
     "mixpanel-browser": "^2.9.14",
     "pagedown": "^1.1.0",
+    "pretty-date": "^0.2.0",
     "react": "^0.14.0",
     "react-bootstrap": "^0.27.3",
     "react-dom": "^0.14.0",
@@ -43,6 +50,7 @@
     "babel-plugin-react-transform": "^1.1.1",
     "css-loader": "^0.22.0",
     "devtron": "^1.2.1",
+    "electron-builder": "^17.1.2",
     "electron-devtools-installer": "^2.0.0",
     "electron-packager": "^7.7.0",
     "electron-prebuilt": "^1.3.0",
@@ -53,5 +61,44 @@
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2"
+  },
+  "build": {
+    "appId": "com.plottr.app",
+    "publish": ["github"],
+    "files": [
+      "**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}",
+      "!**/node_modules/.bin",
+      "!**/*.{o,hprof,orig,pyc,pyo,rbc,md,MD}",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}",
+      "!src${/*}",
+      "!webpack.config.js",
+      "!example*.plottr",
+      "!screenshots"
+    ],
+    "copyright": "Copyright © C. Louis S. (Cameron Sutter)",
+    "productName": "Plottr",
+    "fileAssociations": {
+      "ext": "plottr",
+      "name": "Plottr",
+      "description": "An elegant writing tool to organize plotlines"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg"
+    },
+    "dmg": {
+      "backgroundColor": "#efefee"
+    },
+    "win": {
+      "target": {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      }
+    },
+    "nsis": {
+      "perMachine": true
+    }
   }
 }

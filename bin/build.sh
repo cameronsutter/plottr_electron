@@ -6,10 +6,10 @@ NODE_ENV=production node_modules/.bin/webpack 1> /dev/null
 echo "building $npm_package_version $1..."
 if [ "$1" = "TRIALMODE" ]; then
   trialmode=true
-  npm run build -- TRIALMODE 1> /dev/null
+  npm run build:js -- TRIALMODE 1> /dev/null
 else
   trialmode=false
-  npm run build 1> /dev/null
+  npm run build:js 1> /dev/null
 fi
 
 cd ~/plottr_dist

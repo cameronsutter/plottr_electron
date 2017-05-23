@@ -28,24 +28,6 @@
   overflow-y: scroll;
 }
 
-.card-dialog__item-select-list {
-  list-style-type: none;
-  padding-left: 10px;
-  li {
-    cursor: pointer;
-    padding: 5px;
-    span.colored {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      margin-right: 3px;
-    }
-  }
-  li:hover {
-    background-color: $body-background-color;
-  }
-}
-
 .card-dialog__description {
   width: 80%;
   padding-left: 10px;
@@ -58,11 +40,6 @@
 .card-dialog__line, .card-dialog__scene {
   display: flex;
   flex-direction: column;
-}
-
-.card-dialog__details-label {
-  @include sub-header-font;
-  min-width: 150px;
 }
 
 .card-dialog__button-bar-create {
@@ -117,45 +94,7 @@
   z-index: 1000;
 }
 
-.card-dialog__characters, .card-dialog__places, .card-dialog__labels-wrapper {
-  label {
-    button {
-      margin-left: 2px;
-      visibility: hidden;
-    }
-  }
-  label:hover {
-    button {
-      visibility: visible;
-    }
-  }
-  ul {
-    list-style-type: none;
-    padding-left: 10px;
-    li {
-      button {
-        margin-right: 2px;
-        visibility: hidden;
-      }
-    }
-    li:hover {
-      button {
-        visibility: visible;
-      }
-    }
-  }
-}
-
-.card-dialog__labels {
-  li {
-    padding-bottom: 5px;
-    button {
-      vertical-align: bottom;
-    }
-    .label {
-      font-size: 10pt;
-      font-weight: normal;
-      padding-top: 5px;
-    }
-  }
+.card-dialog__details-label {
+  @include sub-header-font;
+  min-width: 150px;
 }

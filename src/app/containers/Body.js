@@ -5,6 +5,7 @@ import OutlineView from 'components/outline/outlineView'
 import TagsView from 'components/tag/TagsView'
 import CharactersView from 'components/characters/charactersView'
 import PlacesView from 'components/places/placesView'
+import NotesView from 'components/notes/notesView'
 
 class Body extends Component {
   render () {
@@ -18,6 +19,9 @@ class Body extends Component {
 
       case 'outline':
         return <OutlineView />
+
+      case 'notes':
+        return <NotesView />
 
       case 'tags':
         return <TagsView />

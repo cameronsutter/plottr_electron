@@ -146,19 +146,17 @@ function checkLicense () {
     openWindow(__dirname + '/tour.plottr')
     openAboutWindow()
   } else {
-    openRecentFiles()
-    // UN-COMMENT FOR 1.0 AND REMOVE THE LINE ABOVE
-    // storage.has(USER_INFO, function (err, hasKey) {
-    //   if (err) console.log(err)
-    //   if (hasKey) {
-    //     storage.get(USER_INFO, function (err, data) {
-    //       if (data.success) openRecentFiles()
-    //       else openVerifyWindow()
-    //     })
-    //   } else {
-    //     openVerifyWindow()
-    //   }
-    // })
+    storage.has(USER_INFO, function (err, hasKey) {
+      if (err) console.log(err)
+      if (hasKey) {
+        storage.get(USER_INFO, function (err, data) {
+          if (data.success) openRecentFiles()
+          else openVerifyWindow()
+        })
+      } else {
+        openVerifyWindow()
+      }
+    })
   }
 }
 

@@ -5,7 +5,10 @@ const tracker = store => next => action => {
 
   const result = next(action)
   let state = store.getState()
-  let attrs = {timeline_orientation: state.ui.orientation}
+  let attrs = {
+    timeline_orientation: state.ui.orientation,
+    version: state.file.version,
+  }
 
   if (action.type === CHANGE_CURRENT_VIEW && action.view === 'outline') {
     MPQ.push('view_outline', attrs)

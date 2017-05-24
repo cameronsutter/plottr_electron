@@ -33,8 +33,8 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty) => {
   )
 })
 
-ipcRenderer.once('init-tracker', (event) => {
+ipcRenderer.once('init-tracker', (event, version) => {
   mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
-  MPQ.push('Launch', {online: navigator.onLine})
+  MPQ.push('Launch', {online: navigator.onLine, version: version})
   ipcRenderer.send('tracker-initialized')
 })

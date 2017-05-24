@@ -272,7 +272,7 @@ function openWindow (fileName, newFile = false) {
 
   newWindow.webContents.on('did-finish-load', () => {
     if (!tracker) {
-      newWindow.webContents.send('init-tracker')
+      newWindow.webContents.send('init-tracker', app.getVersion())
     }
   })
 

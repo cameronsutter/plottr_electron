@@ -1,14 +1,15 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button, Input, Label, Glyphicon } from 'react-bootstrap'
+import ReactDOM from 'react-dom'
+import { ButtonToolbar, ButtonGroup, Button, Input, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap'
 import ColorPicker from '../colorpicker'
 import * as TagActions from 'actions/tags'
 
 class TagView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.tag.title === '', showColorPicker: false, newColor: null}
+    this.state = {editing: props.tag.title === '', showColorPicker: false}
   }
 
   handleEnter (event) {
@@ -18,14 +19,16 @@ class TagView extends Component {
   }
 
   saveEdit () {
-    var newTitle = this.refs.titleInput.getValue() || this.props.tag.title
-    var newColor = this.state.newColor || this.props.tag.color
-    this.props.actions.editTag(this.props.tag.id, newTitle, newColor)
+    let { title, id, color } = this.props.tag
+    var newTitle = this.refs.titleInput.getValue() || title
+    this.props.actions.editTag(id, newTitle, color)
     this.setState({editing: false})
   }
 
   changeColor (color) {
-    this.setState({showColorPicker: false, newColor: color})
+    let { id, title } = this.props.tag
+    this.props.actions.editTag(id, title, color)
+    this.setState({showColorPicker: false})
   }
 
   renderColorPicker () {
@@ -37,58 +40,51 @@ class TagView extends Component {
     }
   }
 
-  renderColorLabel (color) {
-    var colorLabel = null
-    if (color) {
-      var style = {backgroundColor: color}
-      colorLabel = <Label bsStyle='info' style={style}>{color}</Label>
-    }
-    return <span>{colorLabel || ''}</span>
-  }
-
   renderEditing () {
     const { tag } = this.props
     return (
-      <div className='tag-list__tag'>
+      <div onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+        >
         <Input type='text' ref='titleInput' autoFocus
           onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
           onKeyPress={this.handleEnter.bind(this)}
           label='tag name' defaultValue={tag.title} />
-        <Button onClick={() => this.setState({showColorPicker: true, newColor: null})} ><Glyphicon glyph='tint' /></Button>
         {this.renderColorPicker()}
-        <div className='form-group tag-list__color-label'><label className='control-label'>Current color: {this.renderColorLabel(tag.color)}</label></div>
-        <div className='form-group tag-list__color-label'><label className='control-label'>New color: {this.renderColorLabel(this.state.newColor)}</label></div>
-        <hr />
-        <ButtonToolbar>
-          <Button
-            onClick={() => this.setState({editing: false})} >
-            Cancel
-          </Button>
-          <Button bsStyle='success'
-            onClick={this.saveEdit.bind(this)} >
-            Save
-          </Button>
-        </ButtonToolbar>
+        <ButtonGroup>
+          <DropdownButton title="Actions" id="bg-nested-dropdown">
+            <MenuItem onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /> Choose color</MenuItem>
+            <MenuItem onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /> No color</MenuItem>
+            <MenuItem onClick={() => this.props.actions.deleteTag(tag.id)}><Glyphicon glyph='trash' /> Delete</MenuItem>
+          </DropdownButton>
+          <Button onClick={() => this.setState({editing: false})} >Cancel</Button>
+        </ButtonGroup>
       </div>
     )
   }
 
   renderTag () {
-    return (
-      <div className='tag-list__tag' onClick={() => this.setState({editing: true})}>
-        <h6>{this.props.tag.title} {this.renderColorLabel(this.props.tag.color)}</h6>
-      </div>
-    )
+    return <div onClick={() => this.setState({editing: true})}>
+      <h6>{this.props.tag.title}</h6>
+      {this.renderColorPicker()}
+    </div>
   }
 
   render () {
+    let body = null
     if (this.state.editing) {
       window.SCROLLWITHKEYS = false
-      return this.renderEditing()
+      body = this.renderEditing()
     } else {
       window.SCROLLWITHKEYS = true
-      return this.renderTag()
+      body = this.renderTag()
     }
+    let styles = {}
+    if (this.props.tag.color) styles = {border: `2px solid ${this.props.tag.color}`}
+    return (
+      <div className='tag-list__tag' style={styles}>
+        {body}
+      </div>
+    )
   }
 }
 

@@ -973,7 +973,7 @@
       "title": "sad"
     },
     {
-      "color": "midnightblue",
+      "color": "black",
       "id": 3,
       "title": "scary"
     },
@@ -1000,11 +1000,26 @@
     {
       "color": null,
       "id": 8,
-      "title": "nocolor"
+      "title": "nocolors"
+    },
+    {
+      "color": "black",
+      "id": 9,
+      "title": "horror"
+    },
+    {
+      "color": "darkorange",
+      "id": 10,
+      "title": "fun"
+    },
+    {
+      "color": null,
+      "id": 11,
+      "title": "cool"
     }
   ],
   "ui": {
-    "currentView": "notes",
+    "currentView": "tags",
     "orientation": "horizontal"
   }
 }

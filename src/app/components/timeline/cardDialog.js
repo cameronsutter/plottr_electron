@@ -7,8 +7,7 @@ import MarkDown from 'pagedown'
 import * as CardActions from 'actions/cards'
 import { card } from 'store/initialState'
 import { shell } from 'electron'
-import { ButtonToolbar, Button, DropdownButton,
-  MenuItem, Input, Label, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bootstrap'
 import SelectList from 'components/selectList'
 
 Modal.setAppElement('#timelineview-root')

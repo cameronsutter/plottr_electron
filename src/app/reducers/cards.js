@@ -4,7 +4,7 @@ import { ADD_CARD, EDIT_CARD_DETAILS,
   EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE,
   DELETE_CARD, ADD_CHARACTER_TO_CARD,
   REMOVE_CHARACTER_FROM_CARD, ADD_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
-  ADD_TAG_TO_CARD, REMOVE_TAG_FROM_CARD,
+  ADD_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG,
   FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { card } from 'store/initialState'
 import { newFileCards } from 'store/newFileState'
@@ -105,6 +105,17 @@ export default function cards (state, action) {
         let tags = _.cloneDeep(card.tags)
         tags.splice(tags.indexOf(action.tagId), 1)
         return card.id === action.id ? Object.assign({}, card, {tags: tags}) : card
+      })
+
+    case DELETE_TAG:
+      return state.map(card => {
+        if (card.tags.includes(action.id)) {
+          let tags = _.cloneDeep(card.tags)
+          tags.splice(tags.indexOf(action.id), 1)
+          return Object.assign({}, card, {tags: tags})
+        } else {
+          return card
+        }
       })
 
     case RESET:

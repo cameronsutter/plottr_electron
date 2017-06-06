@@ -10,7 +10,7 @@
 .tag-list__new {
   @include well;
   line-height: 50px;
-  width: 40px;
+  width: 200px;
   text-align: center;
 }
 
@@ -22,20 +22,32 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .tag-list__tag {
   @include well;
-  margin: 3px;
-  .tag-list__color-label {
-    margin-top: 5px;
-    .label {
-      vertical-align: middle;
-      padding-top: 5px;
-    }
+  width: 200px; // 5 per row
+  padding: 7px 14px;
+  margin: 3px 6px 3px 0px;
+}
+
+.tag-list__color-edit-container {
+  display: flex;
+  .tag-list__tag-color {
+    width: 40px;
+    height: 38px;
+    float: right;
+    margin: 3px;
+    border-color: #ccc;
+    border-radius: 4px;
   }
-  .btn-toolbar {
-    display: flex;
-    flex-direction: row-reverse;
+}
+
+.tag-list__color-label {
+  margin-top: 5px;
+  .label {
+    vertical-align: middle;
+    padding-top: 5px;
   }
 }

@@ -1,6 +1,6 @@
 import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE, FILE_LOADED, NEW_FILE, RESET,
   ADD_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE, ADD_PLACE_TO_NOTE,
-  REMOVE_PLACE_FROM_NOTE, ADD_TAG_TO_NOTE, REMOVE_TAG_FROM_NOTE } from '../constants/ActionTypes'
+  REMOVE_PLACE_FROM_NOTE, ADD_TAG_TO_NOTE, REMOVE_TAG_FROM_NOTE, DELETE_TAG } from '../constants/ActionTypes'
 import { note } from 'store/initialState'
 import { newFileNotes } from 'store/newFileState'
 import { noteId } from 'store/newIds'
@@ -71,6 +71,17 @@ export default function notes (state = initialState, action) {
         let tags = _.cloneDeep(note.tags)
         tags.splice(tags.indexOf(action.tagId), 1)
         return note.id === action.id ? Object.assign({}, note, {tags: tags}) : note
+      })
+
+    case DELETE_TAG:
+      return state.map(note => {
+        if (note.tags.includes(action.id)) {
+          let tags = _.cloneDeep(note.tags)
+          tags.splice(tags.indexOf(action.id), 1)
+          return Object.assign({}, note, {tags: tags})
+        } else {
+          return note
+        }
       })
 
     case RESET:

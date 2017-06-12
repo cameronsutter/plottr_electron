@@ -492,7 +492,10 @@
         0
       ],
       "sceneId": 60,
-      "tags": [],
+      "tags": [
+        7,
+        6
+      ],
       "title": "Keven Enters the World of Rivalia"
     },
     {
@@ -519,7 +522,7 @@
     },
     {
       "characters": [],
-      "description": "Click to edit",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper.\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.",
       "id": 151,
       "lineId": 36,
       "places": [],
@@ -1019,7 +1022,7 @@
     }
   ],
   "ui": {
-    "currentView": "tags",
+    "currentView": "timeline",
     "orientation": "horizontal"
   }
 }

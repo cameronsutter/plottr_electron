@@ -83,13 +83,17 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
-  .labels {
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
-    top: -10px;
-    .label {
-      margin: 2px;
-    }
+}
+
+.card__popover-description {
+  min-width: 250px;
+}
+
+.card__popover-labels {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  .label {
+    margin: 2px;
   }
 }

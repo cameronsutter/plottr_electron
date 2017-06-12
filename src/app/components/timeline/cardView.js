@@ -2,10 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
-import { Label, Input } from 'react-bootstrap'
+import MarkDown from 'pagedown'
+import { Label, Input, Popover, OverlayTrigger } from 'react-bootstrap'
 import CardDialog from 'components/timeline/cardDialog'
 import * as CardActions from 'actions/cards'
 import orientedClassName from 'helpers/orientedClassName'
+
+const md = MarkDown.getSanitizingConverter()
 
 class CardView extends Component {
   constructor (props) {
@@ -123,7 +126,6 @@ class CardView extends Component {
           cardStyle.transform = 'scale(4, 4)' // This is for fit
       }
     }
-    var titleStyle = (!this.props.isZoomed && this.state.hovering && this.hasLabels()) ? {overflow: 'scroll'} : {}
 
     return (<div
       className={orientedClassName('card__real', this.props.orientation)}
@@ -135,7 +137,7 @@ class CardView extends Component {
       onMouseLeave={() => this.setState({hovering: false})}
       style={cardStyle}
       onClick={this.handleCardClick.bind(this)} >
-        <div className='card__title' style={titleStyle}>{this.renderTitle()}</div>
+        {this.renderTitle()}
     </div>)
   }
 
@@ -202,11 +204,41 @@ class CardView extends Component {
   }
 
   renderTitle () {
-    if (this.state.hovering && this.hasLabels()) {
-      return this.renderTags()
-    } else {
-      return <p>{this.props.card.title}</p>
+    let title = <div className='card__title'>
+      <p>{this.props.card.title}</p>
+    </div>
+    if (!this.props.isZoomed && (this.hasLabels() || this.props.card.description)) {
+      let placement = 'left'
+      if (this.props.orientation === 'horizontal') {
+        placement = this.props.scenePosition === 1 ? 'right' : placement
+      } else {
+        placement = this.props.linePosition === 1 ? 'right' : placement
+      }
+      title = <OverlayTrigger ref='popover' placement={placement} overlay={this.renderPopover()}>
+        {title}
+      </OverlayTrigger>
     }
+    return title
+  }
+
+  renderPopover () {
+    return <Popover title={'Description'} id={`card-popover-${this.props.card.id}`}>
+      <div className='card__popover-description' dangerouslySetInnerHTML={{__html: this.makeLabels(md.makeHtml(this.props.card.description))}} />
+      {this.renderTags()}
+    </Popover>
+  }
+
+  makeLabels (html) {
+    var regex = /{{([\w\s]*)}}/gi
+    var matches
+    while ((matches = regex.exec(html)) !== null) {
+      var labelText = matches[1].toLowerCase()
+      if (this.props.labelMap[labelText] !== undefined) {
+        var color = this.props.labelMap[labelText]
+        html = html.replace(matches[0], `<span style='background-color:${color}' class='label label-default'>${labelText}</span>`)
+      }
+    }
+    return html
   }
 
   hasLabels () {
@@ -225,7 +257,7 @@ class CardView extends Component {
         return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>
       })
     }
-    return (<div className='labels'>
+    return (<div className='card__popover-labels'>
       {tags}
     </div>)
   }
@@ -242,13 +274,19 @@ CardView.propTypes = {
   isZoomed: PropTypes.bool.isRequired,
   zoomFactor: PropTypes.any.isRequired,
   zoomIn: PropTypes.func.isRequired,
-  orientation: PropTypes.string.isRequired
+  orientation: PropTypes.string.isRequired,
+  linePosition: PropTypes.number.isRequired,
+  scenePosition: PropTypes.number.isRequired
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state, passedProps) {
+  let line = state.lines.find(l => l.id === passedProps.lineId)
+  let scene = state.scenes.find(s => s.id === passedProps.sceneId)
   return {
     tags: state.tags,
-    orientation: state.ui.orientation
+    orientation: state.ui.orientation,
+    linePosition: line.position,
+    scenePosition: scene.position
   }
 }
 

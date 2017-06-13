@@ -214,7 +214,7 @@ class CardView extends Component {
       } else {
         placement = this.props.linePosition === 1 ? 'right' : placement
       }
-      title = <OverlayTrigger ref='popover' placement={placement} overlay={this.renderPopover()}>
+      title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
         {title}
       </OverlayTrigger>
     }

@@ -1,0 +1,28 @@
+@import "vars";
+
+.filter-list {
+  overflow-y: scroll;
+  p {
+    margin: 0px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 1px;
+    cursor: pointer;
+  }
+  p:hover {
+    background-color: $body-background-color
+  }
+  .filter-list__list {
+    list-style: none;
+    padding-left: 10px;
+    width: $width + 10; // for padding
+    li {
+      cursor: pointer;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+    li:hover {
+      background-color: $body-background-color
+    }
+  }
+}

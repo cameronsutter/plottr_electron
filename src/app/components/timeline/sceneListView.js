@@ -96,7 +96,6 @@ class SceneListView extends Component {
 SceneListView.propTypes = {
   scenes: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  filteredItems: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
   zoomFactor: PropTypes.any.isRequired,
   orientation: PropTypes.string.isRequired

@@ -108,14 +108,18 @@ class LineView extends Component {
     }
   }
 
-  filterIsNotEmpty () {
-    var filter = this.props.filteredItems
-    return filter['tag'].length > 0 || filter['character'].length > 0 || filter['place'].length > 0
+  filterIsEmpty () {
+    let filter = this.props.filteredItems
+    return filter == null ||
+      (filter['tag'].length === 0 &&
+      filter['character'].length === 0 &&
+      filter['place'].length === 0)
   }
 
   cardIsFiltered (card) {
     if (!card) return false
     const filter = this.props.filteredItems
+    if (filter == null) return true
     var filtered = true
     if (card.tags) {
       card.tags.forEach((tId) => {
@@ -173,7 +177,7 @@ class LineView extends Component {
       var card = this.findCard(sceneId)
       var id = card ? card.id : 'blank' + sceneId + scenePosition
       var filtered = false
-      if (this.filterIsNotEmpty() && this.cardIsFiltered(card)) {
+      if (!this.filterIsEmpty() && this.cardIsFiltered(card)) {
         filtered = true
       }
       return (<CardView key={id} card={card}
@@ -294,7 +298,7 @@ LineView.propTypes = {
   cards: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
-  filteredItems: PropTypes.object.isRequired,
+  filteredItems: PropTypes.object,
   labelMap: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
   zoomFactor: PropTypes.any.isRequired,

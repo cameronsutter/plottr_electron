@@ -75,7 +75,7 @@ LineListView.propTypes = {
   lines: PropTypes.array.isRequired,
   sceneMap: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  filteredItems: PropTypes.object.isRequired,
+  filteredItems: PropTypes.object,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,

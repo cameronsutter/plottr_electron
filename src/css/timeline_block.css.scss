@@ -4,37 +4,3 @@
   display: flex;
   flex-direction: row;
 }
-
-.timeline__filter {
-  position: absolute;
-  display: none;
-  overflow-y: scroll;
-  background-color: white;
-  border: 1px solid $new-item-border-color;
-  border-radius: 4px;
-  padding: 7px 15px 7px 10px;
-  z-index: 100;
-  p {
-    margin: 0px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 1px;
-    cursor: pointer;
-  }
-  p:hover {
-    background-color: $body-background-color
-  }
-  .timeline__filter-list {
-    list-style: none;
-    padding-left: 10px;
-    width: $width + 10; // for padding
-    li {
-      cursor: pointer;
-      padding-top: 2px;
-      padding-bottom: 2px;
-    }
-    li:hover {
-      background-color: $body-background-color
-    }
-  }
-}

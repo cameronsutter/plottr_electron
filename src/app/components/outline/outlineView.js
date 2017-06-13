@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { Glyphicon, Nav, Navbar, NavItem, Button } from 'react-bootstrap'
+import { Glyphicon, Nav, Navbar, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
 import SceneView from 'components/outline/sceneView'
 import MiniMap from 'components/outline/miniMap'
 
@@ -60,10 +60,6 @@ class OutlineView extends Component {
     this.setState({active: title})
   }
 
-  toggleFilter () {
-    this.setState({filterOpen: !this.state.filterOpen})
-  }
-
   filterItem (id) {
     if (this.state.currentLine === id) {
       this.setState({currentLine: null})
@@ -77,7 +73,7 @@ class OutlineView extends Component {
       return this.renderFilterItem(i)
     })
     return (
-      <ul className='timeline__filter-list'>
+      <ul className='filter-list__list'>
         {items}
       </ul>
     )
@@ -95,17 +91,23 @@ class OutlineView extends Component {
   }
 
   renderSubNav () {
-    var style = {}
-    if (this.state.filterOpen) style = {display: 'block'}
+    let popover = <Popover id='filter'>
+      <div className='filter-list'>
+        {this.renderFilterList()}
+      </div>
+    </Popover>
+    let filterDeclaration = <Alert bsStyle="warning">Outline is filtered</Alert>
+    if (this.state.currentLine == null) {
+      filterDeclaration = <span></span>
+    }
     return (
       <Navbar className='subnav__container'>
         <Nav bsStyle='pills' >
           <NavItem>
-            <Button bsSize='small' onClick={this.toggleFilter.bind(this)}>
-              <Glyphicon glyph='filter' /> Filter by storyline</Button>
-            <div style={style} className='timeline__filter'>
-              {this.renderFilterList()}
-            </div>
+            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
+              <Button bsSize='small'><Glyphicon glyph='filter' /> Filter by storyline</Button>
+            </OverlayTrigger>
+            {filterDeclaration}
           </NavItem>
         </Nav>
       </Navbar>

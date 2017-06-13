@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon } from 'react-bootstrap'
+import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import SceneListView from 'components/timeline/sceneListView'
 import LineListView from 'components/timeline/lineListView'
+import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
 
 const ZOOM_STATES = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3]
@@ -17,11 +18,10 @@ class TimeLineView extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      filteredItems: this.defaultFilteredItemsObj(),
+      filter: null,
       zoomState: INITIAL_ZOOM_STATE,
       zoomIndex: INITIAL_ZOOM_INDEX,
-      scrollTarget: 0,
-      filterOpen: false
+      scrollTarget: 0
     }
   }
 
@@ -29,37 +29,16 @@ class TimeLineView extends Component {
   //  filtering   //
   // //////////////
 
-  defaultFilteredItemsObj () {
-    return {tag: [], character: [], place: []}
+  updateFilter (filter) {
+    this.setState({ filter })
   }
 
-  filterItem (type, id) {
-    var filteredItems = this.state.filteredItems
-    if (filteredItems[type].indexOf(id) === -1) {
-      filteredItems[type].push(id)
-    } else {
-      var index = filteredItems[type].indexOf(id)
-      if (index !== -1) filteredItems[type].splice(index, 1)
-    }
-    this.setState({filteredItems: filteredItems})
-  }
-
-  filterList (type, list) {
-    var filteredItems = this.state.filteredItems
-    if (filteredItems[type].length > 0) {
-      filteredItems[type] = []
-    } else {
-      filteredItems[type] = list.map((item) => item.id)
-    }
-    this.setState({filteredItems: filteredItems})
-  }
-
-  toggleFilter () {
-    this.setState({filterOpen: !this.state.filterOpen})
-  }
-
-  isChecked (type, id) {
-    return this.state.filteredItems[type].indexOf(id) !== -1
+  filterIsEmpty () {
+    let filter = this.state.filter
+    return filter == null ||
+      (filter['tag'].length === 0 &&
+      filter['character'].length === 0 &&
+      filter['place'].length === 0)
   }
 
   // ////////////////
@@ -184,8 +163,6 @@ class TimeLineView extends Component {
   // //////////////
 
   renderSubNav () {
-    var style = {}
-    if (this.state.filterOpen) style = {display: 'block'}
     let glyph = 'option-vertical'
     let orientation = 'vertical'
     let scrollDirectionFirst = 'menu-left'
@@ -196,19 +173,21 @@ class TimeLineView extends Component {
       scrollDirectionFirst = 'menu-up'
       scrollDirectionSecond = 'menu-down'
     }
+    let popover = <Popover id='filter'>
+      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter.bind(this)}/>
+    </Popover>
+    let filterDeclaration = <Alert bsStyle="warning">Timeline is filtered</Alert>
+    if (this.filterIsEmpty()) {
+      filterDeclaration = <span></span>
+    }
     return (
       <Navbar className='subnav__container'>
         <Nav bsStyle='pills' >
           <NavItem>
-            <Button bsSize='small' onClick={this.toggleFilter.bind(this)}><Glyphicon glyph='filter' /> Filter</Button>
-            <div style={style} className='timeline__filter'>
-              <p onClick={() => this.filterList('tag', this.props.tags)}><em>Tags</em></p>
-                {this.renderFilterList(this.props.tags, 'tag', 'title')}
-              <p onClick={() => this.filterList('character', this.props.characters)}><em>Characters</em></p>
-                {this.renderFilterList(this.props.characters, 'character', 'name')}
-              <p onClick={() => this.filterList('place', this.props.places)}><em>Places</em></p>
-                {this.renderFilterList(this.props.places, 'place', 'name')}
-            </div>
+            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
+              <Button bsSize='small'><Glyphicon glyph='filter' /> Filter</Button>
+            </OverlayTrigger>
+            {filterDeclaration}
           </NavItem>
           <NavItem>
             <Button bsSize='small' onClick={() => this.props.actions.changeOrientation(orientation)}><Glyphicon glyph={glyph} /> Flip</Button>
@@ -237,28 +216,6 @@ class TimeLineView extends Component {
     )
   }
 
-  renderFilterList (array, type, attr) {
-    var items = array.map((i) => {
-      return this.renderFilterItem(i, type, attr)
-    })
-    return (
-      <ul className='timeline__filter-list'>
-        {items}
-      </ul>
-    )
-  }
-
-  renderFilterItem (item, type, attr) {
-    var checked = 'unchecked'
-    if (this.isChecked(type, item.id)) {
-      checked = 'eye-open'
-    }
-    return (<li key={`${type}-${item.id}`} onMouseDown={() => this.filterItem(type, item.id)}>
-        <Glyphicon glyph={checked} /> {item[attr]}
-      </li>
-    )
-  }
-
   render () {
     let styles = this.makeTransform()
     let isZoomed = (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
@@ -270,12 +227,11 @@ class TimeLineView extends Component {
         {this.renderSubNav()}
         <div id='timelineview__root' className={orientation} ref='timeline' style={styles}>
           <SceneListView
-            filteredItems={this.state.filteredItems}
             isZoomed={isZoomed}
             zoomFactor={zoomFactor} />
           <LineListView
             sceneMap={this.sceneMapping()}
-            filteredItems={this.state.filteredItems}
+            filteredItems={this.state.filter}
             isZoomed={isZoomed}
             zoomFactor={zoomFactor}
             zoomIn={this.zoomIntoCard.bind(this)} />

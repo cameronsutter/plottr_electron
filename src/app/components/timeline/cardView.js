@@ -210,9 +210,9 @@ class CardView extends Component {
     if (!this.props.isZoomed && (this.hasLabels() || this.props.card.description)) {
       let placement = 'left'
       if (this.props.orientation === 'horizontal') {
-        placement = this.props.scenePosition === 1 ? 'right' : placement
+        placement = this.props.scenePosition === 0 ? 'right' : placement
       } else {
-        placement = this.props.linePosition === 1 ? 'right' : placement
+        placement = this.props.linePosition === 0 ? 'right' : placement
       }
       title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
         {title}

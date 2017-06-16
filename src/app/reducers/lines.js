@@ -2,6 +2,7 @@ import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE,
 import { line } from 'store/initialState'
 import { newFileLines } from 'store/newFileState'
 import { lineId, linePosition } from 'store/newIds'
+import { nextColor } from 'store/lineColors'
 
 const initialState = [line]
 
@@ -10,8 +11,8 @@ export default function lines (state = initialState, action) {
     case ADD_LINE:
       return [{
         id: lineId(state),
-        title: action.title,
-        color: action.color,
+        title: line.title,
+        color: nextColor(state.length),
         position: linePosition(state)
       }, ...state]
 

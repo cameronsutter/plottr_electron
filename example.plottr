@@ -1060,7 +1060,7 @@
     }
   ],
   "ui": {
-    "currentView": "notes",
+    "currentView": "timeline",
     "orientation": "horizontal"
   }
 }

@@ -48,7 +48,14 @@ class TimeLineView extends Component {
   scale () {
     var elem = this.refs.timeline
     var scale = ZOOM_STATES[this.state.zoomIndex]
-    if (this.state.zoomState === FIT_ZOOM_STATE) scale = window.outerWidth / elem.scrollWidth
+    if (this.state.zoomState === FIT_ZOOM_STATE) {
+      if (this.props.orientation === 'horizontal') {
+        scale = (window.outerWidth - 10) / elem.scrollWidth
+      } else {
+        // take into account navigation height
+        scale = (window.outerHeight - 150) / elem.scrollHeight
+      }
+    }
     return scale
   }
 
@@ -158,17 +165,25 @@ class TimeLineView extends Component {
     }, 10)
   }
 
+  // //////////////
+  // flip
+  // //////////////
+
+  flipOrientation () {
+    let orientation = this.props.orientation === 'horizontal' ? 'vertical' : 'horizontal'
+    this.props.actions.changeOrientation(orientation)
+    this.resetZoom()
+  }
+
   // ///////////////
   //  rendering   //
   // //////////////
 
   renderSubNav () {
     let glyph = 'option-vertical'
-    let orientation = 'vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
     if (this.props.orientation === 'vertical') {
-      orientation = 'horizontal'
       glyph = 'option-horizontal'
       scrollDirectionFirst = 'menu-up'
       scrollDirectionSecond = 'menu-down'
@@ -190,7 +205,7 @@ class TimeLineView extends Component {
             {filterDeclaration}
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={() => this.props.actions.changeOrientation(orientation)}><Glyphicon glyph={glyph} /> Flip</Button>
+            <Button bsSize='small' onClick={this.flipOrientation.bind(this)}><Glyphicon glyph={glyph} /> Flip</Button>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>Zoom: </span>

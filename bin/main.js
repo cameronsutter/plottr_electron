@@ -133,6 +133,15 @@ app.on('ready', function () {
     var menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
 
+    if (process.platform === 'darwin') {
+      let dockMenu = Menu.buildFromTemplate([
+        {label: 'Create a new file', click: function () {
+          askToCreateFile()
+        }},
+      ])
+      app.dock.setMenu(dockMenu)
+    }
+
     checkLicense()
   }
 })
@@ -230,6 +239,7 @@ function askToCreateFile () {
         else {
           storage.set(recentKey, fullName, function (err) {
             if (err) console.log(err)
+            app.addRecentDocument(fullName)
           })
         }
       })
@@ -304,6 +314,7 @@ function openWindow (fileName, newFile = false) {
     if (!newFile) json = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     storage.set(recentKey, fileName, function (err) {
       if (err) console.log(err)
+      app.addRecentDocument(fileName)
     })
 
     windows.push({

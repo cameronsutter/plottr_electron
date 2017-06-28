@@ -1,6 +1,6 @@
 import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ADD_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
-  ADD_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE } from '../constants/ActionTypes'
+  ADD_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE, DELETE_CHARACTER } from '../constants/ActionTypes'
 import { character } from 'store/initialState'
 import { newFileCharacters } from 'store/newFileState'
 import { characterId } from 'store/newIds'
@@ -11,12 +11,11 @@ export default function characters (state = initialState, action) {
   switch (action.type) {
     case ADD_CHARACTER:
       return [...state, {
+        ...character,
         id: characterId(state),
         name: action.name,
         description: action.description,
-        notes: action.notes,
-        color: character.color,
-        cards: []
+        notes: action.notes
       }]
 
     case EDIT_CHARACTER:
@@ -51,6 +50,11 @@ export default function characters (state = initialState, action) {
         notes.splice(notes.indexOf(action.id), 1)
         return character.id === action.characterId ? Object.assign({}, character, {noteIds: notes}) : character
       })
+
+    case DELETE_CHARACTER:
+      return state.filter(character =>
+        character.id !== action.id
+      )
 
     case RESET:
     case FILE_LOADED:

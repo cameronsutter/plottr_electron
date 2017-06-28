@@ -77,9 +77,10 @@ class CharacterListView extends Component {
   }
 
   renderCharacterDetails () {
-    const character = this.props.characters.find(char =>
+    let character = this.props.characters.find(char =>
       char.id === this.state.characterDetailId
     )
+    if (!character) character = this.props.characters[0]
     return <CharacterView key={`character-${character.id}`} character={character} />
   }
 

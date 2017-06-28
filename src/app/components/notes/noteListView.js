@@ -96,9 +96,10 @@ class NoteListView extends Component {
 
   renderNoteDetails () {
     if (this.state.noteDetailId == null) return null
-    const note = this.props.notes.find(n =>
+    let note = this.props.notes.find(n =>
       n.id === this.state.noteDetailId
     )
+    if (!note) note = this.state.viewableNotes[0]
     return <NoteView key={`note-${note.id}`} note={note} />
   }
 

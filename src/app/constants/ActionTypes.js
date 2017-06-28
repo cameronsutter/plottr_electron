@@ -39,6 +39,7 @@ export const DELETE_LINE = 'DELETE_STORYLINE'
 // places actions
 export const ADD_PLACE = 'ADD_PLACE'
 export const EDIT_PLACE = 'EDIT_PLACE'
+export const DELETE_PLACE = 'DELETE_PLACE'
 
 // tags actions
 export const ADD_TAG = 'ADD_TAG'
@@ -48,6 +49,7 @@ export const DELETE_TAG = 'DELETE_TAG'
 // characters actions
 export const ADD_CHARACTER = 'ADD_CHARACTER'
 export const EDIT_CHARACTER = 'EDIT_CHARACTER'
+export const DELETE_CHARACTER = 'DELETE_CHARACTER'
 
 // notes actions
 export const ADD_NOTE = 'ADD_NOTE'

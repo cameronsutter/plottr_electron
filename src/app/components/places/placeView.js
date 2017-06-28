@@ -30,6 +30,10 @@ class PlaceView extends Component {
     this.setState({editing: false})
   }
 
+  deletePlace () {
+    this.props.actions.deletePlace(this.props.place.id)
+  }
+
   renderEditingCustomAttributes () {
     return this.props.customAttributes.map((attr, idx) =>
       <Input key={idx}
@@ -63,7 +67,7 @@ class PlaceView extends Component {
             {this.renderEditingCustomAttributes()}
           </div>
         </div>
-        <ButtonToolbar>
+        <ButtonToolbar className='card-dialog__button-bar'>
           <Button
             onClick={() => this.setState({editing: false})} >
             Cancel
@@ -71,6 +75,10 @@ class PlaceView extends Component {
           <Button bsStyle='success'
             onClick={this.saveEdit.bind(this)} >
             Save
+          </Button>
+          <Button className='card-dialog__delete'
+            onClick={this.deletePlace.bind(this)} >
+            Delete
           </Button>
         </ButtonToolbar>
       </div>

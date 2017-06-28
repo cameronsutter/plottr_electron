@@ -28,6 +28,10 @@ class NoteView extends Component {
     this.setState({editing: false})
   }
 
+  deleteNote () {
+    this.props.actions.deleteNote(this.props.note.id)
+  }
+
   renderContent () {
     const { note } = this.props
     if (this.state.editing) {
@@ -43,7 +47,7 @@ class NoteView extends Component {
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
               label='Content' defaultValue={note.content} />
           </div>
-          <ButtonToolbar>
+          <ButtonToolbar className='card-dialog__button-bar'>
             <Button
               onClick={() => this.setState({editing: false})} >
             Cancel
@@ -51,6 +55,10 @@ class NoteView extends Component {
             <Button bsStyle='success'
               onClick={this.saveEdit.bind(this)} >
             Save
+            </Button>
+            <Button className='card-dialog__delete'
+              onClick={this.deleteNote.bind(this)} >
+              Delete
             </Button>
           </ButtonToolbar>
         </div>

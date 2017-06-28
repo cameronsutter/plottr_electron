@@ -31,6 +31,10 @@ class CharacterView extends Component {
     this.setState({editing: false})
   }
 
+  deleteCharacter () {
+    this.props.actions.deleteCharacter(this.props.character.id)
+  }
+
   renderEditingCustomAttributes () {
     return this.props.customAttributes.map((attr, idx) =>
       <Input key={idx}
@@ -64,7 +68,7 @@ class CharacterView extends Component {
             {this.renderEditingCustomAttributes()}
           </div>
         </div>
-        <ButtonToolbar>
+        <ButtonToolbar className='card-dialog__button-bar'>
           <Button
             onClick={() => this.setState({editing: false})} >
             Cancel
@@ -72,6 +76,10 @@ class CharacterView extends Component {
           <Button bsStyle='success'
             onClick={this.saveEdit.bind(this)} >
             Save
+          </Button>
+          <Button className='card-dialog__delete'
+            onClick={this.deleteCharacter.bind(this)} >
+            Delete
           </Button>
         </ButtonToolbar>
       </div>

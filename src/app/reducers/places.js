@@ -1,6 +1,6 @@
 import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
   ADD_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
-  ADD_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE } from '../constants/ActionTypes'
+  ADD_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE, DELETE_PLACE } from '../constants/ActionTypes'
 import { place } from 'store/initialState'
 import { newFilePlaces } from 'store/newFileState'
 import { placeId } from 'store/newIds'
@@ -11,11 +11,11 @@ export default function places (state = initialState, action) {
   switch (action.type) {
     case ADD_PLACE:
       return [...state, {
+        ...place,
         id: placeId(state),
         name: action.name,
         description: action.description,
-        notes: action.notes,
-        color: place.color
+        notes: action.notes
       }]
 
     case EDIT_PLACE:
@@ -50,6 +50,11 @@ export default function places (state = initialState, action) {
         notes.splice(notes.indexOf(action.id), 1)
         return place.id === action.placeId ? Object.assign({}, place, {noteIds: notes}) : place
       })
+
+    case DELETE_PLACE:
+      return state.filter(place =>
+        place.id !== action.id
+      )
 
     case RESET:
     case FILE_LOADED:

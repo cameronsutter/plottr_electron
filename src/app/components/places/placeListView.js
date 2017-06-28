@@ -78,9 +78,10 @@ class PlaceListView extends Component {
   }
 
   renderPlaceDetails () {
-    const place = this.props.places.find(pl =>
+    let place = this.props.places.find(pl =>
       pl.id === this.state.placeDetailId
     )
+    if (!place) place = this.props.places[0]
     return <PlaceView key={`place-${place.id}`} place={place} />
   }
 

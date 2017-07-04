@@ -30,6 +30,15 @@
         margin-left: 7px;
       }
     </style>
+    <script>
+      var Rollbar = require('rollbar')
+      let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
+      var rollbar = new Rollbar({
+        accessToken: rollbarToken,
+        handleUncaughtExceptions: true,
+        handleUnhandledRejections: true
+      })
+    </script>
     <script src="css.bundle.js"></script>
   </head>
   <body>

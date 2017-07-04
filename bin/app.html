@@ -3,6 +3,15 @@
   <head>
     <title>Plottr</title>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
+    <script>
+      var Rollbar = require('rollbar')
+      let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
+      var rollbar = new Rollbar({
+        accessToken: rollbarToken,
+        handleUncaughtExceptions: true,
+        handleUnhandledRejections: true
+      })
+    </script>
     <script src="css.bundle.js"></script>
   </head>
   <body>

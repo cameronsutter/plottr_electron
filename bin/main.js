@@ -5,6 +5,8 @@ var path = require('path')
 var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
+var Rollbar = require('rollbar')
+require('dotenv').config()
 
 const USER_INFO = 'user_info'
 var TRIALMODE = false
@@ -14,8 +16,6 @@ try {
 } catch (e) {
   // not in trial mode
 }
-
-// TODO: Report crashes to our server.
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -31,6 +31,24 @@ const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFil
 
 // mixpanel tracking
 var tracker = false
+
+////////////////////////////////
+////     Bug Reporting    //////
+////////////////////////////////
+
+let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
+var rollbar = new Rollbar({
+  accessToken: rollbarToken,
+  handleUncaughtExceptions: true,
+  handleUnhandledRejections: true
+})
+// process.on('uncaughtException', function (err) {
+//   // TODO: handle these gracefully
+//   console.log('uncaught has now been caught')
+//   app.quit()
+// })
+
+// TODO: Report crashes to our server.
 
 ////////////////////////////////
 ///////     EVENTS    //////////
@@ -77,8 +95,10 @@ ipcMain.on('save-state', function (event, state, winId) {
   winObj.state = state
   if (edited) {
     saveFile(winObj.fileName, state, function (err) {
-      if (err) throw err
-      else {
+      if (err) {
+        rollbar.error(err)
+        // TODO: handle gracefully
+      } else {
         winObj.window.webContents.send('state-saved')
         winObj.lastSave = winObj.state
         winObj.window.setDocumentEdited(false)
@@ -96,13 +116,13 @@ ipcMain.on('fetch-state', function (event, id) {
 
   if (win.window.isVisible()) {
     migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-      if (err) console.log(err)
+      if (err) rollbar.error(err)
       event.sender.send('state-fetched', json, win.fileName, dirty)
     })
   } else {
     win.window.on('show', () => {
       migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-        if (err) console.log(err)
+        if (err) rollbar.warn(err)
         event.sender.send('state-fetched', json, win.fileName, dirty)
       })
     })
@@ -328,6 +348,7 @@ function openWindow (fileName, newFile = false) {
     newWindow.setTitle(displayFileName(fileName))
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {
+    rollbar.warn(err)
     console.log(err)
     removeRecentFile(fileName)
     newWindow.destroy()
@@ -432,6 +453,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
               dialog.showErrorBox('Problem saving backup', 'Plottr couldn\'t save a backup. It hasn\'t touched your file yet, so don\'t worry. Try quitting Plottr and starting it again.')
               callback('problem saving backup', false, json)
             } else {
+              rollbar.error(err)
               // tell the user that Plottr migrated versions and saved a backup file
               dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr updated your file without a problem. Don\'t forget to save your file.'})
               callback(null, true, json)
@@ -441,6 +463,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
           // open file without migrating
           fs.writeFile(`${fileName}.backup`, JSON.stringify(json, null, 2), (err) => {
             if (err) {
+              rollbar.error(err)
               dialog.showErrorBox('Problem saving backup', 'Plottr tried saving a backup just in case, but it didn\'t work. Try quitting Plottr and starting it again.')
             } else {
               dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr saved a backup just in case and now on with the show (To use the backup, remove \'.backup\' from the file name)'})
@@ -542,8 +565,10 @@ function buildFileMenu () {
         let winObj = _.find(windows, {id: win.id})
         if (winObj) {
           saveFile(winObj.state.file.fileName, winObj.state, function (err) {
-            if (err) throw err
-            else {
+            if (err) {
+              rollbar.error(err)
+              // TODO: handle gracefully
+            } else {
               win.webContents.send('state-saved')
               winObj.lastSave = winObj.state
               win.setDocumentEdited(false)
@@ -625,8 +650,8 @@ function buildViewMenu () {
           let stat = fs.stat(folderPath, (err, stat) => {
             if (err) {
               fs.mkdir(folderPath, (err) => {
-                if(err) {
-                  console.log(err)
+                if (err) {
+                  rollbar.warn(err)
                 } else {
                   fs.writeFile(filePath, image.toPNG())
                 }

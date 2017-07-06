@@ -501,6 +501,12 @@ function buildPlottrMenu () {
       label: 'Report a Problem',
       click: openReportWindow
     }, {
+      label: 'Give feedback',
+      click: openReportWindow
+    }, {
+      label: 'Request a feature',
+      click: openReportWindow
+    }, {
       type: 'separator'
     }, {
       label: 'Services',
@@ -710,6 +716,14 @@ function buildHelpMenu () {
     submenu: [
       {
         label: 'Report a Problem',
+        click: openReportWindow
+      },
+      {
+        label: 'Give feedback',
+        click: openReportWindow
+      },
+      {
+        label: 'Request a feature',
         click: openReportWindow
       }
     ]

@@ -42,11 +42,11 @@ var rollbar = new Rollbar({
   handleUncaughtExceptions: true,
   handleUnhandledRejections: true
 })
-// process.on('uncaughtException', function (err) {
-//   // TODO: handle these gracefully
-//   console.log('uncaught has now been caught')
-//   app.quit()
-// })
+process.on('uncaughtException', function (err) {
+  Rollbar.error(err, function(sendErr, data) {
+    gracefullyQuit()
+  })
+})
 
 // TODO: Report crashes to our server.
 
@@ -97,7 +97,7 @@ ipcMain.on('save-state', function (event, state, winId) {
     saveFile(winObj.fileName, state, function (err) {
       if (err) {
         rollbar.error(err)
-        // TODO: handle gracefully
+        gracefullyNotSave()
       } else {
         winObj.window.webContents.send('state-saved')
         winObj.lastSave = winObj.state
@@ -116,7 +116,7 @@ ipcMain.on('fetch-state', function (event, id) {
 
   if (win.window.isVisible()) {
     migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-      if (err) rollbar.error(err)
+      if (err) rollbar.warn(err)
       event.sender.send('state-fetched', json, win.fileName, dirty)
     })
   } else {
@@ -427,6 +427,16 @@ function openReportWindow () {
   })
 }
 
+function gracefullyQuit () {
+  dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Plottr ran into a problem. Try opening Plottr again.', detail: 'If you keep seeing this problem, email me at cameronsutter0@gmail.com'}, function (choice) {
+    app.quit()
+  })
+}
+
+function gracefullyNotSave () {
+  dialog.showErrorBox('Saving failed', 'Saving your file didn\'t work. Try again.')
+}
+
 ////////////////////////////////
 ///////    MIGRATE    //////////
 ////////////////////////////////
@@ -453,7 +463,6 @@ function migrateIfNeeded (win, json, fileName, callback) {
               dialog.showErrorBox('Problem saving backup', 'Plottr couldn\'t save a backup. It hasn\'t touched your file yet, so don\'t worry. Try quitting Plottr and starting it again.')
               callback('problem saving backup', false, json)
             } else {
-              rollbar.error(err)
               // tell the user that Plottr migrated versions and saved a backup file
               dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr updated your file without a problem. Don\'t forget to save your file.'})
               callback(null, true, json)
@@ -573,7 +582,7 @@ function buildFileMenu () {
           saveFile(winObj.state.file.fileName, winObj.state, function (err) {
             if (err) {
               rollbar.error(err)
-              // TODO: handle gracefully
+              gracefullyNotSave()
             } else {
               win.webContents.send('state-saved')
               winObj.lastSave = winObj.state

@@ -264,8 +264,11 @@ function askToCreateFile () {
       var fullName = fileName + '.plottr'
       openWindow(fullName, true)
       saveFile(fullName, {}, function (err) {
-        if (err) console.log(err)
-        else {
+        if (err) {
+          rollbar.error(err)
+          dialog.showErrorBox('Saving failed', 'Creating your file didn\'t work. Let\'s try again.')
+          askToCreateFile()
+        } else {
           storage.set(recentKey, fullName, function (err) {
             if (err) console.log(err)
             app.addRecentDocument(fullName)
@@ -320,8 +323,7 @@ function openWindow (fileName, newFile = false) {
     newWindow.openDevTools()
   }
 
-  newWindow.on('closed', function () {
-  })
+  newWindow.on('closed', function () {})
 
   newWindow.on('close', function (e) {
     var win = _.find(windows, {id: this.id})
@@ -596,6 +598,28 @@ function buildFileMenu () {
               win.webContents.send('state-saved')
               winObj.lastSave = winObj.state
               win.setDocumentEdited(false)
+            }
+          })
+        }
+      }
+    }, {
+      label: 'Save as...',
+      accelerator: 'CmdOrCtrl+Shift+S',
+      click: function () {
+        let win = BrowserWindow.getFocusedWindow()
+        let winObj = _.find(windows, {id: win.id})
+        if (winObj) {
+          dialog.showSaveDialog(win, {title: 'Where would you like to save this copy?'}, function (fileName) {
+            if (fileName) {
+              var fullName = fileName + '.plottr'
+              saveFile(fullName, winObj.state, function (err) {
+                if (err) {
+                  rollbar.error(err)
+                  gracefullyNotSave()
+                } else {
+                  app.addRecentDocument(fullName)
+                }
+              })
             }
           })
         }

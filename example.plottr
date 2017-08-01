@@ -730,9 +730,7 @@
       "noteIds": [
         2
       ],
-      "notes": [
-        0
-      ],
+      "notes": "notes",
       "weather": "stormy"
     },
     {
@@ -749,12 +747,7 @@
         1,
         3
       ],
-      "notes": [
-        0,
-        0,
-        0,
-        0
-      ]
+      "notes": "weird … how did the notes attr become an array?"
     },
     {
       "cards": [],
@@ -765,7 +758,7 @@
       "noteIds": [
         1
       ],
-      "notes": []
+      "notes": "string … not array"
     }
   ],
   "scenes": [

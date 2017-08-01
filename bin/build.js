@@ -29,6 +29,7 @@ var options = {
     /.*\.(md|MD)/,
     /webpack\.config\.js/,
     /example.{0,3}\.plottr/
+    /example.{0,3}\.docx/
   ]
 }
 

@@ -34,7 +34,7 @@
       let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
       var rollbar = new Rollbar({
         accessToken: rollbarToken,
-        handleUncaughtExceptions: true,
+        handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
         handleUnhandledRejections: true
       })
     </script>

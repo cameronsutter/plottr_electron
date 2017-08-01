@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
 var Migrator = require('./migrator/migrator')
+var Exporter = require('./exporter')
 var fs = require('fs')
 var path = require('path')
 var deep = require('deep-diff')
@@ -39,14 +40,17 @@ var tracker = false
 let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
 var rollbar = new Rollbar({
   accessToken: rollbarToken,
-  handleUncaughtExceptions: true,
-  handleUnhandledRejections: true
+  handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
+  handleUnhandledRejections: true,
+  ignoredMessages: []
 })
-process.on('uncaughtException', function (err) {
-  Rollbar.error(err, function(sendErr, data) {
-    gracefullyQuit()
+if (process.env.NODE_ENV !== 'dev') {
+  process.on('uncaughtException', function (err) {
+    Rollbar.error(err, function(sendErr, data) {
+      gracefullyQuit()
+    })
   })
-})
+}
 
 // TODO: Report crashes to our server.
 
@@ -139,6 +143,11 @@ ipcMain.on('license-verified', function () {
 })
 
 ipcMain.on('report-window-requested', openReportWindow)
+
+ipcMain.on('export', function (event, options, winId) {
+  var winObj = _.find(windows, {id: winId})
+  Exporter(winObj.state, options)
+})
 
 app.on('ready', function () {
   if (process.env.NODE_ENV === 'license') {

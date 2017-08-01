@@ -1,11 +1,15 @@
+import { ipcRenderer, remote } from 'electron'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+import { MPQ } from 'middlewares/helpers'
 import SceneListView from 'components/timeline/sceneListView'
 import LineListView from 'components/timeline/lineListView'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
+const win = remote.getCurrentWindow()
+const dialog = remote.dialog
 
 const ZOOM_STATES = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3]
 const INITIAL_ZOOM_INDEX = 4
@@ -176,6 +180,20 @@ class TimeLineView extends Component {
   }
 
   // ///////////////
+  //  exporting   //
+  // //////////////
+
+  export () {
+    dialog.showSaveDialog({title: 'Where would you like to save the export?'}, function (fileName) {
+      let options = {
+        fileName
+      }
+      MPQ.push('Export')
+      ipcRenderer.send('export', options, win.id)
+    })
+  }
+
+  // ///////////////
   //  rendering   //
   // //////////////
 
@@ -225,6 +243,10 @@ class TimeLineView extends Component {
               <Button onClick={this.scrollMiddle.bind(this)} >Middle</Button>
               <Button onClick={this.scrollEnd.bind(this)} >End</Button>
             </ButtonGroup>
+          </NavItem>
+          <NavItem>
+            <span className='subnav__container__label'>Export: </span>
+            <Button bsSize='small' onClick={this.export.bind(this)}><Glyphicon glyph='export' /></Button>
           </NavItem>
         </Nav>
       </Navbar>

@@ -57,5 +57,9 @@
       e.preventDefault()
       menu.popup(remote.getCurrentWindow())
     }, false)
+
+    function logger(which) {
+      process.env.LOGGER = which.toString()
+    }
   </script>
 </html>

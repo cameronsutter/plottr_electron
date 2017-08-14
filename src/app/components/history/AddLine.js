@@ -8,8 +8,6 @@ class AddLine extends Component {
     return (
       <div>
         <span>new storyline</span>
-        <p>Before: </p>
-        <p>After: <span className='history-component__item__after'>{item.action.title}</span></p>
       </div>
     )
   }

@@ -10,8 +10,6 @@ class AddPlace extends Component {
     return (
       <div>
         <span>new {label}</span>
-        <p>Before: </p>
-        <p>After: <span className='history-component__item__after'>{item.action.name || item.action.title}</span></p>
       </div>
     )
   }

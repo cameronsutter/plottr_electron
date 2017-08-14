@@ -552,8 +552,7 @@
       "noteIds": [
         0,
         4,
-        4,
-        5
+        4
       ],
       "notes": "She is the main character and a really strong female.",
       "power": "lantern"
@@ -581,12 +580,31 @@
         1
       ],
       "notes": []
+    },
+    {
+      "cards": [],
+      "color": null,
+      "description": "desc",
+      "id": 3,
+      "name": "another character",
+      "noteIds": [],
+      "notes": ""
+    },
+    {
+      "cards": [],
+      "color": null,
+      "description": "",
+      "id": 4,
+      "name": "yet another",
+      "noteIds": [],
+      "notes": ""
     }
   ],
   "customAttributes": {
     "cards": [],
     "characters": [
-      "age"
+      "age",
+      "race"
     ],
     "lines": [],
     "places": [
@@ -595,7 +613,7 @@
     "scenes": []
   },
   "file": {
-    "dirty": false,
+    "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example.plottr",
     "loaded": true,
     "version": "1.0.0"

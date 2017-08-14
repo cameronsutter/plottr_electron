@@ -18,6 +18,15 @@ import Reorder from 'components/history/Reorder'
 import DeleteLine from 'components/history/DeleteLine'
 import AddPlace from 'components/history/AddPlace'
 import EditPlace from 'components/history/EditPlace'
+import DeletePlace from 'components/history/DeletePlace'
+import DeleteTag from 'components/history/DeleteTag'
+import DeleteCharacter from 'components/history/DeleteCharacter'
+import AddNote from 'components/history/AddNote'
+import EditNote from 'components/history/EditNote'
+import DeleteNote from 'components/history/DeleteNote'
+import AddCustomAttribute from 'components/history/AddCustomAttribute'
+import RemoveCustomAttribute from 'components/history/RemoveCustomAttribute'
+import AddThingToThing from 'components/history/AddThingToThing'
 
 class HistoryItem extends Component {
   constructor (props) {
@@ -99,6 +108,37 @@ class HistoryItem extends Component {
       case types.EDIT_CHARACTER:
       case types.EDIT_TAG:
         return <EditPlace item={item} />
+      case types.ADD_NOTE:
+        return <AddNote item={item} />
+      case types.EDIT_NOTE:
+        return <EditNote item={item} />
+      case types.DELETE_NOTE:
+        return <DeleteNote item={item} />
+      case types.DELETE_CHARACTER:
+        return <DeleteCharacter item={item} />
+      case types.DELETE_PLACE:
+        return <DeletePlace item={item} />
+      case types.DELETE_TAG:
+        return <DeleteTag item={item} />
+      case types.ADD_PLACES_ATTRIBUTE:
+      case types.ADD_CHARACTER_ATTRIBUTE:
+        return <AddCustomAttribute item={item} />
+      case types.REMOVE_PLACES_ATTRIBUTE:
+      case types.REMOVE_CHARACTER_ATTRIBUTE:
+        return <RemoveCustomAttribute item={item} />
+      case types.ATTACH_CHARACTER_TO_NOTE:
+      case types.ATTACH_CHARACTER_TO_CARD:
+      case types.ATTACH_PLACE_TO_NOTE:
+      case types.ATTACH_PLACE_TO_CARD:
+      case types.ATTACH_TAG_TO_NOTE:
+      case types.ATTACH_TAG_TO_CARD:
+      case types.REMOVE_CHARACTER_FROM_NOTE:
+      case types.REMOVE_CHARACTER_FROM_CARD:
+      case types.REMOVE_PLACE_FROM_NOTE:
+      case types.REMOVE_PLACE_FROM_CARD:
+      case types.REMOVE_TAG_FROM_NOTE:
+      case types.REMOVE_TAG_FROM_CARD:
+        return <AddThingToThing item={item} />
       default:
         return <div>{type}</div>
     }

@@ -1,5 +1,5 @@
-import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE, ADD_CHARACTER_TO_NOTE,
-  ADD_PLACE_TO_NOTE, ADD_TAG_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
+import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE, ATTACH_CHARACTER_TO_NOTE,
+  ATTACH_PLACE_TO_NOTE, ATTACH_TAG_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
   REMOVE_PLACE_FROM_NOTE, REMOVE_TAG_FROM_NOTE } from 'constants/ActionTypes'
 import { note } from 'store/initialState'
 
@@ -16,15 +16,15 @@ export function deleteNote (id) {
 }
 
 export function addCharacter (id, characterId) {
-  return { type: ADD_CHARACTER_TO_NOTE, id, characterId }
+  return { type: ATTACH_CHARACTER_TO_NOTE, id, characterId }
 }
 
 export function addPlace (id, placeId) {
-  return { type: ADD_PLACE_TO_NOTE, id, placeId }
+  return { type: ATTACH_PLACE_TO_NOTE, id, placeId }
 }
 
 export function addTag (id, tagId) {
-  return { type: ADD_TAG_TO_NOTE, id, tagId }
+  return { type: ATTACH_TAG_TO_NOTE, id, tagId }
 }
 
 export function removeCharacter (id, characterId) {

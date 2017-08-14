@@ -1,19 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-class AddCard extends Component {
+class AddCustomAttribute extends Component {
 
   render () {
     const item = this.props.item
+    let label = item.action.type.indexOf('PLACES') === -1 ? 'character' : 'place'
     return (
       <div>
-        <span>new card</span>
+        <span>new custom {label} attribute</span>
+        <p>Before: </p>
+        <p>After: <span className='history-component__item__after'>{item.action.attribute}</span></p>
       </div>
     )
   }
 }
 
-AddCard.propTypes = {
+AddCustomAttribute.propTypes = {
   item: PropTypes.object.isRequired
 }
 
@@ -30,4 +33,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddCard)
+)(AddCustomAttribute)

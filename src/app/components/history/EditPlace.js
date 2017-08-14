@@ -13,6 +13,7 @@ class EditPlace extends Component {
         </div>
       )
     } else {
+      console.log(diff)
       return (
         <div key={`diff-${index}-${diff.path[1]}`}>
           <span>{diff.path[2]}</span>
@@ -28,9 +29,12 @@ class EditPlace extends Component {
     const diffs = item.diff.map(this.renderDiff, this)
     var label = item.action.type.indexOf('PLACE') === -1 ? 'character' : 'place'
     label = item.action.type.indexOf('TAG') === -1 ? 'character' : 'tag'
+    console.log(item)
+    let value = item.action.name || item.action.title
+    if (item.action.attributes) value = item.action.attributes.name
     return (
       <div>
-        <span>{label}: "{item.action.name || item.action.title}"</span>
+        <span>{label}: "{value}"</span>
         {diffs}
       </div>
     )

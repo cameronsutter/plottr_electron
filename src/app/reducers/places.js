@@ -1,6 +1,6 @@
 import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
-  ADD_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
-  ADD_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE, DELETE_PLACE } from '../constants/ActionTypes'
+  ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
+  ATTACH_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE, DELETE_PLACE } from '../constants/ActionTypes'
 import { place } from 'store/initialState'
 import { newFilePlaces } from 'store/newFileState'
 import { placeId } from 'store/newIds'
@@ -23,7 +23,7 @@ export default function places (state = initialState, action) {
         place.id === action.id ? Object.assign({}, place, action.attributes) : place
       )
 
-    case ADD_PLACE_TO_CARD:
+    case ATTACH_PLACE_TO_CARD:
       return state.map(place => {
         let cards = _.cloneDeep(place.cards)
         cards.push(action.id)
@@ -37,7 +37,7 @@ export default function places (state = initialState, action) {
         return place.id === action.placeId ? Object.assign({}, place, {cards: cards}) : place
       })
 
-    case ADD_PLACE_TO_NOTE:
+    case ATTACH_PLACE_TO_NOTE:
       return state.map(place => {
         let notes = _.cloneDeep(place.noteIds)
         notes.push(action.id)

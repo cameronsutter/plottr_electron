@@ -1,6 +1,6 @@
 import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE, FILE_LOADED, NEW_FILE, RESET,
-  ADD_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE, ADD_PLACE_TO_NOTE,
-  REMOVE_PLACE_FROM_NOTE, ADD_TAG_TO_NOTE, REMOVE_TAG_FROM_NOTE, DELETE_TAG,
+  ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE, ATTACH_PLACE_TO_NOTE,
+  REMOVE_PLACE_FROM_NOTE, ATTACH_TAG_TO_NOTE, REMOVE_TAG_FROM_NOTE, DELETE_TAG,
   DELETE_CHARACTER, DELETE_PLACE } from '../constants/ActionTypes'
 import { note } from 'store/initialState'
 import { newFileNotes } from 'store/newFileState'
@@ -29,7 +29,7 @@ export default function notes (state = initialState, action) {
         note.id !== action.id
       )
 
-    case ADD_CHARACTER_TO_NOTE:
+    case ATTACH_CHARACTER_TO_NOTE:
       return state.map(note => {
         let characters = _.cloneDeep(note.characters)
         characters.push(action.characterId)
@@ -43,7 +43,7 @@ export default function notes (state = initialState, action) {
         return note.id === action.id ? Object.assign({}, note, {characters: characters}) : note
       })
 
-    case ADD_PLACE_TO_NOTE:
+    case ATTACH_PLACE_TO_NOTE:
       return state.map(note => {
         let places = _.cloneDeep(note.places)
         places.push(action.placeId)
@@ -57,7 +57,7 @@ export default function notes (state = initialState, action) {
         return note.id === action.id ? Object.assign({}, note, {places: places}) : note
       })
 
-    case ADD_TAG_TO_NOTE:
+    case ATTACH_TAG_TO_NOTE:
       return state.map(note => {
         let tags = _.cloneDeep(note.tags)
         tags.push(action.tagId)

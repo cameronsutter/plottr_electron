@@ -1,19 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-class AddCard extends Component {
+class AddNote extends Component {
 
   render () {
     const item = this.props.item
     return (
       <div>
-        <span>new card</span>
+        <span>new note</span>
       </div>
     )
   }
 }
 
-AddCard.propTypes = {
+AddNote.propTypes = {
   item: PropTypes.object.isRequired
 }
 
@@ -30,4 +30,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddCard)
+)(AddNote)

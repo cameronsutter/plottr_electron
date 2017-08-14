@@ -1,7 +1,7 @@
 import { ADD_CARD, EDIT_CARD_DETAILS, EDIT_CARD_COORDINATES,
-  CHANGE_LINE, CHANGE_SCENE, DELETE_CARD, ADD_CHARACTER_TO_CARD,
-  REMOVE_CHARACTER_FROM_CARD, ADD_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
-  ADD_TAG_TO_CARD, REMOVE_TAG_FROM_CARD } from 'constants/ActionTypes'
+  CHANGE_LINE, CHANGE_SCENE, DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
+  REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
+  ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD } from 'constants/ActionTypes'
 
 export function addCard (card) {
   return { type: ADD_CARD, card }
@@ -28,15 +28,15 @@ export function deleteCard (id) {
 }
 
 export function addCharacter (id, characterId) {
-  return { type: ADD_CHARACTER_TO_CARD, id, characterId }
+  return { type: ATTACH_CHARACTER_TO_CARD, id, characterId }
 }
 
 export function addPlace (id, placeId) {
-  return { type: ADD_PLACE_TO_CARD, id, placeId }
+  return { type: ATTACH_PLACE_TO_CARD, id, placeId }
 }
 
 export function addTag (id, tagId) {
-  return { type: ADD_TAG_TO_CARD, id, tagId }
+  return { type: ATTACH_TAG_TO_CARD, id, tagId }
 }
 
 export function removeCharacter (id, characterId) {

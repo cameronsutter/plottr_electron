@@ -141,3 +141,175 @@ export default [
   'yellow',
   'yellowgreen'
 ]
+
+export const reds = [
+  'MistyRose',
+  'LightPink',
+  'Pink',
+  'Hotpink',
+  'DeepPink',
+  'MediumVioletRed',
+  'PaleVioletRed',
+  'Red',
+  'Crimson',
+  'Maroon',
+  'DarkRed',
+  'Brown',
+  'Firebrick',
+  'IndianRed',
+  'LightCoral',
+  'Salmon',
+  'Tomato',
+  'Coral',
+  'DarkSalmon',
+  'LightSalmon',
+  'PeachPuff'
+]
+
+export const oranges = [
+  'OrangeRed',
+  'DarkOrange',
+  'Orange',
+  'DarkGoldenrod',
+  'Goldenrod',
+  'Khaki',
+  'PaleGoldenrod',
+  'LightGoldenrodYellow',
+  'SandyBrown',
+  'NavajoWhite',
+  'Moccasin',
+  'LemonChiffon',
+  'LightYellow',
+  'Yellow',
+  'Gold'
+]
+
+export const greens = [
+  'GreenYellow',
+  'Chartreuse',
+  'LawnGreen',
+  'Lime',
+  'LimeGreen',
+  'MediumSeaGreen',
+  'SeaGreen',
+  'DarkGreen',
+  'Green',
+  'ForestGreen',
+  'OliveDrab',
+  'DarkOliveGreen',
+  'Olive',
+  'YellowGreen',
+  'LightGreen',
+  'PaleGreen',
+  'SpringGreen',
+  'MediumSpringGreen',
+  'MintCream',
+  'Aquamarine',
+  'MediumAquaMarine',
+  'DarkSeaGreen',
+  'Honeydew',
+  'DarkCyan',
+  'Teal',
+  'LightSeaGreen'
+]
+
+export const blues = [
+  'DarkCyan',
+  'DarkTurquoise',
+  'MediumTurquoise',
+  'Turquoise',
+  'Cyan',
+  'Aqua',
+  'LightCyan',
+  'Azure',
+  'AliceBlue',
+  'SkyBlue',
+  'LightSkyBlue',
+  'DeepSkyBlue',
+  'DodgerBlue',
+  'Blue',
+  'MediumBlue',
+  'DarkBlue',
+  'Navy',
+  'MidnightBlue',
+  'RoyalBlue',
+  'CornflowerBlue',
+  'SteelBlue',
+  'DarkSlateGray',
+  'CadetBlue',
+  'LightBlue',
+  'PaleTurquoise',
+  'PowderBlue',
+  'LightSteelBlue',
+  'Lavender',
+  'MediumSlateBlue',
+  'SlateBlue'
+]
+
+export const purples = [
+  'BlueViolet',
+  'DarkViolet',
+  'DarkOrchid',
+  'MediumOrchid',
+  'Orchid',
+  'Violet',
+  'Fuchsia',
+  'Magenta',
+  'DarkMagenta',
+  'Purple',
+  'RebeccaPurple',
+  'Indigo',
+  'MediumPurple',
+  'Plum',
+  'Thistle'
+]
+
+export const grays = [
+  'Gainsboro',
+  'LightGray',
+  'Silver',
+  'DarkGray',
+  'Gray',
+  'DimGray',
+  'LightSlateGray',
+  'SlateGray',
+  'Black'
+]
+
+export const whites = [
+  'GhostWhite',
+  'AntiqueWhite',
+  'Beige',
+  'Bisque',
+  'BlanchedAlmond',
+  'Ivory',
+  'Linen',
+  'OldLace',
+  'PapayaWhip',
+  'Seashell',
+  'Snow',
+  'LavenderBlush',
+  'White',
+  'WhiteSmoke'
+]
+
+export const browns = [
+  'Brown',
+  'Chocolate',
+  'Peru',
+  'RosyBrown',
+  'SaddleBrown',
+  'DarkGoldenrod',
+  'Wheat'
+]
+
+export const allcolors = [
+  ...reds,
+  ...oranges,
+  ...greens,
+  ...blues,
+  ...purples,
+  ...grays,
+  ...whites,
+  ...browns
+]

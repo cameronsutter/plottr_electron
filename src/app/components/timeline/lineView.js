@@ -149,7 +149,7 @@ class LineView extends Component {
   renderColorPicker () {
     if (this.state.showColorPicker) {
       var key = 'colorPicker-' + this.props.line.id
-      return <ColorPicker key={key} closeDialog={this.changeColor.bind(this)} />
+      return <ColorPicker key={key} color={this.props.line.color} closeDialog={this.changeColor.bind(this)} />
     } else {
       return null
     }

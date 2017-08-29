@@ -108,7 +108,7 @@ ipcMain.on('save-state', function (event, state, winId) {
         winObj.window.setDocumentEdited(false)
       }
     })
-  }
+  } else winObj.window.webContents.send('state-saved')
 })
 
 ipcMain.on('fetch-state', function (event, id) {

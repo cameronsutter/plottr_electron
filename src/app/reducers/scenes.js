@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { scene } from 'store/initialState'
 import { newFileScenes } from 'store/newFileState'
@@ -20,9 +21,14 @@ export default function scenes (state = initialState, action) {
       )
 
     case DELETE_SCENE:
-      return state.filter(scene =>
+      let scenes = state.filter(scene =>
         scene.id !== action.id
       )
+      let newScenes = _.sortBy(scenes, 'position')
+      newScenes.forEach((s, idx) =>
+        s['position'] = idx
+      )
+      return newScenes
 
     case REORDER_SCENES:
       return action.scenes

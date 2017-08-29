@@ -86,7 +86,7 @@ class SceneView extends Component {
     return (<Input
         type='text'
         defaultValue={this.props.scene.title}
-        label='Scene name'
+        label={`Scene ${this.props.scene.position + 1} name`}
         ref='titleInput'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
@@ -118,6 +118,7 @@ class SceneView extends Component {
       style.transformOrigin = 'center center'
     }
     return (<div className={orientedClassName('scene-list__item', this.props.orientation)}
+      title={`Scene ${this.props.scene.position + 1}`}
       style={style}
       draggable={true}
       onClick={() => this.setState({editing: true})}

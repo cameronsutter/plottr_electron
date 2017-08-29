@@ -781,9 +781,9 @@
   ],
   "scenes": [
     {
-      "id": 70,
-      "position": 22,
-      "title": "Scene"
+      "id": 60,
+      "position": 0,
+      "title": "8 years Ago"
     },
     {
       "id": 98,
@@ -791,74 +791,9 @@
       "title": "6 Years Ago"
     },
     {
-      "id": 60,
-      "position": 0,
-      "title": "8 years Ago"
-    },
-    {
-      "id": 76,
-      "position": 11,
-      "title": "Scene 6"
-    },
-    {
-      "id": 74,
-      "position": 23,
-      "title": "Scene"
-    },
-    {
-      "id": 87,
-      "position": 44,
-      "title": "Scene"
-    },
-    {
-      "id": 75,
-      "position": 24,
-      "title": "Scene"
-    },
-    {
-      "id": 77,
-      "position": 28,
-      "title": "Scene"
-    },
-    {
       "id": 99,
       "position": 2,
       "title": "2 years ago"
-    },
-    {
-      "id": 73,
-      "position": 20,
-      "title": "Scene"
-    },
-    {
-      "id": 79,
-      "position": 31,
-      "title": "Scene"
-    },
-    {
-      "id": 81,
-      "position": 32,
-      "title": "Scene"
-    },
-    {
-      "id": 88,
-      "position": 45,
-      "title": "Scene"
-    },
-    {
-      "id": 82,
-      "position": 34,
-      "title": "Midpoint"
-    },
-    {
-      "id": 100,
-      "position": 17,
-      "title": "Scene 10"
-    },
-    {
-      "id": 89,
-      "position": 38,
-      "title": "Scene"
     },
     {
       "id": 68,
@@ -871,9 +806,9 @@
       "title": "Opening Scene (1)"
     },
     {
-      "id": 85,
-      "position": 39,
-      "title": "Scene"
+      "id": 67,
+      "position": 5,
+      "title": "Scene 2"
     },
     {
       "id": 66,
@@ -881,9 +816,9 @@
       "title": "Scene 3"
     },
     {
-      "id": 67,
-      "position": 5,
-      "title": "Scene 2"
+      "id": 69,
+      "position": 7,
+      "title": "Chapter 2: Rivalia"
     },
     {
       "id": 64,
@@ -891,108 +826,173 @@
       "title": "Scene 4"
     },
     {
+      "id": 71,
+      "position": 9,
+      "title": "Scene 5"
+    },
+    {
+      "id": 76,
+      "position": 10,
+      "title": "Scene 6"
+    },
+    {
       "id": 90,
-      "position": 12,
+      "position": 11,
       "title": "Scene 7"
     },
     {
       "id": 83,
-      "position": 13,
+      "position": 12,
       "title": "Scene 8"
     },
     {
-      "id": 78,
-      "position": 16,
-      "title": "Scene 9"
-    },
-    {
-      "id": 84,
-      "position": 46,
-      "title": "Scene"
-    },
-    {
       "id": 72,
-      "position": 14,
+      "position": 13,
       "title": "Chapter 3: The New Dark Lord"
     },
     {
+      "id": 78,
+      "position": 14,
+      "title": "Scene 9"
+    },
+    {
+      "id": 100,
+      "position": 15,
+      "title": "Scene 10"
+    },
+    {
+      "id": 65,
+      "position": 16,
+      "title": "Scene 11"
+    },
+    {
+      "id": 73,
+      "position": 17,
+      "title": "Scene"
+    },
+    {
+      "id": 70,
+      "position": 18,
+      "title": "Scene"
+    },
+    {
+      "id": 74,
+      "position": 19,
+      "title": "Scene"
+    },
+    {
+      "id": 75,
+      "position": 20,
+      "title": "Scene"
+    },
+    {
+      "id": 77,
+      "position": 21,
+      "title": "Scene"
+    },
+    {
+      "id": 79,
+      "position": 22,
+      "title": "Scene"
+    },
+    {
+      "id": 81,
+      "position": 23,
+      "title": "Scene"
+    },
+    {
+      "id": 82,
+      "position": 24,
+      "title": "Midpoint"
+    },
+    {
+      "id": 89,
+      "position": 25,
+      "title": "Scene"
+    },
+    {
+      "id": 85,
+      "position": 26,
+      "title": "Scene"
+    },
+    {
       "id": 86,
-      "position": 41,
+      "position": 27,
+      "title": "Scene"
+    },
+    {
+      "id": 87,
+      "position": 28,
+      "title": "Scene"
+    },
+    {
+      "id": 88,
+      "position": 29,
+      "title": "Scene"
+    },
+    {
+      "id": 84,
+      "position": 30,
       "title": "Scene"
     },
     {
       "id": 101,
-      "position": 51,
+      "position": 31,
       "title": "Scene"
     },
     {
-      "id": 69,
-      "position": 7,
-      "title": "Chapter 2: Rivalia"
-    },
-    {
-      "id": 71,
-      "position": 10,
-      "title": "Scene 5"
-    },
-    {
-      "id": 65,
-      "position": 18,
-      "title": "Scene 11"
-    },
-    {
       "id": 92,
-      "position": 52,
+      "position": 32,
       "title": "Scene"
     },
     {
       "id": 93,
-      "position": 54,
+      "position": 33,
       "title": "Darkest Moment"
     },
     {
       "id": 103,
-      "position": 55,
+      "position": 34,
       "title": "Click to Edit"
     },
     {
       "id": 91,
-      "position": 56,
+      "position": 35,
       "title": "Scene"
     },
     {
       "id": 102,
-      "position": 58,
-      "title": "Scene"
-    },
-    {
-      "id": 94,
-      "position": 66,
+      "position": 36,
       "title": "Scene"
     },
     {
       "id": 95,
-      "position": 63,
+      "position": 37,
       "title": "Climax"
     },
     {
+      "id": 94,
+      "position": 38,
+      "title": "Scene"
+    },
+    {
       "id": 80,
-      "position": 67,
+      "position": 39,
       "title": "Finale"
     },
     {
       "id": 104,
-      "position": 71,
+      "position": 40,
       "title": "1st"
     },
     {
       "id": 96,
-      "position": 72,
+      "position": 41,
       "title": "2nd"
     },
     {
       "id": 105,
-      "position": 74,
+      "position": 42,
       "title": "3rd"
     }
   ],

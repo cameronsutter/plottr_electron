@@ -185,11 +185,13 @@ class TimeLineView extends Component {
 
   export () {
     dialog.showSaveDialog({title: 'Where would you like to save the export?'}, function (fileName) {
-      let options = {
-        fileName
+      if (fileName) {
+        let options = {
+          fileName
+        }
+        MPQ.push('Export')
+        ipcRenderer.send('export', options, win.id)
       }
-      MPQ.push('Export')
-      ipcRenderer.send('export', options, win.id)
     })
   }
 

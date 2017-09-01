@@ -12,13 +12,13 @@ class LineListView extends Component {
   labelMap () {
     var mapping = {}
     this.props.tags.forEach((t) => {
-      mapping[t.title.toLowerCase()] = t.color
+      mapping[t.title.toLowerCase()] = {color: t.color, id: t.id, type: 'Tag'}
     })
     this.props.characters.forEach((c) => {
-      mapping[c.name.toLowerCase()] = c.color
+      mapping[c.name.toLowerCase()] = {color: c.color, id: c.id, type: 'Character'}
     })
     this.props.places.forEach((p) => {
-      mapping[p.name.toLowerCase()] = p.color
+      mapping[p.name.toLowerCase()] = {color: p.color, id: p.id, type: 'Place'}
     })
     return mapping
   }

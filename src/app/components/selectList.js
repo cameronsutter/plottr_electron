@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { ButtonToolbar, Button, DropdownButton,
-  MenuItem, Input, Label, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+  MenuItem, Input, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+import TagLabel from './tagLabel'
 
 export default class SelectList extends Component {
 
@@ -17,13 +18,11 @@ export default class SelectList extends Component {
     return this.props.selectedItems.map(tId => {
       var tag = _.find(this.props.allItems, {id: tId})
       if (!tag) return null
-      var style = {}
-      if (tag.color) style = {backgroundColor: tag.color}
       return <li key={tId}>
         <Button onClick={() => this.props.remove(this.props.parentId, tId)} bsSize='xsmall'>
           <Glyphicon glyph='remove'/>
         </Button>
-        <Label bsStyle='info' style={style}>{tag.title}</Label>
+        <TagLabel tag={tag} />
       </li>
     })
   }
@@ -51,7 +50,7 @@ export default class SelectList extends Component {
         if (type === 'Tags') {
           colorSpan = <span className='colored' style={{backgroundColor: i.color}}></span>
         }
-        return <li key={i.id} onClick={() => this.props.add(this.props.parentId, i.id)}>{colorSpan}{i.name || i.title}</li>
+        return <li key={`${type}-${i.id}`} onClick={() => this.props.add(this.props.parentId, i.id)}>{colorSpan}{i.name || i.title}</li>
       })
     }
     return <Popover id='list-popover' title={`${type} list`}>

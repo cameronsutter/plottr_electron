@@ -2,17 +2,21 @@
   "cards": [
     {
       "characters": [],
-      "description": "Desciption of cool thing happening",
+      "description": "Desciption of cool thing happening {{humor}}",
       "id": 161,
       "lineId": 35,
       "places": [],
       "sceneId": 60,
-      "tags": [],
+      "tags": [
+        6
+      ],
       "title": "Cool thing that takes a whole lot of words to describe"
     },
     {
-      "characters": [],
-      "description": "Desciption of cool thing happening",
+      "characters": [
+        1
+      ],
+      "description": "Desciption of cool thing happening to {{main character}}",
       "id": 160,
       "lineId": 33,
       "places": [],
@@ -347,16 +351,18 @@
         0,
         1
       ],
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper.\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. {{humor}} Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl. {{third place}}",
       "id": 145,
       "lineId": 27,
       "places": [
-        1
+        1,
+        2
       ],
       "sceneId": 60,
       "tags": [
         0,
-        4
+        4,
+        8
       ],
       "title": "The Last Great War"
     },
@@ -473,14 +479,20 @@
       "characters": [
         1
       ],
-      "description": "Click to edit",
+      "description": "something {{sad}} happens here  \n\n{{romance}}??\n\n{{wonder}}??\n\n{{scary}}??\n\n{{horror}}??",
       "id": 144,
       "lineId": 28,
       "places": [
         0
       ],
       "sceneId": 68,
-      "tags": [],
+      "tags": [
+        2,
+        5,
+        4,
+        3,
+        9
+      ],
       "title": "Seeking an Escape"
     },
     {
@@ -543,7 +555,8 @@
         117,
         116,
         122,
-        127
+        127,
+        160
       ],
       "color": "lightpink",
       "description": "she is the coolest",
@@ -591,7 +604,9 @@
       "notes": ""
     },
     {
-      "cards": [],
+      "cards": [
+        145
+      ],
       "color": null,
       "description": "",
       "id": 4,
@@ -768,7 +783,9 @@
       "notes": "weird … how did the notes attr become an array?"
     },
     {
-      "cards": [],
+      "cards": [
+        145
+      ],
       "color": null,
       "description": "",
       "id": 2,

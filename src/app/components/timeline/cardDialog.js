@@ -3,15 +3,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Modal from 'react-modal'
 import _ from 'lodash'
-import MarkDown from 'pagedown'
 import * as CardActions from 'actions/cards'
 import { card } from 'store/initialState'
 import { shell } from 'electron'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bootstrap'
 import SelectList from 'components/selectList'
+import MDdescription from 'components/mdDescription'
 
 Modal.setAppElement('#timelineview-root')
-const md = MarkDown.getSanitizingConverter()
 
 const customStyles = {content: {top: '70px'}}
 
@@ -38,8 +37,28 @@ class CardDialog extends Component {
   saveEdit () {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
     var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
+    this.saveCreatedLabels(newDescription)
     this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
     this.setState({editing: false})
+  }
+
+  saveCreatedLabels (desc) {
+    var regex = /{{([\w\s]*)}}/gi
+    var matches
+    while ((matches = regex.exec(desc)) !== null) {
+      var labelText = matches[1].toLowerCase()
+      if (this.props.labelMap[labelText] !== undefined) {
+        const { id, type } = this.props.labelMap[labelText]
+        if (!this.alreadyHasLabel(id, type)) {
+          this.props.actions[`add${type}`](this.props.card.id, id)
+        }
+      }
+    }
+  }
+
+  alreadyHasLabel(id, type) {
+    let attr = `${type.toLowerCase()}s`
+    return this.props.card[attr].includes(id)
   }
 
   handleEnter (event) {
@@ -155,25 +174,13 @@ class CardDialog extends Component {
       )
     } else {
       return (
-        <div
+        <MDdescription
+          description={description}
           onClick={() => this.setState({editing: true})}
-          dangerouslySetInnerHTML={{__html: this.makeLabels(md.makeHtml(description))}} >
-        </div>
+          labels={this.props.labelMap}
+        />
       )
     }
-  }
-
-  makeLabels (html) {
-    var regex = /{{([\w\s]*)}}/gi
-    var matches
-    while ((matches = regex.exec(html)) !== null) {
-      var labelText = matches[1].toLowerCase()
-      if (this.props.labelMap[labelText] !== undefined) {
-        var color = this.props.labelMap[labelText]
-        html = html.replace(matches[0], `<span style='background-color:${color}' class='label label-default'>${labelText}</span>`)
-      }
-    }
-    return html
   }
 
   renderLeftSide () {

@@ -2,12 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { shell } from 'electron'
-import MarkDown from 'pagedown'
-import { Label, Input, ButtonToolbar, Button } from 'react-bootstrap'
+import { Input, ButtonToolbar, Button } from 'react-bootstrap'
 import _ from 'lodash'
 import * as CardActions from 'actions/cards'
-
-const md = MarkDown.getSanitizingConverter()
+import MDdescription from 'components/mdDescription'
+import TagLabel from 'components/tagLabel'
 
 class CardView extends Component {
   constructor (props) {
@@ -22,27 +21,35 @@ class CardView extends Component {
   saveEdit () {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
     var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
+    this.saveCreatedLabels(newDescription)
     this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
     this.setState({editing: false})
+  }
+
+
+  saveCreatedLabels (desc) {
+    var regex = /{{([\w\s]*)}}/gi
+    var matches
+    while ((matches = regex.exec(desc)) !== null) {
+      var labelText = matches[1].toLowerCase()
+      if (this.props.labelMap[labelText] !== undefined) {
+        const { id, type } = this.props.labelMap[labelText]
+        if (!this.alreadyHasLabel(id, type)) {
+          this.props.actions[`add${type}`](this.props.card.id, id)
+        }
+      }
+    }
+  }
+
+  alreadyHasLabel(id, type) {
+    let attr = `${type.toLowerCase()}s`
+    return this.props.card[attr].includes(id)
   }
 
   handleEnter (event) {
     if (event.which === 13) {
       this.saveEdit()
     }
-  }
-
-  makeLabels (html) {
-    var regex = /{{([\w\s]*)}}/gi
-    var matches
-    while ((matches = regex.exec(html)) !== null) {
-      var labelText = matches[1].toLowerCase()
-      if (this.props.labelMap[labelText] !== undefined) {
-        var color = this.props.labelMap[labelText]
-        html = html.replace(matches[0], `<span style='background-color:${color}' class='label label-default'>${labelText}</span>`)
-      }
-    }
-    return html
   }
 
   renderTitle () {
@@ -84,18 +91,19 @@ class CardView extends Component {
         </div>
       )
     } else {
-      return <div className='outline__description' onClick={() => this.setState({editing: true})}
-        dangerouslySetInnerHTML={{__html: this.makeLabels(md.makeHtml(description))}} >
-      </div>
+      return <MDdescription
+        className='outline__description'
+        onClick={() => this.setState({editing: true})}
+        description={description}
+        labels={this.props.labelMap}
+      />
     }
   }
 
   renderTags () {
     return this.props.card.tags.map(tId => {
       var tag = _.find(this.props.tags, {id: tId})
-      var style = {}
-      if (tag.color) style = {backgroundColor: tag.color}
-      return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>
+      return <TagLabel tag={tag} key={`outline-taglabel-${tId}`} />
     })
   }
 

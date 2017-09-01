@@ -27,7 +27,7 @@ class MiniMap extends Component {
   renderScenes () {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map((s, idx) =>
-      <NavItem ref={s.title} key={s.id} href={s.title} className='outline__minimap__scene-title'>
+      <NavItem ref={s.title} key={`minimap-scene-${s.id}`} href={s.title} className='outline__minimap__scene-title'>
         <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{s.title}</span></span>
         <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[s.id])}</div>
       </NavItem>

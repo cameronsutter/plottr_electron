@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
-import MarkDown from 'pagedown'
-import { Label, Input, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Input, Popover, OverlayTrigger } from 'react-bootstrap'
 import CardDialog from 'components/timeline/cardDialog'
 import * as CardActions from 'actions/cards'
 import orientedClassName from 'helpers/orientedClassName'
+import MDdescription from 'components/mdDescription'
+import TagLabel from 'components/tagLabel'
 
-const md = MarkDown.getSanitizingConverter()
 
 class CardView extends Component {
   constructor (props) {
@@ -223,22 +223,9 @@ class CardView extends Component {
 
   renderPopover () {
     return <Popover title={'Description'} id={`card-popover-${this.props.card.id}`}>
-      <div className='card__popover-description' dangerouslySetInnerHTML={{__html: this.makeLabels(md.makeHtml(this.props.card.description))}} />
+      <MDdescription className='card__popover-description' labels={this.props.labelMap} description={this.props.card.description} />
       {this.renderTags()}
     </Popover>
-  }
-
-  makeLabels (html) {
-    var regex = /{{([\w\s]*)}}/gi
-    var matches
-    while ((matches = regex.exec(html)) !== null) {
-      var labelText = matches[1].toLowerCase()
-      if (this.props.labelMap[labelText] !== undefined) {
-        var color = this.props.labelMap[labelText]
-        html = html.replace(matches[0], `<span style='background-color:${color}' class='label label-default'>${labelText}</span>`)
-      }
-    }
-    return html
   }
 
   hasLabels () {
@@ -252,9 +239,7 @@ class CardView extends Component {
       tags = this.props.card.tags.map(tId => {
         var tag = _.find(this.props.tags, {id: tId})
         if (!tag) return null
-        var style = {}
-        if (tag.color) style = {backgroundColor: tag.color}
-        return <Label bsStyle='info' style={style} key={tId}>{tag.title}</Label>
+        return <TagLabel tag={tag} key={`timeline-taglabel-${tId}`} />
       })
     }
     return (<div className='card__popover-labels'>

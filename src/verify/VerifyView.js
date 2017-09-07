@@ -101,7 +101,7 @@ class VerifyView extends Component {
   render () {
     return (
       <div>
-        <h1 className='verify'><img src='../icons/pblack.png' className='verify' height='100' width='100'/> Welcome to Plottr</h1>
+        <h1 className='verify'><img src='../icons/logo_10_100.png' className='verify' height='100'/> Welcome to Plottr</h1>
         <h2>Please verify your license</h2>
         <p className='text-success'>You should have received a license key from Gumroad.</p>
         <p className='text-muted'><small>(If not, please contact me @ cameronsutter0@gmail.com or @camsutter on Twitter)</small></p>

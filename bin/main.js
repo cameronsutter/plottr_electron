@@ -7,7 +7,9 @@ var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
 var Rollbar = require('rollbar')
-require('dotenv').config()
+if (process.env.NODE_ENV === 'dev') {
+  require('dotenv').config()
+}
 
 const USER_INFO = 'user_info'
 var TRIALMODE = false

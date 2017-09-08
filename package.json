@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -64,6 +64,7 @@
   },
   "build": {
     "appId": "com.plottr.app",
+    "artifactName": "plottr-${version}-${env.BUILD_TYPE}.${ext}",
     "publish": [
       "github"
     ],
@@ -94,7 +95,6 @@
     },
     "dmg": {
       "backgroundColor": "#efefee",
-      "artifactName": "plottr-${version}-${env.TRIALMODE}.${ext}"
     },
     "win": {
       "target": {
@@ -106,8 +106,7 @@
       }
     },
     "nsis": {
-      "perMachine": true,
-      "artifactName": "plottr-setup-${version}-${env.BUILD_TYPE}.${ext}"
+      "perMachine": true
     }
   }
 }

@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -64,7 +64,7 @@
   },
   "build": {
     "appId": "com.plottr.app",
-    "artifactName": "plottr-${version}-${env.BUILD_TYPE}.${ext}",
+    "artifactName": "plottr-${version}-${env.BUILD_TYPE}${ext}",
     "publish": [
       "github"
     ],

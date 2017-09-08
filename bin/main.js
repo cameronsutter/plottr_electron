@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 const USER_INFO = 'user_info'
-const TRIALMODE = process.env.TRIALMODE === 'trial'
+const TRIALMODE = process.env.BUILD_TYPE === 'trial'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

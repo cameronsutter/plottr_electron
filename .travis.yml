@@ -4,8 +4,8 @@ language: node_js
 node_js:
   - "7"
 env:
-  - TRIALMODE=false NODE_ENV=production ELECTRON_CACHE=$HOME/.electron
-  - TRIALMODE=trial NODE_ENV=production ELECTRON_CACHE=$HOME/.electron
+  - BUILD_TYPE=full NODE_ENV=production ELECTRON_CACHE=$HOME/.electron
+  - BUILD_TYPE=trial NODE_ENV=production ELECTRON_CACHE=$HOME/.electron
 cache:
   directories:
   - node_modules

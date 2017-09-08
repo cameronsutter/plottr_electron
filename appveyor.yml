@@ -20,6 +20,5 @@ branches:
 environment:
   NODE_ENV: production
   matrix:
-    - TRIALMODE: false
-    allow_failures:
-      - TRIALMODE: trial
+    - BUILD_TYPE: full
+    - BUILD_TYPE: trial

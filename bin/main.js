@@ -12,13 +12,7 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 const USER_INFO = 'user_info'
-var TRIALMODE = false
-try {
-  require('../trialmode.json')
-  TRIALMODE = true
-} catch (e) {
-  // not in trial mode
-}
+const TRIALMODE = process.env.TRIALMODE === 'trial'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

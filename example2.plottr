@@ -17,6 +17,7 @@
       "description": "she is the coolest",
       "id": 0,
       "name": "main character",
+      "noteIds": [],
       "notes": null
     }
   ],
@@ -28,10 +29,10 @@
     "scenes": []
   },
   "file": {
-    "dirty": true,
+    "dirty": false,
     "fileName": "/Users/csutter/github/plottr_electron/example2.plottr",
     "loaded": true,
-    "version": "0.9.0"
+    "version": "1.0.32"
   },
   "lines": [
     {
@@ -41,12 +42,14 @@
       "title": "Story Line"
     }
   ],
+  "notes": [],
   "places": [
     {
       "color": null,
       "description": "my favorite place",
       "id": 0,
       "name": "first place",
+      "noteIds": [],
       "notes": null
     }
   ],

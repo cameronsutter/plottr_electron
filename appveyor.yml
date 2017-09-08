@@ -16,5 +16,10 @@ build_script:
 test: off
 branches:
   only:
-    - v1.0
     - master
+environment:
+  NODE_ENV: production
+  matrix:
+    - TRIALMODE: false
+    allow_failures:
+      - TRIALMODE: trial

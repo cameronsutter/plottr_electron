@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -17,10 +17,7 @@
     "watch": "NODE_ENV=dev node_modules/.bin/webpack -w",
     "createDevLicense": "NODE_ENV=license electron .",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
-    "build:js": "node bin/build.js",
-    "build:all": "bin/build.sh",
-    "build:trial": "bin/build.sh TRIALMODE",
-    "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
+    "pack": "node_modules/.bin/webpack 1> /dev/null",
     "pack:windows": "node_modules\\.bin\\webpack",
     "dist": "npm run pack && build",
     "dist:windows": "npm run pack:windows && build",
@@ -96,7 +93,8 @@
       "target": "dmg"
     },
     "dmg": {
-      "backgroundColor": "#efefee"
+      "backgroundColor": "#efefee",
+      "artifactName": "plottr-${version}-${env.TRIALMODE}.${ext}"
     },
     "win": {
       "target": {
@@ -108,7 +106,8 @@
       }
     },
     "nsis": {
-      "perMachine": true
+      "perMachine": true,
+      "artifactName": "plottr-setup-${version}-${env.TRIALMODE}.${ext}"
     }
   }
 }

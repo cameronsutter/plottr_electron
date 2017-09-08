@@ -4,7 +4,8 @@ language: node_js
 node_js:
   - "7"
 env:
-  - ELECTRON_CACHE=$HOME/.electron
+  - TRIALMODE=false NODE_ENV=production ELECTRON_CACHE=$HOME/.electron
+  - TRIALMODE=trial NODE_ENV=production ELECTRON_CACHE=$HOME/.electron
 cache:
   directories:
   - node_modules
@@ -14,5 +15,4 @@ script:
   - npm run dist
 branches:
   only:
-    - v1.0
     - master

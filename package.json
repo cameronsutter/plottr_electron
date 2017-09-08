@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.34",
+  "version": "1.0.35",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -17,14 +17,13 @@
     "watch": "NODE_ENV=dev node_modules/.bin/webpack -w",
     "createDevLicense": "NODE_ENV=license electron .",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
-    "pack": "node_modules/.bin/webpack 1> /dev/null",
+    "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
     "pack:windows": "node_modules\\.bin\\webpack",
     "dist": "npm run pack && build",
     "dist:windows": "npm run pack:windows && build",
     "dist:all": "npm run pack && build -mw"
   },
   "dependencies": {
-    "changelog": "^1.0.7",
     "deep-diff": "^0.3.4",
     "docx": "^2.1.1",
     "electron-json-storage": "^2.0.0",
@@ -47,6 +46,7 @@
     "babel-core": "^5.8.29",
     "babel-loader": "^5.3.2",
     "babel-plugin-react-transform": "^1.1.1",
+    "changelog": "^1.0.7",
     "css-loader": "^0.22.0",
     "devtron": "^1.2.1",
     "dotenv": "^4.0.0",

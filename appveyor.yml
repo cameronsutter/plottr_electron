@@ -18,7 +18,6 @@ branches:
   only:
     - master
 environment:
-  NODE_ENV: production
   matrix:
     - BUILD_TYPE: full
     - BUILD_TYPE: trial

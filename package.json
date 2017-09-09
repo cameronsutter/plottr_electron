@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -20,7 +20,7 @@
     "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
     "pack:windows": "node_modules\\.bin\\webpack",
     "dist": "npm run pack && build",
-    "dist:windows": "NODE_ENV=production npm run pack:windows && build -w",
+    "dist:windows": "npm run pack:windows && build",
     "dist:all": "npm run pack && build -mw"
   },
   "dependencies": {

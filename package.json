@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -20,7 +20,7 @@
     "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
     "pack:windows": "node_modules\\.bin\\webpack",
     "dist": "npm run pack && build",
-    "dist:windows": "npm run pack:windows && build",
+    "dist:windows": "NODE_ENV=production npm run pack:windows && build -w",
     "dist:all": "npm run pack && build -mw"
   },
   "dependencies": {
@@ -64,7 +64,7 @@
   },
   "build": {
     "appId": "com.plottr.app",
-    "artifactName": "plottr-${version}-${env.BUILD_TYPE}${ext}",
+    "artifactName": "${productName}-${version}-${env.BUILD_TYPE}.${ext}",
     "publish": [
       "github"
     ],
@@ -97,6 +97,7 @@
       "backgroundColor": "#efefee"
     },
     "win": {
+      "artifactName": "${productName}-${version}-${env.BUILD_TYPE}.${ext}",
       "target": {
         "target": "nsis",
         "arch": [
@@ -106,6 +107,7 @@
       }
     },
     "nsis": {
+      "artifactName": "${productName}-${version}-${env.BUILD_TYPE}.${ext}",
       "perMachine": true
     }
   }

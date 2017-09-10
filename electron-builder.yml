@@ -19,7 +19,7 @@ fileAssociations:
   -
     ext: "plottr"
     name: "Plottr"
-    description: "An elegant writing tool to organize story plotlines",
+    description: "An elegant writing tool to organize story plotlines"
     role: "editor"
 mac:
   category: public.app-category.productivity
@@ -29,10 +29,10 @@ dmg:
 win:
   artifactName: ${productName}-${version}-${env.BUILD_TYPE}.${ext}
   target:
-    target: nsis
-    arch:
-      - x64
-      - ia32
+    - target: nsis
+      arch:
+        - x64
+        - ia32
 nsis:
   artifactName: ${productName}-${version}-${env.BUILD_TYPE}.${ext}
   perMachine: true

@@ -18,6 +18,7 @@ branches:
   only:
     - master
 environment:
-  matrix:
-    - BUILD_TYPE: full
-    - BUILD_TYPE: trial
+  BUILD_TYPE: full
+  # matrix:
+  #   - BUILD_TYPE: full
+  #   - BUILD_TYPE: trial

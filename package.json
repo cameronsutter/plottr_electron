@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.44",
+  "version": "1.0.45",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -61,5 +61,54 @@
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.2"
+  },
+  "build": {
+    "appId": "com.plottr.app",
+    "artifactName": "${productName}-${version}-${env.BUILD_TYPE}.${ext}",
+    "publish": [
+      "github"
+    ],
+    "files": [
+      "**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}",
+      "!**/node_modules/.bin",
+      "!**/*.{o,hprof,orig,pyc,pyo,rbc,md,MD}",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}",
+      "!src${/*}",
+      "!webpack.config.js",
+      "!example*.plottr",
+      "!example*.docx",
+      "!screenshots"
+    ],
+    "copyright": "Copyright © C. Louis S. (Cameron Sutter)",
+    "productName": "Plottr",
+    "fileAssociations": {
+      "ext": "plottr",
+      "name": "Plottr",
+      "description": "An elegant writing tool to organize story plotlines",
+      "role": "editor"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg"
+    },
+    "dmg": {
+      "backgroundColor": "#efefee"
+    },
+    "win": {
+      "artifactName": "${productName}-${version}-${env.BUILD_TYPE}.${ext}",
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "x64",
+          "ia32"
+        ]
+      }
+    },
+    "nsis": {
+      "artifactName": "${productName}-${version}-${env.BUILD_TYPE}.${ext}",
+      "perMachine": true
+    }
   }
 }

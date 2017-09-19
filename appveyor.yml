@@ -17,8 +17,8 @@ test: off
 branches:
   only:
     - master
-environment:
-  BUILD_TYPE: full
+# environment:
+#   BUILD_TYPE: full
   # matrix:
   #   - BUILD_TYPE: full
   #   - BUILD_TYPE: trial

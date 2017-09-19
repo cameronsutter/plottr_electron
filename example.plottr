@@ -638,7 +638,7 @@
       "color": "#ff7f32",
       "id": 33,
       "position": 3,
-      "title": "Anna/Valia"
+      "title": "Anna"
     },
     {
       "color": "#6cace4",
@@ -650,19 +650,19 @@
       "color": "#ffc72c",
       "id": 34,
       "position": 4,
-      "title": "Rivan"
+      "title": "Rivab"
     },
     {
       "color": "#0b1117",
       "id": 35,
       "position": 5,
-      "title": "Maltheus"
+      "title": "Baltazaar"
     },
     {
       "color": "#78be20",
       "id": 28,
       "position": 1,
-      "title": "Jared Cole"
+      "title": "Samuel Zorfert"
     },
     {
       "color": "#e5554f",
@@ -674,7 +674,7 @@
       "color": "darkorchid",
       "id": 36,
       "position": 6,
-      "title": "Burph"
+      "title": "Bimph"
     }
   ],
   "notes": [
@@ -710,9 +710,9 @@
         2
       ],
       "tags": [
-        2,
         3,
-        0
+        0,
+        6
       ],
       "title": "Brainstorming"
     },
@@ -1013,7 +1013,7 @@
       "title": "3rd"
     }
   ],
-  "storyName": "Dark Lordling",
+  "storyName": "Zorfert in Rivalia",
   "tags": [
     {
       "color": "firebrick",

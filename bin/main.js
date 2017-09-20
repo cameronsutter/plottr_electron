@@ -402,7 +402,7 @@ function removeRecentFile (fileNameToRemove) {
 
 function openAboutWindow () {
   const aboutFile = path.join(filePrefix, 'about.html')
-  aboutWindow = new BrowserWindow({width: 400, height: 550, show: false})
+  aboutWindow = new BrowserWindow({width: 350, height: 550, show: false})
   aboutWindow.loadURL(aboutFile)
   aboutWindow.once('ready-to-show', function() {
     this.show()

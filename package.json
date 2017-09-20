@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.46",
+  "version": "1.0.47",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -70,6 +70,8 @@
     ],
     "files": [
       "**/*",
+      "build/icon.*",
+      "build/plottr.*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}",
       "!**/node_modules/.bin",
       "!**/*.{o,hprof,orig,pyc,pyo,rbc,md,MD}",
@@ -87,7 +89,7 @@
       "ext": "plottr",
       "name": "Plottr",
       "description": "An elegant writing tool to organize story plotlines",
-      "role": "editor"
+      "role": "Editor"
     },
     "mac": {
       "category": "public.app-category.productivity",

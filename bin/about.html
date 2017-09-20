@@ -28,13 +28,7 @@
       function handleReportProblem () {
         ipcRenderer.send('report-window-requested')
       }
-      var TRIALMODE = false
-      try {
-        require('../trialmode.json')
-        TRIALMODE = true
-      } catch (e) {
-        // not in trial mode
-      }
+      const TRIALMODE = process.env.BUILD_TYPE === 'trial'
       var versionString = 'Version '
       if (TRIALMODE) versionString = 'TRIAL VERSION '
     </script>

@@ -12,7 +12,7 @@ export default function storyName (state = defaultStoryName, action) {
 
     case NEW_FILE:
       const separator = process.platform === 'darwin' ? '/' : '\\'
-      return action.fileName.substr(action.fileName.lastIndexOf(separator) + 1).replace('.plottr', '')
+      return action.fileName.substr(action.fileName.lastIndexOf(separator) + 1).replace('.pltr', '')
 
     default:
       return state

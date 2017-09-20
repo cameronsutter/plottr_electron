@@ -177,7 +177,7 @@ app.on('ready', function () {
 
 function checkLicense () {
   if (TRIALMODE) {
-    openWindow(__dirname + '/tour.plottr')
+    openWindow(__dirname + '/tour.pltr')
     openAboutWindow()
   } else {
     openRecentFiles()
@@ -204,7 +204,7 @@ function saveFile (fileName, data, callback) {
 function displayFileName (path) {
   var stringBase = 'Plottr'
   if (TRIALMODE) stringBase += ' — TRIAL VERSION'
-  var matches = path.match(/.*\/(.*\.plottr)/)
+  var matches = path.match(/.*\/(.*\.pltr)/)
   if (matches) stringBase += ` — ${matches[1]}`
   return stringBase
 }
@@ -233,7 +233,7 @@ function openRecentFiles () {
         })
       } else {
         openAboutWindow()
-        openWindow(__dirname + '/tour.plottr')
+        openWindow(__dirname + '/tour.pltr')
       }
     })
   }
@@ -259,7 +259,7 @@ function askToSave (win, state, callback) {
 function askToCreateFile () {
   dialog.showSaveDialog({title: 'Where would you like to start your new file?'}, function (fileName) {
     if (fileName) {
-      var fullName = fileName + '.plottr'
+      var fullName = fileName + '.pltr'
       openWindow(fullName, true)
       saveFile(fullName, {}, function (err) {
         if (err) {
@@ -340,7 +340,11 @@ function openWindow (fileName, newFile = false) {
 
   try {
     var json = {}
-    if (!newFile) json = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
+    if (!newFile) {
+      json = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
+      json.file.fileName = updateFileExtenstion(json.file.fileName)
+    }
+    fileName = updateFileExtenstion(fileName)
     storage.set(recentKey, fileName, function (err) {
       if (err) console.log(err)
       app.addRecentDocument(fileName)
@@ -363,6 +367,11 @@ function openWindow (fileName, newFile = false) {
     newWindow.destroy()
     askToOpenOrCreate()
   }
+}
+
+// fix for switching file extension to .pltr
+function updateFileExtenstion (fileName) {
+  return fileName.replace('.plottr', '.pltr')
 }
 
 function dereferenceWindow (winObj) {
@@ -609,7 +618,7 @@ function buildFileMenu () {
         if (winObj) {
           dialog.showSaveDialog(win, {title: 'Where would you like to save this copy?'}, function (fileName) {
             if (fileName) {
-              var fullName = fileName + '.plottr'
+              var fullName = fileName + '.pltr'
               saveFile(fullName, winObj.state, function (err) {
                 if (err) {
                   rollbar.error(err)

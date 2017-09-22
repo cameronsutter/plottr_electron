@@ -18,11 +18,11 @@ class PlaceView extends Component {
 
   saveEdit () {
     var name = this.refs.nameInput.getValue() || this.props.place.name
-    var description = this.refs.descriptionInput.getValue() || this.props.place.description
-    var notes = this.refs.notesInput.getValue() || this.props.place.notes
+    var description = this.refs.descriptionInput.getValue()
+    var notes = this.refs.notesInput.getValue()
     var attrs = {}
     this.props.customAttributes.forEach(attr => {
-      const val = this.refs[`${attr}Input`].getValue() || this.props.place[attr]
+      const val = this.refs[`${attr}Input`].getValue()
       attrs[attr] = val
     })
     this.props.actions.editPlace(this.props.place.id, {name, description, notes, ...attrs})

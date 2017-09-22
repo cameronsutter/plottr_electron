@@ -19,11 +19,11 @@ class CharacterView extends Component {
 
   saveEdit () {
     var name = this.refs.nameInput.getValue() || this.props.character.name
-    var description = this.refs.descriptionInput.getValue() || this.props.character.description
-    var notes = this.refs.notesInput.getValue() || this.props.character.notes
+    var description = this.refs.descriptionInput.getValue()
+    var notes = this.refs.notesInput.getValue()
     var attrs = {}
     this.props.customAttributes.forEach(attr => {
-      const val = this.refs[`${attr}Input`].getValue() || this.props.character[attr]
+      const val = this.refs[`${attr}Input`].getValue()
       attrs[attr] = val
     })
     this.props.actions.editCharacter(this.props.character.id, {name, description, notes, ...attrs})

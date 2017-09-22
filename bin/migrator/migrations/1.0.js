@@ -5,7 +5,17 @@ function migrate (data) {
 
   var obj = _.cloneDeep(data)
 
-  obj['notes'] = []
+  const note = {
+    id: 0,
+    title: '',
+    content: '',
+    tags: [],
+    characters: [],
+    places: [],
+    lastEdited: new Date().getTime()
+  }
+
+  obj['notes'] = [note]
 
   // add notes to characters
   obj.characters.forEach((c) => {

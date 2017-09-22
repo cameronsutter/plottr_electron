@@ -183,8 +183,8 @@ app.on('ready', function () {
 
 function checkLicense () {
   if (TRIALMODE) {
-    openWindow(__dirname + '/tour.pltr')
     openAboutWindow()
+    openTour()
   } else {
     openRecentFiles()
     // UN-COMMENT FOR 1.0 AND REMOVE THE LINE ABOVE
@@ -239,7 +239,7 @@ function openRecentFiles () {
         })
       } else {
         openAboutWindow()
-        openWindow(__dirname + '/tour.pltr')
+        openTour()
       }
     })
   }
@@ -415,6 +415,10 @@ function removeRecentFile (fileNameToRemove) {
   })
 }
 
+function openTour () {
+  openWindow(__dirname + '/tour.pltr')
+}
+
 function openAboutWindow () {
   const aboutFile = path.join(filePrefix, 'about.html')
   aboutWindow = new BrowserWindow({width: 350, height: 550, show: false})
@@ -531,13 +535,18 @@ function buildPlottrMenu () {
       label: 'About Plottr',
       click: openAboutWindow
     }, {
-      label: 'Report a Problem',
+      label: 'Open the Tour...',
+      click: openTour
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Report a Problem...',
       click: openReportWindow
     }, {
-      label: 'Give feedback',
+      label: 'Give feedback...',
       click: openReportWindow
     }, {
-      label: 'Request a feature',
+      label: 'Request a feature...',
       click: openReportWindow
     }, {
       type: 'separator'
@@ -597,6 +606,16 @@ function buildFileMenu () {
   }]
   if (!TRIALMODE) {
     var submenu = [].concat({
+      label: 'New...',
+      accelerator: 'CmdOrCtrl+N',
+      click: askToCreateFile
+    }, {
+      label: 'Open...',
+      accelerator: 'CmdOrCtrl+O',
+      click: askToOpenFile
+    }, {
+      type: 'separator'
+    }, {
       label: 'Save',
       accelerator: 'CmdOrCtrl+S',
       click: function () {
@@ -637,14 +656,6 @@ function buildFileMenu () {
           })
         }
       }
-    }, {
-      label: 'Open',
-      accelerator: 'CmdOrCtrl+O',
-      click: askToOpenFile
-    }, {
-      label: 'New',
-      accelerator: 'CmdOrCtrl+N',
-      click: askToCreateFile
     },
     submenu)
   }
@@ -669,6 +680,8 @@ function buildEditMenu () {
       label: 'Paste',
       accelerator: 'CmdOrCtrl+V',
       role: 'paste'
+    }, {
+      type: 'separator'
     }, {
       label: 'Select All',
       accelerator: 'CmdOrCtrl+A',
@@ -695,7 +708,7 @@ function buildViewMenu () {
       }
     }
   },{
-    label: 'Take Screenshot',
+    label: 'Take Screenshot...',
     accelerator: 'CmdOrCtrl+P',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
@@ -770,15 +783,15 @@ function buildHelpMenu () {
     role: 'help',
     submenu: [
       {
-        label: 'Report a Problem',
+        label: 'Report a Problem...',
         click: openReportWindow
       },
       {
-        label: 'Give feedback',
+        label: 'Give feedback...',
         click: openReportWindow
       },
       {
-        label: 'Request a feature',
+        label: 'Request a feature...',
         click: openReportWindow
       }
     ]

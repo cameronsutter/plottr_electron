@@ -2,6 +2,16 @@
   "cards": [
     {
       "characters": [],
+      "description": "You've discovered the secret discount. Congratulations :)\n\nuse this link to buy Plottr for 20% off!\n\n\n#https://gumroad.com/l/fgSJ/freetrial",
+      "id": 5,
+      "lineId": 4,
+      "places": [],
+      "sceneId": 4,
+      "tags": [],
+      "title": "discount on Plottr!"
+    },
+    {
+      "characters": [],
       "description": "You can change the color of a story line by hovering over the name of the story line and clicking the button that looks like a water drop.",
       "id": 4,
       "lineId": 2,
@@ -122,7 +132,7 @@
     "scenes": []
   },
   "file": {
-    "dirty": false,
+    "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
     "loaded": true,
     "version": "1.0.51"

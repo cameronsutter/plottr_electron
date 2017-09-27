@@ -15,7 +15,7 @@ class HistoryComponent extends Component {
   }
 
   componentWillReceiveProps (newProps) {
-    this.setState({history: this.readHistory()})
+    if (newProps.show) this.setState({history: this.readHistory()})
   }
 
   readHistory () {

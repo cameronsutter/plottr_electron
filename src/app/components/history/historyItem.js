@@ -38,7 +38,7 @@ class HistoryItem extends Component {
     if (nextProps.undone) this.setState({redo: true})
   }
 
-  toggleDetails (e) {
+  toggleDetails = (e) => {
     this.setState({showDetails: !this.state.showDetails})
   }
 
@@ -152,7 +152,7 @@ class HistoryItem extends Component {
     var containerClass = 'history-component__item__container'
     containerClass = this.state.redo ? `${containerClass} redo` : containerClass
     return (
-      <div className='history-component__item' onClick={this.toggleDetails.bind(this)}>
+      <div className='history-component__item' onClick={this.toggleDetails}>
         <div className={containerClass}>
           <div className='history-component__type'><strong>{this.renderTypeName(type)}</strong></div>
           <div className='history-component__details' style={detailStyle} >{details}</div>

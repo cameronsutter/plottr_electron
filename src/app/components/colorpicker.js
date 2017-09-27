@@ -11,11 +11,11 @@ class ColorPicker extends Component {
     this.state = {color: this.props.color}
   }
 
-  closeDialog (color = null) {
+  closeDialog = (color = null) => {
     this.props.closeDialog(color)
   }
 
-  showColor () {
+  showColor = () => {
     var newColor = this.refs.hex.getValue()
     var regex = /#?([0123456789abcdef]{6})/
     var matches = regex.exec(newColor)
@@ -27,7 +27,7 @@ class ColorPicker extends Component {
   }
 
   render () {
-    return (<Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
+    return (<Modal isOpen={true} onRequestClose={this.closeDialog} style={customStyles}>
       <h2 className='color-picker__title'>Pick a color</h2>
       <div className='color-picker__input-box form-horizontal'>
         <Row>
@@ -45,7 +45,7 @@ class ColorPicker extends Component {
               defaultValue={this.state.color}
               onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
               onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}
-              onChange={this.showColor.bind(this)} />
+              onChange={this.showColor} />
           </Col>
           <Col xs={2}>
             <div style={{marginTop: '26px'}}>

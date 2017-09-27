@@ -7,7 +7,7 @@ import TagView from 'components/tag/tagView'
 
 class TagListView extends Component {
 
-  handleCreateNewTag () {
+  handleCreateNewTag = () => {
     this.props.actions.addTag()
   }
 
@@ -24,7 +24,7 @@ class TagListView extends Component {
         <div className='tag-list__tags'>
           {this.renderTags()}
         </div>
-        <div className='tag-list__new' onClick={this.handleCreateNewTag.bind(this)} >
+        <div className='tag-list__new' onClick={this.handleCreateNewTag} >
           <Glyphicon glyph='plus' />
         </div>
       </div>

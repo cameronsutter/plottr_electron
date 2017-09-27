@@ -10,13 +10,13 @@ class PlaceView extends Component {
     this.state = {editing: props.place.name === ''}
   }
 
-  handleEnter (event) {
+  handleEnter = (event) => {
     if (event.which === 13) {
       this.saveEdit()
     }
   }
 
-  saveEdit () {
+  saveEdit = () => {
     var name = this.refs.nameInput.getValue() || this.props.place.name
     var description = this.refs.descriptionInput.getValue()
     var notes = this.refs.notesInput.getValue()
@@ -29,7 +29,7 @@ class PlaceView extends Component {
     this.setState({editing: false})
   }
 
-  deletePlace () {
+  deletePlace = () => {
     this.props.actions.deletePlace(this.props.place.id)
   }
 
@@ -39,7 +39,7 @@ class PlaceView extends Component {
         type='text' label={attr} ref={`${attr}Input`}
         defaultValue={this.props.place[attr]}
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-        onKeyPress={this.handleEnter.bind(this)} />
+        onKeyPress={this.handleEnter} />
     )
   }
 
@@ -52,11 +52,11 @@ class PlaceView extends Component {
             <Input
               type='text' ref='nameInput' autoFocus
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-              onKeyPress={this.handleEnter.bind(this)}
+              onKeyPress={this.handleEnter}
               label='Name' defaultValue={place.name} />
             <Input type='text' ref='descriptionInput'
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-              onKeyPress={this.handleEnter.bind(this)}
+              onKeyPress={this.handleEnter}
               label='Short Description' defaultValue={place.description} />
             <Input type='textarea' rows='10' ref='notesInput'
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
@@ -72,11 +72,11 @@ class PlaceView extends Component {
             Cancel
           </Button>
           <Button bsStyle='success'
-            onClick={this.saveEdit.bind(this)} >
+            onClick={this.saveEdit} >
             Save
           </Button>
           <Button className='card-dialog__delete'
-            onClick={this.deletePlace.bind(this)} >
+            onClick={this.deletePlace} >
             Delete
           </Button>
         </ButtonToolbar>

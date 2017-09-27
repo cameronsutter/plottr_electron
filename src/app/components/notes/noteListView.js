@@ -30,11 +30,11 @@ class NoteListView extends Component {
     this.setState({ noteDetailId, viewableNotes })
   }
 
-  handleCreateNewNote () {
+  handleCreateNewNote = () => {
     this.props.actions.addNote()
   }
 
-  updateFilter (filter) {
+  updateFilter = (filter) => {
     let viewableNotes = this.viewableNotes(this.props.notes, filter)
     let noteDetailId = viewableNotes[0] && viewableNotes[0].id
     this.setState({ viewableNotes, filter, noteDetailId })
@@ -88,7 +88,7 @@ class NoteListView extends Component {
     )
     return (<div className='note-list__list list-group'>
         {notes}
-        <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote.bind(this)} >
+        <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >
           <Glyphicon glyph='plus' />
         </a>
       </div>)
@@ -105,7 +105,7 @@ class NoteListView extends Component {
 
   renderSubNav () {
     let popover = <Popover id='filter'>
-      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter.bind(this)}/>
+      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
     let filterDeclaration = <Alert bsStyle="warning">Notes are filtered</Alert>
     if (this.filterIsEmpty(this.state.filter)) {

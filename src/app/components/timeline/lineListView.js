@@ -23,11 +23,11 @@ class LineListView extends Component {
     return mapping
   }
 
-  handleCreateNewLine () {
+  handleCreateNewLine = () => {
     this.props.actions.addLine()
   }
 
-  handleReorder (originalLinePosition, droppedLinePosition) {
+  handleReorder = (originalLinePosition, droppedLinePosition) => {
     var linesArray = []
     this.props.lines.forEach((l) => {
       var newLine = _.clone(l)
@@ -46,7 +46,7 @@ class LineListView extends Component {
     var lineViews = this.renderLines()
     return (<div className={orientedClassName('line-list', this.props.orientation)}>
       {lineViews}
-      <div className={orientedClassName('line-list__new', this.props.orientation)} onClick={this.handleCreateNewLine.bind(this)} >
+      <div className={orientedClassName('line-list__new', this.props.orientation)} onClick={this.handleCreateNewLine} >
         <Glyphicon glyph='plus' />
       </div>
     </div>)
@@ -60,7 +60,7 @@ class LineListView extends Component {
           line={line}
           sceneMap={this.props.sceneMap}
           labelMap={this.labelMap()}
-          handleReorder={this.handleReorder.bind(this)}
+          handleReorder={this.handleReorder}
           filteredItems={this.props.filteredItems}
           isZoomed={this.props.isZoomed}
           zoomFactor={this.props.zoomFactor}

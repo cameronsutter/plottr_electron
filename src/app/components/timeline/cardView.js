@@ -16,34 +16,34 @@ class CardView extends Component {
     this.state = {dialogOpen: false, creating: false, dropping: false, dragging: false, hovering: false}
   }
 
-  closeDialog () {
+  closeDialog = () => {
     this.setState({dialogOpen: false})
   }
 
-  handleDragStart (e) {
+  handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify(this.props.card))
     this.setState({dragging: true})
   }
 
-  handleDragEnd () {
+  handleDragEnd = () => {
     this.setState({dragging: false})
   }
 
-  handleDragEnter (e) {
+  handleDragEnter = (e) => {
     this.setState({dropping: true})
   }
 
-  handleDragOver (e) {
+  handleDragOver = (e) => {
     e.preventDefault()
     return false
   }
 
-  handleDragLeave (e) {
+  handleDragLeave = (e) => {
     this.setState({dropping: false})
   }
 
-  handleDrop (e) {
+  handleDrop = (e) => {
     e.stopPropagation()
     this.handleDragLeave()
 
@@ -54,7 +54,7 @@ class CardView extends Component {
     this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.sceneId)
   }
 
-  handleCardClick () {
+  handleCardClick = () => {
     if (this.props.isZoomed) {
       var box = this.refs.card.getBoundingClientRect()
       this.props.zoomIn(box.left, box.top)
@@ -63,7 +63,7 @@ class CardView extends Component {
     }
   }
 
-  handleFinishCreate (event) {
+  handleFinishCreate = (event) => {
     if (event.which === 13) {
       var newCard = this.buildCard(this.refs.titleInput.getValue())
       this.props.actions.addCard(newCard)
@@ -83,7 +83,7 @@ class CardView extends Component {
     }
   }
 
-  handleCancelCreate (event) {
+  handleCancelCreate = (event) => {
     if (event.which === 27) {
       this.setState({creating: false})
     }
@@ -131,12 +131,12 @@ class CardView extends Component {
       className={orientedClassName('card__real', this.props.orientation)}
       ref='card'
       draggable={true}
-      onDragStart={this.handleDragStart.bind(this)}
-      onDragEnd={this.handleDragEnd.bind(this)}
+      onDragStart={this.handleDragStart}
+      onDragEnd={this.handleDragEnd}
       onMouseEnter={() => this.setState({hovering: true})}
       onMouseLeave={() => this.setState({hovering: false})}
       style={cardStyle}
-      onClick={this.handleCardClick.bind(this)} >
+      onClick={this.handleCardClick} >
         {this.renderTitle()}
     </div>)
   }
@@ -160,10 +160,10 @@ class CardView extends Component {
     return (
       <div
         className={orientedClassName(cardClass, this.props.orientation)}
-        onDragEnter={this.handleDragEnter.bind(this)}
-        onDragOver={this.handleDragOver.bind(this)}
-        onDragLeave={this.handleDragLeave.bind(this)}
-        onDrop={this.handleDrop.bind(this)}
+        onDragEnter={this.handleDragEnter}
+        onDragOver={this.handleDragOver}
+        onDragLeave={this.handleDragLeave}
+        onDrop={this.handleDrop}
         onClick={ () => { this.setState({creating: true}) } }
         style={{borderColor: this.props.color}}
       ></div>
@@ -181,8 +181,8 @@ class CardView extends Component {
             ref='titleInput'
             bsSize='small'
             onBlur={() => this.setState({creating: false})}
-            onKeyDown={this.handleCancelCreate.bind(this)}
-            onKeyPress={this.handleFinishCreate.bind(this)} />
+            onKeyDown={this.handleCancelCreate}
+            onKeyPress={this.handleFinishCreate} />
         </div>
       </div>
     )
@@ -199,7 +199,7 @@ class CardView extends Component {
         sceneId={sceneId}
         lineId={lineId}
         labelMap={this.props.labelMap}
-        closeDialog={this.closeDialog.bind(this)} />
+        closeDialog={this.closeDialog} />
     )
   }
 

@@ -23,20 +23,20 @@ class PlaceListView extends Component {
     if (place) this.setState({placeDetailId: place.id})
   }
 
-  closeDialog () {
+  closeDialog = () => {
     this.setState({dialogOpen: false})
   }
 
-  handleCreateNewPlace () {
+  handleCreateNewPlace = () => {
     this.props.actions.addPlace()
   }
 
-  handleType () {
+  handleType = () => {
     const attr = this.refs.attrInput.getValue()
     this.setState({addAttrText: attr})
   }
 
-  handleAddCustomAttr (event) {
+  handleAddCustomAttr = (event) => {
     if (event.which === 13) {
       const attr = this.refs.attrInput.getValue()
       this.props.customAttributeActions.addPlaceAttr(attr)
@@ -70,7 +70,7 @@ class PlaceListView extends Component {
     )
     return (<div className='place-list__list list-group'>
         {places}
-        <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace.bind(this)} >
+        <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
           <Glyphicon glyph='plus' />
         </a>
       </div>
@@ -92,12 +92,12 @@ class PlaceListView extends Component {
         <Button onClick={() => this.removeAttr(attr)}><Glyphicon glyph='remove'/></Button>
       </li>
     )
-    return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog.bind(this)} style={modalStyles}>
+    return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
       <div>
         <h3>Custom Attributes for Places</h3>
         <p className='sub-header'>Choose what you want to track about your places</p>
         <div className='character-list__custom-attributes-add-button'>
-          <Input type='text' ref='attrInput' label='Add attributes' value={this.state.addAttrText} onChange={this.handleType.bind(this)} onKeyDown={this.handleAddCustomAttr.bind(this)} />
+          <Input type='text' ref='attrInput' label='Add attributes' value={this.state.addAttrText} onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
         </div>
         <div className='place-list__custom-attributes-list-wrapper'>
           {attrs}

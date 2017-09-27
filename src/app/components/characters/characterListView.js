@@ -23,20 +23,20 @@ class CharacterListView extends Component {
     if (character) this.setState({characterDetailId: character.id})
   }
 
-  closeDialog () {
+  closeDialog = () => {
     this.setState({dialogOpen: false})
   }
 
-  handleCreateNewCharacter () {
+  handleCreateNewCharacter = () => {
     this.props.actions.addCharacter()
   }
 
-  handleType () {
+  handleType = () => {
     const attr = this.refs.attrInput.getValue()
     this.setState({addAttrText: attr})
   }
 
-  handleAddCustomAttr (event) {
+  handleAddCustomAttr = (event) => {
     if (event.which === 13) {
       const attr = this.refs.attrInput.getValue()
       this.props.customAttributeActions.addCharacterAttr(attr)
@@ -70,7 +70,7 @@ class CharacterListView extends Component {
     )
     return (<div className='character-list__list list-group'>
         {characters}
-        <a href='#' key={'new-character'} className='character-list__new list-group-item' onClick={this.handleCreateNewCharacter.bind(this)} >
+        <a href='#' key={'new-character'} className='character-list__new list-group-item' onClick={this.handleCreateNewCharacter} >
           <Glyphicon glyph='plus' />
         </a>
       </div>)
@@ -91,12 +91,12 @@ class CharacterListView extends Component {
         <Button onClick={() => this.removeAttr(attr)}><Glyphicon glyph='remove'/></Button>
       </li>
     )
-    return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog.bind(this)} style={modalStyles}>
+    return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
       <div>
         <h3>Custom Attributes for Characters</h3>
         <p className='sub-header'>Choose what you want to track about your characters</p>
         <div className='character-list__custom-attributes-add-button'>
-          <Input type='text' ref='attrInput' label='Add attributes' value={this.state.addAttrText} onChange={this.handleType.bind(this)} onKeyDown={this.handleAddCustomAttr.bind(this)} />
+          <Input type='text' ref='attrInput' label='Add attributes' value={this.state.addAttrText} onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
         </div>
         <div className='character-list__custom-attributes-list-wrapper'>
           {attrs}

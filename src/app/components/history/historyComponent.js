@@ -22,7 +22,7 @@ class HistoryComponent extends Component {
     return JSON.parse(window.localStorage.getItem(storageKey(this.props.file.fileName))) || []
   }
 
-  undo (changeId) {
+  undo = (changeId) => {
     var toIgnore = this.state.changesToIgnore
     toIgnore.push(changeId)
     this.setState({toIgnore: toIgnore})
@@ -30,7 +30,7 @@ class HistoryComponent extends Component {
     this.applyChanges()
   }
 
-  redo (changeId) {
+  redo = (changeId) => {
     var toIgnore = this.state.changesToIgnore
     toIgnore.splice(toIgnore.indexOf(changeId), 1)
     this.setState({changesToIgnore: toIgnore})
@@ -70,7 +70,7 @@ class HistoryComponent extends Component {
     if (this.state.history.length === 0) return <span>No actions to undo</span>
     return this.state.history.map((item, index) => {
       var hasBeenUndone = this.state.changesToIgnore.indexOf(item.id) !== -1
-      return <HistoryItem key={index} item={item} undone={hasBeenUndone} undo={this.undo.bind(this)} redo={this.redo.bind(this)} />
+      return <HistoryItem key={index} item={item} undone={hasBeenUndone} undo={this.undo} redo={this.redo} />
     })
   }
 

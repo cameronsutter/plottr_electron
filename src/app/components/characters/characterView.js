@@ -11,13 +11,13 @@ class CharacterView extends Component {
     this.state = {editing: props.character.name === ''}
   }
 
-  handleEnter (event) {
+  handleEnter = (event) => {
     if (event.which === 13) {
       this.saveEdit()
     }
   }
 
-  saveEdit () {
+  saveEdit = () => {
     var name = this.refs.nameInput.getValue() || this.props.character.name
     var description = this.refs.descriptionInput.getValue()
     var notes = this.refs.notesInput.getValue()
@@ -30,7 +30,7 @@ class CharacterView extends Component {
     this.setState({editing: false})
   }
 
-  deleteCharacter () {
+  deleteCharacter = () => {
     this.props.actions.deleteCharacter(this.props.character.id)
   }
 
@@ -40,7 +40,7 @@ class CharacterView extends Component {
         type='text' label={attr} ref={`${attr}Input`}
         defaultValue={this.props.character[attr]}
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-        onKeyPress={this.handleEnter.bind(this)} />
+        onKeyPress={this.handleEnter} />
     )
   }
 
@@ -53,11 +53,11 @@ class CharacterView extends Component {
             <Input
               type='text' ref='nameInput' autoFocus
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-              onKeyPress={this.handleEnter.bind(this)}
+              onKeyPress={this.handleEnter}
               label='Name' defaultValue={character.name} />
             <Input type='text' ref='descriptionInput'
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-              onKeyPress={this.handleEnter.bind(this)}
+              onKeyPress={this.handleEnter}
               label='Short Description' defaultValue={character.description} />
             <Input type='textarea' rows='10' ref='notesInput'
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
@@ -73,11 +73,11 @@ class CharacterView extends Component {
             Cancel
           </Button>
           <Button bsStyle='success'
-            onClick={this.saveEdit.bind(this)} >
+            onClick={this.saveEdit} >
             Save
           </Button>
           <Button className='card-dialog__delete'
-            onClick={this.deleteCharacter.bind(this)} >
+            onClick={this.deleteCharacter} >
             Delete
           </Button>
         </ButtonToolbar>

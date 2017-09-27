@@ -12,7 +12,7 @@ class TagView extends Component {
     this.state = {editing: props.tag.title === '', showColorPicker: false}
   }
 
-  handleEnter (event) {
+  handleEnter = (event) => {
     if (event.which === 13) {
       this.saveEdit()
     }
@@ -25,7 +25,7 @@ class TagView extends Component {
     this.setState({editing: false})
   }
 
-  changeColor (color) {
+  changeColor = (color) => {
     let { id, title } = this.props.tag
     this.props.actions.editTag(id, title, color)
     this.setState({showColorPicker: false})
@@ -34,7 +34,7 @@ class TagView extends Component {
   renderColorPicker () {
     if (this.state.showColorPicker) {
       var key = 'colorPicker-' + this.props.tag.id
-      return <ColorPicker key={key} color={this.props.tag.color} closeDialog={this.changeColor.bind(this)} />
+      return <ColorPicker key={key} color={this.props.tag.color} closeDialog={this.changeColor} />
     } else {
       return null
     }
@@ -47,7 +47,7 @@ class TagView extends Component {
         >
         <Input type='text' ref='titleInput' autoFocus
           onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-          onKeyPress={this.handleEnter.bind(this)}
+          onKeyPress={this.handleEnter}
           label='tag name' defaultValue={tag.title} />
         {this.renderColorPicker()}
         <ButtonGroup>

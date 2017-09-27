@@ -15,20 +15,20 @@ class NoteView extends Component {
     this.state = {editing: props.note.title === ''}
   }
 
-  handleEnter (event) {
+  handleEnter = (event) => {
     if (event.which === 13) {
       this.saveEdit()
     }
   }
 
-  saveEdit () {
+  saveEdit = () => {
     var title = this.refs.titleInput.getValue() || this.props.note.title
     var content = this.refs.contentInput.getValue() || this.props.note.content
     this.props.actions.editNote(this.props.note.id, {title, content})
     this.setState({editing: false})
   }
 
-  deleteNote () {
+  deleteNote = () => {
     this.props.actions.deleteNote(this.props.note.id)
   }
 
@@ -41,7 +41,7 @@ class NoteView extends Component {
             <Input
               type='text' ref='titleInput' autoFocus
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-              onKeyPress={this.handleEnter.bind(this)}
+              onKeyPress={this.handleEnter}
               label='Title' defaultValue={note.title} />
             <Input type='textarea' rows='10' ref='contentInput'
               onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
@@ -53,11 +53,11 @@ class NoteView extends Component {
             Cancel
             </Button>
             <Button bsStyle='success'
-              onClick={this.saveEdit.bind(this)} >
+              onClick={this.saveEdit} >
             Save
             </Button>
             <Button className='card-dialog__delete'
-              onClick={this.deleteNote.bind(this)} >
+              onClick={this.deleteNote} >
               Delete
             </Button>
           </ButtonToolbar>

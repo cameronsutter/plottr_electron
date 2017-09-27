@@ -34,7 +34,12 @@ module.exports = {
     }, {
       test: /\.js$/,
       loader: 'babel',
-      include: path.resolve(__dirname, 'src')
+      include: path.resolve(__dirname, 'src'),
+      exclude: /node_modules/,
+      query: {
+        presets: ['react', 'es2015', 'stage-2'],
+        cacheDirectory: true
+      }
     }, {
       test: /\.scss$/,
       loader: 'style-loader!css-loader!sass-loader',

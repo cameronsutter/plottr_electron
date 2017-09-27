@@ -18,7 +18,7 @@ class CardView extends Component {
     return _.find(this.props.lines, {id: this.props.card.lineId})
   }
 
-  saveEdit () {
+  saveEdit = () => {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
     var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
     this.saveCreatedLabels(newDescription)
@@ -41,12 +41,12 @@ class CardView extends Component {
     }
   }
 
-  alreadyHasLabel(id, type) {
+  alreadyHasLabel (id, type) {
     let attr = `${type.toLowerCase()}s`
     return this.props.card[attr].includes(id)
   }
 
-  handleEnter (event) {
+  handleEnter = (event) => {
     if (event.which === 13) {
       this.saveEdit()
     }
@@ -57,7 +57,7 @@ class CardView extends Component {
 
     if (this.state.editing) {
       return <Input
-        onKeyPress={this.handleEnter.bind(this)}
+        onKeyPress={this.handleEnter}
         onKeyDown={(e) => {if (e.which === 27) this.setState({editing: false})}}
         type='text' autoFocus
         label='title' ref='titleInput'
@@ -84,7 +84,7 @@ class CardView extends Component {
               Cancel
             </Button>
             <Button bsStyle='success'
-              onClick={this.saveEdit.bind(this)}>
+              onClick={this.saveEdit}>
               Save
             </Button>
           </ButtonToolbar>

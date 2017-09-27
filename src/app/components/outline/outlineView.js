@@ -56,7 +56,7 @@ class OutlineView extends Component {
     )
   }
 
-  setActive (title) {
+  setActive = (title) => {
     this.setState({active: title})
   }
 
@@ -117,7 +117,7 @@ class OutlineView extends Component {
   renderScenes (cardMapping) {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map(s =>
-      <SceneView key={s.id} scene={s} cards={cardMapping[s.id]} labelMap={this.labelMap()} waypoint={this.setActive.bind(this)} />
+      <SceneView key={s.id} scene={s} cards={cardMapping[s.id]} labelMap={this.labelMap()} waypoint={this.setActive} />
     )
   }
 

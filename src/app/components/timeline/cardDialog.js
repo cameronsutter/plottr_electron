@@ -20,21 +20,21 @@ class CardDialog extends Component {
     this.state = {editing: false}
   }
 
-  closeDialog () {
+  closeDialog = () => {
     this.props.closeDialog()
   }
 
-  deleteCard () {
+  deleteCard = () => {
     if (window.confirm(`Do you want to delete this card: '${this.props.card.title}'?`)) {
       this.props.actions.deleteCard(this.props.card.id)
     }
   }
 
-  startEdit () {
+  startEdit = () => {
     this.setState({editing: true})
   }
 
-  saveEdit () {
+  saveEdit = () => {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
     var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
     this.saveCreatedLabels(newDescription)
@@ -61,7 +61,7 @@ class CardDialog extends Component {
     return this.props.card[attr].includes(id)
   }
 
-  handleEnter (event) {
+  handleEnter = (event) => {
     if (event.which === 13) {
       this.saveEdit()
     }
@@ -88,7 +88,7 @@ class CardDialog extends Component {
     return scenes.map((scene) => {
       return (<MenuItem
         key={scene.id}
-        onSelect={this.changeScene.bind(this, scene.id)} >
+        onSelect={() => this.changeScene(scene.id)} >
         {scene.title}
       </MenuItem>)
     })
@@ -99,7 +99,7 @@ class CardDialog extends Component {
     return lines.map((line) => {
       return (<MenuItem
         key={line.id}
-        onSelect={this.changeLine.bind(this, line.id)} >
+        onSelect={() => this.changeLine(line.id)} >
         {line.title}
       </MenuItem>)
     })
@@ -114,7 +114,7 @@ class CardDialog extends Component {
             Cancel
           </Button>
           <Button bsStyle='success'
-            onClick={this.saveEdit.bind(this)}>
+            onClick={this.saveEdit}>
             Save
           </Button>
         </ButtonToolbar>
@@ -123,16 +123,16 @@ class CardDialog extends Component {
       return (
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button className='card-dialog__close'
-            onClick={this.closeDialog.bind(this)}>
+            onClick={this.closeDialog}>
             Close
           </Button>
           <Button className='card-dialog__edit'
             bsStyle='success'
-            onClick={this.startEdit.bind(this)}>
+            onClick={this.startEdit}>
             Edit
           </Button>
           <Button className='card-dialog__delete'
-            onClick={this.deleteCard.bind(this)} >
+            onClick={this.deleteCard} >
             Delete
           </Button>
         </ButtonToolbar>
@@ -144,7 +144,7 @@ class CardDialog extends Component {
     var title = this.props.card.title
     if (this.state.editing) {
       return <Input
-        onKeyPress={this.handleEnter.bind(this)}
+        onKeyPress={this.handleEnter}
         type='text' autoFocus
         label='title' ref='titleInput'
         defaultValue={title} />
@@ -234,7 +234,7 @@ class CardDialog extends Component {
       window.SCROLLWITHKEYS = true
     }
     return (
-      <Modal isOpen={true} onRequestClose={this.closeDialog.bind(this)} style={customStyles}>
+      <Modal isOpen={true} onRequestClose={this.closeDialog} style={customStyles}>
         <div className='card-dialog'>
           {this.renderTitle()}
           <div className='card-dialog__body'>

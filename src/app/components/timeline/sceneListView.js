@@ -15,7 +15,7 @@ class SceneListView extends Component {
     this.props.actions.addScene()
   }
 
-  handleInsertNewScene (nextPosition) {
+  handleInsertNewScene = (nextPosition) => {
     var newId = sceneId(this.props.scenes)
     var newScene = _.clone(scene)
     newScene['id'] = newId
@@ -34,7 +34,7 @@ class SceneListView extends Component {
     this.saveReorder(scenesArray)
   }
 
-  handleReorder (originalScenePosition, droppedScenePosition) {
+  handleReorder = (originalScenePosition, droppedScenePosition) => {
     var scenesArray = []
     this.props.scenes.forEach((s) => {
       var clonedScene = _.clone(s)
@@ -67,7 +67,7 @@ class SceneListView extends Component {
       <div className={orientedClassName('scene-list', this.props.orientation)}>
         <div className={orientedClassName('scene-list__placeholder', this.props.orientation)} />
         {scenes}
-        <div className={orientedClassName('scene-list__new', this.props.orientation)} onClick={this.handleCreateNewScene.bind(this)} >
+        <div className={orientedClassName('scene-list__new', this.props.orientation)} onClick={this.handleCreateNewScene} >
           <Glyphicon glyph='plus' />
         </div>
       </div>
@@ -84,7 +84,7 @@ class SceneListView extends Component {
           </div>
           <SceneView
             scene={scene}
-            handleReorder={this.handleReorder.bind(this)}
+            handleReorder={this.handleReorder}
             isZoomed={this.props.isZoomed}
             zoomFactor={this.props.zoomFactor} />
         </div>

@@ -21,30 +21,30 @@ class SceneView extends Component {
     }
   }
 
-  handleDragStart (e) {
+  handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify(this.props.scene))
     this.setState({dragging: true})
   }
 
-  handleDragEnd () {
+  handleDragEnd = () => {
     this.setState({dragging: false})
   }
 
-  handleDragEnter (e) {
+  handleDragEnter = (e) => {
     this.setState({dropping: true})
   }
 
-  handleDragOver (e) {
+  handleDragOver = (e) => {
     e.preventDefault()
     return false
   }
 
-  handleDragLeave (e) {
+  handleDragLeave = (e) => {
     this.setState({dropping: false})
   }
 
-  handleDrop (e) {
+  handleDrop = (e) => {
     e.stopPropagation()
     this.handleDragLeave()
 
@@ -55,7 +55,7 @@ class SceneView extends Component {
     this.props.handleReorder(this.props.scene.position, droppedScene.position)
   }
 
-  handleDelete () {
+  handleDelete = () => {
     if (window.confirm(`Do you want to delete this scene: '${this.props.scene.title}'?`)) {
       this.props.actions.deleteScene(this.props.scene.id)
     }
@@ -68,14 +68,14 @@ class SceneView extends Component {
       return (
         <div className={orientedClassName('scene-list__item__hover-options', this.props.orientation)} style={style}>
           <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-          <Button block onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+          <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </div>
       )
     } else {
       return (<div className={orientedClassName('scene-list__item__hover-options', this.props.orientation)} style={style}>
         <ButtonGroup>
           <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-          <Button onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
       </div>)
     }
@@ -91,7 +91,7 @@ class SceneView extends Component {
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
         onBlur={() => this.setState({editing: false})}
-        onKeyPress={this.handleFinishEditing.bind(this)} />)
+        onKeyPress={this.handleFinishEditing} />)
   }
 
   render () {
@@ -124,12 +124,12 @@ class SceneView extends Component {
       onClick={() => this.setState({editing: true})}
       onMouseEnter={() => this.setState({hovering: true})}
       onMouseLeave={() => this.setState({hovering: false})}
-      onDragStart={this.handleDragStart.bind(this)}
-      onDragEnd={this.handleDragEnd.bind(this)}
-      onDragEnter={this.handleDragEnter.bind(this)}
-      onDragOver={this.handleDragOver.bind(this)}
-      onDragLeave={this.handleDragLeave.bind(this)}
-      onDrop={this.handleDrop.bind(this)} >
+      onDragStart={this.handleDragStart}
+      onDragEnd={this.handleDragEnd}
+      onDragEnter={this.handleDragEnter}
+      onDragOver={this.handleDragOver}
+      onDragLeave={this.handleDragLeave}
+      onDrop={this.handleDrop} >
       {this.renderHoverOptions()}
       <div className={classes}>
         <div className='scene-list__item__title'>

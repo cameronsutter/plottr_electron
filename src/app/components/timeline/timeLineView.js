@@ -33,7 +33,7 @@ class TimeLineView extends Component {
   //  filtering   //
   // //////////////
 
-  updateFilter (filter) {
+  updateFilter = (filter) => {
     this.setState({ filter })
   }
 
@@ -69,23 +69,23 @@ class TimeLineView extends Component {
     return {transform: `scale(${scale}, ${scale})`, transformOrigin: 'left top'}
   }
 
-  increaseZoomFactor () {
+  increaseZoomFactor = () => {
     var newIndex = this.state.zoomIndex
     if (newIndex < ZOOM_STATES.length - 1) newIndex++
     this.setState({zoomState: null, zoomIndex: newIndex})
   }
 
-  decreaseZoomFactor () {
+  decreaseZoomFactor = () => {
     var newIndex = this.state.zoomIndex
     if (newIndex > 0) newIndex--
     this.setState({zoomState: null, zoomIndex: newIndex})
   }
 
-  resetZoom () {
+  resetZoom = () => {
     this.setState({zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})
   }
 
-  zoomIntoCard (x, y) {
+  zoomIntoCard = (x, y) => {
     var scale = this.scale()
     if (scale >= 1) {
       x *= scale
@@ -100,49 +100,49 @@ class TimeLineView extends Component {
   //  scrolling   //
   // //////////////
 
-  scrollRight () {
+  scrollRight = () => {
     this.setState({scrollTarget: this.state.scrollTarget + 700})
-    scrollInterval = setInterval(this.increaseScroll.bind(this), 25)
+    scrollInterval = setInterval(this.increaseScroll, 25)
     setTimeout(() => { clearInterval(scrollInterval) }, 500)
   }
 
-  scrollLeft () {
+  scrollLeft = () => {
     this.setState({scrollTarget: this.state.scrollTarget - 700})
-    scrollInterval = setInterval(this.decreaseScroll.bind(this), 25)
+    scrollInterval = setInterval(this.decreaseScroll, 25)
     setTimeout(() => { clearInterval(scrollInterval) }, 500)
   }
 
-  scrollBeginning () {
+  scrollBeginning = () => {
     this.setState({scrollTarget: 0})
-    scrollInterval = setInterval(this.decreaseScroll.bind(this), 25)
+    scrollInterval = setInterval(this.decreaseScroll, 25)
     setTimeout(() => { clearInterval(scrollInterval) }, 3000)
   }
 
-  scrollMiddle () {
+  scrollMiddle = () => {
     var middle = (this.refs.timeline.scrollWidth / 2) - (window.outerWidth / 2)
     if (this.props.orientation === 'vertical') {
       middle = (this.refs.timeline.scrollHeight / 2)
     }
     this.setState({scrollTarget: middle})
     if (document.body.scrollLeft > middle) {
-      scrollInterval = setInterval(this.decreaseScroll.bind(this), 25)
+      scrollInterval = setInterval(this.decreaseScroll, 25)
     } else {
-      scrollInterval = setInterval(this.increaseScroll.bind(this), 25)
+      scrollInterval = setInterval(this.increaseScroll, 25)
     }
     setTimeout(() => { clearInterval(scrollInterval) }, 1500)
   }
 
-  scrollEnd () {
+  scrollEnd = () => {
     var end = this.refs.timeline.scrollWidth - window.outerWidth
     if (this.props.orientation === 'vertical') {
       end = this.refs.timeline.scrollHeight
     }
     this.setState({scrollTarget: end})
-    scrollInterval = setInterval(this.increaseScroll.bind(this), 25)
+    scrollInterval = setInterval(this.increaseScroll, 25)
     setTimeout(() => { clearInterval(scrollInterval) }, 3000)
   }
 
-  increaseScroll () {
+  increaseScroll = () => {
     if (this.props.orientation === 'vertical') {
       if (document.body.scrollTop >= this.state.scrollTarget) clearInterval(scrollInterval)
       else document.body.scrollTop += 100
@@ -152,7 +152,7 @@ class TimeLineView extends Component {
     }
   }
 
-  decreaseScroll () {
+  decreaseScroll = () => {
     if (this.props.orientation === 'vertical') {
       if (document.body.scrollTop <= this.state.scrollTarget) clearInterval(scrollInterval)
       else document.body.scrollTop -= 100
@@ -173,7 +173,7 @@ class TimeLineView extends Component {
   // flip
   // //////////////
 
-  flipOrientation () {
+  flipOrientation = () => {
     let orientation = this.props.orientation === 'horizontal' ? 'vertical' : 'horizontal'
     this.props.actions.changeOrientation(orientation)
     this.resetZoom()
@@ -183,7 +183,7 @@ class TimeLineView extends Component {
   //  exporting   //
   // //////////////
 
-  export () {
+  export = () => {
     dialog.showSaveDialog({title: 'Where would you like to save the export?'}, function (fileName) {
       if (fileName) {
         let options = {
@@ -209,7 +209,7 @@ class TimeLineView extends Component {
       scrollDirectionSecond = 'menu-down'
     }
     let popover = <Popover id='filter'>
-      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter.bind(this)}/>
+      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
     let filterDeclaration = <Alert bsStyle="warning">Timeline is filtered</Alert>
     if (this.filterIsEmpty()) {
@@ -225,30 +225,30 @@ class TimeLineView extends Component {
             {filterDeclaration}
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={this.flipOrientation.bind(this)}><Glyphicon glyph={glyph} /> Flip</Button>
+            <Button bsSize='small' onClick={this.flipOrientation}><Glyphicon glyph={glyph} /> Flip</Button>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>Zoom: </span>
             <ButtonGroup bsSize='small'>
-              <Button onClick={this.increaseZoomFactor.bind(this)} ><Glyphicon glyph='plus-sign' /></Button>
-              <Button onClick={this.decreaseZoomFactor.bind(this)} ><Glyphicon glyph='minus-sign' /></Button>
+              <Button onClick={this.increaseZoomFactor} ><Glyphicon glyph='plus-sign' /></Button>
+              <Button onClick={this.decreaseZoomFactor} ><Glyphicon glyph='minus-sign' /></Button>
               <Button onClick={() => this.setState({zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Fit</Button>
-              <Button onClick={this.resetZoom.bind(this)} >Reset</Button>
+              <Button onClick={this.resetZoom} >Reset</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>Scroll: </span>
             <ButtonGroup bsSize='small'>
-              <Button onClick={this.scrollLeft.bind(this)} ><Glyphicon glyph={scrollDirectionFirst} /></Button>
-              <Button onClick={this.scrollRight.bind(this)} ><Glyphicon glyph={scrollDirectionSecond} /></Button>
-              <Button onClick={this.scrollBeginning.bind(this)} >Beginning</Button>
-              <Button onClick={this.scrollMiddle.bind(this)} >Middle</Button>
-              <Button onClick={this.scrollEnd.bind(this)} >End</Button>
+              <Button onClick={this.scrollLeft} ><Glyphicon glyph={scrollDirectionFirst} /></Button>
+              <Button onClick={this.scrollRight} ><Glyphicon glyph={scrollDirectionSecond} /></Button>
+              <Button onClick={this.scrollBeginning} >Beginning</Button>
+              <Button onClick={this.scrollMiddle} >Middle</Button>
+              <Button onClick={this.scrollEnd} >End</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>Export: </span>
-            <Button bsSize='small' onClick={this.export.bind(this)}><Glyphicon glyph='export' /></Button>
+            <Button bsSize='small' onClick={this.export}><Glyphicon glyph='export' /></Button>
           </NavItem>
         </Nav>
       </Navbar>
@@ -273,7 +273,7 @@ class TimeLineView extends Component {
             filteredItems={this.state.filter}
             isZoomed={isZoomed}
             zoomFactor={zoomFactor}
-            zoomIn={this.zoomIntoCard.bind(this)} />
+            zoomIn={this.zoomIntoCard} />
         </div>
       </div>
     )

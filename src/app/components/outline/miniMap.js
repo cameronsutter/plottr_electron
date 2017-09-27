@@ -10,7 +10,7 @@ class MiniMap extends Component {
     this.state = {mouseOver: false}
   }
 
-  selectNav (key, href) {
+  selectNav = (key, href) => {
     window.location = `#${href}`
     window.scrollBy(0, -105)
   }
@@ -39,7 +39,7 @@ class MiniMap extends Component {
       <Nav
         className='outline__minimap'
         activeHref={this.props.active}
-        onSelect={this.selectNav.bind(this)}
+        onSelect={this.selectNav}
         onMouseEnter={() => this.setState({mouseOver: true})}
         onMouseLeave={() => this.setState({mouseOver: false})}>
         {this.renderScenes()}

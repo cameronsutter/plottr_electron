@@ -59,7 +59,7 @@ class LineView extends Component {
     return _.sortBy(cards, 'position')
   }
 
-  handleFinishEditingTitle (event) {
+  handleFinishEditingTitle = (event) => {
     if (event.which === 13) {
       var id = this.props.line.id
       var newTitle = this.refs.titleInput.getValue()
@@ -68,30 +68,30 @@ class LineView extends Component {
     }
   }
 
-  handleDragStart (e) {
+  handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify(this.props.line))
     this.setState({dragging: true})
   }
 
-  handleDragEnd () {
+  handleDragEnd = () => {
     this.setState({dragging: false})
   }
 
-  handleDragEnter (e) {
+  handleDragEnter = (e) => {
     this.setState({dropping: true})
   }
 
-  handleDragOver (e) {
+  handleDragOver = (e) => {
     e.preventDefault()
     return false
   }
 
-  handleDragLeave (e) {
+  handleDragLeave = (e) => {
     this.setState({dropping: false})
   }
 
-  handleDrop (e) {
+  handleDrop = (e) => {
     e.stopPropagation()
     this.handleDragLeave()
 
@@ -102,7 +102,7 @@ class LineView extends Component {
     this.props.handleReorder(this.props.line.position, droppedLine.position)
   }
 
-  handleDelete () {
+  handleDelete = () => {
     if (window.confirm(`Do you want to delete this story line: '${this.props.line.title}'?`)) {
       this.props.actions.deleteLine(this.props.line.id)
     }
@@ -139,7 +139,7 @@ class LineView extends Component {
     return filtered
   }
 
-  changeColor (newColor) {
+  changeColor = (newColor) => {
     if (newColor) {
       this.props.actions.editLineColor(this.props.line.id, newColor)
     }
@@ -149,7 +149,7 @@ class LineView extends Component {
   renderColorPicker () {
     if (this.state.showColorPicker) {
       var key = 'colorPicker-' + this.props.line.id
-      return <ColorPicker key={key} color={this.props.line.color} closeDialog={this.changeColor.bind(this)} />
+      return <ColorPicker key={key} color={this.props.line.color} closeDialog={this.changeColor} />
     } else {
       return null
     }
@@ -198,14 +198,14 @@ class LineView extends Component {
         <ButtonGroup>
           <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
           <Button onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
-          <Button onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
       </div>)
     } else {
       return (<div className='line__hover-options' style={style}>
         <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
         <Button block onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
-        <Button block onClick={this.handleDelete.bind(this)}><Glyphicon glyph='trash' /></Button>
+        <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
       </div>)
     }
   }
@@ -242,7 +242,7 @@ class LineView extends Component {
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
         onBlur={() => this.setState({editing: false})}
-        onKeyPress={this.handleFinishEditingTitle.bind(this)} />)
+        onKeyPress={this.handleFinishEditingTitle} />)
     }
     return (
       <div
@@ -250,12 +250,12 @@ class LineView extends Component {
         style={style}
         onClick={() => this.setState({editing: true})}
         draggable={true}
-        onDragStart={this.handleDragStart.bind(this)}
-        onDragEnd={this.handleDragEnd.bind(this)}
-        onDragEnter={this.handleDragEnter.bind(this)}
-        onDragOver={this.handleDragOver.bind(this)}
-        onDragLeave={this.handleDragLeave.bind(this)}
-        onDrop={this.handleDrop.bind(this)}>
+        onDragStart={this.handleDragStart}
+        onDragEnd={this.handleDragEnd}
+        onDragEnter={this.handleDragEnter}
+        onDragOver={this.handleDragOver}
+        onDragLeave={this.handleDragLeave}
+        onDrop={this.handleDrop}>
         {body}
         {this.renderColorPicker()}
       </div>

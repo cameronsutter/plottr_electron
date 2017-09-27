@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { ButtonToolbar, Button, DropdownButton,
   MenuItem, Input, Label, Glyphicon } from 'react-bootstrap'
 
-export default class FilterList extends Component {
+class FilterList extends Component {
   constructor (props) {
     super(props)
     this.state = {

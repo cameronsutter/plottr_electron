@@ -1,5 +1,6 @@
 import { ipcRenderer, remote } from 'electron'
 import React, { Component, PropTypes } from 'react'
+import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
@@ -312,7 +313,9 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const Pure = PureComponent(TimeLineView)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TimeLineView)
+)(Pure)

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Modal from 'react-modal'
@@ -281,7 +282,9 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const Pure = PureComponent(CardDialog)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CardDialog)
+)(Pure)

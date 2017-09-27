@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
+import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, Input, ButtonGroup } from 'react-bootstrap'
@@ -321,7 +322,9 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const Pure = PureComponent(LineView)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LineView)
+)(Pure)

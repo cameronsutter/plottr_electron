@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import SceneView from 'components/timeline/sceneView'
@@ -114,7 +115,9 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const Pure = PureComponent(SceneListView)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SceneListView)
+)(Pure)

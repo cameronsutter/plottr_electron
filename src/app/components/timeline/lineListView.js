@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
@@ -101,7 +102,9 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const Pure = PureComponent(LineListView)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LineListView)
+)(Pure)

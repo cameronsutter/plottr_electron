@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, Input } from 'react-bootstrap'
@@ -161,7 +162,9 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const Pure = PureComponent(SceneView)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SceneView)
+)(Pure)

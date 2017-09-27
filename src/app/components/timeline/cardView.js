@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
@@ -281,7 +282,9 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
+const Pure = PureComponent(CardView)
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CardView)
+)(Pure)

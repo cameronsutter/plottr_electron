@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.0.58",
+  "version": "1.0.59",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -14,7 +14,7 @@
   "scripts": {
     "start": "NODE_ENV=dev electron .",
     "compile": "node_modules/.bin/webpack",
-    "watch": "NODE_ENV=dev node_modules/.bin/webpack -w",
+    "watch": "echo 'do you have fsevents?' && NODE_ENV=dev node_modules/.bin/webpack -w",
     "createDevLicense": "NODE_ENV=license electron .",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
@@ -58,7 +58,6 @@
     "electron-packager": "^7.7.0",
     "electron-prebuilt": "^1.3.0",
     "file-loader": "^0.8.5",
-    "fsevents": "^1.1.2",
     "json-loader": "^0.5.4",
     "node-sass": "^3.8.0",
     "sass-loader": "^3.1.1",

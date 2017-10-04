@@ -62,17 +62,17 @@ class VerifyView extends Component {
           // save uses, purchase.email, purchase.full_name, purchase.variants
           storage.set('user_info', body, function(err) {
             if (err) {
-              view.setState({showAlert: true, alertText: this.makeAlertText(CANTSAVE)})
+              view.setState({showAlert: true, alertText: view.makeAlertText(CANTSAVE)})
               storage.set('user_info', body, function(err) {
                 if (err) {
-                  view.setState({showAlert: true, alertText: this.makeAlertText(SAVE2)})
+                  view.setState({showAlert: true, alertText: view.makeAlertText(SAVE2)})
                 } else {
-                  view.setState({showAlert: true, alertClass: GREEN, alertText: this.makeAlertText(SUCCESS)})
+                  view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
                   ipcRenderer.send('license-verified')
                 }
               })
             } else {
-              view.setState({showAlert: true, alertClass: GREEN, alertText: this.makeAlertText(SUCCESS)})
+              view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
               ipcRenderer.send('license-verified')
             }
           })

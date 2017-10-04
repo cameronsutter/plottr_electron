@@ -186,17 +186,18 @@ function checkLicense () {
     openAboutWindow()
     openTour()
   } else {
-    storage.has(USER_INFO, function (err, hasKey) {
-      if (err) console.log(err)
-      if (hasKey) {
-        storage.get(USER_INFO, function (err, data) {
-          if (data.success) openRecentFiles()
-          else openVerifyWindow()
-        })
-      } else {
-        openVerifyWindow()
-      }
-    })
+    openVerifyWindow()
+    // storage.has(USER_INFO, function (err, hasKey) {
+    //   if (err) console.log(err)
+    //   if (hasKey) {
+    //     storage.get(USER_INFO, function (err, data) {
+    //       if (data.success) openRecentFiles()
+    //       else openVerifyWindow()
+    //     })
+    //   } else {
+    //     openVerifyWindow()
+    //   }
+    // })
   }
 }
 
@@ -223,7 +224,9 @@ function checkDirty (state, lastSave) {
 function openRecentFiles () {
   // open-file for windows
   if (process.platform === 'win32' && process.argv.length >= 2) {
-    openWindow(process.argv[1])
+    if (process.argv[1].includes('.pltr') || process.argv[1].includes('.plottr')) {
+      openWindow(process.argv[1])
+    }
   } else if (fileToOpen) {
     openWindow(fileToOpen)
     fileToOpen = null

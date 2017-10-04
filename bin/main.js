@@ -227,7 +227,8 @@ function openRecentFiles () {
     if (process.argv[1].includes('.pltr') || process.argv[1].includes('.plottr')) {
       openWindow(process.argv[1])
     }
-  } else if (fileToOpen) {
+  }
+  if (fileToOpen) {
     openWindow(fileToOpen)
     fileToOpen = null
   } else {

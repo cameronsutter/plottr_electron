@@ -48,7 +48,7 @@ var rollbar = new Rollbar({
 })
 if (process.env.NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
-    Rollbar.error(err, function(sendErr, data) {
+    rollbar.error(err, function(sendErr, data) {
       gracefullyQuit()
     })
   })
@@ -140,7 +140,9 @@ ipcMain.on('tracker-initialized', function (event) {
 })
 
 ipcMain.on('license-verified', function () {
+  rollbar.error(new Error('before verifyWindow.close, line 143'))
   verifyWindow.close()
+  rollbar.error(new Error('after verifyWindow.close, line 145'))
   openRecentFiles()
 })
 
@@ -229,6 +231,7 @@ function openRecentFiles () {
     }
   }
   if (fileToOpen) {
+    rollbar.error(new Error('at fileToOpen, line 232'))
     openWindow(fileToOpen)
     fileToOpen = null
   } else {

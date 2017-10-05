@@ -11,7 +11,7 @@ var TRIALMODE = false
 if (process.env.NODE_ENV === 'dev') {
   require('dotenv').config()
 } else {
-  var env = JSON.parse(require('env.json'))
+  var env = JSON.parse(require('../env.json'))
   TRIALMODE = env.trialmode
 }
 

@@ -7,18 +7,16 @@ var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
 var Rollbar = require('rollbar')
-if (process.env.NODE_ENV === 'dev') {
-  require('dotenv').config()
-}
+require('dotenv').config()
 
 const USER_INFO = 'user_info'
-var TRIALMODE = false
-try {
-  require('../trialmode.json')
-  TRIALMODE = true
-} catch (e) {
-  // not in trial mode
-}
+const TRIALMODE = process.env.TRIALMODE
+// try {
+//   require('../trialmode.json')
+//   TRIALMODE = true
+// } catch (e) {
+//   // not in trial mode
+// }
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

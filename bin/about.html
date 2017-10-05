@@ -28,13 +28,14 @@
       function handleReportProblem () {
         ipcRenderer.send('report-window-requested')
       }
-      var TRIALMODE = false
-      try {
-        require('../trialmode.json')
-        TRIALMODE = true
-      } catch (e) {
-        // not in trial mode
-      }
+      require('dotenv').config()
+      var TRIALMODE = process.env.TRIALMODE
+      // try {
+      //   require('../trialmode.json')
+      //   TRIALMODE = true
+      // } catch (e) {
+      //   // not in trial mode
+      // }
       var versionString = 'Version '
       if (TRIALMODE) versionString = 'TRIAL VERSION '
     </script>

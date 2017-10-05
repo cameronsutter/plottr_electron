@@ -31,6 +31,7 @@ var verifyWindow = null
 var reportWindow = null
 
 var fileToOpen = null
+var verifyWorkflow = false
 
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
@@ -69,11 +70,8 @@ app.on('window-all-closed', function () {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    app.quit()
+    if (!verifyWorkflow) app.quit()
   }
-  // if (process.env.NODE_ENV === 'dev') app.quit()
-
-  // app.quit()
 })
 
 app.on('open-file', function (event, path) {
@@ -334,6 +332,9 @@ function openWindow (fileName, newFile = false) {
     this.show()
   })
 
+  // at this point, verification will always be done
+  verifyWorkflow = false
+
   newWindow.webContents.on('did-finish-load', () => {
     if (!tracker) {
       newWindow.webContents.send('init-tracker', app.getVersion())
@@ -450,6 +451,7 @@ function openAboutWindow () {
 }
 
 function openVerifyWindow () {
+  verifyWorkflow = true
   const verifyFile = path.join(filePrefix, 'verify.html')
   verifyWindow = new BrowserWindow({frame: false, height: 425, show: false})
   verifyWindow.loadURL(verifyFile)

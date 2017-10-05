@@ -4,9 +4,12 @@
     <title>Plottr</title>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
     <script>
-      require('dotenv').config()
+      var env = {}
+      if (process.env.NODE_ENV !== 'dev') {
+        env = JSON.parse(require('env.json'))
+      }
       var Rollbar = require('rollbar')
-      let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
+      let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''
       var rollbar = new Rollbar({
         accessToken: rollbarToken,
         handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',

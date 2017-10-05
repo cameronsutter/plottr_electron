@@ -8,8 +8,8 @@ var fs = require('fs')
 
 console.log('writing rollbar access token and trialmode')
 var env = {
-  ROLLBAR_ACCESS_TOKEN: process.env.ROLLBAR_ACCESS_TOKEN,
-  TRIALMODE: process.env.BUILD_TYPE === 'trial'
+  rollbarToken: process.env.ROLLBAR_ACCESS_TOKEN,
+  trialmode: process.env.BUILD_TYPE === 'trial'
 }
 
-fs.writeFileSync('.env', JSON.stringify(env))
+fs.writeFileSync('env.json', JSON.stringify(env))

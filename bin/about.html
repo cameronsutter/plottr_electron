@@ -28,8 +28,11 @@
       function handleReportProblem () {
         ipcRenderer.send('report-window-requested')
       }
-      require('dotenv').config()
-      var TRIALMODE = process.env.TRIALMODE
+      var TRIALMODE = false
+      if (process.env.NODE_ENV !== 'dev') {
+        var env = JSON.parse(require('env.json'))
+        TRIALMODE = env.trialmode
+      }
       // try {
       //   require('../trialmode.json')
       //   TRIALMODE = true

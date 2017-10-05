@@ -7,10 +7,15 @@ var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
 var Rollbar = require('rollbar')
-require('dotenv').config()
+var TRIALMODE = false
+if (process.env.NODE_ENV === 'dev') {
+  require('dotenv').config()
+} else {
+  var env = JSON.parse(require('env.json'))
+  TRIALMODE = env.trialmode
+}
 
 const USER_INFO = 'user_info'
-const TRIALMODE = process.env.TRIALMODE
 // try {
 //   require('../trialmode.json')
 //   TRIALMODE = true
@@ -37,7 +42,7 @@ var tracker = false
 ////     Bug Reporting    //////
 ////////////////////////////////
 
-let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
+let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''
 var rollbar = new Rollbar({
   accessToken: rollbarToken,
   handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',

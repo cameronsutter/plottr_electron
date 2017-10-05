@@ -229,8 +229,11 @@ function checkDirty (state, lastSave) {
 
 function openRecentFiles () {
   // open-file for windows
+  rollbar.error(new Error('line 232: openRecentFiles'))
   if (process.platform === 'win32' && process.argv.length >= 2) {
+    rollbar.error(new Error('line 234: ' + process.argv[1]))
     if (process.argv[1].includes('.pltr') || process.argv[1].includes('.plottr')) {
+      rollbar.error(new Error('line 236'))
       openWindow(process.argv[1])
     }
   }
@@ -239,14 +242,20 @@ function openRecentFiles () {
     openWindow(fileToOpen)
     fileToOpen = null
   } else {
+    rollbar.error(new Error('line 245'))
     storage.has(recentKey, function (err, hasKey) {
+      rollbar.error(err)
       if (err) console.log(err)
+      rollbar.error(new Error('line 248: ' + hasKey))
       if (hasKey) {
         storage.get(recentKey, function (err, fileName) {
+          rollbar.error(err)
           if (err) console.log(err)
+          rollbar.error(new Error('line 254: ' + fileName))
           openWindow(fileName)
         })
       } else {
+        rollbar.error(new Error('line 258'))
         openAboutWindow()
         openTour()
       }

@@ -67,11 +67,13 @@ class VerifyView extends Component {
                 if (err) {
                   view.setState({showAlert: true, alertText: view.makeAlertText(SAVE2)})
                 } else {
+                  window.rollbar.error(new Error('verified, line 70'))
                   view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
                   ipcRenderer.send('license-verified')
                 }
               })
             } else {
+              window.rollbar.error(new Error('verified, line 76'))
               view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
               ipcRenderer.send('license-verified')
             }

@@ -46,6 +46,7 @@ var rollbar = new Rollbar({
   handleUnhandledRejections: true,
   ignoredMessages: []
 })
+rollbar.error(new Error('testing errors'))
 if (process.env.NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
     rollbar.error(err, function(sendErr, data) {

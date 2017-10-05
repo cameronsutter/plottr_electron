@@ -30,7 +30,7 @@
       }
       var TRIALMODE = false
       if (process.env.NODE_ENV !== 'dev') {
-        var env = JSON.parse(require('../env.json'))
+        var env = require('../env.json')
         TRIALMODE = env.trialmode
       }
       // try {

@@ -6,7 +6,7 @@
     <script>
       var env = {}
       if (process.env.NODE_ENV !== 'dev') {
-        env = JSON.parse(require('../env.json'))
+        env = require('../env.json')
       }
       var Rollbar = require('rollbar')
       let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''

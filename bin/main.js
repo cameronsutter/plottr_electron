@@ -16,12 +16,6 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 const USER_INFO = 'user_info'
-// try {
-//   require('../trialmode.json')
-//   TRIALMODE = true
-// } catch (e) {
-//   // not in trial mode
-// }
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -50,7 +44,6 @@ var rollbar = new Rollbar({
   handleUnhandledRejections: true,
   ignoredMessages: []
 })
-rollbar.error(new Error('testing errors'))
 if (process.env.NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
     rollbar.error(err, function(sendErr, data) {
@@ -142,9 +135,7 @@ ipcMain.on('tracker-initialized', function (event) {
 })
 
 ipcMain.on('license-verified', function () {
-  rollbar.error(new Error('before verifyWindow.close, line 143'))
   verifyWindow.close()
-  rollbar.error(new Error('after verifyWindow.close, line 145'))
   openRecentFiles()
 })
 
@@ -190,18 +181,17 @@ function checkLicense () {
     openAboutWindow()
     openTour()
   } else {
-    openVerifyWindow()
-    // storage.has(USER_INFO, function (err, hasKey) {
-    //   if (err) console.log(err)
-    //   if (hasKey) {
-    //     storage.get(USER_INFO, function (err, data) {
-    //       if (data.success) openRecentFiles()
-    //       else openVerifyWindow()
-    //     })
-    //   } else {
-    //     openVerifyWindow()
-    //   }
-    // })
+    storage.has(USER_INFO, function (err, hasKey) {
+      if (err) console.log(err)
+      if (hasKey) {
+        storage.get(USER_INFO, function (err, data) {
+          if (data.success) openRecentFiles()
+          else openVerifyWindow()
+        })
+      } else {
+        openVerifyWindow()
+      }
+    })
   }
 }
 
@@ -227,33 +217,23 @@ function checkDirty (state, lastSave) {
 
 function openRecentFiles () {
   // open-file for windows
-  rollbar.error(new Error('line 232: openRecentFiles'))
   if (process.platform === 'win32' && process.argv.length >= 2) {
-    rollbar.error(new Error('line 234: ' + process.argv[1]))
     if (process.argv[1].includes('.pltr') || process.argv[1].includes('.plottr')) {
-      rollbar.error(new Error('line 236'))
       openWindow(process.argv[1])
     }
   }
   if (fileToOpen) {
-    rollbar.error(new Error('at fileToOpen, line 232'))
     openWindow(fileToOpen)
     fileToOpen = null
   } else {
-    rollbar.error(new Error('line 245'))
     storage.has(recentKey, function (err, hasKey) {
-      rollbar.error(err)
-      if (err) console.log(err)
-      rollbar.error(new Error('line 248: ' + hasKey))
+      if (err) rollbar.warn(err)
       if (hasKey) {
         storage.get(recentKey, function (err, fileName) {
-          rollbar.error(err)
-          if (err) console.log(err)
-          rollbar.error(new Error('line 254: ' + fileName))
+          if (err) rollbar.warn(err)
           openWindow(fileName)
         })
       } else {
-        rollbar.error(new Error('line 258'))
         openAboutWindow()
         openTour()
       }

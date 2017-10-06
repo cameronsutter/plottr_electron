@@ -94,7 +94,7 @@ ipcMain.on('save-state', function (event, state, winId) {
 
   // save the new state
   winObj.state = state
-  if (edited) {
+  if (edited && !TRIALMODE) {
     saveFile(winObj.fileName, state, function (err) {
       if (err) {
         rollbar.error(err)

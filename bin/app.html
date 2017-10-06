@@ -4,16 +4,25 @@
     <title>Plottr</title>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
     <script>
-      var env = {}
+      const { remote } = require('electron')
+      const app = remote.app
+      let env = {}
+      let environment = 'development'
       if (process.env.NODE_ENV !== 'dev') {
         env = require('../env.json')
+        environment = 'production'
       }
       var Rollbar = require('rollbar')
       let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''
       var rollbar = new Rollbar({
         accessToken: rollbarToken,
+        enviroment: environment,
         handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
-        handleUnhandledRejections: true
+        handleUnhandledRejections: true,
+        payload: {
+          version: app.getVersion(),
+          where: 'app.html'
+        }
       })
     </script>
     <script src="css.bundle.js"></script>

@@ -37,12 +37,18 @@ var tracker = false
 ////     Bug Reporting    //////
 ////////////////////////////////
 
+let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
 let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''
 var rollbar = new Rollbar({
   accessToken: rollbarToken,
+  enviroment: environment,
   handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
   handleUnhandledRejections: true,
-  ignoredMessages: []
+  ignoredMessages: [],
+  payload: {
+    version: app.getVersion(),
+    where: 'main'
+  }
 })
 if (process.env.NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
@@ -97,7 +103,7 @@ ipcMain.on('save-state', function (event, state, winId) {
   if (edited && !TRIALMODE) {
     saveFile(winObj.fileName, state, function (err) {
       if (err) {
-        rollbar.error(err)
+        rollbar.warn(err, {fileName: winObj.fileName})
         gracefullyNotSave()
       } else {
         winObj.window.webContents.send('state-saved')
@@ -265,7 +271,7 @@ function askToCreateFile () {
       openWindow(fullName, true)
       saveFile(fullName, {}, function (err) {
         if (err) {
-          rollbar.error(err)
+          rollbar.warn(err, {fileName: fullName})
           dialog.showErrorBox('Saving failed', 'Creating your file didn\'t work. Let\'s try again.')
           askToCreateFile()
         } else {
@@ -366,7 +372,7 @@ function openWindow (fileName, newFile = false) {
     newWindow.setTitle(displayFileName(fileName))
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {
-    rollbar.warn(err)
+    rollbar.warn(err, {fileName: fileName})
     console.log(err)
     removeRecentFile(fileName)
     newWindow.destroy()
@@ -500,7 +506,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
           // open file without migrating
           fs.writeFile(`${fileName}.backup`, JSON.stringify(json, null, 2), (err) => {
             if (err) {
-              rollbar.error(err)
+              rollbar.warn(err, {fileName: fileName})
               dialog.showErrorBox('Problem saving backup', 'Plottr tried saving a backup just in case, but it didn\'t work. Try quitting Plottr and starting it again.')
             } else {
               dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr saved a backup just in case and now on with the show (To use the backup, remove \'.backup\' from the file name)'})
@@ -624,7 +630,7 @@ function buildFileMenu () {
         if (winObj) {
           saveFile(winObj.state.file.fileName, winObj.state, function (err) {
             if (err) {
-              rollbar.error(err)
+              rollbar.warn(err, {fileName: winObj.state.file.fileName})
               gracefullyNotSave()
             } else {
               win.webContents.send('state-saved')
@@ -646,7 +652,7 @@ function buildFileMenu () {
               var fullName = fileName + '.pltr'
               saveFile(fullName, winObj.state, function (err) {
                 if (err) {
-                  rollbar.error(err)
+                  rollbar.warn(err, {fileName: fullName})
                   gracefullyNotSave()
                 } else {
                   app.addRecentDocument(fullName)
@@ -725,7 +731,7 @@ function buildViewMenu () {
             if (err) {
               fs.mkdir(folderPath, (err) => {
                 if (err) {
-                  rollbar.warn(err)
+                  rollbar.warn(err, {folderPath: folderPath})
                 } else {
                   fs.writeFile(filePath, image.toPNG())
                 }

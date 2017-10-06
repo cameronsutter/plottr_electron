@@ -29,7 +29,9 @@ class NoteView extends Component {
   }
 
   deleteNote = () => {
-    this.props.actions.deleteNote(this.props.note.id)
+    if (window.confirm(`Do you want to delete this note: '${this.props.note.title}'?`)) {
+      this.props.actions.deleteNote(this.props.note.id)
+    }
   }
 
   renderContent () {

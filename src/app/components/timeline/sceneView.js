@@ -13,7 +13,7 @@ class SceneView extends Component {
     this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
   }
 
-  handleFinishEditing (event) {
+  handleFinishEditing = (event) => {
     if (event.which === 13) {
       var id = this.props.scene.id
       var newTitle = this.refs.titleInput.getValue()

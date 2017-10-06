@@ -30,7 +30,9 @@ class PlaceView extends Component {
   }
 
   deletePlace = () => {
-    this.props.actions.deletePlace(this.props.place.id)
+    if (window.confirm(`Do you want to delete this place: '${this.props.place.name}'?`)) {
+      this.props.actions.deletePlace(this.props.place.id)
+    }
   }
 
   renderEditingCustomAttributes () {
@@ -103,9 +105,10 @@ class PlaceView extends Component {
   renderCardAssociations () {
     let label = 'cards'
     if (this.props.place.cards.length === 1) label = 'card'
-    let cardsAssoc = this.props.place.cards.map(cId =>
-      _.find(this.props.cards, {id: cId}).title
-    ).join(', ')
+    let cardsAssoc = this.props.place.cards.reduce((arr, cId) => {
+      let card = _.find(this.props.cards, {id: cId})
+      if (card) return arr.concat(card.title)
+    }, []).join(', ')
     let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
       <span>{this.props.place.cards.length} {label}</span>
@@ -115,9 +118,10 @@ class PlaceView extends Component {
   renderNoteAssociations () {
     let label = 'notes'
     if (this.props.place.noteIds.length === 1) label = 'note'
-    let noteAssoc = this.props.place.noteIds.map(nId =>
-      _.find(this.props.notes, {id: nId}).title
-    ).join(', ')
+    let noteAssoc = this.props.place.noteIds.reduce((arr, nId) => {
+      let note = _.find(this.props.notes, {id: nId})
+      if (note) return arr.concat(note.title)
+    }, []).join(', ')
     let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
       <span>{this.props.place.noteIds.length} {label}</span>

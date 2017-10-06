@@ -1,6 +1,7 @@
 import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
-  ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE, DELETE_CHARACTER } from '../constants/ActionTypes'
+  ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
+  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER } from '../constants/ActionTypes'
 import { character } from 'store/initialState'
 import { newFileCharacters } from 'store/newFileState'
 import { characterId } from 'store/newIds'
@@ -49,6 +50,20 @@ export default function characters (state = initialState, action) {
         let notes = _.cloneDeep(character.noteIds)
         notes.splice(notes.indexOf(action.id), 1)
         return character.id === action.characterId ? Object.assign({}, character, {noteIds: notes}) : character
+      })
+
+    case DELETE_NOTE:
+      return state.map(character => {
+        let notes = _.cloneDeep(character.noteIds)
+        notes.splice(notes.indexOf(action.id), 1)
+        return Object.assign({}, character, {noteIds: notes})
+      })
+
+    case DELETE_CARD:
+      return state.map(character => {
+        let cards = _.cloneDeep(character.cards)
+        cards.splice(cards.indexOf(action.id), 1)
+        return Object.assign({}, character, {cards: cards})
       })
 
     case DELETE_CHARACTER:

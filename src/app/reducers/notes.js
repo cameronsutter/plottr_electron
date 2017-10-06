@@ -82,27 +82,27 @@ export default function notes (state = initialState, action) {
         }
       })
 
-      case DELETE_CHARACTER:
-        return state.map(note => {
-          if (note.characters.includes(action.id)) {
-            let characters = _.cloneDeep(note.characters)
-            characters.splice(characters.indexOf(action.id), 1)
-            return Object.assign({}, note, {characters: characters})
-          } else {
-            return note
-          }
-        })
+    case DELETE_CHARACTER:
+      return state.map(note => {
+        if (note.characters.includes(action.id)) {
+          let characters = _.cloneDeep(note.characters)
+          characters.splice(characters.indexOf(action.id), 1)
+          return Object.assign({}, note, {characters: characters})
+        } else {
+          return note
+        }
+      })
 
-      case DELETE_PLACE:
-        return state.map(note => {
-          if (note.places.includes(action.id)) {
-            let places = _.cloneDeep(note.places)
-            places.splice(places.indexOf(action.id), 1)
-            return Object.assign({}, note, {places: places})
-          } else {
-            return note
-          }
-        })
+    case DELETE_PLACE:
+      return state.map(note => {
+        if (note.places.includes(action.id)) {
+          let places = _.cloneDeep(note.places)
+          places.splice(places.indexOf(action.id), 1)
+          return Object.assign({}, note, {places: places})
+        } else {
+          return note
+        }
+      })
 
     case RESET:
     case FILE_LOADED:

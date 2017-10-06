@@ -4,32 +4,35 @@ var _ = require('lodash')
 function Exporter (data, { fileName }) {
   let doc = new docx.Document()
   let title = new docx.Paragraph(new docx.TextRun(data.storyName).smallCaps())
-  title.title().center()
+  title.title().center().pageBreak()
   doc.addParagraph(title)
 
   let outlineHeading = new docx.Paragraph('Outline')
-  outlineHeading.heading1().center().pageBreak()
+  outlineHeading.heading1().center()
   doc.addParagraph(outlineHeading)
   outline(data).forEach(function(par) {
     doc.addParagraph(par)
   })
 
+  doc.addParagraph(new docx.Paragraph('').pageBreak())
   let charactersHeading = new docx.Paragraph('Characters')
-  charactersHeading.heading1().center().pageBreak()
+  charactersHeading.heading1().center()
   doc.addParagraph(charactersHeading)
   characters(data.characters, data.customAttributes['characters']).forEach(function(par) {
     doc.addParagraph(par)
   })
 
+  doc.addParagraph(new docx.Paragraph('').pageBreak())
   let placesHeading = new docx.Paragraph('Places')
-  placesHeading.heading1().center().pageBreak()
+  placesHeading.heading1().center()
   doc.addParagraph(placesHeading)
   places(data.places, data.customAttributes['places']).forEach(function(par) {
     doc.addParagraph(par)
   })
 
+  doc.addParagraph(new docx.Paragraph('').pageBreak())
   let notesHeading = new docx.Paragraph('Notes')
-  notesHeading.heading1().center().pageBreak()
+  notesHeading.heading1().center()
   doc.addParagraph(notesHeading)
   notes(data.notes).forEach(function(par) {
     doc.addParagraph(par)

@@ -25,6 +25,12 @@ class TagView extends Component {
     this.setState({editing: false})
   }
 
+  deleteTag = () => {
+    if (window.confirm(`Do you want to delete this tag: '${this.props.tag.title}'?`)) {
+      this.props.actions.deleteTag(this.props.tag.id)
+    }
+  }
+
   changeColor = (color) => {
     let { id, title } = this.props.tag
     this.props.actions.editTag(id, title, color)
@@ -54,7 +60,7 @@ class TagView extends Component {
           <DropdownButton title="Actions" id="bg-nested-dropdown">
             <MenuItem onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /> Choose color</MenuItem>
             <MenuItem onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /> No color</MenuItem>
-            <MenuItem onClick={() => this.props.actions.deleteTag(tag.id)}><Glyphicon glyph='trash' /> Delete</MenuItem>
+            <MenuItem onClick={this.deleteTag}><Glyphicon glyph='trash' /> Delete</MenuItem>
           </DropdownButton>
           <Button onClick={() => this.setState({editing: false})} >Cancel</Button>
         </ButtonGroup>

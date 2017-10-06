@@ -31,7 +31,9 @@ class CharacterView extends Component {
   }
 
   deleteCharacter = () => {
-    this.props.actions.deleteCharacter(this.props.character.id)
+    if (window.confirm(`Do you want to delete this character: '${this.props.character.name}'?`)) {
+      this.props.actions.deleteCharacter(this.props.character.id)
+    }
   }
 
   renderEditingCustomAttributes () {
@@ -104,9 +106,10 @@ class CharacterView extends Component {
   renderCardAssociations () {
     let label = 'cards'
     if (this.props.character.cards.length === 1) label = 'card'
-    let cardsAssoc = this.props.character.cards.map(cId =>
-      _.find(this.props.cards, {id: cId}).title
-    ).join(', ')
+    let cardsAssoc = this.props.character.cards.reduce((arr, cId) => {
+      let card = _.find(this.props.cards, {id: cId})
+      if (card) return arr.concat(card.title)
+    }, []).join(', ')
     let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
       <span>{this.props.character.cards.length} {label}</span>
@@ -116,9 +119,10 @@ class CharacterView extends Component {
   renderNoteAssociations () {
     let label = 'notes'
     if (this.props.character.noteIds.length === 1) label = 'note'
-    let noteAssoc = this.props.character.noteIds.map(nId =>
-      _.find(this.props.notes, {id: nId}).title
-    ).join(', ')
+    let noteAssoc = this.props.character.noteIds.reduce((arr, nId) => {
+      let note = _.find(this.props.notes, {id: nId})
+      if (note) return arr.concat(note.title)
+    }, []).join(', ')
     let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
       <span>{this.props.character.noteIds.length} {label}</span>

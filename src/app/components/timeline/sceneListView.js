@@ -12,7 +12,7 @@ import orientedClassName from 'helpers/orientedClassName'
 
 class SceneListView extends Component {
 
-  handleCreateNewScene () {
+  handleCreateNewScene = () => {
     this.props.actions.addScene()
   }
 

@@ -47,7 +47,8 @@ var rollbar = new Rollbar({
   ignoredMessages: [],
   payload: {
     version: app.getVersion(),
-    where: 'main'
+    where: 'main',
+    os: process.platform
   }
 })
 if (process.env.NODE_ENV !== 'dev') {

@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -62,7 +63,8 @@ class CharacterListView extends Component {
   }
 
   renderCharacters () {
-    const characters = this.props.characters.map((ch, idx) =>
+    const sortedCharacters = _.sortBy(this.props.characters, ['name', 'id'])
+    const characters = sortedCharacters.map((ch, idx) =>
       <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>
         <h6 className='list-group-item-heading'>{ch.name}</h6>
         <p className='list-group-item-text'>{ch.description}</p>

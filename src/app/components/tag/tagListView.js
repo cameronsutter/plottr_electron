@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -12,7 +13,8 @@ class TagListView extends Component {
   }
 
   renderTags () {
-    return this.props.tags.map(t =>
+    const sortedTags = _.sortBy(this.props.tags, ['title', 'id'])
+    return sortedTags.map(t =>
       <TagView key={t.id} tag={t} />
     )
   }

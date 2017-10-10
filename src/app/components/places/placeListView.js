@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -62,7 +63,8 @@ class PlaceListView extends Component {
   }
 
   renderPlaces () {
-    const places = this.props.places.map((pl, idx) =>
+    const sortedPlaces = _.sortBy(this.props.places, ['name', 'id'])
+    const places = sortedPlaces.map((pl, idx) =>
       <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
         <h6 className='list-group-item-heading'>{pl.name}</h6>
         <p className='list-group-item-text'>{pl.description}</p>

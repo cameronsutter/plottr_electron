@@ -31,7 +31,7 @@ const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dir
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
 
 // mixpanel tracking
-var tracker = false
+var launchSent = false
 
 ////////////////////////////////
 ////     Bug Reporting    //////
@@ -137,8 +137,8 @@ ipcMain.on('fetch-state', function (event, id) {
   }
 })
 
-ipcMain.on('tracker-initialized', function (event) {
-  tracker = true
+ipcMain.on('launch-sent', function (event) {
+  launchSent = true
 })
 
 ipcMain.on('license-verified', function () {
@@ -324,8 +324,8 @@ function openWindow (fileName, newFile = false) {
   dontquit = false
 
   newWindow.webContents.on('did-finish-load', () => {
-    if (!tracker) {
-      newWindow.webContents.send('init-tracker', app.getVersion())
+    if (!launchSent) {
+      newWindow.webContents.send('send-launch', app.getVersion())
     }
   })
 

@@ -9,6 +9,7 @@ import { newFile, fileSaved, loadFile } from 'actions/ui'
 import mixpanel from 'mixpanel-browser'
 import { MPQ } from 'middlewares/helpers'
 
+mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
 const root = document.getElementById('react-root')
 const store = configureStore()
 
@@ -32,8 +33,7 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty) => {
   )
 })
 
-ipcRenderer.once('init-tracker', (event, version) => {
-  mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
+ipcRenderer.once('send-launch', (event, version) => {
   MPQ.push('Launch', {online: navigator.onLine, version: version})
-  ipcRenderer.send('tracker-initialized')
+  ipcRenderer.send('launch-sent')
 })

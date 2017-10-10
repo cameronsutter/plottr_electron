@@ -29,7 +29,7 @@ class EditPlace extends Component {
     var label = item.action.type.indexOf('PLACE') === -1 ? 'character' : 'place'
     label = item.action.type.indexOf('TAG') === -1 ? 'character' : 'tag'
     let value = item.action.name || item.action.title
-    if (item.action.attributes) value = item.action.attributes.name
+    if (item.action && item.action.attributes) value = item.action.attributes.name
     return (
       <div>
         <span>{label}: "{value}"</span>

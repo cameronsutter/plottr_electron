@@ -109,6 +109,7 @@ class CharacterView extends Component {
     let cardsAssoc = this.props.character.cards.reduce((arr, cId) => {
       let card = _.find(this.props.cards, {id: cId})
       if (card) return arr.concat(card.title)
+      return arr
     }, []).join(', ')
     let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
@@ -122,6 +123,7 @@ class CharacterView extends Component {
     let noteAssoc = this.props.character.noteIds.reduce((arr, nId) => {
       let note = _.find(this.props.notes, {id: nId})
       if (note) return arr.concat(note.title)
+      return arr
     }, []).join(', ')
     let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>

@@ -106,7 +106,7 @@ export default function notes (state = initialState, action) {
 
     case RESET:
     case FILE_LOADED:
-      return action.data.notes
+      return action.data.notes || []
 
     case NEW_FILE:
       return newFileNotes

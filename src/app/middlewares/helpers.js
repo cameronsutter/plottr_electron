@@ -31,7 +31,7 @@ class MixpanelQueue {
     // TODO: read from localStorage
     do {
       let event = this.queue.shift()
-      if (process.env.NODE_ENV !== 'dev') {
+      if (event && process.env.NODE_ENV !== 'dev') {
         var attrs = Object.assign({}, event.attributes, this.superProps)
         mixpanel.track(event.title, attrs)
       }

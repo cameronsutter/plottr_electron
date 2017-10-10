@@ -25,7 +25,7 @@ var verifyWindow = null
 var reportWindow = null
 
 var fileToOpen = null
-var verifyWorkflow = false
+var dontquit = false
 
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
@@ -70,7 +70,7 @@ app.on('window-all-closed', function () {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    if (!verifyWorkflow) app.quit()
+    if (!dontquit) app.quit()
   }
 })
 
@@ -287,6 +287,7 @@ function askToCreateFile () {
 }
 
 function askToOpenOrCreate () {
+  dontquit = true
   dialog.showMessageBox({type: 'question', buttons: ['open', 'new'], message: 'Would you like to open an existing file or start a new file?'}, (choice) => {
     if (choice === 0) {
       askToOpenFile()
@@ -320,7 +321,7 @@ function openWindow (fileName, newFile = false) {
   })
 
   // at this point, verification will always be done
-  verifyWorkflow = false
+  dontquit = false
 
   newWindow.webContents.on('did-finish-load', () => {
     if (!tracker) {
@@ -438,7 +439,7 @@ function openAboutWindow () {
 }
 
 function openVerifyWindow () {
-  verifyWorkflow = true
+  dontquit = true
   const verifyFile = path.join(filePrefix, 'verify.html')
   verifyWindow = new BrowserWindow({frame: false, height: 425, show: false})
   verifyWindow.loadURL(verifyFile)

@@ -382,6 +382,8 @@ function openWindow (fileName, newFile = false) {
       lastSave: json
     })
 
+    newWindow.webContents.send('open-file', app.getVersion(), windows.length)
+
     newWindow.setTitle(displayFileName(fileName))
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {

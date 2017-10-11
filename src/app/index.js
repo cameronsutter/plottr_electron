@@ -39,6 +39,10 @@ ipcRenderer.once('send-launch', (event, version) => {
   ipcRenderer.send('launch-sent')
 })
 
+ipcRenderer.on('open-file', (event, version, openFiles) => {
+  MPQ.push('open_file', {online: navigator.onLine, version: version, number_open: openFiles})
+})
+
 window.onerror = function (message, file, line, column, err) {
   if (process.env.NODE_ENV !== 'dev') rollbar.info(err)
   let newState = FileFixer(store.getState())

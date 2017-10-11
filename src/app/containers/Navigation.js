@@ -4,6 +4,13 @@ import { connect } from 'react-redux'
 import * as UIActions from 'actions/ui'
 import { Glyphicon, Input, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
+var TRIALMODE = false
+if (process.env.NODE_ENV === 'dev') {
+  require('dotenv').config()
+} else {
+  var env = require('../env.json')
+  TRIALMODE = env.trialmode
+}
 
 class Navigation extends Component {
   constructor (props) {
@@ -17,6 +24,11 @@ class Navigation extends Component {
 
   renderUnsavedChanges () {
     let styles = {padding: '8px'}
+    if (TRIALMODE) {
+      return <span className='alert alert-danger' style={styles} role='alert'>
+        <Glyphicon glyph='exclamation-sign' /> TRIAL MODE — no auto saving
+      </span>
+    }
     if (this.props.file.dirty) {
       return <span className='alert alert-danger' style={styles} role='alert'><Glyphicon glyph='exclamation-sign' /> unsaved changes</span>
     } else {

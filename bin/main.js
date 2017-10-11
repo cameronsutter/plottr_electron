@@ -137,6 +137,17 @@ ipcMain.on('fetch-state', function (event, id) {
   }
 })
 
+ipcMain.on('reload-window', function (event, id, state) {
+  let winObj = _.find(windows, {id: id})
+  if (winObj) {
+    saveFile(winObj.fileName, state, function(err, data) {
+      if (err) rollbar.warn(err)
+      winObj.state = state
+      winObj.window.webContents.reload()
+    })
+  }
+})
+
 ipcMain.on('launch-sent', function (event) {
   launchSent = true
 })

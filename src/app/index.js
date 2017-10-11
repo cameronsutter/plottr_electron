@@ -8,6 +8,7 @@ const win = remote.getCurrentWindow()
 import { newFile, fileSaved, loadFile } from 'actions/ui'
 import mixpanel from 'mixpanel-browser'
 import { MPQ } from 'middlewares/helpers'
+import FileFixer from 'helpers/fixer'
 
 mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
 const root = document.getElementById('react-root')
@@ -37,3 +38,9 @@ ipcRenderer.once('send-launch', (event, version) => {
   MPQ.push('Launch', {online: navigator.onLine, version: version})
   ipcRenderer.send('launch-sent')
 })
+
+window.onerror = function (message, file, line, column, err) {
+  if (process.env.NODE_ENV !== 'dev') rollbar.info(err)
+  let newState = FileFixer(store.getState())
+  ipcRenderer.send('reload-window', win.id, newState)
+}

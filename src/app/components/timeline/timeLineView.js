@@ -102,24 +102,28 @@ class TimeLineView extends Component {
   // //////////////
 
   scrollRight = () => {
+    clearInterval(scrollInterval)
     this.setState({scrollTarget: this.state.scrollTarget + 700})
     scrollInterval = setInterval(this.increaseScroll, 25)
     setTimeout(() => { clearInterval(scrollInterval) }, 500)
   }
 
   scrollLeft = () => {
+    clearInterval(scrollInterval)
     this.setState({scrollTarget: this.state.scrollTarget - 700})
     scrollInterval = setInterval(this.decreaseScroll, 25)
     setTimeout(() => { clearInterval(scrollInterval) }, 500)
   }
 
   scrollBeginning = () => {
+    clearInterval(scrollInterval)
     this.setState({scrollTarget: 0})
     scrollInterval = setInterval(this.decreaseScroll, 25)
     setTimeout(() => { clearInterval(scrollInterval) }, 3000)
   }
 
   scrollMiddle = () => {
+    clearInterval(scrollInterval)
     var middle = (this.refs.timeline.scrollWidth / 2) - (window.outerWidth / 2)
     if (this.props.orientation === 'vertical') {
       middle = (this.refs.timeline.scrollHeight / 2)
@@ -134,6 +138,7 @@ class TimeLineView extends Component {
   }
 
   scrollEnd = () => {
+    clearInterval(scrollInterval)
     var end = this.refs.timeline.scrollWidth - window.outerWidth
     if (this.props.orientation === 'vertical') {
       end = this.refs.timeline.scrollHeight

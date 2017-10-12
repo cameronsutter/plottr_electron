@@ -29,10 +29,10 @@
     "scenes": []
   },
   "file": {
-    "dirty": false,
+    "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example2.pltr",
     "loaded": true,
-    "version": "1.0.32"
+    "version": "1.1.11"
   },
   "lines": [
     {

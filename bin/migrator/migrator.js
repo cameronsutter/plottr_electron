@@ -48,6 +48,12 @@ function Migrator (data, fileName, givenVersion, targetVersion) {
     return false
   }
 
+  this.noMigrations = function () {
+    if (!this.given) return false
+    var migrations = this.getMigrations()
+    if (migrations.length == 0) return true
+  }
+
   this.plottrBehindFile = function () {
     return this.majorTarget < this.majorGiven || (this.majorTarget === this.majorGiven && this.minorTarget < this.minorGiven)
   }

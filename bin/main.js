@@ -496,7 +496,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
     return
   }
   var m = new Migrator(json, fileName, json.file.version, app.getVersion())
-  if (m.areSameVersion()) {
+  if (m.areSameVersion() || m.noMigrations()) {
     callback(null, false, json)
   } else {
     // not the same version, start migration process

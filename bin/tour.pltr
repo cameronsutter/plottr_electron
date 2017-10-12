@@ -79,9 +79,7 @@
   ],
   "characters": [
     {
-      "cards": [
-        0
-      ],
+      "cards": [],
       "color": null,
       "description": "she is the coolest",
       "id": 0,
@@ -94,9 +92,7 @@
       "this is a custom attribute": ""
     },
     {
-      "cards": [
-        1
-      ],
+      "cards": [],
       "color": "deeppink",
       "description": "there's always a love interest",
       "id": 1,
@@ -107,9 +103,7 @@
       "this is a custom attribute": "and here is it's value"
     },
     {
-      "cards": [
-        2
-      ],
+      "cards": [],
       "color": null,
       "description": "that's a terrible name for a character",
       "id": 2,
@@ -135,7 +129,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
     "loaded": true,
-    "version": "1.0.51"
+    "version": "1.1.12"
   },
   "lines": [
     {
@@ -188,9 +182,7 @@
   ],
   "places": [
     {
-      "cards": [
-        0
-      ],
+      "cards": [],
       "color": null,
       "custom attribute!": "add more just like characters",
       "description": "her favorite place",
@@ -203,9 +195,7 @@
       "weather": "peachy"
     },
     {
-      "cards": [
-        1
-      ],
+      "cards": [],
       "color": "springgreen",
       "description": "Click anywhere on a place's details to edit",
       "id": 1,

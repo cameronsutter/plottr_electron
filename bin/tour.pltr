@@ -93,7 +93,7 @@
     },
     {
       "cards": [],
-      "color": "deeppink",
+      "color": null,
       "description": "there's always a love interest",
       "id": 1,
       "it's easy to add them": "just click the button in the navigation above that says \"Custom Attributes\"",
@@ -126,10 +126,10 @@
     "scenes": []
   },
   "file": {
-    "dirty": true,
+    "dirty": false,
     "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
     "loaded": true,
-    "version": "1.1.12"
+    "version": "1.1.14"
   },
   "lines": [
     {
@@ -191,17 +191,17 @@
       "noteIds": [
         0
       ],
-      "notes": null,
+      "notes": "",
       "weather": "peachy"
     },
     {
       "cards": [],
-      "color": "springgreen",
+      "color": null,
       "description": "Click anywhere on a place's details to edit",
       "id": 1,
       "name": "Another place in your story",
       "noteIds": [],
-      "notes": null,
+      "notes": "",
       "place": null
     }
   ],

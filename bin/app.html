@@ -26,6 +26,13 @@
           os: process.platform
         }
       })
+      if (process.env.NODE_ENV !== 'dev') {
+        var log = require('electron-log')
+        process.on('uncaughtException', function (err) {
+          log.error(err)
+          rollbar.error(err)
+        })
+      }
     </script>
     <script src="css.bundle.js"></script>
   </head>

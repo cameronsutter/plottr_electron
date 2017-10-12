@@ -6,6 +6,7 @@ var path = require('path')
 var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
+var log = require('electron-log')
 var Rollbar = require('rollbar')
 var TRIALMODE = false
 if (process.env.NODE_ENV === 'dev') {
@@ -15,7 +16,8 @@ if (process.env.NODE_ENV === 'dev') {
   TRIALMODE = env.trialmode
 }
 
-const USER_INFO = 'user_info'
+const USER_INFO_PATH = 'user_info'
+var USER_INFO = {}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -53,6 +55,7 @@ var rollbar = new Rollbar({
 })
 if (process.env.NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
+    log.error(err)
     rollbar.error(err, function(sendErr, data) {
       gracefullyQuit()
     })
@@ -104,6 +107,8 @@ ipcMain.on('save-state', function (event, state, winId) {
   if (edited && !TRIALMODE) {
     saveFile(winObj.fileName, state, function (err) {
       if (err) {
+        log.warn(err)
+        log.warn('file name: ' + winObj.fileName)
         rollbar.warn(err, {fileName: winObj.fileName})
         gracefullyNotSave()
       } else {
@@ -124,13 +129,13 @@ ipcMain.on('fetch-state', function (event, id) {
 
   if (win.window.isVisible()) {
     migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-      if (err) rollbar.warn(err)
+      if (err) { log.warn(err); rollbar.warn(err) }
       event.sender.send('state-fetched', json, win.fileName, dirty)
     })
   } else {
     win.window.on('show', () => {
       migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-        if (err) rollbar.warn(err)
+        if (err) { log.warn(err); rollbar.warn(err) }
         event.sender.send('state-fetched', json, win.fileName, dirty)
       })
     })
@@ -141,7 +146,7 @@ ipcMain.on('reload-window', function (event, id, state) {
   let winObj = _.find(windows, {id: id})
   if (winObj) {
     saveFile(winObj.fileName, state, function(err, data) {
-      if (err) rollbar.warn(err)
+      if (err) { log.warn(err); rollbar.warn(err) }
       winObj.state = state
       winObj.window.webContents.reload()
     })
@@ -167,7 +172,7 @@ ipcMain.on('export', function (event, options, winId) {
 app.on('ready', function () {
   if (process.env.NODE_ENV === 'license') {
     const fakeData = require('./devLicense')
-    storage.set(USER_INFO, fakeData, function(err) {
+    storage.set(USER_INFO_PATH, fakeData, function(err) {
       if (err) console.log(err)
       else console.log('dev license created')
       app.quit()
@@ -199,10 +204,11 @@ function checkLicense () {
     openAboutWindow()
     openTour()
   } else {
-    storage.has(USER_INFO, function (err, hasKey) {
+    storage.has(USER_INFO_PATH, function (err, hasKey) {
       if (err) console.log(err)
       if (hasKey) {
-        storage.get(USER_INFO, function (err, data) {
+        storage.get(USER_INFO_PATH, function (err, data) {
+          USER_INFO = data
           if (data.success) openRecentFiles()
           else openVerifyWindow()
         })
@@ -245,10 +251,10 @@ function openRecentFiles () {
     fileToOpen = null
   } else {
     storage.has(recentKey, function (err, hasKey) {
-      if (err) rollbar.warn(err)
+      if (err) { log.warn(err); rollbar.warn(err) }
       if (hasKey) {
         storage.get(recentKey, function (err, fileName) {
-          if (err) rollbar.warn(err)
+          if (err) { log.warn(err); rollbar.warn(err) }
           openWindow(fileName)
         })
       } else {
@@ -283,6 +289,8 @@ function askToCreateFile () {
       openWindow(fullName, true)
       saveFile(fullName, {}, function (err) {
         if (err) {
+          log.warn(err)
+          log.warn('file name: ' + fullName)
           rollbar.warn(err, {fileName: fullName})
           dialog.showErrorBox('Saving failed', 'Creating your file didn\'t work. Let\'s try again.')
           askToCreateFile()
@@ -387,6 +395,8 @@ function openWindow (fileName, newFile = false) {
     newWindow.setTitle(displayFileName(fileName))
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {
+    log.warn(err)
+    log.warn('file name: ' + fileName)
     rollbar.warn(err, {fileName: fileName})
     console.log(err)
     removeRecentFile(fileName)
@@ -486,6 +496,41 @@ function gracefullyNotSave () {
   dialog.showErrorBox('Saving failed', 'Saving your file didn\'t work. Try again.')
 }
 
+function prepareErrorReport () {
+  var report = 'VERSION: ' + app.getVersion() + '\n\n'
+  report += 'USER INFO\n'
+  report += JSON.stringify(USER_INFO) + '\n\n'
+  report += '----------------------------------\n\n'
+  report += 'ERROR LOG\n'
+  let logFile = log.transports.file.findLogPath()
+  let logContents = null
+  try{
+    logContents = fs.readFileSync(logFile)
+  } catch (e) {
+    // no log file, no big deal
+  }
+  report += logContents + '\n\n'
+  report += '----------------------------------\n\n'
+  report += 'FILE STATE\n'
+  let openFilesState = windows.map(function(w) {
+    return JSON.stringify(w.state)
+  })
+  report += openFilesState.join("\n\n------------\n\n")
+  return report
+}
+
+function sendErrorReport (body) {
+  var fileName = path.resolve(process.env.HOME, 'plottr_error_report.txt')
+  fs.writeFile(fileName, body, function(err) {
+    if (err) {
+      log.warn(err)
+      rollbar.warn(err)
+    } else {
+      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Email me at cameronsutter0@gmail.com with the file Plottr just exported', detail: 'Please email me the file named plottr_error_report.txt in your user\'s home folder'})
+    }
+  })
+}
+
 ////////////////////////////////
 ///////    MIGRATE    //////////
 ////////////////////////////////
@@ -521,6 +566,8 @@ function migrateIfNeeded (win, json, fileName, callback) {
           // open file without migrating
           fs.writeFile(`${fileName}.backup`, JSON.stringify(json, null, 2), (err) => {
             if (err) {
+              log.warn(err)
+              log.warn('file name: ' + fileName)
               rollbar.warn(err, {fileName: fileName})
               dialog.showErrorBox('Problem saving backup', 'Plottr tried saving a backup just in case, but it didn\'t work. Try quitting Plottr and starting it again.')
             } else {
@@ -562,7 +609,10 @@ function buildPlottrMenu () {
       type: 'separator'
     }, {
       label: 'Report a Problem...',
-      click: openReportWindow
+      click: function () {
+        let report = prepareErrorReport()
+        sendErrorReport(report)
+      }
     }, {
       label: 'Give feedback...',
       click: openReportWindow
@@ -645,6 +695,8 @@ function buildFileMenu () {
         if (winObj) {
           saveFile(winObj.state.file.fileName, winObj.state, function (err) {
             if (err) {
+              log.warn(err)
+              log.warn('file name: ' + winObj.state.file.fileName)
               rollbar.warn(err, {fileName: winObj.state.file.fileName})
               gracefullyNotSave()
             } else {
@@ -667,6 +719,8 @@ function buildFileMenu () {
               var fullName = fileName + '.pltr'
               saveFile(fullName, winObj.state, function (err) {
                 if (err) {
+                  log.warn(err)
+                  log.warn('file name: ' + fullName)
                   rollbar.warn(err, {fileName: fullName})
                   gracefullyNotSave()
                 } else {
@@ -746,6 +800,8 @@ function buildViewMenu () {
             if (err) {
               fs.mkdir(folderPath, (err) => {
                 if (err) {
+                  log.warn(err)
+                  log.warn('folder path: ' + folderPath)
                   rollbar.warn(err, {folderPath: folderPath})
                 } else {
                   fs.writeFile(filePath, image.toPNG())

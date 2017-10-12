@@ -9,6 +9,7 @@ import { newFile, fileSaved, loadFile } from 'actions/ui'
 import mixpanel from 'mixpanel-browser'
 import { MPQ } from 'middlewares/helpers'
 import FileFixer from 'helpers/fixer'
+import log from 'electron-log'
 
 mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
 const root = document.getElementById('react-root')
@@ -44,7 +45,10 @@ ipcRenderer.on('open-file', (event, version, openFiles) => {
 })
 
 window.onerror = function (message, file, line, column, err) {
-  if (process.env.NODE_ENV !== 'dev') rollbar.info(err)
+  if (process.env.NODE_ENV !== 'dev') {
+    log.warn(err)
+    rollbar.info(err)
+  }
   let newState = FileFixer(store.getState())
   ipcRenderer.send('reload-window', win.id, newState)
 }

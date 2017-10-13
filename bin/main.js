@@ -550,7 +550,7 @@ function prepareErrorReport () {
 
 function sendErrorReport (body) {
   let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
-  var fileName = path.join(home, 'plottr_error_report.txt', 'Documents')
+  var fileName = path.join(home, 'Documents', 'plottr_error_report.txt')
   fs.writeFile(fileName, body, function(err) {
     if (err) {
       log.warn(err)

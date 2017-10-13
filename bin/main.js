@@ -240,12 +240,6 @@ function checkDirty (state, lastSave) {
 }
 
 function openRecentFiles () {
-  // open-file for windows
-  // if (process.platform === 'win32' && process.argv.length >= 2) {
-  //   if (process.argv[1].includes('.pltr') || process.argv[1].includes('.plottr')) {
-  //     openWindow(process.argv[1])
-  //   }
-  // }
   if (fileToOpen) {
     openWindow(fileToOpen)
     fileToOpen = null
@@ -556,13 +550,13 @@ function prepareErrorReport () {
 
 function sendErrorReport (body) {
   let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
-  var fileName = path.join(home, 'plottr_error_report.txt')
+  var fileName = path.join(home, 'plottr_error_report.txt', 'Documents')
   fs.writeFile(fileName, body, function(err) {
     if (err) {
       log.warn(err)
       rollbar.warn(err)
     } else {
-      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Email me at cameronsutter0@gmail.com with the file Plottr just exported', detail: 'Please email me the file named plottr_error_report.txt in your user\'s home folder'})
+      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Email me at cameronsutter0@gmail.com with the file Plottr just exported', detail: 'Please email me the file named plottr_error_report.txt in your Documents folder'})
     }
   })
 }

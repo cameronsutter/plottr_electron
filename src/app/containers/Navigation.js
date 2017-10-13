@@ -6,7 +6,7 @@ import { Glyphicon, Input, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
 var TRIALMODE = false
 if (process.env.NODE_ENV !== 'dev') {
-  TRIALMODE = process.env.TRIALMODE || false
+  TRIALMODE = env.trialmode || false
 }
 
 class Navigation extends Component {

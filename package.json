@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.1.14",
+  "version": "1.1.15",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -27,6 +27,7 @@
     "deep-diff": "^0.3.4",
     "docx": "^2.1.1",
     "electron-json-storage": "^2.0.0",
+    "electron-log": "^2.2.9",
     "lodash": "^4.17.4",
     "mixpanel-browser": "^2.9.14",
     "pagedown": "^1.1.0",

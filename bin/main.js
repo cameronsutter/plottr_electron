@@ -496,6 +496,41 @@ function gracefullyNotSave () {
   dialog.showErrorBox('Saving failed', 'Saving your file didn\'t work. Try again.')
 }
 
+function takeScreenshot () {
+  let win = BrowserWindow.getFocusedWindow()
+  if (win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
+  win.capturePage(function (image) {
+    if (process.env.NODE_ENV === 'dev') {
+      let version = app.getVersion()
+      let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
+      var folderPath = path.join(home, 'plottr_dist', version, 'screenshots')
+      let date = new Date()
+      let timestamp = '' + date.getMinutes() + date.getSeconds()
+      var fileName = 'shot' + timestamp + '.png'
+      var filePath = path.join(folderPath, fileName)
+      let stat = fs.stat(folderPath, (err, stat) => {
+        if (err) {
+          fs.mkdir(folderPath, (err) => {
+            if (err) {
+              log.error(err)
+            } else {
+              fs.writeFile(filePath, image.toPNG())
+            }
+          })
+        } else {
+          if (stat.isDirectory()) {
+            fs.writeFile(filePath, image.toPNG())
+          }
+        }
+      })
+    } else {
+      dialog.showSaveDialog(win, function(fileName) {
+        if (fileName) fs.writeFile(fileName + '.png', image.toPNG())
+      })
+    }
+  })
+}
+
 function prepareErrorReport () {
   var report = 'VERSION: ' + app.getVersion() + '\n\n'
   report += 'USER INFO\n'
@@ -520,7 +555,8 @@ function prepareErrorReport () {
 }
 
 function sendErrorReport (body) {
-  var fileName = path.resolve(process.env.HOME, 'plottr_error_report.txt')
+  let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
+  var fileName = path.join(home, 'plottr_error_report.txt')
   fs.writeFile(fileName, body, function(err) {
     if (err) {
       log.warn(err)
@@ -608,7 +644,8 @@ function buildPlottrMenu () {
     }, {
       type: 'separator'
     }, {
-      label: 'Report a Problem...',
+      label: 'Report a Problem',
+      sublabel: 'Creates a report to email me',
       click: function () {
         let report = prepareErrorReport()
         sendErrorReport(report)
@@ -782,53 +819,18 @@ function buildViewMenu () {
         win.webContents.reload()
       }
     }
-  },{
+  }, {
     label: 'Take Screenshot...',
     accelerator: 'CmdOrCtrl+P',
-    click: function () {
-      let win = BrowserWindow.getFocusedWindow()
-      if (win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
-      win.capturePage(function (image) {
-        if (process.env.NODE_ENV === 'dev') {
-          var version = app.getVersion()
-          var folderPath = path.join(process.env.HOME, 'plottr_dist', version, 'screenshots')
-          var date = new Date()
-          var timestamp = '' + date.getMinutes() + date.getSeconds()
-          var fileName = 'shot' + timestamp + '.png'
-          var filePath = path.join(folderPath, fileName)
-          let stat = fs.stat(folderPath, (err, stat) => {
-            if (err) {
-              fs.mkdir(folderPath, (err) => {
-                if (err) {
-                  log.warn(err)
-                  log.warn('folder path: ' + folderPath)
-                  rollbar.warn(err, {folderPath: folderPath})
-                } else {
-                  fs.writeFile(filePath, image.toPNG())
-                }
-              })
-            } else {
-              if (stat.isDirectory()) {
-                fs.writeFile(filePath, image.toPNG())
-              }
-            }
-          })
-        } else {
-          dialog.showSaveDialog(win, function(fileName) {
-            if (fileName) fs.writeFile(fileName + '.png', image.toPNG())
-          })
-        }
-      })
-    }
-  }]
-  if (!TRIALMODE) submenu.push({
+    click: takeScreenshot
+  }, {
     label: 'Show Dev Tools',
-    accelerator: '',
+    accelerator: 'CmdOrCtrl+D',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
       win.openDevTools()
     }
-  })
+  }]
   return {
     label: 'View',
     submenu: submenu
@@ -860,8 +862,12 @@ function buildHelpMenu () {
     role: 'help',
     submenu: [
       {
-        label: 'Report a Problem...',
-        click: openReportWindow
+        label: 'Report a Problem',
+        sublabel: 'Creates a report to email me',
+        click: function () {
+          let report = prepareErrorReport()
+          sendErrorReport(report)
+        }
       },
       {
         label: 'Give feedback...',

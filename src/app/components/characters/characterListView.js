@@ -14,7 +14,9 @@ class CharacterListView extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {dialogOpen: false, addAttrText: '', characterDetailId: props.characters[0].id}
+    let id = null
+    if (props.characters.length > 0) id = props.characters[0].id
+    this.state = {dialogOpen: false, addAttrText: '', characterDetailId: id}
   }
 
   componentWillReceiveProps (nextProps) {
@@ -81,9 +83,12 @@ class CharacterListView extends Component {
   renderCharacterDetails () {
     let character = this.props.characters.find(char =>
       char.id === this.state.characterDetailId
-    )
-    if (!character) character = this.props.characters[0]
-    return <CharacterView key={`character-${character.id}`} character={character} />
+    ) || this.props.characters[0]
+    if (character) {
+      return <CharacterView key={`character-${character.id}`} character={character} />
+    } else {
+      return null
+    }
   }
 
   renderCustomAttributes () {

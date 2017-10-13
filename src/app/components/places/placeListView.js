@@ -14,7 +14,9 @@ class PlaceListView extends Component {
 
   constructor (props) {
     super(props)
-    this.state = {dialogOpen: false, addAttrText: '', placeDetailId: props.places[0].id}
+    let id = null
+    if (props.places.length > 0) id = props.places[0].id
+    this.state = {dialogOpen: false, addAttrText: '', placeDetailId: id}
   }
 
   componentWillReceiveProps (nextProps) {
@@ -82,9 +84,12 @@ class PlaceListView extends Component {
   renderPlaceDetails () {
     let place = this.props.places.find(pl =>
       pl.id === this.state.placeDetailId
-    )
-    if (!place) place = this.props.places[0]
-    return <PlaceView key={`place-${place.id}`} place={place} />
+    ) || this.props.places[0]
+    if (place) {
+      return <PlaceView key={`place-${place.id}`} place={place} />
+    } else {
+      return null
+    }
   }
 
   renderCustomAttributes () {

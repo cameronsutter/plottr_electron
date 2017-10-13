@@ -15,10 +15,15 @@ class NoteListView extends Component {
 
   constructor (props) {
     super(props)
-    const sortedNotes = _.sortBy(props.notes, ['lastEdited'])
-    sortedNotes.reverse()
+    var id = null
+    var sortedNotes = []
+    if (props.notes.length > 0) {
+      sortedNotes = _.sortBy(props.notes, ['lastEdited'])
+      sortedNotes.reverse()
+      id = sortedNotes[0].id
+    }
     this.state = {
-      noteDetailId: sortedNotes[0].id,
+      noteDetailId: id,
       filter: null,
       viewableNotes: sortedNotes}
   }

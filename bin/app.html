@@ -16,10 +16,10 @@
       let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''
       var rollbar = new Rollbar({
         accessToken: rollbarToken,
-        enviroment: environment,
         handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
         handleUnhandledRejections: true,
         payload: {
+          environment: environment,
           version: app.getVersion(),
           where: 'app.html',
           os: process.platform

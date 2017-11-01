@@ -24,7 +24,7 @@ class CardView extends Component {
   handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify(this.props.card))
-    this.setState({dragging: true})
+    this.setState({dragging: true, hovering: false})
   }
 
   handleDragEnd = () => {

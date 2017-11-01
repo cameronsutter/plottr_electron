@@ -622,10 +622,10 @@
     "scenes": []
   },
   "file": {
-    "dirty": false,
+    "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.1.11"
+    "version": "1.1.19"
   },
   "lines": [
     {
@@ -643,13 +643,13 @@
     {
       "color": "#ffc72c",
       "id": 34,
-      "position": 4,
+      "position": 5,
       "title": "Rivab"
     },
     {
       "color": "#0b1117",
       "id": 35,
-      "position": 5,
+      "position": 6,
       "title": "Baltazaar"
     },
     {
@@ -667,7 +667,7 @@
     {
       "color": "darkorchid",
       "id": 36,
-      "position": 6,
+      "position": 4,
       "title": "Bimph"
     }
   ],

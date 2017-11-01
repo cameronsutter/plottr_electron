@@ -43,11 +43,11 @@ let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
 let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''
 var rollbar = new Rollbar({
   accessToken: rollbarToken,
-  enviroment: environment,
   handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
   handleUnhandledRejections: true,
   ignoredMessages: [],
   payload: {
+    environment: environment,
     version: app.getVersion(),
     where: 'main',
     os: process.platform
@@ -392,10 +392,9 @@ function openWindow (fileName, newFile = false) {
     log.warn(err)
     log.warn('file name: ' + fileName)
     rollbar.warn(err, {fileName: fileName})
-    console.log(err)
+    askToOpenOrCreate()
     removeRecentFile(fileName)
     newWindow.destroy()
-    askToOpenOrCreate()
   }
 }
 

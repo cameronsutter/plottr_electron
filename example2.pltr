@@ -13,12 +13,13 @@
   ],
   "characters": [
     {
+      "cards": [],
       "color": null,
       "description": "she is the coolest",
       "id": 0,
       "name": "main character",
       "noteIds": [],
-      "notes": null
+      "notes": ""
     }
   ],
   "customAttributes": {
@@ -32,7 +33,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example2.pltr",
     "loaded": true,
-    "version": "1.1.11"
+    "version": "1.1.21"
   },
   "lines": [
     {
@@ -45,18 +46,24 @@
   "notes": [],
   "places": [
     {
+      "cards": [],
       "color": null,
       "description": "my favorite place",
       "id": 0,
       "name": "first place",
       "noteIds": [],
-      "notes": null
+      "notes": ""
     }
   ],
   "scenes": [
     {
-      "id": 2,
-      "position": 2,
+      "id": 3,
+      "position": 3,
+      "title": "Scene 4"
+    },
+    {
+      "id": 0,
+      "position": 0,
       "title": "new scene"
     },
     {
@@ -65,8 +72,8 @@
       "title": "new scene"
     },
     {
-      "id": 0,
-      "position": 0,
+      "id": 2,
+      "position": 2,
       "title": "new scene"
     }
   ],

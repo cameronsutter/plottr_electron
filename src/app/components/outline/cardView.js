@@ -26,7 +26,6 @@ class CardView extends Component {
     this.setState({editing: false})
   }
 
-
   saveCreatedLabels (desc) {
     var regex = /{{([\w\s]*)}}/gi
     var matches

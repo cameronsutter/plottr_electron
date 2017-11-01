@@ -60,11 +60,22 @@ class LineView extends Component {
     return _.sortBy(cards, 'position')
   }
 
+  editTitle = () => {
+    var id = this.props.line.id
+    var newTitle = this.refs.titleInput.getValue()
+    this.props.actions.editLineTitle(id, newTitle)
+    this.setState({editing: false})
+  }
+
   handleFinishEditingTitle = (event) => {
     if (event.which === 13) {
-      var id = this.props.line.id
-      var newTitle = this.refs.titleInput.getValue()
-      this.props.actions.editLineTitle(id, newTitle)
+      this.editTitle()
+    }
+  }
+
+  handleBlur = () => {
+    if (this.refs.titleInput.getValue() !== '') {
+      this.editTitle()
       this.setState({editing: false})
     }
   }
@@ -242,7 +253,7 @@ class LineView extends Component {
         ref='titleInput'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-        onBlur={() => this.setState({editing: false})}
+        onBlur={this.handleBlur}
         onKeyPress={this.handleFinishEditingTitle} />)
     }
     return (

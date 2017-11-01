@@ -64,11 +64,15 @@ class CardView extends Component {
     }
   }
 
+  saveCreate = () => {
+    var newCard = this.buildCard(this.refs.titleInput.getValue())
+    this.props.actions.addCard(newCard)
+    this.setState({creating: false})
+  }
+
   handleFinishCreate = (event) => {
     if (event.which === 13) {
-      var newCard = this.buildCard(this.refs.titleInput.getValue())
-      this.props.actions.addCard(newCard)
-      this.setState({creating: false})
+      this.saveCreate()
     }
   }
 
@@ -86,6 +90,16 @@ class CardView extends Component {
 
   handleCancelCreate = (event) => {
     if (event.which === 27) {
+      this.setState({creating: false})
+    }
+  }
+
+  handleBlur = () => {
+    var newTitle = this.refs.titleInput.getValue()
+    if (newTitle === '') {
+      return false
+    } else {
+      this.saveCreate()
       this.setState({creating: false})
     }
   }
@@ -181,7 +195,7 @@ class CardView extends Component {
             label='Card Title'
             ref='titleInput'
             bsSize='small'
-            onBlur={() => this.setState({creating: false})}
+            onBlur={this.handleBlur}
             onKeyDown={this.handleCancelCreate}
             onKeyPress={this.handleFinishCreate} />
         </div>

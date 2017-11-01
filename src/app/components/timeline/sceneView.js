@@ -13,12 +13,26 @@ class SceneView extends Component {
     this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
   }
 
+  editTitle = () => {
+    var id = this.props.scene.id
+    var newTitle = this.refs.titleInput.getValue()
+    this.props.actions.editSceneTitle(id, newTitle)
+    this.setState({editing: false})
+  }
+
   handleFinishEditing = (event) => {
     if (event.which === 13) {
-      var id = this.props.scene.id
-      var newTitle = this.refs.titleInput.getValue()
-      this.props.actions.editSceneTitle(id, newTitle)
+      this.editTitle()
+    }
+  }
+
+  handleBlur = () => {
+    if (this.props.scene.title === '') {
+      let newTitle = `Scene ${this.props.scene.position + 1}`
+      this.props.actions.editSceneTitle(this.props.scene.id, newTitle)
       this.setState({editing: false})
+    } else {
+      this.editTitle()
     }
   }
 
@@ -91,7 +105,7 @@ class SceneView extends Component {
         ref='titleInput'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-        onBlur={() => this.setState({editing: false})}
+        onBlur={this.handleBlur}
         onKeyPress={this.handleFinishEditing} />)
   }
 

@@ -95,18 +95,16 @@ app.on('activate', function () {
   }
 })
 
-ipcMain.on('save-state', function (event, state, winId) {
-  log.warn('save-state')
-  log.warn(state)
+ipcMain.on('save-state', function (event, state, winId, isNewFile) {
   var winObj = _.find(windows, {id: winId})
-  let edited = checkDirty(state, winObj.lastSave)
-  winObj.window.setDocumentEdited(edited)
+  let wasEdited = checkDirty(state, winObj.lastSave)
+  winObj.window.setDocumentEdited(wasEdited)
   winObj.window.setTitle(displayFileName(winObj.fileName))
   winObj.window.setRepresentedFilename(winObj.fileName)
 
   // save the new state
   winObj.state = state
-  if (edited && !TRIALMODE) {
+  if (shouldSave(isNewFile, wasEdited)) {
     saveFile(winObj.fileName, state, function (err) {
       if (err) {
         log.warn(err)
@@ -121,6 +119,12 @@ ipcMain.on('save-state', function (event, state, winId) {
     })
   } else winObj.window.webContents.send('state-saved')
 })
+
+function shouldSave(isNewFile, wasEdited) {
+  if (isNewFile) return true
+  if (wasEdited && !TRIALMODE) return true
+  return false
+}
 
 ipcMain.on('fetch-state', function (event, id) {
   var win = _.find(windows, {id: id})
@@ -242,14 +246,12 @@ function checkDirty (state, lastSave) {
 }
 
 function openRecentFiles () {
-  log.warn(process.argv)
   // open-file for windows
-  if (process.platform === 'win32' && process.argv.length >= 2) {
+  if (process.platform === 'win32' && process.argv.length == 2) {
     if (process.argv[1].includes('.pltr') || process.argv[1].includes('.plottr')) {
       openWindow(process.argv[1])
     }
-  }
-  if (fileToOpen) {
+  } else if (fileToOpen) {
     openWindow(fileToOpen)
     fileToOpen = null
   } else {
@@ -351,10 +353,9 @@ function openWindow (fileName, newFile = false) {
     }
   })
 
-  // if (process.env.NODE_ENV === 'dev') {
-  //   // Open the DevTools.
-  newWindow.openDevTools()
-  // }
+  if (process.env.NODE_ENV === 'dev') {
+    newWindow.openDevTools()
+  }
 
   newWindow.on('closed', function () {})
 

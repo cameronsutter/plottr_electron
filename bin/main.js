@@ -240,6 +240,13 @@ function checkDirty (state, lastSave) {
 }
 
 function openRecentFiles () {
+  log.warn(process.argv)
+  // open-file for windows
+  if (process.platform === 'win32' && process.argv.length >= 2) {
+    if (process.argv[1].includes('.pltr') || process.argv[1].includes('.plottr')) {
+      openWindow(process.argv[1])
+    }
+  }
   if (fileToOpen) {
     openWindow(fileToOpen)
     fileToOpen = null

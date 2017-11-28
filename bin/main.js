@@ -96,6 +96,8 @@ app.on('activate', function () {
 })
 
 ipcMain.on('save-state', function (event, state, winId) {
+  log.warn('save-state')
+  log.warn(state)
   var winObj = _.find(windows, {id: winId})
   let edited = checkDirty(state, winObj.lastSave)
   winObj.window.setDocumentEdited(edited)
@@ -349,10 +351,10 @@ function openWindow (fileName, newFile = false) {
     }
   })
 
-  if (process.env.NODE_ENV === 'dev') {
-    // Open the DevTools.
-    newWindow.openDevTools()
-  }
+  // if (process.env.NODE_ENV === 'dev') {
+  //   // Open the DevTools.
+  newWindow.openDevTools()
+  // }
 
   newWindow.on('closed', function () {})
 

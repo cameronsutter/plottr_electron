@@ -95,6 +95,7 @@
 }
 
 .card-dialog__details-label {
+  cursor: pointer;
   @include sub-header-font;
   min-width: 150px;
 }

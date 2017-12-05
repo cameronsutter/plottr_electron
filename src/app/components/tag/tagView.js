@@ -12,8 +12,18 @@ class TagView extends Component {
     this.state = {editing: props.tag.title === '', showColorPicker: false}
   }
 
+  componentWillUnmount () {
+    if (this.state.editing) this.saveEdit()
+  }
+
   handleEnter = (event) => {
     if (event.which === 13) {
+      this.saveEdit()
+    }
+  }
+
+  handleEsc = (event) => {
+    if (event.which === 27) {
       this.saveEdit()
     }
   }
@@ -49,10 +59,9 @@ class TagView extends Component {
   renderEditing () {
     const { tag } = this.props
     return (
-      <div onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-        >
+      <div onKeyDown={this.handleEsc}>
         <Input type='text' ref='titleInput' autoFocus
-          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+          onKeyDown={this.handleEsc}
           onKeyPress={this.handleEnter}
           label='tag name' defaultValue={tag.title} />
         {this.renderColorPicker()}
@@ -69,7 +78,10 @@ class TagView extends Component {
   }
 
   renderTag () {
-    return <div onClick={() => this.setState({editing: true})}>
+    return <div
+        onClick={() => this.setState({editing: true})}
+        className='tag-list__tag-normal'
+      >
       <h6>{this.props.tag.title}</h6>
       {this.renderColorPicker()}
     </div>

@@ -28,6 +28,10 @@
   @include well;
   width: 75%;
   float: right;
+  h4 {
+    cursor: pointer;
+  }
+
   .note-list__body {
     display: flex;
     flex-direction: row;
@@ -45,6 +49,10 @@
       width: 80%;
       padding-left: 10px;
       overflow-y:scroll;
+      cursor: pointer;
+    }
+    .note-list__content.editing {
+      cursor: auto;
     }
   }
   .note-list__note__edit-form {
@@ -56,6 +64,12 @@
   .btn-toolbar {
     display: flex;
     flex-direction: row-reverse;
+  }
+}
+
+.note-list__note.editing {
+  h4 {
+    cursor: auto;
   }
 }
 

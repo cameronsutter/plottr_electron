@@ -28,6 +28,7 @@
   @include well;
   width: 75%;
   float: right;
+  cursor: pointer;
   .place-list__place__edit-form {
     padding-left: 5px;
     display: flex;
@@ -46,6 +47,10 @@
     display: flex;
     flex-direction: row-reverse;
   }
+}
+
+.place-list__place.editing {
+  cursor: auto;
 }
 
 .place-list__custom-attributes-list-wrapper {

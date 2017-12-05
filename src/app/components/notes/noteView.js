@@ -15,8 +15,18 @@ class NoteView extends Component {
     this.state = {editing: props.note.title === ''}
   }
 
+  componentWillUnmount () {
+    if (this.state.editing) this.saveEdit()
+  }
+
   handleEnter = (event) => {
     if (event.which === 13) {
+      this.saveEdit()
+    }
+  }
+
+  handleEsc = (event) => {
+    if (event.which === 27) {
       this.saveEdit()
     }
   }
@@ -38,15 +48,15 @@ class NoteView extends Component {
     const { note } = this.props
     if (this.state.editing) {
       return (
-        <div className='note-list__content'>
+        <div className='note-list__content editing'>
           <div className='note-list__note__edit-form'>
             <Input
               type='text' ref='titleInput' autoFocus
-              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
               label='Title' defaultValue={note.title} />
             <Input type='textarea' rows='10' ref='contentInput'
-              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyDown={this.handleEsc}
               label='Content' defaultValue={note.content} />
           </div>
           <ButtonToolbar className='card-dialog__button-bar'>
@@ -74,8 +84,10 @@ class NoteView extends Component {
 
   renderNote () {
     const { note } = this.props
+    let klasses = 'note-list__note'
+    if (this.state.editing) klasses += ' editing'
     return (
-      <div className='note-list__note'>
+      <div className={klasses}>
         <h4 className='text-center secondary-text' onClick={() => this.setState({editing: true})}>
           {note.title}
         </h4>

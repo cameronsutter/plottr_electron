@@ -11,8 +11,18 @@ class CharacterView extends Component {
     this.state = {editing: props.character.name === ''}
   }
 
+  componentWillUnmount () {
+    if (this.state.editing) this.saveEdit()
+  }
+
   handleEnter = (event) => {
     if (event.which === 13) {
+      this.saveEdit()
+    }
+  }
+
+  handleEsc = (event) => {
+    if (event.which === 27) {
       this.saveEdit()
     }
   }
@@ -41,7 +51,7 @@ class CharacterView extends Component {
       <Input key={idx}
         type='text' label={attr} ref={`${attr}Input`}
         defaultValue={this.props.character[attr]}
-        onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+        onKeyDown={this.handleEsc}
         onKeyPress={this.handleEnter} />
     )
   }
@@ -49,20 +59,20 @@ class CharacterView extends Component {
   renderEditing () {
     const { character } = this.props
     return (
-      <div className='character-list__character'>
+      <div className='character-list__character editing'>
         <div className='character-list__character__edit-form'>
           <div className='character-list__inputs__normal'>
             <Input
               type='text' ref='nameInput' autoFocus
-              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
               label='Name' defaultValue={character.name} />
             <Input type='text' ref='descriptionInput'
-              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
               label='Short Description' defaultValue={character.description} />
             <Input type='textarea' rows='10' ref='notesInput'
-              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyDown={this.handleEsc}
               label='Notes' defaultValue={character.notes} />
           </div>
           <div className='character-list__inputs__custom'>

@@ -10,8 +10,18 @@ class PlaceView extends Component {
     this.state = {editing: props.place.name === ''}
   }
 
+  componentWillUnmount () {
+    if (this.state.editing) this.saveEdit()
+  }
+
   handleEnter = (event) => {
     if (event.which === 13) {
+      this.saveEdit()
+    }
+  }
+
+  handleEsc = (event) => {
+    if (event.which === 27) {
       this.saveEdit()
     }
   }
@@ -40,7 +50,7 @@ class PlaceView extends Component {
       <Input key={idx}
         type='text' label={attr} ref={`${attr}Input`}
         defaultValue={this.props.place[attr]}
-        onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+        onKeyDown={this.handleEsc}
         onKeyPress={this.handleEnter} />
     )
   }
@@ -48,20 +58,20 @@ class PlaceView extends Component {
   renderEditing () {
     const { place } = this.props
     return (
-      <div className='place-list__place'>
+      <div className='place-list__place editing'>
         <div className='place-list__place__edit-form'>
           <div className='place-list__inputs__normal'>
             <Input
               type='text' ref='nameInput' autoFocus
-              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
               label='Name' defaultValue={place.name} />
             <Input type='text' ref='descriptionInput'
-              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
               label='Short Description' defaultValue={place.description} />
             <Input type='textarea' rows='10' ref='notesInput'
-              onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+              onKeyDown={this.handleEsc}
               label='Notes' defaultValue={place.notes} />
           </div>
           <div className='place-list__inputs__custom'>

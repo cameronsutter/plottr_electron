@@ -22,6 +22,7 @@ class CardDialog extends Component {
   }
 
   closeDialog = () => {
+    if (this.state.editing) this.saveEdit()
     this.props.closeDialog()
   }
 
@@ -241,7 +242,9 @@ class CardDialog extends Component {
           <div className='card-dialog__body'>
             {this.renderLeftSide()}
             <div className='card-dialog__description'>
-              <p className='card-dialog__details-label text-center'>Description:</p>
+              <p
+                onClick={() => this.setState({editing: true})}
+                className='card-dialog__details-label text-center'>Description:</p>
               {this.renderDescription()}
             </div>
           </div>

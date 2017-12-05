@@ -18,6 +18,10 @@ class CardView extends Component {
     return _.find(this.props.lines, {id: this.props.card.lineId})
   }
 
+  componentWillUnmount () {
+    if (this.state.editing) this.saveEdit()
+  }
+
   saveEdit = () => {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
     var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
@@ -51,13 +55,19 @@ class CardView extends Component {
     }
   }
 
+  handleEsc = (event) => {
+    if (event.which === 27) {
+      this.saveEdit()
+    }
+  }
+
   renderTitle () {
     const { title } = this.props.card
 
     if (this.state.editing) {
       return <Input
         onKeyPress={this.handleEnter}
-        onKeyDown={(e) => {if (e.which === 27) this.setState({editing: false})}}
+        onKeyDown={this.handleEsc}
         type='text' autoFocus
         label='title' ref='titleInput'
         defaultValue={title} />
@@ -74,7 +84,7 @@ class CardView extends Component {
         <div className='outline__description__editing'>
           <Input type='textarea' label='description' rows='15'
             ref='descriptionInput' defaultValue={description}
-            onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+            onKeyDown={this.handleEsc}
             />
           <small>Format with markdown! <a href='#' onClick={() => shell.openExternal(url)}>learn how</a></small>
           <ButtonToolbar className='card-dialog__button-bar'>

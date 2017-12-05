@@ -7,10 +7,23 @@ function Exporter (data, { fileName }) {
   title.title().center().pageBreak()
   doc.addParagraph(title)
 
+  let characterNames = data.characters.reduce(function(mapping, char){
+    mapping[char.id] = char.name
+    return mapping
+  }, {})
+  let placeNames = data.places.reduce(function(mapping, place){
+    mapping[place.id] = place.name
+    return mapping
+  }, {})
+  let tagTitles = data.tags.reduce(function(mapping, tag){
+    mapping[tag.id] = tag.title
+    return mapping
+  }, {})
+
   let outlineHeading = new docx.Paragraph('Outline')
   outlineHeading.heading1().center()
   doc.addParagraph(outlineHeading)
-  outline(data).forEach(function(par) {
+  outline(data, characterNames, placeNames, tagTitles).forEach(function(par) {
     doc.addParagraph(par)
   })
 
@@ -34,7 +47,7 @@ function Exporter (data, { fileName }) {
   let notesHeading = new docx.Paragraph('Notes')
   notesHeading.heading1().center()
   doc.addParagraph(notesHeading)
-  notes(data.notes).forEach(function(par) {
+  notes(data.notes, characterNames, placeNames, tagTitles).forEach(function(par) {
     doc.addParagraph(par)
   })
 
@@ -47,27 +60,49 @@ function Exporter (data, { fileName }) {
 /////   Support Functions   ////////
 ////////////////////////////////////
 
-function outline (data) {
+function outline (data, characterNames, placeNames, tagTitles) {
   let scenes = _.sortBy(data.scenes, 'position')
-  let paragraphs = scenes.map(function(s) { return scene(s, data) })
+  let paragraphs = scenes.map(function(s) { return scene(s, data, characterNames, placeNames, tagTitles) })
   return _.flatten(paragraphs)
 }
 
-function scene (scene, data) {
+function scene (scene, data, characterNames, placeNames, tagTitles) {
   let paragraphs = []
   paragraphs.push(new docx.Paragraph(scene.title).heading2())
   let cards = sortedSceneCards(scene.id, data.cards, data.lines)
-  let cardParagraphs = cards.map(function(c) { return card(c, data.lines) })
+  let cardParagraphs = cards.map(function(c) { return card(c, data.lines, characterNames, placeNames, tagTitles) })
   let flattened = _.flatten(cardParagraphs)
   return paragraphs.concat(flattened)
 }
 
-function card (card, lines) {
+function card (card, lines, characterNames, placeNames, tagTitles) {
   let paragraphs = []
   let line = _.find(lines, {id: card.lineId})
   let titleString = `${card.title} (${line.title})`
+  let attachmentParagraphs = attachments(card, characterNames, placeNames, tagTitles)
   paragraphs.push(new docx.Paragraph(titleString).heading3())
+  paragraphs = paragraphs.concat(attachmentParagraphs)
   paragraphs.push(new docx.Paragraph(card.description).style('indented'))
+  return paragraphs
+}
+
+function attachments (obj, characterNames, placeNames, tagTitles) {
+  let characters = obj.characters.map(function(ch) { return characterNames[ch]})
+  let places = obj.places.map(function(pl) { return placeNames[pl]})
+  let tags = obj.tags.map(function(tg) { return tagTitles[tg]})
+  let paragraphs = []
+  if (characters.length > 0) {
+    paragraphs.push(new docx.Paragraph(`Characters: ${characters.join(', ')}`).style('attachments'))
+  }
+  if (places.length > 0) {
+    paragraphs.push(new docx.Paragraph(`Places: ${places.join(', ')}`).style('attachments'))
+  }
+  if (tags.length > 0) {
+    paragraphs.push(new docx.Paragraph(`Tags: ${tags.join(', ')}`).style('attachments'))
+  }
+  if (paragraphs.length > 0) {
+    paragraphs.push(new docx.Paragraph('').style('attachments'))
+  }
   return paragraphs
 }
 
@@ -124,11 +159,13 @@ function places (places, customAttributes) {
   return paragraphs
 }
 
-function notes (notes) {
+function notes (notes, characterNames, placeNames, tagTitles) {
   let paragraphs = []
   notes.forEach(function(n) {
     let title = new docx.Paragraph(n.title).heading2()
     paragraphs.push(title)
+    let attachmentParagraphs = attachments(n, characterNames, placeNames, tagTitles)
+    paragraphs = paragraphs.concat(attachmentParagraphs)
     paragraphs.push(new docx.Paragraph(n.content).style('indented'))
   })
 
@@ -141,6 +178,11 @@ function notes (notes) {
 
 function styles () {
   let paragraphStyles = new docx.Styles()
+  paragraphStyles.createParagraphStyle('Normal', 'Normal')
+    .quickFormat()
+    .size(20)
+    .spacing({before: 0, after: 240, line: 300})
+
   paragraphStyles.createParagraphStyle('Title', 'Title')
     .quickFormat()
     .basedOn('Normal')
@@ -169,14 +211,15 @@ function styles () {
     .spacing({before: 0, after: 120})
     .indent(360)
 
-  paragraphStyles.createParagraphStyle('Normal', 'Normal')
-    .quickFormat()
-    .size(20)
-    .spacing({before: 0, after: 240, line: 300})
-
   paragraphStyles.createParagraphStyle('indented', 'Indented Normal')
     .basedOn('Normal')
     .next('Normal')
+    .indent(720)
+
+  paragraphStyles.createParagraphStyle('attachments', 'Attachments')
+    .basedOn('Normal')
+    .next('Normal')
+    .spacing({before: 0, after: 0})
     .indent(720)
 
   return paragraphStyles

@@ -4,10 +4,7 @@ import { connect } from 'react-redux'
 import * as UIActions from 'actions/ui'
 import { Glyphicon, Input, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
-var TRIALMODE = false
-if (process.env.NODE_ENV !== 'dev') {
-  TRIALMODE = env.trialmode || false
-}
+var TRIALMODE = process.env.TRIALMODE === 'true'
 
 class Navigation extends Component {
   constructor (props) {
@@ -15,7 +12,7 @@ class Navigation extends Component {
     this.state = {editing: false, showHistory: false}
   }
 
-  toggleShowHistory () {
+  toggleShowHistory = () => {
     this.setState({showHistory: !this.state.showHistory})
   }
 
@@ -74,7 +71,7 @@ class Navigation extends Component {
               </li>
             </ul>
             <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>
-              <Button onClick={this.toggleShowHistory.bind(this)}><Glyphicon glyph='erase' /> Undo</Button>
+              <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> Undo</Button>
               <HistoryComponent show={this.state.showHistory} />
             </div>
             <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>

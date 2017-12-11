@@ -8,13 +8,10 @@ var _ = require('lodash')
 var storage = require('electron-json-storage')
 var log = require('electron-log')
 var Rollbar = require('rollbar')
-var TRIALMODE = false
-if (process.env.NODE_ENV === 'dev') {
-  require('dotenv').config()
-} else {
-  var env = require('../env.json')
-  TRIALMODE = env.trialmode
-}
+var request = require('request')
+var { stringify } = require('dotenv-stringify')
+require('dotenv').config()
+var TRIALMODE = process.env.TRIALMODE === 'true'
 
 const USER_INFO_PATH = 'user_info'
 var USER_INFO = {}
@@ -25,6 +22,7 @@ var windows = []
 var aboutWindow = null
 var verifyWindow = null
 var reportWindow = null
+var buyWindow = null
 
 var fileToOpen = null
 var dontquit = false
@@ -91,7 +89,7 @@ app.on('activate', function () {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (windows.length === 0) {
-    checkLicense()
+    checkLicense(function() {})
   }
 })
 
@@ -163,9 +161,60 @@ ipcMain.on('launch-sent', function (event) {
   launchSent = true
 })
 
+ipcMain.on('open-buy-window', function (event) {
+  openBuyWindow()
+})
+
+ipcMain.on('license-to-verify', function (event, licenseString) {
+  dialog.showMessageBox(buyWindow, {type: 'info', buttons: ['ok'], message: 'Verifying your license. Please wait...', detail: licenseString}, function (choice) {})
+  var req = {
+    url: 'https://api.gumroad.com/v2/licenses/verify',
+    method: 'POST',
+    json: true,
+    body: {
+      product_permalink: 'fgSJ',
+      license_key: licenseString
+    }
+  }
+  const view = this
+  request(req, function (err, response, body) {
+    if (err && err.code === 404) {
+      logger.warn(err)
+      dialog.showErrorBox('License verification failed', 'Try again by clicking in the menu: Plottr > Verify License...')
+    } else {
+      if (body.success && !body.purchase.refunded && !body.purchase.chargebacked) {
+        // save uses, purchase.email, purchase.full_name, purchase.variants
+        storage.set('user_info', body, function(err) {
+          if (err) {
+            logger.error(err)
+            dialog.showErrorBox('License verification failed', 'Try again by clicking in the menu: Plottr > Verify License...')
+          } else {
+            dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'License verified! You\'re all set.', detail: 'Now let\'s get to the good stuff'}, function () {
+              licenseVerified()
+            })
+          }
+        })
+      }
+    }
+  })
+})
+
+function licenseVerified () {
+  if (verifyWindow) verifyWindow.close()
+  if (buyWindow) buyWindow.close()
+  if (TRIALMODE) {
+    turnOffTrialMode()
+    var template = buildMenu()
+    var menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+    askToOpenOrCreate()
+  } else {
+    openRecentFiles()
+  }
+}
+
 ipcMain.on('license-verified', function () {
-  verifyWindow.close()
-  openRecentFiles()
+  licenseVerified()
 })
 
 ipcMain.on('report-window-requested', openReportWindow)
@@ -184,20 +233,20 @@ app.on('ready', function () {
       app.quit()
     })
   } else {
-    var template = buildMenu()
-    var menu = Menu.buildFromTemplate(template)
-    Menu.setApplicationMenu(menu)
+    checkLicense(function() {
+      var template = buildMenu()
+      var menu = Menu.buildFromTemplate(template)
+      Menu.setApplicationMenu(menu)
 
-    if (process.platform === 'darwin') {
-      let dockMenu = Menu.buildFromTemplate([
-        {label: 'Create a new file', click: function () {
-          askToCreateFile()
-        }},
-      ])
-      app.dock.setMenu(dockMenu)
-    }
-
-    checkLicense()
+      if (process.platform === 'darwin') {
+        let dockMenu = Menu.buildFromTemplate([
+          {label: 'Create a new file', click: function () {
+            askToCreateFile()
+          }},
+        ])
+        app.dock.setMenu(dockMenu)
+      }
+    })
   }
 })
 
@@ -205,23 +254,43 @@ app.on('ready', function () {
 ///////   FUNCTIONS   //////////
 ////////////////////////////////
 
-function checkLicense () {
-  if (TRIALMODE) {
-    openAboutWindow()
-    openTour()
-  } else {
-    storage.has(USER_INFO_PATH, function (err, hasKey) {
-      if (err) console.log(err)
-      if (hasKey) {
-        storage.get(USER_INFO_PATH, function (err, data) {
-          USER_INFO = data
+function checkLicense (callback) {
+  storage.has(USER_INFO_PATH, function (err, hasKey) {
+    if (err) log.error(err)
+    if (hasKey) {
+      storage.get(USER_INFO_PATH, function (err, data) {
+        if (err) log.error(err)
+        USER_INFO = data
+        if (TRIALMODE) {
+          if (data.success) turnOffTrialMode()
+          callback()
+          openRecentFiles()
+        } else {
+          callback()
           if (data.success) openRecentFiles()
           else openVerifyWindow()
-        })
-      } else {
-        openVerifyWindow()
-      }
-    })
+        }
+      })
+    } else {
+      callback()
+      if (TRIALMODE) openTour()
+      else openVerifyWindow()
+    }
+  })
+}
+
+function turnOffTrialMode() {
+  if (process.env.NODE_ENV !== 'dev') {
+    TRIALMODE = false
+    process.env.TRIALMODE = 'false'
+    var env = {
+      ROLLBAR_ACCESS_TOKEN: process.env.ROLLBAR_ACCESS_TOKEN,
+      NODE_ENV: process.env.NODE_ENV,
+      TRIALMODE: 'false'
+    }
+    var envstr = stringify(env)
+
+    fs.writeFileSync(path.join('..','.env'), envstr)
   }
 }
 
@@ -263,7 +332,6 @@ function openRecentFiles () {
           openWindow(fileName)
         })
       } else {
-        openAboutWindow()
         openTour()
       }
     })
@@ -489,6 +557,18 @@ function openReportWindow () {
   })
 }
 
+function openBuyWindow () {
+  const buyFile = path.join(filePrefix, 'buy.html')
+  buyWindow = new BrowserWindow({height: 600, show: false})
+  buyWindow.loadURL(buyFile)
+  buyWindow.once('ready-to-show', function() {
+    this.show()
+  })
+  buyWindow.on('close', function () {
+    reportWindow = null
+  })
+}
+
 function gracefullyQuit () {
   dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Plottr ran into a problem. Try opening Plottr again.', detail: 'If you keep seeing this problem, email me at cameronsutter0@gmail.com'}, function (choice) {
     app.quit()
@@ -636,36 +716,44 @@ function buildMenu () {
 }
 
 function buildPlottrMenu () {
-  return {
-    label: 'Plottr',
-    submenu: [ {
-      label: 'About Plottr',
-      click: openAboutWindow
-    }, {
-      label: 'Open the Tour...',
-      click: openTour
-    }, {
+  var submenu = [{
+    label: 'About Plottr',
+    click: openAboutWindow
+  }]
+  if (TRIALMODE) {
+    submenu = [].concat({
       type: 'separator'
     }, {
-      label: 'Report a Problem',
-      sublabel: 'Creates a report to email me',
-      click: function () {
-        let report = prepareErrorReport()
-        sendErrorReport(report)
-      }
+      label: 'Buy the Full Version...',
+      click: openBuyWindow
     }, {
-      label: 'Give feedback...',
-      click: openReportWindow
-    }, {
-      label: 'Request a feature...',
-      click: openReportWindow
+      label: 'Enter License...',
+      click: openVerifyWindow
     }, {
       type: 'separator'
-    }, {
-      label: 'Services',
-      role: 'services',
-      submenu: []
-    }, {
+    })
+  }
+  submenu = [].concat({
+    label: 'Open the Tour...',
+    click: openTour
+  }, {
+    type: 'separator'
+  }, {
+    label: 'Report a Problem',
+    sublabel: 'Creates a report to email me',
+    click: function () {
+      let report = prepareErrorReport()
+      sendErrorReport(report)
+    }
+  }, {
+    label: 'Give feedback...',
+    click: openReportWindow
+  }, {
+    label: 'Request a feature...',
+    click: openReportWindow
+  })
+  if (process.platform === 'darwin') {
+    submenu = [].concat({
       type: 'separator'
     }, {
       label: 'Hide Plottr',
@@ -687,7 +775,20 @@ function buildPlottrMenu () {
         // TODO: check for dirty files open
         app.quit()
       }
-    }]
+    })
+  } else {
+    submenu = [].concat({
+      label: 'Close',
+      accelerator: 'Alt+F4',
+      click: function () {
+        // TODO: check for dirty files open
+        app.quit()
+      }
+    })
+  }
+  return {
+    label: 'Plottr',
+    submenu: submenu
   }
 }
 
@@ -715,65 +816,67 @@ function buildFileMenu () {
       }
     }
   }]
-  if (!TRIALMODE) {
-    var submenu = [].concat({
-      label: 'New...',
-      accelerator: 'CmdOrCtrl+N',
-      click: askToCreateFile
-    }, {
-      label: 'Open...',
-      accelerator: 'CmdOrCtrl+O',
-      click: askToOpenFile
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Save',
-      accelerator: 'CmdOrCtrl+S',
-      click: function () {
-        let win = BrowserWindow.getFocusedWindow()
-        let winObj = _.find(windows, {id: win.id})
-        if (winObj) {
-          saveFile(winObj.state.file.fileName, winObj.state, function (err) {
-            if (err) {
-              log.warn(err)
-              log.warn('file name: ' + winObj.state.file.fileName)
-              rollbar.warn(err, {fileName: winObj.state.file.fileName})
-              gracefullyNotSave()
-            } else {
-              win.webContents.send('state-saved')
-              winObj.lastSave = winObj.state
-              win.setDocumentEdited(false)
-            }
-          })
-        }
+  var submenu = [].concat({
+    label: 'New...',
+    enabled: !TRIALMODE,
+    accelerator: 'CmdOrCtrl+N',
+    click: askToCreateFile
+  }, {
+    label: 'Open...',
+    enabled: !TRIALMODE,
+    accelerator: 'CmdOrCtrl+O',
+    click: askToOpenFile
+  }, {
+    type: 'separator'
+  }, {
+    label: 'Save',
+    enabled: !TRIALMODE,
+    accelerator: 'CmdOrCtrl+S',
+    click: function () {
+      let win = BrowserWindow.getFocusedWindow()
+      let winObj = _.find(windows, {id: win.id})
+      if (winObj) {
+        saveFile(winObj.state.file.fileName, winObj.state, function (err) {
+          if (err) {
+            log.warn(err)
+            log.warn('file name: ' + winObj.state.file.fileName)
+            rollbar.warn(err, {fileName: winObj.state.file.fileName})
+            gracefullyNotSave()
+          } else {
+            win.webContents.send('state-saved')
+            winObj.lastSave = winObj.state
+            win.setDocumentEdited(false)
+          }
+        })
       }
-    }, {
-      label: 'Save as...',
-      accelerator: 'CmdOrCtrl+Shift+S',
-      click: function () {
-        let win = BrowserWindow.getFocusedWindow()
-        let winObj = _.find(windows, {id: win.id})
-        if (winObj) {
-          dialog.showSaveDialog(win, {title: 'Where would you like to save this copy?'}, function (fileName) {
-            if (fileName) {
-              var fullName = fileName + '.pltr'
-              saveFile(fullName, winObj.state, function (err) {
-                if (err) {
-                  log.warn(err)
-                  log.warn('file name: ' + fullName)
-                  rollbar.warn(err, {fileName: fullName})
-                  gracefullyNotSave()
-                } else {
-                  app.addRecentDocument(fullName)
-                }
-              })
-            }
-          })
-        }
+    }
+  }, {
+    label: 'Save as...',
+    enabled: !TRIALMODE,
+    accelerator: 'CmdOrCtrl+Shift+S',
+    click: function () {
+      let win = BrowserWindow.getFocusedWindow()
+      let winObj = _.find(windows, {id: win.id})
+      if (winObj) {
+        dialog.showSaveDialog(win, {title: 'Where would you like to save this copy?'}, function (fileName) {
+          if (fileName) {
+            var fullName = fileName + '.pltr'
+            saveFile(fullName, winObj.state, function (err) {
+              if (err) {
+                log.warn(err)
+                log.warn('file name: ' + fullName)
+                rollbar.warn(err, {fileName: fullName})
+                gracefullyNotSave()
+              } else {
+                app.addRecentDocument(fullName)
+              }
+            })
+          }
+        })
       }
-    },
-    submenu)
-  }
+    }
+  },
+  submenu)
   return {
     label: 'File',
     submenu: submenu

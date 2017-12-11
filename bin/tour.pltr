@@ -2,7 +2,7 @@
   "cards": [
     {
       "characters": [],
-      "description": "You've discovered the secret discount. Congratulations :)\n\nuse this link to buy Plottr for 20% off!\n\n\n#https://gumroad.com/l/fgSJ/freetrial",
+      "description": "You've discovered the secret discount. Congratulations :)\n\nuse the coupon code \"freetrial\" when you buy Plottr to get $10 off!",
       "id": 5,
       "lineId": 4,
       "places": [],
@@ -126,10 +126,10 @@
     "scenes": []
   },
   "file": {
-    "dirty": false,
+    "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
     "loaded": true,
-    "version": "1.1.25"
+    "version": "1.2.0"
   },
   "lines": [
     {

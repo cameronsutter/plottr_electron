@@ -6,14 +6,10 @@
     <script>
       const { remote } = require('electron')
       const app = remote.app
-      let env = {}
-      let environment = 'development'
-      if (process.env.NODE_ENV !== 'dev') {
-        env = require('../env.json')
-        environment = 'production'
-      }
+      let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
+      require('dotenv').config()
       var Rollbar = require('rollbar')
-      let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''
+      let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
       var rollbar = new Rollbar({
         accessToken: rollbarToken,
         handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',

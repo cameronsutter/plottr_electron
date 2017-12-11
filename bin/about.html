@@ -28,11 +28,8 @@
       function handleReportProblem () {
         ipcRenderer.send('report-window-requested')
       }
-      var TRIALMODE = false
-      if (process.env.NODE_ENV !== 'dev') {
-        var env = require('../env.json')
-        TRIALMODE = env.trialmode
-      }
+      require('dotenv').config()
+      var TRIALMODE = process.env.TRIALMODE === 'true'
       var versionString = 'Version '
       if (TRIALMODE) versionString = 'TRIAL VERSION '
     </script>

@@ -30,6 +30,10 @@ class TimeLineView extends Component {
     }
   }
 
+  openBuyWindow = () => {
+    ipcRenderer.send('open-buy-window')
+  }
+
   // ////////////////
   //  filtering   //
   // //////////////
@@ -255,6 +259,9 @@ class TimeLineView extends Component {
           <NavItem>
             <span className='subnav__container__label'>Export: </span>
             <Button bsSize='small' onClick={this.export}><Glyphicon glyph='export' /></Button>
+          </NavItem>
+          <NavItem>
+            <Button bsSize='small' bsStyle='info' onClick={this.openBuyWindow}><Glyphicon glyph='shopping-cart' /> Get the Full Version</Button>
           </NavItem>
         </Nav>
       </Navbar>

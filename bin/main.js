@@ -38,7 +38,7 @@ var launchSent = false
 ////////////////////////////////
 
 let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
-let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || env.rollbarToken || ''
+let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
 var rollbar = new Rollbar({
   accessToken: rollbarToken,
   handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',

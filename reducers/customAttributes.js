@@ -4,7 +4,7 @@ import { ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   REMOVE_CARDS_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, REMOVE_LINES_ATTRIBUTE,
   REMOVE_SCENES_ATTRIBUTE, RESET, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { combineReducers } from 'redux'
-import { newFileCustomAttributes } from 'store/newFileState'
+import { newFileCustomAttributes } from '../store/newFileState'
 
 function characters (state = [], action) {
   switch (action.type) {

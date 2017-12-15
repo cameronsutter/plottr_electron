@@ -2,9 +2,9 @@ import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_PLACE } from '../constants/ActionTypes'
-import { place } from 'store/initialState'
-import { newFilePlaces } from 'store/newFileState'
-import { placeId } from 'store/newIds'
+import { place } from '../store/initialState'
+import { newFilePlaces } from '../store/newFileState'
+import { placeId } from '../store/newIds'
 
 const initialState = [place]
 

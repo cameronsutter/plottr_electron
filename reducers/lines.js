@@ -1,8 +1,8 @@
 import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { line } from 'store/initialState'
-import { newFileLines } from 'store/newFileState'
-import { lineId, linePosition } from 'store/newIds'
-import { nextColor } from 'store/lineColors'
+import { line } from '../store/initialState'
+import { newFileLines } from '../store/newFileState'
+import { lineId, linePosition } from '../store/newIds'
+import { nextColor } from '../store/lineColors'
 
 const initialState = [line]
 

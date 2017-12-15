@@ -8,8 +8,8 @@ import * as newIds from './store/newIds'
 import * as ActionTypes from './constants/ActionTypes'
 
 export rootReducer
-export initialState
-export lineColors
-export newFileState
-export newIds
-export ActionTypes
+// export initialState
+// export lineColors
+// export newFileState
+// export newIds
+// export ActionTypes

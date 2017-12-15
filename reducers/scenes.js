@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { scene } from 'store/initialState'
-import { newFileScenes } from 'store/newFileState'
-import { sceneId, scenePosition } from 'store/newIds'
+import { scene } from '../store/initialState'
+import { newFileScenes } from '../store/newFileState'
+import { sceneId, scenePosition } from '../store/newIds'
 
 const initialState = [scene]
 

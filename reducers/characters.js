@@ -2,9 +2,9 @@ import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
   ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER } from '../constants/ActionTypes'
-import { character } from 'store/initialState'
-import { newFileCharacters } from 'store/newFileState'
-import { characterId } from 'store/newIds'
+import { character } from '../store/initialState'
+import { newFileCharacters } from '../store/newFileState'
+import { characterId } from '../store/newIds'
 
 const initialState = [character]
 

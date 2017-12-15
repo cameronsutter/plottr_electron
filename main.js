@@ -18,7 +18,7 @@ import * as tagActions from './actions/tags'
 import * as uiActions from './actions/ui'
 import * as undoActions from './actions/undo'
 
-export rootReducer
+// export rootReducer
 // export initialState
 // export lineColors
 // export newFileState

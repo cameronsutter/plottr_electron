@@ -1,5 +1,5 @@
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE } from '../constants/ActionTypes'
-import { scene } from 'store/initialState'
+import { scene } from '../store/initialState'
 
 export function addScene () {
   return { type: ADD_SCENE, title: scene.title }

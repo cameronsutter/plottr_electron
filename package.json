@@ -14,11 +14,11 @@
   "scripts": {
     "start": "node bundle.js",
     "compile": "node_modules/.bin/webpack",
-    "watch": "echo 'do you have fsevents?' && node_modules/.bin/webpack -w",
+    "watch": "echo 'do you have fsevents?' && node_modules/.bin/webpack -w"
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "redux": "^3.5.2",
+    "redux": "^3.5.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

@@ -18,9 +18,19 @@ import * as tagActions from './actions/tags'
 import * as uiActions from './actions/ui'
 import * as undoActions from './actions/undo'
 
-// export rootReducer
-// export initialState
-// export lineColors
-// export newFileState
-// export newIds
-// export ActionTypes
+module.exports.rootReducer = rootReducer
+module.exports.initialState = initialState
+module.exports.lineColors = lineColors
+module.exports.newFileState = newFileState
+module.exports.newIds = newIds
+module.exports.ActionTypes = ActionTypes
+module.exports.cardActions = cardActions
+module.exports.characterActions = characterActions
+module.exports.customAttributeActions = customAttributeActions
+module.exports.lineActions = lineActions
+module.exports.noteActions = noteActions
+module.exports.placeActions = placeActions
+module.exports.sceneActions = sceneActions
+module.exports.tagActions = tagActions
+module.exports.uiActions = uiActions
+module.exports.undoActions = undoActions

@@ -4,7 +4,7 @@
   "repository": "https://github.com/Plotinator/pltr.git",
   "private": true,
   "readme": "Copyright 2017 C Louis S, LLC",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -12,27 +12,11 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "node bundle.js",
-    "compile": "node_modules/.bin/webpack",
-    "watch": "echo 'do you have fsevents?' && node_modules/.bin/webpack -w"
   },
   "dependencies": {
     "lodash": "^4.17.4",
     "redux": "^3.5.2"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^6.4.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "css-loader": "^0.22.0",
-    "file-loader": "^0.8.5",
-    "json-loader": "^0.5.4",
-    "node-sass": "^3.8.0",
-    "sass-loader": "^3.1.1",
-    "style-loader": "^0.13.0",
-    "url-loader": "^0.5.7",
-    "webpack": "^1.13.2"
   }
 }

@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
 var Migrator = require('./migrator/migrator')
 var Exporter = require('./exporter')
+var RecentFilesManager = require('./recentfilesmanager')
 var fs = require('fs')
 var path = require('path')
 var deep = require('deep-diff')
@@ -26,9 +27,9 @@ var buyWindow = null
 
 var fileToOpen = null
 var dontquit = false
-
+var recentFilesManager = new RecentFilesManager()
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
-const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
+const openRecentFileMenuItemName = 'Open Recent'
 
 // mixpanel tracking
 var launchSent = false
@@ -51,6 +52,7 @@ var rollbar = new Rollbar({
     os: process.platform
   }
 })
+recentFilesManager.rollbar = rollbar;
 if (process.env.NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
     log.error(err)
@@ -199,14 +201,12 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
   })
 })
 
-function licenseVerified () {
+async function licenseVerified () {
   if (verifyWindow) verifyWindow.close()
   if (buyWindow) buyWindow.close()
   if (TRIALMODE) {
     turnOffTrialMode()
-    var template = buildMenu()
-    var menu = Menu.buildFromTemplate(template)
-    Menu.setApplicationMenu(menu)
+    await rebuildApplicationMenu();
     askToOpenOrCreate()
   } else {
     openRecentFiles()
@@ -233,10 +233,8 @@ app.on('ready', function () {
       app.quit()
     })
   } else {
-    checkLicense(function() {
-      var template = buildMenu()
-      var menu = Menu.buildFromTemplate(template)
-      Menu.setApplicationMenu(menu)
+    checkLicense(async function() {
+      await rebuildApplicationMenu();
 
       if (process.platform === 'darwin') {
         let dockMenu = Menu.buildFromTemplate([
@@ -324,17 +322,14 @@ function openRecentFiles () {
     openWindow(fileToOpen)
     fileToOpen = null
   } else {
-    storage.has(recentKey, function (err, hasKey) {
-      if (err) { log.warn(err); rollbar.warn(err) }
-      if (hasKey) {
-        storage.get(recentKey, function (err, fileName) {
-          if (err) { log.warn(err); rollbar.warn(err) }
-          openWindow(fileName)
-        })
-      } else {
-        openTour()
-      }
-    })
+    recentFilesManager.getMostRecentFile().then(function (result) {
+      openWindow(result);
+    },
+    function (rejectReason) {
+      log.warn(rejectReason);
+      rollbar.warn(rejectReason);
+      openTour();
+    });
   }
 }
 
@@ -368,9 +363,15 @@ function askToCreateFile () {
           dialog.showErrorBox('Saving failed', 'Creating your file didn\'t work. Let\'s try again.')
           askToCreateFile()
         } else {
-          storage.set(recentKey, fullName, function (err) {
-            if (err) console.log(err)
-            app.addRecentDocument(fullName)
+          app.addRecentDocument(fileName);
+          recentFilesManager.addFileToRecentsList(fullName).then(
+            function (result) { 
+              rebuildApplicationMenu() 
+            }, 
+            function (rejectReason) {
+            log.warn(rejectReason);
+            rollbar.warn(rejectReason);
+            // TODO: notify user? Maybe not?
           })
         }
       })
@@ -421,7 +422,7 @@ function openWindow (fileName, newFile = false) {
     }
   })
 
-  if (process.env.NODE_ENV === 'dev') {
+  if (process.env.NODE_ENV === 'dev' && process.env.SUPPRESS_DEVTOOLS === undefined) {
     newWindow.openDevTools()
   }
 
@@ -449,10 +450,13 @@ function openWindow (fileName, newFile = false) {
       json.file.fileName = updateFileExtenstion(json.file.fileName)
     }
     fileName = updateFileExtenstion(fileName)
-    storage.set(recentKey, fileName, function (err) {
-      if (err) console.log(err)
-      app.addRecentDocument(fileName)
-    })
+    app.addRecentDocument(fileName);
+    recentFilesManager.addFileToRecentsList(fileName).then(
+      function(r) {}, 
+      function(rejectReason) {
+        log.warn(rejectReason);
+        rollbar.warn(rejectReason);
+      });
 
     windows.push({
       id: newWindow.id,
@@ -482,7 +486,10 @@ function updateFileExtenstion (fileName) {
 }
 
 function dereferenceWindow (winObj) {
-  removeRecentFile(winObj.fileName)
+  // if we never saved the file, we don't need to keep its recents record
+  if (!fs.existsSync(winObj.fileName)) {
+    removeRecentFile(winObj.fileName)
+  }
   windows = _.reject(windows, function (win) {
     return win.id === winObj.id
   })
@@ -494,26 +501,16 @@ function closeWindow (id) {
   win.window.close()
 }
 
-function removeRecentFile (fileNameToRemove) {
-  storage.get(recentKey, function (err, storedFileName) {
-    if (err) console.log(err)
-    if (fileNameToRemove === storedFileName) {
-      if (windows.length > 1) {
-        let newFileName = ''
-        for (let i = 0; i < windows.length; i++) {
-          let thisWindowFile = windows[i].fileName
-          if (thisWindowFile !== fileNameToRemove && thisWindowFile !== storedFileName) {
-            newFileName = thisWindowFile
-          }
-        }
-        if (newFileName !== '') {
-          storage.set(recentKey, newFileName, function (err, _) {
-            if (err) console.log(err)
-          })
-        }
-      }
-    }
-  })
+async function removeRecentFile (fileNameToRemove) {
+  await recentFilesManager.removeRecentFile(fileNameToRemove)
+  await rebuildApplicationMenu()
+}
+
+async function rebuildApplicationMenu() {
+   // also mess with the recents menu
+   let menuTemplate = await buildMenu()
+   let menu = Menu.buildFromTemplate(menuTemplate)
+   Menu.setApplicationMenu(menu);
 }
 
 function openTour () {
@@ -704,10 +701,10 @@ function migrateIfNeeded (win, json, fileName, callback) {
 ///////   BUILD MENU  //////////
 ////////////////////////////////
 
-function buildMenu () {
+async function buildMenu () {
   return [
     buildPlottrMenu(),
-    buildFileMenu(),
+    await buildFileMenu(),
     buildEditMenu(),
     buildViewMenu(),
     buildWindowMenu(),
@@ -792,8 +789,24 @@ function buildPlottrMenu () {
   }
 }
 
-function buildFileMenu () {
-  var submenu = [{
+async function buildFileMenu () {
+  let recentsList =  await recentFilesManager.recents;
+  let fileOpenRecentsMenu = null;
+  if (recentsList.length > 1 && !TRIALMODE) {
+      fileOpenRecentsMenu = {
+      label: openRecentFileMenuItemName,
+      submenu: recentsList.map(element => {
+        return {
+          label: element,
+          click: function () {
+            openWindow(element);
+          }
+        };
+      })
+    };
+  }
+
+  var closeMenuItem = {
     label: 'Close',
     accelerator: 'CmdOrCtrl+W',
     click: function () {
@@ -815,7 +828,8 @@ function buildFileMenu () {
         }
       }
     }
-  }]
+  }
+
   var submenu = [].concat({
     label: 'New...',
     enabled: !TRIALMODE,
@@ -826,9 +840,15 @@ function buildFileMenu () {
     enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+O',
     click: askToOpenFile
-  }, {
+  });
+  if (fileOpenRecentsMenu !== null) {
+    submenu.push(fileOpenRecentsMenu);
+  }
+  submenu = submenu.concat(
+  {
     type: 'separator'
-  }, {
+  }, 
+  {
     label: 'Save',
     enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+S',
@@ -875,8 +895,7 @@ function buildFileMenu () {
         })
       }
     }
-  },
-  submenu)
+  }, closeMenuItem)
   return {
     label: 'File',
     submenu: submenu

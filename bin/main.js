@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
 var Migrator = require('./migrator/migrator')
 var Exporter = require('./exporter')
 var RecentFilesManager = require('./recentfilesmanager')
-const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer');var fs = require('fs')
+var fs = require('fs')
 var path = require('path')
 var deep = require('deep-diff')
 var _ = require('lodash')
@@ -225,7 +225,6 @@ ipcMain.on('export', function (event, options, winId) {
 })
 
 app.on('ready', function () {
-  storage.setDataPath(app.getPath('userData'));
   if (process.env.NODE_ENV === 'license') {
     const fakeData = require('./devLicense')
     storage.set(USER_INFO_PATH, fakeData, function(err) {
@@ -423,14 +422,8 @@ function openWindow (fileName, newFile = false) {
     }
   })
 
-  if (process.env.NODE_ENV === 'dev') {
-    if (process.env.SUPPRESS_DEVTOOLS === undefined) {
-      newWindow.openDevTools()
-    }
-    installExtension(REACT_DEVELOPER_TOOLS)
-      .then((name) => console.log(`Added Extension:  ${name}`))
-      .catch((err) => console.log('An error occurred: ', err));
-      newWindow.openDevTools()
+  if (process.env.NODE_ENV === 'dev' && process.env.SUPPRESS_DEVTOOLS === undefined) {
+    newWindow.openDevTools()
   }
 
   newWindow.on('closed', function () {})

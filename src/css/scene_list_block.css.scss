@@ -99,6 +99,12 @@ $extra-height: 34px;
   color: $body-background-color;
 }
 
+.scene-list__insert.darkmode, .vertical-scene-list__insert.darkmode {
+  .glyphicon-plus {
+    color: #777;
+  }
+}
+
 .vertical-scene-list__insert {
   height: $margin-width;
   min-height: $margin-width;
@@ -141,6 +147,10 @@ $extra-height: 34px;
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.scene-list__item__title.darkmode {
+  color: #eee;
 }
 
 .scene-list__item__editing {

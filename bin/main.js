@@ -26,6 +26,7 @@ var buyWindow = null
 
 var fileToOpen = null
 var dontquit = false
+var darkMode = false
 
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
@@ -416,6 +417,7 @@ function openWindow (fileName, newFile = false) {
   dontquit = false
 
   newWindow.webContents.on('did-finish-load', () => {
+    newWindow.webContents.send('set-dark-mode', darkMode)
     if (!launchSent) {
       newWindow.webContents.send('send-launch', app.getVersion())
     }
@@ -910,6 +912,17 @@ function buildEditMenu () {
 
 function buildViewMenu () {
   var submenu = [{
+    label: 'Dark Mode',
+    accelerator: 'CmdOrCtrl+D',
+    checked: darkMode,
+    type: 'checkbox',
+    click: function () {
+      darkMode = !darkMode
+      windows.forEach(function (w) {
+        w.window.webContents.send('set-dark-mode', darkMode)
+      })
+    }
+  }, {
     label: 'Reload',
     accelerator: 'CmdOrCtrl+R',
     click: function () {
@@ -931,7 +944,7 @@ function buildViewMenu () {
     click: takeScreenshot
   }, {
     label: 'Show Dev Tools',
-    accelerator: 'CmdOrCtrl+D',
+    accelerator: 'CmdOrCtrl+T',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
       win.openDevTools()

@@ -27,7 +27,7 @@ class LineView extends Component {
 
   lineLength () {
     let multiplier = this.width()
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       multiplier = this.verticalHeight()
     }
     return this.numberOfScenes() * multiplier + 25
@@ -170,7 +170,7 @@ class LineView extends Component {
   renderSVGLine () {
     let lineLength = this.lineLength()
     let style = {stroke: this.props.line.color}
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       return (<svg height={lineLength} >
         <line y1='0' x1={this.widthForVertical()} y2={lineLength} x2={this.widthForVertical()} className='line__svg-line' style={style} />
       </svg>)
@@ -205,8 +205,8 @@ class LineView extends Component {
   renderHoverOptions () {
     var style = {visibility: 'hidden'}
     if (this.state.hovering) style.visibility = 'visible'
-    if (this.props.orientation === 'vertical') {
-      return (<div className={orientedClassName('line__hover-options', this.props.orientation)} style={style}>
+    if (this.props.ui.orientation === 'vertical') {
+      return (<div className={orientedClassName('line__hover-options', this.props.ui.orientation)} style={style}>
         <ButtonGroup>
           <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
           <Button onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
@@ -243,7 +243,8 @@ class LineView extends Component {
       }
       style.transformOrigin = 'left center'
     }
-    let titleClass = orientedClassName('line__title', this.props.orientation)
+    let titleClass = orientedClassName('line__title', this.props.ui.orientation)
+    if (!this.state.hovering && this.props.ui.darkMode) titleClass += ' darkmode'
     var body = <div className={titleClass}>{this.props.line.title}</div>
     if (this.state.editing) {
       body = (<Input
@@ -282,20 +283,20 @@ class LineView extends Component {
     }
     let lineLength = this.lineLength()
     let lineStyle = {width: (lineLength + this.width())}
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       lineStyle = {height: (lineLength + this.height())}
     }
     return (
-      <div className={orientedClassName('line', this.props.orientation)}
+      <div className={orientedClassName('line', this.props.ui.orientation)}
         style={lineStyle}
         onMouseEnter={() => this.setState({hovering: true})}
         onMouseLeave={() => this.setState({hovering: false})} >
         {this.renderHoverOptions()}
         {this.renderBody()}
-        <div className={orientedClassName('line__svg-line-box', this.props.orientation)}>
+        <div className={orientedClassName('line__svg-line-box', this.props.ui.orientation)}>
           {this.renderSVGLine()}
         </div>
-        <div className={orientedClassName('card__box', this.props.orientation)}>
+        <div className={orientedClassName('card__box', this.props.ui.orientation)}>
           {this.renderCards()}
         </div>
       </div>
@@ -315,7 +316,7 @@ LineView.propTypes = {
   isZoomed: PropTypes.bool.isRequired,
   zoomFactor: PropTypes.any.isRequired,
   zoomIn: PropTypes.func.isRequired,
-  orientation: PropTypes.string.isRequired
+  ui: PropTypes.object.isRequired
 }
 
 function mapStateToProps (state) {
@@ -323,7 +324,7 @@ function mapStateToProps (state) {
     lines: state.lines,
     scenes: state.scenes,
     cards: state.cards,
-    orientation: state.ui.orientation
+    ui: state.ui
   }
 }
 

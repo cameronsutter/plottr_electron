@@ -101,6 +101,10 @@
   padding: 5px 10px 5px 10px;
 }
 
+.line__title.darkmode, .vertical-line__title.darkmode {
+  color: #eee;
+}
+
 .vertical-line__title {
   @extend .line__title;
   text-align: center;

@@ -3,6 +3,10 @@
   margin-top: 50px !important;
 }
 
+.container-with-sub-nav.darkmode {
+  background-color: #777;
+}
+
 .subnav__container {
   position: fixed;
   top: 50px;
@@ -13,6 +17,21 @@
 
   button span {
     vertical-align: text-top;
+  }
+}
+
+.subnav__container.darkmode {
+  background-color: #444;
+  border-color: #333;
+
+  .subnav__container__label {
+    color: white;
+  }
+
+  button {
+    border-color: #888;
+    background-color: #999;
+    color: #eee;
   }
 }
 

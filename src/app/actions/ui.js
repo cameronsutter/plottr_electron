@@ -1,4 +1,4 @@
-import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, FILE_SAVED, NEW_FILE, EDIT_STORY_NAME } from 'constants/ActionTypes'
+import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, FILE_SAVED, NEW_FILE, EDIT_STORY_NAME, SET_DARK_MODE } from 'constants/ActionTypes'
 
 export function changeCurrentView (view) {
   return { type: CHANGE_CURRENT_VIEW, view }
@@ -22,4 +22,8 @@ export function fileSaved () {
 
 export function changeStoryName (newName) {
   return { type: EDIT_STORY_NAME, name: newName }
+}
+
+export function setDarkMode (on) {
+  return { type: SET_DARK_MODE, on }
 }

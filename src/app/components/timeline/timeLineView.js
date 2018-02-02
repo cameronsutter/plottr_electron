@@ -59,7 +59,7 @@ class TimeLineView extends Component {
     var elem = this.refs.timeline
     var scale = ZOOM_STATES[this.state.zoomIndex]
     if (this.state.zoomState === FIT_ZOOM_STATE) {
-      if (this.props.orientation === 'horizontal') {
+      if (this.props.ui.orientation === 'horizontal') {
         scale = (window.outerWidth - 10) / elem.scrollWidth
       } else {
         // take into account navigation height
@@ -130,7 +130,7 @@ class TimeLineView extends Component {
   scrollMiddle = () => {
     clearInterval(scrollInterval)
     var middle = (this.refs.timeline.scrollWidth / 2) - (window.outerWidth / 2)
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       middle = (this.refs.timeline.scrollHeight / 2)
     }
     this.setState({scrollTarget: middle})
@@ -145,7 +145,7 @@ class TimeLineView extends Component {
   scrollEnd = () => {
     clearInterval(scrollInterval)
     var end = this.refs.timeline.scrollWidth - window.outerWidth
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       end = this.refs.timeline.scrollHeight
     }
     this.setState({scrollTarget: end})
@@ -154,7 +154,7 @@ class TimeLineView extends Component {
   }
 
   increaseScroll = () => {
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       if (document.body.scrollTop >= this.state.scrollTarget) clearInterval(scrollInterval)
       else document.body.scrollTop += 100
     } else {
@@ -164,7 +164,7 @@ class TimeLineView extends Component {
   }
 
   decreaseScroll = () => {
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       if (document.body.scrollTop <= this.state.scrollTarget) clearInterval(scrollInterval)
       else document.body.scrollTop -= 100
     } else {
@@ -185,7 +185,7 @@ class TimeLineView extends Component {
   // //////////////
 
   flipOrientation = () => {
-    let orientation = this.props.orientation === 'horizontal' ? 'vertical' : 'horizontal'
+    let orientation = this.props.ui.orientation === 'horizontal' ? 'vertical' : 'horizontal'
     this.props.actions.changeOrientation(orientation)
     this.resetZoom()
   }
@@ -222,7 +222,7 @@ class TimeLineView extends Component {
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       glyph = 'option-horizontal'
       scrollDirectionFirst = 'menu-up'
       scrollDirectionSecond = 'menu-down'
@@ -234,8 +234,10 @@ class TimeLineView extends Component {
     if (this.filterIsEmpty()) {
       filterDeclaration = <span></span>
     }
+    let subNavKlasses = 'subnav__container'
+    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     return (
-      <Navbar className='subnav__container'>
+      <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
@@ -278,11 +280,13 @@ class TimeLineView extends Component {
   render () {
     let styles = this.makeTransform()
     let isZoomed = (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
-    let orientation = this.props.orientation === 'vertical' ? 'vertical' : ''
+    let orientation = this.props.ui.orientation === 'vertical' ? 'vertical' : ''
     // zoomFactor allows us to scale cards and scenes in a ratio that fits the scale determined by zoomState
     let zoomFactor = this.state.zoomState === FIT_ZOOM_STATE ? FIT_ZOOM_STATE : ZOOM_STATES[this.state.zoomIndex]
+    let containerKlasses = 'container-with-sub-nav'
+    if (this.props.ui.darkMode) containerKlasses += ' darkmode'
     return (
-      <div id='timelineview__container' className='container-with-sub-nav'>
+      <div id='timelineview__container' className={containerKlasses}>
         {this.renderSubNav()}
         <div id='timelineview__root' className={orientation} ref='timeline' style={styles}>
           <SceneListView
@@ -313,7 +317,7 @@ TimeLineView.propTypes = {
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
-  orientation: PropTypes.string.isRequired
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
@@ -322,7 +326,7 @@ function mapStateToProps (state) {
     tags: state.tags,
     characters: state.characters,
     places: state.places,
-    orientation: state.ui.orientation
+    ui: state.ui,
   }
 }
 

@@ -65,10 +65,10 @@ class SceneListView extends Component {
   render () {
     var scenes = this.renderScenes()
     return (
-      <div className={orientedClassName('scene-list', this.props.orientation)}>
-        <div className={orientedClassName('scene-list__placeholder', this.props.orientation)} />
+      <div className={orientedClassName('scene-list', this.props.ui.orientation)}>
+        <div className={orientedClassName('scene-list__placeholder', this.props.ui.orientation)} />
         {scenes}
-        <div className={orientedClassName('scene-list__new', this.props.orientation)} onClick={this.handleCreateNewScene} >
+        <div className={orientedClassName('scene-list__new', this.props.ui.orientation)} onClick={this.handleCreateNewScene} >
           <Glyphicon glyph='plus' />
         </div>
       </div>
@@ -77,10 +77,12 @@ class SceneListView extends Component {
 
   renderScenes () {
     const scenes = _.sortBy(this.props.scenes, 'position')
+    let insertClasses = orientedClassName('scene-list__insert', this.props.ui.orientation)
+    if (this.props.ui.darkMode) insertClasses += ' darkmode'
     return scenes.map((scene) => {
       return (
-        <div className={orientedClassName('scene-list__item-container', this.props.orientation)} key={'sceneId-' + scene.id}>
-          <div className={orientedClassName('scene-list__insert', this.props.orientation)} onClick={() => this.handleInsertNewScene(scene.position, this)}>
+        <div className={orientedClassName('scene-list__item-container', this.props.ui.orientation)} key={'sceneId-' + scene.id}>
+          <div className={insertClasses} onClick={() => this.handleInsertNewScene(scene.position, this)}>
             <Glyphicon glyph='plus' />
           </div>
           <SceneView
@@ -99,13 +101,13 @@ SceneListView.propTypes = {
   actions: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
   zoomFactor: PropTypes.any.isRequired,
-  orientation: PropTypes.string.isRequired
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     scenes: state.scenes,
-    orientation: state.ui.orientation
+    ui: state.ui,
   }
 }
 

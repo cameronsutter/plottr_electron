@@ -1,4 +1,4 @@
-import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE, SET_DARK_MODE } from '../constants/ActionTypes'
 import { ui as defaultUI } from 'store/initialState'
 import { newFileUI } from 'store/newFileState'
 
@@ -9,6 +9,9 @@ export default function ui (state = defaultUI, action) {
 
     case CHANGE_ORIENTATION:
       return Object.assign({}, state, {orientation: action.orientation})
+
+    case SET_DARK_MODE:
+      return Object.assign({}, state, {darkMode: action.on})
 
     case FILE_LOADED:
       return action.data.ui

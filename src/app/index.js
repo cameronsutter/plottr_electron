@@ -5,7 +5,7 @@ import App from 'containers/App'
 import configureStore from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
 const win = remote.getCurrentWindow()
-import { newFile, fileSaved, loadFile } from 'actions/ui'
+import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
 import mixpanel from 'mixpanel-browser'
 import { MPQ } from 'middlewares/helpers'
 import FileFixer from 'helpers/fixer'
@@ -23,6 +23,7 @@ ipcRenderer.send('fetch-state', win.id)
 ipcRenderer.on('state-fetched', (event, state, fileName, dirty) => {
   if (state && Object.keys(state).length > 0) {
     store.dispatch(loadFile(fileName, dirty, state))
+    if (state.ui.darkMode) window.document.body.className = 'darkmode'
   } else {
     store.dispatch(newFile(fileName))
   }
@@ -42,6 +43,12 @@ ipcRenderer.once('send-launch', (event, version) => {
 
 ipcRenderer.on('open-file', (event, version, openFiles) => {
   MPQ.push('open_file', {online: navigator.onLine, version: version, number_open: openFiles})
+})
+
+ipcRenderer.on('set-dark-mode', (event, on) => {
+  store.dispatch(setDarkMode(on))
+  let klass = on ? 'darkmode' : ''
+  window.document.body.className = klass
 })
 
 window.onerror = function (message, file, line, column, err) {

@@ -25,20 +25,24 @@ body {
   padding-top: 55px;
 }
 
+body.darkmode {
+  background-color: #777;
+}
+
 h1, h2, h3, h4, h5, h6 {
   @include header-font;
 }
 
 h1 {
-  font-size: 30pt !important;
+  font-size: 28pt !important;
 }
 
 h2 {
-  font-size: 26pt !important;
+  font-size: 24pt !important;
 }
 
 h3 {
-  font-size: 24pt !important;
+  font-size: 20pt !important;
 }
 
 h3.popover-title {
@@ -46,7 +50,7 @@ h3.popover-title {
 }
 
 h4 {
-  font-size: 20pt !important;
+  font-size: 18pt !important;
 }
 
 h5 {

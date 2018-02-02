@@ -79,15 +79,15 @@ class SceneView extends Component {
   renderHoverOptions () {
     var style = {visibility: 'hidden'}
     if (this.state.hovering) style.visibility = 'visible'
-    if (this.props.orientation === 'vertical') {
+    if (this.props.ui.orientation === 'vertical') {
       return (
-        <div className={orientedClassName('scene-list__item__hover-options', this.props.orientation)} style={style}>
+        <div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)} style={style}>
           <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
           <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </div>
       )
     } else {
-      return (<div className={orientedClassName('scene-list__item__hover-options', this.props.orientation)} style={style}>
+      return (<div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)} style={style}>
         <ButtonGroup>
           <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
           <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
@@ -115,8 +115,10 @@ class SceneView extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
-    var classes = 'scene-list__item__body'
+    let classes = 'scene-list__item__body'
     if (this.state.hovering) classes += ' hover'
+    let titleClasses = 'scene-list__item__title'
+    if (!this.state.hovering && this.props.ui.darkMode) titleClasses += ' darkmode'
     var style = {}
     var zoomFactor = this.props.zoomFactor
     if (this.props.isZoomed && this.state.hovering) {
@@ -132,7 +134,7 @@ class SceneView extends Component {
       }
       style.transformOrigin = 'center center'
     }
-    return (<div className={orientedClassName('scene-list__item', this.props.orientation)}
+    return (<div className={orientedClassName('scene-list__item', this.props.ui.orientation)}
       title={`Scene ${this.props.scene.position + 1}`}
       style={style}
       draggable={true}
@@ -147,7 +149,7 @@ class SceneView extends Component {
       onDrop={this.handleDrop} >
       {this.renderHoverOptions()}
       <div className={classes}>
-        <div className='scene-list__item__title'>
+        <div className={titleClasses}>
           {this.renderTitle()}
         </div>
       </div>
@@ -161,12 +163,12 @@ SceneView.propTypes = {
   actions: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
   zoomFactor: PropTypes.any.isRequired,
-  orientation: PropTypes.string.isRequired
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
-    orientation: state.ui.orientation
+    ui: state.ui,
   }
 }
 

@@ -8,7 +8,8 @@ export const scene = {
 
 export const ui = {
   currentView: 'timeline',
-  orientation: 'horizontal'
+  orientation: 'horizontal',
+  darkMode: false,
 }
 
 export const file = {

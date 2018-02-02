@@ -37,9 +37,13 @@ class Navigation extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
+    let klasses = 'navbar navbar-default navbar-fixed-top'
+    if (this.props.ui.darkMode) {
+      klasses += ' navbar-inverse'
+    }
     return (
       <div>
-        <nav className='navbar navbar-default navbar-fixed-top' role='navigation'>
+        <nav className={klasses} role='navigation'>
           <div className='navbar-header'>
             <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='#navbar-collapse-1'>
               <span className='sr-only'>Toggle navigation</span>
@@ -110,7 +114,7 @@ class Navigation extends Component {
   }
 
   isActive (currentLink) {
-    if (currentLink === this.props.currentView) {
+    if (currentLink === this.props.ui.currentView) {
       return 'active'
     }
   }
@@ -118,16 +122,16 @@ class Navigation extends Component {
 
 Navigation.propTypes = {
   storyName: PropTypes.string.isRequired,
-  currentView: PropTypes.string.isRequired,
+  ui: PropTypes.object.isRequired,
   file: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     file: state.file,
     storyName: state.storyName,
-    currentView: state.ui.currentView
+    ui: state.ui,
   }
 }
 

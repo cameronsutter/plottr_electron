@@ -22,9 +22,9 @@ class CardView extends Component {
   }
 
   handleDragStart = (e) => {
+    this.setState({dragging: true, hovering: false})
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify(this.props.card))
-    this.setState({dragging: true, hovering: false})
   }
 
   handleDragEnd = () => {
@@ -142,8 +142,11 @@ class CardView extends Component {
       }
     }
 
+    let cardClasses = orientedClassName('card__real', this.props.ui.orientation)
+    if (this.props.ui.darkMode) cardClasses += ' darkmode'
+
     return (<div
-      className={orientedClassName('card__real', this.props.orientation)}
+      className={cardClasses}
       ref='card'
       draggable={true}
       onDragStart={this.handleDragStart}
@@ -174,7 +177,7 @@ class CardView extends Component {
 
     return (
       <div
-        className={orientedClassName(cardClass, this.props.orientation)}
+        className={orientedClassName(cardClass, this.props.ui.orientation)}
         onDragEnter={this.handleDragEnter}
         onDragOver={this.handleDragOver}
         onDragLeave={this.handleDragLeave}
@@ -187,7 +190,7 @@ class CardView extends Component {
 
   renderCreateNew () {
     return (
-      <div className={orientedClassName('card__real card__creating', this.props.orientation)} style={{borderColor: this.props.color}}>
+      <div className={orientedClassName('card__real card__creating', this.props.ui.orientation)} style={{borderColor: this.props.color}}>
         <div className='card__creating__inner-wrapper'>
           <Input
             type='text'
@@ -224,7 +227,7 @@ class CardView extends Component {
     </div>
     if (!this.props.isZoomed && (this.hasLabels() || this.props.card.description)) {
       let placement = 'left'
-      if (this.props.orientation === 'horizontal') {
+      if (this.props.ui.orientation === 'horizontal') {
         placement = this.props.scenePosition === 0 ? 'right' : placement
       } else {
         placement = this.props.linePosition === 0 ? 'right' : placement
@@ -274,7 +277,7 @@ CardView.propTypes = {
   isZoomed: PropTypes.bool.isRequired,
   zoomFactor: PropTypes.any.isRequired,
   zoomIn: PropTypes.func.isRequired,
-  orientation: PropTypes.string.isRequired,
+  ui: PropTypes.object.isRequired,
   linePosition: PropTypes.number.isRequired,
   scenePosition: PropTypes.number.isRequired
 }
@@ -284,9 +287,9 @@ function mapStateToProps (state, passedProps) {
   let scene = state.scenes.find(s => s.id === passedProps.sceneId)
   return {
     tags: state.tags,
-    orientation: state.ui.orientation,
+    ui: state.ui,
     linePosition: line.position,
-    scenePosition: scene.position
+    scenePosition: scene.position,
   }
 }
 

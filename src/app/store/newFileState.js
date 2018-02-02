@@ -8,7 +8,8 @@ export const newFileScenes = [{
 
 export const newFileUI = {
   currentView: 'timeline',
-  orientation: 'horizontal'
+  orientation: 'horizontal',
+  darkMode: false,
 }
 
 export const newFileFile = {

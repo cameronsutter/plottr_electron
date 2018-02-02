@@ -721,7 +721,7 @@ function buildPlottrMenu () {
     click: openAboutWindow
   }]
   if (TRIALMODE) {
-    submenu = [].concat({
+    submenu = [].concat(submenu, {
       type: 'separator'
     }, {
       label: 'Buy the Full Version...',
@@ -733,7 +733,7 @@ function buildPlottrMenu () {
       type: 'separator'
     })
   }
-  submenu = [].concat({
+  submenu = [].concat(submenu, {
     label: 'Open the Tour...',
     click: openTour
   }, {
@@ -753,7 +753,7 @@ function buildPlottrMenu () {
     click: openReportWindow
   })
   if (process.platform === 'darwin') {
-    submenu = [].concat({
+    submenu = [].concat(submenu, {
       type: 'separator'
     }, {
       label: 'Hide Plottr',
@@ -777,7 +777,7 @@ function buildPlottrMenu () {
       }
     })
   } else {
-    submenu = [].concat({
+    submenu = [].concat(submenu, {
       label: 'Close',
       accelerator: 'Alt+F4',
       click: function () {

@@ -17,3 +17,10 @@ test: off
 branches:
   only:
     - master
+environment:
+  matrix:
+    - rando: onething
+      BUILD_TYPE: full
+
+    - rando: anotherthing
+      BUILD_TYPE: trial

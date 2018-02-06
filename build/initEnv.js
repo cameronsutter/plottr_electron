@@ -10,5 +10,4 @@ var env = {
 }
 var envstr = stringify(env)
 
-console.log('.env path', path.resolve('.env'))
 fs.writeFileSync('.env', envstr)

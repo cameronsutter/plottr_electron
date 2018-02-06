@@ -14,16 +14,6 @@ build_script:
   - ps: set NODE_ENV=production
   - npm run dist:windows
 test: off
-matrix:
-  full:
-    - BUILD_TYPE: full
-  trial:
-    - BUILD_TYPE: trial
 branches:
   only:
     - master
-# environment:
-#   BUILD_TYPE: full
-  # matrix:
-  #   - BUILD_TYPE: full
-  #   - BUILD_TYPE: trial

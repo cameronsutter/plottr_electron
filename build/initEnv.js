@@ -10,4 +10,5 @@ var env = {
 }
 var envstr = stringify(env)
 
+console.log('.env path', path.join('..','.env'))
 fs.writeFileSync(path.join('..','.env'), envstr)

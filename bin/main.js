@@ -10,7 +10,7 @@ var log = require('electron-log')
 var Rollbar = require('rollbar')
 var request = require('request')
 var { stringify } = require('dotenv-stringify')
-require('dotenv').config({path.resolve(__dirname, '..', '.env')})
+require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 var TRIALMODE = process.env.TRIALMODE === 'true'
 
 const USER_INFO_PATH = 'user_info'

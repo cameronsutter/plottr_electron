@@ -18,7 +18,7 @@
       const app = remote.app
       let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
       const path = require('path')
-      require('dotenv').config({path.resolve(__dirname, '..', '.env')})
+      require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
       var Rollbar = require('rollbar')
       let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
       var rollbar = new Rollbar({

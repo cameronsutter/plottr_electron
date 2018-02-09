@@ -29,7 +29,7 @@
         ipcRenderer.send('report-window-requested')
       }
       const path = require('path')
-      require('dotenv').config({path.resolve(__dirname, '..', '.env')})
+      require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
       var TRIALMODE = process.env.TRIALMODE === 'true'
       var versionString = 'Version '
       if (TRIALMODE) versionString = 'TRIAL VERSION '

@@ -213,7 +213,7 @@ class TimeLineView extends Component {
   renderBuyButton () {
     if (TRIALMODE) {
       return <NavItem>
-        <Button bsSize='small' bsStyle='info' onClick={this.openBuyWindow}><Glyphicon glyph='shopping-cart' /> Get the Full Version</Button>
+        <Button bsSize='small' bsStyle='info' onClick={this.openBuyWindow}><Glyphicon glyph='shopping-cart' /> Buy Full Version</Button>
       </NavItem>
     }
   }

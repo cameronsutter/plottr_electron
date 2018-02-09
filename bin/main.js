@@ -10,7 +10,10 @@ var log = require('electron-log')
 var Rollbar = require('rollbar')
 var request = require('request')
 var { stringify } = require('dotenv-stringify')
-require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
+
+const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
+require('dotenv').config({path: ENV_FILE_PATH})
+
 var TRIALMODE = process.env.TRIALMODE === 'true'
 
 const USER_INFO_PATH = 'user_info'
@@ -291,7 +294,7 @@ function turnOffTrialMode() {
     }
     var envstr = stringify(env)
 
-    fs.writeFileSync(path.join('..','.env'), envstr)
+    fs.writeFileSync(ENV_FILE_PATH, envstr)
   }
 }
 
@@ -911,18 +914,19 @@ function buildEditMenu () {
 }
 
 function buildViewMenu () {
+  // {
+  //   label: 'Dark Mode',
+  //   accelerator: 'CmdOrCtrl+D',
+  //   checked: darkMode,
+  //   type: 'checkbox',
+  //   click: function () {
+  //     darkMode = !darkMode
+  //     windows.forEach(function (w) {
+  //       w.window.webContents.send('set-dark-mode', darkMode)
+  //     })
+  //   }
+  // },
   var submenu = [{
-    label: 'Dark Mode',
-    accelerator: 'CmdOrCtrl+D',
-    checked: darkMode,
-    type: 'checkbox',
-    click: function () {
-      darkMode = !darkMode
-      windows.forEach(function (w) {
-        w.window.webContents.send('set-dark-mode', darkMode)
-      })
-    }
-  }, {
     label: 'Reload',
     accelerator: 'CmdOrCtrl+R',
     click: function () {

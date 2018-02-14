@@ -20,13 +20,15 @@ ipcRenderer.on('state-saved', (_arg) => {
 })
 
 ipcRenderer.send('fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, state, fileName, dirty) => {
+ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode) => {
   if (state && Object.keys(state).length > 0) {
     store.dispatch(loadFile(fileName, dirty, state))
-    if (state.ui.darkMode) window.document.body.className = 'darkmode'
   } else {
     store.dispatch(newFile(fileName))
   }
+
+  store.dispatch(setDarkMode(darkMode))
+  if (darkMode) window.document.body.className = 'darkmode'
 
   render(
     <Provider store={store}>
@@ -47,8 +49,7 @@ ipcRenderer.on('open-file', (event, version, openFiles) => {
 
 ipcRenderer.on('set-dark-mode', (event, on) => {
   store.dispatch(setDarkMode(on))
-  let klass = on ? 'darkmode' : ''
-  window.document.body.className = klass
+  window.document.body.className = on ? 'darkmode' : ''
 })
 
 window.onerror = function (message, file, line, column, err) {

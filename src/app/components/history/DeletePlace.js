@@ -9,7 +9,7 @@ class DeletePlace extends Component {
     var place = _.find(item.before.places, {id: item.action.id}) || {title: ''}
     return (
       <div>
-        <span>card: "{place.title}"</span>
+        <span>place: "{place.title}"</span>
         <p>Before: <span className='history-component__item__before'>{place.title}</span></p>
         <p>After: </p>
       </div>

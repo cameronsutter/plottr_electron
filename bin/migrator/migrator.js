@@ -52,6 +52,7 @@ function Migrator (data, fileName, givenVersion, targetVersion) {
     if (!this.given) return false
     var migrations = this.getMigrations()
     if (migrations.length == 0) return true
+    return false
   }
 
   this.plottrBehindFile = function () {

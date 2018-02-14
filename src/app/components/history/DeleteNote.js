@@ -9,7 +9,7 @@ class DeleteNote extends Component {
     var note = _.find(item.before.notes, {id: item.action.id}) || {title: ''}
     return (
       <div>
-        <span>card: "{note.title}"</span>
+        <span>note: "{note.title}"</span>
         <p>Before: <span className='history-component__item__before'>{note.title}</span></p>
         <p>After: </p>
       </div>

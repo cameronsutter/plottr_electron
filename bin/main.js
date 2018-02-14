@@ -138,13 +138,13 @@ ipcMain.on('fetch-state', function (event, id) {
   if (win.window.isVisible()) {
     migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
       if (err) { log.warn(err); rollbar.warn(err) }
-      event.sender.send('state-fetched', json, win.fileName, dirty)
+      event.sender.send('state-fetched', json, win.fileName, dirty, darkMode)
     })
   } else {
     win.window.on('show', () => {
       migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
         if (err) { log.warn(err); rollbar.warn(err) }
-        event.sender.send('state-fetched', json, win.fileName, dirty)
+        event.sender.send('state-fetched', json, win.fileName, dirty, darkMode)
       })
     })
   }
@@ -420,7 +420,6 @@ function openWindow (fileName, newFile = false) {
   dontquit = false
 
   newWindow.webContents.on('did-finish-load', () => {
-    newWindow.webContents.send('set-dark-mode', darkMode)
     if (!launchSent) {
       newWindow.webContents.send('send-launch', app.getVersion())
     }
@@ -575,7 +574,7 @@ function openBuyWindow () {
 }
 
 function gracefullyQuit () {
-  dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Plottr ran into a problem. Try opening Plottr again.', detail: 'If you keep seeing this problem, email me at cameronsutter0@gmail.com'}, function (choice) {
+  dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Plottr ran into a problem. Try opening Plottr again.', detail: 'If you keep seeing this problem, email me at family@plottrapp.com'}, function (choice) {
     app.quit()
   })
 }
@@ -650,7 +649,7 @@ function sendErrorReport (body) {
       log.warn(err)
       rollbar.warn(err)
     } else {
-      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Email me at cameronsutter0@gmail.com with the file Plottr just exported', detail: 'Please email me the file named plottr_error_report.txt in your Documents folder'})
+      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Email me at family@plottrapp.com with the file Plottr just exported', detail: 'Please email me the file named plottr_error_report.txt in your Documents folder'})
     }
   })
 }
@@ -694,6 +693,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
               log.warn('file name: ' + fileName)
               rollbar.warn(err, {fileName: fileName})
               dialog.showErrorBox('Problem saving backup', 'Plottr tried saving a backup just in case, but it didn\'t work. Try quitting Plottr and starting it again.')
+              callback(err, false, json)
             } else {
               dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr saved a backup just in case and now on with the show (To use the backup, remove \'.backup\' from the file name)'})
               callback(null, false, json)

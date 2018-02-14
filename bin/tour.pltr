@@ -129,7 +129,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
     "loaded": true,
-    "version": "1.2.4"
+    "version": "1.2.15"
   },
   "lines": [
     {
@@ -262,7 +262,7 @@
   ],
   "ui": {
     "currentView": "timeline",
-    "darkMode": true,
+    "darkMode": false,
     "orientation": "horizontal"
   }
 }

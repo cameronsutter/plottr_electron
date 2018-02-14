@@ -9,7 +9,7 @@ class DeleteCharacter extends Component {
     var character = _.find(item.before.characters, {id: item.action.id}) || {title: ''}
     return (
       <div>
-        <span>card: "{character.title}"</span>
+        <span>character: "{character.title}"</span>
         <p>Before: <span className='history-component__item__before'>{character.title}</span></p>
         <p>After: </p>
       </div>

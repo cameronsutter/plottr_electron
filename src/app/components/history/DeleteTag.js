@@ -9,7 +9,7 @@ class DeleteTag extends Component {
     var tag = _.find(item.before.tags, {id: item.action.id}) || {title: ''}
     return (
       <div>
-        <span>card: "{tag.title}"</span>
+        <span>tag: "{tag.title}"</span>
         <p>Before: <span className='history-component__item__before'>{tag.title}</span></p>
         <p>After: </p>
       </div>

@@ -625,7 +625,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.1.19"
+    "version": "1.2.15"
   },
   "lines": [
     {
@@ -1067,6 +1067,7 @@
   ],
   "ui": {
     "currentView": "timeline",
+    "darkMode": false,
     "orientation": "horizontal"
   }
 }

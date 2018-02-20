@@ -97,6 +97,7 @@ class CardView extends Component {
   handleBlur = () => {
     var newTitle = this.refs.titleInput.getValue()
     if (newTitle === '') {
+      this.setState({creating: false})
       return false
     } else {
       this.saveCreate()

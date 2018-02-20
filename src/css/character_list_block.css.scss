@@ -73,5 +73,11 @@
 }
 
 .character-list__custom-attributes-add-button {
-  width: 25%;
+  width: 50%;
+  display: flex;
+  .btn {
+    margin-left: 7px;
+    margin-top: 11px;
+    align-self: center;
+  }
 }

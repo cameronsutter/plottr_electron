@@ -8,7 +8,7 @@ import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import PlaceView from 'components/places/placeView'
 
-const modalStyles = {content: {top: '70px'}}
+const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
 class PlaceListView extends Component {
 
@@ -101,10 +101,16 @@ class PlaceListView extends Component {
     )
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
       <div>
+        <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
+          Close
+        </Button>
         <h3>Custom Attributes for Places</h3>
         <p className='sub-header'>Choose what you want to track about your places</p>
         <div className='character-list__custom-attributes-add-button'>
           <Input type='text' ref='attrInput' label='Add attributes' value={this.state.addAttrText} onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
+          <Button bsStyle='success' onClick={this.handleAddCustomAttr}>
+            Add
+          </Button>
         </div>
         <div className='place-list__custom-attributes-list-wrapper'>
           {attrs}

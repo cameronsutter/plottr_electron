@@ -18,7 +18,8 @@ const customStyles = {content: {top: '70px'}}
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false}
+    let editing = props.card.description == ''
+    this.state = {editing}
   }
 
   closeDialog = () => {
@@ -111,13 +112,14 @@ class CardDialog extends Component {
     if (this.state.editing) {
       return (
         <ButtonToolbar className='card-dialog__button-bar'>
-          <Button
-            onClick={() => this.setState({editing: false})} >
+          <Button onClick={() => this.setState({editing: false})}>
             Cancel
           </Button>
-          <Button bsStyle='success'
-            onClick={this.saveEdit}>
+          <Button onClick={this.saveEdit}>
             Save
+          </Button>
+          <Button bsStyle='success' onClick={this.closeDialog}>
+            Save & Close
           </Button>
         </ButtonToolbar>
       )

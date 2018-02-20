@@ -27,7 +27,7 @@ class Navigation extends Component {
       return <span className='alert alert-danger' style={styles} role='alert'><Glyphicon glyph='exclamation-sign' /> unsaved changes</span>
     } else {
       return <span className='alert alert-success' style={styles} role='alert'>
-        <Glyphicon bsStyle={{verticalAlign: 'baseline'}} glyph='ok' /> everything saved</span>
+        <Glyphicon bsStyle={{verticalAlign: 'baseline'}} glyph='ok' /> autosaved</span>
     }
   }
 
@@ -75,7 +75,7 @@ class Navigation extends Component {
               </li>
             </ul>
             <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>
-              <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> Undo</Button>
+              <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> Undo...</Button>
               <HistoryComponent show={this.state.showHistory} />
             </div>
             <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>
@@ -87,10 +87,20 @@ class Navigation extends Component {
     )
   }
 
-  handleFinishEditing (event) {
+  saveEdit = () => {
+    var newName = this.refs.storyNameInput.getValue()
+    this.props.actions.changeStoryName(newName)
+    this.setState({editing: false})
+  }
+
+  handleFinishEditing = (event) => {
     if (event.which === 13) {
-      var newName = this.refs.storyNameInput.getValue()
-      this.props.actions.changeStoryName(newName)
+      this.saveEdit()
+    }
+  }
+
+  handleCancelEdit = (event) => {
+    if (event.which === 27) {
       this.setState({editing: false})
     }
   }
@@ -105,8 +115,9 @@ class Navigation extends Component {
       defaultValue={this.props.storyName}
       ref='storyNameInput'
       autoFocus
-      onBlur={() => this.setState({editing: false})}
-      onKeyPress={this.handleFinishEditing.bind(this)} />
+      onBlur={this.saveEdit}
+      onKeyDown={this.handleCancelEdit}
+      onKeyPress={this.handleFinishEditing} />
   }
 
   renderDisplayStoryName () {

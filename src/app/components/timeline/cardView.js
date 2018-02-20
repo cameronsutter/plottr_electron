@@ -225,7 +225,7 @@ class CardView extends Component {
     let title = <div className='card__title'>
       <p>{this.props.card.title}</p>
     </div>
-    if (!this.props.isZoomed && (this.hasLabels() || this.props.card.description)) {
+    if (!this.state.dragging && !this.props.isZoomed && (this.hasLabels() || this.props.card.description)) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
         placement = this.props.scenePosition === 0 ? 'right' : placement
@@ -241,7 +241,7 @@ class CardView extends Component {
 
   renderPopover () {
     return <Popover title={'Description'} id={`card-popover-${this.props.card.id}`}>
-      <MDdescription className='card__popover-description' labels={this.props.labelMap} description={this.props.card.description} />
+      <MDdescription className='card__popover-description' labels={this.props.labelMap} description={this.props.card.description.substring(0, 1000)} />
       {this.renderTags()}
     </Popover>
   }

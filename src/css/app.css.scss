@@ -67,6 +67,10 @@ h6 {
   @include secondary-text;
 }
 
+.secondary-text.darkmode {
+  color: $secondary-text-darkmode;
+}
+
 .disabled-text {
   @include disabled-text;
 }

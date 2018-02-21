@@ -53,8 +53,10 @@ class PlaceListView extends Component {
   }
 
   renderSubNav () {
+    let subNavKlasses = 'subnav__container'
+    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     return (
-      <Navbar className='subnav__container'>
+      <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> Custom Attributes</Button>
@@ -65,6 +67,8 @@ class PlaceListView extends Component {
   }
 
   renderPlaces () {
+    let klasses = 'place-list__list list-group'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     const sortedPlaces = _.sortBy(this.props.places, ['name', 'id'])
     const places = sortedPlaces.map((pl, idx) =>
       <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
@@ -72,7 +76,7 @@ class PlaceListView extends Component {
         <p className='list-group-item-text'>{pl.description}</p>
       </a>
     )
-    return (<div className='place-list__list list-group'>
+    return (<div className={klasses}>
         {places}
         <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
           <Glyphicon glyph='plus' />
@@ -120,11 +124,13 @@ class PlaceListView extends Component {
   }
 
   render () {
+    let klasses = 'secondary-text'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div className='place-list container-with-sub-nav'>
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        <h1 className='secondary-text'>Places</h1>
+        <h1 className={klasses}>Places</h1>
         {this.renderPlaceDetails()}
         {this.renderPlaces()}
       </div>
@@ -135,13 +141,15 @@ class PlaceListView extends Component {
 PlaceListView.propTypes = {
   places: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  customAttributeActions: PropTypes.object.isRequired
+  customAttributeActions: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     places: state.places,
-    customAttributes: state.customAttributes['places']
+    customAttributes: state.customAttributes['places'],
+    ui: state.ui,
   }
 }
 

@@ -14,6 +14,12 @@
   text-align: center;
 }
 
+.tag-list__new.darkmode {
+  background-color: $card-background-darkmode;
+  color: $text-darkmode;
+  border-color: $border-color-darkmode;
+}
+
 .tag-list__new:hover {
   @include new_item_hover;
 }
@@ -30,6 +36,12 @@
   width: 200px; // 5 per row
   padding: 7px 14px;
   margin: 3px 6px 3px 0px;
+}
+
+.tag-list__tag.darkmode {
+  background-color: $card-background-darkmode;
+  color: $text-darkmode;
+  border-color: $border-color-darkmode;
 }
 
 .tag-list__tag-normal {

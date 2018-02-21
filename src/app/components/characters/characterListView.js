@@ -53,8 +53,10 @@ class CharacterListView extends Component {
   }
 
   renderSubNav () {
+    let subNavKlasses = 'subnav__container'
+    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     return (
-      <Navbar className='subnav__container'>
+      <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> Custom Attributes</Button>
@@ -65,6 +67,8 @@ class CharacterListView extends Component {
   }
 
   renderCharacters () {
+    let klasses = 'character-list__list list-group'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     const sortedCharacters = _.sortBy(this.props.characters, ['name', 'id'])
     const characters = sortedCharacters.map((ch, idx) =>
       <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>
@@ -72,7 +76,7 @@ class CharacterListView extends Component {
         <p className='list-group-item-text'>{ch.description}</p>
       </a>
     )
-    return (<div className='character-list__list list-group'>
+    return (<div className={klasses}>
         {characters}
         <a href='#' key={'new-character'} className='character-list__new list-group-item' onClick={this.handleCreateNewCharacter} >
           <Glyphicon glyph='plus' />
@@ -119,11 +123,13 @@ class CharacterListView extends Component {
   }
 
   render () {
+    let klasses = 'secondary-text'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div className='character-list container-with-sub-nav'>
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        <h1 className='secondary-text'>Characters</h1>
+        <h1 className={klasses}>Characters</h1>
         {this.renderCharacterDetails()}
         {this.renderCharacters()}
       </div>
@@ -135,13 +141,15 @@ CharacterListView.propTypes = {
   characters: PropTypes.array.isRequired,
   customAttributes: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  customAttributeActions: PropTypes.object.isRequired
+  customAttributeActions: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     characters: state.characters,
-    customAttributes: state.customAttributes['characters']
+    customAttributes: state.customAttributes['characters'],
+    ui: state.ui,
   }
 }
 

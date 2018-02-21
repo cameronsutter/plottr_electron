@@ -14,6 +14,21 @@
   }
 }
 
+.character-list__list.darkmode {
+  .list-group-item {
+    background-color: $card-background-darkmode;
+    color: $text-darkmode;
+    border-color: $border-color-darkmode;
+
+    h6 {
+      color: $text-darkmode;
+    }
+    p {
+      color: $secondary-text-darkmode;
+    }
+  }
+}
+
 .character-list__new {
   text-align: center;
   cursor: pointer;
@@ -46,6 +61,16 @@
   .btn-toolbar {
     display: flex;
     flex-direction: row-reverse;
+  }
+}
+
+.character-list__character.darkmode {
+  background-color: $card-background-darkmode;
+  color: $text-darkmode;
+  border-color: $border-color-darkmode;
+
+  h4 {
+    color: $secondary-text-darkmode;
   }
 }
 

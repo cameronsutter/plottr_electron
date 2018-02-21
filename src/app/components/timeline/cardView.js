@@ -242,7 +242,10 @@ class CardView extends Component {
 
   renderPopover () {
     return <Popover title={'Description'} id={`card-popover-${this.props.card.id}`}>
-      <MDdescription className='card__popover-description' labels={this.props.labelMap} description={this.props.card.description.substring(0, 1000)} />
+      <MDdescription className='card__popover-description' labels={this.props.labelMap}
+        description={this.props.card.description.substring(0, 1000)}
+        darkMode={this.props.ui.darkMode}
+      />
       {this.renderTags()}
     </Popover>
   }

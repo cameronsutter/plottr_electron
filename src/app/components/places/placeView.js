@@ -141,6 +141,8 @@ class PlaceView extends Component {
   }
 
   renderPlace () {
+    let klasses = 'character-list__character'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     const { place } = this.props
     const details = this.props.customAttributes.map((attr, idx) =>
       <dl key={idx} className='dl-horizontal'>
@@ -149,7 +151,7 @@ class PlaceView extends Component {
       </dl>
     )
     return (
-      <div className='character-list__character' onClick={() => this.setState({editing: true})}>
+      <div className={klasses} onClick={() => this.setState({editing: true})}>
         <h4 className='text-center secondary-text'>{place.name}</h4>
         <dl className='dl-horizontal'>
           <dt>Description</dt>
@@ -184,14 +186,16 @@ PlaceView.propTypes = {
   actions: PropTypes.object.isRequired,
   customAttributes: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
-  notes: PropTypes.array.isRequired
+  notes: PropTypes.array.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     customAttributes: state.customAttributes['places'],
     cards: state.cards,
-    notes: state.notes
+    notes: state.notes,
+    ui: state.ui,
   }
 }
 

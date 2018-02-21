@@ -105,6 +105,7 @@ class CardView extends Component {
         onClick={() => this.setState({editing: true})}
         description={description}
         labels={this.props.labelMap}
+        darkMode={this.props.ui.darkMode}
       />
     }
   }
@@ -117,12 +118,14 @@ class CardView extends Component {
   }
 
   render () {
-    var line = this.line()
-    var style = {color: line.color}
+    let line = this.line()
+    let style = {color: line.color}
     const title = this.renderTitle()
     const description = this.renderDescription()
+    let klasses = 'outline__card'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
-      <div className='outline__card'>
+      <div className={klasses}>
         <div style={style} className='outline__card__line-title'>{line.title}</div>
         {title}
         {description}

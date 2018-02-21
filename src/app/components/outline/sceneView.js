@@ -11,10 +11,12 @@ class SceneView extends Component {
   }
 
   render () {
+    let klasses = 'outline__scene_title'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div id={this.props.scene.title}>
         <Waypoint onEnter={() => this.props.waypoint(this.props.scene.title)} threshold={-0.75} />
-        <h3>{this.props.scene.title}</h3>
+        <h3 className={klasses}>{this.props.scene.title}</h3>
         {this.renderCards()}
       </div>
     )
@@ -25,11 +27,14 @@ SceneView.propTypes = {
   scene: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
-  labelMap: PropTypes.object.isRequired
+  labelMap: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
-  return {}
+  return {
+    ui: state.ui,
+  }
 }
 
 function mapDispatchToProps (dispatch) {

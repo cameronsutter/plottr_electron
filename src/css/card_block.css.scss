@@ -37,9 +37,9 @@
 }
 
 .card__real.darkmode, .vertical-card__real.darkmode {
-  background-color: #888;
+  background-color: $card-background-darkmode;
   .card__title {
-    color: #eee;
+    color: $text-darkmode;
   }
 }
 

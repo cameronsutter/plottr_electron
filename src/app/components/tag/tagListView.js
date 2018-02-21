@@ -20,13 +20,19 @@ class TagListView extends Component {
   }
 
   render () {
+    let klasses = 'secondary-text'
+    let newKlasses = 'tag-list__new'
+    if (this.props.ui.darkMode) {
+      klasses += ' darkmode'
+      newKlasses += ' darkmode'
+    }
     return (
       <div className='tag-list__container'>
-        <h3 className='secondary-text'>Tags</h3>
+        <h3 className={klasses}>Tags</h3>
         <div className='tag-list__tags'>
           {this.renderTags()}
         </div>
-        <div className='tag-list__new' onClick={this.handleCreateNewTag} >
+        <div className={newKlasses} onClick={this.handleCreateNewTag} >
           <Glyphicon glyph='plus' />
         </div>
       </div>
@@ -36,12 +42,14 @@ class TagListView extends Component {
 
 TagListView.propTypes = {
   tags: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
-    tags: state.tags
+    tags: state.tags,
+    ui: state.ui,
   }
 }
 

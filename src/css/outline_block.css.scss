@@ -29,6 +29,12 @@
   }
 }
 
+.outline__card.darkmode {
+  background-color: $card-background-darkmode;
+  color: $text-darkmode;
+  border-color: $border-color-darkmode;
+}
+
 .outline__scenes-container {
   width: 75%;
 }
@@ -85,6 +91,18 @@ li.outline__minimap__scene-title > a:hover {
   border-radius: 0px;
 }
 
+.outline__minimap.darkmode {
+  background-color: $card-background-darkmode;
+  color: $text-darkmode;
+  li.outline__minimap__scene-title.active {
+    background-color: $body-background-color-darkmode;
+  }
+  li.outline__minimap__scene-title > a:hover {
+    background-color: $body-background-color-darkmode;
+    color: $text-darkmode;
+  }
+}
+
 .outline__minimap__placeholder {
   width: 25%;
   height: 100%;
@@ -103,4 +121,8 @@ li.outline__minimap__scene-title > a:hover {
   textarea {
     font-size: 15px;
   }
+}
+
+.outline__scene_title.darkmode {
+  color: $text-darkmode;
 }

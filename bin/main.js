@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, dialog, systemPreferences } = require('electron')
 var Migrator = require('./migrator/migrator')
 var Exporter = require('./exporter')
 var fs = require('fs')
@@ -29,7 +29,7 @@ var buyWindow = null
 
 var fileToOpen = null
 var dontquit = false
-var darkMode = false
+var darkMode = systemPreferences.isDarkMode() || false
 
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
@@ -914,18 +914,6 @@ function buildEditMenu () {
 }
 
 function buildViewMenu () {
-  // {
-  //   label: 'Dark Mode',
-  //   accelerator: 'CmdOrCtrl+D',
-  //   checked: darkMode,
-  //   type: 'checkbox',
-  //   click: function () {
-  //     darkMode = !darkMode
-  //     windows.forEach(function (w) {
-  //       w.window.webContents.send('set-dark-mode', darkMode)
-  //     })
-  //   }
-  // },
   var submenu = [{
     label: 'Reload',
     accelerator: 'CmdOrCtrl+R',
@@ -942,6 +930,17 @@ function buildViewMenu () {
         win.webContents.reload()
       }
     }
+  }, {
+      label: 'Dark Mode',
+      accelerator: 'CmdOrCtrl+D',
+      checked: darkMode,
+      type: 'checkbox',
+      click: function () {
+        darkMode = !darkMode
+        windows.forEach(function (w) {
+          w.window.webContents.send('set-dark-mode', darkMode)
+        })
+      }
   }, {
     label: 'Take Screenshot...',
     accelerator: 'CmdOrCtrl+P',

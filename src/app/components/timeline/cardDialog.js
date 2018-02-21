@@ -182,6 +182,7 @@ class CardDialog extends Component {
           description={description}
           onClick={() => this.setState({editing: true})}
           labels={this.props.labelMap}
+          darkMode={this.props.ui.darkMode}
         />
       )
     }
@@ -268,7 +269,8 @@ CardDialog.propTypes = {
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
-  labelMap: PropTypes.object.isRequired
+  labelMap: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
@@ -277,7 +279,8 @@ function mapStateToProps (state) {
     scenes: state.scenes,
     tags: state.tags,
     characters: state.characters,
-    places: state.places
+    places: state.places,
+    ui: state.ui
   }
 }
 

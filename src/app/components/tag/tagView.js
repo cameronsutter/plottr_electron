@@ -98,8 +98,10 @@ class TagView extends Component {
     }
     let styles = {}
     if (this.props.tag.color) styles = {border: `2px solid ${this.props.tag.color}`}
+    let klasses = 'tag-list__tag'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
-      <div className='tag-list__tag' style={styles}>
+      <div className={klasses} style={styles}>
         {body}
       </div>
     )
@@ -108,11 +110,14 @@ class TagView extends Component {
 
 TagView.propTypes = {
   tag: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
-  return {}
+  return {
+    ui: state.ui,
+  }
 }
 
 function mapDispatchToProps (dispatch) {

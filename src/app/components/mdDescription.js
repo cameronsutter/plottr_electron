@@ -10,7 +10,8 @@ class MDdescription extends Component {
     while ((matches = regex.exec(html)) !== null) {
       var labelText = matches[1].toLowerCase()
       if (this.props.labels[labelText] !== undefined) {
-        var style = 'color:#16222d;border:1px solid #16222d;padding-top:0.4em;'
+        let style = 'color:#16222d;border:1px solid #16222d;padding-top:0.4em;'
+        if (this.props.darkMode) style = 'color:#eee;border:1px solid #ddd;padding-top:0.4em;background-color:#777;'
         html = html.replace(matches[0], `<span style='${style}' class='label'>${labelText}</span>`)
       }
     }
@@ -31,6 +32,7 @@ MDdescription.propTypes = {
   labels: PropTypes.object.isRequired,
   className: PropTypes.string,
   onClick: PropTypes.func,
+  darkMode: PropTypes.bool.isRequired,
 }
 
 export default MDdescription

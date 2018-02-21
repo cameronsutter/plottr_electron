@@ -35,9 +35,11 @@ class MiniMap extends Component {
   }
 
   render () {
+    let klasses = 'outline__minimap'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <Nav
-        className='outline__minimap'
+        className={klasses}
         activeHref={this.props.active}
         onSelect={this.selectNav}
         onMouseEnter={() => this.setState({mouseOver: true})}
@@ -61,13 +63,15 @@ MiniMap.propTypes = {
   scenes: PropTypes.array.isRequired,
   active: PropTypes.string.isRequired,
   lines: PropTypes.array.isRequired,
-  cardMapping: PropTypes.object.isRequired
+  cardMapping: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     scenes: state.scenes,
-    lines: state.lines
+    lines: state.lines,
+    ui: state.ui,
   }
 }
 

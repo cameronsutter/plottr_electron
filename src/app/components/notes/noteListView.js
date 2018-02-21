@@ -85,13 +85,15 @@ class NoteListView extends Component {
   }
 
   renderNotes () {
+    let klasses = 'note-list__list list-group'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     const notes = this.state.viewableNotes.map((n, idx) =>
       <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({noteDetailId: n.id})}>
         <h6 className='list-group-item-heading'>{n.title}</h6>
         <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
       </a>
     )
-    return (<div className='note-list__list list-group'>
+    return (<div className={klasses}>
         {notes}
         <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >
           <Glyphicon glyph='plus' />
@@ -109,6 +111,8 @@ class NoteListView extends Component {
   }
 
   renderSubNav () {
+    let subNavKlasses = 'subnav__container'
+    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     let popover = <Popover id='filter'>
       <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
@@ -117,7 +121,7 @@ class NoteListView extends Component {
       filterDeclaration = <span></span>
     }
     return (
-      <Navbar className='subnav__container'>
+      <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
@@ -131,10 +135,12 @@ class NoteListView extends Component {
   }
 
   render () {
+    let klasses = 'secondary-text'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div className='note-list container-with-sub-nav'>
         {this.renderSubNav()}
-        <h1 className='secondary-text'>Notes</h1>
+        <h1 className={klasses}>Notes</h1>
         {this.renderNoteDetails()}
         {this.renderNotes()}
       </div>
@@ -148,6 +154,7 @@ NoteListView.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
@@ -155,7 +162,8 @@ function mapStateToProps (state) {
     notes: state.notes,
     characters: state.characters,
     places: state.places,
-    tags: state.tags
+    tags: state.tags,
+    ui: state.ui,
   }
 }
 

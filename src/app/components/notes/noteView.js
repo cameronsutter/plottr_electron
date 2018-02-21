@@ -86,6 +86,7 @@ class NoteView extends Component {
     const { note } = this.props
     let klasses = 'note-list__note'
     if (this.state.editing) klasses += ' editing'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div className={klasses}>
         <h4 className='text-center secondary-text' onClick={() => this.setState({editing: true})}>
@@ -130,14 +131,16 @@ NoteView.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     characters: state.characters,
     places: state.places,
-    tags: state.tags
+    tags: state.tags,
+    ui: state.ui,
   }
 }
 

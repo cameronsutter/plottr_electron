@@ -14,6 +14,21 @@
   }
 }
 
+.place-list__list.darkmode {
+  .list-group-item {
+    background-color: $card-background-darkmode;
+    color: $text-darkmode;
+    border-color: $border-color-darkmode;
+
+    h6 {
+      color: $text-darkmode;
+    }
+    p {
+      color: $secondary-text-darkmode;
+    }
+  }
+}
+
 .place-list__new {
   text-align: center;
   cursor: pointer;

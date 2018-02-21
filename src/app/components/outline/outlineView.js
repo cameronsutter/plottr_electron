@@ -91,6 +91,8 @@ class OutlineView extends Component {
   }
 
   renderSubNav () {
+    let subNavKlasses = 'subnav__container'
+    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     let popover = <Popover id='filter'>
       <div className='filter-list'>
         {this.renderFilterList()}
@@ -101,7 +103,7 @@ class OutlineView extends Component {
       filterDeclaration = <span></span>
     }
     return (
-      <Navbar className='subnav__container'>
+      <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
@@ -142,7 +144,8 @@ OutlineView.propTypes = {
   cards: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired
+  places: PropTypes.array.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
@@ -152,7 +155,8 @@ function mapStateToProps (state) {
     cards: state.cards,
     tags: state.tags,
     characters: state.characters,
-    places: state.places
+    places: state.places,
+    ui: state.ui,
   }
 }
 

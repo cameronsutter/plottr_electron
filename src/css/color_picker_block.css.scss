@@ -65,3 +65,16 @@
     }
   }
 }
+
+.color-picker__wrapper.darkmode {
+  background-color: $card-background-darkmode;
+  .color-picker__title {
+    color: $text-darkmode;
+  }
+  h5.secondary-text {
+    color: $secondary-text-darkmode;
+  }
+  p {
+    color: $text-darkmode;
+  }
+}

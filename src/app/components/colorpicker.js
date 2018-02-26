@@ -27,35 +27,42 @@ class ColorPicker extends Component {
   }
 
   render () {
+    let klasses = 'color-picker__wrapper'
+    if (this.props.darkMode == true) {
+      klasses += ' darkmode'
+      customStyles.content.backgroundColor = '#888'
+    }
     return (<Modal isOpen={true} onRequestClose={this.closeDialog} style={customStyles}>
-      <h2 className='color-picker__title'>Pick a color</h2>
-      <div className='color-picker__input-box form-horizontal'>
-        <Row>
-          <Col xs={5} >
-            <h5 style={{marginTop: '26px'}} className='secondary-text'>Click on a color below or type it in</h5>
-          </Col>
-          <Col xs={2} >
-            <p style={{textAlign: 'right', marginTop: '32px'}}>Current Color: </p>
-          </Col>
-          <Col xs={1} >
-            <div title={this.state.color} style={{backgroundColor: this.state.color, marginTop: '16px'}} className='color-picker__show-color'></div>
-          </Col>
-          <Col xs={2}>
-            <Input type='text' label='hex code or name' ref='hex' placeholder='e.g. #ffffff'
-              defaultValue={this.state.color}
-              onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
-              onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}
-              onChange={this.showColor} />
-          </Col>
-          <Col xs={2}>
-            <div style={{marginTop: '26px'}}>
-              <Button bsStyle='success' onClick={() => this.closeDialog(this.state.color)}>Choose</Button>
-            </div>
-          </Col>
-        </Row>
-      </div>
-      <div>
-        {this.renderColors()}
+      <div className={klasses}>
+        <h2 className='color-picker__title'>Pick a color</h2>
+        <div className='color-picker__input-box form-horizontal'>
+          <Row>
+            <Col xs={5} >
+              <h5 style={{marginTop: '26px'}} className='secondary-text'>Click on a color below or type it in</h5>
+            </Col>
+            <Col xs={2} >
+              <p style={{textAlign: 'right', marginTop: '32px'}}>Current Color: </p>
+            </Col>
+            <Col xs={1} >
+              <div title={this.state.color} style={{backgroundColor: this.state.color, marginTop: '16px'}} className='color-picker__show-color'></div>
+            </Col>
+            <Col xs={2}>
+              <Input type='text' label='hex code or name' ref='hex' placeholder='e.g. #ffffff'
+                defaultValue={this.state.color}
+                onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
+                onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}
+                onChange={this.showColor} />
+            </Col>
+            <Col xs={2}>
+              <div style={{marginTop: '26px'}}>
+                <Button bsStyle='success' onClick={() => this.closeDialog(this.state.color)}>Choose</Button>
+              </div>
+            </Col>
+          </Row>
+        </div>
+        <div>
+          {this.renderColors()}
+        </div>
       </div>
     </Modal>)
   }
@@ -104,7 +111,8 @@ class ColorPicker extends Component {
 
 ColorPicker.propTypes = {
   closeDialog: PropTypes.func.isRequired,
-  color: PropTypes.string
+  color: PropTypes.string,
+  darkMode: PropTypes.bool,
 }
 
 export default ColorPicker

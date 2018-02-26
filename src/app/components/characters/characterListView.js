@@ -102,8 +102,13 @@ class CharacterListView extends Component {
         <Button onClick={() => this.removeAttr(attr)}><Glyphicon glyph='remove'/></Button>
       </li>
     )
+    let klasses = 'custom-attributes__wrapper'
+    if (this.props.ui.darkMode) {
+      klasses += ' darkmode'
+      modalStyles.content.backgroundColor = '#888'
+    }
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
-      <div>
+      <div className={klasses}>
         <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
           Close
         </Button>

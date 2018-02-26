@@ -106,3 +106,21 @@
     align-self: center;
   }
 }
+
+.custom-attributes__wrapper.darkmode {
+  background-color: $card-background-darkmode;
+  color: $text-darkmode;
+  h3 {
+    color: $text-darkmode;
+  }
+  p.sub-header {
+    color: $secondary-text-darkmode;
+  }
+  .list-group-item {
+    background-color: $card-background-darkmode;
+  }
+  .card-dialog__close {
+    background-color: $border-color-darkmode;
+    color: $text-darkmode;
+  }
+}

@@ -625,49 +625,49 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.2.15"
+    "version": "1.2.22"
   },
   "lines": [
     {
       "color": "#ff7f32",
       "id": 33,
-      "position": 3,
+      "position": 6,
       "title": "Anna"
     },
     {
       "color": "#6cace4",
       "id": 27,
-      "position": 0,
+      "position": 1,
       "title": "Main Story Arc"
     },
     {
       "color": "#ffc72c",
       "id": 34,
-      "position": 5,
+      "position": 8,
       "title": "Rivab"
     },
     {
       "color": "#0b1117",
       "id": 35,
-      "position": 6,
+      "position": 9,
       "title": "Baltazaar"
     },
     {
       "color": "#78be20",
       "id": 28,
-      "position": 1,
+      "position": 2,
       "title": "Samuel Zorfert"
     },
     {
       "color": "#e5554f",
       "id": 29,
-      "position": 2,
+      "position": 4,
       "title": "Kevan"
     },
     {
       "color": "darkorchid",
       "id": 36,
-      "position": 4,
+      "position": 7,
       "title": "Bimph"
     }
   ],

@@ -50,7 +50,7 @@ class TagView extends Component {
   renderColorPicker () {
     if (this.state.showColorPicker) {
       var key = 'colorPicker-' + this.props.tag.id
-      return <ColorPicker key={key} color={this.props.tag.color} closeDialog={this.changeColor} />
+      return <ColorPicker key={key} darkMode={this.props.ui.darkMode} color={this.props.tag.color} closeDialog={this.changeColor} />
     } else {
       return null
     }

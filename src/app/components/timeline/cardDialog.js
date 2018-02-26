@@ -238,9 +238,14 @@ class CardDialog extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
+    let klasses = 'card-dialog'
+    if (this.props.ui.darkMode) {
+      klasses += ' darkmode'
+      customStyles.content.backgroundColor = '#888'
+    }
     return (
       <Modal isOpen={true} onRequestClose={this.closeDialog} style={customStyles}>
-        <div className='card-dialog'>
+        <div className={klasses}>
           {this.renderTitle()}
           <div className='card-dialog__body'>
             {this.renderLeftSide()}

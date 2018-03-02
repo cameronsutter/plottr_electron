@@ -1,435 +1,376 @@
-2017-04-10
+2018-02-25
 ==========
 
-  * Merge pull request [#106](https://github.com/cameronsutter/plottr_electron/issues/106) from cameronsutter/dev
-    Fix zoom popover effect scale
+  * change free trial discount wording
+  * dark mode finale
+    color picker, card dialog, custom attributes
 
-2017-04-09
+2018-02-19
 ==========
 
-  * Fix zoom popover effect scale
-    fixes: [#70](https://github.com/cameronsutter/plottr_electron/issues/70)
+  * dark mode part 2
+    everything in dark mode except:
+    - card dialog
+    - color picker
+    - custom attributes
+  * story name improvements
+    LTUE priority
+  * card creation (look and interaction)
+    LTUE priority
+  * save and close button in card dialog
+    LTUE priority
+  * fix description dialog on card drag
+    LTUE priority
+  * make custom attributes dialog easier to use
+    LTUE discovery
 
-2017-03-29
+2018-02-13
 ==========
 
-  * show what cards a place is attached to
-  * custom attributes for places
-  * redesign the place tab
-  * show what cards a character is attached to
-    closes [#68](https://github.com/cameronsutter/plottr_electron/issues/68)
-  * better ellipses on cards
-    closes [#92](https://github.com/cameronsutter/plottr_electron/issues/92)
-    the small cards on the timeline stop the text at the appropriate time
-    and show an ellipsis instead of running out of the box
+  * fixed major issue
+    dark mode was being sent to the renderer process too early and it was
+    causing data loss in the file
 
-2017-03-16
+2018-02-08
 ==========
 
-  * increase font size in card description editor
-    closes [#76](https://github.com/cameronsutter/plottr_electron/issues/76)
+  * fix env file writing
+  * fix dotenv config syntax error
 
-2017-03-15
+2018-02-05
 ==========
 
-  * fix recent files bugs
-    Fix these 2 behaviors that weren’t working:
-    1) when a file no longer exists but is in the recent files key, handle
-    not trying to open that gracefully and ask the user to open or create a
-    file.
-    2) when a window is closed and there are other windows open, remove
-    that window from the recent files key and put in one of the other
-    windows
-  * ability to take screenshots
-  * filter outline by storyline
-    closes [#97](https://github.com/cameronsutter/plottr_electron/issues/97)
+  * hopefully fixed env vars
+  * another stab at fixing env vars
+  * fix env vars writing
+    the .env isn’t being created at build
+  * another shot at appveyor builds
+  * change appveyor
+    using appveyor UI for now to achieve matrix build
+  * appveyor config tweak
+  * fix env variables
 
-2017-03-14
+2018-02-01
 ==========
 
-  * editable outline view
-    closes [#98](https://github.com/cameronsutter/plottr_electron/issues/98)
-  * put outline minimap on left side
-    closes [#103](https://github.com/cameronsutter/plottr_electron/issues/103)
-  * improve label padding on card dialog
-    closes [#37](https://github.com/cameronsutter/plottr_electron/issues/37)
+  * dark mode part 1
+    dark mode core
+    timeline dark mode
+  * fix menu and font
+    font size increase made navigation not look good. And the Plottr menu
+    was missing things
 
-2017-03-13
+2018-01-15
 ==========
 
-  * fixed card dialog editing bug
-    tags no longer disappear when a card is in editing mode
-  * card dialog makeover
-    closes [#99](https://github.com/cameronsutter/plottr_electron/issues/99)
+  * larger, darker fonts
+    refs [#163](https://github.com/cameronsutter/plottr_electron/issues/163)
+    refs [#174](https://github.com/cameronsutter/plottr_electron/issues/174)
+    refs [#202](https://github.com/cameronsutter/plottr_electron/issues/202)
 
-2017-03-05
+2017-12-12
 ==========
 
-  * better initial state for new files
-    closes [#59](https://github.com/cameronsutter/plottr_electron/issues/59)
-  * track timeline orientation
-    when an event is registered, track what timeline orientation they are in
-  * improvements to the color picker
-    colors don’t say a name anymore except on the title (hover over), they
-    are just a square of that color
+  * remove buy button from full version
+  * small bug fix
+
+2017-12-10
+==========
+
+  * Buy full version from trial
+    Allows you to buy the full version right from the free trial
+
+2017-12-04
+==========
+
+  * save on blur
+    refs [#182](https://github.com/cameronsutter/plottr_electron/issues/182)
+    everything saves when you navigate away from it
+  * attachments in the doc export
+    closes [#183](https://github.com/cameronsutter/plottr_electron/issues/183)
+
+2017-11-27
+==========
+
+  * fix windows opening
+    closes [#189](https://github.com/cameronsutter/plottr_electron/issues/189)
+    - windows should open files when double-clicked
+    - mac/windows should save new files when first created
+  * more tests
+    refs [#189](https://github.com/cameronsutter/plottr_electron/issues/189)
+  * a test
+    refs [#189](https://github.com/cameronsutter/plottr_electron/issues/189)
+    testing a fix for a windows bug where files won’t open
+
+2017-10-31
+==========
+
+  * workflow improvements
+    closes [#170](https://github.com/cameronsutter/plottr_electron/issues/170)
+    also saves a card/line/scene on blur in some cases
+  * small bug fixes
+    closes [#166](https://github.com/cameronsutter/plottr_electron/issues/166)
+    fix misspelling of environment for rollbar
+    fix open/new dialog disappearing on windows
+
+2017-10-12
+==========
+
+  * stupid fix
+  * fixes
+    - save error report to Documents instead of home
+    - fix trial mode display in Navigation
+  * more bug fixes
+  * bug fixes
+    - handle no notes/characters/places (deleting them all)
+    - home path for windows
+  * ummmm ... forgot to save to package json
+    somehow forgot to add electron-log to the package.json file
+
+2017-10-11
+==========
+
+  * error reporting
+    Better error reporting
+    - generate a detailed error report file to email to me
+    - log all errors to file as well as send to Rollbar
   * fix scrolling
-    no longer scrolls in the background when using the arrow keys to edit
-    text
-  * better windows & mac handling
-    closes [#65](https://github.com/cameronsutter/plottr_electron/issues/65)
-    Can now create and open files in windows/mac without cross-platform
-    problems.
-    Improved handling of workflow when migrating files
-  * only primary buttons have colors
-    closes [#95](https://github.com/cameronsutter/plottr_electron/issues/95)
-  * more branding
-    improvement to css text classes
+    fast scrolling shouldn’t break so easily
+  * small fixes
+    - don’t migrate if there is no migration
+    - fix navigation in trial mode
+    - update tour/examples to current version
 
-2017-03-01
+2017-10-10
 ==========
 
-  * display custom character attributes
-    refs [#41](https://github.com/cameronsutter/plottr_electron/issues/41)
-    Redesign the character page. Display and edit custom character
-    attributes
-  * reworking UI
-    first step in reworking the UI — colors
-  * custom character attributes
-    refs [#41](https://github.com/cameronsutter/plottr_electron/issues/41)
-    add custom attributes
+  * show not saving in trial mode
+    display that trial mode is not saving the file
+  * track open files
+    closes [#162](https://github.com/cameronsutter/plottr_electron/issues/162)
+  * file fixer
+    closes [#160](https://github.com/cameronsutter/plottr_electron/issues/160)
 
-2017-02-23
+2017-10-09
 ==========
 
-  * press esc to cancel editing
-    refs [#78](https://github.com/cameronsutter/plottr_electron/issues/78)
-    characters, places, tags, story lines, scenes
-  * click to edit scenes, lines, cards
-    closes [#94](https://github.com/cameronsutter/plottr_electron/issues/94)
-  * card dialog editing
-    closes [#78](https://github.com/cameronsutter/plottr_electron/issues/78)
-    refs [#94](https://github.com/cameronsutter/plottr_electron/issues/94)
-  * vertical timeline scrolling
-    refs [#96](https://github.com/cameronsutter/plottr_electron/issues/96)
-    fixes scrolling when in vertical orientation
-  * vertical timeline
-    closes [#96](https://github.com/cameronsutter/plottr_electron/issues/96)
-    adds a button on the timeline to flip the orientation from horizontal
-    to vertical
+  * small bug fixes
+  * verify view improvements
+  * disable_all_events error
+    init tracker in each window
 
-2017-02-21
+2017-10-08
 ==========
 
-  * better workflows for characters/places/tags
-    closes [#38](https://github.com/cameronsutter/plottr_electron/issues/38)
-    characters/places/tags now can be edited as soon as adding a new one
-    and the user can hit Enter after editing the title/name to finish
-    editing
-  * better workflow for adding lines
-    refs [#38](https://github.com/cameronsutter/plottr_electron/issues/38)
-    adding lines goes right into editing the title
-  * better workflow for adding scenes
-    refs [#38](https://github.com/cameronsutter/plottr_electron/issues/38)
-    adding scenes is much more smooth now
-  * better workflow for adding a card
-    refs [#38](https://github.com/cameronsutter/plottr_electron/issues/38)
-    adding a card is much smoother and requires less clicks
-  * fix migration issue
+  * sort characters & places
+    closes [#156](https://github.com/cameronsutter/plottr_electron/issues/156)
+    closes [#157](https://github.com/cameronsutter/plottr_electron/issues/157)
+    sort characters, places, & tags alphabetically
+  * fix open/create windows problem
+    stop windows from quitting after it asked to open or create
+  * small improvements to error reporting
 
-2017-02-20
+2017-10-05
 ==========
 
-  * autosave every change
-    closes [#74](https://github.com/cameronsutter/plottr_electron/issues/74)
-    no longer autosaves on a 5 minute interval. Instead it saves after
-    every change
-  * production build handling
+  * send errors as production environment
+    - set rollbar error environment to production when not in dev
+    - add some extra info to rollbar errors
+  * don't allow autosave in trial
+    stop the free trial from auto-saving
+  * fix last minute critical bugs
+    - adding a scene
+    - deleting notes/cards with attached places/characters
+    - doc exporter
+    - confirmation before deletion of characters/notes/places/tags
 
-2016-10-03
+2017-10-04
 ==========
 
-  * update changelog
+  * remove code
+    remove the comments and extra errors that i was using to diagnose the
+    windows verification workflow
+  * fix verification workflow on windows
+    This is just an attempt, but I think the problem was happening because
+    the verification window would close before any other window would open.
+    On Windows when the last window is closed, the app quits.
+    So now it’s tracking whether it’s in the verification workflow or not.
+    If it is, the app doesn’t quit when all windows are closed.
+  * diagnose verification on windows
+  * fixed the json issue hopefully
 
-2016-10-02
+2017-10-03
 ==========
 
-  * bump minor version number
-  * [mac] associate .plottr with Plottr
-    refs [#28](https://github.com/cameronsutter/plottr_electron/issues/28)
-    on macOS, the .plottr files will have a cool Plottr icon and you can
-    open Plottr by double clicking them
+  * ok this time will send errors
+  * okay this time actually send errors
+  * actually send errors
+    sending errors the right way so i can see what’s happening in windows
+    on verification
+  * diagnose on windows
+  * diagnose verification workflow
+    try to figure out what is happening on windows
+  * fix verification workflow
+    i forgot something in the last commit
+  * try to fix verification workflow
+    verification works, but on windows Plottr doesn’t open after the
+    verification.
 
-2016-09-29
+2017-10-02
 ==========
 
-  * trial version
-    closes [#42](https://github.com/cameronsutter/plottr_electron/issues/42)
-    enables a trial version build
+  * fix license verification
+    license verification wasn’t working
 
-2016-09-27
+2017-10-01
 ==========
 
-  * open tour file on first use
-    refs [#42](https://github.com/cameronsutter/plottr_electron/issues/42)
+  * build to turn back on license verification
+    closes [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * Revert "Revert "Turn on license verification""
+    This reverts commit d5f393ffe7c75381e4cd221ef6bb92bc810c99d3.
 
-2016-09-25
+2017-09-26
 ==========
 
-  * migration for 0.8
-    start a migrator file for 0.8 which adds notes to places/characters
-  * open markdown help in a real browser
-    fixes [#67](https://github.com/cameronsutter/plottr_electron/issues/67)
-  * improve role descriptions
-    improve the description of our roles in the Creators section of the
-    about window
-  * fix bug reporting
-    fixes [#85](https://github.com/cameronsutter/plottr_electron/issues/85)
-    removes the insecure call to github and instead reports bugs in a more
-    secure way
-  * decrease build size
-    refs [#64](https://github.com/cameronsutter/plottr_electron/issues/64)
-    by making a common bundle and minifying the js files for production,
-    the builds should be smaller :)
-  * Merge pull request [#89](https://github.com/cameronsutter/plottr_electron/issues/89) from cameronsutter/dev
-    Dev: Issue 69 fix
+  * remove fsevents as a dependency
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    removed fsevents as a dependency. In development, make sure it’s
+    installed, but don’t add it to list of dependencies (I know that’s
+    weird, but it makes wepback take so much less CPU)
+  * performance improvements 3
+    closes [#150](https://github.com/cameronsutter/plottr_electron/issues/150)
+    stop history (undo) from loading the localStorage at every prop change
+    MAIN PROBLEM: stop the infinite loop between the saver and the action
+    that told the store it had been saved
+  * performance improvements 2
+    refs [#150](https://github.com/cameronsutter/plottr_electron/issues/150)
+    component should update
+  * performance improvements
+    refs [#150](https://github.com/cameronsutter/plottr_electron/issues/150)
+    stop binding callbacks in the render functions everywhere
 
-2016-09-20
+2017-09-24
 ==========
 
-  * Add Notes field to Character and Settings
-    Fixes Issue [#69](https://github.com/cameronsutter/plottr_electron/issues/69)
-    Additionally:
-    * Changes "character description" label to say "Short Description"
-    * Changes "place description" label to say "Short Description"
-    * Changes "character name" label to say "Name"
-    * Changes "character description" label to say "Short Description"
-    * Fixes spelling error for Jon Willesen's name on About page
-    * Adds dev to Steve Shepherd's credits
-  * Changes:
-    * Updated
-  * report a bug
-    closes [#26](https://github.com/cameronsutter/plottr_electron/issues/26)
-    Now you can report a bug or request a feature
+  * secret discount for the free trial
 
-2016-09-18
+2017-09-21
 ==========
 
-  * improve startup time
-  * optimize build
+  * bug fixes
+    A few small bug fixes:
+    1.0 migrator (add a note, not just an empty array)
+    allow removing values while editing characters/places
+  * menu improvements
+    add separators, add opening the tour, add ellipses (…) where it makes
+    sense
+  * fix tour file
+    update the tour file to the right version, and make improvements
+    because of new features
 
-2016-09-16
+2017-09-19
 ==========
 
-  * verify licenses
-    closes [#27](https://github.com/cameronsutter/plottr_electron/issues/27)
-    I had to reorganize the whole project to get this to work, mainly to
-    get webpack to play nicely but it’s better as a result
+  * installer builds mark 20
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    trial mode should work
+    (no license verification)
+  * installer builds mark 19
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    (trial version test, no license verification)
+  * installer build fixes (no real build)
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    (no license verification, put back default ignores, turn on asar, trial
+    mode doesn’t work)
+  * installer builds mark 18
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    (file extension change to .pltr, trial mode on about window, icon fix
+    on mac, no asar to test default ignores)
 
-2016-09-12
+2017-09-18
 ==========
 
-  * track usage
-    closes [#39](https://github.com/cameronsutter/plottr_electron/issues/39)
-    tracks simple actions (when online) so that we can measure engagement
-    with Plottr. No
-    story data is tracked/captured/transferred
+  * installer builds mark 17
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    about window is fixed
+    attempting fix for mac icons
+  * installer builds mark 16
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    (no license verification, but attempting windows trial build)
+  * installer builds mark 15
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    (no windows trial build. Must do that separately)
 
-2016-08-31
+2017-09-08
 ==========
 
-  * cleanup from multiple windows
-    fixes [#71](https://github.com/cameronsutter/plottr_electron/issues/71)
-    after a migration it will say that there are unsaved changes.
-  * multiple windows
-    closes [#15](https://github.com/cameronsutter/plottr_electron/issues/15)
-    More than one window open at a time
+  * installer builds mark 14
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * installer builds mark 13
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * installer builds mark 12
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * installer builds mark 11
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * installer builds mark 10
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * installer build mark 9
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
 
-2016-08-29
+2017-09-07
 ==========
 
-  * remove unnecessary glyphicon fonts
+  * builds mark 8
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * builds mark 7
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * get the builds right
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * Revert "Turn on license verification"
+    This reverts commit 32b75208916a101e70963c292a210b155f91dbfb.
+  * improve builds yet again
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * improve builds again
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * improved builds
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+  * small fixes to get installers working
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
 
-2016-08-28
+2017-09-06
 ==========
 
-  * bug fix: new files
-    fixes [#66](https://github.com/cameronsutter/plottr_electron/issues/66)
+  * new icons!
+    refs [#22](https://github.com/cameronsutter/plottr_electron/issues/22)
+    Remaining work: About window & Trial mode
 
-2016-08-23
+2017-08-31
 ==========
 
-  * fix a few bugs
-    node-sass needed to be updated, opening files wasn’t working, and the
-    about window wasn’t showing.
-    bumped build number
-  * fix build … again
-    also started a js build script that isn’t currently working, but it
-    will be useful in the future
+  * link tags in card descriptions
+    closes [#57](https://github.com/cameronsutter/plottr_electron/issues/57)
 
-2016-08-22
+2017-08-30
 ==========
 
-  * update changelog
-  * bump version number to 0.7.0
+  * fix export cancel bug
+    when you hit cancel after clicking export, it threw an exception
 
-2016-08-16
+2017-08-28
 ==========
 
-  * fix build size
-    get the build back down to a good size. It was up past 200MB and now
-    it’s back around 60MB
+  * fix when it says 'everything saved'
+    sometimes it didn’t say everything was saved, but only because the diff
+    of what had changed was actually nothing. Now it shows that everything
+    was saved if there was nothing to save
+  * display the number of scenes
+    closes [#62](https://github.com/cameronsutter/plottr_electron/issues/62)
+    shows the number of scenes in the minimap of the outline, on hover over
+    the scenes in the timeline, and while editing a scene name
 
-2016-08-15
+2017-08-17
 ==========
 
-  * copy/paste right-click menu
-    closes [#9](https://github.com/cameronsutter/plottr_electron/issues/9)
-
-2016-08-08
-==========
-
-  * better color picker for storylines
-    closes [#36](https://github.com/cameronsutter/plottr_electron/issues/36)
-    changing colors for storylines is no longer a pain. It’s fun and
-    there’s so many choices
-  * click to zoom in
-    closes [#29](https://github.com/cameronsutter/plottr_electron/issues/29)
-    when zoomed out, click on a card to zoom into that location
-  * bug: storyline color editing
-    changing the color of storylines was impossible because of this bug
-  * finish undo/redo
-    closes [#8](https://github.com/cameronsutter/plottr_electron/issues/8)
-    every action has a helpful details view in the undo menu
-
-2016-08-07
-==========
-
-  * ignore change_current_view actions
-    change_current_view actions now don’t prompt the user that there are
-    unsaved changes
-  * autosave
-    closes [#19](https://github.com/cameronsutter/plottr_electron/issues/19)
-  * fix build
-
-2016-08-04
-==========
-
-  * bump version number to 0.6.5
-  * undo/redo
-    refs [#8](https://github.com/cameronsutter/plottr_electron/issues/8)
-    the last piece that is still missing is showing details of changes for
-    most actions such as editing scene names, changing the position of
-    cards, etc.
-  * upgrade redux
-
-2016-08-02
-==========
-
-  * groundwork for undo/redo
-    refs [#8](https://github.com/cameronsutter/plottr_electron/issues/8)
-    middleware to track changes, basic UI to see changes, no functionality
-    … it’s almost in a broken state. Had to break to update redux
-
-2016-07-31
-==========
-
-  * fix subnav styles
-  * change icon
-    icon may change again, but a new icon/logo to try out
-  * move the filter button
-    functionality remains the same, but now it’s on the subnav bar instead
-    of in the timeline
-
-2016-07-28
-==========
-
-  * faster scrolling
-    closes [#43](https://github.com/cameronsutter/plottr_electron/issues/43)
-    scroll buttons in the subnav menu and keyboard shortcuts to scroll
-    around faster
-  * simple zoom in and out
-    refs [#29](https://github.com/cameronsutter/plottr_electron/issues/29)
-    lets you zoom in and out, fit the whole plot in the view, and reset
-    back to normal zoom
-  * upgrade to Electron 1.3
-    closes [#55](https://github.com/cameronsutter/plottr_electron/issues/55)
-    Fixed incompatibilities with older versions … hopefully I got
-    everything.
-    Added Devtron & React to Chrome devTools
-
-2016-07-27
-==========
-
-  * sub navigation menu
-    non-functional menu buttons
-  * fixed build script
-    I had accidentally commented out some important parts of the build
-    script
-
-2016-05-30
-==========
-
-  * some rebranding
-    changing the font of the word Plottr in the about menu
-  * improved build
-    the zipped OS X version of Plottr was always much bigger with the new
-    build script than before. To fix this, I  made the script compress it
-    to a .dmg instead of a .zip which is slightly more annoying but much
-    smaller
-
-2016-05-29
-==========
-
-  * bug: didn't ask to save
-    fixes [#40](https://github.com/cameronsutter/plottr_electron/issues/40)
-    and a lot more error possibilities
-
-2016-05-25
-==========
-
-  * bug: displaying cards
-    fixed how it does children ids for great justice … and an addition to
-    the migration … and bumped build version number
-  * show labels in card description
-    Now if you type a character/place/tag within two curly braces (e.g.
-    {{coolDude}}) in the card description, it will render with a label of
-    that color
-
-2016-05-24
-==========
-
-  * better build script
-    all but the uploading is done automatically with one command
-
-2016-05-18
-==========
-
-  * color line labels
-    closes [#45](https://github.com/cameronsutter/plottr_electron/issues/45)
-    also adds a cool little colored square to the outline minimap for each
-    line with a card in that scene
-  * remove unneeded extra example file
-    oops, didn’t mean to commit this
-  * bug: dragging and dropping the first card
-    fixes [#34](https://github.com/cameronsutter/plottr_electron/issues/34)
-    The first card in a new file wouldn’t drag anywhere, but after a good
-    whipping it’s behaving well again
-  * clean up chapters
-    once and for all clean up remnants of chapters. Also did a little bit
-    of cleanup around new ids for most objects
-  * bug: change lines/scenes in card dialog
-    fixes [#47](https://github.com/cameronsutter/plottr_electron/issues/47)
-  * show color for character/place labels in card dialog
-    closes [#53](https://github.com/cameronsutter/plottr_electron/issues/53)
-  * bug: about menu - version undefined
-    fixes [#56](https://github.com/cameronsutter/plottr_electron/issues/56)
-
-2016-05-17
-==========
-
-  * bug: choosing "none" tag/character/place in card edit
-    fixes [#54](https://github.com/cameronsutter/plottr_electron/issues/54)
-    this also fixes choosing tags/characters/places when creating a card.
-  * bug: outline minimap overlapping cards
-    closes [#52](https://github.com/cameronsutter/plottr_electron/issues/52)
-    outline minimap no longer overlaps cards when you resize the window
+  * color picker improvements
+    closes [#143](https://github.com/cameronsutter/plottr_electron/issues/143)

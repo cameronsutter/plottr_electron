@@ -26,6 +26,13 @@ class CharacterListView extends Component {
     if (character) this.setState({characterDetailId: character.id})
   }
 
+  componentDidUpdate () {
+    if (this.refs.attrInput) {
+      var input = this.refs.attrInput.getInputDOMNode()
+      input.focus()
+    }
+  }
+
   closeDialog = () => {
     this.setState({dialogOpen: false})
   }
@@ -41,10 +48,16 @@ class CharacterListView extends Component {
 
   handleAddCustomAttr = (event) => {
     if (event.which === 13) {
-      const attr = this.refs.attrInput.getValue()
-      this.props.customAttributeActions.addCharacterAttr(attr)
-      this.setState({addAttrText: ''})
+      this.saveAttr()
     }
+  }
+
+  saveAttr = () => {
+    const attr = this.refs.attrInput.getValue()
+    this.props.customAttributeActions.addCharacterAttr(attr)
+    this.setState({addAttrText: ''})
+    var input = this.refs.attrInput.getInputDOMNode()
+    input.focus()
   }
 
   removeAttr (attr) {
@@ -115,8 +128,10 @@ class CharacterListView extends Component {
         <h3>Custom Attributes for Characters</h3>
         <p className='sub-header'>Choose what you want to track about your characters</p>
         <div className='character-list__custom-attributes-add-button'>
-          <Input type='text' ref='attrInput' label='Add attributes' value={this.state.addAttrText} onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
-          <Button bsStyle='success' onClick={this.handleAddCustomAttr}>
+          <Input type='text' ref='attrInput'
+            label='Add attributes' value={this.state.addAttrText}
+            onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
+          <Button bsStyle='success' onClick={this.saveAttr}>
             Add
           </Button>
         </div>

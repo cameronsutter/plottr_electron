@@ -26,6 +26,13 @@ class PlaceListView extends Component {
     if (place) this.setState({placeDetailId: place.id})
   }
 
+  componentDidUpdate () {
+    if (this.refs.attrInput) {
+      var input = this.refs.attrInput.getInputDOMNode()
+      input.focus()
+    }
+  }
+
   closeDialog = () => {
     this.setState({dialogOpen: false})
   }
@@ -41,10 +48,16 @@ class PlaceListView extends Component {
 
   handleAddCustomAttr = (event) => {
     if (event.which === 13) {
-      const attr = this.refs.attrInput.getValue()
-      this.props.customAttributeActions.addPlaceAttr(attr)
-      this.setState({addAttrText: ''})
+      this.saveAttr()
     }
+  }
+
+  saveAttr = () => {
+    const attr = this.refs.attrInput.getValue()
+    this.props.customAttributeActions.addPlaceAttr(attr)
+    this.setState({addAttrText: ''})
+    var input = this.refs.attrInput.getInputDOMNode()
+    input.focus()
   }
 
   removeAttr (attr) {
@@ -116,8 +129,10 @@ class PlaceListView extends Component {
         <h3>Custom Attributes for Places</h3>
         <p className='sub-header'>Choose what you want to track about your places</p>
         <div className='character-list__custom-attributes-add-button'>
-          <Input type='text' ref='attrInput' label='Add attributes' value={this.state.addAttrText} onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
-          <Button bsStyle='success' onClick={this.handleAddCustomAttr}>
+          <Input type='text' ref='attrInput'
+            label='Add attributes' value={this.state.addAttrText}
+            onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
+          <Button bsStyle='success' onClick={this.saveAttr}>
             Add
           </Button>
         </div>

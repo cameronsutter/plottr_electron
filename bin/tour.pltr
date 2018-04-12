@@ -115,13 +115,15 @@
   "customAttributes": {
     "cards": [],
     "characters": [
-      "this is a custom attribute",
-      "it's easy to add them"
+      "age",
+      "superpower",
+      "race"
     ],
     "lines": [],
     "places": [
       "weather",
-      "custom attribute!"
+      "planet",
+      "number of moons"
     ],
     "scenes": []
   },
@@ -261,7 +263,7 @@
     }
   ],
   "ui": {
-    "currentView": "timeline",
+    "currentView": "places",
     "darkMode": false,
     "orientation": "horizontal"
   }

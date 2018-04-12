@@ -79,6 +79,7 @@
   ],
   "characters": [
     {
+      "age": "",
       "cards": [],
       "color": null,
       "description": "she is the coolest",
@@ -89,9 +90,12 @@
         0
       ],
       "notes": "general notes about her",
+      "race": "",
+      "superpower": "",
       "this is a custom attribute": ""
     },
     {
+      "age": "",
       "cards": [],
       "color": null,
       "description": "there's always a love interest",
@@ -100,16 +104,21 @@
       "name": "Love interest",
       "noteIds": [],
       "notes": "Click anywhere on a character's details to edit",
+      "race": "",
+      "superpower": "",
       "this is a custom attribute": "and here is it's value"
     },
     {
+      "age": "",
       "cards": [],
       "color": null,
       "description": "that's a terrible name for a character",
       "id": 2,
-      "name": "Filter in the Timeline",
+      "name": "Connor",
       "noteIds": [],
-      "notes": "Characters, places, and tags show up on the filter menu in the timeline view. You can filter which cards are visible by which of these you have attached to that card"
+      "notes": "Characters, places, and tags show up on the filter menu in the timeline view. You can filter which cards are visible by which of these you have attached to that card",
+      "race": "",
+      "superpower": ""
     }
   ],
   "customAttributes": {
@@ -131,7 +140,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
     "loaded": true,
-    "version": "1.2.26"
+    "version": "1.2.27"
   },
   "lines": [
     {
@@ -263,7 +272,7 @@
     }
   ],
   "ui": {
-    "currentView": "places",
+    "currentView": "tags",
     "darkMode": false,
     "orientation": "horizontal"
   }

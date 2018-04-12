@@ -16,6 +16,13 @@ class TagView extends Component {
     if (this.state.editing) this.saveEdit()
   }
 
+  handleCancel = () => {
+    this.setState({editing: false})
+    if (this.props.tag.title == '') {
+      this.props.actions.deleteTag(this.props.tag.id)
+    }
+  }
+
   handleEnter = (event) => {
     if (event.which === 13) {
       this.saveEdit()
@@ -71,7 +78,7 @@ class TagView extends Component {
             <MenuItem onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /> No color</MenuItem>
             <MenuItem onClick={this.deleteTag}><Glyphicon glyph='trash' /> Delete</MenuItem>
           </DropdownButton>
-          <Button onClick={() => this.setState({editing: false})} >Cancel</Button>
+          <Button onClick={this.handleCancel}>Cancel</Button>
         </ButtonGroup>
       </div>
     )

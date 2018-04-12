@@ -397,7 +397,8 @@ function askToOpenFile () {
   let win = null
   if (windows.length > 0) win = BrowserWindow.getFocusedWindow()
   var properties = [ 'openFile', 'createDirectory' ]
-  dialog.showOpenDialog(win, { properties: properties }, function (chosenFileName) {
+  var filters = [{name: 'Plottr file', extensions: ['pltr']}]
+  dialog.showOpenDialog(win, {filters: filters, properties: properties }, function (chosenFileName) {
     if (chosenFileName && chosenFileName.length > 0) {
       openWindow(chosenFileName[0])
     }

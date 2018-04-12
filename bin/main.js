@@ -138,13 +138,13 @@ ipcMain.on('fetch-state', function (event, id) {
   if (win.window.isVisible()) {
     migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
       if (err) { log.warn(err); rollbar.warn(err) }
-      event.sender.send('state-fetched', json, win.fileName, dirty, darkMode)
+      event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
     })
   } else {
     win.window.on('show', () => {
       migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
         if (err) { log.warn(err); rollbar.warn(err) }
-        event.sender.send('state-fetched', json, win.fileName, dirty, darkMode)
+        event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
       })
     })
   }
@@ -465,8 +465,6 @@ function openWindow (fileName, newFile = false) {
       state: json,
       lastSave: json
     })
-
-    newWindow.webContents.send('open-file', app.getVersion(), windows.length)
 
     newWindow.setTitle(displayFileName(fileName))
     newWindow.setRepresentedFilename(fileName)

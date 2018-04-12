@@ -20,15 +20,18 @@ ipcRenderer.on('state-saved', (_arg) => {
 })
 
 ipcRenderer.send('fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode) => {
+ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFiles) => {
   if (state && Object.keys(state).length > 0) {
     store.dispatch(loadFile(fileName, dirty, state))
+    MPQ.push('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles, new_file: false})
   } else {
     store.dispatch(newFile(fileName))
+    MPQ.push('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles, new_file: true})
   }
 
   store.dispatch(setDarkMode(darkMode))
   if (darkMode) window.document.body.className = 'darkmode'
+
 
   render(
     <Provider store={store}>
@@ -41,10 +44,6 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode) => {
 ipcRenderer.once('send-launch', (event, version) => {
   MPQ.push('Launch', {online: navigator.onLine, version: version})
   ipcRenderer.send('launch-sent')
-})
-
-ipcRenderer.on('open-file', (event, version, openFiles) => {
-  MPQ.push('open_file', {online: navigator.onLine, version: version, number_open: openFiles})
 })
 
 ipcRenderer.on('set-dark-mode', (event, on) => {

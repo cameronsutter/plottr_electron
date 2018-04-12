@@ -129,7 +129,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
     "loaded": true,
-    "version": "1.2.22"
+    "version": "1.2.24"
   },
   "lines": [
     {
@@ -232,7 +232,7 @@
       "title": "Drag this scene"
     }
   ],
-  "storyName": "Click your story's title",
+  "storyName": "The Pirates of Krakken Coast",
   "tags": [
     {
       "color": "crimson",

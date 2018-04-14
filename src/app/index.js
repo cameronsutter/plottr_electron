@@ -55,7 +55,7 @@ window.onerror = function (message, file, line, column, err) {
   if (process.env.NODE_ENV !== 'dev') {
     log.warn(err)
     rollbar.info(err)
+    let newState = FileFixer(store.getState())
+    ipcRenderer.send('reload-window', win.id, newState)
   }
-  let newState = FileFixer(store.getState())
-  ipcRenderer.send('reload-window', win.id, newState)
 }

@@ -79,19 +79,19 @@
   ],
   "characters": [
     {
-      "age": "",
+      "age": "14",
       "cards": [],
       "color": null,
       "description": "she is the coolest",
       "id": 0,
       "it's easy to add them": "",
-      "name": "Main Character",
+      "name": "Lyra",
       "noteIds": [
         0
       ],
       "notes": "general notes about her",
-      "race": "",
-      "superpower": "",
+      "race": "Fairy",
+      "superpower": "None",
       "this is a custom attribute": ""
     },
     {
@@ -109,16 +109,16 @@
       "this is a custom attribute": "and here is it's value"
     },
     {
-      "age": "",
+      "age": "16",
       "cards": [],
       "color": null,
-      "description": "that's a terrible name for a character",
+      "description": "He's meh",
       "id": 2,
       "name": "Connor",
       "noteIds": [],
       "notes": "Characters, places, and tags show up on the filter menu in the timeline view. You can filter which cards are visible by which of these you have attached to that card",
-      "race": "",
-      "superpower": ""
+      "race": "Goblin",
+      "superpower": "flight"
     }
   ],
   "customAttributes": {
@@ -140,7 +140,7 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
     "loaded": true,
-    "version": "1.2.27"
+    "version": "1.2.28"
   },
   "lines": [
     {
@@ -203,6 +203,8 @@
         0
       ],
       "notes": "",
+      "number of moons": "1",
+      "planet": "",
       "weather": "peachy"
     },
     {
@@ -213,7 +215,10 @@
       "name": "Another place in your story",
       "noteIds": [],
       "notes": "",
-      "place": null
+      "number of moons": "3",
+      "place": null,
+      "planet": "",
+      "weather": ""
     }
   ],
   "scenes": [
@@ -272,7 +277,7 @@
     }
   ],
   "ui": {
-    "currentView": "tags",
+    "currentView": "places",
     "darkMode": false,
     "orientation": "horizontal"
   }

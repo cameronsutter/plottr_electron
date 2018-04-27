@@ -21,42 +21,13 @@ export const newFileFile = {
 
 export const newFileStoryName = i18n('My awesome story')
 
-export const newFileCharacters = [{
-  id: 0,
-  name: i18n('Main Character'),
-  description: i18n('the main character'),
-  notes: '',
-  color: null,
-  cards: [],
-  noteIds: []
-}]
+export const newFileCharacters = []
 
-export const newFilePlaces = [{
-  id: 0,
-  name: i18n('First Place'),
-  description: i18n('somewhere cool'),
-  notes: '',
-  color: null,
-  cards: [],
-  noteIds: []
-}]
+export const newFilePlaces = []
 
-export const newFileTags = [{
-  id: 0,
-  title: i18n('Happy'),
-  color: '#ff7f32'
-}]
+export const newFileTags = []
 
-export const newFileCards = [{
-  id: 0,
-  lineId: 0,
-  sceneId: 0,
-  title: i18n('an empty card'),
-  description: '',
-  tags: [0],
-  characters: [],
-  places: []
-}]
+export const newFileCards = []
 
 export const newFileLines = [{
   id: 0,
@@ -66,19 +37,11 @@ export const newFileLines = [{
 }]
 
 export const newFileCustomAttributes = {
-  characters: [i18n('age')],
+  characters: [],
   places: [],
   cards: [],
   scenes: [],
   lines: []
 }
 
-export const newFileNotes = [{
-  id: 0,
-  title: i18n('Note 1'),
-  content: '',
-  tags: [],
-  characters: [],
-  places: [],
-  lastEdited: null
-}]
+export const newFileNotes = []

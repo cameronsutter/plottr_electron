@@ -32,7 +32,7 @@ class CharacterListView extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nexProps.characters.length > 0) {
+    if (nextProps.characters.length > 0) {
       let visible = this.visibleCharacters(nextProps.characters)
       this.setState({
         visibleCharacters: visible,

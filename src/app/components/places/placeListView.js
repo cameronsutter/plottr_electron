@@ -32,10 +32,10 @@ class PlaceListView extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nexProps.places.length > 0) {
+    if (nextProps.places.length > 0) {
       let visible = this.visiblePlaces(nextProps.places)
       this.setState({
-        visiblePlaces: sorted,
+        visiblePlaces: visible,
         placeDetailId: this.detailID(visible),
       })
     }

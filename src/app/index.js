@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import App from 'containers/App'
 import configureStore from 'store/configureStore'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer, remote, app } from 'electron'
 const win = remote.getCurrentWindow()
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
 import mixpanel from 'mixpanel-browser'
@@ -26,7 +26,7 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
     MPQ.push('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles, new_file: false})
   } else {
     store.dispatch(newFile(fileName))
-    MPQ.push('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles, new_file: true})
+    MPQ.push('open_file', {online: navigator.onLine, version: app.getVersion(), number_open: openFiles, new_file: true})
   }
 
   store.dispatch(setDarkMode(darkMode))

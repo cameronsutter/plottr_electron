@@ -74,7 +74,7 @@ export default class SelectList extends Component {
   render () {
     let classNameUL = this.props.type === 'Tags' ? 'select-list__labels' : ''
     let label = ''
-    switch (type) {
+    switch (this.props.type) {
       case 'Characters':
         label = i18n('Characters')
         break

@@ -17,12 +17,6 @@
   "after_4c71e718": {
     "message": "After"
   },
-  "age_e144e42e": {
-    "message": "age"
-  },
-  "an_empty_card_77430117": {
-    "message": "an empty card"
-  },
   "attach_character_charactername_to_card_cardname_5fb9e490": {
     "message": "attach character { characterName } to card { cardName }"
   },
@@ -43,9 +37,6 @@
   },
   "attached_to_8f852206": {
     "message": "Attached to"
-  },
-  "autosaved_369db118": {
-    "message": "autosaved"
   },
   "before_44c686b4": {
     "message": "Before"
@@ -209,9 +200,6 @@
   "filter_e3398407": {
     "message": "Filter"
   },
-  "first_place_4063cd26": {
-    "message": "First Place"
-  },
   "fit_2875b937": {
     "message": "Fit"
   },
@@ -229,9 +217,6 @@
   },
   "greens_cb4a9ea1": {
     "message": "Greens"
-  },
-  "happy_7bd82a90": {
-    "message": "Happy"
   },
   "help_4c4968b1": {
     "message": "Help"
@@ -280,9 +265,6 @@
   },
   "loading_25990131": {
     "message": "Loading..."
-  },
-  "main_character_d39a0ee5": {
-    "message": "Main Character"
   },
   "main_plot_a6312542": {
     "message": "Main Plot"
@@ -334,9 +316,6 @@
   },
   "nope_plottr_tried_again_but_it_didn_t_work_plottr__e62701ff": {
     "message": "Nope. Plottr tried again. But it didn''t work. Plottr will ask you next time it opens, but you''re verified. Enjoy"
-  },
-  "note_1_6ab8ee97": {
-    "message": "Note 1"
   },
   "note_8b73ce09": {
     "message": "Note"
@@ -491,9 +470,6 @@
   "show_dev_tools_4a5a0eeb": {
     "message": "Show Dev Tools"
   },
-  "somewhere_cool_949a6735": {
-    "message": "somewhere cool"
-  },
   "story_line_9b9b93d4": {
     "message": "Story line"
   },
@@ -521,9 +497,6 @@
   "take_screenshot_d754e9b": {
     "message": "Take Screenshot"
   },
-  "the_main_character_d41d8f42": {
-    "message": "the main character"
-  },
   "timeline_f91b9baf": {
     "message": "Timeline"
   },
@@ -539,9 +512,6 @@
   "toggle_navigation_381fb8df": {
     "message": "Toggle navigation"
   },
-  "trial_mode_no_auto_saving_79f22711": {
-    "message": "TRIAL MODE — no auto saving"
-  },
   "trial_version_e1b78c2": {
     "message": "TRIAL VERSION"
   },
@@ -550,9 +520,6 @@
   },
   "undo_a7be8fef": {
     "message": "Undo"
-  },
-  "unsaved_changes_91e329da": {
-    "message": "unsaved changes"
   },
   "update_plottr_966759d8": {
     "message": "Update Plottr"

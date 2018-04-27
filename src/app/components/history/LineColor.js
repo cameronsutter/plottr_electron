@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import i18n from 'format-message'
 
 class EditScene extends Component {
 
@@ -10,9 +11,9 @@ class EditScene extends Component {
     const line = _.find(this.props.lines, {id: item.action.id}) || {title: ''}
     return (
       <div>
-        <span>storyline: "{line.title}"</span>
-        <p>Before: <span className='history-component__item__before' style={{color: diff.lhs}}>{diff.lhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.lhs}}></span></p>
-        <p>After: <span style={{color: diff.rhs}}>{diff.rhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.rhs}}></span></p>
+        <span>{i18n('story line')}: "{line.title}"</span>
+        <p>{i18n('Before')}: <span className='history-component__item__before' style={{color: diff.lhs}}>{diff.lhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.lhs}}></span></p>
+        <p>{i18n('After')}: <span style={{color: diff.rhs}}>{diff.rhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.rhs}}></span></p>
       </div>
     )
   }

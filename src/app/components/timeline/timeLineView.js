@@ -9,6 +9,7 @@ import SceneListView from 'components/timeline/sceneListView'
 import LineListView from 'components/timeline/lineListView'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
+import i18n from 'format-message'
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
 var TRIALMODE = process.env.TRIALMODE === 'true'
@@ -194,8 +195,9 @@ class TimeLineView extends Component {
   //  exporting   //
   // //////////////
 
-  export = () => {
-    dialog.showSaveDialog({title: 'Where would you like to save the export?'}, function (fileName) {
+  doExport = () => {
+    let label = i18n('Where would you like to save the export?')
+    dialog.showSaveDialog({title: label}, function (fileName) {
       if (fileName) {
         let options = {
           fileName
@@ -213,7 +215,7 @@ class TimeLineView extends Component {
   renderBuyButton () {
     if (TRIALMODE) {
       return <NavItem>
-        <Button bsSize='small' bsStyle='info' onClick={this.openBuyWindow}><Glyphicon glyph='shopping-cart' /> Buy Full Version</Button>
+        <Button bsSize='small' bsStyle='info' onClick={this.openBuyWindow}><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</Button>
       </NavItem>
     }
   }
@@ -230,7 +232,7 @@ class TimeLineView extends Component {
     let popover = <Popover id='filter'>
       <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">Timeline is filtered</Alert>
+    let filterDeclaration = <Alert bsStyle="warning">{i18n('Timeline is filtered')}</Alert>
     if (this.filterIsEmpty()) {
       filterDeclaration = <span></span>
     }
@@ -241,35 +243,35 @@ class TimeLineView extends Component {
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> Filter</Button>
+              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={this.flipOrientation}><Glyphicon glyph={glyph} /> Flip</Button>
+            <Button bsSize='small' onClick={this.flipOrientation}><Glyphicon glyph={glyph} /> {i18n('Flip')}</Button>
           </NavItem>
           <NavItem>
-            <span className='subnav__container__label'>Zoom: </span>
+            <span className='subnav__container__label'>{i18n('Zoom')}: </span>
             <ButtonGroup bsSize='small'>
               <Button onClick={this.increaseZoomFactor} ><Glyphicon glyph='plus-sign' /></Button>
               <Button onClick={this.decreaseZoomFactor} ><Glyphicon glyph='minus-sign' /></Button>
-              <Button onClick={() => this.setState({zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >Fit</Button>
-              <Button onClick={this.resetZoom} >Reset</Button>
+              <Button onClick={() => this.setState({zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >{i18n('Fit')}</Button>
+              <Button onClick={this.resetZoom} >{i18n('Reset')}</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
-            <span className='subnav__container__label'>Scroll: </span>
+            <span className='subnav__container__label'>{i18n('Scroll')}: </span>
             <ButtonGroup bsSize='small'>
               <Button onClick={this.scrollLeft} ><Glyphicon glyph={scrollDirectionFirst} /></Button>
               <Button onClick={this.scrollRight} ><Glyphicon glyph={scrollDirectionSecond} /></Button>
-              <Button onClick={this.scrollBeginning} >Beginning</Button>
-              <Button onClick={this.scrollMiddle} >Middle</Button>
-              <Button onClick={this.scrollEnd} >End</Button>
+              <Button onClick={this.scrollBeginning} >{i18n('Beginning')}</Button>
+              <Button onClick={this.scrollMiddle} >{i18n('Middle')}</Button>
+              <Button onClick={this.scrollEnd} >{i18n('End')}</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
-            <span className='subnav__container__label'>Export: </span>
-            <Button bsSize='small' onClick={this.export}><Glyphicon glyph='export' /></Button>
+            <span className='subnav__container__label'>{i18n('Export')}: </span>
+            <Button bsSize='small' onClick={this.doExport}><Glyphicon glyph='export' /></Button>
           </NavItem>
           {this.renderBuyButton()}
         </Nav>

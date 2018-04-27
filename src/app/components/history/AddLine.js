@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 
 class AddLine extends Component {
 
@@ -7,7 +8,7 @@ class AddLine extends Component {
     const item = this.props.item
     return (
       <div>
-        <span>new storyline</span>
+        <span>{i18n('new storyline')}</span>
       </div>
     )
   }

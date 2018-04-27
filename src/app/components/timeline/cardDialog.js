@@ -10,6 +10,7 @@ import { shell } from 'electron'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
+import i18n from 'format-message'
 
 Modal.setAppElement('#timelineview-root')
 
@@ -28,7 +29,8 @@ class CardDialog extends Component {
   }
 
   deleteCard = () => {
-    if (window.confirm(`Do you want to delete this card: '${this.props.card.title}'?`)) {
+    let label = i18n("Do you want to delete this card: '{title}'?", {title: this.props.card.title})
+    if (window.confirm(label)) {
       this.props.actions.deleteCard(this.props.card.id)
     }
   }
@@ -113,13 +115,13 @@ class CardDialog extends Component {
       return (
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button onClick={() => this.setState({editing: false})}>
-            Cancel
+            {i18n('Cancel')}
           </Button>
           <Button onClick={this.saveEdit}>
-            Save
+            {i18n('Save')}
           </Button>
           <Button bsStyle='success' onClick={this.closeDialog}>
-            Save & Close
+            {i18n('Save & Close')}
           </Button>
         </ButtonToolbar>
       )
@@ -128,16 +130,16 @@ class CardDialog extends Component {
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button className='card-dialog__close'
             onClick={this.closeDialog}>
-            Close
+            {i18n('Close')}
           </Button>
           <Button className='card-dialog__edit'
             bsStyle='success'
             onClick={this.startEdit}>
-            Edit
+            {i18n('Edit')}
           </Button>
           <Button className='card-dialog__delete'
             onClick={this.deleteCard} >
-            Delete
+            {i18n('Delete')}
           </Button>
         </ButtonToolbar>
       )
@@ -150,7 +152,7 @@ class CardDialog extends Component {
       return <Input
         onKeyPress={this.handleEnter}
         type='text' autoFocus
-        label='title' ref='titleInput'
+        label={i18n('title')} ref='titleInput'
         defaultValue={title} />
     } else {
       return (
@@ -173,7 +175,7 @@ class CardDialog extends Component {
       return (
         <div>
           <Input type='textarea' rows='20' ref='descriptionInput' defaultValue={description} />
-          <small>Format with markdown! <a href='#' onClick={() => shell.openExternal(url)}>learn how</a></small>
+          <small>{i18n('Format with markdown!')} <a href='#' onClick={() => shell.openExternal(url)}>{i18n('learn how')}</a></small>
         </div>
       )
     } else {
@@ -197,14 +199,14 @@ class CardDialog extends Component {
     return (
       <div className='card-dialog__left-side'>
         <div className='card-dialog__line'>
-          <label className='card-dialog__details-label' htmlFor={ids.line}>Line:
+          <label className='card-dialog__details-label' htmlFor={ids.line}>{i18n('Line')}:
             <DropdownButton id={ids.line} className='card-dialog__select-line' title={this.getCurrentLine().title}>
               {this.renderLineItems()}
             </DropdownButton>
           </label>
         </div>
         <div className='card-dialog__scene'>
-          <label className='card-dialog__details-label' htmlFor={ids.scene}>Scene:
+          <label className='card-dialog__details-label' htmlFor={ids.scene}>{i18n('Scene')}:
             <DropdownButton id={ids.scene} className='card-dialog__select-scene' title={this.getCurrentScene().title}>
               {this.renderSceneItems()}
             </DropdownButton>
@@ -252,7 +254,7 @@ class CardDialog extends Component {
             <div className='card-dialog__description'>
               <p
                 onClick={() => this.setState({editing: true})}
-                className='card-dialog__details-label text-center'>Description:</p>
+                className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
               {this.renderDescription()}
             </div>
           </div>

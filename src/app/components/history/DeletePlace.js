@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import i18n from 'format-message'
 
 class DeletePlace extends Component {
 
@@ -9,9 +10,9 @@ class DeletePlace extends Component {
     var place = _.find(item.before.places, {id: item.action.id}) || {title: ''}
     return (
       <div>
-        <span>place: "{place.title}"</span>
-        <p>Before: <span className='history-component__item__before'>{place.title}</span></p>
-        <p>After: </p>
+        <span>{i18n('Place')}: "{place.title}"</span>
+        <p>{i18n('Before')}: <span className='history-component__item__before'>{place.title}</span></p>
+        <p>{i18n('After')}: </p>
       </div>
     )
   }

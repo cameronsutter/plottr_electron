@@ -5,14 +5,15 @@ class Reorder extends Component {
 
   render () {
     const item = this.props.item
-    if (item.action.type.indexOf('SCENES') !== -1) {
-      var things = 'scenes'
+    let label = ''
+    if (item.action.type.includes('SCENES')) {
+      label = i18n('a lot of scenes moved around')
     } else {
-      things = 'storylines'
+      label = i18n('a lot of story lines moved around')
     }
     return (
       <div>
-        <p>a lot of {things} moved around</p>
+        <p>{label}</p>
       </div>
     )
   }

@@ -5,12 +5,12 @@ class AddCustomAttribute extends Component {
 
   render () {
     const item = this.props.item
-    let label = item.action.type.indexOf('PLACES') === -1 ? 'character' : 'place'
+    let label = item.action.type.indexOf('PLACES') === -1 ? i18n('character') : i18n('place')
     return (
       <div>
         <span>new custom {label} attribute</span>
-        <p>Before: </p>
-        <p>After: <span className='history-component__item__after'>{item.action.attribute}</span></p>
+        <p>{i18n('Before')}: </p>
+        <p>{i18n('After')}: <span className='history-component__item__after'>{item.action.attribute}</span></p>
       </div>
     )
   }

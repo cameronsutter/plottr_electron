@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Glyphicon } from 'react-bootstrap'
 import { remote } from 'electron'
+import i18n from 'format-message'
 
 const win = remote.getCurrentWindow()
 const webContents = remote.webContents
@@ -35,12 +36,12 @@ class ReportView extends Component {
   }
 
   renderLoading () {
-    return <span>Loading...<Glyphicon id='spinner' glyph='refresh'/></span>
+    return <span>{i18n('Loading...')}<Glyphicon id='spinner' glyph='refresh'/></span>
   }
 
   renderAlert () {
     return <p id='alert' className='bg-danger'>
-      It looks like you&apos;re not online. You don&apos;t always have to be online to use Plottr, but it can&apos;t report a problem offline
+      {i18n("It looks like you're not online. You don't always have to be online to use Plottr, but it can't report a problem offline")}
     </p>
   }
 }

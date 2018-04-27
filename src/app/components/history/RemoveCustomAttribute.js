@@ -1,16 +1,23 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 
 class RemoveCustomAttribute extends Component {
 
   render () {
     const item = this.props.item
-    let label = item.action.type.indexOf('PLACES') === -1 ? 'character' : 'place'
+    let label = ''
+    if (item.action.type.includes('PLACES')) {
+      label = i18n('custom place attribute')
+    } else {
+      label = i18n('custom character attribute')
+    }
+
     return (
       <div>
-        <span>custom {label} attribute</span>
-        <p>Before: <span className='history-component__item__before'>{item.action.attribute}</span></p>
-        <p>After: </p>
+        <span>{label}</span>
+        <p>{i18n('Before')}: <span className='history-component__item__before'>{item.action.attribute}</span></p>
+        <p>{i18n('After')}: </p>
       </div>
     )
   }

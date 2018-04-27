@@ -8,6 +8,7 @@ import CustomAttrFilterList from 'components/customAttrFilterList'
 import * as CharacterActions from 'actions/characters'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import CharacterView from 'components/characters/characterView'
+import i18n from 'format-message'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -131,7 +132,7 @@ class CharacterListView extends Component {
     let popover = <Popover id='filter'>
       <CustomAttrFilterList type={'characters'} filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">Character list is filtered</Alert>
+    let filterDeclaration = <Alert bsStyle="warning">{i18n('Character list is filtered')}</Alert>
     if (this.filterIsEmpty(this.state.filter)) {
       filterDeclaration = <span></span>
     }
@@ -139,11 +140,11 @@ class CharacterListView extends Component {
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
-            <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> Custom Attributes</Button>
+            <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> Filter</Button>
+              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
@@ -195,16 +196,16 @@ class CharacterListView extends Component {
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
       <div className={klasses}>
         <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
-          Close
+          {i18n('Close')}
         </Button>
-        <h3>Custom Attributes for Characters</h3>
-        <p className='sub-header'>Choose what you want to track about your characters</p>
+        <h3>{i18n('Custom Attributes for Characters')}</h3>
+        <p className='sub-header'>{i18n('Choose what you want to track about your characters')}</p>
         <div className='character-list__custom-attributes-add-button'>
           <Input type='text' ref='attrInput'
             label='Add attributes' value={this.state.addAttrText}
             onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
           <Button bsStyle='success' onClick={this.saveAttr}>
-            Add
+            {i18n('Add')}
           </Button>
         </div>
         <div className='character-list__custom-attributes-list-wrapper'>
@@ -221,7 +222,7 @@ class CharacterListView extends Component {
       <div className='character-list container-with-sub-nav'>
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        <h1 className={klasses}>Characters</h1>
+        <h1 className={klasses}>{i18n('Characters')}</h1>
         {this.renderCharacterDetails()}
         {this.renderCharacters()}
       </div>

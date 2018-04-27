@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, Input } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
 import orientedClassName from 'helpers/orientedClassName'
+import i18n from 'format-message'
 
 class SceneView extends Component {
   constructor (props) {
@@ -28,7 +29,7 @@ class SceneView extends Component {
 
   handleBlur = () => {
     if (this.props.scene.title === '') {
-      let newTitle = `Scene ${this.props.scene.position + 1}`
+      let newTitle = i18n('Scene {number}', {number: this.props.scene.position + 1})
       this.props.actions.editSceneTitle(this.props.scene.id, newTitle)
       this.setState({editing: false})
     } else {
@@ -71,7 +72,8 @@ class SceneView extends Component {
   }
 
   handleDelete = () => {
-    if (window.confirm(`Do you want to delete this scene: '${this.props.scene.title}'?`)) {
+    let label = i18n("Do you want to delete this scene: '{title}'?", {title: this.props.scene.title})
+    if (window.confirm(label)) {
       this.props.actions.deleteScene(this.props.scene.id)
     }
   }
@@ -101,7 +103,7 @@ class SceneView extends Component {
     return (<Input
         type='text'
         defaultValue={this.props.scene.title}
-        label={`Scene ${this.props.scene.position + 1} name`}
+        label={i18n('Scene {number} name', {number: this.props.scene.position + 1})}
         ref='titleInput'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
@@ -135,7 +137,7 @@ class SceneView extends Component {
       style.transformOrigin = 'center center'
     }
     return (<div className={orientedClassName('scene-list__item', this.props.ui.orientation)}
-      title={`Scene ${this.props.scene.position + 1}`}
+      title={i18n('Scene {number}', {number: this.props.scene.position + 1})}
       style={style}
       draggable={true}
       onClick={() => this.setState({editing: true})}

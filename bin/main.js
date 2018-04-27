@@ -10,6 +10,7 @@ var log = require('electron-log')
 var Rollbar = require('rollbar')
 var request = require('request')
 var { stringify } = require('dotenv-stringify')
+var i18n = require('format-message')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
@@ -170,7 +171,7 @@ ipcMain.on('open-buy-window', function (event) {
 })
 
 ipcMain.on('license-to-verify', function (event, licenseString) {
-  dialog.showMessageBox(buyWindow, {type: 'info', buttons: ['ok'], message: 'Verifying your license. Please wait...', detail: licenseString}, function (choice) {})
+  dialog.showMessageBox(buyWindow, {type: 'info', buttons: ['ok'], message: i18n('Verifying your license. Please wait...'), detail: licenseString}, function (choice) {})
   var req = {
     url: 'https://api.gumroad.com/v2/licenses/verify',
     method: 'POST',
@@ -184,16 +185,16 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
   request(req, function (err, response, body) {
     if (err && err.code === 404) {
       logger.warn(err)
-      dialog.showErrorBox('License verification failed', 'Try again by clicking in the menu: Plottr > Verify License...')
+      dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
     } else {
       if (body.success && !body.purchase.refunded && !body.purchase.chargebacked) {
         // save uses, purchase.email, purchase.full_name, purchase.variants
         storage.set('user_info', body, function(err) {
           if (err) {
             logger.error(err)
-            dialog.showErrorBox('License verification failed', 'Try again by clicking in the menu: Plottr > Verify License...')
+            dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
           } else {
-            dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'License verified! You\'re all set.', detail: 'Now let\'s get to the good stuff'}, function () {
+            dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n("License verified! You're all set."), detail: i18n("Now let's get to the good stuff")}, function () {
               licenseVerified()
             })
           }
@@ -237,6 +238,11 @@ app.on('ready', function () {
       app.quit()
     })
   } else {
+    i18n.setup({
+      generateId: require('format-message-generate-id/underscored_crc32'),
+      translations: require('../locales'),
+      locale: 'en' || app.getLocale()
+    })
     checkLicense(function() {
       var template = buildMenu()
       var menu = Menu.buildFromTemplate(template)
@@ -244,7 +250,7 @@ app.on('ready', function () {
 
       if (process.platform === 'darwin') {
         let dockMenu = Menu.buildFromTemplate([
-          {label: 'Create a new file', click: function () {
+          {label: i18n('Create a new file'), click: function () {
             askToCreateFile()
           }},
         ])
@@ -305,7 +311,7 @@ function saveFile (fileName, data, callback) {
 
 function displayFileName (path) {
   var stringBase = 'Plottr'
-  if (TRIALMODE) stringBase += ' — TRIAL VERSION'
+  if (TRIALMODE) stringBase += ' — ' + i18n('TRIAL VERSION')
   var matches = path.match(/.*\/(.*\.pltr)/)
   if (matches) stringBase += ` — ${matches[1]}`
   return stringBase
@@ -343,7 +349,7 @@ function openRecentFiles () {
 }
 
 function askToSave (win, state, callback) {
-  dialog.showMessageBox(win, {type: 'question', buttons: ['yes, save!', 'no, just exit'], defaultId: 0, message: 'Would you like to save before exiting?'}, function (choice) {
+  dialog.showMessageBox(win, {type: 'question', buttons: [i18n('yes, save!'), i18n('no, just exit')], defaultId: 0, message: i18n('Would you like to save before exiting?')}, function (choice) {
     if (choice === 0) {
       saveFile(win.fileName, state, function (err) {
         if (err) throw err
@@ -360,7 +366,7 @@ function askToSave (win, state, callback) {
 }
 
 function askToCreateFile () {
-  dialog.showSaveDialog({title: 'Where would you like to start your new file?'}, function (fileName) {
+  dialog.showSaveDialog({title: i18n('Where would you like to start your new file?')}, function (fileName) {
     if (fileName) {
       var fullName = fileName + '.pltr'
       openWindow(fullName, true)
@@ -369,7 +375,7 @@ function askToCreateFile () {
           log.warn(err)
           log.warn('file name: ' + fullName)
           rollbar.warn(err, {fileName: fullName})
-          dialog.showErrorBox('Saving failed', 'Creating your file didn\'t work. Let\'s try again.')
+          dialog.showErrorBox(i18n('Saving failed'), i18n("Creating your file didn't work. Let's try again."))
           askToCreateFile()
         } else {
           storage.set(recentKey, fullName, function (err) {
@@ -384,7 +390,7 @@ function askToCreateFile () {
 
 function askToOpenOrCreate () {
   dontquit = true
-  dialog.showMessageBox({type: 'question', buttons: ['open', 'new'], message: 'Would you like to open an existing file or start a new file?'}, (choice) => {
+  dialog.showMessageBox({type: 'question', buttons: ['open', 'new'], message: i18n('Would you like to open an existing file or start a new file?')}, (choice) => {
     if (choice === 0) {
       askToOpenFile()
     } else {
@@ -520,7 +526,14 @@ function removeRecentFile (fileNameToRemove) {
 }
 
 function openTour () {
-  openWindow(__dirname + '/tour.pltr')
+  openWindow(__dirname + '/tour/en.pltr')
+  // TODO: when the tour is translated, do this
+  // let locale = app.getLocale()
+  // if (locale.includes('en')) {
+  //   openWindow(__dirname + '/tour/en.pltr')
+  // } else if (locale.includes('fr')) {
+  //   openWindow(__dirname + '/tour/fr.pltr')
+  // }
 }
 
 function openAboutWindow () {
@@ -573,13 +586,13 @@ function openBuyWindow () {
 }
 
 function gracefullyQuit () {
-  dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Plottr ran into a problem. Try opening Plottr again.', detail: 'If you keep seeing this problem, email me at family@plottrapp.com'}, function (choice) {
+  dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email me at family@plottrapp.com')}, function (choice) {
     app.quit()
   })
 }
 
 function gracefullyNotSave () {
-  dialog.showErrorBox('Saving failed', 'Saving your file didn\'t work. Try again.')
+  dialog.showErrorBox(i18n('Saving failed'), i18n("Saving your file didn't work. Try again."))
 }
 
 function takeScreenshot () {
@@ -648,7 +661,7 @@ function sendErrorReport (body) {
       log.warn(err)
       rollbar.warn(err)
     } else {
-      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: 'Email me at family@plottrapp.com with the file Plottr just exported', detail: 'Please email me the file named plottr_error_report.txt in your Documents folder'})
+      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n('Email me at family@plottrapp.com with the file Plottr just exported'), detail: i18n('Please email me the file named plottr_error_report.txt in your Documents folder')})
     }
   })
 }
@@ -668,19 +681,19 @@ function migrateIfNeeded (win, json, fileName, callback) {
   } else {
     // not the same version, start migration process
     if (m.plottrBehindFile()) {
-      dialog.showErrorBox('Update Plottr', 'It looks like your file was saved with a newer version of Plottr than you\'re using now. That could cause problems. Try updating Plottr and starting it again.')
-      callback('Update Plottr', false, json)
+      dialog.showErrorBox(i18n('Update Plottr'), i18n("It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again."))
+      callback(i18n('Update Plottr'), false, json)
     } else {
       // ask user to try to migrate
-      dialog.showMessageBox(win, {type: 'question', buttons: ['yes, update the file', 'no, open the file as-is'], defaultId: 0, message: 'It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?', detail: '(It will save a backup first which will be saved to the same folder as this file)'}, (choice) => {
+      dialog.showMessageBox(win, {type: 'question', buttons: ['yes, update the file', 'no, open the file as-is'], defaultId: 0, message: i18n('It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?'), detail: i18n('It will save a backup first which will be saved to the same folder as this file')}, (choice) => {
         if (choice === 0) {
           m.migrate((err, json) => {
             if (err === 'backup') {
-              dialog.showErrorBox('Problem saving backup', 'Plottr couldn\'t save a backup. It hasn\'t touched your file yet, so don\'t worry. Try quitting Plottr and starting it again.')
+              dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again."))
               callback('problem saving backup', false, json)
             } else {
               // tell the user that Plottr migrated versions and saved a backup file
-              dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr updated your file without a problem. Don\'t forget to save your file.'})
+              dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: i18n("Plottr updated your file without a problem. Don't forget to save your file.")})
               callback(null, true, json)
             }
           })
@@ -691,10 +704,10 @@ function migrateIfNeeded (win, json, fileName, callback) {
               log.warn(err)
               log.warn('file name: ' + fileName)
               rollbar.warn(err, {fileName: fileName})
-              dialog.showErrorBox('Problem saving backup', 'Plottr tried saving a backup just in case, but it didn\'t work. Try quitting Plottr and starting it again.')
+              dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again."))
               callback(err, false, json)
             } else {
-              dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: 'Plottr saved a backup just in case and now on with the show (To use the backup, remove \'.backup\' from the file name)'})
+              dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: i18n("Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)")})
               callback(null, false, json)
             }
           })
@@ -721,59 +734,59 @@ function buildMenu () {
 
 function buildPlottrMenu () {
   var submenu = [{
-    label: 'About Plottr',
+    label: i18n('About Plottr'),
     click: openAboutWindow
   }]
   if (TRIALMODE) {
     submenu = [].concat(submenu, {
       type: 'separator'
     }, {
-      label: 'Buy the Full Version...',
+      label: i18n('Buy the Full Version') + '...',
       click: openBuyWindow
     }, {
-      label: 'Enter License...',
+      label: i18n('Enter License') + '...',
       click: openVerifyWindow
     }, {
       type: 'separator'
     })
   }
   submenu = [].concat(submenu, {
-    label: 'Open the Tour...',
+    label: i18n('Open the Tour') + '...',
     click: openTour
   }, {
     type: 'separator'
   }, {
-    label: 'Report a Problem',
-    sublabel: 'Creates a report to email me',
+    label: i18n('Report a Problem'),
+    sublabel: i18n('Creates a report to email me'),
     click: function () {
       let report = prepareErrorReport()
       sendErrorReport(report)
     }
   }, {
-    label: 'Give feedback...',
+    label: i18n('Give feedback') + '...',
     click: openReportWindow
   }, {
-    label: 'Request a feature...',
+    label: i18n('Request a feature') + '...',
     click: openReportWindow
   })
   if (process.platform === 'darwin') {
     submenu = [].concat(submenu, {
       type: 'separator'
     }, {
-      label: 'Hide Plottr',
+      label: i18n('Hide Plottr'),
       accelerator: 'Command+H',
       role: 'hide'
     }, {
-      label: 'Hide Others',
+      label: i18n('Hide Others'),
       accelerator: 'Command+Alt+H',
       role: 'hideothers'
     }, {
-      label: 'Show All',
+      label: i18n('Show All'),
       role: 'unhide'
     }, {
       type: 'separator'
     }, {
-      label: 'Quit',
+      label: i18n('Quit'),
       accelerator: 'Cmd+Q',
       click: function () {
         // TODO: check for dirty files open
@@ -782,7 +795,7 @@ function buildPlottrMenu () {
     })
   } else {
     submenu = [].concat(submenu, {
-      label: 'Close',
+      label: i18n('Close'),
       accelerator: 'Alt+F4',
       click: function () {
         // TODO: check for dirty files open
@@ -798,7 +811,7 @@ function buildPlottrMenu () {
 
 function buildFileMenu () {
   var submenu = [{
-    label: 'Close',
+    label: i18n('Close'),
     accelerator: 'CmdOrCtrl+W',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
@@ -821,19 +834,19 @@ function buildFileMenu () {
     }
   }]
   var submenu = [].concat({
-    label: 'New...',
+    label: i18n('New') + '...',
     enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+N',
     click: askToCreateFile
   }, {
-    label: 'Open...',
+    label: i18n('Open') + '...',
     enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+O',
     click: askToOpenFile
   }, {
     type: 'separator'
   }, {
-    label: 'Save',
+    label: i18n('Save'),
     enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+S',
     click: function () {
@@ -855,14 +868,14 @@ function buildFileMenu () {
       }
     }
   }, {
-    label: 'Save as...',
+    label: i18n('Save as') + '...',
     enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+Shift+S',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = _.find(windows, {id: win.id})
       if (winObj) {
-        dialog.showSaveDialog(win, {title: 'Where would you like to save this copy?'}, function (fileName) {
+        dialog.showSaveDialog(win, {title: i18n('Where would you like to save this copy?')}, function (fileName) {
           if (fileName) {
             var fullName = fileName + '.pltr'
             saveFile(fullName, winObj.state, function (err) {
@@ -889,23 +902,23 @@ function buildFileMenu () {
 
 function buildEditMenu () {
   return {
-    label: 'Edit',
+    label: i18n('Edit'),
     submenu: [{
       label: 'Cut',
       accelerator: 'CmdOrCtrl+X',
       role: 'cut'
     }, {
-      label: 'Copy',
+      label: i18n('Copy'),
       accelerator: 'CmdOrCtrl+C',
       role: 'copy'
     }, {
-      label: 'Paste',
+      label: i18n('Paste'),
       accelerator: 'CmdOrCtrl+V',
       role: 'paste'
     }, {
       type: 'separator'
     }, {
-      label: 'Select All',
+      label: i18n('Select All'),
       accelerator: 'CmdOrCtrl+A',
       role: 'selectall'
     }]
@@ -914,7 +927,7 @@ function buildEditMenu () {
 
 function buildViewMenu () {
   var submenu = [{
-    label: 'Reload',
+    label: i18n('Reload'),
     accelerator: 'CmdOrCtrl+R',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
@@ -930,7 +943,7 @@ function buildViewMenu () {
       }
     }
   }, {
-      label: 'Dark Mode',
+      label: i18n('Dark Mode'),
       accelerator: 'CmdOrCtrl+D',
       checked: darkMode,
       type: 'checkbox',
@@ -941,11 +954,11 @@ function buildViewMenu () {
         })
       }
   }, {
-    label: 'Take Screenshot...',
+    label: i18n('Take Screenshot') + '...',
     accelerator: 'CmdOrCtrl+P',
     click: takeScreenshot
   }, {
-    label: 'Show Dev Tools',
+    label: i18n('Show Dev Tools'),
     accelerator: 'CmdOrCtrl+T',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
@@ -953,24 +966,24 @@ function buildViewMenu () {
     }
   }]
   return {
-    label: 'View',
+    label: i18n('View'),
     submenu: submenu
   }
 }
 
 function buildWindowMenu () {
   return {
-    label: 'Window',
+    label: i18n('Window'),
     role: 'window',
     submenu: [
       {
-        label: 'Minimize',
+        label: i18n('Minimize'),
         accelerator: 'CmdOrCtrl+M',
         role: 'minimize'
       }, {
         type: 'separator'
       }, {
-        label: 'Bring All to Front',
+        label: i18n('Bring All to Front'),
         role: 'front'
       }
     ]
@@ -979,7 +992,7 @@ function buildWindowMenu () {
 
 function buildHelpMenu () {
   return {
-    label: 'Help',
+    label: i18n('Help'),
     role: 'help',
     submenu: [
       {
@@ -991,11 +1004,11 @@ function buildHelpMenu () {
         }
       },
       {
-        label: 'Give feedback...',
+        label: i18n('Give feedback') + '...',
         click: openReportWindow
       },
       {
-        label: 'Request a feature...',
+        label: i18n('Request a feature') + '...',
         click: openReportWindow
       }
     ]

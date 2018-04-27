@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 
 class AddCard extends Component {
 
@@ -7,7 +8,7 @@ class AddCard extends Component {
     const item = this.props.item
     return (
       <div>
-        <span>new card</span>
+        <span>{i18n('new card')}</span>
       </div>
     )
   }

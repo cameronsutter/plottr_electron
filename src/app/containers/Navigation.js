@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import * as UIActions from 'actions/ui'
 import { Glyphicon, Input, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
+import i18n from 'format-message'
 var TRIALMODE = process.env.TRIALMODE === 'true'
 
 class Navigation extends Component {
@@ -20,14 +21,14 @@ class Navigation extends Component {
     let styles = {padding: '8px'}
     if (TRIALMODE) {
       return <span className='alert alert-danger' style={styles} role='alert'>
-        <Glyphicon glyph='exclamation-sign' /> TRIAL MODE — no auto saving
+        <Glyphicon glyph='exclamation-sign' /> {i18n('TRIAL MODE — no auto saving')}
       </span>
     }
     if (this.props.file.dirty) {
-      return <span className='alert alert-danger' style={styles} role='alert'><Glyphicon glyph='exclamation-sign' /> unsaved changes</span>
+      return <span className='alert alert-danger' style={styles} role='alert'><Glyphicon glyph='exclamation-sign' /> {i18n('unsaved changes')}</span>
     } else {
       return <span className='alert alert-success' style={styles} role='alert'>
-        <Glyphicon bsStyle={{verticalAlign: 'baseline'}} glyph='ok' /> autosaved</span>
+        <Glyphicon bsStyle={{verticalAlign: 'baseline'}} glyph='ok' /> {i18n('autosaved')}</span>
     }
   }
 
@@ -46,7 +47,7 @@ class Navigation extends Component {
         <nav className={klasses} role='navigation'>
           <div className='navbar-header'>
             <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='#navbar-collapse-1'>
-              <span className='sr-only'>Toggle navigation</span>
+              <span className='sr-only'>{i18n('Toggle navigation')}</span>
               <span className='icon-bar'></span>
               <span className='icon-bar'></span>
               <span className='icon-bar'></span>
@@ -56,26 +57,26 @@ class Navigation extends Component {
           <div className='collapse navbar-collapse'>
             <ul className='nav navbar-nav'>
               <li className={this.isActive('timeline')}>
-                <a href='#' onClick={() => this.props.actions.changeCurrentView('timeline')} >Timeline</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('timeline')} >{i18n('Timeline')}</a>
               </li>
               <li className={this.isActive('outline')}>
-                <a href='#' onClick={() => this.props.actions.changeCurrentView('outline')} >Outline</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('outline')} >{i18n('Outline')}</a>
               </li>
               <li className={this.isActive('notes')}>
-                <a href='#' onClick={() => this.props.actions.changeCurrentView('notes')} >Notes</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('notes')} >{i18n('Notes')}</a>
               </li>
               <li className={this.isActive('characters')}>
-                <a href='#' onClick={() => this.props.actions.changeCurrentView('characters')} >Characters</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('characters')} >{i18n('Characters')}</a>
               </li>
               <li className={this.isActive('places')}>
-                <a href='#' onClick={() => this.props.actions.changeCurrentView('places')} >Places</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('places')} >{i18n('Places')}</a>
               </li>
               <li className={this.isActive('tags')}>
-                <a href='#' onClick={() => this.props.actions.changeCurrentView('tags')} >Tags</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('tags')} >{i18n('Tags')}</a>
               </li>
             </ul>
             <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>
-              <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> Undo...</Button>
+              <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> {i18n('Undo')}...</Button>
               <HistoryComponent show={this.state.showHistory} />
             </div>
             <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>

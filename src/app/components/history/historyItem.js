@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-// import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 import { Glyphicon, Button } from 'react-bootstrap'
 import * as types from 'constants/ActionTypes'
 import StoryName from 'components/history/StoryName'
@@ -62,10 +62,10 @@ class HistoryItem extends Component {
     var style = this.state.showDetails ? {alignSelf: 'flex-start'} : {}
     if (this.state.redo) {
       return <Button bsStyle='primary' bsSize='small' style={style} onClick={this.redo.bind(this)}>
-        <Glyphicon glyph='repeat' /> Redo</Button>
+        <Glyphicon glyph='repeat' /> {i18n('Redo')}</Button>
     } else {
       return <Button bsStyle='danger' bsSize='small' style={style} onClick={this.undo.bind(this)}>
-        <Glyphicon glyph='remove' /> Undo</Button>
+        <Glyphicon glyph='remove' /> {i18n('Undo')}</Button>
     }
   }
 

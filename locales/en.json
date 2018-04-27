@@ -1,0 +1,593 @@
+{
+  "a_new_card_4bfa3e20": {
+    "message": "a new card"
+  },
+  "about_plottr_9eb9c0b9": {
+    "message": "About Plottr"
+  },
+  "actions_efcde10d": {
+    "message": "Actions"
+  },
+  "add_8523c19b": {
+    "message": "Add"
+  },
+  "add_attributes_941fcc33": {
+    "message": "Add attributes"
+  },
+  "after_4c71e718": {
+    "message": "After"
+  },
+  "age_e144e42e": {
+    "message": "age"
+  },
+  "an_empty_card_77430117": {
+    "message": "an empty card"
+  },
+  "attach_character_charactername_to_card_cardname_5fb9e490": {
+    "message": "attach character { characterName } to card { cardName }"
+  },
+  "attach_character_charactername_to_note_notename_8f54d6bc": {
+    "message": "attach character { characterName } to note { noteName }"
+  },
+  "attach_place_placename_to_card_cardname_7fc103e0": {
+    "message": "attach place { placeName } to card { cardName }"
+  },
+  "attach_place_placename_to_note_notename_af2c31cc": {
+    "message": "attach place { placeName } to note { noteName }"
+  },
+  "attach_tag_tagname_to_card_cardname_36599de6": {
+    "message": "attach tag { tagName } to card { cardName }"
+  },
+  "attach_tag_tagname_to_note_notename_e6b4afca": {
+    "message": "attach tag { tagName } to note { noteName }"
+  },
+  "attached_to_8f852206": {
+    "message": "Attached to"
+  },
+  "autosaved_369db118": {
+    "message": "autosaved"
+  },
+  "before_44c686b4": {
+    "message": "Before"
+  },
+  "beginning_dca17442": {
+    "message": "Beginning"
+  },
+  "blues_12a9270d": {
+    "message": "Blues"
+  },
+  "bring_all_to_front_207a7ad1": {
+    "message": "Bring All to Front"
+  },
+  "browns_eb989868": {
+    "message": "Browns"
+  },
+  "buy_full_version_1035b58c": {
+    "message": "Buy Full Version"
+  },
+  "buy_the_full_version_e952f5e": {
+    "message": "Buy the Full Version"
+  },
+  "cancel_caeb1e68": {
+    "message": "Cancel"
+  },
+  "card_52daacce": {
+    "message": "Card"
+  },
+  "card_title_8f1725af": {
+    "message": "Card Title"
+  },
+  "character_b0f3f0bd": {
+    "message": "Character"
+  },
+  "character_list_is_filtered_8ecd427": {
+    "message": "Character list is filtered"
+  },
+  "characters_9d897d1c": {
+    "message": "Characters"
+  },
+  "characters_list_808fc50b": {
+    "message": "Characters list"
+  },
+  "choose_1319ef6b": {
+    "message": "Choose"
+  },
+  "choose_color_87443ec8": {
+    "message": "Choose color"
+  },
+  "choose_what_you_want_to_track_about_your_character_c97ca289": {
+    "message": "Choose what you want to track about your characters"
+  },
+  "choose_what_you_want_to_track_about_your_places_5a8a7f4a": {
+    "message": "Choose what you want to track about your places"
+  },
+  "click_on_a_color_below_or_type_it_in_446fe96d": {
+    "message": "Click on a color below or type it in"
+  },
+  "close_d634289d": {
+    "message": "Close"
+  },
+  "content_1440204b": {
+    "message": "Content"
+  },
+  "copy_9748f9f": {
+    "message": "Copy"
+  },
+  "count_plural_one_card_other_cards_dd03ba0c": {
+    "message": "{ count, plural,\n    one {card}\n  other {cards}\n}"
+  },
+  "count_plural_one_character_attached_other_characte_ac50182b": {
+    "message": "{ count, plural,\n    one {character attached}\n  other {characters attached}\n}"
+  },
+  "count_plural_one_note_other_notes_3ea766eb": {
+    "message": "{ count, plural,\n    one {note}\n  other {notes}\n}"
+  },
+  "count_plural_one_place_attached_other_places_attac_4bd14f30": {
+    "message": "{ count, plural,\n    one {place attached}\n  other {places attached}\n}"
+  },
+  "count_plural_one_tag_attached_other_tags_attached_e8221913": {
+    "message": "{ count, plural,\n    one {tag attached}\n  other {tags attached}\n}"
+  },
+  "create_a_new_file_2e47c4a0": {
+    "message": "Create a new file"
+  },
+  "creates_a_report_to_email_me_2b7854b3": {
+    "message": "Creates a report to email me"
+  },
+  "creating_your_file_didn_t_work_let_s_try_again_52c18722": {
+    "message": "Creating your file didn''t work. Let''s try again."
+  },
+  "current_color_5207682a": {
+    "message": "Current Color"
+  },
+  "custom_attributes_45bf786f": {
+    "message": "Custom Attributes"
+  },
+  "custom_attributes_for_characters_cf7c8646": {
+    "message": "Custom Attributes for Characters"
+  },
+  "custom_attributes_for_places_955f89d5": {
+    "message": "Custom Attributes for Places"
+  },
+  "custom_character_attribute_ea03301f": {
+    "message": "custom character attribute"
+  },
+  "custom_place_attribute_3184159c": {
+    "message": "custom place attribute"
+  },
+  "dark_mode_16f702bc": {
+    "message": "Dark Mode"
+  },
+  "delete_a6efa79d": {
+    "message": "Delete"
+  },
+  "description_436c48d7": {
+    "message": "Description"
+  },
+  "description_c5f0c700": {
+    "message": "description"
+  },
+  "do_you_want_to_delete_this_card_title_fc4eaa43": {
+    "message": "Do you want to delete this card: '{'title'}'?"
+  },
+  "do_you_want_to_delete_this_character_character_2f393b31": {
+    "message": "Do you want to delete this character: { character }?"
+  },
+  "do_you_want_to_delete_this_note_title_a4ab2f32": {
+    "message": "Do you want to delete this note: '{'title'}'?"
+  },
+  "do_you_want_to_delete_this_place_name_9b486606": {
+    "message": "Do you want to delete this place: '{'name'}'?"
+  },
+  "do_you_want_to_delete_this_scene_title_bed4d18f": {
+    "message": "Do you want to delete this scene: '{'title'}'?"
+  },
+  "do_you_want_to_delete_this_story_line_title_2d093c3c": {
+    "message": "Do you want to delete this story line: '{'title'}'?"
+  },
+  "do_you_want_to_delete_this_tag_title_4b88def0": {
+    "message": "Do you want to delete this tag: '{'title'}'?"
+  },
+  "edit_c5fbea07": {
+    "message": "Edit"
+  },
+  "email_me_at_family_plottrapp_com_with_the_file_plo_17ce8592": {
+    "message": "Email me at family@plottrapp.com with the file Plottr just exported"
+  },
+  "end_78c581cd": {
+    "message": "End"
+  },
+  "enter_license_2d9e22b5": {
+    "message": "Enter License"
+  },
+  "export_de71cd8e": {
+    "message": "Export"
+  },
+  "filter_by_story_line_e68e2763": {
+    "message": "Filter by story line"
+  },
+  "filter_e3398407": {
+    "message": "Filter"
+  },
+  "first_place_4063cd26": {
+    "message": "First Place"
+  },
+  "fit_2875b937": {
+    "message": "Fit"
+  },
+  "flip_de30d048": {
+    "message": "Flip"
+  },
+  "format_with_markdown_2e610472": {
+    "message": "Format with markdown!"
+  },
+  "give_feedback_765645dc": {
+    "message": "Give feedback"
+  },
+  "grays_97d7de20": {
+    "message": "Grays"
+  },
+  "greens_cb4a9ea1": {
+    "message": "Greens"
+  },
+  "happy_7bd82a90": {
+    "message": "Happy"
+  },
+  "help_4c4968b1": {
+    "message": "Help"
+  },
+  "hide_others_4204b552": {
+    "message": "Hide Others"
+  },
+  "hide_plottr_417abfb1": {
+    "message": "Hide Plottr"
+  },
+  "hmmmm_it_looks_like_that_s_not_a_valid_license_key_9b81a16": {
+    "message": "Hmmmm. It looks like that''s not a valid license key."
+  },
+  "if_you_keep_seeing_this_problem_email_me_at_family_2e6bbf72": {
+    "message": "If you keep seeing this problem, email me at family@plottrapp.com"
+  },
+  "it_looks_like_you_have_an_older_file_version_this__f6d9479f": {
+    "message": "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?"
+  },
+  "it_looks_like_you_re_not_online_you_don_t_always_h_8b311e3c": {
+    "message": "It looks like you''re not online. You don''t always have to be online to user Plottr, but it can''t verify your license offline"
+  },
+  "it_looks_like_you_re_not_online_you_don_t_always_h_aef42051": {
+    "message": "It looks like you''re not online. You don''t always have to be online to use Plottr, but it can''t report a problem offline"
+  },
+  "it_looks_like_your_file_was_saved_with_a_newer_ver_97f89b8f": {
+    "message": "It looks like your file was saved with a newer version of Plottr than you''re using now. That could cause problems. Try updating Plottr and starting it again."
+  },
+  "it_will_save_a_backup_first_which_will_be_saved_to_70a328cd": {
+    "message": "It will save a backup first which will be saved to the same folder as this file"
+  },
+  "learn_how_e2f68e0d": {
+    "message": "learn how"
+  },
+  "license_verification_failed_67a53f29": {
+    "message": "License verification failed"
+  },
+  "license_verified_plottr_will_start_momentarily_tha_35f080ab": {
+    "message": "License Verified. Plottr will start momentarily. Thanks for being patient!"
+  },
+  "license_verified_you_re_all_set_c6844055": {
+    "message": "License verified! You''re all set."
+  },
+  "line_95da80eb": {
+    "message": "Line"
+  },
+  "loading_25990131": {
+    "message": "Loading..."
+  },
+  "main_character_d39a0ee5": {
+    "message": "Main Character"
+  },
+  "main_plot_a6312542": {
+    "message": "Main Plot"
+  },
+  "middle_27dc1d5": {
+    "message": "Middle"
+  },
+  "minimize_4f999e30": {
+    "message": "Minimize"
+  },
+  "my_awesome_story_503d28ed": {
+    "message": "My awesome story"
+  },
+  "name_1aed4a1b": {
+    "message": "Name"
+  },
+  "new_13daf639": {
+    "message": "New"
+  },
+  "new_card_dfe8648f": {
+    "message": "new card"
+  },
+  "new_character_be23e76c": {
+    "message": "new character"
+  },
+  "new_note_6410648": {
+    "message": "new note"
+  },
+  "new_place_d7876d2e": {
+    "message": "new place"
+  },
+  "new_scene_7ae3d139": {
+    "message": "new scene"
+  },
+  "new_storyline_15e25a1e": {
+    "message": "new storyline"
+  },
+  "new_tag_2ceca221": {
+    "message": "new tag"
+  },
+  "no_color_c580b6e7": {
+    "message": "No color"
+  },
+  "no_just_exit_6eba944e": {
+    "message": "no, just exit"
+  },
+  "no_more_to_add_943918b2": {
+    "message": "no more to add"
+  },
+  "nope_plottr_tried_again_but_it_didn_t_work_plottr__e62701ff": {
+    "message": "Nope. Plottr tried again. But it didn''t work. Plottr will ask you next time it opens, but you''re verified. Enjoy"
+  },
+  "note_1_6ab8ee97": {
+    "message": "Note 1"
+  },
+  "note_8b73ce09": {
+    "message": "Note"
+  },
+  "notes_are_filtered_b609fb32": {
+    "message": "Notes are filtered"
+  },
+  "notes_c42e0fd5": {
+    "message": "Notes"
+  },
+  "now_let_s_get_to_the_good_stuff_4193038f": {
+    "message": "Now let''s get to the good stuff"
+  },
+  "open_e0beb7b9": {
+    "message": "Open"
+  },
+  "open_the_tour_2707269e": {
+    "message": "Open the Tour"
+  },
+  "oranges_af48e356": {
+    "message": "Oranges"
+  },
+  "outline_adfa4207": {
+    "message": "Outline"
+  },
+  "outline_is_filtered_417f5549": {
+    "message": "Outline is filtered"
+  },
+  "paste_5963d1c1": {
+    "message": "Paste"
+  },
+  "pick_a_color_557abfb0": {
+    "message": "Pick a color"
+  },
+  "place_b128fa94": {
+    "message": "Place"
+  },
+  "place_list_is_filtered_2743bd68": {
+    "message": "Place list is filtered"
+  },
+  "places_6252b74f": {
+    "message": "Places"
+  },
+  "places_list_95ff2982": {
+    "message": "Places list"
+  },
+  "please_email_me_the_file_named_plottr_error_report_d67154a3": {
+    "message": "Please email me the file named plottr_error_report.txt in your Documents folder"
+  },
+  "plottr_couldn_t_save_a_backup_it_hasn_t_touched_yo_462daa03": {
+    "message": "Plottr couldn''t save a backup. It hasn''t touched your file yet, so don''t worry. Try quitting Plottr and starting it again."
+  },
+  "plottr_ran_into_a_problem_try_opening_plottr_again_447b011": {
+    "message": "Plottr ran into a problem. Try opening Plottr again."
+  },
+  "plottr_saved_a_backup_just_in_case_and_now_on_with_822c0a78": {
+    "message": "Plottr saved a backup just in case and now on with the show (To use the backup, remove ''.backup'' from the file name)"
+  },
+  "plottr_tried_saving_a_backup_just_in_case_but_it_d_e91ed702": {
+    "message": "Plottr tried saving a backup just in case, but it didn''t work. Try quitting Plottr and starting it again."
+  },
+  "plottr_updated_your_file_without_a_problem_don_t_f_aa524f03": {
+    "message": "Plottr updated your file without a problem. Don''t forget to save your file."
+  },
+  "plottr_verified_your_license_key_successfully_but__f5521bbb": {
+    "message": "Plottr verified your license key successfully, but there was an error saving that. Let''s try one more time"
+  },
+  "problem_saving_backup_f3c0103b": {
+    "message": "Problem saving backup"
+  },
+  "purples_b8081dd6": {
+    "message": "Purples"
+  },
+  "quit_764e388": {
+    "message": "Quit"
+  },
+  "redo_363c58b7": {
+    "message": "Redo"
+  },
+  "reds_223d04f8": {
+    "message": "Reds"
+  },
+  "reload_3e45154f": {
+    "message": "Reload"
+  },
+  "remove_character_charactername_from_card_cardname_639ea3d": {
+    "message": "remove character { characterName } from card { cardName }"
+  },
+  "remove_character_charactername_from_note_notename_d6d4d811": {
+    "message": "remove character { characterName } from note { noteName }"
+  },
+  "remove_place_placename_from_card_cardname_ded7f317": {
+    "message": "remove place { placeName } from card { cardName }"
+  },
+  "remove_place_placename_from_note_notename_e3ac13b": {
+    "message": "remove place { placeName } from note { noteName }"
+  },
+  "remove_tag_tagname_from_card_cardname_536d3212": {
+    "message": "remove tag { tagName } from card { cardName }"
+  },
+  "remove_tag_tagname_from_note_notename_8380003e": {
+    "message": "remove tag { tagName } from note { noteName }"
+  },
+  "report_a_problem_4d48624a": {
+    "message": "Report a Problem"
+  },
+  "request_a_feature_f33319e5": {
+    "message": "Request a feature"
+  },
+  "reset_95a81614": {
+    "message": "Reset"
+  },
+  "save_11a80ec3": {
+    "message": "Save"
+  },
+  "save_as_9e0cf70b": {
+    "message": "Save as"
+  },
+  "save_close_a458b0e5": {
+    "message": "Save & Close"
+  },
+  "saving_failed_8559ceae": {
+    "message": "Saving failed"
+  },
+  "saving_your_file_didn_t_work_try_again_45e5cc2e": {
+    "message": "Saving your file didn''t work. Try again."
+  },
+  "scene_1_24642d80": {
+    "message": "Scene 1"
+  },
+  "scene_1c4c4683": {
+    "message": "Scene"
+  },
+  "scene_number_76f3c37f": {
+    "message": "Scene { number }"
+  },
+  "scene_number_name_87be6d8a": {
+    "message": "Scene { number } name"
+  },
+  "scroll_71eae599": {
+    "message": "Scroll"
+  },
+  "select_all_cf7e0248": {
+    "message": "Select All"
+  },
+  "short_description_22fb4bb3": {
+    "message": "Short Description"
+  },
+  "show_all_ae37d610": {
+    "message": "Show All"
+  },
+  "show_dev_tools_4a5a0eeb": {
+    "message": "Show Dev Tools"
+  },
+  "somewhere_cool_949a6735": {
+    "message": "somewhere cool"
+  },
+  "story_line_9b9b93d4": {
+    "message": "Story line"
+  },
+  "story_line_d4c69004": {
+    "message": "story line"
+  },
+  "story_line_name_3c59069c": {
+    "message": "Story line name"
+  },
+  "story_name_14ac5924": {
+    "message": "Story name"
+  },
+  "tag_7bb005ff": {
+    "message": "Tag"
+  },
+  "tag_name_8d3d8931": {
+    "message": "tag name"
+  },
+  "tags_2b72a03b": {
+    "message": "Tags"
+  },
+  "tags_list_136463df": {
+    "message": "Tags list"
+  },
+  "take_screenshot_d754e9b": {
+    "message": "Take Screenshot"
+  },
+  "the_main_character_d41d8f42": {
+    "message": "the main character"
+  },
+  "timeline_f91b9baf": {
+    "message": "Timeline"
+  },
+  "timeline_is_filtered_3d6019a4": {
+    "message": "Timeline is filtered"
+  },
+  "title_2fc2fe36": {
+    "message": "title"
+  },
+  "title_ee03d132": {
+    "message": "Title"
+  },
+  "toggle_navigation_381fb8df": {
+    "message": "Toggle navigation"
+  },
+  "trial_mode_no_auto_saving_79f22711": {
+    "message": "TRIAL MODE — no auto saving"
+  },
+  "trial_version_e1b78c2": {
+    "message": "TRIAL VERSION"
+  },
+  "try_again_by_clicking_in_the_menu_plottr_verify_li_f109a437": {
+    "message": "Try again by clicking in the menu: Plottr > Verify License..."
+  },
+  "undo_a7be8fef": {
+    "message": "Undo"
+  },
+  "unsaved_changes_91e329da": {
+    "message": "unsaved changes"
+  },
+  "update_plottr_966759d8": {
+    "message": "Update Plottr"
+  },
+  "verifying_your_license_please_wait_5b8a4d84": {
+    "message": "Verifying your license. Please wait..."
+  },
+  "view_ba339f93": {
+    "message": "View"
+  },
+  "where_would_you_like_to_save_the_export_dc66a78": {
+    "message": "Where would you like to save the export?"
+  },
+  "where_would_you_like_to_save_this_copy_a0869148": {
+    "message": "Where would you like to save this copy?"
+  },
+  "where_would_you_like_to_start_your_new_file_241f89b8": {
+    "message": "Where would you like to start your new file?"
+  },
+  "whites_560abc2d": {
+    "message": "Whites"
+  },
+  "window_171922c7": {
+    "message": "Window"
+  },
+  "would_you_like_to_open_an_existing_file_or_start_a_a384b5be": {
+    "message": "Would you like to open an existing file or start a new file?"
+  },
+  "would_you_like_to_save_before_exiting_4c70ceea": {
+    "message": "Would you like to save before exiting?"
+  },
+  "yes_save_3c66c87": {
+    "message": "yes, save!"
+  },
+  "zoom_f3e54d69": {
+    "message": "Zoom"
+  }
+}

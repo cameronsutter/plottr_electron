@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom'
 import { ButtonToolbar, ButtonGroup, Button, Input, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap'
 import ColorPicker from '../colorpicker'
 import * as TagActions from 'actions/tags'
+import i18n from 'format-message'
 
 class TagView extends Component {
   constructor (props) {
@@ -43,7 +44,8 @@ class TagView extends Component {
   }
 
   deleteTag = () => {
-    if (window.confirm(`Do you want to delete this tag: '${this.props.tag.title}'?`)) {
+    let label = i18n("Do you want to delete this tag: '{title}'?", {title: this.props.tag.title})
+    if (window.confirm(label)) {
       this.props.actions.deleteTag(this.props.tag.id)
     }
   }
@@ -70,15 +72,15 @@ class TagView extends Component {
         <Input type='text' ref='titleInput' autoFocus
           onKeyDown={this.handleEsc}
           onKeyPress={this.handleEnter}
-          label='tag name' defaultValue={tag.title} />
+          label={i18n('tag name')} defaultValue={tag.title} />
         {this.renderColorPicker()}
         <ButtonGroup>
-          <DropdownButton title="Actions" id="bg-nested-dropdown">
-            <MenuItem onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /> Choose color</MenuItem>
-            <MenuItem onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /> No color</MenuItem>
-            <MenuItem onClick={this.deleteTag}><Glyphicon glyph='trash' /> Delete</MenuItem>
+          <DropdownButton title={i18n("Actions")} id="bg-nested-dropdown">
+            <MenuItem onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /> {i18n('Choose color')}</MenuItem>
+            <MenuItem onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /> {i18n('No color')}</MenuItem>
+            <MenuItem onClick={this.deleteTag}><Glyphicon glyph='trash' /> {i18n('Delete')}</MenuItem>
           </DropdownButton>
-          <Button onClick={this.handleCancel}>Cancel</Button>
+          <Button onClick={this.handleCancel}>{i18n('Cancel')}</Button>
         </ButtonGroup>
       </div>
     )

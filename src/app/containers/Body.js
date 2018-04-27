@@ -6,6 +6,7 @@ import TagsView from 'components/tag/TagsView'
 import CharactersView from 'components/characters/charactersView'
 import PlacesView from 'components/places/placesView'
 import NotesView from 'components/notes/notesView'
+import i18n from 'format-message'
 
 class Body extends Component {
   render () {
@@ -39,7 +40,7 @@ class Body extends Component {
   }
 
   renderLoading () {
-    return <p>Loading...</p>
+    return <p>{i18n('Loading...')}</p>
   }
 
 }

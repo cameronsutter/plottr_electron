@@ -8,6 +8,7 @@ import * as LineActions from 'actions/lines'
 import CardView from 'components/timeline/cardView'
 import ColorPicker from '../colorpicker'
 import orientedClassName from 'helpers/orientedClassName'
+import i18n from 'format-message'
 
 class LineView extends Component {
   constructor (props) {
@@ -115,7 +116,8 @@ class LineView extends Component {
   }
 
   handleDelete = () => {
-    if (window.confirm(`Do you want to delete this story line: '${this.props.line.title}'?`)) {
+    let label = i18n("Do you want to delete this story line: '{title}'?", {title: this.props.line.title})
+    if (window.confirm(label)) {
       this.props.actions.deleteLine(this.props.line.id)
     }
   }
@@ -250,7 +252,7 @@ class LineView extends Component {
       body = (<Input
         type='text'
         defaultValue={this.props.line.title}
-        label='Story line name'
+        label={i18n('Story line name')}
         ref='titleInput'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}

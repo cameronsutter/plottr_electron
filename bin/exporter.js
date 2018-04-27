@@ -1,5 +1,6 @@
 var docx = require('docx')
 var _ = require('lodash')
+var i18n = require('format-message')
 
 function Exporter (data, { fileName }) {
   let doc = new docx.Document()
@@ -20,7 +21,7 @@ function Exporter (data, { fileName }) {
     return mapping
   }, {})
 
-  let outlineHeading = new docx.Paragraph('Outline')
+  let outlineHeading = new docx.Paragraph(i18n('Outline'))
   outlineHeading.heading1().center()
   doc.addParagraph(outlineHeading)
   outline(data, characterNames, placeNames, tagTitles).forEach(function(par) {
@@ -28,7 +29,7 @@ function Exporter (data, { fileName }) {
   })
 
   doc.addParagraph(new docx.Paragraph('').pageBreak())
-  let charactersHeading = new docx.Paragraph('Characters')
+  let charactersHeading = new docx.Paragraph(i18n('Characters'))
   charactersHeading.heading1().center()
   doc.addParagraph(charactersHeading)
   characters(data.characters, data.customAttributes['characters']).forEach(function(par) {
@@ -36,7 +37,7 @@ function Exporter (data, { fileName }) {
   })
 
   doc.addParagraph(new docx.Paragraph('').pageBreak())
-  let placesHeading = new docx.Paragraph('Places')
+  let placesHeading = new docx.Paragraph(i18n('Places'))
   placesHeading.heading1().center()
   doc.addParagraph(placesHeading)
   places(data.places, data.customAttributes['places']).forEach(function(par) {
@@ -44,7 +45,7 @@ function Exporter (data, { fileName }) {
   })
 
   doc.addParagraph(new docx.Paragraph('').pageBreak())
-  let notesHeading = new docx.Paragraph('Notes')
+  let notesHeading = new docx.Paragraph(i18n('Notes'))
   notesHeading.heading1().center()
   doc.addParagraph(notesHeading)
   notes(data.notes, characterNames, placeNames, tagTitles).forEach(function(par) {
@@ -92,13 +93,13 @@ function attachments (obj, characterNames, placeNames, tagTitles) {
   let tags = obj.tags.map(function(tg) { return tagTitles[tg]})
   let paragraphs = []
   if (characters.length > 0) {
-    paragraphs.push(new docx.Paragraph(`Characters: ${characters.join(', ')}`).style('attachments'))
+    paragraphs.push(new docx.Paragraph(`${i18n(Characters)}: ${characters.join(', ')}`).style('attachments'))
   }
   if (places.length > 0) {
-    paragraphs.push(new docx.Paragraph(`Places: ${places.join(', ')}`).style('attachments'))
+    paragraphs.push(new docx.Paragraph(`${i18n(Places)}: ${places.join(', ')}`).style('attachments'))
   }
   if (tags.length > 0) {
-    paragraphs.push(new docx.Paragraph(`Tags: ${tags.join(', ')}`).style('attachments'))
+    paragraphs.push(new docx.Paragraph(`${i18n(Tags)}: ${tags.join(', ')}`).style('attachments'))
   }
   if (paragraphs.length > 0) {
     paragraphs.push(new docx.Paragraph('').style('attachments'))
@@ -128,9 +129,9 @@ function characters (characters, customAttributes) {
   characters.forEach(function(ch) {
     let name = new docx.Paragraph(ch.name).heading2()
     paragraphs.push(name)
-    paragraphs.push(new docx.Paragraph('Description').heading3())
+    paragraphs.push(new docx.Paragraph(i18n('Description')).heading3())
     paragraphs.push(new docx.Paragraph(ch.description).style('indented'))
-    paragraphs.push(new docx.Paragraph('Notes').heading3())
+    paragraphs.push(new docx.Paragraph(i18n('Notes')).heading3())
     paragraphs.push(new docx.Paragraph(ch.notes).style('indented'))
     customAttributes.forEach(function(ca) {
       paragraphs.push(new docx.Paragraph(ca).heading3())
@@ -146,9 +147,9 @@ function places (places, customAttributes) {
   places.forEach(function(pl) {
     let name = new docx.Paragraph(pl.name).heading2()
     paragraphs.push(name)
-    paragraphs.push(new docx.Paragraph('Description').heading3())
+    paragraphs.push(new docx.Paragraph(i18n('Description')).heading3())
     paragraphs.push(new docx.Paragraph(pl.description).style('indented'))
-    paragraphs.push(new docx.Paragraph('Notes').heading3())
+    paragraphs.push(new docx.Paragraph(i18n('Notes')).heading3())
     paragraphs.push(new docx.Paragraph(pl.notes).style('indented'))
     customAttributes.forEach(function(ca) {
       paragraphs.push(new docx.Paragraph(ca).heading3())

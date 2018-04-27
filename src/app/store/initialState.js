@@ -1,3 +1,4 @@
+import i18n from 'format-message'
 // data structure
 
 export const scene = {
@@ -18,7 +19,7 @@ export const file = {
   dirty: false
 }
 
-export const storyName = 'My awesome story'
+export const storyName = i18n('My awesome story')
 
 export const character = {
   id: 0,
@@ -50,7 +51,7 @@ export const card = {
   id: 0,
   lineId: 0,
   sceneId: 0,
-  title: 'a new card',
+  title: i18n('a new card'),
   description: '',
   tags: [],
   characters: [],

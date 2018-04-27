@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button, Input, Label, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
+import i18n from 'format-message'
 
 class CharacterView extends Component {
   constructor (props) {
@@ -41,7 +42,8 @@ class CharacterView extends Component {
   }
 
   deleteCharacter = () => {
-    if (window.confirm(`Do you want to delete this character: '${this.props.character.name}'?`)) {
+    let text = i18n('Do you want to delete this character: { character }?', {character: this.props.character.name})
+    if (window.confirm(text)) {
       this.props.actions.deleteCharacter(this.props.character.id)
     }
   }
@@ -82,15 +84,15 @@ class CharacterView extends Component {
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button
             onClick={() => this.setState({editing: false})} >
-            Cancel
+            {i18n('Cancel')}
           </Button>
           <Button bsStyle='success'
             onClick={this.saveEdit} >
-            Save
+            {i18n('Save')}
           </Button>
           <Button className='card-dialog__delete'
             onClick={this.deleteCharacter} >
-            Delete
+            {i18n('Delete')}
           </Button>
         </ButtonToolbar>
       </div>
@@ -114,8 +116,11 @@ class CharacterView extends Component {
   }
 
   renderCardAssociations () {
-    let label = 'cards'
-    if (this.props.character.cards.length === 1) label = 'card'
+    let label = i18n(`{
+      count, plural,
+        one {card}
+        other {cards}
+    }`, { count: this.props.character.cards.length })
     let cardsAssoc = this.props.character.cards.reduce((arr, cId) => {
       let card = _.find(this.props.cards, {id: cId})
       if (card) return arr.concat(card.title)
@@ -128,8 +133,11 @@ class CharacterView extends Component {
   }
 
   renderNoteAssociations () {
-    let label = 'notes'
-    if (this.props.character.noteIds.length === 1) label = 'note'
+    let label = i18n(`{
+      count, plural,
+        one {note}
+        other {notes}
+    }`, { count: this.props.character.noteIds.length })
     let noteAssoc = this.props.character.noteIds.reduce((arr, nId) => {
       let note = _.find(this.props.notes, {id: nId})
       if (note) return arr.concat(note.title)
@@ -155,16 +163,16 @@ class CharacterView extends Component {
       <div className={klasses} onClick={() => this.setState({editing: true})}>
         <h4 className='text-center secondary-text'>{character.name}</h4>
         <dl className='dl-horizontal'>
-          <dt>Description</dt>
+          <dt>{i18n('Description')}</dt>
           <dd>{character.description}</dd>
         </dl>
         {details}
         <dl className='dl-horizontal'>
-          <dt>Notes</dt>
+          <dt>{i18n('Notes')}</dt>
           <dd>{character.notes}</dd>
         </dl>
         <dl className='dl-horizontal'>
-          <dt>Attached to</dt>
+          <dt>{i18n('Attached to')}</dt>
           <dd>{this.renderAssociations()}</dd>
         </dl>
       </div>

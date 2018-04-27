@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 
 class EditPlace extends Component {
 
@@ -8,16 +9,16 @@ class EditPlace extends Component {
       return (
         <div key={`diff-${index}-${diff.path[1]}`}>
           <span>{diff.path[2]}</span>
-          <p>Before: <span className='history-component__item__before' style={{color: diff.lhs}}>{diff.lhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.lhs}}></span></p>
-          <p>After: <span style={{color: diff.rhs}}>{diff.rhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.rhs}}></span></p>
+          <p>{i18n('Before')}: <span className='history-component__item__before' style={{color: diff.lhs}}>{diff.lhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.lhs}}></span></p>
+          <p>{i18n('After')}: <span style={{color: diff.rhs}}>{diff.rhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.rhs}}></span></p>
         </div>
       )
     } else {
       return (
         <div key={`diff-${index}-${diff.path[1]}`}>
           <span>{diff.path[2]}</span>
-          <p>Before: <span className='history-component__item__before'>{diff.lhs}</span></p>
-          <p>After: <span className='history-component__item__after'>{diff.rhs}</span></p>
+          <p>{i18n('Before')}: <span className='history-component__item__before'>{diff.lhs}</span></p>
+          <p>{i18n('After')}: <span className='history-component__item__after'>{diff.rhs}</span></p>
         </div>
       )
     }

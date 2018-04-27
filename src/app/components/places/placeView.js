@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button, Input, Label, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
+import i18n from 'format-message'
 
 class PlaceView extends Component {
   constructor (props) {
@@ -40,7 +41,8 @@ class PlaceView extends Component {
   }
 
   deletePlace = () => {
-    if (window.confirm(`Do you want to delete this place: '${this.props.place.name}'?`)) {
+    let label = i18n("Do you want to delete this place: '{name}'?", {name: this.props.place.name})
+    if (window.confirm(label)) {
       this.props.actions.deletePlace(this.props.place.id)
     }
   }
@@ -65,14 +67,14 @@ class PlaceView extends Component {
               type='text' ref='nameInput' autoFocus
               onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
-              label='Name' defaultValue={place.name} />
+              label={i18n('Name')} defaultValue={place.name} />
             <Input type='text' ref='descriptionInput'
               onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
-              label='Short Description' defaultValue={place.description} />
+              label={i18n('Short Description')} defaultValue={place.description} />
             <Input type='textarea' rows='10' ref='notesInput'
               onKeyDown={this.handleEsc}
-              label='Notes' defaultValue={place.notes} />
+              label={i18n('Notes')} defaultValue={place.notes} />
           </div>
           <div className='place-list__inputs__custom'>
             {this.renderEditingCustomAttributes()}
@@ -81,15 +83,15 @@ class PlaceView extends Component {
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button
             onClick={() => this.setState({editing: false})} >
-            Cancel
+            {i18n('Cancel')}
           </Button>
           <Button bsStyle='success'
             onClick={this.saveEdit} >
-            Save
+            {i18n('Save')}
           </Button>
           <Button className='card-dialog__delete'
             onClick={this.deletePlace} >
-            Delete
+            {i18n('Delete')}
           </Button>
         </ButtonToolbar>
       </div>
@@ -113,8 +115,11 @@ class PlaceView extends Component {
   }
 
   renderCardAssociations () {
-    let label = 'cards'
-    if (this.props.place.cards.length === 1) label = 'card'
+    let label = i18n(`{
+      count, plural,
+        one {card}
+        other {cards}
+    }`, { count: this.props.place.cards.length })
     let cardsAssoc = this.props.place.cards.reduce((arr, cId) => {
       let card = _.find(this.props.cards, {id: cId})
       if (card) return arr.concat(card.title)
@@ -127,8 +132,11 @@ class PlaceView extends Component {
   }
 
   renderNoteAssociations () {
-    let label = 'notes'
-    if (this.props.place.noteIds.length === 1) label = 'note'
+    let label = i18n(`{
+      count, plural,
+        one {note}
+        other {notes}
+    }`, { count: this.props.place.noteIds.length })
     let noteAssoc = this.props.place.noteIds.reduce((arr, nId) => {
       let note = _.find(this.props.notes, {id: nId})
       if (note) return arr.concat(note.title)
@@ -154,16 +162,16 @@ class PlaceView extends Component {
       <div className={klasses} onClick={() => this.setState({editing: true})}>
         <h4 className='text-center secondary-text'>{place.name}</h4>
         <dl className='dl-horizontal'>
-          <dt>Description</dt>
+          <dt>{i18n('Description')}</dt>
           <dd>{place.description}</dd>
         </dl>
         {details}
         <dl className='dl-horizontal'>
-          <dt>Notes</dt>
+          <dt>{i18n('Notes')}</dt>
           <dd>{place.notes}</dd>
         </dl>
         <dl className='dl-horizontal'>
-          <dt>Attached to</dt>
+          <dt>{i18n('Attached to')}</dt>
           <dd>{this.renderAssociations()}</dd>
         </dl>
       </div>

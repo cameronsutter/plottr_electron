@@ -1,15 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 
 class AddPlace extends Component {
 
   render () {
     const item = this.props.item
-    var label = item.action.type.indexOf('PLACE') === -1 ? 'character' : 'place'
-    label = item.action.type.indexOf('TAG') === -1 ? 'character' : 'tag'
+    var label = item.action.type.indexOf('PLACE') === -1 ? i18n('new character') : i18n('new place')
+    if (item.action.type.indexOf('TAG') != -1) label = i18n('new tag')
     return (
       <div>
-        <span>new {label}</span>
+        <span>{label}</span>
       </div>
     )
   }

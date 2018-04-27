@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 
 class CardDetails extends Component {
 
@@ -19,9 +20,9 @@ class CardDetails extends Component {
       if (diff.path.length < 4) { // if greater it means a tag/character/place has changed position. Don't show that
         return (
           <div key={`diff-${index}-${diff.path[1]}`}>
-            <span>Edit {diff.path[2]}</span>
-            <p>Before: <span className='history-component__item__before'>{diff.lhs}</span></p>
-            <p>After: <span className='history-component__item__after'>{diff.rhs}</span></p>
+            <span>{i18n('Edit')} {diff.path[2]}</span>
+            <p>{i18n('Before')}: <span className='history-component__item__before'>{diff.lhs}</span></p>
+            <p>{i18n('After')}: <span className='history-component__item__after'>{diff.rhs}</span></p>
           </div>
         )
       }
@@ -31,9 +32,9 @@ class CardDetails extends Component {
         var title = label['title'] || label['name']
         return (
           <div key={`diff-${index}-${diff.path[1]}`}>
-            <span>Delete {diff.path[2]}: {title}</span>
-            <p>Before: <span className='history-component__item__before'>{this.renderLabels(diff.path, 'before')}</span></p>
-            <p>After: <span className='history-component__item__after'>{this.renderLabels(diff.path, 'after')}</span></p>
+            <span>{i18n('Delete')} {diff.path[2]}: {title}</span>
+            <p>{i18n('Before')}: <span className='history-component__item__before'>{this.renderLabels(diff.path, 'before')}</span></p>
+            <p>{i18n('After')}: <span className='history-component__item__after'>{this.renderLabels(diff.path, 'after')}</span></p>
           </div>
         )
       } else if (diff.item.kind === 'N') {
@@ -41,9 +42,9 @@ class CardDetails extends Component {
         title = label['title'] || label['name']
         return (
           <div key={`diff-${index}-${diff.path[1]}`}>
-            <span>New {diff.path[2]}: {title}</span>
-            <p>Before: <span className='history-component__item__before'>{this.renderLabels(diff.path, 'before')}</span></p>
-            <p>After: <span className='history-component__item__after'>{this.renderLabels(diff.path, 'after')}</span></p>
+            <span>{i18n('New')} {diff.path[2]}: {title}</span>
+            <p>{i18n('Before')}: <span className='history-component__item__before'>{this.renderLabels(diff.path, 'before')}</span></p>
+            <p>{i18n('After')}: <span className='history-component__item__after'>{this.renderLabels(diff.path, 'after')}</span></p>
           </div>
         )
       }
@@ -56,7 +57,7 @@ class CardDetails extends Component {
     var card = this.props.cards[item.diff[0].path[1]] || {title: ''}
     return (
       <div>
-        <div className='history-component__item-identifier'>Card: "{card.title}"</div>
+        <div className='history-component__item-identifier'>{i18n('Card')}: "{card.title}"</div>
         {diffs}
       </div>
     )

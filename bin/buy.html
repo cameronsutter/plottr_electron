@@ -16,6 +16,7 @@
     <script>
       const { remote } = require('electron')
       const app = remote.app
+      var i18n = require('format-message')
       let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
       const path = require('path')
       require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
@@ -43,7 +44,9 @@
   </head>
   <body>
     <script src="https://gumroad.com/js/gumroad-embed.js"></script>
-    <div class="gumroad-product-embed" data-gumroad-product-id="fgSJ"><p>Loading...</p></div>
+    <div class="gumroad-product-embed" data-gumroad-product-id="fgSJ"><p>
+      <script>document.write(i18n('Loading...'))</script>
+    </p></div>
     <script src="common.bundle.js"></script>
     <script>
       const { ipcRenderer } = require('electron')

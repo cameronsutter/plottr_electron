@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { Button, Input, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
+import i18n from 'format-message'
 
 const SUCCESS = 'success'
 const OFFLINE = 'offline'
@@ -27,15 +28,15 @@ class VerifyView extends Component {
 
   makeAlertText (value) {
     if (value === SUCCESS) {
-      return 'License Verified. Plottr will start momentarily. Thanks for being patient!'
+      return i18n('License Verified. Plottr will start momentarily. Thanks for being patient!')
     } else if (value === OFFLINE) {
-      return 'It looks like you\'re not online. You don\'t always have to be online to user Plottr, but it can\'t verify your license offline'
+      return i18n("It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline")
     } else if (value === INVALID) {
-      return 'Hmmmm. It looks like that\'s not a valid license key.'
+      return i18n("Hmmmm. It looks like that's not a valid license key.")
     } else if (value === CANTSAVE) {
-      return 'Plottr verified your license key successfully, but there was an error saving that. Let\'s try one more time'
+      return i18n("Plottr verified your license key successfully, but there was an error saving that. Let's try one more time")
     } else if (value === SAVE2) {
-      return 'Nope. Plottr tried again. But it didn\'t work. Plottr will ask you next time it opens, but you\'re verified. Enjoy'
+      return i18n("Nope. Plottr tried again. But it didn't work. Plottr will ask you next time it opens, but you're verified. Enjoy")
     } else {
       return null
     }

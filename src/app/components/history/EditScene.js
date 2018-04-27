@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 
 class EditScene extends Component {
 
@@ -8,9 +9,9 @@ class EditScene extends Component {
     const diff = item.diff[0]
     return (
       <div>
-        <span>scene: "{item.action.title}"</span>
-        <p>Before: <span className='history-component__item__before'>{diff.lhs}</span></p>
-        <p>After: <span className='history-component__item__after'>{diff.rhs}</span></p>
+        <span>{i18n('Scene')}: "{item.action.title}"</span>
+        <p>{i18n('Before')}: <span className='history-component__item__before'>{diff.lhs}</span></p>
+        <p>{i18n('After')}: <span className='history-component__item__after'>{diff.rhs}</span></p>
       </div>
     )
   }

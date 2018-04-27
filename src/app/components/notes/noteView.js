@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button, Input, Label, Glyphicon } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
+import i18n from 'format-message'
 
 const md = MarkDown.getSanitizingConverter()
 
@@ -39,7 +40,8 @@ class NoteView extends Component {
   }
 
   deleteNote = () => {
-    if (window.confirm(`Do you want to delete this note: '${this.props.note.title}'?`)) {
+    let label = i18n("Do you want to delete this note: '{title}'?", {title: this.props.note.title})
+    if (window.confirm(label)) {
       this.props.actions.deleteNote(this.props.note.id)
     }
   }
@@ -54,10 +56,10 @@ class NoteView extends Component {
               type='text' ref='titleInput' autoFocus
               onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
-              label='Title' defaultValue={note.title} />
+              label={i18n('Title')} defaultValue={note.title} />
             <Input type='textarea' rows='10' ref='contentInput'
               onKeyDown={this.handleEsc}
-              label='Content' defaultValue={note.content} />
+              label={i18n('Content')} defaultValue={note.content} />
           </div>
           <ButtonToolbar className='card-dialog__button-bar'>
             <Button
@@ -66,11 +68,11 @@ class NoteView extends Component {
             </Button>
             <Button bsStyle='success'
               onClick={this.saveEdit} >
-            Save
+            {i18n('Save')}
             </Button>
             <Button className='card-dialog__delete'
               onClick={this.deleteNote} >
-              Delete
+              {i18n('Delete')}
             </Button>
           </ButtonToolbar>
         </div>

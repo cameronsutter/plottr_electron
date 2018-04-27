@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { Glyphicon, Nav, Navbar, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
 import SceneView from 'components/outline/sceneView'
 import MiniMap from 'components/outline/miniMap'
+import i18n from 'format-message'
 
 class OutlineView extends Component {
   constructor (props) {
@@ -98,7 +99,7 @@ class OutlineView extends Component {
         {this.renderFilterList()}
       </div>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">Outline is filtered</Alert>
+    let filterDeclaration = <Alert bsStyle="warning">{i18n('Outline is filtered')}</Alert>
     if (this.state.currentLine == null) {
       filterDeclaration = <span></span>
     }
@@ -107,7 +108,7 @@ class OutlineView extends Component {
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> Filter by storyline</Button>
+              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter by story line')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
@@ -128,7 +129,7 @@ class OutlineView extends Component {
     return (
       <div className='outline__container container-with-sub-nav'>
         {this.renderSubNav()}
-        <div className='outline__minimap__placeholder'>you didn&apos;t see anything</div>
+        <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
         <MiniMap active={this.state.active} cardMapping={cardMapping} />
         <div className='outline__scenes-container'>
           {this.renderScenes(cardMapping)}

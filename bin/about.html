@@ -25,28 +25,34 @@
     <script>
       const { remote, ipcRenderer } = require('electron')
       const app = remote.app
+      var i18n = require('format-message')
       function handleReportProblem () {
         ipcRenderer.send('report-window-requested')
       }
       const path = require('path')
       require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
       var TRIALMODE = process.env.TRIALMODE === 'true'
-      var versionString = 'Version '
-      if (TRIALMODE) versionString = 'TRIAL VERSION '
+      var versionString = i18n('Version') + ' '
+      if (TRIALMODE) versionString = i18n('TRIAL VERSION') + ' '
     </script>
     <h1><img src='../icons/logo_04_100.png' height='100'/></h1>
     <p><script>document.write(versionString + app.getVersion())</script></p>
-    <h4>Contact</h4>
+    <h4><script>document.write(i18n('Contact'))</script></h4>
     <p>family@plottrapp.com</p>
     <p>
-      <button class='btn btn-default' onClick='handleReportProblem()'>Report a problem</button>
-      <br/><small>(or request a feature)</small>
+      <button class='btn btn-default' onClick='handleReportProblem()'>
+        <script>document.write(i18n('Report a problem'))</script>
+      </button>
+      <br/>
+      <small>
+        <script>document.write(i18n('(or request a feature)'))</script>
+      </small>
     </p>
-    <h4>Credits</h4>
+    <h4><script>document.write(i18n('Credits'))</script></h4>
     <p>
       <img src='../icons/jellyfish_mountains.png' width='150'/>
       <br/>
-      Crafted in the Mountains of Utah by
+      <script>document.write(i18n('Crafted in the Mountains of Utah by'))</script>
     </p>
     <p>C. Louis S. &amp; Steve Shepherd</p>
   </body>

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Modal from 'react-modal'
 import { reds, oranges, greens, blues, purples, grays, whites, browns } from '../constants/CSScolors'
 import { Input, Button, Row, Col } from 'react-bootstrap'
+import i18n from 'format-message'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -34,14 +35,14 @@ class ColorPicker extends Component {
     }
     return (<Modal isOpen={true} onRequestClose={this.closeDialog} style={customStyles}>
       <div className={klasses}>
-        <h2 className='color-picker__title'>Pick a color</h2>
+        <h2 className='color-picker__title'>{i18n('Pick a color')}</h2>
         <div className='color-picker__input-box form-horizontal'>
           <Row>
             <Col xs={5} >
-              <h5 style={{marginTop: '26px'}} className='secondary-text'>Click on a color below or type it in</h5>
+              <h5 style={{marginTop: '26px'}} className='secondary-text'>{i18n('Click on a color below or type it in')}</h5>
             </Col>
             <Col xs={2} >
-              <p style={{textAlign: 'right', marginTop: '32px'}}>Current Color: </p>
+              <p style={{textAlign: 'right', marginTop: '32px'}}>{i18n('Current Color')}: </p>
             </Col>
             <Col xs={1} >
               <div title={this.state.color} style={{backgroundColor: this.state.color, marginTop: '16px'}} className='color-picker__show-color'></div>
@@ -55,7 +56,7 @@ class ColorPicker extends Component {
             </Col>
             <Col xs={2}>
               <div style={{marginTop: '26px'}}>
-                <Button bsStyle='success' onClick={() => this.closeDialog(this.state.color)}>Choose</Button>
+                <Button bsStyle='success' onClick={() => this.closeDialog(this.state.color)}>{i18n('Choose')}</Button>
               </div>
             </Col>
           </Row>
@@ -69,35 +70,35 @@ class ColorPicker extends Component {
 
   renderColors () {
     return <div className='color-picker__box-wrapper'>
-      <p>Reds</p>
+      <p>{i18n('Reds')}</p>
       <div className='color-picker__box'>
         {reds.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
-      <p>Oranges</p>
+      <p>{i18n('Oranges')}</p>
       <div className='color-picker__box'>
         {oranges.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
-      <p>Greens</p>
+      <p>{i18n('Greens')}</p>
       <div className='color-picker__box'>
         {greens.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
-      <p>Blues</p>
+      <p>{i18n('Blues')}</p>
       <div className='color-picker__box'>
         {blues.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
-      <p>Purples</p>
+      <p>{i18n('Purples')}</p>
       <div className='color-picker__box'>
         {purples.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
-      <p>Grays</p>
+      <p>{i18n('Grays')}</p>
       <div className='color-picker__box'>
         {grays.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
-      <p>Whites</p>
+      <p>{i18n('Whites')}</p>
       <div className='color-picker__box'>
         {whites.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
-      <p>Browns</p>
+      <p>{i18n('Browns')}</p>
       <div className='color-picker__box'>
         {browns.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>

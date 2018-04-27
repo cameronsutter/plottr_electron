@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { ButtonToolbar, Button, DropdownButton,
   MenuItem, Input, Label, Glyphicon } from 'react-bootstrap'
+import i18n from 'format-message'
 
 class FilterList extends Component {
   constructor (props) {
@@ -67,11 +68,11 @@ class FilterList extends Component {
   render () {
     return (
       <div className='filter-list'>
-        <p onClick={() => this.filterList('character', this.props.characters)}><em>Characters</em></p>
+        <p onClick={() => this.filterList('character', this.props.characters)}><em>{i18n('Characters')}</em></p>
           {this.renderFilterList(this.props.characters, 'character', 'name')}
-        <p onClick={() => this.filterList('place', this.props.places)}><em>Places</em></p>
+        <p onClick={() => this.filterList('place', this.props.places)}><em>{i18n('Places')}</em></p>
           {this.renderFilterList(this.props.places, 'place', 'name')}
-        <p onClick={() => this.filterList('tag', this.props.tags)}><em>Tags</em></p>
+        <p onClick={() => this.filterList('tag', this.props.tags)}><em>{i18n('Tags')}</em></p>
         {this.renderFilterList(this.props.tags, 'tag', 'title')}
       </div>
     )

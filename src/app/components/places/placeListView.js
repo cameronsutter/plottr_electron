@@ -8,6 +8,7 @@ import CustomAttrFilterList from 'components/customAttrFilterList'
 import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import PlaceView from 'components/places/placeView'
+import i18n from 'format-message'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -131,7 +132,7 @@ class PlaceListView extends Component {
     let popover = <Popover id='filter'>
       <CustomAttrFilterList type={'places'} filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">Place list is filtered</Alert>
+    let filterDeclaration = <Alert bsStyle="warning">{i18n('Place list is filtered')}</Alert>
     if (this.filterIsEmpty(this.state.filter)) {
       filterDeclaration = <span></span>
     }
@@ -139,11 +140,11 @@ class PlaceListView extends Component {
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
-            <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> Custom Attributes</Button>
+            <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> Filter</Button>
+              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
@@ -196,16 +197,16 @@ class PlaceListView extends Component {
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
       <div className={klasses}>
         <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
-          Close
+          {i18n('Close')}
         </Button>
-        <h3>Custom Attributes for Places</h3>
-        <p className='sub-header'>Choose what you want to track about your places</p>
+        <h3>{i18n('Custom Attributes for Places')}</h3>
+        <p className='sub-header'>{i18n('Choose what you want to track about your places')}</p>
         <div className='character-list__custom-attributes-add-button'>
           <Input type='text' ref='attrInput'
-            label='Add attributes' value={this.state.addAttrText}
+            label={i18n('Add attributes')} value={this.state.addAttrText}
             onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
           <Button bsStyle='success' onClick={this.saveAttr}>
-            Add
+            {i18n('Add')}
           </Button>
         </div>
         <div className='place-list__custom-attributes-list-wrapper'>

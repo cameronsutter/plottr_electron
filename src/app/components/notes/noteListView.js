@@ -8,6 +8,7 @@ import Modal from 'react-modal'
 import * as NoteActions from 'actions/notes'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
+import i18n from 'format-message'
 
 const modalStyles = {content: {top: '70px'}}
 
@@ -116,7 +117,7 @@ class NoteListView extends Component {
     let popover = <Popover id='filter'>
       <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">Notes are filtered</Alert>
+    let filterDeclaration = <Alert bsStyle="warning">{i18n('Notes are filtered')}</Alert>
     if (this.filterIsEmpty(this.state.filter)) {
       filterDeclaration = <span></span>
     }
@@ -125,7 +126,7 @@ class NoteListView extends Component {
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> Filter</Button>
+              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
@@ -140,7 +141,7 @@ class NoteListView extends Component {
     return (
       <div className='note-list container-with-sub-nav'>
         {this.renderSubNav()}
-        <h1 className={klasses}>Notes</h1>
+        <h1 className={klasses}>{i18n('Notes')}</h1>
         {this.renderNoteDetails()}
         {this.renderNotes()}
       </div>

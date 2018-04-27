@@ -9,6 +9,7 @@ import * as CardActions from 'actions/cards'
 import orientedClassName from 'helpers/orientedClassName'
 import MDdescription from 'components/mdDescription'
 import TagLabel from 'components/tagLabel'
+import i18n from 'format-message'
 
 
 class CardView extends Component {
@@ -196,7 +197,7 @@ class CardView extends Component {
           <Input
             type='text'
             autoFocus
-            label='Card Title'
+            label={i18n('Card Title')}
             ref='titleInput'
             bsSize='small'
             onBlur={this.handleBlur}
@@ -241,7 +242,7 @@ class CardView extends Component {
   }
 
   renderPopover () {
-    return <Popover title={'Description'} id={`card-popover-${this.props.card.id}`}>
+    return <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
       <MDdescription className='card__popover-description' labels={this.props.labelMap}
         description={this.props.card.description.substring(0, 1000)}
         darkMode={this.props.ui.darkMode}

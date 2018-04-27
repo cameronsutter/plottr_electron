@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import i18n from 'format-message'
 
 class EditNote extends Component {
 
@@ -7,8 +8,8 @@ class EditNote extends Component {
     return (
       <div key={`diff-${index}-${diff.path[1]}`}>
         <span>{diff.path[2]}</span>
-        <p>Before: <span className='history-component__item__before'>{diff.lhs}</span></p>
-        <p>After: <span className='history-component__item__after'>{diff.rhs}</span></p>
+        <p>{i18n('Before')}: <span className='history-component__item__before'>{diff.lhs}</span></p>
+        <p>{i18n('After')}: <span className='history-component__item__after'>{diff.rhs}</span></p>
       </div>
     )
   }
@@ -18,7 +19,7 @@ class EditNote extends Component {
     const diffs = item.diff.map(this.renderDiff, this)
     return (
       <div>
-        <span>note: "{item.action.title}"</span>
+        <span>{i18n('Note')}: "{item.action.title}"</span>
         {diffs}
       </div>
     )

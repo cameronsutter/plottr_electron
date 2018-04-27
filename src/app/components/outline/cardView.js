@@ -7,6 +7,7 @@ import _ from 'lodash'
 import * as CardActions from 'actions/cards'
 import MDdescription from 'components/mdDescription'
 import TagLabel from 'components/tagLabel'
+import i18n from 'format-message'
 
 class CardView extends Component {
   constructor (props) {
@@ -69,7 +70,7 @@ class CardView extends Component {
         onKeyPress={this.handleEnter}
         onKeyDown={this.handleEsc}
         type='text' autoFocus
-        label='title' ref='titleInput'
+        label={i18n('title')} ref='titleInput'
         defaultValue={title} />
     } else {
       return <h6 onClick={() => this.setState({editing: true})}>{title}</h6>
@@ -82,19 +83,19 @@ class CardView extends Component {
       const url = 'https://daringfireball.net/projects/markdown/syntax'
       return (
         <div className='outline__description__editing'>
-          <Input type='textarea' label='description' rows='15'
+          <Input type='textarea' label={i18n('description')} rows='15'
             ref='descriptionInput' defaultValue={description}
             onKeyDown={this.handleEsc}
             />
-          <small>Format with markdown! <a href='#' onClick={() => shell.openExternal(url)}>learn how</a></small>
+          <small>{i18n('Format with markdown!')} <a href='#' onClick={() => shell.openExternal(url)}>{i18n('learn how')}</a></small>
           <ButtonToolbar className='card-dialog__button-bar'>
             <Button
               onClick={() => this.setState({editing: false})} >
-              Cancel
+              {i18n('Cancel')}
             </Button>
             <Button bsStyle='success'
               onClick={this.saveEdit}>
-              Save
+              {i18n('Save')}
             </Button>
           </ButtonToolbar>
         </div>

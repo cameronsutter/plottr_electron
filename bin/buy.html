@@ -50,6 +50,7 @@
     <script src="common.bundle.js"></script>
     <script>
       const { ipcRenderer } = require('electron')
+      const MPQ = require('../src/app/middlewares/helpers')
       function makeCSS () {
         var style = document.createElement("style")
         style.innerHTML = "@keyframes highlight { 0% { background-color: none; } 50% { background-color: yellow; } 100% { background-color: none; } }"
@@ -67,6 +68,7 @@
           const LICENSE = elem.innerHTML
           elem.className = 'license-key highlighted'
           ipcRenderer.send('license-to-verify', LICENSE)
+          MPQ.push('Buy')
         }
       }
       var i = setInterval(checkForPurchaseCompletion, 3000)

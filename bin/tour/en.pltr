@@ -138,9 +138,9 @@
   },
   "file": {
     "dirty": true,
-    "fileName": "/Users/csutter/github/plottr_electron/bin/tour.pltr",
+    "fileName": "/Users/csutter/github/plottr_electron/bin/tour/en.pltr",
     "loaded": true,
-    "version": "1.2.28"
+    "version": "1.3.1"
   },
   "lines": [
     {
@@ -277,7 +277,7 @@
     }
   ],
   "ui": {
-    "currentView": "places",
+    "currentView": "timeline",
     "darkMode": false,
     "orientation": "horizontal"
   }

@@ -12,7 +12,6 @@ import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
-var TRIALMODE = process.env.TRIALMODE === 'true'
 
 const ZOOM_STATES = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3]
 const INITIAL_ZOOM_INDEX = 4
@@ -30,10 +29,6 @@ class TimeLineView extends Component {
       zoomIndex: INITIAL_ZOOM_INDEX,
       scrollTarget: 0
     }
-  }
-
-  openBuyWindow = () => {
-    ipcRenderer.send('open-buy-window')
   }
 
   // ////////////////
@@ -212,14 +207,6 @@ class TimeLineView extends Component {
   //  rendering   //
   // //////////////
 
-  renderBuyButton () {
-    if (TRIALMODE) {
-      return <NavItem>
-        <Button bsSize='small' bsStyle='info' onClick={this.openBuyWindow}><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</Button>
-      </NavItem>
-    }
-  }
-
   renderSubNav () {
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
@@ -273,7 +260,6 @@ class TimeLineView extends Component {
             <span className='subnav__container__label'>{i18n('Export')}: </span>
             <Button bsSize='small' onClick={this.doExport}><Glyphicon glyph='export' /></Button>
           </NavItem>
-          {this.renderBuyButton()}
         </Nav>
       </Navbar>
     )

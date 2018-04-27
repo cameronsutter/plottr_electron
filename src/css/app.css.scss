@@ -94,6 +94,10 @@ h6 {
 }
 
 .navbar-brand {
-  border: 2px solid $brand-orange;
-  border-radius: 10px;
+  border: 2px solid $brand-primary;
+  border-radius: 1px;
+}
+
+.blue-background {
+  background-color: $blue;
 }

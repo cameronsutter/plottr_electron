@@ -5,6 +5,7 @@ import * as UIActions from 'actions/ui'
 import { Glyphicon, Input, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
 import i18n from 'format-message'
+const { ipcRenderer } = require('electron')
 var TRIALMODE = process.env.TRIALMODE === 'true'
 
 class Navigation extends Component {
@@ -17,21 +18,6 @@ class Navigation extends Component {
     this.setState({showHistory: !this.state.showHistory})
   }
 
-  renderUnsavedChanges () {
-    let styles = {padding: '8px'}
-    if (TRIALMODE) {
-      return <span className='alert alert-danger' style={styles} role='alert'>
-        <Glyphicon glyph='exclamation-sign' /> {i18n('TRIAL MODE — no auto saving')}
-      </span>
-    }
-    if (this.props.file.dirty) {
-      return <span className='alert alert-danger' style={styles} role='alert'><Glyphicon glyph='exclamation-sign' /> {i18n('unsaved changes')}</span>
-    } else {
-      return <span className='alert alert-success' style={styles} role='alert'>
-        <Glyphicon bsStyle={{verticalAlign: 'baseline'}} glyph='ok' /> {i18n('autosaved')}</span>
-    }
-  }
-
   render () {
     if (this.state.editing) {
       window.SCROLLWITHKEYS = false
@@ -41,6 +27,12 @@ class Navigation extends Component {
     let klasses = 'navbar navbar-default navbar-fixed-top'
     if (this.props.ui.darkMode) {
       klasses += ' navbar-inverse'
+    }
+    let buyItem = null
+    if (TRIALMODE) {
+      buyItem = <li className=''>
+        <a href='#' style={{color: '#6cace4'}} onClick={() => ipcRenderer.send('open-buy-window')} ><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</a>
+      </li>
     }
     return (
       <div>
@@ -74,14 +66,12 @@ class Navigation extends Component {
               <li className={this.isActive('tags')}>
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('tags')} >{i18n('Tags')}</a>
               </li>
+              { buyItem }
             </ul>
             <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>
               <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> {i18n('Undo')}...</Button>
               <HistoryComponent show={this.state.showHistory} />
             </div>
-            <p className='navbar-text navbar-right' style={{marginRight: '15px'}}>
-              {this.renderUnsavedChanges()}
-            </p>
           </div>
         </nav>
       </div>

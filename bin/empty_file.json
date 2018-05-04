@@ -1,0 +1,41 @@
+{
+  "cards": [],
+  "characters": [],
+  "customAttributes": {
+    "cards": [],
+    "characters": [],
+    "lines": [],
+    "places": [],
+    "scenes": []
+  },
+  "file": {
+    "dirty": true,
+    "fileName": "/Users/csutter/github/plottr_electron/example3.pltr",
+    "loaded": true,
+    "version": "1.3.3"
+  },
+  "lines": [
+    {
+      "color": "#6cace4",
+      "id": 0,
+      "position": 0,
+      "title": "Main Plot"
+    }
+  ],
+  "notes": [],
+  "places": [],
+  "scenes": [
+    {
+      "id": 0,
+      "position": 0,
+      "title": "Scene 1"
+    }
+  ],
+  "storyName": "My story's name",
+  "tags": [],
+  "ui": {
+    "currentView": "timeline",
+    "darkMode": false,
+    "orientation": "horizontal"
+  }
+}

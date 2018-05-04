@@ -283,7 +283,7 @@ function checkLicense (callback) {
       })
     } else {
       callback()
-      if (TRIALMODE) openTour()
+      if (TRIALMODE) createEmpty()
       else openVerifyWindow()
     }
   })
@@ -342,7 +342,7 @@ function openRecentFiles () {
           openWindow(fileName)
         })
       } else {
-        openTour()
+        askToOpenOrCreate()
       }
     })
   }
@@ -534,6 +534,24 @@ function openTour () {
   // } else if (locale.includes('fr')) {
   //   openWindow(__dirname + '/tour/fr.pltr')
   // }
+}
+
+function createEmpty () {
+  let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
+  let fileName = path.join(home, 'Documents', 'plottr_trial.pltr')
+  fs.writeFile(fileName, emptyFileContents(), function(err) {
+    if (err) {
+      log.warn(err)
+      rollbar.warn(err)
+    } else {
+      openWindow(fileName)
+    }
+  })
+}
+
+function emptyFileContents () {
+  let data = require('./empty_file.json')
+  return JSON.stringify(data, null, 2)
 }
 
 function openAboutWindow () {

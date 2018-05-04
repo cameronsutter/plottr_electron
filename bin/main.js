@@ -895,7 +895,7 @@ function buildFileMenu () {
   },
   submenu)
   return {
-    label: 'File',
+    label: i18n('File'),
     submenu: submenu
   }
 }

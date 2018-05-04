@@ -11,6 +11,13 @@ import { MPQ } from 'middlewares/helpers'
 import FileFixer from 'helpers/fixer'
 import log from 'electron-log'
 
+import i18n from 'format-message'
+i18n.setup({
+  generateId: require('format-message-generate-id/underscored_crc32'),
+  translations: require('../../locales'),
+  locale: 'en' || app.getLocale()
+})
+
 mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
 const root = document.getElementById('react-root')
 const store = configureStore()

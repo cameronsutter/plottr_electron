@@ -41,47 +41,47 @@
     </div>
     <script src="common.bundle.js"></script>
     <script src="app.bundle.js"></script>
-  </body>
-  <script>
-    window.SCROLLWITHKEYS = true
-    window.onkeydown = function (e) {
-      if (window.SCROLLWITHKEYS) {
-        if (e.key === 'ArrowUp') {
-          var amount = 300
-          if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
-          document.body.scrollTop -= amount
-        } else if (e.key === 'ArrowRight') {
-          var amount = 400
-          if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
-          document.body.scrollLeft += amount
-        } else if (e.key === 'ArrowDown') {
-          var amount = 300
-          if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
-          document.body.scrollTop += amount
-        } else if (e.key === 'ArrowLeft') {
-          var amount = 400
-          if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
-          document.body.scrollLeft -= amount
+    <script>
+      window.SCROLLWITHKEYS = true
+      window.onkeydown = function (e) {
+        if (window.SCROLLWITHKEYS) {
+          if (e.key === 'ArrowUp') {
+            var amount = 300
+            if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
+            document.body.scrollTop -= amount
+          } else if (e.key === 'ArrowRight') {
+            var amount = 400
+            if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
+            document.body.scrollLeft += amount
+          } else if (e.key === 'ArrowDown') {
+            var amount = 300
+            if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
+            document.body.scrollTop += amount
+          } else if (e.key === 'ArrowLeft') {
+            var amount = 400
+            if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
+            document.body.scrollLeft -= amount
+          }
         }
       }
-    }
-    const {Menu, MenuItem} = remote
+      const {Menu, MenuItem} = remote
 
-    const menu = new Menu()
-    menu.append(new MenuItem({label: i18n('Cut'), accelerator: 'CmdOrCtrl+X', role: 'cut'}))
-    menu.append(new MenuItem({label: i18n('Copy'), accelerator: 'CmdOrCtrl+C', role: 'copy'}))
-    menu.append(new MenuItem({type: 'separator'}))
-    menu.append(new MenuItem({label: i18n('Paste'), accelerator: 'CmdOrCtrl+V', role: 'paste'}))
-    menu.append(new MenuItem({type: 'separator'}))
-    menu.append(new MenuItem({label: i18n('Select All'), accelerator: 'CmdOrCtrl+A', role: 'selectall'}))
+      const menu = new Menu()
+      menu.append(new MenuItem({label: i18n('Cut'), accelerator: 'CmdOrCtrl+X', role: 'cut'}))
+      menu.append(new MenuItem({label: i18n('Copy'), accelerator: 'CmdOrCtrl+C', role: 'copy'}))
+      menu.append(new MenuItem({type: 'separator'}))
+      menu.append(new MenuItem({label: i18n('Paste'), accelerator: 'CmdOrCtrl+V', role: 'paste'}))
+      menu.append(new MenuItem({type: 'separator'}))
+      menu.append(new MenuItem({label: i18n('Select All'), accelerator: 'CmdOrCtrl+A', role: 'selectall'}))
 
-    window.addEventListener('contextmenu', (e) => {
-      e.preventDefault()
-      menu.popup(remote.getCurrentWindow())
-    }, false)
+      window.addEventListener('contextmenu', (e) => {
+        e.preventDefault()
+        menu.popup(remote.getCurrentWindow())
+      }, false)
 
-    function logger(which) {
-      process.env.LOGGER = which.toString()
-    }
-  </script>
+      function logger(which) {
+        process.env.LOGGER = which.toString()
+      }
+    </script>
+  </body>
 </html>

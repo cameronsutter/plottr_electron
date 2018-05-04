@@ -32,13 +32,16 @@ class CharacterListView extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    let visible = []
+    let detailID = null
     if (nextProps.characters.length > 0) {
-      let visible = this.visibleCharacters(nextProps.characters)
-      this.setState({
-        visibleCharacters: visible,
-        characterDetailId: this.detailID(visible),
-      })
+      visible = this.visibleCharacters(nextProps.characters)
+      detailID = this.detailID(visible)
     }
+    this.setState({
+      visibleCharacters: visible,
+      characterDetailId: detailID,
+    })
   }
 
   componentDidUpdate () {

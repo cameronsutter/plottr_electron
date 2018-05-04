@@ -75,7 +75,7 @@
     "message": "Character list is filtered"
   },
   "characters_9d897d1c": {
-    "message": "Characters"
+    "message": "Personnages"
   },
   "characters_list_808fc50b": {
     "message": "Characters list"
@@ -180,7 +180,7 @@
     "message": "Do you want to delete this tag: '{'title'}'?"
   },
   "edit_c5fbea07": {
-    "message": "Edit"
+    "message": "Modifier"
   },
   "email_me_at_family_plottrapp_com_with_the_file_plo_17ce8592": {
     "message": "Email me at family@plottrapp.com with the file Plottr just exported"
@@ -195,7 +195,7 @@
     "message": "Export"
   },
   "file_c851020d": {
-    "message": "File"
+    "message": "Fichier"
   },
   "filter_by_story_line_e68e2763": {
     "message": "Filter by story line"
@@ -342,7 +342,7 @@
     "message": "Oranges"
   },
   "outline_adfa4207": {
-    "message": "Outline"
+    "message": "Trame"
   },
   "outline_is_filtered_417f5549": {
     "message": "Outline is filtered"
@@ -360,7 +360,7 @@
     "message": "Place list is filtered"
   },
   "places_6252b74f": {
-    "message": "Places"
+    "message": "Lieux"
   },
   "places_list_95ff2982": {
     "message": "Places list"
@@ -492,7 +492,7 @@
     "message": "tag name"
   },
   "tags_2b72a03b": {
-    "message": "Tags"
+    "message": "Etiquettes"
   },
   "tags_list_136463df": {
     "message": "Tags list"
@@ -501,7 +501,7 @@
     "message": "Take Screenshot"
   },
   "timeline_f91b9baf": {
-    "message": "Timeline"
+    "message": "Chronologie"
   },
   "timeline_is_filtered_3d6019a4": {
     "message": "Timeline is filtered"
@@ -531,7 +531,7 @@
     "message": "Verifying your license. Please wait..."
   },
   "view_ba339f93": {
-    "message": "View"
+    "message": "Voir"
   },
   "where_would_you_like_to_save_the_export_dc66a78": {
     "message": "Where would you like to save the export?"
@@ -558,6 +558,6 @@
     "message": "yes, save!"
   },
   "zoom_f3e54d69": {
-    "message": "Zoom"
+    "message": "Zoomer"
   }
 }

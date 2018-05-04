@@ -98,37 +98,37 @@ class AddThingToThing extends Component {
       case 'character':
         beforeCountStr = i18n(`{
           count, plural,
-          one {character attached}
-          other {characters attached}
+          one {1 character attached}
+          other {# characters attached}
         }`, { count: howMany })
         afterCountStr = i18n(`{
           count, plural,
-          one {character attached}
-          other {characters attached}
+          one {1 character attached}
+          other {# characters attached}
         }`, { count: afterHowMany })
         break
       case 'place':
         beforeCountStr = i18n(`{
           count, plural,
-          one {place attached}
-          other {places attached}
+          one {1 place attached}
+          other {# places attached}
         }`, { count: howMany })
         afterCountStr = i18n(`{
           count, plural,
-          one {place attached}
-          other {places attached}
+          one {1 place attached}
+          other {# places attached}
         }`, { count: afterHowMany })
         break
       case 'tag':
         beforeCountStr = i18n(`{
           count, plural,
-          one {tag attached}
-          other {tags attached}
+          one {1 tag attached}
+          other {# tags attached}
         }`, { count: howMany })
         afterCountStr = i18n(`{
           count, plural,
-          one {tag attached}
-          other {tags attached}
+          one {1 tag attached}
+          other {# tags attached}
         }`, { count: afterHowMany })
         break
     }

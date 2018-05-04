@@ -104,20 +104,20 @@
   "copy_9748f9f": {
     "message": "Copy"
   },
-  "count_plural_one_card_other_cards_dd03ba0c": {
-    "message": "{ count, plural,\n    one {card}\n  other {cards}\n}"
+  "count_plural_one_1_card_other_cards_53696e34": {
+    "message": "{ count, plural,\n    one {1 card}\n  other {# cards}\n}"
   },
-  "count_plural_one_character_attached_other_characte_ac50182b": {
-    "message": "{ count, plural,\n    one {character attached}\n  other {characters attached}\n}"
+  "count_plural_one_1_character_attached_other_charac_8a94b132": {
+    "message": "{ count, plural,\n    one {1 character attached}\n  other {# characters attached}\n}"
   },
-  "count_plural_one_note_other_notes_3ea766eb": {
-    "message": "{ count, plural,\n    one {note}\n  other {notes}\n}"
+  "count_plural_one_1_note_other_notes_b0148074": {
+    "message": "{ count, plural,\n    one {1 note}\n  other {# notes}\n}"
   },
-  "count_plural_one_place_attached_other_places_attac_4bd14f30": {
-    "message": "{ count, plural,\n    one {place attached}\n  other {places attached}\n}"
+  "count_plural_one_1_place_attached_other_places_att_17f07042": {
+    "message": "{ count, plural,\n    one {1 place attached}\n  other {# places attached}\n}"
   },
-  "count_plural_one_tag_attached_other_tags_attached_e8221913": {
-    "message": "{ count, plural,\n    one {tag attached}\n  other {tags attached}\n}"
+  "count_plural_one_1_tag_attached_other_tags_attache_3904cb41": {
+    "message": "{ count, plural,\n    one {1 tag attached}\n  other {# tags attached}\n}"
   },
   "create_a_new_file_2e47c4a0": {
     "message": "Create a new file"
@@ -148,6 +148,9 @@
   },
   "dark_mode_16f702bc": {
     "message": "Dark Mode"
+  },
+  "days_days_remaining_66f2081a": {
+    "message": "{ days } days remaining"
   },
   "delete_a6efa79d": {
     "message": "Delete"
@@ -515,8 +518,8 @@
   "toggle_navigation_381fb8df": {
     "message": "Toggle navigation"
   },
-  "trial_version_e1b78c2": {
-    "message": "TRIAL VERSION"
+  "trial_version_fee3bf44": {
+    "message": "TRIAL Version"
   },
   "try_again_by_clicking_in_the_menu_plottr_verify_li_f109a437": {
     "message": "Try again by clicking in the menu: Plottr > Verify License..."

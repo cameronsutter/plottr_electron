@@ -117,8 +117,8 @@ class PlaceView extends Component {
   renderCardAssociations () {
     let label = i18n(`{
       count, plural,
-        one {card}
-        other {cards}
+        one {1 card}
+        other {# cards}
     }`, { count: this.props.place.cards.length })
     let cardsAssoc = this.props.place.cards.reduce((arr, cId) => {
       let card = _.find(this.props.cards, {id: cId})
@@ -134,8 +134,8 @@ class PlaceView extends Component {
   renderNoteAssociations () {
     let label = i18n(`{
       count, plural,
-        one {note}
-        other {notes}
+        one {1 note}
+        other {# notes}
     }`, { count: this.props.place.noteIds.length })
     let noteAssoc = this.props.place.noteIds.reduce((arr, nId) => {
       let note = _.find(this.props.notes, {id: nId})

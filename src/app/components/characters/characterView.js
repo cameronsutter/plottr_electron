@@ -118,8 +118,8 @@ class CharacterView extends Component {
   renderCardAssociations () {
     let label = i18n(`{
       count, plural,
-        one {card}
-        other {cards}
+        one {1 card}
+        other {# cards}
     }`, { count: this.props.character.cards.length })
     let cardsAssoc = this.props.character.cards.reduce((arr, cId) => {
       let card = _.find(this.props.cards, {id: cId})
@@ -135,8 +135,8 @@ class CharacterView extends Component {
   renderNoteAssociations () {
     let label = i18n(`{
       count, plural,
-        one {note}
-        other {notes}
+        one {1 note}
+        other {# notes}
     }`, { count: this.props.character.noteIds.length })
     let noteAssoc = this.props.character.noteIds.reduce((arr, nId) => {
       let note = _.find(this.props.notes, {id: nId})

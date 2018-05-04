@@ -16,6 +16,9 @@ const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
 
 var TRIALMODE = process.env.TRIALMODE === 'true'
+const TRIAL_LENGTH = 30
+const FIRST_DAY_PATH = 'first_day'
+var DAYS_LEFT = TRIAL_LENGTH
 
 const USER_INFO_PATH = 'user_info'
 var USER_INFO = {}
@@ -30,6 +33,7 @@ var buyWindow = null
 
 var fileToOpen = null
 var dontquit = false
+var tryingToQuit = false
 var darkMode = systemPreferences.isDarkMode() || false
 
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
@@ -107,7 +111,7 @@ ipcMain.on('save-state', function (event, state, winId, isNewFile) {
 
   // save the new state
   winObj.state = state
-  if (shouldSave(isNewFile, wasEdited)) {
+  if (isNewFile || wasEdited) {
     saveFile(winObj.fileName, state, function (err) {
       if (err) {
         log.warn(err)
@@ -122,12 +126,6 @@ ipcMain.on('save-state', function (event, state, winId, isNewFile) {
     })
   } else winObj.window.webContents.send('state-saved')
 })
-
-function shouldSave(isNewFile, wasEdited) {
-  if (isNewFile) return true
-  if (wasEdited && !TRIALMODE) return true
-  return false
-}
 
 ipcMain.on('fetch-state', function (event, id) {
   var win = _.find(windows, {id: id})
@@ -209,9 +207,7 @@ function licenseVerified () {
   if (buyWindow) buyWindow.close()
   if (TRIALMODE) {
     turnOffTrialMode()
-    var template = buildMenu()
-    var menu = Menu.buildFromTemplate(template)
-    Menu.setApplicationMenu(menu)
+    loadMenu()
     askToOpenOrCreate()
   } else {
     openRecentFiles()
@@ -244,9 +240,7 @@ app.on('ready', function () {
       locale: 'en' || app.getLocale()
     })
     checkLicense(function() {
-      var template = buildMenu()
-      var menu = Menu.buildFromTemplate(template)
-      Menu.setApplicationMenu(menu)
+      loadMenu()
 
       if (process.platform === 'darwin') {
         let dockMenu = Menu.buildFromTemplate([
@@ -283,25 +277,62 @@ function checkLicense (callback) {
       })
     } else {
       callback()
-      if (TRIALMODE) createEmpty()
+      if (TRIALMODE) checkFirstDay(createEmpty, openRecentFiles)
       else openVerifyWindow()
     }
   })
 }
 
-function turnOffTrialMode() {
+function turnOffTrialMode () {
   if (process.env.NODE_ENV !== 'dev') {
     TRIALMODE = false
     process.env.TRIALMODE = 'false'
-    var env = {
-      ROLLBAR_ACCESS_TOKEN: process.env.ROLLBAR_ACCESS_TOKEN,
-      NODE_ENV: process.env.NODE_ENV,
-      TRIALMODE: 'false'
-    }
-    var envstr = stringify(env)
-
-    fs.writeFileSync(ENV_FILE_PATH, envstr)
   }
+  writeToEnv('TRIALMODE', 'false')
+}
+
+function writeToEnv (key, val) {
+  var env = {
+    ROLLBAR_ACCESS_TOKEN: process.env.ROLLBAR_ACCESS_TOKEN,
+    NODE_ENV: process.env.NODE_ENV,
+    TRIALMODE: process.env.TRIALMODE,
+  }
+  env[key] = val
+  var envstr = stringify(env)
+
+  fs.writeFileSync(ENV_FILE_PATH, envstr)
+}
+
+function checkFirstDay (isFirstDayCallback, notFirstDayCallback) {
+  storage.has(FIRST_DAY_PATH, function (err, hasKey) {
+    if (err) log.error(err)
+    if (hasKey) {
+      storage.get(FIRST_DAY_PATH, function (err, data) {
+        if (err) log.error(err)
+        let oneDay = 24*60*60*1000
+        var today = new Date()
+        let numOfDays = Math.round((today.getTime() - data.firstDay)/oneDay)
+        if (numOfDays > TRIAL_LENGTH) {
+          // disable after 30 days
+          console.log(numOfDays)
+        } else {
+          DAYS_LEFT = TRIAL_LENGTH - numOfDays
+          notFirstDayCallback()
+          loadMenu()
+        }
+      })
+    } else {
+      let day = new Date()
+      let time = day.getTime()
+      storage.set(FIRST_DAY_PATH, {firstDay: time}, function (err) {
+        if (err) {
+          log.error(err)
+          rollbar.warn(err)
+        }
+        isFirstDayCallback()
+      })
+    }
+  })
 }
 
 function saveFile (fileName, data, callback) {
@@ -311,7 +342,7 @@ function saveFile (fileName, data, callback) {
 
 function displayFileName (path) {
   var stringBase = 'Plottr'
-  if (TRIALMODE) stringBase += ' — ' + i18n('TRIAL VERSION')
+  if (TRIALMODE) stringBase += ' — ' + i18n('TRIAL Version') + ' (' + i18n('{days} days remaining', {days: DAYS_LEFT}) + ')'
   var matches = path.match(/.*\/(.*\.pltr)/)
   if (matches) stringBase += ` — ${matches[1]}`
   return stringBase
@@ -348,10 +379,10 @@ function openRecentFiles () {
   }
 }
 
-function askToSave (win, state, callback) {
+function askToSave (win, state, fileName, callback) {
   dialog.showMessageBox(win, {type: 'question', buttons: [i18n('yes, save!'), i18n('no, just exit')], defaultId: 0, message: i18n('Would you like to save before exiting?')}, function (choice) {
     if (choice === 0) {
-      saveFile(win.fileName, state, function (err) {
+      saveFile(fileName, state, function (err) {
         if (err) throw err
         else {
           if (typeof callback === 'string') win[callback]()
@@ -443,10 +474,11 @@ function openWindow (fileName, newFile = false) {
     if (checkDirty(win.state, win.lastSave)) {
       e.preventDefault()
       var _this = this
-      askToSave(this, win.state,  function() {
+      askToSave(this, win.state, win.fileName, function() {
         dereferenceWindow(win)
         // TODO: if changes weren't saved (checkDirty(win.state, win.lastSave)), flush the history from local storage
-        _this.destroy() // TODO: also handle when the app is trying to quit
+        if (tryingToQuit) app.quit()
+        _this.destroy()
       })
     } else {
       dereferenceWindow(win)
@@ -739,6 +771,12 @@ function migrateIfNeeded (win, json, fileName, callback) {
 ///////   BUILD MENU  //////////
 ////////////////////////////////
 
+function loadMenu () {
+  var template = buildMenu()
+  var menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+}
+
 function buildMenu () {
   return [
     buildPlottrMenu(),
@@ -753,39 +791,27 @@ function buildMenu () {
 function buildPlottrMenu () {
   var submenu = [{
     label: i18n('About Plottr'),
-    click: openAboutWindow
+    click: openAboutWindow,
   }]
   if (TRIALMODE) {
     submenu = [].concat(submenu, {
-      type: 'separator'
+      type: 'separator',
+    }, {
+      label: i18n('{days} days remaining', {days: DAYS_LEFT}),
+      enabled: false,
     }, {
       label: i18n('Buy the Full Version') + '...',
-      click: openBuyWindow
+      click: openBuyWindow,
     }, {
       label: i18n('Enter License') + '...',
-      click: openVerifyWindow
+      click: openVerifyWindow,
     }, {
-      type: 'separator'
+      type: 'separator',
     })
   }
   submenu = [].concat(submenu, {
     label: i18n('Open the Tour') + '...',
-    click: openTour
-  }, {
-    type: 'separator'
-  }, {
-    label: i18n('Report a Problem'),
-    sublabel: i18n('Creates a report to email me'),
-    click: function () {
-      let report = prepareErrorReport()
-      sendErrorReport(report)
-    }
-  }, {
-    label: i18n('Give feedback') + '...',
-    click: openReportWindow
-  }, {
-    label: i18n('Request a feature') + '...',
-    click: openReportWindow
+    click: openTour,
   })
   if (process.platform === 'darwin') {
     submenu = [].concat(submenu, {
@@ -807,7 +833,7 @@ function buildPlottrMenu () {
       label: i18n('Quit'),
       accelerator: 'Cmd+Q',
       click: function () {
-        // TODO: check for dirty files open
+        tryingToQuit = true
         app.quit()
       }
     })
@@ -816,7 +842,7 @@ function buildPlottrMenu () {
       label: i18n('Close'),
       accelerator: 'Alt+F4',
       click: function () {
-        // TODO: check for dirty files open
+        tryingToQuit = true
         app.quit()
       }
     })
@@ -838,7 +864,7 @@ function buildFileMenu () {
         if (winObj) {
           if (process.env.NODE_ENV !== 'dev') {
             if (checkDirty(winObj.state, winObj.lastSave)) {
-              askToSave(win, winObj.state, function () { closeWindow(win.id) })
+              askToSave(win, winObj.state, winObj.fileName, function () { closeWindow(win.id) })
             } else {
               closeWindow(win.id)
             }
@@ -865,7 +891,6 @@ function buildFileMenu () {
     type: 'separator'
   }, {
     label: i18n('Save'),
-    enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+S',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
@@ -952,7 +977,7 @@ function buildViewMenu () {
       let winObj = _.find(windows, {id: win.id})
       if (process.env.NODE_ENV !== 'dev') {
         if (checkDirty(winObj.state, winObj.lastSave)) {
-          askToSave(win, winObj.state, win.webContents.reload)
+          askToSave(win, winObj.state, winObj.fileName, win.webContents.reload)
         } else {
           win.webContents.reload()
         }
@@ -1014,8 +1039,8 @@ function buildHelpMenu () {
     role: 'help',
     submenu: [
       {
-        label: 'Report a Problem',
-        sublabel: 'Creates a report to email me',
+        label: i18n('Report a Problem'),
+        sublabel: i18n('Creates a report to email me'),
         click: function () {
           let report = prepareErrorReport()
           sendErrorReport(report)

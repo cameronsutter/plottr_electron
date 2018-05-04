@@ -30,7 +30,7 @@ class Navigation extends Component {
     }
     let buyItem = null
     if (TRIALMODE) {
-      buyItem = <li className=''>
+      buyItem = <li>
         <a href='#' style={{color: '#6cace4'}} onClick={() => ipcRenderer.send('open-buy-window')} ><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</a>
       </li>
     }

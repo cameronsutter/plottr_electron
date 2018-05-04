@@ -33,7 +33,7 @@
       require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
       var TRIALMODE = process.env.TRIALMODE === 'true'
       var versionString = i18n('Version') + ' '
-      if (TRIALMODE) versionString = i18n('TRIAL VERSION') + ' '
+      if (TRIALMODE) versionString = i18n('TRIAL Version') + ' '
     </script>
     <h1><img src='../icons/logo_04_100.png' height='100'/></h1>
     <p><script>document.write(versionString + app.getVersion())</script></p>

@@ -185,7 +185,7 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
       logger.warn(err)
       dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
     } else {
-      if (body.success && !body.purchase.refunded && !body.purchase.chargebacked) {
+      if (body.success && !body.purchase.refunded && !body.purchase.chargebacked && body.uses <= 5) {
         // save uses, purchase.email, purchase.full_name, purchase.variants
         storage.set('user_info', body, function(err) {
           if (err) {
@@ -197,6 +197,10 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
             })
           }
         })
+      } else {
+        rollbar.warn(`Refund or maxed out. Uses: ${body.uses}. Refund: ${body.purchase.refunded}. Chargebacked: ${body.purchase.chargebacked}`)
+        logger.warn(`Refund or maxed out. Uses: ${body.uses}. Refund: ${body.purchase.refunded}. Chargebacked: ${body.purchase.chargebacked}`)
+        dialog.showErrorBox(i18n('License verification failed'), i18n('It looks like you have Plottr on 5 computers already or you requested a refund'))
       }
     }
   })

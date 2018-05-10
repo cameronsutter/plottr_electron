@@ -245,6 +245,9 @@
   "it_looks_like_you_have_an_older_file_version_this__f6d9479f": {
     "message": "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?"
   },
+  "it_looks_like_you_have_plottr_on_5_computers_alrea_519c4e2e": {
+    "message": "It looks like you have Plottr on 5 computers already or you requested a refund"
+  },
   "it_looks_like_you_re_not_online_you_don_t_always_h_8b311e3c": {
     "message": "It looks like you''re not online. You don''t always have to be online to user Plottr, but it can''t verify your license offline"
   },

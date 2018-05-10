@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, systemPreferences } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, dialog, systemPreferences, globalShortcut } = require('electron')
 var Migrator = require('./migrator/migrator')
 var Exporter = require('./exporter')
 var fs = require('fs')
@@ -243,6 +243,13 @@ app.on('ready', function () {
       translations: require('../locales'),
       locale: 'en' || app.getLocale()
     })
+
+    // Register the toggleDevTools shortcut listener.
+    const ret = globalShortcut.register('CommandOrControl+T', () => {
+      let win = BrowserWindow.getFocusedWindow()
+      if (win) win.toggleDevTools()
+    })
+
     checkLicense(function() {
       loadMenu()
 
@@ -256,6 +263,10 @@ app.on('ready', function () {
       }
     })
   }
+})
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll()
 })
 
 ////////////////////////////////
@@ -1006,13 +1017,6 @@ function buildViewMenu () {
     label: i18n('Take Screenshot') + '...',
     accelerator: 'CmdOrCtrl+P',
     click: takeScreenshot
-  }, {
-    label: i18n('Show Dev Tools'),
-    accelerator: 'CmdOrCtrl+T',
-    click: function () {
-      let win = BrowserWindow.getFocusedWindow()
-      win.openDevTools()
-    }
   }]
   return {
     label: i18n('View'),

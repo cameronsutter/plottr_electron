@@ -122,8 +122,8 @@
   "create_a_new_file_2e47c4a0": {
     "message": "Create a new file"
   },
-  "creates_a_report_to_email_me_2b7854b3": {
-    "message": "Creates a report to email me"
+  "creates_a_report_to_send_me_353534ad": {
+    "message": "Creates a report to send me"
   },
   "creating_your_file_didn_t_work_let_s_try_again_52c18722": {
     "message": "Creating your file didn''t work. Let''s try again."
@@ -185,9 +185,6 @@
   "edit_c5fbea07": {
     "message": "Edit"
   },
-  "email_me_at_family_plottrapp_com_with_the_file_plo_17ce8592": {
-    "message": "Email me at family@plottrapp.com with the file Plottr just exported"
-  },
   "end_78c581cd": {
     "message": "End"
   },
@@ -196,6 +193,9 @@
   },
   "export_de71cd8e": {
     "message": "Export"
+  },
+  "faq_3e2cc3da": {
+    "message": "FAQ"
   },
   "file_c851020d": {
     "message": "File"
@@ -214,6 +214,9 @@
   },
   "format_with_markdown_2e610472": {
     "message": "Format with markdown!"
+  },
+  "forums_62a381a2": {
+    "message": "Forums"
   },
   "give_feedback_765645dc": {
     "message": "Give feedback"
@@ -368,8 +371,8 @@
   "places_list_95ff2982": {
     "message": "Places list"
   },
-  "please_email_me_the_file_named_plottr_error_report_d67154a3": {
-    "message": "Please email me the file named plottr_error_report.txt in your Documents folder"
+  "please_upload_the_file_named_plottr_error_report_t_44dc8d83": {
+    "message": "Please upload the file named plottr_error_report.txt in your Documents folder"
   },
   "plottr_couldn_t_save_a_backup_it_hasn_t_touched_yo_462daa03": {
     "message": "Plottr couldn''t save a backup. It hasn''t touched your file yet, so don''t worry. Try quitting Plottr and starting it again."
@@ -529,6 +532,9 @@
   },
   "update_plottr_966759d8": {
     "message": "Update Plottr"
+  },
+  "upload_the_file_plottr_just_exported_5c75a60": {
+    "message": "Upload the file Plottr just exported"
   },
   "verifying_your_license_please_wait_5b8a4d84": {
     "message": "Verifying your license. Please wait..."

@@ -9,7 +9,7 @@ const webContents = remote.webContents
 class ReportView extends Component {
   constructor (props) {
     super(props)
-    this.state = {showSpinner: true, connected: navigator.onLine}
+    this.state = {page: props.page, showSpinner: true, connected: navigator.onLine}
   }
 
   componentDidMount () {
@@ -31,7 +31,7 @@ class ReportView extends Component {
       <button className='close report' dangerouslySetInnerHTML={{__html: '&times;'}} onClick={() => window.close()} />
       {this.state.showSpinner && this.renderLoading()}
       {!this.state.connected && this.renderAlert()}
-      <webview id='embedded' src='https://gitreports.com/issue/cameronsutter/plottr_electron' />
+      <webview id='embedded' src={this.props.page} />
     </div>
   }
 

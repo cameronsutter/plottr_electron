@@ -611,12 +611,13 @@ function openVerifyWindow () {
   })
 }
 
-function openReportWindow () {
+function openReportWindow (page) {
   const reportFile = path.join(filePrefix, 'report.html')
   reportWindow = new BrowserWindow({frame: false, show: false})
   reportWindow.loadURL(reportFile)
   reportWindow.once('ready-to-show', function() {
     this.show()
+    this.webContents.send('which-page', page)
   })
   reportWindow.on('close', function () {
     reportWindow = null
@@ -711,7 +712,8 @@ function sendErrorReport (body) {
       log.warn(err)
       rollbar.warn(err)
     } else {
-      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n('Email me at family@plottrapp.com with the file Plottr just exported'), detail: i18n('Please email me the file named plottr_error_report.txt in your Documents folder')})
+      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n('Upload the file Plottr just exported'), detail: i18n('Please upload the file named plottr_error_report.txt in your Documents folder')})
+      openReportWindow('http://support.plottrapp.com/support/tickets/new')
     }
   })
 }
@@ -1039,8 +1041,8 @@ function buildHelpMenu () {
     role: 'help',
     submenu: [
       {
-        label: i18n('Report a Problem'),
-        sublabel: i18n('Creates a report to email me'),
+        label: i18n('Report a Problem') + '...',
+        sublabel: i18n('Creates a report to send me'),
         click: function () {
           let report = prepareErrorReport()
           sendErrorReport(report)
@@ -1048,12 +1050,28 @@ function buildHelpMenu () {
       },
       {
         label: i18n('Give feedback') + '...',
-        click: openReportWindow
+        click: function () {
+          openReportWindow('http://support.plottrapp.com/support/tickets/new')
+        }
       },
       {
         label: i18n('Request a feature') + '...',
-        click: openReportWindow
-      }
+        click: function () {
+          openReportWindow('http://support.plottrapp.com/support/tickets/new')
+        }
+      },
+      {
+        label: i18n('FAQ') + '...',
+        click: function () {
+          openReportWindow('http://support.plottrapp.com/support/solutions')
+        }
+      },
+      {
+        label: i18n('Forums') + '...',
+        click: function () {
+          openReportWindow('http://support.plottrapp.com/support/discussions')
+        }
+      },
     ]
   }
 }

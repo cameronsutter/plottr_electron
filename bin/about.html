@@ -26,9 +26,6 @@
       const { remote, ipcRenderer } = require('electron')
       const app = remote.app
       var i18n = require('format-message')
-      function handleReportProblem () {
-        ipcRenderer.send('report-window-requested')
-      }
       const path = require('path')
       require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
       var TRIALMODE = process.env.TRIALMODE === 'true'
@@ -37,17 +34,11 @@
     </script>
     <h1><img src='../icons/logo_04_100.png' height='100'/></h1>
     <p><script>document.write(versionString + app.getVersion())</script></p>
+    <p>&nbsp;</p>
     <h4><script>document.write(i18n('Contact'))</script></h4>
-    <p>family@plottrapp.com</p>
-    <p>
-      <button class='btn btn-default' onClick='handleReportProblem()'>
-        <script>document.write(i18n('Report a problem'))</script>
-      </button>
-      <br/>
-      <small>
-        <script>document.write(i18n('(or request a feature)'))</script>
-      </small>
-    </p>
+    <p><a href='mailto:family@plottrapp.com'>family@plottrapp.com</a></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
     <h4><script>document.write(i18n('Credits'))</script></h4>
     <p>
       <img src='../icons/jellyfish_mountains.png' width='150'/>

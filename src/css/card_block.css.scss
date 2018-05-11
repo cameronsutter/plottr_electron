@@ -9,7 +9,7 @@
 .vertical-card__box {
   position: relative;
   left: -25px;
-  top: 17px;
+  top: 13px;
 }
 
 .card {
@@ -33,7 +33,7 @@
 .vertical-card__real {
   @extend .card__real;
   display: block;
-  margin-bottom: 25px;
+  margin-bottom: 31px;
 }
 
 .card__real.darkmode, .vertical-card__real.darkmode {

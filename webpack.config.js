@@ -5,7 +5,7 @@ var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
   new webpack.optimize.CommonsChunkPlugin({
     name: 'common',
-    chunks: ['app', 'verify', 'report']
+    chunks: ['app', 'verify']
   })
 ]
 
@@ -20,8 +20,7 @@ module.exports = {
   entry: {
     app: path.join('app', 'index'),
     css: path.join('css', 'index'),
-    verify: path.join('verify', 'index'),
-    report: path.join('report', 'index')
+    verify: path.join('verify', 'index')
   },
   output: {
     path: path.resolve(__dirname, 'bin'),
@@ -49,7 +48,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.css', '.scss', '.json'],
     root: path.resolve(__dirname, 'src'),
-    modulesDirectories: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/report']
+    modulesDirectories: ['node_modules', 'src/app', 'src/verify', 'src/css']
   },
   target: 'electron-renderer',
   externals: [

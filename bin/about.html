@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>About Plottr</title>
+    <title></title>
     <script src="css.bundle.js"></script>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
     <style>
@@ -22,29 +22,20 @@
     </style>
   </head>
   <body>
-    <script>
-      const { remote, ipcRenderer } = require('electron')
-      const app = remote.app
-      var i18n = require('format-message')
-      const path = require('path')
-      require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
-      var TRIALMODE = process.env.TRIALMODE === 'true'
-      var versionString = i18n('Version') + ' '
-      if (TRIALMODE) versionString = i18n('TRIAL Version') + ' '
-    </script>
     <h1><img src='../icons/logo_04_100.png' height='100'/></h1>
-    <p><script>document.write(versionString + app.getVersion())</script></p>
+    <p id='versionP'></p>
     <p>&nbsp;</p>
-    <h4><script>document.write(i18n('Contact'))</script></h4>
+    <h4 id='contactH4'></h4>
     <p><a href='mailto:family@plottrapp.com'>family@plottrapp.com</a></p>
+    <p><a href='https//twitter.com/@StoryPlottr'>@StoryPlottr</a></p>
     <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <h4><script>document.write(i18n('Credits'))</script></h4>
+    <h4 id='creditsH4'></h4>
     <p>
       <img src='../icons/jellyfish_mountains.png' width='150'/>
       <br/>
-      <script>document.write(i18n('Crafted in the Mountains of Utah by'))</script>
+      <span id='craftedSpan'></span>
     </p>
     <p>C. Louis S. &amp; Steve Shepherd</p>
+    <script src='about.js'></script>
   </body>
 </html>

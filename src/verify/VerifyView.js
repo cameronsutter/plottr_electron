@@ -105,7 +105,7 @@ class VerifyView extends Component {
         <h1 className='verify'><img src='../icons/logo_10_100.png' className='verify' height='100'/> Welcome to Plottr</h1>
         <h2>Please verify your license</h2>
         <p className='text-success'>You should have received a license key from Gumroad.</p>
-        <p className='text-muted'><small>(If not, please contact me @ <a href='mailto:family@plottrapp.com'>family@plottrapp.com</a> or @camsutter on Twitter)</small></p>
+        <p className='text-muted'><small>(If not, please contact me @ <a href='mailto:family@plottrapp.com'>family@plottrapp.com</a> or @StoryPlottr on Twitter)</small></p>
         <div className='form-inline'>
           <Input type='text' bsSize='large' style={{width: '400px'}} ref='license' />
           <Button bsStyle='primary' onClick={this.handleVerify.bind(this)}>Verify</Button>

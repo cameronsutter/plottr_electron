@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Verify Plottr license</title>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
     <style>
       body {
@@ -30,33 +29,6 @@
         margin-left: 7px;
       }
     </style>
-    <script>
-      const { remote } = require('electron')
-      const app = remote.app
-      const path = require('path')
-      require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
-      let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
-      var Rollbar = require('rollbar')
-      let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
-      var rollbar = new Rollbar({
-        accessToken: rollbarToken,
-        handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
-        handleUnhandledRejections: true,
-        payload: {
-          environment: environment,
-          version: app.getVersion(),
-          where: 'verify.html',
-          os: process.platform
-        }
-      })
-      if (process.env.NODE_ENV !== 'dev') {
-        var log = require('electron-log')
-        process.on('uncaughtException', function (err) {
-          log.error(err)
-          rollbar.error(err)
-        })
-      }
-    </script>
     <script src="css.bundle.js"></script>
   </head>
   <body>

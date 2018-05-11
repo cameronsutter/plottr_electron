@@ -129,6 +129,7 @@ ipcMain.on('save-state', function (event, state, winId, isNewFile) {
 
 ipcMain.on('fetch-state', function (event, id) {
   var win = _.find(windows, {id: id})
+  win.window.setProgressBar(0.99)
   if (win.state.file) {
     win.window.setTitle(displayFileName(win.fileName))
     win.window.setRepresentedFilename(win.fileName)
@@ -137,12 +138,14 @@ ipcMain.on('fetch-state', function (event, id) {
   if (win.window.isVisible()) {
     migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
       if (err) { log.warn(err); rollbar.warn(err) }
+      win.window.setProgressBar(-1)
       event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
     })
   } else {
     win.window.on('show', () => {
       migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
         if (err) { log.warn(err); rollbar.warn(err) }
+        win.window.setProgressBar(-1)
         event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
       })
     })
@@ -193,6 +196,7 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
             dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
           } else {
             dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n("License verified! You're all set."), detail: i18n("Now let's get to the good stuff")}, function () {
+              if (windows[0]) windows[0].window.webContents.send('bought-in-app')
               licenseVerified()
             })
           }
@@ -221,8 +225,6 @@ function licenseVerified () {
 ipcMain.on('license-verified', function () {
   licenseVerified()
 })
-
-ipcMain.on('report-window-requested', openReportWindow)
 
 ipcMain.on('export', function (event, options, winId) {
   var winObj = _.find(windows, {id: winId})
@@ -461,11 +463,16 @@ function openWindow (fileName, newFile = false) {
   // Create the browser window.
   let newWindow = new BrowserWindow({width: 1200, height: 800, show: false, backgroundColor: '#efefee', webPreferences: {scrollBounce: true}})
 
+  newWindow.setProgressBar(0.1)
+
   // and load the app.html of the app.
   const entryFile = path.join(filePrefix, 'app.html')
   newWindow.loadURL(entryFile)
 
+  newWindow.setProgressBar(0.2)
+
   newWindow.once('ready-to-show', function() {
+    this.setProgressBar(0.75)
     this.show()
   })
 
@@ -500,12 +507,15 @@ function openWindow (fileName, newFile = false) {
     }
   })
 
+  newWindow.setProgressBar(0.4)
+
   try {
     var json = {}
     if (!newFile) {
       json = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
       json.file.fileName = updateFileExtenstion(json.file.fileName)
     }
+    newWindow.setProgressBar(0.5)
     fileName = updateFileExtenstion(fileName)
     storage.set(recentKey, fileName, function (err) {
       if (err) console.log(err)
@@ -519,7 +529,7 @@ function openWindow (fileName, newFile = false) {
       state: json,
       lastSave: json
     })
-
+    newWindow.setProgressBar(0.6)
     newWindow.setTitle(displayFileName(fileName))
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {
@@ -627,12 +637,10 @@ function openVerifyWindow () {
 }
 
 function openReportWindow (page) {
-  const reportFile = path.join(filePrefix, 'report.html')
-  reportWindow = new BrowserWindow({frame: false, show: false})
-  reportWindow.loadURL(reportFile)
+  reportWindow = new BrowserWindow({show: false})
+  reportWindow.loadURL(page)
   reportWindow.once('ready-to-show', function() {
     this.show()
-    this.webContents.send('which-page', page)
   })
   reportWindow.on('close', function () {
     reportWindow = null

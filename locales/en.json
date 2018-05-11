@@ -98,6 +98,9 @@
   "close_d634289d": {
     "message": "Close"
   },
+  "contact_a6e7f6da": {
+    "message": "Contact"
+  },
   "content_1440204b": {
     "message": "Content"
   },
@@ -119,6 +122,9 @@
   "count_plural_one_1_tag_attached_other_tags_attache_3904cb41": {
     "message": "{ count, plural,\n    one {1 tag attached}\n  other {# tags attached}\n}"
   },
+  "crafted_in_the_mountains_of_utah_by_a6af96c7": {
+    "message": "Crafted in the Mountains of Utah by"
+  },
   "create_a_new_file_2e47c4a0": {
     "message": "Create a new file"
   },
@@ -127,6 +133,9 @@
   },
   "creating_your_file_didn_t_work_let_s_try_again_52c18722": {
     "message": "Creating your file didn''t work. Let''s try again."
+  },
+  "credits_ab92c19c": {
+    "message": "Credits"
   },
   "current_color_5207682a": {
     "message": "Current Color"
@@ -145,6 +154,9 @@
   },
   "custom_place_attribute_3184159c": {
     "message": "custom place attribute"
+  },
+  "cut_c8c92681": {
+    "message": "Cut"
   },
   "dark_mode_16f702bc": {
     "message": "Dark Mode"
@@ -250,9 +262,6 @@
   },
   "it_looks_like_you_re_not_online_you_don_t_always_h_8b311e3c": {
     "message": "It looks like you''re not online. You don''t always have to be online to user Plottr, but it can''t verify your license offline"
-  },
-  "it_looks_like_you_re_not_online_you_don_t_always_h_aef42051": {
-    "message": "It looks like you''re not online. You don''t always have to be online to use Plottr, but it can''t report a problem offline"
   },
   "it_looks_like_your_file_was_saved_with_a_newer_ver_97f89b8f": {
     "message": "It looks like your file was saved with a newer version of Plottr than you''re using now. That could cause problems. Try updating Plottr and starting it again."
@@ -479,9 +488,6 @@
   "show_all_ae37d610": {
     "message": "Show All"
   },
-  "show_dev_tools_4a5a0eeb": {
-    "message": "Show Dev Tools"
-  },
   "story_line_9b9b93d4": {
     "message": "Story line"
   },
@@ -539,8 +545,14 @@
   "upload_the_file_plottr_just_exported_5c75a60": {
     "message": "Upload the file Plottr just exported"
   },
+  "use_the_code_freetrial_to_get_the_secret_discount_b8336b38": {
+    "message": "Use the code \"freetrial\" to get the secret discount"
+  },
   "verifying_your_license_please_wait_5b8a4d84": {
     "message": "Verifying your license. Please wait..."
+  },
+  "version_5599c321": {
+    "message": "Version"
   },
   "view_ba339f93": {
     "message": "View"

@@ -98,35 +98,44 @@
   "close_d634289d": {
     "message": "Close"
   },
+  "contact_a6e7f6da": {
+   "message": "Contact"
+  },
   "content_1440204b": {
     "message": "Content"
   },
   "copy_9748f9f": {
     "message": "Copy"
   },
-  "count_plural_one_card_other_cards_dd03ba0c": {
-    "message": "{ count, plural,\n    one {card}\n  other {cards}\n}"
+  "count_plural_one_1_card_other_cards_53696e34": {
+    "message": "{ count, plural,\n    one {1 card}\n  other {# cards}\n}"
   },
-  "count_plural_one_character_attached_other_characte_ac50182b": {
-    "message": "{ count, plural,\n    one {character attached}\n  other {characters attached}\n}"
+  "count_plural_one_1_character_attached_other_charac_8a94b132": {
+    "message": "{ count, plural,\n    one {1 character attached}\n  other {# characters attached}\n}"
   },
-  "count_plural_one_note_other_notes_3ea766eb": {
-    "message": "{ count, plural,\n    one {note}\n  other {notes}\n}"
+  "count_plural_one_1_note_other_notes_b0148074": {
+    "message": "{ count, plural,\n    one {1 note}\n  other {# notes}\n}"
   },
-  "count_plural_one_place_attached_other_places_attac_4bd14f30": {
-    "message": "{ count, plural,\n    one {place attached}\n  other {places attached}\n}"
+  "count_plural_one_1_place_attached_other_places_att_17f07042": {
+    "message": "{ count, plural,\n    one {1 place attached}\n  other {# places attached}\n}"
   },
-  "count_plural_one_tag_attached_other_tags_attached_e8221913": {
-    "message": "{ count, plural,\n    one {tag attached}\n  other {tags attached}\n}"
+  "count_plural_one_1_tag_attached_other_tags_attache_3904cb41": {
+    "message": "{ count, plural,\n    one {1 tag attached}\n  other {# tags attached}\n}"
+  },
+  "crafted_in_the_mountains_of_utah_by_a6af96c7": {
+    "message": "Crafted in the Mountains of Utah by"
   },
   "create_a_new_file_2e47c4a0": {
     "message": "Create a new file"
   },
-  "creates_a_report_to_email_me_2b7854b3": {
-    "message": "Creates a report to email me"
+  "creates_a_report_to_send_me_353534ad": {
+    "message": "Creates a report to send me"
   },
   "creating_your_file_didn_t_work_let_s_try_again_52c18722": {
     "message": "Creating your file didn''t work. Let''s try again."
+  },
+  "credits_ab92c19c": {
+    "message": "Credits"
   },
   "current_color_5207682a": {
     "message": "Current Color"
@@ -146,8 +155,14 @@
   "custom_place_attribute_3184159c": {
     "message": "custom place attribute"
   },
+  "cut_c8c92681": {
+    "message": "Cut"
+  },
   "dark_mode_16f702bc": {
     "message": "Dark Mode"
+  },
+  "days_days_remaining_66f2081a": {
+    "message": "{ days } days remaining"
   },
   "delete_a6efa79d": {
     "message": "Delete"
@@ -182,9 +197,6 @@
   "edit_c5fbea07": {
     "message": "Modifier"
   },
-  "email_me_at_family_plottrapp_com_with_the_file_plo_17ce8592": {
-    "message": "Email me at family@plottrapp.com with the file Plottr just exported"
-  },
   "end_78c581cd": {
     "message": "End"
   },
@@ -193,6 +205,9 @@
   },
   "export_de71cd8e": {
     "message": "Export"
+  },
+  "faq_3e2cc3da": {
+    "message": "FAQ"
   },
   "file_c851020d": {
     "message": "Fichier"
@@ -211,6 +226,9 @@
   },
   "format_with_markdown_2e610472": {
     "message": "Format with markdown!"
+  },
+  "forums_62a381a2": {
+    "message": "Forums"
   },
   "give_feedback_765645dc": {
     "message": "Give feedback"
@@ -239,11 +257,11 @@
   "it_looks_like_you_have_an_older_file_version_this__f6d9479f": {
     "message": "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?"
   },
+  "it_looks_like_you_have_plottr_on_5_computers_alrea_519c4e2e": {
+    "message": "It looks like you have Plottr on 5 computers already or you requested a refund"
+  },
   "it_looks_like_you_re_not_online_you_don_t_always_h_8b311e3c": {
     "message": "It looks like you''re not online. You don''t always have to be online to user Plottr, but it can''t verify your license offline"
-  },
-  "it_looks_like_you_re_not_online_you_don_t_always_h_aef42051": {
-    "message": "It looks like you''re not online. You don''t always have to be online to use Plottr, but it can''t report a problem offline"
   },
   "it_looks_like_your_file_was_saved_with_a_newer_ver_97f89b8f": {
     "message": "It looks like your file was saved with a newer version of Plottr than you''re using now. That could cause problems. Try updating Plottr and starting it again."
@@ -365,8 +383,8 @@
   "places_list_95ff2982": {
     "message": "Places list"
   },
-  "please_email_me_the_file_named_plottr_error_report_d67154a3": {
-    "message": "Please email me the file named plottr_error_report.txt in your Documents folder"
+  "please_upload_the_file_named_plottr_error_report_t_44dc8d83": {
+    "message": "Please upload the file named plottr_error_report.txt in your Documents folder"
   },
   "plottr_couldn_t_save_a_backup_it_hasn_t_touched_yo_462daa03": {
     "message": "Plottr couldn''t save a backup. It hasn''t touched your file yet, so don''t worry. Try quitting Plottr and starting it again."
@@ -470,9 +488,6 @@
   "show_all_ae37d610": {
     "message": "Show All"
   },
-  "show_dev_tools_4a5a0eeb": {
-    "message": "Show Dev Tools"
-  },
   "story_line_9b9b93d4": {
     "message": "Story line"
   },
@@ -515,8 +530,8 @@
   "toggle_navigation_381fb8df": {
     "message": "Toggle navigation"
   },
-  "trial_version_e1b78c2": {
-    "message": "TRIAL VERSION"
+  "trial_version_fee3bf44": {
+    "message": "TRIAL Version"
   },
   "try_again_by_clicking_in_the_menu_plottr_verify_li_f109a437": {
     "message": "Try again by clicking in the menu: Plottr > Verify License..."
@@ -527,8 +542,17 @@
   "update_plottr_966759d8": {
     "message": "Update Plottr"
   },
+  "upload_the_file_plottr_just_exported_5c75a60": {
+    "message": "Upload the file Plottr just exported"
+  },
+  "use_the_code_freetrial_to_get_the_secret_discount_b8336b38": {
+    "message": "Use the code \"freetrial\" to get the secret discount"
+  },
   "verifying_your_license_please_wait_5b8a4d84": {
     "message": "Verifying your license. Please wait..."
+  },
+  "version_5599c321": {
+    "message": "Version"
   },
   "view_ba339f93": {
     "message": "Voir"

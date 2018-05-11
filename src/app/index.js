@@ -1,24 +1,51 @@
+import path from 'path'
 import React from 'react'
+import Rollbar from 'rollbar'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import App from 'containers/App'
 import configureStore from 'store/configureStore'
-import { ipcRenderer, remote, app } from 'electron'
+import { ipcRenderer, remote } from 'electron'
+const { Menu, MenuItem } = remote
 const win = remote.getCurrentWindow()
+const app = remote.app
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
 import mixpanel from 'mixpanel-browser'
 import { MPQ } from 'middlewares/helpers'
 import FileFixer from 'helpers/fixer'
 import log from 'electron-log'
-
 import i18n from 'format-message'
+
 i18n.setup({
   generateId: require('format-message-generate-id/underscored_crc32'),
   translations: require('../../locales'),
   locale: 'en' || app.getLocale()
 })
 
+let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
+require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
+let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
+var rollbar = new Rollbar({
+  accessToken: rollbarToken,
+  handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
+  handleUnhandledRejections: true,
+  payload: {
+    environment: environment,
+    version: app.getVersion(),
+    where: 'app.html',
+    os: process.platform
+  }
+})
+
+if (process.env.NODE_ENV !== 'dev') {
+  process.on('uncaughtException', function (err) {
+    log.error(err)
+    rollbar.error(err)
+  })
+}
+
 mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
+
 const root = document.getElementById('react-root')
 const store = configureStore()
 
@@ -58,6 +85,10 @@ ipcRenderer.on('set-dark-mode', (event, on) => {
   window.document.body.className = on ? 'darkmode' : ''
 })
 
+ipcRenderer.on('bought-in-app', event => {
+  MPQ.push('Buy', {online: navigator.onLine})
+})
+
 window.onerror = function (message, file, line, column, err) {
   if (process.env.NODE_ENV !== 'dev') {
     log.warn(err)
@@ -65,4 +96,44 @@ window.onerror = function (message, file, line, column, err) {
     let newState = FileFixer(store.getState())
     ipcRenderer.send('reload-window', win.id, newState)
   }
+}
+
+window.SCROLLWITHKEYS = true
+window.onkeydown = function (e) {
+  if (window.SCROLLWITHKEYS) {
+    if (e.key === 'ArrowUp') {
+      var amount = 300
+      if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
+      document.body.scrollTop -= amount
+    } else if (e.key === 'ArrowRight') {
+      var amount = 400
+      if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
+      document.body.scrollLeft += amount
+    } else if (e.key === 'ArrowDown') {
+      var amount = 300
+      if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
+      document.body.scrollTop += amount
+    } else if (e.key === 'ArrowLeft') {
+      var amount = 400
+      if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
+      document.body.scrollLeft -= amount
+    }
+  }
+}
+
+const menu = new Menu()
+menu.append(new MenuItem({label: i18n('Cut'), accelerator: 'CmdOrCtrl+X', role: 'cut'}))
+menu.append(new MenuItem({label: i18n('Copy'), accelerator: 'CmdOrCtrl+C', role: 'copy'}))
+menu.append(new MenuItem({type: 'separator'}))
+menu.append(new MenuItem({label: i18n('Paste'), accelerator: 'CmdOrCtrl+V', role: 'paste'}))
+menu.append(new MenuItem({type: 'separator'}))
+menu.append(new MenuItem({label: i18n('Select All'), accelerator: 'CmdOrCtrl+A', role: 'selectall'}))
+
+window.addEventListener('contextmenu', (e) => {
+  e.preventDefault()
+  menu.popup(remote.getCurrentWindow())
+}, false)
+
+function logger(which) {
+  process.env.LOGGER = which.toString()
 }

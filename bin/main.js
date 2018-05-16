@@ -172,7 +172,7 @@ ipcMain.on('open-buy-window', function (event) {
 })
 
 ipcMain.on('license-to-verify', function (event, licenseString) {
-  dialog.showMessageBox(buyWindow, {type: 'info', buttons: ['ok'], message: i18n('Verifying your license. Please wait...'), detail: licenseString}, function (choice) {})
+  dialog.showMessageBox(buyWindow, {type: 'info', buttons: [i18n('ok')], message: i18n('Verifying your license. Please wait...'), detail: licenseString}, function (choice) {})
   var req = {
     url: 'https://api.gumroad.com/v2/licenses/verify',
     method: 'POST',
@@ -195,7 +195,7 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
             logger.error(err)
             dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
           } else {
-            dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n("License verified! You're all set."), detail: i18n("Now let's get to the good stuff")}, function () {
+            dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n("License verified! You're all set."), detail: i18n("Now let's get to the good stuff")}, function () {
               if (windows[0]) windows[0].window.webContents.send('bought-in-app')
               licenseVerified()
             })
@@ -660,7 +660,7 @@ function openBuyWindow () {
 }
 
 function gracefullyQuit () {
-  dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email me at family@plottrapp.com')}, function (choice) {
+  dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email me at family@plottrapp.com')}, function (choice) {
     app.quit()
   })
 }
@@ -735,7 +735,7 @@ function sendErrorReport (body) {
       log.warn(err)
       rollbar.warn(err)
     } else {
-      dialog.showMessageBox({type: 'info', buttons: ['ok'], message: i18n('Upload the file Plottr just exported'), detail: i18n('Please upload the file named plottr_error_report.txt in your Documents folder')})
+      dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n('Upload the file Plottr just exported'), detail: i18n('Please upload the file named plottr_error_report.txt in your Documents folder')})
       openReportWindow('http://support.plottrapp.com/support/tickets/new')
     }
   })
@@ -760,7 +760,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
       callback(i18n('Update Plottr'), false, json)
     } else {
       // ask user to try to migrate
-      dialog.showMessageBox(win, {type: 'question', buttons: ['yes, update the file', 'no, open the file as-is'], defaultId: 0, message: i18n('It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?'), detail: i18n('It will save a backup first which will be saved to the same folder as this file')}, (choice) => {
+      dialog.showMessageBox(win, {type: 'question', buttons: [i18n('yes, update the file'), i18n('no, open the file as-is')], defaultId: 0, message: i18n('It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?'), detail: i18n('It will save a backup first which will be saved to the same folder as this file')}, (choice) => {
         if (choice === 0) {
           m.migrate((err, json) => {
             if (err === 'backup') {
@@ -768,7 +768,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
               callback('problem saving backup', false, json)
             } else {
               // tell the user that Plottr migrated versions and saved a backup file
-              dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: i18n("Plottr updated your file without a problem. Don't forget to save your file.")})
+              dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr updated your file without a problem. Don't forget to save your file.")})
               callback(null, true, json)
             }
           })
@@ -782,7 +782,7 @@ function migrateIfNeeded (win, json, fileName, callback) {
               dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again."))
               callback(err, false, json)
             } else {
-              dialog.showMessageBox(win, {type: 'info', buttons: ['ok'], message: i18n("Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)")})
+              dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)")})
               callback(null, false, json)
             }
           })

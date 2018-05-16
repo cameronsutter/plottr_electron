@@ -29,7 +29,7 @@ class CardDialog extends Component {
   }
 
   deleteCard = () => {
-    let label = i18n("Do you want to delete this card: '{title}'?", {title: this.props.card.title})
+    let label = i18n("Do you want to delete this card: { title }?", {title: this.props.card.title})
     if (window.confirm(label)) {
       this.props.actions.deleteCard(this.props.card.id)
     }

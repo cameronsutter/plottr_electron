@@ -116,7 +116,7 @@ class LineView extends Component {
   }
 
   handleDelete = () => {
-    let label = i18n("Do you want to delete this story line: '{title}'?", {title: this.props.line.title})
+    let label = i18n("Do you want to delete this story line: { title }?", {title: this.props.line.title})
     if (window.confirm(label)) {
       this.props.actions.deleteLine(this.props.line.id)
     }

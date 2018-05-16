@@ -41,7 +41,7 @@ class PlaceView extends Component {
   }
 
   deletePlace = () => {
-    let label = i18n("Do you want to delete this place: '{name}'?", {name: this.props.place.name})
+    let label = i18n("Do you want to delete this place: { name }?", {name: this.props.place.name})
     if (window.confirm(label)) {
       this.props.actions.deletePlace(this.props.place.id)
     }

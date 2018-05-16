@@ -100,15 +100,18 @@ class VerifyView extends Component {
   }
 
   render () {
+    var contact = i18n.rich("(If not, please contact me @ <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)", {
+      a: ({ children }) => <a key="a" href='mailto:family@plottrapp.com'>{children}</a>
+    })
     return (
       <div>
-        <h1 className='verify'><img src='../icons/logo_10_100.png' className='verify' height='100'/> Welcome to Plottr</h1>
-        <h2>Please verify your license</h2>
-        <p className='text-success'>You should have received a license key from Gumroad.</p>
-        <p className='text-muted'><small>(If not, please contact me @ <a href='mailto:family@plottrapp.com'>family@plottrapp.com</a> or @StoryPlottr on Twitter)</small></p>
+        <h1 className='verify'><img src='../icons/logo_10_100.png' className='verify' height='100'/> {i18n('Welcome to Plottr')}</h1>
+        <h2>{i18n('Please verify your license')}</h2>
+        <p className='text-success'>{i18n('You should have received a license key from Gumroad.')}</p>
+        <p className='text-muted'><small>{contact}</small></p>
         <div className='form-inline'>
           <Input type='text' bsSize='large' style={{width: '400px'}} ref='license' />
-          <Button bsStyle='primary' onClick={this.handleVerify.bind(this)}>Verify</Button>
+          <Button bsStyle='primary' onClick={this.handleVerify.bind(this)}>{i18n('Verify')}</Button>
           <span style={{marginLeft: '7px'}} className={this.state.spinnerHidden ? 'hidden' : ''}><Glyphicon id='spinner' glyph='refresh'/></span>
         </div>
         { this.renderAlert() }

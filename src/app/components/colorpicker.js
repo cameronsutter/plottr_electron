@@ -48,7 +48,7 @@ class ColorPicker extends Component {
               <div title={this.state.color} style={{backgroundColor: this.state.color, marginTop: '16px'}} className='color-picker__show-color'></div>
             </Col>
             <Col xs={2}>
-              <Input type='text' label='hex code or name' ref='hex' placeholder='e.g. #ffffff'
+              <Input type='text' label={i18n('hex code or name')} ref='hex' placeholder='e.g. #ffffff'
                 defaultValue={this.state.color}
                 onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
                 onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}

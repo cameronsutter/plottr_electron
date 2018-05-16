@@ -40,7 +40,7 @@ class NoteView extends Component {
   }
 
   deleteNote = () => {
-    let label = i18n("Do you want to delete this note: '{title}'?", {title: this.props.note.title})
+    let label = i18n("Do you want to delete this note: { title }?", {title: this.props.note.title})
     if (window.confirm(label)) {
       this.props.actions.deleteNote(this.props.note.id)
     }

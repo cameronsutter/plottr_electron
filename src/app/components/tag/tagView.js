@@ -44,7 +44,7 @@ class TagView extends Component {
   }
 
   deleteTag = () => {
-    let label = i18n("Do you want to delete this tag: '{title}'?", {title: this.props.tag.title})
+    let label = i18n("Do you want to delete this tag: { title }?", {title: this.props.tag.title})
     if (window.confirm(label)) {
       this.props.actions.deleteTag(this.props.tag.id)
     }

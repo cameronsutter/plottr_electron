@@ -72,7 +72,7 @@ class SceneView extends Component {
   }
 
   handleDelete = () => {
-    let label = i18n("Do you want to delete this scene: '{title}'?", {title: this.props.scene.title})
+    let label = i18n("Do you want to delete this scene: { title }?", {title: this.props.scene.title})
     if (window.confirm(label)) {
       this.props.actions.deleteScene(this.props.scene.id)
     }

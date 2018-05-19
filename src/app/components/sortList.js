@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as UIActions from 'actions/ui'
+import i18n from 'format-message'
 
 class SortList extends Component {
   toggle = (attr) => {
@@ -61,7 +62,7 @@ function mapStateToProps (state, props) {
     customAttributes = state.customAttributes['places']
     attr = state.ui.placeSort
   }
-  let items = ['name', 'description', ...customAttributes]
+  let items = [i18n('name'), i18n('description'), ...customAttributes]
   return {
     customAttributes,
     sortAttr: attr,

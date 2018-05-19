@@ -1071,7 +1071,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "timeline",
     "darkMode": false,
     "orientation": "horizontal",
     "placeFilter": {

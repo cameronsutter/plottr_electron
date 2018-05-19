@@ -6,6 +6,7 @@ import _ from 'lodash'
 import { storageKey } from 'middlewares/helpers'
 import * as UndoActions from 'actions/undo'
 import HistoryItem from 'components/history/historyItem'
+import i18n from 'format-message'
 
 class HistoryComponent extends Component {
   constructor (props) {
@@ -66,7 +67,7 @@ class HistoryComponent extends Component {
   }
 
   renderHistoryItems () {
-    if (this.state.history.length === 0) return <span>No actions to undo</span>
+    if (this.state.history.length === 0) return <span>{i18n('No actions to undo')}</span>
     return this.state.history.map((item, index) => {
       var hasBeenUndone = this.state.changesToIgnore.indexOf(item.id) !== -1
       return <HistoryItem key={index} item={item} undone={hasBeenUndone} undo={this.undo} redo={this.redo} />

@@ -257,6 +257,9 @@
   "New": {
     "message": "New"
   },
+  "No actions to undo": {
+    "message": "No actions to undo"
+  },
   "No color": {
     "message": "No color"
   },
@@ -398,6 +401,9 @@
   "Show All": {
     "message": "Show All"
   },
+  "Sort": {
+    "message": "Sort"
+  },
   "Story line": {
     "message": "Story line"
   },
@@ -535,6 +541,9 @@
   },
   "learn how": {
     "message": "learn how"
+  },
+  "name": {
+    "message": "name"
   },
   "new card": {
     "message": "new card"

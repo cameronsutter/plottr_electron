@@ -33,3 +33,10 @@ export function linePosition (lines) {
 export function noteId (notes) {
   return notes.reduce((maxId, note) => Math.max(note.id, maxId), -1) + 1
 }
+
+export function positionReset (items) {
+  return items.map((item, index) => {
+    item.position = index
+    return item
+  })
+}

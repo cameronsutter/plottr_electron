@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { scene } from 'store/initialState'
 import { newFileScenes } from 'store/newFileState'
-import { sceneId, scenePosition } from 'store/newIds'
+import { sceneId, scenePosition, positionReset } from 'store/newIds'
 
 const initialState = [scene]
 
@@ -31,7 +31,7 @@ export default function scenes (state = initialState, action) {
       return newScenes
 
     case REORDER_SCENES:
-      return action.scenes
+      return positionReset(action.scenes)
 
     case RESET:
     case FILE_LOADED:

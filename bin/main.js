@@ -30,6 +30,7 @@ var aboutWindow = null
 var verifyWindow = null
 var reportWindow = null
 var buyWindow = null
+var expiredWindow = null
 
 var fileToOpen = null
 var dontquit = false
@@ -197,7 +198,7 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
           } else {
             dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n("License verified! You're all set."), detail: i18n("Now let's get to the good stuff")}, function () {
               if (windows[0]) windows[0].window.webContents.send('bought-in-app')
-              licenseVerified()
+              licenseVerified(false)
             })
           }
         })
@@ -210,20 +211,20 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
   })
 })
 
-function licenseVerified () {
+function licenseVerified (ask) {
   if (verifyWindow) verifyWindow.close()
   if (buyWindow) buyWindow.close()
   if (TRIALMODE) {
     turnOffTrialMode()
     loadMenu()
-    askToOpenOrCreate()
+    if (ask) askToOpenOrCreate()
   } else {
     openRecentFiles()
   }
 }
 
 ipcMain.on('license-verified', function () {
-  licenseVerified()
+  licenseVerified(true)
 })
 
 ipcMain.on('export', function (event, options, winId) {
@@ -330,7 +331,7 @@ function checkFirstDay (isFirstDayCallback, notFirstDayCallback) {
         let numOfDays = Math.round((today.getTime() - data.firstDay)/oneDay)
         if (numOfDays > TRIAL_LENGTH) {
           // disable after 30 days
-          console.log(numOfDays)
+          openExpiredWindow()
         } else {
           DAYS_LEFT = TRIAL_LENGTH - numOfDays
           notFirstDayCallback()
@@ -632,6 +633,19 @@ function openVerifyWindow () {
   })
   verifyWindow.on('close', function () {
     verifyWindow = null
+  })
+}
+
+function openExpiredWindow () {
+  dontquit = true
+  const expiredFile = path.join(filePrefix, 'expired.html')
+  expiredWindow = new BrowserWindow({frame: false, height: 425, width: 700, show: false})
+  expiredWindow.loadURL(expiredFile)
+  expiredWindow.once('ready-to-show', function() {
+    this.show()
+  })
+  expiredWindow.on('close', function () {
+    expiredWindow = null
   })
 }
 

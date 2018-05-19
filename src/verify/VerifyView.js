@@ -32,7 +32,8 @@ class VerifyView extends Component {
     } else if (value === OFFLINE) {
       return i18n("It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline")
     } else if (value === INVALID) {
-      return i18n("Hmmmm. It looks like that's not a valid license key.")
+      return i18n('It looks like you have Plottr on 5 computers already or you requested a refund')
+      // return i18n("Hmmmm. It looks like that's not a valid license key.")
     } else if (value === CANTSAVE) {
       return i18n("Plottr verified your license key successfully, but there was an error saving that. Let's try one more time")
     } else if (value === SAVE2) {
@@ -59,7 +60,7 @@ class VerifyView extends Component {
         newState.showAlert = true
         newState.alertText = view.makeAlertText(INVALID)
       } else {
-        if (body.success && !body.purchase.refunded && !body.purchase.chargebacked) {
+        if (body.success && !body.purchase.refunded && !body.purchase.chargebacked && body.uses <= 5) {
           // save uses, purchase.email, purchase.full_name, purchase.variants
           storage.set('user_info', body, function(err) {
             if (err) {

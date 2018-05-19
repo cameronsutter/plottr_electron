@@ -77,6 +77,9 @@
   "Choose what you want to track about your places": {
     "message": "Choisir ce que vous voulez suivre dans vos lieux"
   },
+  "Click here to get the full version": {
+    "message": "Click here to get the full version"
+  },
   "Click on a color below or type it in": {
     "message": "Cliquer sur une couleur ci dessous ou taper une couleur"
   },
@@ -287,6 +290,9 @@
   "Open the Tour": {
     "message": "Ouvrir la visite guidée"
   },
+  "Or feel free to contact me with any questions": {
+    "message": "Or feel free to contact me with any questions"
+  },
   "Oranges": {
     "message": "Oranges"
   },
@@ -434,6 +440,9 @@
   "Take Screenshot": {
     "message": "Prendre photo de l''écran"
   },
+  "Thanks for trying Plottr": {
+    "message": "Thanks for trying Plottr"
+  },
   "Timeline": {
     "message": "Chronologie"
   },
@@ -499,6 +508,9 @@
   },
   "You should have received a license key from Gumroad.": {
     "message": "Vous avez du recevoir une clef de licence de Gumroad."
+  },
+  "Your free trial has expired!": {
+    "message": "Your free trial has expired!"
   },
   "Zoom": {
     "message": "Zoomer"

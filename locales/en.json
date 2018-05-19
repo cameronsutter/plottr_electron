@@ -74,6 +74,9 @@
   "Choose what you want to track about your places": {
     "message": "Choose what you want to track about your places"
   },
+  "Click here to get the full version": {
+    "message": "Click here to get the full version"
+  },
   "Click on a color below or type it in": {
     "message": "Click on a color below or type it in"
   },
@@ -203,9 +206,6 @@
   "Hide Plottr": {
     "message": "Hide Plottr"
   },
-  "Hmmmm. It looks like that's not a valid license key.": {
-    "message": "Hmmmm. It looks like that''s not a valid license key."
-  },
   "If you keep seeing this problem, email me at family@plottrapp.com": {
     "message": "If you keep seeing this problem, email me at family@plottrapp.com"
   },
@@ -283,6 +283,9 @@
   },
   "Open the Tour": {
     "message": "Open the Tour"
+  },
+  "Or feel free to contact me with any questions": {
+    "message": "Or feel free to contact me with any questions"
   },
   "Oranges": {
     "message": "Oranges"
@@ -428,6 +431,9 @@
   "Take Screenshot": {
     "message": "Take Screenshot"
   },
+  "Thanks for trying Plottr": {
+    "message": "Thanks for trying Plottr"
+  },
   "Timeline": {
     "message": "Timeline"
   },
@@ -493,6 +499,9 @@
   },
   "You should have received a license key from Gumroad.": {
     "message": "You should have received a license key from Gumroad."
+  },
+  "Your free trial has expired!": {
+    "message": "Your free trial has expired!"
   },
   "Zoom": {
     "message": "Zoom"

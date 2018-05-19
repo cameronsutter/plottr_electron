@@ -8,6 +8,7 @@
     padding-bottom: 3px;
     padding-left: 1px;
     cursor: pointer;
+    -webkit-user-select: none;
   }
   p:hover {
     background-color: $body-background-color
@@ -18,11 +19,31 @@
     width: $width + 10; // for padding
     li {
       cursor: pointer;
+      -webkit-user-select: none;
       padding-top: 2px;
       padding-bottom: 2px;
     }
     li:hover {
       background-color: $body-background-color
     }
+  }
+}
+
+.sort-list {
+  overflow-y: scroll;
+  list-style: none;
+  padding-left: 0px;
+  width: auto;
+  li {
+    cursor: pointer;
+    -webkit-user-select: none;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    span.not-active {
+      margin-left: 20px;
+    }
+  }
+  li:hover {
+    background-color: $body-background-color
   }
 }

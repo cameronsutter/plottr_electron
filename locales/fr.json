@@ -53,6 +53,9 @@
   "Character": {
     "message": "Personnage"
   },
+  "character": {
+    "message": "personnage"
+  },
   "Character list is filtered": {
     "message": "Character list is filtered"
   },
@@ -298,6 +301,9 @@
   },
   "Place": {
     "message": "Lieu"
+  },
+  "place": {
+    "message": "lieu"
   },
   "Place list is filtered": {
     "message": "Place list is filtered"

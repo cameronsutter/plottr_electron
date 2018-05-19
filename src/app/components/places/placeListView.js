@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, Navbar, NavItem, Button, Input, Label, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
+import SortList from 'components/sortList'
 import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import PlaceView from 'components/places/placeView'
@@ -18,8 +19,9 @@ class PlaceListView extends Component {
     super(props)
     let id = null
     let visible = []
+    const { placeSort, placeFilter } = props.ui
     if (props.places.length > 0) {
-      visible = this.visiblePlaces(props.places, null)
+      visible = this.visiblePlaces(props.places, placeFilter, placeSort)
       id = this.detailID(visible)
     }
     this.state = {
@@ -27,7 +29,6 @@ class PlaceListView extends Component {
       addAttrText: '',
       placeDetailId: id,
       visiblePlaces: visible,
-      filter: null,
     }
   }
 
@@ -35,7 +36,8 @@ class PlaceListView extends Component {
     let visible = []
     let detailID = null
     if (nextProps.places.length > 0) {
-      visible = this.visiblePlaces(nextProps.places)
+      const { placeSort, placeFilter } = nextProps.ui
+      visible = this.visiblePlaces(nextProps.places, placeFilter, placeSort)
       detailID = this.detailID(visible)
     }
     this.setState({
@@ -51,7 +53,7 @@ class PlaceListView extends Component {
     }
   }
 
-  visiblePlaces (places, filter) {
+  visiblePlaces (places, filter, sort) {
     let visible = places
     if (!this.filterIsEmpty(filter)) {
       visible = []
@@ -67,7 +69,14 @@ class PlaceListView extends Component {
         })
       })
     }
-    return _.sortBy(visible, ['name', 'id'])
+
+    let sortOperands = sort.split('~')
+    let attrName = sortOperands[0]
+    let direction = sortOperands[1]
+    let sortBy = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
+    let sorted = _.sortBy(visible, sortBy)
+    if (direction == 'desc') sorted.reverse()
+    return sorted
   }
 
   detailID (places) {
@@ -77,19 +86,8 @@ class PlaceListView extends Component {
     return id
   }
 
-  updateFilter = (filter) => {
-    if (this.props.places.length > 0) {
-      let visible = this.visiblePlaces(this.props.places, filter)
-      this.setState({
-        visiblePlaces: visible,
-        placeDetailId: this.detailID(visible),
-        filter: filter,
-      })
-    }
-  }
-
   filterIsEmpty = (filter) => {
-    if (filter == null) return true
+    if (!filter) return true
     let numFiltered = this.props.customAttributes.reduce((num, attrs) => {
       num += filter[attrs].length
       return num
@@ -132,13 +130,18 @@ class PlaceListView extends Component {
   renderSubNav () {
     let subNavKlasses = 'subnav__container'
     if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
-    let popover = <Popover id='filter'>
-      <CustomAttrFilterList type={'places'} filteredItems={this.state.filter} updateItems={this.updateFilter}/>
+    let filterPopover = <Popover id='filter'>
+      <CustomAttrFilterList type={'places'} />
     </Popover>
     let filterDeclaration = <Alert bsStyle="warning">{i18n('Place list is filtered')}</Alert>
-    if (this.filterIsEmpty(this.state.filter)) {
+    if (this.filterIsEmpty(this.props.ui.placeFilter)) {
       filterDeclaration = <span></span>
     }
+    let sortPopover = <Popover id='sort'>
+      <SortList type={'places'} />
+    </Popover>
+    let sortGlyph = 'sort-by-attributes'
+    if (this.props.ui.placeSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
     return (
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
@@ -146,10 +149,15 @@ class PlaceListView extends Component {
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>
           <NavItem>
-            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
+            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={filterPopover}>
               <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
+          </NavItem>
+          <NavItem>
+            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={sortPopover}>
+              <Button bsSize='small'><Glyphicon glyph={sortGlyph} /> {i18n('Sort')}</Button>
+            </OverlayTrigger>
           </NavItem>
         </Nav>
       </Navbar>
@@ -162,7 +170,7 @@ class PlaceListView extends Component {
     const places = this.state.visiblePlaces.map((pl, idx) =>
       <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
         <h6 className='list-group-item-heading'>{pl.name}</h6>
-        <p className='list-group-item-text'>{pl.description}</p>
+        <p className='list-group-item-text'>{pl.description.substr(0, 100)}</p>
       </a>
     )
     return (<div className={klasses}>

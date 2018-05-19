@@ -1,4 +1,6 @@
-import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE, SET_DARK_MODE } from '../constants/ActionTypes'
+import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
+  SET_DARK_MODE, SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
+  SET_PLACE_FILTER } from '../constants/ActionTypes'
 import { ui as defaultUI } from 'store/initialState'
 import { newFileUI } from 'store/newFileState'
 
@@ -12,6 +14,18 @@ export default function ui (state = defaultUI, action) {
 
     case SET_DARK_MODE:
       return Object.assign({}, state, {darkMode: action.on})
+
+    case SET_CHARACTER_SORT:
+      return Object.assign({}, state, {characterSort: `${action.attr}~${action.direction}`})
+
+    case SET_PLACE_SORT:
+      return Object.assign({}, state, {placeSort: `${action.attr}~${action.direction}`})
+
+    case SET_CHARACTER_FILTER:
+      return Object.assign({}, state, {characterFilter: action.filter})
+
+    case SET_PLACE_FILTER:
+      return Object.assign({}, state, {placeFilter: action.filter})
 
     case FILE_LOADED:
       return action.data.ui

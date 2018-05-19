@@ -1,4 +1,7 @@
-import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, FILE_SAVED, NEW_FILE, EDIT_STORY_NAME, SET_DARK_MODE } from 'constants/ActionTypes'
+import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED,
+  FILE_SAVED, NEW_FILE, EDIT_STORY_NAME, SET_DARK_MODE,
+  SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
+  SET_PLACE_FILTER } from 'constants/ActionTypes'
 
 export function changeCurrentView (view) {
   return { type: CHANGE_CURRENT_VIEW, view }
@@ -26,4 +29,28 @@ export function changeStoryName (newName) {
 
 export function setDarkMode (on) {
   return { type: SET_DARK_MODE, on }
+}
+
+export function setCharacterSort (attr, direction) {
+  return { type: SET_CHARACTER_SORT, attr, direction }
+}
+
+export function setPlaceSort (attr, direction) {
+  return { type: SET_PLACE_SORT, attr, direction }
+}
+
+export function setNoteSort (attr, direction) {
+  return { type: SET_NOTE_SORT, attr, direction }
+}
+
+export function setCharacterFilter (filter) {
+  return { type: SET_CHARACTER_FILTER, filter }
+}
+
+export function setPlaceFilter (filter) {
+  return { type: SET_PLACE_FILTER, filter }
+}
+
+export function setNoteFilter (filter) {
+  return { type: SET_NOTE_FILTER, filter }
 }

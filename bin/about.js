@@ -8,7 +8,6 @@ var versionString = i18n('Version') + ' '
 if (TRIALMODE) versionString = i18n('TRIAL Version') + ' '
 
 i18n.setup({
-  generateId: require('format-message-generate-id/underscored_crc32'),
   translations: require('../locales'),
   locale: 'en' || app.getLocale()
 })

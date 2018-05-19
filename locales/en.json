@@ -518,6 +518,9 @@
   "attach tag {tagName} to note {noteName}": {
     "message": "attach tag { tagName } to note { noteName }"
   },
+  "character": {
+    "message": "character"
+  },
   "custom character attribute": {
     "message": "custom character attribute"
   },
@@ -565,6 +568,9 @@
   },
   "ok": {
     "message": "ok"
+  },
+  "place": {
+    "message": "place"
   },
   "remove character {characterName} from card {cardName}": {
     "message": "remove character { characterName } from card { cardName }"

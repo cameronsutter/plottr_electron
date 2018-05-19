@@ -241,7 +241,6 @@ app.on('ready', function () {
     })
   } else {
     i18n.setup({
-      generateId: require('format-message-generate-id/underscored_crc32'),
       translations: require('../locales'),
       locale: 'en' || app.getLocale()
     })

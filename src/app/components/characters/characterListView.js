@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, Navbar, NavItem, Button, Input, Label, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
+import SortList from 'components/sortList'
 import * as CharacterActions from 'actions/characters'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import CharacterView from 'components/characters/characterView'
@@ -13,13 +14,13 @@ import i18n from 'format-message'
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
 class CharacterListView extends Component {
-
   constructor (props) {
     super(props)
     let id = null
     let visible = []
+    const { characterSort, characterFilter } = props.ui
     if (props.characters.length > 0) {
-      visible = this.visibleCharacters(props.characters, null)
+      visible = this.visibleCharacters(props.characters, characterFilter, characterSort)
       id = this.detailID(visible)
     }
     this.state = {
@@ -27,15 +28,15 @@ class CharacterListView extends Component {
       addAttrText: '',
       characterDetailId: id,
       visibleCharacters: visible,
-      filter: null,
     }
   }
 
   componentWillReceiveProps (nextProps) {
     let visible = []
     let detailID = null
+    const { characterSort, characterFilter } = nextProps.ui
     if (nextProps.characters.length > 0) {
-      visible = this.visibleCharacters(nextProps.characters)
+      visible = this.visibleCharacters(nextProps.characters, characterFilter, characterSort)
       detailID = this.detailID(visible)
     }
     this.setState({
@@ -51,7 +52,7 @@ class CharacterListView extends Component {
     }
   }
 
-  visibleCharacters (characters, filter) {
+  visibleCharacters (characters, filter, sort) {
     let visible = characters
     if (!this.filterIsEmpty(filter)) {
       visible = []
@@ -67,7 +68,14 @@ class CharacterListView extends Component {
         })
       })
     }
-    return _.sortBy(visible, ['name', 'id'])
+
+    let sortOperands = sort.split('~')
+    let attrName = sortOperands[0]
+    let direction = sortOperands[1]
+    let sortBy = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
+    let sorted = _.sortBy(visible, sortBy)
+    if (direction == 'desc') sorted.reverse()
+    return sorted
   }
 
   detailID (characters) {
@@ -77,19 +85,8 @@ class CharacterListView extends Component {
     return id
   }
 
-  updateFilter = (filter) => {
-    if (this.props.characters.length > 0) {
-      let visible = this.visibleCharacters(this.props.characters, filter)
-      this.setState({
-        visibleCharacters: visible,
-        characterDetailId: this.detailID(visible),
-        filter: filter,
-      })
-    }
-  }
-
   filterIsEmpty = (filter) => {
-    if (filter == null) return true
+    if (!filter) return true
     let numFiltered = this.props.customAttributes.reduce((num, attrs) => {
       num += filter[attrs].length
       return num
@@ -132,13 +129,18 @@ class CharacterListView extends Component {
   renderSubNav () {
     let subNavKlasses = 'subnav__container'
     if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
-    let popover = <Popover id='filter'>
-      <CustomAttrFilterList type={'characters'} filteredItems={this.state.filter} updateItems={this.updateFilter}/>
+    let filterPopover = <Popover id='filter'>
+      <CustomAttrFilterList type={'characters'}/>
     </Popover>
     let filterDeclaration = <Alert bsStyle="warning">{i18n('Character list is filtered')}</Alert>
-    if (this.filterIsEmpty(this.state.filter)) {
+    if (this.filterIsEmpty(this.props.ui.characterFilter)) {
       filterDeclaration = <span></span>
     }
+    let sortPopover = <Popover id='sort'>
+      <SortList type={'characters'} />
+    </Popover>
+    let sortGlyph = 'sort-by-attributes'
+    if (this.props.ui.characterSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
     return (
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
@@ -146,10 +148,15 @@ class CharacterListView extends Component {
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>
           <NavItem>
-            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
+            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={filterPopover}>
               <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
+          </NavItem>
+          <NavItem>
+            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={sortPopover}>
+              <Button bsSize='small'><Glyphicon glyph={sortGlyph} /> {i18n('Sort')}</Button>
+            </OverlayTrigger>
           </NavItem>
         </Nav>
       </Navbar>
@@ -162,7 +169,7 @@ class CharacterListView extends Component {
     const characters = this.state.visibleCharacters.map((ch, idx) =>
       <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>
         <h6 className='list-group-item-heading'>{ch.name}</h6>
-        <p className='list-group-item-text'>{ch.description}</p>
+        <p className='list-group-item-text'>{ch.description.substr(0, 100)}</p>
       </a>
     )
     return (<div className={klasses}>

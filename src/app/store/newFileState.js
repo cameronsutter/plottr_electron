@@ -11,6 +11,12 @@ export const newFileUI = {
   currentView: 'timeline',
   orientation: 'horizontal',
   darkMode: false,
+  characterSort: 'name~asc',
+  characterFilter: null,
+  placeSort: 'name~asc',
+  placeFilter: null,
+  noteSort: 'title~asc',
+  noteFilter: null,
 }
 
 export const newFileFile = {

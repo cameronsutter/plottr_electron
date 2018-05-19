@@ -1,13 +1,18 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { ButtonToolbar, Button, DropdownButton,
-  MenuItem, Input, Label, Glyphicon } from 'react-bootstrap'
+import { bindActionCreators } from 'redux'
+import { Glyphicon } from 'react-bootstrap'
+import * as UIActions from 'actions/ui'
 
 class CustomAttrFilterList extends Component {
   constructor (props) {
     super(props)
+    let filteredItems = props.filteredItems
+    if (!filteredItems) {
+      filteredItems = this.defaultFilteredItemsObj()
+    }
     this.state = {
-      filteredItems: props.filteredItems || this.defaultFilteredItemsObj(),
+      filteredItems,
     }
   }
 
@@ -26,7 +31,7 @@ class CustomAttrFilterList extends Component {
       var index = filteredItems[attr].indexOf(value)
       if (index !== -1) filteredItems[attr].splice(index, 1)
     }
-    this.props.updateItems(filteredItems)
+    this.props.update(filteredItems)
     this.setState({ filteredItems })
   }
 
@@ -37,7 +42,7 @@ class CustomAttrFilterList extends Component {
     } else {
       filteredItems[attr] = this.values(attr)
     }
-    this.props.updateItems(filteredItems)
+    this.props.update(filteredItems)
     this.setState({filteredItems: filteredItems})
   }
 
@@ -101,21 +106,27 @@ class CustomAttrFilterList extends Component {
 
 CustomAttrFilterList.propTypes = {
   type: PropTypes.string.isRequired,
-  updateItems: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
   customAttributes: PropTypes.array.isRequired,
   items: PropTypes.array.isRequired,
   filteredItems: PropTypes.object,
 }
 
 function mapStateToProps (state, props) {
+  let filteredItems = state.ui.characterFilter
+  if (props.type == 'places') filteredItems = state.ui.placeFilter
   return {
     customAttributes: state.customAttributes[props.type],
     items: props.type == 'characters' ? state.characters : state.places,
+    filteredItems,
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {}
+function mapDispatchToProps (dispatch, props) {
+  let actions = bindActionCreators(UIActions, dispatch)
+  return {
+    update: props.type == 'characters' ? actions.setCharacterFilter : actions.setPlaceFilter
+  }
 }
 
 export default connect(

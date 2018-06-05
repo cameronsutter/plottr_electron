@@ -1095,12 +1095,6 @@ function buildHelpMenu () {
           openReportWindow('http://support.plottrapp.com/support/solutions')
         }
       },
-      {
-        label: i18n('Forums') + '...',
-        click: function () {
-          openReportWindow('http://support.plottrapp.com/support/discussions')
-        }
-      },
     ]
   }
 }

@@ -1,3 +1,102 @@
+2018-06-04
+==========
+
+  * exporter fix
+    closes [#238](https://github.com/cameronsutter/plottr_electron/issues/238)
+  * finish translations
+    closes [#234](https://github.com/cameronsutter/plottr_electron/issues/234)
+
+2018-05-18
+==========
+
+  * window for expired free trial
+
+2018-05-17
+==========
+
+  * almost done with translations
+    refs [#234](https://github.com/cameronsutter/plottr_electron/issues/234)
+  * reset line/scene positions
+    closes [#233](https://github.com/cameronsutter/plottr_electron/issues/233)
+  * sort characters and places
+    closes [#231](https://github.com/cameronsutter/plottr_electron/issues/231)
+    also persists filtering and sorting of characters & places
+
+2018-05-15
+==========
+
+  * update format-message version
+    refs [#234](https://github.com/cameronsutter/plottr_electron/issues/234)
+  * insert all french translations I have
+    refs [#234](https://github.com/cameronsutter/plottr_electron/issues/234)
+
+2018-05-10
+==========
+
+  * vertical timeline bug
+    refs [#233](https://github.com/cameronsutter/plottr_electron/issues/233)
+  * finish organizing for translations
+    refs [#234](https://github.com/cameronsutter/plottr_electron/issues/234)
+
+2018-05-09
+==========
+
+  * remove menu item to show dev tools
+
+2018-05-08
+==========
+
+  * only on 5 computers
+    Plottr can only be used on 5 computers now
+  * features and problems through freshdesk
+    Reporting problems & feature requests will now go through freshdesk.
+    There is also FAQ and forums
+
+2018-05-03
+==========
+
+  * translation improvements
+  * 30 day trial version!
+  * start the free trial on a empty file
+  * getting french ready
+
+2018-04-26
+==========
+
+  * remove new file defaults
+    closes [#212](https://github.com/cameronsutter/plottr_electron/issues/212)
+  * buy button in main navigation
+    The Buy Full Version button was put in the main navigation. As well as
+    removing the ‘autosaving’ alert and changing the ugly orange box around
+    the story name to blue and more subtle
+  * preparation for translations
+
+2018-04-13
+==========
+
+  * character and place filter
+    closes [#177](https://github.com/cameronsutter/plottr_electron/issues/177)
+
+2018-04-11
+==========
+
+  * fix empty tags after creation
+    closes [#210](https://github.com/cameronsutter/plottr_electron/issues/210)
+
+2018-04-10
+==========
+
+  * only open pltr files in open dialogs
+    closes [#224](https://github.com/cameronsutter/plottr_electron/issues/224)
+  * fix custom attribute add buttons
+    closes [#213](https://github.com/cameronsutter/plottr_electron/issues/213)
+  * fix open_file mixpanel event
+
+2018-03-01
+==========
+
+  * update changelog
+
 2018-02-25
 ==========
 

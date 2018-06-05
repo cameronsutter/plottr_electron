@@ -88,9 +88,12 @@ function card (card, lines, characterNames, placeNames, tagTitles) {
 }
 
 function attachments (obj, characterNames, placeNames, tagTitles) {
-  let characters = obj.characters.map(function(ch) { return characterNames[ch]})
-  let places = obj.places.map(function(pl) { return placeNames[pl]})
-  let tags = obj.tags.map(function(tg) { return tagTitles[tg]})
+  let characters = []
+  if (obj.characters) characters = obj.characters.map(function(ch) { return characterNames[ch]})
+  let places = []
+  if (obj.places) places = obj.places.map(function(pl) { return placeNames[pl]})
+  let tags = []
+  if (obj.tags) tags = obj.tags.map(function(tg) { return tagTitles[tg]})
   let paragraphs = []
   if (characters.length > 0) {
     paragraphs.push(new docx.Paragraph(`${i18n(Characters)}: ${characters.join(', ')}`).style('attachments'))

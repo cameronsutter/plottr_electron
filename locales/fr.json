@@ -78,7 +78,7 @@
     "message": "Choisir ce que vous voulez suivre dans vos lieux"
   },
   "Click here to get the full version": {
-    "message": "Click here to get the full version"
+    "message": "Cliquer ici pour obtenir la version intégrale."
   },
   "Click on a color below or type it in": {
     "message": "Cliquer sur une couleur ci dessous ou taper une couleur"
@@ -216,7 +216,7 @@
     "message": "Si le problème se répète, merci de m''écrire à family@plottrapp.com"
   },
   "It looks like you have Plottr on 5 computers already or you requested a refund": {
-    "message": "It looks like you have Plottr on 5 computers already or you requested a refund"
+    "message": "Il semble que vous avez installé Plottr sur 5 ordinateurs ou que vous vous êtes fait rembourser."
   },
   "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?": {
     "message": "Il semble que vous avez une version ancienne du fichier. Le logiciel pourrait fonctionner étrangement ou pas du tout. Plottr peut-il faire une mise à jour pour vous?"
@@ -291,7 +291,7 @@
     "message": "Ouvrir la visite guidée"
   },
   "Or feel free to contact me with any questions": {
-    "message": "Or feel free to contact me with any questions"
+    "message": "Ou n'hésitez pas à me contacter si vous avez une question."
   },
   "Oranges": {
     "message": "Oranges"
@@ -441,7 +441,7 @@
     "message": "Prendre photo de l''écran"
   },
   "Thanks for trying Plottr": {
-    "message": "Thanks for trying Plottr"
+    "message": "Merci d'essayer Plottr"
   },
   "Timeline": {
     "message": "Chronologie"
@@ -468,10 +468,10 @@
     "message": "Upload the file Plottr just exported"
   },
   "Use the code \"freetrial\" to get the secret discount": {
-    "message": "Use the code \"freetrial\" to get the secret discount"
+    "message": "Utiliser le code \"freetrial\" pour obtenir la remise secrète"
   },
   "Verify": {
-    "message": "Verify"
+    "message": "Vérifier"
   },
   "Verifying your license. Please wait...": {
     "message": "Vérification de votre licence en cours. Merci de patienter."
@@ -486,7 +486,7 @@
     "message": "Bienvenu sur Plottr."
   },
   "Where would you like to save the export?": {
-    "message": "Where would you like to save the export?"
+    "message": "Où voulez vous enregistrer le document exporté?"
   },
   "Where would you like to save this copy?": {
     "message": "Où voulez vous enregistrer cette copie?"
@@ -510,7 +510,7 @@
     "message": "Vous avez du recevoir une clef de licence de Gumroad."
   },
   "Your free trial has expired!": {
-    "message": "Your free trial has expired!"
+    "message": "La période d'essai est parvenue à son terme."
   },
   "Zoom": {
     "message": "Zoomer"

@@ -9,7 +9,7 @@ if (TRIALMODE) versionString = i18n('TRIAL Version') + ' '
 
 i18n.setup({
   translations: require('../locales'),
-  locale: 'en' || app.getLocale()
+  locale: app.getLocale() || 'en'
 })
 
 var p = document.getElementById('versionP')

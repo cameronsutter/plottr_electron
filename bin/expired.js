@@ -3,7 +3,7 @@ var i18n = require('format-message')
 
 i18n.setup({
   translations: require('../locales'),
-  locale: 'en' || app.getLocale()
+  locale: app.getLocale() || 'en'
 })
 
 function openBuy () {

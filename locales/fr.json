@@ -156,7 +156,7 @@
     "message": "Voulez vous effacer cette étiquette: { title }?"
   },
   "Edit": {
-    "message": "Modifier"
+    "message": "Édition"
   },
   "End": {
     "message": "Fin"
@@ -480,7 +480,7 @@
     "message": "Version"
   },
   "View": {
-    "message": "Voir"
+    "message": "Présentation"
   },
   "Welcome to Plottr": {
     "message": "Bienvenu sur Plottr."
@@ -498,7 +498,7 @@
     "message": "Blancs"
   },
   "Window": {
-    "message": "Window"
+    "message": "Fenêtre"
   },
   "Would you like to open an existing file or start a new file?": {
     "message": "Voulez vous ouvrir un fichier existant ou en créer un nouveau?"

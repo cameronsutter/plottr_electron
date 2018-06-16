@@ -29,7 +29,7 @@ if (process.env.NODE_ENV !== 'dev') {
 
 i18n.setup({
   translations: require('../locales'),
-  locale: 'en' || app.getLocale()
+  locale: app.getLocale() || 'en'
 })
 
 function makeCSS () {

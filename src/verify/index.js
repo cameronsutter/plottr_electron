@@ -9,7 +9,7 @@ const app = remote.app
 import i18n from 'format-message'
 i18n.setup({
   translations: require('../../locales'),
-  locale: 'en' || app.getLocale()
+  locale: app.getLocale() || 'en'
 })
 
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})

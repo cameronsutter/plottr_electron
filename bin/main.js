@@ -243,7 +243,7 @@ app.on('ready', function () {
   } else {
     i18n.setup({
       translations: require('../locales'),
-      locale: 'en' || app.getLocale()
+      locale: app.getLocale() || 'en'
     })
 
     // Register the toggleDevTools shortcut listener.

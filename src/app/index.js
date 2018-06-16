@@ -18,7 +18,7 @@ import i18n from 'format-message'
 
 i18n.setup({
   translations: require('../../locales'),
-  locale: 'en' || app.getLocale()
+  locale: app.getLocale() || 'en'
 })
 
 let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'

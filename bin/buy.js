@@ -59,4 +59,5 @@ var p = document.getElementById('loadingP')
 var loadingNode = document.createTextNode(i18n('Loading...'))
 p.appendChild(loadingNode)
 
-document.title = i18n('Use the code "freetrial" to get the secret discount')
+// document.title = i18n('Use the code "freetrial" to get the secret discount')
+document.title = 'Gumroad.com'

@@ -662,7 +662,7 @@ function openReportWindow (page) {
 
 function openBuyWindow () {
   const buyFile = path.join(filePrefix, 'buy.html')
-  buyWindow = new BrowserWindow({height: 600, show: false})
+  buyWindow = new BrowserWindow({height: 600, show: false, backgroundColor: 'white'})
   buyWindow.loadURL(buyFile)
   buyWindow.once('ready-to-show', function() {
     this.show()
@@ -749,7 +749,7 @@ function sendErrorReport (body) {
       rollbar.warn(err)
     } else {
       dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n('Upload the file Plottr just exported'), detail: i18n('Please upload the file named plottr_error_report.txt in your Documents folder')})
-      openReportWindow('http://support.plottrapp.com/support/tickets/new')
+      openReportWindow('http://plottr.freshdesk.com/support/tickets/new')
     }
   })
 }
@@ -1080,19 +1080,19 @@ function buildHelpMenu () {
       {
         label: i18n('Give feedback') + '...',
         click: function () {
-          openReportWindow('http://support.plottrapp.com/support/tickets/new')
+          openReportWindow('http://plottr.freshdesk.com/support/tickets/new')
         }
       },
       {
         label: i18n('Request a feature') + '...',
         click: function () {
-          openReportWindow('http://support.plottrapp.com/support/tickets/new')
+          openReportWindow('http://plottr.freshdesk.com/support/tickets/new')
         }
       },
       {
         label: i18n('FAQ') + '...',
         click: function () {
-          openReportWindow('http://support.plottrapp.com/support/solutions')
+          openReportWindow('http://plottr.freshdesk.com/support/solutions')
         }
       },
     ]

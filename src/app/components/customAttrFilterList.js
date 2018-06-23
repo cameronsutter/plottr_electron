@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -52,7 +53,7 @@ class CustomAttrFilterList extends Component {
 
   values (attr) {
     let values = this.props.items.map((item) => item[attr])
-    return values.filter((v) => v && v != '')
+    return _.uniq(values.filter((v) => v && v != ''))
   }
 
   renderFilterList (array, attr) {

@@ -14,7 +14,6 @@ import i18n from 'format-message'
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
 class PlaceListView extends Component {
-
   constructor (props) {
     super(props)
     let id = null
@@ -80,9 +79,20 @@ class PlaceListView extends Component {
   }
 
   detailID (places) {
+    if (places.length == 0) return null
+
     let id = places[0].id
-    let place = places.find(pl => pl.name === '')
-    if (place) id = place.id
+
+    // check for the currently active one
+    if (this.state && this.state.placeDetailId) {
+      let activePlace = places.find(pl => pl.id === this.state.placeDetailId)
+      if (activePlace) id = activePlace.id
+    }
+
+    // check for a newly created one
+    let newPlace = places.find(pl => pl.name === '')
+    if (newPlace) id = newPlace.id
+
     return id
   }
 
@@ -185,7 +195,7 @@ class PlaceListView extends Component {
   renderPlaceDetails () {
     let place = this.props.places.find(pl =>
       pl.id === this.state.placeDetailId
-    ) || this.props.places[0]
+    )
     if (place) {
       return <PlaceView key={`place-${place.id}`} place={place} />
     } else {

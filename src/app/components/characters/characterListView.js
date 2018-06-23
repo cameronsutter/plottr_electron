@@ -79,9 +79,20 @@ class CharacterListView extends Component {
   }
 
   detailID (characters) {
+    if (characters.length == 0) return null
+
     let id = characters[0].id
-    let character = characters.find(ch => ch.name === '')
-    if (character) id = character.id
+
+    // check for the currently active one
+    if (this.state && this.state.characterDetailId) {
+      let activeCharacter = characters.find(ch => ch.id === this.state.characterDetailId)
+      if (activeCharacter) id = activeCharacter.id
+    }
+
+    // check for a newly created one
+    let newCharacter = characters.find(ch => ch.name === '')
+    if (newCharacter) id = newCharacter.id
+
     return id
   }
 
@@ -183,7 +194,7 @@ class CharacterListView extends Component {
   renderCharacterDetails () {
     let character = this.props.characters.find(char =>
       char.id === this.state.characterDetailId
-    ) || this.props.characters[0]
+    )
     if (character) {
       return <CharacterView key={`character-${character.id}`} character={character} />
     } else {

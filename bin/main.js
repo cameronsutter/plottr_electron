@@ -247,7 +247,7 @@ app.on('ready', function () {
     })
 
     // Register the toggleDevTools shortcut listener.
-    const ret = globalShortcut.register('CommandOrControl+T', () => {
+    const ret = globalShortcut.register('CommandOrControl+Alt+R', () => {
       let win = BrowserWindow.getFocusedWindow()
       if (win) win.toggleDevTools()
     })

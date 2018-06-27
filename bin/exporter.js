@@ -96,13 +96,13 @@ function attachments (obj, characterNames, placeNames, tagTitles) {
   if (obj.tags) tags = obj.tags.map(function(tg) { return tagTitles[tg]})
   let paragraphs = []
   if (characters.length > 0) {
-    paragraphs.push(new docx.Paragraph(`${i18n(Characters)}: ${characters.join(', ')}`).style('attachments'))
+    paragraphs.push(new docx.Paragraph(`${i18n('Characters')}: ${characters.join(', ')}`).style('attachments'))
   }
   if (places.length > 0) {
-    paragraphs.push(new docx.Paragraph(`${i18n(Places)}: ${places.join(', ')}`).style('attachments'))
+    paragraphs.push(new docx.Paragraph(`${i18n('Places')}: ${places.join(', ')}`).style('attachments'))
   }
   if (tags.length > 0) {
-    paragraphs.push(new docx.Paragraph(`${i18n(Tags)}: ${tags.join(', ')}`).style('attachments'))
+    paragraphs.push(new docx.Paragraph(`${i18n('Tags')}: ${tags.join(', ')}`).style('attachments'))
   }
   if (paragraphs.length > 0) {
     paragraphs.push(new docx.Paragraph('').style('attachments'))

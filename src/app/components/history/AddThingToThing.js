@@ -38,26 +38,26 @@ class AddThingToThing extends Component {
         // card
         switch (thingType) {
           case 'character':
-            words = i18n('attach character {characterName} to card {cardName}', {characterName: thing.name, cardName: toThing.title})
+            description = i18n('attach character {characterName} to card {cardName}', {characterName: thing.name, cardName: toThing.title})
             break
           case 'place':
-            words = i18n('attach place {placeName} to card {cardName}', {placeName: thing.name, cardName: toThing.title})
+            description = i18n('attach place {placeName} to card {cardName}', {placeName: thing.name, cardName: toThing.title})
             break
           case 'tag':
-            words = i18n('attach tag {tagName} to card {cardName}', {tagName: thing.title, cardName: toThing.title})
+            description = i18n('attach tag {tagName} to card {cardName}', {tagName: thing.title, cardName: toThing.title})
             break
         }
       } else {
         // note
         switch (thingType) {
           case 'character':
-            words = i18n('attach character {characterName} to note {noteName}', {characterName: thing.name, noteName: toThing.title})
+            description = i18n('attach character {characterName} to note {noteName}', {characterName: thing.name, noteName: toThing.title})
             break
           case 'place':
-            words = i18n('attach place {placeName} to note {noteName}', {placeName: thing.name, noteName: toThing.title})
+            description = i18n('attach place {placeName} to note {noteName}', {placeName: thing.name, noteName: toThing.title})
             break
           case 'tag':
-            words = i18n('attach tag {tagName} to note {noteName}', {tagName: thing.title, noteName: toThing.title})
+            description = i18n('attach tag {tagName} to note {noteName}', {tagName: thing.title, noteName: toThing.title})
             break
         }
       }
@@ -67,26 +67,26 @@ class AddThingToThing extends Component {
         // card
         switch (thingType) {
           case 'character':
-            words = i18n('remove character {characterName} from card {cardName}', {characterName: thing.name, cardName: toThing.title})
+            description = i18n('remove character {characterName} from card {cardName}', {characterName: thing.name, cardName: toThing.title})
             break
           case 'place':
-            words = i18n('remove place {placeName} from card {cardName}', {placeName: thing.name, cardName: toThing.title})
+            description = i18n('remove place {placeName} from card {cardName}', {placeName: thing.name, cardName: toThing.title})
             break
           case 'tag':
-            words = i18n('remove tag {tagName} from card {cardName}', {tagName: thing.title, cardName: toThing.title})
+            description = i18n('remove tag {tagName} from card {cardName}', {tagName: thing.title, cardName: toThing.title})
             break
         }
       } else {
         // note
         switch (thingType) {
           case 'character':
-            words = i18n('remove character {characterName} from note {noteName}', {characterName: thing.name, noteName: toThing.title})
+            description = i18n('remove character {characterName} from note {noteName}', {characterName: thing.name, noteName: toThing.title})
             break
           case 'place':
-            words = i18n('remove place {placeName} from note {noteName}', {placeName: thing.name, noteName: toThing.title})
+            description = i18n('remove place {placeName} from note {noteName}', {placeName: thing.name, noteName: toThing.title})
             break
           case 'tag':
-            words = i18n('remove tag {tagName} from note {noteName}', {tagName: thing.title, noteName: toThing.title})
+            description = i18n('remove tag {tagName} from note {noteName}', {tagName: thing.title, noteName: toThing.title})
             break
         }
       }

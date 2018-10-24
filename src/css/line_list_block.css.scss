@@ -95,6 +95,10 @@
   cursor: move;
 }
 
+.line__body.dropping {
+  @include hover-box;
+}
+
 .line__title {
   @include sub-header-font;
   width: $width;

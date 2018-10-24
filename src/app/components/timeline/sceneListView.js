@@ -36,30 +36,10 @@ class SceneListView extends Component {
   }
 
   handleReorder = (originalScenePosition, droppedScenePosition) => {
-    var scenesArray = []
-    this.props.scenes.forEach((s) => {
-      var clonedScene = _.clone(s)
-      if (s.position >= originalScenePosition && s.position !== droppedScenePosition) {
-        clonedScene.position += 1
-      } else if (s.position === droppedScenePosition) {
-        clonedScene.position = originalScenePosition
-      }
-      scenesArray.push(clonedScene)
-    })
-    this.saveReorder(scenesArray)
-  }
-
-  saveReorder (scenes) {
-    var scenesArray = this.resetPositions(scenes)
-    this.props.actions.reorderScenes(scenesArray)
-  }
-
-  resetPositions (scenes) {
-    var newScenes = _.sortBy(scenes, 'position')
-    newScenes.forEach((s, idx) =>
-      s['position'] = idx
-    )
-    return newScenes
+    const scenes = _.sortBy(this.props.scenes, 'position')
+    const [removed] = scenes.splice(droppedScenePosition, 1)
+    scenes.splice(originalScenePosition, 0, removed)
+    this.props.actions.reorderScenes(scenes)
   }
 
   render () {

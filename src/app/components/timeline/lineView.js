@@ -96,6 +96,7 @@ class LineView extends Component {
   }
 
   handleDragOver = (e) => {
+    this.setState({dropping: true})
     e.preventDefault()
     return false
   }
@@ -106,11 +107,11 @@ class LineView extends Component {
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.handleDragLeave()
+    this.setState({dropping: false})
 
     var json = e.dataTransfer.getData('text/json')
     var droppedLine = JSON.parse(json)
-    if (!droppedLine.id) return
+    if (droppedLine.id == null) return
 
     this.props.handleReorder(this.props.line.position, droppedLine.position)
   }
@@ -227,6 +228,7 @@ class LineView extends Component {
   renderBody () {
     var classes = 'line__body'
     if (this.state.hovering) classes += ' hover'
+    if (this.state.dropping) classes += ' dropping'
     var style = {}
     var zoomFactor = this.props.zoomFactor
     if (this.props.isZoomed && this.state.hovering) {

@@ -29,18 +29,10 @@ class LineListView extends Component {
   }
 
   handleReorder = (originalLinePosition, droppedLinePosition) => {
-    var linesArray = []
-    this.props.lines.forEach((l) => {
-      var newLine = _.clone(l)
-      if (l.position >= originalLinePosition && l.position !== droppedLinePosition) {
-        newLine.position += 1
-      } else if (l.position === droppedLinePosition) {
-        newLine.position = originalLinePosition
-      }
-      linesArray.push(newLine)
-    })
-    // potentially we'd want to reset all the positions so there aren't any gaps
-    this.props.actions.reorderLines(linesArray)
+    const lines = _.sortBy(this.props.lines, 'position')
+    const [removed] = lines.splice(droppedLinePosition, 1)
+    lines.splice(originalLinePosition, 0, removed)
+    this.props.actions.reorderLines(lines)
   }
 
   render () {

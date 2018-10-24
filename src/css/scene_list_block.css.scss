@@ -141,6 +141,10 @@ $extra-height: 34px;
   cursor: move;
 }
 
+.scene-list__item__body.dropping {
+  @include hover-box;
+}
+
 .scene-list__item__title {
   display: flex;
   flex-direction: row;

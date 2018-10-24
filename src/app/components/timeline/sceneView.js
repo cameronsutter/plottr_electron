@@ -52,6 +52,7 @@ class SceneView extends Component {
   }
 
   handleDragOver = (e) => {
+    this.setState({dropping: true})
     e.preventDefault()
     return false
   }
@@ -62,11 +63,11 @@ class SceneView extends Component {
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.handleDragLeave()
+    this.setState({dropping: false})
 
     var json = e.dataTransfer.getData('text/json')
     var droppedScene = JSON.parse(json)
-    if (!droppedScene.id) return
+    if (droppedScene.id == null) return
 
     this.props.handleReorder(this.props.scene.position, droppedScene.position)
   }
@@ -119,6 +120,7 @@ class SceneView extends Component {
     }
     let classes = 'scene-list__item__body'
     if (this.state.hovering) classes += ' hover'
+    if (this.state.dropping) classes += ' dropping'
     let titleClasses = 'scene-list__item__title'
     if (!this.state.hovering && this.props.ui.darkMode) titleClasses += ' darkmode'
     var style = {}

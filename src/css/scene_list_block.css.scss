@@ -142,7 +142,7 @@ $extra-height: 34px;
 }
 
 .scene-list__item__body.dropping {
-  @include hover-box;
+  border: $new-item-border;
 }
 
 .scene-list__item__title {

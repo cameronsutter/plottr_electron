@@ -84,7 +84,7 @@ class PlaceListView extends Component {
     let id = places[0].id
 
     // check for the currently active one
-    if (this.state && this.state.placeDetailId) {
+    if (this.state && this.state.placeDetailId != null) {
       let activePlace = places.find(pl => pl.id === this.state.placeDetailId)
       if (activePlace) id = activePlace.id
     }

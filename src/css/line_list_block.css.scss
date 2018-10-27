@@ -96,7 +96,7 @@
 }
 
 .line__body.dropping {
-  @include hover-box;
+  border: $new-item-border;
 }
 
 .line__title {

@@ -84,7 +84,7 @@ class CharacterListView extends Component {
     let id = characters[0].id
 
     // check for the currently active one
-    if (this.state && this.state.characterDetailId) {
+    if (this.state && this.state.characterDetailId != null) {
       let activeCharacter = characters.find(ch => ch.id === this.state.characterDetailId)
       if (activeCharacter) id = activeCharacter.id
     }

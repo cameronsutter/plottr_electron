@@ -133,6 +133,6 @@ window.addEventListener('contextmenu', (e) => {
   menu.popup(remote.getCurrentWindow())
 }, false)
 
-function logger(which) {
+window.logger = function(which) {
   process.env.LOGGER = which.toString()
 }

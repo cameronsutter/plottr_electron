@@ -84,8 +84,8 @@ ipcRenderer.on('set-dark-mode', (event, on) => {
   window.document.body.className = on ? 'darkmode' : ''
 })
 
-ipcRenderer.on('bought-in-app', event => {
-  MPQ.push('Buy', {online: navigator.onLine})
+ipcRenderer.on('bought-in-app', (event, numOfDays) => {
+  MPQ.push('Buy', {online: navigator.onLine, num_of_days: numOfDays})
 })
 
 window.onerror = function (message, file, line, column, err) {

@@ -1,4 +1,5 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog, systemPreferences, globalShortcut } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, dialog,
+  systemPreferences, globalShortcut, shell } = require('electron')
 var Migrator = require('./migrator/migrator')
 var Exporter = require('./exporter')
 var fs = require('fs')
@@ -103,6 +104,20 @@ app.on('activate', function () {
   }
 })
 
+// Listen for web contents being created
+app.on('web-contents-created', (e, contents) => {
+  // Check for a webview
+  if (contents.getType() == 'window') {
+    // Listen for any new window events
+    contents.on('new-window', (e, url) => {
+      e.preventDefault()
+      if (url.includes("paypal.com")) {
+        shell.openExternal("https://gum.co/fgSJ")
+      }
+    })
+  }
+})
+
 ipcMain.on('save-state', function (event, state, winId, isNewFile) {
   var winObj = _.find(windows, {id: winId})
   let wasEdited = checkDirty(state, winObj.lastSave)
@@ -197,7 +212,7 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
             dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
           } else {
             dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n("License verified! You're all set."), detail: i18n("Now let's get to the good stuff")}, function () {
-              if (windows[0]) windows[0].window.webContents.send('bought-in-app')
+              if (windows[0]) windows[0].window.webContents.send('bought-in-app', DAYS_LEFT)
               licenseVerified(false)
             })
           }

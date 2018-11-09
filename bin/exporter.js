@@ -29,6 +29,7 @@ function Exporter (data, { fileName }) {
   })
 
   doc.addParagraph(new docx.Paragraph('').pageBreak())
+  doc.addParagraph(new docx.Paragraph('^'))
   let charactersHeading = new docx.Paragraph(i18n('Characters'))
   charactersHeading.heading1().center()
   doc.addParagraph(charactersHeading)
@@ -37,6 +38,7 @@ function Exporter (data, { fileName }) {
   })
 
   doc.addParagraph(new docx.Paragraph('').pageBreak())
+  doc.addParagraph(new docx.Paragraph('^'))
   let placesHeading = new docx.Paragraph(i18n('Places'))
   placesHeading.heading1().center()
   doc.addParagraph(placesHeading)
@@ -45,6 +47,7 @@ function Exporter (data, { fileName }) {
   })
 
   doc.addParagraph(new docx.Paragraph('').pageBreak())
+  doc.addParagraph(new docx.Paragraph('^'))
   let notesHeading = new docx.Paragraph(i18n('Notes'))
   notesHeading.heading1().center()
   doc.addParagraph(notesHeading)
@@ -69,6 +72,7 @@ function outline (data, characterNames, placeNames, tagTitles) {
 
 function scene (scene, data, characterNames, placeNames, tagTitles) {
   let paragraphs = []
+  paragraphs.push(new docx.Paragraph('^'))
   paragraphs.push(new docx.Paragraph(scene.title).heading2())
   let cards = sortedSceneCards(scene.id, data.cards, data.lines)
   let cardParagraphs = cards.map(function(c) { return card(c, data.lines, characterNames, placeNames, tagTitles) })

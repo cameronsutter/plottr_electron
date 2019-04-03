@@ -123,6 +123,10 @@ class CardDialog extends Component {
           <Button bsStyle='success' onClick={this.closeDialog}>
             {i18n('Save & Close')}
           </Button>
+          <Button className='card-dialog__delete'
+            onClick={this.deleteCard} >
+            {i18n('Delete')}
+          </Button>
         </ButtonToolbar>
       )
     } else {
@@ -150,9 +154,10 @@ class CardDialog extends Component {
     var title = this.props.card.title
     if (this.state.editing) {
       return <Input
+        style={{fontSize: '24pt'}}
         onKeyPress={this.handleEnter}
         type='text' autoFocus
-        label={i18n('title')} ref='titleInput'
+        ref='titleInput'
         defaultValue={title} />
     } else {
       return (

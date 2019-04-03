@@ -123,24 +123,8 @@ class SceneView extends Component {
     if (this.state.dropping) classes += ' dropping'
     let titleClasses = 'scene-list__item__title'
     if (!this.state.hovering && this.props.ui.darkMode) titleClasses += ' darkmode'
-    var style = {}
-    var zoomFactor = this.props.zoomFactor
-    if (this.props.isZoomed && this.state.hovering) {
-      switch(true) {
-        case zoomFactor > 0.1 && zoomFactor < 0.75:
-          style.transform = 'scale(2, 2)';
-          break;
-        case zoomFactor >= 0.75:
-          style.transform = 'scale(1, 1)'
-          break;
-        default:
-          style.transform = 'scale(5, 5)' // This is for fit
-      }
-      style.transformOrigin = 'center center'
-    }
     return (<div className={orientedClassName('scene-list__item', this.props.ui.orientation)}
       title={i18n('Scene {number}', {number: this.props.scene.position + 1})}
-      style={style}
       draggable={true}
       onClick={() => this.setState({editing: true})}
       onMouseEnter={() => this.setState({hovering: true})}

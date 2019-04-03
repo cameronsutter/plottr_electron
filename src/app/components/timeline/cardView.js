@@ -57,12 +57,7 @@ class CardView extends Component {
   }
 
   handleCardClick = () => {
-    if (this.props.isZoomed) {
-      var box = this.refs.card.getBoundingClientRect()
-      this.props.zoomIn(box.left, box.top)
-    } else {
-      this.setState({dialogOpen: true})
-    }
+    this.setState({dialogOpen: true})
   }
 
   saveCreate = () => {
@@ -123,25 +118,6 @@ class CardView extends Component {
     }
     if (this.props.filtered) {
       cardStyle.opacity = '0.1'
-    }
-    var zoomFactor = this.props.zoomFactor
-    if (this.props.isZoomed && this.state.hovering) {
-      switch(true) {
-        case zoomFactor < 0.25:
-          cardStyle.transform = 'scale(6, 6)'
-          break;
-        case zoomFactor === 0.25:
-          cardStyle.transform = 'scale(3, 3)';
-          break;
-        case zoomFactor === 0.50:
-          cardStyle.transform = 'scale(2, 2)';
-          break;
-        case zoomFactor > 0.50:
-          cardStyle.transform = 'scale(1, 1)'
-          break;
-        default:
-          cardStyle.transform = 'scale(4, 4)' // This is for fit
-      }
     }
 
     let cardClasses = orientedClassName('card__real', this.props.ui.orientation)
@@ -227,13 +203,14 @@ class CardView extends Component {
     let title = <div className='card__title'>
       <p>{this.props.card.title}</p>
     </div>
-    if (!this.state.dragging && !this.props.isZoomed && (this.hasLabels() || this.props.card.description)) {
+    if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
         placement = this.props.scenePosition === 0 ? 'right' : placement
       } else {
         placement = this.props.linePosition === 0 ? 'right' : placement
       }
+      if (this.props.isZoomed) placement = 'right'
       title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
         {title}
       </OverlayTrigger>
@@ -280,8 +257,6 @@ CardView.propTypes = {
   labelMap: PropTypes.object.isRequired,
   tags: PropTypes.array,
   isZoomed: PropTypes.bool.isRequired,
-  zoomFactor: PropTypes.any.isRequired,
-  zoomIn: PropTypes.func.isRequired,
   ui: PropTypes.object.isRequired,
   linePosition: PropTypes.number.isRequired,
   scenePosition: PropTypes.number.isRequired

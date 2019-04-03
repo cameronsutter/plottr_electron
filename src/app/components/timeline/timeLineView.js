@@ -277,15 +277,11 @@ class TimeLineView extends Component {
       <div id='timelineview__container' className={containerKlasses}>
         {this.renderSubNav()}
         <div id='timelineview__root' className={orientation} ref='timeline' style={styles}>
-          <SceneListView
-            isZoomed={isZoomed}
-            zoomFactor={zoomFactor} />
+          <SceneListView isZoomed={isZoomed} />
           <LineListView
             sceneMap={this.sceneMapping()}
             filteredItems={this.state.filter}
-            isZoomed={isZoomed}
-            zoomFactor={zoomFactor}
-            zoomIn={this.zoomIntoCard} />
+            isZoomed={isZoomed} />
         </div>
       </div>
     )

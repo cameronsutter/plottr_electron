@@ -199,8 +199,7 @@ class LineView extends Component {
         sceneId={sceneId} lineId={this.props.line.id}
         labelMap={this.props.labelMap}
         color={this.props.line.color} filtered={filtered}
-        isZoomed={this.props.isZoomed} zoomIn={this.props.zoomIn}
-        zoomFactor={this.props.zoomFactor} />
+        isZoomed={this.props.isZoomed} />
       )
     })
   }
@@ -229,24 +228,6 @@ class LineView extends Component {
     var classes = 'line__body'
     if (this.state.hovering) classes += ' hover'
     if (this.state.dropping) classes += ' dropping'
-    var style = {}
-    var zoomFactor = this.props.zoomFactor
-    if (this.props.isZoomed && this.state.hovering) {
-      switch(true) {
-        case zoomFactor === 0.1:
-          style.transform = 'scale(4, 4)';
-          break;
-        case zoomFactor > 0.1 && zoomFactor < 0.75:
-          style.transform = 'scale(2, 2)';
-          break;
-        case zoomFactor >= 0.75:
-          style.transform = 'scale(1, 1)'
-          break;
-        default:
-          style.transform = 'scale(3, 3)' // This is for fit
-      }
-      style.transformOrigin = 'left center'
-    }
     let titleClass = orientedClassName('line__title', this.props.ui.orientation)
     if (!this.state.hovering && this.props.ui.darkMode) titleClass += ' darkmode'
     var body = <div className={titleClass}>{this.props.line.title}</div>
@@ -264,7 +245,6 @@ class LineView extends Component {
     return (
       <div
         className={classes}
-        style={style}
         onClick={() => this.setState({editing: true})}
         draggable={true}
         onDragStart={this.handleDragStart}
@@ -318,8 +298,6 @@ LineView.propTypes = {
   filteredItems: PropTypes.object,
   labelMap: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
-  zoomFactor: PropTypes.any.isRequired,
-  zoomIn: PropTypes.func.isRequired,
   ui: PropTypes.object.isRequired
 }
 

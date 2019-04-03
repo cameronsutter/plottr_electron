@@ -56,9 +56,7 @@ class LineListView extends Component {
           handleReorder={this.handleReorder}
           filteredItems={this.props.filteredItems}
           isZoomed={this.props.isZoomed}
-          zoomFactor={this.props.zoomFactor}
-          zoomIn={this.props.zoomIn}
-          />
+        />
       )
     })
   }
@@ -73,8 +71,6 @@ LineListView.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   isZoomed: PropTypes.bool.isRequired,
-  zoomFactor: PropTypes.any.isRequired,
-  zoomIn: PropTypes.func.isRequired,
   orientation: PropTypes.string.isRequired
 }
 

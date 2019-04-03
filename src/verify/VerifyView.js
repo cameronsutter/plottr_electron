@@ -90,7 +90,7 @@ class VerifyView extends Component {
   handleVerify () {
     if (navigator.onLine) {
       var input = ReactDOM.findDOMNode(this.refs.license).children[0]
-      var license = input.value
+      var license = input.value.trim()
       if (license != '') {
         this.setState({spinnerHidden: false})
         this.verifyLicense(license)

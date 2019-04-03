@@ -150,7 +150,6 @@ SceneView.propTypes = {
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
-  zoomFactor: PropTypes.any.isRequired,
   ui: PropTypes.object.isRequired,
 }
 

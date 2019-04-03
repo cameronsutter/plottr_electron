@@ -31,22 +31,22 @@ class Navigation extends Component {
     let buyItem = null
     if (TRIALMODE) {
       buyItem = <li>
-        <a href='#' style={{color: '#6cace4'}} onClick={() => ipcRenderer.send('open-buy-window')} ><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</a>
+        <a href='#' style={{color: 'hsl(210, 83%, 53%)'}} onClick={() => ipcRenderer.send('open-buy-window')} ><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</a>
       </li>
     }
     return (
       <div>
         <nav className={klasses} role='navigation'>
-          <div className='navbar-header'>
-            <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='#navbar-collapse-1'>
-              <span className='sr-only'>{i18n('Toggle navigation')}</span>
-              <span className='icon-bar'></span>
-              <span className='icon-bar'></span>
-              <span className='icon-bar'></span>
-            </button>
-            {this.renderStoryName()}
-          </div>
           <div className='collapse navbar-collapse'>
+            <div className='navbar-header'>
+              <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='#navbar-collapse-1'>
+                <span className='sr-only'>{i18n('Toggle navigation')}</span>
+                <span className='icon-bar'></span>
+                <span className='icon-bar'></span>
+                <span className='icon-bar'></span>
+              </button>
+              {this.renderStoryName()}
+            </div>
             <ul className='nav navbar-nav'>
               <li className={this.isActive('timeline')}>
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('timeline')} >{i18n('Timeline')}</a>
@@ -102,6 +102,7 @@ class Navigation extends Component {
 
   renderEditingStoryName () {
     return <Input
+      className='navbar-brand story-name__input'
       type='text'
       defaultValue={this.props.storyName}
       ref='storyNameInput'

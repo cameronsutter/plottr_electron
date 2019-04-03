@@ -16,10 +16,17 @@
 @import "filter_list_block";
 
 @import "vars";
+@import "colors";
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
 // Give everything in 'yield' margin to separate it.
 #react-root {
   margin: 0px 0px 30px 20px;
+  animation: fadein 1.5s;
 }
 
 body {
@@ -35,32 +42,8 @@ h1, h2, h3, h4, h5, h6 {
   @include header-font;
 }
 
-h1 {
-  font-size: 28pt !important;
-}
-
-h2 {
-  font-size: 24pt !important;
-}
-
-h3 {
-  font-size: 20pt !important;
-}
-
 h3.popover-title {
   font-size: 12pt !important;
-}
-
-h4 {
-  font-size: 18pt !important;
-}
-
-h5 {
-  font-size: 16pt !important;
-}
-
-h6 {
-  font-size: 14pt !important;
 }
 
 .secondary-text {
@@ -86,7 +69,7 @@ h6 {
 }
 
 .glyphicon {
-  vertical-align: text-top;
+  vertical-align: baseline;
 }
 
 .glyphicon-ok {
@@ -94,8 +77,14 @@ h6 {
 }
 
 .navbar-brand {
-  border: 2px solid $brand-primary;
-  border-radius: 1px;
+  @include header-font;
+  font-size: 24px;
+}
+.nav.navbar-nav {
+  @include application-text;
+}
+.btn {
+  @include application-text;
 }
 
 .blue-background {

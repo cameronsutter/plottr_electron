@@ -33,6 +33,7 @@
   &:focus,
   &.focus {
     color: $btn-default-color;
+    background-color: $btn-default-hover-bg;
     text-decoration: none;
   }
 
@@ -66,26 +67,26 @@ a.btn {
 // --------------------------------------------------
 
 .btn-default {
-  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border);
+  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border, $btn-default-hover-bg);
 }
 .btn-primary {
-  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border, $btn-primary-hover-bg);
 }
 // Success appears as green
 .btn-success {
-  @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border);
+  @include button-variant($btn-success-color, $btn-success-bg, $btn-success-border, $btn-success-hover-bg);
 }
 // Info appears as blue-green
 .btn-info {
-  @include button-variant($btn-info-color, $btn-info-bg, $btn-info-border);
+  @include button-variant($btn-info-color, $btn-info-bg, $btn-info-border, $btn-info-hover-bg);
 }
 // Warning appears as orange
 .btn-warning {
-  @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border);
+  @include button-variant($btn-warning-color, $btn-warning-bg, $btn-warning-border, $btn-warning-hover-bg);
 }
 // Danger and error appear as red
 .btn-danger {
-  @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+  @include button-variant($btn-danger-color, $btn-danger-bg, $btn-danger-border, $btn-danger-hover-bg);
 }
 
 

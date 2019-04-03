@@ -361,7 +361,7 @@
         0,
         1
       ],
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. {{humor}} Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl. {{third place}}",
+      "description": "This is a description of something very funny happening in this scene\n\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. {{humor}} Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl. {{third place}}",
       "id": 145,
       "lineId": 27,
       "places": [
@@ -381,7 +381,7 @@
       "characters": [
         1
       ],
-      "description": "Valia, running out of power, finds a suitable vessel in princess Anna and makes a deal with Princess Anna to help bring  \nLorem ipsum dolor sit amet, consectetur adipiscing elit. {{sad}} In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. {{happy}} Maecenas euismod magna in tortor tempus ullamcorper.\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam {{scary}} et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.  ",
+      "description": "This is a description of a **really** funny thing happening in this scene\n\nValia, running out of power, finds a suitable vessel in princess Anna and makes a deal with Princess Anna to help bring  \nLorem ipsum dolor sit amet, consectetur adipiscing elit. {{sad}} In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. {{happy}} Maecenas euismod magna in tortor tempus ullamcorper.\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam {{scary}} et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.  ",
       "id": 146,
       "lineId": 27,
       "places": [],
@@ -629,7 +629,7 @@
     "dirty": true,
     "fileName": "/Users/cameron/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.3.31"
+    "version": "1.4.2"
   },
   "lines": [
     {

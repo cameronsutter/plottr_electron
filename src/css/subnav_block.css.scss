@@ -1,3 +1,4 @@
+@import "colors";
 
 .container-with-sub-nav {
   margin-top: 50px !important;
@@ -8,16 +9,14 @@
 }
 
 .subnav__container {
+  background-color: $gray-8;
+  border-radius: 0;
   position: fixed;
   top: 50px;
   left: 0px;
   width: 100%;
   z-index: 1000;
   min-height: 30px;
-
-  button span {
-    vertical-align: text-top;
-  }
 }
 
 .subnav__container.darkmode {
@@ -35,10 +34,6 @@
   }
 }
 
-.subnav__container__label {
-  vertical-align: text-top;
-}
-
 nav.subnav__container .container .nav li a {
   padding-top: 7px;
   padding-bottom: 7px;
@@ -48,4 +43,9 @@ nav.subnav__container .container .nav li a {
   display: inline;
   padding: 5px;
   margin: 0px 0px 0px 3px;
+}
+
+.story-name__input {
+  background-color: $gray-8;
+  border: none;
 }

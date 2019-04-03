@@ -1,11 +1,68 @@
-$brand-primary: #6cace4;
-$body-bg: #efefee;
-$text-color: #16222d; // or #0b1117
+@import "colors";
 
-$brand-success:         #78be20;
-$brand-info:            #6cace4; // or #ff7f32
-$brand-warning:         #ffc72c;
-$brand-danger:          #e5554f;
-$brand-orange:          #ff7f32;
+$body-bg:               $gray-9;
+$text-color:            $gray-0;
+
+$brand-primary:         $blue-5;
+$brand-success:         $green-5;
+$brand-info:            $orange-5;
+$brand-warning:         $yellow-5;
+$brand-danger:          $red-5;
+$brand-orange:          $orange-5;
+
+$gray-base:             $gray-0;
+$gray-darker:           $gray-1;
+$gray-dark:             $gray-3;
+$gray:                  $gray-5;
+$gray-light:            $gray-7;
+$gray-lighter:          $gray-9;
+
+//=== FontSize
+$font-size-h1:            28pt;
+$font-size-h2:            24pt;
+$font-size-h3:            20pt;
+$font-size-h4:            18pt;
+$font-size-h5:            16pt;
+$font-size-h6:            14pt;
+$headings-font-weight:    400;
+
+//=== Navbar
+$navbar-default-color:             $gray-8;
+$navbar-default-bg:                $gray-8;
+$navbar-default-border:            $gray-6;
+
+$navbar-default-link-active-color:         $blue-1;
+$navbar-default-link-active-bg:            $blue-9;
+
+// Navbar brand label
+$navbar-default-brand-color:               $blue-2;
+$navbar-default-brand-hover-color:         $blue-0;
+$navbar-default-brand-hover-bg:            transparent;
+
+
+//=== Inverted navbar
+// Reset inverted navbar basics
+$navbar-inverse-color:                      white;
+$navbar-inverse-bg:                         #444;
+$navbar-inverse-border:                     #333;
+
+$navbar-inverse-link-active-color:          $blue-1;
+$navbar-inverse-link-active-bg:             $blue-6;
+
+// Inverted navbar brand label
+$navbar-inverse-brand-color:                $blue-8;
+$navbar-inverse-brand-hover-color:          $blue-7;
+$navbar-inverse-brand-hover-bg:             transparent;
+
+//=== Buttons
+$btn-default-color:              $text-color;
+$btn-default-bg:                 white;
+$btn-default-border:             $gray-6;
+$btn-default-hover-bg:           $blue-9;
+
+
+//=== Popover
+$popover-max-width:   500px;
+$popover-title-bg:    $gray-9;
 
 @import "_bootstrap";

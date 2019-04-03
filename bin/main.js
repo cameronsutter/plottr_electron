@@ -476,7 +476,7 @@ function askToOpenFile () {
 
 function openWindow (fileName, newFile = false) {
   // Create the browser window.
-  let newWindow = new BrowserWindow({width: 1200, height: 800, show: false, backgroundColor: '#efefee', webPreferences: {scrollBounce: true}})
+  let newWindow = new BrowserWindow({width: 1200, height: 800, show: false, backgroundColor: '#f7f7f7', webPreferences: {scrollBounce: true}})
 
   newWindow.setProgressBar(0.1)
 

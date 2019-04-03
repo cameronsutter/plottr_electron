@@ -106,7 +106,7 @@ class VerifyView extends Component {
     })
     return (
       <div>
-        <h1 className='verify'><img src='../icons/logo_10_100.png' className='verify' height='100'/> {i18n('Welcome to Plottr')}</h1>
+        <h1 className='verify'><img src='../icons/logo_28_100.png' className='verify' height='100'/> {i18n('Welcome to Plottr')}</h1>
         <h2>{i18n('Please verify your license')}</h2>
         <p className='text-success'>{i18n('You should have received a license key from Gumroad.')}</p>
         <p className='text-muted'><small>{contact}</small></p>

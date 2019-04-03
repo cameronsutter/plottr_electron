@@ -36,8 +36,9 @@
   width: 80%;
   padding-left: 10px;
   overflow-y:scroll;
+  font-size: 20px;
   textarea {
-    font-size: 15px;
+    font-size: 20px;
   }
 }
 
@@ -54,6 +55,8 @@
 
 .card-dialog__select-line, .card-dialog__select-scene {
   margin-left: 5px !important;
+  @include user-text;
+  
 }
 
 .card-title-editor, .card-description-editor {
@@ -100,6 +103,6 @@
 
 .card-dialog__details-label {
   cursor: pointer;
-  @include sub-header-font;
+  @include application-text;
   min-width: 150px;
 }

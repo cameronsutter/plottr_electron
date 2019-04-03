@@ -28,6 +28,12 @@
   border: 3px solid black;
   border-radius: $border-radius;
   background: $card-background;
+  transition: all .6s $cubic;
+}
+
+.card__real:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 20px $shadow-1, 0 3px 6px $shadow-0;
 }
 
 .vertical-card__real {
@@ -86,7 +92,7 @@
 }
 
 .card__title {
-  padding: $padding;
+  padding: 5px 5px 5px 7px;
   height: $height;
   overflow: hidden;
   p {

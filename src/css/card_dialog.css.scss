@@ -1,4 +1,5 @@
 @import "vars";
+@import "colors";
 
 .card-dialog {
   height: 100%;
@@ -56,7 +57,7 @@
 .card-dialog__select-line, .card-dialog__select-scene {
   margin-left: 5px !important;
   @include user-text;
-  
+
 }
 
 .card-title-editor, .card-description-editor {
@@ -81,11 +82,11 @@
 }
 
 .card-dialog__button-bar {
-  margin-top: 10px;
   padding-top: 10px;
   display: flex;
   flex-direction: row-reverse;
-  border-top: 1px solid #eee;
+  border-top: 1px solid $gray-8;
+  min-height: 50px;
 }
 
 .card-dialog__delete {
@@ -102,7 +103,56 @@
 }
 
 .card-dialog__details-label {
-  cursor: pointer;
   @include application-text;
   min-width: 150px;
+}
+
+.editor-toolbar {
+  border-radius: 4px;
+  border: 1px solid $gray-5;
+  a {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none!important;
+    color: $gray-2!important;
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  a:hover {
+    text-decoration: none;
+    color: $gray-1!important;
+    border: 1px solid $gray-5;
+  }
+  .separator {
+    font-style: normal;
+    display: inline-block;
+    width: 0;
+    border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #fff;
+    color: transparent;
+    text-indent: -10px;
+    margin: 0 6px;
+  }
+}
+
+.CodeMirror-wrap {
+  border: 1px solid $gray-5;
+  border-top: none;
+  .CodeMirror-line {
+    background-color: white;
+    border: none;
+    color: $gray-0;
+  }
+  .CodeMirror-selectedtext {
+    background-color: $blue-8;
+  }
+
+  .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+    background: none;
+    border-bottom: 1px dotted $red-5;
+  }
 }

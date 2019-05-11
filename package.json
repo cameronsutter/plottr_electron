@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -46,7 +46,8 @@
     "react.pure.component": "^1.2.0",
     "redux": "^3.5.2",
     "request": "^2.74.0",
-    "rollbar": "^2.0.4"
+    "rollbar": "^2.0.4",
+    "simplemde": "^1.11.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

@@ -11,6 +11,7 @@ import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bo
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import SimpleMDE from 'simplemde'
 
 Modal.setAppElement('#timelineview-root')
 
@@ -19,12 +20,28 @@ const customStyles = {content: {top: '70px'}}
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    let editing = props.card.description == ''
-    this.state = {editing}
+    this.simplemde = null
   }
 
-  closeDialog = () => {
-    if (this.state.editing) this.saveEdit()
+  componentDidMount () {
+    window.SCROLLWITHKEYS = false
+    this.simplemde = new SimpleMDE({
+      element: this.refs.descriptionInput,
+      initialValue: this.props.card.description,
+      autofocus: true,
+      status: ['words'],
+      hideIcons: ['side-by-side', 'fullscreen'],
+      promptURLs: true,
+    })
+  }
+
+  componentWillUnmount () {
+    this.saveEdit()
+    window.SCROLLWITHKEYS = true
+  }
+
+  saveAndClose = () => {
+    this.saveEdit()
     this.props.closeDialog()
   }
 
@@ -35,16 +52,11 @@ class CardDialog extends Component {
     }
   }
 
-  startEdit = () => {
-    this.setState({editing: true})
-  }
-
   saveEdit = () => {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
-    var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
+    var newDescription = this.simplemde.value() || this.props.card.description
     this.saveCreatedLabels(newDescription)
     this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
-    this.setState({editing: false})
   }
 
   saveCreatedLabels (desc) {
@@ -111,88 +123,58 @@ class CardDialog extends Component {
   }
 
   renderButtonBar () {
-    if (this.state.editing) {
-      return (
-        <ButtonToolbar className='card-dialog__button-bar'>
-          <Button onClick={() => this.setState({editing: false})}>
-            {i18n('Cancel')}
-          </Button>
-          <Button onClick={this.saveEdit}>
-            {i18n('Save')}
-          </Button>
-          <Button bsStyle='success' onClick={this.closeDialog}>
-            {i18n('Save & Close')}
-          </Button>
-          <Button className='card-dialog__delete'
-            onClick={this.deleteCard} >
-            {i18n('Delete')}
-          </Button>
-        </ButtonToolbar>
-      )
-    } else {
-      return (
-        <ButtonToolbar className='card-dialog__button-bar'>
-          <Button className='card-dialog__close'
-            onClick={this.closeDialog}>
-            {i18n('Close')}
-          </Button>
-          <Button className='card-dialog__edit'
-            bsStyle='success'
-            onClick={this.startEdit}>
-            {i18n('Edit')}
-          </Button>
-          <Button className='card-dialog__delete'
-            onClick={this.deleteCard} >
-            {i18n('Delete')}
-          </Button>
-        </ButtonToolbar>
-      )
-    }
+    return (
+      <ButtonToolbar className='card-dialog__button-bar'>
+        <Button onClick={this.props.closeDialog}>
+          {i18n('Cancel')}
+        </Button>
+        <Button bsStyle='success' onClick={this.saveAndClose}>
+          {i18n('Save')}
+        </Button>
+        <Button className='card-dialog__delete' onClick={this.deleteCard} >
+          {i18n('Delete')}
+        </Button>
+      </ButtonToolbar>
+    )
   }
 
   renderTitle () {
     var title = this.props.card.title
-    if (this.state.editing) {
-      return <Input
-        style={{fontSize: '24pt'}}
-        onKeyPress={this.handleEnter}
-        type='text' autoFocus
-        ref='titleInput'
-        defaultValue={title} />
-    } else {
-      return (
-        <div
-          onClick={() => this.setState({editing: true})}
-          className='card-dialog__title'>
-          <h2 className='card-title-editor__display'>
-            {title}
-          </h2>
-        </div>
-      )
-    }
+    return <Input
+      style={{fontSize: '24pt'}}
+      onKeyPress={this.handleEnter}
+      type='text' autoFocus
+      ref='titleInput'
+      defaultValue={title}
+    />
   }
 
   renderDescription () {
     var description = this.props.card.description
 
-    if (this.state.editing) {
-      const url = 'https://daringfireball.net/projects/markdown/syntax'
-      return (
-        <div>
-          <Input type='textarea' rows='20' ref='descriptionInput' defaultValue={description} />
-          <small>{i18n('Format with markdown!')} <a href='#' onClick={() => shell.openExternal(url)}>{i18n('learn how')}</a></small>
-        </div>
-      )
-    } else {
-      return (
-        <MDdescription
-          description={description}
-          onClick={() => this.setState({editing: true})}
-          labels={this.props.labelMap}
-          darkMode={this.props.ui.darkMode}
-        />
-      )
-    }
+    return <textarea rows='20' ref='descriptionInput' />
+
+    // darkmode?
+    // link to syntax?
+
+    // if (this.state.editing) {
+    //   const url = 'https://daringfireball.net/projects/markdown/syntax'
+    //   return (
+    //     <div>
+    //       <Input type='textarea' rows='20' ref='descriptionInput' defaultValue={description} />
+    //       <small>{i18n('Format with markdown!')} <a href='#' onClick={() => shell.openExternal(url)}>{i18n('learn how')}</a></small>
+    //     </div>
+    //   )
+    // } else {
+    //   return (
+    //     <MDdescription
+    //       description={description}
+    //       onClick={() => this.setState({editing: true})}
+    //       labels={this.props.labelMap}
+    //       darkMode={this.props.ui.darkMode}
+    //     />
+    //   )
+    // }
   }
 
   renderLeftSide () {
@@ -240,26 +222,19 @@ class CardDialog extends Component {
   }
 
   render () {
-    if (this.state.editing) {
-      window.SCROLLWITHKEYS = false
-    } else {
-      window.SCROLLWITHKEYS = true
-    }
     let klasses = 'card-dialog'
     if (this.props.ui.darkMode) {
       klasses += ' darkmode'
       customStyles.content.backgroundColor = '#888'
     }
     return (
-      <Modal isOpen={true} onRequestClose={this.closeDialog} style={customStyles}>
+      <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
         <div className={klasses}>
           {this.renderTitle()}
           <div className='card-dialog__body'>
             {this.renderLeftSide()}
             <div className='card-dialog__description'>
-              <p
-                onClick={() => this.setState({editing: true})}
-                className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
+              <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
               {this.renderDescription()}
             </div>
           </div>

@@ -381,10 +381,12 @@
       "characters": [
         1
       ],
-      "description": "This is a description of a **really** funny thing happening in this scene\n\nValia, running out of power, finds a suitable vessel in princess Anna and makes a deal with Princess Anna to help bring  \nLorem ipsum dolor sit amet, consectetur adipiscing elit. {{sad}} In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. {{happy}} Maecenas euismod magna in tortor tempus ullamcorper.\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam {{scary}} et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.  ",
+      "description": "This is a description of a **really** funny thing happening in this scene\n\nValia, running out of power, finds a suitable vessel in princess Anna and makes a deal with Princess Anna to help bring  \nLorem ipsum dolor sit amet, consectetur adipiscing elit. {{sad}} In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. {{happy}} Maecenas euismod magna in tortor tempus ullamcorper. {{main character}}\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam {{scary}} et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.  \n\n- this is\n- is a \n- list",
       "id": 146,
       "lineId": 27,
-      "places": [],
+      "places": [
+        2
+      ],
       "sceneId": 99,
       "tags": [
         0,
@@ -496,7 +498,7 @@
       "places": [
         0
       ],
-      "sceneId": 68,
+      "sceneId": 61,
       "tags": [
         2,
         5,
@@ -606,6 +608,7 @@
       "cards": [],
       "color": null,
       "description": "my fav",
+      "family": "X",
       "id": 5,
       "name": "best character",
       "noteIds": [],
@@ -617,7 +620,8 @@
     "cards": [],
     "characters": [
       "age",
-      "race"
+      "race",
+      "family"
     ],
     "lines": [],
     "places": [
@@ -629,7 +633,7 @@
     "dirty": true,
     "fileName": "/Users/cameron/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.4.2"
+    "version": "1.4.4"
   },
   "lines": [
     {
@@ -731,7 +735,7 @@
       ],
       "content": "not really",
       "id": 4,
-      "lastEdited": 1540681046804,
+      "lastEdited": 1555174612626,
       "places": [],
       "tags": [],
       "title": "something cool"
@@ -779,7 +783,8 @@
     },
     {
       "cards": [
-        145
+        145,
+        146
       ],
       "color": null,
       "description": "",
@@ -807,203 +812,208 @@
       "title": "2 years ago"
     },
     {
-      "id": 68,
+      "id": 107,
       "position": 3,
+      "title": "5 years ago"
+    },
+    {
+      "id": 68,
+      "position": 4,
       "title": "Chapter 1: The Storm of Destiny"
     },
     {
       "id": 61,
-      "position": 4,
+      "position": 5,
       "title": "Opening Scene (1)"
     },
     {
       "id": 67,
-      "position": 5,
+      "position": 6,
       "title": "Scene 2"
     },
     {
       "id": 66,
-      "position": 6,
+      "position": 7,
       "title": "Scene 3"
     },
     {
       "id": 69,
-      "position": 7,
+      "position": 8,
       "title": "Chapter 2: Rivalia"
     },
     {
       "id": 64,
-      "position": 8,
+      "position": 9,
       "title": "Scene 4"
     },
     {
       "id": 71,
-      "position": 9,
+      "position": 10,
       "title": "Scene 5"
     },
     {
       "id": 76,
-      "position": 10,
+      "position": 11,
       "title": "Scene 6"
     },
     {
       "id": 90,
-      "position": 11,
+      "position": 12,
       "title": "Scene 7"
     },
     {
       "id": 83,
-      "position": 12,
+      "position": 13,
       "title": "Scene 8"
     },
     {
       "id": 72,
-      "position": 13,
+      "position": 14,
       "title": "Chapter 3: The New Dark Lord"
     },
     {
       "id": 78,
-      "position": 14,
+      "position": 15,
       "title": "Scene 9"
     },
     {
       "id": 100,
-      "position": 15,
+      "position": 16,
       "title": "Scene 10"
     },
     {
       "id": 65,
-      "position": 16,
+      "position": 17,
       "title": "Scene 11"
     },
     {
       "id": 73,
-      "position": 17,
-      "title": "Scene"
-    },
-    {
-      "id": 70,
       "position": 18,
       "title": "Scene"
     },
     {
-      "id": 74,
+      "id": 70,
       "position": 19,
       "title": "Scene"
     },
     {
-      "id": 75,
+      "id": 74,
       "position": 20,
       "title": "Scene"
     },
     {
-      "id": 77,
+      "id": 75,
       "position": 21,
       "title": "Scene"
     },
     {
-      "id": 79,
+      "id": 77,
       "position": 22,
       "title": "Scene"
     },
     {
-      "id": 81,
+      "id": 79,
       "position": 23,
       "title": "Scene"
     },
     {
-      "id": 82,
+      "id": 81,
       "position": 24,
+      "title": "Scene"
+    },
+    {
+      "id": 82,
+      "position": 25,
       "title": "Midpoint"
     },
     {
       "id": 89,
-      "position": 25,
-      "title": "Scene"
-    },
-    {
-      "id": 85,
       "position": 26,
       "title": "Scene"
     },
     {
-      "id": 86,
+      "id": 85,
       "position": 27,
       "title": "Scene"
     },
     {
-      "id": 87,
+      "id": 86,
       "position": 28,
       "title": "Scene"
     },
     {
-      "id": 88,
+      "id": 87,
       "position": 29,
       "title": "Scene"
     },
     {
-      "id": 84,
+      "id": 88,
       "position": 30,
       "title": "Scene"
     },
     {
-      "id": 101,
+      "id": 84,
       "position": 31,
       "title": "Scene"
     },
     {
-      "id": 92,
+      "id": 101,
       "position": 32,
       "title": "Scene"
     },
     {
-      "id": 93,
+      "id": 92,
       "position": 33,
+      "title": "Scene"
+    },
+    {
+      "id": 93,
+      "position": 34,
       "title": "Darkest Moment"
     },
     {
       "id": 103,
-      "position": 34,
+      "position": 35,
       "title": "Click to Edit"
     },
     {
       "id": 91,
-      "position": 35,
-      "title": "Scene"
-    },
-    {
-      "id": 102,
       "position": 36,
       "title": "Scene"
     },
     {
-      "id": 95,
+      "id": 102,
       "position": 37,
+      "title": "Scene"
+    },
+    {
+      "id": 95,
+      "position": 38,
       "title": "Climax"
     },
     {
       "id": 94,
-      "position": 38,
+      "position": 39,
       "title": "Scene"
     },
     {
       "id": 80,
-      "position": 39,
+      "position": 40,
       "title": "Finale"
     },
     {
       "id": 104,
-      "position": 40,
+      "position": 41,
       "title": "1st"
     },
     {
       "id": 96,
-      "position": 41,
+      "position": 42,
       "title": "2nd"
     },
     {
       "id": 106,
-      "position": 42,
+      "position": 43,
       "title": "scene 44"
     }
   ],
@@ -1073,9 +1083,10 @@
   "ui": {
     "characterFilter": {
       "age": [],
+      "family": [],
       "race": []
     },
-    "characterSort": "name~asc",
+    "characterSort": "age~asc",
     "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,

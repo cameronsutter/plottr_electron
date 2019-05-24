@@ -8,7 +8,9 @@ import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import * as CharacterActions from 'actions/characters'
 import * as CustomAttributeActions from 'actions/customAttributes'
+import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
+import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
@@ -58,7 +60,7 @@ class CharacterListView extends Component {
       visible = []
       characters.forEach(ch => {
         Object.keys(filter).forEach(attr => {
-          filter[attr].forEach(val => {
+          filter[attr.split(':#:')[0]].forEach(val => {
             if (val == '') {
               if (!ch[attr] || ch[attr] == '') visible.push(ch)
             } else {
@@ -98,8 +100,9 @@ class CharacterListView extends Component {
 
   filterIsEmpty = (filter) => {
     if (!filter) return true
-    let numFiltered = this.props.customAttributes.reduce((num, attrs) => {
-      num += filter[attrs].length
+    let numFiltered = this.props.customAttributes.reduce((num, attr) => {
+      let attrName = attr.split(':#:')[0]
+      if (filter[attrName]) num += filter[attrName].length
       return num
     }, 0)
     return numFiltered == 0
@@ -127,14 +130,20 @@ class CharacterListView extends Component {
   saveAttr = () => {
     const attr = this.refs.attrInput.getValue()
     this.props.customAttributeActions.addCharacterAttr(attr)
+
     this.setState({addAttrText: ''})
     var input = this.refs.attrInput.getInputDOMNode()
     input.focus()
   }
 
-  removeAttr (attr) {
+  removeAttr = (attr) => {
     this.props.customAttributeActions.removeCharacterAttr(attr)
     this.setState({addAttrText: this.state.addAttrText}) // no op
+  }
+
+  updateAttr = (index, attr) => {
+    let old = this.props.customAttributes[index]
+    this.props.customAttributeActions.editCharacterAttr(index, attr, old)
   }
 
   renderSubNav () {
@@ -203,12 +212,7 @@ class CharacterListView extends Component {
   }
 
   renderCustomAttributes () {
-    const attrs = this.props.customAttributes.map((attr, idx) =>
-      <li className='list-group-item' key={idx}>
-        <p className='character-list__attribute-name'>{attr}</p>
-        <Button onClick={() => this.removeAttr(attr)}><Glyphicon glyph='remove'/></Button>
-      </li>
-    )
+    const attrs = this.props.customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr}/> )
     let klasses = 'custom-attributes__wrapper'
     if (this.props.ui.darkMode) {
       klasses += ' darkmode'
@@ -270,7 +274,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     actions: bindActionCreators(CharacterActions, dispatch),
-    customAttributeActions: bindActionCreators(CustomAttributeActions, dispatch)
+    customAttributeActions: bindActionCreators(CustomAttributeActions, dispatch),
+    uiActions: bindActionCreators(UIActions, dispatch),
   }
 }
 

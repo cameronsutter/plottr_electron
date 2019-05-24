@@ -1,10 +1,13 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
   SET_DARK_MODE, SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
-  SET_PLACE_FILTER } from '../constants/ActionTypes'
+  SET_PLACE_FILTER, ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
+  REMOVE_CHARACTER_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE,
+  EDIT_PLACES_ATTRIBUTE } from '../constants/ActionTypes'
 import { ui as defaultUI } from 'store/initialState'
 import { newFileUI } from 'store/newFileState'
 
 export default function ui (state = defaultUI, action) {
+  let filter;
   switch (action.type) {
     case CHANGE_CURRENT_VIEW:
       return Object.assign({}, state, {currentView: action.view})
@@ -23,6 +26,35 @@ export default function ui (state = defaultUI, action) {
 
     case SET_CHARACTER_FILTER:
       return Object.assign({}, state, {characterFilter: action.filter})
+
+    case ADD_CHARACTER_ATTRIBUTE:
+      filter = {...state.characterFilter}
+      filter[action.attribute] = []
+      return Object.assign({}, state, {characterFilter: filter})
+    case ADD_PLACES_ATTRIBUTE:
+      filter = {...state.placeFilter}
+      filter[action.attribute] = []
+      return Object.assign({}, state, {placeFilter: filter})
+
+    case REMOVE_CHARACTER_ATTRIBUTE:
+      filter = {...state.characterFilter}
+      delete filter[action.attribute.split(':#:')]
+      return Object.assign({}, state, {characterFilter: filter})
+    case REMOVE_PLACES_ATTRIBUTE:
+      filter = {...state.placeFilter}
+      delete filter[action.attribute.split(':#:')]
+      return Object.assign({}, state, {placeFilter: filter})
+
+    case EDIT_CHARACTER_ATTRIBUTE:
+      filter = {...state.characterFilter}
+      delete filter[action.old]
+      filter[action.attribute.split(':#:')] = []
+      return Object.assign({}, state, {characterFilter: filter})
+    case EDIT_PLACES_ATTRIBUTE:
+      filter = {...state.placeFilter}
+      delete filter[action.old]
+      filter[action.attribute.split(':#:')] = []
+      return Object.assign({}, state, {placeFilter: filter})
 
     case SET_PLACE_FILTER:
       return Object.assign({}, state, {placeFilter: action.filter})

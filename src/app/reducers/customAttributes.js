@@ -2,7 +2,9 @@ import { ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   ADD_CARDS_ATTRIBUTE, ADD_LINES_ATTRIBUTE,
   ADD_SCENES_ATTRIBUTE, REMOVE_CHARACTER_ATTRIBUTE,
   REMOVE_CARDS_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, REMOVE_LINES_ATTRIBUTE,
-  REMOVE_SCENES_ATTRIBUTE, RESET, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+  REMOVE_SCENES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE, EDIT_PLACES_ATTRIBUTE,
+  EDIT_CARDS_ATTRIBUTE, EDIT_LINES_ATTRIBUTE, EDIT_SCENES_ATTRIBUTE,
+  RESET, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { combineReducers } from 'redux'
 import { newFileCustomAttributes } from 'store/newFileState'
 
@@ -15,6 +17,11 @@ function characters (state = [], action) {
       return state.filter(attr =>
         attr !== action.attribute
       )
+
+    case EDIT_CHARACTER_ATTRIBUTE:
+      let newState = [...state]
+      newState[action.index] = action.attribute
+      return newState
 
     case NEW_FILE:
       return newFileCustomAttributes['characters']
@@ -37,6 +44,11 @@ function places (state = [], action) {
         attr !== action.attribute
       )
 
+    case EDIT_PLACES_ATTRIBUTE:
+      let newState = [...state]
+      newState[action.index] = action.attribute
+      return newState
+
     case NEW_FILE:
       return newFileCustomAttributes['places']
 
@@ -56,6 +68,11 @@ function cards (state = [], action) {
     case REMOVE_CARDS_ATTRIBUTE:
       state.splice(state.indexOf(action.attribute), 1)
       return [...state]
+
+    case EDIT_CARDS_ATTRIBUTE:
+      let newState = [...state]
+      newState[action.index] = action.attribute
+      return newState
 
     case NEW_FILE:
       return newFileCustomAttributes['cards']
@@ -77,6 +94,11 @@ function scenes (state = [], action) {
       state.splice(state.indexOf(action.attribute), 1)
       return [...state]
 
+    case EDIT_SCENES_ATTRIBUTE:
+      let newState = [...state]
+      newState[action.index] = action.attribute
+      return newState
+
     case NEW_FILE:
       return newFileCustomAttributes['scenes']
 
@@ -96,6 +118,11 @@ function lines (state = [], action) {
     case REMOVE_LINES_ATTRIBUTE:
       state.splice(state.indexOf(action.attribute), 1)
       return [...state]
+
+    case EDIT_LINES_ATTRIBUTE:
+      let newState = [...state]
+      newState[action.index] = action.attribute
+      return newState
 
     case NEW_FILE:
       return newFileCustomAttributes['lines']

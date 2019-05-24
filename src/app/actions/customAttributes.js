@@ -2,7 +2,8 @@ import { ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   ADD_CARDS_ATTRIBUTE, ADD_LINES_ATTRIBUTE,
   ADD_SCENES_ATTRIBUTE, REMOVE_CHARACTER_ATTRIBUTE,
   REMOVE_PLACES_ATTRIBUTE, REMOVE_CARDS_ATTRIBUTE,
-  REMOVE_LINES_ATTRIBUTE, REMOVE_SCENES_ATTRIBUTE } from '../constants/ActionTypes'
+  REMOVE_LINES_ATTRIBUTE, REMOVE_SCENES_ATTRIBUTE,
+  EDIT_CHARACTER_ATTRIBUTE } from '../constants/ActionTypes'
 
 export function addCharacterAttr (attribute) {
   return { type: ADD_CHARACTER_ATTRIBUTE, attribute }
@@ -10,6 +11,10 @@ export function addCharacterAttr (attribute) {
 
 export function removeCharacterAttr (attribute) {
   return { type: REMOVE_CHARACTER_ATTRIBUTE, attribute}
+}
+
+export function editCharacterAttr (index, attribute, old) {
+  return { type: EDIT_CHARACTER_ATTRIBUTE, index, attribute, old}
 }
 
 export function addPlaceAttr (attribute) {

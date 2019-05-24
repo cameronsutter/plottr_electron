@@ -49,13 +49,14 @@ class CharacterView extends Component {
   }
 
   renderEditingCustomAttributes () {
-    return this.props.customAttributes.map((attr, idx) =>
-      <Input key={idx}
-        type='text' label={attr} ref={`${attr}Input`}
-        defaultValue={this.props.character[attr]}
+    return this.props.customAttributes.map((attr, idx) => {
+      let val = attr.split(':#:')[0]
+      return <Input key={idx}
+        type='text' label={val} ref={`${val}Input`}
+        defaultValue={this.props.character[val]}
         onKeyDown={this.handleEsc}
         onKeyPress={this.handleEnter} />
-    )
+    })
   }
 
   renderEditing () {
@@ -128,7 +129,7 @@ class CharacterView extends Component {
     }, []).join(', ')
     let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
-      <span>{this.props.character.cards.length} {label}</span>
+      <span>{label}</span>
     </OverlayTrigger>
   }
 
@@ -145,7 +146,7 @@ class CharacterView extends Component {
     }, []).join(', ')
     let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
-      <span>{this.props.character.noteIds.length} {label}</span>
+      <span>{label}</span>
     </OverlayTrigger>
   }
 

@@ -633,7 +633,7 @@
     "dirty": true,
     "fileName": "/Users/cameron/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.4.4"
+    "version": "1.4.6"
   },
   "lines": [
     {
@@ -1086,8 +1086,8 @@
       "family": [],
       "race": []
     },
-    "characterSort": "age~asc",
-    "currentView": "timeline",
+    "characterSort": "name~asc",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

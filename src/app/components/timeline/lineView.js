@@ -43,7 +43,7 @@ class LineView extends Component {
   }
 
   verticalHeight () {
-    return 66 + 25
+    return 66 + 30.5
   }
 
   width () {

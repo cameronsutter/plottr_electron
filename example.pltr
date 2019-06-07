@@ -361,7 +361,7 @@
         0,
         1
       ],
-      "description": "This is a description of something very funny happening in this scene\n\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. {{humor}} Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl. {{third place}}",
+      "description": "This is a description of something **very** funny happening in this scene\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. {{humor}} Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl. {{third place}}",
       "id": 145,
       "lineId": 27,
       "places": [
@@ -572,6 +572,7 @@
       ],
       "color": null,
       "description": "she is the coolest",
+      "family": "",
       "id": 1,
       "name": "main character",
       "noteIds": [
@@ -586,6 +587,7 @@
       "cards": [],
       "color": null,
       "description": "she is the coolest",
+      "family": "",
       "id": 0,
       "name": "second character",
       "noteIds": [],
@@ -597,6 +599,7 @@
       "cards": [],
       "color": null,
       "description": "nothing big",
+      "family": "",
       "id": 2,
       "name": "third character",
       "noteIds": [],
@@ -608,7 +611,7 @@
       "cards": [],
       "color": null,
       "description": "my fav",
-      "family": "X",
+      "family": "The **best** family",
       "id": 5,
       "name": "best character",
       "noteIds": [],
@@ -621,7 +624,7 @@
     "characters": [
       "age",
       "race",
-      "family"
+      "family:#:paragraph"
     ],
     "lines": [],
     "places": [
@@ -633,7 +636,7 @@
     "dirty": true,
     "fileName": "/Users/cameron/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.4.6"
+    "version": "1.4.7"
   },
   "lines": [
     {
@@ -643,22 +646,22 @@
       "title": "Main Story Arc"
     },
     {
-      "color": "#78be20",
-      "id": 28,
-      "position": 1,
-      "title": "Samuel Zorfert"
-    },
-    {
       "color": "#e5554f",
       "id": 29,
-      "position": 2,
+      "position": 1,
       "title": "Kevan"
     },
     {
       "color": "#ff7f32",
       "id": 33,
-      "position": 3,
+      "position": 2,
       "title": "Anna"
+    },
+    {
+      "color": "#78be20",
+      "id": 28,
+      "position": 3,
+      "title": "Samuel Zorfert"
     },
     {
       "color": "darkorchid",
@@ -720,9 +723,9 @@
     },
     {
       "characters": [],
-      "content": "This is a great place",
+      "content": "This is a great place, really",
       "id": 3,
-      "lastEdited": 1507303062496,
+      "lastEdited": 1559310452951,
       "places": [
         0
       ],
@@ -733,9 +736,9 @@
       "characters": [
         1
       ],
-      "content": "not really",
+      "content": "not really, but oh yes it is",
       "id": 4,
-      "lastEdited": 1555174612626,
+      "lastEdited": 1559569582486,
       "places": [],
       "tags": [],
       "title": "something cool"
@@ -746,7 +749,7 @@
       ],
       "content": "here is some note content",
       "id": 5,
-      "lastEdited": 1507301820727,
+      "lastEdited": 1559570167467,
       "places": [
         2
       ],
@@ -807,14 +810,14 @@
       "title": "6 Years Ago"
     },
     {
-      "id": 99,
+      "id": 107,
       "position": 2,
-      "title": "2 years ago"
+      "title": "5 years ago"
     },
     {
-      "id": 107,
+      "id": 99,
       "position": 3,
-      "title": "5 years ago"
+      "title": "2 years ago"
     },
     {
       "id": 68,
@@ -1083,15 +1086,17 @@
   "ui": {
     "characterFilter": {
       "age": [],
-      "family": [],
-      "race": []
+      "age,paragraph": [],
+      "family,paragraph": [],
+      "race": [],
+      "race,paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "horizontal",
+    "orientation": "vertical",
     "placeFilter": null,
     "placeSort": "name~asc"
   }

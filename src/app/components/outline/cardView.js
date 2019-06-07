@@ -12,7 +12,7 @@ import i18n from 'format-message'
 class CardView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false}
+    this.state = {editing: false, description: props.card.description}
   }
 
   line () {
@@ -25,7 +25,7 @@ class CardView extends Component {
 
   saveEdit = () => {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
-    var newDescription = this.refs.descriptionInput.getValue() || this.props.card.description
+    var newDescription = this.state.description
     this.saveCreatedLabels(newDescription)
     this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
     this.setState({editing: false})
@@ -62,6 +62,10 @@ class CardView extends Component {
     }
   }
 
+  editOnClick = () => {
+    if (!this.state.editing) this.setState({editing: true})
+  }
+
   renderTitle () {
     const { title } = this.props.card
 
@@ -79,36 +83,28 @@ class CardView extends Component {
 
   renderDescription () {
     const { description } = this.props.card
-    if (this.state.editing) {
-      const url = 'https://daringfireball.net/projects/markdown/syntax'
-      return (
-        <div className='outline__description__editing'>
-          <Input type='textarea' label={i18n('description')} rows='15'
-            ref='descriptionInput' defaultValue={description}
-            onKeyDown={this.handleEsc}
-            />
-          <small>{i18n('Format with markdown!')} <a href='#' onClick={() => shell.openExternal(url)}>{i18n('learn how')}</a></small>
-          <ButtonToolbar className='card-dialog__button-bar'>
-            <Button
-              onClick={() => this.setState({editing: false})} >
-              {i18n('Cancel')}
-            </Button>
-            <Button bsStyle='success'
-              onClick={this.saveEdit}>
-              {i18n('Save')}
-            </Button>
-          </ButtonToolbar>
-        </div>
-      )
-    } else {
-      return <MDdescription
-        className='outline__description'
-        onClick={() => this.setState({editing: true})}
-        description={description}
-        labels={this.props.labelMap}
-        darkMode={this.props.ui.darkMode}
-      />
-    }
+    return (
+      <div className='outline__description__editing' onClick={this.editOnClick}>
+        <MDdescription
+          className='outline__description'
+          onChange={(desc) => this.setState({description: desc})}
+          description={description}
+          useRCE={this.state.editing}
+          labels={this.props.labelMap}
+          darkMode={this.props.ui.darkMode}
+        />
+        {this.state.editing && <ButtonToolbar className='card-dialog__button-bar'>
+          <Button
+            onClick={() => this.setState({editing: false})} >
+            {i18n('Cancel')}
+          </Button>
+          <Button bsStyle='success'
+            onClick={this.saveEdit}>
+            {i18n('Save')}
+          </Button>
+        </ButtonToolbar>}
+      </div>
+    )
   }
 
   renderTags () {

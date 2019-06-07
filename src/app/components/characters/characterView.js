@@ -4,12 +4,22 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button, Input, Label, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
+import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 
 class CharacterView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.character.name === ''}
+    let description = {}
+    props.customAttributes.forEach(attr => {
+      const [attrName, attrType] = attr.split(':#:')
+      description[attrName] = props.character[attrName]
+    })
+    this.state = {
+      editing: props.character.name === '',
+      notes: props.character.notes,
+      description: description
+    }
   }
 
   componentWillUnmount () {
@@ -28,14 +38,27 @@ class CharacterView extends Component {
     }
   }
 
+  handleAttrDescriptionChange = (attrName, desc) => {
+    let description = {
+      ...this.state.description
+    }
+    description[attrName] = desc
+    this.setState({description: description})
+  }
+
   saveEdit = () => {
     var name = this.refs.nameInput.getValue() || this.props.character.name
     var description = this.refs.descriptionInput.getValue()
-    var notes = this.refs.notesInput.getValue()
+    var notes = this.state.notes
     var attrs = {}
     this.props.customAttributes.forEach(attr => {
-      const val = this.refs[`${attr}Input`].getValue()
-      attrs[attr] = val
+      const [attrName, attrType] = attr.split(':#:')
+      if (attrType == 'paragraph') {
+        attrs[attrName] = this.state.description[attrName]
+      } else {
+        const val = this.refs[`${attr}Input`].getValue()
+        attrs[attr] = val
+      }
     })
     this.props.actions.editCharacter(this.props.character.id, {name, description, notes, ...attrs})
     this.setState({editing: false})
@@ -50,12 +73,25 @@ class CharacterView extends Component {
 
   renderEditingCustomAttributes () {
     return this.props.customAttributes.map((attr, idx) => {
-      let val = attr.split(':#:')[0]
-      return <Input key={idx}
-        type='text' label={val} ref={`${val}Input`}
-        defaultValue={this.props.character[val]}
-        onKeyDown={this.handleEsc}
-        onKeyPress={this.handleEnter} />
+      const [attrName, attrType] = attr.split(':#:')
+      if (attrType == 'paragraph') {
+        return <div key={idx}>
+          <label>{attrName}</label>
+          <MDdescription
+            description={this.props.character[attrName]}
+            onChange={(desc) => this.handleAttrDescriptionChange(attrName, desc)}
+            useRCE={true}
+            labels={{}}
+            darkMode={false}
+          />
+        </div>
+      } else {
+        return <Input key={idx}
+          type='text' label={attrName} ref={`${attrName}Input`}
+          defaultValue={this.props.character[attrName]}
+          onKeyDown={this.handleEsc}
+          onKeyPress={this.handleEnter} />
+      }
     })
   }
 
@@ -69,14 +105,19 @@ class CharacterView extends Component {
               type='text' ref='nameInput' autoFocus
               onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
-              label='Name' defaultValue={character.name} />
+              label={i18n('Name')} defaultValue={character.name} />
             <Input type='text' ref='descriptionInput'
               onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
-              label='Short Description' defaultValue={character.description} />
-            <Input type='textarea' rows='10' ref='notesInput'
-              onKeyDown={this.handleEsc}
-              label='Notes' defaultValue={character.notes} />
+              label={i18n('Short Description')} defaultValue={character.description} />
+            <label>{i18n('Notes')}</label>
+            <MDdescription
+              description={character.notes}
+              onChange={(desc) => this.setState({notes: desc})}
+              useRCE={true}
+              labels={{}}
+              darkMode={false}
+            />
           </div>
           <div className='character-list__inputs__custom'>
             {this.renderEditingCustomAttributes()}
@@ -154,12 +195,23 @@ class CharacterView extends Component {
     let klasses = 'character-list__character'
     if (this.props.ui.darkMode) klasses += ' darkmode'
     const { character } = this.props
-    const details = this.props.customAttributes.map((attr, idx) =>
-      <dl key={idx} className='dl-horizontal'>
-        <dt>{attr}</dt>
-        <dd>{character[attr]}</dd>
+    const details = this.props.customAttributes.map((attr, idx) => {
+      const [attrName, attrType] = attr.split(':#:')
+      let desc = <dd>{character[attrName]}</dd>
+      if (attrType == 'paragraph') {
+        desc = <dd>
+          <MDdescription
+            description={character[attrName] || ''}
+            labels={{}}
+            darkMode={false}
+          />
+        </dd>
+      }
+      return <dl key={idx} className='dl-horizontal'>
+        <dt>{attrName}</dt>
+        {desc}
       </dl>
-    )
+    })
     return (
       <div className={klasses} onClick={() => this.setState({editing: true})}>
         <h4 className='text-center secondary-text'>{character.name}</h4>

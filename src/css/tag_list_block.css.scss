@@ -4,6 +4,7 @@
   margin: 10px;
   h3 {
     text-align: center;
+    @include application-text;
   }
 }
 

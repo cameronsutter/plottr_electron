@@ -1,23 +1,21 @@
 import _ from 'lodash'
-import MarkDown from 'pagedown'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button, Input, Label, Glyphicon } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
+import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
-
-const md = MarkDown.getSanitizingConverter()
 
 class NoteView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.note.title === ''}
+    this.state = {content: props.note.content, hide: false}
   }
 
   componentWillUnmount () {
-    if (this.state.editing) this.saveEdit()
+    if (!this.state.hide) this.setState({hide: true})
   }
 
   handleEnter = (event) => {
@@ -34,9 +32,8 @@ class NoteView extends Component {
 
   saveEdit = () => {
     var title = this.refs.titleInput.getValue() || this.props.note.title
-    var content = this.refs.contentInput.getValue() || this.props.note.content
+    var content = this.state.content
     this.props.actions.editNote(this.props.note.id, {title, content})
-    this.setState({editing: false})
   }
 
   deleteNote = () => {
@@ -48,50 +45,45 @@ class NoteView extends Component {
 
   renderContent () {
     const { note } = this.props
-    if (this.state.editing) {
-      return (
-        <div className='note-list__content editing'>
-          <div className='note-list__note__edit-form'>
-            <Input
-              type='text' ref='titleInput' autoFocus
-              onKeyDown={this.handleEsc}
-              onKeyPress={this.handleEnter}
-              label={i18n('Title')} defaultValue={note.title} />
-            <Input type='textarea' rows='10' ref='contentInput'
-              onKeyDown={this.handleEsc}
-              label={i18n('Content')} defaultValue={note.content} />
-          </div>
-          <ButtonToolbar className='card-dialog__button-bar'>
-            <Button
-              onClick={() => this.setState({editing: false})} >
-            Cancel
-            </Button>
-            <Button bsStyle='success'
-              onClick={this.saveEdit} >
-            {i18n('Save')}
-            </Button>
-            <Button className='card-dialog__delete'
-              onClick={this.deleteNote} >
-              {i18n('Delete')}
-            </Button>
-          </ButtonToolbar>
+    return (
+      <div className='note-list__content editing'>
+        <div className='note-list__note__edit-form'>
+          <Input
+            type='text' ref='titleInput' autoFocus
+            onKeyDown={this.handleEsc}
+            onKeyPress={this.handleEnter}
+            onChange={() => this.setState({unsaved: true})}
+            label={i18n('Title')} defaultValue={note.title} />
+          <MDdescription
+            description={note.content}
+            onChange={(desc) => this.setState({content: desc, unsaved: true})}
+            useRCE={!this.state.hide}
+            labels={{}}
+            darkMode={false}
+          />
         </div>
-      )
-    } else {
-      return <div className='note-list__content' onClick={() => this.setState({editing: true})}>
-        <div dangerouslySetInnerHTML={{__html: md.makeHtml(note.content || '')}}></div>
+        <ButtonToolbar className='card-dialog__button-bar'>
+          <Button bsStyle='success'
+            onClick={this.saveEdit} >
+            {i18n('Save')}
+          </Button>
+          <Button className='card-dialog__delete'
+            onClick={this.deleteNote} >
+            {i18n('Delete')}
+          </Button>
+        </ButtonToolbar>
       </div>
-    }
+    )
   }
 
-  renderNote () {
+  render () {
     const { note } = this.props
     let klasses = 'note-list__note'
     if (this.state.editing) klasses += ' editing'
     if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div className={klasses}>
-        <h4 className='text-center secondary-text' onClick={() => this.setState({editing: true})}>
+        <h4 className='text-center secondary-text'>
           {note.title}
         </h4>
         <div className='note-list__body'>
@@ -119,12 +111,6 @@ class NoteView extends Component {
         </div>
       </div>
     )
-  }
-
-  render () {
-    window.SCROLLWITHKEYS = true
-    if (this.state.editing) window.SCROLLWITHKEYS = false
-    return this.renderNote()
   }
 }
 

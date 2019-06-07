@@ -11,7 +11,6 @@ import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bo
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
-import SimpleMDE from 'simplemde'
 
 Modal.setAppElement('#timelineview-root')
 
@@ -20,19 +19,13 @@ const customStyles = {content: {top: '70px'}}
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    this.simplemde = null
+    this.state = {
+      description: props.card.description
+    }
   }
 
   componentDidMount () {
     window.SCROLLWITHKEYS = false
-    this.simplemde = new SimpleMDE({
-      element: this.refs.descriptionInput,
-      initialValue: this.props.card.description,
-      autofocus: true,
-      status: ['words'],
-      hideIcons: ['side-by-side', 'fullscreen'],
-      promptURLs: true,
-    })
   }
 
   componentWillUnmount () {
@@ -54,7 +47,7 @@ class CardDialog extends Component {
 
   saveEdit = () => {
     var newTitle = this.refs.titleInput.getValue() || this.props.card.title
-    var newDescription = this.simplemde.value() || this.props.card.description
+    var newDescription = this.state.description || this.props.card.description
     this.saveCreatedLabels(newDescription)
     this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
   }
@@ -152,29 +145,15 @@ class CardDialog extends Component {
   renderDescription () {
     var description = this.props.card.description
 
-    return <textarea rows='20' ref='descriptionInput' />
-
-    // darkmode?
-    // link to syntax?
-
-    // if (this.state.editing) {
-    //   const url = 'https://daringfireball.net/projects/markdown/syntax'
-    //   return (
-    //     <div>
-    //       <Input type='textarea' rows='20' ref='descriptionInput' defaultValue={description} />
-    //       <small>{i18n('Format with markdown!')} <a href='#' onClick={() => shell.openExternal(url)}>{i18n('learn how')}</a></small>
-    //     </div>
-    //   )
-    // } else {
-    //   return (
-    //     <MDdescription
-    //       description={description}
-    //       onClick={() => this.setState({editing: true})}
-    //       labels={this.props.labelMap}
-    //       darkMode={this.props.ui.darkMode}
-    //     />
-    //   )
-    // }
+    return (
+      <MDdescription
+        description={description}
+        onChange={(desc) => this.setState({description: desc})}
+        useRCE={true}
+        labels={this.props.labelMap}
+        darkMode={this.props.ui.darkMode}
+      />
+    )
   }
 
   renderLeftSide () {

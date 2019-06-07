@@ -138,21 +138,3 @@
     margin: 0 6px;
   }
 }
-
-.CodeMirror-wrap {
-  border: 1px solid $gray-5;
-  border-top: none;
-  .CodeMirror-line {
-    background-color: white;
-    border: none;
-    color: $gray-0;
-  }
-  .CodeMirror-selectedtext {
-    background-color: $blue-8;
-  }
-
-  .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
-    background: none;
-    border-bottom: 1px dotted $red-5;
-  }
-}

@@ -26,6 +26,9 @@ $font-size-h5:            16pt;
 $font-size-h6:            14pt;
 $headings-font-weight:    400;
 
+//** Text color for `<input>`s
+$input-color:                    $gray-0;
+
 //=== Navbar
 $navbar-default-color:             $gray-8;
 $navbar-default-bg:                $gray-8;
@@ -59,6 +62,11 @@ $btn-default-color:              $text-color;
 $btn-default-bg:                 white;
 $btn-default-border:             $gray-6;
 $btn-default-hover-bg:           $gray-9;
+
+$btn-success-color:              $green-9;
+$btn-success-bg:                 $brand-success !default;
+$btn-success-border:             $green-6;
+$btn-success-hover-bg:           $green-6;
 
 
 //=== Popover

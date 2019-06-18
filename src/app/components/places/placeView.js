@@ -127,7 +127,7 @@ class PlaceView extends Component {
     }, []).join(', ')
     let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
     return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
-      <span>{this.props.place.cards.length} {label}</span>
+      <span>{label}</span>
     </OverlayTrigger>
   }
 

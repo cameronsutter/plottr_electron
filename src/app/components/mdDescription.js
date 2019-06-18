@@ -17,7 +17,7 @@ class MDdescription extends Component {
       autofocus: true,
       status: ['words'],
       hideIcons: ['side-by-side', 'fullscreen'],
-      promptURLs: true,
+      promptURLs: false,
     })
     this.simplemde.codemirror.on("update", () => {
       this.props.onChange(this.simplemde.value())

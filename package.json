@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.4.10",
+  "version": "1.4.11",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -31,6 +31,7 @@
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
     "electron-json-storage": "^2.0.0",
+    "electron-updater": "^4.0.14",
     "format-message": "^6.2.1",
     "lodash": "^4.17.11",
     "mixpanel-browser": "^2.29.0",
@@ -76,9 +77,9 @@
     "webpack-cli": "^3.3.4"
   },
   "build": {
-    "electronVersion": "1.3.0",
+    "electronVersion": "5.0.4",
     "appId": "com.plottr.app",
-    "artifactName": "${productName}-${os}-${env.BUILD_TYPE}.${ext}",
+    "artifactName": "${productName}-${os}-${env.BUILD_TYPE}-${version}.${ext}",
     "publish": [
       "github"
     ],
@@ -107,7 +108,7 @@
     ],
     "mac": {
       "category": "public.app-category.productivity",
-      "target": "dmg"
+      "target": ["dmg", "zip"]
     },
     "dmg": {
       "backgroundColor": "#efefee",
@@ -123,7 +124,7 @@
       }
     },
     "nsis": {
-      "artifactName": "${productName}-${os}-${env.BUILD_TYPE}.${ext}",
+      "artifactName": "${productName}-${os}-${env.BUILD_TYPE}-${version}.${ext}",
       "perMachine": true
     }
   }

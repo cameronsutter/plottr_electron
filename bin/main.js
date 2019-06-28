@@ -12,6 +12,7 @@ var Rollbar = require('rollbar')
 var request = require('request')
 var { stringify } = require('dotenv-stringify')
 var i18n = require('format-message')
+import { autoUpdater } from 'electron-updater'
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
@@ -277,6 +278,12 @@ app.on('ready', function () {
           }},
         ])
         app.dock.setMenu(dockMenu)
+      }
+
+      If (!TRIALMODE) {
+        log.transports.file.level = 'debug'
+        autoUpdater.logger = log
+        autoUpdater.checkForUpdatesAndNotify()
       }
     })
   }

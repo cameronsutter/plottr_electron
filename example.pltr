@@ -633,10 +633,10 @@
     "scenes": []
   },
   "file": {
-    "dirty": true,
+    "dirty": false,
     "fileName": "/Users/cameron/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.4.8"
+    "version": "1.4.9"
   },
   "lines": [
     {
@@ -1084,13 +1084,7 @@
     }
   ],
   "ui": {
-    "characterFilter": {
-      "age": [],
-      "age,paragraph": [],
-      "family,paragraph": [],
-      "race": [],
-      "race,paragraph": []
-    },
+    "characterFilter": null,
     "characterSort": "name~asc",
     "currentView": "timeline",
     "darkMode": false,

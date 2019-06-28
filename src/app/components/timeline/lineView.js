@@ -1,9 +1,10 @@
 import _ from 'lodash'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Button, Input, ButtonGroup } from 'react-bootstrap'
+import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import * as LineActions from 'actions/lines'
 import CardView from 'components/timeline/cardView'
 import ColorPicker from '../colorpicker'
@@ -232,15 +233,17 @@ class LineView extends Component {
     if (!this.state.hovering && this.props.ui.darkMode) titleClass += ' darkmode'
     var body = <div className={titleClass}>{this.props.line.title}</div>
     if (this.state.editing) {
-      body = (<Input
-        type='text'
-        defaultValue={this.props.line.title}
-        label={i18n('Story line name')}
-        ref='titleInput'
-        autoFocus
-        onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
-        onBlur={this.handleBlur}
-        onKeyPress={this.handleFinishEditingTitle} />)
+      body = (<FormGroup>
+        <ControlLabel>{i18n('Story line name')}</ControlLabel>
+        <FormControl
+          type='text'
+          defaultValue={this.props.line.title}
+          ref='titleInput'
+          autoFocus
+          onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+          onBlur={this.handleBlur}
+          onKeyPress={this.handleFinishEditingTitle} />
+      </FormGroup>)
     }
     return (
       <div

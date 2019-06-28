@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as UIActions from 'actions/ui'
-import { Glyphicon, Input, Button } from 'react-bootstrap'
+import { Glyphicon, FormControl, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
 import i18n from 'format-message'
 const { ipcRenderer } = require('electron')
@@ -101,7 +102,7 @@ class Navigation extends Component {
   }
 
   renderEditingStoryName () {
-    return <Input
+    return <FormControl
       className='navbar-brand story-name__input'
       type='text'
       defaultValue={this.props.storyName}

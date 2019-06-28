@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Button, ButtonGroup, Input } from 'react-bootstrap'
+import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
@@ -101,15 +102,17 @@ class SceneView extends Component {
 
   renderTitle () {
     if (!this.state.editing) return <span>{this.props.scene.title}</span>
-    return (<Input
+    return (<FormGroup>
+      <ControlLabel>{i18n('Scene {number} name', {number: this.props.scene.position + 1})}</ControlLabel>
+      <FormControl
         type='text'
         defaultValue={this.props.scene.title}
-        label={i18n('Scene {number} name', {number: this.props.scene.position + 1})}
         ref='titleInput'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
         onBlur={this.handleBlur}
-        onKeyPress={this.handleFinishEditing} />)
+        onKeyPress={this.handleFinishEditing} />
+    </FormGroup>)
   }
 
   render () {

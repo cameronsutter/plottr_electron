@@ -1,8 +1,9 @@
 import request from 'request'
 import storage from 'electron-json-storage'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import ReactDOM from 'react-dom'
-import { Button, Input, Glyphicon } from 'react-bootstrap'
+import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import i18n from 'format-message'
 
@@ -111,7 +112,7 @@ class VerifyView extends Component {
         <p className='text-success'>{i18n('You should have received a license key from Gumroad.')}</p>
         <p className='text-muted'><small>{contact}</small></p>
         <div className='form-inline'>
-          <Input type='text' bsSize='large' style={{width: '400px'}} ref='license' />
+          <FormControl type='text' bsSize='large' style={{width: '400px'}} ref='license' />
           <Button bsStyle='primary' onClick={this.handleVerify.bind(this)}>{i18n('Verify')}</Button>
           <span style={{marginLeft: '7px'}} className={this.state.spinnerHidden ? 'hidden' : ''}><Glyphicon id='spinner' glyph='refresh'/></span>
         </div>

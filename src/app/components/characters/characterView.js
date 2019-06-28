@@ -1,8 +1,10 @@
 import _ from 'lodash'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button, Input, Label, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { ButtonToolbar, Button, FormControl, FormGroup,
+  ControlLabel, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
@@ -86,11 +88,14 @@ class CharacterView extends Component {
           />
         </div>
       } else {
-        return <Input key={idx}
-          type='text' label={attrName} ref={`${attrName}Input`}
-          defaultValue={this.props.character[attrName]}
-          onKeyDown={this.handleEsc}
-          onKeyPress={this.handleEnter} />
+        return <FormGroup key={idx}>
+          <ControlLabel>{attrName}</ControlLabel>
+          <FormControl
+            type='text' ref={`${attrName}Input`}
+            defaultValue={this.props.character[attrName]}
+            onKeyDown={this.handleEsc}
+            onKeyPress={this.handleEnter} />
+        </FormGroup>
       }
     })
   }
@@ -101,23 +106,27 @@ class CharacterView extends Component {
       <div className='character-list__character editing'>
         <div className='character-list__character__edit-form'>
           <div className='character-list__inputs__normal'>
-            <Input
-              type='text' ref='nameInput' autoFocus
-              onKeyDown={this.handleEsc}
-              onKeyPress={this.handleEnter}
-              label={i18n('Name')} defaultValue={character.name} />
-            <Input type='text' ref='descriptionInput'
-              onKeyDown={this.handleEsc}
-              onKeyPress={this.handleEnter}
-              label={i18n('Short Description')} defaultValue={character.description} />
-            <label>{i18n('Notes')}</label>
-            <MDdescription
-              description={character.notes}
-              onChange={(desc) => this.setState({notes: desc})}
-              useRCE={true}
-              labels={{}}
-              darkMode={false}
-            />
+            <FormGroup>
+              <ControlLabel>{i18n('Name')}</ControlLabel>
+              <Input
+                type='text' ref='nameInput' autoFocus
+                onKeyDown={this.handleEsc}
+                onKeyPress={this.handleEnter}
+                defaultValue={character.name} />
+              <ControlLabel>{i18n('Short Description')}</ControlLabel>
+              <Input type='text' ref='descriptionInput'
+                onKeyDown={this.handleEsc}
+                onKeyPress={this.handleEnter}
+                defaultValue={character.description} />
+              <ControlLabel>{i18n('Notes')}</ControlLabel>
+              <MDdescription
+                description={character.notes}
+                onChange={(desc) => this.setState({notes: desc})}
+                useRCE={true}
+                labels={{}}
+                darkMode={false}
+              />
+            </FormGroup>
           </div>
           <div className='character-list__inputs__custom'>
             {this.renderEditingCustomAttributes()}

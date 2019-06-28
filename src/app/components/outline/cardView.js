@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { shell } from 'electron'
-import { Input, ButtonToolbar, Button } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, ButtonToolbar, Button } from 'react-bootstrap'
 import _ from 'lodash'
 import * as CardActions from 'actions/cards'
 import MDdescription from 'components/mdDescription'
@@ -70,12 +71,15 @@ class CardView extends Component {
     const { title } = this.props.card
 
     if (this.state.editing) {
-      return <Input
-        onKeyPress={this.handleEnter}
-        onKeyDown={this.handleEsc}
-        type='text' autoFocus
-        label={i18n('title')} ref='titleInput'
-        defaultValue={title} />
+      return <FormGroup>
+        <ControlLabel>{i18n('title')}</ControlLabel>
+        <FormControl
+          onKeyPress={this.handleEnter}
+          onKeyDown={this.handleEsc}
+          type='text' autoFocus
+          ref='titleInput'
+          defaultValue={title} />
+      </FormGroup>
     } else {
       return <h6 onClick={() => this.setState({editing: true})}>{title}</h6>
     }

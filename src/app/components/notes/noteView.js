@@ -1,8 +1,9 @@
 import _ from 'lodash'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button, Input, Label, Glyphicon } from 'react-bootstrap'
+import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
@@ -48,19 +49,22 @@ class NoteView extends Component {
     return (
       <div className='note-list__content editing'>
         <div className='note-list__note__edit-form'>
-          <Input
-            type='text' ref='titleInput' autoFocus
-            onKeyDown={this.handleEsc}
-            onKeyPress={this.handleEnter}
-            onChange={() => this.setState({unsaved: true})}
-            label={i18n('Title')} defaultValue={note.title} />
-          <MDdescription
-            description={note.content}
-            onChange={(desc) => this.setState({content: desc, unsaved: true})}
-            useRCE={!this.state.hide}
-            labels={{}}
-            darkMode={false}
-          />
+          <FormGroup>
+            <ControlLabel>{i18n('Title')}</ControlLabel>
+            <FormControl
+              type='text' ref='titleInput' autoFocus
+              onKeyDown={this.handleEsc}
+              onKeyPress={this.handleEnter}
+              onChange={() => this.setState({unsaved: true})}
+              defaultValue={note.title} />
+            <MDdescription
+              description={note.content}
+              onChange={(desc) => this.setState({content: desc, unsaved: true})}
+              useRCE={!this.state.hide}
+              labels={{}}
+              darkMode={false}
+            />
+          </FormGroup>
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button bsStyle='success'

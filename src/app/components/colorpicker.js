@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import Modal from 'react-modal'
 import { reds, oranges, greens, blues, purples, grays, whites, browns } from '../constants/CSScolors'
-import { Input, Button, Row, Col } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bootstrap'
 import i18n from 'format-message'
 
 const customStyles = {content: {top: '70px'}}
@@ -48,11 +49,14 @@ class ColorPicker extends Component {
               <div title={this.state.color} style={{backgroundColor: this.state.color, marginTop: '16px'}} className='color-picker__show-color'></div>
             </Col>
             <Col xs={2}>
-              <Input type='text' label={i18n('hex code or name')} ref='hex' placeholder='e.g. #ffffff'
-                defaultValue={this.state.color}
-                onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
-                onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}
-                onChange={this.showColor} />
+              <FormGroup>
+                <ControlLabel>{i18n('hex code or name')}</ControlLabel>
+                <FormControl type='text' ref='hex' placeholder='e.g. #ffffff'
+                  defaultValue={this.state.color}
+                  onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
+                  onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}
+                  onChange={this.showColor} />
+              </FormGroup>
             </Col>
             <Col xs={2}>
               <div style={{marginTop: '26px'}}>

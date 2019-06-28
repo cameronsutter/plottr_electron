@@ -3,10 +3,6 @@ var webpack = require('webpack')
 
 var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
-  new webpack.optimize.CommonsChunkPlugin({
-    name: 'common',
-    chunks: ['app', 'verify']
-  })
 ]
 
 if (process.env.NODE_ENV === 'production') {
@@ -16,39 +12,35 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   context: path.resolve(__dirname, 'src'),
   entry: {
-    app: path.join('app', 'index'),
-    css: path.join('css', 'index'),
-    verify: path.join('verify', 'index')
+    app: path.resolve('.', 'src', 'app', 'index.js'),
+    css: path.resolve('.', 'src', 'css', 'index'),
+    verify: path.resolve('.', 'src', 'verify', 'index')
   },
   output: {
     path: path.resolve(__dirname, 'bin'),
     filename: '[name].bundle.js'
   },
   module: {
-    loaders: [{
-      test: /\.json$/,
-      loader: 'json'
-    }, {
-      test: /\.js$/,
-      loader: 'babel',
-      include: path.resolve(__dirname, 'src'),
-      exclude: /node_modules/,
-      query: {
-        presets: ['react', 'es2015', 'stage-2'],
-        cacheDirectory: true
-      }
-    }, {
-      test: /\.scss$/,
-      loader: 'style-loader!css-loader!sass-loader',
-      include: path.join('src', 'css')
+    rules: [{
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/,
+        query: {
+          cacheDirectory: true,
+        },
+      }, {
+        test: /\.scss$/,
+        loader: 'sass-loader',
+        include: path.resolve(__dirname, 'src', 'css'),
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css', '.scss', '.json'],
-    root: path.resolve(__dirname, 'src'),
-    modulesDirectories: ['node_modules', 'src/app', 'src/verify', 'src/css']
+    extensions: ['.js', '.jsx', '.css', '.scss', '.json'],
+    modules: ['node_modules', 'src/app', 'src/verify', 'src/css'],
   },
   target: 'electron-renderer',
   externals: [
@@ -64,5 +56,9 @@ module.exports = {
       }
     })()
   ],
-  plugins: plugins
+  plugins: plugins,
+  devServer: {
+    port: 9001,
+    host: 'localhost',
+  }
 }

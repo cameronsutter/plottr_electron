@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -7,12 +8,12 @@ import _ from 'lodash'
 import * as CardActions from 'actions/cards'
 import { card } from 'store/initialState'
 import { shell } from 'electron'
-import { ButtonToolbar, Button, DropdownButton, MenuItem, Input } from 'react-bootstrap'
+import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 
-Modal.setAppElement('#timelineview-root')
+// Modal.setAppElement('#timelineview-root')
 
 const customStyles = {content: {top: '70px'}}
 
@@ -133,7 +134,7 @@ class CardDialog extends Component {
 
   renderTitle () {
     var title = this.props.card.title
-    return <Input
+    return <FormControl
       style={{fontSize: '24pt'}}
       onKeyPress={this.handleEnter}
       type='text' autoFocus

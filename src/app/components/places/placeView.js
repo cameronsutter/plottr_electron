@@ -1,7 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button, Input, Label, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
+   Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
 
@@ -49,11 +51,14 @@ class PlaceView extends Component {
 
   renderEditingCustomAttributes () {
     return this.props.customAttributes.map((attr, idx) =>
-      <Input key={idx}
-        type='text' label={attr} ref={`${attr}Input`}
-        defaultValue={this.props.place[attr]}
-        onKeyDown={this.handleEsc}
-        onKeyPress={this.handleEnter} />
+      <FormGroup key={idx}>
+        <ControlLabel>{attr}</ControlLabel>
+        <FormControl
+          type='text' ref={`${attr}Input`}
+          defaultValue={this.props.place[attr]}
+          onKeyDown={this.handleEsc}
+          onKeyPress={this.handleEnter} />
+      </FormGroup>
     )
   }
 
@@ -63,18 +68,23 @@ class PlaceView extends Component {
       <div className='place-list__place editing'>
         <div className='place-list__place__edit-form'>
           <div className='place-list__inputs__normal'>
-            <Input
-              type='text' ref='nameInput' autoFocus
-              onKeyDown={this.handleEsc}
-              onKeyPress={this.handleEnter}
-              label={i18n('Name')} defaultValue={place.name} />
-            <Input type='text' ref='descriptionInput'
-              onKeyDown={this.handleEsc}
-              onKeyPress={this.handleEnter}
-              label={i18n('Short Description')} defaultValue={place.description} />
-            <Input type='textarea' rows='10' ref='notesInput'
-              onKeyDown={this.handleEsc}
-              label={i18n('Notes')} defaultValue={place.notes} />
+            <FormGroup>
+              <ControlLabel>{i18n('Name')}</ControlLabel>
+              <FormControl
+                type='text' ref='nameInput' autoFocus
+                onKeyDown={this.handleEsc}
+                onKeyPress={this.handleEnter}
+                defaultValue={place.name} />
+              <ControlLabel>{i18n('Short Description')}</ControlLabel>
+              <FormControl type='text' ref='descriptionInput'
+                onKeyDown={this.handleEsc}
+                onKeyPress={this.handleEnter}
+                defaultValue={place.description} />
+              <ControlLabel>{i18n('Notes')}</ControlLabel>
+              <FormControl type='textarea' rows='10' ref='notesInput'
+                onKeyDown={this.handleEsc}
+                defaultValue={place.notes} />
+            </FormGroup>
           </div>
           <div className='place-list__inputs__custom'>
             {this.renderEditingCustomAttributes()}

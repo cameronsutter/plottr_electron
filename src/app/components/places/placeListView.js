@@ -1,8 +1,10 @@
 import _ from 'lodash'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Nav, Navbar, NavItem, Button, Input, Label, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
+  ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
@@ -223,9 +225,12 @@ class PlaceListView extends Component {
         <h3>{i18n('Custom Attributes for Places')}</h3>
         <p className='sub-header'>{i18n('Choose what you want to track about your places')}</p>
         <div className='character-list__custom-attributes-add-button'>
-          <Input type='text' ref='attrInput'
-            label={i18n('Add attributes')} value={this.state.addAttrText}
-            onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
+          <FormGroup>
+            <ControlLabel>{i18n('Add attributes')}</ControlLabel>
+            <FormControl type='text' ref='attrInput'
+              value={this.state.addAttrText}
+              onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
+          </FormGroup>
           <Button bsStyle='success' onClick={this.saveAttr}>
             {i18n('Add')}
           </Button>

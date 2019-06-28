@@ -65,7 +65,6 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
   store.dispatch(setDarkMode(darkMode))
   if (darkMode) window.document.body.className = 'darkmode'
 
-
   render(
     <Provider store={store}>
       <App />

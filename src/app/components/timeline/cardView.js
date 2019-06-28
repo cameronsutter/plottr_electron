@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
-import { Input, Popover, OverlayTrigger } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, Popover, OverlayTrigger } from 'react-bootstrap'
 import CardDialog from 'components/timeline/cardDialog'
 import * as CardActions from 'actions/cards'
 import orientedClassName from 'helpers/orientedClassName'
@@ -170,15 +171,17 @@ class CardView extends Component {
     return (
       <div className={orientedClassName('card__real card__creating', this.props.ui.orientation)} style={{borderColor: this.props.color}}>
         <div className='card__creating__inner-wrapper'>
-          <Input
-            type='text'
-            autoFocus
-            label={i18n('Card Title')}
-            ref='titleInput'
-            bsSize='small'
-            onBlur={this.handleBlur}
-            onKeyDown={this.handleCancelCreate}
-            onKeyPress={this.handleFinishCreate} />
+          <FormGroup>
+            <ControlLabel>{i18n('Card Title')}</ControlLabel>
+            <FormControl
+              type='text'
+              autoFocus
+              ref='titleInput'
+              bsSize='small'
+              onBlur={this.handleBlur}
+              onKeyDown={this.handleCancelCreate}
+              onKeyPress={this.handleFinishCreate} />
+          </FormGroup>
         </div>
       </div>
     )
@@ -206,9 +209,9 @@ class CardView extends Component {
     if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
-        placement = this.props.scenePosition === 0 ? 'right' : placement
+        placement = this.props.scenePosition <= 1 ? 'right' : placement
       } else {
-        placement = this.props.linePosition === 0 ? 'right' : placement
+        placement = this.props.linePosition <= 1 ? 'right' : placement
       }
       if (this.props.isZoomed) placement = 'right'
       title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>

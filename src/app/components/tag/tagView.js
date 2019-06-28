@@ -1,8 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import ReactDOM from 'react-dom'
-import { ButtonToolbar, ButtonGroup, Button, Input, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap'
+import { ButtonToolbar, ButtonGroup, Button, FormControl, FormGroup,
+  ControlLabel, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap'
 import ColorPicker from '../colorpicker'
 import * as TagActions from 'actions/tags'
 import i18n from 'format-message'
@@ -69,10 +71,13 @@ class TagView extends Component {
     const { tag } = this.props
     return (
       <div onKeyDown={this.handleEsc}>
-        <Input type='text' ref='titleInput' autoFocus
-          onKeyDown={this.handleEsc}
-          onKeyPress={this.handleEnter}
-          label={i18n('tag name')} defaultValue={tag.title} />
+        <FormGroup>
+          <ControlLabel>{i18n('tag name')}</ControlLabel>
+          <FormControl type='text' ref='titleInput' autoFocus
+            onKeyDown={this.handleEsc}
+            onKeyPress={this.handleEnter}
+            defaultValue={tag.title} />
+        </FormGroup>
         {this.renderColorPicker()}
         <ButtonGroup>
           <DropdownButton title={i18n("Actions")} id="bg-nested-dropdown">

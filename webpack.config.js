@@ -6,7 +6,6 @@ var plugins = [
 ]
 
 if (process.env.NODE_ENV === 'production') {
-  plugins.push(new webpack.optimize.UglifyJsPlugin({compressor: {screw_ie8: true, warnings: false}}))
   plugins.push(new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')}))
   plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/))
 }
@@ -60,5 +59,5 @@ module.exports = {
   devServer: {
     port: 9001,
     host: 'localhost',
-  }
+  },
 }

@@ -21,6 +21,7 @@ var TRIALMODE = process.env.TRIALMODE === 'true'
 const TRIAL_LENGTH = 30
 const FIRST_DAY_PATH = 'first_day'
 var DAYS_LEFT = TRIAL_LENGTH
+let DAY_OF_TRIAL = TRIAL_LENGTH
 
 const USER_INFO_PATH = 'user_info'
 var USER_INFO = {}
@@ -213,7 +214,7 @@ ipcMain.on('license-to-verify', function (event, licenseString) {
             dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
           } else {
             dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n("License verified! You're all set."), detail: i18n("Now let's get to the good stuff")}, function () {
-              if (windows[0]) windows[0].window.webContents.send('bought-in-app', DAYS_LEFT)
+              if (windows[0]) windows[0].window.webContents.send('bought-in-app', DAY_OF_TRIAL)
               licenseVerified(false)
             })
           }
@@ -342,15 +343,20 @@ function writeToEnv (key, val) {
   fs.writeFileSync(ENV_FILE_PATH, envstr)
 }
 
+function dayOfTrial (firstDay) {
+  let oneDay = 24*60*60*1000
+  var today = new Date()
+  DAY_OF_TRIAL = Math.round((today.getTime() - firstDay)/oneDay)
+  return DAY_OF_TRIAL
+}
+
 function checkFirstDay (isFirstDayCallback, notFirstDayCallback) {
   storage.has(FIRST_DAY_PATH, function (err, hasKey) {
     if (err) log.error(err)
     if (hasKey) {
       storage.get(FIRST_DAY_PATH, function (err, data) {
         if (err) log.error(err)
-        let oneDay = 24*60*60*1000
-        var today = new Date()
-        let numOfDays = Math.round((today.getTime() - data.firstDay)/oneDay)
+        let numOfDays = dayOfTrial(data.firstDay)
         if (numOfDays > TRIAL_LENGTH) {
           // disable after 30 days
           openExpiredWindow()
@@ -502,7 +508,7 @@ function openWindow (fileName, newFile = false) {
 
   newWindow.webContents.on('did-finish-load', () => {
     if (!launchSent) {
-      newWindow.webContents.send('send-launch', app.getVersion())
+      newWindow.webContents.send('send-launch', app.getVersion(), TRIALMODE, DAY_OF_TRIAL)
     }
   })
 

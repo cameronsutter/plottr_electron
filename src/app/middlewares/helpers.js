@@ -7,6 +7,11 @@ export function storageKey (fileName) {
   return `history-${name}`
 }
 
+let dayOfTrial
+export function setDayOfTrial (num) {
+  dayOfTrial = num
+}
+
 class MixpanelQueue {
   constructor () {
     var size = screen.getPrimaryDisplay().size
@@ -20,8 +25,12 @@ class MixpanelQueue {
 
   push (event, attrs={}) {
     // TODO: save to localStorage
-    attrs.online = navigator.onLine
-    this.queue.push({title: event, attributes: attrs})
+    let allAttrs = {
+      ...attrs
+      online: navigator.onLine,
+      day_of_trial: dayOfTrial,
+    }
+    this.queue.push({title: event, attributes: allAttrs})
     if (navigator.onLine) {
       this.flush()
     }

@@ -8,7 +8,9 @@ export function storageKey (fileName) {
 }
 
 let dayOfTrial
-export function setDayOfTrial (num) {
+let isTrial
+export function setTrialInfo (isTrialMode, num) {
+  isTrial = isTrialMode
   dayOfTrial = num
 }
 
@@ -26,9 +28,10 @@ class MixpanelQueue {
   push (event, attrs={}) {
     // TODO: save to localStorage
     let allAttrs = {
-      ...attrs
+      ...attrs,
       online: navigator.onLine,
       day_of_trial: dayOfTrial,
+      trial_mode: isTrial,
     }
     this.queue.push({title: event, attributes: allAttrs})
     if (navigator.onLine) {

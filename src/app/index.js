@@ -11,7 +11,7 @@ const win = remote.getCurrentWindow()
 const app = remote.app
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
 import mixpanel from 'mixpanel-browser'
-import { MPQ, setDayOfTrial } from 'middlewares/helpers'
+import { MPQ, setTrialInfo } from 'middlewares/helpers'
 import FileFixer from 'helpers/fixer'
 import log from 'electron-log'
 import i18n from 'format-message'
@@ -74,7 +74,7 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
 })
 
 ipcRenderer.once('send-launch', (event, version, isTrialMode, dayOfTrial) => {
-  setDayOfTrial(dayOfTrial)
+  setTrialInfo(isTrialMode, dayOfTrial)
   MPQ.push('Launch', {online: navigator.onLine, version: version})
   ipcRenderer.send('launch-sent')
 })

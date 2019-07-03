@@ -1,16 +1,16 @@
-osx_image: xcode7.3
+osx_image: xcode10.2
 os: osx
 language: node_js
 node_js:
-  - "7"
+  - "10"
 env:
   - BUILD_TYPE=full ELECTRON_CACHE=$HOME/.electron
   - BUILD_TYPE=trial ELECTRON_CACHE=$HOME/.electron
 cache:
   directories:
   - node_modules
-  - $HOME/.electron
-  - $HOME/.cache
+  - $HOME/.cache/electron
+  - $HOME/.cache/electron-builder
 script:
   - npm run dist
 branches:

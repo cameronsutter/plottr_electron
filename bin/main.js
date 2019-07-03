@@ -12,7 +12,7 @@ var Rollbar = require('rollbar')
 var request = require('request')
 var { stringify } = require('dotenv-stringify')
 var i18n = require('format-message')
-import { autoUpdater } from 'electron-updater'
+const { autoUpdater } = require('electron-updater')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})

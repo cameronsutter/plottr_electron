@@ -281,7 +281,7 @@ app.on('ready', function () {
         app.dock.setMenu(dockMenu)
       }
 
-      if (!TRIALMODE) {
+      if (!TRIALMODE && !process.env.NODE_ENV === 'dev') {
         log.transports.file.level = 'debug'
         autoUpdater.logger = log
         autoUpdater.checkForUpdatesAndNotify()
@@ -640,7 +640,7 @@ function emptyFileContents () {
 
 function openAboutWindow () {
   const aboutFile = path.join(filePrefix, 'about.html')
-  aboutWindow = new BrowserWindow({width: 350, height: 550, show: false})
+  aboutWindow = new BrowserWindow({width: 350, height: 550, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
   aboutWindow.loadURL(aboutFile)
   aboutWindow.once('ready-to-show', function() {
     this.show()
@@ -653,7 +653,7 @@ function openAboutWindow () {
 function openVerifyWindow () {
   dontquit = true
   const verifyFile = path.join(filePrefix, 'verify.html')
-  verifyWindow = new BrowserWindow({frame: false, height: 425, show: false})
+  verifyWindow = new BrowserWindow({frame: false, height: 425, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
   verifyWindow.loadURL(verifyFile)
   verifyWindow.once('ready-to-show', function() {
     this.show()
@@ -666,7 +666,7 @@ function openVerifyWindow () {
 function openExpiredWindow () {
   dontquit = true
   const expiredFile = path.join(filePrefix, 'expired.html')
-  expiredWindow = new BrowserWindow({frame: false, height: 425, width: 700, show: false})
+  expiredWindow = new BrowserWindow({frame: false, height: 425, width: 700, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
   expiredWindow.loadURL(expiredFile)
   expiredWindow.once('ready-to-show', function() {
     this.show()
@@ -677,7 +677,7 @@ function openExpiredWindow () {
 }
 
 function openReportWindow (page) {
-  reportWindow = new BrowserWindow({show: false})
+  reportWindow = new BrowserWindow({show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
   reportWindow.loadURL(page)
   reportWindow.once('ready-to-show', function() {
     this.show()
@@ -689,7 +689,7 @@ function openReportWindow (page) {
 
 function openBuyWindow () {
   const buyFile = path.join(filePrefix, 'buy.html')
-  buyWindow = new BrowserWindow({height: 600, show: false, backgroundColor: 'white'})
+  buyWindow = new BrowserWindow({height: 600, show: false, backgroundColor: 'white', webPreferences: {scrollBounce: true, nodeIntegration: true}})
   buyWindow.loadURL(buyFile)
   buyWindow.once('ready-to-show', function() {
     this.show()

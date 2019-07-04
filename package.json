@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.4.16",
+  "version": "1.4.17",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -31,6 +31,7 @@
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
     "electron-json-storage": "^2.0.0",
+    "electron-log": "^2.2.17",
     "electron-updater": "^4.0.14",
     "format-message": "^6.2.1",
     "lodash": "^4.17.11",
@@ -66,7 +67,6 @@
     "electron": "^5.0.4",
     "electron-builder": "^21.0.1",
     "electron-devtools-installer": "^2.0.0",
-    "electron-log": "^2.2.17",
     "file-loader": "^0.8.5",
     "format-message-cli": "^6.2.1",
     "node-sass": "^4.12.0",
@@ -96,7 +96,7 @@
       "!example*.docx",
       "!screenshots"
     ],
-    "copyright": "Copyright © C. Louis S. (Cameron Sutter)",
+    "copyright": "Copyright © 2017 C. Louis S. (Cameron Sutter)",
     "productName": "Plottr",
     "fileAssociations": [
       {
@@ -112,7 +112,7 @@
     },
     "dmg": {
       "backgroundColor": "#efefee",
-      "title": "${productName} 1.0"
+      "title": "${productName}"
     },
     "win": {
       "target": {

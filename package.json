@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.4.17",
+  "version": "1.4.18",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -112,7 +112,7 @@
     },
     "dmg": {
       "backgroundColor": "#efefee",
-      "title": "${productName}"
+      "title": "${productName} Installer"
     },
     "win": {
       "target": {

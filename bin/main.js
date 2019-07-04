@@ -281,7 +281,7 @@ app.on('ready', function () {
         app.dock.setMenu(dockMenu)
       }
 
-      If (!TRIALMODE) {
+      if (!TRIALMODE) {
         log.transports.file.level = 'debug'
         autoUpdater.logger = log
         autoUpdater.checkForUpdatesAndNotify()

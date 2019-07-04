@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  watch: process.env.NODE_ENV === 'dev',
   context: path.resolve(__dirname, 'src'),
   entry: {
     app: path.resolve('.', 'src', 'app', 'index.js'),
@@ -56,8 +57,4 @@ module.exports = {
     })()
   ],
   plugins: plugins,
-  devServer: {
-    port: 9001,
-    host: 'localhost',
-  },
 }

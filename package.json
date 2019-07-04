@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "1.4.19",
+  "version": "1.4.20",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -15,7 +15,7 @@
     "start": "NODE_ENV=dev electron .",
     "compile": "node_modules/.bin/webpack",
     "serve": "NODE_ENV=dev node_modules/.bin/webpack",
-    "watch": "echo 'do you have fsevents?' && NODE_ENV=dev node_modules/.bin/webpack -w",
+    "watch": "echo 'do you have fsevents?' && NODE_ENV=dev node_modules/.bin/webpack",
     "createDevLicense": "NODE_ENV=license electron .",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
@@ -67,6 +67,7 @@
     "electron": "^5.0.4",
     "electron-builder": "^21.0.1",
     "electron-devtools-installer": "^2.0.0",
+    "electron-reload": "^1.4.0",
     "file-loader": "^0.8.5",
     "format-message-cli": "^6.2.1",
     "node-sass": "^4.12.0",
@@ -108,7 +109,10 @@
     ],
     "mac": {
       "category": "public.app-category.productivity",
-      "target": ["dmg", "zip"]
+      "target": [
+        "dmg",
+        "zip"
+      ]
     },
     "dmg": {
       "backgroundColor": "#efefee",

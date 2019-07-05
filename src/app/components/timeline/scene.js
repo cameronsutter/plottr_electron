@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
-import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
@@ -9,18 +9,19 @@ import * as SceneActions from 'actions/scenes'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
-class SceneView extends Component {
+class Scene extends Component {
   constructor (props) {
     super(props)
     let editing = props.scene.title === ''
     this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
+    this.titleRef = null
   }
 
   editTitle = () => {
-    var id = this.props.scene.id
-    var newTitle = this.refs.titleInput.getValue()
-    this.props.actions.editSceneTitle(id, newTitle)
-    this.setState({editing: false})
+    const id = this.props.scene.id
+    const ref = ReactDOM.findDOMNode(this.titleRef)
+    this.props.actions.editSceneTitle(id, ref.value)
+    this.setState({editing: false, hovering: false})
   }
 
   handleFinishEditing = (event) => {
@@ -108,7 +109,7 @@ class SceneView extends Component {
       <FormControl
         type='text'
         defaultValue={this.props.scene.title}
-        ref='titleInput'
+        ref={ref => this.titleRef = ref}
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
         onBlur={this.handleBlur}
@@ -122,38 +123,36 @@ class SceneView extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
-    let classes = 'scene-list__item__body'
+    let classes = 'scene__body'
     if (this.state.hovering) classes += ' hover'
     if (this.state.dropping) classes += ' dropping'
-    let titleClasses = 'scene-list__item__title'
-    if (!this.state.hovering && this.props.ui.darkMode) titleClasses += ' darkmode'
-    return (<Cell className={orientedClassName('scene-list__item', this.props.ui.orientation)}
-      title={i18n('Scene {number}', {number: this.props.scene.position + 1})}
-      draggable={true}
-      onClick={() => this.setState({editing: true})}
-      onMouseEnter={() => this.setState({hovering: true})}
-      onMouseLeave={() => this.setState({hovering: false})}
-      onDragStart={this.handleDragStart}
-      onDragEnd={this.handleDragEnd}
-      onDragEnter={this.handleDragEnter}
-      onDragOver={this.handleDragOver}
-      onDragLeave={this.handleDragLeave}
-      onDrop={this.handleDrop} >
-      {this.renderHoverOptions()}
-      <div className={classes}>
-        <div className={titleClasses}>
-          {this.renderTitle()}
+    return <Cell>
+      <div className={orientedClassName('scene__cell', this.props.ui.orientation)}
+        title={i18n('Scene {number}', {number: this.props.scene.position + 1})}
+        onClick={() => this.setState({editing: true})}
+        onMouseEnter={() => this.setState({hovering: true})}
+        onMouseLeave={() => this.setState({hovering: false})}
+        onDrop={this.handleDrop}>
+        { this.renderHoverOptions() }
+        <div className={classes}
+          draggable={true}
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}>
+          { this.renderTitle() }
         </div>
       </div>
-    </Cell>)
+    </Cell>
   }
 }
 
-SceneView.propTypes = {
+Scene.propTypes = {
   scene: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
-  actions: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
+  actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }
 
@@ -169,9 +168,7 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-const Pure = PureComponent(SceneView)
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Pure)
+)(Scene)

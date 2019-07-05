@@ -57,4 +57,5 @@ module.exports = {
     })()
   ],
   plugins: plugins,
+  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false
 }

@@ -1,119 +1,141 @@
 @import "vars";
 
-.card__box {
-  position: relative;
-  top: -$height;
-  left: $width;
-}
-
-.vertical-card__box {
-  position: relative;
-  left: -25px;
-  top: 13px;
-}
-
-.card {
-  display: inline-block;
-  height: $height;
-  width: $width;
-  margin: $margin-left;
-}
-
-.card:hover {
-  cursor: pointer;
-}
-
-.card__real {
-  @extend .card;
-  border: 3px solid black;
-  border-radius: $border-radius;
-  background: $card-background;
-  transition: all .6s $cubic;
-}
-
-.card__real:hover {
-  transform: scale(1.1);
-  box-shadow: 0 10px 20px $shadow-1, 0 3px 6px $shadow-0;
-}
-
-.vertical-card__real {
-  @extend .card__real;
-  display: block;
-  margin-bottom: 31px;
-}
-
-.card__real.darkmode, .vertical-card__real.darkmode {
-  background-color: $card-background-darkmode;
-  .card__title {
-    color: $text-darkmode;
+.card__cell {
+  width: 200px;
+  height: 66px;
+  svg {
+    position: absolute;
   }
 }
 
-.card__blank {
-  @extend .card;
-  margin-bottom: 3px;
+.card__body {
+  width: 150px;
+  padding: 10px;
+  border: 1px solid black;
+  border-width: 3px;
+  margin: auto;
 }
 
-.vertical-card__blank {
-  @extend .card__blank;
-  display: block;
-  margin-bottom: 31px;
+.card__svg-line {
+  stroke-width: $svg-line-width;
 }
 
-.card__hover {
-  border: $new-item-border;
-  border-radius: $border-radius;
-  background: $new-item-background;
-}
 
-.card__blank:hover {
-  @extend .card__hover;
-}
 
-.card__creating {
-  position: relative;
-  top: -$height*1/3;
-  .card__creating__inner-wrapper {
-    padding: 2px 5px 5px 5px;
-    label {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.vertical-card__real.card__creating {
-  top: 0px;
-  .card__creating__inner-wrapper {
-    padding: 2px 5px 5px 5px;
-    label {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.card__title {
-  padding: 5px 5px 5px 7px;
-  height: $height;
-  overflow: hidden;
-  p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-}
-
-.card__popover-description {
-  min-width: 250px;
-  @include body-text-font;
-}
-
-.card__popover-labels {
-  display: flex;
-  flex-wrap: wrap;
-  position: relative;
-  .label {
-    margin: 2px;
-  }
-}
+// .card__box {
+//   position: relative;
+//   top: -$height;
+//   left: $width;
+// }
+//
+// .vertical-card__box {
+//   position: relative;
+//   left: -25px;
+//   top: 13px;
+// }
+//
+// .card {
+//   display: inline-block;
+//   height: $height;
+//   width: $width;
+//   margin: $margin-left;
+// }
+//
+// .card:hover {
+//   cursor: pointer;
+// }
+//
+// .card__real {
+//   @extend .card;
+//   border: 3px solid black;
+//   border-radius: $border-radius;
+//   background: $card-background;
+//   transition: all .6s $cubic;
+// }
+//
+// .card__real:hover {
+//   transform: scale(1.1);
+//   box-shadow: 0 10px 20px $shadow-1, 0 3px 6px $shadow-0;
+// }
+//
+// .vertical-card__real {
+//   @extend .card__real;
+//   display: block;
+//   margin-bottom: 31px;
+// }
+//
+// .card__real.darkmode, .vertical-card__real.darkmode {
+//   background-color: $card-background-darkmode;
+//   .card__title {
+//     color: $text-darkmode;
+//   }
+// }
+//
+// .card__blank {
+//   @extend .card;
+//   margin-bottom: 3px;
+// }
+//
+// .vertical-card__blank {
+//   @extend .card__blank;
+//   display: block;
+//   margin-bottom: 31px;
+// }
+//
+// .card__hover {
+//   border: $new-item-border;
+//   border-radius: $border-radius;
+//   background: $new-item-background;
+// }
+//
+// .card__blank:hover {
+//   @extend .card__hover;
+// }
+//
+// .card__creating {
+//   position: relative;
+//   top: -$height*1/3;
+//   .card__creating__inner-wrapper {
+//     padding: 2px 5px 5px 5px;
+//     label {
+//       margin-bottom: 0;
+//     }
+//   }
+// }
+//
+// .vertical-card__real.card__creating {
+//   top: 0px;
+//   .card__creating__inner-wrapper {
+//     padding: 2px 5px 5px 5px;
+//     label {
+//       margin-bottom: 0;
+//     }
+//   }
+// }
+//
+// .card__title {
+//   padding: 5px 5px 5px 7px;
+//   height: $height;
+//   overflow: hidden;
+//   p {
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 2;
+//     -webkit-box-orient: vertical;
+//   }
+// }
+//
+// .card__popover-description {
+//   min-width: 250px;
+//   @include body-text-font;
+// }
+//
+// .card__popover-labels {
+//   display: flex;
+//   flex-wrap: wrap;
+//   position: relative;
+//   .label {
+//     margin: 2px;
+//   }
+// }

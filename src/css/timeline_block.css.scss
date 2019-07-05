@@ -1,6 +1,17 @@
 @import "vars";
 
+#timelineview__root {
+  width: 100vw;
+  height: calc(100% - 121px);
+  position: absolute;
+}
+
 #timelineview__root.vertical {
   display: flex;
   flex-direction: row;
+}
+
+.sticky-table-cell {
+  padding: 10px;
+  background-color: $body-background-color;
 }

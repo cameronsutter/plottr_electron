@@ -2,10 +2,10 @@
 @import "card_block";
 @import "card_dialog";
 @import "character_list_block";
-@import "line_list_block";
+@import "line_block";
 @import "outline_block";
 @import "place_list_block";
-@import "scene_list_block";
+@import "scene_block";
 @import "tag_list_block";
 @import "color_picker_block";
 @import "subnav_block";
@@ -26,7 +26,7 @@
 
 // Give everything in 'yield' margin to separate it.
 #react-root {
-  margin: 0px 0px 30px 20px;
+  margin: 0px 0px 0px 0px;
   animation: fadein 1.5s;
 }
 

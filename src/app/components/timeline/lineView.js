@@ -5,6 +5,7 @@ import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { Row, Cell } from 'react-sticky-table'
 import * as LineActions from 'actions/lines'
 import CardView from 'components/timeline/cardView'
 import ColorPicker from '../colorpicker'
@@ -188,6 +189,9 @@ class LineView extends Component {
   renderCards () {
     var sceneMap = this.props.sceneMap
 
+    // <div className={orientedClassName('card__box', this.props.ui.orientation)}>
+    // </div>
+
     return Object.keys(sceneMap).map((scenePosition) => {
       var sceneId = sceneMap[scenePosition]
       var card = this.findCard(sceneId)
@@ -273,21 +277,20 @@ class LineView extends Component {
     if (this.props.ui.orientation === 'vertical') {
       lineStyle = {height: (lineLength + this.height())}
     }
-    return (
-      <div className={orientedClassName('line', this.props.ui.orientation)}
+
+    // <div className={orientedClassName('line__svg-line-box', this.props.ui.orientation)}>
+    //   {this.renderSVGLine()}
+    // </div>
+    return <Row className={orientedClassName('line', this.props.ui.orientation)}
         style={lineStyle}
         onMouseEnter={() => this.setState({hovering: true})}
         onMouseLeave={() => this.setState({hovering: false})} >
+      <Cell>
         {this.renderHoverOptions()}
         {this.renderBody()}
-        <div className={orientedClassName('line__svg-line-box', this.props.ui.orientation)}>
-          {this.renderSVGLine()}
-        </div>
-        <div className={orientedClassName('card__box', this.props.ui.orientation)}>
-          {this.renderCards()}
-        </div>
-      </div>
-    )
+      </Cell>
+      {this.renderCards()}
+    </Row>
   }
 }
 

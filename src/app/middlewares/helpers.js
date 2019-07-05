@@ -1,5 +1,6 @@
 import mixpanel from 'mixpanel-browser'
-import { screen } from 'electron'
+import { remote } from 'electron'
+const screen = remote.screen
 
 export function storageKey (fileName) {
   let index = fileName.lastIndexOf('/') + 1

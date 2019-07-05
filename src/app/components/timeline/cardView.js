@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import _ from 'lodash'
 import { FormControl, FormGroup, ControlLabel, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Cell } from 'react-sticky-table'
 import CardDialog from 'components/timeline/cardDialog'
 import * as CardActions from 'actions/cards'
 import orientedClassName from 'helpers/orientedClassName'
@@ -103,7 +104,8 @@ class CardView extends Component {
   }
 
   render () {
-    return this.state.dialogOpen ? this.renderDialog() : this.renderShape()
+    const card = this.state.dialogOpen ? this.renderDialog() : this.renderShape()
+    return <Cell>{ card }</Cell>
   }
 
   renderShape () {

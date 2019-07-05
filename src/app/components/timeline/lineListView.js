@@ -37,14 +37,20 @@ class LineListView extends Component {
   }
 
   render () {
-    var lineViews = this.renderLines()
-    return (<div className={orientedClassName('line-list', this.props.orientation)}>
-      {lineViews}
-      <div className={orientedClassName('line-list__new', this.props.orientation)} onClick={this.handleCreateNewLine} >
-        <Glyphicon glyph='plus' />
-      </div>
-    </div>)
+    const lineViews = this.renderLines()
+    return lineViews
   }
+
+  //
+  // render () {
+  //   var lineViews = this.renderLines()
+  //   return (<div className={orientedClassName('line-list', this.props.orientation)}>
+  //     {lineViews}
+  //     <div className={orientedClassName('line-list__new', this.props.orientation)} onClick={this.handleCreateNewLine} >
+  //       <Glyphicon glyph='plus' />
+  //     </div>
+  //   </div>)
+  // }
 
   renderLines () {
     const lines = _.sortBy(this.props.lines, 'position')

@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Row } from 'react-sticky-table'
 import SceneView from 'components/timeline/sceneView'
 import { Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
@@ -38,35 +39,43 @@ class SceneListView extends Component {
 
   render () {
     var scenes = this.renderScenes()
-    return (
-      <div className={orientedClassName('scene-list', this.props.ui.orientation)}>
-        <div className={orientedClassName('scene-list__placeholder', this.props.ui.orientation)} />
-        {scenes}
-        <div className={orientedClassName('scene-list__new', this.props.ui.orientation)} onClick={this.handleCreateNewScene} >
-          <Glyphicon glyph='plus' />
-        </div>
-      </div>
-    )
+    return <Row>{scenes}</Row>
+    // return (
+    //   <div className={orientedClassName('scene-list', this.props.ui.orientation)}>
+    //     <div className={orientedClassName('scene-list__placeholder', this.props.ui.orientation)} />
+    //     {scenes}
+    //     <div className={orientedClassName('scene-list__new', this.props.ui.orientation)} onClick={this.handleCreateNewScene} >
+    //       <Glyphicon glyph='plus' />
+    //     </div>
+    //   </div>
+    // )
   }
 
   renderScenes () {
     const scenes = _.sortBy(this.props.scenes, 'position')
-    let insertClasses = orientedClassName('scene-list__insert', this.props.ui.orientation)
-    if (this.props.ui.darkMode) insertClasses += ' darkmode'
-    return scenes.map((scene) => {
-      return (
-        <div className={orientedClassName('scene-list__item-container', this.props.ui.orientation)} key={'sceneId-' + scene.id}>
-          <div className={insertClasses} onClick={() => this.handleInsertNewScene(scene.position, this)}>
-            <Glyphicon glyph='plus' />
-          </div>
-          <SceneView
-            scene={scene}
-            handleReorder={this.handleReorder}
-            isZoomed={this.props.isZoomed} />
-        </div>
-      )
-    })
+    return scenes.map(sc => (
+      <SceneView key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorder} isZoomed={this.props.isZoomed} />
+    ))
   }
+
+  // renderScenes () {
+  //   const scenes = _.sortBy(this.props.scenes, 'position')
+  //   let insertClasses = orientedClassName('scene-list__insert', this.props.ui.orientation)
+  //   if (this.props.ui.darkMode) insertClasses += ' darkmode'
+  //   return scenes.map((scene) => {
+  //     return (
+  //       <div className={orientedClassName('scene-list__item-container', this.props.ui.orientation)} key={'sceneId-' + scene.id}>
+  //         <div className={insertClasses} onClick={() => this.handleInsertNewScene(scene.position, this)}>
+  //           <Glyphicon glyph='plus' />
+  //         </div>
+  //         <SceneView
+  //           scene={scene}
+  //           handleReorder={this.handleReorder}
+  //           isZoomed={this.props.isZoomed} />
+  //       </div>
+  //     )
+  //   })
+  // }
 }
 
 SceneListView.propTypes = {

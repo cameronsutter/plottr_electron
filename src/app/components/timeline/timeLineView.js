@@ -5,9 +5,16 @@ import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+import { StickyTable, Row, Cell } from 'react-sticky-table'
+import 'style-loader!css-loader!react-sticky-table/dist/react-sticky-table.css'
 import { MPQ } from 'middlewares/helpers'
 import SceneListView from 'components/timeline/sceneListView'
+import LineView from 'components/timeline/lineView'
 import LineListView from 'components/timeline/lineListView'
+import CardCell from 'components/timeline/cardCell'
+import BlankCard from 'components/timeline/blankCard'
+import Scene from 'components/timeline/scene'
+import LineTitle from 'components/timeline/lineTitle'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
@@ -51,6 +58,10 @@ class TimeLineView extends Component {
   // ////////////////
   //   zooming    //
   // //////////////
+
+  isZoomed () {
+    return (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
+  }
 
   scale () {
     var elem = this.refs.timeline
@@ -204,9 +215,84 @@ class TimeLineView extends Component {
     })
   }
 
+
+  // ///////////////
+  //  reordering  //
+  // //////////////
+
+
+
+
   // ///////////////
   //  rendering   //
   // //////////////
+
+  labelMap () {
+    var mapping = {}
+    this.props.tags.forEach((t) => {
+      mapping[t.title.toLowerCase()] = {color: t.color, id: t.id, type: 'Tag'}
+    })
+    this.props.characters.forEach((c) => {
+      mapping[c.name.toLowerCase()] = {color: c.color, id: c.id, type: 'Character'}
+    })
+    this.props.places.forEach((p) => {
+      mapping[p.name.toLowerCase()] = {color: p.color, id: p.id, type: 'Place'}
+    })
+    return mapping
+  }
+
+  cards (lineId) {
+    var cards = _.filter(this.props.cards, (card) => {
+      return card.lineId === lineId
+    })
+    return _.sortBy(cards, 'position')
+  }
+
+  renderScenes () {
+    const scenes = _.sortBy(this.props.scenes, 'position')
+    return [<Cell key={`sceneId-placeholder`}></Cell>].concat(scenes.map(sc => <Scene key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />))
+  }
+
+  renderTable () {
+    // TODO: think about how to do vertical orientation
+
+    // const sceneRow = <SceneListView key='lineId-header' isZoomed={this.isZoomed()} />
+    const sceneRow = <Row>{this.renderScenes()}</Row>
+    const lineRows = this.renderLines()
+
+    return [sceneRow, lineRows]
+  }
+
+  renderLines () {
+    const sceneMap = this.sceneMapping()
+    const lines = _.sortBy(this.props.lines, 'position')
+    return lines.map(line => {
+      return <Row key={'lineId-' + line.id}>
+        <LineTitle line={line} isZoomed={this.isZoomed()}/>
+        { this.renderCards(line, sceneMap) }
+      </Row>
+    })
+  }
+
+  renderCards (line, sceneMap) {
+    // TODO: do filtered
+    const filtered = false
+    const isZoomed = this.isZoomed()
+    const labelMap = this.labelMap()
+    return Object.keys(sceneMap).map(scenePosition => {
+      var sceneId = sceneMap[scenePosition]
+      var card = _.find(this.cards(line.id), {sceneId: sceneId})
+      if (card) return <CardCell
+        key={`cardId-${card.id}`} card={card}
+        sceneId={sceneId} lineId={line.id}
+        labelMap={labelMap}
+        color={line.color} filtered={filtered}
+        isZoomed={isZoomed} />
+      else return <BlankCard sceneId={sceneId} lineId={line.id}
+        key={`blank-${sceneId}-${line.id}`}
+        color={line.color} isZoomed={isZoomed}/>
+    })
+  }
 
   renderSubNav () {
     let glyph = 'option-vertical'
@@ -268,7 +354,6 @@ class TimeLineView extends Component {
 
   render () {
     let styles = this.makeTransform()
-    let isZoomed = (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
     let orientation = this.props.ui.orientation === 'vertical' ? 'vertical' : ''
     // zoomFactor allows us to scale cards and scenes in a ratio that fits the scale determined by zoomState
     let zoomFactor = this.state.zoomState === FIT_ZOOM_STATE ? FIT_ZOOM_STATE : ZOOM_STATES[this.state.zoomIndex]
@@ -278,11 +363,9 @@ class TimeLineView extends Component {
       <div id='timelineview__container' className={containerKlasses}>
         {this.renderSubNav()}
         <div id='timelineview__root' className={orientation} ref='timeline' style={styles}>
-          <SceneListView isZoomed={isZoomed} />
-          <LineListView
-            sceneMap={this.sceneMapping()}
-            filteredItems={this.state.filter}
-            isZoomed={isZoomed} />
+          <StickyTable>
+            { this.renderTable() }
+          </StickyTable>
         </div>
       </div>
     )
@@ -299,6 +382,8 @@ class TimeLineView extends Component {
 
 TimeLineView.propTypes = {
   scenes: PropTypes.array.isRequired,
+  lines: PropTypes.array.isRequired,
+  cards: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
@@ -308,6 +393,8 @@ TimeLineView.propTypes = {
 function mapStateToProps (state) {
   return {
     scenes: state.scenes,
+    lines: state.lines,
+    cards: state.cards,
     tags: state.tags,
     characters: state.characters,
     places: state.places,

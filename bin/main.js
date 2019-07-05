@@ -13,7 +13,7 @@ var request = require('request')
 var { stringify } = require('dotenv-stringify')
 var i18n = require('format-message')
 const { autoUpdater } = require('electron-updater')
-require('electron-reload')(path.join('..'))
+require('electron-reload')(__dirname)
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})

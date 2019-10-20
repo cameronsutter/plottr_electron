@@ -5,9 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
 import CardDialog from 'components/timeline/cardDialog'
-
-const width = 200 + 20
-const height = 60
+import CardSVGline from 'components/timeline/cardSVGline'
 
 class CardCell extends Component {
   constructor (props) {
@@ -21,25 +19,31 @@ class CardCell extends Component {
     }
   }
 
-  linePlacement () {
-    if (this.props.ui.orientation == 'vertical') {
-      return width / 2
-    }
-    return height / 2
+  closeDialog = () => {
+    this.setState({dialogOpen: false})
   }
 
-  renderSVGLine () {
-    let style = {stroke: this.props.color}
-    const placement = this.linePlacement()
-    if (this.props.ui.orientation === 'vertical') {
-      return (<svg height={height} >
-        <line y1='0' x1={placement} y2={height} x2={placement} className='card__svg-line' style={style} />
-      </svg>)
-    } else {
-      return (<svg width={width} >
-        <line x1='0' y1={placement} x2={width} y2={placement} className='card__svg-line' style={style} />
-      </svg>)
-    }
+  handleDragStart = (e) => {
+    this.setState({dragging: true, hovering: false})
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/json', JSON.stringify(this.props.card))
+  }
+
+  handleDragEnd = () => {
+    this.setState({dragging: false})
+  }
+
+  handleDragEnter = (e) => {
+    this.setState({dropping: true})
+  }
+
+  handleDragOver = (e) => {
+    e.preventDefault()
+    return false
+  }
+
+  handleDragLeave = (e) => {
+    this.setState({dropping: false})
   }
 
   renderDialog () {
@@ -55,11 +59,26 @@ class CardCell extends Component {
   }
 
   render () {
+    var cardStyle = {
+      borderColor: this.props.color
+    }
+    if (this.state.dragging) {
+      cardStyle.opacity = '0.5'
+    }
+    if (this.props.filtered) {
+      cardStyle.opacity = '0.1'
+    }
     return <Cell>
       <div className='card__cell'>
-        { this.renderSVGLine() }
-        <div className='card__body'>
-          {this.props.card.title}
+        <CardSVGline color={this.props.color} orientation={this.props.ui.orientation}/>
+        <div className='card__body' style={cardStyle}
+          draggable={true}
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
+          onMouseEnter={() => this.setState({hovering: true})}
+          onMouseLeave={() => this.setState({hovering: false})}
+          onClick={() => this.setState({dialogOpen: true})}>
+            {this.props.card.title}
         </div>
         { this.renderDialog() }
       </div>

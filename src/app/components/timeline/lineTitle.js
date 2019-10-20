@@ -102,10 +102,10 @@ class LineTitle extends Component {
   }
 
   renderHoverOptions () {
-    var style = {visibility: 'hidden'}
-    if (this.state.hovering) style.visibility = 'visible'
+    // var style = {visibility: 'hidden'}
+    // if (this.state.hovering) style.visibility = 'visible'
     if (this.props.ui.orientation === 'vertical') {
-      return (<div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)} style={style}>
+      return (<div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)}>
         <ButtonGroup>
           <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
           <Button onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
@@ -113,7 +113,7 @@ class LineTitle extends Component {
         </ButtonGroup>
       </div>)
     } else {
-      return (<div className='line-title__hover-options' style={style}>
+      return (<div className='line-title__hover-options'>
         <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
         <Button block onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
         <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>

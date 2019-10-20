@@ -10,14 +10,33 @@
 
 .card__body {
   width: 150px;
+  min-height: 70px;
   padding: 10px;
   border: 1px solid black;
   border-width: 3px;
+  border-radius: 4px;
   margin: auto;
+  position: relative;
+  background-color: $body-background-color;
+  cursor: move;
 }
 
 .card__svg-line {
   stroke-width: $svg-line-width;
+}
+
+.blank-card__body {
+  @extend .card__body;
+  border: 3px dashed black;
+  visibility: hidden;
+  cursor: pointer;
+  text-align: center;
+}
+
+.card__cell:hover {
+  .blank-card__body {
+    visibility: visible;
+  }
 }
 
 

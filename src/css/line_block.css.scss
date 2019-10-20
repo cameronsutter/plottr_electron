@@ -1,14 +1,16 @@
 @import "vars";
 
 .line-title__cell {
-  width: 250px;
-  display: flex;
-  align-items: center;
+  width: 200px;
+  // display: flex;
+  // align-items: center;
 }
 
 .line-title__body {
   @include sub-header-font;
-  padding: 20px;
+  min-height: 70px;
+  min-width: 150px;
+  padding: 10px;
   transition: all .4s $cubic;
 }
 
@@ -22,11 +24,20 @@
 }
 
 .line-title__hover-options {
+  float: left;
   margin-right: 5px;
+  visibility: hidden;
   button.btn-block {
     margin-top: 1px;
   }
 }
+
+.line-title__cell:hover {
+  .line-title__hover-options {
+    visibility: visible;
+  }
+}
+
 
 // .line-list {
 //   margin-top: 10px;

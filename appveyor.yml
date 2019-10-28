@@ -17,6 +17,7 @@ test: off
 branches:
   only:
     - master
+    - beforeStickyTable
 environment:
   matrix:
     - rando: onething

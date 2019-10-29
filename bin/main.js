@@ -515,11 +515,6 @@ function openWindow (fileName, newFile = false) {
     }
   })
 
-  newWindow.webContents.on('will-navigate', (event, string) => {
-    console.log("WILL NAVIGATE", string)
-    log.warn("WILL NAVIGATE")
-  })
-
   if (process.env.NODE_ENV === 'dev') {
     newWindow.openDevTools()
   }

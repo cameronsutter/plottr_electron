@@ -20,8 +20,8 @@ branches:
     - beforeStickyTable
 environment:
   matrix:
-    - rando: onething
-      BUILD_TYPE: full
-
     - rando: anotherthing
       BUILD_TYPE: trial
+
+    - rando: onething
+      BUILD_TYPE: full

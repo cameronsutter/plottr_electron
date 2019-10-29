@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -80,7 +81,7 @@ class Navigation extends Component {
   }
 
   saveEdit = () => {
-    var newName = this.refs.storyNameInput.getValue()
+    var newName = ReactDOM.findDOMNode(this.refs.storyNameInput).value
     this.props.actions.changeStoryName(newName)
     this.setState({editing: false})
   }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import Modal from 'react-modal'
 import { reds, oranges, greens, blues, purples, grays, whites, browns } from '../constants/CSScolors'
@@ -18,7 +19,7 @@ class ColorPicker extends Component {
   }
 
   showColor = () => {
-    var newColor = this.refs.hex.getValue()
+    var newColor = ReactDOM.findDOMNode(this.refs.hex).value
     var regex = /#?([0123456789abcdef]{6})/
     var matches = regex.exec(newColor)
     if (matches) {

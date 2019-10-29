@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -30,12 +31,12 @@ class PlaceView extends Component {
   }
 
   saveEdit = () => {
-    var name = this.refs.nameInput.getValue() || this.props.place.name
-    var description = this.refs.descriptionInput.getValue()
-    var notes = this.refs.notesInput.getValue()
+    var name = ReactDOM.findDOMNode(this.refs.nameInput).value || this.props.place.name
+    var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
+    var notes = ReactDOM.findDOMNode(this.refs.notesInput).value
     var attrs = {}
     this.props.customAttributes.forEach(attr => {
-      const val = this.refs[`${attr}Input`].getValue()
+      const val = ReactDOM.findDOMNode(this.refs[`${attr}Input`]).value
       attrs[attr] = val
     })
     this.props.actions.editPlace(this.props.place.id, {name, description, notes, ...attrs})

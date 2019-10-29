@@ -14,7 +14,7 @@ var { stringify } = require('dotenv-stringify')
 var i18n = require('format-message')
 const { autoUpdater } = require('electron-updater')
 if (process.env.NODE_ENV === 'dev') {
-  require('electron-reload')(path.join('..'))
+  // require('electron-reload')(path.join('..'))
 }
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
@@ -513,6 +513,11 @@ function openWindow (fileName, newFile = false) {
     if (!launchSent) {
       newWindow.webContents.send('send-launch', app.getVersion(), TRIALMODE, DAY_OF_TRIAL)
     }
+  })
+
+  newWindow.webContents.on('will-navigate', (event, string) => {
+    console.log("WILL NAVIGATE", string)
+    log.warn("WILL NAVIGATE")
   })
 
   if (process.env.NODE_ENV === 'dev') {
@@ -1069,6 +1074,12 @@ function buildViewMenu () {
     accelerator: 'CmdOrCtrl+P',
     click: takeScreenshot
   }]
+  if (process.env.NODE_ENV === 'dev') {
+    submenu.push({
+      label: 'View Verify Window',
+      click: openVerifyWindow
+    })
+  }
   return {
     label: i18n('View'),
     submenu: submenu

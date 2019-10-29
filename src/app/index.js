@@ -89,7 +89,7 @@ ipcRenderer.on('bought-in-app', (event, numOfDays) => {
 })
 
 window.onerror = function (message, file, line, column, err) {
-  if (process.env.NODE_ENV !== 'dev') {
+  if (process.env.NODE_ENV !== 'development') {
     log.warn(err)
     rollbar.info(err)
     let newState = FileFixer(store.getState())

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import ReactDOM from 'react-dom'
 import { ButtonToolbar, ButtonGroup, Button, FormControl, FormGroup,
   ControlLabel, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap'
 import ColorPicker from '../colorpicker'
@@ -40,7 +40,7 @@ class TagView extends Component {
 
   saveEdit () {
     let { title, id, color } = this.props.tag
-    var newTitle = this.refs.titleInput.getValue() || title
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value || title
     this.props.actions.editTag(id, newTitle, color)
     this.setState({editing: false})
   }

@@ -15,12 +15,12 @@ exports.default = function (buildResult) {
   console.log("BUILD TYPE", process.env.BUILD_TYPE)
   console.log("outDir", buildResult.outDir)
   console.log("artifactPaths", buildResult.artifactPaths)
-  console.log("platforms", Object.keys(buildResult.platformToTargets))
-  console.log("first platform", Object.keys(buildResult.platformToTargets)[0])
-  let platform = Object.keys(buildResult.platformToTargets)[0]
-  if (process.env.BUILD_TYPE === 'trial' && platform === 'win32') {
-    fs.renameSync('latest.yml', 'latest-trial.yml')
-  } else {
-    fs.renameSync('latest-mac.yml', 'latest-mac-trial.yml')
+  console.log("platformToTargets", buildResult.platformToTargets)
+  if (process.env.BUILD_TYPE === 'trial') {
+    if(process.env.BUILD_PLATFORM === 'win32') {
+      fs.renameSync('latest.yml', 'latest-trial.yml')
+    } else {
+      fs.renameSync('latest-mac.yml', 'latest-mac-trial.yml')
+    }
   }
 }

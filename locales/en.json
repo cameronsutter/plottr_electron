@@ -206,11 +206,14 @@
   "Hide Plottr": {
     "message": "Hide Plottr"
   },
+  "Hmmmm. It looks like that's not a valid license key": {
+    "message": "Hmmmm. It looks like that's not a valid license key"
+  },
   "If you keep seeing this problem, email me at family@plottrapp.com": {
     "message": "If you keep seeing this problem, email me at family@plottrapp.com"
   },
-  "It looks like you have Plottr on 5 computers already or you requested a refund": {
-    "message": "It looks like you have Plottr on 5 computers already or you requested a refund"
+  "It looks like you have Plottr on 5 computers already": {
+    "message": "It looks like you have Plottr on 5 computers already"
   },
   "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?": {
     "message": "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?"

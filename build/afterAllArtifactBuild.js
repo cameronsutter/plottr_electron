@@ -17,6 +17,7 @@ exports.default = function (buildResult) {
   console.log("artifactPaths", buildResult.artifactPaths)
   console.log("platformToTargets", buildResult.platformToTargets)
   if (process.env.BUILD_TYPE === 'trial') {
+    throw new Error("I pitty the fool!");
     if(process.env.BUILD_PLATFORM === 'win32') {
       fs.renameSync('latest.yml', 'latest-trial.yml')
     } else {

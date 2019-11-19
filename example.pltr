@@ -646,7 +646,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "1.4.26"
+    "version": "1.4.27"
   },
   "lines": [
     {
@@ -1098,7 +1098,7 @@
       "age": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

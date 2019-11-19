@@ -77,7 +77,7 @@ class LineView extends Component {
   }
 
   handleBlur = () => {
-    if (this.refs.titleInput.getValue() !== '') {
+    if (ReactDOM.findDOMNode(this.refs.titleInput).value !== '') {
       this.editTitle()
       this.setState({editing: false})
     }

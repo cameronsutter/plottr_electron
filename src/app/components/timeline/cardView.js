@@ -93,7 +93,7 @@ class CardView extends Component {
   }
 
   handleBlur = () => {
-    var newTitle = this.refs.titleInput.getValue()
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
     if (newTitle === '') {
       this.setState({creating: false})
       return false

@@ -9,19 +9,21 @@
 //   configuration: Configuration
 // }
 const fs = require('fs')
+const path = require('path')
 
 exports.default = function (buildResult) {
   console.log("CUSTOM FUNCTION afterAllArtifactBuild")
   console.log("BUILD TYPE", process.env.BUILD_TYPE)
   console.log("outDir", buildResult.outDir)
   console.log("artifactPaths", buildResult.artifactPaths)
-  console.log("platformToTargets", buildResult.platformToTargets)
   if (process.env.BUILD_TYPE === 'trial') {
-    throw new Error("I pitty the fool!");
+    let files = fs.readdirSync(buildResult.outDir)
+    console.log(files)
+    // throw new Error("I pitty the fool!");
     if(process.env.BUILD_PLATFORM === 'win32') {
-      fs.renameSync('latest.yml', 'latest-trial.yml')
+      fs.renameSync(path.join(buildResult.outDir, 'latest.yml'), path.join(buildResult.outDir, 'latest-trial.yml'))
     } else {
-      fs.renameSync('latest-mac.yml', 'latest-mac-trial.yml')
+      fs.renameSync(path.join(buildResult.outDir, 'latest-mac.yml'), path.join(buildResult.outDir, 'latest-mac-trial.yml'))
     }
   }
 }

@@ -284,7 +284,7 @@ app.on('ready', function () {
         app.dock.setMenu(dockMenu)
       }
 
-      if (!TRIALMODE && !process.env.NODE_ENV === 'dev') {
+      if (!TRIALMODE && process.env.NODE_ENV !== 'dev') {
         log.transports.file.level = 'debug'
         autoUpdater.logger = log
         autoUpdater.checkForUpdatesAndNotify()

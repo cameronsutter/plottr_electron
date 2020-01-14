@@ -10,7 +10,7 @@ import i18n from 'format-message'
 class OutlineView extends Component {
   constructor (props) {
     super(props)
-    this.state = {affixed: false, active: '', currentLine: null}
+    this.state = {affixed: false, active: 0, currentLine: null}
   }
 
   cardMapping () {
@@ -58,8 +58,8 @@ class OutlineView extends Component {
     )
   }
 
-  setActive = (title) => {
-    this.setState({active: title})
+  setActive = (id) => {
+    this.setState({active: id})
   }
 
   filterItem (id) {

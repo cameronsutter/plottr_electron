@@ -250,14 +250,15 @@ class TimeLineView extends Component {
 
   renderScenes () {
     const scenes = _.sortBy(this.props.scenes, 'position')
-    return [<Cell key={`sceneId-placeholder`}></Cell>].concat(scenes.map(sc => <Scene key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />))
+    const renderedScenes = scenes.map(sc => <Scene key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />)
+    return [<Cell key={`sceneId-placeholder`}></Cell>].concat(renderedScenes)
   }
 
   renderTable () {
     // TODO: think about how to do vertical orientation
 
     // const sceneRow = <SceneListView key='lineId-header' isZoomed={this.isZoomed()} />
-    const sceneRow = <Row>{this.renderScenes()}</Row>
+    const sceneRow = <Row key="scene-row">{this.renderScenes()}</Row>
     const lineRows = this.renderLines()
 
     return [sceneRow, lineRows]

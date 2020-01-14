@@ -2,7 +2,7 @@
 
 #timelineview__root {
   width: 100vw;
-  height: calc(100% - 121px);
+  height: calc(100% - 105px);
   position: absolute;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .sticky-table-cell {
-  // padding: 0 10px 10px 10px;
   padding: 0;
   background-color: $body-background-color;
+  vertical-align: top;
 }

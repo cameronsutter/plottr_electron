@@ -68,7 +68,7 @@ class CardCell extends Component {
     if (this.props.filtered) {
       cardStyle.opacity = '0.1'
     }
-    return <Cell>
+    return <Cell style={{paddingTop: "-2px"}}>
       <div className='card__cell'>
         <CardSVGline color={this.props.color} orientation={this.props.ui.orientation}/>
         <div className='card__body' style={cardStyle}

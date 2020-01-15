@@ -16,10 +16,7 @@ class CardCell extends Component {
     super(props)
     this.state = {
       dialogOpen: false,
-      creating: false,
-      dropping: false,
       dragging: false,
-      hovering: false
     }
   }
 
@@ -28,26 +25,13 @@ class CardCell extends Component {
   }
 
   handleDragStart = (e) => {
-    this.setState({dragging: true, hovering: false})
+    this.setState({dragging: true})
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify(this.props.card))
   }
 
   handleDragEnd = () => {
     this.setState({dragging: false})
-  }
-
-  handleDragEnter = (e) => {
-    this.setState({dropping: true})
-  }
-
-  handleDragOver = (e) => {
-    e.preventDefault()
-    return false
-  }
-
-  handleDragLeave = (e) => {
-    this.setState({dropping: false})
   }
 
   renderDialog () {
@@ -91,25 +75,6 @@ class CardCell extends Component {
     </div>)
   }
 
-  renderTitle () {
-    let title = <div className='card__title'>
-      <p>{this.props.card.title}</p>
-    </div>
-    if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
-      let placement = 'left'
-      if (this.props.ui.orientation === 'horizontal') {
-        placement = this.props.scenePosition <= 1 ? 'right' : placement
-      } else {
-        placement = this.props.linePosition <= 1 ? 'right' : placement
-      }
-      if (this.props.isZoomed) placement = 'right'
-      title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
-        {title}
-      </OverlayTrigger>
-    }
-    return title
-  }
-
   renderBody () {
     var cardStyle = {
       borderColor: this.props.color
@@ -124,12 +89,12 @@ class CardCell extends Component {
       draggable={true}
       onDragStart={this.handleDragStart}
       onDragEnd={this.handleDragEnd}
-      onMouseEnter={() => this.setState({hovering: true})}
-      onMouseLeave={() => this.setState({hovering: false})}
-      onClick={() => this.setState({dialogOpen: true})}>
-        {this.props.card.title}
+      onClick={() => this.setState({dialogOpen: true})}
+    >
+      {this.props.card.title}
     </div>
-    if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
+    // if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
+    if (this.hasLabels() || this.props.card.description) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
         placement = this.props.scenePosition <= 1 ? 'right' : placement

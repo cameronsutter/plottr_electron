@@ -14,8 +14,46 @@ class BlankCard extends Component {
     super(props)
     this.state = {
       creating: false,
-      hovering: false
+      dropping: false,
+      mouseOverIt: false,
     }
+    this.dragLeaveTimeout = null
+    this.dragOverTimeout = null
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.dragLeaveTimeout)
+    clearTimeout(this.dragOverTimeout)
+  }
+
+  handleDragEnter = (e) => {
+    this.setState({dropping: true})
+  }
+
+  handleDragOver = (e) => {
+    if (!this.state.mouseOverIt) {
+      this.setState({mouseOverIt: true})
+      this.dragOverTimeout = setTimeout(() => {this.setState({mouseOverIt: false})}, 50)
+    }
+    e.preventDefault()
+    return false
+  }
+
+  handleDragLeave = (e) => {
+    this.dragLeaveTimeout = setTimeout(() => {
+      if (!this.state.mouseOverIt) this.setState({dropping: false});
+    }, 100)
+  }
+
+  handleDrop = (e) => {
+    e.stopPropagation()
+    this.setState({dropping: false, mouseOverIt: false})
+
+    var json = e.dataTransfer.getData('text/json')
+    var droppedCard = JSON.parse(json)
+    if (droppedCard.id === null || droppedCard.id === undefined) return
+
+    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.sceneId)
   }
 
   saveCreate = () => {
@@ -63,9 +101,9 @@ class BlankCard extends Component {
     var blankCardStyle = {
       borderColor: this.props.color
     }
-    return <div className='blank-card__body' style={blankCardStyle}>
-      {i18n('New Card')}
-    </div>
+    let klass = 'blank-card__body'
+    if (this.state.dropping) klass += ' hover'
+    return <div className={klass} style={blankCardStyle} />
   }
 
   renderCreateNew () {
@@ -99,7 +137,13 @@ class BlankCard extends Component {
       body = this.renderBlank()
     }
     return <Cell>
-      <div className='card__cell' onClick={() => this.setState({creating: true})}>
+      <div className='card__cell'
+        onDragEnter={this.handleDragEnter}
+        onDragOver={this.handleDragOver}
+        onDragLeave={this.handleDragLeave}
+        onDrop={this.handleDrop}
+        onClick={() => this.setState({creating: true})}
+      >
         <CardSVGline color={this.props.color} orientation={this.props.ui.orientation}/>
         {body}
       </div>

@@ -51,7 +51,7 @@ class CardCell extends Component {
   }
 
   renderDialog () {
-    if (!this.dialogOpen) return null
+    if (!this.state.dialogOpen) return null
     const { card, sceneId, lineId } = this.props
     return <CardDialog
       card={card}

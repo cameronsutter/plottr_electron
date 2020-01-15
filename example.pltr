@@ -2,11 +2,21 @@
   "cards": [
     {
       "characters": [],
-      "description": "stuff",
+      "description": "",
+      "id": 164,
+      "lineId": 29,
+      "places": [],
+      "sceneId": 107,
+      "tags": [],
+      "title": "new card"
+    },
+    {
+      "characters": [],
+      "description": "",
       "id": 163,
       "lineId": 27,
       "places": [],
-      "sceneId": 107,
+      "sceneId": 98,
       "tags": [],
       "title": "new card"
     },
@@ -1094,11 +1104,9 @@
     }
   ],
   "ui": {
-    "characterFilter": {
-      "age": []
-    },
+    "characterFilter": null,
     "characterSort": "name~asc",
-    "currentView": "outline",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

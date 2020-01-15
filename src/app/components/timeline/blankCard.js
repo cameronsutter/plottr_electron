@@ -6,8 +6,8 @@ import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
 import CardSVGline from 'components/timeline/cardSVGline'
 import i18n from 'format-message'
-import orientedClassName from 'helpers/orientedClassName'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import ReactDOM from 'react-dom'
 
 class BlankCard extends Component {
   constructor (props) {
@@ -19,7 +19,7 @@ class BlankCard extends Component {
   }
 
   saveCreate = () => {
-    var newCard = this.buildCard(this.refs.titleInput.getValue())
+    var newCard = this.buildCard(ReactDOM.findDOMNode(this.refs.titleInput).value)
     this.props.actions.addCard(newCard)
     this.setState({creating: false})
   }
@@ -49,7 +49,7 @@ class BlankCard extends Component {
   }
 
   handleBlur = () => {
-    var newTitle = this.refs.titleInput.getValue()
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
     if (newTitle === '') {
       this.setState({creating: false})
       return false

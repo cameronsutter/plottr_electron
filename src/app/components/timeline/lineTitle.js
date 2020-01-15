@@ -20,7 +20,6 @@ class LineTitle extends Component {
       dropping: false,
       showColorPicker: false
     }
-    this.titleRef = null
   }
 
   editTitle = () => {
@@ -128,7 +127,7 @@ class LineTitle extends Component {
       <FormControl
         type='text'
         defaultValue={this.props.line.title}
-        ref={ref => this.titleRef = ref}
+        ref='titleRef'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
         onBlur={this.handleBlur}

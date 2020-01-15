@@ -9,12 +9,11 @@ import * as SceneActions from 'actions/scenes'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
-class Scene extends Component {
+class SceneCell extends Component {
   constructor (props) {
     super(props)
     let editing = props.scene.title === ''
     this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
-    this.titleRef = null
   }
 
   editTitle = () => {
@@ -109,7 +108,7 @@ class Scene extends Component {
       <FormControl
         type='text'
         defaultValue={this.props.scene.title}
-        ref={ref => this.titleRef = ref}
+        ref='titleRef'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
         onBlur={this.handleBlur}
@@ -148,7 +147,7 @@ class Scene extends Component {
   }
 }
 
-Scene.propTypes = {
+SceneCell.propTypes = {
   scene: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
   isZoomed: PropTypes.bool.isRequired,
@@ -171,4 +170,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Scene)
+)(SceneCell)

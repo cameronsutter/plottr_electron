@@ -13,7 +13,7 @@ import LineView from 'components/timeline/lineView'
 import LineListView from 'components/timeline/lineListView'
 import CardCell from 'components/timeline/cardCell'
 import BlankCard from 'components/timeline/blankCard'
-import Scene from 'components/timeline/scene'
+import SceneCell from 'components/timeline/sceneCell'
 import LineTitle from 'components/timeline/lineTitle'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
@@ -250,7 +250,7 @@ class TimeLineView extends Component {
 
   renderScenes () {
     const scenes = _.sortBy(this.props.scenes, 'position')
-    const renderedScenes = scenes.map(sc => <Scene key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />)
+    const renderedScenes = scenes.map(sc => <SceneCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />)
     return [<Cell key={`sceneId-placeholder`}></Cell>].concat(renderedScenes)
   }
 

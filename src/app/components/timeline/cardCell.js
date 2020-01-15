@@ -6,6 +6,10 @@ import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
 import CardDialog from 'components/timeline/cardDialog'
 import CardSVGline from 'components/timeline/cardSVGline'
+import { Popover, OverlayTrigger } from 'react-bootstrap'
+import orientedClassName from 'helpers/orientedClassName'
+import MDdescription from 'components/mdDescription'
+import TagLabel from 'components/tagLabel'
 
 class CardCell extends Component {
   constructor (props) {
@@ -58,7 +62,55 @@ class CardCell extends Component {
     />
   }
 
-  render () {
+  renderPopover () {
+    return <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
+      <MDdescription className='card__popover-description' labels={this.props.labelMap}
+        description={this.props.card.description.substring(0, 1000)}
+        darkMode={this.props.ui.darkMode}
+      />
+      {this.renderTags()}
+    </Popover>
+  }
+
+  hasLabels () {
+    const { card } = this.props
+    return card.tags && card.tags.length > 0
+  }
+
+  renderTags () {
+    var tags = null
+    if (this.props.card.tags) {
+      tags = this.props.card.tags.map(tId => {
+        var tag = _.find(this.props.tags, {id: tId})
+        if (!tag) return null
+        return <TagLabel tag={tag} key={`timeline-taglabel-${tId}`} />
+      })
+    }
+    return (<div className='card__popover-labels'>
+      {tags}
+    </div>)
+  }
+
+  renderTitle () {
+    let title = <div className='card__title'>
+      <p>{this.props.card.title}</p>
+    </div>
+    if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
+      let placement = 'left'
+      if (this.props.ui.orientation === 'horizontal') {
+        placement = this.props.scenePosition <= 1 ? 'right' : placement
+      } else {
+        placement = this.props.linePosition <= 1 ? 'right' : placement
+      }
+      if (this.props.isZoomed) placement = 'right'
+      title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
+        {title}
+      </OverlayTrigger>
+    }
+    return title
+  }
+
+  renderBody () {
     var cardStyle = {
       borderColor: this.props.color
     }
@@ -68,18 +120,35 @@ class CardCell extends Component {
     if (this.props.filtered) {
       cardStyle.opacity = '0.1'
     }
+    const body = <div className='card__body' style={cardStyle}
+      draggable={true}
+      onDragStart={this.handleDragStart}
+      onDragEnd={this.handleDragEnd}
+      onMouseEnter={() => this.setState({hovering: true})}
+      onMouseLeave={() => this.setState({hovering: false})}
+      onClick={() => this.setState({dialogOpen: true})}>
+        {this.props.card.title}
+    </div>
+    if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
+      let placement = 'left'
+      if (this.props.ui.orientation === 'horizontal') {
+        placement = this.props.scenePosition <= 1 ? 'right' : placement
+      } else {
+        placement = this.props.linePosition <= 1 ? 'right' : placement
+      }
+      if (this.props.isZoomed) placement = 'right'
+      return <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
+        {body}
+      </OverlayTrigger>
+    }
+    return body
+  }
+
+  render () {
     return <Cell>
       <div className='card__cell'>
         <CardSVGline color={this.props.color} orientation={this.props.ui.orientation}/>
-        <div className='card__body' style={cardStyle}
-          draggable={true}
-          onDragStart={this.handleDragStart}
-          onDragEnd={this.handleDragEnd}
-          onMouseEnter={() => this.setState({hovering: true})}
-          onMouseLeave={() => this.setState({hovering: false})}
-          onClick={() => this.setState({dialogOpen: true})}>
-            {this.props.card.title}
-        </div>
+        { this.renderBody() }
         { this.renderDialog() }
       </div>
     </Cell>

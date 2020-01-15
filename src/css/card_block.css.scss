@@ -1,8 +1,6 @@
 @import "vars";
 
 .card__cell {
-  // width: 200px;
-  // height: 66px;
   svg {
     position: absolute;
   }
@@ -35,6 +33,20 @@
 .card__cell:hover {
   .blank-card__body {
     visibility: visible;
+  }
+}
+
+.card__popover-description {
+  min-width: 250px;
+  @include body-text-font;
+}
+
+.card__popover-labels {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  .label {
+    margin: 2px;
   }
 }
 
@@ -144,16 +156,4 @@
 //   }
 // }
 //
-// .card__popover-description {
-//   min-width: 250px;
-//   @include body-text-font;
-// }
-//
-// .card__popover-labels {
-//   display: flex;
-//   flex-wrap: wrap;
-//   position: relative;
-//   .label {
-//     margin: 2px;
-//   }
-// }
+

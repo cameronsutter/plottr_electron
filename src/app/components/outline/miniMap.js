@@ -11,9 +11,9 @@ class MiniMap extends Component {
     this.state = {mouseOver: false}
   }
 
-  selectNav = (key, href) => {
-    window.location = `#${href}`
-    window.scrollBy(0, -105)
+  selectNav = (key) => {
+    document.querySelector(`#scene-${key}`).scrollIntoViewIfNeeded()
+    window.scrollBy(0, 250)
   }
 
   renderCardDots (sceneCards) {
@@ -28,7 +28,7 @@ class MiniMap extends Component {
   renderScenes () {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map((s, idx) =>
-      <NavItem ref={s.title} key={`minimap-scene-${s.id}`} href={s.title} className='outline__minimap__scene-title'>
+      <NavItem ref={s.title} key={`minimap-scene-${s.id}`} eventKey={s.id} className='outline__minimap__scene-title'>
         <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{s.title}</span></span>
         <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[s.id])}</div>
       </NavItem>
@@ -41,7 +41,7 @@ class MiniMap extends Component {
     return (
       <Nav
         className={klasses}
-        activeHref={this.props.active}
+        activeKey={this.props.active}
         onSelect={this.selectNav}
         onMouseEnter={() => this.setState({mouseOver: true})}
         onMouseLeave={() => this.setState({mouseOver: false})}>
@@ -52,7 +52,10 @@ class MiniMap extends Component {
 
   componentDidUpdate () {
     if (!this.state.mouseOver) {
-      var domNode = ReactDOM.findDOMNode(this.refs[this.props.active])
+      const scene = this.props.scenes.find(sc => sc.id === this.props.active)
+      let title = ""
+      if (scene) title = scene.title
+      var domNode = ReactDOM.findDOMNode(this.refs[title])
       if (domNode) {
         domNode.scrollIntoViewIfNeeded()
       }
@@ -62,7 +65,7 @@ class MiniMap extends Component {
 
 MiniMap.propTypes = {
   scenes: PropTypes.array.isRequired,
-  active: PropTypes.string.isRequired,
+  active: PropTypes.number.isRequired,
   lines: PropTypes.array.isRequired,
   cardMapping: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,

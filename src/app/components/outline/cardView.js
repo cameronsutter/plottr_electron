@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -25,7 +26,7 @@ class CardView extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = this.refs.titleInput.getValue() || this.props.card.title
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.card.title
     var newDescription = this.state.description
     this.saveCreatedLabels(newDescription)
     this.props.actions.editCard(this.props.card.id, newTitle, newDescription)

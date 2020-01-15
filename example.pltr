@@ -2,6 +2,16 @@
   "cards": [
     {
       "characters": [],
+      "description": "stuff",
+      "id": 163,
+      "lineId": 27,
+      "places": [],
+      "sceneId": 107,
+      "tags": [],
+      "title": "new card"
+    },
+    {
+      "characters": [],
       "description": "",
       "id": 162,
       "lineId": 33,
@@ -1084,9 +1094,11 @@
     }
   ],
   "ui": {
-    "characterFilter": null,
+    "characterFilter": {
+      "age": []
+    },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "outline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

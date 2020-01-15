@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -49,8 +50,7 @@ class PlaceListView extends Component {
 
   componentDidUpdate () {
     if (this.refs.attrInput) {
-      var input = this.refs.attrInput.getInputDOMNode()
-      input.focus()
+      ReactDOM.findDOMNode(this.refs.attrInput).focus()
     }
   }
 
@@ -116,7 +116,7 @@ class PlaceListView extends Component {
   }
 
   handleType = () => {
-    const attr = this.refs.attrInput.getValue()
+    const attr = ReactDOM.findDOMNode(this.refs.attrInput).value
     this.setState({addAttrText: attr})
   }
 
@@ -127,11 +127,11 @@ class PlaceListView extends Component {
   }
 
   saveAttr = () => {
-    const attr = this.refs.attrInput.getValue()
+    const inputNode = ReactDOM.findDOMNode(this.refs.attrInput)
+    const attr = inputNode.value
     this.props.customAttributeActions.addPlaceAttr(attr)
     this.setState({addAttrText: ''})
-    var input = this.refs.attrInput.getInputDOMNode()
-    input.focus()
+    inputNode.focus()
   }
 
   removeAttr (attr) {

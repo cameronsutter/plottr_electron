@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -32,7 +33,7 @@ class NoteView extends Component {
   }
 
   saveEdit = () => {
-    var title = this.refs.titleInput.getValue() || this.props.note.title
+    var title = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.note.title
     var content = this.state.content
     this.props.actions.editNote(this.props.note.id, {title, content})
   }

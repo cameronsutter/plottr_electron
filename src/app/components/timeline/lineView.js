@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
@@ -65,7 +66,7 @@ class LineView extends Component {
 
   editTitle = () => {
     var id = this.props.line.id
-    var newTitle = this.refs.titleInput.getValue()
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
     this.props.actions.editLineTitle(id, newTitle)
     this.setState({editing: false})
   }
@@ -77,7 +78,7 @@ class LineView extends Component {
   }
 
   handleBlur = () => {
-    if (this.refs.titleInput.getValue() !== '') {
+    if (ReactDOM.findDOMNode(this.refs.titleInput).value !== '') {
       this.editTitle()
       this.setState({editing: false})
     }

@@ -68,6 +68,7 @@
     "electron": "^5.0.4",
     "electron-builder": "^21.0.1",
     "electron-devtools-installer": "^2.0.0",
+    "electron-notarize": "^0.1.1",
     "electron-reload": "^1.4.0",
     "file-loader": "^0.8.5",
     "format-message-cli": "^6.2.1",
@@ -81,7 +82,7 @@
   "build": {
     "electronVersion": "5.0.4",
     "appId": "com.plottr.app",
-    "artifactName": "${productName}-${os}-${env.BUILD_TYPE}-${version}.${ext}",
+    "artifactName": "${productName}-${os}-installer-${env.BUILD_TYPE}-${version}.${ext}",
     "publish": [
       "github"
     ],
@@ -98,7 +99,7 @@
       "!example*.docx",
       "!screenshots"
     ],
-    "copyright": "Copyright © 2017 C. Louis S. (Cameron Sutter)",
+    "copyright": "Copyright © 2019 C. Louis S. (Cameron Sutter)",
     "productName": "Plottr",
     "fileAssociations": [
       {
@@ -108,16 +109,23 @@
         "role": "Editor"
       }
     ],
+    "afterSign": "build/notarize.js",
+    "afterAllArtifactBuild": "build/afterAllArtifactBuild.js",
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
         "dmg",
         "zip"
-      ]
+      ],
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
     },
     "dmg": {
       "backgroundColor": "#efefee",
-      "title": "${productName} Installer"
+      "title": "${productName} Installer",
+      "sign": false
     },
     "win": {
       "target": {
@@ -129,7 +137,7 @@
       }
     },
     "nsis": {
-      "artifactName": "${productName}-${os}-${env.BUILD_TYPE}-${version}.${ext}",
+      "artifactName": "${productName}-${os}-installer-${env.BUILD_TYPE}-${version}.${ext}",
       "perMachine": true
     }
   }

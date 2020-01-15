@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
@@ -47,7 +48,7 @@ class CardDialog extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = this.refs.titleInput.getValue() || this.props.card.title
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.card.title
     var newDescription = this.state.description || this.props.card.description
     this.saveCreatedLabels(newDescription)
     this.props.actions.editCard(this.props.card.id, newTitle, newDescription)

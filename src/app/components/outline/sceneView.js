@@ -15,11 +15,12 @@ class SceneView extends Component {
     let klasses = 'outline__scene_title'
     if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
-      <div id={this.props.scene.title}>
-        <Waypoint onEnter={() => this.props.waypoint(this.props.scene.title)} threshold={-0.75} />
-        <h3 className={klasses}>{this.props.scene.title}</h3>
-        {this.renderCards()}
-      </div>
+      <Waypoint onEnter={() => this.props.waypoint(this.props.scene.id)} scrollableAncestor={window} topOffset={"60%"} bottomOffset={"60%"}>
+        <div>
+          <h3 id={`scene-${this.props.scene.id}`} className={klasses}>{this.props.scene.title}</h3>
+          {this.renderCards()}
+        </div>
+      </Waypoint>
     )
   }
 }

@@ -10,6 +10,7 @@ import i18n from 'format-message'
 const SUCCESS = 'success'
 const OFFLINE = 'offline'
 const INVALID = 'invalid'
+const TOOMANY = 'toomany'
 const CANTSAVE = 'cantsave'
 const SAVE2 = 'save_attempt_2'
 const RED = 'bg-danger'
@@ -33,8 +34,9 @@ class VerifyView extends Component {
     } else if (value === OFFLINE) {
       return i18n("It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline")
     } else if (value === INVALID) {
-      return i18n('It looks like you have Plottr on 5 computers already or you requested a refund')
-      // return i18n("Hmmmm. It looks like that's not a valid license key.")
+      return i18n("Hmmmm. It looks like that's not a valid license key")
+    } else if (value === TOOMANY) {
+      return i18n('It looks like you have Plottr on 5 computers already')
     } else if (value === CANTSAVE) {
       return i18n("Plottr verified your license key successfully, but there was an error saving that. Let's try one more time")
     } else if (value === SAVE2) {
@@ -44,7 +46,11 @@ class VerifyView extends Component {
     }
   }
 
-  verifyLicense (license) {
+  isValidLicense = (body) => {
+    return body.success && !body.purchase.refunded && !body.purchase.chargebacked && !body.purchase.disputed
+  }
+
+  verifyLicense = (license) => {
     var req = {
       url: 'https://api.gumroad.com/v2/licenses/verify',
       method: 'POST',
@@ -54,6 +60,9 @@ class VerifyView extends Component {
         license_key: license
       }
     }
+    if (process.env.NODE_ENV === 'development') {
+      req.body.increment_uses_count = 'false'
+    }
     const view = this
     request(req, function (err, response, body) {
       var newState = {spinnerHidden: true}
@@ -61,24 +70,36 @@ class VerifyView extends Component {
         newState.showAlert = true
         newState.alertText = view.makeAlertText(INVALID)
       } else {
-        if (body.success && !body.purchase.refunded && !body.purchase.chargebacked && body.uses <= 5) {
-          // save uses, purchase.email, purchase.full_name, purchase.variants
-          storage.set('user_info', body, function(err) {
-            if (err) {
-              view.setState({showAlert: true, alertText: view.makeAlertText(CANTSAVE)})
-              storage.set('user_info', body, function(err) {
-                if (err) {
-                  view.setState({showAlert: true, alertText: view.makeAlertText(SAVE2)})
-                } else {
-                  view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
+        if (process.env.NODE_ENV === 'development') {
+          console.log(body)
+        }
+        if (view.isValidLicense(body)) {
+          if (body.uses > 5) {
+            newState.showAlert = true
+            newState.alertText = view.makeAlertText(TOOMANY)
+          } else {
+            // save uses, purchase.email, purchase.full_name, purchase.variants
+            storage.set('user_info', body, function(err) {
+              if (err) {
+                view.setState({showAlert: true, alertText: view.makeAlertText(CANTSAVE)})
+                storage.set('user_info', body, function(err) {
+                  if (err) {
+                    view.setState({showAlert: true, alertText: view.makeAlertText(SAVE2)})
+                  } else {
+                    view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
+                    if (process.env.NODE_ENV !== 'development') {
+                      ipcRenderer.send('license-verified')
+                    } 
+                  }
+                })
+              } else {
+                view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
+                if (process.env.NODE_ENV !== 'development') {
                   ipcRenderer.send('license-verified')
-                }
-              })
-            } else {
-              view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
-              ipcRenderer.send('license-verified')
-            }
-          })
+                } 
+              }
+            })
+          }
         } else {
           newState.showAlert = true
           newState.alertText = view.makeAlertText(INVALID)
@@ -90,7 +111,7 @@ class VerifyView extends Component {
 
   handleVerify () {
     if (navigator.onLine) {
-      var input = ReactDOM.findDOMNode(this.refs.license).children[0]
+      var input = ReactDOM.findDOMNode(this.refs.license)
       var license = input.value.trim()
       if (license != '') {
         this.setState({spinnerHidden: false})

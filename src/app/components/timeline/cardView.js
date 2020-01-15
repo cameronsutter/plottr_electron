@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
@@ -63,7 +64,7 @@ class CardView extends Component {
   }
 
   saveCreate = () => {
-    var newCard = this.buildCard(this.refs.titleInput.getValue())
+    var newCard = this.buildCard(ReactDOM.findDOMNode(this.refs.titleInput).value)
     this.props.actions.addCard(newCard)
     this.setState({creating: false})
   }
@@ -93,7 +94,7 @@ class CardView extends Component {
   }
 
   handleBlur = () => {
-    var newTitle = this.refs.titleInput.getValue()
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
     if (newTitle === '') {
       this.setState({creating: false})
       return false

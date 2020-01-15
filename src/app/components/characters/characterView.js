@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -49,8 +50,8 @@ class CharacterView extends Component {
   }
 
   saveEdit = () => {
-    var name = this.refs.nameInput.getValue() || this.props.character.name
-    var description = this.refs.descriptionInput.getValue()
+    var name = ReactDOM.findDOMNode(this.refs.nameInput).value || this.props.character.name
+    var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
     var attrs = {}
     this.props.customAttributes.forEach(attr => {
@@ -58,7 +59,7 @@ class CharacterView extends Component {
       if (attrType == 'paragraph') {
         attrs[attrName] = this.state.description[attrName]
       } else {
-        const val = this.refs[`${attr}Input`].getValue()
+        const val = ReactDOM.findDOMNode(this.refs[`${attr}Input`]).value
         attrs[attr] = val
       }
     })
@@ -108,13 +109,13 @@ class CharacterView extends Component {
           <div className='character-list__inputs__normal'>
             <FormGroup>
               <ControlLabel>{i18n('Name')}</ControlLabel>
-              <Input
+              <FormControl
                 type='text' ref='nameInput' autoFocus
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}
                 defaultValue={character.name} />
               <ControlLabel>{i18n('Short Description')}</ControlLabel>
-              <Input type='text' ref='descriptionInput'
+              <FormControl type='text' ref='descriptionInput'
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}
                 defaultValue={character.description} />

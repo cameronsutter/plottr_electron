@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
@@ -18,7 +19,7 @@ class SceneView extends Component {
 
   editTitle = () => {
     var id = this.props.scene.id
-    var newTitle = this.refs.titleInput.getValue()
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
     this.props.actions.editSceneTitle(id, newTitle)
     this.setState({editing: false})
   }

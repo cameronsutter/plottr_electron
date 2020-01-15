@@ -257,7 +257,6 @@ class TimeLineView extends Component {
   renderTable () {
     // TODO: think about how to do vertical orientation
 
-    // const sceneRow = <SceneListView key='lineId-header' isZoomed={this.isZoomed()} />
     const sceneRow = <Row key="scene-row">{this.renderScenes()}</Row>
     const lineRows = this.renderLines()
 

@@ -3,26 +3,6 @@
     {
       "characters": [],
       "description": "",
-      "id": 164,
-      "lineId": 29,
-      "places": [],
-      "sceneId": 107,
-      "tags": [],
-      "title": "new card"
-    },
-    {
-      "characters": [],
-      "description": "",
-      "id": 163,
-      "lineId": 27,
-      "places": [],
-      "sceneId": 98,
-      "tags": [],
-      "title": "new card"
-    },
-    {
-      "characters": [],
-      "description": "",
       "id": 162,
       "lineId": 33,
       "places": [],
@@ -586,9 +566,7 @@
         114,
         118,
         117,
-        116,
-        122,
-        127
+        116
       ],
       "color": null,
       "description": "she is the coolest",
@@ -696,7 +674,7 @@
       "title": "Rivab"
     },
     {
-      "color": "#0b1117",
+      "color": "DeepPink",
       "id": 35,
       "position": 6,
       "title": "Baltazaar"
@@ -781,9 +759,7 @@
   ],
   "places": [
     {
-      "cards": [
-        140
-      ],
+      "cards": [],
       "color": null,
       "description": "my favorite place",
       "id": 1,
@@ -793,9 +769,7 @@
       "weather": "stormy"
     },
     {
-      "cards": [
-        112
-      ],
+      "cards": [],
       "color": null,
       "description": "my favorite place",
       "id": 0,
@@ -805,10 +779,7 @@
       "weather": ""
     },
     {
-      "cards": [
-        145,
-        146
-      ],
+      "cards": [],
       "color": null,
       "description": "",
       "id": 2,

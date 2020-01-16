@@ -11,6 +11,15 @@
   margin: auto;
   text-align: center;
   transition: all .4s $cubic;
+  .form-group {
+    text-align: left;
+    .control-label {
+      @include secondary-text;
+      font-weight: normal;
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+  }
 }
 
 .scene__body.hover {

@@ -14,12 +14,12 @@ class ColorPicker extends Component {
     this.state = {color: this.props.color}
   }
 
-  closeDialog = (color = null) => {
+  closeDialog = (color) => {
     this.props.closeDialog(color)
   }
 
   showColor = () => {
-    var newColor = ReactDOM.findDOMNode(this.refs.hex).value
+    var newColor = ReactDOM.findDOMNode(this.refs.hexRef).value
     var regex = /#?([0123456789abcdef]{6})/
     var matches = regex.exec(newColor)
     if (matches) {
@@ -35,7 +35,7 @@ class ColorPicker extends Component {
       klasses += ' darkmode'
       customStyles.content.backgroundColor = '#888'
     }
-    return (<Modal isOpen={true} onRequestClose={this.closeDialog} style={customStyles}>
+    return (<Modal isOpen={true} onRequestClose={() => this.closeDialog(this.state.color)} style={customStyles}>
       <div className={klasses}>
         <h2 className='color-picker__title'>{i18n('Pick a color')}</h2>
         <div className='color-picker__input-box form-horizontal'>
@@ -52,7 +52,7 @@ class ColorPicker extends Component {
             <Col xs={2}>
               <FormGroup>
                 <ControlLabel>{i18n('hex code or name')}</ControlLabel>
-                <FormControl type='text' ref='hex' placeholder='e.g. #ffffff'
+                <FormControl type='text' ref='hexRef' placeholder='e.g. #ffffff'
                   defaultValue={this.state.color}
                   onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
                   onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}

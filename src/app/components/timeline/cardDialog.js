@@ -75,7 +75,7 @@ class CardDialog extends Component {
 
   handleEnter = (event) => {
     if (event.which === 13) {
-      this.saveEdit()
+      this.saveAndClose()
     }
   }
 

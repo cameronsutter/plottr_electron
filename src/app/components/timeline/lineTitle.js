@@ -141,16 +141,16 @@ class LineTitle extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
-    var classes = 'line-title__body'
-    if (this.state.hovering) classes += ' hover'
-    if (this.state.dropping) classes += ' dropping'
+    var klass = 'line-title__body'
+    if (this.state.hovering) klass += ' hover'
+    if (this.state.dropping) klass += ' dropping'
     return <Cell>
       <div className='line-title__cell'
         onMouseEnter={() => this.setState({hovering: true})}
         onMouseLeave={() => this.setState({hovering: false})}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
-        <div className={classes}
+        <div className={klass}
           onClick={() => this.setState({editing: true})}
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}

@@ -18,7 +18,7 @@ class SceneCell extends Component {
 
   editTitle = () => {
     const id = this.props.scene.id
-    const ref = ReactDOM.findDOMNode(this.titleRef)
+    const ref = ReactDOM.findDOMNode(this.refs.titleRef)
     this.props.actions.editSceneTitle(id, ref.value)
     this.setState({editing: false, hovering: false})
   }

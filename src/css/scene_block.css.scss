@@ -44,7 +44,7 @@
       margin-right: -1px;
     }
   }
-  .insert-scene-wrapper.insert-last {
+  .insert-scene-wrapper.append-scene {
     padding: 30px 70px;
     color: $blue-5;
     border: 3px dotted $blue-8;
@@ -54,7 +54,7 @@
 
 .scene-list__insert:hover {
   color: $blue-5;
-  .insert-scene-wrapper.insert-last {
+  .insert-scene-wrapper.append-scene {
     border: 3px dashed $blue-7;
   }
 }

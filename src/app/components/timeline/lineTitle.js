@@ -24,7 +24,7 @@ class LineTitle extends Component {
 
   editTitle = () => {
     var id = this.props.line.id
-    const ref = ReactDOM.findDOMNode(this.titleRef)
+    const ref = ReactDOM.findDOMNode(this.refs.titleRef)
     this.props.actions.editLineTitle(id, ref.value)
     this.setState({editing: false, hovering: false})
   }
@@ -36,7 +36,7 @@ class LineTitle extends Component {
   }
 
   handleBlur = () => {
-    if (this.refs.titleInput.getValue() !== '') {
+    if (ReactDOM.findDOMNode(this.refs.titleRef).value !== '') {
       this.editTitle()
       this.setState({editing: false, hovering: false})
     }

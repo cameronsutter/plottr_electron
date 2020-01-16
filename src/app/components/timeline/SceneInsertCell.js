@@ -9,7 +9,7 @@ export default class SceneInsertCell extends Component {
     const { scenePosition, lineId, isInSceneList, handleInsert, needsSpacer, color, orientation, isLast } = this.props
     let wrapperKlass = 'insert-scene-wrapper'
     if (needsSpacer) wrapperKlass += ' insert-scene-spacer'
-    if (isLast) wrapperKlass += ' insert-last'
+    if (isLast) wrapperKlass += ' append-scene'
 
     return <Cell>
       <div
@@ -27,7 +27,7 @@ export default class SceneInsertCell extends Component {
   static propTypes = {
     handleInsert: PropTypes.func.isRequired,
     isInSceneList: PropTypes.bool.isRequired,
-    scenePosition: PropTypes.number.isRequired,
+    scenePosition: PropTypes.number,
     lineId: PropTypes.number,
     needsSpacer: PropTypes.bool,
     orientation: PropTypes.string,

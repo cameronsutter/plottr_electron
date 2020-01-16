@@ -17,6 +17,15 @@
   min-width: 150px;
   padding: 10px;
   transition: all .4s $cubic;
+  .form-group {
+    text-align: left;
+    .control-label {
+      @include secondary-text;
+      font-weight: normal;
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+  }
 }
 
 .line-title__body.hover {
@@ -30,7 +39,8 @@
 
 .line-title__hover-options {
   float: left;
-  margin-right: 5px;
+  margin-right: 3px;
+  margin-left: 2px;
   visibility: hidden;
   button.btn-block {
     margin-top: 1px;
@@ -66,6 +76,24 @@
   color: $blue-5;
   .insert-scene-wrapper {
     border: 1px dotted $blue-8;
+  }
+}
+
+.line-list__append-line {
+  cursor: pointer;
+  .line-list__append-line-wrapper {
+    padding: 20px 70px;
+    color: $blue-5;
+    border: 3px dotted $blue-8;
+    margin-left: 35px;
+    margin-bottom: 50px;
+  }
+}
+
+.line-list__append-line:hover {
+  color: $blue-5;
+  .line-list__append-line-wrapper {
+    border: 3px dashed $blue-7;
   }
 }
 

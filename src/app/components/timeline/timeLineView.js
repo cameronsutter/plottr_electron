@@ -20,6 +20,7 @@ import SceneInsertCell from 'components/timeline/SceneInsertCell'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
+import * as LineActions from 'actions/lines'
 import i18n from 'format-message'
 import { scene } from 'store/initialState'
 import { sceneId } from 'store/newIds'
@@ -264,12 +265,11 @@ class TimeLineView extends Component {
       cells.push(<SceneCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />)
       return cells
     })
-    const lastPosition = scenes[scenes.length - 1].position;
-    return [<Cell key='placeholder-1'/>].concat(renderedScenes).concat([this.renderLastInsertSceneCell(lastPosition + 1)])
+    return [<Cell key='placeholder-1'/>].concat(renderedScenes).concat([this.renderLastInsertSceneCell()])
   }
 
-  renderLastInsertSceneCell (position) {
-    return <SceneInsertCell key='last-insert' isInSceneList={true} scenePosition={position} handleInsert={this.handleInsertNewScene} isLast={true} />
+  renderLastInsertSceneCell () {
+    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} />
   }
 
   handleInsertNewScene = (nextPosition, lineId) => {
@@ -310,7 +310,20 @@ class TimeLineView extends Component {
         <LineTitle line={line} isZoomed={this.isZoomed()}/>
         { this.renderCards(line, sceneMap) }
       </Row>
-    })
+    }).concat(
+      <Row key='insert-line'>
+        <Cell>
+          <div
+            className='line-list__append-line'
+            onClick={() => this.props.lineActions.addLine()}
+          >
+            <div className='line-list__append-line-wrapper'>
+              <Glyphicon glyph='plus' />
+            </div>
+          </div>
+        </Cell>
+      </Row>
+    )
   }
 
   renderCards (line, sceneMap) {
@@ -454,7 +467,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     actions: bindActionCreators(UIActions, dispatch),
-    sceneActions: bindActionCreators(SceneActions, dispatch)
+    sceneActions: bindActionCreators(SceneActions, dispatch),
+    lineActions: bindActionCreators(LineActions, dispatch),
   }
 }
 

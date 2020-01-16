@@ -62,6 +62,29 @@ class TimeLineView extends Component {
       filter['place'].length === 0)
   }
 
+  cardIsFiltered (card) {
+    if (!card) return false
+    const filter = this.state.filter
+    if (filter == null) return true
+    let filtered = true
+    if (card.tags) {
+      card.tags.forEach((tId) => {
+        if (filter['tag'].indexOf(tId) !== -1) filtered = false
+      })
+    }
+    if (card.characters) {
+      card.characters.forEach((cId) => {
+        if (filter['character'].indexOf(cId) !== -1) filtered = false
+      })
+    }
+    if (card.places) {
+      card.places.forEach((pId) => {
+        if (filter['place'].indexOf(pId) !== -1) filtered = false
+      })
+    }
+    return filtered
+  }
+
   // ////////////////
   //   zooming    //
   // //////////////
@@ -327,19 +350,18 @@ class TimeLineView extends Component {
   }
 
   renderCards (line, sceneMap) {
-    // TODO: do filtered
-    const filtered = false
+    let filtered = false
     const isZoomed = this.isZoomed()
     const labelMap = this.labelMap()
     return Object.keys(sceneMap).flatMap(scenePosition => {
       const cells = []
       var sceneId = sceneMap[scenePosition]
       var card = _.find(this.cards(line.id), {sceneId: sceneId})
-      if (scenePosition === "0") {
-        // cells.push(this.renderSpacer(line.color))
-      }
       cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene} needsSpacer={scenePosition === "0"} orientation={this.props.ui.orientation} color={line.color}/>)
       if (card) {
+        if (!this.filterIsEmpty() && this.cardIsFiltered(card)) {
+          filtered = true
+        }
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
           sceneId={sceneId} lineId={line.id}

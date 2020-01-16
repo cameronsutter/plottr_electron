@@ -43,6 +43,23 @@
   }
 }
 
+.line-list__insert-scene {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  color: transparent;
+  transition: all .4s $cubic;
+  border: 1px solid transparent;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.line-list__insert-scene:hover {
+  color: $blue-5;
+  .insert-scene-wrapper {
+    border: 1px dotted $blue-8;
+  }
+}
 
 // .line-list {
 //   margin-top: 10px;

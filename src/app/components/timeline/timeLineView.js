@@ -1,4 +1,4 @@
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer, remote, crashReporter } from 'electron'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
@@ -15,9 +15,14 @@ import CardCell from 'components/timeline/cardCell'
 import BlankCard from 'components/timeline/blankCard'
 import SceneCell from 'components/timeline/sceneCell'
 import LineTitle from 'components/timeline/lineTitle'
+import SceneInsertCell from 'components/timeline/SceneInsertCell'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
+import * as SceneActions from 'actions/scenes'
 import i18n from 'format-message'
+import { scene } from 'store/initialState'
+import { sceneId } from 'store/newIds'
+
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
 
@@ -249,9 +254,29 @@ class TimeLineView extends Component {
   }
 
   renderScenes () {
+    // let insertClasses = orientedClassName('scene-list__insert', this.props.ui.orientation)
+    // if (this.props.ui.darkMode) insertClasses += ' darkmode'
     const scenes = _.sortBy(this.props.scenes, 'position')
-    const renderedScenes = scenes.map(sc => <SceneCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />)
+    const renderedScenes = scenes.flatMap(sc => {
+      const cells = []
+      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} />)
+      cells.push(<SceneCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />)
+      return cells
+    })
     return [<Cell key={`sceneId-placeholder`}></Cell>].concat(renderedScenes)
+  }
+
+  handleInsertNewScene = (nextPosition, lineId) => {
+    // IDEA: lineId could be used to create a new card at the same time
+
+    var newId = sceneId(this.props.scenes)
+    var newScene = _.clone(scene)
+    newScene['id'] = newId
+
+    const scenes = _.sortBy(this.props.scenes, 'position')
+    scenes.splice(nextPosition, 0, newScene)
+
+    this.props.sceneActions.reorderScenes(scenes)
   }
 
   renderTable () {
@@ -279,18 +304,24 @@ class TimeLineView extends Component {
     const filtered = false
     const isZoomed = this.isZoomed()
     const labelMap = this.labelMap()
-    return Object.keys(sceneMap).map(scenePosition => {
+    return Object.keys(sceneMap).flatMap(scenePosition => {
+      const cells = []
       var sceneId = sceneMap[scenePosition]
       var card = _.find(this.cards(line.id), {sceneId: sceneId})
-      if (card) return <CardCell
-        key={`cardId-${card.id}`} card={card}
-        sceneId={sceneId} lineId={line.id}
-        labelMap={labelMap}
-        color={line.color} filtered={filtered}
-        isZoomed={isZoomed} />
-      else return <BlankCard sceneId={sceneId} lineId={line.id}
-        key={`blank-${sceneId}-${line.id}`}
-        color={line.color} isZoomed={isZoomed}/>
+      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene}/>)
+      if (card) {
+        cells.push(<CardCell
+          key={`cardId-${card.id}`} card={card}
+          sceneId={sceneId} lineId={line.id}
+          labelMap={labelMap}
+          color={line.color} filtered={filtered}
+          isZoomed={isZoomed} />)
+      } else {
+        cells.push(<BlankCard sceneId={sceneId} lineId={line.id}
+          key={`blank-${sceneId}-${line.id}`}
+          color={line.color} isZoomed={isZoomed}/>)
+      }
+      return cells
     })
   }
 
@@ -404,7 +435,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(UIActions, dispatch)
+    actions: bindActionCreators(UIActions, dispatch),
+    sceneActions: bindActionCreators(SceneActions, dispatch)
   }
 }
 

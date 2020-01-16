@@ -10,7 +10,7 @@ import ColorPicker from '../colorpicker'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
-class LineTitle extends Component {
+class LineTitleCell extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -166,7 +166,7 @@ class LineTitle extends Component {
   }
 }
 
-LineTitle.propTypes = {
+LineTitleCell.propTypes = {
   line: PropTypes.object.isRequired,
   isZoomed: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
@@ -188,4 +188,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LineTitle)
+)(LineTitleCell)

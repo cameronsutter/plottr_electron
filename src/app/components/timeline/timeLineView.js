@@ -15,7 +15,7 @@ import CardCell from 'components/timeline/cardCell'
 import CardSVGline from 'components/timeline/cardSVGline'
 import BlankCard from 'components/timeline/blankCard'
 import SceneCell from 'components/timeline/sceneCell'
-import LineTitle from 'components/timeline/lineTitle'
+import LineTitleCell from 'components/timeline/lineTitleCell'
 import SceneInsertCell from 'components/timeline/SceneInsertCell'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
@@ -285,7 +285,7 @@ class TimeLineView extends Component {
     const renderedScenes = scenes.flatMap(sc => {
       const cells = []
       cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} />)
-      cells.push(<SceneCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />)
+      cells.push(<SceneCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} isZoomed={this.isZoomed()} />)
       return cells
     })
     return [<Cell key='placeholder-1'/>].concat(renderedScenes).concat([this.renderLastInsertSceneCell()])
@@ -306,6 +306,20 @@ class TimeLineView extends Component {
     scenes.splice(nextPosition, 0, newScene)
 
     this.props.sceneActions.reorderScenes(scenes)
+  }
+
+  handleReorderScenes = (originalScenePosition, droppedScenePosition) => {
+    const scenes = _.sortBy(this.props.scenes, 'position')
+    const [removed] = scenes.splice(droppedScenePosition, 1)
+    scenes.splice(originalScenePosition, 0, removed)
+    this.props.sceneActions.reorderScenes(scenes)
+  }
+
+  handleReorderLines = (originalLinePosition, droppedLinePosition) => {
+    const lines = _.sortBy(this.props.lines, 'position')
+    const [removed] = lines.splice(droppedLinePosition, 1)
+    lines.splice(originalLinePosition, 0, removed)
+    this.props.lineActions.reorderLines(lines)
   }
 
   renderTable () {
@@ -330,7 +344,7 @@ class TimeLineView extends Component {
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map(line => {
       return <Row key={'lineId-' + line.id}>
-        <LineTitle line={line} isZoomed={this.isZoomed()}/>
+        <LineTitleCell line={line} isZoomed={this.isZoomed()} handleReorder={this.handleReorderLines}/>
         { this.renderCards(line, sceneMap) }
       </Row>
     }).concat(

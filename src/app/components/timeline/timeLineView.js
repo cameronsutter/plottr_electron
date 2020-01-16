@@ -12,6 +12,7 @@ import SceneListView from 'components/timeline/sceneListView'
 import LineView from 'components/timeline/lineView'
 import LineListView from 'components/timeline/lineListView'
 import CardCell from 'components/timeline/cardCell'
+import CardSVGline from 'components/timeline/cardSVGline'
 import BlankCard from 'components/timeline/blankCard'
 import SceneCell from 'components/timeline/sceneCell'
 import LineTitle from 'components/timeline/lineTitle'
@@ -263,7 +264,12 @@ class TimeLineView extends Component {
       cells.push(<SceneCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={() => {}} isZoomed={this.isZoomed()} />)
       return cells
     })
-    return [<Cell key={`sceneId-placeholder`}></Cell>].concat(renderedScenes)
+    const lastPosition = scenes[scenes.length - 1].position;
+    return [<Cell key='placeholder-1'/>].concat(renderedScenes).concat([this.renderLastInsertSceneCell(lastPosition + 1)])
+  }
+
+  renderLastInsertSceneCell (position) {
+    return <SceneInsertCell key='last-insert' isInSceneList={true} scenePosition={position} handleInsert={this.handleInsertNewScene} isLast={true} />
   }
 
   handleInsertNewScene = (nextPosition, lineId) => {
@@ -288,6 +294,14 @@ class TimeLineView extends Component {
     return [sceneRow, lineRows]
   }
 
+  sceneMapping () {
+    var mapping = {}
+    this.props.scenes.forEach((s) => {
+      mapping[s.position] = s.id
+    })
+    return mapping
+  }
+
   renderLines () {
     const sceneMap = this.sceneMapping()
     const lines = _.sortBy(this.props.lines, 'position')
@@ -308,7 +322,10 @@ class TimeLineView extends Component {
       const cells = []
       var sceneId = sceneMap[scenePosition]
       var card = _.find(this.cards(line.id), {sceneId: sceneId})
-      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene}/>)
+      if (scenePosition === "0") {
+        // cells.push(this.renderSpacer(line.color))
+      }
+      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene} needsSpacer={scenePosition === "0"} orientation={this.props.ui.orientation} color={line.color}/>)
       if (card) {
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
@@ -323,6 +340,15 @@ class TimeLineView extends Component {
       }
       return cells
     })
+  }
+
+  renderSpacer (color) {
+    return <Cell key='placeholder'>
+      <div>
+        <CardSVGline color={color} spacer={true} orientation={this.props.ui.orientation}/>
+        <div className='line-list__spacer'></div>
+      </div>
+    </Cell>
   }
 
   renderSubNav () {
@@ -400,14 +426,6 @@ class TimeLineView extends Component {
         </div>
       </div>
     )
-  }
-
-  sceneMapping () {
-    var mapping = {}
-    this.props.scenes.forEach((s) => {
-      mapping[s.position] = s.id
-    })
-    return mapping
   }
 }
 

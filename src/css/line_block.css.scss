@@ -52,6 +52,14 @@
   border: 1px solid transparent;
   font-size: 12px;
   cursor: pointer;
+  svg {
+    position: absolute;
+  }
+  .insert-scene-wrapper.insert-scene-spacer {
+    .glyphicon {
+      position: relative;
+    }
+  }
 }
 
 .line-list__insert-scene:hover {

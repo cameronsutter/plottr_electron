@@ -14,8 +14,33 @@ import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
 import { reorderList, insertScene } from 'helpers/lists'
+import SceneTitleCell from 'components/timeline/SceneTitleCell'
 
 class TimelineTable extends Component {
+
+  cardIsFiltered (card) {
+    if (!card) return false
+    const filter = this.state.filter
+    if (filter == null) return true
+    let filtered = true
+    if (card.tags) {
+      card.tags.forEach((tId) => {
+        if (filter['tag'].indexOf(tId) !== -1) filtered = false
+      })
+    }
+    if (card.characters) {
+      card.characters.forEach((cId) => {
+        if (filter['character'].indexOf(cId) !== -1) filtered = false
+      })
+    }
+    if (card.places) {
+      card.places.forEach((pId) => {
+        if (filter['place'].indexOf(pId) !== -1) filtered = false
+      })
+    }
+    return filtered
+  }
+
   labelMap () {
     var mapping = {}
     this.props.tags.forEach((t) => {
@@ -48,13 +73,18 @@ class TimelineTable extends Component {
   }
 
   sceneMapping () {
-    var mapping = {}
-    this.props.scenes.forEach((s) => {
-      mapping[s.position] = s.id
-    })
-    return mapping
+    return this.props.scenes.reduce((acc, scene) => {
+      acc[scene.position] = scene.id
+      return acc
+    }, {})
   }
 
+  lineMapping () {
+    return this.props.lines.reduce((acc, line) => {
+      acc[line.position] = line
+      return acc
+    }, {})
+  }
 
   handleInsertNewScene = (nextPosition, lineId) => {
     // IDEA: lineId could be used to create a new card at the same time
@@ -65,11 +95,12 @@ class TimelineTable extends Component {
 
   renderLines () {
     const sceneMap = this.sceneMapping()
+    const labelMap = this.labelMap()
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map(line => {
-      return <Row key={'lineId-' + line.id}>
+      return <Row key={`lineId-${line.id}`}>
         <LineTitleCell line={line} isZoomed={this.props.isZoomed} handleReorder={this.handleReorderLines}/>
-        { this.renderCards(line, sceneMap) }
+        { this.renderCardsByScene(line, sceneMap, labelMap) }
       </Row>
     }).concat(
       <Row key='insert-line'>
@@ -87,14 +118,51 @@ class TimelineTable extends Component {
     )
   }
 
-  renderCards (line, sceneMap) {
-    let filtered = false
+  renderInsertsRow (scene, lineMap) {
+
+    return
+  }
+
+  renderScenes () {
+    const lineMap = this.lineMapping()
     const labelMap = this.labelMap()
+    const scenes = _.sortBy(this.props.scenes, 'position')
+    return scenes.map(scene => {
+      const inserts = Object.keys(lineMap).flatMap(linePosition => {
+        const line = lineMap[linePosition];
+        return <SceneInsertCell key={`${linePosition}-insert`} isInSceneList={false} scenePosition={scene.position} handleInsert={this.handleInsertNewScene} color={line.color} orientation={this.props.ui.orientation} needsSVGline={true} />
+      })
+      return [<Row key={`sceneId-${scene.id}`}>
+        <SceneInsertCell isInSceneList={true} scenePosition={scene.position} handleInsert={this.handleInsertNewScene}/>
+        { inserts }
+      </Row>,
+      <Row key={`sceneId-${scene.id}-insert`}>
+        <SceneTitleCell scene={scene} handleReorder={this.handleReorderScenes} isZoomed={this.props.isZoomed} />
+        { this.renderCardsByLine(scene, lineMap, labelMap) }
+      </Row>
+      ]
+    }).concat(
+      <Row key='last-insert'>
+        <SceneInsertCell isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true}/>
+      </Row>
+    )
+  }
+
+  renderRows () {
+    if (this.props.orientation === 'horizontal') {
+      return this.renderLines()
+    } else {
+      return this.renderScenes()
+    }
+  }
+
+  renderCardsByScene (line, sceneMap, labelMap) {
     return Object.keys(sceneMap).flatMap(scenePosition => {
+      let filtered = false
       const cells = []
-      var sceneId = sceneMap[scenePosition]
-      var card = _.find(this.cards(line.id), {sceneId: sceneId})
-      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene} needsSpacer={scenePosition === "0"} orientation={this.props.ui.orientation} color={line.color}/>)
+      let sceneId = sceneMap[scenePosition]
+      let card = _.find(this.cards(line.id), {sceneId: sceneId})
+      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene} needsSVGline={scenePosition === "0"} orientation={this.props.ui.orientation} color={line.color}/>)
       if (card) {
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
           filtered = true
@@ -114,6 +182,31 @@ class TimelineTable extends Component {
     })
   }
 
+  renderCardsByLine (scene, lineMap, labelMap) {
+    return Object.keys(lineMap).flatMap(linePosition => {
+      let filtered = false
+      const cells = []
+      let line = lineMap[linePosition]
+      let card = _.find(this.cards(line.id), {sceneId: scene.id})
+      if (card) {
+        if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
+          filtered = true
+        }
+        cells.push(<CardCell
+          key={`cardId-${card.id}`} card={card}
+          sceneId={scene.id} lineId={line.id}
+          labelMap={labelMap}
+          color={line.color} filtered={filtered}
+          isZoomed={this.props.isZoomed} />)
+      } else {
+        cells.push(<BlankCard sceneId={scene.id} lineId={line.id}
+          key={`blank-${scene.id}-${line.id}`}
+          color={line.color} isZoomed={this.props.isZoomed}/>)
+      }
+      return cells
+    })
+  }
+
   renderSpacer (color) {
     return <Cell key='placeholder'>
       <div>
@@ -124,9 +217,9 @@ class TimelineTable extends Component {
   }
 
   render () {
-    const lineRows = this.renderLines()
+    const rows = this.renderRows()
 
-    return [<TopRow key='top-row' isZoomed={this.props.isZoomed}/>, lineRows]
+    return [<TopRow key='top-row' isZoomed={this.props.isZoomed}/>, rows]
   }
 }
 

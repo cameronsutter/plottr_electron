@@ -7,7 +7,6 @@ import * as CardActions from 'actions/cards'
 import CardDialog from 'components/timeline/cardDialog'
 import CardSVGline from 'components/timeline/cardSVGline'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
-import orientedClassName from 'helpers/orientedClassName'
 import MDdescription from 'components/mdDescription'
 import TagLabel from 'components/tagLabel'
 

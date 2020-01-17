@@ -6,7 +6,7 @@ import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
-import SceneCell from 'components/timeline/sceneCell'
+import SceneTitleCell from 'components/timeline/SceneTitleCell'
 import LineTitleCell from 'components/timeline/lineTitleCell'
 import SceneInsertCell from 'components/timeline/SceneInsertCell'
 import { reorderList, insertScene } from 'helpers/lists'
@@ -43,7 +43,7 @@ class TopRow extends Component {
     const renderedScenes = scenes.flatMap(sc => {
       const cells = []
       cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} />)
-      cells.push(<SceneCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} isZoomed={this.props.isZoomed} />)
+      cells.push(<SceneTitleCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} isZoomed={this.props.isZoomed} />)
       return cells
     })
     return [<Cell key='placeholder'/>].concat(renderedScenes).concat([this.renderLastInsertSceneCell()])

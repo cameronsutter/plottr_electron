@@ -3,20 +3,21 @@ import PropTypes from 'react-proptypes'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import CardSVGline from 'components/timeline/cardSVGline'
+import orientedClassName from 'helpers/orientedClassName'
 
 export default class SceneInsertCell extends Component {
   render () {
-    const { scenePosition, lineId, isInSceneList, handleInsert, needsSpacer, color, orientation, isLast } = this.props
-    let wrapperKlass = 'insert-scene-wrapper'
-    if (needsSpacer) wrapperKlass += ' insert-scene-spacer'
+    const { scenePosition, lineId, isInSceneList, handleInsert, needsSVGline, color, orientation, isLast } = this.props
+    let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
+    if (needsSVGline) wrapperKlass += ' insert-scene-spacer'
     if (isLast) wrapperKlass += ' append-scene'
 
     return <Cell>
       <div
-        className={isInSceneList ? 'scene-list__insert' : 'line-list__insert-scene'}
+        className={orientedClassName(isInSceneList ? 'scene-list__insert' : 'line-list__insert-scene', orientation)}
         onClick={() => handleInsert(scenePosition, lineId)}
       >
-        {needsSpacer ? <CardSVGline color={color} spacer={true} orientation={orientation}/> : null}
+        {needsSVGline ? <CardSVGline color={color} spacer={true} orientation={orientation}/> : null}
         <div className={wrapperKlass}>
           <Glyphicon glyph='plus' />
         </div>
@@ -29,7 +30,7 @@ export default class SceneInsertCell extends Component {
     isInSceneList: PropTypes.bool.isRequired,
     scenePosition: PropTypes.number,
     lineId: PropTypes.number,
-    needsSpacer: PropTypes.bool,
+    needsSVGline: PropTypes.bool,
     orientation: PropTypes.string,
     color: PropTypes.string,
     isLast: PropTypes.bool,

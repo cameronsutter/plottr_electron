@@ -9,7 +9,7 @@ import * as SceneActions from 'actions/scenes'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
-class SceneCell extends Component {
+class SceneTitleCell extends Component {
   constructor (props) {
     super(props)
     let editing = props.scene.title === ''
@@ -122,9 +122,9 @@ class SceneCell extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
-    let classes = 'scene__body'
-    if (this.state.hovering) classes += ' hover'
-    if (this.state.dropping) classes += ' dropping'
+    let klass = orientedClassName('scene__body', this.props.ui.orientation)
+    if (this.state.hovering) klass += ' hover'
+    if (this.state.dropping) klass += ' dropping'
     return <Cell>
       <div className={orientedClassName('scene__cell', this.props.ui.orientation)}
         title={i18n('Scene {number}', {number: this.props.scene.position + 1})}
@@ -133,7 +133,7 @@ class SceneCell extends Component {
         onMouseLeave={() => this.setState({hovering: false})}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
-        <div className={classes}
+        <div className={klass}
           draggable={true}
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}
@@ -147,7 +147,7 @@ class SceneCell extends Component {
   }
 }
 
-SceneCell.propTypes = {
+SceneTitleCell.propTypes = {
   scene: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
   isZoomed: PropTypes.bool.isRequired,
@@ -170,4 +170,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SceneCell)
+)(SceneTitleCell)

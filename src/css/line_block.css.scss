@@ -103,6 +103,8 @@ $title_width: 200px;
 
 .vertical-line-title__cell {
   width: $title_width;
+  min-height: 150px;
+  border-bottom: 1px solid $gray-6;
 }
 
 .vertical-line-title__body {
@@ -132,7 +134,6 @@ $title_width: 200px;
   border: $new-item-border;
 }
 
-
 .vertical-line-title__hover-options {
   text-align: center;
   visibility: hidden;
@@ -142,6 +143,36 @@ $title_width: 200px;
 .vertical-line-title__cell:hover {
   .vertical-line-title__hover-options {
     visibility: visible;
+  }
+}
+
+.vertical-line-list__insert-scene {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: all .4s $cubic;
+  border: 1px solid transparent;
+  font-size: 12px;
+  cursor: pointer;
+  svg {
+    position: absolute;
+  }
+  .vertical-insert-scene-wrapper.insert-scene-spacer {
+    display: flex;
+    padding: 1px;
+    .glyphicon {
+      position: relative;
+      top: 0;
+    }
+  }
+}
+
+.vertical-line-list__insert-scene:hover {
+  color: $blue-5;
+  .vertical-insert-scene-wrapper {
+    border: 1px dotted $blue-8;
   }
 }
 

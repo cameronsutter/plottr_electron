@@ -14,7 +14,7 @@ import LineListView from 'components/timeline/lineListView'
 import CardCell from 'components/timeline/cardCell'
 import CardSVGline from 'components/timeline/cardSVGline'
 import BlankCard from 'components/timeline/blankCard'
-import SceneCell from 'components/timeline/sceneCell'
+import SceneTitleCell from 'components/timeline/SceneTitleCell'
 import LineTitleCell from 'components/timeline/lineTitleCell'
 import SceneInsertCell from 'components/timeline/SceneInsertCell'
 import TopRow from 'components/timeline/TopRow'
@@ -342,7 +342,7 @@ class TimeLineView extends Component {
       const cells = []
       var sceneId = sceneMap[scenePosition]
       var card = _.find(this.cards(line.id), {sceneId: sceneId})
-      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene} needsSpacer={scenePosition === "0"} orientation={this.props.ui.orientation} color={line.color}/>)
+      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene} needsSVGline={scenePosition === "0"} orientation={this.props.ui.orientation} color={line.color}/>)
       if (card) {
         if (!this.filterIsEmpty() && this.cardIsFiltered(card)) {
           filtered = true

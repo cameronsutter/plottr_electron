@@ -51,29 +51,6 @@ class TimelineWrapper extends Component {
       filter['place'].length === 0)
   }
 
-  cardIsFiltered (card) {
-    if (!card) return false
-    const filter = this.state.filter
-    if (filter == null) return true
-    let filtered = true
-    if (card.tags) {
-      card.tags.forEach((tId) => {
-        if (filter['tag'].indexOf(tId) !== -1) filtered = false
-      })
-    }
-    if (card.characters) {
-      card.characters.forEach((cId) => {
-        if (filter['character'].indexOf(cId) !== -1) filtered = false
-      })
-    }
-    if (card.places) {
-      card.places.forEach((pId) => {
-        if (filter['place'].indexOf(pId) !== -1) filtered = false
-      })
-    }
-    return filtered
-  }
-
   // ////////////////
   //   zooming    //
   // //////////////

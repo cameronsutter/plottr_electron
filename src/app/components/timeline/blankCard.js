@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -7,7 +8,7 @@ import * as CardActions from 'actions/cards'
 import CardSVGline from 'components/timeline/cardSVGline'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import ReactDOM from 'react-dom'
+import orientedClassName from 'helpers/orientedClassName'
 
 class BlankCard extends Component {
   constructor (props) {

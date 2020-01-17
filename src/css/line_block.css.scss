@@ -1,10 +1,11 @@
 @import "vars";
 
+$title_height: 70px;
+$title_width: 200px;
+
 .line-title__cell {
-  width: 200px;
+  width: $title_width;
   border-right: 1px solid $gray-6;
-  // display: flex;
-  // align-items: center;
 }
 
 .line-title__body {
@@ -12,8 +13,7 @@
   display: flex;
   text-align: right;
   justify-content: flex-end;
-  // align-items: center;
-  min-height: 70px;
+  min-height: $title_height;
   min-width: 150px;
   padding: 10px;
   transition: all .4s $cubic;
@@ -54,7 +54,7 @@
 }
 
 .line-list__insert-scene {
-  height: 70px;
+  height: $title_height;
   display: flex;
   align-items: center;
   color: transparent;
@@ -82,7 +82,7 @@
 .line-list__append-line {
   cursor: pointer;
   .line-list__append-line-wrapper {
-    padding: 20px 70px;
+    padding: 20px $title_height;
     color: $blue-5;
     border: 3px dotted $blue-8;
     margin-left: 35px;
@@ -97,84 +97,75 @@
   }
 }
 
-// .line-list {
-//   margin-top: 10px;
-//   margin-bottom: 50px;
-//   display: flex;
-//   flex-direction: column;
-// }
-//
-// .vertical-line-list {
-//   display: flex;
-//   flex-direction: row;
-// }
-//
-// .line-list__new {
-//   height: $height;
-//   width: $width;
-//   margin-left: 40px; // because hover option buttons
-//   text-align: center;
-//   color: $blue-6;
-//   line-height: $height;
-//   transition: all .4s $cubic;
-// }
-//
-// .vertical-line-list__new {
-//   height: $height;
-//   width: $width;
-//   margin-top: 33px;
-//   text-align: center;
-//   color: $blue-6;
-//   line-height: $height;
-//   transition: all .4s $cubic;
-// }
-//
-// .line-list__new:hover {
-//   background-color: $blue-8;
-//   border: none;
-//   color: $blue-5;
-//   box-shadow: inset 0 2px 0 $blue-9-alpha, 0 3px 2px $shadow-2;
-//   cursor: pointer;
-// }
-//
-// .vertical-line-list__new:hover {
-//   @extend .line-list__new:hover;
-// }
-//
-// .line {
-//   margin-top: 10px;
-//   margin-bottom: 10px;
-//   flex-basis: $height;
-//   height: $height;
-// }
-//
-// .vertical-line {
-//   width: $width;
-//   margin-left: 10px;
-//   margin-right: 10px;
-// }
-//
-// .line__svg-line-box {
-//   position: relative;
-//   top: -$height;
-//   left: $width;
-//   height: 0px;
-// }
-//
-// .vertical-line__svg-line-box {
-//   height: 0px;
-// }
-//
-// .vertical-line__hover-options {
-//   text-align: center;
-//   margin-bottom: 1px;
-// }
-//
+// ///////////
+// Vertical
+// ///////////
+
+.vertical-line-title__cell {
+  width: $title_width;
+}
+
+.vertical-line-title__body {
+  @include sub-header-font;
+  padding: 20px;
+  width: 150px;
+  margin: auto;
+  text-align: center;
+  transition: all .4s $cubic;
+  .form-group {
+    text-align: left;
+    .control-label {
+      @include secondary-text;
+      font-weight: normal;
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.vertical-line-title__body.hover {
+  box-shadow: inset 0 2px 4px white, 0 3px 2px $shadow-2;
+  cursor: move;
+}
+
+.vertical-line-title__body.dropping {
+  border: $new-item-border;
+}
+
+
+.vertical-line-title__hover-options {
+  text-align: center;
+  visibility: hidden;
+  margin-bottom: 5px;
+}
+
+.vertical-line-title__cell:hover {
+  .vertical-line-title__hover-options {
+    visibility: visible;
+  }
+}
+
+.vertical-line-list__append-line {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  .vertical-line-list__append-line-wrapper {
+    padding: 30px $title_height;
+    color: $blue-5;
+    border: 3px dotted $blue-8;
+    margin-right: 50px;
+  }
+}
+
+.vertical-line-list__append-line:hover {
+  color: $blue-5;
+  .vertical-line-list__append-line-wrapper {
+    border: 3px dashed $blue-7;
+  }
+}
+
+
 // .line__title.darkmode, .vertical-line__title.darkmode {
 //   color: #eee;
-// }
-//
-// .vertical-line__title {
-//   @extend .line__title;
-//   text-align: center;
 // }

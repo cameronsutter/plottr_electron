@@ -101,8 +101,6 @@ class LineTitleCell extends Component {
   }
 
   renderHoverOptions () {
-    // var style = {visibility: 'hidden'}
-    // if (this.state.hovering) style.visibility = 'visible'
     if (this.props.ui.orientation === 'vertical') {
       return (<div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)}>
         <ButtonGroup>
@@ -141,11 +139,11 @@ class LineTitleCell extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
-    var klass = 'line-title__body'
+    var klass = orientedClassName('line-title__body', this.props.ui.orientation)
     if (this.state.hovering) klass += ' hover'
     if (this.state.dropping) klass += ' dropping'
     return <Cell>
-      <div className='line-title__cell'
+      <div className={orientedClassName('line-title__cell', this.props.ui.orientation)}
         onMouseEnter={() => this.setState({hovering: true})}
         onMouseLeave={() => this.setState({hovering: false})}
         onDrop={this.handleDrop}>

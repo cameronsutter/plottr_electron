@@ -8,6 +8,7 @@ import CharactersView from 'components/characters/charactersView'
 import PlacesView from 'components/places/placesView'
 import NotesView from 'components/notes/notesView'
 import i18n from 'format-message'
+import TimelineWrapper from '../components/timeline/TimelineWrapper'
 
 class Body extends Component {
   render () {
@@ -17,7 +18,7 @@ class Body extends Component {
   renderBody () {
     switch (this.props.currentView) {
       case 'timeline':
-        return <TimeLineView />
+        return <TimelineWrapper />
 
       case 'outline':
         return <OutlineView />

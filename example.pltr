@@ -1076,7 +1076,7 @@
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "vertical",
+    "orientation": "horizontal",
     "placeFilter": null,
     "placeSort": "name~asc"
   }

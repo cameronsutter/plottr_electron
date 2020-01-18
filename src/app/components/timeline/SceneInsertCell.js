@@ -9,12 +9,16 @@ export default class SceneInsertCell extends Component {
   render () {
     const { scenePosition, lineId, isInSceneList, handleInsert, needsSVGline, color, orientation, isLast } = this.props
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
+    let sceneKlass = 'scene-list__insert'
     if (needsSVGline) wrapperKlass += ' insert-scene-spacer'
-    if (isLast) wrapperKlass += ' append-scene'
+    if (isLast) {
+      wrapperKlass += ' append-scene'
+      sceneKlass += ' append-scene'
+    }
 
     return <Cell>
       <div
-        className={orientedClassName(isInSceneList ? 'scene-list__insert' : 'line-list__insert-scene', orientation)}
+        className={orientedClassName(isInSceneList ? sceneKlass : 'line-list__insert-scene', orientation)}
         onClick={() => handleInsert(scenePosition, lineId)}
       >
         {needsSVGline ? <CardSVGline color={color} spacer={true} orientation={orientation}/> : null}

@@ -118,22 +118,18 @@ class TimelineTable extends Component {
     )
   }
 
-  renderInsertsRow (scene, lineMap) {
-
-    return
-  }
-
   renderScenes () {
     const lineMap = this.lineMapping()
     const labelMap = this.labelMap()
     const scenes = _.sortBy(this.props.scenes, 'position')
+    const orientation = this.props.ui.orientation
     return scenes.map(scene => {
       const inserts = Object.keys(lineMap).flatMap(linePosition => {
         const line = lineMap[linePosition];
-        return <SceneInsertCell key={`${linePosition}-insert`} isInSceneList={false} scenePosition={scene.position} handleInsert={this.handleInsertNewScene} color={line.color} orientation={this.props.ui.orientation} needsSVGline={true} />
+        return <SceneInsertCell key={`${linePosition}-insert`} isInSceneList={false} scenePosition={scene.position} handleInsert={this.handleInsertNewScene} color={line.color} orientation={orientation} needsSVGline={true} />
       })
       return [<Row key={`sceneId-${scene.id}`}>
-        <SceneInsertCell isInSceneList={true} scenePosition={scene.position} handleInsert={this.handleInsertNewScene}/>
+        <SceneInsertCell isInSceneList={true} scenePosition={scene.position} handleInsert={this.handleInsertNewScene} orientation={orientation}/>
         { inserts }
       </Row>,
       <Row key={`sceneId-${scene.id}-insert`}>
@@ -143,13 +139,13 @@ class TimelineTable extends Component {
       ]
     }).concat(
       <Row key='last-insert'>
-        <SceneInsertCell isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true}/>
+        <SceneInsertCell isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation}/>
       </Row>
     )
   }
 
   renderRows () {
-    if (this.props.orientation === 'horizontal') {
+    if (this.props.ui.orientation === 'horizontal') {
       return this.renderLines()
     } else {
       return this.renderScenes()

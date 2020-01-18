@@ -129,13 +129,6 @@ $title_width: 200px;
   transition: all .4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  .vertical-insert-scene-wrapper.append-scene {
-    padding: 30px 70px;
-    color: $blue-5;
-    border: 3px dotted $blue-8;
-    margin-left: 35px;
-    margin-bottom: 50px;
-  }
   svg {
     position: absolute;
   }
@@ -143,6 +136,18 @@ $title_width: 200px;
     .glyphicon {
       position: relative;
     }
+  }
+}
+
+.vertical-scene-list__insert.append-scene {
+  @extend .vertical-scene-list__insert;
+  height: $title_height;
+  margin-bottom: 50px;
+  .vertical-insert-scene-wrapper.append-scene {
+    padding: 20px $title_height;
+    color: $blue-5;
+    border: 3px dotted $blue-8;
+    margin-top: 10px;
   }
 }
 

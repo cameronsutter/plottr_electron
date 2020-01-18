@@ -33,16 +33,15 @@ class TopRow extends Component {
   }
 
   renderLastInsertSceneCell () {
-    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} />
+    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={this.props.ui.orientation} />
   }
 
   renderScenes () {
-    // let insertClasses = orientedClassName('scene-list__insert', this.props.ui.orientation)
     // if (this.props.ui.darkMode) insertClasses += ' darkmode'
     const scenes = _.sortBy(this.props.scenes, 'position')
     const renderedScenes = scenes.flatMap(sc => {
       const cells = []
-      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} />)
+      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} orientation={this.props.ui.orientation} />)
       cells.push(<SceneTitleCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} isZoomed={this.props.isZoomed} />)
       return cells
     })

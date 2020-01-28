@@ -9,18 +9,12 @@ import 'style-loader!css-loader!react-sticky-table/dist/react-sticky-table.css'
 import { MPQ } from 'middlewares/helpers'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
-import * as SceneActions from 'actions/scenes'
-import * as LineActions from 'actions/lines'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
+import { computeZoom, computeZoomKlass } from 'helpers/zoom'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
-
-const ZOOM_STATES = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3]
-const INITIAL_ZOOM_INDEX = 4
-const INITIAL_ZOOM_STATE = 'initial'
-const FIT_ZOOM_STATE = 'fit'
 
 var scrollInterval = null
 
@@ -29,10 +23,13 @@ class TimelineWrapper extends Component {
     super(props)
     this.state = {
       filter: null,
-      zoomState: INITIAL_ZOOM_STATE,
-      zoomIndex: INITIAL_ZOOM_INDEX,
       scrollTarget: 0
     }
+  }
+
+  componentDidMount () {
+    const { zoomIndex } = this.props.ui
+    if (!zoomIndex) this.props.actions.resetZoom()
   }
 
   // ////////////////
@@ -49,61 +46,6 @@ class TimelineWrapper extends Component {
       (filter['tag'].length === 0 &&
       filter['character'].length === 0 &&
       filter['place'].length === 0)
-  }
-
-  // ////////////////
-  //   zooming    //
-  // //////////////
-
-  isZoomed () {
-    return (this.state.zoomState !== INITIAL_ZOOM_STATE) && (this.state.zoomIndex <= INITIAL_ZOOM_INDEX)
-  }
-
-  scale () {
-    var elem = this.refs.timeline
-    var scale = ZOOM_STATES[this.state.zoomIndex]
-    if (this.state.zoomState === FIT_ZOOM_STATE) {
-      if (this.props.ui.orientation === 'horizontal') {
-        scale = (window.outerWidth - 10) / elem.scrollWidth
-      } else {
-        // take into account navigation height
-        scale = (window.outerHeight - 150) / elem.scrollHeight
-      }
-    }
-    return scale
-  }
-
-  makeTransform () {
-    if (this.state.zoomState === INITIAL_ZOOM_STATE) return {transform: INITIAL_ZOOM_STATE}
-    var scale = this.scale()
-    return {transform: `scale(${scale}, ${scale})`, transformOrigin: 'left top'}
-  }
-
-  increaseZoomFactor = () => {
-    var newIndex = this.state.zoomIndex
-    if (newIndex < ZOOM_STATES.length - 1) newIndex++
-    this.setState({zoomState: null, zoomIndex: newIndex})
-  }
-
-  decreaseZoomFactor = () => {
-    var newIndex = this.state.zoomIndex
-    if (newIndex > 0) newIndex--
-    this.setState({zoomState: null, zoomIndex: newIndex})
-  }
-
-  resetZoom = () => {
-    this.setState({zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})
-  }
-
-  zoomIntoCard = (x, y) => {
-    var scale = this.scale()
-    if (scale >= 1) {
-      x *= scale
-    } else {
-      x /= scale
-    }
-    this.resetZoom()
-    this.scrollTo(x, y)
   }
 
   // ////////////////
@@ -191,7 +133,7 @@ class TimelineWrapper extends Component {
   flipOrientation = () => {
     let orientation = this.props.ui.orientation === 'horizontal' ? 'vertical' : 'horizontal'
     this.props.actions.changeOrientation(orientation)
-    this.resetZoom()
+    this.props.actions.resetZoom()
   }
 
   // ///////////////
@@ -233,6 +175,9 @@ class TimelineWrapper extends Component {
     }
     let subNavKlasses = 'subnav__container'
     if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
+
+    // had to remove this
+    // <Button onClick={() => this.props.actions.fitZoom()} >{i18n('Fit')}</Button>
     return (
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
@@ -248,10 +193,9 @@ class TimelineWrapper extends Component {
           <NavItem>
             <span className='subnav__container__label'>{i18n('Zoom')}: </span>
             <ButtonGroup bsSize='small'>
-              <Button onClick={this.increaseZoomFactor} ><Glyphicon glyph='plus-sign' /></Button>
-              <Button onClick={this.decreaseZoomFactor} ><Glyphicon glyph='minus-sign' /></Button>
-              <Button onClick={() => this.setState({zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})} >{i18n('Fit')}</Button>
-              <Button onClick={this.resetZoom} >{i18n('Reset')}</Button>
+              <Button onClick={() => this.props.actions.increaseZoom()} ><Glyphicon glyph='plus-sign' /></Button>
+              <Button onClick={() => this.props.actions.decreaseZoom()} ><Glyphicon glyph='minus-sign' /></Button>
+              <Button onClick={() => this.props.actions.resetZoom()} >{i18n('Reset')}</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
@@ -274,21 +218,21 @@ class TimelineWrapper extends Component {
   }
 
   render () {
-    let styles = this.makeTransform()
-    let orientation = this.props.ui.orientation === 'vertical' ? 'vertical' : ''
-    // zoomFactor allows us to scale cards and scenes in a ratio that fits the scale determined by zoomState
-    let zoomFactor = this.state.zoomState === FIT_ZOOM_STATE ? FIT_ZOOM_STATE : ZOOM_STATES[this.state.zoomIndex]
+    const { orientation, darkMode } = this.props.ui
+    let orientationKlass = orientation === 'vertical' ? 'vertical' : ''
     let containerKlasses = 'container-with-sub-nav'
-    if (this.props.ui.darkMode) containerKlasses += ' darkmode'
+    if (darkMode) containerKlasses += ' darkmode'
+    // might be able to use this for zoom fit
+    // const zoomStyles = computeZoom(this.refs.table, this.props.ui)
+    const zoomKlass = computeZoomKlass(this.props.ui)
     return (
       <div id='timelineview__container' className={containerKlasses}>
         {this.renderSubNav()}
-        <div id='timelineview__root' className={orientation} ref='timeline' style={styles}>
-          <StickyTable>
+        <div id='timelineview__root' className={orientationKlass}>
+          <StickyTable className={zoomKlass}>
             <TimelineTable
               filter={this.state.filter}
               filterIsEmpty={this.filterIsEmpty()}
-              isZoomed={this.isZoomed()}
             />
           </StickyTable>
         </div>
@@ -298,23 +242,11 @@ class TimelineWrapper extends Component {
 }
 
 TimelineWrapper.propTypes = {
-  scenes: PropTypes.array.isRequired,
-  lines: PropTypes.array.isRequired,
-  cards: PropTypes.array.isRequired,
-  tags: PropTypes.array.isRequired,
-  characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
-    scenes: state.scenes,
-    lines: state.lines,
-    cards: state.cards,
-    tags: state.tags,
-    characters: state.characters,
-    places: state.places,
     ui: state.ui,
   }
 }
@@ -322,8 +254,6 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     actions: bindActionCreators(UIActions, dispatch),
-    sceneActions: bindActionCreators(SceneActions, dispatch),
-    lineActions: bindActionCreators(LineActions, dispatch),
   }
 }
 

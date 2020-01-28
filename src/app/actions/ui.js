@@ -1,7 +1,7 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED,
   FILE_SAVED, NEW_FILE, EDIT_STORY_NAME, SET_DARK_MODE,
   SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
-  SET_PLACE_FILTER } from 'constants/ActionTypes'
+  SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM } from 'constants/ActionTypes'
 
 export function changeCurrentView (view) {
   return { type: CHANGE_CURRENT_VIEW, view }
@@ -54,3 +54,20 @@ export function setPlaceFilter (filter) {
 export function setNoteFilter (filter) {
   return { type: SET_NOTE_FILTER, filter }
 }
+
+export function increaseZoom () {
+  return { type: INCREASE_ZOOM }
+}
+
+export function decreaseZoom () {
+  return { type: DECREASE_ZOOM }
+}
+
+export function fitZoom () {
+  return { type: FIT_ZOOM }
+}
+
+export function resetZoom () {
+  return { type: RESET_ZOOM }
+}
+

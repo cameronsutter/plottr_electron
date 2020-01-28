@@ -8,7 +8,6 @@ import * as CardActions from 'actions/cards'
 import CardSVGline from 'components/timeline/cardSVGline'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import orientedClassName from 'helpers/orientedClassName'
 
 class BlankCard extends Component {
   constructor (props) {
@@ -138,7 +137,8 @@ class BlankCard extends Component {
       body = this.renderBlank()
     }
     return <Cell>
-      <div className='card__cell'
+      <div
+        className='card__cell'
         onDragEnter={this.handleDragEnter}
         onDragOver={this.handleDragOver}
         onDragLeave={this.handleDragLeave}
@@ -156,7 +156,6 @@ BlankCard.propTypes = {
   sceneId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  isZoomed: PropTypes.bool.isRequired,
   ui: PropTypes.object.isRequired,
   linePosition: PropTypes.number.isRequired,
   scenePosition: PropTypes.number.isRequired

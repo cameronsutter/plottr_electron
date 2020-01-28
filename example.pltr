@@ -1078,6 +1078,8 @@
     "noteSort": "title~asc",
     "orientation": "horizontal",
     "placeFilter": null,
-    "placeSort": "name~asc"
+    "placeSort": "name~asc",
+    "zoomIndex": 4,
+    "zoomState": "initial"
   }
 }

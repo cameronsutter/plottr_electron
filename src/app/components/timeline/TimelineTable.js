@@ -20,7 +20,7 @@ class TimelineTable extends Component {
 
   cardIsFiltered (card) {
     if (!card) return false
-    const filter = this.state.filter
+    const filter = this.props.filter
     if (filter == null) return true
     let filtered = true
     if (card.tags) {
@@ -99,7 +99,7 @@ class TimelineTable extends Component {
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map(line => {
       return <Row key={`lineId-${line.id}`}>
-        <LineTitleCell line={line} isZoomed={this.props.isZoomed} handleReorder={this.handleReorderLines}/>
+        <LineTitleCell line={line} handleReorder={this.handleReorderLines}/>
         { this.renderCardsByScene(line, sceneMap, labelMap) }
       </Row>
     }).concat(
@@ -122,18 +122,18 @@ class TimelineTable extends Component {
     const lineMap = this.lineMapping()
     const labelMap = this.labelMap()
     const scenes = _.sortBy(this.props.scenes, 'position')
-    const orientation = this.props.ui.orientation
+    const { orientation } = this.props.ui
     return scenes.map(scene => {
       const inserts = Object.keys(lineMap).flatMap(linePosition => {
         const line = lineMap[linePosition];
-        return <SceneInsertCell key={`${linePosition}-insert`} isInSceneList={false} scenePosition={scene.position} handleInsert={this.handleInsertNewScene} color={line.color} orientation={orientation} needsSVGline={true} />
+        return <SceneInsertCell key={`${linePosition}-insert`} isInSceneList={false} scenePosition={scene.position} handleInsert={this.handleInsertNewScene} color={line.color} orientation={orientation} needsSVGline={true}/>
       })
       return [<Row key={`sceneId-${scene.id}`}>
         <SceneInsertCell isInSceneList={true} scenePosition={scene.position} handleInsert={this.handleInsertNewScene} orientation={orientation}/>
         { inserts }
       </Row>,
       <Row key={`sceneId-${scene.id}-insert`}>
-        <SceneTitleCell scene={scene} handleReorder={this.handleReorderScenes} isZoomed={this.props.isZoomed} />
+        <SceneTitleCell scene={scene} handleReorder={this.handleReorderScenes} />
         { this.renderCardsByLine(scene, lineMap, labelMap) }
       </Row>
       ]
@@ -153,12 +153,13 @@ class TimelineTable extends Component {
   }
 
   renderCardsByScene (line, sceneMap, labelMap) {
+    const { orientation } = this.props.ui
     return Object.keys(sceneMap).flatMap(scenePosition => {
       let filtered = false
       const cells = []
       let sceneId = sceneMap[scenePosition]
       let card = _.find(this.cards(line.id), {sceneId: sceneId})
-      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene} needsSVGline={scenePosition === "0"} orientation={this.props.ui.orientation} color={line.color}/>)
+      cells.push(<SceneInsertCell key={`${scenePosition}-insert`} isInSceneList={false} scenePosition={Number(scenePosition)} lineId={line.id} handleInsert={this.handleInsertNewScene} needsSVGline={scenePosition === "0"} color={line.color} orientation={orientation}/>)
       if (card) {
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
           filtered = true
@@ -167,12 +168,11 @@ class TimelineTable extends Component {
           key={`cardId-${card.id}`} card={card}
           sceneId={sceneId} lineId={line.id}
           labelMap={labelMap}
-          color={line.color} filtered={filtered}
-          isZoomed={this.props.isZoomed} />)
+          color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard sceneId={sceneId} lineId={line.id}
           key={`blank-${sceneId}-${line.id}`}
-          color={line.color} isZoomed={this.props.isZoomed}/>)
+          color={line.color} />)
       }
       return cells
     })
@@ -192,12 +192,11 @@ class TimelineTable extends Component {
           key={`cardId-${card.id}`} card={card}
           sceneId={scene.id} lineId={line.id}
           labelMap={labelMap}
-          color={line.color} filtered={filtered}
-          isZoomed={this.props.isZoomed} />)
+          color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard sceneId={scene.id} lineId={line.id}
           key={`blank-${scene.id}-${line.id}`}
-          color={line.color} isZoomed={this.props.isZoomed}/>)
+          color={line.color} />)
       }
       return cells
     })
@@ -215,7 +214,7 @@ class TimelineTable extends Component {
   render () {
     const rows = this.renderRows()
 
-    return [<TopRow key='top-row' isZoomed={this.props.isZoomed}/>, rows]
+    return [<TopRow key='top-row'/>, rows]
   }
 }
 
@@ -227,9 +226,6 @@ TimelineTable.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
-  isZoomed: PropTypes.bool,
-  zoomState: PropTypes.string,
-  zoomIndex: PropTypes.number,
   filter: PropTypes.object,
   filterIsEmpty: PropTypes.bool,
 }

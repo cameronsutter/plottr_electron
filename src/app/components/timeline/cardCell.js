@@ -9,6 +9,7 @@ import CardSVGline from 'components/timeline/cardSVGline'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import MDdescription from 'components/mdDescription'
 import TagLabel from 'components/tagLabel'
+import { isZoomed } from 'helpers/zoom'
 
 class CardCell extends Component {
   constructor (props) {
@@ -100,7 +101,7 @@ class CardCell extends Component {
       } else {
         placement = this.props.linePosition <= 1 ? 'right' : placement
       }
-      if (this.props.isZoomed) placement = 'right'
+      if (isZoomed(this.props.ui)) placement = 'right'
       return <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
         {body}
       </OverlayTrigger>
@@ -127,7 +128,6 @@ CardCell.propTypes = {
   filtered: PropTypes.bool.isRequired,
   labelMap: PropTypes.object.isRequired,
   tags: PropTypes.array,
-  isZoomed: PropTypes.bool.isRequired,
   ui: PropTypes.object.isRequired,
   linePosition: PropTypes.number.isRequired,
   scenePosition: PropTypes.number.isRequired

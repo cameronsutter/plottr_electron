@@ -15,7 +15,6 @@ export default class SceneInsertCell extends Component {
       wrapperKlass += ' append-scene'
       sceneKlass += ' append-scene'
     }
-
     return <Cell>
       <div
         className={orientedClassName(isInSceneList ? sceneKlass : 'line-list__insert-scene', orientation)}

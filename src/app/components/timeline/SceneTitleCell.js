@@ -126,7 +126,8 @@ class SceneTitleCell extends Component {
     if (this.state.hovering) klass += ' hover'
     if (this.state.dropping) klass += ' dropping'
     return <Cell>
-      <div className={orientedClassName('scene__cell', this.props.ui.orientation)}
+      <div
+        className={orientedClassName('scene__cell', this.props.ui.orientation)}
         title={i18n('Scene {number}', {number: this.props.scene.position + 1})}
         onClick={() => this.setState({editing: true})}
         onMouseEnter={() => this.setState({hovering: true})}
@@ -150,7 +151,6 @@ class SceneTitleCell extends Component {
 SceneTitleCell.propTypes = {
   scene: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
-  isZoomed: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }

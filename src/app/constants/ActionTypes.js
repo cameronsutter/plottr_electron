@@ -1,3 +1,4 @@
+//ui actions
 export const FILE_LOADED = 'FILE_LOADED'
 export const FILE_SAVED = 'FILE_SAVED'
 export const NEW_FILE = 'NEW_FILE'
@@ -11,6 +12,10 @@ export const SET_NOTE_SORT = 'SET_PLACE_SORT'
 export const SET_CHARACTER_FILTER = 'SET_CHARACTER_FILTER'
 export const SET_PLACE_FILTER = 'SET_PLACE_FILTER'
 export const SET_NOTE_FILTER = 'SET_PLACE_FILTER'
+export const INCREASE_ZOOM = 'INCREASE_ZOOM'
+export const DECREASE_ZOOM = 'DECREASE_ZOOM'
+export const FIT_ZOOM = 'FIT_ZOOM'
+export const RESET_ZOOM = 'RESET_ZOOM'
 
 // story actions
 export const EDIT_STORY_NAME = 'EDIT_STORY_NAME'

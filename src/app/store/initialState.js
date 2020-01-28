@@ -1,4 +1,5 @@
 import i18n from 'format-message'
+import { INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE } from 'constants/zoom_states'
 // data structure
 
 export const scene = {
@@ -17,6 +18,8 @@ export const ui = {
   placeFilter: null,
   noteSort: 'title~asc',
   noteFilter: null,
+  zoomState: INITIAL_ZOOM_STATE,
+  zoomIndex: INITIAL_ZOOM_INDEX,
 }
 
 export const file = {

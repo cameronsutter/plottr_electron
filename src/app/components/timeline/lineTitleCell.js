@@ -143,7 +143,8 @@ class LineTitleCell extends Component {
     if (this.state.hovering) klass += ' hover'
     if (this.state.dropping) klass += ' dropping'
     return <Cell>
-      <div className={orientedClassName('line-title__cell', this.props.ui.orientation)}
+      <div
+        className={orientedClassName('line-title__cell', this.props.ui.orientation)}
         onMouseEnter={() => this.setState({hovering: true})}
         onMouseLeave={() => this.setState({hovering: false})}
         onDrop={this.handleDrop}>
@@ -166,7 +167,6 @@ class LineTitleCell extends Component {
 
 LineTitleCell.propTypes = {
   line: PropTypes.object.isRequired,
-  isZoomed: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }

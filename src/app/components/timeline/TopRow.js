@@ -33,16 +33,18 @@ class TopRow extends Component {
   }
 
   renderLastInsertSceneCell () {
-    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={this.props.ui.orientation} />
+    const { orientation } = this.props.ui
+    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation} />
   }
 
   renderScenes () {
+    const { orientation } = this.props.ui
     // if (this.props.ui.darkMode) insertClasses += ' darkmode'
     const scenes = _.sortBy(this.props.scenes, 'position')
     const renderedScenes = scenes.flatMap(sc => {
       const cells = []
-      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} orientation={this.props.ui.orientation} />)
-      cells.push(<SceneTitleCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} isZoomed={this.props.isZoomed} />)
+      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} orientation={orientation} />)
+      cells.push(<SceneTitleCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} />)
       return cells
     })
     return [<Cell key='placeholder'/>].concat(renderedScenes).concat([this.renderLastInsertSceneCell()])
@@ -50,8 +52,7 @@ class TopRow extends Component {
 
   renderLines () {
     const lines = _.sortBy(this.props.lines, 'position')
-    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} isZoomed={this.props.isZoomed} handleReorder={this.handleReorderLines}/>)
-
+    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines}/>)
     return [<Cell key='placeholder'/>].concat(renderedLines).concat(
       <Row key='insert-line'>
         <Cell>
@@ -78,7 +79,6 @@ class TopRow extends Component {
 
 TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
-  isZoomed: PropTypes.bool.isRequired,
   scenes: PropTypes.array,
   lines: PropTypes.array,
 }

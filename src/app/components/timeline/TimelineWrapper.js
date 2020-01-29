@@ -10,7 +10,8 @@ import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
-import { computeZoom, computeZoomKlass } from 'helpers/zoom'
+import { computeZoom } from 'helpers/zoom'
+import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -32,7 +33,15 @@ class TimelineWrapper extends Component {
   componentDidMount () {
     this.tableRef.onscroll = this.scrollHandler
     const { zoomIndex } = this.props.ui
-    if (!zoomIndex) this.props.actions.resetZoom()
+    if (!zoomIndex) {
+      this.props.actions.resetZoom()
+    } else {
+      this.updateZoom(this.props.ui)
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.updateZoom(nextProps.ui)
   }
 
   componentWillUnmount () {
@@ -40,8 +49,22 @@ class TimelineWrapper extends Component {
     this.tableRef = null
   }
 
-  // ////////////////
-  //  filtering   //
+  // ////////////
+  //  zooming  //
+  // ////////////
+
+  updateZoom = (uiProps) => {
+    const zoomScale = computeZoom(this.tableRef, uiProps)
+    this.tableRef.children[0].style.transform = zoomScale;
+  }
+
+  zoomLabel = () => {
+    if (this.props.ui.zoomState === FIT_ZOOM_STATE) return 'fit'
+    return `${ZOOM_STATES[this.props.ui.zoomIndex]}x`
+  }
+
+  // //////////////
+  //  filtering  //
   // //////////////
 
   updateFilter = (filter) => {
@@ -56,8 +79,8 @@ class TimelineWrapper extends Component {
       filter['place'].length === 0)
   }
 
-  // ////////////////
-  //  scrolling   //
+  // //////////////
+  //  scrolling  //
   // //////////////
 
   scrollDistance = () => {
@@ -161,9 +184,9 @@ class TimelineWrapper extends Component {
     this.setState({scrollLeft: newScrollLeft, scrollTarget: newScrollLeft})
   }
 
-  // //////////////
-  // flip
-  // //////////////
+  // ////////
+  // flip  //
+  // ////////
 
   flipOrientation = () => {
     let orientation = this.props.ui.orientation === 'horizontal' ? 'vertical' : 'horizontal'
@@ -212,9 +235,6 @@ class TimelineWrapper extends Component {
     let subNavKlasses = 'subnav__container'
     if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
 
-    // had to remove this
-    // <Button onClick={() => this.props.actions.fitZoom()} >{i18n('Fit')}</Button>
-
     return (
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
@@ -228,11 +248,13 @@ class TimelineWrapper extends Component {
             <Button bsSize='small' onClick={this.flipOrientation}><Glyphicon glyph={glyph} /> {i18n('Flip')}</Button>
           </NavItem>
           <NavItem>
-            <span className='subnav__container__label'>{i18n('Zoom')}: </span>
+            <span className='subnav__container__label'>{i18n('Zoom')}</span>
+            <span className='subnav__container__label'> ({this.zoomLabel()}): </span>
             <ButtonGroup bsSize='small'>
-              <Button onClick={() => this.props.actions.increaseZoom()} ><Glyphicon glyph='plus-sign' /></Button>
-              <Button onClick={() => this.props.actions.decreaseZoom()} ><Glyphicon glyph='minus-sign' /></Button>
-              <Button onClick={() => this.props.actions.resetZoom()} >{i18n('Reset')}</Button>
+              <Button onClick={this.props.actions.increaseZoom} ><Glyphicon glyph='plus-sign' /></Button>
+              <Button onClick={this.props.actions.decreaseZoom} ><Glyphicon glyph='minus-sign' /></Button>
+              <Button onClick={this.props.actions.fitZoom} >{i18n('Fit')}</Button>
+              <Button onClick={this.props.actions.resetZoom} >{i18n('Reset')}</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
@@ -259,13 +281,13 @@ class TimelineWrapper extends Component {
     let containerKlasses = 'container-with-sub-nav'
     if (darkMode) containerKlasses += ' darkmode'
     // might be able to use this for zoom fit
-    // const zoomStyles = computeZoom(this.refs.table, this.props.ui)
-    const zoomKlass = computeZoomKlass(this.props.ui)
+    // const zoomStyles = computeZoom(this.tableRef, this.props.ui)
+    // const zoomKlass = computeZoomKlass(this.props.ui)
     return (
       <div id='timelineview__container' className={containerKlasses}>
         {this.renderSubNav()}
         <div id='timelineview__root'>
-          <StickyTable className={zoomKlass} wrapperRef={ref => this.tableRef = ref}>
+          <StickyTable wrapperRef={ref => this.tableRef = ref}>
             <TimelineTable
               filter={this.state.filter}
               filterIsEmpty={this.filterIsEmpty()}

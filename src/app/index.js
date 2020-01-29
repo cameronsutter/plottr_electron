@@ -100,22 +100,23 @@ window.onerror = function (message, file, line, column, err) {
 window.SCROLLWITHKEYS = true
 window.onkeydown = function (e) {
   if (window.SCROLLWITHKEYS) {
+    const table = document.querySelector(".sticky-table")
     if (e.key === 'ArrowUp') {
       var amount = 300
       if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
-      document.body.scrollTop -= amount
+      table.scrollTop -= amount
     } else if (e.key === 'ArrowRight') {
       var amount = 400
       if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
-      document.body.scrollLeft += amount
+      table.scrollLeft += amount
     } else if (e.key === 'ArrowDown') {
       var amount = 300
       if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
-      document.body.scrollTop += amount
+      table.scrollTop += amount
     } else if (e.key === 'ArrowLeft') {
       var amount = 400
       if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
-      document.body.scrollLeft -= amount
+      table.scrollLeft -= amount
     }
   }
 }

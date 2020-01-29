@@ -63,12 +63,12 @@ export default function ui (state = defaultUI, action) {
     case INCREASE_ZOOM:
       var newIndex = state.zoomIndex || 0
       if (newIndex < ZOOM_STATES.length - 1) newIndex++
-      return Object.assign({}, state, {zoomState: null, zoomIndex: newIndex})
+      return Object.assign({}, state, {zoomState: INITIAL_ZOOM_STATE, zoomIndex: newIndex})
 
     case DECREASE_ZOOM:
       var newIndex = state.zoomIndex || 0
       if (newIndex > 0) newIndex--
-      return Object.assign({}, state, {zoomState: null, zoomIndex: newIndex})
+      return Object.assign({}, state, {zoomState: INITIAL_ZOOM_STATE, zoomIndex: newIndex})
 
     case FIT_ZOOM:
       return Object.assign({}, state, {zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})

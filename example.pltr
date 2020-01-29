@@ -1080,6 +1080,6 @@
     "placeFilter": null,
     "placeSort": "name~asc",
     "zoomIndex": 4,
-    "zoomState": "initial"
+    "zoomState": null
   }
 }

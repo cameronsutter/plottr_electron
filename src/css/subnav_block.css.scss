@@ -34,9 +34,15 @@
   }
 }
 
-nav.subnav__container .container .nav li a {
-  padding-top: 7px;
-  padding-bottom: 7px;
+nav.subnav__container {
+  .container {
+    margin-left: 0;
+    margin-right: 0;
+    .nav li a {
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+  }
 }
 
 .subnav__container .alert-warning {

@@ -6,63 +6,63 @@
   position: absolute;
 }
 
-#timelineview__root.vertical {
-  display: flex;
-  flex-direction: row;
+.sticky-table-table {
+  white-space: normal !important;
 }
 
 .sticky-table-cell {
-  padding: 0;
-  background-color: $body-background-color;
-  vertical-align: top;
+  padding: 0 !important;
+  background-color: $body-background-color !important;
+  vertical-align: top !important;
+  border: none !important;
 }
 
 //////////
 // zoom //
 //////////
-.sticky-table.sticky-table-1zoomed-0 {
+.sticky-table.zoomed-0 {
   .sticky-table-table {
     transform: scale(0.1, 0.1);
     transform-origin: left top;
   }
 }
-.sticky-table.sticky-table-1zoomed-1 {
+.sticky-table.zoomed-1 {
   .sticky-table-table {
     transform: scale(0.25, 0.25);
     transform-origin: left top;
   }
 }
-.sticky-table.sticky-table-1zoomed-2 {
+.sticky-table.zoomed-2 {
   .sticky-table-table {
     transform: scale(0.5, 0.5);
     transform-origin: left top;
   }
 }
-.sticky-table.sticky-table-1zoomed-3 {
+.sticky-table.zoomed-3 {
   .sticky-table-table {
     transform: scale(0.75, 0.75);
     transform-origin: left top;
   }
 }
-.sticky-table.sticky-table-1zoomed-4 {
+.sticky-table.zoomed-4 {
   .sticky-table-table {
     transform: scale(1, 1);
     transform-origin: left top;
   }
 }
-.sticky-table.sticky-table-1zoomed-5 {
+.sticky-table.zoomed-5 {
   .sticky-table-table {
     transform: scale(1.5, 1.5);
     transform-origin: left top;
   }
 }
-.sticky-table.sticky-table-1zoomed-6 {
+.sticky-table.zoomed-6 {
   .sticky-table-table {
     transform: scale(2, 2);
     transform-origin: left top;
   }
 }
-.sticky-table.sticky-table-1zoomed-7 {
+.sticky-table.zoomed-7 {
   .sticky-table-table {
     transform: scale(3, 3);
     transform-origin: left top;

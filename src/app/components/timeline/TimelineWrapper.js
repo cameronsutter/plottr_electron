@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
-import 'style-loader!css-loader!react-sticky-table/dist/react-sticky-table.css'
 import { MPQ } from 'middlewares/helpers'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
@@ -23,13 +22,22 @@ class TimelineWrapper extends Component {
     super(props)
     this.state = {
       filter: null,
-      scrollTarget: 0
+      scrollLeft: 0,
+      scrollTarget: 0,
+      manualScroll: false,
     }
+    this.tableRef = null
   }
 
   componentDidMount () {
+    this.tableRef.onscroll = this.scrollHandler
     const { zoomIndex } = this.props.ui
     if (!zoomIndex) this.props.actions.resetZoom()
+  }
+
+  componentWillUnmount () {
+    this.tableRef.onScroll = null
+    this.tableRef = null
   }
 
   // ////////////////
@@ -52,78 +60,105 @@ class TimelineWrapper extends Component {
   //  scrolling   //
   // //////////////
 
+  scrollDistance = () => {
+    if (this.props.ui.orientation === 'vertical') return window.innerHeight - 165
+    return window.innerWidth - 200
+  }
+
   scrollRight = () => {
+    this.setState({manualScroll: true})
     clearInterval(scrollInterval)
-    this.setState({scrollTarget: this.state.scrollTarget + 700})
-    scrollInterval = setInterval(this.increaseScroll, 25)
+    this.setState({scrollTarget: this.state.scrollTarget + this.scrollDistance()})
+    scrollInterval = setInterval(this.increaseScroll, 10)
     setTimeout(() => { clearInterval(scrollInterval) }, 500)
   }
 
   scrollLeft = () => {
+    this.setState({manualScroll: true})
     clearInterval(scrollInterval)
-    this.setState({scrollTarget: this.state.scrollTarget - 700})
-    scrollInterval = setInterval(this.decreaseScroll, 25)
+    this.setState({scrollTarget: this.state.scrollTarget - this.scrollDistance()})
+    scrollInterval = setInterval(this.decreaseScroll, 10)
     setTimeout(() => { clearInterval(scrollInterval) }, 500)
   }
 
   scrollBeginning = () => {
+    this.setState({manualScroll: true})
     clearInterval(scrollInterval)
     this.setState({scrollTarget: 0})
-    scrollInterval = setInterval(this.decreaseScroll, 25)
+    scrollInterval = setInterval(this.decreaseScroll, 10)
     setTimeout(() => { clearInterval(scrollInterval) }, 3000)
   }
 
   scrollMiddle = () => {
+    this.setState({manualScroll: true})
     clearInterval(scrollInterval)
-    var middle = (this.refs.timeline.scrollWidth / 2) - (window.outerWidth / 2)
+    var middle = (this.tableRef.scrollWidth / 2)
     if (this.props.ui.orientation === 'vertical') {
-      middle = (this.refs.timeline.scrollHeight / 2)
+      middle = (this.tableRef.scrollHeight / 2)
     }
     this.setState({scrollTarget: middle})
-    if (document.body.scrollLeft > middle) {
-      scrollInterval = setInterval(this.decreaseScroll, 25)
+    if (this.tableRef.scrollLeft > middle) {
+      scrollInterval = setInterval(this.decreaseScroll, 10)
     } else {
-      scrollInterval = setInterval(this.increaseScroll, 25)
+      scrollInterval = setInterval(this.increaseScroll, 10)
     }
     setTimeout(() => { clearInterval(scrollInterval) }, 1500)
   }
 
   scrollEnd = () => {
+    this.setState({manualScroll: true})
     clearInterval(scrollInterval)
-    var end = this.refs.timeline.scrollWidth - window.outerWidth
+    var end = this.tableRef.scrollWidth
     if (this.props.ui.orientation === 'vertical') {
-      end = this.refs.timeline.scrollHeight
+      end = this.tableRef.scrollHeight
     }
     this.setState({scrollTarget: end})
-    scrollInterval = setInterval(this.increaseScroll, 25)
+    scrollInterval = setInterval(this.increaseScroll, 10)
     setTimeout(() => { clearInterval(scrollInterval) }, 3000)
   }
 
   increaseScroll = () => {
     if (this.props.ui.orientation === 'vertical') {
-      if (document.body.scrollTop >= this.state.scrollTarget) clearInterval(scrollInterval)
-      else document.body.scrollTop += 100
+      if (this.tableRef.scrollTop >= this.state.scrollTarget) this.clearManualScroll()
+      else this.tableRef.scrollTop += 100
     } else {
-      if (document.body.scrollLeft >= this.state.scrollTarget) clearInterval(scrollInterval)
-      else document.body.scrollLeft += 100
+      if (this.tableRef.scrollLeft >= this.state.scrollTarget) this.clearManualScroll()
+      else this.tableRef.scrollLeft += 100
     }
   }
 
   decreaseScroll = () => {
     if (this.props.ui.orientation === 'vertical') {
-      if (document.body.scrollTop <= this.state.scrollTarget) clearInterval(scrollInterval)
-      else document.body.scrollTop -= 100
+      if (this.tableRef.scrollTop <= this.state.scrollTarget) this.clearManualScroll()
+      else this.tableRef.scrollTop -= 100
     } else {
-      if (document.body.scrollLeft <= this.state.scrollTarget) clearInterval(scrollInterval)
-      else document.body.scrollLeft -= 100
+      if (this.tableRef.scrollLeft <= this.state.scrollTarget) this.clearManualScroll()
+      else this.tableRef.scrollLeft -= 100
     }
+  }
+
+  clearManualScroll = () => {
+    clearInterval(scrollInterval)
+    this.setState({manualScroll: false})
   }
 
   scrollTo (x, y) {
     setTimeout(() => {
-      document.body.scrollTop = y
-      document.body.scrollLeft = x + 300 - (window.outerWidth / 2)
+      this.tableRef.scrollTop = y
+      this.tableRef.scrollLeft = x + 300 - (window.outerWidth / 2)
     }, 10)
+  }
+
+  scrollHandler = (e) => {
+    if (!this.state.manualScroll) this.updateScrollLeft(this.props.ui.orientation)
+  }
+
+  updateScrollLeft = (orientation = 'horizontal') => {
+    let newScrollLeft = this.tableRef.scrollLeft
+    if (orientation === 'vertical') {
+      newScrollLeft = this.tableRef.scrollHeight
+    }
+    this.setState({scrollLeft: newScrollLeft, scrollTarget: newScrollLeft})
   }
 
   // //////////////
@@ -134,6 +169,7 @@ class TimelineWrapper extends Component {
     let orientation = this.props.ui.orientation === 'horizontal' ? 'vertical' : 'horizontal'
     this.props.actions.changeOrientation(orientation)
     this.props.actions.resetZoom()
+    this.updateScrollLeft(orientation)
   }
 
   // ///////////////
@@ -178,6 +214,7 @@ class TimelineWrapper extends Component {
 
     // had to remove this
     // <Button onClick={() => this.props.actions.fitZoom()} >{i18n('Fit')}</Button>
+
     return (
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
@@ -218,8 +255,7 @@ class TimelineWrapper extends Component {
   }
 
   render () {
-    const { orientation, darkMode } = this.props.ui
-    let orientationKlass = orientation === 'vertical' ? 'vertical' : ''
+    const { darkMode } = this.props.ui
     let containerKlasses = 'container-with-sub-nav'
     if (darkMode) containerKlasses += ' darkmode'
     // might be able to use this for zoom fit
@@ -228,8 +264,8 @@ class TimelineWrapper extends Component {
     return (
       <div id='timelineview__container' className={containerKlasses}>
         {this.renderSubNav()}
-        <div id='timelineview__root' className={orientationKlass}>
-          <StickyTable className={zoomKlass}>
+        <div id='timelineview__root'>
+          <StickyTable className={zoomKlass} wrapperRef={ref => this.tableRef = ref}>
             <TimelineTable
               filter={this.state.filter}
               filterIsEmpty={this.filterIsEmpty()}

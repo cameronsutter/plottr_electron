@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
-import CardSVGline from 'components/timeline/cardSVGline'
+import CardSVGline from 'components/timeline/CardSVGline'
 import orientedClassName from 'helpers/orientedClassName'
 
 export default class SceneInsertCell extends Component {

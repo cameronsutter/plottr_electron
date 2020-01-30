@@ -97,6 +97,17 @@ $title_width: 200px;
   }
 }
 
+.sticky-table.darkmode {
+  .line-list__append-line {
+    .line-list__append-line-wrapper {
+      color: $blue-7;
+    }
+  }
+  .line-list__insert-scene:hover {
+    color: $blue-7;
+  }
+}
+
 // ///////////
 // Vertical
 // ///////////
@@ -195,8 +206,3 @@ $title_width: 200px;
     border: 3px dashed $blue-7;
   }
 }
-
-
-// .line__title.darkmode, .vertical-line__title.darkmode {
-//   color: #eee;
-// }

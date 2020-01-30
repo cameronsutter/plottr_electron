@@ -7,7 +7,7 @@ import { Glyphicon } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
 import SceneTitleCell from 'components/timeline/SceneTitleCell'
-import LineTitleCell from 'components/timeline/lineTitleCell'
+import LineTitleCell from 'components/timeline/LineTitleCell'
 import SceneInsertCell from 'components/timeline/SceneInsertCell'
 import { reorderList, insertScene } from 'helpers/lists'
 import orientedClassName from 'helpers/orientedClassName'
@@ -34,16 +34,15 @@ class TopRow extends Component {
 
   renderLastInsertSceneCell () {
     const { orientation } = this.props.ui
-    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation} />
+    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation}/>
   }
 
   renderScenes () {
     const { orientation } = this.props.ui
-    // if (this.props.ui.darkMode) insertClasses += ' darkmode'
     const scenes = _.sortBy(this.props.scenes, 'position')
     const renderedScenes = scenes.flatMap(sc => {
       const cells = []
-      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} orientation={orientation} />)
+      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} orientation={orientation}/>)
       cells.push(<SceneTitleCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} />)
       return cells
     })
@@ -70,7 +69,7 @@ class TopRow extends Component {
   }
 
   render () {
-    let body
+    let body = null
     if (this.props.ui.orientation === 'horizontal') body = this.renderScenes()
     else body = this.renderLines()
     return <Row>{body}</Row>

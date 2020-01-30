@@ -280,14 +280,12 @@ class TimelineWrapper extends Component {
     const { darkMode } = this.props.ui
     let containerKlasses = 'container-with-sub-nav'
     if (darkMode) containerKlasses += ' darkmode'
-    // might be able to use this for zoom fit
-    // const zoomStyles = computeZoom(this.tableRef, this.props.ui)
-    // const zoomKlass = computeZoomKlass(this.props.ui)
+    let tableKlass = darkMode ? 'darkmode' : ''
     return (
       <div id='timelineview__container' className={containerKlasses}>
         {this.renderSubNav()}
         <div id='timelineview__root'>
-          <StickyTable wrapperRef={ref => this.tableRef = ref}>
+          <StickyTable wrapperRef={ref => this.tableRef = ref} className={tableKlass}>
             <TimelineTable
               filter={this.state.filter}
               filterIsEmpty={this.filterIsEmpty()}

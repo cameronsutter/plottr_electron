@@ -139,9 +139,9 @@ class LineTitleCell extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
-    var klass = orientedClassName('line-title__body', this.props.ui.orientation)
-    if (this.state.hovering) klass += ' hover'
-    if (this.state.dropping) klass += ' dropping'
+    let innerKlass = orientedClassName('line-title__body', this.props.ui.orientation)
+    if (this.state.hovering) innerKlass += ' hover'
+    if (this.state.dropping) innerKlass += ' dropping'
     return <Cell>
       <div
         className={orientedClassName('line-title__cell', this.props.ui.orientation)}
@@ -149,7 +149,7 @@ class LineTitleCell extends Component {
         onMouseLeave={() => this.setState({hovering: false})}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
-        <div className={klass}
+        <div className={innerKlass}
           onClick={() => this.setState({editing: true})}
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}

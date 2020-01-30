@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
-import CardSVGline from 'components/timeline/cardSVGline'
+import CardSVGline from 'components/timeline/CardSVGline'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 

@@ -17,3 +17,16 @@
   vertical-align: top !important;
   border: none !important;
 }
+
+.sticky-table.darkmode {
+  background-color: $card-background-darkmode !important;
+  color: $text-darkmode;
+  .sticky-table-row {
+    background-color: $card-background-darkmode !important;
+    color: $text-darkmode;
+  }
+  .sticky-table-cell {
+    background-color: $card-background-darkmode !important;
+    color: $text-darkmode;
+  }
+}

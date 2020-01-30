@@ -122,9 +122,9 @@ class SceneTitleCell extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
-    let klass = orientedClassName('scene__body', this.props.ui.orientation)
-    if (this.state.hovering) klass += ' hover'
-    if (this.state.dropping) klass += ' dropping'
+    let innerKlass = orientedClassName('scene__body', this.props.ui.orientation)
+    if (this.state.hovering) innerKlass += ' hover'
+    if (this.state.dropping) innerKlass += ' dropping'
     return <Cell>
       <div
         className={orientedClassName('scene__cell', this.props.ui.orientation)}
@@ -134,7 +134,7 @@ class SceneTitleCell extends Component {
         onMouseLeave={() => this.setState({hovering: false})}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
-        <div className={klass}
+        <div className={innerKlass}
           draggable={true}
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}

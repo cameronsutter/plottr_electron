@@ -53,11 +53,12 @@
   }
 }
 
-
-// .card__real.darkmode, .vertical-card__real.darkmode {
-//   background-color: $card-background-darkmode;
-//   .card__title {
-//     color: $text-darkmode;
-//   }
-// }
-//
+.sticky-table.darkmode {
+  .card__cell {
+    background-color: $card-background-darkmode;
+    .card__body, .blank-card__body {
+      background-color: $card-background-darkmode;
+      color: $text-darkmode;
+    }
+  }
+}

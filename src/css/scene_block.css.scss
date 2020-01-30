@@ -71,6 +71,17 @@ $title_width: 200px;
   }
 }
 
+.sticky-table.darkmode {
+  .scene-list__insert:hover {
+    color: $blue-8;
+  }
+  .scene-list__insert {
+    .insert-scene-wrapper.append-scene {
+      color: $blue-7;
+    }
+  }
+}
+
 // ///////////
 // Vertical
 // ///////////

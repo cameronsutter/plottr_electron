@@ -1073,7 +1073,7 @@
     "characterFilter": null,
     "characterSort": "name~asc",
     "currentView": "timeline",
-    "darkMode": true,
+    "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",

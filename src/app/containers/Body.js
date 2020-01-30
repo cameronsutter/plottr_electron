@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import TimeLineView from 'components/timeline/timeLineView'
 import OutlineView from 'components/outline/outlineView'
 import TagsView from 'components/tag/TagsView'
 import CharactersView from 'components/characters/charactersView'

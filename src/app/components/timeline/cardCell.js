@@ -75,6 +75,26 @@ class CardCell extends Component {
     </div>)
   }
 
+  renderTitle () {
+    let title = <div className='card__title'>
+      {this.props.card.title}
+    </div>
+    if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
+      let placement = 'left'
+      if (this.props.ui.orientation === 'horizontal') {
+        placement = this.props.scenePosition <= 1 ? 'right' : placement
+      } else {
+        placement = this.props.linePosition <= 1 ? 'right' : placement
+      }
+      if (isZoomed(this.props.ui)) placement = 'right'
+      title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
+        {title}
+      </OverlayTrigger>
+    }
+
+    return title
+  }
+
   renderBody () {
     var cardStyle = {
       borderColor: this.props.color
@@ -85,28 +105,15 @@ class CardCell extends Component {
     if (this.props.filtered) {
       cardStyle.opacity = '0.1'
     }
-    const body = <div className='card__body' style={cardStyle}
+
+    return <div className='card__body' style={cardStyle}
       draggable={true}
       onDragStart={this.handleDragStart}
       onDragEnd={this.handleDragEnd}
       onClick={() => this.setState({dialogOpen: true})}
     >
-      {this.props.card.title}
+      {this.renderTitle()}
     </div>
-    // if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
-    if (this.hasLabels() || this.props.card.description) {
-      let placement = 'left'
-      if (this.props.ui.orientation === 'horizontal') {
-        placement = this.props.scenePosition <= 1 ? 'right' : placement
-      } else {
-        placement = this.props.linePosition <= 1 ? 'right' : placement
-      }
-      if (isZoomed(this.props.ui)) placement = 'right'
-      return <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
-        {body}
-      </OverlayTrigger>
-    }
-    return body
   }
 
   render () {

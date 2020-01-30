@@ -9,13 +9,19 @@
 .card__body {
   width: 150px;
   min-height: 70px;
-  padding: 10px;
+  display: flex;
   border: 3px solid black;
   border-radius: 4px;
   margin: auto;
   position: relative;
   background-color: $body-background-color;
   cursor: move;
+  transition: all 0.6s $cubic;
+}
+
+.card__title {
+  padding: 10px;
+  flex-grow: 1;
 }
 
 .card__svg-line {
@@ -37,6 +43,12 @@
   .blank-card__body {
     visibility: visible;
   }
+}
+
+.card__body:hover {
+  transform: scale(1.01);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
 .card__popover-description {

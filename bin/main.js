@@ -8,11 +8,13 @@ var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
 var log = require('electron-log')
-var Rollbar = require('rollbar')
 var request = require('request')
 var { stringify } = require('dotenv-stringify')
 var i18n = require('format-message')
 const { autoUpdater } = require('electron-updater')
+const backupFile = require('./main_modules/backup')
+const setupRollbar = require('./main_modules/rollbar')
+const rollbar = setupRollbar('main')
 if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
@@ -53,20 +55,6 @@ var launchSent = false
 ////     Bug Reporting    //////
 ////////////////////////////////
 
-let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
-let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
-var rollbar = new Rollbar({
-  accessToken: rollbarToken,
-  handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
-  handleUnhandledRejections: true,
-  ignoredMessages: [],
-  payload: {
-    environment: environment,
-    version: app.getVersion(),
-    where: 'main',
-    os: process.platform
-  }
-})
 if (process.env.NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
     log.error(err)
@@ -134,6 +122,7 @@ ipcMain.on('save-state', function (event, state, winId, isNewFile) {
   winObj.state = state
   if (isNewFile || wasEdited) {
     saveFile(winObj.fileName, state, function (err) {
+      backupFile(winObj.fileName, state, () => {})
       if (err) {
         log.warn(err)
         log.warn('file name: ' + winObj.fileName)
@@ -612,17 +601,6 @@ function removeRecentFile (fileNameToRemove) {
   })
 }
 
-function openTour () {
-  openWindow(__dirname + '/tour/en.pltr')
-  // TODO: when the tour is translated, do this
-  // let locale = app.getLocale()
-  // if (locale.includes('en')) {
-  //   openWindow(__dirname + '/tour/en.pltr')
-  // } else if (locale.includes('fr')) {
-  //   openWindow(__dirname + '/tour/fr.pltr')
-  // }
-}
-
 function createEmpty () {
   let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
   let fileName = path.join(home, 'Documents', 'plottr_trial.pltr')
@@ -730,18 +708,18 @@ function takeScreenshot () {
             if (err) {
               log.error(err)
             } else {
-              fs.writeFile(filePath, image.toPNG())
+              fs.writeFile(filePath, image.toPNG(), () => {})
             }
           })
         } else {
           if (stat.isDirectory()) {
-            fs.writeFile(filePath, image.toPNG())
+            fs.writeFile(filePath, image.toPNG(), () => {})
           }
         }
       })
     } else {
       dialog.showSaveDialog(win, function(fileName) {
-        if (fileName) fs.writeFile(fileName + '.png', image.toPNG())
+        if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
       })
     }
   })
@@ -877,10 +855,6 @@ function buildPlottrMenu () {
       type: 'separator',
     })
   }
-  submenu = [].concat(submenu, {
-    label: i18n('Open the Tour') + '...',
-    click: openTour,
-  })
   if (process.platform === 'darwin') {
     submenu = [].concat(submenu, {
       type: 'separator'

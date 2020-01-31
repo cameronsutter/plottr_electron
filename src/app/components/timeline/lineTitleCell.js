@@ -158,9 +158,9 @@ class LineTitleCell extends Component {
           onDragLeave={this.handleDragLeave}
           draggable={true}>
           { this.renderTitle() }
-          { this.renderColorPicker() }
         </div>
       </div>
+      { this.renderColorPicker() }
     </Cell>
   }
 }

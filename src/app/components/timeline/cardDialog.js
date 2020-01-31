@@ -7,14 +7,10 @@ import { bindActionCreators } from 'redux'
 import Modal from 'react-modal'
 import _ from 'lodash'
 import * as CardActions from 'actions/cards'
-import { card } from 'store/initialState'
-import { shell } from 'electron'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
-
-// Modal.setAppElement('#timelineview-root')
 
 const customStyles = {content: {top: '70px'}}
 

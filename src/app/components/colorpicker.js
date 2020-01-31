@@ -35,7 +35,7 @@ class ColorPicker extends Component {
       klasses += ' darkmode'
       customStyles.content.backgroundColor = '#888'
     }
-    return (<Modal isOpen={true} onRequestClose={() => this.closeDialog(this.state.color)} style={customStyles}>
+    return (<Modal isOpen={true} onRequestClose={() => this.closeDialog(this.props.color)} style={customStyles}>
       <div className={klasses}>
         <h2 className='color-picker__title'>{i18n('Pick a color')}</h2>
         <div className='color-picker__input-box form-horizontal'>

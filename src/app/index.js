@@ -15,6 +15,7 @@ import { MPQ, setTrialInfo } from 'middlewares/helpers'
 import FileFixer from 'helpers/fixer'
 import log from 'electron-log'
 import i18n from 'format-message'
+import Modal from 'react-modal'
 
 i18n.setup({
   translations: require('../../locales'),
@@ -45,6 +46,7 @@ if (process.env.NODE_ENV !== 'dev') {
 
 mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
 
+Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
 const store = configureStore()
 

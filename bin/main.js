@@ -114,7 +114,7 @@ app.on('web-contents-created', (e, contents) => {
 
 ipcMain.on('save-state', function (event, state, winId, isNewFile) {
   var winObj = _.find(windows, {id: winId})
-  let wasEdited = checkDirty(state, winObj.lastSave)
+  let wasEdited = isDirty(state, winObj.lastSave)
   winObj.window.setDocumentEdited(wasEdited)
   winObj.window.setTitle(displayFileName(winObj.fileName))
   winObj.window.setRepresentedFilename(winObj.fileName)
@@ -339,9 +339,9 @@ function displayFileName (path) {
   return stringBase
 }
 
-function checkDirty (state, lastSave) {
-  var diff = deep.diff(lastSave, state) || []
-  var edited = false
+function isDirty (state, lastSave) {
+  const diff = deep.diff(lastSave, state) || []
+  let edited = false
   if (state.file && state.file.dirty && diff.length > 0) edited = true
   return edited
 }
@@ -467,7 +467,7 @@ function openWindow (fileName, newFile = false) {
 
   newWindow.on('close', function (e) {
     var win = _.find(windows, {id: this.id})
-    if (checkDirty(win.state, win.lastSave)) {
+    if (isDirty(win.state, win.lastSave)) {
       e.preventDefault()
       var _this = this
       askToSave(this, win.state, win.fileName, function() {
@@ -851,7 +851,7 @@ function buildFileMenu () {
         let winObj = _.find(windows, {id: win.id})
         if (winObj) {
           if (process.env.NODE_ENV !== 'dev') {
-            if (checkDirty(winObj.state, winObj.lastSave)) {
+            if (isDirty(winObj.state, winObj.lastSave)) {
               askToSave(win, winObj.state, winObj.fileName, function () { closeWindow(win.id) })
             } else {
               closeWindow(win.id)
@@ -867,12 +867,10 @@ function buildFileMenu () {
   }]
   var submenu = [].concat({
     label: i18n('New') + '...',
-    enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+N',
     click: askToCreateFile
   }, {
     label: i18n('Open') + '...',
-    enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+O',
     click: askToOpenFile
   }, {
@@ -900,7 +898,6 @@ function buildFileMenu () {
     }
   }, {
     label: i18n('Save as') + '...',
-    enabled: !TRIALMODE,
     accelerator: 'CmdOrCtrl+Shift+S',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
@@ -964,7 +961,7 @@ function buildViewMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = _.find(windows, {id: win.id})
       if (process.env.NODE_ENV !== 'dev') {
-        if (checkDirty(winObj.state, winObj.lastSave)) {
+        if (isDirty(winObj.state, winObj.lastSave)) {
           askToSave(win, winObj.state, winObj.fileName, win.webContents.reload)
         } else {
           win.webContents.reload()

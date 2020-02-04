@@ -6,7 +6,7 @@ import VerifyView from './VerifyView'
 
 export default class ChoiceView extends Component {
   state = {
-    view: process.env.TRIALMODE ? 'verify' : 'chooser'
+    view: process.env.TRIALMODE === 'true' ? 'verify' : 'chooser'
   }
 
   startFreeTrial = () => {

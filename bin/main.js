@@ -98,20 +98,6 @@ app.on('activate', function () {
   }
 })
 
-// Listen for web contents being created
-app.on('web-contents-created', (e, contents) => {
-  // Check for a webview
-  if (contents.getType() == 'window') {
-    // Listen for any new window events
-    contents.on('new-window', (e, url) => {
-      e.preventDefault()
-      if (url.includes("paypal.com")) {
-        shell.openExternal("https://gum.co/fgSJ")
-      }
-    })
-  }
-})
-
 ipcMain.on('save-state', function (event, state, winId, isNewFile) {
   var winObj = _.find(windows, {id: winId})
   let wasEdited = isDirty(state, winObj.lastSave)
@@ -178,49 +164,8 @@ ipcMain.on('launch-sent', function (event) {
   launchSent = true
 })
 
-// TODO: remove this when you remove the buy window
 ipcMain.on('open-buy-window', function (event) {
   openBuyWindow()
-})
-
-// TODO: remove this when you remove the buy window
-ipcMain.on('license-to-verify', function (event, licenseString) {
-  dialog.showMessageBox(buyWindow, {type: 'info', buttons: [i18n('ok')], message: i18n('Verifying your license. Please wait...'), detail: licenseString}, function (choice) {})
-  var req = {
-    url: 'https://api.gumroad.com/v2/licenses/verify',
-    method: 'POST',
-    json: true,
-    body: {
-      product_permalink: 'fgSJ',
-      license_key: licenseString
-    }
-  }
-  const view = this
-  request(req, function (err, response, body) {
-    if (err && err.code === 404) {
-      logger.warn(err)
-      dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
-    } else {
-      if (body.success && !body.purchase.refunded && !body.purchase.chargebacked && body.uses <= 5) {
-        // save uses, purchase.email, purchase.full_name, purchase.variants
-        storage.set('user_info', body, function(err) {
-          if (err) {
-            logger.error(err)
-            dialog.showErrorBox(i18n('License verification failed'), i18n('Try again by clicking in the menu: Plottr > Verify License...'))
-          } else {
-            dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n("License verified! You're all set."), detail: i18n("Now let's get to the good stuff")}, function () {
-              if (windows[0]) windows[0].window.webContents.send('bought-in-app', DAY_OF_TRIAL)
-              licenseVerified(false)
-            })
-          }
-        })
-      } else {
-        rollbar.warn(`Refund or maxed out. Uses: ${body.uses}. Refund: ${body.purchase.refunded}. Chargebacked: ${body.purchase.chargebacked}`)
-        logger.warn(`Refund or maxed out. Uses: ${body.uses}. Refund: ${body.purchase.refunded}. Chargebacked: ${body.purchase.chargebacked}`)
-        dialog.showErrorBox(i18n('License verification failed'), i18n('It looks like you have Plottr on 5 computers already or you requested a refund'))
-      }
-    }
-  })
 })
 
 function licenseVerified (ask) {
@@ -616,15 +561,7 @@ function openReportWindow (page) {
 }
 
 function openBuyWindow () {
-  const buyFile = path.join(filePrefix, 'buy.html')
-  buyWindow = new BrowserWindow({height: 600, show: false, backgroundColor: 'white', webPreferences: {scrollBounce: true, nodeIntegration: true}})
-  buyWindow.loadURL(buyFile)
-  buyWindow.once('ready-to-show', function() {
-    this.show()
-  })
-  buyWindow.on('close', function () {
-    reportWindow = null
-  })
+  shell.openExternal("https://gum.co/fgSJ")
 }
 
 function gracefullyQuit () {

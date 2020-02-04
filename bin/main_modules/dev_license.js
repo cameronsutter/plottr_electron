@@ -1,3 +1,6 @@
+var storage = require('electron-json-storage')
+
+const USER_INFO_PATH = 'user_info'
 const fakeData = {
   "success": true,
   "uses": 3,
@@ -14,4 +17,7 @@ const fakeData = {
   }
 }
 
-module.exports = fakeData
+storage.set(USER_INFO_PATH, fakeData, function(err) {
+  if (err) console.log(err)
+  else console.log('dev license created')
+})

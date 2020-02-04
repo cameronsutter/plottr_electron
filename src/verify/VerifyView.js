@@ -89,14 +89,14 @@ class VerifyView extends Component {
                     view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
                     if (process.env.NODE_ENV !== 'development') {
                       ipcRenderer.send('license-verified')
-                    } 
+                    }
                   }
                 })
               } else {
                 view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
                 if (process.env.NODE_ENV !== 'development') {
                   ipcRenderer.send('license-verified')
-                } 
+                }
               }
             })
           }
@@ -123,18 +123,17 @@ class VerifyView extends Component {
   }
 
   render () {
-    var contact = i18n.rich("(If not, please contact me @ <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)", {
+    var contact = i18n.rich("(If not, please contact me at <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)", {
       a: ({ children }) => <a key="a" href='mailto:family@plottrapp.com'>{children}</a>
     })
     return (
       <div>
-        <h1 className='verify'><img src='../icons/logo_28_100.png' className='verify' height='100'/> {i18n('Welcome to Plottr')}</h1>
         <h2>{i18n('Please verify your license')}</h2>
         <p className='text-success'>{i18n('You should have received a license key from Gumroad.')}</p>
-        <p className='text-muted'><small>{contact}</small></p>
-        <div className='form-inline'>
-          <FormControl type='text' bsSize='large' style={{width: '400px'}} ref='license' />
-          <Button bsStyle='primary' onClick={this.handleVerify.bind(this)}>{i18n('Verify')}</Button>
+        <p className='text-info'>{contact}</p>
+        <div className='form-inline' style={{marginTop: '50px'}}>
+          <FormControl type='text' bsSize='large' style={{width: '450px'}} ref='license' />
+          <Button bsStyle='primary' bsSize='large' onClick={this.handleVerify.bind(this)}>{i18n('Verify')}</Button>
           <span style={{marginLeft: '7px'}} className={this.state.spinnerHidden ? 'hidden' : ''}><Glyphicon id='spinner' glyph='refresh'/></span>
         </div>
         { this.renderAlert() }

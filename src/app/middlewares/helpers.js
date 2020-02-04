@@ -8,11 +8,11 @@ export function storageKey (fileName) {
   return `history-${name}`
 }
 
-let dayOfTrial
+let daysLeft
 let isTrial
 export function setTrialInfo (isTrialMode, num) {
   isTrial = isTrialMode
-  dayOfTrial = num
+  daysLeft = num
 }
 
 class MixpanelQueue {
@@ -31,7 +31,7 @@ class MixpanelQueue {
     let allAttrs = {
       ...attrs,
       online: navigator.onLine,
-      day_of_trial: dayOfTrial,
+      days_left_of_trial: daysLeft,
       trial_mode: isTrial,
     }
     this.queue.push({title: event, attributes: allAttrs})

@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "2020.1.31",
+  "version": "2020.2.4",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -16,7 +16,7 @@
     "compile": "node_modules/.bin/webpack",
     "serve": "NODE_ENV=dev node_modules/.bin/webpack",
     "watch": "echo 'do you have fsevents?' && NODE_ENV=dev node_modules/.bin/webpack",
-    "createDevLicense": "NODE_ENV=license electron .",
+    "createDevLicense": "node bin/main_modules/dev_license.js",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "pack": "NODE_ENV=production node_modules/.bin/webpack 1> /dev/null",
     "pack:windows": "node_modules\\.bin\\webpack",
@@ -82,7 +82,7 @@
   "build": {
     "electronVersion": "5.0.4",
     "appId": "com.plottr.app",
-    "artifactName": "${productName}-${os}-installer-${env.BUILD_TYPE}-${version}.${ext}",
+    "artifactName": "${productName}-${os}-installer-${version}.${ext}",
     "publish": [
       "github"
     ],
@@ -99,7 +99,7 @@
       "!example*.docx",
       "!screenshots"
     ],
-    "copyright": "Copyright © 2019 C. Louis S. (Cameron Sutter)",
+    "copyright": "Copyright © 2020 C. Louis S. (Cameron Sutter)",
     "productName": "Plottr",
     "fileAssociations": [
       {
@@ -110,7 +110,6 @@
       }
     ],
     "afterSign": "build/notarize.js",
-    "afterAllArtifactBuild": "build/afterAllArtifactBuild.js",
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
@@ -123,7 +122,7 @@
       "entitlementsInherit": "build/entitlements.mac.plist"
     },
     "dmg": {
-      "backgroundColor": "#efefee",
+      "backgroundColor": "#f7f7f7",
       "title": "${productName} Installer",
       "sign": false
     },
@@ -137,8 +136,10 @@
       }
     },
     "nsis": {
-      "artifactName": "${productName}-${os}-installer-${env.BUILD_TYPE}-${version}.${ext}",
-      "perMachine": true
+      "artifactName": "${productName}-${os}-setup-${version}.${ext}",
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
     }
   }
 }

@@ -75,8 +75,8 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
   )
 })
 
-ipcRenderer.once('send-launch', (event, version, isTrialMode, dayOfTrial) => {
-  setTrialInfo(isTrialMode, dayOfTrial)
+ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) => {
+  setTrialInfo(isTrialMode, daysLeftOfTrial)
   MPQ.push('Launch', {online: navigator.onLine, version: version})
   ipcRenderer.send('launch-sent')
 })

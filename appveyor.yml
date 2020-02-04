@@ -17,11 +17,3 @@ test: off
 branches:
   only:
     - master
-    - beforeStickyTable
-environment:
-  matrix:
-    - rando: anotherthing
-      BUILD_TYPE: trial
-
-    - rando: onething
-      BUILD_TYPE: full

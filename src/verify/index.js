@@ -2,7 +2,7 @@ import path from 'path'
 import log from 'electron-log'
 import React from 'react'
 import { render } from 'react-dom'
-import VerifyView from 'VerifyView'
+import ChoiceView from 'ChoiceView'
 const { remote } = require('electron')
 const app = remote.app
 
@@ -13,12 +13,12 @@ i18n.setup({
 })
 
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
-let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
+let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 var Rollbar = require('rollbar')
 let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
 var rollbar = new Rollbar({
   accessToken: rollbarToken,
-  handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
+  handleUncaughtExceptions: process.env.NODE_ENV !== 'development',
   handleUnhandledRejections: true,
   payload: {
     environment: environment,
@@ -28,7 +28,7 @@ var rollbar = new Rollbar({
   }
 })
 
-if (process.env.NODE_ENV !== 'dev') {
+if (process.env.NODE_ENV !== 'development') {
   process.on('uncaughtException', function (err) {
     log.error(err)
     rollbar.error(err)
@@ -37,7 +37,4 @@ if (process.env.NODE_ENV !== 'dev') {
 
 const root = document.getElementById('verify__react__root')
 
-render(
-  <VerifyView />,
-  root
-)
+render(<ChoiceView />, root)

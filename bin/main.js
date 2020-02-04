@@ -9,9 +9,9 @@ var _ = require('lodash')
 var storage = require('electron-json-storage')
 var log = require('electron-log')
 var request = require('request')
-var { stringify } = require('dotenv-stringify')
 var i18n = require('format-message')
 const { autoUpdater } = require('electron-updater')
+const { checkTrialInfo, turnOffTrialMode, startTheTrial } = require('./main_modules/trial_manager')
 const backupFile = require('./main_modules/backup')
 const setupRollbar = require('./main_modules/rollbar')
 const rollbar = setupRollbar('main')
@@ -22,10 +22,11 @@ if (process.env.NODE_ENV === 'dev') {
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
 
-var TRIALMODE = process.env.TRIALMODE === 'true'
+let TRIALMODE = process.env.TRIALMODE === 'true'
+// TODO: remove this when you remove the buy window
 const TRIAL_LENGTH = 30
-const FIRST_DAY_PATH = 'first_day'
-var DAYS_LEFT = TRIAL_LENGTH
+let DAYS_LEFT = null
+// TODO: remove this when you remove the buy window
 let DAY_OF_TRIAL = TRIAL_LENGTH
 
 const USER_INFO_PATH = 'user_info'
@@ -93,7 +94,7 @@ app.on('activate', function () {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (windows.length === 0) {
-    checkLicense(function() {})
+    checkLicense(() => {})
   }
 })
 
@@ -177,10 +178,12 @@ ipcMain.on('launch-sent', function (event) {
   launchSent = true
 })
 
+// TODO: remove this when you remove the buy window
 ipcMain.on('open-buy-window', function (event) {
   openBuyWindow()
 })
 
+// TODO: remove this when you remove the buy window
 ipcMain.on('license-to-verify', function (event, licenseString) {
   dialog.showMessageBox(buyWindow, {type: 'info', buttons: [i18n('ok')], message: i18n('Verifying your license. Please wait...'), detail: licenseString}, function (choice) {})
   var req = {
@@ -224,6 +227,7 @@ function licenseVerified (ask) {
   if (verifyWindow) verifyWindow.close()
   if (buyWindow) buyWindow.close()
   if (TRIALMODE) {
+    TRIALMODE = false
     turnOffTrialMode()
     loadMenu()
     if (ask) askToOpenOrCreate()
@@ -241,45 +245,45 @@ ipcMain.on('export', function (event, options, winId) {
   Exporter(winObj.state, options)
 })
 
+ipcMain.on('start-free-trial', function(event) {
+  if (verifyWindow) verifyWindow.close()
+  startTheTrial(daysLeft => {
+    TRIALMODE = true
+    DAYS_LEFT = daysLeft
+    createAndOpenEmptyFile()
+  })
+})
+
 app.on('ready', function () {
-  if (process.env.NODE_ENV === 'license') {
-    const fakeData = require('./devLicense')
-    storage.set(USER_INFO_PATH, fakeData, function(err) {
-      if (err) console.log(err)
-      else console.log('dev license created')
-      app.quit()
-    })
-  } else {
-    i18n.setup({
-      translations: require('../locales'),
-      locale: app.getLocale() || 'en'
-    })
+  i18n.setup({
+    translations: require('../locales'),
+    locale: app.getLocale() || 'en'
+  })
 
-    // Register the toggleDevTools shortcut listener.
-    const ret = globalShortcut.register('CommandOrControl+Alt+R', () => {
-      let win = BrowserWindow.getFocusedWindow()
-      if (win) win.toggleDevTools()
-    })
+  // Register the toggleDevTools shortcut listener.
+  const ret = globalShortcut.register('CommandOrControl+Alt+R', () => {
+    let win = BrowserWindow.getFocusedWindow()
+    if (win) win.toggleDevTools()
+  })
 
-    checkLicense(function() {
-      loadMenu()
+  checkLicense(function() {
+    loadMenu()
 
-      if (process.platform === 'darwin') {
-        let dockMenu = Menu.buildFromTemplate([
-          {label: i18n('Create a new file'), click: function () {
-            askToCreateFile()
-          }},
-        ])
-        app.dock.setMenu(dockMenu)
-      }
+    if (process.platform === 'darwin') {
+      let dockMenu = Menu.buildFromTemplate([
+        {label: i18n('Create a new file'), click: function () {
+          askToCreateFile()
+        }},
+      ])
+      app.dock.setMenu(dockMenu)
+    }
 
-      if (!TRIALMODE && process.env.NODE_ENV !== 'dev') {
-        log.transports.file.level = 'debug'
-        autoUpdater.logger = log
-        autoUpdater.checkForUpdatesAndNotify()
-      }
-    })
-  }
+    if (process.env.NODE_ENV !== 'dev') {
+      log.transports.file.level = 'debug'
+      autoUpdater.logger = log
+      autoUpdater.checkForUpdatesAndNotify()
+    }
+  })
 })
 
 app.on('will-quit', () => {
@@ -298,7 +302,10 @@ function checkLicense (callback) {
         if (err) log.error(err)
         USER_INFO = data
         if (TRIALMODE) {
-          if (data.success) turnOffTrialMode()
+          if (data.success) {
+            TRIALMODE = false
+            turnOffTrialMode()
+          }
           callback()
           openRecentFiles()
         } else {
@@ -308,66 +315,13 @@ function checkLicense (callback) {
         }
       })
     } else {
-      callback()
-      if (TRIALMODE) checkFirstDay(createEmpty, openRecentFiles)
-      else openVerifyWindow()
-    }
-  })
-}
-
-function turnOffTrialMode () {
-  if (process.env.NODE_ENV !== 'dev') {
-    TRIALMODE = false
-    process.env.TRIALMODE = 'false'
-  }
-  writeToEnv('TRIALMODE', 'false')
-}
-
-function writeToEnv (key, val) {
-  var env = {
-    ROLLBAR_ACCESS_TOKEN: process.env.ROLLBAR_ACCESS_TOKEN,
-    NODE_ENV: process.env.NODE_ENV,
-    TRIALMODE: process.env.TRIALMODE,
-  }
-  env[key] = val
-  var envstr = stringify(env)
-
-  fs.writeFileSync(ENV_FILE_PATH, envstr)
-}
-
-function dayOfTrial (firstDay) {
-  let oneDay = 24*60*60*1000
-  var today = new Date()
-  DAY_OF_TRIAL = Math.round((today.getTime() - firstDay)/oneDay)
-  return DAY_OF_TRIAL
-}
-
-function checkFirstDay (isFirstDayCallback, notFirstDayCallback) {
-  storage.has(FIRST_DAY_PATH, function (err, hasKey) {
-    if (err) log.error(err)
-    if (hasKey) {
-      storage.get(FIRST_DAY_PATH, function (err, data) {
-        if (err) log.error(err)
-        let numOfDays = dayOfTrial(data.firstDay)
-        if (numOfDays > TRIAL_LENGTH) {
-          // disable after 30 days
-          openExpiredWindow()
-        } else {
-          DAYS_LEFT = TRIAL_LENGTH - numOfDays
-          notFirstDayCallback()
-          loadMenu()
-        }
-      })
-    } else {
-      let day = new Date()
-      let time = day.getTime()
-      storage.set(FIRST_DAY_PATH, {firstDay: time}, function (err) {
-        if (err) {
-          log.error(err)
-          rollbar.warn(err)
-        }
-        isFirstDayCallback()
-      })
+      // no license yet, check for trial info
+      checkTrialInfo(daysLeft => {
+        TRIALMODE = true
+        DAYS_LEFT = daysLeft
+        callback()
+        openRecentFiles()
+      }, openVerifyWindow, openExpiredWindow)
     }
   })
 }
@@ -395,7 +349,7 @@ function checkDirty (state, lastSave) {
 function openRecentFiles () {
   // open-file for windows
   if (process.platform === 'win32' && process.argv.length == 2) {
-    if (process.argv[1].includes('.pltr') || process.argv[1].includes('.plottr')) {
+    if (process.argv[1].includes('.pltr')) {
       openWindow(process.argv[1])
     }
   } else if (fileToOpen) {
@@ -499,8 +453,9 @@ function openWindow (fileName, newFile = false) {
   dontquit = false
 
   newWindow.webContents.on('did-finish-load', () => {
+    // launch wouldn't be sent if they have another file open
     if (!launchSent) {
-      newWindow.webContents.send('send-launch', app.getVersion(), TRIALMODE, DAY_OF_TRIAL)
+      newWindow.webContents.send('send-launch', app.getVersion(), TRIALMODE, DAYS_LEFT)
     }
   })
 
@@ -532,10 +487,8 @@ function openWindow (fileName, newFile = false) {
     var json = {}
     if (!newFile) {
       json = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
-      json.file.fileName = updateFileExtenstion(json.file.fileName)
     }
     newWindow.setProgressBar(0.5)
-    fileName = updateFileExtenstion(fileName)
     storage.set(recentKey, fileName, function (err) {
       if (err) console.log(err)
       app.addRecentDocument(fileName)
@@ -559,11 +512,6 @@ function openWindow (fileName, newFile = false) {
     removeRecentFile(fileName)
     newWindow.destroy()
   }
-}
-
-// fix for switching file extension to .pltr
-function updateFileExtenstion (fileName) {
-  return fileName.replace('.plottr', '.pltr')
 }
 
 function dereferenceWindow (winObj) {
@@ -601,7 +549,7 @@ function removeRecentFile (fileNameToRemove) {
   })
 }
 
-function createEmpty () {
+function createAndOpenEmptyFile () {
   let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
   let fileName = path.join(home, 'Documents', 'plottr_trial.pltr')
   fs.writeFile(fileName, emptyFileContents(), function(err) {

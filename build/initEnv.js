@@ -5,7 +5,7 @@ var path = require('path')
 console.log('writing env variables')
 var env = {
   ROLLBAR_ACCESS_TOKEN: process.env.ROLLBAR_ACCESS_TOKEN,
-  TRIALMODE: process.env.BUILD_TYPE === 'trial',
+  TRIALMODE: false,
   NODE_ENV: 'production',
 }
 var envstr = stringify(env)

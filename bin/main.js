@@ -550,8 +550,7 @@ function removeRecentFile (fileNameToRemove) {
 }
 
 function createAndOpenEmptyFile () {
-  let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
-  let fileName = path.join(home, 'Documents', 'plottr_trial.pltr')
+  let fileName = path.join(app.getPath('documents'), 'plottr_trial.pltr')
   fs.writeFile(fileName, emptyFileContents(), function(err) {
     if (err) {
       log.warn(err)
@@ -697,8 +696,7 @@ function prepareErrorReport () {
 }
 
 function sendErrorReport (body) {
-  let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
-  var fileName = path.join(home, 'Documents', 'plottr_error_report.txt')
+  var fileName = path.join(app.getPath('documents'), 'plottr_error_report.txt')
   fs.writeFile(fileName, body, function(err) {
     if (err) {
       log.warn(err)

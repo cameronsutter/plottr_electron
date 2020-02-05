@@ -8,10 +8,9 @@ var deep = require('deep-diff')
 var _ = require('lodash')
 var storage = require('electron-json-storage')
 var log = require('electron-log')
-var request = require('request')
 var i18n = require('format-message')
 const { autoUpdater } = require('electron-updater')
-const { checkTrialInfo, turnOffTrialMode, startTheTrial } = require('./main_modules/trial_manager')
+const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
 const backupFile = require('./main_modules/backup')
 const setupRollbar = require('./main_modules/rollbar')
 const rollbar = setupRollbar('main')
@@ -23,11 +22,7 @@ const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
-// TODO: remove this when you remove the buy window
-const TRIAL_LENGTH = 30
 let DAYS_LEFT = null
-// TODO: remove this when you remove the buy window
-let DAY_OF_TRIAL = TRIAL_LENGTH
 
 const USER_INFO_PATH = 'user_info'
 var USER_INFO = {}
@@ -38,7 +33,6 @@ var windows = []
 var aboutWindow = null
 var verifyWindow = null
 var reportWindow = null
-var buyWindow = null
 var expiredWindow = null
 
 var fileToOpen = null
@@ -165,12 +159,12 @@ ipcMain.on('launch-sent', function (event) {
 })
 
 ipcMain.on('open-buy-window', function (event) {
+  if (expiredWindow) expiredWindow.close()
   openBuyWindow()
 })
 
 function licenseVerified (ask) {
   if (verifyWindow) verifyWindow.close()
-  if (buyWindow) buyWindow.close()
   if (TRIALMODE) {
     TRIALMODE = false
     turnOffTrialMode()
@@ -190,12 +184,29 @@ ipcMain.on('export', function (event, options, winId) {
   Exporter(winObj.state, options)
 })
 
-ipcMain.on('start-free-trial', function(event) {
+ipcMain.on('start-free-trial', () => {
   if (verifyWindow) verifyWindow.close()
   startTheTrial(daysLeft => {
     TRIALMODE = true
     DAYS_LEFT = daysLeft
     createAndOpenEmptyFile()
+  })
+})
+
+ipcMain.on('extend-trial', (event, days) => {
+  extendTheTrial(days, (error) => {
+    if (error) {
+      expiredWindow.close()
+      dialog.showErrorBox(i18n('Error'), i18n('Extending your trial didn\'t work. Let\'s try again.'))
+      openExpiredWindow()
+    } else {
+      if (expiredWindow) expiredWindow.close()
+      DAYS_LEFT += days
+      loadMenu()
+      windows.forEach(winObj => {
+        winObj.window.setTitle(displayFileName(winObj.fileName))
+      })
+    }
   })
 })
 
@@ -924,10 +935,17 @@ function buildViewMenu () {
     click: takeScreenshot
   }]
   if (process.env.NODE_ENV === 'dev') {
-    submenu.push({
+    submenu = [].concat(submenu, [{
+      type: 'separator'
+    },
+    {
       label: 'View Verify Window',
       click: openVerifyWindow
-    })
+    },
+    {
+      label: 'View Expired Window',
+      click: openExpiredWindow
+    }])
   }
   return {
     label: i18n('View'),

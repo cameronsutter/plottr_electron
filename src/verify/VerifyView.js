@@ -1,7 +1,6 @@
 import request from 'request'
 import storage from 'electron-json-storage'
 import React, { Component } from 'react'
-import PropTypes from 'react-proptypes'
 import ReactDOM from 'react-dom'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'

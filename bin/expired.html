@@ -3,40 +3,24 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <script src="css.bundle.js"></script>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
+    <script src="css.bundle.js"></script>
     <style>
       body {
         text-align: center;
-        background-color: #efefee;
-        font-family: 'Quattrocento', serif;
+        font-family: 'Lato', sans-serif !important;
+        font-size: 19px !important;
         font-weight: 400;
-        padding-top: 30px;
+        padding: 20px;
       }
-      h2 {
-        font-family: 'Playfair Display', serif !important;
-        font-weight: 400 !important;
+      #spinner {
+        animation:spin 2s linear infinite;
       }
-      h1.verify {
-        font-family: 'Yellowtail' !important;
-        font-weight: 400 !important;
-        font-size: 36pt !important;
-      }
-      img.verify {
-        vertical-align: -50%;
-      }
-      a {
-        font-size: 20pt;
-      }
+      @keyframes spin { 100% { transform:rotate(360deg); } }
     </style>
   </head>
   <body>
-    <h1 class='verify' id='thanksH1'><img src='../icons/logo_28_100.png' class='verify' height='100'/></h1>
-    <h2 id='expiredH2'></h2>
-    <p>&nbsp;</p>
-    <a id='buyA' href='#'></a>
-    <p>&nbsp;</p>
-    <p id='contactMeP'></p>
-    <script src='expired.js'></script>
+    <div id='expired__react__root'></div>
+    <script src="expired.bundle.js"></script>
   </body>
 </html>

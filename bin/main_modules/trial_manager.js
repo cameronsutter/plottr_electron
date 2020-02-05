@@ -3,6 +3,8 @@ const writeToEnv = require('./env')
 
 const TRIAL_LENGTH = 30
 const TRIAL_INFO_PATH = 'trial_info'
+const EXTENSIONS = 2
+let info = {}
 
 function checkTrialInfo (hasStartedCallback, hasntStartedCallback, expiredCallBack) {
   storage.has(TRIAL_INFO_PATH, function (err, hasKey) {
@@ -10,6 +12,7 @@ function checkTrialInfo (hasStartedCallback, hasntStartedCallback, expiredCallBa
     if (hasKey) {
       storage.get(TRIAL_INFO_PATH, function (err, data) {
         if (err) log.error(err)
+        info = data
         const daysLeft = daysLeftOfTrial(data.endsAt)
         if (daysLeft <= 0) {
           expiredCallBack()
@@ -28,9 +31,9 @@ function startTheTrial (callback) {
   const day = new Date()
   const startsAt = day.getTime()
   const end = addDays(startsAt, TRIAL_LENGTH)
-  end.setUTCHours(23, 59, 59, 999)
+  end.setHours(23, 59, 59, 999)
   const endsAt = end.getTime()
-  const info = {startsAt, endsAt}
+  info = {startsAt, endsAt, extensions: EXTENSIONS}
   storage.set(TRIAL_INFO_PATH, info, function (err) {
     if (err) {
       log.error(err)
@@ -38,6 +41,18 @@ function startTheTrial (callback) {
     }
     callback(TRIAL_LENGTH)
   })
+}
+
+function extendTheTrial (days, callback) {
+  const newEnd = addDays(info.endsAt, days)
+  newEnd.setHours(23, 59, 59, 999)
+  info = {
+    ...info,
+    endsAt: newEnd.getTime(),
+    extensions: --info.extensions,
+  }
+
+  storage.set(TRIAL_INFO_PATH, info, callback)
 }
 
 function addDays (date, days) {
@@ -64,4 +79,4 @@ function turnOnTrialMode () {
   writeToEnv('TRIALMODE', 'true')
 }
 
-module.exports = { checkTrialInfo, turnOffTrialMode, startTheTrial }
+module.exports = { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial }

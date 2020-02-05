@@ -110,4 +110,8 @@ h3.popover-title {
     background: none;
     border-bottom: 1px dotted $red-5;
   }
+
+  .CodeMirror-selectedtext.cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+    background-color: $blue-8;
+  }
 }

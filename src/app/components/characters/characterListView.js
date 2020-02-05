@@ -61,15 +61,18 @@ class CharacterListView extends Component {
     if (!this.filterIsEmpty(filter)) {
       visible = []
       characters.forEach(ch => {
-        Object.keys(filter).forEach(attr => {
-          filter[attr.split(':#:')[0]].forEach(val => {
+        const matches = Object.keys(filter).some(attr => {
+          const attrName = attr.split(':#:')[0]
+          return filter[attr].some(val => {
             if (val == '') {
-              if (!ch[attr] || ch[attr] == '') visible.push(ch)
+              if (!ch[attrName] || ch[attrName] == '') return true
             } else {
-              if (ch[attr] && ch[attr] == val) visible.push(ch)
+              if (ch[attrName] && ch[attrName] == val) return true
             }
+            return false
           })
         })
+        if (matches) visible.push(ch)
       })
     }
 
@@ -103,8 +106,7 @@ class CharacterListView extends Component {
   filterIsEmpty = (filter) => {
     if (!filter) return true
     let numFiltered = this.props.customAttributes.reduce((num, attr) => {
-      let attrName = attr.split(':#:')[0]
-      if (filter[attrName]) num += filter[attrName].length
+      if (filter[attr]) num += filter[attr].length
       return num
     }, 0)
     return numFiltered == 0
@@ -134,8 +136,6 @@ class CharacterListView extends Component {
     this.props.customAttributeActions.addCharacterAttr(attr)
 
     this.setState({addAttrText: ''})
-    var input = this.refs.attrInput.getInputDOMNode()
-    input.focus()
   }
 
   removeAttr = (attr) => {

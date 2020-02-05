@@ -160,6 +160,9 @@ $title_width: 200px;
     border: 3px dotted $blue-8;
     margin-top: 10px;
   }
+  .vertical-insert-scene-wrapper.append-scene:hover {
+    border: 3px dashed $blue-7;
+  }
 }
 
 .vertical-scene-list__insert:hover {

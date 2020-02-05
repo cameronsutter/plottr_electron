@@ -39,22 +39,22 @@ export default function ui (state = defaultUI, action) {
 
     case REMOVE_CHARACTER_ATTRIBUTE:
       filter = {...state.characterFilter}
-      delete filter[action.attribute.split(':#:')]
+      delete filter[action.attribute]
       return Object.assign({}, state, {characterFilter: filter})
     case REMOVE_PLACES_ATTRIBUTE:
       filter = {...state.placeFilter}
-      delete filter[action.attribute.split(':#:')]
+      delete filter[action.attribute]
       return Object.assign({}, state, {placeFilter: filter})
 
     case EDIT_CHARACTER_ATTRIBUTE:
       filter = {...state.characterFilter}
       delete filter[action.old]
-      filter[action.attribute.split(':#:')] = []
+      filter[action.attribute] = []
       return Object.assign({}, state, {characterFilter: filter})
     case EDIT_PLACES_ATTRIBUTE:
       filter = {...state.placeFilter}
       delete filter[action.old]
-      filter[action.attribute.split(':#:')] = []
+      filter[action.attribute] = []
       return Object.assign({}, state, {placeFilter: filter})
 
     case SET_PLACE_FILTER:

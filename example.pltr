@@ -368,7 +368,7 @@
         1,
         2
       ],
-      "sceneId": 60,
+      "sceneId": 98,
       "tags": [
         0,
         4,
@@ -747,7 +747,7 @@
       ],
       "content": "here is some note content",
       "id": 5,
-      "lastEdited": 1559570167467,
+      "lastEdited": 1580937611047,
       "places": [
         2
       ],
@@ -1070,9 +1070,13 @@
     }
   ],
   "ui": {
-    "characterFilter": null,
+    "characterFilter": {
+      "age": [],
+      "family:#:paragraph": [],
+      "race": []
+    },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

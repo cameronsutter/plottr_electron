@@ -57,7 +57,7 @@ class NoteView extends Component {
               onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
               onChange={() => this.setState({unsaved: true})}
-              defaultValue={note.title} />
+              defaultValue={note.title} style={{marginBottom: '10px'}}/>
             <MDdescription
               description={note.content}
               onChange={(desc) => this.setState({content: desc, unsaved: true})}
@@ -82,15 +82,11 @@ class NoteView extends Component {
   }
 
   render () {
-    const { note } = this.props
     let klasses = 'note-list__note'
     if (this.state.editing) klasses += ' editing'
     if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div className={klasses}>
-        <h4 className='text-center secondary-text'>
-          {note.title}
-        </h4>
         <div className='note-list__body'>
           <div className='note-list__left-side'>
             <SelectList

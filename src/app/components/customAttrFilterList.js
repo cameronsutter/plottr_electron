@@ -10,7 +10,7 @@ class CustomAttrFilterList extends Component {
   constructor (props) {
     super(props)
     let filteredItems = props.filteredItems
-    if (!filteredItems) {
+    if (!filteredItems || Object.keys(filteredItems).length < 1) {
       filteredItems = this.defaultFilteredItemsObj()
     }
     this.state = {
@@ -60,7 +60,7 @@ class CustomAttrFilterList extends Component {
   renderFilterList (array, attr) {
     var items = array.map((i) => this.renderFilterItem(i, attr))
     return (
-      <ul className='filter-list__list'>
+      <ul key={`${attr}-${items}`} className='filter-list__list'>
         {items}
         {this.renderBlank(attr)}
       </ul>
@@ -90,7 +90,7 @@ class CustomAttrFilterList extends Component {
 
   renderList = (attr) => {
     return [
-      <p onClick={() => this.filterList(attr)}><em>{attr}</em></p>,
+      <p key={attr} onClick={() => this.filterList(attr)}><em>{attr.split(':#:')[0]}</em></p>,
       this.renderFilterList(this.values(attr), attr),
     ]
   }

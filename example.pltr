@@ -1004,7 +1004,7 @@
       "title": "2nd"
     }
   ],
-  "storyName": "Mansion of Mystery",
+  "storyName": "The Awesome Prison Mansion",
   "tags": [
     {
       "color": "firebrick",
@@ -1074,7 +1074,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "places",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

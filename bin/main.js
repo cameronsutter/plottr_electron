@@ -94,13 +94,12 @@ app.on('activate', function () {
 
 ipcMain.on('save-state', function (event, state, winId, isNewFile) {
   var winObj = _.find(windows, {id: winId})
-  let wasEdited = isDirty(state, winObj.lastSave)
+  let wasEdited = isDirty(state, winObj.state)
   winObj.window.setDocumentEdited(wasEdited)
   winObj.window.setTitle(displayFileName(winObj.fileName))
   winObj.window.setRepresentedFilename(winObj.fileName)
 
-  // save the new state and old state
-  winObj.lastSave = winObj.state
+  // save the new state
   winObj.state = state
   if (isNewFile || wasEdited) {
     saveFile(winObj.fileName, state, function (err) {
@@ -112,6 +111,7 @@ ipcMain.on('save-state', function (event, state, winId, isNewFile) {
         gracefullyNotSave()
       } else {
         winObj.window.webContents.send('state-saved')
+        winObj.lastSave = winObj.state
         winObj.window.setDocumentEdited(false)
       }
     })
@@ -295,10 +295,10 @@ function displayFileName (path) {
   return stringBase
 }
 
-function isDirty (state, lastSave) {
-  const diff = deep.diff(lastSave, state) || []
+function isDirty (newState, oldState) {
+  const diff = deep.diff(oldState, newState) || []
   let edited = false
-  if (state.file && state.file.dirty && diff.length > 0) edited = true
+  if (newState.file && newState.file.dirty && diff.length > 0) edited = true
   return edited
 }
 

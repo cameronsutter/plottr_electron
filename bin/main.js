@@ -99,7 +99,8 @@ ipcMain.on('save-state', function (event, state, winId, isNewFile) {
   winObj.window.setTitle(displayFileName(winObj.fileName))
   winObj.window.setRepresentedFilename(winObj.fileName)
 
-  // save the new state
+  // save the new state and old state
+  winObj.lastSave = winObj.state
   winObj.state = state
   if (isNewFile || wasEdited) {
     saveFile(winObj.fileName, state, function (err) {
@@ -111,7 +112,6 @@ ipcMain.on('save-state', function (event, state, winId, isNewFile) {
         gracefullyNotSave()
       } else {
         winObj.window.webContents.send('state-saved')
-        winObj.lastSave = winObj.state
         winObj.window.setDocumentEdited(false)
       }
     })

@@ -565,8 +565,7 @@
         144,
         114,
         118,
-        117,
-        116
+        117
       ],
       "color": null,
       "description": "she is the coolest",
@@ -634,7 +633,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "2020.2.4"
+    "version": "2020.2.5"
   },
   "lines": [
     {
@@ -1076,7 +1075,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

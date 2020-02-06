@@ -423,7 +423,7 @@ function openWindow (fileName, newFile = false) {
 
   newWindow.on('close', function (e) {
     var win = _.find(windows, {id: this.id})
-    if (isDirty(win.state, win.lastSave)) {
+    if (win && win.state && isDirty(win.state, win.lastSave)) {
       e.preventDefault()
       var _this = this
       askToSave(this, win.state, win.fileName, function() {

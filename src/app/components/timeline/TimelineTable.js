@@ -13,6 +13,7 @@ import TopRow from 'components/timeline/TopRow'
 import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
+import * as CardActions from 'actions/cards'
 import { reorderList, insertScene } from 'helpers/lists'
 import SceneTitleCell from 'components/timeline/SceneTitleCell'
 
@@ -87,10 +88,25 @@ class TimelineTable extends Component {
   }
 
   handleInsertNewScene = (nextPosition, lineId) => {
-    // IDEA: lineId could be used to create a new card at the same time
-
     const scenes = insertScene(nextPosition, this.props.scenes)
     this.props.sceneActions.reorderScenes(scenes)
+
+    if (lineId && scenes[nextPosition]) {
+      const sceneId = scenes[nextPosition].id
+      this.props.cardActions.addCard(this.buildCard(lineId, sceneId))
+    }
+  }
+
+  buildCard (lineId, sceneId) {
+    return {
+      title: '',
+      sceneId: sceneId,
+      lineId: lineId,
+      description: '',
+      characters: [],
+      places: [],
+      tags: []
+    }
   }
 
   renderLines () {
@@ -247,6 +263,7 @@ function mapDispatchToProps (dispatch) {
     actions: bindActionCreators(UIActions, dispatch),
     sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
+    cardActions: bindActionCreators(CardActions, dispatch),
   }
 }
 

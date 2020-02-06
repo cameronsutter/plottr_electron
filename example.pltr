@@ -510,7 +510,7 @@
     },
     {
       "characters": [],
-      "description": "Enter Rivalia",
+      "description": "Enter at your own risk",
       "id": 112,
       "lineId": 29,
       "places": [
@@ -521,7 +521,7 @@
         7,
         6
       ],
-      "title": "Keven Enters the World of Rivalia"
+      "title": "Keven Enters the Mansion"
     },
     {
       "characters": [],
@@ -564,8 +564,7 @@
         146,
         144,
         114,
-        118,
-        117
+        118
       ],
       "color": null,
       "description": "she is the coolest",
@@ -633,7 +632,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "2020.2.5"
+    "version": "2020.2.6"
   },
   "lines": [
     {
@@ -812,7 +811,7 @@
     {
       "id": 68,
       "position": 4,
-      "title": "Chapter 1: The Storm of Destiny"
+      "title": "Chapter 1"
     },
     {
       "id": 61,
@@ -862,7 +861,7 @@
     {
       "id": 72,
       "position": 14,
-      "title": "Chapter 3: The New Dark Lord"
+      "title": "Chapter 3"
     },
     {
       "id": 78,
@@ -1005,7 +1004,7 @@
       "title": "2nd"
     }
   ],
-  "storyName": "Zorfert in Rivalia",
+  "storyName": "Mansion of Mystery",
   "tags": [
     {
       "color": "firebrick",

@@ -822,6 +822,9 @@ function buildFileMenu () {
     accelerator: 'CmdOrCtrl+O',
     click: askToOpenFile
   }, {
+    role: "recentDocuments",
+    submenu: []
+  }, {
     type: 'separator'
   }, {
     label: i18n('Save'),

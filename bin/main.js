@@ -12,6 +12,7 @@ var i18n = require('format-message')
 const { autoUpdater } = require('electron-updater')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
 const backupFile = require('./main_modules/backup')
+const createErrorReport = require('./main_modules/error_report')
 const setupRollbar = require('./main_modules/rollbar')
 const rollbar = setupRollbar('main')
 if (process.env.NODE_ENV === 'dev') {
@@ -560,17 +561,6 @@ function openExpiredWindow () {
   })
 }
 
-function openReportWindow (page) {
-  reportWindow = new BrowserWindow({show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
-  reportWindow.loadURL(page)
-  reportWindow.once('ready-to-show', function() {
-    this.show()
-  })
-  reportWindow.on('close', function () {
-    reportWindow = null
-  })
-}
-
 function openBuyWindow () {
   shell.openExternal("https://gum.co/fgSJ")
 }
@@ -616,42 +606,6 @@ function takeScreenshot () {
       dialog.showSaveDialog(win, function(fileName) {
         if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
       })
-    }
-  })
-}
-
-function prepareErrorReport () {
-  var report = 'VERSION: ' + app.getVersion() + '\n\n'
-  report += 'USER INFO\n'
-  report += JSON.stringify(USER_INFO) + '\n\n'
-  report += '----------------------------------\n\n'
-  report += 'ERROR LOG\n'
-  let logFile = log.transports.file.findLogPath()
-  let logContents = null
-  try{
-    logContents = fs.readFileSync(logFile)
-  } catch (e) {
-    // no log file, no big deal
-  }
-  report += logContents + '\n\n'
-  report += '----------------------------------\n\n'
-  report += 'FILE STATE\n'
-  let openFilesState = windows.map(function(w) {
-    return JSON.stringify(w.state)
-  })
-  report += openFilesState.join("\n\n------------\n\n")
-  return report
-}
-
-function sendErrorReport (body) {
-  var fileName = path.join(app.getPath('documents'), 'plottr_error_report.txt')
-  fs.writeFile(fileName, body, function(err) {
-    if (err) {
-      log.warn(err)
-      rollbar.warn(err)
-    } else {
-      dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n('Upload the file Plottr just exported'), detail: i18n('Please upload the file named plottr_error_report.txt in your Documents folder')})
-      openReportWindow('http://plottr.freshdesk.com/support/tickets/new')
     }
   })
 }
@@ -981,29 +935,34 @@ function buildHelpMenu () {
     role: 'help',
     submenu: [
       {
-        label: i18n('Report a Problem') + '...',
+        label: i18n('Report a problem') + '...',
+        click: function () {
+          shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
+        }
+      },
+      {
+        label: i18n('Create an error report'),
         sublabel: i18n('Creates a report to send me'),
         click: function () {
-          let report = prepareErrorReport()
-          sendErrorReport(report)
+          createErrorReport(USER_INFO, windows.map(w => w.state))
         }
       },
       {
         label: i18n('Give feedback') + '...',
         click: function () {
-          openReportWindow('http://plottr.freshdesk.com/support/tickets/new')
+          shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
         }
       },
       {
         label: i18n('Request a feature') + '...',
         click: function () {
-          openReportWindow('http://plottr.freshdesk.com/support/tickets/new')
+          shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
         }
       },
       {
         label: i18n('FAQ') + '...',
         click: function () {
-          openReportWindow('http://plottr.freshdesk.com/support/solutions')
+          shell.openExternal('http://plottr.freshdesk.com/support/solutions')
         }
       },
     ]

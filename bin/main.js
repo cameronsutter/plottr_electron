@@ -11,6 +11,7 @@ var log = require('electron-log')
 var i18n = require('format-message')
 const { autoUpdater } = require('electron-updater')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
+const { getSettings, updateSettings } = require('./main_modules/settings')
 const backupFile = require('./main_modules/backup')
 const createErrorReport = require('./main_modules/error_report')
 const setupRollbar = require('./main_modules/rollbar')
@@ -28,12 +29,14 @@ let DAYS_LEFT = null
 const USER_INFO_PATH = 'user_info'
 var USER_INFO = {}
 
+let SETTINGS = {}
+getSettings(data => SETTINGS = data)
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 var windows = []
 var aboutWindow = null
 var verifyWindow = null
-var reportWindow = null
 var expiredWindow = null
 
 var fileToOpen = null
@@ -508,14 +511,25 @@ function removeRecentFile (fileNameToRemove) {
 
 function createAndOpenEmptyFile () {
   let fileName = path.join(app.getPath('documents'), 'plottr_trial.pltr')
-  fs.writeFile(fileName, emptyFileContents(), function(err) {
-    if (err) {
-      log.warn(err)
-      rollbar.warn(err)
-    } else {
-      openWindow(fileName)
+  try {
+    // see if this file exists already
+    let stat = fs.statSync(fileName)
+    if (stat) {
+      let date = new Date()
+      fileName = path.join(app.getPath('documents'), `plottr_trial_${date.getTime()}.pltr`)
     }
-  })
+  } catch (error) {
+    log.warn(error)
+  } finally {
+    fs.writeFile(fileName, emptyFileContents(), function(err) {
+      if (err) {
+        log.warn(err)
+        rollbar.warn(err)
+      } else {
+        openWindow(fileName)
+      }
+    })
+  }
 }
 
 function emptyFileContents () {

@@ -64,8 +64,8 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
     MPQ.push('open_file', {online: navigator.onLine, version: app.getVersion(), number_open: openFiles, new_file: true})
   }
 
-  const newDarkState = state.ui.darkMode || darkMode
-  if (state.ui.darkMode !== darkMode) {
+  const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
+  if (state.ui && state.ui.darkMode !== darkMode) {
     store.dispatch(setDarkMode(newDarkState))
   }
   if (newDarkState) window.document.body.className = 'darkmode'

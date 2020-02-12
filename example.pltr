@@ -632,7 +632,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "2020.2.6"
+    "version": "2020.2.11"
   },
   "lines": [
     {
@@ -745,7 +745,7 @@
       ],
       "content": "here is some note content",
       "id": 5,
-      "lastEdited": 1580937611047,
+      "lastEdited": 1581546816024,
       "places": [
         2
       ],

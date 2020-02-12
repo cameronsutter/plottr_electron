@@ -32,20 +32,22 @@ function backupPath () {
 }
 
 // assumes base path exists
-function ensureBackupPath () {
+function ensureBackupTodayPath () {
+  if (process.env.NODE_ENV === 'dev') return
+
   const backupFolder = backupPath()
   if (fs.existsSync(backupFolder)) return
 
   fs.mkdirSync(backupFolder)
 }
 
-function ensureBackupBasePath() {
+function ensureBackupFullPath() {
   if (!fs.existsSync(BACKUP_BASE_PATH)) {
     fs.mkdirSync(BACKUP_BASE_PATH)
   }
 
-  ensureBackupPath()
+  ensureBackupTodayPath()
 }
-ensureBackupBasePath()
+ensureBackupFullPath()
 
 module.exports = backupFile

@@ -9,6 +9,7 @@ var _ = require('lodash')
 var storage = require('electron-json-storage')
 var log = require('electron-log')
 var i18n = require('format-message')
+const windowStateKeeper = require('electron-window-state');
 const { autoUpdater } = require('electron-updater')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
 const { getSettings, updateSettings } = require('./main_modules/settings')
@@ -394,8 +395,30 @@ function askToOpenFile () {
 }
 
 function openWindow (fileName, newFile = false) {
+  // Load the previous state with fallback to defaults
+  let stateKeeper = windowStateKeeper({
+    defaultWidth: 1200,
+    defaultHeight: 800,
+    file: fileName,
+  });
+
   // Create the browser window.
-  let newWindow = new BrowserWindow({width: 1200, height: 800, show: false, backgroundColor: '#f7f7f7', webPreferences: {scrollBounce: true, nodeIntegration: true}})
+  let newWindow = new BrowserWindow({
+    x: stateKeeper.x,
+    y: stateKeeper.y,
+    width: stateKeeper.width,
+    height: stateKeeper.height,
+    fullscreen: stateKeeper.isFullScreen || null,
+    show: false,
+    backgroundColor: '#f7f7f7',
+    webPreferences: {scrollBounce: true, nodeIntegration: true, spellcheck: true}
+  })
+
+  // Let us register listeners on the window, so we can update the state
+  // automatically (the listeners will be removed when the window is closed)
+  // and restore the maximized or full screen state
+  stateKeeper.manage(newWindow);
+
   newWindow.setProgressBar(0.1)
 
   // and load the app.html of the app.

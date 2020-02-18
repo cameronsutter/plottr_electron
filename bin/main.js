@@ -740,6 +740,19 @@ function buildPlottrMenu () {
       type: 'separator',
     })
   }
+  if (!TRIALMODE) {
+    submenu = [].concat(submenu, {
+      label: i18n('View License Key'),
+      click: () => {
+        const licenseKey = USER_INFO.purchase && USER_INFO.purchase.license_key
+        if (licenseKey) {
+          dialog.showMessageBox({type: 'info', title: i18n('Here is your license key'), message: licenseKey})
+        } else {
+          dialog.showErrorBox(i18n('Error'), i18n('Could not display license key. Try again'))
+        }
+      }
+    })
+  }
   if (process.platform === 'darwin') {
     submenu = [].concat(submenu, {
       type: 'separator'
@@ -929,7 +942,7 @@ function buildViewMenu () {
     click: takeScreenshot
   }]
   if (process.env.NODE_ENV === 'dev') {
-    submenu = [].concat(submenu, [{
+    submenu = [].concat(submenu, {
       type: 'separator'
     },
     {
@@ -939,7 +952,7 @@ function buildViewMenu () {
     {
       label: 'View Expired Window',
       click: openExpiredWindow
-    }])
+    })
   }
   return {
     label: i18n('View'),

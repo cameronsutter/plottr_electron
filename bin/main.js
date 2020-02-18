@@ -12,11 +12,13 @@ var i18n = require('format-message')
 const windowStateKeeper = require('electron-window-state');
 const { autoUpdater } = require('electron-updater')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
-const { getSettings, updateSettings } = require('./main_modules/settings')
 const backupFile = require('./main_modules/backup')
 const createErrorReport = require('./main_modules/error_report')
 const setupRollbar = require('./main_modules/rollbar')
 const rollbar = setupRollbar('main')
+const Store = require('electron-store');
+const defaultSettings = require('../shared/default_settings')
+const SETTINGS = new Store({defaults: defaultSettings})
 if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
@@ -29,9 +31,6 @@ let DAYS_LEFT = null
 
 const USER_INFO_PATH = 'user_info'
 var USER_INFO = {}
-
-let SETTINGS = {}
-getSettings(data => SETTINGS = data)
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

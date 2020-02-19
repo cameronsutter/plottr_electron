@@ -303,6 +303,15 @@ export const browns = [
   'Wheat'
 ]
 
+export const defaults = [
+  '#6cace4',
+  '#78be20',
+  '#e5554f',
+  '#ff7f32',
+  '#ffc72c',
+  '#0b1117'
+]
+
 export const allcolors = [
   ...reds,
   ...oranges,

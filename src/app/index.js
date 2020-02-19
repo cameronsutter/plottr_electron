@@ -16,7 +16,6 @@ import FileFixer from 'helpers/fixer'
 import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
-import SETTINGS from '../settings'
 
 i18n.setup({
   translations: require('../../locales'),

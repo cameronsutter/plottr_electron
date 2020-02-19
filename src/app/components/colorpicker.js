@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import Modal from 'react-modal'
-import { reds, oranges, greens, blues, purples, grays, whites, browns } from '../constants/CSScolors'
+import { reds, oranges, greens, blues, purples, grays, whites, browns, defaults } from '../constants/CSScolors'
 import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bootstrap'
 import i18n from 'format-message'
 
@@ -106,6 +106,10 @@ class ColorPicker extends Component {
       <p>{i18n('Browns')}</p>
       <div className='color-picker__box'>
         {browns.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
+      </div>
+      <p>{i18n('Default Colors')}</p>
+      <div className='color-picker__box'>
+        {defaults.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
     </div>
   }

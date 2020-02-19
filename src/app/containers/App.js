@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import * as UIActions from 'actions/ui'
+import GuidedTour from '../components/GuidedTour'
 
 class App extends Component {
   render () {
@@ -12,6 +13,7 @@ class App extends Component {
       <div>
         <Navigation />
         <Body />
+        <GuidedTour />
       </div>
     )
   }

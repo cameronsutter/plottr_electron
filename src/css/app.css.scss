@@ -115,3 +115,28 @@ h3.popover-title {
     background-color: $blue-8;
   }
 }
+
+.tour-helper {
+  padding-right: 60px!important;
+  max-width: 700px!important;
+  font-size: 18pt;
+
+  [data-tour-elem="controls"] {
+    margin-top: 40px!important;
+  }
+
+  button:not([data-tour-elem="dot"]) {
+    height: 15px!important;
+    width: 15px!important;
+  }
+
+  button[data-tour-elem="left-arrow"], button[data-tour-elem="right-arrow"] {
+    height: 20px!important;
+    width: 20px!important;
+  }
+
+  .reactour__dot {
+    height: 12px!important;
+    width: 12px!important;
+  }
+}

@@ -1,14 +1,14 @@
-const { app } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const log = require('electron-log')
 const setupRollbar = require('./rollbar')
 const rollbar = setupRollbar('backup')
-
-const BACKUP_BASE_PATH = path.join(app.getPath('userData'), 'backups')
+const { BACKUP_BASE_PATH } = require('./config_paths')
+const SETTINGS = require('./settings')
 
 function backupFile(fileName, data, callback) {
   if (process.env.NODE_ENV === 'dev') return
+  if (!SETTINGS.get('backup')) return
 
   // make the backup a daily record
   const filePath = path.join(backupPath(), path.basename(fileName))
@@ -34,6 +34,7 @@ function backupPath () {
 // assumes base path exists
 function ensureBackupTodayPath () {
   if (process.env.NODE_ENV === 'dev') return
+  if (!SETTINGS.get('backup')) return
 
   const backupFolder = backupPath()
   if (fs.existsSync(backupFolder)) return

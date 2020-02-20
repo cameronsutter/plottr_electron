@@ -1,5 +1,12 @@
 import i18n from 'format-message'
 import { INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE } from 'constants/zoom_states'
+import { remote } from 'electron'
+const app = remote.app
+i18n.setup({
+  translations: require('../../../locales'),
+  locale: app.getLocale() || 'en'
+})
+
 // data structure
 
 export const scene = {

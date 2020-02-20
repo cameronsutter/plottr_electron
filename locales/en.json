@@ -1,9 +1,12 @@
 {
-  "(If not, please contact me @ <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(If not, please contact me @ <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)"
+  "(If not, please contact me at <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)": {
+    "message": "(If not, please contact me at <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)"
   },
   "About Plottr": {
     "message": "About Plottr"
+  },
+  "Access to all the features": {
+    "message": "Access to all the features"
   },
   "Actions": {
     "message": "Actions"
@@ -13,6 +16,15 @@
   },
   "Add attributes": {
     "message": "Add attributes"
+  },
+  "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details": {
+    "message": "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details"
+  },
+  "Add more plotlines here": {
+    "message": "Add more plotlines here"
+  },
+  "Add new scenes or chapters here": {
+    "message": "Add new scenes or chapters here"
   },
   "After": {
     "message": "After"
@@ -40,6 +52,9 @@
   },
   "Buy the Full Version": {
     "message": "Buy the Full Version"
+  },
+  "Can I have a few more days?": {
+    "message": "Can I have a few more days?"
   },
   "Cancel": {
     "message": "Cancel"
@@ -86,17 +101,23 @@
   "Contact": {
     "message": "Contact"
   },
-  "Content": {
-    "message": "Content"
-  },
   "Copy": {
     "message": "Copy"
+  },
+  "Could not display license key. Try again": {
+    "message": "Could not display license key. Try again"
   },
   "Crafted in the Mountains of Utah by": {
     "message": "Crafted in the Mountains of Utah by"
   },
   "Create a new file": {
     "message": "Create a new file"
+  },
+  "Create an error report": {
+    "message": "Create an error report"
+  },
+  "Create unlimited story files": {
+    "message": "Create unlimited story files"
   },
   "Creates a report to send me": {
     "message": "Creates a report to send me"
@@ -125,6 +146,9 @@
   "Dark Mode": {
     "message": "Dark Mode"
   },
+  "Default Colors": {
+    "message": "Default Colors"
+  },
   "Delete": {
     "message": "Delete"
   },
@@ -152,6 +176,12 @@
   "Do you want to delete this tag: { title }?": {
     "message": "Do you want to delete this tag: { title }?"
   },
+  "Don't worry, all your work is saved in plottr_trial.pltr in your Documents folder": {
+    "message": "Don''t worry, all your work is saved in plottr_trial.pltr in your Documents folder"
+  },
+  "Done": {
+    "message": "Done"
+  },
   "Edit": {
     "message": "Edit"
   },
@@ -161,8 +191,23 @@
   "Enter License": {
     "message": "Enter License"
   },
+  "Enter a code you were given": {
+    "message": "Enter a code you were given"
+  },
+  "Enter a customer service code": {
+    "message": "Enter a customer service code"
+  },
+  "Error": {
+    "message": "Error"
+  },
+  "Error Report created": {
+    "message": "Error Report created"
+  },
   "Export": {
     "message": "Export"
+  },
+  "Extending your trial didn't work. Let's try again.": {
+    "message": "Extending your trial didn''t work. Let''s try again."
   },
   "FAQ": {
     "message": "FAQ"
@@ -182,12 +227,6 @@
   "Flip": {
     "message": "Flip"
   },
-  "Format with markdown!": {
-    "message": "Format with markdown!"
-  },
-  "Forums": {
-    "message": "Forums"
-  },
   "Give feedback": {
     "message": "Give feedback"
   },
@@ -200,6 +239,9 @@
   "Help": {
     "message": "Help"
   },
+  "Here is your license key": {
+    "message": "Here is your license key"
+  },
   "Hide Others": {
     "message": "Hide Others"
   },
@@ -207,7 +249,16 @@
     "message": "Hide Plottr"
   },
   "Hmmmm. It looks like that's not a valid license key": {
-    "message": "Hmmmm. It looks like that's not a valid license key"
+    "message": "Hmmmm. It looks like that''s not a valid license key"
+  },
+  "I have a license key": {
+    "message": "I have a license key"
+  },
+  "I want to buy the full version!": {
+    "message": "I want to buy the full version!"
+  },
+  "I want to start the free trial": {
+    "message": "I want to start the free trial"
   },
   "If you keep seeing this problem, email me at family@plottrapp.com": {
     "message": "If you keep seeing this problem, email me at family@plottrapp.com"
@@ -227,14 +278,17 @@
   "It will save a backup first which will be saved to the same folder as this file": {
     "message": "It will save a backup first which will be saved to the same folder as this file"
   },
+  "Keep all your notes here (brainstorming, world-building, etc.)": {
+    "message": "Keep all your notes here (brainstorming, world-building, etc.)"
+  },
+  "Keep info about your locations here": {
+    "message": "Keep info about your locations here"
+  },
+  "Keep your character sheets here": {
+    "message": "Keep your character sheets here"
+  },
   "License Verified. Plottr will start momentarily. Thanks for being patient!": {
     "message": "License Verified. Plottr will start momentarily. Thanks for being patient!"
-  },
-  "License verification failed": {
-    "message": "License verification failed"
-  },
-  "License verified! You're all set.": {
-    "message": "License verified! You''re all set."
   },
   "Line": {
     "message": "Line"
@@ -278,17 +332,11 @@
   "Notes are filtered": {
     "message": "Notes are filtered"
   },
-  "Now let's get to the good stuff": {
-    "message": "Now let''s get to the good stuff"
-  },
   "Open": {
     "message": "Open"
   },
-  "Open the Tour": {
-    "message": "Open the Tour"
-  },
-  "Or feel free to contact me with any questions": {
-    "message": "Or feel free to contact me with any questions"
+  "Or hover here to insert between scenes": {
+    "message": "Or hover here to insert between scenes"
   },
   "Oranges": {
     "message": "Oranges"
@@ -317,14 +365,17 @@
   "Places list": {
     "message": "Places list"
   },
-  "Please upload the file named plottr_error_report.txt in your Documents folder": {
-    "message": "Please upload the file named plottr_error_report.txt in your Documents folder"
+  "Please contact me with any questions at family@plottrapp.com": {
+    "message": "Please contact me with any questions at family@plottrapp.com"
   },
   "Please verify your license": {
     "message": "Please verify your license"
   },
   "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again.": {
     "message": "Plottr couldn''t save a backup. It hasn''t touched your file yet, so don''t worry. Try quitting Plottr and starting it again."
+  },
+  "Plottr created a file named plottr_error_report.txt in your Documents folder": {
+    "message": "Plottr created a file named plottr_error_report.txt in your Documents folder"
   },
   "Plottr ran into a problem. Try opening Plottr again.": {
     "message": "Plottr ran into a problem. Try opening Plottr again."
@@ -371,9 +422,6 @@
   "Save": {
     "message": "Save"
   },
-  "Save & Close": {
-    "message": "Save & Close"
-  },
   "Save as": {
     "message": "Save as"
   },
@@ -398,6 +446,9 @@
   "Scroll": {
     "message": "Scroll"
   },
+  "See the outline here": {
+    "message": "See the outline here"
+  },
   "Select All": {
     "message": "Select All"
   },
@@ -407,8 +458,14 @@
   "Show All": {
     "message": "Show All"
   },
+  "Since this is your first time using Plottr, I'll give you a guided tour if you like.": {
+    "message": "Since this is your first time using Plottr, I''ll give you a guided tour if you like."
+  },
   "Sort": {
     "message": "Sort"
+  },
+  "Start my Free Trial": {
+    "message": "Start my Free Trial"
   },
   "Story line": {
     "message": "Story line"
@@ -428,6 +485,9 @@
   "Tags": {
     "message": "Tags"
   },
+  "Tags can be used for organization": {
+    "message": "Tags can be used for organization"
+  },
   "Tags list": {
     "message": "Tags list"
   },
@@ -436,6 +496,12 @@
   },
   "Thanks for trying Plottr": {
     "message": "Thanks for trying Plottr"
+  },
+  "This is a plotline": {
+    "message": "This is a plotline"
+  },
+  "This is a scene or chapter. You can change it's name by clicking on it": {
+    "message": "This is a scene or chapter. You can change it''s name by clicking on it"
   },
   "Timeline": {
     "message": "Timeline"
@@ -449,32 +515,26 @@
   "Toggle navigation": {
     "message": "Toggle navigation"
   },
-  "Try again by clicking in the menu: Plottr > Verify License...": {
-    "message": "Try again by clicking in the menu: Plottr > Verify License..."
-  },
   "Undo": {
     "message": "Undo"
   },
   "Update Plottr": {
     "message": "Update Plottr"
   },
-  "Upload the file Plottr just exported": {
-    "message": "Upload the file Plottr just exported"
-  },
-  "Use the code \"freetrial\" to get the secret discount": {
-    "message": "Use the code \"freetrial\" to get the secret discount"
-  },
   "Verify": {
     "message": "Verify"
-  },
-  "Verifying your license. Please wait...": {
-    "message": "Verifying your license. Please wait..."
   },
   "Version": {
     "message": "Version"
   },
   "View": {
     "message": "View"
+  },
+  "View License Key": {
+    "message": "View License Key"
+  },
+  "View the Tour": {
+    "message": "View the Tour"
   },
   "Welcome to Plottr": {
     "message": "Welcome to Plottr"
@@ -500,11 +560,23 @@
   "Would you like to save before exiting?": {
     "message": "Would you like to save before exiting?"
   },
+  "You can change it's name or color by hovering over it (disabled for the tour)": {
+    "message": "You can change it''s name or color by hovering over it (disabled for the tour)"
+  },
+  "You can export everything to a Word document": {
+    "message": "You can export everything to a Word document"
+  },
+  "You can have 5 more days to try Plottr": {
+    "message": "You can have 5 more days to try Plottr"
+  },
   "You should have received a license key from Gumroad.": {
     "message": "You should have received a license key from Gumroad."
   },
-  "Your free trial has expired!": {
-    "message": "Your free trial has expired!"
+  "You'll have 30 days": {
+    "message": "You''ll have 30 days"
+  },
+  "Your free trial has expired": {
+    "message": "Your free trial has expired"
   },
   "Zoom": {
     "message": "Zoom"
@@ -539,6 +611,9 @@
   "character": {
     "message": "character"
   },
+  "code": {
+    "message": "code"
+  },
   "custom character attribute": {
     "message": "custom character attribute"
   },
@@ -551,17 +626,11 @@
   "hex code or name": {
     "message": "hex code or name"
   },
-  "learn how": {
-    "message": "learn how"
-  },
   "name": {
     "message": "name"
   },
   "new card": {
     "message": "new card"
-  },
-  "New Card": {
-    "message": "New Card"
   },
   "new character": {
     "message": "new character"
@@ -592,6 +661,9 @@
   },
   "ok": {
     "message": "ok"
+  },
+  "paragraph": {
+    "message": "paragraph"
   },
   "place": {
     "message": "place"

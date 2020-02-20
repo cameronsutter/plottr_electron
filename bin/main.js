@@ -11,14 +11,14 @@ var log = require('electron-log')
 var i18n = require('format-message')
 const windowStateKeeper = require('electron-window-state');
 const { autoUpdater } = require('electron-updater')
+const { USER_INFO_PATH, RECENT_FILES_PATH } = require('./main_modules/config_paths')
+const enterCustomerServiceCode = require('./main_modules/customer_service_codes')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
 const backupFile = require('./main_modules/backup')
 const createErrorReport = require('./main_modules/error_report')
 const setupRollbar = require('./main_modules/rollbar')
 const rollbar = setupRollbar('main')
-const Store = require('electron-store');
-const defaultSettings = require('../shared/default_settings')
-const SETTINGS = new Store({defaults: defaultSettings})
+const SETTINGS = require('./main_modules/settings')
 if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
@@ -28,8 +28,6 @@ require('dotenv').config({path: ENV_FILE_PATH})
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
 let DAYS_LEFT = null
-
-const USER_INFO_PATH = 'user_info'
 var USER_INFO = {}
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -45,7 +43,7 @@ var tryingToQuit = false
 var darkMode = systemPreferences.isDarkMode() || false
 
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
-const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : 'recentFiles'
+const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : RECENT_FILES_PATH
 
 // mixpanel tracking
 var launchSent = false
@@ -951,12 +949,10 @@ function buildViewMenu () {
   if (process.env.NODE_ENV === 'dev') {
     submenu = [].concat(submenu, {
       type: 'separator'
-    },
-    {
+    }, {
       label: 'View Verify Window',
       click: openVerifyWindow
-    },
-    {
+    }, {
       label: 'View Expired Window',
       click: openExpiredWindow
     })
@@ -997,33 +993,37 @@ function buildHelpMenu () {
           SETTINGS.set('showTheTour', true)
           reloadWindow()
         }
-      },
-      {
+      }, {
+        type: 'separator'
+      }, {
         label: i18n('Report a problem') + '...',
         click: function () {
           shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
         }
-      },
-      {
+      }, {
         label: i18n('Create an error report'),
         sublabel: i18n('Creates a report to send me'),
         click: function () {
           createErrorReport(USER_INFO, windows.map(w => w.state))
         }
-      },
-      {
+      }, {
+        label: i18n('Enter a customer service code') + '...',
+        click: enterCustomerServiceCode
+      }, {
+        type: 'separator'
+      }, {
         label: i18n('Give feedback') + '...',
         click: function () {
           shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
         }
-      },
-      {
+      }, {
         label: i18n('Request a feature') + '...',
         click: function () {
           shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
         }
-      },
-      {
+      }, {
+        type: 'separator'
+      }, {
         label: i18n('FAQ') + '...',
         click: function () {
           shell.openExternal('http://plottr.freshdesk.com/support/solutions')

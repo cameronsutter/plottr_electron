@@ -1,8 +1,8 @@
-var storage = require('electron-json-storage')
+const storage = require('electron-json-storage')
+const { TRIAL_INFO_PATH } = require('./config_paths')
 const writeToEnv = require('./env')
 
 const TRIAL_LENGTH = 30
-const TRIAL_INFO_PATH = 'trial_info'
 const EXTENSIONS = 2
 let info = {}
 
@@ -31,7 +31,6 @@ function startTheTrial (callback) {
   const day = new Date()
   const startsAt = day.getTime()
   const end = addDays(startsAt, TRIAL_LENGTH)
-  end.setHours(23, 59, 59, 999)
   const endsAt = end.getTime()
   info = {startsAt, endsAt, extensions: EXTENSIONS}
   storage.set(TRIAL_INFO_PATH, info, function (err) {
@@ -45,7 +44,6 @@ function startTheTrial (callback) {
 
 function extendTheTrial (days, callback) {
   const newEnd = addDays(info.endsAt, days)
-  newEnd.setHours(23, 59, 59, 999)
   info = {
     ...info,
     endsAt: newEnd.getTime(),
@@ -55,10 +53,24 @@ function extendTheTrial (days, callback) {
   storage.set(TRIAL_INFO_PATH, info, callback)
 }
 
+function extendWithReset (days, callback) {
+  if (info.hasBeenReset) return
+
+  const newEnd = addDays(info.endsAt, days)
+  info = {
+    ...info,
+    endsAt: newEnd.getTime(),
+    extensions: EXTENSIONS,
+    hasBeenReset: true
+  }
+  storage.set(TRIAL_INFO_PATH, info, callback)
+}
+
 function addDays (date, days) {
-  var result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
+  var result = new Date(date)
+  result.setDate(result.getDate() + days)
+  result.setHours(23, 59, 59, 999)
+  return result
 }
 
 function daysLeftOfTrial (endsAt) {
@@ -79,4 +91,4 @@ function turnOnTrialMode () {
   writeToEnv('TRIALMODE', 'true')
 }
 
-module.exports = { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial }
+module.exports = { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial, extendWithReset }

@@ -646,6 +646,20 @@ function takeScreenshot () {
   })
 }
 
+function reloadWindow () {
+  let win = BrowserWindow.getFocusedWindow()
+  let winObj = _.find(windows, {id: win.id})
+  if (process.env.NODE_ENV !== 'dev') {
+    if (isDirty(winObj.state, winObj.lastSave)) {
+      askToSave(win, winObj.state, winObj.fileName, win.webContents.reload)
+    } else {
+      win.webContents.reload()
+    }
+  } else {
+    win.webContents.reload()
+  }
+}
+
 ////////////////////////////////
 ///////    MIGRATE    //////////
 ////////////////////////////////
@@ -726,6 +740,12 @@ function buildPlottrMenu () {
   if (TRIALMODE) {
     submenu = [].concat(submenu, {
       type: 'separator',
+    }, {
+      label: i18n('View the Tour'),
+      click: () => {
+        SETTINGS.set('showTheTour', true)
+        reloadWindow()
+      }
     }, {
       label: i18n('{days} days remaining', {days: DAYS_LEFT}),
       enabled: false,
@@ -911,19 +931,7 @@ function buildViewMenu () {
   var submenu = [{
     label: i18n('Reload'),
     accelerator: 'CmdOrCtrl+R',
-    click: function () {
-      let win = BrowserWindow.getFocusedWindow()
-      let winObj = _.find(windows, {id: win.id})
-      if (process.env.NODE_ENV !== 'dev') {
-        if (isDirty(winObj.state, winObj.lastSave)) {
-          askToSave(win, winObj.state, winObj.fileName, win.webContents.reload)
-        } else {
-          win.webContents.reload()
-        }
-      } else {
-        win.webContents.reload()
-      }
-    }
+    click: reloadWindow
   }, {
       label: i18n('Dark Mode'),
       accelerator: 'CmdOrCtrl+D',
@@ -983,6 +991,13 @@ function buildHelpMenu () {
     label: i18n('Help'),
     role: 'help',
     submenu: [
+      {
+        label: i18n('View the Tour'),
+        click: () => {
+          SETTINGS.set('showTheTour', true)
+          reloadWindow()
+        }
+      },
       {
         label: i18n('Report a problem') + '...',
         click: function () {

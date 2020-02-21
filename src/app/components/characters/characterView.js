@@ -232,7 +232,13 @@ class CharacterView extends Component {
         {details}
         <dl className='dl-horizontal'>
           <dt>{i18n('Notes')}</dt>
-          <dd>{character.notes}</dd>
+          <dd>
+            <MDdescription
+              description={character.notes || ''}
+              labels={{}}
+              darkMode={false}
+            />
+          </dd>
         </dl>
         <dl className='dl-horizontal'>
           <dt>{i18n('Attached to')}</dt>

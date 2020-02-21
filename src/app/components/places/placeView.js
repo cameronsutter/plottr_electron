@@ -7,11 +7,15 @@ import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
    Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
+import MDdescription from 'components/mdDescription'
 
 class PlaceView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.place.name === ''}
+    this.state = {
+      editing: props.place.name === '',
+      notes: props.place.notes,
+    }
   }
 
   componentWillUnmount () {
@@ -33,7 +37,7 @@ class PlaceView extends Component {
   saveEdit = () => {
     var name = ReactDOM.findDOMNode(this.refs.nameInput).value || this.props.place.name
     var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
-    var notes = ReactDOM.findDOMNode(this.refs.notesInput).value
+    var notes = this.state.notes
     var attrs = {}
     this.props.customAttributes.forEach(attr => {
       const val = ReactDOM.findDOMNode(this.refs[`${attr}Input`]).value
@@ -82,9 +86,13 @@ class PlaceView extends Component {
                 onKeyPress={this.handleEnter}
                 defaultValue={place.description} />
               <ControlLabel>{i18n('Notes')}</ControlLabel>
-              <FormControl type='textarea' rows='10' ref='notesInput'
-                onKeyDown={this.handleEsc}
-                defaultValue={place.notes} />
+              <MDdescription
+                description={place.notes}
+                onChange={(desc) => this.setState({notes: desc})}
+                useRCE={true}
+                labels={{}}
+                darkMode={false}
+              />
             </FormGroup>
           </div>
           <div className='place-list__inputs__custom'>
@@ -179,7 +187,13 @@ class PlaceView extends Component {
         {details}
         <dl className='dl-horizontal'>
           <dt>{i18n('Notes')}</dt>
-          <dd>{place.notes}</dd>
+          <dd>
+            <MDdescription
+              description={place.notes || ''}
+              labels={{}}
+              darkMode={false}
+            />
+          </dd>
         </dl>
         <dl className='dl-horizontal'>
           <dt>{i18n('Attached to')}</dt>

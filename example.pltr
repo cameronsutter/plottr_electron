@@ -611,7 +611,7 @@
       "id": 5,
       "name": "best character",
       "noteIds": [],
-      "notes": "she is really cool",
+      "notes": "she is **really** cool",
       "race": "Bramorphian"
     }
   ],
@@ -763,7 +763,7 @@
       "id": 1,
       "name": "first place",
       "noteIds": [],
-      "notes": "notes",
+      "notes": "notes are **cool**\n",
       "weather": "stormy"
     },
     {
@@ -1074,7 +1074,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "places",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

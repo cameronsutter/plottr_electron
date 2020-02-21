@@ -15,7 +15,7 @@ class MDdescription extends Component {
     this.simplemde = new SimpleMDE({
       element: this.refs.descriptionInput,
       initialValue: this.props.description,
-      autofocus: true,
+      autofocus: this.props.autofocus || false,
       status: ['words'],
       hideIcons: ['side-by-side', 'fullscreen'],
       promptURLs: false,
@@ -82,6 +82,7 @@ MDdescription.propTypes = {
   className: PropTypes.string,
   onChange: PropTypes.func,
   useRCE: PropTypes.bool,
+  autofocus: PropTypes.bool,
   darkMode: PropTypes.bool.isRequired,
 }
 

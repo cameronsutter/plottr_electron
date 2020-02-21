@@ -1074,7 +1074,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "places",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

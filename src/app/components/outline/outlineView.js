@@ -36,7 +36,7 @@ class OutlineView extends Component {
   }
 
   lineIsVisible (id) {
-    return this.state.currentLine ? id === this.state.currentLine : true
+    return this.state.currentLine !== null ? id === this.state.currentLine : true
   }
 
   sortedSceneCards (sceneId) {
@@ -62,12 +62,16 @@ class OutlineView extends Component {
     this.setState({active: id})
   }
 
-  filterItem (id) {
+  filterItem = (id) => {
     if (this.state.currentLine === id) {
       this.setState({currentLine: null})
     } else {
       this.setState({currentLine: id})
     }
+  }
+
+  removeFilter = () => {
+    this.setState({currentLine: null})
   }
 
   renderFilterList () {
@@ -100,7 +104,7 @@ class OutlineView extends Component {
         {this.renderFilterList()}
       </div>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">{i18n('Outline is filtered')}</Alert>
+    let filterDeclaration = <Alert onClick={this.removeFilter} bsStyle="warning"><Glyphicon glyph='remove-sign' />{" "}{i18n('Outline is filtered')}</Alert>
     if (this.state.currentLine == null) {
       filterDeclaration = <span></span>
     }
@@ -109,7 +113,7 @@ class OutlineView extends Component {
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter by story line')}</Button>
+              <Button bsSize='small'><Glyphicon glyph='filter' />{" "}{i18n('Filter by story line')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>

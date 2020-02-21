@@ -6,7 +6,6 @@ import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import i18n from 'format-message'
 import log from 'electron-log'
-log.transports.file.level = 'info'
 
 const SUCCESS = 'success'
 const OFFLINE = 'offline'
@@ -53,6 +52,7 @@ class VerifyView extends Component {
 
   verifyLicense = (license) => {
     if (license === "!TEST_LICENSE_@NEPHI") {
+      log.info('secret bypass')
       ipcRenderer.send('license-verified')
     }
     var req = {

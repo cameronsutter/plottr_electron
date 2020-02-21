@@ -78,14 +78,14 @@ class VerifyView extends Component {
           console.log(body)
         }
         if (view.isValidLicense(body)) {
-          log.info('valid license')
+          log.info('VERIFY -- valid license')
           if (body.uses > 5) {
             newState.showAlert = true
             newState.alertText = view.makeAlertText(TOOMANY)
           } else {
-            log.info('going to save info')
+            log.info('VERIFY -- going to save info')
             view.saveInfo(body, err => {
-              log.info('saved info. err is null? ' + err == null)
+              log.info('VERIFY -- saved info. err is null? ' + err == null)
               if (err) {
                 view.setState({showAlert: true, alertText: view.makeAlertText(CANTSAVE)})
                 view.saveInfo(body, error => {
@@ -99,11 +99,11 @@ class VerifyView extends Component {
                   }
                 })
               } else {
-                log.info('setting state')
+                log.info('VERIFY -- setting state')
                 view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
-                log.info('check env ' + process.env.NODE_ENV !== 'development')
+                log.info('VERIFY -- check env ', process.env.NODE_ENV)
                 if (process.env.NODE_ENV !== 'development') {
-                  log.info('sending via ipcRenderer. is null? ' + ipcRenderer)
+                  log.info('VERIFY -- sending via ipcRenderer. is null? ', ipcRenderer, ipcRenderer.send)
                   ipcRenderer.send('license-verified')
                 }
               }

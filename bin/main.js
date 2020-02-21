@@ -469,9 +469,9 @@ function openWindow (fileName, newFile = false) {
       json = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     }
     newWindow.setProgressBar(0.5)
-    storage.set(recentKey, fileName, function (err) {
-      if (err) console.log(err)
-      app.addRecentDocument(fileName)
+    app.addRecentDocument(fileName)
+    storage.set(recentKey, fileName, error => {
+      if (error) console.log(error)
     })
 
     windows.push({
@@ -885,7 +885,8 @@ function buildFileMenu () {
                 rollbar.warn(err, {fileName: fullName})
                 gracefullyNotSave()
               } else {
-                app.addRecentDocument(fullName)
+                win.close()
+                openWindow(fullName)
               }
             })
           }

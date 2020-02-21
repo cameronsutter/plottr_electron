@@ -45,6 +45,12 @@ var darkMode = systemPreferences.isDarkMode() || false
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : RECENT_FILES_PATH
 
+// auto updates
+let lastCheckedForUpdate = new Date().getTime()
+const updateCheckThreshold = 1000 * 60 * 60
+log.transports.file.level = 'debug'
+autoUpdater.logger = log
+
 // mixpanel tracking
 var launchSent = false
 
@@ -68,7 +74,7 @@ if (process.env.NODE_ENV !== 'dev') {
 ////////////////////////////////
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
@@ -76,7 +82,7 @@ app.on('window-all-closed', function () {
   }
 })
 
-app.on('open-file', function (event, path) {
+app.on('open-file', (event, path) => {
   // do the file opening here
   if (app.isReady()) {
     openWindow(path)
@@ -86,7 +92,7 @@ app.on('open-file', function (event, path) {
   event.preventDefault()
 })
 
-app.on('activate', function () {
+app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (windows.length === 0) {
@@ -94,7 +100,15 @@ app.on('activate', function () {
   }
 })
 
-ipcMain.on('save-state', function (event, state, winId, isNewFile) {
+app.on('browser-window-focus', () => {
+  const currentTime = new Date().getTime()
+  if (currentTime - lastCheckedForUpdate > updateCheckThreshold) {
+    checkForUpdates()
+    lastCheckedForUpdate = currentTime
+  }
+})
+
+ipcMain.on('save-state', (event, state, winId, isNewFile) => {
   var winObj = _.find(windows, {id: winId})
   let wasEdited = isDirty(state, winObj.state)
   winObj.window.setDocumentEdited(wasEdited)
@@ -177,11 +191,11 @@ function licenseVerified (ask) {
   }
 }
 
-ipcMain.on('license-verified', function () {
+ipcMain.on('license-verified', () => {
   licenseVerified(true)
 })
 
-ipcMain.on('export', function (event, options, winId) {
+ipcMain.on('export', (event, options, winId) => {
   var winObj = _.find(windows, {id: winId})
   Exporter(winObj.state, options)
 })
@@ -212,7 +226,7 @@ ipcMain.on('extend-trial', (event, days) => {
   })
 })
 
-app.on('ready', function () {
+app.on('ready', () => {
   i18n.setup({
     translations: require('../locales'),
     locale: app.getLocale() || 'en'
@@ -224,23 +238,8 @@ app.on('ready', function () {
     if (win) win.toggleDevTools()
   })
 
-  checkLicense(function() {
+  checkLicense(() => {
     loadMenu()
-
-    if (process.platform === 'darwin') {
-      let dockMenu = Menu.buildFromTemplate([
-        {label: i18n('Create a new file'), click: function () {
-          askToCreateFile()
-        }},
-      ])
-      app.dock.setMenu(dockMenu)
-    }
-
-    if (process.env.NODE_ENV !== 'dev') {
-      log.transports.file.level = 'debug'
-      autoUpdater.logger = log
-      autoUpdater.checkForUpdatesAndNotify()
-    }
   })
 })
 
@@ -251,6 +250,12 @@ app.on('will-quit', () => {
 ////////////////////////////////
 ///////   FUNCTIONS   //////////
 ////////////////////////////////
+
+function checkForUpdates () {
+  if (process.env.NODE_ENV !== 'dev') {
+    autoUpdater.checkForUpdatesAndNotify()
+  }
+}
 
 function checkLicense (callback) {
   storage.has(USER_INFO_PATH, function (err, hasKey) {
@@ -491,6 +496,8 @@ function openWindow (fileName, newFile = false) {
     askToOpenOrCreate()
     removeRecentFile(fileName)
     newWindow.destroy()
+  } finally {
+    checkForUpdates()
   }
 }
 
@@ -717,6 +724,16 @@ function loadMenu () {
   var template = buildMenu()
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
+
+
+  if (process.platform === 'darwin') {
+    let dockMenu = Menu.buildFromTemplate([
+      {label: i18n('Create a new file'), click: function () {
+        askToCreateFile()
+      }},
+    ])
+    app.dock.setMenu(dockMenu)
+  }
 }
 
 function buildMenu () {

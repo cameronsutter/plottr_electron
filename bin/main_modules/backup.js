@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const log = require('electron-log')
+log.transports.file.level = 'info'
 const setupRollbar = require('./rollbar')
 const rollbar = setupRollbar('backup')
 const { BACKUP_BASE_PATH } = require('./config_paths')
@@ -43,12 +44,14 @@ function ensureBackupTodayPath () {
 }
 
 function ensureBackupFullPath() {
+  log.info('ensuring backup path')
   if (!fs.existsSync(BACKUP_BASE_PATH)) {
     fs.mkdirSync(BACKUP_BASE_PATH)
   }
 
   ensureBackupTodayPath()
 }
+log.info('going to ensure backup path')
 ensureBackupFullPath()
 
 module.exports = backupFile

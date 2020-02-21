@@ -23,8 +23,12 @@ if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
 
+log.transports.file.level = 'info'
+log.info('going to resolve env path')
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
+log.info('env path' + ENV_FILE_PATH)
 require('dotenv').config({path: ENV_FILE_PATH})
+log.info('required dotenv')
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
 let DAYS_LEFT = null
@@ -48,7 +52,7 @@ const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : RECENT_FIL
 // auto updates
 let lastCheckedForUpdate = new Date().getTime()
 const updateCheckThreshold = 1000 * 60 * 60
-log.transports.file.level = 'debug'
+log.transports.file.level = 'info'
 autoUpdater.logger = log
 
 // mixpanel tracking
@@ -227,18 +231,22 @@ ipcMain.on('extend-trial', (event, days) => {
 })
 
 app.on('ready', () => {
+  log.info('on ready')
   i18n.setup({
     translations: require('../locales'),
     locale: app.getLocale() || 'en'
   })
+  log.info('i18n setup')
 
   // Register the toggleDevTools shortcut listener.
   const ret = globalShortcut.register('CommandOrControl+Alt+R', () => {
     let win = BrowserWindow.getFocusedWindow()
     if (win) win.toggleDevTools()
   })
+  log.info('registered shortcut')
 
   checkLicense(() => {
+    log.info('checked license & loading menu')
     loadMenu()
   })
 })
@@ -253,13 +261,16 @@ app.on('will-quit', () => {
 
 function checkForUpdates () {
   if (process.env.NODE_ENV !== 'dev') {
+    autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
     autoUpdater.checkForUpdatesAndNotify()
   }
 }
 
 function checkLicense (callback) {
   storage.has(USER_INFO_PATH, function (err, hasKey) {
+    log.info('error? ', err)
     if (err) log.error(err)
+    log.info('has key? ' + hasKey)
     if (hasKey) {
       storage.get(USER_INFO_PATH, function (err, data) {
         if (err) log.error(err)
@@ -751,6 +762,9 @@ function buildPlottrMenu () {
   var submenu = [{
     label: i18n('About Plottr'),
     click: openAboutWindow,
+  }, {
+    label: i18n('Check for updates'),
+    click: checkForUpdates
   }]
   if (TRIALMODE) {
     submenu = [].concat(submenu, {

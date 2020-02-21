@@ -62,6 +62,16 @@ function handleCustomerServiceCode (code) {
       SETTINGS.set('backup', true)
       break;
 
+    case "3c66c9":
+      // turn off allowPrerelease
+      SETTINGS.set('allowPrerelease', false)
+      break;
+
+    case "a56a8a":
+      // turn on allowPrerelease
+      SETTINGS.set('allowPrerelease', true)
+      break;
+
     default:
       break;
   }

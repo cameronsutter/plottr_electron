@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import i18n from 'format-message'
+import log from 'electron-log'
+log.transports.file.level = 'info'
 
 const SUCCESS = 'success'
 const OFFLINE = 'offline'
@@ -76,16 +78,18 @@ class VerifyView extends Component {
           console.log(body)
         }
         if (view.isValidLicense(body)) {
+          log.info('valid license')
           if (body.uses > 5) {
             newState.showAlert = true
             newState.alertText = view.makeAlertText(TOOMANY)
           } else {
-            // save uses, purchase.email, purchase.full_name, purchase.variants
-            storage.set('user_info', body, function(err) {
+            log.info('going to save info')
+            view.saveInfo(body, err => {
+              log.info('saved info. err is null? ' + err == null)
               if (err) {
                 view.setState({showAlert: true, alertText: view.makeAlertText(CANTSAVE)})
-                storage.set('user_info', body, function(err) {
-                  if (err) {
+                view.saveInfo(body, error => {
+                  if (error) {
                     view.setState({showAlert: true, alertText: view.makeAlertText(SAVE2)})
                   } else {
                     view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
@@ -95,8 +99,11 @@ class VerifyView extends Component {
                   }
                 })
               } else {
+                log.info('setting state')
                 view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
+                log.info('check env ' + process.env.NODE_ENV !== 'development')
                 if (process.env.NODE_ENV !== 'development') {
+                  log.info('sending via ipcRenderer. is null? ' + ipcRenderer)
                   ipcRenderer.send('license-verified')
                 }
               }
@@ -109,6 +116,11 @@ class VerifyView extends Component {
       }
       view.setState(newState)
     })
+  }
+
+  saveInfo = (info, callback) => {
+    // save uses, purchase.email, purchase.full_name, purchase.variants
+    storage.set('user_info', info, callback)
   }
 
   handleVerify () {

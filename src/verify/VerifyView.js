@@ -85,7 +85,7 @@ class VerifyView extends Component {
           } else {
             log.info('VERIFY -- going to save info')
             view.saveInfo(body, err => {
-              log.info('VERIFY -- saved info. err is null? ' + err == null)
+              log.info('VERIFY -- saved info. err is null? ', err)
               if (err) {
                 view.setState({showAlert: true, alertText: view.makeAlertText(CANTSAVE)})
                 view.saveInfo(body, error => {

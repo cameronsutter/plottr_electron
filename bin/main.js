@@ -455,7 +455,7 @@ function openWindow (fileName, newFile = false) {
     }
   })
 
-  if (process.env.NODE_ENV === 'dev') {
+  if (process.env.NODE_ENV === 'dev' || SETTINGS.get('forceDevTools')) {
     newWindow.openDevTools()
   }
 
@@ -579,6 +579,9 @@ function openAboutWindow () {
   const aboutFile = path.join(filePrefix, 'about.html')
   aboutWindow = new BrowserWindow({width: 350, height: 550, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
   aboutWindow.loadURL(aboutFile)
+  if (SETTINGS.get('forceDevTools')) {
+    aboutWindow.openDevTools()
+  }
   aboutWindow.once('ready-to-show', function() {
     this.show()
   })
@@ -592,6 +595,9 @@ function openVerifyWindow () {
   const verifyFile = path.join(filePrefix, 'verify.html')
   verifyWindow = new BrowserWindow({frame: false, height: 425, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
   verifyWindow.loadURL(verifyFile)
+  if (SETTINGS.get('forceDevTools')) {
+    verifyWindow.openDevTools()
+  }
   verifyWindow.once('ready-to-show', function() {
     this.show()
   })
@@ -605,6 +611,9 @@ function openExpiredWindow () {
   const expiredFile = path.join(filePrefix, 'expired.html')
   expiredWindow = new BrowserWindow({frame: false, height: 425, width: 700, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
   expiredWindow.loadURL(expiredFile)
+  if (SETTINGS.get('forceDevTools')) {
+    expiredWindow.openDevTools()
+  }
   expiredWindow.once('ready-to-show', function() {
     this.show()
   })

@@ -5,6 +5,7 @@ var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
 ]
 
+console.log('WEBPACK config node_env', process.env.NODE_ENV)
 if (process.env.NODE_ENV === 'production') {
   plugins.push(new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')}))
   plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/))

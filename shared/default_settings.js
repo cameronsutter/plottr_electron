@@ -3,4 +3,5 @@ module.exports = {
   backup: true,
   trialMode: false,
   allowPrerelease: false,
+  forceDevTools: false,
 }

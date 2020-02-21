@@ -22,7 +22,8 @@ i18n.setup({
   locale: app.getLocale() || 'en'
 })
 
-let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
+console.log('NODE ENV', process.env.NODE_ENV)
+let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
 var rollbar = new Rollbar({
@@ -37,7 +38,7 @@ var rollbar = new Rollbar({
   }
 })
 
-if (process.env.NODE_ENV !== 'dev') {
+if (process.env.NODE_ENV !== 'development') {
   process.on('uncaughtException', function (err) {
     log.error(err)
     rollbar.error(err)

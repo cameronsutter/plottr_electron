@@ -80,9 +80,6 @@ class HistoryItem extends Component {
         return <EditScene item={item} />
       case types.DELETE_SCENE:
         return <DeleteScene item={item} />
-      case types.REORDER_SCENES:
-      case types.REORDER_LINES:
-        return <Reorder item={item} />
       case types.ADD_CARD:
         return <AddCard item={item} />
       case types.EDIT_CARD_DETAILS:

@@ -6,13 +6,13 @@ var plugins = [
 ]
 
 console.log('WEBPACK config node_env', process.env.NODE_ENV)
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'dev') {
   plugins.push(new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')}))
   plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/))
 }
 
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
   watch: process.env.NODE_ENV === 'dev',
   context: path.resolve(__dirname, 'src'),
   entry: {

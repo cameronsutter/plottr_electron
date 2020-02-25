@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const log = require('electron-log')
-log.transports.file.level = 'info'
 const setupRollbar = require('./rollbar')
 const rollbar = setupRollbar('backup')
 const { BACKUP_BASE_PATH } = require('./config_paths')

@@ -23,10 +23,9 @@ if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
 
-log.transports.file.level = 'info'
 log.info('going to resolve env path')
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
-log.info('env path' + ENV_FILE_PATH)
+log.info('env path', ENV_FILE_PATH)
 require('dotenv').config({path: ENV_FILE_PATH})
 log.info('required dotenv')
 
@@ -801,7 +800,7 @@ function buildPlottrMenu () {
     submenu = [].concat(submenu, {
       label: i18n('View License Key'),
       click: () => {
-        const licenseKey = USER_INFO.purchase && USER_INFO.purchase.license_key
+        const licenseKey = USER_INFO.purchase ? USER_INFO.purchase.license_key : USER_INFO.license_key
         if (licenseKey) {
           dialog.showMessageBox({type: 'info', title: i18n('Here is your license key'), message: licenseKey})
         } else {

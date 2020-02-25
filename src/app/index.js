@@ -22,7 +22,6 @@ i18n.setup({
   locale: app.getLocale() || 'en'
 })
 
-console.log('NODE ENV', process.env.NODE_ENV)
 let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
@@ -88,10 +87,6 @@ ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) =
 ipcRenderer.on('set-dark-mode', (event, on) => {
   store.dispatch(setDarkMode(on))
   window.document.body.className = on ? 'darkmode' : ''
-})
-
-ipcRenderer.on('bought-in-app', (event, numOfDays) => {
-  MPQ.push('Buy', {online: navigator.onLine, num_of_days: numOfDays})
 })
 
 window.onerror = function (message, file, line, column, err) {

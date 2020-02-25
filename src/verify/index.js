@@ -13,9 +13,7 @@ i18n.setup({
 })
 
 const envPath = path.resolve(__dirname, '..', '.env')
-log.info('VERIFY-INDEX', envPath)
 require('dotenv').config({path: envPath})
-log.info('VERIFY-INDEX', process.env.NODE_ENV)
 let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 var Rollbar = require('rollbar')
 let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''

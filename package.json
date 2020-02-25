@@ -3,8 +3,8 @@
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
-  "readme": "Copyright 2016 C. Louis S. (Cameron Sutter)",
-  "version": "2020.2.21-alpha.3",
+  "readme": "Copyright 2016-2020 C. Louis S. (Cameron Sutter)",
+  "version": "2020.2.24-alpha",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -39,6 +39,7 @@
     "format-message": "^6.2.1",
     "lodash": "^4.17.11",
     "mixpanel-browser": "^2.29.0",
+    "node-machine-id": "^1.1.12",
     "pagedown": "^1.1.0",
     "pretty-date": "^0.2.0",
     "react": "^16.8.6",
@@ -123,7 +124,8 @@
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist"
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "darkModeSupport": true
     },
     "dmg": {
       "backgroundColor": "#f7f7f7",

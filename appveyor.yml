@@ -10,7 +10,6 @@ install:
   - ps: Install-Product node 10 x64
   - npm install
 build_script:
-  - ps: set NODE_ENV=production
   - npm run dist:windows
 test: off
 branches:

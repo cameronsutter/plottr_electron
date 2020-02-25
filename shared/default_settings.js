@@ -5,4 +5,7 @@ module.exports = {
   allowPrerelease: false,
   forceDevTools: false,
   premiumFeatures: false,
+  user: {
+    useMarkdown: true
+  }
 }

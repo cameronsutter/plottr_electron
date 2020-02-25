@@ -780,6 +780,7 @@ function buildMenu (makeItSimple) {
   if (makeItSimple) {
     return [
       buildPlottrMenu(),
+      buildEditMenu(),
       buildWindowMenu(),
       buildHelpMenu()
     ]

@@ -280,7 +280,7 @@ function checkLicense (callback) {
         log.info('data', data)
         USER_INFO = data
         log.info('trialmode?', TRIALMODE)
-        if (process.env.useEDD) {
+        if (process.env.useEDD === 'true') {
           checkForActiveLicense(USER_INFO.license_key, valid => {
             if (valid) {
               // may have to rethink the flow here a little bit

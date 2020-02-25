@@ -7,6 +7,8 @@ import { ipcRenderer } from 'electron'
 import i18n from 'format-message'
 import { machineIdSync } from 'node-machine-id'
 
+const useEDD = process.env.useEDD === 'true'
+
 const SUCCESS = 'success'
 const OFFLINE = 'offline'
 const INVALID = 'invalid'
@@ -47,7 +49,7 @@ class VerifyView extends Component {
   }
 
   isValidLicense = (body) => {
-    if (process.env.useEDD) {
+    if (useEDD) {
       return body.success && body.license === "valid"
     } else {
       return body.success && !body.purchase.refunded && !body.purchase.chargebacked && !body.purchase.disputed
@@ -65,8 +67,8 @@ class VerifyView extends Component {
   }
 
   makeRequest = (license) => {
-    if (process.env.useEDD) {
-      let req = {
+    if (useEDD) {
+      return {
         url: this.buildURL(license),
         method: 'GET',
         json: true,
@@ -89,7 +91,7 @@ class VerifyView extends Component {
   }
 
   hasActivationsLeft = (body) => {
-    if (process.env.useEDD) {
+    if (useEDD) {
       return body.activations_left > 0
     } else {
       return body.uses > 5
@@ -139,7 +141,7 @@ class VerifyView extends Component {
           }
         } else {
           newState.showAlert = true
-          if (process.env.useEDD && !this.hasActivationsLeft(body)) {
+          if (useEDD && !this.hasActivationsLeft(body)) {
             newState.alertText = view.makeAlertText(TOOMANY)
           } else {
             newState.alertText = view.makeAlertText(INVALID)
@@ -152,7 +154,7 @@ class VerifyView extends Component {
 
   saveInfo = (license, body, callback) => {
     let info = body
-    if (process.env.useEDD) {
+    if (useEDD) {
       info.license_key = license
     }
     storage.set('user_info', info, callback)

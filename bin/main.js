@@ -1,16 +1,16 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog,
   systemPreferences, globalShortcut, shell } = require('electron')
-var Migrator = require('./migrator/migrator')
-var Exporter = require('./exporter')
-var fs = require('fs')
-var path = require('path')
-var deep = require('deep-diff')
-var _ = require('lodash')
-var storage = require('electron-json-storage')
-var log = require('electron-log')
-var i18n = require('format-message')
-const windowStateKeeper = require('electron-window-state');
+const fs = require('fs')
+const path = require('path')
+const deep = require('deep-diff')
+const _ = require('lodash')
+const storage = require('electron-json-storage')
+const log = require('electron-log')
+const i18n = require('format-message')
+const windowStateKeeper = require('electron-window-state')
 const { autoUpdater } = require('electron-updater')
+const Migrator = require('./migrator/migrator')
+const Exporter = require('./main_modules/exporter')
 const { USER_INFO_PATH, RECENT_FILES_PATH } = require('./main_modules/config_paths')
 const enterCustomerServiceCode = require('./main_modules/customer_service_codes')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
@@ -19,6 +19,7 @@ const createErrorReport = require('./main_modules/error_report')
 const setupRollbar = require('./main_modules/rollbar')
 const rollbar = setupRollbar('main')
 const SETTINGS = require('./main_modules/settings')
+const checkForActiveLicense = require('./main_modules/license_checker')
 if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
@@ -277,6 +278,15 @@ function checkLicense (callback) {
         log.info('data', data)
         USER_INFO = data
         log.info('trialmode?', TRIALMODE)
+        if (process.env.useEDD) {
+          checkForActiveLicense(USER_INFO.license_key, valid => {
+            if (valid) {
+              // may have to rethink the flow here a little bit
+            } else {
+              // what to do if it isn't valid?
+            }
+          })
+        }
         if (TRIALMODE) {
           if (data.success) {
             TRIALMODE = false

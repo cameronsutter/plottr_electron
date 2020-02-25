@@ -13,7 +13,8 @@ const fakeData = {
     "refunded": false,
     "chargebacked": false,
     "custom_fields": [],
-    "email": "leywa@gumroad.com"
+    "email": "leywa@gumroad.com",
+    "license_key": "TEST_LICENSE_KEY"
   }
 }
 

@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import i18n from 'format-message'
-import log from 'electron-log'
 import { machineIdSync } from 'node-machine-id'
 
 const SUCCESS = 'success'

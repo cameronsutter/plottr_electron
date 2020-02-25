@@ -4,7 +4,7 @@
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "private": true,
   "readme": "Copyright 2016-2020 C. Louis S. (Cameron Sutter)",
-  "version": "2020.2.25-alpha.2",
+  "version": "2020.2.25-alpha.3",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -88,9 +88,7 @@
     "electronVersion": "5.0.4",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-${version}.${ext}",
-    "publish": [
-      "github"
-    ],
+    "publish": [ "github" ],
     "files": [
       "**/*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}",
@@ -117,10 +115,7 @@
     "afterSign": "build/notarize.js",
     "mac": {
       "category": "public.app-category.productivity",
-      "target": [
-        "dmg",
-        "zip"
-      ],
+      "target": [ "dmg", "zip" ],
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
@@ -135,10 +130,7 @@
     "win": {
       "target": {
         "target": "nsis",
-        "arch": [
-          "x64",
-          "ia32"
-        ]
+        "arch": [ "x64", "ia32" ]
       }
     },
     "nsis": {

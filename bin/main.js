@@ -240,6 +240,11 @@ app.on('ready', () => {
   })
   log.info('i18n setup')
 
+  if (process.platform === 'darwin') {
+    log.info('loading simple menu because mac')
+    loadMenu(true)
+  }
+
   // Register the toggleDevTools shortcut listener.
   const ret = globalShortcut.register('CommandOrControl+Alt+R', () => {
     let win = BrowserWindow.getFocusedWindow()
@@ -754,8 +759,8 @@ function migrateIfNeeded (win, json, fileName, callback) {
 ///////   BUILD MENU  //////////
 ////////////////////////////////
 
-function loadMenu () {
-  var template = buildMenu()
+function loadMenu (makeItSimple) {
+  var template = buildMenu(makeItSimple)
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 
@@ -771,7 +776,15 @@ function loadMenu () {
   log.info('dock menu created')
 }
 
-function buildMenu () {
+function buildMenu (makeItSimple) {
+  if (makeItSimple) {
+    return [
+      buildPlottrMenu(),
+      buildWindowMenu(),
+      buildHelpMenu()
+    ]
+  }
+
   return [
     buildPlottrMenu(),
     buildFileMenu(),

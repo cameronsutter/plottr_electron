@@ -114,7 +114,7 @@ class VerifyView extends Component {
           console.log(body)
         }
         if (view.isValidLicense(body)) {
-          if (this.hasActivationsLeft(body)) {
+          if (view.hasActivationsLeft(body)) {
             view.saveInfo(license, body, err => {
               if (err) {
                 view.setState({showAlert: true, alertText: view.makeAlertText(CANTSAVE)})
@@ -141,7 +141,7 @@ class VerifyView extends Component {
           }
         } else {
           newState.showAlert = true
-          if (useEDD && !this.hasActivationsLeft(body)) {
+          if (useEDD && !view.hasActivationsLeft(body)) {
             newState.alertText = view.makeAlertText(TOOMANY)
           } else {
             newState.alertText = view.makeAlertText(INVALID)

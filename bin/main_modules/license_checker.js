@@ -2,6 +2,7 @@ const request = require('request')
 const log = require('electron-log')
 const setupRollbar = require('./rollbar')
 const rollbar = setupRollbar('license_checker')
+const { machineIdSync } = require('node-machine-id')
 
 function checkForActiveLicense (licenseKey, callback) {
   const req = makeRequest(licenseKey)
@@ -15,7 +16,7 @@ function checkForActiveLicense (licenseKey, callback) {
       if (process.env.NODE_ENV === 'dev') {
         console.log(body)
       }
-      if (view.isValidLicense(body)) {
+      if (isValidLicense(body)) {
         callback(true)
       } else {
         callback(false)
@@ -40,10 +41,10 @@ buildURL = (license) => {
 
 makeRequest = (license) => {
   return {
-    url: this.buildURL(license),
+    url: buildURL(license),
     method: 'GET',
     json: true,
   }
 }
 
-modules.export = checkForActiveLicense
+module.exports = checkForActiveLicense

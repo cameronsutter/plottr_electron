@@ -4,4 +4,5 @@ module.exports = {
   trialMode: false,
   allowPrerelease: false,
   forceDevTools: false,
+  premiumFeatures: false,
 }

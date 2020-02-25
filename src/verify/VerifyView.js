@@ -56,6 +56,7 @@ class VerifyView extends Component {
 
   buildURL = (license) => {
     const itemId = "355"
+    // itemId = "737" // for premium features
     let url = 'http://plottr.flywheelsites.com'
     url += `/edd-api?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
     url += `&edd_action=activate_license&item_id=${itemId}&license=${license}`

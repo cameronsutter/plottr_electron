@@ -191,6 +191,7 @@ function licenseVerified (ask) {
     loadMenu()
     if (ask) askToOpenOrCreate()
   } else {
+    loadMenu()
     openRecentFiles()
   }
 }
@@ -209,6 +210,7 @@ ipcMain.on('start-free-trial', () => {
   startTheTrial(daysLeft => {
     TRIALMODE = true
     DAYS_LEFT = daysLeft
+    loadMenu()
     createAndOpenEmptyFile()
   })
 })

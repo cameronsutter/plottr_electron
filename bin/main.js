@@ -269,11 +269,14 @@ function checkLicense (callback) {
   storage.has(USER_INFO_PATH, function (err, hasKey) {
     log.info('error? ', err)
     if (err) log.error(err)
-    log.info('has key? ' + hasKey)
+    log.info('has key? ', hasKey)
     if (hasKey) {
       storage.get(USER_INFO_PATH, function (err, data) {
+        log.info('err?', err)
         if (err) log.error(err)
+        log.info('data', data)
         USER_INFO = data
+        log.info('trialmode?', TRIALMODE)
         if (TRIALMODE) {
           if (data.success) {
             TRIALMODE = false
@@ -423,7 +426,7 @@ function openWindow (fileName, newFile = false) {
     fullscreen: stateKeeper.isFullScreen || null,
     show: false,
     backgroundColor: '#f7f7f7',
-    webPreferences: {scrollBounce: true, nodeIntegration: true, spellcheck: true}
+    webPreferences: {nodeIntegration: true, spellcheck: true}
   })
 
   // Let us register listeners on the window, so we can update the state
@@ -576,7 +579,7 @@ function emptyFileContents () {
 
 function openAboutWindow () {
   const aboutFile = path.join(filePrefix, 'about.html')
-  aboutWindow = new BrowserWindow({width: 350, height: 550, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
+  aboutWindow = new BrowserWindow({width: 350, height: 550, show: false, webPreferences: {nodeIntegration: true}})
   aboutWindow.loadURL(aboutFile)
   if (SETTINGS.get('forceDevTools')) {
     aboutWindow.openDevTools()
@@ -592,7 +595,7 @@ function openAboutWindow () {
 function openVerifyWindow () {
   dontquit = true
   const verifyFile = path.join(filePrefix, 'verify.html')
-  verifyWindow = new BrowserWindow({frame: false, height: 425, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
+  verifyWindow = new BrowserWindow({frame: false, height: 425, show: false, webPreferences: {nodeIntegration: true}})
   verifyWindow.loadURL(verifyFile)
   if (SETTINGS.get('forceDevTools')) {
     verifyWindow.openDevTools()
@@ -608,7 +611,7 @@ function openVerifyWindow () {
 function openExpiredWindow () {
   dontquit = true
   const expiredFile = path.join(filePrefix, 'expired.html')
-  expiredWindow = new BrowserWindow({frame: false, height: 425, width: 700, show: false, webPreferences: {scrollBounce: true, nodeIntegration: true}})
+  expiredWindow = new BrowserWindow({frame: false, height: 425, width: 700, show: false, webPreferences: {nodeIntegration: true}})
   expiredWindow.loadURL(expiredFile)
   if (SETTINGS.get('forceDevTools')) {
     expiredWindow.openDevTools()
@@ -744,7 +747,7 @@ function loadMenu () {
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 
-
+  log.info('menu loaded')
   if (process.platform === 'darwin') {
     let dockMenu = Menu.buildFromTemplate([
       {label: i18n('Create a new file'), click: function () {
@@ -753,6 +756,7 @@ function loadMenu () {
     ])
     app.dock.setMenu(dockMenu)
   }
+  log.info('dock menu created')
 }
 
 function buildMenu () {

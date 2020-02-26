@@ -43,14 +43,12 @@ function ensureBackupTodayPath () {
 }
 
 function ensureBackupFullPath() {
-  log.info('ensuring backup path')
   if (!fs.existsSync(BACKUP_BASE_PATH)) {
     fs.mkdirSync(BACKUP_BASE_PATH)
   }
 
   ensureBackupTodayPath()
 }
-log.info('going to ensure backup path')
 ensureBackupFullPath()
 
 module.exports = backupFile

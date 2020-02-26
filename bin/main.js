@@ -24,11 +24,8 @@ if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
 
-log.info('going to resolve env path')
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
-log.info('env path', ENV_FILE_PATH)
 require('dotenv').config({path: ENV_FILE_PATH})
-log.info('required dotenv')
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
 let DAYS_LEFT = null
@@ -233,15 +230,12 @@ ipcMain.on('extend-trial', (event, days) => {
 })
 
 app.on('ready', () => {
-  log.info('on ready')
   i18n.setup({
     translations: require('../locales'),
     locale: app.getLocale() || 'en'
   })
-  log.info('i18n setup')
 
   if (process.platform === 'darwin') {
-    log.info('loading simple menu because mac')
     loadMenu(true)
   }
 
@@ -250,10 +244,8 @@ app.on('ready', () => {
     let win = BrowserWindow.getFocusedWindow()
     if (win) win.toggleDevTools()
   })
-  log.info('registered shortcut')
 
   checkLicense(() => {
-    log.info('checked license & loading menu')
     loadMenu()
   })
 })
@@ -275,16 +267,11 @@ function checkForUpdates () {
 
 function checkLicense (callback) {
   storage.has(USER_INFO_PATH, function (err, hasKey) {
-    log.info('error? ', err)
     if (err) log.error(err)
-    log.info('has key? ', hasKey)
     if (hasKey) {
       storage.get(USER_INFO_PATH, function (err, data) {
-        log.info('err?', err)
         if (err) log.error(err)
-        log.info('data', data)
         USER_INFO = data
-        log.info('trialmode?', TRIALMODE)
         if (process.env.useEDD === 'true') {
           checkForActiveLicense(USER_INFO.license_key, valid => {
             if (valid) {
@@ -764,7 +751,6 @@ function loadMenu (makeItSimple) {
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 
-  log.info('menu loaded')
   if (process.platform === 'darwin') {
     let dockMenu = Menu.buildFromTemplate([
       {label: i18n('Create a new file'), click: function () {
@@ -773,7 +759,6 @@ function loadMenu (makeItSimple) {
     ])
     app.dock.setMenu(dockMenu)
   }
-  log.info('dock menu created')
 }
 
 function buildMenu (makeItSimple) {
@@ -962,6 +947,19 @@ function buildFileMenu () {
         })
       }
     }
+  }, {
+    type: 'separator'
+  }, {
+    label: i18n('Export') + '...',
+    click: () => {
+      let win = BrowserWindow.getFocusedWindow()
+      var winObj = _.find(windows, {id: win.id})
+      if (winObj) {
+        Exporter(winObj.state, options)
+      }
+    }
+  }, {
+    type: 'separator'
   },
   submenu)
   return {

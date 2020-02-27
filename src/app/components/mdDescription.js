@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import MarkDown from 'pagedown'
 import SimpleMDE from 'simplemde'
+import RCE from './RCE'
+import SETTINGS from '../../settings'
 
 const md = MarkDown.getSanitizingConverter()
 
@@ -11,33 +13,37 @@ class MDdescription extends Component {
     this.simplemde = null
   }
 
+  useSimpleMDE = SETTINGS.get('user.useMarkdown')
+
   createRCE = () => {
-    this.simplemde = new SimpleMDE({
-      element: this.refs.descriptionInput,
-      initialValue: this.props.description,
-      autofocus: this.props.autofocus || false,
-      status: ['words'],
-      hideIcons: ['side-by-side', 'fullscreen'],
-      promptURLs: false,
-    })
-    this.simplemde.codemirror.on("update", () => {
-      this.props.onChange(this.simplemde.value())
-    })
+    if (this.useSimpleMDE) {
+      this.simplemde = new SimpleMDE({
+        element: this.refs.descriptionInput,
+        initialValue: this.props.description,
+        autofocus: this.props.autofocus || false,
+        status: ['words'],
+        hideIcons: ['side-by-side', 'fullscreen'],
+        promptURLs: false,
+      })
+      this.simplemde.codemirror.on("update", () => {
+        this.props.onChange(this.simplemde.value())
+      })
+    }
   }
 
   componentDidMount () {
-    if (this.props.useRCE) this.createRCE()
+    if (this.props.useRCE && this.useSimpleMDE) this.createRCE()
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.props.useRCE && !nextProps.useRCE) {
+    if (this.useSimpleMDE && this.props.useRCE && !nextProps.useRCE) {
       this.simplemde.toTextArea()
       this.simplemde = null
     }
   }
 
   componentDidUpdate (prevProps) {
-    if (prevProps.useRCE != this.props.useRCE) {
+    if (this.useSimpleMDE && prevProps.useRCE != this.props.useRCE) {
       if (this.props.useRCE && !this.simplemde) {
         this.createRCE()
       }
@@ -65,7 +71,10 @@ class MDdescription extends Component {
   render () {
     // darkmode?
     if (this.props.useRCE) {
-      return <textarea rows='20' ref='descriptionInput' />
+      if (this.useSimpleMDE) {
+        return <textarea rows='20' ref='descriptionInput' />
+      }
+      return <RCE text={this.props.description}/>
     } else {
       let html = this.makeLabels(md.makeHtml(this.props.description))
       return <div

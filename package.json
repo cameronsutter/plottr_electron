@@ -56,7 +56,10 @@
     "redux": "^3.5.2",
     "request": "^2.88.0",
     "rollbar": "^2.7.1",
-    "simplemde": "^1.11.2"
+    "simplemde": "^1.11.2",
+    "slate": "^0.57.1",
+    "slate-hyperscript": "^0.57.1",
+    "slate-react": "^0.57.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
@@ -70,7 +73,7 @@
     "changelog": "^1.4.2",
     "css-loader": "^3.0.0",
     "devtron": "^1.2.1",
-    "electron": "^5.0.4",
+    "electron": "^8.0.2",
     "electron-builder": "^21.0.1",
     "electron-devtools-installer": "^2.0.0",
     "electron-notarize": "^0.1.1",
@@ -85,10 +88,12 @@
     "webpack-cli": "^3.3.4"
   },
   "build": {
-    "electronVersion": "5.0.4",
+    "electronVersion": "8.0.2",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-${version}.${ext}",
-    "publish": [ "github" ],
+    "publish": [
+      "github"
+    ],
     "files": [
       "**/*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}",
@@ -115,7 +120,10 @@
     "afterSign": "build/notarize.js",
     "mac": {
       "category": "public.app-category.productivity",
-      "target": [ "dmg", "zip" ],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
@@ -130,7 +138,10 @@
     "win": {
       "target": {
         "target": "nsis",
-        "arch": [ "x64", "ia32" ]
+        "arch": [
+          "x64",
+          "ia32"
+        ]
       }
     },
     "nsis": {

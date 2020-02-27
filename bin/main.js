@@ -929,22 +929,25 @@ function buildFileMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = _.find(windows, {id: win.id})
       if (winObj) {
-        dialog.showSaveDialog(win, {title: i18n('Where would you like to save this copy?')}, function (fileName) {
-          if (fileName) {
-            var fullName = fileName + '.pltr'
-            saveFile(fullName, winObj.state, function (err) {
-              if (err) {
-                log.warn(err)
-                log.warn('file name: ' + fullName)
-                rollbar.warn(err, {fileName: fullName})
-                gracefullyNotSave()
-              } else {
-                win.close()
-                openWindow(fullName)
-              }
-            })
+        const fileName = dialog.showSaveDialogSync(win, {title: i18n('Where would you like to save this copy?')})
+        if (fileName) {
+          var fullName = fileName + '.pltr'
+          const newState = {
+            ...winObj.state,
+            storyName: winObj.state.storyName + ' copy'
           }
-        })
+          saveFile(fullName, newState, function (err) {
+            if (err) {
+              log.warn(err)
+              log.warn('file name: ' + fullName)
+              rollbar.warn(err, {fileName: fullName})
+              gracefullyNotSave()
+            } else {
+              win.close()
+              openWindow(fullName)
+            }
+          })
+        }
       }
     }
   }, {

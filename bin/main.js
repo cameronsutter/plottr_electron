@@ -932,15 +932,19 @@ function buildFileMenu () {
         dialog.showSaveDialog(win, {title: i18n('Where would you like to save this copy?')}, function (fileName) {
           if (fileName) {
             var fullName = fileName + '.pltr'
-            saveFile(fullName, winObj.state, function (err) {
+            const newState = {
+              ...winObj.state,
+              storyName: winObj.state.storyName + ' copy'
+            }
+            saveFile(fullName, newState, function (err) {
               if (err) {
                 log.warn(err)
                 log.warn('file name: ' + fullName)
                 rollbar.warn(err, {fileName: fullName})
                 gracefullyNotSave()
               } else {
-                win.close()
                 openWindow(fullName)
+                win.close()
               }
             })
           }

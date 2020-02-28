@@ -1,52 +1,33 @@
-const request = require('request')
-const log = require('electron-log')
-const setupRollbar = require('./rollbar')
-const rollbar = setupRollbar('license_checker')
-const { machineIdSync } = require('node-machine-id')
-const SETTINGS = require('./settings')
+import request from 'request'
+import { machineIdSync } from 'node-machine-id'
 
 const BASE_URL = 'http://plottr.flywheelsites.com'
 const PRODUCT_ID = '3090'
 const SUBSCRIPTION_ID = '3087'
 
-function checkForActiveLicense (licenseInfo, callback) {
-  const req = makeRequest(licenseURL(licenseInfo.licenseKey))
+export function getLicenseInfo (license, callback) {
+  const req = makeRequest(licenseURL(license))
   request(req, (err, response, body) => {
-    if (process.env.NODE_ENV === 'dev') {
-      console.log(body)
-    }
-    if (err) {
-      log.error(err)
-      rollbar.warn(err)
-      // conscious choice to allow them to use the app if the verification request fails
-      // they might be offline
-      // but either way if they have a valid license in user_info
-      // i'll give them a one-launch grace
-      callback(true)
-    } else {
+    if (err) callback(err, false, {})
+    else {
       if (isValidLicense(body)) {
+        const data = {
+          licenseKey: license,
+          purchase: body,
+        }
         // check for premium
         getSubscriptionInfo(body.customer_email, (err, activeSub) => {
-          if (process.env.NODE_ENV === 'dev') {
-            console.log(activeSub)
+          if (!err && activeSub) {
+            data.premium = true
+            data.subscription = activeSub
           }
-          SETTINGS.set('premiumFeatures', !err && activeSub)
-          callback(true)
+          callback(null, true, data)
         })
       } else {
-        callback(false)
+        callback(null, false, {hasActivationsLeft: hasActivationsLeft(body)})
       }
     }
   })
-}
-
-isValidLicense = (body) => {
-  // license could also be:
-  // - site_inactive
-  // - invalid
-  // - disabled?
-  // not handling site_inactive differently than invalid for now
-  return body.success && body.license == 'valid'
 }
 
 function getSubscriptionInfo (email, callback) {
@@ -64,6 +45,14 @@ function getSubscriptionInfo (email, callback) {
   })
 }
 
+function hasActivationsLeft (body) {
+  return body.activations_left > 0
+}
+
+function isValidLicense (body) {
+  return body.success && body.license == "valid"
+}
+
 function findActiveSubscription (body) {
   if (body.error) return false
   if (!body.subscriptions) return false
@@ -75,7 +64,7 @@ function findActiveSubscription (body) {
 
 function licenseURL (license) {
   let url = apiURL()
-  url += `&edd_action=check_license&item_id=${PRODUCT_ID}&license=${license}`
+  url += `&edd_action=activate_license&item_id=${PRODUCT_ID}&license=${license}`
   url += `&url=${machineIdSync(true)}`
   return url
 }
@@ -97,5 +86,3 @@ function makeRequest (url) {
     json: true,
   }
 }
-
-module.exports = checkForActiveLicense

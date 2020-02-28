@@ -272,15 +272,6 @@ function checkLicense (callback) {
       storage.get(USER_INFO_PATH, function (err, data) {
         if (err) log.error(err)
         USER_INFO = data
-        if (process.env.useEDD === 'true') {
-          checkForActiveLicense(USER_INFO.license_key, valid => {
-            if (valid) {
-              // may have to rethink the flow here a little bit
-            } else {
-              // what to do if it isn't valid?
-            }
-          })
-        }
         if (TRIALMODE) {
           if (data.success) {
             TRIALMODE = false
@@ -288,6 +279,13 @@ function checkLicense (callback) {
           }
           callback()
           openRecentFiles()
+          if (process.env.useEDD === 'true') {
+            // do this in the background
+            // will have to think how to handle open windows if not valid
+            checkForActiveLicense(USER_INFO, valid => {
+              if (!valid) openVerifyWindow()
+            })
+          }
         } else {
           callback()
           if (data.success) openRecentFiles()

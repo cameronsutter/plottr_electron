@@ -201,7 +201,7 @@ class TimelineWrapper extends Component {
 
   doExport = () => {
     let label = i18n('Where would you like to save the export?')
-    dialog.showSaveDialog({title: label}, function (fileName) {
+    dialog.showSaveDialog({title: label}, (fileName) => {
       if (fileName) {
         let options = {
           fileName

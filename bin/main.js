@@ -958,9 +958,17 @@ function buildFileMenu () {
     click: () => {
       let win = BrowserWindow.getFocusedWindow()
       var winObj = _.find(windows, {id: win.id})
+      let exportState = {}
       if (winObj) {
-        Exporter(winObj.state, options)
+        exportState = winObj.state
+      } else {
+        exportState = windows[0].state
       }
+      dialog.showSaveDialog(win, {title: i18n('Where would you like to save the export?')}, (fileName) => {
+        if (fileName) {
+          Exporter(exportState, {fileName})
+        }
+      })
     }
   }, {
     type: 'separator'

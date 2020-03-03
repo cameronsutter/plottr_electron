@@ -20,6 +20,8 @@ const setupRollbar = require('./main_modules/rollbar')
 const rollbar = setupRollbar('main')
 const SETTINGS = require('./main_modules/settings')
 const checkForActiveLicense = require('./main_modules/license_checker')
+const TemplateManager = require('./main_modules/template_manager')
+const templateManager = new TemplateManager()
 if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
@@ -246,6 +248,7 @@ app.on('ready', () => {
   })
 
   checkLicense(() => {
+    templateManager.fetchManifest()
     loadMenu()
   })
 })

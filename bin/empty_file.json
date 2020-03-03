@@ -9,10 +9,10 @@
     "scenes": []
   },
   "file": {
-    "dirty": true,
+    "dirty": false,
     "fileName": "/Users/csutter/github/plottr_electron/bin/empty.pltr",
-    "loaded": true,
-    "version": "1.3.14"
+    "loaded": false,
+    "version": "2020.3.2"
   },
   "lines": [
     {
@@ -42,6 +42,8 @@
     "noteSort": "title",
     "orientation": "horizontal",
     "placeFilter": null,
-    "placeSort": "name~asc"
+    "placeSort": "name~asc",
+    "zoomState": null,
+    "zoomIndex": 4
   }
 }

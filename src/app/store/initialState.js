@@ -46,6 +46,7 @@ export const character = {
   cards: [],
   noteIds: [],
   templates: [],
+  tags: [],
   categoryId: ''
 }
 
@@ -56,7 +57,9 @@ export const place = {
   notes: '',
   color: null,
   cards: [],
-  noteIds: []
+  noteIds: [],
+  templates: [],
+  tags: [],
 }
 
 export const tag = {
@@ -99,5 +102,6 @@ export const note = {
   tags: [],
   characters: [],
   places: [],
-  lastEdited: new Date().getTime()
+  lastEdited: new Date().getTime(),
+  templates: [],
 }

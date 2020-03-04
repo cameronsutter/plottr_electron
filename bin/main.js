@@ -145,21 +145,19 @@ ipcMain.on('fetch-state', function (event, id) {
     win.window.setRepresentedFilename(win.fileName)
   }
 
-  if (win.window.isVisible()) {
-    migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-      if (err) { log.warn(err); rollbar.warn(err) }
-      win.window.setProgressBar(-1)
+  migrateIfNeeded (win.state, win.fileName, (err, dirty, json) => {
+    if (err) { log.warn(err); rollbar.warn(err) }
+    win.lastSave = json
+    win.state = json
+    win.window.setProgressBar(-1)
+    if (win.window.isVisible()) {
       event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
-    })
-  } else {
-    win.window.on('show', () => {
-      migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-        if (err) { log.warn(err); rollbar.warn(err) }
-        win.window.setProgressBar(-1)
+    } else {
+      win.window.on('show', () => {
         event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
       })
-    })
-  }
+    }
+  })
 })
 
 ipcMain.on('reload-window', function (event, id, state) {
@@ -696,50 +694,40 @@ function reloadWindow () {
 ///////    MIGRATE    //////////
 ////////////////////////////////
 
-function migrateIfNeeded (win, json, fileName, callback) {
+function migrateIfNeeded (json, fileName, callback) {
   if (!json.file) {
     callback(null, false, json)
     return
   }
   var m = new Migrator(json, fileName, json.file.version, app.getVersion())
-  if (m.areSameVersion() || m.noMigrations()) {
-    callback(null, false, json)
-  } else {
+  if (m.needsToMigrate()) {
     // not the same version, start migration process
     if (m.plottrBehindFile()) {
       dialog.showErrorBox(i18n('Update Plottr'), i18n("It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again."))
       callback(i18n('Update Plottr'), false, json)
     } else {
-      // ask user to try to migrate
-      dialog.showMessageBox(win, {type: 'question', buttons: [i18n('yes, update the file'), i18n('no, open the file as-is')], defaultId: 0, message: i18n('It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?'), detail: i18n('It will save a backup first which will be saved to the same folder as this file')}, (choice) => {
-        if (choice === 0) {
+      m.migrate((err, json) => {
+        if (err === 'backup') {
+          // try again
           m.migrate((err, json) => {
             if (err === 'backup') {
-              dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again."))
+              // open without migrating
               callback('problem saving backup', false, json)
             } else {
-              // tell the user that Plottr migrated versions and saved a backup file
-              dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr updated your file without a problem. Don't forget to save your file.")})
+              // save it and open
               callback(null, true, json)
+              saveFile(fileName, json, () => {})
             }
           })
         } else {
-          // open file without migrating
-          fs.writeFile(`${fileName}.backup`, JSON.stringify(json, null, 2), (err) => {
-            if (err) {
-              log.warn(err)
-              log.warn('file name: ' + fileName)
-              rollbar.warn(err, {fileName: fileName})
-              dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again."))
-              callback(err, false, json)
-            } else {
-              dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)")})
-              callback(null, false, json)
-            }
-          })
+          // save it and open
+          callback(null, true, json)
+          saveFile(fileName, json, () => {})
         }
       })
     }
+  } else {
+    callback(null, false, json)
   }
 }
 

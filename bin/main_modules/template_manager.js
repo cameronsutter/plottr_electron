@@ -13,8 +13,15 @@ const manifestURL = 'https://raw.githubusercontent.com/Plotinator/plottr_templat
 
 class TemplateManager {
 
-  templates = () => {
-    return templateStore.get(TEMPLATES_ROOT)
+  templates = (type) => {
+    const templatesById = templateStore.get(TEMPLATES_ROOT)
+    if (!type) return Object.values(templatesById)
+
+    const ids = Object.keys(templatesById)
+    return ids.reduce((acc, id) => {
+      if (templatesById[id].type === type) acc.push(templatesById[id])
+      return acc
+    }, [])
   }
 
   manifestReq = () => {
@@ -31,11 +38,11 @@ class TemplateManager {
     }
   }
 
-  fetchManifest = () => {
+  load = () => {
     if (SETTINGS.get('premiumFeatures')) {
       request(this.manifestReq(), (err, resp, fetchedManifest) => {
         if (!err && resp && resp.statusCode == 200) {
-          if (this.manifestIsNewer(fetchedManifest.version)) {
+          if (this.fetchedIsNewer(fetchedManifest.version)) {
             manifestStore.set(MANIFEST_ROOT, fetchedManifest)
             this.fetchTemplates()
           }
@@ -44,7 +51,7 @@ class TemplateManager {
     }
   }
 
-  manifestIsNewer = (fetchedVersion) => {
+  fetchedIsNewer = (fetchedVersion) => {
     return semverGt(fetchedVersion, manifestStore.get('manifest.version')) // is 1st param greater than 2nd?
   }
 

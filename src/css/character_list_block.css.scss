@@ -45,6 +45,15 @@
   width: 75%;
   float: right;
   cursor: pointer;
+  .character-list__character-notes {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      flex: 1;
+    }
+  }
+
   .character-list__character__edit-form {
     padding-left: 5px;
     display: flex;

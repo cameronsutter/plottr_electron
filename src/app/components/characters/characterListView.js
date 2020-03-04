@@ -15,6 +15,8 @@ import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
 import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
+import SETTINGS from '../../../common/utils/settings'
+import TemplatePicker from '../../../common/components/TemplatePicker'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -33,6 +35,7 @@ class CharacterListView extends Component {
       addAttrText: '',
       characterDetailId: id,
       visibleCharacters: visible,
+      showTemplatePicker: false,
     }
   }
 
@@ -120,6 +123,11 @@ class CharacterListView extends Component {
     this.props.actions.addCharacter()
   }
 
+  handleCreateNewCharacterFromTemplate = (templateData) => {
+    this.setState({showTemplatePicker: false})
+    this.props.actions.addCharacterWithTemplate(templateData)
+  }
+
   handleType = () => {
     const attr = ReactDOM.findDOMNode(this.refs.attrInput).value
     this.setState({addAttrText: attr})
@@ -163,9 +171,19 @@ class CharacterListView extends Component {
     </Popover>
     let sortGlyph = 'sort-by-attributes'
     if (this.props.ui.characterSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
+    let newFromTemplate = null
+    if (SETTINGS.get('premiumFeatures')) {
+      newFromTemplate = <NavItem>
+        <Button bsSize='small' onClick={() => this.setState({showTemplatePicker: true})}><Glyphicon glyph='plus-sign' /> {i18n('New from Template')}</Button>
+      </NavItem>
+    }
     return (
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
+          <NavItem>
+            <Button bsSize='small' onClick={this.handleCreateNewCharacter}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+          </NavItem>
+          {newFromTemplate}
           <NavItem>
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>
@@ -245,6 +263,15 @@ class CharacterListView extends Component {
     </Modal>)
   }
 
+  renderTemplatePicker () {
+    return <TemplatePicker
+      type='characters'
+      isOpen={this.state.showTemplatePicker}
+      close={() => this.setState({showTemplatePicker: false})}
+      onChooseTemplate={this.handleCreateNewCharacterFromTemplate}
+    />
+  }
+
   render () {
     let klasses = 'secondary-text'
     if (this.props.ui.darkMode) klasses += ' darkmode'
@@ -252,6 +279,7 @@ class CharacterListView extends Component {
       <div className='character-list container-with-sub-nav'>
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
+        {this.renderTemplatePicker()}
         <h1 className={klasses}>{i18n('Characters')}</h1>
         {this.renderCharacterDetails()}
         {this.renderCharacters()}

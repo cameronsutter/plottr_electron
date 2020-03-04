@@ -60,6 +60,7 @@ export const DELETE_TAG = 'DELETE_TAG'
 
 // characters actions
 export const ADD_CHARACTER = 'ADD_CHARACTER'
+export const ADD_CHARACTER_WITH_TEMPLATE = 'ADD_CHARACTER_WITH_TEMPLATE'
 export const EDIT_CHARACTER = 'EDIT_CHARACTER'
 export const DELETE_CHARACTER = 'DELETE_CHARACTER'
 

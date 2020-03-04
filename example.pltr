@@ -613,6 +613,121 @@
       "noteIds": [],
       "notes": "she is **really** cool",
       "race": "Bramorphian"
+    },
+    {
+      "age": "",
+      "cards": [],
+      "color": null,
+      "description": "Main Character",
+      "family": "",
+      "id": 6,
+      "name": "Not Sure Yet",
+      "noteIds": [],
+      "notes": "He's been locked in the mansion his whole life and can only visit 3 rooms",
+      "race": ""
+    },
+    {
+      "age": "",
+      "cards": [],
+      "categoryId": "",
+      "color": null,
+      "description": "He's old and cranky",
+      "family": "",
+      "id": 7,
+      "name": "Father of MC",
+      "noteIds": [],
+      "notes": "Could be a stepdad or a mean uncle or something too. He must have some sort of dark past or some good reason to keep the kid confined to those 3 rooms. He has to be harsh to make sure the kid doesn't get out of line",
+      "race": "",
+      "templates": [
+        {
+          "attributes": [
+            {
+              "name": "Goal — internal",
+              "type": "text",
+              "value": "this is his internal goal"
+            },
+            {
+              "name": "Motivation — internal",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "Conflict — internal",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "Goal — external",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "Motivation — external",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "Conflict — external",
+              "type": "text",
+              "value": ""
+            }
+          ],
+          "id": "ch1",
+          "version": "2020.3.4"
+        }
+      ]
+    },
+    {
+      "age": "",
+      "cards": [],
+      "categoryId": "",
+      "color": null,
+      "description": "Main Character",
+      "family": "",
+      "id": 8,
+      "name": "Not sure Yet",
+      "noteIds": [],
+      "notes": "",
+      "race": "",
+      "templates": [
+        {
+          "attributes": [
+            {
+              "name": "Goal — internal",
+              "type": "text",
+              "value": "Nothing"
+            },
+            {
+              "name": "Motivation — internal",
+              "type": "text",
+              "value": "Doesn't want to make his [caregiver] angry"
+            },
+            {
+              "name": "Conflict — internal",
+              "type": "text",
+              "value": "wants to see more of the mansion"
+            },
+            {
+              "name": "Goal — external",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "Motivation — external",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "Conflict — external",
+              "type": "text",
+              "value": ""
+            }
+          ],
+          "id": "ch1",
+          "value": "",
+          "version": "2020.3.4"
+        }
+      ]
     }
   ],
   "customAttributes": {
@@ -632,7 +747,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "2020.2.11"
+    "version": "2020.3.2"
   },
   "lines": [
     {
@@ -1074,7 +1189,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

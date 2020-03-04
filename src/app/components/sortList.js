@@ -25,6 +25,7 @@ class SortList extends Component {
     let direction = sort[1]
     return this.props.items.map(i => {
       let arrow = null
+      i = i.split(':#:')[0]
       let item = <span className='not-active'>{i}</span>
       if (i === attrName) {
         item = <em>{i}</em>

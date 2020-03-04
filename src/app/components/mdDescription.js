@@ -65,7 +65,7 @@ class MDdescription extends Component {
   render () {
     // darkmode?
     if (this.props.useRCE) {
-      return <textarea rows='20' ref='descriptionInput' />
+      return <textarea rows={this.props.numOfRows || '20'} ref='descriptionInput' />
     } else {
       let html = this.makeLabels(md.makeHtml(this.props.description))
       return <div
@@ -84,6 +84,7 @@ MDdescription.propTypes = {
   useRCE: PropTypes.bool,
   autofocus: PropTypes.bool,
   darkMode: PropTypes.bool.isRequired,
+  numOfRows: PropTypes.string,
 }
 
 export default MDdescription

@@ -2,6 +2,7 @@
   "name": "plottr",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
+  "homepage": "www.myplottr.com",
   "private": true,
   "readme": "Copyright 2016-2020 C. Louis S. (Cameron Sutter)",
   "version": "2020.3.2",

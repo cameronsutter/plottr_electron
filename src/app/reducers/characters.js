@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
+import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
   ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER } from '../constants/ActionTypes'
@@ -18,6 +18,22 @@ export default function characters (state = initialState, action) {
         name: action.name,
         description: action.description,
         notes: action.notes
+      }]
+
+    case ADD_CHARACTER_WITH_TEMPLATE:
+      const templateData = {
+        id: action.templateData.id,
+        version: action.templateData.version,
+        attributes: action.templateData.attributes,
+        value: ''
+      }
+      return [...state, {
+        ...character,
+        id: characterId(state),
+        name: action.name,
+        description: action.description,
+        notes: action.notes,
+        templates: [templateData]
       }]
 
     case EDIT_CHARACTER:

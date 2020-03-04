@@ -44,7 +44,9 @@ export const character = {
   notes: '',
   color: null,
   cards: [],
-  noteIds: []
+  noteIds: [],
+  templates: [],
+  categoryId: ''
 }
 
 export const place = {
@@ -71,7 +73,8 @@ export const card = {
   description: '',
   tags: [],
   characters: [],
-  places: []
+  places: [],
+  templates: [],
 }
 
 export const line = {

@@ -248,7 +248,7 @@ app.on('ready', () => {
   })
 
   checkLicense(() => {
-    templateManager.fetchManifest()
+    templateManager.load()
     loadMenu()
   })
 })

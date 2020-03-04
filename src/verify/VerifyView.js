@@ -7,7 +7,7 @@ import { ipcRenderer } from 'electron'
 import i18n from 'format-message'
 import { machineIdSync } from 'node-machine-id'
 import { getLicenseInfo } from './verifyRequests'
-import SETTINGS from '../settings'
+import SETTINGS from '../common/utils/settings'
 
 const useEDD = process.env.useEDD === 'true'
 

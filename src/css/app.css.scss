@@ -17,6 +17,7 @@
 @import "custom_attr_block";
 @import "verify_window";
 @import "expired_window";
+@import "template_picker";
 
 @import "vars";
 @import "colors";
@@ -92,6 +93,11 @@ h3.popover-title {
 
 .blue-background {
   background-color: $blue;
+}
+
+.CodeMirror {
+  overflow-y: auto;
+  min-height: 100px;
 }
 
 .CodeMirror-wrap {

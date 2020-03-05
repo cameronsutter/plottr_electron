@@ -16,7 +16,7 @@ import CharacterView from 'components/characters/characterView'
 import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
 import SETTINGS from '../../../common/utils/settings'
-import TemplatePicker from '../../../common/components/TemplatePicker'
+import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -123,7 +123,7 @@ class CharacterListView extends Component {
     this.props.actions.addCharacter()
   }
 
-  handleCreateNewCharacterFromTemplate = (templateData) => {
+  handleChooseTemplate = (templateData) => {
     this.setState({showTemplatePicker: false})
     this.props.actions.addCharacterWithTemplate(templateData)
   }
@@ -268,7 +268,7 @@ class CharacterListView extends Component {
       type='characters'
       isOpen={this.state.showTemplatePicker}
       close={() => this.setState({showTemplatePicker: false})}
-      onChooseTemplate={this.handleCreateNewCharacterFromTemplate}
+      onChooseTemplate={this.handleChooseTemplate}
     />
   }
 

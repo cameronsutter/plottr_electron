@@ -1,7 +1,11 @@
-import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE } from 'constants/ActionTypes'
+import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE } from 'constants/ActionTypes'
 
 export function addLine () {
   return { type: ADD_LINE }
+}
+
+export function addLinesFromTemplate (cards, lineIds, templateName) {
+  return { type: ADD_LINES_FROM_TEMPLATE, cards, lineIds, templateName }
 }
 
 export function editLineTitle (id, title) {

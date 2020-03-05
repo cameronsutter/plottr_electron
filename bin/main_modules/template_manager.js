@@ -46,6 +46,11 @@ class TemplateManager {
             manifestStore.set(MANIFEST_ROOT, fetchedManifest)
             this.fetchTemplates()
           }
+          // else {
+          //   console.info('no new template manifest', fetchedManifest.version)
+          // }
+        } else {
+          console.warn(resp.statusCode, err)
         }
       })
     }

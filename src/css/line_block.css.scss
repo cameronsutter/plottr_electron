@@ -88,6 +88,34 @@ $title_width: 200px;
     margin-left: 35px;
     margin-bottom: 50px;
   }
+  .line-list__append-line__double {
+    margin-left: 35px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      padding: 10px 5px;
+      color: $blue-5;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 3px dashed $blue-8;
+      &:hover {
+        background-color: $blue-8;
+      }
+    }
+    div.template {
+      @include application-text;
+      color: $blue-4;
+      border-left: 1px dashed $blue-8;
+      text-align: center;
+    }
+    div.non-template {
+      border-right: none;
+    }
+  }
 }
 
 .line-list__append-line:hover {

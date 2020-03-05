@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { ADD_CARD, EDIT_CARD_DETAILS,
+import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   DELETE_LINE, DELETE_SCENE,
   EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE,
   DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
@@ -25,6 +25,9 @@ export default function cards (state, action) {
         characters: action.card.characters,
         places: action.card.places
       }, ...state]
+
+    case ADD_LINES_FROM_TEMPLATE:
+      return [...action.cards, ...state]
 
     case EDIT_CARD_DETAILS:
       var newCardDetails = {

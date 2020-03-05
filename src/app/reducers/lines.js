@@ -1,4 +1,5 @@
-import { ADD_LINE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
+import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE,
+  EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { line } from 'store/initialState'
 import { newFileLines } from 'store/newFileState'
 import { lineId, linePosition, positionReset } from 'store/newIds'
@@ -15,6 +16,17 @@ export default function lines (state = initialState, action) {
         color: nextColor(state.length),
         position: linePosition(state)
       }, ...state]
+
+    case ADD_LINES_FROM_TEMPLATE:
+      const nextPosition = linePosition(state)
+      return [...action.lineIds.map((id, idx) => {
+        return {
+          id: id,
+          title: action.templateName,
+          color: nextColor(state.length + idx),
+          position: nextPosition + idx,
+        }
+      }), ...state]
 
     case EDIT_LINE_TITLE:
       return state.map(line =>

@@ -10,6 +10,7 @@
 .template-picker__wrapper {
   display: flex;
   justify-content: space-between;
+  overflow: auto;
 
   .template-picker__list {
     h1 {

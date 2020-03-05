@@ -3,7 +3,9 @@ import PropTypes from 'react-proptypes'
 import Modal from 'react-modal'
 import i18n from 'format-message'
 import { ButtonToolbar, Button } from 'react-bootstrap'
-import listTemplates from '../utils/templates'
+import listTemplates from '../../utils/templates'
+import CharacterTemplateDetails from './CharacterTemplateDetails'
+import PlotlineTemplateDetails from './PlotlineTemplateDetails'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -31,27 +33,22 @@ export default class TemplatePicker extends Component {
     const template = this.selectedTemplate()
     if (!template) return null
 
-    const attrs = template.attributes.map(attr => {
-      return <tr key={attr.name}>
-        <td>{attr.name}</td>
-        <td>{attr.type}</td>
-      </tr>
-    })
+    let details = null
+    switch (this.props.type) {
+      case 'characters':
+        details = <CharacterTemplateDetails template={template}/>
+        break
+      case 'plotlines':
+        details = <PlotlineTemplateDetails template={template}/>
+        break
+    }
 
     return <div className='panel panel-primary'>
       <div className='panel-heading'>
         <h3 className='panel-title'>{template.name}</h3>
         <p>{template.description}</p>
       </div>
-      <div className='panel-body'>
-        <h5 className='text-center'>{i18n('Attributes')}</h5>
-        <table className='table table-striped'>
-          <thead>
-            <tr><th>{i18n('Name')}</th><th>{i18n('Type')}</th></tr>
-          </thead>
-          <tbody>{attrs}</tbody>
-        </table>
-      </div>
+      {details}
     </div>
   }
 

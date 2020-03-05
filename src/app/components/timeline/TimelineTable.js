@@ -3,7 +3,6 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Row, Cell } from 'react-sticky-table'
-import { Glyphicon } from 'react-bootstrap'
 import CardCell from 'components/timeline/CardCell'
 import CardSVGline from 'components/timeline/CardSVGline'
 import BlankCard from 'components/timeline/BlankCard'
@@ -16,6 +15,7 @@ import * as LineActions from 'actions/lines'
 import * as CardActions from 'actions/cards'
 import { reorderList, insertScene } from 'helpers/lists'
 import SceneTitleCell from 'components/timeline/SceneTitleCell'
+import AddLineRow from './AddLineRow'
 
 class TimelineTable extends Component {
 
@@ -118,20 +118,7 @@ class TimelineTable extends Component {
         <LineTitleCell line={line} handleReorder={this.handleReorderLines}/>
         { this.renderCardsByScene(line, sceneMap, labelMap) }
       </Row>
-    }).concat(
-      <Row key='insert-line'>
-        <Cell>
-          <div
-            className='line-list__append-line'
-            onClick={() => this.props.lineActions.addLine()}
-          >
-            <div className='line-list__append-line-wrapper'>
-              <Glyphicon glyph='plus' />
-            </div>
-          </div>
-        </Cell>
-      </Row>
-    )
+    }).concat(<AddLineRow key='insert-line'/>)
   }
 
   renderScenes () {

@@ -10,7 +10,7 @@
   },
   "file": {
     "dirty": true,
-    "fileName": "/Users/csutter/github/plottr_electron/bin/empty.pltr",
+    "fileName": "/Users/sparrowhawk/github/plottr_electron/newtest.pltr",
     "loaded": true,
     "version": "2020.3.4"
   },
@@ -43,7 +43,7 @@
     "orientation": "horizontal",
     "placeFilter": null,
     "placeSort": "name~asc",
-    "zoomState": null,
-    "zoomIndex": 4
+    "zoomIndex": 4,
+    "zoomState": null
   }
 }

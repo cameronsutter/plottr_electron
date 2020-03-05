@@ -53,7 +53,9 @@ export default class TemplatePicker extends Component {
   }
 
   renderTemplateList () {
-    if (!this.props.isOpen) return null
+    // modal but not open
+    if (this.props.modal && !this.props.isOpen) return null
+
     return this.templates.map(template => {
       let klasses = 'list-group-item'
       if (template.id == this.state.selectedId) klasses += ' selected'
@@ -63,37 +65,46 @@ export default class TemplatePicker extends Component {
     })
   }
 
-  render () {
-    if (this.props.darkMode) modalStyles.content.backgroundColor = '#888'
-    return <Modal isOpen={this.props.isOpen} onRequestClose={this.props.close} style={modalStyles}>
-      <div className='template-picker__dialog-wrapper'>
-        <div className='template-picker__wrapper'>
-          <div className='template-picker__list'>
-            <h1 className=''>{i18n('Templates')}</h1>
-            <ul className='list-group'>
-              {this.renderTemplateList()}
-            </ul>
-          </div>
-          <div className='template-picker__details'>
-            {this.renderTemplateDetails()}
-          </div>
+  renderBody () {
+    return <div className='template-picker__dialog-wrapper'>
+      <div className='template-picker__wrapper'>
+        <div className='template-picker__list'>
+          <h1 className=''>{i18n('Templates')}</h1>
+          <ul className='list-group'>
+            {this.renderTemplateList()}
+          </ul>
         </div>
-        <ButtonToolbar className='card-dialog__button-bar'>
-          <Button onClick={this.props.close}>
-            {i18n('Cancel')}
-          </Button>
-          <Button bsStyle='primary' onClick={this.chooseTemplate} disabled={!this.state.selectedId}>
-            {i18n('Choose')}
-          </Button>
-        </ButtonToolbar>
+        <div className='template-picker__details'>
+          {this.renderTemplateDetails()}
+        </div>
       </div>
-    </Modal>
+      <ButtonToolbar className='card-dialog__button-bar'>
+        <Button onClick={this.props.close}>
+          {i18n('Cancel')}
+        </Button>
+        <Button bsStyle='primary' onClick={this.chooseTemplate} disabled={!this.state.selectedId}>
+          {i18n('Choose')}
+        </Button>
+      </ButtonToolbar>
+    </div>
+  }
+
+  render () {
+    if (this.props.modal) {
+      if (this.props.darkMode) modalStyles.content.backgroundColor = '#888'
+      return <Modal isOpen={this.props.isOpen} onRequestClose={this.props.close} style={modalStyles}>
+        {this.renderBody()}
+      </Modal>
+    } else {
+      return this.renderBody()
+    }
   }
 
   static propTypes = {
-    isOpen: PropTypes.bool.isRequired,
+    modal: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
     onChooseTemplate: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool,
     type: PropTypes.string,
     darkMode: PropTypes.bool,
   }

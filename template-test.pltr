@@ -9,9 +9,9 @@
     "scenes": []
   },
   "file": {
-    "dirty": true,
+    "dirty": false,
     "fileName": "/Users/csutter/github/plottr_electron/bin/empty.pltr",
-    "loaded": true,
+    "loaded": false,
     "version": "2020.3.4"
   },
   "lines": [
@@ -26,9 +26,39 @@
   "places": [],
   "scenes": [
     {
+      "id": 7,
+      "position": 6,
+      "title": "Resolution"
+    },
+    {
+      "id": 6,
+      "position": 5,
+      "title": "Plot Turn 2"
+    },
+    {
+      "id": 5,
+      "position": 4,
+      "title": "Pinch 2"
+    },
+    {
+      "id": 4,
+      "position": 3,
+      "title": "Midpoint"
+    },
+    {
+      "id": 3,
+      "position": 2,
+      "title": "Pinch 1"
+    },
+    {
+      "id": 2,
+      "position": 1,
+      "title": "Plot Turn 1"
+    },
+    {
       "id": 1,
       "position": 0,
-      "title": "Scene 1"
+      "title": "Hook"
     }
   ],
   "storyName": "My story's name",

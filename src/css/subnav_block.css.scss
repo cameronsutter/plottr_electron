@@ -11,6 +11,8 @@
 .subnav__container {
   background-color: $gray-8;
   border-radius: 0;
+  border-left: none;
+  border-right: none;
   position: fixed;
   top: 50px;
   left: 0px;

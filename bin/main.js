@@ -39,6 +39,7 @@ var windows = []
 var aboutWindow = null
 var verifyWindow = null
 var expiredWindow = null
+var dashboardWindow = null
 
 var fileToOpen = null
 var dontquit = false
@@ -125,7 +126,6 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
       backupFile(winObj.fileName, state, () => {})
       if (err) {
         log.warn(err)
-        log.warn('file name: ' + winObj.fileName)
         rollbar.warn(err, {fileName: winObj.fileName})
         gracefullyNotSave()
       } else {
@@ -229,6 +229,12 @@ ipcMain.on('extend-trial', (event, days) => {
   })
 })
 
+ipcMain.on('chose-template', (event, template) => {
+  const empty = emptyFileContents()
+  const data = Object.assign({}, empty, template.templateData)
+  askToCreateFile(data)
+})
+
 app.on('ready', () => {
   i18n.setup({
     translations: require('../locales'),
@@ -305,13 +311,14 @@ function checkLicense (callback) {
   })
 }
 
-function saveFile (fileName, data, callback) {
-  var stringState = JSON.stringify(data, null, 2)
-  fs.writeFile(fileName, stringState, callback)
+function saveFile (fileName, jsonData, callback) {
+  var stringData = JSON.stringify(jsonData, null, 2)
+  fs.writeFile(fileName, stringData, callback)
 }
 
 function displayFileName (path) {
   var stringBase = 'Plottr'
+  if (process.env.NODE_ENV == 'dev') stringBase += ' (DEV)'
   if (TRIALMODE) stringBase += ' — ' + i18n('TRIAL Version') + ' (' + i18n('{days} days remaining', {days: DAYS_LEFT}) + ')'
   var matches = path.match(/.*\/(.*\.pltr)/)
   if (matches) stringBase += ` — ${matches[1]}`
@@ -366,19 +373,22 @@ function askToSave (win, state, fileName, callback) {
   })
 }
 
-function askToCreateFile () {
+function askToCreateFile (data = {}) {
   dialog.showSaveDialog({title: i18n('Where would you like to start your new file?')}, function (fileName) {
     if (fileName) {
       var fullName = fileName + '.pltr'
-      openWindow(fullName, true)
-      saveFile(fullName, {}, function (err) {
+      if (!Object.keys(data).length) {
+        // no data
+        data = emptyFileContents()
+      }
+      saveFile(fullName, data, function (err) {
         if (err) {
           log.warn(err)
-          log.warn('file name: ' + fullName)
           rollbar.warn(err, {fileName: fullName})
           dialog.showErrorBox(i18n('Saving failed'), i18n("Creating your file didn't work. Let's try again."))
-          askToCreateFile()
+          askToCreateFile(data)
         } else {
+          openWindow(fullName, data)
           storage.set(recentKey, fullName, function (err) {
             if (err) console.log(err)
             app.addRecentDocument(fullName)
@@ -412,7 +422,7 @@ function askToOpenFile () {
   })
 }
 
-function openWindow (fileName, newFile = false) {
+function openWindow (fileName, jsonData) {
   // Load the previous state with fallback to defaults
   let stateKeeper = windowStateKeeper({
     defaultWidth: 1200,
@@ -485,10 +495,7 @@ function openWindow (fileName, newFile = false) {
   newWindow.setProgressBar(0.4)
 
   try {
-    var json = {}
-    if (!newFile) {
-      json = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
-    }
+    var json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     newWindow.setProgressBar(0.5)
     app.addRecentDocument(fileName)
     storage.set(recentKey, fileName, error => {
@@ -507,7 +514,6 @@ function openWindow (fileName, newFile = false) {
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {
     log.warn(err)
-    log.warn('file name: ' + fileName)
     rollbar.warn(err, {fileName: fileName})
     askToOpenOrCreate()
     removeRecentFile(fileName)
@@ -564,20 +570,20 @@ function createAndOpenEmptyFile () {
   } catch (error) {
     log.warn(error)
   } finally {
-    fs.writeFile(fileName, emptyFileContents(), function(err) {
+    const data = emptyFileContents()
+    saveFile(fileName, data, function(err) {
       if (err) {
         log.warn(err)
         rollbar.warn(err)
       } else {
-        openWindow(fileName)
+        openWindow(fileName, data)
       }
     })
   }
 }
 
 function emptyFileContents () {
-  let data = require('./empty_file.json')
-  return JSON.stringify(data, null, 2)
+  return require('./empty_file.json')
 }
 
 function openAboutWindow () {
@@ -624,6 +630,22 @@ function openExpiredWindow () {
   })
   expiredWindow.on('close', function () {
     expiredWindow = null
+  })
+}
+
+function openDashboardWindow () {
+  dontquit = true
+  const dashboardFile = path.join(filePrefix, 'dashboard.html')
+  dashboardWindow = new BrowserWindow({frame: false, height: 525, width: 800, show: false, webPreferences: {nodeIntegration: true}})
+  dashboardWindow.loadURL(dashboardFile)
+  if (SETTINGS.get('forceDevTools')) {
+    dashboardWindow.openDevTools()
+  }
+  dashboardWindow.once('ready-to-show', function() {
+    this.show()
+  })
+  dashboardWindow.on('close', function () {
+    dashboardWindow = null
   })
 }
 
@@ -880,8 +902,15 @@ function buildFileMenu () {
   var submenu = [].concat({
     label: i18n('New') + '...',
     accelerator: 'CmdOrCtrl+N',
-    click: askToCreateFile
-  }, {
+    click: () => { askToCreateFile() },
+  })
+  if (SETTINGS.get('premiumFeatures')) {
+    submenu = [].concat(submenu, {
+      label: i18n('New from Template') + '...',
+      click: openDashboardWindow
+    })
+  }
+  submenu = [].concat(submenu, {
     label: i18n('Open') + '...',
     accelerator: 'CmdOrCtrl+O',
     click: askToOpenFile
@@ -900,7 +929,6 @@ function buildFileMenu () {
         saveFile(winObj.state.file.fileName, winObj.state, function (err) {
           if (err) {
             log.warn(err)
-            log.warn('file name: ' + winObj.state.file.fileName)
             rollbar.warn(err, {fileName: winObj.state.file.fileName})
             gracefullyNotSave()
           } else {
@@ -928,11 +956,10 @@ function buildFileMenu () {
             saveFile(fullName, newState, function (err) {
               if (err) {
                 log.warn(err)
-                log.warn('file name: ' + fullName)
                 rollbar.warn(err, {fileName: fullName})
                 gracefullyNotSave()
               } else {
-                openWindow(fullName)
+                openWindow(fullName, newState)
                 win.close()
               }
             })

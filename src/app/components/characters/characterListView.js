@@ -265,6 +265,7 @@ class CharacterListView extends Component {
 
   renderTemplatePicker () {
     return <TemplatePicker
+      modal={true}
       type='characters'
       isOpen={this.state.showTemplatePicker}
       close={() => this.setState({showTemplatePicker: false})}

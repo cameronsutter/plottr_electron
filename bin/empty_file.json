@@ -12,12 +12,12 @@
     "dirty": false,
     "fileName": "/Users/csutter/github/plottr_electron/bin/empty.pltr",
     "loaded": false,
-    "version": "2020.3.2"
+    "version": "2020.3.4"
   },
   "lines": [
     {
       "color": "#6cace4",
-      "id": 0,
+      "id": 1,
       "position": 0,
       "title": "Main Plot"
     }
@@ -26,7 +26,7 @@
   "places": [],
   "scenes": [
     {
-      "id": 0,
+      "id": 1,
       "position": 0,
       "title": "Scene 1"
     }

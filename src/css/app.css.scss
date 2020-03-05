@@ -36,6 +36,10 @@
 body {
   @include body-text-font;
   padding-top: 55px;
+  background: $gray-9 url("../../icons/grid_background.jpg");
+  // background-image: url("../../icons/grid_background.jpg");
+  background-blend-mode: color-burn;
+  background-size: 3%;
 }
 
 body.darkmode {

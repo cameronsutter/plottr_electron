@@ -43,7 +43,7 @@ module.exports = {
       test: /\.(png|jpg|gif)$/,
       loader: 'url-loader',
       query: {
-        limit: 65536,
+        limit: 1048576,
       },
     }]
   },

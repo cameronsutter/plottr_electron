@@ -30,7 +30,18 @@
 // Give everything in 'yield' margin to separate it.
 #react-root {
   margin: 0px 0px 0px 0px;
-  animation: fadein 1.5s;
+  // animation: fadein 0.5s;
+
+  #temporary-inner {
+    background: url("../../icons/mountain_background.jpg");
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    img {
+      animation: fadein 1.5s;
+      margin-top: 10px;
+    }
+  }
 }
 
 body {

@@ -10,6 +10,7 @@ import cards from './cards'
 import lines from './lines'
 import customAttributes from './customAttributes'
 import notes from './notes'
+import images from './images'
 
 const rootReducer = combineReducers({
   ui,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   cards,
   lines,
   customAttributes,
-  notes
+  notes,
+  images
 })
 
 export default rootReducer

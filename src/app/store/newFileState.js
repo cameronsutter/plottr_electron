@@ -11,7 +11,7 @@ i18n.setup({
 // data structure
 
 export const newFileScenes = [{
-  id: 0,
+  id: 1,
   title: i18n('Scene 1'),
   position: 0
 }]
@@ -47,7 +47,7 @@ export const newFileTags = []
 export const newFileCards = []
 
 export const newFileLines = [{
-  id: 0,
+  id: 1,
   color: '#6cace4',
   title: i18n('Main Plot'),
   position: 0
@@ -62,3 +62,4 @@ export const newFileCustomAttributes = {
 }
 
 export const newFileNotes = []
+export const newFileImages = {}

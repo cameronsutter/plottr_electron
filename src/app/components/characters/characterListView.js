@@ -5,7 +5,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
-  ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+  ControlLabel, Popover, OverlayTrigger, Alert, Image } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
@@ -203,17 +203,31 @@ class CharacterListView extends Component {
     )
   }
 
+  renderVisibleCharacters = () => {
+    return this.state.visibleCharacters.map((ch, idx) => {
+      let img = null
+      if (ch.imageId && this.props.images[ch.imageId]) {
+        img = <div className='character-list__item-inner__image-wrapper'>
+          <Image src={this.props.images[ch.imageId].data} responsive rounded/>
+        </div>
+      }
+      return <div key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>
+        <div className='character-list__item-inner'>
+          {img}
+          <div>
+            <h6 className='list-group-item-heading'>{ch.name}</h6>
+            <p className='list-group-item-text'>{ch.description.substr(0, 100)}</p>
+          </div>
+        </div>
+      </div>
+    })
+  }
+
   renderCharacters () {
     let klasses = 'character-list__list list-group'
     if (this.props.ui.darkMode) klasses += ' darkmode'
-    const characters = this.state.visibleCharacters.map((ch, idx) =>
-      <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>
-        <h6 className='list-group-item-heading'>{ch.name}</h6>
-        <p className='list-group-item-text'>{ch.description.substr(0, 100)}</p>
-      </a>
-    )
     return (<div className={klasses}>
-        {characters}
+        { this.renderVisibleCharacters() }
         <a href='#' key={'new-character'} className='character-list__new list-group-item' onClick={this.handleCreateNewCharacter} >
           <Glyphicon glyph='plus' />
         </a>
@@ -295,6 +309,7 @@ CharacterListView.propTypes = {
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -302,6 +317,7 @@ function mapStateToProps (state) {
     characters: state.characters,
     customAttributes: state.customAttributes['characters'],
     ui: state.ui,
+    images: state.images,
   }
 }
 

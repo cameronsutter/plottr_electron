@@ -10,7 +10,7 @@ i18n.setup({
 // data structure
 
 export const scene = {
-  id: 0,
+  id: 1,
   title: '',
   position: 0
 }
@@ -38,7 +38,7 @@ export const file = {
 export const storyName = i18n('My awesome story')
 
 export const character = {
-  id: 0,
+  id: 1,
   name: '',
   description: '',
   notes: '',
@@ -47,11 +47,12 @@ export const character = {
   noteIds: [],
   templates: [],
   tags: [],
-  categoryId: ''
+  categoryId: '',
+  imageId: null,
 }
 
 export const place = {
-  id: 0,
+  id: 1,
   name: '',
   description: '',
   notes: '',
@@ -60,31 +61,33 @@ export const place = {
   noteIds: [],
   templates: [],
   tags: [],
+  imageId: null,
 }
 
 export const tag = {
-  id: 0,
+  id: 1,
   title: '',
   color: null
 }
 
 export const card = {
-  id: 0,
-  lineId: 0,
-  sceneId: 0,
+  id: 1,
+  lineId: 1,
+  sceneId: 1,
   title: i18n('a new card'),
   description: '',
   tags: [],
   characters: [],
   places: [],
   templates: [],
+  imageId: null,
 }
 
 export const line = {
-  id: 0,
+  id: 1,
   color: '#6cace4',
   title: '',
-  position: 0
+  position: 0,
 }
 
 export const customAttributes = {
@@ -96,7 +99,7 @@ export const customAttributes = {
 }
 
 export const note = {
-  id: 0,
+  id: 1,
   title: '',
   content: '',
   tags: [],
@@ -104,4 +107,12 @@ export const note = {
   places: [],
   lastEdited: new Date().getTime(),
   templates: [],
+  imageId: null,
+}
+
+export const image = {
+  id: 1,
+  name: '',
+  path: '',
+  data: '',
 }

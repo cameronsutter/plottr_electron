@@ -5,10 +5,16 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button, FormControl, FormGroup,
-  ControlLabel, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+  ControlLabel, HelpBlock, Tooltip, OverlayTrigger, Image } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
+import * as ImageActions from 'actions/images'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import SETTINGS from '../../../common/utils/settings'
+import { resizeToMaxWidth } from '../../helpers/images'
+import { imageId } from '../../store/newIds'
+
+const reader = new FileReader()
 
 class CharacterView extends Component {
   constructor (props) {
@@ -30,6 +36,8 @@ class CharacterView extends Component {
       notes: props.character.notes,
       description: description,
       templateAttrs: templateAttrs,
+      newImageData: null,
+      newImageId: null,
     }
   }
 
@@ -68,11 +76,34 @@ class CharacterView extends Component {
     this.setState({templateAttrs})
   }
 
+  handleUploadFile = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0]
+      reader.onload = (loadedFile => {
+        return e => {
+          resizeToMaxWidth(e.target.result, (data) => {
+            this.setState({
+              newImageData: data,
+              newImageId: imageId(this.props.images)
+            })
+            this.props.imageActions.addImage({data, name: file.name, path: file.path})
+          })
+        }
+      })(file)
+
+      // Read the image file as a data URL
+      reader.readAsDataURL(file)
+    }
+  }
+
   saveEdit = () => {
     var name = ReactDOM.findDOMNode(this.refs.nameInput).value || this.props.character.name
     var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
     var attrs = {}
+    if (this.state.newImageId) {
+      attrs.imageId = this.state.newImageId
+    }
     this.props.customAttributes.forEach(attr => {
       const [attrName, attrType] = attr.split(':#:')
       if (attrType == 'paragraph') {
@@ -102,6 +133,37 @@ class CharacterView extends Component {
     if (window.confirm(text)) {
       this.props.actions.deleteCharacter(this.props.character.id)
     }
+  }
+
+  renderEditingImage () {
+    if (!SETTINGS.get('premiumFeatures')) return null
+    const { character, images } = this.props
+
+    let img = null
+    let help = <HelpBlock>{i18n('Upload an image to use for this character')}</HelpBlock>
+    if (character.imageId && images[character.imageId]) {
+      img = <Image src={images[character.imageId].data} responsive rounded />
+      help = <HelpBlock>{i18n('Upload to change this character\'s image')}</HelpBlock>
+    }
+    if (this.state.newImageData) {
+      img = <Image src={this.state.newImageData} responsive rounded />
+    }
+    return <FormGroup>
+      <ControlLabel>{i18n('Character Image')}</ControlLabel>
+      <div className='character-list__character__edit-image-wrapper'>
+        <div className='character-list__character__edit-image'>
+          {img ? img : null}
+        </div>
+        <div>
+          <FormControl
+            type='file'
+            ref='imageInput'
+            onChange={this.handleUploadFile}
+          />
+          { help }
+        </div>
+      </div>
+    </FormGroup>
   }
 
   renderEditingCustomAttributes () {
@@ -172,11 +234,16 @@ class CharacterView extends Component {
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}
                 defaultValue={character.name} />
+            </FormGroup>
+            <FormGroup>
               <ControlLabel>{i18n('Short Description')}</ControlLabel>
               <FormControl type='text' ref='descriptionInput'
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}
                 defaultValue={character.description} />
+            </FormGroup>
+            { this.renderEditingImage() }
+            <FormGroup>
               <ControlLabel>{i18n('Notes')}</ControlLabel>
               <MDdescription
                 description={character.notes}
@@ -185,8 +252,8 @@ class CharacterView extends Component {
                 labels={{}}
                 darkMode={false}
               />
-              { this.renderEditingTemplates() }
             </FormGroup>
+            { this.renderEditingTemplates() }
           </div>
           <div className='character-list__inputs__custom'>
             {this.renderEditingCustomAttributes()}
@@ -260,10 +327,10 @@ class CharacterView extends Component {
     </OverlayTrigger>
   }
 
-  renderCharacter () {
-    let klasses = 'character-list__character'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
-    const { character } = this.props
+  renderLeftSide (shouldRender) {
+    if (!shouldRender) return null
+
+    const { character, images } = this.props
     const customAttrNotes = this.props.customAttributes.map((attr, idx) => {
       const [attrName, attrType] = attr.split(':#:')
       let desc = <dd>{character[attrName]}</dd>
@@ -281,6 +348,21 @@ class CharacterView extends Component {
         {desc}
       </dl>
     })
+
+    const hasImage = character.imageId && images[character.imageId]
+    let imageData = null
+    if (hasImage) imageData = images[character.imageId].data
+
+    return <div>
+      {hasImage ? <Image rounded responsive src={imageData} /> : null}
+      {customAttrNotes}
+    </div>
+  }
+
+  renderCharacter () {
+    let klasses = 'character-list__character'
+    if (this.props.ui.darkMode) klasses += ' darkmode'
+    const { character, images } = this.props
     const templateNotes = character.templates.flatMap(t => {
       return t.attributes.map(attr => {
         let val = <dd>{attr.value}</dd>
@@ -299,10 +381,12 @@ class CharacterView extends Component {
         </dl>
       })
     })
+    const hasImage = character.imageId && images[character.imageId]
     return (
       <div className={klasses} onClick={() => this.setState({editing: true})}>
         <h4 className='text-center secondary-text'>{character.name}</h4>
         <div className='character-list__character-notes'>
+          { this.renderLeftSide(hasImage) }
           <div>
             <dl className='dl-horizontal'>
               <dt>{i18n('Description')}</dt>
@@ -325,9 +409,7 @@ class CharacterView extends Component {
               <dd>{this.renderAssociations()}</dd>
             </dl>
           </div>
-          <div>
-            {customAttrNotes}
-          </div>
+          { this.renderLeftSide(!hasImage) }
         </div>
       </div>
     )
@@ -359,12 +441,14 @@ function mapStateToProps (state) {
     cards: state.cards,
     notes: state.notes,
     ui: state.ui,
+    images: state.images,
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(CharacterActions, dispatch)
+    actions: bindActionCreators(CharacterActions, dispatch),
+    imageActions: bindActionCreators(ImageActions, dispatch)
   }
 }
 

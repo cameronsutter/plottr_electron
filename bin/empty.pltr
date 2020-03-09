@@ -12,8 +12,9 @@
     "dirty": true,
     "fileName": "/Users/csutter/github/plottr_electron/bin/empty.pltr",
     "loaded": true,
-    "version": "2020.3.4"
+    "version": "2020.3.9"
   },
+  "images": [],
   "lines": [
     {
       "color": "#6cace4",

@@ -3,6 +3,7 @@ var webpack = require('webpack')
 
 var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
+  new webpack.DefinePlugin({'__REACT_DEVTOOLS_GLOBAL_HOOK__': '({ isDisabled: true })'})
 ]
 
 if (process.env.NODE_ENV !== 'dev') {

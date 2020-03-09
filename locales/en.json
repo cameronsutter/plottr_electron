@@ -32,6 +32,9 @@
   "Attached to": {
     "message": "Attached to"
   },
+  "Attributes": {
+    "message": "Attributes"
+  },
   "Before": {
     "message": "Before"
   },
@@ -269,17 +272,11 @@
   "It looks like you have Plottr on 5 computers already": {
     "message": "It looks like you have Plottr on 5 computers already"
   },
-  "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?": {
-    "message": "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?"
-  },
   "It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline": {
     "message": "It looks like you''re not online. You don''t always have to be online to user Plottr, but it can''t verify your license offline"
   },
   "It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again.": {
     "message": "It looks like your file was saved with a newer version of Plottr than you''re using now. That could cause problems. Try updating Plottr and starting it again."
-  },
-  "It will save a backup first which will be saved to the same folder as this file": {
-    "message": "It will save a backup first which will be saved to the same folder as this file"
   },
   "Keep all your notes here (brainstorming, world-building, etc.)": {
     "message": "Keep all your notes here (brainstorming, world-building, etc.)"
@@ -316,6 +313,9 @@
   },
   "New": {
     "message": "New"
+  },
+  "New from Template": {
+    "message": "New from Template"
   },
   "No actions to undo": {
     "message": "No actions to undo"
@@ -374,29 +374,14 @@
   "Please verify your license": {
     "message": "Please verify your license"
   },
-  "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again.": {
-    "message": "Plottr couldn''t save a backup. It hasn''t touched your file yet, so don''t worry. Try quitting Plottr and starting it again."
-  },
   "Plottr created a file named plottr_error_report.txt in your Documents folder": {
     "message": "Plottr created a file named plottr_error_report.txt in your Documents folder"
   },
   "Plottr ran into a problem. Try opening Plottr again.": {
     "message": "Plottr ran into a problem. Try opening Plottr again."
   },
-  "Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)": {
-    "message": "Plottr saved a backup just in case and now on with the show (To use the backup, remove ''.backup'' from the file name)"
-  },
-  "Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again.": {
-    "message": "Plottr tried saving a backup just in case, but it didn''t work. Try quitting Plottr and starting it again."
-  },
-  "Plottr updated your file without a problem. Don't forget to save your file.": {
-    "message": "Plottr updated your file without a problem. Don''t forget to save your file."
-  },
   "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {
     "message": "Plottr verified your license key successfully, but there was an error saving that. Let''s try one more time"
-  },
-  "Problem saving backup": {
-    "message": "Problem saving backup"
   },
   "Purples": {
     "message": "Purples"
@@ -497,6 +482,9 @@
   "Take Screenshot": {
     "message": "Take Screenshot"
   },
+  "Templates": {
+    "message": "Templates"
+  },
   "Thanks for trying Plottr": {
     "message": "Thanks for trying Plottr"
   },
@@ -518,11 +506,17 @@
   "Toggle navigation": {
     "message": "Toggle navigation"
   },
+  "Type": {
+    "message": "Type"
+  },
   "Undo": {
     "message": "Undo"
   },
   "Update Plottr": {
     "message": "Update Plottr"
+  },
+  "Use Template": {
+    "message": "Use Template"
   },
   "Verify": {
     "message": "Verify"
@@ -659,9 +653,6 @@
   "no, just exit": {
     "message": "no, just exit"
   },
-  "no, open the file as-is": {
-    "message": "no, open the file as-is"
-  },
   "ok": {
     "message": "ok"
   },
@@ -700,9 +691,6 @@
   },
   "yes, save!": {
     "message": "yes, save!"
-  },
-  "yes, update the file": {
-    "message": "yes, update the file"
   },
   "{\n          count, plural,\n          one {1 character attached}\n          other {# characters attached}\n        }": {
     "message": "{ count, plural,\n    one {1 character attached}\n  other {# characters attached}\n}"

@@ -10,7 +10,7 @@ import * as LineActions from 'actions/lines'
 import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { lineId, cardId } from '../../store/newIds'
-import { card } from '../../store/initialState'
+import { card, line } from '../../store/initialState'
 
 class AddLineRow extends Component {
   state = {
@@ -21,10 +21,10 @@ class AddLineRow extends Component {
   handleChooseTemplate = (template) => {
     const templateData = template.templateData
     const newLineId = lineId(this.props.lines)
-    let lineIds = []
     let newCardId = cardId(this.props.cards)
     const scenes = _.sortBy(this.props.scenes, 'position')
     let cards = []
+    let lines = []
     if (templateData.scenes) {
       const sceneCards = _.sortBy(templateData.scenes, 'position').map((sc, idx) => {
         return Object.assign({}, card, {
@@ -35,9 +35,33 @@ class AddLineRow extends Component {
         })
       })
       cards = cards.concat(sceneCards)
-      lineIds.push(newLineId)
+      lines.push({
+        id: newLineId,
+        title: template.name,
+      })
     }
-    if (templateData.cards) {
+    if (templateData.lines) {
+      const templateLines = _.sortBy(templateData.lines, 'position').map((l, idx) => {
+        const thisLineId = newLineId++
+        if (templateData.cards) {
+          const templateCards = templateData.cards.filter(c => c.lineId == l.id).map((c, idx) => {
+            return Object.assign({}, card, {
+              title: c.title,
+              description: c.description,
+              id: newCardId++,
+              lineId: thisLineId,
+              sceneId: scenes[idx].id,
+            })
+          })
+          cards = cards.concat(templateCards)
+        }
+        return {
+          id: thisLineId,
+          title: `${template.name} - ${l.title}`,
+        }
+      })
+      lines = lines.concat(templateLines)
+    } else if (templateData.cards) {
       const cardCards = _.sortBy(templateData.cards, 'id').map((c, idx) => {
         return Object.assign({}, card, {
           title: c.title,
@@ -48,9 +72,12 @@ class AddLineRow extends Component {
         })
       })
       cards = cards.concat(cardCards)
-      lineIds.push(newLineId + 1)
+      lines.push({
+        id: newLineId + 1,
+        title: template.name,
+      })
     }
-    this.props.actions.addLinesFromTemplate(cards, lineIds, template.name)
+    this.props.actions.addLinesFromTemplate(cards, lines)
     this.setState({showTemplatePicker: false})
   }
 

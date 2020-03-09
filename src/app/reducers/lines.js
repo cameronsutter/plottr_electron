@@ -19,10 +19,10 @@ export default function lines (state = initialState, action) {
 
     case ADD_LINES_FROM_TEMPLATE:
       const nextPosition = linePosition(state)
-      return [...action.lineIds.map((id, idx) => {
+      return [...action.lines.map((line, idx) => {
         return {
-          id: id,
-          title: action.templateName,
+          id: line.id,
+          title: line.title,
           color: nextColor(state.length + idx),
           position: nextPosition + idx,
         }

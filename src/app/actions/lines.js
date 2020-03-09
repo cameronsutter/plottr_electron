@@ -4,8 +4,8 @@ export function addLine () {
   return { type: ADD_LINE }
 }
 
-export function addLinesFromTemplate (cards, lineIds, templateName) {
-  return { type: ADD_LINES_FROM_TEMPLATE, cards, lineIds, templateName }
+export function addLinesFromTemplate (cards, lines) {
+  return { type: ADD_LINES_FROM_TEMPLATE, cards, lines }
 }
 
 export function editLineTitle (id, title) {

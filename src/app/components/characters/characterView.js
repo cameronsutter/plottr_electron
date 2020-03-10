@@ -11,10 +11,7 @@ import * as ImageActions from 'actions/images'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 import SETTINGS from '../../../common/utils/settings'
-import { resizeToMaxWidth } from '../../helpers/images'
-import { imageId } from '../../store/newIds'
-
-const reader = new FileReader()
+import ImagePicker from '../ImagePicker'
 
 class CharacterView extends Component {
   constructor (props) {
@@ -76,26 +73,6 @@ class CharacterView extends Component {
     this.setState({templateAttrs})
   }
 
-  handleUploadFile = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0]
-      reader.onload = (loadedFile => {
-        return e => {
-          resizeToMaxWidth(e.target.result, (data) => {
-            this.setState({
-              newImageData: data,
-              newImageId: imageId(this.props.images)
-            })
-            this.props.imageActions.addImage({data, name: file.name, path: file.path})
-          })
-        }
-      })(file)
-
-      // Read the image file as a data URL
-      reader.readAsDataURL(file)
-    }
-  }
-
   saveEdit = () => {
     var name = ReactDOM.findDOMNode(this.refs.nameInput).value || this.props.character.name
     var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
@@ -136,17 +113,14 @@ class CharacterView extends Component {
   }
 
   renderEditingImage () {
-    if (!SETTINGS.get('premiumFeatures')) return null
     const { character, images } = this.props
 
     let img = null
-    let help = <HelpBlock>{i18n('Upload an image to use for this character')}</HelpBlock>
     if (character.imageId && images[character.imageId]) {
       img = <Image src={images[character.imageId].data} responsive rounded />
-      help = <HelpBlock>{i18n('Upload to change this character\'s image')}</HelpBlock>
     }
-    if (this.state.newImageData) {
-      img = <Image src={this.state.newImageData} responsive rounded />
+    if (this.state.newImageId) {
+      img = <Image src={images[this.state.newImageId].data} responsive rounded />
     }
     return <FormGroup>
       <ControlLabel>{i18n('Character Image')}</ControlLabel>
@@ -155,12 +129,9 @@ class CharacterView extends Component {
           {img ? img : null}
         </div>
         <div>
-          <FormControl
-            type='file'
-            ref='imageInput'
-            onChange={this.handleUploadFile}
-          />
-          { help }
+          {SETTINGS.get('premiumFeatures') ?
+            <ImagePicker current={character.imageId} chooseImage={id => this.setState({newImageId: id})} />
+          : null}
         </div>
       </div>
     </FormGroup>

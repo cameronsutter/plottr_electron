@@ -8,6 +8,7 @@
 @import "scene_block";
 @import "tag_list_block";
 @import "color_picker_block";
+@import "image_picker";
 @import "subnav_block";
 @import "timeline_block";
 @import "history_block";
@@ -103,6 +104,13 @@ h3.popover-title {
   @include application-text;
 }
 .btn {
+  @include application-text;
+}
+
+.control-label {
+  @include application-text;
+}
+input[type="file"] {
   @include application-text;
 }
 

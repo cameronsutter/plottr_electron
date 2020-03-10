@@ -98,3 +98,4 @@ export const EDIT_SCENES_ATTRIBUTE = 'EDIT_SCENES_ATTRIBUTE'
 
 // image actions
 export const ADD_IMAGE = 'ADD_IMAGE'
+export const DELETE_IMAGE = 'DELETE_IMAGE'

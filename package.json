@@ -27,6 +27,7 @@
     "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\""
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "deep-diff": "^0.3.4",
     "docx": "^2.1.1",
     "dotenv": "^4.0.0",

@@ -1,5 +1,6 @@
 // NOTE: must use this in a file that has the DOM
 
+const reader = new FileReader()
 const width = 500
 
 // callback
@@ -17,4 +18,15 @@ export function resizeToMaxWidth (dataURL, callback) {
 
     callback(data)
   }
+}
+
+export function readImage (file, callback) {
+  reader.onload = (loadedFile => {
+    return e => {
+      resizeToMaxWidth(e.target.result, callback)
+    }
+  })(file)
+
+  // Read the image file as a data URL
+  reader.readAsDataURL(file)
 }

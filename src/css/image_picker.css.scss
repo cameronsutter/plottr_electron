@@ -1,0 +1,70 @@
+@import "vars";
+
+.image-picker__title {
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+.image-picker__inputs-wrapper {
+  padding: 10px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+
+.image-picker__images-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#fileUpload {
+  visibility: hidden;
+}
+
+.image-picker__button-wrapper {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.image-picker__upload-button {
+  border: 1px solid $gray-7;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.image-picker__image-wrapper {
+  max-width: 300px;
+  margin: 10px;
+  text-align: center;
+  cursor: pointer;
+
+  p {
+    @include header-font;
+    font-size: 16pt;
+    margin-top: 10px;
+  }
+
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  &.selected {
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.image-picker__wrapper.darkmode {
+  background-color: $card-background-darkmode;
+  .image-picker__title {
+    color: $text-darkmode;
+  }
+  h5.secondary-text {
+    color: $secondary-text-darkmode;
+  }
+  p {
+    color: $text-darkmode;
+  }
+}

@@ -18,7 +18,10 @@
       align-items: center;
 
       .character-list__item-inner__image-wrapper {
-        max-width: 75px;
+        img {
+          max-width: 75px;
+          max-height: 75px;
+        }
         margin-right: 20px;
       }
     }
@@ -52,6 +55,7 @@
 
 .character-list__character {
   @include well;
+  padding: 20px;
   width: 75%;
   float: right;
   cursor: pointer;
@@ -60,9 +64,21 @@
     justify-content: space-between;
 
     div {
-      flex: 1;
+      padding: 5px;
+      &:first-child {
+        flex: 0.5;
+        dl {
+          max-width: 300px;
+        }
+        dt {
+          width: 100px;
+        }
+      }
+      &:last-child {
+        flex: 1;
+      }
       .img-responsive {
-        max-width: 500px;
+        max-width: 200px;
       }
     }
   }

@@ -208,7 +208,7 @@ class CharacterListView extends Component {
       let img = null
       if (ch.imageId && this.props.images[ch.imageId]) {
         img = <div className='character-list__item-inner__image-wrapper'>
-          <Image src={this.props.images[ch.imageId].data} responsive rounded/>
+          <Image src={this.props.images[ch.imageId].data} responsive circle/>
         </div>
       }
       return <div key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>

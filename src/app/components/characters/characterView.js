@@ -325,7 +325,7 @@ class CharacterView extends Component {
     if (hasImage) imageData = images[character.imageId].data
 
     return <div>
-      {hasImage ? <Image rounded responsive src={imageData} /> : null}
+      {hasImage ? <Image circle responsive src={imageData} /> : null}
       {customAttrNotes}
     </div>
   }
@@ -355,7 +355,7 @@ class CharacterView extends Component {
     const hasImage = character.imageId && images[character.imageId]
     return (
       <div className={klasses} onClick={() => this.setState({editing: true})}>
-        <h4 className='text-center secondary-text'>{character.name}</h4>
+        <h4 className='secondary-text'>{character.name}</h4>
         <div className='character-list__character-notes'>
           { this.renderLeftSide(hasImage) }
           <div>

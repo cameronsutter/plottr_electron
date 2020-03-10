@@ -1,8 +1,8 @@
 import deep from 'deep-diff'
 import { storageKey } from './helpers'
-import { FILE_LOADED, RESET, NEW_FILE, CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION } from 'constants/ActionTypes'
+import { FILE_LOADED, RESET, NEW_FILE, CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, ADD_IMAGE, DELETE_IMAGE } from 'constants/ActionTypes'
 
-const BLACKLIST = [FILE_LOADED, NEW_FILE, CHANGE_CURRENT_VIEW, RESET, CHANGE_ORIENTATION]
+const BLACKLIST = [FILE_LOADED, NEW_FILE, CHANGE_CURRENT_VIEW, RESET, CHANGE_ORIENTATION, ADD_IMAGE, DELETE_IMAGE]
 const CLEARHISTORY = [FILE_LOADED, NEW_FILE]
 
 const history = store => next => action => {

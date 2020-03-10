@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup,
-  ControlLabel, HelpBlock, Tooltip, OverlayTrigger, Image } from 'react-bootstrap'
+  ControlLabel, Tooltip, OverlayTrigger, Image } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
-import * as ImageActions from 'actions/images'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 import SETTINGS from '../../../common/utils/settings'
@@ -33,7 +33,6 @@ class CharacterView extends Component {
       notes: props.character.notes,
       description: description,
       templateAttrs: templateAttrs,
-      newImageData: null,
       newImageId: null,
     }
   }
@@ -117,10 +116,10 @@ class CharacterView extends Component {
 
     let img = null
     if (character.imageId && images[character.imageId]) {
-      img = <Image src={images[character.imageId].data} responsive rounded />
+      img = <Image src={images[character.imageId].data} responsive circle />
     }
     if (this.state.newImageId) {
-      img = <Image src={images[this.state.newImageId].data} responsive rounded />
+      img = <Image src={images[this.state.newImageId].data} responsive circle />
     }
     return <FormGroup>
       <ControlLabel>{i18n('Character Image')}</ControlLabel>
@@ -331,8 +330,9 @@ class CharacterView extends Component {
   }
 
   renderCharacter () {
-    let klasses = 'character-list__character'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
+    const klasses = cx('character-list__character', {
+      darkmode: this.props.ui.darkMode,
+    })
     const { character, images } = this.props
     const templateNotes = character.templates.flatMap(t => {
       return t.attributes.map(attr => {
@@ -419,7 +419,6 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     actions: bindActionCreators(CharacterActions, dispatch),
-    imageActions: bindActionCreators(ImageActions, dispatch)
   }
 }
 

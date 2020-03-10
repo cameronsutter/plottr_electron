@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
-   Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+   Glyphicon, Tooltip, OverlayTrigger, Image } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
 import MDdescription from 'components/mdDescription'
+import SETTINGS from '../../../common/utils/settings'
+import ImagePicker from '../ImagePicker'
 
 class PlaceView extends Component {
   constructor (props) {
@@ -15,6 +18,7 @@ class PlaceView extends Component {
     this.state = {
       editing: props.place.name === '',
       notes: props.place.notes,
+      newImageId: null,
     }
   }
 
@@ -39,6 +43,9 @@ class PlaceView extends Component {
     var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
     var attrs = {}
+    if (this.state.newImageId) {
+      attrs.imageId = this.state.newImageId
+    }
     this.props.customAttributes.forEach(attr => {
       const val = ReactDOM.findDOMNode(this.refs[`${attr}Input`]).value
       attrs[attr] = val
@@ -52,6 +59,31 @@ class PlaceView extends Component {
     if (window.confirm(label)) {
       this.props.actions.deletePlace(this.props.place.id)
     }
+  }
+
+  renderEditingImage () {
+    const { place, images } = this.props
+
+    let img = null
+    if (place.imageId && images[place.imageId]) {
+      img = <Image src={images[place.imageId].data} responsive rounded />
+    }
+    if (this.state.newImageId) {
+      img = <Image src={images[this.state.newImageId].data} responsive rounded />
+    }
+    return <FormGroup>
+      <ControlLabel>{i18n('Place Image')}</ControlLabel>
+      <div className='place-list__place__edit-image-wrapper'>
+        <div className='place-list__place__edit-image'>
+          {img ? img : null}
+        </div>
+        <div>
+          {SETTINGS.get('premiumFeatures') ?
+            <ImagePicker current={place.imageId} chooseImage={id => this.setState({newImageId: id})} />
+          : null}
+        </div>
+      </div>
+    </FormGroup>
   }
 
   renderEditingCustomAttributes () {
@@ -80,11 +112,16 @@ class PlaceView extends Component {
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}
                 defaultValue={place.name} />
+            </FormGroup>
+            <FormGroup>
               <ControlLabel>{i18n('Short Description')}</ControlLabel>
               <FormControl type='text' ref='descriptionInput'
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}
                 defaultValue={place.description} />
+            </FormGroup>
+            { this.renderEditingImage() }
+            <FormGroup>
               <ControlLabel>{i18n('Notes')}</ControlLabel>
               <MDdescription
                 description={place.notes}
@@ -168,37 +205,48 @@ class PlaceView extends Component {
   }
 
   renderPlace () {
-    let klasses = 'character-list__character'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
-    const { place } = this.props
+    const klasses = cx('place-list__place', {
+      darkmode: this.props.ui.darkMode,
+    })
+    const { place, images } = this.props
     const details = this.props.customAttributes.map((attr, idx) =>
       <dl key={idx} className='dl-horizontal'>
         <dt>{attr}</dt>
         <dd>{place[attr]}</dd>
       </dl>
     )
+    const hasImage = place.imageId && images[place.imageId]
+    let imageData = null
+    if (hasImage) imageData = images[place.imageId].data
     return (
       <div className={klasses} onClick={() => this.setState({editing: true})}>
-        <h4 className='text-center secondary-text'>{place.name}</h4>
-        <dl className='dl-horizontal'>
-          <dt>{i18n('Description')}</dt>
-          <dd>{place.description}</dd>
-        </dl>
-        {details}
-        <dl className='dl-horizontal'>
-          <dt>{i18n('Notes')}</dt>
-          <dd>
-            <MDdescription
-              description={place.notes || ''}
-              labels={{}}
-              darkMode={false}
-            />
-          </dd>
-        </dl>
-        <dl className='dl-horizontal'>
-          <dt>{i18n('Attached to')}</dt>
-          <dd>{this.renderAssociations()}</dd>
-        </dl>
+        <h4 className='secondary-text'>{place.name}</h4>
+        <div className='place-list__place-inner'>
+          <div>
+            <dl className='dl-horizontal'>
+              <dt>{i18n('Description')}</dt>
+              <dd>{place.description}</dd>
+            </dl>
+            {details}
+            <dl className='dl-horizontal'>
+              <dt>{i18n('Notes')}</dt>
+              <dd>
+                <MDdescription
+                  description={place.notes || ''}
+                  labels={{}}
+                  darkMode={false}
+                />
+              </dd>
+            </dl>
+            <dl className='dl-horizontal'>
+              <dt>{i18n('Attached to')}</dt>
+              <dd>{this.renderAssociations()}</dd>
+            </dl>
+          </div>
+          <div>
+            {hasImage ? <Image responsive src={imageData} rounded /> : null}
+          </div>
+        </div>
       </div>
     )
   }
@@ -221,6 +269,7 @@ PlaceView.propTypes = {
   cards: PropTypes.array.isRequired,
   notes: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
+  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -229,6 +278,7 @@ function mapStateToProps (state) {
     cards: state.cards,
     notes: state.notes,
     ui: state.ui,
+    images: state.images,
   }
 }
 

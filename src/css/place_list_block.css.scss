@@ -12,6 +12,21 @@
   width: 25%;
   .list-group-item {
     cursor: pointer;
+
+    .place-list__item-inner {
+      display: flex;
+      align-items: center;
+
+      .place-list__item-inner__image-wrapper {
+        img {
+          max-width: 75px;
+        }
+        margin-right: 20px;
+      }
+    }
+    &:hover {
+      background: $new-item-background;
+    }
   }
 }
 
@@ -42,6 +57,7 @@
 
 .place-list__place {
   @include well;
+  padding: 20px;
   width: 75%;
   float: right;
   cursor: pointer;
@@ -63,10 +79,24 @@
     display: flex;
     flex-direction: row-reverse;
   }
+  .place-list__place-inner {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .place-list__place.editing {
   cursor: auto;
+}
+
+.place-list__place__edit-image-wrapper {
+  display: flex;
+  align-items: center;
+  .place-list__place__edit-image {
+    max-width: 200px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 .place-list__custom-attributes-list-wrapper {

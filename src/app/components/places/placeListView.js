@@ -4,8 +4,9 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import cx from 'classnames'
 import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
-  ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+  ControlLabel, Popover, OverlayTrigger, Alert, Image } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
@@ -176,22 +177,36 @@ class PlaceListView extends Component {
     )
   }
 
-  renderPlaces () {
-    let klasses = 'place-list__list list-group'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
-    const places = this.state.visiblePlaces.map((pl, idx) =>
-      <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
-        <h6 className='list-group-item-heading'>{pl.name}</h6>
-        <p className='list-group-item-text'>{pl.description.substr(0, 100)}</p>
-      </a>
-    )
-    return (<div className={klasses}>
-        {places}
-        <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
-          <Glyphicon glyph='plus' />
-        </a>
+  renderVisiblePlaces = () => {
+    return this.state.visiblePlaces.map((pl, idx) => {
+      let img = null
+      if (pl.imageId && this.props.images[pl.imageId]) {
+        img = <div className='place-list__item-inner__image-wrapper'>
+          <Image src={this.props.images[pl.imageId].data} responsive rounded/>
+        </div>
+      }
+      return <div key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
+        <div className='place-list__item-inner'>
+          {img}
+          <div>
+            <h6 className='list-group-item-heading'>{pl.name}</h6>
+            <p className='list-group-item-text'>{pl.description.substr(0, 100)}</p>
+          </div>
+        </div>
       </div>
-    )
+    })
+  }
+
+  renderPlaces () {
+    const klasses = cx('place-list__list', 'list-group', {
+      darkmode: this.props.ui.darkMode
+    })
+    return <div className={klasses}>
+      { this.renderVisiblePlaces() }
+      <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
+        <Glyphicon glyph='plus' />
+      </a>
+    </div>
   }
 
   renderPlaceDetails () {
@@ -262,6 +277,7 @@ PlaceListView.propTypes = {
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -269,6 +285,7 @@ function mapStateToProps (state) {
     places: state.places,
     customAttributes: state.customAttributes['places'],
     ui: state.ui,
+    images: state.images,
   }
 }
 

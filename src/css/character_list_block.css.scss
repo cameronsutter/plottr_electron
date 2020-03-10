@@ -25,6 +25,9 @@
         margin-right: 20px;
       }
     }
+    &:hover {
+      background: $new-item-background;
+    }
   }
 }
 
@@ -109,6 +112,7 @@
   .character-list__character__edit-image {
     max-width: 200px;
     margin-right: 10px;
+    margin-bottom: 10px;
   }
 }
 

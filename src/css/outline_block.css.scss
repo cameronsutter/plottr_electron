@@ -2,8 +2,6 @@
 
 .outline__container {
   display: flex;
-  flex-direction: row;
-
 }
 
 .filter-list__list li {
@@ -21,11 +19,19 @@
 .outline__card {
   @include well;
   margin: 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   h6 {
     margin-top: -15px;
     cursor: pointer;
+  }
+  .chip-cloud {
+    margin: 8px 0;
+  }
+  .divider {
+    margin: 10px 40px 2px 40px;
+    border-top: 1px solid $gray-8;
   }
 }
 
@@ -36,7 +42,7 @@
 }
 
 .outline__scenes-container {
-  width: 75%;
+  width: 80%;
 }
 
 .outline__card__line-title {
@@ -44,6 +50,7 @@
 }
 
 .outline__card__label-list {
+  margin: 8px 0;
   .label {
     margin-right: 5px;
     padding-top: 4px;
@@ -81,8 +88,8 @@ li.outline__minimap__scene-title > a:hover {
   position: fixed;
   left: 0px;
   top: 102px;
-  width: 25%;
-  height:88%;
+  width: 20%;
+  height: 88%;
   overflow-y: scroll;
   padding-top: 5px;
   padding-right: 5px;
@@ -104,7 +111,7 @@ li.outline__minimap__scene-title > a:hover {
 }
 
 .outline__minimap__placeholder {
-  width: 25%;
+  width: 20%;
   height: 100%;
   margin-left: 10px;
 }

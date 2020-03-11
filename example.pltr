@@ -981,10 +981,10 @@
       "characters": [
         1
       ],
-      "content": "not really, but oh yes it is",
+      "content": "# Is it cool?\nnot really, but oh yes it is",
       "id": 4,
       "imageId": null,
-      "lastEdited": 1559569582486,
+      "lastEdited": 1583935202846,
       "places": [],
       "tags": [],
       "templates": [],
@@ -997,7 +997,7 @@
       "content": "here is some note content",
       "id": 5,
       "imageId": null,
-      "lastEdited": 1581546816024,
+      "lastEdited": 1583935075738,
       "places": [
         2
       ],
@@ -1336,7 +1336,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "places",
+    "currentView": "notes",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

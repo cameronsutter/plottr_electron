@@ -9,6 +9,7 @@ import cx from 'classnames'
 import { FormControl, ControlLabel, Button, Row, Col, Image, Glyphicon, ButtonToolbar, FormGroup } from 'react-bootstrap'
 import i18n from 'format-message'
 import { readImage } from '../helpers/images'
+import SETTINGS from '../../common/utils/settings'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -44,6 +45,11 @@ class ImagePicker extends Component {
     this.close()
   }
 
+  chooseNoImage = () => {
+    this.props.chooseImage(-1)
+    this.close()
+  }
+
   uploadNewFile = (event) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0]
@@ -65,19 +71,22 @@ class ImagePicker extends Component {
           <h2 className='image-picker__title'>{i18n('Your images')}</h2>
           <div className='image-picker__inputs-wrapper form-horizontal'>
             <Row>
-              <Col xs={5} >
+              <Col xs={4}>
                 <h5 className='secondary-text'>{i18n('Choose an image below or upload a new one')}</h5>
               </Col>
               <Col xs={2}>
-                <ControlLabel htmlFor='fileUpload'>
-                  <div className='btn image-picker__upload-button'><Glyphicon glyph='upload'/>{' '}{i18n('Upload a new image')}</div>
-                </ControlLabel>
+                {SETTINGS.get('premiumFeatures') ?
+                  <ControlLabel htmlFor='fileUpload'>
+                    <div className='btn image-picker__upload-button'><Glyphicon glyph='upload'/>{' '}{i18n('Upload a new image')}</div>
+                  </ControlLabel>
+                : null}
               </Col>
               <Col xs={2}>
                 <FormControl id='fileUpload' type='file' onChange={this.uploadNewFile} />
               </Col>
-              <Col xs={2}>
+              <Col xs={4}>
                 <div className='image-picker__button-wrapper'>
+                  <Button onClick={this.chooseNoImage}>{i18n('No Image')}</Button>
                   <Button bsStyle='success' onClick={this.chooseImage}>{i18n('Choose')}</Button>
                   <Button onClick={this.close}>{i18n('Cancel')}</Button>
                 </div>

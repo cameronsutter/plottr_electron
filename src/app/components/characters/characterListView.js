@@ -17,6 +17,7 @@ import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
 import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
+import ImageCircle from '../ImageCircle'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -209,7 +210,7 @@ class CharacterListView extends Component {
       let img = null
       if (ch.imageId && images[ch.imageId]) {
         img = <div className='character-list__item-inner__image-wrapper'>
-          <div className='image-circle-small' style={{backgroundImage: `url(${images[ch.imageId].data})`}} />
+          <ImageCircle size='small' imageData={images[ch.imageId].data} />
         </div>
       }
       return <div key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>

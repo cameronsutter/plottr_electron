@@ -9,15 +9,20 @@ import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import ImagePicker from 'components/ImagePicker'
 
 class NoteView extends Component {
   constructor (props) {
     super(props)
-    this.state = {content: props.note.content, hide: false}
+    this.state = {
+      content: props.note.content,
+      editing: false,
+      newImageId: null,
+    }
   }
 
   componentWillUnmount () {
-    if (!this.state.hide) this.setState({hide: true})
+    if (this.state.editing) this.saveEdit()
   }
 
   handleEnter = (event) => {
@@ -36,6 +41,7 @@ class NoteView extends Component {
     var title = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.note.title
     var content = this.state.content
     this.props.actions.editNote(this.props.note.id, {title, content})
+    this.setState({editing: false})
   }
 
   deleteNote = () => {
@@ -45,10 +51,40 @@ class NoteView extends Component {
     }
   }
 
+  renderEditingImage () {
+    const { note, images } = this.props
+    const imagesExist = Object.keys(images).length
+    if (!SETTINGS.get('premiumFeatures') && !imagesExist && !note.imageId) return null
+
+    let img = null
+    if (note.imageId && images[note.imageId]) {
+      img = <Image src={images[note.imageId].data} responsive rounded />
+    }
+    if (this.state.newImageId && this.state.newImageId != -1) {
+      img = <Image src={images[this.state.newImageId].data} responsive rounded />
+    }
+    if (this.state.newImageId == -1) {
+      img = null
+    }
+    return <FormGroup>
+      <ControlLabel>{i18n('Note Image')}</ControlLabel>
+      <div className='note-list__note__edit-image-wrapper'>
+        <div className='note-list__note__edit-image'>
+          {img ? img : null}
+        </div>
+        <div>
+          {SETTINGS.get('premiumFeatures') || imagesExist ?
+            <ImagePicker current={note.imageId} chooseImage={id => this.setState({newImageId: id})} />
+          : null}
+        </div>
+      </div>
+    </FormGroup>
+  }
+
   renderContent () {
     const { note } = this.props
-    return (
-      <div className='note-list__content editing'>
+    if (this.state.editing) {
+      return <div className='note-list__content editing'>
         <div className='note-list__note__edit-form'>
           <FormGroup>
             <ControlLabel>{i18n('Title')}</ControlLabel>
@@ -58,27 +94,41 @@ class NoteView extends Component {
               onKeyPress={this.handleEnter}
               onChange={() => this.setState({unsaved: true})}
               defaultValue={note.title} style={{marginBottom: '10px'}}/>
+          </FormGroup>
+          { this.renderEditingImage() }
+          <FormGroup>
             <MDdescription
               description={note.content}
               onChange={(desc) => this.setState({content: desc, unsaved: true})}
-              useRCE={!this.state.hide}
+              useRCE={true}
               labels={{}}
               darkMode={false}
             />
           </FormGroup>
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
-          <Button bsStyle='success'
-            onClick={this.saveEdit} >
+          <Button onClick={() => this.setState({editing: false})}>
+            {i18n('Cancel')}
+          </Button>
+          <Button bsStyle='success' onClick={this.saveEdit}>
             {i18n('Save')}
           </Button>
-          <Button className='card-dialog__delete'
-            onClick={this.deleteNote} >
+          <Button className='card-dialog__delete' onClick={this.deleteNote}>
             {i18n('Delete')}
           </Button>
         </ButtonToolbar>
       </div>
-    )
+    } else {
+      return <div className='note-list__content' onClick={() => this.setState({editing: true})}>
+        <h4 className='secondary-text'>{note.title}</h4>
+        <MDdescription
+          description={note.content}
+          useRCE={false}
+          labels={{}}
+          darkMode={false}
+        />
+      </div>
+    }
   }
 
   render () {

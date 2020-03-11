@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE, ATTACH_PLACE_TO_NOTE,
   REMOVE_PLACE_FROM_NOTE, ATTACH_TAG_TO_NOTE, REMOVE_TAG_FROM_NOTE, DELETE_TAG,
-  DELETE_CHARACTER, DELETE_PLACE } from '../constants/ActionTypes'
+  DELETE_CHARACTER, DELETE_PLACE, DELETE_IMAGE } from '../constants/ActionTypes'
 import { note } from 'store/initialState'
 import { newFileNotes } from 'store/newFileState'
 import { noteId } from 'store/newIds'
@@ -102,6 +102,18 @@ export default function notes (state = initialState, action) {
           return Object.assign({}, note, {places: places})
         } else {
           return note
+        }
+      })
+
+    case DELETE_IMAGE:
+      return state.map(n => {
+        if (action.id == n.imageId) {
+          return {
+            ...n,
+            imageId: null,
+          }
+        } else {
+          return n
         }
       })
 

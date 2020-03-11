@@ -83,6 +83,16 @@
   }
 }
 
+.note-list__note__edit-image-wrapper {
+  display: flex;
+  align-items: center;
+  .note-list__note__edit-image {
+    max-width: 200px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+}
+
 .note-list__note.darkmode {
   background-color: $card-background-darkmode;
   color: $text-darkmode;

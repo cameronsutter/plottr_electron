@@ -63,6 +63,8 @@ class PlaceView extends Component {
 
   renderEditingImage () {
     const { place, images } = this.props
+    const imagesExist = Object.keys(images).length
+    if (!SETTINGS.get('premiumFeatures') && !imagesExist && !place.imageId) return null
 
     let img = null
     if (place.imageId && images[place.imageId]) {
@@ -71,6 +73,9 @@ class PlaceView extends Component {
     if (this.state.newImageId) {
       img = <Image src={images[this.state.newImageId].data} responsive rounded />
     }
+    if (this.state.newImageId == -1) {
+      img = null
+    }
     return <FormGroup>
       <ControlLabel>{i18n('Place Image')}</ControlLabel>
       <div className='place-list__place__edit-image-wrapper'>
@@ -78,7 +83,7 @@ class PlaceView extends Component {
           {img ? img : null}
         </div>
         <div>
-          {SETTINGS.get('premiumFeatures') ?
+          {SETTINGS.get('premiumFeatures') || imagesExist ?
             <ImagePicker current={place.imageId} chooseImage={id => this.setState({newImageId: id})} />
           : null}
         </div>

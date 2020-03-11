@@ -12,6 +12,7 @@ import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 import SETTINGS from '../../../common/utils/settings'
 import ImagePicker from '../ImagePicker'
+import ImageCircle from '../ImageCircle'
 
 class CharacterView extends Component {
   constructor (props) {
@@ -113,13 +114,18 @@ class CharacterView extends Component {
 
   renderEditingImage () {
     const { character, images } = this.props
+    const imagesExist = Object.keys(images).length
+    if (!SETTINGS.get('premiumFeatures') && !imagesExist && !character.imageId) return null
 
     let img = null
     if (character.imageId && images[character.imageId]) {
-      img = <Image src={images[character.imageId].data} responsive circle />
+      img = <ImageCircle size='large' imageData={images[character.imageId].data} />
     }
-    if (this.state.newImageId) {
-      img = <Image src={images[this.state.newImageId].data} responsive circle />
+    if (this.state.newImageId && this.state.newImageId != -1) {
+      img = <ImageCircle size='large' imageData={images[this.state.newImageId].data} />
+    }
+    if (this.state.newImageId == -1) {
+      img = null
     }
     return <FormGroup>
       <ControlLabel>{i18n('Character Image')}</ControlLabel>
@@ -128,7 +134,7 @@ class CharacterView extends Component {
           {img ? img : null}
         </div>
         <div>
-          {SETTINGS.get('premiumFeatures') ?
+          {SETTINGS.get('premiumFeatures') || imagesExist ?
             <ImagePicker current={character.imageId} chooseImage={id => this.setState({newImageId: id})} />
           : null}
         </div>
@@ -324,7 +330,7 @@ class CharacterView extends Component {
     if (hasImage) imageData = images[character.imageId].data
 
     return <div>
-      {hasImage ? <div className='image-circle-large' style={{backgroundImage: `url(${imageData})`}} /> : null}
+      {hasImage ? <ImageCircle size='large' imageData={imageData} /> : null}
       {customAttrNotes}
     </div>
   }

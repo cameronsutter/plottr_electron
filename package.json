@@ -39,7 +39,7 @@
     "electron-updater": "^4.0.14",
     "electron-window-state": "^5.0.3",
     "format-message": "^6.2.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "mixpanel-browser": "^2.29.0",
     "node-machine-id": "^1.1.12",
     "pagedown": "^1.1.0",

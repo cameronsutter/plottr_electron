@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import * as ImageActions from 'actions/images'
 import Modal from 'react-modal'
 import cx from 'classnames'
-import { FormControl, FormGroup, ControlLabel, Button, Row, Col, Image, Glyphicon } from 'react-bootstrap'
+import { FormControl, ControlLabel, Button, Row, Col, Image, Glyphicon, ButtonToolbar, FormGroup } from 'react-bootstrap'
 import i18n from 'format-message'
 import { readImage } from '../helpers/images'
 
@@ -18,6 +18,20 @@ class ImagePicker extends Component {
     this.state = {
       imageId: props.current,
       open: false,
+      editing: null,
+    }
+  }
+
+  renameFile = () => {
+    let newName = ReactDOM.findDOMNode(this.refs.fileName).value
+    this.props.actions.renameImage(this.state.editing, newName)
+    this.setState({editing: null})
+  }
+
+  deleteImage = (id) => {
+    let text = i18n('Do you want to remove this image? It will NOT be deleted from your computer')
+    if (window.confirm(text)) {
+      this.props.actions.deleteImage(id)
     }
   }
 
@@ -80,13 +94,42 @@ class ImagePicker extends Component {
     }
   }
 
+  renderName (id, value) {
+    if (this.state.editing == id) {
+      return <FormGroup>
+        <FormControl type='text' defaultValue={value} ref='fileName' />
+        <Button onClick={this.renameFile}>{i18n('Rename')}</Button>
+      </FormGroup>
+    } else {
+      return <p>{value}</p>
+    }
+  }
+
+  renderToolbar (id) {
+    if (this.state.editing == id) {
+      return null
+    } else {
+      return <ButtonToolbar className='card-dialog__button-bar'>
+        <Button onClick={() => this.setState({editing: id})}>
+          {i18n('Rename')}
+        </Button>
+        <Button bsStyle='danger' onClick={() => this.deleteImage(id)} >
+          {i18n('Remove')}
+        </Button>
+      </ButtonToolbar>
+    }
+  }
+
   renderImages () {
     const { images } = this.props
     return Object.keys(images).map(id => {
-      const klasses = cx('image-picker__image-wrapper', {selected: this.state.imageId == id})
+      const isSelected = this.state.imageId == id
+      const klasses = cx('image-picker__image-wrapper', {selected: isSelected})
       return <div key={images[id].name} className={klasses} onClick={() => this.setState({imageId: id})}>
+        {isSelected ? <span className='label label-success'>{i18n('selected')}</span> : null}
         <Image src={images[id].data} responsive rounded />
-        <p>{images[id].name}</p>
+        { this.renderName(id, images[id].name) }
+        { this.renderToolbar(id) }
       </div>
     })
   }

@@ -204,11 +204,12 @@ class CharacterListView extends Component {
   }
 
   renderVisibleCharacters = () => {
+    const { images } = this.props
     return this.state.visibleCharacters.map((ch, idx) => {
       let img = null
-      if (ch.imageId && this.props.images[ch.imageId]) {
+      if (ch.imageId && images[ch.imageId]) {
         img = <div className='character-list__item-inner__image-wrapper'>
-          <Image src={this.props.images[ch.imageId].data} responsive circle/>
+          <div className='image-circle-small' style={{backgroundImage: `url(${images[ch.imageId].data})`}} />
         </div>
       }
       return <div key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>

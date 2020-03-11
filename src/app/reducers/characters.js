@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
   ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
-  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER } from '../constants/ActionTypes'
+  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELET_IMAGE, DELETE_IMAGE} from '../constants/ActionTypes'
 import { character } from 'store/initialState'
 import { newFileCharacters } from 'store/newFileState'
 import { characterId } from 'store/newIds'
@@ -87,6 +87,18 @@ export default function characters (state = initialState, action) {
       return state.filter(character =>
         character.id !== action.id
       )
+
+    case DELETE_IMAGE:
+      return state.map(ch => {
+        if (action.id == ch.imageId) {
+          return {
+            ...ch,
+            imageId: null,
+          }
+        } else {
+          return ch
+        }
+      })
 
     case RESET:
     case FILE_LOADED:

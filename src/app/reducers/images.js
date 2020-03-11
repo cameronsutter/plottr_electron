@@ -1,4 +1,4 @@
-import { ADD_IMAGE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
+import { ADD_IMAGE, RENAME_IMAGE, DELETE_IMAGE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { newFileImages } from 'store/newFileState'
 import { imageId } from 'store/newIds'
 
@@ -11,6 +11,23 @@ export default function cards (state, action) {
         ...state,
         [newId]: newImage,
       }
+
+    case RENAME_IMAGE:
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          name: action.name,
+        },
+      }
+
+    case DELETE_IMAGE:
+      return Object.keys(state).reduce((acc, id) => {
+        if (id != action.id) {
+          acc[id] = state[id]
+        }
+        return acc
+      }, {})
 
     case RESET:
     case FILE_LOADED:

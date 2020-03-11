@@ -324,7 +324,7 @@ class CharacterView extends Component {
     if (hasImage) imageData = images[character.imageId].data
 
     return <div>
-      {hasImage ? <Image circle responsive src={imageData} /> : null}
+      {hasImage ? <div className='image-circle-large' style={{backgroundImage: `url(${imageData})`}} /> : null}
       {customAttrNotes}
     </div>
   }

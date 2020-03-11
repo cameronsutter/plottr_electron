@@ -114,12 +114,6 @@ input[type="file"] {
   @include application-text;
 }
 
-.img-circle {
-  border-radius: unset;
-  object-fit: contain;
-  clip-path: circle(40%);
-}
-
 .blue-background {
   background-color: $blue;
 }

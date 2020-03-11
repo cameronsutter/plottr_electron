@@ -4,12 +4,13 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
+import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Image } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 import ImagePicker from 'components/ImagePicker'
+import SETTINGS from '../../../common/utils/settings'
 
 class NoteView extends Component {
   constructor (props) {
@@ -38,9 +39,11 @@ class NoteView extends Component {
   }
 
   saveEdit = () => {
-    var title = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.note.title
-    var content = this.state.content
-    this.props.actions.editNote(this.props.note.id, {title, content})
+    const { note } = this.props
+    let title = ReactDOM.findDOMNode(this.refs.titleInput).value || note.title
+    let content = this.state.content
+    let imageId = this.state.newImageId || note.imageId
+    this.props.actions.editNote(note.id, {title, content, imageId})
     this.setState({editing: false})
   }
 
@@ -82,7 +85,7 @@ class NoteView extends Component {
   }
 
   renderContent () {
-    const { note } = this.props
+    const { note, images } = this.props
     if (this.state.editing) {
       return <div className='note-list__content editing'>
         <div className='note-list__note__edit-form'>
@@ -97,6 +100,7 @@ class NoteView extends Component {
           </FormGroup>
           { this.renderEditingImage() }
           <FormGroup>
+            <ControlLabel>{i18n('Content')}</ControlLabel>
             <MDdescription
               description={note.content}
               onChange={(desc) => this.setState({content: desc, unsaved: true})}
@@ -119,8 +123,15 @@ class NoteView extends Component {
         </ButtonToolbar>
       </div>
     } else {
+      let img = null
+      if (note.imageId && images[note.imageId]) {
+        img = <div className='text-center'>
+          <Image src={images[note.imageId].data} />
+        </div>
+      }
       return <div className='note-list__content' onClick={() => this.setState({editing: true})}>
         <h4 className='secondary-text'>{note.title}</h4>
+        { img }
         <MDdescription
           description={note.content}
           useRCE={false}
@@ -172,6 +183,7 @@ NoteView.propTypes = {
   tags: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -180,6 +192,7 @@ function mapStateToProps (state) {
     places: state.places,
     tags: state.tags,
     ui: state.ui,
+    images: state.images,
   }
 }
 

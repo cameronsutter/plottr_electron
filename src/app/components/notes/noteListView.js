@@ -4,17 +4,14 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Nav, Navbar, NavItem, Button, Input, Alert, OverlayTrigger, Popover } from 'react-bootstrap'
-import Modal from 'react-modal'
+import { Glyphicon, Nav, Navbar, NavItem, Button, Alert, OverlayTrigger, Popover, Image } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
 import i18n from 'format-message'
-
-const modalStyles = {content: {top: '70px'}}
+import cx from 'classnames'
 
 class NoteListView extends Component {
-
   constructor (props) {
     super(props)
     var id = null
@@ -27,7 +24,8 @@ class NoteListView extends Component {
     this.state = {
       noteDetailId: id,
       filter: null,
-      viewableNotes: sortedNotes}
+      viewableNotes: sortedNotes
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -86,21 +84,36 @@ class NoteListView extends Component {
     return filtered
   }
 
+  renderVisibleNotes () {
+    return this.state.viewableNotes.map((n, idx) => {
+      let img = null
+      if (n.imageId && this.props.images[n.imageId]) {
+        img = <div className='note-list__item-inner__image-wrapper'>
+          <Image src={this.props.images[n.imageId].data} responsive/>
+        </div>
+      }
+      return <div key={idx} className='list-group-item' onClick={() => this.setState({noteDetailId: n.id})}>
+        <div className='note-list__item-inner'>
+          {img}
+          <div>
+            <h6 className='list-group-item-heading'>{n.title}</h6>
+            <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
+          </div>
+        </div>
+      </div>
+    })
+  }
+
   renderNotes () {
-    let klasses = 'note-list__list list-group'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
-    const notes = this.state.viewableNotes.map((n, idx) =>
-      <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({noteDetailId: n.id})}>
-        <h6 className='list-group-item-heading'>{n.title}</h6>
-        <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
+    let klasses = cx('note-list__list', 'list-group', {
+      darkmode: this.props.ui.darkMode,
+    })
+    return <div className={klasses}>
+      { this.renderVisibleNotes() }
+      <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >
+        <Glyphicon glyph='plus' />
       </a>
-    )
-    return (<div className={klasses}>
-        {notes}
-        <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >
-          <Glyphicon glyph='plus' />
-        </a>
-      </div>)
+    </div>
   }
 
   renderNoteDetails () {
@@ -124,7 +137,10 @@ class NoteListView extends Component {
     }
     return (
       <Navbar className={subNavKlasses}>
-        <Nav bsStyle='pills' >
+        <Nav bsStyle='pills'>
+          <NavItem>
+            <Button bsSize='small' onClick={this.handleCreateNewNote}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+          </NavItem>
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
               <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
@@ -157,6 +173,7 @@ NoteListView.propTypes = {
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
+  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -166,6 +183,7 @@ function mapStateToProps (state) {
     places: state.places,
     tags: state.tags,
     ui: state.ui,
+    images: state.images,
   }
 }
 

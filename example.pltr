@@ -673,9 +673,7 @@
       "id": 1,
       "imageId": null,
       "name": "main character",
-      "noteIds": [
-        0
-      ],
+      "noteIds": [],
       "notes": "She is the main character and a really strong female.",
       "power": "lantern",
       "race": "?",
@@ -966,10 +964,10 @@
     },
     {
       "characters": [],
-      "content": "This is a great place, really",
+      "content": "",
       "id": 3,
-      "imageId": null,
-      "lastEdited": 1559310452951,
+      "imageId": "3",
+      "lastEdited": 1583936255726,
       "places": [
         0
       ],
@@ -983,8 +981,8 @@
       ],
       "content": "# Is it cool?\nnot really, but oh yes it is",
       "id": 4,
-      "imageId": null,
-      "lastEdited": 1583935202846,
+      "imageId": -1,
+      "lastEdited": 1583936242121,
       "places": [],
       "tags": [],
       "templates": [],

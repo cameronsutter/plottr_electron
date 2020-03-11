@@ -159,6 +159,9 @@ class PlaceListView extends Component {
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
+            <Button bsSize='small' onClick={this.handleCreateNewPlace}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+          </NavItem>
+          <NavItem>
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>
           <NavItem>

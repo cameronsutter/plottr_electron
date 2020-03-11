@@ -12,6 +12,21 @@
   width: 25%;
   .list-group-item {
     cursor: pointer;
+
+    .note-list__item-inner {
+      display: flex;
+      align-items: center;
+
+      .note-list__item-inner__image-wrapper {
+        img {
+          max-width: 75px;
+        }
+        margin-right: 20px;
+      }
+    }
+    &:hover {
+      background: $new-item-background;
+    }
   }
 }
 

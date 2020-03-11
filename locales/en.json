@@ -71,6 +71,9 @@
   "Character": {
     "message": "Character"
   },
+  "Character Image": {
+    "message": "Character Image"
+  },
   "Character list is filtered": {
     "message": "Character list is filtered"
   },
@@ -85,6 +88,12 @@
   },
   "Choose": {
     "message": "Choose"
+  },
+  "Choose an image": {
+    "message": "Choose an image"
+  },
+  "Choose an image below or upload a new one": {
+    "message": "Choose an image below or upload a new one"
   },
   "Choose color": {
     "message": "Choose color"
@@ -106,6 +115,9 @@
   },
   "Contact": {
     "message": "Contact"
+  },
+  "Content": {
+    "message": "Content"
   },
   "Copy": {
     "message": "Copy"
@@ -181,6 +193,9 @@
   },
   "Do you want to delete this tag: { title }?": {
     "message": "Do you want to delete this tag: { title }?"
+  },
+  "Do you want to remove this image? It will NOT be deleted from your computer": {
+    "message": "Do you want to remove this image? It will NOT be deleted from your computer"
   },
   "Don't worry, all your work is saved in plottr_trial.pltr in your Documents folder": {
     "message": "Don''t worry, all your work is saved in plottr_trial.pltr in your Documents folder"
@@ -317,6 +332,9 @@
   "New from Template": {
     "message": "New from Template"
   },
+  "No Image": {
+    "message": "No Image"
+  },
   "No actions to undo": {
     "message": "No actions to undo"
   },
@@ -328,6 +346,9 @@
   },
   "Note": {
     "message": "Note"
+  },
+  "Note Image": {
+    "message": "Note Image"
   },
   "Notes": {
     "message": "Notes"
@@ -358,6 +379,9 @@
   },
   "Place": {
     "message": "Place"
+  },
+  "Place Image": {
+    "message": "Place Image"
   },
   "Place list is filtered": {
     "message": "Place list is filtered"
@@ -397,6 +421,12 @@
   },
   "Reload": {
     "message": "Reload"
+  },
+  "Remove": {
+    "message": "Remove"
+  },
+  "Rename": {
+    "message": "Rename"
   },
   "Report a problem": {
     "message": "Report a problem"
@@ -515,6 +545,9 @@
   "Update Plottr": {
     "message": "Update Plottr"
   },
+  "Upload a new image": {
+    "message": "Upload a new image"
+  },
   "Use Template": {
     "message": "Use Template"
   },
@@ -574,6 +607,9 @@
   },
   "Your free trial has expired": {
     "message": "Your free trial has expired"
+  },
+  "Your images": {
+    "message": "Your images"
   },
   "Zoom": {
     "message": "Zoom"
@@ -679,6 +715,9 @@
   },
   "remove tag {tagName} from note {noteName}": {
     "message": "remove tag { tagName } from note { noteName }"
+  },
+  "selected": {
+    "message": "selected"
   },
   "story line": {
     "message": "story line"

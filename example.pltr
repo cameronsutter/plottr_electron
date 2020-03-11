@@ -426,8 +426,10 @@
     },
     {
       "characters": [
+        1,
         0,
-        1
+        5,
+        7
       ],
       "description": "This is a description of something **very** funny happening in this scene\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}\n\nNullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. {{humor}} Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl. {{third place}}",
       "id": 145,
@@ -660,11 +662,11 @@
     {
       "age": "12",
       "cards": [
-        145,
         146,
         144,
         114,
-        118
+        118,
+        145
       ],
       "categoryId": "",
       "color": null,
@@ -673,7 +675,9 @@
       "id": 1,
       "imageId": null,
       "name": "main character",
-      "noteIds": [],
+      "noteIds": [
+        3
+      ],
       "notes": "She is the main character and a really strong female.",
       "power": "lantern",
       "race": "?",
@@ -682,7 +686,9 @@
     },
     {
       "age": "13",
-      "cards": [],
+      "cards": [
+        145
+      ],
       "categoryId": "",
       "color": null,
       "description": "she is the coolest",
@@ -714,7 +720,9 @@
     },
     {
       "age": "3200",
-      "cards": [],
+      "cards": [
+        145
+      ],
       "categoryId": "",
       "color": null,
       "description": "my fav",
@@ -722,7 +730,9 @@
       "id": 5,
       "imageId": null,
       "name": "best character",
-      "noteIds": [],
+      "noteIds": [
+        3
+      ],
       "notes": "she is **really** cool",
       "race": "Bramorphian",
       "tags": [],
@@ -730,7 +740,9 @@
     },
     {
       "age": "50s",
-      "cards": [],
+      "cards": [
+        145
+      ],
       "categoryId": "",
       "color": null,
       "description": "He's old and cranky",
@@ -791,7 +803,9 @@
       "id": 8,
       "imageId": null,
       "name": "Not sure Yet",
-      "noteIds": [],
+      "noteIds": [
+        3
+      ],
       "notes": "He's been locked in the mansion his whole life and can only visit 3 rooms",
       "race": "",
       "tags": [],
@@ -963,7 +977,11 @@
       "title": "Brainstorming"
     },
     {
-      "characters": [],
+      "characters": [
+        1,
+        8,
+        5
+      ],
       "content": "",
       "id": 3,
       "imageId": "3",
@@ -1334,7 +1352,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "outline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

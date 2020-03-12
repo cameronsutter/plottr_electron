@@ -3,7 +3,6 @@ var fs = require('fs')
 var path = require('path')
 const semverGt = require('semver/functions/gt')
 const semverEq = require('semver/functions/eq')
-const semverGte = require('semver/functions/gte')
 const semverCoerce = require('semver/functions/coerce')
 
 function Migrator (data, fileName, fileVersion, appVersion) {
@@ -26,14 +25,14 @@ function Migrator (data, fileName, fileVersion, appVersion) {
     })
   }
 
-  this.areSameVersion = function () {
+  this.areDifferentVersions = function () {
     if (!this.fileVersion) return false
-    return semverEq(this.fileVersion, this.appVersion)
+    return !semverEq(this.fileVersion, this.appVersion)
   }
 
   this.needsToMigrate = function () {
     if (!this.fileVersion) return false
-    return !this.areSameVersion() && !!this.getMigrations().length
+    return this.areDifferentVersions() && this.getMigrations().length
   }
 
   this.plottrBehindFile = function () {
@@ -49,7 +48,7 @@ function Migrator (data, fileName, fileVersion, appVersion) {
     this.migrations = files.filter((f) => {
       if (!this.fileVersion) return true
       const fileName = f.replace('.js', '')
-      return semverGte(semverCoerce(fileName), this.fileVersion)
+      return semverGt(semverCoerce(fileName), this.fileVersion)
     }).sort((a, b) => {
       let aVersion = a.replace('.js', '')
       let bVersion = b.replace('.js', '')

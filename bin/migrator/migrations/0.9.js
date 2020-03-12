@@ -1,7 +1,7 @@
 var _ = require('lodash')
 
 function migrate (data) {
-  if (data.file && data.file.version === '0.9.0') return
+  if (data.file && data.file.version === '0.9.0') return data
 
   var obj = _.cloneDeep(data)
 

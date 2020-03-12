@@ -867,7 +867,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "2020.3.9"
+    "version": "2020.3.11"
   },
   "images": {
     "2": {
@@ -1352,7 +1352,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "outline",
+    "currentView": "notes",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

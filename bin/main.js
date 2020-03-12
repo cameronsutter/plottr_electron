@@ -140,10 +140,8 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
 ipcMain.on('fetch-state', function (event, id) {
   var win = _.find(windows, {id: id})
   win.window.setProgressBar(0.99)
-  if (win.state.file) {
-    win.window.setTitle(displayFileName(win.fileName))
-    win.window.setRepresentedFilename(win.fileName)
-  }
+  win.window.setTitle(displayFileName(win.fileName))
+  win.window.setRepresentedFilename(win.fileName)
 
   migrateIfNeeded (win.state, win.fileName, (err, dirty, json) => {
     if (err) { log.warn(err); rollbar.warn(err) }
@@ -721,28 +719,34 @@ function migrateIfNeeded (json, fileName, callback) {
     callback(null, false, json)
     return
   }
-  var m = new Migrator(json, fileName, json.file.version, app.getVersion())
+  const appVersion = app.getVersion()
+  var m = new Migrator(json, fileName, json.file.version, appVersion)
   if (m.needsToMigrate()) {
-    // not the same version, start migration process
+    log.info('needs to migrate', json.file.version, appVersion)
     if (m.plottrBehindFile()) {
       dialog.showErrorBox(i18n('Update Plottr'), i18n("It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again."))
       callback(i18n('Update Plottr'), false, json)
     } else {
+      log.info('migrating')
       m.migrate((err, json) => {
         if (err === 'backup') {
+          log.warn('error saving backup')
           // try again
           m.migrate((err, json) => {
             if (err === 'backup') {
+              log.warn('error saving backup again. Open without migrating')
               // open without migrating
               callback('problem saving backup', false, json)
             } else {
               // save it and open
+              log.info('finished migrating. Save it and open')
               callback(null, true, json)
               saveFile(fileName, json, () => {})
             }
           })
         } else {
           // save it and open
+          log.info('finished migrating. Save it and open')
           callback(null, true, json)
           saveFile(fileName, json, () => {})
         }

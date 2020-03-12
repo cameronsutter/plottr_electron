@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import MarkDown from 'pagedown'
 import SimpleMDE from 'simplemde'
-import RCE from './RCE'
+import RCE from './rce/RCE'
 import SETTINGS from '../../settings'
 
 const md = MarkDown.getSanitizingConverter()

@@ -59,6 +59,12 @@ function convert(text) {
   const html = md.makeHtml(text)
   const dom = parser.parseFromString('<body>' + html + '</body>')
   const slate = deserialize(dom.getElementsByTagName('body')[0])
+  if (!slate.length) {
+    slate.push({
+      type: 'paragraph',
+      children: [{ text: '' }],
+    })
+  }
   return slate
 }
 

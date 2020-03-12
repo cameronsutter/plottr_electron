@@ -46,6 +46,7 @@
     "react": "^16.8.6",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.6",
+    "react-icons": "^3.9.0",
     "react-modal": "^3.8.1",
     "react-overlays": "^1.2.0",
     "react-proptypes": "^1.0.0",

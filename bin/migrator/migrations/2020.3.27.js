@@ -61,7 +61,6 @@ function convert(text) {
   const slate = deserialize(dom.getElementsByTagName('body')[0])
   if (!slate.length) {
     slate.push({
-      type: 'paragraph',
       children: [{ text: '' }],
     })
   }

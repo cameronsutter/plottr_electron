@@ -1,0 +1,29 @@
+@import "vars";
+
+.slate-editor__wrapper {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.slate-editor__toolbar-wrapper {
+  margin-bottom: 5px;
+  width: 100%;
+  .btn-toolbar {
+    flex-direction: row;
+    .btn {
+      border-radius: 2px;
+      svg {
+        vertical-align: text-bottom;
+      }
+    }
+  }
+}
+
+.slate-editor__editor {
+  border: 1px solid $gray-9;
+  border-radius: 2px;
+  padding: 10px;
+
+}

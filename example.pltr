@@ -6,7 +6,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "notes",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

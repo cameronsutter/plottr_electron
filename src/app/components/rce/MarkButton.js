@@ -1,26 +1,24 @@
-import React, { useState } from 'react'
+import React, { useMemo } from 'react'
 import { Editor } from 'slate'
+import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
 
-const MarkButton = ({ editor, format, icon }) => {
-  const isMarkActive = () => {
+const MarkButton = ({ format, icon }) => {
+  const isMarkActive = (editor) => {
     const marks = Editor.marks(editor)
-    console.log(editor)
     return marks ? marks[format] === true : false
   }
 
   const toggleMark = event => {
     event.preventDefault()
-    if (isMarkActive()) {
+    if (isMarkActive(editor)) {
       Editor.removeMark(editor, format)
     } else {
       Editor.addMark(editor, format, true)
     }
   }
 
-  const [isActive] = useState(isMarkActive())
-  // console.log(format, isActive)
-
-  return <Button bsStyle={isActive ? 'success' : 'default'} onClick={toggleMark}>{icon}</Button>
+  const editor = useSlate()
+  return <Button bsStyle={isMarkActive(editor) ? 'primary' : 'default'} onMouseDown={toggleMark}>{icon}</Button>
 }
 export default MarkButton

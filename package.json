@@ -28,6 +28,7 @@
   "dependencies": {
     "deep-diff": "^0.3.4",
     "docx": "^2.1.1",
+    "dom-parser": "^0.1.6",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
     "electron-json-storage": "^2.0.0",

@@ -1,24 +1,29 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Editor } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
 
-const MarkButton = ({ format, icon }) => {
-  const isMarkActive = (editor) => {
-    const marks = Editor.marks(editor)
-    return marks ? marks[format] === true : false
-  }
-
-  const toggleMark = event => {
-    event.preventDefault()
-    if (isMarkActive(editor)) {
-      Editor.removeMark(editor, format)
-    } else {
-      Editor.addMark(editor, format, true)
-    }
-  }
-
+export const MarkButton = ({ mark, icon }) => {
   const editor = useSlate()
-  return <Button bsStyle={isMarkActive(editor) ? 'primary' : 'default'} onMouseDown={toggleMark}>{icon}</Button>
+
+  return <Button
+    bsStyle={isMarkActive(editor, mark) ? 'primary' : 'default'}
+    onMouseDown={event => {
+      event.preventDefault()
+      toggleMark(editor, mark)
+    }}
+  >{icon}</Button>
 }
-export default MarkButton
+
+const isMarkActive = (editor, mark) => {
+  const marks = Editor.marks(editor)
+  return marks ? marks[mark] === true : false
+}
+
+export const toggleMark = (editor, mark) => {
+  if (isMarkActive(editor, mark)) {
+    Editor.removeMark(editor, mark)
+  } else {
+    Editor.addMark(editor, mark, true)
+  }
+}

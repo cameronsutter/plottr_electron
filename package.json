@@ -38,6 +38,8 @@
     "electron-updater": "^4.0.14",
     "electron-window-state": "^5.0.3",
     "format-message": "^6.2.1",
+    "is-hotkey": "^0.1.6",
+    "is-url": "^1.2.4",
     "lodash": "^4.17.11",
     "mixpanel-browser": "^2.29.0",
     "node-machine-id": "^1.1.12",

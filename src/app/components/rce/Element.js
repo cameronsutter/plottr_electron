@@ -1,4 +1,6 @@
 import React from 'react'
+import { useSelected, useFocused } from 'slate-react'
+import cx from 'classnames'
 
 const Element = ({ attributes, children, element }) => {
   switch (element.type) {
@@ -14,6 +16,21 @@ const Element = ({ attributes, children, element }) => {
       return <li {...attributes}>{children}</li>
     case 'numbered-list':
       return <ol {...attributes}>{children}</ol>
+    case 'link':
+      // TODO: show a preview or a little icon to show a preview
+      return <a {...attributes} title={element.url} href={element.url}>{children}</a>
+    case 'image-link':
+      const selected = useSelected()
+      const focused = useFocused()
+      return <div {...attributes}>
+        <div contentEditable={false}>
+          <img
+            src={element.url}
+            className={cx('slate-editor__image-link', {selected: selected && focused})}
+          />
+        </div>
+        {children}
+      </div>
     default:
       return <p {...attributes}>{children}</p>
   }

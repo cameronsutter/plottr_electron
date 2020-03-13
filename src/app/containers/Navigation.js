@@ -70,15 +70,15 @@ class Navigation extends Component {
               </li>
               { buyItem }
             </ul>
-            <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>
-              <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> {i18n('Undo')}...</Button>
-              <HistoryComponent show={this.state.showHistory} />
-            </div>
           </div>
         </nav>
       </div>
     )
   }
+  // <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>
+  //   <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> {i18n('Undo')}...</Button>
+  //   <HistoryComponent show={this.state.showHistory} />
+  // </div>
 
   saveEdit = () => {
     var newName = ReactDOM.findDOMNode(this.refs.storyNameInput).value

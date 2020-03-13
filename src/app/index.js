@@ -124,18 +124,18 @@ window.onkeydown = function (e) {
   }
 }
 
-const menu = new Menu()
-menu.append(new MenuItem({label: i18n('Cut'), accelerator: 'CmdOrCtrl+X', role: 'cut'}))
-menu.append(new MenuItem({label: i18n('Copy'), accelerator: 'CmdOrCtrl+C', role: 'copy'}))
-menu.append(new MenuItem({type: 'separator'}))
-menu.append(new MenuItem({label: i18n('Paste'), accelerator: 'CmdOrCtrl+V', role: 'paste'}))
-menu.append(new MenuItem({type: 'separator'}))
-menu.append(new MenuItem({label: i18n('Select All'), accelerator: 'CmdOrCtrl+A', role: 'selectall'}))
+// const menu = new Menu()
+// menu.append(new MenuItem({label: i18n('Cut'), accelerator: 'CmdOrCtrl+X', role: 'cut'}))
+// menu.append(new MenuItem({label: i18n('Copy'), accelerator: 'CmdOrCtrl+C', role: 'copy'}))
+// menu.append(new MenuItem({type: 'separator'}))
+// menu.append(new MenuItem({label: i18n('Paste'), accelerator: 'CmdOrCtrl+V', role: 'paste'}))
+// menu.append(new MenuItem({type: 'separator'}))
+// menu.append(new MenuItem({label: i18n('Select All'), accelerator: 'CmdOrCtrl+A', role: 'selectall'}))
 
-window.addEventListener('contextmenu', (e) => {
-  e.preventDefault()
-  menu.popup(remote.getCurrentWindow())
-}, false)
+// window.addEventListener('contextmenu', (e) => {
+//   e.preventDefault()
+//   menu.popup(remote.getCurrentWindow())
+// }, false)
 
 window.logger = function(which) {
   process.env.LOGGER = which.toString()

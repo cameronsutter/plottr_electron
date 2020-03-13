@@ -90,6 +90,9 @@ h3.popover-title {
 .btn {
   @include application-text;
 }
+.modal-header {
+  @include header-font;
+}
 
 .blue-background {
   background-color: $blue;

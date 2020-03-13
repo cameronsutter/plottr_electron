@@ -108,7 +108,7 @@ function deserialize (el) {
     case 'strong':
       return jsx('text', {bold: true})
     case 'img':
-      return jsx('element', { type: 'img', url: el.getAttribute('src') }, children )
+      return jsx('element', { type: 'image-link', url: el.getAttribute('src') }, children )
     case 'a':
       return jsx('element', { type: 'link', url: el.getAttribute('href') }, children )
     default:

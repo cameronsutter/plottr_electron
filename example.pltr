@@ -6,7 +6,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -168,11 +168,41 @@
       "cards": [],
       "color": null,
       "description": "my fav",
-      "family": "The **best** family",
+      "family": [
+        {
+          "children": [
+            {
+              "text": "The "
+            },
+            {
+              "text": "best",
+              "bold": true
+            },
+            {
+              "text": " family"
+            }
+          ]
+        }
+      ],
       "id": 5,
       "name": "best character",
       "noteIds": [],
-      "notes": "she is **really** cool",
+      "notes": [
+        {
+          "children": [
+            {
+              "text": "she is "
+            },
+            {
+              "text": "really",
+              "bold": true
+            },
+            {
+              "text": " cool"
+            }
+          ]
+        }
+      ],
       "race": "Bramorphian"
     }
   ],

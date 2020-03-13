@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import MarkDown from 'pagedown'
 import SimpleMDE from 'simplemde'
-import RCE from './rce/RCE'
+import RichTextEditor from './rce/RichTextEditor'
 import SETTINGS from '../../settings'
+import { RCE_INITIAL_VALUE } from '../store/initialState'
 
 const md = MarkDown.getSanitizingConverter()
 
@@ -70,23 +71,41 @@ class MDdescription extends Component {
 
   render () {
     // darkmode?
-    if (this.props.useRCE) {
-      if (this.useSimpleMDE) {
+    if (this.useSimpleMDE) {
+      if (this.props.useRCE) {
         return <textarea rows='20' ref='descriptionInput' />
+      } else {
+        let html = this.makeLabels(md.makeHtml(this.props.description))
+        return <div
+          className={this.props.className}
+          onClick={this.props.onClick}
+          dangerouslySetInnerHTML={{__html: html}}
+        />
       }
-      return <RCE text={this.props.description}/>
     } else {
-      let html = this.makeLabels(md.makeHtml(this.props.description))
-      return <div
-        className={this.props.className}
-        onClick={this.props.onClick}
-        dangerouslySetInnerHTML={{__html: html}} />
+      // Slate editor
+      let text = this.props.description
+      // let text = RCE_INITIAL_VALUE
+      if (!text.length) {
+        text = RCE_INITIAL_VALUE
+      }
+      if (typeof text == 'string') {
+        let temp = [...RCE_INITIAL_VALUE]
+        temp[0].children[0].text = text
+        text = temp
+      }
+      return <RichTextEditor
+        text={text}
+        onChange={this.props.onChange}
+        autoFocus={this.props.autofocus || undefined}
+        readOnly={!this.props.useRCE}
+      />
     }
   }
 }
 
 MDdescription.propTypes = {
-  description: PropTypes.string,
+  description: PropTypes.any,
   labels: PropTypes.object.isRequired,
   className: PropTypes.string,
   onChange: PropTypes.func,

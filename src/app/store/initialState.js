@@ -7,6 +7,8 @@ i18n.setup({
   locale: app.getLocale() || 'en'
 })
 
+export const RCE_INITIAL_VALUE = [{ children: [{ text: '' }] }]
+
 // data structure
 
 export const scene = {
@@ -41,7 +43,7 @@ export const character = {
   id: 0,
   name: '',
   description: '',
-  notes: '',
+  notes: RCE_INITIAL_VALUE,
   color: null,
   cards: [],
   noteIds: []
@@ -51,7 +53,7 @@ export const place = {
   id: 0,
   name: '',
   description: '',
-  notes: '',
+  notes: RCE_INITIAL_VALUE,
   color: null,
   cards: [],
   noteIds: []
@@ -68,7 +70,7 @@ export const card = {
   lineId: 0,
   sceneId: 0,
   title: i18n('a new card'),
-  description: '',
+  description: RCE_INITIAL_VALUE,
   tags: [],
   characters: [],
   places: []
@@ -92,7 +94,7 @@ export const customAttributes = {
 export const note = {
   id: 0,
   title: '',
-  content: '',
+  content: RCE_INITIAL_VALUE,
   tags: [],
   characters: [],
   places: [],

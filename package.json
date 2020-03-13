@@ -5,7 +5,7 @@
   "homepage": "www.myplottr.com",
   "private": true,
   "readme": "Copyright 2016-2020 C. Louis S. (Cameron Sutter)",
-  "version": "2020.3.12",
+  "version": "2020.3.13",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -47,6 +47,7 @@
     "react": "^16.8.6",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.6",
+    "react-image-file-resizer": "^0.2.1",
     "react-modal": "^3.8.1",
     "react-overlays": "^1.2.0",
     "react-proptypes": "^1.0.0",

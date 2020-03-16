@@ -1,10 +1,14 @@
 var docx = require('docx')
 var _ = require('lodash')
 var i18n = require('format-message')
+const SETTINGS = require('./settings')
 
 function Exporter (data, { fileName }) {
   let doc = new docx.Document()
-  let title = new docx.Paragraph(new docx.TextRun(data.storyName).smallCaps())
+  let title = new docx.Paragraph(new docx.TextRun(data.books[1].name).smallCaps())
+  if (SETTINGS.get('premiumFeatures')) {
+    title = new docx.Paragraph(new docx.TextRun(data.series.name).smallCaps())
+  }
   title.title().center().pageBreak()
   doc.addParagraph(title)
 

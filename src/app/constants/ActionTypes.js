@@ -17,9 +17,6 @@ export const DECREASE_ZOOM = 'DECREASE_ZOOM'
 export const FIT_ZOOM = 'FIT_ZOOM'
 export const RESET_ZOOM = 'RESET_ZOOM'
 
-// story actions
-export const EDIT_STORY_NAME = 'EDIT_STORY_NAME'
-
 // scene actions
 export const ADD_SCENE = 'ADD_SCENE'
 export const EDIT_SCENE_TITLE = 'EDIT_SCENE_TITLE'

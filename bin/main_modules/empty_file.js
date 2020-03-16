@@ -1,20 +1,8 @@
 const { app } = require('electron')
 const {
-  newFileSeries,
-  newFileBooks,
-  newFileBeats,
-  newFileChapters,
-  newFileUI,
-  newFileFile,
-  newFileCharacters,
-  newFilePlaces,
-  newFileTags,
-  newFileCards,
-  newFileLines,
-  newFileSeriesLines,
-  newFileCustomAttributes,
-  newFileNotes,
-  newFileImages,
+  newFileSeries, newFileBooks, newFileBeats, newFileChapters, newFileUI, newFileFile,
+  newFileCharacters, newFilePlaces, newFileTags, newFileCards, newFileLines,
+  newFileSeriesLines, newFileCustomAttributes, newFileNotes, newFileImages,
 } = require('../../shared/newFileState')
 
 function emptyFile (name) {

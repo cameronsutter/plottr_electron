@@ -21,21 +21,20 @@ const book = {
 const beat = {
   id: 1,
   title: '',
-  position: 0,
-  time: new Date().getTime(), // ? can also be a string
+  time: 0, // ? can also be a string
 }
 
 const chapter = {
   id: 1,
   bookId: 1,
   title: 'auto',
-  position: 0,
-  time: new Date().getTime(), // ? can also be a string
+  time: 0, // ? can also be a string
   templates: [],
 }
 
 const ui = {
   currentView: 'timeline',
+  currentTimeline: 1, // bookId or 'series'
   orientation: 'horizontal',
   darkMode: false,
   characterSort: 'name~asc',
@@ -137,7 +136,7 @@ const note = {
   tags: [],
   characters: [],
   places: [],
-  lastEdited: new Date().getTime(),
+  lastEdited: null,
   templates: [],
   imageId: null,
   bookIds: [],

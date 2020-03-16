@@ -1338,7 +1338,8 @@
     "placeFilter": null,
     "placeSort": "name~asc",
     "zoomIndex": 4,
-    "zoomState": null
+    "zoomState": null,
+    "currentTimeline": 1
   },
   "series": {
     "name": "The Awesome Prison Mansion",
@@ -1367,7 +1368,6 @@
   "chapters": {
     "60": {
       "id": 60,
-      "position": 0,
       "title": "8 years Ago",
       "bookId": 1,
       "time": 0,
@@ -1375,7 +1375,6 @@
     },
     "61": {
       "id": 61,
-      "position": 5,
       "title": "Opening Scene (1)",
       "bookId": 1,
       "time": 0,
@@ -1383,7 +1382,6 @@
     },
     "64": {
       "id": 64,
-      "position": 9,
       "title": "Scene 4",
       "bookId": 1,
       "time": 0,
@@ -1391,7 +1389,6 @@
     },
     "65": {
       "id": 65,
-      "position": 17,
       "title": "Scene 11",
       "bookId": 1,
       "time": 0,
@@ -1399,7 +1396,6 @@
     },
     "66": {
       "id": 66,
-      "position": 7,
       "title": "Scene 3",
       "bookId": 1,
       "time": 0,
@@ -1407,7 +1403,6 @@
     },
     "67": {
       "id": 67,
-      "position": 6,
       "title": "Scene 2",
       "bookId": 1,
       "time": 0,
@@ -1415,7 +1410,6 @@
     },
     "68": {
       "id": 68,
-      "position": 4,
       "title": "Chapter 1",
       "bookId": 1,
       "time": 0,
@@ -1423,7 +1417,6 @@
     },
     "69": {
       "id": 69,
-      "position": 8,
       "title": "Chapter 2: Rivalia",
       "bookId": 1,
       "time": 0,
@@ -1431,7 +1424,6 @@
     },
     "70": {
       "id": 70,
-      "position": 19,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1439,7 +1431,6 @@
     },
     "71": {
       "id": 71,
-      "position": 10,
       "title": "Scene 5",
       "bookId": 1,
       "time": 0,
@@ -1447,7 +1438,6 @@
     },
     "72": {
       "id": 72,
-      "position": 14,
       "title": "Chapter 3",
       "bookId": 1,
       "time": 0,
@@ -1455,7 +1445,6 @@
     },
     "73": {
       "id": 73,
-      "position": 18,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1463,7 +1452,6 @@
     },
     "74": {
       "id": 74,
-      "position": 20,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1471,7 +1459,6 @@
     },
     "75": {
       "id": 75,
-      "position": 21,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1479,7 +1466,6 @@
     },
     "76": {
       "id": 76,
-      "position": 11,
       "title": "Scene 6",
       "bookId": 1,
       "time": 0,
@@ -1487,7 +1473,6 @@
     },
     "77": {
       "id": 77,
-      "position": 22,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1495,7 +1480,6 @@
     },
     "78": {
       "id": 78,
-      "position": 15,
       "title": "Scene 9",
       "bookId": 1,
       "time": 0,
@@ -1503,7 +1487,6 @@
     },
     "79": {
       "id": 79,
-      "position": 23,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1511,7 +1494,6 @@
     },
     "80": {
       "id": 80,
-      "position": 40,
       "title": "Finale",
       "bookId": 1,
       "time": 0,
@@ -1519,7 +1501,6 @@
     },
     "81": {
       "id": 81,
-      "position": 24,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1527,7 +1508,6 @@
     },
     "82": {
       "id": 82,
-      "position": 25,
       "title": "Midpoint",
       "bookId": 1,
       "time": 0,
@@ -1535,7 +1515,6 @@
     },
     "83": {
       "id": 83,
-      "position": 13,
       "title": "Scene 8",
       "bookId": 1,
       "time": 0,
@@ -1543,7 +1522,6 @@
     },
     "84": {
       "id": 84,
-      "position": 31,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1551,7 +1529,6 @@
     },
     "85": {
       "id": 85,
-      "position": 27,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1559,7 +1536,6 @@
     },
     "86": {
       "id": 86,
-      "position": 28,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1567,7 +1543,6 @@
     },
     "87": {
       "id": 87,
-      "position": 29,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1575,7 +1550,6 @@
     },
     "88": {
       "id": 88,
-      "position": 30,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1583,7 +1557,6 @@
     },
     "89": {
       "id": 89,
-      "position": 26,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1591,7 +1564,6 @@
     },
     "90": {
       "id": 90,
-      "position": 12,
       "title": "Scene 7",
       "bookId": 1,
       "time": 0,
@@ -1599,7 +1571,6 @@
     },
     "91": {
       "id": 91,
-      "position": 36,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1607,7 +1578,6 @@
     },
     "92": {
       "id": 92,
-      "position": 33,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1615,7 +1585,6 @@
     },
     "93": {
       "id": 93,
-      "position": 34,
       "title": "Darkest Moment",
       "bookId": 1,
       "time": 0,
@@ -1623,7 +1592,6 @@
     },
     "94": {
       "id": 94,
-      "position": 39,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1631,7 +1599,6 @@
     },
     "95": {
       "id": 95,
-      "position": 38,
       "title": "Climax",
       "bookId": 1,
       "time": 0,
@@ -1639,7 +1606,6 @@
     },
     "96": {
       "id": 96,
-      "position": 42,
       "title": "2nd",
       "bookId": 1,
       "time": 0,
@@ -1647,7 +1613,6 @@
     },
     "98": {
       "id": 98,
-      "position": 1,
       "title": "6 Years Ago",
       "bookId": 1,
       "time": 0,
@@ -1655,7 +1620,6 @@
     },
     "99": {
       "id": 99,
-      "position": 3,
       "title": "2 years ago",
       "bookId": 1,
       "time": 0,
@@ -1663,7 +1627,6 @@
     },
     "100": {
       "id": 100,
-      "position": 16,
       "title": "Scene 10",
       "bookId": 1,
       "time": 0,
@@ -1671,7 +1634,6 @@
     },
     "101": {
       "id": 101,
-      "position": 32,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1679,7 +1641,6 @@
     },
     "102": {
       "id": 102,
-      "position": 37,
       "title": "Scene",
       "bookId": 1,
       "time": 0,
@@ -1687,7 +1648,6 @@
     },
     "103": {
       "id": 103,
-      "position": 35,
       "title": "Click to Edit",
       "bookId": 1,
       "time": 0,
@@ -1695,7 +1655,6 @@
     },
     "104": {
       "id": 104,
-      "position": 41,
       "title": "1st",
       "bookId": 1,
       "time": 0,
@@ -1703,7 +1662,6 @@
     },
     "107": {
       "id": 107,
-      "position": 2,
       "title": "5 years ago",
       "bookId": 1,
       "time": 0,

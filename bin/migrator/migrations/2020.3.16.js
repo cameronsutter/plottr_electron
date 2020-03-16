@@ -7,6 +7,8 @@ function migrate (data) {
 
   var obj = _.cloneDeep(data)
 
+  const BOOK_ID = 1
+
   // +series
   obj.series = series
   // storyName -> series name
@@ -16,7 +18,7 @@ function migrate (data) {
 
   // +books
   obj.books = newFileBooks
-  obj.books[1].name = obj.series.name
+  obj.books[BOOK_ID].name = obj.series.name
 
   // everything in the current file is for book 1
 
@@ -29,10 +31,11 @@ function migrate (data) {
     acc.allIds.push(sc.id)
     acc[sc.id] = {
       ...sc,
-      bookId: 1,
+      bookId: BOOK_ID,
       time: 0,
       templates: [],
     }
+    delete acc[sc.id].position
     return acc
   }, {allIds: []})
   // -scenes
@@ -40,12 +43,12 @@ function migrate (data) {
 
   // +character.bookIds (all = [1])
   obj.characters.forEach(ch => {
-    ch.bookIds = [1]
+    ch.bookIds = [BOOK_ID]
   })
 
   // +place.bookIds     (all = [1])
   obj.places.forEach(pl => {
-    pl.bookIds = [1]
+    pl.bookIds = [BOOK_ID]
   })
 
   // card.sceneId -> card.chapterId
@@ -65,7 +68,7 @@ function migrate (data) {
     // +line.characterId
     l.characterId = null
     // +line.bookId
-    l.bookId = 1
+    l.bookId = BOOK_ID
   })
 
   // +seriesLines
@@ -75,6 +78,8 @@ function migrate (data) {
   obj.notes.forEach(n => {
     n.bookIds = []
   })
+
+  obj.ui.currentTimeline = BOOK_ID
 
   return obj
 }

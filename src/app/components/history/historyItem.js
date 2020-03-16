@@ -72,8 +72,6 @@ class HistoryItem extends Component {
 
   renderDetailsByType (type, item) {
     switch (type) {
-      case types.EDIT_STORY_NAME:
-        return <StoryName item={item} />
       case types.ADD_SCENE:
         return <AddScene item={item} />
       case types.EDIT_SCENE_TITLE:

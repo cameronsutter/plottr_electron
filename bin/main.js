@@ -956,7 +956,12 @@ function buildFileMenu () {
             var fullName = fileName + '.pltr'
             const newState = {
               ...winObj.state,
-              storyName: winObj.state.storyName + ' copy'
+              books: {
+                [1]: {
+                  ...books[1],
+                  name: books[1].name + ' copy'
+                }
+              }
             }
             saveFile(fullName, newState, function (err) {
               if (err) {

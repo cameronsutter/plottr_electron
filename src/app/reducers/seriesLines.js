@@ -1,18 +1,18 @@
 import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE,
   EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { line } from '../../../shared/initialState'
-import { newFileLines } from '../../../shared/newFileState'
+import { seriesLine } from '../../../shared/initialState'
+import { newFileSeriesLines } from '../../../shared/newFileState'
 import { arrayId, arrayPosition, arrayPositionReset } from 'store/newIds'
 import { nextColor } from 'store/lineColors'
 
-const initialState = [line]
+const initialState = [seriesLine]
 
-export default function lines (state = initialState, action) {
+export default function seriesLines (state = initialState, action) {
   switch (action.type) {
     case ADD_LINE:
       return [{
         id: arrayId(state),
-        title: line.title,
+        title: seriesLine.title,
         color: nextColor(state.length),
         position: arrayPosition(state)
       }, ...state]
@@ -48,10 +48,10 @@ export default function lines (state = initialState, action) {
 
     case RESET:
     case FILE_LOADED:
-      return action.data.lines
+      return action.data.seriesLines
 
     case NEW_FILE:
-      return newFileLines
+      return newFileSeriesLines
 
     default:
       return state

@@ -1,5 +1,5 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED,
-  FILE_SAVED, NEW_FILE, EDIT_STORY_NAME, SET_DARK_MODE,
+  FILE_SAVED, NEW_FILE, SET_DARK_MODE,
   SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
   SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM } from 'constants/ActionTypes'
 
@@ -21,10 +21,6 @@ export function newFile (fileName) {
 
 export function fileSaved () {
   return { type: FILE_SAVED, dirty: false }
-}
-
-export function changeStoryName (newName) {
-  return { type: EDIT_STORY_NAME, name: newName }
 }
 
 export function setDarkMode (on) {

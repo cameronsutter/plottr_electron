@@ -92,12 +92,16 @@ class NoteListView extends Component {
           <Image src={this.props.images[n.imageId].data} responsive/>
         </div>
       }
+      let lastEdited = null
+      if (n.lastEdited) {
+        lastEdited = <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
+      }
       return <div key={idx} className='list-group-item' onClick={() => this.setState({noteDetailId: n.id})}>
         <div className='note-list__item-inner'>
           {img}
           <div>
             <h6 className='list-group-item-heading'>{n.title}</h6>
-            <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
+            { lastEdited }
           </div>
         </div>
       </div>

@@ -9,8 +9,8 @@ import _ from 'lodash'
 import * as LineActions from 'actions/lines'
 import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { lineId, cardId } from '../../store/newIds'
-import { card, line } from '../../../../shared/initialState'
+import { arrayId } from '../../store/newIds'
+import { card } from '../../../../shared/initialState'
 
 class AddLineRow extends Component {
   state = {
@@ -20,8 +20,8 @@ class AddLineRow extends Component {
 
   handleChooseTemplate = (template) => {
     const templateData = template.templateData
-    const newLineId = lineId(this.props.lines)
-    let newCardId = cardId(this.props.cards)
+    const newLineId = arrayId(this.props.lines)
+    let newCardId = arrayId(this.props.cards)
     const scenes = _.sortBy(this.props.scenes, 'position')
     let cards = []
     let lines = []

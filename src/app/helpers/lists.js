@@ -1,5 +1,5 @@
 import { scene } from '../../../shared/initialState'
-import { sceneId } from 'store/newIds'
+import { arrayId } from 'store/newIds'
 
 export function reorderList (originalPosition, newPosition, list) {
   const sortedList = _.sortBy(list, 'position')
@@ -8,8 +8,9 @@ export function reorderList (originalPosition, newPosition, list) {
   return sortedList
 }
 
+//TODO: this will need to change
 export function insertScene (position, scenes) {
-  var newId = sceneId(scenes)
+  var newId = arrayId(scenes)
   var newScene = _.clone(scene)
   newScene['id'] = newId
 

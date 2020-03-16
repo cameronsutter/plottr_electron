@@ -5,7 +5,7 @@ import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED
   DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELET_IMAGE, DELETE_IMAGE} from '../constants/ActionTypes'
 import { character } from '../../../shared/initialState'
 import { newFileCharacters } from '../../../shared/newFileState'
-import { characterId } from 'store/newIds'
+import { arrayId } from 'store/newIds'
 
 const initialState = [character]
 
@@ -14,7 +14,7 @@ export default function characters (state = initialState, action) {
     case ADD_CHARACTER:
       return [...state, {
         ...character,
-        id: characterId(state),
+        id: arrayId(state),
         name: action.name,
         description: action.description,
         notes: action.notes
@@ -29,7 +29,7 @@ export default function characters (state = initialState, action) {
       }
       return [...state, {
         ...character,
-        id: characterId(state),
+        id: arrayId(state),
         name: action.name,
         description: action.description,
         notes: action.notes,

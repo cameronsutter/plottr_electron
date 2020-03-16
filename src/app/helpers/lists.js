@@ -1,4 +1,4 @@
-import { scene } from 'store/initialState'
+import { scene } from '../../../shared/initialState'
 import { sceneId } from 'store/newIds'
 
 export function reorderList (originalPosition, newPosition, list) {

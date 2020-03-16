@@ -1,6 +1,6 @@
 import { ADD_TAG, EDIT_TAG, DELETE_TAG, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { tag } from 'store/initialState'
-import { newFileTags } from 'store/newFileState'
+import { tag } from '../../../shared/initialState'
+import { newFileTags } from '../../../shared/newFileState'
 import { tagId } from 'store/newIds'
 
 const initialState = [tag]

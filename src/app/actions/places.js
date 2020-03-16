@@ -1,5 +1,5 @@
 import { ADD_PLACE, EDIT_PLACE, DELETE_PLACE } from 'constants/ActionTypes'
-import { place } from 'store/initialState'
+import { place } from '../../../shared/initialState'
 
 export function addPlace () {
   return { type: ADD_PLACE, name: place.name, description: place.description, notes: place.notes }

@@ -6,7 +6,7 @@ import { ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   EDIT_CARDS_ATTRIBUTE, EDIT_LINES_ATTRIBUTE, EDIT_SCENES_ATTRIBUTE,
   RESET, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
 import { combineReducers } from 'redux'
-import { newFileCustomAttributes } from 'store/newFileState'
+import { newFileCustomAttributes } from '../../../shared/newFileState'
 
 function characters (state = [], action) {
   switch (action.type) {

@@ -3,8 +3,8 @@ import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE, ATTACH_PLACE_TO_NOTE,
   REMOVE_PLACE_FROM_NOTE, ATTACH_TAG_TO_NOTE, REMOVE_TAG_FROM_NOTE, DELETE_TAG,
   DELETE_CHARACTER, DELETE_PLACE, DELETE_IMAGE } from '../constants/ActionTypes'
-import { note } from 'store/initialState'
-import { newFileNotes } from 'store/newFileState'
+import { note } from '../../../shared/initialState'
+import { newFileNotes } from '../../../shared/newFileState'
 import { noteId } from 'store/newIds'
 
 const initialState = [note]

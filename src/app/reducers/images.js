@@ -1,5 +1,5 @@
 import { ADD_IMAGE, RENAME_IMAGE, DELETE_IMAGE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { newFileImages } from 'store/newFileState'
+import { newFileImages } from '../../../shared/newFileState'
 import { imageId } from 'store/newIds'
 
 export default function cards (state, action) {

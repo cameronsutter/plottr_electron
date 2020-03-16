@@ -1,21 +1,40 @@
-import i18n from 'format-message'
-import { INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE } from 'constants/zoom_states'
-import { remote } from 'electron'
-const app = remote.app
-i18n.setup({
-  translations: require('../../../locales'),
-  locale: app.getLocale() || 'en'
-})
-
 // data structure
 
-export const scene = {
-  id: 1,
-  title: '',
-  position: 0
+const series = {
+  name: '',
+  premise: '',
+  genre: '',
+  theme: '',
+  templates: [],
 }
 
-export const ui = {
+const book = {
+  id: 1,
+  name: '',
+  bookNumber: 1,
+  premise: '',
+  genre: '',
+  theme: '',
+  templates: [],
+}
+
+const beat = {
+  id: 1,
+  title: '',
+  position: 0,
+  time: new Date().getTime(), // ? can also be a string
+  series: false,
+}
+
+const chapter = {
+  id: 1,
+  title: 'auto',
+  position: 0,
+  time: new Date().getTime(), // ? can also be a string
+  templates: [],
+}
+
+const ui = {
   currentView: 'timeline',
   orientation: 'horizontal',
   darkMode: false,
@@ -25,19 +44,18 @@ export const ui = {
   placeFilter: null,
   noteSort: 'title~asc',
   noteFilter: null,
-  zoomState: INITIAL_ZOOM_STATE,
-  zoomIndex: INITIAL_ZOOM_INDEX,
+  zoomState: null,
+  zoomIndex: 4,
 }
 
-export const file = {
+const file = {
   fileName: '',
   loaded: false,
-  dirty: false
+  dirty: false,
+  version: '',
 }
 
-export const storyName = i18n('My awesome story')
-
-export const character = {
+const character = {
   id: 1,
   name: '',
   description: '',
@@ -51,7 +69,7 @@ export const character = {
   imageId: null,
 }
 
-export const place = {
+const place = {
   id: 1,
   name: '',
   description: '',
@@ -64,17 +82,19 @@ export const place = {
   imageId: null,
 }
 
-export const tag = {
+const tag = {
   id: 1,
   title: '',
   color: null
 }
 
-export const card = {
+const card = {
   id: 1,
   lineId: 1,
-  sceneId: 1,
-  title: i18n('a new card'),
+  chapterId: 1,
+  beatId: null,
+  bookId: 1,
+  title: '',
   description: '',
   tags: [],
   characters: [],
@@ -83,14 +103,23 @@ export const card = {
   imageId: null,
 }
 
-export const line = {
+const line = {
+  id: 1,
+  bookId: 1,
+  color: '#6cace4',
+  title: '',
+  position: 0,
+  characterId: null,
+}
+
+const seriesLine = {
   id: 1,
   color: '#6cace4',
   title: '',
   position: 0,
 }
 
-export const customAttributes = {
+const customAttributes = {
   characters: [],
   places: [],
   cards: [],
@@ -98,7 +127,7 @@ export const customAttributes = {
   lines: []
 }
 
-export const note = {
+const note = {
   id: 1,
   title: '',
   content: '',
@@ -110,9 +139,27 @@ export const note = {
   imageId: null,
 }
 
-export const image = {
+const image = {
   id: 1,
   name: '',
   path: '',
   data: '',
+}
+
+module.exports = {
+  image,
+  note,
+  customAttributes,
+  seriesLine,
+  line,
+  card,
+  tag,
+  place,
+  character,
+  file,
+  ui,
+  chapter,
+  beat,
+  book,
+  series,
 }

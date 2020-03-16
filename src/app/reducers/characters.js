@@ -3,8 +3,8 @@ import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
   ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELET_IMAGE, DELETE_IMAGE} from '../constants/ActionTypes'
-import { character } from 'store/initialState'
-import { newFileCharacters } from 'store/newFileState'
+import { character } from '../../../shared/initialState'
+import { newFileCharacters } from '../../../shared/newFileState'
 import { characterId } from 'store/newIds'
 
 const initialState = [character]

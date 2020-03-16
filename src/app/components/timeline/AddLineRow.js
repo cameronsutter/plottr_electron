@@ -10,7 +10,7 @@ import * as LineActions from 'actions/lines'
 import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { lineId, cardId } from '../../store/newIds'
-import { card, line } from '../../store/initialState'
+import { card, line } from '../../../../shared/initialState'
 
 class AddLineRow extends Component {
   state = {

@@ -22,6 +22,7 @@ const SETTINGS = require('./main_modules/settings')
 const checkForActiveLicense = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
 const templateManager = new TemplateManager()
+const emptyFile = require('./main_modules/empty_file')
 if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
@@ -568,7 +569,7 @@ function createAndOpenEmptyFile () {
   } catch (error) {
     log.warn(error)
   } finally {
-    const data = emptyFileContents()
+    const data = emptyFileContents(i18n('Plottr Trial'))
     saveFile(fileName, data, function(err) {
       if (err) {
         log.warn(err)
@@ -580,8 +581,8 @@ function createAndOpenEmptyFile () {
   }
 }
 
-function emptyFileContents () {
-  return require('./empty_file.json')
+function emptyFileContents (name) {
+  return emptyFile(name)
 }
 
 function openAboutWindow () {

@@ -1,5 +1,5 @@
 import { EDIT_STORY_NAME, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { storyName as defaultStoryName } from 'store/initialState'
+import { storyName as defaultStoryName } from '../../../shared/newFileState'
 
 export default function storyName (state = defaultStoryName, action) {
   switch (action.type) {

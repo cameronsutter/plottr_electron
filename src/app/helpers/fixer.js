@@ -2,7 +2,7 @@ import _ from 'lodash'
 const { remote } = require('electron')
 const app = remote.app
 import { ui, scene, character, place,
-  tag, card, line, note } from 'store/initialState'
+  tag, card, line, note } from '../../../shared/initialState'
 
 export default function FileFixer (state) {
   var newState = _.cloneDeep(state)

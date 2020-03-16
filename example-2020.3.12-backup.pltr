@@ -7,13 +7,10 @@
       "imageId": null,
       "lineId": 33,
       "places": [],
+      "sceneId": 96,
       "tags": [],
       "templates": [],
-      "title": "card",
-      "chapterId": 96,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "card"
     },
     {
       "characters": [],
@@ -22,15 +19,12 @@
       "imageId": null,
       "lineId": 35,
       "places": [],
+      "sceneId": 60,
       "tags": [
         6
       ],
       "templates": [],
-      "title": "Cool thing that takes a whole lot of words to describe",
-      "chapterId": 60,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Cool thing that takes a whole lot of words to describe"
     },
     {
       "characters": [
@@ -41,13 +35,10 @@
       "imageId": null,
       "lineId": 33,
       "places": [],
+      "sceneId": 98,
       "tags": [],
       "templates": [],
-      "title": "Cool thing happens",
-      "chapterId": 98,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Cool thing happens"
     },
     {
       "characters": [],
@@ -56,13 +47,10 @@
       "imageId": null,
       "lineId": 33,
       "places": [],
+      "sceneId": 66,
       "tags": [],
       "templates": [],
-      "title": "Valia calls a new champion",
-      "chapterId": 66,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Valia calls a new champion"
     },
     {
       "characters": [],
@@ -71,13 +59,10 @@
       "imageId": null,
       "lineId": 33,
       "places": [],
+      "sceneId": 68,
       "tags": [],
       "templates": [],
-      "title": "Exiled but still in the game",
-      "chapterId": 68,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Exiled but still in the game"
     },
     {
       "characters": [],
@@ -86,13 +71,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 84,
       "tags": [],
       "templates": [],
-      "title": "Choosing the Three ",
-      "chapterId": 84,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Choosing the Three "
     },
     {
       "characters": [],
@@ -101,13 +83,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 104,
       "tags": [],
       "templates": [],
-      "title": "Back Home: Now for Mom and Dad",
-      "chapterId": 104,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Back Home: Now for Mom and Dad"
     },
     {
       "characters": [],
@@ -116,13 +95,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 96,
       "tags": [],
       "templates": [],
-      "title": "Jared Attempts Escape",
-      "chapterId": 96,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Jared Attempts Escape"
     },
     {
       "characters": [],
@@ -131,13 +107,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 88,
       "tags": [],
       "templates": [],
-      "title": "Prisoners",
-      "chapterId": 88,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Prisoners"
     },
     {
       "characters": [],
@@ -146,13 +119,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 75,
       "tags": [],
       "templates": [],
-      "title": "Mantle of Power",
-      "chapterId": 75,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Mantle of Power"
     },
     {
       "characters": [
@@ -163,13 +133,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 66,
       "tags": [],
       "templates": [],
-      "title": "Blackout",
-      "chapterId": 66,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Blackout"
     },
     {
       "characters": [],
@@ -178,13 +145,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 77,
       "tags": [],
       "templates": [],
-      "title": "Testing the Dark Lord",
-      "chapterId": 77,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Testing the Dark Lord"
     },
     {
       "characters": [
@@ -195,13 +159,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 76,
       "tags": [],
       "templates": [],
-      "title": "Escaping the Knights",
-      "chapterId": 76,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Escaping the Knights"
     },
     {
       "characters": [],
@@ -210,13 +171,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 92,
       "tags": [],
       "templates": [],
-      "title": "The Siege of Valior",
-      "chapterId": 92,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "The Siege of Valior"
     },
     {
       "characters": [],
@@ -225,13 +183,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 93,
       "tags": [],
       "templates": [],
-      "title": "Faded Hope",
-      "chapterId": 93,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Faded Hope"
     },
     {
       "characters": [
@@ -242,13 +197,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 71,
       "tags": [],
       "templates": [],
-      "title": "Magic Shoes",
-      "chapterId": 71,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Magic Shoes"
     },
     {
       "characters": [],
@@ -257,13 +209,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 90,
       "tags": [],
       "templates": [],
-      "title": "Ashwood Forest",
-      "chapterId": 90,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Ashwood Forest"
     },
     {
       "characters": [],
@@ -272,13 +221,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 79,
       "tags": [],
       "templates": [],
-      "title": "The Dark Queen",
-      "chapterId": 79,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "The Dark Queen"
     },
     {
       "characters": [],
@@ -287,13 +233,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 80,
       "tags": [],
       "templates": [],
-      "title": "Through the Portal",
-      "chapterId": 80,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Through the Portal"
     },
     {
       "characters": [],
@@ -302,13 +245,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 86,
       "tags": [],
       "templates": [],
-      "title": "Liberlooting",
-      "chapterId": 86,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Liberlooting"
     },
     {
       "characters": [],
@@ -317,13 +257,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 81,
       "tags": [],
       "templates": [],
-      "title": "Insomnia again",
-      "chapterId": 81,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Insomnia again"
     },
     {
       "characters": [],
@@ -332,13 +269,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 87,
       "tags": [],
       "templates": [],
-      "title": "Return to Malgard",
-      "chapterId": 87,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Return to Malgard"
     },
     {
       "characters": [],
@@ -347,13 +281,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 85,
       "tags": [],
       "templates": [],
-      "title": "Outside The Prison City",
-      "chapterId": 85,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Outside The Prison City"
     },
     {
       "characters": [],
@@ -362,13 +293,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 100,
       "tags": [],
       "templates": [],
-      "title": "Welcome to Malgard",
-      "chapterId": 100,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Welcome to Malgard"
     },
     {
       "characters": [],
@@ -377,13 +305,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 95,
       "tags": [],
       "templates": [],
-      "title": "The Battle for Heaven and Earth",
-      "chapterId": 95,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "The Battle for Heaven and Earth"
     },
     {
       "characters": [],
@@ -392,13 +317,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 94,
       "tags": [],
       "templates": [],
-      "title": "Aftermath",
-      "chapterId": 94,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Aftermath"
     },
     {
       "characters": [],
@@ -407,13 +329,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 78,
       "tags": [],
       "templates": [],
-      "title": "The Dark Way",
-      "chapterId": 78,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "The Dark Way"
     },
     {
       "characters": [],
@@ -422,13 +341,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 70,
       "tags": [],
       "templates": [],
-      "title": "Maltheus's Divination",
-      "chapterId": 70,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Maltheus's Divination"
     },
     {
       "characters": [
@@ -439,13 +355,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 67,
       "tags": [],
       "templates": [],
-      "title": "Cries in the storm",
-      "chapterId": 67,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Cries in the storm"
     },
     {
       "characters": [],
@@ -454,13 +367,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 73,
       "tags": [],
       "templates": [],
-      "title": "Insomnia",
-      "chapterId": 73,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Insomnia"
     },
     {
       "characters": [],
@@ -469,13 +379,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 65,
       "tags": [],
       "templates": [],
-      "title": "The Last Vizari",
-      "chapterId": 65,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "The Last Vizari"
     },
     {
       "characters": [],
@@ -484,13 +391,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 74,
       "tags": [],
       "templates": [],
-      "title": "A rude awakening",
-      "chapterId": 74,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "A rude awakening"
     },
     {
       "characters": [
@@ -501,13 +405,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 61,
       "tags": [],
       "templates": [],
-      "title": "Running Away Again",
-      "chapterId": 61,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Running Away Again"
     },
     {
       "characters": [
@@ -518,13 +419,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 64,
       "tags": [],
       "templates": [],
-      "title": "Master?",
-      "chapterId": 64,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Master?"
     },
     {
       "characters": [
@@ -541,6 +439,7 @@
         1,
         2
       ],
+      "sceneId": 98,
       "tags": [
         0,
         4,
@@ -548,11 +447,7 @@
         6
       ],
       "templates": [],
-      "title": "The Last Great War",
-      "chapterId": 98,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "The Last Great War"
     },
     {
       "characters": [
@@ -565,6 +460,7 @@
       "places": [
         2
       ],
+      "sceneId": 99,
       "tags": [
         0,
         1,
@@ -574,11 +470,7 @@
         5
       ],
       "templates": [],
-      "title": "Valia's New Plan",
-      "chapterId": 99,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Valia's New Plan"
     },
     {
       "characters": [],
@@ -587,13 +479,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 89,
       "tags": [],
       "templates": [],
-      "title": "Visiting the Queen",
-      "chapterId": 89,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Visiting the Queen"
     },
     {
       "characters": [],
@@ -602,13 +491,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 101,
       "tags": [],
       "templates": [],
-      "title": "Dirtying up the land",
-      "chapterId": 101,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Dirtying up the land"
     },
     {
       "characters": [],
@@ -617,13 +503,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 103,
       "tags": [],
       "templates": [],
-      "title": "Underfoot",
-      "chapterId": 103,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Underfoot"
     },
     {
       "characters": [],
@@ -632,13 +515,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 102,
       "tags": [],
       "templates": [],
-      "title": "Underbranch",
-      "chapterId": 102,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Underbranch"
     },
     {
       "characters": [],
@@ -647,13 +527,10 @@
       "imageId": null,
       "lineId": 27,
       "places": [],
+      "sceneId": 83,
       "tags": [],
       "templates": [],
-      "title": "The Gobblin' Goblin",
-      "chapterId": 83,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "The Gobblin' Goblin"
     },
     {
       "characters": [],
@@ -662,13 +539,10 @@
       "imageId": null,
       "lineId": 34,
       "places": [],
+      "sceneId": 99,
       "tags": [],
       "templates": [],
-      "title": "Rivan's army is defeated, but he defeats Valia in Heaven",
-      "chapterId": 99,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Rivan's army is defeated, but he defeats Valia in Heaven"
     },
     {
       "characters": [],
@@ -677,13 +551,10 @@
       "imageId": null,
       "lineId": 34,
       "places": [],
+      "sceneId": 68,
       "tags": [],
       "templates": [],
-      "title": "Ruling the World",
-      "chapterId": 68,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Ruling the World"
     },
     {
       "characters": [],
@@ -692,13 +563,10 @@
       "imageId": null,
       "lineId": 35,
       "places": [],
+      "sceneId": 90,
       "tags": [],
       "templates": [],
-      "title": "Maltheus finally communes with Rivan",
-      "chapterId": 90,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Maltheus finally communes with Rivan"
     },
     {
       "characters": [],
@@ -707,13 +575,10 @@
       "imageId": null,
       "lineId": 35,
       "places": [],
+      "sceneId": 68,
       "tags": [],
       "templates": [],
-      "title": "Plotting and Leading the Remnants",
-      "chapterId": 68,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Plotting and Leading the Remnants"
     },
     {
       "characters": [
@@ -726,6 +591,7 @@
       "places": [
         0
       ],
+      "sceneId": 61,
       "tags": [
         2,
         5,
@@ -734,11 +600,7 @@
         9
       ],
       "templates": [],
-      "title": "Seeking an Escape",
-      "chapterId": 61,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Seeking an Escape"
     },
     {
       "characters": [],
@@ -749,16 +611,13 @@
       "places": [
         0
       ],
+      "sceneId": 60,
       "tags": [
         7,
         6
       ],
       "templates": [],
-      "title": "Keven Enters the Mansion",
-      "chapterId": 60,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Keven Enters the Mansion"
     },
     {
       "characters": [],
@@ -767,13 +626,10 @@
       "imageId": null,
       "lineId": 29,
       "places": [],
+      "sceneId": 64,
       "tags": [],
       "templates": [],
-      "title": "Kevan gains a new quest",
-      "chapterId": 64,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Kevan gains a new quest"
     },
     {
       "characters": [],
@@ -784,13 +640,10 @@
       "places": [
         1
       ],
+      "sceneId": 68,
       "tags": [],
       "templates": [],
-      "title": "Hunting and Maintaining Order",
-      "chapterId": 68,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Hunting and Maintaining Order"
     },
     {
       "characters": [],
@@ -799,13 +652,10 @@
       "imageId": null,
       "lineId": 36,
       "places": [],
+      "sceneId": 68,
       "tags": [],
       "templates": [],
-      "title": "Seeking his family",
-      "chapterId": 68,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null
+      "title": "Seeking his family"
     }
   ],
   "characters": [
@@ -832,10 +682,7 @@
       "power": "lantern",
       "race": "?",
       "tags": [],
-      "templates": [],
-      "bookIds": [
-        1
-      ]
+      "templates": []
     },
     {
       "age": "13",
@@ -853,10 +700,7 @@
       "notes": "",
       "race": "",
       "tags": [],
-      "templates": [],
-      "bookIds": [
-        1
-      ]
+      "templates": []
     },
     {
       "age": "13",
@@ -872,10 +716,7 @@
       "notes": "",
       "race": "gregorian",
       "tags": [],
-      "templates": [],
-      "bookIds": [
-        1
-      ]
+      "templates": []
     },
     {
       "age": "3200",
@@ -895,10 +736,7 @@
       "notes": "she is **really** cool",
       "race": "Bramorphian",
       "tags": [],
-      "templates": [],
-      "bookIds": [
-        1
-      ]
+      "templates": []
     },
     {
       "age": "50s",
@@ -953,9 +791,6 @@
           "id": "ch1",
           "version": "2020.3.4"
         }
-      ],
-      "bookIds": [
-        1
       ]
     },
     {
@@ -1012,9 +847,6 @@
           "value": "",
           "version": "2020.3.4"
         }
-      ],
-      "bookIds": [
-        1
       ]
     }
   ],
@@ -1035,7 +867,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "2020.3.16"
+    "version": "2020.3.12"
   },
   "images": {
     "1": {
@@ -1062,57 +894,43 @@
       "color": "#6cace4",
       "id": 27,
       "position": 0,
-      "title": "Main Story Arc",
-      "characterId": null,
-      "bookId": 1
+      "title": "Main Story Arc"
     },
     {
       "color": "#e5554f",
       "id": 29,
       "position": 1,
-      "title": "Kevan",
-      "characterId": null,
-      "bookId": 1
+      "title": "Kevan"
     },
     {
       "color": "#ff7f32",
       "id": 33,
       "position": 2,
-      "title": "Anna",
-      "characterId": null,
-      "bookId": 1
+      "title": "Anna"
     },
     {
       "color": "#78be20",
       "id": 28,
       "position": 3,
-      "title": "Samuel Zorfert",
-      "characterId": null,
-      "bookId": 1
+      "title": "Samuel Zorfert"
     },
     {
       "color": "darkorchid",
       "id": 36,
       "position": 4,
-      "title": "Bimph",
-      "characterId": null,
-      "bookId": 1
+      "title": "Bimph"
     },
     {
       "color": "#ffc72c",
       "id": 34,
       "position": 5,
-      "title": "Rivab",
-      "characterId": null,
-      "bookId": 1
+      "title": "Rivab"
     },
     {
       "color": "DeepPink",
       "id": 35,
       "position": 6,
-      "title": "Baltazaar",
-      "characterId": null,
-      "bookId": 1
+      "title": "Baltazaar"
     }
   ],
   "notes": [
@@ -1136,8 +954,7 @@
         0
       ],
       "templates": [],
-      "title": "Another Note",
-      "bookIds": []
+      "title": "Another Note"
     },
     {
       "characters": [
@@ -1157,8 +974,7 @@
         6
       ],
       "templates": [],
-      "title": "Brainstorming",
-      "bookIds": []
+      "title": "Brainstorming"
     },
     {
       "characters": [
@@ -1175,8 +991,7 @@
       ],
       "tags": [],
       "templates": [],
-      "title": "note about First Place",
-      "bookIds": []
+      "title": "note about First Place"
     },
     {
       "characters": [
@@ -1189,8 +1004,7 @@
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "something cool",
-      "bookIds": []
+      "title": "something cool"
     },
     {
       "characters": [
@@ -1207,8 +1021,7 @@
         10
       ],
       "templates": [],
-      "title": "a new note",
-      "bookIds": []
+      "title": "a new note"
     }
   ],
   "places": [
@@ -1223,10 +1036,7 @@
       "notes": "notes are **cool**\n",
       "tags": [],
       "templates": [],
-      "weather": "stormy",
-      "bookIds": [
-        1
-      ]
+      "weather": "stormy"
     },
     {
       "cards": [],
@@ -1239,10 +1049,7 @@
       "notes": "weird … how did the notes attr become an array?",
       "tags": [],
       "templates": [],
-      "weather": "",
-      "bookIds": [
-        1
-      ]
+      "weather": ""
     },
     {
       "cards": [],
@@ -1255,12 +1062,227 @@
       "notes": "string … not array",
       "tags": [],
       "templates": [],
-      "weather": "?",
-      "bookIds": [
-        1
-      ]
+      "weather": "?"
     }
   ],
+  "scenes": [
+    {
+      "id": 60,
+      "position": 0,
+      "title": "8 years Ago"
+    },
+    {
+      "id": 98,
+      "position": 1,
+      "title": "6 Years Ago"
+    },
+    {
+      "id": 107,
+      "position": 2,
+      "title": "5 years ago"
+    },
+    {
+      "id": 99,
+      "position": 3,
+      "title": "2 years ago"
+    },
+    {
+      "id": 68,
+      "position": 4,
+      "title": "Chapter 1"
+    },
+    {
+      "id": 61,
+      "position": 5,
+      "title": "Opening Scene (1)"
+    },
+    {
+      "id": 67,
+      "position": 6,
+      "title": "Scene 2"
+    },
+    {
+      "id": 66,
+      "position": 7,
+      "title": "Scene 3"
+    },
+    {
+      "id": 69,
+      "position": 8,
+      "title": "Chapter 2: Rivalia"
+    },
+    {
+      "id": 64,
+      "position": 9,
+      "title": "Scene 4"
+    },
+    {
+      "id": 71,
+      "position": 10,
+      "title": "Scene 5"
+    },
+    {
+      "id": 76,
+      "position": 11,
+      "title": "Scene 6"
+    },
+    {
+      "id": 90,
+      "position": 12,
+      "title": "Scene 7"
+    },
+    {
+      "id": 83,
+      "position": 13,
+      "title": "Scene 8"
+    },
+    {
+      "id": 72,
+      "position": 14,
+      "title": "Chapter 3"
+    },
+    {
+      "id": 78,
+      "position": 15,
+      "title": "Scene 9"
+    },
+    {
+      "id": 100,
+      "position": 16,
+      "title": "Scene 10"
+    },
+    {
+      "id": 65,
+      "position": 17,
+      "title": "Scene 11"
+    },
+    {
+      "id": 73,
+      "position": 18,
+      "title": "Scene"
+    },
+    {
+      "id": 70,
+      "position": 19,
+      "title": "Scene"
+    },
+    {
+      "id": 74,
+      "position": 20,
+      "title": "Scene"
+    },
+    {
+      "id": 75,
+      "position": 21,
+      "title": "Scene"
+    },
+    {
+      "id": 77,
+      "position": 22,
+      "title": "Scene"
+    },
+    {
+      "id": 79,
+      "position": 23,
+      "title": "Scene"
+    },
+    {
+      "id": 81,
+      "position": 24,
+      "title": "Scene"
+    },
+    {
+      "id": 82,
+      "position": 25,
+      "title": "Midpoint"
+    },
+    {
+      "id": 89,
+      "position": 26,
+      "title": "Scene"
+    },
+    {
+      "id": 85,
+      "position": 27,
+      "title": "Scene"
+    },
+    {
+      "id": 86,
+      "position": 28,
+      "title": "Scene"
+    },
+    {
+      "id": 87,
+      "position": 29,
+      "title": "Scene"
+    },
+    {
+      "id": 88,
+      "position": 30,
+      "title": "Scene"
+    },
+    {
+      "id": 84,
+      "position": 31,
+      "title": "Scene"
+    },
+    {
+      "id": 101,
+      "position": 32,
+      "title": "Scene"
+    },
+    {
+      "id": 92,
+      "position": 33,
+      "title": "Scene"
+    },
+    {
+      "id": 93,
+      "position": 34,
+      "title": "Darkest Moment"
+    },
+    {
+      "id": 103,
+      "position": 35,
+      "title": "Click to Edit"
+    },
+    {
+      "id": 91,
+      "position": 36,
+      "title": "Scene"
+    },
+    {
+      "id": 102,
+      "position": 37,
+      "title": "Scene"
+    },
+    {
+      "id": 95,
+      "position": 38,
+      "title": "Climax"
+    },
+    {
+      "id": 94,
+      "position": 39,
+      "title": "Scene"
+    },
+    {
+      "id": 80,
+      "position": 40,
+      "title": "Finale"
+    },
+    {
+      "id": 104,
+      "position": 41,
+      "title": "1st"
+    },
+    {
+      "id": 96,
+      "position": 42,
+      "title": "2nd"
+    }
+  ],
+  "storyName": "The Awesome Prison Mansion",
   "tags": [
     {
       "color": "firebrick",
@@ -1339,428 +1361,5 @@
     "placeSort": "name~asc",
     "zoomIndex": 4,
     "zoomState": null
-  },
-  "series": {
-    "name": "The Awesome Prison Mansion",
-    "premise": "",
-    "genre": "",
-    "theme": "",
-    "templates": []
-  },
-  "books": {
-    "1": {
-      "id": 1,
-      "name": "The Awesome Prison Mansion",
-      "bookNumber": 1,
-      "premise": "",
-      "genre": "",
-      "theme": "",
-      "templates": []
-    },
-    "allIds": [
-      1
-    ]
-  },
-  "beats": {
-    "allIds": []
-  },
-  "chapters": {
-    "60": {
-      "id": 60,
-      "position": 0,
-      "title": "8 years Ago",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "61": {
-      "id": 61,
-      "position": 5,
-      "title": "Opening Scene (1)",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "64": {
-      "id": 64,
-      "position": 9,
-      "title": "Scene 4",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "65": {
-      "id": 65,
-      "position": 17,
-      "title": "Scene 11",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "66": {
-      "id": 66,
-      "position": 7,
-      "title": "Scene 3",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "67": {
-      "id": 67,
-      "position": 6,
-      "title": "Scene 2",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "68": {
-      "id": 68,
-      "position": 4,
-      "title": "Chapter 1",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "69": {
-      "id": 69,
-      "position": 8,
-      "title": "Chapter 2: Rivalia",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "70": {
-      "id": 70,
-      "position": 19,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "71": {
-      "id": 71,
-      "position": 10,
-      "title": "Scene 5",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "72": {
-      "id": 72,
-      "position": 14,
-      "title": "Chapter 3",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "73": {
-      "id": 73,
-      "position": 18,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "74": {
-      "id": 74,
-      "position": 20,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "75": {
-      "id": 75,
-      "position": 21,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "76": {
-      "id": 76,
-      "position": 11,
-      "title": "Scene 6",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "77": {
-      "id": 77,
-      "position": 22,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "78": {
-      "id": 78,
-      "position": 15,
-      "title": "Scene 9",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "79": {
-      "id": 79,
-      "position": 23,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "80": {
-      "id": 80,
-      "position": 40,
-      "title": "Finale",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "81": {
-      "id": 81,
-      "position": 24,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "82": {
-      "id": 82,
-      "position": 25,
-      "title": "Midpoint",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "83": {
-      "id": 83,
-      "position": 13,
-      "title": "Scene 8",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "84": {
-      "id": 84,
-      "position": 31,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "85": {
-      "id": 85,
-      "position": 27,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "86": {
-      "id": 86,
-      "position": 28,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "87": {
-      "id": 87,
-      "position": 29,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "88": {
-      "id": 88,
-      "position": 30,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "89": {
-      "id": 89,
-      "position": 26,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "90": {
-      "id": 90,
-      "position": 12,
-      "title": "Scene 7",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "91": {
-      "id": 91,
-      "position": 36,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "92": {
-      "id": 92,
-      "position": 33,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "93": {
-      "id": 93,
-      "position": 34,
-      "title": "Darkest Moment",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "94": {
-      "id": 94,
-      "position": 39,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "95": {
-      "id": 95,
-      "position": 38,
-      "title": "Climax",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "96": {
-      "id": 96,
-      "position": 42,
-      "title": "2nd",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "98": {
-      "id": 98,
-      "position": 1,
-      "title": "6 Years Ago",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "99": {
-      "id": 99,
-      "position": 3,
-      "title": "2 years ago",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "100": {
-      "id": 100,
-      "position": 16,
-      "title": "Scene 10",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "101": {
-      "id": 101,
-      "position": 32,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "102": {
-      "id": 102,
-      "position": 37,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "103": {
-      "id": 103,
-      "position": 35,
-      "title": "Click to Edit",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "104": {
-      "id": 104,
-      "position": 41,
-      "title": "1st",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "107": {
-      "id": 107,
-      "position": 2,
-      "title": "5 years ago",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "allIds": [
-      60,
-      98,
-      107,
-      99,
-      68,
-      61,
-      67,
-      66,
-      69,
-      64,
-      71,
-      76,
-      90,
-      83,
-      72,
-      78,
-      100,
-      65,
-      73,
-      70,
-      74,
-      75,
-      77,
-      79,
-      81,
-      82,
-      89,
-      85,
-      86,
-      87,
-      88,
-      84,
-      101,
-      92,
-      93,
-      103,
-      91,
-      102,
-      95,
-      94,
-      80,
-      104,
-      96
-    ]
-  },
-  "seriesLines": [
-    {
-      "id": 1,
-      "color": "#6cace4",
-      "title": "Main Plot",
-      "position": 0
-    }
-  ]
+  }
 }

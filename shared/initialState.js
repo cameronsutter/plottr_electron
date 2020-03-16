@@ -23,11 +23,11 @@ const beat = {
   title: '',
   position: 0,
   time: new Date().getTime(), // ? can also be a string
-  series: false,
 }
 
 const chapter = {
   id: 1,
+  bookId: 1,
   title: 'auto',
   position: 0,
   time: new Date().getTime(), // ? can also be a string
@@ -67,6 +67,7 @@ const character = {
   tags: [],
   categoryId: '',
   imageId: null,
+  bookIds: [],
 }
 
 const place = {
@@ -80,6 +81,7 @@ const place = {
   templates: [],
   tags: [],
   imageId: null,
+  bookIds: [],
 }
 
 const tag = {
@@ -93,7 +95,8 @@ const card = {
   lineId: 1,
   chapterId: 1,
   beatId: null,
-  bookId: 1,
+  seriesLineId: null,
+  bookId: null,
   title: '',
   description: '',
   tags: [],
@@ -137,6 +140,7 @@ const note = {
   lastEdited: new Date().getTime(),
   templates: [],
   imageId: null,
+  bookIds: [],
 }
 
 const image = {

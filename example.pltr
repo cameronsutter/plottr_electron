@@ -13,7 +13,8 @@
       "chapterId": 96,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -30,7 +31,8 @@
       "chapterId": 60,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -47,7 +49,8 @@
       "chapterId": 98,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -62,7 +65,8 @@
       "chapterId": 66,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -77,7 +81,8 @@
       "chapterId": 68,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -92,7 +97,8 @@
       "chapterId": 84,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -107,7 +113,8 @@
       "chapterId": 104,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -122,7 +129,8 @@
       "chapterId": 96,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -137,7 +145,8 @@
       "chapterId": 88,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -152,7 +161,8 @@
       "chapterId": 75,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -169,7 +179,8 @@
       "chapterId": 66,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -184,7 +195,8 @@
       "chapterId": 77,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -201,7 +213,8 @@
       "chapterId": 76,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -216,7 +229,8 @@
       "chapterId": 92,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -231,7 +245,8 @@
       "chapterId": 93,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -248,7 +263,8 @@
       "chapterId": 71,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -263,7 +279,8 @@
       "chapterId": 90,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -278,7 +295,8 @@
       "chapterId": 79,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -293,7 +311,8 @@
       "chapterId": 80,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -308,7 +327,8 @@
       "chapterId": 86,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -323,7 +343,8 @@
       "chapterId": 81,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -338,7 +359,8 @@
       "chapterId": 87,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -353,7 +375,8 @@
       "chapterId": 85,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -368,7 +391,8 @@
       "chapterId": 100,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -383,7 +407,8 @@
       "chapterId": 95,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -398,7 +423,8 @@
       "chapterId": 94,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -413,7 +439,8 @@
       "chapterId": 78,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -428,7 +455,8 @@
       "chapterId": 70,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -445,7 +473,8 @@
       "chapterId": 67,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -460,7 +489,8 @@
       "chapterId": 73,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -475,7 +505,8 @@
       "chapterId": 65,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -490,7 +521,8 @@
       "chapterId": 74,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -507,7 +539,8 @@
       "chapterId": 61,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -524,7 +557,8 @@
       "chapterId": 64,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -552,7 +586,8 @@
       "chapterId": 98,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -578,7 +613,8 @@
       "chapterId": 99,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -593,7 +629,8 @@
       "chapterId": 89,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -608,7 +645,8 @@
       "chapterId": 101,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -623,7 +661,8 @@
       "chapterId": 103,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -638,7 +677,8 @@
       "chapterId": 102,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -653,7 +693,8 @@
       "chapterId": 83,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -668,7 +709,8 @@
       "chapterId": 99,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -683,7 +725,8 @@
       "chapterId": 68,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -698,7 +741,8 @@
       "chapterId": 90,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -713,7 +757,8 @@
       "chapterId": 68,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [
@@ -738,7 +783,8 @@
       "chapterId": 61,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -758,7 +804,8 @@
       "chapterId": 60,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -773,7 +820,8 @@
       "chapterId": 64,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -790,7 +838,8 @@
       "chapterId": 68,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     },
     {
       "characters": [],
@@ -805,7 +854,8 @@
       "chapterId": 68,
       "beatId": null,
       "bookId": null,
-      "seriesLineId": null
+      "seriesLineId": null,
+      "position": 0
     }
   ],
   "characters": [
@@ -1362,357 +1412,353 @@
       1
     ]
   },
-  "beats": {
-    "allIds": []
-  },
-  "chapters": {
-    "60": {
+  "beats": [],
+  "chapters": [
+    {
       "id": 60,
+      "position": 0,
       "title": "8 years Ago",
       "bookId": 1,
       "time": 0,
       "templates": []
     },
-    "61": {
-      "id": 61,
-      "title": "Opening Scene (1)",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "64": {
-      "id": 64,
-      "title": "Scene 4",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "65": {
-      "id": 65,
-      "title": "Scene 11",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "66": {
-      "id": 66,
-      "title": "Scene 3",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "67": {
-      "id": 67,
-      "title": "Scene 2",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "68": {
-      "id": 68,
-      "title": "Chapter 1",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "69": {
-      "id": 69,
-      "title": "Chapter 2: Rivalia",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "70": {
-      "id": 70,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "71": {
-      "id": 71,
-      "title": "Scene 5",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "72": {
-      "id": 72,
-      "title": "Chapter 3",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "73": {
-      "id": 73,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "74": {
-      "id": 74,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "75": {
-      "id": 75,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "76": {
-      "id": 76,
-      "title": "Scene 6",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "77": {
-      "id": 77,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "78": {
-      "id": 78,
-      "title": "Scene 9",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "79": {
-      "id": 79,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "80": {
-      "id": 80,
-      "title": "Finale",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "81": {
-      "id": 81,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "82": {
-      "id": 82,
-      "title": "Midpoint",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "83": {
-      "id": 83,
-      "title": "Scene 8",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "84": {
-      "id": 84,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "85": {
-      "id": 85,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "86": {
-      "id": 86,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "87": {
-      "id": 87,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "88": {
-      "id": 88,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "89": {
-      "id": 89,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "90": {
-      "id": 90,
-      "title": "Scene 7",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "91": {
-      "id": 91,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "92": {
-      "id": 92,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "93": {
-      "id": 93,
-      "title": "Darkest Moment",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "94": {
-      "id": 94,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "95": {
-      "id": 95,
-      "title": "Climax",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "96": {
-      "id": 96,
-      "title": "2nd",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "98": {
+    {
       "id": 98,
+      "position": 1,
       "title": "6 Years Ago",
       "bookId": 1,
       "time": 0,
       "templates": []
     },
-    "99": {
-      "id": 99,
-      "title": "2 years ago",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "100": {
-      "id": 100,
-      "title": "Scene 10",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "101": {
-      "id": 101,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "102": {
-      "id": 102,
-      "title": "Scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "103": {
-      "id": 103,
-      "title": "Click to Edit",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "104": {
-      "id": 104,
-      "title": "1st",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    "107": {
+    {
       "id": 107,
+      "position": 2,
       "title": "5 years ago",
       "bookId": 1,
       "time": 0,
       "templates": []
     },
-    "allIds": [
-      60,
-      98,
-      107,
-      99,
-      68,
-      61,
-      67,
-      66,
-      69,
-      64,
-      71,
-      76,
-      90,
-      83,
-      72,
-      78,
-      100,
-      65,
-      73,
-      70,
-      74,
-      75,
-      77,
-      79,
-      81,
-      82,
-      89,
-      85,
-      86,
-      87,
-      88,
-      84,
-      101,
-      92,
-      93,
-      103,
-      91,
-      102,
-      95,
-      94,
-      80,
-      104,
-      96
-    ]
-  },
+    {
+      "id": 99,
+      "position": 3,
+      "title": "2 years ago",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 68,
+      "position": 4,
+      "title": "Chapter 1",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 61,
+      "position": 5,
+      "title": "Opening Scene (1)",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 67,
+      "position": 6,
+      "title": "Scene 2",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 66,
+      "position": 7,
+      "title": "Scene 3",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 69,
+      "position": 8,
+      "title": "Chapter 2: Rivalia",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 64,
+      "position": 9,
+      "title": "Scene 4",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 71,
+      "position": 10,
+      "title": "Scene 5",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 76,
+      "position": 11,
+      "title": "Scene 6",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 90,
+      "position": 12,
+      "title": "Scene 7",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 83,
+      "position": 13,
+      "title": "Scene 8",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 72,
+      "position": 14,
+      "title": "Chapter 3",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 78,
+      "position": 15,
+      "title": "Scene 9",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 100,
+      "position": 16,
+      "title": "Scene 10",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 65,
+      "position": 17,
+      "title": "Scene 11",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 73,
+      "position": 18,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 70,
+      "position": 19,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 74,
+      "position": 20,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 75,
+      "position": 21,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 77,
+      "position": 22,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 79,
+      "position": 23,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 81,
+      "position": 24,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 82,
+      "position": 25,
+      "title": "Midpoint",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 89,
+      "position": 26,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 85,
+      "position": 27,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 86,
+      "position": 28,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 87,
+      "position": 29,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 88,
+      "position": 30,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 84,
+      "position": 31,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 101,
+      "position": 32,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 92,
+      "position": 33,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 93,
+      "position": 34,
+      "title": "Darkest Moment",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 103,
+      "position": 35,
+      "title": "Click to Edit",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 91,
+      "position": 36,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 102,
+      "position": 37,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 95,
+      "position": 38,
+      "title": "Climax",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 94,
+      "position": 39,
+      "title": "Scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 80,
+      "position": 40,
+      "title": "Finale",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 104,
+      "position": 41,
+      "title": "1st",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 96,
+      "position": 42,
+      "title": "2nd",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    }
+  ],
   "seriesLines": [
     {
       "id": 1,

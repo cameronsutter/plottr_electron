@@ -5,20 +5,20 @@ import { Glyphicon } from 'react-bootstrap'
 import CardSVGline from 'components/timeline/CardSVGline'
 import orientedClassName from 'helpers/orientedClassName'
 
-export default class SceneInsertCell extends Component {
+export default class ChapterInsertCell extends Component {
   render () {
-    const { scenePosition, lineId, isInSceneList, handleInsert, needsSVGline, color, orientation, isLast } = this.props
+    const { chapterPosition, lineId, isInChapterList, handleInsert, needsSVGline, color, orientation, isLast } = this.props
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
-    let sceneKlass = 'scene-list__insert'
+    let chapterKlass = 'scene-list__insert'
     if (needsSVGline) wrapperKlass += ' insert-scene-spacer'
     if (isLast) {
       wrapperKlass += ' append-scene'
-      sceneKlass += ' append-scene'
+      chapterKlass += ' append-scene'
     }
     return <Cell>
       <div
-        className={orientedClassName(isInSceneList ? sceneKlass : 'line-list__insert-scene', orientation)}
-        onClick={() => handleInsert(scenePosition, lineId)}
+        className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-scene', orientation)}
+        onClick={() => handleInsert(chapterPosition, lineId)}
       >
         {needsSVGline ? <CardSVGline color={color} spacer={true} orientation={orientation}/> : null}
         <div className={wrapperKlass}>
@@ -30,8 +30,8 @@ export default class SceneInsertCell extends Component {
 
   static propTypes = {
     handleInsert: PropTypes.func.isRequired,
-    isInSceneList: PropTypes.bool.isRequired,
-    scenePosition: PropTypes.number,
+    isInChapterList: PropTypes.bool.isRequired,
+    chapterPosition: PropTypes.number,
     lineId: PropTypes.number,
     needsSVGline: PropTypes.bool,
     orientation: PropTypes.string,

@@ -6,18 +6,18 @@ import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
-import SceneTitleCell from 'components/timeline/SceneTitleCell'
+import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
-import SceneInsertCell from 'components/timeline/SceneInsertCell'
+import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
 import { reorderList, insertScene } from 'helpers/lists'
 import orientedClassName from 'helpers/orientedClassName'
 
 
 class TopRow extends Component {
 
-  handleReorderScenes = (originalPosition, droppedPosition) => {
-    const scenes = reorderList(originalPosition, droppedPosition, this.props.scenes)
-    this.props.sceneActions.reorderScenes(scenes)
+  handleReorderChapters = (originalPosition, droppedPosition) => {
+    const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
+    this.props.sceneActions.reorderScenes(chapters)
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
@@ -25,28 +25,26 @@ class TopRow extends Component {
     this.props.lineActions.reorderLines(lines)
   }
 
-  handleInsertNewScene = (nextPosition, lineId) => {
-    // IDEA: lineId could be used to create a new card at the same time
-
-    const scenes = insertScene(nextPosition, this.props.scenes)
-    this.props.sceneActions.reorderScenes(scenes)
+  handleInsertNewChapter = (nextPosition) => {
+    const chapters = insertScene(nextPosition, this.props.chapters)
+    this.props.sceneActions.reorderScenes(chapters)
   }
 
   renderLastInsertSceneCell () {
     const { orientation } = this.props.ui
-    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation}/>
+    return <ChapterInsertCell key='last-insert' isInChapterList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation}/>
   }
 
   renderScenes () {
     const { orientation } = this.props.ui
-    const scenes = _.sortBy(this.props.scenes, 'position')
-    const renderedScenes = scenes.flatMap(sc => {
+    const chapters = _.sortBy(this.props.chapters, 'position')
+    const renderedChapters = chapters.flatMap(ch => {
       const cells = []
-      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} orientation={orientation}/>)
-      cells.push(<SceneTitleCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} />)
+      cells.push(<ChapterInsertCell key={`chapterId-${ch.id}-insert`} isInChapterList={true} chapterPosition={ch.position} handleInsert={this.handleInsertNewChapter} orientation={orientation}/>)
+      cells.push(<ChapterTitleCell key={`chapterId-${ch.id}`} chapter={ch} handleReorder={this.handleReorderChapters} />)
       return cells
     })
-    return [<Cell key='placeholder'/>].concat(renderedScenes).concat([this.renderLastInsertSceneCell()])
+    return [<Cell key='placeholder'/>].concat(renderedChapters).concat([this.renderLastInsertSceneCell()])
   }
 
   renderLines () {
@@ -78,7 +76,7 @@ class TopRow extends Component {
 
 TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
-  scenes: PropTypes.array,
+  chapters: PropTypes.array,
   lines: PropTypes.array,
 }
 
@@ -86,7 +84,7 @@ function mapStateToProps (state) {
   let obj = {
     ui: state.ui
   }
-  if (state.ui.orientation === 'horizontal') obj.scenes = state.scenes
+  if (state.ui.orientation === 'horizontal') obj.chapters = state.chapters
   else obj.lines = state.lines
 
   return obj

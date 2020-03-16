@@ -2,53 +2,38 @@ import _ from 'lodash'
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { chapter } from '../../../shared/initialState'
 import { newFileChapters } from '../../../shared/newFileState'
-import { objectId, objectPosition, objectPositionReset } from 'store/newIds'
+import { arrayId, arrayPosition, positionReset } from 'store/newIds'
 
 const initialState = {allIds: [1], 1: chapter}
 
 export default function chapters (state = initialState, action) {
-  let allIds
   switch (action.type) {
     case ADD_SCENE:
-      allIds = state.allIds
-      const newId = objectId(state.allIds)
-      allIds.push(newId)
-      return {
-        ...state,
-        allIds: allIds,
-        [newId]: {
-          id: newId,
-          title: action.title,
-          bookId: action.bookId,
-          time: 0,
-          position: objectPosition(state)
-        }
-      }
+      return [{
+        id: arrayId(state),
+        title: action.title,
+        bookId: action.bookId,
+        time: 0,
+        position: arrayPosition(state)
+      }]
 
     case EDIT_SCENE_TITLE:
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          title: action.title
-        }
-      }
+      return state.map(ch =>
+        ch.id == action.id ? Object.assign({}, ch, {title: action.title}) : ch
+      )
 
     case DELETE_SCENE:
-      // delete in allIds
-      allIds = [...state.allIds]
-      const index = allIds.indexOf(action.id)
-      allIds.splice(index, 0)
-
-      // delete in objects
-      const chapters = {...chapters, allIds}
-      delete chapters[action.id]
-      return chapters
+      let chapters = state.filter(ch =>
+        ch.id !== action.id
+      )
+      let newChapters = _.sortBy(chapters, 'position')
+      newChapters.forEach((ch, idx) =>
+        ch['position'] = idx
+      )
+      return newChapters
 
     case REORDER_SCENES:
-      // TODO: think about how to do this
-      return state
-      // return objectPositionReset(action.chapters)
+      return positionReset(action.chapters)
 
     case RESET:
     case FILE_LOADED:

@@ -49,7 +49,7 @@ class Navigation extends Component {
               </button>
             </div>
             <ul className='nav navbar-nav'>
-              <li className={this.isActive('timeline')}>
+              <li className={this.isActive('story')}>
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('story')} >{i18n('Story')}</a>
               </li>
               <li className={this.isActive('timeline')}>

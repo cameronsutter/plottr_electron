@@ -10,10 +10,10 @@ function migrate (data) {
   const BOOK_ID = 1
 
   // +series
-  obj.series = series
   // storyName -> series name
-  obj.series.name = obj.storyName
   // -storyName
+  obj.series = series
+  obj.series.name = obj.storyName
   delete obj.storyName
 
   // +books
@@ -26,19 +26,15 @@ function migrate (data) {
   obj.beats = newFileBeats
 
   // scenes -> chapters (with new attrs)
-  const sortedScenes = _.sortBy(obj.scenes, 'position')
-  obj.chapters = sortedScenes.reduce((acc, sc) => {
-    acc.allIds.push(sc.id)
-    acc[sc.id] = {
+  // -scenes
+  obj.chapters = obj.scenes.map(sc => {
+    return {
       ...sc,
       bookId: BOOK_ID,
       time: 0,
-      templates: [],
+      templates: []
     }
-    delete acc[sc.id].position
-    return acc
-  }, {allIds: []})
-  // -scenes
+  })
   delete obj.scenes
 
   // +character.bookIds (all = [1])
@@ -52,22 +48,24 @@ function migrate (data) {
   })
 
   // card.sceneId -> card.chapterId
+  // +card.beatId
+  // +card.bookId
+  // +card.seriesLineId
+  // +card.position
+  // -card.sceneId
   obj.cards.forEach(c => {
     c.chapterId = c.sceneId
-    // +card.beatId
     c.beatId = null
-    // +card.bookId
     c.bookId = null
-    // +card.seriesLineId
     c.seriesLineId = null
-    // -card.sceneId
+    c.position = 0
     delete c.sceneId
   })
 
+  // +line.characterId
+  // +line.bookId
   obj.lines.forEach(l => {
-    // +line.characterId
     l.characterId = null
-    // +line.bookId
     l.bookId = BOOK_ID
   })
 

@@ -15,11 +15,7 @@ export function arrayPosition (arr) {
   return arr.reduce((maxPosition, item) => Math.max(item.position, maxPosition), 0) + 1
 }
 
-export function objectPositionReset (obj) {
-  // ?
-}
-
-export function arrayPositionReset (items) {
+export function positionReset (items) {
   return items.map((item, index) => {
     item.position = index
     return item

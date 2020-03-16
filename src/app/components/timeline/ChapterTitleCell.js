@@ -9,15 +9,15 @@ import * as SceneActions from 'actions/scenes'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
-class SceneTitleCell extends Component {
+class ChapterTitleCell extends Component {
   constructor (props) {
     super(props)
-    let editing = props.scene.title === ''
+    let editing = props.chapter.title === ''
     this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
   }
 
   editTitle = () => {
-    const id = this.props.scene.id
+    const id = this.props.chapter.id
     const ref = ReactDOM.findDOMNode(this.refs.titleRef)
     this.props.actions.editSceneTitle(id, ref.value)
     this.setState({editing: false, hovering: false})
@@ -30,9 +30,9 @@ class SceneTitleCell extends Component {
   }
 
   handleBlur = () => {
-    if (this.props.scene.title === '') {
-      let newTitle = i18n('Scene {number}', {number: this.props.scene.position + 1})
-      this.props.actions.editSceneTitle(this.props.scene.id, newTitle)
+    if (this.props.chapter.title === '' || this.props.chapter.title === 'auto') {
+      let newTitle = i18n('Chapter {number}', {number: this.props.chapter.position + 1})
+      this.props.actions.editSceneTitle(this.props.chapter.id, newTitle)
       this.setState({editing: false})
     } else {
       this.editTitle()
@@ -41,7 +41,7 @@ class SceneTitleCell extends Component {
 
   handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/json', JSON.stringify(this.props.scene))
+    e.dataTransfer.setData('text/json', JSON.stringify(this.props.chapter))
     this.setState({dragging: true})
   }
 
@@ -68,16 +68,16 @@ class SceneTitleCell extends Component {
     this.setState({dropping: false})
 
     var json = e.dataTransfer.getData('text/json')
-    var droppedScene = JSON.parse(json)
-    if (droppedScene.id == null) return
+    var droppedChapter = JSON.parse(json)
+    if (droppedChapter.id == null) return
 
-    this.props.handleReorder(this.props.scene.position, droppedScene.position)
+    this.props.handleReorder(this.props.chapter.position, droppedChapter.position)
   }
 
   handleDelete = () => {
-    let label = i18n("Do you want to delete this scene: { title }?", {title: this.props.scene.title})
+    let label = i18n("Do you want to delete this chapter: { title }?", {title: this.props.chapter.title})
     if (window.confirm(label)) {
-      this.props.actions.deleteScene(this.props.scene.id)
+      this.props.actions.deleteScene(this.props.chapter.id)
     }
   }
 
@@ -102,12 +102,12 @@ class SceneTitleCell extends Component {
   }
 
   renderTitle () {
-    if (!this.state.editing) return <span>{this.props.scene.title}</span>
+    if (!this.state.editing) return <span>{this.props.chapter.title}</span>
     return (<FormGroup>
-      <ControlLabel>{i18n('Scene {number} name', {number: this.props.scene.position + 1})}</ControlLabel>
+      <ControlLabel>{i18n('Chapter {number} name', {number: this.props.chapter.position + 1})}</ControlLabel>
       <FormControl
         type='text'
-        defaultValue={this.props.scene.title}
+        defaultValue={this.props.chapter.title}
         ref='titleRef'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
@@ -128,7 +128,7 @@ class SceneTitleCell extends Component {
     return <Cell>
       <div
         className={orientedClassName('scene__cell', this.props.ui.orientation)}
-        title={i18n('Scene {number}', {number: this.props.scene.position + 1})}
+        title={i18n('Chapter {number}', {number: this.props.chapter.position + 1})}
         onClick={() => this.setState({editing: true})}
         onMouseEnter={() => this.setState({hovering: true})}
         onMouseLeave={() => this.setState({hovering: false})}
@@ -148,8 +148,8 @@ class SceneTitleCell extends Component {
   }
 }
 
-SceneTitleCell.propTypes = {
-  scene: PropTypes.object.isRequired,
+ChapterTitleCell.propTypes = {
+  chapter: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
@@ -170,4 +170,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SceneTitleCell)
+)(ChapterTitleCell)

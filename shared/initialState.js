@@ -20,6 +20,7 @@ const book = {
 
 const beat = {
   id: 1,
+  position: 0,
   title: '',
   time: 0, // ? can also be a string
 }
@@ -27,6 +28,7 @@ const beat = {
 const chapter = {
   id: 1,
   bookId: 1,
+  position: 0,
   title: 'auto',
   time: 0, // ? can also be a string
   templates: [],
@@ -96,6 +98,7 @@ const card = {
   beatId: null,
   seriesLineId: null,
   bookId: null,
+  position: 0,
   title: '',
   description: '',
   tags: [],

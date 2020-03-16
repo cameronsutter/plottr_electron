@@ -19,14 +19,9 @@ const newFileBooks = {
   1: book,
 }
 
-const newFileBeats = {
-  allIds: [],
-}
+const newFileBeats = []
 
-const newFileChapters = {
-  allIds: [1],
-  1: chapter,
-}
+const newFileChapters = [chapter]
 
 const newFileUI = ui
 

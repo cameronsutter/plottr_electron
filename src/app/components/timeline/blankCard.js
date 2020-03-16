@@ -53,7 +53,7 @@ class BlankCard extends Component {
     var droppedCard = JSON.parse(json)
     if (droppedCard.id === null || droppedCard.id === undefined) return
 
-    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.sceneId)
+    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId)
   }
 
   saveCreate = () => {
@@ -71,7 +71,7 @@ class BlankCard extends Component {
   buildCard (title) {
     return {
       title: title,
-      sceneId: this.props.sceneId,
+      chapterId: this.props.chapterId,
       lineId: this.props.lineId,
       description: '',
       characters: [],
@@ -153,21 +153,21 @@ class BlankCard extends Component {
 }
 
 BlankCard.propTypes = {
-  sceneId: PropTypes.number.isRequired,
+  chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   ui: PropTypes.object.isRequired,
   linePosition: PropTypes.number.isRequired,
-  scenePosition: PropTypes.number.isRequired
+  chapterPosition: PropTypes.number.isRequired
 }
 
-function mapStateToProps (state, passedProps) {
-  let line = state.lines.find(l => l.id === passedProps.lineId)
-  let scene = state.scenes.find(s => s.id === passedProps.sceneId)
+function mapStateToProps (state, ownProps) {
+  let line = state.lines.find(l => l.id === ownProps.lineId)
+  let chapter = state.chapters.find(s => s.id === ownProps.chapterId)
   return {
     ui: state.ui,
     linePosition: line.position,
-    scenePosition: scene.position,
+    chapterPosition: chapter.position,
   }
 }
 

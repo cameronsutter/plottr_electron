@@ -35,7 +35,7 @@ class Body extends Component {
         return <PlacesView />
 
       default:
-        return <TimeLineView />
+        return <TimelineWrapper />
 
     }
   }

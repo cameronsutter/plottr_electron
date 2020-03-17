@@ -82,7 +82,7 @@ class AddLineRow extends Component {
   }
 
   renderInsertButton () {
-    if (SETTINGS.get('premiumFeatures')) {
+    if (SETTINGS.get('premiumFeatures') && this.props.bookId != 'series') {
       return <div className='line-list__append-line'>
         {this.state.hovering ?
           <div className='line-list__append-line__double'>
@@ -128,6 +128,10 @@ class AddLineRow extends Component {
 
   static propTypes = {
     ui: PropTypes.object.isRequired,
+    bookId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
   }
 }
 

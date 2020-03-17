@@ -36,10 +36,10 @@ class CardCell extends Component {
 
   renderDialog () {
     if (!this.state.dialogOpen) return null
-    const { card, sceneId, lineId } = this.props
+    const { card, chapterId, lineId } = this.props
     return <CardDialog
       card={card}
-      sceneId={sceneId}
+      chapterId={chapterId}
       lineId={lineId}
       labelMap={this.props.labelMap}
       closeDialog={this.closeDialog}
@@ -82,7 +82,7 @@ class CardCell extends Component {
     if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
-        placement = this.props.scenePosition <= 1 ? 'right' : placement
+        placement = this.props.chapterPosition <= 1 ? 'right' : placement
       } else {
         placement = this.props.linePosition <= 1 ? 'right' : placement
       }
@@ -129,7 +129,7 @@ class CardCell extends Component {
 
 CardCell.propTypes = {
   card: PropTypes.object,
-  sceneId: PropTypes.number.isRequired,
+  chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   filtered: PropTypes.bool.isRequired,
@@ -137,17 +137,17 @@ CardCell.propTypes = {
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
   linePosition: PropTypes.number.isRequired,
-  scenePosition: PropTypes.number.isRequired
+  chapterPosition: PropTypes.number.isRequired
 }
 
 function mapStateToProps (state, passedProps) {
   let line = state.lines.find(l => l.id === passedProps.lineId)
-  let scene = state.scenes.find(s => s.id === passedProps.sceneId)
+  let chapter = state.chapters.find(s => s.id === passedProps.chapterId)
   return {
     tags: state.tags,
     ui: state.ui,
     linePosition: line.position,
-    scenePosition: scene.position,
+    chapterPosition: chapter.position,
   }
 }
 

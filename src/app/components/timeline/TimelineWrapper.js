@@ -289,7 +289,7 @@ class TimelineWrapper extends Component {
             <TimelineTable
               filter={this.state.filter}
               filterIsEmpty={this.filterIsEmpty()}
-              bookId={1}
+              bookId={'series'}
             />
           </StickyTable>
         </div>

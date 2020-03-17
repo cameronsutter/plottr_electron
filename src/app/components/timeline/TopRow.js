@@ -78,14 +78,31 @@ TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
   chapters: PropTypes.array,
   lines: PropTypes.array,
+  bookId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state, ownProps) {
   let obj = {
     ui: state.ui
   }
-  if (state.ui.orientation === 'horizontal') obj.chapters = state.chapters
-  else obj.lines = state.lines
+  if (ownProps.bookId == 'series') {
+    // get all beats / seriesLines
+    if (state.ui.orientation === 'horizontal') {
+      obj.chapters = state.beats
+    } else {
+      obj.lines = state.seriesLines
+    }
+  } else {
+    // get all the chapters / lines for ownProps.bookId
+    if (state.ui.orientation === 'horizontal') {
+      obj.chapters = state.chapters.filter(ch => ch.bookId == ownProps.bookId)
+    } else {
+      obj.lines = state.lines.filter(l => l.bookId == ownProps.bookId)
+    }
+  }
 
   return obj
 }

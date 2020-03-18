@@ -2,13 +2,29 @@
 
 
 .book-list__container {
-  padding: 40px;
+  padding: 10px 40px;
+  position: relative;
+
+  h2 {
+    margin-top: 0;
+    .glyphicon {
+      visibility: hidden;
+      cursor: pointer;
+      color: $blue-5;
+    }
+    &:hover {
+      .glyphicon {
+        visibility: visible;
+      }
+    }
+  }
 }
 
 .book-list__list {
   display: flex;
   flex-wrap: wrap;
   padding: 40px;
+  padding-top: 0;
 }
 
 .edit-book__container {
@@ -27,6 +43,17 @@
   z-index: 1;
   perspective:3000px;
   cursor: pointer;
+  margin-right: 80px;
+  text-align: center;
+  .hover-options {
+    visibility: hidden;
+    &.hovering {
+      visibility: visible;
+    }
+  }
+  &.add {
+    padding-top: 36px;
+  }
 }
 
 .book-container .book {
@@ -38,7 +65,8 @@
   height: 242.7px;
   margin: 5% auto;
   border-radius: 2px 4px 4px 2px;
-  background: linear-gradient(45deg,  #DAD5DC 0%, #f2ebf4 100%);
+  // background: linear-gradient(45deg,  #DAD5DC 0%, #f2ebf4 100%);
+  background: linear-gradient(45deg,  $gray-7 0%, $gray-8 100%);
   // some ideas for backgrounds
   // background: linear-gradient($blue-8, $blue-9);
   // background: linear-gradient($blue-8, $blue-9), url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6f6ff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
@@ -48,17 +76,22 @@
   // font-family: acumin-pro, sans-serif;
   box-shadow: 13px 13px 8px 0px rgba(151, 146, 153,0.6);
   // font-weight: 400;
-  color: #2b2b2b;
+  color: $gray-0;
   transform-style: preserve-3d;
   transition: transform .5s;
+  &.add {
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  }
 }
 
-.book-container .book:hover {
+.book-container .book:hover, .book-container .book.hovering {
   transform: rotate3d(0,1,0,35deg);
+  &.add {
+    transform: none;
+  }
 }
 
-.book-container .book > div,
-.book-container .front > div {
+.book-container .book > div {
   display: block;
   position: absolute;
 }
@@ -87,6 +120,22 @@
     text-align: center;
     font-size: 16pt !important;
     line-height: 1.4;
+    .glyphicon {
+      color: $blue-5;
+    }
+  }
+
+  .book-container__add {
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $blue-5;
+    &:hover {
+      .glyphicon {
+        color: $blue-7;
+      }
+    }
   }
 }
 
@@ -96,12 +145,16 @@
   // left: -20px;
   left: -18px;
   // height: 550px;
-  height: 242.7px;
-  background-color: rgb(232,229,234);
-  // background-color: $gray-8;
+  height: 242.5px;
+  // background-color: rgb(232,229,234);
+  background-color: $gray-7;
   transform: rotate3d(0,1,0,-90deg);
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+  &.add {
+    background: none;
+    background-color: $gray-9;
+  }
 }
 
 .book-container .front:after {
@@ -124,10 +177,9 @@
   box-shadow: 1px 0 3px rgba(255, 255, 255, 0.1);
 }
 
-
 .book-container h2 {
   // width: 500px;
-  width: 242.7px;
+  width: 242px;
   // height: 40px;
   height: 35px;
   color: $gray-0;
@@ -140,8 +192,19 @@
 }
 
 .cover {
-  background: linear-gradient(45deg,  #DAD5DC 0%, #f2ebf4 100%);
-  // background: linear-gradient(45deg, $blue-8, $blue-9), url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6f6ff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  // background: linear-gradient(45deg,  #DAD5DC 0%, #f2ebf4 100%);
+  background: linear-gradient(45deg,  $gray-7 0%, $gray-8 100%);
+  // background-color: #bcccdc;
+  // background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23dae2ec' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+  &.add {
+    background: none;
+    background-color: $gray-9;
+  }
 }
 
 .left-side h2 span:first-child {
@@ -151,5 +214,9 @@
 }
 
 .book-container__cover-image-wrapper {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 150px;
 }

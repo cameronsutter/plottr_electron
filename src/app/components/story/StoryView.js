@@ -6,17 +6,19 @@ import SETTINGS from '../../../common/utils/settings'
 import BookDialog from './BookDialog'
 import EditSeries from './EditSeries'
 import BookList from './BookList'
+import i18n from 'format-message'
 
 class StoryView extends Component {
   renderSeries () {
     return <div>
+      <h2 style={{paddingLeft: '40px'}}>{i18n('Series')}</h2>
       <EditSeries />
       <BookList />
     </div>
   }
 
   renderBook1 () {
-    return <BookDialog modal={false} bookId={1} />
+    return <BookDialog modal={false} bookId={this.props.books.allIds[0]} />
   }
 
   render () {
@@ -28,7 +30,9 @@ class StoryView extends Component {
   }
 
   static propTypes = {
-
+    ui: PropTypes.object.isRequired,
+    series: PropTypes.object.isRequired,
+    books: PropTypes.object.isRequired,
   }
 }
 

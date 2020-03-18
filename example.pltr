@@ -2,7 +2,7 @@
   "beats": [],
   "books": {
     "1": {
-      "bookNumber": "1",
+      "bookNumber": 1,
       "genre": "? YA Thriller",
       "id": 1,
       "imageId": "1",
@@ -11,8 +11,30 @@
       "templates": [],
       "theme": "🤷‍♂️"
     },
+    "2": {
+      "bookNumber": 2,
+      "genre": "",
+      "id": 2,
+      "imageId": null,
+      "name": "Awesome Mansion 2",
+      "premise": "",
+      "templates": [],
+      "theme": ""
+    },
+    "4": {
+      "bookNumber": 3,
+      "genre": "",
+      "id": 4,
+      "imageId": null,
+      "name": "",
+      "premise": "",
+      "templates": [],
+      "theme": ""
+    },
     "allIds": [
-      1
+      1,
+      2,
+      4
     ]
   },
   "cards": [
@@ -1758,7 +1780,7 @@
     },
     "characterSort": "name~asc",
     "currentTimeline": 1,
-    "currentView": "timeline",
+    "currentView": "story",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

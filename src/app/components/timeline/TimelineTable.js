@@ -236,10 +236,7 @@ TimelineTable.propTypes = {
   ui: PropTypes.object.isRequired,
   filter: PropTypes.object,
   filterIsEmpty: PropTypes.bool,
-  bookId: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  bookId: PropTypes.number,
 }
 
 function mapStateToProps (state, ownProps) {

@@ -128,10 +128,7 @@ class AddLineRow extends Component {
 
   static propTypes = {
     ui: PropTypes.object.isRequired,
-    bookId: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    bookId: PropTypes.number,
   }
 }
 

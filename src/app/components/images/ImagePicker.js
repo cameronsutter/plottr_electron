@@ -38,6 +38,7 @@ class ImagePicker extends Component {
   }
 
   close = () => {
+    console.log('close', this.setState)
     this.setState({open: false})
   }
 
@@ -100,7 +101,7 @@ class ImagePicker extends Component {
         </div>
       </Modal>
     } else {
-      let text = this.props.iconOnly ? null : i18n('Choose an image')
+      let text = this.props.iconOnly ? null : ` ${i18n('Choose an image')}`
       return <Button onClick={() => this.setState({open: true})}><Glyphicon glyph='picture'/>{text}</Button>
     }
   }

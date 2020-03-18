@@ -78,10 +78,7 @@ TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
   chapters: PropTypes.array,
   lines: PropTypes.array,
-  bookId: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
+  bookId: PropTypes.number,
 }
 
 function mapStateToProps (state, ownProps) {

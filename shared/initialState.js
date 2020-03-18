@@ -11,7 +11,6 @@ const series = {
 const book = {
   id: 1,
   name: '',
-  bookNumber: 1,
   premise: '',
   genre: '',
   theme: '',

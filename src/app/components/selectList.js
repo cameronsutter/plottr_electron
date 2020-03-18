@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { connect } from 'react-redux'
 import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from './tagLabel'
 import i18n from 'format-message'
-import ImageCircle from './ImageCircle'
+import Image from './images/Image'
 
-class SelectList extends Component {
+export default class SelectList extends Component {
 
   renderSelected () {
     if (this.props.type === 'Tags') {
@@ -37,12 +36,8 @@ class SelectList extends Component {
     return this.props.selectedItems.map(itemId => {
       var item = _.find(this.props.allItems, {id: itemId})
       if (!item) return null
-      let img = null
-      if (item.imageId && this.props.images[item.imageId]) {
-        img = <ImageCircle size='xs' imageData={this.props.images[item.imageId].data}/>
-      }
       return <div key={itemId} className='chip'>
-        { img }
+        <Image size='xs' shape='circle' imageId={item.imageId}/>
         <span>{ item.name }</span>
         <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, itemId)}/>
       </div>
@@ -116,20 +111,4 @@ SelectList.propTypes = {
   remove: PropTypes.func.isRequired,
   selectedItems: PropTypes.array.isRequired,
   allItems: PropTypes.array.isRequired,
-  images: PropTypes.object,
 }
-
-function mapStateToProps (state) {
-  return {
-    images: state.images,
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {}
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectList)

@@ -5,12 +5,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
-   Glyphicon, Tooltip, OverlayTrigger, Image } from 'react-bootstrap'
+   Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
 import MDdescription from 'components/mdDescription'
 import SETTINGS from '../../../common/utils/settings'
-import ImagePicker from '../ImagePicker'
+import ImagePicker from '../images/ImagePicker'
+import Image from '../images/Image'
 
 class PlaceView extends Component {
   constructor (props) {
@@ -66,25 +67,16 @@ class PlaceView extends Component {
     const imagesExist = Object.keys(images).length
     if (!SETTINGS.get('premiumFeatures') && !imagesExist && !place.imageId) return null
 
-    let img = null
-    if (place.imageId && images[place.imageId]) {
-      img = <Image src={images[place.imageId].data} responsive rounded />
-    }
-    if (this.state.newImageId) {
-      img = <Image src={images[this.state.newImageId].data} responsive rounded />
-    }
-    if (this.state.newImageId == -1) {
-      img = null
-    }
+    let imgId = this.state.newImageId || place.imageId
     return <FormGroup>
       <ControlLabel>{i18n('Place Image')}</ControlLabel>
       <div className='place-list__place__edit-image-wrapper'>
         <div className='place-list__place__edit-image'>
-          {img ? img : null}
+          <Image size='small' shape='rounded' imageId={imgId} />
         </div>
         <div>
           {SETTINGS.get('premiumFeatures') || imagesExist ?
-            <ImagePicker current={place.imageId} chooseImage={id => this.setState({newImageId: id})} />
+            <ImagePicker selectedId={place.imageId} chooseImage={id => this.setState({newImageId: id})} />
           : null}
         </div>
       </div>
@@ -213,16 +205,13 @@ class PlaceView extends Component {
     const klasses = cx('place-list__place', {
       darkmode: this.props.ui.darkMode,
     })
-    const { place, images } = this.props
+    const { place } = this.props
     const details = this.props.customAttributes.map((attr, idx) =>
       <dl key={idx} className='dl-horizontal'>
         <dt>{attr}</dt>
         <dd>{place[attr]}</dd>
       </dl>
     )
-    const hasImage = place.imageId && images[place.imageId]
-    let imageData = null
-    if (hasImage) imageData = images[place.imageId].data
     return (
       <div className={klasses} onClick={() => this.setState({editing: true})}>
         <h4 className='secondary-text'>{place.name}</h4>
@@ -249,7 +238,7 @@ class PlaceView extends Component {
             </dl>
           </div>
           <div>
-            {hasImage ? <Image responsive src={imageData} rounded /> : null}
+            <Image size='large' shape='rounded' imageId={place.imageId} />
           </div>
         </div>
       </div>
@@ -274,7 +263,6 @@ PlaceView.propTypes = {
   cards: PropTypes.array.isRequired,
   notes: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
-  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -283,7 +271,6 @@ function mapStateToProps (state) {
     cards: state.cards,
     notes: state.notes,
     ui: state.ui,
-    images: state.images,
   }
 }
 

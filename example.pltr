@@ -2,13 +2,14 @@
   "beats": [],
   "books": {
     "1": {
-      "bookNumber": 1,
-      "genre": "",
+      "bookNumber": "1",
+      "genre": "? YA Thriller",
       "id": 1,
+      "imageId": "1",
       "name": "The Awesome Prison Mansion",
-      "premise": "",
+      "premise": "Coming of age story about a boy who finds himself in different worlds",
       "templates": [],
-      "theme": ""
+      "theme": "🤷‍♂️"
     },
     "allIds": [
       1
@@ -1673,11 +1674,11 @@
     }
   ],
   "series": {
-    "genre": "",
+    "genre": "YA Thriller",
     "name": "The Awesome Prison Mansion",
     "premise": "",
     "templates": [],
-    "theme": ""
+    "theme": "🤷‍♂️"
   },
   "seriesLines": [
     {

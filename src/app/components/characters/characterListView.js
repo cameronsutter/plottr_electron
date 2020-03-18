@@ -5,7 +5,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
-  ControlLabel, Popover, OverlayTrigger, Alert, Image } from 'react-bootstrap'
+  ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
@@ -17,7 +17,7 @@ import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
 import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import ImageCircle from '../ImageCircle'
+import Image from '../images/Image'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -205,12 +205,11 @@ class CharacterListView extends Component {
   }
 
   renderVisibleCharacters = () => {
-    const { images } = this.props
     return this.state.visibleCharacters.map((ch, idx) => {
       let img = null
-      if (ch.imageId && images[ch.imageId]) {
+      if (ch.imageId) {
         img = <div className='character-list__item-inner__image-wrapper'>
-          <ImageCircle size='small' imageData={images[ch.imageId].data} />
+          <Image shape='circle' size='small' imageId={ch.imageId} />
         </div>
       }
       return <div key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>
@@ -319,7 +318,6 @@ function mapStateToProps (state) {
     characters: state.characters,
     customAttributes: state.customAttributes['characters'],
     ui: state.ui,
-    images: state.images,
   }
 }
 

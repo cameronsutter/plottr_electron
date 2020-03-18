@@ -4,12 +4,13 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Image } from 'react-bootstrap'
+import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
-import ImagePicker from 'components/ImagePicker'
+import ImagePicker from 'components/images/ImagePicker'
+import Image from 'components/images/Image'
 import SETTINGS from '../../../common/utils/settings'
 
 class NoteView extends Component {
@@ -55,29 +56,19 @@ class NoteView extends Component {
   }
 
   renderEditingImage () {
-    const { note, images } = this.props
-    const imagesExist = Object.keys(images).length
-    if (!SETTINGS.get('premiumFeatures') && !imagesExist && !note.imageId) return null
+    const { note } = this.props
+    if (!SETTINGS.get('premiumFeatures') && !note.imageId) return null
 
-    let img = null
-    if (note.imageId && images[note.imageId]) {
-      img = <Image src={images[note.imageId].data} responsive rounded />
-    }
-    if (this.state.newImageId && this.state.newImageId != -1) {
-      img = <Image src={images[this.state.newImageId].data} responsive rounded />
-    }
-    if (this.state.newImageId == -1) {
-      img = null
-    }
+    let imgId = this.state.newImageId || note.imageId
     return <FormGroup>
       <ControlLabel>{i18n('Note Image')}</ControlLabel>
       <div className='note-list__note__edit-image-wrapper'>
         <div className='note-list__note__edit-image'>
-          {img ? img : null}
+          <Image size='small' shape='rounded' imageId={imgId}/>
         </div>
         <div>
           {SETTINGS.get('premiumFeatures') || imagesExist ?
-            <ImagePicker current={note.imageId} chooseImage={id => this.setState({newImageId: id})} />
+            <ImagePicker selectedId={note.imageId} chooseImage={id => this.setState({newImageId: id})} />
           : null}
         </div>
       </div>
@@ -85,7 +76,7 @@ class NoteView extends Component {
   }
 
   renderContent () {
-    const { note, images } = this.props
+    const { note } = this.props
     if (this.state.editing) {
       return <div className='note-list__content editing'>
         <div className='note-list__note__edit-form'>
@@ -124,9 +115,9 @@ class NoteView extends Component {
       </div>
     } else {
       let img = null
-      if (note.imageId && images[note.imageId]) {
+      if (note.imageId) {
         img = <div className='text-center'>
-          <Image src={images[note.imageId].data} />
+          <Image size='large' shape='rectangle' imageId={note.imageId} />
         </div>
       }
       return <div className='note-list__content' onClick={() => this.setState({editing: true})}>
@@ -183,7 +174,6 @@ NoteView.propTypes = {
   tags: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
-  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -192,7 +182,6 @@ function mapStateToProps (state) {
     places: state.places,
     tags: state.tags,
     ui: state.ui,
-    images: state.images,
   }
 }
 

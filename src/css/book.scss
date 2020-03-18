@@ -1,0 +1,155 @@
+@import "vars";
+
+
+.book-list__container {
+  padding: 40px;
+}
+
+.book-list__list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px;
+}
+
+.edit-book__container {
+  padding: 20px;
+
+  .btn-toolbar {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+
+// css book copy/pasted from the 😱 internet
+
+.book-container {
+  z-index: 1;
+  perspective:3000px;
+  cursor: pointer;
+}
+
+.book-container .book {
+  position: relative;
+  display: block;
+  // width: 400px;
+  // height: 550px;
+  width: 175px;
+  height: 242.7px;
+  margin: 5% auto;
+  border-radius: 2px 4px 4px 2px;
+  background: linear-gradient(45deg,  #DAD5DC 0%, #f2ebf4 100%);
+  // some ideas for backgrounds
+  // background: linear-gradient($blue-8, $blue-9);
+  // background: linear-gradient($blue-8, $blue-9), url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6f6ff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+  // background-color: $blue-8;
+  // background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6f6ff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+
+  // font-family: acumin-pro, sans-serif;
+  box-shadow: 13px 13px 8px 0px rgba(151, 146, 153,0.6);
+  // font-weight: 400;
+  color: #2b2b2b;
+  transform-style: preserve-3d;
+  transition: transform .5s;
+}
+
+.book-container .book:hover {
+  transform: rotate3d(0,1,0,35deg);
+}
+
+.book-container .book > div,
+.book-container .front > div {
+  display: block;
+  position: absolute;
+}
+
+.book-container .front {
+  transform-style: preserve-3d;
+  transform-origin: 0% 50%;
+  transition: transform .5s;
+  transform: translate3d(0,0,20px);
+  z-index: 10;
+}
+
+.book-container .front > div {
+  // width: 400px;
+  // height: 550px;
+  width: 175px;
+  height: 242.7px;
+  border-radius: 0 3px 3px 0;
+  box-shadow: inset 4px 0 10px rgba(0, 0, 0, 0.1);
+
+  padding: 10px;
+  padding-left: 15px;
+
+  h6 {
+    @include body-text-font;
+    text-align: center;
+    font-size: 16pt !important;
+    line-height: 1.4;
+  }
+}
+
+.book-container .left-side {
+  // width: 40px;
+  width: 35px;
+  // left: -20px;
+  left: -18px;
+  // height: 550px;
+  height: 242.7px;
+  background-color: rgb(232,229,234);
+  // background-color: $gray-8;
+  transform: rotate3d(0,1,0,-90deg);
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.book-container .front:after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: -1px;
+  width: 1px;
+}
+
+.book-container .cover:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 6px;
+  bottom: 0;
+  width: 2px;
+  background: rgba(0,0,0,0.1);
+  box-shadow: 1px 0 3px rgba(255, 255, 255, 0.1);
+}
+
+
+.book-container h2 {
+  // width: 500px;
+  width: 242.7px;
+  // height: 40px;
+  height: 35px;
+  color: $gray-0;
+  // font-size: 15px;
+  line-height: 35px;
+  padding-right: 20px;
+  text-align: right;
+  transform-origin: 0 0;
+  transform: rotate(90deg) translateY(-45px);
+}
+
+.cover {
+  background: linear-gradient(45deg,  #DAD5DC 0%, #f2ebf4 100%);
+  // background: linear-gradient(45deg, $blue-8, $blue-9), url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e6f6ff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.left-side h2 span:first-child {
+  font-weight: 400;
+  font-size: 10px;
+  padding-right: 20px;
+}
+
+.book-container__cover-image-wrapper {
+  width: 150px;
+}

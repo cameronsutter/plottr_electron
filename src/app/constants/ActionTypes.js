@@ -97,3 +97,12 @@ export const EDIT_SCENES_ATTRIBUTE = 'EDIT_SCENES_ATTRIBUTE'
 export const ADD_IMAGE = 'ADD_IMAGE'
 export const RENAME_IMAGE = 'RENAME_IMAGE'
 export const DELETE_IMAGE = 'DELETE_IMAGE'
+
+// series actions
+export const EDIT_SERIES = 'EDIT_SERIES'
+
+// book actions
+export const ADD_BOOK = 'ADD_BOOK'
+export const EDIT_BOOK = 'EDIT_BOOK'
+export const DELETE_BOOK = 'DELETE_BOOK'
+export const REORDER_BOOKS = 'REORDER_BOOKS'

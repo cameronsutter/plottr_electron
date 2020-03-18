@@ -996,10 +996,7 @@ function buildFileMenu () {
         }
       })
     }
-  }, {
-    type: 'separator'
-  },
-  submenu)
+  })
   return {
     label: i18n('File'),
     submenu: submenu

@@ -6,13 +6,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup,
-  ControlLabel, Tooltip, OverlayTrigger, Image } from 'react-bootstrap'
+  ControlLabel, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 import SETTINGS from '../../../common/utils/settings'
-import ImagePicker from '../ImagePicker'
-import ImageCircle from '../ImageCircle'
+import ImagePicker from '../images/ImagePicker'
+import Image from '../images/Image'
 
 class CharacterView extends Component {
   constructor (props) {
@@ -113,29 +113,19 @@ class CharacterView extends Component {
   }
 
   renderEditingImage () {
-    const { character, images } = this.props
-    const imagesExist = Object.keys(images).length
-    if (!SETTINGS.get('premiumFeatures') && !imagesExist && !character.imageId) return null
+    const { character } = this.props
+    if (!SETTINGS.get('premiumFeatures') && !character.imageId) return null
 
-    let img = null
-    if (character.imageId && images[character.imageId]) {
-      img = <ImageCircle size='large' imageData={images[character.imageId].data} />
-    }
-    if (this.state.newImageId && this.state.newImageId != -1) {
-      img = <ImageCircle size='large' imageData={images[this.state.newImageId].data} />
-    }
-    if (this.state.newImageId == -1) {
-      img = null
-    }
+    let imgId = this.state.newImageId || character.imageId
     return <FormGroup>
       <ControlLabel>{i18n('Character Image')}</ControlLabel>
       <div className='character-list__character__edit-image-wrapper'>
         <div className='character-list__character__edit-image'>
-          {img ? img : null}
+          <Image size='large' shape='circle' imageId={imgId} />
         </div>
         <div>
           {SETTINGS.get('premiumFeatures') || imagesExist ?
-            <ImagePicker current={character.imageId} chooseImage={id => this.setState({newImageId: id})} />
+            <ImagePicker selectedId={character.imageId} chooseImage={id => this.setState({newImageId: id})} />
           : null}
         </div>
       </div>
@@ -306,7 +296,7 @@ class CharacterView extends Component {
   renderLeftSide (shouldRender) {
     if (!shouldRender) return null
 
-    const { character, images } = this.props
+    const { character } = this.props
     const customAttrNotes = this.props.customAttributes.map((attr, idx) => {
       const [attrName, attrType] = attr.split(':#:')
       let desc = <dd>{character[attrName]}</dd>
@@ -325,12 +315,8 @@ class CharacterView extends Component {
       </dl>
     })
 
-    const hasImage = character.imageId && images[character.imageId]
-    let imageData = null
-    if (hasImage) imageData = images[character.imageId].data
-
     return <div>
-      {hasImage ? <ImageCircle size='large' imageData={imageData} /> : null}
+      <Image size='large' shape='circle' imageId={character.imageId} />
       {customAttrNotes}
     </div>
   }
@@ -358,7 +344,7 @@ class CharacterView extends Component {
         </dl>
       })
     })
-    const hasImage = character.imageId && images[character.imageId]
+    const hasImage = character.imageId
     return (
       <div className={klasses} onClick={() => this.setState({editing: true})}>
         <h4 className='secondary-text'>{character.name}</h4>
@@ -418,7 +404,6 @@ function mapStateToProps (state) {
     cards: state.cards,
     notes: state.notes,
     ui: state.ui,
-    images: state.images,
   }
 }
 

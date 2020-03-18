@@ -10,7 +10,7 @@ import MDdescription from 'components/mdDescription'
 import TagLabel from 'components/tagLabel'
 import i18n from 'format-message'
 import cx from 'classnames'
-import ImageCircle from 'components/ImageCircle'
+import Image from 'components/images/Image'
 
 class CardView extends Component {
   constructor (props) {
@@ -128,12 +128,8 @@ class CardView extends Component {
       const thing = _.find(list, {id: id})
       if (!thing) return null
       const key = `${idx}-${id}`
-      let img = null
-      if (thing.imageId && images[thing.imageId]) {
-        img = <ImageCircle size='xs' imageData={images[thing.imageId].data}/>
-      }
       return <div key={key} className='chip'>
-        { img }
+        <Image size='xs' shape='circle' imageId={thing.imageId}/>
         <span>{ thing.name }</span>
       </div>
     })
@@ -199,7 +195,6 @@ function mapStateToProps (state) {
     characters: state.characters,
     places: state.places,
     ui: state.ui,
-    images: state.images,
   }
 }
 

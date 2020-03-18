@@ -6,13 +6,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
-  ControlLabel, Popover, OverlayTrigger, Alert, Image } from 'react-bootstrap'
+  ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import PlaceView from 'components/places/placeView'
+import Image from 'components/images/Image'
 import i18n from 'format-message'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
@@ -183,9 +184,9 @@ class PlaceListView extends Component {
   renderVisiblePlaces = () => {
     return this.state.visiblePlaces.map((pl, idx) => {
       let img = null
-      if (pl.imageId && this.props.images[pl.imageId]) {
+      if (pl.imageId) {
         img = <div className='place-list__item-inner__image-wrapper'>
-          <Image src={this.props.images[pl.imageId].data} responsive rounded/>
+          <Image size='xs' shape='rounded' imageId={pl.imageId} />
         </div>
       }
       return <div key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
@@ -280,7 +281,6 @@ PlaceListView.propTypes = {
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
-  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -288,7 +288,6 @@ function mapStateToProps (state) {
     places: state.places,
     customAttributes: state.customAttributes['places'],
     ui: state.ui,
-    images: state.images,
   }
 }
 

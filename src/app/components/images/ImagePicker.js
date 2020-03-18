@@ -6,10 +6,11 @@ import { bindActionCreators } from 'redux'
 import * as ImageActions from 'actions/images'
 import Modal from 'react-modal'
 import cx from 'classnames'
-import { FormControl, ControlLabel, Button, Row, Col, Image, Glyphicon, ButtonToolbar, FormGroup } from 'react-bootstrap'
+import { FormControl, ControlLabel, Button, Row, Col, Glyphicon, ButtonToolbar, FormGroup } from 'react-bootstrap'
+import Image from './Image'
 import i18n from 'format-message'
-import { readImage } from '../helpers/images'
-import SETTINGS from '../../common/utils/settings'
+import { readImage } from '../../helpers/images'
+import SETTINGS from '../../../common/utils/settings'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -17,7 +18,7 @@ class ImagePicker extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      imageId: props.current,
+      imageId: props.selectedId,
       open: false,
       editing: null,
     }
@@ -86,7 +87,7 @@ class ImagePicker extends Component {
               </Col>
               <Col xs={4}>
                 <div className='image-picker__button-wrapper'>
-                  <Button onClick={this.chooseNoImage}>{i18n('No Image')}</Button>
+                  <Button onClick={this.chooseNoImage}>{i18n('Choose No Image')}</Button>
                   <Button bsStyle='success' onClick={this.chooseImage}>{i18n('Choose')}</Button>
                   <Button onClick={this.close}>{i18n('Cancel')}</Button>
                 </div>
@@ -99,7 +100,8 @@ class ImagePicker extends Component {
         </div>
       </Modal>
     } else {
-      return <Button onClick={() => this.setState({open: true})}><Glyphicon glyph='picture'/>{' '}{i18n('Choose an image')}</Button>
+      let text = this.props.iconOnly ? null : i18n('Choose an image')
+      return <Button onClick={() => this.setState({open: true})}><Glyphicon glyph='picture'/>{text}</Button>
     }
   }
 
@@ -123,7 +125,7 @@ class ImagePicker extends Component {
           {i18n('Rename')}
         </Button>
         <Button bsStyle='danger' onClick={() => this.deleteImage(id)} >
-          {i18n('Remove')}
+          {i18n('Delete')}
         </Button>
       </ButtonToolbar>
     }
@@ -136,7 +138,7 @@ class ImagePicker extends Component {
       const klasses = cx('image-picker__image-wrapper', {selected: isSelected})
       return <div key={images[id].name} className={klasses} onClick={() => this.setState({imageId: id})}>
         {isSelected ? <span className='label label-success'>{i18n('selected')}</span> : null}
-        <Image src={images[id].data} responsive rounded />
+        <Image responsive imageId={id} />
         { this.renderName(id, images[id].name) }
         { this.renderToolbar(id) }
       </div>
@@ -146,8 +148,9 @@ class ImagePicker extends Component {
 
 ImagePicker.propTypes = {
   chooseImage: PropTypes.func.isRequired,
-  current: PropTypes.string,
+  selectedId: PropTypes.string,
   darkMode: PropTypes.bool,
+  iconOnly: PropTypes.bool,
 }
 
 function mapStateToProps (state) {

@@ -16,6 +16,7 @@ const book = {
   genre: '',
   theme: '',
   templates: [],
+  imageId: null,
 }
 
 const beat = {

@@ -4,10 +4,11 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Nav, Navbar, NavItem, Button, Alert, OverlayTrigger, Popover, Image } from 'react-bootstrap'
+import { Glyphicon, Nav, Navbar, NavItem, Button, Alert, OverlayTrigger, Popover } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
+import Image from 'components/images/Image'
 import i18n from 'format-message'
 import cx from 'classnames'
 
@@ -87,9 +88,9 @@ class NoteListView extends Component {
   renderVisibleNotes () {
     return this.state.viewableNotes.map((n, idx) => {
       let img = null
-      if (n.imageId && this.props.images[n.imageId]) {
+      if (n.imageId) {
         img = <div className='note-list__item-inner__image-wrapper'>
-          <Image src={this.props.images[n.imageId].data} responsive/>
+          <Image size='xs' shape='rectangle' imageId={n.imageId} />
         </div>
       }
       let lastEdited = null
@@ -177,7 +178,6 @@ NoteListView.propTypes = {
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
-  images: PropTypes.object,
 }
 
 function mapStateToProps (state) {
@@ -187,7 +187,6 @@ function mapStateToProps (state) {
     places: state.places,
     tags: state.tags,
     ui: state.ui,
-    images: state.images,
   }
 }
 

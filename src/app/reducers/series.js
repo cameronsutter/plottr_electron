@@ -1,9 +1,15 @@
-import { FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
+import { FILE_LOADED, NEW_FILE, RESET, EDIT_SERIES } from '../constants/ActionTypes'
 import { series as defaultSeries } from '../../../shared/initialState'
 import { newFileSeries } from '../../../shared/newFileState'
 
 export default function series (state = defaultSeries, action) {
   switch (action.type) {
+
+    case EDIT_SERIES:
+      return {
+        ...state,
+        ...action.attributes,
+      }
 
     case RESET:
     case FILE_LOADED:

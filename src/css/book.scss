@@ -23,8 +23,21 @@
 .book-list__list {
   display: flex;
   flex-wrap: wrap;
+  overflow: auto;
   padding: 40px;
   padding-top: 0;
+
+  &.dragging {
+
+  }
+}
+
+.book-list__droppable {
+  user-select: none;
+
+  &.dragging {
+
+  }
 }
 
 .edit-book__container {
@@ -42,9 +55,9 @@
 .book-container {
   z-index: 1;
   perspective:3000px;
-  cursor: pointer;
-  margin-right: 80px;
+  margin-right: 70px;
   text-align: center;
+  user-select: none;
   .hover-options {
     visibility: hidden;
     &.hovering {
@@ -52,7 +65,12 @@
     }
   }
   &.add {
+    cursor: pointer;
     padding-top: 36px;
+  }
+  &.gu-transit {
+    // being dragged
+    border: 2px dashed $gray-7;
   }
 }
 

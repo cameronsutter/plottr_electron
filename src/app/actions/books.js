@@ -12,3 +12,7 @@ export function editBook (id, attributes) {
 export function deleteBook (id) {
   return { type: DELETE_BOOK, id}
 }
+
+export function reorderBooks (ids) {
+  return { type: REORDER_BOOKS, ids}
+}

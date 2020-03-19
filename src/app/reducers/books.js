@@ -1,4 +1,4 @@
-import { FILE_LOADED, NEW_FILE, RESET, EDIT_BOOK, ADD_BOOK, DELETE_BOOK } from '../constants/ActionTypes'
+import { FILE_LOADED, NEW_FILE, RESET, EDIT_BOOK, ADD_BOOK, DELETE_BOOK, REORDER_BOOKS } from '../constants/ActionTypes'
 import { book as defaultBook } from '../../../shared/initialState'
 import { newFileBooks } from '../../../shared/newFileState'
 import { objectId } from '../store/newIds'
@@ -27,6 +27,12 @@ export default function books (state = defaultBook, action) {
           ...action.book,
           id: newId,
         }
+      }
+
+    case REORDER_BOOKS:
+      return {
+        ...state,
+        allIds: action.ids,
       }
 
     case DELETE_BOOK:

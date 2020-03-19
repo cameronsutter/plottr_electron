@@ -1,6 +1,5 @@
 @import "vars";
 
-
 .book-list__container {
   padding: 10px 40px;
   position: relative;
@@ -24,11 +23,11 @@
   display: flex;
   flex-wrap: wrap;
   overflow: auto;
-  padding: 40px;
+  padding: 40px 5px;
   padding-top: 0;
 
   &.dragging {
-
+    background-color: rgba(218, 226, 236, 0.2); // $gray-8 with alpha
   }
 }
 
@@ -36,7 +35,7 @@
   user-select: none;
 
   &.dragging {
-
+    // background-color: $gray-9;
   }
 }
 
@@ -55,7 +54,8 @@
 .book-container {
   z-index: 1;
   perspective:3000px;
-  margin-right: 70px;
+  margin-left: 35px;
+  margin-right: 35px;
   text-align: center;
   user-select: none;
   .hover-options {

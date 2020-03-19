@@ -76,8 +76,6 @@ class HistoryItem extends Component {
         return <AddScene item={item} />
       case types.EDIT_SCENE_TITLE:
         return <EditScene item={item} />
-      case types.DELETE_SCENE:
-        return <DeleteScene item={item} />
       case types.ADD_CARD:
         return <AddCard item={item} />
       case types.EDIT_CARD_DETAILS:

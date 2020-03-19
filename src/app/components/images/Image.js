@@ -23,7 +23,7 @@ class Image extends Component {
       PropTypes.number,
     ]),
     size: PropTypes.oneOf(['xl', 'large', 'small', 'xs']),
-    shape: PropTypes.oneOf(['circle', 'rounded', 'rectangle']),
+    shape: PropTypes.oneOf(['circle', 'rounded', 'square']),
     responsive: PropTypes.bool,
     className: PropTypes.string,
     image: PropTypes.object,

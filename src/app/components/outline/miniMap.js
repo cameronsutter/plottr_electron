@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import ReactDOM from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
+import cx from 'classnames'
+import { chapterTitle } from '../../helpers/chapters'
 
 class MiniMap extends Component {
   constructor (props) {
@@ -12,12 +14,12 @@ class MiniMap extends Component {
   }
 
   selectNav = (key) => {
-    document.querySelector(`#scene-${key}`).scrollIntoViewIfNeeded()
+    document.querySelector(`#chapter-${key}`).scrollIntoViewIfNeeded()
     window.scrollBy(0, 250)
   }
 
-  renderCardDots (sceneCards) {
-    const cards = _.cloneDeep(sceneCards).reverse()
+  renderCardDots (chapters) {
+    const cards = _.cloneDeep(chapters).reverse()
     return cards.map((c) => {
       var line = _.find(this.props.lines, {id: c.lineId})
       var style = {backgroundColor: line.color}
@@ -25,36 +27,34 @@ class MiniMap extends Component {
     })
   }
 
-  renderScenes () {
-    const scenes = _.sortBy(this.props.scenes, 'position')
-    return scenes.map((s, idx) =>
-      <NavItem ref={s.title} key={`minimap-scene-${s.id}`} eventKey={s.id} className='outline__minimap__scene-title'>
-        <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{s.title}</span></span>
-        <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[s.id])}</div>
+  renderChapters () {
+    const chapters = _.sortBy(this.props.chapters, 'position')
+    return chapters.map((ch, idx) =>
+      <NavItem ref={ch.title} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
+        <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(ch)}</span></span>
+        <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[ch.id])}</div>
       </NavItem>
     )
   }
 
   render () {
-    let klasses = 'outline__minimap'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <Nav
-        className={klasses}
+        className={cx('outline__minimap', {darkmode: this.props.ui.darkMode})}
         activeKey={this.props.active}
         onSelect={this.selectNav}
         onMouseEnter={() => this.setState({mouseOver: true})}
         onMouseLeave={() => this.setState({mouseOver: false})}>
-        {this.renderScenes()}
+        {this.renderChapters()}
       </Nav>
     )
   }
 
   componentDidUpdate () {
     if (!this.state.mouseOver) {
-      const scene = this.props.scenes.find(sc => sc.id === this.props.active)
+      const chapter = this.props.chapters.find(ch => ch.id === this.props.active)
       let title = ""
-      if (scene) title = scene.title
+      if (chapter) title = chapter.title
       var domNode = ReactDOM.findDOMNode(this.refs[title])
       if (domNode) {
         domNode.scrollIntoViewIfNeeded()
@@ -64,7 +64,7 @@ class MiniMap extends Component {
 }
 
 MiniMap.propTypes = {
-  scenes: PropTypes.array.isRequired,
+  chapters: PropTypes.array.isRequired,
   active: PropTypes.number.isRequired,
   lines: PropTypes.array.isRequired,
   cardMapping: PropTypes.object.isRequired,
@@ -73,7 +73,7 @@ MiniMap.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    scenes: state.scenes,
+    chapters: state.chapters,
     lines: state.lines,
     ui: state.ui,
   }

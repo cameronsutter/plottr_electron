@@ -7,21 +7,16 @@ import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG, DELETE_CHARACTER,
   DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { newFileCards } from '../../../shared/newFileState'
+import { card as defaultCard } from '../../../shared/initialState'
 import { arrayId } from 'store/newIds'
 
 export default function cards (state, action) {
   switch (action.type) {
     case ADD_CARD:
-      return [{
+      return [Object.assign(defaultCard, {
+        ...action.card,
         id: arrayId(state),
-        lineId: action.card.lineId,
-        sceneId: action.card.sceneId,
-        title: action.card.title,
-        description: action.card.description,
-        tags: action.card.tags,
-        characters: action.card.characters,
-        places: action.card.places
-      }, ...state]
+      }), ...state]
 
     case ADD_LINES_FROM_TEMPLATE:
       return [...action.cards, ...state]

@@ -1,16 +1,16 @@
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE } from 'constants/ActionTypes'
-import { scene } from '../../../shared/initialState'
+import { chapter } from '../../../shared/initialState'
 
-export function addScene () {
-  return { type: ADD_SCENE, title: scene.title }
+export function addScene (bookId) {
+  return { type: ADD_SCENE, title: chapter.title, bookId }
 }
 
 export function editSceneTitle (id, title) {
   return { type: EDIT_SCENE_TITLE, id, title }
 }
 
-export function reorderScenes (scenes) {
-  return { type: REORDER_SCENES, scenes }
+export function reorderScenes (chapters) {
+  return { type: REORDER_SCENES, chapters }
 }
 
 export function deleteScene (id) {

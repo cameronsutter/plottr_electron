@@ -186,7 +186,7 @@ class PlaceListView extends Component {
       let img = null
       if (pl.imageId) {
         img = <div className='place-list__item-inner__image-wrapper'>
-          <Image size='xs' shape='rounded' imageId={pl.imageId} />
+          <Image size='small' shape='rounded' imageId={pl.imageId} />
         </div>
       }
       return <div key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>

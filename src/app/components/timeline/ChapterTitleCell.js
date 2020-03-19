@@ -8,6 +8,7 @@ import { Cell } from 'react-sticky-table'
 import * as SceneActions from 'actions/scenes'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
+import { chapterTitle } from '../../helpers/chapters'
 
 class ChapterTitleCell extends Component {
   constructor (props) {
@@ -102,12 +103,13 @@ class ChapterTitleCell extends Component {
   }
 
   renderTitle () {
-    if (!this.state.editing) return <span>{this.props.chapter.title}</span>
+    const { chapter } = this.props
+    if (!this.state.editing) return <span>{chapterTitle(chapter)}</span>
     return (<FormGroup>
-      <ControlLabel>{i18n('Chapter {number} name', {number: this.props.chapter.position + 1})}</ControlLabel>
+      <ControlLabel>{i18n('Chapter {number} name', {number: chapter.position + 1})}</ControlLabel>
       <FormControl
         type='text'
-        defaultValue={this.props.chapter.title}
+        defaultValue={chapter.title}
         ref='titleRef'
         autoFocus
         onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}

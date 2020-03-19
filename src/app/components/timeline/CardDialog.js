@@ -11,6 +11,7 @@ import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 're
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import { chapterTitle } from '../../helpers/chapters'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -75,29 +76,29 @@ class CardDialog extends Component {
     }
   }
 
-  changeScene (sceneId) {
-    this.props.actions.changeScene(this.props.card.id, sceneId)
+  changeChapter (chapterId) {
+    this.props.actions.changeScene(this.props.card.id, chapterId)
   }
 
   changeLine (lineId) {
     this.props.actions.changeLine(this.props.card.id, lineId)
   }
 
-  getCurrentScene () {
-    return _.find(this.props.scenes, {id: this.props.sceneId})
+  getCurrentChapter () {
+    return _.find(this.props.chapters, {id: this.props.chapterId})
   }
 
   getCurrentLine () {
     return _.find(this.props.lines, {id: this.props.lineId})
   }
 
-  renderSceneItems () {
-    var scenes = _.sortBy(this.props.scenes, 'position')
-    return scenes.map((scene) => {
+  renderChapterItems () {
+    var chapters = _.sortBy(this.props.chapters, 'position')
+    return chapters.map((chapter) => {
       return (<MenuItem
-        key={scene.id}
-        onSelect={() => this.changeScene(scene.id)} >
-        {scene.title}
+        key={chapter.id}
+        onSelect={() => this.changeChapter(chapter.id)} >
+        {chapterTitle(chapter)}
       </MenuItem>)
     })
   }
@@ -156,7 +157,7 @@ class CardDialog extends Component {
 
   renderLeftSide () {
     var ids = {
-      scene: _.uniqueId('select-scene-'),
+      chapter: _.uniqueId('select-chapter-'),
       line: _.uniqueId('select-line-')
     }
 
@@ -170,9 +171,9 @@ class CardDialog extends Component {
           </label>
         </div>
         <div className='card-dialog__scene'>
-          <label className='card-dialog__details-label' htmlFor={ids.scene}>{i18n('Scene')}:
-            <DropdownButton id={ids.scene} className='card-dialog__select-scene' title={this.getCurrentScene().title}>
-              {this.renderSceneItems()}
+          <label className='card-dialog__details-label' htmlFor={ids.chapter}>{i18n('Chapter')}:
+            <DropdownButton id={ids.chapter} className='card-dialog__select-scene' title={this.getCurrentChapter().title}>
+              {this.renderChapterItems()}
             </DropdownButton>
           </label>
         </div>
@@ -224,11 +225,11 @@ class CardDialog extends Component {
 
 CardDialog.propTypes = {
   card: PropTypes.object,
-  sceneId: PropTypes.number.isRequired,
+  chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   closeDialog: PropTypes.func,
   lines: PropTypes.array.isRequired,
-  scenes: PropTypes.array.isRequired,
+  chapters: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
@@ -240,7 +241,7 @@ CardDialog.propTypes = {
 function mapStateToProps (state) {
   return {
     lines: state.lines,
-    scenes: state.scenes,
+    chapters: state.chapters,
     tags: state.tags,
     characters: state.characters,
     places: state.places,

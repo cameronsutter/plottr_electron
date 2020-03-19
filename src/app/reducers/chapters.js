@@ -4,7 +4,7 @@ import { chapter } from '../../../shared/initialState'
 import { newFileChapters } from '../../../shared/newFileState'
 import { arrayId, arrayPosition, positionReset } from 'store/newIds'
 
-const initialState = {allIds: [1], 1: chapter}
+const initialState = [chapter]
 
 export default function chapters (state = initialState, action) {
   switch (action.type) {
@@ -15,7 +15,7 @@ export default function chapters (state = initialState, action) {
         bookId: action.bookId,
         time: 0,
         position: arrayPosition(state)
-      }]
+      }, ...state]
 
     case EDIT_SCENE_TITLE:
       return state.map(ch =>

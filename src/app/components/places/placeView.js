@@ -238,7 +238,7 @@ class PlaceView extends Component {
             </dl>
           </div>
           <div>
-            <Image size='large' shape='rounded' imageId={place.imageId} />
+            <Image responsive imageId={place.imageId} />
           </div>
         </div>
       </div>

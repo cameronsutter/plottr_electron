@@ -3,8 +3,10 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Waypoint } from 'react-waypoint'
 import CardView from 'components/outline/cardView'
+import cx from 'classnames'
+import { chapterTitle } from '../../helpers/chapters'
 
-class SceneView extends Component {
+class ChapterView extends Component {
   renderCards () {
     return this.props.cards.map(c =>
       <CardView key={c.id} card={c} labelMap={this.props.labelMap} />
@@ -12,12 +14,12 @@ class SceneView extends Component {
   }
 
   render () {
-    let klasses = 'outline__scene_title'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
+    const { chapter, ui, waypoint } = this.props
+    const klasses = cx('outline__scene_title', {darkmode: ui.darkMode})
     return (
-      <Waypoint onEnter={() => this.props.waypoint(this.props.scene.id)} scrollableAncestor={window} topOffset={"60%"} bottomOffset={"60%"}>
+      <Waypoint onEnter={() => waypoint(chapter.id)} scrollableAncestor={window} topOffset={"60%"} bottomOffset={"60%"}>
         <div>
-          <h3 id={`scene-${this.props.scene.id}`} className={klasses}>{this.props.scene.title}</h3>
+          <h3 id={`chapter-${chapter.id}`} className={klasses}>{chapterTitle(chapter)}</h3>
           {this.renderCards()}
         </div>
       </Waypoint>
@@ -25,8 +27,8 @@ class SceneView extends Component {
   }
 }
 
-SceneView.propTypes = {
-  scene: PropTypes.object.isRequired,
+ChapterView.propTypes = {
+  chapter: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
   labelMap: PropTypes.object.isRequired,
@@ -46,4 +48,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SceneView)
+)(ChapterView)

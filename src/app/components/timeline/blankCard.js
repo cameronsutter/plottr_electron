@@ -163,7 +163,7 @@ BlankCard.propTypes = {
 
 function mapStateToProps (state, ownProps) {
   let line = state.lines.find(l => l.id === ownProps.lineId)
-  let chapter = state.chapters.find(s => s.id === ownProps.chapterId)
+  let chapter = state.chapters.find(ch => ch.id === ownProps.chapterId)
   return {
     ui: state.ui,
     linePosition: line.position,

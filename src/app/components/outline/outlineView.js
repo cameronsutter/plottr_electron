@@ -3,9 +3,10 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { Glyphicon, Nav, Navbar, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
-import SceneView from 'components/outline/sceneView'
+import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
+import cx from 'classnames'
 
 class OutlineView extends Component {
   constructor (props) {
@@ -15,8 +16,8 @@ class OutlineView extends Component {
 
   cardMapping () {
     var mapping = {}
-    this.props.scenes.forEach(s =>
-      mapping[s.id] = this.sortedSceneCards(s.id)
+    this.props.chapters.forEach(s =>
+      mapping[s.id] = this.sortedChapterCards(s.id)
     )
     return mapping
   }
@@ -39,8 +40,8 @@ class OutlineView extends Component {
     return this.state.currentLine !== null ? id === this.state.currentLine : true
   }
 
-  sortedSceneCards (sceneId) {
-    var cards = this.findSceneCards(sceneId)
+  sortedChapterCards (chapterId) {
+    var cards = this.findChapterCards(chapterId)
     const lines = _.sortBy(this.props.lines, 'position')
     var sorted = []
     lines.forEach((l) => {
@@ -52,9 +53,9 @@ class OutlineView extends Component {
     return sorted
   }
 
-  findSceneCards (sceneId) {
+  findChapterCards (chapterId) {
     return this.props.cards.filter(c =>
-      c.sceneId === sceneId
+      c.chapterId === chapterId
     )
   }
 
@@ -97,8 +98,6 @@ class OutlineView extends Component {
   }
 
   renderSubNav () {
-    let subNavKlasses = 'subnav__container'
-    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     let popover = <Popover id='filter'>
       <div className='filter-list'>
         {this.renderFilterList()}
@@ -109,7 +108,7 @@ class OutlineView extends Component {
       filterDeclaration = <span></span>
     }
     return (
-      <Navbar className={subNavKlasses}>
+      <Navbar className={cx('subnav__container', {darkmode: this.props.ui.darkMode})}>
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
@@ -122,10 +121,10 @@ class OutlineView extends Component {
     )
   }
 
-  renderScenes (cardMapping) {
-    const scenes = _.sortBy(this.props.scenes, 'position')
-    return scenes.map(s =>
-      <SceneView key={s.id} scene={s} cards={cardMapping[s.id]} labelMap={this.labelMap()} waypoint={this.setActive} />
+  renderChapters (cardMapping) {
+    const chapters = _.sortBy(this.props.chapters, 'position')
+    return chapters.map(ch =>
+      <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} labelMap={this.labelMap()} waypoint={this.setActive} />
     )
   }
 
@@ -138,7 +137,7 @@ class OutlineView extends Component {
           <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
           <MiniMap active={this.state.active} cardMapping={cardMapping} />
           <div className='outline__scenes-container'>
-            {this.renderScenes(cardMapping)}
+            {this.renderChapters(cardMapping)}
           </div>
         </div>
       </div>
@@ -147,7 +146,7 @@ class OutlineView extends Component {
 }
 
 OutlineView.propTypes = {
-  scenes: PropTypes.array.isRequired,
+  chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
@@ -157,9 +156,21 @@ OutlineView.propTypes = {
 }
 
 function mapStateToProps (state) {
+  let chapters = []
+  let lines = []
+  const bookId = state.ui.currentTimeline
+  if (bookId == 'series') {
+    // get all beats / seriesLines
+    chapters = state.beats
+    lines = state.seriesLines
+  } else {
+    // get all the chapters / lines for state.ui.currentTimeline (bookId)
+    chapters = state.chapters.filter(ch => ch.bookId == bookId)
+    lines = state.lines.filter(l => l.bookId == bookId)
+  }
   return {
-    scenes: state.scenes,
-    lines: state.lines,
+    chapters: chapters,
+    lines: lines,
     cards: state.cards,
     tags: state.tags,
     characters: state.characters,

@@ -1,4 +1,4 @@
-import { scene } from '../../../shared/initialState'
+import { chapter } from '../../../shared/initialState'
 import { arrayId } from 'store/newIds'
 
 export function reorderList (originalPosition, newPosition, list) {
@@ -9,12 +9,12 @@ export function reorderList (originalPosition, newPosition, list) {
 }
 
 //TODO: this will need to change
-export function insertScene (position, scenes) {
-  var newId = arrayId(scenes)
-  var newScene = _.clone(scene)
-  newScene['id'] = newId
+export function insertChapter (position, chapters) {
+  var newId = arrayId(chapters)
+  var newChapter = _.clone(chapter)
+  newChapter['id'] = newId
 
-  const sortedScenes = _.sortBy(scenes, 'position')
-  sortedScenes.splice(position, 0, newScene)
-  return sortedScenes
+  const sortedChapters = _.sortBy(chapters, 'position')
+  sortedChapters.splice(position, 0, newChapter)
+  return sortedChapters
 }

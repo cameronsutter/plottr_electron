@@ -9,7 +9,7 @@ import * as LineActions from 'actions/lines'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
-import { reorderList, insertScene } from 'helpers/lists'
+import { reorderList, insertChapter } from 'helpers/lists'
 import orientedClassName from 'helpers/orientedClassName'
 
 
@@ -26,16 +26,16 @@ class TopRow extends Component {
   }
 
   handleInsertNewChapter = (nextPosition) => {
-    const chapters = insertScene(nextPosition, this.props.chapters)
+    const chapters = insertChapter(nextPosition, this.props.chapters)
     this.props.sceneActions.reorderScenes(chapters)
   }
 
   renderLastInsertSceneCell () {
-    const { orientation } = this.props.ui
-    return <ChapterInsertCell key='last-insert' isInChapterList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation}/>
+    const { orientation, currentTimeline } = this.props.ui
+    return <ChapterInsertCell key='last-insert' isInChapterList={true} handleInsert={() => this.props.sceneActions.addScene(currentTimeline)} isLast={true} orientation={orientation}/>
   }
 
-  renderScenes () {
+  renderChapters () {
     const { orientation } = this.props.ui
     const chapters = _.sortBy(this.props.chapters, 'position')
     const renderedChapters = chapters.flatMap(ch => {
@@ -68,7 +68,7 @@ class TopRow extends Component {
 
   render () {
     let body = null
-    if (this.props.ui.orientation === 'horizontal') body = this.renderScenes()
+    if (this.props.ui.orientation === 'horizontal') body = this.renderChapters()
     else body = this.renderLines()
     return <Row>{body}</Row>
   }
@@ -78,14 +78,14 @@ TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
   chapters: PropTypes.array,
   lines: PropTypes.array,
-  bookId: PropTypes.number,
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps (state) {
   let obj = {
     ui: state.ui
   }
-  if (ownProps.bookId == 'series') {
+  const bookId = state.ui.currentTimeline
+  if (bookId == 'series') {
     // get all beats / seriesLines
     if (state.ui.orientation === 'horizontal') {
       obj.chapters = state.beats
@@ -93,11 +93,11 @@ function mapStateToProps (state, ownProps) {
       obj.lines = state.seriesLines
     }
   } else {
-    // get all the chapters / lines for ownProps.bookId
+    // get all the chapters / lines for state.ui.currentTimeline (bookId)
     if (state.ui.orientation === 'horizontal') {
-      obj.chapters = state.chapters.filter(ch => ch.bookId == ownProps.bookId)
+      obj.chapters = state.chapters.filter(ch => ch.bookId == bookId)
     } else {
-      obj.lines = state.lines.filter(l => l.bookId == ownProps.bookId)
+      obj.lines = state.lines.filter(l => l.bookId == bookId)
     }
   }
 

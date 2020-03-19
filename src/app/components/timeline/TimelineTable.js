@@ -13,9 +13,10 @@ import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
 import * as CardActions from 'actions/cards'
-import { reorderList, insertScene } from 'helpers/lists'
+import { reorderList, insertChapter } from 'helpers/lists'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import AddLineRow from './AddLineRow'
+import { card } from '../../../../shared/initialState'
 
 class TimelineTable extends Component {
 
@@ -67,8 +68,8 @@ class TimelineTable extends Component {
   }
 
   handleReorderChapters = (originalPosition, droppedPosition) => {
-    const scenes = reorderList(originalPosition, droppedPosition, this.props.chapters)
-    this.props.sceneActions.reorderScenes(scenes)
+    const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
+    this.props.sceneActions.reorderScenes(chapters)
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
@@ -91,35 +92,27 @@ class TimelineTable extends Component {
   }
 
   handleInsertNewChapter = (nextPosition, lineId) => {
-    const scenes = insertScene(nextPosition, this.props.chapters)
-    this.props.sceneActions.reorderScenes(scenes)
+    const chapters = insertChapter(nextPosition, this.props.chapters)
+    this.props.sceneActions.reorderScenes(chapters)
 
-    if (lineId && scenes[nextPosition]) {
-      const sceneId = scenes[nextPosition].id
-      this.props.cardActions.addCard(this.buildCard(lineId, sceneId))
+    if (lineId && chapters[nextPosition]) {
+      const chapterId = chapters[nextPosition].id
+      this.props.cardActions.addCard(this.buildCard(lineId, chapterId))
     }
   }
 
-  buildCard (lineId, sceneId) {
-    return {
-      title: '',
-      sceneId: sceneId,
-      lineId: lineId,
-      description: '',
-      characters: [],
-      places: [],
-      tags: []
-    }
+  buildCard (lineId, chapterId) {
+    return Object.assign(card, { chapterId, lineId })
   }
 
   renderLines () {
-    const sceneMap = this.chapterMapping()
+    const chapterMap = this.chapterMapping()
     const labelMap = this.labelMap()
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map(line => {
       return <Row key={`lineId-${line.id}`}>
         <LineTitleCell line={line} handleReorder={this.handleReorderLines}/>
-        { this.renderCardsByChapter(line, sceneMap, labelMap) }
+        { this.renderCardsByChapter(line, chapterMap, labelMap) }
       </Row>
     }).concat(<AddLineRow key='insert-line' bookId={this.props.bookId}/>)
   }
@@ -128,7 +121,7 @@ class TimelineTable extends Component {
     const lineMap = this.lineMapping()
     const labelMap = this.labelMap()
     const chapters = _.sortBy(this.props.chapters, 'position')
-    const { orientation } = this.props.ui
+    const { orientation, currentTimeline } = this.props.ui
     return chapters.map(chapter => {
       const inserts = Object.keys(lineMap).flatMap(linePosition => {
         const line = lineMap[linePosition];
@@ -145,7 +138,7 @@ class TimelineTable extends Component {
       ]
     }).concat(
       <Row key='last-insert'>
-        <ChapterInsertCell isInChapterList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation}/>
+        <ChapterInsertCell isInChapterList={true} handleInsert={() => this.props.sceneActions.addScene(currentTimeline)} isLast={true} orientation={orientation}/>
       </Row>
     )
   }
@@ -196,11 +189,11 @@ class TimelineTable extends Component {
         }
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
-          sceneId={chapter.id} lineId={line.id}
+          chapterId={chapter.id} lineId={line.id}
           labelMap={labelMap}
           color={line.color} filtered={filtered} />)
       } else {
-        cells.push(<BlankCard sceneId={chapter.id} lineId={line.id}
+        cells.push(<BlankCard chapterId={chapter.id} lineId={line.id}
           key={`blank-${chapter.id}-${line.id}`}
           color={line.color} />)
       }
@@ -220,7 +213,7 @@ class TimelineTable extends Component {
   render () {
     const rows = this.renderRows()
 
-    return [<TopRow key='top-row' bookId={this.props.bookId}/>, rows]
+    return [<TopRow key='top-row'/>, rows]
   }
 }
 
@@ -236,20 +229,20 @@ TimelineTable.propTypes = {
   ui: PropTypes.object.isRequired,
   filter: PropTypes.object,
   filterIsEmpty: PropTypes.bool,
-  bookId: PropTypes.number,
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps (state) {
   let chapters = []
   let lines = []
-  if (ownProps.bookId == 'series') {
+  const bookId = state.ui.currentTimeline
+  if (bookId == 'series') {
     // get all beats / seriesLines
     chapters = state.beats
     lines = state.seriesLines
   } else {
-    // get all the chapters / lines for ownProps.bookId
-    chapters = state.chapters.filter(ch => ch.bookId == ownProps.bookId)
-    lines = state.lines.filter(l => l.bookId == ownProps.bookId)
+    // get all the chapters / lines for state.ui.currentTimeline (bookId)
+    chapters = state.chapters.filter(ch => ch.bookId == bookId)
+    lines = state.lines.filter(l => l.bookId == bookId)
   }
   return {
     chapters: chapters,

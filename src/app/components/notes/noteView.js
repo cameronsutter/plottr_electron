@@ -117,7 +117,7 @@ class NoteView extends Component {
       let img = null
       if (note.imageId) {
         img = <div className='text-center'>
-          <Image size='large' shape='rectangle' imageId={note.imageId} />
+          <Image responsive imageId={note.imageId} />
         </div>
       }
       return <div className='note-list__content' onClick={() => this.setState({editing: true})}>

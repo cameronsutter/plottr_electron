@@ -90,7 +90,7 @@ class NoteListView extends Component {
       let img = null
       if (n.imageId) {
         img = <div className='note-list__item-inner__image-wrapper'>
-          <Image size='xs' shape='rectangle' imageId={n.imageId} />
+          <Image responsive imageId={n.imageId} />
         </div>
       }
       let lastEdited = null

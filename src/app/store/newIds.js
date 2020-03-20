@@ -3,23 +3,8 @@ export function objectId (allIds) {
   return Math.max(...allIds) + 1
 }
 
-export function arrayId (arr) {
+export function nextId (arr) {
   return arr.reduce((maxId, item) => Math.max(item.id, maxId), 0) + 1
-}
-
-export function objectPosition (obj) {
-  return obj.allIds.reduce((maxPosition, id) => Math.max(obj[id].position, maxPosition), 0) + 1
-}
-
-export function arrayPosition (arr) {
-  return arr.reduce((maxPosition, item) => Math.max(item.position, maxPosition), 0) + 1
-}
-
-export function positionReset (items) {
-  return items.map((item, index) => {
-    item.position = index
-    return item
-  })
 }
 
 // TODO: when you change images to have an allIds key, use the objectId function above

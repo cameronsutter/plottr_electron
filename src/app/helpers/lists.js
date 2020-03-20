@@ -1,5 +1,4 @@
-import { chapter } from '../../../shared/initialState'
-import { arrayId } from 'store/newIds'
+import _ from 'lodash'
 
 export function reorderList (originalPosition, newPosition, list) {
   const sortedList = _.sortBy(list, 'position')
@@ -8,13 +7,19 @@ export function reorderList (originalPosition, newPosition, list) {
   return sortedList
 }
 
-//TODO: this will need to change
-export function insertChapter (position, chapters) {
-  var newId = arrayId(chapters)
-  var newChapter = _.clone(chapter)
-  newChapter['id'] = newId
+export function nextPosition (arr) {
+  return arr.reduce((maxPosition, item) => Math.max(item.position, maxPosition), -1) + 1
+}
 
-  const sortedChapters = _.sortBy(chapters, 'position')
-  sortedChapters.splice(position, 0, newChapter)
-  return sortedChapters
+export function positionReset (items) {
+  return items.map((item, index) => {
+    item.position = index
+    return item
+  })
+}
+
+export function nextPositionInBook (items, bookId) {
+  return items
+    .filter(item => item.bookId == bookId)
+    .reduce((maxPosition, item) => Math.max(item.position, maxPosition), -1) + 1
 }

@@ -12,7 +12,7 @@ i18n.setup({
 
 // data structure
 
-const newFileSeries = Object.assign(series, {name: i18n('My awesome story')})
+const newFileSeries = series
 
 const newFileBooks = {
   allIds: [1],

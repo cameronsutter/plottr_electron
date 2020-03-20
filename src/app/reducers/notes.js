@@ -5,7 +5,7 @@ import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE, FILE_LOADED, NEW_FILE, RESET,
   DELETE_CHARACTER, DELETE_PLACE, DELETE_IMAGE } from '../constants/ActionTypes'
 import { note } from '../../../shared/initialState'
 import { newFileNotes } from '../../../shared/newFileState'
-import { arrayId } from 'store/newIds'
+import { nextId } from 'store/newIds'
 
 const initialState = [note]
 
@@ -14,7 +14,7 @@ export default function notes (state = initialState, action) {
     case ADD_NOTE:
       return [...state, {
         ...note,
-        id: arrayId(state),
+        id: nextId(state),
         title: action.title,
         content: action.content
       }]

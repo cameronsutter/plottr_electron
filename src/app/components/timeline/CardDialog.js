@@ -172,7 +172,7 @@ class CardDialog extends Component {
         </div>
         <div className='card-dialog__scene'>
           <label className='card-dialog__details-label' htmlFor={ids.chapter}>{i18n('Chapter')}:
-            <DropdownButton id={ids.chapter} className='card-dialog__select-scene' title={this.getCurrentChapter().title}>
+            <DropdownButton id={ids.chapter} className='card-dialog__select-scene' title={chapterTitle(this.getCurrentChapter())}>
               {this.renderChapterItems()}
             </DropdownButton>
           </label>
@@ -239,9 +239,21 @@ CardDialog.propTypes = {
 }
 
 function mapStateToProps (state) {
+  let chapters = []
+  let lines = []
+  const bookId = state.ui.currentTimeline
+  if (bookId == 'series') {
+    // get all beats / seriesLines
+    chapters = state.beats
+    lines = state.seriesLines
+  } else {
+    // get all the chapters / lines for state.ui.currentTimeline (bookId)
+    chapters = state.chapters.filter(ch => ch.bookId == bookId)
+    lines = state.lines.filter(l => l.bookId == bookId)
+  }
   return {
-    lines: state.lines,
-    chapters: state.chapters,
+    lines: lines,
+    chapters: chapters,
     tags: state.tags,
     characters: state.characters,
     places: state.places,

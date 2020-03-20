@@ -937,6 +937,20 @@
   ],
   "chapters": [
     {
+      "bookId": 2,
+      "id": 110,
+      "position": 1,
+      "time": 0,
+      "title": "auto"
+    },
+    {
+      "bookId": 2,
+      "id": 109,
+      "position": 0,
+      "time": 0,
+      "title": "auto"
+    },
+    {
       "bookId": 1,
       "id": 60,
       "position": 0,
@@ -946,16 +960,8 @@
     },
     {
       "bookId": 1,
-      "id": 108,
-      "position": 1,
-      "templates": [],
-      "time": 0,
-      "title": "Chapter 2"
-    },
-    {
-      "bookId": 1,
       "id": 98,
-      "position": 2,
+      "position": 1,
       "templates": [],
       "time": 0,
       "title": "6 Years Ago"
@@ -963,7 +969,7 @@
     {
       "bookId": 1,
       "id": 107,
-      "position": 3,
+      "position": 2,
       "templates": [],
       "time": 0,
       "title": "5 years ago"
@@ -971,7 +977,7 @@
     {
       "bookId": 1,
       "id": 99,
-      "position": 4,
+      "position": 3,
       "templates": [],
       "time": 0,
       "title": "2 years ago"
@@ -979,7 +985,7 @@
     {
       "bookId": 1,
       "id": 68,
-      "position": 5,
+      "position": 4,
       "templates": [],
       "time": 0,
       "title": "Chapter 1"
@@ -987,7 +993,7 @@
     {
       "bookId": 1,
       "id": 61,
-      "position": 6,
+      "position": 5,
       "templates": [],
       "time": 0,
       "title": "Opening Scene (1)"
@@ -995,7 +1001,7 @@
     {
       "bookId": 1,
       "id": 67,
-      "position": 7,
+      "position": 6,
       "templates": [],
       "time": 0,
       "title": "Scene 2"
@@ -1003,7 +1009,7 @@
     {
       "bookId": 1,
       "id": 66,
-      "position": 8,
+      "position": 7,
       "templates": [],
       "time": 0,
       "title": "Scene 3"
@@ -1011,7 +1017,7 @@
     {
       "bookId": 1,
       "id": 69,
-      "position": 9,
+      "position": 8,
       "templates": [],
       "time": 0,
       "title": "Chapter 2: Rivalia"
@@ -1019,7 +1025,7 @@
     {
       "bookId": 1,
       "id": 64,
-      "position": 10,
+      "position": 9,
       "templates": [],
       "time": 0,
       "title": "Scene 4"
@@ -1027,7 +1033,7 @@
     {
       "bookId": 1,
       "id": 71,
-      "position": 11,
+      "position": 10,
       "templates": [],
       "time": 0,
       "title": "Scene 5"
@@ -1035,7 +1041,7 @@
     {
       "bookId": 1,
       "id": 76,
-      "position": 12,
+      "position": 11,
       "templates": [],
       "time": 0,
       "title": "Scene 6"
@@ -1043,7 +1049,7 @@
     {
       "bookId": 1,
       "id": 90,
-      "position": 13,
+      "position": 12,
       "templates": [],
       "time": 0,
       "title": "Scene 7"
@@ -1051,7 +1057,7 @@
     {
       "bookId": 1,
       "id": 83,
-      "position": 14,
+      "position": 13,
       "templates": [],
       "time": 0,
       "title": "Scene 8"
@@ -1059,7 +1065,7 @@
     {
       "bookId": 1,
       "id": 72,
-      "position": 15,
+      "position": 14,
       "templates": [],
       "time": 0,
       "title": "Chapter 3"
@@ -1067,7 +1073,7 @@
     {
       "bookId": 1,
       "id": 78,
-      "position": 16,
+      "position": 15,
       "templates": [],
       "time": 0,
       "title": "Scene 9"
@@ -1075,7 +1081,7 @@
     {
       "bookId": 1,
       "id": 100,
-      "position": 17,
+      "position": 16,
       "templates": [],
       "time": 0,
       "title": "Scene 10"
@@ -1083,7 +1089,7 @@
     {
       "bookId": 1,
       "id": 65,
-      "position": 18,
+      "position": 17,
       "templates": [],
       "time": 0,
       "title": "Scene 11"
@@ -1091,7 +1097,7 @@
     {
       "bookId": 1,
       "id": 73,
-      "position": 19,
+      "position": 18,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1099,7 +1105,7 @@
     {
       "bookId": 1,
       "id": 70,
-      "position": 20,
+      "position": 19,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1107,7 +1113,7 @@
     {
       "bookId": 1,
       "id": 74,
-      "position": 21,
+      "position": 20,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1115,7 +1121,7 @@
     {
       "bookId": 1,
       "id": 75,
-      "position": 22,
+      "position": 21,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1123,7 +1129,7 @@
     {
       "bookId": 1,
       "id": 77,
-      "position": 23,
+      "position": 22,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1131,7 +1137,7 @@
     {
       "bookId": 1,
       "id": 79,
-      "position": 24,
+      "position": 23,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1139,7 +1145,7 @@
     {
       "bookId": 1,
       "id": 81,
-      "position": 25,
+      "position": 24,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1147,7 +1153,7 @@
     {
       "bookId": 1,
       "id": 82,
-      "position": 26,
+      "position": 25,
       "templates": [],
       "time": 0,
       "title": "Midpoint"
@@ -1155,7 +1161,7 @@
     {
       "bookId": 1,
       "id": 89,
-      "position": 27,
+      "position": 26,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1163,7 +1169,7 @@
     {
       "bookId": 1,
       "id": 85,
-      "position": 28,
+      "position": 27,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1171,7 +1177,7 @@
     {
       "bookId": 1,
       "id": 86,
-      "position": 29,
+      "position": 28,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1179,7 +1185,7 @@
     {
       "bookId": 1,
       "id": 87,
-      "position": 30,
+      "position": 29,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1187,7 +1193,7 @@
     {
       "bookId": 1,
       "id": 88,
-      "position": 31,
+      "position": 30,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1195,7 +1201,7 @@
     {
       "bookId": 1,
       "id": 84,
-      "position": 32,
+      "position": 31,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1203,7 +1209,7 @@
     {
       "bookId": 1,
       "id": 101,
-      "position": 33,
+      "position": 32,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1211,7 +1217,7 @@
     {
       "bookId": 1,
       "id": 92,
-      "position": 34,
+      "position": 33,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1219,7 +1225,7 @@
     {
       "bookId": 1,
       "id": 93,
-      "position": 35,
+      "position": 34,
       "templates": [],
       "time": 0,
       "title": "Darkest Moment"
@@ -1227,7 +1233,7 @@
     {
       "bookId": 1,
       "id": 103,
-      "position": 36,
+      "position": 35,
       "templates": [],
       "time": 0,
       "title": "Click to Edit"
@@ -1235,7 +1241,7 @@
     {
       "bookId": 1,
       "id": 91,
-      "position": 37,
+      "position": 36,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1243,7 +1249,7 @@
     {
       "bookId": 1,
       "id": 102,
-      "position": 38,
+      "position": 37,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1251,7 +1257,7 @@
     {
       "bookId": 1,
       "id": 95,
-      "position": 39,
+      "position": 38,
       "templates": [],
       "time": 0,
       "title": "Climax"
@@ -1259,7 +1265,7 @@
     {
       "bookId": 1,
       "id": 94,
-      "position": 40,
+      "position": 39,
       "templates": [],
       "time": 0,
       "title": "Scene"
@@ -1267,7 +1273,7 @@
     {
       "bookId": 1,
       "id": 80,
-      "position": 41,
+      "position": 40,
       "templates": [],
       "time": 0,
       "title": "Finale"
@@ -1275,7 +1281,7 @@
     {
       "bookId": 1,
       "id": 104,
-      "position": 42,
+      "position": 41,
       "templates": [],
       "time": 0,
       "title": "1st"
@@ -1283,7 +1289,7 @@
     {
       "bookId": 1,
       "id": 96,
-      "position": 43,
+      "position": 42,
       "templates": [],
       "time": 0,
       "title": "2nd"
@@ -1297,8 +1303,7 @@
       ],
       "cards": [
         146,
-        144,
-        114
+        144
       ],
       "categoryId": "",
       "color": null,
@@ -1532,6 +1537,20 @@
   },
   "lines": [
     {
+      "bookId": 2,
+      "color": "#78be20",
+      "id": 39,
+      "position": 1,
+      "title": "sub plot"
+    },
+    {
+      "bookId": 2,
+      "color": "#6cace4",
+      "id": 37,
+      "position": 0,
+      "title": "Main Plot"
+    },
+    {
       "bookId": 1,
       "characterId": null,
       "color": "#6cace4",
@@ -1584,7 +1603,7 @@
       "characterId": null,
       "color": "DeepPink",
       "id": 35,
-      "position": 6,
+      "position": 7,
       "title": "Baltazaar"
     }
   ],
@@ -1795,7 +1814,7 @@
       "characterId": null,
       "color": "DeepPink",
       "id": 35,
-      "position": 6,
+      "position": 7,
       "title": "Baltazaar"
     }
   ],

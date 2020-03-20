@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import * as UIActions from 'actions/ui'
 import { Glyphicon, FormControl, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
+import BookChooser from '../components/story/BookChooser'
 import i18n from 'format-message'
 const { ipcRenderer } = require('electron')
 var TRIALMODE = process.env.TRIALMODE === 'true'
@@ -72,10 +73,9 @@ class Navigation extends Component {
               </li>
               { buyItem }
             </ul>
-            <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>
-              <Button onClick={this.toggleShowHistory}><Glyphicon glyph='erase' /> {i18n('Undo')}...</Button>
-              <HistoryComponent show={this.state.showHistory} />
-            </div>
+            <ul className="nav navbar-nav navbar-right" style={{marginRight: '15px'}}>
+              <BookChooser />
+            </ul>
           </div>
         </nav>
       </div>

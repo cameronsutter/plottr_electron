@@ -2,7 +2,7 @@ import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
   SET_DARK_MODE, SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
   SET_PLACE_FILTER, ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   REMOVE_CHARACTER_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE,
-  EDIT_PLACES_ATTRIBUTE, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM } from '../constants/ActionTypes'
+  EDIT_PLACES_ATTRIBUTE, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM, CHANGE_CURRENT_TIMELINE } from '../constants/ActionTypes'
 import { ZOOM_STATES, INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE, FIT_ZOOM_STATE } from 'constants/zoom_states'
 import { ui as defaultUI } from '../../../shared/initialState'
 import { newFileUI } from '../../../shared/newFileState'
@@ -15,6 +15,9 @@ export default function ui (state = defaultUI, action) {
 
     case CHANGE_ORIENTATION:
       return Object.assign({}, state, {orientation: action.orientation})
+
+    case CHANGE_CURRENT_TIMELINE:
+      return Object.assign({}, state, {currentTimeline: action.id})
 
     case SET_DARK_MODE:
       return Object.assign({}, state, {darkMode: action.on})

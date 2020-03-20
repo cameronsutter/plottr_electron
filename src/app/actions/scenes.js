@@ -9,10 +9,10 @@ export function editSceneTitle (id, title) {
   return { type: EDIT_SCENE_TITLE, id, title }
 }
 
-export function reorderScenes (chapters) {
-  return { type: REORDER_SCENES, chapters }
+export function reorderScenes (chapters, bookId) {
+  return { type: REORDER_SCENES, chapters, bookId }
 }
 
-export function deleteScene (id) {
-  return { type: DELETE_SCENE, id }
+export function deleteScene (id, bookId) {
+  return { type: DELETE_SCENE, id, bookId }
 }

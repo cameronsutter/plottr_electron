@@ -1,11 +1,11 @@
 import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE } from 'constants/ActionTypes'
 
-export function addLine () {
-  return { type: ADD_LINE }
+export function addLine (bookId) {
+  return { type: ADD_LINE, bookId }
 }
 
-export function addLinesFromTemplate (cards, lines) {
-  return { type: ADD_LINES_FROM_TEMPLATE, cards, lines }
+export function addLinesFromTemplate (cards, lines, bookId) {
+  return { type: ADD_LINES_FROM_TEMPLATE, cards, lines, bookId }
 }
 
 export function editLineTitle (id, title) {
@@ -16,10 +16,10 @@ export function editLineColor (id, color) {
   return { type: EDIT_LINE_COLOR, id, color }
 }
 
-export function reorderLines (lines) {
-  return { type: REORDER_LINES, lines }
+export function reorderLines (lines, bookId) {
+  return { type: REORDER_LINES, lines, bookId }
 }
 
-export function deleteLine (id) {
-  return { type: DELETE_LINE, id }
+export function deleteLine (id, bookId) {
+  return { type: DELETE_LINE, id, bookId }
 }

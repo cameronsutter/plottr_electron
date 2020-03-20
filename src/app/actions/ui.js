@@ -1,5 +1,5 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED,
-  FILE_SAVED, NEW_FILE, SET_DARK_MODE,
+  FILE_SAVED, NEW_FILE, SET_DARK_MODE, CHANGE_CURRENT_TIMELINE,
   SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
   SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM } from 'constants/ActionTypes'
 
@@ -65,5 +65,9 @@ export function fitZoom () {
 
 export function resetZoom () {
   return { type: RESET_ZOOM }
+}
+
+export function changeCurrentTimeline (id) {
+  return { type: CHANGE_CURRENT_TIMELINE, id}
 }
 

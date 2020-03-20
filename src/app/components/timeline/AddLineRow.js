@@ -9,7 +9,7 @@ import _ from 'lodash'
 import * as LineActions from 'actions/lines'
 import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { arrayId } from '../../store/newIds'
+import { nextId } from '../../store/newIds'
 import { card } from '../../../../shared/initialState'
 
 class AddLineRow extends Component {
@@ -19,22 +19,23 @@ class AddLineRow extends Component {
   }
 
   handleChooseTemplate = (template) => {
+    const { ui, actions } = this.props
     const templateData = template.templateData
-    const newLineId = arrayId(this.props.lines)
-    let newCardId = arrayId(this.props.cards)
-    const scenes = _.sortBy(this.props.scenes, 'position')
+    const newLineId = nextId(this.props.lines)
+    let newCardId = nextId(this.props.cards)
+    const chapters = _.sortBy(this.props.chapters, 'position')
     let cards = []
     let lines = []
-    if (templateData.scenes) {
-      const sceneCards = _.sortBy(templateData.scenes, 'position').map((sc, idx) => {
+    if (templateData.chapters) {
+      const chapterCards = _.sortBy(templateData.chapters, 'position').map((sc, idx) => {
         return Object.assign({}, card, {
           title: sc.title,
           id: newCardId++,
           lineId: newLineId,
-          sceneId: scenes[idx].id,
+          chapterId: chapters[idx].id,
         })
       })
-      cards = cards.concat(sceneCards)
+      cards = cards.concat(chapterCards)
       lines.push({
         id: newLineId,
         title: template.name,
@@ -50,7 +51,7 @@ class AddLineRow extends Component {
               description: c.description,
               id: newCardId++,
               lineId: thisLineId,
-              sceneId: scenes[idx].id,
+              chapterId: chapters[idx].id,
             })
           })
           cards = cards.concat(templateCards)
@@ -68,7 +69,7 @@ class AddLineRow extends Component {
           description: c.description,
           id: newCardId++,
           lineId: newLineId + 1,
-          sceneId: scenes[idx].id,
+          chapterId: chapters[idx].id,
         })
       })
       cards = cards.concat(cardCards)
@@ -77,16 +78,17 @@ class AddLineRow extends Component {
         title: template.name,
       })
     }
-    this.props.actions.addLinesFromTemplate(cards, lines)
+    actions.addLinesFromTemplate(cards, lines, ui.currentTimeline)
     this.setState({showTemplatePicker: false})
   }
 
   renderInsertButton () {
+    const { ui, actions } = this.props
     if (SETTINGS.get('premiumFeatures') && this.props.bookId != 'series') {
       return <div className='line-list__append-line'>
         {this.state.hovering ?
           <div className='line-list__append-line__double'>
-            <div onClick={this.props.actions.addLine} className='non-template'><Glyphicon glyph='plus' /></div>
+            <div onClick={() => actions.addLine(ui.currentTimeline)} className='non-template'><Glyphicon glyph='plus' /></div>
             <div onClick={() => this.setState({showTemplatePicker: true, hovering: false})} className='template'>{i18n('Use Template')}</div>
           </div>
         :
@@ -98,7 +100,7 @@ class AddLineRow extends Component {
     } else {
       return <div
         className='line-list__append-line'
-        onClick={this.props.actions.addLine}
+        onClick={() => actions.addLine(ui.currentTimeline)}
       >
         <div className='line-list__append-line-wrapper'>
           <Glyphicon glyph='plus' />
@@ -135,7 +137,7 @@ class AddLineRow extends Component {
 function mapStateToProps (state) {
   return {
     ui: state.ui,
-    scenes: state.scenes,
+    chapters: state.chapters,
     lines: state.lines,
     cards: state.cards,
   }

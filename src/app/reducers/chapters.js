@@ -2,7 +2,8 @@ import _ from 'lodash'
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { chapter } from '../../../shared/initialState'
 import { newFileChapters } from '../../../shared/newFileState'
-import { arrayId, arrayPosition, positionReset } from 'store/newIds'
+import { nextId } from 'store/newIds'
+import { nextPositionInBook, positionReset } from '../helpers/lists'
 
 const initialState = [chapter]
 
@@ -10,11 +11,11 @@ export default function chapters (state = initialState, action) {
   switch (action.type) {
     case ADD_SCENE:
       return [{
-        id: arrayId(state),
+        id: nextId(state),
         title: action.title,
         bookId: action.bookId,
         time: 0,
-        position: arrayPosition(state)
+        position: nextPositionInBook(state, action.bookId)
       }, ...state]
 
     case EDIT_SCENE_TITLE:
@@ -23,17 +24,17 @@ export default function chapters (state = initialState, action) {
       )
 
     case DELETE_SCENE:
-      let chapters = state.filter(ch =>
-        ch.id !== action.id
-      )
-      let newChapters = _.sortBy(chapters, 'position')
-      newChapters.forEach((ch, idx) =>
-        ch['position'] = idx
-      )
-      return newChapters
+      const [book, notBook] = _.partition(state, ch => ch.bookId == action.bookId)
+      return [
+        ...notBook,
+        ...positionReset(book.filter(ch => ch.id != action.id)),
+      ]
 
     case REORDER_SCENES:
-      return positionReset(action.chapters)
+      return [
+        ...state.filter(ch => ch.bookId != action.bookId),
+        ...positionReset(action.chapters),
+      ]
 
     case RESET:
     case FILE_LOADED:

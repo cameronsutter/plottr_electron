@@ -8,14 +8,14 @@ import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { newFileCards } from '../../../shared/newFileState'
 import { card as defaultCard } from '../../../shared/initialState'
-import { arrayId } from 'store/newIds'
+import { nextId } from 'store/newIds'
 
 export default function cards (state, action) {
   switch (action.type) {
     case ADD_CARD:
       return [Object.assign(defaultCard, {
         ...action.card,
-        id: arrayId(state),
+        id: nextId(state),
       }), ...state]
 
     case ADD_LINES_FROM_TEMPLATE:
@@ -32,7 +32,7 @@ export default function cards (state, action) {
 
     case EDIT_CARD_COORDINATES:
       return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {lineId: action.lineId, sceneId: action.sceneId}) : card
+        card.id === action.id ? Object.assign({}, card, {lineId: action.lineId, chapterId: action.chapterId}) : card
       )
 
     case CHANGE_LINE:
@@ -42,7 +42,7 @@ export default function cards (state, action) {
 
     case CHANGE_SCENE:
       return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {sceneId: action.sceneId}) : card
+        card.id === action.id ? Object.assign({}, card, {chapterId: action.chapterId}) : card
       )
 
     case DELETE_CARD:
@@ -52,7 +52,7 @@ export default function cards (state, action) {
 
     case DELETE_SCENE:
       return state.filter(card =>
-        card.sceneId !== action.id
+        card.chapterId !== action.id
       )
 
     case DELETE_LINE:

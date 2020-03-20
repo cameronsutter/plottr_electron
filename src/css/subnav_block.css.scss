@@ -40,6 +40,7 @@ nav.subnav__container {
   .container {
     margin-left: 0;
     margin-right: 0;
+    width: 100%;
     .nav li a {
       padding-top: 7px;
       padding-bottom: 7px;
@@ -53,7 +54,22 @@ nav.subnav__container {
   margin: 0px 0px 0px 3px;
 }
 
-.story-name__input {
-  background-color: $gray-8;
-  border: none;
+.nav.navbar-nav {
+  li.dropdown {
+    & > a {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-top: 7px;
+      margin-bottom: 6px;
+      border: 1px solid $gray-6;
+      border-radius: 4px;
+      background-color: white;
+    }
+    & > a:hover {
+      background-color: $gray-9;
+    }
+    ul {
+      @include body-text-font;
+    }
+  }
 }

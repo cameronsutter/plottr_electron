@@ -76,9 +76,9 @@ class ChapterTitleCell extends Component {
   }
 
   handleDelete = () => {
-    let label = i18n("Do you want to delete this chapter: { title }?", {title: this.props.chapter.title})
+    let label = i18n("Do you want to delete this chapter: { title }?", {title: chapterTitle(this.props.chapter)})
     if (window.confirm(label)) {
-      this.props.actions.deleteScene(this.props.chapter.id)
+      this.props.actions.deleteScene(this.props.chapter.id, this.props.ui.currentTimeline)
     }
   }
 

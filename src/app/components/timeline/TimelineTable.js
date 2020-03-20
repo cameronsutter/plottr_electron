@@ -13,10 +13,12 @@ import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
 import * as CardActions from 'actions/cards'
-import { reorderList, insertChapter } from 'helpers/lists'
+import { reorderList } from 'helpers/lists'
+import { insertChapter } from 'helpers/chapters'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import AddLineRow from './AddLineRow'
 import { card } from '../../../../shared/initialState'
+import { nextId } from '../../store/newIds'
 
 class TimelineTable extends Component {
 
@@ -69,12 +71,12 @@ class TimelineTable extends Component {
 
   handleReorderChapters = (originalPosition, droppedPosition) => {
     const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
-    this.props.sceneActions.reorderScenes(chapters)
+    this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-    this.props.lineActions.reorderLines(lines)
+    this.props.lineActions.reorderLines(lines, this.props.ui.currentTimeline)
   }
 
   chapterMapping () {
@@ -92,8 +94,8 @@ class TimelineTable extends Component {
   }
 
   handleInsertNewChapter = (nextPosition, lineId) => {
-    const chapters = insertChapter(nextPosition, this.props.chapters)
-    this.props.sceneActions.reorderScenes(chapters)
+    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId)
+    this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
 
     if (lineId && chapters[nextPosition]) {
       const chapterId = chapters[nextPosition].id
@@ -128,13 +130,13 @@ class TimelineTable extends Component {
         return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={orientation} needsSVGline={true}/>
       })
       return [<Row key={`chapterId-${chapter.id}`}>
-        <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} orientation={orientation}/>
-        { inserts }
-      </Row>,
-      <Row key={`chapterId-${chapter.id}-insert`}>
-        <ChapterTitleCell chapter={chapter} handleReorder={this.handleReorderChapters} />
-        { this.renderCardsByLine(chapter, lineMap, labelMap) }
-      </Row>
+          <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} orientation={orientation}/>
+          { inserts }
+        </Row>,
+        <Row key={`chapterId-${chapter.id}-insert`}>
+          <ChapterTitleCell chapter={chapter} handleReorder={this.handleReorderChapters} />
+          { this.renderCardsByLine(chapter, lineMap, labelMap) }
+        </Row>
       ]
     }).concat(
       <Row key='last-insert'>
@@ -219,6 +221,7 @@ class TimelineTable extends Component {
 
 TimelineTable.propTypes = {
   chapters: PropTypes.array,
+  nextChapterId: PropTypes.number,
   beats: PropTypes.array,
   lines: PropTypes.array,
   seriesLines: PropTypes.array,
@@ -234,18 +237,22 @@ TimelineTable.propTypes = {
 function mapStateToProps (state) {
   let chapters = []
   let lines = []
+  let nextChapterId = -1
   const bookId = state.ui.currentTimeline
   if (bookId == 'series') {
     // get all beats / seriesLines
     chapters = state.beats
     lines = state.seriesLines
+    nextChapterId = nextId(state.beats)
   } else {
     // get all the chapters / lines for state.ui.currentTimeline (bookId)
     chapters = state.chapters.filter(ch => ch.bookId == bookId)
     lines = state.lines.filter(l => l.bookId == bookId)
+    nextChapterId = nextId(state.chapters)
   }
   return {
     chapters: chapters,
+    nextChapterId: nextChapterId,
     lines: lines,
     cards: state.cards,
     tags: state.tags,

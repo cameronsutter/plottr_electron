@@ -9,25 +9,25 @@ import * as LineActions from 'actions/lines'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
-import { reorderList, insertChapter } from 'helpers/lists'
+import { reorderList } from 'helpers/lists'
+import { insertChapter } from 'helpers/chapters'
 import orientedClassName from 'helpers/orientedClassName'
-
+import { nextId } from '../../store/newIds'
 
 class TopRow extends Component {
-
   handleReorderChapters = (originalPosition, droppedPosition) => {
     const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
-    this.props.sceneActions.reorderScenes(chapters)
+    this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-    this.props.lineActions.reorderLines(lines)
+    this.props.lineActions.reorderLines(lines, this.props.ui.currentTimeline)
   }
 
   handleInsertNewChapter = (nextPosition) => {
-    const chapters = insertChapter(nextPosition, this.props.chapters)
-    this.props.sceneActions.reorderScenes(chapters)
+    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId)
+    this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
   }
 
   renderLastInsertSceneCell () {
@@ -48,6 +48,7 @@ class TopRow extends Component {
   }
 
   renderLines () {
+    const { ui, lineActions } = this.props
     const lines = _.sortBy(this.props.lines, 'position')
     const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines}/>)
     return [<Cell key='placeholder'/>].concat(renderedLines).concat(
@@ -55,7 +56,7 @@ class TopRow extends Component {
         <Cell>
           <div
             className={orientedClassName('line-list__append-line', this.props.ui.orientation)}
-            onClick={() => this.props.lineActions.addLine()}
+            onClick={() => lineActions.addLine(ui.currentTimeline)}
           >
             <div className={orientedClassName('line-list__append-line-wrapper', this.props.ui.orientation)}>
               <Glyphicon glyph='plus' />
@@ -77,31 +78,33 @@ class TopRow extends Component {
 TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
   chapters: PropTypes.array,
+  nextChapterId: PropTypes.number,
   lines: PropTypes.array,
 }
 
 function mapStateToProps (state) {
-  let obj = {
-    ui: state.ui
-  }
+  let chapters = []
+  let lines = []
+  let nextChapterId = -1
   const bookId = state.ui.currentTimeline
   if (bookId == 'series') {
     // get all beats / seriesLines
-    if (state.ui.orientation === 'horizontal') {
-      obj.chapters = state.beats
-    } else {
-      obj.lines = state.seriesLines
-    }
+    chapters = state.beats
+    lines = state.seriesLines
+    nextChapterId = nextId(state.beats)
   } else {
     // get all the chapters / lines for state.ui.currentTimeline (bookId)
-    if (state.ui.orientation === 'horizontal') {
-      obj.chapters = state.chapters.filter(ch => ch.bookId == bookId)
-    } else {
-      obj.lines = state.lines.filter(l => l.bookId == bookId)
-    }
+    chapters = state.chapters.filter(ch => ch.bookId == bookId)
+    lines = state.lines.filter(l => l.bookId == bookId)
+    nextChapterId = nextId(state.chapters)
   }
 
-  return obj
+  return {
+    ui: state.ui,
+    chapters: chapters,
+    nextChapterId: nextChapterId,
+    lines: lines,
+  }
 }
 
 function mapDispatchToProps (dispatch) {

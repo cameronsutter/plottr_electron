@@ -24,6 +24,12 @@ export const EDIT_SCENE_TITLE = 'EDIT_SCENE_TITLE'
 export const REORDER_SCENES = 'REORDER_SCENES'
 export const DELETE_SCENE = 'DELETE_SCENE'
 
+// beat actions
+export const ADD_BEAT = 'ADD_BEAT'
+export const EDIT_BEAT_TITLE = 'EDIT_BEAT_TITLE'
+export const REORDER_BEATS = 'REORDER_BEATS'
+export const DELETE_BEAT = 'DELETE_BEAT'
+
 // card actions
 export const ADD_CARD = 'ADD_CARD'
 export const EDIT_CARD_DETAILS = 'EDIT_CARD_DETAILS'
@@ -46,6 +52,14 @@ export const EDIT_LINE_TITLE = 'EDIT_STORYLINE_TITLE'
 export const EDIT_LINE_COLOR = 'EDIT_STORYLINE_COLOR'
 export const REORDER_LINES = 'REORDER_STORYLINES'
 export const DELETE_LINE = 'DELETE_STORYLINE'
+
+// series line actions
+export const ADD_SERIES_LINE = 'ADD_SERIES_LINE'
+export const ADD_SERIES_LINES_FROM_TEMPLATE = 'ADD_SERIES_LINES_FROM_TEMPLATE'
+export const EDIT_SERIES_LINE_TITLE = 'EDIT_SERIES_LINE_TITLE'
+export const EDIT_SERIES_LINE_COLOR = 'EDIT_SERIES_LINE_COLOR'
+export const REORDER_SERIES_LINES = 'REORDER_SERIES_LINES'
+export const DELETE_SERIES_LINE = 'DELETE_SERIES_LINE'
 
 // places actions
 export const ADD_PLACE = 'ADD_PLACE'

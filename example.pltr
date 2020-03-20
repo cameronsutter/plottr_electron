@@ -1,5 +1,30 @@
 {
-  "beats": [],
+  "beats": [
+    {
+      "id": 1,
+      "position": 0,
+      "time": 0,
+      "title": "The Beginning"
+    },
+    {
+      "id": 2,
+      "position": 1,
+      "time": 0,
+      "title": "Book 1"
+    },
+    {
+      "id": 3,
+      "position": 2,
+      "time": 0,
+      "title": "Interim"
+    },
+    {
+      "id": 4,
+      "position": 3,
+      "time": 0,
+      "title": "Book 2"
+    }
+  ],
   "books": {
     "1": {
       "bookNumber": 1,
@@ -77,6 +102,41 @@
     ]
   },
   "cards": [
+    {
+      "beatId": 4,
+      "bookId": null,
+      "chapterId": null,
+      "characters": [],
+      "description": "",
+      "id": 164,
+      "imageId": null,
+      "lineId": null,
+      "places": [],
+      "position": 0,
+      "seriesLineId": 27,
+      "tags": [],
+      "templates": [],
+      "title": "Book 2"
+    },
+    {
+      "beatId": 2,
+      "bookId": null,
+      "chapterId": null,
+      "characters": [
+        1,
+        7
+      ],
+      "description": "",
+      "id": 163,
+      "imageId": null,
+      "lineId": null,
+      "places": [],
+      "position": 0,
+      "seriesLineId": 27,
+      "tags": [],
+      "templates": [],
+      "title": "Awesome Prison Mansion"
+    },
     {
       "beatId": null,
       "bookId": null,
@@ -1303,7 +1363,8 @@
       ],
       "cards": [
         146,
-        144
+        144,
+        163
       ],
       "categoryId": "",
       "color": null,
@@ -1385,7 +1446,9 @@
       "bookIds": [
         1
       ],
-      "cards": [],
+      "cards": [
+        163
+      ],
       "categoryId": "",
       "color": null,
       "description": "He's old and cranky",
@@ -1556,7 +1619,7 @@
       "color": "#6cace4",
       "id": 27,
       "position": 0,
-      "title": "Main Story Arc"
+      "title": "Main Plot"
     },
     {
       "bookId": 1,
@@ -1767,55 +1830,7 @@
       "color": "#6cace4",
       "id": 27,
       "position": 0,
-      "title": "Main Story Arc"
-    },
-    {
-      "bookId": 1,
-      "characterId": null,
-      "color": "#e5554f",
-      "id": 29,
-      "position": 1,
-      "title": "Kevan"
-    },
-    {
-      "bookId": 1,
-      "characterId": null,
-      "color": "#ff7f32",
-      "id": 33,
-      "position": 2,
-      "title": "Anna"
-    },
-    {
-      "bookId": 1,
-      "characterId": null,
-      "color": "#78be20",
-      "id": 28,
-      "position": 3,
-      "title": "Samuel Zorfert"
-    },
-    {
-      "bookId": 1,
-      "characterId": null,
-      "color": "darkorchid",
-      "id": 36,
-      "position": 4,
-      "title": "Bimph"
-    },
-    {
-      "bookId": 1,
-      "characterId": null,
-      "color": "#ffc72c",
-      "id": 34,
-      "position": 5,
-      "title": "Rivab"
-    },
-    {
-      "bookId": 1,
-      "characterId": null,
-      "color": "DeepPink",
-      "id": 35,
-      "position": 7,
-      "title": "Baltazaar"
+      "title": "Main Plot"
     }
   ],
   "tags": [
@@ -1887,7 +1902,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentTimeline": 1,
+    "currentTimeline": "series",
     "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,

@@ -12,6 +12,8 @@ import TopRow from 'components/timeline/TopRow'
 import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
+import * as BeatActions from 'actions/beats'
+import * as SeriesLineActions from 'actions/seriesLines'
 import * as CardActions from 'actions/cards'
 import { reorderList } from 'helpers/lists'
 import { insertChapter } from 'helpers/chapters'
@@ -21,6 +23,10 @@ import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 
 class TimelineTable extends Component {
+
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
+  }
 
   cardIsFiltered (card) {
     if (!card) return false
@@ -59,9 +65,9 @@ class TimelineTable extends Component {
     return mapping
   }
 
-  cards (lineId) {
+  cards = (lineId) => {
     let cards = []
-    if (this.props.bookId == 'series') {
+    if (this.isSeries()) {
       cards = this.props.cards.filter(c => c.seriesLineId == lineId)
     } else {
       cards = this.props.cards.filter(c => c.lineId == lineId)
@@ -69,14 +75,29 @@ class TimelineTable extends Component {
     return _.sortBy(cards, 'position')
   }
 
+  findCard = (lineId, chapterId) => {
+    let findIds = {}
+    if (this.isSeries()) {
+      findIds = {beatId: chapterId}
+    } else {
+      findIds = {chapterId: chapterId}
+    }
+    return _.find(this.cards(lineId), findIds)
+  }
+
   handleReorderChapters = (originalPosition, droppedPosition) => {
     const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
-    this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
+    if (this.isSeries()) {
+      this.props.beatActions.reorderBeats(chapters)
+    } else {
+      this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
+    }
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-    this.props.lineActions.reorderLines(lines, this.props.ui.currentTimeline)
+    const actions = this.isSeries() ? this.props.seriesLineActions : this.props.lineActions
+    actions.reorderLines(lines, this.props.ui.currentTimeline)
   }
 
   chapterMapping () {
@@ -95,7 +116,11 @@ class TimelineTable extends Component {
 
   handleInsertNewChapter = (nextPosition, lineId) => {
     const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId)
-    this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
+    if (this.isSeries()) {
+      this.props.beatActions.reorderBeats(chapters)
+    } else {
+      this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
+    }
 
     if (lineId && chapters[nextPosition]) {
       const chapterId = chapters[nextPosition].id
@@ -104,7 +129,19 @@ class TimelineTable extends Component {
   }
 
   buildCard (lineId, chapterId) {
-    return Object.assign(card, { chapterId, lineId })
+    if (this.isSeries()) {
+      return Object.assign(card, { beatId: chapterId, seriesLineId: lineId })
+    } else {
+      return Object.assign(card, { chapterId, lineId })
+    }
+  }
+
+  handleAppendChapter = () => {
+    if (this.isSeries()) {
+      this.props.beatActions.addBeat()
+    } else {
+      this.props.sceneActions.addScene(this.props.ui.currentTimeline)
+    }
   }
 
   renderLines () {
@@ -113,17 +150,17 @@ class TimelineTable extends Component {
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map(line => {
       return <Row key={`lineId-${line.id}`}>
-        <LineTitleCell line={line} handleReorder={this.handleReorderLines}/>
+        <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>
         { this.renderCardsByChapter(line, chapterMap, labelMap) }
       </Row>
-    }).concat(<AddLineRow key='insert-line' bookId={this.props.bookId}/>)
+    }).concat(<AddLineRow key='insert-line' bookId={this.props.ui.currentTimeline}/>)
   }
 
   renderChapters () {
     const lineMap = this.lineMapping()
     const labelMap = this.labelMap()
     const chapters = _.sortBy(this.props.chapters, 'position')
-    const { orientation, currentTimeline } = this.props.ui
+    const { orientation } = this.props.ui
     return chapters.map(chapter => {
       const inserts = Object.keys(lineMap).flatMap(linePosition => {
         const line = lineMap[linePosition];
@@ -140,7 +177,7 @@ class TimelineTable extends Component {
       ]
     }).concat(
       <Row key='last-insert'>
-        <ChapterInsertCell isInChapterList={true} handleInsert={() => this.props.sceneActions.addScene(currentTimeline)} isLast={true} orientation={orientation}/>
+        <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true} orientation={orientation}/>
       </Row>
     )
   }
@@ -159,7 +196,7 @@ class TimelineTable extends Component {
       let filtered = false
       const cells = []
       let chapterId = chapterMap[chapterPosition]
-      let card = _.find(this.cards(line.id), {chapterId: chapterId})
+      let card = this.findCard(line.id, chapterId)
       cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} needsSVGline={chapterPosition == 0} color={line.color} orientation={orientation}/>)
       if (card) {
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
@@ -184,7 +221,7 @@ class TimelineTable extends Component {
       let filtered = false
       const cells = []
       let line = lineMap[linePosition]
-      let card = _.find(this.cards(line.id), {chapterId: chapter.id})
+      let card = this.findCard(line.id, chapter.id)
       if (card) {
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
           filtered = true
@@ -268,6 +305,8 @@ function mapDispatchToProps (dispatch) {
     sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
     cardActions: bindActionCreators(CardActions, dispatch),
+    beatActions: bindActionCreators(BeatActions, dispatch),
+    seriesLineActions: bindActionCreators(SeriesLineActions, dispatch),
   }
 }
 

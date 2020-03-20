@@ -23,6 +23,10 @@ class CardDialog extends Component {
     }
   }
 
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
+  }
+
   componentDidMount () {
     window.SCROLLWITHKEYS = false
   }
@@ -77,11 +81,11 @@ class CardDialog extends Component {
   }
 
   changeChapter (chapterId) {
-    this.props.actions.changeScene(this.props.card.id, chapterId)
+    this.props.actions.changeScene(this.props.card.id, chapterId, this.props.ui.currentTimeline)
   }
 
   changeLine (lineId) {
-    this.props.actions.changeLine(this.props.card.id, lineId)
+    this.props.actions.changeLine(this.props.card.id, lineId, this.props.ui.currentTimeline)
   }
 
   getCurrentChapter () {

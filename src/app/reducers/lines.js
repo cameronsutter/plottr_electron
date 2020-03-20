@@ -15,19 +15,20 @@ export default function lines (state = initialState, action) {
       return [{
         id: nextId(state),
         bookId: action.bookId,
+        title: '',
         color: nextColor(linesInBook),
         position: nextPositionInBook(state, action.bookId)
       }, ...state]
 
     case ADD_LINES_FROM_TEMPLATE:
-      const nxtPosition = nextPosition(state)
+      const position = nextPosition(state)
       return [...action.lines.map((l, idx) => {
         return {
           id: l.id,
           title: l.title,
           bookId: action.bookId,
           color: nextColor(state.length + idx),
-          position: nxtPosition + idx,
+          position: position + idx,
         }
       }), ...state]
 

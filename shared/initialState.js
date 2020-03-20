@@ -23,6 +23,7 @@ const beat = {
   position: 0,
   title: '',
   time: 0, // ? can also be a string
+  templates: [],
 }
 
 const chapter = {
@@ -93,8 +94,8 @@ const tag = {
 
 const card = {
   id: 1,
-  lineId: 1,
-  chapterId: 1,
+  lineId: null,
+  chapterId: null,
   beatId: null,
   seriesLineId: null,
   bookId: null,

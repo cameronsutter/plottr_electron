@@ -8,6 +8,7 @@ import * as CardActions from 'actions/cards'
 import CardSVGline from 'components/timeline/CardSVGline'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { card } from '../../../../shared/initialState'
 
 class BlankCard extends Component {
   constructor (props) {
@@ -19,6 +20,10 @@ class BlankCard extends Component {
     }
     this.dragLeaveTimeout = null
     this.dragOverTimeout = null
+  }
+
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
   }
 
   componentWillUnmount() {
@@ -53,7 +58,7 @@ class BlankCard extends Component {
     var droppedCard = JSON.parse(json)
     if (droppedCard.id === null || droppedCard.id === undefined) return
 
-    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId)
+    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.ui.currentTimeline)
   }
 
   saveCreate = () => {
@@ -69,14 +74,11 @@ class BlankCard extends Component {
   }
 
   buildCard (title) {
-    return {
-      title: title,
-      chapterId: this.props.chapterId,
-      lineId: this.props.lineId,
-      description: '',
-      characters: [],
-      places: [],
-      tags: []
+    const { chapterId, lineId } = this.props
+    if (this.isSeries()) {
+      return Object.assign(card, { title, beatId: chapterId, seriesLineId: lineId })
+    } else {
+      return Object.assign(card, { title, chapterId, lineId })
     }
   }
 
@@ -162,8 +164,15 @@ BlankCard.propTypes = {
 }
 
 function mapStateToProps (state, ownProps) {
-  let line = state.lines.find(l => l.id === ownProps.lineId)
-  let chapter = state.chapters.find(ch => ch.id === ownProps.chapterId)
+  let line
+  let chapter
+  if (state.ui.currentTimeline == 'series') {
+    line = state.seriesLines.find(l => l.id === ownProps.lineId)
+    chapter = state.beats.find(b => b.id === ownProps.chapterId)
+  } else {
+    line = state.lines.find(l => l.id === ownProps.lineId)
+    chapter = state.chapters.find(s => s.id === ownProps.chapterId)
+  }
   return {
     ui: state.ui,
     linePosition: line.position,

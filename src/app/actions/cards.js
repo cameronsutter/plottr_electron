@@ -11,16 +11,16 @@ export function editCard (id, title, description) {
   return { type: EDIT_CARD_DETAILS, id, title, description }
 }
 
-export function editCardCoordinates (id, lineId, chapterId) {
-  return { type: EDIT_CARD_COORDINATES, id, lineId, chapterId }
+export function editCardCoordinates (id, lineId, chapterId, bookId) {
+  return { type: EDIT_CARD_COORDINATES, id, lineId, chapterId, bookId }
 }
 
-export function changeLine (id, lineId) {
-  return { type: CHANGE_LINE, id, lineId }
+export function changeLine (id, lineId, bookId) {
+  return { type: CHANGE_LINE, id, lineId, bookId }
 }
 
-export function changeScene (id, chapterId) {
-  return { type: CHANGE_SCENE, id, chapterId }
+export function changeScene (id, chapterId, bookId) {
+  return { type: CHANGE_SCENE, id, chapterId, bookId }
 }
 
 export function deleteCard (id) {

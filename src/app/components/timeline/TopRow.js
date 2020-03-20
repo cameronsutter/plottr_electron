@@ -6,6 +6,8 @@ import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
+import * as BeatActions from 'actions/beats'
+import * as SeriesLineActions from 'actions/seriesLines'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
@@ -15,24 +17,62 @@ import orientedClassName from 'helpers/orientedClassName'
 import { nextId } from '../../store/newIds'
 
 class TopRow extends Component {
+
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
+  }
+
   handleReorderChapters = (originalPosition, droppedPosition) => {
+    const { ui, beatActions, sceneActions } = this.props
     const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
-    this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
+    if (this.isSeries()) {
+      beatActions.reorderBeats(chapters)
+    } else {
+      sceneActions.reorderScenes(chapters, ui.currentTimeline)
+    }
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
+    const { ui, lineActions, seriesLineActions } = this.props
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-    this.props.lineActions.reorderLines(lines, this.props.ui.currentTimeline)
+    if (this.isSeries()) {
+      seriesLineActions.reorderSeriesLines(lines)
+    } else {
+      lineActions.reorderLines(lines, ui.currentTimeline)
+    }
   }
 
   handleInsertNewChapter = (nextPosition) => {
+    const { ui, beatActions, sceneActions } = this.props
     const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId)
-    this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
+    if (this.isSeries()) {
+      beatActions.reorderBeats(chapters)
+    } else {
+      sceneActions.reorderScenes(chapters, ui.currentTimeline)
+    }
   }
 
-  renderLastInsertSceneCell () {
-    const { orientation, currentTimeline } = this.props.ui
-    return <ChapterInsertCell key='last-insert' isInChapterList={true} handleInsert={() => this.props.sceneActions.addScene(currentTimeline)} isLast={true} orientation={orientation}/>
+  handleAppendChapter = () => {
+    const { ui, beatActions, sceneActions } = this.props
+    if (this.isSeries()) {
+      beatActions.addBeat()
+    } else {
+      sceneActions.addScene(ui.currentTimeline)
+    }
+  }
+
+  handleAppendLine = () => {
+    const { ui, lineActions, seriesLineActions } = this.props
+    if (this.isSeries()) {
+      seriesLineActions.addSeriesLine()
+    } else {
+      lineActions.addLine(ui.currentTimeline)
+    }
+  }
+
+  renderLastInsertChapterCell () {
+    const { orientation } = this.props.ui
+    return <ChapterInsertCell key='last-insert' isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true} orientation={orientation}/>
   }
 
   renderChapters () {
@@ -44,19 +84,18 @@ class TopRow extends Component {
       cells.push(<ChapterTitleCell key={`chapterId-${ch.id}`} chapter={ch} handleReorder={this.handleReorderChapters} />)
       return cells
     })
-    return [<Cell key='placeholder'/>].concat(renderedChapters).concat([this.renderLastInsertSceneCell()])
+    return [<Cell key='placeholder'/>].concat(renderedChapters).concat([this.renderLastInsertChapterCell()])
   }
 
   renderLines () {
-    const { ui, lineActions } = this.props
     const lines = _.sortBy(this.props.lines, 'position')
-    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines}/>)
+    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>)
     return [<Cell key='placeholder'/>].concat(renderedLines).concat(
       <Row key='insert-line'>
         <Cell>
           <div
             className={orientedClassName('line-list__append-line', this.props.ui.orientation)}
-            onClick={() => lineActions.addLine(ui.currentTimeline)}
+            onClick={this.handleAppendLine}
           >
             <div className={orientedClassName('line-list__append-line-wrapper', this.props.ui.orientation)}>
               <Glyphicon glyph='plus' />
@@ -111,6 +150,8 @@ function mapDispatchToProps (dispatch) {
   return {
     sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
+    beatActions: bindActionCreators(BeatActions, dispatch),
+    seriesLinesActions: bindActionCreators(SeriesLineActions, dispatch),
   }
 }
 

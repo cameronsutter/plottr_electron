@@ -7,6 +7,7 @@ import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import _ from 'lodash'
 import * as LineActions from 'actions/lines'
+import * as SeriesLineActions from 'actions/seriesLines'
 import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { nextId } from '../../store/newIds'
@@ -19,6 +20,7 @@ class AddLineRow extends Component {
   }
 
   handleChooseTemplate = (template) => {
+    // TODO: this needs to be fixed with series bible in mind
     const { ui, actions } = this.props
     const templateData = template.templateData
     const newLineId = nextId(this.props.lines)
@@ -130,11 +132,15 @@ class AddLineRow extends Component {
 
   static propTypes = {
     ui: PropTypes.object.isRequired,
-    bookId: PropTypes.number,
+    bookId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
   }
 }
 
 function mapStateToProps (state) {
+  // TODO: this needs to be fixed with series bible in mind
   return {
     ui: state.ui,
     chapters: state.chapters,
@@ -143,9 +149,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps (dispatch, ownProps) {
+  let actions = ownProps.bookId == 'series' ? SeriesLineActions : LineActions
   return {
-    actions: bindActionCreators(LineActions, dispatch),
+    actions: bindActionCreators(actions, dispatch),
   }
 }
 

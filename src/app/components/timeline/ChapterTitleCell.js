@@ -6,22 +6,34 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import * as SceneActions from 'actions/scenes'
+import * as BeatActions from 'actions/beats'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
-import { chapterTitle } from '../../helpers/chapters'
+import { chapterTitle, editingChapterLabel } from '../../helpers/chapters'
 
 class ChapterTitleCell extends Component {
   constructor (props) {
     super(props)
-    let editing = props.chapter.title === ''
+    let editing = props.chapter.title == ''
     this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
+  }
+
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
   }
 
   editTitle = () => {
     const id = this.props.chapter.id
     const ref = ReactDOM.findDOMNode(this.refs.titleRef)
-    this.props.actions.editSceneTitle(id, ref.value)
-    this.setState({editing: false, hovering: false})
+    if (this.isSeries()) {
+      if (ref.value != '') {
+        this.props.beatActions.editBeatTitle(id, ref.value)
+        this.setState({editing: false, hovering: false})
+      }
+    } else {
+      this.props.actions.editSceneTitle(id, ref.value)
+      this.setState({editing: false, hovering: false})
+    }
   }
 
   handleFinishEditing = (event) => {
@@ -31,13 +43,7 @@ class ChapterTitleCell extends Component {
   }
 
   handleBlur = () => {
-    if (this.props.chapter.title === '' || this.props.chapter.title === 'auto') {
-      let newTitle = i18n('Chapter {number}', {number: this.props.chapter.position + 1})
-      this.props.actions.editSceneTitle(this.props.chapter.id, newTitle)
-      this.setState({editing: false})
-    } else {
-      this.editTitle()
-    }
+    this.editTitle()
   }
 
   handleDragStart = (e) => {
@@ -78,7 +84,11 @@ class ChapterTitleCell extends Component {
   handleDelete = () => {
     let label = i18n("Do you want to delete this chapter: { title }?", {title: chapterTitle(this.props.chapter)})
     if (window.confirm(label)) {
-      this.props.actions.deleteScene(this.props.chapter.id, this.props.ui.currentTimeline)
+      if (this.isSeries()) {
+        this.props.beatActions.deleteBeat(this.props.chapter.id)
+      } else {
+        this.props.actions.deleteScene(this.props.chapter.id, this.props.ui.currentTimeline)
+      }
     }
   }
 
@@ -104,9 +114,10 @@ class ChapterTitleCell extends Component {
 
   renderTitle () {
     const { chapter } = this.props
-    if (!this.state.editing) return <span>{chapterTitle(chapter)}</span>
+    if (!this.state.editing) return <span>{chapterTitle(chapter, this.isSeries())}</span>
+
     return (<FormGroup>
-      <ControlLabel>{i18n('Chapter {number} name', {number: chapter.position + 1})}</ControlLabel>
+      <ControlLabel>{editingChapterLabel(chapter, this.isSeries())}</ControlLabel>
       <FormControl
         type='text'
         defaultValue={chapter.title}
@@ -154,6 +165,7 @@ ChapterTitleCell.propTypes = {
   chapter: PropTypes.object.isRequired,
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
+  beatActions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }
 
@@ -165,7 +177,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(SceneActions, dispatch)
+    actions: bindActionCreators(SceneActions, dispatch),
+    beatActions: bindActionCreators(BeatActions, dispatch),
   }
 }
 

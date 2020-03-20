@@ -11,15 +11,19 @@ import cx from 'classnames'
 class OutlineView extends Component {
   constructor (props) {
     super(props)
-    this.state = {affixed: false, active: 0, currentLine: null}
+    this.state = {active: 0, currentLine: null}
+  }
+
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
   }
 
   cardMapping () {
-    var mapping = {}
-    this.props.chapters.forEach(s =>
-      mapping[s.id] = this.sortedChapterCards(s.id)
-    )
-    return mapping
+    const lines = _.sortBy(this.props.lines, 'position')
+    return this.props.chapters.reduce((acc, ch) => {
+      acc[ch.id] = this.sortedChapterCards(lines, ch.id)
+      return acc
+    }, {})
   }
 
   labelMap () {
@@ -36,27 +40,28 @@ class OutlineView extends Component {
     return mapping
   }
 
-  lineIsVisible (id) {
-    return this.state.currentLine !== null ? id === this.state.currentLine : true
+  lineIsHidden (line) {
+    if (!this.state.currentLine) return false
+    return line.id != this.state.currentLine
   }
 
-  sortedChapterCards (chapterId) {
-    var cards = this.findChapterCards(chapterId)
-    const lines = _.sortBy(this.props.lines, 'position')
-    var sorted = []
-    lines.forEach((l) => {
-      var card = _.find(cards, {lineId: l.id})
-      if (card && this.lineIsVisible(l.id)) {
-        sorted.push(card)
+  sortedChapterCards (sortedLines, chapterId) {
+    return sortedLines.reduce((acc, l) => {
+      if (this.lineIsHidden(l)) return acc
+
+      const cards = this.findCards(chapterId, l.id)
+      return acc.concat(cards)
+    }, [])
+  }
+
+  findCards = (chapterId, lineId) => {
+    return this.props.cards.filter(c => {
+      if (this.isSeries()) {
+        return c.beatId == chapterId && c.seriesLineId == lineId
+      } else {
+        return c.chapterId === chapterId && c.lineId == lineId
       }
     })
-    return sorted
-  }
-
-  findChapterCards (chapterId) {
-    return this.props.cards.filter(c =>
-      c.chapterId === chapterId
-    )
   }
 
   setActive = (id) => {

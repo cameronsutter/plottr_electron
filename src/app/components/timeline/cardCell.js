@@ -140,9 +140,16 @@ CardCell.propTypes = {
   chapterPosition: PropTypes.number.isRequired
 }
 
-function mapStateToProps (state, passedProps) {
-  let line = state.lines.find(l => l.id === passedProps.lineId)
-  let chapter = state.chapters.find(s => s.id === passedProps.chapterId)
+function mapStateToProps (state, ownProps) {
+  let line
+  let chapter
+  if (state.ui.currentTimeline == 'series') {
+    line = state.seriesLines.find(l => l.id === ownProps.lineId)
+    chapter = state.beats.find(b => b.id === ownProps.chapterId)
+  } else {
+    line = state.lines.find(l => l.id === ownProps.lineId)
+    chapter = state.chapters.find(s => s.id === ownProps.chapterId)
+  }
   return {
     tags: state.tags,
     ui: state.ui,

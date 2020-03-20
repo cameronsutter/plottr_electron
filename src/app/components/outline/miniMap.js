@@ -72,9 +72,21 @@ MiniMap.propTypes = {
 }
 
 function mapStateToProps (state) {
+  let chapters = []
+  let lines = []
+  const bookId = state.ui.currentTimeline
+  if (bookId == 'series') {
+    // get all beats / seriesLines
+    chapters = state.beats
+    lines = state.seriesLines
+  } else {
+    // get all the chapters / lines for state.ui.currentTimeline (bookId)
+    chapters = state.chapters.filter(ch => ch.bookId == bookId)
+    lines = state.lines.filter(l => l.bookId == bookId)
+  }
   return {
-    chapters: state.chapters,
-    lines: state.lines,
+    chapters: chapters,
+    lines: lines,
     ui: state.ui,
   }
 }

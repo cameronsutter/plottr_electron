@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import * as LineActions from 'actions/lines'
+import * as SeriesLineActions from 'actions/seriesLines'
 import ColorPicker from '../colorpicker'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
@@ -78,9 +79,10 @@ class LineTitleCell extends Component {
   }
 
   handleDelete = () => {
-    let label = i18n("Do you want to delete this story line: { title }?", {title: this.props.line.title})
+    const { line } = this.props
+    let label = i18n("Do you want to delete this story line: { title }?", {title: line.title})
     if (window.confirm(label)) {
-      this.props.actions.deleteLine(this.props.line.id)
+      this.props.actions.deleteLine(line.id)
     }
   }
 
@@ -167,6 +169,10 @@ class LineTitleCell extends Component {
 
 LineTitleCell.propTypes = {
   line: PropTypes.object.isRequired,
+  bookId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }
@@ -177,9 +183,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps (dispatch, ownProps) {
+  let actions = ownProps.bookId == 'series' ? SeriesLineActions : LineActions
   return {
-    actions: bindActionCreators(LineActions, dispatch)
+    actions: bindActionCreators(actions, dispatch),
   }
 }
 

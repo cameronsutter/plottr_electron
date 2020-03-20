@@ -18,10 +18,6 @@ class CardView extends Component {
     this.state = {editing: false, description: props.card.description}
   }
 
-  line () {
-    return _.find(this.props.lines, {id: this.props.card.lineId})
-  }
-
   componentWillUnmount () {
     if (this.state.editing) this.saveEdit()
   }
@@ -155,16 +151,14 @@ class CardView extends Component {
   }
 
   render () {
-    let line = this.line()
-    let style = {color: line.color}
-    const title = this.renderTitle()
-    const description = this.renderDescription()
-    let klasses = cx('outline__card', {darkmode: this.props.ui.darkMode})
+    const { line, ui } = this.props
+    const style = {color: line.color}
+    const klasses = cx('outline__card', {darkmode: ui.darkMode})
     return (
       <div className={klasses}>
         <div style={style} className='outline__card__line-title'>{line.title}</div>
-        {title}
-        {description}
+        { this.renderTitle() }
+        { this.renderDescription() }
         { this.renderDivider() }
         <div className='outline__card__label-list'>
           { this.renderTags() }
@@ -178,7 +172,7 @@ class CardView extends Component {
 
 CardView.propTypes = {
   card: PropTypes.object.isRequired,
-  lines: PropTypes.array.isRequired,
+  line: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
@@ -188,9 +182,17 @@ CardView.propTypes = {
   images: PropTypes.object,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state, ownProps) {
+  let line = null
+  if (state.ui.currentTimeline == 'series') {
+    // get the right seriesLines
+    line = state.seriesLines.find(sl => sl.id === ownProps.card.seriesLineId)
+  } else {
+    // get the right lines for state.ui.currentTimeline (bookId)
+    line = state.lines.find(l => l.id == ownProps.card.lineId)
+  }
   return {
-    lines: state.lines,
+    line: line,
     tags: state.tags,
     characters: state.characters,
     places: state.places,

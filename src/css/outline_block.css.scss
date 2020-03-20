@@ -65,7 +65,7 @@ li.outline__minimap__scene-title > a {
   justify-content: space-between;
 
   .outline__minimap__dots {
-    display: inline-block;
+    display: flex;
     margin-top: 4px;
     margin-left: 5px;
   }
@@ -73,7 +73,6 @@ li.outline__minimap__scene-title > a {
   .outline__minimap__card-dot {
     height: 7px;
     width: 7px;
-    float:right;
     margin: 1px;
   }
 }

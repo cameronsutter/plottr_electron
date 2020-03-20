@@ -14,7 +14,7 @@ export default function cards (state, action) {
   let diffObj
   switch (action.type) {
     case ADD_CARD:
-      return [Object.assign(defaultCard, {
+      return [Object.assign({}, defaultCard, {
         ...action.card,
         id: nextId(state),
       }), ...state]

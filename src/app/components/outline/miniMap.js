@@ -13,16 +13,30 @@ class MiniMap extends Component {
     this.state = {mouseOver: false}
   }
 
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
+  }
+
   selectNav = (key) => {
     document.querySelector(`#chapter-${key}`).scrollIntoViewIfNeeded()
     window.scrollBy(0, 250)
   }
 
-  renderCardDots (chapters) {
-    const cards = _.cloneDeep(chapters).reverse()
-    return cards.map((c) => {
-      var line = _.find(this.props.lines, {id: c.lineId})
-      var style = {backgroundColor: line.color}
+  findCard = (linesById, card) => {
+    let id = card.lineId
+    if (this.isSeries()) {
+      id = card.seriesLineId
+    }
+    return linesById[id]
+  }
+
+  renderCardDots (chapterCards) {
+    const linesById = _.keyBy(this.props.lines, 'id')
+    return chapterCards.map((c) => {
+      let line = this.findCard(linesById, c)
+      if (!line) return null
+
+      let style = {backgroundColor: line.color}
       return <div key={`dot-${line.id}-${c.id}`} title={line.title} style={style} className='outline__minimap__card-dot'></div>
     })
   }

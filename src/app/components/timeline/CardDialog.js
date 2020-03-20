@@ -137,7 +137,7 @@ class CardDialog extends Component {
   renderTitle () {
     var title = this.props.card.title
     return <FormControl
-      style={{fontSize: '24pt'}}
+      style={{fontSize: '24pt', textAlign: 'center', marginBottom: '6px'}}
       onKeyPress={this.handleEnter}
       type='text' autoFocus
       ref='titleInput'
@@ -164,6 +164,10 @@ class CardDialog extends Component {
       chapter: _.uniqueId('select-chapter-'),
       line: _.uniqueId('select-line-')
     }
+    let labelText = i18n('Chapter')
+    if (this.isSeries()) {
+      labelText = i18n('Beat')
+    }
 
     return (
       <div className='card-dialog__left-side'>
@@ -175,7 +179,7 @@ class CardDialog extends Component {
           </label>
         </div>
         <div className='card-dialog__scene'>
-          <label className='card-dialog__details-label' htmlFor={ids.chapter}>{i18n('Chapter')}:
+          <label className='card-dialog__details-label' htmlFor={ids.chapter}>{labelText}:
             <DropdownButton id={ids.chapter} className='card-dialog__select-scene' title={chapterTitle(this.getCurrentChapter())}>
               {this.renderChapterItems()}
             </DropdownButton>
@@ -212,10 +216,10 @@ class CardDialog extends Component {
     return (
       <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
         <div className={klasses}>
-          {this.renderTitle()}
           <div className='card-dialog__body'>
             {this.renderLeftSide()}
             <div className='card-dialog__description'>
+              {this.renderTitle()}
               <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
               {this.renderDescription()}
             </div>

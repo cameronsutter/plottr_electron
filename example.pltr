@@ -1361,11 +1361,7 @@
       "bookIds": [
         1
       ],
-      "cards": [
-        146,
-        144,
-        163
-      ],
+      "cards": [],
       "categoryId": "",
       "color": null,
       "description": "she is the coolest",
@@ -1446,9 +1442,7 @@
       "bookIds": [
         1
       ],
-      "cards": [
-        163
-      ],
+      "cards": [],
       "categoryId": "",
       "color": null,
       "description": "He's old and cranky",

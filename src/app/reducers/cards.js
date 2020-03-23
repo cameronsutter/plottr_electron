@@ -5,7 +5,7 @@ import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
   REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG, DELETE_CHARACTER,
-  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
+  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK } from '../constants/ActionTypes'
 import { newFileCards } from '../../../shared/newFileState'
 import { card as defaultCard } from '../../../shared/initialState'
 import { nextId } from 'store/newIds'
@@ -64,6 +64,11 @@ export default function cards (state, action) {
       }
       return state.map(card =>
         card.id === action.id ? Object.assign({}, card, diffObj) : card
+      )
+
+    case CHANGE_BOOK:
+      return state.map(card =>
+        card.id === action.id ? Object.assign({}, card, {bookId: action.bookId}) : card
       )
 
     case DELETE_CARD:

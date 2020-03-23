@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux'
 import Modal from 'react-modal'
 import _ from 'lodash'
 import * as CardActions from 'actions/cards'
+import * as UIActions from 'actions/ui'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
@@ -88,6 +89,10 @@ class CardDialog extends Component {
     this.props.actions.changeLine(this.props.card.id, lineId, this.props.ui.currentTimeline)
   }
 
+  changeBook (bookId) {
+    this.props.actions.changeBook(this.props.card.id, bookId)
+  }
+
   getCurrentChapter () {
     return _.find(this.props.chapters, {id: this.props.chapterId})
   }
@@ -96,12 +101,19 @@ class CardDialog extends Component {
     return _.find(this.props.lines, {id: this.props.lineId})
   }
 
+  getBookTitle () {
+    const book = this.props.books[this.props.card.bookId]
+    if (book) {
+      return book.title || i18n('Untitled')
+    } else {
+      return i18n('Choose...')
+    }
+  }
+
   renderChapterItems () {
     var chapters = _.sortBy(this.props.chapters, 'position')
     return chapters.map((chapter) => {
-      return (<MenuItem
-        key={chapter.id}
-        onSelect={() => this.changeChapter(chapter.id)} >
+      return (<MenuItem key={chapter.id} onSelect={() => this.changeChapter(chapter.id)}>
         {chapterTitle(chapter)}
       </MenuItem>)
     })
@@ -110,11 +122,18 @@ class CardDialog extends Component {
   renderLineItems () {
     var lines = _.sortBy(this.props.lines, 'position')
     return lines.map((line) => {
-      return (<MenuItem
-        key={line.id}
-        onSelect={() => this.changeLine(line.id)} >
+      return (<MenuItem key={line.id} onSelect={() => this.changeLine(line.id)}>
         {line.title}
       </MenuItem>)
+    })
+  }
+
+  renderBooks () {
+    const { books } = this.props
+    return books.allIds.map(id => {
+      return <MenuItem key={id} onSelect={() => this.changeBook(id)}>
+        {books[id].title || i18n('Untitled')}
+      </MenuItem>
     })
   }
 
@@ -159,26 +178,48 @@ class CardDialog extends Component {
     )
   }
 
+  renderBookDropdown () {
+    let bookButton = null
+    if (this.props.card.bookId) {
+      const handler = () => {
+        this.props.uiActions.changeCurrentTimeline(this.props.card.bookId)
+        this.props.closeDialog()
+      }
+      bookButton = <Button onClick={handler}>{i18n('View Timeline')}</Button>
+    }
+    return <div className='card-dialog__dropdown-wrapper' style={{marginBottom: '5px'}}>
+      <label className='card-dialog__details-label' htmlFor='select-book'>{i18n('Book')}:
+        <DropdownButton id='select-book' className='card-dialog__select-line' title={this.getBookTitle()}>
+          {this.renderBooks()}
+        </DropdownButton>
+      </label>
+      { bookButton }
+    </div>
+  }
+
   renderLeftSide () {
     var ids = {
       chapter: _.uniqueId('select-chapter-'),
-      line: _.uniqueId('select-line-')
+      line: _.uniqueId('select-line-'),
     }
     let labelText = i18n('Chapter')
+    let bookDropDown = null
     if (this.isSeries()) {
       labelText = i18n('Beat')
+      bookDropDown = this.renderBookDropdown()
     }
 
     return (
       <div className='card-dialog__left-side'>
-        <div className='card-dialog__line'>
+        { bookDropDown }
+        <div className='card-dialog__dropdown-wrapper'>
           <label className='card-dialog__details-label' htmlFor={ids.line}>{i18n('Line')}:
             <DropdownButton id={ids.line} className='card-dialog__select-line' title={this.getCurrentLine().title}>
               {this.renderLineItems()}
             </DropdownButton>
           </label>
         </div>
-        <div className='card-dialog__scene'>
+        <div className='card-dialog__sdropdown-wrapper'>
           <label className='card-dialog__details-label' htmlFor={ids.chapter}>{labelText}:
             <DropdownButton id={ids.chapter} className='card-dialog__select-scene' title={chapterTitle(this.getCurrentChapter())}>
               {this.renderChapterItems()}
@@ -244,6 +285,7 @@ CardDialog.propTypes = {
   places: PropTypes.array.isRequired,
   labelMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  books: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
@@ -265,13 +307,15 @@ function mapStateToProps (state) {
     tags: state.tags,
     characters: state.characters,
     places: state.places,
-    ui: state.ui
+    ui: state.ui,
+    books: state.books,
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(CardActions, dispatch)
+    actions: bindActionCreators(CardActions, dispatch),
+    uiActions: bindActionCreators(UIActions, dispatch),
   }
 }
 

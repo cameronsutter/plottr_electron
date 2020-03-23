@@ -31,65 +31,65 @@
       "genre": "? YA Thriller",
       "id": 1,
       "imageId": "1",
-      "name": "The Awesome Prison Mansion",
       "premise": "Coming of age story about a boy who finds himself in different worlds",
       "templates": [],
-      "theme": "🤷‍♂️"
+      "theme": "🤷‍♂️",
+      "title": "The Awesome Prison Mansion"
     },
     "2": {
       "bookNumber": 2,
       "genre": "",
       "id": 2,
       "imageId": null,
-      "name": "Awesome Mansion 2",
       "premise": "",
       "templates": [],
-      "theme": ""
+      "theme": "",
+      "title": "Awesome Mansion 2"
     },
     "5": {
       "genre": "",
       "id": 5,
       "imageId": null,
-      "name": "Book 3",
       "premise": "",
       "templates": [],
-      "theme": ""
+      "theme": "",
+      "title": "Book 3"
     },
     "6": {
       "genre": "",
       "id": 6,
       "imageId": null,
-      "name": "Book 4",
       "premise": "",
       "templates": [],
-      "theme": ""
+      "theme": "",
+      "title": "Book 4"
     },
     "7": {
       "genre": "",
       "id": 7,
       "imageId": null,
-      "name": "Book 5",
       "premise": "",
       "templates": [],
-      "theme": ""
+      "theme": "",
+      "title": "Book 5"
     },
     "8": {
       "genre": "",
       "id": 8,
       "imageId": null,
-      "name": "Book 6",
       "premise": "",
       "templates": [],
-      "theme": ""
+      "theme": "",
+      "title": "Book 6"
     },
     "9": {
       "genre": "",
       "id": 9,
       "imageId": null,
-      "name": "Book 7",
       "premise": "",
       "templates": [],
-      "theme": ""
+      "theme": "",
+      "title": "Book 7"
     },
     "allIds": [
       1,
@@ -120,7 +120,7 @@
     },
     {
       "beatId": 2,
-      "bookId": null,
+      "bookId": 1,
       "chapterId": null,
       "characters": [
         1,
@@ -1570,7 +1570,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "2020.3.16"
+    "version": "2020.3.20"
   },
   "images": {
     "1": {

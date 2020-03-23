@@ -18,7 +18,7 @@ function migrate (data) {
 
   // +books
   obj.books = newFileBooks
-  obj.books[BOOK_ID].name = obj.series.name
+  obj.books[BOOK_ID].title = obj.series.name
 
   // everything in the current file is for book 1
 

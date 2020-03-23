@@ -44,7 +44,7 @@ class BookList extends Component {
             style={provided.draggableProps.style}
             className={cx('book-list__droppable', {dragging: snapshot.isDragging})}
           >
-            <Book bookId={id} />
+            <Book bookId={id} bookNumber={idx + 1} />
           </div>
         )}
       </Draggable>

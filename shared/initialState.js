@@ -10,7 +10,7 @@ const series = {
 
 const book = {
   id: 1,
-  name: '',
+  title: '',
   premise: '',
   genre: '',
   theme: '',

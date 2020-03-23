@@ -23,7 +23,7 @@ class Book extends Component {
   }
 
   handleDelete = () => {
-    let text = i18n('Do you want to delete this book: { book }?', {book: this.props.book.name})
+    let text = i18n('Do you want to delete this book: { book }?', {book: this.props.book.title})
     if (window.confirm(text)) {
       this.props.actions.deleteBook(this.props.book.id)
     }
@@ -42,7 +42,9 @@ class Book extends Component {
   renderDialog () {
     if (!this.state.editing) return null
 
-    return <BookDialog bookId={this.props.book.id} modal={true} cancel={() => this.setState({editing: false})} />
+    const { book, bookNumber } = this.props
+
+    return <BookDialog bookId={book.id} bookNumber={bookNumber} modal={true} cancel={() => this.setState({editing: false})} />
   }
 
   renderImage () {
@@ -84,7 +86,7 @@ class Book extends Component {
       <div className={cx('book', {hovering: this.state.hovering})} onClick={() => this.setState({editing: true})}>
         <div className='front'>
           <div className='cover'>
-            <h6>{book.name || i18n('Untitled')}</h6>
+            <h6>{book.title || i18n('Untitled')}</h6>
             <div className='book-container__cover-image-wrapper'>
               { this.renderImage() }
             </div>
@@ -92,7 +94,7 @@ class Book extends Component {
         </div>
         <div className='left-side'>
           <h2>
-            <span>{book.name || i18n('Untitled')}</span>
+            <span>{book.title || i18n('Untitled')}</span>
           </h2>
         </div>
       </div>
@@ -104,6 +106,7 @@ class Book extends Component {
     bookId: PropTypes.number,
     addBook: PropTypes.func,
     book: PropTypes.object,
+    bookNumber: PropTypes.number,
   }
 }
 

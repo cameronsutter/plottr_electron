@@ -1,5 +1,5 @@
 import { ADD_CARD, EDIT_CARD_DETAILS, EDIT_CARD_COORDINATES,
-  CHANGE_LINE, CHANGE_SCENE, DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
+  CHANGE_LINE, CHANGE_SCENE, CHANGE_BOOK, DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
   REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD } from 'constants/ActionTypes'
 
@@ -21,6 +21,10 @@ export function changeLine (id, lineId, bookId) {
 
 export function changeScene (id, chapterId, bookId) {
   return { type: CHANGE_SCENE, id, chapterId, bookId }
+}
+
+export function changeBook (id, bookId) {
+  return { type: CHANGE_BOOK, id, bookId }
 }
 
 export function deleteCard (id) {

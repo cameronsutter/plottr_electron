@@ -15,11 +15,11 @@ class BookDialog extends Component {
   saveEdit = () => {
     const { book, modal } = this.props
 
-    let name = ReactDOM.findDOMNode(this.refs.name).value
+    let title = ReactDOM.findDOMNode(this.refs.title).value
     let premise = ReactDOM.findDOMNode(this.refs.premise).value
     let genre = ReactDOM.findDOMNode(this.refs.genre).value
     let theme = ReactDOM.findDOMNode(this.refs.theme).value
-    this.props.actions.editBook(book.id, {name, premise, genre, theme})
+    this.props.actions.editBook(book.id, {title, premise, genre, theme})
     if (this.props.cancel) this.props.cancel()
   }
 
@@ -43,10 +43,10 @@ class BookDialog extends Component {
       </FormGroup> : null}
       <FormGroup>
         <Col componentClass={ControlLabel} sm={modal ? 3 : 1}>
-          {i18n('Name')}
+          {i18n('Title')}
         </Col>
         <Col sm={modal ? 8 : 5}>
-          <FormControl type='text' ref='name' defaultValue={book.name} />
+          <FormControl type='text' ref='title' defaultValue={book.title} />
         </Col>
       </FormGroup>
       <FormGroup>

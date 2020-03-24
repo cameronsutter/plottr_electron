@@ -14,6 +14,9 @@
   "Add": {
     "message": "Add"
   },
+  "Add Chapter": {
+    "message": "Add Chapter"
+  },
   "Add attributes": {
     "message": "Add attributes"
   },
@@ -35,6 +38,15 @@
   "Attributes": {
     "message": "Attributes"
   },
+  "Beat": {
+    "message": "Beat"
+  },
+  "Beat {number}": {
+    "message": "Beat { number }"
+  },
+  "Beat {number} title": {
+    "message": "Beat { number } title"
+  },
   "Before": {
     "message": "Before"
   },
@@ -43,6 +55,9 @@
   },
   "Blues": {
     "message": "Blues"
+  },
+  "Book": {
+    "message": "Book"
   },
   "Book #": {
     "message": "Book #"
@@ -80,8 +95,8 @@
   "Chapter {number}": {
     "message": "Chapter { number }"
   },
-  "Chapter {number} name": {
-    "message": "Chapter { number } name"
+  "Chapter {number} title": {
+    "message": "Chapter { number } title"
   },
   "Character": {
     "message": "Character"
@@ -121,6 +136,9 @@
   },
   "Choose what you want to track about your places": {
     "message": "Choose what you want to track about your places"
+  },
+  "Choose...": {
+    "message": "Choose..."
   },
   "Click here to get the full version": {
     "message": "Click here to get the full version"
@@ -308,6 +326,12 @@
   "If you keep seeing this problem, email me at family@plottrapp.com": {
     "message": "If you keep seeing this problem, email me at family@plottrapp.com"
   },
+  "Insert Chapter": {
+    "message": "Insert Chapter"
+  },
+  "Insert Chapter and a Card": {
+    "message": "Insert Chapter and a Card"
+  },
   "It looks like you have Plottr on 5 computers already": {
     "message": "It looks like you have Plottr on 5 computers already"
   },
@@ -349,6 +373,12 @@
   },
   "New Book": {
     "message": "New Book"
+  },
+  "New Character": {
+    "message": "New Character"
+  },
+  "New Place": {
+    "message": "New Place"
   },
   "New from Template": {
     "message": "New from Template"
@@ -586,6 +616,9 @@
   },
   "View License Key": {
     "message": "View License Key"
+  },
+  "View Timeline": {
+    "message": "View Timeline"
   },
   "View the Tour": {
     "message": "View the Tour"

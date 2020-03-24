@@ -149,7 +149,10 @@ class ImagePicker extends Component {
 
 ImagePicker.propTypes = {
   chooseImage: PropTypes.func.isRequired,
-  selectedId: PropTypes.string,
+  selectedId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   darkMode: PropTypes.bool,
   iconOnly: PropTypes.bool,
 }

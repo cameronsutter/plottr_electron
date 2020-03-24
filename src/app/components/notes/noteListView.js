@@ -46,6 +46,10 @@ class NoteListView extends Component {
     this.setState({ viewableNotes, filter, noteDetailId })
   }
 
+  removeFilter = () => {
+    this.updateFilter(null)
+  }
+
   viewableNotes (notes, filter) {
     const filterIsEmpty = this.filterIsEmpty(filter)
     let viewableNotes = notes
@@ -61,28 +65,29 @@ class NoteListView extends Component {
     return filter == null ||
       (filter['tag'].length === 0 &&
       filter['character'].length === 0 &&
-      filter['place'].length === 0)
+      filter['place'].length === 0 &&
+      filter['book'].length === 0)
   }
 
   isViewable (filter, note) {
     if (!note) return false
-    var filtered = false
+    let visible = false
     if (note.tags) {
-      note.tags.forEach((tId) => {
-        if (filter['tag'].includes(tId)) filtered = true
-      })
+      if (filter['tag'].some(tId => note.tags.includes(tId))) visible = true
     }
     if (note.characters) {
-      note.characters.forEach((cId) => {
-        if (filter['character'].includes(cId)) filtered = true
-      })
+      if (filter['character'].some(cId => note.characters.includes(cId))) visible = true
     }
     if (note.places) {
-      note.places.forEach((pId) => {
-        if (filter['place'].includes(pId)) filtered = true
-      })
+      if (filter['place'].some(pId => note.places.includes(pId))) visible = true
     }
-    return filtered
+    if (note.bookIds) {
+      if (filter['book'].some(bookId => note.bookIds.includes(bookId))) visible = true
+      // if the filter includes books, and this note has no bookIds,
+      // it's considered in all books, so it should be visible
+      if (filter['book'].length && !note.bookIds.length) visible = true
+    }
+    return visible
   }
 
   renderVisibleNotes () {
@@ -136,7 +141,7 @@ class NoteListView extends Component {
     let popover = <Popover id='filter'>
       <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">{i18n('Notes are filtered')}</Alert>
+    let filterDeclaration = <Alert onClick={this.removeFilter} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Notes are filtered')}</Alert>
     if (this.filterIsEmpty(this.state.filter)) {
       filterDeclaration = <span></span>
     }

@@ -12,6 +12,7 @@ import i18n from 'format-message'
 import ImagePicker from 'components/images/ImagePicker'
 import Image from 'components/images/Image'
 import SETTINGS from '../../../common/utils/settings'
+import BookSelectList from '../story/BookSelectList'
 
 class NoteView extends Component {
   constructor (props) {
@@ -53,6 +54,19 @@ class NoteView extends Component {
     if (window.confirm(label)) {
       this.props.actions.deleteNote(this.props.note.id)
     }
+  }
+
+  renderBookSelectList () {
+    if (!SETTINGS.get('premiumFeatures')) return null
+
+    const { note, actions } = this.props
+
+    return <BookSelectList
+      selectedBooks={note.bookIds}
+      parentId={note.id}
+      add={actions.addBook}
+      remove={actions.removeBook}
+    />
   }
 
   renderEditingImage () {
@@ -141,6 +155,7 @@ class NoteView extends Component {
       <div className={klasses}>
         <div className='note-list__body'>
           <div className='note-list__left-side'>
+            { this.renderBookSelectList() }
             <SelectList
               parentId={this.props.note.id} type={'Characters'}
               selectedItems={this.props.note.characters}

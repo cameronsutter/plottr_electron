@@ -1016,7 +1016,7 @@
       "position": 0,
       "templates": [],
       "time": 0,
-      "title": "8 years Ago"
+      "title": "8 years ago"
     },
     {
       "bookId": 1,
@@ -1024,7 +1024,7 @@
       "position": 1,
       "templates": [],
       "time": 0,
-      "title": "6 Years Ago"
+      "title": "6 years ago"
     },
     {
       "bookId": 1,
@@ -1558,7 +1558,11 @@
     "characters": [
       "age",
       "race",
-      "family:#:paragraph"
+      "family:#:paragraph",
+      "hair color",
+      "goal",
+      "motivation",
+      "conflict"
     ],
     "lines": [],
     "places": [
@@ -1728,14 +1732,20 @@
       "title": "note about First Place"
     },
     {
-      "bookIds": [],
+      "bookIds": [
+        1,
+        2,
+        5,
+        7,
+        8
+      ],
       "characters": [
         1
       ],
       "content": "# Is it cool?\nnot really, but oh yes it is",
       "id": 4,
-      "imageId": -1,
-      "lastEdited": 1583936242121,
+      "imageId": null,
+      "lastEdited": 1585003825769,
       "places": [],
       "tags": [],
       "templates": [],
@@ -1892,11 +1902,15 @@
   "ui": {
     "characterFilter": {
       "age": [],
+      "conflict": [],
       "family:#:paragraph": [],
+      "goal": [],
+      "hair color": [],
+      "motivation": [],
       "race": []
     },
     "characterSort": "name~asc",
-    "currentTimeline": "series",
+    "currentTimeline": 1,
     "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,

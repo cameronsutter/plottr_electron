@@ -13,10 +13,14 @@ class BookChooser extends Component {
     this.props.actions.changeCurrentTimeline(id)
   }
 
+  bookTitle = (book) => {
+    return book.title || i18n('Untitled')
+  }
+
   renderBookList () {
-    const { ui, books } = this.props
+    const { books } = this.props
     return books.allIds.map(id => {
-      return <MenuItem key={id} onSelect={() => this.handleChange(id)}>{books[id].title}</MenuItem>
+      return <MenuItem key={id} onSelect={() => this.handleChange(id)}>{this.bookTitle(books[id])}</MenuItem>
     })
   }
 
@@ -26,7 +30,7 @@ class BookChooser extends Component {
     const { ui, books } = this.props
     const seriesText = i18n('Series')
     let title = seriesText
-    if (ui.currentTimeline != 'series') title = books[ui.currentTimeline].title
+    if (ui.currentTimeline != 'series') title = this.bookTitle(books[ui.currentTimeline])
 
     return <NavDropdown id='book_chooser' title={title}>
       <MenuItem onSelect={() => this.handleChange('series')}>{seriesText}</MenuItem>

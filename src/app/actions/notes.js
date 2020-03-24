@@ -1,6 +1,7 @@
 import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE, ATTACH_CHARACTER_TO_NOTE,
   ATTACH_PLACE_TO_NOTE, ATTACH_TAG_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
-  REMOVE_PLACE_FROM_NOTE, REMOVE_TAG_FROM_NOTE } from 'constants/ActionTypes'
+  REMOVE_PLACE_FROM_NOTE, REMOVE_TAG_FROM_NOTE,
+  REMOVE_BOOK_FROM_NOTE, ATTACH_BOOK_TO_NOTE } from 'constants/ActionTypes'
 import { note } from '../../../shared/initialState'
 
 export function addNote () {
@@ -27,6 +28,10 @@ export function addTag (id, tagId) {
   return { type: ATTACH_TAG_TO_NOTE, id, tagId }
 }
 
+export function addBook (id, bookId) {
+  return { type: ATTACH_BOOK_TO_NOTE, id, bookId }
+}
+
 export function removeCharacter (id, characterId) {
   return { type: REMOVE_CHARACTER_FROM_NOTE, id, characterId }
 }
@@ -37,4 +42,8 @@ export function removePlace (id, placeId) {
 
 export function removeTag (id, tagId) {
   return { type: REMOVE_TAG_FROM_NOTE, id, tagId }
+}
+
+export function removeBook (id, bookId) {
+  return { type: REMOVE_BOOK_FROM_NOTE, id, bookId }
 }

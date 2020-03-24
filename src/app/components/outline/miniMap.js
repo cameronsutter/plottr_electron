@@ -6,6 +6,8 @@ import ReactDOM from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
+import { chaptersByBookSelector } from '../../selectors/chapters'
+import { linesByBookSelector } from '../../selectors/lines'
 
 class MiniMap extends Component {
   constructor (props) {
@@ -86,21 +88,9 @@ MiniMap.propTypes = {
 }
 
 function mapStateToProps (state) {
-  let chapters = []
-  let lines = []
-  const bookId = state.ui.currentTimeline
-  if (bookId == 'series') {
-    // get all beats / seriesLines
-    chapters = state.beats
-    lines = state.seriesLines
-  } else {
-    // get all the chapters / lines for state.ui.currentTimeline (bookId)
-    chapters = state.chapters.filter(ch => ch.bookId == bookId)
-    lines = state.lines.filter(l => l.bookId == bookId)
-  }
   return {
-    chapters: chapters,
-    lines: lines,
+    chapters: chaptersByBookSelector(state),
+    lines: linesByBookSelector(state),
     ui: state.ui,
   }
 }

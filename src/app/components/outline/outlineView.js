@@ -7,6 +7,8 @@ import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
 import cx from 'classnames'
+import { chaptersByBookSelector } from '../../selectors/chapters'
+import { linesByBookSelector } from '../../selectors/lines'
 
 class OutlineView extends Component {
   constructor (props) {
@@ -161,21 +163,9 @@ OutlineView.propTypes = {
 }
 
 function mapStateToProps (state) {
-  let chapters = []
-  let lines = []
-  const bookId = state.ui.currentTimeline
-  if (bookId == 'series') {
-    // get all beats / seriesLines
-    chapters = state.beats
-    lines = state.seriesLines
-  } else {
-    // get all the chapters / lines for state.ui.currentTimeline (bookId)
-    chapters = state.chapters.filter(ch => ch.bookId == bookId)
-    lines = state.lines.filter(l => l.bookId == bookId)
-  }
   return {
-    chapters: chapters,
-    lines: lines,
+    chapters: chaptersByBookSelector(state),
+    lines: linesByBookSelector(state),
     cards: state.cards,
     tags: state.tags,
     characters: state.characters,

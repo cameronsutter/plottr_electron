@@ -21,6 +21,8 @@ import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import AddLineRow from './AddLineRow'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
+import { chaptersByBookSelector } from '../../selectors/chapters'
+import { linesByBookSelector } from '../../selectors/lines'
 
 class TimelineTable extends Component {
 
@@ -272,25 +274,17 @@ TimelineTable.propTypes = {
 }
 
 function mapStateToProps (state) {
-  let chapters = []
-  let lines = []
   let nextChapterId = -1
   const bookId = state.ui.currentTimeline
   if (bookId == 'series') {
-    // get all beats / seriesLines
-    chapters = state.beats
-    lines = state.seriesLines
     nextChapterId = nextId(state.beats)
   } else {
-    // get all the chapters / lines for state.ui.currentTimeline (bookId)
-    chapters = state.chapters.filter(ch => ch.bookId == bookId)
-    lines = state.lines.filter(l => l.bookId == bookId)
     nextChapterId = nextId(state.chapters)
   }
   return {
-    chapters: chapters,
+    chapters: chaptersByBookSelector(state),
     nextChapterId: nextChapterId,
-    lines: lines,
+    lines: linesByBookSelector(state),
     cards: state.cards,
     tags: state.tags,
     characters: state.characters,

@@ -15,6 +15,8 @@ import { reorderList } from 'helpers/lists'
 import { insertChapter } from 'helpers/chapters'
 import orientedClassName from 'helpers/orientedClassName'
 import { nextId } from '../../store/newIds'
+import { chaptersByBookSelector } from '../../selectors/chapters'
+import { linesByBookSelector } from '../../selectors/lines'
 
 class TopRow extends Component {
 
@@ -122,27 +124,21 @@ TopRow.propTypes = {
 }
 
 function mapStateToProps (state) {
-  let chapters = []
-  let lines = []
   let nextChapterId = -1
   const bookId = state.ui.currentTimeline
   if (bookId == 'series') {
     // get all beats / seriesLines
-    chapters = state.beats
-    lines = state.seriesLines
     nextChapterId = nextId(state.beats)
   } else {
     // get all the chapters / lines for state.ui.currentTimeline (bookId)
-    chapters = state.chapters.filter(ch => ch.bookId == bookId)
-    lines = state.lines.filter(l => l.bookId == bookId)
     nextChapterId = nextId(state.chapters)
   }
 
   return {
     ui: state.ui,
-    chapters: chapters,
+    chapters: chaptersByBookSelector(state),
     nextChapterId: nextChapterId,
-    lines: lines,
+    lines: linesByBookSelector(state),
   }
 }
 

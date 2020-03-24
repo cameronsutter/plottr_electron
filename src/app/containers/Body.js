@@ -11,6 +11,12 @@ import TimelineWrapper from '../components/timeline/TimelineWrapper'
 import StoryView from '../components/story/StoryView'
 
 class Body extends Component {
+  constructor (props) {
+    super(props)
+    this.timeline = <TimelineWrapper/>
+    this.outline = <OutlineView />
+  }
+
   render () {
     return this.props.file.loaded ? this.renderBody() : this.renderLoading()
   }
@@ -21,10 +27,10 @@ class Body extends Component {
         return <StoryView />
 
       case 'timeline':
-        return <TimelineWrapper />
+        return this.timeline
 
       case 'outline':
-        return <OutlineView />
+        return this.outline
 
       case 'notes':
         return <NotesView />

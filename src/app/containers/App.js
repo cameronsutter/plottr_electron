@@ -9,13 +9,11 @@ import GuidedTour from '../components/GuidedTour'
 
 class App extends Component {
   render () {
-    return (
-      <div>
-        <Navigation />
-        <Body />
-        <GuidedTour />
-      </div>
-    )
+    return <div>
+      <Navigation />
+      <Body />
+      <GuidedTour />
+    </div>
   }
 }
 

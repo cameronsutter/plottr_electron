@@ -13,6 +13,8 @@ import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 import { chapterTitle } from '../../helpers/chapters'
+import { chaptersByBookSelector } from '../../selectors/chapters'
+import { linesByBookSelector } from '../../selectors/lines'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -289,21 +291,9 @@ CardDialog.propTypes = {
 }
 
 function mapStateToProps (state) {
-  let chapters = []
-  let lines = []
-  const bookId = state.ui.currentTimeline
-  if (bookId == 'series') {
-    // get all beats / seriesLines
-    chapters = state.beats
-    lines = state.seriesLines
-  } else {
-    // get all the chapters / lines for state.ui.currentTimeline (bookId)
-    chapters = state.chapters.filter(ch => ch.bookId == bookId)
-    lines = state.lines.filter(l => l.bookId == bookId)
-  }
   return {
-    lines: lines,
-    chapters: chapters,
+    chapters: chaptersByBookSelector(state),
+    lines: linesByBookSelector(state),
     tags: state.tags,
     characters: state.characters,
     places: state.places,

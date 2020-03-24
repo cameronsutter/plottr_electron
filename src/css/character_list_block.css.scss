@@ -28,6 +28,11 @@
     &:hover {
       background: $new-item-background;
     }
+    &.selected {
+      border: 2px dashed $blue-5;
+      background-color: $gray-9;
+      margin-bottom: 0;
+    }
   }
 }
 

@@ -18,6 +18,7 @@ import i18n from 'format-message'
 import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import Image from '../images/Image'
+import cx from 'classnames'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -212,11 +213,12 @@ class CharacterListView extends Component {
           <Image shape='circle' size='small' imageId={ch.imageId} />
         </div>
       }
-      return <div key={idx} className='list-group-item' onClick={() => this.setState({characterDetailId: ch.id})}>
+      const klasses = cx('list-group-item', {selected: ch.id == this.state.characterDetailId})
+      return <div key={idx} className={klasses} onClick={() => this.setState({characterDetailId: ch.id})}>
         <div className='character-list__item-inner'>
           {img}
           <div>
-            <h6 className='list-group-item-heading'>{ch.name}</h6>
+            <h6 className='list-group-item-heading'>{ch.name || i18n('New Character')}</h6>
             <p className='list-group-item-text'>{ch.description.substr(0, 100)}</p>
           </div>
         </div>
@@ -225,14 +227,12 @@ class CharacterListView extends Component {
   }
 
   renderCharacters () {
-    let klasses = 'character-list__list list-group'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
-    return (<div className={klasses}>
-        { this.renderVisibleCharacters() }
-        <a href='#' key={'new-character'} className='character-list__new list-group-item' onClick={this.handleCreateNewCharacter} >
-          <Glyphicon glyph='plus' />
-        </a>
-      </div>)
+    return <div className={cx('character-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
+      { this.renderVisibleCharacters() }
+      <a href='#' key={'new-character'} className='character-list__new list-group-item' onClick={this.handleCreateNewCharacter} >
+        <Glyphicon glyph='plus' />
+      </a>
+    </div>
   }
 
   renderCharacterDetails () {

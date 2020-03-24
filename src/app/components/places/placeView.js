@@ -63,9 +63,8 @@ class PlaceView extends Component {
   }
 
   renderEditingImage () {
-    const { place, images } = this.props
-    const imagesExist = Object.keys(images).length
-    if (!SETTINGS.get('premiumFeatures') && !imagesExist && !place.imageId) return null
+    const { place } = this.props
+    if (!SETTINGS.get('premiumFeatures') && !place.imageId) return null
 
     let imgId = this.state.newImageId || place.imageId
     return <FormGroup>

@@ -189,11 +189,12 @@ class PlaceListView extends Component {
           <Image size='small' shape='rounded' imageId={pl.imageId} />
         </div>
       }
-      return <div key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
+      const klasses = cx('list-group-item', {selected: pl.id == this.state.placeDetailId})
+      return <div key={idx} className={klasses} onClick={() => this.setState({placeDetailId: pl.id})}>
         <div className='place-list__item-inner'>
           {img}
           <div>
-            <h6 className='list-group-item-heading'>{pl.name}</h6>
+            <h6 className='list-group-item-heading'>{pl.name || i18n('New Place')}</h6>
             <p className='list-group-item-text'>{pl.description.substr(0, 100)}</p>
           </div>
         </div>
@@ -202,10 +203,7 @@ class PlaceListView extends Component {
   }
 
   renderPlaces () {
-    const klasses = cx('place-list__list', 'list-group', {
-      darkmode: this.props.ui.darkMode
-    })
-    return <div className={klasses}>
+    return <div className={cx('place-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
       { this.renderVisiblePlaces() }
       <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
         <Glyphicon glyph='plus' />

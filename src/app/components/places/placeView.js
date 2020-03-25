@@ -238,6 +238,7 @@ class PlaceView extends Component {
           </div>
           <div>
             <Image responsive imageId={place.imageId} />
+            <Glyphicon glyph='pencil' />
           </div>
         </div>
       </div>

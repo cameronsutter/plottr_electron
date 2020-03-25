@@ -22,12 +22,13 @@ export default function lines (state = initialState, action) {
 
     case ADD_LINES_FROM_TEMPLATE:
       const position = nextPosition(state)
+      const length = state.filter(l => l.bookId == action.bookId).length
       return [...action.lines.map((l, idx) => {
         return {
           id: l.id,
           title: l.title,
           bookId: action.bookId,
-          color: nextColor(state.length + idx),
+          color: nextColor(length + idx),
           position: position + idx,
         }
       }), ...state]

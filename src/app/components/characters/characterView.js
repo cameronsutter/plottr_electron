@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup,
-  ControlLabel, Tooltip, OverlayTrigger } from 'react-bootstrap'
+  ControlLabel, Tooltip, OverlayTrigger, Glyphicon } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
@@ -373,6 +373,7 @@ class CharacterView extends Component {
             </dl>
           </div>
           { this.renderLeftSide(!hasImage) }
+          <Glyphicon glyph='pencil' />
         </div>
       </div>
     )

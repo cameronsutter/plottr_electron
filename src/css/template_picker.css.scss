@@ -13,6 +13,7 @@
   overflow: auto;
 
   .template-picker__list {
+    overflow: auto;
     h1 {
       @include application-text;
       font-size: 20pt;
@@ -35,13 +36,13 @@
 
     li.list-group-item.selected {
       background-color: $gray-9;
-      border-color: $gray-9;
     }
   }
 
   .template-picker__details {
     flex-grow: 1;
     margin-left: 20px;
+    overflow: auto;
     .panel-heading {
       @include application-text;
       h3.panel-title {

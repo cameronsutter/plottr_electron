@@ -9,6 +9,7 @@ import NotesView from 'components/notes/notesView'
 import i18n from 'format-message'
 import TimelineWrapper from '../components/timeline/TimelineWrapper'
 import StoryView from '../components/story/StoryView'
+import SETTINGS from '../../common/utils/settings'
 
 class Body extends Component {
   constructor (props) {
@@ -24,6 +25,8 @@ class Body extends Component {
   renderBody () {
     switch (this.props.currentView) {
       case 'story':
+        if (!SETTINGS.get('premiumFeatures')) return this.timeline
+
         return <StoryView />
 
       case 'timeline':

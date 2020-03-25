@@ -57,6 +57,7 @@ class TemplateManager {
   }
 
   fetchedIsNewer = (fetchedVersion) => {
+    if (!manifestStore.get('manifest')) return true
     return semverGt(fetchedVersion, manifestStore.get('manifest.version')) // is 1st param greater than 2nd?
   }
 

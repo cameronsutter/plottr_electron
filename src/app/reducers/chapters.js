@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
+import { ADD_SCENE, ADD_LINES_FROM_TEMPLATE, EDIT_SCENE_TITLE, REORDER_SCENES,
+  DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { chapter } from '../../../shared/initialState'
 import { newFileChapters } from '../../../shared/newFileState'
 import { nextId } from '../store/newIds'
@@ -17,6 +18,19 @@ export default function chapters (state = initialState, action) {
         time: 0,
         position: nextPositionInBook(state, action.bookId)
       }, ...state]
+
+    case ADD_LINES_FROM_TEMPLATE:
+      if (!action.chapters) return state
+      if (!action.chapters.length) return state
+      const newState = [
+        ...state,
+        ...action.chapters,
+      ]
+      const [bookChapters, notBookChapters] = _.partition(newState, ch => ch.bookId == action.bookId)
+      return [
+        ...notBookChapters,
+        ...positionReset(bookChapters),
+      ]
 
     case EDIT_SCENE_TITLE:
       return state.map(ch =>

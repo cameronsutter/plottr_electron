@@ -1574,7 +1574,7 @@
     "dirty": true,
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
-    "version": "2020.3.20"
+    "version": "2020.3.24"
   },
   "images": {
     "1": {
@@ -1910,7 +1910,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentTimeline": 1,
+    "currentTimeline": 5,
     "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,

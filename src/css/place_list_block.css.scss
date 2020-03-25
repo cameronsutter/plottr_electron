@@ -28,7 +28,7 @@
       background: $new-item-background;
     }
     &.selected {
-      border: 2px dashed $blue-5;
+      border: 2px dashed $blue-7;
       background-color: $gray-9;
       margin-bottom: 0;
     }
@@ -85,8 +85,32 @@
     flex-direction: row-reverse;
   }
   .place-list__place-inner {
+    border: 2px dashed transparent;
     display: flex;
     justify-content: space-between;
+    padding: 4px 0;
+    div:last-child {
+      display: flex;
+      align-items: flex-end;
+      .glyphicon {
+        color: $blue-7;
+        visibility: hidden;
+        margin: 5px;
+      }
+    }
+  }
+
+  &:hover {
+    .place-list__place-inner {
+      border: 2px dashed $blue-7;
+      border-radius: 4px;
+      background-color: $gray-9;
+      div {
+        .glyphicon {
+          visibility: visible;
+        }
+      }
+    }
   }
 }
 

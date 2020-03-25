@@ -1822,7 +1822,7 @@
   ],
   "series": {
     "genre": "YA Thriller",
-    "name": "The Awesome Prison Mansion",
+    "name": "Prison Mansion Series",
     "premise": "",
     "templates": [],
     "theme": "🤷‍♂️"
@@ -1911,7 +1911,7 @@
     },
     "characterSort": "name~asc",
     "currentTimeline": 1,
-    "currentView": "story",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

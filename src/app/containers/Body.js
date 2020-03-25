@@ -8,7 +8,8 @@ import PlacesView from 'components/places/placesView'
 import NotesView from 'components/notes/notesView'
 import i18n from 'format-message'
 import TimelineWrapper from '../components/timeline/TimelineWrapper'
-import StoryView from '../components/story/StoryView'
+import SeriesTab from '../components/story/SeriesTab'
+import ExportTab from '../components/export/ExportTab'
 import SETTINGS from '../../common/utils/settings'
 
 class Body extends Component {
@@ -26,8 +27,7 @@ class Body extends Component {
     switch (this.props.currentView) {
       case 'story':
         if (!SETTINGS.get('premiumFeatures')) return this.timeline
-
-        return <StoryView />
+        return <SeriesTab />
 
       case 'timeline':
         return this.timeline
@@ -46,6 +46,9 @@ class Body extends Component {
 
       case 'places':
         return <PlacesView />
+
+      case 'export':
+        return <ExportTab />
 
       default:
         return <TimelineWrapper />

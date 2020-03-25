@@ -49,9 +49,12 @@ class Navigation extends Component {
                 <span className='icon-bar'></span>
               </button>
             </div>
+            <ul className="nav navbar-nav" style={{marginLeft: '15px', marginRight: '10px'}}>
+              <BookChooser />
+            </ul>
             <ul className='nav navbar-nav'>
               <li className={this.isActive('story')}>
-                <a href='#' onClick={() => this.props.actions.changeCurrentView('story')} >{i18n('Story')}</a>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('story')} >{i18n('Series')}</a>
               </li>
               <li className={this.isActive('timeline')}>
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('timeline')} >{i18n('Timeline')}</a>
@@ -72,9 +75,6 @@ class Navigation extends Component {
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('tags')} >{i18n('Tags')}</a>
               </li>
               { buyItem }
-            </ul>
-            <ul className="nav navbar-nav navbar-right" style={{marginRight: '15px'}}>
-              <BookChooser />
             </ul>
           </div>
         </nav>

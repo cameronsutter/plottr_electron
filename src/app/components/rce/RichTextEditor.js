@@ -15,8 +15,7 @@ import Element from './Element'
 import { LinkButton, withLinks } from './LinkButton'
 import { ImageLinkButton, withImages } from './ImageLinkButton'
 import cx from 'classnames'
-import { RCE_INITIAL_VALUE } from '../../store/initialState'
-import deep from 'deep-diff'
+import { useTextConverter } from './helpers'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -30,27 +29,21 @@ const RichTextEditor = (props) => {
   }, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
   const renderElement = useCallback(props => <Element {...props} />, [])
-  const [value, setValue] = useState(props.text)
+  const rceText = useTextConverter(props.text)
+  const [value, setValue] = useState(rceText)
 
   const updateValue = val => {
     setValue(val)
     props.onChange(val)
   }
 
-  if (props.readOnly && props.text.length == 1) {
-    const diff = deep.diff(RCE_INITIAL_VALUE, props.text)
-    // nothing to show
-    if (!diff) return null
-  }
-
   const otherProps = {
-    readOnly: props.readOnly,
+    autoFocus: props.autoFocus
   }
-  if (props.autoFocus != undefined) otherProps.autoFocus = props.autoFocus
   return (
     <Slate editor={editor} value={value} onChange={updateValue} key={Math.random().toString(16)}>
       <div className='slate-editor__wrapper'>
-        <div className={cx('slate-editor__toolbar-wrapper', {readonly: props.readOnly})}>
+        <div className={cx('slate-editor__toolbar-wrapper', {readonly: false})}>
           <ToolBar>
             <ButtonGroup>
               <MarkButton mark="bold" icon={<FaBold/>} />
@@ -70,13 +63,13 @@ const RichTextEditor = (props) => {
             </ButtonGroup>
           </ToolBar>
         </div>
-        <div className={cx('slate-editor__editor', {readonly: props.readOnly})}>
+        <div className={cx('slate-editor__editor', {readonly: false})}>
           <Editable
             spellCheck
             {...otherProps}
             renderLeaf={renderLeaf}
             renderElement={renderElement}
-            placeholder={props.readOnly ? undefined : i18n('enter some text...')}
+            placeholder={i18n('enter some text...')}
             onKeyDown={event => {
               for (const hotkey in HOTKEYS) {
                 if (isHotkey(hotkey, event)) {
@@ -97,7 +90,6 @@ RichTextEditor.propTypes = {
   text: PropTypes.array.isRequired,
   onChange: PropTypes.func,
   autoFocus: PropTypes.bool,
-  readOnly: PropTypes.bool,
 }
 
 export default RichTextEditor

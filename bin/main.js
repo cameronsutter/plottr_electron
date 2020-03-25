@@ -709,35 +709,35 @@ function migrateIfNeeded (win, json, fileName, callback) {
       dialog.showErrorBox(i18n('Update Plottr'), i18n("It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again."))
       callback(i18n('Update Plottr'), false, json)
     } else {
-      // ask user to try to migrate
-      dialog.showMessageBox(win, {type: 'question', buttons: [i18n('yes, update the file'), i18n('no, open the file as-is')], defaultId: 0, message: i18n('It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?'), detail: i18n('It will save a backup first which will be saved to the same folder as this file')}, (choice) => {
-        if (choice === 0) {
-          m.migrate((err, json) => {
-            if (err === 'backup') {
-              dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again."))
-              callback('problem saving backup', false, json)
-            } else {
-              // tell the user that Plottr migrated versions and saved a backup file
-              dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr updated your file without a problem. Don't forget to save your file.")})
-              callback(null, true, json)
-            }
-          })
+      m.migrate((err, json) => {
+        if (err === 'backup') {
+          dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again."))
+          callback('problem saving backup', false, json)
         } else {
-          // open file without migrating
-          fs.writeFile(`${fileName}.backup`, JSON.stringify(json, null, 2), (err) => {
-            if (err) {
-              log.warn(err)
-              log.warn('file name: ' + fileName)
-              rollbar.warn(err, {fileName: fileName})
-              dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again."))
-              callback(err, false, json)
-            } else {
-              dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)")})
-              callback(null, false, json)
-            }
-          })
+          // tell the user that Plottr migrated versions and saved a backup file
+          dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr updated your file without a problem. Don't forget to save your file.")})
+          callback(null, true, json)
         }
       })
+      // // ask user to try to migrate
+      // dialog.showMessageBox(win, {type: 'question', buttons: [i18n('yes, update the file'), i18n('no, open the file as-is')], defaultId: 0, message: i18n('It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?'), detail: i18n('It will save a backup first which will be saved to the same folder as this file')}, (choice) => {
+      //   if (choice === 0) {
+      //   } else {
+      //     // open file without migrating
+      //     fs.writeFile(`${fileName}.backup`, JSON.stringify(json, null, 2), (err) => {
+      //       if (err) {
+      //         log.warn(err)
+      //         log.warn('file name: ' + fileName)
+      //         rollbar.warn(err, {fileName: fileName})
+      //         dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again."))
+      //         callback(err, false, json)
+      //       } else {
+      //         dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)")})
+      //         callback(null, false, json)
+      //       }
+      //     })
+      //   }
+      // })
     }
   }
 }

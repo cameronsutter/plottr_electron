@@ -89,11 +89,11 @@ class MDdescription extends Component {
       if (!text.length) {
         text = RCE_INITIAL_VALUE
       }
-      if (typeof text == 'string') {
-        let temp = [...RCE_INITIAL_VALUE]
-        temp[0].children[0].text = text
-        text = temp
-      }
+      // if (typeof text == 'string') {
+      //   let temp = [...RCE_INITIAL_VALUE]
+      //   temp[0].children[0].text = text
+      //   text = temp
+      // }
       return <RichTextEditor
         text={text}
         onChange={this.props.onChange}

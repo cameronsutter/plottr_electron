@@ -6,7 +6,7 @@ const DomParser = require('dom-parser')
 const parser = new DomParser()
 
 function migrate (data) {
-  if (data.file && data.file.version === '2020.3.27') return
+  if (data.file && data.file.version === '2020.3.25') return
 
   var obj = _.cloneDeep(data)
 
@@ -80,7 +80,7 @@ function deserialize (el) {
     case 'body':
       return jsx('fragment', {}, children)
     case 'br':
-      return '\n'
+      return jsx('element', { type: 'paragraph' }, [{text: '\n'}])
     case 'blockquote':
       return jsx('element', { type: 'block-quote' }, children)
     case 'p':
@@ -98,15 +98,17 @@ function deserialize (el) {
     case 'h6':
       return jsx('element', {type: 'heading-six'}, children)
     case 'ul':
+      // TODO: filter out \n from children
       return jsx('element', {type: 'bulleted-list'}, children)
     case 'li':
+      // TODO: filter out \n from children
       return jsx('element', {type: 'list-item'}, children)
     case 'ol':
       return jsx('element', {type: 'numbered-list'}, children)
     case 'em':
-      return jsx('text', {italic: true})
+      return jsx('text', {italic: true, text: el.textContent})
     case 'strong':
-      return jsx('text', {bold: true})
+      return jsx('text', {bold: true, text: el.textContent})
     case 'img':
       return jsx('element', { type: 'image-link', url: el.getAttribute('src') }, children )
     case 'a':

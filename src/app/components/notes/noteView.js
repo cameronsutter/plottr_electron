@@ -9,6 +9,7 @@ import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import RichText from '../rce/RichText'
 
 class NoteView extends Component {
   constructor (props) {
@@ -58,11 +59,11 @@ class NoteView extends Component {
               onKeyPress={this.handleEnter}
               onChange={() => this.setState({unsaved: true})}
               defaultValue={note.title} style={{marginBottom: '10px'}}/>
-            <MDdescription
+            <RichText
               description={note.content}
-              onChange={(desc) => this.setState({content: desc, unsaved: true})}
-              useRCE={!this.state.hide}
-              labels={{}}
+              onChange={(desc) => this.setState({content: desc})}
+              editable={!this.state.hide}
+              autofocus={false}
               darkMode={false}
             />
           </FormGroup>

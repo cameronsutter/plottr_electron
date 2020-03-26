@@ -18,12 +18,9 @@
 @import "custom_attr_block";
 @import "verify_window";
 @import "expired_window";
-<<<<<<< HEAD
 @import "slate";
-=======
 @import "template_picker";
 @import "book";
->>>>>>> master
 
 @import "vars";
 @import "colors";
@@ -126,36 +123,6 @@ input[type="file"] {
   background-color: $blue;
 }
 
-<<<<<<< HEAD
-=======
-.CodeMirror {
-  overflow-y: auto;
-  min-height: 100px;
-}
-
-.CodeMirror-wrap {
-  border: 1px solid $gray-5;
-  border-top: none;
-  .CodeMirror-line {
-    background-color: white;
-    border: none;
-    color: $gray-0;
-  }
-  .CodeMirror-selectedtext {
-    background-color: $blue-8;
-  }
-
-  .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
-    background: none;
-    border-bottom: 1px dotted $red-5;
-  }
-
-  .CodeMirror-selectedtext.cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
-    background-color: $blue-8;
-  }
-}
-
->>>>>>> master
 .tour-helper {
   padding-right: 60px!important;
   max-width: 700px!important;

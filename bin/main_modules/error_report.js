@@ -37,7 +37,7 @@ function createErrorReport (userInfo, openWindowsStates) {
       log.warn(err)
       rollbar.warn(err)
     } else {
-      dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n('Error Report created'), detail: i18n('Plottr created a file named plottr_error_report.txt in your Documents folder')})
+      dialog.showMessageBoxSync({type: 'info', buttons: [i18n('ok')], message: i18n('Error Report created'), detail: i18n('Plottr created a file named plottr_error_report.txt in your Documents folder')})
       shell.showItemInFolder(fileName)
     }
   })

@@ -70,21 +70,13 @@
   .character-list__character-notes {
     border: 2px dashed transparent;
     display: flex;
-    justify-content: space-between;
 
-    div {
+    .character-list__character-notes__inner {
+      flex: 1;
       padding: 5px;
-      &:first-child {
-        flex: 0.5;
-        dl {
-          max-width: 300px;
-        }
-      }
-      &:last-child {
-        flex: 1;
-      }
-      .img-responsive {
-        max-width: 200px;
+      .image-circle-large {
+        margin-left: 100px;
+        margin-bottom: 20px;
       }
     }
     .glyphicon {

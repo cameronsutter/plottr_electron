@@ -356,20 +356,19 @@ function openRecentFiles () {
 }
 
 function askToSave (win, state, fileName, callback) {
-  dialog.showMessageBox(win, {type: 'question', buttons: [i18n('yes, save!'), i18n('no, just exit')], defaultId: 0, message: i18n('Would you like to save before exiting?')}, function (choice) {
-    if (choice === 0) {
-      saveFile(fileName, state, function (err) {
-        if (err) throw err
-        else {
-          if (typeof callback === 'string') win[callback]()
-          else callback()
-        }
-      })
-    } else {
-      if (typeof callback === 'string') win[callback]()
-      else callback()
-    }
-  })
+  const choice = dialog.showMessageBoxSync(win, {type: 'question', buttons: [i18n('yes, save!'), i18n('no, just exit')], defaultId: 0, message: i18n('Would you like to save before exiting?')})
+  if (choice == 0) {
+    saveFile(fileName, state, function (err) {
+      if (err) throw err
+      else {
+        if (typeof callback === 'string') win[callback]()
+        else callback()
+      }
+    })
+  } else {
+    if (typeof callback === 'string') win[callback]()
+    else callback()
+  }
 }
 
 function askToCreateFile (data = {}) {
@@ -400,13 +399,12 @@ function askToCreateFile (data = {}) {
 
 function askToOpenOrCreate () {
   dontquit = true
-  dialog.showMessageBox({type: 'question', buttons: ['open', 'new'], message: i18n('Would you like to open an existing file or start a new file?')}, (choice) => {
-    if (choice === 0) {
-      askToOpenFile()
-    } else {
-      askToCreateFile()
-    }
-  })
+  const choice = dialog.showMessageBoxSync({type: 'question', buttons: ['open', 'new'], message: i18n('Would you like to open an existing file or start a new file?')})
+  if (choice == 0) {
+    askToOpenFile()
+  } else {
+    askToCreateFile()
+  }
 }
 
 function askToOpenFile () {
@@ -653,9 +651,8 @@ function openBuyWindow () {
 }
 
 function gracefullyQuit () {
-  dialog.showMessageBox({type: 'info', buttons: [i18n('ok')], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email me at family@plottrapp.com')}, function (choice) {
-    app.quit()
-  })
+  dialog.showMessageBoxSync({type: 'info', buttons: [i18n('ok')], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email me at family@plottrapp.com')})
+  app.quit()
 }
 
 function gracefullyNotSave () {
@@ -833,7 +830,7 @@ function buildPlottrMenu () {
       click: () => {
         const licenseKey = USER_INFO.purchase ? USER_INFO.purchase.license_key : USER_INFO.license_key
         if (licenseKey) {
-          dialog.showMessageBox({type: 'info', title: i18n('Here is your license key'), message: licenseKey})
+          dialog.showMessageBoxSync({type: 'info', title: i18n('Here is your license key'), message: licenseKey})
         } else {
           dialog.showErrorBox(i18n('Error'), i18n('Could not display license key. Try again'))
         }

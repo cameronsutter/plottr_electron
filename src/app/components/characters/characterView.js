@@ -293,9 +293,7 @@ class CharacterView extends Component {
     </OverlayTrigger>
   }
 
-  renderLeftSide (shouldRender) {
-    if (!shouldRender) return null
-
+  renderLeftSide () {
     const { character } = this.props
     const customAttrNotes = this.props.customAttributes.map((attr, idx) => {
       const [attrName, attrType] = attr.split(':#:')
@@ -311,7 +309,7 @@ class CharacterView extends Component {
       </dl>
     })
 
-    return <div>
+    return <div className='character-list__character-notes__inner'>
       <Image size='large' shape='circle' imageId={character.imageId} />
       {customAttrNotes}
     </div>
@@ -336,34 +334,30 @@ class CharacterView extends Component {
         </dl>
       })
     })
-    const hasImage = character.imageId
-    return (
-      <div className={klasses} onClick={() => this.setState({editing: true})}>
-        <h4 className='secondary-text'>{character.name}</h4>
-        <div className='character-list__character-notes'>
-          { this.renderLeftSide(hasImage) }
-          <div>
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Description')}</dt>
-              <dd>{character.description}</dd>
-            </dl>
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Notes')}</dt>
-              <dd>
-                <RichText description={character.notes} darkMode={this.props.ui.darkMode} />
-              </dd>
-            </dl>
-            {templateNotes}
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Attached to')}</dt>
-              <dd>{this.renderAssociations()}</dd>
-            </dl>
-          </div>
-          { this.renderLeftSide(!hasImage) }
-          <Glyphicon glyph='pencil' />
+    return <div className={klasses} onClick={() => this.setState({editing: true})}>
+      <h4 className='secondary-text'>{character.name}</h4>
+      <div className='character-list__character-notes'>
+        { this.renderLeftSide() }
+        <div className='character-list__character-notes__inner'>
+          <dl className='dl-horizontal'>
+            <dt>{i18n('Description')}</dt>
+            <dd>{character.description}</dd>
+          </dl>
+          <dl className='dl-horizontal'>
+            <dt>{i18n('Notes')}</dt>
+            <dd>
+              <RichText description={character.notes} darkMode={this.props.ui.darkMode} />
+            </dd>
+          </dl>
+          {templateNotes}
+          <dl className='dl-horizontal'>
+            <dt>{i18n('Attached to')}</dt>
+            <dd>{this.renderAssociations()}</dd>
+          </dl>
         </div>
+        <Glyphicon glyph='pencil' />
       </div>
-    )
+    </div>
   }
 
   render () {

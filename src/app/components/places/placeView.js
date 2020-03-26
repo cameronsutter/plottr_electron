@@ -8,6 +8,7 @@ import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
 import MDdescription from 'components/mdDescription'
+import RichText from '../rce/RichText'
 
 class PlaceView extends Component {
   constructor (props) {
@@ -86,11 +87,11 @@ class PlaceView extends Component {
                 onKeyPress={this.handleEnter}
                 defaultValue={place.description} />
               <ControlLabel>{i18n('Notes')}</ControlLabel>
-              <MDdescription
+              <RichText
                 description={place.notes}
                 onChange={(desc) => this.setState({notes: desc})}
-                useRCE={true}
-                labels={{}}
+                editable={true}
+                autofocus={false}
                 darkMode={false}
               />
             </FormGroup>
@@ -188,10 +189,10 @@ class PlaceView extends Component {
         <dl className='dl-horizontal'>
           <dt>{i18n('Notes')}</dt>
           <dd>
-            <MDdescription
-              description={place.notes || ''}
-              labels={{}}
-              darkMode={false}
+            <RichText
+              description={place.notes}
+              editable={false}
+              darkMode={this.props.ui.darkMode}
             />
           </dd>
         </dl>

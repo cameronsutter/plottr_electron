@@ -6,6 +6,9 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  &.readonly {
+    margin: 0;
+  }
 }
 
 .slate-editor__toolbar-wrapper {
@@ -34,6 +37,7 @@
 
   &.readonly {
     border: none;
+    padding: 0;
   }
 
   img.slate-editor__image-link {

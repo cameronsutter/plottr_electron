@@ -11,6 +11,7 @@ import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 're
 import SelectList from 'components/selectList'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import RichText from '../rce/RichText'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -44,29 +45,8 @@ class CardDialog extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.card.title
-    var newDescription = this.state.description || this.props.card.description
-    this.saveCreatedLabels(newDescription)
-    this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
-  }
-
-  saveCreatedLabels (desc) {
-    var regex = /{{([\w\s]*)}}/gi
-    var matches
-    while ((matches = regex.exec(desc)) !== null) {
-      var labelText = matches[1].toLowerCase()
-      if (this.props.labelMap[labelText] !== undefined) {
-        const { id, type } = this.props.labelMap[labelText]
-        if (!this.alreadyHasLabel(id, type)) {
-          this.props.actions[`add${type}`](this.props.card.id, id)
-        }
-      }
-    }
-  }
-
-  alreadyHasLabel(id, type) {
-    let attr = `${type.toLowerCase()}s`
-    return this.props.card[attr].includes(id)
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
+    this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
   }
 
   handleEnter = (event) => {
@@ -144,11 +124,10 @@ class CardDialog extends Component {
     var description = this.props.card.description
 
     return (
-      <MDdescription
+      <RichText
         description={description}
         onChange={(desc) => this.setState({description: desc})}
-        useRCE={true}
-        labels={this.props.labelMap}
+        editable={true}
         darkMode={this.props.ui.darkMode}
       />
     )
@@ -233,7 +212,6 @@ CardDialog.propTypes = {
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
-  labelMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }
 

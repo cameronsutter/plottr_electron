@@ -9,6 +9,7 @@ import { ButtonToolbar, Button, FormControl, FormGroup,
 import * as CharacterActions from 'actions/characters'
 import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import RichText from '../rce/RichText'
 
 class CharacterView extends Component {
   constructor (props) {
@@ -80,12 +81,12 @@ class CharacterView extends Component {
       if (attrType == 'paragraph') {
         return <div key={idx}>
           <label>{attrName}</label>
-          <MDdescription
+          <RichText
             description={this.props.character[attrName]}
             onChange={(desc) => this.handleAttrDescriptionChange(attrName, desc)}
-            useRCE={true}
-            labels={{}}
-            darkMode={false}
+            editable
+            autofocus={false}
+            darkMode={this.props.ui.darkMode}
           />
         </div>
       } else {
@@ -120,12 +121,12 @@ class CharacterView extends Component {
                 onKeyPress={this.handleEnter}
                 defaultValue={character.description} />
               <ControlLabel>{i18n('Notes')}</ControlLabel>
-              <MDdescription
+              <RichText
                 description={character.notes}
                 onChange={(desc) => this.setState({notes: desc})}
-                useRCE={true}
-                labels={{}}
-                darkMode={false}
+                editable
+                autofocus={false}
+                darkMode={this.props.ui.darkMode}
               />
             </FormGroup>
           </div>
@@ -210,11 +211,7 @@ class CharacterView extends Component {
       let desc = <dd>{character[attrName]}</dd>
       if (attrType == 'paragraph') {
         desc = <dd>
-          <MDdescription
-            description={character[attrName] || ''}
-            labels={{}}
-            darkMode={false}
-          />
+          <RichText description={character[attrName]} darkMode={this.props.ui.darkMode} />
         </dd>
       }
       return <dl key={idx} className='dl-horizontal'>
@@ -233,11 +230,7 @@ class CharacterView extends Component {
         <dl className='dl-horizontal'>
           <dt>{i18n('Notes')}</dt>
           <dd>
-            <MDdescription
-              description={character.notes || ''}
-              labels={{}}
-              darkMode={false}
-            />
+            <RichText description={character.notes} darkMode={this.props.ui.darkMode} />
           </dd>
         </dl>
         <dl className='dl-horizontal'>

@@ -42,20 +42,6 @@ class TimelineTable extends Component {
     return filtered
   }
 
-  labelMap () {
-    var mapping = {}
-    this.props.tags.forEach((t) => {
-      mapping[t.title.toLowerCase()] = {color: t.color, id: t.id, type: 'Tag'}
-    })
-    this.props.characters.forEach((c) => {
-      mapping[c.name.toLowerCase()] = {color: c.color, id: c.id, type: 'Character'}
-    })
-    this.props.places.forEach((p) => {
-      mapping[p.name.toLowerCase()] = {color: p.color, id: p.id, type: 'Place'}
-    })
-    return mapping
-  }
-
   cards (lineId) {
     var cards = _.filter(this.props.cards, (card) => {
       return card.lineId === lineId
@@ -111,12 +97,11 @@ class TimelineTable extends Component {
 
   renderLines () {
     const sceneMap = this.sceneMapping()
-    const labelMap = this.labelMap()
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map(line => {
       return <Row key={`lineId-${line.id}`}>
         <LineTitleCell line={line} handleReorder={this.handleReorderLines}/>
-        { this.renderCardsByScene(line, sceneMap, labelMap) }
+        { this.renderCardsByScene(line, sceneMap) }
       </Row>
     }).concat(
       <Row key='insert-line'>
@@ -136,7 +121,6 @@ class TimelineTable extends Component {
 
   renderScenes () {
     const lineMap = this.lineMapping()
-    const labelMap = this.labelMap()
     const scenes = _.sortBy(this.props.scenes, 'position')
     const { orientation } = this.props.ui
     return scenes.map(scene => {
@@ -150,7 +134,7 @@ class TimelineTable extends Component {
       </Row>,
       <Row key={`sceneId-${scene.id}-insert`}>
         <SceneTitleCell scene={scene} handleReorder={this.handleReorderScenes} />
-        { this.renderCardsByLine(scene, lineMap, labelMap) }
+        { this.renderCardsByLine(scene, lineMap) }
       </Row>
       ]
     }).concat(
@@ -168,7 +152,7 @@ class TimelineTable extends Component {
     }
   }
 
-  renderCardsByScene (line, sceneMap, labelMap) {
+  renderCardsByScene (line, sceneMap) {
     const { orientation } = this.props.ui
     return Object.keys(sceneMap).flatMap(scenePosition => {
       let filtered = false
@@ -183,7 +167,6 @@ class TimelineTable extends Component {
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
           sceneId={sceneId} lineId={line.id}
-          labelMap={labelMap}
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard sceneId={sceneId} lineId={line.id}
@@ -194,7 +177,7 @@ class TimelineTable extends Component {
     })
   }
 
-  renderCardsByLine (scene, lineMap, labelMap) {
+  renderCardsByLine (scene, lineMap) {
     return Object.keys(lineMap).flatMap(linePosition => {
       let filtered = false
       const cells = []
@@ -207,7 +190,6 @@ class TimelineTable extends Component {
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
           sceneId={scene.id} lineId={line.id}
-          labelMap={labelMap}
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard sceneId={scene.id} lineId={line.id}
@@ -238,9 +220,6 @@ TimelineTable.propTypes = {
   scenes: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
-  tags: PropTypes.array.isRequired,
-  characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   filter: PropTypes.object,
   filterIsEmpty: PropTypes.bool,
@@ -251,9 +230,6 @@ function mapStateToProps (state) {
     scenes: state.scenes,
     lines: state.lines,
     cards: state.cards,
-    tags: state.tags,
-    characters: state.characters,
-    places: state.places,
     ui: state.ui,
   }
 }

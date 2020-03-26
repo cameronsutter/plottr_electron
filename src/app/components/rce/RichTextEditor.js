@@ -46,8 +46,8 @@ const RichTextEditor = (props) => {
   }
   return (
     <Slate editor={editor} value={value} onChange={updateValue} key={Math.random().toString(16)}>
-      <div className='slate-editor__wrapper'>
-        <div className={cx('slate-editor__toolbar-wrapper', {readonly: false})}>
+      <div className={cx('slate-editor__wrapper', props.className)}>
+        <div className='slate-editor__toolbar-wrapper'>
           <ToolBar>
             <ButtonGroup>
               <MarkButton mark="bold" icon={<FaBold/>} />
@@ -67,7 +67,7 @@ const RichTextEditor = (props) => {
             </ButtonGroup>
           </ToolBar>
         </div>
-        <div className={cx('slate-editor__editor', {readonly: false})}>
+        <div className='slate-editor__editor'>
           <Editable
             spellCheck
             {...otherProps}

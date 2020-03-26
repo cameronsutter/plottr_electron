@@ -21,20 +21,6 @@ class OutlineView extends Component {
     return mapping
   }
 
-  labelMap () {
-    var mapping = {}
-    this.props.tags.forEach((t) => {
-      mapping[t.title.toLowerCase()] = {color: t.color, id: t.id, type: 'Tag'}
-    })
-    this.props.characters.forEach((c) => {
-      mapping[c.name.toLowerCase()] = {color: c.color, id: c.id, type: 'Character'}
-    })
-    this.props.places.forEach((p) => {
-      mapping[p.name.toLowerCase()] = {color: p.color, id: p.id, type: 'Place'}
-    })
-    return mapping
-  }
-
   lineIsVisible (id) {
     return this.state.currentLine !== null ? id === this.state.currentLine : true
   }
@@ -125,7 +111,7 @@ class OutlineView extends Component {
   renderScenes (cardMapping) {
     const scenes = _.sortBy(this.props.scenes, 'position')
     return scenes.map(s =>
-      <SceneView key={s.id} scene={s} cards={cardMapping[s.id]} labelMap={this.labelMap()} waypoint={this.setActive} />
+      <SceneView key={s.id} scene={s} cards={cardMapping[s.id]} waypoint={this.setActive} />
     )
   }
 

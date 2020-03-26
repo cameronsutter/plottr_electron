@@ -25,7 +25,7 @@ const RichTextViewer = (props) => {
 
   return (
     <Slate editor={editor} value={value} key={Math.random().toString(16)}>
-      <div className='slate-editor__wrapper'>
+      <div className={cx('slate-editor__wrapper', props.className, {readonly: true})}>
         <div className={cx('slate-editor__editor', {readonly: true})}>
           <Editable
             readOnly

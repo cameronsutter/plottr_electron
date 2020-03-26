@@ -6,7 +6,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -41,6 +41,23 @@
             {
               "text": "cool",
               "bold": true
+            },
+            {
+              "text": "."
+            },
+            {
+              "text": " ",
+              "bold": true
+            },
+            {
+              "text": "super, duper "
+            },
+            {
+              "text": "cool",
+              "bold": true
+            },
+            {
+              "text": ". Right?"
             }
           ]
         }
@@ -280,7 +297,7 @@
               "bold": true
             },
             {
-              "text": " cool"
+              "text": " cool, right?"
             }
           ]
         }
@@ -531,7 +548,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Desciption of cool thing happening {{humor}}"
+              "text": "Desciption of cool thing happening"
             }
           ]
         }
@@ -554,7 +571,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Desciption of cool thing happening to {{main character}}"
+              "text": "Desciption of cool thing happening to Main Character"
             }
           ]
         }
@@ -592,7 +609,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "6 years after defeat Anna, Princess of "
+              "text": "6 years after defeat Anna, Princess of Lorem Ipsum"
             }
           ]
         }
@@ -1728,7 +1745,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}"
+              "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper."
             }
           ]
         },
@@ -1744,7 +1761,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Nullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. {{humor}} Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl. {{third place}}"
+              "text": "Nullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl."
             }
           ]
         }

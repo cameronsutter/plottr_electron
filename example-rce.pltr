@@ -41,23 +41,6 @@
             {
               "text": "cool",
               "bold": true
-            },
-            {
-              "text": "."
-            },
-            {
-              "text": " ",
-              "bold": true
-            },
-            {
-              "text": "super, duper "
-            },
-            {
-              "text": "cool",
-              "bold": true
-            },
-            {
-              "text": ". Right?"
             }
           ]
         }
@@ -297,7 +280,7 @@
               "bold": true
             },
             {
-              "text": " cool, right?"
+              "text": " cool"
             }
           ]
         }
@@ -548,7 +531,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Desciption of cool thing happening"
+              "text": "Desciption of cool thing happening {{humor}}"
             }
           ]
         }
@@ -571,7 +554,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Desciption of cool thing happening to Main Character"
+              "text": "Desciption of cool thing happening to {{main character}}"
             }
           ]
         }
@@ -609,7 +592,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "6 years after defeat Anna, Princess of Lorem Ipsum"
+              "text": "6 years after defeat Anna, Princess of "
             }
           ]
         }
@@ -1737,7 +1720,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper."
+              "text": ""
             }
           ]
         },
@@ -1745,7 +1728,23 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Nullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl."
+              "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Nullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. {{humor}} Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl. {{third place}}"
             }
           ]
         }
@@ -1900,12 +1899,7 @@
               "type": "list-item",
               "children": [
                 {
-                  "type": "paragraph",
-                  "children": [
-                    {
-                      "text": "Anna says they need to speak, but the walls have ears and eyes (literally, they do), so they go up to the surface, when asked where they are going, Jared says he's taking his queen to teach her some manners"
-                    }
-                  ]
+                  "text": "Anna says they need to speak, but the walls have ears and eyes (literally, they do), so they go up to the surface, when asked where they are going, Jared says he's taking his queen to teach her some manners"
                 }
               ]
             },
@@ -1913,12 +1907,7 @@
               "type": "list-item",
               "children": [
                 {
-                  "type": "paragraph",
-                  "children": [
-                    {
-                      "text": "Up on the surface, Anna and Jared talk"
-                    }
-                  ]
+                  "text": "Up on the surface, Anna and Jared talk"
                 }
               ]
             },
@@ -1934,7 +1923,14 @@
               "type": "list-item",
               "children": [
                 {
-                  "text": "Jared wonders what is up with Anna. Why is she being nice now? blushing, asks how she feel about being his \"dark queen\""
+                  "text": "Jared "
+                },
+                {
+                  "text": "wonders what is up",
+                  "bold": true
+                },
+                {
+                  "text": " with Anna. Why is she being nice now? blushing, asks how she feel about being his \"dark queen\""
                 }
               ]
             },
@@ -1950,12 +1946,7 @@
               "type": "list-item",
               "children": [
                 {
-                  "type": "paragraph",
-                  "children": [
-                    {
-                      "text": "Valia says she brought Jared here to help her defeat Rivan, who is even now trying to destroy her subjects in Valior and send the world into a neverending chaos of war,"
-                    }
-                  ]
+                  "text": "Valia says she brought Jared here to help her defeat Rivan, who is even now trying to destroy her subjects in Valior and send the world into a neverending chaos of war,"
                 }
               ]
             },
@@ -1963,12 +1954,7 @@
               "type": "list-item",
               "children": [
                 {
-                  "type": "paragraph",
-                  "children": [
-                    {
-                      "text": "Jared is upset Valia brought him here, he had enough problems at home"
-                    }
-                  ]
+                  "text": "Jared is upset Valia brought him here, he had enough problems at home"
                 }
               ]
             },
@@ -2016,15 +2002,15 @@
               "type": "list-item",
               "children": [
                 {
-                  "text": "She mentions he is now that he has her favor and they have the advantage of stealth and deception, but they need to act now. they have very little time left before Rivan discovers both of their fraud. When that happens, both will be in mortal danger.\n"
-                },
+                  "text": "She mentions he is now that he has her favor and they have the advantage of stealth and deception, but they need to act now. they have very little time left before Rivan discovers both of their fraud. When that happens, both will be in mortal danger."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
                 {
-                  "type": "heading-two",
-                  "children": [
-                    {
-                      "text": "- Jared asks her what her plan is."
-                    }
-                  ]
+                  "text": "Jared asks her what her plan is."
                 }
               ]
             }
@@ -2507,12 +2493,7 @@
               "type": "list-item",
               "children": [
                 {
-                  "type": "paragraph",
-                  "children": [
-                    {
-                      "text": "After defeating the last Dark Lord, Kevan is on a grand hunt alongside his Paladins to vanquish or capture what's left of Rivan's hosts, in hopes of stopping them from ever gathering strength again. He lost too many friends in the last war. "
-                    }
-                  ]
+                  "text": "After defeating the last Dark Lord, Kevan is on a grand hunt alongside his Paladins to vanquish or capture what's left of Rivan's hosts, in hopes of stopping them from ever gathering strength again. He lost too many friends in the last war. "
                 }
               ]
             },
@@ -2520,12 +2501,7 @@
               "type": "list-item",
               "children": [
                 {
-                  "type": "paragraph",
-                  "children": [
-                    {
-                      "text": "Currently, he and several of his knights are responding to a tip that a crafty hoglin has been sneaking up to the city of Bask and spying."
-                    }
-                  ]
+                  "text": "Currently, he and several of his knights are responding to a tip that a crafty hoglin has been sneaking up to the city of Bask and spying."
                 }
               ]
             },
@@ -2683,14 +2659,6 @@
                   "text": "step 4"
                 }
               ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "step 5"
-                }
-              ]
             }
           ]
         },
@@ -2820,7 +2788,7 @@
       ],
       "description": "",
       "id": 0,
-      "lastEdited": 1585229927986,
+      "lastEdited": 1583966742336,
       "places": [
         0
       ],

@@ -8,7 +8,7 @@ const parser = new DomParser()
 const NEWLINES = ['\n\n', '\r\n', '\r\r', '\r\n\r\n']
 
 function migrate (data) {
-  if (data.file && data.file.version === '2020.3.25') return
+  if (data.file && data.file.version === '2020.3.26') return data
 
   var obj = _.cloneDeep(data)
 
@@ -58,13 +58,13 @@ function migrate (data) {
 }
 
 function convert(text) {
+  if (text == '') return [{ children: [{ text: '' }] }]
+
   const html = md.makeHtml(text)
   const dom = parser.parseFromString('<body>' + html + '</body>')
   const slate = deserialize(dom.getElementsByTagName('body')[0])
   if (!slate.length) {
-    slate.push({
-      children: [{ text: '' }],
-    })
+    slate.push({ children: [{ text: '' }] })
   }
   return slate
 }
@@ -104,11 +104,11 @@ function deserialize (el) {
     case 'h6':
       return jsx('element', {type: 'heading-six'}, children)
     case 'ul':
-      return jsx('element', {type: 'bulleted-list'}, children.filter(n => n != '\n')) // check for \r in windows
+      return jsx('element', {type: 'bulleted-list'}, children.filter(node => node != '\n')) // check for \r in windows
     case 'li':
-      return jsx('element', {type: 'list-item'}, children)
+      return jsx('element', {type: 'list-item'}, fixLIchildren(children))
     case 'ol':
-      return jsx('element', {type: 'numbered-list'}, children.filter(n => n != '\n')) // check for \r in windows
+      return jsx('element', {type: 'numbered-list'}, children.filter(node => node != '\n')) // check for \r in windows
     case 'em':
       return jsx('text', {italic: true, text: el.textContent})
     case 'strong':
@@ -122,6 +122,14 @@ function deserialize (el) {
     default:
       return el.textContent
   }
+}
+
+function fixLIchildren (children) {
+  return children.map(node => {
+    if (node.type) return node.children.map(child => child.text).join(' ')
+
+    return node
+  })
 }
 
 module.exports = migrate

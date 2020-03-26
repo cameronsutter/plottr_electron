@@ -9,7 +9,7 @@ import { chapterTitle } from '../../helpers/chapters'
 class ChapterView extends Component {
   renderCards () {
     return this.props.cards.map(c =>
-      <CardView key={c.id} card={c} labelMap={this.props.labelMap} />
+      <CardView key={c.id} card={c} />
     )
   }
 
@@ -31,7 +31,6 @@ ChapterView.propTypes = {
   chapter: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
-  labelMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }
 

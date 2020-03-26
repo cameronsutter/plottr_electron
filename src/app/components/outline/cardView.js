@@ -6,9 +6,9 @@ import { bindActionCreators } from 'redux'
 import { FormControl, FormGroup, ControlLabel, ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import * as CardActions from 'actions/cards'
-import MDdescription from 'components/mdDescription'
 import TagLabel from 'components/tagLabel'
 import i18n from 'format-message'
+import RichText from '../rce/RichText'
 import cx from 'classnames'
 import Image from 'components/images/Image'
 
@@ -24,29 +24,8 @@ class CardView extends Component {
 
   saveEdit = () => {
     var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.card.title
-    var newDescription = this.state.description
-    this.saveCreatedLabels(newDescription)
-    this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
+    this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
     this.setState({editing: false})
-  }
-
-  saveCreatedLabels (desc) {
-    var regex = /{{([\w\s]*)}}/gi
-    var matches
-    while ((matches = regex.exec(desc)) !== null) {
-      var labelText = matches[1].toLowerCase()
-      if (this.props.labelMap[labelText] !== undefined) {
-        const { id, type } = this.props.labelMap[labelText]
-        if (!this.alreadyHasLabel(id, type)) {
-          this.props.actions[`add${type}`](this.props.card.id, id)
-        }
-      }
-    }
-  }
-
-  alreadyHasLabel (id, type) {
-    let attr = `${type.toLowerCase()}s`
-    return this.props.card[attr].includes(id)
   }
 
   handleEnter = (event) => {
@@ -87,12 +66,11 @@ class CardView extends Component {
     const { description } = this.props.card
     return (
       <div className='outline__description__editing' onClick={this.editOnClick}>
-        <MDdescription
+        <RichText
           className='outline__description'
           onChange={(desc) => this.setState({description: desc})}
           description={description}
-          useRCE={this.state.editing}
-          labels={this.props.labelMap}
+          editable={this.state.editing}
           darkMode={this.props.ui.darkMode}
         />
         {this.state.editing && <ButtonToolbar className='card-dialog__button-bar'>
@@ -176,7 +154,6 @@ CardView.propTypes = {
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
-  labelMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   images: PropTypes.object,

@@ -8,7 +8,7 @@ import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
    Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
-import MDdescription from 'components/mdDescription'
+import RichText from '../rce/RichText'
 import SETTINGS from '../../../common/utils/settings'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
@@ -119,11 +119,11 @@ class PlaceView extends Component {
             { this.renderEditingImage() }
             <FormGroup>
               <ControlLabel>{i18n('Notes')}</ControlLabel>
-              <MDdescription
+              <RichText
                 description={place.notes}
                 onChange={(desc) => this.setState({notes: desc})}
-                useRCE={true}
-                labels={{}}
+                editable
+                autofocus={false}
                 darkMode={false}
               />
             </FormGroup>
@@ -224,10 +224,10 @@ class PlaceView extends Component {
             <dl className='dl-horizontal'>
               <dt>{i18n('Notes')}</dt>
               <dd>
-                <MDdescription
-                  description={place.notes || ''}
-                  labels={{}}
-                  darkMode={false}
+                <RichText
+                  description={place.notes}
+                  editable={false}
+                  darkMode={this.props.ui.darkMode}
                 />
               </dd>
             </dl>

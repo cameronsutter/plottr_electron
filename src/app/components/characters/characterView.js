@@ -8,8 +8,8 @@ import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup,
   ControlLabel, Tooltip, OverlayTrigger, Glyphicon } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
-import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import RichText from '../rce/RichText'
 import SETTINGS from '../../../common/utils/settings'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
@@ -138,12 +138,12 @@ class CharacterView extends Component {
       if (attrType == 'paragraph') {
         return <div key={idx}>
           <label>{attrName}</label>
-          <MDdescription
+          <RichText
             description={this.props.character[attrName]}
             onChange={(desc) => this.handleAttrDescriptionChange(attrName, desc)}
-            useRCE={true}
-            labels={{}}
-            darkMode={false}
+            editable
+            autofocus={false}
+            darkMode={this.props.ui.darkMode}
           />
         </div>
       } else {
@@ -211,12 +211,12 @@ class CharacterView extends Component {
             { this.renderEditingImage() }
             <FormGroup>
               <ControlLabel>{i18n('Notes')}</ControlLabel>
-              <MDdescription
+              <RichText
                 description={character.notes}
                 onChange={(desc) => this.setState({notes: desc})}
-                useRCE={true}
-                labels={{}}
-                darkMode={false}
+                editable
+                autofocus={false}
+                darkMode={this.props.ui.darkMode}
               />
             </FormGroup>
             { this.renderEditingTemplates() }
@@ -302,11 +302,7 @@ class CharacterView extends Component {
       let desc = <dd>{character[attrName]}</dd>
       if (attrType == 'paragraph') {
         desc = <dd>
-          <MDdescription
-            description={character[attrName] || ''}
-            labels={{}}
-            darkMode={false}
-          />
+          <RichText description={character[attrName]} darkMode={this.props.ui.darkMode} />
         </dd>
       }
       return <dl key={idx} className='dl-horizontal'>
@@ -325,17 +321,13 @@ class CharacterView extends Component {
     const klasses = cx('character-list__character', {
       darkmode: this.props.ui.darkMode,
     })
-    const { character, images } = this.props
+    const { character } = this.props
     const templateNotes = character.templates.flatMap(t => {
       return t.attributes.map(attr => {
         let val = <dd>{attr.value}</dd>
         if (attr.type == 'paragraph') {
           val = <dd>
-            <MDdescription
-              description={attr.value || ''}
-              labels={{}}
-              darkMode={false}
-            />
+            <RichText description={attr.value} darkMode={this.props.ui.darkMode} />
           </dd>
         }
         return <dl key={attr.name} className='dl-horizontal'>
@@ -358,12 +350,7 @@ class CharacterView extends Component {
             <dl className='dl-horizontal'>
               <dt>{i18n('Notes')}</dt>
               <dd>
-                <MDdescription
-                  description={character.notes || ''}
-                  labels={{}}
-                  darkMode={false}
-                  numOfRows={'15'}
-                />
+                <RichText description={character.notes} darkMode={this.props.ui.darkMode} />
               </dd>
             </dl>
             {templateNotes}

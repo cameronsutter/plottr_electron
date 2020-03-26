@@ -194,9 +194,6 @@
   "Custom Attributes for Places": {
     "message": "Custom Attributes for Places"
   },
-  "Cut": {
-    "message": "Cut"
-  },
   "Dark Mode": {
     "message": "Dark Mode"
   },
@@ -256,6 +253,9 @@
   },
   "Enter a customer service code": {
     "message": "Enter a customer service code"
+  },
+  "Enter the URL of the link:": {
+    "message": "Enter the URL of the link:"
   },
   "Error": {
     "message": "Error"
@@ -404,6 +404,9 @@
   "Notes are filtered": {
     "message": "Notes are filtered"
   },
+  "OK": {
+    "message": "OK"
+  },
   "Open": {
     "message": "Open"
   },
@@ -541,6 +544,9 @@
   },
   "Story name": {
     "message": "Story name"
+  },
+  "Subtitle": {
+    "message": "Subtitle"
   },
   "TRIAL Version": {
     "message": "TRIAL Version"
@@ -709,6 +715,9 @@
   },
   "description": {
     "message": "description"
+  },
+  "enter some text...": {
+    "message": "enter some text..."
   },
   "hex code or name": {
     "message": "hex code or name"

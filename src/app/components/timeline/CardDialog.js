@@ -10,8 +10,9 @@ import * as CardActions from 'actions/cards'
 import * as UIActions from 'actions/ui'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import SelectList from 'components/selectList'
-import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import cx from 'classnames'
+import RichText from '../rce/RichText'
 import { chapterTitle } from '../../helpers/chapters'
 import { chaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
@@ -22,7 +23,8 @@ class CardDialog extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      description: props.card.description
+      description: props.card.description,
+      editing: false,
     }
   }
 
@@ -32,6 +34,11 @@ class CardDialog extends Component {
 
   componentDidMount () {
     window.SCROLLWITHKEYS = false
+    // this is a hack
+    // must do this so the RichText editing works
+    // otherwise, throws this: addRange(): The given range isn't in document.
+    // 400 is the minimum
+    setTimeout(() => {this.setState({editing: true})}, 400)
   }
 
   componentWillUnmount () {
@@ -52,29 +59,8 @@ class CardDialog extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.card.title
-    var newDescription = this.state.description || this.props.card.description
-    this.saveCreatedLabels(newDescription)
-    this.props.actions.editCard(this.props.card.id, newTitle, newDescription)
-  }
-
-  saveCreatedLabels (desc) {
-    var regex = /{{([\w\s]*)}}/gi
-    var matches
-    while ((matches = regex.exec(desc)) !== null) {
-      var labelText = matches[1].toLowerCase()
-      if (this.props.labelMap[labelText] !== undefined) {
-        const { id, type } = this.props.labelMap[labelText]
-        if (!this.alreadyHasLabel(id, type)) {
-          this.props.actions[`add${type}`](this.props.card.id, id)
-        }
-      }
-    }
-  }
-
-  alreadyHasLabel(id, type) {
-    let attr = `${type.toLowerCase()}s`
-    return this.props.card[attr].includes(id)
+    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
+    this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
   }
 
   handleEnter = (event) => {
@@ -167,17 +153,9 @@ class CardDialog extends Component {
   }
 
   renderDescription () {
-    var description = this.props.card.description
+    if (!this.state.editing) return null
 
-    return (
-      <MDdescription
-        description={description}
-        onChange={(desc) => this.setState({description: desc})}
-        useRCE={true}
-        labels={this.props.labelMap}
-        darkMode={this.props.ui.darkMode}
-      />
-    )
+    return
   }
 
   renderBookDropdown () {
@@ -251,20 +229,24 @@ class CardDialog extends Component {
   }
 
   render () {
-    let klasses = 'card-dialog'
-    if (this.props.ui.darkMode) {
-      klasses += ' darkmode'
+    const { card, ui } = this.props
+    if (ui.darkMode) {
       customStyles.content.backgroundColor = '#888'
     }
     return (
       <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
-        <div className={klasses}>
+        <div className={cx('card-dialog', {darkmode: ui.darkMode})}>
           <div className='card-dialog__body'>
             {this.renderLeftSide()}
             <div className='card-dialog__description'>
               {this.renderTitle()}
               <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
-              {this.renderDescription()}
+              <RichText
+                description={card.description}
+                onChange={(desc) => this.setState({description: desc})}
+                editable={this.state.editing}
+                darkMode={ui.darkMode}
+              />
             </div>
           </div>
           {this.renderButtonBar()}
@@ -285,7 +267,6 @@ CardDialog.propTypes = {
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
-  labelMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   books: PropTypes.object.isRequired,
 }

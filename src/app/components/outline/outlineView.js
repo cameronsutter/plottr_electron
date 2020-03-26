@@ -28,20 +28,6 @@ class OutlineView extends Component {
     }, {})
   }
 
-  labelMap () {
-    var mapping = {}
-    this.props.tags.forEach((t) => {
-      mapping[t.title.toLowerCase()] = {color: t.color, id: t.id, type: 'Tag'}
-    })
-    this.props.characters.forEach((c) => {
-      mapping[c.name.toLowerCase()] = {color: c.color, id: c.id, type: 'Character'}
-    })
-    this.props.places.forEach((p) => {
-      mapping[p.name.toLowerCase()] = {color: p.color, id: p.id, type: 'Place'}
-    })
-    return mapping
-  }
-
   lineIsHidden (line) {
     if (!this.state.currentLine) return false
     return line.id != this.state.currentLine
@@ -131,7 +117,7 @@ class OutlineView extends Component {
   renderChapters (cardMapping) {
     const chapters = _.sortBy(this.props.chapters, 'position')
     return chapters.map(ch =>
-      <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} labelMap={this.labelMap()} waypoint={this.setActive} />
+      <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} />
     )
   }
 
@@ -156,9 +142,6 @@ OutlineView.propTypes = {
   chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
-  tags: PropTypes.array.isRequired,
-  characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
 }
 
@@ -167,9 +150,6 @@ function mapStateToProps (state) {
     chapters: chaptersByBookSelector(state),
     lines: linesByBookSelector(state),
     cards: state.cards,
-    tags: state.tags,
-    characters: state.characters,
-    places: state.places,
     ui: state.ui,
   }
 }

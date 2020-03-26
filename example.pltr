@@ -153,6 +153,25 @@
       "templates": [],
       "title": "card"
     },
+    "characterSort": "name~asc",
+    "currentView": "notes",
+    "darkMode": false,
+    "noteFilter": null,
+    "noteSort": "title~asc",
+    "orientation": "horizontal",
+    "placeFilter": null,
+    "placeSort": "name~asc",
+    "zoomIndex": 4,
+    "zoomState": null
+  },
+  "file": {
+    "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
+    "loaded": true,
+    "dirty": true,
+    "version": "2020.3.16"
+  },
+  "storyName": "The Awesome Prison Mansion",
+  "places": [
     {
       "beatId": null,
       "bookId": null,
@@ -1839,64 +1858,136 @@
   ],
   "tags": [
     {
-      "color": "firebrick",
+      "color": "#6cace4",
+      "id": 27,
+      "position": 0,
+      "title": "Main Story Arc"
+    },
+    {
+      "color": "#e5554f",
+      "id": 29,
+      "position": 1,
+      "title": "Kevan"
+    },
+    {
+      "color": "#ff7f32",
+      "id": 33,
+      "position": 2,
+      "title": "Anna"
+    },
+    {
+      "color": "#78be20",
+      "id": 28,
+      "position": 3,
+      "title": "Samuel Zorfert"
+    },
+    {
+      "color": "darkorchid",
+      "id": 36,
+      "position": 4,
+      "title": "Bimph"
+    },
+    {
+      "color": "#ffc72c",
+      "id": 34,
+      "position": 5,
+      "title": "Rivab"
+    },
+    {
+      "color": "DeepPink",
+      "id": 35,
+      "position": 6,
+      "title": "Baltazaar"
+    }
+  ],
+  "customAttributes": {
+    "characters": [
+      "age",
+      "race",
+      "family:#:paragraph"
+    ],
+    "places": [
+      "weather"
+    ],
+    "cards": [],
+    "scenes": [],
+    "lines": []
+  },
+  "notes": [
+    {
+      "characters": [
+        1,
+        0
+      ],
+      "content": "- step 1\n- step 2\n- step 3\n- step 4\n\nsome **bold** text\n\n# heading1\n## heading2\n### heading3\n1. something\n1. something else\n\nsome *italics* here",
+      "description": "",
       "id": 0,
-      "title": "awesomeness"
+      "lastEdited": 1583966742336,
+      "places": [
+        0
+      ],
+      "tags": [
+        4,
+        3,
+        1,
+        0
+      ],
+      "title": "Another Note"
     },
     {
-      "color": "hotpink",
+      "characters": [
+        2
+      ],
+      "content": "- step 1\n- step 2\n- step 3",
       "id": 1,
-      "title": "happy"
+      "lastEdited": 1493245375389,
+      "places": [
+        0,
+        2
+      ],
+      "tags": [
+        3,
+        0,
+        6
+      ],
+      "title": "Brainstorming"
     },
     {
-      "color": "crimson",
-      "id": 2,
-      "title": "sad"
-    },
-    {
-      "color": "black",
+      "characters": [],
+      "content": "This is a great place, really",
       "id": 3,
-      "title": "scary"
+      "lastEdited": 1559310452951,
+      "places": [
+        0
+      ],
+      "tags": [],
+      "title": "note about First Place"
     },
     {
-      "color": "blueviolet",
+      "characters": [
+        1
+      ],
+      "content": "not really, but oh yes it is",
       "id": 4,
-      "title": "wonder"
+      "lastEdited": 1559569582486,
+      "places": [],
+      "tags": [],
+      "title": "something cool"
     },
     {
-      "color": "lavender",
+      "characters": [
+        2
+      ],
+      "content": "here is some note content",
       "id": 5,
-      "title": "romance"
-    },
-    {
-      "color": "orange",
-      "id": 6,
-      "title": "humor"
-    },
-    {
-      "color": "cornflowerblue",
-      "id": 7,
-      "title": "action"
-    },
-    {
-      "color": null,
-      "id": 8,
-      "title": "nocolors"
-    },
-    {
-      "color": "black",
-      "id": 9,
-      "title": "horror"
-    },
-    {
-      "color": "darkorange",
-      "id": 10,
-      "title": "fun"
-    },
-    {
-      "color": null,
-      "id": 11,
-      "title": "cool"
+      "lastEdited": 1581546816024,
+      "places": [
+        2
+      ],
+      "tags": [
+        10
+      ],
+      "title": "a new note"
     }
   ],
   "ui": {

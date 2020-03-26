@@ -7,8 +7,8 @@ import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
-import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import RichText from '../rce/RichText'
 import ImagePicker from 'components/images/ImagePicker'
 import Image from 'components/images/Image'
 import SETTINGS from '../../../common/utils/settings'
@@ -106,11 +106,11 @@ class NoteView extends Component {
           { this.renderEditingImage() }
           <FormGroup>
             <ControlLabel>{i18n('Content')}</ControlLabel>
-            <MDdescription
+            <RichText
               description={note.content}
-              onChange={(desc) => this.setState({content: desc, unsaved: true})}
-              useRCE={true}
-              labels={{}}
+              onChange={(desc) => this.setState({content: desc})}
+              editable={!this.state.hide}
+              autofocus={false}
               darkMode={false}
             />
           </FormGroup>

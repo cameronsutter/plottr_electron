@@ -53,20 +53,6 @@ class TimelineTable extends Component {
     return filtered
   }
 
-  labelMap () {
-    var mapping = {}
-    this.props.tags.forEach((t) => {
-      mapping[t.title.toLowerCase()] = {color: t.color, id: t.id, type: 'Tag'}
-    })
-    this.props.characters.forEach((c) => {
-      mapping[c.name.toLowerCase()] = {color: c.color, id: c.id, type: 'Character'}
-    })
-    this.props.places.forEach((p) => {
-      mapping[p.name.toLowerCase()] = {color: p.color, id: p.id, type: 'Place'}
-    })
-    return mapping
-  }
-
   cards = (lineId) => {
     let cards = []
     if (this.isSeries()) {
@@ -148,19 +134,17 @@ class TimelineTable extends Component {
 
   renderLines () {
     const chapterMap = this.chapterMapping()
-    const labelMap = this.labelMap()
     const lines = _.sortBy(this.props.lines, 'position')
     return lines.map(line => {
       return <Row key={`lineId-${line.id}`}>
         <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>
-        { this.renderCardsByChapter(line, chapterMap, labelMap) }
+        { this.renderCardsByChapter(line, chapterMap) }
       </Row>
     }).concat(<AddLineRow key='insert-line' bookId={this.props.ui.currentTimeline}/>)
   }
 
   renderChapters () {
     const lineMap = this.lineMapping()
-    const labelMap = this.labelMap()
     const chapters = _.sortBy(this.props.chapters, 'position')
     const { orientation } = this.props.ui
     return chapters.map(chapter => {
@@ -174,7 +158,7 @@ class TimelineTable extends Component {
         </Row>,
         <Row key={`chapterId-${chapter.id}-insert`}>
           <ChapterTitleCell chapter={chapter} handleReorder={this.handleReorderChapters} />
-          { this.renderCardsByLine(chapter, lineMap, labelMap) }
+          { this.renderCardsByLine(chapter, lineMap) }
         </Row>
       ]
     }).concat(
@@ -192,7 +176,7 @@ class TimelineTable extends Component {
     }
   }
 
-  renderCardsByChapter (line, chapterMap, labelMap) {
+  renderCardsByChapter (line, chapterMap) {
     const { orientation } = this.props.ui
     return Object.keys(chapterMap).flatMap(chapterPosition => {
       let filtered = false
@@ -207,7 +191,6 @@ class TimelineTable extends Component {
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
           chapterId={chapterId} lineId={line.id}
-          labelMap={labelMap}
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
@@ -218,7 +201,7 @@ class TimelineTable extends Component {
     })
   }
 
-  renderCardsByLine (chapter, lineMap, labelMap) {
+  renderCardsByLine (chapter, lineMap) {
     return Object.keys(lineMap).flatMap(linePosition => {
       let filtered = false
       const cells = []
@@ -231,7 +214,6 @@ class TimelineTable extends Component {
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
           chapterId={chapter.id} lineId={line.id}
-          labelMap={labelMap}
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard chapterId={chapter.id} lineId={line.id}
@@ -265,9 +247,6 @@ TimelineTable.propTypes = {
   lines: PropTypes.array,
   seriesLines: PropTypes.array,
   cards: PropTypes.array.isRequired,
-  tags: PropTypes.array.isRequired,
-  characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   filter: PropTypes.object,
   filterIsEmpty: PropTypes.bool,
@@ -286,9 +265,6 @@ function mapStateToProps (state) {
     nextChapterId: nextChapterId,
     lines: linesByBookSelector(state),
     cards: state.cards,
-    tags: state.tags,
-    characters: state.characters,
-    places: state.places,
     ui: state.ui,
   }
 }

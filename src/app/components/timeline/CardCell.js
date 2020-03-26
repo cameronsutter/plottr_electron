@@ -7,9 +7,9 @@ import * as CardActions from 'actions/cards'
 import CardDialog from 'components/timeline/CardDialog'
 import CardSVGline from 'components/timeline/CardSVGline'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
-import MDdescription from 'components/mdDescription'
 import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
+import RichText from '../rce/RichText'
 
 class CardCell extends Component {
   constructor (props) {
@@ -41,15 +41,16 @@ class CardCell extends Component {
       card={card}
       chapterId={chapterId}
       lineId={lineId}
-      labelMap={this.props.labelMap}
       closeDialog={this.closeDialog}
     />
   }
 
   renderPopover () {
     return <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
-      <MDdescription className='card__popover-description' labels={this.props.labelMap}
-        description={this.props.card.description.substring(0, 1000)}
+      <RichText
+        description={this.props.card.description}
+        editable={false}
+        className='card__popover-description'
         darkMode={this.props.ui.darkMode}
       />
       {this.renderTags()}
@@ -133,7 +134,6 @@ CardCell.propTypes = {
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   filtered: PropTypes.bool.isRequired,
-  labelMap: PropTypes.object.isRequired,
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
   linePosition: PropTypes.number.isRequired,

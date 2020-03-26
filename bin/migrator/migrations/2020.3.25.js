@@ -5,6 +5,8 @@ const md = MarkDown.getSanitizingConverter()
 const DomParser = require('dom-parser')
 const parser = new DomParser()
 
+const NEWLINES = ['\n\n', '\r\n', '\r\r', '\r\n\r\n']
+
 function migrate (data) {
   if (data.file && data.file.version === '2020.3.25') return
 
@@ -69,6 +71,10 @@ function convert(text) {
 
 function deserialize (el) {
   if (el.nodeType === 3) {
+    if (NEWLINES.includes(el.textContent)) {
+      return jsx('element', { type: 'paragraph' }, [{text: ''}])
+    }
+
     return el.textContent
   } else if (el.nodeType !== 1) {
     return null
@@ -80,7 +86,7 @@ function deserialize (el) {
     case 'body':
       return jsx('fragment', {}, children)
     case 'br':
-      return jsx('element', { type: 'paragraph' }, [{text: '\n'}])
+      return jsx('element', { type: 'paragraph' }, [{text: ''}])
     case 'blockquote':
       return jsx('element', { type: 'block-quote' }, children)
     case 'p':
@@ -98,17 +104,17 @@ function deserialize (el) {
     case 'h6':
       return jsx('element', {type: 'heading-six'}, children)
     case 'ul':
-      // TODO: filter out \n from children
-      return jsx('element', {type: 'bulleted-list'}, children)
+      return jsx('element', {type: 'bulleted-list'}, children.filter(n => n != '\n')) // check for \r in windows
     case 'li':
-      // TODO: filter out \n from children
       return jsx('element', {type: 'list-item'}, children)
     case 'ol':
-      return jsx('element', {type: 'numbered-list'}, children)
+      return jsx('element', {type: 'numbered-list'}, children.filter(n => n != '\n')) // check for \r in windows
     case 'em':
       return jsx('text', {italic: true, text: el.textContent})
     case 'strong':
       return jsx('text', {bold: true, text: el.textContent})
+    case 'u':
+      return jsx('text', {underline: true, text: el.textContent})
     case 'img':
       return jsx('element', { type: 'image-link', url: el.getAttribute('src') }, children )
     case 'a':

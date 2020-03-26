@@ -7,10 +7,6 @@ const Element = ({ attributes, children, element }) => {
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>
     case 'bulleted-list':
-      console.log(children)
-      const realChildren = children.props.node.children.filter(chil => !chil.text)
-      console.log(realChildren)
-      // children.props.node = realChildren
       return <ul {...attributes}>{children}</ul>
     case 'heading-one':
       return <h1 {...attributes}>{children}</h1>

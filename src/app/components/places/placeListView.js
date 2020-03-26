@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import cx from 'classnames'
 import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
   ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import Modal from 'react-modal'
@@ -12,6 +13,7 @@ import SortList from 'components/sortList'
 import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import PlaceView from 'components/places/placeView'
+import Image from 'components/images/Image'
 import i18n from 'format-message'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
@@ -158,6 +160,9 @@ class PlaceListView extends Component {
       <Navbar className={subNavKlasses}>
         <Nav bsStyle='pills' >
           <NavItem>
+            <Button bsSize='small' onClick={this.handleCreateNewPlace}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+          </NavItem>
+          <NavItem>
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>
           <NavItem>
@@ -176,22 +181,34 @@ class PlaceListView extends Component {
     )
   }
 
-  renderPlaces () {
-    let klasses = 'place-list__list list-group'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
-    const places = this.state.visiblePlaces.map((pl, idx) =>
-      <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({placeDetailId: pl.id})}>
-        <h6 className='list-group-item-heading'>{pl.name}</h6>
-        <p className='list-group-item-text'>{pl.description.substr(0, 100)}</p>
-      </a>
-    )
-    return (<div className={klasses}>
-        {places}
-        <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
-          <Glyphicon glyph='plus' />
-        </a>
+  renderVisiblePlaces = () => {
+    return this.state.visiblePlaces.map((pl, idx) => {
+      let img = null
+      if (pl.imageId) {
+        img = <div className='place-list__item-inner__image-wrapper'>
+          <Image size='small' shape='rounded' imageId={pl.imageId} />
+        </div>
+      }
+      const klasses = cx('list-group-item', {selected: pl.id == this.state.placeDetailId})
+      return <div key={idx} className={klasses} onClick={() => this.setState({placeDetailId: pl.id})}>
+        <div className='place-list__item-inner'>
+          {img}
+          <div>
+            <h6 className='list-group-item-heading'>{pl.name || i18n('New Place')}</h6>
+            <p className='list-group-item-text'>{pl.description.substr(0, 100)}</p>
+          </div>
+        </div>
       </div>
-    )
+    })
+  }
+
+  renderPlaces () {
+    return <div className={cx('place-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
+      { this.renderVisiblePlaces() }
+      <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
+        <Glyphicon glyph='plus' />
+      </a>
+    </div>
   }
 
   renderPlaceDetails () {

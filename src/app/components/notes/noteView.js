@@ -4,20 +4,28 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
+import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
+import ImagePicker from 'components/images/ImagePicker'
+import Image from 'components/images/Image'
+import SETTINGS from '../../../common/utils/settings'
+import BookSelectList from '../story/BookSelectList'
 
 class NoteView extends Component {
   constructor (props) {
     super(props)
-    this.state = {content: props.note.content, hide: false}
+    this.state = {
+      content: props.note.content,
+      editing: false,
+      newImageId: null,
+    }
   }
 
   componentWillUnmount () {
-    if (!this.state.hide) this.setState({hide: true})
+    if (this.state.editing) this.saveEdit()
   }
 
   handleEnter = (event) => {
@@ -33,9 +41,12 @@ class NoteView extends Component {
   }
 
   saveEdit = () => {
-    var title = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.note.title
-    var content = this.state.content
-    this.props.actions.editNote(this.props.note.id, {title, content})
+    const { note } = this.props
+    let title = ReactDOM.findDOMNode(this.refs.titleInput).value || note.title
+    let content = this.state.content
+    let imageId = this.state.newImageId || note.imageId
+    this.props.actions.editNote(note.id, {title, content, imageId})
+    this.setState({editing: false})
   }
 
   deleteNote = () => {
@@ -45,10 +56,43 @@ class NoteView extends Component {
     }
   }
 
+  renderBookSelectList () {
+    if (!SETTINGS.get('premiumFeatures')) return null
+
+    const { note, actions } = this.props
+
+    return <BookSelectList
+      selectedBooks={note.bookIds}
+      parentId={note.id}
+      add={actions.addBook}
+      remove={actions.removeBook}
+    />
+  }
+
+  renderEditingImage () {
+    const { note } = this.props
+    if (!SETTINGS.get('premiumFeatures') && !note.imageId) return null
+
+    let imgId = this.state.newImageId || note.imageId
+    return <FormGroup>
+      <ControlLabel>{i18n('Note Image')}</ControlLabel>
+      <div className='note-list__note__edit-image-wrapper'>
+        <div className='note-list__note__edit-image'>
+          <Image size='small' shape='rounded' imageId={imgId}/>
+        </div>
+        <div>
+          {SETTINGS.get('premiumFeatures') || imagesExist ?
+            <ImagePicker selectedId={note.imageId} chooseImage={id => this.setState({newImageId: id})} />
+          : null}
+        </div>
+      </div>
+    </FormGroup>
+  }
+
   renderContent () {
     const { note } = this.props
-    return (
-      <div className='note-list__content editing'>
+    if (this.state.editing) {
+      return <div className='note-list__content editing'>
         <div className='note-list__note__edit-form'>
           <FormGroup>
             <ControlLabel>{i18n('Title')}</ControlLabel>
@@ -58,6 +102,10 @@ class NoteView extends Component {
               onKeyPress={this.handleEnter}
               onChange={() => this.setState({unsaved: true})}
               defaultValue={note.title} style={{marginBottom: '10px'}}/>
+          </FormGroup>
+          { this.renderEditingImage() }
+          <FormGroup>
+            <ControlLabel>{i18n('Content')}</ControlLabel>
             <RichText
               description={note.content}
               onChange={(desc) => this.setState({content: desc})}
@@ -68,17 +116,35 @@ class NoteView extends Component {
           </FormGroup>
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
-          <Button bsStyle='success'
-            onClick={this.saveEdit} >
+          <Button onClick={() => this.setState({editing: false})}>
+            {i18n('Cancel')}
+          </Button>
+          <Button bsStyle='success' onClick={this.saveEdit}>
             {i18n('Save')}
           </Button>
-          <Button className='card-dialog__delete'
-            onClick={this.deleteNote} >
+          <Button className='card-dialog__delete' onClick={this.deleteNote}>
             {i18n('Delete')}
           </Button>
         </ButtonToolbar>
       </div>
-    )
+    } else {
+      let img = null
+      if (note.imageId) {
+        img = <div className='text-center'>
+          <Image responsive imageId={note.imageId} />
+        </div>
+      }
+      return <div className='note-list__content' onClick={() => this.setState({editing: true})}>
+        <h4 className='secondary-text'>{note.title}</h4>
+        { img }
+        <MDdescription
+          description={note.content}
+          useRCE={false}
+          labels={{}}
+          darkMode={false}
+        />
+      </div>
+    }
   }
 
   render () {
@@ -89,6 +155,7 @@ class NoteView extends Component {
       <div className={klasses}>
         <div className='note-list__body'>
           <div className='note-list__left-side'>
+            { this.renderBookSelectList() }
             <SelectList
               parentId={this.props.note.id} type={'Characters'}
               selectedItems={this.props.note.characters}

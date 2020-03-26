@@ -3,6 +3,7 @@ var webpack = require('webpack')
 
 var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
+  new webpack.DefinePlugin({'__REACT_DEVTOOLS_GLOBAL_HOOK__': '({ isDisabled: true })'})
 ]
 
 if (process.env.NODE_ENV !== 'dev') {
@@ -18,7 +19,8 @@ module.exports = {
     app: path.resolve('.', 'src', 'app', 'index.js'),
     css: path.resolve('.', 'src', 'css', 'index'),
     verify: path.resolve('.', 'src', 'verify', 'index'),
-    expired: path.resolve('.', 'src', 'expired', 'index')
+    expired: path.resolve('.', 'src', 'expired', 'index'),
+    dashboard: path.resolve('.', 'src', 'dashboard', 'index'),
   },
   output: {
     path: path.resolve(__dirname, 'bin'),
@@ -37,11 +39,17 @@ module.exports = {
         test: /\.scss$/,
         loader: 'sass-loader',
         include: path.resolve(__dirname, 'src', 'css'),
+    }, {
+      test: /\.(png|jpg|gif)$/,
+      loader: 'url-loader',
+      query: {
+        limit: 1048576,
+      },
     }]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.css', '.scss', '.json'],
-    modules: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/expired'],
+    extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
+    modules: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/expired', 'src/dashboard'],
   },
   target: 'electron-renderer',
   externals: [

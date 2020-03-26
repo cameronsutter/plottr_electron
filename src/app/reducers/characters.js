@@ -1,11 +1,11 @@
 import _ from 'lodash'
-import { ADD_CHARACTER, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
+import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
   ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
-  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER } from '../constants/ActionTypes'
-import { character } from 'store/initialState'
-import { newFileCharacters } from 'store/newFileState'
-import { characterId } from 'store/newIds'
+  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELET_IMAGE, DELETE_IMAGE} from '../constants/ActionTypes'
+import { character } from '../../../shared/initialState'
+import { newFileCharacters } from '../../../shared/newFileState'
+import { nextId } from 'store/newIds'
 
 const initialState = [character]
 
@@ -14,10 +14,26 @@ export default function characters (state = initialState, action) {
     case ADD_CHARACTER:
       return [...state, {
         ...character,
-        id: characterId(state),
+        id: nextId(state),
         name: action.name,
         description: action.description,
         notes: action.notes
+      }]
+
+    case ADD_CHARACTER_WITH_TEMPLATE:
+      const templateData = {
+        id: action.templateData.id,
+        version: action.templateData.version,
+        attributes: action.templateData.attributes,
+        value: ''
+      }
+      return [...state, {
+        ...character,
+        id: nextId(state),
+        name: action.name,
+        description: action.description,
+        notes: action.notes,
+        templates: [templateData]
       }]
 
     case EDIT_CHARACTER:
@@ -71,6 +87,18 @@ export default function characters (state = initialState, action) {
       return state.filter(character =>
         character.id !== action.id
       )
+
+    case DELETE_IMAGE:
+      return state.map(ch => {
+        if (action.id == ch.imageId) {
+          return {
+            ...ch,
+            imageId: null,
+          }
+        } else {
+          return ch
+        }
+      })
 
     case RESET:
     case FILE_LOADED:

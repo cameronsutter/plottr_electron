@@ -18,6 +18,12 @@
   border: none !important;
 }
 
+.sticky-table-cell:hover {
+  .line-list__insert-scene {
+    color: $blue-5;
+  }
+}
+
 .sticky-table.darkmode {
   background-color: $card-background-darkmode !important;
   color: $text-darkmode;

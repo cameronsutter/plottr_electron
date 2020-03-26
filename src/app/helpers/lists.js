@@ -1,5 +1,4 @@
-import { scene } from 'store/initialState'
-import { sceneId } from 'store/newIds'
+import _ from 'lodash'
 
 export function reorderList (originalPosition, newPosition, list) {
   const sortedList = _.sortBy(list, 'position')
@@ -8,12 +7,19 @@ export function reorderList (originalPosition, newPosition, list) {
   return sortedList
 }
 
-export function insertScene (position, scenes) {
-  var newId = sceneId(scenes)
-  var newScene = _.clone(scene)
-  newScene['id'] = newId
+export function nextPosition (arr) {
+  return arr.reduce((maxPosition, item) => Math.max(item.position, maxPosition), -1) + 1
+}
 
-  const sortedScenes = _.sortBy(scenes, 'position')
-  sortedScenes.splice(position, 0, newScene)
-  return sortedScenes
+export function positionReset (items) {
+  return items.map((item, index) => {
+    item.position = index
+    return item
+  })
+}
+
+export function nextPositionInBook (items, bookId) {
+  return items
+    .filter(item => item.bookId == bookId)
+    .reduce((maxPosition, item) => Math.max(item.position, maxPosition), -1) + 1
 }

@@ -1,11 +1,15 @@
 var docx = require('docx')
 var _ = require('lodash')
 var i18n = require('format-message')
+const SETTINGS = require('./settings')
 
 function Exporter (data, { fileName }) {
   let doc = new docx.Document()
-  let title = new docx.Paragraph(new docx.TextRun(data.storyName).smallCaps())
-  title.title().center().pageBreak()
+  let title = new docx.Paragraph(new docx.TextRun(data.books[1].name).smallCaps())
+  if (SETTINGS.get('premiumFeatures')) {
+    title = new docx.Paragraph(new docx.TextRun(data.series.name).smallCaps())
+  }
+  title.title().center()
   doc.addParagraph(title)
 
   let characterNames = data.characters.reduce(function(mapping, char){
@@ -65,16 +69,17 @@ function Exporter (data, { fileName }) {
 ////////////////////////////////////
 
 function outline (data, characterNames, placeNames, tagTitles) {
-  let scenes = _.sortBy(data.scenes, 'position')
-  let paragraphs = scenes.map(function(s) { return scene(s, data, characterNames, placeNames, tagTitles) })
+  // TODO: export other books besides book 1
+  let chapters = _.sortBy(data.chapters.filter(ch => ch.bookId == 1), 'position')
+  let paragraphs = chapters.map(ch => chapter(ch, data, characterNames, placeNames, tagTitles))
   return _.flatten(paragraphs)
 }
 
-function scene (scene, data, characterNames, placeNames, tagTitles) {
+function chapter (chapter, data, characterNames, placeNames, tagTitles) {
   let paragraphs = []
   paragraphs.push(new docx.Paragraph('^'))
-  paragraphs.push(new docx.Paragraph(scene.title).heading2())
-  let cards = sortedSceneCards(scene.id, data.cards, data.lines)
+  paragraphs.push(new docx.Paragraph(chapter.title).heading2())
+  let cards = sortedChapterCards(chapter.id, data.cards, data.lines)
   let cardParagraphs = cards.map(function(c) { return card(c, data.lines, characterNames, placeNames, tagTitles) })
   let flattened = _.flatten(cardParagraphs)
   return paragraphs.concat(flattened)
@@ -114,8 +119,8 @@ function attachments (obj, characterNames, placeNames, tagTitles) {
   return paragraphs
 }
 
-function sortedSceneCards (sceneId, allCards, allLines) {
-  let cards = findSceneCards(sceneId, allCards)
+function sortedChapterCards (chapterId, allCards, allLines) {
+  let cards = findChapterCards(chapterId, allCards)
   const lines = _.sortBy(allLines, 'position')
   var sorted = []
   lines.forEach(function(l) {
@@ -125,9 +130,9 @@ function sortedSceneCards (sceneId, allCards, allLines) {
   return sorted
 }
 
-function findSceneCards (sceneId, allCards) {
+function findChapterCards (chapterId, allCards) {
   return allCards.filter(function(c) {
-    return c.sceneId === sceneId
+    return c.chapterId === chapterId
   })
 }
 

@@ -1,85 +1,61 @@
 const { app } = require('electron')
 var fs = require('fs')
 var path = require('path')
+const semverGt = require('semver/functions/gt')
+const semverEq = require('semver/functions/eq')
+const semverCoerce = require('semver/functions/coerce')
 
-function Migrator (data, fileName, givenVersion, targetVersion) {
+function Migrator (data, fileName, fileVersion, appVersion) {
   this.migrate = function (callback) {
     // save a backup file
-    fs.writeFile(`${fileName}.backup`, JSON.stringify(this.data, null, 2), (err) => {
+    fs.writeFile(`${fileName.replace('.pltr', '')}-${this.fileVersion}-backup.pltr`, JSON.stringify(this.data, null, 2), (err) => {
       if (err) {
         console.log(err)
         callback('backup', false)
       } else {
         // start migrations
-        var migrations = this.getMigrations()
-        migrations.forEach((m) => {
+        let migrations = this.getMigrations()
+        migrations.forEach(m => {
           var migration = require(`./migrations/${m}`)
           this.data = migration(this.data)
         })
-        this.data.file.version = this.target
+        this.data.file.version = this.appVersion
         callback(null, this.data)
       }
     })
   }
 
-  this.getMajor = function (versionString) {
-    var versionArray = versionString.split('.')
-    return parseInt(versionArray[0], 10)
+  this.areDifferentVersions = function () {
+    if (!this.fileVersion) return false
+    return !semverEq(this.fileVersion, this.appVersion)
   }
 
-  this.getMinor = function (versionString) {
-    var versionArray = versionString.split('.')
-    return parseInt(versionArray[1], 10)
-  }
-
-  this.areSameVersion = function () {
-    if (!this.given) return false
-    if (this.given === this.target) {
-      return true
-    } else {
-      if (this.majorGiven === this.majorTarget) {
-        // major version is the same
-        if (this.minorGiven === this.minorTarget) {
-          // minor version is the same
-          return true
-        }
-      }
-    }
-    return false
-  }
-
-  this.noMigrations = function () {
-    if (!this.given) return false
-    var migrations = this.getMigrations()
-    if (migrations.length == 0) return true
-    return false
+  this.needsToMigrate = function () {
+    if (!this.fileVersion) return false
+    return this.areDifferentVersions() && this.getMigrations().length
   }
 
   this.plottrBehindFile = function () {
-    return this.majorTarget < this.majorGiven || (this.majorTarget === this.majorGiven && this.minorTarget < this.minorGiven)
+    return semverGt(this.fileVersion, this.appVersion) // file version is greater than app
   }
 
   this.getMigrations = function () {
-    var files = fs.readdirSync(this.getPath())
-    return files.filter((f) => {
-      if (!this.given) return true
-      var fParts = f.split('.').map(Number)
-      if (fParts[0] < this.majorGiven) return false
-      if (fParts[0] === this.majorGiven) {
-        if (fParts[1] <= this.minorGiven) return false
-      }
-      return true
-    }).sort((a, b) => {
-      var aParts = a.split('.').map(Number)
-      var bParts = b.split('.').map(Number)
+    if (this.migrationsChecked) {
+      return this.migrations
+    }
 
-      if (aParts[0] > bParts[0]) return 1
-      if (aParts[0] === bParts[0]) {
-        if (aParts[1] > bParts[1]) return 1
-        return -1
-      }
-      return -1
+    let files = fs.readdirSync(this.getPath())
+    this.migrations = files.filter((f) => {
+      if (!this.fileVersion) return true
+      const fileName = f.replace('.js', '')
+      return semverGt(semverCoerce(fileName), this.fileVersion)
+    }).sort((a, b) => {
+      let aVersion = a.replace('.js', '')
+      let bVersion = b.replace('.js', '')
+      return semverGt(semverCoerce(aVersion), semverCoerce(bVersion)) ? 1 : -1
     })
+    this.migrationsChecked = true
+    return this.migrations
   }
 
   this.getPath = function () {
@@ -88,12 +64,10 @@ function Migrator (data, fileName, givenVersion, targetVersion) {
   }
 
   this.data = data
-  this.given = givenVersion
-  this.target = targetVersion
-  this.majorGiven = givenVersion ? this.getMajor(this.given) : null
-  this.majorTarget = givenVersion ? this.getMajor(this.target) : null
-  this.minorGiven = givenVersion ? this.getMinor(this.given) : null
-  this.minorTarget = givenVersion ? this.getMinor(this.target) : null
+  this.fileVersion = fileVersion
+  this.appVersion = appVersion
+  this.migrations = []
+  this.migrationsChecked = false
 }
 
 module.exports = Migrator

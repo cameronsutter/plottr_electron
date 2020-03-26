@@ -1,6 +1,6 @@
 import { remote } from 'electron'
 import { FILE_LOADED, FILE_SAVED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { file as defaultFile } from 'store/initialState'
+import { file as defaultFile } from '../../../shared/initialState'
 const app = remote.app
 const VERSION = app.getVersion()
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Tour from 'reactour'
-import SETTINGS from '../../settings'
+import SETTINGS from '../../common/utils/settings'
 import i18n from 'format-message'
 
 export default class GuidedTour extends Component {

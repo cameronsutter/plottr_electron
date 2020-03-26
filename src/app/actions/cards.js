@@ -1,5 +1,5 @@
 import { ADD_CARD, EDIT_CARD_DETAILS, EDIT_CARD_COORDINATES,
-  CHANGE_LINE, CHANGE_SCENE, DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
+  CHANGE_LINE, CHANGE_SCENE, CHANGE_BOOK, DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
   REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD } from 'constants/ActionTypes'
 
@@ -11,16 +11,20 @@ export function editCard (id, title, description) {
   return { type: EDIT_CARD_DETAILS, id, title, description }
 }
 
-export function editCardCoordinates (id, lineId, sceneId) {
-  return { type: EDIT_CARD_COORDINATES, id, lineId, sceneId }
+export function editCardCoordinates (id, lineId, chapterId, bookId) {
+  return { type: EDIT_CARD_COORDINATES, id, lineId, chapterId, bookId }
 }
 
-export function changeLine (id, lineId) {
-  return { type: CHANGE_LINE, id, lineId }
+export function changeLine (id, lineId, bookId) {
+  return { type: CHANGE_LINE, id, lineId, bookId }
 }
 
-export function changeScene (id, sceneId) {
-  return { type: CHANGE_SCENE, id, sceneId }
+export function changeScene (id, chapterId, bookId) {
+  return { type: CHANGE_SCENE, id, chapterId, bookId }
+}
+
+export function changeBook (id, bookId) {
+  return { type: CHANGE_BOOK, id, bookId }
 }
 
 export function deleteCard (id) {

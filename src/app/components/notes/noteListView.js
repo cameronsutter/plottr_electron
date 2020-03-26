@@ -4,17 +4,15 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Nav, Navbar, NavItem, Button, Input, Alert, OverlayTrigger, Popover } from 'react-bootstrap'
-import Modal from 'react-modal'
+import { Glyphicon, Nav, Navbar, NavItem, Button, Alert, OverlayTrigger, Popover } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
+import Image from 'components/images/Image'
 import i18n from 'format-message'
-
-const modalStyles = {content: {top: '70px'}}
+import cx from 'classnames'
 
 class NoteListView extends Component {
-
   constructor (props) {
     super(props)
     var id = null
@@ -27,7 +25,8 @@ class NoteListView extends Component {
     this.state = {
       noteDetailId: id,
       filter: null,
-      viewableNotes: sortedNotes}
+      viewableNotes: sortedNotes
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -47,6 +46,10 @@ class NoteListView extends Component {
     this.setState({ viewableNotes, filter, noteDetailId })
   }
 
+  removeFilter = () => {
+    this.updateFilter(null)
+  }
+
   viewableNotes (notes, filter) {
     const filterIsEmpty = this.filterIsEmpty(filter)
     let viewableNotes = notes
@@ -62,45 +65,65 @@ class NoteListView extends Component {
     return filter == null ||
       (filter['tag'].length === 0 &&
       filter['character'].length === 0 &&
-      filter['place'].length === 0)
+      filter['place'].length === 0 &&
+      filter['book'].length === 0)
   }
 
   isViewable (filter, note) {
     if (!note) return false
-    var filtered = false
+    let visible = false
     if (note.tags) {
-      note.tags.forEach((tId) => {
-        if (filter['tag'].includes(tId)) filtered = true
-      })
+      if (filter['tag'].some(tId => note.tags.includes(tId))) visible = true
     }
     if (note.characters) {
-      note.characters.forEach((cId) => {
-        if (filter['character'].includes(cId)) filtered = true
-      })
+      if (filter['character'].some(cId => note.characters.includes(cId))) visible = true
     }
     if (note.places) {
-      note.places.forEach((pId) => {
-        if (filter['place'].includes(pId)) filtered = true
-      })
+      if (filter['place'].some(pId => note.places.includes(pId))) visible = true
     }
-    return filtered
+    if (note.bookIds) {
+      if (filter['book'].some(bookId => note.bookIds.includes(bookId))) visible = true
+      // if the filter includes books, and this note has no bookIds,
+      // it's considered in all books, so it should be visible
+      if (filter['book'].length && !note.bookIds.length) visible = true
+    }
+    return visible
+  }
+
+  renderVisibleNotes () {
+    return this.state.viewableNotes.map((n, idx) => {
+      let img = null
+      if (n.imageId) {
+        img = <div className='note-list__item-inner__image-wrapper'>
+          <Image responsive imageId={n.imageId} />
+        </div>
+      }
+      let lastEdited = null
+      if (n.lastEdited) {
+        lastEdited = <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
+      }
+      return <div key={idx} className='list-group-item' onClick={() => this.setState({noteDetailId: n.id})}>
+        <div className='note-list__item-inner'>
+          {img}
+          <div>
+            <h6 className='list-group-item-heading'>{n.title}</h6>
+            { lastEdited }
+          </div>
+        </div>
+      </div>
+    })
   }
 
   renderNotes () {
-    let klasses = 'note-list__list list-group'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
-    const notes = this.state.viewableNotes.map((n, idx) =>
-      <a href='#' key={idx} className='list-group-item' onClick={() => this.setState({noteDetailId: n.id})}>
-        <h6 className='list-group-item-heading'>{n.title}</h6>
-        <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
+    let klasses = cx('note-list__list', 'list-group', {
+      darkmode: this.props.ui.darkMode,
+    })
+    return <div className={klasses}>
+      { this.renderVisibleNotes() }
+      <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >
+        <Glyphicon glyph='plus' />
       </a>
-    )
-    return (<div className={klasses}>
-        {notes}
-        <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >
-          <Glyphicon glyph='plus' />
-        </a>
-      </div>)
+    </div>
   }
 
   renderNoteDetails () {
@@ -118,13 +141,16 @@ class NoteListView extends Component {
     let popover = <Popover id='filter'>
       <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">{i18n('Notes are filtered')}</Alert>
+    let filterDeclaration = <Alert onClick={this.removeFilter} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Notes are filtered')}</Alert>
     if (this.filterIsEmpty(this.state.filter)) {
       filterDeclaration = <span></span>
     }
     return (
       <Navbar className={subNavKlasses}>
-        <Nav bsStyle='pills' >
+        <Nav bsStyle='pills'>
+          <NavItem>
+            <Button bsSize='small' onClick={this.handleCreateNewNote}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+          </NavItem>
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
               <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>

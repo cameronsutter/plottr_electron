@@ -3,45 +3,53 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { Glyphicon, Nav, Navbar, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
-import SceneView from 'components/outline/sceneView'
+import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
+import cx from 'classnames'
+import { chaptersByBookSelector } from '../../selectors/chapters'
+import { linesByBookSelector } from '../../selectors/lines'
 
 class OutlineView extends Component {
   constructor (props) {
     super(props)
-    this.state = {affixed: false, active: 0, currentLine: null}
+    this.state = {active: 0, currentLine: null}
+  }
+
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
   }
 
   cardMapping () {
-    var mapping = {}
-    this.props.scenes.forEach(s =>
-      mapping[s.id] = this.sortedSceneCards(s.id)
-    )
-    return mapping
-  }
-
-  lineIsVisible (id) {
-    return this.state.currentLine !== null ? id === this.state.currentLine : true
-  }
-
-  sortedSceneCards (sceneId) {
-    var cards = this.findSceneCards(sceneId)
     const lines = _.sortBy(this.props.lines, 'position')
-    var sorted = []
-    lines.forEach((l) => {
-      var card = _.find(cards, {lineId: l.id})
-      if (card && this.lineIsVisible(l.id)) {
-        sorted.push(card)
+    return this.props.chapters.reduce((acc, ch) => {
+      acc[ch.id] = this.sortedChapterCards(lines, ch.id)
+      return acc
+    }, {})
+  }
+
+  lineIsHidden (line) {
+    if (!this.state.currentLine) return false
+    return line.id != this.state.currentLine
+  }
+
+  sortedChapterCards (sortedLines, chapterId) {
+    return sortedLines.reduce((acc, l) => {
+      if (this.lineIsHidden(l)) return acc
+
+      const cards = this.findCards(chapterId, l.id)
+      return acc.concat(cards)
+    }, [])
+  }
+
+  findCards = (chapterId, lineId) => {
+    return this.props.cards.filter(c => {
+      if (this.isSeries()) {
+        return c.beatId == chapterId && c.seriesLineId == lineId
+      } else {
+        return c.chapterId === chapterId && c.lineId == lineId
       }
     })
-    return sorted
-  }
-
-  findSceneCards (sceneId) {
-    return this.props.cards.filter(c =>
-      c.sceneId === sceneId
-    )
   }
 
   setActive = (id) => {
@@ -83,8 +91,6 @@ class OutlineView extends Component {
   }
 
   renderSubNav () {
-    let subNavKlasses = 'subnav__container'
-    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     let popover = <Popover id='filter'>
       <div className='filter-list'>
         {this.renderFilterList()}
@@ -95,7 +101,7 @@ class OutlineView extends Component {
       filterDeclaration = <span></span>
     }
     return (
-      <Navbar className={subNavKlasses}>
+      <Navbar className={cx('subnav__container', {darkmode: this.props.ui.darkMode})}>
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
@@ -108,22 +114,24 @@ class OutlineView extends Component {
     )
   }
 
-  renderScenes (cardMapping) {
-    const scenes = _.sortBy(this.props.scenes, 'position')
-    return scenes.map(s =>
-      <SceneView key={s.id} scene={s} cards={cardMapping[s.id]} waypoint={this.setActive} />
+  renderChapters (cardMapping) {
+    const chapters = _.sortBy(this.props.chapters, 'position')
+    return chapters.map(ch =>
+      <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} />
     )
   }
 
   render () {
     var cardMapping = this.cardMapping()
     return (
-      <div className='outline__container container-with-sub-nav'>
+      <div className='container-with-sub-nav'>
         {this.renderSubNav()}
-        <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
-        <MiniMap active={this.state.active} cardMapping={cardMapping} />
-        <div className='outline__scenes-container'>
-          {this.renderScenes(cardMapping)}
+        <div className='outline__container'>
+          <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
+          <MiniMap active={this.state.active} cardMapping={cardMapping} />
+          <div className='outline__scenes-container'>
+            {this.renderChapters(cardMapping)}
+          </div>
         </div>
       </div>
     )
@@ -131,23 +139,17 @@ class OutlineView extends Component {
 }
 
 OutlineView.propTypes = {
-  scenes: PropTypes.array.isRequired,
+  chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
-  tags: PropTypes.array.isRequired,
-  characters: PropTypes.array.isRequired,
-  places: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
-    scenes: state.scenes,
-    lines: state.lines,
+    chapters: chaptersByBookSelector(state),
+    lines: linesByBookSelector(state),
     cards: state.cards,
-    tags: state.tags,
-    characters: state.characters,
-    places: state.places,
     ui: state.ui,
   }
 }

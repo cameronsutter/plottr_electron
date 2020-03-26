@@ -20,6 +20,9 @@ const setupRollbar = require('./main_modules/rollbar')
 const rollbar = setupRollbar('main')
 const SETTINGS = require('./main_modules/settings')
 const checkForActiveLicense = require('./main_modules/license_checker')
+const TemplateManager = require('./main_modules/template_manager')
+const templateManager = new TemplateManager()
+const emptyFile = require('./main_modules/empty_file')
 if (process.env.NODE_ENV === 'dev') {
   // require('electron-reload')(path.join('..'))
 }
@@ -37,6 +40,7 @@ var windows = []
 var aboutWindow = null
 var verifyWindow = null
 var expiredWindow = null
+var dashboardWindow = null
 
 var fileToOpen = null
 var dontquit = false
@@ -123,7 +127,6 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
       backupFile(winObj.fileName, state, () => {})
       if (err) {
         log.warn(err)
-        log.warn('file name: ' + winObj.fileName)
         rollbar.warn(err, {fileName: winObj.fileName})
         gracefullyNotSave()
       } else {
@@ -138,26 +141,22 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
 ipcMain.on('fetch-state', function (event, id) {
   var win = _.find(windows, {id: id})
   win.window.setProgressBar(0.99)
-  if (win.state.file) {
-    win.window.setTitle(displayFileName(win.fileName))
-    win.window.setRepresentedFilename(win.fileName)
-  }
+  win.window.setTitle(displayFileName(win.fileName))
+  win.window.setRepresentedFilename(win.fileName)
 
-  if (win.window.isVisible()) {
-    migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-      if (err) { log.warn(err); rollbar.warn(err) }
-      win.window.setProgressBar(-1)
+  migrateIfNeeded (win.state, win.fileName, (err, dirty, json) => {
+    if (err) { log.warn(err); rollbar.warn(err) }
+    win.lastSave = json
+    win.state = json
+    win.window.setProgressBar(-1)
+    if (win.window.isVisible()) {
       event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
-    })
-  } else {
-    win.window.on('show', () => {
-      migrateIfNeeded (win.window, win.state, win.fileName, function(err, dirty, json) {
-        if (err) { log.warn(err); rollbar.warn(err) }
-        win.window.setProgressBar(-1)
+    } else {
+      win.window.on('show', () => {
         event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
       })
-    })
-  }
+    }
+  })
 })
 
 ipcMain.on('reload-window', function (event, id, state) {
@@ -229,6 +228,12 @@ ipcMain.on('extend-trial', (event, days) => {
   })
 })
 
+ipcMain.on('chose-template', (event, template) => {
+  const empty = emptyFileContents()
+  const data = Object.assign({}, empty, template.templateData)
+  askToCreateFile(data)
+})
+
 app.on('ready', () => {
   i18n.setup({
     translations: require('../locales'),
@@ -246,6 +251,7 @@ app.on('ready', () => {
   })
 
   checkLicense(() => {
+    templateManager.load()
     loadMenu()
   })
 })
@@ -272,15 +278,6 @@ function checkLicense (callback) {
       storage.get(USER_INFO_PATH, function (err, data) {
         if (err) log.error(err)
         USER_INFO = data
-        if (process.env.useEDD === 'true') {
-          checkForActiveLicense(USER_INFO.license_key, valid => {
-            if (valid) {
-              // may have to rethink the flow here a little bit
-            } else {
-              // what to do if it isn't valid?
-            }
-          })
-        }
         if (TRIALMODE) {
           if (data.success) {
             TRIALMODE = false
@@ -288,6 +285,13 @@ function checkLicense (callback) {
           }
           callback()
           openRecentFiles()
+          if (process.env.useEDD === 'true') {
+            // do this in the background
+            // will have to think how to handle open windows if not valid
+            checkForActiveLicense(USER_INFO, valid => {
+              if (!valid) openVerifyWindow()
+            })
+          }
         } else {
           callback()
           if (data.success) openRecentFiles()
@@ -306,13 +310,14 @@ function checkLicense (callback) {
   })
 }
 
-function saveFile (fileName, data, callback) {
-  var stringState = JSON.stringify(data, null, 2)
-  fs.writeFile(fileName, stringState, callback)
+function saveFile (fileName, jsonData, callback) {
+  var stringData = JSON.stringify(jsonData, null, 2)
+  fs.writeFile(fileName, stringData, callback)
 }
 
 function displayFileName (path) {
   var stringBase = 'Plottr'
+  if (process.env.NODE_ENV == 'dev') stringBase += ' (DEV)'
   if (TRIALMODE) stringBase += ' — ' + i18n('TRIAL Version') + ' (' + i18n('{days} days remaining', {days: DAYS_LEFT}) + ')'
   var matches = path.match(/.*\/(.*\.pltr)/)
   if (matches) stringBase += ` — ${matches[1]}`
@@ -367,19 +372,22 @@ function askToSave (win, state, fileName, callback) {
   })
 }
 
-function askToCreateFile () {
+function askToCreateFile (data = {}) {
   dialog.showSaveDialog({title: i18n('Where would you like to start your new file?')}, function (fileName) {
     if (fileName) {
       var fullName = fileName + '.pltr'
-      openWindow(fullName, true)
-      saveFile(fullName, {}, function (err) {
+      if (!Object.keys(data).length) {
+        // no data
+        data = emptyFileContents()
+      }
+      saveFile(fullName, data, function (err) {
         if (err) {
           log.warn(err)
-          log.warn('file name: ' + fullName)
           rollbar.warn(err, {fileName: fullName})
           dialog.showErrorBox(i18n('Saving failed'), i18n("Creating your file didn't work. Let's try again."))
-          askToCreateFile()
+          askToCreateFile(data)
         } else {
+          openWindow(fullName, data)
           storage.set(recentKey, fullName, function (err) {
             if (err) console.log(err)
             app.addRecentDocument(fullName)
@@ -413,7 +421,7 @@ function askToOpenFile () {
   })
 }
 
-function openWindow (fileName, newFile = false) {
+function openWindow (fileName, jsonData) {
   // Load the previous state with fallback to defaults
   let stateKeeper = windowStateKeeper({
     defaultWidth: 1200,
@@ -486,10 +494,7 @@ function openWindow (fileName, newFile = false) {
   newWindow.setProgressBar(0.4)
 
   try {
-    var json = {}
-    if (!newFile) {
-      json = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
-    }
+    var json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     newWindow.setProgressBar(0.5)
     app.addRecentDocument(fileName)
     storage.set(recentKey, fileName, error => {
@@ -508,7 +513,6 @@ function openWindow (fileName, newFile = false) {
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {
     log.warn(err)
-    log.warn('file name: ' + fileName)
     rollbar.warn(err, {fileName: fileName})
     askToOpenOrCreate()
     removeRecentFile(fileName)
@@ -565,20 +569,20 @@ function createAndOpenEmptyFile () {
   } catch (error) {
     log.warn(error)
   } finally {
-    fs.writeFile(fileName, emptyFileContents(), function(err) {
+    const data = emptyFileContents(i18n('Plottr Trial'))
+    saveFile(fileName, data, function(err) {
       if (err) {
         log.warn(err)
         rollbar.warn(err)
       } else {
-        openWindow(fileName)
+        openWindow(fileName, data)
       }
     })
   }
 }
 
-function emptyFileContents () {
-  let data = require('./empty_file.json')
-  return JSON.stringify(data, null, 2)
+function emptyFileContents (name) {
+  return emptyFile(name)
 }
 
 function openAboutWindow () {
@@ -625,6 +629,22 @@ function openExpiredWindow () {
   })
   expiredWindow.on('close', function () {
     expiredWindow = null
+  })
+}
+
+function openDashboardWindow () {
+  dontquit = true
+  const dashboardFile = path.join(filePrefix, 'dashboard.html')
+  dashboardWindow = new BrowserWindow({frame: false, height: 525, width: 800, show: false, webPreferences: {nodeIntegration: true}})
+  dashboardWindow.loadURL(dashboardFile)
+  if (SETTINGS.get('forceDevTools')) {
+    dashboardWindow.openDevTools()
+  }
+  dashboardWindow.once('ready-to-show', function() {
+    this.show()
+  })
+  dashboardWindow.on('close', function () {
+    dashboardWindow = null
   })
 }
 
@@ -695,50 +715,46 @@ function reloadWindow () {
 ///////    MIGRATE    //////////
 ////////////////////////////////
 
-function migrateIfNeeded (win, json, fileName, callback) {
+function migrateIfNeeded (json, fileName, callback) {
   if (!json.file) {
     callback(null, false, json)
     return
   }
-  var m = new Migrator(json, fileName, json.file.version, app.getVersion())
-  if (m.areSameVersion() || m.noMigrations()) {
-    callback(null, false, json)
-  } else {
-    // not the same version, start migration process
+  const appVersion = app.getVersion()
+  var m = new Migrator(json, fileName, json.file.version, appVersion)
+  if (m.needsToMigrate()) {
+    log.info('needs to migrate', json.file.version, appVersion)
     if (m.plottrBehindFile()) {
       dialog.showErrorBox(i18n('Update Plottr'), i18n("It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again."))
       callback(i18n('Update Plottr'), false, json)
     } else {
-      // ask user to try to migrate
-      dialog.showMessageBox(win, {type: 'question', buttons: [i18n('yes, update the file'), i18n('no, open the file as-is')], defaultId: 0, message: i18n('It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?'), detail: i18n('It will save a backup first which will be saved to the same folder as this file')}, (choice) => {
-        if (choice === 0) {
+      log.info('migrating')
+      m.migrate((err, json) => {
+        if (err === 'backup') {
+          log.warn('error saving backup')
+          // try again
           m.migrate((err, json) => {
             if (err === 'backup') {
-              dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again."))
+              log.warn('error saving backup again. Open without migrating')
+              // open without migrating
               callback('problem saving backup', false, json)
             } else {
-              // tell the user that Plottr migrated versions and saved a backup file
-              dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr updated your file without a problem. Don't forget to save your file.")})
+              // save it and open
+              log.info('finished migrating. Save it and open')
               callback(null, true, json)
+              saveFile(fileName, json, () => {})
             }
           })
         } else {
-          // open file without migrating
-          fs.writeFile(`${fileName}.backup`, JSON.stringify(json, null, 2), (err) => {
-            if (err) {
-              log.warn(err)
-              log.warn('file name: ' + fileName)
-              rollbar.warn(err, {fileName: fileName})
-              dialog.showErrorBox(i18n('Problem saving backup'), i18n("Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again."))
-              callback(err, false, json)
-            } else {
-              dialog.showMessageBox(win, {type: 'info', buttons: [i18n('ok')], message: i18n("Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)")})
-              callback(null, false, json)
-            }
-          })
+          // save it and open
+          log.info('finished migrating. Save it and open')
+          callback(null, true, json)
+          saveFile(fileName, json, () => {})
         }
       })
     }
+  } else {
+    callback(null, false, json)
   }
 }
 
@@ -891,8 +907,15 @@ function buildFileMenu () {
   var submenu = [].concat({
     label: i18n('New') + '...',
     accelerator: 'CmdOrCtrl+N',
-    click: askToCreateFile
-  }, {
+    click: () => { askToCreateFile() },
+  })
+  if (SETTINGS.get('premiumFeatures')) {
+    submenu = [].concat(submenu, {
+      label: i18n('New from Template') + '...',
+      click: openDashboardWindow
+    })
+  }
+  submenu = [].concat(submenu, {
     label: i18n('Open') + '...',
     accelerator: 'CmdOrCtrl+O',
     click: askToOpenFile
@@ -911,7 +934,6 @@ function buildFileMenu () {
         saveFile(winObj.state.file.fileName, winObj.state, function (err) {
           if (err) {
             log.warn(err)
-            log.warn('file name: ' + winObj.state.file.fileName)
             rollbar.warn(err, {fileName: winObj.state.file.fileName})
             gracefullyNotSave()
           } else {
@@ -929,25 +951,30 @@ function buildFileMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = _.find(windows, {id: win.id})
       if (winObj) {
-        const fileName = dialog.showSaveDialogSync(win, {title: i18n('Where would you like to save this copy?')})
-        if (fileName) {
-          var fullName = fileName + '.pltr'
-          const newState = {
-            ...winObj.state,
-            storyName: winObj.state.storyName + ' copy'
-          }
-          saveFile(fullName, newState, function (err) {
-            if (err) {
-              log.warn(err)
-              log.warn('file name: ' + fullName)
-              rollbar.warn(err, {fileName: fullName})
-              gracefullyNotSave()
-            } else {
-              win.close()
-              openWindow(fullName)
+        dialog.showSaveDialog(win, {title: i18n('Where would you like to save this copy?')}, function (fileName) {
+          if (fileName) {
+            var fullName = fileName + '.pltr'
+            const newState = {
+              ...winObj.state,
+              books: {
+                [1]: {
+                  ...books[1],
+                  name: books[1].name + ' copy'
+                }
+              }
             }
-          })
-        }
+            saveFile(fullName, newState, function (err) {
+              if (err) {
+                log.warn(err)
+                rollbar.warn(err, {fileName: fullName})
+                gracefullyNotSave()
+              } else {
+                openWindow(fullName, newState)
+                win.close()
+              }
+            })
+          }
+        })
       }
     }
   }, {
@@ -957,14 +984,19 @@ function buildFileMenu () {
     click: () => {
       let win = BrowserWindow.getFocusedWindow()
       var winObj = _.find(windows, {id: win.id})
+      let exportState = {}
       if (winObj) {
-        Exporter(winObj.state, options)
+        exportState = winObj.state
+      } else {
+        exportState = windows[0].state
       }
+      dialog.showSaveDialog(win, {title: i18n('Where would you like to save the export?')}, (fileName) => {
+        if (fileName) {
+          Exporter(exportState, {fileName})
+        }
+      })
     }
-  }, {
-    type: 'separator'
-  },
-  submenu)
+  })
   return {
     label: i18n('File'),
     submenu: submenu

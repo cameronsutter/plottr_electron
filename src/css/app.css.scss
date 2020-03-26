@@ -8,6 +8,7 @@
 @import "scene_block";
 @import "tag_list_block";
 @import "color_picker_block";
+@import "image_picker";
 @import "subnav_block";
 @import "timeline_block";
 @import "history_block";
@@ -17,7 +18,12 @@
 @import "custom_attr_block";
 @import "verify_window";
 @import "expired_window";
+<<<<<<< HEAD
 @import "slate";
+=======
+@import "template_picker";
+@import "book";
+>>>>>>> master
 
 @import "vars";
 @import "colors";
@@ -30,12 +36,27 @@
 // Give everything in 'yield' margin to separate it.
 #react-root {
   margin: 0px 0px 0px 0px;
-  animation: fadein 1.5s;
+  // animation: fadein 0.5s;
+
+  #temporary-inner {
+    background: url("../../icons/mountain_background.jpg");
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    img {
+      animation: fadein 1.5s;
+      margin-top: 10px;
+    }
+  }
 }
 
 body {
   @include body-text-font;
   padding-top: 55px;
+  background: $gray-9 url("../../icons/grid_background.jpg");
+  // background-image: url("../../icons/grid_background.jpg");
+  background-blend-mode: color-burn;
+  background-size: 3%;
 }
 
 body.darkmode {
@@ -94,10 +115,47 @@ h3.popover-title {
   @include header-font;
 }
 
+.control-label {
+  @include application-text;
+}
+input[type="file"] {
+  @include application-text;
+}
+
 .blue-background {
   background-color: $blue;
 }
 
+<<<<<<< HEAD
+=======
+.CodeMirror {
+  overflow-y: auto;
+  min-height: 100px;
+}
+
+.CodeMirror-wrap {
+  border: 1px solid $gray-5;
+  border-top: none;
+  .CodeMirror-line {
+    background-color: white;
+    border: none;
+    color: $gray-0;
+  }
+  .CodeMirror-selectedtext {
+    background-color: $blue-8;
+  }
+
+  .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+    background: none;
+    border-bottom: 1px dotted $red-5;
+  }
+
+  .CodeMirror-selectedtext.cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+    background-color: $blue-8;
+  }
+}
+
+>>>>>>> master
 .tour-helper {
   padding-right: 60px!important;
   max-width: 700px!important;

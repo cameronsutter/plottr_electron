@@ -1,0 +1,61 @@
+@import "vars";
+
+.template-picker__dialog-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.template-picker__wrapper {
+  display: flex;
+  justify-content: space-between;
+  overflow: auto;
+
+  .template-picker__list {
+    overflow: auto;
+    max-width: 34%;
+    h1 {
+      @include application-text;
+      font-size: 20pt;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+
+    ul.list-group {
+      max-width: 300px;
+    }
+
+    li.list-group-item {
+      cursor: pointer;
+      text-overflow: ellipsis;
+      &:hover {
+        background-color: $gray-9;
+        border-color: $gray-9;
+      }
+    }
+
+    li.list-group-item.selected {
+      background-color: $gray-9;
+    }
+  }
+
+  .template-picker__details {
+    flex: 1;
+    margin-left: 20px;
+    overflow: auto;
+    .panel-heading {
+      @include application-text;
+      h3.panel-title {
+        @include application-text;
+      }
+      p {
+        margin-top: 12px;
+        margin-bottom: 0;
+      }
+    }
+    .table {
+      margin-bottom: 0;
+    }
+  }
+}

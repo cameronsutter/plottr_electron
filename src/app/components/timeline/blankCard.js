@@ -8,6 +8,7 @@ import * as CardActions from 'actions/cards'
 import CardSVGline from 'components/timeline/CardSVGline'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { card } from '../../../../shared/initialState'
 
 class BlankCard extends Component {
   constructor (props) {
@@ -19,6 +20,10 @@ class BlankCard extends Component {
     }
     this.dragLeaveTimeout = null
     this.dragOverTimeout = null
+  }
+
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
   }
 
   componentWillUnmount() {
@@ -53,7 +58,7 @@ class BlankCard extends Component {
     var droppedCard = JSON.parse(json)
     if (droppedCard.id === null || droppedCard.id === undefined) return
 
-    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.sceneId)
+    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.ui.currentTimeline)
   }
 
   saveCreate = () => {
@@ -69,14 +74,11 @@ class BlankCard extends Component {
   }
 
   buildCard (title) {
-    return {
-      title: title,
-      sceneId: this.props.sceneId,
-      lineId: this.props.lineId,
-      description: '',
-      characters: [],
-      places: [],
-      tags: []
+    const { chapterId, lineId } = this.props
+    if (this.isSeries()) {
+      return Object.assign(card, { title, beatId: chapterId, seriesLineId: lineId })
+    } else {
+      return Object.assign(card, { title, chapterId, lineId })
     }
   }
 
@@ -153,21 +155,28 @@ class BlankCard extends Component {
 }
 
 BlankCard.propTypes = {
-  sceneId: PropTypes.number.isRequired,
+  chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   ui: PropTypes.object.isRequired,
   linePosition: PropTypes.number.isRequired,
-  scenePosition: PropTypes.number.isRequired
+  chapterPosition: PropTypes.number.isRequired
 }
 
-function mapStateToProps (state, passedProps) {
-  let line = state.lines.find(l => l.id === passedProps.lineId)
-  let scene = state.scenes.find(s => s.id === passedProps.sceneId)
+function mapStateToProps (state, ownProps) {
+  let line
+  let chapter
+  if (state.ui.currentTimeline == 'series') {
+    line = state.seriesLines.find(l => l.id === ownProps.lineId)
+    chapter = state.beats.find(b => b.id === ownProps.chapterId)
+  } else {
+    line = state.lines.find(l => l.id === ownProps.lineId)
+    chapter = state.chapters.find(s => s.id === ownProps.chapterId)
+  }
   return {
     ui: state.ui,
     linePosition: line.position,
-    scenePosition: scene.position,
+    chapterPosition: chapter.position,
   }
 }
 

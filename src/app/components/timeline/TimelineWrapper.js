@@ -12,6 +12,7 @@ import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
 import { computeZoom } from 'helpers/zoom'
 import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
+import cx from 'classnames'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -201,7 +202,7 @@ class TimelineWrapper extends Component {
 
   doExport = () => {
     let label = i18n('Where would you like to save the export?')
-    dialog.showSaveDialog({title: label}, function (fileName) {
+    dialog.showSaveDialog({title: label}, (fileName) => {
       if (fileName) {
         let options = {
           fileName
@@ -217,10 +218,11 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav () {
+    const { ui } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
-    if (this.props.ui.orientation === 'vertical') {
+    if (ui.orientation === 'vertical') {
       glyph = 'option-horizontal'
       scrollDirectionFirst = 'menu-up'
       scrollDirectionSecond = 'menu-down'
@@ -232,11 +234,9 @@ class TimelineWrapper extends Component {
     if (this.filterIsEmpty()) {
       filterDeclaration = <span></span>
     }
-    let subNavKlasses = 'subnav__container'
-    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
 
     return (
-      <Navbar className={subNavKlasses}>
+      <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
@@ -277,15 +277,12 @@ class TimelineWrapper extends Component {
   }
 
   render () {
-    const { darkMode } = this.props.ui
-    let containerKlasses = 'container-with-sub-nav'
-    if (darkMode) containerKlasses += ' darkmode'
-    let tableKlass = darkMode ? 'darkmode' : ''
+    const { ui } = this.props
     return (
-      <div id='timelineview__container' className={containerKlasses}>
+      <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
         {this.renderSubNav()}
         <div id='timelineview__root'>
-          <StickyTable wrapperRef={ref => this.tableRef = ref} className={tableKlass}>
+          <StickyTable wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode})}>
             <TimelineTable
               filter={this.state.filter}
               filterIsEmpty={this.filterIsEmpty()}

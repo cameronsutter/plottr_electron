@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import * as UIActions from 'actions/ui'
 import { Glyphicon, FormControl, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
+import BookChooser from '../components/story/BookChooser'
 import i18n from 'format-message'
 const { ipcRenderer } = require('electron')
 var TRIALMODE = process.env.TRIALMODE === 'true'
@@ -47,9 +48,14 @@ class Navigation extends Component {
                 <span className='icon-bar'></span>
                 <span className='icon-bar'></span>
               </button>
-              {this.renderStoryName()}
             </div>
+            <ul className="nav navbar-nav" style={{marginLeft: '15px', marginRight: '10px'}}>
+              <BookChooser />
+            </ul>
             <ul className='nav navbar-nav'>
+              <li className={this.isActive('story')}>
+                <a href='#' onClick={() => this.props.actions.changeCurrentView('story')} >{i18n('Series')}</a>
+              </li>
               <li className={this.isActive('timeline')}>
                 <a href='#' onClick={() => this.props.actions.changeCurrentView('timeline')} >{i18n('Timeline')}</a>
               </li>
@@ -80,44 +86,6 @@ class Navigation extends Component {
   //   <HistoryComponent show={this.state.showHistory} />
   // </div>
 
-  saveEdit = () => {
-    var newName = ReactDOM.findDOMNode(this.refs.storyNameInput).value
-    this.props.actions.changeStoryName(newName)
-    this.setState({editing: false})
-  }
-
-  handleFinishEditing = (event) => {
-    if (event.which === 13) {
-      this.saveEdit()
-    }
-  }
-
-  handleCancelEdit = (event) => {
-    if (event.which === 27) {
-      this.setState({editing: false})
-    }
-  }
-
-  renderStoryName () {
-    return this.state.editing ? this.renderEditingStoryName() : this.renderDisplayStoryName()
-  }
-
-  renderEditingStoryName () {
-    return <FormControl
-      className='navbar-brand story-name__input'
-      type='text'
-      defaultValue={this.props.storyName}
-      ref='storyNameInput'
-      autoFocus
-      onBlur={this.saveEdit}
-      onKeyDown={this.handleCancelEdit}
-      onKeyPress={this.handleFinishEditing} />
-  }
-
-  renderDisplayStoryName () {
-    return <a className='navbar-brand' onClick={() => this.setState({editing: true})} >{this.props.storyName}</a>
-  }
-
   isActive (currentLink) {
     if (currentLink === this.props.ui.currentView) {
       return 'active'
@@ -126,7 +94,6 @@ class Navigation extends Component {
 }
 
 Navigation.propTypes = {
-  storyName: PropTypes.string.isRequired,
   ui: PropTypes.object.isRequired,
   file: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
@@ -135,7 +102,6 @@ Navigation.propTypes = {
 function mapStateToProps (state) {
   return {
     file: state.file,
-    storyName: state.storyName,
     ui: state.ui,
   }
 }

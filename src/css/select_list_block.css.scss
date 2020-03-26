@@ -52,16 +52,57 @@
   }
 }
 
-.select-list__labels {
-  li {
-    padding-bottom: 5px;
-    button {
-      vertical-align: bottom;
-    }
-    .label {
-      font-size: 10pt;
-      font-weight: normal;
-      padding-top: 5px;
+// .select-list__labels {
+//   li {
+//     padding-bottom: 5px;
+//     button {
+//       vertical-align: bottom;
+//     }
+//     .label {
+//       font-size: 10pt;
+//       font-weight: normal;
+//       padding-top: 5px;
+//     }
+//   }
+// }
+
+.chip-cloud {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-size: 14px;
+  line-height: 16px;
+  border-radius: 5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 300px;
+  height: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 8px;
+  margin: 2px;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: default;
+
+  .image-circle-xs {
+    margin: 0px 4px 0px -8px;
+  }
+
+  .glyphicon-remove {
+    visibility: hidden;
+    margin-left: 4px;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: $gray-9;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    .glyphicon-remove {
+      visibility: visible;
     }
   }
 }

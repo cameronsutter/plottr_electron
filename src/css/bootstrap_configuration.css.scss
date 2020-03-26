@@ -25,6 +25,10 @@ $font-size-h4:            18pt;
 $font-size-h5:            16pt;
 $font-size-h6:            14pt;
 $headings-font-weight:    400;
+$headings-font-family:    'IBM Plex Serif', serif;
+$font-family-sans-serif:  'Lato', sans-serif;
+$font-family-serif:       'IBM Plex Serif', serif;
+
 
 //** Text color for `<input>`s
 $input-color:                    $gray-0;
@@ -69,6 +73,7 @@ $btn-success-border:             $green-6;
 $btn-success-hover-bg:           $green-6;
 
 $btn-primary-hover-bg:           $blue-6;
+$btn-danger-hover-bg:            $red-6;
 
 
 //=== Popover

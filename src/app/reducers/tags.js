@@ -1,7 +1,7 @@
 import { ADD_TAG, EDIT_TAG, DELETE_TAG, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { tag } from 'store/initialState'
-import { newFileTags } from 'store/newFileState'
-import { tagId } from 'store/newIds'
+import { tag } from '../../../shared/initialState'
+import { newFileTags } from '../../../shared/newFileState'
+import { nextId } from 'store/newIds'
 
 const initialState = [tag]
 
@@ -9,7 +9,7 @@ export default function tags (state = initialState, action) {
   switch (action.type) {
     case ADD_TAG:
       return [...state, {
-        id: tagId(state),
+        id: nextId(state),
         title: action.title,
         color: tag.color
       }]

@@ -8,19 +8,31 @@ import PlacesView from 'components/places/placesView'
 import NotesView from 'components/notes/notesView'
 import i18n from 'format-message'
 import TimelineWrapper from '../components/timeline/TimelineWrapper'
+import SeriesTab from '../components/story/SeriesTab'
+import ExportTab from '../components/export/ExportTab'
+import SETTINGS from '../../common/utils/settings'
 
 class Body extends Component {
+  constructor (props) {
+    super(props)
+    this.timeline = <TimelineWrapper/>
+    this.outline = <OutlineView />
+  }
+
   render () {
     return this.props.file.loaded ? this.renderBody() : this.renderLoading()
   }
 
   renderBody () {
     switch (this.props.currentView) {
+      case 'story':
+        return <SeriesTab />
+
       case 'timeline':
-        return <TimelineWrapper />
+        return this.timeline
 
       case 'outline':
-        return <OutlineView />
+        return this.outline
 
       case 'notes':
         return <NotesView />
@@ -34,8 +46,11 @@ class Body extends Component {
       case 'places':
         return <PlacesView />
 
+      case 'export':
+        return <ExportTab />
+
       default:
-        return <TimeLineView />
+        return <TimelineWrapper />
 
     }
   }

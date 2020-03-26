@@ -1,30 +1,26 @@
 import _ from 'lodash'
-import { ADD_CARD, EDIT_CARD_DETAILS,
+import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   DELETE_LINE, DELETE_SCENE,
   EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE,
   DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
   REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG, DELETE_CHARACTER,
-  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { card } from 'store/initialState'
-import { newFileCards } from 'store/newFileState'
-import { cardId } from 'store/newIds'
-
-const initialState = [card]
+  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK } from '../constants/ActionTypes'
+import { newFileCards } from '../../../shared/newFileState'
+import { card as defaultCard } from '../../../shared/initialState'
+import { nextId } from 'store/newIds'
 
 export default function cards (state, action) {
+  let diffObj
   switch (action.type) {
     case ADD_CARD:
-      return [{
-        id: cardId(state),
-        lineId: action.card.lineId,
-        sceneId: action.card.sceneId,
-        title: action.card.title,
-        description: action.card.description,
-        tags: action.card.tags,
-        characters: action.card.characters,
-        places: action.card.places
-      }, ...state]
+      return [Object.assign({}, defaultCard, {
+        ...action.card,
+        id: nextId(state),
+      }), ...state]
+
+    case ADD_LINES_FROM_TEMPLATE:
+      return [...action.cards, ...state]
 
     case EDIT_CARD_DETAILS:
       var newCardDetails = {
@@ -36,18 +32,43 @@ export default function cards (state, action) {
       )
 
     case EDIT_CARD_COORDINATES:
+      diffObj = {}
+      if (action.bookId == 'series') {
+        diffObj.seriesLineId = action.lineId
+        diffObj.beatId = action.chapterId
+      } else {
+        diffObj.lineId = action.lineId
+        diffObj.chapterId = action.chapterId
+      }
       return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {lineId: action.lineId, sceneId: action.sceneId}) : card
+        card.id === action.id ? Object.assign({}, card, diffObj) : card
       )
 
     case CHANGE_LINE:
+      diffObj = {}
+      if (action.bookId == 'series') {
+        diffObj.seriesLineId = action.lineId
+      } else {
+        diffObj.lineId = action.lineId
+      }
       return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {lineId: action.lineId}) : card
+        card.id === action.id ? Object.assign({}, card, diffObj) : card
       )
 
     case CHANGE_SCENE:
+      diffObj = {}
+      if (action.bookId == 'series') {
+        diffObj.beatId = action.chapterId
+      } else {
+        diffObj.chapterId = action.chapterId
+      }
       return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {sceneId: action.sceneId}) : card
+        card.id === action.id ? Object.assign({}, card, diffObj) : card
+      )
+
+    case CHANGE_BOOK:
+      return state.map(card =>
+        card.id === action.id ? Object.assign({}, card, {bookId: action.bookId}) : card
       )
 
     case DELETE_CARD:
@@ -57,7 +78,7 @@ export default function cards (state, action) {
 
     case DELETE_SCENE:
       return state.filter(card =>
-        card.sceneId !== action.id
+        card.chapterId !== action.id
       )
 
     case DELETE_LINE:

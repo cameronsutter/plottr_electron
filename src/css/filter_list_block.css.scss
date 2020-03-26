@@ -29,6 +29,11 @@
   }
 }
 
+.filter-list.flex {
+  display: flex;
+  overflow: auto;
+}
+
 .sort-list {
   overflow-y: scroll;
   list-style: none;

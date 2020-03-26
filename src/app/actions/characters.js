@@ -1,8 +1,12 @@
-import { ADD_CHARACTER, EDIT_CHARACTER, DELETE_CHARACTER } from 'constants/ActionTypes'
-import { character } from 'store/initialState'
+import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, DELETE_CHARACTER } from 'constants/ActionTypes'
+import { character } from '../../../shared/initialState'
 
 export function addCharacter () {
   return { type: ADD_CHARACTER, name: character.name, description: character.description, notes: character.notes  }
+}
+
+export function addCharacterWithTemplate (templateData) {
+  return { type: ADD_CHARACTER_WITH_TEMPLATE, name: character.name, description: character.description, notes: character.notes, templateData  }
 }
 
 export function editCharacter (id, attributes) {

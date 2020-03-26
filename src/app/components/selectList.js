@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { connect } from 'react-redux'
-import { ButtonToolbar, Button, DropdownButton,
-  MenuItem, Input, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from './tagLabel'
 import i18n from 'format-message'
+import Image from './images/Image'
 
 export default class SelectList extends Component {
 
   renderSelected () {
     if (this.props.type === 'Tags') {
-      return this.renderSelectedTags ()
+      return <ul>
+        { this.renderSelectedTags() }
+      </ul>
     } else {
-      return this.renderSelectedItems ()
+      return <div className='chip-cloud'>
+        { this.renderSelectedItems() }
+      </div>
     }
   }
 
@@ -33,10 +36,11 @@ export default class SelectList extends Component {
     return this.props.selectedItems.map(itemId => {
       var item = _.find(this.props.allItems, {id: itemId})
       if (!item) return null
-      return <li key={itemId}>
-        <Button onClick={() => this.props.remove(this.props.parentId, itemId)} bsSize='xsmall'><Glyphicon glyph='remove'/></Button>
-        {item.name}
-      </li>
+      return <div key={itemId} className='chip'>
+        <Image size='xs' shape='circle' imageId={item.imageId}/>
+        <span>{ item.name }</span>
+        <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, itemId)}/>
+      </div>
     })
   }
 
@@ -73,7 +77,6 @@ export default class SelectList extends Component {
   }
 
   render () {
-    let classNameUL = this.props.type === 'Tags' ? 'select-list__labels' : ''
     let label = ''
     switch (this.props.type) {
       case 'Characters':
@@ -95,9 +98,7 @@ export default class SelectList extends Component {
             </Button>
           </OverlayTrigger>
         </label>
-        <ul className={classNameUL}>
-          {this.renderSelected()}
-        </ul>
+        {this.renderSelected()}
       </div>
     )
   }

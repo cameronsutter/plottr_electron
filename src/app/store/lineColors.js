@@ -1,16 +1,16 @@
 export function nextColor (length) {
   switch (length) {
     case 0:
-      return '#6cace4'
+      return '#6cace4' // blue
     case 1:
-      return '#78be20'
+      return '#78be20' // green
     case 2:
-      return '#e5554f'
+      return '#e5554f' // red
     case 3:
-      return '#ff7f32'
+      return '#ff7f32' // orange
     case 4:
-      return '#ffc72c'
+      return '#ffc72c' // yellow
     default:
-      return '#0b1117'
+      return '#0b1117' // black
   }
 }

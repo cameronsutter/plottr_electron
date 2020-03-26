@@ -2,10 +2,10 @@ import _ from 'lodash'
 import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE,
-  DELETE_NOTE, DELETE_CARD, DELETE_PLACE } from '../constants/ActionTypes'
-import { place } from 'store/initialState'
-import { newFilePlaces } from 'store/newFileState'
-import { placeId } from 'store/newIds'
+  DELETE_NOTE, DELETE_CARD, DELETE_PLACE, DELETE_IMAGE } from '../constants/ActionTypes'
+import { place } from '../../../shared/initialState'
+import { newFilePlaces } from '../../../shared/newFileState'
+import { nextId } from 'store/newIds'
 
 const initialState = [place]
 
@@ -14,7 +14,7 @@ export default function places (state = initialState, action) {
     case ADD_PLACE:
       return [...state, {
         ...place,
-        id: placeId(state),
+        id: nextId(state),
         name: action.name,
         description: action.description,
         notes: action.notes
@@ -71,6 +71,19 @@ export default function places (state = initialState, action) {
       return state.filter(place =>
         place.id !== action.id
       )
+
+    case DELETE_IMAGE:
+      return state.map(pl => {
+        if (action.id == pl.imageId) {
+          return {
+            ...pl,
+            imageId: null,
+          }
+        } else {
+          return pl
+        }
+      })
+
 
     case RESET:
     case FILE_LOADED:

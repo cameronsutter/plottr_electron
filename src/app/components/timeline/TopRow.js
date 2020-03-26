@@ -6,58 +6,98 @@ import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
-import SceneTitleCell from 'components/timeline/SceneTitleCell'
+import * as BeatActions from 'actions/beats'
+import * as SeriesLineActions from 'actions/seriesLines'
+import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
-import SceneInsertCell from 'components/timeline/SceneInsertCell'
-import { reorderList, insertScene } from 'helpers/lists'
+import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
+import { reorderList } from 'helpers/lists'
+import { insertChapter } from 'helpers/chapters'
 import orientedClassName from 'helpers/orientedClassName'
-
+import { nextId } from '../../store/newIds'
+import { chaptersByBookSelector } from '../../selectors/chapters'
+import { linesByBookSelector } from '../../selectors/lines'
 
 class TopRow extends Component {
 
-  handleReorderScenes = (originalPosition, droppedPosition) => {
-    const scenes = reorderList(originalPosition, droppedPosition, this.props.scenes)
-    this.props.sceneActions.reorderScenes(scenes)
+  isSeries = () => {
+    return this.props.ui.currentTimeline == 'series'
+  }
+
+  handleReorderChapters = (originalPosition, droppedPosition) => {
+    const { ui, beatActions, sceneActions } = this.props
+    const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
+    if (this.isSeries()) {
+      beatActions.reorderBeats(chapters)
+    } else {
+      sceneActions.reorderScenes(chapters, ui.currentTimeline)
+    }
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
+    const { ui, lineActions, seriesLineActions } = this.props
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-    this.props.lineActions.reorderLines(lines)
+    if (this.isSeries()) {
+      seriesLineActions.reorderSeriesLines(lines)
+    } else {
+      lineActions.reorderLines(lines, ui.currentTimeline)
+    }
   }
 
-  handleInsertNewScene = (nextPosition, lineId) => {
-    // IDEA: lineId could be used to create a new card at the same time
-
-    const scenes = insertScene(nextPosition, this.props.scenes)
-    this.props.sceneActions.reorderScenes(scenes)
+  handleInsertNewChapter = (nextPosition) => {
+    const { ui, beatActions, sceneActions } = this.props
+    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId)
+    if (this.isSeries()) {
+      beatActions.reorderBeats(chapters)
+    } else {
+      sceneActions.reorderScenes(chapters, ui.currentTimeline)
+    }
   }
 
-  renderLastInsertSceneCell () {
+  handleAppendChapter = () => {
+    const { ui, beatActions, sceneActions } = this.props
+    if (this.isSeries()) {
+      beatActions.addBeat()
+    } else {
+      sceneActions.addScene(ui.currentTimeline)
+    }
+  }
+
+  handleAppendLine = () => {
+    const { ui, lineActions, seriesLineActions } = this.props
+    if (this.isSeries()) {
+      seriesLineActions.addSeriesLine()
+    } else {
+      lineActions.addLine(ui.currentTimeline)
+    }
+  }
+
+  renderLastInsertChapterCell () {
     const { orientation } = this.props.ui
-    return <SceneInsertCell key='last-insert' isInSceneList={true} handleInsert={() => this.props.sceneActions.addScene()} isLast={true} orientation={orientation}/>
+    return <ChapterInsertCell key='last-insert' isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true} orientation={orientation}/>
   }
 
-  renderScenes () {
+  renderChapters () {
     const { orientation } = this.props.ui
-    const scenes = _.sortBy(this.props.scenes, 'position')
-    const renderedScenes = scenes.flatMap(sc => {
+    const chapters = _.sortBy(this.props.chapters, 'position')
+    const renderedChapters = chapters.flatMap(ch => {
       const cells = []
-      cells.push(<SceneInsertCell key={`sceneId-${sc.id}-insert`} isInSceneList={true} scenePosition={sc.position} handleInsert={this.handleInsertNewScene} orientation={orientation}/>)
-      cells.push(<SceneTitleCell key={`sceneId-${sc.id}`} scene={sc} handleReorder={this.handleReorderScenes} />)
+      cells.push(<ChapterInsertCell key={`chapterId-${ch.id}-insert`} isInChapterList={true} chapterPosition={ch.position} handleInsert={this.handleInsertNewChapter} orientation={orientation}/>)
+      cells.push(<ChapterTitleCell key={`chapterId-${ch.id}`} chapter={ch} handleReorder={this.handleReorderChapters} />)
       return cells
     })
-    return [<Cell key='placeholder'/>].concat(renderedScenes).concat([this.renderLastInsertSceneCell()])
+    return [<Cell key='placeholder'/>].concat(renderedChapters).concat([this.renderLastInsertChapterCell()])
   }
 
   renderLines () {
     const lines = _.sortBy(this.props.lines, 'position')
-    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines}/>)
+    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>)
     return [<Cell key='placeholder'/>].concat(renderedLines).concat(
       <Row key='insert-line'>
         <Cell>
           <div
             className={orientedClassName('line-list__append-line', this.props.ui.orientation)}
-            onClick={() => this.props.lineActions.addLine()}
+            onClick={this.handleAppendLine}
           >
             <div className={orientedClassName('line-list__append-line-wrapper', this.props.ui.orientation)}>
               <Glyphicon glyph='plus' />
@@ -70,7 +110,7 @@ class TopRow extends Component {
 
   render () {
     let body = null
-    if (this.props.ui.orientation === 'horizontal') body = this.renderScenes()
+    if (this.props.ui.orientation === 'horizontal') body = this.renderChapters()
     else body = this.renderLines()
     return <Row>{body}</Row>
   }
@@ -78,24 +118,36 @@ class TopRow extends Component {
 
 TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
-  scenes: PropTypes.array,
+  chapters: PropTypes.array,
+  nextChapterId: PropTypes.number,
   lines: PropTypes.array,
 }
 
 function mapStateToProps (state) {
-  let obj = {
-    ui: state.ui
+  let nextChapterId = -1
+  const bookId = state.ui.currentTimeline
+  if (bookId == 'series') {
+    // get all beats / seriesLines
+    nextChapterId = nextId(state.beats)
+  } else {
+    // get all the chapters / lines for state.ui.currentTimeline (bookId)
+    nextChapterId = nextId(state.chapters)
   }
-  if (state.ui.orientation === 'horizontal') obj.scenes = state.scenes
-  else obj.lines = state.lines
 
-  return obj
+  return {
+    ui: state.ui,
+    chapters: chaptersByBookSelector(state),
+    nextChapterId: nextChapterId,
+    lines: linesByBookSelector(state),
+  }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
+    beatActions: bindActionCreators(BeatActions, dispatch),
+    seriesLinesActions: bindActionCreators(SeriesLineActions, dispatch),
   }
 }
 

@@ -3,21 +3,19 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { FormControl, FormGroup, ControlLabel, ButtonToolbar, Button } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import * as CardActions from 'actions/cards'
 import TagLabel from 'components/tagLabel'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
+import cx from 'classnames'
+import Image from 'components/images/Image'
 
 class CardView extends Component {
   constructor (props) {
     super(props)
     this.state = {editing: false, description: props.card.description}
-  }
-
-  line () {
-    return _.find(this.props.lines, {id: this.props.card.lineId})
   }
 
   componentWillUnmount () {
@@ -96,21 +94,55 @@ class CardView extends Component {
     })
   }
 
+  renderChipCloud (ids, list) {
+    if (!ids.length) return null
+    const { images } = this.props
+
+    const chips = ids.map((id, idx) => {
+      const thing = _.find(list, {id: id})
+      if (!thing) return null
+      const key = `${idx}-${id}`
+      return <div key={key} className='chip'>
+        <Image size='xs' shape='circle' imageId={thing.imageId}/>
+        <span>{ thing.name }</span>
+      </div>
+    })
+
+    return <div className='chip-cloud'>{ chips }</div>
+  }
+
+  renderCharacters () {
+    const { card, characters } = this.props
+    return this.renderChipCloud(card.characters, characters)
+  }
+
+  renderPlaces () {
+    const { card, places } = this.props
+    return this.renderChipCloud(card.places, places)
+  }
+
+  renderDivider () {
+    const { card } = this.props
+    if (!card.tags.length && !card.characters.length && !card.places.length) return null
+
+    return <div className='divider'/>
+  }
+
   render () {
-    let line = this.line()
-    let style = {color: line.color}
-    const title = this.renderTitle()
-    const description = this.renderDescription()
-    let klasses = 'outline__card'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
+    const { line, ui } = this.props
+    const style = {color: line.color}
+    const klasses = cx('outline__card', {darkmode: ui.darkMode})
     return (
       <div className={klasses}>
         <div style={style} className='outline__card__line-title'>{line.title}</div>
-        {title}
-        {description}
+        { this.renderTitle() }
+        { this.renderDescription() }
+        { this.renderDivider() }
         <div className='outline__card__label-list'>
-          {this.renderTags()}
+          { this.renderTags() }
         </div>
+        { this.renderCharacters() }
+        { this.renderPlaces() }
       </div>
     )
   }
@@ -118,17 +150,26 @@ class CardView extends Component {
 
 CardView.propTypes = {
   card: PropTypes.object.isRequired,
-  lines: PropTypes.array.isRequired,
+  line: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
+  images: PropTypes.object,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state, ownProps) {
+  let line = null
+  if (state.ui.currentTimeline == 'series') {
+    // get the right seriesLines
+    line = state.seriesLines.find(sl => sl.id === ownProps.card.seriesLineId)
+  } else {
+    // get the right lines for state.ui.currentTimeline (bookId)
+    line = state.lines.find(l => l.id == ownProps.card.lineId)
+  }
   return {
-    lines: state.lines,
+    line: line,
     tags: state.tags,
     characters: state.characters,
     places: state.places,

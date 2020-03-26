@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { ButtonToolbar, Button, DropdownButton,
-  MenuItem, Input, Label, Glyphicon } from 'react-bootstrap'
+import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
+import SETTINGS from '../../common/utils/settings'
 
 class FilterList extends Component {
   constructor (props) {
@@ -14,10 +14,10 @@ class FilterList extends Component {
   }
 
   defaultFilteredItemsObj () {
-    return {tag: [], character: [], place: []}
+    return {tag: [], character: [], place: [], book: []}
   }
 
-  filterItem (type, id) {
+  filterItem = (type, id) => {
     var filteredItems = this.state.filteredItems
     if (filteredItems[type].indexOf(id) === -1) {
       filteredItems[type].push(id)
@@ -29,7 +29,7 @@ class FilterList extends Component {
     this.setState({filteredItems: filteredItems})
   }
 
-  filterList (type, list) {
+  filterList = (type, list) => {
     var filteredItems = this.state.filteredItems
     if (filteredItems[type].length > 0) {
       filteredItems[type] = []
@@ -60,21 +60,52 @@ class FilterList extends Component {
     if (this.isChecked(type, item.id)) {
       checked = 'eye-open'
     }
-    return (<li key={`${type}-${item.id}`} onMouseDown={() => this.filterItem(type, item.id)}>
-        <Glyphicon glyph={checked} /> {item[attr]}
-      </li>
-    )
+    return <li key={`${type}-${item.id}`} onMouseDown={() => this.filterItem(type, item.id)}>
+      <Glyphicon glyph={checked} /> {item[attr]}
+    </li>
+  }
+
+  renderBooks () {
+    if (!SETTINGS.get('premiumFeatures')) return null
+
+    const { books } = this.props
+
+    const renderedBooks = books.allIds.map(id => {
+      return this.renderFilterItem(books[id], 'book', 'title')
+    })
+
+    let checked = 'unchecked'
+    if (this.isChecked('book', 'series')) {
+      checked = 'eye-open'
+    }
+
+    return <div>
+      <p>{i18n('Books')}</p>
+      <ul className='filter-list__list'>
+        <li key='book-series' onMouseDown={() => this.filterItem('book', 'series')}>
+          <Glyphicon glyph={checked} /> {i18n('Series')}
+        </li>
+        { renderedBooks }
+      </ul>
+    </div>
   }
 
   render () {
     return (
-      <div className='filter-list'>
-        <p onClick={() => this.filterList('character', this.props.characters)}><em>{i18n('Characters')}</em></p>
+      <div className='filter-list flex'>
+        { this.renderBooks() }
+        <div>
+          <p onClick={() => this.filterList('character', this.props.characters)}><em>{i18n('Characters')}</em></p>
           {this.renderFilterList(this.props.characters, 'character', 'name')}
-        <p onClick={() => this.filterList('place', this.props.places)}><em>{i18n('Places')}</em></p>
+        </div>
+        <div>
+          <p onClick={() => this.filterList('place', this.props.places)}><em>{i18n('Places')}</em></p>
           {this.renderFilterList(this.props.places, 'place', 'name')}
-        <p onClick={() => this.filterList('tag', this.props.tags)}><em>{i18n('Tags')}</em></p>
-        {this.renderFilterList(this.props.tags, 'tag', 'title')}
+        </div>
+        <div>
+          <p onClick={() => this.filterList('tag', this.props.tags)}><em>{i18n('Tags')}</em></p>
+          {this.renderFilterList(this.props.tags, 'tag', 'title')}
+        </div>
       </div>
     )
   }
@@ -85,6 +116,7 @@ FilterList.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
+  books: PropTypes.object.isRequired,
   updateItems: PropTypes.func.isRequired
 }
 
@@ -92,7 +124,8 @@ function mapStateToProps (state) {
   return {
     characters: state.characters,
     places: state.places,
-    tags: state.tags
+    tags: state.tags,
+    books: state.books,
   }
 }
 

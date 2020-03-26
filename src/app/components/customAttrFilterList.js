@@ -84,7 +84,7 @@ class CustomAttrFilterList extends Component {
       checked = 'eye-open'
     }
     return <li onMouseDown={() => this.filterItem('', attr)}>
-      <Glyphicon glyph={checked} /> <em>[blank]</em>
+      <Glyphicon glyph={checked} /> <em>--</em>
     </li>
   }
 

@@ -15,6 +15,7 @@ import Element from './Element'
 import { LinkButton, withLinks } from './LinkButton'
 import { ImageLinkButton, withImages } from './ImageLinkButton'
 import cx from 'classnames'
+import deep from 'deep-diff'
 import { useTextConverter } from './helpers'
 
 const HOTKEYS = {
@@ -33,8 +34,11 @@ const RichTextEditor = (props) => {
   const [value, setValue] = useState(rceText)
 
   const updateValue = val => {
-    setValue(val)
-    props.onChange(val)
+    const diff = deep.diff(value, val)
+    if (diff) {
+      setValue(val)
+      props.onChange(val)
+    }
   }
 
   const otherProps = {

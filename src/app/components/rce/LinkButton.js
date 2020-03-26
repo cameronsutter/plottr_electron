@@ -15,6 +15,7 @@ export const LinkButton = () => {
     if (selection) {
       editor.apply({
         type: 'set_selection',
+        properties: { anchor: selection.anchor, focus: selection.focus },
         newProperties: { anchor: selection.anchor, focus: selection.focus },
       })
     }

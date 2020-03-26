@@ -26,7 +26,6 @@ class Body extends Component {
   renderBody () {
     switch (this.props.currentView) {
       case 'story':
-        if (!SETTINGS.get('premiumFeatures')) return this.timeline
         return <SeriesTab />
 
       case 'timeline':

@@ -190,10 +190,10 @@ class CardDialog extends Component {
             <div className='card-dialog__description'>
               <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
               <RichText
-                description={this.props.card.description}
+                description={card.description}
                 onChange={(desc) => this.setState({description: desc})}
                 editable={this.state.editing}
-                darkMode={this.props.ui.darkMode}
+                darkMode={ui.darkMode}
               />
             </div>
           </div>

@@ -7,7 +7,6 @@ import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
    Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
-import MDdescription from 'components/mdDescription'
 import RichText from '../rce/RichText'
 
 class PlaceView extends Component {
@@ -90,7 +89,7 @@ class PlaceView extends Component {
               <RichText
                 description={place.notes}
                 onChange={(desc) => this.setState({notes: desc})}
-                editable={true}
+                editable
                 autofocus={false}
                 darkMode={false}
               />

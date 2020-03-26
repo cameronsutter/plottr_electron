@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
-import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 

@@ -1737,23 +1737,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": ""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
               "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper."
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": ""
             }
           ]
         },

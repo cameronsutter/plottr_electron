@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button, FormControl, FormGroup,
   ControlLabel, Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
-import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 

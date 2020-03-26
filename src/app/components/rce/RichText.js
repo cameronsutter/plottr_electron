@@ -14,7 +14,6 @@ const RichText = (props) => {
   }
 }
 
-
 RichText.propTypes = {
   description: PropTypes.any,
   onChange: PropTypes.func,

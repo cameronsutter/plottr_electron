@@ -9,8 +9,8 @@ import _ from 'lodash'
 import * as CardActions from 'actions/cards'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import SelectList from 'components/selectList'
-import MDdescription from 'components/mdDescription'
 import i18n from 'format-message'
+import cx from 'classnames'
 import RichText from '../rce/RichText'
 
 const customStyles = {content: {top: '70px'}}
@@ -19,12 +19,18 @@ class CardDialog extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      description: props.card.description
+      description: props.card.description,
+      editing: false,
     }
   }
 
   componentDidMount () {
     window.SCROLLWITHKEYS = false
+    // this is a hack
+    // must do this so the RichText editing works
+    // otherwise, throws this: addRange(): The given range isn't in document.
+    // 400 is the minimum
+    setTimeout(() => {this.setState({editing: true})}, 400)
   }
 
   componentWillUnmount () {
@@ -121,16 +127,9 @@ class CardDialog extends Component {
   }
 
   renderDescription () {
-    var description = this.props.card.description
+    if (!this.state.editing) return null
 
-    return (
-      <RichText
-        description={description}
-        onChange={(desc) => this.setState({description: desc})}
-        editable={true}
-        darkMode={this.props.ui.darkMode}
-      />
-    )
+    return
   }
 
   renderLeftSide () {
@@ -178,20 +177,24 @@ class CardDialog extends Component {
   }
 
   render () {
-    let klasses = 'card-dialog'
-    if (this.props.ui.darkMode) {
-      klasses += ' darkmode'
+    const { card, ui } = this.props
+    if (ui.darkMode) {
       customStyles.content.backgroundColor = '#888'
     }
     return (
       <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
-        <div className={klasses}>
+        <div className={cx('card-dialog', {darkmode: ui.darkMode})}>
           {this.renderTitle()}
           <div className='card-dialog__body'>
             {this.renderLeftSide()}
             <div className='card-dialog__description'>
               <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
-              {this.renderDescription()}
+              <RichText
+                description={this.props.card.description}
+                onChange={(desc) => this.setState({description: desc})}
+                editable={this.state.editing}
+                darkMode={this.props.ui.darkMode}
+              />
             </div>
           </div>
           {this.renderButtonBar()}

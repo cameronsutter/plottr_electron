@@ -1,5 +1,5 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog,
-  systemPreferences, globalShortcut, shell } = require('electron')
+  nativeTheme, globalShortcut, shell } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const deep = require('deep-diff')
@@ -24,6 +24,12 @@ const TemplateManager = require('./main_modules/template_manager')
 const templateManager = new TemplateManager()
 const emptyFile = require('./main_modules/empty_file')
 if (process.env.NODE_ENV === 'dev') {
+  // https://github.com/MarshallOfSound/electron-devtools-installer
+  // const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
+  // installExtension(REACT_DEVELOPER_TOOLS)
+  //   .then((name) => console.log(`Added Extension:  ${name}`))
+  //   .catch((err) => console.log('An error occurred: ', err))
+
   // require('electron-reload')(path.join('..'))
 }
 
@@ -45,7 +51,7 @@ var dashboardWindow = null
 var fileToOpen = null
 var dontquit = false
 var tryingToQuit = false
-var darkMode = systemPreferences.isDarkMode() || false
+var darkMode = nativeTheme.shouldUseDarkColors || false
 
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : RECENT_FILES_PATH

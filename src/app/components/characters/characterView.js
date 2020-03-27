@@ -165,12 +165,12 @@ class CharacterView extends Component {
         if (attr.type == 'paragraph') {
           return <div key={attr.name}>
             <label>{attr.name}</label>
-            <MDdescription
+            <RichText
               description={attr.value}
               onChange={(desc) => handleTemplateAttrDescriptionChange(t.id, attr.name, desc)}
-              useRCE={true}
-              labels={{}}
-              darkMode={false}
+              editable
+              autofocus={false}
+              darkMode={this.props.ui.darkMode}
             />
           </div>
         } else {

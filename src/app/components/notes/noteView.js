@@ -90,7 +90,7 @@ class NoteView extends Component {
   }
 
   renderContent () {
-    const { note } = this.props
+    const { note, ui } = this.props
     if (this.state.editing) {
       return <div className='note-list__content editing'>
         <div className='note-list__note__edit-form'>
@@ -109,9 +109,9 @@ class NoteView extends Component {
             <RichText
               description={note.content}
               onChange={(desc) => this.setState({content: desc})}
-              editable={!this.state.hide}
+              editable
               autofocus={false}
-              darkMode={false}
+              darkMode={ui.darkMode}
             />
           </FormGroup>
         </div>
@@ -137,12 +137,7 @@ class NoteView extends Component {
       return <div className='note-list__content' onClick={() => this.setState({editing: true})}>
         <h4 className='secondary-text'>{note.title}</h4>
         { img }
-        <MDdescription
-          description={note.content}
-          useRCE={false}
-          labels={{}}
-          darkMode={false}
-        />
+        <RichText description={note.content} darkMode={ui.darkMode} />
       </div>
     }
   }

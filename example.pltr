@@ -11,7 +11,7 @@
     },
     "characterSort": "name~asc",
     "currentTimeline": 1,
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

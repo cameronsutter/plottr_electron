@@ -1,14 +1,54 @@
 {
-  "cards": [
+  "ui": {
+    "currentView": "timeline",
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title",
+    "noteFilter": null,
+    "currentTimeline": 1,
+    "zoomState": null,
+    "zoomIndex": 4
+  },
+  "file": {
+    "fileName": "/Users/sparrowhawk/github/plottr_electron/example2.pltr",
+    "loaded": true,
+    "dirty": true,
+    "version": "2020.3.27"
+  },
+  "places": [
     {
-      "characters": [],
-      "description": "boom",
+      "cards": [],
+      "color": null,
+      "description": "my favorite place",
       "id": 0,
-      "lineId": 0,
-      "places": [],
-      "sceneId": 0,
+      "name": "first place",
+      "noteIds": [],
+      "notes": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "templates": [],
       "tags": [],
-      "title": "a new card"
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "color": null,
+      "id": 0,
+      "title": "First tag :)"
     }
   ],
   "characters": [
@@ -19,74 +59,132 @@
       "id": 0,
       "name": "main character",
       "noteIds": [],
-      "notes": ""
+      "notes": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "templates": [],
+      "categoryId": "",
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
     }
   ],
-  "customAttributes": {
-    "cards": [],
-    "characters": [],
-    "lines": [],
-    "places": [],
-    "scenes": []
-  },
-  "file": {
-    "dirty": true,
-    "fileName": "/Users/csutter/github/plottr_electron/example2.pltr",
-    "loaded": true,
-    "version": "1.1.21"
-  },
+  "chapters": [
+    {
+      "id": 3,
+      "position": 3,
+      "title": "Scene 4",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 0,
+      "position": 0,
+      "title": "new scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 1,
+      "position": 1,
+      "title": "new scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    },
+    {
+      "id": 2,
+      "position": 2,
+      "title": "new scene",
+      "bookId": 1,
+      "time": 0,
+      "templates": []
+    }
+  ],
+  "cards": [
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "boom"
+            }
+          ]
+        }
+      ],
+      "id": 0,
+      "lineId": 0,
+      "places": [],
+      "tags": [],
+      "title": "a new card",
+      "templates": [],
+      "imageId": null,
+      "chapterId": 0,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    }
+  ],
   "lines": [
     {
       "color": "#000000",
       "id": 0,
       "position": 0,
-      "title": "Story Line"
+      "title": "Story Line",
+      "characterId": null,
+      "bookId": 1
     }
   ],
+  "customAttributes": {
+    "characters": [],
+    "places": [],
+    "cards": [],
+    "scenes": [],
+    "lines": []
+  },
   "notes": [],
-  "places": [
-    {
-      "cards": [],
-      "color": null,
-      "description": "my favorite place",
-      "id": 0,
-      "name": "first place",
-      "noteIds": [],
-      "notes": ""
-    }
-  ],
-  "scenes": [
-    {
-      "id": 3,
-      "position": 3,
-      "title": "Scene 4"
+  "images": {},
+  "beats": [],
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "example2",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "imageId": null
     },
-    {
-      "id": 0,
-      "position": 0,
-      "title": "new scene"
-    },
+    "allIds": [
+      1
+    ]
+  },
+  "series": {
+    "name": "example2",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "seriesLines": [
     {
       "id": 1,
-      "position": 1,
-      "title": "new scene"
-    },
-    {
-      "id": 2,
-      "position": 2,
-      "title": "new scene"
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0
     }
-  ],
-  "storyName": "example2",
-  "tags": [
-    {
-      "color": null,
-      "id": 0,
-      "title": "First tag :)"
-    }
-  ],
-  "ui": {
-    "currentView": "timeline",
-    "orientation": "horizontal"
-  }
+  ]
 }

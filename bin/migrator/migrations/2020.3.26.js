@@ -16,16 +16,26 @@ function migrate (data) {
 
   // character notes
   // character custom attributes
+  // character templates
   obj.characters = obj.characters.map(ch => {
     let newCharacter = {
       ...ch,
-      notes: convert(ch.notes)
+      notes: convert(ch.notes),
     }
     obj.customAttributes.characters.forEach(ca => {
       const parts = ca.split(':#:')
       if (parts[1] && parts[1] == 'paragraph') {
         newCharacter[parts[0]] = convert(newCharacter[parts[0]])
       }
+    })
+    newCharacter.templates = newCharacter.templates.map(t => {
+      t.attributes = t.attributes.map(attr => {
+        if (attr.type == 'paragraph') {
+          attr.value = convert(attr.value)
+        }
+        return attr
+      })
+      return t
     })
     return newCharacter
   })

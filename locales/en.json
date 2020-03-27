@@ -359,6 +359,9 @@
   "Loading...": {
     "message": "Loading..."
   },
+  "Main Plot": {
+    "message": "Main Plot"
+  },
   "Middle": {
     "message": "Middle"
   },
@@ -532,9 +535,6 @@
   },
   "Start my Free Trial": {
     "message": "Start my Free Trial"
-  },
-  "Story": {
-    "message": "Story"
   },
   "Story line": {
     "message": "Story line"

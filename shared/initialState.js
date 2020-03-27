@@ -1,5 +1,7 @@
 // data structure
 
+const RCE_INITIAL_VALUE = [{ children: [{ text: '' }] }]
+
 const series = {
   name: '',
   premise: '',
@@ -61,7 +63,7 @@ const character = {
   id: 1,
   name: '',
   description: '',
-  notes: '',
+  notes: RCE_INITIAL_VALUE,
   color: null,
   cards: [],
   noteIds: [],
@@ -76,7 +78,7 @@ const place = {
   id: 1,
   name: '',
   description: '',
-  notes: '',
+  notes: RCE_INITIAL_VALUE,
   color: null,
   cards: [],
   noteIds: [],
@@ -101,7 +103,7 @@ const card = {
   bookId: null,
   position: 0,
   title: '',
-  description: '',
+  description: RCE_INITIAL_VALUE,
   tags: [],
   characters: [],
   places: [],
@@ -136,7 +138,7 @@ const customAttributes = {
 const note = {
   id: 1,
   title: '',
-  content: '',
+  content: RCE_INITIAL_VALUE,
   tags: [],
   characters: [],
   places: [],
@@ -152,6 +154,14 @@ const image = {
   path: '',
   data: '',
 }
+
+// example template for reference
+// NOT exported
+const templates = [
+  {id: 'ch1', version: '2020.3.4', attributes: [
+    {name: 'Motivation', type: 'text', value: ''},
+  ]}
+]
 
 module.exports = {
   image,
@@ -169,4 +179,5 @@ module.exports = {
   beat,
   book,
   series,
+  RCE_INITIAL_VALUE,
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { RCE_INITIAL_VALUE } from '../../store/initialState'
+import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 
 export function useTextConverter (text) {
   let rceText = text

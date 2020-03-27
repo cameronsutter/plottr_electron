@@ -372,29 +372,28 @@ function askToSave (win, state, fileName, callback) {
 }
 
 function askToCreateFile (data = {}) {
-  dialog.showSaveDialog({title: i18n('Where would you like to start your new file?')}, function (fileName) {
-    if (fileName) {
-      var fullName = fileName + '.pltr'
-      if (!Object.keys(data).length) {
-        // no data
-        data = emptyFileContents()
-      }
-      saveFile(fullName, data, function (err) {
-        if (err) {
-          log.warn(err)
-          rollbar.warn(err, {fileName: fullName})
-          dialog.showErrorBox(i18n('Saving failed'), i18n("Creating your file didn't work. Let's try again."))
-          askToCreateFile(data)
-        } else {
-          openWindow(fullName, data)
-          storage.set(recentKey, fullName, function (err) {
-            if (err) console.log(err)
-            app.addRecentDocument(fullName)
-          })
-        }
-      })
+  const fileName = dialog.showSaveDialogSync({title: i18n('Where would you like to start your new file?')})
+  if (fileName) {
+    var fullName = fileName + '.pltr'
+    if (!Object.keys(data).length) {
+      // no data
+      data = emptyFileContents()
     }
-  })
+    saveFile(fullName, data, function (err) {
+      if (err) {
+        log.warn(err)
+        rollbar.warn(err, {fileName: fullName})
+        dialog.showErrorBox(i18n('Saving failed'), i18n("Creating your file didn't work. Let's try again."))
+        askToCreateFile(data)
+      } else {
+        openWindow(fullName, data)
+        storage.set(recentKey, fullName, function (err) {
+          if (err) console.log(err)
+          app.addRecentDocument(fullName)
+        })
+      }
+    })
+  }
 }
 
 function askToOpenOrCreate () {
@@ -408,15 +407,12 @@ function askToOpenOrCreate () {
 }
 
 function askToOpenFile () {
-  let win = null
-  if (windows.length > 0) win = BrowserWindow.getFocusedWindow()
-  var properties = [ 'openFile', 'createDirectory' ]
-  var filters = [{name: 'Plottr file', extensions: ['pltr']}]
-  dialog.showOpenDialog(win, {filters: filters, properties: properties }, function (chosenFileName) {
-    if (chosenFileName && chosenFileName.length > 0) {
-      openWindow(chosenFileName[0])
-    }
-  })
+  const properties = [ 'openFile', 'createDirectory' ]
+  const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+  const files = dialog.showOpenDialogSync({filters: filters, properties: properties })
+  if (files && files.length) {
+    openWindow(files[0])
+  }
 }
 
 function openWindow (fileName, jsonData) {
@@ -662,16 +658,13 @@ function gracefullyNotSave () {
 function takeScreenshot () {
   let win = BrowserWindow.getFocusedWindow()
   if (win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
-  win.capturePage(function (image) {
+  win.capturePage().then(image => {
     if (process.env.NODE_ENV === 'dev') {
-      let version = app.getVersion()
-      let home = process.platform === 'darwin' ? process.env.HOME : process.env.HOMEPATH
-      var folderPath = path.join(home, 'plottr_dist', version, 'screenshots')
-      let date = new Date()
-      let timestamp = '' + date.getMinutes() + date.getSeconds()
-      var fileName = 'shot' + timestamp + '.png'
-      var filePath = path.join(folderPath, fileName)
-      let stat = fs.stat(folderPath, (err, stat) => {
+      const folderPath = path.join(app.getPath('home'), 'plottr_screenshots', app.getVersion())
+      const date = new Date()
+      const fileName = `screenshot-${date.getMinutes()}-${date.getSeconds()}.png`
+      const filePath = path.join(folderPath, fileName)
+      fs.stat(folderPath, (err, stat) => {
         if (err) {
           fs.mkdir(folderPath, (err) => {
             if (err) {
@@ -687,9 +680,8 @@ function takeScreenshot () {
         }
       })
     } else {
-      dialog.showSaveDialog(win, function(fileName) {
-        if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
-      })
+      const fileName = dialog.showSaveDialogSync(win)
+      if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
     }
   })
 }
@@ -948,30 +940,26 @@ function buildFileMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = _.find(windows, {id: win.id})
       if (winObj) {
-        dialog.showSaveDialog(win, {title: i18n('Where would you like to save this copy?')}, function (fileName) {
-          if (fileName) {
-            var fullName = fileName + '.pltr'
-            const newState = {
-              ...winObj.state,
-              books: {
-                [1]: {
-                  ...books[1],
-                  name: books[1].name + ' copy'
-                }
-              }
-            }
-            saveFile(fullName, newState, function (err) {
-              if (err) {
-                log.warn(err)
-                rollbar.warn(err, {fileName: fullName})
-                gracefullyNotSave()
-              } else {
-                openWindow(fullName, newState)
-                win.close()
-              }
-            })
+        const fileName = dialog.showSaveDialogSync(win, {title: i18n('Where would you like to save this copy?')})
+        if (fileName) {
+          var fullName = fileName + '.pltr'
+          let newState = {...winObj.state}
+          if (SETTINGS.get('premiumFeatures')) {
+            newState.series.name = `${newState.series.name} copy`
+          } else {
+            newState.books[1].title = `${newState.books[1].title} copy`
           }
-        })
+          saveFile(fullName, newState, function (err) {
+            if (err) {
+              log.warn(err)
+              rollbar.warn(err, {fileName: fullName})
+              gracefullyNotSave()
+            } else {
+              openWindow(fullName, newState)
+              win.close()
+            }
+          })
+        }
       }
     }
   }, {
@@ -987,11 +975,10 @@ function buildFileMenu () {
       } else {
         exportState = windows[0].state
       }
-      dialog.showSaveDialog(win, {title: i18n('Where would you like to save the export?')}, (fileName) => {
-        if (fileName) {
-          Exporter(exportState, {fileName})
-        }
-      })
+      const fileName = dialog.showSaveDialogSync(win, {title: i18n('Where would you like to save the export?')})
+      if (fileName) {
+        Exporter(exportState, {fileName})
+      }
     }
   })
   return {

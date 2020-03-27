@@ -7,7 +7,7 @@ import Element from './Element'
 import { withLinks } from './LinkButton'
 import { withImages } from './ImageLinkButton'
 import { useTextConverter } from './helpers'
-import { RCE_INITIAL_VALUE } from '../../store/initialState'
+import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 import cx from 'classnames'
 import deep from 'deep-diff'
 
@@ -21,7 +21,7 @@ const RichTextViewer = (props) => {
 
   const diff = deep.diff(RCE_INITIAL_VALUE, value)
   // nothing to show
-  if (!diff) return null
+  if (!diff) return <span/>
 
   return (
     <Slate editor={editor} value={value} key={Math.random().toString(16)}>

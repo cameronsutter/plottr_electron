@@ -1,0 +1,85 @@
+{
+  "series": {
+    "name": "",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "imageId": null
+    },
+    "allIds": [
+      1
+    ]
+  },
+  "beats": [],
+  "chapters": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "position": 0,
+      "title": "auto",
+      "time": 0,
+      "templates": []
+    }
+  ],
+  "ui": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "zoomState": null,
+    "zoomIndex": 4
+  },
+  "file": {
+    "fileName": "",
+    "loaded": false,
+    "dirty": false,
+    "version": "2020.3.27"
+  },
+  "characters": [],
+  "places": [],
+  "tags": [],
+  "cards": [],
+  "lines": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0,
+      "characterId": null
+    }
+  ],
+  "seriesLines": [
+    {
+      "id": 1,
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0
+    }
+  ],
+  "customAttributes": {
+    "characters": [],
+    "places": [],
+    "cards": [],
+    "scenes": [],
+    "lines": []
+  },
+  "notes": [],
+  "images": {}
+}

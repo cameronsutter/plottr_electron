@@ -67,6 +67,7 @@ class FilterList extends Component {
 
   renderBooks () {
     if (!SETTINGS.get('premiumFeatures')) return null
+    if (!this.props.renderBooks) return null
 
     const { books } = this.props
 
@@ -117,7 +118,8 @@ FilterList.propTypes = {
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   books: PropTypes.object.isRequired,
-  updateItems: PropTypes.func.isRequired
+  updateItems: PropTypes.func.isRequired,
+  renderBooks: PropTypes.bool,
 }
 
 function mapStateToProps (state) {

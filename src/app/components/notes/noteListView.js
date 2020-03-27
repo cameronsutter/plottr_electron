@@ -139,7 +139,7 @@ class NoteListView extends Component {
     let subNavKlasses = 'subnav__container'
     if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     let popover = <Popover id='filter'>
-      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
+      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter} renderBooks/>
     </Popover>
     let filterDeclaration = <Alert onClick={this.removeFilter} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Notes are filtered')}</Alert>
     if (this.filterIsEmpty(this.state.filter)) {

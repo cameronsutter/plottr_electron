@@ -137,7 +137,7 @@ class CharacterView extends Component {
       const [attrName, attrType] = attr.split(':#:')
       if (attrType == 'paragraph') {
         return <div key={idx}>
-          <label>{attrName}</label>
+          <ControlLabel>{attrName}</ControlLabel>
           <RichText
             description={this.props.character[attrName]}
             onChange={(desc) => this.handleAttrDescriptionChange(attrName, desc)}
@@ -164,7 +164,7 @@ class CharacterView extends Component {
       return t.attributes.map(attr => {
         if (attr.type == 'paragraph') {
           return <div key={attr.name}>
-            <label>{attr.name}</label>
+            <ControlLabel>{attr.name}</ControlLabel>
             <RichText
               description={attr.value}
               onChange={(desc) => handleTemplateAttrDescriptionChange(t.id, attr.name, desc)}

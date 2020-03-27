@@ -82,7 +82,7 @@ function convert(text) {
 function deserialize (el) {
   if (el.nodeType === 3) {
     if (NEWLINES.includes(el.textContent)) {
-      return jsx('element', { type: 'paragraph' }, [{text: ''}])
+      return jsx('text', {text: ''})
     }
 
     return el.textContent
@@ -100,7 +100,7 @@ function deserialize (el) {
     case 'blockquote':
       return jsx('element', { type: 'block-quote' }, children)
     case 'p':
-      return jsx('element', { type: 'paragraph' }, children)
+      return jsx('element', { type: 'paragraph' }, fixParagraphChildren(children))
     case 'h1':
       return jsx('element', {type: 'heading-one'}, children)
     case 'h2':
@@ -116,7 +116,7 @@ function deserialize (el) {
     case 'ul':
       return jsx('element', {type: 'bulleted-list'}, children.filter(node => node != '\n')) // check for \r in windows
     case 'li':
-      return jsx('element', {type: 'list-item'}, fixLIchildren(children))
+      return jsx('element', {type: 'list-item'}, fixParagraphChildren(children))
     case 'ol':
       return jsx('element', {type: 'numbered-list'}, children.filter(node => node != '\n')) // check for \r in windows
     case 'em':
@@ -134,7 +134,7 @@ function deserialize (el) {
   }
 }
 
-function fixLIchildren (children) {
+function fixParagraphChildren (children) {
   return children.map(node => {
     if (node.type) return node.children.map(child => child.text).join(' ')
 

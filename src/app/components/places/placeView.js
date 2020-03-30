@@ -248,10 +248,10 @@ class PlaceView extends Component {
   render () {
     if (this.state.editing) {
       window.SCROLLWITHKEYS = false
-      return this.renderEditing()
+      body = this.renderEditing()
     } else {
       window.SCROLLWITHKEYS = true
-      return this.renderPlace()
+      body = this.renderPlace()
     }
   }
 }

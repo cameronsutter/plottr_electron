@@ -17,7 +17,6 @@ const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = requ
 const backupFile = require('./main_modules/backup')
 const createErrorReport = require('./main_modules/error_report')
 const setupRollbar = require('./main_modules/rollbar')
-const rollbar = setupRollbar('main')
 const SETTINGS = require('./main_modules/settings')
 const checkForActiveLicense = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
@@ -35,6 +34,7 @@ if (process.env.NODE_ENV === 'dev') {
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
+const rollbar = setupRollbar('main')
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
 let DAYS_LEFT = null

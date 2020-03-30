@@ -81,9 +81,7 @@ function convert(text) {
 
 function deserialize (el) {
   if (el.nodeType === 3) {
-    if (NEWLINES.includes(el.textContent)) {
-      return jsx('text', {text: ''})
-    }
+    if (NEWLINES.includes(el.textContent)) return null
 
     return el.textContent
   } else if (el.nodeType !== 1) {

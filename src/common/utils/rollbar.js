@@ -1,13 +1,14 @@
-const { app } = require('electron')
 const Rollbar = require('rollbar')
+import { remote } from 'electron'
+const app = remote.app
 
-function setupRollbar(where) {
-  let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
+export default function setupRollbar(where) {
+  let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
   let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
 
   return new Rollbar({
     accessToken: rollbarToken,
-    handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
+    handleUncaughtExceptions: process.env.NODE_ENV !== 'development',
     handleUnhandledRejections: true,
     ignoredMessages: [],
     payload: {
@@ -18,5 +19,3 @@ function setupRollbar(where) {
     }
   })
 }
-
-module.exports = setupRollbar

@@ -38,7 +38,8 @@ class CardDialog extends Component {
     // must do this so the RichText editing works
     // otherwise, throws this: addRange(): The given range isn't in document.
     // 400 is the minimum
-    setTimeout(() => {this.setState({editing: true})}, 400)
+    const delay = 400
+    setTimeout(() => {this.setState({editing: true})}, delay)
   }
 
   componentWillUnmount () {
@@ -233,26 +234,24 @@ class CardDialog extends Component {
     if (ui.darkMode) {
       customStyles.content.backgroundColor = '#888'
     }
-    return (
-      <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
-        <div className={cx('card-dialog', {darkmode: ui.darkMode})}>
-          <div className='card-dialog__body'>
-            {this.renderLeftSide()}
-            <div className='card-dialog__description'>
-              {this.renderTitle()}
-              <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
-              <RichText
-                description={card.description}
-                onChange={(desc) => this.setState({description: desc})}
-                editable={this.state.editing}
-                darkMode={ui.darkMode}
-              />
-            </div>
+    return <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
+      <div className={cx('card-dialog', {darkmode: ui.darkMode})}>
+        <div className='card-dialog__body'>
+          {this.renderLeftSide()}
+          <div className='card-dialog__description'>
+            {this.renderTitle()}
+            <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
+            <RichText
+              description={card.description}
+              onChange={(desc) => this.setState({description: desc})}
+              editable={this.state.editing}
+              darkMode={ui.darkMode}
+            />
           </div>
-          {this.renderButtonBar()}
         </div>
-      </Modal>
-    )
+        {this.renderButtonBar()}
+      </div>
+    </Modal>
   }
 }
 

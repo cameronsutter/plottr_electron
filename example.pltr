@@ -6,7 +6,7 @@
       "race": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -21,7 +21,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.3.27"
+    "version": "2020.3.28"
   },
   "places": [
     {
@@ -978,9 +978,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -1064,9 +1061,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -1129,9 +1123,6 @@
               "text": " Marshy Forest"
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -1219,9 +1210,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -1255,9 +1243,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -1265,9 +1250,6 @@
               "bold": true
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "bulleted-list",
@@ -1332,9 +1314,6 @@
               "text": "Jared and Burp flee from the knights into a nearby thicket.\n\"The trees won't stop them for long\" Jared asks. \"How do we lose them?\"\n- Burp says they need to get to Malgard and asks jared to try on his shoes.\n- Jared asks why and protests that they won't fit. Burp says they are Magic, and tells him just to do it.\n- Jared places them on and asks \"what now?\" \n- Burp tells Jared to \"hold me\" and tries to jump into his arms\n- Jared recoils, but hears the Knights dismounting and sees them entering the thicket. \"there they are!\" One of them says.\n- Jared runs quickly through the thicket, nearly tripping a few times as he gets used to the shoes, as the Knights calling after him."
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -1545,9 +1524,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "bulleted-list",
           "children": [
             {
@@ -1577,9 +1553,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -1587,9 +1560,6 @@
               "bold": true
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -1623,9 +1593,6 @@
               "text": "Jared and his army return from Bask victorious and with several prisoners (Jared honored Anna's wishes and didn't have any of the Valians killed)"
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -1862,9 +1829,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -1900,9 +1864,6 @@
               "text": " Malgard Halls"
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -2007,18 +1968,12 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
               "text": "After hearing his parent fight for the umpteenth time, Jared hops on his bike and runs off to think somewhere quiet. He considers his friend Marc's house but realizes they'd look for him there so he just rides wherever his bike takes him."
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -2028,9 +1983,6 @@
               "bold": true
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -2067,9 +2019,6 @@
               "bold": true
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "bulleted-list",
@@ -2155,6 +2104,14 @@
       ],
       "description": [
         {
+          "type": "heading-one",
+          "children": [
+            {
+              "text": "Big Title"
+            }
+          ]
+        },
+        {
           "type": "paragraph",
           "children": [
             {
@@ -2170,18 +2127,12 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
               "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper. {{yet another}}"
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -2234,9 +2185,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -2245,18 +2193,12 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
               "text": "Nullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam {{scary}} et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl.  "
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "bulleted-list",
@@ -2456,9 +2398,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "bulleted-list",
           "children": [
             {
@@ -2616,9 +2555,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -2674,9 +2610,6 @@
               "text": "Having defeated Valia, Rivan believes himself in absolute power. He abandons his defeated forces, angered that his vast hosts and dark champion lost against Kevan Darkslayer an outsider, and begins a new plan to pretend to be Valia and use her own armies to conquer the rest of the world. He also plans to undo Kevan's spirit."
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -2793,18 +2726,12 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
               "text": "{{romance}}??"
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -2815,18 +2742,12 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
               "text": "{{scary}}??"
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -2992,9 +2913,6 @@
               "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper."
             }
           ]
-        },
-        {
-          "text": ""
         },
         {
           "type": "paragraph",
@@ -3243,9 +3161,6 @@
           ]
         },
         {
-          "text": ""
-        },
-        {
           "type": "paragraph",
           "children": [
             {
@@ -3322,8 +3237,18 @@
       "templates": [],
       "imageId": null
     },
+    "2": {
+      "id": 2,
+      "title": "Prison Mansion 2",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "imageId": null
+    },
     "allIds": [
-      1
+      1,
+      2
     ]
   },
   "series": {

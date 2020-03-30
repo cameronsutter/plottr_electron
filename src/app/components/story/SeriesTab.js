@@ -7,6 +7,7 @@ import BookDialog from './BookDialog'
 import EditSeries from './EditSeries'
 import BookList from './BookList'
 import i18n from 'format-message'
+import ErrorBoundary from '../../containers/ErrorBoundary'
 
 class SeriesTab extends Component {
   renderSeries () {
@@ -22,11 +23,17 @@ class SeriesTab extends Component {
   }
 
   render () {
+    let body
     if (SETTINGS.get('premiumFeatures')) {
-      return this.renderSeries()
+      body = this.renderSeries()
     } else {
-      return this.renderBook1()
+      body = this.renderBook1()
     }
+
+    // TODO: ErrorBoundary isn't used quite right, fix it
+    return <ErrorBoundary>
+      { body }
+    </ErrorBoundary>
   }
 
   static propTypes = {

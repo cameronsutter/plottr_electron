@@ -123,18 +123,16 @@ class OutlineView extends Component {
 
   render () {
     var cardMapping = this.cardMapping()
-    return (
-      <div className='container-with-sub-nav'>
-        {this.renderSubNav()}
-        <div className='outline__container'>
-          <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
-          <MiniMap active={this.state.active} cardMapping={cardMapping} />
-          <div className='outline__scenes-container'>
-            {this.renderChapters(cardMapping)}
-          </div>
+    return <div className='container-with-sub-nav'>
+      {this.renderSubNav()}
+      <div className='outline__container'>
+        <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
+        <MiniMap active={this.state.active} cardMapping={cardMapping} />
+        <div className='outline__scenes-container'>
+          {this.renderChapters(cardMapping)}
         </div>
       </div>
-    )
+    </div>
   }
 }
 

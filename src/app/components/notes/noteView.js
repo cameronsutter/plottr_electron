@@ -146,34 +146,32 @@ class NoteView extends Component {
     let klasses = 'note-list__note'
     if (this.state.editing) klasses += ' editing'
     if (this.props.ui.darkMode) klasses += ' darkmode'
-    return (
-      <div className={klasses}>
-        <div className='note-list__body'>
-          <div className='note-list__left-side'>
-            { this.renderBookSelectList() }
-            <SelectList
-              parentId={this.props.note.id} type={'Characters'}
-              selectedItems={this.props.note.characters}
-              allItems={this.props.characters}
-              add={this.props.actions.addCharacter}
-              remove={this.props.actions.removeCharacter} />
-            <SelectList
-              parentId={this.props.note.id} type={'Places'}
-              selectedItems={this.props.note.places}
-              allItems={this.props.places}
-              add={this.props.actions.addPlace}
-              remove={this.props.actions.removePlace} />
-            <SelectList
-              parentId={this.props.note.id} type={'Tags'}
-              selectedItems={this.props.note.tags}
-              allItems={this.props.tags}
-              add={this.props.actions.addTag}
-              remove={this.props.actions.removeTag} />
-          </div>
-          {this.renderContent()}
+    return <div className={klasses}>
+      <div className='note-list__body'>
+        <div className='note-list__left-side'>
+          { this.renderBookSelectList() }
+          <SelectList
+            parentId={this.props.note.id} type={'Characters'}
+            selectedItems={this.props.note.characters}
+            allItems={this.props.characters}
+            add={this.props.actions.addCharacter}
+            remove={this.props.actions.removeCharacter} />
+          <SelectList
+            parentId={this.props.note.id} type={'Places'}
+            selectedItems={this.props.note.places}
+            allItems={this.props.places}
+            add={this.props.actions.addPlace}
+            remove={this.props.actions.removePlace} />
+          <SelectList
+            parentId={this.props.note.id} type={'Tags'}
+            selectedItems={this.props.note.tags}
+            allItems={this.props.tags}
+            add={this.props.actions.addTag}
+            remove={this.props.actions.removeTag} />
         </div>
+        {this.renderContent()}
       </div>
-    )
+    </div>
   }
 }
 

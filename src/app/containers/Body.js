@@ -1,22 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import OutlineView from 'components/outline/outlineView'
-import TagsView from 'components/tag/TagsView'
-import CharactersView from 'components/characters/charactersView'
-import PlacesView from 'components/places/placesView'
-import NotesView from 'components/notes/notesView'
+import OutlineTab from 'components/outline/OutlineTab'
+import TagsTab from 'components/tag/TagsTab'
+import CharactersTab from 'components/characters/CharactersTab'
+import PlacesTab from 'components/places/PlacesTab'
+import NotesTab from 'components/notes/NotesTab'
 import i18n from 'format-message'
-import TimelineWrapper from '../components/timeline/TimelineWrapper'
+import TimelineTab from '../components/timeline/TimelineTab'
 import SeriesTab from '../components/story/SeriesTab'
 import ExportTab from '../components/export/ExportTab'
-import SETTINGS from '../../common/utils/settings'
 
 class Body extends Component {
   constructor (props) {
     super(props)
-    this.timeline = <TimelineWrapper/>
-    this.outline = <OutlineView />
+    this.timeline = <TimelineTab/>
+    this.outline = <OutlineTab />
   }
 
   render () {
@@ -35,22 +34,22 @@ class Body extends Component {
         return this.outline
 
       case 'notes':
-        return <NotesView />
+        return <NotesTab />
 
       case 'tags':
-        return <TagsView />
+        return <TagsTab />
 
       case 'characters':
-        return <CharactersView />
+        return <CharactersTab />
 
       case 'places':
-        return <PlacesView />
+        return <PlacesTab />
 
       case 'export':
         return <ExportTab />
 
       default:
-        return <TimelineWrapper />
+        return this.timeline
 
     }
   }

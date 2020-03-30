@@ -530,6 +530,9 @@
   "Since this is your first time using Plottr, I'll give you a guided tour if you like.": {
     "message": "Since this is your first time using Plottr, I''ll give you a guided tour if you like."
   },
+  "Something went wrong.": {
+    "message": "Something went wrong."
+  },
   "Sort": {
     "message": "Sort"
   },
@@ -592,6 +595,9 @@
   },
   "Toggle navigation": {
     "message": "Toggle navigation"
+  },
+  "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem to me.": {
+    "message": "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem to me."
   },
   "Type": {
     "message": "Type"

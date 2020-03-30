@@ -275,19 +275,17 @@ class TimelineWrapper extends Component {
 
   render () {
     const { ui } = this.props
-    return (
-      <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
-        {this.renderSubNav()}
-        <div id='timelineview__root'>
-          <StickyTable wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode})}>
-            <TimelineTable
-              filter={this.state.filter}
-              filterIsEmpty={this.filterIsEmpty()}
-            />
-          </StickyTable>
-        </div>
+    return <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
+      {this.renderSubNav()}
+      <div id='timelineview__root'>
+        <StickyTable wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode})}>
+          <TimelineTable
+            filter={this.state.filter}
+            filterIsEmpty={this.filterIsEmpty()}
+          />
+        </StickyTable>
       </div>
-    )
+    </div>
   }
 }
 

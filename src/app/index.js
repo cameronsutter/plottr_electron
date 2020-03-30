@@ -1,6 +1,5 @@
 import path from 'path'
 import React from 'react'
-import Rollbar from 'rollbar'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import App from 'containers/App'
@@ -12,7 +11,7 @@ const app = remote.app
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
 import mixpanel from 'mixpanel-browser'
 import { MPQ, setTrialInfo } from 'middlewares/helpers'
-import FileFixer from 'helpers/fixer'
+import setupRollbar from '../common/utils/rollbar'
 import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
@@ -22,23 +21,11 @@ i18n.setup({
   locale: app.getLocale() || 'en'
 })
 
-let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
-let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
-var rollbar = new Rollbar({
-  accessToken: rollbarToken,
-  handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
-  handleUnhandledRejections: true,
-  payload: {
-    environment: environment,
-    version: app.getVersion(),
-    where: 'app.html',
-    os: process.platform
-  }
-})
+const rollbar = setupRollbar('app.html')
 
 if (process.env.NODE_ENV !== 'development') {
-  process.on('uncaughtException', function (err) {
+  process.on('uncaughtException', err => {
     log.error(err)
     rollbar.error(err)
   })
@@ -91,10 +78,8 @@ ipcRenderer.on('set-dark-mode', (event, on) => {
 
 window.onerror = function (message, file, line, column, err) {
   if (process.env.NODE_ENV !== 'development') {
-    log.warn(err)
-    rollbar.info(err)
-    let newState = FileFixer(store.getState())
-    ipcRenderer.send('reload-window', win.id, newState)
+    log.error(err)
+    rollbar.error(err)
   }
 }
 

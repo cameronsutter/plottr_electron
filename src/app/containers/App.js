@@ -4,16 +4,17 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
+import ErrorBoundary from './ErrorBoundary'
 import * as UIActions from 'actions/ui'
 import GuidedTour from '../components/GuidedTour'
 
 class App extends Component {
   render () {
-    return <div>
+    return <ErrorBoundary>
       <Navigation />
       <Body />
       <GuidedTour />
-    </div>
+    </ErrorBoundary>
   }
 }
 

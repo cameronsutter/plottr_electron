@@ -1,5 +1,3 @@
-const log = require('electron-log')
-log.info('started app')
 const { app, BrowserWindow, Menu, ipcMain, dialog,
   nativeTheme, globalShortcut, shell } = require('electron')
 const fs = require('fs')
@@ -7,12 +5,14 @@ const path = require('path')
 const deep = require('deep-diff')
 const _ = require('lodash')
 const storage = require('electron-json-storage')
+const log = require('electron-log')
 const i18n = require('format-message')
+const { is } = require('electron-util')
 const windowStateKeeper = require('electron-window-state')
 const { autoUpdater } = require('electron-updater')
-const Migrator = require('./migrator/migrator')
+const migrateIfNeeded = require('./main_modules/migration_manager')
 const Exporter = require('./main_modules/exporter')
-const { USER_INFO_PATH, RECENT_FILES_PATH } = require('./main_modules/config_paths')
+const { USER_INFO_PATH } = require('./main_modules/config_paths')
 const enterCustomerServiceCode = require('./main_modules/customer_service_codes')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
 const backupFile = require('./main_modules/backup')
@@ -21,6 +21,7 @@ const setupRollbar = require('./main_modules/rollbar')
 const SETTINGS = require('./main_modules/settings')
 const checkForActiveLicense = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
+const FileManager = require('./main_modules/file_manager')
 const emptyFile = require('./main_modules/empty_file')
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
@@ -35,7 +36,6 @@ if (process.env.NODE_ENV === 'dev') {
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
 const rollbar = setupRollbar('main')
-const templateManager = new TemplateManager()
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
 let DAYS_LEFT = null
@@ -54,8 +54,7 @@ var dontquit = false
 var tryingToQuit = false
 var darkMode = nativeTheme.shouldUseDarkColors || false
 
-const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
-const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : RECENT_FILES_PATH
+const filePrefix = is.macos ? 'file://' + __dirname : __dirname
 
 // auto updates
 let lastCheckedForUpdate = new Date().getTime()
@@ -158,16 +157,18 @@ ipcMain.on('fetch-state', function (event, id) {
   win.window.setTitle(displayFileName(win.fileName))
   win.window.setRepresentedFilename(win.fileName)
 
-  migrateIfNeeded (win.state, win.fileName, (err, dirty, json) => {
+  migrateIfNeeded (win.state, win.fileName, (err, migrated, json) => {
     if (err) { log.warn(err); rollbar.warn(err) }
+    if (migrated) saveFile(win.fileName, json, () => {})
+
     win.lastSave = json
     win.state = json
     win.window.setProgressBar(-1)
     if (win.window.isVisible()) {
-      event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
+      event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
     } else {
       win.window.on('show', () => {
-        event.sender.send('state-fetched', json, win.fileName, dirty, darkMode, windows.length)
+        event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
       })
     }
   })
@@ -254,7 +255,7 @@ app.on('ready', () => {
     locale: app.getLocale() || 'en'
   })
 
-  if (process.platform === 'darwin') {
+  if (is.macos) {
     loadMenu(true)
   }
 
@@ -265,7 +266,7 @@ app.on('ready', () => {
   })
 
   checkLicense(() => {
-    templateManager.load()
+    TemplateManager.load()
     loadMenu()
   })
 })
@@ -355,17 +356,12 @@ function openRecentFiles () {
     openWindow(fileToOpen)
     fileToOpen = null
   } else {
-    storage.has(recentKey, function (err, hasKey) {
-      if (err) { log.warn(err); rollbar.warn(err) }
-      if (hasKey) {
-        storage.get(recentKey, function (err, fileName) {
-          if (err) { log.warn(err); rollbar.warn(err) }
-          openWindow(fileName)
-        })
-      } else {
-        askToOpenOrCreate()
-      }
-    })
+    let openFiles = FileManager.listOpenFiles()
+    if (openFiles.length) {
+      openFiles.forEach(f => openWindow(f))
+    } else {
+      askToOpenOrCreate()
+    }
   }
 }
 
@@ -401,10 +397,6 @@ function askToCreateFile (data = {}) {
         askToCreateFile(data)
       } else {
         openWindow(fullName, data)
-        storage.set(recentKey, fullName, function (err) {
-          if (err) console.log(err)
-          app.addRecentDocument(fullName)
-        })
       }
     })
   }
@@ -452,7 +444,7 @@ function openWindow (fileName, jsonData) {
   // Let us register listeners on the window, so we can update the state
   // automatically (the listeners will be removed when the window is closed)
   // and restore the maximized or full screen state
-  stateKeeper.manage(newWindow);
+  stateKeeper.manage(newWindow)
 
   newWindow.setProgressBar(0.1)
 
@@ -485,12 +477,16 @@ function openWindow (fileName, jsonData) {
 
   newWindow.on('close', function (e) {
     var win = _.find(windows, {id: this.id})
+
+    if (win && !tryingToQuit) {
+      FileManager.close(win.fileName)
+    }
+
     if (win && win.state && isDirty(win.state, win.lastSave)) {
       e.preventDefault()
       var _this = this
       askToSave(this, win.state, win.fileName, function() {
         dereferenceWindow(win)
-        // TODO: if changes weren't saved (checkDirty(win.state, win.lastSave)), flush the history from local storage
         if (tryingToQuit) app.quit()
         _this.destroy()
       })
@@ -505,9 +501,7 @@ function openWindow (fileName, jsonData) {
     var json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     newWindow.setProgressBar(0.5)
     app.addRecentDocument(fileName)
-    storage.set(recentKey, fileName, error => {
-      if (error) console.log(error)
-    })
+    FileManager.open(fileName)
 
     windows.push({
       id: newWindow.id,
@@ -523,7 +517,7 @@ function openWindow (fileName, jsonData) {
     log.warn(err)
     rollbar.warn(err, {fileName: fileName})
     askToOpenOrCreate()
-    removeRecentFile(fileName)
+    FileManager.close(fileName)
     newWindow.destroy()
   } finally {
     checkForUpdates()
@@ -531,7 +525,6 @@ function openWindow (fileName, jsonData) {
 }
 
 function dereferenceWindow (winObj) {
-  removeRecentFile(winObj.fileName)
   windows = _.reject(windows, function (win) {
     return win.id === winObj.id
   })
@@ -541,28 +534,6 @@ function closeWindow (id) {
   let win = _.find(windows, {id: id})
   let windowFile = win.fileName
   win.window.close()
-}
-
-function removeRecentFile (fileNameToRemove) {
-  storage.get(recentKey, function (err, storedFileName) {
-    if (err) console.log(err)
-    if (fileNameToRemove === storedFileName) {
-      if (windows.length > 1) {
-        let newFileName = ''
-        for (let i = 0; i < windows.length; i++) {
-          let thisWindowFile = windows[i].fileName
-          if (thisWindowFile !== fileNameToRemove && thisWindowFile !== storedFileName) {
-            newFileName = thisWindowFile
-          }
-        }
-        if (newFileName !== '') {
-          storage.set(recentKey, newFileName, function (err, _) {
-            if (err) console.log(err)
-          })
-        }
-      }
-    }
-  })
 }
 
 function createAndOpenEmptyFile () {
@@ -715,53 +686,6 @@ function reloadWindow () {
 }
 
 ////////////////////////////////
-///////    MIGRATE    //////////
-////////////////////////////////
-
-function migrateIfNeeded (json, fileName, callback) {
-  if (!json.file) {
-    callback(null, false, json)
-    return
-  }
-  const appVersion = app.getVersion()
-  var m = new Migrator(json, fileName, json.file.version, appVersion)
-  if (m.needsToMigrate()) {
-    log.info('needs to migrate', json.file.version, appVersion)
-    if (m.plottrBehindFile()) {
-      dialog.showErrorBox(i18n('Update Plottr'), i18n("It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again."))
-      callback(i18n('Update Plottr'), false, json)
-    } else {
-      log.info('migrating')
-      m.migrate((err, json) => {
-        if (err === 'backup') {
-          log.warn('error saving backup')
-          // try again
-          m.migrate((err, json) => {
-            if (err === 'backup') {
-              log.warn('error saving backup again. Open without migrating')
-              // open without migrating
-              callback('problem saving backup', false, json)
-            } else {
-              // save it and open
-              log.info('finished migrating. Save it and open')
-              callback(null, true, json)
-              saveFile(fileName, json, () => {})
-            }
-          })
-        } else {
-          // save it and open
-          log.info('finished migrating. Save it and open')
-          callback(null, true, json)
-          saveFile(fileName, json, () => {})
-        }
-      })
-    }
-  } else {
-    callback(null, false, json)
-  }
-}
-
-////////////////////////////////
 ///////   BUILD MENU  //////////
 ////////////////////////////////
 
@@ -770,10 +694,13 @@ function loadMenu (makeItSimple) {
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 
-  if (process.platform === 'darwin') {
+  if (is.macos) {
     let dockMenu = Menu.buildFromTemplate([
       {label: i18n('Create a new file'), click: function () {
         askToCreateFile()
+      }},
+      {label: i18n('Create an error report'), click: () => {
+        createErrorReport(USER_INFO, windows.map(w => w.state))
       }},
     ])
     app.dock.setMenu(dockMenu)
@@ -843,7 +770,7 @@ function buildPlottrMenu () {
       }
     })
   }
-  if (process.platform === 'darwin') {
+  if (is.macos) {
     submenu = [].concat(submenu, {
       type: 'separator'
     }, {
@@ -884,30 +811,7 @@ function buildPlottrMenu () {
 }
 
 function buildFileMenu () {
-  var submenu = [{
-    label: i18n('Close'),
-    accelerator: 'CmdOrCtrl+W',
-    click: function () {
-      let win = BrowserWindow.getFocusedWindow()
-      if (win) {
-        let winObj = _.find(windows, {id: win.id})
-        if (winObj) {
-          if (process.env.NODE_ENV !== 'dev') {
-            if (isDirty(winObj.state, winObj.lastSave)) {
-              askToSave(win, winObj.state, winObj.fileName, function () { closeWindow(win.id) })
-            } else {
-              closeWindow(win.id)
-            }
-          } else {
-            closeWindow(win.id)
-          }
-        } else {
-          win.close()
-        }
-      }
-    }
-  }]
-  var submenu = [].concat({
+  let submenu = [].concat({
     label: i18n('New') + '...',
     accelerator: 'CmdOrCtrl+N',
     click: () => { askToCreateFile() },
@@ -924,9 +828,10 @@ function buildFileMenu () {
     click: askToOpenFile
   }, {
     role: "recentDocuments",
-    submenu: []
+    submenu: [],
+    visible: is.macos,
   }, {
-    type: 'separator'
+    type: 'separator',
   }, {
     label: i18n('Save'),
     accelerator: 'CmdOrCtrl+S',
@@ -973,6 +878,26 @@ function buildFileMenu () {
               win.close()
             }
           })
+        }
+      }
+    }
+  }, {
+    label: i18n('Close'),
+    accelerator: 'CmdOrCtrl+W',
+    click: function () {
+      let win = BrowserWindow.getFocusedWindow()
+      if (win) {
+        let winObj = _.find(windows, {id: win.id})
+        if (winObj) {
+          if (process.env.NODE_ENV == 'dev') return closeWindow(win.id)
+
+          if (isDirty(winObj.state, winObj.lastSave)) {
+            askToSave(win, winObj.state, winObj.fileName, function () { closeWindow(win.id) })
+          } else {
+            closeWindow(win.id)
+          }
+        } else {
+          win.close()
         }
       }
     }

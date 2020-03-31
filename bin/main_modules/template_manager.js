@@ -85,4 +85,6 @@ class TemplateManager {
   }
 }
 
-module.exports = TemplateManager
+const TM = new TemplateManager()
+
+module.exports = TM

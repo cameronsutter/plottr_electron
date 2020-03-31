@@ -60,7 +60,7 @@ function Migrator (data, fileName, fileVersion, appVersion) {
 
   this.getPath = function () {
     var appPath = app.getAppPath()
-    return path.resolve(appPath, 'bin', 'migrator', 'migrations')
+    return path.resolve(appPath, 'bin', 'main_modules', 'migrator', 'migrations')
   }
 
   this.data = data

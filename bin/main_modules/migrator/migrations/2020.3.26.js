@@ -94,7 +94,7 @@ function deserialize (el) {
     case 'br':
       return jsx('element', { type: 'paragraph' }, [{text: ''}])
     case 'blockquote':
-      return jsx('element', { type: 'block-quote' }, children)
+      return jsx('element', { type: 'block-quote' }, children.filter(node => !node.text))
     case 'p':
       return jsx('element', { type: 'paragraph' }, fixParagraphChildren(children))
     case 'h1':

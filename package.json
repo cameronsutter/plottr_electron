@@ -139,7 +139,7 @@
       "darkModeSupport": true
     },
     "dmg": {
-      "backgroundColor": "#f7f7f7",
+      "background": "build/background.png",
       "title": "${productName} Installer",
       "sign": false
     },

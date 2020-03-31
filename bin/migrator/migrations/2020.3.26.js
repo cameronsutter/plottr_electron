@@ -5,8 +5,6 @@ const md = MarkDown.getSanitizingConverter()
 const DomParser = require('dom-parser')
 const parser = new DomParser()
 
-const NEWLINES = ['\n\n', '\r\n', '\r\r', '\r\n\r\n']
-
 function migrate (data) {
   if (data.file && data.file.version === '2020.3.26') return data
 
@@ -81,7 +79,7 @@ function convert(text) {
 
 function deserialize (el) {
   if (el.nodeType === 3) {
-    if (NEWLINES.includes(el.textContent)) return null
+    if (el.textContent == '\n\n') return null
 
     return el.textContent
   } else if (el.nodeType !== 1) {

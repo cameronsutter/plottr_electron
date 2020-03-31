@@ -21,7 +21,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.3.28"
+    "version": "2020.3.30"
   },
   "places": [
     {
@@ -3138,7 +3138,7 @@
       ],
       "id": 3,
       "imageId": "1",
-      "lastEdited": 1584057480448,
+      "lastEdited": 1585607311574,
       "places": [
         0
       ],

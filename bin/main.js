@@ -1,3 +1,5 @@
+const log = require('electron-log')
+log.info('started app')
 const { app, BrowserWindow, Menu, ipcMain, dialog,
   nativeTheme, globalShortcut, shell } = require('electron')
 const fs = require('fs')
@@ -5,7 +7,6 @@ const path = require('path')
 const deep = require('deep-diff')
 const _ = require('lodash')
 const storage = require('electron-json-storage')
-const log = require('electron-log')
 const i18n = require('format-message')
 const windowStateKeeper = require('electron-window-state')
 const { autoUpdater } = require('electron-updater')
@@ -20,7 +21,6 @@ const setupRollbar = require('./main_modules/rollbar')
 const SETTINGS = require('./main_modules/settings')
 const checkForActiveLicense = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
-const templateManager = new TemplateManager()
 const emptyFile = require('./main_modules/empty_file')
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
@@ -35,6 +35,7 @@ if (process.env.NODE_ENV === 'dev') {
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
 const rollbar = setupRollbar('main')
+const templateManager = new TemplateManager()
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
 let DAYS_LEFT = null
@@ -117,6 +118,13 @@ app.on('browser-window-focus', () => {
     checkForUpdates()
     lastCheckedForUpdate = currentTime
   }
+})
+
+nativeTheme.on('updated', () => {
+  darkMode = nativeTheme.shouldUseDarkColors
+  windows.forEach(w => {
+    w.window.webContents.send('set-dark-mode', darkMode)
+  })
 })
 
 ipcMain.on('save-state', (event, state, winId, isNewFile) => {
@@ -1030,7 +1038,7 @@ function buildViewMenu () {
       type: 'checkbox',
       click: function () {
         darkMode = !darkMode
-        windows.forEach(function (w) {
+        windows.forEach(w => {
           w.window.webContents.send('set-dark-mode', darkMode)
         })
       }

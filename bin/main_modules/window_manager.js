@@ -6,6 +6,14 @@ const manifestStore = new Store({name: OPEN_FILES_PATH})
 
 class WindowManager {
 
+  add = (fileName) => {
+
+  }
+
+  remove = (fileName) => {
+
+  }
+
 }
 
 const WM = new WindowManager()

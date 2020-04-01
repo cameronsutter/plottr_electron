@@ -188,9 +188,9 @@ class CharacterView extends Component {
   }
 
   renderEditing () {
-    const { character } = this.props
+    const { character, ui } = this.props
     return (
-      <div className='character-list__character editing'>
+      <div className={cx('character-list__character', 'editing', {darkmode: ui.darkMode})}>
         <div className='character-list__character__edit-form'>
           <div className='character-list__inputs__normal'>
             <FormGroup>

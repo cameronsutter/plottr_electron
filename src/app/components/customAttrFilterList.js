@@ -53,11 +53,13 @@ class CustomAttrFilterList extends Component {
   }
 
   values (attr) {
+    // TODO: this should be a selector
     let values = this.props.items.map((item) => item[attr])
     return _.uniq(values.filter((v) => v && v != ''))
   }
 
   renderFilterList (array, attr) {
+    console.log(array, attr)
     var items = array.map((i) => this.renderFilterItem(i, attr))
     return (
       <ul key={`${attr}-${items}`} className='filter-list__list'>
@@ -89,16 +91,19 @@ class CustomAttrFilterList extends Component {
   }
 
   renderList = (attr) => {
-    return [
-      <p key={attr} onClick={() => this.filterList(attr)}><em>{attr.split(':#:')[0]}</em></p>,
-      this.renderFilterList(this.values(attr), attr),
-    ]
+    const [name, type] = attr.split(':#:')
+    if (type) return null
+
+    return <div key={attr}>
+      <p onClick={() => this.filterList(attr)}><em>{name}</em></p>
+      { this.renderFilterList(this.values(attr), attr) }
+    </div>
   }
 
   render () {
     let lists = this.props.customAttributes.map(this.renderList)
     return (
-      <div className='filter-list'>
+      <div className='filter-list flex'>
         { lists }
       </div>
     )

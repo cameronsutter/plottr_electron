@@ -29,8 +29,8 @@
       background: $new-item-background;
     }
     &.selected {
-      border: 2px dashed $blue-7;
-      background-color: $gray-9;
+      border: 2px dashed $blue-6;
+      background-color: $gray-7;
       margin-bottom: 0;
     }
   }
@@ -38,9 +38,18 @@
 
 .character-list__list.darkmode {
   .list-group-item {
-    background-color: $darkmode-card-background;
+    background-color: $darkmode-darker-background;
     color: $darkmode-text;
-    border-color: $darkmode-border;
+    border-color: $darkmode-darker-border;
+
+    &:hover {
+      background: $darkmode-background;
+    }
+    &.selected {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-darker-border;
+      margin-bottom: 0;
+    }
 
     h6 {
       color: $darkmode-text;
@@ -80,7 +89,6 @@
       }
     }
     .glyphicon {
-      align-self: flex-end;
       color: $blue-7;
       visibility: hidden;
       margin: 5px;
@@ -129,9 +137,16 @@
 }
 
 .character-list__character.darkmode {
-  background-color: $darkmode-card-background;
+  background-color: $darkmode-darker-background;
   color: $darkmode-text;
-  border-color: $darkmode-border;
+  border-color: $darkmode-darker-border;
+
+  &:hover {
+    .character-list__character-notes {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-darker-border;
+    }
+  }
 
   h4 {
     color: $darkmode-darker-text;
@@ -140,6 +155,10 @@
 
 .character-list__character.editing {
   cursor: auto;
+  &.darkmode {
+    background-color: $darkmode-darker-background;
+    color: $darkmode-text;
+  }
 }
 
 .character-list__custom-attributes-list-wrapper {
@@ -172,7 +191,7 @@
 }
 
 .custom-attributes__wrapper.darkmode {
-  background-color: $darkmode-card-background;
+  background-color: $darkmode-background;
   color: $darkmode-text;
   h3 {
     color: $darkmode-text;
@@ -181,10 +200,10 @@
     color: $darkmode-darker-text;
   }
   .list-group-item {
-    background-color: $darkmode-card-background;
+    background-color: $darkmode-darker-background;
   }
-  .card-dialog__close {
-    background-color: $darkmode-border;
+  .custom-attr-item__input {
     color: $darkmode-text;
+    background-color: $darkmode-background;
   }
 }

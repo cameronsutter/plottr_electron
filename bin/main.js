@@ -485,7 +485,7 @@ function openWindow (fileName, jsonData) {
   newWindow.setProgressBar(0.4)
 
   try {
-    var json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
+    let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     newWindow.setProgressBar(0.5)
     app.addRecentDocument(fileName)
     FileManager.open(fileName)
@@ -858,8 +858,8 @@ function buildFileMenu () {
   }, {
     label: i18n('Export') + '...',
     click: () => {
-      let win = BrowserWindow.getFocusedWindow()
-      var winObj = _.find(windows, {id: win.id})
+      const win = BrowserWindow.getFocusedWindow()
+      const winObj = _.find(windows, {id: win.id})
       let exportState = {}
       if (winObj) {
         exportState = winObj.state
@@ -869,6 +869,26 @@ function buildFileMenu () {
       const fileName = dialog.showSaveDialogSync(win, {title: i18n('Where would you like to save the export?')})
       if (fileName) {
         Exporter(exportState, {fileName})
+      }
+    }
+  }, {
+    type: 'separator',
+    visible: process.env.NODE_ENV === 'dev',
+  }, {
+    label: i18n('Reload from File'),
+    visible: process.env.NODE_ENV === 'dev',
+    click: () => {
+      const win = BrowserWindow.getFocusedWindow()
+      const winObj = _.find(windows, {id: win.id})
+      if (winObj) {
+        try {
+          const json = JSON.parse(fs.readFileSync(winObj.fileName, 'utf-8'))
+          winObj.state = json
+          winObj.lastSave = json
+          win.webContents.send('state-fetched', json, winObj.fileName, true, darkMode, windows.length)
+        } catch (error) {
+          log.info(error)
+        }
       }
     }
   })

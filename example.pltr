@@ -1,7 +1,9 @@
 {
   "ui": {
     "characterFilter": {
-      "age": []
+      "age": [],
+      "race": [],
+      "family:#:paragraph": []
     },
     "characterSort": "name~asc",
     "currentView": "characters",

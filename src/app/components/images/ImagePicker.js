@@ -66,7 +66,7 @@ class ImagePicker extends Component {
       let klasses = 'image-picker__wrapper'
       if (this.props.darkMode == true) {
         klasses += ' darkmode'
-        customStyles.content.backgroundColor = '#888'
+        customStyles.content.backgroundColor = '#666'
       }
       return <Modal isOpen={true} onRequestClose={this.close} style={customStyles}>
         <div className={klasses}>

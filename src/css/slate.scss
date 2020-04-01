@@ -27,6 +27,17 @@
   &.readonly {
     display: none;
   }
+  &.darkmode {
+    .btn {
+      background-color: #888;
+      color: #eee;
+      border-color: #777;
+    }
+    .btn-primary {
+      background-color: $gray-8;
+      color: #666;
+    }
+  }
 }
 
 .slate-editor__editor {
@@ -38,6 +49,11 @@
   &.readonly {
     border: none;
     padding: 0;
+  }
+
+  &.darkmode {
+    background-color: #555;
+    border: 1px solid #777;
   }
 
   img.slate-editor__image-link {

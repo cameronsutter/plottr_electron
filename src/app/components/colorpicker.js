@@ -33,7 +33,7 @@ class ColorPicker extends Component {
     let klasses = 'color-picker__wrapper'
     if (this.props.darkMode == true) {
       klasses += ' darkmode'
-      customStyles.content.backgroundColor = '#888'
+      customStyles.content.backgroundColor = '#666'
     }
     return (<Modal isOpen={true} onRequestClose={() => this.closeDialog(this.props.color)} style={customStyles}>
       <div className={klasses}>

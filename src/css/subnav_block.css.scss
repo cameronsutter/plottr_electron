@@ -79,6 +79,7 @@ nav.subnav__container {
     li.dropdown {
       & > a {
         background-color: #666;
+        border: 1px solid #777;
       }
       ul {
         background-color: #666;

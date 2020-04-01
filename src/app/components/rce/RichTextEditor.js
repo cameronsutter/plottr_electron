@@ -47,7 +47,7 @@ const RichTextEditor = (props) => {
   return (
     <Slate editor={editor} value={value} onChange={updateValue} key={Math.random().toString(16)}>
       <div className={cx('slate-editor__wrapper', props.className)}>
-        <div className='slate-editor__toolbar-wrapper'>
+        <div className={cx('slate-editor__toolbar-wrapper', {darkmode: props.darkMode})}>
           <ToolBar>
             <ButtonGroup>
               <MarkButton mark="bold" icon={<FaBold/>} />
@@ -67,7 +67,7 @@ const RichTextEditor = (props) => {
             </ButtonGroup>
           </ToolBar>
         </div>
-        <div className='slate-editor__editor'>
+        <div className={cx('slate-editor__editor', {darkmode: props.darkMode})}>
           <Editable
             spellCheck
             {...otherProps}
@@ -94,6 +94,7 @@ RichTextEditor.propTypes = {
   text: PropTypes.array.isRequired,
   onChange: PropTypes.func,
   autoFocus: PropTypes.bool,
+  darkMode: PropTypes.bool,
 }
 
 export default RichTextEditor

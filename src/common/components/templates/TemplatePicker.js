@@ -91,7 +91,7 @@ export default class TemplatePicker extends Component {
 
   render () {
     if (this.props.modal) {
-      if (this.props.darkMode) modalStyles.content.backgroundColor = '#888'
+      if (this.props.darkMode) modalStyles.content.backgroundColor = '#666'
       return <Modal isOpen={this.props.isOpen} onRequestClose={this.props.close} style={modalStyles}>
         {this.renderBody()}
       </Modal>

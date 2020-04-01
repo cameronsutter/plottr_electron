@@ -232,7 +232,7 @@ class PlaceListView extends Component {
     let klasses = 'custom-attributes__wrapper'
     if (this.props.ui.darkMode) {
       klasses += ' darkmode'
-      modalStyles.content.backgroundColor = '#888'
+      modalStyles.content.backgroundColor = '#666'
     }
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
       <div className={klasses}>

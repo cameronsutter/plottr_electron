@@ -232,7 +232,7 @@ class CardDialog extends Component {
   render () {
     const { card, ui } = this.props
     if (ui.darkMode) {
-      customStyles.content.backgroundColor = '#888'
+      customStyles.content.backgroundColor = '#666'
     }
     return <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
       <div className={cx('card-dialog', {darkmode: ui.darkMode})}>

@@ -8,27 +8,30 @@ import Image from './images/Image'
 export default class SelectList extends Component {
 
   renderSelected () {
+    let body
     if (this.props.type === 'Tags') {
-      return <ul>
-        { this.renderSelectedTags() }
-      </ul>
+      body = this.renderSelectedTags()
     } else {
-      return <div className='chip-cloud'>
-        { this.renderSelectedItems() }
-      </div>
+      body = this.renderSelectedItems()
     }
+    return <div className='chip-cloud'>
+      { body }
+    </div>
   }
 
   renderSelectedTags () {
     return this.props.selectedItems.map(tId => {
       var tag = _.find(this.props.allItems, {id: tId})
       if (!tag) return null
-      return <li key={tId}>
-        <Button onClick={() => this.props.remove(this.props.parentId, tId)} bsSize='xsmall'>
-          <Glyphicon glyph='remove'/>
-        </Button>
+      return <div key={tId} className='tag-chip'>
         <TagLabel tag={tag} />
-      </li>
+        <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, tId)}/>
+      </div>
+      // return <li key={tId}>
+      //   <Button onClick={() => this.props.remove(this.props.parentId, tId)} bsSize='xsmall'>
+      //     <Glyphicon glyph='remove'/>
+      //   </Button>
+      // </li>
     })
   }
 

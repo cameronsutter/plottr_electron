@@ -52,20 +52,6 @@
   }
 }
 
-// .select-list__labels {
-//   li {
-//     padding-bottom: 5px;
-//     button {
-//       vertical-align: bottom;
-//     }
-//     .label {
-//       font-size: 10pt;
-//       font-weight: normal;
-//       padding-top: 5px;
-//     }
-//   }
-// }
-
 .chip-cloud {
   display: flex;
   flex-wrap: wrap;
@@ -101,6 +87,33 @@
   &:hover {
     background-color: $gray-9;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    .glyphicon-remove {
+      visibility: visible;
+    }
+  }
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2px;
+  cursor: default;
+
+  .glyphicon-remove {
+    visibility: hidden;
+    margin-left: 2px;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: $gray-9;
+    .label {
+      color: $red-5 !important;
+      background-color: $gray-9 !important;
+      border-color: transparent !important;
+    }
+    // box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
     .glyphicon-remove {
       visibility: visible;
     }

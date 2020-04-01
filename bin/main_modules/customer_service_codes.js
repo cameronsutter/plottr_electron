@@ -72,6 +72,16 @@ function handleCustomerServiceCode (code) {
       SETTINGS.set('allowPrerelease', true)
       break;
 
+    case "f92d59":
+      // turn off premiumFeatures
+      SETTINGS.set('premiumFeatures', false)
+      break;
+
+    case "d45e13cf92d59":
+      // turn on premiumFeatures
+      SETTINGS.set('premiumFeatures', true)
+      break;
+
     default:
       break;
   }

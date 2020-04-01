@@ -44,4 +44,14 @@ body.darkmode {
       background-color: $darkmode-background;
     }
   }
+
+  .dropdown-menu {
+    background-color: $darkmode-background;
+    li > a {
+      color: $darkmode-text;
+      &:hover {
+        background-color: $darkmode-darker-background;
+      }
+    }
+  }
 }

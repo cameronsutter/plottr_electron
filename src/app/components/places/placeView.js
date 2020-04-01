@@ -96,9 +96,9 @@ class PlaceView extends Component {
   }
 
   renderEditing () {
-    const { place } = this.props
+    const { place, ui } = this.props
     return (
-      <div className='place-list__place editing'>
+      <div className={cx('place-list__place', 'editing', {darkmode: ui.darkMode})}>
         <div className='place-list__place__edit-form'>
           <div className='place-list__inputs__normal'>
             <FormGroup>
@@ -124,7 +124,7 @@ class PlaceView extends Component {
                 onChange={(desc) => this.setState({notes: desc})}
                 editable
                 autofocus={false}
-                darkMode={false}
+                darkMode={ui.darkMode}
               />
             </FormGroup>
           </div>
@@ -201,48 +201,45 @@ class PlaceView extends Component {
   }
 
   renderPlace () {
-    const klasses = cx('place-list__place', {
-      darkmode: this.props.ui.darkMode,
-    })
-    const { place } = this.props
-    const details = this.props.customAttributes.map((attr, idx) =>
+    const { place, customAttributes, ui } = this.props
+    const klasses = cx('place-list__place', { darkmode: ui.darkMode })
+
+    const details = customAttributes.map((attr, idx) =>
       <dl key={idx} className='dl-horizontal'>
         <dt>{attr}</dt>
         <dd>{place[attr]}</dd>
       </dl>
     )
-    return (
-      <div className={klasses} onClick={() => this.setState({editing: true})}>
-        <h4 className='secondary-text'>{place.name}</h4>
-        <div className='place-list__place-inner'>
-          <div>
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Description')}</dt>
-              <dd>{place.description}</dd>
-            </dl>
-            {details}
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Notes')}</dt>
-              <dd>
-                <RichText
-                  description={place.notes}
-                  editable={false}
-                  darkMode={this.props.ui.darkMode}
-                />
-              </dd>
-            </dl>
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Attached to')}</dt>
-              <dd>{this.renderAssociations()}</dd>
-            </dl>
-          </div>
-          <div>
-            <Image responsive imageId={place.imageId} />
-            <Glyphicon glyph='pencil' />
-          </div>
+    return <div className={klasses} onClick={() => this.setState({editing: true})}>
+      <h4 className='secondary-text'>{place.name}</h4>
+      <div className='place-list__place-inner'>
+        <div>
+          <dl className='dl-horizontal'>
+            <dt>{i18n('Description')}</dt>
+            <dd>{place.description}</dd>
+          </dl>
+          {details}
+          <dl className='dl-horizontal'>
+            <dt>{i18n('Notes')}</dt>
+            <dd>
+              <RichText
+                description={place.notes}
+                editable={false}
+                darkMode={this.props.ui.darkMode}
+              />
+            </dd>
+          </dl>
+          <dl className='dl-horizontal'>
+            <dt>{i18n('Attached to')}</dt>
+            <dd>{this.renderAssociations()}</dd>
+          </dl>
+        </div>
+        <div>
+          <Image responsive imageId={place.imageId} />
+          <Glyphicon glyph='pencil' />
         </div>
       </div>
-    )
+    </div>
   }
 
   render () {

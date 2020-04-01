@@ -1,12 +1,12 @@
 {
   "ui": {
     "characterFilter": {
-      "age": [],
       "race": [],
-      "family:#:paragraph": []
+      "family:#:paragraph": [],
+      "age": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "places",
     "darkMode": true,
     "noteFilter": null,
     "noteSort": "title~asc",

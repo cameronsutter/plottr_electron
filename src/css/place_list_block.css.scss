@@ -37,9 +37,18 @@
 
 .place-list__list.darkmode {
   .list-group-item {
-    background-color: $darkmode-card-background;
+    background-color: $darkmode-darker-background;
     color: $darkmode-text;
-    border-color: $darkmode-border;
+    border-color: $darkmode-darker-border;
+
+    &:hover {
+      background: $darkmode-background;
+    }
+    &.selected {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-darker-border;
+      margin-bottom: 0;
+    }
 
     h6 {
       color: $darkmode-text;
@@ -110,6 +119,23 @@
         }
       }
     }
+  }
+}
+
+.place-list__place.darkmode {
+  background-color: $darkmode-darker-background;
+  color: $darkmode-text;
+  border-color: $darkmode-darker-border;
+
+  &:hover {
+    .place-list__place-inner {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-darker-border;
+    }
+  }
+
+  h4 {
+    color: $darkmode-darker-text;
   }
 }
 

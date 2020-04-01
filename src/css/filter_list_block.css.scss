@@ -11,7 +11,7 @@
     -webkit-user-select: none;
   }
   p:hover {
-    background-color: $body-background-color
+    background-color: $body-background-color;
   }
   .filter-list__list {
     list-style: none;
@@ -24,7 +24,7 @@
       padding-bottom: 2px;
     }
     li:hover {
-      background-color: $body-background-color
+      background-color: $body-background-color;
     }
   }
 }
@@ -49,6 +49,23 @@
     }
   }
   li:hover {
-    background-color: $body-background-color
+    background-color: $body-background-color;
+  }
+}
+
+body.darkmode {
+  .filter-list {
+    p:hover {
+      background-color: $darkmode-darker-background;
+    }
+    li:hover {
+      background-color: $darkmode-darker-background;
+    }
+  }
+
+  .sort-list {
+    li:hover {
+      background-color: $darkmode-darker-background;
+    }
   }
 }

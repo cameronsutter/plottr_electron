@@ -37,15 +37,15 @@
 
 .place-list__list.darkmode {
   .list-group-item {
-    background-color: $card-background-darkmode;
-    color: $text-darkmode;
-    border-color: $border-color-darkmode;
+    background-color: $darkmode-card-background;
+    color: $darkmode-text;
+    border-color: $darkmode-border;
 
     h6 {
-      color: $text-darkmode;
+      color: $darkmode-text;
     }
     p {
-      color: $secondary-text-darkmode;
+      color: $darkmode-darker-text;
     }
   }
 }

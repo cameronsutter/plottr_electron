@@ -84,15 +84,15 @@
 }
 
 .image-picker__wrapper.darkmode {
-  background-color: $card-background-darkmode;
+  background-color: $darkmode-card-background;
   .image-picker__title {
-    color: $text-darkmode;
+    color: $darkmode-text;
   }
   h5.secondary-text {
-    color: $secondary-text-darkmode;
+    color: $darkmode-darker-text;
   }
   p {
-    color: $text-darkmode;
+    color: $darkmode-text;
   }
 }
 

@@ -21,6 +21,7 @@
 @import "slate";
 @import "template_picker";
 @import "book";
+@import "darkmode";
 
 @import "vars";
 @import "colors";
@@ -59,43 +60,6 @@ body {
   background-size: 3%;
 }
 
-body.darkmode {
-  background: #666;
-  .form-control {
-    background-color: #ddd !important;
-  }
-  h1, h2, h3, h4, h5, h6, p, .control-label {
-    color: #eee;
-  }
-  .popover {
-    color: #eee;
-    background-color: #666;
-    &.right {
-      .arrow:after {
-        border-right-color: #666;
-      }
-    }
-    &.left {
-      .arrow:after {
-        border-left-color: #666;
-      }
-    }
-    .popover-title {
-      background-color: #555;
-      color: #eee;
-      border-bottom: 1px solid #444;
-    }
-  }
-  .btn-default {
-    border-color: #777;
-    background-color: #555;
-    color: #eee;
-    &:hover {
-      background-color: #666;
-    }
-  }
-}
-
 h1, h2, h3, h4, h5, h6 {
   @include header-font;
 }
@@ -109,7 +73,7 @@ h3.popover-title {
 }
 
 .secondary-text.darkmode {
-  color: $secondary-text-darkmode;
+  color: $darkmode-darker-text;
 }
 
 .disabled-text {

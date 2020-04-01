@@ -25,14 +25,14 @@
 }
 
 .sticky-table.darkmode {
-  background-color: $card-background-darkmode !important;
-  color: $text-darkmode;
+  background-color: $darkmode-card-background !important;
+  color: $darkmode-text;
   .sticky-table-row {
-    background-color: $card-background-darkmode !important;
-    color: $text-darkmode;
+    background-color: $darkmode-card-background !important;
+    color: $darkmode-text;
   }
   .sticky-table-cell {
-    background-color: $card-background-darkmode !important;
-    color: $text-darkmode;
+    background-color: $darkmode-card-background !important;
+    color: $darkmode-text;
   }
 }

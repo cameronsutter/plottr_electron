@@ -16,9 +16,9 @@
 }
 
 .tag-list__new.darkmode {
-  background-color: $card-background-darkmode;
-  color: $text-darkmode;
-  border-color: $border-color-darkmode;
+  background-color: $darkmode-card-background;
+  color: $darkmode-text;
+  border-color: $darkmode-border;
 }
 
 .tag-list__new:hover {
@@ -40,9 +40,9 @@
 }
 
 .tag-list__tag.darkmode {
-  background-color: $card-background-darkmode;
-  color: $text-darkmode;
-  border-color: $border-color-darkmode;
+  background-color: $darkmode-card-background;
+  color: $darkmode-text;
+  border-color: $darkmode-border;
 }
 
 .tag-list__tag-normal {

@@ -1,8 +1,10 @@
 {
   "ui": {
-    "characterFilter": null,
+    "characterFilter": {
+      "age": []
+    },
     "characterSort": "name~asc",
-    "currentView": "outline",
+    "currentView": "characters",
     "darkMode": true,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -3138,7 +3140,9 @@
       "places": [
         0
       ],
-      "tags": [],
+      "tags": [
+        3
+      ],
       "templates": [],
       "title": "note about First Place",
       "bookIds": []

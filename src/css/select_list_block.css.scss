@@ -119,3 +119,30 @@
     }
   }
 }
+
+body.darkmode {
+  .select-list__item-select-list {
+    li:hover {
+      background-color: $darkmode-darker-background;
+    }
+  }
+
+  .chip {
+    .glyphicon-remove {
+      color: $darkmode-darker-text;
+    }
+
+    &:hover {
+      background-color: $darkmode-darker-background;
+    }
+  }
+
+  .tag-chip {
+    .glyphicon-remove {
+      color: $darkmode-darker-text;
+    }
+    &:hover {
+      background-color: $darkmode-darker-background;
+    }
+  }
+}

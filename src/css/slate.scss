@@ -30,12 +30,12 @@
   &.darkmode {
     .btn {
       background-color: #888;
-      color: #eee;
-      border-color: #777;
+      color: $darkmode-text;
+      border-color: $darkmode-darker-border;
     }
     .btn-primary {
       background-color: $gray-8;
-      color: #666;
+      color: $darkmode-background;
     }
   }
 }
@@ -52,8 +52,8 @@
   }
 
   &.darkmode {
-    background-color: #555;
-    border: 1px solid #777;
+    background-color: $darkmode-darker-background;
+    border: 1px solid $darkmode-darker-border;
   }
 
   img.slate-editor__image-link {

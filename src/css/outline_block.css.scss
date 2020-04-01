@@ -36,9 +36,9 @@
 }
 
 .outline__card.darkmode {
-  background-color: $card-background-darkmode;
-  color: $text-darkmode;
-  border-color: $border-color-darkmode;
+  background-color: $darkmode-darker-background;
+  color: $darkmode-text;
+  border-color: $darkmode-border;
 }
 
 .outline__scenes-container {
@@ -98,14 +98,14 @@ li.outline__minimap__scene-title > a:hover {
 }
 
 .outline__minimap.darkmode {
-  background-color: $card-background-darkmode;
-  color: $text-darkmode;
+  background-color: $darkmode-darker-background;
+  color: $darkmode-text;
   li.outline__minimap__scene-title.active {
-    background-color: $body-background-color-darkmode;
+    background-color: $darkmode-background;
   }
   li.outline__minimap__scene-title > a:hover {
-    background-color: $body-background-color-darkmode;
-    color: $text-darkmode;
+    background-color: $darkmode-background;
+    color: $darkmode-text;
   }
 }
 
@@ -130,5 +130,5 @@ li.outline__minimap__scene-title > a:hover {
 }
 
 .outline__scene_title.darkmode {
-  color: $text-darkmode;
+  color: $darkmode-text;
 }

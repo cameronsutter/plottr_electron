@@ -1,3 +1,4 @@
+const fs = require('fs')
 const Store = require('electron-store')
 const { OPEN_FILES_PATH, KNOWN_FILES_PATH } = require('./config_paths')
 const SETTINGS = require('./settings')
@@ -28,6 +29,16 @@ class FileManager {
 
   move = (fileName) => {
 
+  }
+
+  save = (fileName, jsonData, callback) => {
+    let stringData = ''
+    if (process.env.NODE_ENV == 'dev') {
+      stringData = JSON.stringify(jsonData, null, 2)
+    } else {
+      stringData = JSON.stringify(jsonData)
+    }
+    fs.writeFile(fileName, stringData, callback)
   }
 
 }

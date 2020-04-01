@@ -2,7 +2,6 @@ const { app, BrowserWindow, Menu, ipcMain, dialog,
   nativeTheme, globalShortcut, shell } = require('electron')
 const fs = require('fs')
 const path = require('path')
-const deep = require('deep-diff')
 const _ = require('lodash')
 const storage = require('electron-json-storage')
 const log = require('electron-log')
@@ -22,7 +21,7 @@ const SETTINGS = require('./main_modules/settings')
 const checkForActiveLicense = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
 const FileManager = require('./main_modules/file_manager')
-const emptyFile = require('./main_modules/empty_file')
+const { isDirty, takeScreenshot } = require('./main_modules/helpers')
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
   // const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
@@ -136,7 +135,7 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
   // save the new state
   winObj.state = state
   if (isNewFile || wasEdited) {
-    saveFile(winObj.fileName, state, function (err) {
+    FileManager.save(winObj.fileName, state, (err) => {
       backupFile(winObj.fileName, state, () => {})
       if (err) {
         log.warn(err)
@@ -159,7 +158,7 @@ ipcMain.on('fetch-state', function (event, id) {
 
   migrateIfNeeded (win.state, win.fileName, (err, migrated, json) => {
     if (err) { log.warn(err); rollbar.warn(err) }
-    if (migrated) saveFile(win.fileName, json, () => {})
+    if (migrated) FileManager.save(win.fileName, json, () => {})
 
     win.lastSave = json
     win.state = json
@@ -177,7 +176,7 @@ ipcMain.on('fetch-state', function (event, id) {
 ipcMain.on('reload-window', function (event, id, state) {
   let winObj = _.find(windows, {id: id})
   if (winObj) {
-    saveFile(winObj.fileName, state, function(err, data) {
+    FileManager.save(winObj.fileName, state, function(err, data) {
       if (err) { log.warn(err); rollbar.warn(err) }
       winObj.state = state
       winObj.window.webContents.reload()
@@ -325,11 +324,6 @@ function checkLicense (callback) {
   })
 }
 
-function saveFile (fileName, jsonData, callback) {
-  var stringData = JSON.stringify(jsonData, null, 2)
-  fs.writeFile(fileName, stringData, callback)
-}
-
 function displayFileName (path) {
   var stringBase = 'Plottr'
   if (process.env.NODE_ENV == 'dev') stringBase += ' (DEV)'
@@ -337,13 +331,6 @@ function displayFileName (path) {
   var matches = path.match(/.*\/(.*\.pltr)/)
   if (matches) stringBase += ` — ${matches[1]}`
   return stringBase
-}
-
-function isDirty (newState, oldState) {
-  const diff = deep.diff(oldState, newState) || []
-  let edited = false
-  if (newState.file && newState.file.dirty && diff.length > 0) edited = true
-  return edited
 }
 
 function openRecentFiles () {
@@ -368,7 +355,7 @@ function openRecentFiles () {
 function askToSave (win, state, fileName, callback) {
   const choice = dialog.showMessageBoxSync(win, {type: 'question', buttons: [i18n('yes, save!'), i18n('no, just exit')], defaultId: 0, message: i18n('Would you like to save before exiting?')})
   if (choice == 0) {
-    saveFile(fileName, state, function (err) {
+    FileManager.save(fileName, state, function (err) {
       if (err) throw err
       else {
         if (typeof callback === 'string') win[callback]()
@@ -389,7 +376,7 @@ function askToCreateFile (data = {}) {
       // no data
       data = emptyFileContents()
     }
-    saveFile(fullName, data, function (err) {
+    FileManager.save(fullName, data, function (err) {
       if (err) {
         log.warn(err)
         rollbar.warn(err, {fileName: fullName})
@@ -549,7 +536,7 @@ function createAndOpenEmptyFile () {
     log.warn(error)
   } finally {
     const data = emptyFileContents(i18n('Plottr Trial'))
-    saveFile(fileName, data, function(err) {
+    FileManager.save(fileName, data, function(err) {
       if (err) {
         log.warn(err)
         rollbar.warn(err)
@@ -558,10 +545,6 @@ function createAndOpenEmptyFile () {
       }
     })
   }
-}
-
-function emptyFileContents (name) {
-  return emptyFile(name)
 }
 
 function openAboutWindow () {
@@ -638,37 +621,6 @@ function gracefullyQuit () {
 
 function gracefullyNotSave () {
   dialog.showErrorBox(i18n('Saving failed'), i18n("Saving your file didn't work. Try again."))
-}
-
-function takeScreenshot () {
-  let win = BrowserWindow.getFocusedWindow()
-  if (win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
-  win.capturePage().then(image => {
-    if (process.env.NODE_ENV === 'dev') {
-      const folderPath = path.join(app.getPath('home'), 'plottr_screenshots', app.getVersion())
-      const date = new Date()
-      const fileName = `screenshot-${date.getMinutes()}-${date.getSeconds()}.png`
-      const filePath = path.join(folderPath, fileName)
-      fs.stat(folderPath, (err, stat) => {
-        if (err) {
-          fs.mkdir(folderPath, (err) => {
-            if (err) {
-              log.error(err)
-            } else {
-              fs.writeFile(filePath, image.toPNG(), () => {})
-            }
-          })
-        } else {
-          if (stat.isDirectory()) {
-            fs.writeFile(filePath, image.toPNG(), () => {})
-          }
-        }
-      })
-    } else {
-      const fileName = dialog.showSaveDialogSync(win)
-      if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
-    }
-  })
 }
 
 function reloadWindow () {
@@ -839,7 +791,7 @@ function buildFileMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = _.find(windows, {id: win.id})
       if (winObj) {
-        saveFile(winObj.state.file.fileName, winObj.state, function (err) {
+        FileManager.save(winObj.state.file.fileName, winObj.state, function (err) {
           if (err) {
             log.warn(err)
             rollbar.warn(err, {fileName: winObj.state.file.fileName})
@@ -868,7 +820,7 @@ function buildFileMenu () {
           } else {
             newState.books[1].title = `${newState.books[1].title} copy`
           }
-          saveFile(fullName, newState, function (err) {
+          FileManager.save(fullName, newState, function (err) {
             if (err) {
               log.warn(err)
               rollbar.warn(err, {fileName: fullName})

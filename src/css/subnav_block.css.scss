@@ -31,7 +31,7 @@
 
   button {
     border-color: #888;
-    background-color: #999;
+    background-color: #666;
     color: #eee;
   }
 }
@@ -70,6 +70,28 @@ nav.subnav__container {
     }
     ul {
       @include body-text-font;
+    }
+  }
+}
+
+.navbar-inverse {
+  .nav.navbar-nav {
+    li.dropdown {
+      & > a {
+        background-color: #666;
+      }
+      ul {
+        background-color: #666;
+        li > a{
+          color: #eee;
+        }
+      }
+    }
+    li.dropdown.open {
+      & > a {
+        background-color: #666;
+        color: #eee;
+      }
     }
   }
 }

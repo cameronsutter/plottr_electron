@@ -73,6 +73,27 @@
     // being dragged
     border: 2px dashed $gray-7;
   }
+  &.darkmode {
+    .book {
+      background: linear-gradient(45deg,  $gray-4 0%, $gray-5 100%);
+      box-shadow: 13px 13px 8px 0px rgba(90, 90, 90, 0.6);
+    }
+    .left-side {
+      background-color: $gray-4;
+      &.add {
+        background-color: $gray-4;
+      }
+    }
+    .cover {
+      background: linear-gradient(45deg,  $gray-4 0%, $gray-5 100%);
+      &.add {
+        background: linear-gradient(45deg,  $gray-6 0%, $gray-7 100%);
+      }
+    }
+    // .book-container__add {
+    //   background: linear-gradient(45deg,  $gray-7 0%, $gray-8 100%);
+    // }
+  }
 }
 
 .book-container .book {

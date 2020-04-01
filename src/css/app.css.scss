@@ -60,7 +60,13 @@ body {
 }
 
 body.darkmode {
-  background-color: #777;
+  background: #666;
+  .form-control {
+    background-color: #ddd !important;
+  }
+  h1, h2, h3, h4, h5, h6, p, .control-label {
+    color: #eee;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

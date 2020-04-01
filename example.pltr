@@ -3,7 +3,7 @@
     "characterFilter": null,
     "characterSort": "name~asc",
     "currentView": "timeline",
-    "darkMode": false,
+    "darkMode": true,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
@@ -3240,7 +3240,7 @@
       "genre": "",
       "theme": "",
       "templates": [],
-      "imageId": null
+      "imageId": "1"
     },
     "allIds": [
       1,

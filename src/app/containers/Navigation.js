@@ -8,6 +8,7 @@ import { Glyphicon, FormControl, Button } from 'react-bootstrap'
 import HistoryComponent from 'components/history/historyComponent'
 import BookChooser from '../components/story/BookChooser'
 import i18n from 'format-message'
+import cx from 'classnames'
 const { ipcRenderer } = require('electron')
 var TRIALMODE = process.env.TRIALMODE === 'true'
 
@@ -27,16 +28,13 @@ class Navigation extends Component {
     } else {
       window.SCROLLWITHKEYS = true
     }
-    let klasses = 'navbar navbar-default navbar-fixed-top'
-    if (this.props.ui.darkMode) {
-      klasses += ' navbar-inverse'
-    }
     let buyItem = null
     if (TRIALMODE) {
       buyItem = <li>
         <a href='#' style={{color: 'hsl(210, 83%, 53%)'}} onClick={() => ipcRenderer.send('open-buy-window')} ><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</a>
       </li>
     }
+    let klasses = cx('navbar', 'navbar-default', 'navbar-fixed-top', {'navbar-inverse': this.props.ui.darkMode})
     return (
       <div>
         <nav className={klasses} role='navigation'>

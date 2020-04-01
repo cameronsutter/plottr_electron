@@ -55,10 +55,10 @@ class Book extends Component {
   }
 
   render () {
-    const { book } = this.props
+    const { book, ui } = this.props
 
     if (!book) {
-      return <div className='book-container add'>
+      return <div className={cx('book-container', 'add', {darkmode: ui.darkMode})}>
         <div className='book add' onClick={this.addBook}>
           <div className='front'>
             <div className='cover add'>
@@ -77,7 +77,7 @@ class Book extends Component {
     }
 
     return <div
-      className='book-container'
+      className={cx('book-container', {darkmode: ui.darkMode})}
       onMouseEnter={() => this.setState({hovering: true})}
       onMouseLeave={() => this.setState({hovering: false})}
     >

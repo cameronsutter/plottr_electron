@@ -1,10 +1,6 @@
 {
   "ui": {
-    "characterFilter": {
-      "age": [],
-      "family:#:paragraph": [],
-      "race": []
-    },
+    "characterFilter": null,
     "characterSort": "name~asc",
     "currentView": "timeline",
     "darkMode": false,
@@ -21,7 +17,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.3.31-4"
+    "version": "2020.3.31"
   },
   "places": [
     {

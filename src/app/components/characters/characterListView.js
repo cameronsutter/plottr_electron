@@ -159,20 +159,19 @@ class CharacterListView extends Component {
   }
 
   renderSubNav () {
-    let subNavKlasses = 'subnav__container'
-    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
+    const { ui, uiActions } = this.props
     let filterPopover = <Popover id='filter'>
       <CustomAttrFilterList type={'characters'}/>
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">{i18n('Character list is filtered')}</Alert>
-    if (this.filterIsEmpty(this.props.ui.characterFilter)) {
+    let filterDeclaration = <Alert onClick={() => uiActions.setCharacterFilter(null)} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Character list is filtered')}</Alert>
+    if (this.filterIsEmpty(ui.characterFilter)) {
       filterDeclaration = <span></span>
     }
     let sortPopover = <Popover id='sort'>
       <SortList type={'characters'} />
     </Popover>
     let sortGlyph = 'sort-by-attributes'
-    if (this.props.ui.characterSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
+    if (ui.characterSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
     let newFromTemplate = null
     if (SETTINGS.get('premiumFeatures')) {
       newFromTemplate = <NavItem>
@@ -180,7 +179,7 @@ class CharacterListView extends Component {
       </NavItem>
     }
     return (
-      <Navbar className={subNavKlasses}>
+      <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
         <Nav bsStyle='pills' >
           <NavItem>
             <Button bsSize='small' onClick={this.handleCreateNewCharacter}><Glyphicon glyph='plus' /> {i18n('New')}</Button>

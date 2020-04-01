@@ -12,6 +12,7 @@ import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
+import * as UIActions from 'actions/ui'
 import PlaceView from 'components/places/placeView'
 import Image from 'components/images/Image'
 import i18n from 'format-message'
@@ -142,22 +143,21 @@ class PlaceListView extends Component {
   }
 
   renderSubNav () {
-    let subNavKlasses = 'subnav__container'
-    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
+    const { ui, uiActions } = this.props
     let filterPopover = <Popover id='filter'>
       <CustomAttrFilterList type={'places'} />
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">{i18n('Place list is filtered')}</Alert>
-    if (this.filterIsEmpty(this.props.ui.placeFilter)) {
+    let filterDeclaration = <Alert onClick={() => uiActions.setPlaceFilter(null)}  bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Place list is filtered')}</Alert>
+    if (this.filterIsEmpty(ui.placeFilter)) {
       filterDeclaration = <span></span>
     }
     let sortPopover = <Popover id='sort'>
       <SortList type={'places'} />
     </Popover>
     let sortGlyph = 'sort-by-attributes'
-    if (this.props.ui.placeSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
+    if (ui.placeSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
     return (
-      <Navbar className={subNavKlasses}>
+      <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
         <Nav bsStyle='pills' >
           <NavItem>
             <Button bsSize='small' onClick={this.handleCreateNewPlace}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
@@ -292,7 +292,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return {
     actions: bindActionCreators(PlaceActions, dispatch),
-    customAttributeActions: bindActionCreators(CustomAttributeActions, dispatch)
+    customAttributeActions: bindActionCreators(CustomAttributeActions, dispatch),
+    uiActions: bindActionCreators(UIActions, dispatch),
   }
 }
 

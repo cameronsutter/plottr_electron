@@ -72,6 +72,10 @@ class TimelineWrapper extends Component {
     this.setState({ filter })
   }
 
+  clearFilter = () => {
+    this.updateFilter({ tag: [], character: [], place: [], book: [] })
+  }
+
   filterIsEmpty () {
     let filter = this.state.filter
     return filter == null ||
@@ -225,9 +229,9 @@ class TimelineWrapper extends Component {
       scrollDirectionSecond = 'menu-down'
     }
     let popover = <Popover id='filter'>
-      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter}/>
+      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter} />
     </Popover>
-    let filterDeclaration = <Alert bsStyle="warning">{i18n('Timeline is filtered')}</Alert>
+    let filterDeclaration = <Alert onClick={this.clearFilter} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Timeline is filtered')}</Alert>
     if (this.filterIsEmpty()) {
       filterDeclaration = <span></span>
     }

@@ -722,8 +722,8 @@
   "description": {
     "message": "description"
   },
-  "enter some text...": {
-    "message": "enter some text..."
+  "Enter some text...": {
+    "message": "Enter some text..."
   },
   "hex code or name": {
     "message": "hex code or name"

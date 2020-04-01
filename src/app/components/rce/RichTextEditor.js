@@ -73,7 +73,7 @@ const RichTextEditor = (props) => {
             {...otherProps}
             renderLeaf={renderLeaf}
             renderElement={renderElement}
-            placeholder={i18n('enter some text...')}
+            placeholder={i18n('Enter some text...')}
             onKeyDown={event => {
               for (const hotkey in HOTKEYS) {
                 if (isHotkey(hotkey, event)) {

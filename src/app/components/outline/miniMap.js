@@ -9,6 +9,8 @@ import { chapterTitle } from '../../helpers/chapters'
 import { chaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
+const extraScrollAmount = 190
+
 class MiniMap extends Component {
   constructor (props) {
     super(props)
@@ -21,7 +23,7 @@ class MiniMap extends Component {
 
   selectNav = (key) => {
     document.querySelector(`#chapter-${key}`).scrollIntoViewIfNeeded()
-    window.scrollBy(0, 250)
+    window.scrollBy(0, extraScrollAmount)
   }
 
   findCard = (linesById, card) => {
@@ -46,7 +48,7 @@ class MiniMap extends Component {
   renderChapters () {
     const chapters = _.sortBy(this.props.chapters, 'position')
     return chapters.map((ch, idx) =>
-      <NavItem ref={ch.title} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
+      <NavItem ref={chapterTitle(ch)} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
         <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(ch)}</span></span>
         <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[ch.id])}</div>
       </NavItem>

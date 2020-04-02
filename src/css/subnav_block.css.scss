@@ -70,6 +70,10 @@ nav.subnav__container {
     }
     ul {
       @include body-text-font;
+      li > a {
+        color: $gray-0;
+        font-size: 19px;
+      }
     }
   }
 }
@@ -83,7 +87,7 @@ nav.subnav__container {
       }
       ul {
         background-color: $darkmode-background;
-        li > a{
+        li > a {
           color: $darkmode-text;
         }
       }

@@ -10,7 +10,7 @@
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "vertical",
+    "orientation": "horizontal",
     "placeFilter": null,
     "placeSort": "name~asc",
     "zoomIndex": 4,
@@ -21,7 +21,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.3.31"
+    "version": "2020.4.1"
   },
   "places": [
     {

@@ -47,13 +47,15 @@ class CardCell extends Component {
 
   renderPopover () {
     return <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
-      <RichText
-        description={this.props.card.description}
-        editable={false}
-        className='card__popover-description'
-        darkMode={this.props.ui.darkMode}
-      />
-      {this.renderTags()}
+      <div className='card__popover-wrapper'>
+        <RichText
+          description={this.props.card.description}
+          editable={false}
+          className='card__popover-description'
+          darkMode={this.props.ui.darkMode}
+        />
+        {this.renderTags()}
+      </div>
     </Popover>
   }
 
@@ -63,17 +65,16 @@ class CardCell extends Component {
   }
 
   renderTags () {
-    var tags = null
-    if (this.props.card.tags) {
-      tags = this.props.card.tags.map(tId => {
-        var tag = _.find(this.props.tags, {id: tId})
-        if (!tag) return null
-        return <TagLabel tag={tag} key={`timeline-taglabel-${tId}`} />
-      })
-    }
-    return (<div className='card__popover-labels'>
-      {tags}
-    </div>)
+    const { card, tags } = this.props
+    if (!card.tags || !card.tags.length) return null
+
+    const tagLabels = card.tags.map(tId => {
+      const tag = _.find(tags, {id: tId})
+      if (!tag) return null
+      return <TagLabel tag={tag} key={`taglabel-${tId}`} />
+    })
+
+    return <div className='card__popover-labels'>{ tagLabels }</div>
   }
 
   renderTitle () {

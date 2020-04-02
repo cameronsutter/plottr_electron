@@ -52,15 +52,23 @@
   z-index: 10;
 }
 
+.card__popover-wrapper {
+  padding: 4px 16px;
+}
+
 .card__popover-description {
   min-width: 250px;
   @include body-text-font;
+
+  .slate-editor__editor {
+    text-align: justify;
+  }
 }
 
 .card__popover-labels {
   display: flex;
   flex-wrap: wrap;
-  position: relative;
+  padding-bottom: 12px;
   .label {
     margin: 2px;
   }

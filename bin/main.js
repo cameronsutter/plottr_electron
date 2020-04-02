@@ -21,7 +21,7 @@ const SETTINGS = require('./main_modules/settings')
 const checkForActiveLicense = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
 const FileManager = require('./main_modules/file_manager')
-const { isDirty, takeScreenshot } = require('./main_modules/helpers')
+const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/helpers')
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
   // const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
@@ -391,7 +391,7 @@ function askToCreateFile (data = {}) {
 
 function askToOpenOrCreate () {
   dontquit = true
-  const choice = dialog.showMessageBoxSync({type: 'question', buttons: ['open', 'new'], message: i18n('Would you like to open an existing file or start a new file?')})
+  const choice = dialog.showMessageBoxSync({type: 'question', buttons: [i18n('Open File'), i18n('New File')], message: i18n('Would you like to open an existing file or start a new file?')})
   if (choice == 0) {
     askToOpenFile()
   } else {

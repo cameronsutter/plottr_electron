@@ -5,7 +5,7 @@
   "homepage": "www.myplottr.com",
   "private": true,
   "readme": "Copyright 2016-2020 C. Louis S. (Cameron Sutter)",
-  "version": "2020.4.3",
+  "version": "2020.4.4",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -139,7 +139,7 @@
       "darkModeSupport": true
     },
     "dmg": {
-      "background": "build/background.png",
+      "backgroundColor": "#EBF2F9",
       "title": "${productName} Installer",
       "sign": false
     },

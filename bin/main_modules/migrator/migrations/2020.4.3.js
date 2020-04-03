@@ -19,12 +19,14 @@ function migrate (data) {
   })
 
   // remove anything in the character filter that was a paragraph type before … doesn't belong there
-  obj.ui.characterFilter = Object.keys(obj.ui.characterFilter)
-    .filter(attrStr => !attrStr.includes(':#:paragraph'))
-    .reduce((acc, attrStr) => {
-      acc[attrStr] = obj.ui.characterFilter[attrStr]
-      return acc
-    }, {})
+  if (obj.ui.characterFilter) {
+    obj.ui.characterFilter = Object.keys(obj.ui.characterFilter)
+      .filter(attrStr => !attrStr.includes(':#:paragraph'))
+      .reduce((acc, attrStr) => {
+        acc[attrStr] = obj.ui.characterFilter[attrStr]
+        return acc
+      }, {})
+  }
 
   return obj
 }

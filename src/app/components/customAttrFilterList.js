@@ -5,12 +5,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as UIActions from 'actions/ui'
+import cx from 'classnames'
 
 class CustomAttrFilterList extends Component {
   constructor (props) {
     super(props)
     let filteredItems = props.filteredItems
-    if (!filteredItems || Object.keys(filteredItems).length < 1) {
+    if (!filteredItems || !Object.keys(filteredItems).length) {
       filteredItems = this.defaultFilteredItemsObj()
     }
     this.state = {
@@ -19,8 +20,9 @@ class CustomAttrFilterList extends Component {
   }
 
   defaultFilteredItemsObj () {
+    // TODO: this should be a selector
     return this.props.customAttributes.reduce((result, attr) => {
-      result[attr] = []
+      if (attr.type == 'text') result[attr.name] = []
       return result
     }, {})
   }
@@ -48,21 +50,20 @@ class CustomAttrFilterList extends Component {
     this.setState({filteredItems: filteredItems})
   }
 
-  isChecked (value, attr) {
-    return this.state.filteredItems[attr].indexOf(value) !== -1
+  isChecked (value, attrName) {
+    return this.state.filteredItems[attrName].indexOf(value) !== -1
   }
 
-  values (attr) {
+  values (attrName) {
     // TODO: this should be a selector
-    let values = this.props.items.map((item) => item[attr])
+    let values = this.props.items.map((item) => item[attrName])
     return _.uniq(values.filter((v) => v && v != ''))
   }
 
   renderFilterList (array, attr) {
-    console.log(array, attr)
     var items = array.map((i) => this.renderFilterItem(i, attr))
     return (
-      <ul key={`${attr}-${items}`} className='filter-list__list'>
+      <ul key={`${attr.name}-${items}`} className='filter-list__list'>
         {items}
         {this.renderBlank(attr)}
       </ul>
@@ -71,21 +72,20 @@ class CustomAttrFilterList extends Component {
 
   renderFilterItem (value, attr) {
     var checked = 'unchecked'
-    if (this.isChecked(value, attr)) {
+    if (this.isChecked(value, attr.name)) {
       checked = 'eye-open'
     }
-    return (<li key={`${value}-${attr}`} onMouseDown={() => this.filterItem(value, attr)}>
-        <Glyphicon glyph={checked} /> {value}
-      </li>
-    )
+    return <li key={`${value}-${attr.name}`} onMouseDown={() => this.filterItem(value, attr.name)}>
+      <Glyphicon glyph={checked} /> {value.substr(0, 18)}
+    </li>
   }
 
   renderBlank (attr) {
     var checked = 'unchecked'
-    if (this.isChecked('', attr)) {
+    if (this.isChecked('', attr.name)) {
       checked = 'eye-open'
     }
-    return <li onMouseDown={() => this.filterItem('', attr)}>
+    return <li onMouseDown={() => this.filterItem('', attr.name)}>
       <Glyphicon glyph={checked} /> <em>--</em>
     </li>
   }
@@ -94,9 +94,9 @@ class CustomAttrFilterList extends Component {
     const {name, type} = attr
     if (type != 'text') return null
 
-    return <div key={attr}>
-      <p onClick={() => this.filterList(attr)}><em>{name}</em></p>
-      { this.renderFilterList(this.values(attr), attr) }
+    return <div key={name}>
+      <p onClick={() => this.filterList(attr.name)}><em>{name}</em></p>
+      { this.renderFilterList(this.values(attr.name), attr) }
     </div>
   }
 

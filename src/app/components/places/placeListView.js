@@ -105,11 +105,8 @@ class PlaceListView extends Component {
 
   filterIsEmpty = (filter) => {
     if (!filter) return true
-    let numFiltered = this.props.customAttributes.reduce((num, attrs) => {
-      num += filter[attrs].length
-      return num
-    }, 0)
-    return numFiltered == 0
+
+    return !this.props.customAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
   }
 
   closeDialog = () => {

@@ -62,6 +62,7 @@ class CharacterListView extends Component {
     }
   }
 
+  // TODO: this should be a selector
   visibleCharacters (characters, filter, sort) {
     let visible = characters
     if (!this.filterIsEmpty(filter)) {
@@ -110,11 +111,8 @@ class CharacterListView extends Component {
 
   filterIsEmpty = (filter) => {
     if (!filter) return true
-    let numFiltered = this.props.customAttributes.reduce((num, attr) => {
-      if (filter[attr]) num += filter[attr].length
-      return num
-    }, 0)
-    return numFiltered == 0
+
+    return !this.props.customAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
   }
 
   closeDialog = () => {

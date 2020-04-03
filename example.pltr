@@ -1,19 +1,19 @@
 {
   "ui": {
     "characterFilter": {
-      "race": [],
-      "family:#:paragraph": [],
       "age": [],
-      "[object Object]": []
+      "race": [],
+      "superpower": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
     "placeFilter": {
-      "[object Object]": []
+      "weather": [],
+      "galaxy": []
     },
     "placeSort": "name~asc",
     "zoomIndex": 4,

@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
   ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
-  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELET_IMAGE, DELETE_IMAGE} from '../constants/ActionTypes'
+  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELETE_IMAGE, EDIT_CHARACTER_ATTRIBUTE} from '../constants/ActionTypes'
 import { character } from '../../../shared/initialState'
 import { newFileCharacters } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
@@ -40,6 +40,20 @@ export default function characters (state = initialState, action) {
       return state.map(character =>
         character.id === action.id ? Object.assign({}, character, action.attributes) : character
       )
+
+    case EDIT_CHARACTER_ATTRIBUTE:
+      if (action.attribute.type != 'text') return state
+
+      // see ../selectors/customAttributes.js for when this is allowed
+      // reset value to blank string
+      return state.map(ch => {
+        let desc = ch[action.attribute.name]
+        if (desc && desc.length && typeof desc !== 'string') {
+          desc = ''
+        }
+        ch[action.attribute.name] = desc
+        return ch
+      })
 
     case ATTACH_CHARACTER_TO_CARD:
       return state.map(character => {

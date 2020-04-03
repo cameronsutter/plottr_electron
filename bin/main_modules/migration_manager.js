@@ -1,5 +1,6 @@
 const { app, dialog } = require('electron')
 const Migrator = require('./migrator/migrator')
+const log = require('electron-log')
 
 // callback(error, migrated?, data)
 function migrateIfNeeded (json, fileName, callback) {

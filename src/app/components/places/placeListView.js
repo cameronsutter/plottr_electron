@@ -14,8 +14,10 @@ import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import * as UIActions from 'actions/ui'
 import PlaceView from 'components/places/placeView'
+import CustomAttrItem from 'components/customAttrItem'
 import Image from 'components/images/Image'
 import i18n from 'format-message'
+import { placeCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -130,16 +132,19 @@ class PlaceListView extends Component {
   }
 
   saveAttr = () => {
-    const inputNode = ReactDOM.findDOMNode(this.refs.attrInput)
-    const attr = inputNode.value
-    this.props.customAttributeActions.addPlaceAttr(attr)
+    const name = ReactDOM.findDOMNode(this.refs.attrInput).value
+    this.props.customAttributeActions.addPlaceAttr({name, type: 'text'})
+
     this.setState({addAttrText: ''})
-    inputNode.focus()
   }
 
   removeAttr (attr) {
     this.props.customAttributeActions.removePlaceAttr(attr)
     this.setState({addAttrText: this.state.addAttrText}) // no op
+  }
+
+  updateAttr = (index, attr) => {
+    this.props.customAttributeActions.editPlaceAttr(index, attr)
   }
 
   renderSubNav () {
@@ -223,19 +228,13 @@ class PlaceListView extends Component {
   }
 
   renderCustomAttributes () {
-    const attrs = this.props.customAttributes.map((attr, idx) =>
-      <li className='list-group-item' key={idx}>
-        <p className='place-list__attribute-name'>{attr}</p>
-        <Button onClick={() => this.removeAttr(attr)}><Glyphicon glyph='remove'/></Button>
-      </li>
-    )
-    let klasses = 'custom-attributes__wrapper'
-    if (this.props.ui.darkMode) {
-      klasses += ' darkmode'
+    const { customAttributes, ui, customAttributesThatCanChange } = this.props
+    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)}/> )
+    if (ui.darkMode) {
       modalStyles.content.backgroundColor = '#666'
     }
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
-      <div className={klasses}>
+      <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
         <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
           {i18n('Close')}
         </Button>
@@ -276,15 +275,19 @@ class PlaceListView extends Component {
 
 PlaceListView.propTypes = {
   places: PropTypes.array.isRequired,
+  customAttributes: PropTypes.array.isRequired,
+  customAttributesThatCanChange: PropTypes.array,
+  ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
-  ui: PropTypes.object.isRequired,
+  uiActions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     places: state.places,
     customAttributes: state.customAttributes['places'],
+    customAttributesThatCanChange: placeCustomAttributesThatCanChangeSelector(state),
     ui: state.ui,
   }
 }

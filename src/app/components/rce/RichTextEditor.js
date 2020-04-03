@@ -91,7 +91,7 @@ const RichTextEditor = (props) => {
 }
 
 RichTextEditor.propTypes = {
-  text: PropTypes.array.isRequired,
+  text: PropTypes.any,
   onChange: PropTypes.func,
   autoFocus: PropTypes.bool,
   darkMode: PropTypes.bool,

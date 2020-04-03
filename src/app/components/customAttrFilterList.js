@@ -91,8 +91,8 @@ class CustomAttrFilterList extends Component {
   }
 
   renderList = (attr) => {
-    const [name, type] = attr.split(':#:')
-    if (type) return null
+    const {name, type} = attr
+    if (type != 'text') return null
 
     return <div key={attr}>
       <p onClick={() => this.filterList(attr)}><em>{name}</em></p>

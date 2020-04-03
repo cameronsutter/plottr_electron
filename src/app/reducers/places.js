@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE,
-  DELETE_NOTE, DELETE_CARD, DELETE_PLACE, DELETE_IMAGE } from '../constants/ActionTypes'
+  DELETE_NOTE, DELETE_CARD, DELETE_PLACE, DELETE_IMAGE, EDIT_PLACES_ATTRIBUTE } from '../constants/ActionTypes'
 import { place } from '../../../shared/initialState'
 import { newFilePlaces } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
@@ -24,6 +24,20 @@ export default function places (state = initialState, action) {
       return state.map(place =>
         place.id === action.id ? Object.assign({}, place, action.attributes) : place
       )
+
+    case EDIT_PLACES_ATTRIBUTE:
+      if (action.attribute.type != 'text') return state
+
+      // see ../selectors/customAttributes.js for when this is allowed
+      // reset value to blank string
+      return state.map(pl => {
+        let desc = pl[action.attribute.name]
+        if (desc && desc.length && typeof desc !== 'string') {
+          desc = ''
+        }
+        pl[action.attribute.name] = desc
+        return pl
+      })
 
     case ATTACH_PLACE_TO_CARD:
       return state.map(place => {

@@ -39,7 +39,7 @@ const RichTextViewer = (props) => {
 }
 
 RichTextViewer.propTypes = {
-  text: PropTypes.array.isRequired,
+  text: PropTypes.any,
 }
 
 export default RichTextViewer

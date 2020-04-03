@@ -19,6 +19,7 @@ import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import Image from '../images/Image'
 import cx from 'classnames'
+import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -67,12 +68,11 @@ class CharacterListView extends Component {
       visible = []
       characters.forEach(ch => {
         const matches = Object.keys(filter).some(attr => {
-          const attrName = attr.split(':#:')[0]
           return filter[attr].some(val => {
             if (val == '') {
-              if (!ch[attrName] || ch[attrName] == '') return true
+              if (!ch[attr] || ch[attr] == '') return true
             } else {
-              if (ch[attrName] && ch[attrName] == val) return true
+              if (ch[attr] && ch[attr] == val) return true
             }
             return false
           })
@@ -142,8 +142,8 @@ class CharacterListView extends Component {
   }
 
   saveAttr = () => {
-    const attr = ReactDOM.findDOMNode(this.refs.attrInput).value
-    this.props.customAttributeActions.addCharacterAttr(attr)
+    const name = ReactDOM.findDOMNode(this.refs.attrInput).value
+    this.props.customAttributeActions.addCharacterAttr({name, type: 'text'})
 
     this.setState({addAttrText: ''})
   }
@@ -154,8 +154,7 @@ class CharacterListView extends Component {
   }
 
   updateAttr = (index, attr) => {
-    let old = this.props.customAttributes[index]
-    this.props.customAttributeActions.editCharacterAttr(index, attr, old)
+    this.props.customAttributeActions.editCharacterAttr(index, attr)
   }
 
   renderSubNav () {
@@ -246,14 +245,13 @@ class CharacterListView extends Component {
   }
 
   renderCustomAttributes () {
-    const attrs = this.props.customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr}/> )
-    let klasses = 'custom-attributes__wrapper'
-    if (this.props.ui.darkMode) {
-      klasses += ' darkmode'
+    const { customAttributes, ui, customAttributesThatCanChange } = this.props
+    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)}/> )
+    if (ui.darkMode) {
       modalStyles.content.backgroundColor = '#666'
     }
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
-      <div className={klasses}>
+      <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
         <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
           {i18n('Close')}
         </Button>
@@ -306,16 +304,18 @@ class CharacterListView extends Component {
 CharacterListView.propTypes = {
   characters: PropTypes.array.isRequired,
   customAttributes: PropTypes.array.isRequired,
+  customAttributesThatCanChange: PropTypes.array,
+  ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
-  ui: PropTypes.object.isRequired,
-  images: PropTypes.object,
+  uiActions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     characters: state.characters,
     customAttributes: state.customAttributes['characters'],
+    customAttributesThatCanChange: characterCustomAttributesThatCanChangeSelector(state),
     ui: state.ui,
   }
 }

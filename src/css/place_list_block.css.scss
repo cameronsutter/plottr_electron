@@ -98,7 +98,7 @@
     display: flex;
     justify-content: space-between;
     padding: 4px 0;
-    div:last-child {
+    .place-list__right-side {
       display: flex;
       .glyphicon {
         color: $blue-7;
@@ -113,7 +113,7 @@
       border: 2px dashed $blue-7;
       border-radius: 4px;
       background-color: $gray-9;
-      div {
+      .place-list__right-side {
         .glyphicon {
           visibility: visible;
         }

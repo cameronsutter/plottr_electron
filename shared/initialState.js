@@ -135,6 +135,11 @@ const customAttributes = {
   lines: []
 }
 
+const attribute = {
+  name: '',
+  type: 'text',
+}
+
 const note = {
   id: 1,
   title: '',
@@ -167,6 +172,7 @@ module.exports = {
   image,
   note,
   customAttributes,
+  attribute,
   seriesLine,
   line,
   card,

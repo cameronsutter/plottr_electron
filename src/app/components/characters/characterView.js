@@ -19,8 +19,8 @@ class CharacterView extends Component {
     super(props)
     let description = {}
     props.customAttributes.forEach(attr => {
-      const [attrName, attrType] = attr.split(':#:')
-      description[attrName] = props.character[attrName]
+      const { name } = attr
+      description[name] = props.character[name]
     })
     let templateAttrs = props.character.templates.reduce((acc, t) =>{
       acc[t.id] = t.attributes.reduce((obj, attr) => {
@@ -82,12 +82,12 @@ class CharacterView extends Component {
       attrs.imageId = this.state.newImageId
     }
     this.props.customAttributes.forEach(attr => {
-      const [attrName, attrType] = attr.split(':#:')
-      if (attrType == 'paragraph') {
-        attrs[attrName] = this.state.description[attrName]
+      const { name, type } = attr
+      if (type == 'paragraph') {
+        attrs[name] = this.state.description[name]
       } else {
-        const val = ReactDOM.findDOMNode(this.refs[`${attr}Input`]).value
-        attrs[attr] = val
+        const val = ReactDOM.findDOMNode(this.refs[`${name}Input`]).value
+        attrs[name] = val
       }
     })
     let templates = this.props.character.templates.map(t => {
@@ -133,25 +133,26 @@ class CharacterView extends Component {
   }
 
   renderEditingCustomAttributes () {
-    return this.props.customAttributes.map((attr, idx) => {
-      const [attrName, attrType] = attr.split(':#:')
-      if (attrType == 'paragraph') {
+    const { character, ui, customAttributes } = this.props
+    return customAttributes.map((attr, idx) => {
+      const { name, type } = attr
+      if (type == 'paragraph') {
         return <div key={idx}>
-          <ControlLabel>{attrName}</ControlLabel>
+          <ControlLabel>{name}</ControlLabel>
           <RichText
-            description={this.props.character[attrName]}
-            onChange={(desc) => this.handleAttrDescriptionChange(attrName, desc)}
+            description={character[name]}
+            onChange={(desc) => this.handleAttrDescriptionChange(name, desc)}
             editable
             autofocus={false}
-            darkMode={this.props.ui.darkMode}
+            darkMode={ui.darkMode}
           />
         </div>
       } else {
         return <FormGroup key={idx}>
-          <ControlLabel>{attrName}</ControlLabel>
+          <ControlLabel>{name}</ControlLabel>
           <FormControl
-            type='text' ref={`${attrName}Input`}
-            defaultValue={this.props.character[attrName]}
+            type='text' ref={`${name}Input`}
+            defaultValue={character[name]}
             onKeyDown={this.handleEsc}
             onKeyPress={this.handleEnter} />
         </FormGroup>
@@ -294,17 +295,17 @@ class CharacterView extends Component {
   }
 
   renderLeftSide () {
-    const { character } = this.props
-    const customAttrNotes = this.props.customAttributes.map((attr, idx) => {
-      const [attrName, attrType] = attr.split(':#:')
-      let desc = <dd>{character[attrName]}</dd>
-      if (attrType == 'paragraph') {
+    const { character, ui, customAttributes } = this.props
+    const customAttrNotes = customAttributes.map((attr, idx) => {
+      const { name, type } = attr
+      let desc = <dd>{character[name]}</dd>
+      if (type == 'paragraph') {
         desc = <dd>
-          <RichText description={character[attrName]} darkMode={this.props.ui.darkMode} />
+          <RichText description={character[name]} darkMode={ui.darkMode} />
         </dd>
       }
       return <dl key={idx} className='dl-horizontal'>
-        <dt>{attrName}</dt>
+        <dt>{name}</dt>
         {desc}
       </dl>
     })
@@ -312,6 +313,10 @@ class CharacterView extends Component {
     return <div className='character-list__character-notes__inner'>
       <Image size='large' shape='circle' imageId={character.imageId} />
       {customAttrNotes}
+      <dl className='dl-horizontal'>
+        <dt>{i18n('Attached to')}</dt>
+        <dd>{this.renderAssociations()}</dd>
+      </dl>
     </div>
   }
 
@@ -350,10 +355,6 @@ class CharacterView extends Component {
             </dd>
           </dl>
           {templateNotes}
-          <dl className='dl-horizontal'>
-            <dt>{i18n('Attached to')}</dt>
-            <dd>{this.renderAssociations()}</dd>
-          </dl>
         </div>
         <Glyphicon glyph='pencil' />
       </div>

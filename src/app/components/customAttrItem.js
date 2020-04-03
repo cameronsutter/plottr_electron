@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { Glyphicon, Nav, Navbar, NavItem, Button, Input, Label, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+import { Glyphicon, Button } from 'react-bootstrap'
 import i18n from 'format-message'
 
 export default class CustomAttrItem extends Component {
@@ -12,23 +12,43 @@ export default class CustomAttrItem extends Component {
   }
 
   update = () => {
-    let attr = this.refs.attrInput.value
+    const name = this.refs.nameInput.value
+    let type = 'text'
     const paragraph = this.refs.paragraphCheck.checked
     if (paragraph) {
-      attr = `${attr}:#:paragraph`
+      type = 'paragraph'
     }
-    this.props.update(this.props.index, attr)
+    this.props.update(this.props.index, {name, type})
+  }
+
+  renderParagraphCheckBox () {
+    const { attr } = this.props
+    const checked = attr.type == 'paragraph'
+    if (this.props.canChangeType) {
+      return <label className='custom-attr-item__checkbox-label'>
+        <input ref='paragraphCheck' type="checkbox" checked={checked} onChange={this.update}/> {i18n('paragraph')}
+      </label>
+    } else {
+      return <label className='custom-attr-item__checkbox-label text-muted'>{i18n('paragraph')}</label>
+    }
   }
 
   render () {
-    const [val, checked] = this.props.attr.split(':#:')
+    const { attr } = this.props
     return <li className='list-group-item'>
       <input className='custom-attr-item__input'
-        ref='attrInput' onBlur={this.update}
-        onKeyDown={this.handleEnter} defaultValue={val} />
-      <label className='custom-attr-item__checkbox-label'>
-        <input ref='paragraphCheck' type="checkbox" checked={!!checked} onChange={this.update}/> {i18n('paragraph')}</label>
-      <Button onClick={() => this.props.delete(this.props.attr)}><Glyphicon glyph='remove'/></Button>
+        ref='nameInput' onBlur={this.update}
+        onKeyDown={this.handleEnter} defaultValue={attr.name} />
+      { this.renderParagraphCheckBox() }
+      <Button onClick={() => this.props.delete(attr.name)}><Glyphicon glyph='remove'/></Button>
     </li>
+  }
+
+  static propTypes = {
+    index: PropTypes.number,
+    attr: PropTypes.object,
+    update: PropTypes.func,
+    delete: PropTypes.func,
+    canChangeType: PropTypes.bool,
   }
 }

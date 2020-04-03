@@ -16,9 +16,15 @@ import Image from '../images/Image'
 class PlaceView extends Component {
   constructor (props) {
     super(props)
+    let description = {}
+    props.customAttributes.forEach(attr => {
+      const { name } = attr
+      description[name] = props.place[name]
+    })
     this.state = {
       editing: props.place.name === '',
       notes: props.place.notes,
+      description: description,
       newImageId: null,
     }
   }
@@ -39,6 +45,14 @@ class PlaceView extends Component {
     }
   }
 
+  handleAttrDescriptionChange = (attrName, desc) => {
+    let description = {
+      ...this.state.description,
+    }
+    description[attrName] = desc
+    this.setState({description: description})
+  }
+
   saveEdit = () => {
     var name = ReactDOM.findDOMNode(this.refs.nameInput).value || this.props.place.name
     var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
@@ -48,8 +62,13 @@ class PlaceView extends Component {
       attrs.imageId = this.state.newImageId
     }
     this.props.customAttributes.forEach(attr => {
-      const val = ReactDOM.findDOMNode(this.refs[`${attr}Input`]).value
-      attrs[attr] = val
+      const { name, type } = attr
+      if (type == 'paragraph') {
+        attrs[name] = this.state.description[name]
+      } else {
+        const val = ReactDOM.findDOMNode(this.refs[`${name}Input`]).value
+        attrs[name] = val
+      }
     })
     this.props.actions.editPlace(this.props.place.id, {name, description, notes, ...attrs})
     this.setState({editing: false})
@@ -83,16 +102,31 @@ class PlaceView extends Component {
   }
 
   renderEditingCustomAttributes () {
-    return this.props.customAttributes.map((attr, idx) =>
-      <FormGroup key={idx}>
-        <ControlLabel>{attr}</ControlLabel>
-        <FormControl
-          type='text' ref={`${attr}Input`}
-          defaultValue={this.props.place[attr]}
-          onKeyDown={this.handleEsc}
-          onKeyPress={this.handleEnter} />
-      </FormGroup>
-    )
+    const { place, ui, customAttributes } = this.props
+    return customAttributes.map((attr, idx) => {
+      const { name, type } = attr
+      if (type == 'paragraph') {
+        return <div key={idx}>
+          <ControlLabel>{name}</ControlLabel>
+          <RichText
+            description={place[name]}
+            onChange={(desc) => this.handleAttrDescriptionChange(name, desc)}
+            editable
+            autofocus={false}
+            darkMode={ui.darkMode}
+          />
+        </div>
+      } else {
+        return <FormGroup key={idx}>
+          <ControlLabel>{name}</ControlLabel>
+          <FormControl
+            type='text' ref={`${name}Input`}
+            defaultValue={place[name]}
+            onKeyDown={this.handleEsc}
+            onKeyPress={this.handleEnter} />
+        </FormGroup>
+      }
+    })
   }
 
   renderEditing () {
@@ -204,12 +238,19 @@ class PlaceView extends Component {
     const { place, customAttributes, ui } = this.props
     const klasses = cx('place-list__place', { darkmode: ui.darkMode })
 
-    const details = customAttributes.map((attr, idx) =>
-      <dl key={idx} className='dl-horizontal'>
-        <dt>{attr}</dt>
-        <dd>{place[attr]}</dd>
+    const details = customAttributes.map((attr, idx) => {
+      const { name, type } = attr
+      let desc = <dd>{place[name]}</dd>
+      if (type == 'paragraph') {
+        desc = <dd>
+          <RichText description={place[name]} darkMode={ui.darkMode} />
+        </dd>
+      }
+      return <dl key={idx} className='dl-horizontal'>
+        <dt>{name}</dt>
+        {desc}
       </dl>
-    )
+    })
     return <div className={klasses} onClick={() => this.setState({editing: true})}>
       <h4 className='secondary-text'>{place.name}</h4>
       <div className='place-list__place-inner'>
@@ -234,7 +275,7 @@ class PlaceView extends Component {
             <dd>{this.renderAssociations()}</dd>
           </dl>
         </div>
-        <div>
+        <div className='place-list__right-side'>
           <Image responsive imageId={place.imageId} />
           <Glyphicon glyph='pencil' />
         </div>

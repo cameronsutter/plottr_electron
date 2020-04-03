@@ -3,18 +3,15 @@
     "characterFilter": {
       "race": [],
       "family:#:paragraph": [],
-      "age": [],
-      "[object Object]": []
+      "age": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
-    "placeFilter": {
-      "[object Object]": []
-    },
+    "placeFilter": null,
     "placeSort": "name~asc",
     "zoomIndex": 4,
     "zoomState": null,
@@ -24,7 +21,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.3"
+    "version": "2020.4.1"
   },
   "places": [
     {
@@ -54,8 +51,7 @@
       "weather": "stormy",
       "bookIds": [
         1
-      ],
-      "galaxy": ""
+      ]
     },
     {
       "cards": [],
@@ -341,8 +337,7 @@
       "templates": [],
       "bookIds": [
         1
-      ],
-      "superpower": ""
+      ]
     },
     {
       "age": "50s",
@@ -417,8 +412,7 @@
       ],
       "bookIds": [
         1
-      ],
-      "superpower": ""
+      ]
     },
     {
       "age": "",
@@ -3003,32 +2997,12 @@
   ],
   "customAttributes": {
     "characters": [
-      {
-        "name": "age",
-        "type": "text"
-      },
-      {
-        "name": "race",
-        "type": "text"
-      },
-      {
-        "name": "family",
-        "type": "paragraph"
-      },
-      {
-        "name": "superpower",
-        "type": "text"
-      }
+      "age",
+      "race",
+      "family:#:paragraph"
     ],
     "places": [
-      {
-        "name": "weather",
-        "type": "text"
-      },
-      {
-        "name": "galaxy",
-        "type": "text"
-      }
+      "weather"
     ],
     "cards": [],
     "scenes": [],

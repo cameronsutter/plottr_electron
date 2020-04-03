@@ -22,7 +22,7 @@ export default class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return <div className='text-center'>
         <h1>{i18n('Something went wrong.')}</h1>
-        <p style={{fontSize: '20px'}}>{i18n('Try that again, but if it keeps happening, use the help menu to create an error report and report the problem to me.')}</p>
+        <p style={{fontSize: '20px'}}>{i18n('Try that again, but if it keeps happening, use the help menu to create an error report and report the problem.')}</p>
       </div>
     }
 

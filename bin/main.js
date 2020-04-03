@@ -465,7 +465,9 @@ function openWindow (fileName, jsonData) {
   newWindow.on('close', function (e) {
     var win = _.find(windows, {id: this.id})
 
-    if (win && !tryingToQuit) {
+    // closing the window, but not trying to quit
+    // only remove from open windows if there's more than one window open
+    if (!tryingToQuit && windows.length > 1 && win) {
       FileManager.close(win.fileName)
     }
 

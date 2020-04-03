@@ -1,6 +1,6 @@
 var _ = require('lodash')
-const { newFileBooks, newFileBeats, newFileSeriesLines } = require('../../../shared/newFileState')
-const { series } = require('../../../shared/initialState')
+const { newFileBooks, newFileBeats, newFileSeriesLines } = require('../../../../shared/newFileState')
+const { series } = require('../../../../shared/initialState')
 
 function migrate (data) {
   if (data.file && data.file.version === '2020.3.16') return data

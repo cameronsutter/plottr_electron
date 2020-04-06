@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
+import { characterSortCAnamesSelector, placeSortCAnamesSelector } from '../selectors/customAttributes'
 
 class SortList extends Component {
   toggle = (attr) => {
@@ -25,7 +26,6 @@ class SortList extends Component {
     let direction = sort[1]
     return this.props.items.map(i => {
       let arrow = null
-      i = i.split(':#:')[0]
       let item = <span className='not-active'>{i}</span>
       if (i === attrName) {
         item = <em>{i}</em>
@@ -42,7 +42,7 @@ class SortList extends Component {
   render () {
     return (
       <ul className='sort-list'>
-        {this.renderList()}
+        { this.renderList() }
       </ul>
     )
   }
@@ -58,10 +58,10 @@ SortList.propTypes = {
 function mapStateToProps (state, props) {
   let attr, customAttributes
   if (props.type == 'characters') {
-    customAttributes = state.customAttributes['characters']
+    customAttributes = characterSortCAnamesSelector(state)
     attr = state.ui.characterSort
   } else {
-    customAttributes = state.customAttributes['places']
+    customAttributes = placeSortCAnamesSelector(state)
     attr = state.ui.placeSort
   }
   let items = [i18n('name'), i18n('description'), ...customAttributes]

@@ -9,6 +9,16 @@ export const allCustomAttributesSelector = state => state.customAttributes
 export const characterCustomAttributesSelector = state => state.customAttributes.characters
 export const placeCustomAttributesSelector = state => state.customAttributes.places
 
+export const characterSortCAnamesSelector = createSelector(
+  characterCustomAttributesSelector,
+  (attributes) => attributes.filter(attr => attr.type == 'text').map(attr => attr.name)
+)
+
+export const placeSortCAnamesSelector = createSelector(
+  placeCustomAttributesSelector,
+  (attributes) => attributes.filter(attr => attr.type == 'text').map(attr => attr.name)
+)
+
 export const characterCustomAttributesThatCanChangeSelector = createSelector(
   allCharactersSelector,
   characterCustomAttributesSelector,

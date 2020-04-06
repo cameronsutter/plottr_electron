@@ -3,7 +3,6 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
-import SETTINGS from '../../common/utils/settings'
 
 class FilterList extends Component {
   constructor (props) {
@@ -66,7 +65,6 @@ class FilterList extends Component {
   }
 
   renderBooks () {
-    if (!SETTINGS.get('premiumFeatures')) return null
     if (!this.props.renderBooks) return null
 
     const { books } = this.props

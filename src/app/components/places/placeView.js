@@ -9,7 +9,6 @@ import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
-import SETTINGS from '../../../common/utils/settings'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 
@@ -83,7 +82,6 @@ class PlaceView extends Component {
 
   renderEditingImage () {
     const { place } = this.props
-    if (!SETTINGS.get('premiumFeatures') && !place.imageId) return null
 
     let imgId = this.state.newImageId || place.imageId
     return <FormGroup>
@@ -93,9 +91,7 @@ class PlaceView extends Component {
           <Image size='small' shape='rounded' imageId={imgId} />
         </div>
         <div>
-          {SETTINGS.get('premiumFeatures') || imagesExist ?
-            <ImagePicker selectedId={place.imageId} chooseImage={id => this.setState({newImageId: id})} />
-          : null}
+          <ImagePicker selectedId={place.imageId} chooseImage={id => this.setState({newImageId: id})} />
         </div>
       </div>
     </FormGroup>

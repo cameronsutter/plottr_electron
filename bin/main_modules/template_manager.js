@@ -2,10 +2,12 @@ const Store = require('electron-store')
 const request = require('request')
 const semverGt = require('semver/functions/gt')
 const { TEMPLATES_MANIFEST_PATH, TEMPLATES_PATH } = require('./config_paths')
-const SETTINGS = require('./settings')
 
-const manifestStore = new Store({name: TEMPLATES_MANIFEST_PATH})
-const templateStore = new Store({name: TEMPLATES_PATH})
+const manifestPath = process.env.NODE_ENV == 'dev' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
+const templatesPath = process.env.NODE_ENV == 'dev' ? `${TEMPLATES_PATH}_dev` : TEMPLATES_PATH
+
+const manifestStore = new Store({name: manifestPath})
+const templateStore = new Store({name: templatesPath})
 
 const MANIFEST_ROOT = 'manifest'
 const TEMPLATES_ROOT = 'templates'
@@ -39,21 +41,19 @@ class TemplateManager {
   }
 
   load = () => {
-    if (SETTINGS.get('premiumFeatures')) {
-      request(this.manifestReq(), (err, resp, fetchedManifest) => {
-        if (!err && resp && resp.statusCode == 200) {
-          if (this.fetchedIsNewer(fetchedManifest.version)) {
-            manifestStore.set(MANIFEST_ROOT, fetchedManifest)
-            this.fetchTemplates()
-          }
-          // else {
-          //   console.info('no new template manifest', fetchedManifest.version)
-          // }
-        } else {
-          console.warn(resp.statusCode, err)
+    request(this.manifestReq(), (err, resp, fetchedManifest) => {
+      if (!err && resp && resp.statusCode == 200) {
+        if (this.fetchedIsNewer(fetchedManifest.version)) {
+          manifestStore.set(MANIFEST_ROOT, fetchedManifest)
+          this.fetchTemplates()
         }
-      })
-    }
+        // else {
+        //   console.info('no new template manifest', fetchedManifest.version)
+        // }
+      } else {
+        console.warn(resp.statusCode, err)
+      }
+    })
   }
 
   fetchedIsNewer = (fetchedVersion) => {

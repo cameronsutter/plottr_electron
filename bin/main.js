@@ -769,17 +769,14 @@ function buildFileMenu () {
     label: i18n('New') + '...',
     accelerator: 'CmdOrCtrl+N',
     click: () => { askToCreateFile() },
+  }, {
+    label: i18n('New from Template') + '...',
+    click: openDashboardWindow,
   })
-  if (SETTINGS.get('premiumFeatures')) {
-    submenu = [].concat(submenu, {
-      label: i18n('New from Template') + '...',
-      click: openDashboardWindow
-    })
-  }
   submenu = [].concat(submenu, {
     label: i18n('Open') + '...',
     accelerator: 'CmdOrCtrl+O',
-    click: askToOpenFile
+    click: askToOpenFile,
   }, {
     role: "recentDocuments",
     submenu: [],
@@ -817,11 +814,7 @@ function buildFileMenu () {
         if (fileName) {
           var fullName = fileName + '.pltr'
           let newState = {...winObj.state}
-          if (SETTINGS.get('premiumFeatures')) {
-            newState.series.name = `${newState.series.name} copy`
-          } else {
-            newState.books[1].title = `${newState.books[1].title} copy`
-          }
+          newState.series.name = `${newState.series.name} copy`
           FileManager.save(fullName, newState, function (err) {
             if (err) {
               log.warn(err)

@@ -24,7 +24,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.3"
+    "version": "2020.4.4-alpha.1"
   },
   "places": [
     {
@@ -494,7 +494,8 @@
       ],
       "bookIds": [
         1
-      ]
+      ],
+      "superpower": ""
     }
   ],
   "chapters": [

@@ -8,75 +8,71 @@ import i18n from 'format-message'
 import * as BookActions from 'actions/books'
 
 class BookDialog extends Component {
-  componentWillUnmount () {
-    if (!this.props.modal) this.saveEdit()
-  }
-
   saveEdit = () => {
-    const { book, modal } = this.props
+    const { book } = this.props
 
     let title = ReactDOM.findDOMNode(this.refs.title).value
     let premise = ReactDOM.findDOMNode(this.refs.premise).value
     let genre = ReactDOM.findDOMNode(this.refs.genre).value
     let theme = ReactDOM.findDOMNode(this.refs.theme).value
     this.props.actions.editBook(book.id, {title, premise, genre, theme})
-    if (this.props.cancel) this.props.cancel()
+    this.props.cancel()
   }
 
   renderToolBar () {
     return <ButtonToolbar>
       <Button bsStyle='success' onClick={this.saveEdit}>{i18n('Save')}</Button>
-      {this.props.modal ? <Button onClick={this.props.cancel}>{i18n('Cancel')}</Button> : null}
+      <Button onClick={this.props.cancel}>{i18n('Cancel')}</Button>
     </ButtonToolbar>
   }
 
   renderBody () {
-    const { book, modal } = this.props
+    const { book } = this.props
     return <Form horizontal>
-      {modal ? <FormGroup>
-        <Col componentClass={ControlLabel} sm={modal ? 3 : 1}>
+      <FormGroup>
+        <Col componentClass={ControlLabel} sm={3}>
           {i18n('Book #')}
         </Col>
-        <Col sm={modal ? 8 : 5}>
+        <Col sm={8}>
           <span className='lead'>{this.props.bookNumber}</span>
         </Col>
-      </FormGroup> : null}
+      </FormGroup>
       <FormGroup>
-        <Col componentClass={ControlLabel} sm={modal ? 3 : 1}>
+        <Col componentClass={ControlLabel} sm={3}>
           {i18n('Title')}
         </Col>
-        <Col sm={modal ? 8 : 5}>
+        <Col sm={8}>
           <FormControl type='text' ref='title' defaultValue={book.title} />
         </Col>
       </FormGroup>
       <FormGroup>
-        <Col componentClass={ControlLabel} sm={modal ? 3 : 1}>
+        <Col componentClass={ControlLabel} sm={3}>
           {i18n('Premise')}
         </Col>
-        <Col sm={modal ? 8 : 5}>
+        <Col sm={8}>
           <FormControl type='text' ref='premise' defaultValue={book.premise} />
         </Col>
       </FormGroup>
       <FormGroup>
-        <Col componentClass={ControlLabel} sm={modal ? 3 : 1}>
+        <Col componentClass={ControlLabel} sm={3}>
           {i18n('Genre')}
         </Col>
-        <Col sm={modal ? 8 : 5}>
+        <Col sm={8}>
           <FormControl type='text' ref='genre' defaultValue={book.genre} />
         </Col>
       </FormGroup>
       <FormGroup>
-        <Col componentClass={ControlLabel} sm={modal ? 3 : 1}>
+        <Col componentClass={ControlLabel} sm={3}>
           {i18n('Theme')}
         </Col>
-        <Col sm={modal ? 8 : 5}>
+        <Col sm={8}>
           <FormControl type='text' ref='theme' defaultValue={book.theme} />
         </Col>
       </FormGroup>
     </Form>
   }
 
-  renderModal () {
+  render () {
     return <Modal show={true} onHide={this.props.cancel}>
       <Modal.Body>
         { this.renderBody() }
@@ -87,25 +83,9 @@ class BookDialog extends Component {
     </Modal>
   }
 
-  render () {
-    if (this.props.modal) {
-      return this.renderModal()
-    } else {
-      return <div className='edit-book__container'>
-        { this.renderBody() }
-        <Row>
-          <Col sm={6}>
-            { this.renderToolBar() }
-          </Col>
-        </Row>
-      </div>
-    }
-  }
-
   static propTypes = {
     bookId: PropTypes.number.isRequired,
-    cancel: PropTypes.func,
-    modal: PropTypes.bool.isRequired,
+    cancel: PropTypes.func.isRequired,
     ui: PropTypes.object.isRequired,
     book: PropTypes.object,
     bookNumber: PropTypes.number,

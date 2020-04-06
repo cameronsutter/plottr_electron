@@ -11,7 +11,6 @@ import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import ImagePicker from 'components/images/ImagePicker'
 import Image from 'components/images/Image'
-import SETTINGS from '../../../common/utils/settings'
 import BookSelectList from '../story/BookSelectList'
 
 class NoteView extends Component {
@@ -57,8 +56,6 @@ class NoteView extends Component {
   }
 
   renderBookSelectList () {
-    if (!SETTINGS.get('premiumFeatures')) return null
-
     const { note, actions } = this.props
 
     return <BookSelectList
@@ -71,7 +68,6 @@ class NoteView extends Component {
 
   renderEditingImage () {
     const { note } = this.props
-    if (!SETTINGS.get('premiumFeatures') && !note.imageId) return null
 
     let imgId = this.state.newImageId || note.imageId
     return <FormGroup>
@@ -81,9 +77,7 @@ class NoteView extends Component {
           <Image size='small' shape='rounded' imageId={imgId}/>
         </div>
         <div>
-          {SETTINGS.get('premiumFeatures') || imagesExist ?
-            <ImagePicker selectedId={note.imageId} chooseImage={id => this.setState({newImageId: id})} />
-          : null}
+          <ImagePicker selectedId={note.imageId} chooseImage={id => this.setState({newImageId: id})} />
         </div>
       </div>
     </FormGroup>

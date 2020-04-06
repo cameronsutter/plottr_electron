@@ -1,6 +1,6 @@
 const Store = require('electron-store')
 
-const TEMPLATES_PATH = 'templates'
+const TEMPLATES_PATH = process.env.NODE_ENV == 'development' ? 'templates_dev' : 'templates'
 const templateStore = new Store({name: TEMPLATES_PATH})
 const TEMPLATES_ROOT = 'templates'
 

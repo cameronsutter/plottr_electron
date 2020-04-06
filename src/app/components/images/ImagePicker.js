@@ -10,7 +10,6 @@ import { FormControl, ControlLabel, Button, Row, Col, Glyphicon, ButtonToolbar, 
 import Image from './Image'
 import i18n from 'format-message'
 import { readImage } from '../../helpers/images'
-import SETTINGS from '../../../common/utils/settings'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -77,19 +76,17 @@ class ImagePicker extends Component {
                 <h5 className='secondary-text'>{i18n('Choose an image below or upload a new one')}</h5>
               </Col>
               <Col xs={2}>
-                {SETTINGS.get('premiumFeatures') ?
-                  <ControlLabel htmlFor='fileUpload'>
-                    <div className='btn image-picker__upload-button'><Glyphicon glyph='upload'/>{' '}{i18n('Upload a new image')}</div>
-                  </ControlLabel>
-                : null}
+                <ControlLabel htmlFor='fileUpload'>
+                  <div className='btn image-picker__upload-button'><Glyphicon glyph='upload'/>{' '}{i18n('Upload a new image')}</div>
+                </ControlLabel>
               </Col>
               <Col xs={2}>
                 <FormControl id='fileUpload' type='file' onChange={this.uploadNewFile} />
               </Col>
               <Col xs={4}>
                 <div className='image-picker__button-wrapper'>
-                  <Button onClick={this.chooseNoImage}>{i18n('Choose No Image')}</Button>
                   <Button bsStyle='success' onClick={this.chooseImage}>{i18n('Choose')}</Button>
+                  <Button onClick={this.chooseNoImage}>{i18n('Choose No Image')}</Button>
                   <Button onClick={this.close}>{i18n('Cancel')}</Button>
                 </div>
               </Col>

@@ -118,9 +118,9 @@ class TimelineTable extends Component {
 
   buildCard (lineId, chapterId) {
     if (this.isSeries()) {
-      return Object.assign(card, { beatId: chapterId, seriesLineId: lineId })
+      return Object.assign({}, card, { beatId: chapterId, seriesLineId: lineId })
     } else {
-      return Object.assign(card, { chapterId, lineId })
+      return Object.assign({}, card, { chapterId, lineId })
     }
   }
 

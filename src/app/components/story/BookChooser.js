@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as UIActions from 'actions/ui'
 import { NavDropdown, MenuItem } from 'react-bootstrap'
-import SETTINGS from '../../../common/utils/settings'
 import i18n from 'format-message'
 
 class BookChooser extends Component {
@@ -25,8 +24,6 @@ class BookChooser extends Component {
   }
 
   render () {
-    if (!SETTINGS.get('premiumFeatures')) return null
-
     const { ui, books } = this.props
     const seriesText = i18n('Series')
     let title = seriesText

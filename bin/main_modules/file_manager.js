@@ -1,7 +1,6 @@
 const fs = require('fs')
 const Store = require('electron-store')
 const { OPEN_FILES_PATH, KNOWN_FILES_PATH } = require('./config_paths')
-const SETTINGS = require('./settings')
 
 const openFilesPath = process.env.NODE_ENV == 'dev' ? `${OPEN_FILES_PATH}_dev` : OPEN_FILES_PATH
 const knownFilesPath = process.env.NODE_ENV == 'dev' ? `${KNOWN_FILES_PATH}_dev` : KNOWN_FILES_PATH

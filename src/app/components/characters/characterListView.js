@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
+import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup, ButtonGroup,
   ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
@@ -15,7 +15,6 @@ import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
 import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
-import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import Image from '../images/Image'
 import cx from 'classnames'
@@ -169,19 +168,15 @@ class CharacterListView extends Component {
     </Popover>
     let sortGlyph = 'sort-by-attributes'
     if (ui.characterSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
-    let newFromTemplate = null
-    if (SETTINGS.get('premiumFeatures')) {
-      newFromTemplate = <NavItem>
-        <Button bsSize='small' onClick={() => this.setState({showTemplatePicker: true})}><Glyphicon glyph='plus-sign' /> {i18n('New from Template')}</Button>
-      </NavItem>
-    }
     return (
       <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
         <Nav bsStyle='pills' >
           <NavItem>
-            <Button bsSize='small' onClick={this.handleCreateNewCharacter}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+            <ButtonGroup>
+              <Button bsSize='small' onClick={this.handleCreateNewCharacter}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+              <Button bsSize='small' onClick={() => this.setState({showTemplatePicker: true})}>{i18n('Use Template')}</Button>
+            </ButtonGroup>
           </NavItem>
-          {newFromTemplate}
           <NavItem>
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>

@@ -10,7 +10,6 @@ import { ButtonToolbar, Button, FormControl, FormGroup,
 import * as CharacterActions from 'actions/characters'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
-import SETTINGS from '../../../common/utils/settings'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 
@@ -114,7 +113,6 @@ class CharacterView extends Component {
 
   renderEditingImage () {
     const { character } = this.props
-    if (!SETTINGS.get('premiumFeatures') && !character.imageId) return null
 
     let imgId = this.state.newImageId || character.imageId
     return <FormGroup>
@@ -124,9 +122,7 @@ class CharacterView extends Component {
           <Image size='large' shape='circle' imageId={imgId} />
         </div>
         <div>
-          {SETTINGS.get('premiumFeatures') || imagesExist ?
-            <ImagePicker selectedId={character.imageId} chooseImage={id => this.setState({newImageId: id})} />
-          : null}
+          <ImagePicker selectedId={character.imageId} chooseImage={id => this.setState({newImageId: id})} />
         </div>
       </div>
     </FormGroup>

@@ -113,11 +113,11 @@ $title_width: 200px;
     div.template {
       @include application-text;
       color: $blue-4;
-      border-left: 1px dashed $blue-8;
+      border-right: none;
       text-align: center;
     }
     div.non-template {
-      border-right: none;
+      border-left: none;
     }
   }
 }

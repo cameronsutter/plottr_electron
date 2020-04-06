@@ -8,7 +8,6 @@ import i18n from 'format-message'
 import _ from 'lodash'
 import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
-import SETTINGS from '../../../common/utils/settings'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { nextId } from '../../store/newIds'
 import { card, chapter as defaultChapter } from '../../../../shared/initialState'
@@ -150,12 +149,12 @@ class AddLineRow extends Component {
 
   renderInsertButton () {
     const { ui, actions } = this.props
-    if (SETTINGS.get('premiumFeatures') && this.props.bookId != 'series') {
+    if (this.props.bookId != 'series') {
       return <div className='line-list__append-line'>
         {this.state.hovering ?
           <div className='line-list__append-line__double'>
-            <div onClick={() => actions.addLine(ui.currentTimeline)} className='non-template'><Glyphicon glyph='plus' /></div>
             <div onClick={() => this.setState({showTemplatePicker: true, hovering: false})} className='template'>{i18n('Use Template')}</div>
+            <div onClick={() => actions.addLine(ui.currentTimeline)} className='non-template'><Glyphicon glyph='plus' /></div>
           </div>
         :
           <div className='line-list__append-line-wrapper'>

@@ -9,6 +9,7 @@ import Image from '../images/Image'
 import BookDialog from './BookDialog'
 import { Glyphicon, ButtonGroup, Button } from 'react-bootstrap'
 import cx from 'classnames'
+import { canDeleteBookSelector } from '../../selectors/books'
 
 class Book extends Component {
   state = {editing: false, hovering: false}
@@ -34,7 +35,7 @@ class Book extends Component {
       <ButtonGroup>
         <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
         <ImagePicker chooseImage={this.chooseImage} iconOnly />
-        <Button bsStyle='danger' onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+        {this.props.canDelete ? <Button bsStyle='danger' onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button> : null}
       </ButtonGroup>
     </div>
   }
@@ -104,6 +105,7 @@ class Book extends Component {
   static propTypes = {
     ui: PropTypes.object.isRequired,
     bookId: PropTypes.number,
+    canDelete: PropTypes.bool,
     addBook: PropTypes.func,
     book: PropTypes.object,
     bookNumber: PropTypes.number,
@@ -114,6 +116,7 @@ function mapStateToProps (state, ownProps) {
   return {
     ui: state.ui,
     book: state.books[ownProps.bookId],
+    canDelete: canDeleteBookSelector(state),
   }
 }
 

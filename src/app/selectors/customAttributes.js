@@ -3,6 +3,7 @@ import { createSelector } from 'reselect'
 import { allCharactersSelector } from './characters'
 import { allPlacesSelector } from './places'
 import { RCE_INITIAL_VALUE } from '../../../shared/initialState'
+// TODO: extract this
 const otherPossibleValue = [ { "children": [ { "text": "" } ], "type": "paragraph" } ]
 
 export const allCustomAttributesSelector = state => state.customAttributes

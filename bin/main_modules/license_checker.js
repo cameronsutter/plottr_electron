@@ -10,7 +10,9 @@ const PRODUCT_ID = '3090'
 const SUBSCRIPTION_ID = '3087'
 
 function checkForActiveLicense (licenseInfo, callback) {
-  const req = makeRequest(licenseURL(licenseInfo.licenseKey))
+  const key = licenseInfo.purchase ? licenseInfo.purchase.license_key : licenseInfo.licenseKey
+  log.info('checking for active license', key)
+  const req = makeRequest(licenseURL(key))
   request(req, (err, response, body) => {
     if (process.env.NODE_ENV === 'dev') {
       console.log(body)
@@ -18,29 +20,20 @@ function checkForActiveLicense (licenseInfo, callback) {
     if (err) {
       log.error(err)
       rollbar.warn(err)
-      // conscious choice to allow them to use the app if the verification request fails
-      // they might be offline
-      // but either way if they have a valid license in user_info
-      // i'll give them a one-launch grace
-      callback(true)
+      // conscious choice not to turn premium off here
+      // User may be disconnected from internet or something else going on
+      log.info('license check request failed')
+      callback(false)
     } else {
-      if (isValidLicense(body)) {
-        // check for premium
-        getSubscriptionInfo(body.customer_email, (err, activeSub) => {
-          if (process.env.NODE_ENV === 'dev') {
-            console.log(activeSub)
-          }
-          SETTINGS.set('premiumFeatures', !err && activeSub)
-          callback(true)
-        })
-      } else {
-        callback(false)
-      }
+      const activeLicense = isActiveLicense(body)
+      log.info('active license?', activeLicense)
+      SETTINGS.set('premiumFeatures', activeLicense)
+      callback(activeLicense)
     }
   })
 }
 
-isValidLicense = (body) => {
+isActiveLicense = (body) => {
   // license could also be:
   // - site_inactive
   // - invalid

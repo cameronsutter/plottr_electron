@@ -5,26 +5,30 @@ const BASE_URL = 'http://plottr.flywheelsites.com'
 const PRODUCT_ID = '3090'
 const SUBSCRIPTION_ID = '3087'
 
+// TODO: extract this to shared folder
+
+// callback(error, valid, data)
 export function getLicenseInfo (license, callback) {
   const req = makeRequest(licenseURL(license))
   request(req, (err, response, body) => {
-    if (err) callback(err, false, {})
-    else {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(body)
+    }
+
+    if (err) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(err)
+      }
+      callback(err, false, {})
+    } else {
       if (isValidLicense(body)) {
         const data = {
           licenseKey: license,
-          purchase: body,
+          ...body,
         }
-        // check for premium
-        getSubscriptionInfo(body.customer_email, (err, activeSub) => {
-          if (!err && activeSub) {
-            data.premium = true
-            data.subscription = activeSub
-          }
-          callback(null, true, data)
-        })
+        callback(null, true, data)
       } else {
-        callback(null, false, {hasActivationsLeft: hasActivationsLeft(body)})
+        callback(null, false, {problem: body.error, hasActivationsLeft: hasActivationsLeft(body)})
       }
     }
   })
@@ -46,11 +50,11 @@ function getSubscriptionInfo (email, callback) {
 }
 
 function hasActivationsLeft (body) {
-  return body.activations_left > 0
+  return body.activations_left && body.activations_left > 0
 }
 
 function isValidLicense (body) {
-  return body.success && body.license == "valid"
+  return body.success && body.license == 'valid'
 }
 
 function findActiveSubscription (body) {
@@ -58,7 +62,7 @@ function findActiveSubscription (body) {
   if (!body.subscriptions) return false
 
   return body.subscriptions.find(sub => {
-    return sub.info && sub.info.product_id == SUBSCRIPTION_ID && sub.info.status == "active"
+    return sub.info && sub.info.product_id == SUBSCRIPTION_ID && sub.info.status == 'active'
   })
 }
 

@@ -9,8 +9,6 @@ import { machineIdSync } from 'node-machine-id'
 import { getLicenseInfo } from './verifyRequests'
 import SETTINGS from '../common/utils/settings'
 
-const useEDD = process.env.useEDD === 'true'
-
 const SUCCESS = 'success'
 const OFFLINE = 'offline'
 const INVALID = 'invalid'
@@ -55,8 +53,7 @@ class VerifyView extends Component {
   }
 
   buildURL = (license) => {
-    const itemId = "355"
-    // itemId = "737" // for premium features
+    const itemId = '3090'
     let url = 'http://plottr.flywheelsites.com'
     url += `/edd-api?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
     url += `&edd_action=activate_license&item_id=${itemId}&license=${license}`
@@ -88,104 +85,50 @@ class VerifyView extends Component {
     if (license === "!TEST_LICENSE_@NEPHI") {
       ipcRenderer.send('license-verified')
     }
-    const view = this
-    if (useEDD) {
-      getLicenseInfo(license, (error, valid, licenseInfo) => {
-        if (process.env.NODE_ENV === 'development') {
-          console.log(body)
-        }
-        let newState = {spinnerHidden: true}
-        if (error || !valid) {
-          if (licenseInfo && !licenseInfo.hasActivationsLeft) {
-            // not valid because of number of activations
-            newState.showAlert = true
-            newState.alertText = view.makeAlertText(TOOMANY)
-          } else {
-            // invalid
-            newState.showAlert = true
-            newState.alertText = view.makeAlertText(INVALID)
-          }
-        } else {
-          // valid
-          this.saveInfo(licenseInfo, err => {
-            if (err) {
-              this.setState({showAlert: true, alertText: this.makeAlertText(CANTSAVE)})
-              this.saveInfo(body, error => {
-                if (error) {
-                  this.setState({showAlert: true, alertText: this.makeAlertText(SAVE2)})
-                } else {
-                  this.setState({showAlert: true, alertClass: GREEN, alertText: this.makeAlertText(SUCCESS)})
-                  if (process.env.NODE_ENV !== 'development') {
-                    ipcRenderer.send('license-verified')
-                  }
-                }
-              })
-            } else {
-              this.setState({showAlert: true, alertClass: GREEN, alertText: this.makeAlertText(SUCCESS)})
-              if (process.env.NODE_ENV !== 'development') {
-                ipcRenderer.send('license-verified')
-              }
-            }
-          })
-        }
-        this.setState(newState)
-      })
-    } else {
-      var req = this.makeRequest(license)
-      request(req, (err, response, body) => {
-        var newState = {spinnerHidden: true}
-        if (err && err.code === 404) {
+    getLicenseInfo(license, (error, valid, licenseInfo) => {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(licenseInfo)
+      }
+      let newState = {spinnerHidden: true}
+      if (error || !valid) {
+        if (licenseInfo && licenseInfo.problem == 'invalid' && !licenseInfo.hasActivationsLeft) {
+          // not valid because of number of activations
           newState.showAlert = true
-          newState.alertText = view.makeAlertText(INVALID)
+          newState.alertText = this.makeAlertText(TOOMANY)
         } else {
-          if (process.env.NODE_ENV === 'development') {
-            console.log(body)
-          }
-          if (view.isValidLicense(body)) {
-            if (view.hasActivationsLeft(body)) {
-              // valid
-              view.saveInfo(body, err => {
-                if (err) {
-                  view.setState({showAlert: true, alertText: view.makeAlertText(CANTSAVE)})
-                  view.saveInfo(body, error => {
-                    if (error) {
-                      view.setState({showAlert: true, alertText: view.makeAlertText(SAVE2)})
-                    } else {
-                      view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
-                      if (process.env.NODE_ENV !== 'development') {
-                        ipcRenderer.send('license-verified')
-                      }
-                    }
-                  })
-                } else {
-                  view.setState({showAlert: true, alertClass: GREEN, alertText: view.makeAlertText(SUCCESS)})
-                  if (process.env.NODE_ENV !== 'development') {
-                    ipcRenderer.send('license-verified')
-                  }
-                }
-              })
-            } else {
-              // not valid becuase of too many activations
-              newState.showAlert = true
-              newState.alertText = view.makeAlertText(TOOMANY)
-            }
-          } else {
-            // invalid
-            newState.showAlert = true
-            newState.alertText = view.makeAlertText(INVALID)
-          }
+          // invalid
+          newState.showAlert = true
+          newState.alertText = this.makeAlertText(INVALID)
         }
-        view.setState(newState)
-      })
-    }
+      } else {
+        // valid
+        this.saveInfo(licenseInfo, err => {
+          if (err) {
+            this.setState({showAlert: true, alertText: this.makeAlertText(CANTSAVE)})
+            this.saveInfo(licenseInfo, error => {
+              if (error) {
+                this.setState({showAlert: true, alertText: this.makeAlertText(SAVE2)})
+              } else {
+                this.setState({showAlert: true, alertClass: GREEN, alertText: this.makeAlertText(SUCCESS)})
+                if (process.env.NODE_ENV !== 'development') {
+                  ipcRenderer.send('license-verified')
+                }
+              }
+            })
+          } else {
+            this.setState({showAlert: true, alertClass: GREEN, alertText: this.makeAlertText(SUCCESS)})
+            if (process.env.NODE_ENV !== 'development') {
+              ipcRenderer.send('license-verified')
+            }
+          }
+        })
+      }
+      this.setState(newState)
+    })
   }
 
   saveInfo = (info, callback) => {
-    if (info.premium) {
-      SETTINGS.set('premiumFeatures', true)
-    } else {
-      SETTINGS.set('premiumFeatures', false)
-    }
+    SETTINGS.set('premiumFeatures', true)
     storage.set('user_info', info, callback)
   }
 
@@ -203,14 +146,11 @@ class VerifyView extends Component {
   }
 
   render () {
-    var contact = i18n.rich("(If not, please contact me at <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)", {
-      a: ({ children }) => <a key="a" href='mailto:family@plottrapp.com'>{children}</a>
-    })
     return (
       <div>
         <h2>{i18n('Please verify your license')}</h2>
-        <p className='text-success'>{i18n('You should have received a license key from Gumroad.')}</p>
-        <p className='text-info'>{contact}</p>
+        <p className='text-success'>{i18n('You should have received a license key after your purchase.')}</p>
+        <p className='text-info'>{i18n('(If not, please email support@myplottr.com)')}</p>
         <div className='form-inline' style={{marginTop: '50px'}}>
           <FormControl type='text' bsSize='large' style={{width: '450px'}} ref='license' />
           <Button bsStyle='primary' bsSize='large' onClick={this.handleVerify.bind(this)}>{i18n('Verify')}</Button>

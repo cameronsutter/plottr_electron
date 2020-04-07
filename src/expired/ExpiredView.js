@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, ipcMain } from 'electron'
 import i18n from 'format-message'
 import { Glyphicon } from 'react-bootstrap'
 import storage from 'electron-json-storage'
@@ -18,8 +18,10 @@ export default class ExpiredView extends Component {
 
   checkTrialInfo = () => {
     storage.get('trial_info', (err, data) => {
-      console.log(err)
-      console.log(data)
+      if (process.env.NODE_ENV === 'development') {
+        console.log(err)
+        console.log(data)
+      }
       if (err) {
         if (this.tryAgain) {
           this.tryAgain = false
@@ -35,6 +37,10 @@ export default class ExpiredView extends Component {
     ipcRenderer.send('open-buy-window')
   }
 
+  verify = () => {
+    ipcRenderer.send('verify-from-expired')
+  }
+
   renderChoices () {
     if (this.state.canExtend) {
       return <div className='expired__chooser'>
@@ -46,9 +52,21 @@ export default class ExpiredView extends Component {
         </div>
       </div>
     } else {
-      return <div style={{margin: '35px'}}>
-        <h3><a href='#' onClick={this.buy}>{i18n('Click here to get the full version')}</a></h3>
-        <p style={{padding: '10px 70px'}}>{i18n('Don\'t worry, all your work is saved in plottr_trial.pltr in your Documents folder')}</p>
+      // return <div style={{margin: '35px', marginTop: '20px'}}>
+      //   <h3><a href='#' onClick={this.buy}>{i18n('Get the full version')}</a>{' '}<a href='#' onClick={this.verify}>{i18n('Or verify your license')}</a></h3>
+      //   <p></p>
+      //   <p style={{padding: '10px 70px'}}>{i18n('Don\'t worry, all your work is saved in plottr_trial.pltr in your Documents folder')}</p>
+      // </div>
+      return <div>
+        <p style={{padding: '5px 70px'}}>{i18n('Don\'t worry, all your work is saved in plottr_trial.pltr in your Documents folder')}</p>
+        <div className='expired__chooser' style={{marginBottom: '20px'}}>
+          <div className='expired__choice' onClick={this.buy}>
+            <h2>{i18n('I want to buy the full version!')}</h2>
+          </div>
+          <div className='expired__choice' onClick={this.verify}>
+            <h2>{i18n('I have a license key')}</h2>
+          </div>
+        </div>
       </div>
     }
   }
@@ -59,7 +77,7 @@ export default class ExpiredView extends Component {
         <h1 className='expired'><img src='../icons/logo_28_100.png' className='verify' height='100'/> {i18n('Thanks for trying Plottr')}</h1>
         <h2>{i18n('Your free trial has expired')} 😭</h2>
         { this.renderChoices() }
-        <p>{i18n('Please contact me with any questions at family@plottrapp.com')}</p>
+        <p>{i18n('Please contact me with any questions at support@myplottr.com')}</p>
       </div>
     } else if (this.state.view === 'ad') {
       return <AdView />

@@ -56,6 +56,7 @@ var darkMode = nativeTheme.shouldUseDarkColors || false
 const filePrefix = is.macos ? 'file://' + __dirname : __dirname
 
 // auto updates
+let checkedForActiveLicense = false
 let lastCheckedForUpdate = new Date().getTime()
 const updateCheckThreshold = 1000 * 60 * 60
 log.transports.file.level = 'info'
@@ -184,19 +185,25 @@ ipcMain.on('reload-window', function (event, id, state) {
   }
 })
 
-ipcMain.on('launch-sent', function (event) {
+ipcMain.on('launch-sent', (event) => {
   launchSent = true
 })
 
-ipcMain.on('open-buy-window', function (event) {
+ipcMain.on('open-buy-window', (event) => {
   if (expiredWindow) expiredWindow.close()
   openBuyWindow()
+})
+
+ipcMain.on('verify-from-expired', () => {
+  if (expiredWindow) expiredWindow.close()
+  openVerifyWindow()
 })
 
 function licenseVerified (ask) {
   if (verifyWindow) verifyWindow.close()
   if (TRIALMODE) {
     TRIALMODE = false
+    SETTINGS.set('trialMode', false)
     turnOffTrialMode()
     loadMenu()
     if (ask) askToOpenOrCreate()
@@ -219,6 +226,7 @@ ipcMain.on('start-free-trial', () => {
   if (verifyWindow) verifyWindow.close()
   startTheTrial(daysLeft => {
     TRIALMODE = true
+    SETTINGS.set('trialMode', true)
     DAYS_LEFT = daysLeft
     loadMenu()
     createAndOpenEmptyFile()
@@ -279,8 +287,22 @@ app.on('will-quit', () => {
 ////////////////////////////////
 
 function checkForUpdates () {
-  if (process.env.NODE_ENV !== 'dev') {
-    autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
+  // if (process.env.NODE_ENV == 'dev') return
+  console.log('checked for license?', checkedForActiveLicense, SETTINGS.get('premiumFeatures'))
+  if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
+
+  autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
+
+  if (!checkedForActiveLicense) {
+    checkForActiveLicense(USER_INFO, valid => {
+      checkedForActiveLicense = true
+      if (valid) {
+        console.log('valid license, checking for updates')
+        autoUpdater.checkForUpdatesAndNotify()
+      }
+    })
+  } else if (SETTINGS.get('premiumFeatures')) {
+    console.log('already checked license. premium is on, checking for updates')
     autoUpdater.checkForUpdatesAndNotify()
   }
 }
@@ -295,17 +317,11 @@ function checkLicense (callback) {
         if (TRIALMODE) {
           if (data.success) {
             TRIALMODE = false
+            SETTINGS.set('trialMode', false)
             turnOffTrialMode()
           }
           callback()
           openRecentFiles()
-          if (process.env.useEDD === 'true') {
-            // do this in the background
-            // will have to think how to handle open windows if not valid
-            checkForActiveLicense(USER_INFO, valid => {
-              if (!valid) openVerifyWindow()
-            })
-          }
         } else {
           callback()
           if (data.success) openRecentFiles()
@@ -316,6 +332,7 @@ function checkLicense (callback) {
       // no license yet, check for trial info
       checkTrialInfo(daysLeft => {
         TRIALMODE = true
+        SETTINGS.set('trialMode', true)
         DAYS_LEFT = daysLeft
         callback()
         openRecentFiles()
@@ -583,7 +600,7 @@ function openVerifyWindow () {
 function openExpiredWindow () {
   dontquit = true
   const expiredFile = path.join(filePrefix, 'expired.html')
-  expiredWindow = new BrowserWindow({frame: false, height: 425, width: 700, show: false, webPreferences: {nodeIntegration: true}})
+  expiredWindow = new BrowserWindow({frame: false, height: 500, width: 700, show: false, webPreferences: {nodeIntegration: true}})
   expiredWindow.loadURL(expiredFile)
   if (SETTINGS.get('forceDevTools')) {
     expiredWindow.openDevTools()

@@ -6,7 +6,7 @@
       "superpower": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -24,7 +24,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.4-alpha.1"
+    "version": "2020.4.6"
   },
   "places": [
     {
@@ -499,6 +499,13 @@
     }
   ],
   "chapters": [
+    {
+      "id": 108,
+      "title": "auto",
+      "bookId": 2,
+      "time": 0,
+      "position": 0
+    },
     {
       "id": 60,
       "position": 0,
@@ -2945,6 +2952,13 @@
     }
   ],
   "lines": [
+    {
+      "id": 37,
+      "bookId": 2,
+      "title": "Main plot",
+      "color": "#6cace4",
+      "position": 0
+    },
     {
       "color": "#6cace4",
       "id": 27,

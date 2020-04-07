@@ -11,7 +11,6 @@ function writeToEnv (key, val) {
     TRIALMODE: process.env.TRIALMODE,
     EDD_KEY: process.env.EDD_KEY,
     EDD_TOKEN: process.env.EDD_TOKEN,
-    useEDD: process.env.useEDD,
   }
   env[key] = val
   const envstr = stringify(env)

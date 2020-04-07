@@ -8,7 +8,6 @@ const storage = require('electron-json-storage')
 const log = require('electron-log')
 const i18n = require('format-message')
 const windowStateKeeper = require('electron-window-state')
-const { autoUpdater } = require('electron-updater')
 const Migrator = require('./migrator/migrator')
 const Exporter = require('./main_modules/exporter')
 const { USER_INFO_PATH, RECENT_FILES_PATH } = require('./main_modules/config_paths')
@@ -45,12 +44,6 @@ var darkMode = systemPreferences.isDarkMode() || false
 
 const filePrefix = process.platform === 'darwin' ? 'file://' + __dirname : __dirname
 const recentKey = process.env.NODE_ENV === 'dev' ? 'recentFilesDev' : RECENT_FILES_PATH
-
-// auto updates
-let lastCheckedForUpdate = new Date().getTime()
-const updateCheckThreshold = 1000 * 60 * 60
-log.transports.file.level = 'info'
-autoUpdater.logger = log
 
 // mixpanel tracking
 var launchSent = false
@@ -98,14 +91,6 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (windows.length === 0) {
     checkLicense(() => {})
-  }
-})
-
-app.on('browser-window-focus', () => {
-  const currentTime = new Date().getTime()
-  if (currentTime - lastCheckedForUpdate > updateCheckThreshold) {
-    checkForUpdates()
-    lastCheckedForUpdate = currentTime
   }
 })
 
@@ -257,13 +242,6 @@ app.on('will-quit', () => {
 ////////////////////////////////
 ///////   FUNCTIONS   //////////
 ////////////////////////////////
-
-function checkForUpdates () {
-  if (process.env.NODE_ENV !== 'dev') {
-    autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
-    autoUpdater.checkForUpdatesAndNotify()
-  }
-}
 
 function checkLicense (callback) {
   storage.has(USER_INFO_PATH, function (err, hasKey) {
@@ -511,8 +489,6 @@ function openWindow (fileName, newFile = false) {
     askToOpenOrCreate()
     removeRecentFile(fileName)
     newWindow.destroy()
-  } finally {
-    checkForUpdates()
   }
 }
 
@@ -783,9 +759,6 @@ function buildPlottrMenu () {
   var submenu = [{
     label: i18n('About Plottr'),
     click: openAboutWindow,
-  }, {
-    label: i18n('Check for updates'),
-    click: checkForUpdates
   }]
   if (TRIALMODE) {
     submenu = [].concat(submenu, {

@@ -10,6 +10,8 @@ import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
 import RichText from '../rce/RichText'
+import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
+import deep from 'deep-diff'
 
 class CardCell extends Component {
   constructor (props) {
@@ -59,9 +61,23 @@ class CardCell extends Component {
     </Popover>
   }
 
-  hasLabels () {
+  // TODO: this should be a selector
+  hasDetailsToShow () {
     const { card } = this.props
-    return card.tags && card.tags.length > 0
+
+    if (card.tags && card.tags.length) return true
+
+    if (!card.description) return false
+    if (!card.description.length) return false
+    if (card.description.length > 1) return true
+
+    let diff = deep.diff(RCE_INITIAL_VALUE, card.description)
+    if (diff) return true
+
+    // TODO: extract this
+    const otherPossibleValue = [ { "children": [ { "text": "" } ], "type": "paragraph" } ]
+    diff = deep.diff(otherPossibleValue, card.description)
+    if (diff) return true
   }
 
   renderTags () {
@@ -81,7 +97,7 @@ class CardCell extends Component {
     let title = <div className='card__title'>
       {this.props.card.title}
     </div>
-    if (!this.state.dragging && (this.hasLabels() || this.props.card.description)) {
+    if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
         placement = this.props.chapterPosition <= 1 ? 'right' : placement

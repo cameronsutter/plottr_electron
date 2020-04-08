@@ -27,6 +27,11 @@
     &:hover {
       background: $new-item-background;
     }
+    &.selected {
+      border: 2px dashed $blue-6;
+      background-color: $gray-7;
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -81,6 +86,22 @@
       padding-left: 10px;
       overflow-y:scroll;
       cursor: pointer;
+      border: 2px dashed transparent;
+
+      .glyphicon-pencil {
+        color: $blue-7;
+        visibility: hidden;
+        margin: 5px;
+      }
+
+      &:hover:not(.editing) {
+        border: 2px dashed $blue-7;
+        border-radius: 4px;
+        background-color: $gray-9;
+        .glyphicon-pencil {
+          visibility: visible;
+        }
+      }
     }
     .note-list__content.editing {
       cursor: auto;

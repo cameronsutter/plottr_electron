@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
@@ -132,6 +132,7 @@ class NoteView extends Component {
         <h4 className='secondary-text'>{note.title}</h4>
         { img }
         <RichText description={note.content} darkMode={ui.darkMode} />
+        <Glyphicon className='pull-right' glyph='pencil' />
       </div>
     }
   }

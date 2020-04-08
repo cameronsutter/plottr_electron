@@ -102,7 +102,8 @@ class NoteListView extends Component {
       if (n.lastEdited) {
         lastEdited = <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
       }
-      return <div key={idx} className='list-group-item' onClick={() => this.setState({noteDetailId: n.id})}>
+      const klasses = cx('list-group-item', {selected: n.id == this.state.noteDetailId})
+      return <div key={idx} className={klasses} onClick={() => this.setState({noteDetailId: n.id})}>
         <div className='note-list__item-inner'>
           {img}
           <div>
@@ -115,9 +116,7 @@ class NoteListView extends Component {
   }
 
   renderNotes () {
-    let klasses = cx('note-list__list', 'list-group', {
-      darkmode: this.props.ui.darkMode,
-    })
+    let klasses = cx('note-list__list', 'list-group', { darkmode: this.props.ui.darkMode })
     return <div className={klasses}>
       { this.renderVisibleNotes() }
       <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >

@@ -29,7 +29,7 @@
 }
 
 .tag-list__new:hover {
-  @include new_item_hover;
+  background: $new-item-background;
 }
 
 .tag-list__tags {

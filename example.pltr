@@ -6,7 +6,7 @@
       "superpower": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "notes",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -24,7 +24,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.6"
+    "version": "2020.4.7"
   },
   "places": [
     {
@@ -3179,7 +3179,7 @@
       ],
       "id": 3,
       "imageId": "1",
-      "lastEdited": 1585607311574,
+      "lastEdited": 1586354802963,
       "places": [
         0
       ],

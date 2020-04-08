@@ -6,7 +6,7 @@
       "superpower": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -3179,7 +3179,7 @@
       ],
       "id": 3,
       "imageId": "1",
-      "lastEdited": 1586354802963,
+      "lastEdited": 1586355050316,
       "places": [
         0
       ],

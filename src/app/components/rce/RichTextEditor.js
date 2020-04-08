@@ -53,15 +53,11 @@ const RichTextEditor = (props) => {
               <MarkButton mark="bold" icon={<FaBold/>} />
               <MarkButton mark="italic" icon={<FaItalic/>} />
               <MarkButton mark="underline" icon={<FaUnderline/>} />
-            </ButtonGroup>
-            <ButtonGroup>
               <BlockButton format="heading-one" icon={i18n('Title')} />
               <BlockButton format="heading-two" icon={i18n('Subtitle')} />
               <BlockButton format="block-quote" icon={<FaQuoteLeft/>} />
               <BlockButton format="numbered-list" icon={<FaListOl/>} />
               <BlockButton format="bulleted-list" icon={<FaListUl/>} />
-            </ButtonGroup>
-            <ButtonGroup>
               <LinkButton />
               <ImageLinkButton />
             </ButtonGroup>

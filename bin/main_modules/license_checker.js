@@ -28,6 +28,7 @@ function checkForActiveLicense (licenseInfo, callback) {
       const activeLicense = isActiveLicense(body)
       log.info('active license?', activeLicense)
       SETTINGS.set('premiumFeatures', activeLicense)
+      // TODO: update site_count and/or activations_left locally
       callback(activeLicense)
     }
   })
@@ -41,7 +42,7 @@ isActiveLicense = (body) => {
   // - expired
   // - inactive
 
-  // not handling site_inactive differently than invalid for now
+  // not handling site_inactive nor inactive differently than invalid for now
   return body.success && body.license == 'valid'
 }
 

@@ -6,11 +6,13 @@ import { bindActionCreators } from 'redux'
 import { Modal, Form, FormGroup, Col, Row, ControlLabel, FormControl, ButtonToolbar, Button } from 'react-bootstrap'
 import i18n from 'format-message'
 import * as SeriesActions from 'actions/series'
+import cx from 'classnames'
 
 class EditSeries extends Component {
+  state = {editing: false}
 
   componentWillUnmount () {
-    this.saveEdit()
+    if (this.state.editing) this.saveEdit()
   }
 
   saveEdit = () => {
@@ -19,10 +21,15 @@ class EditSeries extends Component {
     let genre = ReactDOM.findDOMNode(this.refs.genre).value
     let theme = ReactDOM.findDOMNode(this.refs.theme).value
     this.props.actions.editSeries({name, premise, genre, theme})
+    this.setState({editing: false})
+  }
+
+  editMode = () => {
+    if (!this.state.editing) this.setState({editing: true})
   }
 
   renderToolBar () {
-    return <ButtonToolbar>
+    return <ButtonToolbar className={cx({invisible: !this.state.editing})}>
       <Button bsStyle='success' onClick={this.saveEdit}>{i18n('Save')}</Button>
     </ButtonToolbar>
   }
@@ -35,13 +42,13 @@ class EditSeries extends Component {
           {i18n('Name')}
         </Col>
         <Col sm={4}>
-          <FormControl type='text' ref='name' defaultValue={series.name} />
+          <FormControl type='text' ref='name' defaultValue={series.name} onChange={this.editMode} />
         </Col>
         <Col componentClass={ControlLabel} sm={1}>
           {i18n('Premise')}
         </Col>
         <Col sm={4}>
-          <FormControl type='text' ref='premise' defaultValue={series.premise} />
+          <FormControl type='text' ref='premise' defaultValue={series.premise} onChange={this.editMode} />
         </Col>
       </FormGroup>
       <FormGroup>
@@ -49,42 +56,27 @@ class EditSeries extends Component {
           {i18n('Genre')}
         </Col>
         <Col sm={4}>
-          <FormControl type='text' ref='genre' defaultValue={series.genre} />
+          <FormControl type='text' ref='genre' defaultValue={series.genre} onChange={this.editMode} />
         </Col>
         <Col componentClass={ControlLabel} sm={1}>
           {i18n('Theme')}
         </Col>
         <Col sm={4}>
-          <FormControl type='text' ref='theme' defaultValue={series.theme} />
+          <FormControl type='text' ref='theme' defaultValue={series.theme} onChange={this.editMode} />
         </Col>
       </FormGroup>
     </Form>
   }
 
-  renderModal () {
-    return <Modal show={true} onHide={this.props.cancel}>
-      <Modal.Body>
-        { this.renderBody() }
-      </Modal.Body>
-      <Modal.Footer>
-        { this.renderToolBar() }
-      </Modal.Footer>
-    </Modal>
-  }
-
   render () {
-    if (this.props.modal) {
-      this.renderModal()
-    } else {
-      return <div className='edit-book__container'>
-        { this.renderBody() }
-        <Row>
-          <Col sm={10}>
-            { this.renderToolBar() }
-          </Col>
-        </Row>
-      </div>
-    }
+    return <div className='edit-book__container'>
+      { this.renderBody() }
+      <Row>
+        <Col sm={10}>
+          { this.renderToolBar() }
+        </Col>
+      </Row>
+    </div>
   }
 
   static propTypes = {
@@ -94,7 +86,7 @@ class EditSeries extends Component {
   }
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps (state) {
   return {
     ui: state.ui,
     series: state.series,

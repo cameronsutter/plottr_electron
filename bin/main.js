@@ -287,8 +287,7 @@ app.on('will-quit', () => {
 ////////////////////////////////
 
 function checkForUpdates () {
-  // if (process.env.NODE_ENV == 'dev') return
-  console.log('checked for license?', checkedForActiveLicense, SETTINGS.get('premiumFeatures'))
+  if (process.env.NODE_ENV == 'dev') return
   if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
 
   autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
@@ -297,12 +296,10 @@ function checkForUpdates () {
     checkForActiveLicense(USER_INFO, valid => {
       checkedForActiveLicense = true
       if (valid) {
-        console.log('valid license, checking for updates')
         autoUpdater.checkForUpdatesAndNotify()
       }
     })
   } else if (SETTINGS.get('premiumFeatures')) {
-    console.log('already checked license. premium is on, checking for updates')
     autoUpdater.checkForUpdatesAndNotify()
   }
 }

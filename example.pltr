@@ -18,7 +18,7 @@
     "placeSort": "name~asc",
     "zoomIndex": 4,
     "zoomState": null,
-    "currentTimeline": 3
+    "currentTimeline": 1
   },
   "file": {
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
@@ -840,14 +840,6 @@
       "position": 42,
       "title": "auto",
       "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    {
-      "id": 110,
-      "bookId": 1,
-      "position": 0,
-      "title": "auto",
       "time": 0,
       "templates": []
     },
@@ -3529,7 +3521,7 @@
     ]
   },
   "series": {
-    "name": " (Series) (Series) (Series) (Series) (Series) (Series) (Series) (Series) (Series) (Series)",
+    "name": "Prison Mansion",
     "premise": "",
     "genre": "",
     "theme": "",

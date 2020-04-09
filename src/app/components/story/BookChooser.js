@@ -24,8 +24,8 @@ class BookChooser extends Component {
   }
 
   render () {
-    const { ui, books } = this.props
-    const seriesText = i18n('Series')
+    const { ui, books, series } = this.props
+    const seriesText = series.name == '' ? i18n('Series View') : `${series.name} (${i18n('Series View')})`
     let title = seriesText
     if (ui.currentTimeline != 'series') title = this.bookTitle(books[ui.currentTimeline])
 
@@ -39,6 +39,7 @@ class BookChooser extends Component {
   static propTypes = {
     ui: PropTypes.object.isRequired,
     books: PropTypes.object.isRequired,
+    series: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   }
 }
@@ -47,6 +48,7 @@ function mapStateToProps (state) {
   return {
     ui: state.ui,
     books: state.books,
+    series: state.series,
   }
 }
 

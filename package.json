@@ -2,10 +2,10 @@
   "name": "plottr",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
-  "homepage": "www.myplottr.com",
+  "homepage": "www.getplottr.com",
   "private": true,
   "readme": "Copyright 2016-2020 C. Louis S. (Cameron Sutter)",
-  "version": "2020.4.7",
+  "version": "2020.4.9",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",

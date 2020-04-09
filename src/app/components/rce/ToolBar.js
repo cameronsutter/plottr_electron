@@ -10,6 +10,9 @@ export default class ToolBar extends Component {
   }
 
   static propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.object,
+    ]),
   }
 }

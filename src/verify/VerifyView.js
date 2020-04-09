@@ -38,7 +38,7 @@ class VerifyView extends Component {
     } else if (value === INVALID) {
       return i18n("Hmmmm. It looks like that's not a valid license key")
     } else if (value === TOOMANY) {
-      return i18n('It looks like you have Plottr on 5 computers already')
+      return i18n('It looks like you have Plottr on the max number of computers already')
     } else if (value === CANTSAVE) {
       return i18n("Plottr verified your license key successfully, but there was an error saving that. Let's try one more time")
     } else if (value === SAVE2) {
@@ -46,39 +46,6 @@ class VerifyView extends Component {
     } else {
       return null
     }
-  }
-
-  isValidLicense = (body) => {
-    return body.success && !body.purchase.refunded && !body.purchase.chargebacked && !body.purchase.disputed
-  }
-
-  buildURL = (license) => {
-    const itemId = '3090'
-    let url = 'http://plottr.flywheelsites.com'
-    url += `/edd-api?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
-    url += `&edd_action=activate_license&item_id=${itemId}&license=${license}`
-    url += `&url=${machineIdSync(true)}`
-    return url
-  }
-
-  makeRequest = (license) => {
-    let req = {
-      url: 'https://api.gumroad.com/v2/licenses/verify',
-      method: 'POST',
-      json: true,
-      body: {
-        product_permalink: 'fgSJ',
-        license_key: license
-      }
-    }
-    if (process.env.NODE_ENV === 'development') {
-      req.body.increment_uses_count = 'false'
-    }
-    return req
-  }
-
-  hasActivationsLeft = (body) => {
-    return body.uses < 5
   }
 
   verifyLicense = (license) => {
@@ -91,7 +58,7 @@ class VerifyView extends Component {
       }
       let newState = {spinnerHidden: true}
       if (error || !valid) {
-        if (licenseInfo && licenseInfo.problem == 'invalid' && !licenseInfo.hasActivationsLeft) {
+        if (licenseInfo && licenseInfo.problem == 'no_activations_left' && !licenseInfo.hasActivationsLeft) {
           // not valid because of number of activations
           newState.showAlert = true
           newState.alertText = this.makeAlertText(TOOMANY)
@@ -151,7 +118,7 @@ class VerifyView extends Component {
         <h2>{i18n('Please verify your license')}</h2>
         <p className='text-success'>{i18n('You should have received a license key after your purchase.')}</p>
         <p className='text-info'>{i18n('(If not, please email support@myplottr.com)')}</p>
-        <div className='form-inline' style={{marginTop: '50px'}}>
+        <div className='form-inline' style={{marginTop: '30px'}}>
           <FormControl type='text' bsSize='large' style={{width: '450px'}} ref='license' />
           <Button bsStyle='primary' bsSize='large' onClick={this.handleVerify.bind(this)}>{i18n('Verify')}</Button>
           <span style={{marginLeft: '7px'}} className={this.state.spinnerHidden ? 'hidden' : ''}><Glyphicon id='spinner' glyph='refresh'/></span>

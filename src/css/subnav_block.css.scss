@@ -70,9 +70,21 @@ nav.subnav__container {
     }
     ul {
       @include body-text-font;
+      padding-top: 0;
       li > a {
         color: $gray-0;
         font-size: 19px;
+      }
+      li:first-child {
+        padding: 5px 0 5px 0;
+        background-color: $gray-9;
+
+        & > a:hover, &:hover {
+          background-color: $gray-8;
+        }
+      }
+      li.divider {
+        margin-top: 0;
       }
     }
   }

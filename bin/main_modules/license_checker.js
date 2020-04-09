@@ -6,8 +6,8 @@ const { machineIdSync } = require('node-machine-id')
 const SETTINGS = require('./settings')
 
 const BASE_URL = 'http://plottr.flywheelsites.com'
-const PRODUCT_ID = '3090'
-const SUBSCRIPTION_ID = '3087'
+const PRODUCT_ID = '10333'
+const SUBSCRIPTION_ID = '10333'
 
 function checkForActiveLicense (licenseInfo, callback) {
   const key = licenseInfo.purchase ? licenseInfo.purchase.license_key : licenseInfo.licenseKey
@@ -37,7 +37,10 @@ isActiveLicense = (body) => {
   // license could also be:
   // - site_inactive
   // - invalid
-  // - disabled?
+  // - disabled
+  // - expired
+  // - inactive
+
   // not handling site_inactive differently than invalid for now
   return body.success && body.license == 'valid'
 }

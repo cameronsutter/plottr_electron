@@ -2,13 +2,15 @@ import request from 'request'
 import { machineIdSync } from 'node-machine-id'
 
 const BASE_URL = 'http://plottr.flywheelsites.com'
-const PRODUCT_ID = '3090'
-const SUBSCRIPTION_ID = '3087'
+const PRODUCT_ID = '10333'
+const SUBSCRIPTION_ID = '10333'
+const MACHINE_ID = machineIdSync(true)
 
 // TODO: extract this to shared folder
 
 // callback(error, valid, data)
 export function getLicenseInfo (license, callback) {
+  console.log(MACHINE_ID)
   const req = makeRequest(licenseURL(license))
   request(req, (err, response, body) => {
     if (process.env.NODE_ENV === 'development') {
@@ -69,7 +71,7 @@ function findActiveSubscription (body) {
 function licenseURL (license) {
   let url = apiURL()
   url += `&edd_action=activate_license&item_id=${PRODUCT_ID}&license=${license}`
-  url += `&url=${machineIdSync(true)}`
+  url += `&url=${MACHINE_ID}`
   return url
 }
 

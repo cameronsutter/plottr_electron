@@ -58,7 +58,7 @@ class PlaceView extends Component {
     var notes = this.state.notes
     var attrs = {}
     if (this.state.newImageId) {
-      attrs.imageId = this.state.newImageId
+      attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
     }
     this.props.customAttributes.forEach(attr => {
       const { name, type } = attr
@@ -71,6 +71,13 @@ class PlaceView extends Component {
     })
     this.props.actions.editPlace(this.props.place.id, {name, description, notes, ...attrs})
     this.setState({editing: false})
+  }
+
+  cancelEdit = () => {
+    this.setState({
+      newImageId: null,
+      editing: false,
+    })
   }
 
   deletePlace = () => {
@@ -91,7 +98,7 @@ class PlaceView extends Component {
           <Image size='small' shape='rounded' imageId={imgId} />
         </div>
         <div>
-          <ImagePicker selectedId={place.imageId} chooseImage={id => this.setState({newImageId: id})} />
+          <ImagePicker selectedId={imgId} chooseImage={id => this.setState({newImageId: id})} deleteButton />
         </div>
       </div>
     </FormGroup>
@@ -164,7 +171,7 @@ class PlaceView extends Component {
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button
-            onClick={() => this.setState({editing: false})} >
+            onClick={this.cancelEdit} >
             {i18n('Cancel')}
           </Button>
           <Button bsStyle='success'

@@ -41,6 +41,9 @@
   "Beat": {
     "message": "Beat"
   },
+  "Beat 1": {
+    "message": "Beat 1"
+  },
   "Beat {number}": {
     "message": "Beat { number }"
   },
@@ -118,9 +121,6 @@
   },
   "Choose": {
     "message": "Choose"
-  },
-  "Choose No Image": {
-    "message": "Choose No Image"
   },
   "Choose an image": {
     "message": "Choose an image"
@@ -487,6 +487,12 @@
   },
   "Reload from File": {
     "message": "Reload from File"
+  },
+  "Remove": {
+    "message": "Remove"
+  },
+  "Remove image": {
+    "message": "Remove image"
   },
   "Rename": {
     "message": "Rename"

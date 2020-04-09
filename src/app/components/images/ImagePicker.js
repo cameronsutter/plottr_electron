@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import * as ImageActions from 'actions/images'
 import Modal from 'react-modal'
 import cx from 'classnames'
-import { FormControl, ControlLabel, Button, Row, Col, Glyphicon, ButtonToolbar, FormGroup } from 'react-bootstrap'
+import { FormControl, ControlLabel, Button, Row, Col, Glyphicon, ButtonToolbar, FormGroup, ButtonGroup } from 'react-bootstrap'
 import Image from './Image'
 import i18n from 'format-message'
 import { readImage } from '../../helpers/images'
@@ -37,7 +37,6 @@ class ImagePicker extends Component {
   }
 
   close = () => {
-    console.log('close', this.setState)
     this.setState({open: false})
   }
 
@@ -48,7 +47,8 @@ class ImagePicker extends Component {
 
   chooseNoImage = () => {
     this.props.chooseImage(-1)
-    this.close()
+    if (this.state.open) this.close()
+    this.setState({imageId: null})
   }
 
   uploadNewFile = (event) => {
@@ -61,14 +61,13 @@ class ImagePicker extends Component {
   }
 
   render () {
+    const { darkMode, selectedId, iconOnly, deleteButton } = this.props
     if (this.state.open) {
-      let klasses = 'image-picker__wrapper'
-      if (this.props.darkMode == true) {
-        klasses += ' darkmode'
+      if (darkMode) {
         customStyles.content.backgroundColor = '#666'
       }
       return <Modal isOpen={true} onRequestClose={this.close} style={customStyles}>
-        <div className={klasses}>
+        <div className={cx('image-picker__wrapper', {darkmode: darkMode})}>
           <h2 className='image-picker__title'>{i18n('Your images')}</h2>
           <div className='image-picker__inputs-wrapper form-horizontal'>
             <Row>
@@ -86,7 +85,6 @@ class ImagePicker extends Component {
               <Col xs={4}>
                 <div className='image-picker__button-wrapper'>
                   <Button bsStyle='success' onClick={this.chooseImage}>{i18n('Choose')}</Button>
-                  <Button onClick={this.chooseNoImage}>{i18n('Choose No Image')}</Button>
                   <Button onClick={this.close}>{i18n('Cancel')}</Button>
                 </div>
               </Col>
@@ -98,8 +96,17 @@ class ImagePicker extends Component {
         </div>
       </Modal>
     } else {
-      let text = this.props.iconOnly ? null : ` ${i18n('Choose an image')}`
-      return <Button onClick={() => this.setState({open: true})}><Glyphicon glyph='picture'/>{text}</Button>
+      let text = iconOnly ? null : ` ${i18n('Choose an image')}`
+      let button = <Button title={i18n('Choose an image')} onClick={() => this.setState({open: true})}><Glyphicon glyph='picture'/>{text}</Button>
+      if (selectedId && selectedId != -1 && deleteButton) {
+        let deleteText = iconOnly ? null : ` ${i18n('Remove')}`
+        return <ButtonGroup>
+          { button }
+          <Button bsStyle='warning' title={i18n('Remove image')} onClick={this.chooseNoImage}><Glyphicon glyph='ban-circle'/>{deleteText}</Button>
+        </ButtonGroup>
+      } else {
+        return button
+      }
     }
   }
 
@@ -152,6 +159,7 @@ ImagePicker.propTypes = {
   ]),
   darkMode: PropTypes.bool,
   iconOnly: PropTypes.bool,
+  deleteButton: PropTypes.bool,
 }
 
 function mapStateToProps (state) {

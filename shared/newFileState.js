@@ -1,5 +1,5 @@
 const i18n = require('format-message')
-const { series, book, chapter, ui, file, line, customAttributes, seriesLine } = require('./initialState')
+const { series, book, chapter, beat, ui, file, line, customAttributes, seriesLine } = require('./initialState')
 const { app, remote } = require('electron')
 let electronApp = app
 if (remote) {
@@ -19,7 +19,7 @@ const newFileBooks = {
   1: book,
 }
 
-const newFileBeats = []
+const newFileBeats = [Object.assign({}, beat, {title: i18n('Beat 1')})]
 
 const newFileChapters = [chapter]
 
@@ -35,8 +35,8 @@ const newFileTags = []
 
 const newFileCards = []
 
-const newFileLines = [Object.assign(line, {title: i18n('Main Plot')})]
-const newFileSeriesLines = [Object.assign(seriesLine, {title: i18n('Main Plot')})]
+const newFileLines = [Object.assign({}, line, {title: i18n('Main Plot')})]
+const newFileSeriesLines = [Object.assign({}, seriesLine, {title: i18n('Main Plot')})]
 
 const newFileCustomAttributes = customAttributes
 

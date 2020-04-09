@@ -17,7 +17,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example2.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.3.27"
+    "version": "2020.4.9"
   },
   "places": [
     {
@@ -161,7 +161,7 @@
   "books": {
     "1": {
       "id": 1,
-      "title": "example2",
+      "title": "Secret of the Fire Jellies",
       "premise": "",
       "genre": "",
       "theme": "",
@@ -173,7 +173,7 @@
     ]
   },
   "series": {
-    "name": "example2",
+    "name": "Pizza Planet",
     "premise": "",
     "genre": "",
     "theme": "",

@@ -43,9 +43,19 @@ class NoteView extends Component {
     const { note } = this.props
     let title = ReactDOM.findDOMNode(this.refs.titleInput).value || note.title
     let content = this.state.content
-    let imageId = this.state.newImageId || note.imageId
-    this.props.actions.editNote(note.id, {title, content, imageId})
+    let attrs = {title, content}
+    if (this.state.newImageId) {
+      attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
+    }
+    this.props.actions.editNote(note.id, attrs)
     this.setState({editing: false})
+  }
+
+  cancelEdit = () => {
+    this.setState({
+      newImageId: null,
+      editing: false,
+    })
   }
 
   deleteNote = () => {
@@ -77,7 +87,7 @@ class NoteView extends Component {
           <Image size='small' shape='rounded' imageId={imgId}/>
         </div>
         <div>
-          <ImagePicker selectedId={note.imageId} chooseImage={id => this.setState({newImageId: id})} />
+          <ImagePicker selectedId={imgId} chooseImage={id => this.setState({newImageId: id})} deleteButton />
         </div>
       </div>
     </FormGroup>
@@ -110,7 +120,7 @@ class NoteView extends Component {
           </FormGroup>
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
-          <Button onClick={() => this.setState({editing: false})}>
+          <Button onClick={this.cancelEdit}>
             {i18n('Cancel')}
           </Button>
           <Button bsStyle='success' onClick={this.saveEdit}>

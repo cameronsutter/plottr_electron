@@ -14,10 +14,6 @@ import { canDeleteBookSelector } from '../../selectors/books'
 class Book extends Component {
   state = {editing: false, hovering: false}
 
-  addBook = () => {
-    this.props.actions.addBook()
-  }
-
   chooseImage = (newId) => {
     const id = newId == -1 ? null : newId
     this.props.actions.editBook(this.props.book.id, {imageId: id})
@@ -33,8 +29,8 @@ class Book extends Component {
   renderHoverOptions () {
     return <div className={cx('hover-options', {hovering: this.state.hovering})}>
       <ButtonGroup>
-        <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-        <ImagePicker chooseImage={this.chooseImage} iconOnly />
+        <Button title={i18n('Edit')} onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
+        <ImagePicker chooseImage={this.chooseImage} selectedId={this.props.book.imageId} iconOnly deleteButton />
         {this.props.canDelete ? <Button bsStyle='danger' onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button> : null}
       </ButtonGroup>
     </div>
@@ -60,7 +56,7 @@ class Book extends Component {
 
     if (!book) {
       return <div className={cx('book-container', 'add', {darkmode: ui.darkMode})}>
-        <div className='book add' onClick={this.addBook}>
+        <div className='book add' onClick={this.props.addBook}>
           <div className='front'>
             <div className='cover add'>
               <div className='book-container__add'>
@@ -103,12 +99,12 @@ class Book extends Component {
   }
 
   static propTypes = {
-    ui: PropTypes.object.isRequired,
     bookId: PropTypes.number,
-    canDelete: PropTypes.bool,
-    addBook: PropTypes.func,
-    book: PropTypes.object,
     bookNumber: PropTypes.number,
+    addBook: PropTypes.func,
+    ui: PropTypes.object.isRequired,
+    canDelete: PropTypes.bool,
+    book: PropTypes.object,
   }
 }
 

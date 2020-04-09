@@ -4,16 +4,25 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as BookActions from 'actions/books'
+import * as LineActions from 'actions/lines'
+import * as SceneActions from 'actions/scenes'
 import i18n from 'format-message'
 import Book from './Book'
 import { Glyphicon } from 'react-bootstrap'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import cx from 'classnames'
+import { objectId } from '../../store/newIds'
 
 class BookList extends Component {
 
   addBook = () => {
-    this.props.actions.addBook()
+    const { actions, books, lineActions, sceneActions } = this.props
+    const newBookId = objectId(books.allIds)
+    actions.addBook()
+    // add a plotline
+    lineActions.addLine(newBookId)
+    // add a chapter
+    sceneActions.addScene(newBookId)
   }
 
   reorder = (startIndex, endIndex) => {
@@ -64,7 +73,7 @@ class BookList extends Component {
             >
               { this.renderBooks() }
               {provided.placeholder}
-              <Book />
+              <Book addBook={this.addBook}/>
             </div>
           )}
         </Droppable>
@@ -88,7 +97,9 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(BookActions, dispatch)
+    actions: bindActionCreators(BookActions, dispatch),
+    lineActions: bindActionCreators(LineActions, dispatch),
+    sceneActions: bindActionCreators(SceneActions, dispatch),
   }
 }
 

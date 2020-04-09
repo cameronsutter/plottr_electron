@@ -78,7 +78,7 @@ class CharacterView extends Component {
     var notes = this.state.notes
     var attrs = {}
     if (this.state.newImageId) {
-      attrs.imageId = this.state.newImageId
+      attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
     }
     this.props.customAttributes.forEach(attr => {
       const { name, type } = attr
@@ -104,6 +104,13 @@ class CharacterView extends Component {
     this.setState({editing: false})
   }
 
+  cancelEdit = () => {
+    this.setState({
+      newImageId: null,
+      editing: false,
+    })
+  }
+
   deleteCharacter = () => {
     let text = i18n('Do you want to delete this character: { character }?', {character: this.props.character.name})
     if (window.confirm(text)) {
@@ -122,7 +129,7 @@ class CharacterView extends Component {
           <Image size='large' shape='circle' imageId={imgId} />
         </div>
         <div>
-          <ImagePicker selectedId={character.imageId} chooseImage={id => this.setState({newImageId: id})} />
+          <ImagePicker selectedId={imgId} chooseImage={id => this.setState({newImageId: id})} deleteButton />
         </div>
       </div>
     </FormGroup>
@@ -224,7 +231,7 @@ class CharacterView extends Component {
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button
-            onClick={() => this.setState({editing: false})} >
+            onClick={this.cancelEdit} >
             {i18n('Cancel')}
           </Button>
           <Button bsStyle='success'

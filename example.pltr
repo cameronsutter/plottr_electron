@@ -24,7 +24,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.7"
+    "version": "2020.4.9"
   },
   "places": [
     {
@@ -80,7 +80,8 @@
       "weather": "",
       "bookIds": [
         1
-      ]
+      ],
+      "galaxy": ""
     },
     {
       "cards": [],
@@ -929,105 +930,6 @@
       "templates": [],
       "time": 0,
       "title": "auto"
-    },
-    {
-      "id": 111,
-      "title": "auto",
-      "bookId": 3,
-      "time": 0,
-      "position": 0
-    },
-    {
-      "id": 112,
-      "title": "auto",
-      "bookId": 3,
-      "time": 0,
-      "position": 1
-    },
-    {
-      "bookId": 3,
-      "id": 1,
-      "position": 2,
-      "templates": [],
-      "time": 0,
-      "title": "The Ordinary World"
-    },
-    {
-      "bookId": 3,
-      "id": 2,
-      "position": 3,
-      "time": 0,
-      "title": "The Call of Adventure"
-    },
-    {
-      "bookId": 3,
-      "id": 3,
-      "position": 4,
-      "time": 0,
-      "title": "Refusal of the Call"
-    },
-    {
-      "bookId": 3,
-      "id": 4,
-      "position": 5,
-      "time": 0,
-      "title": "Meeting the Mentor"
-    },
-    {
-      "bookId": 3,
-      "id": 5,
-      "position": 6,
-      "time": 0,
-      "title": "Crossing the First Threshold"
-    },
-    {
-      "bookId": 3,
-      "id": 6,
-      "position": 7,
-      "time": 0,
-      "title": "Test, Allies, Enemies"
-    },
-    {
-      "bookId": 3,
-      "id": 7,
-      "position": 8,
-      "time": 0,
-      "title": "Approach to the Inmose Cave"
-    },
-    {
-      "bookId": 3,
-      "id": 8,
-      "position": 9,
-      "time": 0,
-      "title": "The Ordeal"
-    },
-    {
-      "bookId": 3,
-      "id": 9,
-      "position": 10,
-      "time": 0,
-      "title": "Reward (Seizing the Sword)"
-    },
-    {
-      "bookId": 3,
-      "id": 10,
-      "position": 11,
-      "time": 0,
-      "title": "The Road Back"
-    },
-    {
-      "bookId": 3,
-      "id": 11,
-      "position": 12,
-      "time": 0,
-      "title": "Resurrection"
-    },
-    {
-      "bookId": 3,
-      "id": 12,
-      "position": 13,
-      "time": 0,
-      "title": "Return with the Elixir"
     }
   ],
   "cards": [
@@ -3148,13 +3050,6 @@
   ],
   "lines": [
     {
-      "id": 41,
-      "bookId": 3,
-      "title": "Main Plot",
-      "color": "#6cace4",
-      "position": 0
-    },
-    {
       "id": 39,
       "title": "Shonen Battle Manga Formula - Main Plot",
       "bookId": 2,
@@ -3388,14 +3283,14 @@
         {
           "children": [
             {
-              "text": ""
+              "text": "It's great"
             }
           ]
         }
       ],
       "id": 3,
       "imageId": "1",
-      "lastEdited": 1586355050316,
+      "lastEdited": 1586467311424,
       "places": [
         0
       ],
@@ -3429,8 +3324,8 @@
         }
       ],
       "id": 4,
-      "imageId": -1,
-      "lastEdited": 1583936242121,
+      "imageId": null,
+      "lastEdited": 1586467302798,
       "places": [],
       "tags": [],
       "templates": [],
@@ -3505,19 +3400,9 @@
       "templates": [],
       "imageId": "1"
     },
-    "3": {
-      "id": 3,
-      "title": "",
-      "premise": "",
-      "genre": "",
-      "theme": "",
-      "templates": [],
-      "imageId": null
-    },
     "allIds": [
       1,
-      2,
-      3
+      2
     ]
   },
   "series": {

@@ -77,7 +77,7 @@ export default class ExpiredView extends Component {
         <h1 className='expired'><img src='../icons/logo_28_100.png' className='verify' height='100'/> {i18n('Thanks for trying Plottr')}</h1>
         <h2>{i18n('Your free trial has expired')} 😭</h2>
         { this.renderChoices() }
-        <p>{i18n('Please contact me with any questions at support@myplottr.com')}</p>
+        <p>{i18n('Please contact me with any questions at support@getplottr.com')}</p>
       </div>
     } else if (this.state.view === 'ad') {
       return <AdView />

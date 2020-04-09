@@ -1,6 +1,6 @@
 {
-  "(If not, please contact me at <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(If not, please contact me at <a>family@plottrapp.com</a> or @StoryPlottr on Twitter)"
+  "(If not, please email support@getplottr.com)": {
+    "message": "(If not, please email support@getplottr.com)"
   },
   "About Plottr": {
     "message": "About Plottr"
@@ -140,9 +140,6 @@
   "Choose...": {
     "message": "Choose..."
   },
-  "Click here to get the full version": {
-    "message": "Click here to get the full version"
-  },
   "Click on a color below or type it in": {
     "message": "Click on a color below or type it in"
   },
@@ -254,6 +251,9 @@
   "Enter a customer service code": {
     "message": "Enter a customer service code"
   },
+  "Enter some text...": {
+    "message": "Enter some text..."
+  },
   "Enter the URL of the link:": {
     "message": "Enter the URL of the link:"
   },
@@ -323,8 +323,8 @@
   "I want to start the free trial": {
     "message": "I want to start the free trial"
   },
-  "If you keep seeing this problem, email me at family@plottrapp.com": {
-    "message": "If you keep seeing this problem, email me at family@plottrapp.com"
+  "If you keep seeing this problem, email me at support@getplottr.com": {
+    "message": "If you keep seeing this problem, email me at support@getplottr.com"
   },
   "Insert Chapter": {
     "message": "Insert Chapter"
@@ -332,14 +332,11 @@
   "Insert Chapter and a Card": {
     "message": "Insert Chapter and a Card"
   },
-  "It looks like you have Plottr on 5 computers already": {
-    "message": "It looks like you have Plottr on 5 computers already"
+  "It looks like you have Plottr on the max number of computers already": {
+    "message": "It looks like you have Plottr on the max number of computers already"
   },
   "It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline": {
     "message": "It looks like you''re not online. You don''t always have to be online to user Plottr, but it can''t verify your license offline"
-  },
-  "It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again.": {
-    "message": "It looks like your file was saved with a newer version of Plottr than you''re using now. That could cause problems. Try updating Plottr and starting it again."
   },
   "Keep all your notes here (brainstorming, world-building, etc.)": {
     "message": "Keep all your notes here (brainstorming, world-building, etc.)"
@@ -380,6 +377,9 @@
   "New Character": {
     "message": "New Character"
   },
+  "New File": {
+    "message": "New File"
+  },
   "New Place": {
     "message": "New Place"
   },
@@ -412,6 +412,9 @@
   },
   "Open": {
     "message": "Open"
+  },
+  "Open File": {
+    "message": "Open File"
   },
   "Or hover here to insert between scenes": {
     "message": "Or hover here to insert between scenes"
@@ -446,8 +449,8 @@
   "Places list": {
     "message": "Places list"
   },
-  "Please contact me with any questions at family@plottrapp.com": {
-    "message": "Please contact me with any questions at family@plottrapp.com"
+  "Please contact me with any questions at support@getplottr.com": {
+    "message": "Please contact me with any questions at support@getplottr.com"
   },
   "Please verify your license": {
     "message": "Please verify your license"
@@ -481,6 +484,9 @@
   },
   "Reload": {
     "message": "Reload"
+  },
+  "Reload from File": {
+    "message": "Reload from File"
   },
   "Rename": {
     "message": "Rename"
@@ -520,6 +526,9 @@
   },
   "Series": {
     "message": "Series"
+  },
+  "Series View": {
+    "message": "Series View"
   },
   "Short Description": {
     "message": "Short Description"
@@ -596,8 +605,8 @@
   "Toggle navigation": {
     "message": "Toggle navigation"
   },
-  "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem to me.": {
-    "message": "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem to me."
+  "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem.": {
+    "message": "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem."
   },
   "Type": {
     "message": "Type"
@@ -607,9 +616,6 @@
   },
   "Untitled": {
     "message": "Untitled"
-  },
-  "Update Plottr": {
-    "message": "Update Plottr"
   },
   "Upload a new image": {
     "message": "Upload a new image"
@@ -668,8 +674,8 @@
   "You can have 5 more days to try Plottr": {
     "message": "You can have 5 more days to try Plottr"
   },
-  "You should have received a license key from Gumroad.": {
-    "message": "You should have received a license key from Gumroad."
+  "You should have received a license key after your purchase.": {
+    "message": "You should have received a license key after your purchase."
   },
   "You'll have 30 days": {
     "message": "You''ll have 30 days"
@@ -721,9 +727,6 @@
   },
   "description": {
     "message": "description"
-  },
-  "Enter some text...": {
-    "message": "Enter some text..."
   },
   "hex code or name": {
     "message": "hex code or name"

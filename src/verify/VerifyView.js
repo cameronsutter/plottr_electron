@@ -117,7 +117,7 @@ class VerifyView extends Component {
       <div>
         <h2>{i18n('Please verify your license')}</h2>
         <p className='text-success'>{i18n('You should have received a license key after your purchase.')}</p>
-        <p className='text-info'>{i18n('(If not, please email support@myplottr.com)')}</p>
+        <p className='text-info'>{i18n('(If not, please email support@getplottr.com)')}</p>
         <div className='form-inline' style={{marginTop: '30px'}}>
           <FormControl type='text' bsSize='large' style={{width: '450px'}} ref='license' />
           <Button bsStyle='primary' bsSize='large' onClick={this.handleVerify.bind(this)}>{i18n('Verify')}</Button>

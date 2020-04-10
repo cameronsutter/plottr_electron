@@ -7,12 +7,12 @@ const {
 
 function emptyFile (name) {
   return {
-    series: name ? Object.assign(newFileSeries, {name: name}) : newFileSeries,
+    series: name ? Object.assign({}, newFileSeries, {name: name}) : newFileSeries,
     books: newFileBooks,
     beats: newFileBeats,
     chapters: newFileChapters,
     ui: newFileUI,
-    file: Object.assign(newFileFile, {version: app.getVersion()}),
+    file: Object.assign({}, newFileFile, {version: app.getVersion()}),
     characters: newFileCharacters,
     places: newFilePlaces,
     tags: newFileTags,

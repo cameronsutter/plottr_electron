@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
-import { chaptersByBookSelector } from '../../selectors/chapters'
+import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
 const extraScrollAmount = 190
@@ -46,8 +46,7 @@ class MiniMap extends Component {
   }
 
   renderChapters () {
-    const chapters = _.sortBy(this.props.chapters, 'position')
-    return chapters.map((ch, idx) =>
+    return this.props.chapters.map((ch, idx) =>
       <NavItem ref={chapterTitle(ch)} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
         <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(ch)}</span></span>
         <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[ch.id])}</div>
@@ -91,7 +90,7 @@ MiniMap.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    chapters: chaptersByBookSelector(state),
+    chapters: sortedChaptersByBookSelector(state),
     lines: linesByBookSelector(state),
     ui: state.ui,
   }

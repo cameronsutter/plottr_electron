@@ -18,10 +18,9 @@ export function editingChapterLabel (chapter, isSeries) {
   }
 }
 
-export function insertChapter (position, chapters, newId) {
-  var newChapter = Object.assign(chapter, {id: newId})
+export function insertChapter (position, chapters, newId, bookId) {
+  var newChapter = Object.assign({}, chapter, {id: newId, bookId: bookId})
 
-  const sortedChapters = _.sortBy(chapters, 'position')
-  sortedChapters.splice(position, 0, newChapter)
-  return sortedChapters
+  chapters.splice(position, 0, newChapter)
+  return chapters
 }

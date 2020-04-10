@@ -167,11 +167,13 @@ ChapterTitleCell.propTypes = {
   actions: PropTypes.object.isRequired,
   beatActions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  chapters: PropTypes.array,
 }
 
 function mapStateToProps (state) {
   return {
     ui: state.ui,
+    chapters: state.chapters,
   }
 }
 

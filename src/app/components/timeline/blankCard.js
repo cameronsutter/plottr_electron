@@ -76,9 +76,9 @@ class BlankCard extends Component {
   buildCard (title) {
     const { chapterId, lineId } = this.props
     if (this.isSeries()) {
-      return Object.assign(card, { title, beatId: chapterId, seriesLineId: lineId })
+      return Object.assign({}, card, { title, beatId: chapterId, seriesLineId: lineId })
     } else {
-      return Object.assign(card, { title, chapterId, lineId })
+      return Object.assign({}, card, { title, chapterId, lineId })
     }
   }
 

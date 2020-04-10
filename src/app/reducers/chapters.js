@@ -41,7 +41,7 @@ export default function chapters (state = initialState, action) {
       const [book, notBook] = _.partition(state, ch => ch.bookId == action.bookId)
       return [
         ...notBook,
-        ...book.filter(ch => ch.id != action.id),
+        ...positionReset(book.filter(ch => ch.id != action.id)),
       ]
 
     case REORDER_SCENES:

@@ -7,7 +7,7 @@ import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
 import cx from 'classnames'
-import { chaptersByBookSelector } from '../../selectors/chapters'
+import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
 class OutlineView extends Component {
@@ -115,8 +115,7 @@ class OutlineView extends Component {
   }
 
   renderChapters (cardMapping) {
-    const chapters = _.sortBy(this.props.chapters, 'position')
-    return chapters.map(ch =>
+    return this.props.chapters.map(ch =>
       <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} />
     )
   }
@@ -145,7 +144,7 @@ OutlineView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    chapters: chaptersByBookSelector(state),
+    chapters: sortedChaptersByBookSelector(state),
     lines: linesByBookSelector(state),
     cards: state.cards,
     ui: state.ui,

@@ -21,7 +21,7 @@ import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import AddLineRow from './AddLineRow'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
-import { chaptersByBookSelector } from '../../selectors/chapters'
+import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
 class TimelineTable extends Component {
@@ -88,6 +88,7 @@ class TimelineTable extends Component {
     actions.reorderLines(lines, this.props.ui.currentTimeline)
   }
 
+  // TODO: this should be a selector
   chapterMapping () {
     return this.props.chapters.reduce((acc, chapter) => {
       acc[chapter.position] = chapter.id
@@ -95,6 +96,7 @@ class TimelineTable extends Component {
     }, {})
   }
 
+  // TODO: this should be a selector
   lineMapping () {
     return this.props.lines.reduce((acc, line) => {
       acc[line.position] = line
@@ -103,7 +105,7 @@ class TimelineTable extends Component {
   }
 
   handleInsertNewChapter = (nextPosition, lineId) => {
-    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId)
+    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId, this.props.ui.currentTimeline)
     if (this.isSeries()) {
       this.props.beatActions.reorderBeats(chapters)
     } else {
@@ -145,15 +147,14 @@ class TimelineTable extends Component {
 
   renderChapters () {
     const lineMap = this.lineMapping()
-    const chapters = _.sortBy(this.props.chapters, 'position')
-    const { orientation } = this.props.ui
+    const { ui, chapters } = this.props
     return chapters.map(chapter => {
       const inserts = Object.keys(lineMap).flatMap(linePosition => {
         const line = lineMap[linePosition];
-        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={orientation} needsSVGline={true}/>
+        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={ui.orientation} needsSVGline={true}/>
       })
       return [<Row key={`chapterId-${chapter.id}`}>
-          <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} orientation={orientation}/>
+          <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} orientation={ui.orientation}/>
           { inserts }
         </Row>,
         <Row key={`chapterId-${chapter.id}-insert`}>
@@ -163,7 +164,7 @@ class TimelineTable extends Component {
       ]
     }).concat(
       <Row key='last-insert'>
-        <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true} orientation={orientation}/>
+        <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true} orientation={ui.orientation}/>
       </Row>
     )
   }
@@ -261,7 +262,7 @@ function mapStateToProps (state) {
     nextChapterId = nextId(state.chapters)
   }
   return {
-    chapters: chaptersByBookSelector(state),
+    chapters: sortedChaptersByBookSelector(state),
     nextChapterId: nextChapterId,
     lines: linesByBookSelector(state),
     cards: state.cards,

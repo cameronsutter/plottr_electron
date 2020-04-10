@@ -11,7 +11,7 @@ import * as SeriesLineActions from 'actions/seriesLines'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { nextId } from '../../store/newIds'
 import { card, chapter as defaultChapter } from '../../../../shared/initialState'
-import { chaptersByBookSelector } from '../../selectors/chapters'
+import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
 class AddLineRow extends Component {
@@ -108,11 +108,10 @@ class AddLineRow extends Component {
     const templateData = template.templateData
     let newLineId = nextId(this.props.lines)
     let newCardId = nextId(this.props.cards)
-    let chapters = _.sortBy(this.props.chapters, 'position')
     let bookId = ui.currentTimeline
     let cards = []
     let lines = []
-    let { newChapters, newCards, cardId, newLine } = this.createChapters(template.name, templateData.chapters, chapters, newCardId, newLineId, bookId)
+    let { newChapters, newCards, cardId, newLine } = this.createChapters(template.name, templateData.chapters, this.props.chapters, newCardId, newLineId, bookId)
     if (newCards.length) cards = cards.concat(newCards)
     if (newLine) lines.push(newLine)
     newCardId = cardId
@@ -121,7 +120,7 @@ class AddLineRow extends Component {
       const templateLines = _.sortBy(templateData.lines, 'position').map(l => {
         const thisLineId = ++newLineId
         if (templateData.cards) {
-          const [templateCards, moarChapters] = this.createCards(_.sortBy(templateData.cards.filter(c => c.lineId == l.id), 'id'), newChapters, chapters, newCardId, thisLineId)
+          const [templateCards, moarChapters] = this.createCards(_.sortBy(templateData.cards.filter(c => c.lineId == l.id), 'id'), newChapters, this.props.chapters, newCardId, thisLineId)
           cards = cards.concat(templateCards)
           if (moarChapters) newChapters = newChapters.concat(moarChapters)
         }
@@ -134,7 +133,7 @@ class AddLineRow extends Component {
       lines = lines.concat(templateLines)
     } else if (templateData.cards) {
       const nextLineId = ++newLineId
-      const [cardCards, moreChapters] = this.createCards(_.sortBy(templateData.cards, 'id'), newChapters, chapters, newCardId, nextLineId)
+      const [cardCards, moreChapters] = this.createCards(_.sortBy(templateData.cards, 'id'), newChapters, this.props.chapters, newCardId, nextLineId)
       cards = cards.concat(cardCards)
       if (moreChapters) newChapters = newChapters.concat(moreChapters)
       lines.push({
@@ -208,7 +207,7 @@ class AddLineRow extends Component {
 function mapStateToProps (state) {
   return {
     ui: state.ui,
-    chapters: chaptersByBookSelector(state),
+    chapters: sortedChaptersByBookSelector(state),
     lines: linesByBookSelector(state),
     cards: state.cards,
   }

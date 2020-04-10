@@ -25,7 +25,7 @@ function checkForActiveLicense (licenseInfo, callback) {
       log.info('license check request failed')
       callback(false)
     } else {
-      const activeLicense = isActiveLicense(body)
+      const activeLicense = !!isActiveLicense(body)
       log.info('active license?', activeLicense)
       SETTINGS.set('premiumFeatures', activeLicense)
       // TODO: update site_count and/or activations_left locally

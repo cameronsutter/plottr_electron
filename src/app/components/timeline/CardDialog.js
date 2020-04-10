@@ -14,7 +14,7 @@ import i18n from 'format-message'
 import cx from 'classnames'
 import RichText from '../rce/RichText'
 import { chapterTitle } from '../../helpers/chapters'
-import { chaptersByBookSelector } from '../../selectors/chapters'
+import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
 const customStyles = {content: {top: '70px'}}
@@ -100,8 +100,7 @@ class CardDialog extends Component {
   }
 
   renderChapterItems () {
-    var chapters = _.sortBy(this.props.chapters, 'position')
-    return chapters.map((chapter) => {
+    return this.props.chapters.map((chapter) => {
       return (<MenuItem key={chapter.id} onSelect={() => this.changeChapter(chapter.id)}>
         {chapterTitle(chapter)}
       </MenuItem>)
@@ -272,7 +271,7 @@ CardDialog.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    chapters: chaptersByBookSelector(state),
+    chapters: sortedChaptersByBookSelector(state),
     lines: linesByBookSelector(state),
     tags: state.tags,
     characters: state.characters,

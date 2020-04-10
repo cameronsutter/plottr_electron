@@ -15,7 +15,7 @@ import { reorderList } from 'helpers/lists'
 import { insertChapter } from 'helpers/chapters'
 import orientedClassName from 'helpers/orientedClassName'
 import { nextId } from '../../store/newIds'
-import { chaptersByBookSelector } from '../../selectors/chapters'
+import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
 class TopRow extends Component {
@@ -46,7 +46,7 @@ class TopRow extends Component {
 
   handleInsertNewChapter = (nextPosition) => {
     const { ui, beatActions, sceneActions } = this.props
-    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId)
+    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId, ui.currentTimeline)
     if (this.isSeries()) {
       beatActions.reorderBeats(chapters)
     } else {
@@ -78,11 +78,10 @@ class TopRow extends Component {
   }
 
   renderChapters () {
-    const { orientation } = this.props.ui
-    const chapters = _.sortBy(this.props.chapters, 'position')
+    const { ui, chapters } = this.props
     const renderedChapters = chapters.flatMap(ch => {
       const cells = []
-      cells.push(<ChapterInsertCell key={`chapterId-${ch.id}-insert`} isInChapterList={true} chapterPosition={ch.position} handleInsert={this.handleInsertNewChapter} orientation={orientation}/>)
+      cells.push(<ChapterInsertCell key={`chapterId-${ch.id}-insert`} isInChapterList={true} chapterPosition={ch.position} handleInsert={this.handleInsertNewChapter} orientation={ui.orientation}/>)
       cells.push(<ChapterTitleCell key={`chapterId-${ch.id}`} chapter={ch} handleReorder={this.handleReorderChapters} />)
       return cells
     })
@@ -136,7 +135,7 @@ function mapStateToProps (state) {
 
   return {
     ui: state.ui,
-    chapters: chaptersByBookSelector(state),
+    chapters: sortedChaptersByBookSelector(state),
     nextChapterId: nextChapterId,
     lines: linesByBookSelector(state),
   }

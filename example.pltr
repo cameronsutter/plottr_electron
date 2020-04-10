@@ -18,7 +18,7 @@
     "placeSort": "name~asc",
     "zoomIndex": 4,
     "zoomState": null,
-    "currentTimeline": 2
+    "currentTimeline": 1
   },
   "file": {
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
@@ -2746,7 +2746,9 @@
       "imageId": null,
       "lineId": 34,
       "places": [],
-      "tags": [],
+      "tags": [
+        5
+      ],
       "templates": [],
       "title": "Rivan's army is defeated, but he defeats Valia in Heaven",
       "chapterId": 99,

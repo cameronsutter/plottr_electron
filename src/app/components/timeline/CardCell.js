@@ -10,8 +10,6 @@ import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
 import RichText from '../rce/RichText'
-import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
-import deep from 'deep-diff'
 
 class CardCell extends Component {
   constructor (props) {
@@ -61,7 +59,6 @@ class CardCell extends Component {
     </Popover>
   }
 
-  // TODO: this should be a selector
   hasDetailsToShow () {
     const { card } = this.props
 
@@ -69,15 +66,11 @@ class CardCell extends Component {
 
     if (!card.description) return false
     if (!card.description.length) return false
-    if (card.description.length > 1) return true
+    if (card.description.length > 1) return true // more than 1 paragraph
+    if (card.description[0].children.length > 1) return true // more than 1 text node
+    if (card.description[0].children[0].text == '') return false // no text
 
-    let diff = deep.diff(RCE_INITIAL_VALUE, card.description)
-    if (diff) return true
-
-    // TODO: extract this
-    const otherPossibleValue = [ { "children": [ { "text": "" } ], "type": "paragraph" } ]
-    diff = deep.diff(otherPossibleValue, card.description)
-    if (diff) return true
+    return true
   }
 
   renderTags () {

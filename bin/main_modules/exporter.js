@@ -1,13 +1,56 @@
-var docx = require('docx')
-var _ = require('lodash')
-var i18n = require('format-message')
+const { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel } = require('docx')
+const fs = require('fs')
+const _ = require('lodash')
+const i18n = require('format-message')
+const serialize = require('./slate_serializers/to_word')
 
-function Exporter (data, { fileName }) {
-  let doc = new docx.Document()
-  let title = new docx.Paragraph(new docx.TextRun(data.series.name).smallCaps())
-  title.title().center()
-  doc.addParagraph(title)
+function Exporter (data, { fileName, bookId }) {
+  let doc = new Document()
+  let names = namesMapping(data)
+  let sections = []
+  sections.push(seriesNameSection(data, bookId))
+  sections.push(outlineSection(data, names, bookId))
 
+  // doc.addParagraph(new Paragraph('').pageBreak())
+  // doc.addParagraph(new Paragraph('^'))
+  // let charactersHeading = new Paragraph(i18n('Characters'))
+  // charactersHeading.heading1().center()
+  // doc.addParagraph(charactersHeading)
+  // characters(data.characters, data.customAttributes['characters']).forEach(function(par) {
+  //   doc.addParagraph(par)
+  // })
+
+  // doc.addParagraph(new Paragraph('').pageBreak())
+  // doc.addParagraph(new Paragraph('^'))
+  // let placesHeading = new Paragraph(i18n('Places'))
+  // placesHeading.heading1().center()
+  // doc.addParagraph(placesHeading)
+  // places(data.places, data.customAttributes['places']).forEach(function(par) {
+  //   doc.addParagraph(par)
+  // })
+
+  // doc.addParagraph(new Paragraph('').pageBreak())
+  // doc.addParagraph(new Paragraph('^'))
+  // let notesHeading = new Paragraph(i18n('Notes'))
+  // notesHeading.heading1().center()
+  // doc.addParagraph(notesHeading)
+  // notes(data.notes, characterNames, placeNames, tagTitles).forEach(function(par) {
+  //   doc.addParagraph(par)
+  // })
+
+  sections.forEach(s => doc.addSection(s))
+
+  // finish - save to file
+  Packer.toBuffer(doc).then((buffer) => {
+    fs.writeFileSync(`${fileName}.docx`, buffer)
+  })
+}
+
+////////////////////////////////////
+/////   Support Functions   ////////
+////////////////////////////////////
+
+function namesMapping (data) {
   let characterNames = data.characters.reduce(function(mapping, char){
     mapping[char.id] = char.name
     return mapping
@@ -21,96 +64,74 @@ function Exporter (data, { fileName }) {
     return mapping
   }, {})
 
-  let outlineHeading = new docx.Paragraph(i18n('Outline'))
-  outlineHeading.heading1().center()
-  doc.addParagraph(outlineHeading)
-  outline(data, characterNames, placeNames, tagTitles).forEach(function(par) {
-    doc.addParagraph(par)
-  })
-
-  doc.addParagraph(new docx.Paragraph('').pageBreak())
-  doc.addParagraph(new docx.Paragraph('^'))
-  let charactersHeading = new docx.Paragraph(i18n('Characters'))
-  charactersHeading.heading1().center()
-  doc.addParagraph(charactersHeading)
-  characters(data.characters, data.customAttributes['characters']).forEach(function(par) {
-    doc.addParagraph(par)
-  })
-
-  doc.addParagraph(new docx.Paragraph('').pageBreak())
-  doc.addParagraph(new docx.Paragraph('^'))
-  let placesHeading = new docx.Paragraph(i18n('Places'))
-  placesHeading.heading1().center()
-  doc.addParagraph(placesHeading)
-  places(data.places, data.customAttributes['places']).forEach(function(par) {
-    doc.addParagraph(par)
-  })
-
-  doc.addParagraph(new docx.Paragraph('').pageBreak())
-  doc.addParagraph(new docx.Paragraph('^'))
-  let notesHeading = new docx.Paragraph(i18n('Notes'))
-  notesHeading.heading1().center()
-  doc.addParagraph(notesHeading)
-  notes(data.notes, characterNames, placeNames, tagTitles).forEach(function(par) {
-    doc.addParagraph(par)
-  })
-
-  // finish - save to file
-  let exporter = new docx.LocalPacker(doc, styles())
-  exporter.pack(fileName)
+  return {
+    characters: characterNames,
+    places: placeNames,
+    tags: tagTitles,
+  }
 }
 
-////////////////////////////////////
-/////   Support Functions   ////////
-////////////////////////////////////
-
-function outline (data, characterNames, placeNames, tagTitles) {
-  // TODO: export other books besides book 1
-  let chapters = _.sortBy(data.chapters.filter(ch => ch.bookId == 1), 'position')
-  let paragraphs = chapters.map(ch => chapter(ch, data, characterNames, placeNames, tagTitles))
-  return _.flatten(paragraphs)
+function seriesNameSection (data, bookId) {
+  let titleText = bookId == 'series' ? data.series.name : data.books[bookId].title
+  const paragraph = new Paragraph({text: titleText, heading: HeadingLevel.TITLE, alignment: AlignmentType.CENTER})
+  return {children: [paragraph]}
 }
 
-function chapter (chapter, data, characterNames, placeNames, tagTitles) {
+function outlineSection (data, namesMapping, bookId) {
+  let children = []
+
+  children.push(new Paragraph({text: i18n('Outline'), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER}))
+
+  // TODO: handle 'series' and undefined
+  let chapters = _.sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
+  let paragraphs = chapters.flatMap(ch => chapterParagraphs(ch, data, namesMapping))
+
+  return {children: children.concat(paragraphs)}
+}
+
+function chapterParagraphs (chapter, data, namesMapping) {
   let paragraphs = []
-  paragraphs.push(new docx.Paragraph('^'))
-  paragraphs.push(new docx.Paragraph(chapter.title).heading2())
-  let cards = sortedChapterCards(chapter.id, data.cards, data.lines)
-  let cardParagraphs = cards.map(function(c) { return card(c, data.lines, characterNames, placeNames, tagTitles) })
-  let flattened = _.flatten(cardParagraphs)
-  return paragraphs.concat(flattened)
+  paragraphs.push(new Paragraph({text: '^', spacing: { before: 16}}))
+  let title = chapter.title == 'auto' ? i18n('Chapter {number}', {number: chapter.position + 1}) : chapter.title
+  paragraphs.push(new Paragraph({text: title, heading: HeadingLevel.HEADING_2}))
+  const cards = sortedChapterCards(chapter.id, data.cards, data.lines)
+  let cardParagraphs = cards.flatMap(c => card(c, data.lines, namesMapping))
+  return paragraphs.concat(cardParagraphs)
 }
 
-function card (card, lines, characterNames, placeNames, tagTitles) {
+function card (card, lines, namesMapping) {
   let paragraphs = []
   let line = _.find(lines, {id: card.lineId})
   let titleString = `${card.title} (${line.title})`
-  let attachmentParagraphs = attachments(card, characterNames, placeNames, tagTitles)
-  paragraphs.push(new docx.Paragraph(titleString).heading3())
+  let attachmentParagraphs = attachments(card, namesMapping)
+  paragraphs.push(new Paragraph({text: titleString, heading: HeadingLevel.HEADING_3, spacing: { before: 16 }}))
   paragraphs = paragraphs.concat(attachmentParagraphs)
-  paragraphs.push(new docx.Paragraph(card.description).style('indented'))
-  return paragraphs
+  const descParagraphs = serialize(card.description)
+  // console.log(descParagraphs)
+  return paragraphs.concat(descParagraphs)
 }
 
-function attachments (obj, characterNames, placeNames, tagTitles) {
-  let characters = []
-  if (obj.characters) characters = obj.characters.map(function(ch) { return characterNames[ch]})
-  let places = []
-  if (obj.places) places = obj.places.map(function(pl) { return placeNames[pl]})
-  let tags = []
-  if (obj.tags) tags = obj.tags.map(function(tg) { return tagTitles[tg]})
+function attachments (obj, namesMapping) {
   let paragraphs = []
-  if (characters.length > 0) {
-    paragraphs.push(new docx.Paragraph(`${i18n('Characters')}: ${characters.join(', ')}`).style('attachments'))
+  let characters = []
+  let places = []
+  let tags = []
+
+  if (obj.characters) characters = obj.characters.map(ch => namesMapping.characters[ch])
+  if (obj.places) places = obj.places.map(pl => namesMapping.places[pl])
+  if (obj.tags) tags = obj.tags.map(tg => namesMapping.tags[tg])
+
+  if (characters.length) {
+    paragraphs.push(new Paragraph(`${i18n('Characters')}: ${characters.join(', ')}`))
   }
-  if (places.length > 0) {
-    paragraphs.push(new docx.Paragraph(`${i18n('Places')}: ${places.join(', ')}`).style('attachments'))
+  if (places.length) {
+    paragraphs.push(new Paragraph(`${i18n('Places')}: ${places.join(', ')}`))
   }
-  if (tags.length > 0) {
-    paragraphs.push(new docx.Paragraph(`${i18n('Tags')}: ${tags.join(', ')}`).style('attachments'))
+  if (tags.length) {
+    paragraphs.push(new Paragraph(`${i18n('Tags')}: ${tags.join(', ')}`))
   }
-  if (paragraphs.length > 0) {
-    paragraphs.push(new docx.Paragraph('').style('attachments'))
+  if (paragraphs.length) {
+    paragraphs.push(new Paragraph(''))
   }
   return paragraphs
 }
@@ -133,17 +154,18 @@ function findChapterCards (chapterId, allCards) {
 }
 
 function characters (characters, customAttributes) {
+  // TODO: handle templates
   let paragraphs = []
   characters.forEach(function(ch) {
-    let name = new docx.Paragraph(ch.name).heading2()
+    let name = new Paragraph(ch.name).heading2()
     paragraphs.push(name)
-    paragraphs.push(new docx.Paragraph(i18n('Description')).heading3())
-    paragraphs.push(new docx.Paragraph(ch.description).style('indented'))
-    paragraphs.push(new docx.Paragraph(i18n('Notes')).heading3())
-    paragraphs.push(new docx.Paragraph(ch.notes).style('indented'))
+    paragraphs.push(new Paragraph(i18n('Description')).heading3())
+    paragraphs.push(new Paragraph(ch.description).style('indented'))
+    paragraphs.push(new Paragraph(i18n('Notes')).heading3())
+    paragraphs.push(new Paragraph(ch.notes).style('indented'))
     customAttributes.forEach(function(ca) {
-      paragraphs.push(new docx.Paragraph(ca).heading3())
-      paragraphs.push(new docx.Paragraph(ch[ca]).style('indented'))
+      paragraphs.push(new Paragraph(ca).heading3())
+      paragraphs.push(new Paragraph(ch[ca]).style('indented'))
     })
   })
 
@@ -153,15 +175,15 @@ function characters (characters, customAttributes) {
 function places (places, customAttributes) {
   let paragraphs = []
   places.forEach(function(pl) {
-    let name = new docx.Paragraph(pl.name).heading2()
+    let name = new Paragraph(pl.name).heading2()
     paragraphs.push(name)
-    paragraphs.push(new docx.Paragraph(i18n('Description')).heading3())
-    paragraphs.push(new docx.Paragraph(pl.description).style('indented'))
-    paragraphs.push(new docx.Paragraph(i18n('Notes')).heading3())
-    paragraphs.push(new docx.Paragraph(pl.notes).style('indented'))
+    paragraphs.push(new Paragraph(i18n('Description')).heading3())
+    paragraphs.push(new Paragraph(pl.description).style('indented'))
+    paragraphs.push(new Paragraph(i18n('Notes')).heading3())
+    paragraphs.push(new Paragraph(pl.notes).style('indented'))
     customAttributes.forEach(function(ca) {
-      paragraphs.push(new docx.Paragraph(ca).heading3())
-      paragraphs.push(new docx.Paragraph(pl[ca]).style('indented'))
+      paragraphs.push(new Paragraph(ca).heading3())
+      paragraphs.push(new Paragraph(pl[ca]).style('indented'))
     })
   })
 
@@ -171,11 +193,11 @@ function places (places, customAttributes) {
 function notes (notes, characterNames, placeNames, tagTitles) {
   let paragraphs = []
   notes.forEach(function(n) {
-    let title = new docx.Paragraph(n.title).heading2()
+    let title = new Paragraph(n.title).heading2()
     paragraphs.push(title)
     let attachmentParagraphs = attachments(n, characterNames, placeNames, tagTitles)
     paragraphs = paragraphs.concat(attachmentParagraphs)
-    paragraphs.push(new docx.Paragraph(n.content).style('indented'))
+    paragraphs.push(new Paragraph(n.content).style('indented'))
   })
 
   return paragraphs
@@ -186,6 +208,9 @@ function notes (notes, characterNames, placeNames, tagTitles) {
 //////////////////////////
 
 function styles () {
+  return [
+
+  ]
   let paragraphStyles = new docx.Styles()
   paragraphStyles.createParagraphStyle('Normal', 'Normal')
     .quickFormat()

@@ -877,7 +877,7 @@ function buildFileMenu () {
       }
       const fileName = dialog.showSaveDialogSync(win, {title: i18n('Where would you like to save the export?')})
       if (fileName) {
-        Exporter(exportState, {fileName})
+        Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})
       }
     }
   }, {

@@ -208,7 +208,7 @@ class TimelineWrapper extends Component {
     let label = i18n('Where would you like to save the export?')
     const fileName = dialog.showSaveDialogSync({title: label})
     if (fileName) {
-      const options = { fileName }
+      const options = { fileName, bookId: this.props.ui.currentTimeline }
       MPQ.push('Export')
       ipcRenderer.send('export', options, win.id)
     }

@@ -5,7 +5,7 @@
   "homepage": "www.getplottr.com",
   "private": true,
   "readme": "Copyright 2016-2020 C. Louis S. (Cameron Sutter)",
-  "version": "2020.4.9",
+  "version": "2020.4.13-beta.1",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
@@ -29,7 +29,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "deep-diff": "^0.3.4",
-    "docx": "^2.1.1",
+    "docx": "^5.0.2",
     "dom-parser": "^0.1.6",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",

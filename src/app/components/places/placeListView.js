@@ -64,15 +64,17 @@ class PlaceListView extends Component {
     if (!this.filterIsEmpty(filter)) {
       visible = []
       places.forEach(pl => {
-        Object.keys(filter).forEach(attr => {
-          filter[attr].forEach(val => {
+        const matches = Object.keys(filter).some(attr => {
+          return filter[attr].some(val => {
             if (val == '') {
-              if (!pl[attr] || pl[attr] == '') visible.push(pl)
+              if (!pl[attr] || pl[attr] == '') return true
             } else {
-              if (pl[attr] && pl[attr] == val) visible.push(pl)
+              if (pl[attr] && pl[attr] == val) return true
             }
+            return false
           })
         })
+        if (matches) visible.push(pl)
       })
     }
 
@@ -135,7 +137,7 @@ class PlaceListView extends Component {
     this.setState({addAttrText: ''})
   }
 
-  removeAttr (attr) {
+  removeAttr = (attr) => {
     this.props.customAttributeActions.removePlaceAttr(attr)
     this.setState({addAttrText: this.state.addAttrText}) // no op
   }

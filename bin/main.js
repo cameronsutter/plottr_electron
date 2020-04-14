@@ -998,16 +998,18 @@ function buildHelpMenu () {
     submenu: [
       {
         label: i18n('View the Tour'),
+        visible: false,
         click: () => {
           SETTINGS.set('showTheTour', true)
           reloadWindow()
         }
       }, {
-        type: 'separator'
+        type: 'separator',
+        visible: false,
       }, {
-        label: i18n('Report a problem') + '...',
+        label: i18n('Report a problem'),
         click: function () {
-          shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
+          shell.openExternal('https://getplottr.com/support/')
         }
       }, {
         label: i18n('Create an error report'),
@@ -1016,26 +1018,26 @@ function buildHelpMenu () {
           createErrorReport(USER_INFO, windows.map(w => w.state))
         }
       }, {
-        label: i18n('Enter a customer service code') + '...',
+        label: i18n('Enter a customer service code'),
         click: enterCustomerServiceCode
       }, {
         type: 'separator'
       }, {
-        label: i18n('Give feedback') + '...',
+        label: i18n('Give feedback'),
         click: function () {
-          shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
+          shell.openExternal('https://getplottr.com/support/')
         }
       }, {
-        label: i18n('Request a feature') + '...',
+        label: i18n('Request a feature'),
         click: function () {
-          shell.openExternal('http://plottr.freshdesk.com/support/tickets/new')
+          shell.openExternal('https://getplottr.com/support/')
         }
       }, {
         type: 'separator'
       }, {
-        label: i18n('FAQ') + '...',
+        label: i18n('FAQ'),
         click: function () {
-          shell.openExternal('http://plottr.freshdesk.com/support/solutions')
+          shell.openExternal('https://getplottr.com/docs/frequently-asked-questions/')
         }
       },
     ]

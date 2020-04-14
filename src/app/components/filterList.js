@@ -64,7 +64,7 @@ class FilterList extends Component {
     </li>
   }
 
-  renderBooks () {
+  renderBookList () {
     if (!this.props.renderBooks) return null
 
     const { books } = this.props
@@ -92,7 +92,7 @@ class FilterList extends Component {
   render () {
     return (
       <div className='filter-list flex'>
-        { this.renderBooks() }
+        { this.renderBookList() }
         <div>
           <p onClick={() => this.filterList('character', this.props.characters)}><em>{i18n('Characters')}</em></p>
           {this.renderFilterList(this.props.characters, 'character', 'name')}

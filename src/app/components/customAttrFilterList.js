@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as UIActions from 'actions/ui'
 import cx from 'classnames'
+import i18n from 'format-message'
 
 class CustomAttrFilterList extends Component {
   constructor (props) {
@@ -86,7 +87,7 @@ class CustomAttrFilterList extends Component {
       checked = 'eye-open'
     }
     return <li onMouseDown={() => this.filterItem('', attr.name)}>
-      <Glyphicon glyph={checked} /> <em>--</em>
+      <Glyphicon glyph={checked} /> <em className='secondary-text'>[{i18n('blank')}]</em>
     </li>
   }
 

@@ -3,6 +3,7 @@
 .select-list__item-select-list {
   list-style-type: none;
   padding-left: 10px;
+  margin-bottom: 0;
   li {
     cursor: pointer;
     padding: 5px;
@@ -16,7 +17,16 @@
   li:hover {
     background-color: $body-background-color;
   }
+  &.series-select {
+    li {
+      margin-left: 5px;
+    }
+    .series {
+      margin-left: -15px;
+    }
+  }
 }
+
 
 .select-list__details-label {
   @include application-text;

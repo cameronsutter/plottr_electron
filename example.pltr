@@ -3326,7 +3326,9 @@
       ],
       "templates": [],
       "title": "Another Note",
-      "bookIds": []
+      "bookIds": [
+        2
+      ]
     },
     {
       "characters": [
@@ -3405,7 +3407,9 @@
       ],
       "templates": [],
       "title": "note about First Place",
-      "bookIds": []
+      "bookIds": [
+        "series"
+      ]
     },
     {
       "characters": [
@@ -3436,7 +3440,9 @@
       "tags": [],
       "templates": [],
       "title": "something cool",
-      "bookIds": []
+      "bookIds": [
+        1
+      ]
     },
     {
       "characters": [
@@ -3463,7 +3469,9 @@
       ],
       "templates": [],
       "title": "a new note",
-      "bookIds": []
+      "bookIds": [
+        2
+      ]
     }
   ],
   "images": {

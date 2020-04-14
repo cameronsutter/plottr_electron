@@ -27,11 +27,6 @@ export default class SelectList extends Component {
         <TagLabel tag={tag} />
         <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, tId)}/>
       </div>
-      // return <li key={tId}>
-      //   <Button onClick={() => this.props.remove(this.props.parentId, tId)} bsSize='xsmall'>
-      //     <Glyphicon glyph='remove'/>
-      //   </Button>
-      // </li>
     })
   }
 

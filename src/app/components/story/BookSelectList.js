@@ -7,6 +7,7 @@ import * as UIActions from 'actions/ui'
 import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import i18n from 'format-message'
 import Image from '../images/Image'
+import cx from 'classnames'
 
 class BookSelectList extends Component {
   renderUnSelected () {
@@ -18,9 +19,10 @@ class BookSelectList extends Component {
         return <li key={`book-${id}`} onClick={() => add(parentId, id)}>{books[id].title || i18n('Untitled')}</li>
       })
     }
-    return <Popover id='list-popover' title={i18n('Books')}>
-      <ul className='select-list__item-select-list'>
-        <li key='book-series' onClick={() => add(parentId, 'series')}>{i18n('Series')}</li>
+    const showSeries = !selectedBooks.includes('series')
+    return <Popover id='list-popover' title=''>
+      <ul className={cx('select-list__item-select-list', {'series-select': showSeries})}>
+        {showSeries ? <li key='book-series' className='series' onClick={() => add(parentId, 'series')}>{i18n('Series')}</li> : null}
         {listItems}
       </ul>
     </Popover>
@@ -28,13 +30,20 @@ class BookSelectList extends Component {
 
   renderSelected () {
     return this.props.selectedBooks.map(id => {
-      let book = this.props.books[id]
-      if (!book) return null
-      return <div key={id} className='chip'>
-        <Image size='xs' shape='circle' imageId={book.imageId}/>
-        <span>{ book.title || i18n('Untitled') }</span>
-        <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, id)}/>
-      </div>
+      if (id == 'series') {
+        return <div key={id} className='chip'>
+          <span>{i18n('Series')}</span>
+          <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, id)}/>
+        </div>
+      } else {
+        let book = this.props.books[id]
+        if (!book) return null
+        return <div key={id} className='chip'>
+          <Image size='xs' shape='circle' imageId={book.imageId}/>
+          <span>{ book.title || i18n('Untitled') }</span>
+          <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, id)}/>
+        </div>
+      }
     })
   }
 
@@ -65,6 +74,7 @@ function mapStateToProps (state) {
   return {
     ui: state.ui,
     books: state.books,
+    series: state.series,
   }
 }
 

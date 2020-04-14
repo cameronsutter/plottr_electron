@@ -25,6 +25,8 @@ class ChapterTitleCell extends Component {
   editTitle = () => {
     const id = this.props.chapter.id
     const ref = ReactDOM.findDOMNode(this.refs.titleRef)
+    if (!ref) return null
+
     if (this.isSeries()) {
       if (ref.value != '') {
         this.props.beatActions.editBeatTitle(id, ref.value)

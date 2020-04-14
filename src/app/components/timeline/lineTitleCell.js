@@ -26,6 +26,7 @@ class LineTitleCell extends Component {
   editTitle = () => {
     var id = this.props.line.id
     const ref = ReactDOM.findDOMNode(this.refs.titleRef)
+    if (!ref) return
     this.props.actions.editLineTitle(id, ref.value)
     this.setState({editing: false, hovering: false})
   }

@@ -288,6 +288,7 @@ app.on('will-quit', () => {
 
 function checkForUpdates () {
   if (process.env.NODE_ENV == 'dev') return
+  if (TRIALMODE) return
   if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
 
   autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
@@ -729,9 +730,10 @@ function buildPlottrMenu () {
     submenu = [].concat(submenu, {
       label: i18n('View License Key'),
       click: () => {
-        const licenseKey = USER_INFO.purchase ? USER_INFO.purchase.license_key : USER_INFO.license_key
+        const licenseKey = USER_INFO.purchase ? USER_INFO.purchase.license_key : USER_INFO.licenseKey
         if (licenseKey) {
-          dialog.showMessageBoxSync({type: 'info', title: i18n('Here is your license key'), message: licenseKey})
+          const text = i18n('Here is your license key')
+          dialog.showMessageBoxSync({type: 'info', title: text, message: text, detail: licenseKey})
         } else {
           dialog.showErrorBox(i18n('Error'), i18n('Could not display license key. Try again'))
         }

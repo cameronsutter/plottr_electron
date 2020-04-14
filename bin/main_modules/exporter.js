@@ -1,4 +1,4 @@
-const { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel } = require('docx')
+const { Document, Packer, Paragraph, Media, AlignmentType, HeadingLevel } = require('docx')
 const fs = require('fs')
 const _ = require('lodash')
 const i18n = require('format-message')
@@ -10,33 +10,9 @@ function Exporter (data, { fileName, bookId }) {
   let sections = []
   sections.push(seriesNameSection(data, bookId))
   sections.push(outlineSection(data, names, bookId))
-
-  // doc.addParagraph(new Paragraph('').pageBreak())
-  // doc.addParagraph(new Paragraph('^'))
-  // let charactersHeading = new Paragraph(i18n('Characters'))
-  // charactersHeading.heading1().center()
-  // doc.addParagraph(charactersHeading)
-  // characters(data.characters, data.customAttributes['characters']).forEach(function(par) {
-  //   doc.addParagraph(par)
-  // })
-
-  // doc.addParagraph(new Paragraph('').pageBreak())
-  // doc.addParagraph(new Paragraph('^'))
-  // let placesHeading = new Paragraph(i18n('Places'))
-  // placesHeading.heading1().center()
-  // doc.addParagraph(placesHeading)
-  // places(data.places, data.customAttributes['places']).forEach(function(par) {
-  //   doc.addParagraph(par)
-  // })
-
-  // doc.addParagraph(new Paragraph('').pageBreak())
-  // doc.addParagraph(new Paragraph('^'))
-  // let notesHeading = new Paragraph(i18n('Notes'))
-  // notesHeading.heading1().center()
-  // doc.addParagraph(notesHeading)
-  // notes(data.notes, characterNames, placeNames, tagTitles).forEach(function(par) {
-  //   doc.addParagraph(par)
-  // })
+  sections.push(charactersSection(data, doc))
+  sections.push(placesSection(data, doc))
+  sections.push(notesSection(data, names, doc))
 
   sections.forEach(s => doc.addSection(s))
 
@@ -90,8 +66,8 @@ function outlineSection (data, namesMapping, bookId) {
 }
 
 function chapterParagraphs (chapter, data, namesMapping) {
-  let paragraphs = []
-  paragraphs.push(new Paragraph({text: '^', spacing: { before: 16}}))
+  let paragraphs = [new Paragraph('')]
+  paragraphs.push(new Paragraph('^'))
   let title = chapter.title == 'auto' ? i18n('Chapter {number}', {number: chapter.position + 1}) : chapter.title
   paragraphs.push(new Paragraph({text: title, heading: HeadingLevel.HEADING_2}))
   const cards = sortedChapterCards(chapter.id, data.cards, data.lines)
@@ -100,14 +76,13 @@ function chapterParagraphs (chapter, data, namesMapping) {
 }
 
 function card (card, lines, namesMapping) {
-  let paragraphs = []
+  let paragraphs = [new Paragraph('')]
   let line = _.find(lines, {id: card.lineId})
   let titleString = `${card.title} (${line.title})`
   let attachmentParagraphs = attachments(card, namesMapping)
-  paragraphs.push(new Paragraph({text: titleString, heading: HeadingLevel.HEADING_3, spacing: { before: 16 }}))
+  paragraphs.push(new Paragraph({text: titleString, heading: HeadingLevel.HEADING_3}))
   paragraphs = paragraphs.concat(attachmentParagraphs)
   const descParagraphs = serialize(card.description)
-  // console.log(descParagraphs)
   return paragraphs.concat(descParagraphs)
 }
 
@@ -153,110 +128,133 @@ function findChapterCards (chapterId, allCards) {
   })
 }
 
-function characters (characters, customAttributes) {
-  // TODO: handle templates
+function charactersSection (data, doc) {
+  let children = [
+    new Paragraph({text: '', pageBreakBefore: true}),
+    new Paragraph('^'),
+    new Paragraph({text: i18n('Characters'), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER})
+  ]
+
+  const paragraphs = characters(data.characters, data.customAttributes['characters'], data.images, doc)
+
+  return {children: children.concat(paragraphs)}
+}
+
+function characters (characters, customAttributes, images, doc) {
   let paragraphs = []
-  characters.forEach(function(ch) {
-    let name = new Paragraph(ch.name).heading2()
+  characters.forEach(ch => {
+    paragraphs.push(new Paragraph(''))
+    let name = new Paragraph({text: ch.name, heading: HeadingLevel.HEADING_2})
     paragraphs.push(name)
-    paragraphs.push(new Paragraph(i18n('Description')).heading3())
-    paragraphs.push(new Paragraph(ch.description).style('indented'))
-    paragraphs.push(new Paragraph(i18n('Notes')).heading3())
-    paragraphs.push(new Paragraph(ch.notes).style('indented'))
-    customAttributes.forEach(function(ca) {
-      paragraphs.push(new Paragraph(ca).heading3())
-      paragraphs.push(new Paragraph(ch[ca]).style('indented'))
+    if (ch.imageId) {
+      const imgData = images[ch.imageId].data
+      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"), 200, 200)
+      paragraphs.push(new Paragraph({children: [image]}))
+    }
+    paragraphs.push(new Paragraph({text: i18n('Description'), heading: HeadingLevel.HEADING_3}))
+    paragraphs.push(new Paragraph(ch.description))
+    paragraphs.push(new Paragraph({text: i18n('Notes'), heading: HeadingLevel.HEADING_3}))
+    const descParagraphs = serialize(ch.notes)
+    paragraphs = [...paragraphs, ...descParagraphs]
+
+    customAttributes.forEach(ca => {
+      paragraphs.push(new Paragraph({text: ca.name, heading: HeadingLevel.HEADING_3}))
+      if (ca.type == 'paragraph') {
+        const attrParagraphs = serialize(ch[ca.name])
+        paragraphs = [...paragraphs, ...attrParagraphs]
+      } else {
+        if (ch[ca.name]) paragraphs.push(new Paragraph(ch[ca.name]))
+      }
+    })
+
+    ch.templates.forEach(t => {
+      t.attributes.forEach(attr => {
+        paragraphs.push(new Paragraph({text: attr.name, heading: HeadingLevel.HEADING_3}))
+        if (attr.type == 'paragraph') {
+          const attrParagraphs = serialize(attr.value)
+          paragraphs = [...paragraphs, ...attrParagraphs]
+        } else {
+          paragraphs.push(new Paragraph(attr.value))
+        }
+      })
     })
   })
 
   return paragraphs
 }
 
-function places (places, customAttributes) {
+function placesSection (data, doc) {
+  let children = [
+    new Paragraph({text: '', pageBreakBefore: true}),
+    new Paragraph('^'),
+    new Paragraph({text: i18n('Places'), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER})
+  ]
+
+  const paragraphs = places(data.places, data.customAttributes['places'], data.images, doc)
+
+  return {children: children.concat(paragraphs)}
+}
+
+function places (places, customAttributes, images, doc) {
   let paragraphs = []
-  places.forEach(function(pl) {
-    let name = new Paragraph(pl.name).heading2()
+  places.forEach(pl => {
+    paragraphs.push(new Paragraph(''))
+    let name = new Paragraph({text: pl.name, heading: HeadingLevel.HEADING_2})
     paragraphs.push(name)
-    paragraphs.push(new Paragraph(i18n('Description')).heading3())
-    paragraphs.push(new Paragraph(pl.description).style('indented'))
-    paragraphs.push(new Paragraph(i18n('Notes')).heading3())
-    paragraphs.push(new Paragraph(pl.notes).style('indented'))
-    customAttributes.forEach(function(ca) {
-      paragraphs.push(new Paragraph(ca).heading3())
-      paragraphs.push(new Paragraph(pl[ca]).style('indented'))
+    if (pl.imageId) {
+      const imgData = images[pl.imageId].data
+      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"), 200, 200)
+      paragraphs.push(new Paragraph({children: [image]}))
+    }
+    paragraphs.push(new Paragraph({text: i18n('Description'), heading: HeadingLevel.HEADING_3}))
+    paragraphs.push(new Paragraph(pl.description))
+    paragraphs.push(new Paragraph({text: i18n('Notes'), heading: HeadingLevel.HEADING_3}))
+    const descParagraphs = serialize(pl.notes)
+    paragraphs = [...paragraphs, ...descParagraphs]
+
+    customAttributes.forEach(ca => {
+      paragraphs.push(new Paragraph({text: ca.name, heading: HeadingLevel.HEADING_3}))
+      if (ca.type == 'paragraph') {
+        const attrParagraphs = serialize(pl[ca.name])
+        paragraphs = [...paragraphs, ...attrParagraphs]
+      } else {
+        if (pl[ca.name]) paragraphs.push(new Paragraph(pl[ca.name]))
+      }
     })
   })
 
   return paragraphs
 }
 
-function notes (notes, characterNames, placeNames, tagTitles) {
+function notesSection (data, namesMapping, doc) {
+  let children = [
+    new Paragraph({text: '', pageBreakBefore: true}),
+    new Paragraph('^'),
+    new Paragraph({text: i18n('Notes'), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER})
+  ]
+
+  const paragraphs = notes(data.notes, namesMapping, data.images, doc)
+
+  return {children: children.concat(paragraphs)}
+}
+
+function notes (notes, namesMapping, images, doc) {
   let paragraphs = []
   notes.forEach(function(n) {
-    let title = new Paragraph(n.title).heading2()
+    paragraphs.push(new Paragraph(''))
+    let title = new Paragraph({text: n.title, heading: HeadingLevel.HEADING_2})
     paragraphs.push(title)
-    let attachmentParagraphs = attachments(n, characterNames, placeNames, tagTitles)
-    paragraphs = paragraphs.concat(attachmentParagraphs)
-    paragraphs.push(new Paragraph(n.content).style('indented'))
+    if (n.imageId) {
+      const imgData = images[n.imageId].data
+      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"), 200, 200)
+      paragraphs.push(new Paragraph({children: [image]}))
+    }
+    const attachmentParagraphs = attachments(n, namesMapping)
+    const contentParagraphs = serialize(n.content)
+    paragraphs = [...paragraphs, ...attachmentParagraphs, ...contentParagraphs]
   })
 
   return paragraphs
-}
-
-//////////////////////////
-//////   Styles   ////////
-//////////////////////////
-
-function styles () {
-  return [
-
-  ]
-  let paragraphStyles = new docx.Styles()
-  paragraphStyles.createParagraphStyle('Normal', 'Normal')
-    .quickFormat()
-    .size(20)
-    .spacing({before: 0, after: 240, line: 300})
-
-  paragraphStyles.createParagraphStyle('Title', 'Title')
-    .quickFormat()
-    .basedOn('Normal')
-    .next('Normal')
-    .size(56)
-
-  paragraphStyles.createParagraphStyle('Heading1', 'Heading 1')
-    .quickFormat()
-    .basedOn('Normal')
-    .next('Normal')
-    .size(32)
-    .spacing({before: 0, after: 480})
-
-  paragraphStyles.createParagraphStyle('Heading2', 'Heading 2')
-    .quickFormat()
-    .basedOn('Normal')
-    .next('Normal')
-    .size(28)  // 14pt font
-    .spacing({before: 0, after: 240})  // TWIP for both
-
-  paragraphStyles.createParagraphStyle('Heading3', 'Heading 3')
-    .quickFormat()
-    .basedOn('Normal')
-    .next('Normal')
-    .size(24)
-    .spacing({before: 0, after: 120})
-    .indent(360)
-
-  paragraphStyles.createParagraphStyle('indented', 'Indented Normal')
-    .basedOn('Normal')
-    .next('Normal')
-    .indent(720)
-
-  paragraphStyles.createParagraphStyle('attachments', 'Attachments')
-    .basedOn('Normal')
-    .next('Normal')
-    .spacing({before: 0, after: 0})
-    .indent(720)
-
-  return paragraphStyles
 }
 
 module.exports = Exporter

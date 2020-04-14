@@ -24,7 +24,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.9"
+    "version": "2020.4.13-beta.1"
   },
   "places": [
     {
@@ -1009,7 +1009,44 @@
         {
           "children": [
             {
-              "text": ""
+              "text": "THis is a Numbered list"
+            }
+          ]
+        },
+        {
+          "type": "numbered-list",
+          "children": [
+            {
+              "children": [
+                {
+                  "text": "Number 1"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "Number 2"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "Number 3"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "So forth"
+                }
+              ],
+              "type": "list-item"
             }
           ]
         }
@@ -1054,6 +1091,71 @@
           "children": [
             {
               "text": "Desciption of cool thing happening to {{main character}}"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "And here's a link: "
+            },
+            {
+              "type": "link",
+              "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+              "children": [
+                {
+                  "text": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80"
+                }
+              ]
+            },
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "image-link",
+          "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            },
+            {
+              "type": "link",
+              "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "text": ""
             }
           ]
         }

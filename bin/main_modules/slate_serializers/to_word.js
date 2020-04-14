@@ -1,5 +1,42 @@
-const { Node } = require('slate')
-const docx = require('docx')
+const { Paragraph, TextRun, AlignmentType, HeadingLevel, Numbering, Hyperlink } = require('docx')
+
+// NONE of this works
+const numbering = new Numbering({config: [
+  {
+    reference: 'decimal-numbering',
+    levels: [
+      {
+        level: 0,
+        format: "decimal",
+        text: "%1",
+        alignment: AlignmentType.START,
+        style: {
+          paragraph: {
+            indent: { left: 720, hanging: 260 },
+          },
+        },
+      }
+    ],
+  },
+]})
+
+const abstractNum = numbering.createAbstractNumbering([
+  {
+    level: 0,
+    format: "decimal",
+    text: "%1",
+    alignment: AlignmentType.START,
+    style: {
+      paragraph: {
+        indent: { left: 720, hanging: 260 },
+      },
+    },
+  },
+])
+// abstractNum.createLevel(0, "decimal", "%1.", "start").addParagraphProperty(new Indent(720, 260))
+const concrete = numbering.createConcreteNumbering(abstractNum)
+
+// END NONE of this works
 
 const serialize = (nodes) => {
   return nodes.flatMap(n => {
@@ -8,27 +45,25 @@ const serialize = (nodes) => {
     const children = serialize(n.children)
 
     switch (n.type) {
-      case 'block-quote':
-        return ''
       case 'bulleted-list':
-        return ''
+        return children.map(li => new Paragraph({children: [li], bullet: {level: 0}}))
       case 'heading-one':
-        return ''
+        return new Paragraph({children: children, heading: HeadingLevel.HEADING_4})
       case 'heading-two':
-        return ''
+        return new Paragraph({children: children, heading: HeadingLevel.HEADING_5})
       case 'list-item':
-        return ''
+        return children[0] // always an array with 1 TextRun
       case 'numbered-list':
-        return ''
+        return children.map(li => new Paragraph({children: [li], numbering: { reference: concrete, level: 0 }}))
       case 'link':
-        return ''
-      case 'image-link':
-        return ''
-      case 'paragraph':
         // console.log('node', n, children)
-        return new docx.Paragraph({children: children})
+        return new Hyperlink(n.url)
+      case 'image-link':
+        return new Hyperlink(n.url)
+      case 'block-quote':
+      case 'paragraph':
       default:
-        return children.flatMap(leaf)
+        return new Paragraph({children: children})
     }
   })
 }
@@ -48,7 +83,7 @@ const leaf = (node) => {
     options.underline = {}
   }
 
-  return new docx.TextRun(options)
+  return new TextRun(options)
 }
 
 module.exports = serialize

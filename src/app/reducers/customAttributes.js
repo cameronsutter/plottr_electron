@@ -14,7 +14,7 @@ function characters (state = [], action) {
       return [...state, action.attribute]
 
     case REMOVE_CHARACTER_ATTRIBUTE:
-      return state.filter(attr => attr !== action.attribute)
+      return state.filter(attr => attr.name !== action.attribute)
 
     case EDIT_CHARACTER_ATTRIBUTE:
       let newState = [...state]
@@ -38,9 +38,7 @@ function places (state = [], action) {
       return [...state, action.attribute]
 
     case REMOVE_PLACES_ATTRIBUTE:
-      return state.filter(attr =>
-        attr !== action.attribute
-      )
+      return state.filter(attr => attr.name !== action.attribute)
 
     case EDIT_PLACES_ATTRIBUTE:
       let newState = [...state]

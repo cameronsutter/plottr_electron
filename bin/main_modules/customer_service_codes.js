@@ -13,8 +13,8 @@ const SETTINGS = require('./settings')
 
 function enterCustomerServiceCode () {
   prompt({
-    title: i18n('Enter a code you were given'),
-    label: i18n('code') + ':',
+    title: i18n('Enter a customer service code'),
+    label: i18n('Enter your code') + ':',
     inputAttrs: {
       type: 'text',
       required: true

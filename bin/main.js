@@ -272,6 +272,10 @@ app.on('ready', () => {
     if (win) win.toggleDevTools()
   })
 
+  if (process.env.NODE_ENV != 'dev') {
+    app.setAsDefaultProtocolClient('plottr')
+  }
+
   checkLicense(() => {
     TemplateManager.load()
     loadMenu()
@@ -1007,28 +1011,28 @@ function buildHelpMenu () {
         type: 'separator',
         visible: false,
       }, {
-        label: i18n('Report a problem'),
+        label: i18n('Report a Problem'),
         click: function () {
           shell.openExternal('https://getplottr.com/support/')
         }
       }, {
-        label: i18n('Create an error report'),
+        label: i18n('Create an Error Report'),
         sublabel: i18n('Creates a report to send me'),
         click: function () {
           createErrorReport(USER_INFO, windows.map(w => w.state))
         }
       }, {
-        label: i18n('Enter a customer service code'),
+        label: i18n('Enter a Customer Service Code'),
         click: enterCustomerServiceCode
       }, {
         type: 'separator'
       }, {
-        label: i18n('Give feedback'),
+        label: i18n('Give Feedback'),
         click: function () {
           shell.openExternal('https://getplottr.com/support/')
         }
       }, {
-        label: i18n('Request a feature'),
+        label: i18n('Request a Feature'),
         click: function () {
           shell.openExternal('https://getplottr.com/support/')
         }

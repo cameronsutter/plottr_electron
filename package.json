@@ -125,7 +125,8 @@
         "ext": "pltr",
         "name": "Plottr",
         "description": "An elegant writing tool to organize story plotlines",
-        "role": "Editor"
+        "role": "Editor",
+        "protocols": "plottr"
       }
     ],
     "afterSign": "build/notarize.js",

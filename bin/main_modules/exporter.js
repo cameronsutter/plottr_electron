@@ -159,11 +159,15 @@ function characters (characters, customAttributes, images, doc) {
 
     customAttributes.forEach(ca => {
       paragraphs.push(new Paragraph({text: ca.name, heading: HeadingLevel.HEADING_3}))
-      if (ca.type == 'paragraph') {
-        const attrParagraphs = serialize(ch[ca.name])
-        paragraphs = [...paragraphs, ...attrParagraphs]
+      if (ch[ca.name]) {
+        if (ca.type == 'paragraph') {
+          const attrParagraphs = serialize(ch[ca.name])
+          paragraphs = [...paragraphs, ...attrParagraphs]
+        } else {
+          if (ch[ca.name]) paragraphs.push(new Paragraph(ch[ca.name]))
+        }
       } else {
-        if (ch[ca.name]) paragraphs.push(new Paragraph(ch[ca.name]))
+        paragraphs.push(new Paragraph(''))
       }
     })
 
@@ -214,11 +218,15 @@ function places (places, customAttributes, images, doc) {
 
     customAttributes.forEach(ca => {
       paragraphs.push(new Paragraph({text: ca.name, heading: HeadingLevel.HEADING_3}))
-      if (ca.type == 'paragraph') {
-        const attrParagraphs = serialize(pl[ca.name])
-        paragraphs = [...paragraphs, ...attrParagraphs]
+      if (pl[ca.name]) {
+        if (ca.type == 'paragraph') {
+          const attrParagraphs = serialize(pl[ca.name])
+          paragraphs = [...paragraphs, ...attrParagraphs]
+        } else {
+          if (pl[ca.name]) paragraphs.push(new Paragraph(pl[ca.name]))
+        }
       } else {
-        if (pl[ca.name]) paragraphs.push(new Paragraph(pl[ca.name]))
+        paragraphs.push(new Paragraph(''))
       }
     })
   })

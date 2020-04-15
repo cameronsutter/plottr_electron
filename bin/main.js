@@ -274,6 +274,9 @@ app.on('ready', () => {
 
   if (process.env.NODE_ENV != 'dev') {
     app.setAsDefaultProtocolClient('plottr')
+    protocol.registerHttpProtocol('plottr', (req, cb) => {
+      log.info('got url', req.url)
+    })
   }
 
   checkLicense(() => {
@@ -1007,9 +1010,6 @@ function buildHelpMenu () {
           SETTINGS.set('showTheTour', true)
           reloadWindow()
         }
-      }, {
-        type: 'separator',
-        visible: false,
       }, {
         label: i18n('Report a Problem'),
         click: function () {

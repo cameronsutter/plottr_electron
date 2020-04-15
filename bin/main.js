@@ -1029,12 +1029,12 @@ function buildHelpMenu () {
       }, {
         label: i18n('Give Feedback'),
         click: function () {
-          shell.openExternal('https://getplottr.com/support/')
+          shell.openExternal('https://fdier.co/NCqOZl')
         }
       }, {
         label: i18n('Request a Feature'),
         click: function () {
-          shell.openExternal('https://getplottr.com/support/')
+          shell.openExternal('https://getplottr.com/support/?help=Feature%20Request')
         }
       }, {
         type: 'separator'

@@ -1,5 +1,5 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog,
-  nativeTheme, globalShortcut, shell, protocol } = require('electron')
+  nativeTheme, globalShortcut, shell } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
@@ -61,6 +61,8 @@ let lastCheckedForUpdate = new Date().getTime()
 const updateCheckThreshold = 1000 * 60 * 60
 log.transports.file.level = 'info'
 autoUpdater.logger = log
+
+log.info('argv', process.argv)
 
 // mixpanel tracking
 var launchSent = false
@@ -274,9 +276,6 @@ app.on('ready', () => {
 
   if (process.env.NODE_ENV != 'dev') {
     app.setAsDefaultProtocolClient('plottr')
-    protocol.registerHttpProtocol('plottr', (req, cb) => {
-      log.info('got url', req.url)
-    })
   }
 
   checkLicense(() => {

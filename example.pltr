@@ -7,7 +7,7 @@
       "stuff": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -25,7 +25,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.15-beta.2"
+    "version": "2020.4.15-beta.4"
   },
   "places": [
     {

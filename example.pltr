@@ -4,18 +4,17 @@
       "age": [],
       "race": [],
       "superpower": [],
-      "[object Object]": []
+      "stuff": []
     },
     "characterSort": "name~asc",
-    "currentView": "outline",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
     "placeFilter": {
       "weather": [],
-      "galaxy": [],
-      "[object Object]": []
+      "galaxy": []
     },
     "placeSort": "name~asc",
     "zoomIndex": 4,
@@ -26,7 +25,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.14-beta.1"
+    "version": "2020.4.15-beta.2"
   },
   "places": [
     {
@@ -410,7 +409,8 @@
       "bookIds": [
         1
       ],
-      "superpower": ""
+      "superpower": "",
+      "stuff": "soemthing"
     },
     {
       "age": "",
@@ -3243,6 +3243,10 @@
       },
       {
         "name": "superpower",
+        "type": "text"
+      },
+      {
+        "name": "stuff",
         "type": "text"
       }
     ],

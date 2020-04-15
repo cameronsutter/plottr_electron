@@ -37,11 +37,14 @@ export default function ui (state = defaultUI, action) {
 
     case ADD_CHARACTER_ATTRIBUTE:
       filter = {...state.characterFilter}
-      filter[action.attribute] = []
+      console.log('reducer', action)
+      if (action.attribute.type == 'paragraph') return state
+      filter[action.attribute.name] = []
       return Object.assign({}, state, {characterFilter: filter})
     case ADD_PLACES_ATTRIBUTE:
       filter = {...state.placeFilter}
-      filter[action.attribute] = []
+      if (action.attribute.type == 'paragraph') return state
+      filter[action.attribute.name] = []
       return Object.assign({}, state, {placeFilter: filter})
 
     case REMOVE_CHARACTER_ATTRIBUTE:
@@ -56,12 +59,14 @@ export default function ui (state = defaultUI, action) {
     case EDIT_CHARACTER_ATTRIBUTE:
       filter = {...state.characterFilter}
       delete filter[action.old]
-      filter[action.attribute] = []
+      if (action.attribute.type == 'paragraph') return state
+      filter[action.attribute.name] = []
       return Object.assign({}, state, {characterFilter: filter})
     case EDIT_PLACES_ATTRIBUTE:
       filter = {...state.placeFilter}
       delete filter[action.old]
-      filter[action.attribute] = []
+      if (action.attribute.type == 'paragraph') return state
+      filter[action.attribute.name] = []
       return Object.assign({}, state, {placeFilter: filter})
 
     case SET_PLACE_FILTER:

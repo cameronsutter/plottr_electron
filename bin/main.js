@@ -105,6 +105,11 @@ app.on('open-file', (event, path) => {
   event.preventDefault()
 })
 
+app.on('open-url', function (event, url) {
+  event.preventDefault()
+  log.info("open-url event: " + url)
+})
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.

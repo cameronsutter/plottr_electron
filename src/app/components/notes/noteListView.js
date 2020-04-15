@@ -107,7 +107,7 @@ class NoteListView extends Component {
         <div className='note-list__item-inner'>
           {img}
           <div>
-            <h6 className='list-group-item-heading'>{n.title}</h6>
+            <h6 className='list-group-item-heading'>{n.title || i18n('New Note')}</h6>
             { lastEdited }
           </div>
         </div>

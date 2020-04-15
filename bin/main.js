@@ -1,5 +1,5 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog,
-  nativeTheme, globalShortcut, shell } = require('electron')
+  nativeTheme, globalShortcut, shell, protocol } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')

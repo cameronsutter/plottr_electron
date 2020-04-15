@@ -82,7 +82,7 @@ export default class TemplatePicker extends Component {
         <Button onClick={this.props.close}>
           {i18n('Cancel')}
         </Button>
-        <Button bsStyle='primary' onClick={this.chooseTemplate} disabled={!this.state.selectedId}>
+        <Button bsStyle='success' onClick={this.chooseTemplate} disabled={!this.state.selectedId}>
           {i18n('Choose')}
         </Button>
       </ButtonToolbar>

@@ -7,7 +7,7 @@
       "[object Object]": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "outline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -197,9 +197,7 @@
       "id": 1,
       "imageId": null,
       "name": "main character",
-      "noteIds": [
-        3
-      ],
+      "noteIds": [],
       "notes": [
         {
           "type": "paragraph",
@@ -314,9 +312,7 @@
       "id": 5,
       "imageId": null,
       "name": "best character",
-      "noteIds": [
-        3
-      ],
+      "noteIds": [],
       "notes": [
         {
           "type": "paragraph",
@@ -434,9 +430,7 @@
       "id": 8,
       "imageId": null,
       "name": "Not sure Yet",
-      "noteIds": [
-        3
-      ],
+      "noteIds": [],
       "notes": [
         {
           "type": "paragraph",

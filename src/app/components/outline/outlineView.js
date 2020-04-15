@@ -20,6 +20,7 @@ class OutlineView extends Component {
     return this.props.ui.currentTimeline == 'series'
   }
 
+  // TODO: this could be a selector ... maybe
   cardMapping () {
     const lines = _.sortBy(this.props.lines, 'position')
     return this.props.chapters.reduce((acc, ch) => {
@@ -33,6 +34,7 @@ class OutlineView extends Component {
     return line.id != this.state.currentLine
   }
 
+  // TODO: this could be a selector ... maybe
   sortedChapterCards (sortedLines, chapterId) {
     return sortedLines.reduce((acc, l) => {
       if (this.lineIsHidden(l)) return acc
@@ -105,7 +107,7 @@ class OutlineView extends Component {
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' />{i18n('Filter by story line')}</Button>
+              <Button bsSize='small'><Glyphicon glyph='filter' />{i18n('Filter by Plotline')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
@@ -116,7 +118,7 @@ class OutlineView extends Component {
 
   renderChapters (cardMapping) {
     return this.props.chapters.map(ch =>
-      <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} />
+      <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} activeFilter={!!this.state.currentLine} />
     )
   }
 
@@ -126,7 +128,7 @@ class OutlineView extends Component {
       {this.renderSubNav()}
       <div className='outline__container'>
         <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
-        <MiniMap active={this.state.active} cardMapping={cardMapping} />
+        <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />
         <div className='outline__scenes-container'>
           {this.renderChapters(cardMapping)}
         </div>

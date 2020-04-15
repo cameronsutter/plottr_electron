@@ -8,14 +8,14 @@ import { chapterTitle } from '../../helpers/chapters'
 
 class ChapterView extends Component {
   renderCards () {
-    return this.props.cards.map(c =>
-      <CardView key={c.id} card={c} />
-    )
+    return this.props.cards.map(c => <CardView key={c.id} card={c} />)
   }
 
   render () {
-    const { chapter, ui, waypoint } = this.props
-    const klasses = cx('outline__scene_title', {darkmode: ui.darkMode})
+    const { chapter, ui, waypoint, cards, activeFilter } = this.props
+    if (activeFilter && !cards.length) return null
+
+    const klasses = cx('outline__scene-title', {darkmode: ui.darkMode})
     return (
       <Waypoint onEnter={() => waypoint(chapter.id)} scrollableAncestor={window} topOffset={"60%"} bottomOffset={"60%"}>
         <div>
@@ -28,10 +28,11 @@ class ChapterView extends Component {
 }
 
 ChapterView.propTypes = {
+  ui: PropTypes.object.isRequired,
   chapter: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
-  ui: PropTypes.object.isRequired,
+  activeFilter: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state) {

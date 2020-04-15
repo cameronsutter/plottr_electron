@@ -129,6 +129,9 @@ li.outline__minimap__scene-title > a:hover {
   }
 }
 
-.outline__scene_title.darkmode {
-  color: $darkmode-text;
+.outline__scene-title {
+  margin-left: 20px;
+  &.darkmode {
+    color: $darkmode-text;
+  }
 }

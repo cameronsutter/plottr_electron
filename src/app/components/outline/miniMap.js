@@ -9,12 +9,13 @@ import { chapterTitle } from '../../helpers/chapters'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
-const extraScrollAmount = 190
+const targetPosition = 115
 
 class MiniMap extends Component {
   constructor (props) {
     super(props)
     this.state = {mouseOver: false}
+    this.firstChapterKey = props.chapters[0].id // this works since they are sorted
   }
 
   isSeries = () => {
@@ -22,8 +23,12 @@ class MiniMap extends Component {
   }
 
   selectNav = (key) => {
-    document.querySelector(`#chapter-${key}`).scrollIntoViewIfNeeded()
-    window.scrollBy(0, extraScrollAmount)
+    const elem = document.querySelector(`#chapter-${key}`)
+    elem.scrollIntoViewIfNeeded()
+    if (key != this.firstChapterKey) {
+      const yPosition = elem.getBoundingClientRect().y
+      window.scrollBy(0, yPosition - targetPosition)
+    }
   }
 
   findCard = (linesById, card) => {
@@ -46,12 +51,15 @@ class MiniMap extends Component {
   }
 
   renderChapters () {
-    return this.props.chapters.map((ch, idx) =>
-      <NavItem ref={chapterTitle(ch)} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
+    return this.props.chapters.map((ch, idx) => {
+      const chapterCards = this.props.cardMapping[ch.id]
+      if (this.props.activeFilter && !chapterCards.length) return null
+
+      return <NavItem ref={chapterTitle(ch)} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
         <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(ch)}</span></span>
-        <div className='outline__minimap__dots'>{this.renderCardDots(this.props.cardMapping[ch.id])}</div>
+        <div className='outline__minimap__dots'>{this.renderCardDots(chapterCards)}</div>
       </NavItem>
-    )
+    })
   }
 
   render () {
@@ -82,10 +90,11 @@ class MiniMap extends Component {
 
 MiniMap.propTypes = {
   chapters: PropTypes.array.isRequired,
-  active: PropTypes.number.isRequired,
   lines: PropTypes.array.isRequired,
-  cardMapping: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  active: PropTypes.number.isRequired,
+  cardMapping: PropTypes.object.isRequired,
+  activeFilter: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state) {

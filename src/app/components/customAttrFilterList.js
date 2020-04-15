@@ -20,16 +20,6 @@ class CustomAttrFilterList extends Component {
     }
   }
 
-  componentWillReceiveProps (newProps) {
-    // TODO: wouldn't be necessary if below were a selector
-    // might not even be necessary with the redcuers
-    const filteredItems = newProps.customAttributes.reduce((result, attr) => {
-      if (attr.type == 'text') result[attr.name] = []
-      return result
-    }, {})
-    this.setState({filteredItems})
-  }
-
   defaultFilteredItemsObj () {
     // TODO: this should be a selector
     return this.props.customAttributes.reduce((result, attr) => {
@@ -64,7 +54,9 @@ class CustomAttrFilterList extends Component {
   }
 
   isChecked (value, attrName) {
-    return this.state.filteredItems[attrName] && this.state.filteredItems[attrName].indexOf(value) !== -1
+    if (!this.state.filteredItems[attrName]) return false
+    if (!this.state.filteredItems[attrName].length) return false
+    return this.state.filteredItems[attrName].indexOf(value) !== -1
   }
 
   values (attrName) {

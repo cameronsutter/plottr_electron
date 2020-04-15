@@ -68,7 +68,7 @@ class ImagePicker extends Component {
       }
       return <Modal isOpen={true} onRequestClose={this.close} style={customStyles}>
         <div className={cx('image-picker__wrapper', {darkmode: darkMode})}>
-          <h2 className='image-picker__title'>{i18n('Your images')}</h2>
+          <h2 className='image-picker__title'>{i18n('Image Gallery')}</h2>
           <div className='image-picker__inputs-wrapper form-horizontal'>
             <Row>
               <Col xs={4}>

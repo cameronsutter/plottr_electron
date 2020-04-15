@@ -123,7 +123,7 @@ class CharacterView extends Component {
 
     let imgId = this.state.newImageId || character.imageId
     return <FormGroup>
-      <ControlLabel>{i18n('Character Image')}</ControlLabel>
+      <ControlLabel>{i18n('Character Thumbnail')}</ControlLabel>
       <div className='character-list__character__edit-image-wrapper'>
         <div className='character-list__character__edit-image'>
           <Image size='large' shape='circle' imageId={imgId} />

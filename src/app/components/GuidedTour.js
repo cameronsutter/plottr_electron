@@ -7,6 +7,7 @@ export default class GuidedTour extends Component {
   state = {
     showTour: SETTINGS.get('showTheTour')
   }
+
   steps = [
     {selector: '', content: i18n('Since this is your first time using Plottr, I\'ll give you a guided tour if you like.')},
     {selector: '.sticky-table-row:nth-child(1) .sticky-table-cell:nth-child(3) .scene__body', content: i18n('This is a scene or chapter. You can change it\'s name by clicking on it')},
@@ -21,11 +22,11 @@ export default class GuidedTour extends Component {
     {selector: '.sticky-table-row:nth-child(2) .sticky-table-cell:nth-child(3) .card__cell', content: i18n('Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details')},
     {selector: '.sticky-table-row:nth-child(3) .sticky-table-cell:nth-child(1) .line-list__append-line', content: i18n('Add more plotlines here')},
     {selector: '.subnav__container .container ul li:nth-child(5)', content: i18n('You can export everything to a Word document')},
-    {selector: '.nav.navbar-nav li:nth-child(2)', content: i18n('See the outline here')},
-    {selector: '.nav.navbar-nav li:nth-child(3)', content: i18n('Keep all your notes here (brainstorming, world-building, etc.)')},
-    {selector: '.nav.navbar-nav li:nth-child(4)', content: i18n('Keep your character sheets here')},
-    {selector: '.nav.navbar-nav li:nth-child(5)', content: i18n('Keep info about your locations here')},
-    {selector: '.nav.navbar-nav li:nth-child(6)', content: i18n('Tags can be used for organization')},
+    {selector: '.nav.navbar-nav li:nth-child(3)', content: i18n('See the outline here')},
+    {selector: '.nav.navbar-nav li:nth-child(4)', content: i18n('Keep all your notes here (brainstorming, world-building, etc.)')},
+    {selector: '.nav.navbar-nav li:nth-child(5)', content: i18n('Keep your character sheets here')},
+    {selector: '.nav.navbar-nav li:nth-child(6)', content: i18n('Keep info about your locations here')},
+    {selector: '.nav.navbar-nav li:nth-child(7)', content: i18n('Tags can be used for organization')},
   ]
 
   closeTheTour = () => {

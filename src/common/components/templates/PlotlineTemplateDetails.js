@@ -10,7 +10,7 @@ export default class PlotlineTemplateDetails extends Component {
       case 'chapters':
         return _.sortBy(data, 'position').map(ch => <li key={ch.id}>{ch.title}</li>)
       case 'cards':
-        return data.map(c => <li key={c.id}>{c.title}</li>)
+        return _.sortBy(data, 'id').map(c => <li key={c.id}>{c.title}</li>)
       case 'lines':
         return _.sortBy(data, 'position').map(l => <li key={l.id}>{l.title}</li>)
       default:

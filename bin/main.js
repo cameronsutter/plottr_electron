@@ -107,6 +107,8 @@ app.on('open-file', (event, path) => {
 
 app.on('open-url', function (event, url) {
   event.preventDefault()
+  // handle custom protocol links here for mac
+  // make sure to check that the app is ready
   log.info("open-url event: " + url)
 })
 
@@ -362,9 +364,14 @@ function displayFileName (path) {
 function openRecentFiles () {
   // open-file for windows
   if (process.platform === 'win32' && process.argv.length == 2) {
-    if (process.argv[1].includes('.pltr')) {
-      openWindow(process.argv[1])
+    const param = process.argv.slice(1)
+
+    if (param.includes('.pltr')) {
+      openWindow(param)
     }
+
+    // handle custom protocol links here for windows
+    // const link = param.replace('plottr://')
   } else if (fileToOpen) {
     openWindow(fileToOpen)
     fileToOpen = null

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import isUrl from 'is-url'
 import { FaImage } from "react-icons/fa"
-import { Editor, Transforms, Range } from 'slate'
+import { Editor, Transforms } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
 import InputModal from '../InputModal'

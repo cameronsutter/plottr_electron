@@ -1,10 +1,15 @@
 var path = require('path')
 var webpack = require('webpack')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
   new webpack.DefinePlugin({'__REACT_DEVTOOLS_GLOBAL_HOOK__': '({ isDisabled: true })'}),
 ]
+
+if (process.env.NODE_ENV == 'dev') {
+  plugins.push(new BundleAnalyzerPlugin())
+}
 
 if (process.env.NODE_ENV !== 'dev') {
   plugins.push(new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')}))
@@ -67,9 +72,4 @@ module.exports = {
   ],
   plugins: plugins,
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
-  optimization: {
-    splitChunks: {
-      chunks: 'all'
-    }
-  }
 }

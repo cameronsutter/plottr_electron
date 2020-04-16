@@ -66,5 +66,10 @@ module.exports = {
     })()
   ],
   plugins: plugins,
-  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false
+  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  }
 }

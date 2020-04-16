@@ -12,12 +12,6 @@ import SeriesTab from '../components/story/SeriesTab'
 import ExportTab from '../components/export/ExportTab'
 
 class Body extends Component {
-  constructor (props) {
-    super(props)
-    this.timeline = <TimelineTab/>
-    this.outline = <OutlineTab />
-  }
-
   render () {
     return this.props.file.loaded ? this.renderBody() : this.renderLoading()
   }
@@ -28,10 +22,10 @@ class Body extends Component {
         return <SeriesTab />
 
       case 'timeline':
-        return this.timeline
+        return <TimelineTab/>
 
       case 'outline':
-        return this.outline
+        return <OutlineTab />
 
       case 'notes':
         return <NotesTab />
@@ -49,12 +43,12 @@ class Body extends Component {
         return <ExportTab />
 
       default:
-        return this.timeline
-
+        return <TimelineTab/>
     }
   }
 
   renderLoading () {
+    console.log('loading')
     return <p>{i18n('Loading...')}</p>
   }
 

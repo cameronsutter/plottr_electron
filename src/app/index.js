@@ -1,3 +1,4 @@
+console.time('requires')
 import path from 'path'
 import React from 'react'
 import { render } from 'react-dom'
@@ -15,11 +16,14 @@ import setupRollbar from '../common/utils/rollbar'
 import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
+console.timeEnd('requires')
 
+console.time('i18n setup')
 i18n.setup({
   translations: require('../../locales'),
   locale: app.getLocale() || 'en'
 })
+console.timeEnd('i18n setup')
 
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 const rollbar = setupRollbar('app.html')
@@ -35,14 +39,18 @@ mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
 
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
+console.time('store')
 const store = configureStore()
+console.timeEnd('store')
 
 ipcRenderer.on('state-saved', (_arg) => {
   store.dispatch(fileSaved())
 })
 
+console.time('state')
 ipcRenderer.send('fetch-state', win.id)
 ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFiles) => {
+  console.timeLog('state')
   if (state && Object.keys(state).length > 0) {
     store.dispatch(loadFile(fileName, dirty, state))
     MPQ.push('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles, new_file: false})
@@ -63,6 +71,7 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
     </Provider>,
     root
   )
+  console.timeEnd('state')
 })
 
 ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) => {

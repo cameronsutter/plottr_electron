@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -25,7 +25,7 @@ class LineTitleCell extends Component {
 
   editTitle = () => {
     var id = this.props.line.id
-    const ref = ReactDOM.findDOMNode(this.refs.titleRef)
+    const ref = findDOMNode(this.refs.titleRef)
     if (!ref) return
     this.props.actions.editLineTitle(id, ref.value)
     this.setState({editing: false, hovering: false})
@@ -38,7 +38,7 @@ class LineTitleCell extends Component {
   }
 
   handleBlur = () => {
-    if (ReactDOM.findDOMNode(this.refs.titleRef).value !== '') {
+    if (findDOMNode(this.refs.titleRef).value !== '') {
       this.editTitle()
       this.setState({editing: false, hovering: false})
     }

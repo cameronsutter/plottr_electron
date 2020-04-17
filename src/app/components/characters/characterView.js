@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -73,8 +73,8 @@ class CharacterView extends Component {
   }
 
   saveEdit = () => {
-    var name = ReactDOM.findDOMNode(this.refs.nameInput).value || this.props.character.name
-    var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
+    var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
+    var description = findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
     var attrs = {}
     if (this.state.newImageId) {
@@ -85,7 +85,7 @@ class CharacterView extends Component {
       if (type == 'paragraph') {
         attrs[name] = this.state.description[name]
       } else {
-        const val = ReactDOM.findDOMNode(this.refs[`${name}Input`]).value
+        const val = findDOMNode(this.refs[`${name}Input`]).value
         attrs[name] = val
       }
     })
@@ -94,7 +94,7 @@ class CharacterView extends Component {
         if (attr.type == 'paragraph') {
           attr.value = this.state.templateAttrs[t.id][attr.name]
         } else {
-          attr.value = ReactDOM.findDOMNode(this.refs[`${t.id}-${attr.name}Input`]).value
+          attr.value = findDOMNode(this.refs[`${t.id}-${attr.name}Input`]).value
         }
         return attr
       })

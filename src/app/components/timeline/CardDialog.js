@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
@@ -60,7 +60,7 @@ class CardDialog extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
+    var newTitle = findDOMNode(this.refs.titleInput).value
     this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
   }
 

@@ -78,7 +78,7 @@ class CardCell extends Component {
     if (!card.tags || !card.tags.length) return null
 
     const tagLabels = card.tags.map(tId => {
-      const tag = _.find(tags, {id: tId})
+      const tag = tags.find(t => t.id == tId)
       if (!tag) return null
       return <TagLabel tag={tag} key={`taglabel-${tId}`} />
     })

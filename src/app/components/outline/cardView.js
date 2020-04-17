@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -23,7 +23,7 @@ class CardView extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value || this.props.card.title
+    var newTitle = findDOMNode(this.refs.titleInput).value || this.props.card.title
     this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
     this.setState({editing: false})
   }

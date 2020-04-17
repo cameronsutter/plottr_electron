@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -62,7 +62,7 @@ class BlankCard extends Component {
   }
 
   saveCreate = () => {
-    var newCard = this.buildCard(ReactDOM.findDOMNode(this.refs.titleInput).value)
+    var newCard = this.buildCard(findDOMNode(this.refs.titleInput).value)
     this.props.actions.addCard(newCard)
     this.setState({creating: false})
   }
@@ -89,7 +89,7 @@ class BlankCard extends Component {
   }
 
   handleBlur = () => {
-    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value
+    var newTitle = findDOMNode(this.refs.titleInput).value
     if (newTitle === '') {
       this.setState({creating: false})
       return false

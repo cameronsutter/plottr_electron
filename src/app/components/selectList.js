@@ -21,7 +21,7 @@ export default class SelectList extends Component {
 
   renderSelectedTags () {
     return this.props.selectedItems.map(tId => {
-      var tag = _.find(this.props.allItems, {id: tId})
+      var tag = this.props.allItems.find(item => item.id == tId)
       if (!tag) return null
       return <div key={tId} className='tag-chip'>
         <TagLabel tag={tag} />
@@ -32,7 +32,7 @@ export default class SelectList extends Component {
 
   renderSelectedItems () {
     return this.props.selectedItems.map(itemId => {
-      var item = _.find(this.props.allItems, {id: itemId})
+      var item = this.props.allItems.find(item => item.id == itemId)
       if (!item) return null
       return <div key={itemId} className='chip'>
         <Image size='xs' shape='circle' imageId={item.imageId}/>

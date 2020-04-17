@@ -4,13 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Plottr</title>
-    <script>
-      console.time('fonts')
-    </script>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
-    <script>
-      console.timeEnd('fonts')
-    </script>
     <script>
       console.time('css bundle')
     </script>
@@ -28,7 +22,9 @@
     <script>
       console.time('app bundle')
     </script>
+    <script async src="commons.bundle.js"></script>
     <script async src="app.bundle.js"></script>
+    <script async src="reactIcons.bundle.js"></script>
     <script>
       console.timeEnd('app bundle')
     </script>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -40,7 +40,7 @@ class TagView extends Component {
 
   saveEdit () {
     let { title, id, color } = this.props.tag
-    var newTitle = ReactDOM.findDOMNode(this.refs.titleInput).value || title
+    var newTitle = findDOMNode(this.refs.titleInput).value || title
     this.props.actions.editTag(id, newTitle, color)
     this.setState({editing: false})
   }

@@ -14,8 +14,7 @@
   "main": "bin/main.js",
   "scripts": {
     "start": "NODE_ENV=dev electron .",
-    "compile": "node_modules/.bin/webpack",
-    "serve": "NODE_ENV=dev node_modules/.bin/webpack",
+    "compile": "NODE_ENV=dev node_modules/.bin/webpack",
     "watch": "echo 'do you have fsevents?' && NODE_ENV=dev node_modules/.bin/webpack",
     "createDevLicense": "node bin/main_modules/dev_license.js",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",

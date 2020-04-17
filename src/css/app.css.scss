@@ -35,20 +35,6 @@
 #react-root {
   margin: 0px 0px 0px 0px;
   // animation: fadein 0.5s;
-
-  #temporary-inner {
-    margin-top: -50px;
-    background: hsl(60, 3%, 94%) url("../../icons/mountain_background.jpg");
-    background-size: cover;
-    background-blend-mode: overlay;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    img {
-      animation: fadein 1.5s;
-      margin-top: 10px;
-    }
-  }
 }
 
 body {

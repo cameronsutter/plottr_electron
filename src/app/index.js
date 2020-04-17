@@ -9,7 +9,7 @@ const { Menu, MenuItem } = remote
 const win = remote.getCurrentWindow()
 const app = remote.app
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
-import mixpanel from 'mixpanel-browser'
+import { init } from 'mixpanel-browser'
 import { MPQ, setTrialInfo } from 'middlewares/helpers'
 import setupRollbar from '../common/utils/rollbar'
 import log from 'electron-log'
@@ -31,7 +31,8 @@ if (process.env.NODE_ENV !== 'development') {
   })
 }
 
-mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
+// mixpanel
+init('507cb4c0ee35b3bde61db304462e9351')
 
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')

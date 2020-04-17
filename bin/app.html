@@ -5,13 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Plottr</title>
     <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
-    <script>
-      console.time('css bundle')
-    </script>
     <script src="css.bundle.js"></script>
-    <script>
-      console.timeEnd('css bundle')
-    </script>
+    <style>
+      #temporary-inner {
+        margin-top: -50px;
+        background: hsl(60, 3%, 94%) url("../icons/mountain_background.jpg");
+        background-size: cover;
+        background-blend-mode: overlay;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+      }
+      #temporary-inner img {
+        animation: fadein 1.5s;
+        margin-top: 10px;
+      }
+    </style>
   </head>
   <body>
     <div id="react-root">
@@ -19,14 +28,8 @@
         <img src='../icons/logo_28_500.png' height='500'/>
       </div>
     </div>
-    <script>
-      console.time('app bundle')
-    </script>
     <script async src="commons.bundle.js"></script>
     <script async src="app.bundle.js"></script>
     <script async src="reactIcons.bundle.js"></script>
-    <script>
-      console.timeEnd('app bundle')
-    </script>
   </body>
 </html>

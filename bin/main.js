@@ -1,4 +1,3 @@
-const startTime = new Date().getTime()
 const { app, BrowserWindow, Menu, ipcMain, dialog,
   nativeTheme, globalShortcut, shell } = require('electron')
 const fs = require('fs')
@@ -10,31 +9,19 @@ const i18n = require('format-message')
 const { is } = require('electron-util')
 const windowStateKeeper = require('electron-window-state')
 const { autoUpdater } = require('electron-updater')
-log.info('midway through requires', new Date().getTime() - startTime)
 const migrateIfNeeded = require('./main_modules/migration_manager')
-log.info('after migration manager', new Date().getTime() - startTime)
 const Exporter = require('./main_modules/exporter')
-log.info('after exporter', new Date().getTime() - startTime)
 const { USER_INFO_PATH } = require('./main_modules/config_paths')
 const enterCustomerServiceCode = require('./main_modules/customer_service_codes')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
-log.info('after trial manager', new Date().getTime() - startTime)
 const backupFile = require('./main_modules/backup')
-log.info('after backup', new Date().getTime() - startTime)
 const createErrorReport = require('./main_modules/error_report')
-log.info('after error report', new Date().getTime() - startTime)
 const setupRollbar = require('./main_modules/rollbar')
-log.info('after rollbar', new Date().getTime() - startTime)
 const SETTINGS = require('./main_modules/settings')
-log.info('after settings', new Date().getTime() - startTime)
 const checkForActiveLicense = require('./main_modules/license_checker')
-log.info('after license_checker', new Date().getTime() - startTime)
 const TemplateManager = require('./main_modules/template_manager')
-log.info('after template manager', new Date().getTime() - startTime)
 const FileManager = require('./main_modules/file_manager')
-log.info('after file manager', new Date().getTime() - startTime)
 const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/helpers')
-log.info('after requires', new Date().getTime() - startTime)
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
   // const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
@@ -91,7 +78,6 @@ if (process.env.NODE_ENV !== 'dev') {
   })
 }
 
-log.info('after bug reporting', new Date().getTime() - startTime)
 
 // TODO: Report crashes to our server.
 
@@ -174,27 +160,22 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
 })
 
 ipcMain.on('fetch-state', function (event, id) {
-  log.info('on fetch state', new Date().getTime() - startTime)
   var win = _.find(windows, {id: id})
   win.window.setProgressBar(0.99)
   win.window.setTitle(displayFileName(win.fileName))
   win.window.setRepresentedFilename(win.fileName)
 
   migrateIfNeeded (win.state, win.fileName, (err, migrated, json) => {
-    log.info('after migrateIfNeeded', new Date().getTime() - startTime)
     if (err) { log.warn(err); rollbar.warn(err) }
     if (migrated) FileManager.save(win.fileName, json, () => {})
-    log.info('after FileManager save', new Date().getTime() - startTime)
 
     win.lastSave = json
     win.state = json
     win.window.setProgressBar(-1)
     if (win.window.isVisible()) {
-      log.info('window is visible, send state', new Date().getTime() - startTime)
       event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
     } else {
       win.window.on('show', () => {
-        log.info('window waited to show, now is visible, send state', new Date().getTime() - startTime)
         event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
       })
     }
@@ -284,35 +265,28 @@ ipcMain.on('chose-template', (event, template) => {
 })
 
 app.on('ready', () => {
-  log.info('on ready', new Date().getTime() - startTime)
   i18n.setup({
     translations: require('../locales'),
     locale: app.getLocale() || 'en'
   })
-  log.info('after i18n setup', new Date().getTime() - startTime)
 
   if (is.macos) {
     loadMenu(true)
   }
-  log.info('after loadMenu', new Date().getTime() - startTime)
 
   // Register the toggleDevTools shortcut listener.
   const ret = globalShortcut.register('CommandOrControl+Alt+R', () => {
     let win = BrowserWindow.getFocusedWindow()
     if (win) win.toggleDevTools()
   })
-  log.info('after register shortcut', new Date().getTime() - startTime)
 
   if (process.env.NODE_ENV != 'dev') {
     app.setAsDefaultProtocolClient('plottr')
   }
 
   checkLicense(() => {
-    log.info('checkLicense callback', new Date().getTime() - startTime)
     TemplateManager.load()
-    log.info('after start template loading', new Date().getTime() - startTime)
     loadMenu()
-    log.info('after loading menu', new Date().getTime() - startTime)
   })
 })
 
@@ -348,7 +322,6 @@ function checkLicense (callback) {
     if (err) log.error(err)
     if (hasKey) {
       storage.get(USER_INFO_PATH, function (err, data) {
-        log.info('after get USER_INFO', new Date().getTime() - startTime)
         if (err) log.error(err)
         USER_INFO = data
         if (TRIALMODE) {
@@ -388,7 +361,6 @@ function displayFileName (path) {
 }
 
 function openRecentFiles () {
-  log.info('start open recentFiles', new Date().getTime() - startTime)
   // open-file for windows
   if (process.platform === 'win32' && process.argv.length == 2) {
     const param = process.argv.slice(1)
@@ -404,7 +376,6 @@ function openRecentFiles () {
     fileToOpen = null
   } else {
     let openFiles = FileManager.listOpenFiles()
-    log.info('after openFiles list fetch', new Date().getTime() - startTime)
     if (openFiles.length) {
       openFiles.forEach(f => openWindow(f))
     } else {
@@ -470,7 +441,6 @@ function askToOpenFile () {
 }
 
 function openWindow (fileName, jsonData) {
-  log.info('start openWindow', fileName, new Date().getTime() - startTime)
   // Load the previous state with fallback to defaults
   let stateKeeper = windowStateKeeper({
     defaultWidth: 1200,
@@ -489,7 +459,6 @@ function openWindow (fileName, jsonData) {
     backgroundColor: '#f7f7f7',
     webPreferences: {nodeIntegration: true, spellcheck: true}
   })
-  log.info('after create new browser window', new Date().getTime() - startTime)
 
   // Let us register listeners on the window, so we can update the state
   // automatically (the listeners will be removed when the window is closed)
@@ -501,12 +470,10 @@ function openWindow (fileName, jsonData) {
   // and load the app.html of the app.
   const entryFile = path.join(filePrefix, 'app.html')
   newWindow.loadURL(entryFile)
-  log.info('after loadURL', new Date().getTime() - startTime)
 
   newWindow.setProgressBar(0.2)
 
   newWindow.once('ready-to-show', function() {
-    log.info('ready to show', new Date().getTime() - startTime)
     this.setProgressBar(0.75)
     this.show()
   })
@@ -553,11 +520,9 @@ function openWindow (fileName, jsonData) {
 
   try {
     let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
-    log.info('after load file data', new Date().getTime() - startTime)
     newWindow.setProgressBar(0.5)
     app.addRecentDocument(fileName)
     FileManager.open(fileName)
-    log.info('after FileManager open file', new Date().getTime() - startTime)
 
     windows.push({
       id: newWindow.id,

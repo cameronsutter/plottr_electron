@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -24,7 +24,7 @@ class ImagePicker extends Component {
   }
 
   renameFile = () => {
-    let newName = ReactDOM.findDOMNode(this.refs.fileName).value
+    let newName = findDOMNode(this.refs.fileName).value
     this.props.actions.renameImage(this.state.editing, newName)
     this.setState({editing: null})
   }

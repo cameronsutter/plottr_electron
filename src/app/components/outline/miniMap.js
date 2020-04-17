@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
@@ -80,7 +80,7 @@ class MiniMap extends Component {
       const chapter = this.props.chapters.find(ch => ch.id === this.props.active)
       let title = ""
       if (chapter) title = chapter.title
-      var domNode = ReactDOM.findDOMNode(this.refs[title])
+      var domNode = findDOMNode(this.refs[title])
       if (domNode) {
         domNode.scrollIntoViewIfNeeded()
       }

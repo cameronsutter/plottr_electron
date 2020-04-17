@@ -1,7 +1,7 @@
 import request from 'request'
 import storage from 'electron-json-storage'
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import i18n from 'format-message'
@@ -101,7 +101,7 @@ class VerifyView extends Component {
 
   handleVerify () {
     if (navigator.onLine) {
-      var input = ReactDOM.findDOMNode(this.refs.license)
+      var input = findDOMNode(this.refs.license)
       var license = input.value.trim()
       if (license != '') {
         this.setState({spinnerHidden: false})

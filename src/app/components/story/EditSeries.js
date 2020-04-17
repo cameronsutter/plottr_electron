@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Modal, Form, FormGroup, Col, Row, ControlLabel, FormControl, ButtonToolbar, Button } from 'react-bootstrap'
@@ -16,10 +16,10 @@ class EditSeries extends Component {
   }
 
   saveEdit = () => {
-    let name = ReactDOM.findDOMNode(this.refs.name).value
-    let premise = ReactDOM.findDOMNode(this.refs.premise).value
-    let genre = ReactDOM.findDOMNode(this.refs.genre).value
-    let theme = ReactDOM.findDOMNode(this.refs.theme).value
+    let name = findDOMNode(this.refs.name).value
+    let premise = findDOMNode(this.refs.premise).value
+    let genre = findDOMNode(this.refs.genre).value
+    let theme = findDOMNode(this.refs.theme).value
     this.props.actions.editSeries({name, premise, genre, theme})
     this.setState({editing: false})
   }

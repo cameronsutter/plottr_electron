@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -55,7 +55,7 @@ class PlaceListView extends Component {
 
   componentDidUpdate () {
     if (this.refs.attrInput) {
-      ReactDOM.findDOMNode(this.refs.attrInput).focus()
+      findDOMNode(this.refs.attrInput).focus()
     }
   }
 
@@ -120,7 +120,7 @@ class PlaceListView extends Component {
   }
 
   handleType = () => {
-    const attr = ReactDOM.findDOMNode(this.refs.attrInput).value
+    const attr = findDOMNode(this.refs.attrInput).value
     this.setState({addAttrText: attr})
   }
 
@@ -131,7 +131,7 @@ class PlaceListView extends Component {
   }
 
   saveAttr = () => {
-    const name = ReactDOM.findDOMNode(this.refs.attrInput).value
+    const name = findDOMNode(this.refs.attrInput).value
     this.props.customAttributeActions.addPlaceAttr({name, type: 'text'})
 
     this.setState({addAttrText: ''})

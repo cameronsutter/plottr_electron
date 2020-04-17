@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { Form, FormGroup, FormControl, Button, Modal, InputGroup, Col } from 'react-bootstrap'
 import i18n from 'format-message'
 
 export default class InputModal extends Component {
   handleOK = () => {
-    this.props.getValue(ReactDOM.findDOMNode(this.refs.input).value)
+    this.props.getValue(findDOMNode(this.refs.input).value)
   }
 
   handleChange = () => {

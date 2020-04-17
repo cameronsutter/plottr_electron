@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -41,7 +41,7 @@ class NoteView extends Component {
 
   saveEdit = () => {
     const { note } = this.props
-    let title = ReactDOM.findDOMNode(this.refs.titleInput).value || note.title
+    let title = findDOMNode(this.refs.titleInput).value || note.title
     let content = this.state.content
     let attrs = {title, content}
     if (this.state.newImageId) {

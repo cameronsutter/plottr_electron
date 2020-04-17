@@ -55,6 +55,12 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
     modules: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/expired', 'src/dashboard'],
+    alias: {
+      'lodash': 'lodash-es',
+      'lodash.isequal': 'lodash-es/isEqual',
+      'lodash.debounce': 'lodash-es/debounce',
+      'lodash.pick': 'lodash-es/pick',
+    }
   },
   target: 'electron-renderer',
   externals: [
@@ -72,4 +78,23 @@ module.exports = {
   ],
   plugins: plugins,
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2,
+        },
+        reactIcons: {
+          name: 'reactIcons',
+          chunks: 'all',
+          test (module) {
+            return module.resource && module.resource.includes('react-icons')
+          },
+          filename: '[name].bundle.js'
+        }
+      }
+    }
+  }
 }

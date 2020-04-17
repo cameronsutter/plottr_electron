@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -57,7 +57,7 @@ class CharacterListView extends Component {
 
   componentDidUpdate () {
     if (this.refs.attrInput) {
-      ReactDOM.findDOMNode(this.refs.attrInput).focus()
+      findDOMNode(this.refs.attrInput).focus()
     }
   }
 
@@ -128,7 +128,7 @@ class CharacterListView extends Component {
   }
 
   handleType = () => {
-    const attr = ReactDOM.findDOMNode(this.refs.attrInput).value
+    const attr = findDOMNode(this.refs.attrInput).value
     this.setState({addAttrText: attr})
   }
 
@@ -139,7 +139,7 @@ class CharacterListView extends Component {
   }
 
   saveAttr = () => {
-    const name = ReactDOM.findDOMNode(this.refs.attrInput).value
+    const name = findDOMNode(this.refs.attrInput).value
     this.props.customAttributeActions.addCharacterAttr({name, type: 'text'})
 
     this.setState({addAttrText: ''})

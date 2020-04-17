@@ -1,4 +1,3 @@
-console.time('requires')
 import path from 'path'
 import React from 'react'
 import { render } from 'react-dom'
@@ -16,14 +15,11 @@ import setupRollbar from '../common/utils/rollbar'
 import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
-console.timeEnd('requires')
 
-console.time('i18n setup')
 i18n.setup({
   translations: require('../../locales'),
   locale: app.getLocale() || 'en'
 })
-console.timeEnd('i18n setup')
 
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 const rollbar = setupRollbar('app.html')

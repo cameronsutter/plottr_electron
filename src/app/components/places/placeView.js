@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -53,8 +53,8 @@ class PlaceView extends Component {
   }
 
   saveEdit = () => {
-    var name = ReactDOM.findDOMNode(this.refs.nameInput).value || this.props.place.name
-    var description = ReactDOM.findDOMNode(this.refs.descriptionInput).value
+    var name = findDOMNode(this.refs.nameInput).value || this.props.place.name
+    var description = findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
     var attrs = {}
     if (this.state.newImageId) {
@@ -65,7 +65,7 @@ class PlaceView extends Component {
       if (type == 'paragraph') {
         attrs[name] = this.state.description[name]
       } else {
-        const val = ReactDOM.findDOMNode(this.refs[`${name}Input`]).value
+        const val = findDOMNode(this.refs[`${name}Input`]).value
         attrs[name] = val
       }
     })

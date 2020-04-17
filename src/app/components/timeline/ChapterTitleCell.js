@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -24,7 +24,7 @@ class ChapterTitleCell extends Component {
 
   editTitle = () => {
     const id = this.props.chapter.id
-    const ref = ReactDOM.findDOMNode(this.refs.titleRef)
+    const ref = findDOMNode(this.refs.titleRef)
     if (!ref) return null
 
     if (this.isSeries()) {

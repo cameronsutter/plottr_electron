@@ -57,7 +57,7 @@ const filePrefix = is.macos ? 'file://' + __dirname : __dirname
 
 // auto updates
 let checkedForActiveLicense = false
-let lastCheckedForUpdate = new Date().getTime()
+let lastCheckedForUpdate = 0
 const updateCheckThreshold = 1000 * 60 * 60
 log.transports.file.level = 'info'
 autoUpdater.logger = log
@@ -114,7 +114,7 @@ app.on('open-url', function (event, url) {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (windows.length === 0) {
+  if (!windows.length) {
     checkLicense(() => {})
   }
 })
@@ -122,8 +122,8 @@ app.on('activate', () => {
 app.on('browser-window-focus', () => {
   const currentTime = new Date().getTime()
   if (currentTime - lastCheckedForUpdate > updateCheckThreshold) {
-    checkForUpdates()
     lastCheckedForUpdate = currentTime
+    checkUpdatesIfAllowed()
   }
 })
 
@@ -251,9 +251,13 @@ ipcMain.on('extend-trial', (event, days) => {
       if (expiredWindow) expiredWindow.close()
       DAYS_LEFT += days
       loadMenu()
-      windows.forEach(winObj => {
-        winObj.window.setTitle(displayFileName(winObj.fileName))
-      })
+      if (windows.length) {
+        windows.forEach(winObj => {
+          winObj.window.setTitle(displayFileName(winObj.fileName))
+        })
+      } else {
+        openRecentFiles()
+      }
     }
   })
 })
@@ -298,7 +302,7 @@ app.on('will-quit', () => {
 ///////   FUNCTIONS   //////////
 ////////////////////////////////
 
-function checkForUpdates () {
+function checkUpdatesIfAllowed () {
   if (process.env.NODE_ENV == 'dev') return
   if (TRIALMODE) return
   if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
@@ -309,12 +313,16 @@ function checkForUpdates () {
     checkForActiveLicense(USER_INFO, valid => {
       checkedForActiveLicense = true
       if (valid) {
-        autoUpdater.checkForUpdatesAndNotify()
+        checkForUpdates()
       }
     })
   } else if (SETTINGS.get('premiumFeatures')) {
-    autoUpdater.checkForUpdatesAndNotify()
+    checkForUpdates()
   }
+}
+
+function checkForUpdates () {
+  autoUpdater.checkForUpdatesAndNotify()
 }
 
 function checkLicense (callback) {
@@ -540,8 +548,6 @@ function openWindow (fileName, jsonData) {
     askToOpenOrCreate()
     FileManager.close(fileName)
     newWindow.destroy()
-  } finally {
-    checkForUpdates()
   }
 }
 
@@ -583,7 +589,7 @@ function createAndOpenEmptyFile () {
 
 function openAboutWindow () {
   const aboutFile = path.join(filePrefix, 'about.html')
-  aboutWindow = new BrowserWindow({width: 350, height: 550, show: false, webPreferences: {nodeIntegration: true}})
+  aboutWindow = new BrowserWindow({frame: false, width: 350, height: 550, show: false, webPreferences: {nodeIntegration: true}})
   aboutWindow.loadURL(aboutFile)
   if (SETTINGS.get('forceDevTools')) {
     aboutWindow.openDevTools()
@@ -615,7 +621,7 @@ function openVerifyWindow () {
 function openExpiredWindow () {
   dontquit = true
   const expiredFile = path.join(filePrefix, 'expired.html')
-  expiredWindow = new BrowserWindow({frame: false, height: 500, width: 700, show: false, webPreferences: {nodeIntegration: true}})
+  expiredWindow = new BrowserWindow({height: 600, width: 700, show: false, webPreferences: {nodeIntegration: true}})
   expiredWindow.loadURL(expiredFile)
   if (SETTINGS.get('forceDevTools')) {
     expiredWindow.openDevTools()
@@ -645,7 +651,7 @@ function openDashboardWindow () {
 }
 
 function openBuyWindow () {
-  shell.openExternal("https://gum.co/fgSJ")
+  shell.openExternal("https://getplottr.com/pricing/")
 }
 
 function gracefullyQuit () {
@@ -719,7 +725,8 @@ function buildPlottrMenu () {
     click: openAboutWindow,
   }, {
     label: i18n('Check for updates'),
-    click: checkForUpdates
+    click: checkUpdatesIfAllowed,
+    visible: SETTINGS.get('premiumFeatures'),
   }]
   if (TRIALMODE) {
     submenu = [].concat(submenu, {
@@ -743,20 +750,19 @@ function buildPlottrMenu () {
       type: 'separator',
     })
   }
-  if (!TRIALMODE) {
-    submenu = [].concat(submenu, {
-      label: i18n('View License Key'),
-      click: () => {
-        const licenseKey = USER_INFO.purchase ? USER_INFO.purchase.license_key : USER_INFO.licenseKey
-        if (licenseKey) {
-          const text = i18n('Here is your license key')
-          dialog.showMessageBoxSync({type: 'info', title: text, message: text, detail: licenseKey})
-        } else {
-          dialog.showErrorBox(i18n('Error'), i18n('Could not display license key. Try again'))
-        }
+  submenu = [].concat(submenu, {
+    label: i18n('View License Key'),
+    visible: !TRIALMODE,
+    click: () => {
+      const licenseKey = USER_INFO.licenseKey
+      if (licenseKey) {
+        const text = i18n('Here is your license key')
+        dialog.showMessageBoxSync({type: 'info', title: text, message: text, detail: licenseKey})
+      } else {
+        dialog.showErrorBox(i18n('Error'), i18n('Could not display license key. Try again'))
       }
-    })
-  }
+    }
+  })
   if (is.macos) {
     submenu = [].concat(submenu, {
       type: 'separator'

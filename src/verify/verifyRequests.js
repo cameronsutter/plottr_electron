@@ -1,7 +1,7 @@
 import request from 'request'
 import { machineIdSync } from 'node-machine-id'
 
-const BASE_URL = 'http://plottr.flywheelsites.com'
+const BASE_URL = 'http://getplottr.com'
 const PRODUCT_ID = '10333'
 const SUBSCRIPTION_ID = '10333'
 const MACHINE_ID = machineIdSync(true)

@@ -1,11 +1,9 @@
-import request from 'request'
 import storage from 'electron-json-storage'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import i18n from 'format-message'
-import { machineIdSync } from 'node-machine-id'
 import { getLicenseInfo } from './verifyRequests'
 import SETTINGS from '../common/utils/settings'
 
@@ -96,7 +94,7 @@ class VerifyView extends Component {
 
   saveInfo = (info, callback) => {
     SETTINGS.set('premiumFeatures', true)
-    storage.set('user_info', info, callback)
+    storage.set('license_info', info, callback)
   }
 
   handleVerify () {

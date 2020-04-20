@@ -44,8 +44,8 @@ export default class ExpiredView extends Component {
   renderChoices () {
     if (this.state.canExtend) {
       return <div className='expired__chooser'>
-        <div className='expired__choice' onClick={this.buy}>
-          <h2>{i18n('I want to buy the full version!')}</h2>
+        <div className='expired__choice' onClick={this.verify}>
+          <h2>{i18n('I have a license key')}</h2>
         </div>
         <div className='expired__choice' onClick={() => this.setState({view: 'ad'})}>
           <h2>{i18n('Can I have a few more days?')}</h2>

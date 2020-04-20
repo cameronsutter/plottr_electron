@@ -4,7 +4,7 @@ import i18n from 'format-message'
 
 export default class AdView extends Component {
   state = {
-    countdown: 15, //if this changes, you have to change the animation length in expired_window.css.scss
+    countdown: 10, //if this changes, you have to change the animation length in expired_window.css.scss ~ line 79
     timesUp: false
   }
   interval = null

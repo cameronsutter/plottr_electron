@@ -5,7 +5,7 @@ const rollbar = setupRollbar('license_checker')
 const { machineIdSync } = require('node-machine-id')
 const SETTINGS = require('./settings')
 
-const BASE_URL = 'http://plottr.flywheelsites.com'
+const BASE_URL = 'http://getplottr.com'
 const PRODUCT_ID = '10333'
 const SUBSCRIPTION_ID = '10333'
 

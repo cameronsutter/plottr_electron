@@ -2,7 +2,7 @@ const { app } = require('electron')
 const path = require('path')
 
 const TRIAL_INFO_PATH = 'trial_info'
-const USER_INFO_PATH = 'user_info'
+const USER_INFO_PATH = 'license_info'
 const OPEN_FILES_PATH = 'open_files'
 const KNOWN_FILES_PATH = 'known_files'
 const TEMPLATES_MANIFEST_PATH = 'templates_manifest'

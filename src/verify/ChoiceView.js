@@ -2,11 +2,22 @@ import React, { Component } from 'react'
 import { ipcRenderer } from 'electron'
 import { Button } from 'react-bootstrap'
 import i18n from 'format-message'
+import storage from 'electron-json-storage'
 import VerifyView from './VerifyView'
 
 export default class ChoiceView extends Component {
   state = {
-    view: process.env.TRIALMODE === 'true' ? 'verify' : 'chooser'
+    view: 'verify',
+  }
+
+  componentWillMount () {
+    this.checkTrialInfo()
+  }
+
+  checkTrialInfo = () => {
+    storage.has('trial_info', (err, hasKey) => {
+      if (err || !hasKey) this.setState({view: 'chooser'})
+    })
   }
 
   startFreeTrial = () => {

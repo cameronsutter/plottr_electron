@@ -1,12 +1,12 @@
 var storage = require('electron-json-storage')
 
-const USER_INFO_PATH = 'user_info'
+const USER_INFO_PATH = 'license_info'
 const fakeData = {
   "licenseKey": "e896854d5c786fb9b6b192b1736532bf",
   "success": true,
   "license": "valid",
   "item_id": 10333,
-  "item_name": "Plottr &#8211; Install Files",
+  "item_name": "Plottr — Desktop",
   "license_limit": 3,
   "site_count": 1,
   "expires": "2021-04-08 23:59:59",

@@ -87,13 +87,11 @@ class Navigation extends Component {
 
 Navigation.propTypes = {
   ui: PropTypes.object.isRequired,
-  file: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
-    file: state.file,
     ui: state.ui,
   }
 }

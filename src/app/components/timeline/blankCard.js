@@ -54,9 +54,8 @@ class BlankCard extends Component {
     var json = e.dataTransfer.getData('text/json')
     var droppedCard = JSON.parse(json)
     if (droppedCard.id === null || droppedCard.id === undefined) return
-    console.log(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
 
-    // this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
+    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
   }
 
   saveCreate = () => {

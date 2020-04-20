@@ -490,6 +490,91 @@
   ],
   "chapters": [
     {
+      "bookId": 2,
+      "id": 1,
+      "position": 0,
+      "templates": [],
+      "time": 0,
+      "title": "The Ordinary World"
+    },
+    {
+      "bookId": 2,
+      "id": 2,
+      "position": 1,
+      "time": 0,
+      "title": "The Call of Adventure"
+    },
+    {
+      "bookId": 2,
+      "id": 3,
+      "position": 2,
+      "time": 0,
+      "title": "Refusal of the Call"
+    },
+    {
+      "bookId": 2,
+      "id": 4,
+      "position": 3,
+      "time": 0,
+      "title": "Meeting the Mentor"
+    },
+    {
+      "bookId": 2,
+      "id": 5,
+      "position": 4,
+      "time": 0,
+      "title": "Crossing the First Threshold"
+    },
+    {
+      "bookId": 2,
+      "id": 6,
+      "position": 5,
+      "time": 0,
+      "title": "Test, Allies, Enemies"
+    },
+    {
+      "bookId": 2,
+      "id": 7,
+      "position": 6,
+      "time": 0,
+      "title": "Approach to the Inmose Cave"
+    },
+    {
+      "bookId": 2,
+      "id": 8,
+      "position": 7,
+      "time": 0,
+      "title": "The Ordeal"
+    },
+    {
+      "bookId": 2,
+      "id": 9,
+      "position": 8,
+      "time": 0,
+      "title": "Reward (Seizing the Sword)"
+    },
+    {
+      "bookId": 2,
+      "id": 10,
+      "position": 9,
+      "time": 0,
+      "title": "The Road Back"
+    },
+    {
+      "bookId": 2,
+      "id": 11,
+      "position": 10,
+      "time": 0,
+      "title": "Resurrection"
+    },
+    {
+      "bookId": 2,
+      "id": 12,
+      "position": 11,
+      "time": 0,
+      "title": "Return with the Elixir"
+    },
+    {
       "id": 116,
       "bookId": 1,
       "position": 0,
@@ -880,91 +965,6 @@
       "title": "auto",
       "time": 0,
       "templates": []
-    },
-    {
-      "bookId": 2,
-      "id": 1,
-      "position": 0,
-      "templates": [],
-      "time": 0,
-      "title": "The Ordinary World"
-    },
-    {
-      "bookId": 2,
-      "id": 2,
-      "position": 1,
-      "time": 0,
-      "title": "The Call of Adventure"
-    },
-    {
-      "bookId": 2,
-      "id": 3,
-      "position": 2,
-      "time": 0,
-      "title": "Refusal of the Call"
-    },
-    {
-      "bookId": 2,
-      "id": 4,
-      "position": 3,
-      "time": 0,
-      "title": "Meeting the Mentor"
-    },
-    {
-      "bookId": 2,
-      "id": 5,
-      "position": 4,
-      "time": 0,
-      "title": "Crossing the First Threshold"
-    },
-    {
-      "bookId": 2,
-      "id": 6,
-      "position": 5,
-      "time": 0,
-      "title": "Test, Allies, Enemies"
-    },
-    {
-      "bookId": 2,
-      "id": 7,
-      "position": 6,
-      "time": 0,
-      "title": "Approach to the Inmose Cave"
-    },
-    {
-      "bookId": 2,
-      "id": 8,
-      "position": 7,
-      "time": 0,
-      "title": "The Ordeal"
-    },
-    {
-      "bookId": 2,
-      "id": 9,
-      "position": 8,
-      "time": 0,
-      "title": "Reward (Seizing the Sword)"
-    },
-    {
-      "bookId": 2,
-      "id": 10,
-      "position": 9,
-      "time": 0,
-      "title": "The Road Back"
-    },
-    {
-      "bookId": 2,
-      "id": 11,
-      "position": 10,
-      "time": 0,
-      "title": "Resurrection"
-    },
-    {
-      "bookId": 2,
-      "id": 12,
-      "position": 11,
-      "time": 0,
-      "title": "Return with the Elixir"
     }
   ],
   "cards": [
@@ -2413,7 +2413,7 @@
       "chapterId": 98,
       "lineId": 27,
       "beatId": null,
-      "bookId": 1,
+      "bookId": null,
       "seriesLineId": null,
       "position": 0
     },

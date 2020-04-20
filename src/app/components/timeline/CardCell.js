@@ -59,6 +59,7 @@ class CardCell extends Component {
     </Popover>
   }
 
+  // TODO: this should be a selector
   hasDetailsToShow () {
     const { card } = this.props
 
@@ -93,9 +94,9 @@ class CardCell extends Component {
     if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
-        placement = this.props.chapterPosition <= 1 ? 'right' : placement
+        placement = Number(this.props.chapterPosition) <= 1 ? 'right' : placement
       } else {
-        placement = this.props.linePosition <= 1 ? 'right' : placement
+        placement = Number(this.props.linePosition) <= 1 ? 'right' : placement
       }
       if (isZoomed(this.props.ui)) placement = 'right'
       title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
@@ -146,25 +147,14 @@ CardCell.propTypes = {
   filtered: PropTypes.bool.isRequired,
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
-  linePosition: PropTypes.number.isRequired,
-  chapterPosition: PropTypes.number.isRequired
+  linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
 }
 
 function mapStateToProps (state, ownProps) {
-  let line
-  let chapter
-  if (state.ui.currentTimeline == 'series') {
-    line = state.seriesLines.find(l => l.id === ownProps.lineId)
-    chapter = state.beats.find(b => b.id === ownProps.chapterId)
-  } else {
-    line = state.lines.find(l => l.id === ownProps.lineId)
-    chapter = state.chapters.find(s => s.id === ownProps.chapterId)
-  }
   return {
     tags: state.tags,
     ui: state.ui,
-    linePosition: line.position,
-    chapterPosition: chapter.position,
   }
 }
 

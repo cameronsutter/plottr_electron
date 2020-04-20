@@ -10,6 +10,7 @@ import i18n from 'format-message'
 import TimelineTab from '../components/timeline/TimelineTab'
 import SeriesTab from '../components/story/SeriesTab'
 import ExportTab from '../components/export/ExportTab'
+import Spinner from '../components/Spinner'
 
 class Body extends Component {
   render () {
@@ -48,8 +49,7 @@ class Body extends Component {
   }
 
   renderLoading () {
-    console.log('loading')
-    return <p>{i18n('Loading...')}</p>
+    return <Spinner/>
   }
 
 }

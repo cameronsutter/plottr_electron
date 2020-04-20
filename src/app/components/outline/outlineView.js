@@ -8,23 +8,24 @@ import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
 import cx from 'classnames'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { linesByBookSelector } from '../../selectors/lines'
+import { sortedLinesByBookSelector } from '../../selectors/lines'
+import { isSeriesSelector } from '../../selectors/ui'
+import Spinner from '../Spinner'
 
 class OutlineView extends Component {
   constructor (props) {
     super(props)
-    this.state = {active: 0, currentLine: null}
+    this.state = {active: 0, currentLine: null, mounted: false}
   }
 
-  isSeries = () => {
-    return this.props.ui.currentTimeline == 'series'
+  componentDidMount () {
+    setTimeout(() => this.setState({mounted: true}), 100)
   }
 
   // TODO: this could be a selector ... maybe
   cardMapping () {
-    const lines = _.sortBy(this.props.lines, 'position')
     return this.props.chapters.reduce((acc, ch) => {
-      acc[ch.id] = this.sortedChapterCards(lines, ch.id)
+      acc[ch.id] = this.sortedChapterCards(this.props.lines, ch.id)
       return acc
     }, {})
   }
@@ -46,7 +47,7 @@ class OutlineView extends Component {
 
   findCards = (chapterId, lineId) => {
     return this.props.cards.filter(c => {
-      if (this.isSeries()) {
+      if (this.props.isSeries) {
         return c.beatId == chapterId && c.seriesLineId == lineId
       } else {
         return c.chapterId === chapterId && c.lineId == lineId
@@ -122,17 +123,25 @@ class OutlineView extends Component {
     )
   }
 
-  render () {
-    var cardMapping = this.cardMapping()
-    return <div className='container-with-sub-nav'>
-      {this.renderSubNav()}
-      <div className='outline__container'>
+  renderBody () {
+    if (this.state.mounted) {
+      var cardMapping = this.cardMapping()
+      return <div className='outline__container'>
         <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
         <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />
         <div className='outline__scenes-container'>
           {this.renderChapters(cardMapping)}
         </div>
       </div>
+    } else {
+      return <Spinner/>
+    }
+  }
+
+  render () {
+    return <div className='container-with-sub-nav'>
+      { this.renderSubNav() }
+      { this.renderBody() }
     </div>
   }
 }
@@ -142,14 +151,16 @@ OutlineView.propTypes = {
   lines: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
+  isSeries: PropTypes.bool,
 }
 
 function mapStateToProps (state) {
   return {
     chapters: sortedChaptersByBookSelector(state),
-    lines: linesByBookSelector(state),
+    lines: sortedLinesByBookSelector(state),
     cards: state.cards,
     ui: state.ui,
+    isSeries: isSeriesSelector(state),
   }
 }
 

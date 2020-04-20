@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
@@ -10,16 +10,13 @@ import * as BeatActions from 'actions/beats'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 import { chapterTitle, editingChapterLabel } from '../../helpers/chapters'
+import { isSeriesSelector } from '../../selectors/ui'
 
-class ChapterTitleCell extends Component {
+class ChapterTitleCell extends PureComponent {
   constructor (props) {
     super(props)
     let editing = props.chapter.title == ''
     this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
-  }
-
-  isSeries = () => {
-    return this.props.ui.currentTimeline == 'series'
   }
 
   editTitle = () => {
@@ -27,7 +24,7 @@ class ChapterTitleCell extends Component {
     const ref = findDOMNode(this.refs.titleRef)
     if (!ref) return null
 
-    if (this.isSeries()) {
+    if (this.props.isSeries) {
       if (ref.value != '') {
         this.props.beatActions.editBeatTitle(id, ref.value)
         this.setState({editing: false, hovering: false})
@@ -86,7 +83,7 @@ class ChapterTitleCell extends Component {
   handleDelete = () => {
     let label = i18n("Do you want to delete this chapter: { title }?", {title: chapterTitle(this.props.chapter)})
     if (window.confirm(label)) {
-      if (this.isSeries()) {
+      if (this.props.isSeries) {
         this.props.beatActions.deleteBeat(this.props.chapter.id)
       } else {
         this.props.actions.deleteScene(this.props.chapter.id, this.props.ui.currentTimeline)
@@ -116,10 +113,10 @@ class ChapterTitleCell extends Component {
 
   renderTitle () {
     const { chapter } = this.props
-    if (!this.state.editing) return <span>{chapterTitle(chapter, this.isSeries())}</span>
+    if (!this.state.editing) return <span>{chapterTitle(chapter, this.props.isSeries)}</span>
 
     return (<FormGroup>
-      <ControlLabel>{editingChapterLabel(chapter, this.isSeries())}</ControlLabel>
+      <ControlLabel>{editingChapterLabel(chapter, this.props.isSeries)}</ControlLabel>
       <FormControl
         type='text'
         defaultValue={chapter.title}
@@ -169,12 +166,14 @@ ChapterTitleCell.propTypes = {
   actions: PropTypes.object.isRequired,
   beatActions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  isSeries: PropTypes.bool,
   chapters: PropTypes.array,
 }
 
 function mapStateToProps (state) {
   return {
     ui: state.ui,
+    isSeries: isSeriesSelector(state),
     chapters: state.chapters,
   }
 }

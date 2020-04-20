@@ -15,7 +15,7 @@ import cx from 'classnames'
 import RichText from '../rce/RichText'
 import { chapterTitle } from '../../helpers/chapters'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { linesByBookSelector } from '../../selectors/lines'
+import { sortedLinesByBookSelector } from '../../selectors/lines'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -108,8 +108,7 @@ class CardDialog extends Component {
   }
 
   renderLineItems () {
-    var lines = _.sortBy(this.props.lines, 'position')
-    return lines.map((line) => {
+    return this.props.lines.map((line) => {
       return (<MenuItem key={line.id} onSelect={() => this.changeLine(line.id)}>
         {line.title}
       </MenuItem>)
@@ -272,7 +271,7 @@ CardDialog.propTypes = {
 function mapStateToProps (state) {
   return {
     chapters: sortedChaptersByBookSelector(state),
-    lines: linesByBookSelector(state),
+    lines: sortedLinesByBookSelector(state),
     tags: state.tags,
     characters: state.characters,
     places: state.places,

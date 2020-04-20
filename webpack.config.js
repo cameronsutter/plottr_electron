@@ -7,9 +7,9 @@ var plugins = [
   new webpack.DefinePlugin({'__REACT_DEVTOOLS_GLOBAL_HOOK__': '({ isDisabled: true })'}),
 ]
 
-if (process.env.NODE_ENV == 'dev') {
-  plugins.push(new BundleAnalyzerPlugin())
-}
+// if (process.env.NODE_ENV == 'dev') {
+//   plugins.push(new BundleAnalyzerPlugin())
+// }
 
 if (process.env.NODE_ENV !== 'dev') {
   plugins.push(new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')}))

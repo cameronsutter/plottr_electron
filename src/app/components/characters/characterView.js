@@ -171,7 +171,7 @@ class CharacterView extends Component {
             <ControlLabel>{attr.name}</ControlLabel>
             <RichText
               description={attr.value}
-              onChange={(desc) => handleTemplateAttrDescriptionChange(t.id, attr.name, desc)}
+              onChange={(desc) => this.handleTemplateAttrDescriptionChange(t.id, attr.name, desc)}
               editable
               autofocus={false}
               darkMode={this.props.ui.darkMode}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
@@ -11,7 +11,7 @@ import ColorPicker from '../colorpicker'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
-class LineTitleCell extends Component {
+class LineTitleCell extends PureComponent {
   constructor (props) {
     super(props)
     this.state = {

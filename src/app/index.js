@@ -9,7 +9,7 @@ const { Menu, MenuItem } = remote
 const win = remote.getCurrentWindow()
 const app = remote.app
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
-import { init } from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser'
 import { MPQ, setTrialInfo } from 'middlewares/helpers'
 import setupRollbar from '../common/utils/rollbar'
 import log from 'electron-log'
@@ -31,23 +31,18 @@ if (process.env.NODE_ENV !== 'development') {
   })
 }
 
-// mixpanel
-init('507cb4c0ee35b3bde61db304462e9351')
+mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
 
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
-console.time('store')
 const store = configureStore()
-console.timeEnd('store')
 
 ipcRenderer.on('state-saved', (_arg) => {
   store.dispatch(fileSaved())
 })
 
-console.time('state')
 ipcRenderer.send('fetch-state', win.id)
 ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFiles) => {
-  console.timeLog('state')
   if (state && Object.keys(state).length > 0) {
     store.dispatch(loadFile(fileName, dirty, state))
     MPQ.push('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles, new_file: false})
@@ -68,7 +63,6 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
     </Provider>,
     root
   )
-  console.timeEnd('state')
 })
 
 ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) => {

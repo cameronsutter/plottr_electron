@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
@@ -6,7 +6,7 @@ import CardSVGline from 'components/timeline/CardSVGline'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
-export default class ChapterInsertCell extends Component {
+export default class ChapterInsertCell extends PureComponent {
   render () {
     const { chapterPosition, lineId, isInChapterList, handleInsert, needsSVGline, color, orientation, isLast } = this.props
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)

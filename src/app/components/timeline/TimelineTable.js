@@ -23,7 +23,7 @@ import AddLineRow from './AddLineRow'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { linesByBookSelector } from '../../selectors/lines'
+import { sortedLinesByBookSelector } from '../../selectors/lines'
 
 class TimelineTable extends Component {
 
@@ -91,14 +91,16 @@ class TimelineTable extends Component {
 
   // TODO: this should be a selector
   chapterMapping () {
-    return this.props.chapters.reduce((acc, chapter) => {
+    const thing = this.props.chapters.reduce((acc, chapter) => {
       acc[chapter.position] = chapter.id
       return acc
     }, {})
+    return thing
   }
 
   // TODO: this should be a selector
   lineMapping () {
+    console.log('mapping lines')
     return this.props.lines.reduce((acc, line) => {
       acc[line.position] = line
       return acc
@@ -137,8 +139,7 @@ class TimelineTable extends Component {
 
   renderLines () {
     const chapterMap = this.chapterMapping()
-    const lines = _.sortBy(this.props.lines, 'position')
-    return lines.map(line => {
+    return this.props.lines.map(line => {
       return <Row key={`lineId-${line.id}`}>
         <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>
         { this.renderCardsByChapter(line, chapterMap) }
@@ -193,6 +194,7 @@ class TimelineTable extends Component {
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
           chapterId={chapterId} lineId={line.id}
+          chapterPosition={chapterPosition} linePosition={line.position}
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
@@ -216,6 +218,7 @@ class TimelineTable extends Component {
         cells.push(<CardCell
           key={`cardId-${card.id}`} card={card}
           chapterId={chapter.id} lineId={line.id}
+          chapterPosition={chapter.position} linePosition={linePosition}
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard chapterId={chapter.id} lineId={line.id}
@@ -265,7 +268,7 @@ function mapStateToProps (state) {
   return {
     chapters: sortedChaptersByBookSelector(state),
     nextChapterId: nextChapterId,
-    lines: linesByBookSelector(state),
+    lines: sortedLinesByBookSelector(state),
     cards: state.cards,
     ui: state.ui,
   }

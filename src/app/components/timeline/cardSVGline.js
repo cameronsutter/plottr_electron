@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 
-export default class CardSVGline extends Component {
+export default class CardSVGline extends PureComponent {
   static propTypes = {
     color: PropTypes.string.isRequired,
     orientation: PropTypes.string.isRequired,

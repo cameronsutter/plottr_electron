@@ -1,11 +1,9 @@
 import _ from 'lodash'
 
 export function reorderList (originalPosition, newPosition, list) {
-  // TODO: shouldn't have to do this here. It should already be sorted
-  const sortedList = _.sortBy(list, 'position')
-  const [removed] = sortedList.splice(newPosition, 1)
-  sortedList.splice(originalPosition, 0, removed)
-  return sortedList
+  const [removed] = list.splice(newPosition, 1)
+  list.splice(originalPosition, 0, removed)
+  return list
 }
 
 export function nextPosition (arr) {

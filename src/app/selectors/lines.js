@@ -1,3 +1,4 @@
+import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
 import { currentTimelineSelector } from './ui'
 import { allSeriesLinesSelector } from './seriesLines'
@@ -15,4 +16,9 @@ export const linesByBookSelector = createSelector(
       return lines.filter(l => l.bookId == bookId)
     }
   }
+)
+
+export const sortedLinesByBookSelector = createSelector(
+  linesByBookSelector,
+  (lines) => sortBy(lines, 'position')
 )

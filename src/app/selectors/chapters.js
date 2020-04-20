@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
 import { currentTimelineSelector } from './ui'
 import { allBeatsSelector } from './beats'
@@ -20,5 +20,5 @@ export const chaptersByBookSelector = createSelector(
 
 export const sortedChaptersByBookSelector = createSelector(
   chaptersByBookSelector,
-  (chapters) => _.sortBy(chapters, 'position')
+  (chapters) => sortBy(chapters, 'position')
 )

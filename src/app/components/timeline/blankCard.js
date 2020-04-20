@@ -9,6 +9,7 @@ import CardSVGline from 'components/timeline/CardSVGline'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import { card } from '../../../../shared/initialState'
+import { isSeriesSelector } from '../../selectors/ui'
 
 class BlankCard extends Component {
   constructor (props) {
@@ -20,10 +21,6 @@ class BlankCard extends Component {
     }
     this.dragLeaveTimeout = null
     this.dragOverTimeout = null
-  }
-
-  isSeries = () => {
-    return this.props.ui.currentTimeline == 'series'
   }
 
   componentWillUnmount() {
@@ -57,8 +54,9 @@ class BlankCard extends Component {
     var json = e.dataTransfer.getData('text/json')
     var droppedCard = JSON.parse(json)
     if (droppedCard.id === null || droppedCard.id === undefined) return
+    console.log(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
 
-    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.ui.currentTimeline)
+    // this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
   }
 
   saveCreate = () => {
@@ -75,7 +73,7 @@ class BlankCard extends Component {
 
   buildCard (title) {
     const { chapterId, lineId } = this.props
-    if (this.isSeries()) {
+    if (this.props.isSeries) {
       return Object.assign({}, card, { title, beatId: chapterId, seriesLineId: lineId })
     } else {
       return Object.assign({}, card, { title, chapterId, lineId })
@@ -147,7 +145,7 @@ class BlankCard extends Component {
         onDrop={this.handleDrop}
         onClick={() => this.setState({creating: true})}
       >
-        <CardSVGline color={this.props.color} orientation={this.props.ui.orientation}/>
+        <CardSVGline color={this.props.color} orientation={this.props.orientation}/>
         {body}
       </div>
     </Cell>
@@ -155,28 +153,19 @@ class BlankCard extends Component {
 }
 
 BlankCard.propTypes = {
-  chapterId: PropTypes.number.isRequired,
-  lineId: PropTypes.number.isRequired,
+  chapterId: PropTypes.number,
+  lineId: PropTypes.number,
   color: PropTypes.string.isRequired,
-  ui: PropTypes.object.isRequired,
-  linePosition: PropTypes.number.isRequired,
-  chapterPosition: PropTypes.number.isRequired
+  currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  orientation: PropTypes.string,
+  isSeries: PropTypes.bool,
 }
 
-function mapStateToProps (state, ownProps) {
-  let line
-  let chapter
-  if (state.ui.currentTimeline == 'series') {
-    line = state.seriesLines.find(l => l.id === ownProps.lineId)
-    chapter = state.beats.find(b => b.id === ownProps.chapterId)
-  } else {
-    line = state.lines.find(l => l.id === ownProps.lineId)
-    chapter = state.chapters.find(s => s.id === ownProps.chapterId)
-  }
+function mapStateToProps (state) {
   return {
-    ui: state.ui,
-    linePosition: line.position,
-    chapterPosition: chapter.position,
+    currentTimeline: state.ui.currentTimeline,
+    orientation: state.ui.orientation,
+    isSeries: isSeriesSelector(state),
   }
 }
 

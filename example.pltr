@@ -25,7 +25,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.16-beta.1"
+    "version": "2020.4.17-beta"
   },
   "places": [
     {
@@ -2398,7 +2398,6 @@
       ],
       "id": 145,
       "imageId": null,
-      "lineId": 27,
       "places": [
         1,
         2
@@ -2412,8 +2411,9 @@
       "templates": [],
       "title": "The Last Great War",
       "chapterId": 98,
+      "lineId": 27,
       "beatId": null,
-      "bookId": null,
+      "bookId": 1,
       "seriesLineId": null,
       "position": 0
     },

@@ -13,6 +13,7 @@ import TimelineTable from './TimelineTable'
 import { computeZoom } from 'helpers/zoom'
 import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
+import Spinner from '../Spinner'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -27,6 +28,7 @@ class TimelineWrapper extends Component {
       scrollLeft: 0,
       scrollTarget: 0,
       manualScroll: false,
+      mounted: false,
     }
     this.tableRef = null
   }
@@ -39,6 +41,7 @@ class TimelineWrapper extends Component {
     } else {
       this.updateZoom(this.props.ui)
     }
+    setTimeout(() => this.setState({mounted: true}), 100)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -277,16 +280,21 @@ class TimelineWrapper extends Component {
     )
   }
 
+  renderBody () {
+    if (this.state.mounted) {
+      return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} />
+    } else {
+      return <Spinner/>
+    }
+  }
+
   render () {
     const { ui } = this.props
     return <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
       {this.renderSubNav()}
       <div id='timelineview__root'>
         <StickyTable wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
-          <TimelineTable
-            filter={this.state.filter}
-            filterIsEmpty={this.filterIsEmpty()}
-          />
+          { this.renderBody() }
         </StickyTable>
       </div>
     </div>

@@ -16,7 +16,7 @@ import { insertChapter } from 'helpers/chapters'
 import orientedClassName from 'helpers/orientedClassName'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { linesByBookSelector } from '../../selectors/lines'
+import { sortedLinesByBookSelector } from '../../selectors/lines'
 
 class TopRow extends Component {
 
@@ -89,8 +89,7 @@ class TopRow extends Component {
   }
 
   renderLines () {
-    const lines = _.sortBy(this.props.lines, 'position')
-    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>)
+    const renderedLines = this.props.lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>)
     return [<Cell key='placeholder'/>].concat(renderedLines).concat(
       <Row key='insert-line'>
         <Cell>
@@ -137,7 +136,7 @@ function mapStateToProps (state) {
     ui: state.ui,
     chapters: sortedChaptersByBookSelector(state),
     nextChapterId: nextChapterId,
-    lines: linesByBookSelector(state),
+    lines: sortedLinesByBookSelector(state),
   }
 }
 

@@ -1,4 +1,4 @@
-import { track } from 'mixpanel-browser'
+import mixpanel from 'mixpanel-browser'
 import { remote } from 'electron'
 const screen = remote.screen
 
@@ -46,7 +46,7 @@ class MixpanelQueue {
       let event = this.queue.shift()
       if (event && process.env.NODE_ENV !== 'dev') {
         var attrs = Object.assign({}, event.attributes, this.superProps)
-        track(event.title, attrs)
+        mixpanel.track(event.title, attrs)
       }
     } while (this.queue.length > 0)
   }

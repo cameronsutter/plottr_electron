@@ -368,8 +368,8 @@ function displayFileName (path) {
 
 function openRecentFiles () {
   // open-file for windows
-  if (process.platform === 'win32' && process.argv.length == 2) {
-    const param = process.argv.slice(1)
+  if (is.windows && process.argv.length == 2) {
+    const param = process.argv[1]
 
     if (param.includes('.pltr')) {
       openWindow(param)

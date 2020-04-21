@@ -161,7 +161,6 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
 
 ipcMain.on('fetch-state', function (event, id) {
   var win = _.find(windows, {id: id})
-  win.window.setProgressBar(0.99)
   win.window.setTitle(displayFileName(win.fileName))
   win.window.setRepresentedFilename(win.fileName)
 
@@ -171,7 +170,6 @@ ipcMain.on('fetch-state', function (event, id) {
 
     win.lastSave = json
     win.state = json
-    win.window.setProgressBar(-1)
     if (win.window.isVisible()) {
       event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
     } else {
@@ -473,16 +471,13 @@ function openWindow (fileName, jsonData) {
   // and restore the maximized or full screen state
   stateKeeper.manage(newWindow)
 
-  newWindow.setProgressBar(0.1)
 
   // and load the app.html of the app.
   const entryFile = path.join(filePrefix, 'app.html')
   newWindow.loadURL(entryFile)
 
-  newWindow.setProgressBar(0.2)
 
   newWindow.once('ready-to-show', function() {
-    this.setProgressBar(0.75)
     this.show()
   })
 
@@ -524,11 +519,9 @@ function openWindow (fileName, jsonData) {
     }
   })
 
-  newWindow.setProgressBar(0.4)
 
   try {
     let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
-    newWindow.setProgressBar(0.5)
     app.addRecentDocument(fileName)
     FileManager.open(fileName)
 
@@ -539,7 +532,6 @@ function openWindow (fileName, jsonData) {
       state: json,
       lastSave: json
     })
-    newWindow.setProgressBar(0.6)
     newWindow.setTitle(displayFileName(fileName))
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {

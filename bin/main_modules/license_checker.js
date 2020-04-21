@@ -71,8 +71,8 @@ function findActiveSubscription (body) {
 }
 
 function licenseURL (license) {
-  let url = apiURL()
-  url += `&edd_action=check_license&item_id=${PRODUCT_ID}&license=${license}`
+  let url = `${BASE_URL}/`
+  url += `?edd_action=check_license&item_id=${PRODUCT_ID}&license=${license}`
   url += `&url=${machineIdSync(true)}`
   return url
 }
@@ -83,9 +83,10 @@ function subscriptionURL (email) {
   return url
 }
 
-function apiURL (path = '') {
-  return `${BASE_URL}/edd-api${path}?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
-}
+// NOTE: only needed for non-license api calls
+// function apiURL (path = '') {
+//   return `${BASE_URL}/edd-api${path}?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
+// }
 
 function makeRequest (url) {
   return {

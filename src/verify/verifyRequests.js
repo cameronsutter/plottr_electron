@@ -10,17 +10,11 @@ const MACHINE_ID = machineIdSync(true)
 
 // callback(error, valid, data)
 export function getLicenseInfo (license, callback) {
-  console.log('machineID', MACHINE_ID)
   const req = makeRequest(licenseURL(license))
-  console.log('URL', licenseURL(license))
   request(req, (err, response, body) => {
     if (process.env.NODE_ENV === 'development') {
       console.log(body)
     }
-    console.group('Request')
-    console.log(body)
-    console.log(err)
-    console.groupEnd()
 
     if (err) {
       if (process.env.NODE_ENV === 'development') {

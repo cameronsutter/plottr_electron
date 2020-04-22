@@ -6,11 +6,10 @@ import TagsTab from 'components/tag/TagsTab'
 import CharactersTab from 'components/characters/CharactersTab'
 import PlacesTab from 'components/places/PlacesTab'
 import NotesTab from 'components/notes/NotesTab'
-import i18n from 'format-message'
 import TimelineTab from '../components/timeline/TimelineTab'
 import SeriesTab from '../components/story/SeriesTab'
 import ExportTab from '../components/export/ExportTab'
-import Spinner from '../components/Spinner'
+import { Spinner } from '../components/Spinner'
 
 class Body extends Component {
   render () {

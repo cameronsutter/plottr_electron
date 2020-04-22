@@ -13,7 +13,7 @@ import TimelineTable from './TimelineTable'
 import { computeZoom } from 'helpers/zoom'
 import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
-import Spinner from '../Spinner'
+import { FunSpinner } from '../Spinner'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -284,7 +284,7 @@ class TimelineWrapper extends Component {
     if (this.state.mounted) {
       return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} />
     } else {
-      return <Spinner/>
+      return <FunSpinner/>
     }
   }
 

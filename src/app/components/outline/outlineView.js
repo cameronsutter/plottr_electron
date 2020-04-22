@@ -10,7 +10,7 @@ import cx from 'classnames'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
-import Spinner from '../Spinner'
+import { FunSpinner } from '../Spinner'
 
 class OutlineView extends Component {
   constructor (props) {
@@ -134,7 +134,7 @@ class OutlineView extends Component {
         </div>
       </div>
     } else {
-      return <Spinner/>
+      return <FunSpinner/>
     }
   }
 

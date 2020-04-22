@@ -49,7 +49,6 @@ class CardView extends Component {
 
     if (this.state.editing) {
       return <FormGroup>
-        <ControlLabel>{i18n('title')}</ControlLabel>
         <FormControl
           onKeyPress={this.handleEnter}
           onKeyDown={this.handleEsc}
@@ -58,14 +57,14 @@ class CardView extends Component {
           defaultValue={title} />
       </FormGroup>
     } else {
-      return <h6 onClick={() => this.setState({editing: true})}>{title}</h6>
+      return <h6>{title}</h6>
     }
   }
 
   renderDescription () {
     const { description } = this.props.card
     return (
-      <div className='outline__description__editing' onClick={this.editOnClick}>
+      <div className='outline__description__editing'>
         <RichText
           className='outline__description'
           onChange={(desc) => this.setState({description: desc})}
@@ -96,7 +95,6 @@ class CardView extends Component {
 
   renderChipCloud (ids, list) {
     if (!ids.length) return null
-    const { images } = this.props
 
     const chips = ids.map((id, idx) => {
       const thing = _.find(list, {id: id})
@@ -131,12 +129,14 @@ class CardView extends Component {
   render () {
     const { line, ui } = this.props
     const style = {color: line.color}
-    const klasses = cx('outline__card', {darkmode: ui.darkMode})
     return (
-      <div className={klasses}>
-        <div style={style} className='outline__card__line-title'>{line.title}</div>
-        { this.renderTitle() }
-        { this.renderDescription() }
+      <div className={cx('outline__card', {darkmode: ui.darkMode})}>
+        <div className={cx('outline__card__inner', {editing: this.state.editing})} onClick={this.editOnClick}>
+          <div style={style} className='outline__card__line-title'>{line.title}</div>
+          { this.renderTitle() }
+          { this.renderDescription() }
+          <Glyphicon glyph='pencil' />
+        </div>
         { this.renderDivider() }
         <div className='outline__card__label-list'>
           { this.renderTags() }

@@ -46,12 +46,14 @@
   border-radius: $input-border-radius;
   padding: 10px 12px;
   font-size: 20px;
+  cursor: text;
 
   &.readonly {
     border: none;
     padding: 0;
     border-radius: 0;
     box-shadow: none;
+    cursor: inherit;
   }
 
   &.darkmode {

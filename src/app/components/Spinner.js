@@ -12,6 +12,6 @@ export const FunSpinner = (props) => {
   }
   return <div className='fun-spinner'>
     <Spinner style={style}/>
-    <div>{i18n('Once You Plot, the Fun Don’t Stop')}</div>
+    <div>{i18n("Once You Plot, the Fun Don't Stop")}</div>
   </div>
 }

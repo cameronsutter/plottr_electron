@@ -974,18 +974,19 @@ function buildViewMenu () {
     label: i18n('Take Screenshot') + '...',
     accelerator: 'CmdOrCtrl+P',
     click: takeScreenshot
+  }, {
+    type: 'separator',
+    visible: process.env.NODE_ENV === 'dev',
+  }, {
+    label: 'View Verify Window',
+    click: openVerifyWindow,
+    visible: process.env.NODE_ENV === 'dev',
+  }, {
+    label: 'View Expired Window',
+    click: openExpiredWindow,
+    visible: process.env.NODE_ENV === 'dev',
   }]
-  if (process.env.NODE_ENV === 'dev') {
-    submenu = [].concat(submenu, {
-      type: 'separator'
-    }, {
-      label: 'View Verify Window',
-      click: openVerifyWindow
-    }, {
-      label: 'View Expired Window',
-      click: openExpiredWindow
-    })
-  }
+
   return {
     label: i18n('View'),
     submenu: submenu
@@ -1042,7 +1043,7 @@ function buildHelpMenu () {
       }, {
         label: i18n('Give Feedback'),
         click: function () {
-          shell.openExternal('https://fdier.co/NCqOZl')
+          shell.openExternal('https://feedback.getplottr.com')
         }
       }, {
         label: i18n('Request a Feature'),
@@ -1056,7 +1057,12 @@ function buildHelpMenu () {
         click: function () {
           shell.openExternal('https://getplottr.com/docs/frequently-asked-questions/')
         }
-      },
+      }, {
+        label: i18n('Roadmap'),
+        click: function () {
+          shell.openExternal('https://roadmap.getplottr.com')
+        }
+      }
     ]
   }
 }

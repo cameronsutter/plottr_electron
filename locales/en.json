@@ -104,8 +104,8 @@
   "Character": {
     "message": "Character"
   },
-  "Character Image": {
-    "message": "Character Image"
+  "Character Thumbnail": {
+    "message": "Character Thumbnail"
   },
   "Character list is filtered": {
     "message": "Character list is filtered"
@@ -158,11 +158,14 @@
   "Could not display license key. Try again": {
     "message": "Could not display license key. Try again"
   },
-  "Crafted in the Mountains of Utah by": {
-    "message": "Crafted in the Mountains of Utah by"
+  "Crafted in the Mountains of Utah": {
+    "message": "Crafted in the Mountains of Utah"
   },
   "Create a new file": {
     "message": "Create a new file"
+  },
+  "Create an Error Report": {
+    "message": "Create an Error Report"
   },
   "Create an error report": {
     "message": "Create an error report"
@@ -245,8 +248,8 @@
   "Enter License": {
     "message": "Enter License"
   },
-  "Enter a code you were given": {
-    "message": "Enter a code you were given"
+  "Enter a Customer Service Code": {
+    "message": "Enter a Customer Service Code"
   },
   "Enter a customer service code": {
     "message": "Enter a customer service code"
@@ -256,6 +259,9 @@
   },
   "Enter the URL of the link:": {
     "message": "Enter the URL of the link:"
+  },
+  "Enter your code": {
+    "message": "Enter your code"
   },
   "Error": {
     "message": "Error"
@@ -278,8 +284,8 @@
   "Filter": {
     "message": "Filter"
   },
-  "Filter by story line": {
-    "message": "Filter by story line"
+  "Filter by Plotline": {
+    "message": "Filter by Plotline"
   },
   "Fit": {
     "message": "Fit"
@@ -290,8 +296,8 @@
   "Genre": {
     "message": "Genre"
   },
-  "Give feedback": {
-    "message": "Give feedback"
+  "Give Feedback": {
+    "message": "Give Feedback"
   },
   "Grays": {
     "message": "Grays"
@@ -323,8 +329,11 @@
   "I want to start the free trial": {
     "message": "I want to start the free trial"
   },
-  "If you keep seeing this problem, email me at support@getplottr.com": {
-    "message": "If you keep seeing this problem, email me at support@getplottr.com"
+  "If you keep seeing this problem, email us at support@getplottr.com": {
+    "message": "If you keep seeing this problem, email us at support@getplottr.com"
+  },
+  "Image Gallery": {
+    "message": "Image Gallery"
   },
   "Insert Chapter": {
     "message": "Insert Chapter"
@@ -353,9 +362,6 @@
   "Line": {
     "message": "Line"
   },
-  "Loading...": {
-    "message": "Loading..."
-  },
   "Main Plot": {
     "message": "Main Plot"
   },
@@ -379,6 +385,9 @@
   },
   "New File": {
     "message": "New File"
+  },
+  "New Note": {
+    "message": "New Note"
   },
   "New Place": {
     "message": "New Place"
@@ -409,6 +418,9 @@
   },
   "OK": {
     "message": "OK"
+  },
+  "Once You Plot, the Fun Don't Stop": {
+    "message": "Once You Plot, the Fun Don''t Stop"
   },
   "Open": {
     "message": "Open"
@@ -497,14 +509,17 @@
   "Rename": {
     "message": "Rename"
   },
-  "Report a problem": {
-    "message": "Report a problem"
+  "Report a Problem": {
+    "message": "Report a Problem"
   },
-  "Request a feature": {
-    "message": "Request a feature"
+  "Request a Feature": {
+    "message": "Request a Feature"
   },
   "Reset": {
     "message": "Reset"
+  },
+  "Roadmap": {
+    "message": "Roadmap"
   },
   "Save": {
     "message": "Save"
@@ -689,9 +704,6 @@
   "Your free trial has expired": {
     "message": "Your free trial has expired"
   },
-  "Your images": {
-    "message": "Your images"
-  },
   "Zoom": {
     "message": "Zoom"
   },
@@ -719,11 +731,11 @@
   "attach tag {tagName} to note {noteName}": {
     "message": "attach tag { tagName } to note { noteName }"
   },
+  "blank": {
+    "message": "blank"
+  },
   "character": {
     "message": "character"
-  },
-  "code": {
-    "message": "code"
   },
   "custom character attribute": {
     "message": "custom character attribute"

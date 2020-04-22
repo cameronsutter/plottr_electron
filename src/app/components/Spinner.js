@@ -8,7 +8,7 @@ export const Spinner = (props) => {
 
 export const FunSpinner = (props) => {
   let style = {
-    fontSize: props.size || '3em',
+    fontSize: props.size || '2.5em',
   }
   return <div className='fun-spinner'>
     <Spinner style={style}/>

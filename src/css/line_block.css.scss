@@ -6,6 +6,13 @@ $title_width: 200px;
 .line-title__cell {
   width: $title_width;
   border-right: 1px solid $gray-6;
+
+}
+.line-title__line-line {
+  position: absolute;
+  top: 33px;
+  border-top: 3px solid red;
+  z-index: 0 !important;
 }
 
 .line-title__body {

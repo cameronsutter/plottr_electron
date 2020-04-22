@@ -293,7 +293,7 @@ class TimelineWrapper extends Component {
     return <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
       {this.renderSubNav()}
       <div id='timelineview__root'>
-        <StickyTable wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
+        <StickyTable leftColumnZ={3} headerZ={3}  wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
           { this.renderBody() }
         </StickyTable>
       </div>

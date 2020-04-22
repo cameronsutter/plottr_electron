@@ -6,7 +6,19 @@ import CardSVGline from 'components/timeline/CardSVGline'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
+const CELL_WIDTH = 200
+
 export default class ChapterInsertCell extends PureComponent {
+  renderLine () {
+    return null
+    const lineStyle = {
+      left: `${CELL_WIDTH}px`,
+      borderColor: this.props.color,
+      width: `${window.innerWidth - CELL_WIDTH}px`
+    }
+    return <div className='line-title__line-line' style={lineStyle}></div>
+  }
+
   render () {
     const { chapterPosition, lineId, isInChapterList, handleInsert, needsSVGline, color, orientation, isLast } = this.props
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
@@ -24,12 +36,12 @@ export default class ChapterInsertCell extends PureComponent {
         title={titleText}
         className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-scene', orientation)}
         onClick={() => handleInsert(chapterPosition, lineId)}
-      >
-        {needsSVGline ? <CardSVGline color={color} spacer={true} orientation={orientation}/> : null}
+        >
         <div className={wrapperKlass}>
           <Glyphicon glyph='plus' />
         </div>
       </div>
+      {needsSVGline ? this.renderLine() : null}
     </Cell>
   }
 

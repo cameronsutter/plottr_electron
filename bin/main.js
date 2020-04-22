@@ -580,8 +580,13 @@ function createAndOpenEmptyFile () {
 }
 
 function openAboutWindow () {
+  if (aboutWindow) {
+    aboutWindow.focus()
+    return
+  }
+
   const aboutFile = path.join(filePrefix, 'about.html')
-  aboutWindow = new BrowserWindow({frame: false, width: 350, height: 550, show: false, webPreferences: {nodeIntegration: true}})
+  aboutWindow = new BrowserWindow({width: 350, height: 566, show: false, webPreferences: {nodeIntegration: true}})
   aboutWindow.loadURL(aboutFile)
   if (SETTINGS.get('forceDevTools')) {
     aboutWindow.openDevTools()

@@ -5,7 +5,7 @@ import i18n from 'format-message'
 
 export default class GuidedTour extends Component {
   state = {
-    showTour: SETTINGS.get('showTheTour')
+    showTour: true
   }
 
   steps = [
@@ -31,6 +31,7 @@ export default class GuidedTour extends Component {
 
   closeTheTour = () => {
     SETTINGS.set('showTheTour', false)
+    this.setState({showTour: false})
   }
 
   render () {

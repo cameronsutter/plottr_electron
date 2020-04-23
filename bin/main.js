@@ -24,10 +24,13 @@ const FileManager = require('./main_modules/file_manager')
 const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/helpers')
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
+  // issue: https://github.com/electron/electron/issues/22117
   // const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
-  // installExtension(REACT_DEVELOPER_TOOLS)
-  //   .then((name) => console.log(`Added Extension:  ${name}`))
-  //   .catch((err) => console.log('An error occurred: ', err))
+  // app.whenReady().then(() => {
+  //   installExtension(REACT_DEVELOPER_TOOLS)
+  //       .then((name) => console.log(`Added Extension:  ${name}`))
+  //       .catch((err) => console.log('An error occurred: ', err))
+  // })
 
   // require('electron-reload')(path.join('..'))
 }

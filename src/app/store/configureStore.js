@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from '../reducers'
 import saver from '../middlewares/saver'
-import history from '../middlewares/history'
+// import history from '../middlewares/history'
 import tracker from '../middlewares/tracker'
 import logger from '../middlewares/logger'
 

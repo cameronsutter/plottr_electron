@@ -11,10 +11,11 @@ export function nextPosition (arr) {
 }
 
 export function positionReset (items) {
-  return items.map((item, index) => {
+  const theThing = items.map((item, index) => {
     item.position = index
     return item
   })
+  return theThing
 }
 
 export function nextPositionInBook (items, bookId) {

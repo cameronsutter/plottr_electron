@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.4.22",
+  "version": "2020.4.23",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "www.getplottr.com",
@@ -83,7 +83,7 @@
     "devtron": "^1.2.1",
     "electron": "^8.2.0",
     "electron-builder": "^22.4.1",
-    "electron-devtools-installer": "^2.0.0",
+    "electron-devtools-installer": "^3.0.0",
     "electron-notarize": "^0.1.1",
     "electron-reload": "^1.5.0",
     "file-loader": "^0.8.5",

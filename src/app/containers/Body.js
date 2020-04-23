@@ -9,14 +9,9 @@ import NotesTab from 'components/notes/NotesTab'
 import TimelineTab from '../components/timeline/TimelineTab'
 import SeriesTab from '../components/story/SeriesTab'
 import ExportTab from '../components/export/ExportTab'
-import { Spinner } from '../components/Spinner'
 
 class Body extends Component {
   render () {
-    return this.props.file.loaded ? this.renderBody() : this.renderLoading()
-  }
-
-  renderBody () {
     switch (this.props.currentView) {
       case 'story':
         return <SeriesTab />
@@ -46,21 +41,14 @@ class Body extends Component {
         return <TimelineTab/>
     }
   }
-
-  renderLoading () {
-    return <Spinner/>
-  }
-
 }
 
 Body.propTypes = {
-  file: PropTypes.object.isRequired,
   currentView: PropTypes.string.isRequired
 }
 
 function mapStateToProps (state) {
   return {
-    file: state.file,
     currentView: state.ui.currentView
   }
 }

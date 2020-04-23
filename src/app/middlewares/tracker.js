@@ -1,9 +1,12 @@
 import { CHANGE_CURRENT_VIEW, ADD_TAG, ADD_PLACE, ADD_CHARACTER, ADD_CARD, ADD_LINE, ADD_SCENE } from 'constants/ActionTypes'
 import { MPQ } from './helpers'
 
-const tracker = store => next => action => {
+const WHITE_LIST = [ADD_CARD]
 
+const tracker = store => next => action => {
   const result = next(action)
+  if (!WHITE_LIST.includes(action.type)) return result
+
   let state = store.getState()
   let attrs = {
     timeline_orientation: state.ui.orientation,

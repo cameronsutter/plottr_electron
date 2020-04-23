@@ -192,6 +192,12 @@ class AddLineRow extends Component {
     </Row>
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.showTemplatePicker != nextState.showTemplatePicker) return true
+    if (this.state.hovering != nextState.hovering) return true
+    return false
+  }
+
   static propTypes = {
     ui: PropTypes.object.isRequired,
     bookId: PropTypes.oneOfType([

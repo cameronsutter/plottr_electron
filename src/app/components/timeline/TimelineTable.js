@@ -54,26 +54,6 @@ class TimelineTable extends Component {
     return filtered
   }
 
-  cards = (lineId) => {
-    let cards = []
-    if (this.isSeries()) {
-      cards = this.props.cards.filter(c => c.seriesLineId == lineId)
-    } else {
-      cards = this.props.cards.filter(c => c.lineId == lineId)
-    }
-    return _.sortBy(cards, 'position')
-  }
-
-  findCard = (lineId, chapterId) => {
-    let findIds = {}
-    if (this.isSeries()) {
-      findIds = {beatId: chapterId}
-    } else {
-      findIds = {chapterId: chapterId}
-    }
-    return _.find(this.cards(lineId), findIds)
-  }
-
   handleReorderChapters = (originalPosition, droppedPosition) => {
     const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
     if (this.isSeries()) {
@@ -90,6 +70,21 @@ class TimelineTable extends Component {
   }
 
   // TODO: this should be a selector
+  cardMapping = () => {
+    if (this.isSeries()) {
+      return this.props.cards.reduce((acc, card) => {
+        acc[`${card.seriesLineId}-${card.beatId}`] = card
+        return acc
+      }, {})
+    } else {
+      return this.props.cards.reduce((acc, card) => {
+        acc[`${card.lineId}-${card.chapterId}`] = card
+        return acc
+      }, {})
+    }
+  }
+
+  // TODO: this should be a selector
   chapterMapping () {
     const thing = this.props.chapters.reduce((acc, chapter) => {
       acc[chapter.position] = chapter.id
@@ -100,7 +95,6 @@ class TimelineTable extends Component {
 
   // TODO: this should be a selector
   lineMapping () {
-    console.log('mapping lines')
     return this.props.lines.reduce((acc, line) => {
       acc[line.position] = line
       return acc
@@ -139,16 +133,20 @@ class TimelineTable extends Component {
 
   renderLines () {
     const chapterMap = this.chapterMapping()
+    const chapterMapKeys = Object.keys(chapterMap)
+    const cardMap = this.cardMapping()
     return this.props.lines.map(line => {
       return <Row key={`lineId-${line.id}`}>
         <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>
-        { this.renderCardsByChapter(line, chapterMap) }
+        { this.renderCardsByChapter(line, chapterMap, chapterMapKeys, cardMap) }
       </Row>
     }).concat(<AddLineRow key='insert-line' bookId={this.props.ui.currentTimeline}/>)
   }
 
   renderChapters () {
     const lineMap = this.lineMapping()
+    const lineMapKeys = Object.keys(lineMap)
+    const cardMap = this.cardMapping()
     const { ui, chapters } = this.props
     return chapters.map(chapter => {
       const inserts = Object.keys(lineMap).flatMap(linePosition => {
@@ -160,8 +158,8 @@ class TimelineTable extends Component {
           { inserts }
         </Row>,
         <Row key={`chapterId-${chapter.id}-insert`}>
-          <ChapterTitleCell chapter={chapter} handleReorder={this.handleReorderChapters} />
-          { this.renderCardsByLine(chapter, lineMap) }
+          <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
+          { this.renderCardsByLine(chapter, lineMap, lineMapKeys, cardMap) }
         </Row>
       ]
     }).concat(
@@ -179,15 +177,17 @@ class TimelineTable extends Component {
     }
   }
 
-  renderCardsByChapter (line, chapterMap) {
+  renderCardsByChapter (line, chapterMap, chapterMapKeys, cardMap) {
     const { orientation } = this.props.ui
-    return Object.keys(chapterMap).flatMap(chapterPosition => {
+    // speed up by passing in the keys
+    return chapterMapKeys.flatMap(chapterPosition => {
       let filtered = false
       const cells = []
       let chapterId = chapterMap[chapterPosition]
-      let card = this.findCard(line.id, chapterId)
+      let card = cardMap[`${line.id}-${chapterId}`]
       cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} needsSVGline={chapterPosition == 0} color={line.color} orientation={orientation}/>)
       if (card) {
+        // This should be a selector on the card
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
           filtered = true
         }
@@ -205,12 +205,12 @@ class TimelineTable extends Component {
     })
   }
 
-  renderCardsByLine (chapter, lineMap) {
-    return Object.keys(lineMap).flatMap(linePosition => {
+  renderCardsByLine (chapter, lineMap, lineMapKeys, cardMap) {
+    return lineMapKeys.flatMap(linePosition => {
       let filtered = false
       const cells = []
       let line = lineMap[linePosition]
-      let card = this.findCard(line.id, chapter.id)
+      let card = cardMap[`${line.id}-${chapter.id}`]
       if (card) {
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
           filtered = true

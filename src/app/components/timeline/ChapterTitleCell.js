@@ -11,6 +11,7 @@ import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 import { chapterTitle, editingChapterLabel } from '../../helpers/chapters'
 import { isSeriesSelector } from '../../selectors/ui'
+import { makeChapterNameSelector, makeChapterSelector } from '../../selectors/chapters'
 
 class ChapterTitleCell extends PureComponent {
   constructor (props) {
@@ -43,6 +44,10 @@ class ChapterTitleCell extends PureComponent {
 
   handleBlur = () => {
     this.editTitle()
+  }
+
+  handleEsc = (event) => {
+    if (event.which === 27) this.setState({editing: false})
   }
 
   handleDragStart = (e) => {
@@ -91,20 +96,24 @@ class ChapterTitleCell extends PureComponent {
     }
   }
 
+  startEditing = () => {
+    this.setState({editing: true})
+  }
+
   renderHoverOptions () {
     var style = {visibility: 'hidden'}
     if (this.state.hovering) style.visibility = 'visible'
     if (this.props.ui.orientation === 'vertical') {
       return (
         <div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)} style={style}>
-          <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
+          <Button block onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
           <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </div>
       )
     } else {
       return (<div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)} style={style}>
         <ButtonGroup>
-          <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
+          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
           <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
       </div>)
@@ -122,7 +131,7 @@ class ChapterTitleCell extends PureComponent {
         defaultValue={chapter.title}
         ref='titleRef'
         autoFocus
-        onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+        onKeyDown={this.handleEsc}
         onBlur={this.handleBlur}
         onKeyPress={this.handleFinishEditing} />
     </FormGroup>)
@@ -141,7 +150,7 @@ class ChapterTitleCell extends PureComponent {
       <div
         className={orientedClassName('scene__cell', this.props.ui.orientation)}
         title={i18n('Chapter {number}', {number: this.props.chapter.position + 1})}
-        onClick={() => this.setState({editing: true})}
+        onClick={this.startEditing}
         onMouseEnter={() => this.setState({hovering: true})}
         onMouseLeave={() => this.setState({hovering: false})}
         onDrop={this.handleDrop}>
@@ -161,20 +170,27 @@ class ChapterTitleCell extends PureComponent {
 }
 
 ChapterTitleCell.propTypes = {
-  chapter: PropTypes.object.isRequired,
+  chapterId: PropTypes.number.isRequired,
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   beatActions: PropTypes.object.isRequired,
+  chapter: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
-  chapters: PropTypes.array,
+  chapterName: PropTypes.string.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-    ui: state.ui,
-    isSeries: isSeriesSelector(state),
-    chapters: state.chapters,
+const makeMapState = (state) => {
+  const uniqueChapterSelector = makeChapterSelector()
+  const uniqueChapterNameSelector = makeChapterNameSelector()
+
+  return function mapStateToProps (state, ownProps) {
+    return {
+      chapter: uniqueChapterSelector(state, ownProps.chapterId),
+      ui: state.ui,
+      isSeries: isSeriesSelector(state),
+      chapterName: uniqueChapterNameSelector(state, ownProps.chapterId)
+    }
   }
 }
 
@@ -186,6 +202,6 @@ function mapDispatchToProps (dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
+  makeMapState,
   mapDispatchToProps
 )(ChapterTitleCell)

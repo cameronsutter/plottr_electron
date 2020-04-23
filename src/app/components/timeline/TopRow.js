@@ -82,7 +82,7 @@ class TopRow extends Component {
     const renderedChapters = chapters.flatMap(ch => {
       const cells = []
       cells.push(<ChapterInsertCell key={`chapterId-${ch.id}-insert`} isInChapterList={true} chapterPosition={ch.position} handleInsert={this.handleInsertNewChapter} orientation={ui.orientation}/>)
-      cells.push(<ChapterTitleCell key={`chapterId-${ch.id}`} chapter={ch} handleReorder={this.handleReorderChapters} />)
+      cells.push(<ChapterTitleCell key={`chapterId-${ch.id}`} chapterId={ch.id} handleReorder={this.handleReorderChapters} />)
       return cells
     })
     return [<Cell key='placeholder'/>].concat(renderedChapters).concat([this.renderLastInsertChapterCell()])

@@ -61,26 +61,28 @@ class ChapterTitleCell extends PureComponent {
   }
 
   handleDragEnter = (e) => {
-    this.setState({dropping: true})
+    if (!this.state.dragging) this.setState({dropping: true})
   }
 
   handleDragOver = (e) => {
-    this.setState({dropping: true})
+    if (!this.state.dragging) this.setState({dropping: true})
     e.preventDefault()
     return false
   }
 
   handleDragLeave = (e) => {
-    this.setState({dropping: false})
+    if (!this.state.dragging) this.setState({dropping: false})
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
+    if (this.state.dragging) return
     this.setState({dropping: false})
 
     var json = e.dataTransfer.getData('text/json')
     var droppedChapter = JSON.parse(json)
     if (droppedChapter.id == null) return
+    if (droppedChapter.id == this.props.chapter.id) return
 
     this.props.handleReorder(this.props.chapter.position, droppedChapter.position)
   }

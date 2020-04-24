@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
+import { shell } from 'electron'
 import Modal from 'react-modal'
 import i18n from 'format-message'
-import { ButtonToolbar, Button } from 'react-bootstrap'
+import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import listTemplates from '../../utils/templates'
 import CharacterTemplateDetails from './CharacterTemplateDetails'
 import PlotlineTemplateDetails from './PlotlineTemplateDetails'
@@ -27,6 +28,12 @@ export default class TemplatePicker extends Component {
     this.props.onChooseTemplate(this.selectedTemplate())
   }
 
+  renderLink (template) {
+    if (!template.link) return null
+
+    return <a className='template-picker__link' title={template.link} onClick={() => shell.openExternal(template.link)}><Glyphicon glyph='info-sign' /></a>
+  }
+
   renderTemplateDetails () {
     if (!this.state.selectedId) return null
 
@@ -45,7 +52,7 @@ export default class TemplatePicker extends Component {
 
     return <div className='panel panel-primary'>
       <div className='panel-heading'>
-        <h3 className='panel-title'>{template.name}</h3>
+        <h3 className='panel-title'>{template.name}{this.renderLink(template)}</h3>
         <p>{template.description}</p>
       </div>
       {details}

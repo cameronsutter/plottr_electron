@@ -46,6 +46,11 @@
     overflow: auto;
     .panel-heading {
       @include application-text;
+      .template-picker__link {
+        margin-left: 8px;
+        vertical-align: middle;
+        cursor: pointer;
+      }
       h3.panel-title {
         @include application-text;
       }

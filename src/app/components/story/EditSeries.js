@@ -24,8 +24,12 @@ class EditSeries extends Component {
     this.setState({editing: false})
   }
 
-  editMode = () => {
-    if (!this.state.editing) this.setState({editing: true})
+  checkForEdits = () => {
+    const { series } = this.props
+    const someEdited = Object.keys(this.refs).some(field => {
+      return findDOMNode(this.refs[field]).value != series[field]
+    })
+    this.setState({editing: someEdited})
   }
 
   renderToolBar () {
@@ -42,13 +46,13 @@ class EditSeries extends Component {
           {i18n('Name')}
         </Col>
         <Col sm={4}>
-          <FormControl type='text' ref='name' defaultValue={series.name} onChange={this.editMode} />
+          <FormControl type='text' ref='name' defaultValue={series.name} onChange={this.checkForEdits} />
         </Col>
         <Col componentClass={ControlLabel} sm={1}>
           {i18n('Premise')}
         </Col>
         <Col sm={4}>
-          <FormControl type='text' ref='premise' defaultValue={series.premise} onChange={this.editMode} />
+          <FormControl type='text' ref='premise' defaultValue={series.premise} onChange={this.checkForEdits} />
         </Col>
       </FormGroup>
       <FormGroup>
@@ -56,13 +60,13 @@ class EditSeries extends Component {
           {i18n('Genre')}
         </Col>
         <Col sm={4}>
-          <FormControl type='text' ref='genre' defaultValue={series.genre} onChange={this.editMode} />
+          <FormControl type='text' ref='genre' defaultValue={series.genre} onChange={this.checkForEdits} />
         </Col>
         <Col componentClass={ControlLabel} sm={1}>
           {i18n('Theme')}
         </Col>
         <Col sm={4}>
-          <FormControl type='text' ref='theme' defaultValue={series.theme} onChange={this.editMode} />
+          <FormControl type='text' ref='theme' defaultValue={series.theme} onChange={this.checkForEdits} />
         </Col>
       </FormGroup>
     </Form>

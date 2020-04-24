@@ -125,10 +125,8 @@ function mapStateToProps (state) {
   let nextChapterId = -1
   const bookId = state.ui.currentTimeline
   if (bookId == 'series') {
-    // get all beats / seriesLines
     nextChapterId = nextId(state.beats)
   } else {
-    // get all the chapters / lines for state.ui.currentTimeline (bookId)
     nextChapterId = nextId(state.chapters)
   }
 

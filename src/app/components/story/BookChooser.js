@@ -12,6 +12,9 @@ class BookChooser extends Component {
 
   handleChange (id) {
     this.props.actions.changeCurrentTimeline(id)
+    if (this.props.ui.currentView == 'story') {
+      this.props.actions.changeCurrentView('timeline')
+    }
   }
 
   isDisabled = () => {

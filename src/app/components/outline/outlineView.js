@@ -19,7 +19,7 @@ class OutlineView extends Component {
   }
 
   componentDidMount () {
-    setTimeout(() => this.setState({mounted: true}), 100)
+    setTimeout(() => this.setState({mounted: true}), 50)
   }
 
   // TODO: this could be a selector ... maybe
@@ -125,7 +125,7 @@ class OutlineView extends Component {
 
   renderBody () {
     if (this.state.mounted) {
-      var cardMapping = this.cardMapping()
+      const cardMapping = this.cardMapping()
       return <div className='outline__container'>
         <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
         <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />

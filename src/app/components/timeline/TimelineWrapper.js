@@ -41,7 +41,7 @@ class TimelineWrapper extends Component {
     } else {
       this.updateZoom(this.props.ui)
     }
-    setTimeout(() => this.setState({mounted: true}), 100)
+    setTimeout(() => this.setState({mounted: true}), 50)
   }
 
   componentWillReceiveProps (nextProps) {

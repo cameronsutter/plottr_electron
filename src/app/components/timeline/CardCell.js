@@ -34,6 +34,10 @@ class CardCell extends Component {
     this.setState({dragging: false})
   }
 
+  openDialog = () => {
+    this.setState({dialogOpen: true})
+  }
+
   renderDialog () {
     if (!this.state.dialogOpen) return null
     const { card, chapterId, lineId } = this.props
@@ -122,7 +126,7 @@ class CardCell extends Component {
       draggable={true}
       onDragStart={this.handleDragStart}
       onDragEnd={this.handleDragEnd}
-      onClick={() => this.setState({dialogOpen: true})}
+      onClick={this.openDialog}
     >
       {this.renderTitle()}
     </div>
@@ -136,6 +140,16 @@ class CardCell extends Component {
         { this.renderDialog() }
       </div>
     </Cell>
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.dragging != nextState.dragging) return true
+    if (this.state.dialogOpen != nextState.dialogOpen) return true
+    if (this.props.color != nextProps.color) return true
+    if (this.props.filtered != nextProps.filtered) return true
+    if (this.props.card != nextProps.card) return true
+
+    return false
   }
 }
 

@@ -12,6 +12,7 @@
 }
 
 .sticky-table-cell {
+  position: relative;
   padding: 0 !important;
   background-color: $body-background-color !important;
   vertical-align: top !important;

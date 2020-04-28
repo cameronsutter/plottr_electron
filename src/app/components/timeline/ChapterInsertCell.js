@@ -2,19 +2,17 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
-import CardSVGline from 'components/timeline/CardSVGline'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
-const CELL_WIDTH = 200
+const FIRST_CELL = 200
+const LAST_CELL = 161 + 50
 
 export default class ChapterInsertCell extends PureComponent {
   renderLine () {
-    return null
     const lineStyle = {
-      left: `${CELL_WIDTH}px`,
       borderColor: this.props.color,
-      width: `${window.innerWidth - CELL_WIDTH}px`
+      width: `${this.props.tableWidth - FIRST_CELL - LAST_CELL}px`,
     }
     return <div className='line-title__line-line' style={lineStyle}></div>
   }
@@ -54,5 +52,6 @@ export default class ChapterInsertCell extends PureComponent {
     orientation: PropTypes.string,
     color: PropTypes.string,
     isLast: PropTypes.bool,
+    tableWidth: PropTypes.number,
   }
 }

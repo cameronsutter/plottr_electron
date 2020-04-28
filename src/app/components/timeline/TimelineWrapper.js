@@ -282,7 +282,7 @@ class TimelineWrapper extends Component {
 
   renderBody () {
     if (this.state.mounted) {
-      return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} />
+      return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} tableRef={this.tableRef} />
     } else {
       return <Spinner/>
     }

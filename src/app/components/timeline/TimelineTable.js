@@ -24,8 +24,20 @@ import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
+import { findDOMNode } from 'react-dom'
 
 class TimelineTable extends Component {
+
+  state = {tableWidth: 0}
+
+  componentDidMount () {
+    this.setState({tableWidth: findDOMNode(this.props.tableRef).scrollWidth})
+  }
+
+  componentDidUpdate () {
+    const newWidth = findDOMNode(this.props.tableRef).scrollWidth
+    if (this.state.tableWidth != newWidth) this.setState({tableWidth: newWidth})
+  }
 
   isSeries = () => {
     return this.props.ui.currentTimeline == 'series'
@@ -186,7 +198,7 @@ class TimelineTable extends Component {
       const cells = []
       let chapterId = chapterMap[chapterPosition]
       let card = this.findCard(line.id, chapterId)
-      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} needsSVGline={chapterPosition == 0} color={line.color} orientation={orientation}/>)
+      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} needsSVGline={chapterPosition == 0} color={line.color} orientation={orientation} tableWidth={this.state.tableWidth}/>)
       if (card) {
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
           filtered = true
@@ -255,6 +267,7 @@ TimelineTable.propTypes = {
   ui: PropTypes.object.isRequired,
   filter: PropTypes.object,
   filterIsEmpty: PropTypes.bool,
+  tableRef: PropTypes.object,
 }
 
 function mapStateToProps (state) {

@@ -13,6 +13,7 @@ $title_width: 200px;
   top: 33px;
   border-top: 3px solid red;
   z-index: 1 !important;
+  transition: $cubic;
 }
 
 .line-title__body {
@@ -75,6 +76,9 @@ $title_width: 200px;
   cursor: pointer;
   svg {
     position: absolute;
+  }
+  .insert-scene-wrapper {
+    z-index: 3;
   }
   .insert-scene-wrapper.insert-scene-spacer {
     .glyphicon {

@@ -30,14 +30,27 @@ class TimelineTable extends Component {
 
   state = {tableWidth: 0}
 
+  setWidth = () => {
+    const newWidth = findDOMNode(this.props.tableRef).scrollWidth
+    if (this.state.tableWidth != newWidth) {
+      this.setState({tableWidth: newWidth})
+    }
+  }
+
   componentDidMount () {
-    this.setState({tableWidth: findDOMNode(this.props.tableRef).scrollWidth})
+    this.setWidth()
   }
 
   componentDidUpdate () {
-    const newWidth = findDOMNode(this.props.tableRef).scrollWidth
-    if (this.state.tableWidth != newWidth) this.setState({tableWidth: newWidth})
+    this.setWidth()
   }
+
+  // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
+  // componentWillReceiveProps (nextProps) {
+  //   if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
+  //     this.setState({tableWidth: 0})
+  //   }
+  // }
 
   isSeries = () => {
     return this.props.ui.currentTimeline == 'series'

@@ -87,11 +87,31 @@ class LineTitleCell extends PureComponent {
     }
   }
 
+  handleEsc = (event) => {
+    if (event.which === 27) this.setState({editing: false})
+  }
+
   changeColor = (newColor) => {
     if (newColor) {
       this.props.actions.editLineColor(this.props.line.id, newColor)
     }
     this.setState({showColorPicker: false})
+  }
+
+  openColorPicker = () => {
+    this.setState({showColorPicker: true})
+  }
+
+  startEditing = () => {
+    this.setState({editing: true})
+  }
+
+  startHovering = () => {
+    this.setState({hovering: true})
+  }
+
+  stopHovering = () => {
+    this.setState({hovering: false})
   }
 
   renderColorPicker () {
@@ -107,15 +127,15 @@ class LineTitleCell extends PureComponent {
     if (this.props.ui.orientation === 'vertical') {
       return (<div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)}>
         <ButtonGroup>
-          <Button onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-          <Button onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
+          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+          <Button onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
           <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
       </div>)
     } else {
       return (<div className='line-title__hover-options'>
-        <Button block onClick={() => this.setState({editing: true})}><Glyphicon glyph='edit' /></Button>
-        <Button block onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
+        <Button block onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+        <Button block onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
         <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
       </div>)
     }
@@ -130,7 +150,7 @@ class LineTitleCell extends PureComponent {
         defaultValue={this.props.line.title}
         ref='titleRef'
         autoFocus
-        onKeyDown={(event) => {if (event.which === 27) this.setState({editing: false})}}
+        onKeyDown={this.handleEsc}
         onBlur={this.handleBlur}
         onKeyPress={this.handleFinishEditingTitle} />
     </FormGroup>
@@ -148,12 +168,12 @@ class LineTitleCell extends PureComponent {
     return <Cell>
       <div
         className={orientedClassName('line-title__cell', this.props.ui.orientation)}
-        onMouseEnter={() => this.setState({hovering: true})}
-        onMouseLeave={() => this.setState({hovering: false})}
+        onMouseEnter={this.startHovering}
+        onMouseLeave={this.stopHovering}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
         <div className={innerKlass}
-          onClick={() => this.setState({editing: true})}
+          onClick={this.startEditing}
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}
           onDragEnter={this.handleDragEnter}

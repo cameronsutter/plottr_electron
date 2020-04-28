@@ -7,8 +7,14 @@ import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
 export default class ChapterInsertCell extends PureComponent {
+  insert = () => {
+    const { chapterPosition, lineId, handleInsert } = this.props
+    handleInsert(chapterPosition, lineId)
+  }
+
   render () {
-    const { chapterPosition, lineId, isInChapterList, handleInsert, needsSVGline, color, orientation, isLast } = this.props
+    const { isInChapterList, needsSVGline, color, orientation, isLast } = this.props
+    console.log(needsSVGline)
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
     let chapterKlass = 'scene-list__insert'
     let titleText = i18n('Insert Chapter')
@@ -23,7 +29,7 @@ export default class ChapterInsertCell extends PureComponent {
       <div
         title={titleText}
         className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-scene', orientation)}
-        onClick={() => handleInsert(chapterPosition, lineId)}
+        onClick={this.insert}
       >
         {needsSVGline ? <CardSVGline color={color} spacer={true} orientation={orientation}/> : null}
         <div className={wrapperKlass}>

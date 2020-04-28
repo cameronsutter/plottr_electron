@@ -57,6 +57,10 @@ class BlankCard extends Component {
     }
   }
 
+  startCreating = () => {
+    this.setState({creating: true})
+  }
+
   buildCard (title) {
     const { chapterId, lineId } = this.props
     if (this.props.isSeries) {
@@ -128,7 +132,7 @@ class BlankCard extends Component {
         onDragOver={this.handleDragOver}
         onDragLeave={this.handleDragLeave}
         onDrop={this.handleDrop}
-        onClick={() => this.setState({creating: true})}
+        onClick={this.startCreating}
       >
         <CardSVGline color={this.props.color} orientation={this.props.orientation}/>
         {body}

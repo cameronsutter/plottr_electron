@@ -149,7 +149,7 @@ class TimelineTable extends Component {
     const cardMap = this.cardMapping()
     const { ui, chapters } = this.props
     return chapters.map(chapter => {
-      const inserts = Object.keys(lineMap).flatMap(linePosition => {
+      const inserts = lineMapKeys.flatMap(linePosition => {
         const line = lineMap[linePosition];
         return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={ui.orientation} needsSVGline={true}/>
       })
@@ -179,7 +179,6 @@ class TimelineTable extends Component {
 
   renderCardsByChapter (line, chapterMap, chapterMapKeys, cardMap) {
     const { orientation } = this.props.ui
-    // speed up by passing in the keys
     return chapterMapKeys.flatMap(chapterPosition => {
       let filtered = false
       const cells = []

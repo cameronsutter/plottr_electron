@@ -102,6 +102,14 @@ class ChapterTitleCell extends PureComponent {
     this.setState({editing: true})
   }
 
+  startHovering = () => {
+    this.setState({hovering: true})
+  }
+
+  stopHovering = () => {
+    this.setState({hovering: false})
+  }
+
   renderHoverOptions () {
     var style = {visibility: 'hidden'}
     if (this.state.hovering) style.visibility = 'visible'
@@ -153,8 +161,8 @@ class ChapterTitleCell extends PureComponent {
         className={orientedClassName('scene__cell', this.props.ui.orientation)}
         title={i18n('Chapter {number}', {number: this.props.chapter.position + 1})}
         onClick={this.startEditing}
-        onMouseEnter={() => this.setState({hovering: true})}
-        onMouseLeave={() => this.setState({hovering: false})}
+        onMouseEnter={this.startHovering}
+        onMouseLeave={this.stopHovering}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
         <div className={innerKlass}

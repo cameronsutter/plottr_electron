@@ -14,7 +14,6 @@ export default class ChapterInsertCell extends PureComponent {
 
   render () {
     const { isInChapterList, needsSVGline, color, orientation, isLast } = this.props
-    console.log(needsSVGline)
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
     let chapterKlass = 'scene-list__insert'
     let titleText = i18n('Insert Chapter')

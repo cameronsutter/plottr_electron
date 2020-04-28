@@ -81,10 +81,7 @@ class TimelineWrapper extends Component {
 
   filterIsEmpty () {
     let filter = this.state.filter
-    return filter == null ||
-      (filter['tag'].length === 0 &&
-      filter['character'].length === 0 &&
-      filter['place'].length === 0)
+    return filter == null || (!filter['tag'].length && !filter['character'].length && !filter['place'].length)
   }
 
   // //////////////
@@ -282,7 +279,7 @@ class TimelineWrapper extends Component {
 
   renderBody () {
     if (this.state.mounted) {
-      return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} />
+      return <TimelineTable filter={{...this.state.filter}} filterIsEmpty={this.filterIsEmpty()} />
     } else {
       return <FunSpinner/>
     }

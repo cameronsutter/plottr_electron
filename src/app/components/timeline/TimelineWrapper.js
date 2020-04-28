@@ -123,7 +123,7 @@ class TimelineWrapper extends Component {
   scrollMiddle = () => {
     this.setState({manualScroll: true})
     clearInterval(scrollInterval)
-    var middle = (this.tableRef.scrollWidth / 2)
+    var middle = (this.tableRef.scrollWidth / 2) - (window.innerWidth / 2)
     if (this.props.ui.orientation === 'vertical') {
       middle = (this.tableRef.scrollHeight / 2)
     }

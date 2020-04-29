@@ -28,29 +28,37 @@ import { findDOMNode } from 'react-dom'
 
 class TimelineTable extends Component {
 
-  state = {tableWidth: 0}
+  state = {tableLength: 0}
 
-  setWidth = () => {
-    const newWidth = findDOMNode(this.props.tableRef).scrollWidth
-    if (this.state.tableWidth != newWidth) {
-      this.setState({tableWidth: newWidth})
+  setLength = () => {
+    const table = findDOMNode(this.props.tableRef)
+    let newLength = table.scrollWidth
+    if (this.props.ui.orientation != 'horizontal') {
+      newLength = table.scrollHeight
+    }
+    if (this.state.tableLength != newLength) {
+      this.setState({tableLength: newLength})
     }
   }
 
   componentDidMount () {
-    this.setWidth()
+    this.setLength()
   }
 
   componentDidUpdate () {
-    this.setWidth()
+    this.setLength()
   }
 
-  // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
-  // componentWillReceiveProps (nextProps) {
-  //   if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
-  //     this.setState({tableWidth: 0})
-  //   }
-  // }
+  componentWillReceiveProps (nextProps) {
+    // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
+    // if (nextProps.ui.orientation != this.props.ui.orientation) {
+    //   this.setState({tableLength: 0})
+    // }
+    // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
+    // if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
+    //   this.setState({tableLength: 0})
+    // }
+  }
 
   isSeries = () => {
     return this.props.ui.currentTimeline == 'series'
@@ -125,7 +133,6 @@ class TimelineTable extends Component {
 
   // TODO: this should be a selector
   lineMapping () {
-    console.log('mapping lines')
     return this.props.lines.reduce((acc, line) => {
       acc[line.position] = line
       return acc
@@ -178,7 +185,7 @@ class TimelineTable extends Component {
     return chapters.map(chapter => {
       const inserts = Object.keys(lineMap).flatMap(linePosition => {
         const line = lineMap[linePosition];
-        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={ui.orientation} needsSVGline={true}/>
+        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={ui.orientation} showLine={chapter.position == 0} tableLength={this.state.tableLength}/>
       })
       return [<Row key={`chapterId-${chapter.id}`}>
           <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} orientation={ui.orientation}/>
@@ -211,7 +218,7 @@ class TimelineTable extends Component {
       const cells = []
       let chapterId = chapterMap[chapterPosition]
       let card = this.findCard(line.id, chapterId)
-      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} needsSVGline={chapterPosition == 0} color={line.color} orientation={orientation} tableWidth={this.state.tableWidth}/>)
+      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} showLine={chapterPosition == 0} color={line.color} orientation={orientation} tableLength={this.state.tableLength}/>)
       if (card) {
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
           filtered = true

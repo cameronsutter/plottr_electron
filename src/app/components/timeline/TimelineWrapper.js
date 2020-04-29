@@ -50,6 +50,10 @@ class TimelineWrapper extends Component {
       this.setState({mounted: false})
       setTimeout(() => this.setState({mounted: true}), 100)
     }
+    if (nextProps.ui.orientation != this.props.ui.orientation) {
+      this.setState({mounted: false})
+      setTimeout(() => this.setState({mounted: true}), 100)
+    }
   }
 
   componentWillUnmount () {

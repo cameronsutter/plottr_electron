@@ -261,15 +261,6 @@ class TimelineTable extends Component {
     })
   }
 
-  renderSpacer (color) {
-    return <Cell key='placeholder'>
-      <div>
-        <CardSVGline color={color} spacer={true} orientation={this.props.ui.orientation}/>
-        <div className='line-list__spacer'></div>
-      </div>
-    </Cell>
-  }
-
   render () {
     const rows = this.renderRows()
 

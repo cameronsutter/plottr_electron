@@ -12,6 +12,7 @@
 }
 
 .sticky-table-cell {
+  position: relative;
   padding: 0 !important;
   background-color: $body-background-color !important;
   vertical-align: top !important;
@@ -37,6 +38,7 @@
   }
 }
 
+// vertical orientation, border under the plotline titles
 .sticky-table.vertical {
   .sticky-table-row:first-child {
     .sticky-table-cell:after {

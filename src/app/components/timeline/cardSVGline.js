@@ -33,6 +33,8 @@ export default class CardSVGline extends PureComponent {
   }
 
   render () {
+    console.log('SVG')
+    return null
     let style = {stroke: this.props.color}
     const placement = this.linePlacement()
     const length = this.lineLength()

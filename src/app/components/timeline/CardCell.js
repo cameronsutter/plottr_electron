@@ -135,7 +135,6 @@ class CardCell extends Component {
   render () {
     return <Cell>
       <div className='card__cell'>
-        <CardSVGline color={this.props.color} orientation={this.props.ui.orientation}/>
         { this.renderBody() }
         { this.renderDialog() }
       </div>

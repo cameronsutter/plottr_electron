@@ -7,6 +7,21 @@ $title_width: 200px;
   width: $title_width;
   border-right: 1px solid $gray-6;
 }
+.line-title__line-line {
+  position: absolute;
+  top: 33px;
+  border-top: 3px solid red;
+  z-index: 1 !important;
+  transition: $cubic;
+}
+.vertical-line-title__line-line {
+  position: absolute;
+  top: 0;
+  left: 98px;
+  border-right: 3px solid red;
+  z-index: 1 !important;
+  transition: $cubic;
+}
 
 .line-title__body {
   @include sub-header-font;
@@ -68,6 +83,9 @@ $title_width: 200px;
   cursor: pointer;
   svg {
     position: absolute;
+  }
+  .insert-scene-wrapper {
+    z-index: 3;
   }
   .insert-scene-wrapper.insert-scene-spacer {
     .glyphicon {
@@ -201,6 +219,9 @@ $title_width: 200px;
   cursor: pointer;
   svg {
     position: absolute;
+  }
+  .vertical-insert-scene-wrapper {
+    z-index: 3;
   }
   .vertical-insert-scene-wrapper.insert-scene-spacer {
     display: flex;

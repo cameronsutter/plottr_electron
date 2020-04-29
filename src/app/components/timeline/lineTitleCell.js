@@ -11,6 +11,8 @@ import ColorPicker from '../colorpicker'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
+const CELL_WIDTH = 200
+
 class LineTitleCell extends PureComponent {
   constructor (props) {
     super(props)
@@ -165,6 +167,12 @@ class LineTitleCell extends PureComponent {
     let innerKlass = orientedClassName('line-title__body', this.props.ui.orientation)
     if (this.state.hovering) innerKlass += ' hover'
     if (this.state.dropping) innerKlass += ' dropping'
+    // const lineStyle = {
+    //   left: `${CELL_WIDTH}px`,
+    //   borderColor: this.props.line.color,
+    //   width: `${window.innerWidth - CELL_WIDTH}px`
+    // }
+    // <div className='line-title__line-line' style={lineStyle}></div>
     return <Cell>
       <div
         className={orientedClassName('line-title__cell', this.props.ui.orientation)}
@@ -184,6 +192,7 @@ class LineTitleCell extends PureComponent {
         </div>
       </div>
       { this.renderColorPicker() }
+
     </Cell>
   }
 }

@@ -134,7 +134,6 @@ class BlankCard extends Component {
         onDrop={this.handleDrop}
         onClick={this.startCreating}
       >
-        <CardSVGline color={this.props.color} orientation={this.props.orientation}/>
         {body}
       </div>
     </Cell>

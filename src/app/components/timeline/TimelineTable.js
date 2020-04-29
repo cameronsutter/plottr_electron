@@ -24,8 +24,41 @@ import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
+import { findDOMNode } from 'react-dom'
 
 class TimelineTable extends Component {
+
+  state = {tableLength: 0}
+
+  setLength = () => {
+    const table = findDOMNode(this.props.tableRef)
+    let newLength = table.scrollWidth
+    if (this.props.ui.orientation != 'horizontal') {
+      newLength = table.scrollHeight
+    }
+    if (this.state.tableLength != newLength) {
+      this.setState({tableLength: newLength})
+    }
+  }
+
+  componentDidMount () {
+    this.setLength()
+  }
+
+  componentDidUpdate () {
+    this.setLength()
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
+    // if (nextProps.ui.orientation != this.props.ui.orientation) {
+    //   this.setState({tableLength: 0})
+    // }
+    // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
+    // if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
+    //   this.setState({tableLength: 0})
+    // }
+  }
 
   isSeries = () => {
     return this.props.ui.currentTimeline == 'series'
@@ -151,7 +184,7 @@ class TimelineTable extends Component {
     return chapters.map(chapter => {
       const inserts = lineMapKeys.flatMap(linePosition => {
         const line = lineMap[linePosition];
-        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={ui.orientation} needsSVGline={true}/>
+        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={ui.orientation} showLine={chapter.position == 0} tableLength={this.state.tableLength}/>
       })
       return [<Row key={`chapterId-${chapter.id}`}>
           <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} orientation={ui.orientation}/>
@@ -183,8 +216,8 @@ class TimelineTable extends Component {
       let filtered = false
       const cells = []
       let chapterId = chapterMap[chapterPosition]
+      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} showLine={chapterPosition == 0} color={line.color} orientation={orientation} tableLength={this.state.tableLength}/>)
       let card = cardMap[`${line.id}-${chapterId}`]
-      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} needsSVGline={chapterPosition == 0} color={line.color} orientation={orientation}/>)
       if (card) {
         // This should be a selector on the card
         if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
@@ -254,6 +287,7 @@ TimelineTable.propTypes = {
   ui: PropTypes.object.isRequired,
   filter: PropTypes.object,
   filterIsEmpty: PropTypes.bool,
+  tableRef: PropTypes.object,
 }
 
 function mapStateToProps (state) {

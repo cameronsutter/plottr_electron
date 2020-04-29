@@ -2,9 +2,18 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
-import CardSVGline from 'components/timeline/CardSVGline'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
+
+const Horizontal = {
+  first: 200,
+  last: 161 + 50,
+}
+
+const Vertical = {
+  first: 150,
+  last: 70 + 40,
+}
 
 export default class ChapterInsertCell extends PureComponent {
   insert = () => {
@@ -12,12 +21,26 @@ export default class ChapterInsertCell extends PureComponent {
     handleInsert(chapterPosition, lineId)
   }
 
+  renderLine () {
+    const { tableLength, orientation, color } = this.props
+    let lineStyle = {
+      borderColor: color,
+    }
+    if (orientation == 'horizontal') {
+      lineStyle.width = `${tableLength - Horizontal.first - Horizontal.last}px`
+    } else {
+      lineStyle.height = `${tableLength - Vertical.first - Vertical.last}px`
+    }
+    return <div className={orientedClassName('line-title__line-line', orientation)} style={lineStyle}></div>
+  }
+
+
   render () {
-    const { isInChapterList, needsSVGline, color, orientation, isLast } = this.props
+    const { isInChapterList, showLine, orientation, isLast } = this.props
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
     let chapterKlass = 'scene-list__insert'
     let titleText = i18n('Insert Chapter')
-    if (needsSVGline) wrapperKlass += ' insert-scene-spacer'
+    if (showLine) wrapperKlass += ' insert-scene-spacer'
     if (isLast) {
       titleText = i18n('Add Chapter')
       wrapperKlass += ' append-scene'
@@ -30,11 +53,11 @@ export default class ChapterInsertCell extends PureComponent {
         className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-scene', orientation)}
         onClick={this.insert}
       >
-        {needsSVGline ? <CardSVGline color={color} spacer={true} orientation={orientation}/> : null}
         <div className={wrapperKlass}>
           <Glyphicon glyph='plus' />
         </div>
       </div>
+      {showLine ? this.renderLine() : null}
     </Cell>
   }
 
@@ -43,9 +66,10 @@ export default class ChapterInsertCell extends PureComponent {
     isInChapterList: PropTypes.bool.isRequired,
     chapterPosition: PropTypes.number,
     lineId: PropTypes.number,
-    needsSVGline: PropTypes.bool,
+    showLine: PropTypes.bool,
     orientation: PropTypes.string,
     color: PropTypes.string,
     isLast: PropTypes.bool,
+    tableLength: PropTypes.number,
   }
 }

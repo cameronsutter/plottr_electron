@@ -46,6 +46,14 @@ class TimelineWrapper extends Component {
 
   componentWillReceiveProps (nextProps) {
     this.updateZoom(nextProps.ui)
+    if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
+      this.setState({mounted: false})
+      setTimeout(() => this.setState({mounted: true}), 100)
+    }
+    if (nextProps.ui.orientation != this.props.ui.orientation) {
+      this.setState({mounted: false})
+      setTimeout(() => this.setState({mounted: true}), 100)
+    }
   }
 
   componentWillUnmount () {
@@ -280,7 +288,7 @@ class TimelineWrapper extends Component {
 
   renderBody () {
     if (this.state.mounted) {
-      return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} />
+      return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} tableRef={this.tableRef} />
     } else {
       return <FunSpinner/>
     }
@@ -291,7 +299,7 @@ class TimelineWrapper extends Component {
     return <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
       {this.renderSubNav()}
       <div id='timelineview__root'>
-        <StickyTable wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
+        <StickyTable leftColumnZ={5} headerZ={5}  wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
           { this.renderBody() }
         </StickyTable>
       </div>

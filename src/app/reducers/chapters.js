@@ -11,13 +11,13 @@ const initialState = [chapter]
 export default function chapters (state = initialState, action) {
   switch (action.type) {
     case ADD_SCENE:
-      return [{
+      return [...state, {
         id: nextId(state),
-        title: action.title,
         bookId: action.bookId,
+        position: nextPositionInBook(state, action.bookId),
+        title: action.title,
         time: 0,
-        position: nextPositionInBook(state, action.bookId)
-      }, ...state]
+      }]
 
     case ADD_LINES_FROM_TEMPLATE:
       if (!action.chapters) return state
@@ -41,7 +41,7 @@ export default function chapters (state = initialState, action) {
       const [book, notBook] = _.partition(state, ch => ch.bookId == action.bookId)
       return [
         ...notBook,
-        ...positionReset(book.filter(ch => ch.id != action.id)),
+        ...positionReset(book.filter(ch => ch.id != action.id)), // assumes they are sorted
       ]
 
     case REORDER_SCENES:

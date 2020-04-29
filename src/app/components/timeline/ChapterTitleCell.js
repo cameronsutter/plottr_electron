@@ -26,12 +26,12 @@ class ChapterTitleCell extends PureComponent {
     if (!ref) return null
 
     if (this.props.isSeries) {
-      if (ref.value != '') {
-        this.props.beatActions.editBeatTitle(id, ref.value)
-        this.setState({editing: false, hovering: false})
-      }
+      if (ref.value == '') return null // don't allow nothing
+      this.props.beatActions.editBeatTitle(id, ref.value)
+      this.setState({editing: false, hovering: false})
     } else {
-      this.props.actions.editSceneTitle(id, ref.value)
+      // if nothing, set to auto
+      this.props.actions.editSceneTitle(id, ref.value || 'auto')
       this.setState({editing: false, hovering: false})
     }
   }
@@ -160,12 +160,12 @@ class ChapterTitleCell extends PureComponent {
       <div
         className={orientedClassName('scene__cell', this.props.ui.orientation)}
         title={i18n('Chapter {number}', {number: this.props.chapter.position + 1})}
-        onClick={this.startEditing}
         onMouseEnter={this.startHovering}
         onMouseLeave={this.stopHovering}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
         <div className={innerKlass}
+          onClick={this.startEditing}
           draggable={true}
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}
@@ -196,6 +196,7 @@ const makeMapState = (state) => {
 
   return function mapStateToProps (state, ownProps) {
     return {
+      chapters: state.chapters,
       chapter: uniqueChapterSelector(state, ownProps.chapterId),
       ui: state.ui,
       isSeries: isSeriesSelector(state),

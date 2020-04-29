@@ -41,7 +41,7 @@ class TimelineWrapper extends Component {
     } else {
       this.updateZoom(this.props.ui)
     }
-    setTimeout(() => this.setState({mounted: true}), 50)
+    setTimeout(() => this.setState({mounted: true}), 100)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -72,7 +72,8 @@ class TimelineWrapper extends Component {
   // //////////////
 
   updateFilter = (filter) => {
-    this.setState({ filter })
+    // need to create a new object so the timeline re-renders everytime the filter changes
+    this.setState({ filter: {...filter} })
   }
 
   clearFilter = () => {
@@ -279,7 +280,7 @@ class TimelineWrapper extends Component {
 
   renderBody () {
     if (this.state.mounted) {
-      return <TimelineTable filter={{...this.state.filter}} filterIsEmpty={this.filterIsEmpty()} />
+      return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} />
     } else {
       return <FunSpinner/>
     }

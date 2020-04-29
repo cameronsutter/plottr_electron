@@ -22,9 +22,27 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  .outline__card__inner {
+    display: flex;
+    flex-direction: column;
+    border: 2px dashed transparent;
+    cursor: pointer;
+    &.editing {
+      cursor: default;
+      .card-dialog__button-bar {
+        border-top: none;
+      }
+    }
+    .glyphicon-pencil {
+      color: $blue-7;
+      visibility: hidden;
+      margin: 5px;
+      align-self: flex-end;
+    }
+  }
+
   h6 {
     margin-top: -15px;
-    cursor: pointer;
   }
   .chip-cloud {
     margin: 8px 0;
@@ -32,6 +50,17 @@
   .divider {
     margin: 10px 40px 2px 40px;
     border-top: 1px solid $gray-8;
+  }
+
+  &:hover {
+    .outline__card__inner:not(.editing) {
+      border: 2px dashed $blue-7;
+      border-radius: 4px;
+      background-color: $gray-9;
+      .glyphicon-pencil {
+        visibility: visible;
+      }
+    }
   }
 }
 
@@ -117,16 +146,6 @@ li.outline__minimap__scene-title > a:hover {
 
 .active {
   background-color: $new-item-background;
-}
-
-.outline__description {
-  cursor: pointer;
-}
-
-.outline__description__editing {
-  textarea {
-    font-size: 15px;
-  }
 }
 
 .outline__scene-title {

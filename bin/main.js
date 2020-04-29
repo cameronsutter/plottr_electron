@@ -24,10 +24,13 @@ const FileManager = require('./main_modules/file_manager')
 const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/helpers')
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
+  // issue: https://github.com/electron/electron/issues/22117
   // const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
-  // installExtension(REACT_DEVELOPER_TOOLS)
-  //   .then((name) => console.log(`Added Extension:  ${name}`))
-  //   .catch((err) => console.log('An error occurred: ', err))
+  // app.whenReady().then(() => {
+  //   installExtension(REACT_DEVELOPER_TOOLS)
+  //       .then((name) => console.log(`Added Extension:  ${name}`))
+  //       .catch((err) => console.log('An error occurred: ', err))
+  // })
 
   // require('electron-reload')(path.join('..'))
 }
@@ -580,8 +583,13 @@ function createAndOpenEmptyFile () {
 }
 
 function openAboutWindow () {
+  if (aboutWindow) {
+    aboutWindow.focus()
+    return
+  }
+
   const aboutFile = path.join(filePrefix, 'about.html')
-  aboutWindow = new BrowserWindow({frame: false, width: 350, height: 550, show: false, webPreferences: {nodeIntegration: true}})
+  aboutWindow = new BrowserWindow({width: 350, height: 566, show: false, webPreferences: {nodeIntegration: true}})
   aboutWindow.loadURL(aboutFile)
   if (SETTINGS.get('forceDevTools')) {
     aboutWindow.openDevTools()
@@ -969,18 +977,19 @@ function buildViewMenu () {
     label: i18n('Take Screenshot') + '...',
     accelerator: 'CmdOrCtrl+P',
     click: takeScreenshot
+  }, {
+    type: 'separator',
+    visible: process.env.NODE_ENV === 'dev',
+  }, {
+    label: 'View Verify Window',
+    click: openVerifyWindow,
+    visible: process.env.NODE_ENV === 'dev',
+  }, {
+    label: 'View Expired Window',
+    click: openExpiredWindow,
+    visible: process.env.NODE_ENV === 'dev',
   }]
-  if (process.env.NODE_ENV === 'dev') {
-    submenu = [].concat(submenu, {
-      type: 'separator'
-    }, {
-      label: 'View Verify Window',
-      click: openVerifyWindow
-    }, {
-      label: 'View Expired Window',
-      click: openExpiredWindow
-    })
-  }
+
   return {
     label: i18n('View'),
     submenu: submenu
@@ -1037,7 +1046,7 @@ function buildHelpMenu () {
       }, {
         label: i18n('Give Feedback'),
         click: function () {
-          shell.openExternal('https://fdier.co/NCqOZl')
+          shell.openExternal('https://feedback.getplottr.com')
         }
       }, {
         label: i18n('Request a Feature'),
@@ -1051,7 +1060,12 @@ function buildHelpMenu () {
         click: function () {
           shell.openExternal('https://getplottr.com/docs/frequently-asked-questions/')
         }
-      },
+      }, {
+        label: i18n('Roadmap'),
+        click: function () {
+          shell.openExternal('https://roadmap.getplottr.com')
+        }
+      }
     ]
   }
 }

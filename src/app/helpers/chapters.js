@@ -4,6 +4,7 @@ import { chapter } from '../../../shared/initialState'
 
 export function chapterTitle (chapter, isSeries) {
   if (isSeries) {
+    // if isSeries, chapters will actually be beats
     return chapter.title == '' ? i18n('Beat {number}', {number: chapter.position + 1}) : chapter.title
   } else {
     return chapter.title == 'auto' ? i18n('Chapter {number}', {number: chapter.position + 1}) : chapter.title
@@ -12,6 +13,7 @@ export function chapterTitle (chapter, isSeries) {
 
 export function editingChapterLabel (chapter, isSeries) {
   if (isSeries) {
+    // if isSeries, chapters will actually be beats
     return i18n('Beat {number} title', {number: chapter.position + 1})
   } else {
     return i18n('Chapter {number} title', {number: chapter.position + 1})

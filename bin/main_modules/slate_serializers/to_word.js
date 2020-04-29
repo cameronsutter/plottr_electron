@@ -56,7 +56,6 @@ const serialize = (nodes) => {
       case 'numbered-list':
         return children.map(li => new Paragraph({children: [li], numbering: { reference: concrete, level: 0 }}))
       case 'link':
-        // console.log('node', n, children)
         return new Hyperlink(n.url)
       case 'image-link':
         return new Hyperlink(n.url)

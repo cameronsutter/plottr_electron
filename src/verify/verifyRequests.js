@@ -1,9 +1,10 @@
 import request from 'request'
 import { machineIdSync } from 'node-machine-id'
+import { is } from 'electron-util'
 
 const BASE_URL = 'http://getplottr.com'
-const PRODUCT_ID = '10333'
-const SUBSCRIPTION_ID = '10333'
+const PRODUCT_ID = is.macos ? '11321' : '11322'
+// const SUBSCRIPTION_ID = '10333'
 const MACHINE_ID = machineIdSync(true)
 
 // TODO: extract this to shared folder
@@ -35,20 +36,20 @@ export function getLicenseInfo (license, callback) {
   })
 }
 
-function getSubscriptionInfo (email, callback) {
-  const req = makeRequest(subscriptionURL(email))
-  request(req, (err, response, body) => {
-    if (err) callback(err, null)
-    else {
-      const activeSub = findActiveSubscription(body)
-      if (activeSub) {
-        callback(null, activeSub)
-      } else {
-        callback(null, false)
-      }
-    }
-  })
-}
+// function getSubscriptionInfo (email, callback) {
+//   const req = makeRequest(subscriptionURL(email))
+//   request(req, (err, response, body) => {
+//     if (err) callback(err, null)
+//     else {
+//       const activeSub = findActiveSubscription(body)
+//       if (activeSub) {
+//         callback(null, activeSub)
+//       } else {
+//         callback(null, false)
+//       }
+//     }
+//   })
+// }
 
 function hasActivationsLeft (body) {
   return body.activations_left && body.activations_left > 0
@@ -58,14 +59,14 @@ function isValidLicense (body) {
   return body.success && body.license == 'valid'
 }
 
-function findActiveSubscription (body) {
-  if (body.error) return false
-  if (!body.subscriptions) return false
+// function findActiveSubscription (body) {
+//   if (body.error) return false
+//   if (!body.subscriptions) return false
 
-  return body.subscriptions.find(sub => {
-    return sub.info && sub.info.product_id == SUBSCRIPTION_ID && sub.info.status == 'active'
-  })
-}
+//   return body.subscriptions.find(sub => {
+//     return sub.info && sub.info.product_id == SUBSCRIPTION_ID && sub.info.status == 'active'
+//   })
+// }
 
 function licenseURL (license) {
   let url = `${BASE_URL}/`
@@ -74,11 +75,11 @@ function licenseURL (license) {
   return url
 }
 
-function subscriptionURL (email) {
-  let url = apiURL('/subscriptions')
-  url += `&customer=${email}`
-  return url
-}
+// function subscriptionURL (email) {
+//   let url = apiURL('/subscriptions')
+//   url += `&customer=${email}`
+//   return url
+// }
 
 // NOTE: only needed for non-license api calls
 // function apiURL (path = '') {

@@ -10,10 +10,7 @@ function emptyFileContents (name) {
 }
 
 function isDirty (newState, oldState) {
-  const diff = deep.diff(oldState, newState) || []
-  let edited = false
-  if (newState.file && newState.file.dirty && diff.length > 0) edited = true
-  return edited
+  return !!deep.diff(oldState, newState)
 }
 
 function takeScreenshot () {

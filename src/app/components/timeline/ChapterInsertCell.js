@@ -16,6 +16,11 @@ const Vertical = {
 }
 
 export default class ChapterInsertCell extends PureComponent {
+  insert = () => {
+    const { chapterPosition, lineId, handleInsert } = this.props
+    handleInsert(chapterPosition, lineId)
+  }
+
   renderLine () {
     const { tableLength, orientation, color } = this.props
     let lineStyle = {
@@ -29,8 +34,9 @@ export default class ChapterInsertCell extends PureComponent {
     return <div className={orientedClassName('line-title__line-line', orientation)} style={lineStyle}></div>
   }
 
+
   render () {
-    const { chapterPosition, lineId, isInChapterList, handleInsert, showLine, orientation, isLast } = this.props
+    const { isInChapterList, showLine, orientation, isLast } = this.props
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
     let chapterKlass = 'scene-list__insert'
     let titleText = i18n('Insert Chapter')
@@ -45,8 +51,8 @@ export default class ChapterInsertCell extends PureComponent {
       <div
         title={titleText}
         className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-scene', orientation)}
-        onClick={() => handleInsert(chapterPosition, lineId)}
-        >
+        onClick={this.insert}
+      >
         <div className={wrapperKlass}>
           <Glyphicon glyph='plus' />
         </div>

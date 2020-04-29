@@ -6,10 +6,19 @@ import * as UIActions from 'actions/ui'
 import { NavDropdown, MenuItem } from 'react-bootstrap'
 import i18n from 'format-message'
 
+const DISABLED_VIEWS = ['notes', 'characters', 'places', 'tags']
+
 class BookChooser extends Component {
 
   handleChange (id) {
     this.props.actions.changeCurrentTimeline(id)
+    if (this.props.ui.currentView == 'story') {
+      this.props.actions.changeCurrentView('timeline')
+    }
+  }
+
+  isDisabled = () => {
+    return DISABLED_VIEWS.includes(this.props.ui.currentView)
   }
 
   bookTitle = (book) => {
@@ -29,7 +38,7 @@ class BookChooser extends Component {
     let title = seriesText
     if (ui.currentTimeline != 'series') title = this.bookTitle(books[ui.currentTimeline])
 
-    return <NavDropdown id='book_chooser' title={title}>
+    return <NavDropdown id='book_chooser' title={title} disabled={this.isDisabled()}>
       <MenuItem onSelect={() => this.handleChange('series')}>{seriesText}</MenuItem>
       <MenuItem divider />
       { this.renderBookList() }

@@ -15,6 +15,7 @@ import setupRollbar from '../common/utils/rollbar'
 import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
+import SETTINGS from '../common/utils/settings'
 
 i18n.setup({
   translations: require('../../locales'),
@@ -38,7 +39,7 @@ const root = document.getElementById('react-root')
 const store = configureStore()
 
 ipcRenderer.on('state-saved', (_arg) => {
-  store.dispatch(fileSaved())
+  // store.dispatch(fileSaved())
 })
 
 ipcRenderer.send('fetch-state', win.id)
@@ -59,7 +60,7 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
 
   render(
     <Provider store={store}>
-      <App />
+      <App showTour={SETTINGS.get('showTheTour')} />
     </Provider>,
     root
   )

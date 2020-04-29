@@ -25,7 +25,7 @@ var creditsNode = document.createTextNode(i18n('Credits'))
 h4credits.appendChild(creditsNode)
 
 var span = document.getElementById('craftedSpan')
-var craftedNode = document.createTextNode(i18n('Crafted in the Mountains of Utah by'))
+var craftedNode = document.createTextNode(i18n('Crafted in the Mountains of Utah'))
 span.appendChild(craftedNode)
 
 document.title = i18n('About Plottr')

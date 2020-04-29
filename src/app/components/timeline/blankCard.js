@@ -10,6 +10,7 @@ import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import { card } from '../../../../shared/initialState'
 import { isSeriesSelector } from '../../selectors/ui'
+import cx from 'classnames'
 
 class BlankCard extends Component {
   constructor (props) {
@@ -17,15 +18,7 @@ class BlankCard extends Component {
     this.state = {
       creating: false,
       dropping: false,
-      mouseOverIt: false,
     }
-    this.dragLeaveTimeout = null
-    this.dragOverTimeout = null
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.dragLeaveTimeout)
-    clearTimeout(this.dragOverTimeout)
   }
 
   handleDragEnter = (e) => {
@@ -33,18 +26,12 @@ class BlankCard extends Component {
   }
 
   handleDragOver = (e) => {
-    if (!this.state.mouseOverIt) {
-      this.setState({mouseOverIt: true})
-      this.dragOverTimeout = setTimeout(() => {this.setState({mouseOverIt: false})}, 50)
-    }
+    this.setState({dropping: true})
     e.preventDefault()
-    return false
   }
 
   handleDragLeave = (e) => {
-    this.dragLeaveTimeout = setTimeout(() => {
-      if (!this.state.mouseOverIt) this.setState({dropping: false});
-    }, 100)
+    this.setState({dropping: false})
   }
 
   handleDrop = (e) => {
@@ -68,6 +55,10 @@ class BlankCard extends Component {
     if (event.which === 13) { //enter
       this.saveCreate()
     }
+  }
+
+  startCreating = () => {
+    this.setState({creating: true})
   }
 
   buildCard (title) {
@@ -100,9 +91,7 @@ class BlankCard extends Component {
     var blankCardStyle = {
       borderColor: this.props.color
     }
-    let klass = 'blank-card__body'
-    if (this.state.dropping) klass += ' hover'
-    return <div className={klass} style={blankCardStyle} />
+    return <div className={cx('blank-card__body', {hover: this.state.dropping})} style={blankCardStyle} />
   }
 
   renderCreateNew () {
@@ -127,6 +116,7 @@ class BlankCard extends Component {
   }
 
   render () {
+    // console.count('BlankCard')
     let body = null
     if (this.state.creating) {
       window.SCROLLWITHKEYS = false
@@ -142,11 +132,17 @@ class BlankCard extends Component {
         onDragOver={this.handleDragOver}
         onDragLeave={this.handleDragLeave}
         onDrop={this.handleDrop}
-        onClick={() => this.setState({creating: true})}
+        onClick={this.startCreating}
       >
         {body}
       </div>
     </Cell>
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.dropping != nextState.dropping) return true
+    if (this.state.creating != nextState.creating) return true
+    return false
   }
 }
 

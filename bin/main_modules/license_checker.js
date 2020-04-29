@@ -4,10 +4,11 @@ const setupRollbar = require('./rollbar')
 const rollbar = setupRollbar('license_checker')
 const { machineIdSync } = require('node-machine-id')
 const SETTINGS = require('./settings')
+const { is } = require('electron-util')
 
 const BASE_URL = 'http://getplottr.com'
-const PRODUCT_ID = '10333'
-const SUBSCRIPTION_ID = '10333'
+const PRODUCT_ID = is.macos ? '11321' : '11322'
+// const SUBSCRIPTION_ID = '10333'
 
 function checkForActiveLicense (licenseInfo, callback) {
   const key = licenseInfo.purchase ? licenseInfo.purchase.license_key : licenseInfo.licenseKey
@@ -61,14 +62,14 @@ function getSubscriptionInfo (email, callback) {
   })
 }
 
-function findActiveSubscription (body) {
-  if (body.error) return false
-  if (!body.subscriptions) return false
+// function findActiveSubscription (body) {
+//   if (body.error) return false
+//   if (!body.subscriptions) return false
 
-  return body.subscriptions.find(sub => {
-    return sub.info && sub.info.product_id == SUBSCRIPTION_ID && sub.info.status == "active"
-  })
-}
+//   return body.subscriptions.find(sub => {
+//     return sub.info && sub.info.product_id == SUBSCRIPTION_ID && sub.info.status == "active"
+//   })
+// }
 
 function licenseURL (license) {
   let url = `${BASE_URL}/`
@@ -77,11 +78,11 @@ function licenseURL (license) {
   return url
 }
 
-function subscriptionURL (email) {
-  let url = apiURL('/subscriptions')
-  url += `&customer=${email}`
-  return url
-}
+// function subscriptionURL (email) {
+//   let url = apiURL('/subscriptions')
+//   url += `&customer=${email}`
+//   return url
+// }
 
 // NOTE: only needed for non-license api calls
 // function apiURL (path = '') {

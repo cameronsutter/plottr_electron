@@ -1,41 +1,22 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ErrorBoundary from './ErrorBoundary'
-import * as UIActions from 'actions/ui'
 import GuidedTour from '../components/GuidedTour'
 
-class App extends Component {
+export default class App extends Component {
+  renderGuidedTour () {
+    if (!this.props.showTour) return null
+
+    return <GuidedTour />
+  }
+
   render () {
     return <ErrorBoundary>
       <Navigation />
       <Body />
-      <GuidedTour />
+      { this.renderGuidedTour() }
     </ErrorBoundary>
   }
 }
-
-App.propTypes = {
-  file: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
-}
-
-function mapStateToProps (state) {
-  return {
-    file: state.file
-  }
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    actions: bindActionCreators(UIActions, dispatch)
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)

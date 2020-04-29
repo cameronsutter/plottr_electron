@@ -13,7 +13,7 @@ import TimelineTable from './TimelineTable'
 import { computeZoom } from 'helpers/zoom'
 import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
-import Spinner from '../Spinner'
+import { FunSpinner } from '../Spinner'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -80,7 +80,8 @@ class TimelineWrapper extends Component {
   // //////////////
 
   updateFilter = (filter) => {
-    this.setState({ filter })
+    // need to create a new object so the timeline re-renders everytime the filter changes
+    this.setState({ filter: {...filter} })
   }
 
   clearFilter = () => {
@@ -89,10 +90,7 @@ class TimelineWrapper extends Component {
 
   filterIsEmpty () {
     let filter = this.state.filter
-    return filter == null ||
-      (filter['tag'].length === 0 &&
-      filter['character'].length === 0 &&
-      filter['place'].length === 0)
+    return filter == null || (!filter['tag'].length && !filter['character'].length && !filter['place'].length)
   }
 
   // //////////////
@@ -131,7 +129,7 @@ class TimelineWrapper extends Component {
   scrollMiddle = () => {
     this.setState({manualScroll: true})
     clearInterval(scrollInterval)
-    var middle = (this.tableRef.scrollWidth / 2)
+    var middle = (this.tableRef.scrollWidth / 2) - (window.innerWidth / 2)
     if (this.props.ui.orientation === 'vertical') {
       middle = (this.tableRef.scrollHeight / 2)
     }
@@ -292,7 +290,7 @@ class TimelineWrapper extends Component {
     if (this.state.mounted) {
       return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} tableRef={this.tableRef} />
     } else {
-      return <Spinner/>
+      return <FunSpinner/>
     }
   }
 

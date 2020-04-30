@@ -1,9 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
+import { isZoomed, isZoomedOut, computeZoomMultiplier, computeZoomOutMultiplier } from 'helpers/zoom'
 
 const Horizontal = {
   first: 200,
@@ -15,21 +18,26 @@ const Vertical = {
   last: 70 + 40,
 }
 
-export default class ChapterInsertCell extends PureComponent {
+class ChapterInsertCell extends PureComponent {
   insert = () => {
     const { chapterPosition, lineId, handleInsert } = this.props
     handleInsert(chapterPosition, lineId)
   }
 
   renderLine () {
-    const { tableLength, orientation, color } = this.props
+    const { tableLength, orientation, color, zoom } = this.props
+
+    let length = tableLength
+    if (isZoomed(zoom)) length = tableLength * computeZoomMultiplier(orientation, zoom)
+    if (isZoomedOut(zoom)) length = tableLength * computeZoomOutMultiplier(orientation, zoom)
+
     let lineStyle = {
       borderColor: color,
     }
     if (orientation == 'horizontal') {
-      lineStyle.width = `${tableLength - Horizontal.first - Horizontal.last}px`
+      lineStyle.width = `${length - Horizontal.first - Horizontal.last}px`
     } else {
-      lineStyle.height = `${tableLength - Vertical.first - Vertical.last}px`
+      lineStyle.height = `${length - Vertical.first - Vertical.last}px`
     }
     return <div className={orientedClassName('line-title__line-line', orientation)} style={lineStyle}></div>
   }
@@ -62,14 +70,28 @@ export default class ChapterInsertCell extends PureComponent {
   }
 
   static propTypes = {
+    orientation: PropTypes.string,
+    zoom: PropTypes.object,
     handleInsert: PropTypes.func.isRequired,
     isInChapterList: PropTypes.bool.isRequired,
     chapterPosition: PropTypes.number,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,
-    orientation: PropTypes.string,
     color: PropTypes.string,
     isLast: PropTypes.bool,
     tableLength: PropTypes.number,
   }
 }
+
+function mapStateToProps (state) {
+  return {
+    orientation: state.ui.orientation,
+    zoom: {zoomState: state.ui.zoomState, zoomIndex: state.ui.zoomIndex},
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChapterInsertCell)

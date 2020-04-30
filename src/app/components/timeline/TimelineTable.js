@@ -58,6 +58,10 @@ class TimelineTable extends Component {
     // if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
     //   this.setState({tableLength: 0})
     // }
+    // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
+    // if (nextProps.ui.zoomIndex != this.props.ui.zoomIndex || nextProps.ui.zoomState != this.props.ui.zoomState) {
+    //   this.setState({tableLength: 0})
+    // }
   }
 
   isSeries = () => {
@@ -180,14 +184,14 @@ class TimelineTable extends Component {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
     const cardMap = this.cardMapping()
-    const { ui, chapters } = this.props
+    const { chapters } = this.props
     return chapters.map(chapter => {
       const inserts = lineMapKeys.flatMap(linePosition => {
         const line = lineMap[linePosition];
-        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} orientation={ui.orientation} showLine={chapter.position == 0} tableLength={this.state.tableLength}/>
+        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} showLine={chapter.position == 0} tableLength={this.state.tableLength}/>
       })
       return [<Row key={`chapterId-${chapter.id}`}>
-          <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} orientation={ui.orientation}/>
+          <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter}/>
           { inserts }
         </Row>,
         <Row key={`chapterId-${chapter.id}-insert`}>
@@ -197,7 +201,7 @@ class TimelineTable extends Component {
       ]
     }).concat(
       <Row key='last-insert'>
-        <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true} orientation={ui.orientation}/>
+        <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true}/>
       </Row>
     )
   }
@@ -211,12 +215,11 @@ class TimelineTable extends Component {
   }
 
   renderCardsByChapter (line, chapterMap, chapterMapKeys, cardMap) {
-    const { orientation } = this.props.ui
     return chapterMapKeys.flatMap(chapterPosition => {
       let filtered = false
       const cells = []
       let chapterId = chapterMap[chapterPosition]
-      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} showLine={chapterPosition == 0} color={line.color} orientation={orientation} tableLength={this.state.tableLength}/>)
+      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} showLine={chapterPosition == 0} color={line.color} tableLength={this.state.tableLength}/>)
       let card = cardMap[`${line.id}-${chapterId}`]
       if (card) {
         // This should be a selector on the card

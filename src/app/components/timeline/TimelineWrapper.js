@@ -45,14 +45,29 @@ class TimelineWrapper extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    this.updateZoom(nextProps.ui)
-    if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
+    const { ui } = this.props
+    if (nextProps.ui.zoomState != ui.zoomState) {
+      if (nextProps.ui.zoomState != 'fit') this.updateZoom(nextProps.ui)
+    } else {
+      this.updateZoom(nextProps.ui)
+    }
+
+    if (nextProps.ui.currentTimeline != ui.currentTimeline) {
       this.setState({mounted: false})
       setTimeout(() => this.setState({mounted: true}), 100)
     }
-    if (nextProps.ui.orientation != this.props.ui.orientation) {
+    if (nextProps.ui.orientation != ui.orientation) {
       this.setState({mounted: false})
       setTimeout(() => this.setState({mounted: true}), 100)
+    }
+    if (nextProps.ui.zoomIndex != ui.zoomIndex || nextProps.ui.zoomState != ui.zoomState) {
+      this.setState({mounted: false})
+      const updateIt = nextProps.ui.zoomState == 'fit' && ui.zoomState == null
+      const uiProps = nextProps.ui
+      setTimeout(() => {
+        this.setState({mounted: true})
+        if (updateIt) this.updateZoom(uiProps)
+      }, 100)
     }
   }
 

@@ -83,11 +83,11 @@ class CardDialog extends Component {
   }
 
   getCurrentChapter () {
-    return _.find(this.props.chapters, {id: this.props.chapterId})
+    return this.props.chapters.find(ch => ch.id == this.props.chapterId)
   }
 
   getCurrentLine () {
-    return _.find(this.props.lines, {id: this.props.lineId})
+    return this.props.lines.find(l => l.id == this.props.lineId)
   }
 
   getBookTitle () {

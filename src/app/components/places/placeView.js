@@ -210,7 +210,7 @@ class PlaceView extends Component {
         other {# cards}
     }`, { count: this.props.place.cards.length })
     let cardsAssoc = this.props.place.cards.reduce((arr, cId) => {
-      let card = _.find(this.props.cards, {id: cId})
+      let card = this.props.cards.find(c => c.id == cId)
       if (card) return arr.concat(card.title)
       return arr
     }, []).join(', ')
@@ -227,7 +227,7 @@ class PlaceView extends Component {
         other {# notes}
     }`, { count: this.props.place.noteIds.length })
     let noteAssoc = this.props.place.noteIds.reduce((arr, nId) => {
-      let note = _.find(this.props.notes, {id: nId})
+      let note = this.props.notes.find(n => n.id == nId)
       if (note) return arr.concat(note.title)
       return arr
     }, []).join(', ')

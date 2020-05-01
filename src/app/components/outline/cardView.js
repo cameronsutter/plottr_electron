@@ -88,7 +88,7 @@ class CardView extends Component {
 
   renderTags () {
     return this.props.card.tags.map(tId => {
-      var tag = _.find(this.props.tags, {id: tId})
+      var tag = this.props.tags.find(t => t.id == tId)
       return <TagLabel tag={tag} key={`outline-taglabel-${tId}`} />
     })
   }
@@ -97,7 +97,7 @@ class CardView extends Component {
     if (!ids.length) return null
 
     const chips = ids.map((id, idx) => {
-      const thing = _.find(list, {id: id})
+      const thing = list.find(l => l.id == id)
       if (!thing) return null
       const key = `${idx}-${id}`
       return <div key={key} className='chip'>

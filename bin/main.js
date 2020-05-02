@@ -804,15 +804,14 @@ function buildPlottrMenu () {
 }
 
 function buildFileMenu () {
-  let submenu = [].concat({
+  let submenu = [{
     label: i18n('New') + '...',
     accelerator: 'CmdOrCtrl+N',
-    click: askToCreateFile,
+    click: () => askToCreateFile({}),
   }, {
     label: i18n('New from Template') + '...',
     click: openDashboardWindow,
-  })
-  submenu = [].concat(submenu, {
+  }, {
     label: i18n('Open') + '...',
     accelerator: 'CmdOrCtrl+O',
     click: askToOpenFile,
@@ -925,7 +924,7 @@ function buildFileMenu () {
         }
       }
     }
-  })
+  }]
   return {
     label: i18n('File'),
     submenu: submenu

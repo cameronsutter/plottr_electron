@@ -51,7 +51,7 @@ class TemplateManager {
         //   console.info('no new template manifest', fetchedManifest.version)
         // }
       } else {
-        console.warn(resp.statusCode, err)
+        console.warn(resp ? resp.statusCode : 'null response', err)
       }
     })
   }

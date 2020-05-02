@@ -10,7 +10,7 @@ export default class GuidedTour extends Component {
 
   steps = [
     {selector: '', content: i18n('Since this is your first time using Plottr, I\'ll give you a guided tour if you like.')},
-    {selector: '.sticky-table-row:nth-child(1) .sticky-table-cell:nth-child(3) .scene__body', content: i18n('This is a scene or chapter. You can change it\'s name by clicking on it')},
+    {selector: '.sticky-table-row:nth-child(1) .sticky-table-cell:nth-child(3) .scene__body', content: i18n('This is a scene or chapter. You can change its name by clicking on it')},
     {selector: '.insert-scene-wrapper.append-scene', content: i18n('Add new scenes or chapters here')},
     {selector: '.sticky-table-row:nth-child(1) .sticky-table-cell:nth-child(2) .scene-list__insert', content: i18n('Or hover here to insert between scenes')},
     {selector: '.sticky-table-row:nth-child(2)', content: i18n('This is a plotline')},

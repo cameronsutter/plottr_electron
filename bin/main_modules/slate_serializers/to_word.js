@@ -39,6 +39,7 @@ const concrete = numbering.createConcreteNumbering(abstractNum)
 // END NONE of this works
 
 const serialize = (nodes) => {
+  if (!nodes) return []
   return nodes.flatMap(n => {
     if (!n.children) return leaf(n)
 

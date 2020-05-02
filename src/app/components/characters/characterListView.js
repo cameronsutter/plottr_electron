@@ -269,6 +269,8 @@ class CharacterListView extends Component {
   }
 
   renderTemplatePicker () {
+    if (!this.state.showTemplatePicker) return null
+
     return <TemplatePicker
       modal={true}
       type='characters'

@@ -174,6 +174,8 @@ class AddLineRow extends Component {
   }
 
   renderTemplatePicker () {
+    if (!this.state.showTemplatePicker) return null
+
     return <TemplatePicker
       type='plotlines'
       modal={true}

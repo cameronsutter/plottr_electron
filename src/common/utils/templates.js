@@ -6,6 +6,7 @@ const TEMPLATES_ROOT = 'templates'
 
 export default function listTemplates (type) {
   const templatesById = templateStore.get(TEMPLATES_ROOT)
+  if (!templatesById) return []
   if (!type) return Object.values(templatesById)
 
   const ids = Object.keys(templatesById)

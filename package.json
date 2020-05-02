@@ -1,9 +1,9 @@
 {
   "name": "plottr",
-  "version": "2020.5.2",
+  "version": "2020.5.3",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
-  "homepage": "www.getplottr.com",
+  "homepage": "getplottr.com",
   "private": true,
   "readme": "Copyright 2016-2020 C. Louis S. (Cameron Sutter)",
   "author": {

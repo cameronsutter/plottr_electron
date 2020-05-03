@@ -756,8 +756,9 @@ function buildPlottrMenu () {
     click: () => {
       const licenseKey = USER_INFO.licenseKey
       if (licenseKey) {
+        const title = i18n('License Key')
         const text = i18n('Here is your license key')
-        dialog.showMessageBoxSync({type: 'info', title: text, message: text, detail: licenseKey})
+        dialog.showMessageBoxSync({type: 'info', title: title, message: text, detail: licenseKey})
       } else {
         dialog.showErrorBox(i18n('Error'), i18n('Could not display license key. Try again'))
       }
@@ -1027,16 +1028,15 @@ function buildHelpMenu () {
           reloadWindow()
         }
       }, {
+        label: i18n('Documentation'),
+        click: () => shell.openExternal('https://getplottr.com/docs/navigating-plottr/')
+      }, {
         label: i18n('Report a Problem'),
-        click: function () {
-          shell.openExternal('https://getplottr.com/support/')
-        }
+        click: () => shell.openExternal('https://getplottr.com/support/')
       }, {
         label: i18n('Create an Error Report'),
         sublabel: i18n('Creates a report to send me'),
-        click: function () {
-          createErrorReport(USER_INFO, windows.map(w => w.state))
-        }
+        click: () => createErrorReport(USER_INFO, windows.map(w => w.state))
       }, {
         label: i18n('Enter a Customer Service Code'),
         click: enterCustomerServiceCode
@@ -1044,26 +1044,18 @@ function buildHelpMenu () {
         type: 'separator'
       }, {
         label: i18n('Give Feedback'),
-        click: function () {
-          shell.openExternal('https://feedback.getplottr.com')
-        }
+        click: () => shell.openExternal('https://feedback.getplottr.com')
       }, {
         label: i18n('Request a Feature'),
-        click: function () {
-          shell.openExternal('https://getplottr.com/support/?help=Feature%20Request')
-        }
+        click: () => shell.openExternal('https://getplottr.com/support/?help=Feature%20Request')
       }, {
         type: 'separator'
       }, {
         label: i18n('FAQ'),
-        click: function () {
-          shell.openExternal('https://getplottr.com/docs/frequently-asked-questions/')
-        }
+        click: () => shell.openExternal('https://getplottr.com/docs/frequently-asked-questions/')
       }, {
         label: i18n('Roadmap'),
-        click: function () {
-          shell.openExternal('https://roadmap.getplottr.com')
-        }
+        click: () => shell.openExternal('https://roadmap.getplottr.com')
       }
     ]
   }

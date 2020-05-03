@@ -4,6 +4,7 @@ var path = require('path')
 const semverGt = require('semver/functions/gt')
 const semverEq = require('semver/functions/eq')
 const semverCoerce = require('semver/functions/coerce')
+const migrationsList = require('./migrations_list')
 
 function Migrator (data, fileName, fileVersion, appVersion) {
   this.migrate = function (callback) {
@@ -44,15 +45,9 @@ function Migrator (data, fileName, fileVersion, appVersion) {
       return this.migrations
     }
 
-    let files = fs.readdirSync(this.getPath())
-    this.migrations = files.filter((f) => {
+    this.migrations = migrationsList.filter(version => {
       if (!this.fileVersion) return true
-      const fileName = f.replace('.js', '')
-      return semverGt(semverCoerce(fileName), this.fileVersion)
-    }).sort((a, b) => {
-      let aVersion = a.replace('.js', '')
-      let bVersion = b.replace('.js', '')
-      return semverGt(semverCoerce(aVersion), semverCoerce(bVersion)) ? 1 : -1
+      return semverGt(semverCoerce(version), this.fileVersion)
     })
     this.migrationsChecked = true
     return this.migrations

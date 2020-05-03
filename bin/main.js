@@ -808,7 +808,7 @@ function buildFileMenu () {
   let submenu = [{
     label: i18n('New') + '...',
     accelerator: 'CmdOrCtrl+N',
-    click: () => askToCreateFile({}),
+    click: () => askToCreateFile({}), // don't change this to just a function name … it causes a bug. You've been bitten by it a couple times
   }, {
     label: i18n('New from Template') + '...',
     click: openDashboardWindow,

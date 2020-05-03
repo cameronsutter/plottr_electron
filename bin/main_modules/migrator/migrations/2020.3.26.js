@@ -66,6 +66,7 @@ function migrate (data) {
 }
 
 function convert(text) {
+  if (!text) return [{ children: [{ text: '' }] }]
   if (text == '') return [{ children: [{ text: '' }] }]
 
   const html = md.makeHtml(text)

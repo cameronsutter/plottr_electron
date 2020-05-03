@@ -9,7 +9,7 @@
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "vertical",
+    "orientation": "horizontal",
     "placeFilter": {
       "county": [],
       "owner": []
@@ -20,10 +20,10 @@
     "zoomIndex": 4
   },
   "file": {
-    "fileName": "/Users/sparrowhawk/Downloads/pride_prejudice_finished.pltr",
+    "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.23"
+    "version": "2020.5.3"
   },
   "places": [
     {

@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.5.4",
+  "version": "2020.5.5",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
@@ -103,18 +103,18 @@
     "publish": [
       "github"
     ],
+    "asar": false,
     "files": [
       "**/*",
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}",
-      "!**/node_modules/.bin",
+      "!node_modules${/*}",
       "!**/*.{o,hprof,orig,pyc,pyo,rbc,md,MD}",
       "!**/._*",
-      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}",
+      "!.vscode${/*}",
+      "!**/{.DS_Store,.git,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}",
       "!src${/*}",
       "!webpack.config.js",
       "!example*.pltr",
-      "!example*.docx",
-      "!screenshots"
+      "!example*.docx"
     ],
     "copyright": "Copyright © 2020 C. Louis S. (Cameron Sutter)",
     "productName": "Plottr",

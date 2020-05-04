@@ -7,6 +7,7 @@ const storage = require('electron-json-storage')
 const log = require('electron-log')
 const i18n = require('format-message')
 const { is } = require('electron-util')
+const { machineIdSync } = require('node-machine-id')
 const windowStateKeeper = require('electron-window-state')
 const { autoUpdater } = require('electron-updater')
 const migrateIfNeeded = require('./main_modules/migration_manager')
@@ -762,6 +763,15 @@ function buildPlottrMenu () {
       } else {
         dialog.showErrorBox(i18n('Error'), i18n('Could not display license key. Try again'))
       }
+    }
+  }, {
+    label: i18n('View Device ID'),
+    visible: !TRIALMODE,
+    click: () => {
+      const id = machineIdSync(true)
+      const title = i18n('Device ID')
+      const text = i18n('This is your Device ID')
+      dialog.showMessageBoxSync({type: 'info', title: title, message: text, detail: id})
     }
   })
   if (is.macos) {

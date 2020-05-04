@@ -103,10 +103,10 @@
     "publish": [
       "github"
     ],
-    "asar": false,
     "files": [
       "**/*",
-      "!node_modules${/*}",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme,test,__tests__,tests,powered-test,example,examples,*.d.ts}",
+      "!**/node_modules/.bin",
       "!**/*.{o,hprof,orig,pyc,pyo,rbc,md,MD}",
       "!**/._*",
       "!.vscode${/*}",

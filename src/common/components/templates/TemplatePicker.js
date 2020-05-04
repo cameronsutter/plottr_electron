@@ -19,6 +19,12 @@ export default class TemplatePicker extends Component {
     this.templates = listTemplates(props.type)
   }
 
+  componentDidMount () {
+    if (!this.templates.length) {
+      this.templates = listTemplates(this.props.type)
+    }
+  }
+
   selectedTemplate = () => {
     return this.templates.find(template => template.id == this.state.selectedId)
   }

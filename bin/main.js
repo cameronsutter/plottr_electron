@@ -19,7 +19,7 @@ const backupFile = require('./main_modules/backup')
 const createErrorReport = require('./main_modules/error_report')
 const setupRollbar = require('./main_modules/rollbar')
 const SETTINGS = require('./main_modules/settings')
-const checkForActiveLicense = require('./main_modules/license_checker')
+const { checkForActiveLicense, getLicenseInfo } = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
 const FileManager = require('./main_modules/file_manager')
 const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/helpers')
@@ -42,7 +42,7 @@ const rollbar = setupRollbar('main')
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
 let DAYS_LEFT = null
-var USER_INFO = {}
+var USER_INFO = getLicenseInfo()
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -59,12 +59,16 @@ var darkMode = nativeTheme.shouldUseDarkColors || false
 
 const filePrefix = is.macos ? 'file://' + __dirname : __dirname
 
+TemplateManager.load()
+
 // auto updates
 let checkedForActiveLicense = false
-let lastCheckedForUpdate = 0
+let lastCheckedForUpdate = new Date().getTime()
 const updateCheckThreshold = 1000 * 60 * 60
 log.transports.file.level = 'info'
 autoUpdater.logger = log
+
+checkUpdatesIfAllowed()
 
 // mixpanel tracking
 var launchSent = false
@@ -291,7 +295,6 @@ app.on('ready', () => {
   }
 
   checkLicense(() => {
-    TemplateManager.load()
     loadMenu()
   })
 })
@@ -328,37 +331,61 @@ function checkForUpdates () {
 }
 
 function checkLicense (callback) {
-  storage.has(USER_INFO_PATH, function (err, hasKey) {
-    if (err) log.error(err)
-    if (hasKey) {
-      storage.get(USER_INFO_PATH, function (err, data) {
-        if (err) log.error(err)
-        USER_INFO = data
-        if (TRIALMODE) {
-          if (data.success) {
-            TRIALMODE = false
-            SETTINGS.set('trialMode', false)
-            turnOffTrialMode()
-          }
-          callback()
-          openRecentFiles()
-        } else {
-          callback()
-          if (data.success) openRecentFiles()
-          else openVerifyWindow()
-        }
-      })
+  if (Object.keys(USER_INFO).length) {
+    if (TRIALMODE) {
+      if (USER_INFO.success) {
+        TRIALMODE = false
+        SETTINGS.set('trialMode', false)
+        turnOffTrialMode()
+      }
+      callback()
+      openRecentFiles()
     } else {
-      // no license yet, check for trial info
-      checkTrialInfo(daysLeft => {
-        TRIALMODE = true
-        SETTINGS.set('trialMode', true)
-        DAYS_LEFT = daysLeft
-        callback()
-        openRecentFiles()
-      }, openVerifyWindow, openExpiredWindow)
+      callback()
+      if (USER_INFO.success) openRecentFiles()
+      else openVerifyWindow()
     }
-  })
+  } else {
+    // no license yet, check for trial info
+    checkTrialInfo(daysLeft => {
+      TRIALMODE = true
+      SETTINGS.set('trialMode', true)
+      DAYS_LEFT = daysLeft
+      callback()
+      openRecentFiles()
+    }, openVerifyWindow, openExpiredWindow)
+  }
+  // storage.has(USER_INFO_PATH, function (err, hasKey) {
+  //   if (err) log.error(err)
+  //   if (hasKey) {
+  //     storage.get(USER_INFO_PATH, function (err, data) {
+  //       if (err) log.error(err)
+  //       USER_INFO = data
+  //       if (TRIALMODE) {
+  //         if (data.success) {
+  //           TRIALMODE = false
+  //           SETTINGS.set('trialMode', false)
+  //           turnOffTrialMode()
+  //         }
+  //         callback()
+  //         openRecentFiles()
+  //       } else {
+  //         callback()
+  //         if (data.success) openRecentFiles()
+  //         else openVerifyWindow()
+  //       }
+  //     })
+  //   } else {
+  //     // no license yet, check for trial info
+  //     checkTrialInfo(daysLeft => {
+  //       TRIALMODE = true
+  //       SETTINGS.set('trialMode', true)
+  //       DAYS_LEFT = daysLeft
+  //       callback()
+  //       openRecentFiles()
+  //     }, openVerifyWindow, openExpiredWindow)
+  //   }
+  // })
 }
 
 function displayFileName (path) {

@@ -1,3 +1,4 @@
+const Store = require('electron-store')
 const request = require('request')
 const log = require('electron-log')
 const setupRollbar = require('./rollbar')
@@ -5,10 +6,17 @@ const rollbar = setupRollbar('license_checker')
 const { machineIdSync } = require('node-machine-id')
 const SETTINGS = require('./settings')
 const { is } = require('electron-util')
+const { USER_INFO_PATH } = require('./config_paths')
+
+const licenseStore = new Store({name: USER_INFO_PATH})
 
 const BASE_URL = 'http://getplottr.com'
 const PRODUCT_ID = is.macos ? '11321' : '11322'
 // const SUBSCRIPTION_ID = '10333'
+
+function getLicenseInfo () {
+  return licenseStore.get()
+}
 
 function checkForActiveLicense (licenseInfo, callback) {
   const key = licenseInfo.purchase ? licenseInfo.purchase.license_key : licenseInfo.licenseKey
@@ -97,4 +105,4 @@ function makeRequest (url) {
   }
 }
 
-module.exports = checkForActiveLicense
+module.exports = { checkForActiveLicense, getLicenseInfo }

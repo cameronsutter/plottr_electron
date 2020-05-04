@@ -6,9 +6,16 @@ const {
 } = require('../../shared/newFileState')
 
 function emptyFile (name) {
+  const books = {
+    ...newFileBooks,
+    [1]: {
+      ...newFileBooks[1],
+      title: name,
+    }
+  }
   return {
     series: name ? Object.assign({}, newFileSeries, {name: name}) : newFileSeries,
-    books: newFileBooks,
+    books: books,
     beats: newFileBeats,
     chapters: newFileChapters,
     ui: newFileUI,

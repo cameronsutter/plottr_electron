@@ -413,10 +413,14 @@ function askToSave (win, state, fileName, callback) {
 function askToCreateFile (data = {}) {
   const fileName = dialog.showSaveDialogSync({title: i18n('Where would you like to start your new file?')})
   if (fileName) {
-    var fullName = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+    const fullName = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+    const storyName = path.basename(fileName, '.pltr')
     if (!Object.keys(data).length) {
       // no data
-      data = emptyFileContents()
+      data = emptyFileContents(storyName)
+    } else {
+      data.series.name = storyName
+      data.books[1].title = storyName
     }
     FileManager.save(fullName, data, (err) => {
       if (err) {

@@ -15,7 +15,7 @@
       "owner": []
     },
     "placeSort": "name~asc",
-    "currentTimeline": 1,
+    "currentTimeline": 2,
     "zoomState": null,
     "zoomIndex": 4
   },
@@ -1370,6 +1370,13 @@
       "bookId": 1,
       "time": 0,
       "templates": []
+    },
+    {
+      "id": 65,
+      "bookId": 3,
+      "position": 0,
+      "title": "auto",
+      "time": 0
     }
   ],
   "cards": [
@@ -9238,6 +9245,13 @@
   ],
   "lines": [
     {
+      "id": 16,
+      "bookId": 3,
+      "title": "",
+      "color": "#6cace4",
+      "position": 0
+    },
+    {
       "id": 15,
       "bookId": 2,
       "title": "Sub plot",
@@ -9623,9 +9637,19 @@
       "templates": [],
       "imageId": null
     },
+    "3": {
+      "id": 3,
+      "title": "",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "imageId": null
+    },
     "allIds": [
       1,
-      2
+      2,
+      3
     ]
   },
   "series": {

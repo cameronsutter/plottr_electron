@@ -143,7 +143,7 @@ function mapDispatchToProps (dispatch) {
     sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
     beatActions: bindActionCreators(BeatActions, dispatch),
-    seriesLinesActions: bindActionCreators(SeriesLineActions, dispatch),
+    seriesLineActions: bindActionCreators(SeriesLineActions, dispatch),
   }
 }
 

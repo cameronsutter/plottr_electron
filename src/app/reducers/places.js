@@ -70,6 +70,7 @@ export default function places (state = initialState, action) {
     case DELETE_NOTE:
       return state.map(place => {
         let notes = _.cloneDeep(place.noteIds)
+        if (!notes) return place
         notes.splice(notes.indexOf(action.id), 1)
         return Object.assign({}, place, {noteIds: notes})
       })
@@ -77,6 +78,7 @@ export default function places (state = initialState, action) {
     case DELETE_CARD:
       return state.map(place => {
         let cards = _.cloneDeep(place.cards)
+        if (!cards) return place
         cards.splice(cards.indexOf(action.id), 1)
         return Object.assign({}, place, {cards: cards})
       })

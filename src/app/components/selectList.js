@@ -20,6 +20,8 @@ export default class SelectList extends Component {
   }
 
   renderSelectedTags () {
+    if (!this.props.selectedItems) return null
+
     return this.props.selectedItems.map(tId => {
       var tag = this.props.allItems.find(item => item.id == tId)
       if (!tag) return null
@@ -31,6 +33,8 @@ export default class SelectList extends Component {
   }
 
   renderSelectedItems () {
+    if (!this.props.selectedItems) return null
+
     return this.props.selectedItems.map(itemId => {
       var item = this.props.allItems.find(item => item.id == itemId)
       if (!item) return null

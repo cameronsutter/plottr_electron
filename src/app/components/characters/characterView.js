@@ -264,6 +264,7 @@ class CharacterView extends Component {
   }
 
   renderCardAssociations () {
+    if (!this.props.character.cards) return null
     if (!this.props.character.cards.length) return null
 
     let label = i18n(`{
@@ -283,6 +284,7 @@ class CharacterView extends Component {
   }
 
   renderNoteAssociations () {
+    if (!this.props.character.noteIds) return null
     if (!this.props.character.noteIds.length) return null
 
     let label = i18n(`{

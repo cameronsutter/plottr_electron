@@ -13,6 +13,7 @@ export default function setupRollbar(where) {
     handleUnhandledRejections: true,
     ignoredMessages: [],
     codeVersion: version,
+    version: version,
     environment: environment,
     payload: {
       environment: environment,

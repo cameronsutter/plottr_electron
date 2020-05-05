@@ -12,6 +12,7 @@ export function nextPosition (arr) {
 
 export function positionReset (items) {
   return items.map((item, index) => {
+    if (!item) return null // i have no idea how this could possibly be happening, but it is
     item.position = index
     return item
   })

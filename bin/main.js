@@ -59,7 +59,8 @@ var darkMode = nativeTheme.shouldUseDarkColors || false
 
 const filePrefix = is.macos ? 'file://' + __dirname : __dirname
 
-TemplateManager.load()
+// mixpanel tracking
+var launchSent = false
 
 // auto updates
 let checkedForActiveLicense = false
@@ -68,10 +69,13 @@ const updateCheckThreshold = 1000 * 60 * 60
 log.transports.file.level = 'info'
 autoUpdater.logger = log
 
+////////////////////////////////
+////     Startup Tasks    //////
+////////////////////////////////
+log.info('--------Startup Tasks--------')
+TemplateManager.load()
 checkUpdatesIfAllowed()
 
-// mixpanel tracking
-var launchSent = false
 
 ////////////////////////////////
 ////     Bug Reporting    //////
@@ -280,9 +284,7 @@ app.on('ready', () => {
     locale: app.getLocale() || 'en'
   })
 
-  if (is.macos) {
-    loadMenu(true)
-  }
+  loadMenu(true)
 
   // Register the toggleDevTools shortcut listener.
   const ret = globalShortcut.register('CommandOrControl+Alt+R', () => {

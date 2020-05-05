@@ -1,4 +1,5 @@
 const Store = require('electron-store')
+const log = require('electron-log')
 const request = require('request')
 const semverGt = require('semver/functions/gt')
 const { TEMPLATES_MANIFEST_PATH, TEMPLATES_PATH } = require('./config_paths')
@@ -41,17 +42,18 @@ class TemplateManager {
   }
 
   load = () => {
+    log.info('fetching template manifest')
     request(this.manifestReq(), (err, resp, fetchedManifest) => {
       if (!err && resp && resp.statusCode == 200) {
         if (this.fetchedIsNewer(fetchedManifest.version)) {
+          log.info('new templates found', fetchedManifest.version)
           manifestStore.set(MANIFEST_ROOT, fetchedManifest)
           this.fetchTemplates()
+        } else {
+          log.info('no new template manifest', fetchedManifest.version)
         }
-        // else {
-        //   console.info('no new template manifest', fetchedManifest.version)
-        // }
       } else {
-        console.warn(resp ? resp.statusCode : 'null response', err)
+        log.error(resp ? resp.statusCode : 'null template manifest response', err)
       }
     })
   }

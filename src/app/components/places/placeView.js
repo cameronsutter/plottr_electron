@@ -204,6 +204,8 @@ class PlaceView extends Component {
   }
 
   renderCardAssociations () {
+    if (!this.props.place.cards.length) return null
+
     let label = i18n(`{
       count, plural,
         one {1 card}
@@ -221,6 +223,8 @@ class PlaceView extends Component {
   }
 
   renderNoteAssociations () {
+    if (!this.props.place.noteIds.length) return null
+
     let label = i18n(`{
       count, plural,
         one {1 note}

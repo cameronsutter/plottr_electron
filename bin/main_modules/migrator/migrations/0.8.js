@@ -7,12 +7,12 @@ function migrate (data) {
 
   // add notes to places
   obj.places.forEach((p) => {
-    p['notes'] = p['notes'] || null
+    p['notes'] = p['notes'] || ""
   })
 
   // add notes to characters
   obj.characters.forEach((c) => {
-    c['notes'] = c['notes'] || null
+    c['notes'] = c['notes'] || ""
   })
 
 

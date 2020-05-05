@@ -3,7 +3,6 @@ const { app, BrowserWindow, Menu, ipcMain, dialog,
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
-const storage = require('electron-json-storage')
 const log = require('electron-log')
 const i18n = require('format-message')
 const { is } = require('electron-util')
@@ -12,7 +11,6 @@ const windowStateKeeper = require('electron-window-state')
 const { autoUpdater } = require('electron-updater')
 const migrateIfNeeded = require('./main_modules/migration_manager')
 const Exporter = require('./main_modules/exporter')
-const { USER_INFO_PATH } = require('./main_modules/config_paths')
 const enterCustomerServiceCode = require('./main_modules/customer_service_codes')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
 const backupFile = require('./main_modules/backup')
@@ -335,6 +333,7 @@ function checkForUpdates () {
 function checkLicense (callback) {
   if (Object.keys(USER_INFO).length) {
     if (TRIALMODE) {
+      // still in trial mode
       if (USER_INFO.success) {
         TRIALMODE = false
         SETTINGS.set('trialMode', false)
@@ -343,6 +342,7 @@ function checkLicense (callback) {
       callback()
       openRecentFiles()
     } else {
+      // not-trial, normal mode
       callback()
       if (USER_INFO.success) openRecentFiles()
       else openVerifyWindow()
@@ -357,45 +357,14 @@ function checkLicense (callback) {
       openRecentFiles()
     }, openVerifyWindow, openExpiredWindow)
   }
-  // storage.has(USER_INFO_PATH, function (err, hasKey) {
-  //   if (err) log.error(err)
-  //   if (hasKey) {
-  //     storage.get(USER_INFO_PATH, function (err, data) {
-  //       if (err) log.error(err)
-  //       USER_INFO = data
-  //       if (TRIALMODE) {
-  //         if (data.success) {
-  //           TRIALMODE = false
-  //           SETTINGS.set('trialMode', false)
-  //           turnOffTrialMode()
-  //         }
-  //         callback()
-  //         openRecentFiles()
-  //       } else {
-  //         callback()
-  //         if (data.success) openRecentFiles()
-  //         else openVerifyWindow()
-  //       }
-  //     })
-  //   } else {
-  //     // no license yet, check for trial info
-  //     checkTrialInfo(daysLeft => {
-  //       TRIALMODE = true
-  //       SETTINGS.set('trialMode', true)
-  //       DAYS_LEFT = daysLeft
-  //       callback()
-  //       openRecentFiles()
-  //     }, openVerifyWindow, openExpiredWindow)
-  //   }
-  // })
 }
 
 function displayFileName (path) {
   var stringBase = 'Plottr'
-  if (process.env.NODE_ENV == 'dev') stringBase += ' (DEV)'
   if (TRIALMODE) stringBase += ' — ' + i18n('TRIAL Version') + ' (' + i18n('{days} days remaining', {days: DAYS_LEFT}) + ')'
   var matches = path.match(/.*\/(.*\.pltr)/)
   if (matches) stringBase += ` — ${matches[1]}`
+  if (process.env.NODE_ENV == 'dev') stringBase += ' - (DEV)'
   return stringBase
 }
 
@@ -1073,6 +1042,9 @@ function buildHelpMenu () {
       }, {
         label: i18n('Documentation'),
         click: () => shell.openExternal('https://getplottr.com/docs/navigating-plottr/')
+      }, {
+        label: i18n('Facebook Support Group'),
+        click: () => shell.openExternal('https://www.facebook.com/groups/367650870614184')
       }, {
         label: i18n('Report a Problem'),
         click: () => shell.openExternal('https://getplottr.com/support/')

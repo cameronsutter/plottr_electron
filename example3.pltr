@@ -15,7 +15,7 @@
       "owner": []
     },
     "placeSort": "name~asc",
-    "currentTimeline": 1,
+    "currentTimeline": 3,
     "zoomState": null,
     "zoomIndex": 4
   },
@@ -884,13 +884,6 @@
       "position": 0
     },
     {
-      "id": 65,
-      "bookId": 3,
-      "position": 0,
-      "title": "auto",
-      "time": 0
-    },
-    {
       "id": 1,
       "position": 0,
       "title": "Chapter 1",
@@ -1377,6 +1370,13 @@
       "bookId": 1,
       "time": 0,
       "templates": []
+    },
+    {
+      "id": 66,
+      "bookId": 3,
+      "position": 0,
+      "title": "auto",
+      "time": 0
     }
   ],
   "cards": [
@@ -9245,13 +9245,6 @@
   ],
   "lines": [
     {
-      "id": 16,
-      "bookId": 3,
-      "title": "",
-      "color": "#6cace4",
-      "position": 0
-    },
-    {
       "id": 15,
       "bookId": 2,
       "title": "Sub plot",
@@ -9368,6 +9361,13 @@
       "title": "Colonel Fitzwilliam",
       "characterId": null,
       "bookId": 1
+    },
+    {
+      "id": 16,
+      "bookId": 3,
+      "title": "",
+      "color": "#6cace4",
+      "position": 0
     }
   ],
   "customAttributes": {

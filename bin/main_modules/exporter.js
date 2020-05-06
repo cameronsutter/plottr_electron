@@ -144,6 +144,7 @@ function characters (characters, customAttributes, images, doc) {
   let paragraphs = []
   characters.forEach(ch => {
     paragraphs.push(new Paragraph(''))
+    paragraphs.push(new Paragraph('^'))
     let name = new Paragraph({text: ch.name, heading: HeadingLevel.HEADING_2})
     paragraphs.push(name)
     if (ch.imageId) {
@@ -203,6 +204,7 @@ function places (places, customAttributes, images, doc) {
   let paragraphs = []
   places.forEach(pl => {
     paragraphs.push(new Paragraph(''))
+    paragraphs.push(new Paragraph('^'))
     let name = new Paragraph({text: pl.name, heading: HeadingLevel.HEADING_2})
     paragraphs.push(name)
     if (pl.imageId) {
@@ -250,6 +252,7 @@ function notes (notes, namesMapping, images, doc) {
   let paragraphs = []
   notes.forEach(function(n) {
     paragraphs.push(new Paragraph(''))
+    paragraphs.push(new Paragraph('^'))
     let title = new Paragraph({text: n.title, heading: HeadingLevel.HEADING_2})
     paragraphs.push(title)
     if (n.imageId) {

@@ -98,9 +98,9 @@ class CardCell extends Component {
     if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
-        placement = Number(this.props.chapterPosition) <= 1 ? 'right' : placement
+        placement = Number(this.props.chapterPosition) <= 2 ? 'right' : placement
       } else {
-        placement = Number(this.props.linePosition) <= 1 ? 'right' : placement
+        placement = Number(this.props.linePosition) <= 2 ? 'right' : placement
       }
       if (isZoomed(this.props.ui)) placement = 'right'
       title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>

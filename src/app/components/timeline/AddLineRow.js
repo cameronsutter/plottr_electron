@@ -24,12 +24,13 @@ class AddLineRow extends Component {
     let newChapters = []
     let newCards = []
     let newLine = null
+    const nextChapterId = nextId(currentChapters)
     if (!templateChapters) return {newChapters, newCards, cardId, newLine}
-    const areAllAuto = templateChapters.every(ch => ch.title == 'auto')
+    const allAreAuto = templateChapters.every(ch => ch.title == 'auto')
     const allChapters = _.sortBy(templateChapters, 'position').map(ch => { return {...ch, bookId: bookId}})
 
     if (currentChapters.length >= templateChapters.length) {
-      if (areAllAuto) return {newChapters, newCards, cardId, newLine}
+      if (allAreAuto) return {newChapters, newCards, cardId, newLine}
 
       // chapter titles are useful & they don't need to be chapters
       // add them as cards
@@ -44,20 +45,15 @@ class AddLineRow extends Component {
       newLine = { id: newLineId, title: templateName, bookId: bookId }
     } else if (currentChapters.length) {
       // some current chapters, but not enough
-      if (areAllAuto) {
+      if (allAreAuto) {
         // take enough to fill up how many we need
-        const chIds = currentChapters.map(ch => ch.id)
-        newChapters = allChapters.slice(currentChapters.length).map(ch => {
-          // make sure ids don't clash
-          let chapter = {...ch, bookId: bookId}
-          if (chIds.includes(ch.id)) {
-            chapter.id = ch.id + 100 // ought to be a safe number
-          }
-          return chapter
+        newChapters = allChapters.slice(currentChapters.length).map((ch, idx) => {
+          // set ids
+          return {...ch, id: nextChapterId + idx, bookId: bookId}
         })
       } else {
         // add them to the end
-        newChapters = allChapters
+        newChapters = allChapters.map((ch, idx) => { return {...ch, id: nextChapterId + idx, bookId: bookId}})
       }
     } else {
       // no current chapters
@@ -96,10 +92,10 @@ class AddLineRow extends Component {
         description: c.description,
         id: cardId++,
         lineId: lineId,
-        chapterId: allChapters[idx].id,
+        chapterId: c.chapterId,
       })
     })
-    return [moreCards, moreChapters]
+    return [moreCards, moreChapters, cardId]
   }
 
   handleChooseTemplate = (template) => {
@@ -120,7 +116,8 @@ class AddLineRow extends Component {
       const templateLines = _.sortBy(templateData.lines, 'position').map(l => {
         const thisLineId = ++newLineId
         if (templateData.cards) {
-          const [templateCards, moarChapters] = this.createCards(_.sortBy(templateData.cards.filter(c => c.lineId == l.id), 'id'), newChapters, this.props.chapters, newCardId, thisLineId)
+          const [templateCards, moarChapters, moarCardId] = this.createCards(_.sortBy(templateData.cards.filter(c => c.lineId == l.id), 'id'), newChapters, this.props.chapters, newCardId, thisLineId)
+          newCardId = moarCardId
           cards = cards.concat(templateCards)
           if (moarChapters) newChapters = newChapters.concat(moarChapters)
         }
@@ -142,7 +139,7 @@ class AddLineRow extends Component {
         bookId: bookId,
       })
     }
-    actions.addLinesFromTemplate(cards, lines, newChapters, bookId)
+    actions.addLinesFromTemplate(cards, lines, newChapters, bookId, template.name)
     this.setState({showTemplatePicker: false})
   }
 

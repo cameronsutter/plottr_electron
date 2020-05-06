@@ -4,8 +4,8 @@ export function addLine (bookId) {
   return { type: ADD_LINE, bookId }
 }
 
-export function addLinesFromTemplate (cards, lines, chapters, bookId) {
-  return { type: ADD_LINES_FROM_TEMPLATE, cards, lines, chapters, bookId }
+export function addLinesFromTemplate (cards, lines, chapters, bookId, templateName) {
+  return { type: ADD_LINES_FROM_TEMPLATE, cards, lines, chapters, bookId, templateName }
 }
 
 export function editLineTitle (id, title) {

@@ -15,7 +15,7 @@
       "owner": []
     },
     "placeSort": "name~asc",
-    "currentTimeline": 3,
+    "currentTimeline": 1,
     "zoomState": null,
     "zoomIndex": 4
   },
@@ -1375,6 +1375,13 @@
       "id": 66,
       "bookId": 3,
       "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 67,
+      "bookId": 3,
+      "position": 1,
       "title": "auto",
       "time": 0
     }
@@ -9365,7 +9372,7 @@
     {
       "id": 16,
       "bookId": 3,
-      "title": "",
+      "title": "Main Plot",
       "color": "#6cace4",
       "position": 0
     }

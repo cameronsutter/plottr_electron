@@ -22,15 +22,16 @@ export default function chapters (state = initialState, action) {
     case ADD_LINES_FROM_TEMPLATE:
       if (!action.chapters) return state
       if (!action.chapters.length) return state
-      const newState = [
-        ...state,
-        ...action.chapters,
-      ]
-      const [bookChapters, notBookChapters] = _.partition(newState, ch => ch.bookId == action.bookId)
-      return [
-        ...notBookChapters,
-        ...positionReset(bookChapters),
-      ]
+      const [bookChapters, notBookChapters] = _.partition(state, ch => ch.bookId == action.bookId)
+      let newState = notBookChapters
+      let moarChapters = []
+      if (bookChapters.length < 2) {
+        moarChapters = positionReset(action.chapters)
+      } else {
+        moarChapters = positionReset([...bookChapters, ...action.chapters])
+      }
+      newState = newState.concat(moarChapters)
+      return newState
 
     case EDIT_SCENE_TITLE:
       return state.map(ch =>

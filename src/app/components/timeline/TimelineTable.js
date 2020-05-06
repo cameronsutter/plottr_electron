@@ -233,7 +233,7 @@ class TimelineTable extends Component {
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
-          key={`blank-${chapterId}-${line.id}`}
+          key={`blank-${chapterPosition}-${line.position}`}
           color={line.color} />)
       }
       return cells

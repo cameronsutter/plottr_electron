@@ -12,14 +12,18 @@ export default function setupRollbar(where) {
     handleUncaughtExceptions: process.env.NODE_ENV !== 'development',
     handleUnhandledRejections: true,
     ignoredMessages: [],
-    codeVersion: version,
-    version: version,
-    environment: environment,
     payload: {
       environment: environment,
       version: version,
       where: where,
-      os: process.platform
+      os: process.platform,
+      client: {
+        javascript: {
+          source_map_enabled: true,
+          code_version: version,
+          guess_uncaught_frames: true,
+        }
+      }
     }
   })
 }

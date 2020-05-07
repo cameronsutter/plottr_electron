@@ -23,7 +23,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.5.5"
+    "version": "2020.5.6"
   },
   "places": [
     {
@@ -859,6 +859,68 @@
       "bookIds": [
         1
       ]
+    },
+    {
+      "id": 21,
+      "name": "A new character",
+      "description": "",
+      "notes": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [
+        {
+          "id": "ch1",
+          "version": "2020.4.8",
+          "attributes": [
+            {
+              "name": "Internal Goal",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "Internal Motivation",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "Internal Conflict",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "External Goal",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "External Motivation",
+              "type": "text",
+              "value": ""
+            },
+            {
+              "name": "External Conflict",
+              "type": "text",
+              "value": ""
+            }
+          ],
+          "value": ""
+        }
+      ],
+      "tags": [],
+      "categoryId": "",
+      "imageId": null,
+      "bookIds": [],
+      "In possession of fortune": "",
+      "Married": ""
     }
   ],
   "chapters": [
@@ -1443,9 +1505,39 @@
       "characters": [],
       "description": [
         {
+          "type": "numbered-list",
           "children": [
             {
-              "text": "something"
+              "children": [
+                {
+                  "text": "something"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "and"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "something"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "else"
+                }
+              ],
+              "type": "list-item"
             }
           ]
         }

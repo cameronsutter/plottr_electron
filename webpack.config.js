@@ -1,6 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),

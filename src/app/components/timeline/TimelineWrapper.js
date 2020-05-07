@@ -206,6 +206,8 @@ class TimelineWrapper extends Component {
   }
 
   updateScrollLeft = (orientation = 'horizontal') => {
+    if (!this.tableRef) return
+
     let newScrollLeft = this.tableRef.scrollLeft
     if (orientation === 'vertical') {
       newScrollLeft = this.tableRef.scrollHeight

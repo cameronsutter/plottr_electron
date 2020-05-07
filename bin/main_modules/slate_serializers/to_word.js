@@ -55,7 +55,8 @@ const serialize = (nodes) => {
       case 'list-item':
         return children[0] // always an array with 1 TextRun
       case 'numbered-list':
-        return children.map(li => new Paragraph({children: [li.root[1]], bullet: {level: 0}}))
+        // make it a bullet list for now
+        return children.map(li => new Paragraph({children: [li], bullet: {level: 0}}))
         // this isn't working for now
         // return children.map(li => new Paragraph({children: [li.root[1]], numbering: { reference: concrete, level: 0 }}))
       case 'link':

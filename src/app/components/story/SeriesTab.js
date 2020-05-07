@@ -9,7 +9,7 @@ export default class SeriesTab extends Component {
   render () {
     return <ErrorBoundary>
       <div>
-        <h2 style={{paddingLeft: '40px'}}>{i18n('Series')}</h2>
+        <h2 style={{paddingLeft: '40px'}}>{i18n('Project')}</h2>
         <EditSeries />
         <BookList />
       </div>

@@ -132,11 +132,13 @@ function deserialize (el) {
 }
 
 function fixParagraphChildren (children) {
-  return children.map(node => {
-    if (node.type) return node.children.map(child => child.text).join(' ')
+  return children
+    .filter(node => node != null)
+    .map(node => {
+      if (node.type) return node.children.map(child => child.text).join(' ')
 
-    return node
-  })
+      return node
+    })
 }
 
 module.exports = migrate

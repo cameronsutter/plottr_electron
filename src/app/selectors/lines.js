@@ -13,7 +13,7 @@ export const linesByBookSelector = createSelector(
     if (bookId == 'series') {
       return seriesLines
     } else {
-      return lines.filter(l => l.bookId == bookId)
+      return lines.filter(l => l && l.bookId == bookId)
     }
   }
 )

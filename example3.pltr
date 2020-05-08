@@ -9358,6 +9358,13 @@
       "position": 0
     },
     {
+      "id": 16,
+      "bookId": 3,
+      "title": "Main Plot",
+      "color": "#6cace4",
+      "position": 0
+    },
+    {
       "color": "#6cace4",
       "id": 1,
       "position": 0,
@@ -9460,13 +9467,6 @@
       "title": "Colonel Fitzwilliam",
       "characterId": null,
       "bookId": 1
-    },
-    {
-      "id": 16,
-      "bookId": 3,
-      "title": "Main Plot",
-      "color": "#6cace4",
-      "position": 0
     }
   ],
   "customAttributes": {

@@ -1046,6 +1046,8 @@ function buildHelpMenu () {
         label: i18n('Facebook Support Group'),
         click: () => shell.openExternal('https://www.facebook.com/groups/367650870614184')
       }, {
+        type: 'separator'
+      }, {
         label: i18n('Report a Problem'),
         click: () => shell.openExternal('https://getplottr.com/support/')
       }, {

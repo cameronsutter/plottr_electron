@@ -11,8 +11,7 @@ export function nextPosition (arr) {
 }
 
 export function positionReset (items) {
-  return items.map((item, index) => {
-    if (!item) return null // i have no idea how this could possibly be happening, but it is
+  return items.filter(item => item != null).map((item, index) => {
     item.position = index
     return item
   })
@@ -20,6 +19,6 @@ export function positionReset (items) {
 
 export function nextPositionInBook (items, bookId) {
   return items
-    .filter(item => item.bookId == bookId)
+    .filter(item => item && item.bookId == bookId)
     .reduce((maxPosition, item) => Math.max(item.position, maxPosition), -1) + 1
 }

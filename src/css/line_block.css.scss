@@ -33,6 +33,7 @@ $title_width: 200px;
   padding: 10px;
   transition: all .4s $cubic;
   border: 3px dashed transparent;
+  word-break: break-word;
   .form-group {
     text-align: left;
     .control-label {
@@ -175,6 +176,7 @@ $title_width: 200px;
   text-align: center;
   transition: all .4s $cubic;
   border: 3px dashed transparent;
+  word-break: break-word;
   .form-group {
     text-align: left;
     .control-label {

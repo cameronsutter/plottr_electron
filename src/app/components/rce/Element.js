@@ -3,6 +3,8 @@ import { useSelected, useFocused } from 'slate-react'
 import cx from 'classnames'
 
 const Element = ({ attributes, children, element }) => {
+  const selected = useSelected()
+  const focused = useFocused()
   switch (element.type) {
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>
@@ -28,12 +30,20 @@ const Element = ({ attributes, children, element }) => {
       // TODO: show a preview or a little icon to show a preview
       return <a {...attributes} title={element.url} href={element.url}>{children}</a>
     case 'image-link':
-      const selected = useSelected()
-      const focused = useFocused()
       return <div {...attributes}>
         <div contentEditable={false}>
           <img
             src={element.url}
+            className={cx('slate-editor__image-link', {selected: selected && focused})}
+          />
+        </div>
+        {children}
+      </div>
+    case 'image-data':
+      return <div {...attributes}>
+        <div contentEditable={false}>
+          <img
+            src={element.data}
             className={cx('slate-editor__image-link', {selected: selected && focused})}
           />
         </div>

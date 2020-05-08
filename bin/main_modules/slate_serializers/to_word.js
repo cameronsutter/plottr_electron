@@ -1,4 +1,4 @@
-const { Paragraph, TextRun, AlignmentType, HeadingLevel, Numbering, Hyperlink } = require('docx')
+const { Paragraph, TextRun, AlignmentType, HeadingLevel, Numbering, Hyperlink, Media } = require('docx')
 
 // NONE of this works
 const numbering = new Numbering({config: [
@@ -38,12 +38,12 @@ const concrete = numbering.createConcreteNumbering(abstractNum)
 
 // END NONE of this works
 
-const serialize = (nodes) => {
+const serialize = (nodes, doc) => {
   if (!nodes) return []
   return nodes.flatMap(n => {
     if (!n.children) return leaf(n)
 
-    const children = serialize(n.children)
+    const children = serialize(n.children, doc)
 
     switch (n.type) {
       case 'bulleted-list':
@@ -63,6 +63,10 @@ const serialize = (nodes) => {
         return new Hyperlink(n.url)
       case 'image-link':
         return new Hyperlink(n.url)
+      case 'image-data':
+        const imgData = n.data
+        const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
+        return new Paragraph({children: [image]})
       case 'block-quote':
       case 'paragraph':
       default:

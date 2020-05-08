@@ -37,6 +37,10 @@ mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
 const store = configureStore()
+// kind of a hack to enable store dispatches in otherwise hard situations
+window.specialDelivery = (action) => {
+  store.dispatch(action)
+}
 
 ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())

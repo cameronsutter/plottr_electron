@@ -6,6 +6,8 @@ import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
 import InputModal from '../InputModal'
 import i18n from 'format-message'
+import { readImage } from '../../helpers/images'
+import { addImage } from '../../actions/images'
 
 export const ImageLinkButton = () => {
   const editor = useSlate()
@@ -19,7 +21,7 @@ export const ImageLinkButton = () => {
         newProperties: { anchor: selection.anchor, focus: selection.focus },
       })
     }
-    if (url) insertImage(editor, url)
+    if (url) insertImageLink(editor, url)
     setOpen(false)
   }
 
@@ -42,7 +44,7 @@ export const withImages = editor => {
   const { insertData, isVoid } = editor
 
   editor.isVoid = element => {
-    return element.type === 'image-link' ? true : isVoid(element)
+    return element.type === 'image-link' || element.type === 'image-data' ? true : isVoid(element)
   }
 
   editor.insertData = data => {
@@ -51,20 +53,17 @@ export const withImages = editor => {
 
     if (files && files.length > 0) {
       for (const file of files) {
-        const reader = new FileReader()
         const [mime] = file.type.split('/')
 
         if (mime === 'image') {
-          reader.addEventListener('load', () => {
-            const url = reader.result
-            insertImage(editor, url)
+          readImage(file, data => {
+            window.specialDelivery(addImage({data, name: file.name, path: file.path}))
+            insertImageData(editor, data)
           })
-
-          reader.readAsDataURL(file)
         }
       }
     } else if (isImageUrl(text)) {
-      insertImage(editor, text)
+      insertImageLink(editor, text)
     } else {
       insertData(data)
     }
@@ -73,9 +72,8 @@ export const withImages = editor => {
   return editor
 }
 
-
 const isImageActive = editor => {
-  const [link] = Editor.nodes(editor, { match: n => n.type === 'image-link' })
+  const [link] = Editor.nodes(editor, { match: n => n.type === 'image-link' || n.type === 'image-data' })
   return !!link
 }
 
@@ -86,8 +84,14 @@ const isImageUrl = url => {
   return imageExtensions.includes(ext)
 }
 
-const insertImage = (editor, url) => {
+const insertImageLink = (editor, url) => {
   const text = { text: '' }
   const image = { type: 'image-link', url, children: [text] }
+  Transforms.insertNodes(editor, image)
+}
+
+const insertImageData = (editor, data) => {
+  const text = { text: '' }
+  const image = { type: 'image-data', data, children: [text] }
   Transforms.insertNodes(editor, image)
 }

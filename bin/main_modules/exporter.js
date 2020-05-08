@@ -9,7 +9,7 @@ function Exporter (data, { fileName, bookId }) {
   let names = namesMapping(data)
   let sections = []
   sections.push(seriesNameSection(data, bookId))
-  sections.push(outlineSection(data, names, bookId))
+  sections.push(outlineSection(data, names, bookId, doc))
   sections.push(charactersSection(data, doc))
   sections.push(placesSection(data, doc))
   sections.push(notesSection(data, names, doc))
@@ -53,36 +53,36 @@ function seriesNameSection (data, bookId) {
   return {children: [paragraph]}
 }
 
-function outlineSection (data, namesMapping, bookId) {
+function outlineSection (data, namesMapping, bookId, doc) {
   let children = []
 
   children.push(new Paragraph({text: i18n('Outline'), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER}))
 
   // TODO: handle 'series' and undefined
   let chapters = _.sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
-  let paragraphs = chapters.flatMap(ch => chapterParagraphs(ch, data, namesMapping))
+  let paragraphs = chapters.flatMap(ch => chapterParagraphs(ch, data, namesMapping, doc))
 
   return {children: children.concat(paragraphs)}
 }
 
-function chapterParagraphs (chapter, data, namesMapping) {
+function chapterParagraphs (chapter, data, namesMapping, doc) {
   let paragraphs = [new Paragraph('')]
   paragraphs.push(new Paragraph('^'))
   let title = chapter.title == 'auto' ? i18n('Chapter {number}', {number: chapter.position + 1}) : chapter.title
   paragraphs.push(new Paragraph({text: title, heading: HeadingLevel.HEADING_2}))
   const cards = sortedChapterCards(chapter.id, data.cards, data.lines)
-  let cardParagraphs = cards.flatMap(c => card(c, data.lines, namesMapping))
+  let cardParagraphs = cards.flatMap(c => card(c, data.lines, namesMapping, doc))
   return paragraphs.concat(cardParagraphs)
 }
 
-function card (card, lines, namesMapping) {
+function card (card, lines, namesMapping, doc) {
   let paragraphs = [new Paragraph('')]
   let line = _.find(lines, {id: card.lineId})
   let titleString = `${card.title} (${line.title})`
   let attachmentParagraphs = attachments(card, namesMapping)
   paragraphs.push(new Paragraph({text: titleString, heading: HeadingLevel.HEADING_3}))
   paragraphs = paragraphs.concat(attachmentParagraphs)
-  const descParagraphs = serialize(card.description)
+  const descParagraphs = serialize(card.description, doc)
   return paragraphs.concat(descParagraphs)
 }
 
@@ -149,20 +149,20 @@ function characters (characters, customAttributes, images, doc) {
     paragraphs.push(name)
     if (ch.imageId) {
       const imgData = images[ch.imageId].data
-      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"), 200, 200)
+      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
       paragraphs.push(new Paragraph({children: [image]}))
     }
     paragraphs.push(new Paragraph({text: i18n('Description'), heading: HeadingLevel.HEADING_3}))
     paragraphs.push(new Paragraph(ch.description))
     paragraphs.push(new Paragraph({text: i18n('Notes'), heading: HeadingLevel.HEADING_3}))
-    const descParagraphs = serialize(ch.notes)
+    const descParagraphs = serialize(ch.notes, doc)
     paragraphs = [...paragraphs, ...descParagraphs]
 
     customAttributes.forEach(ca => {
       paragraphs.push(new Paragraph({text: ca.name, heading: HeadingLevel.HEADING_3}))
       if (ch[ca.name]) {
         if (ca.type == 'paragraph') {
-          const attrParagraphs = serialize(ch[ca.name])
+          const attrParagraphs = serialize(ch[ca.name], doc)
           paragraphs = [...paragraphs, ...attrParagraphs]
         } else {
           if (ch[ca.name]) paragraphs.push(new Paragraph(ch[ca.name]))
@@ -176,7 +176,7 @@ function characters (characters, customAttributes, images, doc) {
       t.attributes.forEach(attr => {
         paragraphs.push(new Paragraph({text: attr.name, heading: HeadingLevel.HEADING_3}))
         if (attr.type == 'paragraph') {
-          const attrParagraphs = serialize(attr.value)
+          const attrParagraphs = serialize(attr.value, doc)
           paragraphs = [...paragraphs, ...attrParagraphs]
         } else {
           paragraphs.push(new Paragraph(attr.value))
@@ -209,20 +209,20 @@ function places (places, customAttributes, images, doc) {
     paragraphs.push(name)
     if (pl.imageId) {
       const imgData = images[pl.imageId].data
-      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"), 200, 200)
+      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
       paragraphs.push(new Paragraph({children: [image]}))
     }
     paragraphs.push(new Paragraph({text: i18n('Description'), heading: HeadingLevel.HEADING_3}))
     paragraphs.push(new Paragraph(pl.description))
     paragraphs.push(new Paragraph({text: i18n('Notes'), heading: HeadingLevel.HEADING_3}))
-    const descParagraphs = serialize(pl.notes)
+    const descParagraphs = serialize(pl.notes, doc)
     paragraphs = [...paragraphs, ...descParagraphs]
 
     customAttributes.forEach(ca => {
       paragraphs.push(new Paragraph({text: ca.name, heading: HeadingLevel.HEADING_3}))
       if (pl[ca.name]) {
         if (ca.type == 'paragraph') {
-          const attrParagraphs = serialize(pl[ca.name])
+          const attrParagraphs = serialize(pl[ca.name], doc)
           paragraphs = [...paragraphs, ...attrParagraphs]
         } else {
           if (pl[ca.name]) paragraphs.push(new Paragraph(pl[ca.name]))
@@ -257,11 +257,11 @@ function notes (notes, namesMapping, images, doc) {
     paragraphs.push(title)
     if (n.imageId) {
       const imgData = images[n.imageId].data
-      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"), 200, 200)
+      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
       paragraphs.push(new Paragraph({children: [image]}))
     }
     const attachmentParagraphs = attachments(n, namesMapping)
-    const contentParagraphs = serialize(n.content)
+    const contentParagraphs = serialize(n.content, doc)
     paragraphs = [...paragraphs, ...attachmentParagraphs, ...contentParagraphs]
   })
 

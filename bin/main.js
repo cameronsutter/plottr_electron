@@ -435,11 +435,17 @@ function askToCreateFile (data = {}) {
 
 function askToOpenOrCreate () {
   dontquit = true
-  const choice = dialog.showMessageBoxSync({type: 'question', buttons: [i18n('Open File'), i18n('New File')], message: i18n('Would you like to open an existing file or start a new file?')})
-  if (choice == 0) {
-    askToOpenFile()
-  } else {
-    askToCreateFile()
+  const choice = dialog.showMessageBoxSync({type: 'question', buttons: [i18n('New from Template'), i18n('New File'), i18n('Open File')], message: i18n('Would you like to open an existing file or start a new file?')})
+  switch (choice) {
+    case 0:
+      openDashboardWindow()
+      break
+    case 1:
+      askToCreateFile()
+      break
+    case 2:
+      askToOpenFile()
+      break
   }
 }
 

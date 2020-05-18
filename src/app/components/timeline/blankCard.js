@@ -142,6 +142,7 @@ class BlankCard extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     if (this.state.dropping != nextState.dropping) return true
     if (this.state.creating != nextState.creating) return true
+    if (this.props.color != nextProps.color) return true
     return false
   }
 }

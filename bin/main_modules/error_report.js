@@ -4,12 +4,17 @@ const path = require('path')
 const log = require('electron-log')
 const setupRollbar = require('./rollbar')
 const rollbar = setupRollbar('backup')
-var i18n = require('format-message')
+const i18n = require('format-message')
+const { machineIdSync } = require('node-machine-id')
+
+const machineID = machineIdSync(true)
 
 function prepareErrorReport (userInfo, openWindowsStates) {
   var report = 'VERSION: ' + app.getVersion() + '\n\n'
   report += 'USER INFO\n'
   report += JSON.stringify(userInfo) + '\n\n'
+  report += `MACHINE ID: ${machineID}\n`
+  report += `PLATFORM: ${process.platform}\n`
   report += '----------------------------------\n\n'
   report += 'ERROR LOG\n'
   const logFile = log.transports.file.findLogPath()

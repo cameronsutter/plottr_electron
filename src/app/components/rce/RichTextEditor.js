@@ -15,7 +15,6 @@ import Element from './Element'
 import { LinkButton, withLinks } from './LinkButton'
 import { ImageLinkButton, withImages } from './ImageLinkButton'
 import cx from 'classnames'
-import deep from 'deep-diff'
 import { useTextConverter } from './helpers'
 
 const HOTKEYS = {
@@ -33,11 +32,12 @@ const RichTextEditor = (props) => {
   const rceText = useTextConverter(props.text)
   const [value, setValue] = useState(rceText)
 
-  const updateValue = val => {
-    const diff = deep.diff(value, val)
-    if (diff) {
-      setValue(val)
-      props.onChange(val)
+  const updateValue = newVal => {
+    // only update if it changed
+    // (e.g. this event could fire with a selection change, but the text is the same)
+    if (value !== newVal) {
+      setValue(newVal)
+      props.onChange(newVal)
     }
   }
 

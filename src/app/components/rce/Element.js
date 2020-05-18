@@ -53,4 +53,4 @@ const Element = ({ attributes, children, element }) => {
       return <p {...attributes}>{children}</p>
   }
 }
-export default Element
+export default React.memo(Element)

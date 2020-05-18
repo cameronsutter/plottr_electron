@@ -37,8 +37,10 @@ class CardDialog extends Component {
     // this is a hack
     // must do this so the RichText editing works
     // otherwise, throws this: addRange(): The given range isn't in document.
+    // or when you click on it, nothing happens and you can't edit anything
+
     // 400 is the minimum
-    const delay = 400
+    const delay = 500
     setTimeout(() => {this.setState({editing: true})}, delay)
   }
 
@@ -149,12 +151,6 @@ class CardDialog extends Component {
       ref='titleInput'
       defaultValue={title}
     />
-  }
-
-  renderDescription () {
-    if (!this.state.editing) return null
-
-    return
   }
 
   renderBookDropdown () {

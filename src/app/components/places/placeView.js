@@ -279,10 +279,6 @@ class PlaceView extends Component {
               />
             </dd>
           </dl>
-          <dl className='dl-horizontal'>
-            <dt>{i18n('Attached to')}</dt>
-            <dd>{this.renderAssociations()}</dd>
-          </dl>
         </div>
         <div className='place-list__right-side'>
           <Image responsive imageId={place.imageId} />

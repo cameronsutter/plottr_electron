@@ -322,10 +322,6 @@ class CharacterView extends Component {
     return <div className='character-list__character-notes__inner'>
       <Image size='large' shape='circle' imageId={character.imageId} />
       {customAttrNotes}
-      <dl className='dl-horizontal'>
-        <dt>{i18n('Attached to')}</dt>
-        <dd>{this.renderAssociations()}</dd>
-      </dl>
     </div>
   }
 

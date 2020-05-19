@@ -18,12 +18,12 @@ class FileManager {
   }
 
   open = (fileName) => {
-    this.opM.open(fileName)
+    this.opM.add(fileName)
     this.knM.addIf(fileName)
   }
 
   close = (fileName) => {
-    this.opM.close(fileName)
+    this.opM.remove(fileName)
   }
 
   move = (fileName) => {
@@ -39,15 +39,23 @@ class FileManager {
     }
     fs.writeFile(fileName, stringData, callback)
   }
-
 }
 
 class OpenFileManager {
   listOpenFiles = () => {
-    return openFilesStore.get(OPEN_FILES_ROOT)
+    let files = openFilesStore.get(OPEN_FILES_ROOT)
+    return files.reduce((acc, f) => {
+      if (fs.existsSync(f)) {
+        acc.push(f)
+      } else {
+        this.remove(f)
+      }
+
+      return acc
+    }, [])
   }
 
-  open = (fileName) => {
+  add = (fileName) => {
     let opened = openFilesStore.get(OPEN_FILES_ROOT)
     const idx = opened.indexOf(fileName)
     if (idx == -1) {
@@ -56,7 +64,7 @@ class OpenFileManager {
     }
   }
 
-  close = (fileName) => {
+  remove = (fileName) => {
     let opened = openFilesStore.get(OPEN_FILES_ROOT)
     const idx = opened.indexOf(fileName)
     if (idx > -1) {

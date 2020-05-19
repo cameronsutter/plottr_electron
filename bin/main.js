@@ -387,6 +387,7 @@ function openRecentFiles () {
     if (openFiles.length) {
       openFiles.forEach(f => openWindow(f))
     } else {
+      // TODO: open a dashboard here instead (or maybe it always gets opened, so no need for this branch of logic)
       askToOpenOrCreate()
     }
   }
@@ -549,7 +550,6 @@ function openWindow (fileName, jsonData) {
   } catch (err) {
     log.warn(err)
     rollbar.warn(err, {fileName: fileName})
-    askToOpenOrCreate()
     FileManager.close(fileName)
     newWindow.destroy()
   }

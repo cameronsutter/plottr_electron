@@ -2,7 +2,7 @@
 
 .tag-list__container {
   margin: 10px;
-  h3 {
+  h1 {
     text-align: center;
     @include application-text;
   }
@@ -40,13 +40,19 @@
   align-items: flex-start;
 }
 
+.tag-list__tag-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3px;
+}
+
 .tag-list__tag {
   @include well;
   width: 200px; // 5 per row
   padding: 7px 14px;
-  margin: 3px 6px 3px 0px;
 
-  &:hover {
+  &:not(.editing):hover {
     background-color: $gray-8;
   }
 }
@@ -56,9 +62,13 @@
   color: $darkmode-text;
   border-color: $darkmode-border;
 
-  &:hover {
+  &:not(.editing):hover {
     background-color: $darkmode-background;
   }
+}
+
+.tag-list__tag__hover-options {
+  margin: 5px 0;
 }
 
 .tag-list__tag-normal {
@@ -83,4 +93,9 @@
     vertical-align: middle;
     padding-top: 5px;
   }
+}
+
+.tag-list__tag__button-bar {
+  display: flex;
+  justify-content: flex-end;
 }

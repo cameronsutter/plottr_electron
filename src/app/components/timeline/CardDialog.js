@@ -39,7 +39,7 @@ class CardDialog extends Component {
     // otherwise, throws this: addRange(): The given range isn't in document.
     // or when you click on it, nothing happens and you can't edit anything
 
-    // 400 is the minimum
+    // 400 is the minimum (apparently only sometimes)
     const delay = 500
     setTimeout(() => {this.setState({editing: true})}, delay)
   }

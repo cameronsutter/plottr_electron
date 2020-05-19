@@ -4,15 +4,16 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ButtonToolbar, ButtonGroup, Button, FormControl, FormGroup,
-  ControlLabel, Glyphicon, DropdownButton, MenuItem } from 'react-bootstrap'
+  ControlLabel, Glyphicon } from 'react-bootstrap'
 import ColorPicker from '../colorpicker'
 import * as TagActions from 'actions/tags'
 import i18n from 'format-message'
+import cx from 'classnames'
 
 class TagView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.tag.title === '', showColorPicker: false}
+    this.state = {editing: props.tag.title === '', showColorPicker: false, hovering: false}
   }
 
   componentWillUnmount () {
@@ -38,7 +39,19 @@ class TagView extends Component {
     }
   }
 
-  saveEdit () {
+  startEditing = () => {
+    this.setState({editing: true})
+  }
+
+  startHovering = () => {
+    this.setState({hovering: true})
+  }
+
+  stopHovering = () => {
+    this.setState({hovering: false})
+  }
+
+  saveEdit = () => {
     let { title, id, color } = this.props.tag
     var newTitle = findDOMNode(this.refs.titleInput).value || title
     this.props.actions.editTag(id, newTitle, color)
@@ -72,32 +85,38 @@ class TagView extends Component {
     return (
       <div onKeyDown={this.handleEsc}>
         <FormGroup>
-          <ControlLabel>{i18n('tag name')}</ControlLabel>
+          <ControlLabel>{i18n('Tag Name')}</ControlLabel>
           <FormControl type='text' ref='titleInput' autoFocus
             onKeyDown={this.handleEsc}
             onKeyPress={this.handleEnter}
             defaultValue={tag.title} />
         </FormGroup>
         {this.renderColorPicker()}
-        <ButtonGroup>
-          <DropdownButton title={i18n("Actions")} id="bg-nested-dropdown">
-            <MenuItem onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /> {i18n('Choose color')}</MenuItem>
-            <MenuItem onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /> {i18n('No color')}</MenuItem>
-            <MenuItem onClick={this.deleteTag}><Glyphicon glyph='trash' /> {i18n('Delete')}</MenuItem>
-          </DropdownButton>
+        <ButtonToolbar className='tag-list__tag__button-bar'>
+          <Button bsStyle='success' onClick={this.saveEdit}>{i18n('Save')}</Button>
           <Button onClick={this.handleCancel}>{i18n('Cancel')}</Button>
-        </ButtonGroup>
+        </ButtonToolbar>
       </div>
     )
   }
 
+  renderHoverOptions () {
+    const { color } = this.props.tag
+    var style = {visibility: 'hidden'}
+    if (this.state.hovering) style.visibility = 'visible'
+    return <div className='tag-list__tag__hover-options' style={style}>
+      <ButtonGroup>
+        <Button title={i18n('Edit')} onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+        <Button title={i18n('Choose color')} onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
+        {color ? <Button bsStyle='warning' title={i18n('No color')} onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /></Button>: null}
+        <Button bsStyle='danger' title={i18n('Delete')} onClick={this.deleteTag}><Glyphicon glyph='trash' /></Button>
+      </ButtonGroup>
+    </div>
+  }
+
   renderTag () {
-    return <div
-        onClick={() => this.setState({editing: true})}
-        className='tag-list__tag-normal'
-      >
+    return <div className='tag-list__tag-normal' onClick={this.startEditing}>
       <h6>{this.props.tag.title}</h6>
-      {this.renderColorPicker()}
     </div>
   }
 
@@ -110,13 +129,20 @@ class TagView extends Component {
       window.SCROLLWITHKEYS = true
       body = this.renderTag()
     }
+    const { tag, ui } = this.props
     let styles = {}
-    if (this.props.tag.color) styles = {border: `2px solid ${this.props.tag.color}`}
-    let klasses = 'tag-list__tag'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
+    if (tag.color) styles = {border: `2px solid ${tag.color}`}
     return (
-      <div className={klasses} style={styles}>
-        {body}
+      <div
+        className='tag-list__tag-wrapper'
+        onMouseEnter={this.startHovering}
+        onMouseLeave={this.stopHovering}
+      >
+        { this.renderHoverOptions() }
+        { this.renderColorPicker() }
+        <div className={cx('tag-list__tag', {darkmode: ui.darkMode, editing: this.state.editing})} style={styles}>
+          {body}
+        </div>
       </div>
     )
   }

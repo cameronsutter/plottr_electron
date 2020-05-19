@@ -3,9 +3,11 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon } from 'react-bootstrap'
+import { Glyphicon, Nav, Navbar, NavItem, Button } from 'react-bootstrap'
 import * as TagActions from 'actions/tags'
 import TagView from 'components/tag/tagView'
+import cx from 'classnames'
+import i18n from 'format-message'
 
 class TagListView extends Component {
 
@@ -15,26 +17,30 @@ class TagListView extends Component {
 
   renderTags () {
     const sortedTags = _.sortBy(this.props.tags, ['title', 'id'])
-    return sortedTags.map(t =>
-      <TagView key={t.id} tag={t} />
+    return sortedTags.map(t => <TagView key={t.id} tag={t} />)
+  }
+
+  renderSubNav () {
+    const { ui } = this.props
+    return (
+      <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
+        <Nav bsStyle='pills'>
+          <NavItem>
+            <Button bsSize='small' onClick={this.handleCreateNewTag}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+          </NavItem>
+        </Nav>
+      </Navbar>
     )
   }
 
   render () {
-    let klasses = 'secondary-text'
-    let newKlasses = 'tag-list__new'
-    if (this.props.ui.darkMode) {
-      klasses += ' darkmode'
-      newKlasses += ' darkmode'
-    }
+    const { ui } = this.props
     return (
-      <div className='tag-list__container'>
-        <h3 className={klasses}>Tags</h3>
+      <div className='tag-list__container container-with-sub-nav'>
+        { this.renderSubNav() }
+        <h1 className={cx('secondary-text', {darkmode: ui.darkMode})}>{i18n('Tags')}</h1>
         <div className='tag-list__tags'>
           {this.renderTags()}
-        </div>
-        <div className={newKlasses} onClick={this.handleCreateNewTag} >
-          <Glyphicon glyph='plus' />
         </div>
       </div>
     )

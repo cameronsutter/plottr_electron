@@ -1,5 +1,5 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog,
-  nativeTheme, globalShortcut, shell } = require('electron')
+  nativeTheme, globalShortcut, shell, screen } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
@@ -461,9 +461,11 @@ function askToOpenFile () {
 
 function openWindow (fileName, jsonData) {
   // Load the previous state with fallback to defaults
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+
   let stateKeeper = windowStateKeeper({
-    defaultWidth: 1200,
-    defaultHeight: 800,
+    defaultWidth: parseInt(width * 0.9),
+    defaultHeight: parseInt(height * 0.9),
     file: fileName,
   });
 

@@ -11,7 +11,8 @@
 .tag-list__new {
   @include well;
   width: 200px;
-  height: 53px;
+  height: 58px;
+  margin-top: 46px; // hover-options on other tags are 36px + margin
   cursor: pointer;
 
   display: inline-flex;
@@ -34,17 +35,19 @@
 }
 
 .tag-list__tags {
+  width: 100vw;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
+  justify-content: center;
 }
 
 .tag-list__tag-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 3px;
+  margin: 3px 20px;
 }
 
 .tag-list__tag {

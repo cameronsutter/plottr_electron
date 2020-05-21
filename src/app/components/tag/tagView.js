@@ -13,11 +13,11 @@ import cx from 'classnames'
 class TagView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.tag.title === '', showColorPicker: false, hovering: false}
+    this.state = {editing: props.tag.title === '', showColorPicker: false, hovering: false, color: null}
   }
 
   componentWillUnmount () {
-    if (this.state.editing) this.saveEdit()
+    if (this.state.editing && !this.props.new) this.saveEdit()
   }
 
   handleCancel = () => {
@@ -54,7 +54,12 @@ class TagView extends Component {
   saveEdit = () => {
     let { title, id, color } = this.props.tag
     var newTitle = findDOMNode(this.refs.titleInput).value || title
-    this.props.actions.editTag(id, newTitle, color)
+    if (this.props.new) {
+      this.props.actions.addCreatedTag({title: newTitle, color: this.state.color})
+      this.props.doneCreating()
+    } else {
+      this.props.actions.editTag(id, newTitle, color)
+    }
     this.setState({editing: false})
   }
 
@@ -66,15 +71,19 @@ class TagView extends Component {
   }
 
   changeColor = (color) => {
-    let { id, title } = this.props.tag
-    this.props.actions.editTag(id, title, color)
+    if (this.props.new) {
+      this.setState({color})
+    } else {
+      let { id, title } = this.props.tag
+      this.props.actions.editTag(id, title, color)
+    }
     this.setState({showColorPicker: false})
   }
 
   renderColorPicker () {
     if (this.state.showColorPicker) {
       var key = 'colorPicker-' + this.props.tag.id
-      return <ColorPicker key={key} darkMode={this.props.ui.darkMode} color={this.props.tag.color} closeDialog={this.changeColor} />
+      return <ColorPicker key={key} darkMode={this.props.ui.darkMode} color={this.props.tag.color || this.state.color} closeDialog={this.changeColor} />
     } else {
       return null
     }
@@ -106,10 +115,10 @@ class TagView extends Component {
     if (this.state.hovering) style.visibility = 'visible'
     return <div className='tag-list__tag__hover-options' style={style}>
       <ButtonGroup>
-        <Button title={i18n('Edit')} onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+        {this.props.new ? null : <Button title={i18n('Edit')} onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>}
         <Button title={i18n('Choose color')} onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
-        {color ? <Button bsStyle='warning' title={i18n('No color')} onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /></Button>: null}
-        <Button bsStyle='danger' title={i18n('Delete')} onClick={this.deleteTag}><Glyphicon glyph='trash' /></Button>
+        {color || this.state.color ? <Button bsStyle='warning' title={i18n('No color')} onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /></Button>: null}
+        {this.props.new ? null : <Button bsStyle='danger' title={i18n('Delete')} onClick={this.deleteTag}><Glyphicon glyph='trash' /></Button>}
       </ButtonGroup>
     </div>
   }
@@ -132,14 +141,15 @@ class TagView extends Component {
     const { tag, ui } = this.props
     let styles = {}
     if (tag.color) styles = {border: `2px solid ${tag.color}`}
+    if (this.state.color) styles = {border: `2px solid ${this.state.color}`}
     return (
       <div
         className='tag-list__tag-wrapper'
         onMouseEnter={this.startHovering}
         onMouseLeave={this.stopHovering}
       >
-        { this.renderHoverOptions() }
         { this.renderColorPicker() }
+        { this.renderHoverOptions() }
         <div className={cx('tag-list__tag', {darkmode: ui.darkMode, editing: this.state.editing})} style={styles}>
           {body}
         </div>
@@ -150,6 +160,8 @@ class TagView extends Component {
 
 TagView.propTypes = {
   tag: PropTypes.object.isRequired,
+  new: PropTypes.bool,
+  doneCreating: PropTypes.func,
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }

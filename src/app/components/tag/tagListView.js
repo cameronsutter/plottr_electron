@@ -8,16 +8,32 @@ import * as TagActions from 'actions/tags'
 import TagView from 'components/tag/tagView'
 import cx from 'classnames'
 import i18n from 'format-message'
+import { tag } from '../../../../shared/initialState'
+import { sortedTagsSelector } from '../../selectors/tags'
 
 class TagListView extends Component {
+  state = {
+    prepending: false,
+    appending: false,
+  }
 
-  handleCreateNewTag = () => {
-    this.props.actions.addTag()
+  appendNewTag = () => {
+    this.setState({appending: true})
+  }
+
+  prependNewTag = () => {
+    this.setState({prepending: true})
   }
 
   renderTags () {
-    const sortedTags = _.sortBy(this.props.tags, ['title', 'id'])
-    return sortedTags.map(t => <TagView key={t.id} tag={t} />)
+    let renderedTags = this.props.tags.map(t => <TagView key={t.id} tag={t} />)
+    if (this.state.prepending) {
+      renderedTags.unshift(<TagView key='prepended' tag={tag} new doneCreating={() => this.setState({prepending: false})}/>)
+    }
+    if (this.state.appending) {
+      renderedTags.push(<TagView key='appended' tag={tag} new doneCreating={() => this.setState({appending: false})}/>)
+    }
+    return renderedTags
   }
 
   renderSubNav () {
@@ -26,7 +42,7 @@ class TagListView extends Component {
       <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
         <Nav bsStyle='pills'>
           <NavItem>
-            <Button bsSize='small' onClick={this.handleCreateNewTag}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+            <Button bsSize='small' onClick={this.prependNewTag}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
           </NavItem>
         </Nav>
       </Navbar>
@@ -40,7 +56,12 @@ class TagListView extends Component {
         { this.renderSubNav() }
         <h1 className={cx('secondary-text', {darkmode: ui.darkMode})}>{i18n('Tags')}</h1>
         <div className='tag-list__tags'>
-          {this.renderTags()}
+          { this.renderTags() }
+          <div className='tag-list__tag-wrapper'>
+            <div className={cx('tag-list__new', {darkmode: ui.darkMode})} onClick={this.appendNewTag} >
+              <Glyphicon glyph='plus' />
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -55,7 +76,7 @@ TagListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    tags: state.tags,
+    tags: sortedTagsSelector(state),
     ui: state.ui,
   }
 }

@@ -136,6 +136,8 @@ class OutlineView extends Component {
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
+        </Nav>
+        <Nav pullRight>
           <NavItem>
             <span className='subnav__container__label'>{i18n('Export')}: </span>
             <Button bsSize='small' onClick={this.doExport}><Glyphicon glyph='export' /></Button>

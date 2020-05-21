@@ -13,25 +13,21 @@ import { sortedTagsSelector } from '../../selectors/tags'
 
 class TagListView extends Component {
   state = {
-    prepending: false,
     appending: false,
   }
 
-  appendNewTag = () => {
+  appendBlankTag = () => {
     this.setState({appending: true})
   }
 
-  prependNewTag = () => {
-    this.setState({prepending: true})
+  doneCreating = () => {
+    this.setState({appending: false})
   }
 
   renderTags () {
     let renderedTags = this.props.tags.map(t => <TagView key={t.id} tag={t} />)
-    if (this.state.prepending) {
-      renderedTags.unshift(<TagView key='prepended' tag={tag} new doneCreating={() => this.setState({prepending: false})}/>)
-    }
     if (this.state.appending) {
-      renderedTags.push(<TagView key='appended' tag={tag} new doneCreating={() => this.setState({appending: false})}/>)
+      renderedTags.push(<TagView key='appended' new tag={tag} doneCreating={this.doneCreating}/>)
     }
     return renderedTags
   }
@@ -42,7 +38,7 @@ class TagListView extends Component {
       <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
         <Nav bsStyle='pills'>
           <NavItem>
-            <Button bsSize='small' onClick={this.prependNewTag}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+            <Button bsSize='small' onClick={this.appendBlankTag}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
           </NavItem>
         </Nav>
       </Navbar>
@@ -55,11 +51,13 @@ class TagListView extends Component {
       <div className='tag-list__container container-with-sub-nav'>
         { this.renderSubNav() }
         <h1 className={cx('secondary-text', {darkmode: ui.darkMode})}>{i18n('Tags')}</h1>
-        <div className='tag-list__tags'>
-          { this.renderTags() }
-          <div className='tag-list__tag-wrapper'>
-            <div className={cx('tag-list__new', {darkmode: ui.darkMode})} onClick={this.appendNewTag} >
-              <Glyphicon glyph='plus' />
+        <div className='tag-list__wrapper'>
+          <div className='tag-list__tags'>
+            { this.renderTags() }
+            <div className='tag-list__tag-wrapper'>
+              <div className={cx('tag-list__new', {darkmode: ui.darkMode})} onClick={this.appendBlankTag} >
+                <Glyphicon glyph='plus' />
+              </div>
             </div>
           </div>
         </div>

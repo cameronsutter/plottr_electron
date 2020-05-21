@@ -6,6 +6,15 @@
     text-align: center;
     @include application-text;
   }
+  .tag-list__wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: calc(100% - 170px);
+    position: absolute;
+    top: 160px;
+    overflow: auto;
+  }
 }
 
 .tag-list__new {
@@ -35,12 +44,11 @@
 }
 
 .tag-list__tags {
-  width: 100vw;
+  width: 90%;
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
+  align-content: flex-start;
 }
 
 .tag-list__tag-wrapper {

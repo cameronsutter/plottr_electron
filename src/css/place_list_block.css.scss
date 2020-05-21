@@ -6,10 +6,27 @@
     text-align: center;
     @include application-text;
   }
+  .container-fluid {
+    width: 100vw;
+    height: calc(100% - 110px);
+    position: absolute;
+    top: 107px;
+    overflow: hidden;
+    .row {
+      height: 100%;
+    }
+    .col-sm-3, .col-sm-9 {
+      height: 100%;
+      position: relative;
+    }
+  }
 }
 
 .place-list__list {
-  width: 25%;
+  overflow: auto;
+  height: calc(100% - 74px);
+  position: relative;
+
   .list-group-item {
     cursor: pointer;
 
@@ -72,8 +89,11 @@
 .place-list__place {
   @include well;
   padding: 20px;
-  width: 75%;
-  float: right;
+
+  height: 100%;
+  position: relative;
+  overflow: auto;
+
   cursor: pointer;
   .place-list__place__edit-form {
     padding-left: 5px;
@@ -141,6 +161,9 @@
 
 .place-list__place.editing {
   cursor: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .place-list__place__edit-image-wrapper {

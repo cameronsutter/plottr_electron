@@ -219,10 +219,10 @@ class CharacterListView extends Component {
 
   renderCharacters () {
     return <div className={cx('character-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
-      { this.renderVisibleCharacters() }
       <a href='#' key={'new-character'} className='character-list__new list-group-item' onClick={this.handleCreateNewCharacter} >
         <Glyphicon glyph='plus' />
       </a>
+      { this.renderVisibleCharacters() }
     </div>
   }
 

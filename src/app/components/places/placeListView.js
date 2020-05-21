@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
-  ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+  ControlLabel, Popover, OverlayTrigger, Alert, Grid, Row, Col } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
@@ -208,10 +208,10 @@ class PlaceListView extends Component {
 
   renderPlaces () {
     return <div className={cx('place-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
-      { this.renderVisiblePlaces() }
       <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
         <Glyphicon glyph='plus' />
       </a>
+      { this.renderVisiblePlaces() }
     </div>
   }
 
@@ -264,9 +264,17 @@ class PlaceListView extends Component {
       <div className='place-list container-with-sub-nav'>
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        <h1 className={klasses}>Places</h1>
-        {this.renderPlaceDetails()}
-        {this.renderPlaces()}
+        <Grid fluid>
+          <Row>
+            <Col sm={3}>
+              <h1 className={klasses}>{i18n('Places')}</h1>
+              {this.renderPlaces()}
+            </Col>
+            <Col sm={9}>
+              {this.renderPlaceDetails()}
+            </Col>
+          </Row>
+        </Grid>
       </div>
     )
   }

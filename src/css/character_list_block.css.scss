@@ -87,15 +87,17 @@
   background: $new-item-background;
 }
 
-.character-list__character {
-  @include well;
-  padding: 20px;
-
+.character-list__character-wrapper {
   height: 100%;
   position: relative;
   overflow: auto;
+}
 
+.character-list__character {
+  @include well;
+  padding: 20px;
   cursor: pointer;
+
   .character-list__character-notes {
     border: 2px dashed transparent;
     display: flex;

@@ -134,7 +134,7 @@ class PlaceView extends Component {
 
   renderEditing () {
     const { place, ui } = this.props
-    return (
+    return <div className='place-list__place-wrapper'>
       <div className={cx('place-list__place', 'editing', {darkmode: ui.darkMode})}>
         <div className='place-list__place__edit-form'>
           <div className='place-list__inputs__normal'>
@@ -184,7 +184,7 @@ class PlaceView extends Component {
           </Button>
         </ButtonToolbar>
       </div>
-    )
+    </div>
   }
 
   renderAssociations () {
@@ -260,29 +260,31 @@ class PlaceView extends Component {
         {desc}
       </dl>
     })
-    return <div className={klasses} onClick={() => this.setState({editing: true})}>
-      <h4 className='secondary-text'>{place.name}</h4>
-      <div className='place-list__place-inner'>
-        <div>
-          <dl className='dl-horizontal'>
-            <dt>{i18n('Description')}</dt>
-            <dd>{place.description}</dd>
-          </dl>
-          {details}
-          <dl className='dl-horizontal'>
-            <dt>{i18n('Notes')}</dt>
-            <dd>
-              <RichText
-                description={place.notes}
-                editable={false}
-                darkMode={this.props.ui.darkMode}
-              />
-            </dd>
-          </dl>
-        </div>
-        <div className='place-list__right-side'>
-          <Image responsive imageId={place.imageId} />
-          <Glyphicon glyph='pencil' />
+    return <div className='place-list__place-wrapper'>
+      <div className={klasses} onClick={() => this.setState({editing: true})}>
+        <h4 className='secondary-text'>{place.name}</h4>
+        <div className='place-list__place-inner'>
+          <div>
+            <dl className='dl-horizontal'>
+              <dt>{i18n('Description')}</dt>
+              <dd>{place.description}</dd>
+            </dl>
+            {details}
+            <dl className='dl-horizontal'>
+              <dt>{i18n('Notes')}</dt>
+              <dd>
+                <RichText
+                  description={place.notes}
+                  editable={false}
+                  darkMode={this.props.ui.darkMode}
+                  />
+              </dd>
+            </dl>
+          </div>
+          <div className='place-list__right-side'>
+            <Image responsive imageId={place.imageId} />
+            <Glyphicon glyph='pencil' />
+          </div>
         </div>
       </div>
     </div>

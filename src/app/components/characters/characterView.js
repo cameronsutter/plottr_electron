@@ -193,7 +193,7 @@ class CharacterView extends Component {
 
   renderEditing () {
     const { character, ui } = this.props
-    return (
+    return <div className='character-list__character-wrapper'>
       <div className={cx('character-list__character', 'editing', {darkmode: ui.darkMode})}>
         <div className='character-list__character__edit-form'>
           <div className='character-list__inputs__normal'>
@@ -244,7 +244,7 @@ class CharacterView extends Component {
           </Button>
         </ButtonToolbar>
       </div>
-    )
+    </div>
   }
 
   renderAssociations () {
@@ -304,9 +304,6 @@ class CharacterView extends Component {
   }
 
   renderCharacter () {
-    const klasses = cx('character-list__character', {
-      darkmode: this.props.ui.darkMode,
-    })
     const { character, ui, customAttributes } = this.props
     const customAttrNotes = customAttributes.map((attr, idx) => {
       const { name, type } = attr
@@ -326,7 +323,7 @@ class CharacterView extends Component {
         let val = <dd>{attr.value}</dd>
         if (attr.type == 'paragraph') {
           val = <dd>
-            <RichText description={attr.value} darkMode={this.props.ui.darkMode} />
+            <RichText description={attr.value} darkMode={ui.darkMode} />
           </dd>
         }
         return <dl key={attr.name} className='dl-horizontal'>
@@ -336,26 +333,30 @@ class CharacterView extends Component {
       })
     })
 
-    return <div className={klasses} onClick={() => this.setState({editing: true})}>
-      <h4 className='secondary-text'>{character.name}</h4>
-      <div className='character-list__character-notes'>
-        <div>
-          <Image size='large' shape='circle' imageId={character.imageId} />
-          <dl className='dl-horizontal'>
-            <dt>{i18n('Description')}</dt>
-            <dd>{character.description}</dd>
-          </dl>
-          {customAttrNotes}
-          <dl className='dl-horizontal'>
-            <dt>{i18n('Notes')}</dt>
-            <dd>
-              <RichText description={character.notes} darkMode={this.props.ui.darkMode} />
-            </dd>
-          </dl>
-          {templateNotes}
-        </div>
-        <div className='character-list__right-side'>
-          <Glyphicon glyph='pencil' />
+    const klasses = cx('character-list__character', { darkmode: ui.darkMode })
+
+    return <div className='character-list__character-wrapper'>
+      <div className={klasses} onClick={() => this.setState({editing: true})}>
+        <h4 className='secondary-text'>{character.name}</h4>
+        <div className='character-list__character-notes'>
+          <div>
+            <Image size='large' shape='circle' imageId={character.imageId} />
+            <dl className='dl-horizontal'>
+              <dt>{i18n('Description')}</dt>
+              <dd>{character.description}</dd>
+            </dl>
+            {customAttrNotes}
+            <dl className='dl-horizontal'>
+              <dt>{i18n('Notes')}</dt>
+              <dd>
+                <RichText description={character.notes} darkMode={ui.darkMode} />
+              </dd>
+            </dl>
+            {templateNotes}
+          </div>
+          <div className='character-list__right-side'>
+            <Glyphicon glyph='pencil' />
+          </div>
         </div>
       </div>
     </div>

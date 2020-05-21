@@ -86,15 +86,17 @@
   background: $new-item-background;
 }
 
-.place-list__place {
-  @include well;
-  padding: 20px;
-
+.place-list__place-wrapper {
   height: 100%;
   position: relative;
   overflow: auto;
+}
 
+.place-list__place {
+  @include well;
+  padding: 20px;
   cursor: pointer;
+
   .place-list__place__edit-form {
     padding-left: 5px;
     display: flex;

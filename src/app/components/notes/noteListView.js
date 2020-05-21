@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Nav, Navbar, NavItem, Button, Alert, OverlayTrigger, Popover } from 'react-bootstrap'
+import { Glyphicon, Nav, Navbar, NavItem, Button, Alert, OverlayTrigger, Popover, Grid, Row, Col } from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
@@ -118,10 +118,10 @@ class NoteListView extends Component {
   renderNotes () {
     let klasses = cx('note-list__list', 'list-group', { darkmode: this.props.ui.darkMode })
     return <div className={klasses}>
-      { this.renderVisibleNotes() }
       <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >
         <Glyphicon glyph='plus' />
       </a>
+      { this.renderVisibleNotes() }
     </div>
   }
 
@@ -167,9 +167,17 @@ class NoteListView extends Component {
     return (
       <div className='note-list container-with-sub-nav'>
         {this.renderSubNav()}
-        <h1 className={klasses}>{i18n('Notes')}</h1>
-        {this.renderNoteDetails()}
-        {this.renderNotes()}
+        <Grid fluid>
+          <Row>
+            <Col sm={3}>
+              <h1 className={klasses}>{i18n('Notes')}</h1>
+              {this.renderNotes()}
+            </Col>
+            <Col sm={9}>
+              {this.renderNoteDetails()}
+            </Col>
+          </Row>
+        </Grid>
       </div>
     )
   }

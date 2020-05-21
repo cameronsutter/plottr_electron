@@ -6,10 +6,27 @@
     text-align: center;
     @include application-text;
   }
+  .container-fluid {
+    width: 100vw;
+    height: calc(100% - 110px);
+    position: absolute;
+    top: 107px;
+    overflow: hidden;
+    .row {
+      height: 100%;
+    }
+    .col-sm-3, .col-sm-9 {
+      height: 100%;
+      position: relative;
+    }
+  }
 }
 
 .note-list__list {
-  width: 25%;
+  overflow: auto;
+  height: calc(100% - 74px);
+  position: relative;
+
   .list-group-item {
     cursor: pointer;
 
@@ -62,16 +79,15 @@
 
 .note-list__note {
   @include well;
-  width: 75%;
-  float: right;
+  height: 100%;
+
   h4 {
     cursor: pointer;
   }
 
   .note-list__body {
     display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    height: 100%;
 
     .note-list__left-side {
       width: 20%;
@@ -82,9 +98,11 @@
     }
 
     .note-list__content {
-      width: 80%;
-      padding-left: 10px;
-      overflow-y:scroll;
+      width: 79%;
+      height: 100%;
+      padding: 4px;
+      overflow-y: auto;
+
       cursor: pointer;
       border: 2px dashed transparent;
 

@@ -1,3 +1,4 @@
+const { shell } = require('electron')
 const { Document, Packer, Paragraph, Media, AlignmentType, HeadingLevel } = require('docx')
 const fs = require('fs')
 const _ = require('lodash')
@@ -18,7 +19,9 @@ function Exporter (data, { fileName, bookId }) {
 
   // finish - save to file
   Packer.toBuffer(doc).then((buffer) => {
-    fs.writeFileSync(`${fileName}.docx`, buffer)
+    const fullName = fileName.includes('.docx') ? fileName : `${fileName}.docx`
+    fs.writeFileSync(fullName, buffer)
+    shell.showItemInFolder(fullName)
   })
 }
 

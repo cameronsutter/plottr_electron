@@ -232,7 +232,8 @@ class TimelineWrapper extends Component {
 
   doExport = () => {
     let label = i18n('Where would you like to save the export?')
-    const fileName = dialog.showSaveDialogSync({title: label})
+    const filters = [{name: 'Word', extensions: ['docx']}]
+    const fileName = dialog.showSaveDialogSync({title: label, filters})
     if (fileName) {
       const options = { fileName, bookId: this.props.ui.currentTimeline }
       MPQ.push('Export')

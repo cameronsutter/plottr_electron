@@ -5,7 +5,7 @@
       "Married": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "outline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -9836,100 +9836,10 @@
               "text": " by Fanny Burney\nquote: \"'The whole of this unfortunate business, said Dr Lyster, has been the result of PRIDE and PREJUDICE. […] if to PRIDE and PREJUDICE you owe your miseries, so wonderfully is good and evil balanced, that to PRIDE and PREJUDICE you will also owe their termination.'\""
             }
           ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Pride & Prejudice\nsource: "
-            },
-            {
-              "text": "Cecilia",
-              "italic": true
-            },
-            {
-              "text": " by Fanny Burney\nquote: \"'The whole of this unfortunate business, said Dr Lyster, has been the result of PRIDE and PREJUDICE. […] if to PRIDE and PREJUDICE you owe your miseries, so wonderfully is good and evil balanced, that to PRIDE and PREJUDICE you will also owe their termination.'\""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Pride & Prejudice\nsource: "
-            },
-            {
-              "text": "Cecilia",
-              "italic": true
-            },
-            {
-              "text": " by Fanny Burney\nquote: \"'The whole of this unfortunate business, said Dr Lyster, has been the result of PRIDE and PREJUDICE. […] if to PRIDE and PREJUDICE you owe your miseries, so wonderfully is good and evil balanced, that to PRIDE and PREJUDICE you will also owe their termination.'\""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Pride & Prejudice\nsource: "
-            },
-            {
-              "text": "Cecilia",
-              "italic": true
-            },
-            {
-              "text": " by Fanny Burney\nquote: \"'The whole of this unfortunate business, said Dr Lyster, has been the result of PRIDE and PREJUDICE. […] if to PRIDE and PREJUDICE you owe your miseries, so wonderfully is good and evil balanced, that to PRIDE and PREJUDICE you will also owe their termination.'\""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Pride & Prejudice\nsource: "
-            },
-            {
-              "text": "Cecilia",
-              "italic": true
-            },
-            {
-              "text": " by Fanny Burney\nquote: \"'The whole of this unfortunate business, said Dr Lyster, has been the result of PRIDE and PREJUDICE. […] if to PRIDE and PREJUDICE you owe your miseries, so wonderfully is good and evil balanced, that to PRIDE and PREJUDICE you will also owe their termination.'\""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Pride & Prejudice\nsource: "
-            },
-            {
-              "text": "Cecilia",
-              "italic": true
-            },
-            {
-              "text": " by Fanny Burney\nquote: \"'The whole of this unfortunate business, said Dr Lyster, has been the result of PRIDE and PREJUDICE. […] if to PRIDE and PREJUDICE you owe your miseries, so wonderfully is good and evil balanced, that to PRIDE and PREJUDICE you will also owe their termination.'\""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Pride & Prejudice\nsource: "
-            },
-            {
-              "text": "Cecilia",
-              "italic": true
-            },
-            {
-              "text": " by Fanny Burney\nquote: \"'The whole of this unfortunate business, said Dr Lyster, has been the result of PRIDE and PREJUDICE. […] if to PRIDE and PREJUDICE you owe your miseries, so wonderfully is good and evil balanced, that to PRIDE and PREJUDICE you will also owe their termination.'\""
-            }
-          ]
         }
       ],
       "id": 5,
-      "lastEdited": 1590072725468,
+      "lastEdited": 1590073177131,
       "places": [],
       "tags": [],
       "title": "Title Ideas",

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+import { ipcRenderer, remote } from 'electron'
 import _ from 'lodash'
 import { Glyphicon, Nav, Navbar, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
 import ChapterView from 'components/outline/ChapterView'
@@ -11,6 +12,10 @@ import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import { FunSpinner } from '../Spinner'
+import { MPQ } from 'middlewares/helpers'
+
+const win = remote.getCurrentWindow()
+const dialog = remote.dialog
 
 class OutlineView extends Component {
   constructor (props) {
@@ -71,6 +76,25 @@ class OutlineView extends Component {
     this.setState({currentLine: null})
   }
 
+  // ///////////////
+  //  exporting   //
+  // //////////////
+
+  doExport = () => {
+    let label = i18n('Where would you like to save the export?')
+    const filters = [{name: 'Word', extensions: ['docx']}]
+    const fileName = dialog.showSaveDialogSync({title: label, filters})
+    if (fileName) {
+      const options = { fileName, bookId: this.props.ui.currentTimeline }
+      MPQ.push('Export')
+      ipcRenderer.send('export', options, win.id)
+    }
+  }
+
+  // ///////////////
+  //  rendering   //
+  // //////////////
+
   renderFilterList () {
     var items = this.props.lines.map((i) => {
       return this.renderFilterItem(i)
@@ -111,6 +135,10 @@ class OutlineView extends Component {
               <Button bsSize='small'><Glyphicon glyph='filter' />{i18n('Filter by Plotline')}</Button>
             </OverlayTrigger>
             {filterDeclaration}
+          </NavItem>
+          <NavItem>
+            <span className='subnav__container__label'>{i18n('Export')}: </span>
+            <Button bsSize='small' onClick={this.doExport}><Glyphicon glyph='export' /></Button>
           </NavItem>
         </Nav>
       </Navbar>

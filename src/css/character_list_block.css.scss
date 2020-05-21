@@ -6,10 +6,27 @@
     text-align: center;
     @include application-text;
   }
+  .container-fluid {
+    width: 100vw;
+    height: calc(100% - 110px);
+    position: absolute;
+    top: 107px;
+    overflow: hidden;
+    .row {
+      height: 100%;
+    }
+    .col-sm-3, .col-sm-9 {
+      height: 100%;
+      position: relative;
+    }
+  }
 }
 
 .character-list__list {
-  width: 25%;
+  overflow: auto;
+  height: calc(100% - 74px);
+  position: relative;
+
   .list-group-item {
     cursor: pointer;
 
@@ -73,25 +90,27 @@
 .character-list__character {
   @include well;
   padding: 20px;
-  width: 75%;
-  float: right;
+
+  height: 100%;
+  position: relative;
+  overflow: auto;
+
   cursor: pointer;
   .character-list__character-notes {
     border: 2px dashed transparent;
     display: flex;
+    justify-content: space-between;
 
-    .character-list__character-notes__inner {
-      flex: 1;
-      padding: 5px;
-      .image-circle-large {
-        margin-left: 100px;
-        margin-bottom: 20px;
-      }
+    .image-circle-large {
+      margin-left: 100px;
+      margin-bottom: 20px;
     }
-    .glyphicon {
-      color: $blue-7;
-      visibility: hidden;
-      margin: 5px;
+    .character-list__right-side {
+      .glyphicon {
+        color: $blue-7;
+        visibility: hidden;
+        margin: 5px;
+      }
     }
   }
 
@@ -155,6 +174,10 @@
 
 .character-list__character.editing {
   cursor: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   &.darkmode {
     background-color: $darkmode-darker-background;
     color: $darkmode-text;

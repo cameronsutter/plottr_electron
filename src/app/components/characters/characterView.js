@@ -303,7 +303,10 @@ class CharacterView extends Component {
     </OverlayTrigger>
   }
 
-  renderLeftSide () {
+  renderCharacter () {
+    const klasses = cx('character-list__character', {
+      darkmode: this.props.ui.darkMode,
+    })
     const { character, ui, customAttributes } = this.props
     const customAttrNotes = customAttributes.map((attr, idx) => {
       const { name, type } = attr
@@ -318,18 +321,6 @@ class CharacterView extends Component {
         {desc}
       </dl>
     })
-
-    return <div className='character-list__character-notes__inner'>
-      <Image size='large' shape='circle' imageId={character.imageId} />
-      {customAttrNotes}
-    </div>
-  }
-
-  renderCharacter () {
-    const klasses = cx('character-list__character', {
-      darkmode: this.props.ui.darkMode,
-    })
-    const { character } = this.props
     const templateNotes = character.templates.flatMap(t => {
       return t.attributes.map(attr => {
         let val = <dd>{attr.value}</dd>
@@ -344,15 +335,17 @@ class CharacterView extends Component {
         </dl>
       })
     })
+
     return <div className={klasses} onClick={() => this.setState({editing: true})}>
       <h4 className='secondary-text'>{character.name}</h4>
       <div className='character-list__character-notes'>
-        { this.renderLeftSide() }
-        <div className='character-list__character-notes__inner'>
+        <div>
+          <Image size='large' shape='circle' imageId={character.imageId} />
           <dl className='dl-horizontal'>
             <dt>{i18n('Description')}</dt>
             <dd>{character.description}</dd>
           </dl>
+          {customAttrNotes}
           <dl className='dl-horizontal'>
             <dt>{i18n('Notes')}</dt>
             <dd>
@@ -361,7 +354,9 @@ class CharacterView extends Component {
           </dl>
           {templateNotes}
         </div>
-        <Glyphicon glyph='pencil' />
+        <div className='character-list__right-side'>
+          <Glyphicon glyph='pencil' />
+        </div>
       </div>
     </div>
   }

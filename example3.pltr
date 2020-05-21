@@ -5,7 +5,7 @@
       "Married": []
     },
     "characterSort": "name~asc",
-    "currentView": "tags",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

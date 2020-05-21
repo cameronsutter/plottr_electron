@@ -5,7 +5,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup, ButtonGroup,
-  ControlLabel, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+  ControlLabel, Popover, OverlayTrigger, Alert, Grid, Row, Col } from 'react-bootstrap'
 import Modal from 'react-modal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
@@ -288,9 +288,17 @@ class CharacterListView extends Component {
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
         {this.renderTemplatePicker()}
-        <h1 className={klasses}>{i18n('Characters')}</h1>
-        {this.renderCharacterDetails()}
-        {this.renderCharacters()}
+        <Grid fluid>
+          <Row>
+            <Col sm={3}>
+              <h1 className={klasses}>{i18n('Characters')}</h1>
+              {this.renderCharacters()}
+            </Col>
+            <Col sm={9}>
+              {this.renderCharacterDetails()}
+            </Col>
+          </Row>
+        </Grid>
       </div>
     )
   }

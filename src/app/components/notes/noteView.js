@@ -139,7 +139,7 @@ class NoteView extends Component {
         </div>
       }
       return <div className='note-list__content' onClick={() => this.setState({editing: true})}>
-        <h4 className='secondary-text'>{note.title}</h4>
+        <h4 className='secondary-text'>{note.title || i18n('New Note')}</h4>
         { img }
         <RichText description={note.content} darkMode={ui.darkMode} />
         <Glyphicon className='pull-right' glyph='pencil' />

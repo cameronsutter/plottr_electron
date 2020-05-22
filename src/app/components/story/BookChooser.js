@@ -28,7 +28,8 @@ class BookChooser extends Component {
   renderBookList () {
     const { books } = this.props
     return books.allIds.map(id => {
-      return <MenuItem key={id} onSelect={() => this.handleChange(id)}>{this.bookTitle(books[id])}</MenuItem>
+      const book = books[id] || books[`${id}`]
+      return <MenuItem key={id} onSelect={() => this.handleChange(id)}>{this.bookTitle(book)}</MenuItem>
     })
   }
 

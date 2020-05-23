@@ -6,6 +6,7 @@ import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
 import InputModal from '../InputModal'
 import i18n from 'format-message'
+import imageExtensions from 'image-extensions'
 import { readImage } from '../../helpers/images'
 import { addImage } from '../../actions/images'
 

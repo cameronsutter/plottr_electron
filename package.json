@@ -40,6 +40,7 @@
     "electron-util": "^0.14.0",
     "electron-window-state": "^5.0.3",
     "format-message": "^6.2.1",
+    "image-extensions": "^1.1.0",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.4",
     "lodash": "^4.17.13",

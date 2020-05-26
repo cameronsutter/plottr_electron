@@ -50,7 +50,7 @@ export default function lines (state = initialState, action) {
 
     case REORDER_LINES:
       return [
-        ...state.filter(l => l.bookId != action.bookId),
+        ...state.filter(l => l && l.bookId != action.bookId),
         ...positionReset(action.lines),
       ]
 

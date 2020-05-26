@@ -7,7 +7,7 @@
       "stuff": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -17,7 +17,7 @@
       "galaxy": []
     },
     "placeSort": "name~asc",
-    "zoomIndex": 1,
+    "zoomIndex": 4,
     "zoomState": null,
     "currentTimeline": 1
   },
@@ -25,7 +25,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.4.30"
+    "version": "2020.5.21"
   },
   "places": [
     {
@@ -599,16 +599,8 @@
       "templates": []
     },
     {
-      "id": 110,
-      "bookId": 1,
-      "position": 3,
-      "title": "auto",
-      "time": 0,
-      "templates": []
-    },
-    {
       "id": 99,
-      "position": 4,
+      "position": 3,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -616,7 +608,7 @@
     },
     {
       "id": 68,
-      "position": 5,
+      "position": 4,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -624,7 +616,7 @@
     },
     {
       "id": 61,
-      "position": 6,
+      "position": 5,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -632,7 +624,7 @@
     },
     {
       "id": 67,
-      "position": 7,
+      "position": 6,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -640,7 +632,7 @@
     },
     {
       "id": 66,
-      "position": 8,
+      "position": 7,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -648,7 +640,7 @@
     },
     {
       "id": 69,
-      "position": 9,
+      "position": 8,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -656,7 +648,7 @@
     },
     {
       "id": 64,
-      "position": 10,
+      "position": 9,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -664,7 +656,7 @@
     },
     {
       "id": 71,
-      "position": 11,
+      "position": 10,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -672,7 +664,7 @@
     },
     {
       "id": 76,
-      "position": 12,
+      "position": 11,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -680,7 +672,7 @@
     },
     {
       "id": 90,
-      "position": 13,
+      "position": 12,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -688,7 +680,7 @@
     },
     {
       "id": 83,
-      "position": 14,
+      "position": 13,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -696,7 +688,7 @@
     },
     {
       "id": 72,
-      "position": 15,
+      "position": 14,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -704,7 +696,7 @@
     },
     {
       "id": 78,
-      "position": 16,
+      "position": 15,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -712,7 +704,7 @@
     },
     {
       "id": 100,
-      "position": 17,
+      "position": 16,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -720,7 +712,7 @@
     },
     {
       "id": 65,
-      "position": 18,
+      "position": 17,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -728,7 +720,7 @@
     },
     {
       "id": 73,
-      "position": 19,
+      "position": 18,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -736,7 +728,7 @@
     },
     {
       "id": 70,
-      "position": 20,
+      "position": 19,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -744,7 +736,7 @@
     },
     {
       "id": 74,
-      "position": 21,
+      "position": 20,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -752,7 +744,7 @@
     },
     {
       "id": 75,
-      "position": 22,
+      "position": 21,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -760,7 +752,7 @@
     },
     {
       "id": 77,
-      "position": 23,
+      "position": 22,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -768,7 +760,7 @@
     },
     {
       "id": 79,
-      "position": 24,
+      "position": 23,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -776,7 +768,7 @@
     },
     {
       "id": 81,
-      "position": 25,
+      "position": 24,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -784,7 +776,7 @@
     },
     {
       "id": 82,
-      "position": 26,
+      "position": 25,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -792,7 +784,7 @@
     },
     {
       "id": 89,
-      "position": 27,
+      "position": 26,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -800,7 +792,7 @@
     },
     {
       "id": 85,
-      "position": 28,
+      "position": 27,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -808,7 +800,7 @@
     },
     {
       "id": 86,
-      "position": 29,
+      "position": 28,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -816,7 +808,7 @@
     },
     {
       "id": 87,
-      "position": 30,
+      "position": 29,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -824,7 +816,7 @@
     },
     {
       "id": 88,
-      "position": 31,
+      "position": 30,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -832,7 +824,7 @@
     },
     {
       "id": 84,
-      "position": 32,
+      "position": 31,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -840,7 +832,7 @@
     },
     {
       "id": 101,
-      "position": 33,
+      "position": 32,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -848,7 +840,7 @@
     },
     {
       "id": 92,
-      "position": 34,
+      "position": 33,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -856,7 +848,7 @@
     },
     {
       "id": 93,
-      "position": 35,
+      "position": 34,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -864,7 +856,7 @@
     },
     {
       "id": 103,
-      "position": 36,
+      "position": 35,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -872,7 +864,7 @@
     },
     {
       "id": 91,
-      "position": 37,
+      "position": 36,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -880,7 +872,7 @@
     },
     {
       "id": 102,
-      "position": 38,
+      "position": 37,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -888,7 +880,7 @@
     },
     {
       "id": 95,
-      "position": 39,
+      "position": 38,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -896,7 +888,7 @@
     },
     {
       "id": 94,
-      "position": 40,
+      "position": 39,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -904,7 +896,7 @@
     },
     {
       "id": 80,
-      "position": 41,
+      "position": 40,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -912,7 +904,7 @@
     },
     {
       "id": 104,
-      "position": 42,
+      "position": 41,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -920,7 +912,7 @@
     },
     {
       "id": 96,
-      "position": 43,
+      "position": 42,
       "title": "auto",
       "bookId": 1,
       "time": 0,
@@ -929,7 +921,7 @@
     {
       "id": 111,
       "bookId": 1,
-      "position": 44,
+      "position": 43,
       "title": "auto",
       "time": 0,
       "templates": []
@@ -937,7 +929,7 @@
     {
       "id": 112,
       "bookId": 1,
-      "position": 45,
+      "position": 44,
       "title": "auto",
       "time": 0,
       "templates": []
@@ -945,7 +937,7 @@
     {
       "id": 113,
       "bookId": 1,
-      "position": 46,
+      "position": 45,
       "title": "auto",
       "time": 0,
       "templates": []
@@ -953,297 +945,13 @@
     {
       "id": 114,
       "bookId": 1,
-      "position": 47,
+      "position": 46,
       "title": "auto",
       "time": 0,
       "templates": []
     }
   ],
   "cards": [
-    {
-      "id": 164,
-      "lineId": 35,
-      "chapterId": 116,
-      "beatId": null,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": "Cool thing that takes a whole lot of words to describe",
-      "description": [
-        {
-          "children": [
-            {
-              "text": "Description of cool thing happening"
-            }
-          ]
-        }
-      ],
-      "tags": [],
-      "characters": [],
-      "places": [],
-      "templates": [],
-      "imageId": null
-    },
-    {
-      "id": 163,
-      "lineId": 29,
-      "chapterId": 116,
-      "beatId": null,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": "Kevan enters the Mansion",
-      "description": [
-        {
-          "children": [
-            {
-              "text": "THis is a Numbered list"
-            }
-          ]
-        },
-        {
-          "type": "numbered-list",
-          "children": [
-            {
-              "children": [
-                {
-                  "text": "Number 1"
-                }
-              ],
-              "type": "list-item"
-            },
-            {
-              "children": [
-                {
-                  "text": "Number 2"
-                }
-              ],
-              "type": "list-item"
-            },
-            {
-              "children": [
-                {
-                  "text": "Number 3"
-                }
-              ],
-              "type": "list-item"
-            },
-            {
-              "children": [
-                {
-                  "text": "So forth"
-                }
-              ],
-              "type": "list-item"
-            }
-          ]
-        }
-      ],
-      "tags": [],
-      "characters": [],
-      "places": [],
-      "templates": [],
-      "imageId": null
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "id": 162,
-      "imageId": null,
-      "lineId": 33,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "card",
-      "chapterId": 96,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [
-        1
-      ],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Desciption of cool thing happening to {{main character}}"
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "And here's a link: "
-            },
-            {
-              "type": "link",
-              "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
-              "children": [
-                {
-                  "text": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80"
-                }
-              ]
-            },
-            {
-              "text": ""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        },
-        {
-          "type": "image-link",
-          "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            },
-            {
-              "type": "link",
-              "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
-              "children": [
-                {
-                  "text": ""
-                }
-              ]
-            },
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "id": 160,
-      "imageId": null,
-      "lineId": 33,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Cool thing happens",
-      "chapterId": 98,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "The Lightning Storm brings Jared to the brink, and Valia senses him and summons him to Rivalia. Realizing how transparent she would be if she brought him to her lands which are watched by Rivan and his spies, She decides to mark him as rivan's champion, hoping to use him and Rivan's own forces against him. Her plan is to make him a dark lord"
-            }
-          ]
-        }
-      ],
-      "id": 120,
-      "imageId": null,
-      "lineId": 33,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Valia calls a new champion",
-      "chapterId": 66,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "6 years after defeat Anna, Princess of "
-            }
-          ]
-        }
-      ],
-      "id": 142,
-      "imageId": null,
-      "lineId": 33,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Exiled but still in the game",
-      "chapterId": 68,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Now that Jared has an army and a Dark Queen, it's time to Organize and prepare. Maltheus brings in several candidates for generalship, as the Wailing Codex mentions the Dark Lord must choose a council of Three Underlings to carry out his bidding. However Jared doesn't like any of Maltheus's choices, and instead chooses his own generals from loyal friends, naming Burp Warmaster of the Rivantide, Dark Queen Anna as Lady of the Council, and Viggon/Viggoth the Arachean as Huntmaster General "
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Maltheus's line includes such powerful villains as Zad the Quasi-Mad, hunchbacked Wizard Lord of the Five Cities, Slithis the Drake Lord, Morthag the Skull Queen, Stoneheart the Rock Reaver, Skye Blacktalon, Dread Captain of the Kite Pirates, Khom the Barbarian King, and Archwraith Morvoth. He details a few of their exploits and happily mentions his suggested choices (Slithis the Drake Lord, Morthag the Skull Queen, and Stoneheart the Rock Reaver) before being rejected by Jared."
-            }
-          ]
-        }
-      ],
-      "id": 135,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Choosing the Three ",
-      "chapterId": 84,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
     {
       "characters": [],
       "description": [
@@ -1270,38 +978,19 @@
       "position": 0
     },
     {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Click to edit"
-            }
-          ]
-        }
+      "characters": [
+        1
       ],
-      "id": 159,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Jared Attempts Escape",
-      "chapterId": 96,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
       "description": [
         {
           "type": "paragraph",
           "children": [
             {
-              "text": "Jared, Anna, and Maltheus visit the dungeons, where paladins and warriors of Valia captured during bask's liberation plead for Jared to release them. Jared acts all big and bad, One prisoner in particular mocks him with fourth wall Orc-style banter\n\"What now? You going to twist our forms into some dark race that lives only to fight and die for you?\"\n\"Though that sounds like something I saw in a movie once, I think I'd rather have you tickled to death.\""
+              "text": "Setting:",
+              "bold": true
+            },
+            {
+              "text": " Duxbury, MA"
             }
           ]
         },
@@ -1309,19 +998,36 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Rhonas realizes he isn't so bad."
+              "text": "After hearing his parent fight for the umpteenth time, Jared hops on his bike and runs off to think somewhere quiet. He considers his friend Marc's house but realizes they'd look for him there so he just rides wherever his bike takes him."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Emotional Beats:",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Loneliness\nFrustration\nFear\nHope"
             }
           ]
         }
       ],
-      "id": 126,
+      "id": 114,
       "imageId": null,
       "lineId": 27,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "Prisoners",
-      "chapterId": 88,
+      "title": "Running Away Again",
+      "chapterId": 61,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -1331,22 +1037,124 @@
       "characters": [],
       "description": [
         {
-          "type": "paragraph",
+          "type": "bulleted-list",
           "children": [
             {
-              "text": "Jared is lead to the throne room, where a wicked-looking Durmolian Shell awaits him, guarded by two four armed demons. Burp rushes excitedly from Jared's side and worships the armor in reverence. Maltheus explains that this armor is the Dark Lord's ultimate source of power and influence, blessed and powered by Rivan himself."
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Maltheus gives Jared a tour of his new home, The ruins of Rivania, explaining the history of the war and current state of the world, stopping dramatically to tend to various foul tasks and creatures. He explains the \"evils\" of Valia, and likens Kevan Darkslayer as a murderer and interloper, the vanquisher of thousands of poor Rivanians. While painting Valians as evil, Jared can't help but notice the sinister things going on around him."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Maltheus asks Jared if he will take up the mantle of the Dark Lord of Rivan, pandering to Jared's less than evil nature by saying it would help the outcasts promising a way home once his task his complete"
+                }
+              ]
             }
           ]
         }
       ],
-      "id": 125,
+      "id": 115,
       "imageId": null,
       "lineId": 27,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "Mantle of Power",
-      "chapterId": 75,
+      "title": "The Last Vizari",
+      "chapterId": 65,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [
+        1
+      ],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Setting: Rivanian field",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "type": "bulleted-list",
+          "children": [
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared Wakes up in the middle of a crater in the road, running a bright green plain disoriented. A creature stands over him, excitedly calling him master"
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared freaks out at the sight of the strange creature and tries to crawl back, but then hears a man calling out to him, he turns to see several knights getting up off the ground, grass stuck in some of their armor, and the one callout out to him, who has scuffed up armor."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "The creature tells him that just as prophesied/expected, Jared fell from the sky like a comet and knocked all those knights down, and that they must flee. "
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared rejects the idea until the lead knight starts talking about a mark, and draws his sword, telling his men to \"Bring me that kid. Dead or alive!\""
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared gets up and protests, \"Wait! I didn't mean any harm and I have no idea where I am. can't we talk about this?\""
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "The man replies: \"Sure! Come right on over here. We'll talk all about how you got here and why you side with the enemy.\" Jared hesitates and burp pulls his arm the other way. \"No! He'll capture you, or kill you! Mustn't have that!\" Jared hurriedly asks the creature if he can explain what's going on and where he is, and the creature says \"later. tell you later, come on please. Not wanting to be caught by angry knights.\" "
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared looks back and gives into the creatures pleas to escape somewhere safe to answer questions. \"Don't let him escape!\" the knight says when Jared starts turning to run.  Jared follows the creature as the knights mount."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "id": 116,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Master?",
+      "chapterId": 64,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -1392,25 +1200,290 @@
       "position": 0
     },
     {
+      "characters": [
+        1
+      ],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Setting:",
+              "bold": true
+            },
+            {
+              "text": " Duxbury bogs"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Deep in thought Jared finds he has ridden to the city limits, but a storm brewing causes him to reconsider going further.  As he is ready to turn back, he hears  a girl crying for help from the old marshy fields behind him. He decides to investigate."
+            }
+          ]
+        }
+      ],
+      "id": 118,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Cries in the storm",
+      "chapterId": 67,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "bulleted-list",
+          "children": [
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared's drop to the ground knocks Kevan and his Paladins off their mounts and dazes them."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "As Kevan gathers himself from the fall, he sees Jared's clothing and realizes he's from Earth. "
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Kevan also recognizes the scar on Jared's hand as Rivan's mark, the same mark on the hand of the last Dark Lord that he vanquished. Instantly, he realizes Jared must have been called by Rivan. Already angered by being tripped, he sends his knights after this new sport for glory and to continue his quest to rid the world of evil, in hopes of capturing Jared."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "id": 119,
+      "imageId": null,
+      "lineId": 29,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Kevan gains a new quest",
+      "chapterId": 64,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
       "characters": [],
       "description": [
         {
           "type": "paragraph",
           "children": [
             {
-              "text": "Maltheus leads Jared to a hidden chamber, the undeground arena, to test his powers (Can't test on the surface for fear of discovery)."
+              "text": "The Lightning Storm brings Jared to the brink, and Valia senses him and summons him to Rivalia. Realizing how transparent she would be if she brought him to her lands which are watched by Rivan and his spies, She decides to mark him as rivan's champion, hoping to use him and Rivan's own forces against him. Her plan is to make him a dark lord"
             }
           ]
         }
       ],
-      "id": 130,
+      "id": 120,
+      "imageId": null,
+      "lineId": 33,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Valia calls a new champion",
+      "chapterId": 66,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared creeps up to the door to Maltheus's Chambers and overhears Maltheus attempting to contact Rivan about his new champion."
+            }
+          ]
+        }
+      ],
+      "id": 121,
       "imageId": null,
       "lineId": 27,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "Testing the Dark Lord",
-      "chapterId": 77,
+      "title": "Maltheus's Divination",
+      "chapterId": 70,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [
+        1
+      ],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared and Burp flee from the knights into a nearby thicket.\n\"The trees won't stop them for long\" Jared asks. \"How do we lose them?\"\n- Burp says they need to get to Malgard and asks jared to try on his shoes.\n- Jared asks why and protests that they won't fit. Burp says they are Magic, and tells him just to do it.\n- Jared places them on and asks \"what now?\" \n- Burp tells Jared to \"hold me\" and tries to jump into his arms\n- Jared recoils, but hears the Knights dismounting and sees them entering the thicket. \"there they are!\" One of them says.\n- Jared runs quickly through the thicket, nearly tripping a few times as he gets used to the shoes, as the Knights calling after him."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "** Objectives **\n- Show burp's loveable personality"
+            }
+          ]
+        }
+      ],
+      "id": 122,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Magic Shoes",
+      "chapterId": 71,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Setting:",
+              "bold": true
+            },
+            {
+              "text": " Malgard Halls"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared can't sleep his first night in the castle. He explores the Ruins, peering into the hoglin warrens, examining the ruined forge with a single Savarat sleeping at a table,  and hurrying past the creepy Arachean Hive, He eventually gets lost and sees a light coming from a door."
+            }
+          ]
+        }
+      ],
+      "id": 123,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Insomnia",
+      "chapterId": 73,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared is awoken by a horde of Hoglins bursting into the room excitedely, proclaiming today is the Mantling, the first day of his reign where he will gain his Dark Lord armor"
+            }
+          ]
+        }
+      ],
+      "id": 124,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "A rude awakening",
+      "chapterId": 74,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared is lead to the throne room, where a wicked-looking Durmolian Shell awaits him, guarded by two four armed demons. Burp rushes excitedly from Jared's side and worships the armor in reverence. Maltheus explains that this armor is the Dark Lord's ultimate source of power and influence, blessed and powered by Rivan himself."
+            }
+          ]
+        }
+      ],
+      "id": 125,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Mantle of Power",
+      "chapterId": 75,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared, Anna, and Maltheus visit the dungeons, where paladins and warriors of Valia captured during bask's liberation plead for Jared to release them. Jared acts all big and bad, One prisoner in particular mocks him with fourth wall Orc-style banter\n\"What now? You going to twist our forms into some dark race that lives only to fight and die for you?\"\n\"Though that sounds like something I saw in a movie once, I think I'd rather have you tickled to death.\""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Rhonas realizes he isn't so bad."
+            }
+          ]
+        }
+      ],
+      "id": 126,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Prisoners",
+      "chapterId": 88,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -1438,6 +1511,227 @@
       "templates": [],
       "title": "Escaping the Knights",
       "chapterId": 76,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "bulleted-list",
+          "children": [
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "The soldier closes in, but Jared tricks him and Burp Headbutts him in the nuts. Taps comes in and apologizes, then leads them out the back way."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared and Burp rush through the forest, Burp leading the way to Malgard."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "After a few hours, they come to mountainous cliff wall. Jared wonders where they'd go next, looking back for any signs of Kevan. But Burp knows of a secret tunnel to Malgard and searches the walls for it, "
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "A few minutes of walking later, Burp exclaims that he found it. It's behind a wall near a stream inlet"
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared is lead into Malgard through the secret passage, a slimy, dusty place that follows the stream inlet. "
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "After walking for what seems like hours they come to a door guarded by a giant spidery thing. It comes towards them in a menacing fashion"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "id": 128,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "The Dark Way",
+      "chapterId": 78,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Setting:",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "type": "bulleted-list",
+          "children": [
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared can't sleep again, and creeps back down to Maltheus's door to see if the Vizari is up to anything. This time Maltheus calls him in and lectures him, asking him his intentions."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared asks if Maltheus has contacted Rivan yet, and Maltheus replies in frustration about lack of direction."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared asks if there is anything he can do to help, and Maltheus mentions that they need to gather their forces, suggesting that Jared should take what forces he has at his disposal and liberate the largest internment camp (at Bask) to greatly enlarge their forces while Maltheus continues to seek out Rivan's advice. He says it would be a test of Jared's lordship and prove a good boost of morale for the army. Jared reluctantly agrees, wondering if he's ready for such a task. Maltheus or Rivan."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Dialogue:",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Maltheus (Not turning to meet Jared): \"Are we going to do this every night, my lord?\""
+            }
+          ]
+        }
+      ],
+      "id": 129,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Insomnia again",
+      "chapterId": 81,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Maltheus leads Jared to a hidden chamber, the undeground arena, to test his powers (Can't test on the surface for fear of discovery)."
+            }
+          ]
+        }
+      ],
+      "id": 130,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Testing the Dark Lord",
+      "chapterId": 77,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "bulleted-list",
+          "children": [
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "At night, while Jared is out, Maltheus communes again with Rivan and finally gets in contact with him."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "He shares the progress of Rivan's army, and to his surprise, learns Rivan had nothing to do with his new Dark Lord."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "They decide Jared is Valia's new champion, now that Kevan has fallen to Rivan's influence."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "The God and Vizari hatch a new plan, to spy on Jared to use him to entrap and defeat Valia once and for all. They will proceed with letting him be Dark Lord for now, to gather power"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "id": 131,
+      "imageId": null,
+      "lineId": 35,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Maltheus finally communes with Rivan",
+      "chapterId": 90,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -1548,35 +1842,26 @@
       "position": 0
     },
     {
-      "characters": [
-        1
-      ],
+      "characters": [],
       "description": [
         {
-          "type": "paragraph",
           "children": [
             {
-              "text": "Jared and Burp flee from the knights into a nearby thicket.\n\"The trees won't stop them for long\" Jared asks. \"How do we lose them?\"\n- Burp says they need to get to Malgard and asks jared to try on his shoes.\n- Jared asks why and protests that they won't fit. Burp says they are Magic, and tells him just to do it.\n- Jared places them on and asks \"what now?\" \n- Burp tells Jared to \"hold me\" and tries to jump into his arms\n- Jared recoils, but hears the Knights dismounting and sees them entering the thicket. \"there they are!\" One of them says.\n- Jared runs quickly through the thicket, nearly tripping a few times as he gets used to the shoes, as the Knights calling after him."
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "** Objectives **\n- Show burp's loveable personality"
+              "text": ""
             }
           ]
         }
       ],
-      "id": 122,
+      "id": 134,
       "imageId": null,
-      "lineId": 27,
+      "lineId": 34,
       "places": [],
-      "tags": [],
+      "tags": [
+        5
+      ],
       "templates": [],
-      "title": "Magic Shoes",
-      "chapterId": 71,
+      "title": "Rivan's army is defeated, but he defeats Valia in Heaven",
+      "chapterId": 99,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -1586,59 +1871,113 @@
       "characters": [],
       "description": [
         {
-          "type": "bulleted-list",
+          "type": "paragraph",
           "children": [
             {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared enters Ashwood Forest with Kevan and his Paladins close behind. "
-                }
-              ]
-            },
+              "text": "Now that Jared has an army and a Dark Queen, it's time to Organize and prepare. Maltheus brings in several candidates for generalship, as the Wailing Codex mentions the Dark Lord must choose a council of Three Underlings to carry out his bidding. However Jared doesn't like any of Maltheus's choices, and instead chooses his own generals from loyal friends, naming Burp Warmaster of the Rivantide, Dark Queen Anna as Lady of the Council, and Viggon/Viggoth the Arachean as Huntmaster General "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
             {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared tired from carrying burp, tries to find a spot to hide in the thick foliage and fallen ash-colored leaves to lose the Paladins."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Burp and Jared whisper about their next move while the Paladins halt where they left them"
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "The Paladins fan out and search the woods, while Jared and burp creep away and zoom ahead "
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Burp leads Jared to the Gobblin' Goblin."
-                }
-              ]
+              "text": "Maltheus's line includes such powerful villains as Zad the Quasi-Mad, hunchbacked Wizard Lord of the Five Cities, Slithis the Drake Lord, Morthag the Skull Queen, Stoneheart the Rock Reaver, Skye Blacktalon, Dread Captain of the Kite Pirates, Khom the Barbarian King, and Archwraith Morvoth. He details a few of their exploits and happily mentions his suggested choices (Slithis the Drake Lord, Morthag the Skull Queen, and Stoneheart the Rock Reaver) before being rejected by Jared."
             }
           ]
         }
       ],
-      "id": 149,
+      "id": 135,
       "imageId": null,
       "lineId": 27,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "Ashwood Forest",
-      "chapterId": 90,
+      "title": "Choosing the Three ",
+      "chapterId": 84,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared, Anna, and his small but utterly loyal force of grass imps, Hoglins, and Aracheans creep up to the Prison City of Bask and strategize how to liberate the Gravelkin (giants) and Savarats within."
+            }
+          ]
+        }
+      ],
+      "id": 136,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Outside The Prison City",
+      "chapterId": 85,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared and his forces enact their plan to liberate the city of Bask from the Valian guard and their Wizard captain. He saw his plan in a movie/video game/book."
+            }
+          ]
+        }
+      ],
+      "id": 137,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Liberlooting",
+      "chapterId": 86,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jared and his army return from Bask victorious and with several prisoners (Jared honored Anna's wishes and didn't have any of the Valians killed)"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Maltheus is displeased about prisoners, but jared mentions ransom"
+            }
+          ]
+        }
+      ],
+      "id": 138,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Return to Malgard",
+      "chapterId": 87,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -1710,72 +2049,13 @@
       "characters": [],
       "description": [
         {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Click to edit"
-            }
-          ]
-        }
-      ],
-      "id": 153,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Through the Portal",
-      "chapterId": 80,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Jared and his forces enact their plan to liberate the city of Bask from the Valian guard and their Wizard captain. He saw his plan in a movie/video game/book."
-            }
-          ]
-        }
-      ],
-      "id": 137,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Liberlooting",
-      "chapterId": 86,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Setting:",
-              "bold": true
-            }
-          ]
-        },
-        {
           "type": "bulleted-list",
           "children": [
             {
               "type": "list-item",
               "children": [
                 {
-                  "text": "Jared can't sleep again, and creeps back down to Maltheus's door to see if the Vizari is up to anything. This time Maltheus calls him in and lectures him, asking him his intentions."
+                  "text": "After defeating the last Dark Lord, Kevan is on a grand hunt alongside his Paladins to vanquish or capture what's left of Rivan's hosts, in hopes of stopping them from ever gathering strength again. He lost too many friends in the last war. "
                 }
               ]
             },
@@ -1783,7 +2063,7 @@
               "type": "list-item",
               "children": [
                 {
-                  "text": "Jared asks if Maltheus has contacted Rivan yet, and Maltheus replies in frustration about lack of direction."
+                  "text": "Currently, he and several of his knights are responding to a tip that a crafty hoglin has been sneaking up to the city of Bask and spying."
                 }
               ]
             },
@@ -1791,9 +2071,36 @@
               "type": "list-item",
               "children": [
                 {
-                  "text": "Jared asks if there is anything he can do to help, and Maltheus mentions that they need to gather their forces, suggesting that Jared should take what forces he has at his disposal and liberate the largest internment camp (at Bask) to greatly enlarge their forces while Maltheus continues to seek out Rivan's advice. He says it would be a test of Jared's lordship and prove a good boost of morale for the army. Jared reluctantly agrees, wondering if he's ready for such a task. Maltheus or Rivan."
+                  "text": "Kevan has located the hoglin and gives chase, though the creature is difficult to catch since it has an Equine Speed enchantment on its shoes and uses thickets and brush to make pursuit via horseback difficult (Runs about 25 mph. boots were stolen from the previous dark lord's now abandoned armory)"
                 }
               ]
+            }
+          ]
+        }
+      ],
+      "id": 140,
+      "imageId": null,
+      "lineId": 29,
+      "places": [
+        1
+      ],
+      "tags": [],
+      "templates": [],
+      "title": "Hunting and Maintaining Order",
+      "chapterId": 68,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Having defeated Valia, Rivan believes himself in absolute power. He abandons his defeated forces, angered that his vast hosts and dark champion lost against Kevan Darkslayer an outsider, and begins a new plan to pretend to be Valia and use her own armies to conquer the rest of the world. He also plans to undo Kevan's spirit."
             }
           ]
         },
@@ -1801,28 +2108,19 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Dialogue:",
-              "bold": true
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Maltheus (Not turning to meet Jared): \"Are we going to do this every night, my lord?\""
+              "text": "Now 6 years"
             }
           ]
         }
       ],
-      "id": 129,
+      "id": 141,
       "imageId": null,
-      "lineId": 27,
+      "lineId": 34,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "Insomnia again",
-      "chapterId": 81,
+      "title": "Ruling the World",
+      "chapterId": 68,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -1835,27 +2133,19 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Jared and his army return from Bask victorious and with several prisoners (Jared honored Anna's wishes and didn't have any of the Valians killed)"
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Maltheus is displeased about prisoners, but jared mentions ransom"
+              "text": "6 years after defeat Anna, Princess of "
             }
           ]
         }
       ],
-      "id": 138,
+      "id": 142,
       "imageId": null,
-      "lineId": 27,
+      "lineId": 33,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "Return to Malgard",
-      "chapterId": 87,
+      "title": "Exiled but still in the game",
+      "chapterId": 68,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -1868,189 +2158,19 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Jared, Anna, and his small but utterly loyal force of grass imps, Hoglins, and Aracheans creep up to the Prison City of Bask and strategize how to liberate the Gravelkin (giants) and Savarats within."
+              "text": "Unable to contact Rivan for guidance, Maltheus currently leads the remnants of the failed Dark Lord's hosts in rebuilding underneath the ruins of Malgard."
             }
           ]
         }
       ],
-      "id": 136,
+      "id": 143,
       "imageId": null,
-      "lineId": 27,
+      "lineId": 35,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "Outside The Prison City",
-      "chapterId": 85,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Click to edit"
-            }
-          ]
-        }
-      ],
-      "id": 150,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Welcome to Malgard",
-      "chapterId": 100,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "The forces of Maltheus battle the combined armies of Valior and Jared's Minions.\nRivan himself appears, and on the cusp of defeat, with Valia's sword to his throat, is goaded into merging with her, creating one God of balance to rule the world."
-            }
-          ]
-        }
-      ],
-      "id": 152,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "The Battle for Heaven and Earth",
-      "chapterId": 95,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Click to edit"
-            }
-          ]
-        }
-      ],
-      "id": 154,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Aftermath",
-      "chapterId": 94,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "bulleted-list",
-          "children": [
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "The soldier closes in, but Jared tricks him and Burp Headbutts him in the nuts. Taps comes in and apologizes, then leads them out the back way."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared and Burp rush through the forest, Burp leading the way to Malgard."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "After a few hours, they come to mountainous cliff wall. Jared wonders where they'd go next, looking back for any signs of Kevan. But Burp knows of a secret tunnel to Malgard and searches the walls for it, "
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "A few minutes of walking later, Burp exclaims that he found it. It's behind a wall near a stream inlet"
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared is lead into Malgard through the secret passage, a slimy, dusty place that follows the stream inlet. "
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "After walking for what seems like hours they come to a door guarded by a giant spidery thing. It comes towards them in a menacing fashion"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "id": 128,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "The Dark Way",
-      "chapterId": 78,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Jared creeps up to the door to Maltheus's Chambers and overhears Maltheus attempting to contact Rivan about his new champion."
-            }
-          ]
-        }
-      ],
-      "id": 121,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Maltheus's Divination",
-      "chapterId": 70,
+      "title": "Plotting and Leading the Remnants",
+      "chapterId": 68,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -2065,11 +2185,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Setting:",
-              "bold": true
-            },
-            {
-              "text": " Duxbury bogs"
+              "text": "something {{sad}} happens here  "
             }
           ]
         },
@@ -2077,36 +2193,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Deep in thought Jared finds he has ridden to the city limits, but a storm brewing causes him to reconsider going further.  As he is ready to turn back, he hears  a girl crying for help from the old marshy fields behind him. He decides to investigate."
-            }
-          ]
-        }
-      ],
-      "id": 118,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Cries in the storm",
-      "chapterId": 67,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Setting:",
-              "bold": true
-            },
-            {
-              "text": " Malgard Halls"
+              "text": "{{romance}}??"
             }
           ]
         },
@@ -2114,101 +2201,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Jared can't sleep his first night in the castle. He explores the Ruins, peering into the hoglin warrens, examining the ruined forge with a single Savarat sleeping at a table,  and hurrying past the creepy Arachean Hive, He eventually gets lost and sees a light coming from a door."
-            }
-          ]
-        }
-      ],
-      "id": 123,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Insomnia",
-      "chapterId": 73,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "bulleted-list",
-          "children": [
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Maltheus gives Jared a tour of his new home, The ruins of Rivania, explaining the history of the war and current state of the world, stopping dramatically to tend to various foul tasks and creatures. He explains the \"evils\" of Valia, and likens Kevan Darkslayer as a murderer and interloper, the vanquisher of thousands of poor Rivanians. While painting Valians as evil, Jared can't help but notice the sinister things going on around him."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Maltheus asks Jared if he will take up the mantle of the Dark Lord of Rivan, pandering to Jared's less than evil nature by saying it would help the outcasts promising a way home once his task his complete"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "id": 115,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "The Last Vizari",
-      "chapterId": 65,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Jared is awoken by a horde of Hoglins bursting into the room excitedely, proclaiming today is the Mantling, the first day of his reign where he will gain his Dark Lord armor"
-            }
-          ]
-        }
-      ],
-      "id": 124,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "A rude awakening",
-      "chapterId": 74,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [
-        1
-      ],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Setting:",
-              "bold": true
-            },
-            {
-              "text": " Duxbury, MA"
+              "text": "{{wonder}}??"
             }
           ]
         },
@@ -2216,7 +2209,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "After hearing his parent fight for the umpteenth time, Jared hops on his bike and runs off to think somewhere quiet. He considers his friend Marc's house but realizes they'd look for him there so he just rides wherever his bike takes him."
+              "text": "{{scary}}??"
             }
           ]
         },
@@ -2224,117 +2217,27 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Emotional Beats:",
-              "bold": true
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Loneliness\nFrustration\nFear\nHope"
+              "text": "{{horror}}??"
             }
           ]
         }
       ],
-      "id": 114,
+      "id": 144,
       "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
+      "lineId": 28,
+      "places": [
+        0
+      ],
+      "tags": [
+        2,
+        5,
+        4,
+        3,
+        9
+      ],
       "templates": [],
-      "title": "Running Away Again",
+      "title": "Seeking an Escape",
       "chapterId": 61,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [
-        1
-      ],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Setting: Rivanian field",
-              "bold": true
-            }
-          ]
-        },
-        {
-          "type": "bulleted-list",
-          "children": [
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared Wakes up in the middle of a crater in the road, running a bright green plain disoriented. A creature stands over him, excitedly calling him master"
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared freaks out at the sight of the strange creature and tries to crawl back, but then hears a man calling out to him, he turns to see several knights getting up off the ground, grass stuck in some of their armor, and the one callout out to him, who has scuffed up armor."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "The creature tells him that just as prophesied/expected, Jared fell from the sky like a comet and knocked all those knights down, and that they must flee. "
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared rejects the idea until the lead knight starts talking about a mark, and draws his sword, telling his men to \"Bring me that kid. Dead or alive!\""
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared gets up and protests, \"Wait! I didn't mean any harm and I have no idea where I am. can't we talk about this?\""
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "The man replies: \"Sure! Come right on over here. We'll talk all about how you got here and why you side with the enemy.\" Jared hesitates and burp pulls his arm the other way. \"No! He'll capture you, or kill you! Mustn't have that!\" Jared hurriedly asks the creature if he can explain what's going on and where he is, and the creature says \"later. tell you later, come on please. Not wanting to be caught by angry knights.\" "
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared looks back and gives into the creatures pleas to escape somewhere safe to answer questions. \"Don't let him escape!\" the knight says when Jared starts turning to run.  Jared follows the creature as the knights mount."
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "id": 116,
-      "imageId": null,
-      "lineId": 27,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Master?",
-      "chapterId": 64,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -2507,6 +2410,92 @@
               "type": "list-item",
               "children": [
                 {
+                  "text": "Burp and Jared arrive at the Gobblin' Goblin, a rest stop in the forest that used to be frequented by all manners of Rivanians, but now Valian Soldiers and traitorous Rivanian mercenaries make up its patrons. Thankfully, it is midday and the few patrons around are too drunk to care about a hoglin and a kid, and the staff are loyal to Rivan so they won't rat them out."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "The two enter the tavern and are lead into a private room in the back by the barkeep, a hoglin nicknamed \"Taps\" who tells his assistant to watch the front. Jared notices one of the patrons eyeing them as they walk past."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "In the back room, Taps brings in food and Burp explains everything to Jared and answers his questions over food. "
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared seems a bit disgusted by Burps's eating habits."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "As Burp and Jared talk, Taps walks in with a wanted poster that just came through Telescribe, saying there is someone out front asking for them. Jared wonders about the guy eyeing them and tells him to stall the person asking about them. Taps refills their drinks"
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared wonders how they already had wanted posters, and Burp curses, saying that Kevan must have had a Telescribe amongst his Knights, a wizard who can send magical messages (Telescription) that enter these devices called Telescriptor (Like a fax) and that the wanted posters are probably in every tavern, village, and barracks in the land by now. Burp takes a huge swig of his drink, but Jared doesn't."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Burp goes limp, and Jared wonders what is going on as Kevan bursts in with three paladins and Taps behind them. Taps has apparently paralyzed Burp"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Old: The Soldier eyeing them earlier bursts in, intending to arrest them and says he's already telescripted Kevan, who will be here in minutes. He draws his sword and backs Jared and Burp into a corner."
+            }
+          ]
+        }
+      ],
+      "id": 147,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "The Gobblin' Goblin",
+      "chapterId": 83,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "bulleted-list",
+          "children": [
+            {
+              "type": "list-item",
+              "children": [
+                {
                   "text": "Jared visits Anna, who acts less hostile than she did before."
                 }
               ]
@@ -2635,6 +2624,201 @@
       "characters": [],
       "description": [
         {
+          "type": "bulleted-list",
+          "children": [
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared enters Ashwood Forest with Kevan and his Paladins close behind. "
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Jared tired from carrying burp, tries to find a spot to hide in the thick foliage and fallen ash-colored leaves to lose the Paladins."
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Burp and Jared whisper about their next move while the Paladins halt where they left them"
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "The Paladins fan out and search the woods, while Jared and burp creep away and zoom ahead "
+                }
+              ]
+            },
+            {
+              "type": "list-item",
+              "children": [
+                {
+                  "text": "Burp leads Jared to the Gobblin' Goblin."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "id": 149,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Ashwood Forest",
+      "chapterId": 90,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Click to edit"
+            }
+          ]
+        }
+      ],
+      "id": 150,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Welcome to Malgard",
+      "chapterId": 100,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Nullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl."
+            }
+          ]
+        }
+      ],
+      "id": 151,
+      "imageId": null,
+      "lineId": 36,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Seeking his family",
+      "chapterId": 68,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The forces of Maltheus battle the combined armies of Valior and Jared's Minions.\nRivan himself appears, and on the cusp of defeat, with Valia's sword to his throat, is goaded into merging with her, creating one God of balance to rule the world."
+            }
+          ]
+        }
+      ],
+      "id": 152,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "The Battle for Heaven and Earth",
+      "chapterId": 95,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Click to edit"
+            }
+          ]
+        }
+      ],
+      "id": 153,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Through the Portal",
+      "chapterId": 80,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Click to edit"
+            }
+          ]
+        }
+      ],
+      "id": 154,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Aftermath",
+      "chapterId": 94,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
           "type": "paragraph",
           "children": [
             {
@@ -2739,63 +2923,37 @@
       "characters": [],
       "description": [
         {
-          "type": "bulleted-list",
+          "type": "paragraph",
           "children": [
             {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Burp and Jared arrive at the Gobblin' Goblin, a rest stop in the forest that used to be frequented by all manners of Rivanians, but now Valian Soldiers and traitorous Rivanian mercenaries make up its patrons. Thankfully, it is midday and the few patrons around are too drunk to care about a hoglin and a kid, and the staff are loyal to Rivan so they won't rat them out."
-                }
-              ]
-            },
+              "text": "Click to edit"
+            }
+          ]
+        }
+      ],
+      "id": 159,
+      "imageId": null,
+      "lineId": 27,
+      "places": [],
+      "tags": [],
+      "templates": [],
+      "title": "Jared Attempts Escape",
+      "chapterId": 96,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0
+    },
+    {
+      "characters": [
+        1
+      ],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
             {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "The two enter the tavern and are lead into a private room in the back by the barkeep, a hoglin nicknamed \"Taps\" who tells his assistant to watch the front. Jared notices one of the patrons eyeing them as they walk past."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "In the back room, Taps brings in food and Burp explains everything to Jared and answers his questions over food. "
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared seems a bit disgusted by Burps's eating habits."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "As Burp and Jared talk, Taps walks in with a wanted poster that just came through Telescribe, saying there is someone out front asking for them. Jared wonders about the guy eyeing them and tells him to stall the person asking about them. Taps refills their drinks"
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared wonders how they already had wanted posters, and Burp curses, saying that Kevan must have had a Telescribe amongst his Knights, a wizard who can send magical messages (Telescription) that enter these devices called Telescriptor (Like a fax) and that the wanted posters are probably in every tavern, village, and barracks in the land by now. Burp takes a huge swig of his drink, but Jared doesn't."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Burp goes limp, and Jared wonders what is going on as Kevan bursts in with three paladins and Taps behind them. Taps has apparently paralyzed Burp"
-                }
-              ]
+              "text": "Desciption of cool thing happening to {{main character}}"
             }
           ]
         },
@@ -2803,19 +2961,76 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Old: The Soldier eyeing them earlier bursts in, intending to arrest them and says he's already telescripted Kevan, who will be here in minutes. He draws his sword and backs Jared and Burp into a corner."
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "And here's a link: "
+            },
+            {
+              "type": "link",
+              "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+              "children": [
+                {
+                  "text": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80"
+                }
+              ]
+            },
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "image-link",
+          "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            },
+            {
+              "type": "link",
+              "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "text": ""
             }
           ]
         }
       ],
-      "id": 147,
+      "id": 160,
       "imageId": null,
-      "lineId": 27,
+      "lineId": 33,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "The Gobblin' Goblin",
-      "chapterId": 83,
+      "title": "Cool thing happens",
+      "chapterId": 98,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
@@ -2832,326 +3047,103 @@
           ]
         }
       ],
-      "id": 134,
+      "id": 162,
       "imageId": null,
-      "lineId": 34,
-      "places": [],
-      "tags": [
-        5
-      ],
-      "templates": [],
-      "title": "Rivan's army is defeated, but he defeats Valia in Heaven",
-      "chapterId": 99,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Having defeated Valia, Rivan believes himself in absolute power. He abandons his defeated forces, angered that his vast hosts and dark champion lost against Kevan Darkslayer an outsider, and begins a new plan to pretend to be Valia and use her own armies to conquer the rest of the world. He also plans to undo Kevan's spirit."
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Now 6 years"
-            }
-          ]
-        }
-      ],
-      "id": 141,
-      "imageId": null,
-      "lineId": 34,
+      "lineId": 33,
       "places": [],
       "tags": [],
       "templates": [],
-      "title": "Ruling the World",
-      "chapterId": 68,
+      "title": "card",
+      "chapterId": 96,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
       "position": 0
     },
     {
-      "characters": [],
-      "description": [
-        {
-          "type": "bulleted-list",
-          "children": [
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "At night, while Jared is out, Maltheus communes again with Rivan and finally gets in contact with him."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "He shares the progress of Rivan's army, and to his surprise, learns Rivan had nothing to do with his new Dark Lord."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "They decide Jared is Valia's new champion, now that Kevan has fallen to Rivan's influence."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "The God and Vizari hatch a new plan, to spy on Jared to use him to entrap and defeat Valia once and for all. They will proceed with letting him be Dark Lord for now, to gather power"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "id": 131,
-      "imageId": null,
-      "lineId": 35,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Maltheus finally communes with Rivan",
-      "chapterId": 90,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Unable to contact Rivan for guidance, Maltheus currently leads the remnants of the failed Dark Lord's hosts in rebuilding underneath the ruins of Malgard."
-            }
-          ]
-        }
-      ],
-      "id": 143,
-      "imageId": null,
-      "lineId": 35,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Plotting and Leading the Remnants",
-      "chapterId": 68,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [
-        1
-      ],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "something {{sad}} happens here  "
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "{{romance}}??"
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "{{wonder}}??"
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "{{scary}}??"
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "{{horror}}??"
-            }
-          ]
-        }
-      ],
-      "id": 144,
-      "imageId": null,
-      "lineId": 28,
-      "places": [
-        0
-      ],
-      "tags": [
-        2,
-        5,
-        4,
-        3,
-        9
-      ],
-      "templates": [],
-      "title": "Seeking an Escape",
-      "chapterId": 61,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "bulleted-list",
-          "children": [
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Jared's drop to the ground knocks Kevan and his Paladins off their mounts and dazes them."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "As Kevan gathers himself from the fall, he sees Jared's clothing and realizes he's from Earth. "
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Kevan also recognizes the scar on Jared's hand as Rivan's mark, the same mark on the hand of the last Dark Lord that he vanquished. Instantly, he realizes Jared must have been called by Rivan. Already angered by being tripped, he sends his knights after this new sport for glory and to continue his quest to rid the world of evil, in hopes of capturing Jared."
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "id": 119,
-      "imageId": null,
+      "id": 163,
       "lineId": 29,
-      "places": [],
-      "tags": [],
-      "templates": [],
-      "title": "Kevan gains a new quest",
-      "chapterId": 64,
+      "chapterId": 116,
       "beatId": null,
-      "bookId": null,
       "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
+      "bookId": null,
+      "position": 0,
+      "title": "Kevan enters the Mansion",
       "description": [
         {
-          "type": "bulleted-list",
           "children": [
             {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "After defeating the last Dark Lord, Kevan is on a grand hunt alongside his Paladins to vanquish or capture what's left of Rivan's hosts, in hopes of stopping them from ever gathering strength again. He lost too many friends in the last war. "
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Currently, he and several of his knights are responding to a tip that a crafty hoglin has been sneaking up to the city of Bask and spying."
-                }
-              ]
-            },
-            {
-              "type": "list-item",
-              "children": [
-                {
-                  "text": "Kevan has located the hoglin and gives chase, though the creature is difficult to catch since it has an Equine Speed enchantment on its shoes and uses thickets and brush to make pursuit via horseback difficult (Runs about 25 mph. boots were stolen from the previous dark lord's now abandoned armory)"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "id": 140,
-      "imageId": null,
-      "lineId": 29,
-      "places": [
-        1
-      ],
-      "tags": [],
-      "templates": [],
-      "title": "Hunting and Maintaining Order",
-      "chapterId": 68,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    },
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In pellentesque risus nec mi fermentum scelerisque. Aliquam purus diam, viverra eu lorem vitae, suscipit sagittis nisi. Mauris laoreet nisi in accumsan convallis. Duis sed venenatis ex. Nunc lobortis, mauris ac consequat volutpat, libero dui sagittis enim, eu aliquam sapien lacus non felis. Nullam luctus libero ac sapien fringilla, at eleifend mi porta. Aliquam rutrum lacinia velit sit amet mollis. Maecenas euismod magna in tortor tempus ullamcorper."
+              "text": "THis is a Numbered list"
             }
           ]
         },
         {
-          "type": "paragraph",
+          "type": "numbered-list",
           "children": [
             {
-              "text": "Nullam ac aliquet ligula. Sed quis convallis nunc, sit amet gravida mauris. Vivamus mattis pharetra placerat. Donec euismod efficitur est, a mollis ipsum accumsan laoreet. Aliquam et ex vitae tellus blandit aliquam. Vivamus lorem turpis, varius in imperdiet vitae, sollicitudin ornare velit. Donec ac iaculis lacus, non blandit nisl."
+              "children": [
+                {
+                  "text": "Number 1"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "Number 2"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "Number 3"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "So forth"
+                }
+              ],
+              "type": "list-item"
             }
           ]
         }
       ],
-      "id": 151,
-      "imageId": null,
-      "lineId": 36,
-      "places": [],
       "tags": [],
+      "characters": [],
+      "places": [],
       "templates": [],
-      "title": "Seeking his family",
-      "chapterId": 68,
+      "imageId": null
+    },
+    {
+      "id": 164,
+      "lineId": 35,
+      "chapterId": 116,
       "beatId": null,
-      "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "bookId": null,
+      "position": 0,
+      "title": "Cool thing that takes a whole lot of words to describe",
+      "description": [
+        {
+          "children": [
+            {
+              "text": "Description of cool thing happening"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null
     }
   ],
   "lines": [

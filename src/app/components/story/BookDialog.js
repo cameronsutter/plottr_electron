@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { Modal, Form, FormGroup, Col, Row, ControlLabel, FormControl, ButtonToolbar, Button } from 'react-bootstrap'
 import i18n from 'format-message'
 import * as BookActions from 'actions/books'
+import cx from 'classnames'
 
 class BookDialog extends Component {
   saveEdit = () => {
@@ -73,7 +74,7 @@ class BookDialog extends Component {
   }
 
   render () {
-    return <Modal show={true} onHide={this.props.cancel}>
+    return <Modal show={true} onHide={this.props.cancel} dialogClassName={cx('book-dialog', {darkmode: this.props.ui.darkMode})}>
       <Modal.Body>
         { this.renderBody() }
       </Modal.Body>

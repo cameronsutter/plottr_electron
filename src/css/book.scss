@@ -48,6 +48,13 @@
   }
 }
 
+.book-dialog.darkmode {
+  .modal-body, .modal-footer {
+    color: $darkmode-text;
+    background-color: $darkmode-background;
+  }
+}
+
 
 // css book copy/pasted from the 😱 internet
 // https://freefrontend.com/css-book-effects/ -> https://codepen.io/HighFlyer/pen/LaXrgV

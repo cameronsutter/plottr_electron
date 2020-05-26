@@ -30,13 +30,13 @@
   border-right: 1px solid #eee;
   padding-top: 10px;
   padding-bottom: 10px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .card-dialog__description {
   width: 80%;
   padding-left: 10px;
-  overflow-y:scroll;
+  overflow-y: auto;
   font-size: 20px;
   textarea {
     font-size: 20px;

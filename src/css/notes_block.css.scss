@@ -162,6 +162,14 @@
   color: $darkmode-text;
   border-color: $darkmode-darker-border;
 
+  .note-list__content {
+    &:hover:not(.editing) {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-darker-border;
+    }
+  }
+
+
   h4 {
     color: $darkmode-darker-text;
   }

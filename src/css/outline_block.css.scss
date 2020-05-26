@@ -68,6 +68,13 @@
   background-color: $darkmode-darker-background;
   color: $darkmode-text;
   border-color: $darkmode-border;
+
+  &:hover {
+    .outline__card__inner:not(.editing) {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-background;
+    }
+  }
 }
 
 .outline__scenes-container {

@@ -506,6 +506,16 @@ function openWindow (fileName, jsonData) {
     }
   })
 
+  newWindow.webContents.on('unresponsive', () => {
+    log.warn('webContents became unresponsive')
+    newWindow.webContents.reload()
+  })
+
+  newWindow.on('unresponsive', () => {
+    log.warn('window became unresponsive')
+    newWindow.webContents.reload()
+  })
+
   if (process.env.NODE_ENV === 'dev' || SETTINGS.get('forceDevTools')) {
     newWindow.openDevTools()
   }

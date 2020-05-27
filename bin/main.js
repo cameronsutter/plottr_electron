@@ -19,6 +19,7 @@ const setupRollbar = require('./main_modules/rollbar')
 const SETTINGS = require('./main_modules/settings')
 const { checkForActiveLicense, getLicenseInfo } = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
+const CustomTemplateManager = require('./main_modules/custom_template_manager')
 const FileManager = require('./main_modules/file_manager')
 const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/helpers')
 if (process.env.NODE_ENV === 'dev') {
@@ -410,7 +411,8 @@ function askToSave (win, state, fileName, callback) {
 }
 
 function askToCreateFile (data = {}) {
-  const fileName = dialog.showSaveDialogSync({title: i18n('Where would you like to start your new file?')})
+  const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+  const fileName = dialog.showSaveDialogSync({filters: filters, title: i18n('Where would you like to start your new file?')})
   if (fileName) {
     const fullName = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
     const storyName = path.basename(fileName, '.pltr')
@@ -895,6 +897,15 @@ function buildFileMenu () {
             }
           })
         }
+      }
+    }
+  }, {
+    label: i18n('Save as Template'),
+    click: () => {
+      let win = BrowserWindow.getFocusedWindow()
+      let winObj = windows.find(w => w.id == win.id)
+      if (winObj) {
+        CustomTemplateManager.addNew(winObj.state)
       }
     }
   }, {

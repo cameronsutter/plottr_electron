@@ -16,7 +16,7 @@ export default class GuidedTour extends Component {
     {selector: '.sticky-table-row:nth-child(2)', content: i18n('This is a plotline')},
     {
       selector: '.sticky-table-row:nth-child(2) .sticky-table-cell:nth-child(1) .line-title__cell',
-      content: i18n('You can change it\'s name or color by hovering over it (disabled for the tour)'),
+      content: i18n('You can change its name or color by hovering over it (disabled for the tour)'),
       stepInteraction: false,
     },
     {selector: '.sticky-table-row:nth-child(2) .sticky-table-cell:nth-child(3) .card__cell', content: i18n('Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details')},

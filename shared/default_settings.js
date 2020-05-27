@@ -1,5 +1,5 @@
 module.exports = {
-  showTheTour: true,
+  showTheTour: false,
   backup: true,
   trialMode: false,
   allowPrerelease: false,

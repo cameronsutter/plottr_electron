@@ -22,8 +22,8 @@ class TagView extends Component {
 
   handleCancel = () => {
     this.setState({editing: false})
-    if (this.props.tag.title == '') {
-      this.props.actions.deleteTag(this.props.tag.id)
+    if (this.props.new) {
+      this.props.doneCreating()
     }
   }
 

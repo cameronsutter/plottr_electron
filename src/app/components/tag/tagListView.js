@@ -55,9 +55,9 @@ class TagListView extends Component {
           <div className='tag-list__tags'>
             { this.renderTags() }
             <div className='tag-list__tag-wrapper'>
-              <div className={cx('tag-list__new', {darkmode: ui.darkMode})} onClick={this.appendBlankTag} >
+              {!this.state.appending ? <div className={cx('tag-list__new', {darkmode: ui.darkMode})} onClick={this.appendBlankTag} >
                 <Glyphicon glyph='plus' />
-              </div>
+              </div> : null}
             </div>
           </div>
         </div>

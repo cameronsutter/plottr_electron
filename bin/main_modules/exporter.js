@@ -1,4 +1,4 @@
-const { shell } = require('electron')
+const { shell, Notification } = require('electron')
 const { Document, Packer, Paragraph, Media, AlignmentType, HeadingLevel } = require('docx')
 const fs = require('fs')
 const _ = require('lodash')
@@ -21,6 +21,14 @@ function Exporter (data, { fileName, bookId }) {
   Packer.toBuffer(doc).then((buffer) => {
     const fullName = fileName.includes('.docx') ? fileName : `${fileName}.docx`
     fs.writeFileSync(fullName, buffer)
+    if (Notification.isSupported()) {
+      const notify = new Notification({
+        title: i18n('File Exported'),
+        body: i18n('Your Plottr file was exported to a .docx file'),
+        silent: true,
+      })
+      notify.show()
+    }
     shell.showItemInFolder(fullName)
   })
 }

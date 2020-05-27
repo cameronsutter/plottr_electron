@@ -1,4 +1,4 @@
-const { app, dialog, shell } = require('electron')
+const { app, shell, Notification } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const log = require('electron-log')
@@ -42,7 +42,14 @@ function createErrorReport (userInfo, openWindowsStates) {
       log.warn(err)
       rollbar.warn(err)
     } else {
-      dialog.showMessageBoxSync({type: 'info', buttons: [i18n('ok')], message: i18n('Error Report created'), detail: i18n('Plottr created a file named plottr_error_report.txt in your Documents folder')})
+      if (Notification.isSupported()) {
+        const notify = new Notification({
+          title: i18n('Error Report created'),
+          body: i18n('Plottr created a file named plottr_error_report.txt in your Documents folder'),
+          silent: true,
+        })
+        notify.show()
+      }
       shell.showItemInFolder(fileName)
     }
   })

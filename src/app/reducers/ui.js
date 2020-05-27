@@ -37,7 +37,6 @@ export default function ui (state = defaultUI, action) {
 
     case ADD_CHARACTER_ATTRIBUTE:
       filter = {...state.characterFilter}
-      console.log('reducer', action)
       if (action.attribute.type == 'paragraph') return state
       filter[action.attribute.name] = []
       return Object.assign({}, state, {characterFilter: filter})

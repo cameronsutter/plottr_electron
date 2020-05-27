@@ -55,6 +55,8 @@ class FilterList extends Component {
   }
 
   renderFilterItem (item, type, attr) {
+    if (!item) return null
+
     var checked = 'unchecked'
     if (this.isChecked(type, item.id)) {
       checked = 'eye-open'
@@ -70,7 +72,8 @@ class FilterList extends Component {
     const { books } = this.props
 
     const renderedBooks = books.allIds.map(id => {
-      return this.renderFilterItem(books[id], 'book', 'title')
+      const book = books[id] || books[id.toString()]
+      return this.renderFilterItem(book, 'book', 'title')
     })
 
     let checked = 'unchecked'

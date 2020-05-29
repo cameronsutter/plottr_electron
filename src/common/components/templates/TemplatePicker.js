@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { shell } from 'electron'
+import { shell, remote } from 'electron'
 import Modal from 'react-modal'
 import i18n from 'format-message'
 import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
-import listTemplates from '../../utils/templates'
+import { listTemplates, listCustomTemplates, deleteTemplate } from '../../utils/templates'
 import CharacterTemplateDetails from './CharacterTemplateDetails'
 import PlotlineTemplateDetails from './PlotlineTemplateDetails'
+import cx from 'classnames'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -15,18 +16,38 @@ export default class TemplatePicker extends Component {
     super(props)
     this.state = {
       selectedId: null,
+      selectedType: null,
+      templates: listTemplates(props.type),
+      customTemplates: listCustomTemplates(props.type),
     }
-    this.templates = listTemplates(props.type)
   }
 
   componentDidMount () {
-    if (!this.templates.length) {
-      this.templates = listTemplates(this.props.type)
+    if (!this.state.templates.length) {
+      this.setState({templates: listTemplates(this.props.type)})
+    }
+    if (!this.state.customTemplates.length) {
+      this.setState({customTemplates: listCustomTemplates(this.props.type)})
     }
   }
 
   selectedTemplate = () => {
-    return this.templates.find(template => template.id == this.state.selectedId)
+    if (this.state.selectedType == 'custom') {
+      return this.state.customTemplates.find(template => template.id == this.state.selectedId)
+    }
+
+    if (this.state.selectedType == 'starter') {
+      return this.state.templates.find(template => template.id == this.state.selectedId)
+    }
+  }
+
+  deleteTemplate = (e, template) => {
+    e.stopPropagation()
+
+    if (confirm(i18n('Are you sure you want to delete {template}?', {template: template.name}))) {
+      deleteTemplate(template.id)
+      this.setState({customTemplates: listCustomTemplates(this.props.type)})
+    }
   }
 
   chooseTemplate = () => {
@@ -38,6 +59,19 @@ export default class TemplatePicker extends Component {
     if (!template.link) return null
 
     return <a className='template-picker__link' title={template.link} onClick={() => shell.openExternal(template.link)}><Glyphicon glyph='info-sign' /></a>
+  }
+
+  renderVersion (versionTimestamp) {
+    if (!versionTimestamp) return null
+
+    const version = new Date(versionTimestamp)
+    return i18n('Created on {version, date, medium} {version, time}', {version: version})
+  }
+
+  renderDelete (type, template) {
+    if (type != 'custom') return null
+
+    return <Button bsSize='small' onClick={e => this.deleteTemplate(e, template)}><Glyphicon glyph='trash'/></Button>
   }
 
   renderTemplateDetails () {
@@ -56,24 +90,28 @@ export default class TemplatePicker extends Component {
         break
     }
 
+    const subHeading = this.state.selectedType == 'starter' ? template.description : this.renderVersion(template.version)
+
     return <div className='panel panel-primary'>
       <div className='panel-heading'>
         <h3 className='panel-title'>{template.name}{this.renderLink(template)}</h3>
-        <p>{template.description}</p>
+        <p>{subHeading}</p>
       </div>
       {details}
     </div>
   }
 
-  renderTemplateList () {
+  renderTemplateList (list, type) {
     // modal but not open
     if (this.props.modal && !this.props.isOpen) return null
 
-    return this.templates.map(template => {
-      let klasses = 'list-group-item'
-      if (template.id == this.state.selectedId) klasses += ' selected'
-      return <li key={template.id} className={klasses} onClick={() => this.setState({selectedId: template.id})}>
+    const { selectedId, selectedType } = this.state
+
+    return list.map(template => {
+      let klasses = cx('list-group-item', {selected: selectedType == type && selectedId == template.id})
+      return <li key={template.id} className={klasses} onClick={() => this.setState({selectedId: template.id, selectedType: type})}>
         {template.name}
+        { this.renderDelete(type, template) }
       </li>
     })
   }
@@ -82,9 +120,13 @@ export default class TemplatePicker extends Component {
     return <div className='template-picker__dialog-wrapper'>
       <div className='template-picker__wrapper'>
         <div className='template-picker__list'>
-          <h1 className=''>{i18n('Templates')}</h1>
+          <h1 className=''>{i18n('My Templates')}</h1>
           <ul className='list-group'>
-            {this.renderTemplateList()}
+            {this.renderTemplateList(this.state.customTemplates, 'custom')}
+          </ul>
+          <h1 className=''>{i18n('Starter Templates')}</h1>
+          <ul className='list-group'>
+            {this.renderTemplateList(this.state.templates, 'starter')}
           </ul>
         </div>
         <div className='template-picker__details'>

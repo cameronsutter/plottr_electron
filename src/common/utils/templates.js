@@ -2,16 +2,26 @@ const Store = require('electron-store')
 
 const TEMPLATES_PATH = process.env.NODE_ENV == 'development' ? 'templates_dev' : 'templates'
 const templateStore = new Store({name: TEMPLATES_PATH})
+const CUSTOM_TEMPLATES_PATH = process.env.NODE_ENV == 'development' ? 'custom_templates_dev' : 'custom_templates'
+const customTemplateStore = new Store({name: CUSTOM_TEMPLATES_PATH})
 const TEMPLATES_ROOT = 'templates'
 
-export default function listTemplates (type) {
+export function listTemplates (type) {
   const templatesById = templateStore.get(TEMPLATES_ROOT)
   if (!templatesById) return []
   if (!type) return Object.values(templatesById)
 
-  const ids = Object.keys(templatesById)
-  return ids.reduce((acc, id) => {
-    if (templatesById[id].type === type) acc.push(templatesById[id])
-    return acc
-  }, [])
+  return Object.values(templatesById).filter(t => t.type == type)
+}
+
+export function listCustomTemplates (type) {
+  const templatesById = customTemplateStore.get(TEMPLATES_ROOT)
+  if (!templatesById) return []
+  if (!type) return Object.values(templatesById)
+
+  return Object.values(templatesById).filter(t => t.type == type)
+}
+
+export function deleteTemplate (id) {
+  customTemplateStore.delete(`${TEMPLATES_ROOT}.${id}`)
 }

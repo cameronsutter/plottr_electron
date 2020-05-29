@@ -8,8 +8,8 @@
   "Access to all the features": {
     "message": "Access to all the features"
   },
-  "Actions": {
-    "message": "Actions"
+  "Activate License": {
+    "message": "Activate License"
   },
   "Add": {
     "message": "Add"
@@ -32,8 +32,8 @@
   "After": {
     "message": "After"
   },
-  "Attached to": {
-    "message": "Attached to"
+  "Are you sure you want to delete {template}?": {
+    "message": "Are you sure you want to delete { template }?"
   },
   "Attributes": {
     "message": "Attributes"
@@ -76,9 +76,6 @@
   },
   "Buy Full Version": {
     "message": "Buy Full Version"
-  },
-  "Buy the Full Version": {
-    "message": "Buy the Full Version"
   },
   "Can I have a few more days?": {
     "message": "Can I have a few more days?"
@@ -173,6 +170,9 @@
   "Create unlimited story files": {
     "message": "Create unlimited story files"
   },
+  "Created on {version, date, medium} {version, time}": {
+    "message": "Created on { version, date, medium } { version, time }"
+  },
   "Creates a report to send me": {
     "message": "Creates a report to send me"
   },
@@ -194,6 +194,9 @@
   "Custom Attributes for Places": {
     "message": "Custom Attributes for Places"
   },
+  "Custom Template": {
+    "message": "Custom Template"
+  },
   "Dark Mode": {
     "message": "Dark Mode"
   },
@@ -205,6 +208,9 @@
   },
   "Description": {
     "message": "Description"
+  },
+  "Device ID": {
+    "message": "Device ID"
   },
   "Do you want to delete this book: { book }?": {
     "message": "Do you want to delete this book: { book }?"
@@ -233,6 +239,9 @@
   "Do you want to remove this image? It will NOT be deleted from your computer": {
     "message": "Do you want to remove this image? It will NOT be deleted from your computer"
   },
+  "Documentation": {
+    "message": "Documentation"
+  },
   "Don't worry, all your work is saved in plottr_trial.pltr in your Documents folder": {
     "message": "Don''t worry, all your work is saved in plottr_trial.pltr in your Documents folder"
   },
@@ -244,9 +253,6 @@
   },
   "End": {
     "message": "End"
-  },
-  "Enter License": {
-    "message": "Enter License"
   },
   "Enter a Customer Service Code": {
     "message": "Enter a Customer Service Code"
@@ -278,8 +284,14 @@
   "FAQ": {
     "message": "FAQ"
   },
+  "Facebook Support Group": {
+    "message": "Facebook Support Group"
+  },
   "File": {
     "message": "File"
+  },
+  "File Exported": {
+    "message": "File Exported"
   },
   "Filter": {
     "message": "Filter"
@@ -356,6 +368,9 @@
   "Keep your character sheets here": {
     "message": "Keep your character sheets here"
   },
+  "License Key": {
+    "message": "License Key"
+  },
   "License Verified. Plottr will start momentarily. Thanks for being patient!": {
     "message": "License Verified. Plottr will start momentarily. Thanks for being patient!"
   },
@@ -370,6 +385,9 @@
   },
   "Minimize": {
     "message": "Minimize"
+  },
+  "My Templates": {
+    "message": "My Templates"
   },
   "Name": {
     "message": "Name"
@@ -467,6 +485,9 @@
   "Please verify your license": {
     "message": "Please verify your license"
   },
+  "Plottr": {
+    "message": "Plottr"
+  },
   "Plottr Trial": {
     "message": "Plottr Trial"
   },
@@ -481,6 +502,9 @@
   },
   "Premise": {
     "message": "Premise"
+  },
+  "Project": {
+    "message": "Project"
   },
   "Purples": {
     "message": "Purples"
@@ -527,6 +551,9 @@
   "Save as": {
     "message": "Save as"
   },
+  "Save as Template": {
+    "message": "Save as Template"
+  },
   "Saving failed": {
     "message": "Saving failed"
   },
@@ -569,6 +596,9 @@
   "Start my Free Trial": {
     "message": "Start my Free Trial"
   },
+  "Starter Templates": {
+    "message": "Starter Templates"
+  },
   "Story line": {
     "message": "Story line"
   },
@@ -587,6 +617,9 @@
   "Tag": {
     "message": "Tag"
   },
+  "Tag Name": {
+    "message": "Tag Name"
+  },
   "Tags": {
     "message": "Tags"
   },
@@ -599,8 +632,8 @@
   "Take Screenshot": {
     "message": "Take Screenshot"
   },
-  "Templates": {
-    "message": "Templates"
+  "Template Saved": {
+    "message": "Template Saved"
   },
   "Thanks for trying Plottr": {
     "message": "Thanks for trying Plottr"
@@ -611,8 +644,11 @@
   "This is a plotline": {
     "message": "This is a plotline"
   },
-  "This is a scene or chapter. You can change it's name by clicking on it": {
-    "message": "This is a scene or chapter. You can change it''s name by clicking on it"
+  "This is a scene or chapter. You can change its name by clicking on it": {
+    "message": "This is a scene or chapter. You can change its name by clicking on it"
+  },
+  "This is your Device ID": {
+    "message": "This is your Device ID"
   },
   "Timeline": {
     "message": "Timeline"
@@ -653,6 +689,9 @@
   "View": {
     "message": "View"
   },
+  "View Device ID": {
+    "message": "View Device ID"
+  },
   "View License Key": {
     "message": "View License Key"
   },
@@ -686,8 +725,8 @@
   "Would you like to save before exiting?": {
     "message": "Would you like to save before exiting?"
   },
-  "You can change it's name or color by hovering over it (disabled for the tour)": {
-    "message": "You can change it''s name or color by hovering over it (disabled for the tour)"
+  "You can change its name or color by hovering over it (disabled for the tour)": {
+    "message": "You can change its name or color by hovering over it (disabled for the tour)"
   },
   "You can export everything to a Word document": {
     "message": "You can export everything to a Word document"
@@ -701,8 +740,14 @@
   "You'll have 30 days": {
     "message": "You''ll have 30 days"
   },
+  "Your Plottr file was exported to a .docx file": {
+    "message": "Your Plottr file was exported to a .docx file"
+  },
   "Your free trial has expired": {
     "message": "Your free trial has expired"
+  },
+  "Your template has been saved and is ready to use": {
+    "message": "Your template has been saved and is ready to use"
   },
   "Zoom": {
     "message": "Zoom"
@@ -811,12 +856,6 @@
   },
   "story line": {
     "message": "story line"
-  },
-  "tag name": {
-    "message": "tag name"
-  },
-  "title": {
-    "message": "title"
   },
   "yes, save!": {
     "message": "yes, save!"

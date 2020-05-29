@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as UIActions from 'actions/ui'
 import { Glyphicon } from 'react-bootstrap'
+import { FaKey } from 'react-icons/fa'
 import BookChooser from '../components/story/BookChooser'
 import i18n from 'format-message'
 import cx from 'classnames'
@@ -20,17 +21,24 @@ class Navigation extends Component {
     this.setState({showHistory: !this.state.showHistory})
   }
 
+  renderTrialLinks () {
+    if (!TRIALMODE) return null
+
+    return <ul className='nav navbar-nav navbar-right' style={{marginRight: '15px'}}>
+      <li>
+        <a href='#' style={{color: 'hsl(210, 83%, 53%)'}} onClick={() => ipcRenderer.send('open-buy-window')} ><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</a>
+      </li>
+      <li>
+        <a href='#' style={{color: 'hsl(210, 83%, 53%)'}} onClick={() => ipcRenderer.send('verify-from-expired')} ><FaKey/> {i18n('Activate License')}</a>
+      </li>
+    </ul>
+  }
+
   render () {
     if (this.state.editing) {
       window.SCROLLWITHKEYS = false
     } else {
       window.SCROLLWITHKEYS = true
-    }
-    let buyItem = null
-    if (TRIALMODE) {
-      buyItem = <li>
-        <a href='#' style={{color: 'hsl(210, 83%, 53%)'}} onClick={() => ipcRenderer.send('open-buy-window')} ><Glyphicon glyph='shopping-cart' /> {i18n('Buy Full Version')}</a>
-      </li>
     }
     let klasses = cx('navbar', 'navbar-default', 'navbar-fixed-top', {'navbar-inverse': this.props.ui.darkMode})
     return <nav className={klasses} role='navigation'>
@@ -68,8 +76,8 @@ class Navigation extends Component {
           <li className={this.isActive('tags')}>
             <a href='#' onClick={() => this.props.actions.changeCurrentView('tags')} >{i18n('Tags')}</a>
           </li>
-          { buyItem }
         </ul>
+        { this.renderTrialLinks() }
       </div>
     </nav>
   }

@@ -12,6 +12,8 @@ i18n.setup({
   locale: app.getLocale() || 'en'
 })
 
+document.title = i18n('Plottr')
+
 const envPath = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: envPath})
 let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'

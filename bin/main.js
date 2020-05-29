@@ -628,7 +628,7 @@ function openAboutWindow () {
 function openVerifyWindow () {
   dontquit = true
   const verifyFile = path.join(filePrefix, 'verify.html')
-  verifyWindow = new BrowserWindow({frame: false, height: 425, show: false, webPreferences: {nodeIntegration: true}})
+  verifyWindow = new BrowserWindow({height: 425, show: false, webPreferences: {nodeIntegration: true}})
   verifyWindow.loadURL(verifyFile)
   if (SETTINGS.get('forceDevTools')) {
     verifyWindow.openDevTools()
@@ -764,10 +764,10 @@ function buildPlottrMenu () {
       label: i18n('{days} days remaining', {days: DAYS_LEFT}),
       enabled: false,
     }, {
-      label: i18n('Buy the Full Version') + '...',
+      label: i18n('Buy Full Version') + '...',
       click: openBuyWindow,
     }, {
-      label: i18n('Enter License') + '...',
+      label: i18n('Activate License') + '...',
       click: openVerifyWindow,
     }, {
       type: 'separator',

@@ -12,6 +12,8 @@ i18n.setup({
   locale: app.getLocale() || 'en'
 })
 
+document.title = i18n('Plottr')
+
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
 var Rollbar = require('rollbar')

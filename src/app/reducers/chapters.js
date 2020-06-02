@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { partition } from 'lodash'
 import { ADD_SCENE, ADD_LINES_FROM_TEMPLATE, EDIT_SCENE_TITLE, REORDER_SCENES,
   DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { chapter } from '../../../shared/initialState'
@@ -20,18 +20,8 @@ export default function chapters (state = initialState, action) {
       }]
 
     case ADD_LINES_FROM_TEMPLATE:
-      if (!action.chapters) return state
-      if (!action.chapters.length) return state
-      const [bookChapters, notBookChapters] = _.partition(state, ch => ch.bookId == action.bookId)
-      let newState = notBookChapters
-      let moarChapters = []
-      if (bookChapters.length < 2) {
-        moarChapters = positionReset(action.chapters)
-      } else {
-        moarChapters = positionReset([...bookChapters, ...action.chapters])
-      }
-      newState = newState.concat(moarChapters)
-      return newState
+      const [tBook, tNotBook] = partition(state, ch => ch.bookId == action.bookId)
+      return [...tNotBook, ...action.chapters]
 
     case EDIT_SCENE_TITLE:
       return state.map(ch =>
@@ -39,10 +29,10 @@ export default function chapters (state = initialState, action) {
       )
 
     case DELETE_SCENE:
-      const [book, notBook] = _.partition(state, ch => ch.bookId == action.bookId)
+      const [delBook, delNotBook] = partition(state, ch => ch.bookId == action.bookId)
       return [
-        ...notBook,
-        ...positionReset(book.filter(ch => ch.id != action.id)), // assumes they are sorted
+        ...delNotBook,
+        ...positionReset(delBook.filter(ch => ch.id != action.id)), // assumes they are sorted
       ]
 
     case REORDER_SCENES:

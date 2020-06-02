@@ -10,7 +10,8 @@ import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { nextId } from '../../store/newIds'
-import { card, chapter as defaultChapter } from '../../../../shared/initialState'
+import { nextColor } from 'store/lineColors'
+import { card, chapter as defaultChapter, line as defaultLine } from '../../../../shared/initialState'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 
@@ -19,127 +20,183 @@ class AddLineRow extends Component {
     hovering: false,
     showTemplatePicker: false,
   }
+  allChapters = []
+  allLines = []
+  allCards = []
+  nextChapterId = null
+  nextLineId = null
+  nextCardId = null
+  newLineMapping = {}
+  newChapterOffset = 0
 
-  createChapters = (templateName, templateChapters, currentChapters, cardId, newLineId, bookId) => {
-    let newChapters = []
-    let newCards = []
-    let newLine = null
-    const nextChapterId = nextId(currentChapters)
-    if (!templateChapters) return {newChapters, newCards, cardId, newLine}
-    const allAreAuto = templateChapters.every(ch => ch.title == 'auto')
-    const allChapters = _.sortBy(templateChapters, 'position').map(ch => { return {...ch, bookId: bookId}})
-
-    if (currentChapters.length >= templateChapters.length) {
-      if (allAreAuto) return {newChapters, newCards, cardId, newLine}
-
-      // chapter titles are useful & they don't need to be chapters
-      // add them as cards
-      newCards = allChapters.map((ch, idx) => {
-        return Object.assign({}, card, {
-          title: ch.title,
-          id: cardId++,
-          lineId: newLineId,
-          chapterId: currentChapters[idx].id,
-        })
-      })
-      newLine = { id: newLineId, title: templateName, bookId: bookId }
-    } else if (currentChapters.length) {
-      // some current chapters, but not enough
-      if (allAreAuto) {
-        // take enough to fill up how many we need
-        newChapters = allChapters.slice(currentChapters.length).map((ch, idx) => {
-          // set ids
-          return {...ch, id: nextChapterId + idx, bookId: bookId}
-        })
-      } else {
-        // add them to the end
-        newChapters = allChapters.map((ch, idx) => { return {...ch, id: nextChapterId + idx, bookId: bookId}})
-      }
-    } else {
-      // no current chapters
-      newChapters = allChapters
-    }
-    return {newChapters, newCards, cardId, newLine}
+  getLast = (list) => {
+    return list[list.length - 1]
   }
 
-  createCards = (cards, newChapters, currentChapters, cardId, lineId) => {
-    let moreCards = []
-    let moreChapters = []
-    if (!cards.length) return [moreCards, moreChapters]
+  getPositionById = (list) => {
+    return list.reduce((acc, item) => {
+      acc[item.id] = item.position
+      return acc
+    }, {})
+  }
 
-    let allChapters = []
+  addBlankLine = (templateName, bookId) => {
+    const newLine = Object.assign({}, defaultLine, {title: templateName, bookId: bookId})
+    this.addLines([newLine], bookId, false)
+  }
 
-    if (newChapters.length >= cards.length) {
-      // use newChapters' chapterId
-      allChapters = newChapters
-    } else {
-      // the chapters are 'auto', replace chapterIds
-      allChapters = [...currentChapters, ...newChapters]
-    }
+  addChapters = (templateChapters, bookId, templateName) => {
+    if (!templateChapters) return
+    templateChapters = _.sortBy(templateChapters, 'position')
 
-    if (allChapters.length < cards.length) {
-      const chapterId = nextId(allChapters)
-      // have to create more chapters
-      for (let i = allChapters.length; i < cards.length; i++) {
-        moreChapters.push(Object.assign({}, defaultChapter, {id: chapterId + i}))
-      }
-      allChapters = [...allChapters, ...moreChapters]
-    }
+    const allAreAuto = templateChapters.every(ch => ch.title == 'auto')
 
-    moreCards = cards.map((c, idx) => {
-      return Object.assign({}, card, {
-        title: c.title,
-        description: c.description,
-        id: cardId++,
-        lineId: lineId,
-        chapterId: c.chapterId,
+    // situations
+    // 1. there are < 2 current chapters
+    // 2. there are > 2 current chapters
+    //    a. template has allAuto chapters (doesn't care about names)
+    //        1. current are less than how many the template needs
+    //    b. template has chapter titles (cares about names)
+    //        1. current are less than how many the template needs
+    //        2. current are enough (or more) than how many the template needs
+
+    if (this.allChapters.length < 2) {
+      // replace the current chapter with chapters from template
+      this.allChapters = templateChapters.map(tCh => {
+        const id = this.nextChapterId
+        ++this.nextChapterId
+        return {
+          ...tCh,
+          id: id,
+          bookId: bookId,
+        }
       })
+    } else {
+      if (allAreAuto) {
+        if (this.allChapters.length < templateChapters.length) {
+          // add more auto chapters
+          templateChapters.slice(this.allChapters.length).forEach(tCh => {
+            const id = this.nextChapterId
+            ++this.nextChapterId
+            const last = this.getLast(this.allChapters)
+            const newChapter = {
+              ...tCh,
+              id: id,
+              bookId: bookId,
+              position: last.position + 1,
+            }
+            this.allChapters.push(newChapter)
+          })
+        }
+      } else {
+        if (this.allChapters.length < templateChapters.length) {
+          // add them to the end
+          this.newChapterOffset = this.allChapters.length
+          templateChapters.forEach(tCh => {
+            const id = this.nextChapterId
+            ++this.nextChapterId
+            const last = this.getLast(this.allChapters)
+            const newChapter = {
+              ...tCh,
+              id: id,
+              bookId: bookId,
+              position: last.position + 1,
+            }
+            this.allChapters.push(newChapter)
+          })
+        } else {
+          // add a new line and add chapters as cards
+          this.addBlankLine(templateName, bookId)
+          let thisLine = this.getLast(this.allLines)
+
+          templateChapters.forEach(tCh => {
+            const id = this.nextCardId
+            ++this.nextCardId
+            const newCard = Object.assign({}, card, {
+              id: id,
+              bookId: bookId,
+              lineId: thisLine.id,
+              chapterId: this.allChapters[tCh.position].id,
+              title: tCh.title,
+            })
+            this.allCards.push(newCard)
+          })
+        }
+      }
+    }
+  }
+
+  addLines = (templateLines, bookId, remember) => {
+    if (!templateLines) return
+    templateLines = _.sortBy(templateLines, 'position')
+
+    templateLines.forEach(tL => {
+      const id = this.nextLineId
+      if (remember) this.newLineMapping[tL.id] = id // remember old line id -> new line id
+      const lastLine = this.getLast(this.allLines)
+      const color = nextColor(this.allLines.length)
+      const newLine = {
+        ...tL,
+        id: id,
+        bookId: bookId,
+        position: lastLine.position + 1 + tL.position,
+        color: color,
+      }
+      this.allLines.push(newLine)
+      ++this.nextLineId
     })
-    return [moreCards, moreChapters, cardId]
+  }
+
+  addCards = (templateCards, templateChapters, bookId, templateName) => {
+    if (!templateCards) return
+
+    const chaptersPositionById = this.getPositionById(templateChapters)
+    let useLines = true
+    let lineId = null
+
+    // if the template doesn't have any lines, add a new one
+    if (!Object.keys(this.newLineMapping).length) {
+      useLines = false
+      this.addBlankLine(templateName, bookId)
+      lineId = this.getLast(this.allLines).id
+    }
+
+    templateCards.forEach(tC => {
+      const id = this.nextCardId
+      lineId = useLines ? this.newLineMapping[tC.lineId] : lineId
+      const chapterPosition = chaptersPositionById[tC.chapterId]
+      const chapterId = this.allChapters[chapterPosition + this.newChapterOffset].id
+      const newCard = {
+        ...tC,
+        id: id,
+        bookId: bookId,
+        chapterId: chapterId,
+        lineId: lineId,
+      }
+      this.allCards.push(newCard)
+      ++this.nextCardId
+    })
   }
 
   handleChooseTemplate = (template) => {
     // NOTE: doesn't work for series lines
     const { ui, actions } = this.props
     const templateData = template.templateData
-    let newLineId = nextId(this.props.lines)
-    let newCardId = nextId(this.props.cards)
     let bookId = ui.currentTimeline
-    let cards = []
-    let lines = []
-    let { newChapters, newCards, cardId, newLine } = this.createChapters(template.name, templateData.chapters, this.props.chapters, newCardId, newLineId, bookId)
-    if (newCards.length) cards = cards.concat(newCards)
-    if (newLine) lines.push(newLine)
-    newCardId = cardId
 
-    if (templateData.lines) {
-      const templateLines = _.sortBy(templateData.lines, 'position').map(l => {
-        const thisLineId = ++newLineId
-        if (templateData.cards) {
-          const [templateCards, moarChapters, moarCardId] = this.createCards(_.sortBy(templateData.cards.filter(c => c.lineId == l.id), 'id'), newChapters, this.props.chapters, newCardId, thisLineId)
-          newCardId = moarCardId
-          cards = cards.concat(templateCards)
-          if (moarChapters) newChapters = newChapters.concat(moarChapters)
-        }
-        return {
-          id: thisLineId,
-          title: `${template.name} - ${l.title}`,
-          bookId: bookId,
-        }
-      })
-      lines = lines.concat(templateLines)
-    } else if (templateData.cards) {
-      const nextLineId = ++newLineId
-      const [cardCards, moreChapters] = this.createCards(_.sortBy(templateData.cards, 'id'), newChapters, this.props.chapters, newCardId, nextLineId)
-      cards = cards.concat(cardCards)
-      if (moreChapters) newChapters = newChapters.concat(moreChapters)
-      lines.push({
-        id: nextLineId,
-        title: template.name,
-        bookId: bookId,
-      })
-    }
-    actions.addLinesFromTemplate(cards, lines, newChapters, bookId, template.name)
+    this.nextLineId = nextId(this.props.lines)
+    this.nextCardId = nextId(this.props.cards)
+    this.nextChapterId = nextId(this.props.chapters)
+
+    this.allChapters = this.props.chapters
+    this.allLines = this.props.lines
+    this.allCards = this.props.cards
+
+    this.addChapters(templateData.chapters, bookId, template.name)
+    this.addLines(templateData.lines, bookId, true)
+    this.addCards(templateData.cards, templateData.chapters, bookId, template.name)
+
+    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, bookId, template.name)
     this.setState({showTemplatePicker: false})
   }
 

@@ -1,3 +1,4 @@
+import { partition } from 'lodash'
 import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE,
   EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { line } from '../../../shared/initialState'
@@ -21,17 +22,8 @@ export default function lines (state = initialState, action) {
       }, ...state]
 
     case ADD_LINES_FROM_TEMPLATE:
-      const position = nextPosition(state)
-      const length = state.filter(l => l.bookId == action.bookId).length
-      return [...action.lines.map((l, idx) => {
-        return {
-          id: l.id,
-          title: l.title,
-          bookId: action.bookId,
-          color: nextColor(length + idx),
-          position: position + idx,
-        }
-      }), ...state]
+      const [book, notBook] = partition(state, l => l.bookId == action.bookId)
+      return [...notBook, ...action.lines]
 
     case EDIT_LINE_TITLE:
       return state.map(l =>

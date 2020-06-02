@@ -18,6 +18,7 @@ import CustomAttrItem from 'components/customAttrItem'
 import Image from 'components/images/Image'
 import i18n from 'format-message'
 import { placeCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
+import ErrorBoundary from '../../containers/ErrorBoundary'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -220,7 +221,7 @@ class PlaceListView extends Component {
       pl.id === this.state.placeDetailId
     )
     if (place) {
-      return <PlaceView key={`place-${place.id}`} place={place} />
+      return <ErrorBoundary><PlaceView key={`place-${place.id}`} place={place} /></ErrorBoundary>
     } else {
       return null
     }

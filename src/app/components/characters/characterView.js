@@ -307,11 +307,14 @@ class CharacterView extends Component {
     const { character, ui, customAttributes } = this.props
     const customAttrNotes = customAttributes.map((attr, idx) => {
       const { name, type } = attr
-      let desc = <dd>{character[name]}</dd>
+      let desc
+      console.log(name, type, character[name])
       if (type == 'paragraph') {
         desc = <dd>
           <RichText description={character[name]} darkMode={ui.darkMode} />
         </dd>
+      } else {
+        desc = <dd>{character[name]}</dd>
       }
       return <dl key={idx} className='dl-horizontal'>
         <dt>{name}</dt>
@@ -320,11 +323,13 @@ class CharacterView extends Component {
     })
     const templateNotes = character.templates.flatMap(t => {
       return t.attributes.map(attr => {
-        let val = <dd>{attr.value}</dd>
+        let val
         if (attr.type == 'paragraph') {
           val = <dd>
             <RichText description={attr.value} darkMode={ui.darkMode} />
           </dd>
+        } else {
+          val = <dd>{attr.value}</dd>
         }
         return <dl key={attr.name} className='dl-horizontal'>
           <dt>{attr.name}</dt>

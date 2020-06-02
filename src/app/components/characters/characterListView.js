@@ -19,6 +19,7 @@ import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import Image from '../images/Image'
 import cx from 'classnames'
 import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
+import ErrorBoundary from '../../containers/ErrorBoundary'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -231,7 +232,7 @@ class CharacterListView extends Component {
       char.id === this.state.characterDetailId
     )
     if (character) {
-      return <CharacterView key={`character-${character.id}`} character={character} />
+      return <ErrorBoundary><CharacterView key={`character-${character.id}`} character={character} /></ErrorBoundary>
     } else {
       return null
     }

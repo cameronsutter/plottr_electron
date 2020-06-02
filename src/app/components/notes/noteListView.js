@@ -11,6 +11,7 @@ import FilterList from 'components/filterList'
 import Image from 'components/images/Image'
 import i18n from 'format-message'
 import cx from 'classnames'
+import ErrorBoundary from '../../containers/ErrorBoundary'
 
 class NoteListView extends Component {
   constructor (props) {
@@ -131,7 +132,7 @@ class NoteListView extends Component {
       n.id === this.state.noteDetailId
     )
     if (!note) note = this.state.viewableNotes[0]
-    return <NoteView key={`note-${note.id}`} note={note} />
+    return <ErrorBoundary><NoteView key={`note-${note.id}`} note={note} /></ErrorBoundary>
   }
 
   renderSubNav () {

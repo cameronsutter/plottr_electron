@@ -32,9 +32,7 @@ class CustomTemplateManager {
 
     // only the chapters in book 1
     const bookChapters = data.chapters.filter(ch => ch.bookId == 1)
-    if (bookChapters.some(ch => ch.title != 'auto')) {
-      plTemplate.templateData.chapters = bookChapters
-    }
+    plTemplate.templateData.chapters = bookChapters
 
     // only the lines in book 1
     // only if there are more than 1 line

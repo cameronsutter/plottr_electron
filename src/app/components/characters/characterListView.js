@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { ipcRenderer, remote } from 'electron'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
@@ -20,8 +21,10 @@ import Image from '../images/Image'
 import cx from 'classnames'
 import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
 import ErrorBoundary from '../../containers/ErrorBoundary'
+import { FaSave } from 'react-icons/fa'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
+const win = remote.getCurrentWindow()
 
 class CharacterListView extends Component {
   constructor (props) {
@@ -117,6 +120,10 @@ class CharacterListView extends Component {
 
   closeDialog = () => {
     this.setState({dialogOpen: false})
+  }
+
+  startSaveAsTemplate = () => {
+    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start') // sends this message to this same process
   }
 
   handleCreateNewCharacter = () => {
@@ -246,8 +253,11 @@ class CharacterListView extends Component {
     }
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
       <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
-        <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
+        <Button className='pull-right' onClick={this.closeDialog}>
           {i18n('Close')}
+        </Button>
+        <Button className='pull-right character-list__custom-attributes__save-as-template' onClick={this.startSaveAsTemplate}>
+          <FaSave className='svg-save-template'/> {i18n('Save as Template')}
         </Button>
         <h3>{i18n('Custom Attributes for Characters')}</h3>
         <p className='sub-header'>{i18n('Choose what you want to track about your characters')}</p>

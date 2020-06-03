@@ -14,6 +14,7 @@ import { computeZoom } from 'helpers/zoom'
 import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
 import { FunSpinner } from '../Spinner'
+import { FaSave } from 'react-icons/fa'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -241,6 +242,10 @@ class TimelineWrapper extends Component {
     }
   }
 
+  startSaveAsTemplate = () => {
+    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start') // sends this message to this same process
+  }
+
   // ///////////////
   //  rendering   //
   // //////////////
@@ -294,6 +299,9 @@ class TimelineWrapper extends Component {
               <Button onClick={this.scrollMiddle} >{i18n('Middle')}</Button>
               <Button onClick={this.scrollEnd} >{i18n('End')}</Button>
             </ButtonGroup>
+          </NavItem>
+          <NavItem>
+            <Button bsSize='small' onClick={this.startSaveAsTemplate}><FaSave className='svg-save-template'/> {i18n('Save as Template')}</Button>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>{i18n('Export')}: </span>

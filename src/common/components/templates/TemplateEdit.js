@@ -1,31 +1,43 @@
 import { ipcRenderer, remote } from 'electron'
-const win = remote.getCurrentWindow()
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Modal, Form, FormGroup, Col, ControlLabel, FormControl, ButtonToolbar, Button, Checkbox } from 'react-bootstrap'
+import { Modal, Form, FormGroup, Col, ControlLabel, FormControl, ButtonToolbar, Button, Checkbox, Glyphicon, Collapse } from 'react-bootstrap'
 import i18n from 'format-message'
 import cx from 'classnames'
 
+const win = remote.getCurrentWindow()
+
 class TemplateEdit extends Component {
-  state = {includeCharacter: true}
+  constructor (props) {
+    super(props)
+    this.state = {
+      includeCharacter: props.createCharacterToo,
+      includePlotline: true,
+      showDetails: false,
+    }
+  }
 
   saveEdit = () => {
-    const plName = findDOMNode(this.refs.plName).value
-    const plDescription = findDOMNode(this.refs.plDescription).value
-    const plLink = findDOMNode(this.refs.plLink).value
+    let plotline = {}
+    let character = {}
+    const includePlotline = this.state.includePlotline
+    const includeCharacter = this.state.includeCharacter
 
-    const plotline = {
-      name: plName,
-      description: plDescription,
-      link: plLink,
+    if (includePlotline) {
+      const plName = findDOMNode(this.refs.plName).value
+      const plDescription = findDOMNode(this.refs.plDescription).value
+      const plLink = findDOMNode(this.refs.plLink).value
+
+      plotline = {
+        name: plName,
+        description: plDescription,
+        link: plLink,
+      }
     }
 
-    let character = {}
-
-    const includeCharacter = this.state.includeCharacter
     if (includeCharacter) {
       const chName = findDOMNode(this.refs.chName).value
       const chDescription = findDOMNode(this.refs.chDescription).value
@@ -38,12 +50,16 @@ class TemplateEdit extends Component {
       }
     }
 
-    ipcRenderer.send('save-as-template-finish', win.id, { plotline, includeCharacter, character })
+    ipcRenderer.send('save-as-template-finish', win.id, { includePlotline, includeCharacter, plotline, character })
     this.props.close()
   }
 
   toggleCharacter = () => {
     this.setState({includeCharacter: !this.state.includeCharacter})
+  }
+
+  togglePlotline = () => {
+    this.setState({includePlotline: !this.state.includePlotline})
   }
 
   renderCharacterTemplate () {
@@ -55,7 +71,7 @@ class TemplateEdit extends Component {
           <span className='lead'>{i18n('Character Template')}</span>
         </Col>
         <Col sm={6}>
-          <Checkbox checked={this.state.includeCharacter} onChange={this.toggleCharacter} ref='characterToo'>
+          <Checkbox checked={this.state.includeCharacter} onChange={this.toggleCharacter}>
             {i18n('Save Character Template')}
           </Checkbox>
         </Col>
@@ -97,8 +113,13 @@ class TemplateEdit extends Component {
   renderBody () {
     return <Form horizontal>
       <FormGroup>
-        <Col sm={12}>
+        <Col sm={6}>
           <span className='lead'>{i18n('Plotline Template')}</span>
+        </Col>
+        <Col sm={6}>
+          <Checkbox checked={this.state.includePlotline} onChange={this.togglePlotline}>
+            {i18n('Save Plotline Template')}
+          </Checkbox>
         </Col>
       </FormGroup>
       <FormGroup>
@@ -106,7 +127,7 @@ class TemplateEdit extends Component {
           {i18n('Name')}
         </Col>
         <Col sm={8}>
-          <FormControl type='text' ref='plName' defaultValue={i18n('Custom Template')} />
+          <FormControl disabled={!this.state.includePlotline} type='text' ref='plName' defaultValue={i18n('Custom Template')} />
         </Col>
       </FormGroup>
       <FormGroup>
@@ -114,7 +135,7 @@ class TemplateEdit extends Component {
           {i18n('Description')}
         </Col>
         <Col sm={8}>
-          <FormControl type='text' ref='plDescription' defaultValue={''} />
+          <FormControl disabled={!this.state.includePlotline} type='text' ref='plDescription' defaultValue={''} />
         </Col>
       </FormGroup>
       <FormGroup>
@@ -122,7 +143,7 @@ class TemplateEdit extends Component {
           {i18n('Link')}
         </Col>
         <Col sm={8}>
-          <FormControl type='text' ref='plLink' defaultValue={''} />
+          <FormControl disabled={!this.state.includePlotline} type='text' ref='plLink' defaultValue={''} />
         </Col>
       </FormGroup>
       { this.renderCharacterTemplate() }
@@ -131,6 +152,18 @@ class TemplateEdit extends Component {
 
   render () {
     return <Modal show={true} onHide={this.props.close} dialogClassName={cx('book-dialog', {darkmode: this.props.ui.darkMode})}>
+      <Modal.Header closeButton>
+        <Modal.Title>{i18n('Custom Template')}</Modal.Title>
+        <p className='text-primary' style={{cursor: 'pointer'}} onClick={() => this.setState({showDetails: !this.state.showDetails})}>
+          {i18n('What gets saved?')} <Glyphicon glyph={this.state.showDetails ? 'chevron-down' : 'chevron-right'}/>
+        </p>
+        <Collapse in={this.state.showDetails}>
+          <ul>
+            <li><p>{i18n('Plotline templates: the whole timeline just as you have it.')}</p></li>
+            <li><p>{i18n('Character templates: custom attributes and their types.')}</p></li>
+          </ul>
+        </Collapse>
+      </Modal.Header>
       <Modal.Body>
         { this.renderBody() }
       </Modal.Body>
@@ -143,6 +176,7 @@ class TemplateEdit extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     ui: PropTypes.object.isRequired,
+    createCharacterToo: PropTypes.bool.isRequired,
   }
 }
 

@@ -11,63 +11,65 @@ const TEMPLATES_ROOT = 'templates'
 
 class CustomTemplateManager {
 
-  addNew = (pltrData, { plotline, includeCharacter, character }) => {
+  addNew = (pltrData, { includePlotline, includeCharacter, plotline, character }) => {
     const data = cloneDeep(pltrData)
 
     // //
     // Create the plotline template
     // //
-    let plId = this.makeNewId('pl')
+    if (includePlotline) {
 
-    let plTemplate = {
-      id: plId,
-      type: 'plotlines',
-      name: plotline.name,
-      description: plotline.description,
-      link: plotline.link,
-      templateData: {}
-    }
+      let plId = this.makeNewId('pl')
 
-    // only the chapters in book 1
-    const bookChapters = data.chapters.filter(ch => ch.bookId == 1)
-    plTemplate.templateData.chapters = bookChapters
+      let plTemplate = {
+        id: plId,
+        type: 'plotlines',
+        name: plotline.name,
+        description: plotline.description,
+        link: plotline.link,
+        templateData: {}
+      }
 
-    // only the lines in book 1
-    // only if there are more than 1 line
-    const bookLines = data.lines.filter(l => l.bookId == 1)
-    if (bookLines.length > 1) {
-      plTemplate.templateData.lines = bookLines
-    }
+      // only the chapters in book 1
+      const bookChapters = data.chapters.filter(ch => ch.bookId == 1)
+      plTemplate.templateData.chapters = bookChapters
 
-    // only cards in bookChapters
-    // create new ids for the cards based on the chapter's position (for each line)
-    // because that's how the template picker needs cards sorted
-    if (data.cards.length) {
-      const chapterIds = bookChapters.map(ch => ch.id)
-      const sortedChapters = sortBy(bookChapters, 'position')
-      const sortedCards = []
+      // only the lines in book 1
+      // only if there are more than 1 line
+      const bookLines = data.lines.filter(l => l.bookId == 1)
+      if (bookLines.length > 1) {
+        plTemplate.templateData.lines = bookLines
+      }
 
-      bookLines.forEach((l, idx) => {
-        const firstId = idx + 10
-        const bookCardsByChapterId = data.cards.reduce((acc, card) => {
-          if (chapterIds.includes(card.chapterId) && card.lineId == l.id) {
-            acc[card.chapterId] = card
-          }
-          return acc
-        }, {})
-        sortedChapters.forEach((ch, jdx) => {
-          if (bookCardsByChapterId[ch.id]) {
-            let card = bookCardsByChapterId[ch.id]
-            card.id = (jdx + 1) * firstId
-            sortedCards.push(card)
-          }
+      // only cards in bookChapters
+      // create new ids for the cards based on the chapter's position (for each line)
+      // because that's how the template picker needs cards sorted
+      if (data.cards.length) {
+        const chapterIds = bookChapters.map(ch => ch.id)
+        const sortedChapters = sortBy(bookChapters, 'position')
+        const sortedCards = []
+
+        bookLines.forEach((l, idx) => {
+          const firstId = idx + 10
+          const bookCardsByChapterId = data.cards.reduce((acc, card) => {
+            if (chapterIds.includes(card.chapterId) && card.lineId == l.id) {
+              acc[card.chapterId] = card
+            }
+            return acc
+          }, {})
+          sortedChapters.forEach((ch, jdx) => {
+            if (bookCardsByChapterId[ch.id]) {
+              let card = bookCardsByChapterId[ch.id]
+              card.id = (jdx + 1) * firstId
+              sortedCards.push(card)
+            }
+          })
         })
-      })
 
-      plTemplate.templateData.cards = sortedCards
+        plTemplate.templateData.cards = sortedCards
+      }
+      templateStore.set(`${TEMPLATES_ROOT}.${plId}`, plTemplate)
     }
-    templateStore.set(`${TEMPLATES_ROOT}.${plId}`, plTemplate)
-
 
     // //
     // Create the character template

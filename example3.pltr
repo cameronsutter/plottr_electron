@@ -2,10 +2,11 @@
   "ui": {
     "characterFilter": {
       "In possession of fortune": [],
-      "Married": []
+      "Married": [],
+      "age": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -23,7 +24,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.5.21"
+    "version": "2020.5.28"
   },
   "places": [
     {
@@ -740,6 +741,15 @@
       "imageId": null,
       "bookIds": [
         1
+      ],
+      "age": [
+        {
+          "children": [
+            {
+              "text": "muddy brown"
+            }
+          ]
+        }
       ]
     },
     {
@@ -9710,6 +9720,10 @@
       {
         "name": "Married",
         "type": "text"
+      },
+      {
+        "name": "age",
+        "type": "paragraph"
       }
     ],
     "places": [
@@ -10018,7 +10032,7 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1590177597469,
+      "lastEdited": 1591044590359,
       "templates": [],
       "imageId": null,
       "bookIds": []

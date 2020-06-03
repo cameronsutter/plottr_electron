@@ -61,13 +61,6 @@ export default class TemplatePicker extends Component {
     return <a className='template-picker__link' title={template.link} onClick={() => shell.openExternal(template.link)}><Glyphicon glyph='info-sign' /></a>
   }
 
-  renderVersion (versionTimestamp) {
-    if (!versionTimestamp) return null
-
-    const version = new Date(versionTimestamp)
-    return i18n('Created on {version, date, medium} {version, time}', {version: version})
-  }
-
   renderDelete (type, template) {
     if (type != 'custom') return null
 
@@ -90,12 +83,10 @@ export default class TemplatePicker extends Component {
         break
     }
 
-    const subHeading = this.state.selectedType == 'starter' ? template.description : this.renderVersion(template.version)
-
     return <div className='panel panel-primary'>
       <div className='panel-heading'>
         <h3 className='panel-title'>{template.name}{this.renderLink(template)}</h3>
-        <p>{subHeading}</p>
+        <p>{template.description}</p>
       </div>
       {details}
     </div>

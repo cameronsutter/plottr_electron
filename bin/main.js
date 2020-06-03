@@ -191,6 +191,13 @@ ipcMain.on('fetch-state', function (event, id) {
   })
 })
 
+ipcMain.on('save-as-template-finish', (event, id, options) => {
+  let winObj = windows.find(w => w.id == id)
+  if (winObj) {
+    CustomTemplateManager.addNew(winObj.state, options)
+  }
+})
+
 ipcMain.on('reload-window', function (event, id, state) {
   let winObj = _.find(windows, {id: id})
   if (winObj) {
@@ -905,7 +912,7 @@ function buildFileMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = windows.find(w => w.id == win.id)
       if (winObj) {
-        CustomTemplateManager.addNew(winObj.state)
+        win.webContents.send('save-as-template-start')
       }
     }
   }, {

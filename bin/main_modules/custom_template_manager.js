@@ -11,11 +11,8 @@ const TEMPLATES_ROOT = 'templates'
 
 class CustomTemplateManager {
 
-  addNew = (pltrData) => {
+  addNew = (pltrData, { plotline, includeCharacter, character }) => {
     const data = cloneDeep(pltrData)
-    const book1 = data.books['1'] || data.books[1]
-    const templateName = book1.title || data.series.name || i18n('Custom Template')
-    const versionStamp = new Date().getTime()
 
     // //
     // Create the plotline template
@@ -25,8 +22,9 @@ class CustomTemplateManager {
     let plTemplate = {
       id: plId,
       type: 'plotlines',
-      name: templateName,
-      version: versionStamp,
+      name: plotline.name,
+      description: plotline.description,
+      link: plotline.link,
       templateData: {}
     }
 
@@ -74,13 +72,14 @@ class CustomTemplateManager {
     // //
     // Create the character template
     // //
-    if (data.customAttributes.characters.length) {
+    if (includeCharacter && data.customAttributes.characters.length) {
       let chId = this.makeNewId('ch')
       const chTemplate = {
         id: chId,
         type: 'characters',
-        name: templateName,
-        version: versionStamp,
+        name: character.name,
+        description: character.description,
+        link: character.link,
         attributes: data.customAttributes.characters,
       }
       templateStore.set(`${TEMPLATES_ROOT}.${chId}`, chTemplate)
@@ -89,7 +88,6 @@ class CustomTemplateManager {
     if (Notification.isSupported()) {
       const notify = new Notification({
         title: i18n('Template Saved'),
-        subtitle: templateName,
         body: i18n('Your template has been saved and is ready to use'),
       })
       notify.show()

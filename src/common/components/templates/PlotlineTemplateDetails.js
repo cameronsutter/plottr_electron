@@ -21,7 +21,6 @@ export default class PlotlineTemplateDetails extends Component {
   render () {
     const { template } = this.props
     const body = Object.keys(template.templateData)
-      .filter(heading => template.templateData[heading].length > 1)
       .filter(heading => !template.templateData[heading].every(item => item.title == 'auto'))
       .map(heading => {
         return <div key={heading}>

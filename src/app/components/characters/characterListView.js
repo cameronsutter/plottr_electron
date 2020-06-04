@@ -123,7 +123,7 @@ class CharacterListView extends Component {
   }
 
   startSaveAsTemplate = () => {
-    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start') // sends this message to this same process
+    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', 'characters') // sends this message to this same process
   }
 
   handleCreateNewCharacter = () => {
@@ -256,9 +256,11 @@ class CharacterListView extends Component {
         <Button className='pull-right' onClick={this.closeDialog}>
           {i18n('Close')}
         </Button>
-        <Button className='pull-right character-list__custom-attributes__save-as-template' onClick={this.startSaveAsTemplate}>
-          <FaSave className='svg-save-template'/> {i18n('Save as Template')}
-        </Button>
+        {customAttributes.length ?
+          <Button className='pull-right character-list__custom-attributes__save-as-template' onClick={this.startSaveAsTemplate}>
+            <FaSave className='svg-save-template'/> {i18n('Save as Template')}
+          </Button>
+        : null }
         <h3>{i18n('Custom Attributes for Characters')}</h3>
         <p className='sub-header'>{i18n('Choose what you want to track about your characters')}</p>
         <div className='character-list__custom-attributes-add-button'>

@@ -908,13 +908,27 @@ function buildFileMenu () {
     }
   }, {
     label: i18n('Save as Template'),
-    click: () => {
-      let win = BrowserWindow.getFocusedWindow()
-      let winObj = windows.find(w => w.id == win.id)
-      if (winObj) {
-        win.webContents.send('save-as-template-start')
+    submenu: [
+      {
+        label: i18n('Timeline'),
+        click: () => {
+          let win = BrowserWindow.getFocusedWindow()
+          let winObj = windows.find(w => w.id == win.id)
+          if (winObj) {
+            win.webContents.send('save-as-template-start', 'plotline')
+          }
+        }
+      },{
+        label: i18n('Character Custom Attributes'),
+        click: () => {
+          let win = BrowserWindow.getFocusedWindow()
+          let winObj = windows.find(w => w.id == win.id)
+          if (winObj) {
+            win.webContents.send('save-as-template-start', 'character')
+          }
+        }
       }
-    }
+    ]
   }, {
     label: i18n('Close'),
     accelerator: 'CmdOrCtrl+W',

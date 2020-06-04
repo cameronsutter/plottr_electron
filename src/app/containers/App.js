@@ -5,21 +5,21 @@ import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ErrorBoundary from './ErrorBoundary'
 import GuidedTour from '../components/GuidedTour'
-import TemplateEdit from '../../common/components/templates/TemplateEdit'
+import TemplateCreate from '../../common/components/templates/TemplateCreate'
 
 export default class App extends Component {
-  state = {showTemplateCreate: false}
+  state = {showTemplateCreate: false, type: null}
 
   componentDidMount () {
-    ipcRenderer.on('save-as-template-start', () => {
-      this.setState({showTemplateCreate: true})
+    ipcRenderer.on('save-as-template-start', (event, type) => {
+      this.setState({showTemplateCreate: true, type: type})
     })
   }
 
   renderTemplateCreate () {
     if (!this.state.showTemplateCreate) return null
 
-    return <TemplateEdit close={() => this.setState({showTemplateCreate: false})}/>
+    return <TemplateCreate type={this.state.type} close={() => this.setState({showTemplateCreate: false})}/>
   }
 
   renderGuidedTour () {

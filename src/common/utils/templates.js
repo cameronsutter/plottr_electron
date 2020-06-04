@@ -25,3 +25,13 @@ export function listCustomTemplates (type) {
 export function deleteTemplate (id) {
   customTemplateStore.delete(`${TEMPLATES_ROOT}.${id}`)
 }
+
+export function editTemplateDetails (id, {name, description, link}) {
+  const info = {
+    ...customTemplateStore.get(`${TEMPLATES_ROOT}.${id}`),
+    name: name,
+    description: description,
+    link: link,
+  }
+  customTemplateStore.set(`${TEMPLATES_ROOT}.${id}`, info)
+}

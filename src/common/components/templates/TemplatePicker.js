@@ -3,11 +3,12 @@ import PropTypes from 'react-proptypes'
 import { shell, remote } from 'electron'
 import Modal from 'react-modal'
 import i18n from 'format-message'
-import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
-import { listTemplates, listCustomTemplates, deleteTemplate } from '../../utils/templates'
+import { ButtonToolbar, Button, Glyphicon, Collapse } from 'react-bootstrap'
+import { listTemplates, listCustomTemplates, deleteTemplate, editTemplateDetails } from '../../utils/templates'
 import CharacterTemplateDetails from './CharacterTemplateDetails'
 import PlotlineTemplateDetails from './PlotlineTemplateDetails'
 import cx from 'classnames'
+import TemplateEdit from './TemplateEdit'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -17,6 +18,7 @@ export default class TemplatePicker extends Component {
     this.state = {
       selectedId: null,
       selectedType: null,
+      editing: false,
       templates: listTemplates(props.type),
       customTemplates: listCustomTemplates(props.type),
     }
@@ -50,6 +52,16 @@ export default class TemplatePicker extends Component {
     }
   }
 
+  editTemplate = (e) => {
+    e.stopPropagation()
+    this.setState({editing: true})
+  }
+
+  saveTemplateEdit = (data) => {
+    editTemplateDetails(data.id, data)
+    this.setState({editing: false, customTemplates: listCustomTemplates(this.props.type)})
+  }
+
   chooseTemplate = () => {
     if (!this.state.selectedId) return
     this.props.onChooseTemplate(this.selectedTemplate())
@@ -61,10 +73,14 @@ export default class TemplatePicker extends Component {
     return <a className='template-picker__link' title={template.link} onClick={() => shell.openExternal(template.link)}><Glyphicon glyph='info-sign' /></a>
   }
 
-  renderDelete (type, template) {
+  renderCustomButtons (type, selected, template) {
     if (type != 'custom') return null
+    if (!selected) return null
 
-    return <Button bsSize='small' onClick={e => this.deleteTemplate(e, template)}><Glyphicon glyph='trash'/></Button>
+    return <div>
+      <Button bsSize='small' onClick={e => this.editTemplate(e)}><Glyphicon glyph='edit'/></Button>
+      <Button bsSize='small' onClick={e => this.deleteTemplate(e, template)}><Glyphicon glyph='trash'/></Button>
+    </div>
   }
 
   renderTemplateDetails () {
@@ -72,6 +88,11 @@ export default class TemplatePicker extends Component {
 
     const template = this.selectedTemplate()
     if (!template) return null
+
+    let edit = null
+    if (this.state.editing) {
+      edit = <TemplateEdit template={template} darkMode={this.props.darkMode} saveEdit={this.saveTemplateEdit} cancel={() => this.setState({editing: false})}/>
+    }
 
     let details = null
     switch (this.props.type) {
@@ -88,6 +109,7 @@ export default class TemplatePicker extends Component {
         <h3 className='panel-title'>{template.name}{this.renderLink(template)}</h3>
         <p>{template.description}</p>
       </div>
+      {edit}
       {details}
     </div>
   }
@@ -99,10 +121,11 @@ export default class TemplatePicker extends Component {
     const { selectedId, selectedType } = this.state
 
     return list.map(template => {
-      let klasses = cx('list-group-item', {selected: selectedType == type && selectedId == template.id})
-      return <li key={template.id} className={klasses} onClick={() => this.setState({selectedId: template.id, selectedType: type})}>
-        {template.name}
-        { this.renderDelete(type, template) }
+      let selected = selectedType == type && selectedId == template.id
+      let klasses = cx('list-group-item', {selected})
+      return <li key={template.id} className={klasses} onClick={() => this.setState({selectedId: template.id, selectedType: type, editing: false})}>
+        <div>{template.name}</div>
+        { this.renderCustomButtons(type, selected, template) }
       </li>
     })
   }

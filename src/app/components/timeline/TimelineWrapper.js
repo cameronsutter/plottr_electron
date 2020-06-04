@@ -243,7 +243,7 @@ class TimelineWrapper extends Component {
   }
 
   startSaveAsTemplate = () => {
-    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start') // sends this message to this same process
+    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', 'plotlines') // sends this message to this same process
   }
 
   // ///////////////

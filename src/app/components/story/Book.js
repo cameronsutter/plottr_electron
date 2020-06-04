@@ -51,6 +51,13 @@ class Book extends Component {
     return <Image responsive imageId={book.imageId} />
   }
 
+  renderTitle () {
+    const { book } = this.props
+    if (book.imageId) return null
+
+    return <h6>{book.title || i18n('Untitled')}</h6>
+  }
+
   render () {
     const { book, ui } = this.props
 
@@ -83,7 +90,7 @@ class Book extends Component {
       <div className={cx('book', {hovering: this.state.hovering})} onClick={() => this.setState({editing: true})}>
         <div className='front'>
           <div className='cover'>
-            <h6>{book.title || i18n('Untitled')}</h6>
+            { this.renderTitle() }
             <div className='book-container__cover-image-wrapper'>
               { this.renderImage() }
             </div>

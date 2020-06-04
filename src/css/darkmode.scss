@@ -54,4 +54,29 @@ body.darkmode {
       }
     }
   }
+
+  .list-group {
+    li {
+      color: $darkmode-text;
+      background-color: $darkmode-background;
+
+      &:hover, &.selected {
+        background-color: $darkmode-darker-background !important;
+      }
+    }
+  }
+
+  .panel {
+    color: $darkmode-text;
+    background-color: $darkmode-background;
+  }
+
+  .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: $darkmode-darker-background;
+  }
+
+  .ReactModal__Content {
+    color: $darkmode-text;
+    background-color: $darkmode-background !important;
+  }
 }

@@ -49,7 +49,10 @@
 }
 
 .book-dialog.darkmode {
-  .modal-body, .modal-footer {
+  .modal-body, .modal-footer, .modal-header {
+    .close {
+      color: $darkmode-text;
+    }
     color: $darkmode-text;
     background-color: $darkmode-background;
   }

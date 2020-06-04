@@ -290,6 +290,7 @@ class CharacterListView extends Component {
       isOpen={this.state.showTemplatePicker}
       close={() => this.setState({showTemplatePicker: false})}
       onChooseTemplate={this.handleChooseTemplate}
+      canMakeCharacterTemplates={!!this.props.customAttributes.length}
     />
   }
 

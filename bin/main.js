@@ -915,7 +915,7 @@ function buildFileMenu () {
           let win = BrowserWindow.getFocusedWindow()
           let winObj = windows.find(w => w.id == win.id)
           if (winObj) {
-            win.webContents.send('save-as-template-start', 'plotline')
+            win.webContents.send('save-as-template-start', 'plotlines')
           }
         }
       },{
@@ -924,7 +924,7 @@ function buildFileMenu () {
           let win = BrowserWindow.getFocusedWindow()
           let winObj = windows.find(w => w.id == win.id)
           if (winObj) {
-            win.webContents.send('save-as-template-start', 'character')
+            win.webContents.send('save-as-template-start', 'characters')
           }
         }
       }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { shell, remote } from 'electron'
+import { shell, remote, ipcRenderer } from 'electron'
 import Modal from 'react-modal'
 import i18n from 'format-message'
 import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
@@ -9,8 +9,10 @@ import CharacterTemplateDetails from './CharacterTemplateDetails'
 import PlotlineTemplateDetails from './PlotlineTemplateDetails'
 import cx from 'classnames'
 import TemplateEdit from './TemplateEdit'
+import { FaSave } from 'react-icons/fa'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
+const win = remote.getCurrentWindow()
 
 export default class TemplatePicker extends Component {
   constructor (props) {
@@ -31,6 +33,10 @@ export default class TemplatePicker extends Component {
     if (!this.state.customTemplates.length) {
       this.setState({customTemplates: listCustomTemplates(this.props.type)})
     }
+  }
+
+  startSaveAsTemplate = () => {
+    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', this.props.type) // sends this message to this same process
   }
 
   selectedTemplate = () => {
@@ -130,13 +136,21 @@ export default class TemplatePicker extends Component {
     })
   }
 
+  renderSaveButton (num) {
+    if (num) return null
+    if (this.props.type == 'characters' && !this.props.canMakeCharacterTemplates) return null
+
+    return <Button bsSize='small' onClick={this.startSaveAsTemplate}><FaSave className='svg-save-template'/> {i18n('Save as Template')}</Button>
+  }
+
   renderBody () {
     return <div className='template-picker__dialog-wrapper'>
       <div className='template-picker__wrapper'>
         <div className='template-picker__list'>
           <h1 className=''>{i18n('My Templates')}</h1>
           <ul className='list-group'>
-            {this.renderTemplateList(this.state.customTemplates, 'custom')}
+            { this.renderSaveButton(this.state.customTemplates.length) }
+            { this.renderTemplateList(this.state.customTemplates, 'custom') }
           </ul>
           <h1 className=''>{i18n('Starter Templates')}</h1>
           <ul className='list-group'>
@@ -176,5 +190,6 @@ export default class TemplatePicker extends Component {
     isOpen: PropTypes.bool,
     type: PropTypes.string,
     darkMode: PropTypes.bool,
+    canMakeCharacterTemplates: PropTypes.bool,
   }
 }

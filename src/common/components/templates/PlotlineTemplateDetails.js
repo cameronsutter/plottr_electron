@@ -21,10 +21,16 @@ export default class PlotlineTemplateDetails extends Component {
   render () {
     const { template } = this.props
     const body = Object.keys(template.templateData)
+      .filter(heading => heading != 'notes')
       .filter(heading => !template.templateData[heading].every(item => item.title == 'auto'))
       .map(heading => {
+        let headingText = heading
+        if (heading == 'lines') headingText = i18n('Plotlines')
+        if (heading == 'cards') headingText = i18n('Scene Cards')
+        if (heading == 'chapters') headingText = i18n('Chapters')
+
         return <div key={heading}>
-          <h5 className='text-center text-capitalize'>{heading}</h5>
+          <h5 className='text-center text-capitalize'>{headingText}</h5>
           <ol>
             {this.renderData(heading, template.templateData[heading])}
           </ol>

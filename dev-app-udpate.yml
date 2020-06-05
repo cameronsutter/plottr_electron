@@ -1,0 +1,12 @@
+version: 2020.6.7
+files:
+  - url: Plottr-mac-installer-latest.zip
+    sha512: Htmo97MJ16xQeWcftQ6oH/pHWb16YhGHvB4tCKvX+Y7Nu+FnAgLeE/lnoQ5R0QBpYf1Y9ZdOqqsodqeUSH3gnw==
+    size: 87026572
+    blockMapSize: 92228
+  - url: Plottr-mac-installer-latest.dmg
+    sha512: VyWWv7nnjoYWdMlTZAhu3On4eX1UW9asn6w2YCnZRYgHhkuZX42o6PupFRNKfuoztZdV2WTwyVQ4sXS/wup99Q==
+    size: 90283795
+path: Plottr-mac-installer-latest.zip
+sha512: Htmo97MJ16xQeWcftQ6oH/pHWb16YhGHvB4tCKvX+Y7Nu+FnAgLeE/lnoQ5R0QBpYf1Y9ZdOqqsodqeUSH3gnw==
+releaseDate: '2020-06-04T22:05:21.944Z'

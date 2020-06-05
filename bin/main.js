@@ -8,7 +8,6 @@ const i18n = require('format-message')
 const { is } = require('electron-util')
 const { machineIdSync } = require('node-machine-id')
 const windowStateKeeper = require('electron-window-state')
-const { autoUpdater } = require('electron-updater')
 const migrateIfNeeded = require('./main_modules/migration_manager')
 const Exporter = require('./main_modules/exporter')
 const enterCustomerServiceCode = require('./main_modules/customer_service_codes')
@@ -21,6 +20,7 @@ const { checkForActiveLicense, getLicenseInfo } = require('./main_modules/licens
 const TemplateManager = require('./main_modules/template_manager')
 const CustomTemplateManager = require('./main_modules/custom_template_manager')
 const FileManager = require('./main_modules/file_manager')
+const UpdateManager = require('./main_modules/update_manager')
 const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/helpers')
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
@@ -65,8 +65,6 @@ var launchSent = false
 let checkedForActiveLicense = false
 let lastCheckedForUpdate = new Date().getTime()
 const updateCheckThreshold = 1000 * 60 * 60
-log.transports.file.level = 'info'
-autoUpdater.logger = log
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -316,26 +314,20 @@ app.on('will-quit', () => {
 ////////////////////////////////
 
 function checkUpdatesIfAllowed () {
-  if (process.env.NODE_ENV == 'dev') return
+  // if (process.env.NODE_ENV == 'dev') return
   if (TRIALMODE) return
   if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
-
-  autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
 
   if (!checkedForActiveLicense) {
     checkForActiveLicense(USER_INFO, valid => {
       checkedForActiveLicense = true
       if (valid) {
-        checkForUpdates()
+        UpdateManager.checkForUpdates(windows)
       }
     })
   } else if (SETTINGS.get('premiumFeatures')) {
-    checkForUpdates()
+    UpdateManager.checkForUpdates(windows)
   }
-}
-
-function checkForUpdates () {
-  autoUpdater.checkForUpdatesAndNotify()
 }
 
 function checkLicense (callback) {

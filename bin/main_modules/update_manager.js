@@ -8,7 +8,6 @@ class UpdateManager {
 
   constructor () {
     autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
-    autoUpdater.logger.transports.file.level = "info"
     autoUpdater.logger = log
     autoUpdater.autoDownload = false
     // /////

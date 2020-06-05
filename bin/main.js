@@ -65,6 +65,7 @@ var launchSent = false
 let checkedForActiveLicense = false
 let lastCheckedForUpdate = new Date().getTime()
 const updateCheckThreshold = 1000 * 60 * 60
+log.transports.file.level = "info"
 
 ////////////////////////////////
 ////     Startup Tasks    //////

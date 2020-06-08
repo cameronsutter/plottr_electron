@@ -6,7 +6,7 @@
       "age": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -24,56 +24,307 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.6.8"
+    "version": "2020.6.5"
   },
-  "series": {
-    "name": "Pride & Prejudice copy",
-    "premise": "",
-    "genre": "",
-    "theme": "",
-    "templates": []
-  },
-  "books": {
-    "1": {
+  "places": [
+    {
+      "cards": [],
+      "color": null,
+      "description": "Charles Bingley's manor",
+      "id": 0,
+      "name": "Netherfield Park",
+      "noteIds": [],
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Bingley lets Netherfield, though his sisters urge him to use his fortune to purchase a family estate."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "county": "",
+      "owner": "Bingley"
+    },
+    {
+      "cards": [],
+      "color": null,
+      "description": "The home the Bennets live in",
       "id": 1,
-      "title": "Pride & Prejudice",
-      "premise": "",
-      "genre": "",
-      "theme": "",
+      "name": "Longbourn",
+      "noteIds": [],
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The Bennets have the home only as long as Mr Bennet is alive. Because of the entail on the property, none of his daughters can inherit the estate."
+            }
+          ]
+        }
+      ],
       "templates": [],
-      "imageId": "1"
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
     },
-    "2": {
+    {
+      "cards": [],
+      "color": null,
+      "description": "The town a mile from Longbourn",
       "id": 2,
-      "title": "Possible Sequel",
-      "premise": "",
-      "genre": "",
-      "theme": "",
+      "name": "Meryton",
+      "noteIds": [],
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "One of the great pleasures of the Bennet girls is found in walking to Meryton. For the first half of the story, the militia is stationed here. This is also where their aunt Phillips lives."
+            }
+          ]
+        }
+      ],
       "templates": [],
-      "imageId": null
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
     },
-    "3": {
+    {
+      "cards": [],
+      "color": null,
+      "description": "The de Bourgh estate",
       "id": 3,
-      "title": "",
-      "premise": "",
-      "genre": "",
-      "theme": "",
+      "name": "Rosings",
+      "noteIds": [],
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Rosings is the massive estate owned by Mr Darcy's aunt, Lady Catherine de Bourgh, and home to her and her sickly daughter. It is also the location of Mr Collins' parsonage."
+            }
+          ]
+        }
+      ],
       "templates": [],
-      "imageId": null
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
     },
-    "allIds": [
-      1,
-      2,
-      3
-    ]
-  },
+    {
+      "cards": [],
+      "color": null,
+      "description": "Darcy's estate",
+      "id": 4,
+      "name": "Pemberley",
+      "noteIds": [],
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "One of the finest homes in all of England."
+            }
+          ]
+        }
+      ],
+      "templates": [],
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "cards": [],
+      "color": null,
+      "description": "The largest city in England",
+      "id": 5,
+      "name": "London",
+      "noteIds": [],
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jane and Lizzy both stay here for a time during the story. It is where the Gardiners live, where the Bingleys go when they leave Netherfield, and where Lydia and Wickham run away."
+            }
+          ]
+        }
+      ],
+      "templates": [],
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "county": "London",
+      "owner": ""
+    },
+    {
+      "cards": [],
+      "color": null,
+      "description": "Location of Collins' rectory",
+      "id": 6,
+      "name": "Hunsford",
+      "noteIds": [],
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Collins has the parsonage of Rosings, located in Hunsford"
+            }
+          ]
+        }
+      ],
+      "templates": [],
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "cards": [],
+      "color": null,
+      "description": "A seaside town",
+      "id": 7,
+      "name": "Brighton",
+      "noteIds": [],
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Once the militia leaves Meryton, they go to Brighton. Lydia accompanies them there with Colonel Forster and Mrs Forster."
+            }
+          ]
+        }
+      ],
+      "templates": [],
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "county": "",
+      "owner": ""
+    }
+  ],
+  "tags": [
+    {
+      "color": "Hotpink",
+      "id": 0,
+      "title": "romance"
+    },
+    {
+      "color": "MediumSeaGreen",
+      "id": 1,
+      "title": "pride"
+    },
+    {
+      "color": "OrangeRed",
+      "id": 2,
+      "title": "prejudice"
+    },
+    {
+      "color": "Yellow",
+      "id": 3,
+      "title": "humor"
+    },
+    {
+      "color": "LawnGreen",
+      "id": 4,
+      "title": "drama"
+    },
+    {
+      "color": "DarkCyan",
+      "id": 5,
+      "title": "etiquette"
+    },
+    {
+      "color": "RoyalBlue",
+      "id": 6,
+      "title": "scandal"
+    },
+    {
+      "color": "Cyan",
+      "id": 7,
+      "title": "impropriety"
+    },
+    {
+      "color": "DarkGoldenrod",
+      "id": 8,
+      "title": "silliness"
+    },
+    {
+      "color": "Coral",
+      "id": 9,
+      "title": "ball"
+    },
+    {
+      "color": "PaleVioletRed",
+      "id": 10,
+      "title": "party"
+    },
+    {
+      "color": "MediumSlateBlue",
+      "id": 11,
+      "title": "marriage"
+    },
+    {
+      "color": "PaleTurquoise",
+      "id": 12,
+      "title": "wealth"
+    },
+    {
+      "color": "Khaki",
+      "id": 13,
+      "title": "class"
+    },
+    {
+      "color": "Magenta",
+      "id": 14,
+      "title": "self-knowledge"
+    },
+    {
+      "color": "DarkGreen",
+      "id": 15,
+      "title": "confiding"
+    },
+    {
+      "color": "YellowGreen",
+      "id": 16,
+      "title": "friendship"
+    },
+    {
+      "color": "MistyRose",
+      "id": 17,
+      "title": "family"
+    }
+  ],
   "characters": [
     {
       "In possession of fortune": "No",
       "In possession of fortune?": "",
       "Married": "During the story, to Mr Darcy",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "",
       "color": null,
       "description": "Main Character",
       "id": 0,
@@ -100,7 +351,7 @@
       "In possession of fortune": "Yes",
       "Married": "During the story, to Elizabeth",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "",
       "color": null,
       "description": "Main Character",
       "id": 1,
@@ -128,7 +379,7 @@
       "In possession of fortune?": "No",
       "Married": "During the story, to Bingley",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "",
       "color": null,
       "description": "Elizabeth's sister",
       "id": 2,
@@ -155,7 +406,7 @@
       "In possession of fortune": "Yes",
       "Married": "During the story, to Jane",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "",
       "color": null,
       "description": "Mr. Darcy's best friend",
       "id": 3,
@@ -334,7 +585,7 @@
       "In possession of fortune": "No",
       "Married": "Yes",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "",
       "color": null,
       "description": "Father of the Bennet family",
       "id": 4,
@@ -361,7 +612,7 @@
       "In possession of fortune": "No",
       "Married": "Yes",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "",
       "color": null,
       "description": "Mother of the Bennet family",
       "id": 5,
@@ -388,7 +639,7 @@
       "In possession of fortune": "No",
       "Married": "During the story, to Mr Wickham",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "",
       "color": null,
       "description": "Elizabeth's sister",
       "id": 6,
@@ -415,7 +666,7 @@
       "In possession of fortune": "No",
       "Married": "During the story, to Lydia",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "",
       "color": null,
       "description": "A militia officer",
       "id": 7,
@@ -458,7 +709,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -485,7 +736,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -521,7 +772,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -548,7 +799,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -575,7 +826,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -602,7 +853,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -629,7 +880,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -656,7 +907,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -683,7 +934,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -710,7 +961,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -737,7 +988,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -764,7 +1015,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -9493,298 +9744,6 @@
     "scenes": [],
     "lines": []
   },
-  "places": [
-    {
-      "cards": [],
-      "color": null,
-      "description": "Charles Bingley's manor",
-      "id": 0,
-      "name": "Netherfield Park",
-      "noteIds": [],
-      "notes": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Bingley lets Netherfield, though his sisters urge him to use his fortune to purchase a family estate."
-            }
-          ]
-        }
-      ],
-      "tags": [],
-      "templates": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ],
-      "county": "",
-      "owner": "Bingley"
-    },
-    {
-      "cards": [],
-      "color": null,
-      "description": "The home the Bennets live in",
-      "id": 1,
-      "name": "Longbourn",
-      "noteIds": [],
-      "notes": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "The Bennets have the home only as long as Mr Bennet is alive. Because of the entail on the property, none of his daughters can inherit the estate."
-            }
-          ]
-        }
-      ],
-      "templates": [],
-      "tags": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ]
-    },
-    {
-      "cards": [],
-      "color": null,
-      "description": "The town a mile from Longbourn",
-      "id": 2,
-      "name": "Meryton",
-      "noteIds": [],
-      "notes": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "One of the great pleasures of the Bennet girls is found in walking to Meryton. For the first half of the story, the militia is stationed here. This is also where their aunt Phillips lives."
-            }
-          ]
-        }
-      ],
-      "templates": [],
-      "tags": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ]
-    },
-    {
-      "cards": [],
-      "color": null,
-      "description": "The de Bourgh estate",
-      "id": 3,
-      "name": "Rosings",
-      "noteIds": [],
-      "notes": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Rosings is the massive estate owned by Mr Darcy's aunt, Lady Catherine de Bourgh, and home to her and her sickly daughter. It is also the location of Mr Collins' parsonage."
-            }
-          ]
-        }
-      ],
-      "templates": [],
-      "tags": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ]
-    },
-    {
-      "cards": [],
-      "color": null,
-      "description": "Darcy's estate",
-      "id": 4,
-      "name": "Pemberley",
-      "noteIds": [],
-      "notes": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "One of the finest homes in all of England."
-            }
-          ]
-        }
-      ],
-      "templates": [],
-      "tags": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ]
-    },
-    {
-      "cards": [],
-      "color": null,
-      "description": "The largest city in England",
-      "id": 5,
-      "name": "London",
-      "noteIds": [],
-      "notes": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Jane and Lizzy both stay here for a time during the story. It is where the Gardiners live, where the Bingleys go when they leave Netherfield, and where Lydia and Wickham run away."
-            }
-          ]
-        }
-      ],
-      "templates": [],
-      "tags": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ],
-      "county": "London",
-      "owner": ""
-    },
-    {
-      "cards": [],
-      "color": null,
-      "description": "Location of Collins' rectory",
-      "id": 6,
-      "name": "Hunsford",
-      "noteIds": [],
-      "notes": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Collins has the parsonage of Rosings, located in Hunsford"
-            }
-          ]
-        }
-      ],
-      "templates": [],
-      "tags": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ]
-    },
-    {
-      "cards": [],
-      "color": null,
-      "description": "A seaside town",
-      "id": 7,
-      "name": "Brighton",
-      "noteIds": [],
-      "notes": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "Once the militia leaves Meryton, they go to Brighton. Lydia accompanies them there with Colonel Forster and Mrs Forster."
-            }
-          ]
-        }
-      ],
-      "templates": [],
-      "tags": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ],
-      "county": "",
-      "owner": ""
-    }
-  ],
-  "tags": [
-    {
-      "color": "Hotpink",
-      "id": 0,
-      "title": "romance"
-    },
-    {
-      "color": "MediumSeaGreen",
-      "id": 1,
-      "title": "pride"
-    },
-    {
-      "color": "OrangeRed",
-      "id": 2,
-      "title": "prejudice"
-    },
-    {
-      "color": "Yellow",
-      "id": 3,
-      "title": "humor"
-    },
-    {
-      "color": "LawnGreen",
-      "id": 4,
-      "title": "drama"
-    },
-    {
-      "color": "DarkCyan",
-      "id": 5,
-      "title": "etiquette"
-    },
-    {
-      "color": "RoyalBlue",
-      "id": 6,
-      "title": "scandal"
-    },
-    {
-      "color": "Cyan",
-      "id": 7,
-      "title": "impropriety"
-    },
-    {
-      "color": "DarkGoldenrod",
-      "id": 8,
-      "title": "silliness"
-    },
-    {
-      "color": "Coral",
-      "id": 9,
-      "title": "ball"
-    },
-    {
-      "color": "PaleVioletRed",
-      "id": 10,
-      "title": "party"
-    },
-    {
-      "color": "MediumSlateBlue",
-      "id": 11,
-      "title": "marriage"
-    },
-    {
-      "color": "PaleTurquoise",
-      "id": 12,
-      "title": "wealth"
-    },
-    {
-      "color": "Khaki",
-      "id": 13,
-      "title": "class"
-    },
-    {
-      "color": "Magenta",
-      "id": 14,
-      "title": "self-knowledge"
-    },
-    {
-      "color": "DarkGreen",
-      "id": 15,
-      "title": "confiding"
-    },
-    {
-      "color": "YellowGreen",
-      "id": 16,
-      "title": "friendship"
-    },
-    {
-      "color": "MistyRose",
-      "id": 17,
-      "title": "family"
-    }
-  ],
   "notes": [
     {
       "characters": [],
@@ -10079,51 +10038,6 @@
       "bookIds": []
     }
   ],
-  "beats": [
-    {
-      "id": 2,
-      "title": "Book 2",
-      "time": 0,
-      "position": 1
-    },
-    {
-      "id": 1,
-      "title": "Book 1",
-      "time": 0,
-      "position": 0
-    }
-  ],
-  "seriesLines": [
-    {
-      "id": 1,
-      "color": "#6cace4",
-      "title": "Main Plot",
-      "position": 0
-    }
-  ],
-  "categories": {
-    "characters": [
-      {
-        "id": 1,
-        "name": "Main",
-        "position": 0
-      },
-      {
-        "id": 2,
-        "name": "Supporting",
-        "position": 1
-      },
-      {
-        "id": 3,
-        "name": "Other",
-        "position": 2
-      }
-    ],
-    "places": [],
-    "cards": [],
-    "scenes": [],
-    "lines": []
-  },
   "images": {
     "1": {
       "id": 1,
@@ -10143,5 +10057,68 @@
       "path": "/Users/sparrowhawk/Downloads/NewHeadshot 600px.jpeg",
       "data": "data:image/jpeg;base64,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"
     }
-  }
+  },
+  "beats": [
+    {
+      "id": 2,
+      "title": "Book 2",
+      "time": 0,
+      "position": 1
+    },
+    {
+      "id": 1,
+      "title": "Book 1",
+      "time": 0,
+      "position": 0
+    }
+  ],
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "Pride & Prejudice",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "imageId": "1"
+    },
+    "2": {
+      "id": 2,
+      "title": "Possible Sequel",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "imageId": null
+    },
+    "3": {
+      "id": 3,
+      "title": "",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "imageId": null
+    },
+    "allIds": [
+      1,
+      2,
+      3
+    ]
+  },
+  "series": {
+    "name": "Pride & Prejudice copy",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "seriesLines": [
+    {
+      "id": 1,
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0
+    }
+  ]
 }

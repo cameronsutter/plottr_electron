@@ -226,11 +226,11 @@ class CharacterListView extends Component {
   }
 
   renderCharacters () {
-    return <div className={cx('character-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
-      <a href='#' key={'new-character'} className='character-list__new list-group-item' onClick={this.handleCreateNewCharacter} >
-        <Glyphicon glyph='plus' />
-      </a>
-      { this.renderVisibleCharacters() }
+    return <div>
+      <h3>{this.props.categories[0].name}</h3>
+      <div className={cx('character-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
+        { this.renderVisibleCharacters() }
+      </div>
     </div>
   }
 
@@ -305,7 +305,7 @@ class CharacterListView extends Component {
         <Grid fluid>
           <Row>
             <Col sm={3}>
-              <h1 className={klasses}>{i18n('Characters')}</h1>
+              <h1 className={klasses}>{i18n('Characters')}{' '}<Button onClick={this.handleCreateNewCharacter}><Glyphicon glyph='plus' /></Button></h1>
               {this.renderCharacters()}
             </Col>
             <Col sm={9}>
@@ -320,6 +320,7 @@ class CharacterListView extends Component {
 
 CharacterListView.propTypes = {
   characters: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired,
   customAttributes: PropTypes.array.isRequired,
   customAttributesThatCanChange: PropTypes.array,
   ui: PropTypes.object.isRequired,
@@ -331,7 +332,8 @@ CharacterListView.propTypes = {
 function mapStateToProps (state) {
   return {
     characters: state.characters,
-    customAttributes: state.customAttributes['characters'],
+    categories: state.categories.characters,
+    customAttributes: state.customAttributes.characters,
     customAttributesThatCanChange: characterCustomAttributesThatCanChangeSelector(state),
     ui: state.ui,
   }

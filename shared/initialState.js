@@ -69,9 +69,23 @@ const character = {
   noteIds: [],
   templates: [],
   tags: [],
-  categoryId: '',
+  categoryId: null,
   imageId: null,
   bookIds: [],
+}
+
+const categories = {
+  characters: [],
+  places: [],
+  cards: [],
+  scenes: [],
+  lines: []
+}
+
+const category = {
+  id: '',
+  name: '',
+  position: 0,
 }
 
 const place = {
@@ -132,7 +146,7 @@ const customAttributes = {
   places: [],
   cards: [],
   scenes: [],
-  lines: []
+  lines: [],
 }
 
 const attribute = {
@@ -179,6 +193,8 @@ module.exports = {
   tag,
   place,
   character,
+  categories,
+  category,
   file,
   ui,
   chapter,

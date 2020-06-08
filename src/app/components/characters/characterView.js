@@ -267,11 +267,7 @@ class CharacterView extends Component {
     if (!this.props.character.cards) return null
     if (!this.props.character.cards.length) return null
 
-    let label = i18n(`{
-      count, plural,
-        one {1 card}
-        other {# cards}
-    }`, { count: this.props.character.cards.length })
+    let label = i18n('{count, plural, one {1 card} other {# cards}}', { count: this.props.character.cards.length })
     let cardsAssoc = this.props.character.cards.reduce((arr, cId) => {
       let card = this.props.cards.find(c => c.id == cId)
       if (card) return arr.concat(card.title)
@@ -287,11 +283,7 @@ class CharacterView extends Component {
     if (!this.props.character.noteIds) return null
     if (!this.props.character.noteIds.length) return null
 
-    let label = i18n(`{
-      count, plural,
-        one {1 note}
-        other {# notes}
-    }`, { count: this.props.character.noteIds.length })
+    let label = i18n('{count, plural, one {1 note} other {# notes}}', { count: this.props.character.noteIds.length })
     let noteAssoc = this.props.character.noteIds.reduce((arr, nId) => {
       let note = this.props.notes.find(n => n.id == nId)
       if (note) return arr.concat(note.title)
@@ -308,7 +300,6 @@ class CharacterView extends Component {
     const customAttrNotes = customAttributes.map((attr, idx) => {
       const { name, type } = attr
       let desc
-      console.log(name, type, character[name])
       if (type == 'paragraph') {
         desc = <dd>
           <RichText description={character[name]} darkMode={ui.darkMode} />

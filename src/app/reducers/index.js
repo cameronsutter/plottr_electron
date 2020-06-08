@@ -14,23 +14,25 @@ import beats from './beats'
 import books from './books'
 import series from './series'
 import seriesLines from './seriesLines'
+import categories from './categories'
 
 const rootReducer = combineReducers({
   ui,
   file,
-  places,
-  tags,
+  series,
+  books,
   characters,
   chapters,
   cards,
   lines,
   customAttributes,
+  places,
+  tags,
   notes,
-  images,
   beats,
-  books,
-  series,
   seriesLines,
+  categories,
+  images,
 })
 
 export default rootReducer

@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap'
 export default class UpdateNotifier extends Component {
   state = {
     checking: false,
-    available: true,
+    available: false,
     finishedChecking: false,
     downloadInProgress: false,
     percentDownloaded: 0,
@@ -18,16 +18,22 @@ export default class UpdateNotifier extends Component {
     // /////
     // autoUpdater events
     // /////
+    ipcRenderer.on('updater-error', (event) => {
+      this.setState({checking: false, finishedChecking: true, available: false})
+      setTimeout(() => this.setState({finishedChecking: false}), 5000)
+    })
     ipcRenderer.on('updater-checking', (event) => {
       this.setState({checking: true})
       setTimeout(() => this.setState({checking: false}), 5000)
     })
     ipcRenderer.on('updater-update-available', (event, info) => {this.setState({checking: false, available: true, info: info})})
-    ipcRenderer.on('updater-update-not-available', (event) => {this.setState({checking: false, available: false})})
+    ipcRenderer.on('updater-update-not-available', (event) => {
+      this.setState({checking: false, finishedChecking: true, available: false})
+      setTimeout(() => this.setState({finishedChecking: false}), 5000)
+    })
     ipcRenderer.on('updater-downloaded', (event, info) => {this.setState({finishedDownloading: true, percentDownloaded: 100})})
-    ipcRenderer.on('updater-download-progress', (event, {progress, percent, total, transferred}) => {
-      console.log(progress, percent, total, transferred)
-      this.setState({downloadInProgress: true, percentDownloaded: percent})
+    ipcRenderer.on('updater-download-progress', (event, {progress}) => {
+      this.setState({downloadInProgress: true, percentDownloaded: progress.percent})
     })
   }
 
@@ -37,9 +43,10 @@ export default class UpdateNotifier extends Component {
 
   renderText () {
     console.log('update info', this.state.info)
-    const { checking, available, downloadInProgress, percentDownloaded, finishedDownloading } = this.state
+    const { checking, available, finishedChecking, downloadInProgress, percentDownloaded, finishedDownloading } = this.state
     let text = ''
     if (checking) text = i18n('Checking for updates')
+    if (finishedChecking && !available) text = i18n('No updates available')
     if (available) text = <a href='#' title={i18n('See the Changelog')} onClick={this.goToChangelog}>{i18n('Update available!')}</a>
     if (downloadInProgress) text = i18n('Downloading ({percent}%)', {percent: percentDownloaded})
     if (finishedDownloading) text = i18n('Update Ready')
@@ -65,14 +72,14 @@ export default class UpdateNotifier extends Component {
     }
 
     if (text == '') return null
-    return <Button bsSize='xsmall' onClick={fnc}>{text}</Button>
+    return <div><Button bsSize='xsmall' onClick={fnc}>{text}</Button></div>
   }
 
   render () {
     return <ul className='nav navbar-nav navbar-right update-notifier'>
       <li>
         <div>{this.renderText()}</div>
-        <div>{this.renderButton()}</div>
+        {this.renderButton()}
       </li>
     </ul>
   }

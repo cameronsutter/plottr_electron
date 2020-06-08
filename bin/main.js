@@ -559,6 +559,7 @@ function openWindow (fileName, jsonData) {
       state: json,
       lastSave: json
     })
+    UpdateManager.updateWindows(windows)
     newWindow.setTitle(displayFileName(fileName))
     newWindow.setRepresentedFilename(fileName)
   } catch (err) {

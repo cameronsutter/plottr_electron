@@ -98,8 +98,14 @@
   "Chapter {number} title": {
     "message": "Chapter { number } title"
   },
+  "Chapters": {
+    "message": "Chapters"
+  },
   "Character": {
     "message": "Character"
+  },
+  "Character Custom Attributes": {
+    "message": "Character Custom Attributes"
   },
   "Character Thumbnail": {
     "message": "Character Thumbnail"
@@ -115,6 +121,9 @@
   },
   "Check for updates": {
     "message": "Check for updates"
+  },
+  "Checking for updates": {
+    "message": "Checking for updates"
   },
   "Choose": {
     "message": "Choose"
@@ -169,9 +178,6 @@
   },
   "Create unlimited story files": {
     "message": "Create unlimited story files"
-  },
-  "Created on {version, date, medium} {version, time}": {
-    "message": "Created on { version, date, medium } { version, time }"
   },
   "Creates a report to send me": {
     "message": "Creates a report to send me"
@@ -247,6 +253,12 @@
   },
   "Done": {
     "message": "Done"
+  },
+  "Download Now": {
+    "message": "Download Now"
+  },
+  "Downloading ({percent}%)": {
+    "message": "Downloading ({ percent }%)"
   },
   "Edit": {
     "message": "Edit"
@@ -386,8 +398,14 @@
   "Minimize": {
     "message": "Minimize"
   },
+  "My Character Template": {
+    "message": "My Character Template"
+  },
   "My Templates": {
     "message": "My Templates"
+  },
+  "My Timeline Template": {
+    "message": "My Timeline Template"
   },
   "Name": {
     "message": "Name"
@@ -418,6 +436,9 @@
   },
   "No color": {
     "message": "No color"
+  },
+  "No updates available": {
+    "message": "No updates available"
   },
   "Nope. Plottr tried again. But it didn't work. Plottr will ask you next time it opens, but you're verified. Enjoy": {
     "message": "Nope. Plottr tried again. But it didn''t work. Plottr will ask you next time it opens, but you''re verified. Enjoy"
@@ -485,6 +506,9 @@
   "Please verify your license": {
     "message": "Please verify your license"
   },
+  "Plotlines": {
+    "message": "Plotlines"
+  },
   "Plottr": {
     "message": "Plottr"
   },
@@ -511,6 +535,9 @@
   },
   "Quit": {
     "message": "Quit"
+  },
+  "Quit and Install": {
+    "message": "Quit and Install"
   },
   "Redo": {
     "message": "Redo"
@@ -563,8 +590,14 @@
   "Scene": {
     "message": "Scene"
   },
+  "Scene Cards": {
+    "message": "Scene Cards"
+  },
   "Scroll": {
     "message": "Scroll"
+  },
+  "See the Changelog": {
+    "message": "See the Changelog"
   },
   "See the outline here": {
     "message": "See the outline here"
@@ -592,6 +625,9 @@
   },
   "Sort": {
     "message": "Sort"
+  },
+  "Source Link": {
+    "message": "Source Link"
   },
   "Start my Free Trial": {
     "message": "Start my Free Trial"
@@ -673,6 +709,12 @@
   },
   "Untitled": {
     "message": "Untitled"
+  },
+  "Update Ready": {
+    "message": "Update Ready"
+  },
+  "Update available!": {
+    "message": "Update available!"
   },
   "Upload a new image": {
     "message": "Upload a new image"

@@ -8,7 +8,8 @@ import { FaKey } from 'react-icons/fa'
 import BookChooser from '../components/story/BookChooser'
 import i18n from 'format-message'
 import cx from 'classnames'
-const { ipcRenderer } = require('electron')
+import UpdateNotifier from '../components/UpdateNotifier'
+import { ipcRenderer } from 'electron'
 var TRIALMODE = process.env.TRIALMODE === 'true'
 
 class Navigation extends Component {
@@ -78,6 +79,7 @@ class Navigation extends Component {
           </li>
         </ul>
         { this.renderTrialLinks() }
+        {TRIALMODE ? null : <UpdateNotifier/>}
       </div>
     </nav>
   }

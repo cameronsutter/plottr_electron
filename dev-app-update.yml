@@ -1,3 +1,5 @@
+publish:
+  - github
 version: 2020.6.7
 files:
   - url: Plottr-mac-installer-latest.zip

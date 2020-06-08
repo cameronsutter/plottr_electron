@@ -87,13 +87,15 @@ h3.popover-title {
 .svg-save-template {
   vertical-align: middle;
 }
-
 .navbar-brand {
   @include header-font;
   font-size: 24px;
 }
 .nav.navbar-nav {
   @include application-text;
+}
+.navbar-default .navbar-text {
+  color: $green-3;
 }
 .btn {
   @include application-text;
@@ -136,6 +138,13 @@ input[type="file"] {
     color: $orange-5;
     font-size: 2.5em;
     margin-bottom: 8px;
+  }
+}
+
+.update-notifier {
+  li {
+    text-align: center;
+    font-size: 14px;
   }
 }
 

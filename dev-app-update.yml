@@ -1,5 +1,5 @@
-publish:
-  - github
+provider: github
+url: https://github.com/cameronsutter/plottr_electron/releases/download/v2020.6.6/Plottr-mac-installer-latest.dmg
 version: 2020.6.7
 files:
   - url: Plottr-mac-installer-latest.zip

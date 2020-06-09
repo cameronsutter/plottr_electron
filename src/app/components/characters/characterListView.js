@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { sortBy, groupBy } from 'lodash'
 import { ipcRenderer, remote } from 'electron'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
@@ -34,7 +34,7 @@ class CharacterListView extends Component {
     const { characterSort, characterFilter } = props.ui
     if (props.characters.length > 0) {
       visible = this.visibleCharacters(props.characters, characterFilter, characterSort)
-      id = this.detailID(visible)
+      id = this.detailID(visible, props.categories)
     }
     this.state = {
       dialogOpen: false,
@@ -51,7 +51,7 @@ class CharacterListView extends Component {
     const { characterSort, characterFilter } = nextProps.ui
     if (nextProps.characters.length > 0) {
       visible = this.visibleCharacters(nextProps.characters, characterFilter, characterSort)
-      detailID = this.detailID(visible)
+      detailID = this.detailID(visible, nextProps.categories)
     }
     this.setState({
       visibleCharacters: visible,
@@ -65,11 +65,31 @@ class CharacterListView extends Component {
     }
   }
 
+  charactersByCategory = (characters) => {
+    return groupBy(characters, 'categoryId')
+  }
+
+  sortEachCategory = (visibleByCategory, sort) => {
+    let sortOperands = sort.split('~')
+    let attrName = sortOperands[0]
+    let direction = sortOperands[1]
+    let sortByOperand = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
+
+    Object.keys(visibleByCategory).forEach(k => {
+      let characters = visibleByCategory[k]
+
+      let sorted = sortBy(characters, sortByOperand)
+      if (direction == 'desc') sorted.reverse()
+      visibleByCategory[k] = sorted
+    })
+    return visibleByCategory
+  }
+
   // TODO: this should be a selector
-  visibleCharacters (characters, filter, sort) {
-    let visible = characters
+  visibleCharacters = (characters, filter, sort) => {
+    let visible = this.charactersByCategory(characters)
     if (!this.filterIsEmpty(filter)) {
-      visible = []
+      visible = {}
       characters.forEach(ch => {
         const matches = Object.keys(filter).some(attr => {
           return filter[attr].some(val => {
@@ -81,32 +101,39 @@ class CharacterListView extends Component {
             return false
           })
         })
-        if (matches) visible.push(ch)
+        if (matches) {
+          if (visible[ch.categoryId] && visible[ch.categoryId].length) {
+            visible[ch.categoryId].push(ch)
+          } else {
+            visible[ch.categoryId] = [ch]
+          }
+        }
       })
     }
 
-    let sortOperands = sort.split('~')
-    let attrName = sortOperands[0]
-    let direction = sortOperands[1]
-    let sortBy = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
-    let sorted = _.sortBy(visible, sortBy)
-    if (direction == 'desc') sorted.reverse()
-    return sorted
+    return this.sortEachCategory(visible, sort)
   }
 
-  detailID (characters) {
-    if (characters.length == 0) return null
+  detailID = (charactersByCategory, categories) => {
+    if (!Object.keys(charactersByCategory).length) return null
 
-    let id = characters[0].id
+    let sortedCategories = sortBy(categories, 'position')
+    sortedCategories.push({id: null}) // uncategorized
+    const firstCategoryWithChar = sortedCategories.find(cat => charactersByCategory[cat.id] && charactersByCategory[cat.id][0])
+    let id = charactersByCategory[firstCategoryWithChar.id][0] && charactersByCategory[firstCategoryWithChar.id][0].id
 
     // check for the currently active one
     if (this.state && this.state.characterDetailId != null) {
-      let activeCharacter = characters.find(ch => ch.id === this.state.characterDetailId)
+      let activeCharacter = Object.keys(charactersByCategory).find(catId => {
+        if (charactersByCategory[catId]) {
+          return charactersByCategory[catId].find(ch => ch.id === this.state.characterDetailId)
+        }
+        return false
+      })
       if (activeCharacter) id = activeCharacter.id
     }
 
-    // check for a newly created one
-    let newCharacter = characters.find(ch => ch.name === '')
+    let newCharacter = charactersByCategory[null].find(ch => ch.name == '')
     if (newCharacter) id = newCharacter.id
 
     return id
@@ -204,8 +231,10 @@ class CharacterListView extends Component {
     )
   }
 
-  renderVisibleCharacters = () => {
-    return this.state.visibleCharacters.map((ch, idx) => {
+  renderVisibleCharacters = (categoryId) => {
+    if (!this.state.visibleCharacters[categoryId]) return []
+
+    return this.state.visibleCharacters[categoryId].map((ch, idx) => {
       let img = null
       if (ch.imageId) {
         img = <div className='character-list__item-inner__image-wrapper'>
@@ -225,13 +254,22 @@ class CharacterListView extends Component {
     })
   }
 
-  renderCharacters () {
-    return <div>
-      <h3>{this.props.categories[0].name}</h3>
+  renderCategory (category) {
+    const charactersInCategory = this.renderVisibleCharacters(category.id)
+    if (!charactersInCategory.length) return null
+    return <div key={`category-${category.id}`}>
+      <h3>{category.name}</h3>
       <div className={cx('character-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
-        { this.renderVisibleCharacters() }
+        { charactersInCategory }
       </div>
     </div>
+  }
+
+  renderCharacters () {
+    let categories = sortBy(this.props.categories, 'position')
+    categories.push({id: null, name: i18n('Uncategorized')})
+
+    return categories.map(cat => this.renderCategory(cat))
   }
 
   renderCharacterDetails () {
@@ -306,7 +344,9 @@ class CharacterListView extends Component {
           <Row>
             <Col sm={3}>
               <h1 className={klasses}>{i18n('Characters')}{' '}<Button onClick={this.handleCreateNewCharacter}><Glyphicon glyph='plus' /></Button></h1>
-              {this.renderCharacters()}
+              <div className='character-list__category-list'>
+                {this.renderCharacters()}
+              </div>
             </Col>
             <Col sm={9}>
               {this.renderCharacterDetails()}

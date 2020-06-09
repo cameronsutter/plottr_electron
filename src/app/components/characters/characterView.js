@@ -12,6 +12,7 @@ import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
+import CategoryPicker from '../CategoryPicker'
 
 class CharacterView extends Component {
   constructor (props) {
@@ -32,6 +33,7 @@ class CharacterView extends Component {
       editing: props.character.name === '',
       notes: props.character.notes,
       description: description,
+      categoryId: props.character.categoryId || -1,
       templateAttrs: templateAttrs,
       newImageId: null,
     }
@@ -76,7 +78,9 @@ class CharacterView extends Component {
     var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
     var description = findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
-    var attrs = {}
+    var attrs = {
+      categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
+    }
     if (this.state.newImageId) {
       attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
     }
@@ -116,6 +120,10 @@ class CharacterView extends Component {
     if (window.confirm(text)) {
       this.props.actions.deleteCharacter(this.props.character.id)
     }
+  }
+
+  changeCategory = (val) => {
+    this.setState({categoryId: val})
   }
 
   renderEditingImage () {
@@ -212,6 +220,10 @@ class CharacterView extends Component {
                 onKeyPress={this.handleEnter}
                 defaultValue={character.description} />
             </FormGroup>
+            <FormGroup>
+              <ControlLabel>{i18n('Category')}</ControlLabel>
+              <CategoryPicker type='characters' selectedId={this.state.categoryId} onChange={this.changeCategory}/>
+            </FormGroup>
             { this.renderEditingImage() }
             <FormGroup>
               <ControlLabel>{i18n('Notes')}</ControlLabel>
@@ -296,7 +308,7 @@ class CharacterView extends Component {
   }
 
   renderCharacter () {
-    const { character, ui, customAttributes } = this.props
+    const { character, ui, customAttributes, categories } = this.props
     const customAttrNotes = customAttributes.map((attr, idx) => {
       const { name, type } = attr
       let desc
@@ -331,6 +343,8 @@ class CharacterView extends Component {
 
     const klasses = cx('character-list__character', { darkmode: ui.darkMode })
 
+    const category = categories.find(cat => cat.id == character.categoryId)
+
     return <div className='character-list__character-wrapper'>
       <div className={klasses} onClick={() => this.setState({editing: true})}>
         <h4 className='secondary-text'>{character.name}</h4>
@@ -340,6 +354,10 @@ class CharacterView extends Component {
             <dl className='dl-horizontal'>
               <dt>{i18n('Description')}</dt>
               <dd>{character.description}</dd>
+            </dl>
+            <dl className='dl-horizontal'>
+              <dt>{i18n('Category')}</dt>
+              <dd>{category && category.name || i18n('Uncategorized')}</dd>
             </dl>
             {customAttrNotes}
             <dl className='dl-horizontal'>
@@ -371,6 +389,7 @@ class CharacterView extends Component {
 
 CharacterView.propTypes = {
   character: PropTypes.object.isRequired,
+  categories: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributes: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
@@ -380,7 +399,8 @@ CharacterView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    customAttributes: state.customAttributes['characters'],
+    categories: state.categories.characters,
+    customAttributes: state.customAttributes.characters,
     cards: state.cards,
     notes: state.notes,
     ui: state.ui,

@@ -77,9 +77,8 @@ const character = {
 const categories = {
   characters: [],
   places: [],
-  cards: [],
-  scenes: [],
-  lines: []
+  notes: [],
+  tags: [],
 }
 
 const category = {

@@ -159,9 +159,11 @@ function characters (characters, customAttributes, images, doc) {
     let name = new Paragraph({text: ch.name, heading: HeadingLevel.HEADING_2})
     paragraphs.push(name)
     if (ch.imageId) {
-      const imgData = images[ch.imageId].data
-      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
-      paragraphs.push(new Paragraph({children: [image]}))
+      const imgData = images[ch.imageId] && images[ch.imageId].data
+      if (imgData) {
+        const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
+        paragraphs.push(new Paragraph({children: [image]}))
+      }
     }
     paragraphs.push(new Paragraph({text: i18n('Description'), heading: HeadingLevel.HEADING_3}))
     paragraphs.push(new Paragraph(ch.description))
@@ -219,9 +221,11 @@ function places (places, customAttributes, images, doc) {
     let name = new Paragraph({text: pl.name, heading: HeadingLevel.HEADING_2})
     paragraphs.push(name)
     if (pl.imageId) {
-      const imgData = images[pl.imageId].data
-      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
-      paragraphs.push(new Paragraph({children: [image]}))
+      const imgData = images[pl.imageId] && images[pl.imageId].data
+      if (imgData) {
+        const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
+        paragraphs.push(new Paragraph({children: [image]}))
+      }
     }
     paragraphs.push(new Paragraph({text: i18n('Description'), heading: HeadingLevel.HEADING_3}))
     paragraphs.push(new Paragraph(pl.description))
@@ -267,9 +271,11 @@ function notes (notes, namesMapping, images, doc) {
     let title = new Paragraph({text: n.title, heading: HeadingLevel.HEADING_2})
     paragraphs.push(title)
     if (n.imageId) {
-      const imgData = images[n.imageId].data
-      const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
-      paragraphs.push(new Paragraph({children: [image]}))
+      const imgData = images[n.imageId] && images[n.imageId].data
+      if (imgData) {
+        const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))
+        paragraphs.push(new Paragraph({children: [image]}))
+      }
     }
     const attachmentParagraphs = attachments(n, namesMapping)
     const contentParagraphs = serialize(n.content, doc)

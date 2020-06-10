@@ -133,8 +133,10 @@ class CharacterListView extends Component {
       if (activeCharacter) id = activeCharacter.id
     }
 
-    let newCharacter = charactersByCategory[null].find(ch => ch.name == '')
-    if (newCharacter) id = newCharacter.id
+    if (charactersByCategory[null] && charactersByCategory[null].length) {
+      let newCharacter = charactersByCategory[null].find(ch => ch.name == '')
+      if (newCharacter) id = newCharacter.id
+    }
 
     return id
   }

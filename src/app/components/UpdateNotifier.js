@@ -33,7 +33,7 @@ export default class UpdateNotifier extends Component {
     })
     ipcRenderer.on('updater-downloaded', (event, info) => {this.setState({finishedDownloading: true, percentDownloaded: 100})})
     ipcRenderer.on('updater-download-progress', (event, {progress}) => {
-      this.setState({downloadInProgress: true, percentDownloaded: progress.percent})
+      this.setState({downloadInProgress: true, percentDownloaded: Math.floor(progress.percent)})
     })
   }
 
@@ -42,6 +42,7 @@ export default class UpdateNotifier extends Component {
   }
 
   renderText () {
+    // this.state.info.version has the string of the new version's number (e.g. "2020.6.9")
     console.log('update info', this.state.info)
     const { checking, available, finishedChecking, downloadInProgress, percentDownloaded, finishedDownloading } = this.state
     let text = ''

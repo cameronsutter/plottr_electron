@@ -36,7 +36,7 @@ class UpdateManager {
 
   notifyAllWindows = (channel, data) => {
     // log.info('sending to', channel, data)
-    this.windows.forEach(win => win.window.webContents.send(channel, data))
+    this.windows.forEach(win => { if (win && win.window) win.window.webContents.send(channel, data) })
   }
 
   updateWindows = (theWindows) => {

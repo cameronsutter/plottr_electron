@@ -574,6 +574,7 @@ function dereferenceWindow (winObj) {
   windows = _.reject(windows, function (win) {
     return win.id === winObj.id
   })
+  UpdateManager.updateWindows(windows)
 }
 
 function closeWindow (id) {

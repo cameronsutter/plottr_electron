@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { ipcRenderer, shell } from 'electron'
 import i18n from 'format-message'
-import { Button } from 'react-bootstrap'
 
 export default class UpdateNotifier extends Component {
   state = {
@@ -37,51 +36,45 @@ export default class UpdateNotifier extends Component {
     })
   }
 
-  goToChangelog () {
+  goToChangelog = () => {
     shell.openExternal('https://getplottr.com/changelog')
   }
 
+  startDownload = () => {
+    ipcRenderer.send('updater-doTheThing')
+    this.setState({downloadInProgress: true})
+  }
+
+  quitToInstall = () => {
+    ipcRenderer.send('updater-ZhuLi-doTheThing')
+  }
+
   renderText () {
-    // this.state.info.version has the string of the new version's number (e.g. "2020.6.9")
-    console.log('update info', this.state.info)
-    const { checking, available, finishedChecking, downloadInProgress, percentDownloaded, finishedDownloading } = this.state
+    const { checking, available, finishedChecking, downloadInProgress, percentDownloaded, finishedDownloading, info } = this.state
+    const version = info && info.version ? info.version : ''
     let text = ''
     if (checking) text = i18n('Checking for updates')
     if (finishedChecking && !available) text = i18n('No updates available')
-    if (available) text = <a href='#' title={i18n('See the Changelog')} onClick={this.goToChangelog}>{i18n('Update available!')}</a>
-    if (downloadInProgress) text = i18n('Downloading ({percent}%)', {percent: percentDownloaded})
-    if (finishedDownloading) text = i18n('Update Ready')
+    if (available) text = i18n('Update Available ({version}): Download Now!', {version: `v${version}`})
+    if (downloadInProgress) text = i18n('Downloading {version} ({percent}%)', {version: `v${version}`, percent: percentDownloaded})
+    if (finishedDownloading) text = i18n('Download Complete: Click to Install ({version})', {version: `v${version}`})
 
-    if (text == '') return null
+    if (!text) return null
     return <span>{ text }</span>
   }
 
-  renderButton () {
-    const { available, downloadInProgress, finishedDownloading } = this.state
-    let text = ''
-    let fnc = () => {}
-    if (available && !downloadInProgress) {
-      text = i18n('Download Now')
-      fnc = () => {
-        ipcRenderer.send('updater-doTheThing')
-        this.setState({downloadInProgress: true})
-      }
-    }
-    if (finishedDownloading) {
-      text = i18n('Quit and Install')
-      fnc = () => { ipcRenderer.send('updater-ZhuLi-doTheThing') }
-    }
-
-    if (text == '') return null
-    return <div><Button bsSize='xsmall' onClick={fnc}>{text}</Button></div>
-  }
-
   render () {
-    return <ul className='nav navbar-nav navbar-right update-notifier'>
-      <li>
-        <div>{this.renderText()}</div>
-        {this.renderButton()}
-      </li>
-    </ul>
+    const text = this.renderText()
+    if (!text) return null
+
+    const { available, finishedDownloading } = this.state
+
+    if (available || finishedDownloading) {
+      return <button onClick={available ? this.startDownload : this.quitToInstall} className='btn-default update-notifier__wrapper'>
+        {text}
+      </button>
+    } else {
+      return <div className='update-notifier__wrapper btn-default'>{ text }</div>
+    }
   }
 }

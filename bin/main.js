@@ -748,7 +748,7 @@ function buildPlottrMenu () {
     label: i18n('About Plottr'),
     click: openAboutWindow,
   }, {
-    label: i18n('Check for updates'),
+    label: i18n('Check for Updates'),
     click: checkUpdatesIfAllowed,
     visible: SETTINGS.get('premiumFeatures'),
   }]

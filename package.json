@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.6.10",
+  "version": "2020.6.11-beta.1",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",

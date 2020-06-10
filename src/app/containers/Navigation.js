@@ -43,6 +43,7 @@ class Navigation extends Component {
     }
     let klasses = cx('navbar', 'navbar-default', 'navbar-fixed-top', {'navbar-inverse': this.props.ui.darkMode})
     return <nav className={klasses} role='navigation'>
+      {TRIALMODE ? null : <UpdateNotifier/>}
       <div className='collapse navbar-collapse'>
         <div className='navbar-header'>
           <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='#navbar-collapse-1'>
@@ -79,7 +80,6 @@ class Navigation extends Component {
           </li>
         </ul>
         { this.renderTrialLinks() }
-        {TRIALMODE ? null : <UpdateNotifier/>}
       </div>
     </nav>
   }

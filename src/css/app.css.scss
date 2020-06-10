@@ -141,21 +141,20 @@ input[type="file"] {
   }
 }
 
-.update-notifier {
-  padding-top: 2px;
-  margin-right: 15px;
-  // display: flex;
-  // justify-content: center;
-  // flex-direction: column;
-  // height: 100%;
-  // position: absolute;
-  // top: 2px;
-  // right: 0;
-
-  li {
-    text-align: center;
-    font-size: 14px;
-  }
+.update-notifier__wrapper {
+  @include application-text;
+  position: absolute;
+  right: 15px;
+  height: 30px;
+  top: 10px;
+  border-radius: 100px;
+  padding: 0px 15px;
+  line-height: 28px;
+  border-width: 1px;
+  border-style: solid;
+}
+div.update-notifier__wrapper:hover {
+  background-color: white;
 }
 
 .tour-helper {

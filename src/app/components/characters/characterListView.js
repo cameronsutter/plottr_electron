@@ -260,7 +260,7 @@ class CharacterListView extends Component {
     const charactersInCategory = this.renderVisibleCharacters(category.id)
     if (!charactersInCategory.length) return null
     return <div key={`category-${category.id}`}>
-      <h3>{category.name}</h3>
+      <h2>{category.name}</h2>
       <div className={cx('character-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
         { charactersInCategory }
       </div>

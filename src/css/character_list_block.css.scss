@@ -26,6 +26,9 @@
   overflow: auto;
   height: calc(100% - 74px);
   position: relative;
+  h2 {
+    font-size: 17px;
+  }
 }
 
 .character-list__list {

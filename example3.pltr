@@ -20,7 +20,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.6.8"
+    "version": "2020.6.11-beta.2"
   },
   "series": {
     "name": "Pride & Prejudice copy",
@@ -85,7 +85,9 @@
           ]
         }
       ],
-      "tags": [],
+      "tags": [
+        2
+      ],
       "templates": [],
       "imageId": null,
       "bookIds": [
@@ -95,7 +97,7 @@
         {
           "children": [
             {
-              "text": ""
+              "text": "2"
             }
           ]
         }
@@ -493,9 +495,7 @@
       "categoryId": "2",
       "tags": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [],
       "age": [
         {
           "children": [
@@ -775,6 +775,28 @@
       "bookIds": [
         1
       ]
+    },
+    {
+      "id": 21,
+      "name": "",
+      "description": "",
+      "notes": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": []
     }
   ],
   "chapters": [
@@ -10078,7 +10100,7 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1591044590359,
+      "lastEdited": 1591796305410,
       "templates": [],
       "imageId": null,
       "bookIds": []

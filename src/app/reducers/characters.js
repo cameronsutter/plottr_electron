@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
-  ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD,
-  ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
-  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELETE_IMAGE, EDIT_CHARACTER_ATTRIBUTE} from '../constants/ActionTypes'
+  ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD, ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
+  DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELETE_IMAGE, EDIT_CHARACTER_ATTRIBUTE,
+  ATTACH_TAG_TO_CHARACTER, REMOVE_TAG_FROM_CHARACTER, ATTACH_BOOK_TO_CHARACTER, REMOVE_BOOK_FROM_CHARACTER } from '../constants/ActionTypes'
 import { character } from '../../../shared/initialState'
 import { newFileCharacters } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
@@ -81,6 +81,34 @@ export default function characters (state = initialState, action) {
         let notes = _.cloneDeep(character.noteIds)
         notes.splice(notes.indexOf(action.id), 1)
         return character.id === action.characterId ? Object.assign({}, character, {noteIds: notes}) : character
+      })
+
+    case ATTACH_TAG_TO_CHARACTER:
+      return state.map(character => {
+        let tags = _.cloneDeep(character.tags)
+        tags.push(action.tagId)
+        return character.id === action.id ? Object.assign({}, character, {tags: tags}) : character
+      })
+
+    case REMOVE_TAG_FROM_CHARACTER:
+      return state.map(character => {
+        let tags = _.cloneDeep(character.tags)
+        tags.splice(tags.indexOf(action.tagId), 1)
+        return character.id === action.id ? Object.assign({}, character, {tags: tags}) : character
+      })
+
+    case ATTACH_BOOK_TO_CHARACTER:
+      return state.map(character => {
+        let bookIds = _.cloneDeep(character.bookIds)
+        bookIds.push(action.bookId)
+        return character.id === action.id ? Object.assign({}, character, {bookIds: bookIds}) : character
+      })
+
+    case REMOVE_BOOK_FROM_CHARACTER:
+      return state.map(character => {
+        let bookIds = _.cloneDeep(character.bookIds)
+        bookIds.splice(bookIds.indexOf(action.bookId), 1)
+        return character.id === action.id ? Object.assign({}, character, {bookIds: bookIds}) : character
       })
 
     case DELETE_NOTE:

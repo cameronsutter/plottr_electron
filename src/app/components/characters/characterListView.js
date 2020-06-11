@@ -20,8 +20,8 @@ import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import Image from '../images/Image'
 import cx from 'classnames'
 import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
-import ErrorBoundary from '../../containers/ErrorBoundary'
 import { FaSave } from 'react-icons/fa'
+import { visibleSortedCharactersByCategorySelector, characterFilterIsEmptySelector } from '../../selectors/characters'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 const win = remote.getCurrentWindow()
@@ -29,122 +29,48 @@ const win = remote.getCurrentWindow()
 class CharacterListView extends Component {
   constructor (props) {
     super(props)
-    let id = null
-    let visible = []
-    const { characterSort, characterFilter } = props.ui
-    if (props.characters.length > 0) {
-      visible = this.visibleCharacters(props.characters, characterFilter, characterSort)
-      id = this.detailID(visible, props.categories)
-    }
     this.state = {
       dialogOpen: false,
       addAttrText: '',
-      characterDetailId: id,
-      visibleCharacters: visible,
+      characterDetailId: null,
       showTemplatePicker: false,
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    let visible = []
-    let detailID = null
-    const { characterSort, characterFilter } = nextProps.ui
-    if (nextProps.characters.length > 0) {
-      visible = this.visibleCharacters(nextProps.characters, characterFilter, characterSort)
-      detailID = this.detailID(visible, nextProps.categories)
+  static getDerivedStateFromProps (props, state) {
+    let returnVal = {...state}
+    const { visibleCharactersByCategory, characters, categories } = props
+    returnVal.characterDetailId = CharacterListView.selectedId(visibleCharactersByCategory, characters, categories, state.characterDetailId)
+    return returnVal
+  }
+
+  static selectedId (charactersByCategory, characters, categories, characterDetailId) {
+    if (!characters.length) return null
+
+    // check for the currently active one
+    if (characterDetailId != null) {
+      let activeCharacter = characters.find(ch => ch.id == characterDetailId)
+      if (activeCharacter) return activeCharacter.id
     }
-    this.setState({
-      visibleCharacters: visible,
-      characterDetailId: detailID,
-    })
-  }
-
-  componentDidUpdate () {
-    if (this.refs.attrInput) {
-      findDOMNode(this.refs.attrInput).focus()
-    }
-  }
-
-  charactersByCategory = (characters) => {
-    return groupBy(characters, 'categoryId')
-  }
-
-  sortEachCategory = (visibleByCategory, sort) => {
-    let sortOperands = sort.split('~')
-    let attrName = sortOperands[0]
-    let direction = sortOperands[1]
-    let sortByOperand = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
-
-    Object.keys(visibleByCategory).forEach(k => {
-      let characters = visibleByCategory[k]
-
-      let sorted = sortBy(characters, sortByOperand)
-      if (direction == 'desc') sorted.reverse()
-      visibleByCategory[k] = sorted
-    })
-    return visibleByCategory
-  }
-
-  // TODO: this should be a selector
-  visibleCharacters = (characters, filter, sort) => {
-    let visible = this.charactersByCategory(characters)
-    if (!this.filterIsEmpty(filter)) {
-      visible = {}
-      characters.forEach(ch => {
-        const matches = Object.keys(filter).some(attr => {
-          return filter[attr].some(val => {
-            if (val == '') {
-              if (!ch[attr] || ch[attr] == '') return true
-            } else {
-              if (ch[attr] && ch[attr] == val) return true
-            }
-            return false
-          })
-        })
-        if (matches) {
-          if (visible[ch.categoryId] && visible[ch.categoryId].length) {
-            visible[ch.categoryId].push(ch)
-          } else {
-            visible[ch.categoryId] = [ch]
-          }
-        }
-      })
-    }
-
-    return this.sortEachCategory(visible, sort)
-  }
-
-  detailID = (charactersByCategory, categories) => {
-    if (!Object.keys(charactersByCategory).length) return null
 
     let sortedCategories = sortBy(categories, 'position')
     sortedCategories.push({id: null}) // uncategorized
     const firstCategoryWithChar = sortedCategories.find(cat => charactersByCategory[cat.id] && charactersByCategory[cat.id][0])
     let id = charactersByCategory[firstCategoryWithChar.id][0] && charactersByCategory[firstCategoryWithChar.id][0].id
 
-    // check for the currently active one
-    if (this.state && this.state.characterDetailId != null) {
-      let activeCharacter = Object.keys(charactersByCategory).find(catId => {
-        if (charactersByCategory[catId]) {
-          return charactersByCategory[catId].find(ch => ch.id === this.state.characterDetailId)
-        }
-        return false
-      })
-      if (activeCharacter) id = activeCharacter.id
-    }
-
-    if (charactersByCategory[null] && charactersByCategory[null].length) {
-      let newCharacter = charactersByCategory[null].find(ch => ch.name == '')
-      if (newCharacter) id = newCharacter.id
-    }
+    // check for a new one
+    // if (charactersByCategory[null] && charactersByCategory[null].length) {
+    //   let newCharacter = charactersByCategory[null].find(ch => ch.name == '')
+    //   if (newCharacter) id = newCharacter.id
+    // }
 
     return id
   }
 
-  filterIsEmpty = (filter) => {
-    if (!filter) return true
-
-    return !this.props.customAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
+  componentDidUpdate () {
+    if (this.refs.attrInput) {
+      findDOMNode(this.refs.attrInput).focus()
+    }
   }
 
   closeDialog = () => {
@@ -192,12 +118,12 @@ class CharacterListView extends Component {
   }
 
   renderSubNav () {
-    const { ui, uiActions } = this.props
+    const { filterIsEmpty, ui, uiActions } = this.props
     let filterPopover = <Popover id='filter'>
       <CustomAttrFilterList type={'characters'}/>
     </Popover>
     let filterDeclaration = <Alert onClick={() => uiActions.setCharacterFilter(null)} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Character list is filtered')}</Alert>
-    if (this.filterIsEmpty(ui.characterFilter)) {
+    if (filterIsEmpty) {
       filterDeclaration = <span></span>
     }
     let sortPopover = <Popover id='sort'>
@@ -234,9 +160,10 @@ class CharacterListView extends Component {
   }
 
   renderVisibleCharacters = (categoryId) => {
-    if (!this.state.visibleCharacters[categoryId]) return []
+    const { visibleCharactersByCategory } = this.props
+    if (!visibleCharactersByCategory[categoryId]) return []
 
-    return this.state.visibleCharacters[categoryId].map((ch, idx) => {
+    return visibleCharactersByCategory[categoryId].map((ch, idx) => {
       let img = null
       if (ch.imageId) {
         img = <div className='character-list__item-inner__image-wrapper'>
@@ -275,11 +202,9 @@ class CharacterListView extends Component {
   }
 
   renderCharacterDetails () {
-    let character = this.props.characters.find(char =>
-      char.id === this.state.characterDetailId
-    )
+    let character = this.props.characters.find(char => char.id == this.state.characterDetailId)
     if (character) {
-      return <ErrorBoundary><CharacterView key={`character-${character.id}`} character={character} /></ErrorBoundary>
+      return <CharacterView key={`character-${character.id}`} characterId={character.id} />
     } else {
       return null
     }
@@ -361,6 +286,7 @@ class CharacterListView extends Component {
 }
 
 CharacterListView.propTypes = {
+  visibleCharactersByCategory: PropTypes.object.isRequired,
   characters: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
   customAttributes: PropTypes.array.isRequired,
@@ -373,6 +299,8 @@ CharacterListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
+    visibleCharactersByCategory: visibleSortedCharactersByCategorySelector(state),
+    filterIsEmpty: characterFilterIsEmptySelector(state),
     characters: state.characters,
     categories: state.categories.characters,
     customAttributes: state.customAttributes.characters,

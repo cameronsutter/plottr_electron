@@ -13,397 +13,110 @@ import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
+import ErrorBoundary from '../../containers/ErrorBoundary'
+import CharacterEditDetails from './CharacterEditDetails'
+import CharacterDetails from './CharacterDetails'
+import SelectList from '../selectList'
+import BookSelectList from '../story/BookSelectList'
 
 class CharacterView extends Component {
-  constructor (props) {
-    super(props)
-    let description = {}
-    props.customAttributes.forEach(attr => {
-      const { name } = attr
-      description[name] = props.character[name]
-    })
-    let templateAttrs = props.character.templates.reduce((acc, t) =>{
-      acc[t.id] = t.attributes.reduce((obj, attr) => {
-        obj[attr.name] = attr.value
-        return obj
-      }, {})
-      return acc
-    }, {})
-    this.state = {
-      editing: props.character.name === '',
-      notes: props.character.notes,
-      description: description,
-      categoryId: props.character.categoryId || -1,
-      templateAttrs: templateAttrs,
-      newImageId: null,
-    }
-  }
+  state = {editing: false}
+  // renderAssociations () {
+  //   let cards = null
+  //   let notes = null
+  //   if (this.props.character.cards.length > 0) {
+  //     cards = this.renderCardAssociations()
+  //   }
+  //   if (this.props.character.noteIds.length > 0) {
+  //     notes = this.renderNoteAssociations()
+  //   }
+  //   if (cards && notes) {
+  //     return [cards, <span key='ampersand'> & </span>, notes]
+  //   } else {
+  //     return cards || notes
+  //   }
+  // }
 
-  componentWillUnmount () {
-    if (this.state.editing) this.saveEdit()
-  }
+  // renderCardAssociations () {
+  //   if (!this.props.character.cards) return null
+  //   if (!this.props.character.cards.length) return null
 
-  handleEnter = (event) => {
-    if (event.which === 13) {
-      this.saveEdit()
-    }
-  }
+  //   let label = i18n('{count, plural, one {1 card} other {# cards}}', { count: this.props.character.cards.length })
+  //   let cardsAssoc = this.props.character.cards.reduce((arr, cId) => {
+  //     let card = this.props.cards.find(c => c.id == cId)
+  //     if (card) return arr.concat(card.title)
+  //     return arr
+  //   }, []).join(', ')
+  //   let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
+  //   return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
+  //     <span>{label}</span>
+  //   </OverlayTrigger>
+  // }
 
-  handleEsc = (event) => {
-    if (event.which === 27) {
-      this.saveEdit()
-    }
-  }
+  // renderNoteAssociations () {
+  //   if (!this.props.character.noteIds) return null
+  //   if (!this.props.character.noteIds.length) return null
 
-  handleAttrDescriptionChange = (attrName, desc) => {
-    let description = {
-      ...this.state.description,
-    }
-    description[attrName] = desc
-    this.setState({description: description})
-  }
-
-  handleTemplateAttrDescriptionChange = (id, attr, desc) => {
-    let templateAttrs = {
-      ...this.state.templateAttrs,
-      [id]: {
-        ...this.state.templateAttrs[id],
-        [attr]: desc,
-      }
-    }
-    this.setState({templateAttrs})
-  }
-
-  saveEdit = () => {
-    var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
-    var description = findDOMNode(this.refs.descriptionInput).value
-    var notes = this.state.notes
-    var attrs = {
-      categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
-    }
-    if (this.state.newImageId) {
-      attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
-    }
-    this.props.customAttributes.forEach(attr => {
-      const { name, type } = attr
-      if (type == 'paragraph') {
-        attrs[name] = this.state.description[name]
-      } else {
-        const val = findDOMNode(this.refs[`${name}Input`]).value
-        attrs[name] = val
-      }
-    })
-    let templates = this.props.character.templates.map(t => {
-      t.attributes = t.attributes.map(attr => {
-        if (attr.type == 'paragraph') {
-          attr.value = this.state.templateAttrs[t.id][attr.name]
-        } else {
-          attr.value = findDOMNode(this.refs[`${t.id}-${attr.name}Input`]).value
-        }
-        return attr
-      })
-      return t
-    })
-    this.props.actions.editCharacter(this.props.character.id, {name, description, notes, templates, ...attrs})
-    this.setState({editing: false})
-  }
-
-  cancelEdit = () => {
-    this.setState({
-      newImageId: null,
-      editing: false,
-    })
-  }
-
-  deleteCharacter = () => {
-    let text = i18n('Do you want to delete this character: { character }?', {character: this.props.character.name})
-    if (window.confirm(text)) {
-      this.props.actions.deleteCharacter(this.props.character.id)
-    }
-  }
-
-  changeCategory = (val) => {
-    this.setState({categoryId: val})
-  }
-
-  renderEditingImage () {
-    const { character } = this.props
-
-    let imgId = this.state.newImageId || character.imageId
-    return <FormGroup>
-      <ControlLabel>{i18n('Character Thumbnail')}</ControlLabel>
-      <div className='character-list__character__edit-image-wrapper'>
-        <div className='character-list__character__edit-image'>
-          <Image size='large' shape='circle' imageId={imgId} />
-        </div>
-        <div>
-          <ImagePicker selectedId={imgId} chooseImage={id => this.setState({newImageId: id})} deleteButton />
-        </div>
-      </div>
-    </FormGroup>
-  }
-
-  renderEditingCustomAttributes () {
-    const { character, ui, customAttributes } = this.props
-    return customAttributes.map((attr, idx) => {
-      const { name, type } = attr
-      if (type == 'paragraph') {
-        return <div key={idx}>
-          <ControlLabel>{name}</ControlLabel>
-          <RichText
-            description={character[name]}
-            onChange={(desc) => this.handleAttrDescriptionChange(name, desc)}
-            editable
-            autofocus={false}
-            darkMode={ui.darkMode}
-          />
-        </div>
-      } else {
-        return <FormGroup key={idx}>
-          <ControlLabel>{name}</ControlLabel>
-          <FormControl
-            type='text' ref={`${name}Input`}
-            defaultValue={character[name]}
-            onKeyDown={this.handleEsc}
-            onKeyPress={this.handleEnter} />
-        </FormGroup>
-      }
-    })
-  }
-
-  renderEditingTemplates () {
-    return this.props.character.templates.flatMap(t => {
-      return t.attributes.map(attr => {
-        if (attr.type == 'paragraph') {
-          return <div key={attr.name}>
-            <ControlLabel>{attr.name}</ControlLabel>
-            <RichText
-              description={attr.value}
-              onChange={(desc) => this.handleTemplateAttrDescriptionChange(t.id, attr.name, desc)}
-              editable
-              autofocus={false}
-              darkMode={this.props.ui.darkMode}
-            />
-          </div>
-        } else {
-          return <FormGroup key={attr.name}>
-            <ControlLabel>{attr.name}</ControlLabel>
-            <FormControl
-              type='text' ref={`${t.id}-${attr.name}Input`}
-              defaultValue={attr.value}
-              onKeyDown={this.handleEsc}
-              onKeyPress={this.handleEnter} />
-          </FormGroup>
-        }
-      })
-    })
-  }
-
-  renderEditing () {
-    const { character, ui } = this.props
-    return <div className='character-list__character-wrapper'>
-      <div className={cx('character-list__character', 'editing', {darkmode: ui.darkMode})}>
-        <div className='character-list__character__edit-form'>
-          <div className='character-list__inputs__normal'>
-            <FormGroup>
-              <ControlLabel>{i18n('Name')}</ControlLabel>
-              <FormControl
-                type='text' ref='nameInput' autoFocus
-                onKeyDown={this.handleEsc}
-                onKeyPress={this.handleEnter}
-                defaultValue={character.name} />
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>{i18n('Short Description')}</ControlLabel>
-              <FormControl type='text' ref='descriptionInput'
-                onKeyDown={this.handleEsc}
-                onKeyPress={this.handleEnter}
-                defaultValue={character.description} />
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>{i18n('Category')}</ControlLabel>
-              <CategoryPicker type='characters' selectedId={this.state.categoryId} onChange={this.changeCategory}/>
-            </FormGroup>
-            { this.renderEditingImage() }
-            <FormGroup>
-              <ControlLabel>{i18n('Notes')}</ControlLabel>
-              <RichText
-                description={character.notes}
-                onChange={(desc) => this.setState({notes: desc})}
-                editable
-                autofocus={false}
-                darkMode={this.props.ui.darkMode}
-              />
-            </FormGroup>
-            { this.renderEditingTemplates() }
-          </div>
-          <div className='character-list__inputs__custom'>
-            {this.renderEditingCustomAttributes()}
-          </div>
-        </div>
-        <ButtonToolbar className='card-dialog__button-bar'>
-          <Button
-            onClick={this.cancelEdit} >
-            {i18n('Cancel')}
-          </Button>
-          <Button bsStyle='success'
-            onClick={this.saveEdit} >
-            {i18n('Save')}
-          </Button>
-          <Button className='card-dialog__delete'
-            onClick={this.deleteCharacter} >
-            {i18n('Delete')}
-          </Button>
-        </ButtonToolbar>
-      </div>
-    </div>
-  }
-
-  renderAssociations () {
-    let cards = null
-    let notes = null
-    if (this.props.character.cards.length > 0) {
-      cards = this.renderCardAssociations()
-    }
-    if (this.props.character.noteIds.length > 0) {
-      notes = this.renderNoteAssociations()
-    }
-    if (cards && notes) {
-      return [cards, <span key='ampersand'> & </span>, notes]
-    } else {
-      return cards || notes
-    }
-  }
-
-  renderCardAssociations () {
-    if (!this.props.character.cards) return null
-    if (!this.props.character.cards.length) return null
-
-    let label = i18n('{count, plural, one {1 card} other {# cards}}', { count: this.props.character.cards.length })
-    let cardsAssoc = this.props.character.cards.reduce((arr, cId) => {
-      let card = this.props.cards.find(c => c.id == cId)
-      if (card) return arr.concat(card.title)
-      return arr
-    }, []).join(', ')
-    let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
-    return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
-      <span>{label}</span>
-    </OverlayTrigger>
-  }
-
-  renderNoteAssociations () {
-    if (!this.props.character.noteIds) return null
-    if (!this.props.character.noteIds.length) return null
-
-    let label = i18n('{count, plural, one {1 note} other {# notes}}', { count: this.props.character.noteIds.length })
-    let noteAssoc = this.props.character.noteIds.reduce((arr, nId) => {
-      let note = this.props.notes.find(n => n.id == nId)
-      if (note) return arr.concat(note.title)
-      return arr
-    }, []).join(', ')
-    let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
-    return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
-      <span>{label}</span>
-    </OverlayTrigger>
-  }
-
-  renderCharacter () {
-    const { character, ui, customAttributes, categories } = this.props
-    const customAttrNotes = customAttributes.map((attr, idx) => {
-      const { name, type } = attr
-      let desc
-      if (type == 'paragraph') {
-        desc = <dd>
-          <RichText description={character[name]} darkMode={ui.darkMode} />
-        </dd>
-      } else {
-        desc = <dd>{character[name]}</dd>
-      }
-      return <dl key={idx} className='dl-horizontal'>
-        <dt>{name}</dt>
-        {desc}
-      </dl>
-    })
-    const templateNotes = character.templates.flatMap(t => {
-      return t.attributes.map(attr => {
-        let val
-        if (attr.type == 'paragraph') {
-          val = <dd>
-            <RichText description={attr.value} darkMode={ui.darkMode} />
-          </dd>
-        } else {
-          val = <dd>{attr.value}</dd>
-        }
-        return <dl key={attr.name} className='dl-horizontal'>
-          <dt>{attr.name}</dt>
-          {val}
-        </dl>
-      })
-    })
-
-    const klasses = cx('character-list__character', { darkmode: ui.darkMode })
-
-    const category = categories.find(cat => cat.id == character.categoryId)
-
-    return <div className='character-list__character-wrapper'>
-      <div className={klasses} onClick={() => this.setState({editing: true})}>
-        <h4 className='secondary-text'>{character.name}</h4>
-        <div className='character-list__character-notes'>
-          <div>
-            <Image size='large' shape='circle' imageId={character.imageId} />
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Description')}</dt>
-              <dd>{character.description}</dd>
-            </dl>
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Category')}</dt>
-              <dd>{category && category.name || i18n('Uncategorized')}</dd>
-            </dl>
-            {customAttrNotes}
-            <dl className='dl-horizontal'>
-              <dt>{i18n('Notes')}</dt>
-              <dd>
-                <RichText description={character.notes} darkMode={ui.darkMode} />
-              </dd>
-            </dl>
-            {templateNotes}
-          </div>
-          <div className='character-list__right-side'>
-            <Glyphicon glyph='pencil' />
-          </div>
-        </div>
-      </div>
-    </div>
-  }
+  //   let label = i18n('{count, plural, one {1 note} other {# notes}}', { count: this.props.character.noteIds.length })
+  //   let noteAssoc = this.props.character.noteIds.reduce((arr, nId) => {
+  //     let note = this.props.notes.find(n => n.id == nId)
+  //     if (note) return arr.concat(note.title)
+  //     return arr
+  //   }, []).join(', ')
+  //   let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
+  //   return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
+  //     <span>{label}</span>
+  //   </OverlayTrigger>
+  // }
 
   render () {
-    if (this.state.editing) {
-      window.SCROLLWITHKEYS = false
-      return this.renderEditing()
-    } else {
-      window.SCROLLWITHKEYS = true
-      return this.renderCharacter()
-    }
+    if (this.state.editing) window.SCROLLWITHKEYS = false
+    else window.SCROLLWITHKEYS = true
+
+    const { character, tags, actions } = this.props
+
+    return <div className='character-list__character-view'>
+      <div className='character-list__character-view__left-side'>
+        <BookSelectList
+          selectedBooks={character.bookIds}
+          parentId={character.id}
+          add={actions.addBook}
+          remove={actions.removeBook}
+        />
+        <SelectList
+          parentId={character.id} type={'Tags'}
+          selectedItems={character.tags}
+          allItems={tags}
+          add={actions.addTag}
+          remove={actions.removeTag}
+        />
+      </div>
+      <div className='character-list__character-view__right-side'>
+        <ErrorBoundary>
+          { this.state.editing ?
+            <CharacterEditDetails characterId={character.id} finishEditing={() => this.setState({editing: false})} />
+            :
+            <CharacterDetails characterId={character.id} startEditing={() => this.setState({editing: true})}/>
+          }
+        </ErrorBoundary>
+      </div>
+    </div>
+  }
+
+  static propTypes = {
+    characterId: PropTypes.number.isRequired,
+    character: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    tags: PropTypes.array.isRequired,
+    ui: PropTypes.object.isRequired,
   }
 }
 
-CharacterView.propTypes = {
-  character: PropTypes.object.isRequired,
-  categories: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired,
-  customAttributes: PropTypes.array.isRequired,
-  cards: PropTypes.array.isRequired,
-  notes: PropTypes.array.isRequired,
-  ui: PropTypes.object.isRequired,
-}
-
-function mapStateToProps (state) {
+function mapStateToProps (state, ownProps) {
   return {
-    categories: state.categories.characters,
-    customAttributes: state.customAttributes.characters,
-    cards: state.cards,
-    notes: state.notes,
+    character: state.characters.find(ch => ch.id == ownProps.characterId),
     ui: state.ui,
+    tags: state.tags,
   }
 }
 

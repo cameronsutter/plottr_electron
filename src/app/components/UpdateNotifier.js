@@ -70,7 +70,7 @@ export default class UpdateNotifier extends Component {
     const { available, finishedDownloading } = this.state
 
     if (available || finishedDownloading) {
-      return <button onClick={available ? this.startDownload : this.quitToInstall} className='btn-default update-notifier__wrapper'>
+      return <button onClick={finishedDownloading ? this.quitToInstall : this.startDownload} className='btn-default update-notifier__wrapper'>
         {text}
       </button>
     } else {

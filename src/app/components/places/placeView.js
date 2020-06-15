@@ -11,6 +11,8 @@ import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
+import SelectList from '../selectList'
+import BookSelectList from '../story/BookSelectList'
 
 class PlaceView extends Component {
   constructor (props) {
@@ -170,10 +172,6 @@ class PlaceView extends Component {
           </div>
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
-          <Button
-            onClick={this.cancelEdit} >
-            {i18n('Cancel')}
-          </Button>
           <Button bsStyle='success'
             onClick={this.saveEdit} >
             {i18n('Save')}
@@ -291,13 +289,31 @@ class PlaceView extends Component {
   }
 
   render () {
-    if (this.state.editing) {
-      window.SCROLLWITHKEYS = false
-      return this.renderEditing()
-    } else {
-      window.SCROLLWITHKEYS = true
-      return this.renderPlace()
-    }
+    if (this.state.editing) window.SCROLLWITHKEYS = false
+    else window.SCROLLWITHKEYS = true
+
+    const { place, tags, actions } = this.props
+
+    return <div className='place-list__place-view'>
+      <div className='place-list__place-view__left-side'>
+        <BookSelectList
+          selectedBooks={place.bookIds}
+          parentId={place.id}
+          add={actions.addBook}
+          remove={actions.removeBook}
+        />
+        <SelectList
+          parentId={place.id} type={'Tags'}
+          selectedItems={place.tags}
+          allItems={tags}
+          add={actions.addTag}
+          remove={actions.removeTag}
+        />
+      </div>
+      <div className='place-list__place-view__right-side'>
+        { this.state.editing ? this.renderEditing() : this.renderPlace() }
+      </div>
+    </div>
   }
 }
 
@@ -308,14 +324,16 @@ PlaceView.propTypes = {
   cards: PropTypes.array.isRequired,
   notes: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
+  tags: PropTypes.array.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
-    customAttributes: state.customAttributes['places'],
+    customAttributes: state.customAttributes.places,
     cards: state.cards,
     notes: state.notes,
     ui: state.ui,
+    tags: state.tags,
   }
 }
 

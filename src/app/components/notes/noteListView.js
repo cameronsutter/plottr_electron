@@ -32,8 +32,9 @@ class NoteListView extends Component {
 
   componentWillReceiveProps (nextProps) {
     let viewableNotes = this.viewableNotes(nextProps.notes, this.state.filter)
-    const note = nextProps.notes.find(n => n.title === '')
-    let noteDetailId = (note && note.id) || (viewableNotes[0] && viewableNotes[0].id)
+    const newNote = nextProps.notes.find(n => n.title === '')
+    const currentNote = nextProps.notes.find(n => n.id === this.state.noteDetailId)
+    let noteDetailId = (currentNote && currentNote.id) || (newNote && newNote.id) || (viewableNotes[0] && viewableNotes[0].id)
     this.setState({ noteDetailId, viewableNotes })
   }
 
@@ -117,11 +118,7 @@ class NoteListView extends Component {
   }
 
   renderNotes () {
-    let klasses = cx('note-list__list', 'list-group', { darkmode: this.props.ui.darkMode })
-    return <div className={klasses}>
-      <a href='#' key={'new-note'} className='note-list__new list-group-item' onClick={this.handleCreateNewNote} >
-        <Glyphicon glyph='plus' />
-      </a>
+    return <div className={cx('note-list__list', 'list-group', { darkmode: this.props.ui.darkMode })}>
       { this.renderVisibleNotes() }
     </div>
   }
@@ -171,7 +168,7 @@ class NoteListView extends Component {
         <Grid fluid>
           <Row>
             <Col sm={3}>
-              <h1 className={klasses}>{i18n('Notes')}</h1>
+              <h1 className={klasses}>{i18n('Notes')}{' '}<Button onClick={this.handleCreateNewNote}><Glyphicon glyph='plus' /></Button></h1>
               {this.renderNotes()}
             </Col>
             <Col sm={9}>

@@ -7,7 +7,7 @@
     @include application-text;
   }
   .container-fluid {
-    width: 100vw;
+    width: 99vw;
     height: calc(100% - 110px);
     position: absolute;
     top: 107px;
@@ -92,9 +92,34 @@
   overflow: auto;
 }
 
-.place-list__place {
+.place-list__place-view {
   @include well;
   padding: 20px;
+  max-height: 100%;
+  overflow: auto;
+
+  display: flex;
+  align-items: flex-start;
+
+  .place-list__place-view__left-side {
+    width: 18%;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid #eee;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .place-list__place-view__right-side {
+    width: 79%;
+    height: 100%;
+    padding: 4px;
+    margin-left: 8px;
+    overflow-y: auto;
+  }
+}
+
+.place-list__place {
   cursor: pointer;
 
   .place-list__place__edit-form {

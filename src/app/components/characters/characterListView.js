@@ -260,8 +260,6 @@ class CharacterListView extends Component {
   }
 
   render () {
-    let klasses = 'secondary-text'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div className='character-list container-with-sub-nav'>
         {this.renderSubNav()}
@@ -270,7 +268,7 @@ class CharacterListView extends Component {
         <Grid fluid>
           <Row>
             <Col sm={3}>
-              <h1 className={klasses}>{i18n('Characters')}{' '}<Button onClick={this.handleCreateNewCharacter}><Glyphicon glyph='plus' /></Button></h1>
+              <h1 className={cx('secondary-text', {darkmode: this.props.ui.darkMode})}>{i18n('Characters')}{' '}<Button onClick={this.handleCreateNewCharacter}><Glyphicon glyph='plus' /></Button></h1>
               <div className='character-list__category-list'>
                 {this.renderCharacters()}
               </div>

@@ -209,9 +209,6 @@ class PlaceListView extends Component {
 
   renderPlaces () {
     return <div className={cx('place-list__list', 'list-group', {darkmode: this.props.ui.darkMode})}>
-      <a href='#' key={'new-place'} className='place-list__new list-group-item' onClick={this.handleCreateNewPlace} >
-        <Glyphicon glyph='plus' />
-      </a>
       { this.renderVisiblePlaces() }
     </div>
   }
@@ -268,7 +265,7 @@ class PlaceListView extends Component {
         <Grid fluid>
           <Row>
             <Col sm={3}>
-              <h1 className={klasses}>{i18n('Places')}</h1>
+              <h1 className={klasses}>{i18n('Places')}{' '}<Button onClick={this.handleCreateNewPlace}><Glyphicon glyph='plus' /></Button></h1>
               {this.renderPlaces()}
             </Col>
             <Col sm={9}>

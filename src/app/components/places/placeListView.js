@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { sortBy } from 'lodash'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
@@ -67,6 +67,12 @@ class PlaceListView extends Component {
       places.forEach(pl => {
         const matches = Object.keys(filter).some(attr => {
           return filter[attr].some(val => {
+            if (attr == 'tag') {
+              return pl.tags.includes(val)
+            }
+            if (attr == 'book') {
+              return pl.bookIds.includes(val)
+            }
             if (val == '') {
               if (!pl[attr] || pl[attr] == '') return true
             } else {
@@ -82,8 +88,8 @@ class PlaceListView extends Component {
     let sortOperands = sort.split('~')
     let attrName = sortOperands[0]
     let direction = sortOperands[1]
-    let sortBy = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
-    let sorted = _.sortBy(visible, sortBy)
+    let sortOperand = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
+    let sorted = sortBy(visible, sortOperand)
     if (direction == 'desc') sorted.reverse()
     return sorted
   }
@@ -109,7 +115,9 @@ class PlaceListView extends Component {
   filterIsEmpty = (filter) => {
     if (!filter) return true
 
-    return !this.props.customAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
+    const allAttributes = [{name:'tag'}, {name:'book'}, ...this.props.customAttributes]
+
+    return !allAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
   }
 
   closeDialog = () => {

@@ -10,7 +10,11 @@ class BookFilterList extends Component {
   }
 
   render () {
-    let books = this.props.books.allIds.map(id => this.props.books[id.toString()])
+    let books = this.props.books.allIds.map(id => {
+      let book = {...this.props.books[id.toString()]}
+      book.title = book.title || i18n('Untitled')
+      return book
+    })
     let allItems = [{id: 'series', title: i18n('Series')}, ...books]
     return <GenericFilterList
       items={allItems}

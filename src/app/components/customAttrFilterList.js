@@ -116,7 +116,6 @@ class CustomAttrFilterList extends Component {
 
   render () {
     const CAlists = this.props.customAttributes.map(this.renderList)
-    // console.log('render', this.state.filteredItems)
     return (
       <div className='filter-list flex'>
         <BookFilterList updateItems={this.updateFilter} filteredItems={[...this.state.filteredItems.book]}/>

@@ -8,12 +8,18 @@
       "Married": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
-    "placeFilter": null,
+    "placeFilter": {
+      "tag": [],
+      "book": [],
+      "category": [],
+      "county": [],
+      "owner": []
+    },
     "placeSort": "name~asc",
     "currentTimeline": 1,
     "zoomState": null,

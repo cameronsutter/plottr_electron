@@ -23,7 +23,7 @@ class PlaceView extends Component {
       description[name] = props.place[name]
     })
     this.state = {
-      editing: props.place.name === '',
+      editing: false,
       notes: props.place.notes,
       description: description,
       newImageId: null,

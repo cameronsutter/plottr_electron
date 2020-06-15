@@ -7,25 +7,34 @@ import { Glyphicon } from 'react-bootstrap'
 import * as UIActions from 'actions/ui'
 import cx from 'classnames'
 import i18n from 'format-message'
+import { sortedTagsSelector } from '../selectors/tags'
+import TagFilterList from './filterLists/TagFilterList'
+import BookFilterList from './filterLists/BookFilterList'
+import CharacterCategoryFilterList from './filterLists/CharacterCategoryFilterList'
 
 class CustomAttrFilterList extends Component {
   constructor (props) {
     super(props)
-    let filteredItems = props.filteredItems
-    if (!filteredItems || !Object.keys(filteredItems).length) {
-      filteredItems = this.defaultFilteredItemsObj()
-    }
-    this.state = {
-      filteredItems,
-    }
+    this.state = { filteredItems: {} }
   }
 
-  defaultFilteredItemsObj () {
+  static getDerivedStateFromProps (props, state) {
     // TODO: this should be a selector
-    return this.props.customAttributes.reduce((result, attr) => {
-      if (attr.type == 'text') result[attr.name] = []
+    let filteredItems = {tag: [], book: [], category: []}
+    if (state.filteredItems) filteredItems = Object.assign({}, filteredItems, state.filteredItems, props.filteredItems)
+    filteredItems = props.customAttributes.reduce((result, attr) => {
+      if (attr.type == 'text') result[attr.name] = filteredItems[attr.name] || []
       return result
-    }, {})
+    }, filteredItems)
+    return { filteredItems }
+  }
+
+  updateFilter = (type, ids) => {
+    let filteredItems = this.state.filteredItems
+    filteredItems[type] = ids
+
+    this.props.update(filteredItems)
+    this.setState({ filteredItems })
   }
 
   filterItem (value, attr) {
@@ -106,10 +115,14 @@ class CustomAttrFilterList extends Component {
   }
 
   render () {
-    let lists = this.props.customAttributes.map(this.renderList)
+    const CAlists = this.props.customAttributes.map(this.renderList)
+    // console.log('render', this.state.filteredItems)
     return (
       <div className='filter-list flex'>
-        { lists }
+        <BookFilterList updateItems={this.updateFilter} filteredItems={[...this.state.filteredItems.book]}/>
+        {this.props.showCategory ? <CharacterCategoryFilterList updateItems={this.updateFilter} filteredItems={[...this.state.filteredItems.category]}/> : null}
+        <TagFilterList updateItems={this.updateFilter} filteredItems={[...this.state.filteredItems.tag]}/>
+        { CAlists }
       </div>
     )
   }
@@ -117,27 +130,33 @@ class CustomAttrFilterList extends Component {
 
 
 CustomAttrFilterList.propTypes = {
-  type: PropTypes.string.isRequired,
-  update: PropTypes.func.isRequired,
+  tags: PropTypes.array.isRequired,
+  books: PropTypes.object.isRequired,
   customAttributes: PropTypes.array.isRequired,
   items: PropTypes.array.isRequired,
   filteredItems: PropTypes.object,
+  type: PropTypes.string.isRequired,
+  update: PropTypes.func.isRequired,
+  showCategory: PropTypes.bool,
 }
 
-function mapStateToProps (state, props) {
+function mapStateToProps (state, ownProps) {
   let filteredItems = state.ui.characterFilter
-  if (props.type == 'places') filteredItems = state.ui.placeFilter
+  if (ownProps.type == 'places') filteredItems = state.ui.placeFilter
   return {
-    customAttributes: state.customAttributes[props.type],
-    items: props.type == 'characters' ? state.characters : state.places,
+    tags: sortedTagsSelector(state),
+    books: state.books,
+    customAttributes: state.customAttributes[ownProps.type],
+    items: ownProps.type == 'characters' ? state.characters : state.places,
     filteredItems,
+    showCategory: ownProps.type == 'characters',
   }
 }
 
-function mapDispatchToProps (dispatch, props) {
+function mapDispatchToProps (dispatch, ownProps) {
   let actions = bindActionCreators(UIActions, dispatch)
   return {
-    update: props.type == 'characters' ? actions.setCharacterFilter : actions.setPlaceFilter
+    update: ownProps.type == 'characters' ? actions.setCharacterFilter : actions.setPlaceFilter
   }
 }
 

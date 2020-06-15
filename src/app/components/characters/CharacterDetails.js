@@ -51,7 +51,7 @@ class CharacterDetails extends Component {
 
     return <div className='character-list__character-wrapper'>
       <div className={klasses} onClick={this.props.startEditing}>
-        <h4 className='secondary-text'>{character.name}</h4>
+        <h4 className='secondary-text'>{character.name || i18n('New Character')}</h4>
         <div className='character-list__character-notes'>
           <div>
             <Image size='large' shape='circle' imageId={character.imageId} />

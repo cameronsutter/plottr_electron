@@ -22,6 +22,7 @@ import cx from 'classnames'
 import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
 import { FaSave } from 'react-icons/fa'
 import { visibleSortedCharactersByCategorySelector, characterFilterIsEmptySelector } from '../../selectors/characters'
+import { sortedCharacterCategoriesSelector } from '../../selectors/categories'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 const win = remote.getCurrentWindow()
@@ -46,25 +47,29 @@ class CharacterListView extends Component {
 
   static selectedId (charactersByCategory, characters, categories, characterDetailId) {
     if (!characters.length) return null
+    if (!Object.keys(charactersByCategory).length) return null
+    const allCategories = [...categories, {id: null}] // uncategorized
+
+    // check for a new one
+    if (charactersByCategory[null] && charactersByCategory[null].length) {
+      let newCharacter = charactersByCategory[null].find(ch => ch.name == '')
+      if (newCharacter) return newCharacter.id
+    }
 
     // check for the currently active one
     if (characterDetailId != null) {
-      let activeCharacter = characters.find(ch => ch.id == characterDetailId)
-      if (activeCharacter) return activeCharacter.id
+      const isVisible = allCategories.some(cat => {
+        if (!charactersByCategory[cat.id] || !charactersByCategory[cat.id].length) return false
+        return charactersByCategory[cat.id].some(ch => ch.id == characterDetailId)
+      })
+      if (isVisible) return characterDetailId
     }
 
-    let sortedCategories = sortBy(categories, 'position')
-    sortedCategories.push({id: null}) // uncategorized
-    const firstCategoryWithChar = sortedCategories.find(cat => charactersByCategory[cat.id] && charactersByCategory[cat.id][0])
-    let id = charactersByCategory[firstCategoryWithChar.id][0] && charactersByCategory[firstCategoryWithChar.id][0].id
+    // default to first one in the first category
+    const firstCategoryWithChar = allCategories.find(cat => charactersByCategory[cat.id] && charactersByCategory[cat.id].length)
+    if (firstCategoryWithChar) return charactersByCategory[firstCategoryWithChar.id][0] && charactersByCategory[firstCategoryWithChar.id][0].id
 
-    // check for a new one
-    // if (charactersByCategory[null] && charactersByCategory[null].length) {
-    //   let newCharacter = charactersByCategory[null].find(ch => ch.name == '')
-    //   if (newCharacter) id = newCharacter.id
-    // }
-
-    return id
+    return null
   }
 
   componentDidUpdate () {
@@ -120,7 +125,7 @@ class CharacterListView extends Component {
   renderSubNav () {
     const { filterIsEmpty, ui, uiActions } = this.props
     let filterPopover = <Popover id='filter'>
-      <CustomAttrFilterList type={'characters'}/>
+      <CustomAttrFilterList type='characters'/>
     </Popover>
     let filterDeclaration = <Alert onClick={() => uiActions.setCharacterFilter(null)} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Character list is filtered')}</Alert>
     if (filterIsEmpty) {
@@ -195,7 +200,7 @@ class CharacterListView extends Component {
   }
 
   renderCharacters () {
-    let categories = sortBy(this.props.categories, 'position')
+    let categories = [...this.props.categories]
     categories.push({id: null, name: i18n('Uncategorized')})
 
     return categories.map(cat => this.renderCategory(cat))
@@ -300,7 +305,7 @@ function mapStateToProps (state) {
     visibleCharactersByCategory: visibleSortedCharactersByCategorySelector(state),
     filterIsEmpty: characterFilterIsEmptySelector(state),
     characters: state.characters,
-    categories: state.categories.characters,
+    categories: sortedCharacterCategoriesSelector(state),
     customAttributes: state.customAttributes.characters,
     customAttributesThatCanChange: characterCustomAttributesThatCanChangeSelector(state),
     ui: state.ui,

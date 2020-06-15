@@ -16,7 +16,8 @@ export const characterFilterIsEmptySelector = createSelector(
   characterCustomAttributesSelector,
   (filter, attributes) => {
     if (!filter) return true
-    return !attributes.some(attr => filter[attr.name] && filter[attr.name].length)
+    const allAttributes = [{name:'tag'}, {name:'book'}, {name:'category'}, ...attributes]
+    return !allAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
   }
 )
 
@@ -35,6 +36,15 @@ export const visibleSortedCharactersByCategorySelector = createSelector(
       allCharacters.forEach(ch => {
         const matches = Object.keys(filter).some(attr => {
           return filter[attr].some(val => {
+            if (attr == 'tag') {
+              return ch.tags.includes(val)
+            }
+            if (attr == 'book') {
+              return ch.bookIds.includes(val)
+            }
+            if (attr == 'category') {
+              return ch.categoryId == val
+            }
             if (val == '') {
               if (!ch[attr] || ch[attr] == '') return true
             } else {

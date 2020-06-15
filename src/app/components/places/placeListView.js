@@ -150,7 +150,7 @@ class PlaceListView extends Component {
   renderSubNav () {
     const { ui, uiActions } = this.props
     let filterPopover = <Popover id='filter'>
-      <CustomAttrFilterList type={'places'} />
+      <CustomAttrFilterList type='places' />
     </Popover>
     let filterDeclaration = <Alert onClick={() => uiActions.setPlaceFilter(null)}  bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Place list is filtered')}</Alert>
     if (this.filterIsEmpty(ui.placeFilter)) {

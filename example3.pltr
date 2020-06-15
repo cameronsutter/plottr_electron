@@ -1,16 +1,19 @@
 {
   "ui": {
-    "characterFilter": {},
+    "characterFilter": {
+      "tag": [],
+      "book": [],
+      "category": [],
+      "In possession of fortune": [],
+      "Married": []
+    },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
-    "placeFilter": {
-      "county": [],
-      "owner": []
-    },
+    "placeFilter": null,
     "placeSort": "name~asc",
     "currentTimeline": 1,
     "zoomState": null,
@@ -20,7 +23,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.6.11-beta.2"
+    "version": "2020.6.12"
   },
   "series": {
     "name": "Pride & Prejudice copy",
@@ -787,28 +790,6 @@
       "bookIds": [
         1
       ]
-    },
-    {
-      "id": 21,
-      "name": "",
-      "description": "",
-      "notes": [
-        {
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "color": null,
-      "cards": [],
-      "noteIds": [],
-      "templates": [],
-      "tags": [],
-      "categoryId": null,
-      "imageId": null,
-      "bookIds": []
     }
   ],
   "chapters": [
@@ -10162,9 +10143,8 @@
       }
     ],
     "places": [],
-    "cards": [],
-    "scenes": [],
-    "lines": []
+    "notes": [],
+    "tags": []
   },
   "images": {
     "1": {

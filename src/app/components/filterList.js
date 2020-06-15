@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
+import { sortedTagsSelector } from '../selectors/tags'
 
 class FilterList extends Component {
   constructor (props) {
@@ -121,13 +122,14 @@ FilterList.propTypes = {
   books: PropTypes.object.isRequired,
   updateItems: PropTypes.func.isRequired,
   renderBooks: PropTypes.bool,
+  filteredItems: PropTypes.object,
 }
 
 function mapStateToProps (state) {
   return {
     characters: state.characters,
     places: state.places,
-    tags: state.tags,
+    tags: sortedTagsSelector(state),
     books: state.books,
   }
 }

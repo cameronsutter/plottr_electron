@@ -48,9 +48,7 @@ export default class SelectList extends Component {
 
   renderUnSelected () {
     const type = this.props.type
-    const itemsToList = this.props.allItems.filter(i =>
-      !this.props.selectedItems.includes(i.id)
-    )
+    const itemsToList = !this.props.selectedItems ? this.props.allItems : this.props.allItems.filter(i => !this.props.selectedItems.includes(i.id))
     let listItems = <small><i>{i18n('no more to add')}</i></small>
     if (itemsToList.length > 0) {
       listItems = itemsToList.map(i => {

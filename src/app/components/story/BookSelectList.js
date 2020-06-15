@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import _ from 'lodash'
+import { difference } from 'lodash'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -12,7 +12,7 @@ import cx from 'classnames'
 class BookSelectList extends Component {
   renderUnSelected () {
     const { selectedBooks, books, parentId, add } = this.props
-    const idsToList = _.difference(books.allIds, selectedBooks)
+    const idsToList = difference(books.allIds, selectedBooks)
     let listItems = <small><i>{i18n('no more to add')}</i></small>
     if (idsToList.length) {
       listItems = idsToList.map(id => {

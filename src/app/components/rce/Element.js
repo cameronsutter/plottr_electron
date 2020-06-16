@@ -1,3 +1,4 @@
+import { shell } from 'electron'
 import React from 'react'
 import { useSelected, useFocused } from 'slate-react'
 import cx from 'classnames'
@@ -28,7 +29,7 @@ const Element = ({ attributes, children, element }) => {
       return <ol {...attributes}>{children}</ol>
     case 'link':
       // TODO: show a preview or a little icon to show a preview
-      return <a {...attributes} title={element.url} href={element.url}>{children}</a>
+      return <a {...attributes} title={element.url} href='#' onClick={() => handleLinkClick(element.url)}>{children}</a>
     case 'image-link':
       return <div {...attributes}>
         <div contentEditable={false}>
@@ -53,4 +54,9 @@ const Element = ({ attributes, children, element }) => {
       return <p {...attributes}>{children}</p>
   }
 }
+
+function handleLinkClick (url) {
+  shell.openExternal(url)
+}
+
 export default React.memo(Element)

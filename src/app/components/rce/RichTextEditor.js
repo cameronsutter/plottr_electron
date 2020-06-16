@@ -16,6 +16,7 @@ import { LinkButton, withLinks } from './LinkButton'
 import { ImageLinkButton, withImages } from './ImageLinkButton'
 import cx from 'classnames'
 import { useTextConverter } from './helpers'
+import { withHTML } from './withHTML'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -25,7 +26,7 @@ const HOTKEYS = {
 
 const RichTextEditor = (props) => {
   const editor = useMemo(() => {
-    return withImages(withLinks(withHistory(withReact(createEditor()))))
+    return withHTML(withImages(withLinks(withHistory(withReact(createEditor())))))
   }, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
   const renderElement = useCallback(props => <Element {...props} />, [])

@@ -51,11 +51,11 @@ function deserialize (el) {
     case 'h6':
       return jsx('element', {type: 'heading-six'}, children)
     case 'ul':
-      return jsx('element', {type: 'bulleted-list'}, children.filter(node => node != '\n')) // check for \r in windows
+      return jsx('element', {type: 'bulleted-list'}, children.filter(node => node != '\n'))
     case 'li':
       return jsx('element', {type: 'list-item'}, fixParagraphChildren(children))
     case 'ol':
-      return jsx('element', {type: 'numbered-list'}, children.filter(node => node != '\n')) // check for \r in windows
+      return jsx('element', {type: 'numbered-list'}, children.filter(node => node != '\n'))
     case 'em':
       return jsx('text', {italic: true, text: el.textContent})
     case 'strong':

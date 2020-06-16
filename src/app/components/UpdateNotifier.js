@@ -49,6 +49,14 @@ export default class UpdateNotifier extends Component {
     ipcRenderer.send('updater-ZhuLi-doTheThing')
   }
 
+  renderLoadingDots () {
+    if (!this.state.checking) return null
+
+    return <span className='loading-dots'>
+      <span className='one'>.</span><span className='two'>.</span><span className='three'>.</span>
+    </span>
+  }
+
   renderText () {
     const { checking, available, finishedChecking, downloadInProgress, percentDownloaded, finishedDownloading, info } = this.state
     const version = info && info.version ? info.version : ''
@@ -60,7 +68,7 @@ export default class UpdateNotifier extends Component {
     if (finishedDownloading) text = i18n('Download Complete: Click to Install ({version})', {version: `v${version}`})
 
     if (!text) return null
-    return <span>{ text }</span>
+    return <span>{ text }{ this.renderLoadingDots() }</span>
   }
 
   render () {
@@ -70,11 +78,11 @@ export default class UpdateNotifier extends Component {
     const { available, finishedDownloading } = this.state
 
     if (available || finishedDownloading) {
-      return <button onClick={finishedDownloading ? this.quitToInstall : this.startDownload} className='btn-default update-notifier__wrapper'>
+      return <button onClick={finishedDownloading ? this.quitToInstall : this.startDownload} className='btn-default update-notifier'>
         {text}
       </button>
     } else {
-      return <div className='update-notifier__wrapper btn-default'>{ text }</div>
+      return <div className='update-notifier btn-default'>{ text }</div>
     }
   }
 }

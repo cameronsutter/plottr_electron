@@ -141,7 +141,13 @@ input[type="file"] {
   }
 }
 
-.update-notifier__wrapper {
+@keyframes dot {
+  0% { opacity: 0; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.update-notifier {
   @include application-text;
   position: absolute;
   right: 15px;
@@ -152,8 +158,28 @@ input[type="file"] {
   line-height: 28px;
   border-width: 1px;
   border-style: solid;
+
+  .loading-dots {
+    .one {
+      opacity: 0;
+      animation: dot 1s infinite;
+      animation-delay: 0.0s;
+    }
+
+    .two {
+      opacity: 0;
+      animation: dot 1s infinite;
+      animation-delay: 0.2s;
+    }
+
+    .three {
+      opacity: 0;
+      animation: dot 1s infinite;
+      animation-delay: 0.3s;
+    }
+  }
 }
-div.update-notifier__wrapper:hover {
+div.update-notifier:hover {
   background-color: white;
 }
 

@@ -26,6 +26,10 @@ export const LinkButton = () => {
     bsStyle={isLinkActive(editor) ? 'primary' : 'default'}
     onMouseDown={event => {
       event.preventDefault()
+      if (isLinkActive(editor)) {
+        unwrapLink(editor)
+        return
+      }
       if (!selection) {
         setSelection(editor.selection)
       }

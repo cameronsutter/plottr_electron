@@ -252,7 +252,7 @@ ipcMain.on('start-free-trial', () => {
     SETTINGS.set('trialMode', true)
     DAYS_LEFT = daysLeft
     loadMenu()
-    createAndOpenEmptyFile()
+    askToCreateFile()
   })
 })
 
@@ -581,30 +581,6 @@ function closeWindow (id) {
   let win = _.find(windows, {id: id})
   let windowFile = win.fileName
   win.window.close()
-}
-
-function createAndOpenEmptyFile () {
-  let fileName = path.join(app.getPath('documents'), 'plottr_trial.pltr')
-  try {
-    // see if this file exists already
-    let stat = fs.statSync(fileName)
-    if (stat) {
-      let date = new Date()
-      fileName = path.join(app.getPath('documents'), `plottr_trial_${date.getTime()}.pltr`)
-    }
-  } catch (error) {
-    log.warn(error)
-  } finally {
-    const data = emptyFileContents(i18n('Plottr Trial'))
-    FileManager.save(fileName, data, function(err) {
-      if (err) {
-        log.warn(err)
-        rollbar.warn(err)
-      } else {
-        openWindow(fileName, data)
-      }
-    })
-  }
 }
 
 function openAboutWindow () {

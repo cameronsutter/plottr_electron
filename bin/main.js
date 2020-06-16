@@ -37,11 +37,11 @@ if (process.env.NODE_ENV === 'dev') {
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
-const rollbar = setupRollbar('main')
 
 let TRIALMODE = process.env.TRIALMODE === 'true'
 let DAYS_LEFT = null
 var USER_INFO = getLicenseInfo()
+const rollbar = setupRollbar('main', USER_INFO)
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

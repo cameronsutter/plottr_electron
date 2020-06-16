@@ -19,7 +19,7 @@ function getLicenseInfo () {
 }
 
 function checkForActiveLicense (licenseInfo, callback) {
-  const key = licenseInfo.purchase ? licenseInfo.purchase.license_key : licenseInfo.licenseKey
+  const key = licenseInfo.licenseKey
   log.info('checking for active license', key)
   const req = makeRequest(licenseURL(key))
   request(req, (err, response, body) => {

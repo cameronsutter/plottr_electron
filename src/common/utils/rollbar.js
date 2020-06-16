@@ -1,6 +1,7 @@
 const Rollbar = require('rollbar')
 import { remote } from 'electron'
 const app = remote.app
+import USER from './user_info'
 
 export default function setupRollbar(where) {
   let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
@@ -23,6 +24,10 @@ export default function setupRollbar(where) {
           code_version: version,
           guess_uncaught_frames: true,
         }
+      },
+      person: {
+        id: USER.get('payment_id'),
+        email: USER.get('customer_email'),
       }
     }
   })

@@ -159,14 +159,16 @@ class AddLineRow extends Component {
     if (!Object.keys(this.newLineMapping).length) {
       useLines = false
       this.addBlankLine(templateName, bookId)
-      lineId = this.getLast(this.allLines).id
+      const lastLine = this.getLast(this.allLines)
+      if (lastLine) lineId = lastLine.id
     }
 
     templateCards.forEach(tC => {
       const id = this.nextCardId
       lineId = useLines ? this.newLineMapping[tC.lineId] : lineId
       const chapterPosition = chaptersPositionById[tC.chapterId]
-      const chapterId = this.allChapters[chapterPosition + this.newChapterOffset].id
+      const chapter = this.allChapters[chapterPosition + this.newChapterOffset] || this.allChapters[this.allChapters.length - 1] // default to last chapter ... not sure if that's right to do
+      const chapterId = chapter ? chapter.id : 0 // default to no chapter ... again not sure if that's right
       const newCard = {
         ...tC,
         id: id,

@@ -12,6 +12,7 @@ import i18n from 'format-message'
 import { chapterTitle, editingChapterLabel } from '../../helpers/chapters'
 import { isSeriesSelector } from '../../selectors/ui'
 import { makeChapterNameSelector, makeChapterSelector } from '../../selectors/chapters'
+import { Popover, Overlay } from 'react-bootstrap'
 
 class ChapterTitleCell extends PureComponent {
   constructor (props) {
@@ -102,8 +103,8 @@ class ChapterTitleCell extends PureComponent {
     this.setState({editing: true})
   }
 
-  startHovering = () => {
-    this.setState({hovering: true})
+  startHovering = (e) => {
+    this.setState({hovering: true, target: e.target})
   }
 
   stopHovering = () => {
@@ -111,23 +112,28 @@ class ChapterTitleCell extends PureComponent {
   }
 
   renderHoverOptions () {
-    var style = {visibility: 'hidden'}
-    if (this.state.hovering) style.visibility = 'visible'
-    if (this.props.ui.orientation === 'vertical') {
-      return (
-        <div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)} style={style}>
-          <Button block onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-          <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
-        </div>
-      )
-    } else {
-      return (<div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)} style={style}>
-        <ButtonGroup>
-          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
-        </ButtonGroup>
-      </div>)
-    }
+    if (!this.state.hovering) return null
+
+    return <Overlay
+      show={this.state.hovering}
+      target={this.state.target}
+      placement='left'
+      container={this}
+    >
+      <Popover id={`chapter-popover-${this.props.chapter.id}`}>
+        {this.props.ui.orientation === 'vertical' ?
+          <div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)}>
+            <Button block onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+            <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+          </div>
+        :
+          <ButtonGroup>
+            <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+            <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+          </ButtonGroup>
+        }
+      </Popover>
+    </Overlay>
   }
 
   renderTitle () {

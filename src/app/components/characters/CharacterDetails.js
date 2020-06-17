@@ -45,12 +45,10 @@ class CharacterDetails extends Component {
       })
     })
 
-    const klasses = cx('character-list__character', { darkmode: ui.darkMode })
-
     const category = categories.find(cat => cat.id == character.categoryId)
 
     return <div className='character-list__character-wrapper'>
-      <div className={klasses} onClick={this.props.startEditing}>
+      <div className='character-list__character' onClick={this.props.startEditing}>
         <h4 className='secondary-text'>{character.name || i18n('New Character')}</h4>
         <div className='character-list__character-notes'>
           <div>

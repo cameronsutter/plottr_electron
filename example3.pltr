@@ -5,10 +5,14 @@
       "book": [],
       "category": [],
       "In possession of fortune": [],
-      "Married": []
+      "Married": [],
+      "more": [],
+      "attributes": [],
+      "of type": [],
+      "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "outline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -32,7 +36,7 @@
     "version": "2020.6.15"
   },
   "series": {
-    "name": "Pride & Prejudice copy",
+    "name": "Pride & Prejudice \"Series\"",
     "premise": "",
     "genre": "",
     "theme": "",
@@ -804,6 +808,30 @@
       "bookIds": [
         1
       ]
+    },
+    {
+      "id": 21,
+      "name": "ne character",
+      "description": "",
+      "notes": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [],
+      "In possession of fortune": "",
+      "Married": ""
     }
   ],
   "chapters": [
@@ -9506,6 +9534,22 @@
       },
       {
         "name": "age",
+        "type": "paragraph"
+      },
+      {
+        "name": "more",
+        "type": "paragraph"
+      },
+      {
+        "name": "attributes",
+        "type": "paragraph"
+      },
+      {
+        "name": "of type",
+        "type": "paragraph"
+      },
+      {
+        "name": "paragraph",
         "type": "paragraph"
       }
     ],

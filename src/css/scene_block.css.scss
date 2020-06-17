@@ -41,9 +41,8 @@ $title_height: 70px;
 }
 
 .scene-list__insert {
-  height: 150px;
+  height: 100px;
   display: flex;
-  align-items: center;
   color: transparent;
   transition: all .4s $cubic;
   font-size: 16px;
@@ -51,6 +50,7 @@ $title_height: 70px;
   .insert-scene-wrapper {
     display: flex;
     padding: 1px;
+    padding-top: 28px;
     .glyphicon {
       margin-top: -1px;
       margin-right: -1px;

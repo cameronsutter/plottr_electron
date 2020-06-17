@@ -24,6 +24,18 @@ import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { findDOMNode } from 'react-dom'
+import ActRow from './ActRow'
+
+
+// web worker usage
+// this.worker = new WebWorker(mappingWorker)
+// this.worker.addEventListener('message', event => {
+//   const { cardMapping, chapterMapping, chapterMapKeys, visibleCards } = event.data
+//   this.setState({ cardMapping, chapterMapping, chapterMapKeys, visibleCards })
+//   this.setLength()
+// })
+// const { cards, chapters, filter } = this.props
+// this.worker.postMessage({ cards, chapters, filter })
 
 class TimelineTable extends Component {
 
@@ -67,10 +79,14 @@ class TimelineTable extends Component {
     return this.props.ui.currentTimeline == 'series'
   }
 
+  // TODO: should be a selector on each card
+  // or cache this somewhere
   cardIsFiltered (card) {
     if (!card) return false
     const filter = this.props.filter
     if (filter == null) return true
+
+    // TODO: there's got to be a better way to do this logic
     let filtered = true
     if (card.tags) {
       card.tags.forEach((tId) => {
@@ -266,7 +282,7 @@ class TimelineTable extends Component {
   render () {
     const rows = this.renderRows()
 
-    return [<TopRow key='top-row'/>, rows]
+    return [<ActRow key='act-row'/> , <TopRow key='top-row'/>, rows]
   }
 }
 

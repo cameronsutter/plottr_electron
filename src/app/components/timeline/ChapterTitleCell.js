@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel, Popover, Overlay } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import * as SceneActions from 'actions/scenes'
 import * as BeatActions from 'actions/beats'
@@ -12,13 +12,12 @@ import i18n from 'format-message'
 import { chapterTitle, editingChapterLabel } from '../../helpers/chapters'
 import { isSeriesSelector } from '../../selectors/ui'
 import { makeChapterNameSelector, makeChapterSelector } from '../../selectors/chapters'
-import { Popover, Overlay } from 'react-bootstrap'
 
 class ChapterTitleCell extends PureComponent {
   constructor (props) {
     super(props)
     let editing = props.chapter.title == ''
-    this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
+    this.state = {hovering: false, target: null, editing: editing, dragging: false, dropping: false}
   }
 
   editTitle = () => {

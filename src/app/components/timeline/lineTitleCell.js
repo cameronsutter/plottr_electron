@@ -3,7 +3,7 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel, Popover, Overlay } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
@@ -18,6 +18,7 @@ class LineTitleCell extends PureComponent {
     super(props)
     this.state = {
       hovering: false,
+      target: null,
       editing: props.line.title === '',
       dragging: false,
       dropping: false,
@@ -108,8 +109,8 @@ class LineTitleCell extends PureComponent {
     this.setState({editing: true})
   }
 
-  startHovering = () => {
-    this.setState({hovering: true})
+  startHovering = (e) => {
+    this.setState({hovering: true, target: e.target})
   }
 
   stopHovering = () => {
@@ -126,6 +127,31 @@ class LineTitleCell extends PureComponent {
   }
 
   renderHoverOptions () {
+    // if (!this.state.hovering) return null
+
+    // return <Overlay
+    //   show={this.state.hovering}
+    //   target={this.state.target}
+    //   placement='right'
+    //   container={this}
+    // >
+    //   <Popover id={`line-popover-${this.props.line.id}`}>
+    //     {this.props.ui.orientation === 'vertical' ?
+    //       <ButtonGroup>
+    //         <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+    //         <Button onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
+    //         <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+    //       </ButtonGroup>
+    //     :
+    //       <ButtonGroup>
+    //         <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+    //         <Button onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
+    //         <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+    //       </ButtonGroup>
+    //     }
+    //   </Popover>
+    // </Overlay>
+
     if (this.props.ui.orientation === 'vertical') {
       return (<div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)}>
         <ButtonGroup>

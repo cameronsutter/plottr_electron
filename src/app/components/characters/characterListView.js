@@ -1,4 +1,3 @@
-import { sortBy, groupBy } from 'lodash'
 import { ipcRenderer, remote } from 'electron'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
@@ -72,12 +71,6 @@ class CharacterListView extends Component {
     return null
   }
 
-  componentDidUpdate () {
-    if (this.refs.attrInput) {
-      findDOMNode(this.refs.attrInput).focus()
-    }
-  }
-
   closeDialog = () => {
     this.setState({dialogOpen: false})
   }
@@ -93,33 +86,6 @@ class CharacterListView extends Component {
   handleChooseTemplate = (templateData) => {
     this.setState({showTemplatePicker: false})
     this.props.actions.addCharacterWithTemplate(templateData)
-  }
-
-  handleType = () => {
-    const attr = findDOMNode(this.refs.attrInput).value
-    this.setState({addAttrText: attr})
-  }
-
-  handleAddCustomAttr = (event) => {
-    if (event.which === 13) {
-      this.saveAttr()
-    }
-  }
-
-  saveAttr = () => {
-    const name = findDOMNode(this.refs.attrInput).value
-    this.props.customAttributeActions.addCharacterAttr({name, type: 'text'})
-
-    this.setState({addAttrText: ''})
-  }
-
-  removeAttr = (attr) => {
-    this.props.customAttributeActions.removeCharacterAttr(attr)
-    this.setState({addAttrText: this.state.addAttrText}) // no op
-  }
-
-  updateAttr = (index, attr) => {
-    this.props.customAttributeActions.editCharacterAttr(index, attr)
   }
 
   renderSubNav () {
@@ -147,17 +113,6 @@ class CharacterListView extends Component {
           </NavItem>
           <NavItem>
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
-          </NavItem>
-          <NavItem>
-            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={filterPopover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
-            </OverlayTrigger>
-            {filterDeclaration}
-          </NavItem>
-          <NavItem>
-            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={sortPopover}>
-              <Button bsSize='small'><Glyphicon glyph={sortGlyph} /> {i18n('Sort')}</Button>
-            </OverlayTrigger>
           </NavItem>
         </Nav>
       </Navbar>

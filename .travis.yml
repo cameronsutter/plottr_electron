@@ -14,4 +14,3 @@ script:
 branches:
   only:
     - master
-    - unresponsive-bug

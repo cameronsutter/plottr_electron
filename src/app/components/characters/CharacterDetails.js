@@ -3,13 +3,21 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
-import { Glyphicon } from 'react-bootstrap'
+import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import Image from '../images/Image'
+import { singleCharacterSelector } from '../../selectors/characters'
 
 class CharacterDetails extends Component {
+
+  deleteCharacter = () => {
+    let text = i18n('Do you want to delete this character: { character }?', {character: this.props.character.name})
+    if (window.confirm(text)) {
+      this.props.actions.deleteCharacter(this.props.character.id)
+    }
+  }
 
   render () {
     const { character, ui, customAttributes, categories } = this.props
@@ -77,6 +85,11 @@ class CharacterDetails extends Component {
           </div>
         </div>
       </div>
+      <ButtonToolbar className='card-dialog__button-bar'>
+        <Button className='card-dialog__delete' onClick={this.deleteCharacter}>
+          {i18n('Delete')}
+        </Button>
+      </ButtonToolbar>
     </div>
   }
 
@@ -93,7 +106,7 @@ class CharacterDetails extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    character: state.characters.find(ch => ch.id == ownProps.characterId),
+    character: singleCharacterSelector(state, ownProps.characterId),
     categories: state.categories.characters,
     customAttributes: state.customAttributes.characters,
     ui: state.ui,

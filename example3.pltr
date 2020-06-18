@@ -8,7 +8,7 @@
       "Married": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

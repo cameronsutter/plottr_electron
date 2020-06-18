@@ -1,10 +1,6 @@
-import deep from 'deep-diff'
 import { createSelector } from 'reselect'
 import { allCharactersSelector } from './characters'
 import { allPlacesSelector } from './places'
-import { RCE_INITIAL_VALUE } from '../../../shared/initialState'
-// TODO: extract this
-const otherPossibleValue = [ { "children": [ { "text": "" } ], "type": "paragraph" } ]
 
 export const allCustomAttributesSelector = state => state.customAttributes
 export const characterCustomAttributesSelector = state => state.customAttributes.characters
@@ -30,21 +26,7 @@ export const characterCustomAttributesThatCanChangeSelector = createSelector(
         return acc
       }
 
-      // you can change a paragraph type back to text if:
-      // 1. It has no value
-      // 2. It is a string
-      // 3. It's value is the same as RCE_INITIAL_VALUE
-      // 4. It's value is an empty paragraph
-      // Otherwise, a paragraph type can not be changed back
-      let changeable = characters.every(ch => {
-        if (!ch[attr.name]) return true
-        if (typeof ch[attr.name] === 'string') return true
-        let diff = deep.diff(RCE_INITIAL_VALUE, ch[attr.name])
-        if (!diff) return true
-        diff = deep.diff(otherPossibleValue, ch[attr.name])
-        if (!diff) return true
-        return false
-      })
+      const changeable = characters.every(ch => hasValue(ch, attr.name))
       if (changeable) acc.push(attr.name)
       return acc
     }, [])
@@ -61,23 +43,27 @@ export const placeCustomAttributesThatCanChangeSelector = createSelector(
         return acc
       }
 
-      // you can change a paragraph type back to text if:
-      // 1. It has no value
-      // 2. It is a string
-      // 3. It's value is the same as RCE_INITIAL_VALUE
-      // 4. It's value is an empty paragraph
-      // Otherwise, a paragraph type can not be changed back
-      let changeable = places.every(pl => {
-        if (!pl[attr.name]) return true
-        if (typeof pl[attr.name] === 'string') return true
-        let diff = deep.diff(RCE_INITIAL_VALUE, pl[attr.name])
-        if (!diff) return true
-        diff = deep.diff(otherPossibleValue, pl[attr.name])
-        if (!diff) return true
-        return false
-      })
+      const changeable = places.every(pl => hasValue(pl, attr.name))
       if (changeable) acc.push(attr.name)
       return acc
     }, [])
   }
 )
+
+// you can change a paragraph type back to text if:
+// 1. It has no value
+// 2. It is a string
+// 3. It's value is the same as RCE_INITIAL_VALUE
+// 4. It's value is an empty paragraph
+// Otherwise, a paragraph type can not be changed back
+function hasValue (item, attr) {
+  const val = item[attr]
+  if (!val) return true
+  if (typeof val === 'string') return true
+
+  if (!val.length) return true
+  if (val.length > 1) return false // more than 1 paragraph
+  if (val[0].children.length > 1) return false // more than 1 text node
+  if (val[0].children[0].text == '') return true // no text
+  return false
+}

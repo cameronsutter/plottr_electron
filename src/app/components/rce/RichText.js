@@ -4,7 +4,6 @@ import RichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
 
 const RichText = (props) => {
-
   if (props.editable) {
     return <RichTextEditor text={props.description} className={props.className} onChange={props.onChange} autoFocus={props.autofocus} darkMode={props.darkMode}/>
   } else {

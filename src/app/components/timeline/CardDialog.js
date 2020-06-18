@@ -24,7 +24,7 @@ class CardDialog extends Component {
     super(props)
     this.state = {
       description: props.card.description,
-      editing: false,
+      editing: true,
     }
   }
 
@@ -41,7 +41,8 @@ class CardDialog extends Component {
 
     // 400 is the minimum (apparently only sometimes)
     const delay = 500
-    setTimeout(() => {this.setState({editing: true})}, delay)
+    // setTimeout(() => {this.setState({editing: true})}, delay)
+    // this.setState({editing: true})
   }
 
   componentWillUnmount () {

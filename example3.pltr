@@ -12,7 +12,7 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -123,7 +123,16 @@
           ]
         }
       ],
-      "thing": ""
+      "thing": "",
+      "more": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ]
     },
     {
       "In possession of fortune": "Yes",
@@ -1759,7 +1768,7 @@
         {
           "children": [
             {
-              "text": ""
+              "text": "asdkfasdfasdfasdfaskasdfkasdfkasdf"
             }
           ]
         }

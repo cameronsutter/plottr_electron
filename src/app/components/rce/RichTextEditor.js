@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import i18n from 'format-message'
 import isHotkey from 'is-hotkey'
@@ -30,8 +30,20 @@ const RichTextEditor = (props) => {
   }, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
   const renderElement = useCallback(props => <Element {...props} />, [])
-  const rceText = useTextConverter(props.text)
-  const [value, setValue] = useState(rceText)
+  const [value, setValue] = useState(null)
+  const [key, setKey] = useState(null)
+  useEffect(() => {
+    if (!value) {
+      const rceText = useTextConverter(props.text)
+      setValue(rceText)
+    }
+  }, [props.text])
+  useEffect(() => {
+    setKey(Math.random().toString(16))
+  }, [])
+
+  if (!value) return null
+  if (!key) return null
 
   const updateValue = newVal => {
     // only update if it changed
@@ -46,7 +58,7 @@ const RichTextEditor = (props) => {
     autoFocus: props.autoFocus
   }
   return (
-    <Slate editor={editor} value={value} onChange={updateValue} key={Math.random().toString(16)}>
+    <Slate editor={editor} value={value} onChange={updateValue} key={key}>
       <div className={cx('slate-editor__wrapper', props.className)}>
         <div className={cx('slate-editor__toolbar-wrapper', {darkmode: props.darkMode})}>
           <ToolBar>

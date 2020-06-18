@@ -114,6 +114,17 @@ class CharacterListView extends Component {
           <NavItem>
             <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
           </NavItem>
+          <NavItem>
+            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={filterPopover}>
+              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
+            </OverlayTrigger>
+            {filterDeclaration}
+          </NavItem>
+          <NavItem>
+            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={sortPopover}>
+              <Button bsSize='small'><Glyphicon glyph={sortGlyph} /> {i18n('Sort')}</Button>
+            </OverlayTrigger>
+          </NavItem>
         </Nav>
       </Navbar>
     )

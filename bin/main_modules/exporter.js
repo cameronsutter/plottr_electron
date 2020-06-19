@@ -188,6 +188,7 @@ function characters (characters, customAttributes, images, doc) {
     ch.templates.forEach(t => {
       t.attributes.forEach(attr => {
         paragraphs.push(new Paragraph({text: attr.name, heading: HeadingLevel.HEADING_3}))
+        if (!attr.value) return
         if (attr.type == 'paragraph') {
           const attrParagraphs = serialize(attr.value, doc)
           paragraphs = [...paragraphs, ...attrParagraphs]

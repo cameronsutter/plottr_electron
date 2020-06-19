@@ -13,10 +13,10 @@ import { singleCharacterSelector } from '../../selectors/characters'
 class CharacterDetails extends Component {
 
   deleteCharacter = () => {
-    let text = i18n('Do you want to delete this character: { character }?', {character: this.props.character.name})
-    if (window.confirm(text)) {
-      this.props.actions.deleteCharacter(this.props.character.id)
-    }
+    // let text = i18n('Do you want to delete this character: { character }?', {character: this.props.character.name})
+    // if (window.confirm(text)) {
+    // }
+    this.props.actions.deleteCharacter(this.props.character.id)
   }
 
   render () {

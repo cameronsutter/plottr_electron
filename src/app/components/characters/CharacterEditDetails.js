@@ -43,7 +43,9 @@ class CharacterEditDetails extends Component {
 
   handleEnter = (event) => {
     if (event.which === 13) {
-      this.saveEdit()
+      if (window.confirm("All Your Base Are Belong to Us")) {
+        this.saveEdit()
+      }
     }
   }
 

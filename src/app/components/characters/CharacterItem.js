@@ -41,7 +41,6 @@ class CharacterItem extends Component {
   handleDelete = e => {
     e.stopPropagation()
     this.setState({deleting: true})
-    console.log('handleDelete')
     this.props.stopEdit()
   }
 

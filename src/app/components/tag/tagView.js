@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { ButtonToolbar, ButtonGroup, Button, FormControl, FormGroup,
   ControlLabel, Glyphicon } from 'react-bootstrap'
 import ColorPicker from '../colorpicker'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import * as TagActions from 'actions/tags'
 import i18n from 'format-message'
 import cx from 'classnames'
@@ -13,11 +14,26 @@ import cx from 'classnames'
 class TagView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: props.tag.title === '', showColorPicker: false, hovering: false, color: null}
+    this.state = {editing: props.tag.title === '', showColorPicker: false, hovering: false, color: null, deleting: false}
   }
 
   componentWillUnmount () {
     if (this.state.editing && !this.props.new) this.saveEdit()
+  }
+
+  deleteTag = e => {
+    e.stopPropagation()
+    this.props.actions.deleteTag(this.props.tag.id)
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false})
+  }
+
+  handleDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: true})
   }
 
   handleCancel = () => {
@@ -63,13 +79,6 @@ class TagView extends Component {
     this.setState({editing: false})
   }
 
-  deleteTag = () => {
-    let label = i18n("Do you want to delete this tag: { title }?", {title: this.props.tag.title})
-    if (window.confirm(label)) {
-      this.props.actions.deleteTag(this.props.tag.id)
-    }
-  }
-
   changeColor = (color) => {
     if (this.props.new) {
       this.setState({color})
@@ -78,6 +87,12 @@ class TagView extends Component {
       this.props.actions.editTag(id, title, color)
     }
     this.setState({showColorPicker: false})
+  }
+
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={this.props.tag.title} onDelete={this.deleteTag} onCancel={this.cancelDelete}/>
   }
 
   renderColorPicker () {
@@ -118,7 +133,7 @@ class TagView extends Component {
         {this.props.new ? null : <Button title={i18n('Edit')} onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>}
         <Button title={i18n('Choose color')} onClick={() => this.setState({showColorPicker: true})}><Glyphicon glyph='tint' /></Button>
         {color || this.state.color ? <Button bsStyle='warning' title={i18n('No color')} onClick={() => this.changeColor(null)}><Glyphicon glyph='ban-circle' /></Button>: null}
-        {this.props.new ? null : <Button bsStyle='danger' title={i18n('Delete')} onClick={this.deleteTag}><Glyphicon glyph='trash' /></Button>}
+        {this.props.new ? null : <Button bsStyle='danger' title={i18n('Delete')} onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>}
       </ButtonGroup>
     </div>
   }
@@ -142,19 +157,18 @@ class TagView extends Component {
     let styles = {}
     if (tag.color) styles = {border: `2px solid ${tag.color}`}
     if (this.state.color) styles = {border: `2px solid ${this.state.color}`}
-    return (
-      <div
-        className='tag-list__tag-wrapper'
-        onMouseEnter={this.startHovering}
-        onMouseLeave={this.stopHovering}
-      >
-        { this.renderColorPicker() }
-        { this.renderHoverOptions() }
-        <div className={cx('tag-list__tag', {darkmode: ui.darkMode, editing: this.state.editing})} style={styles}>
-          {body}
-        </div>
+    return <div
+      className='tag-list__tag-wrapper'
+      onMouseEnter={this.startHovering}
+      onMouseLeave={this.stopHovering}
+    >
+      { this.renderDelete() }
+      { this.renderColorPicker() }
+      { this.renderHoverOptions() }
+      <div className={cx('tag-list__tag', {darkmode: ui.darkMode, editing: this.state.editing})} style={styles}>
+        {body}
       </div>
-    )
+    </div>
   }
 }
 

@@ -69,7 +69,8 @@ class MiniMap extends Component {
         activeKey={this.props.active}
         onSelect={this.selectNav}
         onMouseEnter={() => this.setState({mouseOver: true})}
-        onMouseLeave={() => this.setState({mouseOver: false})}>
+        onMouseLeave={() => this.setState({mouseOver: false})}
+      >
         {this.renderChapters()}
       </Nav>
     )

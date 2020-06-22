@@ -826,6 +826,30 @@
       "bookIds": [
         1
       ]
+    },
+    {
+      "id": 21,
+      "name": "ne character",
+      "description": "",
+      "notes": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [],
+      "In possession of fortune": "",
+      "Married": ""
     }
   ],
   "chapters": [

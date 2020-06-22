@@ -243,7 +243,6 @@ class PlaceView extends Component {
 
   renderPlace () {
     const { place, customAttributes, ui } = this.props
-    const klasses = cx('place-list__place', { darkmode: ui.darkMode })
 
     const details = customAttributes.map((attr, idx) => {
       const { name, type } = attr
@@ -259,7 +258,7 @@ class PlaceView extends Component {
       </dl>
     })
     return <div className='place-list__place-wrapper'>
-      <div className={klasses} onClick={() => this.setState({editing: true})}>
+      <div className='place-list__place' onClick={() => this.setState({editing: true})}>
         <h4 className='secondary-text'>{place.name}</h4>
         <div className='place-list__place-inner'>
           <div>
@@ -292,9 +291,9 @@ class PlaceView extends Component {
     if (this.state.editing) window.SCROLLWITHKEYS = false
     else window.SCROLLWITHKEYS = true
 
-    const { place, tags, actions } = this.props
+    const { place, tags, actions, ui } = this.props
 
-    return <div className='place-list__place-view'>
+    return <div className={cx('place-list__place-view', { darkmode: ui.darkMode })}>
       <div className='place-list__place-view__left-side'>
         <BookSelectList
           selectedBooks={place.bookIds}

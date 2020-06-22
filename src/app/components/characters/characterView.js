@@ -21,9 +21,9 @@ import BookSelectList from '../story/BookSelectList'
 
 class CharacterView extends Component {
   render () {
-    const { character, tags, actions } = this.props
+    const { character, tags, actions, ui } = this.props
 
-    return <div className='character-list__character-view'>
+    return <div className={cx('character-list__character-view', { darkmode: ui.darkMode })}>
       <div className='character-list__character-view__left-side'>
         <BookSelectList
           selectedBooks={character.bookIds}

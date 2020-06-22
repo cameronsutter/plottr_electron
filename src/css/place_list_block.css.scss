@@ -169,12 +169,12 @@
   }
 }
 
-.place-list__place.darkmode {
+.place-list__place-view.darkmode {
   background-color: $darkmode-darker-background;
   color: $darkmode-text;
   border-color: $darkmode-darker-border;
 
-  &:hover {
+  .place-list__place-wrapper:hover {
     .place-list__place-inner {
       border: 2px dashed $darkmode-border;
       background-color: $darkmode-darker-border;

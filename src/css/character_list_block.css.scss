@@ -199,12 +199,12 @@
   }
 }
 
-.character-list__character.darkmode {
+.character-list__character-view.darkmode {
   background-color: $darkmode-darker-background;
   color: $darkmode-text;
   border-color: $darkmode-darker-border;
 
-  &:hover {
+  .character-list__character:hover {
     .character-list__character-notes {
       border: 2px dashed $darkmode-border;
       background-color: $darkmode-darker-border;

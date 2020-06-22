@@ -102,6 +102,13 @@ nav.subnav__container {
         li > a {
           color: $darkmode-text;
         }
+        li:first-child {
+          background-color: $darkmode-darker-background;
+
+          & > a:hover, &:hover {
+            background-color: $darkmode-background;
+          }
+        }
       }
     }
     li.dropdown.open {

@@ -133,11 +133,18 @@ li.outline__minimap__scene-title > a:hover {
   border-radius: 0px;
 }
 
+li.outline__minimap__scene-title.active {
+  background-color: $new-item-background;
+}
+
 .outline__minimap.darkmode {
   background-color: $darkmode-darker-background;
   color: $darkmode-text;
   li.outline__minimap__scene-title.active {
     background-color: $darkmode-background;
+    a:focus {
+      background-color: $darkmode-background;
+    }
   }
   li.outline__minimap__scene-title > a:hover {
     background-color: $darkmode-background;
@@ -149,10 +156,6 @@ li.outline__minimap__scene-title > a:hover {
   width: 20%;
   height: 100%;
   margin-left: 10px;
-}
-
-.active {
-  background-color: $new-item-background;
 }
 
 .outline__scene-title {

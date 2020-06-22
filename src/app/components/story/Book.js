@@ -10,20 +10,35 @@ import BookDialog from './BookDialog'
 import { Glyphicon, ButtonGroup, Button } from 'react-bootstrap'
 import cx from 'classnames'
 import { canDeleteBookSelector } from '../../selectors/books'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 class Book extends Component {
-  state = {editing: false, hovering: false}
+  state = {editing: false, hovering: false, deleting: false}
 
   chooseImage = (newId) => {
     const id = newId == -1 ? null : newId
     this.props.actions.editBook(this.props.book.id, {imageId: id})
   }
 
-  handleDelete = () => {
-    let text = i18n('Do you want to delete this book: { book }?', {book: this.props.book.title})
-    if (window.confirm(text)) {
-      this.props.actions.deleteBook(this.props.book.id)
-    }
+  deleteBook = e => {
+    e.stopPropagation()
+    this.props.actions.deleteBook(this.props.book.id)
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false})
+  }
+
+  handleDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: true})
+  }
+
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={this.props.book.title || i18n('Untitled')} onDelete={this.deleteBook} onCancel={this.cancelDelete}/>
   }
 
   renderHoverOptions () {
@@ -87,6 +102,7 @@ class Book extends Component {
     >
       { this.renderHoverOptions() }
       { this.renderDialog() }
+      { this.renderDelete() }
       <div className={cx('book', {hovering: this.state.hovering})} onClick={() => this.setState({editing: true})}>
         <div className='front'>
           <div className='cover'>

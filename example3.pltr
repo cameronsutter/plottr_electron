@@ -12,7 +12,7 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -1375,6 +1375,41 @@
       "bookId": 1,
       "time": 0,
       "templates": []
+    },
+    {
+      "id": 68,
+      "bookId": 4,
+      "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 69,
+      "bookId": 4,
+      "position": 1,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 70,
+      "bookId": 4,
+      "position": 2,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 71,
+      "bookId": 5,
+      "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 72,
+      "bookId": 6,
+      "position": 0,
+      "title": "auto",
+      "time": 0
     }
   ],
   "cards": [
@@ -9414,6 +9449,41 @@
     }
   ],
   "lines": [
+    {
+      "id": 21,
+      "bookId": 6,
+      "title": "",
+      "color": "#6cace4",
+      "position": 0
+    },
+    {
+      "id": 20,
+      "bookId": 5,
+      "title": "",
+      "color": "#6cace4",
+      "position": 0
+    },
+    {
+      "id": 19,
+      "bookId": 4,
+      "title": "",
+      "color": "#e5554f",
+      "position": 2
+    },
+    {
+      "id": 18,
+      "bookId": 4,
+      "title": "",
+      "color": "#78be20",
+      "position": 1
+    },
+    {
+      "id": 17,
+      "bookId": 4,
+      "title": "",
+      "color": "#6cace4",
+      "position": 0
+    },
     {
       "id": 15,
       "bookId": 2,

@@ -10,6 +10,7 @@ import PlotlineTemplateDetails from './PlotlineTemplateDetails'
 import cx from 'classnames'
 import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
+import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmModal'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 const win = remote.getCurrentWindow()
@@ -23,6 +24,8 @@ export default class TemplatePicker extends Component {
       editing: false,
       templates: listTemplates(props.type),
       customTemplates: listCustomTemplates(props.type),
+      deleting: false,
+      deleteWhich: null,
     }
   }
 
@@ -33,6 +36,23 @@ export default class TemplatePicker extends Component {
     if (!this.state.customTemplates.length) {
       this.setState({customTemplates: listCustomTemplates(this.props.type)})
     }
+  }
+
+
+  deleteTemplate = e => {
+    e.stopPropagation()
+    deleteTemplate(this.state.deleteWhich.id)
+    this.setState({customTemplates: listCustomTemplates(this.props.type), deleting: false, deleteWhich: null})
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false, deleteWhich: null})
+  }
+
+  handleDelete = (e, template) => {
+    e.stopPropagation()
+    this.setState({deleting: true, deleteWhich: template})
   }
 
   startSaveAsTemplate = () => {
@@ -46,15 +66,6 @@ export default class TemplatePicker extends Component {
 
     if (this.state.selectedType == 'starter') {
       return this.state.templates.find(template => template.id == this.state.selectedId)
-    }
-  }
-
-  deleteTemplate = (e, template) => {
-    e.stopPropagation()
-
-    if (confirm(i18n('Are you sure you want to delete {template}?', {template: template.name}))) {
-      deleteTemplate(template.id)
-      this.setState({customTemplates: listCustomTemplates(this.props.type)})
     }
   }
 
@@ -73,6 +84,12 @@ export default class TemplatePicker extends Component {
     this.props.onChooseTemplate(this.selectedTemplate())
   }
 
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={this.state.deleteWhich.name} onDelete={this.deleteTemplate} onCancel={this.cancelDelete}/>
+  }
+
   renderLink (template) {
     if (!template.link) return null
 
@@ -85,7 +102,7 @@ export default class TemplatePicker extends Component {
 
     return <div>
       <Button bsSize='small' onClick={e => this.editTemplate(e)}><Glyphicon glyph='edit'/></Button>
-      <Button bsSize='small' onClick={e => this.deleteTemplate(e, template)}><Glyphicon glyph='trash'/></Button>
+      <Button bsSize='small' onClick={e => this.handleDelete(e, template)}><Glyphicon glyph='trash'/></Button>
     </div>
   }
 
@@ -145,6 +162,7 @@ export default class TemplatePicker extends Component {
 
   renderBody () {
     return <div className='template-picker__dialog-wrapper'>
+      { this.renderDelete() }
       <div className='template-picker__wrapper'>
         <div className='template-picker__list'>
           <h1 className=''>{i18n('My Templates')}</h1>

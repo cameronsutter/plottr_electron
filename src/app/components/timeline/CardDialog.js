@@ -16,11 +16,15 @@ import RichText from '../rce/RichText'
 import { chapterTitle } from '../../helpers/chapters'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 const customStyles = {content: {top: '70px'}}
 
 class CardDialog extends Component {
-  state = { description: props.card.description }
+  constructor (props) {
+    super(props)
+    this.state = { description: props.card.description, deleting: false }
+  }
 
   isSeries = () => {
     return this.props.ui.currentTimeline == 'series'
@@ -35,16 +39,24 @@ class CardDialog extends Component {
     window.SCROLLWITHKEYS = true
   }
 
+  deleteCard = e => {
+    e.stopPropagation()
+    this.props.actions.deleteCard(this.props.card.id)
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false})
+  }
+
+  handleDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: true})
+  }
+
   saveAndClose = () => {
     this.saveEdit()
     this.props.closeDialog()
-  }
-
-  deleteCard = () => {
-    let label = i18n("Do you want to delete this card: { title }?", {title: this.props.card.title})
-    if (window.confirm(label)) {
-      this.props.actions.deleteCard(this.props.card.id)
-    }
   }
 
   saveEdit = () => {
@@ -87,6 +99,12 @@ class CardDialog extends Component {
     }
   }
 
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={this.props.card.title} onDelete={this.deleteCard} onCancel={this.cancelDelete}/>
+  }
+
   renderChapterItems () {
     return this.props.chapters.map((chapter) => {
       return (<MenuItem key={chapter.id} onSelect={() => this.changeChapter(chapter.id)}>
@@ -121,7 +139,7 @@ class CardDialog extends Component {
         <Button bsStyle='success' onClick={this.saveAndClose}>
           {i18n('Save')}
         </Button>
-        <Button className='card-dialog__delete' onClick={this.deleteCard} >
+        <Button className='card-dialog__delete' onClick={this.handleDelete} >
           {i18n('Delete')}
         </Button>
       </ButtonToolbar>
@@ -174,7 +192,7 @@ class CardDialog extends Component {
       <div className='card-dialog__left-side'>
         { bookDropDown }
         <div className='card-dialog__dropdown-wrapper'>
-          <label className='card-dialog__details-label' htmlFor={ids.line}>{i18n('Line')}:
+          <label className='card-dialog__details-label' htmlFor={ids.line}>{i18n('Plotline')}:
             <DropdownButton id={ids.line} className='card-dialog__select-line' title={this.getCurrentLine().title}>
               {this.renderLineItems()}
             </DropdownButton>
@@ -215,6 +233,7 @@ class CardDialog extends Component {
       customStyles.content.backgroundColor = '#666'
     }
     return <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
+      { this.renderDelete() }
       <div className={cx('card-dialog', {darkmode: ui.darkMode})}>
         <div className='card-dialog__body'>
           {this.renderLeftSide()}

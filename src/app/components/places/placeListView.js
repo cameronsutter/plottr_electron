@@ -19,6 +19,7 @@ import Image from 'components/images/Image'
 import i18n from 'format-message'
 import { placeCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
 import ErrorBoundary from '../../containers/ErrorBoundary'
+import PlaceItem from './PlaceItem'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -195,24 +196,12 @@ class PlaceListView extends Component {
   }
 
   renderVisiblePlaces = () => {
-    return this.state.visiblePlaces.map((pl, idx) => {
-      let img = null
-      if (pl.imageId) {
-        img = <div className='place-list__item-inner__image-wrapper'>
-          <Image size='small' shape='rounded' imageId={pl.imageId} />
-        </div>
-      }
-      const klasses = cx('list-group-item', {selected: pl.id == this.state.placeDetailId})
-      return <div key={idx} className={klasses} onClick={() => this.setState({placeDetailId: pl.id})}>
-        <div className='place-list__item-inner'>
-          {img}
-          <div>
-            <h6 className='list-group-item-heading'>{pl.name || i18n('New Place')}</h6>
-            <p className='list-group-item-text'>{pl.description.substr(0, 100)}</p>
-          </div>
-        </div>
-      </div>
-    })
+    return this.state.visiblePlaces.map(pl => (
+      <PlaceItem key={pl.id} place={pl}
+        selected={pl.id == this.state.placeDetailId}
+        select={() => this.setState({placeDetailId: pl.id})}
+      />
+    ))
   }
 
   renderPlaces () {

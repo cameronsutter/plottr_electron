@@ -82,13 +82,6 @@ class PlaceView extends Component {
     })
   }
 
-  deletePlace = () => {
-    let label = i18n("Do you want to delete this place: { name }?", {name: this.props.place.name})
-    if (window.confirm(label)) {
-      this.props.actions.deletePlace(this.props.place.id)
-    }
-  }
-
   renderEditingImage () {
     const { place } = this.props
 
@@ -176,10 +169,6 @@ class PlaceView extends Component {
             onClick={this.saveEdit} >
             {i18n('Save')}
           </Button>
-          <Button className='card-dialog__delete'
-            onClick={this.deletePlace} >
-            {i18n('Delete')}
-          </Button>
         </ButtonToolbar>
       </div>
     </div>
@@ -259,7 +248,7 @@ class PlaceView extends Component {
     })
     return <div className='place-list__place-wrapper'>
       <div className='place-list__place' onClick={() => this.setState({editing: true})}>
-        <h4 className='secondary-text'>{place.name}</h4>
+        <h4 className='secondary-text'>{place.name || i18n('New Place')}</h4>
         <div className='place-list__place-inner'>
           <div>
             <dl className='dl-horizontal'>

@@ -12,7 +12,7 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "places",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -33,7 +33,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.6.17"
+    "version": "2020.6.19"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",

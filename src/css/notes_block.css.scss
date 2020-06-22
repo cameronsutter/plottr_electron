@@ -33,6 +33,15 @@
     .note-list__item-inner {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+
+
+      .note-list__item-buttons {
+        visibility: hidden;
+        &.visible {
+          visibility: visible;
+        }
+      }
 
       .note-list__item-inner__image-wrapper {
         img {
@@ -43,6 +52,10 @@
     }
     &:hover {
       background: $new-item-background;
+
+      .note-list__item-buttons {
+        visibility: visible;
+      }
     }
     &.selected {
       border: 2px dashed $blue-6;

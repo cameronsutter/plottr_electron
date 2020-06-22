@@ -4,13 +4,14 @@ import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
-import * as CharacterActions from 'actions/characters'
+import * as NoteActions from 'actions/notes'
 import i18n from 'format-message'
 import Image from '../images/Image'
 import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import prettydate from 'pretty-date'
 
-class CharacterItem extends Component {
+class PlaceItem extends Component {
   state = {deleting: false}
 
   componentDidMount () {
@@ -28,9 +29,9 @@ class CharacterItem extends Component {
     }
   }
 
-  deleteCharacter = e => {
+  deleteNote = e => {
     e.stopPropagation()
-    this.props.actions.deleteCharacter(this.props.character.id)
+    this.props.actions.deleteNote(this.props.note.id)
   }
 
   cancelDelete = e => {
@@ -41,62 +42,63 @@ class CharacterItem extends Component {
   handleDelete = e => {
     e.stopPropagation()
     this.setState({deleting: true})
-    this.props.stopEdit()
+    // this.props.stopEdit()
   }
 
-  selectCharacter = () => {
-    const { character, selected, select, startEdit } = this.props
+  selectNote = () => {
+    const { note, selected, select, startEdit } = this.props
     if (selected) {
-      startEdit()
+      // startEdit()
     } else {
-      select(character.id)
+      select(note.id)
     }
   }
 
   startEditing = e => {
     e.stopPropagation()
-    this.props.select(this.props.character.id)
+    this.props.select(this.props.note.id)
     this.props.startEdit()
   }
 
   renderDelete () {
     if (!this.state.deleting) return null
 
-    return <DeleteConfirmModal name={this.props.character.name || i18n('New Character')} onDelete={this.deleteCharacter} onCancel={this.cancelDelete}/>
+    return <DeleteConfirmModal name={this.props.note.title || i18n('New Note')} onDelete={this.deleteNote} onCancel={this.cancelDelete}/>
   }
 
   render () {
-    const { character, selected } = this.props
+    const { note, selected } = this.props
     let img = null
-    if (character.imageId) {
-      img = <div className='character-list__item-inner__image-wrapper'>
-        <Image shape='circle' size='small' imageId={character.imageId} />
+    if (note.imageId) {
+      img = <div className='note-list__item-inner__image-wrapper'>
+        <Image responsive imageId={note.imageId} />
       </div>
     }
+    let lastEdited = null
+    if (note.lastEdited) {
+      lastEdited = <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(note.lastEdited))}</p>
+    }
     const klasses = cx('list-group-item', {selected: selected})
-    const buttonKlasses = cx('character-list__item-buttons', {visible: selected})
-    return <div className={klasses} onClick={this.selectCharacter}>
-      <div className='character-list__item-inner'>
+    const buttonKlasses = cx('note-list__item-buttons', {visible: selected})
+    return <div className={klasses} onClick={this.selectNote}>
+      { this.renderDelete() }
+      <div className='note-list__item-inner'>
         {img}
         <div>
-          <h6 className='list-group-item-heading'>{character.name || i18n('New Character')}</h6>
-          <p className='list-group-item-text'>{character.description.substr(0, 100)}</p>
+          <h6 className='list-group-item-heading'>{note.title || i18n('New Note')}</h6>
+          { lastEdited }
         </div>
         <ButtonGroup className={buttonKlasses}>
-          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
           <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
-        { this.renderDelete() }
       </div>
     </div>
   }
 
   static propTypes = {
-    character: PropTypes.object.isRequired,
+    note: PropTypes.object.isRequired,
     selected: PropTypes.bool.isRequired,
     select: PropTypes.func.isRequired,
-    startEdit: PropTypes.func.isRequired,
-    stopEdit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
   }
 }
@@ -108,11 +110,11 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(CharacterActions, dispatch),
+    actions: bindActionCreators(NoteActions, dispatch),
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CharacterItem)
+)(PlaceItem)

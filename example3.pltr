@@ -12,7 +12,7 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "places",
+    "currentView": "notes",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -10076,41 +10076,6 @@
       "places": [],
       "tags": [],
       "title": "Title Ideas",
-      "templates": [],
-      "imageId": null,
-      "bookIds": []
-    },
-    {
-      "id": 6,
-      "title": "Something here",
-      "content": [
-        {
-          "children": [
-            {
-              "text": "some large text goes here:"
-            }
-          ]
-        },
-        {
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "tags": [],
-      "characters": [],
-      "places": [],
-      "lastEdited": 1592254882086,
       "templates": [],
       "imageId": null,
       "bookIds": []

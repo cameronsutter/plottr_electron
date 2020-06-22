@@ -62,7 +62,7 @@ class PlaceItem extends Component {
   renderDelete () {
     if (!this.state.deleting) return null
 
-    return <DeleteConfirmModal name={this.props.place.name} onDelete={this.deletePlace} onCancel={this.cancelDelete}/>
+    return <DeleteConfirmModal name={this.props.place.name || i18n('New Place')} onDelete={this.deletePlace} onCancel={this.cancelDelete}/>
   }
 
   render () {

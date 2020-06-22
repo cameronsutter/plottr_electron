@@ -1,5 +1,4 @@
-import _ from 'lodash'
-import prettydate from 'pretty-date'
+import { sortBy } from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
@@ -8,10 +7,10 @@ import { Glyphicon, Nav, Navbar, NavItem, Button, Alert, OverlayTrigger, Popover
 import * as NoteActions from 'actions/notes'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
-import Image from 'components/images/Image'
 import i18n from 'format-message'
 import cx from 'classnames'
 import ErrorBoundary from '../../containers/ErrorBoundary'
+import NoteItem from './NoteItem'
 
 class NoteListView extends Component {
   constructor (props) {
@@ -19,7 +18,7 @@ class NoteListView extends Component {
     var id = null
     var sortedNotes = []
     if (props.notes.length > 0) {
-      sortedNotes = _.sortBy(props.notes, ['lastEdited'])
+      sortedNotes = sortBy(props.notes, ['lastEdited'])
       sortedNotes.reverse()
       id = sortedNotes[0].id
     }
@@ -58,7 +57,7 @@ class NoteListView extends Component {
     if (!filterIsEmpty) {
       viewableNotes = notes.filter((n) => this.isViewable(filter, n))
     }
-    let sortedNotes = _.sortBy(viewableNotes, ['lastEdited'])
+    let sortedNotes = sortBy(viewableNotes, ['lastEdited'])
     sortedNotes.reverse()
     return sortedNotes
   }
@@ -93,28 +92,12 @@ class NoteListView extends Component {
   }
 
   renderVisibleNotes () {
-    return this.state.viewableNotes.map((n, idx) => {
-      let img = null
-      if (n.imageId) {
-        img = <div className='note-list__item-inner__image-wrapper'>
-          <Image responsive imageId={n.imageId} />
-        </div>
-      }
-      let lastEdited = null
-      if (n.lastEdited) {
-        lastEdited = <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(n.lastEdited))}</p>
-      }
-      const klasses = cx('list-group-item', {selected: n.id == this.state.noteDetailId})
-      return <div key={idx} className={klasses} onClick={() => this.setState({noteDetailId: n.id})}>
-        <div className='note-list__item-inner'>
-          {img}
-          <div>
-            <h6 className='list-group-item-heading'>{n.title || i18n('New Note')}</h6>
-            { lastEdited }
-          </div>
-        </div>
-      </div>
-    })
+    return this.state.viewableNotes.map(n => (
+      <NoteItem key={n.id} note={n}
+        selected={n.id == this.state.noteDetailId}
+        select={() => this.setState({noteDetailId: n.id})}
+      />
+    ))
   }
 
   renderNotes () {

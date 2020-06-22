@@ -8,6 +8,7 @@ import { Cell } from 'react-sticky-table'
 import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
 import ColorPicker from '../colorpicker'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 
@@ -21,8 +22,24 @@ class LineTitleCell extends PureComponent {
       editing: props.line.title === '',
       dragging: false,
       dropping: false,
-      showColorPicker: false
+      showColorPicker: false,
+      deleting: false,
     }
+  }
+
+  deleteLine = e => {
+    e.stopPropagation()
+    this.props.actions.deleteLine(this.props.line.id)
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false})
+  }
+
+  handleDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: true, hovering: false})
   }
 
   editTitle = () => {
@@ -81,14 +98,6 @@ class LineTitleCell extends PureComponent {
     this.props.handleReorder(this.props.line.position, droppedLine.position)
   }
 
-  handleDelete = () => {
-    const { line } = this.props
-    let label = i18n("Do you want to delete this story line: { title }?", {title: line.title})
-    if (window.confirm(label)) {
-      this.props.actions.deleteLine(line.id)
-    }
-  }
-
   handleEsc = (event) => {
     if (event.which === 27) this.setState({editing: false})
   }
@@ -114,6 +123,12 @@ class LineTitleCell extends PureComponent {
 
   stopHovering = () => {
     this.setState({hovering: false})
+  }
+
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={this.props.line.title || i18n('New Plotline')} onDelete={this.deleteLine} onCancel={this.cancelDelete}/>
   }
 
   renderColorPicker () {
@@ -146,7 +161,7 @@ class LineTitleCell extends PureComponent {
   renderTitle () {
     if (!this.state.editing) return this.props.line.title
     return <FormGroup>
-      <ControlLabel>{i18n('Story line name')}</ControlLabel>
+      <ControlLabel>{i18n('Plotline name')}</ControlLabel>
       <FormControl
         type='text'
         defaultValue={this.props.line.title}
@@ -167,12 +182,6 @@ class LineTitleCell extends PureComponent {
     let innerKlass = orientedClassName('line-title__body', this.props.ui.orientation)
     if (this.state.hovering) innerKlass += ' hover'
     if (this.state.dropping) innerKlass += ' dropping'
-    // const lineStyle = {
-    //   left: `${CELL_WIDTH}px`,
-    //   borderColor: this.props.line.color,
-    //   width: `${window.innerWidth - CELL_WIDTH}px`
-    // }
-    // <div className='line-title__line-line' style={lineStyle}></div>
     return <Cell>
       <div
         className={orientedClassName('line-title__cell', this.props.ui.orientation)}
@@ -180,6 +189,7 @@ class LineTitleCell extends PureComponent {
         onMouseLeave={this.stopHovering}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
+        { this.renderDelete() }
         <div className={innerKlass}
           onClick={this.startEditing}
           onDragStart={this.handleDragStart}

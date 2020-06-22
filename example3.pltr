@@ -16,7 +16,7 @@
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "vertical",
+    "orientation": "horizontal",
     "placeFilter": {
       "tag": [],
       "book": [],
@@ -25,7 +25,7 @@
       "owner": []
     },
     "placeSort": "name~asc",
-    "currentTimeline": "series",
+    "currentTimeline": 1,
     "zoomState": null,
     "zoomIndex": 4
   },
@@ -875,20 +875,6 @@
       "position": 0
     },
     {
-      "id": 66,
-      "bookId": 3,
-      "position": 0,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 67,
-      "bookId": 3,
-      "position": 1,
-      "title": "auto",
-      "time": 0
-    },
-    {
       "id": 1,
       "position": 0,
       "title": "Chapter 1",
@@ -1408,6 +1394,27 @@
       "id": 72,
       "bookId": 6,
       "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 66,
+      "bookId": 3,
+      "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 67,
+      "bookId": 3,
+      "position": 1,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 73,
+      "bookId": 3,
+      "position": 2,
       "title": "auto",
       "time": 0
     }

@@ -12,12 +12,32 @@ import i18n from 'format-message'
 import { chapterTitle, editingChapterLabel } from '../../helpers/chapters'
 import { isSeriesSelector } from '../../selectors/ui'
 import { makeChapterNameSelector, makeChapterSelector } from '../../selectors/chapters'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 class ChapterTitleCell extends PureComponent {
   constructor (props) {
     super(props)
     let editing = props.chapter.title == ''
-    this.state = {hovering: false, editing: editing, dragging: false, dropping: false}
+    this.state = {hovering: false, editing: editing, dragging: false, dropping: false, deleting: false}
+  }
+
+  deleteChapter = e => {
+    e.stopPropagation()
+    if (this.props.isSeries) {
+      this.props.beatActions.deleteBeat(this.props.chapter.id)
+    } else {
+      this.props.actions.deleteScene(this.props.chapter.id, this.props.ui.currentTimeline)
+    }
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false})
+  }
+
+  handleDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: true, hovering: false})
   }
 
   editTitle = () => {
@@ -87,17 +107,6 @@ class ChapterTitleCell extends PureComponent {
     this.props.handleReorder(this.props.chapter.position, droppedChapter.position)
   }
 
-  handleDelete = () => {
-    let label = i18n("Do you want to delete this chapter: { title }?", {title: chapterTitle(this.props.chapter)})
-    if (window.confirm(label)) {
-      if (this.props.isSeries) {
-        this.props.beatActions.deleteBeat(this.props.chapter.id)
-      } else {
-        this.props.actions.deleteScene(this.props.chapter.id, this.props.ui.currentTimeline)
-      }
-    }
-  }
-
   startEditing = () => {
     this.setState({editing: true})
   }
@@ -108,6 +117,12 @@ class ChapterTitleCell extends PureComponent {
 
   stopHovering = () => {
     this.setState({hovering: false})
+  }
+
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={chapterTitle(this.props.chapter)} onDelete={this.deleteChapter} onCancel={this.cancelDelete}/>
   }
 
   renderHoverOptions () {
@@ -164,6 +179,7 @@ class ChapterTitleCell extends PureComponent {
         onMouseLeave={this.stopHovering}
         onDrop={this.handleDrop}>
         { this.renderHoverOptions() }
+        { this.renderDelete() }
         <div className={innerKlass}
           onClick={this.startEditing}
           draggable={true}

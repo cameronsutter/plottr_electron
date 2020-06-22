@@ -1066,7 +1066,7 @@ function buildHelpMenu () {
         label: i18n('Documentation'),
         click: () => shell.openExternal('https://getplottr.com/docs/navigating-plottr/')
       }, {
-        label: i18n('Facebook Support Group'),
+        label: i18n('Facebook Group'),
         click: () => shell.openExternal('https://www.facebook.com/groups/367650870614184')
       }, {
         type: 'separator'

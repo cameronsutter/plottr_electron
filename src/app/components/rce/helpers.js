@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 
 export function useTextConverter (text) {
-  console.log('text converter')
   let rceText = text
   if (!text || !text.length || typeof text === 'string') {
     // [{ children: [{ text: '' }] }]
@@ -12,7 +11,6 @@ export function useTextConverter (text) {
   if (typeof text === 'string') {
     rceText[0].children[0].text = text
   }
-  // const [value, setValue] = useState(rceText)
 
   return rceText
 }

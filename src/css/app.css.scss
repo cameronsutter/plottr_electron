@@ -22,6 +22,7 @@
 @import "template_picker";
 @import "book";
 @import "darkmode";
+@import "modals";
 
 @import "vars";
 @import "colors";
@@ -181,6 +182,13 @@ input[type="file"] {
 }
 div.update-notifier:hover {
   background-color: white;
+}
+
+.modal-container {
+  position: relative;
+}
+.modal-container .modal, .modal-container .modal-backdrop {
+  position: absolute;
 }
 
 .tour-helper {

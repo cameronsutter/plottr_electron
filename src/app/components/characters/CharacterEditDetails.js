@@ -38,14 +38,12 @@ class CharacterEditDetails extends Component {
   }
 
   componentWillUnmount () {
-    this.saveEdit()
+    this.saveEdit(false)
   }
 
   handleEnter = (event) => {
     if (event.which === 13) {
-      if (window.confirm("All Your Base Are Belong to Us")) {
-        this.saveEdit()
-      }
+      this.saveEdit()
     }
   }
 
@@ -74,7 +72,7 @@ class CharacterEditDetails extends Component {
     this.setState({templateAttrs})
   }
 
-  saveEdit = () => {
+  saveEdit = (close = true) => {
     var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
     var description = findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
@@ -105,12 +103,12 @@ class CharacterEditDetails extends Component {
       return t
     })
     this.props.actions.editCharacter(this.props.character.id, {name, description, notes, templates, ...attrs})
-    this.props.finishEditing()
+    if (close) this.props.finishEditing()
   }
 
-  // TODO: this should make the change in redux without leaving edit mode or saving everything else
   changeCategory = (val) => {
     this.setState({categoryId: val})
+    this.props.actions.editCharacter(this.props.character.id, {categoryId: val == -1 ? null : val})
   }
 
   renderEditingImage () {

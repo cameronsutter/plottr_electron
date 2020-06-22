@@ -15,4 +15,3 @@ test: off
 branches:
   only:
     - master
-    - unresponsive-bug

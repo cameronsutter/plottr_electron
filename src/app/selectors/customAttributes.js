@@ -26,7 +26,7 @@ export const characterCustomAttributesThatCanChangeSelector = createSelector(
         return acc
       }
 
-      const changeable = characters.every(ch => hasValue(ch, attr.name))
+      const changeable = characters.every(ch => hasNoValue(ch, attr.name))
       if (changeable) acc.push(attr.name)
       return acc
     }, [])
@@ -43,7 +43,7 @@ export const placeCustomAttributesThatCanChangeSelector = createSelector(
         return acc
       }
 
-      const changeable = places.every(pl => hasValue(pl, attr.name))
+      const changeable = places.every(pl => hasNoValue(pl, attr.name))
       if (changeable) acc.push(attr.name)
       return acc
     }, [])
@@ -56,7 +56,7 @@ export const placeCustomAttributesThatCanChangeSelector = createSelector(
 // 3. It's value is the same as RCE_INITIAL_VALUE
 // 4. It's value is an empty paragraph
 // Otherwise, a paragraph type can not be changed back
-function hasValue (item, attr) {
+function hasNoValue (item, attr) {
   const val = item[attr]
   if (!val) return true
   if (typeof val === 'string') return true

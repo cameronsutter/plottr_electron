@@ -20,13 +20,7 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 const customStyles = {content: {top: '70px'}}
 
 class CardDialog extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      description: props.card.description,
-      editing: true,
-    }
-  }
+  state = { description: props.card.description }
 
   isSeries = () => {
     return this.props.ui.currentTimeline == 'series'
@@ -34,15 +28,6 @@ class CardDialog extends Component {
 
   componentDidMount () {
     window.SCROLLWITHKEYS = false
-    // this is a hack
-    // must do this so the RichText editing works
-    // otherwise, throws this: addRange(): The given range isn't in document.
-    // or when you click on it, nothing happens and you can't edit anything
-
-    // 400 is the minimum (apparently only sometimes)
-    const delay = 500
-    // setTimeout(() => {this.setState({editing: true})}, delay)
-    // this.setState({editing: true})
   }
 
   componentWillUnmount () {
@@ -239,7 +224,7 @@ class CardDialog extends Component {
             <RichText
               description={card.description}
               onChange={(desc) => this.setState({description: desc})}
-              editable={this.state.editing}
+              editable={true}
               darkMode={ui.darkMode}
             />
           </div>

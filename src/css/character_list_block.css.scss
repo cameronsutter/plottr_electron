@@ -38,6 +38,14 @@
     .character-list__item-inner {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+
+      .character-list__item-buttons {
+        visibility: hidden;
+        &.visible {
+          visibility: visible;
+        }
+      }
 
       .character-list__item-inner__image-wrapper {
         img {
@@ -49,6 +57,10 @@
     }
     &:hover {
       background: $new-item-background;
+
+      .character-list__item-buttons {
+        visibility: visible;
+      }
     }
     &.selected {
       border: 2px dashed $blue-6;

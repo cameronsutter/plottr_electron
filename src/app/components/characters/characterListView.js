@@ -1,30 +1,24 @@
-import { ipcRenderer, remote } from 'electron'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup, ButtonGroup,
-  ControlLabel, Popover, OverlayTrigger, Alert, Grid, Row, Col } from 'react-bootstrap'
-import Modal from 'react-modal'
+import { Glyphicon, Nav, Navbar, NavItem, Button, ButtonGroup, Popover, OverlayTrigger, Alert, Grid, Row, Col } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import * as CharacterActions from 'actions/characters'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
-import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import Image from '../images/Image'
 import cx from 'classnames'
 import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
-import { FaSave } from 'react-icons/fa'
 import { visibleSortedCharactersByCategorySelector, characterFilterIsEmptySelector } from '../../selectors/characters'
 import { sortedCharacterCategoriesSelector } from '../../selectors/categories'
-
-const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
-const win = remote.getCurrentWindow()
+import CustomAttributeModal from './CustomAttributeModal'
+import CharacterItem from './CharacterItem'
+import InputModal from '../dialogs/InputModal'
+import { nextId } from '../../store/newIds'
 
 class CharacterListView extends Component {
   constructor (props) {
@@ -33,7 +27,10 @@ class CharacterListView extends Component {
       dialogOpen: false,
       addAttrText: '',
       characterDetailId: null,
+      editingSelected: false,
       showTemplatePicker: false,
+      creating: false,
+      templateData: null,
     }
   }
 
@@ -48,12 +45,6 @@ class CharacterListView extends Component {
     if (!characters.length) return null
     if (!Object.keys(charactersByCategory).length) return null
     const allCategories = [...categories, {id: null}] // uncategorized
-
-    // check for a new one
-    if (charactersByCategory[null] && charactersByCategory[null].length) {
-      let newCharacter = charactersByCategory[null].find(ch => ch.name == '')
-      if (newCharacter) return newCharacter.id
-    }
 
     // check for the currently active one
     if (characterDetailId != null) {
@@ -71,21 +62,41 @@ class CharacterListView extends Component {
     return null
   }
 
+  editingSelected = () => {
+    this.setState({editingSelected: true})
+  }
+
+  stopEditing = () => {
+    this.setState({editingSelected: false})
+  }
+
   closeDialog = () => {
     this.setState({dialogOpen: false})
   }
 
-  startSaveAsTemplate = () => {
-    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', 'characters') // sends this message to this same process
-  }
-
   handleCreateNewCharacter = () => {
-    this.props.actions.addCharacter()
+    this.setState({creating: true})
   }
 
   handleChooseTemplate = (templateData) => {
-    this.setState({showTemplatePicker: false})
-    this.props.actions.addCharacterWithTemplate(templateData)
+    this.setState({showTemplatePicker: false, templateData: templateData, creating: true})
+  }
+
+  handleFinishCreate = (name) => {
+    const id = nextId(this.props.characters)
+    if (this.state.templateData) {
+      this.props.actions.addCharacterWithTemplate(name, this.state.templateData)
+    } else {
+      this.props.actions.addCharacter(name)
+    }
+
+    this.setState({creating: false, templateData: null, characterDetailId: id, editingSelected: true})
+  }
+
+  renderCreateInput () {
+    if (!this.state.creating) return null
+
+    return <InputModal title={i18n('Name')} getValue={this.handleFinishCreate} cancel={() => this.setState({creating: false})} isOpen={true} type='text'/>
   }
 
   renderSubNav () {
@@ -134,24 +145,14 @@ class CharacterListView extends Component {
     const { visibleCharactersByCategory } = this.props
     if (!visibleCharactersByCategory[categoryId]) return []
 
-    return visibleCharactersByCategory[categoryId].map((ch, idx) => {
-      let img = null
-      if (ch.imageId) {
-        img = <div className='character-list__item-inner__image-wrapper'>
-          <Image shape='circle' size='small' imageId={ch.imageId} />
-        </div>
-      }
-      const klasses = cx('list-group-item', {selected: ch.id == this.state.characterDetailId})
-      return <div key={idx} className={klasses} onClick={() => this.setState({characterDetailId: ch.id})}>
-        <div className='character-list__item-inner'>
-          {img}
-          <div>
-            <h6 className='list-group-item-heading'>{ch.name || i18n('New Character')}</h6>
-            <p className='list-group-item-text'>{ch.description.substr(0, 100)}</p>
-          </div>
-        </div>
-      </div>
-    })
+    return visibleCharactersByCategory[categoryId].map(ch => (
+      <CharacterItem key={ch.id} character={ch}
+        selected={ch.id == this.state.characterDetailId}
+        startEdit={this.editingSelected}
+        stopEdit={this.stopEditing}
+        select={() => this.setState({characterDetailId: ch.id})}
+      />
+    ))
   }
 
   renderCategory (category) {
@@ -175,46 +176,21 @@ class CharacterListView extends Component {
   renderCharacterDetails () {
     let character = this.props.characters.find(char => char.id == this.state.characterDetailId)
     if (character) {
-      return <CharacterView key={`character-${character.id}`} characterId={character.id} />
+      return <CharacterView key={`character-${character.id}`}
+        characterId={character.id}
+        editing={this.state.editingSelected}
+        stopEditing={this.stopEditing}
+        startEditing={this.editingSelected}
+      />
     } else {
       return null
     }
   }
 
   renderCustomAttributes () {
-    const { customAttributes, ui, customAttributesThatCanChange } = this.props
-    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)}/> )
-    if (ui.darkMode) {
-      modalStyles.content.backgroundColor = '#666'
-    }
-    return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
-      <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
-        <Button className='pull-right' onClick={this.closeDialog}>
-          {i18n('Close')}
-        </Button>
-        {customAttributes.length ?
-          <Button className='pull-right character-list__custom-attributes__save-as-template' onClick={this.startSaveAsTemplate}>
-            <FaSave className='svg-save-template'/> {i18n('Save as Template')}
-          </Button>
-        : null }
-        <h3>{i18n('Custom Attributes for Characters')}</h3>
-        <p className='sub-header'>{i18n('Choose what you want to track about your characters')}</p>
-        <div className='character-list__custom-attributes-add-button'>
-          <FormGroup>
-            <ControlLabel>{i18n('Add attributes')}</ControlLabel>
-            <FormControl type='text' ref='attrInput'
-              value={this.state.addAttrText}
-              onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
-          </FormGroup>
-          <Button bsStyle='success' onClick={this.saveAttr}>
-            {i18n('Add')}
-          </Button>
-        </div>
-        <div className='character-list__custom-attributes-list-wrapper'>
-          {attrs}
-        </div>
-      </div>
-    </Modal>)
+    if (!this.state.dialogOpen) return null
+
+    return <CustomAttributeModal closeDialog={this.closeDialog} />
   }
 
   renderTemplatePicker () {
@@ -231,11 +207,15 @@ class CharacterListView extends Component {
   }
 
   render () {
+    if (this.state.editingSelected) window.SCROLLWITHKEYS = false
+    else window.SCROLLWITHKEYS = true
+
     return (
       <div className='character-list container-with-sub-nav'>
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
         {this.renderTemplatePicker()}
+        {this.renderCreateInput()}
         <Grid fluid>
           <Row>
             <Col sm={3}>

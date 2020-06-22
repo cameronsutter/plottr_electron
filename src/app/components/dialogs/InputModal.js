@@ -9,18 +9,31 @@ export default class InputModal extends Component {
     this.props.getValue(findDOMNode(this.refs.input).value)
   }
 
-  handleChange = () => {
+  handleChange = (e) => {
 
   }
 
+  handleEnter = (event) => {
+    event.stopPropagation()
+    if (event.which === 13) {
+      this.handleOK()
+    }
+  }
+
+  handleEsc = (event) => {
+    if (event.which === 27) {
+      this.props.cancel()
+    }
+  }
+
   render () {
-    return <Modal show={this.props.isOpen} onHide={this.props.cancel}>
+    return <Modal show={this.props.isOpen} onHide={this.props.cancel} dialogClassName='center-modal-vertically'>
       <Modal.Header closeButton>{this.props.title}</Modal.Header>
       <Modal.Body>
         <Form horizontal>
           <FormGroup>
             <Col sm={8}>
-              <FormControl type={this.props.type} ref='input' autoFocus defaultValue='' onChange={this.handleChange} onKeyDown={this.handleChange}/>
+              <FormControl type={this.props.type} ref='input' autoFocus defaultValue='' onChange={this.handleChange} onKeyUp={this.handleEnter}/>
             </Col>
             <Col sm={1}>
             </Col>

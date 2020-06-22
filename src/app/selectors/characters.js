@@ -6,6 +6,14 @@ export const allCharactersSelector = state => state.characters
 // this one also lives in ./customAttributes.js but it causes a circular dependency to import it here
 const characterCustomAttributesSelector = state => state.customAttributes.characters
 
+const selectId = (state, id) => id
+
+export const singleCharacterSelector = createSelector(
+  allCharactersSelector,
+  selectId,
+  (characters, propId) => characters.find(ch => ch.id == propId)
+)
+
 export const charactersByCategorySelector = createSelector(
   allCharactersSelector,
   (characters) => groupBy(characters, 'categoryId')

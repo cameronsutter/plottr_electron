@@ -4,7 +4,7 @@ import { FaImage } from "react-icons/fa"
 import { Editor, Transforms } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
-import InputModal from '../InputModal'
+import InputModal from '../dialogs/InputModal'
 import i18n from 'format-message'
 import imageExtensions from 'image-extensions'
 import { readImage } from '../../helpers/images'

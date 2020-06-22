@@ -4,7 +4,7 @@ import { FaLink } from "react-icons/fa"
 import { Editor, Transforms, Range } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
-import InputModal from '../InputModal'
+import InputModal from '../dialogs/InputModal'
 import i18n from 'format-message'
 
 export const LinkButton = () => {

@@ -8,9 +8,9 @@ import * as CharacterActions from 'actions/characters'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import Image from '../images/Image'
+import { singleCharacterSelector } from '../../selectors/characters'
 
 class CharacterDetails extends Component {
-
   render () {
     const { character, ui, customAttributes, categories } = this.props
     const customAttrNotes = customAttributes.map((attr, idx) => {
@@ -91,7 +91,7 @@ class CharacterDetails extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    character: state.characters.find(ch => ch.id == ownProps.characterId),
+    character: singleCharacterSelector(state, ownProps.characterId),
     categories: state.categories.characters,
     customAttributes: state.customAttributes.characters,
     ui: state.ui,

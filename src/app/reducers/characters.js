@@ -126,9 +126,7 @@ export default function characters (state = initialState, action) {
       })
 
     case DELETE_CHARACTER:
-      return state.filter(character =>
-        character.id !== action.id
-      )
+      return state.filter(character => character.id !== action.id)
 
     case DELETE_IMAGE:
       return state.map(ch => {

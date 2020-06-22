@@ -11,6 +11,7 @@ import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
+import { singleCharacterSelector } from '../../selectors/characters'
 
 class CharacterEditDetails extends Component {
   constructor (props) {
@@ -28,7 +29,6 @@ class CharacterEditDetails extends Component {
       return acc
     }, {})
     this.state = {
-      deleting: false,
       notes: props.character.notes,
       description: description,
       categoryId: props.character.categoryId || -1,
@@ -38,7 +38,7 @@ class CharacterEditDetails extends Component {
   }
 
   componentWillUnmount () {
-    if (!this.state.deleting) this.saveEdit()
+    this.saveEdit(false)
   }
 
   handleEnter = (event) => {
@@ -72,7 +72,7 @@ class CharacterEditDetails extends Component {
     this.setState({templateAttrs})
   }
 
-  saveEdit = () => {
+  saveEdit = (close = true) => {
     var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
     var description = findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
@@ -103,19 +103,12 @@ class CharacterEditDetails extends Component {
       return t
     })
     this.props.actions.editCharacter(this.props.character.id, {name, description, notes, templates, ...attrs})
-    this.props.finishEditing()
-  }
-
-  deleteCharacter = () => {
-    let text = i18n('Do you want to delete this character: { character }?', {character: this.props.character.name})
-    if (window.confirm(text)) {
-      this.setState({deleting: true})
-      this.props.actions.deleteCharacter(this.props.character.id)
-    }
+    if (close) this.props.finishEditing()
   }
 
   changeCategory = (val) => {
     this.setState({categoryId: val})
+    this.props.actions.editCharacter(this.props.character.id, {categoryId: val == -1 ? null : val})
   }
 
   renderEditingImage () {
@@ -236,13 +229,8 @@ class CharacterEditDetails extends Component {
           { this.renderEditingTemplates() }
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
-          <Button bsStyle='success'
-            onClick={this.saveEdit} >
+          <Button bsStyle='success' onClick={this.saveEdit}>
             {i18n('Save')}
-          </Button>
-          <Button className='card-dialog__delete'
-            onClick={this.deleteCharacter} >
-            {i18n('Delete')}
           </Button>
         </ButtonToolbar>
       </div>
@@ -262,7 +250,7 @@ class CharacterEditDetails extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    character: state.characters.find(ch => ch.id == ownProps.characterId),
+    character: singleCharacterSelector(state, ownProps.characterId),
     categories: state.categories.characters,
     customAttributes: state.customAttributes.characters,
     ui: state.ui,

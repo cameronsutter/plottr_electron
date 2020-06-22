@@ -12,8 +12,8 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "outline",
-    "darkMode": true,
+    "currentView": "characters",
+    "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
@@ -123,7 +123,16 @@
           ]
         }
       ],
-      "thing": ""
+      "thing": "",
+      "more": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ]
     },
     {
       "In possession of fortune": "Yes",
@@ -607,6 +616,15 @@
       "imageId": null,
       "bookIds": [
         1
+      ],
+      "paragraph": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
       ]
     },
     {
@@ -1783,7 +1801,7 @@
         {
           "children": [
             {
-              "text": ""
+              "text": "asdkfasdfasdfasdfaskasdfkasdfkasdf"
             }
           ]
         }

@@ -837,7 +837,7 @@ function buildFileMenu () {
     accelerator: 'CmdOrCtrl+S',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
-      let winObj = _.find(windows, {id: win.id})
+      let winObj = windows.find(w => w.id == win.id)
       if (winObj) {
         FileManager.save(winObj.state.file.fileName, winObj.state, function (err) {
           if (err) {
@@ -857,9 +857,10 @@ function buildFileMenu () {
     accelerator: 'CmdOrCtrl+Shift+S',
     click: function () {
       let win = BrowserWindow.getFocusedWindow()
-      let winObj = _.find(windows, {id: win.id})
+      let winObj = windows.find(w => w.id == win.id)
       if (winObj) {
-        const fileName = dialog.showSaveDialogSync(win, {title: i18n('Where would you like to save this copy?')})
+        const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+        const fileName = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save this copy?')})
         if (fileName) {
           let fullName = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
           let newState = {...winObj.state}
@@ -926,14 +927,15 @@ function buildFileMenu () {
     label: i18n('Export') + '...',
     click: () => {
       const win = BrowserWindow.getFocusedWindow()
-      const winObj = _.find(windows, {id: win.id})
+      const winObj = windows.find(w => w.id == win.id)
       let exportState = {}
       if (winObj) {
         exportState = winObj.state
       } else {
         exportState = windows[0].state
       }
-      const fileName = dialog.showSaveDialogSync(win, {title: i18n('Where would you like to save the export?')})
+      const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+      const fileName = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save the export?')})
       if (fileName) {
         Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})
       }

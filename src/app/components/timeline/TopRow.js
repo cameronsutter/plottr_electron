@@ -66,7 +66,7 @@ class TopRow extends Component {
   handleAppendLine = () => {
     const { ui, lineActions, seriesLineActions } = this.props
     if (this.isSeries()) {
-      seriesLineActions.addSeriesLine()
+      seriesLineActions.addLine()
     } else {
       lineActions.addLine(ui.currentTimeline)
     }

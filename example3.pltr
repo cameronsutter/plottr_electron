@@ -16,7 +16,7 @@
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "horizontal",
+    "orientation": "vertical",
     "placeFilter": {
       "tag": [],
       "book": [],
@@ -25,7 +25,7 @@
       "owner": []
     },
     "placeSort": "name~asc",
-    "currentTimeline": 1,
+    "currentTimeline": "series",
     "zoomState": null,
     "zoomIndex": 4
   },

@@ -159,7 +159,7 @@ class LineTitleCell extends PureComponent {
   }
 
   renderTitle () {
-    if (!this.state.editing) return this.props.line.title.substr(0, 75)
+    if (!this.state.editing) return this.props.line.title.substr(0, 50)
     return <FormGroup>
       <ControlLabel>{i18n('Plotline name')}</ControlLabel>
       <FormControl

@@ -15,7 +15,7 @@ class MiniMap extends Component {
   constructor (props) {
     super(props)
     this.state = {mouseOver: false}
-    this.firstChapterKey = props.chapters[0].id // this works since they are sorted
+    this.firstChapterKey = props.chapters.length ? props.chapters[0].id : 0 // this works since they are sorted
   }
 
   isSeries = () => {
@@ -71,7 +71,7 @@ class MiniMap extends Component {
         onMouseEnter={() => this.setState({mouseOver: true})}
         onMouseLeave={() => this.setState({mouseOver: false})}
       >
-        {this.renderChapters()}
+        { this.renderChapters() }
       </Nav>
     )
   }

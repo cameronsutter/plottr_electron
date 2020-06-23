@@ -5,7 +5,6 @@ import { objectId } from '../store/newIds'
 
 export default function books (state = defaultBook, action) {
   switch (action.type) {
-
     case EDIT_BOOK:
       return {
         ...state,
@@ -50,9 +49,6 @@ export default function books (state = defaultBook, action) {
       return action.data.books
 
     case NEW_FILE:
-      // TODO: maybe use this
-      // const separator = process.platform === 'darwin' ? '/' : '\\'
-      // return action.fileName.substr(action.fileName.lastIndexOf(separator) + 1).replace('.pltr', '')
       return newFileBooks
 
     default:

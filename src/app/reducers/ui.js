@@ -19,10 +19,6 @@ export default function ui (state = defaultUI, action) {
     case CHANGE_CURRENT_TIMELINE:
       return Object.assign({}, state, {currentTimeline: action.id})
 
-    case DELETE_BOOK:
-      if (state.currentTimeline == action.id) return Object.assign({}, state, {currentTimeline: 1})
-      return state
-
     case SET_DARK_MODE:
       return Object.assign({}, state, {darkMode: action.on})
 

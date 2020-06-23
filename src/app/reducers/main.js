@@ -16,7 +16,7 @@ import series from './series'
 import seriesLines from './seriesLines'
 import categories from './categories'
 
-const rootReducer = combineReducers({
+const mainReducer = combineReducers({
   ui,
   file,
   series,
@@ -35,4 +35,4 @@ const rootReducer = combineReducers({
   images,
 })
 
-export default rootReducer
+export default mainReducer

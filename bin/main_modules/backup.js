@@ -6,12 +6,18 @@ const rollbar = setupRollbar('backup')
 const { BACKUP_BASE_PATH } = require('./config_paths')
 const SETTINGS = require('./settings')
 
-function backupFile(fileName, data, callback) {
+function backupFile(fileName, isStartOfSession, data, callback) {
   if (process.env.NODE_ENV === 'dev') return
   if (!SETTINGS.get('backup')) return
 
-  // make the backup a daily record
-  const filePath = path.join(backupPath(), path.basename(fileName))
+  const fileBaseName = path.basename(fileName)
+  const basename = isStartOfSession ? `(start-session)-${fileBaseName}` : fileBaseName
+  const partialPath = backupPath()
+  let filePath = path.join(partialPath, basename)
+  if (isStartOfSession && fs.existsSync(filePath)) {
+    // don't overwrite the (start-session) backup file once it's been created
+    filePath = path.join(partialPath, fileBaseName)
+  }
   var stringState = JSON.stringify(data)
   try {
     fs.writeFile(filePath, stringState, callback)
@@ -21,6 +27,7 @@ function backupFile(fileName, data, callback) {
   }
 }
 
+// make the backup a daily record (except for the first time opening a file that day)
 function backupPath () {
   const today = new Date()
 

@@ -7,6 +7,12 @@ const semverCoerce = require('semver/functions/coerce')
 const migrationsList = require('./migrations_list')
 
 function Migrator (data, fileName, fileVersion, appVersion) {
+  this.data = data
+  this.fileVersion = fileVersion
+  this.appVersion = appVersion
+  this.migrations = []
+  this.migrationsChecked = false
+
   this.migrate = function (callback) {
     // save a backup file
     fs.writeFile(`${fileName.replace('.pltr', '')}-${this.fileVersion}-backup.pltr`, JSON.stringify(this.data, null, 2), (err) => {
@@ -57,12 +63,6 @@ function Migrator (data, fileName, fileVersion, appVersion) {
     var appPath = app.getAppPath()
     return path.resolve(appPath, 'bin', 'main_modules', 'migrator', 'migrations')
   }
-
-  this.data = data
-  this.fileVersion = fileVersion
-  this.appVersion = appVersion
-  this.migrations = []
-  this.migrationsChecked = false
 }
 
 module.exports = Migrator

@@ -155,7 +155,7 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
   winObj.state = state
   if (isNewFile || wasEdited) {
     FileManager.save(winObj.fileName, state, (err) => {
-      backupFile(winObj.fileName, state, () => {})
+      backupFile(winObj.fileName, false, state, () => {})
       if (err) {
         log.warn(err)
         rollbar.warn(err, {fileName: winObj.fileName})
@@ -551,6 +551,7 @@ function openWindow (fileName, jsonData) {
     let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     app.addRecentDocument(fileName)
     FileManager.open(fileName)
+    backupFile(fileName, true, json, () => {})
 
     windows.push({
       id: newWindow.id,

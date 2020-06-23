@@ -33,17 +33,17 @@ module.exports = {
   },
   module: {
     rules: [{
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: path.resolve(__dirname, 'src'),
-        exclude: /node_modules/,
-        query: {
-          cacheDirectory: true,
-        },
-      }, {
-        test: /\.scss$/,
-        loader: 'sass-loader',
-        include: path.resolve(__dirname, 'src', 'css'),
+      test: /\.js$/,
+      loader: 'babel-loader',
+      include: path.resolve(__dirname, 'src'),
+      exclude: /node_modules/,
+      query: {
+        cacheDirectory: true,
+      },
+    }, {
+      test: /\.scss$/,
+      loader: 'sass-loader',
+      include: path.resolve(__dirname, 'src', 'css'),
     }, {
       test: /\.(png|jpg|gif)$/,
       loader: 'url-loader',

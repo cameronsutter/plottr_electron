@@ -5,6 +5,7 @@ import { render } from 'react-dom'
 import ChoiceView from 'ChoiceView'
 const { remote } = require('electron')
 const app = remote.app
+import contextMenu from 'electron-context-menu'
 
 import i18n from 'format-message'
 i18n.setup({
@@ -41,3 +42,8 @@ if (process.env.NODE_ENV !== 'development') {
 const root = document.getElementById('verify__react__root')
 
 render(<ChoiceView />, root)
+
+// https://github.com/sindresorhus/electron-context-menu
+contextMenu({
+  prepend: (defaultActions, params, browserWindow) => []
+})

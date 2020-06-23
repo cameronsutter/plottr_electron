@@ -16,6 +16,7 @@ import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
+import contextMenu from 'electron-context-menu'
 
 i18n.setup({
   translations: require('../../locales'),
@@ -114,19 +115,11 @@ window.onkeydown = function (e) {
   }
 }
 
-// const menu = new Menu()
-// menu.append(new MenuItem({label: i18n('Cut'), accelerator: 'CmdOrCtrl+X', role: 'cut'}))
-// menu.append(new MenuItem({label: i18n('Copy'), accelerator: 'CmdOrCtrl+C', role: 'copy'}))
-// menu.append(new MenuItem({type: 'separator'}))
-// menu.append(new MenuItem({label: i18n('Paste'), accelerator: 'CmdOrCtrl+V', role: 'paste'}))
-// menu.append(new MenuItem({type: 'separator'}))
-// menu.append(new MenuItem({label: i18n('Select All'), accelerator: 'CmdOrCtrl+A', role: 'selectall'}))
-
-// window.addEventListener('contextmenu', (e) => {
-//   e.preventDefault()
-//   menu.popup(remote.getCurrentWindow())
-// }, false)
-
 window.logger = function(which) {
   process.env.LOGGER = which.toString()
 }
+
+// https://github.com/sindresorhus/electron-context-menu
+contextMenu({
+  prepend: (defaultActions, params, browserWindow) => []
+})

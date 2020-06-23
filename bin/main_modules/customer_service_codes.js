@@ -10,6 +10,7 @@ const log = require('electron-log')
 const { RECENT_FILES_PATH, BACKUP_BASE_PATH } = require('./config_paths')
 const { checkTrialInfo, extendWithReset } = require('./trial_manager')
 const SETTINGS = require('./settings')
+const fix = require('../../shared/FileFixer')
 
 function enterCustomerServiceCode () {
   prompt({
@@ -29,9 +30,10 @@ function enterCustomerServiceCode () {
       handleCustomerServiceCode(r)
     }
   })
-  .catch(console.error);
+  .catch(console.error)
 }
 
+// generate with `Math.random().toString(16)`
 function handleCustomerServiceCode (code) {
   switch (code) {
     case "xsu7wb":
@@ -80,6 +82,10 @@ function handleCustomerServiceCode (code) {
     case "d45e13cf92d59":
       // turn on premiumFeatures
       SETTINGS.set('premiumFeatures', true)
+      break;
+
+    case "186e0d":
+      fix() // TODO: how to thread the file contents to here
       break;
 
     default:

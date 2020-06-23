@@ -14,6 +14,14 @@ class ColorPicker extends Component {
     this.state = {color: this.props.color}
   }
 
+  componentDidMount () {
+    window.SCROLLWITHKEYS = false
+  }
+
+  componentWillUnmount () {
+    window.SCROLLWITHKEYS = true
+  }
+
   closeDialog = (color) => {
     this.props.closeDialog(color)
   }

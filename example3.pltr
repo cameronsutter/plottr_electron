@@ -1442,7 +1442,12 @@
       "id": 0,
       "lineId": 1,
       "places": [],
-      "tags": [],
+      "tags": [
+        18,
+        6,
+        8,
+        11
+      ],
       "title": "Netherfield Park is let at last!",
       "templates": [],
       "imageId": null,
@@ -9965,6 +9970,11 @@
       "color": "MistyRose",
       "id": 17,
       "title": "family"
+    },
+    {
+      "id": 18,
+      "title": "white",
+      "color": "LightYellow"
     }
   ],
   "notes": [

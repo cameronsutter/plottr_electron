@@ -18,6 +18,7 @@ import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
 import contextMenu from 'electron-context-menu'
 
+
 i18n.setup({
   translations: require('../../locales'),
   locale: app.getLocale() || 'en'

@@ -176,9 +176,8 @@ class LineTitleCell extends PureComponent {
   render () {
     if (this.state.editing) {
       window.SCROLLWITHKEYS = false
-    } else {
-      window.SCROLLWITHKEYS = true
     }
+
     let innerKlass = orientedClassName('line-title__body', this.props.ui.orientation)
     if (this.state.hovering) innerKlass += ' hover'
     if (this.state.dropping) innerKlass += ' dropping'

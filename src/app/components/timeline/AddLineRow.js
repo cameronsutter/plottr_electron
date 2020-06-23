@@ -134,7 +134,7 @@ class AddLineRow extends Component {
       const id = this.nextLineId
       if (remember) this.newLineMapping[tL.id] = id // remember old line id -> new line id
       const lastLine = this.getLast(this.allLines)
-      const lastPosition = lastLine.position || 0
+      const lastPosition = lastLine ? lastLine.position : 0
       const color = nextColor(this.allLines.length)
       const newLine = {
         ...tL,

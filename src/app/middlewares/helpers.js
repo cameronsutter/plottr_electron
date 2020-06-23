@@ -20,10 +20,40 @@ class MixpanelQueue {
     var size = screen.getPrimaryDisplay().size
     this.queue = []
     this.superProps = {
-      arch: process.arch,
       platform: process.platform,
       screen_size: `${size.width}x${size.height}`,
     }
+  }
+
+  defaultEventStats (event, basicAttrs={}, state) {
+    // average tags attached to cards
+    // average characters attached to cards
+    // average places attached to cards
+    let totalTags = 0
+    let totalChars = 0
+    let totalPls = 0
+    state.cards.forEach(c => {
+      totalTags += c.tags.length
+      totalChars += c.characters.length
+      totalPls += c.places.length
+    })
+    let numOfCards = state.cards.length
+
+    let attrs = {
+      ...basicAttrs,
+      numOfCards: numOfCards,
+      numOfCharacters: state.characters.length,
+      numOfChapters: state.chapters.length,
+      numOfLines: state.lines.length,
+      numOfBooks: state.books.allIds.length,
+      zoomLevel: state.ui.zoomIndex,
+      numOfCharCategories: state.categories.characters.length,
+      avgTagsOnCards: totalTags / numOfCards,
+      avgCharsOnCards: totalChars / numOfCards,
+      avgPlsOnCards: totalPls / numOfCards,
+    }
+
+    this.push(event, attrs)
   }
 
   push (event, attrs={}) {

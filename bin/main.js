@@ -546,7 +546,6 @@ function openWindow (fileName, jsonData) {
     }
   })
 
-
   try {
     let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     app.addRecentDocument(fileName)

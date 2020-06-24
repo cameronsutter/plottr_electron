@@ -21,7 +21,7 @@
     "message": "Añadir atributos"
   },
   "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details": {
-    "message": "Añade tarjetas a la línea del tiempo para incorporar notas a tus escenas. Haz click en la tarjeta para añadir más detalles"
+    "message": "Añade tarjetas a la línea temporal para incorporar notas a tus escenas. Haz click en la tarjeta para añadir más detalles"
   },
   "Add more plotlines here": {
     "message": "Añade más tramas aquí"
@@ -267,7 +267,7 @@
     "message": "Final"
   },
   "Enter a Customer Service Code": {
-    "message": "Introduce el código de atención al cliente"
+    "message": "Introducir un código de atención al cliente"
   },
   "Enter a customer service code": {
     "message": "Introduce el código de atención al cliente"
@@ -315,7 +315,7 @@
     "message": "Ajustar"
   },
   "Flip": {
-    "message": "Dar la vuelta"
+    "message": "Rotar"
   },
   "Genre": {
     "message": "Género"
@@ -405,7 +405,7 @@
     "message": "Mis plantillas"
   },
   "My Timeline Template": {
-    "message": "Mi plantilla de línea del tiempo"
+    "message": "Mi plantilla de línea temporal"
   },
   "Name": {
     "message": "Nombre"
@@ -570,7 +570,7 @@
     "message": "Reiniciar"
   },
   "Roadmap": {
-    "message": "Mapa"
+    "message": "Mapa de desarrollo"
   },
   "Save": {
     "message": "Guardar"
@@ -606,10 +606,10 @@
     "message": "Seleccionar todo"
   },
   "Series": {
-    "message": "Series"
+    "message": "Serie"
   },
   "Series View": {
-    "message": "Vista de series"
+    "message": "Vista de serie"
   },
   "Short Description": {
     "message": "Descripción breve"
@@ -687,10 +687,10 @@
     "message": "Este es el identificador de tu equipo"
   },
   "Timeline": {
-    "message": "Línea del tiempo"
+    "message": "Línea temporal"
   },
   "Timeline is filtered": {
-    "message": "Línea del tiempo filtrada"
+    "message": "Línea temporal filtrada"
   },
   "Title": {
     "message": "Título"
@@ -738,7 +738,7 @@
     "message": "Mostrar mi clave de licencia"
   },
   "View Timeline": {
-    "message": "Mostrar línea del tiempo"
+    "message": "Mostrar línea temporal"
   },
   "View the Tour": {
     "message": "Mostrar el recorrido inicial"

@@ -16,7 +16,7 @@ import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
-import contextMenu from 'electron-context-menu'
+// import contextMenu from 'electron-context-menu'
 
 
 i18n.setup({
@@ -116,6 +116,6 @@ window.logger = function(which) {
 }
 
 // https://github.com/sindresorhus/electron-context-menu
-contextMenu({
-  prepend: (defaultActions, params, browserWindow) => []
-})
+// contextMenu({
+//   prepend: (defaultActions, params, browserWindow) => []
+// })

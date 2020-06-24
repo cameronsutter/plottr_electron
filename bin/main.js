@@ -6,6 +6,7 @@ const _ = require('lodash')
 const log = require('electron-log')
 const i18n = require('format-message')
 const { is } = require('electron-util')
+const contextMenu = require('electron-context-menu')
 const { machineIdSync } = require('node-machine-id')
 const windowStateKeeper = require('electron-window-state')
 const migrateIfNeeded = require('./main_modules/migration_manager')
@@ -74,6 +75,10 @@ log.info('--------Startup Tasks--------')
 TemplateManager.load()
 checkUpdatesIfAllowed()
 
+// https://github.com/sindresorhus/electron-context-menu
+contextMenu({
+  prepend: (defaultActions, params, browserWindow) => []
+})
 
 ////////////////////////////////
 ////     Bug Reporting    //////

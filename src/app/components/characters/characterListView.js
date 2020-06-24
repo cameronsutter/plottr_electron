@@ -75,11 +75,21 @@ class CharacterListView extends Component {
   }
 
   handleCreateNewCharacter = () => {
-    this.setState({creating: true})
+    // this.setState({creating: true})
+
+    // going back to old way (without modal) to think it over
+    const id = nextId(this.props.characters)
+    this.props.actions.addCharacter()
+    this.setState({characterDetailId: id, editingSelected: true})
   }
 
   handleChooseTemplate = (templateData) => {
-    this.setState({showTemplatePicker: false, templateData: templateData, creating: true})
+    // this.setState({showTemplatePicker: false, templateData: templateData, creating: true})
+
+    // going back to old way (without modal) to think it over
+    const id = nextId(this.props.characters)
+    this.props.actions.addCharacterWithTemplate(null, templateData)
+    this.setState({characterDetailId: id, editingSelected: true})
   }
 
   handleFinishCreate = (name) => {

@@ -41,13 +41,13 @@ class PlaceItem extends Component {
   handleDelete = e => {
     e.stopPropagation()
     this.setState({deleting: true})
-    // this.props.stopEdit()
+    this.props.stopEdit()
   }
 
   selectPlace = () => {
     const { place, selected, select, startEdit } = this.props
     if (selected) {
-      // startEdit()
+      startEdit()
     } else {
       select(place.id)
     }
@@ -80,11 +80,12 @@ class PlaceItem extends Component {
       <div className='place-list__item-inner'>
         {img}
         <div>
-          <h6 className='list-group-item-heading'>{place.name || i18n('New Place')}</h6>
+          <h6 className={cx('list-group-item-heading', {withImage: !!place.imageId})}>{place.name || i18n('New Place')}</h6>
           <p className='list-group-item-text'>{place.description.substr(0, 100)}</p>
         </div>
         <ButtonGroup className={buttonKlasses}>
-          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+          <Button bsSize='small' onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+          <Button bsSize='small' onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
       </div>
     </div>
@@ -94,6 +95,8 @@ class PlaceItem extends Component {
     place: PropTypes.object.isRequired,
     selected: PropTypes.bool.isRequired,
     select: PropTypes.func.isRequired,
+    startEdit: PropTypes.func.isRequired,
+    stopEdit: PropTypes.func.isRequired,
     actions: PropTypes.object.isRequired,
   }
 }

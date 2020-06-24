@@ -79,12 +79,12 @@ class CharacterItem extends Component {
       <div className='character-list__item-inner'>
         {img}
         <div>
-          <h6 className='list-group-item-heading'>{character.name || i18n('New Character')}</h6>
+          <h6 className={cx('list-group-item-heading', {withImage: !!character.imageId})}>{character.name || i18n('New Character')}</h6>
           <p className='list-group-item-text'>{character.description.substr(0, 100)}</p>
         </div>
         <ButtonGroup className={buttonKlasses}>
-          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+          <Button bsSize='small' onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+          <Button bsSize='small' onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
         { this.renderDelete() }
       </div>

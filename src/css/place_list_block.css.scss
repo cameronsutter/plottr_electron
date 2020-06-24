@@ -28,14 +28,16 @@
   position: relative;
 
   .list-group-item {
+    padding-right: 4px;
     cursor: pointer;
 
     .place-list__item-inner {
       display: flex;
       align-items: center;
-      justify-content: space-between;
 
       .place-list__item-buttons {
+        margin-left: auto;
+        min-width: 71px;
         visibility: hidden;
         &.visible {
           visibility: visible;
@@ -46,7 +48,11 @@
         img {
           max-width: 75px;
         }
-        margin-right: 20px;
+        margin-right: 10px;
+      }
+
+      .list-group-item-heading.withImage {
+        font-size: 16px;
       }
     }
     &:hover {

@@ -25,16 +25,37 @@ class NoteListView extends Component {
     this.state = {
       noteDetailId: id,
       filter: null,
-      viewableNotes: sortedNotes
+      viewableNotes: sortedNotes,
+      editingSelected: false,
     }
   }
 
   componentWillReceiveProps (nextProps) {
-    let viewableNotes = this.viewableNotes(nextProps.notes, this.state.filter)
-    const newNote = nextProps.notes.find(n => n.title === '')
-    const currentNote = nextProps.notes.find(n => n.id === this.state.noteDetailId)
-    let noteDetailId = (currentNote && currentNote.id) || (newNote && newNote.id) || (viewableNotes[0] && viewableNotes[0].id)
+    let viewableNotes = []
+    let noteDetailId = null
+    if (nextProps.notes.length) {
+      viewableNotes = this.viewableNotes(nextProps.notes, this.state.filter)
+      noteDetailId = this.detailID(viewableNotes)
+    }
     this.setState({ noteDetailId, viewableNotes })
+  }
+
+  detailID (notes) {
+    if (notes.length == 0) return null
+
+    let id = notes[0].id
+
+    // check for the currently active one
+    if (this.state && this.state.noteDetailId != null) {
+      let activeNote = notes.find(n => n.id === this.state.noteDetailId)
+      if (activeNote) id = activeNote.id
+    }
+
+    // check for a newly created one
+    let newNote = notes.find(n => n.title === '')
+    if (newNote) id = newNote.id
+
+    return id
   }
 
   handleCreateNewNote = () => {
@@ -91,10 +112,20 @@ class NoteListView extends Component {
     return visible
   }
 
+  editingSelected = () => {
+    this.setState({editingSelected: true})
+  }
+
+  stopEditing = () => {
+    this.setState({editingSelected: false})
+  }
+
   renderVisibleNotes () {
     return this.state.viewableNotes.map(n => (
       <NoteItem key={n.id} note={n}
         selected={n.id == this.state.noteDetailId}
+        startEdit={this.editingSelected}
+        stopEdit={this.stopEditing}
         select={() => this.setState({noteDetailId: n.id})}
       />
     ))
@@ -112,7 +143,13 @@ class NoteListView extends Component {
       n.id === this.state.noteDetailId
     )
     if (!note) note = this.state.viewableNotes[0]
-    return <ErrorBoundary><NoteView key={`note-${note.id}`} note={note} /></ErrorBoundary>
+    return <ErrorBoundary>
+      <NoteView key={`note-${note.id}`} note={note}
+        editing={this.state.editingSelected}
+        stopEditing={this.stopEditing}
+        startEditing={this.editingSelected}
+      />
+    </ErrorBoundary>
   }
 
   renderSubNav () {

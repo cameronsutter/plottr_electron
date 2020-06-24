@@ -12,19 +12,19 @@ import RichText from '../rce/RichText'
 import ImagePicker from 'components/images/ImagePicker'
 import Image from 'components/images/Image'
 import BookSelectList from '../story/BookSelectList'
+import cx from 'classnames'
 
 class NoteView extends Component {
   constructor (props) {
     super(props)
     this.state = {
       content: props.note.content,
-      editing: false,
       newImageId: null,
     }
   }
 
   componentWillUnmount () {
-    if (this.state.editing) this.saveEdit()
+    if (this.props.editing) this.saveEdit(false)
   }
 
   handleEnter = (event) => {
@@ -39,7 +39,7 @@ class NoteView extends Component {
     }
   }
 
-  saveEdit = () => {
+  saveEdit = (close = true) => {
     const { note } = this.props
     let title = findDOMNode(this.refs.titleInput).value || note.title
     let content = this.state.content
@@ -48,21 +48,7 @@ class NoteView extends Component {
       attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
     }
     this.props.actions.editNote(note.id, attrs)
-    this.setState({editing: false})
-  }
-
-  cancelEdit = () => {
-    this.setState({
-      newImageId: null,
-      editing: false,
-    })
-  }
-
-  deleteNote = () => {
-    let label = i18n("Do you want to delete this note: { title }?", {title: this.props.note.title})
-    if (window.confirm(label)) {
-      this.props.actions.deleteNote(this.props.note.id)
-    }
+    if (close) this.props.stopEditing()
   }
 
   renderBookSelectList () {
@@ -95,7 +81,7 @@ class NoteView extends Component {
 
   renderContent () {
     const { note, ui } = this.props
-    if (this.state.editing) {
+    if (this.props.editing) {
       return <div className='note-list__content editing'>
         <div className='note-list__note__edit-form'>
           <FormGroup>
@@ -120,14 +106,8 @@ class NoteView extends Component {
           </FormGroup>
         </div>
         <ButtonToolbar className='card-dialog__button-bar'>
-          <Button onClick={this.cancelEdit}>
-            {i18n('Cancel')}
-          </Button>
           <Button bsStyle='success' onClick={this.saveEdit}>
             {i18n('Save')}
-          </Button>
-          <Button className='card-dialog__delete' onClick={this.deleteNote}>
-            {i18n('Delete')}
           </Button>
         </ButtonToolbar>
       </div>
@@ -138,7 +118,7 @@ class NoteView extends Component {
           <Image responsive imageId={note.imageId} />
         </div>
       }
-      return <div className='note-list__content' onClick={() => this.setState({editing: true})}>
+      return <div className='note-list__content' onClick={this.props.startEditing}>
         <h4 className='secondary-text'>{note.title || i18n('New Note')}</h4>
         { img }
         <RichText description={note.content} darkMode={ui.darkMode} />
@@ -148,32 +128,30 @@ class NoteView extends Component {
   }
 
   render () {
-    let klasses = 'note-list__note'
-    if (this.state.editing) klasses += ' editing'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
+    const { editing, ui, note, characters, actions, places, tags } = this.props
     return <div className='note-list__note-wrapper'>
-      <div className={klasses}>
+      <div className={cx('note-list__note', {editing: editing, darkmode: ui.darkMode})}>
         <div className='note-list__body'>
           <div className='note-list__left-side'>
             { this.renderBookSelectList() }
             <SelectList
-              parentId={this.props.note.id} type={'Characters'}
-              selectedItems={this.props.note.characters}
-              allItems={this.props.characters}
-              add={this.props.actions.addCharacter}
-              remove={this.props.actions.removeCharacter} />
+              parentId={note.id} type={'Characters'}
+              selectedItems={note.characters}
+              allItems={characters}
+              add={actions.addCharacter}
+              remove={actions.removeCharacter} />
             <SelectList
-              parentId={this.props.note.id} type={'Places'}
-              selectedItems={this.props.note.places}
-              allItems={this.props.places}
-              add={this.props.actions.addPlace}
-              remove={this.props.actions.removePlace} />
+              parentId={note.id} type={'Places'}
+              selectedItems={note.places}
+              allItems={places}
+              add={actions.addPlace}
+              remove={actions.removePlace} />
             <SelectList
-              parentId={this.props.note.id} type={'Tags'}
-              selectedItems={this.props.note.tags}
-              allItems={this.props.tags}
-              add={this.props.actions.addTag}
-              remove={this.props.actions.removeTag} />
+              parentId={note.id} type={'Tags'}
+              selectedItems={note.tags}
+              allItems={tags}
+              add={actions.addTag}
+              remove={actions.removeTag} />
           </div>
           {this.renderContent()}
         </div>
@@ -184,6 +162,9 @@ class NoteView extends Component {
 
 NoteView.propTypes = {
   note: PropTypes.object.isRequired,
+  editing: PropTypes.bool.isRequired,
+  startEditing: PropTypes.func.isRequired,
+  stopEditing: PropTypes.func.isRequired,
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,

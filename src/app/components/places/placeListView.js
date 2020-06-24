@@ -37,6 +37,7 @@ class PlaceListView extends Component {
       dialogOpen: false,
       addAttrText: '',
       placeDetailId: id,
+      editingSelected: false,
       visiblePlaces: visible,
     }
   }
@@ -44,7 +45,7 @@ class PlaceListView extends Component {
   componentWillReceiveProps (nextProps) {
     let visible = []
     let detailID = null
-    if (nextProps.places.length > 0) {
+    if (nextProps.places.length) {
       const { placeSort, placeFilter } = nextProps.ui
       visible = this.visiblePlaces(nextProps.places, placeFilter, placeSort)
       detailID = this.detailID(visible)
@@ -119,6 +120,14 @@ class PlaceListView extends Component {
     const allAttributes = [{name:'tag'}, {name:'book'}, ...this.props.customAttributes]
 
     return !allAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
+  }
+
+  editingSelected = () => {
+    this.setState({editingSelected: true})
+  }
+
+  stopEditing = () => {
+    this.setState({editingSelected: false})
   }
 
   closeDialog = () => {
@@ -199,6 +208,8 @@ class PlaceListView extends Component {
     return this.state.visiblePlaces.map(pl => (
       <PlaceItem key={pl.id} place={pl}
         selected={pl.id == this.state.placeDetailId}
+        startEdit={this.editingSelected}
+        stopEdit={this.stopEditing}
         select={() => this.setState({placeDetailId: pl.id})}
       />
     ))
@@ -215,7 +226,13 @@ class PlaceListView extends Component {
       pl.id === this.state.placeDetailId
     )
     if (place) {
-      return <ErrorBoundary><PlaceView key={`place-${place.id}`} place={place} /></ErrorBoundary>
+      return <ErrorBoundary>
+        <PlaceView key={`place-${place.id}`} place={place}
+          editing={this.state.editingSelected}
+          stopEditing={this.stopEditing}
+          startEditing={this.editingSelected}
+        />
+      </ErrorBoundary>
     } else {
       return null
     }

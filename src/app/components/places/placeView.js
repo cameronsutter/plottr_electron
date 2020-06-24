@@ -4,8 +4,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
-import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup,
-   Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup, Glyphicon } from 'react-bootstrap'
 import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
@@ -23,7 +22,6 @@ class PlaceView extends Component {
       description[name] = props.place[name]
     })
     this.state = {
-      editing: false,
       notes: props.place.notes,
       description: description,
       newImageId: null,
@@ -31,7 +29,7 @@ class PlaceView extends Component {
   }
 
   componentWillUnmount () {
-    if (this.state.editing) this.saveEdit()
+    if (this.props.editing) this.saveEdit(false)
   }
 
   handleEnter = (event) => {
@@ -54,7 +52,7 @@ class PlaceView extends Component {
     this.setState({description: description})
   }
 
-  saveEdit = () => {
+  saveEdit = (close = true) => {
     var name = findDOMNode(this.refs.nameInput).value || this.props.place.name
     var description = findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
@@ -72,14 +70,7 @@ class PlaceView extends Component {
       }
     })
     this.props.actions.editPlace(this.props.place.id, {name, description, notes, ...attrs})
-    this.setState({editing: false})
-  }
-
-  cancelEdit = () => {
-    this.setState({
-      newImageId: null,
-      editing: false,
-    })
+    if (close) this.props.stopEditing()
   }
 
   renderEditingImage () {
@@ -174,61 +165,61 @@ class PlaceView extends Component {
     </div>
   }
 
-  renderAssociations () {
-    let cards = null
-    let notes = null
-    if (this.props.place.cards.length > 0) {
-      cards = this.renderCardAssociations()
-    }
-    if (this.props.place.noteIds.length > 0) {
-      notes = this.renderNoteAssociations()
-    }
-    if (cards && notes) {
-      return [cards, <span key='ampersand'> & </span>, notes]
-    } else {
-      return cards || notes
-    }
-  }
+  // renderAssociations () {
+  //   let cards = null
+  //   let notes = null
+  //   if (this.props.place.cards.length > 0) {
+  //     cards = this.renderCardAssociations()
+  //   }
+  //   if (this.props.place.noteIds.length > 0) {
+  //     notes = this.renderNoteAssociations()
+  //   }
+  //   if (cards && notes) {
+  //     return [cards, <span key='ampersand'> & </span>, notes]
+  //   } else {
+  //     return cards || notes
+  //   }
+  // }
 
-  renderCardAssociations () {
-    if (!this.props.place.cards) return null
-    if (!this.props.place.cards.length) return null
+  // renderCardAssociations () {
+  //   if (!this.props.place.cards) return null
+  //   if (!this.props.place.cards.length) return null
 
-    let label = i18n(`{
-      count, plural,
-        one {1 card}
-        other {# cards}
-    }`, { count: this.props.place.cards.length })
-    let cardsAssoc = this.props.place.cards.reduce((arr, cId) => {
-      let card = this.props.cards.find(c => c.id == cId)
-      if (card) return arr.concat(card.title)
-      return arr
-    }, []).join(', ')
-    let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
-    return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
-      <span>{label}</span>
-    </OverlayTrigger>
-  }
+  //   let label = i18n(`{
+  //     count, plural,
+  //       one {1 card}
+  //       other {# cards}
+  //   }`, { count: this.props.place.cards.length })
+  //   let cardsAssoc = this.props.place.cards.reduce((arr, cId) => {
+  //     let card = this.props.cards.find(c => c.id == cId)
+  //     if (card) return arr.concat(card.title)
+  //     return arr
+  //   }, []).join(', ')
+  //   let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
+  //   return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
+  //     <span>{label}</span>
+  //   </OverlayTrigger>
+  // }
 
-  renderNoteAssociations () {
-    if (!this.props.place.noteIds) return null
-    if (!this.props.place.noteIds.length) return null
+  // renderNoteAssociations () {
+  //   if (!this.props.place.noteIds) return null
+  //   if (!this.props.place.noteIds.length) return null
 
-    let label = i18n(`{
-      count, plural,
-        one {1 note}
-        other {# notes}
-    }`, { count: this.props.place.noteIds.length })
-    let noteAssoc = this.props.place.noteIds.reduce((arr, nId) => {
-      let note = this.props.notes.find(n => n.id == nId)
-      if (note) return arr.concat(note.title)
-      return arr
-    }, []).join(', ')
-    let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
-    return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
-      <span>{label}</span>
-    </OverlayTrigger>
-  }
+  //   let label = i18n(`{
+  //     count, plural,
+  //       one {1 note}
+  //       other {# notes}
+  //   }`, { count: this.props.place.noteIds.length })
+  //   let noteAssoc = this.props.place.noteIds.reduce((arr, nId) => {
+  //     let note = this.props.notes.find(n => n.id == nId)
+  //     if (note) return arr.concat(note.title)
+  //     return arr
+  //   }, []).join(', ')
+  //   let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
+  //   return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
+  //     <span>{label}</span>
+  //   </OverlayTrigger>
+  // }
 
   renderPlace () {
     const { place, customAttributes, ui } = this.props
@@ -247,7 +238,7 @@ class PlaceView extends Component {
       </dl>
     })
     return <div className='place-list__place-wrapper'>
-      <div className='place-list__place' onClick={() => this.setState({editing: true})}>
+      <div className='place-list__place' onClick={this.props.startEditing}>
         <h4 className='secondary-text'>{place.name || i18n('New Place')}</h4>
         <div className='place-list__place-inner'>
           <div>
@@ -277,7 +268,7 @@ class PlaceView extends Component {
   }
 
   render () {
-    if (this.state.editing) window.SCROLLWITHKEYS = false
+    if (this.props.editing) window.SCROLLWITHKEYS = false
     else window.SCROLLWITHKEYS = true
 
     const { place, tags, actions, ui } = this.props
@@ -299,7 +290,7 @@ class PlaceView extends Component {
         />
       </div>
       <div className='place-list__place-view__right-side'>
-        { this.state.editing ? this.renderEditing() : this.renderPlace() }
+        { this.props.editing ? this.renderEditing() : this.renderPlace() }
       </div>
     </div>
   }
@@ -307,6 +298,9 @@ class PlaceView extends Component {
 
 PlaceView.propTypes = {
   place: PropTypes.object.isRequired,
+  editing: PropTypes.bool.isRequired,
+  startEditing: PropTypes.func.isRequired,
+  stopEditing: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributes: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,

@@ -33,14 +33,16 @@
 
 .character-list__list {
   .list-group-item {
+    padding-right: 4px;
     cursor: pointer;
 
     .character-list__item-inner {
       display: flex;
       align-items: center;
-      justify-content: space-between;
 
       .character-list__item-buttons {
+        margin-left: auto;
+        min-width: 71px;
         visibility: hidden;
         &.visible {
           visibility: visible;
@@ -52,7 +54,11 @@
           max-width: 75px;
           max-height: 75px;
         }
-        margin-right: 20px;
+        margin-right: 10px;
+      }
+
+      .list-group-item-heading.withImage {
+        font-size: 16px;
       }
     }
     &:hover {

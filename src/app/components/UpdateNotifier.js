@@ -19,7 +19,7 @@ export default class UpdateNotifier extends Component {
     // /////
     ipcRenderer.on('updater-error', (event) => {
       this.setState({checking: false, finishedChecking: true, available: false})
-      setTimeout(() => this.setState({finishedChecking: false}), 5000)
+      setTimeout(() => this.setState({finishedChecking: false}), 10000)
     })
     ipcRenderer.on('updater-checking', (event) => {
       this.setState({checking: true})
@@ -28,7 +28,7 @@ export default class UpdateNotifier extends Component {
     ipcRenderer.on('updater-update-available', (event, info) => {this.setState({checking: false, available: true, info: info})})
     ipcRenderer.on('updater-update-not-available', (event) => {
       this.setState({checking: false, finishedChecking: true, available: false})
-      setTimeout(() => this.setState({finishedChecking: false}), 5000)
+      setTimeout(() => this.setState({finishedChecking: false}), 10000)
     })
     ipcRenderer.on('updater-downloaded', (event, info) => {this.setState({finishedDownloading: true, percentDownloaded: 100})})
     ipcRenderer.on('updater-download-progress', (event, {progress}) => {

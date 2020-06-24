@@ -12,7 +12,7 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -33,7 +33,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.6.21"
+    "version": "2020.6.23"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -93,7 +93,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "She has a \"lively, playful disposition, which delight[s] in anything ridiculous\" - and a tendency towards prejudice which clouds her perception."
+              "text": "She has a \"lively, playful disposition, which delight[s] in anything ridiculous\" - and a tendency towards prejudice which clouds her perception. "
             }
           ]
         },
@@ -10176,6 +10176,24 @@
     }
   ],
   "beats": [
+    {
+      "id": 5,
+      "title": "auto",
+      "time": 0,
+      "position": 4
+    },
+    {
+      "id": 4,
+      "title": "auto",
+      "time": 0,
+      "position": 3
+    },
+    {
+      "id": 3,
+      "title": "auto",
+      "time": 0,
+      "position": 2
+    },
     {
       "id": 2,
       "title": "Book 2",

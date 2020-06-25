@@ -70,21 +70,38 @@ function outlineSection (data, namesMapping, bookId, doc) {
   children.push(new Paragraph({text: i18n('Outline'), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER}))
 
   // TODO: handle 'series' and undefined
-  console.log('bookId', typeof bookId, bookId)
-  let chapters = sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
-  let paragraphs = chapters.flatMap(ch => chapterParagraphs(ch, data, namesMapping, bookId, doc))
+  const chapters = sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
+  const offset = positionOffset(chapters)
+  const paragraphs = chapters.flatMap(ch => chapterParagraphs(ch, data, namesMapping, bookId, offset, doc))
 
   return {children: children.concat(paragraphs)}
 }
 
-function chapterParagraphs (chapter, data, namesMapping, bookId, doc) {
+function chapterParagraphs (chapter, data, namesMapping, bookId, offset, doc) {
   let paragraphs = [new Paragraph('')]
   paragraphs.push(new Paragraph('^'))
-  let title = chapter.title == 'auto' ? i18n('Chapter {number}', {number: chapter.position + 1}) : chapter.title
+  let title = chapterTitle(chapter, offset, bookId == 'series')
   paragraphs.push(new Paragraph({text: title, heading: HeadingLevel.HEADING_2}))
   const cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, data.lines, bookId == 'series')
   let cardParagraphs = cards.flatMap(c => card(c, data.lines, namesMapping, doc))
   return paragraphs.concat(cardParagraphs)
+}
+
+// TODO: most of this is copy/pasted from helpers/chapters
+// when we refactor main.js, this can be shared from there
+function positionOffset (sortedChapters) {
+  return sortedChapters[0].title == i18n('Prologue') ? -1 : 0
+}
+
+// TODO: most of this is copy/pasted from helpers/chapters
+// when we refactor main.js, this can be shared from there
+function chapterTitle (chapter, offset, isSeries) {
+  if (isSeries) {
+    // if isSeries, chapters will actually be beats
+    return chapter.title == 'auto' ? i18n('Beat {number}', {number: chapter.position + offset + 1}) : chapter.title
+  } else {
+    return chapter.title == 'auto' ? i18n('Chapter {number}', {number: chapter.position + offset + 1}) : chapter.title
+  }
 }
 
 function card (card, lines, namesMapping, doc) {
@@ -123,6 +140,8 @@ function attachments (obj, namesMapping) {
   return paragraphs
 }
 
+// TODO: most of this is copy/pasted from helpers/cards
+// when we refactor main.js, this can be shared from there
 function sortedChapterCards (autoSort, chapterId, allCards, allLines, isSeries) {
   let cards = findChapterCards(chapterId, allCards)
   const sortedLines = sortBy(allLines, 'position')

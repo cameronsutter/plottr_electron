@@ -5,7 +5,7 @@ import { chapterTitle } from '../../helpers/chapters'
 import { sortCardsInChapter } from '../../helpers/cards'
 
 function MiniChapter (props) {
-  const { chapter, idx, cards, linesById, sortedLines, isSeries } = props
+  const { chapter, idx, cards, linesById, sortedLines, isSeries, positionOffset } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
   const [inDropZone, setInZone] = useState(false)
@@ -86,7 +86,7 @@ function MiniChapter (props) {
     onDragLeave={handleDragLeave}
     onDrop={handleDrop}
   >
-    <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(chapter, isSeries)}</span></span>
+    <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(chapter, positionOffset, isSeries)}</span></span>
     <div className='outline__minimap__dots'>{renderCardDots()}</div>
   </div>
 }
@@ -98,6 +98,7 @@ MiniChapter.propTypes = {
   sortedLines: PropTypes.array.isRequired,
   linesById: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
+  positionOffset: PropTypes.number.isRequired,
   reorderCardsWithinLine: PropTypes.func.isRequired,
   reorderCardsInChapter: PropTypes.func.isRequired,
 }

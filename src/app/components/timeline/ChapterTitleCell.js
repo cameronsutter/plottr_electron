@@ -8,10 +8,9 @@ import { Cell } from 'react-sticky-table'
 import * as SceneActions from 'actions/scenes'
 import * as BeatActions from 'actions/beats'
 import orientedClassName from 'helpers/orientedClassName'
-import i18n from 'format-message'
-import { chapterTitle, editingChapterLabel } from '../../helpers/chapters'
+import { editingChapterLabel, chapterPositionTitle } from '../../helpers/chapters'
 import { isSeriesSelector } from '../../selectors/ui'
-import { makeChapterNameSelector, makeChapterSelector } from '../../selectors/chapters'
+import { makeChapterTitleSelector, makeChapterSelector, positionOffsetSelector } from '../../selectors/chapters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 class ChapterTitleCell extends PureComponent {
@@ -122,7 +121,7 @@ class ChapterTitleCell extends PureComponent {
   renderDelete () {
     if (!this.state.deleting) return null
 
-    return <DeleteConfirmModal name={chapterTitle(this.props.chapter)} onDelete={this.deleteChapter} onCancel={this.cancelDelete}/>
+    return <DeleteConfirmModal name={this.props.chapterTitle} onDelete={this.deleteChapter} onCancel={this.cancelDelete}/>
   }
 
   renderHoverOptions () {
@@ -146,11 +145,11 @@ class ChapterTitleCell extends PureComponent {
   }
 
   renderTitle () {
-    const { chapter } = this.props
-    if (!this.state.editing) return <span>{chapterTitle(chapter, this.props.isSeries)}</span>
+    const { chapter, chapterTitle, positionOffset, isSeries } = this.props
+    if (!this.state.editing) return <span>{chapterTitle}</span>
 
     return (<FormGroup>
-      <ControlLabel>{editingChapterLabel(chapter, this.props.isSeries)}</ControlLabel>
+      <ControlLabel>{editingChapterLabel(chapter, positionOffset, isSeries)}</ControlLabel>
       <FormControl
         type='text'
         defaultValue={chapter.title}
@@ -163,18 +162,15 @@ class ChapterTitleCell extends PureComponent {
   }
 
   render () {
-    if (this.state.editing) {
-      window.SCROLLWITHKEYS = false
-    } else {
-      window.SCROLLWITHKEYS = true
-    }
-    let innerKlass = orientedClassName('scene__body', this.props.ui.orientation)
+    window.SCROLLWITHKEYS = !this.state.editing
+    const { chapter, ui, positionOffset, isSeries } = this.props
+    let innerKlass = orientedClassName('scene__body', ui.orientation)
     if (this.state.hovering) innerKlass += ' hover'
     if (this.state.dropping) innerKlass += ' dropping'
     return <Cell>
       <div
-        className={orientedClassName('scene__cell', this.props.ui.orientation)}
-        title={i18n('Chapter {number}', {number: this.props.chapter.position + 1})}
+        className={orientedClassName('scene__cell', ui.orientation)}
+        title={chapterPositionTitle(chapter, positionOffset, isSeries)}
         onMouseEnter={this.startHovering}
         onMouseLeave={this.stopHovering}
         onDrop={this.handleDrop}>
@@ -200,15 +196,17 @@ ChapterTitleCell.propTypes = {
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   beatActions: PropTypes.object.isRequired,
+  chapters: PropTypes.array.isRequired,
   chapter: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
-  chapterName: PropTypes.string.isRequired,
+  chapterTitle: PropTypes.string.isRequired,
+  positionOffset: PropTypes.number.isRequired,
 }
 
 const makeMapState = (state) => {
   const uniqueChapterSelector = makeChapterSelector()
-  const uniqueChapterNameSelector = makeChapterNameSelector()
+  const uniqueChapterTitleSelector = makeChapterTitleSelector()
 
   return function mapStateToProps (state, ownProps) {
     return {
@@ -216,7 +214,8 @@ const makeMapState = (state) => {
       chapter: uniqueChapterSelector(state.present, ownProps.chapterId),
       ui: state.present.ui,
       isSeries: isSeriesSelector(state.present),
-      chapterName: uniqueChapterNameSelector(state.present, ownProps.chapterId)
+      chapterTitle: uniqueChapterTitleSelector(state.present, ownProps.chapterId),
+      positionOffset: positionOffsetSelector(state.present),
     }
   }
 }

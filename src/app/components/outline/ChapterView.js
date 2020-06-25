@@ -16,6 +16,7 @@ import { reorderList } from '../../helpers/lists'
 import { isSeriesSelector } from '../../selectors/ui'
 import { sortCardsInChapter } from '../../helpers/cards'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
+import { positionOffsetSelector } from '../../selectors/chapters'
 
 class ChapterView extends Component {
 
@@ -82,14 +83,14 @@ class ChapterView extends Component {
   }
 
   render () {
-    const { chapter, ui, waypoint, cards, activeFilter } = this.props
+    const { chapter, ui, waypoint, cards, activeFilter, positionOffset, isSeries } = this.props
     if (activeFilter && !cards.length) return null
 
     const klasses = cx('outline__scene-title', {darkmode: ui.darkMode})
     return (
       <Waypoint onEnter={() => waypoint(chapter.id)} scrollableAncestor={window} topOffset={"60%"} bottomOffset={"60%"}>
         <div>
-          <h3 id={`chapter-${chapter.id}`} className={klasses}>{chapterTitle(chapter)}{this.renderManualSort()}</h3>
+          <h3 id={`chapter-${chapter.id}`} className={klasses}>{chapterTitle(chapter, positionOffset, isSeries)}{this.renderManualSort()}</h3>
           {this.renderCards()}
         </div>
       </Waypoint>
@@ -105,6 +106,7 @@ ChapterView.propTypes = {
   ui: PropTypes.object.isRequired,
   lines: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
+  positionOffset: PropTypes.number.isRequired,
 }
 
 function mapStateToProps (state) {
@@ -112,6 +114,7 @@ function mapStateToProps (state) {
     ui: state.present.ui,
     lines: sortedLinesByBookSelector(state.present),
     isSeries: isSeriesSelector(state.present),
+    positionOffset: positionOffsetSelector(state.present),
   }
 }
 

@@ -7,7 +7,7 @@ import { findDOMNode } from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import * as CardActions from 'actions/cards'
-import { sortedChaptersByBookSelector } from '../../selectors/chapters'
+import { sortedChaptersByBookSelector, positionOffsetSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import MiniChapter from './MiniChapter'
@@ -42,7 +42,7 @@ class MiniMap extends Component {
   }
 
   renderChapters () {
-    const { lines, chapters, activeFilter, isSeries, cardMapping, actions } = this.props
+    const { lines, chapters, activeFilter, isSeries, cardMapping, positionOffset, actions } = this.props
     const linesById = keyBy(lines, 'id')
     return chapters.map((ch, idx) => {
       if (this.state.firstRender && idx > 20) return null
@@ -51,8 +51,8 @@ class MiniMap extends Component {
 
       return <NavItem ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`} eventKey={ch.id}>
         <MiniChapter
-          chapter={ch} idx={idx} cards={chapterCards} linesById={linesById} isSeries={isSeries}
-          sortedLines={lines}
+          chapter={ch} idx={idx + positionOffset} cards={chapterCards} linesById={linesById} isSeries={isSeries}
+          sortedLines={lines} positionOffset={positionOffset}
           reorderCardsWithinLine={actions.reorderCardsWithinLine}
           reorderCardsInChapter={actions.reorderCardsInChapter}
         />
@@ -100,6 +100,7 @@ MiniMap.propTypes = {
   lines: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
+  positionOffset: PropTypes.number.isRequired,
 }
 
 function mapStateToProps (state) {
@@ -108,6 +109,7 @@ function mapStateToProps (state) {
     lines: sortedLinesByBookSelector(state.present),
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
+    positionOffset: positionOffsetSelector(state.present),
   }
 }
 

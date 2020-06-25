@@ -13,8 +13,9 @@ import i18n from 'format-message'
 import cx from 'classnames'
 import RichText from '../rce/RichText'
 import { chapterTitle } from '../../helpers/chapters'
-import { sortedChaptersByBookSelector } from '../../selectors/chapters'
+import { sortedChaptersByBookSelector, positionOffsetSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
+import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 const customStyles = {content: {top: '70px'}}
@@ -23,10 +24,6 @@ class CardDialog extends Component {
   constructor (props) {
     super(props)
     this.state = { description: props.card.description, deleting: false }
-  }
-
-  isSeries = () => {
-    return this.props.ui.currentTimeline == 'series'
   }
 
   componentDidMount () {
@@ -105,9 +102,10 @@ class CardDialog extends Component {
   }
 
   renderChapterItems () {
-    return this.props.chapters.map((chapter) => {
+    const { chapters, positionOffset, isSeries } = this.props
+    return chapters.map((chapter) => {
       return (<MenuItem key={chapter.id} onSelect={() => this.changeChapter(chapter.id)}>
-        {chapterTitle(chapter)}
+        {chapterTitle(chapter, positionOffset, isSeries)}
       </MenuItem>)
     })
   }
@@ -179,9 +177,11 @@ class CardDialog extends Component {
     const lineDropdownID = 'select-line'
     const chapterDropdownID = 'select-chapter'
 
+    const { positionOffset, isSeries } = this.props
+
     let labelText = i18n('Chapter')
     let bookDropDown = null
-    if (this.isSeries()) {
+    if (isSeries) {
       labelText = i18n('Beat')
       bookDropDown = this.renderBookDropdown()
     }
@@ -198,7 +198,7 @@ class CardDialog extends Component {
         </div>
         <div className='card-dialog__sdropdown-wrapper'>
           <label className='card-dialog__details-label' htmlFor={chapterDropdownID}>{labelText}:
-            <DropdownButton id={chapterDropdownID} className='card-dialog__select-scene' title={chapterTitle(this.getCurrentChapter())}>
+            <DropdownButton id={chapterDropdownID} className='card-dialog__select-scene' title={chapterTitle(this.getCurrentChapter(), positionOffset, isSeries)}>
               {this.renderChapterItems()}
             </DropdownButton>
           </label>
@@ -266,6 +266,8 @@ CardDialog.propTypes = {
   places: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   books: PropTypes.object.isRequired,
+  isSeries: PropTypes.bool.isRequired,
+  positionOffset: PropTypes.number.isRequired,
 }
 
 function mapStateToProps (state) {
@@ -277,6 +279,8 @@ function mapStateToProps (state) {
     places: state.present.places,
     ui: state.present.ui,
     books: state.present.books,
+    isSeries: isSeriesSelector(state.present),
+    positionOffset: positionOffsetSelector(state.present),
   }
 }
 

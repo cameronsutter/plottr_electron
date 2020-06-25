@@ -12,7 +12,7 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -10047,7 +10047,7 @@
         }
       ],
       "id": 1,
-      "lastEdited": 1593007803940,
+      "lastEdited": 1593116330963,
       "places": [],
       "tags": [
         9,

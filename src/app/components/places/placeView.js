@@ -12,6 +12,7 @@ import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import SelectList from '../selectList'
 import BookSelectList from '../story/BookSelectList'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 class PlaceView extends Component {
   constructor (props) {
@@ -25,11 +26,28 @@ class PlaceView extends Component {
       notes: props.place.notes,
       description: description,
       newImageId: null,
+      deleting: false,
     }
   }
 
   componentWillUnmount () {
     if (this.props.editing) this.saveEdit(false)
+  }
+
+  deletePlace = e => {
+    e.stopPropagation()
+    this.props.actions.deletePlace(this.props.place.id)
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false})
+  }
+
+  handleDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: true})
+    this.props.stopEditing()
   }
 
   handleEnter = (event) => {
@@ -71,6 +89,13 @@ class PlaceView extends Component {
     })
     this.props.actions.editPlace(this.props.place.id, {name, description, notes, ...attrs})
     if (close) this.props.stopEditing()
+  }
+
+
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={this.props.place.name || i18n('New Place')} onDelete={this.deletePlace} onCancel={this.cancelDelete}/>
   }
 
   renderEditingImage () {
@@ -160,6 +185,9 @@ class PlaceView extends Component {
             onClick={this.saveEdit} >
             {i18n('Save')}
           </Button>
+          <Button className='card-dialog__delete' onClick={this.handleDelete}>
+            {i18n('Delete')}
+          </Button>
         </ButtonToolbar>
       </div>
     </div>
@@ -238,6 +266,7 @@ class PlaceView extends Component {
       </dl>
     })
     return <div className='place-list__place-wrapper'>
+      { this.renderDelete() }
       <div className='place-list__place' onClick={this.props.startEditing}>
         <h4 className='secondary-text'>{place.name || i18n('New Place')}</h4>
         <div className='place-list__place-inner'>

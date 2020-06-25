@@ -12,6 +12,7 @@ import RichText from '../rce/RichText'
 import ImagePicker from 'components/images/ImagePicker'
 import Image from 'components/images/Image'
 import BookSelectList from '../story/BookSelectList'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import cx from 'classnames'
 
 class NoteView extends Component {
@@ -20,11 +21,28 @@ class NoteView extends Component {
     this.state = {
       content: props.note.content,
       newImageId: null,
+      deleting: false,
     }
   }
 
   componentWillUnmount () {
     if (this.props.editing) this.saveEdit(false)
+  }
+
+  deleteNote = e => {
+    e.stopPropagation()
+    this.props.actions.deleteNote(this.props.note.id)
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false})
+  }
+
+  handleDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: true})
+    this.props.stopEditing()
   }
 
   handleEnter = (event) => {
@@ -49,6 +67,13 @@ class NoteView extends Component {
     }
     this.props.actions.editNote(note.id, attrs)
     if (close) this.props.stopEditing()
+  }
+
+
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={this.props.note.title || i18n('New Note')} onDelete={this.deleteNote} onCancel={this.cancelDelete}/>
   }
 
   renderBookSelectList () {
@@ -109,6 +134,9 @@ class NoteView extends Component {
           <Button bsStyle='success' onClick={this.saveEdit}>
             {i18n('Save')}
           </Button>
+          <Button className='card-dialog__delete' onClick={this.handleDelete}>
+            {i18n('Delete')}
+          </Button>
         </ButtonToolbar>
       </div>
     } else {
@@ -130,6 +158,7 @@ class NoteView extends Component {
   render () {
     const { editing, ui, note, characters, actions, places, tags } = this.props
     return <div className='note-list__note-wrapper'>
+      { this.renderDelete() }
       <div className={cx('note-list__note', {editing: editing, darkmode: ui.darkMode})}>
         <div className='note-list__body'>
           <div className='note-list__left-side'>

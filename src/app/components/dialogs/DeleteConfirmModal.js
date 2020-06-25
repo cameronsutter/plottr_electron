@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Form } from 'react-bootstrap'
 import i18n from 'format-message'
 
 export default class DeleteConfirmModal extends Component {
@@ -10,8 +10,10 @@ export default class DeleteConfirmModal extends Component {
         <h6>{i18n('Are you sure you want to delete { thing }?', { thing: this.props.name })}</h6>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={this.props.onDelete} bsStyle='danger'>{i18n('DELETE')}</Button>
-        <Button onClick={this.props.onCancel}>{i18n('Cancel')}</Button>
+        <Form onSubmit={this.props.onDelete} onKeyDown={(event) => {if (event.which == 27) this.props.onCancel(event)}}>
+          <Button type='submit' autoFocus bsStyle='danger'>{i18n('DELETE')}</Button>
+          <Button onClick={this.props.onCancel}>{i18n('Cancel')}</Button>
+        </Form>
       </Modal.Footer>
     </Modal>
   }

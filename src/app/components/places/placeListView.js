@@ -20,51 +20,35 @@ import i18n from 'format-message'
 import { placeCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import PlaceItem from './PlaceItem'
+import { nextId } from '../../store/newIds'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
 class PlaceListView extends Component {
   constructor (props) {
     super(props)
-    let id = null
-    let visible = []
-    const { placeSort, placeFilter } = props.ui
-    if (props.places.length > 0) {
-      visible = this.visiblePlaces(props.places, placeFilter, placeSort)
-      id = this.detailID(visible)
-    }
     this.state = {
       dialogOpen: false,
       addAttrText: '',
-      placeDetailId: id,
+      placeDetailId: null,
       editingSelected: false,
-      visiblePlaces: visible,
+      visiblePlaces: [],
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    let visible = []
-    let detailID = null
-    if (nextProps.places.length) {
-      const { placeSort, placeFilter } = nextProps.ui
-      visible = this.visiblePlaces(nextProps.places, placeFilter, placeSort)
-      detailID = this.detailID(visible)
-    }
-    this.setState({
-      visiblePlaces: visible,
-      placeDetailId: detailID,
-    })
+  static getDerivedStateFromProps (props, state) {
+    let returnVal = {...state}
+    const { places, ui, customAttributes } = props
+    const visiblePlaces = PlaceListView.visiblePlaces(places, ui.placeFilter, ui.placeSort, customAttributes)
+    returnVal.visiblePlaces = visiblePlaces
+    returnVal.placeDetailId = PlaceListView.detailID(visiblePlaces, state.placeDetailId)
+
+    return returnVal
   }
 
-  componentDidUpdate () {
-    if (this.refs.attrInput) {
-      findDOMNode(this.refs.attrInput).focus()
-    }
-  }
-
-  visiblePlaces (places, filter, sort) {
+  static visiblePlaces (places, filter, sort, customAttributes) {
     let visible = places
-    if (!this.filterIsEmpty(filter)) {
+    if (!PlaceListView.staticFilterIsEmpty(filter, customAttributes)) {
       visible = []
       places.forEach(pl => {
         const matches = Object.keys(filter).some(attr => {
@@ -96,22 +80,27 @@ class PlaceListView extends Component {
     return sorted
   }
 
-  detailID (places) {
+  static detailID (places, placeDetailId) {
     if (places.length == 0) return null
 
     let id = places[0].id
 
     // check for the currently active one
-    if (this.state && this.state.placeDetailId != null) {
-      let activePlace = places.find(pl => pl.id === this.state.placeDetailId)
+    if (placeDetailId != null) {
+      let activePlace = places.find(pl => pl.id === placeDetailId)
       if (activePlace) id = activePlace.id
     }
 
-    // check for a newly created one
-    let newPlace = places.find(pl => pl.name === '')
-    if (newPlace) id = newPlace.id
-
     return id
+  }
+
+  // this is a hack for now
+  static staticFilterIsEmpty = (filter, customAttributes) => {
+    if (!filter) return true
+
+    const allAttributes = [{name:'tag'}, {name:'book'}, ...customAttributes]
+
+    return !allAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
   }
 
   filterIsEmpty = (filter) => {
@@ -135,7 +124,9 @@ class PlaceListView extends Component {
   }
 
   handleCreateNewPlace = () => {
+    const id = nextId(this.props.places)
     this.props.actions.addPlace()
+    this.setState({placeDetailId: id, editingSelected: true})
   }
 
   handleType = () => {
@@ -305,7 +296,7 @@ PlaceListView.propTypes = {
 function mapStateToProps (state) {
   return {
     places: state.places,
-    customAttributes: state.customAttributes['places'],
+    customAttributes: state.customAttributes.places,
     customAttributesThatCanChange: placeCustomAttributesThatCanChangeSelector(state),
     ui: state.ui,
   }

@@ -11,76 +11,75 @@ import i18n from 'format-message'
 import cx from 'classnames'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import NoteItem from './NoteItem'
+import { nextId } from '../../store/newIds'
 
 class NoteListView extends Component {
   constructor (props) {
     super(props)
-    var id = null
-    var sortedNotes = []
-    if (props.notes.length > 0) {
-      sortedNotes = sortBy(props.notes, ['lastEdited'])
-      sortedNotes.reverse()
-      id = sortedNotes[0].id
-    }
     this.state = {
-      noteDetailId: id,
+      noteDetailId: null,
       filter: null,
-      viewableNotes: sortedNotes,
+      viewableNotes: [],
       editingSelected: false,
     }
   }
 
-  componentWillReceiveProps (nextProps) {
-    let viewableNotes = []
-    let noteDetailId = null
-    if (nextProps.notes.length) {
-      viewableNotes = this.viewableNotes(nextProps.notes, this.state.filter)
-      noteDetailId = this.detailID(viewableNotes)
-    }
-    this.setState({ noteDetailId, viewableNotes })
+  static getDerivedStateFromProps (props, state) {
+    let returnVal = {...state}
+    const { notes } = props
+    const viewableNotes = NoteListView.viewableNotes(notes, state.filter)
+    returnVal.viewableNotes = viewableNotes
+    returnVal.noteDetailId = NoteListView.detailID(viewableNotes, state.noteDetailId)
+
+    return returnVal
   }
 
-  detailID (notes) {
+  static detailID (notes, noteDetailId) {
     if (notes.length == 0) return null
 
     let id = notes[0].id
 
     // check for the currently active one
-    if (this.state && this.state.noteDetailId != null) {
-      let activeNote = notes.find(n => n.id === this.state.noteDetailId)
+    if (noteDetailId != null) {
+      let activeNote = notes.find(n => n.id === noteDetailId)
       if (activeNote) id = activeNote.id
     }
-
-    // check for a newly created one
-    let newNote = notes.find(n => n.title === '')
-    if (newNote) id = newNote.id
 
     return id
   }
 
   handleCreateNewNote = () => {
+    const id = nextId(this.props.notes)
     this.props.actions.addNote()
+    this.setState({noteDetailId: id, editingSelected: true})
   }
 
   updateFilter = (filter) => {
-    let viewableNotes = this.viewableNotes(this.props.notes, filter)
-    let noteDetailId = viewableNotes[0] && viewableNotes[0].id
-    this.setState({ viewableNotes, filter, noteDetailId })
+    this.setState({ filter })
   }
 
   removeFilter = () => {
     this.updateFilter(null)
   }
 
-  viewableNotes (notes, filter) {
-    const filterIsEmpty = this.filterIsEmpty(filter)
+  static viewableNotes (notes, filter) {
+    const filterIsEmpty = NoteListView.staticFilterIsEmpty(filter)
     let viewableNotes = notes
     if (!filterIsEmpty) {
-      viewableNotes = notes.filter((n) => this.isViewable(filter, n))
+      viewableNotes = notes.filter((n) => NoteListView.isViewable(filter, n))
     }
     let sortedNotes = sortBy(viewableNotes, ['lastEdited'])
     sortedNotes.reverse()
     return sortedNotes
+  }
+
+  // this is a hack for now
+  static staticFilterIsEmpty (filter) {
+    return filter == null ||
+      (filter['tag'].length === 0 &&
+      filter['character'].length === 0 &&
+      filter['place'].length === 0 &&
+      filter['book'].length === 0)
   }
 
   filterIsEmpty (filter) {
@@ -91,7 +90,7 @@ class NoteListView extends Component {
       filter['book'].length === 0)
   }
 
-  isViewable (filter, note) {
+  static isViewable (filter, note) {
     if (!note) return false
     let visible = false
     if (note.tags) {

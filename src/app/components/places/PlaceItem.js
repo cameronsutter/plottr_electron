@@ -15,10 +15,15 @@ class PlaceItem extends Component {
 
   componentDidMount () {
     this.scrollIntoView()
+
+    // if (this.props.selected && !this.props.editing) document.addEventListener('keydown', this.deleteWithKeyboard)
   }
 
   componentDidUpdate () {
     this.scrollIntoView()
+
+    // if (this.props.selected && !this.props.editing) document.addEventListener('keydown', this.deleteWithKeyboard)
+    // else document.removeEventListener('keydown', this.deleteWithKeyboard)
   }
 
   scrollIntoView = () => {
@@ -27,6 +32,12 @@ class PlaceItem extends Component {
       if (node) node.scrollIntoViewIfNeeded()
     }
   }
+
+  // deleteWithKeyboard = e => {
+  //   if (e.keyCode == 8 || e.keyCode == 46) {
+  //     this.setState({deleting: true})
+  //   }
+  // }
 
   deletePlace = e => {
     e.stopPropagation()

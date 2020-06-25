@@ -21,18 +21,19 @@ function fix (data) {
   const oldToNewIds = {}
   const chapterToBookMapping = {}
   obj.chapters = obj.chapters.map((ch, idx) => {
+    const newId = idx + 1
     // save old chapter id => new chapter id by bookId
     if (oldToNewIds[ch.bookId]) {
-      oldToNewIds[ch.bookId][ch.id] = idx
+      oldToNewIds[ch.bookId][ch.id] = newId
     } else {
-      oldToNewIds[ch.bookId] = {[ch.id]: idx}
+      oldToNewIds[ch.bookId] = {[ch.id]: newId}
     }
 
     // save book id by chapter id
     chapterToBookMapping[ch.id] = ch.bookId
 
     // change id
-    ch.id = idx
+    ch.id = newId
     return ch
   })
 

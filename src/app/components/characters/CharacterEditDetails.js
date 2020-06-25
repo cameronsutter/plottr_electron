@@ -12,6 +12,7 @@ import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
 import { singleCharacterSelector } from '../../selectors/characters'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 class CharacterEditDetails extends Component {
   constructor (props) {
@@ -34,11 +35,27 @@ class CharacterEditDetails extends Component {
       categoryId: props.character.categoryId || -1,
       templateAttrs: templateAttrs,
       newImageId: null,
+      deleting: false,
     }
   }
 
   componentWillUnmount () {
     this.saveEdit(false)
+  }
+
+  deleteCharacter = e => {
+    e.stopPropagation()
+    this.props.actions.deleteCharacter(this.props.character.id)
+  }
+
+  cancelDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: false})
+  }
+
+  handleDelete = e => {
+    e.stopPropagation()
+    this.setState({deleting: true})
   }
 
   handleEnter = (event) => {
@@ -109,6 +126,13 @@ class CharacterEditDetails extends Component {
   changeCategory = (val) => {
     this.setState({categoryId: val})
     this.props.actions.editCharacter(this.props.character.id, {categoryId: val == -1 ? null : val})
+  }
+
+
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    return <DeleteConfirmModal name={this.props.character.name || i18n('New Character')} onDelete={this.deleteCharacter} onCancel={this.cancelDelete}/>
   }
 
   renderEditingImage () {
@@ -187,6 +211,7 @@ class CharacterEditDetails extends Component {
   render () {
     const { character, ui } = this.props
     return <div className='character-list__character-wrapper'>
+      { this.renderDelete() }
       <div className={cx('character-list__character', 'editing', {darkmode: ui.darkMode})}>
         <div className='character-list__character__edit-form'>
           <div className='character-list__inputs__normal'>
@@ -231,6 +256,9 @@ class CharacterEditDetails extends Component {
         <ButtonToolbar className='card-dialog__button-bar'>
           <Button bsStyle='success' onClick={this.saveEdit}>
             {i18n('Save')}
+          </Button>
+          <Button className='card-dialog__delete' onClick={this.handleDelete}>
+            {i18n('Delete')}
           </Button>
         </ButtonToolbar>
       </div>

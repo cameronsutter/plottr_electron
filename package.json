@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.6.26",
+  "version": "2020.6.25",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
@@ -139,16 +139,20 @@
         "role": "Editor"
       }
     ],
+    "afterSign": "build/notarize.js",
     "mac": {
       "category": "public.app-category.productivity",
       "target": "default",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
       "darkModeSupport": true
     },
     "dmg": {
       "backgroundColor": "#ebf2f9",
-      "title": "${productName} Installer"
+      "title": "${productName} Installer",
+      "sign": false
     },
     "win": {
       "target": {

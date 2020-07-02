@@ -96,9 +96,9 @@ class BookDialog extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    ui: state.ui,
-    book: state.books[ownProps.bookId],
-    bookNumber: state.books.allIds.indexOf(ownProps.bookId) + 1,
+    ui: state.present.ui,
+    book: state.present.books[ownProps.bookId],
+    bookNumber: state.present.books.allIds.indexOf(ownProps.bookId) + 1,
   }
 }
 

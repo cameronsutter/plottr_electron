@@ -158,9 +158,9 @@ BlankCard.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    currentTimeline: state.ui.currentTimeline,
-    orientation: state.ui.orientation,
-    isSeries: isSeriesSelector(state),
+    currentTimeline: state.present.ui.currentTimeline,
+    orientation: state.present.ui.orientation,
+    isSeries: isSeriesSelector(state.present),
   }
 }
 

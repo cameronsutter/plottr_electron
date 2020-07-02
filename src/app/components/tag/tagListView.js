@@ -74,8 +74,8 @@ TagListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    tags: sortedTagsSelector(state),
-    ui: state.ui,
+    tags: sortedTagsSelector(state.present),
+    ui: state.present.ui,
   }
 }
 

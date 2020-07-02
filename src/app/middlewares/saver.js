@@ -8,7 +8,7 @@ const saver = store => next => action => {
   const result = next(action)
   if (BLACKLIST.includes(action.type)) return result
   var isNewFile = action.type === NEW_FILE
-  ipcRenderer.send('save-state', store.getState(), win.id, isNewFile)
+  ipcRenderer.send('save-state', store.getState().present, win.id, isNewFile)
   return result
 }
 

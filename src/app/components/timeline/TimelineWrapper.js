@@ -339,7 +339,7 @@ TimelineWrapper.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    ui: state.ui,
+    ui: state.present.ui,
   }
 }
 

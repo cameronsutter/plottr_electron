@@ -33,8 +33,8 @@ class CategoryPicker extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    categories: state.categories[ownProps.type],
-    ui: state.ui,
+    categories: state.present.categories[ownProps.type],
+    ui: state.present.ui,
   }
 }
 

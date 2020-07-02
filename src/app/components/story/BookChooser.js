@@ -56,9 +56,9 @@ class BookChooser extends Component {
 
 function mapStateToProps (state) {
   return {
-    ui: state.ui,
-    books: state.books,
-    series: state.series,
+    ui: state.present.ui,
+    books: state.present.books,
+    series: state.present.series,
   }
 }
 

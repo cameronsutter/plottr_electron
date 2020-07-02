@@ -140,13 +140,13 @@ CustomAttrFilterList.propTypes = {
 }
 
 function mapStateToProps (state, ownProps) {
-  let filteredItems = state.ui.characterFilter
-  if (ownProps.type == 'places') filteredItems = state.ui.placeFilter
+  let filteredItems = state.present.ui.characterFilter
+  if (ownProps.type == 'places') filteredItems = state.present.ui.placeFilter
   return {
-    tags: sortedTagsSelector(state),
-    books: state.books,
-    customAttributes: state.customAttributes[ownProps.type],
-    items: ownProps.type == 'characters' ? state.characters : state.places,
+    tags: sortedTagsSelector(state.present),
+    books: state.present.books,
+    customAttributes: state.present.customAttributes[ownProps.type],
+    items: ownProps.type == 'characters' ? state.present.characters : state.present.places,
     filteredItems,
     showCategory: ownProps.type == 'characters',
   }

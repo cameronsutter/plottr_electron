@@ -4,6 +4,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import App from 'containers/App'
 import configureStore from 'store/configureStore'
+import { is } from 'electron-util'
 import { ipcRenderer, remote } from 'electron'
 const { Menu, MenuItem } = remote
 const win = remote.getCurrentWindow()
@@ -16,7 +17,7 @@ import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
-// import contextMenu from 'electron-context-menu'
+import { ActionCreators } from 'redux-undo'
 
 
 i18n.setup({
@@ -85,8 +86,33 @@ window.onerror = function (message, file, line, column, err) {
   }
 }
 
+function focusIsEditable () {
+  if (document.activeElement.tagName == 'INPUT') return true
+  if (document.activeElement.dataset.slateEditor
+    && document.activeElement.dataset.slateEditor == "true") return true
+
+  return false
+}
+
 window.SCROLLWITHKEYS = true
-window.onkeydown = function (e) {
+document.addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey) {
+    const cmdOrCtl = is.macos ? e.metaKey : e.ctrlKey
+    const redoKey = is.macos ? 'z' : 'y'
+    const redoCmdOrCtl = is.macos ? e.metaKey && e.shiftKey : e.ctrlKey
+    if (e.key == 'z' && cmdOrCtl) {
+      if (!focusIsEditable()) {
+        // custom undo function
+        store.dispatch(ActionCreators.undo())
+      }
+    }
+    if (e.key == redoKey && redoCmdOrCtl) {
+      if (!focusIsEditable()) {
+        // custom redo function
+        store.dispatch(ActionCreators.redo())
+      }
+    }
+  }
   if (window.SCROLLWITHKEYS) {
     const table = document.querySelector(".sticky-table")
     if (table) {
@@ -109,13 +135,8 @@ window.onkeydown = function (e) {
       }
     }
   }
-}
+})
 
 window.logger = function(which) {
   process.env.LOGGER = which.toString()
 }
-
-// https://github.com/sindresorhus/electron-context-menu
-// contextMenu({
-//   prepend: (defaultActions, params, browserWindow) => []
-// })

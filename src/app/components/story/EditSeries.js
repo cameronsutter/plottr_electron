@@ -92,8 +92,8 @@ class EditSeries extends Component {
 
 function mapStateToProps (state) {
   return {
-    ui: state.ui,
-    series: state.series,
+    ui: state.present.ui,
+    series: state.present.series,
   }
 }
 

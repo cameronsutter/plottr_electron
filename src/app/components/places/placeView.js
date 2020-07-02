@@ -340,11 +340,11 @@ PlaceView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    customAttributes: state.customAttributes.places,
-    cards: state.cards,
-    notes: state.notes,
-    ui: state.ui,
-    tags: state.tags,
+    customAttributes: state.present.customAttributes.places,
+    cards: state.present.cards,
+    notes: state.present.notes,
+    ui: state.present.ui,
+    tags: state.present.tags,
   }
 }
 

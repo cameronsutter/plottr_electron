@@ -161,19 +161,19 @@ CardView.propTypes = {
 
 function mapStateToProps (state, ownProps) {
   let line = null
-  if (state.ui.currentTimeline == 'series') {
+  if (state.present.ui.currentTimeline == 'series') {
     // get the right seriesLines
-    line = state.seriesLines.find(sl => sl.id === ownProps.card.seriesLineId)
+    line = state.present.seriesLines.find(sl => sl.id === ownProps.card.seriesLineId)
   } else {
-    // get the right lines for state.ui.currentTimeline (bookId)
-    line = state.lines.find(l => l.id == ownProps.card.lineId)
+    // get the right lines for state.present.ui.currentTimeline (bookId)
+    line = state.present.lines.find(l => l.id == ownProps.card.lineId)
   }
   return {
     line: line,
-    tags: state.tags,
-    characters: state.characters,
-    places: state.places,
-    ui: state.ui,
+    tags: state.present.tags,
+    characters: state.present.characters,
+    places: state.present.places,
+    ui: state.present.ui,
   }
 }
 

@@ -30,7 +30,7 @@ TagFilterList.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    tags: sortedTagsSelector(state),
+    tags: sortedTagsSelector(state.present),
   }
 }
 

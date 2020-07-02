@@ -151,7 +151,7 @@ class CardDialog extends Component {
     return <FormControl
       style={{fontSize: '24pt', textAlign: 'center', marginBottom: '6px'}}
       onKeyPress={this.handleEnter}
-      type='text' autoFocus
+      type='text'
       ref='titleInput'
       defaultValue={title}
     />
@@ -245,6 +245,7 @@ class CardDialog extends Component {
               onChange={(desc) => this.setState({description: desc})}
               editable={true}
               darkMode={ui.darkMode}
+              autofocus
             />
           </div>
         </div>
@@ -271,13 +272,13 @@ CardDialog.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    chapters: sortedChaptersByBookSelector(state),
-    lines: sortedLinesByBookSelector(state),
-    tags: state.tags,
-    characters: state.characters,
-    places: state.places,
-    ui: state.ui,
-    books: state.books,
+    chapters: sortedChaptersByBookSelector(state.present),
+    lines: sortedLinesByBookSelector(state.present),
+    tags: state.present.tags,
+    characters: state.present.characters,
+    places: state.present.places,
+    ui: state.present.ui,
+    books: state.present.books,
   }
 }
 

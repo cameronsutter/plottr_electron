@@ -271,10 +271,10 @@ class AddLineRow extends Component {
 
 function mapStateToProps (state) {
   return {
-    ui: state.ui,
-    chapters: sortedChaptersByBookSelector(state),
-    lines: linesByBookSelector(state),
-    cards: state.cards,
+    ui: state.present.ui,
+    chapters: sortedChaptersByBookSelector(state.present),
+    lines: linesByBookSelector(state.present),
+    cards: state.present.cards,
   }
 }
 

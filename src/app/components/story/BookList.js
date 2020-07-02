@@ -90,8 +90,8 @@ class BookList extends Component {
 
 function mapStateToProps (state) {
   return {
-    ui: state.ui,
-    books: state.books,
+    ui: state.present.ui,
+    books: state.present.books,
   }
 }
 

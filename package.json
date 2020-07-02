@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.6.25",
+  "version": "2020.7.2",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
@@ -66,6 +66,7 @@
     "react.pure.component": "^1.2.0",
     "reactour": "^1.16.0",
     "redux": "^3.5.2",
+    "redux-undo": "^1.0.1",
     "request": "^2.88.0",
     "reselect": "^4.0.0",
     "rollbar": "^2.15.2",

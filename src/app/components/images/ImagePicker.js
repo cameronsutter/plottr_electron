@@ -164,7 +164,7 @@ ImagePicker.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    images: state.images,
+    images: state.present.images,
   }
 }
 

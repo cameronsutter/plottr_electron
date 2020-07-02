@@ -211,11 +211,11 @@ NoteListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    notes: state.notes,
-    characters: state.characters,
-    places: state.places,
-    tags: state.tags,
-    ui: state.ui,
+    notes: state.present.notes,
+    characters: state.present.characters,
+    places: state.present.places,
+    tags: state.present.tags,
+    ui: state.present.ui,
   }
 }
 

@@ -58,11 +58,11 @@ SortList.propTypes = {
 function mapStateToProps (state, props) {
   let attr, customAttributes
   if (props.type == 'characters') {
-    customAttributes = characterSortCAnamesSelector(state)
-    attr = state.ui.characterSort
+    customAttributes = characterSortCAnamesSelector(state.present)
+    attr = state.present.ui.characterSort
   } else {
-    customAttributes = placeSortCAnamesSelector(state)
-    attr = state.ui.placeSort
+    customAttributes = placeSortCAnamesSelector(state.present)
+    attr = state.present.ui.placeSort
   }
   let items = [i18n('name'), i18n('description'), ...customAttributes]
   return {

@@ -18,6 +18,7 @@ import CharacterEditDetails from './CharacterEditDetails'
 import CharacterDetails from './CharacterDetails'
 import SelectList from '../selectList'
 import BookSelectList from '../story/BookSelectList'
+import { singleCharacterSelector } from '../../selectors/characters'
 
 class CharacterView extends Component {
   render () {
@@ -65,9 +66,9 @@ class CharacterView extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    character: state.characters.find(ch => ch.id == ownProps.characterId),
-    ui: state.ui,
-    tags: state.tags,
+    character: singleCharacterSelector(state.present, ownProps.characterId),
+    ui: state.present.ui,
+    tags: state.present.tags,
   }
 }
 

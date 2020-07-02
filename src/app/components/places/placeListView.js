@@ -295,10 +295,10 @@ PlaceListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    places: state.places,
-    customAttributes: state.customAttributes.places,
-    customAttributesThatCanChange: placeCustomAttributesThatCanChangeSelector(state),
-    ui: state.ui,
+    places: state.present.places,
+    customAttributes: state.present.customAttributes.places,
+    customAttributesThatCanChange: placeCustomAttributesThatCanChangeSelector(state.present),
+    ui: state.present.ui,
   }
 }
 

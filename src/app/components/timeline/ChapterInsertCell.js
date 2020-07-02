@@ -85,8 +85,8 @@ class ChapterInsertCell extends PureComponent {
 
 function mapStateToProps (state) {
   return {
-    orientation: state.ui.orientation,
-    zoom: {zoomState: state.ui.zoomState, zoomIndex: state.ui.zoomIndex},
+    orientation: state.present.ui.orientation,
+    zoom: {zoomState: state.present.ui.zoomState, zoomIndex: state.present.ui.zoomIndex},
   }
 }
 

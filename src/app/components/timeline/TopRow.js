@@ -123,18 +123,18 @@ TopRow.propTypes = {
 
 function mapStateToProps (state) {
   let nextChapterId = -1
-  const bookId = state.ui.currentTimeline
+  const bookId = state.present.ui.currentTimeline
   if (bookId == 'series') {
-    nextChapterId = nextId(state.beats)
+    nextChapterId = nextId(state.present.beats)
   } else {
-    nextChapterId = nextId(state.chapters)
+    nextChapterId = nextId(state.present.chapters)
   }
 
   return {
-    ui: state.ui,
-    chapters: sortedChaptersByBookSelector(state),
+    ui: state.present.ui,
+    chapters: sortedChaptersByBookSelector(state.present),
     nextChapterId: nextChapterId,
-    lines: sortedLinesByBookSelector(state),
+    lines: sortedLinesByBookSelector(state.present),
   }
 }
 

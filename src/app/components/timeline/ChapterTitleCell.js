@@ -212,11 +212,11 @@ const makeMapState = (state) => {
 
   return function mapStateToProps (state, ownProps) {
     return {
-      chapters: state.chapters,
-      chapter: uniqueChapterSelector(state, ownProps.chapterId),
-      ui: state.ui,
-      isSeries: isSeriesSelector(state),
-      chapterName: uniqueChapterNameSelector(state, ownProps.chapterId)
+      chapters: state.present.chapters,
+      chapter: uniqueChapterSelector(state.present, ownProps.chapterId),
+      ui: state.present.ui,
+      isSeries: isSeriesSelector(state.present),
+      chapterName: uniqueChapterNameSelector(state.present, ownProps.chapterId)
     }
   }
 }

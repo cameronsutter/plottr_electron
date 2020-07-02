@@ -127,10 +127,10 @@ FilterList.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    characters: state.characters,
-    places: state.places,
-    tags: sortedTagsSelector(state),
-    books: state.books,
+    characters: state.present.characters,
+    places: state.present.places,
+    tags: sortedTagsSelector(state.present),
+    books: state.present.books,
   }
 }
 

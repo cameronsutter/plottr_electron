@@ -47,9 +47,9 @@ class ExportTab extends Component {
 
 function mapStateToProps (state) {
   return {
-    ui: state.ui,
-    series: state.series,
-    books: state.books,
+    ui: state.present.ui,
+    series: state.present.series,
+    books: state.present.books,
   }
 }
 

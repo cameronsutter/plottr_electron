@@ -32,7 +32,7 @@ class Image extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    image: state.images[ownProps.imageId],
+    image: state.present.images[ownProps.imageId],
   }
 }
 

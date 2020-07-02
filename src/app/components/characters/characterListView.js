@@ -258,13 +258,13 @@ CharacterListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    visibleCharactersByCategory: visibleSortedCharactersByCategorySelector(state),
-    filterIsEmpty: characterFilterIsEmptySelector(state),
-    characters: state.characters,
-    categories: sortedCharacterCategoriesSelector(state),
-    customAttributes: state.customAttributes.characters,
-    customAttributesThatCanChange: characterCustomAttributesThatCanChangeSelector(state),
-    ui: state.ui,
+    visibleCharactersByCategory: visibleSortedCharactersByCategorySelector(state.present),
+    filterIsEmpty: characterFilterIsEmptySelector(state.present),
+    characters: state.present.characters,
+    categories: sortedCharacterCategoriesSelector(state.present),
+    customAttributes: state.present.customAttributes.characters,
+    customAttributesThatCanChange: characterCustomAttributesThatCanChangeSelector(state.present),
+    ui: state.present.ui,
   }
 }
 

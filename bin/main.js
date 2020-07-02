@@ -297,7 +297,7 @@ app.on('ready', () => {
   loadMenu(true)
 
   // Register the toggleDevTools shortcut listener.
-  const ret = globalShortcut.register('CommandOrControl+Alt+R', () => {
+  globalShortcut.register('CommandOrControl+Alt+R', () => {
     let win = BrowserWindow.getFocusedWindow()
     if (win) win.toggleDevTools()
   })
@@ -832,8 +832,8 @@ function buildFileMenu () {
     accelerator: 'CmdOrCtrl+O',
     click: askToOpenFile,
   }, {
-    role: "recentDocuments",
-    submenu: [],
+    role: 'recentDocuments',
+    submenu: [{role: 'clearRecentDocuments'}],
     visible: is.macos,
   }, {
     type: 'separator',
@@ -975,25 +975,7 @@ function buildFileMenu () {
 function buildEditMenu () {
   return {
     label: i18n('Edit'),
-    submenu: [{
-      label: 'Cut',
-      accelerator: 'CmdOrCtrl+X',
-      role: 'cut'
-    }, {
-      label: i18n('Copy'),
-      accelerator: 'CmdOrCtrl+C',
-      role: 'copy'
-    }, {
-      label: i18n('Paste'),
-      accelerator: 'CmdOrCtrl+V',
-      role: 'paste'
-    }, {
-      type: 'separator'
-    }, {
-      label: i18n('Select All'),
-      accelerator: 'CmdOrCtrl+A',
-      role: 'selectall'
-    }]
+    role: 'editMenu',
   }
 }
 
@@ -1039,19 +1021,7 @@ function buildViewMenu () {
 function buildWindowMenu () {
   return {
     label: i18n('Window'),
-    role: 'window',
-    submenu: [
-      {
-        label: i18n('Minimize'),
-        accelerator: 'CmdOrCtrl+M',
-        role: 'minimize'
-      }, {
-        type: 'separator'
-      }, {
-        label: i18n('Bring All to Front'),
-        role: 'front'
-      }
-    ]
+    role: 'windowMenu',
   }
 }
 

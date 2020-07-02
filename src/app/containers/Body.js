@@ -49,7 +49,7 @@ Body.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    currentView: state.ui.currentView
+    currentView: state.present.ui.currentView
   }
 }
 

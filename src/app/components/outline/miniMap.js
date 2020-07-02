@@ -100,9 +100,9 @@ MiniMap.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    chapters: sortedChaptersByBookSelector(state),
-    lines: linesByBookSelector(state),
-    ui: state.ui,
+    chapters: sortedChaptersByBookSelector(state.present),
+    lines: linesByBookSelector(state.present),
+    ui: state.present.ui,
   }
 }
 

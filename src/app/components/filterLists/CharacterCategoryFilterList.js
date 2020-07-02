@@ -30,7 +30,7 @@ CharacterCategoryFilterList.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    categories: sortedCharacterCategoriesSelector(state),
+    categories: sortedCharacterCategoriesSelector(state.present),
   }
 }
 

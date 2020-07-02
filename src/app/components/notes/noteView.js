@@ -203,10 +203,10 @@ NoteView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    characters: state.characters,
-    places: state.places,
-    tags: state.tags,
-    ui: state.ui,
+    characters: state.present.characters,
+    places: state.present.places,
+    tags: state.present.tags,
+    ui: state.present.ui,
   }
 }
 

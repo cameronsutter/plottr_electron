@@ -278,10 +278,10 @@ class CharacterEditDetails extends Component {
 
 function mapStateToProps (state, ownProps) {
   return {
-    character: singleCharacterSelector(state, ownProps.characterId),
-    categories: state.categories.characters,
-    customAttributes: state.customAttributes.characters,
-    ui: state.ui,
+    character: singleCharacterSelector(state.present, ownProps.characterId),
+    categories: state.present.categories.characters,
+    customAttributes: state.present.customAttributes.characters,
+    ui: state.present.ui,
   }
 }
 

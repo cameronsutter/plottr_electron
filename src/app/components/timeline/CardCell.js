@@ -166,8 +166,8 @@ CardCell.propTypes = {
 
 function mapStateToProps (state, ownProps) {
   return {
-    tags: state.tags,
-    ui: state.ui,
+    tags: state.present.tags,
+    ui: state.present.ui,
   }
 }
 

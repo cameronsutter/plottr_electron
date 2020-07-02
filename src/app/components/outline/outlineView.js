@@ -186,11 +186,11 @@ OutlineView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    chapters: sortedChaptersByBookSelector(state),
-    lines: sortedLinesByBookSelector(state),
-    cards: state.cards,
-    ui: state.ui,
-    isSeries: isSeriesSelector(state),
+    chapters: sortedChaptersByBookSelector(state.present),
+    lines: sortedLinesByBookSelector(state.present),
+    cards: state.present.cards,
+    ui: state.present.ui,
+    isSeries: isSeriesSelector(state.present),
   }
 }
 

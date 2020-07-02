@@ -100,9 +100,9 @@ class CustomAttributeModal extends Component {
 
 function mapStateToProps (state) {
   return {
-    customAttributes: state.customAttributes.characters,
-    customAttributesThatCanChange: characterCustomAttributesThatCanChangeSelector(state),
-    ui: state.ui,
+    customAttributes: state.present.customAttributes.characters,
+    customAttributesThatCanChange: characterCustomAttributesThatCanChangeSelector(state.present),
+    ui: state.present.ui,
   }
 }
 

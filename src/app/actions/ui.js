@@ -1,4 +1,4 @@
-import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED,
+import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NAVIGATE_TO_BOOK_TIMELINE,
   FILE_SAVED, NEW_FILE, SET_DARK_MODE, CHANGE_CURRENT_TIMELINE,
   SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
   SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM } from 'constants/ActionTypes'
@@ -69,5 +69,9 @@ export function resetZoom () {
 
 export function changeCurrentTimeline (id) {
   return { type: CHANGE_CURRENT_TIMELINE, id}
+}
+
+export function navigateToBookTimeline (bookId) {
+  return { type: NAVIGATE_TO_BOOK_TIMELINE, bookId }
 }
 

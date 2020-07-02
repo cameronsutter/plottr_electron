@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
 import ImagePicker from '../images/ImagePicker'
 import * as BookActions from 'actions/books'
+import * as UIActions from 'actions/ui'
 import Image from '../images/Image'
 import BookDialog from './BookDialog'
 import { Glyphicon, ButtonGroup, Button } from 'react-bootstrap'
@@ -33,6 +34,10 @@ class Book extends Component {
   handleDelete = e => {
     e.stopPropagation()
     this.setState({deleting: true})
+  }
+
+  navigateToBook = () => {
+    this.props.uiActions.navigateToBookTimeline(this.props.book.id)
   }
 
   renderDelete () {
@@ -103,7 +108,7 @@ class Book extends Component {
       { this.renderHoverOptions() }
       { this.renderDialog() }
       { this.renderDelete() }
-      <div className={cx('book', {hovering: this.state.hovering})} onClick={() => this.setState({editing: true})}>
+      <div className={cx('book', {hovering: this.state.hovering})} onClick={this.navigateToBook}>
         <div className='front'>
           <div className='cover'>
             { this.renderTitle() }
@@ -141,7 +146,8 @@ function mapStateToProps (state, ownProps) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators(BookActions, dispatch)
+    actions: bindActionCreators(BookActions, dispatch),
+    uiActions: bindActionCreators(UIActions, dispatch),
   }
 }
 

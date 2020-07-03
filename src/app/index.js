@@ -10,15 +10,14 @@ const { Menu, MenuItem } = remote
 const win = remote.getCurrentWindow()
 const app = remote.app
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
-import mixpanel from 'mixpanel-browser'
 import { MPQ, setTrialInfo } from 'middlewares/helpers'
 import setupRollbar from '../common/utils/rollbar'
+import initMixpanel from '../common/utils/mixpanel'
 import log from 'electron-log'
 import i18n from 'format-message'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
-
 
 i18n.setup({
   translations: require('../../locales'),
@@ -35,7 +34,7 @@ if (process.env.NODE_ENV !== 'development') {
   })
 }
 
-mixpanel.init('507cb4c0ee35b3bde61db304462e9351')
+initMixpanel()
 
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')

@@ -47,7 +47,7 @@
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.4",
     "lodash": "^4.17.13",
-    "mixpanel-browser": "^2.29.0",
+    "mixpanel-browser": "^2.38.0",
     "node-machine-id": "^1.1.12",
     "pagedown": "^1.1.0",
     "pretty-date": "^0.2.0",

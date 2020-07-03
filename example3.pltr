@@ -32,7 +32,7 @@
   "file": {
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
-    "dirty": true,
+    "dirty": false,
     "version": "2020.6.25"
   },
   "series": {

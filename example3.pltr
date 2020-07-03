@@ -32,8 +32,8 @@
   "file": {
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
-    "dirty": false,
-    "version": "2020.6.25"
+    "dirty": true,
+    "version": "2020.7.2"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -1518,6 +1518,14 @@
               "children": [
                 {
                   "text": "else"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": ""
                 }
               ],
               "type": "list-item"

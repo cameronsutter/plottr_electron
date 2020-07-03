@@ -17,11 +17,9 @@ export function setTrialInfo (isTrialMode, num) {
 
 class MixpanelQueue {
   constructor () {
-    var size = screen.getPrimaryDisplay().size
     this.queue = []
     this.superProps = {
       platform: process.platform,
-      screen_size: `${size.width}x${size.height}`,
     }
   }
 

@@ -78,13 +78,6 @@ ipcRenderer.on('set-dark-mode', (event, on) => {
   window.document.body.className = on ? 'darkmode' : ''
 })
 
-window.onerror = function (message, file, line, column, err) {
-  if (process.env.NODE_ENV !== 'development') {
-    log.error(err)
-    rollbar.error(err)
-  }
-}
-
 function focusIsEditable () {
   if (document.activeElement.tagName == 'INPUT') return true
   if (document.activeElement.dataset.slateEditor
@@ -93,25 +86,33 @@ function focusIsEditable () {
   return false
 }
 
+ipcRenderer.on('undo', (event) => {
+  if (focusIsEditable()) {
+    win.webContents.undo()
+  } else {
+    // custom undo function
+    store.dispatch(ActionCreators.undo())
+  }
+})
+
+ipcRenderer.on('redo', (event) => {
+  if (focusIsEditable()) {
+    win.webContents.redo()
+  } else {
+    // custom redo function
+    store.dispatch(ActionCreators.redo())
+  }
+})
+
+window.onerror = function (message, file, line, column, err) {
+  if (process.env.NODE_ENV !== 'development') {
+    log.error(err)
+    rollbar.error(err)
+  }
+}
+
 window.SCROLLWITHKEYS = true
 document.addEventListener('keydown', e => {
-  if (e.metaKey || e.ctrlKey) {
-    const cmdOrCtl = is.macos ? e.metaKey : e.ctrlKey
-    const redoKey = is.macos ? 'z' : 'y'
-    const redoCmdOrCtl = is.macos ? e.metaKey && e.shiftKey : e.ctrlKey
-    if (e.key == 'z' && cmdOrCtl) {
-      if (!focusIsEditable()) {
-        // custom undo function
-        store.dispatch(ActionCreators.undo())
-      }
-    }
-    if (e.key == redoKey && redoCmdOrCtl) {
-      if (!focusIsEditable()) {
-        // custom redo function
-        store.dispatch(ActionCreators.redo())
-      }
-    }
-  }
   if (window.SCROLLWITHKEYS) {
     const table = document.querySelector(".sticky-table")
     if (table) {

@@ -951,15 +951,14 @@ function buildFileMenu () {
   }, {
     label: i18n('Reload from File'),
     visible: process.env.NODE_ENV === 'dev',
-    click: () => {
-      const win = BrowserWindow.getFocusedWindow()
-      const winObj = _.find(windows, {id: win.id})
+    click: (event, focusedWindow) => {
+      const winObj = windows.find(w => w.id == focusedWindow.id)
       if (winObj) {
         try {
           const json = JSON.parse(fs.readFileSync(winObj.fileName, 'utf-8'))
           winObj.state = json
           winObj.lastSave = json
-          win.webContents.send('state-fetched', json, winObj.fileName, true, darkMode, windows.length)
+          focusedWindow.webContents.send('state-fetched', json, winObj.fileName, true, darkMode, windows.length)
         } catch (error) {
           log.info(error)
         }
@@ -975,7 +974,41 @@ function buildFileMenu () {
 function buildEditMenu () {
   return {
     label: i18n('Edit'),
-    role: 'editMenu',
+    submenu: [{
+      label: i18n('Undo'),
+      accelerator: 'CmdOrCtrl+Z',
+      click: (event, focusedWindow) => {
+        focusedWindow.webContents.send('undo')
+      }
+    }, {
+      label: i18n('Redo'),
+      accelerator: is.macos ? 'Cmd+Shift+Z' : 'Ctrl+Y',
+      click: (event, focusedWindow) => {
+        focusedWindow.webContents.send('redo')
+      }
+    }, {
+      type: 'separator'
+    }, {
+      label: i18n('Cut'),
+      accelerator: 'CmdOrCtrl+X',
+      role: 'cut'
+    }, {
+      label: i18n('Copy'),
+      accelerator: 'CmdOrCtrl+C',
+      role: 'copy'
+    }, {
+      label: i18n('Paste'),
+      accelerator: 'CmdOrCtrl+V',
+      role: 'paste'
+    }, {
+      label: i18n('Paste and Match Style'),
+      accelerator: 'CmdOrCtrl+Shift+V',
+      role: 'pasteAndMatchStyle',
+    }, {
+      label: i18n('Select All'),
+      accelerator: 'CmdOrCtrl+A',
+      role: 'selectall'
+    }]
   }
 }
 

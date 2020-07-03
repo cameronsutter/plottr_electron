@@ -9,6 +9,7 @@ import NotesTab from 'components/notes/NotesTab'
 import TimelineTab from '../components/timeline/TimelineTab'
 import SeriesTab from '../components/story/SeriesTab'
 import ExportTab from '../components/export/ExportTab'
+import AnalyzerTab from '../components/analyzer/AnalyzerTab'
 
 class Body extends Component {
   render () {
@@ -36,6 +37,9 @@ class Body extends Component {
 
       case 'export':
         return <ExportTab />
+
+      case 'analyzer':
+        return <AnalyzerTab />
 
       default:
         return <TimelineTab/>

@@ -4,7 +4,6 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import App from 'containers/App'
 import configureStore from 'store/configureStore'
-import { is } from 'electron-util'
 import { ipcRenderer, remote } from 'electron'
 const { Menu, MenuItem } = remote
 const win = remote.getCurrentWindow()

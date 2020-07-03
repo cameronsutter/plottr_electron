@@ -15,7 +15,7 @@ var TRIALMODE = process.env.TRIALMODE === 'true'
 class Navigation extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false, showHistory: false}
+    this.state = {showHistory: false, isDev: process.env.NODE_ENV == 'development'}
   }
 
   toggleShowHistory = () => {
@@ -36,11 +36,6 @@ class Navigation extends Component {
   }
 
   render () {
-    if (this.state.editing) {
-      window.SCROLLWITHKEYS = false
-    } else {
-      window.SCROLLWITHKEYS = true
-    }
     let klasses = cx('navbar', 'navbar-default', 'navbar-fixed-top', {'navbar-inverse': this.props.ui.darkMode})
     return <nav className={klasses} role='navigation'>
       {TRIALMODE ? null : <UpdateNotifier/>}
@@ -78,6 +73,11 @@ class Navigation extends Component {
           <li className={this.isActive('tags')}>
             <a href='#' onClick={() => this.props.actions.changeCurrentView('tags')} >{i18n('Tags')}</a>
           </li>
+          {this.state.isDev ?
+            <li className={this.isActive('analyzer')}>
+              <a href='#' onClick={() => this.props.actions.changeCurrentView('analyzer')} >Analyzer<sup>(DEV)</sup></a>
+            </li>
+          : null}
         </ul>
         { this.renderTrialLinks() }
       </div>

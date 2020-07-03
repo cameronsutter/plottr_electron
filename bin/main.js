@@ -26,9 +26,10 @@ const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/h
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
   // issue: https://github.com/electron/electron/issues/22117
-  // const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-devtools-installer')
+  // const { default: installExtension, REDUX_DEVTOOLS } = require('electron-devtools-installer')
+  // REACT_DEVELOPER_TOOLS, REACT_PERF
   // app.whenReady().then(() => {
-  //   installExtension(REACT_DEVELOPER_TOOLS)
+  //   installExtension(REDUX_DEVTOOLS)
   //       .then((name) => console.log(`Added Extension:  ${name}`))
   //       .catch((err) => console.log('An error occurred: ', err))
   // })

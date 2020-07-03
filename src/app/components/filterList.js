@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortedTagsSelector } from '../selectors/tags'
+import { charactersSortedAtoZSelector } from '../selectors/characters'
+import { placesSortedAtoZSelector } from '../selectors/places'
 
 class FilterList extends Component {
   constructor (props) {
@@ -127,8 +129,8 @@ FilterList.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    characters: state.present.characters,
-    places: state.present.places,
+    characters: charactersSortedAtoZSelector(state.present),
+    places: placesSortedAtoZSelector(state.present),
     tags: sortedTagsSelector(state.present),
     books: state.present.books,
   }

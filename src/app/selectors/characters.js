@@ -91,3 +91,8 @@ function sortEachCategory (visibleByCategory, sort) {
   })
   return visibleByCategory
 }
+
+export const charactersSortedAtoZSelector = createSelector(
+  allCharactersSelector,
+  (characters) => sortBy(characters, 'name')
+)

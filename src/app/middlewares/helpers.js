@@ -24,6 +24,8 @@ class MixpanelQueue {
   }
 
   defaultEventStats (event, basicAttrs={}, state) {
+    if (event && process.env.NODE_ENV == 'development') return
+
     // average tags attached to cards
     // average characters attached to cards
     // average places attached to cards
@@ -55,6 +57,8 @@ class MixpanelQueue {
   }
 
   push (event, attrs={}) {
+    if (event && process.env.NODE_ENV == 'development') return
+
     // TODO: save to localStorage
     let allAttrs = {
       ...attrs,
@@ -69,10 +73,12 @@ class MixpanelQueue {
   }
 
   flush () {
+    if (event && process.env.NODE_ENV == 'development') return
+
     // TODO: read from localStorage
     do {
       let event = this.queue.shift()
-      if (event && process.env.NODE_ENV !== 'dev') {
+      if (event) {
         var attrs = Object.assign({}, event.attributes, this.superProps)
         mixpanel.track(event.title, attrs)
       }

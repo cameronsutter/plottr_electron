@@ -1,5 +1,4 @@
 import { cloneDeep } from 'lodash'
-import { useState } from 'react'
 import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 
 export function useTextConverter (text) {

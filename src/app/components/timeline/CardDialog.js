@@ -5,7 +5,6 @@ import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Modal from 'react-modal'
-import _ from 'lodash'
 import * as CardActions from 'actions/cards'
 import * as UIActions from 'actions/ui'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
@@ -177,10 +176,9 @@ class CardDialog extends Component {
   }
 
   renderLeftSide () {
-    var ids = {
-      chapter: _.uniqueId('select-chapter-'),
-      line: _.uniqueId('select-line-'),
-    }
+    const lineDropdownID = 'select-line'
+    const chapterDropdownID = 'select-chapter'
+
     let labelText = i18n('Chapter')
     let bookDropDown = null
     if (this.isSeries()) {
@@ -192,15 +190,15 @@ class CardDialog extends Component {
       <div className='card-dialog__left-side'>
         { bookDropDown }
         <div className='card-dialog__dropdown-wrapper'>
-          <label className='card-dialog__details-label' htmlFor={ids.line}>{i18n('Plotline')}:
-            <DropdownButton id={ids.line} className='card-dialog__select-line' title={this.getCurrentLine().title}>
+          <label className='card-dialog__details-label' htmlFor={lineDropdownID}>{i18n('Plotline')}:
+            <DropdownButton id={lineDropdownID} className='card-dialog__select-line' title={this.getCurrentLine().title}>
               {this.renderLineItems()}
             </DropdownButton>
           </label>
         </div>
         <div className='card-dialog__sdropdown-wrapper'>
-          <label className='card-dialog__details-label' htmlFor={ids.chapter}>{labelText}:
-            <DropdownButton id={ids.chapter} className='card-dialog__select-scene' title={chapterTitle(this.getCurrentChapter())}>
+          <label className='card-dialog__details-label' htmlFor={chapterDropdownID}>{labelText}:
+            <DropdownButton id={chapterDropdownID} className='card-dialog__select-scene' title={chapterTitle(this.getCurrentChapter())}>
               {this.renderChapterItems()}
             </DropdownButton>
           </label>

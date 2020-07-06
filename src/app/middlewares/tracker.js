@@ -7,8 +7,8 @@ const tracker = store => next => action => {
   const result = next(action)
   if (!WHITE_LIST.includes(action.type)) return result
 
-  let state = store.getState()
-  let attrs = {
+  const state = store.getState()
+  const attrs = {
     timeline_orientation: state.ui.orientation,
     version: state.file.version,
   }

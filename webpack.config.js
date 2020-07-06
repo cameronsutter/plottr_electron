@@ -1,12 +1,12 @@
 var path = require('path')
 var webpack = require('webpack')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
   new webpack.DefinePlugin({'__REACT_DEVTOOLS_GLOBAL_HOOK__': '({ isDisabled: true })'}),
 ]
 
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 // if (process.env.NODE_ENV == 'dev') {
 //   plugins.push(new BundleAnalyzerPlugin())
 // }
@@ -55,12 +55,6 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
     modules: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/expired', 'src/dashboard'],
-    alias: {
-      'lodash': 'lodash-es',
-      'lodash.isequal': 'lodash-es/isEqual',
-      'lodash.debounce': 'lodash-es/debounce',
-      'lodash.pick': 'lodash-es/pick',
-    }
   },
   target: 'electron-renderer',
   externals: [
@@ -86,14 +80,6 @@ module.exports = {
           chunks: 'initial',
           minChunks: 2,
         },
-        reactIcons: {
-          name: 'reactIcons',
-          chunks: 'all',
-          test (module) {
-            return module.resource && module.resource.includes('react-icons')
-          },
-          filename: '[name].bundle.js'
-        }
       }
     }
   }

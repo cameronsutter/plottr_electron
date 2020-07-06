@@ -21,11 +21,18 @@ const dialog = remote.dialog
 class OutlineView extends Component {
   constructor (props) {
     super(props)
-    this.state = {active: 0, currentLine: null, mounted: false}
+    this.state = {active: 0, currentLine: null, firstRender: true}
   }
 
   componentDidMount () {
-    setTimeout(() => this.setState({mounted: true}), 50)
+    setTimeout(() => this.setState({firstRender: false}), 500)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
+      this.setState({firstRender: true})
+      setTimeout(() => this.setState({firstRender: false}), 500)
+    }
   }
 
   // TODO: this could be a selector ... maybe
@@ -147,24 +154,21 @@ class OutlineView extends Component {
   }
 
   renderChapters (cardMapping) {
-    return this.props.chapters.map(ch =>
-      <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} activeFilter={!!this.state.currentLine} />
-    )
+    return this.props.chapters.map((ch, idx) => {
+      if (this.state.firstRender && idx > 2) return null
+      return <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} activeFilter={!!this.state.currentLine} />
+    })
   }
 
   renderBody () {
-    if (this.state.mounted) {
-      const cardMapping = this.cardMapping()
-      return <div className='outline__container'>
-        <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
-        <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />
-        <div className='outline__scenes-container'>
-          {this.renderChapters(cardMapping)}
-        </div>
+    const cardMapping = this.cardMapping()
+    return <div className='outline__container'>
+      <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
+      <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />
+      <div className='outline__scenes-container'>
+        {this.renderChapters(cardMapping)}
       </div>
-    } else {
-      return <FunSpinner/>
-    }
+    </div>
   }
 
   render () {

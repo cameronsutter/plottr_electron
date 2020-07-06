@@ -8,18 +8,26 @@ import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
+import { isSeriesSelector } from '../../selectors/ui'
 
 const targetPosition = 115
 
 class MiniMap extends Component {
   constructor (props) {
     super(props)
-    this.state = {mouseOver: false}
+    this.state = {mouseOver: false, firstRender: true}
     this.firstChapterKey = props.chapters.length ? props.chapters[0].id : 0 // this works since they are sorted
   }
 
-  isSeries = () => {
-    return this.props.ui.currentTimeline == 'series'
+  componentDidMount () {
+    setTimeout(() => this.setState({firstRender: false}), 300)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
+      this.setState({firstRender: true})
+      setTimeout(() => this.setState({firstRender: false}), 500)
+    }
   }
 
   selectNav = (key) => {
@@ -33,7 +41,7 @@ class MiniMap extends Component {
 
   findCard = (linesById, card) => {
     let id = card.lineId
-    if (this.isSeries()) {
+    if (this.props.isSeries) {
       id = card.seriesLineId
     }
     return linesById[id]
@@ -52,6 +60,7 @@ class MiniMap extends Component {
 
   renderChapters () {
     return this.props.chapters.map((ch, idx) => {
+      if (this.state.firstRender && idx > 20) return null
       const chapterCards = this.props.cardMapping[ch.id]
       if (this.props.activeFilter && !chapterCards.length) return null
 
@@ -93,6 +102,7 @@ MiniMap.propTypes = {
   chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
+  isSeries: PropTypes.bool.isRequired,
   active: PropTypes.number.isRequired,
   cardMapping: PropTypes.object.isRequired,
   activeFilter: PropTypes.bool.isRequired,
@@ -103,6 +113,7 @@ function mapStateToProps (state) {
     chapters: sortedChaptersByBookSelector(state.present),
     lines: linesByBookSelector(state.present),
     ui: state.present.ui,
+    isSeries: isSeriesSelector(state.present),
   }
 }
 

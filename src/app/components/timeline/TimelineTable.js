@@ -24,6 +24,7 @@ import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { findDOMNode } from 'react-dom'
+import { cardMapSelector } from '../../selectors/cards'
 
 class TimelineTable extends Component {
 
@@ -106,21 +107,6 @@ class TimelineTable extends Component {
   }
 
   // TODO: this should be a selector
-  cardMapping = () => {
-    if (this.isSeries()) {
-      return this.props.cards.reduce((acc, card) => {
-        acc[`${card.seriesLineId}-${card.beatId}`] = card
-        return acc
-      }, {})
-    } else {
-      return this.props.cards.reduce((acc, card) => {
-        acc[`${card.lineId}-${card.chapterId}`] = card
-        return acc
-      }, {})
-    }
-  }
-
-  // TODO: this should be a selector
   chapterMapping () {
     const thing = this.props.chapters.reduce((acc, chapter) => {
       acc[chapter.position] = chapter.id
@@ -170,11 +156,10 @@ class TimelineTable extends Component {
   renderLines () {
     const chapterMap = this.chapterMapping()
     const chapterMapKeys = Object.keys(chapterMap)
-    const cardMap = this.cardMapping()
     return this.props.lines.map(line => {
       return <Row key={`lineId-${line.id}`}>
         <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>
-        { this.renderCardsByChapter(line, chapterMap, chapterMapKeys, cardMap) }
+        { this.renderCardsByChapter(line, chapterMap, chapterMapKeys) }
       </Row>
     }).concat(<AddLineRow key='insert-line' bookId={this.props.ui.currentTimeline}/>)
   }
@@ -182,7 +167,6 @@ class TimelineTable extends Component {
   renderChapters () {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
-    const cardMap = this.cardMapping()
     const { chapters } = this.props
     return chapters.map(chapter => {
       const inserts = lineMapKeys.flatMap(linePosition => {
@@ -195,7 +179,7 @@ class TimelineTable extends Component {
         </Row>,
         <Row key={`chapterId-${chapter.id}-insert`}>
           <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
-          { this.renderCardsByLine(chapter, lineMap, lineMapKeys, cardMap) }
+          { this.renderCardsByLine(chapter, lineMap, lineMapKeys) }
         </Row>
       ]
     }).concat(
@@ -213,7 +197,8 @@ class TimelineTable extends Component {
     }
   }
 
-  renderCardsByChapter (line, chapterMap, chapterMapKeys, cardMap) {
+  renderCardsByChapter (line, chapterMap, chapterMapKeys) {
+    const { cardMap } = this.props
     return chapterMapKeys.flatMap(chapterPosition => {
       let filtered = false
       const cells = []
@@ -239,7 +224,8 @@ class TimelineTable extends Component {
     })
   }
 
-  renderCardsByLine (chapter, lineMap, lineMapKeys, cardMap) {
+  renderCardsByLine (chapter, lineMap, lineMapKeys) {
+    const { cardMap } = this.props
     return lineMapKeys.flatMap(linePosition => {
       let filtered = false
       const cells = []
@@ -276,7 +262,7 @@ TimelineTable.propTypes = {
   beats: PropTypes.array,
   lines: PropTypes.array,
   seriesLines: PropTypes.array,
-  cards: PropTypes.array.isRequired,
+  cardMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   filter: PropTypes.object,
   filterIsEmpty: PropTypes.bool,
@@ -295,7 +281,7 @@ function mapStateToProps (state) {
     chapters: sortedChaptersByBookSelector(state.present),
     nextChapterId: nextChapterId,
     lines: sortedLinesByBookSelector(state.present),
-    cards: state.present.cards,
+    cardMap: cardMapSelector(state.present),
     ui: state.present.ui,
   }
 }

@@ -13,6 +13,7 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import { FunSpinner } from '../Spinner'
 import { MPQ } from 'middlewares/helpers'
+import { cardMapSelector } from '../../selectors/cards'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -46,18 +47,16 @@ class OutlineView extends Component {
       if (this.lineIsHidden(l)) return acc
 
       const cards = this.findCards(chapterId, l.id)
-      return acc.concat(cards)
+      if (cards) {
+        return acc.concat(cards)
+      } else {
+        return acc
+      }
     }, [])
   }
 
   findCards = (chapterId, lineId) => {
-    return this.props.cards.filter(c => {
-      if (this.props.isSeries) {
-        return c.beatId == chapterId && c.seriesLineId == lineId
-      } else {
-        return c.chapterId === chapterId && c.lineId == lineId
-      }
-    })
+    return this.props.cardMap[`${lineId}-${chapterId}`]
   }
 
   setActive = (id) => {
@@ -179,7 +178,7 @@ class OutlineView extends Component {
 OutlineView.propTypes = {
   chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
-  cards: PropTypes.array.isRequired,
+  cardMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
 }
@@ -188,7 +187,7 @@ function mapStateToProps (state) {
   return {
     chapters: sortedChaptersByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
-    cards: state.present.cards,
+    cardMap: cardMapSelector(state.present),
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
   }

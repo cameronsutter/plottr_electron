@@ -1,9 +1,10 @@
 @import "vars";
 
 .card__cell {
-  svg {
-    position: absolute;
+  .card__body-wrapper {
+    margin-bottom: 10px;
   }
+
 }
 
 .card__body {

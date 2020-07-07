@@ -2,16 +2,14 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
 import CardDialog from 'components/timeline/CardDialog'
-import CardSVGline from 'components/timeline/CardSVGline'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
 import RichText from '../rce/RichText'
 
-class CardCell extends Component {
+class Card extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -111,7 +109,7 @@ class CardCell extends Component {
     return title
   }
 
-  renderBody () {
+  render () {
     var cardStyle = {
       borderColor: this.props.color
     }
@@ -122,23 +120,17 @@ class CardCell extends Component {
       cardStyle.opacity = '0.1'
     }
 
-    return <div className='card__body' style={cardStyle}
-      draggable={true}
-      onDragStart={this.handleDragStart}
-      onDragEnd={this.handleDragEnd}
-      onClick={this.openDialog}
-    >
-      {this.renderTitle()}
-    </div>
-  }
-
-  render () {
-    return <Cell>
-      <div className='card__cell'>
-        { this.renderBody() }
-        { this.renderDialog() }
+    return <div className='card__body-wrapper'>
+      { this.renderDialog() }
+      <div className='card__body' style={cardStyle}
+        draggable={true}
+        onDragStart={this.handleDragStart}
+        onDragEnd={this.handleDragEnd}
+        onClick={this.openDialog}
+      >
+        { this.renderTitle() }
       </div>
-    </Cell>
+    </div>
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -152,8 +144,8 @@ class CardCell extends Component {
   }
 }
 
-CardCell.propTypes = {
-  card: PropTypes.object,
+Card.propTypes = {
+  cards: PropTypes.array,
   chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
@@ -180,4 +172,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CardCell)
+)(Card)

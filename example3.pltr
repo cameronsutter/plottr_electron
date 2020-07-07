@@ -12,7 +12,7 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "outline",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -141,7 +141,8 @@
             }
           ]
         }
-      ]
+      ],
+      "thing2": ""
     },
     {
       "In possession of fortune": "Yes",
@@ -1487,7 +1488,7 @@
         8,
         11
       ],
-      "title": "[COPY] Netherfield Park is let at last!",
+      "title": "Scene 2",
       "templates": [],
       "imageId": null,
       "chapterId": 1,
@@ -1495,6 +1496,66 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 1
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "\"A single man in possession of good fortune must be in want of a wife.\""
+            }
+          ]
+        }
+      ],
+      "id": 301,
+      "lineId": 1,
+      "places": [],
+      "tags": [
+        18,
+        6,
+        8,
+        11
+      ],
+      "title": "Scene 3",
+      "templates": [],
+      "imageId": null,
+      "chapterId": 1,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 2
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "\"A single man in possession of good fortune must be in want of a wife.\""
+            }
+          ]
+        }
+      ],
+      "id": 302,
+      "lineId": 1,
+      "places": [],
+      "tags": [
+        18,
+        6,
+        8,
+        11
+      ],
+      "title": "Scene 4",
+      "templates": [],
+      "imageId": null,
+      "chapterId": 1,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 3
     },
     {
       "characters": [],
@@ -1868,6 +1929,90 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 0
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "While she is tolerable, she is not handsome enough to tempt HIM! Gasp!"
+            }
+          ]
+        }
+      ],
+      "id": 305,
+      "places": [],
+      "tags": [
+        6,
+        7
+      ],
+      "title": "Scene 2",
+      "templates": [],
+      "chapterId": 3,
+      "lineId": 2,
+      "imageId": null,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 1
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "While she is tolerable, she is not handsome enough to tempt HIM! Gasp!"
+            }
+          ]
+        }
+      ],
+      "id": 306,
+      "places": [],
+      "tags": [
+        6,
+        7
+      ],
+      "title": "Scene 3",
+      "templates": [],
+      "chapterId": 3,
+      "lineId": 2,
+      "imageId": null,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 2
+    },
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "While she is tolerable, she is not handsome enough to tempt HIM! Gasp!"
+            }
+          ]
+        }
+      ],
+      "id": 307,
+      "places": [],
+      "tags": [
+        6,
+        7
+      ],
+      "title": "Scene 4",
+      "templates": [],
+      "chapterId": 3,
+      "lineId": 2,
+      "imageId": null,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 3
     },
     {
       "characters": [],
@@ -10183,7 +10328,7 @@
         }
       ],
       "id": 4,
-      "lastEdited": 1593006572846,
+      "lastEdited": 1594052957263,
       "places": [],
       "tags": [
         2

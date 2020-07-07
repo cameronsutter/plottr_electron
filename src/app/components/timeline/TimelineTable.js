@@ -4,11 +4,13 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Row } from 'react-sticky-table'
-import CardCell from 'components/timeline/CardCell'
-import BlankCard from 'components/timeline/BlankCard'
-import LineTitleCell from 'components/timeline/LineTitleCell'
-import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
-import TopRow from 'components/timeline/TopRow'
+import ScenesCell from './ScenesCell'
+import BlankCard from './BlankCard'
+import LineTitleCell from './LineTitleCell'
+import ChapterInsertCell from './ChapterInsertCell'
+import TopRow from './TopRow'
+import ChapterTitleCell from './ChapterTitleCell'
+import AddLineRow from './AddLineRow'
 import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
@@ -17,14 +19,13 @@ import * as SeriesLineActions from 'actions/seriesLines'
 import * as CardActions from 'actions/cards'
 import { reorderList } from 'helpers/lists'
 import { insertChapter } from 'helpers/chapters'
-import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
-import AddLineRow from './AddLineRow'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { findDOMNode } from 'react-dom'
 import { cardMapSelector } from '../../selectors/cards'
+import { isSeriesSelector } from '../../selectors/ui'
 
 class TimelineTable extends Component {
 
@@ -64,36 +65,32 @@ class TimelineTable extends Component {
     // }
   }
 
-  isSeries = () => {
-    return this.props.ui.currentTimeline == 'series'
-  }
-
-  cardIsFiltered (card) {
-    if (!card) return false
-    const filter = this.props.filter
-    if (filter == null) return true
-    let filtered = true
-    if (card.tags) {
-      card.tags.forEach((tId) => {
-        if (filter['tag'].indexOf(tId) !== -1) filtered = false
-      })
-    }
-    if (card.characters) {
-      card.characters.forEach((cId) => {
-        if (filter['character'].indexOf(cId) !== -1) filtered = false
-      })
-    }
-    if (card.places) {
-      card.places.forEach((pId) => {
-        if (filter['place'].indexOf(pId) !== -1) filtered = false
-      })
-    }
-    return filtered
-  }
+  // cardIsFiltered (card) {
+  //   if (!card) return false
+  //   const filter = this.props.filter
+  //   if (filter == null) return true
+  //   let filtered = true
+  //   if (card.tags) {
+  //     card.tags.forEach((tId) => {
+  //       if (filter['tag'].indexOf(tId) !== -1) filtered = false
+  //     })
+  //   }
+  //   if (card.characters) {
+  //     card.characters.forEach((cId) => {
+  //       if (filter['character'].indexOf(cId) !== -1) filtered = false
+  //     })
+  //   }
+  //   if (card.places) {
+  //     card.places.forEach((pId) => {
+  //       if (filter['place'].indexOf(pId) !== -1) filtered = false
+  //     })
+  //   }
+  //   return filtered
+  // }
 
   handleReorderChapters = (originalPosition, droppedPosition) => {
     const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
-    if (this.isSeries()) {
+    if (this.props.isSeries) {
       this.props.beatActions.reorderBeats(chapters)
     } else {
       this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
@@ -102,17 +99,16 @@ class TimelineTable extends Component {
 
   handleReorderLines = (originalPosition, droppedPosition) => {
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-    const actions = this.isSeries() ? this.props.seriesLineActions : this.props.lineActions
+    const actions = this.props.isSeries ? this.props.seriesLineActions : this.props.lineActions
     actions.reorderLines(lines, this.props.ui.currentTimeline)
   }
 
   // TODO: this should be a selector
   chapterMapping () {
-    const thing = this.props.chapters.reduce((acc, chapter) => {
+    return this.props.chapters.reduce((acc, chapter) => {
       acc[chapter.position] = chapter.id
       return acc
     }, {})
-    return thing
   }
 
   // TODO: this should be a selector
@@ -125,7 +121,7 @@ class TimelineTable extends Component {
 
   handleInsertNewChapter = (nextPosition, lineId) => {
     const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId, this.props.ui.currentTimeline)
-    if (this.isSeries()) {
+    if (this.props.isSeries) {
       this.props.beatActions.reorderBeats(chapters)
     } else {
       this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
@@ -138,7 +134,7 @@ class TimelineTable extends Component {
   }
 
   buildCard (lineId, chapterId) {
-    if (this.isSeries()) {
+    if (this.props.isSeries) {
       return Object.assign({}, card, { beatId: chapterId, seriesLineId: lineId })
     } else {
       return Object.assign({}, card, { chapterId, lineId })
@@ -146,7 +142,7 @@ class TimelineTable extends Component {
   }
 
   handleAppendChapter = () => {
-    if (this.isSeries()) {
+    if (this.props.isSeries) {
       this.props.beatActions.addBeat()
     } else {
       this.props.sceneActions.addScene(this.props.ui.currentTimeline)
@@ -202,22 +198,23 @@ class TimelineTable extends Component {
     return chapterMapKeys.flatMap(chapterPosition => {
       let filtered = false
       const cells = []
-      let chapterId = chapterMap[chapterPosition]
+      const chapterId = chapterMap[chapterPosition]
       cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} showLine={chapterPosition == 0} color={line.color} tableLength={this.state.tableLength}/>)
-      let card = cardMap[`${line.id}-${chapterId}`]
-      if (card) {
-        // This should be a selector on the card
-        if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
-          filtered = true
-        }
-        cells.push(<CardCell
-          key={`cardId-${card.id}`} card={card}
+      const cards = cardMap[`${line.id}-${chapterId}`]
+      const key = `${cards ? 'card' : 'blank'}-${chapterPosition}-${line.position}`
+      if (cards) {
+        // TODO: implement card filtering
+        // if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
+        //   filtered = true
+        // }
+        cells.push(<ScenesCell
+          key={key} cards={cards}
           chapterId={chapterId} lineId={line.id}
           chapterPosition={chapterPosition} linePosition={line.position}
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
-          key={`blank-${chapterPosition}-${line.position}`}
+          key={key}
           color={line.color} />)
       }
       return cells
@@ -229,14 +226,15 @@ class TimelineTable extends Component {
     return lineMapKeys.flatMap(linePosition => {
       let filtered = false
       const cells = []
-      let line = lineMap[linePosition]
-      let card = cardMap[`${line.id}-${chapter.id}`]
-      if (card) {
-        if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
-          filtered = true
-        }
-        cells.push(<CardCell
-          key={`cardId-${card.id}`} card={card}
+      const line = lineMap[linePosition]
+      const cards = cardMap[`${line.id}-${chapter.id}`]
+      if (cards) {
+        // TODO: implement card filtering
+        // if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
+        //   filtered = true
+        // }
+        cells.push(<ScenesCell
+          key={`cardId-${card.id}`} cards={cards}
           chapterId={chapter.id} lineId={line.id}
           chapterPosition={chapter.position} linePosition={linePosition}
           color={line.color} filtered={filtered} />)
@@ -283,6 +281,7 @@ function mapStateToProps (state) {
     lines: sortedLinesByBookSelector(state.present),
     cardMap: cardMapSelector(state.present),
     ui: state.present.ui,
+    isSeries: isSeriesSelector(state.present),
   }
 }
 

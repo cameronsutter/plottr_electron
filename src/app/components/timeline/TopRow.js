@@ -17,46 +17,43 @@ import orientedClassName from 'helpers/orientedClassName'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
+import { isSeriesSelector } from '../../selectors/ui'
 
 class TopRow extends Component {
 
-  isSeries = () => {
-    return this.props.ui.currentTimeline == 'series'
-  }
-
   handleReorderChapters = (originalPosition, droppedPosition) => {
-    const { ui, beatActions, sceneActions } = this.props
-    const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
-    if (this.isSeries()) {
-      beatActions.reorderBeats(chapters)
+    const { ui, beatActions, sceneActions, isSeries, chapters } = this.props
+    const newChapters = reorderList(originalPosition, droppedPosition, chapters)
+    if (isSeries) {
+      beatActions.reorderBeats(newChapters)
     } else {
-      sceneActions.reorderScenes(chapters, ui.currentTimeline)
+      sceneActions.reorderScenes(newChapters, ui.currentTimeline)
     }
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
-    const { ui, lineActions, seriesLineActions } = this.props
-    const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-    if (this.isSeries()) {
-      seriesLineActions.reorderSeriesLines(lines)
+    const { ui, lineActions, seriesLineActions, isSeries, lines } = this.props
+    const newLines = reorderList(originalPosition, droppedPosition, lines)
+    if (isSeries) {
+      seriesLineActions.reorderSeriesLines(newLines)
     } else {
-      lineActions.reorderLines(lines, ui.currentTimeline)
+      lineActions.reorderLines(newLines, ui.currentTimeline)
     }
   }
 
   handleInsertNewChapter = (nextPosition) => {
-    const { ui, beatActions, sceneActions } = this.props
-    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId, ui.currentTimeline)
-    if (this.isSeries()) {
-      beatActions.reorderBeats(chapters)
+    const { ui, beatActions, sceneActions, isSeries, chapters, nextChapterId } = this.props
+    const newChapters = insertChapter(nextPosition, chapters, nextChapterId, ui.currentTimeline)
+    if (isSeries) {
+      beatActions.reorderBeats(newChapters)
     } else {
-      sceneActions.reorderScenes(chapters, ui.currentTimeline)
+      sceneActions.reorderScenes(newChapters, ui.currentTimeline)
     }
   }
 
   handleAppendChapter = () => {
-    const { ui, beatActions, sceneActions } = this.props
-    if (this.isSeries()) {
+    const { ui, beatActions, sceneActions, isSeries } = this.props
+    if (isSeries) {
       beatActions.addBeat()
     } else {
       sceneActions.addScene(ui.currentTimeline)
@@ -64,8 +61,8 @@ class TopRow extends Component {
   }
 
   handleAppendLine = () => {
-    const { ui, lineActions, seriesLineActions } = this.props
-    if (this.isSeries()) {
+    const { ui, lineActions, seriesLineActions, isSeries } = this.props
+    if (isSeries) {
       seriesLineActions.addLine()
     } else {
       lineActions.addLine(ui.currentTimeline)
@@ -132,6 +129,7 @@ function mapStateToProps (state) {
 
   return {
     ui: state.present.ui,
+    isSeries: isSeriesSelector(state.present),
     chapters: sortedChaptersByBookSelector(state.present),
     nextChapterId: nextChapterId,
     lines: sortedLinesByBookSelector(state.present),

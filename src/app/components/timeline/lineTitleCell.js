@@ -11,6 +11,8 @@ import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
+import cx from 'classnames'
+import { BsArrowsExpand, BsArrowsCollapse } from 'react-icons/bs'
 
 const CELL_WIDTH = 200
 
@@ -141,6 +143,8 @@ class LineTitleCell extends PureComponent {
   }
 
   renderHoverOptions () {
+    if (!this.state.hovering) return null
+
     if (this.props.ui.orientation === 'vertical') {
       return (<div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)}>
         <ButtonGroup>
@@ -151,9 +155,12 @@ class LineTitleCell extends PureComponent {
       </div>)
     } else {
       return (<div className='line-title__hover-options'>
-        <Button block onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-        <Button block onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
-        <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+        <ButtonGroup>
+          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+          <Button onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
+          <Button onClick={() => {}}><BsArrowsCollapse/></Button>
+          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+        </ButtonGroup>
       </div>)
     }
   }
@@ -178,9 +185,10 @@ class LineTitleCell extends PureComponent {
       window.SCROLLWITHKEYS = false
     }
 
-    let innerKlass = orientedClassName('line-title__body', this.props.ui.orientation)
-    if (this.state.hovering) innerKlass += ' hover'
-    if (this.state.dropping) innerKlass += ' dropping'
+    let innerKlass = cx(
+      orientedClassName('line-title__body', this.props.ui.orientation),
+      { hover: this.state.hovering, dropping: this.state.dropping }
+    )
     return <Cell>
       <div
         className={orientedClassName('line-title__cell', this.props.ui.orientation)}

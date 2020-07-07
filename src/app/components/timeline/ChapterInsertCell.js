@@ -9,7 +9,7 @@ import i18n from 'format-message'
 import { isZoomed, isZoomedOut, computeZoomMultiplier, computeZoomOutMultiplier } from 'helpers/zoom'
 
 const Horizontal = {
-  first: 200,
+  first: 150,
   last: 161 + 50,
 }
 

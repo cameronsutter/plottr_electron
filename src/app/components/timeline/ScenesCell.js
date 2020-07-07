@@ -3,18 +3,26 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
+import { Glyphicon } from 'react-bootstrap'
 import * as CardActions from 'actions/cards'
 import Card from './Card'
 import cx from 'classnames'
 
 class ScenesCell extends PureComponent {
 
+  renderAddButton () {
+    return <div className='card__add-card'>
+      <Glyphicon glyph='plus' />
+    </div>
+  }
+
   renderCards () {
     const { chapterId, lineId, chapterPosition, linePosition, color, filtered } = this.props
-    return this.props.cards.map(card => {
+    const numOfCards = this.props.cards.length - 1
+    return this.props.cards.map((card, idx) => {
       return <Card key={card.id} card={card} chapterId={chapterId} lineId={lineId}
         chapterPosition={chapterPosition} linePosition={linePosition}
-        color={color} filtered={filtered}
+        color={color} filtered={filtered} last={numOfCards == idx}
       />
     })
   }
@@ -25,6 +33,7 @@ class ScenesCell extends PureComponent {
     return <Cell>
       <div className={cx('card__cell', {multiple: this.props.cards.length > 1})}>
         { this.renderCards() }
+        { this.renderAddButton() }
       </div>
     </Cell>
   }

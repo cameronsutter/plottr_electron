@@ -8,6 +8,7 @@ import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
 import RichText from '../rce/RichText'
+import cx from 'classnames'
 
 class Card extends Component {
   constructor (props) {
@@ -120,7 +121,7 @@ class Card extends Component {
       cardStyle.opacity = '0.1'
     }
 
-    return <div className='card__body-wrapper'>
+    return <div className={cx('card__body-wrapper', {lastOne: this.props.last})}>
       { this.renderDialog() }
       <div className='card__body' style={cardStyle}
         draggable={true}
@@ -150,6 +151,7 @@ Card.propTypes = {
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   filtered: PropTypes.bool.isRequired,
+  last: PropTypes.bool.isRequired,
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,

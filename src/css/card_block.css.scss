@@ -3,8 +3,21 @@
 .card__cell {
   .card__body-wrapper {
     margin-bottom: 10px;
+    &.lastOne {
+      margin-bottom: 2px;
+    }
   }
-
+  .card__add-card {
+    font-size: 12px;
+    text-align: center;
+    color: transparent;
+    cursor: pointer;
+  }
+  &:hover {
+    .card__add-card {
+      color: $blue-7;
+    }
+  }
 }
 
 .card__body {

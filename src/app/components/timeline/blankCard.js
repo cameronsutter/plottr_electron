@@ -5,10 +5,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
-import CardSVGline from 'components/timeline/CardSVGline'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import { card } from '../../../../shared/initialState'
 import { isSeriesSelector } from '../../selectors/ui'
 import cx from 'classnames'
 
@@ -38,15 +36,15 @@ class BlankCard extends Component {
     e.stopPropagation()
     this.setState({dropping: false, mouseOverIt: false})
 
-    var json = e.dataTransfer.getData('text/json')
-    var droppedCard = JSON.parse(json)
+    const json = e.dataTransfer.getData('text/json')
+    const droppedCard = JSON.parse(json)
     if (droppedCard.id === null || droppedCard.id === undefined) return
 
     this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
   }
 
   saveCreate = () => {
-    var newCard = this.buildCard(findDOMNode(this.refs.titleInput).value)
+    const newCard = this.buildCard(findDOMNode(this.refs.titleInput).value)
     this.props.actions.addCard(newCard)
     this.setState({creating: false})
   }
@@ -64,9 +62,9 @@ class BlankCard extends Component {
   buildCard (title) {
     const { chapterId, lineId } = this.props
     if (this.props.isSeries) {
-      return Object.assign({}, card, { title, beatId: chapterId, seriesLineId: lineId })
+      return { title, beatId: chapterId, seriesLineId: lineId, position: 0 }
     } else {
-      return Object.assign({}, card, { title, chapterId, lineId })
+      return { title, chapterId, lineId, position: 0 }
     }
   }
 
@@ -95,13 +93,13 @@ class BlankCard extends Component {
   }
 
   renderCreateNew () {
-    var cardStyle = {
+    const cardStyle = {
       borderColor: this.props.color
     }
     return (
       <div className='card__body' style={cardStyle}>
         <FormGroup>
-          <ControlLabel>{i18n('Card Title')}</ControlLabel>
+          <ControlLabel>{i18n('Scene Title')}</ControlLabel>
           <FormControl
             type='text'
             autoFocus
@@ -116,13 +114,12 @@ class BlankCard extends Component {
   }
 
   render () {
-    // console.count('BlankCard')
+    window.SCROLLWITHKEYS = !this.state.creating
+
     let body = null
     if (this.state.creating) {
-      window.SCROLLWITHKEYS = false
       body = this.renderCreateNew()
     } else {
-      window.SCROLLWITHKEYS = true
       body = this.renderBlank()
     }
     return <Cell>

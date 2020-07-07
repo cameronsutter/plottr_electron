@@ -140,6 +140,7 @@ class Card extends Component {
     if (this.props.color != nextProps.color) return true
     if (this.props.filtered != nextProps.filtered) return true
     if (this.props.card != nextProps.card) return true
+    if (this.props.last != nextProps.last) return true
 
     return false
   }

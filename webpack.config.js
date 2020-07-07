@@ -75,6 +75,14 @@ module.exports = {
   optimization: {
     splitChunks: {
       cacheGroups: {
+        reactIcons: {
+          name: 'reactIcons',
+          priority: 10,
+          chunks: 'all',
+          test (module) {
+            return module.resource && module.resource.includes('react-icons')
+          }
+        },
         commons: {
           name: 'commons',
           chunks: 'initial',

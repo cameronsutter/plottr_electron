@@ -40,6 +40,7 @@ const chapter = {
 const ui = {
   currentView: 'timeline',
   currentTimeline: 1, // bookId or 'series'
+  timelineIsExpanded: true,
   orientation: 'horizontal',
   darkMode: false,
   characterSort: 'name~asc',
@@ -131,6 +132,7 @@ const line = {
   title: '',
   position: 0,
   characterId: null,
+  expanded: null,
 }
 
 const seriesLine = {
@@ -138,6 +140,7 @@ const seriesLine = {
   color: '#6cace4',
   title: '',
   position: 0,
+  expanded: null,
 }
 
 const customAttributes = {

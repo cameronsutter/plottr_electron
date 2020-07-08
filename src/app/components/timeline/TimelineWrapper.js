@@ -14,7 +14,7 @@ import { computeZoom } from 'helpers/zoom'
 import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
 import { FunSpinner } from '../Spinner'
-import { FaSave } from 'react-icons/fa'
+import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -227,6 +227,18 @@ class TimelineWrapper extends Component {
     this.updateScrollLeft(orientation)
   }
 
+  // //////////
+  // expand  //
+  // //////////
+
+  toggleExpanded = () => {
+    if (this.props.ui.timelineIsExpanded) {
+      this.props.actions.collapseTimeline()
+    } else {
+      this.props.actions.expandTimeline()
+    }
+  }
+
   // ///////////////
   //  exporting   //
   // //////////////
@@ -255,6 +267,16 @@ class TimelineWrapper extends Component {
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
+
+    let expandedText = null
+    let expandedIcon = null
+    if (ui.timelineIsExpanded) {
+      expandedText = i18n('Collapse')
+      expandedIcon = <FaCompressAlt />
+    } else {
+      expandedText = i18n('Expand')
+      expandedIcon = <FaExpandAlt />
+    }
     if (ui.orientation === 'vertical') {
       glyph = 'option-horizontal'
       scrollDirectionFirst = 'menu-up'
@@ -279,6 +301,9 @@ class TimelineWrapper extends Component {
           </NavItem>
           <NavItem>
             <Button bsSize='small' onClick={this.flipOrientation}><Glyphicon glyph={glyph} /> {i18n('Flip')}</Button>
+          </NavItem>
+          <NavItem>
+            <Button bsSize='small' onClick={this.toggleExpanded}>{expandedIcon}{' '}{expandedText}</Button>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>{i18n('Zoom')}</span>

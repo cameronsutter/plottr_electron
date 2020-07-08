@@ -3,7 +3,7 @@ import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
   SET_PLACE_FILTER, ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   REMOVE_CHARACTER_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE,
   EDIT_PLACES_ATTRIBUTE, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM,
-  CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE } from '../constants/ActionTypes'
+  CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE } from '../constants/ActionTypes'
 import { ZOOM_STATES, INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE, FIT_ZOOM_STATE } from 'constants/zoom_states'
 import { ui as defaultUI } from '../../../shared/initialState'
 import { newFileUI } from '../../../shared/newFileState'
@@ -22,6 +22,12 @@ export default function ui (state = defaultUI, action) {
 
     case NAVIGATE_TO_BOOK_TIMELINE:
       return Object.assign({}, state, {currentTimeline: action.bookId, currentView: 'timeline'})
+
+    case EXPAND_TIMELINE:
+      return Object.assign({}, state, {timelineIsExpanded: true})
+
+    case COLLAPSE_TIMELINE:
+      return Object.assign({}, state, {timelineIsExpanded: false})
 
     case SET_DARK_MODE:
       return Object.assign({}, state, {darkMode: action.on})

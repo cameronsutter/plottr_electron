@@ -27,13 +27,14 @@
     "placeSort": "name~asc",
     "currentTimeline": 1,
     "zoomState": null,
-    "zoomIndex": 4
+    "zoomIndex": 4,
+    "timelineIsExpanded": false
   },
   "file": {
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.7.3"
+    "version": "2020.7.7"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -885,6 +886,69 @@
       "position": 0
     },
     {
+      "id": 68,
+      "bookId": 4,
+      "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 69,
+      "bookId": 4,
+      "position": 1,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 70,
+      "bookId": 4,
+      "position": 2,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 71,
+      "bookId": 5,
+      "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 72,
+      "bookId": 6,
+      "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 73,
+      "bookId": 3,
+      "position": 0,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 74,
+      "bookId": 3,
+      "position": 1,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 75,
+      "bookId": 3,
+      "position": 2,
+      "title": "auto",
+      "time": 0
+    },
+    {
+      "id": 76,
+      "bookId": 3,
+      "position": 3,
+      "title": "auto",
+      "time": 0
+    },
+    {
       "id": 1,
       "position": 0,
       "title": "Chapter 1",
@@ -1371,69 +1435,6 @@
       "bookId": 1,
       "time": 0,
       "templates": []
-    },
-    {
-      "id": 68,
-      "bookId": 4,
-      "position": 0,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 69,
-      "bookId": 4,
-      "position": 1,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 70,
-      "bookId": 4,
-      "position": 2,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 71,
-      "bookId": 5,
-      "position": 0,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 72,
-      "bookId": 6,
-      "position": 0,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 73,
-      "bookId": 3,
-      "position": 0,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 74,
-      "bookId": 3,
-      "position": 1,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 75,
-      "bookId": 3,
-      "position": 2,
-      "title": "auto",
-      "time": 0
-    },
-    {
-      "id": 76,
-      "bookId": 3,
-      "position": 3,
-      "title": "auto",
-      "time": 0
     }
   ],
   "cards": [
@@ -9665,56 +9666,64 @@
       "bookId": 6,
       "title": "",
       "color": "#6cace4",
-      "position": 0
+      "position": 0,
+      "expanded": null
     },
     {
       "id": 20,
       "bookId": 5,
       "title": "",
       "color": "#6cace4",
-      "position": 0
+      "position": 0,
+      "expanded": null
     },
     {
       "id": 19,
       "bookId": 4,
       "title": "",
       "color": "#e5554f",
-      "position": 2
+      "position": 2,
+      "expanded": null
     },
     {
       "id": 18,
       "bookId": 4,
       "title": "",
       "color": "#78be20",
-      "position": 1
+      "position": 1,
+      "expanded": null
     },
     {
       "id": 17,
       "bookId": 4,
       "title": "",
       "color": "#6cace4",
-      "position": 0
+      "position": 0,
+      "expanded": null
     },
     {
       "id": 15,
       "bookId": 2,
       "title": "Sub plot",
       "color": "#78be20",
-      "position": 1
+      "position": 1,
+      "expanded": null
     },
     {
       "id": 14,
       "bookId": 2,
       "title": "Main Plot",
       "color": "#6cace4",
-      "position": 0
+      "position": 0,
+      "expanded": null
     },
     {
       "id": 16,
       "bookId": 3,
       "title": "Main Plot",
       "color": "#6cace4",
-      "position": 0
+      "position": 0,
+      "expanded": null
     },
     {
       "color": "#6cace4",
@@ -9722,7 +9731,8 @@
       "position": 0,
       "title": "Main Plot",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#78be20",
@@ -9730,7 +9740,8 @@
       "position": 1,
       "title": "Elizabeth Bennet",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#e5554f",
@@ -9738,7 +9749,8 @@
       "position": 2,
       "title": "Mr. Darcy",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#ff7f32",
@@ -9746,7 +9758,8 @@
       "position": 3,
       "title": "Jane Bennet",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#ffc72c",
@@ -9754,7 +9767,8 @@
       "position": 4,
       "title": "Mr. Bingley",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "PaleTurquoise",
@@ -9762,7 +9776,8 @@
       "position": 5,
       "title": "Lydia Bennet",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "Violet",
@@ -9770,7 +9785,8 @@
       "position": 6,
       "title": "Mrs Bennet",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "Brown",
@@ -9778,7 +9794,8 @@
       "position": 7,
       "title": "Mr Bennet",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "Peru",
@@ -9786,7 +9803,8 @@
       "position": 8,
       "title": "Miss Bingley",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "Khaki",
@@ -9794,7 +9812,8 @@
       "position": 9,
       "title": "Mr. Collins",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#0b1117",
@@ -9802,7 +9821,8 @@
       "position": 10,
       "title": "Mr. Wickham",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "Hotpink",
@@ -9810,7 +9830,8 @@
       "position": 11,
       "title": "Charlotte Lucas",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "Maroon",
@@ -9818,7 +9839,8 @@
       "position": 12,
       "title": "Colonel Fitzwilliam",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     }
   ],
   "customAttributes": {
@@ -10404,7 +10426,8 @@
       "id": 1,
       "color": "#6cace4",
       "title": "Main Plot",
-      "position": 0
+      "position": 0,
+      "expanded": null
     }
   ],
   "categories": {

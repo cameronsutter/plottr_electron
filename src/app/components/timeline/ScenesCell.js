@@ -10,6 +10,8 @@ import * as CardActions from 'actions/cards'
 import Card from './Card'
 import cx from 'classnames'
 import { isSeriesSelector } from '../../selectors/ui'
+import { lineIsExpandedSelector } from '../../selectors/lines'
+import Floater from 'react-floater'
 
 class ScenesCell extends PureComponent {
   state = {creating: false}
@@ -98,14 +100,39 @@ class ScenesCell extends PureComponent {
     })
   }
 
+  renderHiddenCards = () => {
+    return <div className='card__hidden-cards'>
+      { this.renderCards() }
+    </div>
+  }
+
+  renderBody () {
+    const numOfCards = this.props.cards.length
+    if (this.props.lineIsExpanded || numOfCards == 1) {
+      return <div className={cx('card__cell', {multiple: numOfCards > 1})}>
+        { this.renderCards() }
+        { this.renderAddButton() }
+      </div>
+    } else {
+      var cardStyle = {
+        borderColor: this.props.color
+      }
+      return <div className='card__cell__overview-cell'>
+        <Floater component={this.renderHiddenCards} placement='right' offset={0} >
+          <div className='card__body' style={cardStyle}>
+            <div className='card__title'>{i18n('{num} Scenes', {num: numOfCards})}</div>
+          </div>
+        </Floater>
+        { this.renderAddButton() }
+      </div>
+    }
+  }
+
   render () {
     if (!this.props.cards.length) return <Cell></Cell>
 
     return <Cell>
-      <div className={cx('card__cell', {multiple: this.props.cards.length > 1})}>
-        { this.renderCards() }
-        { this.renderAddButton() }
-      </div>
+      { this.renderBody() }
     </Cell>
   }
 }
@@ -119,12 +146,14 @@ ScenesCell.propTypes = {
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   isSeries: PropTypes.bool.isRequired,
+  lineIsExpanded: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state, ownProps) {
   return {
     isSeries: isSeriesSelector(state.present),
+    lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.lineId],
   }
 }
 

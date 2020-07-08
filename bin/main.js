@@ -35,6 +35,7 @@ if (process.env.NODE_ENV === 'dev') {
   // })
 
   // require('electron-reload')(path.join('..'))
+  var { openProcessManager } = require('electron-process-manager')
 }
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
@@ -779,6 +780,10 @@ function buildPlottrMenu () {
       const text = i18n('This is your Device ID')
       dialog.showMessageBoxSync({type: 'info', title: title, message: text, detail: id})
     }
+  }, {
+    label: 'View Process Manager',
+    visible: process.env.NODE_ENV === 'dev',
+    click: () => openProcessManager()
   })
   if (is.macos) {
     submenu = [].concat(submenu, {
@@ -946,9 +951,6 @@ function buildFileMenu () {
         Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})
       }
     }
-  }, {
-    type: 'separator',
-    visible: process.env.NODE_ENV === 'dev',
   }, {
     label: i18n('Reload from File'),
     visible: process.env.NODE_ENV === 'dev',

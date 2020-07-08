@@ -20,6 +20,33 @@
   }
 }
 
+.card__cell__overview-cell {
+  @extend .card__cell;
+
+  margin: auto;
+  text-align: center;
+
+  span:first-child {
+    text-align: left;
+  }
+  .card__body {
+    margin-top: 3px;
+    text-align: left;
+  }
+}
+
+.card__hidden-cards {
+  background-color: white;
+  padding: 4px;
+  border-radius: 4px;
+  .card__body-wrapper {
+    margin-bottom: 3px;
+    &.lastOne {
+      margin-bottom: 0;
+    }
+  }
+}
+
 .card__body {
   width: 150px;
   min-height: 70px;

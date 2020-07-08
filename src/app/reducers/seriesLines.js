@@ -1,4 +1,5 @@
 import { ADD_SERIES_LINE, ADD_SERIES_LINES_FROM_TEMPLATE, EDIT_SERIES_LINE_TITLE,
+  EXPAND_SERIES_LINE, COLLAPSE_SERIES_LINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
   EDIT_SERIES_LINE_COLOR, REORDER_SERIES_LINES, DELETE_SERIES_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { seriesLine } from '../../../shared/initialState'
 import { newFileSeriesLines } from '../../../shared/newFileState'
@@ -46,6 +47,21 @@ export default function seriesLines (state = initialState, action) {
 
     case REORDER_SERIES_LINES:
       return positionReset(action.lines)
+
+
+    case EXPAND_SERIES_LINE:
+      return state.map(l =>
+        l.id === action.id ? Object.assign({}, l, {expanded: true}) : l
+      )
+
+    case COLLAPSE_SERIES_LINE:
+      return state.map(l =>
+        l.id === action.id ? Object.assign({}, l, {expanded: false}) : l
+      )
+
+    case COLLAPSE_TIMELINE:
+    case EXPAND_TIMELINE:
+      return state.map(l => Object.assign({}, l, {expanded: null}) )
 
     case RESET:
     case FILE_LOADED:

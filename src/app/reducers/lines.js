@@ -1,11 +1,11 @@
 import { partition } from 'lodash'
-import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE,
+import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE, EXPAND_LINE, COLLAPSE_LINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
   EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { line } from '../../../shared/initialState'
 import { newFileLines } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
 import { nextColor } from 'store/lineColors'
-import { nextPositionInBook, nextPosition, positionReset } from '../helpers/lists'
+import { nextPositionInBook, positionReset } from '../helpers/lists'
 
 const initialState = [line]
 
@@ -45,6 +45,20 @@ export default function lines (state = initialState, action) {
         ...state.filter(l => l && l.bookId != action.bookId),
         ...positionReset(action.lines),
       ]
+
+    case EXPAND_LINE:
+      return state.map(l =>
+        l.id === action.id ? Object.assign({}, l, {expanded: true}) : l
+      )
+
+    case COLLAPSE_LINE:
+      return state.map(l =>
+        l.id === action.id ? Object.assign({}, l, {expanded: false}) : l
+      )
+
+    case COLLAPSE_TIMELINE:
+    case EXPAND_TIMELINE:
+      return state.map(l => Object.assign({}, l, {expanded: null}) )
 
     case RESET:
     case FILE_LOADED:

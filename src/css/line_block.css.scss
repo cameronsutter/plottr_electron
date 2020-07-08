@@ -7,6 +7,8 @@ $title_width: 150px;
   width: $title_width;
   border-right: 1px solid $gray-6;
   position: relative;
+  margin-left: 5px;
+  margin-bottom: 35px;
 }
 .line-title__line-line {
   position: absolute;
@@ -60,13 +62,10 @@ $title_width: 150px;
 
 .line-title__hover-options {
   position: absolute;
-  bottom: -25px;
-  left: 0px;
-  margin-right: -50px;
+  bottom: -35px;
+  right: -1px;
   margin-left: 3px;
-  button.btn-block {
-    margin-top: 1px;
-  }
+  z-index: 10;
 }
 
 .line-list__insert-scene {

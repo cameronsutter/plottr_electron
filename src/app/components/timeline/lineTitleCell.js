@@ -12,7 +12,9 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 import cx from 'classnames'
-import { BsArrowsExpand, BsArrowsCollapse } from 'react-icons/bs'
+import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
+import { lineIsExpandedSelector } from '../../selectors/lines'
+import Floater from 'react-floater'
 
 const CELL_WIDTH = 200
 
@@ -27,6 +29,7 @@ class LineTitleCell extends PureComponent {
       showColorPicker: false,
       deleting: false,
     }
+    this.hoverTimeout = null
   }
 
   deleteLine = e => {
@@ -120,11 +123,20 @@ class LineTitleCell extends PureComponent {
   }
 
   startHovering = () => {
+    clearTimeout(this.hoverTimeout)
     this.setState({hovering: true})
   }
 
   stopHovering = () => {
-    this.setState({hovering: false})
+    this.hoverTimeout = setTimeout(() => this.setState({hovering: false}), 200)
+  }
+
+  toggleLine = () => {
+    if (this.props.lineIsExpanded) {
+      this.props.actions.collapseLine(this.props.line.id)
+    } else {
+      this.props.actions.expandLine(this.props.line.id)
+    }
   }
 
   renderDelete () {
@@ -142,26 +154,33 @@ class LineTitleCell extends PureComponent {
     }
   }
 
-  renderHoverOptions () {
-    if (!this.state.hovering) return null
+  renderHoverOptions = () => {
+    // if (!this.state.hovering) return null
+
+    let expandedIcon = null
+    if (this.props.lineIsExpanded) {
+      expandedIcon = <FaCompressAlt />
+    } else {
+      expandedIcon = <FaExpandAlt />
+    }
 
     if (this.props.ui.orientation === 'vertical') {
-      return (<div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)}>
+      return <div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)}>
         <ButtonGroup>
           <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
           <Button onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
           <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
-      </div>)
+      </div>
     } else {
-      return (<div className='line-title__hover-options'>
+      return <div className='line-title__hover-options'>
         <ButtonGroup>
-          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-          <Button onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
-          <Button onClick={() => {}}><BsArrowsCollapse/></Button>
-          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+          <Button bsSize='small' onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+          <Button bsSize='small' onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
+          <Button bsSize='small' onClick={this.toggleLine}>{expandedIcon}</Button>
+          <Button bsSize='small' onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
         </ButtonGroup>
-      </div>)
+      </div>
     }
   }
 
@@ -194,22 +213,23 @@ class LineTitleCell extends PureComponent {
         className={orientedClassName('line-title__cell', this.props.ui.orientation)}
         onMouseEnter={this.startHovering}
         onMouseLeave={this.stopHovering}
-        onDrop={this.handleDrop}>
-        { this.renderHoverOptions() }
+        onDrop={this.handleDrop}
+      >
         { this.renderDelete() }
-        <div className={innerKlass}
-          onClick={this.startEditing}
-          onDragStart={this.handleDragStart}
-          onDragEnd={this.handleDragEnd}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}
-          draggable={true}>
-          { this.renderTitle() }
-        </div>
+        <Floater component={this.renderHoverOptions} event='hover' placement='bottom' hideArrow offset={0}>
+          <div className={innerKlass}
+            onClick={this.startEditing}
+            onDragStart={this.handleDragStart}
+            onDragEnd={this.handleDragEnd}
+            onDragEnter={this.handleDragEnter}
+            onDragOver={this.handleDragOver}
+            onDragLeave={this.handleDragLeave}
+            draggable={true}>
+            { this.renderTitle() }
+          </div>
+        </Floater>
       </div>
       { this.renderColorPicker() }
-
     </Cell>
   }
 }
@@ -222,11 +242,13 @@ LineTitleCell.propTypes = {
   ]),
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  lineIsExpanded: PropTypes.bool.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps (state, ownProps) {
   return {
-    ui: state.present.ui
+    ui: state.present.ui,
+    lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.line.id],
   }
 }
 

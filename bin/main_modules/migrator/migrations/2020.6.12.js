@@ -1,10 +1,10 @@
-const _ = require('lodash')
+const { cloneDeep } = require('lodash')
 const { newFileCategories } = require('../../../../shared/newFileState')
 
 function migrate (data) {
   if (data.file && data.file.version === '2020.6.12') return data
 
-  var obj = _.cloneDeep(data)
+  let obj = cloneDeep(data)
 
   // reset characters' categoryId to null instead of ''
   obj.characters = obj.characters.map(ch => {

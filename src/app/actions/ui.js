@@ -1,6 +1,6 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NAVIGATE_TO_BOOK_TIMELINE,
   FILE_SAVED, NEW_FILE, SET_DARK_MODE, CHANGE_CURRENT_TIMELINE,
-  SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
+  SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
   SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM } from 'constants/ActionTypes'
 
 export function changeCurrentView (view) {
@@ -73,5 +73,13 @@ export function changeCurrentTimeline (id) {
 
 export function navigateToBookTimeline (bookId) {
   return { type: NAVIGATE_TO_BOOK_TIMELINE, bookId }
+}
+
+export function expandTimeline () {
+  return { type: EXPAND_TIMELINE }
+}
+
+export function collapseTimeline () {
+  return { type: COLLAPSE_TIMELINE }
 }
 

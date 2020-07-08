@@ -155,8 +155,6 @@ class LineTitleCell extends PureComponent {
   }
 
   renderHoverOptions = () => {
-    // if (!this.state.hovering) return null
-
     let expandedIcon = null
     if (this.props.lineIsExpanded) {
       expandedIcon = <FaCompressAlt />
@@ -216,7 +214,7 @@ class LineTitleCell extends PureComponent {
         onDrop={this.handleDrop}
       >
         { this.renderDelete() }
-        <Floater component={this.renderHoverOptions} event='hover' placement='bottom' hideArrow offset={0}>
+        <Floater component={this.renderHoverOptions} open={this.state.hovering} placement='bottom' hideArrow offset={0}>
           <div className={innerKlass}
             onClick={this.startEditing}
             onDragStart={this.handleDragStart}

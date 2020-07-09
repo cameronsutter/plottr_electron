@@ -103,7 +103,7 @@ $title_width: 150px;
     text-align: center;
   }
   .line-list__append-line__double {
-    margin-left: 35px;
+    margin-left: 5px;
     margin-bottom: 50px;
     display: flex;
     justify-content: space-between;
@@ -143,6 +143,11 @@ $title_width: 150px;
   .line-list__append-line {
     .line-list__append-line-wrapper {
       color: $blue-7;
+    }
+    .line-list__append-line__double {
+      div.template:not(:hover) {
+        color: white;
+      }
     }
   }
   .line-list__insert-scene:hover {

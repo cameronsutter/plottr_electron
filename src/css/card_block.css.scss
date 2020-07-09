@@ -23,24 +23,24 @@
 .card__cell__overview-cell {
   @extend .card__cell;
 
-  margin: auto;
   text-align: center;
 
   span:first-child {
     text-align: left;
   }
   .card__body {
-    margin-top: 3px;
-    text-align: left;
+    .card__title {
+      font-style: italic;
+    }
   }
 }
 
 .card__hidden-cards {
   background-color: white;
-  padding: 4px;
+  padding: 8px;
   border-radius: 4px;
   .card__body-wrapper {
-    margin-bottom: 3px;
+    margin-bottom: 6px;
     &.lastOne {
       margin-bottom: 0;
     }

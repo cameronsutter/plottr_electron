@@ -34,13 +34,13 @@ class BlankCard extends Component {
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({dropping: false, mouseOverIt: false})
+    this.setState({dropping: false})
 
     const json = e.dataTransfer.getData('text/json')
-    const droppedCard = JSON.parse(json)
-    if (droppedCard.id === null || droppedCard.id === undefined) return
+    const droppedData = JSON.parse(json)
+    if (!droppedData.cardId) return
 
-    this.props.actions.editCardCoordinates(droppedCard.id, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
+    this.props.actions.editCardCoordinates(droppedData.cardId, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
   }
 
   saveCreate = () => {

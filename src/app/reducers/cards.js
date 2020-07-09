@@ -1,11 +1,11 @@
 import { cloneDeep } from 'lodash'
 import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   DELETE_LINE, DELETE_SCENE,
-  EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE,
+  EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE, ADD_CARD_IN_CHAPTER,
   DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
   REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG, DELETE_CHARACTER,
-  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK, ADD_CARD_TO } from '../constants/ActionTypes'
+  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK, REORDER_CARDS } from '../constants/ActionTypes'
 import { newFileCards } from '../../../shared/newFileState'
 import { card as defaultCard } from '../../../shared/initialState'
 import { nextId } from 'store/newIds'
@@ -14,10 +14,22 @@ export default function cards (state, action) {
   let diffObj
   switch (action.type) {
     case ADD_CARD:
-      return [Object.assign({}, defaultCard, {
-        ...action.card,
-        id: nextId(state),
-      }), ...state]
+      return [Object.assign({}, defaultCard, action.card, {id: nextId(state)}), ...state]
+
+    case ADD_CARD_IN_CHAPTER:
+      // add a new card
+      // and reorder cards in the chapter
+      return [
+        Object.assign({}, defaultCard, action.newCard, {id: nextId(state)}),
+        ...state.map(card => {
+          const idx = action.reorderIds.indexOf(card.id)
+          if (idx != -1) {
+            return Object.assign({}, card, {position: idx})
+          } else {
+            return card
+          }
+        })
+      ]
 
     case ADD_LINES_FROM_TEMPLATE:
       return [...action.cards]
@@ -67,24 +79,30 @@ export default function cards (state, action) {
       )
 
     case CHANGE_BOOK:
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, {bookId: action.bookId}) : card
-      )
+      return state.map(card => card.id === action.id ? Object.assign({}, card, {bookId: action.bookId}) : card )
+
+    case REORDER_CARDS:
+      return state.map(card => {
+        const idx = action.ids.indexOf(card.id)
+        if (idx != -1) {
+          if (action.isSeries) {
+            return Object.assign({}, card, {position: idx, beatId: action.chapterId, seriesLineId: action.lineId})
+          } else {
+            return Object.assign({}, card, {position: idx, chapterId: action.chapterId, lineId: action.lineId})
+          }
+        } else {
+          return card
+        }
+      })
 
     case DELETE_CARD:
-      return state.filter(card =>
-        card.id !== action.id
-      )
+      return state.filter(card => card.id !== action.id )
 
     case DELETE_SCENE:
-      return state.filter(card =>
-        card.chapterId !== action.id
-      )
+      return state.filter(card => card.chapterId !== action.id )
 
     case DELETE_LINE:
-      return state.filter(card =>
-        card.lineId !== action.id
-      )
+      return state.filter(card => card.lineId !== action.id )
 
     case ATTACH_CHARACTER_TO_CARD:
       return state.map(card => {

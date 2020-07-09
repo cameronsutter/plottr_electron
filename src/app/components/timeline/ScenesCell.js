@@ -12,97 +12,72 @@ import cx from 'classnames'
 import { isSeriesSelector } from '../../selectors/ui'
 import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
+import SceneCardAdd from './SceneCardAdd'
+import { reorderList } from '../../helpers/lists'
 
 class ScenesCell extends PureComponent {
-  state = {creating: false}
 
-  saveCreate = () => {
-    const newCard = this.buildCard(findDOMNode(this.refs.titleInput).value)
-    this.props.actions.addCard(newCard)
-    this.setState({creating: false})
-  }
+  moveSceneCard = (id, positionInChapter) => {
+    const { chapterId, lineId, isSeries, cards } = this.props
+    let newOrder = []
 
-  handleFinishCreate = (event) => {
-    if (event.which === 13) { //enter
-      this.saveCreate()
-    }
-  }
-
-  buildCard (title) {
-    const { chapterId, lineId, cards } = this.props
-    if (this.props.isSeries) {
-      return { title, beatId: chapterId, seriesLineId: lineId, position: cards.length }
+    const currentIds = cards.map(c => c.id)
+    if (currentIds.includes(id)) {
+      const currentPosition = cards.find(c => c.id == id).position
+      newOrder = reorderList(positionInChapter, currentPosition, currentIds)
     } else {
-      return { title, chapterId, lineId, position: cards.length }
+      // dropped in from a different chapter
+      newOrder = currentIds
+      newOrder.splice(positionInChapter, 0, id)
     }
+
+    this.props.actions.reorderCardsInChapter(chapterId, lineId, isSeries, newOrder)
   }
 
-  handleCancelCreate = (event) => {
-    if (event.which === 27) { //esc
-      this.setState({creating: false})
-    }
+  addSceneCard = (newCardData) => {
+    // add a new one
+    // and reorder current cards
+    const newCard = this.buildCard(newCardData)
+    const reorderIds = this.props.cards.map(c => c.id)
+    reorderIds.splice(newCardData.position, 0, null)
+
+    this.props.actions.addNewCardInChapter(newCard, reorderIds)
   }
 
-  handleBlur = () => {
-    var newTitle = findDOMNode(this.refs.titleInput).value
-    if (newTitle == '') {
-      this.setState({creating: false})
-      return false
+  buildCard (data) {
+    const { chapterId, lineId, isSeries } = this.props
+    if (isSeries) {
+      return Object.assign({}, { beatId: chapterId, seriesLineId: lineId }, data)
     } else {
-      this.saveCreate()
-      this.setState({creating: false})
+      return Object.assign({}, { chapterId, lineId }, data)
     }
   }
 
-  startCreating = () => {
-    this.setState({creating: true})
-  }
-
-  addSceneCard = () => {
-    const { chapterId, lineId, cards } = this.props
-    this.props.actions.addCard({chapterId, lineId, position: cards.length})
-    this.setState({creating: false})
-  }
-
-  renderAddButton () {
-    if (this.state.creating) {
-      var cardStyle = {
-        borderColor: this.props.color
-      }
-      return <div className='card__body' style={cardStyle}>
-        <FormGroup>
-          <ControlLabel>{i18n('Scene Title')}</ControlLabel>
-          <FormControl
-            type='text'
-            autoFocus
-            ref='titleInput'
-            bsSize='small'
-            onBlur={this.handleBlur}
-            onKeyDown={this.handleCancelCreate}
-            onKeyPress={this.handleFinishCreate} />
-        </FormGroup>
+  renderCards (renderAddButtons) {
+    const { chapterId, lineId, chapterPosition, linePosition, color, filtered, cards } = this.props
+    const numOfCards = cards.length
+    const idxOfCards = numOfCards - 1
+    return cards.map((card, idx) => {
+      return <div key={card.id}>
+        <Card card={card} chapterId={chapterId} lineId={lineId}
+          chapterPosition={chapterPosition} linePosition={linePosition}
+          color={color} filtered={filtered} last={idxOfCards == idx}
+        />
+        {renderAddButtons ?
+          <SceneCardAdd
+            color={color}
+            positionInChapter={idx}
+            moveCard={this.moveSceneCard}
+            addCard={this.addSceneCard}
+          />
+        : null}
       </div>
-    } else {
-      return <div className='card__add-card' onClick={this.startCreating}>
-        <Glyphicon glyph='plus' />
-      </div>
-    }
-  }
-
-  renderCards () {
-    const { chapterId, lineId, chapterPosition, linePosition, color, filtered } = this.props
-    const idxOfCards = this.props.cards.length - 1
-    return this.props.cards.map((card, idx) => {
-      return <Card key={card.id} card={card} chapterId={chapterId} lineId={lineId}
-        chapterPosition={chapterPosition} linePosition={linePosition}
-        color={color} filtered={filtered} last={idxOfCards == idx}
-      />
     })
   }
 
   renderHiddenCards = () => {
     return <div className='card__hidden-cards'>
-      { this.renderCards() }
+      { this.renderCards(false) }
     </div>
   }
 
@@ -110,8 +85,7 @@ class ScenesCell extends PureComponent {
     const numOfCards = this.props.cards.length
     if (this.props.lineIsExpanded || numOfCards == 1) {
       return <div className={cx('card__cell', {multiple: numOfCards > 1})}>
-        { this.renderCards() }
-        { this.renderAddButton() }
+        { this.renderCards(true) }
       </div>
     } else {
       var cardStyle = {
@@ -123,7 +97,12 @@ class ScenesCell extends PureComponent {
             <div className='card__title'>{i18n('{num} Scenes', {num: numOfCards})}</div>
           </div>
         </Floater>
-        { this.renderAddButton() }
+        <SceneCardAdd
+          color={this.props.color}
+          positionInChapter={numOfCards}
+          moveCard={this.moveSceneCard}
+          addCard={this.addSceneCard}
+        />
       </div>
     }
   }

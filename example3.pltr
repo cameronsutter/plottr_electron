@@ -1450,7 +1450,7 @@
           ]
         }
       ],
-      "id": 0,
+      "id": 310,
       "lineId": 1,
       "places": [],
       "tags": [
@@ -1674,7 +1674,7 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 1
     },
     {
       "characters": [],
@@ -9732,7 +9732,7 @@
       "title": "Main Plot",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": false
     },
     {
       "color": "#78be20",
@@ -9741,7 +9741,7 @@
       "title": "Elizabeth Bennet",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": false
     },
     {
       "color": "#e5554f",

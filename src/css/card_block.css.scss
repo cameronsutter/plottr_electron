@@ -2,7 +2,7 @@
 
 .card__cell {
   .card__body-wrapper {
-    margin-bottom: 10px;
+    margin-bottom: 2px;
     &.lastOne {
       margin-bottom: 2px;
     }
@@ -45,6 +45,10 @@
       margin-bottom: 0;
     }
   }
+}
+
+.card__add-card.dropping {
+  background-color: $gray-8;
 }
 
 .card__body {

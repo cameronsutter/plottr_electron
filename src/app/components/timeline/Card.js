@@ -26,7 +26,7 @@ class Card extends Component {
   handleDragStart = (e) => {
     this.setState({dragging: true})
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/json', JSON.stringify(this.props.card))
+    e.dataTransfer.setData('text/json', JSON.stringify({cardId: this.props.card.id}))
   }
 
   handleDragEnd = () => {

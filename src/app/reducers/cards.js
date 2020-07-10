@@ -24,7 +24,7 @@ export default function cards (state, action) {
         ...state.map(card => {
           const idx = action.reorderIds.indexOf(card.id)
           if (idx != -1) {
-            return Object.assign({}, card, {position: idx})
+            return Object.assign({}, card, {positionWithinLine: idx})
           } else {
             return card
           }
@@ -86,9 +86,9 @@ export default function cards (state, action) {
         const idx = action.ids.indexOf(card.id)
         if (idx != -1) {
           if (action.isSeries) {
-            return Object.assign({}, card, {position: idx, beatId: action.chapterId, seriesLineId: action.lineId})
+            return Object.assign({}, card, {positionWithinLine: idx, beatId: action.chapterId, seriesLineId: action.lineId})
           } else {
-            return Object.assign({}, card, {position: idx, chapterId: action.chapterId, lineId: action.lineId})
+            return Object.assign({}, card, {positionWithinLine: idx, chapterId: action.chapterId, lineId: action.lineId})
           }
         } else {
           return card

@@ -48,7 +48,7 @@ class MiniMap extends Component {
   }
 
   renderCardDots (chapterCards, linesById) {
-    const sortedCards = sortBy(chapterCards, ['position', 'lineId'])
+    const sortedCards = sortBy(chapterCards, ['positionWithinLine', 'lineId'])
     return sortedCards.map((c) => {
       let line = this.findCard(linesById, c)
       if (!line) return null

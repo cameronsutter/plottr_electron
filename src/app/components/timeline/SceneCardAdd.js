@@ -10,7 +10,7 @@ export default class SceneCardAdd extends Component {
 
   saveCreate = () => {
     const title = findDOMNode(this.refs.titleInput).value
-    this.props.addCard({title, position: this.props.positionInChapter + 1})
+    this.props.addCard({title, positionWithinLine: this.props.positionWithinLine + 1})
     this.setState({creating: false})
   }
 
@@ -62,7 +62,7 @@ export default class SceneCardAdd extends Component {
     const droppedData = JSON.parse(json)
     if (!droppedData.cardId) return
 
-    this.props.moveCard(droppedData.cardId, this.props.positionInChapter)
+    this.props.moveCard(droppedData.cardId, this.props.positionWithinLine)
   }
 
   render () {
@@ -105,7 +105,7 @@ export default class SceneCardAdd extends Component {
 
   static propTypes = {
     color: PropTypes.string.isRequired,
-    positionInChapter: PropTypes.number.isRequired,
+    positionWithinLine: PropTypes.number.isRequired,
     moveCard: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
   }

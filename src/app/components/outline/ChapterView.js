@@ -10,7 +10,7 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 
 class ChapterView extends Component {
   renderCards () {
-    const sortedCards = sortBy(this.props.cards, ['position', 'lineId'])
+    const sortedCards = sortBy(this.props.cards, ['positionWithinLine', 'lineId'])
     return sortedCards.map(c => <CardView key={c.id} card={c} />)
   }
 

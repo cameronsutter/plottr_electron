@@ -21,7 +21,7 @@ function cardReduce (lineAttr, beatAttr) {
     const val = acc[`${card[lineAttr]}-${card[beatAttr]}`]
     if (val && val.length) {
       const cards = [...val, card]
-      const sortedCards = sortBy(cards, 'position')
+      const sortedCards = sortBy(cards, 'positionWithinLine')
       acc[`${card[lineAttr]}-${card[beatAttr]}`] = sortedCards
     } else {
       acc[`${card[lineAttr]}-${card[beatAttr]}`] = [card]

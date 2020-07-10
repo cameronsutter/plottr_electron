@@ -20,6 +20,21 @@ function migrate (data) {
     return l
   })
 
+  // add manualSorting to Chapters
+  obj.chapters = obj.chapters.map(ch => {
+    ch.manualSorting = false
+    return ch
+  })
+
+  // with cards
+  // change position to positionWithinLine
+  // add positionInChapter
+  obj.cards = obj.cards.map(c => {
+    c.positionWithinLine = c.position
+    c.positionInChapter = null
+    return c
+  })
+
   return obj
 }
 

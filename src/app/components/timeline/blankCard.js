@@ -62,9 +62,9 @@ class BlankCard extends Component {
   buildCard (title) {
     const { chapterId, lineId } = this.props
     if (this.props.isSeries) {
-      return { title, beatId: chapterId, seriesLineId: lineId, position: 0 }
+      return { title, beatId: chapterId, seriesLineId: lineId, positionWithinLine: 0 }
     } else {
-      return { title, chapterId, lineId, position: 0 }
+      return { title, chapterId, lineId, positionWithinLine: 0 }
     }
   }
 

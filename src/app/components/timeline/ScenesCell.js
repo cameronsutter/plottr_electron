@@ -17,18 +17,18 @@ import { reorderList } from '../../helpers/lists'
 
 class ScenesCell extends PureComponent {
 
-  moveSceneCard = (id, positionInChapter) => {
+  moveSceneCard = (id, positionWithinLine) => {
     const { chapterId, lineId, isSeries, cards } = this.props
     let newOrder = []
 
     const currentIds = cards.map(c => c.id)
     if (currentIds.includes(id)) {
-      const currentPosition = cards.find(c => c.id == id).position
-      newOrder = reorderList(positionInChapter, currentPosition, currentIds)
+      const currentPosition = cards.find(c => c.id == id).positionWithinLine
+      newOrder = reorderList(positionWithinLine, currentPosition, currentIds)
     } else {
       // dropped in from a different chapter
       newOrder = currentIds
-      newOrder.splice(positionInChapter, 0, id)
+      newOrder.splice(positionWithinLine, 0, id)
     }
 
     this.props.actions.reorderCardsInChapter(chapterId, lineId, isSeries, newOrder)
@@ -39,7 +39,7 @@ class ScenesCell extends PureComponent {
     // and reorder current cards
     const newCard = this.buildCard(newCardData)
     const reorderIds = this.props.cards.map(c => c.id)
-    reorderIds.splice(newCardData.position, 0, null)
+    reorderIds.splice(newCardData.positionWithinLine, 0, null)
 
     this.props.actions.addNewCardInChapter(newCard, reorderIds)
   }
@@ -66,7 +66,7 @@ class ScenesCell extends PureComponent {
         {renderAddButtons ?
           <SceneCardAdd
             color={color}
-            positionInChapter={idx}
+            positionWithinLine={idx}
             moveCard={this.moveSceneCard}
             addCard={this.addSceneCard}
           />
@@ -99,7 +99,7 @@ class ScenesCell extends PureComponent {
         </Floater>
         <SceneCardAdd
           color={this.props.color}
-          positionInChapter={numOfCards}
+          positionWithinLine={numOfCards}
           moveCard={this.moveSceneCard}
           addCard={this.addSceneCard}
         />

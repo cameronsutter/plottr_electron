@@ -35,6 +35,7 @@ const chapter = {
   title: 'auto',
   time: 0, // ? can also be a string
   templates: [],
+  manualSorting: false,
 }
 
 const ui = {
@@ -115,7 +116,8 @@ const card = {
   beatId: null,
   seriesLineId: null,
   bookId: null,
-  position: 0,
+  positionWithinLine: 0,
+  positionInChapter: 0,
   title: '',
   description: RCE_INITIAL_VALUE,
   tags: [],

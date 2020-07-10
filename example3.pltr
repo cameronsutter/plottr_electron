@@ -12,7 +12,7 @@
       "paragraph": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "outline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -28,7 +28,7 @@
     "currentTimeline": 1,
     "zoomState": null,
     "zoomIndex": 4,
-    "timelineIsExpanded": false
+    "timelineIsExpanded": true
   },
   "file": {
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
@@ -1439,6 +1439,54 @@
   ],
   "cards": [
     {
+      "id": 316,
+      "lineId": 2,
+      "chapterId": 1,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 1,
+      "title": "Scene 2",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null
+    },
+    {
+      "id": 315,
+      "lineId": 2,
+      "chapterId": 1,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "Scene 1",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null
+    },
+    {
       "characters": [],
       "description": [
         {
@@ -1499,7 +1547,9 @@
       "position": 1
     },
     {
-      "characters": [],
+      "characters": [
+        0
+      ],
       "description": [
         {
           "type": "paragraph",
@@ -9732,7 +9782,7 @@
       "title": "Main Plot",
       "characterId": null,
       "bookId": 1,
-      "expanded": false
+      "expanded": null
     },
     {
       "color": "#78be20",
@@ -9741,7 +9791,7 @@
       "title": "Elizabeth Bennet",
       "characterId": null,
       "bookId": 1,
-      "expanded": false
+      "expanded": null
     },
     {
       "color": "#e5554f",

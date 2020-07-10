@@ -11,7 +11,6 @@ import cx from 'classnames'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
-import { FunSpinner } from '../Spinner'
 import { MPQ } from 'middlewares/helpers'
 import { cardMapSelector } from '../../selectors/cards'
 

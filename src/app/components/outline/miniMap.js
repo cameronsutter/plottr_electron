@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import _ from 'lodash'
+import { keyBy, sortBy } from 'lodash'
 import { findDOMNode } from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
@@ -47,9 +47,9 @@ class MiniMap extends Component {
     return linesById[id]
   }
 
-  renderCardDots (chapterCards) {
-    const linesById = _.keyBy(this.props.lines, 'id')
-    return chapterCards.map((c) => {
+  renderCardDots (chapterCards, linesById) {
+    const sortedCards = sortBy(chapterCards, ['position', 'lineId'])
+    return sortedCards.map((c) => {
       let line = this.findCard(linesById, c)
       if (!line) return null
 
@@ -59,6 +59,7 @@ class MiniMap extends Component {
   }
 
   renderChapters () {
+    const linesById = keyBy(this.props.lines, 'id')
     return this.props.chapters.map((ch, idx) => {
       if (this.state.firstRender && idx > 20) return null
       const chapterCards = this.props.cardMapping[ch.id]
@@ -66,7 +67,7 @@ class MiniMap extends Component {
 
       return <NavItem ref={chapterTitle(ch)} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
         <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(ch)}</span></span>
-        <div className='outline__minimap__dots'>{this.renderCardDots(chapterCards)}</div>
+        <div className='outline__minimap__dots'>{this.renderCardDots(chapterCards, linesById)}</div>
       </NavItem>
     })
   }

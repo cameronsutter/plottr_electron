@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
+import { sortBy } from 'lodash'
 import { connect } from 'react-redux'
 import { Waypoint } from 'react-waypoint'
 import CardView from 'components/outline/cardView'
 import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
+import { sortedLinesByBookSelector } from '../../selectors/lines'
 
 class ChapterView extends Component {
   renderCards () {
-    return this.props.cards.map(c => <CardView key={c.id} card={c} />)
+    const sortedCards = sortBy(this.props.cards, ['position', 'lineId'])
+    return sortedCards.map(c => <CardView key={c.id} card={c} />)
   }
 
   render () {

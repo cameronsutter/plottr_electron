@@ -945,7 +945,7 @@ function buildFileMenu () {
       } else {
         exportState = windows[0].state
       }
-      const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+      const filters = [{name: i18n('Word Document'), extensions: ['docx']}]
       const fileName = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save the export?')})
       if (fileName) {
         Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})

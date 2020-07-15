@@ -20,9 +20,9 @@ function migrate (data) {
     return l
   })
 
-  // add manualSorting to Chapters
+  // add autoOutlineSort to Chapters
   obj.chapters = obj.chapters.map(ch => {
-    ch.manualSorting = false
+    ch.autoOutlineSort = true
     return ch
   })
 

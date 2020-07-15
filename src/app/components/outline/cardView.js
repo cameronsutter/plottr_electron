@@ -11,11 +11,13 @@ import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
 import Image from 'components/images/Image'
+import { FaGripLinesVertical, FaRegCircle, FaCircle } from 'react-icons/fa'
+import { isSeriesSelector } from '../../selectors/ui'
 
 class CardView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false, description: props.card.description}
+    this.state = {editing: false, description: props.card.description, dragging: false, dropping: false}
   }
 
   componentWillUnmount () {
@@ -40,25 +42,58 @@ class CardView extends Component {
     }
   }
 
+  handleDragStart = (e) => {
+    this.setState({dragging: true, editing: false})
+    const { card, index } = this.props
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/json', JSON.stringify({cardId: card.id, lineId: card.lineId, index: index}))
+  }
+
+  handleDragEnd = () => {
+    this.setState({dragging: false})
+  }
+
   editOnClick = () => {
     if (!this.state.editing) this.setState({editing: true})
   }
 
+  handleDragEnter = (e) => {
+    if (!this.state.dragging) this.setState({dropping: true})
+  }
+
+  handleDragOver = (e) => {
+    if (!this.state.dragging) this.setState({dropping: true})
+    e.preventDefault()
+  }
+
+  handleDragLeave = (e) => {
+    if (!this.state.dragging) this.setState({dropping: false})
+  }
+
+  handleDrop = (e) => {
+    e.stopPropagation()
+    if (this.state.dragging) return
+    this.setState({dropping: false})
+
+    const json = e.dataTransfer.getData('text/json')
+    const droppedData = JSON.parse(json)
+    if (!droppedData.cardId) return
+
+    this.props.reorder({current: this.props.card, currentIndex: this.props.index, dropped: droppedData})
+  }
+
   renderTitle () {
     const { title } = this.props.card
+    if (!this.state.editing) return null
 
-    if (this.state.editing) {
-      return <FormGroup>
-        <FormControl
-          onKeyPress={this.handleEnter}
-          onKeyDown={this.handleEsc}
-          type='text' autoFocus
-          ref='titleInput'
-          defaultValue={title} />
-      </FormGroup>
-    } else {
-      return <h6>{title}</h6>
-    }
+    return <FormGroup>
+      <FormControl
+        onKeyPress={this.handleEnter}
+        onKeyDown={this.handleEsc}
+        type='text' autoFocus
+        ref='titleInput'
+        defaultValue={title} />
+    </FormGroup>
   }
 
   renderDescription () {
@@ -127,12 +162,20 @@ class CardView extends Component {
   }
 
   render () {
-    const { line, ui } = this.props
+    const { line, ui, card } = this.props
     const style = {color: line.color}
-    return (
+    return <div className='outline__card-wrapper'>
       <div className={cx('outline__card', {darkmode: ui.darkMode})}>
+        <div className={cx('outline__card__grip', {editing: this.state.editing, dragging: this.state.dragging})}
+          draggable
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
+        >
+          <FaGripLinesVertical/>
+          {this.state.editing ? null : <h6>{card.title}</h6>}
+        </div>
+        <div style={style} className='outline__card__line-title'>{line.title}</div>
         <div className={cx('outline__card__inner', {editing: this.state.editing})} onClick={this.editOnClick}>
-          <div style={style} className='outline__card__line-title'>{line.title}</div>
           { this.renderTitle() }
           { this.renderDescription() }
           <Glyphicon glyph='pencil' />
@@ -144,12 +187,22 @@ class CardView extends Component {
         { this.renderCharacters() }
         { this.renderPlaces() }
       </div>
-    )
+      <div className={cx('outline__card-drop', {dropping: this.state.dropping})}
+        onDragEnter={this.handleDragEnter}
+        onDragOver={this.handleDragOver}
+        onDragLeave={this.handleDragLeave}
+        onDrop={this.handleDrop}
+      >
+        {this.state.dropping ? <FaCircle/> : <FaRegCircle/> }
+      </div>
+    </div>
   }
 }
 
 CardView.propTypes = {
   card: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  reorder: PropTypes.func.isRequired,
   line: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
@@ -157,11 +210,13 @@ CardView.propTypes = {
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   images: PropTypes.object,
+  isSeries: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state, ownProps) {
   let line = null
-  if (state.present.ui.currentTimeline == 'series') {
+  let isSeries = isSeriesSelector(state.present)
+  if (isSeries) {
     // get the right seriesLines
     line = state.present.seriesLines.find(sl => sl.id === ownProps.card.seriesLineId)
   } else {
@@ -174,6 +229,7 @@ function mapStateToProps (state, ownProps) {
     characters: state.present.characters,
     places: state.present.places,
     ui: state.present.ui,
+    isSeries: isSeries,
   }
 }
 

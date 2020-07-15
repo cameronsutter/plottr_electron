@@ -1,17 +1,82 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { sortBy } from 'lodash'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as CardActions from 'actions/cards'
+import * as SceneActions from 'actions/scenes'
+import { sortBy } from 'lodash'
+import { Glyphicon } from 'react-bootstrap'
 import { Waypoint } from 'react-waypoint'
+import i18n from 'format-message'
 import CardView from 'components/outline/cardView'
 import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
+import { reorderList } from '../../helpers/lists'
+import { isSeriesSelector } from '../../selectors/ui'
 
 class ChapterView extends Component {
+
+  state = {sortedCards: []}
+
+  static getDerivedStateFromProps (nextProps, nextState) {
+    let sortOperands = []
+    if (nextProps.chapter.autoOutlineSort) {
+      sortOperands = ['positionWithinLine', 'lineId']
+    } else {
+      sortOperands = ['positionInChapter']
+    }
+    const sortedCards = sortBy(nextProps.cards, sortOperands)
+    return {sortedCards}
+  }
+
+  autoSortChapter = () => {
+    const { chapterActions, chapter, isSeries } = this.props
+    chapterActions.autoSortChapter(chapter.id, isSeries)
+  }
+
+  reorderCards = ({current, currentIndex, dropped}) => {
+    const { sortedCards } = this.state
+    const { isSeries, chapter, actions } = this.props
+    const currentIds = sortedCards.map(c => c.id)
+    const currentLineId = isSeries ? current.seriesLineId : current.lineId
+    let newOrderInChapter = []
+    let newOrderWithinLine = null
+
+    // already in chapter
+    if (currentIds.includes(dropped.cardId)) {
+      // flip it to manual sort
+      newOrderInChapter = reorderList(currentIndex, dropped.index, currentIds)
+      if (dropped.lineId == currentLineId) {
+        // if same line, also update positionWithinLine
+        const cardIdsInLine = sortedCards.filter(c => isSeries ? c.seriesLineId == currentLineId : c.lineId == currentLineId).map(c => c.id)
+        const currentPosition = sortedCards.find(c => c.id == dropped.cardId).positionWithinLine
+        newOrderWithinLine = reorderList(current.positionWithinLine, currentPosition, cardIdsInLine)
+      }
+      actions.reorderCardsInChapter(chapter.id, currentLineId, isSeries, newOrderInChapter, newOrderWithinLine)
+    } else {
+      // dropped in from a different chapter
+      if (dropped.lineId == currentLineId) {
+        // if same line, can just update positionWithinLine
+        let cardIdsWithinLine = sortedCards.filter(c => isSeries ? c.seriesLineId == currentLineId : c.lineId == currentLineId).map(c => c.id)
+        cardIdsWithinLine.splice(current.positionWithinLine, 0, dropped.cardId)
+        actions.reorderCardsWithinLine(chapter.id, currentLineId, isSeries, cardIdsWithinLine)
+      } else {
+        // flip to manual sort
+        newOrderInChapter = currentIds
+        newOrderInChapter.splice(currentIndex, 0, dropped.cardId)
+        actions.reorderCardsInChapter(chapter.id, currentLineId, isSeries, newOrderInChapter, null, dropped.cardId)
+      }
+    }
+  }
+
+  renderManualSort () {
+    if (this.props.chapter.autoOutlineSort) return null
+
+    return <small className='outline__chapter-manual-sort' onClick={this.autoSortChapter}>{i18n('Manually Sorted')}{' '}<Glyphicon glyph='remove-sign' /></small>
+  }
+
   renderCards () {
-    const sortedCards = sortBy(this.props.cards, ['positionWithinLine', 'lineId'])
-    return sortedCards.map(c => <CardView key={c.id} card={c} />)
+    return this.state.sortedCards.map((c, idx) => <CardView key={c.id} card={c} index={idx} reorder={this.reorderCards} />)
   }
 
   render () {
@@ -22,7 +87,7 @@ class ChapterView extends Component {
     return (
       <Waypoint onEnter={() => waypoint(chapter.id)} scrollableAncestor={window} topOffset={"60%"} bottomOffset={"60%"}>
         <div>
-          <h3 id={`chapter-${chapter.id}`} className={klasses}>{chapterTitle(chapter)}</h3>
+          <h3 id={`chapter-${chapter.id}`} className={klasses}>{chapterTitle(chapter)}{this.renderManualSort()}</h3>
           {this.renderCards()}
         </div>
       </Waypoint>
@@ -36,16 +101,21 @@ ChapterView.propTypes = {
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
   activeFilter: PropTypes.bool.isRequired,
+  isSeries: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     ui: state.present.ui,
+    isSeries: isSeriesSelector(state.present),
   }
 }
 
 function mapDispatchToProps (dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(CardActions, dispatch),
+    chapterActions: bindActionCreators(SceneActions, dispatch),
+  }
 }
 
 export default connect(

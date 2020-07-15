@@ -124,7 +124,7 @@ class Card extends Component {
     return <div className={cx('card__body-wrapper', {lastOne: this.props.last})}>
       { this.renderDialog() }
       <div className='card__body' style={cardStyle}
-        draggable={true}
+        draggable
         onDragStart={this.handleDragStart}
         onDragEnd={this.handleDragEnd}
         onClick={this.openDialog}

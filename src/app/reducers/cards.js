@@ -5,7 +5,8 @@ import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
   REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG, DELETE_CHARACTER,
-  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK, REORDER_CARDS } from '../constants/ActionTypes'
+  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK,
+  REORDER_CARDS_WITHIN_LINE, REORDER_CARDS_IN_CHAPTER, AUTO_SORT_CHAPTER } from '../constants/ActionTypes'
 import { newFileCards } from '../../../shared/newFileState'
 import { card as defaultCard } from '../../../shared/initialState'
 import { nextId } from 'store/newIds'
@@ -81,7 +82,7 @@ export default function cards (state, action) {
     case CHANGE_BOOK:
       return state.map(card => card.id === action.id ? Object.assign({}, card, {bookId: action.bookId}) : card )
 
-    case REORDER_CARDS:
+    case REORDER_CARDS_WITHIN_LINE:
       return state.map(card => {
         const idx = action.ids.indexOf(card.id)
         if (idx != -1) {
@@ -93,6 +94,43 @@ export default function cards (state, action) {
         } else {
           return card
         }
+      })
+
+    case REORDER_CARDS_IN_CHAPTER:
+      return state.map(card => {
+        const idxInChapter = action.newOrderInChapter.indexOf(card.id)
+        let idxWithinLine = -1
+        if (action.newOrderWithinLine) idxWithinLine = action.newOrderWithinLine.indexOf(card.id)
+
+        if (idxWithinLine == -1 && idxInChapter == -1) {
+          return card
+        }
+
+        let newCard = {...card}
+        // set 'coordinates' of the new card (if any)
+        if (card.id == action.newIdInChapter) {
+          if (action.isSeries) {
+            newCard.beatId = action.chapterId
+            newCard.seriesLineId = action.lineId
+          } else {
+            newCard.chapterId = action.chapterId
+            newCard.lineId = action.lineId
+          }
+        }
+        // change positions
+        if (idxWithinLine != -1) newCard.positionWithinLine = idxWithinLine
+        if (idxInChapter != -1) newCard.positionInChapter = idxInChapter
+
+        return newCard
+      })
+
+    case AUTO_SORT_CHAPTER:
+      return state.map(card => {
+        let idToMatch = card.chapterId
+        if (action.isSeries) idToMatch = card.beatId
+        if (card.chapterId != idToMatch) return card
+
+        return Object.assign({}, card, {positionInChapter: 0})
       })
 
     case DELETE_CARD:

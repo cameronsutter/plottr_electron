@@ -16,10 +16,37 @@
   }
 }
 
+.outline__chapter-manual-sort {
+  margin-left: 12px;
+  color: $yellow-3;
+  cursor: pointer;
+  font-size: 12px;
+  &:hover {
+    color: $yellow-1;
+    font-size: 14px;
+  }
+}
+
+.outline__card-wrapper {
+  margin: 10px 20px;
+
+  .outline__card-drop {
+    text-align: center;
+    margin-top: 4px;
+    svg {
+      color: $gray-8;
+    }
+    &.dropping {
+      border: 2px dashed $gray-8;
+      padding-top: 4px;
+    }
+  }
+}
+
 .outline__card {
   @include well;
-  margin: 20px;
   padding: 20px;
+  padding-top: 9px;
   display: flex;
   flex-direction: column;
   .outline__card__inner {
@@ -41,9 +68,32 @@
     }
   }
 
-  h6 {
-    margin-top: -15px;
+  .outline__card__grip {
+    display: flex;
+    align-items: center;
+    margin-left: -15px;
+    cursor: move;
+
+    svg {
+      color: $gray-8;
+      // vertical-align: text-top;
+    }
+    h6 {
+      margin-left: 2px;
+      // display: inline-block;
+    }
+    &.editing {
+      display: none;
+    }
+    &.dragging {
+      width: 30%;
+      overflow: hidden;
+      h6 {
+        white-space: nowrap;
+      }
+    }
   }
+
   .chip-cloud {
     margin: 8px 0;
   }
@@ -79,10 +129,6 @@
 
 .outline__scenes-container {
   width: 80%;
-}
-
-.outline__card__line-title {
-  align-self: flex-end;
 }
 
 .outline__card__label-list {

@@ -1,6 +1,6 @@
 import { ADD_CARD, EDIT_CARD_DETAILS, EDIT_CARD_COORDINATES,
-  CHANGE_LINE, CHANGE_SCENE, CHANGE_BOOK, REORDER_CARDS, DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
-  REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
+  CHANGE_LINE, CHANGE_SCENE, CHANGE_BOOK, REORDER_CARDS_WITHIN_LINE, REORDER_CARDS_IN_CHAPTER,
+  DELETE_CARD, ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, ADD_CARD_IN_CHAPTER} from 'constants/ActionTypes'
 
 export function addCard (card) {
@@ -31,8 +31,12 @@ export function changeBook (id, bookId) {
   return { type: CHANGE_BOOK, id, bookId }
 }
 
-export function reorderCardsInChapter (chapterId, lineId, isSeries, ids) {
-  return { type: REORDER_CARDS, chapterId, lineId, isSeries, ids }
+export function reorderCardsWithinLine (chapterId, lineId, isSeries, ids) {
+  return { type: REORDER_CARDS_WITHIN_LINE, chapterId, lineId, isSeries, ids }
+}
+
+export function reorderCardsInChapter (chapterId, lineId, isSeries, newOrderInChapter, newOrderWithinLine, newIdInChapter) {
+  return { type: REORDER_CARDS_IN_CHAPTER, chapterId, lineId, isSeries, newOrderInChapter, newOrderWithinLine, newIdInChapter }
 }
 
 export function deleteCard (id) {

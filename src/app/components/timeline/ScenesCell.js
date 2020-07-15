@@ -31,7 +31,7 @@ class ScenesCell extends PureComponent {
       newOrder.splice(positionWithinLine, 0, id)
     }
 
-    this.props.actions.reorderCardsInChapter(chapterId, lineId, isSeries, newOrder)
+    this.props.actions.reorderCardsWithinLine(chapterId, lineId, isSeries, newOrder)
   }
 
   addSceneCard = (newCardData) => {

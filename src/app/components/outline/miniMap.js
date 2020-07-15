@@ -65,7 +65,7 @@ class MiniMap extends Component {
       const chapterCards = this.props.cardMapping[ch.id]
       if (this.props.activeFilter && !chapterCards.length) return null
 
-      return <NavItem ref={chapterTitle(ch)} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
+      return <NavItem ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
         <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(ch)}</span></span>
         <div className='outline__minimap__dots'>{this.renderCardDots(chapterCards, linesById)}</div>
       </NavItem>
@@ -90,12 +90,17 @@ class MiniMap extends Component {
     if (!this.state.mouseOver) {
       const chapter = this.props.chapters.find(ch => ch.id === this.props.active)
       let title = ""
-      if (chapter) title = chapter.title
+      if (chapter) title = `chapter-${chapter.id}`
       var domNode = findDOMNode(this.refs[title])
       if (domNode) {
         domNode.scrollIntoViewIfNeeded()
       }
     }
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (nextState.mouseOver != this.state.mouseOver) return false
+    return true
   }
 }
 

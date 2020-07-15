@@ -870,7 +870,7 @@
       "bookId": 2,
       "time": 0,
       "position": 2,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 63,
@@ -878,7 +878,7 @@
       "bookId": 2,
       "time": 0,
       "position": 1,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 62,
@@ -886,7 +886,7 @@
       "bookId": 2,
       "time": 0,
       "position": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 68,
@@ -894,7 +894,7 @@
       "position": 0,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 69,
@@ -902,7 +902,7 @@
       "position": 1,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 70,
@@ -910,7 +910,7 @@
       "position": 2,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 71,
@@ -918,7 +918,7 @@
       "position": 0,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 72,
@@ -926,7 +926,7 @@
       "position": 0,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 73,
@@ -934,7 +934,7 @@
       "position": 0,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 74,
@@ -942,7 +942,7 @@
       "position": 1,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 75,
@@ -950,7 +950,7 @@
       "position": 2,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 76,
@@ -958,7 +958,7 @@
       "position": 3,
       "title": "auto",
       "time": 0,
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 1,
@@ -967,7 +967,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": false
     },
     {
       "id": 2,
@@ -976,7 +976,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 4,
@@ -985,7 +985,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 3,
@@ -994,7 +994,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": false
     },
     {
       "id": 5,
@@ -1003,7 +1003,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 6,
@@ -1012,7 +1012,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 7,
@@ -1021,7 +1021,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 8,
@@ -1030,7 +1030,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 9,
@@ -1039,7 +1039,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 10,
@@ -1048,7 +1048,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 11,
@@ -1057,7 +1057,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 12,
@@ -1066,7 +1066,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 13,
@@ -1075,7 +1075,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 14,
@@ -1084,7 +1084,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 15,
@@ -1093,7 +1093,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 16,
@@ -1102,7 +1102,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 17,
@@ -1111,7 +1111,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 18,
@@ -1120,7 +1120,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 19,
@@ -1129,7 +1129,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 20,
@@ -1138,7 +1138,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 21,
@@ -1147,7 +1147,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 22,
@@ -1156,7 +1156,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 23,
@@ -1165,7 +1165,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 24,
@@ -1174,7 +1174,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 25,
@@ -1183,7 +1183,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 26,
@@ -1192,7 +1192,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 27,
@@ -1201,7 +1201,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 28,
@@ -1210,7 +1210,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 29,
@@ -1219,7 +1219,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 30,
@@ -1228,7 +1228,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 31,
@@ -1237,7 +1237,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 32,
@@ -1246,7 +1246,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 33,
@@ -1255,7 +1255,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 34,
@@ -1264,7 +1264,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 35,
@@ -1273,7 +1273,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 36,
@@ -1282,7 +1282,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 37,
@@ -1291,7 +1291,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 38,
@@ -1300,7 +1300,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 39,
@@ -1309,7 +1309,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 40,
@@ -1318,7 +1318,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 41,
@@ -1327,7 +1327,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 42,
@@ -1336,7 +1336,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 43,
@@ -1345,7 +1345,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 44,
@@ -1354,7 +1354,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 45,
@@ -1363,7 +1363,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 46,
@@ -1372,7 +1372,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 47,
@@ -1381,7 +1381,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 48,
@@ -1390,7 +1390,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 49,
@@ -1399,7 +1399,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 50,
@@ -1408,7 +1408,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 51,
@@ -1417,7 +1417,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 52,
@@ -1426,7 +1426,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 53,
@@ -1435,7 +1435,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 54,
@@ -1444,7 +1444,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 55,
@@ -1453,7 +1453,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 56,
@@ -1462,7 +1462,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 57,
@@ -1471,7 +1471,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 58,
@@ -1480,7 +1480,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 59,
@@ -1489,7 +1489,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 60,
@@ -1498,7 +1498,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     },
     {
       "id": 61,
@@ -1507,13 +1507,13 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "manualSorting": false
+      "autoOutlineSort": true
     }
   ],
   "cards": [
     {
       "id": 316,
-      "lineId": 2,
+      "lineId": 1,
       "chapterId": 1,
       "beatId": null,
       "seriesLineId": null,
@@ -1535,7 +1535,7 @@
       "templates": [],
       "imageId": null,
       "positionWithinLine": 1,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "id": 315,
@@ -1561,7 +1561,7 @@
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1593,7 +1593,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1608,7 +1608,7 @@
         }
       ],
       "id": 300,
-      "lineId": 1,
+      "lineId": 2,
       "places": [],
       "tags": [
         18,
@@ -1625,7 +1625,7 @@
       "seriesLineId": null,
       "position": 1,
       "positionWithinLine": 1,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [
@@ -1659,7 +1659,7 @@
       "seriesLineId": null,
       "position": 2,
       "positionWithinLine": 2,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1691,7 +1691,7 @@
       "seriesLineId": null,
       "position": 3,
       "positionWithinLine": 3,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1720,7 +1720,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1786,7 +1786,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1815,7 +1815,7 @@
       "seriesLineId": null,
       "position": 1,
       "positionWithinLine": 1,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1845,7 +1845,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1874,7 +1874,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1904,7 +1904,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2078,7 +2078,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2108,7 +2108,7 @@
       "seriesLineId": null,
       "position": 1,
       "positionWithinLine": 1,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2138,7 +2138,7 @@
       "seriesLineId": null,
       "position": 2,
       "positionWithinLine": 2,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2168,7 +2168,7 @@
       "seriesLineId": null,
       "position": 3,
       "positionWithinLine": 3,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2197,7 +2197,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2226,7 +2226,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2256,7 +2256,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2284,7 +2284,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2314,7 +2314,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2343,7 +2343,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2371,7 +2371,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2401,7 +2401,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2430,7 +2430,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2458,7 +2458,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2485,7 +2485,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2511,7 +2511,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2541,7 +2541,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2569,7 +2569,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2599,7 +2599,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2629,7 +2629,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2657,7 +2657,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2683,7 +2683,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2712,7 +2712,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2741,7 +2741,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2767,7 +2767,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2796,7 +2796,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2826,7 +2826,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2855,7 +2855,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2883,7 +2883,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2910,7 +2910,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2936,7 +2936,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2966,7 +2966,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2995,7 +2995,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3025,7 +3025,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3055,7 +3055,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3081,7 +3081,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3110,7 +3110,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3139,7 +3139,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3168,7 +3168,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3196,7 +3196,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3222,7 +3222,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3252,7 +3252,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3280,7 +3280,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3311,7 +3311,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3337,7 +3337,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3367,7 +3367,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3397,7 +3397,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3427,7 +3427,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3457,7 +3457,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3486,7 +3486,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3515,7 +3515,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3543,7 +3543,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3572,7 +3572,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3602,7 +3602,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3628,7 +3628,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3658,7 +3658,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3687,7 +3687,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3717,7 +3717,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3745,7 +3745,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3774,7 +3774,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3803,7 +3803,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3833,7 +3833,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3863,7 +3863,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3891,7 +3891,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3921,7 +3921,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3952,7 +3952,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -3981,7 +3981,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4012,7 +4012,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4041,7 +4041,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4072,7 +4072,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4103,7 +4103,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4135,7 +4135,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4164,7 +4164,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4194,7 +4194,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4225,7 +4225,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4256,7 +4256,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4287,7 +4287,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4315,7 +4315,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4346,7 +4346,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4376,7 +4376,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4405,7 +4405,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4433,7 +4433,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4461,7 +4461,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4490,7 +4490,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4519,7 +4519,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4548,7 +4548,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4576,7 +4576,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4606,7 +4606,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4634,7 +4634,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4663,7 +4663,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4691,7 +4691,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4721,7 +4721,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4749,7 +4749,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4777,7 +4777,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4805,7 +4805,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4833,7 +4833,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4862,7 +4862,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4891,7 +4891,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4921,7 +4921,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4950,7 +4950,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -4980,7 +4980,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5008,7 +5008,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5039,7 +5039,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5069,7 +5069,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5100,7 +5100,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5130,7 +5130,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5159,7 +5159,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5188,7 +5188,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5216,7 +5216,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5245,7 +5245,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5274,7 +5274,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5305,7 +5305,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5334,7 +5334,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5365,7 +5365,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5395,7 +5395,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5427,7 +5427,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5456,7 +5456,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5485,7 +5485,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5513,7 +5513,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5542,7 +5542,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5571,7 +5571,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5599,7 +5599,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5627,7 +5627,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5655,7 +5655,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5686,7 +5686,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5718,7 +5718,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5748,7 +5748,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5778,7 +5778,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5807,7 +5807,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5837,7 +5837,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5869,7 +5869,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5900,7 +5900,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5930,7 +5930,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5959,7 +5959,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -5989,7 +5989,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6020,7 +6020,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6048,7 +6048,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6078,7 +6078,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6106,7 +6106,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6139,7 +6139,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6170,7 +6170,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6201,7 +6201,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6234,7 +6234,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6264,7 +6264,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6292,7 +6292,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6325,7 +6325,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6354,7 +6354,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6385,7 +6385,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6411,7 +6411,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6437,7 +6437,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6465,7 +6465,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6493,7 +6493,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6522,7 +6522,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6553,7 +6553,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6579,7 +6579,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6609,7 +6609,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6635,7 +6635,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6664,7 +6664,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6692,7 +6692,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6720,7 +6720,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6748,7 +6748,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6776,7 +6776,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6806,7 +6806,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6834,7 +6834,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6862,7 +6862,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6892,7 +6892,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6923,7 +6923,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6951,7 +6951,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -6981,7 +6981,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7011,7 +7011,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7040,7 +7040,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7070,7 +7070,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7098,7 +7098,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7129,7 +7129,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7158,7 +7158,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7187,7 +7187,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7215,7 +7215,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7243,7 +7243,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7273,7 +7273,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7302,7 +7302,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7332,7 +7332,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7362,7 +7362,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7391,7 +7391,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7420,7 +7420,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7449,7 +7449,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7478,7 +7478,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7510,7 +7510,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7536,7 +7536,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7567,7 +7567,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7597,7 +7597,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7628,7 +7628,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7661,7 +7661,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7692,7 +7692,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7723,7 +7723,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7753,7 +7753,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7781,7 +7781,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7810,7 +7810,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7840,7 +7840,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7870,7 +7870,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7898,7 +7898,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7927,7 +7927,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7956,7 +7956,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -7988,7 +7988,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8020,7 +8020,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8051,7 +8051,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8082,7 +8082,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8112,7 +8112,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8140,7 +8140,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8170,7 +8170,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8198,7 +8198,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8228,7 +8228,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8257,7 +8257,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8285,7 +8285,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8316,7 +8316,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8348,7 +8348,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8376,7 +8376,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8406,7 +8406,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8435,7 +8435,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8464,7 +8464,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8493,7 +8493,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8522,7 +8522,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8550,7 +8550,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8582,7 +8582,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8611,7 +8611,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8641,7 +8641,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8672,7 +8672,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8702,7 +8702,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8731,7 +8731,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8761,7 +8761,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8791,7 +8791,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8819,7 +8819,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8848,7 +8848,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8876,7 +8876,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8906,7 +8906,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8936,7 +8936,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8965,7 +8965,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -8993,7 +8993,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9022,7 +9022,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9053,7 +9053,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9083,7 +9083,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9111,7 +9111,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9140,7 +9140,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9169,7 +9169,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9199,7 +9199,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9228,7 +9228,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9259,7 +9259,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9289,7 +9289,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9317,7 +9317,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9349,7 +9349,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9382,7 +9382,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9416,7 +9416,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9446,7 +9446,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9476,7 +9476,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9509,7 +9509,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9543,7 +9543,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9572,7 +9572,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9600,7 +9600,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9632,7 +9632,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9662,7 +9662,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9692,7 +9692,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9723,7 +9723,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9755,7 +9755,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9785,7 +9785,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9814,7 +9814,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9844,7 +9844,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9872,7 +9872,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9902,7 +9902,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9931,7 +9931,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9963,7 +9963,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -9993,7 +9993,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10023,7 +10023,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10052,7 +10052,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10084,7 +10084,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10113,7 +10113,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10141,7 +10141,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10170,7 +10170,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10198,7 +10198,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10228,7 +10228,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10257,7 +10257,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10286,7 +10286,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10315,7 +10315,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10344,7 +10344,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     },
     {
       "id": 286,
@@ -10370,7 +10370,7 @@
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": 0
     }
   ],
   "lines": [
@@ -10454,7 +10454,7 @@
       "title": "Elizabeth Bennet",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": true
     },
     {
       "color": "#e5554f",

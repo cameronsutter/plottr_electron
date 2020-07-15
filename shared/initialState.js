@@ -35,7 +35,7 @@ const chapter = {
   title: 'auto',
   time: 0, // ? can also be a string
   templates: [],
-  manualSorting: false,
+  autoOutlineSort: true,
 }
 
 const ui = {

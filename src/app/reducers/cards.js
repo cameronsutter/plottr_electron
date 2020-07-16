@@ -107,14 +107,12 @@ export default function cards (state, action) {
         }
 
         let newCard = {...card}
-        // set 'coordinates' of the new card (if any)
+        // set chapterId of the new-to-this-chapter card (if any)
         if (card.id == action.newIdInChapter) {
           if (action.isSeries) {
             newCard.beatId = action.chapterId
-            newCard.seriesLineId = action.lineId
           } else {
             newCard.chapterId = action.chapterId
-            newCard.lineId = action.lineId
           }
         }
         // change positions

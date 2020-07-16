@@ -1,12 +1,10 @@
-import React, { useState, useEffect, forwardRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
-import { NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
 import { sortCardsInChapter } from '../../helpers/cards'
-import { reorderList } from '../../helpers/lists'
 
-const MiniChapter = forwardRef((props, ref) => {
+function MiniChapter (props) {
   const { chapter, idx, cards, linesById, isSeries } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
@@ -82,9 +80,7 @@ const MiniChapter = forwardRef((props, ref) => {
     })
   }
 
-  return <NavItem ref={ref}
-    eventKey={chapter.id}
-    className={cx('outline__minimap__scene-title', {dropping: inDropZone})}
+  return <div className={cx('outline__minimap__chapter-title', {dropping: inDropZone})}
     onDragEnter={handleDragEnter}
     onDragOver={handleDragOver}
     onDragLeave={handleDragLeave}
@@ -92,8 +88,8 @@ const MiniChapter = forwardRef((props, ref) => {
   >
     <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(chapter)}</span></span>
     <div className='outline__minimap__dots'>{renderCardDots()}</div>
-  </NavItem>
-})
+  </div>
+}
 
 MiniChapter.propTypes = {
   chapter: PropTypes.object.isRequired,

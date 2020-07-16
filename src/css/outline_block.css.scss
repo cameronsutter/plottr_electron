@@ -137,30 +137,6 @@
   }
 }
 
-li.outline__minimap__scene-title > a {
-  color: inherit;
-  cursor: pointer;
-  padding: 3px 10px 3px 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .outline__minimap__dots {
-    display: flex;
-    margin-left: 5px;
-  }
-
-  .outline__minimap__card-dot {
-    height: 7px;
-    width: 7px;
-    margin: 1px;
-  }
-}
-
-li.outline__minimap__scene-title > a:hover {
-  background-color: $body-background-color;
-}
-
 .outline__minimap {
   @include well;
   display: block;
@@ -175,26 +151,55 @@ li.outline__minimap__scene-title > a:hover {
   margin-right: 10px;
   margin-top: -5px;
   border-radius: 0px;
+
+  li {
+    &.active > a {
+      background-color: $new-item-background;
+    }
+    & > a {
+      color: inherit;
+      cursor: pointer;
+      padding: 3px 10px 3px 10px;
+
+      &:hover {
+        background-color: $body-background-color;
+      }
+    }
+  }
 }
 
-li.outline__minimap__scene-title.active {
-  background-color: $new-item-background;
-}
+.outline__minimap__chapter-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-li.outline__minimap__scene-title.dropping > a {
-  border: 2px dashed $gray-8;
+  .outline__minimap__dots {
+    display: flex;
+    margin-left: 5px;
+  }
+
+  .outline__minimap__card-dot {
+    height: 7px;
+    width: 7px;
+    margin: 1px;
+  }
+
+  &.dropping {
+    border: 2px dashed $gray-8;
+    padding: 2px;
+  }
 }
 
 .outline__minimap.darkmode {
   background-color: $darkmode-darker-background;
   color: $darkmode-text;
-  li.outline__minimap__scene-title.active {
+  li.active > a {
     background-color: $darkmode-background;
-    a:focus {
+    &:focus {
       background-color: $darkmode-background;
     }
   }
-  li.outline__minimap__scene-title > a:hover {
+  li > a:hover {
     background-color: $darkmode-background;
     color: $darkmode-text;
   }

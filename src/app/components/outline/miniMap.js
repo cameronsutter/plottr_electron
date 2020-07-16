@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { keyBy } from 'lodash'
 import { findDOMNode } from 'react-dom'
-import { Nav } from 'react-bootstrap'
+import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import * as CardActions from 'actions/cards'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
@@ -49,11 +49,13 @@ class MiniMap extends Component {
       const chapterCards = cardMapping[ch.id]
       if (activeFilter && !chapterCards.length) return null
 
-      return <MiniChapter ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`}
-        chapter={ch} idx={idx} cards={chapterCards} linesById={linesById} isSeries={isSeries}
-        reorderCardsWithinLine={actions.reorderCardsWithinLine}
-        reorderCardsInChapter={actions.reorderCardsInChapter}
-      />
+      return <NavItem ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`} eventKey={ch.id}>
+        <MiniChapter
+          chapter={ch} idx={idx} cards={chapterCards} linesById={linesById} isSeries={isSeries}
+          reorderCardsWithinLine={actions.reorderCardsWithinLine}
+          reorderCardsInChapter={actions.reorderCardsInChapter}
+        />
+      </NavItem>
     })
   }
 

@@ -25,7 +25,7 @@
       "owner": []
     },
     "placeSort": "name~asc",
-    "currentTimeline": "series",
+    "currentTimeline": 1,
     "zoomState": null,
     "zoomIndex": 4,
     "timelineIsExpanded": true

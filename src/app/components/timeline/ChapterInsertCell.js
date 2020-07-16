@@ -14,7 +14,7 @@ const Horizontal = {
 }
 
 const Vertical = {
-  first: 150,
+  first: 100,
   last: 70 + 40,
 }
 

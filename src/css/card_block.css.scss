@@ -21,8 +21,15 @@
 
   &.vertical {
     display: flex;
-    .card__body-wrapper {
+    & > div {
       display: flex;
+    }
+    & > div:first-child {
+      padding-left: 25px;
+    }
+    .card__add-card {
+      height: 70px;
+      line-height: 70px;
     }
   }
 }
@@ -38,6 +45,13 @@
   .card__body {
     .card__title {
       font-style: italic;
+    }
+  }
+
+  &.vertical {
+    padding-left: 25px;
+    .card__add-card {
+      display: block;
     }
   }
 }

@@ -92,10 +92,8 @@ class ScenesCell extends PureComponent {
         { this.renderCards(true) }
       </div>
     } else {
-      var cardStyle = {
-        borderColor: this.props.color
-      }
-      return <div className='card__cell__overview-cell'>
+      var cardStyle = { borderColor: this.props.color }
+      return <div className={cx('card__cell__overview-cell', {vertical: vertical})}>
         <Floater component={this.renderHiddenCards} placement='right' offset={0} disableAnimation={true}>
           <div className='card__body' style={cardStyle}>
             <div className='card__title'>{i18n('{num} Scenes', {num: numOfCards})}</div>

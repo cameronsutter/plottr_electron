@@ -164,11 +164,10 @@ class LineTitleCell extends PureComponent {
 
     if (this.props.ui.orientation === 'vertical') {
       return <div className={orientedClassName('line-title__hover-options', this.props.ui.orientation)}>
-        <ButtonGroup>
-          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-          <Button onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
-          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
-        </ButtonGroup>
+        <Button block bsSize='small' onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
+        <Button block bsSize='small' onClick={this.openColorPicker}><Glyphicon glyph='tint' /></Button>
+        <Button block bsSize='small' onClick={this.toggleLine}>{expandedIcon}</Button>
+        <Button block bsSize='small' onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
       </div>
     } else {
       return <div className='line-title__hover-options'>
@@ -206,6 +205,9 @@ class LineTitleCell extends PureComponent {
       orientedClassName('line-title__body', this.props.ui.orientation),
       { hover: this.state.hovering, dropping: this.state.dropping }
     )
+
+    let placement = 'bottom'
+    if (this.props.ui.orientation == 'vertical') placement = 'right'
     return <Cell>
       <div
         className={orientedClassName('line-title__cell', this.props.ui.orientation)}
@@ -214,7 +216,7 @@ class LineTitleCell extends PureComponent {
         onDrop={this.handleDrop}
       >
         { this.renderDelete() }
-        <Floater component={this.renderHoverOptions} open={this.state.hovering} placement='bottom' hideArrow offset={0}>
+        <Floater component={this.renderHoverOptions} open={this.state.hovering} placement={placement} hideArrow offset={0}>
           <div className={innerKlass}
             onClick={this.startEditing}
             onDragStart={this.handleDragStart}

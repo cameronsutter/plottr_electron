@@ -160,8 +160,9 @@ $title_width: 150px;
 // ///////////
 
 .vertical-line-title__cell {
-  width: $title_width;
-  min-height: 150px;
+  width: 200px;
+  min-height: 100px;
+  text-align: center;
 }
 
 .vertical-line-title__body {
@@ -194,9 +195,9 @@ $title_width: 150px;
 }
 
 .vertical-line-title__hover-options {
-  text-align: center;
-  visibility: hidden;
-  margin-bottom: 5px;
+  .btn-block {
+    margin-top: 0;
+  }
 }
 
 .vertical-line-title__cell:hover {
@@ -214,6 +215,8 @@ $title_width: 150px;
   transition: all .4s $cubic;
   border: 1px solid transparent;
   font-size: 12px;
+  width: 150px;
+  margin-left: 25px;
   cursor: pointer;
   svg {
     position: absolute;
@@ -239,7 +242,7 @@ $title_width: 150px;
 }
 
 .vertical-line-list__append-line {
-  height: 150px;
+  height: 100px;
   display: flex;
   align-items: center;
   cursor: pointer;

@@ -228,19 +228,20 @@ class TimelineTable extends Component {
       const cells = []
       const line = lineMap[linePosition]
       const cards = cardMap[`${line.id}-${chapter.id}`]
+      const key = `${cards ? 'card' : 'blank'}-${chapter.position}-${linePosition}`
       if (cards) {
         // TODO: implement card filtering
         // if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
         //   filtered = true
         // }
         cells.push(<ScenesCell
-          key={`cardId-${card.id}`} cards={cards}
+          key={key} cards={cards}
           chapterId={chapter.id} lineId={line.id}
           chapterPosition={chapter.position} linePosition={linePosition}
           color={line.color} filtered={filtered} />)
       } else {
         cells.push(<BlankCard chapterId={chapter.id} lineId={line.id}
-          key={`blank-${chapter.id}-${line.id}`}
+          key={key}
           color={line.color} />)
       }
       return cells

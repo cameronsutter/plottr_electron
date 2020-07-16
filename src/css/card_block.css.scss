@@ -18,6 +18,13 @@
       color: $blue-5;
     }
   }
+
+  &.vertical {
+    display: flex;
+    .card__body-wrapper {
+      display: flex;
+    }
+  }
 }
 
 .card__cell__overview-cell {

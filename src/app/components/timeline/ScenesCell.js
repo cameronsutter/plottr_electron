@@ -86,8 +86,9 @@ class ScenesCell extends PureComponent {
 
   renderBody () {
     const numOfCards = this.props.cards.length
+    const vertical = this.props.ui.orientation == 'vertical'
     if (this.props.lineIsExpanded || numOfCards == 1) {
-      return <div className={cx('card__cell', {multiple: numOfCards > 1})}>
+      return <div className={cx('card__cell', {multiple: numOfCards > 1, vertical: vertical})}>
         { this.renderCards(true) }
       </div>
     } else {
@@ -127,6 +128,7 @@ ScenesCell.propTypes = {
   filtered: PropTypes.bool,
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
   lineIsExpanded: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
@@ -134,6 +136,7 @@ ScenesCell.propTypes = {
 
 function mapStateToProps (state, ownProps) {
   return {
+    ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
     lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.lineId],
   }

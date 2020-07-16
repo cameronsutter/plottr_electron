@@ -14,6 +14,7 @@ import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
 import SceneCardAdd from './SceneCardAdd'
 import { reorderList } from '../../helpers/lists'
+import ErrorBoundary from '../../containers/ErrorBoundary'
 
 class ScenesCell extends PureComponent {
 
@@ -59,10 +60,12 @@ class ScenesCell extends PureComponent {
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
       return <div key={card.id}>
-        <Card card={card} chapterId={chapterId} lineId={lineId}
-          chapterPosition={chapterPosition} linePosition={linePosition}
-          color={color} filtered={filtered} last={idxOfCards == idx}
-        />
+        <ErrorBoundary>
+          <Card card={card} chapterId={chapterId} lineId={lineId}
+            chapterPosition={chapterPosition} linePosition={linePosition}
+            color={color} filtered={filtered} last={idxOfCards == idx}
+          />
+        </ErrorBoundary>
         {renderAddButtons ?
           <SceneCardAdd
             color={color}

@@ -70,9 +70,6 @@ class Card extends Component {
 
     if (!card.description) return false
     if (!card.description.length) return false
-    if (card.description.length > 1) return true // more than 1 paragraph
-    if (card.description[0].children.length > 1) return true // more than 1 text node
-    if (card.description[0].children[0].text == '') return false // no text
 
     return true
   }

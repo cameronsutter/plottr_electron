@@ -2,13 +2,17 @@ import React from 'react'
 import PropTypes from 'react-proptypes'
 import RichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
+import ErrorBoundary from '../../containers/ErrorBoundary'
 
 const RichText = (props) => {
+  let body = null
   if (props.editable) {
-    return <RichTextEditor text={props.description} className={props.className} onChange={props.onChange} autoFocus={props.autofocus} darkMode={props.darkMode}/>
+    body = <RichTextEditor text={props.description} className={props.className} onChange={props.onChange} autoFocus={props.autofocus} darkMode={props.darkMode}/>
   } else {
-    return <RichTextViewer text={props.description} className={props.className}/>
+    body = <RichTextViewer text={props.description} className={props.className}/>
   }
+
+  return <ErrorBoundary>{ body }</ErrorBoundary>
 }
 
 RichText.propTypes = {

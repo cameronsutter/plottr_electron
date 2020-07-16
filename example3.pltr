@@ -967,7 +967,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": false
+      "autoOutlineSort": true
     },
     {
       "id": 2,

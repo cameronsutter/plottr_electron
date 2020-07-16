@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { keyBy, sortBy } from 'lodash'
+import { bindActionCreators } from 'redux'
+import { keyBy } from 'lodash'
 import { findDOMNode } from 'react-dom'
-import { Nav, NavItem } from 'react-bootstrap'
+import { Nav } from 'react-bootstrap'
 import cx from 'classnames'
-import { chapterTitle } from '../../helpers/chapters'
+import * as CardActions from 'actions/cards'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { linesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
+import MiniChapter from './MiniChapter'
 
 const targetPosition = 115
 
@@ -39,36 +41,19 @@ class MiniMap extends Component {
     }
   }
 
-  findCard = (linesById, card) => {
-    let id = card.lineId
-    if (this.props.isSeries) {
-      id = card.seriesLineId
-    }
-    return linesById[id]
-  }
-
-  renderCardDots (chapterCards, linesById) {
-    const sortedCards = sortBy(chapterCards, ['positionWithinLine', 'lineId'])
-    return sortedCards.map((c) => {
-      let line = this.findCard(linesById, c)
-      if (!line) return null
-
-      let style = {backgroundColor: line.color}
-      return <div key={`dot-${line.id}-${c.id}`} title={line.title} style={style} className='outline__minimap__card-dot'></div>
-    })
-  }
-
   renderChapters () {
-    const linesById = keyBy(this.props.lines, 'id')
-    return this.props.chapters.map((ch, idx) => {
+    const { lines, chapters, activeFilter, isSeries, cardMapping, actions } = this.props
+    const linesById = keyBy(lines, 'id')
+    return chapters.map((ch, idx) => {
       if (this.state.firstRender && idx > 20) return null
-      const chapterCards = this.props.cardMapping[ch.id]
-      if (this.props.activeFilter && !chapterCards.length) return null
+      const chapterCards = cardMapping[ch.id]
+      if (activeFilter && !chapterCards.length) return null
 
-      return <NavItem ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`} eventKey={ch.id} className='outline__minimap__scene-title'>
-        <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(ch)}</span></span>
-        <div className='outline__minimap__dots'>{this.renderCardDots(chapterCards, linesById)}</div>
-      </NavItem>
+      return <MiniChapter ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`}
+        chapter={ch} idx={idx} cards={chapterCards} linesById={linesById} isSeries={isSeries}
+        reorderCardsWithinLine={actions.reorderCardsWithinLine}
+        reorderCardsInChapter={actions.reorderCardsInChapter}
+      />
     })
   }
 
@@ -124,7 +109,9 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(CardActions, dispatch),
+  }
 }
 
 export default connect(

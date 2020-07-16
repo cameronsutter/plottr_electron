@@ -17,7 +17,13 @@ import { isSeriesSelector } from '../../selectors/ui'
 class CardView extends Component {
   constructor (props) {
     super(props)
-    this.state = {editing: false, description: props.card.description, dragging: false, dropping: false}
+    this.state = {
+      editing: false,
+      description: props.card.description,
+      dragging: false,
+      inDropZone: false,
+      dropDepth: 0,
+    }
   }
 
   componentWillUnmount () {
@@ -58,28 +64,44 @@ class CardView extends Component {
   }
 
   handleDragEnter = (e) => {
-    if (!this.state.dragging) this.setState({dropping: true})
+    // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
+    if (!this.state.dragging) this.setState({dropDepth: this.state.dropDepth + 1})
   }
 
   handleDragOver = (e) => {
-    if (!this.state.dragging) this.setState({dropping: true})
     e.preventDefault()
+    if (!this.state.dragging) this.setState({inDropZone: true})
   }
 
   handleDragLeave = (e) => {
-    if (!this.state.dragging) this.setState({dropping: false})
+    if (!this.state.dragging) {
+      let dropDepth = this.state.dropDepth
+      --dropDepth
+      this.setState({dropDepth: dropDepth})
+      if (dropDepth > 0) return
+      this.setState({inDropZone: false})
+    }
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
+    e.preventDefault()
     if (this.state.dragging) return
-    this.setState({dropping: false})
+    this.setState({inDropZone: false, dropDepth: 0})
 
     const json = e.dataTransfer.getData('text/json')
     const droppedData = JSON.parse(json)
     if (!droppedData.cardId) return
 
     this.props.reorder({current: this.props.card, currentIndex: this.props.index, dropped: droppedData})
+  }
+
+  renderDropZone () {
+    if (!this.state.inDropZone) return
+
+    return <div className='outline__card-drop'>
+      <FaCircle/>
+    </div>
   }
 
   renderTitle () {
@@ -164,8 +186,15 @@ class CardView extends Component {
   render () {
     const { line, ui, card } = this.props
     const style = {color: line.color}
-    return <div className='outline__card-wrapper'>
+    return <div className='outline__card-wrapper'
+      onDragEnter={this.handleDragEnter}
+      onDragOver={this.handleDragOver}
+      onDragLeave={this.handleDragLeave}
+      onDrop={this.handleDrop}
+    >
+      { this.renderDropZone() }
       <div className={cx('outline__card', {darkmode: ui.darkMode})}>
+        <div style={style} className='outline__card__line-title'>{line.title}</div>
         <div className={cx('outline__card__grip', {editing: this.state.editing, dragging: this.state.dragging})}
           draggable
           onDragStart={this.handleDragStart}
@@ -174,7 +203,6 @@ class CardView extends Component {
           <FaGripLinesVertical/>
           {this.state.editing ? null : <h6>{card.title}</h6>}
         </div>
-        <div style={style} className='outline__card__line-title'>{line.title}</div>
         <div className={cx('outline__card__inner', {editing: this.state.editing})} onClick={this.editOnClick}>
           { this.renderTitle() }
           { this.renderDescription() }
@@ -186,14 +214,6 @@ class CardView extends Component {
         </div>
         { this.renderCharacters() }
         { this.renderPlaces() }
-      </div>
-      <div className={cx('outline__card-drop', {dropping: this.state.dropping})}
-        onDragEnter={this.handleDragEnter}
-        onDragOver={this.handleDragOver}
-        onDragLeave={this.handleDragLeave}
-        onDrop={this.handleDrop}
-      >
-        {this.state.dropping ? <FaCircle/> : <FaRegCircle/> }
       </div>
     </div>
   }

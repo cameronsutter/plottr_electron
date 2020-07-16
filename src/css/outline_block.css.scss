@@ -28,17 +28,15 @@
 }
 
 .outline__card-wrapper {
-  margin: 10px 20px;
+  margin: 14px 20px;
 
   .outline__card-drop {
     text-align: center;
-    margin-top: 4px;
+    margin-bottom: 4px;
+    border: 2px dashed $gray-8;
+    padding-top: 4px;
     svg {
       color: $gray-8;
-    }
-    &.dropping {
-      border: 2px dashed $gray-8;
-      padding-top: 4px;
     }
   }
 }
@@ -181,6 +179,10 @@ li.outline__minimap__scene-title > a:hover {
 
 li.outline__minimap__scene-title.active {
   background-color: $new-item-background;
+}
+
+li.outline__minimap__scene-title.dropping > a {
+  border: 2px dashed $gray-8;
 }
 
 .outline__minimap.darkmode {

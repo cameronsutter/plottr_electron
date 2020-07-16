@@ -13,19 +13,14 @@ import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
 import { reorderList } from '../../helpers/lists'
 import { isSeriesSelector } from '../../selectors/ui'
+import { sortCardsInChapter } from '../../helpers/cards'
 
 class ChapterView extends Component {
 
   state = {sortedCards: []}
 
   static getDerivedStateFromProps (nextProps, nextState) {
-    let sortOperands = []
-    if (nextProps.chapter.autoOutlineSort) {
-      sortOperands = ['positionWithinLine', 'lineId']
-    } else {
-      sortOperands = ['positionInChapter']
-    }
-    const sortedCards = sortBy(nextProps.cards, sortOperands)
+    const sortedCards = sortCardsInChapter(nextProps.chapter.autoOutlineSort, nextProps.cards)
     return {sortedCards}
   }
 

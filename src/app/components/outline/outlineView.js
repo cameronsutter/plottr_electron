@@ -12,6 +12,7 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import { MPQ } from 'middlewares/helpers'
 import { cardMapSelector } from '../../selectors/cards'
+import ErrorBoundary from '../../containers/ErrorBoundary'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -154,7 +155,9 @@ class OutlineView extends Component {
   renderChapters (cardMapping) {
     return this.props.chapters.map((ch, idx) => {
       if (this.state.firstRender && idx > 2) return null
-      return <ChapterView key={ch.id} chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} activeFilter={!!this.state.currentLine} />
+      return <ErrorBoundary key={ch.id}>
+        <ChapterView chapter={ch} cards={cardMapping[ch.id]} waypoint={this.setActive} activeFilter={!!this.state.currentLine} />
+      </ErrorBoundary>
     })
   }
 
@@ -162,7 +165,9 @@ class OutlineView extends Component {
     const cardMapping = this.cardMapping()
     return <div className='outline__container'>
       <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
-      <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />
+      <ErrorBoundary>
+        <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />
+      </ErrorBoundary>
       <div className='outline__scenes-container'>
         {this.renderChapters(cardMapping)}
       </div>

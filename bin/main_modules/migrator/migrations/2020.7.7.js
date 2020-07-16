@@ -26,6 +26,12 @@ function migrate (data) {
     return ch
   })
 
+  // add autoOutlineSort to Beats
+  obj.beats = obj.beats.map(b => {
+    b.autoOutlineSort = true
+    return b
+  })
+
   // with cards
   // change position to positionWithinLine
   // add positionInChapter

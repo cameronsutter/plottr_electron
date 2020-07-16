@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as CardActions from 'actions/cards'
 import * as SceneActions from 'actions/scenes'
+import * as BeatActions from 'actions/beats'
 import { sortBy } from 'lodash'
 import { Glyphicon } from 'react-bootstrap'
 import { Waypoint } from 'react-waypoint'
@@ -25,8 +26,12 @@ class ChapterView extends Component {
   }
 
   autoSortChapter = () => {
-    const { chapterActions, chapter, isSeries } = this.props
-    chapterActions.autoSortChapter(chapter.id, isSeries)
+    const { chapterActions, beatActions, chapter, isSeries } = this.props
+    if (isSeries) {
+      beatActions.autoSortBeat(chapter.id)
+    } else {
+      chapterActions.autoSortChapter(chapter.id)
+    }
   }
 
   reorderCards = ({current, currentIndex, dropped}) => {
@@ -110,6 +115,7 @@ function mapDispatchToProps (dispatch) {
   return {
     actions: bindActionCreators(CardActions, dispatch),
     chapterActions: bindActionCreators(SceneActions, dispatch),
+    beatActions: bindActionCreators(BeatActions, dispatch),
   }
 }
 

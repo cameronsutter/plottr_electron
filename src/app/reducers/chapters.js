@@ -40,7 +40,7 @@ export default function chapters (state = initialState, action) {
       ]
 
     case REORDER_CARDS_IN_CHAPTER:
-      return state.map(ch => ch.id == action.chapterId ? Object.assign({}, ch, {autoOutlineSort: false}) : ch )
+      return state.map(ch => ch.id == action.chapterId && !action.isSeries ? Object.assign({}, ch, {autoOutlineSort: false}) : ch )
 
     case AUTO_SORT_CHAPTER:
       return state.map(ch => ch.id == action.id ? Object.assign({}, ch, {autoOutlineSort: true}) : ch )

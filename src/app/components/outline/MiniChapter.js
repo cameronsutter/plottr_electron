@@ -86,7 +86,7 @@ function MiniChapter (props) {
     onDragLeave={handleDragLeave}
     onDrop={handleDrop}
   >
-    <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(chapter)}</span></span>
+    <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(chapter, isSeries)}</span></span>
     <div className='outline__minimap__dots'>{renderCardDots()}</div>
   </div>
 }

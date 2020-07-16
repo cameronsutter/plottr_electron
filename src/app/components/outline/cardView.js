@@ -50,9 +50,10 @@ class CardView extends Component {
 
   handleDragStart = (e) => {
     this.setState({dragging: true, editing: false})
-    const { card, index } = this.props
+    const { card, index, isSeries } = this.props
+    const lineId = isSeries ? card.seriesLineId : card.lineId
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/json', JSON.stringify({cardId: card.id, lineId: card.lineId, index: index}))
+    e.dataTransfer.setData('text/json', JSON.stringify({cardId: card.id, lineId, index}))
   }
 
   handleDragEnd = () => {

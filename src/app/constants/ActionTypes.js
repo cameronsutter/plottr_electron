@@ -33,6 +33,7 @@ export const ADD_BEAT = 'ADD_BEAT'
 export const EDIT_BEAT_TITLE = 'EDIT_BEAT_TITLE'
 export const REORDER_BEATS = 'REORDER_BEATS'
 export const DELETE_BEAT = 'DELETE_BEAT'
+export const AUTO_SORT_BEAT = 'AUTO_SORT_BEAT'
 
 // card actions
 export const ADD_CARD = 'ADD_CARD'

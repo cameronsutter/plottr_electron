@@ -17,6 +17,6 @@ export function deleteScene (id, bookId) {
   return { type: DELETE_SCENE, id, bookId }
 }
 
-export function autoSortChapter (id, isSeries) {
-  return { type: AUTO_SORT_CHAPTER, id, isSeries }
+export function autoSortChapter (id) {
+  return { type: AUTO_SORT_CHAPTER, id }
 }

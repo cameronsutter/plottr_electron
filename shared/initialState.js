@@ -26,6 +26,7 @@ const beat = {
   title: '',
   time: 0, // ? can also be a string
   templates: [],
+  autoOutlineSort: true,
 }
 
 const chapter = {

@@ -1,4 +1,5 @@
-import { ADD_BEAT, EDIT_BEAT_TITLE, REORDER_BEATS, DELETE_BEAT, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
+import { ADD_BEAT, EDIT_BEAT_TITLE, REORDER_BEATS, DELETE_BEAT,
+  REORDER_CARDS_IN_CHAPTER, AUTO_SORT_BEAT, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { beat as defaultBeat } from '../../../shared/initialState'
 import { newFileBeats } from '../../../shared/newFileState'
 import { nextId } from '../store/newIds'
@@ -15,15 +16,19 @@ export default function beats (state = defaultBeat, action) {
       }, ...state]
 
     case EDIT_BEAT_TITLE:
-      return state.map(b =>
-        b.id == action.id ? Object.assign({}, b, {title: action.title}) : b
-      )
+      return state.map(b => b.id == action.id ? Object.assign({}, b, {title: action.title}) : b )
 
     case DELETE_BEAT:
       return state.filter(b => b.id != action.id)
 
     case REORDER_BEATS:
       return positionReset(action.beats)
+
+    case REORDER_CARDS_IN_CHAPTER:
+      return state.map(b => b.id == action.chapterId && action.isSeries ? Object.assign({}, b, {autoOutlineSort: false}) : b )
+
+    case AUTO_SORT_BEAT:
+      return state.map(b => b.id == action.id ? Object.assign({}, b, {autoOutlineSort: true}) : b )
 
     case RESET:
     case FILE_LOADED:

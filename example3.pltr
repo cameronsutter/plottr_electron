@@ -860,30 +860,6 @@
   ],
   "chapters": [
     {
-      "id": 64,
-      "title": "auto",
-      "bookId": 2,
-      "time": 0,
-      "position": 2,
-      "autoOutlineSort": true
-    },
-    {
-      "id": 63,
-      "title": "auto",
-      "bookId": 2,
-      "time": 0,
-      "position": 1,
-      "autoOutlineSort": true
-    },
-    {
-      "id": 62,
-      "title": "Prologue",
-      "bookId": 2,
-      "time": 0,
-      "position": 0,
-      "autoOutlineSort": true
-    },
-    {
       "id": 68,
       "bookId": 4,
       "position": 0,
@@ -953,6 +929,30 @@
       "position": 3,
       "title": "auto",
       "time": 0,
+      "autoOutlineSort": true
+    },
+    {
+      "id": 62,
+      "title": "Prologue",
+      "bookId": 2,
+      "time": 0,
+      "position": 0,
+      "autoOutlineSort": true
+    },
+    {
+      "id": 63,
+      "title": "auto",
+      "bookId": 2,
+      "time": 0,
+      "position": 1,
+      "autoOutlineSort": true
+    },
+    {
+      "id": 64,
+      "title": "auto",
+      "bookId": 2,
+      "time": 0,
+      "position": 2,
       "autoOutlineSort": true
     },
     {
@@ -2312,7 +2312,7 @@
       "seriesLineId": null,
       "position": 1,
       "positionWithinLine": 2,
-      "positionInChapter": 3
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2342,7 +2342,7 @@
       "seriesLineId": null,
       "position": 2,
       "positionWithinLine": 1,
-      "positionInChapter": 2
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2372,7 +2372,7 @@
       "seriesLineId": null,
       "position": 3,
       "positionWithinLine": 3,
-      "positionInChapter": 4
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2430,7 +2430,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": 1
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -10619,11 +10619,11 @@
       "expanded": null
     },
     {
-      "id": 15,
-      "bookId": 2,
-      "title": "Sub plot",
-      "color": "#78be20",
-      "position": 1,
+      "id": 16,
+      "bookId": 3,
+      "title": "Main Plot",
+      "color": "#6cace4",
+      "position": 0,
       "expanded": null
     },
     {
@@ -10635,11 +10635,11 @@
       "expanded": null
     },
     {
-      "id": 16,
-      "bookId": 3,
-      "title": "Main Plot",
-      "color": "#6cace4",
-      "position": 0,
+      "id": 15,
+      "bookId": 2,
+      "title": "Sub plot",
+      "color": "#78be20",
+      "position": 1,
       "expanded": null
     },
     {

@@ -12,7 +12,7 @@ import i18n from 'format-message'
 import CardView from 'components/outline/cardView'
 import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
-import { reorderList } from '../../helpers/lists'
+import { moveToAbove } from '../../helpers/lists'
 import { isSeriesSelector } from '../../selectors/ui'
 import { sortCardsInChapter } from '../../helpers/cards'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
@@ -48,12 +48,12 @@ class ChapterView extends Component {
     // already in chapter
     if (currentIds.includes(dropped.cardId)) {
       // flip it to manual sort
-      newOrderInChapter = reorderList(currentIndex, dropped.index, currentIds)
+      newOrderInChapter = moveToAbove(dropped.index, currentIndex, currentIds)
       if (dropped.lineId == currentLineId) {
         // if same line, also update positionWithinLine
         const cardIdsInLine = sortedCards.filter(c => isSeries ? c.seriesLineId == currentLineId : c.lineId == currentLineId).map(c => c.id)
         const currentPosition = sortedCards.find(c => c.id == dropped.cardId).positionWithinLine
-        newOrderWithinLine = reorderList(current.positionWithinLine, currentPosition, cardIdsInLine)
+        newOrderWithinLine = moveToAbove(currentPosition, current.positionWithinLine, cardIdsInLine)
       }
       actions.reorderCardsInChapter(chapter.id, currentLineId, isSeries, newOrderInChapter, newOrderWithinLine)
     } else {

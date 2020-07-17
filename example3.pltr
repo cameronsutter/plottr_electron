@@ -15,7 +15,7 @@
       "owner": []
     },
     "placeSort": "name~asc",
-    "currentTimeline": 2,
+    "currentTimeline": 1,
     "zoomState": null,
     "zoomIndex": 4,
     "timelineIsExpanded": false,
@@ -29,7 +29,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.7.15"
+    "version": "2020.7.16"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",

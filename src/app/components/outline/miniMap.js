@@ -36,8 +36,9 @@ class MiniMap extends Component {
     const elem = document.querySelector(`#chapter-${key}`)
     elem.scrollIntoViewIfNeeded()
     if (key != this.firstChapterKey) {
+      const container = document.querySelector('.outline__container')
       const yPosition = elem.getBoundingClientRect().y
-      window.scrollBy(0, yPosition - targetPosition)
+      container.scrollBy(0, yPosition - targetPosition)
     }
   }
 

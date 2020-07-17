@@ -5,14 +5,14 @@ import { chapterTitle } from '../../helpers/chapters'
 import { sortCardsInChapter } from '../../helpers/cards'
 
 function MiniChapter (props) {
-  const { chapter, idx, cards, linesById, isSeries } = props
+  const { chapter, idx, cards, linesById, sortedLines, isSeries } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
   const [inDropZone, setInZone] = useState(false)
   const [dropDepth, setDropDepth] = useState(0)
 
   useEffect(() => {
-    setSortedCards(sortCardsInChapter(chapter.autoOutlineSort, cards))
+    setSortedCards(sortCardsInChapter(chapter.autoOutlineSort, cards, sortedLines, isSeries))
   }, [chapter, cards])
 
   const handleDragEnter = (e) => {
@@ -95,6 +95,7 @@ MiniChapter.propTypes = {
   chapter: PropTypes.object.isRequired,
   idx: PropTypes.number.isRequired,
   cards: PropTypes.array.isRequired,
+  sortedLines: PropTypes.array.isRequired,
   linesById: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
   reorderCardsWithinLine: PropTypes.func.isRequired,

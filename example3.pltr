@@ -29,7 +29,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.7.7"
+    "version": "2020.7.15"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -980,7 +980,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": false
     },
     {
       "id": 3,
@@ -989,7 +989,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": false
+      "autoOutlineSort": true
     },
     {
       "id": 5,
@@ -998,7 +998,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": false
+      "autoOutlineSort": true
     },
     {
       "id": 6,
@@ -1507,6 +1507,56 @@
   ],
   "cards": [
     {
+      "id": 323,
+      "lineId": 2,
+      "chapterId": 4,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Scene 1",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null
+    },
+    {
+      "id": 322,
+      "lineId": 3,
+      "chapterId": 1,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Mr. Darcy",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null
+    },
+    {
       "id": 321,
       "lineId": null,
       "chapterId": null,
@@ -1514,7 +1564,7 @@
       "seriesLineId": 2,
       "bookId": null,
       "positionWithinLine": 0,
-      "positionInChapter": 1,
+      "positionInChapter": 0,
       "title": "book 3",
       "description": [
         {
@@ -1573,7 +1623,7 @@
       "seriesLineId": 2,
       "bookId": null,
       "positionWithinLine": 1,
-      "positionInChapter": 2,
+      "positionInChapter": 0,
       "title": "scene 1",
       "description": [
         {
@@ -1598,7 +1648,7 @@
       "seriesLineId": 1,
       "bookId": null,
       "positionWithinLine": 1,
-      "positionInChapter": 1,
+      "positionInChapter": 0,
       "title": "book 2",
       "description": [
         {
@@ -1690,7 +1740,7 @@
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
-      "positionInChapter": 4
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1722,7 +1772,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": 1
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1754,7 +1804,7 @@
       "seriesLineId": null,
       "position": 1,
       "positionWithinLine": 1,
-      "positionInChapter": 5
+      "positionInChapter": 0
     },
     {
       "characters": [
@@ -1788,7 +1838,7 @@
       "seriesLineId": null,
       "position": 2,
       "positionWithinLine": 2,
-      "positionInChapter": 2
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1820,7 +1870,7 @@
       "seriesLineId": null,
       "position": 3,
       "positionWithinLine": 3,
-      "positionInChapter": 3
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1849,7 +1899,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": 1
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -1973,8 +2023,8 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 0,
-      "positionWithinLine": 1,
-      "positionInChapter": 6
+      "positionWithinLine": 0,
+      "positionInChapter": 0
     },
     {
       "characters": [],
@@ -2229,15 +2279,15 @@
       ],
       "title": "Scene 2",
       "templates": [],
-      "chapterId": 3,
+      "chapterId": 4,
       "lineId": 2,
       "imageId": null,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
       "position": 1,
-      "positionWithinLine": 1,
-      "positionInChapter": 0
+      "positionWithinLine": 2,
+      "positionInChapter": 3
     },
     {
       "characters": [],
@@ -2259,15 +2309,15 @@
       ],
       "title": "Scene 3",
       "templates": [],
-      "chapterId": 3,
+      "chapterId": 4,
       "lineId": 2,
       "imageId": null,
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
       "position": 2,
-      "positionWithinLine": 2,
-      "positionInChapter": 0
+      "positionWithinLine": 1,
+      "positionInChapter": 2
     },
     {
       "characters": [],
@@ -2289,7 +2339,7 @@
       ],
       "title": "Scene 4",
       "templates": [],
-      "chapterId": 3,
+      "chapterId": 4,
       "lineId": 2,
       "imageId": null,
       "beatId": null,
@@ -2297,7 +2347,7 @@
       "seriesLineId": null,
       "position": 3,
       "positionWithinLine": 3,
-      "positionInChapter": 0
+      "positionInChapter": 4
     },
     {
       "characters": [],
@@ -2355,7 +2405,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": 0
+      "positionInChapter": 1
     },
     {
       "characters": [],
@@ -10622,19 +10672,19 @@
       "expanded": null
     },
     {
-      "color": "Violet",
-      "id": 7,
+      "color": "Brown",
+      "id": 8,
       "position": 6,
-      "title": "Mrs Bennet",
+      "title": "Mr Bennet",
       "characterId": null,
       "bookId": 1,
       "expanded": null
     },
     {
-      "color": "Brown",
-      "id": 8,
+      "color": "Violet",
+      "id": 7,
       "position": 7,
-      "title": "Mr Bennet",
+      "title": "Mrs Bennet",
       "characterId": null,
       "bookId": 1,
       "expanded": null

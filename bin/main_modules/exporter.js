@@ -1,7 +1,7 @@
 const { shell, Notification } = require('electron')
 const { Document, Packer, Paragraph, Media, AlignmentType, HeadingLevel } = require('docx')
 const fs = require('fs')
-const _ = require('lodash')
+const { sortBy, groupBy } = require('lodash')
 const i18n = require('format-message')
 const serialize = require('./slate_serializers/to_word')
 
@@ -70,25 +70,26 @@ function outlineSection (data, namesMapping, bookId, doc) {
   children.push(new Paragraph({text: i18n('Outline'), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER}))
 
   // TODO: handle 'series' and undefined
-  let chapters = _.sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
-  let paragraphs = chapters.flatMap(ch => chapterParagraphs(ch, data, namesMapping, doc))
+  console.log('bookId', typeof bookId, bookId)
+  let chapters = sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
+  let paragraphs = chapters.flatMap(ch => chapterParagraphs(ch, data, namesMapping, bookId, doc))
 
   return {children: children.concat(paragraphs)}
 }
 
-function chapterParagraphs (chapter, data, namesMapping, doc) {
+function chapterParagraphs (chapter, data, namesMapping, bookId, doc) {
   let paragraphs = [new Paragraph('')]
   paragraphs.push(new Paragraph('^'))
   let title = chapter.title == 'auto' ? i18n('Chapter {number}', {number: chapter.position + 1}) : chapter.title
   paragraphs.push(new Paragraph({text: title, heading: HeadingLevel.HEADING_2}))
-  const cards = sortedChapterCards(chapter.id, data.cards, data.lines)
+  const cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, data.lines, bookId == 'series')
   let cardParagraphs = cards.flatMap(c => card(c, data.lines, namesMapping, doc))
   return paragraphs.concat(cardParagraphs)
 }
 
 function card (card, lines, namesMapping, doc) {
   let paragraphs = [new Paragraph('')]
-  let line = _.find(lines, {id: card.lineId})
+  let line = lines.find(l => card.lineId == l.id)
   let titleString = `${card.title} (${line.title})`
   let attachmentParagraphs = attachments(card, namesMapping)
   paragraphs.push(new Paragraph({text: titleString, heading: HeadingLevel.HEADING_3}))
@@ -122,21 +123,25 @@ function attachments (obj, namesMapping) {
   return paragraphs
 }
 
-function sortedChapterCards (chapterId, allCards, allLines) {
+function sortedChapterCards (autoSort, chapterId, allCards, allLines, isSeries) {
   let cards = findChapterCards(chapterId, allCards)
-  const lines = _.sortBy(allLines, 'position')
-  var sorted = []
-  lines.forEach(function(l) {
-    var card = _.find(cards, {lineId: l.id})
-    if (card) sorted.push(card)
-  })
-  return sorted
+  const sortedLines = sortBy(allLines, 'position')
+  if (autoSort) {
+    const idAttr = isSeries ? 'seriesLineId' : 'lineId'
+    // group by position within the line
+    // for each position, sort those cards by the order of the lines
+    const groupedCards = groupBy(cards, 'positionWithinLine')
+    const sortedLineIds = sortedLines.map(l => l.id)
+    return Object.keys(groupedCards).flatMap(position => {
+      return groupedCards[position].sort((a, b) => sortedLineIds.indexOf(a[idAttr]) - sortedLineIds.indexOf(b[idAttr]))
+    })
+  } else {
+    return sortBy(cards, 'positionInChapter')
+  }
 }
 
 function findChapterCards (chapterId, allCards) {
-  return allCards.filter(function(c) {
-    return c.chapterId === chapterId
-  })
+  return allCards.filter(c => c.chapterId === chapterId)
 }
 
 function charactersSection (data, doc) {

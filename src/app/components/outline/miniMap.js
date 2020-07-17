@@ -8,7 +8,7 @@ import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import * as CardActions from 'actions/cards'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { linesByBookSelector } from '../../selectors/lines'
+import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import MiniChapter from './MiniChapter'
 
@@ -52,6 +52,7 @@ class MiniMap extends Component {
       return <NavItem ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`} eventKey={ch.id}>
         <MiniChapter
           chapter={ch} idx={idx} cards={chapterCards} linesById={linesById} isSeries={isSeries}
+          sortedLines={lines}
           reorderCardsWithinLine={actions.reorderCardsWithinLine}
           reorderCardsInChapter={actions.reorderCardsInChapter}
         />
@@ -92,19 +93,19 @@ class MiniMap extends Component {
 }
 
 MiniMap.propTypes = {
+  active: PropTypes.number.isRequired,
+  cardMapping: PropTypes.object.isRequired,
+  activeFilter: PropTypes.bool.isRequired,
   chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
-  active: PropTypes.number.isRequired,
-  cardMapping: PropTypes.object.isRequired,
-  activeFilter: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     chapters: sortedChaptersByBookSelector(state.present),
-    lines: linesByBookSelector(state.present),
+    lines: sortedLinesByBookSelector(state.present),
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
   }

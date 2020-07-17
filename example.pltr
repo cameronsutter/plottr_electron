@@ -1,31 +1,24 @@
 {
   "ui": {
-    "characterFilter": {
-      "age": [],
-      "race": [],
-      "superpower": [],
-      "stuff": []
-    },
+    "characterFilter": null,
     "characterSort": "name~asc",
     "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
-    "placeFilter": {
-      "weather": [],
-      "galaxy": []
-    },
+    "placeFilter": null,
     "placeSort": "name~asc",
     "zoomIndex": 4,
     "zoomState": null,
-    "currentTimeline": 1
+    "currentTimeline": 1,
+    "timelineIsExpanded": true
   },
   "file": {
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.5.27"
+    "version": "2020.7.7"
   },
   "places": [
     {
@@ -181,7 +174,7 @@
         114,
         118
       ],
-      "categoryId": "",
+      "categoryId": null,
       "color": null,
       "description": "she is the coolest",
       "family": [
@@ -218,7 +211,7 @@
     {
       "age": "13",
       "cards": [],
-      "categoryId": "",
+      "categoryId": null,
       "color": null,
       "description": "she is the coolest",
       "family": [
@@ -253,7 +246,7 @@
     {
       "age": "13",
       "cards": [],
-      "categoryId": "",
+      "categoryId": null,
       "color": null,
       "description": "nothing big",
       "family": [
@@ -288,7 +281,7 @@
     {
       "age": "3200",
       "cards": [],
-      "categoryId": "",
+      "categoryId": null,
       "color": null,
       "description": "my fav",
       "family": [
@@ -340,7 +333,7 @@
     {
       "age": "50s",
       "cards": [],
-      "categoryId": "",
+      "categoryId": null,
       "color": null,
       "description": "He's old and cranky",
       "family": [
@@ -415,7 +408,7 @@
     {
       "age": "",
       "cards": [],
-      "categoryId": "",
+      "categoryId": null,
       "color": null,
       "description": "Main Character",
       "family": [
@@ -495,84 +488,96 @@
       "position": 0,
       "templates": [],
       "time": 0,
-      "title": "The Ordinary World"
+      "title": "The Ordinary World",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 2,
       "position": 1,
       "time": 0,
-      "title": "The Call of Adventure"
+      "title": "The Call of Adventure",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 3,
       "position": 2,
       "time": 0,
-      "title": "Refusal of the Call"
+      "title": "Refusal of the Call",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 4,
       "position": 3,
       "time": 0,
-      "title": "Meeting the Mentor"
+      "title": "Meeting the Mentor",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 5,
       "position": 4,
       "time": 0,
-      "title": "Crossing the First Threshold"
+      "title": "Crossing the First Threshold",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 6,
       "position": 5,
       "time": 0,
-      "title": "Test, Allies, Enemies"
+      "title": "Test, Allies, Enemies",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 7,
       "position": 6,
       "time": 0,
-      "title": "Approach to the Inmose Cave"
+      "title": "Approach to the Inmose Cave",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 8,
       "position": 7,
       "time": 0,
-      "title": "The Ordeal"
+      "title": "The Ordeal",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 9,
       "position": 8,
       "time": 0,
-      "title": "Reward (Seizing the Sword)"
+      "title": "Reward (Seizing the Sword)",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 10,
       "position": 9,
       "time": 0,
-      "title": "The Road Back"
+      "title": "The Road Back",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 11,
       "position": 10,
       "time": 0,
-      "title": "Resurrection"
+      "title": "Resurrection",
+      "autoOutlineSort": true
     },
     {
       "bookId": 2,
       "id": 12,
       "position": 11,
       "time": 0,
-      "title": "Return with the Elixir"
+      "title": "Return with the Elixir",
+      "autoOutlineSort": true
     },
     {
       "id": 116,
@@ -580,7 +585,8 @@
       "position": 0,
       "title": "auto",
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 107,
@@ -588,7 +594,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 98,
@@ -596,7 +603,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 99,
@@ -604,7 +612,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 68,
@@ -612,7 +621,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 61,
@@ -620,7 +630,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 67,
@@ -628,7 +639,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 66,
@@ -636,7 +648,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 69,
@@ -644,7 +657,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 64,
@@ -652,7 +666,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 71,
@@ -660,7 +675,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 76,
@@ -668,7 +684,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 90,
@@ -676,7 +693,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 83,
@@ -684,7 +702,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 72,
@@ -692,7 +711,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 78,
@@ -700,7 +720,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 100,
@@ -708,7 +729,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 65,
@@ -716,7 +738,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 73,
@@ -724,7 +747,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 70,
@@ -732,7 +756,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 74,
@@ -740,7 +765,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 75,
@@ -748,7 +774,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 77,
@@ -756,7 +783,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 79,
@@ -764,7 +792,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 81,
@@ -772,7 +801,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 82,
@@ -780,7 +810,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 89,
@@ -788,7 +819,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 85,
@@ -796,7 +828,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 86,
@@ -804,7 +837,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 87,
@@ -812,7 +846,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 88,
@@ -820,7 +855,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 84,
@@ -828,7 +864,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 101,
@@ -836,7 +873,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 92,
@@ -844,7 +882,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 93,
@@ -852,7 +891,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 103,
@@ -860,7 +900,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 91,
@@ -868,7 +909,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 102,
@@ -876,7 +918,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 95,
@@ -884,7 +927,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 94,
@@ -892,7 +936,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 80,
@@ -900,7 +945,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 104,
@@ -908,7 +954,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 96,
@@ -916,7 +963,8 @@
       "title": "auto",
       "bookId": 1,
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 111,
@@ -924,7 +972,8 @@
       "position": 43,
       "title": "auto",
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 112,
@@ -932,7 +981,8 @@
       "position": 44,
       "title": "auto",
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 113,
@@ -940,7 +990,8 @@
       "position": 45,
       "title": "auto",
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     },
     {
       "id": 114,
@@ -948,7 +999,8 @@
       "position": 46,
       "title": "auto",
       "time": 0,
-      "templates": []
+      "templates": [],
+      "autoOutlineSort": true
     }
   ],
   "cards": [
@@ -975,7 +1027,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -1031,7 +1085,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1069,7 +1125,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -1158,7 +1216,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -1197,7 +1257,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -1236,7 +1298,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1282,7 +1346,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1307,7 +1373,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1332,7 +1400,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -1367,7 +1437,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1404,7 +1476,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1429,7 +1503,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1454,7 +1530,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1487,7 +1565,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -1514,7 +1594,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1584,7 +1666,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1656,7 +1740,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1681,7 +1767,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1735,7 +1823,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1768,7 +1858,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1839,7 +1931,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1865,7 +1959,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1898,7 +1994,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1923,7 +2021,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1948,7 +2048,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -1981,7 +2083,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2043,7 +2147,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2091,7 +2197,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2124,7 +2232,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2149,7 +2259,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2174,7 +2286,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -2241,7 +2355,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -2310,7 +2426,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -2397,7 +2515,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2483,7 +2603,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2617,7 +2739,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2679,7 +2803,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2704,7 +2830,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2737,7 +2865,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2762,7 +2892,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2787,7 +2919,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2812,7 +2946,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2866,7 +3002,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2891,7 +3029,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2916,7 +3056,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -2941,7 +3083,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [
@@ -3033,7 +3177,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "characters": [],
@@ -3057,7 +3203,9 @@
       "beatId": null,
       "bookId": null,
       "seriesLineId": null,
-      "position": 0
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "id": 163,
@@ -3118,7 +3266,9 @@
       "characters": [],
       "places": [],
       "templates": [],
-      "imageId": null
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     },
     {
       "id": 164,
@@ -3142,7 +3292,9 @@
       "characters": [],
       "places": [],
       "templates": [],
-      "imageId": null
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
     }
   ],
   "lines": [
@@ -3151,7 +3303,8 @@
       "bookId": 2,
       "title": "Main plot",
       "color": "#6cace4",
-      "position": 0
+      "position": 0,
+      "expanded": null
     },
     {
       "color": "#6cace4",
@@ -3159,7 +3312,8 @@
       "position": 0,
       "title": "Main Story Arc",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#e5554f",
@@ -3167,7 +3321,8 @@
       "position": 1,
       "title": "Kevan",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#ff7f32",
@@ -3175,7 +3330,8 @@
       "position": 2,
       "title": "Anna",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#78be20",
@@ -3183,7 +3339,8 @@
       "position": 3,
       "title": "Samuel Zorfert",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "darkorchid",
@@ -3191,7 +3348,8 @@
       "position": 4,
       "title": "Bimph",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "#ffc72c",
@@ -3199,7 +3357,8 @@
       "position": 5,
       "title": "Rivab",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     },
     {
       "color": "DeepPink",
@@ -3207,7 +3366,8 @@
       "position": 6,
       "title": "Baltazaar",
       "characterId": null,
-      "bookId": 1
+      "bookId": 1,
+      "expanded": null
     }
   ],
   "customAttributes": {
@@ -3511,7 +3671,30 @@
       "id": 1,
       "color": "#6cace4",
       "title": "Main Plot",
-      "position": 0
+      "position": 0,
+      "expanded": null
     }
-  ]
+  ],
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      },
+      {
+        "id": 2,
+        "name": "Supporting",
+        "position": 1
+      },
+      {
+        "id": 3,
+        "name": "Other",
+        "position": 2
+      }
+    ],
+    "places": [],
+    "notes": [],
+    "tags": []
+  }
 }

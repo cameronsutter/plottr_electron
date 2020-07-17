@@ -2,6 +2,16 @@
 
 .outline__container {
   display: flex;
+  // overflow: auto;
+  // width: 100vw;
+  // height: calc(100% - 105px);
+  // position: absolute;
+}
+
+.outline__scenes-container {
+  width: 80%;
+  // height: 100%;
+  // overflow: auto;
 }
 
 .filter-list__list li {
@@ -122,10 +132,6 @@
       background-color: $darkmode-background;
     }
   }
-}
-
-.outline__scenes-container {
-  width: 80%;
 }
 
 .outline__card__label-list {

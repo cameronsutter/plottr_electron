@@ -15,13 +15,15 @@ import { chapterTitle } from '../../helpers/chapters'
 import { reorderList } from '../../helpers/lists'
 import { isSeriesSelector } from '../../selectors/ui'
 import { sortCardsInChapter } from '../../helpers/cards'
+import { sortedLinesByBookSelector } from '../../selectors/lines'
 
 class ChapterView extends Component {
 
   state = {sortedCards: []}
 
   static getDerivedStateFromProps (nextProps, nextState) {
-    const sortedCards = sortCardsInChapter(nextProps.chapter.autoOutlineSort, nextProps.cards)
+    const { chapter, cards, lines, isSeries } = nextProps
+    const sortedCards = sortCardsInChapter(chapter.autoOutlineSort, cards, lines, isSeries)
     return {sortedCards}
   }
 
@@ -96,17 +98,19 @@ class ChapterView extends Component {
 }
 
 ChapterView.propTypes = {
-  ui: PropTypes.object.isRequired,
   chapter: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
   activeFilter: PropTypes.bool.isRequired,
+  ui: PropTypes.object.isRequired,
+  lines: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
     ui: state.present.ui,
+    lines: sortedLinesByBookSelector(state.present),
     isSeries: isSeriesSelector(state.present),
   }
 }

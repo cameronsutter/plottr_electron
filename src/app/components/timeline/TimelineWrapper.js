@@ -15,6 +15,7 @@ import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
 import { FunSpinner } from '../Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
+import { timelineFilterIsEmptySelector } from '../../selectors/ui'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -25,7 +26,6 @@ class TimelineWrapper extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      filter: null,
       scrollLeft: 0,
       scrollTarget: 0,
       manualScroll: false,
@@ -96,17 +96,11 @@ class TimelineWrapper extends Component {
   // //////////////
 
   updateFilter = (filter) => {
-    // need to create a new object so the timeline re-renders everytime the filter changes
-    this.setState({ filter: {...filter} })
+    this.props.actions.setTimelineFilter({...filter})
   }
 
   clearFilter = () => {
-    this.updateFilter({ tag: [], character: [], place: [], book: [] })
-  }
-
-  filterIsEmpty () {
-    let filter = this.state.filter
-    return filter == null || (!filter['tag'].length && !filter['character'].length && !filter['place'].length)
+    this.props.actions.setTimelineFilter({ tag: [], character: [], place: [] })
   }
 
   // //////////////
@@ -263,7 +257,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav () {
-    const { ui } = this.props
+    const { ui, filterIsEmpty } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -283,10 +277,10 @@ class TimelineWrapper extends Component {
       scrollDirectionSecond = 'menu-down'
     }
     let popover = <Popover id='filter'>
-      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter} />
+      <FilterList filteredItems={this.props.ui.timelineFilter} updateItems={this.updateFilter} />
     </Popover>
     let filterDeclaration = <Alert onClick={this.clearFilter} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Timeline is filtered')}</Alert>
-    if (this.filterIsEmpty()) {
+    if (filterIsEmpty) {
       filterDeclaration = <span></span>
     }
 
@@ -339,7 +333,7 @@ class TimelineWrapper extends Component {
 
   renderBody () {
     if (this.state.mounted) {
-      return <TimelineTable filter={this.state.filter} filterIsEmpty={this.filterIsEmpty()} tableRef={this.tableRef} />
+      return <TimelineTable tableRef={this.tableRef} />
     } else {
       return <FunSpinner/>
     }
@@ -365,6 +359,7 @@ TimelineWrapper.propTypes = {
 function mapStateToProps (state) {
   return {
     ui: state.present.ui,
+    filterIsEmpty: timelineFilterIsEmptySelector(state.present),
   }
 }
 

@@ -66,7 +66,6 @@ export default class SceneCardAdd extends Component {
   }
 
   render () {
-    console.log(this.state.dropping)
     if (this.state.creating) {
       var cardStyle = {
         borderColor: this.props.color

@@ -7,6 +7,8 @@ function migrate (data) {
 
   // add expanded attribute to timeline
   obj.ui.timelineIsExpanded = true
+  // add timelineFilter
+  obj.ui.timelineFilter = null
 
   // add expanded attribute to lines
   obj.lines = obj.lines.map(l => {

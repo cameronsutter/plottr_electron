@@ -9,6 +9,7 @@ import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
+import { visibleCardsSelector } from '../../selectors/cards'
 
 class Card extends Component {
   constructor (props) {
@@ -120,7 +121,7 @@ class Card extends Component {
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'
     }
-    if (this.props.filtered) {
+    if (!this.props.isVisible) {
       cardStyle.opacity = '0.1'
     }
 
@@ -141,7 +142,7 @@ class Card extends Component {
     if (this.state.dragging != nextState.dragging) return true
     if (this.state.dialogOpen != nextState.dialogOpen) return true
     if (this.props.color != nextProps.color) return true
-    if (this.props.filtered != nextProps.filtered) return true
+    if (this.props.isVisible != nextProps.isVisible) return true
     if (this.props.card != nextProps.card) return true
     if (this.props.last != nextProps.last) return true
 
@@ -150,22 +151,23 @@ class Card extends Component {
 }
 
 Card.propTypes = {
-  cards: PropTypes.array,
+  card: PropTypes.object.isRequired,
   chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  filtered: PropTypes.bool.isRequired,
   last: PropTypes.bool.isRequired,
+  linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
-  linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
+  isVisible: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state, ownProps) {
   return {
     tags: state.present.tags,
     ui: state.present.ui,
+    isVisible: visibleCardsSelector(state.present)[ownProps.card.id],
   }
 }
 

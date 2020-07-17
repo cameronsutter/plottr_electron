@@ -21,7 +21,7 @@ export const linesByBookSelector = createSelector(
 export const sortedLinesByBookSelector = createSelector(
   linesByBookSelector,
   (lines) => sortBy(lines, 'position')
-  )
+)
 
 export const lineIsExpandedSelector = createSelector(
   linesByBookSelector,

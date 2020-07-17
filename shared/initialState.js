@@ -53,6 +53,7 @@ const ui = {
   noteFilter: null,
   zoomState: null,
   zoomIndex: 4,
+  timelineFilter: null,
 }
 
 const file = {

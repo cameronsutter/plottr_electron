@@ -1,16 +1,6 @@
 {
   "ui": {
-    "characterFilter": {
-      "tag": [],
-      "book": [],
-      "category": [],
-      "In possession of fortune": [],
-      "Married": [],
-      "more": [],
-      "attributes": [],
-      "of type": [],
-      "paragraph": []
-    },
+    "characterFilter": null,
     "characterSort": "name~asc",
     "currentView": "timeline",
     "darkMode": false,
@@ -28,7 +18,12 @@
     "currentTimeline": 1,
     "zoomState": null,
     "zoomIndex": 4,
-    "timelineIsExpanded": true
+    "timelineIsExpanded": false,
+    "timelineFilter": {
+      "tag": [],
+      "character": [],
+      "place": []
+    }
   },
   "file": {
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
@@ -10579,7 +10574,7 @@
       "title": "Main Plot",
       "characterId": null,
       "bookId": 1,
-      "expanded": true
+      "expanded": null
     },
     {
       "color": "#78be20",
@@ -10588,7 +10583,7 @@
       "title": "Elizabeth Bennet",
       "characterId": null,
       "bookId": 1,
-      "expanded": true
+      "expanded": null
     },
     {
       "color": "#e5554f",
@@ -11279,14 +11274,14 @@
       "title": "Sub plot",
       "color": "#78be20",
       "position": 1,
-      "expanded": true
+      "expanded": null
     },
     {
       "id": 1,
       "color": "#6cace4",
       "title": "Main Plot",
       "position": 0,
-      "expanded": true
+      "expanded": null
     }
   ],
   "categories": {

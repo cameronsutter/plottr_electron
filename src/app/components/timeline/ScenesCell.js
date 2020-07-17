@@ -15,6 +15,7 @@ import Floater from 'react-floater'
 import SceneCardAdd from './SceneCardAdd'
 import { reorderList } from '../../helpers/lists'
 import ErrorBoundary from '../../containers/ErrorBoundary'
+import { visibleCardsSelector } from '../../selectors/cards'
 
 class ScenesCell extends PureComponent {
 
@@ -55,7 +56,7 @@ class ScenesCell extends PureComponent {
   }
 
   renderCards (renderAddButtons) {
-    const { chapterId, lineId, chapterPosition, linePosition, color, filtered, cards } = this.props
+    const { chapterId, lineId, chapterPosition, linePosition, color, cards } = this.props
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
@@ -63,7 +64,7 @@ class ScenesCell extends PureComponent {
         <ErrorBoundary>
           <Card card={card} chapterId={chapterId} lineId={lineId}
             chapterPosition={chapterPosition} linePosition={linePosition}
-            color={color} filtered={filtered} last={idxOfCards == idx}
+            color={color} last={idxOfCards == idx}
           />
         </ErrorBoundary>
         {renderAddButtons ?
@@ -92,7 +93,10 @@ class ScenesCell extends PureComponent {
         { this.renderCards(true) }
       </div>
     } else {
-      var cardStyle = { borderColor: this.props.color }
+      let cardStyle = { borderColor: this.props.color }
+      if (!this.props.isVisible) {
+        cardStyle.opacity = '0.1'
+      }
       return <div className={cx('card__cell__overview-cell', {vertical: vertical})}>
         <Floater component={this.renderHiddenCards} placement='right' offset={0} disableAnimation={true}>
           <div className='card__body' style={cardStyle}>
@@ -123,20 +127,23 @@ ScenesCell.propTypes = {
   chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  filtered: PropTypes.bool,
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
   lineIsExpanded: PropTypes.bool.isRequired,
+  isVisible: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state, ownProps) {
+  const visibleCards = visibleCardsSelector(state.present)
+  const visible = ownProps.cards.some(c => visibleCards[c.id])
   return {
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
     lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.lineId],
+    isVisible: visible,
   }
 }
 

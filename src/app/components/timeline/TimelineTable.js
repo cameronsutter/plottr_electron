@@ -65,29 +65,6 @@ class TimelineTable extends Component {
     // }
   }
 
-  // cardIsFiltered (card) {
-  //   if (!card) return false
-  //   const filter = this.props.filter
-  //   if (filter == null) return true
-  //   let filtered = true
-  //   if (card.tags) {
-  //     card.tags.forEach((tId) => {
-  //       if (filter['tag'].indexOf(tId) !== -1) filtered = false
-  //     })
-  //   }
-  //   if (card.characters) {
-  //     card.characters.forEach((cId) => {
-  //       if (filter['character'].indexOf(cId) !== -1) filtered = false
-  //     })
-  //   }
-  //   if (card.places) {
-  //     card.places.forEach((pId) => {
-  //       if (filter['place'].indexOf(pId) !== -1) filtered = false
-  //     })
-  //   }
-  //   return filtered
-  // }
-
   handleReorderChapters = (originalPosition, droppedPosition) => {
     const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
     if (this.props.isSeries) {
@@ -196,22 +173,17 @@ class TimelineTable extends Component {
   renderCardsByChapter (line, chapterMap, chapterMapKeys) {
     const { cardMap } = this.props
     return chapterMapKeys.flatMap(chapterPosition => {
-      let filtered = false
       const cells = []
       const chapterId = chapterMap[chapterPosition]
       cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} showLine={chapterPosition == 0} color={line.color} tableLength={this.state.tableLength}/>)
       const cards = cardMap[`${line.id}-${chapterId}`]
       const key = `${cards ? 'card' : 'blank'}-${chapterPosition}-${line.position}`
       if (cards) {
-        // TODO: implement card filtering
-        // if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
-        //   filtered = true
-        // }
         cells.push(<ScenesCell
           key={key} cards={cards}
           chapterId={chapterId} lineId={line.id}
           chapterPosition={chapterPosition} linePosition={line.position}
-          color={line.color} filtered={filtered} />)
+          color={line.color} />)
       } else {
         cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
           key={key}
@@ -224,21 +196,16 @@ class TimelineTable extends Component {
   renderCardsByLine (chapter, lineMap, lineMapKeys) {
     const { cardMap } = this.props
     return lineMapKeys.flatMap(linePosition => {
-      let filtered = false
       const cells = []
       const line = lineMap[linePosition]
       const cards = cardMap[`${line.id}-${chapter.id}`]
       const key = `${cards ? 'card' : 'blank'}-${chapter.position}-${linePosition}`
       if (cards) {
-        // TODO: implement card filtering
-        // if (!this.props.filterIsEmpty && this.cardIsFiltered(card)) {
-        //   filtered = true
-        // }
         cells.push(<ScenesCell
           key={key} cards={cards}
           chapterId={chapter.id} lineId={line.id}
           chapterPosition={chapter.position} linePosition={linePosition}
-          color={line.color} filtered={filtered} />)
+          color={line.color} />)
       } else {
         cells.push(<BlankCard chapterId={chapter.id} lineId={line.id}
           key={key}
@@ -263,8 +230,6 @@ TimelineTable.propTypes = {
   seriesLines: PropTypes.array,
   cardMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
-  filter: PropTypes.object,
-  filterIsEmpty: PropTypes.bool,
   tableRef: PropTypes.object,
 }
 

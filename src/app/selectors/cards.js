@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 import { sortBy } from 'lodash'
-import { isSeriesSelector } from './ui'
+import { isSeriesSelector, timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
 
 export const allCardsSelector = state => state.cards
 
@@ -13,6 +13,18 @@ export const cardMapSelector = createSelector(
     } else {
       return cards.reduce(cardReduce('lineId', 'chapterId'), {})
     }
+  }
+)
+
+export const visibleCardsSelector = createSelector(
+  allCardsSelector,
+  timelineFilterSelector,
+  timelineFilterIsEmptySelector,
+  (cards, filter, filterIsEmpty) => {
+    return cards.reduce((acc, c) => {
+      acc[c.id] = cardIsVisible(c, filter, filterIsEmpty)
+      return acc
+    }, {})
   }
 )
 
@@ -31,37 +43,25 @@ function cardReduce (lineAttr, beatAttr) {
   }
 }
 
-// MAYBE: this selector should return a map of all cards and whether they are visible
-// and then each card can check if it's visible
+function cardIsVisible (card, filter, filterIsEmpty) {
+  if (filterIsEmpty) return true
 
-// export const cardIsFilteredSelector = createSelector(
-//   allCardsSelector,
-//   () => {}
-// )
+  return Object.keys(filter).some(attr => {
+    return filter[attr].some(val => {
+      // this is AND logic
+      // return card[`${attr}s`].includes(val)
 
-// TODO: should be a selector on each card
-// or cache this somewhere
-function cardIsFiltered (card) {
-  if (!card) return false
-  const filter = this.props.filter
-  if (filter == null) return true
-
-  // TODO: there's got to be a better way to do this logic
-  let filtered = true
-  if (card.tags) {
-    card.tags.forEach((tId) => {
-      if (filter['tag'].indexOf(tId) !== -1) filtered = false
+      // this is OR logic
+      if (attr == 'tag') {
+        return card.tags.includes(val)
+      }
+      if (attr == 'character') {
+        return card.characters.includes(val)
+      }
+      if (attr == 'place') {
+        return card.places.includes(val)
+      }
+      return false
     })
-  }
-  if (card.characters) {
-    card.characters.forEach((cId) => {
-      if (filter['character'].indexOf(cId) !== -1) filtered = false
-    })
-  }
-  if (card.places) {
-    card.places.forEach((pId) => {
-      if (filter['place'].indexOf(pId) !== -1) filtered = false
-    })
-  }
-  return filtered
+  })
 }

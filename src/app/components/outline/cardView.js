@@ -11,7 +11,7 @@ import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
 import Image from 'components/images/Image'
-import { FaGripLinesVertical, FaRegCircle, FaCircle } from 'react-icons/fa'
+import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
 import { isSeriesSelector } from '../../selectors/ui'
 
 class CardView extends Component {

@@ -9,6 +9,7 @@ import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
+import { FaCircle } from 'react-icons/fa'
 import { visibleCardsSelector } from '../../selectors/cards'
 
 class Card extends Component {
@@ -17,6 +18,8 @@ class Card extends Component {
     this.state = {
       dialogOpen: false,
       dragging: false,
+      inDropZone: false,
+      dropDepth: 0,
     }
   }
 
@@ -32,6 +35,39 @@ class Card extends Component {
 
   handleDragEnd = () => {
     this.setState({dragging: false})
+  }
+
+  handleDragEnter = (e) => {
+    // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
+    if (!this.state.dragging) this.setState({dropDepth: this.state.dropDepth + 1})
+  }
+
+  handleDragOver = (e) => {
+    e.preventDefault()
+    if (!this.state.dragging) this.setState({inDropZone: true})
+  }
+
+  handleDragLeave = (e) => {
+    if (!this.state.dragging) {
+      let dropDepth = this.state.dropDepth
+      --dropDepth
+      this.setState({dropDepth: dropDepth})
+      if (dropDepth > 0) return
+      this.setState({inDropZone: false})
+    }
+  }
+
+  handleDrop = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    if (this.state.dragging) return
+    this.setState({inDropZone: false, dropDepth: 0})
+
+    const json = e.dataTransfer.getData('text/json')
+    const droppedData = JSON.parse(json)
+    if (!droppedData.cardId) return
+
+    this.props.moveCard(droppedData.cardId, this.props.idx)
   }
 
   openDialog = () => {
@@ -94,6 +130,14 @@ class Card extends Component {
     return <div className='card__popover-labels'>{ tagLabels }</div>
   }
 
+  renderDropZone () {
+    if (!this.state.inDropZone) return
+
+    return <div className='card__drop-zone'>
+      <FaCircle/>
+    </div>
+  }
+
   renderTitle () {
     let title = <div className='card__title'>
       {this.props.card.title}
@@ -125,8 +169,14 @@ class Card extends Component {
       cardStyle.opacity = '0.1'
     }
 
-    return <div className={cx('card__body-wrapper', {lastOne: this.props.last})}>
+    return <div className={cx('card__body-wrapper', {lastOne: this.props.last})}
+      onDragEnter={this.handleDragEnter}
+      onDragOver={this.handleDragOver}
+      onDragLeave={this.handleDragLeave}
+      onDrop={this.handleDrop}
+    >
       { this.renderDialog() }
+      { this.renderDropZone() }
       <div className='card__body' style={cardStyle}
         draggable
         onDragStart={this.handleDragStart}
@@ -141,6 +191,7 @@ class Card extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     if (this.state.dragging != nextState.dragging) return true
     if (this.state.dialogOpen != nextState.dialogOpen) return true
+    if (this.state.inDropZone != nextState.inDropZone) return true
     if (this.props.color != nextProps.color) return true
     if (this.props.isVisible != nextProps.isVisible) return true
     if (this.props.card != nextProps.card) return true
@@ -158,6 +209,8 @@ Card.propTypes = {
   last: PropTypes.bool.isRequired,
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  moveCard: PropTypes.func.isRequired,
+  idx: PropTypes.number.isRequired,
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
   isVisible: PropTypes.bool.isRequired,

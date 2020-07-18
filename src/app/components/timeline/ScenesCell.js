@@ -19,6 +19,23 @@ import { visibleCardsSelector } from '../../selectors/cards'
 
 class ScenesCell extends PureComponent {
 
+  moveSceneCardAbove = (id, positionWithinLine) => {
+    const { chapterId, lineId, isSeries, cards } = this.props
+    let newOrder = []
+
+    const currentIds = cards.map(c => c.id)
+    if (currentIds.includes(id)) {
+      const currentPosition = cards.find(c => c.id == id).positionWithinLine
+      newOrder = moveToAbove(currentPosition, positionWithinLine, currentIds)
+    } else {
+      // dropped in from a different chapter
+      newOrder = currentIds
+      newOrder.splice(positionWithinLine, 0, id)
+    }
+
+    this.props.actions.reorderCardsWithinLine(chapterId, lineId, isSeries, newOrder)
+  }
+
   moveSceneCard = (id, positionWithinLine) => {
     const { chapterId, lineId, isSeries, cards } = this.props
     let newOrder = []
@@ -60,19 +77,21 @@ class ScenesCell extends PureComponent {
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
+      const isLastOne = idx == cards.length - 1
       return <div key={card.id}>
         <ErrorBoundary>
-          <Card card={card} chapterId={chapterId} lineId={lineId}
+          <Card card={card} chapterId={chapterId} lineId={lineId} idx={idx}
             chapterPosition={chapterPosition} linePosition={linePosition}
-            color={color} last={idxOfCards == idx}
+            color={color} last={idxOfCards == idx} moveCard={this.moveSceneCardAbove}
           />
         </ErrorBoundary>
         {renderAddButtons ?
           <SceneCardAdd
             color={color}
-            positionWithinLine={idx}
+            positionWithinLine={isLastOne ? cards.length : idx}
             moveCard={this.moveSceneCard}
             addCard={this.addSceneCard}
+            allowDrop={isLastOne}
           />
         : null}
       </div>
@@ -108,6 +127,7 @@ class ScenesCell extends PureComponent {
           positionWithinLine={numOfCards}
           moveCard={this.moveSceneCard}
           addCard={this.addSceneCard}
+          allowDrop
         />
       </div>
     }

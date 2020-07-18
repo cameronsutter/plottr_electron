@@ -1894,7 +1894,7 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 3,
-      "positionWithinLine": 3,
+      "positionWithinLine": 4,
       "positionInChapter": 0
     },
     {
@@ -1989,7 +1989,7 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 0,
-      "positionWithinLine": 1,
+      "positionWithinLine": 3,
       "positionInChapter": 0
     },
     {
@@ -2005,7 +2005,7 @@
         }
       ],
       "id": 3,
-      "lineId": 1,
+      "lineId": 2,
       "places": [],
       "tags": [
         9
@@ -2018,7 +2018,7 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 1,
-      "positionWithinLine": 1,
+      "positionWithinLine": 0,
       "positionInChapter": 0
     },
     {
@@ -2281,7 +2281,7 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 0,
-      "positionWithinLine": 0,
+      "positionWithinLine": 1,
       "positionInChapter": 0
     },
     {
@@ -2429,7 +2429,7 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 0,
-      "positionWithinLine": 0,
+      "positionWithinLine": 4,
       "positionInChapter": 0
     },
     {
@@ -2459,7 +2459,7 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 0,
-      "positionWithinLine": 0,
+      "positionWithinLine": 3,
       "positionInChapter": 0
     },
     {
@@ -2688,7 +2688,7 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 0,
-      "positionWithinLine": 0,
+      "positionWithinLine": 2,
       "positionInChapter": 0
     },
     {
@@ -10649,7 +10649,7 @@
       "title": "Main Plot",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": true
     },
     {
       "color": "#78be20",

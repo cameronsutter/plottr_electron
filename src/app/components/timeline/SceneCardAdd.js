@@ -84,15 +84,21 @@ export default class SceneCardAdd extends Component {
         </FormGroup>
       </div>
     } else {
-      return <div className={cx('card__add-card', {dropping: this.state.dropping})}
-        onClick={this.startCreating}
-        onDragEnter={this.handleDragEnter}
-        onDragOver={this.handleDragOver}
-        onDragLeave={this.handleDragLeave}
-        onDrop={this.handleDrop}
-      >
-        <Glyphicon glyph='plus' />
-      </div>
+      if (this.props.allowDrop) {
+        return <div className={cx('card__add-card', {dropping: this.state.dropping})}
+          onClick={this.startCreating}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
+        >
+          <Glyphicon glyph='plus' />
+        </div>
+      } else {
+        return <div className={cx('card__add-card', {dropping: this.state.dropping})} onClick={this.startCreating}>
+          <Glyphicon glyph='plus' />
+        </div>
+      }
     }
   }
 
@@ -108,5 +114,6 @@ export default class SceneCardAdd extends Component {
     positionWithinLine: PropTypes.number.isRequired,
     moveCard: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
+    allowDrop: PropTypes.bool.isRequired,
   }
 }

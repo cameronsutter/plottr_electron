@@ -13,7 +13,7 @@ import { isSeriesSelector } from '../../selectors/ui'
 import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
 import SceneCardAdd from './SceneCardAdd'
-import { reorderList } from '../../helpers/lists'
+import { reorderList, moveToAbove } from '../../helpers/lists'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import { visibleCardsSelector } from '../../selectors/cards'
 

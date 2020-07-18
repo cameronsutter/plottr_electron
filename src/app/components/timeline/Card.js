@@ -61,6 +61,7 @@ class Card extends Component {
     e.stopPropagation()
     e.preventDefault()
     if (this.state.dragging) return
+    if (!this.props.allowDrop) return
     this.setState({inDropZone: false, dropDepth: 0})
 
     const json = e.dataTransfer.getData('text/json')
@@ -131,6 +132,7 @@ class Card extends Component {
   }
 
   renderDropZone () {
+    if (!this.props.allowDrop) return
     if (!this.state.inDropZone) return
 
     return <div className='card__drop-zone'>
@@ -169,11 +171,13 @@ class Card extends Component {
       cardStyle.opacity = '0.1'
     }
 
+    const droppable = this.props.allowDrop
+
     return <div className={cx('card__body-wrapper', {lastOne: this.props.last})}
-      onDragEnter={this.handleDragEnter}
-      onDragOver={this.handleDragOver}
-      onDragLeave={this.handleDragLeave}
-      onDrop={this.handleDrop}
+      onDragEnter={droppable ? this.handleDragEnter : null}
+      onDragOver={droppable ? this.handleDragOver : null}
+      onDragLeave={droppable ? this.handleDragLeave : null}
+      onDrop={droppable ? this.handleDrop : null}
     >
       { this.renderDialog() }
       { this.renderDropZone() }
@@ -211,6 +215,7 @@ Card.propTypes = {
   chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   moveCard: PropTypes.func.isRequired,
   idx: PropTypes.number.isRequired,
+  allowDrop: PropTypes.bool.isRequired,
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
   isVisible: PropTypes.bool.isRequired,

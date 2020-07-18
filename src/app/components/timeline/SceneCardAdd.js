@@ -62,7 +62,7 @@ export default class SceneCardAdd extends Component {
     const droppedData = JSON.parse(json)
     if (!droppedData.cardId) return
 
-    this.props.moveCard(droppedData.cardId, this.props.positionWithinLine)
+    this.props.moveCard(droppedData.cardId, this.props.dropPosition || this.props.positionWithinLine)
   }
 
   render () {
@@ -106,6 +106,7 @@ export default class SceneCardAdd extends Component {
     if (this.state.dropping != nextState.dropping) return true
     if (this.state.creating != nextState.creating) return true
     if (this.props.color != nextProps.color) return true
+    if (this.props.allowDrop != nextProps.allowDrop) return true
     return false
   }
 
@@ -115,5 +116,6 @@ export default class SceneCardAdd extends Component {
     moveCard: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
     allowDrop: PropTypes.bool.isRequired,
+    dropPosition: PropTypes.number,
   }
 }

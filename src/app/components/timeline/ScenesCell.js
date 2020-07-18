@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
-import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
 import { Cell } from 'react-sticky-table'
-import { Glyphicon, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
 import * as CardActions from 'actions/cards'
 import Card from './Card'
 import cx from 'classnames'
@@ -72,7 +70,7 @@ class ScenesCell extends PureComponent {
     }
   }
 
-  renderCards (renderAddButtons) {
+  renderCards (arentHidden) {
     const { chapterId, lineId, chapterPosition, linePosition, color, cards } = this.props
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
@@ -83,15 +81,17 @@ class ScenesCell extends PureComponent {
           <Card card={card} chapterId={chapterId} lineId={lineId} idx={idx}
             chapterPosition={chapterPosition} linePosition={linePosition}
             color={color} last={idxOfCards == idx} moveCard={this.moveSceneCardAbove}
+            allowDrop={arentHidden}
           />
         </ErrorBoundary>
-        {renderAddButtons ?
+        {arentHidden ?
           <SceneCardAdd
             color={color}
-            positionWithinLine={isLastOne ? cards.length : idx}
+            positionWithinLine={idx}
             moveCard={this.moveSceneCard}
             addCard={this.addSceneCard}
             allowDrop={isLastOne}
+            dropPosition={cards.length}
           />
         : null}
       </div>

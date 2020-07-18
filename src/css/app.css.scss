@@ -194,6 +194,24 @@ div.update-notifier:hover {
   position: absolute;
 }
 
+.popover {
+  .popover-content {
+    max-height: 100vh;
+  }
+}
+#list-popover.popover {
+  .popover-content {
+    max-height: 93vh;
+    overflow: auto;
+  }
+}
+#filter.popover {
+  .popover-content {
+    max-height: 83vh;
+    overflow: auto;
+  }
+}
+
 .tour-helper {
   padding-right: 60px!important;
   max-width: 700px!important;

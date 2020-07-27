@@ -40,7 +40,7 @@ const concrete = numbering.createConcreteNumbering(abstractNum)
 
 const serialize = (nodes, doc) => {
   if (!nodes) return []
-  if (typeof nodes === 'string') return new Paragraph({children: [leaf({text: nodes})]})
+  if (typeof nodes === 'string') return [new Paragraph({children: [leaf({text: nodes})]})]
 
   return nodes.flatMap(n => {
     if (!n.children) return leaf(n)

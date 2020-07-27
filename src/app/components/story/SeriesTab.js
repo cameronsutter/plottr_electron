@@ -8,7 +8,7 @@ import ErrorBoundary from '../../containers/ErrorBoundary'
 export default class SeriesTab extends Component {
   render () {
     return <ErrorBoundary>
-      <div>
+      <div className='series__container'>
         <h2 style={{paddingLeft: '40px'}}>{i18n('Series')}</h2>
         <EditSeries />
         <BookList />

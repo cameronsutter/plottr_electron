@@ -870,8 +870,9 @@ function buildFileMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = windows.find(w => w.id == win.id)
       if (winObj) {
+        const defaultPath = path.basename(winObj.state.file.fileName).replace('.pltr', ` ${i18n('copy')}`)
         const filters = [{name: 'Plottr file', extensions: ['pltr']}]
-        const fileName = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save this copy?')})
+        const fileName = dialog.showSaveDialogSync(win, {filters, title: i18n('Where would you like to save this copy?'), defaultPath})
         if (fileName) {
           let fullName = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
           let newState = {...winObj.state}
@@ -942,11 +943,13 @@ function buildFileMenu () {
       let exportState = {}
       if (winObj) {
         exportState = winObj.state
-      } else {
+      } else if (windows.length) {
         exportState = windows[0].state
       }
+      // TODO: if there are no open windows this would export nothing, so maybe handle that better
+      const defaultPath = path.basename(exportState.file.fileName).replace('.pltr', '')
       const filters = [{name: i18n('Word Document'), extensions: ['docx']}]
-      const fileName = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save the export?')})
+      const fileName = dialog.showSaveDialogSync(win, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
       if (fileName) {
         Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})
       }

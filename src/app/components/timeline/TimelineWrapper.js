@@ -1,3 +1,4 @@
+import path from 'path'
 import React, { Component } from 'react'
 import { ipcRenderer, remote } from 'electron'
 import PropTypes from 'react-proptypes'
@@ -239,8 +240,9 @@ class TimelineWrapper extends Component {
 
   doExport = () => {
     let label = i18n('Where would you like to save the export?')
+    const defaultPath = path.basename(this.props.file.fileName).replace('.pltr', '')
     const filters = [{name: 'Word', extensions: ['docx']}]
-    const fileName = dialog.showSaveDialogSync({title: label, filters})
+    const fileName = dialog.showSaveDialogSync({title: label, filters, defaultPath})
     if (fileName) {
       const options = { fileName, bookId: this.props.ui.currentTimeline }
       MPQ.push('Export')
@@ -353,11 +355,13 @@ class TimelineWrapper extends Component {
 }
 
 TimelineWrapper.propTypes = {
+  file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps (state) {
   return {
+    file: state.present.file,
     ui: state.present.ui,
     filterIsEmpty: timelineFilterIsEmptySelector(state.present),
   }

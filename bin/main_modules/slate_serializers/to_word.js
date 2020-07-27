@@ -64,7 +64,7 @@ const serialize = (nodes, doc) => {
       case 'link':
         return new Hyperlink(n.url)
       case 'image-link':
-        return new Hyperlink(n.url)
+        return new Paragraph({children: [new Hyperlink(n.url), ...children]})
       case 'image-data':
         const imgData = n.data
         const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))

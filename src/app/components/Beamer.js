@@ -1,12 +1,18 @@
 import React, { useEffect } from 'react'
 import { shell } from 'electron'
 import { FaRegBell } from 'react-icons/fa'
+import USER from '../../common/utils/user_info'
 
 function Beamer (props) {
 
   useEffect(() => {
     if (window.Beamer) {
-      window.Beamer.update({callback: getBeamerAlerts, onclick: openBeamerLink})
+      const options = {callback: getBeamerAlerts, onclick: openBeamerLink}
+      if (USER.get('payment_id')) {
+        options.user_email = USER.get('customer_email')
+        options.user_id = USER.get('payment_id')
+      }
+      window.Beamer.update(options)
       window.Beamer.init()
     }
   }, [])

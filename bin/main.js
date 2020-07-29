@@ -323,7 +323,11 @@ app.on('will-quit', () => {
 
 function checkUpdatesIfAllowed () {
   if (process.env.NODE_ENV == 'dev') return
-  if (TRIALMODE) return
+  if (TRIALMODE) {
+    UpdateManager.checkForUpdates(windows)
+    return
+  }
+
   if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
 
   if (!checkedForActiveLicense) {

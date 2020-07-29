@@ -10,6 +10,7 @@ import i18n from 'format-message'
 import cx from 'classnames'
 import UpdateNotifier from '../components/UpdateNotifier'
 import { ipcRenderer } from 'electron'
+import Beamer from '../components/Beamer'
 var TRIALMODE = process.env.TRIALMODE === 'true'
 
 class Navigation extends Component {
@@ -38,7 +39,6 @@ class Navigation extends Component {
   render () {
     let klasses = cx('navbar', 'navbar-default', 'navbar-fixed-top', {'navbar-inverse': this.props.ui.darkMode})
     return <nav className={klasses} role='navigation'>
-      {TRIALMODE ? null : <UpdateNotifier/>}
       <div className='collapse navbar-collapse'>
         <div className='navbar-header'>
           <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='#navbar-collapse-1'>
@@ -80,7 +80,9 @@ class Navigation extends Component {
           : null}
         </ul>
         { this.renderTrialLinks() }
+        <Beamer/>
       </div>
+      {TRIALMODE ? null : <UpdateNotifier/>}
     </nav>
   }
   // <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>

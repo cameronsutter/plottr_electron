@@ -499,7 +499,6 @@ function openWindow (fileName, jsonData) {
   // and restore the maximized or full screen state
   stateKeeper.manage(newWindow)
 
-
   // and load the app.html of the app.
   const entryFile = path.join(filePrefix, 'app.html')
   newWindow.loadURL(entryFile)
@@ -555,6 +554,11 @@ function openWindow (fileName, jsonData) {
     } else {
       dereferenceWindow(win)
     }
+  })
+
+  newWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+    event.preventDefault()
+    shell.openExternal(url)
   })
 
   try {

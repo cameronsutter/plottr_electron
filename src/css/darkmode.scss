@@ -1,82 +1,80 @@
 @import "vars";
-
 body.darkmode {
-  background: $darkmode-background;
-
-  .form-control {
-    background-color: #ddd !important;
-  }
-
-  h1, h2, h3, h4, h5, h6, p, .control-label {
-    color: $darkmode-text;
-  }
-
-  .popover {
-    color: $darkmode-text;
-    background-color: $darkmode-background;
-    &.right {
-      .arrow:after {
-        border-right-color: $darkmode-background;
-      }
+    background: $darkmode-background;
+    .form-control {
+        background-color: #ddd !important;
     }
-    &.left {
-      .arrow:after {
-        border-left-color: $darkmode-background;
-      }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    .control-label {
+        color: $darkmode-text;
     }
-    &.bottom {
-      .arrow:after {
-        border-bottom-color: $darkmode-background;
-      }
+    .popover {
+        color: $darkmode-text;
+        background-color: $darkmode-background;
+        &.right {
+            .arrow:after {
+                border-right-color: $darkmode-background;
+            }
+        }
+        &.left {
+            .arrow:after {
+                border-left-color: $darkmode-background;
+            }
+        }
+        &.bottom {
+            .arrow:after {
+                border-bottom-color: $darkmode-background;
+            }
+        }
+        .popover-title {
+            background-color: $darkmode-darker-background;
+            color: $darkmode-text;
+            border-bottom: 1px solid #444;
+        }
     }
-    .popover-title {
-      background-color: $darkmode-darker-background;
-      color: $darkmode-text;
-      border-bottom: 1px solid #444;
-    }
-  }
-
-  .btn-default {
-    border-color: $darkmode-darker-border;
-    background-color: $darkmode-darker-background;
-    color: $darkmode-text;
-    &:hover {
-      background-color: $darkmode-background;
-    }
-  }
-
-  .dropdown-menu {
-    background-color: $darkmode-background;
-    li > a {
-      color: $darkmode-text;
-      &:hover {
+    .btn-default {
+        border-color: $darkmode-darker-border;
         background-color: $darkmode-darker-background;
-      }
+        color: $darkmode-text;
+        &:hover {
+            background-color: $darkmode-background;
+        }
     }
-  }
-
-  .list-group {
-    li {
-      color: $darkmode-text;
-      background-color: $darkmode-background;
-
-      &:hover, &.selected {
-        background-color: $darkmode-darker-background !important;
-      }
+    .dropdown-menu {
+        background-color: $darkmode-background;
+        li>a {
+            color: $darkmode-text;
+            &:hover {
+                background-color: $darkmode-darker-background;
+            }
+        }
     }
-  }
-
-  .panel {
-    color: $darkmode-text;
-    background-color: $darkmode-background;
-  }
-
-  .table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: $darkmode-darker-background;
-  }
-
-  .ReactModal__Content {
-    color: $darkmode-text;
-    background-color: $darkmode-background !important;
-  }
+    .list-group {
+        li {
+            color: $darkmode-text;
+            background-color: $darkmode-background;
+            &:hover,
+            &.selected {
+                background-color: $darkmode-darker-background !important;
+            }
+        }
+    }
+    .panel {
+        color: $darkmode-text;
+        background-color: $darkmode-background;
+    }
+    .table-striped>tbody>tr:nth-of-type(odd) {
+        background-color: $darkmode-darker-background;
+    }
+    .ReactModal__Content,
+    .modal-content {
+        color: $darkmode-text;
+        background-color: $darkmode-background !important;
+    }
 }

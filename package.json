@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.7.25",
+  "version": "2020.7.26",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
@@ -108,7 +108,7 @@
     "webpack-cli": "^3.3.5"
   },
   "build": {
-    "electronVersion": "8.2.0",
+    "electronVersion": "8.2.4",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
     "publish": [

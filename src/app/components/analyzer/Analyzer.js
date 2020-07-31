@@ -30,7 +30,7 @@ class Analyzer extends Component {
 
   render () {
     const { pltr } = this.props
-    return <div style={{padding: '10px'}}>
+    return <div className='analyzer__container'>
       <h3>{pltr.file.version}{' '}<small>{pltr.file.fileName}</small></h3>
       <Grid fluid>
         <Row>

@@ -1,5 +1,12 @@
 @import "vars";
 
+.analyzer__container {
+  padding: 10px;
+  height: calc(100% - 50px);
+  position: absolute;
+  overflow: auto;
+}
+
 div.json-inspector__leaf {
   padding-left: 30px;
 

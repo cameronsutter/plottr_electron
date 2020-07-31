@@ -19,6 +19,7 @@ import CharacterDetails from './CharacterDetails'
 import SelectList from '../selectList'
 import BookSelectList from '../story/BookSelectList'
 import { singleCharacterSelector } from '../../selectors/characters'
+import { sortedTagsSelector } from '../../selectors/tags'
 
 class CharacterView extends Component {
   render () {
@@ -68,7 +69,7 @@ function mapStateToProps (state, ownProps) {
   return {
     character: singleCharacterSelector(state.present, ownProps.characterId),
     ui: state.present.ui,
-    tags: state.present.tags,
+    tags: sortedTagsSelector(state.present),
   }
 }
 

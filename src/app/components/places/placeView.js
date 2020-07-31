@@ -13,6 +13,7 @@ import Image from '../images/Image'
 import SelectList from '../selectList'
 import BookSelectList from '../story/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { sortedTagsSelector } from '../../selectors/tags'
 
 class PlaceView extends Component {
   constructor (props) {
@@ -344,7 +345,7 @@ function mapStateToProps (state) {
     cards: state.present.cards,
     notes: state.present.notes,
     ui: state.present.ui,
-    tags: state.present.tags,
+    tags: sortedTagsSelector(state.present),
   }
 }
 

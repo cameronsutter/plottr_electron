@@ -14,6 +14,9 @@ import Image from 'components/images/Image'
 import BookSelectList from '../story/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import cx from 'classnames'
+import { sortedTagsSelector } from '../../selectors/tags'
+import { charactersSortedAtoZSelector } from '../../selectors/characters'
+import { placesSortedAtoZSelector } from '../../selectors/places'
 
 class NoteView extends Component {
   constructor (props) {
@@ -203,9 +206,9 @@ NoteView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    characters: state.present.characters,
-    places: state.present.places,
-    tags: state.present.tags,
+    tags: sortedTagsSelector(state.present),
+    characters: charactersSortedAtoZSelector(state.present),
+    places: placesSortedAtoZSelector(state.present),
     ui: state.present.ui,
   }
 }

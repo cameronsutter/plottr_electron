@@ -107,7 +107,10 @@ function chapterTitle (chapter, offset, isSeries) {
 function card (card, lines, namesMapping, doc) {
   let paragraphs = [new Paragraph('')]
   let line = lines.find(l => card.lineId == l.id)
-  let titleString = `${card.title} (${line.title})`
+  let titleString = card.title
+  if (line) {
+    titleString = `${card.title} (${line.title})`
+  }
   let attachmentParagraphs = attachments(card, namesMapping)
   paragraphs.push(new Paragraph({text: titleString, heading: HeadingLevel.HEADING_3}))
   paragraphs = paragraphs.concat(attachmentParagraphs)

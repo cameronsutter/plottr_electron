@@ -26,7 +26,7 @@ function Beamer (props) {
 
   if (!window.Beamer) return null
 
-  return <ul className='nav navbar-nav navbar-right' style={{marginRight: '0'}}>
+  return <ul className='nav navbar-nav navbar-right' style={{marginRight: '2px'}}>
     <li>
       <a id='beamer-bell' href='#'>
         <FaRegBell/>

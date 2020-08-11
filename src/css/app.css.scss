@@ -154,7 +154,7 @@ input[type="file"] {
 .update-notifier {
   @include application-text;
   position: absolute;
-  right: 15px;
+  right: 50px;
   height: 30px;
   top: 10px;
   border-radius: 100px;
@@ -209,6 +209,15 @@ div.update-notifier:hover {
   .popover-content {
     max-height: 83vh;
     overflow: auto;
+  }
+}
+
+#beamer-bell {
+  .beamer_icon {
+    top: 5px;
+  }
+  svg {
+    vertical-align: text-bottom;
   }
 }
 

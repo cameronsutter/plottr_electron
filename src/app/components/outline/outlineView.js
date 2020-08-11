@@ -1,3 +1,4 @@
+import path from 'path'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
@@ -87,8 +88,9 @@ class OutlineView extends Component {
 
   doExport = () => {
     let label = i18n('Where would you like to save the export?')
+    const defaultPath = path.basename(this.props.file.fileName).replace('.pltr', '')
     const filters = [{name: 'Word', extensions: ['docx']}]
-    const fileName = dialog.showSaveDialogSync({title: label, filters})
+    const fileName = dialog.showSaveDialogSync({title: label, filters, defaultPath})
     if (fileName) {
       const options = { fileName, bookId: this.props.ui.currentTimeline }
       MPQ.push('Export')
@@ -186,6 +188,7 @@ OutlineView.propTypes = {
   chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   cardMap: PropTypes.object.isRequired,
+  file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
 }
@@ -195,6 +198,7 @@ function mapStateToProps (state) {
     chapters: sortedChaptersByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
     cardMap: cardMapSelector(state.present),
+    file: state.present.file,
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
   }

@@ -38,7 +38,8 @@ function takeScreenshot () {
         }
       })
     } else {
-      const fileName = dialog.showSaveDialogSync(win)
+      const filters = [{name: 'PNG file', extensions: ['png']}]
+      const fileName = dialog.showSaveDialogSync(win, {filters})
       if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
     }
   })

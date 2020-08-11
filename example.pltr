@@ -18,7 +18,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.7.16"
+    "version": "2020.7.21"
   },
   "series": {
     "name": "Prison Mansion",
@@ -56,9 +56,7 @@
       "age": "12",
       "cards": [
         146,
-        144,
-        114,
-        118
+        144
       ],
       "categoryId": null,
       "color": null,
@@ -890,56 +888,6 @@
     }
   ],
   "cards": [
-    {
-      "id": 166,
-      "lineId": 27,
-      "chapterId": 98,
-      "beatId": null,
-      "seriesLineId": null,
-      "bookId": null,
-      "positionWithinLine": 2,
-      "positionInChapter": 0,
-      "title": "scene 3",
-      "description": [
-        {
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "tags": [],
-      "characters": [],
-      "places": [],
-      "templates": [],
-      "imageId": null
-    },
-    {
-      "id": 165,
-      "lineId": 27,
-      "chapterId": 98,
-      "beatId": null,
-      "seriesLineId": null,
-      "bookId": null,
-      "positionWithinLine": 1,
-      "positionInChapter": 0,
-      "title": "scene 2",
-      "description": [
-        {
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "tags": [],
-      "characters": [],
-      "places": [],
-      "templates": [],
-      "imageId": null
-    },
     {
       "characters": [],
       "description": [
@@ -3080,26 +3028,6 @@
               "text": ""
             }
           ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            },
-            {
-              "type": "link",
-              "url": "https://images.unsplash.com/photo-1586779161657-041097557546?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
-              "children": [
-                {
-                  "text": ""
-                }
-              ]
-            },
-            {
-              "text": ""
-            }
-          ]
         }
       ],
       "id": 160,
@@ -3619,7 +3547,7 @@
       ],
       "id": 3,
       "imageId": "1",
-      "lastEdited": 1587097924296,
+      "lastEdited": 1595884286193,
       "places": [
         0
       ],

@@ -29,7 +29,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.7.16"
+    "version": "2020.7.25"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -11267,7 +11267,7 @@
         }
       ],
       "id": 4,
-      "lastEdited": 1594052957263,
+      "lastEdited": 1595856807418,
       "places": [],
       "tags": [
         2
@@ -11303,6 +11303,27 @@
       "title": "Title Ideas",
       "templates": [],
       "imageId": "1",
+      "bookIds": []
+    },
+    {
+      "id": 6,
+      "title": "",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": 1595858818189,
+      "templates": [],
+      "imageId": null,
       "bookIds": []
     }
   ],

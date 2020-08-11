@@ -17,6 +17,9 @@ import { sortedChaptersByBookSelector, positionOffsetSelector } from '../../sele
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { sortedTagsSelector } from '../../selectors/tags'
+import { charactersSortedAtoZSelector } from '../../selectors/characters'
+import { placesSortedAtoZSelector } from '../../selectors/places'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -274,9 +277,9 @@ function mapStateToProps (state) {
   return {
     chapters: sortedChaptersByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
-    tags: state.present.tags,
-    characters: state.present.characters,
-    places: state.present.places,
+    tags: sortedTagsSelector(state.present),
+    characters: charactersSortedAtoZSelector(state.present),
+    places: placesSortedAtoZSelector(state.present),
     ui: state.present.ui,
     books: state.present.books,
     isSeries: isSeriesSelector(state.present),

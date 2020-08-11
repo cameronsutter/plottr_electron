@@ -1,5 +1,12 @@
 @import "vars";
 
+.series__container {
+  width: 100vw;
+  height: calc(100% - 50px);
+  position: absolute;
+  overflow: auto;
+}
+
 .book-list__container {
   padding: 10px 40px;
   position: relative;

@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain, dialog,
   nativeTheme, globalShortcut, shell, screen } = require('electron')
 const fs = require('fs')
 const path = require('path')
-const _ = require('lodash')
+const { reject } = require('lodash')
 const log = require('electron-log')
 const i18n = require('format-message')
 const { is } = require('electron-util')
@@ -152,7 +152,7 @@ nativeTheme.on('updated', () => {
 })
 
 ipcMain.on('save-state', (event, state, winId, isNewFile) => {
-  var winObj = _.find(windows, {id: winId})
+  var winObj = windows.find(w => w.id == winId)
   let wasEdited = isDirty(state, winObj.state)
   winObj.window.setDocumentEdited(wasEdited)
   winObj.window.setTitle(displayFileName(winObj.fileName))
@@ -177,7 +177,7 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
 })
 
 ipcMain.on('fetch-state', function (event, id) {
-  var win = _.find(windows, {id: id})
+  var win = windows.find(w => w.id == id)
   win.window.setTitle(displayFileName(win.fileName))
   win.window.setRepresentedFilename(win.fileName)
 
@@ -205,7 +205,7 @@ ipcMain.on('save-as-template-finish', (event, id, options) => {
 })
 
 ipcMain.on('reload-window', function (event, id, state) {
-  let winObj = _.find(windows, {id: id})
+  let winObj = windows.find(w => w.id == id)
   if (winObj) {
     FileManager.save(winObj.fileName, state, function(err, data) {
       if (err) { log.warn(err); rollbar.warn(err) }
@@ -248,7 +248,7 @@ ipcMain.on('license-verified', () => {
 })
 
 ipcMain.on('export', (event, options, winId) => {
-  var winObj = _.find(windows, {id: winId})
+  var winObj = windows.find(w => w.id == winId)
   Exporter(winObj.state, options)
 })
 
@@ -323,7 +323,11 @@ app.on('will-quit', () => {
 
 function checkUpdatesIfAllowed () {
   if (process.env.NODE_ENV == 'dev') return
-  if (TRIALMODE) return
+  if (TRIALMODE) {
+    UpdateManager.checkForUpdates(windows)
+    return
+  }
+
   if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
 
   if (!checkedForActiveLicense) {
@@ -378,7 +382,7 @@ function displayFileName (path) {
 
 function openRecentFiles () {
   // open-file for windows
-  if (is.windows && process.argv.length == 2) {
+  if (is.windows && process.argv.length == 2 && process.env.NODE_ENV !== 'dev') {
     const param = process.argv[1]
 
     if (param.includes('.pltr')) {
@@ -495,7 +499,6 @@ function openWindow (fileName, jsonData) {
   // and restore the maximized or full screen state
   stateKeeper.manage(newWindow)
 
-
   // and load the app.html of the app.
   const entryFile = path.join(filePrefix, 'app.html')
   newWindow.loadURL(entryFile)
@@ -532,7 +535,7 @@ function openWindow (fileName, jsonData) {
   newWindow.on('closed', function () {})
 
   newWindow.on('close', function (e) {
-    var win = _.find(windows, {id: this.id})
+    var win = windows.find(w => w.id == this.id) // depends on 'this' being the window
 
     // closing the window, but not trying to quit
     // only remove from open windows if there's more than one window open
@@ -551,6 +554,11 @@ function openWindow (fileName, jsonData) {
     } else {
       dereferenceWindow(win)
     }
+  })
+
+  newWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+    event.preventDefault()
+    shell.openExternal(url)
   })
 
   try {
@@ -578,14 +586,12 @@ function openWindow (fileName, jsonData) {
 }
 
 function dereferenceWindow (winObj) {
-  windows = _.reject(windows, function (win) {
-    return win.id === winObj.id
-  })
+  windows = reject(windows, win => win.id === winObj.id)
   UpdateManager.updateWindows(windows)
 }
 
 function closeWindow (id) {
-  let win = _.find(windows, {id: id})
+  let win = windows.find(w => w.id == id)
   let windowFile = win.fileName
   win.window.close()
 }
@@ -673,7 +679,7 @@ function gracefullyNotSave () {
 
 function reloadWindow () {
   let win = BrowserWindow.getFocusedWindow()
-  let winObj = _.find(windows, {id: win.id})
+  let winObj = windows.find(w => w.id == win.id)
   if (process.env.NODE_ENV !== 'dev') {
     if (isDirty(winObj.state, winObj.lastSave)) {
       askToSave(win, winObj.state, winObj.fileName, win.webContents.reload)
@@ -870,8 +876,9 @@ function buildFileMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = windows.find(w => w.id == win.id)
       if (winObj) {
+        const defaultPath = path.basename(winObj.state.file.fileName).replace('.pltr', ` ${i18n('copy')}`)
         const filters = [{name: 'Plottr file', extensions: ['pltr']}]
-        const fileName = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save this copy?')})
+        const fileName = dialog.showSaveDialogSync(win, {filters, title: i18n('Where would you like to save this copy?'), defaultPath})
         if (fileName) {
           let fullName = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
           let newState = {...winObj.state}
@@ -894,20 +901,18 @@ function buildFileMenu () {
     submenu: [
       {
         label: i18n('Timeline'),
-        click: () => {
-          let win = BrowserWindow.getFocusedWindow()
-          let winObj = windows.find(w => w.id == win.id)
+        click: (event, focusedWindow) => {
+          let winObj = windows.find(w => w.id == focusedWindow.id)
           if (winObj) {
-            win.webContents.send('save-as-template-start', 'plotlines')
+            focusedWindow.webContents.send('save-as-template-start', 'plotlines')
           }
         }
       },{
         label: i18n('Character Custom Attributes'),
-        click: () => {
-          let win = BrowserWindow.getFocusedWindow()
-          let winObj = windows.find(w => w.id == win.id)
+        click: (event, focusedWindow) => {
+          let winObj = windows.find(w => w.id == focusedWindow.id)
           if (winObj) {
-            win.webContents.send('save-as-template-start', 'characters')
+            focusedWindow.webContents.send('save-as-template-start', 'characters')
           }
         }
       }
@@ -915,38 +920,36 @@ function buildFileMenu () {
   }, {
     label: i18n('Close'),
     accelerator: 'CmdOrCtrl+W',
-    click: function () {
-      let win = BrowserWindow.getFocusedWindow()
-      if (win) {
-        let winObj = _.find(windows, {id: win.id})
-        if (winObj) {
-          if (process.env.NODE_ENV == 'dev') return closeWindow(win.id)
+    click: function (event, focusedWindow) {
+      let winObj = windows.find(w => w.id == focusedWindow.id)
+      if (winObj) {
+        if (process.env.NODE_ENV == 'dev') return closeWindow(focusedWindow.id)
 
-          if (isDirty(winObj.state, winObj.lastSave)) {
-            askToSave(win, winObj.state, winObj.fileName, function () { closeWindow(win.id) })
-          } else {
-            closeWindow(win.id)
-          }
+        if (isDirty(winObj.state, winObj.lastSave)) {
+          askToSave(win, winObj.state, winObj.fileName, function () { closeWindow(focusedWindow.id) })
         } else {
-          win.close()
+          closeWindow(focusedWindow.id)
         }
+      } else {
+        focusedWindow.close()
       }
     }
   }, {
     type: 'separator'
   }, {
     label: i18n('Export') + '...',
-    click: () => {
-      const win = BrowserWindow.getFocusedWindow()
-      const winObj = windows.find(w => w.id == win.id)
+    click: (event, focusedWindow) => {
+      const winObj = windows.find(w => w.id == focusedWindow.id)
       let exportState = {}
       if (winObj) {
         exportState = winObj.state
-      } else {
+      } else if (windows.length) {
         exportState = windows[0].state
       }
+      // TODO: if there are no open windows this would export nothing, so maybe handle that better
+      const defaultPath = path.basename(exportState.file.fileName).replace('.pltr', '')
       const filters = [{name: i18n('Word Document'), extensions: ['docx']}]
-      const fileName = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save the export?')})
+      const fileName = dialog.showSaveDialogSync(focusedWindow, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
       if (fileName) {
         Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})
       }

@@ -1,4 +1,4 @@
-const { Paragraph, TextRun, AlignmentType, HeadingLevel, Numbering, Hyperlink, Media } = require('docx')
+const { Paragraph, TextRun, AlignmentType, HeadingLevel, Numbering, Hyperlink, HyperlinkType, HyperLinkRef, Media } = require('docx')
 
 // NONE of this works
 const numbering = new Numbering({config: [
@@ -40,7 +40,7 @@ const concrete = numbering.createConcreteNumbering(abstractNum)
 
 const serialize = (nodes, doc) => {
   if (!nodes) return []
-  if (typeof nodes === 'string') return new Paragraph({children: [leaf({text: nodes})]})
+  if (typeof nodes === 'string') return [new Paragraph({children: [leaf({text: nodes})]})]
 
   return nodes.flatMap(n => {
     if (!n.children) return leaf(n)
@@ -62,9 +62,9 @@ const serialize = (nodes, doc) => {
         // this isn't working for now
         // return children.map(li => new Paragraph({children: [li.root[1]], numbering: { reference: concrete, level: 0 }}))
       case 'link':
-        return new Hyperlink(n.url)
+        return doc.createHyperlink(n.url, n.url)
       case 'image-link':
-        return new Hyperlink(n.url)
+        return new Paragraph({children: [doc.createHyperlink(n.url, n.url), ...children]})
       case 'image-data':
         const imgData = n.data
         const image = Media.addImage(doc, Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), "base64"))

@@ -77,4 +77,21 @@ body.darkmode {
         color: $darkmode-text;
         background-color: $darkmode-background !important;
     }
+
+
+  }
+
+  .panel {
+    color: $darkmode-text;
+    background-color: $darkmode-background;
+  }
+
+  .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: $darkmode-darker-background;
+  }
+
+  .ReactModal__Content, .modal-content {
+    color: $darkmode-text;
+    background-color: $darkmode-background !important;
+  }
 }

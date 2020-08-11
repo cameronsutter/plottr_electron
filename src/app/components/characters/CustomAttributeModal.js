@@ -58,6 +58,8 @@ class CustomAttributeModal extends Component {
     const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)}/> )
     if (ui.darkMode) {
       modalStyles.content.backgroundColor = '#666'
+    } else {
+      modalStyles.content.backgorundColor='#f1f5f8'
     }
     return <Modal isOpen={true} onRequestClose={this.props.closeDialog} style={modalStyles}>
       <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>

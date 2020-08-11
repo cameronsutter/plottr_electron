@@ -53,12 +53,12 @@ class Analyzer extends Component {
   renderDetails () {
     if (!this.state.tree) return null
 
-    return <div style={{padding: '10px'}}><ReactJson src={ this.state.tree } name={this.state.path} iconStyle='circle' /></div>
+    return <div className='analyzer__details'><ReactJson src={ this.state.tree } name={this.state.path} iconStyle='circle' /></div>
   }
 
   renderTree () {
     const { pltr } = this.props
-    return <div style={{padding: '10px'}}><Inspector data={ pltr } onClick={this.handleClick} searchOptions={{debounceTime: 300}}/></div>
+    return <div className='analyzer__tree'><Inspector data={ pltr } onClick={this.handleClick} searchOptions={{debounceTime: 300}}/></div>
   }
 
   renderTab () {
@@ -77,25 +77,43 @@ class Analyzer extends Component {
     }
 
     if (this.state.tab == 'cards') {
-      return <div>
-        <input onChange={this.searchCardsByLine} placeholder='Line Id'/>
-        <input onChange={this.searchCardsByChapter} placeholder='Chapter Id'/>
-        { this.renderDetails() }
-      </div>
+      return <Grid fluid>
+        <Row>
+          <Col sm={12} md={5}>
+            <div>
+              <input onChange={this.searchCardsByLine} placeholder='Line Id'/>
+              <input onChange={this.searchCardsByChapter} placeholder='Chapter Id'/>
+            </div>
+            { this.renderDetails() }
+          </Col>
+        </Row>
+      </Grid>
     }
 
     if (this.state.tab == 'lines') {
-      return <div>
-        <input onChange={this.searchLines} placeholder='Line Id'/>
-        { this.renderDetails() }
-      </div>
+      return <Grid fluid>
+        <Row>
+          <Col sm={12} md={5}>
+            <div>
+              <input onChange={this.searchLines} placeholder='Line Id'/>
+            </div>
+            { this.renderDetails() }
+          </Col>
+        </Row>
+      </Grid>
     }
 
     if (this.state.tab == 'chapters') {
-      return <div>
-        <input onChange={this.searchChapters} placeholder='Chapter Id'/>
-        { this.renderDetails() }
-      </div>
+      return <Grid fluid>
+        <Row>
+          <Col sm={12} md={5}>
+            <div>
+              <input onChange={this.searchChapters} placeholder='Chapter Id'/>
+            </div>
+            { this.renderDetails() }
+          </Col>
+        </Row>
+      </Grid>
     }
   }
 
@@ -103,11 +121,11 @@ class Analyzer extends Component {
     const { pltr } = this.props
     return <div className='analyzer__container'>
       <h3>{pltr.file.version}{' '}<small>{pltr.file.fileName}</small></h3>
-      <div>
-        <span onClick={() => this.setState({tab: 'search'})}>Search</span><span> | </span>
-        <span onClick={() => this.setState({tab: 'cards'})}>Cards</span><span> | </span>
-        <span onClick={() => this.setState({tab: 'lines'})}>Lines</span><span> | </span>
-        <span onClick={() => this.setState({tab: 'chapters'})}>Chapters</span>
+      <div className='analyzer__tabs'>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'search'})}>Search</span>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'cards'})}>Cards</span>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'lines'})}>Lines</span>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'chapters'})}>Chapters</span>
       </div>
       {this.renderTab()}
       <div></div>

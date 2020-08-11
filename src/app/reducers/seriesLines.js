@@ -16,7 +16,8 @@ export default function seriesLines (state = initialState, action) {
         id: nextId(state),
         title: '',
         color: nextColor(state.length),
-        position: nextPosition(state)
+        position: nextPosition(state),
+        expanded: null,
       }, ...state]
 
     case ADD_SERIES_LINES_FROM_TEMPLATE:

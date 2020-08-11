@@ -18,7 +18,8 @@ export default function lines (state = initialState, action) {
         bookId: action.bookId,
         title: '',
         color: nextColor(linesInBook),
-        position: nextPositionInBook(state, action.bookId)
+        position: nextPositionInBook(state, action.bookId),
+        expanded: null,
       }, ...state]
 
     case ADD_LINES_FROM_TEMPLATE:

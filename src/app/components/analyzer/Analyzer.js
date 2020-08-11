@@ -9,12 +9,45 @@ import Inspector from 'react-json-inspector'
 import 'style-loader!css-loader!sass-loader!../../../../node_modules/react-json-inspector/json-inspector.css'
 
 class Analyzer extends Component {
-  state = {path: null, tree: null}
+  state = {tab: 'search', path: null, tree: null}
 
   handleClick = ({key, value, path}) => {
     if (path != '') {
       this.setState({path: path, tree: value})
     }
+  }
+
+  searchCardsByLine = e => {
+    this.searchCards([['lineId', e.target.value]])
+  }
+
+  searchCardsByChapter = e => {
+    this.searchCards([['chapterId', e.target.value]])
+  }
+
+  // array of ['key', value]
+  searchCards = options => {
+    const { pltr } = this.props
+    const cards = pltr.cards
+
+    const visibleCards = cards.filter(c => options.some(op => c[op[0]] == op[1]))
+    this.setState({tree: visibleCards})
+  }
+
+  searchLines = e => {
+    const { pltr } = this.props
+    const lines = pltr.lines
+
+    const visibleLines = lines.filter(l => l.id == e.target.value)
+    this.setState({tree: visibleLines})
+  }
+
+  searchChapters = e => {
+    const { pltr } = this.props
+    const chapters = pltr.chapters
+
+    const visibleChapters = chapters.filter(c => c.id == e.target.value)
+    this.setState({tree: visibleChapters})
   }
 
   renderDetails () {
@@ -28,11 +61,9 @@ class Analyzer extends Component {
     return <div style={{padding: '10px'}}><Inspector data={ pltr } onClick={this.handleClick} searchOptions={{debounceTime: 300}}/></div>
   }
 
-  render () {
-    const { pltr } = this.props
-    return <div style={{padding: '10px'}}>
-      <h3>{pltr.file.version}{' '}<small>{pltr.file.fileName}</small></h3>
-      <Grid fluid>
+  renderTab () {
+    if (this.state.tab == 'search') {
+      return <Grid fluid>
         <Row>
           <Col sm={12} md={5}>
             { this.renderTree() }
@@ -43,6 +74,42 @@ class Analyzer extends Component {
           </Col>
         </Row>
       </Grid>
+    }
+
+    if (this.state.tab == 'cards') {
+      return <div>
+        <input onChange={this.searchCardsByLine} placeholder='Line Id'/>
+        <input onChange={this.searchCardsByChapter} placeholder='Chapter Id'/>
+        { this.renderDetails() }
+      </div>
+    }
+
+    if (this.state.tab == 'lines') {
+      return <div>
+        <input onChange={this.searchLines} placeholder='Line Id'/>
+        { this.renderDetails() }
+      </div>
+    }
+
+    if (this.state.tab == 'chapters') {
+      return <div>
+        <input onChange={this.searchChapters} placeholder='Chapter Id'/>
+        { this.renderDetails() }
+      </div>
+    }
+  }
+
+  render () {
+    const { pltr } = this.props
+    return <div className='analyzer__container'>
+      <h3>{pltr.file.version}{' '}<small>{pltr.file.fileName}</small></h3>
+      <div>
+        <span onClick={() => this.setState({tab: 'search'})}>Search</span><span> | </span>
+        <span onClick={() => this.setState({tab: 'cards'})}>Cards</span><span> | </span>
+        <span onClick={() => this.setState({tab: 'lines'})}>Lines</span><span> | </span>
+        <span onClick={() => this.setState({tab: 'chapters'})}>Chapters</span>
+      </div>
+      {this.renderTab()}
       <div></div>
     </div>
   }

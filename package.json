@@ -49,6 +49,7 @@
     "image-extensions": "^1.1.0",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.4",
+    "jsrtf": "0.0.3",
     "lodash": "^4.17.19",
     "mixpanel-browser": "^2.38.0",
     "node-machine-id": "^1.1.12",
@@ -80,7 +81,8 @@
     "slate": "^0.57.1",
     "slate-history": "^0.57.1",
     "slate-hyperscript": "^0.57.1",
-    "slate-react": "^0.57.1"
+    "slate-react": "^0.57.1",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",

@@ -937,23 +937,42 @@ function buildFileMenu () {
   }, {
     type: 'separator'
   }, {
-    label: i18n('Export') + '...',
-    click: (event, focusedWindow) => {
-      const winObj = windows.find(w => w.id == focusedWindow.id)
-      let exportState = {}
-      if (winObj) {
-        exportState = winObj.state
-      } else if (windows.length) {
-        exportState = windows[0].state
+    label: i18n('Export'),
+    submenu: [
+      {
+        label: i18n('MS Word'),
+        click: (event, focusedWindow) => {
+          const winObj = windows.find(w => w.id == focusedWindow.id)
+          let exportState = {}
+          if (winObj) {
+            exportState = winObj.state
+          } else if (windows.length) {
+            exportState = windows[0].state
+          }
+          // TODO: if there are no open windows this would export nothing, so maybe handle that better
+          const defaultPath = path.basename(exportState.file.fileName).replace('.pltr', '')
+          const filters = [{name: i18n('Word Document'), extensions: ['docx']}]
+          const fileName = dialog.showSaveDialogSync(focusedWindow, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
+          if (fileName) {
+            Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})
+          }
+        }
+      },
+      {
+        label: i18n('Scrivener'),
+        click: (event, focusedWindow) => {
+          const winObj = windows.find(w => w.id == focusedWindow.id)
+          if (winObj) {
+            const defaultPath = path.basename(winObj.state.file.fileName).replace('.pltr', '')
+            const filters = [{name: i18n('Scrivener Project'), extensions: ['scriv']}]
+            const filePath = dialog.showSaveDialogSync(focusedWindow, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
+            if (filePath) {
+              focusedWindow.webContents.send('export-scrivener', filePath)
+            }
+          }
+        }
       }
-      // TODO: if there are no open windows this would export nothing, so maybe handle that better
-      const defaultPath = path.basename(exportState.file.fileName).replace('.pltr', '')
-      const filters = [{name: i18n('Word Document'), extensions: ['docx']}]
-      const fileName = dialog.showSaveDialogSync(focusedWindow, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
-      if (fileName) {
-        Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})
-      }
-    }
+    ]
   }, {
     label: i18n('Reload from File'),
     visible: process.env.NODE_ENV === 'dev',

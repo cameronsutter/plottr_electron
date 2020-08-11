@@ -14,6 +14,7 @@ import { isSeriesSelector } from '../../selectors/ui'
 import { MPQ } from 'middlewares/helpers'
 import { cardMapSelector } from '../../selectors/cards'
 import ErrorBoundary from '../../containers/ErrorBoundary'
+import { cardMapping } from '../../helpers/cards'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
@@ -33,37 +34,6 @@ class OutlineView extends Component {
       this.setState({firstRender: true})
       setTimeout(() => this.setState({firstRender: false}), 500)
     }
-  }
-
-  // TODO: this could be a selector ... maybe
-  cardMapping () {
-    return this.props.chapters.reduce((acc, ch) => {
-      acc[ch.id] = this.sortedChapterCards(this.props.lines, ch.id)
-      return acc
-    }, {})
-  }
-
-  lineIsHidden (line) {
-    if (!this.state.currentLine) return false
-    return line.id != this.state.currentLine
-  }
-
-  // TODO: this could be a selector ... maybe
-  sortedChapterCards (sortedLines, chapterId) {
-    return sortedLines.reduce((acc, l) => {
-      if (this.lineIsHidden(l)) return acc
-
-      const cards = this.findCards(chapterId, l.id)
-      if (cards) {
-        return acc.concat(cards)
-      } else {
-        return acc
-      }
-    }, [])
-  }
-
-  findCards = (chapterId, lineId) => {
-    return this.props.cardMap[`${lineId}-${chapterId}`]
   }
 
   setActive = (id) => {
@@ -164,14 +134,15 @@ class OutlineView extends Component {
   }
 
   renderBody () {
-    const cardMapping = this.cardMapping()
+    const { chapters, lines, card2Dmap } = this.props
+    const cardMap = cardMapping(chapters, lines, card2Dmap, this.state.currentLine)
     return <div className='outline__container'>
       <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
       <ErrorBoundary>
-        <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />
+        <MiniMap active={this.state.active} cardMapping={cardMap} activeFilter={!!this.state.currentLine} />
       </ErrorBoundary>
       <div className='outline__scenes-container'>
-        {this.renderChapters(cardMapping)}
+        {this.renderChapters(cardMap)}
       </div>
     </div>
   }
@@ -187,7 +158,7 @@ class OutlineView extends Component {
 OutlineView.propTypes = {
   chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
-  cardMap: PropTypes.object.isRequired,
+  card2Dmap: PropTypes.object.isRequired,
   file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
@@ -197,7 +168,7 @@ function mapStateToProps (state) {
   return {
     chapters: sortedChaptersByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
-    cardMap: cardMapSelector(state.present),
+    card2Dmap: cardMapSelector(state.present),
     file: state.present.file,
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),

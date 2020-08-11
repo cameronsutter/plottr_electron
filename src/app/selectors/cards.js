@@ -1,8 +1,14 @@
 import { createSelector } from 'reselect'
 import { sortBy } from 'lodash'
 import { isSeriesSelector, timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
+import { nextId } from '../store/newIds'
 
 export const allCardsSelector = state => state.cards
+
+export const nextCardIdSelector = createSelector(
+  allCardsSelector,
+  (cards) => nextId(cards)
+)
 
 export const cardMapSelector = createSelector(
   allCardsSelector,

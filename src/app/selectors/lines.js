@@ -2,8 +2,14 @@ import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
 import { currentTimelineSelector, timelineIsExpandedSelector } from './ui'
 import { allSeriesLinesSelector } from './seriesLines'
+import { nextId } from '../store/newIds'
 
 export const allLinesSelector = state => state.lines
+
+export const nextLineIdSelector = createSelector(
+  allLinesSelector,
+  (lines) => nextId(lines)
+)
 
 export const linesByBookSelector = createSelector(
   allLinesSelector,

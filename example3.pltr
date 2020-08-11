@@ -2,7 +2,7 @@
   "ui": {
     "characterFilter": null,
     "characterSort": "name~asc",
-    "currentView": "outline",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",

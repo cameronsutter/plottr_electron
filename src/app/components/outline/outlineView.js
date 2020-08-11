@@ -1,8 +1,6 @@
-import path from 'path'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { ipcRenderer, remote } from 'electron'
 import { Glyphicon, Nav, Navbar, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
 import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
@@ -11,13 +9,10 @@ import cx from 'classnames'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
-import { MPQ } from 'middlewares/helpers'
 import { cardMapSelector } from '../../selectors/cards'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import { cardMapping } from '../../helpers/cards'
-
-const win = remote.getCurrentWindow()
-const dialog = remote.dialog
+import ExportNavItem from '../export/ExportNavItem'
 
 class OutlineView extends Component {
   constructor (props) {
@@ -53,22 +48,6 @@ class OutlineView extends Component {
   }
 
   // ///////////////
-  //  exporting   //
-  // //////////////
-
-  doExport = () => {
-    let label = i18n('Where would you like to save the export?')
-    const defaultPath = path.basename(this.props.file.fileName).replace('.pltr', '')
-    const filters = [{name: 'Word', extensions: ['docx']}]
-    const fileName = dialog.showSaveDialogSync({title: label, filters, defaultPath})
-    if (fileName) {
-      const options = { fileName, bookId: this.props.ui.currentTimeline }
-      MPQ.push('Export')
-      ipcRenderer.send('export', options, win.id)
-    }
-  }
-
-  // ///////////////
   //  rendering   //
   // //////////////
 
@@ -95,6 +74,7 @@ class OutlineView extends Component {
   }
 
   renderSubNav () {
+    const { ui, file } = this.props
     let popover = <Popover id='filter'>
       <div className='filter-list'>
         {this.renderFilterList()}
@@ -105,7 +85,7 @@ class OutlineView extends Component {
       filterDeclaration = <span></span>
     }
     return (
-      <Navbar className={cx('subnav__container', {darkmode: this.props.ui.darkMode})}>
+      <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
@@ -115,10 +95,7 @@ class OutlineView extends Component {
           </NavItem>
         </Nav>
         <Nav pullRight>
-          <NavItem>
-            <span className='subnav__container__label'>{i18n('Export')}: </span>
-            <Button bsSize='small' onClick={this.doExport}><Glyphicon glyph='export' /></Button>
-          </NavItem>
+          <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline}/>
         </Nav>
       </Navbar>
     )

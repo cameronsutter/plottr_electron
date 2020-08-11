@@ -1,0 +1,14 @@
+@import "vars";
+
+ul.export-list {
+  list-style: none;
+  padding-left: 0;
+  li {
+    cursor: pointer;
+    padding: 3px;
+
+    &:hover {
+      background-color: $gray-9;
+    }
+  }
+}

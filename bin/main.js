@@ -382,7 +382,7 @@ function displayFileName (path) {
 
 function openRecentFiles () {
   // open-file for windows
-  if (is.windows && process.argv.length == 2 && process.env.NODE_ENV !== 'dev') {
+  if (is.windows && process.argv.length == 2 && process.env.NODE_ENV != 'dev') {
     const param = process.argv[1]
 
     if (param.includes('.pltr')) {

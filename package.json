@@ -49,6 +49,7 @@
     "image-extensions": "^1.1.0",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.4",
+    "jsrtf": "0.0.3",
     "lodash": "^4.17.13",
     "mixpanel-browser": "^2.38.0",
     "node-machine-id": "^1.1.12",

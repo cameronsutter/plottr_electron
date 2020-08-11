@@ -1,47 +1,39 @@
 import path from 'path'
 import fs from 'fs'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, keyBy } from 'lodash'
 import log from 'electron-log'
 import { shell } from 'electron'
 import i18n from 'format-message'
 import xml from 'xml-js'
+import rtf from 'jsrtf'
 import { sortedChaptersByBookSelector, makeChapterTitleSelector } from '../../../../app/selectors/chapters'
 import { cardMapSelector } from '../../../../app/selectors/cards'
 import { sortCardsInChapter, cardMapping } from '../../../../app/helpers/cards'
 import { isSeriesSelector } from '../../../../app/selectors/ui'
 import { sortedLinesByBookSelector } from '../../../../app/selectors/lines'
+import serialize from '../../../slate_serializers/to_rtf'
 
 export default function Exporter (state, exportPath) {
-  console.log('Exporter', exportPath)
-  let sceneCardIdMapping = {}
-
   const realPath = exportPath.includes('.scriv') ? exportPath : `${exportPath}.scriv`
 
-  // create the structure of the project package
   try {
+    // create the structure of the project package
     createProjectStructure(realPath)
+
+    // create the .scrivx
+    let sceneCardsByDocID = createScrivx(state.present, realPath)
+
+    // create the rtf documents for each scene card
+    createDocuments(sceneCardsByDocID, realPath)
   } catch (error) {
     log.error(error)
-    // don't go any further
+    // move anything we've made to the trash
     remove(realPath)
+    // don't go any further
     return false
   }
 
-  // create the .scrivx
-  try {
-    sceneCardIdMapping = createScrivx(state.present, realPath)
-  } catch (error) {
-    log.error(error)
-    // don't go any further
-    remove(realPath)
-    return false
-  }
-
-  // create the rtf documents for each scene card
-  createDocuments(state.present, sceneCardIdMapping, realPath)
-
-  // show our work
-  showOurWork(realPath)
+  notifyUser(realPath)
 }
 
 function createProjectStructure (exportPath) {
@@ -72,7 +64,7 @@ function createScrivx (state, basePath) {
   const scrivx = require('./bare_scrivx.json') // TODO: i18n names of BinderItems
   const binderItem = require('./binderItem.json')
   let nextId = 3
-  let sceneCardIdMapping = {}
+  let sceneCardsByDocID = {}
 
   // get current book id and select only those chapters/lines/cards
   const chapters = sortedChaptersByBookSelector(state)
@@ -80,10 +72,10 @@ function createScrivx (state, basePath) {
   const card2Dmap = cardMapSelector(state)
   const isSeries = isSeriesSelector(state)
   const chapterCardMapping = cardMapping(chapters, lines, card2Dmap, null)
+  const linesById = keyBy(lines, 'id')
 
   // create a BinderItem for each chapter (Type: Folder)
   //   create a BinderItem for each card (Type: Text)
-  //   add scene card id to sceneCardIdMapping
 
   chapters.forEach(ch => {
     const uniqueChapterTitleSelector = makeChapterTitleSelector(state)
@@ -95,9 +87,16 @@ function createScrivx (state, basePath) {
     const sortedCards = sortCardsInChapter(ch.autoOutlineSort, cards, lines, isSeries)
     sortedCards.forEach(c => {
       ++nextId
-      sceneCardIdMapping[c.id] = nextId + 0 // + 0 so that it will get the value, not the reference to nextId
       const cardItem = createCardBinderItem(binderItem, c, nextId)
       chapterItem['Children']['BinderItem'].push(cardItem)
+
+      // save card info into sceneCardsByDocID
+      let title = ''
+      const lineId = isSeries ? c.seriesLineId : c.lineId
+      const line = linesById[lineId]
+      if (line) title = line.title
+
+      sceneCardsByDocID[nextId + 0] = {lineTitle: title, description: c.description} // + 0 so that it will get the value, not the reference to nextId
     })
 
     scrivx['ScrivenerProject']['Binder']['BinderItem'][0]['Children']['BinderItem'].push(chapterItem)
@@ -108,12 +107,34 @@ function createScrivx (state, basePath) {
   const baseName = path.basename(basePath).replace('.scriv', '')
   fs.writeFileSync(path.join(basePath, `${baseName}.scrivx`), data)
 
-  return sceneCardIdMapping
+  return sceneCardsByDocID
 }
 
-function createDocuments (state, sceneCardIdMapping, basePath) {
+function createDocuments (sceneCardsByDocID, basePath) {
   const realBasePath = path.join(basePath, 'Files', 'Docs')
 
+  Object.keys(sceneCardsByDocID).forEach(docID => {
+    // card is {lineTitle: '', description: []}
+    const card = sceneCardsByDocID[docID]
+    // create a {docID}_synopsis.txt file for the line title
+    if (card.lineTitle) {
+      fs.writeFileSync(path.join(realBasePath, `${docID}_synopsis.txt`), card.lineTitle)
+    }
+
+    // create a {docID}_notes.rtf file for the card description
+    let doc = new rtf()
+    let data = null
+    try {
+      serialize(card.description, doc)
+      data = doc.createDocument()
+      // may have to do this … but it doesn't look like it
+      // const buffer = new Buffer(data, 'binary')
+      fs.writeFileSync(path.join(realBasePath, `${docID}_notes.rtf`), data)
+    } catch (error) {
+      log.error(error)
+      // do nothing, just don't blow up
+    }
+  })
 
 }
 
@@ -133,7 +154,7 @@ function createCardBinderItem (binderItem, card, id) {
   return cloneDeep(data)
 }
 
-function showOurWork (exportPath) {
+function notifyUser (exportPath) {
   try {
     new Notification(i18n('File Exported'), {body: i18n('Your Plottr file was exported to a Scrivener project package'), silent: true})
   } catch (error) {

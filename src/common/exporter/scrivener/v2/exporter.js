@@ -116,14 +116,17 @@ function createDocuments (sceneCardsByDocID, basePath) {
   Object.keys(sceneCardsByDocID).forEach(docID => {
     // card is {lineTitle: '', description: []}
     const card = sceneCardsByDocID[docID]
-    // create a {docID}_synopsis.txt file for the line title
-    if (card.lineTitle) {
-      fs.writeFileSync(path.join(realBasePath, `${docID}_synopsis.txt`), card.lineTitle)
-    }
+    // NOT DOING: create a {docID}_synopsis.txt file for the line title
 
     // create a {docID}_notes.rtf file for the card description
     let doc = new rtf()
     let data = null
+    if (card.lineTitle) {
+      doc.writeText(i18n('Plotline: {name}', {name: card.lineTitle}))
+      doc.addLine()
+      doc.addLine()
+      // fs.writeFileSync(path.join(realBasePath, `${docID}_synopsis.txt`), card.lineTitle)
+    }
     try {
       serialize(card.description, doc)
       data = doc.createDocument()

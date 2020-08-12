@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { get, set } from 'lodash' // possibly will be used to edit values
+import { get, set, groupBy, pickBy, keys, value } from 'lodash' // get/set will possibly be used to edit values
 import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
 import Inspector from 'react-json-inspector'
@@ -50,6 +50,56 @@ class Analyzer extends Component {
     this.setState({tree: visibleChapters})
   }
 
+  searchCardsById = e => {
+    const { pltr } = this.props
+    const cards = pltr.cards
+
+    const visibleCards = cards.filter(c => c.id == e.target.value)
+    this.setState({tree: visibleCards})
+  }
+
+  searchAbandoned = () => {
+    const { pltr } = this.props
+    const cards = pltr.cards
+
+    const lineIds = pltr.lines.map(l => l.id)
+    const chapterIds = pltr.chapters.map(ch => ch.id)
+    const seriesLineIds = pltr.seriesLines.map(sl => sl.id)
+    const beatIds = pltr.beats.map(b => b.id)
+
+    const visibleCards = cards.filter(c => {
+      let result = false
+      if (!lineIds.includes(c.lineId)) result = result || true
+      if (!chapterIds.includes(c.chapterId)) result = result || true
+      if (!seriesLineIds.includes(c.seriesLineId)) result = result || true
+      if (!beatIds.includes(c.beatId)) result = result || true
+      return result
+    })
+    this.setState({tree: visibleCards})
+  }
+
+  searchDuplicateChapters = () => {
+    const { pltr } = this.props
+    const chapterIds = pltr.chapters.map(ch => ch.id)
+    const duplicateIds = keys(pickBy(groupBy(chapterIds), x => x.length > 1)).map(Number)
+    let visible = []
+    if (duplicateIds) {
+      visible = pltr.chapters.filter(ch => duplicateIds.includes(ch.id))
+    }
+    this.setState({tree: visible})
+  }
+
+  searchDuplicateLines = () => {
+    const { pltr } = this.props
+    const lineIds = pltr.lines.map(ch => ch.id)
+    const duplicateIds = keys(pickBy(groupBy(lineIds), x => x.length > 1)).map(Number)
+    let visible = []
+    if (duplicateIds) {
+      visible = pltr.lines.filter(ch => duplicateIds.includes(ch.id))
+    }
+    this.setState({tree: visible})
+  }
+
   renderDetails () {
     if (!this.state.tree) return null
 
@@ -81,8 +131,10 @@ class Analyzer extends Component {
         <Row>
           <Col sm={12} md={5}>
             <div>
+              <input onChange={this.searchCardsById} placeholder='Card Id'/>
               <input onChange={this.searchCardsByLine} placeholder='Line Id'/>
               <input onChange={this.searchCardsByChapter} placeholder='Chapter Id'/>
+              <a href='#' onClick={this.searchAbandoned}>Abandoned</a>
             </div>
             { this.renderDetails() }
           </Col>
@@ -96,6 +148,7 @@ class Analyzer extends Component {
           <Col sm={12} md={5}>
             <div>
               <input onChange={this.searchLines} placeholder='Line Id'/>
+              <a href='#' onClick={this.searchDuplicateLines}>Duplicates</a>
             </div>
             { this.renderDetails() }
           </Col>
@@ -109,6 +162,7 @@ class Analyzer extends Component {
           <Col sm={12} md={5}>
             <div>
               <input onChange={this.searchChapters} placeholder='Chapter Id'/>
+              <a href='#' onClick={this.searchDuplicateChapters}>Duplicates</a>
             </div>
             { this.renderDetails() }
           </Col>

@@ -12,7 +12,8 @@ export default function beats (state = defaultBeat, action) {
         id: nextId(state),
         title: action.title,
         time: 0,
-        position: nextPosition(state)
+        position: nextPosition(state),
+        autoOutlineSort: true,
       }, ...state]
 
     case EDIT_BEAT_TITLE:

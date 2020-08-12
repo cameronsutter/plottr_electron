@@ -17,6 +17,7 @@ export default function chapters (state = initialState, action) {
         position: nextPositionInBook(state, action.bookId),
         title: action.title,
         time: 0,
+        autoOutlineSort: true,
       }]
 
     case ADD_LINES_FROM_TEMPLATE:

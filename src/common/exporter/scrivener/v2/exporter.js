@@ -21,7 +21,7 @@ export default function Exporter (state, exportPath) {
     createProjectStructure(realPath)
 
     // create the .scrivx
-    let sceneCardsByDocID = createScrivx(state.present, realPath)
+    let sceneCardsByDocID = createScrivx(state, realPath)
 
     // create the rtf documents for each scene card
     createDocuments(sceneCardsByDocID, realPath)

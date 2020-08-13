@@ -974,6 +974,15 @@ function buildFileMenu () {
       }
     ]
   }, {
+    label: 'Import Snowflake',
+    visible: process.env.NODE_ENV === 'dev',
+    click: (event, focusedWindow) => {
+      const files = dialog.showOpenDialogSync(focusedWindow)
+      if (files && files.length) {
+        focusedWindow.webContents.send('import-snowflake', files[0])
+      }
+    }
+  }, {
     label: i18n('Reload from File'),
     visible: process.env.NODE_ENV === 'dev',
     click: (event, focusedWindow) => {

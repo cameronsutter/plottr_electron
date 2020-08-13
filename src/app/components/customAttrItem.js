@@ -5,6 +5,10 @@ import i18n from 'format-message'
 
 export default class CustomAttrItem extends Component {
 
+  componentDidUpdate () {
+    this.refs.nameInput.blur()
+  }
+
   handleEnter = (event) => {
     if (event.which === 13) {
       this.update()
@@ -12,13 +16,15 @@ export default class CustomAttrItem extends Component {
   }
 
   update = () => {
+    const { index, attr } = this.props
     const name = this.refs.nameInput.value
     let type = 'text'
     const paragraph = this.refs.paragraphCheck.checked
     if (paragraph) {
       type = 'paragraph'
     }
-    this.props.update(this.props.index, {name, type})
+    if (attr.name == name && attr.type == type) return // no changes? no-op
+    this.props.update(index, attr, {name, type})
   }
 
   renderParagraphCheckBox () {

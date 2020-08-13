@@ -49,8 +49,8 @@ class CustomAttributeModal extends Component {
     this.setState({addAttrText: this.state.addAttrText}) // no op
   }
 
-  updateAttr = (index, attr) => {
-    this.props.actions.editCharacterAttr(index, attr)
+  updateAttr = (index, currentAttr, newAttr) => {
+    this.props.actions.editCharacterAttr(index, currentAttr, newAttr)
   }
 
   render () {

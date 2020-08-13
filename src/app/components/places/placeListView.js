@@ -152,8 +152,8 @@ class PlaceListView extends Component {
     this.setState({addAttrText: this.state.addAttrText}) // no op
   }
 
-  updateAttr = (index, attr) => {
-    this.props.customAttributeActions.editPlaceAttr(index, attr)
+  updateAttr = (index, oldAttribute, newAttribute) => {
+    this.props.customAttributeActions.editPlaceAttr(index, oldAttribute, newAttribute)
   }
 
   renderSubNav () {

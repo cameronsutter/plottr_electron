@@ -7,6 +7,7 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
 import Inspector from 'react-json-inspector'
 import 'style-loader!css-loader!sass-loader!../../../../node_modules/react-json-inspector/json-inspector.css'
+import { nextId } from '../../store/newIds'
 
 class Analyzer extends Component {
   state = {tab: 'search', path: null, tree: null}
@@ -31,7 +32,7 @@ class Analyzer extends Component {
     const cards = pltr.cards
 
     const visibleCards = cards.filter(c => options.some(op => c[op[0]] == op[1]))
-    this.setState({tree: visibleCards})
+    this.setState({tree: visibleCards, path: 'cards'})
   }
 
   searchLines = e => {
@@ -39,7 +40,7 @@ class Analyzer extends Component {
     const lines = pltr.lines
 
     const visibleLines = lines.filter(l => l.id == e.target.value)
-    this.setState({tree: visibleLines})
+    this.setState({tree: visibleLines, path: 'lines'})
   }
 
   searchChapters = e => {
@@ -47,7 +48,7 @@ class Analyzer extends Component {
     const chapters = pltr.chapters
 
     const visibleChapters = chapters.filter(c => c.id == e.target.value)
-    this.setState({tree: visibleChapters})
+    this.setState({tree: visibleChapters, path: 'chapters'})
   }
 
   searchCardsById = e => {
@@ -55,7 +56,7 @@ class Analyzer extends Component {
     const cards = pltr.cards
 
     const visibleCards = cards.filter(c => c.id == e.target.value)
-    this.setState({tree: visibleCards})
+    this.setState({tree: visibleCards, path: 'cards'})
   }
 
   searchAbandoned = () => {
@@ -68,14 +69,12 @@ class Analyzer extends Component {
     const beatIds = pltr.beats.map(b => b.id)
 
     const visibleCards = cards.filter(c => {
-      let result = false
-      if (!lineIds.includes(c.lineId)) result = result || true
-      if (!chapterIds.includes(c.chapterId)) result = result || true
-      if (!seriesLineIds.includes(c.seriesLineId)) result = result || true
-      if (!beatIds.includes(c.beatId)) result = result || true
-      return result
+      return !lineIds.includes(c.lineId)
+        && !chapterIds.includes(c.chapterId)
+        && !seriesLineIds.includes(c.seriesLineId)
+        && !beatIds.includes(c.beatId)
     })
-    this.setState({tree: visibleCards})
+    this.setState({tree: visibleCards, path: 'cards'})
   }
 
   searchDuplicateChapters = () => {
@@ -84,9 +83,9 @@ class Analyzer extends Component {
     const duplicateIds = keys(pickBy(groupBy(chapterIds), x => x.length > 1)).map(Number)
     let visible = []
     if (duplicateIds) {
-      visible = pltr.chapters.filter(ch => duplicateIds.includes(ch.id))
+      visible = groupBy(pltr.chapters.filter(ch => duplicateIds.includes(ch.id)), 'id')
     }
-    this.setState({tree: visible})
+    this.setState({tree: visible, path: 'chapters'})
   }
 
   searchDuplicateLines = () => {
@@ -95,9 +94,9 @@ class Analyzer extends Component {
     const duplicateIds = keys(pickBy(groupBy(lineIds), x => x.length > 1)).map(Number)
     let visible = []
     if (duplicateIds) {
-      visible = pltr.lines.filter(ch => duplicateIds.includes(ch.id))
+      visible = groupBy(pltr.lines.filter(ch => duplicateIds.includes(ch.id)), 'id')
     }
-    this.setState({tree: visible})
+    this.setState({tree: visible, path: 'lines'})
   }
 
   renderDetails () {
@@ -112,6 +111,7 @@ class Analyzer extends Component {
   }
 
   renderTab () {
+    const { pltr } = this.props
     if (this.state.tab == 'search') {
       return <Grid fluid>
         <Row>
@@ -127,6 +127,7 @@ class Analyzer extends Component {
     }
 
     if (this.state.tab == 'cards') {
+      const id = nextId(pltr.cards)
       return <Grid fluid>
         <Row>
           <Col sm={12} md={5}>
@@ -134,7 +135,8 @@ class Analyzer extends Component {
               <input onChange={this.searchCardsById} placeholder='Card Id'/>
               <input onChange={this.searchCardsByLine} placeholder='Line Id'/>
               <input onChange={this.searchCardsByChapter} placeholder='Chapter Id'/>
-              <a href='#' onClick={this.searchAbandoned}>Abandoned</a>
+              <span className='analyzer__sub-option'>nextId: {id}</span>
+              <span className='analyzer__sub-option'><a href='#' onClick={this.searchAbandoned}>Abandoned</a></span>
             </div>
             { this.renderDetails() }
           </Col>
@@ -143,12 +145,14 @@ class Analyzer extends Component {
     }
 
     if (this.state.tab == 'lines') {
+      const id = nextId(pltr.lines)
       return <Grid fluid>
         <Row>
           <Col sm={12} md={5}>
             <div>
               <input onChange={this.searchLines} placeholder='Line Id'/>
-              <a href='#' onClick={this.searchDuplicateLines}>Duplicates</a>
+              <span className='analyzer__sub-option'>nextId: {id}</span>
+              <span className='analyzer__sub-option'><a href='#' onClick={this.searchDuplicateLines}>Duplicates</a></span>
             </div>
             { this.renderDetails() }
           </Col>
@@ -157,12 +161,14 @@ class Analyzer extends Component {
     }
 
     if (this.state.tab == 'chapters') {
+      const id = nextId(pltr.chapters)
       return <Grid fluid>
         <Row>
           <Col sm={12} md={5}>
             <div>
               <input onChange={this.searchChapters} placeholder='Chapter Id'/>
-              <a href='#' onClick={this.searchDuplicateChapters}>Duplicates</a>
+              <span className='analyzer__sub-option'>nextId: {id}</span>
+              <span className='analyzer__sub-option'><a href='#' onClick={this.searchDuplicateChapters}>Duplicates</a></span>
             </div>
             { this.renderDetails() }
           </Col>
@@ -176,10 +182,10 @@ class Analyzer extends Component {
     return <div className='analyzer__container'>
       <h3>{pltr.file.version}{' '}<small>{pltr.file.fileName}</small></h3>
       <div className='analyzer__tabs'>
-        <span className='analyzer__tab' onClick={() => this.setState({tab: 'search'})}>Search</span>
-        <span className='analyzer__tab' onClick={() => this.setState({tab: 'cards'})}>Cards</span>
-        <span className='analyzer__tab' onClick={() => this.setState({tab: 'lines'})}>Lines</span>
-        <span className='analyzer__tab' onClick={() => this.setState({tab: 'chapters'})}>Chapters</span>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'search', tree: null, path: null})}>Search</span>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'cards', tree: null, path: null})}>Cards</span>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'lines', tree: null, path: null})}>Lines</span>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'chapters', tree: null, path: null})}>Chapters</span>
       </div>
       {this.renderTab()}
       <div></div>

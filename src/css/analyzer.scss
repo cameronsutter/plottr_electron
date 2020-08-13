@@ -38,6 +38,16 @@
   }
 }
 
+.analyzer__sub-option {
+  display: inline-block;
+  padding: 0px 10px;
+  border-right: 1px solid $gray-3;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
 .analyzer__details {
   overflow: auto;
   padding: 10px;

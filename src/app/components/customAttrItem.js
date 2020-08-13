@@ -18,14 +18,18 @@ export default class CustomAttrItem extends Component {
   }
 
   update = () => {
-    const { index, attr } = this.props
+    const { index, attr, restrictedValues } = this.props
     const name = this.refs.nameInput.value
+    if (name == '' || restrictedValues.includes(name)) { // is nothing? is a restricted value? no op
+      this.refs.nameInput.value = attr.name
+      return
+    }
     let type = 'text'
     const paragraph = this.refs.paragraphCheck.checked
     if (paragraph) {
       type = 'paragraph'
     }
-    if (attr.name == name && attr.type == type) return // no changes? no-op
+    if (attr.name == name && attr.type == type) return // no changes? no op
     this.props.update(index, attr, {name, type})
   }
 
@@ -65,5 +69,6 @@ export default class CustomAttrItem extends Component {
     update: PropTypes.func,
     delete: PropTypes.func,
     canChangeType: PropTypes.bool,
+    restrictedValues: PropTypes.array,
   }
 }

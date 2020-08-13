@@ -10,7 +10,7 @@ import * as CustomAttributeActions from 'actions/customAttributes'
 import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
 import cx from 'classnames'
-import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
+import { characterCustomAttributesThatCanChangeSelector, characterCustomAttributesRestrictedValues } from '../../selectors/customAttributes'
 import { FaSave } from 'react-icons/fa'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
@@ -39,8 +39,9 @@ class CustomAttributeModal extends Component {
 
   saveAttr = () => {
     const name = findDOMNode(this.refs.attrInput).value
-    this.props.actions.addCharacterAttr({name, type: 'text'})
+    if (name == '' || this.props.restrictedValues.includes(name)) return // nothing? restricted value? no op
 
+    this.props.actions.addCharacterAttr({name, type: 'text'})
     this.setState({addAttrText: ''})
   }
 
@@ -54,12 +55,12 @@ class CustomAttributeModal extends Component {
   }
 
   render () {
-    const { customAttributes, ui, customAttributesThatCanChange } = this.props
-    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)}/> )
+    const { customAttributes, ui, customAttributesThatCanChange, restrictedValues } = this.props
+    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)} restrictedValues={restrictedValues}/> )
     if (ui.darkMode) {
       modalStyles.content.backgroundColor = '#666'
     } else {
-      modalStyles.content.backgorundColor='#f1f5f8'
+      modalStyles.content.backgroundColor = '#fff'
     }
     return <Modal isOpen={true} onRequestClose={this.props.closeDialog} style={modalStyles}>
       <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
@@ -95,6 +96,7 @@ class CustomAttributeModal extends Component {
     closeDialog: PropTypes.func.isRequired,
     customAttributes: PropTypes.array.isRequired,
     customAttributesThatCanChange: PropTypes.array,
+    restrictedValues: PropTypes.array,
     ui: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   }
@@ -104,6 +106,7 @@ function mapStateToProps (state) {
   return {
     customAttributes: state.present.customAttributes.characters,
     customAttributesThatCanChange: characterCustomAttributesThatCanChangeSelector(state.present),
+    restrictedValues: characterCustomAttributesRestrictedValues(state.present),
     ui: state.present.ui,
   }
 }

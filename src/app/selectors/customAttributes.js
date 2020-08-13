@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect'
 import { allCharactersSelector } from './characters'
 import { allPlacesSelector } from './places'
+import { character, place } from '../../../shared/initialState'
+
+const characterKeys = Object.keys(character)
+const placeKeys = Object.keys(place)
 
 export const allCustomAttributesSelector = state => state.customAttributes
 export const characterCustomAttributesSelector = state => state.customAttributes.characters
@@ -67,3 +71,13 @@ function hasNoValue (item, attr) {
   if (val[0].children[0].text == '') return true // no text
   return false
 }
+
+export const characterCustomAttributesRestrictedValues = createSelector(
+  characterCustomAttributesSelector,
+  (attrs) => characterKeys.concat(attrs.map(a => a.name))
+)
+
+export const placeCustomAttributesRestrictedValues = createSelector(
+  placeCustomAttributesSelector,
+  (attrs) => placeKeys.concat(attrs.map(a => a.name))
+)

@@ -1,6 +1,6 @@
 {
   "ui": {
-    "characterFilter": null,
+    "characterFilter": {},
     "characterSort": "name~asc",
     "currentView": "timeline",
     "darkMode": false,

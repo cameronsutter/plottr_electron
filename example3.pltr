@@ -962,7 +962,7 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": false
     },
     {
       "id": 2,
@@ -1564,7 +1564,7 @@
       "seriesLineId": null,
       "bookId": null,
       "positionWithinLine": 0,
-      "positionInChapter": 0,
+      "positionInChapter": 1,
       "title": "Mr. Darcy",
       "description": [
         {
@@ -1739,7 +1739,7 @@
       "templates": [],
       "imageId": null,
       "positionWithinLine": 2,
-      "positionInChapter": 0
+      "positionInChapter": 6
     },
     {
       "id": 315,
@@ -1797,7 +1797,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": 0
+      "positionInChapter": 2
     },
     {
       "characters": [],
@@ -1829,7 +1829,7 @@
       "seriesLineId": null,
       "position": 1,
       "positionWithinLine": 1,
-      "positionInChapter": 0
+      "positionInChapter": 5
     },
     {
       "characters": [
@@ -1863,7 +1863,7 @@
       "seriesLineId": null,
       "position": 2,
       "positionWithinLine": 3,
-      "positionInChapter": 0
+      "positionInChapter": 7
     },
     {
       "characters": [],
@@ -1895,7 +1895,7 @@
       "seriesLineId": null,
       "position": 3,
       "positionWithinLine": 1,
-      "positionInChapter": 0
+      "positionInChapter": 4
     },
     {
       "characters": [],
@@ -2049,7 +2049,7 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": 0
+      "positionInChapter": 3
     },
     {
       "characters": [],
@@ -10649,7 +10649,7 @@
       "title": "Main Plot",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": false
     },
     {
       "color": "#78be20",

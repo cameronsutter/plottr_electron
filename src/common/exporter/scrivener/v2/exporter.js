@@ -61,7 +61,7 @@ function createProjectStructure (exportPath) {
 }
 
 function createScrivx (state, basePath) {
-  const scrivx = require('./bare_scrivx.json') // TODO: i18n names of BinderItems
+  const scrivx = cloneDeep(require('./bare_scrivx.json')) // TODO: i18n names of BinderItems
   const binderItem = require('./binderItem.json')
   let nextId = 3
   let sceneCardsByDocID = {}

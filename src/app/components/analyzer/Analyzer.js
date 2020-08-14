@@ -99,6 +99,14 @@ class Analyzer extends Component {
     this.setState({tree: visible, path: 'lines'})
   }
 
+  searchChaptersByPosition = e => {
+    const { pltr } = this.props
+    const chapters = pltr.chapters
+
+    const visibleChapters = chapters.filter(c => c.position == e.target.value)
+    this.setState({tree: visibleChapters, path: 'chapters'})
+  }
+
   renderDetails () {
     if (!this.state.tree) return null
 
@@ -166,6 +174,7 @@ class Analyzer extends Component {
         <Row>
           <Col sm={12} md={5}>
             <div>
+              <input onChange={this.searchChaptersByPosition} placeholder='Chapter Position'/>
               <input onChange={this.searchChapters} placeholder='Chapter Id'/>
               <span className='analyzer__sub-option'>nextId: {id}</span>
               <span className='analyzer__sub-option'><a href='#' onClick={this.searchDuplicateChapters}>Duplicates</a></span>

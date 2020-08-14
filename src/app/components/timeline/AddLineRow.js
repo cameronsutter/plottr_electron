@@ -12,8 +12,9 @@ import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { nextId } from '../../store/newIds'
 import { nextColor } from 'store/lineColors'
 import { card, chapter as defaultChapter, line as defaultLine } from '../../../../shared/initialState'
-import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { linesByBookSelector } from '../../selectors/lines'
+import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selectors/chapters'
+import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
+import { nextCardIdSelector } from '../../selectors/cards'
 
 class AddLineRow extends Component {
   state = {
@@ -187,9 +188,9 @@ class AddLineRow extends Component {
     const templateData = template.templateData
     let bookId = ui.currentTimeline
 
-    this.nextLineId = nextId(this.props.lines)
-    this.nextCardId = nextId(this.props.cards)
-    this.nextChapterId = nextId(this.props.chapters)
+    this.nextLineId = this.props.nextLineId
+    this.nextCardId = this.props.nextCardId
+    this.nextChapterId = this.props.nextChapterId
 
     this.allChapters = this.props.chapters
     this.allLines = this.props.lines
@@ -266,6 +267,9 @@ class AddLineRow extends Component {
     chapters: PropTypes.array,
     lines: PropTypes.array,
     cards: PropTypes.array,
+    nextLineId: PropTypes.number,
+    nextChapterId: PropTypes.number,
+    nextCardId: PropTypes.number,
   }
 }
 
@@ -275,6 +279,9 @@ function mapStateToProps (state) {
     chapters: sortedChaptersByBookSelector(state.present),
     lines: linesByBookSelector(state.present),
     cards: state.present.cards,
+    nextLineId: nextLineIdSelector(state.present),
+    nextChapterId: nextChapterIdSelector(state.present),
+    nextCardId: nextCardIdSelector(state.present),
   }
 }
 

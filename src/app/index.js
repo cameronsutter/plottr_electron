@@ -17,6 +17,8 @@ import i18n from 'format-message'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
+import Exporter from '../common/exporter/scrivener/v2/exporter'
+import Importer from '../common/importer/snowflake/importer'
 
 i18n.setup({
   translations: require('../../locales'),
@@ -75,6 +77,16 @@ ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) =
 ipcRenderer.on('set-dark-mode', (event, on) => {
   store.dispatch(setDarkMode(on))
   window.document.body.className = on ? 'darkmode' : ''
+})
+
+ipcRenderer.on('export-scrivener', (event, filePath) => {
+  const currentState = store.getState()
+  Exporter(currentState.present, filePath)
+})
+
+ipcRenderer.on('import-snowflake', (event, filePath) => {
+  const currentState = store.getState()
+  Importer(filePath, false, currentState.present)
 })
 
 function focusIsEditable () {

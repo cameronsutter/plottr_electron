@@ -1,8 +1,6 @@
-import path from 'path'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { ipcRenderer, remote } from 'electron'
 import { Glyphicon, Nav, Navbar, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
 import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
@@ -11,12 +9,10 @@ import cx from 'classnames'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
-import { MPQ } from 'middlewares/helpers'
 import { cardMapSelector } from '../../selectors/cards'
 import ErrorBoundary from '../../containers/ErrorBoundary'
-
-const win = remote.getCurrentWindow()
-const dialog = remote.dialog
+import { cardMapping } from '../../helpers/cards'
+import ExportNavItem from '../export/ExportNavItem'
 
 class OutlineView extends Component {
   constructor (props) {
@@ -35,37 +31,6 @@ class OutlineView extends Component {
     }
   }
 
-  // TODO: this could be a selector ... maybe
-  cardMapping () {
-    return this.props.chapters.reduce((acc, ch) => {
-      acc[ch.id] = this.sortedChapterCards(this.props.lines, ch.id)
-      return acc
-    }, {})
-  }
-
-  lineIsHidden (line) {
-    if (!this.state.currentLine) return false
-    return line.id != this.state.currentLine
-  }
-
-  // TODO: this could be a selector ... maybe
-  sortedChapterCards (sortedLines, chapterId) {
-    return sortedLines.reduce((acc, l) => {
-      if (this.lineIsHidden(l)) return acc
-
-      const cards = this.findCards(chapterId, l.id)
-      if (cards) {
-        return acc.concat(cards)
-      } else {
-        return acc
-      }
-    }, [])
-  }
-
-  findCards = (chapterId, lineId) => {
-    return this.props.cardMap[`${lineId}-${chapterId}`]
-  }
-
   setActive = (id) => {
     this.setState({active: id})
   }
@@ -80,22 +45,6 @@ class OutlineView extends Component {
 
   removeFilter = () => {
     this.setState({currentLine: null})
-  }
-
-  // ///////////////
-  //  exporting   //
-  // //////////////
-
-  doExport = () => {
-    let label = i18n('Where would you like to save the export?')
-    const defaultPath = path.basename(this.props.file.fileName).replace('.pltr', '')
-    const filters = [{name: 'Word', extensions: ['docx']}]
-    const fileName = dialog.showSaveDialogSync({title: label, filters, defaultPath})
-    if (fileName) {
-      const options = { fileName, bookId: this.props.ui.currentTimeline }
-      MPQ.push('Export')
-      ipcRenderer.send('export', options, win.id)
-    }
   }
 
   // ///////////////
@@ -125,6 +74,7 @@ class OutlineView extends Component {
   }
 
   renderSubNav () {
+    const { ui, file } = this.props
     let popover = <Popover id='filter'>
       <div className='filter-list'>
         {this.renderFilterList()}
@@ -135,7 +85,7 @@ class OutlineView extends Component {
       filterDeclaration = <span></span>
     }
     return (
-      <Navbar className={cx('subnav__container', {darkmode: this.props.ui.darkMode})}>
+      <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
         <Nav bsStyle='pills' >
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
@@ -145,10 +95,7 @@ class OutlineView extends Component {
           </NavItem>
         </Nav>
         <Nav pullRight>
-          <NavItem>
-            <span className='subnav__container__label'>{i18n('Export')}: </span>
-            <Button bsSize='small' onClick={this.doExport}><Glyphicon glyph='export' /></Button>
-          </NavItem>
+          <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline}/>
         </Nav>
       </Navbar>
     )
@@ -164,14 +111,15 @@ class OutlineView extends Component {
   }
 
   renderBody () {
-    const cardMapping = this.cardMapping()
+    const { chapters, lines, card2Dmap } = this.props
+    const cardMap = cardMapping(chapters, lines, card2Dmap, this.state.currentLine)
     return <div className='outline__container'>
       <div className='outline__minimap__placeholder'>Fish are friends, not food</div>
       <ErrorBoundary>
-        <MiniMap active={this.state.active} cardMapping={cardMapping} activeFilter={!!this.state.currentLine} />
+        <MiniMap active={this.state.active} cardMapping={cardMap} activeFilter={!!this.state.currentLine} />
       </ErrorBoundary>
       <div className='outline__scenes-container'>
-        {this.renderChapters(cardMapping)}
+        {this.renderChapters(cardMap)}
       </div>
     </div>
   }
@@ -187,7 +135,7 @@ class OutlineView extends Component {
 OutlineView.propTypes = {
   chapters: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
-  cardMap: PropTypes.object.isRequired,
+  card2Dmap: PropTypes.object.isRequired,
   file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
@@ -197,7 +145,7 @@ function mapStateToProps (state) {
   return {
     chapters: sortedChaptersByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
-    cardMap: cardMapSelector(state.present),
+    card2Dmap: cardMapSelector(state.present),
     file: state.present.file,
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),

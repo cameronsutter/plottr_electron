@@ -63,15 +63,15 @@ export default function ui (state = defaultUI, action) {
 
     case EDIT_CHARACTER_ATTRIBUTE:
       filter = {...state.characterFilter}
-      delete filter[action.old]
-      if (action.attribute.type == 'paragraph') return state
-      filter[action.attribute.name] = []
+      delete filter[action.oldAttribute.name]
+      if (action.newAttribute.type == 'paragraph') return state
+      filter[action.newAttribute.name] = []
       return Object.assign({}, state, {characterFilter: filter})
     case EDIT_PLACES_ATTRIBUTE:
       filter = {...state.placeFilter}
-      delete filter[action.old]
-      if (action.attribute.type == 'paragraph') return state
-      filter[action.attribute.name] = []
+      delete filter[action.oldAttribute.name]
+      if (action.newAttribute.type == 'paragraph') return state
+      filter[action.newAttribute.name] = []
       return Object.assign({}, state, {placeFilter: filter})
 
     case SET_PLACE_FILTER:

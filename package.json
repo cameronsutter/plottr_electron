@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.7.30",
+  "version": "2020.8.12",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
@@ -14,10 +14,10 @@
   "main": "bin/main.js",
   "scripts": {
     "start": "NODE_ENV=dev electron .",
-    "start-win": "set NODE_ENV=dev & electron .",
+    "start-win": "set NODE_ENV=dev&& electron .",
     "compile": "NODE_ENV=dev node_modules/.bin/webpack",
     "watch": "echo 'do you have fsevents?' && NODE_ENV=dev node_modules/.bin/webpack",
-    "watch-win": "set NODE_ENV=dev & node_modules\\.bin\\webpack",
+    "watch-win": "set NODE_ENV=dev&& node_modules\\.bin\\webpack",
     "createDevLicense": "node bin/main_modules/dev_license.js",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "pack": "NODE_ENV=production node_modules/.bin/webpack",
@@ -49,6 +49,7 @@
     "image-extensions": "^1.1.0",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.4",
+    "jsrtf": "0.0.3",
     "lodash": "^4.17.19",
     "mixpanel-browser": "^2.38.0",
     "node-machine-id": "^1.1.12",
@@ -80,7 +81,8 @@
     "slate": "^0.57.1",
     "slate-history": "^0.57.1",
     "slate-hyperscript": "^0.57.1",
-    "slate-react": "^0.57.1"
+    "slate-react": "^0.57.1",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",

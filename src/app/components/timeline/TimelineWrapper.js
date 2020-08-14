@@ -1,4 +1,3 @@
-import path from 'path'
 import React, { Component } from 'react'
 import { ipcRenderer, remote } from 'electron'
 import PropTypes from 'react-proptypes'
@@ -6,7 +5,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
-import { MPQ } from 'middlewares/helpers'
 import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
@@ -17,9 +15,9 @@ import cx from 'classnames'
 import { FunSpinner } from '../Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { timelineFilterIsEmptySelector } from '../../selectors/ui'
+import ExportNavItem from '../export/ExportNavItem'
 
 const win = remote.getCurrentWindow()
-const dialog = remote.dialog
 
 var scrollInterval = null
 
@@ -238,18 +236,6 @@ class TimelineWrapper extends Component {
   //  exporting   //
   // //////////////
 
-  doExport = () => {
-    let label = i18n('Where would you like to save the export?')
-    const defaultPath = path.basename(this.props.file.fileName).replace('.pltr', '')
-    const filters = [{name: 'Word', extensions: ['docx']}]
-    const fileName = dialog.showSaveDialogSync({title: label, filters, defaultPath})
-    if (fileName) {
-      const options = { fileName, bookId: this.props.ui.currentTimeline }
-      MPQ.push('Export')
-      ipcRenderer.send('export', options, win.id)
-    }
-  }
-
   startSaveAsTemplate = () => {
     ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', 'plotlines') // sends this message to this same process
   }
@@ -259,7 +245,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav () {
-    const { ui, filterIsEmpty } = this.props
+    const { ui, file, filterIsEmpty } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -324,10 +310,7 @@ class TimelineWrapper extends Component {
           <NavItem>
             <Button bsSize='small' onClick={this.startSaveAsTemplate}><FaSave className='svg-save-template'/> {i18n('Save as Template')}</Button>
           </NavItem>
-          <NavItem>
-            <span className='subnav__container__label'>{i18n('Export')}: </span>
-            <Button bsSize='small' onClick={this.doExport}><Glyphicon glyph='export' /></Button>
-          </NavItem>
+          <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline}/>
         </Nav>
       </Navbar>
     )

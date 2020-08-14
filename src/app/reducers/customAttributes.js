@@ -18,9 +18,10 @@ function characters (state = [], action) {
 
     case EDIT_CHARACTER_ATTRIBUTE:
       let newState = [...state]
-      newState[action.index] = action.attribute
+      newState[action.index] = action.newAttribute
       return newState
 
+    case RESET:
     case NEW_FILE:
       return newFileCustomAttributes['characters']
 
@@ -42,9 +43,10 @@ function places (state = [], action) {
 
     case EDIT_PLACES_ATTRIBUTE:
       let newState = [...state]
-      newState[action.index] = action.attribute
+      newState[action.index] = action.newAttribute
       return newState
 
+    case RESET:
     case NEW_FILE:
       return newFileCustomAttributes['places']
 
@@ -65,11 +67,7 @@ function cards (state = [], action) {
       state.splice(state.indexOf(action.attribute), 1)
       return [...state]
 
-    case EDIT_CARDS_ATTRIBUTE:
-      let newState = [...state]
-      newState[action.index] = action.attribute
-      return newState
-
+    case RESET:
     case NEW_FILE:
       return newFileCustomAttributes['cards']
 
@@ -90,11 +88,7 @@ function scenes (state = [], action) {
       state.splice(state.indexOf(action.attribute), 1)
       return [...state]
 
-    case EDIT_SCENES_ATTRIBUTE:
-      let newState = [...state]
-      newState[action.index] = action.attribute
-      return newState
-
+    case RESET:
     case NEW_FILE:
       return newFileCustomAttributes['scenes']
 
@@ -115,11 +109,7 @@ function lines (state = [], action) {
       state.splice(state.indexOf(action.attribute), 1)
       return [...state]
 
-    case EDIT_LINES_ATTRIBUTE:
-      let newState = [...state]
-      newState[action.index] = action.attribute
-      return newState
-
+    case RESET:
     case NEW_FILE:
       return newFileCustomAttributes['lines']
 

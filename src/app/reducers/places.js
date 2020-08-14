@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _, { cloneDeep } from 'lodash'
 import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD, ATTACH_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_PLACE, DELETE_IMAGE, EDIT_PLACES_ATTRIBUTE,
@@ -26,16 +26,26 @@ export default function places (state = initialState, action) {
       )
 
     case EDIT_PLACES_ATTRIBUTE:
-      if (action.attribute.type != 'text') return state
+      if (action.oldAttribute.type != 'text' && action.oldAttribute.name == action.newAttribute.name) return state
 
-      // see ../selectors/customAttributes.js for when this is allowed
-      // reset value to blank string
-      return state.map(pl => {
-        let desc = pl[action.attribute.name]
-        if (desc && desc.length && typeof desc !== 'string') {
-          desc = ''
+      return state.map(p => {
+        let pl = cloneDeep(p)
+
+        if (action.oldAttribute.name != action.newAttribute.name) {
+          pl[action.newAttribute.name] = pl[action.oldAttribute.name]
+          delete pl[action.oldAttribute.name]
         }
-        pl[action.attribute.name] = desc
+
+        // reset value to blank string
+        // (if changing to something other than text type)
+        // see ../selectors/customAttributes.js for when this is allowed
+        if (action.oldAttribute.type == 'text') {
+          let desc = pl[action.newAttribute.name]
+          if (desc && desc.length && typeof desc !== 'string') {
+            desc = ''
+          }
+          pl[action.newAttribute.name] = desc
+        }
         return pl
       })
 

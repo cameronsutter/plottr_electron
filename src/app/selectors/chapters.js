@@ -3,9 +3,15 @@ import { createSelector } from 'reselect'
 import { currentTimelineSelector, isSeriesSelector } from './ui'
 import { allBeatsSelector } from './beats'
 import { chapterTitle, chapterOneIsPrologue } from '../helpers/chapters'
+import { nextId } from '../store/newIds'
 
 export const allChaptersSelector = state => state.chapters
 const chapterIdSelector = (state, chapterId) => chapterId
+
+export const nextChapterIdSelector = createSelector(
+  allChaptersSelector,
+  (chapters) => nextId(chapters)
+)
 
 export const chaptersByBookSelector = createSelector(
   allChaptersSelector,

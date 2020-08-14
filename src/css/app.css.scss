@@ -25,6 +25,7 @@
 @import "modals";
 @import "analyzer";
 @import "scrollbars";
+@import "export";
 
 @import "vars";
 @import "colors";
@@ -197,6 +198,7 @@ div.update-notifier:hover {
 .popover {
   .popover-content {
     max-height: 100vh;
+    padding-bottom: 0;
   }
 }
 #list-popover.popover {

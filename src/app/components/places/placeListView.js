@@ -17,7 +17,7 @@ import PlaceView from 'components/places/placeView'
 import CustomAttrItem from 'components/customAttrItem'
 import Image from 'components/images/Image'
 import i18n from 'format-message'
-import { placeCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
+import { placeCustomAttributesThatCanChangeSelector, placeCustomAttributesRestrictedValues } from '../../selectors/customAttributes'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import PlaceItem from './PlaceItem'
 import { nextId } from '../../store/newIds'
@@ -142,8 +142,9 @@ class PlaceListView extends Component {
 
   saveAttr = () => {
     const name = findDOMNode(this.refs.attrInput).value
-    this.props.customAttributeActions.addPlaceAttr({name, type: 'text'})
+    if (name == '' || this.props.restrictedValues.includes(name)) return // nothing? restricted value? no op
 
+    this.props.customAttributeActions.addPlaceAttr({name, type: 'text'})
     this.setState({addAttrText: ''})
   }
 
@@ -152,8 +153,8 @@ class PlaceListView extends Component {
     this.setState({addAttrText: this.state.addAttrText}) // no op
   }
 
-  updateAttr = (index, attr) => {
-    this.props.customAttributeActions.editPlaceAttr(index, attr)
+  updateAttr = (index, oldAttribute, newAttribute) => {
+    this.props.customAttributeActions.editPlaceAttr(index, oldAttribute, newAttribute)
   }
 
   renderSubNav () {
@@ -230,10 +231,12 @@ class PlaceListView extends Component {
   }
 
   renderCustomAttributes () {
-    const { customAttributes, ui, customAttributesThatCanChange } = this.props
-    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)}/> )
+    const { customAttributes, ui, customAttributesThatCanChange, restrictedValues } = this.props
+    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)} restrictedValues={restrictedValues}/> )
     if (ui.darkMode) {
       modalStyles.content.backgroundColor = '#666'
+    } else {
+      modalStyles.content.backgroundColor = '#fff'
     }
     return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
       <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
@@ -287,6 +290,7 @@ PlaceListView.propTypes = {
   places: PropTypes.array.isRequired,
   customAttributes: PropTypes.array.isRequired,
   customAttributesThatCanChange: PropTypes.array,
+  restrictedValues: PropTypes.array,
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
@@ -298,6 +302,7 @@ function mapStateToProps (state) {
     places: state.present.places,
     customAttributes: state.present.customAttributes.places,
     customAttributesThatCanChange: placeCustomAttributesThatCanChangeSelector(state.present),
+    restrictedValues: placeCustomAttributesRestrictedValues(state.present),
     ui: state.present.ui,
   }
 }

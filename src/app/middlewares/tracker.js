@@ -8,12 +8,14 @@ const tracker = store => next => action => {
   if (!WHITE_LIST.includes(action.type)) return result
 
   const state = store.getState()
-  const attrs = {
-    timeline_orientation: state.ui.orientation,
-    version: state.file.version,
-  }
+  if (state && state.ui && state.file) {
+    const attrs = {
+      timeline_orientation: state.ui.orientation,
+      version: state.file.version,
+    }
 
-  if (action.type == ADD_LINES_FROM_TEMPLATE) MPQ.push('use_timeline_template', {...attrs, template: action.templateName})
+    if (action.type == ADD_LINES_FROM_TEMPLATE) MPQ.push('use_timeline_template', {...attrs, template: action.templateName})
+  }
 
   return result
 }

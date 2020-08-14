@@ -71,6 +71,8 @@ function outlineSection (data, namesMapping, bookId, doc) {
 
   // TODO: handle 'series' and undefined
   const chapters = sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
+  if (!chapters.length) return {children: children}
+
   const offset = positionOffset(chapters)
   const paragraphs = chapters.flatMap(ch => chapterParagraphs(ch, data, namesMapping, bookId, offset, doc))
 

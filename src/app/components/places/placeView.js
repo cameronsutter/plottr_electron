@@ -289,8 +289,8 @@ class PlaceView extends Component {
             </dl>
           </div>
           <div className='place-list__right-side'>
-            <Image responsive imageId={place.imageId} />
             <Glyphicon glyph='pencil' />
+            <Image responsive imageId={place.imageId} />
           </div>
         </div>
       </div>

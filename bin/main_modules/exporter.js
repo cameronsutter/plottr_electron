@@ -69,8 +69,12 @@ function outlineSection (data, namesMapping, bookId, doc) {
 
   children.push(new Paragraph({text: i18n('Outline'), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER}))
 
-  // TODO: handle 'series' and undefined
-  const chapters = sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
+  let chapters = []
+  if (bookId == 'series') {
+    chapters = sortBy(data.beats, 'position')
+  } else {
+    chapters = sortBy(data.chapters.filter(ch => ch.bookId == bookId), 'position')
+  }
   if (!chapters.length) return {children: children}
 
   const offset = positionOffset(chapters)
@@ -80,12 +84,18 @@ function outlineSection (data, namesMapping, bookId, doc) {
 }
 
 function chapterParagraphs (chapter, data, namesMapping, bookId, offset, doc) {
+  const isSeries = bookId == 'series'
   let paragraphs = [new Paragraph('')]
   paragraphs.push(new Paragraph('^'))
-  let title = chapterTitle(chapter, offset, bookId == 'series')
+  let title = chapterTitle(chapter, offset, isSeries)
   paragraphs.push(new Paragraph({text: title, heading: HeadingLevel.HEADING_2}))
-  const cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, data.lines, bookId == 'series')
-  let cardParagraphs = cards.flatMap(c => card(c, data.lines, namesMapping, doc))
+  let lines = data.lines
+  if (isSeries) {
+    lines = data.seriesLines
+  }
+  cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, lines, isSeries)
+  console.log('sortedChapterCards', cards)
+  let cardParagraphs = cards.flatMap(c => card(c, lines, namesMapping, doc, isSeries))
   return paragraphs.concat(cardParagraphs)
 }
 
@@ -106,9 +116,10 @@ function chapterTitle (chapter, offset, isSeries) {
   }
 }
 
-function card (card, lines, namesMapping, doc) {
+function card (card, lines, namesMapping, doc, isSeries) {
   let paragraphs = [new Paragraph('')]
-  let line = lines.find(l => card.lineId == l.id)
+  const idAttr = isSeries ? 'seriesLineId' : 'lineId'
+  let line = lines.find(l => card[idAttr] == l.id)
   let titleString = card.title
   if (line) {
     titleString = `${card.title} (${line.title})`
@@ -148,7 +159,7 @@ function attachments (obj, namesMapping) {
 // TODO: most of this is copy/pasted from helpers/cards
 // when we refactor main.js, this can be shared from there
 function sortedChapterCards (autoSort, chapterId, allCards, allLines, isSeries) {
-  let cards = findChapterCards(chapterId, allCards)
+  let cards = findChapterCards(chapterId, allCards, isSeries)
   const sortedLines = sortBy(allLines, 'position')
   if (autoSort) {
     const idAttr = isSeries ? 'seriesLineId' : 'lineId'
@@ -164,8 +175,9 @@ function sortedChapterCards (autoSort, chapterId, allCards, allLines, isSeries) 
   }
 }
 
-function findChapterCards (chapterId, allCards) {
-  return allCards.filter(c => c.chapterId === chapterId)
+function findChapterCards (chapterId, allCards, isSeries) {
+  const idAttr = isSeries ? 'beatId' : 'chapterId'
+  return allCards.filter(c => c[idAttr] === chapterId)
 }
 
 function charactersSection (data, doc) {

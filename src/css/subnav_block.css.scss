@@ -45,6 +45,10 @@ nav.subnav__container {
       padding-top: 7px;
       padding-bottom: 7px;
     }
+    .nav.navbar-nav {
+      height: 50px;
+      overflow: auto;
+    }
   }
 }
 

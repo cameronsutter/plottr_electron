@@ -13,24 +13,26 @@ export default class CustomAttrItem extends Component {
 
   handleEnter = (event) => {
     if (event.which === 13) {
-      this.update()
+      this.updateName()
     }
   }
 
-  update = () => {
+  updateName = () => {
     const { index, attr, restrictedValues } = this.props
     const name = this.refs.nameInput.value
     if (name == '' || restrictedValues.includes(name)) { // is nothing? is a restricted value? no op
       this.refs.nameInput.value = attr.name
       return
     }
-    let type = 'text'
-    const paragraph = this.refs.paragraphCheck.checked
-    if (paragraph) {
-      type = 'paragraph'
-    }
-    if (attr.name == name && attr.type == type) return // no changes? no op
-    this.props.update(index, attr, {name, type})
+    if (attr.name == name) return // no changes? no op
+    this.props.update(index, attr, {name, type: attr.type})
+  }
+
+  updateType = () => {
+    const { index, attr } = this.props
+    let type = this.refs.paragraphCheck.checked ? 'paragraph' : 'text'
+    if (attr.type == type) return // no changes? no op
+    this.props.update(index, attr, {name: attr.name, type})
   }
 
   renderDelete () {
@@ -44,7 +46,7 @@ export default class CustomAttrItem extends Component {
     const checked = attr.type == 'paragraph'
     if (this.props.canChangeType) {
       return <label className='custom-attr-item__checkbox-label'>
-        <input ref='paragraphCheck' type="checkbox" checked={checked} onChange={this.update}/> {i18n('paragraph')}
+        <input ref='paragraphCheck' type="checkbox" checked={checked} onChange={this.updateType}/> {i18n('paragraph')}
       </label>
     } else {
       return <label className='custom-attr-item__checkbox-label text-muted'>{i18n('paragraph')}</label>
@@ -55,7 +57,7 @@ export default class CustomAttrItem extends Component {
     const { attr } = this.props
     return <li className='list-group-item'>
       <input className='custom-attr-item__input'
-        ref='nameInput' onBlur={this.update}
+        ref='nameInput' onBlur={this.updateName}
         onKeyDown={this.handleEnter} defaultValue={attr.name} />
       { this.renderParagraphCheckBox() }
       <Button onClick={() => this.setState({deleting: true})}><Glyphicon glyph='remove'/></Button>

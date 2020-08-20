@@ -1,6 +1,8 @@
 {
   "ui": {
-    "characterFilter": {},
+    "characterFilter": {
+      "In possession of fortune": []
+    },
     "characterSort": "name~asc",
     "currentView": "timeline",
     "darkMode": false,
@@ -74,7 +76,6 @@
   },
   "characters": [
     {
-      "In possession of fortune": "No",
       "In possession of fortune?": "",
       "Married": "During the story, to Mr Darcy",
       "cards": [],
@@ -138,10 +139,10 @@
           ]
         }
       ],
-      "thing2": ""
+      "thing2": "",
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "During the story, to Elizabeth",
       "cards": [],
       "categoryId": "1",
@@ -165,10 +166,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
-      "In possession of fortune": "No",
       "In possession of fortune?": "No",
       "Married": "During the story, to Bingley",
       "cards": [],
@@ -193,10 +194,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "During the story, to Jane",
       "cards": [],
       "categoryId": "3",
@@ -372,10 +373,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
-      "In possession of fortune": "No",
       "Married": "Yes",
       "cards": [],
       "categoryId": null,
@@ -399,10 +400,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "No",
       "Married": "Yes",
       "cards": [],
       "categoryId": null,
@@ -426,10 +427,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "No",
       "Married": "During the story, to Mr Wickham",
       "cards": [],
       "categoryId": null,
@@ -453,10 +454,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "No",
       "Married": "During the story, to Lydia",
       "cards": [],
       "categoryId": null,
@@ -480,10 +481,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "No",
       "Married": "During the story, to Mr Collins",
       "cards": [],
       "color": null,
@@ -507,10 +508,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "No",
       "Married": "No",
       "cards": [],
       "color": null,
@@ -541,10 +542,10 @@
             }
           ]
         }
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "No",
       "Married": "No",
       "cards": [],
       "color": null,
@@ -568,10 +569,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "No",
       "cards": [],
       "color": null,
@@ -595,10 +596,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "Yes",
       "cards": [],
       "color": null,
@@ -631,10 +632,10 @@
             }
           ]
         }
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "During the story, to Miss Lucas",
       "cards": [],
       "color": null,
@@ -658,10 +659,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "No - widowed",
       "cards": [],
       "color": null,
@@ -685,10 +686,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "Yes",
       "cards": [],
       "color": null,
@@ -712,10 +713,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
-      "In possession of fortune": "No",
       "Married": "No",
       "cards": [],
       "color": null,
@@ -750,10 +751,10 @@
             }
           ]
         }
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "No",
       "cards": [],
       "color": null,
@@ -777,10 +778,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
-      "In possession of fortune": "No",
       "Married": "Yes",
       "cards": [],
       "color": null,
@@ -804,10 +805,10 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "No"
     },
     {
-      "In possession of fortune": "Yes",
       "Married": "Yes",
       "cards": [],
       "color": null,
@@ -831,7 +832,8 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "In possession of fortune": "Yes"
     },
     {
       "id": 21,
@@ -854,8 +856,8 @@
       "categoryId": null,
       "imageId": null,
       "bookIds": [],
-      "In possession of fortune": "",
-      "Married": ""
+      "Married": "",
+      "In possession of fortune": ""
     }
   ],
   "chapters": [

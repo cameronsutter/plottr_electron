@@ -669,8 +669,10 @@ function openBuyWindow () {
 }
 
 function gracefullyQuit () {
-  dialog.showMessageBoxSync({type: 'info', buttons: [i18n('ok')], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email us at support@getplottr.com')})
-  if (!app.isReady() || !windows.length) app.quit()
+  if (!app.isReady() || !windows.length) {
+    dialog.showMessageBoxSync({type: 'info', buttons: [i18n('ok')], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email us at support@getplottr.com')})
+    app.quit()
+  }
 }
 
 function gracefullyNotSave () {

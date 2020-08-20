@@ -90,13 +90,24 @@ class Analyzer extends Component {
 
   searchDuplicateLines = () => {
     const { pltr } = this.props
-    const lineIds = pltr.lines.map(ch => ch.id)
+    const lineIds = pltr.lines.map(l => l.id)
     const duplicateIds = keys(pickBy(groupBy(lineIds), x => x.length > 1)).map(Number)
     let visible = []
     if (duplicateIds) {
-      visible = groupBy(pltr.lines.filter(ch => duplicateIds.includes(ch.id)), 'id')
+      visible = groupBy(pltr.lines.filter(l => duplicateIds.includes(l.id)), 'id')
     }
     this.setState({tree: visible, path: 'lines'})
+  }
+
+  searchDuplicateCards = () => {
+    const { pltr } = this.props
+    const cardIds = pltr.cards.map(c => c.id)
+    const duplicateIds = keys(pickBy(groupBy(cardIds), x => x.length > 1)).map(Number)
+    let visible = []
+    if (duplicateIds) {
+      visible = groupBy(pltr.cards.filter(c => duplicateIds.includes(c.id)), 'id')
+    }
+    this.setState({tree: visible, path: 'cards'})
   }
 
   searchChaptersByPosition = e => {
@@ -145,6 +156,7 @@ class Analyzer extends Component {
               <input onChange={this.searchCardsByChapter} placeholder='Chapter Id'/>
               <span className='analyzer__sub-option'>nextId: {id}</span>
               <span className='analyzer__sub-option'><a href='#' onClick={this.searchAbandoned}>Abandoned</a></span>
+              <span className='analyzer__sub-option'><a href='#' onClick={this.searchDuplicateCards}>Duplicates</a></span>
             </div>
             { this.renderDetails() }
           </Col>

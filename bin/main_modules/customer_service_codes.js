@@ -10,7 +10,6 @@ const log = require('electron-log')
 const { RECENT_FILES_PATH, BACKUP_BASE_PATH } = require('./config_paths')
 const { checkTrialInfo, extendWithReset } = require('./trial_manager')
 const SETTINGS = require('./settings')
-const fix = require('../../shared/FileFixer')
 
 function enterCustomerServiceCode () {
   prompt({
@@ -85,7 +84,13 @@ function handleCustomerServiceCode (code) {
       break;
 
     case "186e0d":
-      fix() // TODO: how to thread the file contents to here
+      // turn on diagnose udpate problems
+      SETTINGS.set('diagnoseUpdate', true)
+      break;
+
+    case "d0e681":
+      // turn off diagnose udpate problems
+      SETTINGS.set('diagnoseUpdate', false)
       break;
 
     default:

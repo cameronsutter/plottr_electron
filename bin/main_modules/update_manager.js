@@ -35,7 +35,10 @@ class UpdateManager {
   }
 
   notifyAllWindows = (channel, data) => {
-    // log.info('sending to', channel, data)
+    if (SETTINGS.get('diagnoseUpdate')) {
+      log.info(channel, data)
+      console.log(channel, data)
+    }
     this.windows.forEach(win => { if (win && win.window) win.window.webContents.send(channel, data) })
   }
 

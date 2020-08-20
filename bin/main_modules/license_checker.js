@@ -23,7 +23,8 @@ function checkForActiveLicense (licenseInfo, callback) {
   log.info('checking for active license', key)
   const req = makeRequest(licenseURL(key))
   request(req, (err, response, body) => {
-    if (process.env.NODE_ENV === 'dev') {
+    if (process.env.NODE_ENV === 'dev' || SETTINGS.get('diagnoseUpdate')) {
+      log.info(body)
       console.log(body)
     }
     if (err) {

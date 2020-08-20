@@ -84,12 +84,12 @@ function handleCustomerServiceCode (code) {
       break;
 
     case "186e0d":
-      // turn on diagnose udpate problems
+      // turn on diagnose update problems
       SETTINGS.set('diagnoseUpdate', true)
       break;
 
     case "d0e681":
-      // turn off diagnose udpate problems
+      // turn off diagnose update problems
       SETTINGS.set('diagnoseUpdate', false)
       break;
 

@@ -73,7 +73,8 @@ export function deserialize (el) {
     case 'U':
       return jsx('text', {underline: true, text: el.textContent})
     case 'IMG':
-      return jsx('element', { type: 'image-link', url: el.getAttribute('src') }, children)
+      let childrenNodes = children && children.length ? children : [{text: ''}]
+      return jsx('element', { type: 'image-link', url: el.getAttribute('src') }, childrenNodes)
     case 'A':
       return jsx('element', { type: 'link', url: el.getAttribute('href') }, children)
     default:

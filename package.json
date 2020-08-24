@@ -4,19 +4,18 @@
   "repository": "https://github.com/Plotinator/pltr.git",
   "private": true,
   "readme": "Copyright 2017 C Louis S, LLC",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "author": {
     "name": "C. Louis S.",
     "email": "cameronsutter0@gmail.com",
     "url": "https://medium.com/@camsutter"
   },
   "main": "main.js",
-  "scripts": {
-  },
+  "scripts": {},
   "dependencies": {
     "lodash": "^4.17.19",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "reselect": "^4.0.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

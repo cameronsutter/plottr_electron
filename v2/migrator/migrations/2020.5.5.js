@@ -1,5 +1,5 @@
 const { cloneDeep, sortBy, uniq } = require('lodash')
-const convert = require('../../slate_serializers/from_html')
+const convert = require('../from_html')
 
 function migrate (data) {
   if (data.file && data.file.version === '2020.5.5') return data

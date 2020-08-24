@@ -1,5 +1,5 @@
 import { FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { newFileCategories } from '../../../shared/newFileState'
+import { newFileCategories } from '../store/newFileState'
 import { categories as defaultCategories } from '../store/initialState'
 
 export default function categories (state = defaultCategories, action) {

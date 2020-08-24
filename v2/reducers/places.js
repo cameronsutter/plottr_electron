@@ -1,11 +1,11 @@
-import _, { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash'
 import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD, ATTACH_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_PLACE, DELETE_IMAGE, EDIT_PLACES_ATTRIBUTE,
   ATTACH_TAG_TO_PLACE, REMOVE_TAG_FROM_PLACE, ATTACH_BOOK_TO_PLACE, REMOVE_BOOK_FROM_PLACE } from '../constants/ActionTypes'
 import { place } from '../store/initialState'
-import { newFilePlaces } from '../../../shared/newFileState'
-import { nextId } from 'store/newIds'
+import { newFilePlaces } from '../store/newFileState'
+import { nextId } from '../store/newIds'
 
 const initialState = [place]
 
@@ -51,63 +51,63 @@ export default function places (state = initialState, action) {
 
     case ATTACH_PLACE_TO_CARD:
       return state.map(place => {
-        let cards = _.cloneDeep(place.cards)
+        let cards = cloneDeep(place.cards)
         cards.push(action.id)
         return place.id === action.placeId ? Object.assign({}, place, {cards: cards}) : place
       })
 
     case REMOVE_PLACE_FROM_CARD:
       return state.map(place => {
-        let cards = _.cloneDeep(place.cards)
+        let cards = cloneDeep(place.cards)
         cards.splice(cards.indexOf(action.id), 1)
         return place.id === action.placeId ? Object.assign({}, place, {cards: cards}) : place
       })
 
     case ATTACH_PLACE_TO_NOTE:
       return state.map(place => {
-        let notes = _.cloneDeep(place.noteIds)
+        let notes = cloneDeep(place.noteIds)
         notes.push(action.id)
         return place.id === action.placeId ? Object.assign({}, place, {noteIds: notes}) : place
       })
 
     case REMOVE_PLACE_FROM_NOTE:
       return state.map(place => {
-        let notes = _.cloneDeep(place.noteIds)
+        let notes = cloneDeep(place.noteIds)
         notes.splice(notes.indexOf(action.id), 1)
         return place.id === action.placeId ? Object.assign({}, place, {noteIds: notes}) : place
       })
 
     case ATTACH_TAG_TO_PLACE:
       return state.map(place => {
-        let tags = _.cloneDeep(place.tags)
+        let tags = cloneDeep(place.tags)
         tags.push(action.tagId)
         return place.id === action.id ? Object.assign({}, place, {tags: tags}) : place
       })
 
     case REMOVE_TAG_FROM_PLACE:
       return state.map(place => {
-        let tags = _.cloneDeep(place.tags)
+        let tags = cloneDeep(place.tags)
         tags.splice(tags.indexOf(action.tagId), 1)
         return place.id === action.id ? Object.assign({}, place, {tags: tags}) : place
       })
 
     case ATTACH_BOOK_TO_PLACE:
       return state.map(place => {
-        let bookIds = _.cloneDeep(place.bookIds)
+        let bookIds = cloneDeep(place.bookIds)
         bookIds.push(action.bookId)
         return place.id === action.id ? Object.assign({}, place, {bookIds: bookIds}) : place
       })
 
     case REMOVE_BOOK_FROM_PLACE:
       return state.map(place => {
-        let bookIds = _.cloneDeep(place.bookIds)
+        let bookIds = cloneDeep(place.bookIds)
         bookIds.splice(bookIds.indexOf(action.bookId), 1)
         return place.id === action.id ? Object.assign({}, place, {bookIds: bookIds}) : place
       })
 
     case DELETE_NOTE:
       return state.map(place => {
-        let notes = _.cloneDeep(place.noteIds)
+        let notes = cloneDeep(place.noteIds)
         if (!notes) return place
         notes.splice(notes.indexOf(action.id), 1)
         return Object.assign({}, place, {noteIds: notes})
@@ -115,7 +115,7 @@ export default function places (state = initialState, action) {
 
     case DELETE_CARD:
       return state.map(place => {
-        let cards = _.cloneDeep(place.cards)
+        let cards = cloneDeep(place.cards)
         if (!cards) return place
         cards.splice(cards.indexOf(action.id), 1)
         return Object.assign({}, place, {cards: cards})

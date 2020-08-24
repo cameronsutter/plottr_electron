@@ -1,6 +1,6 @@
 import { ADD_IMAGE, RENAME_IMAGE, DELETE_IMAGE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { newFileImages } from '../../../shared/newFileState'
-import { imageId } from 'store/newIds'
+import { newFileImages } from '../store/newFileState'
+import { imageId } from '../store/newIds'
 
 export default function cards (state, action) {
   switch (action.type) {

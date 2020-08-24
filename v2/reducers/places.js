@@ -3,7 +3,7 @@ import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD, ATTACH_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_PLACE, DELETE_IMAGE, EDIT_PLACES_ATTRIBUTE,
   ATTACH_TAG_TO_PLACE, REMOVE_TAG_FROM_PLACE, ATTACH_BOOK_TO_PLACE, REMOVE_BOOK_FROM_PLACE } from '../constants/ActionTypes'
-import { place } from '../../../shared/initialState'
+import { place } from '../store/initialState'
 import { newFilePlaces } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
 

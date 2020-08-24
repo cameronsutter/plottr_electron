@@ -1,5 +1,5 @@
 import i18n from 'format-message'
-import { chapter } from '../../../shared/initialState'
+import { chapter } from '../store/initialState'
 
 export function chapterOneIsPrologue (sortedBookChapters) {
   return sortedBookChapters[0].title == i18n('Prologue')

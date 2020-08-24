@@ -5,7 +5,7 @@ import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
   EDIT_PLACES_ATTRIBUTE, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM, SET_TIMELINE_FILTER,
   CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE } from '../constants/ActionTypes'
 import { ZOOM_STATES, INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE, FIT_ZOOM_STATE } from 'constants/zoom_states'
-import { ui as defaultUI } from '../../../shared/initialState'
+import { ui as defaultUI } from '../store/initialState'
 import { newFileUI } from '../../../shared/newFileState'
 
 export default function ui (state = defaultUI, action) {

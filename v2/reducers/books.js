@@ -1,5 +1,5 @@
 import { FILE_LOADED, NEW_FILE, RESET, EDIT_BOOK, ADD_BOOK, DELETE_BOOK, REORDER_BOOKS } from '../constants/ActionTypes'
-import { book as defaultBook } from '../../../shared/initialState'
+import { book as defaultBook } from '../store/initialState'
 import { newFileBooks } from '../../../shared/newFileState'
 import { objectId } from '../store/newIds'
 

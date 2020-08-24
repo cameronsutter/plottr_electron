@@ -1,5 +1,5 @@
 import { ADD_BOOK, EDIT_BOOK, DELETE_BOOK, REORDER_BOOKS } from 'constants/ActionTypes'
-import { book } from '../../../shared/initialState'
+import { book } from '../store/initialState'
 
 export function addBook () {
   return { type: ADD_BOOK, book }

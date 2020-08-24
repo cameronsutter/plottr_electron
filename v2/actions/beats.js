@@ -1,5 +1,5 @@
 import { ADD_BEAT, EDIT_BEAT_TITLE, REORDER_BEATS, DELETE_BEAT } from 'constants/ActionTypes'
-import { beat } from '../../../shared/initialState'
+import { beat } from '../store/initialState'
 
 export function addBeat () {
   return { type: ADD_BEAT, title: beat.title }

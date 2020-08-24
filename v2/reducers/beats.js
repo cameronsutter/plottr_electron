@@ -1,6 +1,6 @@
 import { ADD_BEAT, EDIT_BEAT_TITLE, REORDER_BEATS, DELETE_BEAT,
   REORDER_CARDS_IN_CHAPTER, AUTO_SORT_BEAT, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { beat as defaultBeat } from '../../../shared/initialState'
+import { beat as defaultBeat } from '../store/initialState'
 import { newFileBeats } from '../../../shared/newFileState'
 import { nextId } from '../store/newIds'
 import { nextPosition, positionReset } from '../helpers/lists'

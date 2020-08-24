@@ -1,5 +1,5 @@
 import { FILE_LOADED, NEW_FILE, RESET, EDIT_SERIES } from '../constants/ActionTypes'
-import { series as defaultSeries } from '../../../shared/initialState'
+import { series as defaultSeries } from '../store/initialState'
 import { newFileSeries } from '../../../shared/newFileState'
 
 export default function series (state = defaultSeries, action) {

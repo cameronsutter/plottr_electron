@@ -1,7 +1,7 @@
 import { partition } from 'lodash'
 import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE, EXPAND_LINE, COLLAPSE_LINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
   EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { line } from '../../../shared/initialState'
+import { line } from '../store/initialState'
 import { newFileLines } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
 import { nextColor } from 'store/lineColors'

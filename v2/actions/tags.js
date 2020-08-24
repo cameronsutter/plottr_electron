@@ -1,5 +1,5 @@
 import { ADD_TAG, EDIT_TAG, DELETE_TAG } from 'constants/ActionTypes'
-import { tag } from '../../../shared/initialState'
+import { tag } from '../store/initialState'
 
 export function addTag () {
   return { type: ADD_TAG, title: tag.title }

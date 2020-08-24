@@ -8,7 +8,7 @@ import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK,
   REORDER_CARDS_WITHIN_LINE, REORDER_CARDS_IN_CHAPTER, AUTO_SORT_CHAPTER } from '../constants/ActionTypes'
 import { newFileCards } from '../../../shared/newFileState'
-import { card as defaultCard } from '../../../shared/initialState'
+import { card as defaultCard } from '../store/initialState'
 import { nextId } from 'store/newIds'
 
 export default function cards (state, action) {

@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import { allCharactersSelector } from './characters'
 import { allPlacesSelector } from './places'
-import { character, place } from '../../../shared/initialState'
+import { character, place } from '../store/initialState'
 
 const characterKeys = Object.keys(character)
 const placeKeys = Object.keys(place)

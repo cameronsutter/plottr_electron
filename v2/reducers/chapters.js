@@ -1,7 +1,7 @@
 import { partition } from 'lodash'
 import { ADD_SCENE, ADD_LINES_FROM_TEMPLATE, EDIT_SCENE_TITLE, REORDER_SCENES, REORDER_CARDS_IN_CHAPTER,
   AUTO_SORT_CHAPTER, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
-import { chapter } from '../../../shared/initialState'
+import { chapter } from '../store/initialState'
 import { newFileChapters } from '../../../shared/newFileState'
 import { nextId } from '../store/newIds'
 import { nextPositionInBook, positionReset } from '../helpers/lists'

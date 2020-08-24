@@ -3,7 +3,7 @@ import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD, ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELETE_IMAGE, EDIT_CHARACTER_ATTRIBUTE,
   ATTACH_TAG_TO_CHARACTER, REMOVE_TAG_FROM_CHARACTER, ATTACH_BOOK_TO_CHARACTER, REMOVE_BOOK_FROM_CHARACTER } from '../constants/ActionTypes'
-import { character } from '../../../shared/initialState'
+import { character } from '../store/initialState'
 import { newFileCharacters } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
 

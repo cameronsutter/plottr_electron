@@ -1,5 +1,5 @@
 import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE } from 'constants/ActionTypes'
-import { chapter } from '../../../shared/initialState'
+import { chapter } from '../store/initialState'
 
 export function addScene (bookId) {
   return { type: ADD_SCENE, title: chapter.title, bookId }

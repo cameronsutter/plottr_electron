@@ -39,7 +39,7 @@ import rootReducer from './reducers/root'
 
 import * as initialState from './store/initialState'
 import * as lineColors from './store/lineColors'
-import * as newFileState from './store/newFileState'
+import newFileState from './store/newFileState'
 import * as newIds from './store/newIds'
 
 module.exports = {

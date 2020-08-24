@@ -1,5 +1,5 @@
 import { ADD_SERIES_LINE, ADD_SERIES_LINES_FROM_TEMPLATE, EDIT_SERIES_LINE_TITLE,
-  EDIT_SERIES_LINE_COLOR, REORDER_SERIES_LINES, DELETE_SERIES_LINE } from 'constants/ActionTypes'
+  EDIT_SERIES_LINE_COLOR, REORDER_SERIES_LINES, DELETE_SERIES_LINE } from '../constants/ActionTypes'
 
 // NOTE: needs to have the same signatures as the lines actions
 

@@ -1,4 +1,4 @@
-import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE } from 'constants/ActionTypes'
+import { ADD_SCENE, EDIT_SCENE_TITLE, REORDER_SCENES, DELETE_SCENE } from '../constants/ActionTypes'
 import { chapter } from '../store/initialState'
 
 export function addScene (bookId) {

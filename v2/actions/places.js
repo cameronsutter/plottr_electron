@@ -1,4 +1,4 @@
-import { ADD_PLACE, EDIT_PLACE, DELETE_PLACE } from 'constants/ActionTypes'
+import { ADD_PLACE, EDIT_PLACE, DELETE_PLACE } from '../constants/ActionTypes'
 import { place } from '../store/initialState'
 
 export function addPlace () {

@@ -1,4 +1,4 @@
-import { ADD_BEAT, EDIT_BEAT_TITLE, REORDER_BEATS, DELETE_BEAT } from 'constants/ActionTypes'
+import { ADD_BEAT, EDIT_BEAT_TITLE, REORDER_BEATS, DELETE_BEAT } from '../constants/ActionTypes'
 import { beat } from '../store/initialState'
 
 export function addBeat () {

@@ -1,4 +1,4 @@
-import { ADD_TAG, EDIT_TAG, DELETE_TAG } from 'constants/ActionTypes'
+import { ADD_TAG, EDIT_TAG, DELETE_TAG } from '../constants/ActionTypes'
 import { tag } from '../store/initialState'
 
 export function addTag () {

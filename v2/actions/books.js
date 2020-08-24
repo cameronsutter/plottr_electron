@@ -1,4 +1,4 @@
-import { ADD_BOOK, EDIT_BOOK, DELETE_BOOK, REORDER_BOOKS } from 'constants/ActionTypes'
+import { ADD_BOOK, EDIT_BOOK, DELETE_BOOK, REORDER_BOOKS } from '../constants/ActionTypes'
 import { book } from '../store/initialState'
 
 export function addBook () {

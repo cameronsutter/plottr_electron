@@ -1,14 +1,5 @@
 const i18n = require('format-message')
 const { series, book, chapter, beat, ui, file, line, customAttributes, seriesLine, categories } = require('./initialState')
-const { app, remote } = require('electron')
-let electronApp = app
-if (remote) {
-  electronApp = remote.app
-}
-i18n.setup({
-  translations: require('../locales'),
-  locale: electronApp.getLocale() || 'en'
-})
 
 // data structure
 
@@ -51,21 +42,32 @@ const newFileCharacterCategories = [
 
 const newFileCategories = Object.assign({}, categories, {characters: newFileCharacterCategories})
 
-module.exports = {
-  newFileSeries,
-  newFileBooks,
-  newFileBeats,
-  newFileChapters,
-  newFileUI,
-  newFileFile,
-  newFileCharacters,
-  newFileCategories,
-  newFilePlaces,
-  newFileTags,
-  newFileCards,
-  newFileLines,
-  newFileSeriesLines,
-  newFileCustomAttributes,
-  newFileNotes,
-  newFileImages,
+function emptyFile (name, version) {
+  const books = {
+    ...newFileBooks,
+    [1]: {
+      ...newFileBooks[1],
+      title: name,
+    }
+  }
+  return {
+    series: name ? Object.assign({}, newFileSeries, {name: name}) : newFileSeries,
+    books: books,
+    beats: newFileBeats,
+    chapters: newFileChapters,
+    ui: newFileUI,
+    file: Object.assign({}, newFileFile, {version}),
+    characters: newFileCharacters,
+    places: newFilePlaces,
+    tags: newFileTags,
+    cards: newFileCards,
+    lines: newFileLines,
+    seriesLines: newFileSeriesLines,
+    customAttributes: newFileCustomAttributes,
+    notes: newFileNotes,
+    images: newFileImages,
+    categories: newFileCategories,
+  }
 }
+
+module.exports = emptyFile

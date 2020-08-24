@@ -29,7 +29,6 @@ import * as categorySelectors from './selectors/categories'
 import * as chapterSelectors from './selectors/chapters'
 import * as characterSelectors from './selectors/characters'
 import * as customAttributeSelectors from './selectors/customAttributes'
-import * as imageSelectors from './selectors/images'
 import * as lineSelectors from './selectors/lines'
 import * as placeSelectors from './selectors/places'
 import * as seriesLineSelectors from './selectors/seriesLines'
@@ -75,7 +74,6 @@ module.exports = {
     chapterSelectors,
     characterSelectors,
     customAttributeSelectors,
-    imageSelectors,
     lineSelectors,
     placeSelectors,
     seriesLineSelectors,

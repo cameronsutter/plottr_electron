@@ -1,8 +1,14 @@
 import xml from 'xml-js'
 import fs from 'fs'
+import i18n from 'format-message'
 import { cloneDeep } from 'lodash'
-import { objectId } from '../../../app/store/newIds'
-import { book as defaultBook } from '../../../../shared/initialState'
+import { objectId, nextId } from '../../../app/store/newIds'
+import {
+  book as defaultBook,
+  note as defaultNote,
+  character as defaultCharacter,
+  card as defaultCard
+} from '../../../../shared/initialState'
 
 export default function Importer (path, isNewFile, state) {
   const importedXML = fs.readFileSync(path, 'utf-8')
@@ -16,18 +22,12 @@ export default function Importer (path, isNewFile, state) {
     bookId = createNewBook(currentState.books)
   }
 
-  bookAttributes(currentState.books, json, bookId)
-  console.log(currentState.books)
+  const bookTitle = bookAttributes(currentState.books, json, bookId)
 
-  // storyLine
-  //   sentence -> in a note
-  //   paragraph -> in a note
+  storyLine(currentState, json, bookTitle, bookId)
+  synopsis(currentState, json, bookTitle, bookId)
 
-  // short synopsis -> in a note
-  //   each line of it as a slate paragraph
-
-  // long synopsis -> in a note
-  //   each line of it as a slate paragraph
+  console.log(currentState.notes)
 
   // characterInfoList
   //   each one is a character
@@ -67,6 +67,16 @@ function createNewBook (currentBooks) {
   return nextBookId
 }
 
+function createNewNote (currentNotes, values) {
+  const nextNoteId = nextId(currentNotes)
+  const newNote = Object.assign({}, defaultNote, {id: nextNoteId, ...values})
+  currentNotes.push(newNote)
+}
+
+function createSlateEditor (paragraphs) {
+  return paragraphs.map(p => ( {children: [{text: p}]} ))
+}
+
 function bookAttributes (currentBooks, json, bookId) {
   // title of the book (with subtitle)
   const titleAttr = json['GContainer']['GString'].find(n => n['_attributes']['name'] == 'title')
@@ -91,10 +101,64 @@ function bookAttributes (currentBooks, json, bookId) {
 
   // storyLine -> premise
   const storyLineNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'storyLine')
-  if (storyLineNode) {
+  if (storyLineNode && storyLineNode['GString']) {
     const storyLineAttr = storyLineNode['GString'].find(n => n['_attributes']['name'] == 'sentence')
-    currentBooks[`${bookId}`].premise = storyLineAttr['_attributes']['value']
+    if (storyLineAttr) {
+      currentBooks[`${bookId}`].premise = storyLineAttr['_attributes']['value']
+    }
   }
 
   // TODO: projected word counts -> in a note
+  return titleAttr['_attributes']['value']
+}
+
+function storyLine (currentState, json, bookTitle, bookId) {
+  const storyLineNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'storyLine')
+  if (storyLineNode && storyLineNode['GString']) {
+    // storyLine sentence -> note
+    let storyLineAttr = storyLineNode['GString'].find(n => n['_attributes']['name'] == 'sentence')
+    if (storyLineAttr) {
+      createNewNote(currentState.notes, {
+        title: `[${bookTitle}] ${i18n('Story Line Sentence')}`,
+        bookIds: [bookId],
+        content: createSlateEditor([storyLineAttr['_attributes']['value']])
+      })
+    }
+    // storyLine paragraph -> note
+    storyLineAttr = storyLineNode['GString'].find(n => n['_attributes']['name'] == 'paragraph')
+    if (storyLineAttr) {
+      createNewNote(currentState.notes, {
+        title: `[${bookTitle}] ${i18n('Story Line Paragraph')}`,
+        bookIds: [bookId],
+        content: createSlateEditor([storyLineAttr['_attributes']['value']])
+      })
+    }
+  }
+}
+
+function synopsis (currentState, json, bookTitle, bookId) {
+  let synopsisNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'shortSynopsis')
+  if (synopsisNode && synopsisNode['GString']) {
+    // short synopsis -> in a note (each line of it as a slate paragraph)
+    let paragraphs = synopsisNode['GString'].map(n => n['_attributes']['value'])
+    if (paragraphs && paragraphs.length) {
+      createNewNote(currentState.notes, {
+        title: `[${bookTitle}] ${i18n('Short Synopsis')}`,
+        bookIds: [bookId],
+        content: createSlateEditor(paragraphs)
+      })
+    }
+  }
+  synopsisNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'longSynopsis')
+  if (synopsisNode && synopsisNode['GString']) {
+    // long synopsis -> in a note (each line of it as a slate paragraph)
+    let paragraphs = synopsisNode['GString'].map(n => n['_attributes']['value'])
+    if (paragraphs && paragraphs.length) {
+      createNewNote(currentState.notes, {
+        title: `[${bookTitle}] ${i18n('Long Synopsis')}`,
+        bookIds: [bookId],
+        content: createSlateEditor(paragraphs)
+      })
+    }
+  }
 }

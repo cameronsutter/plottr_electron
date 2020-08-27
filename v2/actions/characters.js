@@ -1,4 +1,5 @@
-import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, DELETE_CHARACTER } from '../constants/ActionTypes'
+import { ADD_CHARACTER, ADD_CHARACTER_WITH_VALUES,
+  ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, DELETE_CHARACTER } from '../constants/ActionTypes'
 import { character } from '../store/initialState'
 
 export function addCharacter () {

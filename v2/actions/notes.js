@@ -8,6 +8,10 @@ export function addNote () {
   return { type: ADD_NOTE, title: note.title, content: note.content }
 }
 
+export function addNoteWithValues (title, content) {
+  return { type: ADD_NOTE, title, content }
+}
+
 export function editNote (id, attributes) {
   return { type: EDIT_NOTE, id, attributes }
 }

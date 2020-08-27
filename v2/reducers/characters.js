@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
+import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, ADD_CHARACTER_WITH_VALUES, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD, ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELETE_IMAGE, EDIT_CHARACTER_ATTRIBUTE,
   ATTACH_TAG_TO_CHARACTER, REMOVE_TAG_FROM_CHARACTER, ATTACH_BOOK_TO_CHARACTER, REMOVE_BOOK_FROM_CHARACTER } from '../constants/ActionTypes'
@@ -18,6 +18,13 @@ export default function characters (state = initialState, action) {
         name: action.name,
         description: action.description,
         notes: action.notes
+      }]
+
+    case ADD_CHARACTER_WITH_VALUES:
+      return [...state, {
+        ...character,
+        ...action.character,
+        id: nextId(state),
       }]
 
     case ADD_CHARACTER_WITH_TEMPLATE:

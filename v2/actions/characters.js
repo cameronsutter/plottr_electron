@@ -5,6 +5,10 @@ export function addCharacter () {
   return { type: ADD_CHARACTER, name: character.name, description: character.description, notes: character.notes  }
 }
 
+export function addCharacterWithValues (character) {
+  return { type: ADD_CHARACTER_WITH_VALUES, character  }
+}
+
 export function addCharacterWithTemplate (templateData) {
   return { type: ADD_CHARACTER_WITH_TEMPLATE, name: character.name, description: character.description, notes: character.notes, templateData  }
 }

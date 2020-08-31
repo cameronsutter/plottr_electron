@@ -16,6 +16,7 @@ import { FunSpinner } from '../Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { timelineFilterIsEmptySelector } from '../../selectors/ui'
 import ExportNavItem from '../export/ExportNavItem'
+import ClearNavItem from './ClearNavItem'
 
 const win = remote.getCurrentWindow()
 
@@ -245,7 +246,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav () {
-    const { ui, file, filterIsEmpty } = this.props
+    const { ui, file, filterIsEmpty, usedTimelineTemplates } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -310,6 +311,7 @@ class TimelineWrapper extends Component {
           <NavItem>
             <Button bsSize='small' onClick={this.startSaveAsTemplate}><FaSave className='svg-save-template'/> {i18n('Save as Template')}</Button>
           </NavItem>
+          <ClearNavItem />
           <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline}/>
         </Nav>
       </Navbar>
@@ -340,6 +342,7 @@ class TimelineWrapper extends Component {
 TimelineWrapper.propTypes = {
   file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  filterIsEmpty: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps (state) {

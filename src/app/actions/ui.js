@@ -1,7 +1,7 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NAVIGATE_TO_BOOK_TIMELINE,
-  FILE_SAVED, NEW_FILE, SET_DARK_MODE, CHANGE_CURRENT_TIMELINE,
+  FILE_SAVED, NEW_FILE, SET_DARK_MODE, CHANGE_CURRENT_TIMELINE, CLEAR_TEMPLATE_FROM_TIMELINE,
   SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER, EXPAND_TIMELINE, COLLAPSE_TIMELINE, SET_TIMELINE_FILTER,
-  SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM } from 'constants/ActionTypes'
+  SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM, RESET_TIMELINE } from 'constants/ActionTypes'
 
 export function changeCurrentView (view) {
   return { type: CHANGE_CURRENT_VIEW, view }
@@ -85,5 +85,13 @@ export function expandTimeline () {
 
 export function collapseTimeline () {
   return { type: COLLAPSE_TIMELINE }
+}
+
+export function clearTemplateFromTimeline (bookId, templateId) {
+  return { type: CLEAR_TEMPLATE_FROM_TIMELINE, bookId, templateId }
+}
+
+export function resetTimeline (bookId) {
+  return { type: RESET_TIMELINE, bookId }
 }
 

@@ -5,11 +5,10 @@ import { bindActionCreators } from 'redux'
 import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
-import _ from 'lodash'
+import { sortBy } from 'lodash'
 import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { nextId } from '../../store/newIds'
 import { nextColor } from 'store/lineColors'
 import { card, chapter as defaultChapter, line as defaultLine } from '../../../../shared/initialState'
 import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selectors/chapters'
@@ -41,14 +40,14 @@ class AddLineRow extends Component {
     }, {})
   }
 
-  addBlankLine = (templateName, bookId) => {
-    const newLine = Object.assign({}, defaultLine, {title: templateName, bookId: bookId})
-    this.addLines([newLine], bookId, false)
+  addBlankLine = (template, bookId) => {
+    const newLine = Object.assign({}, defaultLine, {title: template.name, bookId: bookId})
+    this.addLines([newLine], bookId, false, template)
   }
 
-  addChapters = (templateChapters, bookId, templateName) => {
+  addChapters = (templateChapters, bookId, template) => {
     if (!templateChapters) return
-    templateChapters = _.sortBy(templateChapters, 'position')
+    templateChapters = sortBy(templateChapters, 'position')
 
     const allAreAuto = templateChapters.every(ch => ch.title == 'auto')
 
@@ -70,6 +69,7 @@ class AddLineRow extends Component {
           ...tCh,
           id: id,
           bookId: bookId,
+          fromTemplateId: template.id,
         }
       })
     } else {
@@ -85,6 +85,7 @@ class AddLineRow extends Component {
               id: id,
               bookId: bookId,
               position: last.position + 1,
+              fromTemplateId: template.id,
             }
             this.allChapters.push(newChapter)
           })
@@ -102,12 +103,13 @@ class AddLineRow extends Component {
               id: id,
               bookId: bookId,
               position: last.position + 1,
+              fromTemplateId: template.id,
             }
             this.allChapters.push(newChapter)
           })
         } else {
           // add a new line and add chapters as cards
-          this.addBlankLine(templateName, bookId)
+          this.addBlankLine(template, bookId)
           let thisLine = this.getLast(this.allLines)
 
           templateChapters.forEach(tCh => {
@@ -119,6 +121,7 @@ class AddLineRow extends Component {
               lineId: thisLine.id,
               chapterId: this.allChapters[tCh.position].id,
               title: tCh.title,
+              fromTemplateId: template.id,
             })
             this.allCards.push(newCard)
           })
@@ -127,9 +130,9 @@ class AddLineRow extends Component {
     }
   }
 
-  addLines = (templateLines, bookId, remember) => {
+  addLines = (templateLines, bookId, remember, template) => {
     if (!templateLines) return
-    templateLines = _.sortBy(templateLines, 'position')
+    templateLines = sortBy(templateLines, 'position')
 
     templateLines.forEach(tL => {
       const id = this.nextLineId
@@ -143,13 +146,14 @@ class AddLineRow extends Component {
         bookId: bookId,
         position: lastPosition + 1 + tL.position,
         color: color,
+        fromTemplateId: template.id,
       }
       this.allLines.push(newLine)
       ++this.nextLineId
     })
   }
 
-  addCards = (templateCards, templateChapters, bookId, templateName) => {
+  addCards = (templateCards, templateChapters, bookId, template) => {
     if (!templateCards) return
 
     const chaptersPositionById = this.getPositionById(templateChapters)
@@ -159,7 +163,7 @@ class AddLineRow extends Component {
     // if the template doesn't have any lines, add a new one
     if (!Object.keys(this.newLineMapping).length) {
       useLines = false
-      this.addBlankLine(templateName, bookId)
+      this.addBlankLine(template, bookId)
       const lastLine = this.getLast(this.allLines)
       if (lastLine) lineId = lastLine.id
     }
@@ -176,6 +180,7 @@ class AddLineRow extends Component {
         bookId: bookId,
         chapterId: chapterId,
         lineId: lineId,
+        fromTemplateId: template.id,
       }
       this.allCards.push(newCard)
       ++this.nextCardId
@@ -196,11 +201,11 @@ class AddLineRow extends Component {
     this.allLines = this.props.lines
     this.allCards = this.props.cards
 
-    this.addChapters(templateData.chapters, bookId, template.name)
-    this.addLines(templateData.lines, bookId, true)
-    this.addCards(templateData.cards, templateData.chapters, bookId, template.name)
+    this.addChapters(templateData.chapters, bookId, template)
+    this.addLines(templateData.lines, bookId, true, template)
+    this.addCards(templateData.cards, templateData.chapters, bookId, template)
 
-    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, bookId)
+    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, bookId, template)
     this.setState({showTemplatePicker: false})
   }
 

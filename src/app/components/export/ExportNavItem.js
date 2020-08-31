@@ -13,6 +13,7 @@ function ExportNavItem (props) {
   const doWordExport = () => {
     doExport('word')
   }
+
   const doScrivenerExport = () => {
     doExport('scrivener')
   }

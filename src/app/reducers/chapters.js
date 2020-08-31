@@ -1,5 +1,6 @@
-import { partition } from 'lodash'
-import { ADD_SCENE, ADD_LINES_FROM_TEMPLATE, EDIT_SCENE_TITLE, REORDER_SCENES, REORDER_CARDS_IN_CHAPTER,
+import { partition, sortBy } from 'lodash'
+import { ADD_SCENE, ADD_LINES_FROM_TEMPLATE, EDIT_SCENE_TITLE, REORDER_SCENES,
+  REORDER_CARDS_IN_CHAPTER, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE,
   AUTO_SORT_CHAPTER, DELETE_SCENE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { chapter } from '../../../shared/initialState'
 import { newFileChapters } from '../../../shared/newFileState'
@@ -18,6 +19,7 @@ export default function chapters (state = initialState, action) {
         title: action.title,
         time: 0,
         autoOutlineSort: true,
+        fromTemplateId: null,
       }]
 
     case ADD_LINES_FROM_TEMPLATE:
@@ -45,6 +47,32 @@ export default function chapters (state = initialState, action) {
 
     case AUTO_SORT_CHAPTER:
       return state.map(ch => ch.id == action.id ? Object.assign({}, ch, {autoOutlineSort: true}) : ch )
+
+    case CLEAR_TEMPLATE_FROM_TIMELINE:
+      const values = state.reduce((acc, ch) => {
+        if (ch.bookId == action.bookId) {
+          if (ch.fromTemplateId != action.templateId) acc.book.push(ch)
+        } else {
+          acc.notBook.push(ch)
+        }
+        return acc
+      }, {book: [], notBook: []})
+      const bookChapters = positionReset(sortBy(values.book, 'position'))
+      return values.notBook.concat(bookChapters)
+
+    case RESET_TIMELINE:
+      // remove any from this book
+      const chaptersToKeep = state.filter(line => line.bookId != action.bookId)
+      // create a new chapter in the book so there's 1
+      return [...chaptersToKeep, {
+        id: nextId(state),
+        bookId: action.bookId,
+        position: 0,
+        title: 'auto',
+        time: 0,
+        autoOutlineSort: true,
+        fromTemplateId: null,
+      }]
 
     case RESET:
     case FILE_LOADED:

@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'

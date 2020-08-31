@@ -1,8 +1,8 @@
 import { cloneDeep } from 'lodash'
 import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
-  DELETE_LINE, DELETE_SCENE,
+  DELETE_LINE, DELETE_SCENE, RESET_TIMELINE,
   EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE, ADD_CARD_IN_CHAPTER,
-  DELETE_CARD, ATTACH_CHARACTER_TO_CARD,
+  DELETE_CARD, ATTACH_CHARACTER_TO_CARD, CLEAR_TEMPLATE_FROM_TIMELINE,
   REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG, DELETE_CHARACTER,
   DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK,
@@ -214,6 +214,12 @@ export default function cards (state, action) {
           return card
         }
       })
+
+    case RESET_TIMELINE:
+    case CLEAR_TEMPLATE_FROM_TIMELINE:
+      // chapterIds & lineIds come from root reducer
+      // they are ones that are NOT being removed
+      return state.filter(card => action.chapterIds[card.chapterId] || action.lineIds[card.lineId])
 
     case RESET:
     case FILE_LOADED:

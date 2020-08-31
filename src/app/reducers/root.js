@@ -1,5 +1,5 @@
 import mainReducer from './main'
-import { DELETE_BOOK } from '../constants/ActionTypes'
+import { DELETE_BOOK, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE } from '../constants/ActionTypes'
 
 export default function root (state, action) {
   switch (action.type) {
@@ -12,6 +12,42 @@ export default function root (state, action) {
       } else {
         return mainReducer(state, action)
       }
+
+    case CLEAR_TEMPLATE_FROM_TIMELINE:
+      // finding chapters that will NOT be removed
+      const chapterIdsToClear = state.chapters.reduce((acc, ch) => {
+        if (ch.bookId != action.bookId || ch.fromTemplateId != action.templateId) {
+          acc[ch.id] = true
+        }
+        return acc
+      }, {})
+      // finding lines that will NOT be removed
+      const lineIdsToClear = state.lines.reduce((acc, l) => {
+        if (l.bookId != action.bookId || l.fromTemplateId != action.templateId) {
+          acc[l.id] = true
+        }
+        return acc
+      }, {})
+      const newClearAction = {...action, chapterIds: chapterIdsToClear, lineIds: lineIdsToClear}
+      return mainReducer(state, newClearAction)
+
+    case RESET_TIMELINE:
+      // finding chapters that will NOT be removed
+      const chapterIdsToReset = state.chapters.reduce((acc, ch) => {
+        if (ch.bookId != action.bookId) {
+          acc[ch.id] = true
+        }
+        return acc
+      }, {})
+      // finding lines that will NOT be removed
+      const lineIdsToReset = state.lines.reduce((acc, l) => {
+        if (l.bookId != action.bookId) {
+          acc[l.id] = true
+        }
+        return acc
+      }, {})
+      const newResetAction = {...action, chapterIds: chapterIdsToReset, lineIds: lineIdsToReset}
+      return mainReducer(state, newResetAction)
 
     default:
       return mainReducer(state, action)

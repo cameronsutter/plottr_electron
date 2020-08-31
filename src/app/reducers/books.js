@@ -1,4 +1,5 @@
-import { FILE_LOADED, NEW_FILE, RESET, EDIT_BOOK, ADD_BOOK, DELETE_BOOK, REORDER_BOOKS } from '../constants/ActionTypes'
+import { FILE_LOADED, NEW_FILE, RESET, EDIT_BOOK, ADD_BOOK, DELETE_BOOK, REORDER_BOOKS,
+  ADD_LINES_FROM_TEMPLATE, CLEAR_TEMPLATE_FROM_TIMELINE } from '../constants/ActionTypes'
 import { book as defaultBook } from '../../../shared/initialState'
 import { newFileBooks } from '../../../shared/newFileState'
 import { objectId } from '../store/newIds'
@@ -43,6 +44,27 @@ export default function books (state = defaultBook, action) {
         }
         return acc
       }, {allIds: newIds})
+
+    case ADD_LINES_FROM_TEMPLATE:
+      return {
+        ...state,
+        [action.bookId]: {
+          ...state[action.bookId],
+          timelineTemplates: [
+            ...state[action.bookId].timelineTemplates,
+            {id: action.template.id, name: action.template.name},
+          ],
+        }
+      }
+
+    case CLEAR_TEMPLATE_FROM_TIMELINE:
+      return {
+        ...state,
+        [action.bookId]: {
+          ...state[action.bookId],
+          timelineTemplates: state[action.bookId].timelineTemplates.filter(tt => tt.id != action.templateId),
+        }
+      }
 
     case RESET:
     case FILE_LOADED:

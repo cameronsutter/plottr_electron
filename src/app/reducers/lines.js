@@ -1,5 +1,7 @@
-import { partition } from 'lodash'
-import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE, EXPAND_LINE, COLLAPSE_LINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
+import { partition, sortBy } from 'lodash'
+import i18n from 'format-message'
+import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE, EXPAND_LINE, COLLAPSE_LINE,
+  EXPAND_TIMELINE, COLLAPSE_TIMELINE, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE,
   EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { line } from '../../../shared/initialState'
 import { newFileLines } from '../../../shared/newFileState'
@@ -20,6 +22,7 @@ export default function lines (state = initialState, action) {
         color: nextColor(linesInBook),
         position: nextPositionInBook(state, action.bookId),
         expanded: null,
+        fromTemplateId: null,
       }, ...state]
 
     case ADD_LINES_FROM_TEMPLATE:
@@ -60,6 +63,32 @@ export default function lines (state = initialState, action) {
     case COLLAPSE_TIMELINE:
     case EXPAND_TIMELINE:
       return state.map(l => Object.assign({}, l, {expanded: null}) )
+
+    case CLEAR_TEMPLATE_FROM_TIMELINE:
+      const values = state.reduce((acc, line) => {
+        if (line.bookId == action.bookId) {
+          if (line.fromTemplateId != action.templateId) acc.book.push(line)
+        } else {
+          acc.notBook.push(line)
+        }
+        return acc
+      }, {book: [], notBook: []})
+      const bookLines = positionReset(sortBy(values.book, 'position'))
+      return values.notBook.concat(bookLines)
+
+    case RESET_TIMELINE:
+      // remove any from this book
+      const linesToKeep = state.filter(line => line.bookId != action.bookId)
+      // create a new line in the book so there's 1
+      return [{
+        id: nextId(state),
+        bookId: action.bookId,
+        title: i18n('Main Plot'),
+        color: nextColor(0),
+        position: 0,
+        expanded: null,
+        fromTemplateId: null,
+      }, ...linesToKeep]
 
     case RESET:
     case FILE_LOADED:

@@ -3,7 +3,7 @@ import { DELETE_BOOK, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE } from '../co
 import { isSeriesSelector } from '../selectors/ui'
 
 export default function root (state, action) {
-  const isSeries = isSeriesSelector(state)
+  const isSeries = action.type.includes('@@redux') ? false : isSeriesSelector(state)
   switch (action.type) {
     case DELETE_BOOK:
       if (state.ui.currentTimeline == action.id) {

@@ -77,6 +77,8 @@ export default function lines (state = initialState, action) {
       return values.notBook.concat(bookLines)
 
     case RESET_TIMELINE:
+      if (action.isSeries) return state
+
       // remove any from this book
       const linesToKeep = state.filter(line => line.bookId != action.bookId)
       // create a new line in the book so there's 1

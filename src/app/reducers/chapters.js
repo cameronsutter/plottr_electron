@@ -61,6 +61,8 @@ export default function chapters (state = initialState, action) {
       return values.notBook.concat(bookChapters)
 
     case RESET_TIMELINE:
+      if (action.isSeries) return state
+
       // remove any from this book
       const chaptersToKeep = state.filter(line => line.bookId != action.bookId)
       // create a new chapter in the book so there's 1

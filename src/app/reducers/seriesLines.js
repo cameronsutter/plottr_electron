@@ -1,4 +1,5 @@
-import { ADD_SERIES_LINE, ADD_SERIES_LINES_FROM_TEMPLATE, EDIT_SERIES_LINE_TITLE,
+import i18n from 'format-message'
+import { ADD_SERIES_LINE, ADD_SERIES_LINES_FROM_TEMPLATE, EDIT_SERIES_LINE_TITLE, RESET_TIMELINE,
   EXPAND_SERIES_LINE, COLLAPSE_SERIES_LINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
   EDIT_SERIES_LINE_COLOR, REORDER_SERIES_LINES, DELETE_SERIES_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { seriesLine } from '../../../shared/initialState'
@@ -63,6 +64,17 @@ export default function seriesLines (state = initialState, action) {
     case COLLAPSE_TIMELINE:
     case EXPAND_TIMELINE:
       return state.map(l => Object.assign({}, l, {expanded: null}) )
+
+    case RESET_TIMELINE:
+      if (!action.isSeries) return state
+
+      return [{
+        id: nextId(state),
+        title: i18n('Main Plot'),
+        color: nextColor(0),
+        position: 0,
+        expanded: null,
+      }]
 
     case RESET:
     case FILE_LOADED:

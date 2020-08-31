@@ -32,14 +32,14 @@ class ClearNavItem extends Component {
 
   render () {
     return <NavItem>
-      <Button bsSize='small' onClick={() => this.setState({deleting: true})}><Glyphicon glyph='refresh'/>{' '}{i18n('Reset')}</Button>
+      <Button bsSize='small' onClick={() => this.setState({deleting: true})}><Glyphicon glyph='refresh'/>{' '}{i18n('Clear')}</Button>
       { this.renderDelete() }
     </NavItem>
   }
 }
 
 ClearNavItem.propTypes = {
-  bookId: PropTypes.number.isRequired,
+  bookId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 }
 
 function mapStateToProps (state) {

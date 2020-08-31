@@ -24,7 +24,7 @@ const book = {
 const beat = {
   id: 1,
   position: 0,
-  title: '',
+  title: 'auto',
   time: 0, // ? can also be a string
   templates: [],
   autoOutlineSort: true,

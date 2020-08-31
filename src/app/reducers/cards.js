@@ -216,6 +216,13 @@ export default function cards (state, action) {
       })
 
     case RESET_TIMELINE:
+      // isSeries & chapterIds & lineIds come from root reducer
+      if (action.isSeries) {
+        return state.filter(card => !card.seriesLineId && !card.beatId)
+      } else {
+        return state.filter(card => action.chapterIds[card.chapterId] || action.lineIds[card.lineId])
+      }
+
     case CLEAR_TEMPLATE_FROM_TIMELINE:
       // chapterIds & lineIds come from root reducer
       // they are ones that are NOT being removed

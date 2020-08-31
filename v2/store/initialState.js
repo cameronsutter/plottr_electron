@@ -17,6 +17,7 @@ const book = {
   genre: '',
   theme: '',
   templates: [],
+  timelineTemplates: [],
   imageId: null,
 }
 
@@ -37,6 +38,7 @@ const chapter = {
   time: 0, // ? can also be a string
   templates: [],
   autoOutlineSort: true,
+  fromTemplateId: null,
 }
 
 const ui = {
@@ -127,6 +129,7 @@ const card = {
   places: [],
   templates: [],
   imageId: null,
+  fromTemplateId: null,
 }
 
 const line = {
@@ -137,6 +140,7 @@ const line = {
   position: 0,
   characterId: null,
   expanded: null,
+  fromTemplateId: null,
 }
 
 const seriesLine = {

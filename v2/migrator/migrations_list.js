@@ -14,6 +14,7 @@ const list = [
   'm2020_5_5',
   'm2020_6_12',
   'm2020_7_7',
+  'm2020_8_28',
 ]
 
 module.exports = list

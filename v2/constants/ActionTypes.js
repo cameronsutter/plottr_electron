@@ -70,6 +70,7 @@ export const DELETE_SERIES_LINE = 'DELETE_SERIES_LINE'
 
 // places actions
 export const ADD_PLACE = 'ADD_PLACE'
+export const ADD_PLACE_WITH_VALUES = 'ADD_PLACE_WITH_VALUES'
 export const EDIT_PLACE = 'EDIT_PLACE'
 export const DELETE_PLACE = 'DELETE_PLACE'
 

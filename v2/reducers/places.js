@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET,
+import { ADD_PLACE, EDIT_PLACE, FILE_LOADED, NEW_FILE, RESET, ADD_PLACE_WITH_VALUES,
   ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD, ATTACH_PLACE_TO_NOTE, REMOVE_PLACE_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_PLACE, DELETE_IMAGE, EDIT_PLACES_ATTRIBUTE,
   ATTACH_TAG_TO_PLACE, REMOVE_TAG_FROM_PLACE, ATTACH_BOOK_TO_PLACE, REMOVE_BOOK_FROM_PLACE } from '../constants/ActionTypes'
@@ -18,6 +18,13 @@ export default function places (state = initialState, action) {
         name: action.name,
         description: action.description,
         notes: action.notes
+      }]
+
+    case ADD_PLACE_WITH_VALUES:
+      return [...state, {
+        ...place,
+        ...action.place,
+        id: nextId(state),
       }]
 
     case EDIT_PLACE:

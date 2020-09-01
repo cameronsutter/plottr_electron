@@ -76,6 +76,7 @@ export const DELETE_PLACE = 'DELETE_PLACE'
 
 // tags actions
 export const ADD_TAG = 'ADD_TAG'
+export const ADD_TAG_WITH_VALUES = 'ADD_TAG_WITH_VALUES'
 export const EDIT_TAG = 'EDIT_TAG'
 export const DELETE_TAG = 'DELETE_TAG'
 

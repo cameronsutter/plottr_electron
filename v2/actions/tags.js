@@ -1,8 +1,12 @@
-import { ADD_TAG, EDIT_TAG, DELETE_TAG } from '../constants/ActionTypes'
+import { ADD_TAG, ADD_TAG_WITH_VALUES, EDIT_TAG, DELETE_TAG } from '../constants/ActionTypes'
 import { tag } from '../store/initialState'
 
 export function addTag () {
   return { type: ADD_TAG, title: tag.title }
+}
+
+export function addTagWithValues (title, color) {
+  return { type: ADD_TAG_WITH_VALUES, title, color }
 }
 
 export function editTag (id, title, color) {

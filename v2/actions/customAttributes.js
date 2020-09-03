@@ -10,8 +10,8 @@ export function removeCharacterAttr (attribute) {
   return { type: REMOVE_CHARACTER_ATTRIBUTE, attribute}
 }
 
-export function editCharacterAttr (index, attribute) {
-  return { type: EDIT_CHARACTER_ATTRIBUTE, index, attribute}
+export function editCharacterAttr (index, oldAttribute, newAttribute) {
+  return { type: EDIT_CHARACTER_ATTRIBUTE, index, oldAttribute, newAttribute}
 }
 
 export function addPlaceAttr (attribute) {
@@ -22,8 +22,8 @@ export function removePlaceAttr (attribute) {
   return { type: REMOVE_PLACES_ATTRIBUTE, attribute }
 }
 
-export function editPlaceAttr (index, attribute) {
-  return { type: EDIT_PLACES_ATTRIBUTE, index, attribute}
+export function editPlaceAttr (index, oldAttribute, newAttribute) {
+  return { type: EDIT_PLACES_ATTRIBUTE, index, oldAttribute, newAttribute}
 }
 
 export function addCardAttr (attribute) {

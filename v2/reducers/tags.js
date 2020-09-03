@@ -22,14 +22,10 @@ export default function tags (state = initialState, action) {
       }]
 
     case EDIT_TAG:
-      return state.map(tag =>
-        tag.id === action.id ? Object.assign({}, tag, {title: action.title, color: action.color}) : tag
-      )
+      return state.map(tag => tag.id === action.id ? Object.assign({}, tag, {title: action.title, color: action.color}) : tag )
 
     case DELETE_TAG:
-      return state.filter(tag =>
-        tag.id !== action.id
-      )
+      return state.filter(tag => tag.id !== action.id)
 
     case RESET:
     case FILE_LOADED:

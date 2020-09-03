@@ -159,7 +159,7 @@ class TagView extends Component {
     if (this.state.color) styles = {border: `2px solid ${this.state.color}`}
     return <div
       className='tag-list__tag-wrapper'
-      onMouseEnter={this.startHovering}
+      onMouseOver={this.startHovering}
       onMouseLeave={this.stopHovering}
     >
       { this.renderDelete() }

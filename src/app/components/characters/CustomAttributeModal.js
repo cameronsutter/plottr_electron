@@ -46,7 +46,7 @@ class CustomAttributeModal extends Component {
   }
 
   removeAttr = (attr) => {
-    this.props.actions.removeCharacterAttr(attr)
+    this.props.actions.removeCharacterAttr(attr.name)
     this.setState({addAttrText: this.state.addAttrText}) // no op
   }
 

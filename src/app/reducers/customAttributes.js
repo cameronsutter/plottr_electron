@@ -13,7 +13,7 @@ function characters (state = [], action) {
     case ADD_CHARACTER_ATTRIBUTE:
       return [...state, action.attribute]
 
-    case REMOVE_CHARACTER_ATTRIBUTE:
+    case REMOVE_CHARACTER_ATTRIBUTE: // attribute is the attr's name
       return state.filter(attr => attr.name !== action.attribute)
 
     case EDIT_CHARACTER_ATTRIBUTE:
@@ -38,7 +38,7 @@ function places (state = [], action) {
     case ADD_PLACES_ATTRIBUTE:
       return [...state, action.attribute]
 
-    case REMOVE_PLACES_ATTRIBUTE:
+    case REMOVE_PLACES_ATTRIBUTE: // attribute is the attr's name
       return state.filter(attr => attr.name !== action.attribute)
 
     case EDIT_PLACES_ATTRIBUTE:

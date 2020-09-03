@@ -246,6 +246,7 @@ class CharacterListView extends Component {
 
 CharacterListView.propTypes = {
   visibleCharactersByCategory: PropTypes.object.isRequired,
+  filterIsEmpty: PropTypes.bool.isRequired,
   characters: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
   customAttributes: PropTypes.array.isRequired,

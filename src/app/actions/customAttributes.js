@@ -6,7 +6,7 @@ export function addCharacterAttr (attribute) {
   return { type: ADD_CHARACTER_ATTRIBUTE, attribute }
 }
 
-export function removeCharacterAttr (attribute) {
+export function removeCharacterAttr (attribute) { // attribute is the attr's name
   return { type: REMOVE_CHARACTER_ATTRIBUTE, attribute}
 }
 
@@ -18,7 +18,7 @@ export function addPlaceAttr (attribute) {
   return { type: ADD_PLACES_ATTRIBUTE, attribute }
 }
 
-export function removePlaceAttr (attribute) {
+export function removePlaceAttr (attribute) { // attribute is the attr's name
   return { type: REMOVE_PLACES_ATTRIBUTE, attribute }
 }
 

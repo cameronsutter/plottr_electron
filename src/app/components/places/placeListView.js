@@ -21,6 +21,7 @@ import { placeCustomAttributesThatCanChangeSelector, placeCustomAttributesRestri
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import PlaceItem from './PlaceItem'
 import { nextId } from '../../store/newIds'
+import { visibleSortedPlacesSelector, placeFilterIsEmptySelector } from '../../selectors/places'
 
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 
@@ -32,52 +33,15 @@ class PlaceListView extends Component {
       addAttrText: '',
       placeDetailId: null,
       editingSelected: false,
-      visiblePlaces: [],
     }
   }
 
   static getDerivedStateFromProps (props, state) {
     let returnVal = {...state}
-    const { places, ui, customAttributes } = props
-    const visiblePlaces = PlaceListView.visiblePlaces(places, ui.placeFilter, ui.placeSort, customAttributes)
-    returnVal.visiblePlaces = visiblePlaces
+    const { visiblePlaces } = props
     returnVal.placeDetailId = PlaceListView.detailID(visiblePlaces, state.placeDetailId)
 
     return returnVal
-  }
-
-  static visiblePlaces (places, filter, sort, customAttributes) {
-    let visible = places
-    if (!PlaceListView.staticFilterIsEmpty(filter, customAttributes)) {
-      visible = []
-      places.forEach(pl => {
-        const matches = Object.keys(filter).some(attr => {
-          return filter[attr].some(val => {
-            if (attr == 'tag') {
-              return pl.tags.includes(val)
-            }
-            if (attr == 'book') {
-              return pl.bookIds.includes(val)
-            }
-            if (val == '') {
-              if (!pl[attr] || pl[attr] == '') return true
-            } else {
-              if (pl[attr] && pl[attr] == val) return true
-            }
-            return false
-          })
-        })
-        if (matches) visible.push(pl)
-      })
-    }
-
-    let sortOperands = sort.split('~')
-    let attrName = sortOperands[0]
-    let direction = sortOperands[1]
-    let sortOperand = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
-    let sorted = sortBy(visible, sortOperand)
-    if (direction == 'desc') sorted.reverse()
-    return sorted
   }
 
   static detailID (places, placeDetailId) {
@@ -92,23 +56,6 @@ class PlaceListView extends Component {
     }
 
     return id
-  }
-
-  // this is a hack for now
-  static staticFilterIsEmpty = (filter, customAttributes) => {
-    if (!filter) return true
-
-    const allAttributes = [{name:'tag'}, {name:'book'}, ...customAttributes]
-
-    return !allAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
-  }
-
-  filterIsEmpty = (filter) => {
-    if (!filter) return true
-
-    const allAttributes = [{name:'tag'}, {name:'book'}, ...this.props.customAttributes]
-
-    return !allAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
   }
 
   editingSelected = () => {
@@ -149,7 +96,7 @@ class PlaceListView extends Component {
   }
 
   removeAttr = (attr) => {
-    this.props.customAttributeActions.removePlaceAttr(attr)
+    this.props.customAttributeActions.removePlaceAttr(attr.name)
     this.setState({addAttrText: this.state.addAttrText}) // no op
   }
 
@@ -158,12 +105,12 @@ class PlaceListView extends Component {
   }
 
   renderSubNav () {
-    const { ui, uiActions } = this.props
+    const { ui, filterIsEmpty, uiActions } = this.props
     let filterPopover = <Popover id='filter'>
       <CustomAttrFilterList type='places' />
     </Popover>
     let filterDeclaration = <Alert onClick={() => uiActions.setPlaceFilter(null)}  bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Place list is filtered')}</Alert>
-    if (this.filterIsEmpty(ui.placeFilter)) {
+    if (filterIsEmpty) {
       filterDeclaration = <span></span>
     }
     let sortPopover = <Popover id='sort'>
@@ -197,7 +144,7 @@ class PlaceListView extends Component {
   }
 
   renderVisiblePlaces = () => {
-    return this.state.visiblePlaces.map(pl => (
+    return this.props.visiblePlaces.map(pl => (
       <PlaceItem key={pl.id} place={pl}
         selected={pl.id == this.state.placeDetailId}
         startEdit={this.editingSelected}
@@ -287,7 +234,8 @@ class PlaceListView extends Component {
 }
 
 PlaceListView.propTypes = {
-  places: PropTypes.array.isRequired,
+  visiblePlaces: PropTypes.array.isRequired,
+  filterIsEmpty: PropTypes.bool.isRequired,
   customAttributes: PropTypes.array.isRequired,
   customAttributesThatCanChange: PropTypes.array,
   restrictedValues: PropTypes.array,
@@ -299,7 +247,8 @@ PlaceListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
-    places: state.present.places,
+    visiblePlaces: visibleSortedPlacesSelector(state.present),
+    filterIsEmpty: placeFilterIsEmptySelector(state.present),
     customAttributes: state.present.customAttributes.places,
     customAttributesThatCanChange: placeCustomAttributesThatCanChangeSelector(state.present),
     restrictedValues: placeCustomAttributesRestrictedValues(state.present),

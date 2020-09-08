@@ -1,7 +1,12 @@
-import { ADD_LINE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE } from '../constants/ActionTypes'
+import { ADD_LINE, ADD_LINE_WITH_TITLE, ADD_LINES_FROM_TEMPLATE,
+  EDIT_LINE_TITLE, EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE } from '../constants/ActionTypes'
 
 export function addLine (bookId) {
   return { type: ADD_LINE, bookId }
+}
+
+export function addLineWithTitle (title, bookId) {
+  return { type: ADD_LINE_WITH_TITLE, title, bookId }
 }
 
 export function addLinesFromTemplate (cards, lines, chapters, bookId, template) {

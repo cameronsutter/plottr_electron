@@ -1,7 +1,7 @@
 import { partition, sortBy } from 'lodash'
 import i18n from 'format-message'
 import { ADD_LINE, ADD_LINE_WITH_TITLE, ADD_LINES_FROM_TEMPLATE, EDIT_LINE_TITLE,
-  EXPAND_LINE, COLLAPSE_LINE,
+  EXPAND_LINE, COLLAPSE_LINE, EDIT_LINE,
   EXPAND_TIMELINE, COLLAPSE_TIMELINE, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE,
   EDIT_LINE_COLOR, REORDER_LINES, DELETE_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { line } from '../store/initialState'
@@ -39,20 +39,17 @@ export default function lines (state = initialState, action) {
       const [book, notBook] = partition(state, l => l.bookId == action.bookId)
       return [...notBook, ...action.lines]
 
+    case EDIT_LINE:
+      return state.map(l => l.id === action.id ? Object.assign({}, l, {title: action.title, color: action.color}) : l )
+
     case EDIT_LINE_TITLE:
-      return state.map(l =>
-        l.id === action.id ? Object.assign({}, l, {title: action.title}) : l
-      )
+      return state.map(l => l.id === action.id ? Object.assign({}, l, {title: action.title}) : l )
 
     case EDIT_LINE_COLOR:
-      return state.map(l =>
-        l.id === action.id ? Object.assign({}, l, {color: action.color}) : l
-      )
+      return state.map(l => l.id === action.id ? Object.assign({}, l, {color: action.color}) : l )
 
     case DELETE_LINE:
-      return state.filter(l =>
-        l.id !== action.id
-      )
+      return state.filter(l => l.id !== action.id )
 
     case REORDER_LINES:
       return [

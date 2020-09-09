@@ -8,6 +8,7 @@ const styleH2 = new rtf.Format({ bold : true, paragraph: true, spaceBefore : spa
 const styleBold = new rtf.Format({ bold : true })
 const styleItalic = new rtf.Format({ italic : true })
 const styleUnderline = new rtf.Format({ underline : true })
+const styleStrike = new rtf.Format({ strike : true })
 const styleParagraph = new rtf.Format({ paragraph : true, spaceBefore : space, spaceAfter : space })
 
 // useful functions
@@ -64,6 +65,10 @@ const leaf = (node, doc) => {
 
   if (node.underline) {
     return doc.writeText(node.text, styleUnderline)
+  }
+
+  if (node.strike) {
+    return doc.writeText(node.text, styleStrike)
   }
 
   return doc.writeText(node.text)

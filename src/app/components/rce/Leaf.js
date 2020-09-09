@@ -13,6 +13,10 @@ const Leaf = ({ attributes, children, leaf }) => {
     children = <u>{children}</u>
   }
 
+  if (leaf.strike) {
+    children = <del>{children}</del>
+  }
+
   return <span {...attributes}>{children}</span>
 }
 export default React.memo(Leaf)

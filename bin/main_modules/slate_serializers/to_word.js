@@ -92,7 +92,9 @@ const leaf = (node) => {
     options.underline = {}
   }
 
-  return new TextRun(options)
+  const run = new TextRun(options)
+  if (node.strike) run.strike()
+  return run
 }
 
 module.exports = serialize

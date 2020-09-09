@@ -6,7 +6,7 @@ import { ButtonGroup } from 'react-bootstrap'
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { FaBold, FaItalic, FaUnderline, FaQuoteLeft, FaListOl, FaListUl } from "react-icons/fa"
+import { FaBold, FaItalic, FaUnderline, FaQuoteLeft, FaListOl, FaListUl, FaStrikethrough } from "react-icons/fa"
 import ToolBar from './ToolBar'
 import { MarkButton, toggleMark } from './MarkButton'
 import BlockButton from './BlockButton'
@@ -66,6 +66,7 @@ const RichTextEditor = (props) => {
               <MarkButton mark="bold" icon={<FaBold/>} />
               <MarkButton mark="italic" icon={<FaItalic/>} />
               <MarkButton mark="underline" icon={<FaUnderline/>} />
+              <MarkButton mark="strike" icon={<FaStrikethrough/>} />
               <BlockButton format="heading-one" icon={i18n('Title')} />
               <BlockButton format="heading-two" icon={i18n('Subtitle')} />
               <BlockButton format="block-quote" icon={<FaQuoteLeft/>} />

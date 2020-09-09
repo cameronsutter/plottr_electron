@@ -62,6 +62,8 @@ function deserialize (el) {
       return jsx('text', {bold: true, text: el.textContent})
     case 'u':
       return jsx('text', {underline: true, text: el.textContent})
+    case 'del':
+      return jsx('text', {strike: true, text: el.textContent})
     case 'img':
       return jsx('element', { type: 'image-link', url: el.getAttribute('src') }, children )
     case 'a':

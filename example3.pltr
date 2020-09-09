@@ -4,7 +4,7 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "notes",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -31,7 +31,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.8.28"
+    "version": "2020.8.31"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -11715,7 +11715,31 @@
           "type": "paragraph",
           "children": [
             {
-              "text": ""
+              "text": "here is some text "
+            },
+            {
+              "text": "oh no you didn't",
+              "strike": true
+            },
+            {
+              "text": " this is what i wanted"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text here is some text",
+              "strike": true
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "asdfasdfasdfsdf"
             }
           ]
         }
@@ -11723,7 +11747,7 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1595858818189,
+      "lastEdited": 1599659626234,
       "templates": [],
       "imageId": null,
       "bookIds": []

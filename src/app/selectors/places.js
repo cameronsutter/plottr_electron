@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 import { sortBy } from 'lodash'
+import { placeSortSelector, placeFilterSelector } from './ui'
 
 export const allPlacesSelector = state => state.places
 // this one also lives in ./customAttributes.js but it causes a circular dependency to import it here

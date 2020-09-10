@@ -1,20 +1,17 @@
 import React, { useState } from 'react'
-import isUrl from 'is-url'
 import { FaImage } from "react-icons/fa"
 import { Editor, Transforms } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
-import InputModal from '../dialogs/InputModal'
-import i18n from 'format-message'
-import imageExtensions from 'image-extensions'
-import { readImage } from '../../helpers/images'
+import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
 import { addImage } from '../../actions/images'
+import ImagePicker from '../images/ImagePicker'
 
 export const ImageLinkButton = () => {
   const editor = useSlate()
   const [dialogOpen, setOpen] = useState(false)
   const [selection, setSelection] = useState()
-  const getLink = (url) => {
+  const getData = (id, data) => {
     if (selection) {
       editor.apply({
         type: 'set_selection',
@@ -22,10 +19,11 @@ export const ImageLinkButton = () => {
         newProperties: { anchor: selection.anchor, focus: selection.focus },
       })
     }
-    if (url) insertImageLink(editor, url)
+    if (data) insertImageData(editor, data)
     setOpen(false)
   }
 
+  // TODO: send ImagePicker the selectedId
   return <Button
     bsStyle={isImageActive(editor) ? 'primary' : 'default'}
     onMouseDown={event => {
@@ -37,7 +35,7 @@ export const ImageLinkButton = () => {
     }}
   >
     <FaImage/>
-    <InputModal type='text' isOpen={dialogOpen} cancel={() => setOpen(false)} title={i18n('Enter the URL of the link:')} getValue={getLink} />
+    {dialogOpen ? <ImagePicker modalOnly chooseImage={getData} /> : null}
   </Button>
 }
 
@@ -64,7 +62,10 @@ export const withImages = editor => {
         }
       }
     } else if (isImageUrl(text)) {
-      insertImageLink(editor, text)
+      readImageFromURL(text, strData => {
+        window.specialDelivery(addImage({data: strData, name: text, path: text}))
+        insertImageData(editor, strData)
+      })
     } else {
       insertData(data)
     }
@@ -76,13 +77,6 @@ export const withImages = editor => {
 const isImageActive = editor => {
   const [link] = Editor.nodes(editor, { match: n => n.type === 'image-link' || n.type === 'image-data' })
   return !!link
-}
-
-const isImageUrl = url => {
-  if (!url) return false
-  if (!isUrl(url)) return false
-  const ext = new URL(url).pathname.split('.').pop()
-  return imageExtensions.includes(ext)
 }
 
 const insertImageLink = (editor, url) => {

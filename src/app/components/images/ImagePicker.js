@@ -6,33 +6,80 @@ import { bindActionCreators } from 'redux'
 import * as ImageActions from 'actions/images'
 import Modal from 'react-modal'
 import cx from 'classnames'
-import { FormControl, ControlLabel, Button, Row, Col, Glyphicon, ButtonToolbar, FormGroup, ButtonGroup } from 'react-bootstrap'
+import { FormGroup, FormControl, ControlLabel, Button, Grid, Row, Col, Glyphicon, ButtonToolbar, ButtonGroup, Nav, NavItem } from 'react-bootstrap'
 import Image from './Image'
 import i18n from 'format-message'
-import { readImage } from '../../helpers/images'
+import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
+import { Spinner } from '../Spinner'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 const customStyles = {content: {top: '70px'}}
 
 class ImagePicker extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      imageId: props.selectedId,
-      open: false,
-      editing: null,
+  state = {}
+
+  static getDerivedStateFromProps (props, state) {
+    const ids = Object.keys(props.images).sort().reverse()
+    let selected = null
+    if (state.justAddedImage) selected = ids[0]
+    return {
+      tabId: state.tabId || '1',
+      selectedId: selected || state.selectedId || props.selectedId,
+      open: props.modalOnly || state.open || false,
+      editing: state.editing || false,
+      inDropZone: state.inDropZone || false,
+      sortedIds: ids,
+      justAddedImage: false,
+      loading: state.loading || false,
+      deleting: state.deleting || null,
+    }
+  }
+
+  handleDragOver = (e) => {
+    e.preventDefault()
+    this.setState({inDropZone: true})
+  }
+
+  handleDrop = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    this.setState({inDropZone: false})
+
+    const { files } = e.dataTransfer
+
+    if (files && files.length > 0) {
+      for (const file of files) {
+        readImage(file, data => {
+          this.props.actions.addImage({data, name: file.name, path: file.path})
+          this.setState({tabId: '1', justAddedImage: true})
+        })
+      }
+    }
+  }
+
+  getFromURL = (e) => {
+    const url = e.target.value
+    if (isImageUrl(url)) {
+      this.setState({loading: true})
+      readImageFromURL(url, strData => {
+        this.props.actions.addImage({data: strData, name: url, path: url})
+        setTimeout(() => {
+          this.setState({tabId: '1', justAddedImage: true, loading: false})
+        }, 500)
+      })
     }
   }
 
   renameFile = () => {
     let newName = findDOMNode(this.refs.fileName).value
-    this.props.actions.renameImage(this.state.editing, newName)
-    this.setState({editing: null})
+    this.props.actions.renameImage(this.state.selectedId, newName)
+    this.setState({editing: false})
   }
 
-  deleteImage = (id) => {
-    let text = i18n('Do you want to remove this image? It will NOT be deleted from your computer')
-    if (window.confirm(text)) {
-      this.props.actions.deleteImage(id)
+  deleteImage = () => {
+    if (this.state.deleting) {
+      this.props.actions.deleteImage(this.state.selectedId)
+      this.setState({deleting: false, selectedId: null})
     }
   }
 
@@ -41,14 +88,16 @@ class ImagePicker extends Component {
   }
 
   chooseImage = () => {
-    this.props.chooseImage(this.state.imageId)
+    const { chooseImage, images } = this.props
+    const { selectedId } = this.state
+    chooseImage(selectedId, images[selectedId].data)
     this.close()
   }
 
   chooseNoImage = () => {
     this.props.chooseImage(-1)
     if (this.state.open) this.close()
-    this.setState({imageId: null})
+    this.setState({selectedId: null})
   }
 
   uploadNewFile = (event) => {
@@ -56,42 +105,91 @@ class ImagePicker extends Component {
       const file = event.target.files[0]
       readImage(file, data => {
         this.props.actions.addImage({data, name: file.name, path: file.path})
+        this.setState({tabId: '1'})
       })
     }
   }
 
+  renderDelete () {
+    if (!this.state.deleting) return null
+
+    const text = i18n('Do you want to remove this image? It will NOT be deleted from your computer')
+    return <DeleteConfirmModal customText={text} onDelete={this.deleteImage} onCancel={() => this.setState({deleting: false})} />
+  }
+
+  renderUpload () {
+    return <Row>
+      <Col xs={12}>
+        <div className={cx('image-picker__dropzone', {dropping: this.state.inDropZone})} onDrop={this.handleDrop} onDragOver={this.handleDragOver}>
+          <h2>{i18n('Drop a File Here')}</h2>
+          <p>{i18n('or')}</p>
+          <ControlLabel htmlFor='fileUpload'>
+            <div className='btn image-picker__upload-button'><Glyphicon glyph='upload'/>{' '}{i18n('Select a File')}</div>
+          </ControlLabel>
+          <FormControl id='fileUpload' type='file' onChange={this.uploadNewFile} />
+        </div>
+      </Col>
+    </Row>
+  }
+
+  renderURL () {
+    return <Row>
+      <Col xs={12}>
+        <div className='image-picker__url-wrapper'>
+          <FormGroup bsSize='large'>
+            <ControlLabel><h6>{i18n('Enter the URL of the link:')}</h6></ControlLabel>
+            <FormControl placeholder={i18n('URL')} type='text' onChange={this.getFromURL} />
+          </FormGroup>
+          {this.state.loading ? <Spinner/> : null}
+        </div>
+      </Col>
+    </Row>
+  }
+
+  renderGallery () {
+    return <Row>
+      <Col xs={9}>
+        <div className='image-picker__images-container'>
+          {this.renderImages()}
+        </div>
+      </Col>
+      <Col xs={3}>
+        {this.renderSidebar()}
+      </Col>
+    </Row>
+  }
+
+  renderTab () {
+    switch (this.state.tabId) {
+      case '1': return this.renderGallery()
+      case '2': return this.renderUpload()
+      case '3': return this.renderURL()
+    }
+  }
+
   render () {
-    const { darkMode, selectedId, iconOnly, deleteButton } = this.props
+    const { darkMode, selectedId, iconOnly, modalOnly, deleteButton } = this.props
     if (this.state.open) {
       if (darkMode) {
         customStyles.content.backgroundColor = '#666'
       }
       return <Modal isOpen={true} onRequestClose={this.close} style={customStyles}>
         <div className={cx('image-picker__wrapper', {darkmode: darkMode})}>
-          <h2 className='image-picker__title'>{i18n('Image Gallery')}</h2>
-          <div className='image-picker__inputs-wrapper form-horizontal'>
-            <Row>
-              <Col xs={4}>
-                <h5 className='secondary-text'>{i18n('Choose an image below or upload a new one')}</h5>
-              </Col>
-              <Col xs={2}>
-                <ControlLabel htmlFor='fileUpload'>
-                  <div className='btn image-picker__upload-button'><Glyphicon glyph='upload'/>{' '}{i18n('Upload a new image')}</div>
-                </ControlLabel>
-              </Col>
-              <Col xs={2}>
-                <FormControl id='fileUpload' type='file' onChange={this.uploadNewFile} />
-              </Col>
-              <Col xs={4}>
-                <div className='image-picker__button-wrapper'>
-                  <Button bsStyle='success' onClick={this.chooseImage}>{i18n('Choose')}</Button>
-                  <Button onClick={this.close}>{i18n('Cancel')}</Button>
-                </div>
-              </Col>
-            </Row>
+          <div className='image-picker__header'>
+            <div className='pull-right'>
+              <Button bsStyle='success' onClick={this.chooseImage} disabled={!this.state.selectedId}>{i18n('Choose')}</Button>
+              <Button onClick={this.close} style={{marginLeft: '12px'}}>{i18n('Cancel')}</Button>
+            </div>
+            <Nav bsStyle='tabs' activeKey={this.state.tabId} onSelect={k => this.setState({tabId: k})}>
+              <NavItem eventKey='1'><span className='image-picker__title'>{i18n('Image Gallery')}</span></NavItem>
+              <NavItem eventKey='2'><span className='image-picker__title'>{i18n('Upload Files')}</span></NavItem>
+              <NavItem eventKey='3'><span className='image-picker__title'>{i18n('Insert from URL')}</span></NavItem>
+            </Nav>
           </div>
-          <div className='image-picker__images-container'>
-            {this.renderImages()}
+          <div className='image-picker__body'>
+            <Grid fluid>
+              { this.renderTab() }
+            </Grid>
           </div>
         </div>
       </Modal>
@@ -110,8 +208,8 @@ class ImagePicker extends Component {
     }
   }
 
-  renderName (id, value) {
-    if (this.state.editing == id) {
+  renderName (value) {
+    if (this.state.editing) {
       return <FormGroup>
         <FormControl type='text' defaultValue={value} ref='fileName' />
         <Button onClick={this.renameFile}>{i18n('Rename')}</Button>
@@ -121,33 +219,51 @@ class ImagePicker extends Component {
     }
   }
 
-  renderToolbar (id) {
-    if (this.state.editing == id) {
-      return null
-    } else {
-      return <ButtonToolbar className='card-dialog__button-bar'>
-        <Button onClick={() => this.setState({editing: id})}>
-          {i18n('Rename')}
-        </Button>
-        <Button bsStyle='danger' onClick={() => this.deleteImage(id)} >
-          {i18n('Delete')}
-        </Button>
-      </ButtonToolbar>
-    }
+  renderToolbar () {
+    if (this.state.editing) return null
+
+    return <ButtonToolbar className='card-dialog__button-bar'>
+      <Button onClick={() => this.setState({editing: true})}>
+        {i18n('Rename')}
+      </Button>
+      <Button bsStyle='danger' onClick={() => this.setState({deleting: true})} >
+        {i18n('Delete')}
+      </Button>
+    </ButtonToolbar>
   }
 
   renderImages () {
     const { images } = this.props
-    return Object.keys(images).map(id => {
-      const isSelected = this.state.imageId == id
+    const { sortedIds } = this.state
+    return sortedIds.map(id => {
+      const isSelected = this.state.selectedId == id
       const klasses = cx('image-picker__image-wrapper', {selected: isSelected})
-      return <div key={images[id].name} className={klasses} onClick={() => this.setState({imageId: id})}>
-        {isSelected ? <span className='label label-success'>{i18n('selected')}</span> : null}
-        <Image responsive imageId={id} />
-        { this.renderName(id, images[id].name) }
-        { this.renderToolbar(id) }
+      return <div key={images[id].name} className={klasses} onClick={() => this.setState({selectedId: isSelected ? null : id})}>
+        <Image imageId={id} shape='square' size='large' />
       </div>
     })
+  }
+
+  renderSidebar () {
+    const { images } = this.props
+    const { selectedId } = this.state
+    const image = images[selectedId]
+    let body = null
+    if (image) {
+      body = <div>
+        <h6>{i18n('Image Details')}</h6>
+        <Image imageId={selectedId} responsive />
+        <div className='image-picker__sidebar-tools'>
+          { this.renderDelete() }
+          { this.renderName(image.name) }
+          { this.renderToolbar() }
+        </div>
+      </div>
+    }
+
+    return <div className='image-picker__sidebar'>
+      { body }
+    </div>
   }
 }
 
@@ -159,6 +275,7 @@ ImagePicker.propTypes = {
   ]),
   darkMode: PropTypes.bool,
   iconOnly: PropTypes.bool,
+  modalOnly: PropTypes.bool,
   deleteButton: PropTypes.bool,
 }
 

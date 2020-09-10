@@ -1,8 +1,21 @@
 @import "vars";
 
+.image-picker__wrapper {
+  height: 100%;
+  display: grid;
+  grid-template-areas:
+    "header"
+    "body";
+  grid-template-rows: auto 1fr;
+}
+
+.image-picker__header {
+  grid-area: header;
+}
+
 .image-picker__title {
-  margin: 0px;
-  margin-bottom: 10px;
+  @include application-text;
+  font-size: $font-size-h6;
 }
 
 .image-picker__inputs-wrapper {
@@ -12,19 +25,68 @@
   margin-bottom: 10px;
 }
 
+.image-picker__body {
+  grid-area: body;
+  overflow: hidden;
+  .container-fluid {
+    height: 100%;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    .row {
+      height: 100%;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      .col-xs-9, .col-xs-3, .col-xs-12 {
+        height: 100%;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+}
+
 .image-picker__images-container {
+  height: 100%;
+  overflow: auto;
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  padding: 16px;
+}
+
+.image-picker__sidebar {
+  height: 100%;
+  overflow: auto;
+  background-color: $gray-9;
+  padding: 8px;
+}
+
+.image-picker__sidebar-tools {
+  margin-top: 10px;
+  padding: 4px;
+}
+
+.image-picker__dropzone {
+  height: calc(100% - 50px);
+  margin: 16px;
+  border: 3px dashed $gray-7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all $cubic;
+
+  &.dropping {
+    background-color: $gray-9;
+    border: 3px dashed $gray-5;
+  }
 }
 
 #fileUpload {
   visibility: hidden;
-}
-
-.image-picker__button-wrapper {
-  margin-top: 5px;
-  display: flex;
-  justify-content: space-evenly;
 }
 
 .image-picker__upload-button {
@@ -33,53 +95,24 @@
   cursor: pointer;
 }
 
-.image-picker__image-wrapper {
-  max-width: 300px;
-  margin: 10px;
-  text-align: center;
-  cursor: pointer;
-
-  .img-rounded-xl {
-    margin: auto;
-  }
-
-  p {
-    @include header-font;
-    font-size: 16pt;
-    margin-top: 10px;
-  }
-
-  .card-dialog__button-bar {
-    visibility: hidden;
-    justify-content: space-between;
-  }
-
+.image-picker__url-wrapper {
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   .form-group {
-    margin-top: 20px;
+    width: 80%;
   }
+}
 
-  &:hover {
-    .img-rounded-xl {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
-    }
-  }
+.image-picker__image-wrapper {
+  margin: 0;
+  cursor: pointer;
+  border: 7px solid transparent;
 
   &.selected {
-    padding: 10px;
-    border-radius: 4px;
-    position: relative;
-    .img-rounded-xl {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    .label {
-      position: absolute;
-      right: 10px;
-    }
-
-    .card-dialog__button-bar {
-      visibility: visible;
-    }
+    border: 7px solid $green-5;
   }
 }
 

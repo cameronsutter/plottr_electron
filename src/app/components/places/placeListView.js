@@ -161,9 +161,7 @@ class PlaceListView extends Component {
   }
 
   renderPlaceDetails () {
-    let place = this.props.places.find(pl =>
-      pl.id === this.state.placeDetailId
-    )
+    let place = this.props.places.find(pl => pl.id === this.state.placeDetailId )
     if (place) {
       return <ErrorBoundary>
         <PlaceView key={`place-${place.id}`} place={place}
@@ -247,6 +245,7 @@ PlaceListView.propTypes = {
 
 function mapStateToProps (state) {
   return {
+    places: state.present.places,
     visiblePlaces: visibleSortedPlacesSelector(state.present),
     filterIsEmpty: placeFilterIsEmptySelector(state.present),
     customAttributes: state.present.customAttributes.places,

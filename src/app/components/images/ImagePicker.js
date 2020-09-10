@@ -85,6 +85,7 @@ class ImagePicker extends Component {
 
   close = () => {
     this.setState({open: false})
+    if (this.props.modalOnly) this.props.close()
   }
 
   chooseImage = () => {
@@ -277,6 +278,7 @@ ImagePicker.propTypes = {
   iconOnly: PropTypes.bool,
   modalOnly: PropTypes.bool,
   deleteButton: PropTypes.bool,
+  close: PropTypes.func,
 }
 
 function mapStateToProps (state) {

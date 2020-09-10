@@ -5,7 +5,7 @@ import { Slate, Editable, withReact } from 'slate-react'
 import Leaf from './Leaf'
 import Element from './Element'
 import { withLinks } from './LinkButton'
-import { withImages } from './ImageLinkButton'
+import { withImages } from './ImagesButton'
 import { useTextConverter } from './helpers'
 import cx from 'classnames'
 

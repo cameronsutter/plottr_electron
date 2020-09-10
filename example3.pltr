@@ -4,7 +4,7 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -94,14 +94,6 @@
           "children": [
             {
               "text": "She has a \"lively, playful disposition, which delight[s] in anything ridiculous\" - and a tendency towards prejudice which clouds her perception. "
-            }
-          ]
-        },
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": ""
             }
           ]
         }
@@ -11382,7 +11374,9 @@
       "imageId": null,
       "bookIds": [
         1
-      ]
+      ],
+      "county": "",
+      "owner": ""
     },
     {
       "cards": [],
@@ -11709,7 +11703,7 @@
     },
     {
       "id": 6,
-      "title": "",
+      "title": "strikethrough",
       "content": [
         {
           "type": "paragraph",
@@ -11747,14 +11741,14 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1599746140928,
+      "lastEdited": 1599767994332,
       "templates": [],
       "imageId": null,
       "bookIds": []
     },
     {
       "id": 7,
-      "title": "",
+      "title": "cool image",
       "content": [
         {
           "children": [
@@ -11781,9 +11775,69 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1599748112652,
+      "lastEdited": 1599765587273,
       "templates": [],
       "imageId": "6",
+      "bookIds": []
+    },
+    {
+      "id": 8,
+      "title": "colored text",
+      "content": [
+        {
+          "children": [
+            {
+              "text": "thing ",
+              "color": "DarkRed"
+            },
+            {
+              "text": "asd fasdflkkalsdklajsdf"
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "text": "asldjfklasdjfkl"
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "text": "asd;"
+            },
+            {
+              "text": "ajskld",
+              "color": "LightSalmon"
+            },
+            {
+              "text": ";fasdf"
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "text": "klasjdklfjklsdfj;lkjas;dfl;ads",
+              "color": "MediumSpringGreen"
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "text": "asdfasdfkjkjdlkasdlasd"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": 1599770968102,
+      "templates": [],
+      "imageId": null,
       "bookIds": []
     }
   ],

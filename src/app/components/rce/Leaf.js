@@ -17,6 +17,13 @@ const Leaf = ({ attributes, children, leaf }) => {
     children = <del>{children}</del>
   }
 
+  if (leaf.color) {
+    attributes = {
+      ...attributes,
+      style: {color: leaf.color}
+    }
+  }
+
   return <span {...attributes}>{children}</span>
 }
 export default React.memo(Leaf)

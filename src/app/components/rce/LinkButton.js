@@ -26,14 +26,12 @@ export const LinkButton = () => {
     bsStyle={isLinkActive(editor) ? 'primary' : 'default'}
     onMouseDown={event => {
       event.preventDefault()
+      setSelection(editor.selection)
       if (isLinkActive(editor)) {
         unwrapLink(editor)
-        return
+      } else {
+        setOpen(true)
       }
-      if (!selection) {
-        setSelection(editor.selection)
-      }
-      setOpen(true)
     }}
   >
     <FaLink/>

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react'
+import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
 import PropTypes from 'react-proptypes'
 import i18n from 'format-message'
 import isHotkey from 'is-hotkey'
@@ -13,10 +13,11 @@ import BlockButton from './BlockButton'
 import Leaf from './Leaf'
 import Element from './Element'
 import { LinkButton, withLinks } from './LinkButton'
-import { ImageLinkButton, withImages } from './ImageLinkButton'
+import { ImagesButton, withImages } from './ImagesButton'
 import cx from 'classnames'
 import { useTextConverter } from './helpers'
 import { withHTML } from './withHTML'
+import { ColorButton } from './ColorButton'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -32,6 +33,7 @@ const RichTextEditor = (props) => {
   const renderElement = useCallback(props => <Element {...props} />, [])
   const [value, setValue] = useState(null)
   const [key, setKey] = useState(null)
+  const toolbarRef = useRef(null)
   useEffect(() => {
     if (!value) {
       const rceText = useTextConverter(props.text)
@@ -60,20 +62,21 @@ const RichTextEditor = (props) => {
   return (
     <Slate editor={editor} value={value} onChange={updateValue} key={key}>
       <div className={cx('slate-editor__wrapper', props.className)}>
-        <div className={cx('slate-editor__toolbar-wrapper', {darkmode: props.darkMode})}>
+        <div className={cx('slate-editor__toolbar-wrapper', {darkmode: props.darkMode})} ref={toolbarRef}>
           <ToolBar>
             <ButtonGroup>
-              <MarkButton mark="bold" icon={<FaBold/>} />
-              <MarkButton mark="italic" icon={<FaItalic/>} />
-              <MarkButton mark="underline" icon={<FaUnderline/>} />
-              <MarkButton mark="strike" icon={<FaStrikethrough/>} />
-              <BlockButton format="heading-one" icon={i18n('Title')} />
-              <BlockButton format="heading-two" icon={i18n('Subtitle')} />
-              <BlockButton format="block-quote" icon={<FaQuoteLeft/>} />
-              <BlockButton format="numbered-list" icon={<FaListOl/>} />
-              <BlockButton format="bulleted-list" icon={<FaListUl/>} />
+              <MarkButton mark='bold' icon={<FaBold/>} />
+              <MarkButton mark='italic' icon={<FaItalic/>} />
+              <MarkButton mark='underline' icon={<FaUnderline/>} />
+              <MarkButton mark='strike' icon={<FaStrikethrough/>} />
+              <ColorButton el={toolbarRef}/>
+              <BlockButton format='heading-one' icon={i18n('Title')} />
+              <BlockButton format='heading-two' icon={i18n('Subtitle')} />
+              <BlockButton format='block-quote' icon={<FaQuoteLeft/>} />
+              <BlockButton format='numbered-list' icon={<FaListOl/>} />
+              <BlockButton format='bulleted-list' icon={<FaListUl/>} />
               <LinkButton />
-              <ImageLinkButton />
+              <ImagesButton />
             </ButtonGroup>
           </ToolBar>
         </div>

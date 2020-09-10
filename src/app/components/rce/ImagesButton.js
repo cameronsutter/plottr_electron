@@ -7,7 +7,7 @@ import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
 import { addImage } from '../../actions/images'
 import ImagePicker from '../images/ImagePicker'
 
-export const ImageLinkButton = () => {
+export const ImagesButton = () => {
   const editor = useSlate()
   const [dialogOpen, setOpen] = useState(false)
   const [selection, setSelection] = useState()
@@ -28,14 +28,12 @@ export const ImageLinkButton = () => {
     bsStyle={isImageActive(editor) ? 'primary' : 'default'}
     onMouseDown={event => {
       event.preventDefault()
-      if (!selection) {
-        setSelection(editor.selection)
-      }
+      setSelection(editor.selection)
       setOpen(true)
     }}
   >
     <FaImage/>
-    {dialogOpen ? <ImagePicker modalOnly chooseImage={getData} /> : null}
+    {dialogOpen ? <ImagePicker modalOnly chooseImage={getData} close={() => setOpen(false)} /> : null}
   </Button>
 }
 

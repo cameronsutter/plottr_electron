@@ -38,41 +38,41 @@ export default function MiniColorPicker (props) {
   }
 
   return <div className='mini-color-picker' style={useCoords()} ref={pickerRef}>
+    <p>{i18n('Default Colors')}</p>
+    <div className='color-picker__box'>
+      {defaults.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
     <p>{i18n('Reds')}</p>
-      <div className='color-picker__box'>
-        {reds.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Oranges')}</p>
-      <div className='color-picker__box'>
-        {oranges.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Greens')}</p>
-      <div className='color-picker__box'>
-        {greens.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Blues')}</p>
-      <div className='color-picker__box'>
-        {blues.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Purples')}</p>
-      <div className='color-picker__box'>
-        {purples.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Grays')}</p>
-      <div className='color-picker__box'>
-        {grays.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Whites')}</p>
-      <div className='color-picker__box'>
-        {whites.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Browns')}</p>
-      <div className='color-picker__box'>
-        {browns.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Default Colors')}</p>
-      <div className='color-picker__box'>
-        {defaults.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
-      </div>
+    <div className='color-picker__box'>
+      {reds.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
+    <p>{i18n('Oranges')}</p>
+    <div className='color-picker__box'>
+      {oranges.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
+    <p>{i18n('Greens')}</p>
+    <div className='color-picker__box'>
+      {greens.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
+    <p>{i18n('Blues')}</p>
+    <div className='color-picker__box'>
+      {blues.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
+    <p>{i18n('Purples')}</p>
+    <div className='color-picker__box'>
+      {purples.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
+    <p>{i18n('Grays')}</p>
+    <div className='color-picker__box'>
+      {grays.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
+    <p>{i18n('Whites')}</p>
+    <div className='color-picker__box'>
+      {whites.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
+    <p>{i18n('Browns')}</p>
+    <div className='color-picker__box'>
+      {browns.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{renderColor(c)}</div>)}
+    </div>
   </div>
 }

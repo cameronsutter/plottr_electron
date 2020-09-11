@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
 import PropTypes from 'react-proptypes'
+import { findDOMNode } from 'react-dom'
 import i18n from 'format-message'
 import isHotkey from 'is-hotkey'
-import { ButtonGroup } from 'react-bootstrap'
+import { ButtonGroup, Overlay } from 'react-bootstrap'
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
@@ -17,7 +18,8 @@ import { ImagesButton, withImages } from './ImagesButton'
 import cx from 'classnames'
 import { useTextConverter } from './helpers'
 import { withHTML } from './withHTML'
-import { ColorButton } from './ColorButton'
+import { ColorButton, addColorMark } from './ColorButton'
+import MiniColorPicker from '../MiniColorPicker'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -34,6 +36,11 @@ const RichTextEditor = (props) => {
   const [value, setValue] = useState(null)
   const [key, setKey] = useState(null)
   const toolbarRef = useRef(null)
+  const [showColorPicker, toggleColorPicker] = useState(false)
+  const changeColor = color => {
+    addColorMark(editor, color)
+    toggleColorPicker(false)
+  }
   useEffect(() => {
     if (!value) {
       const rceText = useTextConverter(props.text)
@@ -69,7 +76,7 @@ const RichTextEditor = (props) => {
               <MarkButton mark='italic' icon={<FaItalic/>} />
               <MarkButton mark='underline' icon={<FaUnderline/>} />
               <MarkButton mark='strike' icon={<FaStrikethrough/>} />
-              <ColorButton el={toolbarRef}/>
+              <ColorButton toggle={() => toggleColorPicker(!showColorPicker)}/>
               <BlockButton format='heading-one' icon={i18n('Title')} />
               <BlockButton format='heading-two' icon={i18n('Subtitle')} />
               <BlockButton format='block-quote' icon={<FaQuoteLeft/>} />
@@ -78,6 +85,9 @@ const RichTextEditor = (props) => {
               <LinkButton />
               <ImagesButton />
             </ButtonGroup>
+            <Overlay show={showColorPicker} placement='bottom' container={() => findDOMNode(toolbarRef.current)}>
+              <MiniColorPicker chooseColor={changeColor} el={toolbarRef} close={() => toggleColorPicker(false)}/>
+            </Overlay>
           </ToolBar>
         </div>
         <div className={cx('slate-editor__editor', {darkmode: props.darkMode})}>

@@ -92,6 +92,10 @@ const leaf = (node) => {
     options.underline = {}
   }
 
+  if (node.color) {
+    options.color = node.color.replace('#', '')
+  }
+
   const run = new TextRun(options)
   if (node.strike) run.strike()
   return run

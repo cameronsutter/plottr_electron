@@ -38,7 +38,7 @@ export default class CustomAttrItem extends Component {
   renderDelete () {
     if (!this.state.deleting) return null
     const { attr } = this.props
-    return <DeleteConfirmModal name={attr.name} onDelete={() => this.props.delete(attr.name)} onCancel={() => this.setState({deleting: false})}/>
+    return <DeleteConfirmModal name={attr.name} onDelete={() => this.props.delete(attr)} onCancel={() => this.setState({deleting: false})}/>
   }
 
   renderParagraphCheckBox () {

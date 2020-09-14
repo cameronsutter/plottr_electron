@@ -11179,10 +11179,6 @@
       {
         "name": "of type",
         "type": "paragraph"
-      },
-      {
-        "name": "paragraph",
-        "type": "paragraph"
       }
     ],
     "places": [
@@ -11404,7 +11400,8 @@
         1
       ],
       "county": "",
-      "owner": ""
+      "owner": "",
+      "thing": ""
     }
   ],
   "tags": [

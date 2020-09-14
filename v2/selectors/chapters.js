@@ -58,3 +58,13 @@ export const makeChapterTitleSelector = () => createSelector(
     return chapterTitle(chapter, positionOffset, isSeries)
   }
 )
+
+export const chapterPositionMapping = createSelector(
+  chaptersByBookSelector,
+  (chapters) => {
+    return chapters.reduce((acc, chapter) => {
+      acc[chapter.position] = chapter.id
+      return acc
+    }, {})
+  }
+)

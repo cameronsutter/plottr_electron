@@ -43,3 +43,13 @@ export const lineIsExpandedSelector = createSelector(
     }, {})
   }
 )
+
+export const linePositionMapping = createSelector(
+  linesByBookSelector,
+  (lines) => {
+    return lines.reduce((acc, line) => {
+      acc[line.position] = line
+      return acc
+    }, {})
+  }
+)

@@ -44,7 +44,7 @@ export const lineIsExpandedSelector = createSelector(
   }
 )
 
-export const linePositionMapping = createSelector(
+export const linePositionMappingSelector = createSelector(
   linesByBookSelector,
   (lines) => {
     return lines.reduce((acc, line) => {

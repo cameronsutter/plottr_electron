@@ -49,8 +49,7 @@ ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
 })
 
-ipcRenderer.send('fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFiles) => {
+function bootFile (state, fileName, dirty, darkMode, openFiles) {
   store.dispatch(loadFile(fileName, dirty, state))
   MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles}, state)
 
@@ -66,6 +65,11 @@ ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFi
     </Provider>,
     root
   )
+}
+
+ipcRenderer.send('fetch-state', win.id)
+ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFiles) => {
+  bootFile(state, fileName, dirty, darkMode, openFiles)
 })
 
 ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) => {
@@ -84,9 +88,9 @@ ipcRenderer.on('export-scrivener', (event, filePath) => {
   Exporter(currentState.present, filePath)
 })
 
-ipcRenderer.on('import-snowflake', (event, filePath) => {
-  const currentState = store.getState()
-  Importer(filePath, false, currentState.present)
+ipcRenderer.on('import-snowflake', (event, currentState, fileName, importPath, darkMode, openFiles) => {
+  const result = Importer(importPath, true, currentState)
+  bootFile(result, fileName, true, darkMode, openFiles)
 })
 
 function focusIsEditable () {

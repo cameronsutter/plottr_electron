@@ -27,18 +27,10 @@ export default function Importer (path, isNewFile, state) {
 
   const bookTitle = bookAttributes(currentState.books, json, bookId)
 
-  storyLine(currentState, json, bookTitle, bookId)
-  synopsis(currentState, json, bookTitle, bookId)
-
+  storyLine(currentState, json, bookTitle, bookId, isNewFile)
+  synopsis(currentState, json, bookTitle, bookId, isNewFile)
   characters(currentState, json, bookId)
-
-  console.log('chapters before', currentState.chapters.length)
-  console.log('cards before', currentState.cards.length)
   cards(currentState, json, bookId)
-
-  console.log('chapters', currentState.chapters)
-  console.log('cards', currentState.cards)
-  console.log('lines', currentState.lines)
 
   return currentState
 }
@@ -133,14 +125,14 @@ function bookAttributes (currentBooks, json, bookId) {
   return titleAttr['_attributes']['value']
 }
 
-function storyLine (currentState, json, bookTitle, bookId) {
+function storyLine (currentState, json, bookTitle, bookId, isNewFile) {
   const storyLineNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'storyLine')
   if (storyLineNode && storyLineNode['GString']) {
     // storyLine sentence -> note
     let storyLineAttr = storyLineNode['GString'].find(n => n['_attributes']['name'] == 'sentence')
     if (storyLineAttr) {
       createNewNote(currentState.notes, {
-        title: `[${bookTitle}] ${i18n('Story Line Sentence')}`,
+        title: isNewFile ? i18n('One Sentence Summary') : `[${bookTitle}] ${i18n('One Sentence Summary')}`,
         bookIds: [bookId],
         content: createSlateEditor([storyLineAttr['_attributes']['value']])
       })
@@ -149,7 +141,7 @@ function storyLine (currentState, json, bookTitle, bookId) {
     storyLineAttr = storyLineNode['GString'].find(n => n['_attributes']['name'] == 'paragraph')
     if (storyLineAttr) {
       createNewNote(currentState.notes, {
-        title: `[${bookTitle}] ${i18n('Story Line Paragraph')}`,
+        title: isNewFile ? i18n('One Paragraph Summary') : `[${bookTitle}] ${i18n('One Paragraph Summary')}`,
         bookIds: [bookId],
         content: createSlateEditor([storyLineAttr['_attributes']['value']])
       })
@@ -157,14 +149,14 @@ function storyLine (currentState, json, bookTitle, bookId) {
   }
 }
 
-function synopsis (currentState, json, bookTitle, bookId) {
+function synopsis (currentState, json, bookTitle, bookId, isNewFile) {
   let synopsisNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'shortSynopsis')
   if (synopsisNode && synopsisNode['GString']) {
     // short synopsis -> in a note (each line of it as a slate paragraph)
     let paragraphs = synopsisNode['GString'].map(n => n['_attributes']['value'])
     if (paragraphs && paragraphs.length) {
       createNewNote(currentState.notes, {
-        title: `[${bookTitle}] ${i18n('Short Synopsis')}`,
+        title: isNewFile ? i18n('Short Synopsis') : `[${bookTitle}] ${i18n('Short Synopsis')}`,
         bookIds: [bookId],
         content: createSlateEditor(paragraphs)
       })
@@ -176,7 +168,7 @@ function synopsis (currentState, json, bookTitle, bookId) {
     let paragraphs = synopsisNode['GString'].map(n => n['_attributes']['value'])
     if (paragraphs && paragraphs.length) {
       createNewNote(currentState.notes, {
-        title: `[${bookTitle}] ${i18n('Long Synopsis')}`,
+        title: isNewFile ? i18n('Long Synopsis') : `[${bookTitle}] ${i18n('Long Synopsis')}`,
         bookIds: [bookId],
         content: createSlateEditor(paragraphs)
       })
@@ -196,16 +188,17 @@ function characters(currentState, json, bookId) {
           const attrName = characterAttrMapping[attr['_attributes']['name']] || 'notes'
           switch (attrName) {
             case 'notes':
-              notes.push(attr['_attributes']['value'])
+              const parts = attr['_attributes']['value'].split('\n')
+              notes.push(...parts)
               break
             case 'name':
               acc['name'] = attr['_attributes']['value']
               break
             case 'description':
-              acc['description'] = attr['_attributes']['value']
+              acc['description'] = attr['_attributes']['value'].replace(/\n/g, ' ')
               break
             default:
-              acc[attrName] = attr['_attributes']['value'].replace(/\\n/g, ' ')
+              acc[attrName] = attr['_attributes']['value'].replace(/\n/g, ' ')
               // also create a custom attribute
               newCustomAttrs.push(attrName)
               break
@@ -238,7 +231,7 @@ function createCustomCharacterAttributes(currentState, newCustomAttrs) {
 function cards(currentState, json, bookId) {
   const sceneListNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'sceneList')
   if (sceneListNode && sceneListNode['GContainer'] && sceneListNode['GContainer'].length) {
-    const lineId = createNewLine(currentState.lines, {position: 0}, bookId)
+    const lineId = createNewLine(currentState.lines, {position: 0, title: i18n('Main Plot')}, bookId)
     const scenesByChapter = groupBy(sceneListNode['GContainer'], (scene) => {
       const node = scene['GInteger'].find(n => n['_attributes']['name'] == 'chapter')
       if (node) return node['_attributes']['value']
@@ -300,6 +293,7 @@ function cards(currentState, json, bookId) {
         lineId,
         description,
         positionWithinLine,
+        title: i18n('Scene {num}', {num: positionWithinLine + 1}),
       }
 
       createNewCard(currentState.cards, values)

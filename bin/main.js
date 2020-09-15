@@ -178,23 +178,35 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
 
 ipcMain.on('fetch-state', function (event, id) {
   var win = windows.find(w => w.id == id)
-  win.window.setTitle(displayFileName(win.fileName))
-  win.window.setRepresentedFilename(win.fileName)
+  if (win) {
+    win.window.setTitle(displayFileName(win.fileName))
+    win.window.setRepresentedFilename(win.fileName)
 
-  migrateIfNeeded (win.state, win.fileName, (err, migrated, json) => {
-    if (err) { log.warn(err); rollbar.warn(err) }
-    if (migrated) FileManager.save(win.fileName, json, () => {})
-
-    win.lastSave = json
-    win.state = json
-    if (win.window.isVisible()) {
-      event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
+    if (win.importFrom) {
+      // clear chapters and lines (they were the default)
+      const json = {...win.state}
+      json.chapters = []
+      json.lines = []
+      win.window.webContents.send('import-snowflake', json, win.fileName, win.importFrom, darkMode, windows.length)
+      delete win.importFrom
     } else {
-      win.window.on('show', () => {
-        event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
+      migrateIfNeeded (win.state, win.fileName, (err, migrated, json) => {
+        if (err) { log.warn(err); rollbar.warn(err) }
+        if (migrated) FileManager.save(win.fileName, json, () => {})
+
+        win.lastSave = json
+        win.state = json
+        if (win.window.isVisible()) {
+          event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
+        } else {
+          win.window.on('show', () => {
+            event.sender.send('state-fetched', json, win.fileName, migrated, darkMode, windows.length)
+          })
+        }
       })
     }
-  })
+
+  }
 })
 
 ipcMain.on('save-as-template-finish', (event, id, options) => {
@@ -472,7 +484,7 @@ function askToOpenFile () {
   }
 }
 
-function openWindow (fileName, jsonData) {
+function openWindow (fileName, jsonData, importFrom) {
   // Load the previous state with fallback to defaults
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
@@ -572,7 +584,8 @@ function openWindow (fileName, jsonData) {
       window: newWindow,
       fileName: fileName,
       state: json,
-      lastSave: json
+      lastSave: json,
+      importFrom,
     })
     UpdateManager.updateWindows(windows)
     newWindow.setTitle(displayFileName(fileName))
@@ -666,6 +679,27 @@ function openDashboardWindow () {
 
 function openBuyWindow () {
   shell.openExternal("https://getplottr.com/pricing/")
+}
+
+function importFromSnowflake (focusedWindow) {
+  const filters = [{name: 'Snowflake Pro file', extensions: ['snowXML']}]
+  const files = dialog.showOpenDialogSync(focusedWindow, {filters})
+  if (files && files.length) {
+    const importedName = files[0]
+    const pltrFileName = importedName.replace('.snowXML', '.pltr')
+    const storyName = path.basename(importedName, '.snowXML')
+    const data = emptyFileContents(storyName)
+    FileManager.save(pltrFileName, data, (err) => {
+      if (err) {
+        log.warn(err)
+        rollbar.warn(err, {fileName: pltrFileName})
+        dialog.showErrorBox(i18n('Saving failed'), i18n("Creating your file didn't work. Let's try again."))
+        importFromSnowflake(focusedWindow)
+      } else {
+        openWindow(pltrFileName, data, importedName)
+      }
+    })
+  }
 }
 
 function gracefullyQuit () {
@@ -839,8 +873,17 @@ function buildFileMenu () {
     accelerator: 'CmdOrCtrl+N',
     click: () => askToCreateFile({}), // don't change this to just a function name … it causes a bug. You've been bitten by it a couple times
   }, {
-    label: i18n('New from Template') + '...',
-    click: openDashboardWindow,
+    label: i18n('New from'),
+    submenu: [
+      {
+        label: i18n('Template') + '...',
+        click: openDashboardWindow,
+      },
+      {
+        label: i18n('Snowflake Pro') + '...',
+        click: importFromSnowflake,
+      },
+    ]
   }, {
     label: i18n('Open') + '...',
     accelerator: 'CmdOrCtrl+O',
@@ -974,15 +1017,6 @@ function buildFileMenu () {
         }
       }
     ]
-  }, {
-    label: 'Import Snowflake',
-    visible: process.env.NODE_ENV === 'dev',
-    click: (event, focusedWindow) => {
-      const files = dialog.showOpenDialogSync(focusedWindow)
-      if (files && files.length) {
-        focusedWindow.webContents.send('import-snowflake', files[0])
-      }
-    }
   }, {
     label: i18n('Reload from File'),
     visible: process.env.NODE_ENV === 'dev',

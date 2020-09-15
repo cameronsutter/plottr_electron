@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain, dialog,
   nativeTheme, globalShortcut, shell, screen } = require('electron')
 const fs = require('fs')
 const path = require('path')
-const { reject } = require('lodash')
+const { reject, cloneDeep } = require('lodash')
 const log = require('electron-log')
 const i18n = require('format-message')
 const { is } = require('electron-util')
@@ -878,13 +878,12 @@ function buildFileMenu () {
       let win = BrowserWindow.getFocusedWindow()
       let winObj = windows.find(w => w.id == win.id)
       if (winObj) {
-        const defaultPath = path.basename(winObj.state.file.fileName).replace('.pltr', ` ${i18n('copy')}`)
+        const defaultPath = path.basename(winObj.state.file.fileName).replace('.pltr', '')
         const filters = [{name: 'Plottr file', extensions: ['pltr']}]
         const fileName = dialog.showSaveDialogSync(win, {filters, title: i18n('Where would you like to save this copy?'), defaultPath})
         if (fileName) {
           let fullName = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-          let newState = {...winObj.state}
-          newState.series.name = `${newState.series.name} copy`
+          let newState = cloneDeep(winObj.state)
           FileManager.save(fullName, newState, (err) => {
             if (err) {
               log.warn(err)

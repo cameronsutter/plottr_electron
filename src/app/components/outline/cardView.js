@@ -147,6 +147,7 @@ class CardView extends Component {
   renderTags () {
     return this.props.card.tags.map(tId => {
       var tag = this.props.tags.find(t => t.id == tId)
+      if (!tag) return null
       return <TagLabel tag={tag} key={`outline-taglabel-${tId}`} />
     })
   }

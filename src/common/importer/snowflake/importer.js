@@ -8,7 +8,8 @@ import {
   note as defaultNote,
   character as defaultCharacter,
   card as defaultCard,
-  chapter as defaultChapter
+  chapter as defaultChapter,
+  line as defaultLine,
 } from '../../../../shared/initialState'
 import { nextPositionInBook } from '../../../app/helpers/lists'
 
@@ -35,8 +36,9 @@ export default function Importer (path, isNewFile, state) {
   console.log('cards before', currentState.cards.length)
   cards(currentState, json, bookId)
 
-  console.log(currentState.chapters)
-  console.log(currentState.cards)
+  console.log('chapters', currentState.chapters)
+  console.log('cards', currentState.cards)
+  console.log('lines', currentState.lines)
 
   return currentState
 }
@@ -68,16 +70,32 @@ function createNewCard (currentCards, values) {
   currentCards.push(newCard)
 }
 
+function createNewLine (currentLines, values, bookId) {
+  const nexLineId = nextId(currentLines)
+  const position = nextPositionInBook(currentLines, bookId)
+  const newChapter = Object.assign({}, defaultLine, {id: nexLineId, position, bookId, ...values})
+  currentLines.push(newChapter)
+  return nexLineId
+}
+
 function createNewChapter (currentChapters, values, bookId) {
   const nextChapterId = nextId(currentChapters)
   const position = nextPositionInBook(currentChapters, bookId)
-  const newChapter = Object.assign({}, defaultChapter, {id: nextChapterId, position: position, ...values})
+  const newChapter = Object.assign({}, defaultChapter, {id: nextChapterId, position, bookId, ...values})
   currentChapters.push(newChapter)
   return nextChapterId
 }
 
 function createSlateEditor (paragraphs) {
-  return paragraphs.map(p => ( {children: [{text: p}]} ))
+  return paragraphs.map(createSlateParagraph)
+}
+
+function createSlateParagraph (value) {
+  return { children: [{text: value}]}
+}
+
+function createSlateParagraphWithMark (value, mark) {
+  return { children: [{text: value, [mark]: true}]}
 }
 
 function bookAttributes (currentBooks, json, bookId) {
@@ -187,7 +205,7 @@ function characters(currentState, json, bookId) {
               acc['description'] = attr['_attributes']['value']
               break
             default:
-              acc[attrName] = attr['_attributes']['value'].replace(/&#10;/g, ' ') // &#10; is the newline character
+              acc[attrName] = attr['_attributes']['value'].replace(/\\n/g, ' ')
               // also create a custom attribute
               newCustomAttrs.push(attrName)
               break
@@ -220,78 +238,137 @@ function createCustomCharacterAttributes(currentState, newCustomAttrs) {
 function cards(currentState, json, bookId) {
   const sceneListNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'sceneList')
   if (sceneListNode && sceneListNode['GContainer'] && sceneListNode['GContainer'].length) {
+    const lineId = createNewLine(currentState.lines, {position: 0}, bookId)
     const scenesByChapter = groupBy(sceneListNode['GContainer'], (scene) => {
       const node = scene['GInteger'].find(n => n['_attributes']['name'] == 'chapter')
       if (node) return node['_attributes']['value']
       return '1'
     })
     const chapterNumbers = Object.keys(scenesByChapter)
-    // what to do now? Need to create chapters and get their ids to use in the cards
+
+    // idMap is Snowflake id to Plottr id
+    const idMap = chapterNumbers.reduce((acc, id) => {
+      acc[id] = createNewChapter(currentState.chapters, {position: Number(id) - 1}, bookId)
+      return acc
+    }, {})
+
+    let createdScenesByChapter = {}
 
     sceneListNode['GContainer'].forEach(sNode => {
-      //   chapter -> chapter (stack any that are in the same chapter)
+      // each one is a card in a chapter
+      let chapterId = null
 
-      //   each one is a card in a chapter
-      //
-      //   sentence -> slate paragraph in description
-      //   paragraph -> slate paragraph in description
-      //   povName -> slate paragraph in description
-      //   date -> slate paragraph in description
-      //   location -> slate paragraph in description
-      //   pageCountExpected -> slate paragraph in description
-      //   wordCountExpected -> slate paragraph in description
-      //   wordCountActual -> slate paragraph in description
+      let paragraphsByName = {}
+      function addParagraphs (node) {
+        const name = node['_attributes']['name']
+        const value = node['_attributes']['value']
+        if (name == 'chapter') {
+          chapterId = value
+        } else {
+          if (value) {
+            let paragraphs = []
+            const displayName = sceneAttrMapping[name]
+            paragraphs.push(createSlateParagraphWithMark(`${displayName}:`, 'bold'))
+            const parts = value.split('\n')
+            parts.forEach(p => paragraphs.push(createSlateParagraph(p)))
+            paragraphsByName[name] = paragraphs
+          }
+        }
+      }
+      sNode['GString'].forEach(addParagraphs)
+      sNode['GInteger'].forEach(addParagraphs)
+      const description = sceneAttrOrder.reduce((acc, name) => {
+        if (paragraphsByName[name]) {
+          return [...acc, ...paragraphsByName[name]]
+        } else {
+          return acc
+        }
+      }, [])
+
+      // i don't think the date field is used or it's like a created date
+      // sNode['GLong']['_attributes']['name'] == 'date'
+
+      // stack any that are in the same chapter
+      let positionWithinLine = 0
+      const numInChapter = scenesByChapter[chapterId].length
+      if (numInChapter > 1) {
+        positionWithinLine = createdScenesByChapter[chapterId] ? createdScenesByChapter[chapterId].length : 0
+      }
+
+      const values = {
+        chapterId: idMap[chapterId],
+        lineId,
+        description,
+        positionWithinLine,
+      }
+
+      createNewCard(currentState.cards, values)
+
+      createdScenesByChapter[chapterId] = createdScenesByChapter[chapterId] ? [...createdScenesByChapter[chapterId], values] : [values]
     })
   }
 }
 
 const characterAttrMapping = {
-  "name": "name",
-  "sentence": "description",
-  "paragraph": "notes",
-  "synopsis": "notes",
-  "ambition": "Ambition",
-  "goal": "Goal",
-  "conflict": "Conflict",
-  "epiphany": "Epiphany",
-  "othersSee": "How others see character",
-  "birthDate": "Date of Birth",
-  "age": "Age",
-  "height": "Height",
-  "weight": "Weight",
-  "ethnicity": "Ethnic Heritage",
-  "hairColor": "Hair Color",
-  "eyeColor": "Eye Color",
-  "physicalDescription": "Physical Description",
-  "dressStyle": "Style of Dressing",
-  "personality": "Personality Type",
-  "senseHumor": "Sense of Humor",
-  "religion": "Religion",
-  "politics": "Political Party",
-  "hobbies": "Hobbies",
-  "music": "Favorite Music",
-  "books": "Favorite Books",
-  "movies": "Favorite Movies",
-  "colors": "Favorite Colors",
-  "purseWallet": "Contents of purse or wallet",
-  "homeDescription": "Description of home",
-  "education": "Educational Background",
-  "work": "Work Experience",
-  "family": "Family",
-  "bestFriend": "Best Friend",
-  "maleFriends": "Male Friends",
-  "femaleFriends": "Female Friends",
-  "enemies": "Enemies",
-  "bestMemory": "Best childhood memory",
-  "worstMemory": "Worst childhood memory",
-  "characterization": "One-line characterization",
-  "strongTrait": "Strongest character trait",
-  "weakTrait": "Weakest character trait",
-  "paradox": "Character's Paradox",
-  "hope": "Greatest Hope",
-  "fear": "Deepest Fear",
-  "philosophy": "Philosophy of Life",
-  "seesSelf": "How character sees self",
-  "values": "Values",
-  "change": "How character will change",
+  'name': 'name',
+  'sentence': 'description',
+  'paragraph': 'notes',
+  'synopsis': 'notes',
+  'ambition': 'Ambition',
+  'goal': 'Goal',
+  'conflict': 'Conflict',
+  'epiphany': 'Epiphany',
+  'othersSee': 'How others see character',
+  'birthDate': 'Date of Birth',
+  'age': 'Age',
+  'height': 'Height',
+  'weight': 'Weight',
+  'ethnicity': 'Ethnic Heritage',
+  'hairColor': 'Hair Color',
+  'eyeColor': 'Eye Color',
+  'physicalDescription': 'Physical Description',
+  'dressStyle': 'Style of Dressing',
+  'personality': 'Personality Type',
+  'senseHumor': 'Sense of Humor',
+  'religion': 'Religion',
+  'politics': 'Political Party',
+  'hobbies': 'Hobbies',
+  'music': 'Favorite Music',
+  'books': 'Favorite Books',
+  'movies': 'Favorite Movies',
+  'colors': 'Favorite Colors',
+  'purseWallet': 'Contents of purse or wallet',
+  'homeDescription': 'Description of home',
+  'education': 'Educational Background',
+  'work': 'Work Experience',
+  'family': 'Family',
+  'bestFriend': 'Best Friend',
+  'maleFriends': 'Male Friends',
+  'femaleFriends': 'Female Friends',
+  'enemies': 'Enemies',
+  'bestMemory': 'Best childhood memory',
+  'worstMemory': 'Worst childhood memory',
+  'characterization': 'One-line characterization',
+  'strongTrait': 'Strongest character trait',
+  'weakTrait': 'Weakest character trait',
+  'paradox': "Character's Paradox",
+  'hope': 'Greatest Hope',
+  'fear': 'Deepest Fear',
+  'philosophy': 'Philosophy of Life',
+  'seesSelf': 'How character sees self',
+  'values': 'Values',
+  'change': 'How character will change',
 }
+
+const sceneAttrMapping = {
+  'povName': 'POV',
+  'sentence': 'Sentence Summary',
+  'paragraph': 'Scene Notes',
+  'date': 'Date',
+  'location': 'Location',
+  'pageCountExpected': 'Expected Pages',
+  'wordCountExpected': 'Expected Words',
+  'wordCountActual': 'Actual Words',
+}
+
+const sceneAttrOrder = ['povName', 'location', 'wordCountExpected', 'wordCountActual', 'pageCountExpected', 'sentence', 'paragraph']

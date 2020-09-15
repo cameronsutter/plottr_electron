@@ -1,1 +1,1 @@
-import 'style-loader!css-loader!sass-loader!./app.css.scss'
+import 'style-loader!css-loader!sass-loader!./app.scss'

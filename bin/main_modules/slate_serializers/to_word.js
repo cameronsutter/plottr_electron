@@ -96,9 +96,11 @@ const leaf = (node) => {
     options.color = node.color.replace('#', '')
   }
 
-  const run = new TextRun(options)
-  if (node.strike) run.strike()
-  return run
+  if (node.strike) {
+    options.strike = true
+  }
+
+  return new TextRun(options)
 }
 
 module.exports = serialize

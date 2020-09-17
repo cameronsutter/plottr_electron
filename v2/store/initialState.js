@@ -1,6 +1,6 @@
 // data structure
 
-const RCE_INITIAL_VALUE = [{ children: [{ text: '' }] }]
+const RCE_INITIAL_VALUE = [{ type: 'paragraph', children: [{ text: '' }] }]
 
 const series = {
   name: '',

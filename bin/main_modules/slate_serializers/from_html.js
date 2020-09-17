@@ -6,8 +6,8 @@ const parser = new DomParser()
 
 
 function convert(text) {
-  if (!text) return [{ children: [{ text: '' }] }]
-  if (text == '') return [{ children: [{ text: '' }] }]
+  if (!text) return [{ type: 'paragraph', children: [{ text: '' }] }]
+  if (text == '') return [{ type: 'paragraph', children: [{ text: '' }] }]
 
   const html = md.makeHtml(text)
   const dom = parser.parseFromString('<body>' + html + '</body>')

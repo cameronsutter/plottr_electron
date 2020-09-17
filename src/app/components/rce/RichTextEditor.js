@@ -20,6 +20,7 @@ import { useTextConverter } from './helpers'
 import { withHTML } from './withHTML'
 import { ColorButton, addColorMark } from './ColorButton'
 import MiniColorPicker from '../MiniColorPicker'
+import withNormalizer from './Normalizer'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -29,7 +30,7 @@ const HOTKEYS = {
 
 const RichTextEditor = (props) => {
   const editor = useMemo(() => {
-    return withHTML(withImages(withLinks(withHistory(withReact(createEditor())))))
+    return withNormalizer(withHTML(withImages(withLinks(withHistory(withReact(createEditor()))))))
   }, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
   const renderElement = useCallback(props => <Element {...props} />, [])

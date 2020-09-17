@@ -6,14 +6,14 @@ const parser = new DomParser()
 
 
 export function convertMDString (text) {
-  if (!text) return [{ children: [{ text: '' }] }]
-  if (text == '') return [{ children: [{ text: '' }] }]
+  if (!text) return [{ type: 'paragraph', children: [{ text: '' }] }]
+  if (text == '') return [{ type: 'paragraph', children: [{ text: '' }] }]
 
   const html = md.makeHtml(text)
   const dom = parser.parseFromString('<body>' + html + '</body>')
   const slate = deserialize(dom.getElementsByTagName('body')[0])
   if (!slate.length) {
-    slate.push({ children: [{ text: '' }] })
+    slate.push({ type: 'paragraph', children: [{ text: '' }] })
   }
   return slate
 }
@@ -22,7 +22,7 @@ export function convertHTMLString (html) {
   const parsed = new DOMParser().parseFromString(html, 'text/html')
   const slate = deserialize(parsed.body)
   if (!slate.length) {
-    slate.push({ children: [{ text: '' }] })
+    slate.push({ type: 'paragraph', children: [{ text: '' }] })
   }
   return slate
 }

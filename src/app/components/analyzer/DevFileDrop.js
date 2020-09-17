@@ -19,7 +19,6 @@ export default function DevFileDrop (props) {
 
     if (files && files.length > 0) {
       for (const file of files) {
-        console.log(file.name, file.path)
         ipcRenderer.send('dev-open-analyzer-file', file.name, file.path)
       }
     }

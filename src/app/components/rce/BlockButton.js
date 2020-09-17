@@ -2,8 +2,7 @@ import React from 'react'
 import { Editor, Transforms } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
-
-const LIST_TYPES = ['numbered-list', 'bulleted-list']
+import { LIST_TYPES } from './helpers'
 
 const BlockButton = ({ format, icon }) => {
   const isBlockActive = (editor, format) => {

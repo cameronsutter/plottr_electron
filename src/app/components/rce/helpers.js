@@ -1,10 +1,12 @@
 import { cloneDeep } from 'lodash'
 import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 
+export const LIST_TYPES = ['numbered-list', 'bulleted-list']
+
 export function useTextConverter (text) {
   let rceText = text
   if (!text || !text.length || typeof text === 'string') {
-    // [{ children: [{ text: '' }] }]
+    // [{ type: 'paragraph', children: [{ text: '' }] }]
     rceText = cloneDeep(RCE_INITIAL_VALUE)
   }
   if (typeof text === 'string') {

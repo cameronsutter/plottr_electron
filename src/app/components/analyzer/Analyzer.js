@@ -8,6 +8,7 @@ import ReactJson from 'react-json-view'
 import Inspector from 'react-json-inspector'
 import 'style-loader!css-loader!sass-loader!../../../../node_modules/react-json-inspector/json-inspector.css'
 import { nextId } from '../../store/newIds'
+import DevFileDrop from './DevFileDrop'
 
 class Analyzer extends Component {
   state = {tab: 'search', path: null, tree: null}
@@ -201,7 +202,7 @@ class Analyzer extends Component {
   render () {
     const { pltr } = this.props
     return <div className='analyzer__container'>
-      <h3>{pltr.file.version}{' '}<small>{pltr.file.fileName}</small></h3>
+      <h3>{pltr.file.version}{' '}<small>{pltr.file.fileName}</small><DevFileDrop/></h3>
       <div className='analyzer__tabs'>
         <span className='analyzer__tab' onClick={() => this.setState({tab: 'search', tree: null, path: null})}>Search</span>
         <span className='analyzer__tab' onClick={() => this.setState({tab: 'cards', tree: null, path: null})}>Cards</span>

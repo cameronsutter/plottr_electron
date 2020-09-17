@@ -302,6 +302,14 @@ ipcMain.on('chose-template', (event, template) => {
   askToCreateFile(data)
 })
 
+ipcMain.on('dev-open-analyzer-file', (event, fileName, filePath) => {
+  // save file to this directory
+  // const newPath = path.join(__dirname, fileName)
+
+  // open in new window
+  openWindow(filePath)
+})
+
 app.on('ready', () => {
   i18n.setup({
     translations: require('../locales'),

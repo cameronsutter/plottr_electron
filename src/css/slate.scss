@@ -23,6 +23,19 @@
         vertical-align: text-bottom;
       }
     }
+
+    .dropdown {
+      button {
+        width: 175px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      ul {
+        max-height: 200px;
+        overflow: auto;
+      }
+    }
   }
   &.readonly {
     display: none;

@@ -23,6 +23,7 @@ const CustomTemplateManager = require('./main_modules/custom_template_manager')
 const FileManager = require('./main_modules/file_manager')
 const UpdateManager = require('./main_modules/update_manager')
 const { isDirty, takeScreenshot, emptyFileContents } = require('./main_modules/helpers')
+const { fetchFonts, availableFonts } = require('./main_modules/fonts')
 if (process.env.NODE_ENV === 'dev') {
   // https://github.com/MarshallOfSound/electron-devtools-installer
   // issue: https://github.com/electron/electron/issues/22117
@@ -310,6 +311,10 @@ ipcMain.on('dev-open-analyzer-file', (event, fileName, filePath) => {
   openWindow(filePath)
 })
 
+ipcMain.on('fetch-fonts', function (event) {
+  event.sender.send('fonts-fetched', availableFonts())
+})
+
 app.on('ready', () => {
   i18n.setup({
     translations: require('../locales'),
@@ -317,6 +322,7 @@ app.on('ready', () => {
   })
 
   loadMenu(true)
+  fetchFonts()
 
   // Register the toggleDevTools shortcut listener.
   globalShortcut.register('CommandOrControl+Alt+R', () => {

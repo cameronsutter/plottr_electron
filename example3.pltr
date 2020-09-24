@@ -4,7 +4,7 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "notes",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -11832,7 +11832,54 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1599833794884,
+      "lastEdited": 1600981270838,
+      "templates": [],
+      "imageId": null,
+      "bookIds": []
+    },
+    {
+      "id": 9,
+      "title": "Fonts",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "One Font",
+              "font": "American Typewriter"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Another font",
+              "font": "Andale Mono"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": 1600984315062,
       "templates": [],
       "imageId": null,
       "bookIds": []

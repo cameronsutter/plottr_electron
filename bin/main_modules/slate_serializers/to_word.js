@@ -100,6 +100,10 @@ const leaf = (node) => {
     options.strike = true
   }
 
+  if (node.font) {
+    options.font = node.font
+  }
+
   return new TextRun(options)
 }
 

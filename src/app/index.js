@@ -19,6 +19,7 @@ import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
 import Exporter from '../common/exporter/scrivener/v2/exporter'
 import Importer from '../common/importer/snowflake/importer'
+import { fetchFonts, setFonts } from './helpers/fonts'
 
 i18n.setup({
   translations: require('../../locales'),
@@ -65,6 +66,9 @@ function bootFile (state, fileName, dirty, darkMode, openFiles) {
     </Provider>,
     root
   )
+  requestIdleCallback(() => {
+    ipcRenderer.send('fetch-fonts')
+  })
 }
 
 ipcRenderer.send('fetch-state', win.id)
@@ -91,6 +95,10 @@ ipcRenderer.on('export-scrivener', (event, filePath) => {
 ipcRenderer.on('import-snowflake', (event, currentState, fileName, importPath, darkMode, openFiles) => {
   const result = Importer(importPath, true, currentState)
   bootFile(result, fileName, true, darkMode, openFiles)
+})
+
+ipcRenderer.on('fonts-fetched', (event, fonts) => {
+  setFonts(fonts)
 })
 
 function focusIsEditable () {

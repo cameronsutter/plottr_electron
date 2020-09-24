@@ -18,10 +18,13 @@ const Leaf = ({ attributes, children, leaf }) => {
   }
 
   if (leaf.color) {
-    attributes = {
-      ...attributes,
-      style: {color: leaf.color}
-    }
+    const colorStyle = {color: leaf.color}
+    attributes.style = attributes.style ? {...attributes.style, ...colorStyle} : colorStyle
+  }
+
+  if (leaf.font) {
+    const fontStyle = {fontFamily: `${leaf.font}, Forum, sans-serif`}
+    attributes.style = attributes.style ? {...attributes.style, ...fontStyle} : fontStyle
   }
 
   return <span {...attributes}>{children}</span>

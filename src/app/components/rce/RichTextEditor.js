@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import { findDOMNode } from 'react-dom'
 import i18n from 'format-message'
 import isHotkey from 'is-hotkey'
-import { ButtonGroup, Overlay } from 'react-bootstrap'
+import { ButtonGroup, Overlay, Navbar, Nav, NavItem } from 'react-bootstrap'
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
@@ -11,16 +11,17 @@ import { FaBold, FaItalic, FaUnderline, FaQuoteLeft, FaListOl, FaListUl, FaStrik
 import ToolBar from './ToolBar'
 import { MarkButton, toggleMark } from './MarkButton'
 import BlockButton from './BlockButton'
-import Leaf from './Leaf'
-import Element from './Element'
 import { LinkButton, withLinks } from './LinkButton'
 import { ImagesButton, withImages } from './ImagesButton'
-import cx from 'classnames'
-import { useTextConverter } from './helpers'
-import { withHTML } from './withHTML'
 import { ColorButton, addColorMark } from './ColorButton'
+import { FontsButton } from './FontsButton'
+import { withHTML } from './withHTML'
 import MiniColorPicker from '../MiniColorPicker'
 import withNormalizer from './Normalizer'
+import Leaf from './Leaf'
+import Element from './Element'
+import cx from 'classnames'
+import { useTextConverter } from './helpers'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -73,6 +74,7 @@ const RichTextEditor = (props) => {
         <div className={cx('slate-editor__toolbar-wrapper', {darkmode: props.darkMode})} ref={toolbarRef}>
           <ToolBar>
             <ButtonGroup>
+              <FontsButton fonts={props.fonts} recentFonts={props.recentFonts} addRecent={props.addRecent} />
               <MarkButton mark='bold' icon={<FaBold/>} />
               <MarkButton mark='italic' icon={<FaItalic/>} />
               <MarkButton mark='underline' icon={<FaUnderline/>} />

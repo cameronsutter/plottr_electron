@@ -66,9 +66,6 @@ function bootFile (state, fileName, dirty, darkMode, openFiles) {
     </Provider>,
     root
   )
-  requestIdleCallback(() => {
-    ipcRenderer.send('fetch-fonts')
-  })
 }
 
 ipcRenderer.send('fetch-state', win.id)
@@ -95,10 +92,6 @@ ipcRenderer.on('export-scrivener', (event, filePath) => {
 ipcRenderer.on('import-snowflake', (event, currentState, fileName, importPath, darkMode, openFiles) => {
   const result = Importer(importPath, true, currentState)
   bootFile(result, fileName, true, darkMode, openFiles)
-})
-
-ipcRenderer.on('fonts-fetched', (event, fonts) => {
-  setFonts(fonts)
 })
 
 function focusIsEditable () {

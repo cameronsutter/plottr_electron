@@ -31,12 +31,9 @@ export const FontsButton = (props) => {
     return fontItems
   }
 
-  return <DropdownButton title={activeFont} onSelect={changeFont} id='font-dropdown' style={{fontFamily: activeFont}} rootCloseEvent='mousedown'>
+  return <DropdownButton title={activeFont} onSelect={changeFont} id='font-dropdown' rootCloseEvent='click'>
     { renderFonts() }
   </DropdownButton>
-
-  // return <FormControl componentClass='select' value={activeFont} onChange={changeFont} placeholder='Forum'>
-  // </FormControl>
 }
 
 const isFontActive = editor => {

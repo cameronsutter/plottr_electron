@@ -1,18 +1,15 @@
-import { uniq } from 'lodash'
+import { is } from 'electron-util'
 
-let usableFonts = ['Forum', 'IBM Plex Serif', 'Lato', 'Yellowtail']
+let darwinFonts = ['Andale Mono', 'Arial', 'Arial Black', 'Brush Script MT', 'Comic Sans MS', 'Courier New', 'Forum', 'Georgia', 'Impact', 'Times New Roman', 'Trebuchet MS', 'Verdana']
+let windowsFonts = []
+let plottrFonts = ['Forum', 'IBM Plex Serif', 'Lato', 'Yellowtail']
 let recentlyUsed = ['Forum']
 
-export function setFonts (fonts) {
-  usableFonts = fonts.reduce((acc, f) => {
-    acc.push(f.replace(/"/g, ''))
-    return acc
-  }, usableFonts)
-  usableFonts = uniq(usableFonts).sort()
-}
-
 export function getFonts () {
-  return usableFonts
+  if (is.macos) return darwinFonts
+  if (is.windows) return windowsFonts
+
+  return plottrFonts
 }
 
 export function getRecent () {

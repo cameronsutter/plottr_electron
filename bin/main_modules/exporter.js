@@ -94,7 +94,7 @@ function chapterParagraphs (chapter, data, namesMapping, bookId, offset, doc) {
     lines = data.seriesLines
   }
   cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, lines, isSeries)
-  console.log('sortedChapterCards', cards)
+  // console.log('sortedChapterCards', cards)
   let cardParagraphs = cards.flatMap(c => card(c, lines, namesMapping, doc, isSeries))
   return paragraphs.concat(cardParagraphs)
 }

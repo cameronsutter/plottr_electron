@@ -101,7 +101,7 @@ const leaf = (node) => {
   }
 
   if (node.font) {
-    options.font = node.font
+    options.font = {hint: node.font, name: node.font}
   }
 
   return new TextRun(options)

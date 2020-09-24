@@ -4,7 +4,7 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "notes",
+    "currentView": "timeline",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -11879,7 +11879,7 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1600984315062,
+      "lastEdited": 1600987369847,
       "templates": [],
       "imageId": null,
       "bookIds": []

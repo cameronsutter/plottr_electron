@@ -115,7 +115,8 @@ class CardView extends Component {
         onKeyDown={this.handleEsc}
         type='text' autoFocus
         ref='titleInput'
-        defaultValue={title} />
+        defaultValue={title}
+      />
     </FormGroup>
   }
 

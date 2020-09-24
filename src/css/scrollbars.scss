@@ -1,6 +1,10 @@
 @import "vars";
 
 // https://css-tricks.com/custom-scrollbars-in-webkit/
+// https://webkit.org/blog/363/styling-scrollbars/
+
+// maybe:
+// https://medium.com/frontend-development-with-js/how-to-hide-scrollbar-and-visible-only-scrolling-79cc3472e503
 
 // ::-webkit-scrollbar              { width: 10px; }
 // ::-webkit-scrollbar-button       { }
@@ -17,3 +21,29 @@
 //   background-color: $gray-7;
 // }
 // ::-webkit-resizer                { }
+
+// https://css-tricks.com/snippets/sass/custom-scrollbars-mixin/
+
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white,  50%)) {
+  // For Google Chrome
+  &::-webkit-scrollbar {
+    width:  $size;
+    height: $size;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $foreground-color;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $background-color;
+  }
+}
+
+// Usage:
+// body {
+//   @include scrollbars(10px, pink, red);
+// }
+// .custom-area {
+//   @include scrollbars(.5em, slategray);
+// }

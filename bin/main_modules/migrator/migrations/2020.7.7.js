@@ -11,13 +11,13 @@ function migrate (data) {
   obj.ui.timelineFilter = null
 
   // add expanded attribute to lines
-  obj.lines = obj.lines.map(l => {
+  obj.lines = obj.lines.filter(Boolean).map(l => {
     l.expanded = null
     return l
   })
 
   // add expanded attribute to series lines
-  obj.seriesLines = obj.seriesLines.map(l => {
+  obj.seriesLines = obj.seriesLines.filter(Boolean).map(l => {
     l.expanded = null
     return l
   })

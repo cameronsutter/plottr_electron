@@ -28,7 +28,6 @@ export function convertHTMLString (html) {
 }
 
 export function deserialize (el) {
-  console.log(el)
   if (el.nodeType === 3) {
     // if it's only a bunch of white space, ignore it
     if (el.textContent == '\n' || el.textContent == '\n\n' || el.textContent == '\n\n\n') {

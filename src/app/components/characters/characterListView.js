@@ -185,16 +185,14 @@ class CharacterListView extends Component {
 
   renderCharacterDetails () {
     let character = this.props.characters.find(char => char.id == this.state.characterDetailId)
-    if (character) {
-      return <CharacterView key={`character-${character.id}`}
-        characterId={character.id}
-        editing={this.state.editingSelected}
-        stopEditing={this.stopEditing}
-        startEditing={this.editingSelected}
-      />
-    } else {
-      return null
-    }
+    if (!character) return null
+
+    return <CharacterView key={`character-${character.id}`}
+      characterId={character.id}
+      editing={this.state.editingSelected}
+      stopEditing={this.stopEditing}
+      startEditing={this.editingSelected}
+    />
   }
 
   renderCustomAttributes () {

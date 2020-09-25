@@ -888,6 +888,7 @@ function buildFileMenu () {
         click: openDashboardWindow,
       },
       {
+        visible: process.env.NODE_ENV === 'dev',
         label: i18n('Snowflake Pro') + '...',
         click: importFromSnowflake,
       },

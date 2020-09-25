@@ -32,8 +32,11 @@
   "After": {
     "message": "After"
   },
-  "Are you sure you want to delete {template}?": {
-    "message": "Are you sure you want to delete { template }?"
+  "Are you sure you want to clear everything in this timeline?": {
+    "message": "Are you sure you want to clear everything in this timeline?"
+  },
+  "Are you sure you want to delete { thing }?": {
+    "message": "Are you sure you want to delete { thing }?"
   },
   "Attributes": {
     "message": "Attributes"
@@ -68,9 +71,6 @@
   "Books": {
     "message": "Books"
   },
-  "Bring All to Front": {
-    "message": "Bring All to Front"
-  },
   "Browns": {
     "message": "Browns"
   },
@@ -86,8 +86,11 @@
   "Card": {
     "message": "Card"
   },
-  "Card Title": {
-    "message": "Card Title"
+  "Categories": {
+    "message": "Categories"
+  },
+  "Category": {
+    "message": "Category"
   },
   "Chapter": {
     "message": "Chapter"
@@ -119,8 +122,8 @@
   "Characters list": {
     "message": "Characters list"
   },
-  "Check for updates": {
-    "message": "Check for updates"
+  "Check for Updates": {
+    "message": "Check for Updates"
   },
   "Checking for updates": {
     "message": "Checking for updates"
@@ -130,9 +133,6 @@
   },
   "Choose an image": {
     "message": "Choose an image"
-  },
-  "Choose an image below or upload a new one": {
-    "message": "Choose an image below or upload a new one"
   },
   "Choose color": {
     "message": "Choose color"
@@ -146,11 +146,17 @@
   "Choose...": {
     "message": "Choose..."
   },
+  "Clear": {
+    "message": "Clear"
+  },
   "Click on a color below or type it in": {
     "message": "Click on a color below or type it in"
   },
   "Close": {
     "message": "Close"
+  },
+  "Collapse": {
+    "message": "Collapse"
   },
   "Contact": {
     "message": "Contact"
@@ -203,6 +209,12 @@
   "Custom Template": {
     "message": "Custom Template"
   },
+  "Cut": {
+    "message": "Cut"
+  },
+  "DELETE": {
+    "message": "DELETE"
+  },
   "Dark Mode": {
     "message": "Dark Mode"
   },
@@ -218,30 +230,6 @@
   "Device ID": {
     "message": "Device ID"
   },
-  "Do you want to delete this book: { book }?": {
-    "message": "Do you want to delete this book: { book }?"
-  },
-  "Do you want to delete this card: { title }?": {
-    "message": "Do you want to delete this card: { title }?"
-  },
-  "Do you want to delete this chapter: { title }?": {
-    "message": "Do you want to delete this chapter: { title }?"
-  },
-  "Do you want to delete this character: { character }?": {
-    "message": "Do you want to delete this character: { character }?"
-  },
-  "Do you want to delete this note: { title }?": {
-    "message": "Do you want to delete this note: { title }?"
-  },
-  "Do you want to delete this place: { name }?": {
-    "message": "Do you want to delete this place: { name }?"
-  },
-  "Do you want to delete this story line: { title }?": {
-    "message": "Do you want to delete this story line: { title }?"
-  },
-  "Do you want to delete this tag: { title }?": {
-    "message": "Do you want to delete this tag: { title }?"
-  },
   "Do you want to remove this image? It will NOT be deleted from your computer": {
     "message": "Do you want to remove this image? It will NOT be deleted from your computer"
   },
@@ -254,11 +242,14 @@
   "Done": {
     "message": "Done"
   },
-  "Download Now": {
-    "message": "Download Now"
+  "Download Complete: Click to Install ({version})": {
+    "message": "Download Complete: Click to Install ({ version })"
   },
-  "Downloading ({percent}%)": {
-    "message": "Downloading ({ percent }%)"
+  "Downloading {version} ({percent}%)": {
+    "message": "Downloading { version } ({ percent }%)"
+  },
+  "Drop a File Here": {
+    "message": "Drop a File Here"
   },
   "Edit": {
     "message": "Edit"
@@ -287,6 +278,9 @@
   "Error Report created": {
     "message": "Error Report created"
   },
+  "Expand": {
+    "message": "Expand"
+  },
   "Export": {
     "message": "Export"
   },
@@ -296,8 +290,8 @@
   "FAQ": {
     "message": "FAQ"
   },
-  "Facebook Support Group": {
-    "message": "Facebook Support Group"
+  "Facebook Group": {
+    "message": "Facebook Group"
   },
   "File": {
     "message": "File"
@@ -356,6 +350,9 @@
   "If you keep seeing this problem, email us at support@getplottr.com": {
     "message": "If you keep seeing this problem, email us at support@getplottr.com"
   },
+  "Image Details": {
+    "message": "Image Details"
+  },
   "Image Gallery": {
     "message": "Image Gallery"
   },
@@ -364,6 +361,9 @@
   },
   "Insert Chapter and a Card": {
     "message": "Insert Chapter and a Card"
+  },
+  "Insert from URL": {
+    "message": "Insert from URL"
   },
   "It looks like you have Plottr on the max number of computers already": {
     "message": "It looks like you have Plottr on the max number of computers already"
@@ -386,17 +386,23 @@
   "License Verified. Plottr will start momentarily. Thanks for being patient!": {
     "message": "License Verified. Plottr will start momentarily. Thanks for being patient!"
   },
-  "Line": {
-    "message": "Line"
+  "Long Synopsis": {
+    "message": "Long Synopsis"
+  },
+  "MS Word": {
+    "message": "MS Word"
+  },
+  "Main": {
+    "message": "Main"
   },
   "Main Plot": {
     "message": "Main Plot"
   },
+  "Manually Sorted": {
+    "message": "Manually Sorted"
+  },
   "Middle": {
     "message": "Middle"
-  },
-  "Minimize": {
-    "message": "Minimize"
   },
   "My Character Template": {
     "message": "My Character Template"
@@ -427,6 +433,12 @@
   },
   "New Place": {
     "message": "New Place"
+  },
+  "New Plotline": {
+    "message": "New Plotline"
+  },
+  "New from": {
+    "message": "New from"
   },
   "New from Template": {
     "message": "New from Template"
@@ -461,6 +473,12 @@
   "Once You Plot, the Fun Don't Stop": {
     "message": "Once You Plot, the Fun Don''t Stop"
   },
+  "One Paragraph Summary": {
+    "message": "One Paragraph Summary"
+  },
+  "One Sentence Summary": {
+    "message": "One Sentence Summary"
+  },
   "Open": {
     "message": "Open"
   },
@@ -473,6 +491,9 @@
   "Oranges": {
     "message": "Oranges"
   },
+  "Other": {
+    "message": "Other"
+  },
   "Outline": {
     "message": "Outline"
   },
@@ -481,6 +502,9 @@
   },
   "Paste": {
     "message": "Paste"
+  },
+  "Paste and Match Style": {
+    "message": "Paste and Match Style"
   },
   "Pick a color": {
     "message": "Pick a color"
@@ -506,14 +530,20 @@
   "Please verify your license": {
     "message": "Please verify your license"
   },
+  "Plotline": {
+    "message": "Plotline"
+  },
+  "Plotline name": {
+    "message": "Plotline name"
+  },
+  "Plotline: {name}": {
+    "message": "Plotline: { name }"
+  },
   "Plotlines": {
     "message": "Plotlines"
   },
   "Plottr": {
     "message": "Plottr"
-  },
-  "Plottr Trial": {
-    "message": "Plottr Trial"
   },
   "Plottr created a file named plottr_error_report.txt in your Documents folder": {
     "message": "Plottr created a file named plottr_error_report.txt in your Documents folder"
@@ -530,14 +560,14 @@
   "Project": {
     "message": "Project"
   },
+  "Prologue": {
+    "message": "Prologue"
+  },
   "Purples": {
     "message": "Purples"
   },
   "Quit": {
     "message": "Quit"
-  },
-  "Quit and Install": {
-    "message": "Quit and Install"
   },
   "Redo": {
     "message": "Redo"
@@ -593,17 +623,29 @@
   "Scene Cards": {
     "message": "Scene Cards"
   },
+  "Scene Title": {
+    "message": "Scene Title"
+  },
+  "Scene {num}": {
+    "message": "Scene { num }"
+  },
+  "Scrivener": {
+    "message": "Scrivener"
+  },
+  "Scrivener Project": {
+    "message": "Scrivener Project"
+  },
   "Scroll": {
     "message": "Scroll"
-  },
-  "See the Changelog": {
-    "message": "See the Changelog"
   },
   "See the outline here": {
     "message": "See the outline here"
   },
   "Select All": {
     "message": "Select All"
+  },
+  "Select a File": {
+    "message": "Select a File"
   },
   "Series": {
     "message": "Series"
@@ -614,11 +656,17 @@
   "Short Description": {
     "message": "Short Description"
   },
+  "Short Synopsis": {
+    "message": "Short Synopsis"
+  },
   "Show All": {
     "message": "Show All"
   },
   "Since this is your first time using Plottr, I'll give you a guided tour if you like.": {
     "message": "Since this is your first time using Plottr, I''ll give you a guided tour if you like."
+  },
+  "Snowflake Pro": {
+    "message": "Snowflake Pro"
   },
   "Something went wrong.": {
     "message": "Something went wrong."
@@ -638,14 +686,14 @@
   "Story line": {
     "message": "Story line"
   },
-  "Story line name": {
-    "message": "Story line name"
-  },
   "Story name": {
     "message": "Story name"
   },
   "Subtitle": {
     "message": "Subtitle"
+  },
+  "Supporting": {
+    "message": "Supporting"
   },
   "TRIAL Version": {
     "message": "TRIAL Version"
@@ -667,6 +715,9 @@
   },
   "Take Screenshot": {
     "message": "Take Screenshot"
+  },
+  "Template": {
+    "message": "Template"
   },
   "Template Saved": {
     "message": "Template Saved"
@@ -704,20 +755,23 @@
   "Type": {
     "message": "Type"
   },
+  "URL": {
+    "message": "URL"
+  },
+  "Uncategorized": {
+    "message": "Uncategorized"
+  },
   "Undo": {
     "message": "Undo"
   },
   "Untitled": {
     "message": "Untitled"
   },
-  "Update Ready": {
-    "message": "Update Ready"
+  "Update Available ({version}): Download Now!": {
+    "message": "Update Available ({ version }): Download Now!"
   },
-  "Update available!": {
-    "message": "Update available!"
-  },
-  "Upload a new image": {
-    "message": "Upload a new image"
+  "Upload Files": {
+    "message": "Upload Files"
   },
   "Use Template": {
     "message": "Use Template"
@@ -761,6 +815,9 @@
   "Window": {
     "message": "Window"
   },
+  "Word Document": {
+    "message": "Word Document"
+  },
   "Would you like to open an existing file or start a new file?": {
     "message": "Would you like to open an existing file or start a new file?"
   },
@@ -785,6 +842,9 @@
   "Your Plottr file was exported to a .docx file": {
     "message": "Your Plottr file was exported to a .docx file"
   },
+  "Your Plottr file was exported to a Scrivener project package": {
+    "message": "Your Plottr file was exported to a Scrivener project package"
+  },
   "Your free trial has expired": {
     "message": "Your free trial has expired"
   },
@@ -793,6 +853,9 @@
   },
   "Zoom": {
     "message": "Zoom"
+  },
+  "[image]": {
+    "message": "[image]"
   },
   "a lot of scenes moved around": {
     "message": "a lot of scenes moved around"
@@ -869,6 +932,9 @@
   "ok": {
     "message": "ok"
   },
+  "or": {
+    "message": "or"
+  },
   "paragraph": {
     "message": "paragraph"
   },
@@ -893,9 +959,6 @@
   "remove tag {tagName} from note {noteName}": {
     "message": "remove tag { tagName } from note { noteName }"
   },
-  "selected": {
-    "message": "selected"
-  },
   "story line": {
     "message": "story line"
   },
@@ -911,13 +974,10 @@
   "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {
     "message": "{ count, plural,\n    one {1 tag attached}\n  other {# tags attached}\n}"
   },
-  "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
-    "message": "{ count, plural,\n    one {1 card}\n  other {# cards}\n}"
-  },
-  "{\n      count, plural,\n        one {1 note}\n        other {# notes}\n    }": {
-    "message": "{ count, plural,\n    one {1 note}\n  other {# notes}\n}"
-  },
   "{days} days remaining": {
     "message": "{ days } days remaining"
+  },
+  "{num} Scenes": {
+    "message": "{ num } Scenes"
   }
 }

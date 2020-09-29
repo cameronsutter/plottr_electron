@@ -1,3 +1,5 @@
+import t from 'format-message'
+
 export default [
   'aliceblue',
   'antiquewhite',
@@ -321,4 +323,16 @@ export const allcolors = [
   ...grays,
   ...whites,
   ...browns
+]
+
+export const colorsWithKeys = [
+  {title: t('Default Colors'),  colors: defaults},
+  {title: t('Reds'),            colors: reds},
+  {title: t('Oranges'),         colors: oranges},
+  {title: t('Greens'),          colors: greens},
+  {title: t('Blues'),           colors: blues},
+  {title: t('Purples'),         colors: purples},
+  {title: t('Grays'),           colors: grays},
+  {title: t('Whites'),          colors: whites},
+  {title: t('Browns'),          colors: browns},
 ]

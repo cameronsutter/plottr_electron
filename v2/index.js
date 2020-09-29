@@ -15,6 +15,8 @@ import * as uiActions from './actions/ui'
 import * as undoActions from './actions/undo'
 
 import * as ActionTypes from './constants/ActionTypes'
+import * as colors from './constants/CSScolors'
+import * as ZoomStates from './constants/zoom_states'
 
 import * as cardHelpers from './helpers/cards'
 import * as chapterHelpers from './helpers/chapters'
@@ -61,6 +63,8 @@ module.exports = {
     undoActions,
   },
   ActionTypes,
+  colors,
+  ZoomStates,
   cardHelpers,
   chapterHelpers,
   listHelpers,

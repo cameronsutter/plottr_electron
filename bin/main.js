@@ -190,7 +190,7 @@ ipcMain.on('fetch-state', function (event, id) {
       win.window.webContents.send('import-snowflake', json, win.fileName, win.importFrom, darkMode, windows.length)
       delete win.importFrom
     } else {
-      migrateIfNeeded (win.state, win.fileName, (err, migrated, json) => {
+      migrateIfNeeded(win.state, win.fileName, (err, migrated, json) => {
         if (err) { log.warn(err); rollbar.warn(err) }
         if (migrated) FileManager.save(win.fileName, json, () => {})
 

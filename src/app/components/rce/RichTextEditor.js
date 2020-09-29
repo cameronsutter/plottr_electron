@@ -7,7 +7,7 @@ import { ButtonGroup, Overlay, Navbar, Nav, NavItem } from 'react-bootstrap'
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { FaBold, FaItalic, FaUnderline, FaQuoteLeft, FaListOl, FaListUl, FaStrikethrough } from "react-icons/fa"
+import { FaBold, FaItalic, FaUnderline, FaQuoteLeft, FaListOl, FaListUl, FaStrikethrough } from 'react-icons/fa'
 import ToolBar from './ToolBar'
 import { MarkButton, toggleMark } from './MarkButton'
 import BlockButton from './BlockButton'
@@ -36,7 +36,7 @@ const RichTextEditor = (props) => {
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
   const renderElement = useCallback(props => <Element {...props} />, [])
   const [value, setValue] = useState(null)
-  const [key, setKey] = useState(null)
+  const [key, setKey] = useState(Math.random().toString(16))
   const toolbarRef = useRef(null)
   const [showColorPicker, toggleColorPicker] = useState(false)
   const changeColor = color => {
@@ -45,16 +45,11 @@ const RichTextEditor = (props) => {
   }
   useEffect(() => {
     if (!value) {
-      const rceText = useTextConverter(props.text)
-      setValue(rceText)
+      setValue(useTextConverter(props.text))
     }
   }, [props.text])
-  useEffect(() => {
-    setKey(Math.random().toString(16))
-  }, [])
 
   if (!value) return null
-  if (!key) return null
 
   const updateValue = newVal => {
     // only update if it changed
@@ -72,7 +67,7 @@ const RichTextEditor = (props) => {
     <Slate editor={editor} value={value} onChange={updateValue} key={key}>
       <div className={cx('slate-editor__wrapper', props.className)}>
         <div className={cx('slate-editor__toolbar-wrapper', {darkmode: props.darkMode})} ref={toolbarRef}>
-          <ToolBar>
+          <ToolBar wrapperRef={toolbarRef}>
             <ButtonGroup>
               <FontsButton fonts={props.fonts} recentFonts={props.recentFonts} addRecent={props.addRecent} />
               <MarkButton mark='bold' icon={<FaBold/>} />
@@ -85,7 +80,6 @@ const RichTextEditor = (props) => {
               <BlockButton format='block-quote' icon={<FaQuoteLeft/>} />
               <BlockButton format='numbered-list' icon={<FaListOl/>} />
               <BlockButton format='bulleted-list' icon={<FaListUl/>} />
-              <LinkButton />
               <ImagesButton />
             </ButtonGroup>
             <Overlay show={showColorPicker} placement='bottom' container={() => findDOMNode(toolbarRef.current)}>

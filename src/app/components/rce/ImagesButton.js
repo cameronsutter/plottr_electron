@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FaImage } from "react-icons/fa"
+import { FaImage } from 'react-icons/fa'
 import { Editor, Transforms } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'

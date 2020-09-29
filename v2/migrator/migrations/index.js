@@ -13,6 +13,7 @@ import m2020_4_3 from './2020.4.3'
 import m2020_5_5 from './2020.5.5'
 import m2020_6_12 from './2020.6.12'
 import m2020_7_7 from './2020.7.7'
+import m2020_8_28 from './2020.8.28'
 
 module.exports = {
   m0_6,
@@ -30,4 +31,5 @@ module.exports = {
   m2020_5_5,
   m2020_6_12,
   m2020_7_7,
+  m2020_8_28,
 }

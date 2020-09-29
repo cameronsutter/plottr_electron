@@ -30,10 +30,7 @@ function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
 
   this.startMigrations = function (callback) {
     let migrations = this.getMigrations()
-    console.log('migrations', migrations)
-    console.log('migrators', migrators)
     migrations.forEach(m => {
-      console.log('m', m)
       this.data = migrators[m](this.data)
     })
     this.data.file.version = this.appVersion

@@ -7,8 +7,9 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
 import Inspector from 'react-json-inspector'
 import 'style-loader!css-loader!sass-loader!../../../../node_modules/react-json-inspector/json-inspector.css'
-import { nextId } from '../../store/newIds'
+import { nextId, objectId } from '../../store/newIds'
 import DevFileDrop from './DevFileDrop'
+import { findDOMNode } from 'react-dom'
 
 class Analyzer extends Component {
   state = {tab: 'search', path: null, tree: null}
@@ -119,6 +120,17 @@ class Analyzer extends Component {
     this.setState({tree: visibleChapters, path: 'chapters'})
   }
 
+  moveBookToIdOne = () => {
+    const input = findDOMNode(this.idToMove)
+    const idToMove = input.value
+    if (idToMove) {
+      const { pltr } = this.props
+      const re = new RegExp(`bookId\":\s?${idToMove},`, 'g')
+      const resultJson = JSON.parse(JSON.stringify(pltr).replace(re, 'bookId":1,'))
+      console.log(resultJson.books, resultJson.chapters.filter(ch => ch.bookId == '1'), resultJson.lines.filter(ch => ch.bookId == '1'))
+    }
+  }
+
   renderDetails () {
     if (!this.state.tree) return null
 
@@ -197,6 +209,22 @@ class Analyzer extends Component {
         </Row>
       </Grid>
     }
+
+    if (this.state.tab == 'books') {
+      const id = objectId(pltr.books)
+      return <Grid fluid>
+        <Row>
+          <Col sm={12} md={5}>
+            <div>
+              <input ref={r => this.idToMove = r} placeholder='Id To Move'/>
+              <span className='analyzer__sub-option'>nextId: {id}</span>
+              <span className='analyzer__sub-option'><a href='#' onClick={this.moveBookToIdOne}>Move to Book 1</a></span>
+            </div>
+            { this.renderDetails() }
+          </Col>
+        </Row>
+      </Grid>
+    }
   }
 
   render () {
@@ -208,6 +236,7 @@ class Analyzer extends Component {
         <span className='analyzer__tab' onClick={() => this.setState({tab: 'cards', tree: null, path: null})}>Cards</span>
         <span className='analyzer__tab' onClick={() => this.setState({tab: 'lines', tree: null, path: null})}>Lines</span>
         <span className='analyzer__tab' onClick={() => this.setState({tab: 'chapters', tree: null, path: null})}>Chapters</span>
+        <span className='analyzer__tab' onClick={() => this.setState({tab: 'books', tree: null, path: null})}>Books</span>
       </div>
       {this.renderTab()}
       <div></div>

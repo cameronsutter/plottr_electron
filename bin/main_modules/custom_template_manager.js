@@ -53,31 +53,16 @@ class CustomTemplateManager {
     }
 
     // only cards in bookChapters
-    // create new ids for the cards based on the chapter's position (for each line)
-    // because that's how the template picker needs cards sorted
     if (data.cards.length) {
       const chapterIds = bookChapters.map(ch => ch.id)
-      const sortedChapters = sortBy(bookChapters, 'position')
-      const sortedCards = []
+      let cards = []
 
-      bookLines.forEach((l, idx) => {
-        const firstId = idx + 10
-        const bookCardsByChapterId = data.cards.reduce((acc, card) => {
-          if (chapterIds.includes(card.chapterId) && card.lineId == l.id) {
-            acc[card.chapterId] = card
-          }
-          return acc
-        }, {})
-        sortedChapters.forEach((ch, jdx) => {
-          if (bookCardsByChapterId[ch.id]) {
-            let card = bookCardsByChapterId[ch.id]
-            card.id = (jdx + 1) * firstId
-            sortedCards.push(card)
-          }
-        })
+      bookLines.forEach(l => {
+        const cardsInLine = data.cards.filter(c => chapterIds.includes(c.chapterId) && c.lineId == l.id)
+        cards = cards.concat(cardsInLine)
       })
 
-      template.templateData.cards = sortedCards
+      template.templateData.cards = cards
     }
     templateStore.set(`${TEMPLATES_ROOT}.${id}`, template)
   }

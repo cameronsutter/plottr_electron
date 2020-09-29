@@ -1,4 +1,4 @@
-import { ADD_TAG, ADD_TAG_WITH_VALUES, EDIT_TAG, DELETE_TAG, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
+import { ADD_TAG, ADD_TAG_WITH_VALUES, EDIT_TAG, CHANGE_TAG_COLOR, DELETE_TAG, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { tag } from '../store/initialState'
 import { newFileTags } from '../store/newFileState'
 import { nextId } from '../store/newIds'
@@ -20,6 +20,9 @@ export default function tags (state = initialState, action) {
         title: action.title,
         color: action.color || tag.color,
       }]
+
+    case CHANGE_TAG_COLOR:
+      return state.map(tag => tag.id === action.id ? Object.assign({}, tag, {color: action.color}) : tag )
 
     case EDIT_TAG:
       return state.map(tag => tag.id === action.id ? Object.assign({}, tag, {title: action.title, color: action.color}) : tag )

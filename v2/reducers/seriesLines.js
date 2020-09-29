@@ -33,14 +33,10 @@ export default function seriesLines (state = initialState, action) {
       }), ...state]
 
     case EDIT_SERIES_LINE_TITLE:
-      return state.map(l =>
-        l.id === action.id ? Object.assign({}, l, {title: action.title}) : l
-      )
+      return state.map(l => l.id === action.id ? Object.assign({}, l, {title: action.title}) : l )
 
     case EDIT_SERIES_LINE_COLOR:
-      return state.map(l =>
-        l.id === action.id ? Object.assign({}, l, {color: action.color}) : l
-      )
+      return state.map(l => l.id === action.id ? Object.assign({}, l, {color: action.color}) : l )
 
     case DELETE_SERIES_LINE:
       return state.filter(l =>

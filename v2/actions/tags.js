@@ -1,4 +1,4 @@
-import { ADD_TAG, ADD_TAG_WITH_VALUES, EDIT_TAG, DELETE_TAG } from '../constants/ActionTypes'
+import { ADD_TAG, ADD_TAG_WITH_VALUES, EDIT_TAG, DELETE_TAG, CHANGE_TAG_COLOR } from '../constants/ActionTypes'
 import { tag } from '../store/initialState'
 
 export function addTag () {
@@ -11,6 +11,10 @@ export function addTagWithValues (title, color) {
 
 export function editTag (id, title, color) {
   return { type: EDIT_TAG, id, title, color }
+}
+
+export function changeColor (id, color) {
+  return { type: CHANGE_TAG_COLOR, id, color }
 }
 
 export function deleteTag (id) {

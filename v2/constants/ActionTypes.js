@@ -84,6 +84,7 @@ export const REMOVE_BOOK_FROM_PLACE = 'REMOVE_BOOK_FROM_PLACE'
 export const ADD_TAG = 'ADD_TAG'
 export const ADD_TAG_WITH_VALUES = 'ADD_TAG_WITH_VALUES'
 export const EDIT_TAG = 'EDIT_TAG'
+export const CHANGE_TAG_COLOR = 'CHANGE_TAG_COLOR'
 export const DELETE_TAG = 'DELETE_TAG'
 
 // characters actions

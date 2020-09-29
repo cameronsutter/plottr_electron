@@ -11,8 +11,8 @@ export function changeOrientation (orientation) {
   return { type: CHANGE_ORIENTATION, orientation }
 }
 
-export function loadFile (fileName, dirty, payload) {
-  return { type: FILE_LOADED, data: payload, fileName, dirty }
+export function loadFile (fileName, dirty, payload, version) {
+  return { type: FILE_LOADED, data: payload, fileName, dirty, version }
 }
 
 export function newFile (fileName) {

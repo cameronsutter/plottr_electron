@@ -25,13 +25,13 @@ export default function lines (state = initialState, action) {
       }, ...state]
 
     case ADD_LINE_WITH_TITLE:
-      const linesInBook2 = state.filter(l => l.bookId == action.bookId).length
+      const linesInBook_ = state.filter(l => l.bookId == action.bookId).length
       return [{
         ...line,
         id: nextId(state),
         bookId: action.bookId,
         title: action.title,
-        color: nextColor(linesInBook2),
+        color: nextColor(linesInBook_),
         position: nextPositionInBook(state, action.bookId),
       }, ...state]
 

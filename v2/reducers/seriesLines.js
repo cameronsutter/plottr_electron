@@ -1,6 +1,6 @@
 import i18n from 'format-message'
 import { ADD_SERIES_LINE, ADD_SERIES_LINES_FROM_TEMPLATE, EDIT_SERIES_LINE_TITLE, RESET_TIMELINE,
-  EXPAND_SERIES_LINE, COLLAPSE_SERIES_LINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
+  EXPAND_SERIES_LINE, COLLAPSE_SERIES_LINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE, ADD_SERIES_LINE_WITH_TITLE,
   EDIT_SERIES_LINE_COLOR, REORDER_SERIES_LINES, DELETE_SERIES_LINE, FILE_LOADED, NEW_FILE, RESET } from '../constants/ActionTypes'
 import { seriesLine } from '../store/initialState'
 import { newFileSeriesLines } from '../store/newFileState'
@@ -16,6 +16,15 @@ export default function seriesLines (state = initialState, action) {
       return [{
         id: nextId(state),
         title: '',
+        color: nextColor(state.length),
+        position: nextPosition(state),
+        expanded: null,
+      }, ...state]
+
+    case ADD_SERIES_LINE_WITH_TITLE:
+      return [{
+        id: nextId(state),
+        title: action.title,
         color: nextColor(state.length),
         position: nextPosition(state),
         expanded: null,

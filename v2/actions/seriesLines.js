@@ -1,10 +1,14 @@
-import { ADD_SERIES_LINE, ADD_SERIES_LINES_FROM_TEMPLATE, EDIT_SERIES_LINE_TITLE,
+import { ADD_SERIES_LINE, ADD_SERIES_LINES_FROM_TEMPLATE, EDIT_SERIES_LINE_TITLE, ADD_SERIES_LINE_WITH_TITLE,
   EDIT_SERIES_LINE_COLOR, REORDER_SERIES_LINES, DELETE_SERIES_LINE } from '../constants/ActionTypes'
 
 // NOTE: needs to have the same signatures as the lines actions
 
 export function addLine () {
   return { type: ADD_SERIES_LINE }
+}
+
+export function addLineWithTitle (title) {
+  return { type: ADD_SERIES_LINE_WITH_TITLE, title }
 }
 
 export function addLinesFromTemplate (cards, lines) {

@@ -2,6 +2,8 @@ import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
 import { currentTimelineSelector, timelineIsExpandedSelector } from './ui'
 import { allSeriesLinesSelector } from './seriesLines'
+import { cardMapSelector } from './cards'
+import { chaptersByBookSelector } from './chapters'
 import { nextId } from '../store/newIds'
 
 export const allLinesSelector = state => state.lines
@@ -51,5 +53,22 @@ export const linePositionMappingSelector = createSelector(
       acc[line.position] = line
       return acc
     }, {})
+  }
+)
+
+export const lineMaxCardsSelector = createSelector(
+  linesByBookSelector,
+  cardMapSelector,
+  chaptersByBookSelector,
+  (lines, cardMap, chapters) => {
+    return lines.reduce((acc, l) => {
+      let max = 0
+      chapters.forEach(ch => {
+        const cards = cardMap[`${l.id}-${ch.id}`]
+        if (cards && cards.length > max) max = cards.length
+      })
+      acc[l.id] = max
+      return acc
+    }, l)
   }
 )

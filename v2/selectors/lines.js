@@ -69,6 +69,6 @@ export const lineMaxCardsSelector = createSelector(
       })
       acc[l.id] = max
       return acc
-    }, l)
+    }, {})
   }
 )

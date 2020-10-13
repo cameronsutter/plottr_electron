@@ -690,23 +690,27 @@ function openBuyWindow () {
 }
 
 function importFromSnowflake (focusedWindow) {
+  const title = i18n('Choose your Snowflake Pro file')
   const filters = [{name: 'Snowflake Pro file', extensions: ['snowXML']}]
-  const files = dialog.showOpenDialogSync(focusedWindow, {filters})
+  const properties = [ 'openFile' ]
+  const files = dialog.showOpenDialogSync({title, filters, properties})
   if (files && files.length) {
     const importedName = files[0]
-    const pltrFileName = importedName.replace('.snowXML', '.pltr')
-    const storyName = path.basename(importedName, '.snowXML')
-    const data = emptyFileContents(storyName)
-    FileManager.save(pltrFileName, data, (err) => {
-      if (err) {
-        log.warn(err)
-        rollbar.warn(err, {fileName: pltrFileName})
-        dialog.showErrorBox(i18n('Saving failed'), i18n("Creating your file didn't work. Let's try again."))
-        importFromSnowflake(focusedWindow)
-      } else {
-        openWindow(pltrFileName, data, importedName)
-      }
-    })
+    if (importedName.includes('.snowXML')) {
+      const pltrFileName = importedName.replace('.snowXML', '.pltr')
+      const storyName = path.basename(importedName, '.snowXML')
+      const data = emptyFileContents(storyName)
+      FileManager.save(pltrFileName, data, (err) => {
+        if (err) {
+          log.warn(err)
+          rollbar.warn(err, {fileName: pltrFileName})
+          dialog.showErrorBox(i18n('Saving failed'), i18n("Creating your file didn't work. Let's try again."))
+          importFromSnowflake(focusedWindow)
+        } else {
+          openWindow(pltrFileName, data, importedName)
+        }
+      })
+    }
   }
 }
 
@@ -888,7 +892,6 @@ function buildFileMenu () {
         click: openDashboardWindow,
       },
       {
-        visible: process.env.NODE_ENV === 'dev',
         label: i18n('Snowflake Pro') + '...',
         click: importFromSnowflake,
       },

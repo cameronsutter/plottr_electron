@@ -83,6 +83,10 @@ class ColorPicker extends Component {
 
   renderColors () {
     return <div className='color-picker__box-wrapper'>
+      <p>{i18n('Default Colors')}</p>
+      <div className='color-picker__box'>
+        {defaults.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
+      </div>
       <p>{i18n('Reds')}</p>
       <div className='color-picker__box'>
         {reds.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
@@ -114,10 +118,6 @@ class ColorPicker extends Component {
       <p>{i18n('Browns')}</p>
       <div className='color-picker__box'>
         {browns.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
-      </div>
-      <p>{i18n('Default Colors')}</p>
-      <div className='color-picker__box'>
-        {defaults.map(c => <div key={'color-picker-color-' + c} className='color-picker__choice'>{this.renderColor(c)}</div>)}
       </div>
     </div>
   }

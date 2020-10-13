@@ -12,6 +12,7 @@ import {
   line as defaultLine,
 } from '../../../../shared/initialState'
 import { nextPositionInBook } from '../../../app/helpers/lists'
+import { nextColor } from '../../../app/store/lineColors'
 
 export default function Importer (path, isNewFile, state) {
   const importedXML = fs.readFileSync(path, 'utf-8')
@@ -93,10 +94,10 @@ function createSlateParagraphWithMark (value, mark) {
 function bookAttributes (currentBooks, json, bookId) {
   // title of the book (with subtitle)
   const titleAttr = json['GContainer']['GString'].find(n => n['_attributes']['name'] == 'title')
-  const subTitleAttr = json['GContainer']['GString'].find(n => n['_attributes']['name'] == 'subtitle')
+  // const subTitleAttr = json['GContainer']['GString'].find(n => n['_attributes']['name'] == 'subtitle')
   if (titleAttr) {
     let title = titleAttr['_attributes']['value']
-    if (subTitleAttr) title = `${title}: ${subTitleAttr['_attributes']['value']}`
+    // if (subTitleAttr) title = `${title}: ${subTitleAttr['_attributes']['value']}`
     currentBooks[`${bookId}`].title = title
   }
 
@@ -182,32 +183,26 @@ function characters(currentState, json, bookId) {
     let newCustomAttrs = []
     characterListNode['GContainer'].forEach(chNode => {
       if (chNode['GString'] && chNode['GString'].length) {
-        let notes = []
         let values = chNode['GString'].reduce((acc, attr) => {
           // get the right attr
           const attrName = characterAttrMapping[attr['_attributes']['name']] || 'notes'
-          switch (attrName) {
-            case 'notes':
-              const parts = attr['_attributes']['value'].split('\n')
-              notes.push(...parts)
-              break
-            case 'name':
-              acc['name'] = attr['_attributes']['value']
-              break
-            case 'description':
-              acc['description'] = attr['_attributes']['value'].replace(/\n/g, ' ')
-              break
-            default:
-              acc[attrName] = attr['_attributes']['value'].replace(/\n/g, ' ')
-              // also create a custom attribute
-              newCustomAttrs.push(attrName)
-              break
+          const val = attr['_attributes']['value']
+          if (attrName == 'name') {
+            acc['name'] = val
+          } else {
+            if (['paragraph', 'synopsis'].includes(attr['_attributes']['name'])) {
+              const parts = val.split('\n')
+              acc[attrName] = createSlateEditor(parts)
+            } else {
+              acc[attrName] = val.replace(/\n/g, ' ')
+            }
+            // also create a custom attribute
+            newCustomAttrs.push(attrName)
           }
           return acc
         }, {})
         values['bookIds'] = [bookId]
-        const slateNotes = createSlateEditor(notes)
-        createNewCharacter(currentState.characters, {...values, notes: slateNotes})
+        createNewCharacter(currentState.characters, values)
       }
     })
     createCustomCharacterAttributes(currentState, newCustomAttrs)
@@ -218,8 +213,12 @@ function createCustomCharacterAttributes(currentState, newCustomAttrs) {
   // get names of current ones
   const currentListByName = keyBy(currentState.customAttributes.characters, 'name')
   // add new ones if they don't already exist
-  const customAttrs = uniq(newCustomAttrs).reduce((acc, attr) => {
-    if (!currentListByName[attr]) acc.push({name: attr, type: 'text'})
+  const customAttrs = characterAttrOrder.reduce((acc, attr) => {
+    if (newCustomAttrs.includes(attr)) {
+      let type = 'text'
+      if (['One-Paragraph Summary', 'Character Synopsis'].includes(attr)) type = 'paragraph'
+      if (!currentListByName[attr]) acc.push({name: attr, type: type})
+    }
     return acc
   }, [])
   currentState.customAttributes.characters = [
@@ -232,12 +231,20 @@ function cards(currentState, json, bookId) {
   const sceneListNode = json['GContainer']['GContainer'].find(n => n['_attributes']['name'] == 'sceneList')
   if (sceneListNode && sceneListNode['GContainer'] && sceneListNode['GContainer'].length) {
     const lineId = createNewLine(currentState.lines, {position: 0, title: i18n('Main Plot')}, bookId)
-    const scenesByChapter = groupBy(sceneListNode['GContainer'], (scene) => {
+    const scenesByChapter = groupBy(sceneListNode['GContainer'], scene => {
       const node = scene['GInteger'].find(n => n['_attributes']['name'] == 'chapter')
       if (node) return node['_attributes']['value']
       return '1'
     })
     const chapterNumbers = Object.keys(scenesByChapter)
+    const scenesByChapterByCharacter = chapterNumbers.reduce((acc, num) => {
+      acc[num] = groupBy(scenesByChapter[num], scene => {
+        const node = scene['GInteger'].find(n => n['_attributes']['name'] == 'povName')
+        if (node) return node['_attributes']['value']
+        return ''
+      })
+      return acc
+    }, {})
 
     // idMap is Snowflake id to Plottr id
     const idMap = chapterNumbers.reduce((acc, id) => {
@@ -246,10 +253,16 @@ function cards(currentState, json, bookId) {
     }, {})
 
     let createdScenesByChapter = {}
+    let createdScenesByChapterByCharacter = {}
+    let linesByTitle = {}
+    let nextLinePosition = 1
 
     sceneListNode['GContainer'].forEach(sNode => {
       // each one is a card in a chapter
       let chapterId = null
+      let characterName = ''
+      let sentence = ''
+      let wordCountExpected = 0
 
       let paragraphsByName = {}
       function addParagraphs (node) {
@@ -257,19 +270,33 @@ function cards(currentState, json, bookId) {
         const value = node['_attributes']['value']
         if (name == 'chapter') {
           chapterId = value
+        } else if (name == 'povName') {
+          if (value) characterName = value
+        } else if (name == 'wordCountExpected') {
+          if (value) wordCountExpected = value
         } else {
           if (value) {
-            let paragraphs = []
-            const displayName = sceneAttrMapping[name]
-            paragraphs.push(createSlateParagraphWithMark(`${displayName}:`, 'bold'))
-            const parts = value.split('\n')
-            parts.forEach(p => paragraphs.push(createSlateParagraph(p)))
-            paragraphsByName[name] = paragraphs
+            if (name == 'sentence') {
+              sentence = value
+            } else {
+              let paragraphs = []
+              const displayName = sceneAttrMapping[name]
+              paragraphs.push(createSlateParagraphWithMark(`${displayName}:`, 'bold'))
+              const parts = value.split('\n')
+              parts.forEach(p => paragraphs.push(createSlateParagraph(p)))
+              paragraphsByName[name] = paragraphs
+            }
           }
         }
       }
       sNode['GString'].forEach(addParagraphs)
       sNode['GInteger'].forEach(addParagraphs)
+      let firstLine
+      if (sentence && wordCountExpected) {
+        firstLine = createSlateParagraph(`${sentence} (${i18n('{wordCount,number} words', {wordCount: wordCountExpected})})`)
+      } else if (sentence) {
+        firstLine = createSlateParagraph(sentence)
+      }
       const description = sceneAttrOrder.reduce((acc, name) => {
         if (paragraphsByName[name]) {
           return [...acc, ...paragraphsByName[name]]
@@ -277,41 +304,87 @@ function cards(currentState, json, bookId) {
           return acc
         }
       }, [])
+      if (firstLine) description.unshift(firstLine)
 
       // i don't think the date field is used or it's like a created date
       // sNode['GLong']['_attributes']['name'] == 'date'
 
-      // stack any that are in the same chapter
-      let positionWithinLine = 0
-      const numInChapter = scenesByChapter[chapterId].length
-      if (numInChapter > 1) {
-        positionWithinLine = createdScenesByChapter[chapterId] ? createdScenesByChapter[chapterId].length : 0
+      let character
+      let characterLineId
+      if (characterName) {
+        // find the right character
+        character = currentState.characters.find(ch => ch.name == characterName)
+        if (character) {
+          // make that caracter a main character
+          // TODO: when categories are customizable, will have to think about this
+          character.categoryId = 1
+          // find or create a line for that character
+          if (linesByTitle[characterName]) {
+            characterLineId = linesByTitle[characterName]
+          } else {
+            // create a new line
+            characterLineId = createNewLine(currentState.lines, {position: nextLinePosition, title: characterName, color: nextColor(nextLinePosition)}, bookId)
+            nextLinePosition++
+            linesByTitle[characterName] = characterLineId
+          }
+        }
       }
+
+      const cardLineId = characterLineId || lineId
+
+      // stack any that are in the same chapter and line
+      let positionWithinLine = 0
+      if (character && scenesByChapterByCharacter[chapterId][characterName]) {
+        const numInChapter = scenesByChapterByCharacter[chapterId][characterName].length
+        if (numInChapter > 1) {
+          positionWithinLine = createdScenesByChapterByCharacter[chapterId][characterName] ? createdScenesByChapterByCharacter[chapterId][characterName].length : 0
+        }
+      } else {
+        const numInChapter = scenesByChapter[chapterId].length
+        if (numInChapter > 1) {
+          positionWithinLine = createdScenesByChapter[chapterId] ? createdScenesByChapter[chapterId].length : 0
+        }
+      }
+
+      let sentenceTitle = sentence.length > 20 ? `${sentence.substr(0, 20)}...` : sentence
 
       const values = {
         chapterId: idMap[chapterId],
-        lineId,
+        lineId: cardLineId,
         description,
         positionWithinLine,
-        title: i18n('Scene {num}', {num: positionWithinLine + 1}),
+        title: sentence ? sentenceTitle : i18n('Scene {num}', {num: positionWithinLine + 1}),
+        characters: character ? [character.id] : [],
       }
 
       createNewCard(currentState.cards, values)
 
+      // mark that we've created scenes
       createdScenesByChapter[chapterId] = createdScenesByChapter[chapterId] ? [...createdScenesByChapter[chapterId], values] : [values]
+      if (character) {
+        if (createdScenesByChapterByCharacter[chapterId]) {
+          if (createdScenesByChapterByCharacter[chapterId][characterName]) {
+            createdScenesByChapterByCharacter[chapterId][characterName] = [...createdScenesByChapterByCharacter[chapterId][characterName], values]
+          } else {
+            createdScenesByChapterByCharacter[chapterId][characterName] = [values]
+          }
+        } else {
+          createdScenesByChapterByCharacter[chapterId] = {[characterName]: [values]}
+        }
+      }
     })
   }
 }
 
 const characterAttrMapping = {
   'name': 'name',
-  'sentence': 'description',
-  'paragraph': 'notes',
-  'synopsis': 'notes',
+  'sentence': 'One-Sentence Summary',
   'ambition': 'Ambition',
   'goal': 'Goal',
+  'values': 'Values',
   'conflict': 'Conflict',
   'epiphany': 'Epiphany',
+  'paragraph': 'One-Paragraph Summary',
   'othersSee': 'How others see character',
   'birthDate': 'Date of Birth',
   'age': 'Age',
@@ -350,19 +423,25 @@ const characterAttrMapping = {
   'fear': 'Deepest Fear',
   'philosophy': 'Philosophy of Life',
   'seesSelf': 'How character sees self',
-  'values': 'Values',
   'change': 'How character will change',
+  'synopsis': 'Character Synopsis',
 }
 
+const characterAttrOrder = [
+  'One-Sentence Summary', 'Ambition', 'Goal', 'Values', 'Conflict', 'Epiphany',
+  'One-Paragraph Summary', 'How others see character', 'Date of Birth', 'Age', 'Height', 'Weight', 'Ethnic Heritage',
+  'Hair Color', 'Eye Color', 'Physical Description', 'Style of Dressing', 'Personality Type', 'Sense of Humor',
+  'Religion', 'Political Party', 'Hobbies', 'Favorite Music', 'Favorite Books', 'Favorite Movies', 'Favorite Colors',
+  'Contents of purse or wallet', 'Description of home', 'Educational Background', 'Work Experience', 'Family',
+  'Best Friend', 'Male Friends', 'Female Friends', 'Enemies', 'Best childhood memory', 'Worst childhood memory',
+  'One-line characterization', 'Strongest character trait', 'Weakest character trait', "Character's Paradox", 'Greatest Hope',
+  'Deepest Fear', 'Philosophy of Life', 'How character sees self', 'How character will change', 'Character Synopsis',
+]
+
 const sceneAttrMapping = {
-  'povName': 'POV',
-  'sentence': 'Sentence Summary',
   'paragraph': 'Scene Notes',
   'date': 'Date',
   'location': 'Location',
-  'pageCountExpected': 'Expected Pages',
-  'wordCountExpected': 'Expected Words',
-  'wordCountActual': 'Actual Words',
 }
 
-const sceneAttrOrder = ['povName', 'location', 'wordCountExpected', 'wordCountActual', 'pageCountExpected', 'sentence', 'paragraph']
+const sceneAttrOrder = ['location', 'paragraph']

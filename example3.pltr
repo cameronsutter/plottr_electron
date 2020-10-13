@@ -28,10 +28,10 @@
     }
   },
   "file": {
-    "fileName": "/Users/sparrowhawk/github/plottr_electron/example3.pltr",
+    "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.9.25"
+    "version": "2020.10.13"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",

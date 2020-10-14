@@ -79,7 +79,6 @@ export default function books (state = initialState, action) {
       return newFileBooks
 
     default:
-      console.log(action)
       return state
   }
 }

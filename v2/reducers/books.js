@@ -4,7 +4,12 @@ import { book as defaultBook } from '../store/initialState'
 import { newFileBooks } from '../store/newFileState'
 import { objectId } from '../store/newIds'
 
-export default function books (state = defaultBook, action) {
+const initialState = {
+  allIds: [1],
+  1: defaultBook,
+}
+
+export default function books (state = initialState, action) {
   switch (action.type) {
     case EDIT_BOOK:
       return {
@@ -74,6 +79,7 @@ export default function books (state = defaultBook, action) {
       return newFileBooks
 
     default:
+      console.log(action)
       return state
   }
 }

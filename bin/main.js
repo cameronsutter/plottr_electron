@@ -496,10 +496,14 @@ function openWindow (fileName, jsonData, importFrom) {
   // Load the previous state with fallback to defaults
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
+  // replacing makes it so it doesn't create the folder structure
+  let stateKeeprFile = fileName.replace(/[\/\\]/g, '~')
+  const numFileLetters = 100
+
   let stateKeeper = windowStateKeeper({
     defaultWidth: parseInt(width * 0.9),
     defaultHeight: parseInt(height * 0.9),
-    file: fileName,
+    file: stateKeeprFile.slice(-numFileLetters),
   });
 
   // Create the browser window.

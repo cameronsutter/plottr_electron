@@ -8,17 +8,19 @@ import i18n from 'format-message'
 class CategoryPicker extends Component {
 
   onChange = () => {
-    this.props.onChange(findDOMNode(this.refs.selectRef).value)
+    const val = findDOMNode(this.refs.selectRef).value
+    this.props.onChange(val == -1 ? null : val)
   }
 
   renderOptions () {
     const categories = [...this.props.categories]
-    categories.push({id: -1, name: 'Uncategorized'})
+    categories.push({id: -1, name: i18n('Uncategorized')})
     return categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)
   }
 
   render () {
-    return <FormControl componentClass="select" placeholder={i18n('Choose')} onChange={this.onChange} ref='selectRef' value={this.props.selectedId}>
+    let val = this.props.selectedId ? this.props.selectedId : -1
+    return <FormControl componentClass="select" placeholder={i18n('Choose')} onChange={this.onChange} ref='selectRef' value={val}>
       { this.renderOptions() }
     </FormControl>
   }

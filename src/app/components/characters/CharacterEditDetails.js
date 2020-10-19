@@ -22,7 +22,7 @@ class CharacterEditDetails extends Component {
       const { name } = attr
       description[name] = props.character[name]
     })
-    let templateAttrs = props.character.templates.reduce((acc, t) =>{
+    let templateAttrs = props.character.templates.reduce((acc, t) => {
       acc[t.id] = t.attributes.reduce((obj, attr) => {
         obj[attr.name] = attr.value
         return obj
@@ -32,7 +32,7 @@ class CharacterEditDetails extends Component {
     this.state = {
       notes: props.character.notes,
       description: description,
-      categoryId: props.character.categoryId || -1,
+      categoryId: props.character.categoryId,
       templateAttrs: templateAttrs,
       newImageId: null,
       deleting: false,
@@ -125,9 +125,8 @@ class CharacterEditDetails extends Component {
 
   changeCategory = (val) => {
     this.setState({categoryId: val})
-    this.props.actions.editCharacter(this.props.character.id, {categoryId: val == -1 ? null : val})
+    this.props.actions.editCharacter(this.props.character.id, {categoryId: val})
   }
-
 
   renderDelete () {
     if (!this.state.deleting) return null

@@ -43,13 +43,13 @@ function hasActivationsLeft (body) {
 
 function mapV2old (isActive) {
   if (isActive) {
-    SETTINGS.set('isTrial', false)
+    SETTINGS.set('trialMode', false)
     SETTINGS.set('canGetUpdates', true)
     SETTINGS.set('isInGracePeriod', false)
     SETTINGS.set('canEdit', true)
     SETTINGS.set('canExport', true)
   } else {
-    SETTINGS.set('isTrial', false)
+    SETTINGS.set('trialMode', false)
     SETTINGS.set('canGetUpdates', false)
     SETTINGS.set('isInGracePeriod', false)
     SETTINGS.set('canEdit', true)
@@ -59,7 +59,7 @@ function mapV2old (isActive) {
 
 function mapPro (isActive) {
   if (isActive) {
-    SETTINGS.set('isTrial', false)
+    SETTINGS.set('trialMode', false)
     SETTINGS.set('canGetUpdates', true)
     SETTINGS.set('isInGracePeriod', false)
     SETTINGS.set('canEdit', true)
@@ -67,14 +67,14 @@ function mapPro (isActive) {
   } else {
     const timeStamp = Date.now()
     if (SETTINGS.get('isInGracePeriod') && timeStamp > SETTINGS.get('gracePeriodEnd')) {
-      SETTINGS.set('isTrial', false)
+      SETTINGS.set('trialMode', false)
       SETTINGS.set('canGetUpdates', false)
       SETTINGS.set('isInGracePeriod', false)
       SETTINGS.set('canEdit', false)
       SETTINGS.set('canExport', false)
     } else {
       // just expired
-      SETTINGS.set('isTrial', false)
+      SETTINGS.set('trialMode', false)
       SETTINGS.set('canGetUpdates', false)
       SETTINGS.set('isInGracePeriod', true)
       SETTINGS.set('gracePeriodEnd', SETTINGS.get('gracePeriodEnd') || getGracePeriodEnd())
@@ -87,13 +87,13 @@ function mapPro (isActive) {
 function map2020 (isActive) {
   const timeStamp = Date.now()
   if (timeStamp < BEGINNING_2021) {
-    SETTINGS.set('isTrial', false)
+    SETTINGS.set('trialMode', false)
     SETTINGS.set('canGetUpdates', true)
     SETTINGS.set('isInGracePeriod', false)
     SETTINGS.set('canEdit', true)
     SETTINGS.set('canExport', true)
   } else {
-    SETTINGS.set('isTrial', false)
+    SETTINGS.set('trialMode', false)
     SETTINGS.set('canGetUpdates', false)
     SETTINGS.set('isInGracePeriod', false)
     SETTINGS.set('canEdit', true)

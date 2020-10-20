@@ -1,10 +1,9 @@
 module.exports = {
   showTheTour: false,
   backup: true,
-  trialMode: false,
   allowPrerelease: false,
   forceDevTools: false,
-  isTrial: false,
+  trialMode: false,
   canGetUpdates: false,
   isInGracePeriod: false,
   gracePeriodEnd: 0,

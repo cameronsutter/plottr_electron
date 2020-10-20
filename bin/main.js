@@ -66,7 +66,7 @@ var launchSent = false
 
 // auto updates
 let checkedForActiveLicense = false
-let lastCheckedForUpdate = new Date().getTime()
+let lastCheckedForUpdate = Date.now()
 const updateCheckThreshold = 1000 * 60 * 60
 log.transports.file.level = "info"
 
@@ -348,7 +348,7 @@ function checkUpdatesIfAllowed () {
     return
   }
 
-  if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
+  if (checkedForActiveLicense && !SETTINGS.get('canGetUpdates')) return
 
   if (!checkedForActiveLicense) {
     checkForActiveLicense(USER_INFO, valid => {
@@ -357,7 +357,7 @@ function checkUpdatesIfAllowed () {
         UpdateManager.checkForUpdates(windows)
       }
     })
-  } else if (SETTINGS.get('premiumFeatures')) {
+  } else if (SETTINGS.get('canGetUpdates')) {
     UpdateManager.checkForUpdates(windows)
   }
 }
@@ -792,7 +792,7 @@ function buildPlottrMenu () {
   }, {
     label: i18n('Check for Updates'),
     click: checkUpdatesIfAllowed,
-    visible: SETTINGS.get('premiumFeatures'),
+    visible: SETTINGS.get('canGetUpdates'),
   }]
   if (TRIALMODE) {
     submenu = [].concat(submenu, {

@@ -11,8 +11,6 @@ function setupRollbar(where, USER) {
     handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
     handleUnhandledRejections: true,
     ignoredMessages: [],
-    codeVersion: version,
-    environment: environment,
     payload: {
       environment: environment,
       version: version,

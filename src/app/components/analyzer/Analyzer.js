@@ -124,10 +124,16 @@ class Analyzer extends Component {
     const input = findDOMNode(this.idToMove)
     const idToMove = input.value
     if (idToMove) {
-      const { pltr } = this.props
-      const re = new RegExp(`bookId\":\s?${idToMove},`, 'g')
-      const resultJson = JSON.parse(JSON.stringify(pltr).replace(re, 'bookId":1,'))
-      console.log(resultJson.books, resultJson.chapters.filter(ch => ch.bookId == '1'), resultJson.lines.filter(ch => ch.bookId == '1'))
+      if (idToMove == 'series') {
+        // beats -> chapters (bookId 1)
+        // seriesLines -> lines (bookId 1)
+
+      } else {
+        const { pltr } = this.props
+        const re = new RegExp(`bookId\":\s?${idToMove},`, 'g')
+        const resultJson = JSON.parse(JSON.stringify(pltr).replace(re, 'bookId":1,'))
+        console.log(resultJson.books, resultJson.chapters.filter(ch => ch.bookId == '1'), resultJson.lines.filter(ch => ch.bookId == '1'))
+      }
     }
   }
 

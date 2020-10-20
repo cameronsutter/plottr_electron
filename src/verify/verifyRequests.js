@@ -1,90 +1,52 @@
-import request from 'request'
-import { machineIdSync } from 'node-machine-id'
-import { is } from 'electron-util'
+import rp from 'request-promise-native'
+import log from 'electron-log'
+const { licenseURL, isActiveLicense, licenseIsForProduct, hasActivationsLeft, PRODUCT_IDS, productMapping } = require('../../shared/licensing')
 
-const BASE_URL = 'http://getplottr.com'
-const PRODUCT_ID = is.macos ? '11321' : '11322'
-// const SUBSCRIPTION_ID = '10333'
-const MACHINE_ID = machineIdSync(true)
-
-// TODO: extract this to shared folder
-
-// callback(error, valid, data)
+// callback(isValid, data)
 export function getLicenseInfo (license, callback) {
-  const req = makeRequest(licenseURL(license))
-  request(req, (err, response, body) => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(body)
-    }
-
-    if (err) {
+  // this is going to fire all 3 requests no matter what
+  Promise.allSettled(PRODUCT_IDS.map(id => rp(makeRequest(licenseURL('activate_license', id, license)))))
+  .then(results => {
+    // find the product that this key belongs to
+    let productForKey = null
+    results.some((res, index) => {
+      const productID = PRODUCT_IDS[index]
       if (process.env.NODE_ENV === 'development') {
-        console.log(err)
+        log.info(productID, res)
       }
-      callback(err, false, {})
-    } else {
-      if (isValidLicense(body)) {
+      if (res.status == 'fulfilled') {
+        const isProductForKey = licenseIsForProduct(res.value)
+        if (isProductForKey) productForKey = {productID, value: res.value}
+        return isProductForKey
+      } else {
+        log.info('license check request failed', productID)
+        log.error(productID, err)
+        // rollbar.warn(productID, err)
+        return false
+      }
+    })
+    if (productForKey) {
+      const activeLicense = !!isActiveLicense(productForKey.value)
+      log.info(productForKey.productID, 'active license?', activeLicense)
+
+      // set config vars
+      productMapping[productForKey.productID](activeLicense)
+
+      if (activeLicense) {
         const data = {
           licenseKey: license,
-          ...body,
+          ...productForKey.value,
         }
-        callback(null, true, data)
+        callback(true, data)
       } else {
-        callback(null, false, {problem: body.error, hasActivationsLeft: hasActivationsLeft(body)})
+        callback(false, {problem: productForKey.value.error, hasActivationsLeft: hasActivationsLeft(productForKey.value)})
       }
+    } else {
+      // doesn't belong to any product
+      callback(false, {problem: 'invalid_item_id'})
     }
   })
 }
-
-// function getSubscriptionInfo (email, callback) {
-//   const req = makeRequest(subscriptionURL(email))
-//   request(req, (err, response, body) => {
-//     if (err) callback(err, null)
-//     else {
-//       const activeSub = findActiveSubscription(body)
-//       if (activeSub) {
-//         callback(null, activeSub)
-//       } else {
-//         callback(null, false)
-//       }
-//     }
-//   })
-// }
-
-function hasActivationsLeft (body) {
-  return body.activations_left && body.activations_left > 0
-}
-
-function isValidLicense (body) {
-  return body.success && body.license == 'valid'
-}
-
-// function findActiveSubscription (body) {
-//   if (body.error) return false
-//   if (!body.subscriptions) return false
-
-//   return body.subscriptions.find(sub => {
-//     return sub.info && sub.info.product_id == SUBSCRIPTION_ID && sub.info.status == 'active'
-//   })
-// }
-
-function licenseURL (license) {
-  let url = `${BASE_URL}/`
-  url += `?edd_action=activate_license&item_id=${PRODUCT_ID}&license=${license}`
-  url += `&url=${MACHINE_ID}`
-  return url
-}
-
-// function subscriptionURL (email) {
-//   let url = apiURL('/subscriptions')
-//   url += `&customer=${email}`
-//   return url
-// }
-
-// NOTE: only needed for non-license api calls
-// function apiURL (path = '') {
-//   return `${BASE_URL}/edd-api${path}?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
-// }
 
 function makeRequest (url) {
   return {

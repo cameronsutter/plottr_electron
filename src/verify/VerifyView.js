@@ -50,23 +50,12 @@ class VerifyView extends Component {
     if (license === "!TEST_LICENSE_@NEPHI") {
       ipcRenderer.send('license-verified')
     }
-    getLicenseInfo(license, (error, valid, licenseInfo) => {
+    getLicenseInfo(license, (isValid, licenseInfo) => {
       if (process.env.NODE_ENV === 'development') {
         console.log(licenseInfo)
       }
       let newState = {spinnerHidden: true}
-      if (error || !valid) {
-        if (licenseInfo && licenseInfo.problem == 'no_activations_left' && !licenseInfo.hasActivationsLeft) {
-          // not valid because of number of activations
-          newState.showAlert = true
-          newState.alertText = this.makeAlertText(TOOMANY)
-        } else {
-          // invalid
-          newState.showAlert = true
-          newState.alertText = this.makeAlertText(INVALID)
-        }
-      } else {
-        // valid
+      if (isValid) {
         this.saveInfo(licenseInfo, err => {
           if (err) {
             this.setState({showAlert: true, alertText: this.makeAlertText(CANTSAVE)})
@@ -87,13 +76,22 @@ class VerifyView extends Component {
             }
           }
         })
+      } else {
+        if (licenseInfo && licenseInfo.problem == 'no_activations_left' && !licenseInfo.hasActivationsLeft) {
+          // not valid because of number of activations
+          newState.showAlert = true
+          newState.alertText = this.makeAlertText(TOOMANY)
+        } else {
+          // invalid
+          newState.showAlert = true
+          newState.alertText = this.makeAlertText(INVALID)
+        }
       }
       this.setState(newState)
     })
   }
 
   saveInfo = (info, callback) => {
-    SETTINGS.set('premiumFeatures', true)
     storage.set('license_info', info, callback)
   }
 

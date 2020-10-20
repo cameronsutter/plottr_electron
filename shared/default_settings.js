@@ -4,6 +4,11 @@ module.exports = {
   trialMode: false,
   allowPrerelease: false,
   forceDevTools: false,
-  premiumFeatures: false,
+  isTrial: false,
+  canGetUpdates: false,
+  isInGracePeriod: false,
+  gracePeriodEnd: 0,
+  canEdit: true,
+  canExport: true,
   user: {}
 }

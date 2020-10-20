@@ -11030,7 +11030,7 @@
       "title": "Main Plot",
       "characterId": null,
       "bookId": 1,
-      "expanded": false,
+      "expanded": null,
       "fromTemplateId": null
     },
     {
@@ -11879,7 +11879,7 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1600991824020,
+      "lastEdited": 1603156317839,
       "templates": [],
       "imageId": null,
       "bookIds": []

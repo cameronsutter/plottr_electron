@@ -7,8 +7,8 @@ import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import { isSeriesSelector } from '../../selectors/ui'
 import cx from 'classnames'
+import { isSeriesSelector } from '../../selectors/ui'
 
 class BlankCard extends Component {
   constructor (props) {
@@ -122,18 +122,26 @@ class BlankCard extends Component {
     } else {
       body = this.renderBlank()
     }
-    return <Cell>
-      <div
-        className='card__cell'
-        onDragEnter={this.handleDragEnter}
-        onDragOver={this.handleDragOver}
-        onDragLeave={this.handleDragLeave}
-        onDrop={this.handleDrop}
-        onClick={this.startCreating}
-      >
-        {body}
-      </div>
-    </Cell>
+
+    const vertical = this.props.orientation === 'vertical';
+    return (
+      <Cell>
+        <div
+          className={cx('card__cell', { vertical })}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
+          onClick={this.startCreating}
+        >
+          {/* This div is necessary to match the structure of scene cell cards
+              and thus get the styles to apply in the same way (flexbox) */}
+          <div>
+            {body}
+          </div>
+        </div>
+      </Cell>
+    )
   }
 
   shouldComponentUpdate (nextProps, nextState) {

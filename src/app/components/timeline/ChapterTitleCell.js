@@ -12,6 +12,7 @@ import { editingChapterLabel, chapterPositionTitle } from '../../helpers/chapter
 import { isSeriesSelector } from '../../selectors/ui'
 import { makeChapterTitleSelector, makeChapterSelector, positionOffsetSelector } from '../../selectors/chapters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { truncateTitle } from 'helpers/cards'
 
 class ChapterTitleCell extends PureComponent {
   constructor (props) {
@@ -146,7 +147,7 @@ class ChapterTitleCell extends PureComponent {
 
   renderTitle () {
     const { chapter, chapterTitle, positionOffset, isSeries } = this.props
-    if (!this.state.editing) return <span>{chapterTitle}</span>
+    if (!this.state.editing) return <span>{truncateTitle(chapterTitle, 50)}</span>
 
     return (<FormGroup>
       <ControlLabel>{editingChapterLabel(chapter, positionOffset, isSeries)}</ControlLabel>

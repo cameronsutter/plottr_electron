@@ -7,6 +7,7 @@ import CardDialog from 'components/timeline/CardDialog'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
+import { truncateTitle } from 'helpers/cards'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
@@ -141,9 +142,11 @@ class Card extends Component {
   }
 
   renderTitle () {
-    let title = <div className='card__title'>
-      {this.props.card.title}
-    </div>
+    let title = (
+      <div className='card__title'>
+        {truncateTitle(this.props.card.title, 150)}
+      </div>
+    )
     if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {

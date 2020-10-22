@@ -15,6 +15,7 @@ import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
+import { truncateTitle } from 'helpers/cards'
 
 const CELL_WIDTH = 200
 
@@ -182,7 +183,7 @@ class LineTitleCell extends PureComponent {
   }
 
   renderTitle () {
-    if (!this.state.editing) return this.props.line.title.substr(0, 50)
+    if (!this.state.editing) return truncateTitle(this.props.line.title, 50)
     return <FormGroup>
       <ControlLabel>{i18n('Plotline name')}</ControlLabel>
       <FormControl

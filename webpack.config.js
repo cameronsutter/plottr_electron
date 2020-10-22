@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var packageJSON = require('./package.json')
 
 var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
@@ -14,6 +15,10 @@ var plugins = [
 if (process.env.NODE_ENV !== 'dev') {
   plugins.push(new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')}))
   plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/))
+  plugins.push(new webpack.SourceMapDevToolPlugin({
+    append: `\n//# sourceMappingURL=https://raw.githubusercontent.com/Plotinator/pltr_sourcemaps/main/${packageJSON.version}/[url]`,
+    filename: `../../../pltr_sourcemaps/${packageJSON.version}/[name].map`,
+  }))
 }
 
 module.exports = {
@@ -71,7 +76,7 @@ module.exports = {
     })()
   ],
   plugins: plugins,
-  devtool: 'source-maps',
+  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: {
     splitChunks: {
       cacheGroups: {

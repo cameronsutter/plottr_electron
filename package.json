@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.10.19",
+  "version": "2020.10.20",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
@@ -111,7 +111,6 @@
     "webpack-cli": "^3.3.5"
   },
   "build": {
-    "asar": false,
     "electronVersion": "8.2.4",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
@@ -128,6 +127,7 @@
       "!**/{.DS_Store,.git,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}",
       "!src${/*}",
       "!webpack.config.js",
+      "!dev-app-update.yml",
       "!example*.pltr",
       "!example*.docx"
     ],

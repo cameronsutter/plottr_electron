@@ -18,7 +18,7 @@
     "fileName": "/Users/sparrowhawk/github/plottr_electron/example.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.7.21"
+    "version": "2020.10.13"
   },
   "series": {
     "name": "Prison Mansion",
@@ -35,7 +35,8 @@
       "genre": "",
       "theme": "",
       "templates": [],
-      "imageId": null
+      "imageId": null,
+      "timelineTemplates": []
     },
     "2": {
       "id": 2,
@@ -44,7 +45,8 @@
       "genre": "",
       "theme": "",
       "templates": [],
-      "imageId": "1"
+      "imageId": "1",
+      "timelineTemplates": []
     },
     "allIds": [
       1,
@@ -373,7 +375,8 @@
       "templates": [],
       "time": 0,
       "title": "The Ordinary World",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -381,7 +384,8 @@
       "position": 1,
       "time": 0,
       "title": "The Call of Adventure",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -389,7 +393,8 @@
       "position": 2,
       "time": 0,
       "title": "Refusal of the Call",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -397,7 +402,8 @@
       "position": 3,
       "time": 0,
       "title": "Meeting the Mentor",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -405,7 +411,8 @@
       "position": 4,
       "time": 0,
       "title": "Crossing the First Threshold",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -413,7 +420,8 @@
       "position": 5,
       "time": 0,
       "title": "Test, Allies, Enemies",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -421,7 +429,8 @@
       "position": 6,
       "time": 0,
       "title": "Approach to the Inmose Cave",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -429,7 +438,8 @@
       "position": 7,
       "time": 0,
       "title": "The Ordeal",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -437,7 +447,8 @@
       "position": 8,
       "time": 0,
       "title": "Reward (Seizing the Sword)",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -445,7 +456,8 @@
       "position": 9,
       "time": 0,
       "title": "The Road Back",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -453,7 +465,8 @@
       "position": 10,
       "time": 0,
       "title": "Resurrection",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "bookId": 2,
@@ -461,7 +474,8 @@
       "position": 11,
       "time": 0,
       "title": "Return with the Elixir",
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 116,
@@ -470,7 +484,8 @@
       "title": "auto",
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 107,
@@ -479,7 +494,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 98,
@@ -488,7 +504,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 99,
@@ -497,7 +514,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 68,
@@ -506,7 +524,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 61,
@@ -515,7 +534,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 67,
@@ -524,7 +544,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 66,
@@ -533,7 +554,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 69,
@@ -542,7 +564,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 64,
@@ -551,7 +574,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 71,
@@ -560,7 +584,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 76,
@@ -569,7 +594,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 90,
@@ -578,7 +604,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 83,
@@ -587,7 +614,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 72,
@@ -596,7 +624,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 78,
@@ -605,7 +634,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 100,
@@ -614,7 +644,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 65,
@@ -623,7 +654,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 73,
@@ -632,7 +664,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 70,
@@ -641,7 +674,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 74,
@@ -650,7 +684,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 75,
@@ -659,7 +694,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 77,
@@ -668,7 +704,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 79,
@@ -677,7 +714,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 81,
@@ -686,7 +724,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 82,
@@ -695,7 +734,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 89,
@@ -704,7 +744,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 85,
@@ -713,7 +754,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 86,
@@ -722,7 +764,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 87,
@@ -731,7 +774,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 88,
@@ -740,7 +784,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 84,
@@ -749,7 +794,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 101,
@@ -758,7 +804,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 92,
@@ -767,7 +814,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 93,
@@ -776,7 +824,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 103,
@@ -785,7 +834,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 91,
@@ -794,7 +844,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 102,
@@ -803,7 +854,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 95,
@@ -812,7 +864,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 94,
@@ -821,7 +874,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 80,
@@ -830,7 +884,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 104,
@@ -839,7 +894,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 96,
@@ -848,7 +904,8 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 111,
@@ -857,7 +914,8 @@
       "title": "auto",
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 112,
@@ -866,7 +924,8 @@
       "title": "auto",
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 113,
@@ -875,7 +934,8 @@
       "title": "auto",
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     },
     {
       "id": 114,
@@ -884,7 +944,8 @@
       "title": "auto",
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true
+      "autoOutlineSort": true,
+      "fromTemplateId": null
     }
   ],
   "cards": [
@@ -913,7 +974,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -971,7 +1033,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1011,7 +1074,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -1102,7 +1166,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -1143,7 +1208,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -1184,7 +1250,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1232,7 +1299,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1259,7 +1327,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1286,7 +1355,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -1323,7 +1393,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1362,7 +1433,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1389,7 +1461,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1416,7 +1489,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1451,7 +1525,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -1480,7 +1555,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1552,7 +1628,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1626,7 +1703,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1653,7 +1731,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1709,7 +1788,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1744,7 +1824,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1817,7 +1898,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1845,7 +1927,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1880,7 +1963,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1907,7 +1991,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1934,7 +2019,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -1969,7 +2055,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2033,7 +2120,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2083,7 +2171,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2118,7 +2207,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2145,7 +2235,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2172,7 +2263,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -2241,7 +2333,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -2312,7 +2405,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -2401,7 +2495,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2489,7 +2584,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2625,7 +2721,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2689,7 +2786,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2716,7 +2814,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2751,7 +2850,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2778,7 +2878,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2805,7 +2906,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2832,7 +2934,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2888,7 +2991,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2915,7 +3019,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2942,7 +3047,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -2969,7 +3075,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [
@@ -3043,7 +3150,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "characters": [],
@@ -3069,7 +3177,8 @@
       "seriesLineId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "id": 163,
@@ -3132,7 +3241,8 @@
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     },
     {
       "id": 164,
@@ -3158,7 +3268,8 @@
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
-      "positionInChapter": null
+      "positionInChapter": null,
+      "fromTemplateId": null
     }
   ],
   "lines": [
@@ -3168,7 +3279,8 @@
       "title": "Main plot",
       "color": "#6cace4",
       "position": 0,
-      "expanded": null
+      "expanded": null,
+      "fromTemplateId": null
     },
     {
       "color": "#6cace4",
@@ -3177,7 +3289,8 @@
       "title": "Main Story Arc",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": null,
+      "fromTemplateId": null
     },
     {
       "color": "#e5554f",
@@ -3186,7 +3299,8 @@
       "title": "Kevan",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": null,
+      "fromTemplateId": null
     },
     {
       "color": "#ff7f32",
@@ -3195,7 +3309,8 @@
       "title": "Anna",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": null,
+      "fromTemplateId": null
     },
     {
       "color": "#78be20",
@@ -3204,7 +3319,8 @@
       "title": "Samuel Zorfert",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": null,
+      "fromTemplateId": null
     },
     {
       "color": "darkorchid",
@@ -3213,7 +3329,8 @@
       "title": "Bimph",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": null,
+      "fromTemplateId": null
     },
     {
       "color": "#ffc72c",
@@ -3222,7 +3339,8 @@
       "title": "Rivab",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": null,
+      "fromTemplateId": null
     },
     {
       "color": "DeepPink",
@@ -3231,7 +3349,8 @@
       "title": "Baltazaar",
       "characterId": null,
       "bookId": 1,
-      "expanded": null
+      "expanded": null,
+      "fromTemplateId": null
     }
   ],
   "customAttributes": {

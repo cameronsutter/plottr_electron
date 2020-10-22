@@ -191,7 +191,8 @@ function characters(currentState, json, bookId) {
             acc['name'] = val
           } else {
             if (['paragraph', 'synopsis'].includes(attr['_attributes']['name'])) {
-              const parts = val.split('\n')
+              let trimmedText = val.replace(/\n\n/g, '\n').replace(/\t/g, '')
+              const parts = trimmedText.split('\n')
               acc[attrName] = createSlateEditor(parts)
             } else {
               acc[attrName] = val.replace(/\n/g, ' ')
@@ -346,7 +347,7 @@ function cards(currentState, json, bookId) {
         }
       }
 
-      let sentenceTitle = sentence.length > 20 ? `${sentence.substr(0, 20)}...` : sentence
+      let sentenceTitle = sentence.length > 30 ? `${sentence.substr(0, 30)}...` : sentence
 
       const values = {
         chapterId: idMap[chapterId],
@@ -429,13 +430,13 @@ const characterAttrMapping = {
 
 const characterAttrOrder = [
   'One-Sentence Summary', 'Ambition', 'Goal', 'Values', 'Conflict', 'Epiphany',
-  'One-Paragraph Summary', 'How others see character', 'Date of Birth', 'Age', 'Height', 'Weight', 'Ethnic Heritage',
+  'One-Paragraph Summary', 'Date of Birth', 'Age', 'Height', 'Weight', 'Ethnic Heritage',
   'Hair Color', 'Eye Color', 'Physical Description', 'Style of Dressing', 'Personality Type', 'Sense of Humor',
   'Religion', 'Political Party', 'Hobbies', 'Favorite Music', 'Favorite Books', 'Favorite Movies', 'Favorite Colors',
   'Contents of purse or wallet', 'Description of home', 'Educational Background', 'Work Experience', 'Family',
   'Best Friend', 'Male Friends', 'Female Friends', 'Enemies', 'Best childhood memory', 'Worst childhood memory',
   'One-line characterization', 'Strongest character trait', 'Weakest character trait', "Character's Paradox", 'Greatest Hope',
-  'Deepest Fear', 'Philosophy of Life', 'How character sees self', 'How character will change', 'Character Synopsis',
+  'Deepest Fear', 'Philosophy of Life', 'How character sees self', 'How others see character', 'How character will change', 'Character Synopsis',
 ]
 
 const sceneAttrMapping = {

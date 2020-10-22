@@ -89,7 +89,7 @@ class CharacterListView extends Component {
     // going back to old way (without modal) to think it over
     const id = nextId(this.props.characters)
     this.props.actions.addCharacterWithTemplate(null, templateData)
-    this.setState({characterDetailId: id, editingSelected: true})
+    this.setState({characterDetailId: id, editingSelected: true, showTemplatePicker: false})
   }
 
   handleFinishCreate = (name) => {
@@ -206,7 +206,7 @@ class CharacterListView extends Component {
 
     return <TemplatePicker
       modal={true}
-      type='characters'
+      type={['characters']}
       isOpen={this.state.showTemplatePicker}
       close={() => this.setState({showTemplatePicker: false})}
       onChooseTemplate={this.handleChooseTemplate}

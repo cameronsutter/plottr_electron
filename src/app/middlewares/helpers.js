@@ -1,4 +1,5 @@
 import mixpanel from 'mixpanel-browser'
+import USER from '../../common/utils/user_info'
 import { remote } from 'electron'
 const screen = remote.screen
 
@@ -25,6 +26,7 @@ class MixpanelQueue {
 
   defaultEventStats (event, basicAttrs={}, state) {
     if (event && process.env.NODE_ENV == 'development') return
+    if (!USER.get('payment_id')) return
 
     // average tags attached to cards
     // average characters attached to cards
@@ -58,6 +60,7 @@ class MixpanelQueue {
 
   push (event, attrs={}) {
     if (event && process.env.NODE_ENV == 'development') return
+    if (!USER.get('payment_id')) return
 
     // TODO: save to localStorage
     let allAttrs = {

@@ -1,9 +1,13 @@
 module.exports = {
   showTheTour: false,
   backup: true,
-  trialMode: false,
   allowPrerelease: false,
   forceDevTools: false,
-  premiumFeatures: false,
+  trialMode: false,
+  canGetUpdates: false,
+  isInGracePeriod: false,
+  gracePeriodEnd: 0,
+  canEdit: true,
+  canExport: true,
   user: {}
 }

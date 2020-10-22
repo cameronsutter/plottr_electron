@@ -59,14 +59,14 @@ var dontquit = false
 var tryingToQuit = false
 var darkMode = nativeTheme.shouldUseDarkColors || false
 
-const filePrefix = is.macos ? 'file://' + __dirname : __dirname
+const filePrefix = is.windows ? __dirname : 'file://' + __dirname
 
 // mixpanel tracking
 var launchSent = false
 
 // auto updates
 let checkedForActiveLicense = false
-let lastCheckedForUpdate = new Date().getTime()
+let lastCheckedForUpdate = Date.now()
 const updateCheckThreshold = 1000 * 60 * 60
 log.transports.file.level = "info"
 
@@ -76,7 +76,6 @@ log.transports.file.level = "info"
 log.info('--------Startup Tasks--------')
 TemplateManager.load()
 checkUpdatesIfAllowed()
-
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => []
@@ -348,7 +347,7 @@ function checkUpdatesIfAllowed () {
     return
   }
 
-  if (checkedForActiveLicense && !SETTINGS.get('premiumFeatures')) return
+  if (checkedForActiveLicense && !SETTINGS.get('canGetUpdates')) return
 
   if (!checkedForActiveLicense) {
     checkForActiveLicense(USER_INFO, valid => {
@@ -357,12 +356,18 @@ function checkUpdatesIfAllowed () {
         UpdateManager.checkForUpdates(windows)
       }
     })
-  } else if (SETTINGS.get('premiumFeatures')) {
+  } else if (SETTINGS.get('canGetUpdates')) {
     UpdateManager.checkForUpdates(windows)
   }
 }
 
 function checkLicense (callback) {
+  if (process.env.NODE_ENV === 'dev') {
+    callback();
+    openRecentFiles();
+    return;
+  }
+
   if (Object.keys(USER_INFO).length) {
     if (TRIALMODE) {
       // still in trial mode
@@ -496,10 +501,14 @@ function openWindow (fileName, jsonData, importFrom) {
   // Load the previous state with fallback to defaults
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
+  // replacing makes it so it doesn't create the folder structure
+  let stateKeeprFile = fileName.replace(/[\/\\]/g, '~')
+  const numFileLetters = 100
+
   let stateKeeper = windowStateKeeper({
     defaultWidth: parseInt(width * 0.9),
     defaultHeight: parseInt(height * 0.9),
-    file: fileName,
+    file: stateKeeprFile.slice(-numFileLetters),
   });
 
   // Create the browser window.
@@ -511,7 +520,11 @@ function openWindow (fileName, jsonData, importFrom) {
     fullscreen: stateKeeper.isFullScreen || null,
     show: false,
     backgroundColor: '#f7f7f7',
-    webPreferences: {nodeIntegration: true, spellcheck: true}
+    webPreferences: {
+      nodeIntegration: true,
+      spellcheck: true,
+      enableRemoteModule: true,
+    }
   })
 
   // Let us register listeners on the window, so we can update the state
@@ -624,7 +637,15 @@ function openAboutWindow () {
   }
 
   const aboutFile = path.join(filePrefix, 'about.html')
-  aboutWindow = new BrowserWindow({width: 350, height: 566, show: false, webPreferences: {nodeIntegration: true}})
+  aboutWindow = new BrowserWindow({
+    width: 350,
+    height: 566,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    }
+  })
   aboutWindow.loadURL(aboutFile)
   if (SETTINGS.get('forceDevTools')) {
     aboutWindow.openDevTools()
@@ -640,7 +661,14 @@ function openAboutWindow () {
 function openVerifyWindow () {
   dontquit = true
   const verifyFile = path.join(filePrefix, 'verify.html')
-  verifyWindow = new BrowserWindow({height: 425, show: false, webPreferences: {nodeIntegration: true}})
+  verifyWindow = new BrowserWindow({
+    height: 425,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    }
+  })
   verifyWindow.loadURL(verifyFile)
   if (SETTINGS.get('forceDevTools')) {
     verifyWindow.openDevTools()
@@ -656,7 +684,15 @@ function openVerifyWindow () {
 function openExpiredWindow () {
   dontquit = true
   const expiredFile = path.join(filePrefix, 'expired.html')
-  expiredWindow = new BrowserWindow({height: 600, width: 700, show: false, webPreferences: {nodeIntegration: true}})
+  expiredWindow = new BrowserWindow({
+    height: 600,
+    width: 700,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    }
+  })
   expiredWindow.loadURL(expiredFile)
   if (SETTINGS.get('forceDevTools')) {
     expiredWindow.openDevTools()
@@ -672,7 +708,16 @@ function openExpiredWindow () {
 function openDashboardWindow () {
   dontquit = true
   const dashboardFile = path.join(filePrefix, 'dashboard.html')
-  dashboardWindow = new BrowserWindow({frame: false, height: 525, width: 800, show: false, webPreferences: {nodeIntegration: true}})
+  dashboardWindow = new BrowserWindow({
+    frame: false,
+    height: 525,
+    width: 800,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+    }
+  })
   dashboardWindow.loadURL(dashboardFile)
   if (SETTINGS.get('forceDevTools')) {
     dashboardWindow.openDevTools()
@@ -788,7 +833,7 @@ function buildPlottrMenu () {
   }, {
     label: i18n('Check for Updates'),
     click: checkUpdatesIfAllowed,
-    visible: SETTINGS.get('premiumFeatures'),
+    visible: SETTINGS.get('canGetUpdates'),
   }]
   if (TRIALMODE) {
     submenu = [].concat(submenu, {

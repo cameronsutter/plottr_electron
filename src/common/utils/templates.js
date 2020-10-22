@@ -1,4 +1,5 @@
-const Store = require('electron-store')
+import Store from 'electron-store'
+import { sortBy } from 'lodash'
 
 const TEMPLATES_PATH = process.env.NODE_ENV == 'development' ? 'templates_dev' : 'templates'
 const templateStore = new Store({name: TEMPLATES_PATH})
@@ -11,7 +12,7 @@ export function listTemplates (type) {
   if (!templatesById) return []
   if (!type) return Object.values(templatesById)
 
-  return Object.values(templatesById).filter(t => t.type == type)
+  return sortBy(Object.values(templatesById).filter(t => t.type == type), 'name')
 }
 
 export function listCustomTemplates (type) {
@@ -19,7 +20,7 @@ export function listCustomTemplates (type) {
   if (!templatesById) return []
   if (!type) return Object.values(templatesById)
 
-  return Object.values(templatesById).filter(t => t.type == type)
+  return sortBy(Object.values(templatesById).filter(t => t.type == type), 'name')
 }
 
 export function deleteTemplate (id) {

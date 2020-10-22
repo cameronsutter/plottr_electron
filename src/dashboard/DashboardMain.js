@@ -11,7 +11,7 @@ export default class DashboardMain extends Component {
 
   render () {
     return <TemplatePicker
-      type='plotlines'
+      type={['project', 'plotlines']}
       modal={false}
       close={() => win.close()}
       onChooseTemplate={this.handleChooseTemplate}

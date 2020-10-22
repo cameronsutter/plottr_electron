@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'react-proptypes'
 import { shell, remote, ipcRenderer } from 'electron'
 import Modal from 'react-modal'
@@ -7,6 +7,7 @@ import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import { listTemplates, listCustomTemplates, deleteTemplate, editTemplateDetails } from '../../utils/templates'
 import CharacterTemplateDetails from './CharacterTemplateDetails'
 import PlotlineTemplateDetails from './PlotlineTemplateDetails'
+import ProjectTemplateDetails from './ProjectTemplateDetails'
 import cx from 'classnames'
 import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
@@ -15,27 +16,31 @@ import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmMod
 const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
 const win = remote.getCurrentWindow()
 
+const typeMap = {
+  'project': i18n('Project Templates'),
+  'plotlines': i18n('Starter Templates'),
+}
+
 export default class TemplatePicker extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      selectedId: null,
-      selectedType: null,
-      editing: false,
-      templates: listTemplates(props.type),
-      customTemplates: listCustomTemplates(props.type),
-      deleting: false,
-      deleteWhich: null,
-    }
+  state = {
+    selectedId: null,
+    selectedCategory: null,
+    selectedType: null,
+    editing: false,
+    templates: [],
+    customTemplates: [],
+    deleting: false,
+    deleteWhich: null,
   }
 
   componentDidMount () {
-    if (!this.state.templates.length) {
-      this.setState({templates: listTemplates(this.props.type)})
-    }
-    if (!this.state.customTemplates.length) {
-      this.setState({customTemplates: listCustomTemplates(this.props.type)})
-    }
+    let templates = {}
+    let customTemplates = []
+    this.props.type.forEach(type => {
+      templates[type] = listTemplates(type)
+      customTemplates = [...customTemplates, ...listCustomTemplates(type)]
+    })
+    this.setState({ templates, customTemplates })
   }
 
 
@@ -60,12 +65,13 @@ export default class TemplatePicker extends Component {
   }
 
   selectedTemplate = () => {
-    if (this.state.selectedType == 'custom') {
-      return this.state.customTemplates.find(template => template.id == this.state.selectedId)
+    const { templates, customTemplates, selectedId, selectedCategory, selectedType } = this.state
+    if (selectedCategory == 'custom') {
+      return customTemplates.find(template => template.id == selectedId)
     }
 
-    if (this.state.selectedType == 'starter') {
-      return this.state.templates.find(template => template.id == this.state.selectedId)
+    if (selectedCategory == 'starter') {
+      return templates[selectedType].find(template => template.id == selectedId)
     }
   }
 
@@ -96,8 +102,8 @@ export default class TemplatePicker extends Component {
     return <a className='template-picker__link' title={template.link} onClick={() => shell.openExternal(template.link)}><Glyphicon glyph='info-sign' /></a>
   }
 
-  renderCustomButtons (type, selected, template) {
-    if (type != 'custom') return null
+  renderCustomButtons (category, selected, template) {
+    if (category != 'custom') return null
     if (!selected) return null
 
     return <div>
@@ -118,12 +124,15 @@ export default class TemplatePicker extends Component {
     }
 
     let details = null
-    switch (this.props.type) {
+    switch (template.type) {
       case 'characters':
         details = <CharacterTemplateDetails template={template}/>
         break
       case 'plotlines':
         details = <PlotlineTemplateDetails template={template}/>
+        break
+      case 'project':
+        details = <ProjectTemplateDetails template={template}/>
         break
     }
 
@@ -137,18 +146,18 @@ export default class TemplatePicker extends Component {
     </div>
   }
 
-  renderTemplateList (list, type) {
+  renderTemplateList (list, category, type) {
     // modal but not open
     if (this.props.modal && !this.props.isOpen) return null
 
-    const { selectedId, selectedType } = this.state
+    const { selectedId, selectedCategory } = this.state
 
     return list.map(template => {
-      let selected = selectedType == type && selectedId == template.id
+      let selected = selectedCategory == category && selectedId == template.id
       let klasses = cx('list-group-item', {selected})
-      return <li key={template.id} className={klasses} onClick={() => this.setState({selectedId: template.id, selectedType: type, editing: false})}>
+      return <li key={template.id} className={klasses} onClick={() => this.setState({selectedId: template.id, selectedCategory: category, selectedType: type, editing: false})}>
         <div>{template.name}</div>
-        { this.renderCustomButtons(type, selected, template) }
+        { this.renderCustomButtons(category, selected, template) }
       </li>
     })
   }
@@ -158,6 +167,20 @@ export default class TemplatePicker extends Component {
     if (this.props.type == 'characters' && !this.props.canMakeCharacterTemplates) return null
 
     return <Button bsSize='small' onClick={this.startSaveAsTemplate}><FaSave className='svg-save-template'/> {i18n('Save as Template')}</Button>
+  }
+
+  renderStarterTemplates () {
+    const listTypes = Object.keys(this.state.templates)
+    return listTypes.map(type => {
+      const list = this.state.templates[type]
+      const title = typeMap[type]
+      return <Fragment key={type}>
+        <h1 className=''>{title}</h1>
+        <ul className='list-group'>
+          {this.renderTemplateList(list, 'starter', type)}
+        </ul>
+      </Fragment>
+    })
   }
 
   renderBody () {
@@ -170,10 +193,7 @@ export default class TemplatePicker extends Component {
             { this.renderSaveButton(this.state.customTemplates.length) }
             { this.renderTemplateList(this.state.customTemplates, 'custom') }
           </ul>
-          <h1 className=''>{i18n('Starter Templates')}</h1>
-          <ul className='list-group'>
-            {this.renderTemplateList(this.state.templates, 'starter')}
-          </ul>
+          { this.renderStarterTemplates() }
         </div>
         <div className='template-picker__details'>
           {this.renderTemplateDetails()}
@@ -206,7 +226,7 @@ export default class TemplatePicker extends Component {
     close: PropTypes.func.isRequired,
     onChooseTemplate: PropTypes.func.isRequired,
     isOpen: PropTypes.bool,
-    type: PropTypes.string,
+    type: PropTypes.array,
     darkMode: PropTypes.bool,
     canMakeCharacterTemplates: PropTypes.bool,
   }

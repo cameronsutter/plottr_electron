@@ -13,6 +13,7 @@ import AnalyzerTab from '../components/analyzer/AnalyzerTab'
 
 class Body extends Component {
   render () {
+    throw new Error('Cowabunga Dude!')
     switch (this.props.currentView) {
       case 'story':
         return <SeriesTab />

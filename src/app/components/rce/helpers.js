@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash'
+import { Editor } from 'slate'
 import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list']
@@ -14,4 +15,43 @@ export function useTextConverter (text) {
   }
 
   return rceText
+}
+
+// Gets the previous sibling node to the provided path at the same depth
+Editor.previousSibling = (editor, path) => {
+  if (path == null) return;
+
+  const last = path[path.length - 1];
+  if (last === 0) return;
+
+  const siblingPath = [...path.slice(0, path.length - 1), last - 1];
+  const siblingNode = Editor.node(editor, siblingPath);
+  return siblingNode;
+}
+
+// Gets the next sibling node to the provided path at the same depth
+Editor.nextSibling = (editor, path) => {
+  if (path == null) return;
+  const last = path[path.length - 1];
+  const siblingPath = [...path.slice(0, path.lenght - 1), last + 1];
+  // if there is no next sibling the method will throw an error
+  try {
+    const siblingNode = Editor.node(editor, siblingPath);
+    return siblingNode;
+  } catch (err) {
+    return null;
+  }
+}
+
+Editor.isInList = (editor, path) => {
+  try {
+    const [parent, parentPath] = Editor.parent(editor, path);
+    if (LIST_TYPES.includes(parent.type)) {
+      return true;
+    }
+
+    return Editor.isInList(editor, parentPath);
+  } catch (err) {
+    return false;
+  }
 }

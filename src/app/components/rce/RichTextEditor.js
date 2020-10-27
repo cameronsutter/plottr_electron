@@ -22,6 +22,7 @@ import Leaf from './Leaf'
 import Element from './Element'
 import cx from 'classnames'
 import { useTextConverter } from './helpers'
+import { withList } from './withList'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -31,7 +32,7 @@ const HOTKEYS = {
 
 const RichTextEditor = (props) => {
   const editor = useMemo(() => {
-    return withNormalizer(withHTML(withImages(withLinks(withHistory(withReact(createEditor()))))))
+    return withList(withNormalizer(withHTML(withImages(withLinks(withHistory(withReact(createEditor())))))))
   }, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
   const renderElement = useCallback(props => <Element {...props} />, [])

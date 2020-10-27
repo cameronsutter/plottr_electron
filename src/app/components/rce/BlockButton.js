@@ -12,9 +12,9 @@ const BlockButton = ({ format, icon }) => {
 
     return !!match
   }
+
   const toggleBlock = (editor, format) => {
-    const isActive = isBlockActive(editor, format)
-    const isList = LIST_TYPES.includes(format)
+    const isInList = Editor.isInList(editor, editor.selection)
 
     Transforms.unwrapNodes(editor, {
       match: n => LIST_TYPES.includes(n.type),
@@ -22,12 +22,44 @@ const BlockButton = ({ format, icon }) => {
     })
 
     Transforms.setNodes(editor, {
-      type: isActive ? 'paragraph' : isList ? 'list-item' : format,
+      type: 'paragraph',
     })
 
-    if (!isActive && isList) {
+    if (!isInList) {
       const block = { type: format, children: [] }
       Transforms.wrapNodes(editor, block)
+      
+      const nodes = [...Editor.nodes(editor, {
+        match: n => n.type === 'paragraph'
+      })]
+
+      for (const [, path] of nodes) {
+        Transforms.setNodes(editor, {
+          type: 'list-item',
+          at: path,
+        });
+      }
+      
+      // all the nodes should have the same parent since we wrapped them
+      const [, parentPath] = Editor.parent(editor, nodes[0][1]);
+
+      // if the next sibling is the same kind of list we want to merge them
+      // this has to be first because the next operation has the potential of
+      // changing the parent path
+      const nextSibling = Editor.nextSibling(editor, parentPath);
+      if (nextSibling != null && nextSibling[0].type === format) {
+        Transforms.mergeNodes(editor, {
+          at: nextSibling[1],
+        });
+      }
+
+      // if the previous sibling is the same kind of list we want to merge them
+      const previousSibling = Editor.previousSibling(editor, parentPath);
+      if (previousSibling != null && previousSibling[0].type === format) {
+        Transforms.mergeNodes(editor, {
+          at: parentPath,
+        });
+      }
     }
   }
 

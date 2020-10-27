@@ -1,6 +1,8 @@
 var path = require('path')
 var webpack = require('webpack')
 var packageJSON = require('./package.json')
+const isForMaps = process.env.MAPS == 'true'
+const sourceMapsPath = path.resolve(__dirname, '..', '..', 'pltr_sourcemaps', packageJSON.version)
 
 var plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
@@ -17,7 +19,7 @@ if (process.env.NODE_ENV !== 'dev') {
   plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/))
   plugins.push(new webpack.SourceMapDevToolPlugin({
     append: `\n//# sourceMappingURL=https://raw.githubusercontent.com/Plotinator/pltr_sourcemaps/main/${packageJSON.version}/[url]`,
-    filename: process.env.MAPS == 'true' ? `../../../pltr_sourcemaps/${packageJSON.version}/[name].map` : '[name].map',
+    filename: '[name].map',
   }))
 }
 
@@ -33,7 +35,7 @@ module.exports = {
     dashboard: path.resolve('.', 'src', 'dashboard', 'index'),
   },
   output: {
-    path: path.resolve(__dirname, 'bin'),
+    path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
     filename: '[name].bundle.js'
   },
   module: {

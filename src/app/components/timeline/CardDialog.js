@@ -20,6 +20,7 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
+import { truncateTitle } from '../../helpers/cards'
 
 const customStyles = {content: {top: '70px'}}
 
@@ -108,7 +109,10 @@ class CardDialog extends Component {
     const { chapters, positionOffset, isSeries } = this.props
     return chapters.map((chapter) => {
       return (<MenuItem key={chapter.id} onSelect={() => this.changeChapter(chapter.id)}>
-        {chapterTitle(chapter, positionOffset, isSeries)}
+        {truncateTitle(
+          chapterTitle(chapter, positionOffset, isSeries),
+          50,
+        )}
       </MenuItem>)
     })
   }
@@ -116,7 +120,7 @@ class CardDialog extends Component {
   renderLineItems () {
     return this.props.lines.map((line) => {
       return (<MenuItem key={line.id} onSelect={() => this.changeLine(line.id)}>
-        {line.title}
+        {truncateTitle(line.title, 50)}
       </MenuItem>)
     })
   }
@@ -188,20 +192,36 @@ class CardDialog extends Component {
       labelText = i18n('Beat')
       bookDropDown = this.renderBookDropdown()
     }
+    const currentChapterTitle = chapterTitle(this.getCurrentChapter(), positionOffset, isSeries)
 
     return (
       <div className='card-dialog__left-side'>
         { bookDropDown }
         <div className='card-dialog__dropdown-wrapper'>
-          <label className='card-dialog__details-label' htmlFor={lineDropdownID}>{i18n('Plotline')}:
-            <DropdownButton id={lineDropdownID} className='card-dialog__select-line' title={this.getCurrentLine().title}>
+          <label
+            className='card-dialog__details-label'
+            htmlFor={lineDropdownID}
+          >
+            {i18n('Plotline')}:
+            <DropdownButton 
+              id={lineDropdownID} 
+              className='card-dialog__select-line' 
+              title={truncateTitle(this.getCurrentLine().title, 35)}
+            >
               {this.renderLineItems()}
             </DropdownButton>
           </label>
         </div>
         <div className='card-dialog__sdropdown-wrapper'>
-          <label className='card-dialog__details-label' htmlFor={chapterDropdownID}>{labelText}:
-            <DropdownButton id={chapterDropdownID} className='card-dialog__select-scene' title={chapterTitle(this.getCurrentChapter(), positionOffset, isSeries)}>
+          <label 
+            className='card-dialog__details-label' 
+            htmlFor={chapterDropdownID}
+          >
+            {labelText}:
+            <DropdownButton 
+              id={chapterDropdownID}
+              className='card-dialog__select-scene'
+              title={truncateTitle(currentChapterTitle, 40)}>
               {this.renderChapterItems()}
             </DropdownButton>
           </label>

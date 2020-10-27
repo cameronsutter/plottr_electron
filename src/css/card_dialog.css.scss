@@ -138,3 +138,11 @@
     margin: 0 6px;
   }
 }
+
+// The dropdowns for plotline and chapter cause a horizontal scrollbar
+// when the titles are very long because the menu items don't wrap
+.card-dialog__left-side {
+  .dropdown-menu > li > a {
+    white-space: normal;
+  }
+}

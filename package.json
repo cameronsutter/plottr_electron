@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.10.24",
+  "version": "2020.10.28",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
@@ -23,7 +23,7 @@
     "maps": "NODE_ENV=production MAPS=true node_modules/.bin/webpack",
     "pack": "NODE_ENV=production node_modules/.bin/webpack",
     "pack:windows": "node_modules\\.bin\\webpack",
-    "dist": "node build/initEnv.js && npm run pack && electron-builder",
+    "dist": "node build/initEnv.js && npm run pack && electron-builder -ml",
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder",
     "dist:all": "npm run pack && electron-builder -mw",
     "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\""
@@ -181,6 +181,9 @@
       "oneClick": false,
       "perMachine": true,
       "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "target": ["AppImage", "deb", "rpm"]
     }
   }
 }

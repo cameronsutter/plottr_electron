@@ -8,11 +8,10 @@ const SETTINGS = new Store({defaults: defaultSettings, name: storePath})
 
 const BASE_URL = 'http://getplottr.com'
 const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'
-const PRODUCT_IDS = [33345, V2_OLD_PRODUCT_ID, 33347] // NOTE: if this order changes, change the productMapping array at the bottom too
+const PRODUCT_IDS = [33345, V2_OLD_PRODUCT_ID] // NOTE: if this order changes, change the productMapping array at the bottom too
 const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mismatch', 'missing']
 
 const GRACE_PERIOD_DAYS = 30
-const BEGINNING_2021 = 1609484400000
 
 function licenseURL (action, productID, license) {
   let url = `${BASE_URL}/`
@@ -84,23 +83,6 @@ function mapPro (isActive) {
   }
 }
 
-function map2020 (isActive) {
-  const timeStamp = Date.now()
-  if (timeStamp < BEGINNING_2021) {
-    SETTINGS.set('trialMode', false)
-    SETTINGS.set('canGetUpdates', true)
-    SETTINGS.set('isInGracePeriod', false)
-    SETTINGS.set('canEdit', true)
-    SETTINGS.set('canExport', true)
-  } else {
-    SETTINGS.set('trialMode', false)
-    SETTINGS.set('canGetUpdates', false)
-    SETTINGS.set('isInGracePeriod', false)
-    SETTINGS.set('canEdit', true)
-    SETTINGS.set('canExport', true)
-  }
-}
-
 function getGracePeriodEnd () {
   let result = new Date()
   result.setDate(result.getDate() + GRACE_PERIOD_DAYS)
@@ -112,7 +94,6 @@ const productMapping = {
   '33345': mapPro,
   '11321': mapV2old,
   '11322': mapV2old,
-  '33347': map2020,
 }
 
 module.exports = { licenseURL, isActiveLicense, licenseIsForProduct, hasActivationsLeft, productMapping, PRODUCT_IDS, WRONG_PRODUCT_ERRORS }

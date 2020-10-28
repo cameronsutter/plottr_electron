@@ -1,5 +1,4 @@
-import { Transforms, Element, Node, Text } from 'slate'
-import { LIST_TYPES } from './helpers'
+import { Transforms, Element, Node } from 'slate'
 
 const withNormalizer = editor => {
   const { normalizeNode } = editor
@@ -16,7 +15,7 @@ const withNormalizer = editor => {
       }
     }
 
-  //   // Fall back to the original `normalizeNode` to enforce other constraints.
+    // Fall back to the original `normalizeNode` to enforce other constraints.
     normalizeNode(entry)
   }
 

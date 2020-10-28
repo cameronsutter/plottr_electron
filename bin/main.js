@@ -508,6 +508,7 @@ function openWindow (fileName, jsonData, importFrom) {
   let stateKeeper = windowStateKeeper({
     defaultWidth: parseInt(width * 0.9),
     defaultHeight: parseInt(height * 0.9),
+    path: path.join(app.getPath('userData'), 'stateKeeper'),
     file: stateKeeprFile.slice(-numFileLetters),
   });
 

@@ -12,6 +12,7 @@ function setupRollbar(where, USER) {
     handleUnhandledRejections: true,
     ignoredMessages: [],
     payload: {
+      platform: 'client', // allows the post_client_item token in rollbar
       environment: environment,
       version: version,
       where: where,

@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2020.10.28",
+  "version": "2020.10.29",
   "description": "An elegant writing tool that helps organize plotlines",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
@@ -78,7 +78,7 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.9",
     "reselect": "^4.0.0",
-    "rollbar": "^2.15.2",
+    "rollbar": "^2.19.4",
     "semver": "^7.1.3",
     "slate": "^0.57.1",
     "slate-history": "^0.57.1",
@@ -185,8 +185,7 @@
     "linux": {
       "target": [
         "AppImage",
-        "deb",
-        "rpm"
+        "deb"
       ]
     }
   }

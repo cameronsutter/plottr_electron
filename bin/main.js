@@ -13,7 +13,7 @@ const migrateIfNeeded = require('./main_modules/migration_manager')
 const Exporter = require('./main_modules/exporter')
 const enterCustomerServiceCode = require('./main_modules/customer_service_codes')
 const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
-const backupFile = require('./main_modules/backup')
+const { backupFile } = require('./main_modules/backup')
 const createErrorReport = require('./main_modules/error_report')
 const setupRollbar = require('./main_modules/rollbar')
 const SETTINGS = require('./main_modules/settings')
@@ -94,7 +94,6 @@ if (process.env.NODE_ENV !== 'dev') {
   })
 }
 
-
 // TODO: Report crashes to our server.
 
 ////////////////////////////////
@@ -161,7 +160,13 @@ ipcMain.on('save-state', (event, state, winId, isNewFile) => {
   winObj.state = state
   if (isNewFile || wasEdited) {
     FileManager.save(winObj.fileName, state, (err) => {
-      backupFile(winObj.fileName, false, state, () => {})
+      backupFile(winObj.fileName, false, state, (err) => {
+        if (err) {
+          log.warn('[save state backup]', err)
+          rollbar.error({message: 'BACKUP failed'})
+          rollbar.warn(err, {fileName: winObj.fileName})
+        }
+      })
       if (err) {
         log.warn(err)
         rollbar.warn(err, {fileName: winObj.fileName})
@@ -242,6 +247,7 @@ ipcMain.on('verify-from-expired', () => {
 
 function licenseVerified (ask) {
   if (verifyWindow) verifyWindow.close()
+  USER_INFO = getLicenseInfo()
   if (TRIALMODE) {
     TRIALMODE = false
     SETTINGS.set('trialMode', false)
@@ -363,9 +369,9 @@ function checkUpdatesIfAllowed () {
 
 function checkLicense (callback) {
   if (process.env.NODE_ENV === 'dev') {
-    callback();
-    openRecentFiles();
-    return;
+    callback()
+    openRecentFiles()
+    return
   }
 
   if (Object.keys(USER_INFO).length) {
@@ -599,7 +605,15 @@ function openWindow (fileName, jsonData, importFrom) {
     let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
     app.addRecentDocument(fileName)
     FileManager.open(fileName)
-    backupFile(fileName, true, json, () => {})
+    backupFile(fileName, true, json, (err) => {
+      if (err) {
+        log.warn('[file open backup]', err)
+        rollbar.error({message: 'BACKUP failed'})
+        rollbar.warn(err, {fileName: fileName})
+      } else {
+        log.info('[file open backup]', 'success', fileName)
+      }
+    })
 
     windows.push({
       id: newWindow.id,

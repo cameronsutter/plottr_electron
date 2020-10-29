@@ -10,6 +10,8 @@ function backupFile(fileName, isStartOfSession, data, callback) {
   if (process.env.NODE_ENV === 'dev') return
   if (!SETTINGS.get('backup')) return
 
+  if (isStartOfSession) ensureBackupTodayPath()
+
   const fileBaseName = path.basename(fileName)
   const basename = isStartOfSession ? `(start-session)-${fileBaseName}` : fileBaseName
   const partialPath = backupPath()
@@ -19,12 +21,7 @@ function backupFile(fileName, isStartOfSession, data, callback) {
     filePath = path.join(partialPath, fileBaseName)
   }
   var stringState = JSON.stringify(data)
-  try {
-    fs.writeFile(filePath, stringState, callback)
-  } catch (err) {
-    log.warn(err)
-    rollbar.warn(err, {fileName: filePath})
-  }
+  fs.writeFile(filePath, stringState, callback)
 }
 
 // make the backup a daily record (except for the first time opening a file that day)
@@ -58,4 +55,4 @@ function ensureBackupFullPath() {
 }
 ensureBackupFullPath()
 
-module.exports = backupFile
+module.exports = { backupFile }

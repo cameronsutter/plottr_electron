@@ -26,8 +26,8 @@ export function getLicenseInfo (license, callback) {
       }
     })
     if (productForKey) {
-      const activeLicense = !!isActiveLicense(productForKey.value)
-      log.info(productForKey.productID, 'active license?', activeLicense)
+      const activeLicense = isActiveLicense(productForKey.value)
+      log.info('[verifyRequest]', productForKey.productID, 'active license?', activeLicense)
 
       // set config vars
       productMapping[productForKey.productID](activeLicense)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import CharacterListView from 'components/characters/characterListView'
+import CharacterListView from 'components/characters/CharacterListView'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 
 export default class CharactersTab extends Component {

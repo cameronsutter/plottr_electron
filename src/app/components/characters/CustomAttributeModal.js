@@ -5,7 +5,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import Modal from 'react-modal'
+import PlottrModal from 'components/PlottrModal'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import CustomAttrItem from 'components/customAttrItem'
 import i18n from 'format-message'
@@ -13,7 +13,7 @@ import cx from 'classnames'
 import { characterCustomAttributesThatCanChangeSelector, characterCustomAttributesRestrictedValues } from '../../selectors/customAttributes'
 import { FaSave } from 'react-icons/fa'
 
-const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
+const modalStyles = {content: {width: '50%', marginLeft: '25%'}}
 const win = remote.getCurrentWindow()
 
 class CustomAttributeModal extends Component {
@@ -62,34 +62,40 @@ class CustomAttributeModal extends Component {
     } else {
       modalStyles.content.backgroundColor = '#fff'
     }
-    return <Modal isOpen={true} onRequestClose={this.props.closeDialog} style={modalStyles}>
-      <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
-        <Button className='pull-right' onClick={this.props.closeDialog}>
-          {i18n('Close')}
-        </Button>
-        {customAttributes.length ?
-          <Button className='pull-right character-list__custom-attributes__save-as-template' onClick={this.startSaveAsTemplate}>
-            <FaSave className='svg-save-template'/> {i18n('Save as Template')}
+    return (
+      <PlottrModal
+        isOpen={true} 
+        onRequestClose={this.props.closeDialog}
+        style={modalStyles}
+      >
+        <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
+          <Button className='pull-right' onClick={this.props.closeDialog}>
+            {i18n('Close')}
           </Button>
-        : null }
-        <h3>{i18n('Custom Attributes for Characters')}</h3>
-        <p className='sub-header'>{i18n('Choose what you want to track about your characters')}</p>
-        <div className='character-list__custom-attributes-add-button'>
-          <FormGroup>
-            <ControlLabel>{i18n('Add attributes')}</ControlLabel>
-            <FormControl type='text' ref='attrInput'
-              value={this.state.addAttrText}
-              onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
-          </FormGroup>
-          <Button bsStyle='success' onClick={this.saveAttr}>
-            {i18n('Add')}
-          </Button>
+          {customAttributes.length ?
+            <Button className='pull-right character-list__custom-attributes__save-as-template' onClick={this.startSaveAsTemplate}>
+              <FaSave className='svg-save-template'/> {i18n('Save as Template')}
+            </Button>
+          : null }
+          <h3>{i18n('Custom Attributes for Characters')}</h3>
+          <p className='sub-header'>{i18n('Choose what you want to track about your characters')}</p>
+          <div className='character-list__custom-attributes-add-button'>
+            <FormGroup>
+              <ControlLabel>{i18n('Add attributes')}</ControlLabel>
+              <FormControl type='text' ref='attrInput'
+                value={this.state.addAttrText}
+                onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
+            </FormGroup>
+            <Button bsStyle='success' onClick={this.saveAttr}>
+              {i18n('Add')}
+            </Button>
+          </div>
+          <div className='character-list__custom-attributes-list-wrapper'>
+            {attrs}
+          </div>
         </div>
-        <div className='character-list__custom-attributes-list-wrapper'>
-          {attrs}
-        </div>
-      </div>
-    </Modal>
+      </PlottrModal>
+    )
   }
 
   static propTypes = {

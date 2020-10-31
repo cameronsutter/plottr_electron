@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
   ControlLabel, Popover, OverlayTrigger, Alert, Grid, Row, Col } from 'react-bootstrap'
-import Modal from 'react-modal'
+import PlottrModal from 'components/PlottrModal'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import * as PlaceActions from 'actions/places'
@@ -23,7 +23,7 @@ import PlaceItem from './PlaceItem'
 import { nextId } from '../../store/newIds'
 import { visibleSortedPlacesSelector, placeFilterIsEmptySelector } from '../../selectors/places'
 
-const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
+const modalStyles = {content: {width: '50%', marginLeft: '25%'}}
 
 class PlaceListView extends Component {
   constructor (props) {
@@ -183,29 +183,35 @@ class PlaceListView extends Component {
     } else {
       modalStyles.content.backgroundColor = '#fff'
     }
-    return (<Modal isOpen={this.state.dialogOpen} onRequestClose={this.closeDialog} style={modalStyles}>
-      <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
-        <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
-          {i18n('Close')}
-        </Button>
-        <h3>{i18n('Custom Attributes for Places')}</h3>
-        <p className='sub-header'>{i18n('Choose what you want to track about your places')}</p>
-        <div className='character-list__custom-attributes-add-button'>
-          <FormGroup>
-            <ControlLabel>{i18n('Add attributes')}</ControlLabel>
-            <FormControl type='text' ref='attrInput'
-              value={this.state.addAttrText}
-              onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
-          </FormGroup>
-          <Button bsStyle='success' onClick={this.saveAttr}>
-            {i18n('Add')}
+    return (
+      <PlottrModal
+        isOpen={this.state.dialogOpen} 
+        onRequestClose={this.closeDialog} 
+        style={modalStyles}
+      >
+        <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
+          <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
+            {i18n('Close')}
           </Button>
+          <h3>{i18n('Custom Attributes for Places')}</h3>
+          <p className='sub-header'>{i18n('Choose what you want to track about your places')}</p>
+          <div className='character-list__custom-attributes-add-button'>
+            <FormGroup>
+              <ControlLabel>{i18n('Add attributes')}</ControlLabel>
+              <FormControl type='text' ref='attrInput'
+                value={this.state.addAttrText}
+                onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
+            </FormGroup>
+            <Button bsStyle='success' onClick={this.saveAttr}>
+              {i18n('Add')}
+            </Button>
+          </div>
+          <div className='place-list__custom-attributes-list-wrapper'>
+            {attrs}
+          </div>
         </div>
-        <div className='place-list__custom-attributes-list-wrapper'>
-          {attrs}
-        </div>
-      </div>
-    </Modal>)
+      </PlottrModal>
+    )
   }
 
   render () {

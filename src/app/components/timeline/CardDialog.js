@@ -4,7 +4,7 @@ import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import Modal from 'react-modal'
+import PlottrModal from 'components/PlottrModal'
 import * as CardActions from 'actions/cards'
 import * as UIActions from 'actions/ui'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
@@ -21,8 +21,6 @@ import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 import { truncateTitle } from '../../helpers/cards'
-
-const customStyles = {content: {top: '70px'}}
 
 class CardDialog extends Component {
   constructor (props) {
@@ -250,29 +248,31 @@ class CardDialog extends Component {
 
   render () {
     const { card, ui } = this.props
-    if (ui.darkMode) {
-      customStyles.content.backgroundColor = '#666'
-    }
-    return <Modal isOpen={true} onRequestClose={this.saveAndClose} style={customStyles}>
-      { this.renderDelete() }
-      <div className={cx('card-dialog', {darkmode: ui.darkMode})}>
-        <div className='card-dialog__body'>
-          {this.renderLeftSide()}
-          <div className='card-dialog__description'>
-            {this.renderTitle()}
-            <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
-            <RichText
-              description={card.description}
-              onChange={(desc) => this.setState({description: desc})}
-              editable={true}
-              darkMode={ui.darkMode}
-              autofocus
-            />
+    return (
+      <PlottrModal
+        isOpen={true}
+        onRequestClose={this.saveAndClose}
+      >
+        { this.renderDelete() }
+        <div className={cx('card-dialog', {darkmode: ui.darkMode})}>
+          <div className='card-dialog__body'>
+            {this.renderLeftSide()}
+            <div className='card-dialog__description'>
+              {this.renderTitle()}
+              <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
+              <RichText
+                description={card.description}
+                onChange={(desc) => this.setState({description: desc})}
+                editable={true}
+                darkMode={ui.darkMode}
+                autofocus
+              />
+            </div>
           </div>
+          {this.renderButtonBar()}
         </div>
-        {this.renderButtonBar()}
-      </div>
-    </Modal>
+      </PlottrModal>
+    )
   }
 }
 

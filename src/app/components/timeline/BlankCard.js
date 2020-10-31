@@ -40,7 +40,18 @@ class BlankCard extends Component {
     const droppedData = JSON.parse(json)
     if (!droppedData.cardId) return
 
-    this.props.actions.editCardCoordinates(droppedData.cardId, this.props.lineId, this.props.chapterId, this.props.currentTimeline)
+    const {
+      chapterId,
+      lineId,
+      isSeries
+    } = this.props;
+
+    this.props.actions.reorderCardsWithinLine(
+      chapterId,
+      lineId,
+      isSeries,
+      [droppedData.cardId],
+    )
   }
 
   saveCreate = () => {

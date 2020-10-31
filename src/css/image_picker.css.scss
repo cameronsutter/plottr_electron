@@ -127,6 +127,34 @@
   p {
     color: $darkmode-text;
   }
+
+  .nav-tabs {
+    border-bottom-color: $darkmode-border;
+  }
+
+  .nav-tabs li.active > a {
+    background-color: $darkmode-darker-background;
+
+    &:hover,
+    &:focus {
+      border-bottom-color: transparent;
+    }
+  }
+
+  .nav-tabs li > a {
+    border-color: $darkmode-border;
+    border-bottom-color: transparent;
+
+    &:hover,
+    &:focus {
+      background-color: $darkmode-darker-background;
+      border-bottom-color: $darkmode-border;
+    }
+  }
+
+  .image-picker__sidebar {
+    background-color: $darkmode-darker-background;
+  }
 }
 
 .image-circle {

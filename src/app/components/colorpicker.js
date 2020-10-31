@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
-import Modal from 'react-modal'
+import PlottrModal from 'components/PlottrModal'
 import { reds, oranges, greens, blues, purples, grays, whites, browns, defaults } from '../constants/CSScolors'
 import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bootstrap'
 import i18n from 'format-message'
-
-const customStyles = {content: {top: '70px'}}
 
 class ColorPicker extends Component {
   constructor (props) {
@@ -38,47 +36,47 @@ class ColorPicker extends Component {
   }
 
   render () {
-    let klasses = 'color-picker__wrapper'
-    if (this.props.darkMode == true) {
-      klasses += ' darkmode'
-      customStyles.content.backgroundColor = '#666'
-    }
-    return (<Modal isOpen={true} onRequestClose={() => this.closeDialog(this.props.color)} style={customStyles}>
-      <div className={klasses}>
-        <h2 className='color-picker__title'>{i18n('Pick a color')}</h2>
-        <div className='color-picker__input-box form-horizontal'>
-          <Row>
-            <Col xs={5} >
-              <h5 style={{marginTop: '26px'}} className='secondary-text'>{i18n('Click on a color below or type it in')}</h5>
-            </Col>
-            <Col xs={2} >
-              <p style={{textAlign: 'right', marginTop: '32px'}}>{i18n('Current Color')}: </p>
-            </Col>
-            <Col xs={1} >
-              <div title={this.state.color} style={{backgroundColor: this.state.color, marginTop: '16px'}} className='color-picker__show-color'></div>
-            </Col>
-            <Col xs={2}>
-              <FormGroup>
-                <ControlLabel>{i18n('hex code or name')}</ControlLabel>
-                <FormControl type='text' ref='hexRef' placeholder='e.g. #ffffff'
-                  defaultValue={this.state.color}
-                  onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
-                  onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}
-                  onChange={this.showColor} />
-              </FormGroup>
-            </Col>
-            <Col xs={2}>
-              <div style={{marginTop: '26px'}}>
-                <Button bsStyle='success' onClick={() => this.closeDialog(this.state.color)}>{i18n('Choose')}</Button>
-              </div>
-            </Col>
-          </Row>
+    return (
+      <PlottrModal 
+        isOpen={true} 
+        onRequestClose={() => this.closeDialog(this.props.color)} 
+      >
+        <div className='color-picker__wrapper'>
+          <h2 className='color-picker__title'>{i18n('Pick a color')}</h2>
+          <div className='color-picker__input-box form-horizontal'>
+            <Row>
+              <Col xs={5} >
+                <h5 style={{marginTop: '26px'}} className='secondary-text'>{i18n('Click on a color below or type it in')}</h5>
+              </Col>
+              <Col xs={2} >
+                <p style={{textAlign: 'right', marginTop: '32px'}}>{i18n('Current Color')}: </p>
+              </Col>
+              <Col xs={1} >
+                <div title={this.state.color} style={{backgroundColor: this.state.color, marginTop: '16px'}} className='color-picker__show-color'></div>
+              </Col>
+              <Col xs={2}>
+                <FormGroup>
+                  <ControlLabel>{i18n('hex code or name')}</ControlLabel>
+                  <FormControl type='text' ref='hexRef' placeholder='e.g. #ffffff'
+                    defaultValue={this.state.color}
+                    onKeyDown={(event) => {if (event.which === 27) this.closeDialog(this.state.color)}}
+                    onKeyPress={(event) => {if (event.which === 13) this.closeDialog(this.state.color)}}
+                    onChange={this.showColor} />
+                </FormGroup>
+              </Col>
+              <Col xs={2}>
+                <div style={{marginTop: '26px'}}>
+                  <Button bsStyle='success' onClick={() => this.closeDialog(this.state.color)}>{i18n('Choose')}</Button>
+                </div>
+              </Col>
+            </Row>
+          </div>
+          <div>
+            {this.renderColors()}
+          </div>
         </div>
-        <div>
-          {this.renderColors()}
-        </div>
-      </div>
-    </Modal>)
+      </PlottrModal>
+    )
   }
 
   renderColors () {

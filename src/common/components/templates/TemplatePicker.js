@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'react-proptypes'
 import { shell, remote, ipcRenderer } from 'electron'
-import Modal from 'react-modal'
+import PlottrModal from 'components/PlottrModal'
 import i18n from 'format-message'
 import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import { listTemplates, listCustomTemplates, deleteTemplate, editTemplateDetails } from '../../utils/templates'
@@ -13,7 +13,7 @@ import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
 import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmModal'
 
-const modalStyles = {content: {top: '70px', width: '50%', marginLeft: '25%'}}
+const modalStyles = {content: {width: '50%', marginLeft: '25%'}}
 const win = remote.getCurrentWindow()
 
 const typeMap = {
@@ -212,10 +212,15 @@ export default class TemplatePicker extends Component {
 
   render () {
     if (this.props.modal) {
-      if (this.props.darkMode) modalStyles.content.backgroundColor = '#666'
-      return <Modal isOpen={this.props.isOpen} onRequestClose={this.props.close} style={modalStyles}>
-        {this.renderBody()}
-      </Modal>
+      return (
+        <PlottrModal
+          isOpen={this.props.isOpen}
+          onRequestClose={this.props.close} 
+          style={modalStyles}
+        >
+          {this.renderBody()}
+        </PlottrModal>
+      )
     } else {
       return this.renderBody()
     }

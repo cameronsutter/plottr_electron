@@ -4,7 +4,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as ImageActions from 'actions/images'
-import Modal from 'react-modal'
+import PlottrModal from 'components/PlottrModal'
 import cx from 'classnames'
 import { FormGroup, FormControl, ControlLabel, Button, Grid, Row, Col, Glyphicon, ButtonToolbar, ButtonGroup, Nav, NavItem } from 'react-bootstrap'
 import Image from './Image'
@@ -12,8 +12,6 @@ import i18n from 'format-message'
 import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
 import { Spinner } from '../Spinner'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-
-const customStyles = {content: {top: '70px'}}
 
 class ImagePicker extends Component {
   state = {}
@@ -171,29 +169,31 @@ class ImagePicker extends Component {
   render () {
     const { darkMode, selectedId, iconOnly, modalOnly, deleteButton } = this.props
     if (this.state.open) {
-      if (darkMode) {
-        customStyles.content.backgroundColor = '#666'
-      }
-      return <Modal isOpen={true} onRequestClose={this.close} style={customStyles}>
-        <div className={cx('image-picker__wrapper', {darkmode: darkMode})}>
-          <div className='image-picker__header'>
-            <div className='pull-right'>
-              <Button bsStyle='success' onClick={this.chooseImage} disabled={!this.state.selectedId}>{i18n('Choose')}</Button>
-              <Button onClick={this.close} style={{marginLeft: '12px'}}>{i18n('Cancel')}</Button>
+      return (
+        <PlottrModal
+          isOpen={true}
+          onRequestClose={this.close}
+        >
+          <div className={cx('image-picker__wrapper', {darkmode: darkMode})}>
+            <div className='image-picker__header'>
+              <div className='pull-right'>
+                <Button bsStyle='success' onClick={this.chooseImage} disabled={!this.state.selectedId}>{i18n('Choose')}</Button>
+                <Button onClick={this.close} style={{marginLeft: '12px'}}>{i18n('Cancel')}</Button>
+              </div>
+              <Nav bsStyle='tabs' activeKey={this.state.tabId} onSelect={k => this.setState({tabId: k})}>
+                <NavItem eventKey='1'><span className='image-picker__title'>{i18n('Image Gallery')}</span></NavItem>
+                <NavItem eventKey='2'><span className='image-picker__title'>{i18n('Upload Files')}</span></NavItem>
+                <NavItem eventKey='3'><span className='image-picker__title'>{i18n('Insert from URL')}</span></NavItem>
+              </Nav>
             </div>
-            <Nav bsStyle='tabs' activeKey={this.state.tabId} onSelect={k => this.setState({tabId: k})}>
-              <NavItem eventKey='1'><span className='image-picker__title'>{i18n('Image Gallery')}</span></NavItem>
-              <NavItem eventKey='2'><span className='image-picker__title'>{i18n('Upload Files')}</span></NavItem>
-              <NavItem eventKey='3'><span className='image-picker__title'>{i18n('Insert from URL')}</span></NavItem>
-            </Nav>
+            <div className='image-picker__body'>
+              <Grid fluid>
+                { this.renderTab() }
+              </Grid>
+            </div>
           </div>
-          <div className='image-picker__body'>
-            <Grid fluid>
-              { this.renderTab() }
-            </Grid>
-          </div>
-        </div>
-      </Modal>
+        </PlottrModal>
+      )
     } else {
       let text = iconOnly ? null : ` ${i18n('Choose an image')}`
       let button = <Button title={i18n('Choose an image')} onClick={() => this.setState({open: true})}><Glyphicon glyph='picture'/>{text}</Button>
@@ -284,6 +284,7 @@ ImagePicker.propTypes = {
 function mapStateToProps (state) {
   return {
     images: state.present.images,
+    darkMode: state.present.ui.darkMode,
   }
 }
 

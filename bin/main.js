@@ -1006,7 +1006,6 @@ function buildFileMenu () {
               gracefullyNotSave()
             } else {
               openWindow(fullName, newState)
-              win.close()
             }
           })
         }

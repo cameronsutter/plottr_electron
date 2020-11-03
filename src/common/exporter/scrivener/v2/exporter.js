@@ -110,6 +110,20 @@ function createScrivx (state, basePath) {
   return sceneCardsByDocID
 }
 
+function convertUnicode(str) {
+  let converted = '';
+  for (let i = 0; i < str.length; i++) {
+    const charCode = str.charCodeAt(i);
+    if (charCode < 128) {
+      converted += str[i];
+    } else {
+      converted += `\\u${charCode}`;
+    }
+  }
+
+  return converted;
+}
+
 function createDocuments (sceneCardsByDocID, basePath) {
   const realBasePath = path.join(basePath, 'Files', 'Docs')
 
@@ -130,8 +144,8 @@ function createDocuments (sceneCardsByDocID, basePath) {
     try {
       serialize(card.description, doc)
       data = doc.createDocument()
-      // may have to do this … but it doesn't look like it
-      // const buffer = new Buffer(data, 'binary')
+      data = convertUnicode(data)
+      data = Buffer.from(convertUnicode(data), 'utf8')
       fs.writeFileSync(path.join(realBasePath, `${docID}_notes.rtf`), data)
     } catch (error) {
       log.error(error)

@@ -145,7 +145,7 @@ function createDocuments (sceneCardsByDocID, basePath) {
       serialize(card.description, doc)
       data = doc.createDocument()
       data = convertUnicode(data)
-      data = Buffer.from(convertUnicode(data), 'utf8')
+      data = Buffer.from(data, 'utf8')
       fs.writeFileSync(path.join(realBasePath, `${docID}_notes.rtf`), data)
     } catch (error) {
       log.error(error)

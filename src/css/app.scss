@@ -1,4 +1,7 @@
+@import "colors";
+@import "vars";
 @import "bootstrap_configuration";
+
 @import "card_block";
 @import "card_dialog";
 @import "character_list_block";
@@ -28,8 +31,7 @@
 @import "export";
 @import "error_boundary";
 
-@import "vars";
-@import "colors";
+@import "dashboard/dashboard";
 
 @keyframes fadein {
   from { opacity: 0; }

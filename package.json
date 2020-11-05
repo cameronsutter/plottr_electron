@@ -11,7 +11,7 @@
     "email": "cameronsutter0@gmail.com",
     "url": "https://medium.com/@camsutter"
   },
-  "main": "bin/main.js",
+  "main": "bin/new_main.js",
   "scripts": {
     "start": "NODE_ENV=dev electron .",
     "start-win": "set NODE_ENV=dev&& electron .",
@@ -63,7 +63,7 @@
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.6",
     "react-floater": "^0.7.2",
-    "react-icons": "^3.10.0",
+    "react-icons": "^3.11.0",
     "react-image-file-resizer": "^0.2.1",
     "react-json-inspector": "^7.1.1",
     "react-json-view": "^1.19.1",

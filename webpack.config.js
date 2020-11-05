@@ -30,7 +30,6 @@ module.exports = {
   entry: {
     app: path.resolve('.', 'src', 'app', 'index.js'),
     css: path.resolve('.', 'src', 'css', 'index'),
-    verify: path.resolve('.', 'src', 'verify', 'index'),
     expired: path.resolve('.', 'src', 'expired', 'index'),
     dashboard: path.resolve('.', 'src', 'dashboard', 'index'),
   },
@@ -61,7 +60,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
-    modules: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/expired', 'src/dashboard', 'test'],
+    modules: ['node_modules', 'src/app', 'src/css', 'src/expired', 'src/dashboard', 'test'],
   },
   target: 'electron-renderer',
   externals: [

@@ -6,7 +6,8 @@ import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
   REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
   ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG, DELETE_CHARACTER,
   DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK,
-  REORDER_CARDS_WITHIN_LINE, REORDER_CARDS_IN_CHAPTER, AUTO_SORT_CHAPTER } from '../constants/ActionTypes'
+  REORDER_CARDS_WITHIN_LINE, REORDER_CARDS_IN_CHAPTER, AUTO_SORT_CHAPTER,
+  DELETE_SERIES_LINE, DELETE_BEAT } from '../constants/ActionTypes'
 import { newFileCards } from '../store/newFileState'
 import { card as defaultCard } from '../store/initialState'
 import { nextId } from '../store/newIds'
@@ -139,6 +140,12 @@ export default function cards (state, action) {
 
     case DELETE_LINE:
       return state.filter(card => card.lineId !== action.id )
+
+    case DELETE_SERIES_LINE:
+      return state.filter(card => card.seriesLineId !== action.id)
+
+    case DELETE_BEAT:
+      return state.filter(card => card.beatId !== action.id)
 
     case ATTACH_CHARACTER_TO_CARD:
       return state.map(card => {

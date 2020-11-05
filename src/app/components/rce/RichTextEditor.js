@@ -23,6 +23,7 @@ import Element from './Element'
 import cx from 'classnames'
 import { useTextConverter } from './helpers'
 import { withList } from './withList'
+import { useRegisterEditor } from './editor-registry';
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -49,6 +50,8 @@ const RichTextEditor = (props) => {
       setValue(useTextConverter(props.text))
     }
   }, [props.text])
+
+  const registerEditor = useRegisterEditor(editor);
 
   if (!value) return null
 
@@ -88,7 +91,11 @@ const RichTextEditor = (props) => {
             </Overlay>
           </ToolBar>
         </div>
-        <div className={cx('slate-editor__editor', {darkmode: props.darkMode})}>
+        <div
+          // the firstChild will be the contentEditable dom node 
+          ref={(e) => registerEditor(e && e.firstChild)} 
+          className={cx('slate-editor__editor', {darkmode: props.darkMode})}
+        >
           <Editable
             spellCheck
             {...otherProps}

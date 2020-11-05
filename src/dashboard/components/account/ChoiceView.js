@@ -20,7 +20,7 @@ export default function ChoiceView (props) {
           </div>
         </div>
       case 'verify':
-        return <VerifyView />
+        return <VerifyView goBack={() => setView('chooser')}/>
       case 'explain':
         return <div>
           <p>{t('You\'ll have 30 days')}</p>

@@ -10,7 +10,7 @@ import DashboardHeader from './components/navigation/DashboardHeader'
 // win.close()
 
 export default function DashboardApp () {
-  const [view, setView] = useState('home')
+  const [view, setView] = useState('files')
 
   return <ErrorBoundary>
     <DashboardHeader/>

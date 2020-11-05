@@ -1,0 +1,100 @@
+@import "../colors";
+
+#dashboard__react__root {
+  h1.expired {
+    font-family: 'Yellowtail' !important;
+    font-weight: 400 !important;
+    font-size: 36pt !important;
+    margin-top: 10px;
+  }
+  img.expired {
+    vertical-align: -50%;
+  }
+
+  #spinner {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .expired__chooser {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+
+  .expired__choice {
+    width: 48%;
+    height: 140px;
+    padding: 10px;
+    border: 3px solid $blue-7;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all .4s $cubic;
+    color: $gray-1;
+  }
+
+  .expired__choice:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  @keyframes countdown {
+    from {
+      stroke-dashoffset: 0px;
+    }
+    to {
+      stroke-dashoffset: 113px;
+    }
+  }
+
+  .ad__countdown {
+    position: relative;
+    float: right;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    .ad__countdown-number {
+      color: $orange-5;
+      display: inline-block;
+      line-height: 40px;
+    }
+    svg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      transform: rotateY(-180deg) rotateZ(-90deg);
+
+      circle {
+        stroke-dasharray: 113px;
+        stroke-dashoffset: 0px;
+        stroke-linecap: round;
+        stroke-width: 2px;
+        stroke: $orange-5;
+        fill: none;
+        animation: countdown 10s linear infinite forwards;
+      }
+    }
+  }
+
+  .ad__wrapper {
+    cursor: pointer;
+  }
+
+  .ad__wrapper:hover {
+    transform: scale(1.01);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .ad__hr {
+    border-top: 1px solid $orange-5;
+  }
+}

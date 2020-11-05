@@ -11,7 +11,7 @@
 
 .dashboard__navigation-tab {
   @include application_text;
-  height: 100px;
+  height: 95px;
   border-bottom: 1.5px solid $orange-5;
   color: white;
   padding: 7px;
@@ -24,15 +24,14 @@
   transition: all .2s ease-in;
 
   &:hover {
-    background-color: $orange-6;
-    color: $orange-3;
+    background-color: $orange-7;
   }
 
   &.selected {
-    background-color: $orange-8;
-    color: $orange-4;
+    background-color: $blue-8;
+    color: $blue-4;
     border-bottom: none;
-    box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 #FF7F32;
+    box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $blue-4;
   }
 
   svg {

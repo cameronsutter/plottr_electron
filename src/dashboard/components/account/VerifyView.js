@@ -14,7 +14,7 @@ const TOOMANY = 'toomany'
 const RED = 'bg-danger'
 const GREEN = 'bg-success'
 
-export default function VerifyView (props) {
+export default function VerifyView ({goBack}) {
   const makeAlertText = (value) => {
     if (value === SUCCESS) {
       return t('License Verified. Plottr will start momentarily. Thanks for being patient!')
@@ -29,7 +29,7 @@ export default function VerifyView (props) {
     }
   }
 
-  const [licenseInfo, setLicenseInfo] = useLicenseInfo()
+  const [licenseInfo, licenseInfoSize, setLicenseInfo] = useLicenseInfo()
   const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
   const [showAlert, setShowAlert] = useState(!!alertText)
   const [alertClass, setAlertClass] = useState(RED)
@@ -94,8 +94,11 @@ export default function VerifyView (props) {
     <p className='text-info'>{t('(If not, please email support@getplottr.com)')}</p>
     <div className='form-inline' style={{marginTop: '30px'}}>
       <FormControl type='text' bsSize='large' style={{width: '450px'}} ref={licenseRef} />
-      <Button bsStyle='primary' bsSize='large' onClick={handleVerify}>{t('Verify')}</Button>
-      <span style={{marginLeft: '7px'}} className={spinnerHidden ? 'hidden' : ''}><Glyphicon id='spinner' glyph='refresh'/></span>
+      <Button bsStyle='primary' bsSize='large' onClick={handleVerify}>
+        {t('Verify')}
+        <span style={{marginLeft: '7px'}} className={spinnerHidden ? 'hidden' : ''}><Glyphicon id='spinner' glyph='refresh'/></span>
+      </Button>
+      <Button bsStyle='link' onClick={goBack}>{t('Cancel')}</Button>
     </div>
     { renderAlert() }
   </div>

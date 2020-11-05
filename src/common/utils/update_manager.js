@@ -49,4 +49,4 @@ class UpdateManager {
 
 const UM = new UpdateManager()
 
-module.exports = UM
+export default UM

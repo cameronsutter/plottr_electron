@@ -1,33 +1,35 @@
 import React from 'react'
 import ErrorBoundary from '../../../app/containers/ErrorBoundary'
-import Home from '../home/Home'
 import { useLicenseInfo, useTrialInfo } from '../../../common/utils/store_hooks'
 import Account from '../account/Account'
+import FilesHome from '../files/FilesHome'
+import { useTrialStatus } from '../../../common/licensing/trial_manager'
 
 
 export default function DashboardBody ({currentView, setView}) {
-  const [licenseInfo] = useLicenseInfo()
-  const [trialInfo] = useTrialInfo()
+  const [licenseInfo, licenseInfoSize] = useLicenseInfo()
+  const {started, expired, daysLeft} = useTrialStatus()
+  const [trialInfo, trialInfoSize] = useTrialInfo()
 
-  if (!licenseInfo.length && !trialInfo.length) {
+  // no license and trial hasn't started (first time using the app)
+  // OR no license and trial is expired
+  if (!licenseInfoSize && (!started || expired)) {
     setView('account')
     return <Body><Account/></Body>
   }
 
-  console.log(licenseInfo.length)
-  console.log(trialInfo.length)
-
   let body
   switch (currentView) {
     case 'account':
-    case 'home':
-    case 'new':
+      body = <Account />
+      break
     case 'templates':
     case 'backups':
     case 'settings':
     case 'help':
-    default:
-      body = <Home setView={setView}/>
+    case 'files':
+      body = <FilesHome />
+      break
   }
 
   return <Body>{ body }</Body>

@@ -4,7 +4,7 @@ const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
 
 export function useTrialStatus () {
-  const [trialInfo, setTrialInfo] = useTrialInfo()
+  const [trialInfo, trialInfoSize, setTrialInfo] = useTrialInfo()
 
   const startTrial = () => {
     const day = new Date()
@@ -37,12 +37,13 @@ export function useTrialStatus () {
     setTrialInfo(info)
   }
 
-  if (!trialInfo.length) return {started: false, startTrial}
+  if (!trialInfoSize) return {started: false, startTrial}
 
   const daysLeft = daysLeftOfTrial(trialInfo.endsAt)
   const expired = daysLeft <= 0
+  const canExtend = trialInfo.extensions > 0
 
-  return {started: true, daysLeft, expired, extendTrial, extendWithReset}
+  return {started: true, daysLeft, expired, canExtend, extendTrial, extendWithReset}
 }
 
 function addDays (date, days) {

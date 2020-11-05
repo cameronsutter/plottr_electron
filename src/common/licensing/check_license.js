@@ -1,18 +1,12 @@
-const Store = require('electron-store')
-const rp = require('request-promise-native')
-const log = require('electron-log')
-const { USER_INFO_PATH } = require('./config_paths')
-const { licenseURL, isActiveLicense, productMapping } = require('../../shared/licensing')
+import rp from 'request-promise-native'
+import log from 'electron-log'
+import setupRollbar from '../utils/rollbar'
+const rollbar = setupRollbar('license_checker')
+import { licenseURL, isActiveLicense, productMapping } from './licensing'
 
-const licenseStore = new Store({name: USER_INFO_PATH})
 
-function getLicenseInfo () {
-  return licenseStore.get()
-}
-
-function checkForActiveLicense (callback) {
-  const licenseInfo = licenseStore.get()
-  if (!licenseInfo || !licenseStore.size) {
+export function checkForActiveLicense (licenseInfo, callback) {
+  if (!licenseInfo || !Object.keys(licenseInfo).length) {
     callback(false)
     return
   }
@@ -47,5 +41,3 @@ function makeRequest (url) {
     json: true,
   }
 }
-
-module.exports = { checkForActiveLicense, getLicenseInfo }

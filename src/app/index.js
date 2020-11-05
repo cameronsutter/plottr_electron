@@ -19,7 +19,6 @@ import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
 import Exporter from '../common/exporter/scrivener/v2/exporter'
 import Importer from '../common/importer/snowflake/importer'
-import { fetchFonts, setFonts } from './helpers/fonts'
 import editorRegistry from './components/rce/editor-registry';
 import { setupI18n } from '../../locales';
 

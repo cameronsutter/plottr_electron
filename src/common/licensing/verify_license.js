@@ -1,9 +1,9 @@
 import rp from 'request-promise-native'
 import log from 'electron-log'
-const { licenseURL, isActiveLicense, licenseIsForProduct, hasActivationsLeft, PRODUCT_IDS, productMapping } = require('../../shared/licensing')
+import { licenseURL, isActiveLicense, licenseIsForProduct, hasActivationsLeft, PRODUCT_IDS, productMapping } from './licensing'
 
 // callback(isValid, data)
-export function getLicenseInfo (license, callback) {
+export function verifyLicense (license, callback) {
   // this is going to fire all 3 requests no matter what
   Promise.allSettled(PRODUCT_IDS.map(id => rp(makeRequest(licenseURL('activate_license', id, license)))))
   .then(results => {

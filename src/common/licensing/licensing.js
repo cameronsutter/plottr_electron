@@ -1,26 +1,22 @@
-const { is } = require('electron-util')
-const { machineIdSync } = require('node-machine-id')
-// TODO: refactor this so it's only in one place
-const Store = require('electron-store')
-const defaultSettings = require('./default_settings')
-const storePath = process.env.NODE_ENV == 'dev' ? 'config_dev' : 'config'
-const SETTINGS = new Store({defaults: defaultSettings, name: storePath})
+import { is } from 'electron-util'
+import { machineIdSync } from 'node-machine-id'
+import SETTINGS from '../utils/settings'
 
 const BASE_URL = 'http://getplottr.com'
 const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'
-const PRODUCT_IDS = [33345, V2_OLD_PRODUCT_ID] // NOTE: if this order changes, change the productMapping array at the bottom too
-const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mismatch', 'missing']
+export const PRODUCT_IDS = [33345, V2_OLD_PRODUCT_ID] // NOTE: if this order changes, change the productMapping array at the bottom too
+export const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mismatch', 'missing']
 
 const GRACE_PERIOD_DAYS = 30
 
-function licenseURL (action, productID, license) {
+export function licenseURL (action, productID, license) {
   let url = `${BASE_URL}/`
   url += `?edd_action=${action}&item_id=${productID}&license=${license}`
   url += `&url=${machineIdSync(true)}`
   return url
 }
 
-function isActiveLicense (body) {
+export function isActiveLicense (body) {
   // license could also be:
   // - site_inactive
   // - invalid
@@ -32,11 +28,11 @@ function isActiveLicense (body) {
   return body.success && body.license == 'valid'
 }
 
-function licenseIsForProduct (body) {
+export function licenseIsForProduct (body) {
   return body.success && !WRONG_PRODUCT_ERRORS.includes(body.error) && !WRONG_PRODUCT_ERRORS.includes(body.license)
 }
 
-function hasActivationsLeft (body) {
+export function hasActivationsLeft (body) {
   return body.activations_left && body.activations_left > 0
 }
 
@@ -90,13 +86,11 @@ function getGracePeriodEnd () {
   return result.getTime()
 }
 
-const productMapping = {
+export const productMapping = {
   '33345': mapPro,
   '11321': mapV2old,
   '11322': mapV2old,
 }
-
-module.exports = { licenseURL, isActiveLicense, licenseIsForProduct, hasActivationsLeft, productMapping, PRODUCT_IDS, WRONG_PRODUCT_ERRORS }
 
 // NOTE: only needed for non-license api calls
 // function apiURL (path = '') {

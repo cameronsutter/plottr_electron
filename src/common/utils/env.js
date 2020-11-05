@@ -1,10 +1,10 @@
-const fs = require('fs')
-const path = require('path')
-const { stringify } = require('dotenv-stringify')
+import fs from 'fs'
+import path from 'path'
+import { stringify } from 'dotenv-stringify'
 
-const ENV_FILE_PATH = path.resolve(__dirname, '..', '..', '.env')
+const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 
-function writeToEnv (key, val) {
+export default function writeToEnv (key, val) {
   const env = {
     ROLLBAR_ACCESS_TOKEN: process.env.ROLLBAR_ACCESS_TOKEN,
     NODE_ENV: process.env.NODE_ENV,
@@ -17,5 +17,3 @@ function writeToEnv (key, val) {
 
   fs.writeFileSync(ENV_FILE_PATH, envstr)
 }
-
-module.exports = writeToEnv

@@ -29,7 +29,7 @@
 }
 
 .dashboard__new-files__item {
-  width: 300px;
+  width: 200px;
   height: 150px;
   display: flex;
   flex-direction: column;
@@ -59,15 +59,18 @@
 }
 
 .dashboard__recent-files {
+  height: calc(100% - 220px);
+  width: 100%;
   h1 {
     font-size: 20pt;
   }
 }
 
 .dashboard__recent-files__table {
-  margin: 16px 0;
+  margin-top: 16px;
   width: 100%;
-  // max-height: calc(100% - 220px);
-  // overflow: auto;
-  border: 1px solid black;
+  height: calc(100% - 42px);
+  .sticky-table-table {
+    width: 100%;
+  }
 }

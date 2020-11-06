@@ -8,7 +8,7 @@ export function useSortedKnownFiles () {
     return sortBy(Object.keys(files), (id) => {
       const f = files[`${id}`]
       return f.lastOpened
-    })
+    }).reverse()
   }, [files])
 
   return [sortedIds, files]

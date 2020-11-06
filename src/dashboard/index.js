@@ -1,5 +1,4 @@
 import path from 'path'
-import i18n from 'format-message'
 import log from 'electron-log'
 import React from 'react'
 import { render } from 'react-dom'
@@ -10,6 +9,17 @@ import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
 
 setupI18n(SETTINGS)
+import TemplateManager from './utils/template_manager'
+import DashboardApp from './DashboardApp'
+import setupRollbar from '../common/utils/rollbar'
+import initMixpanel from '../common/utils/mixpanel'
+
+// missingTranslation: 'ignore',
+// formats: {
+//   date: {
+//     monthDay: { month: 'short', day: 'numeric' }
+//   }
+// }
 
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 const rollbar = setupRollbar('app.html')
@@ -26,3 +36,6 @@ initMixpanel()
 const root = document.getElementById('dashboard__react__root')
 
 render(<DashboardApp />, root)
+
+
+TemplateManager.load()

@@ -5,6 +5,7 @@ import Account from '../account/Account'
 import FilesHome from '../files/FilesHome'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import UpdateNotifier from '../UpdateNotifier'
+import TemplatesHome from '../templates/TemplatesHome'
 
 export default function DashboardBody ({currentView, setView}) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -24,6 +25,8 @@ export default function DashboardBody ({currentView, setView}) {
       body = <Account />
       break
     case 'templates':
+      body = <TemplatesHome />
+      break
     case 'backups':
     case 'settings':
     case 'help':

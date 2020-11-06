@@ -4,55 +4,55 @@
   width: 100vw;
   height: calc(100% - 105px);
   position: absolute;
-}
 
-.sticky-table-table {
-  white-space: normal !important;
-  transform-origin: left top !important;
-}
-
-.sticky-table-cell {
-  position: relative;
-  padding: 0 !important;
-  background-color: $body-background-color !important;
-  vertical-align: top !important;
-  border: none !important;
-}
-
-.sticky-table-cell:hover {
-  .line-list__insert-scene {
-    color: $blue-5;
+  .sticky-table-table {
+    white-space: normal !important;
+    transform-origin: left top !important;
   }
-}
 
-.sticky-table.darkmode {
-  background-color: $darkmode-card-background !important;
-  color: $darkmode-text;
-  .sticky-table-row {
-    background-color: $darkmode-card-background !important;
-    color: $darkmode-text;
-  }
   .sticky-table-cell {
+    position: relative;
+    padding: 0 !important;
+    background-color: $body-background-color !important;
+    vertical-align: top !important;
+    border: none !important;
+  }
+
+  .sticky-table-cell:hover {
+    .line-list__insert-scene {
+      color: $blue-5;
+    }
+  }
+
+  .sticky-table.darkmode {
     background-color: $darkmode-card-background !important;
     color: $darkmode-text;
-  }
-}
-
-// vertical orientation, border under the plotline titles
-.sticky-table.vertical {
-  .sticky-table-row:first-child {
-    .sticky-table-cell:after {
-      content: "";
-      display: block;
-      position: absolute;
-      bottom: 0;
-      left: 25px;
-      width: 75%;
-      padding-top: 1px;
-      border-bottom: 1px solid $gray-6;
+    .sticky-table-row {
+      background-color: $darkmode-card-background !important;
+      color: $darkmode-text;
     }
-    .sticky-table-cell:first-child:after {
-      border: none;
+    .sticky-table-cell {
+      background-color: $darkmode-card-background !important;
+      color: $darkmode-text;
+    }
+  }
+
+  // vertical orientation, border under the plotline titles
+  .sticky-table.vertical {
+    .sticky-table-row:first-child {
+      .sticky-table-cell:after {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 25px;
+        width: 75%;
+        padding-top: 1px;
+        border-bottom: 1px solid $gray-6;
+      }
+      .sticky-table-cell:first-child:after {
+        border: none;
+      }
     }
   }
 }

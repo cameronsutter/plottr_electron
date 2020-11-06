@@ -1,5 +1,10 @@
 @import "vars";
 
+.custom-attr-item {
+  display: flex;
+  align-items: center;
+}
+
 .custom-attr-item__input {
   align-self: center;
   margin: 0;
@@ -8,4 +13,10 @@
 
 .custom-attr-item__checkbox-label {
   align-self: center;
+  margin-bottom: 0;
+}
+
+.custom-attr-item__drag-handle {
+  cursor: move;
+  width: 35px;
 }

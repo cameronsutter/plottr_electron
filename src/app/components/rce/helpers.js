@@ -3,6 +3,7 @@ import { Editor } from 'slate'
 import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list']
+export const HEADING_TYPES = ['heading-one', 'heading-two']
 
 export function useTextConverter (text) {
   let rceText = text
@@ -53,5 +54,18 @@ Editor.isInList = (editor, path) => {
     return Editor.isInList(editor, parentPath);
   } catch (err) {
     return false;
+  }
+}
+
+Editor.parentOfType = (editor, path, { match }) => {
+  try {
+    const [parent, parentPath] = Editor.parent(editor, path);
+    if (match(parent)) {
+      return [parent, parentPath];
+    }
+
+    return Editor.parentOfType(editor, parentPath, { match })
+  } catch (err) {
+    return [];
   }
 }

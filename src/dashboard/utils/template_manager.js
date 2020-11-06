@@ -1,20 +1,39 @@
-const Store = require('electron-store')
-const log = require('electron-log')
-const request = require('request')
-const semverGt = require('semver/functions/gt')
-const { TEMPLATES_MANIFEST_PATH, TEMPLATES_PATH } = require('./config_paths')
+import Store from 'electron-store'
+import log from 'electron-log'
+import request from 'request'
+import semverGt from 'semver/functions/gt'
+import { TEMPLATES_MANIFEST_PATH, TEMPLATES_PATH, CUSTOM_TEMPLATES_PATH } from '../../common/utils/config_paths'
 
-const manifestPath = process.env.NODE_ENV == 'dev' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
-const templatesPath = process.env.NODE_ENV == 'dev' ? `${TEMPLATES_PATH}_dev` : TEMPLATES_PATH
+const manifestPath = process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
+const templatesPath = process.env.NODE_ENV == 'development' ? `${TEMPLATES_PATH}_dev` : TEMPLATES_PATH
+const customTemplatesPath = process.env.NODE_ENV == 'development' ? `${CUSTOM_TEMPLATES_PATH}_dev` : CUSTOM_TEMPLATES_PATH
 
 const manifestStore = new Store({name: manifestPath})
 const templateStore = new Store({name: templatesPath})
+const customTemplatesStore = new Store({name: customTemplatesPath})
 
 const MANIFEST_ROOT = 'manifest'
 const TEMPLATES_ROOT = 'templates'
 const manifestURL = 'https://raw.githubusercontent.com/Plotinator/plottr_templates/master/v2/manifest.json'
 
 class TemplateManager {
+
+  constructor (props) {
+    // MIGRATE ONE TIME
+    const templates = templateStore.get(TEMPLATES_ROOT)
+    if (templates) {
+      console.log('GOT HERE')
+      templateStore.clear()
+      templateStore.set(templates)
+    }
+
+    // SAME FOR CUSTOM TEMPLATES
+    const customTemplates = customTemplatesStore.get(TEMPLATES_ROOT)
+    if (customTemplates) {
+      customTemplatesStore.clear()
+      customTemplatesStore.set(customTemplates)
+    }
+  }
 
   templates = (type) => {
     const templatesById = templateStore.get(TEMPLATES_ROOT)
@@ -89,4 +108,4 @@ class TemplateManager {
 
 const TM = new TemplateManager()
 
-module.exports = TM
+export default TM

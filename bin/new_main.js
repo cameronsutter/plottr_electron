@@ -6,6 +6,7 @@ const { is } = require('electron-util')
 const contextMenu = require('electron-context-menu')
 const windowStateKeeper = require('electron-window-state')
 const setupRollbar = require('./main_modules/rollbar')
+const FileManager = require('./main_modules/file_manager')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})

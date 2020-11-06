@@ -8,7 +8,6 @@ import { FaKey } from 'react-icons/fa'
 import BookChooser from '../components/story/BookChooser'
 import i18n from 'format-message'
 import cx from 'classnames'
-import UpdateNotifier from '../components/UpdateNotifier'
 import { ipcRenderer } from 'electron'
 import Beamer from '../components/Beamer'
 import SETTINGS from '../../common/utils/settings'
@@ -84,7 +83,6 @@ class Navigation extends Component {
         { this.renderTrialLinks() }
         <Beamer/>
       </div>
-      <UpdateNotifier/>
     </nav>
   }
   // <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>

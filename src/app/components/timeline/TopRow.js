@@ -35,7 +35,7 @@ class TopRow extends Component {
     const { ui, lineActions, seriesLineActions, isSeries, lines } = this.props
     const newLines = reorderList(originalPosition, droppedPosition, lines)
     if (isSeries) {
-      seriesLineActions.reorderSeriesLines(newLines)
+      seriesLineActions.reorderLines(newLines)
     } else {
       lineActions.reorderLines(newLines, ui.currentTimeline)
     }

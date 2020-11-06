@@ -24,8 +24,10 @@ export function nextPosition (arr) {
 
 export function positionReset (items) {
   return items.filter(item => item != null).map((item, index) => {
-    item.position = index
-    return item
+    return {
+      ...item,
+      position: index,
+    }
   })
 }
 

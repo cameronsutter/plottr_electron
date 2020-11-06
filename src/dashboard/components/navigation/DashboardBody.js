@@ -4,7 +4,7 @@ import { useLicenseInfo, useTrialInfo } from '../../../common/utils/store_hooks'
 import Account from '../account/Account'
 import FilesHome from '../files/FilesHome'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
-
+import UpdateNotifier from '../UpdateNotifier'
 
 export default function DashboardBody ({currentView, setView}) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -37,6 +37,7 @@ export default function DashboardBody ({currentView, setView}) {
 
 function Body ({children}) {
   return <div className='dashboard__body'>
+    <UpdateNotifier />
     <ErrorBoundary>{ children }</ErrorBoundary>
   </div>
 }

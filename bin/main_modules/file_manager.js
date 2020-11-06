@@ -1,6 +1,9 @@
 const fs = require('fs')
 const Store = require('electron-store')
-const { OPEN_FILES_PATH, KNOWN_FILES_PATH } = require('./config_paths')
+// const { OPEN_FILES_PATH, KNOWN_FILES_PATH } = require('../../src/common/utils/config_paths')
+// const { OPEN_FILES_PATH, KNOWN_FILES_PATH } = require('./config_paths')
+const OPEN_FILES_PATH = 'open_files'
+const KNOWN_FILES_PATH = 'known_files'
 
 const openFilesPath = process.env.NODE_ENV == 'dev' ? `${OPEN_FILES_PATH}_dev` : OPEN_FILES_PATH
 const knownFilesPath = process.env.NODE_ENV == 'dev' ? `${KNOWN_FILES_PATH}_dev` : KNOWN_FILES_PATH
@@ -81,6 +84,31 @@ const intialFileStructure = {
 class KnownFileManager {
   ROOT = 'byIds'
   IDS = 'allIds'
+
+  constructor (props) {
+    // MIGRATE ONE TIME
+    if (knownFilesStore.get(this.ROOT)) {
+      // it's in the old format and we need to migrate
+      const fileIds = knownFilesStore.get(this.IDS)
+      const fileObjects = fileIds.reduce((acc, id, idx) => {
+        const key = `${this.ROOT}.${id.replace('.', '~$~')}`
+        console.log('key', key)
+        const val = knownFilesStore.get(key)
+        if (val) {
+          // create an entry for this file
+          const newId = idx + 1
+          const entry = {
+            path: id,
+            lastOpened: val.lastOpened
+          }
+          acc[newId] = entry
+        }
+        return acc
+      }, {})
+      knownFilesStore.clear()
+      knownFilesStore.set(fileObjects)
+    }
+  }
 
   addIf = (fileName) => {
     const name = fileName.replace('.', '~$~')

@@ -1,0 +1,58 @@
+@import "../colors";
+@import "../vars";
+
+@keyframes dot {
+  0% { opacity: 0; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.update-notifier {
+  @include application-text;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // position: relative;
+  // right: 50px;
+  // height: 30px;
+  // top: 10px;
+  // border-radius: 100px;
+  // padding: 0px 15px;
+  // line-height: 28px;
+  // border-width: 1px;
+  // border-style: solid;
+
+  .update-notifier__buttons {
+    display: flex;
+    align-items: center;
+
+    .btn {
+      border-radius: 100px;
+    }
+  }
+
+  .progress {
+    width: 50vw;
+    margin-bottom: 0;
+  }
+
+  .loading-dots {
+    .one {
+      opacity: 0;
+      animation: dot 1s infinite;
+      animation-delay: 0.0s;
+    }
+
+    .two {
+      opacity: 0;
+      animation: dot 1s infinite;
+      animation-delay: 0.2s;
+    }
+
+    .three {
+      opacity: 0;
+      animation: dot 1s infinite;
+      animation-delay: 0.3s;
+    }
+  }
+}

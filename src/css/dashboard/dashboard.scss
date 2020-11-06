@@ -2,11 +2,14 @@
 @import "navigation";
 @import "verify";
 @import "expired";
+@import "update_notifier";
+@import "files";
 
 $header-height: 40px;
 
 #dashboard__react__root {
-  @include application_text;
+  @include application-text;
+  height: 100vh;
 
   .dashboard__header {
     -webkit-app-region: drag;
@@ -35,4 +38,5 @@ $header-height: 40px;
     overflow: hidden;
     padding: 20px;
   }
+
 }

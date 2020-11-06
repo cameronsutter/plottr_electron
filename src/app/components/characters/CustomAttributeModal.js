@@ -1,13 +1,12 @@
 import { ipcRenderer, remote } from 'electron'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import PlottrModal from 'components/PlottrModal'
 import * as CustomAttributeActions from 'actions/customAttributes'
-import CustomAttrItem from 'components/customAttrItem'
+import CustomAttrItem from 'components/CustomAttrItem'
 import i18n from 'format-message'
 import cx from 'classnames'
 import { characterCustomAttributesThatCanChangeSelector, characterCustomAttributesRestrictedValues } from '../../selectors/customAttributes'
@@ -23,23 +22,18 @@ class CustomAttributeModal extends Component {
     ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', 'characters') // sends this message to this same process
   }
 
-  handleType = () => {
-    const attr = findDOMNode(this.refs.attrInput).value
-    this.setState({addAttrText: attr})
+  handleType = (e) => {
+    this.setState({ addAttrText: e.currentTarget.value });
   }
 
   handleAddCustomAttr = (event) => {
-    if (event.which === 13) {
-      this.saveAttr()
-      if (this.refs.attrInput) {
-        findDOMNode(this.refs.attrInput).focus()
-      }
-    }
+    if (event.which !== 13) return;
+    this.saveAttr();
   }
 
   saveAttr = () => {
-    const name = findDOMNode(this.refs.attrInput).value
-    if (name == '' || this.props.restrictedValues.includes(name)) return // nothing? restricted value? no op
+    const name = this.state.addAttrText;
+    if (name === '' || this.props.restrictedValues.includes(name)) return // nothing? restricted value? no op
 
     this.props.actions.addCharacterAttr({name, type: 'text'})
     this.setState({addAttrText: ''})
@@ -56,7 +50,17 @@ class CustomAttributeModal extends Component {
 
   render () {
     const { customAttributes, ui, customAttributesThatCanChange, restrictedValues } = this.props
-    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)} restrictedValues={restrictedValues}/> )
+    const attrs = customAttributes.map((attr, idx) => (
+      <CustomAttrItem 
+        key={attr.name} 
+        attr={attr} 
+        index={idx} 
+        update={this.updateAttr} 
+        delete={this.removeAttr} 
+        reorder={this.props.actions.reorderCharacterAttribute}
+        canChangeType={customAttributesThatCanChange.includes(attr.name)} restrictedValues={restrictedValues}
+      />
+    ))
     if (ui.darkMode) {
       modalStyles.content.backgroundColor = '#666'
     } else {
@@ -82,7 +86,7 @@ class CustomAttributeModal extends Component {
           <div className='character-list__custom-attributes-add-button'>
             <FormGroup>
               <ControlLabel>{i18n('Add attributes')}</ControlLabel>
-              <FormControl type='text' ref='attrInput'
+              <FormControl type='text'
                 value={this.state.addAttrText}
                 onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
             </FormGroup>

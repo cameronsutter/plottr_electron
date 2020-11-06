@@ -5,10 +5,9 @@ import i18n from 'format-message'
 import DeleteConfirmModal from './dialogs/DeleteConfirmModal'
 
 export default class CustomAttrItem extends Component {
-  state = {deleting: false}
-
-  componentDidUpdate () {
-    this.refs.nameInput.blur()
+  state = {
+    deleting: false,
+    draggable: false,
   }
 
   handleEnter = (event) => {
@@ -53,16 +52,53 @@ export default class CustomAttrItem extends Component {
     }
   }
 
+  enableDrag = () => {
+    this.setState({ draggable: true });
+  }
+
+  disableDrag = () => {
+    this.setState({ draggable: false });
+  }
+
+  onDragStart = (e) => {
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/json', JSON.stringify(this.props.attr))
+  }
+
+  onDrop = (e) => {
+    e.stopPropagation();
+
+    const json = e.dataTransfer.getData('text/json')
+    const droppedAttribute = JSON.parse(json)
+    this.props.reorder(droppedAttribute, this.props.index);
+  }
+
   render () {
     const { attr } = this.props
-    return <li className='list-group-item'>
-      <input className='custom-attr-item__input'
-        ref='nameInput' onBlur={this.updateName}
-        onKeyDown={this.handleEnter} defaultValue={attr.name} />
-      { this.renderParagraphCheckBox() }
-      <Button onClick={() => this.setState({deleting: true})}><Glyphicon glyph='remove'/></Button>
-      { this.renderDelete() }
-    </li>
+    const { draggable } = this.state;
+    return (
+      <li 
+        className='list-group-item custom-attr-item'
+        draggable={draggable}
+        onDragStart={this.onDragStart}
+        onDragOver={(e) => e.preventDefault()}
+        onDragEnter={(e) => e.preventDefault()}
+        onDrop={this.onDrop}
+      >
+        <Glyphicon
+          className='custom-attr-item__drag-handle'
+          glyph='menu-hamburger'
+          onMouseDown={this.enableDrag}
+          onMouseOut={this.disableDrag}
+        />
+        <input className='custom-attr-item__input'
+          ref='nameInput' onBlur={this.updateName}
+          onKeyDown={this.handleEnter} defaultValue={attr.name} />
+        { this.renderParagraphCheckBox() }
+        <Button onClick={() => this.setState({deleting: true})}><Glyphicon glyph='remove'/></Button>
+        { this.renderDelete() }
+      </li>
+    )
   }
 
   static propTypes = {

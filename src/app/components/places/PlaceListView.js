@@ -14,7 +14,7 @@ import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import * as UIActions from 'actions/ui'
 import PlaceView from 'components/places/placeView'
-import CustomAttrItem from 'components/customAttrItem'
+import CustomAttrItem from 'components/CustomAttrItem'
 import Image from 'components/images/Image'
 import i18n from 'format-message'
 import { placeCustomAttributesThatCanChangeSelector, placeCustomAttributesRestrictedValues } from '../../selectors/customAttributes'
@@ -177,7 +177,18 @@ class PlaceListView extends Component {
 
   renderCustomAttributes () {
     const { customAttributes, ui, customAttributesThatCanChange, restrictedValues } = this.props
-    const attrs = customAttributes.map((attr, idx) => <CustomAttrItem key={idx} attr={attr} index={idx} update={this.updateAttr} delete={this.removeAttr} canChangeType={customAttributesThatCanChange.includes(attr.name)} restrictedValues={restrictedValues}/> )
+    const attrs = customAttributes.map((attr, idx) => (
+      <CustomAttrItem 
+        key={attr.name} 
+        attr={attr} 
+        index={idx} 
+        update={this.updateAttr} 
+        delete={this.removeAttr} 
+        reorder={this.props.customAttributeActions.reorderPlacesAttribute}
+        canChangeType={customAttributesThatCanChange.includes(attr.name)} 
+        restrictedValues={restrictedValues}
+      />
+    ))
     if (ui.darkMode) {
       modalStyles.content.backgroundColor = '#666'
     } else {

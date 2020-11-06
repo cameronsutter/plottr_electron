@@ -1,6 +1,8 @@
 import { ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE, ADD_CARDS_ATTRIBUTE, ADD_LINES_ATTRIBUTE,
   ADD_SCENES_ATTRIBUTE, REMOVE_CHARACTER_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, REMOVE_CARDS_ATTRIBUTE,
-  REMOVE_LINES_ATTRIBUTE, REMOVE_SCENES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE, EDIT_PLACES_ATTRIBUTE } from '../constants/ActionTypes'
+  REMOVE_LINES_ATTRIBUTE, REMOVE_SCENES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE, EDIT_PLACES_ATTRIBUTE, 
+  REORDER_CHARACTER_ATTRIBUTE, REORDER_PLACES_ATTRIBUTE,
+} from '../constants/ActionTypes'
 
 export function addCharacterAttr (attribute) {
   return { type: ADD_CHARACTER_ATTRIBUTE, attribute }
@@ -48,4 +50,20 @@ export function addSceneAttr (attribute) {
 
 export function removeSceneAttr (attribute) {
   return { type: REMOVE_SCENES_ATTRIBUTE, attribute }
+}
+
+export function reorderCharacterAttribute (attribute, toIndex) {
+  return {
+    type: REORDER_CHARACTER_ATTRIBUTE,
+    attribute,
+    toIndex,
+  }
+}
+
+export function reorderPlacesAttribute (attribute, toIndex) {
+  return {
+    type: REORDER_PLACES_ATTRIBUTE,
+    attribute,
+    toIndex,
+  }
 }

@@ -16,7 +16,7 @@ const MANIFEST_ROOT = 'manifest'
 const TEMPLATES_ROOT = 'templates'
 const manifestURL = 'https://raw.githubusercontent.com/Plotinator/plottr_templates/master/v2/manifest.json'
 
-class TemplateManager {
+class TemplateFetcher {
 
   constructor (props) {
     // MIGRATE ONE TIME
@@ -36,7 +36,7 @@ class TemplateManager {
   }
 
   templates = (type) => {
-    const templatesById = templateStore.get(TEMPLATES_ROOT)
+    const templatesById = templateStore.get()
     if (!type) return Object.values(templatesById)
 
     const ids = Object.keys(templatesById)
@@ -60,7 +60,7 @@ class TemplateManager {
     }
   }
 
-  load = () => {
+  fetch = () => {
     log.info('fetching template manifest')
     request(this.manifestReq(), (err, resp, fetchedManifest) => {
       if (!err && resp && resp.statusCode == 200) {
@@ -94,18 +94,18 @@ class TemplateManager {
   fetchTemplate = (id, url) => {
     request(this.templateReq(url), (err, resp, fetchedTemplate) => {
       if (!err && resp && resp.statusCode == 200) {
-        templateStore.set(`templates.${id}`, fetchedTemplate)
+        templateStore.set(id, fetchedTemplate)
       }
     })
   }
 
   templateIsNewer = (templateId, manifestVersion) => {
-    const storedTemplate = templateStore.get(`templates.${templateId}`)
+    const storedTemplate = templateStore.get(templateId)
     if (!storedTemplate) return true
     return semverGt(manifestVersion, storedTemplate.version) // is 1st param greater than 2nd?
   }
 }
 
-const TM = new TemplateManager()
+const TF = new TemplateFetcher()
 
-export default TM
+export default TF

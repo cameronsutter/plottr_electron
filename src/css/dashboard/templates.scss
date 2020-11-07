@@ -1,8 +1,9 @@
 @import "../colors";
 @import "../vars";
 
-.dashboard__files {
+.dashboard__templates {
   height: 100%;
+  overflow-y: auto;
 
   .dashboard__search {
     position: absolute;
@@ -12,7 +13,7 @@
   }
 }
 
-.dashboard__new-files {
+.dashboard__template-section {
   margin-bottom: 20px;
 
   h1 {
@@ -22,56 +23,43 @@
   }
 }
 
-.dashboard__new-files__wrapper {
+.dashboard__template-section__wrapper {
+  width: 100%;
+  overflow-x: auto;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
 }
 
-.dashboard__new-files__item {
-  width: 200px;
-  height: 150px;
+.dashboard__template-section__item {
+  // min-width: 125px;
+  // max-width: 200px;
+  // min-height: 93px;
+  // max-height: 150px;
+  width: 150px;
+  height: 93px;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
   cursor: pointer;
   border-radius: 4px;
   transition: all .1s ease-in;
+  border: 2px solid $blue-5;
+  padding: 12px;
+  margin: 16px;
+  font-size: larger;
 
-  &.icon {
-    svg {
-      font-size: 50pt;
-      color: $green-5;
-    }
-    &:hover {
-      svg {
-        color: $blue-4;
-        transform: scale(1.2);
-      }
-    }
+  &.custom {
+    border-color: $green-5;
+  }
+
+  &.starter {
+    border-color: $red-5;
   }
 
   &:hover {
     color: $blue-0;
+    border-color: $blue-5;
     background-color: $blue-8;
     box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $blue-4, inset 0px 1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 1px 5px 0 $blue-4;
-  }
-}
-
-.dashboard__recent-files {
-  height: calc(100% - 220px);
-  width: 100%;
-  h1 {
-    font-size: 20pt;
-  }
-}
-
-.dashboard__recent-files__table {
-  margin-top: 16px;
-  width: 100%;
-  height: calc(100% - 42px);
-  .sticky-table-table {
-    width: 100%;
   }
 }

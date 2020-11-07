@@ -9,7 +9,7 @@ import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
 
 setupI18n(SETTINGS)
-import TemplateManager from './utils/template_manager'
+import TemplateFetcher from './utils/template_fetcher'
 import DashboardApp from './DashboardApp'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
@@ -37,5 +37,6 @@ const root = document.getElementById('dashboard__react__root')
 
 render(<DashboardApp />, root)
 
-
-TemplateManager.load()
+window.requestIdleCallback(() => {
+  TemplateFetcher.fetch()
+})

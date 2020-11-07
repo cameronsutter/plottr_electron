@@ -21,7 +21,3 @@ export default function NewFiles (props) {
     </div>
   </div>
 }
-      // <div className='dashboard__new-files__item'>
-      //   <img src='../icons/document_icon.png' className='' height='90'/>
-      //   <div>{t('New Blank Document')}</div>
-      // </div>

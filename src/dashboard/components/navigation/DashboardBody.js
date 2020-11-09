@@ -75,9 +75,13 @@ export default function DashboardBody({ currentView, setView }) {
     case 'backups':
       body = <BackupsHome />
       break
+<<<<<<< HEAD
     case 'options':
       body = <OptionsHome />
       break
+=======
+    case 'settings':
+>>>>>>> backups page
     case 'help':
       body = <HelpHome />
       break

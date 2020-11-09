@@ -10,7 +10,7 @@ import { FormGroup, FormControl, ControlLabel, Button, Grid, Row, Col, Glyphicon
 import Image from './Image'
 import i18n from 'format-message'
 import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
-import { Spinner } from '../Spinner'
+import { Spinner } from '../../../common/components/Spinner'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 class ImagePicker extends Component {

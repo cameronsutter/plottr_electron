@@ -224,11 +224,6 @@
 }
 
 .place-list__custom-attributes-list-wrapper {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  max-height: 400px;
-
   li.list-group-item {
     width: 80%;
     margin-right: 5px;
@@ -238,6 +233,9 @@
     .place-list__attribute-name {
       align-self: center;
       margin: 0;
+    }
+    .custom-attr-item__checkbox-label {
+      margin-right: 50px;
     }
   }
 }

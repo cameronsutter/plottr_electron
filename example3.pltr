@@ -5,7 +5,7 @@
     },
     "characterSort": "name~asc",
     "currentView": "timeline",
-    "darkMode": true,
+    "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
@@ -31,7 +31,7 @@
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.11.2"
+    "version": "2020.11.3"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -11157,12 +11157,16 @@
   "customAttributes": {
     "characters": [
       {
+        "name": "Married",
+        "type": "text"
+      },
+      {
         "name": "In possession of fortune",
         "type": "text"
       },
       {
-        "name": "Married",
-        "type": "text"
+        "name": "attributes",
+        "type": "paragraph"
       },
       {
         "name": "age",
@@ -11170,10 +11174,6 @@
       },
       {
         "name": "more",
-        "type": "paragraph"
-      },
-      {
-        "name": "attributes",
         "type": "paragraph"
       },
       {

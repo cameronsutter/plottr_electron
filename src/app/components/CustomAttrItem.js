@@ -77,7 +77,7 @@ export default class CustomAttrItem extends Component {
     const { attr } = this.props
     const { draggable } = this.state;
     return (
-      <li 
+      <li
         className='list-group-item custom-attr-item'
         draggable={draggable}
         onDragStart={this.onDragStart}
@@ -85,18 +85,22 @@ export default class CustomAttrItem extends Component {
         onDragEnter={(e) => e.preventDefault()}
         onDrop={this.onDrop}
       >
-        <Glyphicon
-          className='custom-attr-item__drag-handle'
-          glyph='menu-hamburger'
-          onMouseDown={this.enableDrag}
-          onMouseOut={this.disableDrag}
-        />
-        <input className='custom-attr-item__input'
-          ref='nameInput' onBlur={this.updateName}
-          onKeyDown={this.handleEnter} defaultValue={attr.name} />
-        { this.renderParagraphCheckBox() }
-        <Button onClick={() => this.setState({deleting: true})}><Glyphicon glyph='remove'/></Button>
-        { this.renderDelete() }
+        <div>
+          <Glyphicon
+            className='custom-attr-item__drag-handle'
+            glyph='menu-hamburger'
+            onMouseDown={this.enableDrag}
+            onMouseOut={this.disableDrag}
+          />
+          <input className='custom-attr-item__input'
+            ref='nameInput' onBlur={this.updateName}
+            onKeyDown={this.handleEnter} defaultValue={attr.name} />
+        </div>
+        <div>
+          { this.renderParagraphCheckBox() }
+          <Button onClick={() => this.setState({deleting: true})}><Glyphicon glyph='remove'/></Button>
+          { this.renderDelete() }
+        </div>
       </li>
     )
   }

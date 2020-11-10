@@ -45,7 +45,7 @@ export function deserialize (el) {
     case 'BODY':
       return jsx('fragment', {}, children)
     case 'BR':
-      return jsx('element', { type: 'paragraph' }, [{text: ''}])
+      return '\n'
     case 'BLOCKQUOTE':
       return jsx('element', { type: 'block-quote' }, children)
     case 'P':

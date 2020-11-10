@@ -92,8 +92,8 @@ const RichTextEditor = (props) => {
           </ToolBar>
         </div>
         <div
-          // the firstChild will be the contentEditable dom node 
-          ref={(e) => registerEditor(e && e.firstChild)} 
+          // the firstChild will be the contentEditable dom node
+          ref={(e) => registerEditor(e && e.firstChild)}
           className={cx('slate-editor__editor', {darkmode: props.darkMode})}
         >
           <Editable

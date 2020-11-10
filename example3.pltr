@@ -11879,7 +11879,29 @@
       "tags": [],
       "characters": [],
       "places": [],
-      "lastEdited": 1603156317839,
+      "lastEdited": 1605016738375,
+      "templates": [],
+      "imageId": null,
+      "bookIds": []
+    },
+    {
+      "id": 10,
+      "title": "something eelse",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "",
+              "italic": true
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": 1605018222298,
       "templates": [],
       "imageId": null,
       "bookIds": []
@@ -11887,54 +11909,54 @@
   ],
   "beats": [
     {
-      "id": 5,
-      "title": "auto",
+      "id": 1,
+      "title": "Book 1",
       "time": 0,
-      "position": 4,
-      "autoOutlineSort": true
-    },
-    {
-      "id": 4,
-      "title": "auto",
-      "time": 0,
-      "position": 3,
-      "autoOutlineSort": true
-    },
-    {
-      "id": 3,
-      "title": "auto",
-      "time": 0,
-      "position": 2,
+      "position": 0,
       "autoOutlineSort": true
     },
     {
       "id": 2,
       "title": "Book 2",
       "time": 0,
-      "position": 1,
+      "position": 2,
       "autoOutlineSort": true
     },
     {
-      "id": 1,
-      "title": "Book 1",
+      "id": 3,
+      "title": "auto",
       "time": 0,
-      "position": 0,
+      "position": 3,
+      "autoOutlineSort": true
+    },
+    {
+      "id": 4,
+      "title": "auto",
+      "time": 0,
+      "position": 4,
+      "autoOutlineSort": true
+    },
+    {
+      "id": 5,
+      "title": "auto",
+      "time": 0,
+      "position": 5,
       "autoOutlineSort": true
     }
   ],
   "seriesLines": [
     {
-      "id": 2,
-      "title": "Sub plot",
-      "color": "#78be20",
-      "position": 1,
-      "expanded": null
-    },
-    {
       "id": 1,
       "color": "#6cace4",
       "title": "Main Plot",
       "position": 0,
+      "expanded": null
+    },
+    {
+      "id": 2,
+      "title": "Sub plot",
+      "color": "#78be20",
+      "position": 1,
       "expanded": null
     }
   ],

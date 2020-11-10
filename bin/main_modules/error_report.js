@@ -25,12 +25,12 @@ function prepareErrorReport (userInfo, openWindowsStates) {
     // no log file, no big deal
   }
   report += logContents + '\n\n'
-  report += '----------------------------------\n\n'
-  report += 'FILE STATE\n'
-  let openFilesState = openWindowsStates.map(state => {
-    return JSON.stringify(state)
-  })
-  report += openFilesState.join("\n\n------------\n\n")
+  // report += '----------------------------------\n\n'
+  // report += 'FILE STATE\n'
+  // let openFilesState = openWindowsStates.map(state => {
+  //   return JSON.stringify(state)
+  // })
+  // report += openFilesState.join("\n\n------------\n\n")
   return report
 }
 

@@ -1,0 +1,39 @@
+@import "vars";
+@import "colors";
+
+.error-boundary {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  svg {
+    font-size: 28pt;
+    color: $yellow-5;
+    vertical-align: top;
+    margin-right: 4px;
+  }
+  h1 {
+    font-size: 24pt;
+    margin-top: 8px;
+  }
+  h2 {
+    font-size: 20pt;
+    margin-top: 8px;
+  }
+}
+
+.error-boundary__options {
+  display: flex;
+  justify-content: space-evenly;
+  width: 30%;
+  margin: 16px 0;
+}
+
+.error-boundary__view-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 60%;
+}

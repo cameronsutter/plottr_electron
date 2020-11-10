@@ -29,7 +29,9 @@ export default class App extends Component {
 
   render () {
     return <ErrorBoundary>
-      <Navigation />
+      <ErrorBoundary>
+        <Navigation />
+      </ErrorBoundary>
       <Body />
       { this.renderTemplateCreate() }
       { this.renderGuidedTour() }

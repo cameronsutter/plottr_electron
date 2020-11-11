@@ -188,7 +188,7 @@
         "deb"
       ],
       "category": "Office",
-      "icon": "build/icon1024x1024.icns",
+      "icon": "build/icon1024x1024.png",
       "vendor": "Fictional Devices",
       "desktop": {
         "Name": "Plottr",

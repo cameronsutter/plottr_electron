@@ -31,7 +31,7 @@
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.11.3"
+    "version": "2020.11.11"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -11165,15 +11165,15 @@
         "type": "text"
       },
       {
-        "name": "attributes",
-        "type": "paragraph"
-      },
-      {
         "name": "age",
         "type": "paragraph"
       },
       {
         "name": "more",
+        "type": "paragraph"
+      },
+      {
+        "name": "attributes",
         "type": "paragraph"
       },
       {

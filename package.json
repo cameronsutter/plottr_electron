@@ -1,7 +1,7 @@
 {
   "name": "plottr",
   "version": "2020.11.11",
-  "description": "An elegant writing tool that helps organize plotlines",
+  "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "getplottr.com",
   "private": true,
@@ -186,7 +186,16 @@
       "target": [
         "AppImage",
         "deb"
-      ]
+      ],
+      "category": "Office",
+      "icon": "build/icon1024x1024.icns",
+      "desktop": {
+        "Name": "Plottr",
+        "Exec": "Plottr",
+        "Icon": "Plottr",
+        "Type": "Application",
+        "Categories": "Office"
+      }
     }
   }
 }

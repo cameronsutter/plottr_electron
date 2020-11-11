@@ -189,12 +189,10 @@
       ],
       "category": "Office",
       "icon": "build/icon1024x1024.icns",
+      "vendor": "Fictional Devices",
       "desktop": {
         "Name": "Plottr",
-        "Exec": "Plottr",
-        "Icon": "Plottr",
-        "Type": "Application",
-        "Categories": "Office"
+        "Type": "Application"
       }
     }
   }

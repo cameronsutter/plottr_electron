@@ -96,7 +96,7 @@
     "changelog": "^1.4.2",
     "css-loader": "^3.0.0",
     "devtron": "^1.2.1",
-    "electron": "^8.5.2",
+    "electron": "^10.1.5",
     "electron-builder": "^22.8.0",
     "electron-devtools-installer": "^3.0.0",
     "electron-notarize": "^1.0.0",
@@ -112,7 +112,7 @@
     "webpack-cli": "^3.3.5"
   },
   "build": {
-    "electronVersion": "8.2.4",
+    "electronVersion": "10.1.5",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
     "publish": [

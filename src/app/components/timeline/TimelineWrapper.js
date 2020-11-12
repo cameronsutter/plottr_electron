@@ -20,15 +20,14 @@ import ClearNavItem from './ClearNavItem'
 
 const win = remote.getCurrentWindow()
 
-var scrollInterval = null
+// takes into account spacing
+const SCENE_CELL_WIDTH = 175 + 17;
+const SCENE_CELL_HEIGHT = 74 + 40; 
 
 class TimelineWrapper extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      scrollLeft: 0,
-      scrollTarget: 0,
-      manualScroll: false,
       mounted: false,
     }
     this.tableRef = null
@@ -42,7 +41,16 @@ class TimelineWrapper extends Component {
     } else {
       this.updateZoom(this.props.ui)
     }
-    setTimeout(() => this.setState({mounted: true}), 100)
+    setTimeout(() => {
+      this.setState({mounted: true}, () => {
+        if (this.props.ui.timelineScrollPosition == null) return;
+        this.tableRef.scrollTo({
+          top: this.props.ui.timelineScrollPosition.y,
+          left: this.props.ui.timelineScrollPosition.x,
+          behavior: 'auto'
+        });
+      })
+    }, 100)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -107,107 +115,58 @@ class TimelineWrapper extends Component {
   //  scrolling  //
   // //////////////
 
-  scrollDistance = () => {
-    if (this.props.ui.orientation === 'vertical') return window.innerHeight - 165
-    return window.innerWidth - 200
+  scrollTo = (position) => {
+    const options = {
+      behavior: 'smooth',
+    };
+
+    if (this.props.ui.orientation === 'vertical') {
+      options.top = position
+    } else {
+      options.left = position
+    }
+    this.tableRef.scrollTo(options);
   }
 
-  scrollRight = () => {
-    this.setState({manualScroll: true})
-    clearInterval(scrollInterval)
-    this.setState({scrollTarget: this.state.scrollTarget + this.scrollDistance()})
-    scrollInterval = setInterval(this.increaseScroll, 10)
-    setTimeout(() => { clearInterval(scrollInterval) }, 500)
+  scrollDistance = () => {
+    return this.props.ui.orientation === 'vertical' ? 2 * SCENE_CELL_HEIGHT : 2 * SCENE_CELL_WIDTH;
   }
 
   scrollLeft = () => {
-    this.setState({manualScroll: true})
-    clearInterval(scrollInterval)
-    this.setState({scrollTarget: this.state.scrollTarget - this.scrollDistance()})
-    scrollInterval = setInterval(this.decreaseScroll, 10)
-    setTimeout(() => { clearInterval(scrollInterval) }, 500)
+    const current = this.props.ui.orientation === 'vertical'
+      ? this.tableRef.scrollTop
+      : this.tableRef.scrollLeft;
+    this.scrollTo(current - this.scrollDistance());
   }
-
-  scrollBeginning = () => {
-    this.setState({manualScroll: true})
-    clearInterval(scrollInterval)
-    this.setState({scrollTarget: 0})
-    scrollInterval = setInterval(this.decreaseScroll, 10)
-    setTimeout(() => { clearInterval(scrollInterval) }, 3000)
+  scrollRight = () => {
+    const current = this.props.ui.orientation === 'vertical'
+      ? this.tableRef.scrollTop
+      : this.tableRef.scrollLeft;
+    this.scrollTo(current + this.scrollDistance());
   }
-
+  scrollBeginning = () => this.scrollTo(0);
   scrollMiddle = () => {
-    this.setState({manualScroll: true})
-    clearInterval(scrollInterval)
-    var middle = (this.tableRef.scrollWidth / 2) - (window.innerWidth / 2)
-    if (this.props.ui.orientation === 'vertical') {
-      middle = (this.tableRef.scrollHeight / 2)
-    }
-    this.setState({scrollTarget: middle})
-    if (this.tableRef.scrollLeft > middle) {
-      scrollInterval = setInterval(this.decreaseScroll, 10)
-    } else {
-      scrollInterval = setInterval(this.increaseScroll, 10)
-    }
-    setTimeout(() => { clearInterval(scrollInterval) }, 1500)
+    const target = this.props.ui.orientation === 'vertical'
+      ? (this.tableRef.scrollHeight / 2) - (window.innerHeight / 2)
+      : (this.tableRef.scrollWidth / 2) - (window.innerWidth / 2);
+    this.scrollTo(target);
   }
-
   scrollEnd = () => {
-    this.setState({manualScroll: true})
-    clearInterval(scrollInterval)
-    var end = this.tableRef.scrollWidth
-    if (this.props.ui.orientation === 'vertical') {
-      end = this.tableRef.scrollHeight
-    }
-    this.setState({scrollTarget: end})
-    scrollInterval = setInterval(this.increaseScroll, 10)
-    setTimeout(() => { clearInterval(scrollInterval) }, 3000)
-  }
-
-  increaseScroll = () => {
-    if (this.props.ui.orientation === 'vertical') {
-      if (this.tableRef.scrollTop >= this.state.scrollTarget) this.clearManualScroll()
-      else this.tableRef.scrollTop += 100
-    } else {
-      if (this.tableRef.scrollLeft >= this.state.scrollTarget) this.clearManualScroll()
-      else this.tableRef.scrollLeft += 100
-    }
-  }
-
-  decreaseScroll = () => {
-    if (this.props.ui.orientation === 'vertical') {
-      if (this.tableRef.scrollTop <= this.state.scrollTarget) this.clearManualScroll()
-      else this.tableRef.scrollTop -= 100
-    } else {
-      if (this.tableRef.scrollLeft <= this.state.scrollTarget) this.clearManualScroll()
-      else this.tableRef.scrollLeft -= 100
-    }
-  }
-
-  clearManualScroll = () => {
-    clearInterval(scrollInterval)
-    this.setState({manualScroll: false})
-  }
-
-  scrollTo (x, y) {
-    setTimeout(() => {
-      this.tableRef.scrollTop = y
-      this.tableRef.scrollLeft = x + 300 - (window.outerWidth / 2)
-    }, 10)
+    const target = this.props.ui.orientation === 'vertical'
+      ? this.tableRef.scrollHeight
+      : this.tableRef.scrollWidth;
+    this.scrollTo(target);
   }
 
   scrollHandler = (e) => {
-    if (!this.state.manualScroll) this.updateScrollLeft(this.props.ui.orientation)
-  }
-
-  updateScrollLeft = (orientation = 'horizontal') => {
-    if (!this.tableRef) return
-
-    let newScrollLeft = this.tableRef.scrollLeft
-    if (orientation === 'vertical') {
-      newScrollLeft = this.tableRef.scrollHeight
-    }
-    this.setState({scrollLeft: newScrollLeft, scrollTarget: newScrollLeft})
+    const position = {
+      x: e.currentTarget.scrollLeft,
+      y: e.currentTarget.scrollTop,
+    };
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.props.actions.recordScrollPosition(position);
+    }, 500)
   }
 
   // ////////
@@ -218,7 +177,6 @@ class TimelineWrapper extends Component {
     let orientation = this.props.ui.orientation === 'horizontal' ? 'vertical' : 'horizontal'
     this.props.actions.changeOrientation(orientation)
     this.props.actions.resetZoom()
-    this.updateScrollLeft(orientation)
   }
 
   // //////////

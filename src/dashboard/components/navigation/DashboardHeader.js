@@ -17,10 +17,15 @@ export default function DashboardHeader (props) {
     spacer2 = <span className='spacer'>—</span>
     message = <span>{t('Free Trial')}</span>
     message2 = <span>{t(`{numOfDays, plural,
-         =0 {# days left}
-        one {# day left}
+      =0 {# days left}
+      one {# day left}
       other {# days left}
     }`, {numOfDays: daysLeft})}</span>
+  }
+
+  if (process.env.NODE_ENV == 'development') {
+    spacer = <span className='spacer'>—</span>
+    message = <span>DEV</span>
   }
 
   if (!is.macos) {

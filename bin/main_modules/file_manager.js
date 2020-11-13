@@ -10,7 +10,7 @@ const knownFilesPath = process.env.NODE_ENV == 'dev' ? `${KNOWN_FILES_PATH}_dev`
 
 const OPEN_FILES_ROOT = 'openFiles'
 const openFilesStore = new Store({name: openFilesPath, defaults: {[OPEN_FILES_ROOT]: []}})
-const knownFilesStore = new Store({name: knownFilesPath, defaults: {byIds: {}, allIds: []}})
+const knownFilesStore = new Store({name: knownFilesPath})
 
 class FileManager {
   opM = new OpenFileManager()

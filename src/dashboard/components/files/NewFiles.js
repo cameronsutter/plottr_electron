@@ -4,10 +4,20 @@ import t from 'format-message'
 import { createNew, openExistingFile } from '../../utils/window_manager'
 
 export default function NewFiles (props) {
+
+  const createBlank = () => {
+    try {
+      createNew(null)
+    } catch (error) {
+      // TODO: tell the user something went wrong
+      console.error(error)
+    }
+  }
+
   return <div className='dashboard__new-files'>
     <h1>{t('Create a New File')}</h1>
     <div className='dashboard__new-files__wrapper'>
-      <div className='dashboard__new-files__item icon' onClick={() => createNew(null)}>
+      <div className='dashboard__new-files__item icon' onClick={createBlank}>
         <IoIosDocument />
         <div>{t('New Blank Project')}</div>
       </div>

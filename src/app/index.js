@@ -1,3 +1,4 @@
+import fs from 'fs'
 import path from 'path'
 import React from 'react'
 import { render } from 'react-dom'
@@ -9,6 +10,7 @@ import { ipcRenderer, remote } from 'electron'
 const { Menu, MenuItem } = remote
 const win = remote.getCurrentWindow()
 const app = remote.app
+// import { actions, migrateIfNeeded } from 'pltr/v2'
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
 import { MPQ, setTrialInfo } from 'middlewares/helpers'
 import setupRollbar from '../common/utils/rollbar'
@@ -27,18 +29,17 @@ setupI18n(SETTINGS);
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 const rollbar = setupRollbar('app.html')
 
-if (process.env.NODE_ENV !== 'development') {
-  process.on('uncaughtException', err => {
-    log.error(err)
-    rollbar.error(err)
-  })
-}
+process.on('uncaughtException', err => {
+  log.error(err)
+  rollbar.error(err)
+})
 
 initMixpanel()
 
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
 const store = configureStore()
+// TODO: fix this by exporting store from the configureStore file
 // kind of a hack to enable store dispatches in otherwise hard situations
 window.specialDelivery = (action) => {
   store.dispatch(action)
@@ -48,34 +49,67 @@ ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
 })
 
-function bootFile (state, fileName, dirty, darkMode, openFiles) {
-  store.dispatch(loadFile(fileName, dirty, state))
-  MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles}, state)
+function bootFile (filePath, darkMode, numOpenFiles) {
+  try {
+    // const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    // migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
+    //   if (err) {
+    //     rollbar.error(err)
+    //     log.error(err)
+    //   }
+    //   store.dispatch(actions.uiActions.loadFile(filePath, didMigrate, state, state.file.version))
 
-  const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
-  if (state.ui && state.ui.darkMode !== darkMode) {
-    store.dispatch(setDarkMode(newDarkState))
+    //   MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
+
+    //   const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
+    //   if (state.ui && state.ui.darkMode !== darkMode) {
+    //     store.dispatch(setDarkMode(newDarkState))
+    //   }
+    //   if (newDarkState) window.document.body.className = 'darkmode'
+
+    //   render(
+    //     <Provider store={store}>
+    //       <App showTour={SETTINGS.get('showTheTour')} />
+    //     </Provider>,
+    //     root
+    //   )
+    // })
+    const state = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    const didMigrate = false
+    console.log('filePath', filePath)
+    store.dispatch(loadFile(filePath, didMigrate, state))
+
+    MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
+
+    const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
+    if (state.ui && state.ui.darkMode !== darkMode) {
+      store.dispatch(setDarkMode(newDarkState))
+    }
+    if (newDarkState) window.document.body.className = 'darkmode'
+
+    render(
+      <Provider store={store}>
+        <App showTour={SETTINGS.get('showTheTour')} />
+      </Provider>,
+      root
+    )
+  } catch (error) {
+    // TODO: maybe tell the main process there was en error, and ask the user to try again
+    log.error(error)
+    rollbar.error(error)
   }
-  if (newDarkState) window.document.body.className = 'darkmode'
-
-  render(
-    <Provider store={store}>
-      <App showTour={SETTINGS.get('showTheTour')} />
-    </Provider>,
-    root
-  )
 }
 
-ipcRenderer.send('fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFiles) => {
-  bootFile(state, fileName, dirty, darkMode, openFiles)
+ipcRenderer.send('pls-fetch-state', win.id)
+ipcRenderer.on('state-fetched', (event, filePath, darkMode, numOpenFiles) => {
+  bootFile(filePath, darkMode, numOpenFiles)
 })
 
-ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) => {
-  setTrialInfo(isTrialMode, daysLeftOfTrial)
-  MPQ.push('Launch', {online: navigator.onLine, version: version})
-  ipcRenderer.send('launch-sent')
-})
+// ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) => {
+//   setTrialInfo(isTrialMode, daysLeftOfTrial)
+//   MPQ.push('Launch', {online: navigator.onLine, version: version})
+//   ipcRenderer.send('launch-sent')
+// })
 
 ipcRenderer.on('set-dark-mode', (event, on) => {
   store.dispatch(setDarkMode(on))
@@ -87,15 +121,16 @@ ipcRenderer.on('export-scrivener', (event, filePath) => {
   Exporter(currentState.present, filePath)
 })
 
-ipcRenderer.on('import-snowflake', (event, currentState, fileName, importPath, darkMode, openFiles) => {
-  const result = Importer(importPath, true, currentState)
-  bootFile(result, fileName, true, darkMode, openFiles)
-})
+// TODO: import from dashboard
+// ipcRenderer.on('import-snowflake', (event, currentState, fileName, importPath, darkMode, openFiles) => {
+//   const result = Importer(importPath, true, currentState)
+//   bootFile(result, fileName, true, darkMode, openFiles)
+// })
 
 function focusIsEditable () {
   if (document.activeElement.tagName == 'INPUT') return true
   if (document.activeElement.dataset.slateEditor
-    && document.activeElement.dataset.slateEditor == "true") return true
+    && document.activeElement.dataset.slateEditor == 'true') return true
 
   return false
 }
@@ -132,10 +167,8 @@ ipcRenderer.on('redo', (event) => {
 })
 
 window.onerror = function (message, file, line, column, err) {
-  if (process.env.NODE_ENV !== 'development') {
-    log.error(err)
-    rollbar.error(err)
-  }
+  log.error(err)
+  rollbar.error(err)
 }
 
 window.SCROLLWITHKEYS = true

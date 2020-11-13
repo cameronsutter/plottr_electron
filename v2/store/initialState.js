@@ -1,8 +1,8 @@
 // data structure
 
-const RCE_INITIAL_VALUE = [{ type: 'paragraph', children: [{ text: '' }] }]
+export const RCE_INITIAL_VALUE = [{ type: 'paragraph', children: [{ text: '' }] }]
 
-const series = {
+export const series = {
   name: '',
   premise: '',
   genre: '',
@@ -10,7 +10,7 @@ const series = {
   templates: [],
 }
 
-const book = {
+export const book = {
   id: 1,
   title: '',
   premise: '',
@@ -21,7 +21,7 @@ const book = {
   imageId: null,
 }
 
-const beat = {
+export const beat = {
   id: 1,
   position: 0,
   title: '',
@@ -30,7 +30,7 @@ const beat = {
   autoOutlineSort: true,
 }
 
-const chapter = {
+export const chapter = {
   id: 1,
   bookId: 1,
   position: 0,
@@ -41,7 +41,7 @@ const chapter = {
   fromTemplateId: null,
 }
 
-const ui = {
+export const ui = {
   currentView: 'timeline',
   currentTimeline: 1, // bookId or 'series'
   timelineIsExpanded: true,
@@ -58,14 +58,14 @@ const ui = {
   timelineFilter: null,
 }
 
-const file = {
+export const file = {
   fileName: '',
   loaded: false,
   dirty: false,
   version: '',
 }
 
-const character = {
+export const character = {
   id: 1,
   name: '',
   description: '',
@@ -80,20 +80,20 @@ const character = {
   bookIds: [],
 }
 
-const categories = {
+export const categories = {
   characters: [],
   places: [],
   notes: [],
   tags: [],
 }
 
-const category = {
+export const category = {
   id: '',
   name: '',
   position: 0,
 }
 
-const place = {
+export const place = {
   id: 1,
   name: '',
   description: '',
@@ -107,13 +107,13 @@ const place = {
   bookIds: [],
 }
 
-const tag = {
+export const tag = {
   id: 1,
   title: '',
   color: null
 }
 
-const card = {
+export const card = {
   id: 1,
   lineId: null,
   chapterId: null,
@@ -132,7 +132,7 @@ const card = {
   fromTemplateId: null,
 }
 
-const line = {
+export const line = {
   id: 1,
   bookId: 1,
   color: '#6cace4',
@@ -143,7 +143,7 @@ const line = {
   fromTemplateId: null,
 }
 
-const seriesLine = {
+export const seriesLine = {
   id: 1,
   color: '#6cace4',
   title: '',
@@ -151,7 +151,7 @@ const seriesLine = {
   expanded: null,
 }
 
-const customAttributes = {
+export const customAttributes = {
   characters: [],
   places: [],
   cards: [],
@@ -159,12 +159,12 @@ const customAttributes = {
   lines: [],
 }
 
-const attribute = {
+export const attribute = {
   name: '',
   type: 'text',
 }
 
-const note = {
+export const note = {
   id: 1,
   title: '',
   content: RCE_INITIAL_VALUE,
@@ -177,7 +177,7 @@ const note = {
   bookIds: [],
 }
 
-const image = {
+export const image = {
   id: 1,
   name: '',
   path: '',
@@ -191,25 +191,3 @@ const templates = [
     {name: 'Motivation', type: 'text', value: ''},
   ]}
 ]
-
-export default {
-  image,
-  note,
-  customAttributes,
-  attribute,
-  seriesLine,
-  line,
-  card,
-  tag,
-  place,
-  character,
-  categories,
-  category,
-  file,
-  ui,
-  chapter,
-  beat,
-  book,
-  series,
-  RCE_INITIAL_VALUE,
-}

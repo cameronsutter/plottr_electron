@@ -87,12 +87,12 @@ class KnownFileManager {
 
   constructor (props) {
     // MIGRATE ONE TIME
-    if (knownFilesStore.get(this.ROOT)) {
+    const filesById = knownFilesStore.get(this.ROOT)
+    if (filesById && Object.keys(filesById).length) {
       // it's in the old format and we need to migrate
       const fileIds = knownFilesStore.get(this.IDS)
       const fileObjects = fileIds.reduce((acc, id, idx) => {
         const key = `${this.ROOT}.${id.replace('.', '~$~')}`
-        console.log('key', key)
         const val = knownFilesStore.get(key)
         if (val) {
           // create an entry for this file

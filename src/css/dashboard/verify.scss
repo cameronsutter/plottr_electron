@@ -11,18 +11,17 @@
     }
   }
 
-  #alert {
-    padding: 10px;
-    margin-top: 5px;
+  .verify__wrapper {
+    #alert {
+      padding: 10px;
+      margin-top: 5px;
+    }
+
+    .btn {
+      margin-left: 7px;
+    }
   }
 
-  .btn {
-    margin-left: 7px;
-  }
-
-  button.btn-link {
-    color: $gray-1;
-  }
 
   h1.verify {
     font-family: 'Yellowtail' !important;
@@ -35,13 +34,14 @@
 
   .verify__chooser {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     margin-top: 70px;
+    margin-bottom: 32px;
   }
 
   .verify__choice {
-    width: 48%;
+    width: 35%;
     height: 140px;
     padding: 10px;
     border: 3px solid $blue-7;

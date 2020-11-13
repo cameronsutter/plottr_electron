@@ -7,6 +7,6 @@ export const tabs = [
   {name: t('Files'), view: 'files', icon: <IoIosDocument/>},
   {name: t('Templates'), view: 'templates', icon: <IoIosBrowsers/>}, // alternative: IoIosAlbums
   {name: t('Backups'), view: 'backups', icon: <IoMdTime/>},
-  {name: t('Settings'), view: 'settings', icon: <IoMdSettings/>},
+  {name: t('Options'), view: 'options', icon: <IoMdSettings/>},
   {name: t('Help'), view: 'help', icon: <IoIosHelpBuoy/>},
 ]

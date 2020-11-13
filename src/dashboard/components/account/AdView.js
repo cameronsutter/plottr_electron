@@ -4,7 +4,7 @@ import i18n from 'format-message'
 
 export default class AdView extends Component {
   state = {
-    countdown: 10, //if this changes, you have to change the animation length in expired_window.css.scss ~ line 79
+    countdown: 10, //if this changes, you have to change the animation length in dashboard/expired.scss ~ line 70
     timesUp: false
   }
   interval = null
@@ -22,7 +22,7 @@ export default class AdView extends Component {
     let val = this.state.countdown
     let timesUp = --val === 0
     if (timesUp) {
-      ipcRenderer.send('extend-trial', 5)
+      this.props.extendTrial()
     }
     this.setState({countdown: val, timesUp})
   }
@@ -51,9 +51,9 @@ export default class AdView extends Component {
   }
 
   render () {
-    return <div>
+    return <div className='ad-view'>
       { this.renderCountdown() }
-      <p>{i18n('You can have 5 more days to try Plottr')} 🎉</p>
+      <h1>{i18n('You can have 5 more days to try Plottr')} 🎉</h1>
       <hr className='ad__hr'/>
       { this.renderAd() }
     </div>

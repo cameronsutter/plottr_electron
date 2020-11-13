@@ -11,7 +11,7 @@ const autoUpdater = remote.require('electron-updater').autoUpdater
 // SETUP //
 autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
 autoUpdater.logger = log
-autoUpdater.autoDownload = true
+autoUpdater.autoDownload = false
 const updateCheckThreshold = 1000 * 60 * 10 // 10 minutes
 
 export default function UpdateNotifier (props) {
@@ -27,6 +27,7 @@ export default function UpdateNotifier (props) {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
+    console.log('UpdateNotifier - adding listeners')
     autoUpdater.on('error', error => {
       log.warn(error)
       setError(error)
@@ -64,7 +65,10 @@ export default function UpdateNotifier (props) {
       setPercentDownloaded(100)
     })
 
-    return () => autoUpdater.removeAllListeners()
+    return () => {
+      console.log('UpdateNotifier - removing listeners')
+      autoUpdater.removeAllListeners()
+    }
   }, [])
 
   useEffect(() => {

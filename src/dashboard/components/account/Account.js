@@ -3,24 +3,43 @@ import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import ChoiceView from './ChoiceView'
 import ExpiredView from './ExpiredView'
+import UserInfo from './UserInfo'
+import About from './About'
+import TrialInfo from './TrialInfo'
 
 export default function Account (props) {
-  const {started, expired, daysLeft} = useTrialStatus()
+  const trialInfo = useTrialStatus()
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
+  const firstTime = !licenseInfoSize && !trialInfo.started
 
-  // first time using the app
-  if (!licenseInfoSize && !started) return <ChoiceView/>
+  const renderUser = () => {
+    // first time using the app
+    if (firstTime) return <ChoiceView/>
 
-  // active license
-  if (licenseInfoSize) {
-    return null
+    // active license
+    if (licenseInfoSize) {
+      return <UserInfo licenseInfo={licenseInfo}/>
+    }
+
+    // free trial
+    if (trialInfo.expired) {
+      return <ExpiredView/>
+    } else {
+      return <TrialInfo trialInfo={trialInfo}/>
+    }
   }
 
-  // free trial
-  if (expired) {
-    return <ExpiredView/>
-  } else {
+  const renderBelow = () => {
+    if (firstTime) return null
 
-    return null
+    return <>
+      <hr/>
+      <About/>
+    </>
   }
+
+  return <div className='dashboard__account'>
+    { renderUser() }
+    { renderBelow() }
+  </div>
 }

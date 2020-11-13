@@ -41,10 +41,10 @@ import rootReducer from './reducers/root'
 
 import * as initialState from './store/initialState'
 import * as lineColors from './store/lineColors'
-import newFileState from './store/newFileState'
+import { emptyFile } from './store/newFileState'
 import * as newIds from './store/newIds'
 
-export default {
+export const {
   actions: {
     beatActions,
     bookActions,
@@ -86,6 +86,6 @@ export default {
   },
   initialState,
   lineColors,
-  newFileState,
+  emptyFile,
   newIds,
 }

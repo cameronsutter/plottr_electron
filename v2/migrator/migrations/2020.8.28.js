@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 
-function migrate (data) {
+export default function migrate (data) {
   if (data.file && data.file.version === '2020.8.28') return data
 
   let obj = cloneDeep(data)
@@ -29,4 +29,4 @@ function migrate (data) {
   return obj
 }
 
-module.exports = migrate
+

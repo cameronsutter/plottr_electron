@@ -1,10 +1,10 @@
-const semverGt = require('semver/functions/gt')
-const semverEq = require('semver/functions/eq')
-const semverCoerce = require('semver/functions/coerce')
-const migrationsList = require('./migrations_list')
-const migrators = require('./migrations')
+import semverGt from 'semver/functions/gt'
+import semverEq from 'semver/functions/eq'
+import semverCoerce from 'semver/functions/coerce'
+import migrationsList from './migrations_list'
+import migrators from './migrations'
 
-function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
+export default function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
   this.data = data
   this.fileVersion = fileVersion
   this.appVersion = appVersion
@@ -65,5 +65,3 @@ function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
     return this.migrations
   }
 }
-
-module.exports = Migrator

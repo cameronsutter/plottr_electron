@@ -1,6 +1,6 @@
-var { cloneDeep } = require('lodash')
+import { cloneDeep } from 'lodash'
 
-function migrate (data) {
+export default function migrate (data) {
   if (data.file && data.file.version === '1.0.0') return data
 
   var obj = cloneDeep(data)
@@ -30,4 +30,4 @@ function migrate (data) {
   return obj
 }
 
-module.exports = migrate
+

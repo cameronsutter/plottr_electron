@@ -1,11 +1,11 @@
-const { cloneDeep } = require('lodash')
-const { jsx } = require('slate-hyperscript')
-const MarkDown = require('pagedown')
+import { cloneDeep } from 'lodash'
+import { jsx } from 'slate-hyperscript'
+import MarkDown from 'pagedown'
 const md = MarkDown.getSanitizingConverter()
-const DomParser = require('dom-parser')
+import DomParser from 'dom-parser'
 const parser = new DomParser()
 
-function migrate (data) {
+export default function migrate (data) {
   if (data.file && data.file.version === '2020.3.26') return data
 
   var obj = cloneDeep(data)
@@ -141,4 +141,4 @@ function fixParagraphChildren (children) {
     })
 }
 
-module.exports = migrate
+

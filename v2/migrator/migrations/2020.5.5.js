@@ -1,7 +1,7 @@
-const { cloneDeep, sortBy, uniq } = require('lodash')
-const convert = require('../from_html')
+import { cloneDeep, sortBy, uniq } from 'lodash'
+import convert from '../from_html'
 
-function migrate (data) {
+export default function migrate (data) {
   if (data.file && data.file.version === '2020.5.5') return data
 
   var obj = cloneDeep(data)
@@ -52,4 +52,4 @@ function migrate (data) {
   return obj
 }
 
-module.exports = migrate
+

@@ -1,11 +1,11 @@
-const { jsx } = require('slate-hyperscript')
-const MarkDown = require('pagedown')
+import { jsx } from 'slate-hyperscript'
+import MarkDown from 'pagedown'
 const md = MarkDown.getSanitizingConverter()
-const DomParser = require('dom-parser')
+import DomParser from 'dom-parser'
 const parser = new DomParser()
 
 
-function convert(text) {
+export default function convert(text) {
   if (!text) return [{ children: [{ text: '' }] }]
   if (text == '') return [{ children: [{ text: '' }] }]
 
@@ -78,5 +78,3 @@ function fixParagraphChildren (children) {
     return node
   })
 }
-
-module.exports = convert

@@ -1,8 +1,8 @@
-var { cloneDeep } = require('lodash')
-const { newFileBooks, newFileBeats, newFileSeriesLines } = require('../../store/newFileState')
-const { series } = require('../../store/initialState')
+import { cloneDeep } from 'lodash'
+import { newFileBooks, newFileBeats, newFileSeriesLines } from '../../store/newFileState'
+import { series } from '../../store/initialState'
 
-function migrate (data) {
+export default function migrate (data) {
   if (data.file && data.file.version === '2020.3.16') return data
 
   var obj = cloneDeep(data)
@@ -82,4 +82,4 @@ function migrate (data) {
   return obj
 }
 
-module.exports = migrate
+

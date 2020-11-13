@@ -15,7 +15,7 @@ import m2020_6_12 from './2020.6.12'
 import m2020_7_7 from './2020.7.7'
 import m2020_8_28 from './2020.8.28'
 
-module.exports = {
+export default {
   m0_6,
   m0_7,
   m0_8,

@@ -17,4 +17,4 @@ const list = [
   'm2020_8_28',
 ]
 
-module.exports = list
+export default list

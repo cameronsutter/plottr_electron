@@ -1,7 +1,7 @@
-const Migrator = require('./migrator')
+import Migrator from './migrator'
 
 // callback(error, migrated?, data)
-function migrateIfNeeded (appVersion, json, fileName, backupFunction, callback) {
+export default function migrateIfNeeded (appVersion, json, fileName, backupFunction, callback) {
   if (!json.file) {
     callback(null, false, json)
     return
@@ -33,5 +33,3 @@ function migrateIfNeeded (appVersion, json, fileName, backupFunction, callback) 
     callback(null, false, json)
   }
 }
-
-module.exports = migrateIfNeeded

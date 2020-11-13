@@ -44,7 +44,7 @@ import * as lineColors from './store/lineColors'
 import newFileState from './store/newFileState'
 import * as newIds from './store/newIds'
 
-module.exports = {
+export default {
   actions: {
     beatActions,
     bookActions,

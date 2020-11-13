@@ -18,7 +18,7 @@ import * as tagActions from "./actions/tags"
 import * as uiActions from "./actions/ui"
 import * as undoActions from "./actions/undo"
 
-module.exports = {
+export default {
   rootReducer: rootReducer,
   initialState: initialState,
   lineColors: lineColors,

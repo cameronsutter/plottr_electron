@@ -192,7 +192,7 @@ const templates = [
   ]}
 ]
 
-module.exports = {
+export default {
   image,
   note,
   customAttributes,

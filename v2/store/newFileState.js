@@ -1,5 +1,5 @@
-const i18n = require('format-message')
-const { series, book, chapter, beat, ui, file, line, customAttributes, seriesLine, categories } = require('./initialState')
+import i18n from 'format-message'
+import { series, book, chapter, beat, ui, file, line, customAttributes, seriesLine, categories } from './initialState'
 
 // data structure
 
@@ -42,7 +42,7 @@ const newFileCharacterCategories = [
 
 const newFileCategories = Object.assign({}, categories, {characters: newFileCharacterCategories})
 
-function emptyFile (name, version) {
+export default function emptyFile (name, version) {
   const books = {
     ...newFileBooks,
     [1]: {
@@ -69,5 +69,3 @@ function emptyFile (name, version) {
     categories: newFileCategories,
   }
 }
-
-module.exports = emptyFile

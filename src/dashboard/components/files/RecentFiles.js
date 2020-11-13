@@ -1,9 +1,9 @@
 import React from 'react'
 import t from 'format-message'
 import { useSortedKnownFiles } from '../../utils/files'
-import prettydate from 'pretty-date'
 import path from 'path'
 import { StickyTable, Row, Cell } from 'react-sticky-table'
+import { openKnownFile } from '../../utils/window_manager'
 
 export default function RecentFiles (props) {
   const [sortedIds, filesById] = useSortedKnownFiles()
@@ -17,14 +17,13 @@ export default function RecentFiles (props) {
       const lastOpen = new Date(f.lastOpened)
       const basename = path.basename(f.path)
       const formattedPath = f.path.replace(basename, '').split(path.sep).filter(Boolean).join(' » ')
-      return <Row key={idx}>
+      return <Row key={idx} onDoubleClick={() => openKnownFile(f.path, id)}>
         <Cell>
-          <div>{basename}</div>
+          <div className='title'>{basename.replace('.pltr', '')}</div>
           <div className='secondary-text'>{formattedPath}</div>
         </Cell>
         <Cell>
-          <div>{t('{date, date, monthDay}', {date: lastOpen})}</div>
-          <div className='secondary-text'>{prettydate.format(lastOpen)}</div>
+          <div className='lastOpen'>{t('{date, date, monthDay}', {date: lastOpen})}</div>
         </Cell>
       </Row>
     })

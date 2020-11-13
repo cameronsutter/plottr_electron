@@ -1,0 +1,65 @@
+@import "../colors";
+@import "../vars";
+
+.dashboard__account {
+  height: 100%;
+  overflow: auto;
+
+  hr {
+    border-top: 1px solid $blue-5;
+  }
+}
+
+.dashboard__account__header {
+  h1 {
+    margin-top: 0;
+    font-family: 'Yellowtail' !important;
+    font-weight: 400 !important;
+    font-size: 36pt !important;
+    img {
+      vertical-align: -80%;
+    }
+  }
+}
+
+.dashboard__user-info {
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 20pt;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .dashboard__user-info__wrapper {
+    display: flex;
+
+    dd, dt {
+      padding: 8px 0;
+
+      &.lead {
+        margin-bottom: 0;
+        margin-top: -6px;
+      }
+    }
+  }
+}
+
+.dashboard__about {
+  margin-bottom: 20px;
+
+  h1 {
+    font-size: 20pt;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .dashboard__about__wrapper {
+    display: flex;
+
+    dd, dt {
+      padding: 8px 0;
+      font-size: large;
+    }
+  }
+}

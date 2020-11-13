@@ -7,30 +7,16 @@
     font-size: 36pt !important;
     margin-top: 10px;
   }
-  img.expired {
-    vertical-align: -50%;
-  }
-
-  #spinner {
-    animation: spin 2s linear infinite;
-  }
-
-  @keyframes spin {
-    100% {
-      transform: rotate(360deg);
-    }
-  }
 
   .expired__chooser {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    margin-top: 30px;
-    margin-bottom: 10px;
+    margin: 32px 0;
   }
 
   .expired__choice {
-    width: 48%;
+    width: 35%;
     height: 140px;
     padding: 10px;
     border: 3px solid $blue-7;
@@ -51,6 +37,13 @@
     }
     to {
       stroke-dashoffset: 113px;
+    }
+  }
+
+  .ad-view {
+    padding: 12px;
+    h1 {
+      margin-top: 8px;
     }
   }
 
@@ -87,10 +80,11 @@
 
   .ad__wrapper {
     cursor: pointer;
+    padding: 12px;
   }
 
   .ad__wrapper:hover {
-    transform: scale(1.01);
+    // transform: scale(1.01);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
   }
 

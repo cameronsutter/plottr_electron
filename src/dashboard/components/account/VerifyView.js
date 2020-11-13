@@ -4,6 +4,7 @@ import { findDOMNode } from 'react-dom'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import t from 'format-message'
+import cx from 'classnames'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import { verifyLicense } from '../../../common/licensing/verify_license'
 
@@ -35,7 +36,6 @@ export default function VerifyView ({goBack}) {
   const [alertClass, setAlertClass] = useState(RED)
   const [spinnerHidden, setSpinnerHidden] = useState(true)
   const licenseRef = useRef()
-
 
   const verify = (license) => {
     if (license === "!TEST_LICENSE_@NEPHI") {
@@ -88,15 +88,15 @@ export default function VerifyView ({goBack}) {
     }
   }
 
-  return <div>
-    <h2>{t('Please verify your license')}</h2>
+  return <div className='verify__wrapper text-center'>
+    <h1>{t('Please verify your license')}</h1>
     <p className='text-success'>{t('You should have received a license key after your purchase.')}</p>
     <p className='text-info'>{t('(If not, please email support@getplottr.com)')}</p>
-    <div className='form-inline' style={{marginTop: '30px'}}>
-      <FormControl type='text' bsSize='large' style={{width: '450px'}} ref={licenseRef} />
+    <div className='text-center' style={{margin: '16px 0'}}>
+      <FormControl type='text' bsSize='large' style={{width: '450px', margin: '12px auto'}} ref={licenseRef} />
       <Button bsStyle='primary' bsSize='large' onClick={handleVerify}>
         {t('Verify')}
-        <span style={{marginLeft: '7px'}} className={spinnerHidden ? 'hidden' : ''}><Glyphicon id='spinner' glyph='refresh'/></span>
+        <span style={{marginLeft: '7px'}} className={cx({hidden: spinnerHidden})}><Glyphicon id='spinner' glyph='refresh'/></span>
       </Button>
       <Button bsStyle='link' onClick={goBack}>{t('Cancel')}</Button>
     </div>

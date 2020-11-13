@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap'
 import t from 'format-message'
 import VerifyView from './VerifyView'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
+import AccountHeader from './AccountHeader'
 
 export default function ChoiceView (props) {
   const { startTrial } = useTrialStatus()
@@ -25,17 +26,17 @@ export default function ChoiceView (props) {
         return <div>
           <p>{t('You\'ll have 30 days')}</p>
           <p>{t('Access to all the features')}</p>
-          <p>{t('Create unlimited story files')}</p>
+          <p>{t('Create unlimited project files')}</p>
           <div style={{marginTop: '30px'}}>
-            <Button bsSize='large' bsStyle='default' onClick={() => setView('chooser')}>{t('Cancel')}</Button>
             <Button bsSize='large' bsStyle='default' onClick={startTrial}>{t('Start my Free Trial')}</Button>
+            <Button bsStyle='link' onClick={() => setView('chooser')}>{t('Cancel')}</Button>
           </div>
         </div>
     }
   }
 
-  return <div>
-    <h1 className='verify'><img src='../icons/logo_28_100.png' className='verify' height='100'/> {t('Welcome to Plottr')}</h1>
+  return <div className='text-center'>
+    <AccountHeader />
     { renderBody() }
   </div>
 }

@@ -6,26 +6,30 @@ const knownFilesPath = process.env.NODE_ENV == 'development' ? `${KNOWN_FILES_PA
 const templatesPath = process.env.NODE_ENV == 'development' ? `${TEMPLATES_PATH}_dev` : TEMPLATES_PATH
 const customTemplatesPath = process.env.NODE_ENV == 'development' ? `${CUSTOM_TEMPLATES_PATH}_dev` : CUSTOM_TEMPLATES_PATH
 
-const trialStore = new Store({name: TRIAL_INFO_PATH})
-const licenseStore = new Store({name: USER_INFO_PATH})
-const knownFilesStore = new Store({name: knownFilesPath})
-const templatesStore = new Store({name: templatesPath})
-const customTemplatesStore = new Store({name: customTemplatesPath})
+const trialStore = new Store({name: TRIAL_INFO_PATH, watch: true})
+const licenseStore = new Store({name: USER_INFO_PATH, watch: true})
+const knownFilesStore = new Store({name: knownFilesPath, watch: true})
+const templatesStore = new Store({name: templatesPath, watch: true})
+const customTemplatesStore = new Store({name: customTemplatesPath, watch: true})
 
 function useJsonStore (store) {
-  const [info, setInfo] = useState({})
+  const [info, setInfo] = useState(store.store)
+  const [size, setSize] = useState(store.size)
   useEffect(() => {
-    setInfo(store.store)
-    const unsubscribe = store.onDidAnyChange((newVal, oldVal) => setInfo(newVal))
+    const unsubscribe = store.onDidAnyChange((newVal, oldVal) => {
+      setInfo(newVal)
+      setSize(Object.keys(newVal).length)
+    })
     return () => unsubscribe()
   }, [])
 
   const saveInfo = (data) => {
     store.set(data)
     setInfo(data)
+    setSize(store.size)
   }
 
-  return [info, store.size, saveInfo]
+  return [info, size, saveInfo]
 }
 
 export function useTrialInfo () {

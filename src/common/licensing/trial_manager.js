@@ -15,21 +15,21 @@ export function useTrialStatus () {
   }
 
   const extendTrial = (days) => {
-    const newEnd = addDays(trailInfo.endsAt, days)
+    const newEnd = addDays(trialInfo.endsAt, days)
     const info = {
-      ...trailInfo,
+      ...trialInfo,
       endsAt: newEnd.getTime(),
-      extensions: --info.extensions,
+      extensions: --trialInfo.extensions,
     }
     setTrialInfo(info)
   }
 
   const extendWithReset = (days) => {
-    if (trailInfo.hasBeenReset) return
+    if (trialInfo.hasBeenReset) return
 
-    const newEnd = addDays(trailInfo.endsAt, days)
+    const newEnd = addDays(trialInfo.endsAt, days)
     const info = {
-      ...trailInfo,
+      ...trialInfo,
       endsAt: newEnd.getTime(),
       extensions: EXTENSIONS,
       hasBeenReset: true
@@ -43,7 +43,7 @@ export function useTrialStatus () {
   const expired = daysLeft <= 0
   const canExtend = trialInfo.extensions > 0
 
-  return {started: true, daysLeft, expired, canExtend, extendTrial, extendWithReset}
+  return {started: true, daysLeft, expired, canExtend, startedOn: trialInfo.startsAt, endsOn: trialInfo.endsAt, extendTrial, extendWithReset}
 }
 
 function addDays (date, days) {

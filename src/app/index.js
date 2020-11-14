@@ -2,6 +2,7 @@ import path from 'path'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import i18n from 'format-message';
 import App from 'containers/App'
 import configureStore from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
@@ -22,7 +23,7 @@ import { fetchFonts, setFonts } from './helpers/fonts'
 import editorRegistry from './components/rce/editor-registry';
 
 i18n.setup({	
-  translations: require('../locales').locales,	
+  translations: require('../../locales').locales,	
   locale: app.getLocale() || 'en'	
 })
 

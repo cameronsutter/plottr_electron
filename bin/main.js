@@ -69,7 +69,7 @@ contextMenu({
 })
 i18n.setup({
   translations: locales,
-  locale: app.locale() || 'en',
+  locale: app.getLocale() || 'en',
 })
 
 ////////////////////////////////

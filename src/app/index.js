@@ -13,7 +13,6 @@ import { MPQ, setTrialInfo } from 'middlewares/helpers'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
 import log from 'electron-log'
-import i18n from 'format-message'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
@@ -22,9 +21,9 @@ import Importer from '../common/importer/snowflake/importer'
 import { fetchFonts, setFonts } from './helpers/fonts'
 import editorRegistry from './components/rce/editor-registry';
 
-i18n.setup({
-  translations: require('../../locales'),
-  locale: app.getLocale() || 'en'
+i18n.setup({	
+  translations: require('../locales').locales,	
+  locale: app.getLocale() || 'en'	
 })
 
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})

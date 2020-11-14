@@ -1,15 +1,16 @@
 const prompt = require('electron-prompt')
-const { app, shell } = require('electron')
+const { shell } = require('electron')
 const i18n = require('format-message')
-i18n.setup({
-  translations: require('../../locales'),
-  locale: app.getLocale() || 'en'
-})
 const storage = require('electron-json-storage')
 const log = require('electron-log')
 const { RECENT_FILES_PATH, BACKUP_BASE_PATH } = require('./config_paths')
 const { checkTrialInfo, extendWithReset } = require('./trial_manager')
 const SETTINGS = require('./settings')
+
+i18n.setup({	
+  translations: require('../locales').locales,	
+  locale: app.getLocale() || 'en'	
+})
 
 function enterCustomerServiceCode () {
   prompt({

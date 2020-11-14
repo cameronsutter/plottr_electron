@@ -1,7 +1,6 @@
 const Store = require('electron-store')
 const rp = require('request-promise-native')
 const log = require('electron-log')
-const rollbar = require('./rollbar')('license_checker')
 const { USER_INFO_PATH } = require('./config_paths')
 const { licenseURL, isActiveLicense, productMapping } = require('../../shared/licensing')
 
@@ -29,6 +28,8 @@ function checkForActiveLicense (licenseInfo, callback) {
     callback(activeLicense)
   })
   .catch(err => {
+    // we do the require here to avoid circular dependencies
+    const rollbar = require('./rollbar').setupRollbar('license_checker');
     log.error(err)
     rollbar.warn(err)
     // conscious choice not to turn premium off here

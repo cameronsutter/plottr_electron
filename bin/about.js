@@ -7,9 +7,9 @@ var TRIALMODE = process.env.TRIALMODE === 'true'
 var versionString = i18n('Version') + ' '
 if (TRIALMODE) versionString = i18n('TRIAL Version') + ' '
 
-i18n.setup({
-  translations: require('../locales'),
-  locale: app.getLocale() || 'en'
+i18n.setup({	
+  translations: require('../locales').locales,	
+  locale: app.getLocale() || 'en'	
 })
 
 var p = document.getElementById('versionP')

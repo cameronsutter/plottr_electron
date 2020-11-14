@@ -5,10 +5,6 @@ let electronApp = app
 if (remote) {
   electronApp = remote.app
 }
-i18n.setup({
-  translations: require('../locales'),
-  locale: electronApp.getLocale() || 'en'
-})
 
 // data structure
 

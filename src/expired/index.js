@@ -7,9 +7,10 @@ const { remote } = require('electron')
 const app = remote.app
 
 import i18n from 'format-message'
-i18n.setup({
-  translations: require('../../locales'),
-  locale: app.getLocale() || 'en'
+
+i18n.setup({	
+  translations: require('../locales').locales,	
+  locale: app.getLocale() || 'en'	
 })
 
 document.title = i18n('Plottr')

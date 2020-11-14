@@ -28,11 +28,11 @@ function buildViewMenu () {
     type: 'separator',
     visible: NODE_ENV === 'dev',
   }, {
-    label: 'View Verify Window',
+    label: i18n('View Verify Window'),
     click: openVerifyWindow,
     visible: NODE_ENV === 'dev',
   }, {
-    label: 'View Expired Window',
+    label: i18n('View Expired Window'),
     click: openExpiredWindow,
     visible: NODE_ENV === 'dev',
   }]

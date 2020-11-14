@@ -143,6 +143,9 @@
   "Choose what you want to track about your places": {
     "message": "Choose what you want to track about your places"
   },
+  "Choose your Snowflake Pro file": {
+    "message": "Choose your Snowflake Pro file"
+  },
   "Choose...": {
     "message": "Choose..."
   },
@@ -158,9 +161,6 @@
   "Collapse": {
     "message": "Collapse"
   },
-  "Contact": {
-    "message": "Contact"
-  },
   "Content": {
     "message": "Content"
   },
@@ -170,17 +170,11 @@
   "Could not display license key. Try again": {
     "message": "Could not display license key. Try again"
   },
-  "Crafted in the Mountains of Utah": {
-    "message": "Crafted in the Mountains of Utah"
-  },
-  "Create a new file": {
-    "message": "Create a new file"
+  "Create Report": {
+    "message": "Create Report"
   },
   "Create an Error Report": {
     "message": "Create an Error Report"
-  },
-  "Create an error report": {
-    "message": "Create an error report"
   },
   "Create unlimited story files": {
     "message": "Create unlimited story files"
@@ -190,9 +184,6 @@
   },
   "Creating your file didn't work. Let's try again.": {
     "message": "Creating your file didn''t work. Let''s try again."
-  },
-  "Credits": {
-    "message": "Credits"
   },
   "Current Color": {
     "message": "Current Color"
@@ -278,6 +269,9 @@
   "Error Report created": {
     "message": "Error Report created"
   },
+  "Error: {error}": {
+    "message": "Error: { error }"
+  },
   "Expand": {
     "message": "Expand"
   },
@@ -356,6 +350,9 @@
   "Image Gallery": {
     "message": "Image Gallery"
   },
+  "Images": {
+    "message": "Images"
+  },
   "Insert Chapter": {
     "message": "Insert Chapter"
   },
@@ -379,6 +376,9 @@
   },
   "Keep your character sheets here": {
     "message": "Keep your character sheets here"
+  },
+  "Language": {
+    "message": "Language"
   },
   "License Key": {
     "message": "License Key"
@@ -545,8 +545,14 @@
   "Plottr": {
     "message": "Plottr"
   },
+  "Plottr Support": {
+    "message": "Plottr Support"
+  },
   "Plottr created a file named plottr_error_report.txt in your Documents folder": {
     "message": "Plottr created a file named plottr_error_report.txt in your Documents folder"
+  },
+  "Plottr created a file named {fileName} in your Documents folder": {
+    "message": "Plottr created a file named { fileName } in your Documents folder"
   },
   "Plottr ran into a problem. Try opening Plottr again.": {
     "message": "Plottr ran into a problem. Try opening Plottr again."
@@ -559,6 +565,9 @@
   },
   "Project": {
     "message": "Project"
+  },
+  "Project Templates": {
+    "message": "Project Templates"
   },
   "Prologue": {
     "message": "Prologue"
@@ -668,8 +677,8 @@
   "Snowflake Pro": {
     "message": "Snowflake Pro"
   },
-  "Something went wrong.": {
-    "message": "Something went wrong."
+  "Something went wrong,": {
+    "message": "Something went wrong,"
   },
   "Sort": {
     "message": "Sort"
@@ -749,8 +758,8 @@
   "Toggle navigation": {
     "message": "Toggle navigation"
   },
-  "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem.": {
-    "message": "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem."
+  "Try that again": {
+    "message": "Try that again"
   },
   "Type": {
     "message": "Type"
@@ -779,20 +788,26 @@
   "Verify": {
     "message": "Verify"
   },
-  "Version": {
-    "message": "Version"
-  },
   "View": {
     "message": "View"
   },
   "View Device ID": {
     "message": "View Device ID"
   },
+  "View Error": {
+    "message": "View Error"
+  },
+  "View Expired Window": {
+    "message": "View Expired Window"
+  },
   "View License Key": {
     "message": "View License Key"
   },
   "View Timeline": {
     "message": "View Timeline"
+  },
+  "View Verify Window": {
+    "message": "View Verify Window"
   },
   "View the Tour": {
     "message": "View the Tour"
@@ -826,6 +841,9 @@
   },
   "You can change its name or color by hovering over it (disabled for the tour)": {
     "message": "You can change its name or color by hovering over it (disabled for the tour)"
+  },
+  "You can create an error report and report the problem to us at: ": {
+    "message": "You can create an error report and report the problem to us at: "
   },
   "You can export everything to a Word document": {
     "message": "You can export everything to a Word document"
@@ -883,6 +901,9 @@
   },
   "blank": {
     "message": "blank"
+  },
+  "but don't worry!": {
+    "message": "but don''t worry!"
   },
   "character": {
     "message": "character"
@@ -979,5 +1000,8 @@
   },
   "{num} Scenes": {
     "message": "{ num } Scenes"
+  },
+  "{wordCount,number} words": {
+    "message": "{ wordCount, number } words"
   }
 }

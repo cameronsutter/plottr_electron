@@ -26,7 +26,8 @@
     "dist": "node build/initEnv.js && npm run pack && electron-builder -ml",
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder",
     "dist:all": "npm run pack && electron-builder -mw",
-    "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\""
+    "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" && npm run generate-flipped",
+    "generate-flipped": "node ./locales/build-flipped-locale.js"
   },
   "dependencies": {
     "acorn": "^6.4.1",
@@ -102,6 +103,7 @@
     "electron-notarize": "^1.0.0",
     "electron-reload": "^1.5.0",
     "file-loader": "^0.8.5",
+    "flip": "^1.0.0",
     "format-message-cli": "^6.2.1",
     "node-sass": "^4.14.1",
     "sass-loader": "^7.1.0",

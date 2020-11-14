@@ -21,11 +21,9 @@ import Exporter from '../common/exporter/scrivener/v2/exporter'
 import Importer from '../common/importer/snowflake/importer'
 import { fetchFonts, setFonts } from './helpers/fonts'
 import editorRegistry from './components/rce/editor-registry';
+import { setupI18n } from '../../locales';
 
-i18n.setup({	
-  translations: require('../../locales').locales,	
-  locale: app.getLocale() || 'en'	
-})
+setupI18n(SETTINGS);
 
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 const rollbar = setupRollbar('app.html')

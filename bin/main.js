@@ -20,7 +20,7 @@ const {
   emptyFileContents,
   displayFileName,
 } = require('./main_modules/helpers')
-const { locales } = require('../locales');
+const { setupI18n } = require('../locales');
 const {
   openWindow,
   canQuit,
@@ -68,10 +68,7 @@ checkUpdatesIfAllowed()
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => []
 })
-i18n.setup({
-  translations: locales,
-  locale: app.getLocale() || 'en',
-})
+setupI18n(SETTINGS);
 
 ////////////////////////////////
 ////     Bug Reporting    //////

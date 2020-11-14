@@ -1,16 +1,15 @@
-const { remote, ipcRenderer } = require('electron')
+const { remote } = require('electron')
 const app = remote.app
-var i18n = require('format-message')
 const path = require('path')
+const { setupI18n } = require('../locales');
+const SETTINGS = require('./settings');
+
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 var TRIALMODE = process.env.TRIALMODE === 'true'
 var versionString = i18n('Version') + ' '
 if (TRIALMODE) versionString = i18n('TRIAL Version') + ' '
 
-i18n.setup({	
-  translations: require('../locales').locales,	
-  locale: app.getLocale() || 'en'	
-})
+setupI18n(SETTINGS);
 
 var p = document.getElementById('versionP')
 var versionNode = document.createTextNode(versionString + app.getVersion())

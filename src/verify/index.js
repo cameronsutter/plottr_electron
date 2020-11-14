@@ -3,16 +3,14 @@ import log from 'electron-log'
 import React from 'react'
 import { render } from 'react-dom'
 import ChoiceView from 'ChoiceView'
+import i18n from 'format-message'
+import { setupI18n } from '../../locales';
+import { SETTINGS } from '../common/utils/settings';
+
 const { remote } = require('electron')
 const app = remote.app
-// import contextMenu from 'electron-context-menu'
 
-import i18n from 'format-message'
-
-i18n.setup({	
-  translations: require('../locales').locales,	
-  locale: app.getLocale() || 'en'	
-})
+setupI18n(SETTINGS);
 
 document.title = i18n('Plottr')
 

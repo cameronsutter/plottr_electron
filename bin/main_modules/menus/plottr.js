@@ -20,6 +20,10 @@ const { openAboutWindow } = require('../windows/about');
 const { openBuyWindow } = require('../windows/buy');
 const { openVerifyWindow } = require('../windows/verify');
 const { getDaysLeftInTrial } = require('../trial_manager');
+const {
+  localeNames,
+  setupI18n,
+} = require('../../../locales');
 
 const USER_INFO = getLicenseInfo();
 
@@ -91,6 +95,19 @@ function buildPlottrMenu () {
       visible: NODE_ENV === 'dev',
       click: () => openProcessManager()
     },
+    {
+      label: i18n('Language'),
+      submenu: Object.entries(localeNames)
+        .map(([locale, name]) => ({
+          label: name,
+          click: () => {
+            SETTINGS.set('locale', locale);
+            setupI18n(SETTINGS);
+            require('./').loadMenu();
+            reloadWindow();
+          }
+        }))
+    }
   )
 
   if (is.macos) {

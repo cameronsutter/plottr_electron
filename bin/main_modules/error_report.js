@@ -2,11 +2,11 @@ const { app, shell, Notification } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const log = require('electron-log')
-const setupRollbar = require('./rollbar')
-const rollbar = setupRollbar('backup')
+const { setupRollbar } = require('./rollbar')
 const i18n = require('format-message')
 const { machineIdSync } = require('node-machine-id')
 
+const rollbar = setupRollbar('backup')
 const machineID = machineIdSync(true)
 
 function prepareErrorReport (userInfo, openWindowsStates) {

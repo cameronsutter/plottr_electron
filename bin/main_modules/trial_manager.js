@@ -1,9 +1,11 @@
 const storage = require('electron-json-storage')
 const { TRIAL_INFO_PATH } = require('./config_paths')
 const writeToEnv = require('./env')
+const { rollbar } = require('./rollbar');
 
 const TRIAL_LENGTH = 90
 const EXTENSIONS = 2
+let daysLeft = 0;
 let info = {}
 
 function checkTrialInfo (hasStartedCallback, hasntStartedCallback, expiredCallBack) {
@@ -13,7 +15,7 @@ function checkTrialInfo (hasStartedCallback, hasntStartedCallback, expiredCallBa
       storage.get(TRIAL_INFO_PATH, function (err, data) {
         if (err) log.error(err)
         info = data
-        const daysLeft = daysLeftOfTrial(data.endsAt)
+        daysLeft = daysLeftOfTrial(data.endsAt)
         if (daysLeft <= 0) {
           expiredCallBack()
         } else {
@@ -38,6 +40,7 @@ function startTheTrial (callback) {
       log.error(err)
       rollbar.warn(err)
     }
+    daysLeft = TRIAL_LENGTH
     callback(TRIAL_LENGTH)
   })
 }
@@ -49,7 +52,7 @@ function extendTheTrial (days, callback) {
     endsAt: newEnd.getTime(),
     extensions: --info.extensions,
   }
-
+  daysLeft = daysLeftOfTrial(newEnd);
   storage.set(TRIAL_INFO_PATH, info, callback)
 }
 
@@ -63,6 +66,7 @@ function extendWithReset (days, callback) {
     extensions: EXTENSIONS,
     hasBeenReset: true
   }
+  daysLeft = daysLeftOfTrial(newEnd);
   storage.set(TRIAL_INFO_PATH, info, callback)
 }
 
@@ -91,4 +95,16 @@ function turnOnTrialMode () {
   writeToEnv('TRIALMODE', 'true')
 }
 
-module.exports = { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial, extendWithReset }
+function getDaysLeftInTrial() {
+  return daysLeft;
+}
+
+module.exports = { 
+  checkTrialInfo, 
+  turnOffTrialMode, 
+  startTheTrial, 
+  extendTheTrial, 
+  extendWithReset,
+  getDaysLeftInTrial,
+}
+

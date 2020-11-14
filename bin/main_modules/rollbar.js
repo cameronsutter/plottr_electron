@@ -1,14 +1,19 @@
 const { app } = require('electron')
 const Rollbar = require('rollbar')
+const {
+  NODE_ENV,
+  ROLLBAR_ACCESS_TOKEN,
+} = require('./constants');
+const { getLicenseInfo } = require('./license_checker')
 
 function setupRollbar(where, USER) {
-  let environment = process.env.NODE_ENV === 'dev' ? 'development' : 'production'
-  let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
+  let environment = NODE_ENV === 'dev' ? 'development' : 'production'
+  let rollbarToken = ROLLBAR_ACCESS_TOKEN || ''
   const version = app.getVersion()
 
   return new Rollbar({
     accessToken: rollbarToken,
-    handleUncaughtExceptions: process.env.NODE_ENV !== 'dev',
+    handleUncaughtExceptions: NODE_ENV !== 'dev',
     handleUnhandledRejections: true,
     ignoredMessages: [],
     payload: {
@@ -32,4 +37,10 @@ function setupRollbar(where, USER) {
   })
 }
 
-module.exports = setupRollbar
+const USER_INFO = getLicenseInfo();
+const rollbar = setupRollbar('main', USER_INFO);
+
+module.exports = {
+  setupRollbar,
+  rollbar,
+}

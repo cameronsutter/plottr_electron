@@ -1,9 +1,16 @@
 const fs = require('fs')
 const path = require('path')
+const i18n = require('format-message');
 const deep = require('deep-diff')
 const log = require('electron-log')
 const { app, BrowserWindow, dialog } = require('electron')
+const { is } = require('electron-util');
 const emptyFile = require('./empty_file')
+const {
+  TRIAL_MODE,
+  NODE_ENV,
+} = require('./constants');
+const { getDaysLeftInTrial } = require('./trial_manager');
 
 function emptyFileContents (name) {
   return emptyFile(name)
@@ -45,8 +52,23 @@ function takeScreenshot () {
   })
 }
 
+function filePrefix(dirname) {
+  return is.windows ? dirname : 'file://' + dirname
+}
+
+function displayFileName (path) {
+  var stringBase = 'Plottr'
+  if (TRIAL_MODE) stringBase += ' — ' + i18n('TRIAL Version') + ' (' + i18n('{days} days remaining', {days: getDaysLeftInTrial()}) + ')'
+  var matches = path.match(/.*\/(.*\.pltr)/)
+  if (matches) stringBase += ` — ${matches[1]}`
+  if (NODE_ENV == 'dev') stringBase += ' - (DEV)'
+  return stringBase
+}
+
 module.exports = {
   emptyFileContents,
   isDirty,
   takeScreenshot,
+  filePrefix,
+  displayFileName,
 }

@@ -4,4 +4,13 @@ const locales = {
   es: require('./es.json'),
 }
 
-module.exports = locales
+const localeNames = {
+  en: 'English',
+  fr: 'Français',
+  es: 'Español',
+};
+
+module.exports = {
+  locales,
+  localeNames,
+}

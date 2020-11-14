@@ -1,5 +1,5 @@
 const prompt = require('electron-prompt')
-const { shell } = require('electron')
+const { shell, app } = require('electron')
 const i18n = require('format-message')
 const storage = require('electron-json-storage')
 const log = require('electron-log')
@@ -8,7 +8,7 @@ const { checkTrialInfo, extendWithReset } = require('./trial_manager')
 const SETTINGS = require('./settings')
 
 i18n.setup({	
-  translations: require('../locales').locales,	
+  translations: require('../../locales').locales,	
   locale: app.getLocale() || 'en'	
 })
 

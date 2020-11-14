@@ -2,6 +2,7 @@ const path = require('path');
 const { BrowserWindow } = require('electron');
 const {
   closeWindow,
+  preventsQuitting,
 } = require('./');
 const { filePrefix } = require('../helpers');
 const SETTINGS = require('../settings');

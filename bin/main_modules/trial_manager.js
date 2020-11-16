@@ -3,7 +3,7 @@ const { TRIAL_INFO_PATH } = require('./config_paths')
 const writeToEnv = require('./env')
 const { rollbar } = require('./rollbar');
 
-const TRIAL_LENGTH = 90
+const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
 let daysLeft = 0;
 let info = {}

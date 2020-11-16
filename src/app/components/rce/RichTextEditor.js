@@ -84,6 +84,7 @@ const RichTextEditor = (props) => {
               <BlockButton format='block-quote' icon={<FaQuoteLeft/>} />
               <BlockButton format='numbered-list' icon={<FaListOl/>} />
               <BlockButton format='bulleted-list' icon={<FaListUl/>} />
+              <LinkButton />
               <ImagesButton />
             </ButtonGroup>
             <Overlay show={showColorPicker} placement='bottom' container={() => findDOMNode(toolbarRef.current)}>

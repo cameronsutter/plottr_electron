@@ -44,7 +44,7 @@
       font-size: 50pt;
       color: $green-5;
     }
-    &:hover {
+    &:hover, &.active {
       svg {
         color: $blue-4;
         transform: scale(1.2);
@@ -52,7 +52,7 @@
     }
   }
 
-  &:hover {
+  &:hover, &.active {
     color: $blue-0;
     background-color: $blue-8;
     box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $blue-4, inset 0px 1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 1px 5px 0 $blue-4;

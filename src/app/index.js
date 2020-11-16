@@ -76,7 +76,6 @@ function bootFile (filePath, darkMode, numOpenFiles) {
     // })
     const state = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
     const didMigrate = false
-    console.log('filePath', filePath)
     store.dispatch(loadFile(filePath, didMigrate, state))
 
     MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)

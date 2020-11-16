@@ -38,7 +38,7 @@ export default class ChoiceView extends Component {
       return <VerifyView />
     } else {
       return <div>
-        <p>{i18n('You\'ll have 30 days')}</p>
+        <p>{i18n('You\'ll have 90 days')}</p>
         <p>{i18n('Access to all the features')}</p>
         <p>{i18n('Create unlimited story files')}</p>
         <div style={{marginTop: '30px'}}>

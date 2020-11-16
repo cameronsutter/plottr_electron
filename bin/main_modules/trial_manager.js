@@ -2,7 +2,7 @@ const storage = require('electron-json-storage')
 const { TRIAL_INFO_PATH } = require('./config_paths')
 const writeToEnv = require('./env')
 
-const TRIAL_LENGTH = 30
+const TRIAL_LENGTH = 90
 const EXTENSIONS = 2
 let info = {}
 

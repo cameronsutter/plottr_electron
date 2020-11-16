@@ -4,9 +4,10 @@ import { ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   REMOVE_CARDS_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, REMOVE_LINES_ATTRIBUTE,
   REMOVE_SCENES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE, EDIT_PLACES_ATTRIBUTE,
   EDIT_CARDS_ATTRIBUTE, EDIT_LINES_ATTRIBUTE, EDIT_SCENES_ATTRIBUTE,
-  RESET, FILE_LOADED, NEW_FILE } from '../constants/ActionTypes'
+  RESET, FILE_LOADED, NEW_FILE, REORDER_CHARACTER_ATTRIBUTE,
+  REORDER_PLACES_ATTRIBUTE } from '../constants/ActionTypes'
 import { combineReducers } from 'redux'
-import { newFileCustomAttributes } from '../store/newFileState'
+import { newFileCustomAttributes } from '../../../shared/newFileState'
 
 function characters (state = [], action) {
   switch (action.type) {
@@ -27,6 +28,19 @@ function characters (state = [], action) {
 
     case FILE_LOADED:
       return action.data.customAttributes['characters']
+
+    case REORDER_CHARACTER_ATTRIBUTE:
+      let {
+        toIndex,
+        attribute,
+      } = action;
+
+      const copy = state
+        .slice()
+        .filter(({ name }) => name != attribute.name);
+
+      copy.splice(toIndex, 0, attribute);
+      return copy;
 
     default:
       return state
@@ -52,6 +66,19 @@ function places (state = [], action) {
 
     case FILE_LOADED:
       return action.data.customAttributes['places']
+
+    case REORDER_PLACES_ATTRIBUTE:
+        let {
+          toIndex,
+          attribute,
+        } = action;
+  
+        const copy = state
+          .slice()
+          .filter(({ name }) => name != attribute.name);
+  
+        copy.splice(toIndex, 0, attribute);
+        return copy;
 
     default:
       return state

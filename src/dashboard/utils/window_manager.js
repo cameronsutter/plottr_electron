@@ -6,6 +6,8 @@ import { TEMP_FILES_PATH } from '../../common/utils/config_paths'
 // const { newFileState } = require('pltr/v2')
 // import pltr from 'pltr/v2'
 // const pltr = require('pltr')
+
+// TODO: pull this from pltr
 const {
   newFileSeries, newFileBooks, newFileBeats, newFileChapters, newFileUI, newFileFile,
   newFileCharacters, newFilePlaces, newFileTags, newFileCards, newFileLines,
@@ -15,8 +17,6 @@ import t from 'format-message'
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
 const app = remote.app
-
-// console.log('newFileState', pltr.newFileState())
 
 export function openKnownFile (filePath, id) {
   if (id) {

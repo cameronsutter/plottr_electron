@@ -1,5 +1,10 @@
 const { cloneDeep } = require('lodash')
-const { newFileCategories } = require('../../store/newFileState')
+
+const newFileCategories = [
+  {id: 1, name: 'Main', position: 0},
+  {id: 2, name: 'Supporting', position: 1},
+  {id: 3, name: 'Other', position: 2},
+]
 
 function migrate (data) {
   if (data.file && data.file.version === '2020.6.12') return data

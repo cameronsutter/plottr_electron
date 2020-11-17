@@ -1,4 +1,5 @@
 import path from 'path'
+import i18n from 'format-message'
 import log from 'electron-log'
 import React from 'react'
 import { render } from 'react-dom'

@@ -91,12 +91,6 @@ function buildPlottrMenu () {
       visible: NODE_ENV === 'dev',
       click: () => openProcessManager()
     },
-    {
-      label: i18n('Language'),
-      click: () => {
-        
-      },
-    }
   )
 
   if (is.macos) {

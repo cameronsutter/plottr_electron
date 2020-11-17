@@ -1,4 +1,5 @@
 const { Menu, app } = require('electron');
+const i18n = require('format-message');
 const { is } = require('electron-util');
 const createErrorReport = require('../error_report')
 const { askToCreateFile } = require('../utils');

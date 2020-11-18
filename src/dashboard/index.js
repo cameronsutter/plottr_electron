@@ -8,7 +8,7 @@ const { remote } = require('electron')
 const app = remote.app
 
 i18n.setup({	
-  translations: require('../locales').locales,	
+  translations: require('../../locales').locales,	
   locale: app.getLocale() || 'en'	
 })
 

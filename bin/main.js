@@ -43,6 +43,7 @@ const {
   gracefullyQuit,
   openRecentFiles,
   checkUpdatesIfAllowed,
+  askToCreateFile,
 } = require('./main_modules/utils');
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')

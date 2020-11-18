@@ -21,6 +21,7 @@ const {
   askToOpenFile,
   gracefullyNotSave,
   askToSave,
+  askToCreateFile,
 } = require('../utils');
 const FileManager = require('../file_manager');
 const { isDirty } = require('../helpers');

@@ -1,15 +1,52 @@
-import { FILE_SAVED, NEW_FILE, FILE_LOADED } from 'constants/ActionTypes'
-import { ipcRenderer, remote } from 'electron'
+import fs from 'fs'
+import i18n from 'format-message'
+import { FILE_SAVED, FILE_LOADED } from 'constants/ActionTypes'
+import { saveBackup } from '../../common/utils/backup'
+import { remote } from 'electron'
+const dialog = remote.dialog
 const win = remote.getCurrentWindow()
 
 const BLACKLIST = [FILE_SAVED, FILE_LOADED]
+let itWorkedLastTime = true
 
 const saver = store => next => action => {
   const result = next(action)
   if (BLACKLIST.includes(action.type)) return result
-  var isNewFile = action.type === NEW_FILE
-  ipcRenderer.send('save-state', store.getState().present, win.id, isNewFile)
+  const state = store.getState().present
+  // save and backup
+  saveFile(state.file.fileName, state)
   return result
+}
+
+function saveFile (filePath, jsonData) {
+  let stringData = ''
+  if (process.env.NODE_ENV == 'dev') {
+    stringData = JSON.stringify(jsonData, null, 2)
+  } else {
+    stringData = JSON.stringify(jsonData)
+  }
+  fs.writeFile(filePath, stringData, (saveErr) => {
+    // either way, save a backup
+    saveBackup(filePath, jsonData, (backupErr) => {
+      if (backupErr) {
+        log.warn('[save state backup]', backupErr)
+        rollbar.error({message: 'BACKUP failed'})
+        rollbar.warn(backupErr, {fileName: filePath})
+      }
+    })
+    if (saveErr) {
+      log.warn(saveErr)
+      rollbar.warn(saveErr, {fileName: filePath})
+      itWorkedLastTime = false
+      dialog.showErrorBox(i18n('Auto-saving failed'), i18n("Saving your file didn't work. Check where it's stored."))
+    } else {
+      // didn't work last time, but it did this time
+      if (!itWorkedLastTime) {
+        itWorkedLastTime = true
+        dialog.showMessageBox(win, {title: i18n('Auto-saving worked'), message: i18n("Saving worked this time 🎉")})
+      }
+    }
+  })
 }
 
 export default saver

@@ -1,7 +1,8 @@
+import path from 'path'
 import React from 'react'
 import t from 'format-message'
+import { FormControl } from 'react-bootstrap'
 import { useSortedKnownFiles } from '../../utils/files'
-import path from 'path'
 import { StickyTable, Row, Cell } from 'react-sticky-table'
 import { openKnownFile } from '../../utils/window_manager'
 
@@ -40,6 +41,7 @@ export default function RecentFiles (props) {
   }
 
   return <div className='dashboard__recent-files'>
+    <FormControl type='search' placeholder={t('Search')} className='dashboard__search' />
     <h1>{t('Your Files')}</h1>
     { renderRecents() }
   </div>

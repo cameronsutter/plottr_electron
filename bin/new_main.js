@@ -19,6 +19,9 @@ let windows = []
 let darkMode = nativeTheme.shouldUseDarkColors || false
 const filePrefix = is.windows ? __dirname : 'file://' + __dirname
 
+// mixpanel tracking
+let launchSent = false
+
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => []
@@ -81,12 +84,17 @@ function openDashboard () {
       app.quit()
     }
   })
+  dashboardWindow.webContents.on('did-finish-load', () => {
+    if (!launchSent) {
+      dashboardWindow.webContents.send('send-launch', app.getVersion())
+      launchSent = true
+    }
+  })
 }
 
 // TODO:
 // - askToSave
 // - backup
-// - reading file contents
 
 function openWindow (filePath) {
   const newWindow = makeBrowserWindow(filePath)

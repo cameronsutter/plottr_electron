@@ -4,6 +4,7 @@
 #dashboard__react__root {
   nav {
     grid-area: nav;
+    user-select: none;
     width: 100px;
     // background-color: #FF7F32;
     background-image: linear-gradient(to right, #FF7F32, $orange-5);

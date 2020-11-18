@@ -18,7 +18,6 @@ export default function NewFiles ({activeView, toggleView}) {
   }
 
   return <div className='dashboard__new-files'>
-    <h1>{t('Create a New File')}</h1>
     <div className='dashboard__new-files__wrapper'>
       <div className='dashboard__new-files__item icon' onClick={wrapFunc(() => createNew(null))}>
         <IoIosDocument />

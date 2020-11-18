@@ -13,6 +13,7 @@ const app = remote.app
 // import { actions, migrateIfNeeded } from 'pltr/v2'
 import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
 import { MPQ, setTrialInfo } from 'middlewares/helpers'
+import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
 import log from 'electron-log'
@@ -35,6 +36,7 @@ process.on('uncaughtException', err => {
 })
 
 initMixpanel()
+ensureBackupTodayPath()
 
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
@@ -75,6 +77,15 @@ function bootFile (filePath, darkMode, numOpenFiles) {
     //   )
     // })
     const state = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    saveBackup(filePath, state, (err) => {
+      if (err) {
+        log.warn('[file open backup]', err)
+        rollbar.error({message: 'BACKUP failed'})
+        rollbar.warn(err, {fileName: filePath})
+      } else {
+        log.info('[file open backup]', 'success', filePath)
+      }
+    })
     const didMigrate = false
     store.dispatch(loadFile(filePath, didMigrate, state))
 

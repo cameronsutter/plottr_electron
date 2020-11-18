@@ -10,22 +10,19 @@ export function storageKey (fileName) {
 }
 
 let daysLeft
-let isTrial
+let isTrial = false
 export function setTrialInfo (isTrialMode, num) {
   isTrial = isTrialMode
   daysLeft = num
 }
 
+const superProps = {platform: process.platform}
+
 class MixpanelQueue {
-  constructor () {
-    this.queue = []
-    this.superProps = {
-      platform: process.platform,
-    }
-  }
+  queue = []
 
   defaultEventStats (event, basicAttrs={}, state) {
-    if (event && process.env.NODE_ENV == 'development') return
+    if (!event || process.env.NODE_ENV == 'development') return
     if (!USER.get('payment_id')) return
 
     window.requestIdleCallback(() => {
@@ -61,7 +58,7 @@ class MixpanelQueue {
   }
 
   push (event, attrs={}) {
-    if (event && process.env.NODE_ENV == 'development') return
+    if (!event || process.env.NODE_ENV == 'development') return
     if (!USER.get('payment_id')) return
 
     // TODO: save to localStorage
@@ -78,13 +75,13 @@ class MixpanelQueue {
   }
 
   flush () {
-    if (event && process.env.NODE_ENV == 'development') return
+    if (process.env.NODE_ENV == 'development') return
 
     // TODO: read from localStorage
     do {
       let event = this.queue.shift()
       if (event) {
-        var attrs = Object.assign({}, event.attributes, this.superProps)
+        const attrs = Object.assign({}, event.attributes, superProps)
         mixpanel.track(event.title, attrs)
       }
     } while (this.queue.length > 0)
@@ -93,4 +90,4 @@ class MixpanelQueue {
 
 export const MPQ = new MixpanelQueue()
 
-window.addEventListener('online',  MPQ.flush.bind(MPQ))
+window.addEventListener('online',  () => MPQ.flush())

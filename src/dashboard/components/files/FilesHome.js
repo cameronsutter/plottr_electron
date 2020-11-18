@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import NewFiles from './NewFiles'
 import RecentFiles from './RecentFiles'
-import { FormControl } from 'react-bootstrap'
 import t from 'format-message'
 import TemplatePicker from '../templates/TemplatePicker'
 import { createNew } from '../../utils/window_manager'
@@ -32,7 +31,6 @@ export default function FilesHome (props) {
   }
 
   return <div className='dashboard__files'>
-    <FormControl type='search' placeholder={t('Search')} className='dashboard__search' />
     <NewFiles activeView={view} toggleView={val => setView(val == view ? 'recent' : val)}/>
     { body }
   </div>

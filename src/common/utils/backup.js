@@ -1,16 +1,19 @@
-const fs = require('fs')
-const path = require('path')
-const { BACKUP_BASE_PATH } = require('./config_paths')
-const SETTINGS = require('./settings')
+import fs from 'fs'
+import path from 'path'
+import log from 'electron-log'
+import setupRollbar from './rollbar'
+const rollbar = setupRollbar('backup')
+import { BACKUP_BASE_PATH } from './config_paths'
+import SETTINGS from './settings'
 
-function backupFile(fileName, data, callback) {
-  if (process.env.NODE_ENV === 'dev') return
+export function saveBackup(filePath, data, callback) {
+  if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 
   ensureBackupTodayPath()
   const partialPath = backupPath()
 
-  const fileBaseName = path.basename(fileName)
+  const fileBaseName = path.basename(filePath)
   const startBaseName = `(start-session)-${fileBaseName}`
   const startFilePath = path.join(partialPath, startBaseName)
   if (!fs.existsSync(startFilePath)) {
@@ -18,8 +21,8 @@ function backupFile(fileName, data, callback) {
     return
   }
 
-  const filePath = path.join(partialPath, fileBaseName)
-  saveFile(filePath, data, callback)
+  const backupFilePath = path.join(partialPath, fileBaseName)
+  saveFile(backupFilePath, data, callback)
 }
 
 function saveFile(filePath, data, callback) {
@@ -40,8 +43,8 @@ function backupPath () {
 }
 
 // assumes base path exists
-function ensureBackupTodayPath () {
-  if (process.env.NODE_ENV === 'dev') return
+export function ensureBackupTodayPath () {
+  if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 
   const backupFolder = backupPath()
@@ -50,13 +53,10 @@ function ensureBackupTodayPath () {
   fs.mkdirSync(backupFolder)
 }
 
-function ensureBackupFullPath() {
+export function ensureBackupFullPath() {
   if (!fs.existsSync(BACKUP_BASE_PATH)) {
     fs.mkdirSync(BACKUP_BASE_PATH)
   }
 
   ensureBackupTodayPath()
 }
-ensureBackupFullPath()
-
-module.exports = { backupFile }

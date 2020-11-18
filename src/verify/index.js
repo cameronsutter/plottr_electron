@@ -10,7 +10,7 @@ const app = remote.app
 import i18n from 'format-message'
 
 i18n.setup({	
-  translations: require('../locales').locales,	
+  translations: require('../../locales').locales,	
   locale: app.getLocale() || 'en'	
 })
 

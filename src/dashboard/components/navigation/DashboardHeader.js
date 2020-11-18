@@ -33,6 +33,8 @@ export default function DashboardHeader (props) {
   }
   return <div className='dashboard__header'>
     <span>{t('Plottr')}</span>
+    <span className='spacer'>—</span>
+    <span>{t('Dashboard')}</span>
     {spacer}
     {message}
     {spacer2}

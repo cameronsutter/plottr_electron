@@ -4,7 +4,7 @@ import t from 'format-message'
 import cx from 'classnames'
 import { createNew, openExistingFile } from '../../utils/window_manager'
 
-export default function NewFiles ({showTemplates, templatesActive}) {
+export default function NewFiles ({activeView, toggleView}) {
 
   const wrapFunc = (func) => {
     return () => {
@@ -28,11 +28,11 @@ export default function NewFiles ({showTemplates, templatesActive}) {
         <IoIosDesktop />
         <div>{t('Open Existing')}</div>
       </div>
-      <div className={cx('dashboard__new-files__item icon', {active: templatesActive})} onClick={() => showTemplates(!templatesActive)}>
+      <div className={cx('dashboard__new-files__item icon', {active: activeView == 'templates'})} onClick={() => toggleView('templates')}>
         <IoIosBrowsers />
         <div>{t('New From Template')}</div>
       </div>
-      <div className='dashboard__new-files__item icon'>
+      <div className={cx('dashboard__new-files__item icon', {active: activeView == 'import'})} onClick={() => toggleView('import')}>
         <IoMdBook/>
         <div>{t('New From Import')}</div>
       </div>

@@ -3,16 +3,37 @@ import NewFiles from './NewFiles'
 import RecentFiles from './RecentFiles'
 import { FormControl } from 'react-bootstrap'
 import t from 'format-message'
-import TemplatesHome from '../templates/TemplatesHome'
+import TemplatePicker from '../templates/TemplatePicker'
+import { createNew } from '../../utils/window_manager'
 
 export default function FilesHome (props) {
-  const [showTemplates, setShowTemplates] = useState(false)
+  const [view, setView] = useState('recent')
 
-  const body = showTemplates ? <TemplatesHome smaller/> : <RecentFiles/>
+  const createWithTemplate = template => {
+    try {
+      createNew(template.templateData)
+    } catch (error) {
+      // TODO: tell the user something went wrong
+      console.error(error)
+    }
+  }
+
+  let body = null
+  switch (view) {
+    case 'templates':
+      body = <TemplatePicker startNew={createWithTemplate}/>
+      break
+    case 'import':
+      body = null
+      break
+    default:
+      body = <RecentFiles/>
+      break
+  }
 
   return <div className='dashboard__files'>
     <FormControl type='search' placeholder={t('Search')} className='dashboard__search' />
-    <NewFiles showTemplates={setShowTemplates} templatesActive={showTemplates}/>
+    <NewFiles activeView={view} toggleView={val => setView(val == view ? 'recent' : val)}/>
     { body }
   </div>
 }

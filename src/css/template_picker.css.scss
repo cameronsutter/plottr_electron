@@ -74,3 +74,36 @@
     }
   }
 }
+
+.dashboard__template-picker {
+  height: calc(100% - 220px);
+
+  &.template-picker__wrapper {
+    justify-content: flex-start;
+  }
+
+  h2 {
+    font-size: 18pt;
+  }
+
+  .template-picker__list {
+    li.list-group-item {
+      &:hover, &.selected {
+        color: $blue-0;
+        background-color: $blue-8;
+        box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $blue-4, inset 0px 1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 1px 5px 0 $blue-4;
+      }
+    }
+  }
+
+  .template-picker__details {
+    margin-left: 5%;
+    padding: 24px;
+
+    .panel-heading {
+      .template-picker__link {
+        vertical-align: text-bottom;
+      }
+    }
+  }
+}

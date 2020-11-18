@@ -7,7 +7,6 @@ const { is } = require('electron-util')
 const contextMenu = require('electron-context-menu')
 const windowStateKeeper = require('electron-window-state')
 const setupRollbar = require('./main_modules/rollbar')
-// const { backupFile } = require('./main_modules/backup')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
@@ -92,10 +91,6 @@ function openDashboard () {
   })
 }
 
-// TODO:
-// - askToSave
-// - backup
-
 function openWindow (filePath) {
   const newWindow = makeBrowserWindow(filePath)
 
@@ -120,17 +115,7 @@ function openWindow (filePath) {
   })
 
   try {
-    // let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(filePath, 'utf-8'))
     app.addRecentDocument(filePath)
-    // backupFile(filePath, json, (err) => {
-    //   if (err) {
-    //     log.warn('[file open backup]', err)
-    //     rollbar.error({message: 'BACKUP failed'})
-    //     rollbar.warn(err, {filePath: filePath})
-    //   } else {
-    //     log.info('[file open backup]', 'success', filePath)
-    //   }
-    // })
 
     windows.push({
       id: newWindow.id,

@@ -8,6 +8,7 @@ import UpdateNotifier from '../UpdateNotifier'
 import TemplatesHome from '../templates/TemplatesHome'
 import BackupsHome from '../backups/BackupsHome'
 import OptionsHome from '../options/OptionsHome'
+import HelpHome from '../help/HelpHome'
 
 export default function DashboardBody ({currentView, setView}) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -34,6 +35,8 @@ export default function DashboardBody ({currentView, setView}) {
       body = <OptionsHome/>
       break
     case 'help':
+      body = <HelpHome/>
+      break
     case 'files':
       body = <FilesHome />
       break

@@ -15,13 +15,11 @@ export default class ErrorBoundary extends Component {
     return { hasError: true, viewError: false }
   }
 
-  componentDidCatch (error, errorInfo) {
+  componentDidCatch(error, errorInfo) {
     this.error = error
     this.errorInfo = errorInfo
-    if (process.env.NODE_ENV !== 'development') {
-      log.error(error, errorInfo)
-      rollbar.error(error, errorInfo)
-    }
+    log.error(error, errorInfo)
+    rollbar.error(error, errorInfo)
   }
 
   createReport = () => {

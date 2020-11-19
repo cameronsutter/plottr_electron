@@ -171,6 +171,7 @@ function makeBrowserWindow (filePath) {
       nodeIntegration: true,
       spellcheck: true,
       enableRemoteModule: true,
+      webviewTag: true,
     }
   }
 

@@ -1,6 +1,7 @@
 import Store from 'electron-store'
 import { useState, useEffect } from 'react'
 import { TRIAL_INFO_PATH, USER_INFO_PATH, KNOWN_FILES_PATH, CUSTOM_TEMPLATES_PATH, TEMPLATES_PATH, TMP_PATH } from './config_paths'
+import SETTINGS from './settings'
 
 const knownFilesPath = process.env.NODE_ENV == 'development' ? `${KNOWN_FILES_PATH}_dev` : KNOWN_FILES_PATH
 const templatesPath = process.env.NODE_ENV == 'development' ? `${TEMPLATES_PATH}_dev` : TEMPLATES_PATH
@@ -25,9 +26,9 @@ function useJsonStore (store) {
     return () => unsubscribe()
   }, [])
 
-  const saveInfo = (data) => {
-    store.set(data)
-    setInfo(data)
+  const saveInfo = (key, data) => {
+    store.set(key, data)
+    setInfo(store.store)
     setSize(store.size)
   }
 
@@ -52,4 +53,8 @@ export function useTemplatesInfo () {
 
 export function useCustomTemplatesInfo () {
   return useJsonStore(customTemplatesStore)
+}
+
+export function useSettingsInfo () {
+  return useJsonStore(SETTINGS)
 }

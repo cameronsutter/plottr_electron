@@ -20,7 +20,7 @@ const saver = store => next => action => {
 
 function saveFile (filePath, jsonData) {
   let stringData = ''
-  if (process.env.NODE_ENV == 'dev') {
+  if (process.env.NODE_ENV == 'development') {
     stringData = JSON.stringify(jsonData, null, 2)
   } else {
     stringData = JSON.stringify(jsonData)

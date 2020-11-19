@@ -12,6 +12,7 @@ export default function OptionsHome (props) {
   if (!backupLocation || backupLocation == 'default') backupLocation = BACKUP_BASE_PATH
 
   return <div className='dashboard__options'>
+    <h1>{t('Configuration Options')}</h1>
     <div>
       <div className='dashboard__options__item'>
         <h4>{t('Save Backups')}</h4>
@@ -22,7 +23,7 @@ export default function OptionsHome (props) {
         />
       </div>
       <hr/>
-      <h1 className='text-center'>{t('🎉 Coming Soon 🎉')}</h1>
+      <h1 className='text-center'>🎉 {t('Coming Soon')} 🎉</h1>
       <div className='dashboard__options__item disabled'>
         <h4>{t('Auto-save')}</h4>
         <Switch
@@ -43,7 +44,7 @@ export default function OptionsHome (props) {
       </div>
       <div className='dashboard__options__item disabled'>
         <h4>{t('Days of Backup')}</h4>
-        <FormGroup controlId='formBasicText'>
+        <FormGroup controlId='backupDays'>
           <ControlLabel>{t('Number of Days of Rolling Backups to Keep')}</ControlLabel>
           <FormControl
             disabled
@@ -56,7 +57,7 @@ export default function OptionsHome (props) {
       </div>
       <div className='dashboard__options__item disabled'>
         <h4>{t('Backup Location')}</h4>
-        <FormGroup controlId='formBasicText'>
+        <FormGroup controlId='backupLocation'>
           <ControlLabel>{t('Folder where backups are stored')}</ControlLabel>
           <FormControl
             disabled

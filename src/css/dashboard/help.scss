@@ -1,0 +1,54 @@
+@import "../colors";
+@import "../vars";
+
+.dashboard__help {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+
+  h1 {
+    font-size: 20pt;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  hr {
+    border-top: 1px solid $blue-5;
+  }
+
+  webview {
+    height: calc(100% - 49px);
+  }
+}
+
+.dashboard__help__item {
+  &.links {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    & > .btn {
+      margin-right: 16px;
+    }
+
+    & > div {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      .btn {
+        margin-left: 8px;
+      }
+      .form-group {
+        margin-bottom: 0;
+      }
+      .form-control {
+        width: 300px;
+      }
+    }
+  }
+}

@@ -12,7 +12,12 @@ const defaultSettings = {
   gracePeriodEnd: 0,
   canEdit: true,
   canExport: true,
-  user: {}
+  user: {
+    autoSave: true,
+    backupDays: 30,
+    backupLocation: 'default',
+    darkModeAlways: false,
+  }
 }
 
 const SETTINGS = new Store({defaults: defaultSettings, name: storePath})

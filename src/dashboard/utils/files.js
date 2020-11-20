@@ -1,15 +1,23 @@
-import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
-import { sortBy } from 'lodash'
 import { useMemo } from 'react'
+import { sortBy } from 'lodash'
+import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
 
-export function useSortedKnownFiles () {
+export function useSortedKnownFiles (searchTerm) {
   const [files] = useKnownFilesInfo()
   const sortedIds = useMemo(() => {
-    return sortBy(Object.keys(files), (id) => {
+    const filteredFileIds = Object.keys(files).filter(id => {
+      if (searchTerm && searchTerm.length > 1) {
+        const f = files[`${id}`]
+        return f.path.toLowerCase().includes(searchTerm)
+      } else {
+        return true
+      }
+    })
+    return sortBy(filteredFileIds, (id) => {
       const f = files[`${id}`]
       return f.lastOpened
     }).reverse()
-  }, [files])
+  }, [files, searchTerm])
 
   return [sortedIds, files]
 }

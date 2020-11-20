@@ -49,7 +49,9 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', function () {
-  openDashboard()
+  if (!is.macos) {
+    openDashboard()
+  }
 })
 
 ipcMain.on('pls-open-window', (event, filePath, jsonData) => {

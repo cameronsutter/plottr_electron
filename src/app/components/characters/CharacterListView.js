@@ -15,7 +15,8 @@ import cx from 'classnames'
 import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
 import { visibleSortedCharactersByCategorySelector, characterFilterIsEmptySelector } from '../../selectors/characters'
 import { sortedCharacterCategoriesSelector } from '../../selectors/categories'
-import CustomAttributeModal from './CustomAttributeModal'
+import CustomAttributeModal from '../dialogs/CustomAttributeModal'
+import CharacterCategoriesModal from './CharacterCategoriesModal'
 import CharacterItem from './CharacterItem'
 import InputModal from '../dialogs/InputModal'
 import { nextId } from '../../store/newIds'
@@ -24,7 +25,8 @@ class CharacterListView extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      dialogOpen: false,
+      attributesDialogOpen: false,
+      categoriesDialogOpen: false,
       addAttrText: '',
       characterDetailId: null,
       editingSelected: false,
@@ -71,7 +73,10 @@ class CharacterListView extends Component {
   }
 
   closeDialog = () => {
-    this.setState({dialogOpen: false})
+    this.setState({
+      attributesDialogOpen: false,
+      categoriesDialogOpen: false
+    })
   }
 
   handleCreateNewCharacter = () => {
@@ -133,7 +138,10 @@ class CharacterListView extends Component {
             </ButtonGroup>
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={() => this.setState({dialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
+            <Button bsSize='small' onClick={() => this.setState({attributesDialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
+          </NavItem>
+          <NavItem>
+            <Button bsSize='small' onClick={() => this.setState({ categoriesDialogOpen: true })}><Glyphicon glyph='list' /> {i18n('Categories')}</Button>
           </NavItem>
           <NavItem>
             <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={filterPopover}>
@@ -196,9 +204,15 @@ class CharacterListView extends Component {
   }
 
   renderCustomAttributes () {
-    if (!this.state.dialogOpen) return null
+    if (!this.state.attributesDialogOpen) return null
 
-    return <CustomAttributeModal closeDialog={this.closeDialog} />
+    return <CustomAttributeModal type='characters' closeDialog={this.closeDialog} />
+  }
+
+  renderCategoriesModal () {
+    if (!this.state.categoriesDialogOpen) return null;
+
+    return <CharacterCategoriesModal closeDialog={this.closeDialog} />
   }
 
   renderTemplatePicker () {
@@ -222,6 +236,7 @@ class CharacterListView extends Component {
       <div className='character-list container-with-sub-nav'>
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
+        {this.renderCategoriesModal()}
         {this.renderTemplatePicker()}
         {this.renderCreateInput()}
         <Grid fluid>

@@ -1,10 +1,10 @@
-import { useTrialInfo } from '../utils/store_hooks'
+import { useTrialInfo, trialStore } from '../utils/store_hooks'
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
 
 export function useTrialStatus () {
-  const [trialInfo, trialInfoSize, setTrialInfo] = useTrialInfo()
+  const [trialInfo, trialInfoSize, setAtKey, setTrialInfo] = useTrialInfo()
 
   const startTrial = () => {
     const day = new Date()
@@ -24,26 +24,24 @@ export function useTrialStatus () {
     setTrialInfo(info)
   }
 
-  const extendWithReset = (days) => {
-    if (trialInfo.hasBeenReset) return
-
-    const newEnd = addDays(trialInfo.endsAt, days)
-    const info = {
-      ...trialInfo,
-      endsAt: newEnd.getTime(),
-      extensions: EXTENSIONS,
-      hasBeenReset: true
-    }
-    setTrialInfo(info)
-  }
-
   if (!trialInfoSize) return {started: false, startTrial}
 
   const daysLeft = daysLeftOfTrial(trialInfo.endsAt)
   const expired = daysLeft <= 0
   const canExtend = trialInfo.extensions > 0
 
-  return {started: true, daysLeft, expired, canExtend, startedOn: trialInfo.startsAt, endsOn: trialInfo.endsAt, extendTrial, extendWithReset}
+  return {started: true, daysLeft, expired, canExtend, startedOn: trialInfo.startsAt, endsOn: trialInfo.endsAt, extendTrial}
+}
+
+// this is needed outside the context of a hook
+export function extendTrialWithReset (days) {
+  const currentInfo = trialStore.store
+  if (currentInfo.hasBeenReset) return
+
+  const newEnd = addDays(currentInfo.endsAt, days)
+  trialStore.set('endsAt', newEnd.getTime())
+  trialStore.set('extensions', EXTENSIONS)
+  trialStore.set('hasBeenReset', true)
 }
 
 function addDays (date, days) {

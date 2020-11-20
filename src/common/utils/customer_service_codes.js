@@ -1,45 +1,16 @@
-const prompt = require('electron-prompt')
-const { shell, app } = require('electron')
-const i18n = require('format-message')
-const storage = require('electron-json-storage')
-const log = require('electron-log')
-const { RECENT_FILES_PATH, BACKUP_BASE_PATH, USER_INFO_PATH } = require('./config_paths')
-const { checkTrialInfo, extendWithReset } = require('./trial_manager')
-const SETTINGS = require('./settings')
-const { setupI18n } = require('../../locales');
-
-setupI18n(SETTINGS);
-
-function enterCustomerServiceCode () {
-  prompt({
-    title: i18n('Enter a customer service code'),
-    label: i18n('Enter your code') + ':',
-    inputAttrs: {
-      type: 'text',
-      required: true
-    },
-    type: 'input',
-    alwaysOnTop: true
-  })
-  .then((r) => {
-    if(r === null) {
-      // cancelled
-    } else {
-      handleCustomerServiceCode(r)
-    }
-  })
-  .catch(console.error)
-}
+import { shell } from 'electron'
+import storage from 'electron-json-storage'
+import log from 'electron-log'
+import { RECENT_FILES_PATH, BACKUP_BASE_PATH } from './config_paths'
+import SETTINGS from './settings'
+import { extendTrialWithReset } from '../licensing/trial_manager'
 
 // generate with `Math.random().toString(16)`
-function handleCustomerServiceCode (code) {
+export function handleCustomerServiceCode (code) {
   switch (code) {
     case "xsu7wb":
       // extend free trial (one time)
-      const ZhuLiDoTheThing = () => {
-        extendWithReset(30)
-      }
-      checkTrialInfo(ZhuLiDoTheThing,()=>{}, ZhuLiDoTheThing)
+      extendTrialWithReset(30)
       break;
 
     case "bafa09":
@@ -105,5 +76,3 @@ function handleCustomerServiceCode (code) {
       break;
   }
 }
-
-module.exports = enterCustomerServiceCode

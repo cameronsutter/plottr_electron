@@ -1,14 +1,13 @@
 import { remote, shell } from 'electron'
 import fs from 'fs'
 import path from 'path'
-// import log from 'electron-log'
 import { machineIdSync } from 'node-machine-id'
 import t from 'format-message'
 import USER from './user_info'
 import { trialStore } from './store_hooks'
 import SETTINGS from './settings'
 const { app, dialog } = remote
-const log = remote.require('electron-log')
+const log = remote.require('electron-log') // necessary to use the transports obj
 
 const machineID = machineIdSync(true)
 

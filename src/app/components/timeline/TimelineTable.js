@@ -62,7 +62,6 @@ class TimelineTable extends Component {
     //   this.setState({tableLength: 0})
     // }
     // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
-    // if (nextProps.ui.zoomIndex != this.props.ui.zoomIndex || nextProps.ui.zoomState != this.props.ui.zoomState) {
     //   this.setState({tableLength: 0})
     // }
   }

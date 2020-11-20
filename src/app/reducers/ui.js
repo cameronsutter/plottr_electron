@@ -14,10 +14,6 @@ import {
   REMOVE_PLACES_ATTRIBUTE,
   EDIT_CHARACTER_ATTRIBUTE,
   EDIT_PLACES_ATTRIBUTE,
-  INCREASE_ZOOM,
-  DECREASE_ZOOM,
-  FIT_ZOOM,
-  RESET_ZOOM,
   SET_TIMELINE_FILTER,
   CHANGE_CURRENT_TIMELINE,
   NAVIGATE_TO_BOOK_TIMELINE,
@@ -27,12 +23,6 @@ import {
   OPEN_ATTRIBUTES_DIALOG,
   CLOSE_ATTRIBUTES_DIALOG,
 } from '../constants/ActionTypes'
-import {
-  ZOOM_STATES,
-  INITIAL_ZOOM_INDEX,
-  INITIAL_ZOOM_STATE,
-  FIT_ZOOM_STATE,
-} from 'constants/zoom_states'
 import { ui as defaultUI } from '../../../shared/initialState'
 import { newFileUI } from '../../../shared/newFileState'
 
@@ -114,25 +104,6 @@ export default function ui(state = defaultUI, action) {
 
     case SET_TIMELINE_FILTER:
       return Object.assign({}, state, { timelineFilter: action.filter })
-
-    case INCREASE_ZOOM:
-      var newIndex = state.zoomIndex || 0
-      if (newIndex < ZOOM_STATES.length - 1) newIndex++
-      return Object.assign({}, state, { zoomState: INITIAL_ZOOM_STATE, zoomIndex: newIndex })
-
-    case DECREASE_ZOOM:
-      var newIndex = state.zoomIndex || 0
-      if (newIndex > 0) newIndex--
-      return Object.assign({}, state, { zoomState: INITIAL_ZOOM_STATE, zoomIndex: newIndex })
-
-    case FIT_ZOOM:
-      return Object.assign({}, state, { zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX })
-
-    case RESET_ZOOM:
-      return Object.assign({}, state, {
-        zoomState: INITIAL_ZOOM_STATE,
-        zoomIndex: INITIAL_ZOOM_INDEX,
-      })
 
     case FILE_LOADED:
       return action.data.ui

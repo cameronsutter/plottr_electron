@@ -94,6 +94,10 @@
       }
     }
 
+    .sticky-table-row .sticky-table-cell:nth-child(2) {
+      width: 17%;
+    }
+
     .sticky-table-row:not(:first-child) {
       .sticky-table-cell {
         padding: 12px 8px;

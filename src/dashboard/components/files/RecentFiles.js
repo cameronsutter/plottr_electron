@@ -1,5 +1,5 @@
 import path from 'path'
-import React from 'react'
+import React, { useState } from 'react'
 import t from 'format-message'
 import { FormControl } from 'react-bootstrap'
 import { useSortedKnownFiles } from '../../utils/files'
@@ -7,7 +7,8 @@ import { StickyTable, Row, Cell } from 'react-sticky-table'
 import { openKnownFile } from '../../utils/window_manager'
 
 export default function RecentFiles (props) {
-  const [sortedIds, filesById] = useSortedKnownFiles()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [sortedIds, filesById] = useSortedKnownFiles(searchTerm)
 
   const renderRecents = () => {
     // if no files, show something different
@@ -41,8 +42,8 @@ export default function RecentFiles (props) {
   }
 
   return <div className='dashboard__recent-files'>
-    <FormControl type='search' placeholder={t('Search')} className='dashboard__search' />
-    <h1>{t('Your Files')}</h1>
+    <FormControl type='search' placeholder={t('Search')} className='dashboard__search' onChange={event => setSearchTerm(event.target.value)} />
+    <h1>{t('Recent Projects')}</h1>
     { renderRecents() }
   </div>
 }

@@ -1,27 +1,24 @@
-import { sortBy } from 'lodash'
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
-import { Glyphicon, Nav, Navbar, NavItem, Button, FormControl, FormGroup,
-  ControlLabel, Popover, OverlayTrigger, Alert, Grid, Row, Col } from 'react-bootstrap'
-import PlottrModal from 'components/PlottrModal'
+import { Glyphicon, Nav, Navbar, NavItem, Button, Popover, 
+  OverlayTrigger, Alert, Grid, Row, Col } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import * as PlaceActions from 'actions/places'
 import * as CustomAttributeActions from 'actions/customAttributes'
 import * as UIActions from 'actions/ui'
 import PlaceView from 'components/places/placeView'
-import CustomAttrItem from 'components/CustomAttrItem'
-import Image from 'components/images/Image'
 import i18n from 'format-message'
 import { placeCustomAttributesThatCanChangeSelector, placeCustomAttributesRestrictedValues } from '../../selectors/customAttributes'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import PlaceItem from './PlaceItem'
 import { nextId } from '../../store/newIds'
 import { visibleSortedPlacesSelector, placeFilterIsEmptySelector } from '../../selectors/places'
+import CustomAttributeModal from '../dialogs/CustomAttributeModal';
 
 const modalStyles = {content: {width: '50%', marginLeft: '25%'}}
 
@@ -176,52 +173,14 @@ class PlaceListView extends Component {
   }
 
   renderCustomAttributes () {
-    const { customAttributes, ui, customAttributesThatCanChange, restrictedValues } = this.props
-    const attrs = customAttributes.map((attr, idx) => (
-      <CustomAttrItem 
-        key={attr.name} 
-        attr={attr} 
-        index={idx} 
-        update={this.updateAttr} 
-        delete={this.removeAttr} 
-        reorder={this.props.customAttributeActions.reorderPlacesAttribute}
-        canChangeType={customAttributesThatCanChange.includes(attr.name)} 
-        restrictedValues={restrictedValues}
-      />
-    ))
-    if (ui.darkMode) {
-      modalStyles.content.backgroundColor = '#666'
-    } else {
-      modalStyles.content.backgroundColor = '#fff'
+    if (!this.state.dialogOpen) {
+      return null;
     }
     return (
-      <PlottrModal
-        isOpen={this.state.dialogOpen} 
-        onRequestClose={this.closeDialog} 
-        style={modalStyles}
-      >
-        <div className={cx('custom-attributes__wrapper', {darkmode: ui.darkMode})}>
-          <Button className='pull-right card-dialog__close' onClick={this.closeDialog}>
-            {i18n('Close')}
-          </Button>
-          <h3>{i18n('Custom Attributes for Places')}</h3>
-          <p className='sub-header'>{i18n('Choose what you want to track about your places')}</p>
-          <div className='character-list__custom-attributes-add-button'>
-            <FormGroup>
-              <ControlLabel>{i18n('Add attributes')}</ControlLabel>
-              <FormControl type='text' ref='attrInput'
-                value={this.state.addAttrText}
-                onChange={this.handleType} onKeyDown={this.handleAddCustomAttr} />
-            </FormGroup>
-            <Button bsStyle='success' onClick={this.saveAttr}>
-              {i18n('Add')}
-            </Button>
-          </div>
-          <div className='place-list__custom-attributes-list-wrapper'>
-            {attrs}
-          </div>
-        </div>
-      </PlottrModal>
+      <CustomAttributeModal
+        type='places'
+        closeDialog={this.closeDialog}
+      />
     )
   }
 

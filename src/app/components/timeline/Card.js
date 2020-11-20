@@ -6,7 +6,6 @@ import * as CardActions from 'actions/cards'
 import CardDialog from 'components/timeline/CardDialog'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
-import { isZoomed } from 'helpers/zoom'
 import { truncateTitle } from 'helpers/cards'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
@@ -154,7 +153,7 @@ class Card extends Component {
       } else {
         placement = Number(this.props.linePosition) <= 2 ? 'right' : placement
       }
-      if (isZoomed(this.props.ui)) placement = 'right'
+
       title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
         {title}
       </OverlayTrigger>

@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
-import { isZoomed, isZoomedOut, computeZoomMultiplier, computeZoomOutMultiplier } from 'helpers/zoom'
 
 const Horizontal = {
   first: 150,
@@ -25,12 +23,9 @@ class ChapterInsertCell extends PureComponent {
   }
 
   renderLine () {
-    const { tableLength, orientation, color, zoom } = this.props
+    const { tableLength, orientation, color } = this.props
 
     let length = tableLength
-    if (isZoomed(zoom)) length = tableLength * computeZoomMultiplier(orientation, zoom)
-    if (isZoomedOut(zoom)) length = tableLength * computeZoomOutMultiplier(orientation, zoom)
-
     let lineStyle = {
       borderColor: color,
     }
@@ -71,7 +66,6 @@ class ChapterInsertCell extends PureComponent {
 
   static propTypes = {
     orientation: PropTypes.string,
-    zoom: PropTypes.object,
     handleInsert: PropTypes.func.isRequired,
     isInChapterList: PropTypes.bool.isRequired,
     chapterPosition: PropTypes.number,
@@ -86,7 +80,6 @@ class ChapterInsertCell extends PureComponent {
 function mapStateToProps (state) {
   return {
     orientation: state.present.ui.orientation,
-    zoom: {zoomState: state.present.ui.zoomState, zoomIndex: state.present.ui.zoomIndex},
   }
 }
 

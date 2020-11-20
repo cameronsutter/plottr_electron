@@ -2,10 +2,9 @@ import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
   SET_DARK_MODE, SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER,
   SET_PLACE_FILTER, ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   REMOVE_CHARACTER_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE,
-  EDIT_PLACES_ATTRIBUTE, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM, SET_TIMELINE_FILTER,
-  CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
+  EDIT_PLACES_ATTRIBUTE, SET_TIMELINE_FILTER, CHANGE_CURRENT_TIMELINE, 
+  NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
   RECORD_SCROLL_POSITION } from '../constants/ActionTypes'
-import { ZOOM_STATES, INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE, FIT_ZOOM_STATE } from 'constants/zoom_states'
 import { ui as defaultUI } from '../../../shared/initialState'
 import { newFileUI } from '../../../shared/newFileState'
 
@@ -87,22 +86,6 @@ export default function ui (state = defaultUI, action) {
 
     case SET_TIMELINE_FILTER:
       return Object.assign({}, state, {timelineFilter: action.filter})
-
-    case INCREASE_ZOOM:
-      var newIndex = state.zoomIndex || 0
-      if (newIndex < ZOOM_STATES.length - 1) newIndex++
-      return Object.assign({}, state, {zoomState: INITIAL_ZOOM_STATE, zoomIndex: newIndex})
-
-    case DECREASE_ZOOM:
-      var newIndex = state.zoomIndex || 0
-      if (newIndex > 0) newIndex--
-      return Object.assign({}, state, {zoomState: INITIAL_ZOOM_STATE, zoomIndex: newIndex})
-
-    case FIT_ZOOM:
-      return Object.assign({}, state, {zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})
-
-    case RESET_ZOOM:
-      return Object.assign({}, state, {zoomState: INITIAL_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX})
 
     case FILE_LOADED:
       return action.data.ui

@@ -1,7 +1,7 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NAVIGATE_TO_BOOK_TIMELINE,
   FILE_SAVED, NEW_FILE, SET_DARK_MODE, CHANGE_CURRENT_TIMELINE, CLEAR_TEMPLATE_FROM_TIMELINE,
   SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER, EXPAND_TIMELINE, COLLAPSE_TIMELINE, SET_TIMELINE_FILTER,
-  SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM, RESET_TIMELINE, RECORD_SCROLL_POSITION } from 'constants/ActionTypes'
+  SET_PLACE_FILTER, RESET_TIMELINE, RECORD_SCROLL_POSITION } from 'constants/ActionTypes'
 
 export function changeCurrentView (view) {
   return { type: CHANGE_CURRENT_VIEW, view }
@@ -53,22 +53,6 @@ export function setNoteFilter (filter) {
 
 export function setTimelineFilter (filter) {
   return { type: SET_TIMELINE_FILTER, filter }
-}
-
-export function increaseZoom () {
-  return { type: INCREASE_ZOOM }
-}
-
-export function decreaseZoom () {
-  return { type: DECREASE_ZOOM }
-}
-
-export function fitZoom () {
-  return { type: FIT_ZOOM }
-}
-
-export function resetZoom () {
-  return { type: RESET_ZOOM }
 }
 
 export function changeCurrentTimeline (id) {

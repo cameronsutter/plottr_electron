@@ -53,8 +53,6 @@ const ui = {
   placeFilter: null,
   noteSort: 'title~asc',
   noteFilter: null,
-  zoomState: null,
-  zoomIndex: 4,
   timelineFilter: null,
   timelineScrollPosition: {
     x: 0,

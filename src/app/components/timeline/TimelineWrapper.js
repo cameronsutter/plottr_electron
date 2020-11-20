@@ -9,8 +9,6 @@ import FilterList from 'components/filterList'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
-import { computeZoom } from 'helpers/zoom'
-import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
 import { FunSpinner } from '../Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
@@ -35,12 +33,7 @@ class TimelineWrapper extends Component {
 
   componentDidMount () {
     this.tableRef.onscroll = this.scrollHandler
-    const { zoomIndex } = this.props.ui
-    if (!zoomIndex) {
-      this.props.actions.resetZoom()
-    } else {
-      this.updateZoom(this.props.ui)
-    }
+
     setTimeout(() => {
       this.setState({mounted: true}, () => {
         if (this.props.ui.timelineScrollPosition == null) return;
@@ -55,11 +48,6 @@ class TimelineWrapper extends Component {
 
   componentWillReceiveProps (nextProps) {
     const { ui } = this.props
-    if (nextProps.ui.zoomState != ui.zoomState) {
-      if (nextProps.ui.zoomState != 'fit') this.updateZoom(nextProps.ui)
-    } else {
-      this.updateZoom(nextProps.ui)
-    }
 
     if (nextProps.ui.currentTimeline != ui.currentTimeline) {
       this.setState({mounted: false})
@@ -69,34 +57,11 @@ class TimelineWrapper extends Component {
       this.setState({mounted: false})
       setTimeout(() => this.setState({mounted: true}), 100)
     }
-    if (nextProps.ui.zoomIndex != ui.zoomIndex || nextProps.ui.zoomState != ui.zoomState) {
-      this.setState({mounted: false})
-      const updateIt = nextProps.ui.zoomState == 'fit' && ui.zoomState == null
-      const uiProps = nextProps.ui
-      setTimeout(() => {
-        this.setState({mounted: true})
-        if (updateIt) this.updateZoom(uiProps)
-      }, 100)
-    }
   }
 
   componentWillUnmount () {
     this.tableRef.onScroll = null
     this.tableRef = null
-  }
-
-  // ////////////
-  //  zooming  //
-  // ////////////
-
-  updateZoom = (uiProps) => {
-    const zoomScale = computeZoom(this.tableRef, uiProps)
-    this.tableRef.children[0].style.transform = zoomScale;
-  }
-
-  zoomLabel = () => {
-    if (this.props.ui.zoomState === FIT_ZOOM_STATE) return 'fit'
-    return `${ZOOM_STATES[this.props.ui.zoomIndex]}x`
   }
 
   // //////////////
@@ -176,7 +141,6 @@ class TimelineWrapper extends Component {
   flipOrientation = () => {
     let orientation = this.props.ui.orientation === 'horizontal' ? 'vertical' : 'horizontal'
     this.props.actions.changeOrientation(orientation)
-    this.props.actions.resetZoom()
   }
 
   // //////////
@@ -245,16 +209,6 @@ class TimelineWrapper extends Component {
           </NavItem>
           <NavItem>
             <Button bsSize='small' onClick={this.toggleExpanded}>{expandedIcon}{' '}{expandedText}</Button>
-          </NavItem>
-          <NavItem>
-            <span className='subnav__container__label'>{i18n('Zoom')}</span>
-            <span className='subnav__container__label'> ({this.zoomLabel()}): </span>
-            <ButtonGroup bsSize='small'>
-              <Button onClick={this.props.actions.increaseZoom} ><Glyphicon glyph='plus-sign' /></Button>
-              <Button onClick={this.props.actions.decreaseZoom} ><Glyphicon glyph='minus-sign' /></Button>
-              <Button onClick={this.props.actions.fitZoom} >{i18n('Fit')}</Button>
-              <Button onClick={this.props.actions.resetZoom} >{i18n('Reset')}</Button>
-            </ButtonGroup>
           </NavItem>
           <NavItem>
             <span className='subnav__container__label'>{i18n('Scroll')}: </span>

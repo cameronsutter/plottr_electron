@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { shell, remote } from 'electron'
-// import { autoUpdater } from 'electron-updater'
 import log from 'electron-log'
 import t from 'format-message'
 import SETTINGS from '../../common/utils/settings'
@@ -109,7 +108,7 @@ export default function UpdateNotifier (props) {
     const version = info && info.version ? info.version : ''
     let text = ''
     if (checking) text = t('Checking for updates')
-    if (finishedChecking && !available) text = t('No updates available')
+    if (finishedChecking && !available) text = t("You're on the latest version")
     if (available) text = t('Update Available 🎉 (version {version})', {version})
     if (downloadInProgress) text = t('Downloading version {version}', {version: version})
     if (finishedDownloading) text = t('Download Complete 🎉 (version {version})', {version})

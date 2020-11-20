@@ -1,10 +1,24 @@
 import React from 'react'
-import electron from 'electron'
+import { remote } from 'electron'
 import t from 'format-message'
 import { Button } from 'react-bootstrap'
-const app = electron.remote.app
+import SETTINGS from '../../../common/utils/settings'
+const app = remote.app
+const autoUpdater = remote.require('electron-updater').autoUpdater
 
 export default function About (props) {
+  const checkForUpdates = () => {
+    if (process.env.NODE_ENV == 'development') return
+    autoUpdater.checkForUpdates()
+  }
+
+  const renderUpdater = () => {
+    if (SETTINGS.get('canGetUpdates')) {
+      return <dd><Button bsSize='small' onClick={checkForUpdates}>{t('Check for Updates')}</Button></dd>
+    } else {
+      return <dd><span className='text-danger'>{t('Not Receiving Updates')}</span></dd>
+    }
+  }
 
   return <div className='dashboard__about'>
     <h1>{t('About Plottr')}</h1>
@@ -13,7 +27,7 @@ export default function About (props) {
         <dt>{t('Version')}</dt>
         <dd>{app.getVersion()}</dd>
         <dt>{t('Updates')}</dt>
-        <dd><Button bsSize='small'>{t('Check for Updates')}</Button></dd>
+        { renderUpdater() }
       </dl>
       <dl className='dl-horizontal'>
         <dt>{t('Created By')}</dt>

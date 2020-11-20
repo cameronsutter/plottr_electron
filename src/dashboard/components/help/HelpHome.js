@@ -1,13 +1,25 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import t from 'format-message'
 import { Button, FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'
 import { shell } from 'electron'
 import { createErrorReport } from '../../../common/utils/full_error_report'
+import { handleCustomerServiceCode } from '../../../common/utils/customer_service_codes'
 
 export default function HelpHome (props) {
+  const serviceCodeRef = useRef(null)
+
+  const submitCode = () => {
+    const val = serviceCodeRef.current.value
+    if (val) {
+      handleCustomerServiceCode(val)
+      serviceCodeRef.current.value = ''
+    }
+  }
+
   const l = (url) => {
     return () => shell.openExternal(`https://${url}`)
   }
+
   return <div className='dashboard__help'>
     <div style={{flex: 0.16}}>
       <h1>{t('Links')}</h1>
@@ -33,10 +45,10 @@ export default function HelpHome (props) {
             <FormControl
               type='text'
               placeholder={t('Enter a Customer Service Code')}
-              onChange={(event) => {}}
+              inputRef={ref => serviceCodeRef.current = ref}
             />
           </FormGroup>
-          <Button>{t('Submit')}</Button>
+          <Button onClick={submitCode}>{t('Submit')}</Button>
         </div>
       </div>
       <hr/>

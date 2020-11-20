@@ -26,13 +26,19 @@ function useJsonStore (store) {
     return () => unsubscribe()
   }, [])
 
-  const saveInfo = (key, data) => {
+  const saveInfoAtKey = (key, data) => {
     store.set(key, data)
     setInfo(store.store)
     setSize(store.size)
   }
 
-  return [info, size, saveInfo]
+  const saveAllInfo = (data) => {
+    store.set(data)
+    setInfo(store.store)
+    setSize(store.size)
+  }
+
+  return [info, size, saveInfoAtKey, saveAllInfo]
 }
 
 export function useTrialInfo () {

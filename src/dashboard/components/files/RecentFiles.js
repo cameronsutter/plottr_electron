@@ -5,6 +5,7 @@ import { FormControl } from 'react-bootstrap'
 import { useSortedKnownFiles } from '../../utils/files'
 import { StickyTable, Row, Cell } from 'react-sticky-table'
 import { openKnownFile } from '../../utils/window_manager'
+import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
 
 export default function RecentFiles (props) {
   const [searchTerm, setSearchTerm] = useState('')
@@ -18,7 +19,10 @@ export default function RecentFiles (props) {
       const f = filesById[`${id}`]
       const lastOpen = new Date(f.lastOpened)
       const basename = path.basename(f.path)
-      const formattedPath = f.path.replace(basename, '').split(path.sep).filter(Boolean).join(' » ')
+      let formattedPath = ''
+      if (!f.path.includes(TEMP_FILES_PATH)) {
+        formattedPath = f.path.replace(basename, '').split(path.sep).filter(Boolean).join(' » ')
+      }
       return <Row key={idx} onDoubleClick={() => openKnownFile(f.path, id)}>
         <Cell>
           <div className='title'>{basename.replace('.pltr', '')}</div>

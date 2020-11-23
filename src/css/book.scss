@@ -47,11 +47,30 @@
 }
 
 .edit-book__container {
-  padding: 20px;
+  padding: 10px 20px;
+
+  h2 {
+    padding-left: 20px;
+    margin-top: 0;
+  }
 
   .btn-toolbar {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .edit-book__location {
+    display: flex;
+    align-items: center;
+    .btn {
+      margin-right: 16px;
+    }
+  }
+
+  .edit-book__location-link {
+    .btn {
+      margin-left: 4px;
+    }
   }
 }
 

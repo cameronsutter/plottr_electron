@@ -4,12 +4,13 @@ import EditSeries from './EditSeries'
 import BookList from './BookList'
 import i18n from 'format-message'
 import ErrorBoundary from '../../containers/ErrorBoundary'
+import FileLocation from './FileLocation'
 
 export default class SeriesTab extends Component {
   render () {
     return <ErrorBoundary>
       <div className='series__container'>
-        <h2 style={{paddingLeft: '40px'}}>{i18n('Series')}</h2>
+        <FileLocation />
         <EditSeries />
         <BookList />
       </div>

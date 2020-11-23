@@ -2,7 +2,8 @@ import { cloneDeep } from 'lodash'
 import { ADD_CHARACTER, ADD_CHARACTER_WITH_TEMPLATE, ADD_CHARACTER_WITH_VALUES, EDIT_CHARACTER, FILE_LOADED, NEW_FILE, RESET,
   ATTACH_CHARACTER_TO_CARD, REMOVE_CHARACTER_FROM_CARD, ATTACH_CHARACTER_TO_NOTE, REMOVE_CHARACTER_FROM_NOTE,
   DELETE_NOTE, DELETE_CARD, DELETE_CHARACTER, DELETE_IMAGE, EDIT_CHARACTER_ATTRIBUTE,
-  ATTACH_TAG_TO_CHARACTER, REMOVE_TAG_FROM_CHARACTER, ATTACH_BOOK_TO_CHARACTER, REMOVE_BOOK_FROM_CHARACTER } from '../constants/ActionTypes'
+  ATTACH_TAG_TO_CHARACTER, REMOVE_TAG_FROM_CHARACTER, ATTACH_BOOK_TO_CHARACTER, REMOVE_BOOK_FROM_CHARACTER,
+  DELETE_CHARACTER_CATEGORY } from '../constants/ActionTypes'
 import { character } from '../store/initialState'
 import { newFileCharacters } from '../store/newFileState'
 import { nextId } from '../store/newIds'
@@ -163,6 +164,20 @@ export default function characters (state = initialState, action) {
 
     case NEW_FILE:
       return newFileCharacters
+
+    case DELETE_CHARACTER_CATEGORY:
+      return state.map(character => {
+        // In one case the ids are strings and the other they are numbers
+        // so just to be safe string them both
+        if (String(character.categoryId) !== String(action.category.id)) {
+          return character;
+        }
+
+        return {
+          ...character,
+          categoryId: null,
+        }
+      })
 
     default:
       return state

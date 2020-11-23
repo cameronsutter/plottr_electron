@@ -3,10 +3,11 @@ import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
   SET_PLACE_FILTER, ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   REMOVE_CHARACTER_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE,
   EDIT_PLACES_ATTRIBUTE, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM, SET_TIMELINE_FILTER,
-  CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE } from '../constants/ActionTypes'
-import { ZOOM_STATES, INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE, FIT_ZOOM_STATE } from '../constants/zoom_states'
-import { ui as defaultUI } from '../store/initialState'
-import { newFileUI } from '../store/newFileState'
+  CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
+  RECORD_SCROLL_POSITION } from '../constants/ActionTypes'
+import { ZOOM_STATES, INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE, FIT_ZOOM_STATE } from 'constants/zoom_states'
+import { ui as defaultUI } from '../../../shared/initialState'
+import { newFileUI } from '../../../shared/newFileState'
 
 export default function ui (state = defaultUI, action) {
   let filter;
@@ -18,10 +19,17 @@ export default function ui (state = defaultUI, action) {
       return Object.assign({}, state, {orientation: action.orientation})
 
     case CHANGE_CURRENT_TIMELINE:
-      return Object.assign({}, state, {currentTimeline: action.id})
+      return Object.assign({}, state, {
+        currentTimeline: action.id,
+        timelineScrollPosition: { x: 0, y: 0 },
+      })
 
     case NAVIGATE_TO_BOOK_TIMELINE:
-      return Object.assign({}, state, {currentTimeline: action.bookId, currentView: 'timeline'})
+      return Object.assign({}, state, {
+        currentTimeline: action.bookId, 
+        currentView: 'timeline',
+        timelineScrollPosition: { x: 0, y: 0 },
+      })
 
     case EXPAND_TIMELINE:
       return Object.assign({}, state, {timelineIsExpanded: true})
@@ -101,6 +109,15 @@ export default function ui (state = defaultUI, action) {
 
     case NEW_FILE:
       return newFileUI
+
+    case RECORD_SCROLL_POSITION:
+      return {
+        ...state,
+        timelineScrollPosition: {
+          x: action.x,
+          y: action.y,
+        }
+      };
 
     default:
       return state

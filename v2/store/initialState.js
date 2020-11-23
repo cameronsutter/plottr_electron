@@ -56,6 +56,10 @@ export const ui = {
   zoomState: null,
   zoomIndex: 4,
   timelineFilter: null,
+  timelineScrollPosition: {
+    x: 0,
+    y: 0,
+  }
 }
 
 export const file = {

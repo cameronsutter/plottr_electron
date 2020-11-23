@@ -74,6 +74,7 @@ class EditSeries extends Component {
 
   render () {
     return <div className='edit-book__container'>
+      <h2>{i18n('Series')}</h2>
       { this.renderBody() }
       <Row>
         <Col sm={10}>

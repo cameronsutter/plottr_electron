@@ -4,7 +4,7 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -25,13 +25,17 @@
       "tag": [],
       "character": [],
       "place": []
+    },
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 0
     }
   },
   "file": {
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.11.11"
+    "version": "2020.11.23"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -455,7 +459,7 @@
     {
       "Married": "During the story, to Lydia",
       "cards": [],
-      "categoryId": null,
+      "categoryId": "4",
       "color": null,
       "description": "A militia officer",
       "id": 7,
@@ -768,7 +772,7 @@
         }
       ],
       "templates": [],
-      "categoryId": null,
+      "categoryId": "4",
       "tags": [],
       "imageId": null,
       "bookIds": [
@@ -11965,17 +11969,26 @@
       {
         "id": 1,
         "name": "Main",
-        "position": 0
+        "position": 0,
+        "type": "text"
       },
       {
         "id": 2,
         "name": "Supporting",
-        "position": 1
+        "position": 1,
+        "type": "text"
+      },
+      {
+        "id": 4,
+        "name": "Antagonist",
+        "position": 2,
+        "type": "text"
       },
       {
         "id": 3,
         "name": "Other",
-        "position": 2
+        "position": 3,
+        "type": "text"
       }
     ],
     "places": [],

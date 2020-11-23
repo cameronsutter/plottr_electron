@@ -4,12 +4,12 @@ import log from 'electron-log'
 import React from 'react'
 import { render } from 'react-dom'
 import DashboardMain from './DashboardMain'
-import { setupI18n } from '../../locales';
-import SETTINGS from '../common/utils/settings';
+import { setupI18n } from '../../locales'
+import SETTINGS from '../common/utils/settings'
 const { remote } = require('electron')
 const app = remote.app
 
-setupI18n(SETTINGS);
+setupI18n(SETTINGS)
 
 const envPath = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: envPath})

@@ -2,7 +2,8 @@ import { FILE_LOADED, NEW_FILE, RESET, ADD_CHARACTER_CATEGORY, DELETE_CHARACTER_
   UPDATE_CHARACTER_CATEGORY, REORDER_CHARACTER_CATEGORY } from '../constants/ActionTypes'
 import { newFileCategories } from '../../../shared/newFileState'
 import { categories as defaultCategories } from '../../../shared/initialState'
-import { nextId } from 'store/newIds';
+import { nextId } from 'store/newIds'
+import { positionReset } from '../helpers/lists'
 
 export default function categories (state = defaultCategories, action) {
   switch (action.type) {
@@ -14,16 +15,16 @@ export default function categories (state = defaultCategories, action) {
       return newFileCategories
 
     case ADD_CHARACTER_CATEGORY:
-      return addCategory('characters', state, action);
+      return addCategory('characters', state, action)
 
     case DELETE_CHARACTER_CATEGORY:
-      return deleteCategory('characters', state, action);
+      return deleteCategory('characters', state, action)
 
     case UPDATE_CHARACTER_CATEGORY:
-      return updateCategory('characters', state, action);
+      return updateCategory('characters', state, action)
 
     case REORDER_CHARACTER_CATEGORY:
-      return reorderCategory('characters', state, action);
+      return reorderCategory('characters', state, action)
 
     default:
       return state
@@ -31,7 +32,7 @@ export default function categories (state = defaultCategories, action) {
 }
 
 function addCategory(key, state, action) {
-  const id = nextId(state[key]);
+  const id = nextId(state[key])
   return {
     ...state,
     [key]: [
@@ -42,18 +43,18 @@ function addCategory(key, state, action) {
         position: state[key].length,
       }
     ]
-  };
+  }
 }
 
 function deleteCategory(key, state, action) {
-  const index = state[key].findIndex(item => item.id === action.category.id);
-  if (index == -1) return state;
-  
+  const index = state[key].findIndex(item => item.id === action.category.id)
+  if (index == -1) return state
+
   const newArray = [
     ...state[key].slice(0, index),
     ...state[key].slice(index + 1),
-  ];
-  newArray.forEach((category, i) => category.position = i);
+  ]
+  newArray.forEach((category, i) => category.position = i)
 
   return {
     ...state,
@@ -62,14 +63,14 @@ function deleteCategory(key, state, action) {
 }
 
 function updateCategory(key, state, action) {
-  const index = state[key].findIndex(item => item.id === action.category.id);
-  if (index === -1) return state;
+  const index = state[key].findIndex(item => item.id === action.category.id)
+  if (index === -1) return state
 
-  const newArray = [...state[key]];
+  const newArray = [...state[key]]
   newArray[index] = {
     ...state[key][index],
     ...action.category,
-  };
+  }
 
   return {
     ...state,
@@ -80,11 +81,12 @@ function updateCategory(key, state, action) {
 function reorderCategory(key, state, { toIndex, category }) {
   const copy = state[key]
     .slice()
-    .filter(({ id }) => id != category.id);
+    .filter(({ id }) => id != category.id)
 
-  copy.splice(toIndex, 0, category);
+  copy.splice(toIndex, 0, category)
+  const newList = positionReset(copy) // have to change the value of the position attribute
   return {
     ...state,
-    [key]: copy,
-  };
+    [key]: newList,
+  }
 }

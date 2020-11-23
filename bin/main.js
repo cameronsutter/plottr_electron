@@ -14,29 +14,14 @@ const { getLicenseInfo } = require('./main_modules/license_checker')
 const TemplateManager = require('./main_modules/template_manager')
 const CustomTemplateManager = require('./main_modules/custom_template_manager')
 const FileManager = require('./main_modules/file_manager')
-const { loadMenu } = require('./main_modules/menus');
-const {
-  isDirty,
-  emptyFileContents,
-  displayFileName,
-} = require('./main_modules/helpers')
-const { setupI18n } = require('../locales');
-const {
-  openWindow,
-  canQuit,
-  windows,
-} = require('./main_modules/windows');
-const { closeExpiredWindow } = require('./main_modules/windows/expired');
-const { openBuyWindow } = require('./main_modules/windows/buy');
-const {
-  openVerifyWindow,
-  closeVerifyWindow,
-} = require('./main_modules/windows/verify');
-const {
-  NODE_ENV,
-  TRIAL_MODE,
-} = require('./main_modules/constants');
-const { getDarkMode } = require('./main_modules/theme');
+const { loadMenu } = require('./main_modules/menus')
+const { setupI18n } = require('../locales')
+const { openWindow, canQuit, windows } = require('./main_modules/windows')
+const { closeExpiredWindow } = require('./main_modules/windows/expired')
+const { openBuyWindow } = require('./main_modules/windows/buy')
+const { openVerifyWindow, closeVerifyWindow } = require('./main_modules/windows/verify')
+const { NODE_ENV, TRIAL_MODE } = require('./main_modules/constants')
+const { getDarkMode } = require('./main_modules/theme')
 const {
   gracefullyNotSave,
   askToOpenOrCreate,
@@ -44,14 +29,13 @@ const {
   openRecentFiles,
   checkUpdatesIfAllowed,
   askToCreateFile,
-} = require('./main_modules/utils');
+} = require('./main_modules/utils')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
 
 let USER_INFO = getLicenseInfo()
 let fileToOpen = null
-
 
 // auto updates
 let lastCheckedForUpdate = Date.now()
@@ -68,7 +52,8 @@ checkUpdatesIfAllowed()
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => []
 })
-setupI18n(SETTINGS);
+setupI18n(SETTINGS)
+const { isDirty, emptyFileContents, displayFileName } = require('./main_modules/helpers') // i18n has to happen before this
 
 ////////////////////////////////
 ////     Bug Reporting    //////
@@ -92,8 +77,8 @@ if (NODE_ENV !== 'dev') {
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (is.macos) return;
-  
+  if (is.macos) return
+
   if (canQuit()) app.quit()
 })
 

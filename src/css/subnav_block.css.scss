@@ -44,6 +44,11 @@ nav.subnav__container {
     .nav li a {
       padding-top: 7px;
       padding-bottom: 7px;
+      .btn {
+        .glyphicon {
+          margin-right: 4px;
+        }
+      }
     }
     .nav.navbar-nav {
       height: 50px;

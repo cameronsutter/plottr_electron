@@ -9,5 +9,6 @@ module.exports = {
   gracePeriodEnd: 0,
   canEdit: true,
   canExport: true,
+  locale: null,
   user: {}
 }

@@ -11,7 +11,9 @@ function getLicenseInfo () {
 }
 
 function checkForActiveLicense (licenseInfo, callback) {
+  log.info('checkForActiveLicense')
   if (!licenseInfo || !Object.keys(licenseInfo).length) {
+    log.info('checkForActiveLicense !licenseInfo')
     callback(false)
     return
   }

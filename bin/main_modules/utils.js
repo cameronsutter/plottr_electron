@@ -15,22 +15,28 @@ const { openDashboardWindow } = require('./windows/dashboard')
 
 let checkedForActiveLicense = false
 function checkUpdatesIfAllowed () {
+  log.info('checkUpdatesIfAllowed')
   if (NODE_ENV == 'dev') return
   if (TRIAL_MODE) {
     UpdateManager.checkForUpdates(windows)
     return
   }
+  log.info('checkUpdatesIfAllowed after TRIAL_MODE')
 
   if (checkedForActiveLicense && !SETTINGS.get('canGetUpdates')) return
+  log.info('checkUpdatesIfAllowed after if checked')
 
   if (!checkedForActiveLicense) {
+    log.info('checkUpdatesIfAllowed !checked')
     checkForActiveLicense(USER_INFO, valid => {
+      log.info('checkUpdatesIfAllowed callback for checkForActiveLicense. valid?', valid)
       checkedForActiveLicense = true
       if (valid) {
         UpdateManager.checkForUpdates(windows)
       }
     })
   } else if (SETTINGS.get('canGetUpdates')) {
+    log.info('checkUpdatesIfAllowed checked')
     UpdateManager.checkForUpdates(windows)
   }
 }

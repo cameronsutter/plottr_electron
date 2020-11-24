@@ -15,28 +15,22 @@ const { openDashboardWindow } = require('./windows/dashboard')
 
 let checkedForActiveLicense = false
 function checkUpdatesIfAllowed () {
-  log.info('checkUpdatesIfAllowed')
   if (NODE_ENV == 'dev') return
   if (TRIAL_MODE) {
     UpdateManager.checkForUpdates(windows)
     return
   }
-  log.info('checkUpdatesIfAllowed after TRIAL_MODE')
 
   if (checkedForActiveLicense && !SETTINGS.get('canGetUpdates')) return
-  log.info('checkUpdatesIfAllowed after if checked')
 
   if (!checkedForActiveLicense) {
-    log.info('checkUpdatesIfAllowed !checked')
     checkForActiveLicense(valid => {
-      log.info('checkUpdatesIfAllowed callback for checkForActiveLicense. valid?', valid)
       checkedForActiveLicense = true
       if (valid) {
         UpdateManager.checkForUpdates(windows)
       }
     })
   } else if (SETTINGS.get('canGetUpdates')) {
-    log.info('checkUpdatesIfAllowed checked')
     UpdateManager.checkForUpdates(windows)
   }
 }
@@ -144,7 +138,6 @@ function gracefullyQuit () {
 }
 
 function openRecentFiles (fileToOpen) {
-  log.info('openRecentFiles. file to open?', fileToOpen)
   // open-file for windows
   if (is.windows && process.argv.length == 2 && NODE_ENV != 'dev') {
     const param = process.argv[1]
@@ -160,7 +153,6 @@ function openRecentFiles (fileToOpen) {
     fileToOpen = null
   } else {
     let openFiles = FileManager.listOpenFiles()
-    log.info('openRecentFiles. openFiles.length', openFiles.length)
     if (openFiles.length) {
       openFiles.forEach(f => openWindow(f))
     } else {

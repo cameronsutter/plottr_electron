@@ -12,9 +12,7 @@ function getLicenseInfo () {
 
 function checkForActiveLicense (callback) {
   const licenseInfo = licenseStore.get()
-  log.info('checkForActiveLicense')
   if (!licenseInfo || !licenseStore.size) {
-    log.info('checkForActiveLicense !licenseInfo')
     callback(false)
     return
   }

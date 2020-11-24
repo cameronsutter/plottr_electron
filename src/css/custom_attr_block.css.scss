@@ -5,6 +5,10 @@
 .custom-attr__wrapper {
   overflow: auto;
 
+  h3 {
+    text-transform: capitalize;
+  }
+
   &.darkmode {
     background-color: $darkmode-background;
     color: $darkmode-text;
@@ -63,6 +67,7 @@
 .custom-attr-item__input {
   align-self: center;
   margin: 0;
+  border: 0;
   width: 60%;
   padding: 1px 4px;
 }

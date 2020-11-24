@@ -65,7 +65,7 @@ function mapStateToProps (state, { type }) {
       };
       break;
   }
- 
+
 
   return {
     customAttributes: state.present.customAttributes[type],
@@ -75,7 +75,7 @@ function mapStateToProps (state, { type }) {
 }
 
 function mapDispatchToProps (dispatch, { type }) {
-  const actions = bindActionCreators(CustomAttributeActions, dispatch); 
+  const actions = bindActionCreators(CustomAttributeActions, dispatch);
 
   switch (type) {
     case 'characters':

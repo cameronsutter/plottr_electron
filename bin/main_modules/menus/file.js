@@ -1,33 +1,25 @@
-const path = require('path');
-const fs = require('fs');
-const i18n = require('format-message');
+const path = require('path')
+const fs = require('fs')
+const i18n = require('format-message')
 const { cloneDeep } = require('lodash')
-const {
-  BrowserWindow,
-  dialog,
-} = require('electron');
-const { is } = require('electron-util');
-const log = require('electron-log');
-const { rollbar } = require('../rollbar');
-const {
-  getWindowById,
-  openWindow,
-  closeWindow,
-  windows,
-} = require('../windows');
-const { openDashboardWindow } = require('../windows/dashboard');
+const { BrowserWindow, dialog } = require('electron')
+const { is } = require('electron-util')
+const log = require('electron-log')
+const { rollbar } = require('../rollbar')
+const { getWindowById, openWindow, closeWindow, windows } = require('../windows')
+const { openDashboardWindow } = require('../windows/dashboard')
 const {
   importFromSnowflake,
   askToOpenFile,
   gracefullyNotSave,
   askToSave,
   askToCreateFile,
-} = require('../utils');
-const FileManager = require('../file_manager');
-const { isDirty } = require('../helpers');
+} = require('../utils')
+const FileManager = require('../file_manager')
+const { isDirty } = require('../helpers')
 const Exporter = require('../exporter')
-const { getDarkMode } = require('../theme');
-const { NODE_ENV } = require('../constants');
+const { getDarkMode } = require('../theme')
+const { NODE_ENV } = require('../constants')
 
 function buildFileMenu () {
   let submenu = [{
@@ -147,7 +139,7 @@ function buildFileMenu () {
       {
         label: i18n('MS Word'),
         click: (event, focusedWindow) => {
-          const winObj = findWindowWithId(focusedWindow.id);
+          const winObj = getWindowById(focusedWindow.id)
           let exportState = {}
           if (winObj) {
             exportState = winObj.state

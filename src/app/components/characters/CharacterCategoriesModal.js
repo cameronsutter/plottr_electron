@@ -1,16 +1,11 @@
-import { ipcRenderer, remote } from 'electron'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import PlottrModal from 'components/PlottrModal'
-import CustomAttrItem from 'components/CustomAttrItem'
 import i18n from 'format-message'
 import cx from 'classnames'
-import * as CategoryActions from 'actions/categories';
-import { FaSave } from 'react-icons/fa'
-import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal';
+import * as CategoryActions from 'actions/categories'
+import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
 
 
 function CharacterCategoriesModal({
@@ -26,7 +21,7 @@ function CharacterCategoriesModal({
 }) {
   return (
     <ItemsManagerModal
-      title={i18n('Categories For Characters')}
+      title={i18n('Character Categories')}
       subtitle={i18n('Choose what categories you want to put your characters into')}
       addLabel={i18n('Add category')}
       items={categories}

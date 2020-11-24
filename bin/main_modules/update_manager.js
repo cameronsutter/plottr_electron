@@ -29,7 +29,6 @@ class UpdateManager {
   }
 
   checkForUpdates = (windows) => {
-    log.info('UpdateManager checkForUpdates')
     this.windows = windows
     this.notifyAllWindows('updater-checking', null)
     autoUpdater.checkForUpdates()

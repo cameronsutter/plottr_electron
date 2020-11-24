@@ -46,7 +46,8 @@ nav.subnav__container {
       padding-bottom: 7px;
       .btn {
         .glyphicon {
-          margin-right: 4px;
+          // TODO: needs to be margin-left on the text of the button
+          // margin-right: 4px;
         }
       }
     }

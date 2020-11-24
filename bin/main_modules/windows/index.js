@@ -24,7 +24,6 @@ function getWindowById(id) {
 }
 
 function openWindow (fileName, jsonData, importFrom) {
-  log.info('openWindow', fileName)
   // Load the previous state with fallback to defaults
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
@@ -121,7 +120,6 @@ function openWindow (fileName, jsonData, importFrom) {
 
   try {
     let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
-    log.info('openWindow. json?', !!json)
     app.addRecentDocument(fileName)
     FileManager.open(fileName)
     backupFile(fileName, json, (err) => {

@@ -48,22 +48,17 @@ log.transports.file.level = "info"
 ////////////////////////////////
 log.info('--------Startup Tasks--------')
 TemplateManager.load()
-log.info('after template load')
 checkUpdatesIfAllowed()
-log.info('after check for updates')
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => []
 })
-log.info('after contextMenu')
 setupI18n(SETTINGS)
-log.info('after setupi18n')
 
 ////////////////////////////////
 ////     Bug Reporting    //////
 ////////////////////////////////
 if (NODE_ENV !== 'dev') {
-  log.info('set uncaughtException error handling')
   process.on('uncaughtException', function (err) {
     log.error(err)
     rollbar.error(err, function(sendErr, data) {
@@ -270,22 +265,18 @@ ipcMain.on('dev-open-analyzer-file', (event, fileName, filePath) => {
 })
 
 app.on('ready', () => {
-  log.info('loading menu')
   loadMenu(true)
 
-  log.info('registering global shortcut')
   // Register the toggleDevTools shortcut listener.
   globalShortcut.register('CommandOrControl+Alt+R', () => {
     let win = BrowserWindow.getFocusedWindow()
     if (win) win.toggleDevTools()
   })
 
-  log.info('setAsDefaultProtocolClient')
   if (NODE_ENV != 'dev') {
     app.setAsDefaultProtocolClient('plottr')
   }
 
-  log.info('check license')
   checkLicense(() => {
     loadMenu()
   })
@@ -321,7 +312,6 @@ function checkLicense (callback) {
     return
   }
 
-  log.info('inside check license')
   if (Object.keys(USER_INFO).length) {
     if (TRIAL_MODE) {
       // still in trial mode
@@ -333,10 +323,8 @@ function checkLicense (callback) {
       callback()
       openRecentFiles(fileToOpen)
     } else {
-      log.info('non-trial')
       // not-trial, normal mode
       callback()
-      log.info('non-trial loaded menu. Success?', USER_INFO.success)
       if (USER_INFO.success) openRecentFiles(fileToOpen)
       else openVerifyWindow()
     }

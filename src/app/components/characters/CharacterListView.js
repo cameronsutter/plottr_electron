@@ -138,7 +138,7 @@ class CharacterListView extends Component {
             </ButtonGroup>
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={() => this.setState({attributesDialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Custom Attributes')}</Button>
+            <Button bsSize='small' onClick={() => this.setState({attributesDialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Attributes')}</Button>
           </NavItem>
           <NavItem>
             <Button bsSize='small' onClick={() => this.setState({ categoriesDialogOpen: true })}><Glyphicon glyph='list' /> {i18n('Categories')}</Button>

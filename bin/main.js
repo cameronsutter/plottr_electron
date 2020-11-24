@@ -15,6 +15,7 @@ const TemplateManager = require('./main_modules/template_manager')
 const CustomTemplateManager = require('./main_modules/custom_template_manager')
 const FileManager = require('./main_modules/file_manager')
 const { loadMenu } = require('./main_modules/menus')
+const { isDirty, emptyFileContents, displayFileName } = require('./main_modules/helpers')
 const { setupI18n } = require('../locales')
 const { openWindow, canQuit, windows } = require('./main_modules/windows')
 const { closeExpiredWindow } = require('./main_modules/windows/expired')
@@ -47,18 +48,22 @@ log.transports.file.level = "info"
 ////////////////////////////////
 log.info('--------Startup Tasks--------')
 TemplateManager.load()
+log.info('after template load')
 checkUpdatesIfAllowed()
+log.info('after check for updates')
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
   prepend: (defaultActions, params, browserWindow) => []
 })
+log.info('after contextMenu')
 setupI18n(SETTINGS)
-const { isDirty, emptyFileContents, displayFileName } = require('./main_modules/helpers') // i18n has to happen before this
+log.info('after setupi18n')
 
 ////////////////////////////////
 ////     Bug Reporting    //////
 ////////////////////////////////
 if (NODE_ENV !== 'dev') {
+  log.info('set uncaughtException error handling')
   process.on('uncaughtException', function (err) {
     log.error(err)
     rollbar.error(err, function(sendErr, data) {

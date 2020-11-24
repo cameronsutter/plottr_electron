@@ -1,29 +1,17 @@
-const path = require('path');
-const {
-  dialog,
-  app,
-} = require('electron');
-const i18n = require('format-message');
+const path = require('path')
+const { dialog, app } = require('electron')
+const i18n = require('format-message')
 const log = require('electron-log')
-const { is } = require('electron-util');
-const { rollbar } = require('./rollbar');
-const {
-  TRIAL_MODE,
-  NODE_ENV,
-} = require('./constants');
+const { is } = require('electron-util')
+const { rollbar } = require('./rollbar')
+const { TRIAL_MODE, NODE_ENV } = require('./constants')
 const UpdateManager = require('./update_manager')
-const SETTINGS = require('./settings');
-const {
-  checkForActiveLicense,
-} = require('./license_checker');
+const SETTINGS = require('./settings')
+const { checkForActiveLicense } = require('./license_checker')
 const FileManager = require('./file_manager')
-const { emptyFileContents } = require('./helpers');
-const {
-  openWindow,
-  preventsQuitting,
-  windows,
-} = require('./windows');
-const { openDashboardWindow } = require('./windows/dashboard');
+const { emptyFileContents } = require('./helpers')
+const { openWindow, preventsQuitting, windows } = require('./windows')
+const { openDashboardWindow } = require('./windows/dashboard')
 
 let checkedForActiveLicense = false
 function checkUpdatesIfAllowed () {
@@ -150,6 +138,7 @@ function gracefullyQuit () {
 }
 
 function openRecentFiles (fileToOpen) {
+  log.info('openRecentFiles. file to open?', fileToOpen)
   // open-file for windows
   if (is.windows && process.argv.length == 2 && NODE_ENV != 'dev') {
     const param = process.argv[1]
@@ -165,6 +154,7 @@ function openRecentFiles (fileToOpen) {
     fileToOpen = null
   } else {
     let openFiles = FileManager.listOpenFiles()
+    log.info('openRecentFiles. openFiles.length', openFiles.length)
     if (openFiles.length) {
       openFiles.forEach(f => openWindow(f))
     } else {

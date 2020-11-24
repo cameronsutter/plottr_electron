@@ -1,33 +1,19 @@
-const path = require('path');
-const fs = require('fs');
-const {
-  screen,
-  app,
-  shell,
-  BrowserWindow,
-} = require('electron');
+const path = require('path')
+const fs = require('fs')
+const { screen, app, shell, BrowserWindow } = require('electron')
 const windowStateKeeper = require('electron-window-state')
 const log = require('electron-log')
-const { reject } = require('lodash');
-const {
-  askToSave,
-} = require('../utils');
+const { reject } = require('lodash')
+const { askToSave } = require('../utils')
 const FileManager = require('../file_manager')
-const {
-  isDirty,
-  filePrefix,
-  displayFileName,
-} = require('../helpers');
+const { isDirty, filePrefix, displayFileName } = require('../helpers')
 const UpdateManager = require('../update_manager')
 const { backupFile } = require('../backup')
-const { rollbar } = require('../rollbar');
-const {
-  NODE_ENV,
-  TRIAL_MODE,
-} = require('../constants');
-const { getDaysLeftInTrial } = require('../trial_manager');
+const { rollbar } = require('../rollbar')
+const { NODE_ENV, TRIAL_MODE } = require('../constants')
+const { getDaysLeftInTrial } = require('../trial_manager')
 
-const windows = [];
+const windows = []
 
 // mixpanel tracking
 let launchSent = false
@@ -37,6 +23,7 @@ function getWindowById(id) {
 }
 
 function openWindow (fileName, jsonData, importFrom) {
+  log.info('openWindow', fileName)
   // Load the previous state with fallback to defaults
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
@@ -133,6 +120,7 @@ function openWindow (fileName, jsonData, importFrom) {
 
   try {
     let json = jsonData ? jsonData : JSON.parse(fs.readFileSync(fileName, 'utf-8'))
+    log.info('openWindow. json?', !!json)
     app.addRecentDocument(fileName)
     FileManager.open(fileName)
     backupFile(fileName, json, (err) => {

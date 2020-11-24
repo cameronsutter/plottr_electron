@@ -4,8 +4,8 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "characters",
-    "darkMode": false,
+    "currentView": "timeline",
+    "darkMode": true,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",

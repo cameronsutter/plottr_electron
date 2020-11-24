@@ -12,6 +12,7 @@ const { backupFile } = require('../backup')
 const { rollbar } = require('../rollbar')
 const { NODE_ENV, TRIAL_MODE } = require('../constants')
 const { getDaysLeftInTrial } = require('../trial_manager')
+const SETTINGS = require('../settings')
 
 const windows = []
 

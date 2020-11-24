@@ -1,1 +1,1 @@
-Copyright 2016 C. Louis S. (Cameron Sutter)
+Copyright 2016-2020 Fictional Devices LLC

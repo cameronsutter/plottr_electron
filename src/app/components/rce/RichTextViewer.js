@@ -18,7 +18,7 @@ const RichTextViewer = (props) => {
 
   if (!value) return <span/>
   if (!value.length) return <span/>
-  if (value.length == 1 && value[0].children[0].text == '') return <span/>
+  if (value.length == 1 && value[0].children.length === 1 && value[0].children[0].text == '') return <span/>
 
   return <Slate editor={editor} value={value} key={key}>
     <div className={cx('slate-editor__wrapper', props.className, {readonly: true})}>

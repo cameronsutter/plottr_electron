@@ -1,5 +1,5 @@
 const SETTINGS = require('./settings')
-const { autoUpdater } = require('electron-updater')
+const { autoUpdater } = require('electron-differential-updater')
 const log = require('electron-log')
 const { ipcMain } = require('electron')
 

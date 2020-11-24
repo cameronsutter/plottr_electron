@@ -13,11 +13,9 @@ export default class InputModal extends Component {
 
   }
 
-  handleEnter = (event) => {
-    event.stopPropagation()
-    if (event.which === 13) {
-      this.handleOK()
-    }
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.handleOK();
   }
 
   handleEsc = (event) => {
@@ -30,7 +28,7 @@ export default class InputModal extends Component {
     return <Modal show={this.props.isOpen} onHide={this.props.cancel} dialogClassName='center-modal-vertically'>
       <Modal.Header closeButton>{this.props.title}</Modal.Header>
       <Modal.Body>
-        <Form horizontal>
+        <Form horizontal onSubmit={this.onSubmit}>
           <FormGroup>
             <Col sm={8}>
               <FormControl type={this.props.type} ref='input' autoFocus defaultValue='' onChange={this.handleChange} onKeyUp={this.handleEnter}/>

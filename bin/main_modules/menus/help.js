@@ -1,15 +1,12 @@
-const { shell } = require('electron');
-const i18n = require('format-message');
-const SETTINGS = require('../settings');
-const {
-  reloadWindow,
-  windows,
-} = require('../windows');
+const { shell } = require('electron')
+const i18n = require('format-message')
+const SETTINGS = require('../settings')
+const { reloadWindow, windows } = require('../windows')
 const createErrorReport = require('../error_report')
 const enterCustomerServiceCode = require('../customer_service_codes')
-const { getLicenseInfo } = require('../license_checker');
+const { getLicenseInfo } = require('../license_checker')
 
-const USER_INFO = getLicenseInfo();
+const USER_INFO = getLicenseInfo()
 
 function buildHelpMenu () {
   return {
@@ -62,4 +59,4 @@ function buildHelpMenu () {
   }
 }
 
-module.exports = { buildHelpMenu };
+module.exports = { buildHelpMenu }

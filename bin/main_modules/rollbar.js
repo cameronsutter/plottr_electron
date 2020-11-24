@@ -1,9 +1,6 @@
 const { app } = require('electron')
 const Rollbar = require('rollbar')
-const {
-  NODE_ENV,
-  ROLLBAR_ACCESS_TOKEN,
-} = require('./constants');
+const { NODE_ENV, ROLLBAR_ACCESS_TOKEN } = require('./constants')
 const { getLicenseInfo } = require('./license_checker')
 
 function setupRollbar(where, USER) {
@@ -37,8 +34,8 @@ function setupRollbar(where, USER) {
   })
 }
 
-const USER_INFO = getLicenseInfo();
-const rollbar = setupRollbar('main', USER_INFO);
+const USER_INFO = getLicenseInfo()
+const rollbar = setupRollbar('main', USER_INFO)
 
 module.exports = {
   setupRollbar,

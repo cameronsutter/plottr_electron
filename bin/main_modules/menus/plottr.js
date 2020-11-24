@@ -1,31 +1,20 @@
-const i18n = require('format-message');
-const {
-  dialog,
-  app,
-} = require('electron');
-const { machineIdSync } = require('node-machine-id');
-const { openProcessManager } = require('electron-process-manager');
-const { is } = require('electron-util');
-const SETTINGS = require('../settings');
-const { checkUpdatesIfAllowed } = require('../utils');
-const { getLicenseInfo } = require('../license_checker');
-const {
-  TRIAL_MODE,
-  NODE_ENV,
-} = require('../constants');
-const {
-  reloadWindow,
-} = require('../windows');
-const { openAboutWindow } = require('../windows/about');
-const { openBuyWindow } = require('../windows/buy');
-const { openVerifyWindow } = require('../windows/verify');
-const { getDaysLeftInTrial } = require('../trial_manager');
-const {
-  localeNames,
-  setupI18n,
-} = require('../../../locales');
+const i18n = require('format-message')
+const { dialog, app } = require('electron')
+const { machineIdSync } = require('node-machine-id')
+const { openProcessManager } = require('electron-process-manager')
+const { is } = require('electron-util')
+const SETTINGS = require('../settings')
+const { checkUpdatesIfAllowed } = require('../utils')
+const { getLicenseInfo } = require('../license_checker')
+const { TRIAL_MODE, NODE_ENV } = require('../constants')
+const { reloadWindow } = require('../windows')
+const { openAboutWindow } = require('../windows/about')
+const { openBuyWindow } = require('../windows/buy')
+const { openVerifyWindow } = require('../windows/verify')
+const { getDaysLeftInTrial } = require('../trial_manager')
+const { localeNames, setupI18n } = require('../../../locales')
 
-const USER_INFO = getLicenseInfo();
+const USER_INFO = getLicenseInfo()
 
 function buildPlottrMenu () {
   const submenu = [{
@@ -101,10 +90,10 @@ function buildPlottrMenu () {
         .map(([locale, name]) => ({
           label: name,
           click: () => {
-            SETTINGS.set('locale', locale);
-            setupI18n(SETTINGS);
-            require('./').loadMenu();
-            reloadWindow();
+            SETTINGS.set('locale', locale)
+            setupI18n(SETTINGS)
+            require('./').loadMenu()
+            reloadWindow()
           }
         }))
     }
@@ -155,4 +144,4 @@ function buildPlottrMenu () {
   }
 }
 
-module.exports = { buildPlottrMenu };
+module.exports = { buildPlottrMenu }

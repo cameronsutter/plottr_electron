@@ -19,7 +19,7 @@ const windows = []
 let launchSent = false
 
 function getWindowById(id) {
-  return windows.find(window => window.id === id);
+  return windows.find(window => window.id === id)
 }
 
 function openWindow (fileName, jsonData, importFrom) {
@@ -36,7 +36,7 @@ function openWindow (fileName, jsonData, importFrom) {
     defaultHeight: parseInt(height * 0.9),
     path: path.join(app.getPath('userData'), 'stateKeeper'),
     file: stateKeeperFile.slice(-numFileLetters),
-  });
+  })
 
   // Create the browser window.
   let newWindow = new BrowserWindow({
@@ -154,7 +154,7 @@ function openWindow (fileName, jsonData, importFrom) {
 
 function reloadWindow () {
   let win = BrowserWindow.getFocusedWindow()
-  let winObj = getWindowById(win.id);
+  let winObj = getWindowById(win.id)
   if (NODE_ENV !== 'dev') {
     if (isDirty(winObj.state, winObj.lastSave)) {
       askToSave(win, winObj.state, winObj.fileName, win.webContents.reload)
@@ -167,8 +167,8 @@ function reloadWindow () {
 }
 
 function dereferenceWindow (winObj) {
-  const index = windows.findIndex(win => win.id === winObj.id);
-  windows.splice(index, 1);
+  const index = windows.findIndex(win => win.id === winObj.id)
+  windows.splice(index, 1)
   UpdateManager.updateWindows(windows)
 }
 
@@ -180,14 +180,14 @@ function closeWindow (id) {
 let dontQuit = false
 function preventsQuitting(fn) {
   return (...args) => {
-    dontQuit = true;
-    fn(...args);
-    dontQuit = false;
+    dontQuit = true
+    fn(...args)
+    dontQuit = false
   }
 }
 
 function canQuit() {
-  return !dontQuit;
+  return !dontQuit
 }
 
 module.exports = {

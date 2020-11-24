@@ -28,7 +28,7 @@ function checkUpdatesIfAllowed () {
 
   if (!checkedForActiveLicense) {
     log.info('checkUpdatesIfAllowed !checked')
-    checkForActiveLicense(USER_INFO, valid => {
+    checkForActiveLicense(valid => {
       log.info('checkUpdatesIfAllowed callback for checkForActiveLicense. valid?', valid)
       checkedForActiveLicense = true
       if (valid) {

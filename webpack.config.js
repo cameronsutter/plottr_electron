@@ -61,7 +61,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
-    modules: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/expired', 'src/dashboard'],
+    modules: ['node_modules', 'src/app', 'src/verify', 'src/css', 'src/expired', 'src/dashboard', 'test'],
   },
   target: 'electron-renderer',
   externals: [

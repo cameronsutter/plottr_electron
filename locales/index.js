@@ -25,7 +25,7 @@ function setupI18n(settings) {
 
   i18n.setup({
     translations: locales,
-    locale: settings.get('locale') || appFRD.getLocale() || 'en'
+    locale: settings.get('locale') || appFRD.getLocale() || 'en',
   })
 }
 

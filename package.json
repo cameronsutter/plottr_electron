@@ -27,7 +27,8 @@
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder",
     "dist:all": "npm run pack && electron-builder -mw",
     "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" && npm run generate-flipped",
-    "generate-flipped": "node ./locales/build-flipped-locale.js"
+    "generate-flipped": "node ./locales/build-flipped-locale.js",
+    "test": "jest src bin shared"
   },
   "dependencies": {
     "acorn": "^6.4.1",
@@ -88,12 +89,15 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.9",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.12.1",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "babel-core": "^6.26.0",
+    "babel-jest": "^26.6.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-module-resolver": "^4.0.0",
     "changelog": "^1.4.2",
     "css-loader": "^3.0.0",
     "devtron": "^1.2.1",
@@ -102,13 +106,17 @@
     "electron-devtools-installer": "^3.0.0",
     "electron-notarize": "^1.0.0",
     "electron-reload": "^1.5.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "file-loader": "^0.8.5",
     "flip": "^1.0.0",
     "format-message-cli": "^6.2.1",
+    "jest": "^26.6.3",
     "node-sass": "^4.14.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.13.0",
     "url-loader": "^2.3.0",
+    "uuid": "^8.3.1",
     "webpack": "^4.35.0",
     "webpack-bundle-analyzer": "^3.7.0",
     "webpack-cli": "^3.3.5"

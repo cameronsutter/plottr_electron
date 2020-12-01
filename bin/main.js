@@ -18,10 +18,17 @@ const { loadMenu } = require('./main_modules/menus')
 const { isDirty, emptyFileContents, displayFileName } = require('./main_modules/helpers')
 const { setupI18n } = require('../locales')
 const { openWindow, canQuit, windows } = require('./main_modules/windows')
-const { closeExpiredWindow } = require('./main_modules/windows/expired')
+const {
+  closeExpiredWindow,
+  openExpiredWindow,
+} = require('./main_modules/windows/expired')
 const { openBuyWindow } = require('./main_modules/windows/buy')
 const { openVerifyWindow, closeVerifyWindow } = require('./main_modules/windows/verify')
-const { NODE_ENV, TRIAL_MODE } = require('./main_modules/constants')
+const {
+  NODE_ENV,
+  setTrialMode,
+  getTrialMode,
+} = require('./main_modules/constants')
 const { getDarkMode } = require('./main_modules/theme')
 const {
   gracefullyNotSave,
@@ -223,7 +230,7 @@ ipcMain.on('export', (event, options, winId) => {
 ipcMain.on('start-free-trial', () => {
   closeVerifyWindow();
   startTheTrial(daysLeft => {
-    TRIAL_MODE = true
+    setTrialMode(true);
     SETTINGS.set('trialMode', true)
     loadMenu()
     askToCreateFile()
@@ -293,8 +300,8 @@ app.on('will-quit', () => {
 function licenseVerified (ask) {
   closeVerifyWindow()
   USER_INFO = getLicenseInfo()
-  if (TRIAL_MODE) {
-    TRIAL_MODE = false
+  if (getTrialMode()) {
+    setTrialMode(false);
     SETTINGS.set('trialMode', false)
     turnOffTrialMode()
     loadMenu()
@@ -313,10 +320,10 @@ function checkLicense (callback) {
   }
 
   if (Object.keys(USER_INFO).length) {
-    if (TRIAL_MODE) {
+    if (getTrialMode()) {
       // still in trial mode
       if (USER_INFO.success) {
-        TRIAL_MODE = false
+        setTrialMode(false);
         SETTINGS.set('trialMode', false)
         turnOffTrialMode()
       }
@@ -331,7 +338,7 @@ function checkLicense (callback) {
   } else {
     // no license yet, check for trial info
     checkTrialInfo(daysLeft => {
-      TRIAL_MODE = true
+      setTrialMode(true);
       SETTINGS.set('trialMode', true)
       callback()
       openRecentFiles(fileToOpen)

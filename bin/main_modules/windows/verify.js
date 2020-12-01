@@ -1,6 +1,6 @@
 const path = require('path')
 const { BrowserWindow } = require('electron')
-const { closeWindow, preventsQuitting } = require('./')
+const { closeWindow, preventsQuitting, windows } = require('./')
 const { filePrefix } = require('../helpers')
 const SETTINGS = require('../settings')
 
@@ -28,9 +28,9 @@ const openVerifyWindow = preventsQuitting(() => {
 })
 
 function closeVerifyWindow() {
-  if (verifiedWindow == null) return
-  closeWindow(verifiedWindow.id)
-  verifiedWindow = null
+  if (verifyWindow == null) return
+  verifyWindow.close();
+  verifyWindow = null
 }
 
 module.exports = {

@@ -1,9 +1,9 @@
 const prompt = require('electron-prompt')
-const { shell } = require('electron')
+const { shell, app } = require('electron')
 const i18n = require('format-message')
 const storage = require('electron-json-storage')
 const log = require('electron-log')
-const { RECENT_FILES_PATH, BACKUP_BASE_PATH } = require('./config_paths')
+const { RECENT_FILES_PATH, BACKUP_BASE_PATH, USER_INFO_PATH } = require('./config_paths')
 const { checkTrialInfo, extendWithReset } = require('./trial_manager')
 const SETTINGS = require('./settings')
 const { setupI18n } = require('../../locales');
@@ -37,14 +37,16 @@ function handleCustomerServiceCode (code) {
     case "xsu7wb":
       // extend free trial (one time)
       const ZhuLiDoTheThing = () => {
-        extendWithReset(30, ()=>{})
+        extendWithReset(30)
       }
       checkTrialInfo(ZhuLiDoTheThing,()=>{}, ZhuLiDoTheThing)
       break;
 
     case "bafa09":
       // delete recentFiles file
-      storage.remove(RECENT_FILES_PATH, error => {log.warn(error)})
+      storage.remove(RECENT_FILES_PATH, error => {
+        if (error) log.warn(error)
+      })
       break;
 
     case "941ff8":
@@ -90,6 +92,13 @@ function handleCustomerServiceCode (code) {
     case "d0e681":
       // turn off diagnose update problems
       SETTINGS.set('diagnoseUpdate', false)
+      break;
+
+    case "329fd4391c10d":
+      // nuke the license info
+      storage.remove(USER_INFO_PATH, error => {
+        if (error) log.warn(error)
+      })
       break;
 
     default:

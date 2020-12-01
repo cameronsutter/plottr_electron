@@ -33,7 +33,7 @@ const openExpiredWindow = preventsQuitting(() => {
 
 function closeExpiredWindow () {
   if (expiredWindow == null) return;
-  closeWindow(expiredWindow.id);
+  expiredWindow.close();
   expiredWindow = null;
 }
 

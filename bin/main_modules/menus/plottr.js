@@ -6,17 +6,18 @@ const { is } = require('electron-util')
 const SETTINGS = require('../settings')
 const { checkUpdatesIfAllowed } = require('../utils')
 const { getLicenseInfo } = require('../license_checker')
-const { TRIAL_MODE, NODE_ENV } = require('../constants')
+const { NODE_ENV } = require('../constants')
 const { reloadWindow } = require('../windows')
 const { openAboutWindow } = require('../windows/about')
 const { openBuyWindow } = require('../windows/buy')
 const { openVerifyWindow } = require('../windows/verify')
-const { getDaysLeftInTrial } = require('../trial_manager')
+const { getDaysLeftInTrial, getTrialModeStatus } = require('../trial_manager')
 const { localeNames, setupI18n } = require('../../../locales')
 
 const USER_INFO = getLicenseInfo()
 
 function buildPlottrMenu () {
+  const trialMode = getTrialModeStatus();
   const submenu = [{
     label: i18n('About Plottr'),
     click: openAboutWindow,
@@ -25,7 +26,7 @@ function buildPlottrMenu () {
     click: checkUpdatesIfAllowed,
     visible: SETTINGS.get('canGetUpdates'),
   }]
-  if (TRIAL_MODE) {
+  if (trialMode) {
     submenu.push(
       {
         type: 'separator',
@@ -57,7 +58,7 @@ function buildPlottrMenu () {
   submenu.push(
     {
       label: i18n('View License Key'),
-      visible: !TRIAL_MODE,
+      visible: !trialMode,
       click: () => {
         const licenseKey = USER_INFO.licenseKey
         if (licenseKey) {
@@ -71,7 +72,7 @@ function buildPlottrMenu () {
     },
     {
       label: i18n('View Device ID'),
-      visible: !TRIAL_MODE,
+      visible: !trialMode,
       click: () => {
         const id = machineIdSync(true)
         const title = i18n('Device ID')

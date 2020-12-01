@@ -10,8 +10,8 @@ const { isDirty, filePrefix, displayFileName } = require('../helpers')
 const UpdateManager = require('../update_manager')
 const { backupFile } = require('../backup')
 const { rollbar } = require('../rollbar')
-const { NODE_ENV, TRIAL_MODE } = require('../constants')
-const { getDaysLeftInTrial } = require('../trial_manager')
+const { NODE_ENV } = require('../constants')
+const { getDaysLeftInTrial, getTrialModeStatus } = require('../trial_manager')
 const SETTINGS = require('../settings')
 
 const windows = []
@@ -74,7 +74,7 @@ function openWindow (fileName, jsonData, importFrom) {
   newWindow.webContents.on('did-finish-load', () => {
     // launch wouldn't be sent if they have another file open
     if (!launchSent) {
-      newWindow.webContents.send('send-launch', app.getVersion(), TRIAL_MODE, getDaysLeftInTrial())
+      newWindow.webContents.send('send-launch', app.getVersion(), getTrialModeStatus(), getDaysLeftInTrial())
     }
   })
 

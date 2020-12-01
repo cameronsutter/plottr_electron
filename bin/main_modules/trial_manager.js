@@ -2,11 +2,13 @@ const storage = require('electron-json-storage')
 const { TRIAL_INFO_PATH } = require('./config_paths')
 const writeToEnv = require('./env')
 const { rollbar } = require('./rollbar');
+const SETTINGS = require('./settings');
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
 let daysLeft = 0;
 let info = {}
+storage.remove(TRIAL_INFO_PATH)
 
 function checkTrialInfo (hasStartedCallback, hasntStartedCallback, expiredCallBack) {
   storage.has(TRIAL_INFO_PATH, function (err, hasKey) {
@@ -84,27 +86,29 @@ function daysLeftOfTrial (endsAt) {
 }
 
 function turnOffTrialMode () {
-  if (process.env.NODE_ENV !== 'dev') {
-    process.env.TRIALMODE = 'false'
-  }
-  writeToEnv('TRIALMODE', 'false')
+  SETTINGS.set('trialMode', false);
 }
 
 function turnOnTrialMode () {
-  process.env.TRIALMODE = 'true'
-  writeToEnv('TRIALMODE', 'true')
+  SETTINGS.set('trialMode', true);
 }
 
 function getDaysLeftInTrial() {
   return daysLeft;
 }
 
+function getTrialModeStatus() {
+  return SETTINGS.get('trialMode') || false;
+}
+
 module.exports = { 
   checkTrialInfo, 
+  turnOnTrialMode,
   turnOffTrialMode, 
   startTheTrial, 
   extendTheTrial, 
   extendWithReset,
   getDaysLeftInTrial,
+  getTrialModeStatus,
 }
 

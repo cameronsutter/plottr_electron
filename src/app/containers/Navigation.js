@@ -11,9 +11,9 @@ import cx from 'classnames'
 import UpdateNotifier from '../components/UpdateNotifier'
 import { ipcRenderer } from 'electron'
 import Beamer from '../components/Beamer'
-import SETTINGS from '../../common/utils/settings';
+import SETTINGS from '../../common/utils/settings'
 
-const trialMode = SETTINGS.get('trialMode');
+const trialMode = SETTINGS.get('trialMode')
 
 class Navigation extends Component {
   constructor (props) {
@@ -84,7 +84,7 @@ class Navigation extends Component {
         { this.renderTrialLinks() }
         <Beamer/>
       </div>
-      {trialMode ? null : <UpdateNotifier/>}
+      <UpdateNotifier/>
     </nav>
   }
   // <div className='navbar-form navbar-right' style={{marginRight: '15px'}}>

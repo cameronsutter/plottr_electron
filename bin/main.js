@@ -25,10 +25,7 @@ const { loadMenu } = require('./main_modules/menus')
 const { isDirty, emptyFileContents, displayFileName } = require('./main_modules/helpers')
 const { setupI18n } = require('../locales')
 const { openWindow, canQuit, windows } = require('./main_modules/windows')
-const {
-  closeExpiredWindow,
-  openExpiredWindow,
-} = require('./main_modules/windows/expired')
+const { closeExpiredWindow, openExpiredWindow } = require('./main_modules/windows/expired')
 const { openBuyWindow } = require('./main_modules/windows/buy')
 const { openVerifyWindow, closeVerifyWindow } = require('./main_modules/windows/verify')
 const { NODE_ENV } = require('./main_modules/constants')
@@ -233,28 +230,22 @@ ipcMain.on('export', (event, options, winId) => {
 ipcMain.on('start-free-trial', () => {
   closeVerifyWindow();
   startTheTrial(daysLeft => {
-    turnOnTrialMode();
+    turnOnTrialMode()
     loadMenu()
     askToCreateFile()
   })
 })
 
 ipcMain.on('extend-trial', (event, days) => {
-  extendTheTrial(days, (error) => {
-    if (error) {
-      closeExpiredWindow();
-      dialog.showErrorBox(i18n('Error'), i18n('Extending your trial didn\'t work. Let\'s try again.'))
-      openExpiredWindow()
+  extendTheTrial(days, () => {
+    closeExpiredWindow()
+    loadMenu()
+    if (windows.length) {
+      windows.forEach(winObj => {
+        winObj.window.setTitle(displayFileName(winObj.fileName))
+      })
     } else {
-      closeExpiredWindow();
-      loadMenu()
-      if (windows.length) {
-        windows.forEach(winObj => {
-          winObj.window.setTitle(displayFileName(winObj.fileName))
-        })
-      } else {
-        openRecentFiles(fileToOpen)
-      }
+      openRecentFiles(fileToOpen)
     }
   })
 })
@@ -320,7 +311,7 @@ function checkLicense (callback) {
   }
 
   if (Object.keys(USER_INFO).length) {
-    if (getTrialMode()) {
+    if (getTrialModeStatus()) {
       // still in trial mode
       if (USER_INFO.success) {
         turnOffTrialMode()
@@ -336,7 +327,7 @@ function checkLicense (callback) {
   } else {
     // no license yet, check for trial info
     checkTrialInfo(daysLeft => {
-      turnOnTrialMode();
+      turnOnTrialMode()
       callback()
       openRecentFiles(fileToOpen)
     }, openVerifyWindow, openExpiredWindow)

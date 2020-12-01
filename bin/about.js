@@ -1,16 +1,14 @@
 const { remote } = require('electron')
 const app = remote.app
-const path = require('path')
-const { setupI18n } = require('../locales');
-const SETTINGS = require('./settings');
-const { getTrialModeStatus } = require('./main_modules/trial_manager');
+const { setupI18n } = require('../locales')
+const SETTINGS = require('./settings')
+const { getTrialModeStatus } = require('./main_modules/trial_manager')
 
-require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
-const trialMode = getTrialModeStatus();
+const trialMode = getTrialModeStatus()
 var versionString = i18n('Version') + ' '
 if (trialMode) versionString = i18n('TRIAL Version') + ' '
 
-setupI18n(SETTINGS);
+setupI18n(SETTINGS)
 
 var p = document.getElementById('versionP')
 var versionNode = document.createTextNode(versionString + app.getVersion())

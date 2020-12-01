@@ -1,33 +1,25 @@
-const storage = require('electron-json-storage')
+const Store = require('electron-store')
 const { TRIAL_INFO_PATH } = require('./config_paths')
-const writeToEnv = require('./env')
-const { rollbar } = require('./rollbar');
-const SETTINGS = require('./settings');
+const trialInfo = new Store({name: TRIAL_INFO_PATH})
+const SETTINGS = require('./settings')
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
-let daysLeft = 0;
-let info = {}
-storage.remove(TRIAL_INFO_PATH)
+let daysLeft = 0
 
 function checkTrialInfo (hasStartedCallback, hasntStartedCallback, expiredCallBack) {
-  storage.has(TRIAL_INFO_PATH, function (err, hasKey) {
-    if (err) log.error(err)
-    if (hasKey) {
-      storage.get(TRIAL_INFO_PATH, function (err, data) {
-        if (err) log.error(err)
-        info = data
-        daysLeft = daysLeftOfTrial(data.endsAt)
-        if (daysLeft <= 0) {
-          expiredCallBack()
-        } else {
-          hasStartedCallback(daysLeft)
-        }
-      })
+  if (trialInfo.size) {
+    // has started
+    daysLeft = daysLeftOfTrial(trialInfo.get('endsAt'))
+    if (daysLeft <= 0) {
+      expiredCallBack()
     } else {
-      hasntStartedCallback()
+      hasStartedCallback(daysLeft)
     }
-  })
+  } else {
+    // hasn't started
+    hasntStartedCallback()
+  }
 }
 
 function startTheTrial (callback) {
@@ -36,40 +28,36 @@ function startTheTrial (callback) {
   const startsAt = day.getTime()
   const end = addDays(startsAt, TRIAL_LENGTH)
   const endsAt = end.getTime()
-  info = {startsAt, endsAt, extensions: EXTENSIONS}
-  storage.set(TRIAL_INFO_PATH, info, function (err) {
-    if (err) {
-      log.error(err)
-      rollbar.warn(err)
-    }
-    daysLeft = TRIAL_LENGTH
-    callback(TRIAL_LENGTH)
-  })
+
+  trialInfo.set('startsAt', startsAt)
+  trialInfo.set('endsAt', endsAt)
+  trialInfo.set('extensions', EXTENSIONS)
+
+  daysLeft = TRIAL_LENGTH
+  callback(TRIAL_LENGTH)
 }
 
 function extendTheTrial (days, callback) {
-  const newEnd = addDays(info.endsAt, days)
-  info = {
-    ...info,
-    endsAt: newEnd.getTime(),
-    extensions: --info.extensions,
-  }
-  daysLeft = daysLeftOfTrial(newEnd);
-  storage.set(TRIAL_INFO_PATH, info, callback)
+  const newEnd = addDays(trialInfo.get('endsAt'), days)
+
+  trialInfo.set('endsAt', newEnd.getTime())
+  trialInfo.set('extensions', --trialInfo.get('extensions'))
+
+  daysLeft = daysLeftOfTrial(newEnd)
+  callback()
 }
 
 function extendWithReset (days, callback) {
-  if (info.hasBeenReset) return
+  if (trialInfo.get('hasBeenReset')) return
 
-  const newEnd = addDays(info.endsAt, days)
-  info = {
-    ...info,
-    endsAt: newEnd.getTime(),
-    extensions: EXTENSIONS,
-    hasBeenReset: true
-  }
-  daysLeft = daysLeftOfTrial(newEnd);
-  storage.set(TRIAL_INFO_PATH, info, callback)
+  const newEnd = addDays(trialInfo.get('endsAt'), days)
+
+  trialInfo.set('endsAt', newEnd.getTime())
+  trialInfo.set('extensions', EXTENSIONS)
+  trialInfo.set('hasBeenReset', true)
+
+  daysLeft = daysLeftOfTrial(newEnd)
+  callback()
 }
 
 function addDays (date, days) {
@@ -86,27 +74,27 @@ function daysLeftOfTrial (endsAt) {
 }
 
 function turnOffTrialMode () {
-  SETTINGS.set('trialMode', false);
+  SETTINGS.set('trialMode', false)
 }
 
 function turnOnTrialMode () {
-  SETTINGS.set('trialMode', true);
+  SETTINGS.set('trialMode', true)
 }
 
 function getDaysLeftInTrial() {
-  return daysLeft;
+  return daysLeft
 }
 
 function getTrialModeStatus() {
-  return SETTINGS.get('trialMode') || false;
+  return SETTINGS.get('trialMode') || false
 }
 
-module.exports = { 
-  checkTrialInfo, 
+module.exports = {
+  checkTrialInfo,
   turnOnTrialMode,
-  turnOffTrialMode, 
-  startTheTrial, 
-  extendTheTrial, 
+  turnOffTrialMode,
+  startTheTrial,
+  extendTheTrial,
   extendWithReset,
   getDaysLeftInTrial,
   getTrialModeStatus,

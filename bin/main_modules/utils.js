@@ -4,7 +4,7 @@ const i18n = require('format-message')
 const log = require('electron-log')
 const { is } = require('electron-util')
 const { rollbar } = require('./rollbar')
-const { TRIAL_MODE, NODE_ENV } = require('./constants')
+const { NODE_ENV } = require('./constants')
 const UpdateManager = require('./update_manager')
 const SETTINGS = require('./settings')
 const { checkForActiveLicense } = require('./license_checker')
@@ -12,11 +12,12 @@ const FileManager = require('./file_manager')
 const { emptyFileContents } = require('./helpers')
 const { openWindow, preventsQuitting, windows } = require('./windows')
 const { openDashboardWindow } = require('./windows/dashboard')
+const { getTrialModeStatus } = require('./trial_manager')
 
 let checkedForActiveLicense = false
 function checkUpdatesIfAllowed () {
   if (NODE_ENV == 'dev') return
-  if (TRIAL_MODE) {
+  if (getTrialModeStatus()) {
     UpdateManager.checkForUpdates(windows)
     return
   }

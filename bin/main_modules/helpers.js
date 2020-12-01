@@ -6,11 +6,12 @@ const log = require('electron-log')
 const { app, BrowserWindow, dialog } = require('electron')
 const { is } = require('electron-util');
 const emptyFile = require('./empty_file')
+const { NODE_ENV } = require('./constants');
+const SETTINGS = require('./settings');
 const {
-  TRIAL_MODE,
-  NODE_ENV,
-} = require('./constants');
-const { getDaysLeftInTrial } = require('./trial_manager');
+  getDaysLeftInTrial,
+  getTrialModeStatus,
+} = require('./trial_manager');
 
 function emptyFileContents (name) {
   return emptyFile(name)
@@ -58,7 +59,7 @@ function filePrefix(dirname) {
 
 function displayFileName (path) {
   var stringBase = 'Plottr'
-  if (TRIAL_MODE) stringBase += ' — ' + i18n('TRIAL Version') + ' (' + i18n('{days} days remaining', {days: getDaysLeftInTrial()}) + ')'
+  if (getTrialModeStatus()) stringBase += ' — ' + i18n('TRIAL Version') + ' (' + i18n('{days} days remaining', {days: getDaysLeftInTrial()}) + ')'
   var matches = path.match(/.*\/(.*\.pltr)/)
   if (matches) stringBase += ` — ${matches[1]}`
   if (NODE_ENV == 'dev') stringBase += ' - (DEV)'

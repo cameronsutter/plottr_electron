@@ -6,7 +6,14 @@ const { is } = require('electron-util')
 const contextMenu = require('electron-context-menu')
 const migrateIfNeeded = require('./main_modules/migration_manager')
 const Exporter = require('./main_modules/exporter')
-const { checkTrialInfo, turnOffTrialMode, startTheTrial, extendTheTrial } = require('./main_modules/trial_manager')
+const {
+  checkTrialInfo,
+  turnOffTrialMode,
+  startTheTrial,
+  extendTheTrial,
+  getTrialModeStatus,
+  turnOnTrialMode,
+} = require('./main_modules/trial_manager')
 const { backupFile } = require('./main_modules/backup')
 const { rollbar } = require('./main_modules/rollbar')
 const SETTINGS = require('./main_modules/settings')
@@ -24,11 +31,7 @@ const {
 } = require('./main_modules/windows/expired')
 const { openBuyWindow } = require('./main_modules/windows/buy')
 const { openVerifyWindow, closeVerifyWindow } = require('./main_modules/windows/verify')
-const {
-  NODE_ENV,
-  setTrialMode,
-  getTrialMode,
-} = require('./main_modules/constants')
+const { NODE_ENV } = require('./main_modules/constants')
 const { getDarkMode } = require('./main_modules/theme')
 const {
   gracefullyNotSave,
@@ -230,8 +233,7 @@ ipcMain.on('export', (event, options, winId) => {
 ipcMain.on('start-free-trial', () => {
   closeVerifyWindow();
   startTheTrial(daysLeft => {
-    setTrialMode(true);
-    SETTINGS.set('trialMode', true)
+    turnOnTrialMode();
     loadMenu()
     askToCreateFile()
   })
@@ -300,9 +302,7 @@ app.on('will-quit', () => {
 function licenseVerified (ask) {
   closeVerifyWindow()
   USER_INFO = getLicenseInfo()
-  if (getTrialMode()) {
-    setTrialMode(false);
-    SETTINGS.set('trialMode', false)
+  if (getTrialModeStatus()) {
     turnOffTrialMode()
     loadMenu()
     if (ask) askToOpenOrCreate()
@@ -323,8 +323,6 @@ function checkLicense (callback) {
     if (getTrialMode()) {
       // still in trial mode
       if (USER_INFO.success) {
-        setTrialMode(false);
-        SETTINGS.set('trialMode', false)
         turnOffTrialMode()
       }
       callback()
@@ -338,8 +336,7 @@ function checkLicense (callback) {
   } else {
     // no license yet, check for trial info
     checkTrialInfo(daysLeft => {
-      setTrialMode(true);
-      SETTINGS.set('trialMode', true)
+      turnOnTrialMode();
       callback()
       openRecentFiles(fileToOpen)
     }, openVerifyWindow, openExpiredWindow)

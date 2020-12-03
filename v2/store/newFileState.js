@@ -51,21 +51,21 @@ export function emptyFile (name, version) {
     }
   }
   return {
-    series: name ? Object.assign({}, newFileSeries, {name: name}) : newFileSeries,
-    books: books,
-    beats: newFileBeats,
-    chapters: newFileChapters,
     ui: newFileUI,
     file: Object.assign({}, newFileFile, {version}),
+    series: name ? Object.assign({}, newFileSeries, {name: name}) : newFileSeries,
+    books: books,
     characters: newFileCharacters,
-    places: newFilePlaces,
-    tags: newFileTags,
+    chapters: newFileChapters,
     cards: newFileCards,
     lines: newFileLines,
-    seriesLines: newFileSeriesLines,
     customAttributes: newFileCustomAttributes,
+    places: newFilePlaces,
+    tags: newFileTags,
     notes: newFileNotes,
-    images: newFileImages,
+    beats: newFileBeats,
+    seriesLines: newFileSeriesLines,
     categories: newFileCategories,
+    images: newFileImages,
   }
 }

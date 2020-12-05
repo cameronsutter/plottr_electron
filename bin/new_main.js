@@ -1,12 +1,11 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog,
   nativeTheme, globalShortcut, shell, screen } = require('electron')
-const fs = require('fs')
 const path = require('path')
 const log = require('electron-log')
 const { is } = require('electron-util')
 const contextMenu = require('electron-context-menu')
 const windowStateKeeper = require('electron-window-state')
-const setupRollbar = require('./main_modules/rollbar')
+const { setupRollbar } = require('./main_modules/rollbar')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
@@ -61,9 +60,6 @@ ipcMain.on('pls-open-window', (event, filePath, jsonData) => {
 ipcMain.on('pls-fetch-state', function (event, id) {
   var win = windows.find(w => w.id == id)
   if (win) {
-    win.browserWindow.setTitle(displayFileName(win.filePath))
-    win.browserWindow.setRepresentedFilename(win.filePath)
-
     event.sender.send('state-fetched', win.filePath, darkMode, windows.length)
   }
 })
@@ -135,13 +131,6 @@ function openWindow (filePath) {
 
 function dereferenceWindow (winObj) {
   windows = windows.filter(win => win.id != winObj.id)
-}
-
-// TODO: days left in trial mode?
-function displayFileName (filePath) {
-  const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
-  const baseFileName = ` - ${path.basename(filePath)}`
-  return `Plottr${baseFileName}${devMessage}`
 }
 
 // TODO: this could be in it's own module

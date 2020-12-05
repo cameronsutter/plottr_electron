@@ -1,4 +1,5 @@
 import Store from 'electron-store'
+import { ipcRenderer } from 'electron'
 import { useState, useEffect } from 'react'
 import { TRIAL_INFO_PATH, USER_INFO_PATH, KNOWN_FILES_PATH, CUSTOM_TEMPLATES_PATH, TEMPLATES_PATH, TMP_PATH } from './config_paths'
 import SETTINGS from './settings'
@@ -15,7 +16,7 @@ export const templatesStore = new Store({name: templatesPath, watch: true})
 export const customTemplatesStore = new Store({name: customTemplatesPath, watch: true})
 export const tempFilesStore = new Store({name: tempPath, cwd: 'tmp', watch: true})
 
-function useJsonStore (store) {
+function useJsonStore (store, doesReloadOnIPC) {
   const [info, setInfo] = useState(store.store)
   const [size, setSize] = useState(store.size)
   useEffect(() => {
@@ -24,6 +25,16 @@ function useJsonStore (store) {
       setSize(Object.keys(newVal).length)
     })
     return () => unsubscribe()
+  }, [])
+  useEffect(() => {
+    if (doesReloadOnIPC) {
+      ipcRenderer.on('pls-reload-recents', () => {
+        setInfo(store.get())
+        setSize(store.size)
+      })
+    }
+
+    return () => ipcRenderer.removeAllListeners('pls-reload-recents')
   }, [])
 
   const saveInfoAtKey = (key, data) => {
@@ -50,7 +61,7 @@ export function useLicenseInfo () {
 }
 
 export function useKnownFilesInfo () {
-  return useJsonStore(knownFilesStore)
+  return useJsonStore(knownFilesStore, true)
 }
 
 export function useTemplatesInfo () {

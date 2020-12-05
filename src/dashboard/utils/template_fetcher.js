@@ -15,14 +15,14 @@ const manifestURL = 'https://raw.githubusercontent.com/Plotinator/plottr_templat
 class TemplateFetcher {
 
   constructor (props) {
-    // MIGRATE ONE TIME (needed after 2020.11.11 for the dashboard)
+    // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
     const templates = templatesStore.get(TEMPLATES_ROOT)
     if (templates) {
       templatesStore.clear()
       templatesStore.set(templates)
     }
 
-    // SAME FOR CUSTOM TEMPLATES (needed after 2020.11.11 for the dashboard)
+    // SAME FOR CUSTOM TEMPLATES (needed after 2020.12.1 for the dashboard)
     const customTemplates = customTemplatesStore.get(TEMPLATES_ROOT)
     if (customTemplates) {
       customTemplatesStore.clear()

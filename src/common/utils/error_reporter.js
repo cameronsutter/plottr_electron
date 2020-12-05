@@ -12,6 +12,10 @@ export function setLastAction (action) {
   lastAction = action
 }
 
+export function getLastAction () {
+  return lastAction
+}
+
 export function createErrorReport (error, errorInfo) {
   const body = prepareErrorReport(error, errorInfo)
   const fileName = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)

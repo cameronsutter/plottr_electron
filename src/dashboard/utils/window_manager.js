@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import path from 'path'
+=======
+>>>>>>> save new files to computer
 import { remote, ipcRenderer } from 'electron'
 import t from 'format-message'
 import { knownFilesStore } from '../../common/utils/store_hooks'

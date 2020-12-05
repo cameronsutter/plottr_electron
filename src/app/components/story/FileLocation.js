@@ -6,11 +6,30 @@ import { Form, FormGroup, Col, ControlLabel, Button, Glyphicon } from 'react-boo
 import i18n from 'format-message'
 import * as UIActions from 'actions/ui'
 import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
-import { shell } from 'electron'
+import { shell, remote, ipcRenderer } from 'electron'
+import { removeFromTempFiles } from '../../../common/utils/temp_files'
+import { displayFileName, editKnownFilePath } from '../../../common/utils/known_files'
+const { dialog } = remote
+const win = remote.getCurrentWindow()
 
 class FileLocation extends Component {
   chooseLocation = () => {
-    console.log(this.props.actions)
+    const { file, actions } = this.props
+    const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+    const newFilePath = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save this file?')})
+    if (newFilePath) {
+      // change in redux
+      actions.editFileName(newFilePath)
+      // remove from tmp store
+      removeFromTempFiles(file.fileName)
+      // update in known files
+      editKnownFilePath(file.fileName, newFilePath)
+      // change the window's title
+      win.setRepresentedFilename(newFilePath)
+      win.setTitle(displayFileName(newFilePath))
+      // send event to dashboard
+      ipcRenderer.sendTo(1, 'pls-reload-recents') // TODO: probably won't always be ID 1
+    }
   }
 
   render () {

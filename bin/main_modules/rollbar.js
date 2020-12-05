@@ -1,7 +1,7 @@
 const { app } = require('electron')
 const Rollbar = require('rollbar')
 const { NODE_ENV, ROLLBAR_ACCESS_TOKEN } = require('./constants')
-const { getLicenseInfo } = require('./license_checker')
+const { getLicenseInfo } = require('./license_info')
 
 function setupRollbar(where, USER) {
   let environment = NODE_ENV === 'dev' ? 'development' : 'production'

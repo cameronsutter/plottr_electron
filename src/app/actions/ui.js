@@ -1,7 +1,7 @@
 import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NAVIGATE_TO_BOOK_TIMELINE,
   FILE_SAVED, NEW_FILE, SET_DARK_MODE, CHANGE_CURRENT_TIMELINE, CLEAR_TEMPLATE_FROM_TIMELINE,
   SET_CHARACTER_SORT, SET_PLACE_SORT, SET_CHARACTER_FILTER, EXPAND_TIMELINE, COLLAPSE_TIMELINE, SET_TIMELINE_FILTER,
-  SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM, RESET_TIMELINE, RECORD_SCROLL_POSITION } from 'constants/ActionTypes'
+  SET_PLACE_FILTER, INCREASE_ZOOM, DECREASE_ZOOM, FIT_ZOOM, RESET_ZOOM, RESET_TIMELINE, RECORD_SCROLL_POSITION, EDIT_FILENAME } from 'constants/ActionTypes'
 
 export function changeCurrentView (view) {
   return { type: CHANGE_CURRENT_VIEW, view }
@@ -96,10 +96,10 @@ export function resetTimeline (bookId) {
 }
 
 export function recordScrollPosition ({ x, y }) {
-  return {
-    type: RECORD_SCROLL_POSITION,
-    x,
-    y,
-  }
+  return { type: RECORD_SCROLL_POSITION, x, y }
+}
+
+export function editFileName (newName) {
+  return { type: EDIT_FILENAME, newName }
 }
 

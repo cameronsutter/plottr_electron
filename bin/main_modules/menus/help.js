@@ -4,7 +4,7 @@ const SETTINGS = require('../settings')
 const { reloadWindow, windows } = require('../windows')
 const createErrorReport = require('../error_report')
 const enterCustomerServiceCode = require('../customer_service_codes')
-const { getLicenseInfo } = require('../license_checker')
+const { getLicenseInfo } = require('../license_info')
 
 const USER_INFO = getLicenseInfo()
 

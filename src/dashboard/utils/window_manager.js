@@ -1,8 +1,8 @@
-import fs from 'fs'
-import path from 'path'
 import { remote, ipcRenderer } from 'electron'
-import { knownFilesStore, tempFilesStore } from '../../common/utils/store_hooks'
-import { TEMP_FILES_PATH } from '../../common/utils/config_paths'
+import t from 'format-message'
+import { knownFilesStore } from '../../common/utils/store_hooks'
+import { saveToTempFile } from '../../common/utils/temp_files'
+import { addToKnownFiles } from '../../common/utils/known_files'
 // const { newFileState } = require('pltr/v2')
 // import pltr from 'pltr/v2'
 // const pltr = require('pltr')
@@ -13,10 +13,8 @@ const {
   newFileCharacters, newFilePlaces, newFileTags, newFileCards, newFileLines,
   newFileSeriesLines, newFileCustomAttributes, newFileNotes, newFileImages, newFileCategories,
 } = require('../../../shared/newFileState')
-import t from 'format-message'
 const win = remote.getCurrentWindow()
-const dialog = remote.dialog
-const app = remote.app
+const { dialog, app } = remote
 
 export function openKnownFile (filePath, id) {
   if (id) {
@@ -29,10 +27,10 @@ export function openKnownFile (filePath, id) {
 export function openExistingFile () {
   // ask user where it is
   const properties = [ 'openFile', 'createDirectory' ]
-  const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+  const filters = [{name: t('Plottr project file'), extensions: ['pltr']}]
   const files = dialog.showOpenDialogSync(win, { filters: filters, properties: properties })
   if (files && files.length) {
-    const id = addToKnown(files[0])
+    const id = addToKnownFiles(files[0])
     openKnownFile(files[0], id)
   }
 }
@@ -46,44 +44,11 @@ export function createNew (templateData) {
   }
   try {
     const filePath = saveToTempFile(json)
-    const fileId = addToKnown(filePath)
+    const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)
   } catch (error) {
     throw error
   }
-}
-
-function addToKnown (filePath) {
-  const existingId = Object.keys(knownFilesStore.store).find(id => knownFilesStore.store[id].path == filePath)
-  if (existingId) {
-    return existingId
-  } else {
-    const newId = knownFilesStore.size + 1
-    knownFilesStore.set(`${newId}`, {
-      path: filePath,
-      lastOpened: Date.now()
-    })
-    return newId
-  }
-}
-
-function saveToTempFile (json) {
-  const tempId = tempFilesStore.size + 1
-  const tempName = `${t('Untitled')}${tempId == 1 ? '' : tempId}.pltr`
-  const filePath = path.join(TEMP_FILES_PATH, tempName)
-  tempFilesStore.set(`${tempId}`, {filePath})
-  saveFile(filePath, json)
-  return filePath
-}
-
-function saveFile (filePath, jsonData) {
-  let stringData = ''
-  if (process.env.NODE_ENV == 'development') {
-    stringData = JSON.stringify(jsonData, null, 2)
-  } else {
-    stringData = JSON.stringify(jsonData)
-  }
-  fs.writeFileSync(filePath, stringData)
 }
 
 function emptyFile (name, version) {

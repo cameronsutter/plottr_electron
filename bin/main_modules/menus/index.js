@@ -3,7 +3,7 @@ const i18n = require('format-message');
 const { is } = require('electron-util');
 const createErrorReport = require('../error_report')
 const { askToCreateFile } = require('../utils');
-const { getLicenseInfo } = require('../license_checker')
+const { getLicenseInfo } = require('../license_info')
 const { windows } = require('../windows');
 
 const { buildPlottrMenu } = require('./plottr');

@@ -1,5 +1,5 @@
 const i18n = require('format-message')
-const { app, remote} = require('electron')
+const { app, remote } = require('electron')
 
 const locales = {
   en: require('./en.json'),
@@ -26,6 +26,12 @@ function setupI18n(settings) {
   i18n.setup({
     translations: locales,
     locale: settings.get('locale') || appFRD.getLocale() || 'en',
+    missingTranslation: 'ignore',
+    formats: {
+      date: {
+        monthDay: { month: 'short', day: 'numeric' },
+      }
+    },
   })
 }
 

@@ -23,7 +23,7 @@ export function useSortedKnownFiles (searchTerm) {
 }
 
 function migrateKnownFileStore () {
-  // MIGRATE ONE TIME (needed after 2020.11.11 for the dashboard)
+  // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
   const filesById = knownFilesStore.get('byIds')
   if (filesById && Object.keys(filesById).length) {
     // it's in the old format and we need to migrate

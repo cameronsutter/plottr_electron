@@ -22,10 +22,12 @@ import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
 import Exporter from '../common/exporter/scrivener/v2/exporter'
 import Importer from '../common/importer/snowflake/importer'
-import editorRegistry from './components/rce/editor-registry';
-import { setupI18n } from '../../locales';
+import editorRegistry from './components/rce/editor-registry'
+import { setupI18n } from '../../locales'
+import { focusIsEditable } from './helpers/undo'
+import { displayFileName } from '../common/utils/known_files'
 
-setupI18n(SETTINGS);
+setupI18n(SETTINGS)
 
 require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
 const rollbar = setupRollbar('app.html')
@@ -52,6 +54,9 @@ ipcRenderer.on('state-saved', (_arg) => {
 })
 
 function bootFile (filePath, darkMode, numOpenFiles) {
+  win.setTitle(displayFileName(filePath))
+  win.setRepresentedFilename(filePath)
+
   try {
     // const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
     // migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
@@ -137,14 +142,6 @@ ipcRenderer.on('export-scrivener', (event, filePath) => {
 //   bootFile(result, fileName, true, darkMode, openFiles)
 // })
 
-function focusIsEditable () {
-  if (document.activeElement.tagName == 'INPUT') return true
-  if (document.activeElement.dataset.slateEditor
-    && document.activeElement.dataset.slateEditor == 'true') return true
-
-  return false
-}
-
 // for some reason the electron webContents.undo() and redo() don't affect
 // the slate editors. So we use the editorRegistry, which can be used to lookup
 // editors based on the active dom node, to find the currently active editor and
@@ -155,7 +152,7 @@ ipcRenderer.on('undo', (event) => {
     win.webContents.undo()
     const editor = editorRegistry.getEditor(document.activeElement);
     if (editor != null) {
-      editor.undo();
+      editor.undo()
     }
   } else {
     // custom undo function

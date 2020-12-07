@@ -20,7 +20,8 @@ import log from 'electron-log'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
-import Exporter from '../common/exporter/scrivener/v2/exporter'
+import ScrivenerExporter from '../common/exporter/scrivener/v2/exporter'
+import WordExporter from '../common/exporter/word/exporter'
 import Importer from '../common/importer/snowflake/importer'
 import editorRegistry from './components/rce/editor-registry'
 import { setupI18n } from '../../locales'
@@ -131,9 +132,18 @@ ipcRenderer.on('set-dark-mode', (event, on) => {
   window.document.body.className = on ? 'darkmode' : ''
 })
 
-ipcRenderer.on('export-scrivener', (event, filePath) => {
+ipcRenderer.on('pls-export', (event, options) => {
   const currentState = store.getState()
-  Exporter(currentState.present, filePath)
+  switch (options.type) {
+    case 'scrivener':
+      ScrivenerExporter(currentState.present, options.fileName)
+      break
+    case 'word':
+    default:
+      WordExporter(currentState.present, options)
+      break
+  }
+
 })
 
 // TODO: import from dashboard

@@ -32,16 +32,9 @@ function ExportNavItem (props) {
     }
     const fileName = dialog.showSaveDialogSync(win, {title: label, filters, defaultPath})
     if (fileName) {
-      const options = { fileName, bookId: props.bookId }
+      const options = { fileName, type, bookId: props.bookId }
+      ipcRenderer.sendTo(win.webContents.id, 'pls-export', options) // sends this message to this same process
       MPQ.push('Export', {export_type: type})
-      switch (type) {
-        case 'word':
-          ipcRenderer.send('export', options, win.id)
-          break
-        case 'scrivener':
-          ipcRenderer.sendTo(win.webContents.id, 'export-scrivener', fileName) // sends this message to this same process
-          break
-      }
     }
   }
 

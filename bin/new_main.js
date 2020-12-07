@@ -21,7 +21,6 @@ setupI18n()
 
 let dashboardWindow = null
 let windows = []
-let fileToOpen = null
 
 let darkMode = nativeTheme.shouldUseDarkColors || false
 const filePrefix = is.windows ? __dirname : 'file://' + __dirname

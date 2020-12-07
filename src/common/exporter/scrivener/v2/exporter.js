@@ -12,6 +12,7 @@ import { sortCardsInChapter, cardMapping } from '../../../../app/helpers/cards'
 import { isSeriesSelector } from '../../../../app/selectors/ui'
 import { sortedLinesByBookSelector } from '../../../../app/selectors/lines'
 import serialize from '../../../slate_serializers/to_rtf'
+import { notifyUser } from '../../notifier'
 
 export default function Exporter (state, exportPath) {
   const realPath = exportPath.includes('.scriv') ? exportPath : `${exportPath}.scriv`
@@ -33,7 +34,7 @@ export default function Exporter (state, exportPath) {
     return false
   }
 
-  notifyUser(realPath)
+  notifyUser(realPath, 'scrivener')
 }
 
 function createProjectStructure (exportPath) {
@@ -169,16 +170,6 @@ function createCardBinderItem (binderItem, card, id) {
   data['_attributes']['ID'] = id
   data['Title']['_text'] = card.title
   return cloneDeep(data)
-}
-
-function notifyUser (exportPath) {
-  try {
-    new Notification(i18n('File Exported'), {body: i18n('Your Plottr file was exported to a Scrivener project package'), silent: true})
-  } catch (error) {
-    // ignore
-    // on windows you need something called an Application User Model ID which may not work
-  }
-  shell.showItemInFolder(exportPath)
 }
 
 function remove (exportPath) {

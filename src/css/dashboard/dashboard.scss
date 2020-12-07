@@ -41,6 +41,20 @@ $header-height: 40px;
         padding: 0 4px;
       }
     }
+
+    .nav-3right-buttons {
+      margin-right: 11px;
+      svg {
+        font-size: 22px;
+        margin: 0 5px;
+        vertical-align: bottom;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $neutral-gray-7;
+        }
+      }
+    }
   }
 
   main {

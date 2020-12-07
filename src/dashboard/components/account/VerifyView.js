@@ -91,7 +91,7 @@ export default function VerifyView ({goBack}) {
   return <div className='verify__wrapper text-center'>
     <h1>{t('Please verify your license')}</h1>
     <p className='text-success'>{t('You should have received a license key after your purchase.')}</p>
-    <p className='text-info'>{t('(If not, please email support@getplottr.com)')}</p>
+    <p className='text-info'>{t('(If not, please email support@plottr.com)')}</p>
     <div className='text-center' style={{margin: '16px 0'}}>
       <FormControl type='text' bsSize='large' style={{width: '450px', margin: '12px auto'}} ref={licenseRef} />
       <Button bsStyle='primary' bsSize='large' onClick={handleVerify}>

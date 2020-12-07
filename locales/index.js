@@ -21,11 +21,12 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 function setupI18n(settings) {
+  const userSetLocale = settings ? settings.get('locale') : null
   const appFRD = app || (remote && remote.app)
 
   i18n.setup({
     translations: locales,
-    locale: settings.get('locale') || appFRD.getLocale() || 'en',
+    locale: userSetLocale || appFRD.getLocale() || 'en',
     missingTranslation: 'ignore',
     formats: {
       date: {

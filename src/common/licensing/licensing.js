@@ -2,7 +2,7 @@ import { is } from 'electron-util'
 import { machineIdSync } from 'node-machine-id'
 import SETTINGS from '../utils/settings'
 
-const BASE_URL = 'http://getplottr.com'
+const BASE_URL = 'https://my.plottr.com'
 const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'
 export const PRODUCT_IDS = [33345, V2_OLD_PRODUCT_ID] // NOTE: if this order changes, change the productMapping array at the bottom too
 export const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mismatch', 'missing']

@@ -10,7 +10,7 @@ export default function ExpiredView (props) {
   const [view, setView] = useState('chooser')
 
   const buy = () => {
-    shell.openExternal("https://getplottr.com/pricing/")
+    shell.openExternal("https://plottr.com/pricing/")
   }
 
   const extend = () => {
@@ -53,7 +53,7 @@ export default function ExpiredView (props) {
       <h2>{i18n('Your free trial has expired')} 😭</h2>
       <p style={{padding: '5px 70px'}}>{i18n("Don't worry, all your work is saved in your files")}</p>
       { renderChoices() }
-      <p>{i18n('Please contact me with any questions at support@getplottr.com')}</p>
+      <p>{i18n('Please contact me with any questions at support@plottr.com')}</p>
     </div>
   } else if (view == 'ad') {
     return <AdView extendTrial={extend}/>

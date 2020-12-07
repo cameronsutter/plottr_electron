@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ErrorBoundary from '../../../app/containers/ErrorBoundary'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import Account from '../account/Account'
@@ -9,15 +9,25 @@ import TemplatesHome from '../templates/TemplatesHome'
 import BackupsHome from '../backups/BackupsHome'
 import OptionsHome from '../options/OptionsHome'
 import HelpHome from '../help/HelpHome'
+import { ipcRenderer } from 'electron'
 
 export default function DashboardBody ({currentView, setView}) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
   const {started, expired, daysLeft} = useTrialStatus()
 
+  useEffect(() => {
+    ipcRenderer.send('pls-reload-menu')
+  }, [licenseInfo, licenseInfoSize, started, expired])
+
   // no license and trial hasn't started (first time using the app)
   // OR no license and trial is expired
   if (!licenseInfoSize && (!started || expired)) {
-    return <Body><Account/></Body>
+    switch (currentView) {
+      case 'help':
+        return <Body><HelpHome/></Body>
+      default:
+        return <Body><Account/></Body>
+    }
   }
 
   let body

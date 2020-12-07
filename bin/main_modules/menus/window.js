@@ -1,4 +1,4 @@
-const i18n = require('format-message');
+const i18n = require('format-message')
 
 function buildWindowMenu () {
   return {
@@ -7,4 +7,4 @@ function buildWindowMenu () {
   }
 }
 
-module.exports = { buildWindowMenu };
+module.exports = { buildWindowMenu }

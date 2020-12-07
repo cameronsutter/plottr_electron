@@ -1,19 +1,15 @@
-const i18n = require('format-message');
-const { reloadWindow } = require('../windows');
-const {
-  getDarkMode,
-  toggleDarkMode,
-} = require('../theme');
-const { takeScreenshot } = require('../helpers');
-const { NODE_ENV } = require('../constants');
-const { openVerifyWindow } = require('../windows/verify');
-const { openExpiredWindow } = require('../windows/expired');
+const i18n = require('format-message')
+// const { reloadWindow } = require('../windows')
+const { getDarkMode, toggleDarkMode } = require('../theme')
+const { takeScreenshot } = require('../helpers')
+const { NODE_ENV } = require('../constants')
 
 function buildViewMenu () {
   const submenu = [{
     label: i18n('Reload'),
     accelerator: 'CmdOrCtrl+R',
-    click: reloadWindow
+    click: () => {}
+    // click: reloadWindow
   }, {
       label: i18n('Dark Mode'),
       accelerator: 'CmdOrCtrl+D',
@@ -24,17 +20,6 @@ function buildViewMenu () {
     label: i18n('Take Screenshot') + '...',
     accelerator: 'CmdOrCtrl+P',
     click: takeScreenshot
-  }, {
-    type: 'separator',
-    visible: NODE_ENV === 'dev',
-  }, {
-    label: i18n('View Verify Window'),
-    click: openVerifyWindow,
-    visible: NODE_ENV === 'dev',
-  }, {
-    label: i18n('View Expired Window'),
-    click: openExpiredWindow,
-    visible: NODE_ENV === 'dev',
   }]
 
   return {

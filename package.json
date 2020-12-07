@@ -3,7 +3,7 @@
   "version": "2020.12.1",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
-  "homepage": "getplottr.com",
+  "homepage": "plottr.com",
   "private": true,
   "readme": "Copyright 2016-2020 Fictional Devices LLC",
   "author": {

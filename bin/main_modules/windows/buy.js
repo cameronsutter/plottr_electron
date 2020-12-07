@@ -1,7 +1,7 @@
 const { shell } = require('electron');
 
 function openBuyWindow () {
-  shell.openExternal("https://getplottr.com/pricing/")
+  shell.openExternal("https://plottr.com/pricing/")
 }
 
 module.exports = { openBuyWindow };

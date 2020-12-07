@@ -1,11 +1,12 @@
-const { shell, Notification } = require('electron')
-const { Document, Packer, Paragraph, Media, AlignmentType, HeadingLevel } = require('docx')
-const fs = require('fs')
-const { sortBy, groupBy } = require('lodash')
-const i18n = require('format-message')
-const serialize = require('./slate_serializers/to_word')
+import { shell } from 'electron'
+import { Document, Packer, Paragraph, Media, AlignmentType, HeadingLevel } from 'docx'
+import fs from 'fs'
+import { sortBy, groupBy } from 'lodash'
+import i18n from 'format-message'
+import serialize from '../../slate_serializers/to_word'
+import { notifyUser } from '../notifier'
 
-function Exporter (data, { fileName, bookId }) {
+export default function Exporter (data, { fileName, bookId }) {
   let doc = new Document()
   let names = namesMapping(data)
   let sections = []
@@ -19,17 +20,10 @@ function Exporter (data, { fileName, bookId }) {
 
   // finish - save to file
   Packer.toBuffer(doc).then((buffer) => {
-    const fullName = fileName.includes('.docx') ? fileName : `${fileName}.docx`
-    fs.writeFileSync(fullName, buffer)
-    if (Notification.isSupported()) {
-      const notify = new Notification({
-        title: i18n('File Exported'),
-        body: i18n('Your Plottr file was exported to a .docx file'),
-        silent: true,
-      })
-      notify.show()
-    }
-    shell.showItemInFolder(fullName)
+    const filePath = fileName.includes('.docx') ? fileName : `${fileName}.docx`
+    fs.writeFileSync(filePath, buffer)
+
+    notifyUser(filePath, 'word')
   })
 }
 
@@ -93,7 +87,7 @@ function chapterParagraphs (chapter, data, namesMapping, bookId, offset, doc) {
   if (isSeries) {
     lines = data.seriesLines
   }
-  cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, lines, isSeries)
+  const cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, lines, isSeries)
   // console.log('sortedChapterCards', cards)
   let cardParagraphs = cards.flatMap(c => card(c, lines, namesMapping, doc, isSeries))
   return paragraphs.concat(cardParagraphs)
@@ -326,5 +320,3 @@ function notes (notes, namesMapping, images, doc) {
 
   return paragraphs
 }
-
-module.exports = Exporter

@@ -1,5 +1,5 @@
-const i18n = require('format-message');
-const { is } = require('electron-util');
+const i18n = require('format-message')
+const { is } = require('electron-util')
 
 function buildEditMenu () {
   return {
@@ -42,4 +42,4 @@ function buildEditMenu () {
   }
 }
 
-module.exports = { buildEditMenu };
+module.exports = { buildEditMenu }

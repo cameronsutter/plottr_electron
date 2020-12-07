@@ -27,7 +27,7 @@ export default class ErrorBoundary extends Component {
   }
 
   goToSupport = () => {
-    shell.openExternal('https://getplottr.com/support/')
+    shell.openExternal('https://plottr.com/support/')
   }
 
   render () {

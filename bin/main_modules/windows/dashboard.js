@@ -1,10 +1,10 @@
-const path = require('path');
-const { BrowserWindow } = require('electron');
-const { filePrefix } = require('../helpers');
-const { preventsQuitting } = require('./');
-const SETTINGS = require('../settings');
+const path = require('path')
+const { BrowserWindow } = require('electron')
+const { filePrefix } = require('../helpers')
+const { preventsQuitting } = require('./')
+const SETTINGS = require('../settings')
 
-let dashboardWindow;
+let dashboardWindow
 const openDashboardWindow = preventsQuitting(() => {
   const dashboardFile = path.join(filePrefix(__dirname), '../../dashboard.html')
   dashboardWindow = new BrowserWindow({
@@ -29,4 +29,4 @@ const openDashboardWindow = preventsQuitting(() => {
   })
 })
 
-module.exports = { openDashboardWindow };
+module.exports = { openDashboardWindow }

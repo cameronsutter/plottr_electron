@@ -84,7 +84,7 @@ export default function UpdateNotifier (props) {
   }, [shouldCheck])
 
   const goToChangelog = () => {
-    shell.openExternal('https://getplottr.com/changelog')
+    shell.openExternal('https://plottr.com/changelog')
   }
 
   const startDownload = () => {

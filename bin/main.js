@@ -30,14 +30,7 @@ const { openBuyWindow } = require('./main_modules/windows/buy')
 const { openVerifyWindow, closeVerifyWindow } = require('./main_modules/windows/verify')
 const { NODE_ENV } = require('./main_modules/constants')
 const { getDarkMode } = require('./main_modules/theme')
-const {
-  gracefullyNotSave,
-  askToOpenOrCreate,
-  gracefullyQuit,
-  openRecentFiles,
-  checkUpdatesIfAllowed,
-  askToCreateFile,
-} = require('./main_modules/utils')
+const { gracefullyNotSave, gracefullyQuit } = require('./main_modules/utils')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})

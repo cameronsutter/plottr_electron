@@ -1,8 +1,11 @@
 import React from 'react'
+import { remote } from 'electron'
 import { is } from 'electron-util'
 import t from 'format-message'
+import { VscChromeMaximize, VscChromeMinimize, VscChromeClose } from 'react-icons/vsc'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
+const win = remote.getCurrentWindow()
 
 export default function DashboardHeader (props) {
   const {started, daysLeft} = useTrialStatus()
@@ -28,8 +31,13 @@ export default function DashboardHeader (props) {
     message = <span>DEV</span>
   }
 
+  let rightButtons = null
   if (!is.macos) {
-    // render the three buttons (minimize, maximize, close)
+    rightButtons = <div className='nav-3right-buttons'>
+      <VscChromeMinimize onClick={() => win.minimize()}/>
+      <VscChromeMaximize onClick={() => win.isMaximized() ? win.unmaximize() : win.maximize()}/>
+      <VscChromeClose onClick={() => window.close()}/>
+    </div>
   }
   return <div className='dashboard__header'>
     <div className='nav-spacer'></div>
@@ -42,5 +50,6 @@ export default function DashboardHeader (props) {
       {spacer2}
       {message2}
     </div>
+    { rightButtons }
   </div>
 }

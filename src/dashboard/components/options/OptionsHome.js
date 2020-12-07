@@ -22,6 +22,14 @@ export default function OptionsHome (props) {
           labelText={t('Automatically save daily backups')}
         />
       </div>
+      <div className='dashboard__options__item'>
+        <h4>{t('Update Automatically')}</h4>
+        <Switch
+          isOn={!!settings.user.autoUpdate}
+          handleToggle={() => saveSetting('user.autoUpdate', !settings.user.autoUpdate)}
+          labelText={t('Download updates automatically')}
+        />
+      </div>
       <hr/>
       <h1 className='text-center'>🎉 {t('Coming Soon')} 🎉</h1>
       <div className='dashboard__options__item disabled'>

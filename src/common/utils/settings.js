@@ -13,6 +13,7 @@ const defaultSettings = {
   canEdit: true,
   canExport: true,
   user: {
+    autoUpdate: true,
     autoSave: true,
     backupDays: 30,
     backupLocation: 'default',

@@ -1,7 +1,11 @@
-const { shell } = require('electron');
+const { shell, ipcMain } = require('electron')
+
+ipcMain.on('open-buy-window', (event) => {
+  openBuyWindow()
+})
 
 function openBuyWindow () {
-  shell.openExternal("https://plottr.com/pricing/")
+  shell.openExternal('https://plottr.com/pricing/')
 }
 
-module.exports = { openBuyWindow };
+module.exports = { openBuyWindow }

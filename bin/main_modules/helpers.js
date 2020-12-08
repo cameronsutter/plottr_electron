@@ -49,7 +49,7 @@ function takeScreenshot () {
   })
 }
 
-function filePrefix(dirname) {
+function filePrefix (dirname) {
   return is.windows ? dirname : 'file://' + dirname
 }
 

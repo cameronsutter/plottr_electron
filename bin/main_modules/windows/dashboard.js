@@ -1,32 +1,38 @@
 const path = require('path')
-const { BrowserWindow } = require('electron')
+const { app } = require('electron')
 const { filePrefix } = require('../helpers')
-const { preventsQuitting } = require('./')
-const SETTINGS = require('../settings')
+const { windows } = require('./')
+
+// mixpanel tracking
+let launchSent = false
 
 let dashboardWindow
-const openDashboardWindow = preventsQuitting(() => {
-  const dashboardFile = path.join(filePrefix(__dirname), '../../dashboard.html')
-  dashboardWindow = new BrowserWindow({
-    frame: false,
-    height: 525,
-    width: 800,
-    show: false,
-    webPreferences: {
-      nodeIntegration: true,
-      enableRemoteModule: true,
-    }
-  })
-  dashboardWindow.loadURL(dashboardFile)
-  if (SETTINGS.get('forceDevTools')) {
-    dashboardWindow.openDevTools()
+function openDashboard () {
+  if (dashboardWindow) {
+    dashboardWindow.focus()
+    return
   }
-  dashboardWindow.once('ready-to-show', function() {
-    this.show()
-  })
+
+  const dashboardFile = path.join(filePrefix(__dirname), '../../dashboard.html')
+
+  dashboardWindow.loadURL(dashboardFile)
+
   dashboardWindow.on('close', function () {
     dashboardWindow = null
+    if (!windows.length && !is.macos) {
+      app.quit()
+    }
   })
-})
+  dashboardWindow.webContents.on('did-finish-load', () => {
+    if (!launchSent) {
+      dashboardWindow.webContents.send('send-launch', app.getVersion())
+      launchSent = true
+    }
+  })
+}
 
-module.exports = { openDashboardWindow }
+function setDarkModeForDashboard (darkMode) {
+  dashboardWindow.webContents.send('set-dark-mode', darkMode)
+}
+
+module.exports = { openDashboard, setDarkModeForDashboard }

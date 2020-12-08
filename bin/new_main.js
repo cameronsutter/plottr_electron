@@ -11,6 +11,7 @@ const { windows, openWindow, getWindowById } = require('./main_modules/windows')
 const { getDarkMode } = require('./main_modules/theme')
 const { gracefullyQuit } = require('./main_modules/utils')
 const { openDashboard } = require('./main_modules/windows/dashboard')
+const { addToKnown } = require('./main_modules/known_files')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -46,6 +47,7 @@ app.whenReady().then(() => {
 
     if (param.includes('.pltr')) {
       openWindow(param)
+      addToKnown(param)
     }
 
     // windows custom protocol link handler
@@ -79,6 +81,7 @@ app.on('open-file', (event, filePath) => {
   if (!is.windows) {
     app.whenReady().then(() => {
       openWindow(filePath)
+      addToKnown(filePath)
     })
   }
 })

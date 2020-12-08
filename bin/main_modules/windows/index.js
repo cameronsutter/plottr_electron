@@ -65,26 +65,11 @@ function closeWindow (id) {
   win.window.close()
 }
 
-// let dontQuit = false
-// function preventsQuitting(fn) {
-//   return (...args) => {
-//     dontQuit = true
-//     fn(...args)
-//     dontQuit = false
-//   }
-// }
-
-// function canQuit() {
-//   return !dontQuit
-// }
-
 module.exports = {
   reloadWindow,
   openWindow,
   dereferenceWindow,
   closeWindow,
-  preventsQuitting,
-  canQuit,
   getWindowById,
   windows,
 }

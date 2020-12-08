@@ -24,7 +24,7 @@ const FileManager = require('./main_modules/file_manager')
 const { loadMenu } = require('./main_modules/menus')
 const { isDirty, emptyFileContents, displayFileName } = require('./main_modules/helpers')
 const { setupI18n } = require('../locales')
-const { openWindow, canQuit, windows } = require('./main_modules/windows')
+const { openWindow, windows } = require('./main_modules/windows')
 const { closeExpiredWindow, openExpiredWindow } = require('./main_modules/windows/expired')
 const { openBuyWindow } = require('./main_modules/windows/buy')
 const { openVerifyWindow, closeVerifyWindow } = require('./main_modules/windows/verify')
@@ -79,7 +79,7 @@ app.on('window-all-closed', () => {
   // to stay active until the user quits explicitly with Cmd + Q
   if (is.macos) return
 
-  if (canQuit()) app.quit()
+  app.quit()
 })
 
 app.on('open-file', (event, path) => {

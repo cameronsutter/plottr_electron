@@ -2,6 +2,7 @@ const path = require('path')
 const { app } = require('electron')
 const { filePrefix } = require('../helpers')
 const { windows } = require('./')
+const { makeBrowserWindow } = require('../utils')
 
 // mixpanel tracking
 let launchSent = false
@@ -14,7 +15,7 @@ function openDashboard () {
   }
 
   const dashboardFile = path.join(filePrefix(__dirname), '../../dashboard.html')
-
+  dashboardWindow = makeBrowserWindow('dashboard')
   dashboardWindow.loadURL(dashboardFile)
 
   dashboardWindow.on('close', function () {

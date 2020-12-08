@@ -1,4 +1,4 @@
-const { Menu, ipcMain } = require('electron')
+const { Menu, ipcMain, app } = require('electron')
 const i18n = require('format-message')
 const { is } = require('electron-util')
 
@@ -11,7 +11,6 @@ const { buildViewMenu } = require('./view')
 const { openDashboard } = require('../windows/dashboard')
 
 ipcMain.on('pls-reload-menu', () => {
-  console.log('loading menu!')
   loadMenu()
 })
 

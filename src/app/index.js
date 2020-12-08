@@ -3,11 +3,11 @@ import path from 'path'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import i18n from 'format-message';
+import i18n from 'format-message'
 import App from 'containers/App'
 import configureStore from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
-const { Menu, MenuItem } = remote
+// const { Menu, MenuItem } = remote
 const win = remote.getCurrentWindow()
 const app = remote.app
 // import { actions, migrateIfNeeded } from 'pltr/v2'
@@ -22,7 +22,6 @@ import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
 import ScrivenerExporter from '../common/exporter/scrivener/v2/exporter'
 import WordExporter from '../common/exporter/word/exporter'
-import Importer from '../common/importer/snowflake/importer'
 import editorRegistry from './components/rce/editor-registry'
 import { setupI18n } from '../../locales'
 import { focusIsEditable } from './helpers/undo'
@@ -105,7 +104,7 @@ function bootFile (filePath, darkMode, numOpenFiles) {
 
     render(
       <Provider store={store}>
-        <App showTour={SETTINGS.get('showTheTour')} />
+        <App showTour={false} />
       </Provider>,
       root
     )
@@ -120,12 +119,6 @@ ipcRenderer.send('pls-fetch-state', win.id)
 ipcRenderer.on('state-fetched', (event, filePath, darkMode, numOpenFiles) => {
   bootFile(filePath, darkMode, numOpenFiles)
 })
-
-// ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) => {
-//   setTrialInfo(isTrialMode, daysLeftOfTrial)
-//   MPQ.push('Launch', {online: navigator.onLine, version: version})
-//   ipcRenderer.send('launch-sent')
-// })
 
 ipcRenderer.on('set-dark-mode', (event, on) => {
   store.dispatch(setDarkMode(on))
@@ -145,12 +138,6 @@ ipcRenderer.on('pls-export', (event, options) => {
   }
 
 })
-
-// TODO: import from dashboard
-// ipcRenderer.on('import-snowflake', (event, currentState, fileName, importPath, darkMode, openFiles) => {
-//   const result = Importer(importPath, true, currentState)
-//   bootFile(result, fileName, true, darkMode, openFiles)
-// })
 
 // for some reason the electron webContents.undo() and redo() don't affect
 // the slate editors. So we use the editorRegistry, which can be used to lookup

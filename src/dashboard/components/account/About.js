@@ -1,5 +1,5 @@
 import React from 'react'
-import { remote } from 'electron'
+import { shell, remote } from 'electron'
 import t from 'format-message'
 import { Button } from 'react-bootstrap'
 import SETTINGS from '../../../common/utils/settings'
@@ -29,6 +29,8 @@ export default function About (props) {
         <dd>{app.getVersion()}</dd>
         <dt>{t('Updates')}</dt>
         { renderUpdater() }
+        <dt>{t('Changelog')}</dt>
+        <dd><a href='#' onClick={() => shell.openExternal('https://plottr.com/changelog')}>{t("See What's New")}</a></dd>
       </dl>
       <dl className='dl-horizontal'>
         <dt>{t('Created By')}</dt>

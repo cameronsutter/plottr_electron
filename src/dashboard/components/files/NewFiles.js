@@ -4,7 +4,7 @@ import t from 'format-message'
 import cx from 'classnames'
 import { createNew, openExistingFile } from '../../utils/window_manager'
 
-export default function NewFiles ({activeView, toggleView}) {
+export default function NewFiles ({activeView, toggleView, doImport}) {
 
   const wrapFunc = (func) => {
     return () => {
@@ -21,7 +21,7 @@ export default function NewFiles ({activeView, toggleView}) {
     <div className='dashboard__new-files__wrapper'>
       <div className='dashboard__new-files__item icon' onClick={wrapFunc(() => createNew(null))}>
         <IoIosDocument />
-        <div>{t('New Blank Project')}</div>
+        <div>{t('Create Blank Project')}</div>
       </div>
       <div className='dashboard__new-files__item icon' onClick={wrapFunc(openExistingFile)}>
         <IoIosDesktop />
@@ -29,11 +29,11 @@ export default function NewFiles ({activeView, toggleView}) {
       </div>
       <div className={cx('dashboard__new-files__item icon', {active: activeView == 'templates'})} onClick={() => toggleView('templates')}>
         <IoIosBrowsers />
-        <div>{t('New From Template')}</div>
+        <div>{t('Create From Template')}</div>
       </div>
-      <div className={cx('dashboard__new-files__item icon', {active: activeView == 'import'})} onClick={() => toggleView('import')}>
+      <div className={cx('dashboard__new-files__item icon', {active: activeView == 'import'})} onClick={doImport}>
         <IoMdBook/>
-        <div>{t('New From Import')}</div>
+        <div>{t('Import Snowflake Pro')}</div>
       </div>
     </div>
   </div>

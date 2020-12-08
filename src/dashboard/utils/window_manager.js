@@ -1,8 +1,10 @@
+import path from 'path'
 import { remote, ipcRenderer } from 'electron'
 import t from 'format-message'
 import { knownFilesStore } from '../../common/utils/store_hooks'
 import { saveToTempFile } from '../../common/utils/temp_files'
 import { addToKnownFiles } from '../../common/utils/known_files'
+import Importer from '../../common/importer/snowflake/importer'
 // const { newFileState } = require('pltr/v2')
 // import pltr from 'pltr/v2'
 // const pltr = require('pltr')
@@ -51,6 +53,25 @@ export function createNew (templateData) {
   }
 }
 
+export function createFromSnowflake (importedPath) {
+  const storyName = path.basename(importedPath, '.snowXML')
+  // let json = newFileState(storyName, app.getVersion())
+  let json = emptyFile(storyName, app.getVersion())
+  // clear chapters and lines
+  json.chapters = []
+  json.lines = []
+  const importedJson = Importer(importedPath, true, json)
+
+  try {
+    const filePath = saveToTempFile(importedJson)
+    const fileId = addToKnownFiles(filePath)
+    openKnownFile(filePath, fileId)
+  } catch (error) {
+    throw error
+  }
+}
+
+// TODO: refactor this
 function emptyFile (name, version) {
   const books = {
     ...newFileBooks,

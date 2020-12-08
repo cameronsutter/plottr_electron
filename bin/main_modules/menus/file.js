@@ -9,7 +9,6 @@ const { rollbar } = require('../rollbar')
 // const { getWindowById, openWindow, closeWindow, windows } = require('../windows')
 // const { openDashboardWindow } = require('../windows/dashboard')
 // const {
-//   importFromSnowflake,
 //   askToOpenFile,
 //   gracefullyNotSave,
 //   askToSave,

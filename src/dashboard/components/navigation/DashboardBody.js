@@ -10,6 +10,7 @@ import BackupsHome from '../backups/BackupsHome'
 import OptionsHome from '../options/OptionsHome'
 import HelpHome from '../help/HelpHome'
 import { ipcRenderer } from 'electron'
+import SETTINGS from '../../../common/utils/settings'
 
 export default function DashboardBody ({currentView, setView}) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -17,6 +18,12 @@ export default function DashboardBody ({currentView, setView}) {
 
   useEffect(() => {
     ipcRenderer.send('pls-reload-menu')
+    // update settings.trialMode
+    if (licenseInfoSize) {
+      SETTINGS.set('trialMode', false)
+    } else {
+      SETTINGS.set('trialMode', true)
+    }
   }, [licenseInfo, licenseInfoSize, started, expired])
 
   // no license and trial hasn't started (first time using the app)

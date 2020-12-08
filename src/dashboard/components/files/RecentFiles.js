@@ -12,7 +12,7 @@ export default function RecentFiles (props) {
   const [sortedIds, filesById] = useSortedKnownFiles(searchTerm)
 
   const renderRecents = () => {
-    // if no files, show something different
+    // TODO: if no files, show something different
     if (!sortedIds.length) return null
 
     const renderedFiles = sortedIds.map((id, idx) => {

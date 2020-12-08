@@ -136,7 +136,6 @@ ipcRenderer.on('pls-export', (event, options) => {
       WordExporter(currentState.present, options)
       break
   }
-
 })
 
 // for some reason the electron webContents.undo() and redo() don't affect

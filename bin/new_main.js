@@ -8,6 +8,8 @@ const windowStateKeeper = require('electron-window-state')
 const { setupRollbar } = require('./main_modules/rollbar')
 const { loadMenu } = require('./main_modules/menus')
 const { setupI18n } = require('../locales')
+const { getWindowById } = require('./main_modules/windows')
+const { getDarkMode } = require('./main_modules/theme')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
@@ -22,7 +24,6 @@ setupI18n()
 let dashboardWindow = null
 let windows = []
 
-let darkMode = nativeTheme.shouldUseDarkColors || false
 const filePrefix = is.windows ? __dirname : 'file://' + __dirname
 
 // mixpanel tracking
@@ -59,7 +60,7 @@ app.whenReady().then(() => {
     // const link = param.replace('plottr://')
   }
 
-  app.on('activate', function () {
+  app.on('activate', () => {
     if (windows.length) {
       const browserWin = BrowserWindow.fromId(windows[0].id)
       if (browserWin) browserWin.focus()
@@ -100,12 +101,11 @@ ipcMain.on('pls-open-window', (event, filePath, jsonData) => {
 ipcMain.on('pls-fetch-state', function (event, id) {
   var win = windows.find(w => w.id == id)
   if (win) {
-    event.sender.send('state-fetched', win.filePath, darkMode, windows.length)
+    event.sender.send('state-fetched', win.filePath, getDarkMode(), windows.length)
   }
 })
 
 ipcMain.on('pls-reload-menu', () => {
-  console.log('reloading menu!')
   loadMenu()
 })
 
@@ -143,18 +143,8 @@ function openWindow (filePath) {
   // newWindow.on('closed', function () {})
 
   newWindow.on('close', function (e) {
-    const win = windows.find(w => w.id == this.id) // depends on 'this' being the window
-
-    // if (win && win.state && isDirty(win.state, win.lastSave)) {
-    //   e.preventDefault()
-    //   const _this = this
-    //   askToSave(this, win.state, win.filePath, function() {
-    //     dereferenceWindow(win)
-    //     _this.destroy()
-    //   })
-    // } else {
-    //   dereferenceWindow(win)
-    // }
+    const win = getWindowById(this.id) // depends on 'this' being the window
+    if (win) dereferenceWindow(win)
   })
 
   try {
@@ -222,7 +212,7 @@ function makeBrowserWindow (filePath) {
   stateKeeper.manage(newWindow)
 
   newWindow.once('ready-to-show', function() {
-    this.show()
+    this.show() // depends on 'this' being the window
   })
 
   newWindow.webContents.on('unresponsive', () => {

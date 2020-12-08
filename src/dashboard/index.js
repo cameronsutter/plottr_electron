@@ -27,8 +27,8 @@ const root = document.getElementById('dashboard__react__root')
 render(<DashboardApp />, root)
 
 // Secondary SETUP //
+initMixpanel()
 window.requestIdleCallback(() => {
-  initMixpanel()
   ensureBackupFullPath()
   TemplateFetcher.fetch()
 })

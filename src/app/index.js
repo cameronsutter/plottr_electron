@@ -26,6 +26,7 @@ import editorRegistry from './components/rce/editor-registry'
 import { setupI18n } from '../../locales'
 import { focusIsEditable } from './helpers/undo'
 import { displayFileName } from '../common/utils/known_files'
+import { addNewCustomTemplate } from '../common/utils/custom_templates'
 
 setupI18n(SETTINGS)
 
@@ -136,6 +137,11 @@ ipcRenderer.on('pls-export', (event, options) => {
       WordExporter(currentState.present, options)
       break
   }
+})
+
+ipcRenderer.on('pls-save-custom-template', (event, options) => {
+  const currentState = store.getState()
+  addNewCustomTemplate(currentState.present, options)
 })
 
 // for some reason the electron webContents.undo() and redo() don't affect

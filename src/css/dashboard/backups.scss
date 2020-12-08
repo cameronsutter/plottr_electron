@@ -21,6 +21,7 @@
 .dashboard__backups__wrapper {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   height: calc(100% - 49px);
   overflow: auto;
 }

@@ -1,5 +1,6 @@
 const path = require('path')
 const { app } = require('electron')
+const { is } = require('electron-util')
 const { filePrefix } = require('../helpers')
 const { windows } = require('./')
 const { makeBrowserWindow } = require('../utils')

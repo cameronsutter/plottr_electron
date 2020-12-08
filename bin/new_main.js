@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron')
 const path = require('path')
 const log = require('electron-log')
-log.info('STARTED PLOTTR')
 const { is } = require('electron-util')
 const contextMenu = require('electron-context-menu')
 const { setupRollbar } = require('./main_modules/rollbar')
@@ -38,8 +37,8 @@ if (process.env.NODE_ENV !== 'dev') {
 }
 
 app.whenReady().then(() => {
-  openDashboard()
   loadMenu(true)
+  openDashboard()
 
   // windows open-file event handler
   if (is.windows && process.argv.length == 2 && process.env.NODE_ENV != 'dev') {

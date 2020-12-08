@@ -1,9 +1,9 @@
-const isTest = process.env.NODE_ENV;
+const isTest = process.env.NODE_ENV
 
 module.exports = {
   "presets": [
     ["@babel/preset-react", {"useBuiltIns": true}],
-    ["@babel/env", {"modules": false, "targets": {"node": true}}]
+    ["@babel/preset-env", {"modules": false, "targets": {"node": true}}]
   ],
   "plugins": [
     "lodash",
@@ -18,4 +18,4 @@ module.exports = {
       }
     }] : undefined,
   ]
-};
+}

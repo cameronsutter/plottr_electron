@@ -8,6 +8,7 @@ import { StickyTable, Row, Cell } from 'react-sticky-table'
 import { openKnownFile } from '../../utils/window_manager'
 import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
 import MissingIndicator from './MissingIndicator'
+import FileOptions from './FileOptions'
 
 export default function RecentFiles (props) {
   const [searchTerm, setSearchTerm] = useState('')
@@ -25,6 +26,11 @@ export default function RecentFiles (props) {
     setMissing(newMissing)
   }, [sortedIds, filesById])
 
+  const openFile = (filePath, id) => {
+    if (missingFiles.includes(id)) return
+    openKnownFile(filePath, id)
+  }
+
   const renderRecents = () => {
     // TODO: if no files, show something different
     if (!sortedIds.length) return null
@@ -41,10 +47,16 @@ export default function RecentFiles (props) {
       if (missingFiles.includes(id)) {
         missing = <MissingIndicator/>
       }
-      return <Row key={idx} onDoubleClick={() => openKnownFile(f.path, id)} onClick={() => selectFile(id)} className={cx({'selected': selectedFile == id})}>
+      const selected = selectedFile == id
+      return <Row key={idx} onDoubleClick={() => openFile(f.path, id)} onClick={() => selectFile(selected ? null : id)} className={cx({'selected': selected})}>
         <Cell>
-          <div className='title'>{missing}{basename.replace('.pltr', '')}</div>
-          <div className='secondary-text'>{formattedPath}</div>
+          <div className='dashboard__recent-files__file-cell'>
+            <div>
+              <div className='title'>{missing}{basename.replace('.pltr', '')}</div>
+              <div className='secondary-text'>{formattedPath}</div>
+            </div>
+            <FileOptions missing={!!missing} id={id} filePath={f.path} openFile={openFile}/>
+          </div>
         </Cell>
         <Cell>
           <div className='lastOpen'>{t('{date, date, monthDay}', {date: lastOpen})}</div>

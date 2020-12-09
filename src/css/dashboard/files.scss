@@ -98,6 +98,30 @@
       width: 17%;
     }
 
+    .dashboard__recent-files__file-cell {
+      display: flex;
+      align-items: center;
+
+      .title {
+        font-size: large;
+        .glyphicon {
+          margin-right: 8px;
+          color: $red-5;
+        }
+      }
+      .secondary-text {
+        font-size: small;
+        white-space: pre-wrap;
+      }
+      .dashboard__recent-files__file-options {
+        margin-left: auto;
+        visibility: hidden;
+        button .glyphicon {
+          vertical-align: middle;
+        }
+      }
+    }
+
     .sticky-table-row:not(:first-child) {
       .sticky-table-cell {
         padding: 12px 8px;
@@ -105,26 +129,16 @@
         cursor: pointer;
         user-select: none;
 
-        .title {
-          font-size: large;
-          .glyphicon {
-            margin-left: 8px;
-            font-size: normal;
-            color: $red-5;
-          }
-        }
-        .secondary-text {
-          font-size: small;
-          white-space: pre-wrap;
-        }
         .lastOpen {
         }
-
       }
 
       &:hover, &.selected {
         .sticky-table-cell {
           background-color: $green-8;
+        }
+        .dashboard__recent-files__file-options {
+          visibility: visible;
         }
       }
     }

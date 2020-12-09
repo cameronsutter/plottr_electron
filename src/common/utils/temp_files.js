@@ -4,14 +4,15 @@ import t from 'format-message'
 import { TEMP_FILES_PATH } from './config_paths'
 import { tempFilesStore } from './store_hooks'
 import { log } from 'electron-log'
+import { shell } from 'electron'
 
-export function removeFromTempFiles (filePath) {
+export function removeFromTempFiles (filePath, doDelete = true) {
   const tmpFiles = tempFilesStore.get()
   const key = Object.keys(tmpFiles).find(id => tmpFiles[id].filePath == filePath)
   tempFilesStore.delete(key)
   // delete the real file
   try {
-    fs.unlinkSync(filePath)
+    if (doDelete) shell.moveItemToTrash(filePath, true)
   } catch (error) {
     log.warn(error)
   }

@@ -1,5 +1,9 @@
+import { shell } from 'electron'
+import { log } from 'electron-log'
 import path from 'path'
+import { TEMP_FILES_PATH } from './config_paths'
 import { knownFilesStore } from './store_hooks'
+import { removeFromTempFiles } from './temp_files'
 
 export function addToKnownFiles (filePath) {
   const existingId = Object.keys(knownFilesStore.store).find(id => knownFilesStore.store[id].path == filePath)
@@ -22,6 +26,25 @@ export function editKnownFilePath (oldPath, newPath) {
     ...file,
     path: newPath,
   })
+}
+
+export function removeFromKnownFiles (id) {
+  knownFilesStore.delete(id)
+}
+
+export function deleteKnownFile (id, filePath) {
+  if (!filePath) {
+    filePath = knownFilesStore.get(`${id}.path`)
+  }
+  try {
+    removeFromKnownFiles(id)
+    shell.moveItemToTrash(filePath, true)
+    if (filePath.includes(TEMP_FILES_PATH)) {
+      removeFromTempFiles(filePath, false)
+    }
+  } catch (error) {
+    log.warn(error)
+  }
 }
 
 // TODO: days left in trial mode?

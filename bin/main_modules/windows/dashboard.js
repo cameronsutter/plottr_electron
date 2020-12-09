@@ -34,7 +34,11 @@ function openDashboard () {
 }
 
 function setDarkModeForDashboard (darkMode) {
-  dashboardWindow.webContents.send('set-dark-mode', darkMode)
+  if (dashboardWindow) dashboardWindow.webContents.send('set-dark-mode', darkMode)
 }
 
-module.exports = { openDashboard, setDarkModeForDashboard }
+function reloadRecents () {
+  if (dashboardWindow) dashboardWindow.webContents.send('pls-reload-recents')
+}
+
+module.exports = { openDashboard, setDarkModeForDashboard, reloadRecents }

@@ -1,4 +1,4 @@
-import { cloneDeep, sortBy } from 'lodash'
+import { cloneDeep } from 'lodash'
 import { Notification } from 'electron'
 import t from 'format-message'
 import { customTemplatesStore } from './store_hooks'

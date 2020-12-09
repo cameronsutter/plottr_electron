@@ -4,8 +4,8 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
-    "darkMode": false,
+    "currentView": "characters",
+    "darkMode": true,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
@@ -31,7 +31,7 @@
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.12.1"
+    "version": "2020.12.8-beta"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -11943,17 +11943,20 @@
       {
         "id": 1,
         "name": "Main",
-        "position": 0
+        "position": 0,
+        "type": "text"
       },
       {
         "id": 2,
         "name": "Supporting",
-        "position": 1
+        "position": 1,
+        "type": "text"
       },
       {
         "id": 3,
         "name": "Other",
-        "position": 2
+        "position": 2,
+        "type": "text"
       }
     ],
     "places": [],

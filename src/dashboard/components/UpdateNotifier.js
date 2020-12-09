@@ -60,6 +60,7 @@ export default function UpdateNotifier (props) {
     })
     autoUpdater.on('update-downloaded', info => {
       setHidden(false)
+      setDownloadInProgress(false)
       setFinishedDownloading(true)
       setPercentDownloaded(100)
     })
@@ -120,6 +121,7 @@ export default function UpdateNotifier (props) {
 
   const renderAction = () => {
     if (!available && !finishedDownloading) return null
+    if (downloadInProgress) return null
     return <Button onClick={finishedDownloading ? quitToInstall : startDownload}>
       { finishedDownloading ? t('Click to Install') : t('Download Now!') }
     </Button>

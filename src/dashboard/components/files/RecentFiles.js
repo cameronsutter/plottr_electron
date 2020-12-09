@@ -1,15 +1,29 @@
 import path from 'path'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import t from 'format-message'
+import cx from 'classnames'
 import { FormControl } from 'react-bootstrap'
-import { useSortedKnownFiles } from '../../utils/files'
+import { doesFileExist, useSortedKnownFiles } from '../../utils/files'
 import { StickyTable, Row, Cell } from 'react-sticky-table'
 import { openKnownFile } from '../../utils/window_manager'
 import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
+import MissingIndicator from './MissingIndicator'
 
 export default function RecentFiles (props) {
   const [searchTerm, setSearchTerm] = useState('')
   const [sortedIds, filesById] = useSortedKnownFiles(searchTerm)
+  const [missingFiles, setMissing] = useState([])
+  const [selectedFile, selectFile] = useState(null)
+
+  useEffect(() => {
+    let newMissing = [...missingFiles]
+    sortedIds.forEach((id) => {
+      if (!doesFileExist(filesById[`${id}`].path)) {
+        newMissing.push(id)
+      }
+    })
+    setMissing(newMissing)
+  }, [sortedIds, filesById])
 
   const renderRecents = () => {
     // TODO: if no files, show something different
@@ -23,9 +37,13 @@ export default function RecentFiles (props) {
       if (!f.path.includes(TEMP_FILES_PATH)) {
         formattedPath = f.path.replace(basename, '').split(path.sep).filter(Boolean).join(' » ')
       }
-      return <Row key={idx} onDoubleClick={() => openKnownFile(f.path, id)}>
+      let missing = null
+      if (missingFiles.includes(id)) {
+        missing = <MissingIndicator/>
+      }
+      return <Row key={idx} onDoubleClick={() => openKnownFile(f.path, id)} onClick={() => selectFile(id)} className={cx({'selected': selectedFile == id})}>
         <Cell>
-          <div className='title'>{basename.replace('.pltr', '')}</div>
+          <div className='title'>{missing}{basename.replace('.pltr', '')}</div>
           <div className='secondary-text'>{formattedPath}</div>
         </Cell>
         <Cell>

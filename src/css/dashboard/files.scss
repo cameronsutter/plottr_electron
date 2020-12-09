@@ -107,6 +107,11 @@
 
         .title {
           font-size: large;
+          .glyphicon {
+            margin-left: 8px;
+            font-size: normal;
+            color: $red-5;
+          }
         }
         .secondary-text {
           font-size: small;
@@ -117,7 +122,7 @@
 
       }
 
-      &:hover {
+      &:hover, &.selected {
         .sticky-table-cell {
           background-color: $green-8;
         }

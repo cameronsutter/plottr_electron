@@ -1,3 +1,4 @@
+import fs from 'fs'
 import { useMemo } from 'react'
 import { sortBy } from 'lodash'
 import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
@@ -20,6 +21,10 @@ export function useSortedKnownFiles (searchTerm) {
   }, [files, searchTerm])
 
   return [sortedIds, files]
+}
+
+export function doesFileExist (filePath) {
+  return fs.existsSync(filePath)
 }
 
 function migrateKnownFileStore () {

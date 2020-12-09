@@ -16,7 +16,9 @@ export const templatesStore = new Store({name: templatesPath, watch: true})
 export const customTemplatesStore = new Store({name: customTemplatesPath, watch: true})
 export const tempFilesStore = new Store({name: tempPath, cwd: 'tmp', watch: true})
 
-function useJsonStore (store, doesReloadOnIPC) {
+const checkInterval = 1000 * 60 * 1 // every minute
+
+function useJsonStore (store, reloadsOnIPC, checksOften) {
   const [info, setInfo] = useState(store.store)
   const [size, setSize] = useState(store.size)
   useEffect(() => {
@@ -27,7 +29,7 @@ function useJsonStore (store, doesReloadOnIPC) {
     return () => unsubscribe()
   }, [])
   useEffect(() => {
-    if (doesReloadOnIPC) {
+    if (reloadsOnIPC) {
       ipcRenderer.on('pls-reload-recents', () => {
         setInfo(store.get())
         setSize(store.size)
@@ -35,6 +37,17 @@ function useJsonStore (store, doesReloadOnIPC) {
     }
 
     return () => ipcRenderer.removeAllListeners('pls-reload-recents')
+  }, [])
+  useEffect(() => {
+    let timeout
+    if (checksOften) {
+      setTimeout(() => {
+        setInfo(store.get())
+        setSize(store.size)
+      }, checkInterval)
+    }
+
+    return () => clearTimeout(timeout)
   }, [])
 
   const saveInfoAtKey = (key, data) => {
@@ -61,7 +74,7 @@ export function useLicenseInfo () {
 }
 
 export function useKnownFilesInfo () {
-  return useJsonStore(knownFilesStore, true)
+  return useJsonStore(knownFilesStore, true, true)
 }
 
 export function useTemplatesInfo () {

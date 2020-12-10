@@ -6,8 +6,8 @@ import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
   CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE,
   RECORD_SCROLL_POSITION } from '../constants/ActionTypes'
 import { ZOOM_STATES, INITIAL_ZOOM_INDEX, INITIAL_ZOOM_STATE, FIT_ZOOM_STATE } from 'constants/zoom_states'
-import { ui as defaultUI } from '../../../shared/initialState'
-import { newFileUI } from '../../../shared/newFileState'
+import { ui as defaultUI } from '../store/initialState'
+import { newFileUI } from '../store/newFileState'
 
 export default function ui (state = defaultUI, action) {
   let filter;
@@ -26,7 +26,7 @@ export default function ui (state = defaultUI, action) {
 
     case NAVIGATE_TO_BOOK_TIMELINE:
       return Object.assign({}, state, {
-        currentTimeline: action.bookId, 
+        currentTimeline: action.bookId,
         currentView: 'timeline',
         timelineScrollPosition: { x: 0, y: 0 },
       })

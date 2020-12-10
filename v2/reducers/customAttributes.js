@@ -7,7 +7,7 @@ import { ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   RESET, FILE_LOADED, NEW_FILE, REORDER_CHARACTER_ATTRIBUTE,
   REORDER_PLACES_ATTRIBUTE } from '../constants/ActionTypes'
 import { combineReducers } from 'redux'
-import { newFileCustomAttributes } from '../../../shared/newFileState'
+import { newFileCustomAttributes } from '../store/newFileState'
 
 function characters (state = [], action) {
   switch (action.type) {
@@ -72,11 +72,11 @@ function places (state = [], action) {
           toIndex,
           attribute,
         } = action;
-  
+
         const copy = state
           .slice()
           .filter(({ name }) => name != attribute.name);
-  
+
         copy.splice(toIndex, 0, attribute);
         return copy;
 

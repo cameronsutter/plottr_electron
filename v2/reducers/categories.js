@@ -1,7 +1,7 @@
 import { FILE_LOADED, NEW_FILE, RESET, ADD_CHARACTER_CATEGORY, DELETE_CHARACTER_CATEGORY,
   UPDATE_CHARACTER_CATEGORY, REORDER_CHARACTER_CATEGORY } from '../constants/ActionTypes'
-import { newFileCategories } from '../../../shared/newFileState'
-import { categories as defaultCategories } from '../../../shared/initialState'
+import { newFileCategories } from '../store/newFileState'
+import { categories as defaultCategories } from '../store/initialState'
 import { nextId } from 'store/newIds';
 
 export default function categories (state = defaultCategories, action) {
@@ -48,7 +48,7 @@ function addCategory(key, state, action) {
 function deleteCategory(key, state, action) {
   const index = state[key].findIndex(item => item.id === action.category.id);
   if (index == -1) return state;
-  
+
   const newArray = [
     ...state[key].slice(0, index),
     ...state[key].slice(index + 1),

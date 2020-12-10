@@ -31,7 +31,7 @@ export default function OptionsHome (props) {
         />
       </div>
       <hr/>
-      <h1 className='secondary-text'>{t('Coming Soon')}</h1>
+      <h1 className='secondary-text'>{t('Coming Soon!')}</h1>
       <div className='dashboard__options__item disabled'>
         <h4>{t('Auto-save')}</h4>
         <Switch

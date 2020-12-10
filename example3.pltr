@@ -5,7 +5,7 @@
     },
     "characterSort": "name~asc",
     "currentView": "characters",
-    "darkMode": true,
+    "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
@@ -31,7 +31,7 @@
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.12.8-beta.2"
+    "version": "2020.12.9-beta"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",

@@ -11,24 +11,35 @@ import { focusIsEditable } from '../helpers/undo'
 import AskToSaveModal from '../components/dialogs/AskToSaveModal'
 import { getLastAction } from '../../common/utils/error_reporter'
 
+let isTryingToReload = false
+
 export default class App extends Component {
-  state = {showTemplateCreate: false, type: null, showAskToSave: false, blockClose: true}
+  state = {showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true}
 
   componentDidMount () {
     ipcRenderer.on('save-as-template-start', (event, type) => {
       this.setState({showTemplateCreate: true, type: type})
     })
+    ipcRenderer.on('reload', () => {
+      isTryingToReload = true
+      this.askToSave({})
+    })
     window.addEventListener('beforeunload', this.askToSave)
   }
 
   componentWillUnmount () {
+    ipcRenderer.removeAllListeners('save-as-template-start')
+    ipcRenderer.removeAllListeners('reload')
     window.removeEventListener('beforeunload', this.askToSave)
   }
 
   askToSave = (event) => {
     // console.log(event.currentTarget.performance.navigation)
-    if (!this.state.blockClose) return
-    if (process.env.NODE_ENV == 'development') return
+    if (!this.state.blockClosing) return
+    if (process.env.NODE_ENV == 'development') {
+      if (isTryingToReload) this.closeOrRefresh()
+      return
+    }
 
     if (focusIsEditable()) {
       // TODO: make this work to save people from closing when they are still editing something
@@ -36,21 +47,21 @@ export default class App extends Component {
       // event.returnValue = 'nope'
       // alert(i18n('Save the work in the open text editor before closing'))
     }
+    // no actions yet? doesn't need to save
     if (!getLastAction()) return
 
-    // TODO: need to reliably distinguish reloads from closing (or not allow reloads) (or handle reloads myself)
-    // event.returnValue = 'nope'
-    // this.setState({showAskToSave: true})
+    event.returnValue = 'nope'
+    this.setState({showAskToSave: true})
   }
 
   dontSaveAndClose = () => {
-    this.setState({showAskToSave: false, blockClose: false})
+    this.setState({showAskToSave: false, blockClosing: false})
     // this.setState({showAskToSave: false})
     this.closeOrRefresh()
   }
 
   saveAndClose = () => {
-    this.setState({showAskToSave: false, blockClose: false})
+    this.setState({showAskToSave: false, blockClosing: false})
     // this.setState({showAskToSave: false})
     // TODO: Save
     console.log('SAVING … not really')
@@ -58,13 +69,10 @@ export default class App extends Component {
   }
 
   closeOrRefresh = () => {
-    let entries = performance.getEntriesByType('navigation')
-    if (entries.some(entry => entry.type == 'reload')) {
+    if (isTryingToReload) {
       location.reload()
-      console.log('reloading', entries.map(e => e.type), performance.navigation.type)
     } else {
       window.close()
-      console.log('closing', entries.map(e => e.type), performance.navigation.type)
     }
   }
 

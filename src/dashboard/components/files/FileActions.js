@@ -16,12 +16,17 @@ if (is.macos) {
 export default function FileOptions ({missing, id, filePath, openFile}) {
   const [deleting, setDeleting] = useState(false)
 
+  const deleteFile = () => {
+    setDeleting(false)
+    deleteKnownFile(id, filePath)
+  }
+
   const renderDeleteFile = () => {
     if (!deleting) return null
 
     const name = path.basename(filePath)
 
-    return <DeleteConfirmModal name={name} onDelete={() => deleteKnownFile(id, filePath)} onCancel={() => setDeleting(false)}/>
+    return <DeleteConfirmModal name={name} onDelete={deleteFile} onCancel={() => setDeleting(false)}/>
   }
 
   const doTheThing = (eventKey) => {

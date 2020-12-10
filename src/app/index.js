@@ -7,12 +7,10 @@ import i18n from 'format-message'
 import App from 'containers/App'
 import configureStore from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
-// const { Menu, MenuItem } = remote
+const { app } = remote
 const win = remote.getCurrentWindow()
-const app = remote.app
-// import { actions, migrateIfNeeded } from 'pltr/v2'
-import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
-import { MPQ, setTrialInfo } from 'middlewares/helpers'
+import { actions, migrateIfNeeded } from 'pltr/v2'
+import { MPQ } from 'middlewares/helpers'
 import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
@@ -59,31 +57,8 @@ function bootFile (filePath, darkMode, numOpenFiles) {
   win.setRepresentedFilename(filePath)
 
   try {
-    // const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-    // migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
-    //   if (err) {
-    //     rollbar.error(err)
-    //     log.error(err)
-    //   }
-    //   store.dispatch(actions.uiActions.loadFile(filePath, didMigrate, state, state.file.version))
-
-    //   MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
-
-    //   const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
-    //   if (state.ui && state.ui.darkMode !== darkMode) {
-    //     store.dispatch(setDarkMode(newDarkState))
-    //   }
-    //   if (newDarkState) window.document.body.className = 'darkmode'
-
-    //   render(
-    //     <Provider store={store}>
-    //       <App showTour={SETTINGS.get('showTheTour')} />
-    //     </Provider>,
-    //     root
-    //   )
-    // })
-    const state = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-    saveBackup(filePath, state, (err) => {
+    const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    saveBackup(filePath, json, (err) => {
       if (err) {
         log.warn('[file open backup]', err)
         rollbar.error({message: 'BACKUP failed'})
@@ -92,23 +67,28 @@ function bootFile (filePath, darkMode, numOpenFiles) {
         log.info('[file open backup]', 'success', filePath)
       }
     })
-    const didMigrate = false
-    store.dispatch(loadFile(filePath, didMigrate, state))
+    migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
+      if (err) {
+        rollbar.error(err)
+        log.error(err)
+      }
+      store.dispatch(actions.uiActions.loadFile(filePath, didMigrate, state, state.file.version))
 
-    MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
+      MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
 
-    const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
-    if (state.ui && state.ui.darkMode !== darkMode) {
-      store.dispatch(setDarkMode(newDarkState))
-    }
-    if (newDarkState) window.document.body.className = 'darkmode'
+      const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
+      if (state.ui && state.ui.darkMode !== darkMode) {
+        store.dispatch(actions.uiActions.setDarkMode(newDarkState))
+      }
+      if (newDarkState) window.document.body.className = 'darkmode'
 
-    render(
-      <Provider store={store}>
-        <App showTour={false} />
-      </Provider>,
-      root
-    )
+      render(
+        <Provider store={store}>
+          <App showTour={false} />
+        </Provider>,
+        root
+      )
+    })
   } catch (error) {
     // TODO: maybe tell the main process there was en error, and ask the user to try again
     log.error(error)
@@ -122,7 +102,7 @@ ipcRenderer.on('state-fetched', (event, filePath, darkMode, numOpenFiles) => {
 })
 
 ipcRenderer.on('set-dark-mode', (event, on) => {
-  store.dispatch(setDarkMode(on))
+  store.dispatch(actions.uiActions.setDarkMode(on))
   window.document.body.className = on ? 'darkmode' : ''
 })
 

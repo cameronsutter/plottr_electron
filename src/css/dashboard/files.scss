@@ -34,23 +34,23 @@
   border-radius: 4px;
   transition: all .1s ease-in;
   font-size: 16pt;
+  color: $gray-1;
 
   &.icon {
     svg {
       font-size: 60pt;
-      color: $orange;
+      color: $gray-5;
     }
     &:hover, &.active {
       svg {
-        // color: $blue-4;
-        color: $orange-4;
+        color: $gray-3;
         // transform: scale(1.2);
       }
     }
   }
 
   &:hover, &.active {
-    color: $blue-0;
+    // color: $blue-0;
     background-color: $blue-8;
     box-shadow: $blue-highlight-box-shadow;
   }
@@ -133,12 +133,10 @@
       border-left: 1px solid #0000001a;
       .sticky-table-cell {
         padding: 12px 8px;
-        // border-bottom: none;
+        border: 1px solid #0000001a;
         cursor: pointer;
         user-select: none;
 
-        border: 1px solid #0000001a;
-        // border-width: 0 1px 1px 1px;
 
         &:first-child {
           border-width: 0 0 1px 1px;

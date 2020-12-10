@@ -8,7 +8,7 @@ import { StickyTable, Row, Cell } from 'react-sticky-table'
 import { openKnownFile } from '../../utils/window_manager'
 import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
 import MissingIndicator from './MissingIndicator'
-import FileOptions from './FileOptions'
+import FileActions from './FileActions'
 
 export default function RecentFiles (props) {
   const [searchTerm, setSearchTerm] = useState('')
@@ -55,7 +55,7 @@ export default function RecentFiles (props) {
               <div className='title'>{missing}{basename.replace('.pltr', '')}</div>
               <div className='secondary-text'>{formattedPath}</div>
             </div>
-            <FileOptions missing={!!missing} id={id} filePath={f.path} openFile={openFile}/>
+            <FileActions missing={!!missing} id={id} filePath={f.path} openFile={openFile}/>
           </div>
         </Cell>
         <Cell>

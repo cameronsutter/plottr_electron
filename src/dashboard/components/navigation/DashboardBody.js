@@ -64,6 +64,7 @@ export default function DashboardBody ({currentView, setView}) {
 
 function Body ({children}) {
   return <div className='dashboard__body'>
+    <div className='dashboard__top-border'></div>
     <UpdateNotifier />
     <ErrorBoundary>{ children }</ErrorBoundary>
   </div>

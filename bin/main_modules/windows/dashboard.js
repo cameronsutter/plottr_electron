@@ -1,5 +1,5 @@
 const path = require('path')
-const { app } = require('electron')
+const { app, ipcMain } = require('electron')
 const { is } = require('electron-util')
 const { filePrefix } = require('../helpers')
 const { windows } = require('./')
@@ -9,6 +9,10 @@ const { makeBrowserWindow } = require('../utils')
 let launchSent = false
 
 let dashboardWindow
+ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
+  reloadRecents()
+})
+
 function openDashboard () {
   if (dashboardWindow) {
     dashboardWindow.focus()

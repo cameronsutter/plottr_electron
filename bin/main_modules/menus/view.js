@@ -1,5 +1,5 @@
 const i18n = require('format-message')
-// const { reloadWindow } = require('../windows')
+const { reloadWindow } = require('../windows')
 const { getDarkMode, toggleDarkMode } = require('../theme')
 const { takeScreenshot } = require('../helpers')
 const { NODE_ENV } = require('../constants')
@@ -8,8 +8,7 @@ function buildViewMenu () {
   const submenu = [{
     label: i18n('Reload'),
     accelerator: 'CmdOrCtrl+R',
-    click: () => {}
-    // click: reloadWindow
+    click: reloadWindow,
   }, {
       label: i18n('Dark Mode'),
       accelerator: 'CmdOrCtrl+D',

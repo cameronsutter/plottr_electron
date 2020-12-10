@@ -43,16 +43,7 @@ function openWindow (filePath) {
 
 function reloadWindow () {
   let win = BrowserWindow.getFocusedWindow()
-  let winObj = getWindowById(win.id)
-  if (NODE_ENV !== 'dev') {
-    if (isDirty(winObj.state, winObj.lastSave)) {
-      askToSave(win, winObj.state, winObj.fileName, win.webContents.reload)
-    } else {
-      win.webContents.reload()
-    }
-  } else {
-    win.webContents.reload()
-  }
+  win.webContents.send('reload')
 }
 
 function dereferenceWindow (winObj) {

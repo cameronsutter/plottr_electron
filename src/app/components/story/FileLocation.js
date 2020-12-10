@@ -28,7 +28,7 @@ class FileLocation extends Component {
       win.setRepresentedFilename(newFilePath)
       win.setTitle(displayFileName(newFilePath))
       // send event to dashboard
-      ipcRenderer.sendTo(1, 'pls-reload-recents') // TODO: probably won't always be ID 1
+      ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
     }
   }
 

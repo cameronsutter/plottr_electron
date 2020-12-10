@@ -31,6 +31,7 @@ function useJsonStore (store, reloadsOnIPC, checksOften) {
   useEffect(() => {
     if (reloadsOnIPC) {
       ipcRenderer.on('pls-reload-recents', () => {
+        console.log('got pls reload request')
         setInfo(store.get())
         setSize(store.size)
       })
@@ -41,7 +42,7 @@ function useJsonStore (store, reloadsOnIPC, checksOften) {
   useEffect(() => {
     let timeout
     if (checksOften) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setInfo(store.get())
         setSize(store.size)
       }, checkInterval)

@@ -6,10 +6,10 @@
     grid-area: nav;
     user-select: none;
     width: 100px;
-    // background-color: #FF7F32;
-    background-image: linear-gradient(to right, #FF7F32, $orange-5);
+    background-color: $orange;
+    // background-image: linear-gradient(to right, $orange, $orange-5);
     // box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    box-shadow: 3px 0px 1px -2px rgba(0, 0, 0, 0.2), 2px 0px 2px 0px rgba(0, 0, 0, 0.14), 1px 0px 5px 0px rgba(0, 0, 0, 0.12);
+    // box-shadow: 3px 0px 1px -2px rgba(0, 0, 0, 0.2), 2px 0px 2px 0px rgba(0, 0, 0, 0.14), 1px 0px 5px 0px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -19,7 +19,7 @@
   border-bottom: 1.5px solid $orange-5;
   color: white;
   padding: 7px;
-  font-size: larger;
+  font-size: medium;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,14 +32,20 @@
   }
 
   &.selected {
-    background-color: $blue-8;
-    color: $blue-4;
+    // background-color: $blue-8;
+    background-color: white;
+    // color: $blue-4;
+    color: $orange;
     border-bottom: none;
     // box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $blue-4;
-    box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $blue-4, inset 0px 1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 1px 5px 0 $blue-4;
+    // box-shadow: $blue-highlight-box-shadow;
   }
 
   svg {
     font-size: 35px;
+  }
+
+  &:first-child {
+    border-top: 4px solid $orange;
   }
 }

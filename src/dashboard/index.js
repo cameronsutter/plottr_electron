@@ -36,3 +36,7 @@ window.requestIdleCallback(() => {
 ipcRenderer.once('send-launch', (event, version) => {
   MPQ.push('Launch', {online: navigator.onLine, version: version})
 })
+
+ipcRenderer.on('reload', () => {
+  location.reload()
+})

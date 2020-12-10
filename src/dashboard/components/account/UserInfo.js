@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap'
 const deviceID = machineIdSync(true)
 
 export default function UserInfo ({licenseInfo}) {
-  const expiresDate = new Date(licenseInfo.expires)
+  const expiresDate = licenseInfo.expires ? t('{date, date, long}', {date: new Date(licenseInfo.expires)}) : null
 
   return <div className='dashboard__user-info'>
     <h1>{t('Account Information')}</h1>
@@ -21,7 +21,7 @@ export default function UserInfo ({licenseInfo}) {
         <dt>{t('License Key')}</dt>
         <dd>{licenseInfo.licenseKey}</dd>
         <dt>{t('Expiration Date')}</dt>
-        <dd>{t('{date, date, long}', {date: expiresDate})}</dd>
+        <dd>{expiresDate}</dd>
       </dl>
     </div>
     <div className='text-right'>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { IoIosBrowsers, IoMdBook, IoIosDocument, IoIosDesktop } from 'react-icons/io'
+import { FaRegSnowflake } from 'react-icons/fa'
 import t from 'format-message'
 import cx from 'classnames'
 import { createNew, openExistingFile } from '../../utils/window_manager'
@@ -32,7 +33,7 @@ export default function NewFiles ({activeView, toggleView, doImport}) {
         <div>{t('Create From Template')}</div>
       </div>
       <div className={cx('dashboard__new-files__item icon', {active: activeView == 'import'})} onClick={doImport}>
-        <IoMdBook/>
+        <FaRegSnowflake/>
         <div>{t('Import Snowflake Pro')}</div>
       </div>
     </div>

@@ -130,11 +130,22 @@
     }
 
     .sticky-table-row:not(:first-child) {
+      border-left: 1px solid #0000001a;
       .sticky-table-cell {
         padding: 12px 8px;
-        border-bottom: none;
+        // border-bottom: none;
         cursor: pointer;
         user-select: none;
+
+        border: 1px solid #0000001a;
+        // border-width: 0 1px 1px 1px;
+
+        &:first-child {
+          border-width: 0 0 1px 1px;
+        }
+        &:last-child {
+          border-width: 0 1px 1px 1px;
+        }
 
         .lastOpen {
         }
@@ -157,7 +168,7 @@
         }
       }
     }
-    .sticky-table-row:nth-of-type(even) {
+    .sticky-table-row:nth-of-type(odd):not(:first-child) {
       .sticky-table-cell {
         background-color: $gray-9;
       }

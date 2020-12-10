@@ -16,6 +16,8 @@ import { store } from '../store/configureStore'
 let isTryingToReload = false
 let isTryingToClose = false
 
+let isTryingToReload = false
+
 export default class App extends Component {
   state = { showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true }
 
@@ -29,6 +31,10 @@ export default class App extends Component {
     })
     ipcRenderer.on('wants-to-close', () => {
       isTryingToClose = true
+      this.askToSave({})
+    })
+    ipcRenderer.on('reload', () => {
+      isTryingToReload = true
       this.askToSave({})
     })
     window.addEventListener('beforeunload', this.askToSave)

@@ -39,7 +39,11 @@
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/examples/example3.pltr",
     "loaded": true,
     "dirty": true,
+<<<<<<< HEAD:examples/example3.pltr
     "version": "2021.1.27-beta.2"
+=======
+    "version": "2020.12.9-beta"
+>>>>>>> use pltr for migrations:example3.pltr
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",

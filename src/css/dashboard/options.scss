@@ -10,6 +10,10 @@
     font-size: 20pt;
     margin-top: 0;
     margin-bottom: 20px;
+
+    &.secondary-text {
+      color: $gray-5;
+    }
   }
 
   hr {

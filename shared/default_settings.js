@@ -10,7 +10,7 @@ module.exports = {
   canEdit: true,
   canExport: true,
   user: {
-    autoUpdate: true,
+    autoDownloadUpdate: true,
     autoSave: true,
     backupDays: 30,
     backupLocation: 'default',

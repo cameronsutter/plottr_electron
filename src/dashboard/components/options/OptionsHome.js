@@ -25,8 +25,8 @@ export default function OptionsHome (props) {
       <div className='dashboard__options__item'>
         <h4>{t('Update Automatically')}</h4>
         <Switch
-          isOn={!!settings.user.autoUpdate}
-          handleToggle={() => saveSetting('user.autoUpdate', !settings.user.autoUpdate)}
+          isOn={!!settings.user.autoDownloadUpdate}
+          handleToggle={() => saveSetting('user.autoDownloadUpdate', !settings.user.autoDownloadUpdate)}
           labelText={t('Download updates automatically')}
         />
       </div>

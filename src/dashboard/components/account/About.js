@@ -9,7 +9,7 @@ const autoUpdater = remote.require('electron-updater').autoUpdater
 export default function About (props) {
   const checkForUpdates = () => {
     if (process.env.NODE_ENV == 'development') return
-    autoUpdater.autoDownload = SETTINGS.get('user.autoUpdate')
+    autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
     autoUpdater.checkForUpdates()
   }
 

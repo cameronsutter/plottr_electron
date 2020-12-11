@@ -10,7 +10,7 @@ const autoUpdater = remote.require('electron-updater').autoUpdater
 // SETUP //
 autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
 autoUpdater.logger = log
-autoUpdater.autoDownload = SETTINGS.get('user.autoUpdate')
+autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
 const updateCheckThreshold = 1000 * 60 * 10 // 10 minutes
 
 export default function UpdateNotifier (props) {
@@ -74,7 +74,7 @@ export default function UpdateNotifier (props) {
   useEffect(() => {
     if (process.env.NODE_ENV == 'development') return
     if (shouldCheck && SETTINGS.get('canGetUpdates')) {
-      autoUpdater.autoDownload = SETTINGS.get('user.autoUpdate')
+      autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
       autoUpdater.checkForUpdates()
       setChecking(true)
       setTimeout(() => setChecking(false), 5000) //failsafe in case of no response

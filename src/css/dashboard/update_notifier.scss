@@ -13,17 +13,11 @@
   justify-content: space-between;
   align-items: center;
   position: absolute;
-  // right: 50px;
-  // height: 30px;
   bottom: 15px;
   left: 115px;
   width: 90%;
   margin-bottom: 0;
-  // border-radius: 100px;
-  // padding: 0px 15px;
-  // line-height: 28px;
-  // border-width: 1px;
-  // border-style: solid;
+  z-index: 10;
 
   .update-notifier__buttons {
     display: flex;

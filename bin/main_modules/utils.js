@@ -4,7 +4,7 @@ const windowStateKeeper = require('electron-window-state')
 const i18n = require('format-message')
 const log = require('electron-log')
 // const { rollbar } = require('./rollbar')
-const { windows } = require('./windows')
+const { hasWindows } = require('./windows')
 const SETTINGS = require('./settings')
 
 function gracefullyNotSave () {
@@ -12,7 +12,7 @@ function gracefullyNotSave () {
 }
 
 function gracefullyQuit () {
-  if (!app.isReady() || !windows.length) {
+  if (!app.isReady() || !hasWindows()) {
     dialog.showMessageBoxSync({type: 'info', buttons: [i18n('ok')], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email us at support@plottr.com')})
     app.quit()
   }

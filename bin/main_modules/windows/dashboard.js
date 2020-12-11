@@ -2,7 +2,7 @@ const path = require('path')
 const { app, ipcMain } = require('electron')
 const { is } = require('electron-util')
 const { filePrefix } = require('../helpers')
-const { windows } = require('./')
+const { hasWindows } = require('./')
 const { makeBrowserWindow } = require('../utils')
 
 // mixpanel tracking
@@ -25,7 +25,7 @@ function openDashboard () {
 
   dashboardWindow.on('close', function () {
     dashboardWindow = null
-    if (!windows.length && !is.macos) {
+    if (!hasWindows() && !is.macos) {
       app.quit()
     }
   })
@@ -42,7 +42,11 @@ function setDarkModeForDashboard (darkMode) {
 }
 
 function reloadRecents () {
-  if (dashboardWindow) dashboardWindow.webContents.send('pls-reload-recents')
+  if (dashboardWindow) dashboardWindow.webContents.send('reload-recents')
 }
 
-module.exports = { openDashboard, setDarkModeForDashboard, reloadRecents }
+function updateOpenFiles (filePath) {
+  if (dashboardWindow) dashboardWindow.webContents.send('file-closed', filePath)
+}
+
+module.exports = { openDashboard, setDarkModeForDashboard, reloadRecents, updateOpenFiles }

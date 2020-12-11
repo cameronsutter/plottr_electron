@@ -1,5 +1,5 @@
 const { nativeTheme } = require('electron')
-const { windows } = require('./windows')
+const { allWindows } = require('./windows')
 const { setDarkModeForDashboard } = require('./windows/dashboard')
 
 let darkMode = nativeTheme.shouldUseDarkColors || false
@@ -10,7 +10,7 @@ function getDarkMode() {
 
 function setDarkMode(value) {
   darkMode = value
-  windows.forEach((winObj) => {
+  allWindows().forEach((winObj) => {
     winObj.browserWindow.webContents.send('set-dark-mode', darkMode)
   })
   setDarkModeForDashboard(darkMode)

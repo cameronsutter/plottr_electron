@@ -1,43 +1,45 @@
-const path = require('path')
-const { app, BrowserWindow } = require('electron')
-const log = require('electron-log')
-const { makeBrowserWindow } = require('../utils')
-const { filePrefix } = require('../helpers')
-const { rollbar } = require('../rollbar')
-const { NODE_ENV } = require('../constants')
+const { BrowserWindow, ipcMain } = require('electron')
 const { openBuyWindow } = require('./buy') // needed because it sets up an event handler
 
-const windows = []
+let windows = []
 
-function getWindowById(id) {
-  return windows.find(window => window.id === id)
+function hasWindows () {
+  return !!windows.length
 }
 
-function openWindow (filePath) {
-  const newWindow = makeBrowserWindow(filePath)
+function allWindows () {
+  return windows
+}
 
-  const entryFile = path.join(filePrefix(__dirname), '../../app.html')
-  newWindow.loadURL(entryFile)
-
-  // newWindow.on('closed', function () {})
-
-  newWindow.on('close', function (e) {
-    const win = getWindowById(this.id) // depends on 'this' being the window
-    if (win) dereferenceWindow(win)
+function addNewWindow (browserWindow, filePath) {
+  windows.push({
+    id: browserWindow.id,
+    browserWindow: browserWindow,
+    filePath: filePath,
   })
+}
 
-  try {
-    app.addRecentDocument(filePath)
+function getWindowById (id) {
+  return windows.find(window => window.id == id)
+}
 
-    windows.push({
-      id: newWindow.id,
-      browserWindow: newWindow,
-      filePath: filePath,
-    })
-  } catch (err) {
-    log.warn(err)
-    rollbar.warn(err, {filePath: filePath})
-    newWindow.destroy()
+function focusFirstWindow () {
+  if (!windows.length) return
+
+  windows[0].browserWindow.focus()
+}
+
+function numberOfWindows () {
+  return windows.length
+}
+
+function focusIfOpen (filePath) {
+  const win = windows.find(w => w.filePath == filePath)
+  if (win) {
+    win.browserWindow.focus()
+    return true
+  } else {
+    return false
   }
 }
 
@@ -53,14 +55,18 @@ function dereferenceWindow (winObj) {
 
 function closeWindow (id) {
   let win = getWindowById(id)
-  win.window.close()
+  if (win) win.browserWindow.send('close')
 }
 
 module.exports = {
+  addNewWindow,
+  allWindows,
   reloadWindow,
-  openWindow,
+  hasWindows,
+  focusFirstWindow,
   dereferenceWindow,
   closeWindow,
   getWindowById,
-  windows,
+  numberOfWindows,
+  focusIfOpen,
 }

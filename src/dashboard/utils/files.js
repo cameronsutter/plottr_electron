@@ -1,7 +1,8 @@
 import fs from 'fs'
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { sortBy } from 'lodash'
 import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
+import { ipcRenderer } from 'electron'
 
 export function useSortedKnownFiles (searchTerm) {
   const [files] = useKnownFilesInfo()

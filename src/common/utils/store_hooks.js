@@ -30,14 +30,13 @@ function useJsonStore (store, reloadsOnIPC, checksOften) {
   }, [])
   useEffect(() => {
     if (reloadsOnIPC) {
-      ipcRenderer.on('pls-reload-recents', () => {
-        console.log('got pls reload request')
+      ipcRenderer.on('reload-recents', () => {
         setInfo(store.get())
         setSize(store.size)
       })
     }
 
-    return () => ipcRenderer.removeAllListeners('pls-reload-recents')
+    return () => ipcRenderer.removeAllListeners('reload-recents')
   }, [])
   useEffect(() => {
     let timeout

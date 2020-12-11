@@ -9,7 +9,7 @@ import GuidedTour from '../components/GuidedTour'
 import TemplateCreate from '../../common/components/templates/TemplateCreate'
 import { focusIsEditable } from '../helpers/undo'
 import AskToSaveModal from '../components/dialogs/AskToSaveModal'
-import { getLastAction } from '../../common/utils/error_reporter'
+import { hasPreviousAction } from '../../common/utils/error_reporter'
 
 let isTryingToReload = false
 
@@ -37,8 +37,7 @@ export default class App extends Component {
     // console.log(event.currentTarget.performance.navigation)
     if (!this.state.blockClosing) return
     if (process.env.NODE_ENV == 'development') {
-      if (isTryingToReload) this.closeOrRefresh()
-      return
+      return this.closeOrRefresh(false)
     }
 
     if (focusIsEditable()) {
@@ -48,7 +47,9 @@ export default class App extends Component {
       // alert(i18n('Save the work in the open text editor before closing'))
     }
     // no actions yet? doesn't need to save
-    if (!getLastAction()) return
+    if (!hasPreviousAction()) {
+      return this.closeOrRefresh(false)
+    }
 
     event.returnValue = 'nope'
     this.setState({showAskToSave: true})
@@ -56,23 +57,21 @@ export default class App extends Component {
 
   dontSaveAndClose = () => {
     this.setState({showAskToSave: false, blockClosing: false})
-    // this.setState({showAskToSave: false})
-    this.closeOrRefresh()
+    this.closeOrRefresh(true)
   }
 
   saveAndClose = () => {
     this.setState({showAskToSave: false, blockClosing: false})
-    // this.setState({showAskToSave: false})
     // TODO: Save
     console.log('SAVING … not really')
-    this.closeOrRefresh()
+    this.closeOrRefresh(true)
   }
 
-  closeOrRefresh = () => {
+  closeOrRefresh = (shouldClose) => {
     if (isTryingToReload) {
       location.reload()
     } else {
-      window.close()
+      if (shouldClose) window.close()
     }
   }
 

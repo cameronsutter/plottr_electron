@@ -6,7 +6,8 @@ const contextMenu = require('electron-context-menu')
 const { setupRollbar } = require('./main_modules/rollbar')
 const { loadMenu } = require('./main_modules/menus')
 const { setupI18n } = require('../locales')
-const { windows, openWindow, getWindowById } = require('./main_modules/windows')
+const { focusFirstWindow, hasWindows, getWindowById, numberOfWindows } = require('./main_modules/windows')
+const { openProjectWindow } = require('./main_modules/windows/projects')
 const { getDarkMode } = require('./main_modules/theme')
 const { gracefullyQuit } = require('./main_modules/utils')
 const { openDashboard } = require('./main_modules/windows/dashboard')
@@ -45,7 +46,7 @@ app.whenReady().then(() => {
     const param = process.argv[1]
 
     if (param.includes('.pltr')) {
-      openWindow(param)
+      openProjectWindow(param)
       addToKnown(param)
     }
 
@@ -65,9 +66,8 @@ app.whenReady().then(() => {
   }
 
   app.on('activate', () => {
-    if (windows.length) {
-      const browserWin = BrowserWindow.fromId(windows[0].id)
-      if (browserWin) browserWin.focus()
+    if (hasWindows()) {
+      focusFirstWindow()
     } else {
       openDashboard()
     }
@@ -79,7 +79,7 @@ app.on('open-file', (event, filePath) => {
   // mac/linux open-file event handler
   if (!is.windows) {
     app.whenReady().then(() => {
-      openWindow(filePath)
+      openProjectWindow(filePath)
       addToKnown(filePath)
     })
   }
@@ -99,13 +99,9 @@ app.on('window-all-closed', function () {
   }
 })
 
-ipcMain.on('pls-open-window', (event, filePath, jsonData) => {
-  openWindow(filePath, jsonData, null)
-})
-
 ipcMain.on('pls-fetch-state', function (event, id) {
   const win = getWindowById(id)
   if (win) {
-    event.sender.send('state-fetched', win.filePath, getDarkMode(), windows.length)
+    event.sender.send('state-fetched', win.filePath, getDarkMode(), numberOfWindows())
   }
 })

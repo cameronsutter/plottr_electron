@@ -2,18 +2,25 @@ import { remote, shell } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import log from 'electron-log'
+import { ActionTypes } from 'pltr/v2'
 import i18n from 'format-message'
 import USER from './user_info'
 const app = remote.app
 
-let lastAction = null
+let previousAction = null
 
-export function setLastAction (action) {
-  lastAction = action
+export function setPreviousAction (action) {
+  previousAction = action
 }
 
-export function getLastAction () {
-  return lastAction
+export function hasPreviousAction () {
+  if (!previousAction) return false
+  if (previousAction.type == ActionTypes.FILE_LOADED) return false
+  return true
+}
+
+export function getPreviousAction () {
+  return previousAction
 }
 
 export function createErrorReport (error, errorInfo) {

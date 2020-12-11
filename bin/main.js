@@ -22,7 +22,6 @@ const TemplateManager = require('./main_modules/template_manager')
 const CustomTemplateManager = require('./main_modules/custom_template_manager')
 const FileManager = require('./main_modules/file_manager')
 const { loadMenu } = require('./main_modules/menus')
-const { isDirty, emptyFileContents, displayFileName } = require('./main_modules/helpers')
 const { setupI18n } = require('../locales')
 const { openWindow, windows } = require('./main_modules/windows')
 const { closeExpiredWindow, openExpiredWindow } = require('./main_modules/windows/expired')
@@ -113,37 +112,6 @@ app.on('browser-window-focus', () => {
     lastCheckedForUpdate = currentTime
     checkUpdatesIfAllowed()
   }
-})
-
-ipcMain.on('save-state', (event, state, winId, isNewFile) => {
-  var winObj = windows.find(w => w.id == winId)
-  let wasEdited = isDirty(state, winObj.state)
-  winObj.window.setDocumentEdited(wasEdited)
-  winObj.window.setTitle(displayFileName(winObj.fileName))
-  winObj.window.setRepresentedFilename(winObj.fileName)
-
-  // save the new state
-  winObj.state = state
-  if (isNewFile || wasEdited) {
-    FileManager.save(winObj.fileName, state, (err) => {
-      backupFile(winObj.fileName, state, (err) => {
-        if (err) {
-          log.warn('[save state backup]', err)
-          rollbar.error({message: 'BACKUP failed'})
-          rollbar.warn(err, {fileName: winObj.fileName})
-        }
-      })
-      if (err) {
-        log.warn(err)
-        rollbar.warn(err, {fileName: winObj.fileName})
-        gracefullyNotSave()
-      } else {
-        winObj.window.webContents.send('state-saved')
-        winObj.lastSave = winObj.state
-        winObj.window.setDocumentEdited(false)
-      }
-    })
-  } else winObj.window.webContents.send('state-saved')
 })
 
 ipcMain.on('fetch-state', function (event, id) {
@@ -241,12 +209,6 @@ ipcMain.on('extend-trial', (event, days) => {
       openRecentFiles(fileToOpen)
     }
   })
-})
-
-ipcMain.on('chose-template', (event, template) => {
-  const empty = emptyFileContents()
-  const data = Object.assign({}, empty, template.templateData)
-  askToCreateFile(data)
 })
 
 ipcMain.on('dev-open-analyzer-file', (event, fileName, filePath) => {

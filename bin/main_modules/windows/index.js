@@ -1,8 +1,8 @@
 const path = require('path')
 const { app, BrowserWindow } = require('electron')
 const log = require('electron-log')
-const { askToSave, makeBrowserWindow } = require('../utils')
-const { isDirty, filePrefix } = require('../helpers')
+const { makeBrowserWindow } = require('../utils')
+const { filePrefix } = require('../helpers')
 const { rollbar } = require('../rollbar')
 const { NODE_ENV } = require('../constants')
 const { openBuyWindow } = require('./buy') // needed because it sets up an event handler

@@ -4,7 +4,6 @@ const windowStateKeeper = require('electron-window-state')
 const i18n = require('format-message')
 const log = require('electron-log')
 // const { rollbar } = require('./rollbar')
-// const { emptyFileContents } = require('./helpers')
 const { windows } = require('./windows')
 const SETTINGS = require('./settings')
 

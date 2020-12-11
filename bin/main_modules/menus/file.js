@@ -15,7 +15,6 @@ const { rollbar } = require('../rollbar')
 //   askToCreateFile,
 // } = require('../utils')
 // const FileManager = require('../file_manager')
-// const { isDirty } = require('../helpers')
 // const Exporter = require('../exporter')
 // const { getDarkMode } = require('../theme')
 const { NODE_ENV } = require('../constants')

@@ -5,16 +5,7 @@ import { knownFilesStore } from '../../common/utils/store_hooks'
 import { saveToTempFile } from '../../common/utils/temp_files'
 import { addToKnownFiles } from '../../common/utils/known_files'
 import Importer from '../../common/importer/snowflake/importer'
-// const { newFileState } = require('pltr/v2')
-// import pltr from 'pltr/v2'
-// const pltr = require('pltr')
-
-// TODO: pull this from pltr
-const {
-  newFileSeries, newFileBooks, newFileBeats, newFileChapters, newFileUI, newFileFile,
-  newFileCharacters, newFilePlaces, newFileTags, newFileCards, newFileLines,
-  newFileSeriesLines, newFileCustomAttributes, newFileNotes, newFileImages, newFileCategories,
-} = require('../../../shared/newFileState')
+import { emptyFile } from 'pltr/v2'
 const win = remote.getCurrentWindow()
 const { dialog, app } = remote
 
@@ -38,7 +29,6 @@ export function openExistingFile () {
 }
 
 export function createNew (templateData) {
-  // let json = newFileState(t('Untitled'), app.getVersion())
   let json = emptyFile(t('Untitled'), app.getVersion())
 
   if (templateData) {
@@ -55,7 +45,6 @@ export function createNew (templateData) {
 
 export function createFromSnowflake (importedPath) {
   const storyName = path.basename(importedPath, '.snowXML')
-  // let json = newFileState(storyName, app.getVersion())
   let json = emptyFile(storyName, app.getVersion())
   // clear chapters and lines
   json.chapters = []
@@ -68,34 +57,5 @@ export function createFromSnowflake (importedPath) {
     openKnownFile(filePath, fileId)
   } catch (error) {
     throw error
-  }
-}
-
-// TODO: refactor this
-function emptyFile (name, version) {
-  const books = {
-    ...newFileBooks,
-    [1]: {
-      ...newFileBooks[1],
-      title: name,
-    }
-  }
-  return {
-    series: name ? Object.assign({}, newFileSeries, {name: name}) : newFileSeries,
-    books: books,
-    beats: newFileBeats,
-    chapters: newFileChapters,
-    ui: newFileUI,
-    file: Object.assign({}, newFileFile, {version: version}),
-    characters: newFileCharacters,
-    places: newFilePlaces,
-    tags: newFileTags,
-    cards: newFileCards,
-    lines: newFileLines,
-    seriesLines: newFileSeriesLines,
-    customAttributes: newFileCustomAttributes,
-    notes: newFileNotes,
-    images: newFileImages,
-    categories: newFileCategories,
   }
 }

@@ -1,21 +1,11 @@
 const fs = require('fs')
 const path = require('path')
-const deep = require('deep-diff')
 const log = require('electron-log')
 const { app, BrowserWindow, dialog } = require('electron')
 const { is } = require('electron-util')
-const emptyFile = require('./empty_file')
 const { NODE_ENV } = require('./constants')
 // const SETTINGS = require('./settings')
 // const { getDaysLeftInTrial, getTrialModeStatus } = require('./trial_manager')
-
-function emptyFileContents (name) {
-  return emptyFile(name)
-}
-
-function isDirty (newState, oldState) {
-  return !!deep.diff(oldState, newState)
-}
 
 function takeScreenshot () {
   let win = BrowserWindow.getFocusedWindow()
@@ -54,8 +44,6 @@ function filePrefix (dirname) {
 }
 
 module.exports = {
-  emptyFileContents,
-  isDirty,
   takeScreenshot,
   filePrefix,
 }

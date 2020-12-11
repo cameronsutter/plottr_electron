@@ -22,11 +22,31 @@
       font-size: 23px;
     }
 
+    #temporary-inner {
+      /* margin-top: -50px; */
+      background: hsl(60, 3%, 94%) url("../icons/mountain_background.jpg");
+      background-size: cover;
+      background-blend-mode: overlay;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #temporary-inner img {
+      /* animation: fadein 1.5s; */
+      /* margin-top: 10px; */
+    }
+
   </style>
 </head>
 
 <body>
-  <div id="dashboard__react__root"></div>
+  <div id="dashboard__react__root">
+    <div id="temporary-inner">
+      <img src='../icons/logo_28_500.png' height='500' />
+    </div>
+  </div>
   <script async src="commons.bundle.js"></script>
   <script async src="reactIcons.bundle.js"></script>
   <script async src="dashboard.bundle.js"></script>

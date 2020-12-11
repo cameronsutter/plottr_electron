@@ -23,10 +23,10 @@ export default function BackupsHome (props) {
     </div>
   }
 
+  // <FormControl type='search' placeholder={t('Search')} className='dashboard__search' />
   return <div className='dashboard__backups'>
     <h1>{t('Your Backups')}</h1>
     { breadcrumb }
-    <FormControl type='search' placeholder={t('Search')} className='dashboard__search' />
     <div className='dashboard__backups__wrapper'>
       <ErrorBoundary>
         { body }

@@ -3,9 +3,9 @@ import t from 'format-message'
 import { useCustomTemplatesInfo } from '../../../common/utils/store_hooks'
 import { useFilteredSortedTemplates } from '../../utils/templates'
 
-export default function CustomTemplates ({type}) {
+export default function CustomTemplates ({type, searchTerm}) {
   const [templateInfo] = useCustomTemplatesInfo()
-  const templates = useFilteredSortedTemplates(templateInfo, type)
+  const templates = useFilteredSortedTemplates(templateInfo, type, searchTerm)
 
   const renderedTemplates = templates.map(t => {
     return <div key={t.id} className='dashboard__template-section__item custom'>

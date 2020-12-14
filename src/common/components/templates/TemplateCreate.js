@@ -18,7 +18,7 @@ class TemplateCreate extends Component {
       link: findDOMNode(this.refs.link).value,
     }
 
-    ipcRenderer.sendTo(win.webContents.id, 'pls-save-custom-template', { type: this.props.type, data })
+    ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', { type: this.props.type, data })
     this.props.close()
   }
 

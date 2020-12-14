@@ -10,6 +10,8 @@ export default function Exporter (data, { fileName, bookId }) {
   let doc = new Document()
   let names = namesMapping(data)
   let sections = []
+  if (!bookId) bookId = data.ui.currentTimeline
+
   sections.push(seriesNameSection(data, bookId))
   sections.push(outlineSection(data, names, bookId, doc))
   sections.push(charactersSection(data, doc))

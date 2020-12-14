@@ -14,6 +14,7 @@ import { saveFile } from '../../common/utils/files'
 import { store } from '../store/configureStore'
 
 let isTryingToReload = false
+let isTryingToClose = false
 
 export default class App extends Component {
   state = {showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true}
@@ -26,20 +27,24 @@ export default class App extends Component {
       isTryingToReload = true
       this.askToSave({})
     })
+    ipcRenderer.on('wants-to-close', () => {
+      isTryingToClose = true
+      this.askToSave({})
+    })
     window.addEventListener('beforeunload', this.askToSave)
   }
 
   componentWillUnmount () {
     ipcRenderer.removeAllListeners('save-as-template-start')
     ipcRenderer.removeAllListeners('reload')
+    ipcRenderer.removeAllListeners('wants-to-close')
     window.removeEventListener('beforeunload', this.askToSave)
   }
 
   askToSave = (event) => {
-    // console.log(event.currentTarget.performance.navigation)
     if (!this.state.blockClosing) return
     if (process.env.NODE_ENV == 'development') {
-      return this.closeOrRefresh(false)
+      return this.closeOrRefresh(isTryingToClose)
     }
 
     if (focusIsEditable()) {
@@ -50,7 +55,8 @@ export default class App extends Component {
     }
     // no actions yet? doesn't need to save
     if (!hasPreviousAction()) {
-      return this.closeOrRefresh(false)
+      this.setState({blockClosing: false})
+      return this.closeOrRefresh(isTryingToClose)
     }
 
     event.returnValue = 'nope'

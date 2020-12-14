@@ -7,5 +7,6 @@ export function saveFile (filePath, jsonData) {
   } else {
     stringData = JSON.stringify(jsonData)
   }
+  console.log('saving!', filePath, jsonData)
   fs.writeFileSync(filePath, stringData)
 }

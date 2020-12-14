@@ -6,7 +6,7 @@ const { BrowserWindow, dialog } = require('electron')
 const { is } = require('electron-util')
 const log = require('electron-log')
 const { rollbar } = require('../rollbar')
-// const { getWindowById, openWindow, closeWindow, windows } = require('../windows')
+const { getWindowById } = require('../windows')
 // const { openDashboardWindow } = require('../windows/dashboard')
 // const {
 //   askToOpenFile,
@@ -18,29 +18,23 @@ const { rollbar } = require('../rollbar')
 // const Exporter = require('../exporter')
 // const { getDarkMode } = require('../theme')
 const { NODE_ENV } = require('../constants')
+const { openDashboard } = require('../windows/dashboard')
 
 // TODO: refactor dashboard so it can be opened from here
 
 function buildFileMenu () {
   let submenu = [{
+    label: i18n('Open Dashboard'),
+    click: function () {
+      openDashboard()
+    }
+  }, {
+    type: 'separator',
+  }, {
     label: i18n('Save'),
     accelerator: 'CmdOrCtrl+S',
-    click: function () {
-      // let win = BrowserWindow.getFocusedWindow()
-      // let winObj = getWindowById(win.id);
-      // if (winObj) {
-      //   FileManager.save(winObj.state.file.fileName, winObj.state, function (err) {
-      //     if (err) {
-      //       log.warn(err)
-      //       rollbar.warn(err, {fileName: winObj.state.file.fileName})
-      //       gracefullyNotSave()
-      //     } else {
-      //       win.webContents.send('state-saved')
-      //       winObj.lastSave = winObj.state
-      //       win.setDocumentEdited(false)
-      //     }
-      //   })
-      // }
+    click: function (event, focusedWindow) {
+      focusedWindow.webContents.send('save')
     }
   }, {
     label: i18n('Save as') + '...',
@@ -71,18 +65,7 @@ function buildFileMenu () {
     label: i18n('Close'),
     accelerator: 'CmdOrCtrl+W',
     click: function (event, focusedWindow) {
-      // let winObj = getWindowById(focusedWindow.id);
-      // if (winObj) {
-      //   if (NODE_ENV == 'dev') return closeWindow(focusedWindow.id)
-
-      //   if (isDirty(winObj.state, winObj.lastSave)) {
-      //     askToSave(win, winObj.state, winObj.fileName, function () { closeWindow(focusedWindow.id) })
-      //   } else {
-      //     closeWindow(focusedWindow.id)
-      //   }
-      // } else {
-      //   focusedWindow.close()
-      // }
+      focusedWindow.webContents.send('wants-to-close')
     }
   }, {
     type: 'separator'
@@ -92,34 +75,31 @@ function buildFileMenu () {
       {
         label: i18n('MS Word'),
         click: (event, focusedWindow) => {
-          // const winObj = getWindowById(focusedWindow.id)
-          // let exportState = {}
-          // if (winObj) {
-          //   exportState = winObj.state
-          // } else if (windows.length) {
-          //   exportState = windows[0].state
-          // }
-          // // TODO: if there are no open windows this would export nothing, so maybe handle that better
-          // const defaultPath = path.basename(exportState.file.fileName).replace('.pltr', '')
-          // const filters = [{name: i18n('Word Document'), extensions: ['docx']}]
-          // const fileName = dialog.showSaveDialogSync(focusedWindow, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
-          // if (fileName) {
-          //   Exporter(exportState, {fileName, bookId: exportState.ui.currentTimeline})
-          // }
+          const winObj = getWindowById(focusedWindow.id)
+          if (winObj) {
+            const defaultPath = path.basename(winObj.filePath).replace('.pltr', '')
+            const filters = [{name: i18n('Word Document'), extensions: ['docx']}]
+            const fileName = dialog.showSaveDialogSync(focusedWindow, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
+            if (fileName) {
+              const options = { fileName, type: 'word' }
+              focusedWindow.webContents.send('export-file', options)
+            }
+          }
         }
       },
       {
         label: i18n('Scrivener'),
         click: (event, focusedWindow) => {
-          // const winObj = getWindowById(focusedWindow.id)
-          // if (winObj) {
-          //   const defaultPath = path.basename(winObj.state.file.fileName).replace('.pltr', '')
-          //   const filters = [{name: i18n('Scrivener Project'), extensions: ['scriv']}]
-          //   const filePath = dialog.showSaveDialogSync(focusedWindow, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
-          //   if (filePath) {
-          //     focusedWindow.webContents.send('export-scrivener', filePath)
-          //   }
-          // }
+          const winObj = getWindowById(focusedWindow.id)
+          if (winObj) {
+            const defaultPath = path.basename(winObj.filePath).replace('.pltr', '')
+            const filters = [{name: i18n('Scrivener Project'), extensions: ['scriv']}]
+            const fileName = dialog.showSaveDialogSync(focusedWindow, {filters, title: i18n('Where would you like to save the export?'), defaultPath})
+            if (fileName) {
+              const options = { fileName, type: 'scrivener' }
+              focusedWindow.webContents.send('export-file', options)
+            }
+          }
         }
       }
     ]

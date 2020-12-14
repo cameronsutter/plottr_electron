@@ -33,7 +33,7 @@ function ExportNavItem (props) {
     const fileName = dialog.showSaveDialogSync(win, {title: label, filters, defaultPath})
     if (fileName) {
       const options = { fileName, type, bookId: props.bookId }
-      ipcRenderer.sendTo(win.webContents.id, 'pls-export', options) // sends this message to this same process
+      ipcRenderer.sendTo(win.webContents.id, 'export-file', options) // sends this message to this same process
       MPQ.push('Export', {export_type: type})
     }
   }

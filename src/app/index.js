@@ -25,6 +25,7 @@ import { setupI18n } from '../../locales'
 import { focusIsEditable } from './helpers/undo'
 import { displayFileName } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
+import { saveFile } from '../common/utils/files'
 
 setupI18n(SETTINGS)
 
@@ -105,7 +106,7 @@ ipcRenderer.on('set-dark-mode', (event, on) => {
   window.document.body.className = on ? 'darkmode' : ''
 })
 
-ipcRenderer.on('pls-export', (event, options) => {
+ipcRenderer.on('export-file', (event, options) => {
   const currentState = store.getState()
   switch (options.type) {
     case 'scrivener':
@@ -118,9 +119,14 @@ ipcRenderer.on('pls-export', (event, options) => {
   }
 })
 
-ipcRenderer.on('pls-save-custom-template', (event, options) => {
+ipcRenderer.on('save-custom-template', (event, options) => {
   const currentState = store.getState()
   addNewCustomTemplate(currentState.present, options)
+})
+
+ipcRenderer.on('save', () => {
+  const { present } = store.getState()
+  saveFile(present.file.fileName, present)
 })
 
 // for some reason the electron webContents.undo() and redo() don't affect

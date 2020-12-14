@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Form, FormGroup, Col, ControlLabel, Button, Glyphicon } from 'react-bootstrap'
+import { OverlayTrigger, NavItem, Button, Popover } from 'react-bootstrap'
 import i18n from 'format-message'
+import { is } from 'electron-util'
 import * as UIActions from 'actions/ui'
 import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
 import { shell, remote, ipcRenderer } from 'electron'
@@ -11,6 +12,11 @@ import { removeFromTempFiles } from '../../../common/utils/temp_files'
 import { displayFileName, editKnownFilePath } from '../../../common/utils/known_files'
 const { dialog } = remote
 const win = remote.getCurrentWindow()
+
+let showInMessage = i18n('Show in File Explorer')
+if (is.macos) {
+  showInMessage = i18n('Show in Finder')
+}
 
 class FileLocation extends Component {
   chooseLocation = () => {
@@ -32,29 +38,26 @@ class FileLocation extends Component {
     }
   }
 
-  render () {
+  renderPopover = () => {
     const { file } = this.props
-    let filePath = file.fileName
-    let location = <ControlLabel className='edit-book__location-link'>{filePath}<Button bsStyle='link' bsSize='xs' onClick={() => shell.showItemInFolder(filePath)}><Glyphicon glyph='new-window'/></Button></ControlLabel>
+    let location = <li onClick={() => shell.showItemInFolder(file.fileName)}>{showInMessage}</li>
     if (file.fileName.includes(TEMP_FILES_PATH)) {
-      location = <div className='edit-book__location'>
-        <Button onClick={this.chooseLocation}>{i18n('Choose')}</Button>
-        <span>{i18n('(Choose where to save this file on your computer)')}</span>
-      </div>
+      location = <li onClick={this.chooseLocation} title={i18n('Choose where to save this file on your computer')}>{i18n('Choose a Location')}</li>
     }
-    return <div className='edit-book__container'>
-      <h2>{i18n('File')}</h2>
-      <Form horizontal>
-        <FormGroup>
-          <Col componentClass={ControlLabel} sm={1}>
-            {i18n('Location')}
-          </Col>
-          <Col sm={8}>
-            { location }
-          </Col>
-        </FormGroup>
-      </Form>
-    </div>
+
+    return <Popover id='export-popover'>
+      <ul className='export-list'>
+        { location }
+      </ul>
+    </Popover>
+  }
+
+  render () {
+    return <NavItem>
+      <OverlayTrigger trigger='click' rootClose placement='bottom' overlay={this.renderPopover()}>
+        <Button bsSize='small'>{i18n('File')}</Button>
+      </OverlayTrigger>
+    </NavItem>
   }
 
   static propTypes = {

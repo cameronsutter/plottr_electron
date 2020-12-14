@@ -13,6 +13,10 @@ ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
   reloadRecents()
 })
 
+ipcMain.on('pls-open-dashboard', () => {
+  openDashboard()
+})
+
 function openDashboard () {
   if (dashboardWindow) {
     dashboardWindow.focus()

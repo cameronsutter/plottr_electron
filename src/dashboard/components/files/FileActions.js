@@ -33,6 +33,7 @@ export default function FileOptions ({missing, id, filePath, openFile}) {
     switch (eventKey) {
       case 'open':
         openFile(filePath, id)
+        break
       case 'show':
         shell.showItemInFolder(filePath)
         break
@@ -47,9 +48,9 @@ export default function FileOptions ({missing, id, filePath, openFile}) {
 
   const isTemp = filePath.includes(TEMP_FILES_PATH)
 
-  return <div className='dashboard__recent-files__file-options'>
+  return <div className='dashboard__recent-files__file-actions'>
     { renderDeleteFile() }
-    <Dropdown id={`file-option-${id}`} onSelect={doTheThing}>
+    <Dropdown id={`file-action-${id}`} onSelect={doTheThing}>
       <Dropdown.Toggle noCaret>
         <Glyphicon glyph='option-horizontal' />
       </Dropdown.Toggle>

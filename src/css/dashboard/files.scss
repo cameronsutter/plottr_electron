@@ -120,7 +120,7 @@
         font-size: small;
         white-space: pre-wrap;
       }
-      .dashboard__recent-files__file-options {
+      .dashboard__recent-files__file-actions {
         margin-left: auto;
         visibility: hidden;
         button .glyphicon {
@@ -161,7 +161,7 @@
           // only sorta looks ok with the selector :first-child on the cell
           box-shadow: inherit;
         }
-        .dashboard__recent-files__file-options {
+        .dashboard__recent-files__file-actions {
           visibility: visible;
         }
       }

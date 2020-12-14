@@ -7,10 +7,12 @@ const { updateOpenFiles } = require('./dashboard')
 const { rollbar } = require('../rollbar')
 // const { NODE_ENV } = require('../constants')
 const { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } = require('.')
+const { addToKnown } = require('../known_files')
 
 
-ipcMain.on('pls-open-window', (event, filePath, jsonData) => {
-  openProjectWindow(filePath, jsonData, null)
+ipcMain.on('pls-open-window', (event, filePath, unknown) => {
+  openProjectWindow(filePath)
+  if (unknown) addToKnown(filePath)
 })
 
 function openProjectWindow (filePath) {

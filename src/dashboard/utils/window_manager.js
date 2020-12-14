@@ -14,7 +14,7 @@ export function openKnownFile (filePath, id) {
     // update lastOpen
     knownFilesStore.set(`${id}.lastOpened`, Date.now())
   }
-  ipcRenderer.send('pls-open-window', filePath)
+  ipcRenderer.send('pls-open-window', filePath, false)
 }
 
 export function openExistingFile () {

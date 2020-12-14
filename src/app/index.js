@@ -7,7 +7,7 @@ import i18n from 'format-message'
 import App from 'containers/App'
 import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
-const { app } = remote
+const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 import { actions, migrateIfNeeded } from 'pltr/v2'
 import { MPQ } from 'middlewares/helpers'
@@ -101,6 +101,10 @@ ipcRenderer.on('state-fetched', (event, filePath, darkMode, numOpenFiles) => {
   bootFile(filePath, darkMode, numOpenFiles)
 })
 
+ipcRenderer.on('reload-from-file', (event, filePath, darkMode, numOpenFiles) => {
+  bootFile(filePath, darkMode, numOpenFiles)
+})
+
 ipcRenderer.on('set-dark-mode', (event, on) => {
   store.dispatch(actions.uiActions.setDarkMode(on))
   window.document.body.className = on ? 'darkmode' : ''
@@ -127,6 +131,18 @@ ipcRenderer.on('save-custom-template', (event, options) => {
 ipcRenderer.on('save', () => {
   const { present } = store.getState()
   saveFile(present.file.fileName, present)
+})
+
+ipcRenderer.on('save-as', () => {
+  const { present } = store.getState()
+  const defaultPath = path.basename(present.file.fileName).replace('.pltr', '')
+  const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+  const fileName = dialog.showSaveDialogSync(win, {filters, title: i18n('Where would you like to save this copy?'), defaultPath})
+  if (fileName) {
+    let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+    saveFile(newFilePath, present)
+    ipcRenderer.send('pls-open-window', newFilePath, true)
+  }
 })
 
 // for some reason the electron webContents.undo() and redo() don't affect

@@ -2,7 +2,7 @@ const i18n = require('format-message')
 const { reloadWindow } = require('../windows')
 const { getDarkMode, toggleDarkMode } = require('../theme')
 const { takeScreenshot } = require('../helpers')
-const { NODE_ENV } = require('../constants')
+// const { NODE_ENV } = require('../constants')
 
 function buildViewMenu () {
   const submenu = [{

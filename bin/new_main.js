@@ -77,12 +77,10 @@ app.whenReady().then(() => {
 app.on('open-file', (event, filePath) => {
   event.preventDefault()
   // mac/linux open-file event handler
-  if (!is.windows) {
-    app.whenReady().then(() => {
-      openProjectWindow(filePath)
-      addToKnown(filePath)
-    })
-  }
+  app.whenReady().then(() => {
+    openProjectWindow(filePath)
+    addToKnown(filePath)
+  })
 })
 
 app.on('open-url', function (event, url) {

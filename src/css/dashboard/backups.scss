@@ -3,7 +3,7 @@
 
 .dashboard__backups {
   height: 100%;
-  padding: 20px;
+  padding: 20px 40px;
 
   .dashboard__search {
     position: absolute;
@@ -36,7 +36,7 @@
   justify-content: space-evenly;
   cursor: pointer;
   border-radius: 4px;
-  transition: all .25s ease-in;
+  transition: all .1s ease-in;
   position: relative;
 
   .badge {
@@ -56,7 +56,7 @@
     &:hover {
       svg {
         color: $gray-5;
-        transform: scale(1.2);
+        // transform: scale(1.2);
       }
     }
   }

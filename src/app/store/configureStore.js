@@ -7,9 +7,12 @@ import logger from '../middlewares/logger'
 import reporter from '../middlewares/reporter'
 import undoable from 'redux-undo'
 
-export default function configureStore (initialState) {
+function configureStore (initialState) {
   const reducer = undoable(rootReducer, {limit: 10, ignoreInitialState: true})
   const middlewares = applyMiddleware(saver, tracker, logger, reporter)
   const store = createStore(reducer, initialState, middlewares)
   return store
 }
+
+const store = configureStore()
+export { store }

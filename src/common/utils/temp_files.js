@@ -1,10 +1,10 @@
 import path from 'path'
-import fs from 'fs'
 import t from 'format-message'
 import { TEMP_FILES_PATH } from './config_paths'
 import { tempFilesStore } from './store_hooks'
 import { log } from 'electron-log'
 import { shell } from 'electron'
+import { saveFile } from './files'
 
 export function removeFromTempFiles (filePath, doDelete = true) {
   const tmpFiles = tempFilesStore.get()
@@ -25,16 +25,4 @@ export function saveToTempFile (json) {
   tempFilesStore.set(`${tempId}`, {filePath})
   saveFile(filePath, json)
   return filePath
-}
-
-// TODO: maybe refactor this to somewhere else
-// I think it's also used in the saver middleware
-function saveFile (filePath, jsonData) {
-  let stringData = ''
-  if (process.env.NODE_ENV == 'development') {
-    stringData = JSON.stringify(jsonData, null, 2)
-  } else {
-    stringData = JSON.stringify(jsonData)
-  }
-  fs.writeFileSync(filePath, stringData)
 }

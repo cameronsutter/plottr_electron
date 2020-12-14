@@ -10,6 +10,8 @@ import TemplateCreate from '../../common/components/templates/TemplateCreate'
 import { focusIsEditable } from '../helpers/undo'
 import AskToSaveModal from '../components/dialogs/AskToSaveModal'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
+import { saveFile } from '../../common/utils/files'
+import { store } from '../store/configureStore'
 
 let isTryingToReload = false
 
@@ -62,8 +64,8 @@ export default class App extends Component {
 
   saveAndClose = () => {
     this.setState({showAskToSave: false, blockClosing: false})
-    // TODO: Save
-    console.log('SAVING … not really')
+    const { present } = store.getState()
+    saveFile(present.file.fileName, present)
     this.closeOrRefresh(true)
   }
 

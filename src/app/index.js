@@ -5,7 +5,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import i18n from 'format-message'
 import App from 'containers/App'
-import configureStore from 'store/configureStore'
+import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
 const { app } = remote
 const win = remote.getCurrentWindow()
@@ -41,7 +41,6 @@ ensureBackupTodayPath()
 
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
-const store = configureStore()
 // TODO: fix this by exporting store from the configureStore file
 // kind of a hack to enable store dispatches in otherwise hard situations
 window.specialDelivery = (action) => {

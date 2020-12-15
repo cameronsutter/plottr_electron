@@ -6,6 +6,7 @@ const log = require('electron-log')
 // const { rollbar } = require('./rollbar')
 const { hasWindows } = require('./windows')
 const SETTINGS = require('./settings')
+const { is } = require('electron-util')
 
 function gracefullyNotSave () {
   dialog.showErrorBox(i18n('Saving failed'), i18n("Saving your file didn't work. Try again."))
@@ -52,9 +53,13 @@ function makeBrowserWindow (filePath) {
 
   if (filePath == 'dashboard') {
     config.titleBarStyle = 'hiddenInset'
+    if (!is.macos) {
+      config.frame = false
+    }
   } else {
     config.backgroundColor = '#f7f7f7'
   }
+
 
   // Create the browser window
   let newWindow = new BrowserWindow(config)

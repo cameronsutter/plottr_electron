@@ -1,8 +1,7 @@
 import fs from 'fs'
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo } from 'react'
 import { sortBy } from 'lodash'
 import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
-import { ipcRenderer } from 'electron'
 
 export function useSortedKnownFiles (searchTerm) {
   const [files] = useKnownFilesInfo()
@@ -15,10 +14,7 @@ export function useSortedKnownFiles (searchTerm) {
         return true
       }
     })
-    return sortBy(filteredFileIds, (id) => {
-      const f = files[`${id}`]
-      return f.lastOpened
-    }).reverse()
+    return sortBy(filteredFileIds, (id) => files[`${id}`].lastOpened).reverse()
   }, [files, searchTerm])
 
   return [sortedIds, files]

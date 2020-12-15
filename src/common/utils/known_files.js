@@ -6,7 +6,7 @@ import { knownFilesStore } from './store_hooks'
 import { removeFromTempFiles } from './temp_files'
 
 export function addToKnownFiles (filePath) {
-  const existingId = Object.keys(knownFilesStore.store).find(id => knownFilesStore.store[id].path == filePath)
+  const existingId = Object.keys(knownFilesStore.store).find(id => path.normalize(knownFilesStore.store[id].path) == path.normalize(filePath))
   if (existingId) {
     return existingId
   } else {
@@ -20,7 +20,7 @@ export function addToKnownFiles (filePath) {
 }
 
 export function editKnownFilePath (oldPath, newPath) {
-  const key = Object.keys(knownFilesStore.store).find(id => knownFilesStore.store[id].path == oldPath)
+  const key = Object.keys(knownFilesStore.store).find(id => path.normalize(knownFilesStore.store[id].path) == path.normalize(oldPath))
   const file = knownFilesStore.get(key)
   knownFilesStore.set(key, {
     ...file,

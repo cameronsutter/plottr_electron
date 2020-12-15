@@ -17,9 +17,10 @@ class ImagePicker extends Component {
   state = {}
 
   static getDerivedStateFromProps (props, state) {
-    const ids = Object.keys(props.images).sort().reverse()
+    const ids = Object.keys(props.images).map(Number).sort((a, b) => a - b).reverse()
     let selected = null
     if (state.justAddedImage) selected = ids[0]
+    console.log('getDerived', state.justAddedImage, selected, state.selectedId, props.selectedId, ids, Object.keys(props.images).map(Number).sort((a, b) => a - b))
     return {
       tabId: state.tabId || '1',
       selectedId: selected || state.selectedId || props.selectedId,
@@ -87,9 +88,10 @@ class ImagePicker extends Component {
   }
 
   chooseImage = () => {
-    const { chooseImage, images } = this.props
+    const { images } = this.props
     const { selectedId } = this.state
-    chooseImage(selectedId, images[selectedId].data)
+    const idString = `${selectedId}`
+    this.props.chooseImage(idString, images[idString].data)
     this.close()
   }
 
@@ -104,7 +106,7 @@ class ImagePicker extends Component {
       const file = event.target.files[0]
       readImage(file, data => {
         this.props.actions.addImage({data, name: file.name, path: file.path})
-        this.setState({tabId: '1'})
+        this.setState({tabId: '1', justAddedImage: true})
       })
     }
   }
@@ -234,12 +236,13 @@ class ImagePicker extends Component {
   }
 
   renderImages () {
-    const { images } = this.props
-    const { sortedIds } = this.state
+    const { sortedIds, selectedId } = this.state
+    console.log('renderImages', selectedId)
     return sortedIds.map(id => {
-      const isSelected = this.state.selectedId == id
+      const isSelected = selectedId == id
+      console.log('renderImages', selectedId, id, isSelected)
       const klasses = cx('image-picker__image-wrapper', {selected: isSelected})
-      return <div key={images[id].name} className={klasses} onClick={() => this.setState({selectedId: isSelected ? null : id})}>
+      return <div key={id} className={klasses} onClick={() => this.setState({selectedId: isSelected ? null : id})}>
         <Image imageId={id} shape='square' size='large' />
       </div>
     })
@@ -248,7 +251,7 @@ class ImagePicker extends Component {
   renderSidebar () {
     const { images } = this.props
     const { selectedId } = this.state
-    const image = images[selectedId]
+    const image = images[`${selectedId}`]
     let body = null
     if (image) {
       body = <div>

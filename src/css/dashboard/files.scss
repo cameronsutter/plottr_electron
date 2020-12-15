@@ -51,7 +51,7 @@
 
   &:hover, &.active {
     // color: $blue-0;
-    background-color: $blue-8;
+    background-color: $blue-9;
     box-shadow: $blue-highlight-box-shadow;
   }
 }
@@ -137,7 +137,6 @@
         cursor: pointer;
         user-select: none;
 
-
         &:first-child {
           border-width: 0 0 1px 1px;
         }
@@ -151,8 +150,8 @@
 
       &:hover, &.selected {
         color: $blue-0;
-        background-color: $blue-8;
-        box-shadow: $blue-highlight-box-shadow;
+        background-color: $blue-9;
+        // box-shadow: $blue-highlight-box-shadow;
         .sticky-table-cell:first-child {
           // background-color: $green-8;
           color: inherit;

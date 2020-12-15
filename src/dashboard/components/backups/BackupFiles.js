@@ -1,6 +1,8 @@
 import React from 'react'
+import path from 'path'
 import t from 'format-message'
 import { IoIosDocument } from 'react-icons/io'
+import { shell } from 'electron'
 
 export default function BackupFiles ({folder}) {
 
@@ -14,7 +16,8 @@ export default function BackupFiles ({folder}) {
   }
 
   const renderedFiles = folder.backups.map(b => {
-    return <div key={b} className='dashboard__backups__item icon'>
+    const filePath = path.join(folder.path, b)
+    return <div key={b} className='dashboard__backups__item icon' onClick={() => shell.showItemInFolder(filePath)}>
       <IoIosDocument/>
       <div>{fileName(b)}</div>
     </div>

@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
+import { is } from 'electron-util'
 import t from 'format-message'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import Switch from '../../../common/components/Switch'
 import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'
 import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
 import LanguagePicker from '../../../common/components/LanguagePicker'
+
+let title = t('Configuration Options')
+if (is.macos) {
+  title = t('Preferences')
+}
 
 export default function OptionsHome (props) {
   const [settings, settingsSize, saveSetting] = useSettingsInfo()
@@ -13,7 +19,7 @@ export default function OptionsHome (props) {
   if (!backupLocation || backupLocation == 'default') backupLocation = BACKUP_BASE_PATH
 
   return <div className='dashboard__options'>
-    <h1>{t('Configuration Options')}</h1>
+    <h1>{title}</h1>
     <div>
       <div className='dashboard__options__item'>
         <h4>{t('Save Backups')}</h4>

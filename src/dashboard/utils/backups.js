@@ -15,7 +15,9 @@ export function useBackupFolders () {
 
 function readBackupsDirectory (setFolders) {
   fs.readdir(BACKUP_BASE_PATH, (err, directories) => {
-    const filteredDirs = directories.filter(d => d[0] != '.')
+    const filteredDirs = directories.filter(d => {
+      return d[0] != '.' && !d.includes('.pltr')
+    })
     let tempList = []
     filteredDirs.forEach(dir => {
       const thisPath = path.join(BACKUP_BASE_PATH, dir)

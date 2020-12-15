@@ -14,7 +14,10 @@ export function addToKnownFiles (filePath) {
   if (existingId) {
     return existingId
   } else {
-    const newId = knownFilesStore.size + 1
+    console.log('no existing', knownFilesStore.size)
+    // for some reason, .size doesn't work in prod here (but it does in temp_files.js)
+    const newId = Math.max(...Object.keys(knownFilesStore.store).map(Number)) + 1
+    console.log('newId', newId)
     knownFilesStore.set(`${newId}`, {
       path: filePath,
       lastOpened: Date.now()

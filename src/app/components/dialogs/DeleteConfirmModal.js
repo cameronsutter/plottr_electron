@@ -5,7 +5,6 @@ import i18n from 'format-message'
 
 export default function DeleteConfirmModal (props) {
   const { name, customText, onDelete, onCancel, notSubmit } = props
-  console.log('notsubmit', notSubmit)
   return <Modal show={true} dialogClassName='center-modal-vertically'>
     <Modal.Body>
       <h6>{customText ? customText : i18n('Are you sure you want to delete { thing }?', { thing: name })}</h6>

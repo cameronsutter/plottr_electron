@@ -54,9 +54,9 @@ message: ${error.message}
 stack: ${error.stack}
 componentStack: ${errorInfo.componentStack}
 ----------------------------------
-LAST ACTION
+PREVIOUS ACTION
 ----------------------------------
-${JSON.stringify(lastAction)}
+${JSON.stringify(previousAction)}
   `
   return report
 }

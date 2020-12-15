@@ -43,6 +43,7 @@ $header-height: 40px;
     }
 
     .nav-3right-buttons {
+      -webkit-app-region: no-drag;
       margin-right: 11px;
       svg {
         font-size: 22px;

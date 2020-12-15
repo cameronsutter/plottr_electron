@@ -6,7 +6,11 @@ import { knownFilesStore } from './store_hooks'
 import { removeFromTempFiles } from './temp_files'
 
 export function addToKnownFiles (filePath) {
+  console.log('adding', filePath)
+  console.log('normalized', path.normalize(filePath))
+  console.log('known', Object.keys(knownFilesStore.store).map(id => path.normalize(knownFilesStore.store[id].path)))
   const existingId = Object.keys(knownFilesStore.store).find(id => path.normalize(knownFilesStore.store[id].path) == path.normalize(filePath))
+  console.log('existingId', existingId)
   if (existingId) {
     return existingId
   } else {

@@ -17,11 +17,10 @@ const { addToKnown } = require('./main_modules/known_files')
 ////     Startup Tasks    //////
 ////////////////////////////////
 log.info('--------Startup Tasks--------')
-setupI18n()
-
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
 const rollbar = setupRollbar('main', {})
+setupI18n()
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({

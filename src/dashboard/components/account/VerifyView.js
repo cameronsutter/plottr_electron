@@ -1,4 +1,3 @@
-import storage from 'electron-json-storage'
 import React, { useState, useRef } from 'react'
 import { findDOMNode } from 'react-dom'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
@@ -30,7 +29,7 @@ export default function VerifyView ({goBack}) {
     }
   }
 
-  const [licenseInfo, licenseInfoSize, setLicenseInfo] = useLicenseInfo()
+  const [licenseInfo, licenseInfoSize, setKey, setLicenseInfo] = useLicenseInfo()
   const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
   const [showAlert, setShowAlert] = useState(!!alertText)
   const [alertClass, setAlertClass] = useState(RED)
@@ -52,6 +51,8 @@ export default function VerifyView ({goBack}) {
         setAlertText(makeAlertText(SUCCESS))
         if (process.env.NODE_ENV !== 'development') {
           setTimeout(() => { setLicenseInfo(licenseData) }, 500)
+        } else {
+          console.log('not setting license because of dev mode')
         }
       } else {
         if (licenseInfo && licenseInfo.problem == 'no_activations_left' && !licenseInfo.hasActivationsLeft) {

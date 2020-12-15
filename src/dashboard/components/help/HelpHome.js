@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import t from 'format-message'
-import { Button, FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'
+import { Button, FormControl, FormGroup } from 'react-bootstrap'
 import { shell } from 'electron'
 import { createErrorReport } from '../../../common/utils/full_error_report'
 import { handleCustomerServiceCode } from '../../../common/utils/customer_service_codes'
@@ -25,9 +25,9 @@ export default function HelpHome (props) {
       <h1>{t('Links')}</h1>
       <div className='dashboard__help__item links'>
         <Button bsSize='large' bsStyle='link' onClick={l('learn.plottr.com/')}>{t('Tutorials')}</Button>
-        <Button bsSize='large' bsStyle='link' onClick={l('plottr.com/docs/frequently-asked-questions/')}>{t('FAQ')}</Button>
+        <Button bsSize='large' bsStyle='link' onClick={l('docs.plottr.com//frequently-asked-questions/')}>{t('FAQ')}</Button>
         <Button bsSize='large' bsStyle='link' onClick={l('plottr.com/demos/')}>{t('Demos')}</Button>
-        <Button bsSize='large' bsStyle='link' onClick={l('plottr.com/docs')}>{t('Documentation')}</Button>
+        <Button bsSize='large' bsStyle='link' onClick={l('docs.plottr.com/')}>{t('Documentation')}</Button>
         <Button bsSize='large' bsStyle='link' onClick={l('feedback.getplottr.com')}>{t('Give Feedback')}</Button>
         <Button bsSize='large' bsStyle='link' onClick={l('www.facebook.com/groups/367650870614184')}>{t('Facebook Group')}</Button>
         <Button bsSize='large' bsStyle='link' onClick={l('plottr.com/support/?help=Feature%20Request')}>{t('Request a Feature')}</Button>
@@ -55,7 +55,7 @@ export default function HelpHome (props) {
     </div>
     <div style={{flex: 0.67}}>
       <h1>{t('Documentation')}</h1>
-      <webview src='https://plottr.com/docs#bsf-live-search'></webview>
+      <webview src='https://docs.plottr.com/#bsf-live-search'></webview>
     </div>
   </div>
 }

@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import t from 'format-message'
 import cx from 'classnames'
+import { FaKey } from 'react-icons/fa'
+import VerifyView from './VerifyView'
 
 export default function TrialInfo ({trialInfo}) {
   const {startedOn, endsOn, daysLeft} = trialInfo
+  const [showVerify, setShowVerify] = useState(false)
   const startedDate = new Date(startedOn)
   const fewDays = daysLeft < 10
 
@@ -19,7 +22,10 @@ export default function TrialInfo ({trialInfo}) {
       <dl className='dl-horizontal'>
         <dt>{t('Ends After')}</dt>
         <dd>{t('{date, date, long}', {date: endsOn})}</dd>
+        <dt>{t('License')}</dt>
+        <dd><a href='#' onClick={() => setShowVerify(true)}><FaKey/>{t('Activate License')}</a></dd>
       </dl>
     </div>
+    { showVerify ? <VerifyView goBack={() => setShowVerify(false)} /> : null}
   </div>
 }

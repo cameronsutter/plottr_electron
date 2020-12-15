@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import t from 'format-message'
 import { machineIdSync } from 'node-machine-id'
 import { Button } from 'react-bootstrap'
+import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmModal'
 
 const deviceID = machineIdSync(true)
 
-export default function UserInfo ({licenseInfo}) {
+export default function UserInfo ({licenseInfo, deleteLicense}) {
+  const [deleting, setDeleting] = useState(false)
   const expiresDate = licenseInfo.expires == 'lifetime' ? t('Lifetime') : t('{date, date, long}', {date: new Date(licenseInfo.expires)})
+
+  let deleteModal = false
+  if (deleting) {
+    deleteModal = <DeleteConfirmModal
+      notSubmit
+      customText={t('Are you sure you want to remove your license?')}
+      onDelete={deleteLicense}
+      onCancel={() => setDeleting(false)}
+    />
+  }
 
   return <div className='dashboard__user-info'>
     <h1>{t('Account Information')}</h1>
@@ -25,8 +37,9 @@ export default function UserInfo ({licenseInfo}) {
       </dl>
     </div>
     <div className='text-right'>
-      <Button bsStyle='danger' bsSize='small'>{t('Reset Account')}</Button>
-      <p className='secondary-text'>{t('Use this to remove your account from Plottr on this device')}</p>
+      <Button bsStyle='danger' bsSize='small' onClick={() => setDeleting(true)}>{t('Remove License')}</Button>
+      { deleteModal }
+      <p className='secondary-text'>{t('Use this to remove your license on this device')}</p>
     </div>
   </div>
 }

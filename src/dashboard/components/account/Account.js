@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
-import { useLicenseInfo } from '../../../common/utils/store_hooks'
+import { licenseStore, useLicenseInfo } from '../../../common/utils/store_hooks'
 import ChoiceView from './ChoiceView'
 import ExpiredView from './ExpiredView'
 import UserInfo from './UserInfo'
@@ -12,13 +12,17 @@ export default function Account (props) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
   const firstTime = !licenseInfoSize && !trialInfo.started
 
+  const deleteLicense = () => {
+    licenseStore.clear()
+  }
+
   const renderUser = () => {
     // first time using the app
     if (firstTime) return <ChoiceView/>
 
     // active license
     if (licenseInfoSize) {
-      return <UserInfo licenseInfo={licenseInfo}/>
+      return <UserInfo licenseInfo={licenseInfo} deleteLicense={deleteLicense}/>
     }
 
     // free trial

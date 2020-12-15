@@ -1,4 +1,4 @@
-const { BrowserWindow, ipcMain } = require('electron')
+const { BrowserWindow } = require('electron')
 const { openBuyWindow } = require('./buy') // needed because it sets up an event handler
 
 let windows = []
@@ -48,6 +48,10 @@ function reloadWindow () {
   win.webContents.send('reload')
 }
 
+function reloadAllWindows () {
+  windows.forEach(w => w.browserWindow.webContents.send('reload'))
+}
+
 function dereferenceWindow (winObj) {
   const index = windows.findIndex(win => win.id === winObj.id)
   windows.splice(index, 1)
@@ -69,4 +73,5 @@ module.exports = {
   getWindowById,
   numberOfWindows,
   focusIfOpen,
+  reloadAllWindows,
 }

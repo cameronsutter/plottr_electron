@@ -3,9 +3,28 @@ const { app } = require('electron')
 const { openProcessManager } = require('electron-process-manager')
 const { is } = require('electron-util')
 const { NODE_ENV } = require('../constants')
+const { localeNames, setupI18n } = require('../../../locales')
+const SETTINGS = require('../settings')
+const { reloadAllWindows } = require('../windows')
+const { reloadDashboard } = require('../windows/dashboard')
 
 function buildPlottrMenu () {
-  const submenu = []
+  const submenu = [
+    {
+      label: i18n('Language'),
+      submenu: Object.entries(localeNames)
+        .map(([locale, name]) => ({
+          label: name,
+          click: () => {
+            SETTINGS.set('locale', locale)
+            setupI18n(SETTINGS)
+            require('./').loadMenu()
+            reloadAllWindows()
+            reloadDashboard()
+          }
+        }))
+    }
+  ]
 
   if (NODE_ENV === 'dev') {
     submenu.push(

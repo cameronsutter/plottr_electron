@@ -49,8 +49,12 @@ function reloadRecents () {
   if (dashboardWindow) dashboardWindow.webContents.send('reload-recents')
 }
 
+function reloadDashboard () {
+  if (dashboardWindow) dashboardWindow.webContents.send('reload')
+}
+
 function updateOpenFiles (filePath) {
   if (dashboardWindow) dashboardWindow.webContents.send('file-closed', filePath)
 }
 
-module.exports = { openDashboard, setDarkModeForDashboard, reloadRecents, updateOpenFiles }
+module.exports = { openDashboard, setDarkModeForDashboard, reloadRecents, updateOpenFiles, reloadDashboard }

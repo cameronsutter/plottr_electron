@@ -5,7 +5,7 @@
     },
     "characterSort": "name~asc",
     "currentView": "story",
-    "darkMode": false,
+    "darkMode": true,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",

@@ -21,12 +21,9 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 function setupI18n(settings) {
-  const userSetLocale = settings ? settings.get('locale') : null
-  const appFRD = app || (remote && remote.app)
-
   i18n.setup({
     translations: locales,
-    locale: userSetLocale || appFRD.getLocale() || 'en',
+    locale: getCurrentLocale(settings),
     missingTranslation: 'ignore',
     formats: {
       date: {
@@ -36,8 +33,16 @@ function setupI18n(settings) {
   })
 }
 
+function getCurrentLocale (settings) {
+  const userSetLocale = settings ? settings.get('locale') : null
+  const appFRD = app || (remote && remote.app)
+
+  return userSetLocale || appFRD.getLocale() || 'en'
+}
+
 module.exports = {
   locales,
   localeNames,
   setupI18n,
+  getCurrentLocale,
 }

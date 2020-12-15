@@ -4,6 +4,7 @@ import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import Switch from '../../../common/components/Switch'
 import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'
 import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
+import LanguagePicker from '../../../common/components/LanguagePicker'
 
 export default function OptionsHome (props) {
   const [settings, settingsSize, saveSetting] = useSettingsInfo()
@@ -29,6 +30,10 @@ export default function OptionsHome (props) {
           handleToggle={() => saveSetting('user.autoDownloadUpdate', !settings.user.autoDownloadUpdate)}
           labelText={t('Download updates automatically')}
         />
+      </div>
+      <div className='dashboard__options__item'>
+        <h4>{t('Language')}</h4>
+        <LanguagePicker />
       </div>
       <hr/>
       <h1 className='secondary-text'>{t('Coming Soon!')}</h1>

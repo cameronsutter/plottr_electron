@@ -33,12 +33,17 @@ function openDashboard () {
       app.quit()
     }
   })
+
   dashboardWindow.webContents.on('did-finish-load', () => {
     if (!launchSent) {
       dashboardWindow.webContents.send('send-launch', app.getVersion())
       launchSent = true
     }
   })
+}
+
+function getDashboardId () {
+  return dashboardWindow ? dashboardWindow.id : null
 }
 
 function setDarkModeForDashboard (darkMode) {
@@ -57,4 +62,11 @@ function updateOpenFiles (filePath) {
   if (dashboardWindow) dashboardWindow.webContents.send('file-closed', filePath)
 }
 
-module.exports = { openDashboard, setDarkModeForDashboard, reloadRecents, updateOpenFiles, reloadDashboard }
+module.exports = {
+  openDashboard,
+  setDarkModeForDashboard,
+  reloadRecents,
+  updateOpenFiles,
+  reloadDashboard,
+  getDashboardId,
+}

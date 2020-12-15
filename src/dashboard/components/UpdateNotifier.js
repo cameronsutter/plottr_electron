@@ -3,7 +3,6 @@ import { shell, remote } from 'electron'
 import log from 'electron-log'
 import t from 'format-message'
 import SETTINGS from '../../common/utils/settings'
-import { is } from 'electron-util'
 import { Button, ProgressBar } from 'react-bootstrap'
 const autoUpdater = remote.require('electron-updater').autoUpdater
 
@@ -49,14 +48,14 @@ export default function UpdateNotifier (props) {
       setAvailable(false)
       setTimeout(() => setFinishedChecking(false), 10000)
     })
-    autoUpdater.on('download-progress', (progress, bytesPerSecond, percent, total, transferred) => {
+    autoUpdater.on('download-progress', (progress) => {
       setHidden(false)
       setDownloadInProgress(true)
-      if (is.windows) {
-        setPercentDownloaded(Math.floor(percent))
-      } else {
-        setPercentDownloaded(Math.floor(progress.percent))
-      }
+
+      log.info('download-progress', progress)
+      const percent = progress.percent || percentDownloaded + 1
+
+      setPercentDownloaded(Math.floor(percent))
     })
     autoUpdater.on('update-downloaded', info => {
       setHidden(false)

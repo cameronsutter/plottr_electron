@@ -8,7 +8,7 @@ const { rollbar } = require('../rollbar')
 // const { NODE_ENV } = require('../constants')
 const { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } = require('.')
 const { addToKnown } = require('../known_files')
-
+const { loadMenu } = require('../menus')
 
 ipcMain.on('pls-open-window', (event, filePath, unknown) => {
   openProjectWindow(filePath)
@@ -31,6 +31,18 @@ function openProjectWindow (filePath) {
       updateOpenFiles(win.filePath)
       dereferenceWindow(win)
     }
+  })
+
+  newWindow.on('focus', () => {
+    // WHY does it work here, but not in utils (nor windows/dashboard)????
+    // in those others, loadMenu is undefined after requiring it
+    loadMenu()
+  })
+
+  newWindow.on('blur', () => {
+    // WHY does it work here, but not in utils (nor windows/dashboard)????
+    // in those others, loadMenu is undefined after requiring it
+    loadMenu()
   })
 
   try {

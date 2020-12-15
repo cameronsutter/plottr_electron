@@ -1,4 +1,4 @@
-const { Menu, ipcMain, app } = require('electron')
+const { Menu, ipcMain, app, BrowserWindow } = require('electron')
 const i18n = require('format-message')
 const { is } = require('electron-util')
 
@@ -8,7 +8,7 @@ const { buildWindowMenu } = require('./window')
 const { buildHelpMenu } = require('./help')
 const { buildFileMenu } = require('./file')
 const { buildViewMenu } = require('./view')
-const { openDashboard } = require('../windows/dashboard')
+const { openDashboard, getDashboardId } = require('../windows/dashboard')
 
 ipcMain.on('pls-reload-menu', () => {
   loadMenu()
@@ -24,13 +24,19 @@ function buildMenu (makeItSimple) {
     ]
   }
 
+  let menus = [buildPlottrMenu()]
+
+  // is dashboard focused?
+  const win = BrowserWindow.getFocusedWindow()
+  if (win && win.id != getDashboardId()) {
+    menus.push(buildFileMenu())
+  }
   return [
-    buildPlottrMenu(),
-    buildFileMenu(),
+    ...menus,
     buildEditMenu(),
     buildViewMenu(),
     buildWindowMenu(),
-    buildHelpMenu()
+    buildHelpMenu(),
   ]
 }
 
@@ -49,7 +55,4 @@ function loadMenu (makeItSimple) {
   }
 }
 
-module.exports = {
-  buildMenu,
-  loadMenu,
-}
+module.exports = { loadMenu }

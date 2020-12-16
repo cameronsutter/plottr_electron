@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const i18n = require('format-message')
 // const { cloneDeep } = require('lodash')
-const { BrowserWindow, dialog } = require('electron')
+const { app, BrowserWindow, dialog, shell } = require('electron')
 const { is } = require('electron-util')
 const log = require('electron-log')
 const { rollbar } = require('../rollbar')
@@ -11,9 +11,14 @@ const { getDarkMode } = require('../theme')
 const { NODE_ENV } = require('../constants')
 const { openDashboard } = require('../windows/dashboard')
 
-// TODO: refactor dashboard so it can be opened from here
+const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
+let showInMessage = i18n('Show in File Explorer')
+if (is.macos) {
+  showInMessage = i18n('Show in Finder')
+}
 
-function buildFileMenu () {
+function buildFileMenu (filePath) {
+  const isTemp = filePath && filePath.includes(TEMP_FILES_PATH)
   let submenu = [{
     label: i18n('Open Dashboard'),
     click: function () {
@@ -25,13 +30,23 @@ function buildFileMenu () {
     label: i18n('Save'),
     accelerator: 'CmdOrCtrl+S',
     click: function (event, focusedWindow) {
-      focusedWindow.webContents.send('save')
+      if (isTemp) {
+        focusedWindow.webContents.send('move-from-temp')
+      } else {
+        focusedWindow.webContents.send('save')
+      }
     }
   }, {
     label: i18n('Save as') + '...',
     accelerator: 'CmdOrCtrl+Shift+S',
     click: function (event, focusedWindow) {
       focusedWindow.webContents.send('save-as')
+    }
+  }, {
+    label: showInMessage,
+    visible: !isTemp,
+    click: function () {
+      shell.showItemInFolder(filePath)
     }
   }, {
     label: i18n('Close'),

@@ -23,7 +23,11 @@ function openProjectWindow (filePath) {
   const entryFile = path.join(filePrefix(__dirname), '../../app.html')
   newWindow.loadURL(entryFile)
 
-  // newWindow.on('closed', function () {})
+  newWindow.on('closed', function () {
+    // doing this here because we can't do the right thing: loadMenu on dashboard focus
+    // see rants below about why not
+    loadMenu()
+  })
 
   newWindow.on('close', function (e) {
     const win = getWindowById(this.id) // depends on 'this' being the window

@@ -6,18 +6,13 @@ import { knownFilesStore } from './store_hooks'
 import { removeFromTempFiles } from './temp_files'
 
 export function addToKnownFiles (filePath) {
-  console.log('adding', filePath)
-  console.log('normalized', path.normalize(filePath))
-  console.log('known', Object.keys(knownFilesStore.store).map(id => path.normalize(knownFilesStore.store[id].path)))
   const existingId = Object.keys(knownFilesStore.store).find(id => path.normalize(knownFilesStore.store[id].path) == path.normalize(filePath))
-  console.log('existingId', existingId)
   if (existingId) {
     return existingId
   } else {
-    console.log('no existing', knownFilesStore.size)
     // for some reason, .size doesn't work in prod here (but it does in temp_files.js)
+    // in prod, it doesn't update in time
     const newId = Math.max(...Object.keys(knownFilesStore.store).map(Number)) + 1
-    console.log('newId', newId)
     knownFilesStore.set(`${newId}`, {
       path: filePath,
       lastOpened: Date.now()

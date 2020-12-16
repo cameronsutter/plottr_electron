@@ -23,9 +23,10 @@ import WordExporter from '../common/exporter/word/exporter'
 import editorRegistry from './components/rce/editor-registry'
 import { setupI18n } from '../../locales'
 import { focusIsEditable } from './helpers/undo'
-import { displayFileName } from '../common/utils/known_files'
+import { displayFileName, editKnownFilePath } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { saveFile } from '../common/utils/files'
+import { removeFromTempFiles } from '../common/utils/temp_files'
 
 setupI18n(SETTINGS)
 
@@ -142,6 +143,25 @@ ipcRenderer.on('save-as', () => {
     let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
     saveFile(newFilePath, present)
     ipcRenderer.send('pls-open-window', newFilePath, true)
+  }
+})
+
+ipcRenderer.on('move-from-temp', () => {
+  const { present } = store.getState()
+  const filters = [{name: 'Plottr file', extensions: ['pltr']}]
+  const newFilePath = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save this file?')})
+  if (newFilePath) {
+    // change in redux
+    store.dispatch(actions.uiActions.editFileName(newFilePath))
+    // remove from tmp store
+    removeFromTempFiles(present.file.fileName)
+    // update in known files
+    editKnownFilePath(present.file.fileName, newFilePath)
+    // change the window's title
+    win.setRepresentedFilename(newFilePath)
+    win.setTitle(displayFileName(newFilePath))
+    // send event to dashboard
+    ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
   }
 })
 

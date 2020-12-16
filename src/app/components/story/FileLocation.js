@@ -13,9 +13,9 @@ import { displayFileName, editKnownFilePath } from '../../../common/utils/known_
 const { dialog } = remote
 const win = remote.getCurrentWindow()
 
-let showInMessage = i18n('Show in File Explorer')
+let showInMessage = i18n('Show File in File Explorer')
 if (is.macos) {
-  showInMessage = i18n('Show in Finder')
+  showInMessage = i18n('Show File in Finder')
 }
 
 class FileLocation extends Component {
@@ -38,25 +38,14 @@ class FileLocation extends Component {
     }
   }
 
-  renderPopover = () => {
-    const { file } = this.props
-    let location = <li onClick={() => shell.showItemInFolder(file.fileName)}>{showInMessage}</li>
-    if (file.fileName.includes(TEMP_FILES_PATH)) {
-      location = <li onClick={this.chooseLocation} title={i18n('Choose where to save this file on your computer')}>{i18n('Choose a Location')}</li>
-    }
-
-    return <Popover id='export-popover'>
-      <ul className='export-list'>
-        { location }
-      </ul>
-    </Popover>
-  }
-
   render () {
+    const { file } = this.props
+    let button = <Button bsSize='small' onClick={() => shell.showItemInFolder(file.fileName)}>{showInMessage}</Button>
+    if (file.fileName.includes(TEMP_FILES_PATH)) {
+      button = <Button bsSize='small' onClick={this.chooseLocation} title={i18n('Choose where to save this file on your computer')}>{i18n('Choose a Location')}</Button>
+    }
     return <NavItem>
-      <OverlayTrigger trigger='click' rootClose placement='bottom' overlay={this.renderPopover()}>
-        <Button bsSize='small'>{i18n('File')}</Button>
-      </OverlayTrigger>
+      { button }
     </NavItem>
   }
 

@@ -10,7 +10,6 @@ import ErrorBoundary from '../../containers/ErrorBoundary'
 import { Nav, Navbar, NavItem, Button } from 'react-bootstrap'
 import FileLocation from './FileLocation'
 import { ipcRenderer } from 'electron'
-import { FaTachometerAlt } from 'react-icons/fa'
 
 function SeriesTab ({ ui }) {
 
@@ -22,7 +21,7 @@ function SeriesTab ({ ui }) {
     return <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
       <Nav bsStyle='pills'>
         <NavItem>
-          <Button bsSize='small' onClick={openDashboard}><FaTachometerAlt /> {i18n('Dashboard')}</Button>
+          <Button bsSize='small' onClick={openDashboard}>{i18n('Open Dashboard')}</Button>
         </NavItem>
         <FileLocation />
       </Nav>

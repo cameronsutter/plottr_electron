@@ -20,7 +20,6 @@ class ImagePicker extends Component {
     const ids = Object.keys(props.images).map(Number).sort((a, b) => a - b).reverse()
     let selected = null
     if (state.justAddedImage) selected = ids[0]
-    console.log('getDerived', state.justAddedImage, selected, state.selectedId, props.selectedId, ids, Object.keys(props.images).map(Number).sort((a, b) => a - b))
     return {
       tabId: state.tabId || '1',
       selectedId: selected || state.selectedId || props.selectedId,

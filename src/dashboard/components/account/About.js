@@ -35,7 +35,8 @@ export default function About (props) {
       <dl className='dl-horizontal'>
         <dt>{t('Created By')}</dt>
         <dd>{t('Fictional Devices LLC')}</dd>
-        <dd>{t('Crafted in the Mountains of Utah')}</dd>
+        <dd>Cameron Sutter</dd>
+        <dd>Ryan Zee</dd>
       </dl>
     </div>
   </div>

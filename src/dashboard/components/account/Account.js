@@ -6,6 +6,7 @@ import ExpiredView from './ExpiredView'
 import UserInfo from './UserInfo'
 import About from './About'
 import TrialInfo from './TrialInfo'
+import MPQ from '../../../common/utils/MPQ'
 
 export default function Account (props) {
   const trialInfo = useTrialStatus()
@@ -13,6 +14,7 @@ export default function Account (props) {
   const firstTime = !licenseInfoSize && !trialInfo.started
 
   const deleteLicense = () => {
+    MPQ.push('btn_remove_license_confirm')
     licenseStore.clear()
   }
 

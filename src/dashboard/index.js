@@ -8,7 +8,7 @@ import SETTINGS from '../common/utils/settings'
 import DashboardApp from './DashboardApp'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
-import { MPQ } from 'middlewares/helpers'
+import MPQ from '../common/utils/MPQ'
 import TemplateFetcher from './utils/template_fetcher'
 import { ensureBackupFullPath } from '../common/utils/backup'
 
@@ -34,7 +34,12 @@ window.requestIdleCallback(() => {
 })
 
 ipcRenderer.once('send-launch', (event, version) => {
-  MPQ.push('Launch', {online: navigator.onLine, version: version})
+  const settingsWeCareAbout = {
+    auto_download: SETTINGS.get('user.autoDownloadUpdate'),
+    backup_on: SETTINGS.get('backup'),
+    locale: SETTINGS.get('locale'),
+  }
+  MPQ.push('Launch', {online: navigator.onLine, version: version, ...settingsWeCareAbout})
 })
 
 ipcRenderer.on('reload', () => {

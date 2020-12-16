@@ -10,7 +10,7 @@ import { ipcRenderer, remote } from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 import { actions, migrateIfNeeded } from 'pltr/v2'
-import { MPQ } from 'middlewares/helpers'
+import MPQ from '../common/utils/MPQ'
 import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'

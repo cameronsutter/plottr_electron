@@ -1,5 +1,5 @@
 import { ADD_LINES_FROM_TEMPLATE, ADD_CARD } from 'constants/ActionTypes'
-import { MPQ } from './helpers'
+import MPQ from '../../common/utils/MPQ'
 import USER from '../../common/utils/user_info'
 
 const WHITE_LIST = [ADD_LINES_FROM_TEMPLATE]

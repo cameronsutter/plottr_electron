@@ -3,14 +3,22 @@ import { shell, remote } from 'electron'
 import t from 'format-message'
 import { Button } from 'react-bootstrap'
 import SETTINGS from '../../../common/utils/settings'
+import MPQ from '../../../common/utils/MPQ'
 const app = remote.app
 const autoUpdater = remote.require('electron-updater').autoUpdater
 
 export default function About (props) {
   const checkForUpdates = () => {
     if (process.env.NODE_ENV == 'development') return
+    MPQ.push('btn_check_for_updates')
+    // SETTINGS.set('user.seeCheckingForUpdates', true) // only show the checking when user asks to see it
     autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
     autoUpdater.checkForUpdates()
+  }
+
+  const seeChangelog = () => {
+    MPQ.push('btn_see_changelog')
+    shell.openExternal('https://plottr.com/changelog')
   }
 
   const renderUpdater = () => {
@@ -30,7 +38,7 @@ export default function About (props) {
         <dt>{t('Updates')}</dt>
         { renderUpdater() }
         <dt>{t('Changelog')}</dt>
-        <dd><a href='#' onClick={() => shell.openExternal('https://plottr.com/changelog')}>{t("See What's New")}</a></dd>
+        <dd><a href='#' onClick={seeChangelog}>{t("See What's New")}</a></dd>
       </dl>
       <dl className='dl-horizontal'>
         <dt>{t('Created By')}</dt>

@@ -5,6 +5,7 @@ import RecentFiles from './RecentFiles'
 import t from 'format-message'
 import TemplatePicker from '../templates/TemplatePicker'
 import { createNew, createFromSnowflake } from '../../utils/window_manager'
+import MPQ from '../../../common/utils/MPQ'
 const { dialog } = remote
 const win = remote.getCurrentWindow()
 
@@ -12,6 +13,7 @@ export default function FilesHome (props) {
   const [view, setView] = useState('recent')
 
   const createWithTemplate = template => {
+    MPQ.push('btn_create_with_template')
     try {
       createNew(template.templateData)
     } catch (error) {
@@ -21,6 +23,7 @@ export default function FilesHome (props) {
   }
 
   const createFomImport = () => {
+    MPQ.push('btn_create_from_import', {type: 'snowflake'})
     try {
       const importedPath = snowflakeImportDialog()
       if (importedPath) {

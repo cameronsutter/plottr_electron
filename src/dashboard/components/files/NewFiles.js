@@ -4,10 +4,12 @@ import { FaRegSnowflake } from 'react-icons/fa'
 import t from 'format-message'
 import cx from 'classnames'
 import { createNew, openExistingFile } from '../../utils/window_manager'
+import MPQ from '../../../common/utils/MPQ'
 
 export default function NewFiles ({activeView, toggleView, doImport}) {
 
-  const wrapFunc = (func) => {
+  const wrapFunc = (type, func) => {
+    MPQ.push(`btn_${type}`)
     return () => {
       try {
         func()
@@ -20,11 +22,11 @@ export default function NewFiles ({activeView, toggleView, doImport}) {
 
   return <div className='dashboard__new-files'>
     <div className='dashboard__new-files__wrapper'>
-      <div className='dashboard__new-files__item icon' onClick={wrapFunc(() => createNew(null))}>
+      <div className='dashboard__new-files__item icon' onClick={wrapFunc('create_new', () => createNew(null))}>
         <IoIosDocument />
         <div>{t('Create Blank Project')}</div>
       </div>
-      <div className='dashboard__new-files__item icon' onClick={wrapFunc(openExistingFile)}>
+      <div className='dashboard__new-files__item icon' onClick={wrapFunc('open_existing', openExistingFile)}>
         <IoIosDesktop />
         <div>{t('Open Existing')}</div>
       </div>

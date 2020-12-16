@@ -12,10 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  top: 50px;
-  right: 10px;
-  width: 50%;
+  margin: 10px 20px;
   margin-bottom: 0;
   z-index: 10;
 
@@ -26,11 +23,26 @@
     .btn {
       border-radius: 100px;
     }
+    button.close {
+      opacity: 0.4;
+    }
   }
 
   .progress {
-    width: 25vw;
+    width: 50vw;
     margin-bottom: 0;
+  }
+
+  svg {
+    margin-right: auto;
+    margin-left: 8px;
+  }
+
+  &.floating {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    margin: 0;
   }
 
   .loading-dots {

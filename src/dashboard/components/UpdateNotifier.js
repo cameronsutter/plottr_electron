@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { shell, remote } from 'electron'
 import log from 'electron-log'
 import t from 'format-message'
+import cx from 'classnames'
 import SETTINGS from '../../common/utils/settings'
 import { Button, ProgressBar } from 'react-bootstrap'
+import { is } from 'electron-util'
+import { Spinner } from '../../common/components/Spinner'
 const autoUpdater = remote.require('electron-updater').autoUpdater
 
 // SETUP //
@@ -25,7 +28,6 @@ export default function UpdateNotifier (props) {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
-    console.log('UpdateNotifier - adding listeners')
     autoUpdater.on('error', error => {
       log.warn(error)
       setError(error)
@@ -39,6 +41,7 @@ export default function UpdateNotifier (props) {
       setHidden(false)
       setChecking(false)
       setAvailable(true)
+      setError(null)
       setInfo(info)
     })
     autoUpdater.on('update-not-available', () => {
@@ -46,7 +49,8 @@ export default function UpdateNotifier (props) {
       setChecking(false)
       setFinishedChecking(true)
       setAvailable(false)
-      setTimeout(() => setFinishedChecking(false), 10000)
+      setError(null)
+      setTimeout(() => setFinishedChecking(false), 5000)
     })
     autoUpdater.on('download-progress', (progress) => {
       setHidden(false)
@@ -64,10 +68,7 @@ export default function UpdateNotifier (props) {
       setPercentDownloaded(100)
     })
 
-    return () => {
-      console.log('UpdateNotifier - removing listeners')
-      autoUpdater.removeAllListeners()
-    }
+    return () => autoUpdater.removeAllListeners()
   }, [])
 
   useEffect(() => {
@@ -75,6 +76,7 @@ export default function UpdateNotifier (props) {
     if (shouldCheck && SETTINGS.get('canGetUpdates')) {
       autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
       autoUpdater.checkForUpdates()
+      setError(null)
       setChecking(true)
       setTimeout(() => setChecking(false), 5000) //failsafe in case of no response
       setHidden(false)
@@ -97,6 +99,11 @@ export default function UpdateNotifier (props) {
     autoUpdater.quitAndInstall(true, true)
   }
 
+  const hide = () => {
+    setHidden(true)
+    setError(null)
+  }
+
   const renderLoadingDots = () => {
     if (!checking) return null
 
@@ -108,14 +115,15 @@ export default function UpdateNotifier (props) {
   const renderStatus = () => {
     const version = info && info.version ? info.version : ''
     let text = ''
-    if (checking) text = t('Checking for updates')
+    // if (checking) text = t('Checking for updates')
     if (finishedChecking && !available) text = t("You're on the latest version")
     if (available) text = t('Update Available 🎉 (version {version})', {version})
     if (downloadInProgress) text = t('Downloading version {version}', {version: version})
     if (finishedDownloading) text = t('Download Complete 🎉 (version {version})', {version})
+    if (error) text = t('Update failed. Try again')
 
     if (!text) return null
-    return <span>{ text }{ renderLoadingDots() }</span>
+    return <span>{ text }</span>
   }
 
   const renderAction = () => {
@@ -128,6 +136,11 @@ export default function UpdateNotifier (props) {
 
   const renderProgress = () => {
     if (!downloadInProgress) return null
+
+    if (is.windows) {
+      return <Spinner/>
+    }
+
     return <ProgressBar bsStyle='success' now={percentDownloaded || 0} label={t('{val, number, percent}', {val: percentDownloaded / 100})}/>
   }
 
@@ -135,12 +148,14 @@ export default function UpdateNotifier (props) {
   if (!text) return null
   if (hidden) return null
 
-  return <div className='update-notifier alert alert-info alert-dismissible' role='alert'>
+  const floating = finishedChecking && !available
+
+  return <div className={cx('update-notifier alert alert-info alert-dismissible', {floating})} role='alert'>
     { text }
     { renderProgress() }
     <div className='update-notifier__buttons'>
       { renderAction() }
-      <button className='close' onClick={() => setHidden(true)}><span aria-hidden='true'>&times;</span></button>
+      <button className='close' onClick={hide}><span aria-hidden='true'>&times;</span></button>
     </div>
   </div>
 }

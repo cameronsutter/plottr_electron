@@ -8,7 +8,7 @@ const deviceID = machineIdSync(true)
 
 export default function UserInfo ({licenseInfo, deleteLicense}) {
   const [deleting, setDeleting] = useState(false)
-  const expiresDate = licenseInfo.expires == 'lifetime' ? t('Lifetime') : t('{date, date, long}', {date: new Date(licenseInfo.expires)})
+  const expiresDate = licenseInfo.expires == 'lifetime' ? t('Never') : t('{date, date, long}', {date: new Date(licenseInfo.expires)})
 
   let deleteModal = false
   if (deleting) {
@@ -32,7 +32,7 @@ export default function UserInfo ({licenseInfo, deleteLicense}) {
       <dl className='dl-horizontal'>
         <dt>{t('License Key')}</dt>
         <dd>{licenseInfo.licenseKey}</dd>
-        <dt>{t('Expiration Date')}</dt>
+        <dt>{t('Expires')}</dt>
         <dd>{expiresDate}</dd>
       </dl>
     </div>

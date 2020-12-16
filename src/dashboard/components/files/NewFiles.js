@@ -9,8 +9,8 @@ import MPQ from '../../../common/utils/MPQ'
 export default function NewFiles ({activeView, toggleView, doImport}) {
 
   const wrapFunc = (type, func) => {
-    MPQ.push(`btn_${type}`)
     return () => {
+      MPQ.push(`btn_${type}`)
       try {
         func()
       } catch (error) {

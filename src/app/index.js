@@ -38,7 +38,6 @@ process.on('uncaughtException', err => {
   rollbar.error(err)
 })
 
-initMixpanel()
 ensureBackupTodayPath()
 
 Modal.setAppElement('#react-root')
@@ -54,6 +53,7 @@ ipcRenderer.on('state-saved', (_arg) => {
 })
 
 function bootFile (filePath, darkMode, numOpenFiles) {
+  initMixpanel()
   win.setTitle(displayFileName(filePath))
   win.setRepresentedFilename(filePath)
 

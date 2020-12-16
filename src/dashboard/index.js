@@ -27,13 +27,14 @@ const root = document.getElementById('dashboard__react__root')
 render(<DashboardApp />, root)
 
 // Secondary SETUP //
-initMixpanel()
 window.requestIdleCallback(() => {
   ensureBackupFullPath()
   TemplateFetcher.fetch()
+  initMixpanel()
 })
 
 ipcRenderer.once('send-launch', (event, version) => {
+  initMixpanel()
   const settingsWeCareAbout = {
     auto_download: SETTINGS.get('user.autoDownloadUpdate'),
     backup_on: SETTINGS.get('backup'),

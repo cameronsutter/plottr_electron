@@ -61,7 +61,7 @@ class MixpanelQueue {
       trial_mode: isTrial,
     }
     this.queue.push({title: event, attributes: allAttrs})
-    if (navigator.onLine) {
+    if (navigator.onLine && mixpanel.__loaded) {
       this.flush()
     }
   }

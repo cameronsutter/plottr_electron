@@ -1,5 +1,6 @@
 import mixpanel from 'mixpanel-browser'
 import USER from './user_info'
+import log from 'electron-log'
 
 const superProps = {platform: process.platform}
 
@@ -13,39 +14,43 @@ export function setTrialInfo (isTrialMode, num) {
 class MixpanelQueue {
   queue = []
 
-  defaultEventStats (event, basicAttrs={}, state) {
+  projectEventStats (event, basicAttrs={}, state) {
     if (!event || process.env.NODE_ENV == 'development') return
     if (!USER.get('payment_id')) return
 
     window.requestIdleCallback(() => {
-      // average tags attached to cards
-      // average characters attached to cards
-      // average places attached to cards
-      let totalTags = 0
-      let totalChars = 0
-      let totalPls = 0
-      state.cards.forEach(c => {
-        totalTags += c.tags.length
-        totalChars += c.characters.length
-        totalPls += c.places.length
-      })
-      let numOfCards = state.cards.length
+      try {
+        // average tags attached to cards
+        // average characters attached to cards
+        // average places attached to cards
+        let totalTags = 0
+        let totalChars = 0
+        let totalPls = 0
+        state.cards.forEach(c => {
+          totalTags += c.tags.length
+          totalChars += c.characters.length
+          totalPls += c.places.length
+        })
+        let numOfCards = state.cards.length
 
-      let attrs = {
-        ...basicAttrs,
-        numOfCards: numOfCards,
-        numOfCharacters: state.characters.length,
-        numOfChapters: state.chapters.length,
-        numOfLines: state.lines.length,
-        numOfBooks: state.books.allIds.length,
-        zoomLevel: state.ui.zoomIndex,
-        numOfCharCategories: state.categories.characters.length,
-        avgTagsOnCards: totalTags / numOfCards,
-        avgCharsOnCards: totalChars / numOfCards,
-        avgPlsOnCards: totalPls / numOfCards,
+        let attrs = {
+          ...basicAttrs,
+          numOfCards: numOfCards,
+          numOfCharacters: state.characters.length,
+          numOfChapters: state.chapters.length,
+          numOfLines: state.lines.length,
+          numOfBooks: state.books.allIds.length,
+          zoomLevel: state.ui.zoomIndex,
+          numOfCharCategories: state.categories.characters.length,
+          avgTagsOnCards: totalTags / numOfCards,
+          avgCharsOnCards: totalChars / numOfCards,
+          avgPlsOnCards: totalPls / numOfCards,
+        }
+
+        this.push(event, attrs)
+      } catch (error) {
+        log.error(error)
       }
-
-      this.push(event, attrs)
     })
   }
 
@@ -74,7 +79,11 @@ class MixpanelQueue {
       let event = this.queue.shift()
       if (event) {
         const attrs = Object.assign({}, event.attributes, superProps)
-        mixpanel.track(event.title, attrs)
+        try {
+          mixpanel.track(event.title, attrs)
+        } catch (error) {
+          log.error(error)
+        }
       }
     } while (this.queue.length > 0)
   }

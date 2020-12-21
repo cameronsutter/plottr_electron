@@ -75,7 +75,7 @@ function bootFile (filePath, darkMode, numOpenFiles) {
       }
       store.dispatch(actions.uiActions.loadFile(filePath, didMigrate, state, state.file.version))
 
-      MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
+      MPQ.projectEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
 
       const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
       if (state.ui && state.ui.darkMode !== darkMode) {

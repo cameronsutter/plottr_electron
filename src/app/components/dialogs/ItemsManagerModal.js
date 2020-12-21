@@ -84,7 +84,7 @@ export default function ItemsManagerModal({
             {i18n('Close')}
           </Button>
           {showSaveAsTemplate ?
-            <Button className='pull-right custom-attr__add-button' onClick={saveAsTemplate}>
+            <Button className='pull-right custom-attr__save-as-template' onClick={saveAsTemplate}>
               <FaSave className='svg-save-template'/> {i18n('Save as Template')}
             </Button>
           : null }

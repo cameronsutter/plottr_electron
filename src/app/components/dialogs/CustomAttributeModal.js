@@ -31,6 +31,7 @@ function CustomAttributeModal({
       items={customAttributes}
       darkMode={darkMode}
       closeDialog={closeDialog}
+      showSaveAsTemplate
       onAdd={(name) => addAttribute({ name, type: 'text'})}
       renderItem={(attr, index) => (
         <ListItem

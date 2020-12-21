@@ -22,7 +22,7 @@ const win = remote.getCurrentWindow()
 
 // takes into account spacing
 const SCENE_CELL_WIDTH = 175 + 17;
-const SCENE_CELL_HEIGHT = 74 + 40; 
+const SCENE_CELL_HEIGHT = 74 + 40;
 
 class TimelineWrapper extends Component {
   constructor (props) {
@@ -287,7 +287,7 @@ class TimelineWrapper extends Component {
   render () {
     const { ui } = this.props
     return <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
-      {this.renderSubNav()}
+      { this.renderSubNav() }
       <div id='timelineview__root'>
         <StickyTable leftColumnZ={5} headerZ={5} wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
           { this.renderBody() }

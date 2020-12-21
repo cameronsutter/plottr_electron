@@ -4,7 +4,7 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "story",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -25,6 +25,10 @@
       "tag": [],
       "character": [],
       "place": []
+    },
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 1
     }
   },
   "file": {

@@ -37,6 +37,8 @@ export default function RecentFiles (props) {
 
     const renderedFiles = sortedIds.map((id, idx) => {
       const f = filesById[`${id}`]
+      if (!f || !f.path) return null
+
       const lastOpen = new Date(f.lastOpened)
       const basename = path.basename(f.path)
       let formattedPath = ''

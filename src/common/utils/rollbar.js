@@ -50,7 +50,7 @@ export default function setupRollbar(where) {
 function requestURL (url, version) {
   const baseURL = `https://raw.githubusercontent.com/Plotinator/pltr_sourcemaps/main/${version}`
   if (url.includes('app.html') || url.includes('app.bundle.js')) return `${baseURL}/app.bundle.js`
-  if (url.includes('dashboard.html') || url.includes('dashboard.bundle.js')) return `${baseURL}/bashboard.bundle.js`
+  if (url.includes('dashboard.html') || url.includes('dashboard.bundle.js')) return `${baseURL}/dashboard.bundle.js`
   if (url.includes('expired.html') || url.includes('expired.bundle.js')) return `${baseURL}/expired.bundle.js`
   if (url.includes('verify.html') || url.includes('verify.bundle.js')) return `${baseURL}/verify.bundle.js`
   return `${baseURL}/commons.bundle.js`

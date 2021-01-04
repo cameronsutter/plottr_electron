@@ -11,8 +11,10 @@ const { dialog, app } = remote
 
 export function openKnownFile (filePath, id) {
   if (id) {
-    // update lastOpen
-    knownFilesStore.set(`${id}.lastOpened`, Date.now())
+    // update lastOpen, but wait a little so the file doesn't move from under their mouse
+    setTimeout(() => {
+      knownFilesStore.set(`${id}.lastOpened`, Date.now())
+    }, 500)
   }
   ipcRenderer.send('pls-open-window', filePath, false)
 }

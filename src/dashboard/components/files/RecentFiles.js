@@ -2,13 +2,13 @@ import path from 'path'
 import React, { useState, useEffect } from 'react'
 import t from 'format-message'
 import cx from 'classnames'
-import { FormControl } from 'react-bootstrap'
 import { doesFileExist, useSortedKnownFiles } from '../../utils/files'
 import { StickyTable, Row, Cell } from 'react-sticky-table'
 import { openKnownFile } from '../../utils/window_manager'
 import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
 import MissingIndicator from './MissingIndicator'
 import FileActions from './FileActions'
+import RecentsHeader from './RecentsHeader'
 
 export default function RecentFiles (props) {
   const [searchTerm, setSearchTerm] = useState('')
@@ -78,8 +78,7 @@ export default function RecentFiles (props) {
   }
 
   return <div className='dashboard__recent-files'>
-    <FormControl type='search' placeholder={t('Search')} className='dashboard__search' onChange={event => setSearchTerm(event.target.value)} />
-    <h1>{t('Recent Projects')}</h1>
+    <RecentsHeader setSearchTerm={setSearchTerm} />
     { renderRecents() }
   </div>
 }

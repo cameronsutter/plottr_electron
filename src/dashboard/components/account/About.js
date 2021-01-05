@@ -4,8 +4,8 @@ import t from 'format-message'
 import { Button } from 'react-bootstrap'
 import SETTINGS from '../../../common/utils/settings'
 import MPQ from '../../../common/utils/MPQ'
-const app = remote.app
-const autoUpdater = remote.require('electron-updater').autoUpdater
+const { app } = remote
+const autoUpdater = remote.require('electron-differential-updater').autoUpdater
 
 export default function About (props) {
   const checkForUpdates = () => {

@@ -1,6 +1,7 @@
 import { cloneDeep } from 'lodash'
 import { Editor } from 'slate'
 import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
+import { rceDataRepair } from './rceDataRepair'
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list']
 export const HEADING_TYPES = ['heading-one', 'heading-two']
@@ -15,7 +16,7 @@ export function useTextConverter (text) {
     rceText[0].children[0].text = text
   }
 
-  return rceText
+  return rceDataRepair(rceText)
 }
 
 // Gets the previous sibling node to the provided path at the same depth

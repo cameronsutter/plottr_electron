@@ -22,6 +22,12 @@
     font-size: 20pt;
     margin-top: 8px;
   }
+
+  &.rce {
+    svg {
+      font-size: 20pt;
+    }
+  }
 }
 
 .error-boundary__options {

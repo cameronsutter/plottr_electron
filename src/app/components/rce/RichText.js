@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'react-proptypes'
 import RichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
-import ErrorBoundary from '../../containers/ErrorBoundary'
 import { getFonts, getRecent, addRecent } from '../../helpers/fonts'
+import RCEBoundary from './RCEBoundary'
 
 const RichText = (props) => {
   let body = null
@@ -22,7 +22,7 @@ const RichText = (props) => {
     body = <RichTextViewer text={props.description} className={props.className}/>
   }
 
-  return <ErrorBoundary>{ body }</ErrorBoundary>
+  return <RCEBoundary>{ body }</RCEBoundary>
 }
 
 RichText.propTypes = {

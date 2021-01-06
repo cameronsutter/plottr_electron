@@ -56,10 +56,10 @@ const RichTextEditor = (props) => {
   if (!value) return null
 
   const updateValue = newVal => {
+    setValue(newVal)
     // only update if it changed
     // (e.g. this event could fire with a selection change, but the text is the same)
     if (value !== newVal) {
-      setValue(newVal)
       props.onChange(newVal)
     }
   }

@@ -12,6 +12,7 @@ const { getDarkMode } = require('./main_modules/theme')
 const { gracefullyQuit } = require('./main_modules/utils')
 const { openDashboard } = require('./main_modules/windows/dashboard')
 const { addToKnown } = require('./main_modules/known_files')
+const SETTINGS = require('./main_modules/settings')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -20,7 +21,7 @@ log.info('--------Startup Tasks--------')
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({path: ENV_FILE_PATH})
 const rollbar = setupRollbar('main', {})
-setupI18n()
+setupI18n(SETTINGS)
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({

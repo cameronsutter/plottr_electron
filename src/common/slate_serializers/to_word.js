@@ -50,10 +50,27 @@ const serialize = (nodes, doc) => {
     switch (n.type) {
       case 'bulleted-list':
         return children.map(li => new Paragraph({children: [li], bullet: {level: 0}}))
+      // Headings can sometimes have 1+ paragraph children, which the docx exporter does not allow
+      // so we map over all the node's children (ignoring what we serialized above) and serialize
+      // them again but as individual headings
       case 'heading-one':
-        return new Paragraph({children: children, heading: HeadingLevel.HEADING_4})
       case 'heading-two':
-        return new Paragraph({children: children, heading: HeadingLevel.HEADING_5})
+        const headingLevel = n.type === 'heading-one' ? HeadingLevel.HEADING_4 : HeadingLevel.HEADING_5;
+        return n.children.map(child => {
+          if (child.text != null) {
+            return new Paragraph({
+              children: leaf(child),
+              heading: headingLevel
+            });
+          }
+
+          if (child.type === 'paragraph') {
+            return new Paragraph({
+              children: child.children.map(leaf),
+              heading: headingLevel
+            });
+          }
+        })
       case 'list-item':
         return children[0] // always an array with 1 TextRun
       case 'numbered-list':

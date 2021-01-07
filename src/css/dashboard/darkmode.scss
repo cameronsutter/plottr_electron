@@ -15,12 +15,13 @@ $dark-gray-6: #abafb5;
 $dark-gray-7: #dbe2ec;
 
 $dark-orange: #ff7f32;
+$dark-text: $dark-gray-7;
 
 
 .dashboard__header.darkmode {
   background-color: $dark-gray-1 !important;
   background-image: none !important;
-  color: $dark-gray-7;
+  color: $dark-text;
 
   .nav-3right-buttons svg:hover {
     background-color: $dark-gray-3 !important;
@@ -29,6 +30,11 @@ $dark-orange: #ff7f32;
 
 main.darkmode {
   background-color: $dark-gray-3 !important;
+  color: $dark-text;
+
+  .secondary-text {
+    color: $dark-text;
+  }
 
   .dashboard__top-border {
     background-color: $dark-gray-3 !important;
@@ -42,11 +48,11 @@ main.darkmode {
   }
   .dashboard__navigation-tab {
     background-color: $dark-gray-1;
-    border-bottom: 1.5px solid $dark-gray-3;
-    color: $dark-gray-7;
+    border-bottom-color: $dark-gray-3;
+    color: $dark-text;
 
     &:first-child {
-      border-top: 4px solid $dark-gray-1;
+      border-top-color: $dark-gray-1;
     }
 
     &:hover {
@@ -57,7 +63,7 @@ main.darkmode {
       background-color: $dark-gray-3;
 
       &:first-child {
-        border-top: 4px solid $dark-gray-3;
+        border-top-color: $dark-gray-3;
       }
 
       svg {
@@ -69,5 +75,121 @@ main.darkmode {
   /////////////
   // account //
   /////////////
+  .dashboard__about__wrapper {
+    dd {
+      button {
+        color: $dark-text;
+        background-color: $dark-gray-1;
+        border-color: $dark-text;
+
+        &:hover {
+          background-color: $dark-gray-2;
+        }
+      }
+      a {
+        color: $dark-orange;
+      }
+    }
+  }
+
+  ///////////
+  // files //
+  ///////////
+  .dashboard__new-files__item {
+    color: $dark-text;
+    background: $dark-gray-1;
+    &.icon {
+      svg {
+        color: $dark-text;
+      }
+      &:hover, &.active {
+        svg {
+          color: $dark-gray-1;
+        }
+      }
+    }
+    &:hover, &.active {
+      background-color: $dark-gray-5;
+      color: $dark-gray-1;
+      box-shadow: none;
+    }
+  }
+
+  .dashboard__recent-files .dashboard__search {
+    color: $dark-text;
+    background-color: $dark-gray-1;
+    border-color: $dark-gray-2;
+    // &::-webkit-input-placeholder {
+    //   color: $dark-text;
+    // }
+  }
+
+  .dashboard__recent-files__table {
+    .sticky-table-table {
+      .sticky-table-row:first-child {
+        .sticky-table-cell {
+          background-color: $dark-gray-1;
+          color: $dark-text;
+          &:first-child {
+            border-right-color: $dark-gray-3;
+          }
+        }
+      }
+      .sticky-table-row:not(:first-child) {
+        border-left-color: $dark-gray-1;
+        .sticky-table-cell:not(:first-child) {
+          border-left-color: $dark-gray-3;
+        }
+        .sticky-table-cell {
+          border-color: $dark-gray-1;
+        }
+
+        &:hover, &.selected {
+          color: $dark-text;
+          .sticky-table-cell:first-child {
+            color: $dark-gray-1;
+            background-color: $dark-gray-5;
+          }
+        }
+      }
+      .sticky-table-row:nth-of-type(even) {
+        .sticky-table-cell {
+          background-color: $dark-gray-4;
+        }
+      }
+      .sticky-table-row:nth-of-type(odd):not(:first-child) {
+        .sticky-table-cell {
+          background-color: $dark-gray-2;
+        }
+      }
+    }
+  }
+
+  .dashboard__template-picker {
+    .template-picker__list {
+      li.list-group-item {
+        background-color: $dark-gray-1;
+        border-color: $dark-gray-2;
+        &:hover, &.selected {
+          color: $dark-gray-1;
+          background-color: $dark-gray-5;
+          box-shadow: none;
+        }
+      }
+    }
+    .template-picker__details {
+      .panel-body {
+        background-color: $dark-gray-4;
+        button {
+          color: $dark-text;
+          background-color: $dark-gray-1;
+          border-color: $dark-text;
+          &:hover {
+            background-color: $dark-gray-2;
+          }
+        }
+      }
+    }
+  }
 
 }

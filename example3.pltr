@@ -4,7 +4,7 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "characters",
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
@@ -35,7 +35,7 @@
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2020.12.17"
+    "version": "2021.1.5"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -840,10 +840,16 @@
       "description": "",
       "notes": [
         {
+          "type": "paragraph",
           "children": [
             {
               "text": ""
             }
+          ],
+          "at": [
+            1,
+            0,
+            0
           ]
         }
       ],
@@ -856,7 +862,17 @@
       "imageId": null,
       "bookIds": [],
       "Married": "",
-      "In possession of fortune": ""
+      "In possession of fortune": "",
+      "more": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ]
     }
   ],
   "chapters": [

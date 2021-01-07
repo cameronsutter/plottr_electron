@@ -1,0 +1,73 @@
+// DARK GREY - Sidebar background, Fill in Fields, Table Header background, Boxes behind the Top icons/Nav in the Files Tab.
+$dark-gray-1: #444444;
+// TABLE Row Color 1:
+$dark-gray-2: #555555;
+// LIGHTER GREY - Active tab, Background dashboard
+$dark-gray-3: #666666;
+// TABLE ROW COLOR 2:
+$dark-gray-4: #6a6a6a;
+// TOGGLE GREY - Pasive state, FOLDER ICONS on Backups Tab:
+$dark-gray-5: #9d9898;
+// Coming Soon Font Color:
+$dark-gray-6: #abafb5;
+// SIDEBAR ICONS and FILE TOP NAV ICONS, Backups Folder Icons, HELP TAB - Light Buttons Grey:
+// Regular Font Color + Fill In Fields text color:
+$dark-gray-7: #dbe2ec;
+
+$dark-orange: #ff7f32;
+
+
+.dashboard__header.darkmode {
+  background-color: $dark-gray-1 !important;
+  background-image: none !important;
+  color: $dark-gray-7;
+
+  .nav-3right-buttons svg:hover {
+    background-color: $dark-gray-3 !important;
+  }
+}
+
+main.darkmode {
+  background-color: $dark-gray-3 !important;
+
+  .dashboard__top-border {
+    background-color: $dark-gray-3 !important;
+  }
+
+  ////////////////
+  // navigation //
+  ////////////////
+  nav {
+    background-color: $dark-gray-1 !important;
+  }
+  .dashboard__navigation-tab {
+    background-color: $dark-gray-1;
+    border-bottom: 1.5px solid $dark-gray-3;
+    color: $dark-gray-7;
+
+    &:first-child {
+      border-top: 4px solid $dark-gray-1;
+    }
+
+    &:hover {
+      background-color: $dark-gray-2;
+    }
+
+    &.selected {
+      background-color: $dark-gray-3;
+
+      &:first-child {
+        border-top: 4px solid $dark-gray-3;
+      }
+
+      svg {
+        color: $dark-orange;
+      }
+    }
+  }
+
+  /////////////
+  // account //
+  /////////////
+
+}

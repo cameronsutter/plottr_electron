@@ -2,12 +2,13 @@ import React from 'react'
 import { remote } from 'electron'
 import { is } from 'electron-util'
 import t from 'format-message'
+import cx from 'classnames'
 import { VscChromeMaximize, VscChromeMinimize, VscChromeClose } from 'react-icons/vsc'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 const win = remote.getCurrentWindow()
 
-export default function DashboardHeader (props) {
+export default function DashboardHeader ({ darkMode }) {
   const {started, daysLeft} = useTrialStatus()
   const [licenseInfo, licenseSize] = useLicenseInfo()
   let spacer = ''
@@ -39,7 +40,7 @@ export default function DashboardHeader (props) {
       <VscChromeClose onClick={() => window.close()}/>
     </div>
   }
-  return <div className='dashboard__header'>
+  return <div className={cx('dashboard__header', {darkmode: darkMode})}>
     <div className='nav-spacer'></div>
     <div className='nav-right'>
       <span>{t('Plottr')}</span>

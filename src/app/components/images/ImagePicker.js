@@ -236,10 +236,8 @@ class ImagePicker extends Component {
 
   renderImages () {
     const { sortedIds, selectedId } = this.state
-    console.log('renderImages', selectedId)
     return sortedIds.map(id => {
       const isSelected = selectedId == id
-      console.log('renderImages', selectedId, id, isSelected)
       const klasses = cx('image-picker__image-wrapper', {selected: isSelected})
       return <div key={id} className={klasses} onClick={() => this.setState({selectedId: isSelected ? null : id})}>
         <Image imageId={id} shape='square' size='large' />

@@ -106,9 +106,9 @@ ipcRenderer.on('reload-from-file', (event, filePath, darkMode, numOpenFiles) => 
   bootFile(filePath, darkMode, numOpenFiles)
 })
 
-ipcRenderer.on('set-dark-mode', (event, on) => {
-  store.dispatch(actions.uiActions.setDarkMode(on))
-  window.document.body.className = on ? 'darkmode' : ''
+ipcRenderer.on('set-dark-mode', (event, isOn) => {
+  store.dispatch(actions.uiActions.setDarkMode(isOn))
+  window.document.body.className = isOn ? 'darkmode' : ''
 })
 
 ipcRenderer.on('export-file', (event, options) => {

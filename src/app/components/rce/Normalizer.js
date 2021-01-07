@@ -17,9 +17,11 @@ const withNormalizer = editor => {
       }
     }
 
-    // TODO: Only allow text in headings (no other elements)
+    // TODO: Only allow text in headings (no other elements as children)
 
-    // TODO: don't allow lists to have children that are not list-items
+    // TODO: Only allow list-items as children of lists
+
+    // TODO: don't allow list-items to be children of other list-items
 
 
     // Fall back to the original `normalizeNode` to enforce other constraints.

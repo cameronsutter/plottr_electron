@@ -6,6 +6,9 @@ import cx from 'classnames'
 import { createNew, openExistingFile } from '../../utils/window_manager'
 import MPQ from '../../../common/utils/MPQ'
 import { Col, Grid, Row, Clearfix } from 'react-bootstrap'
+import log from 'electron-log'
+import { remote } from 'electron'
+const { dialog } = remote
 
 export default function NewFiles ({activeView, toggleView, doImport}) {
 
@@ -15,8 +18,8 @@ export default function NewFiles ({activeView, toggleView, doImport}) {
       try {
         func()
       } catch (error) {
-        // TODO: tell the user something went wrong
-        console.error(error)
+        log.error(error)
+        dialog.showErrorBox(t('There was an error doing that. Try again'))
       }
     }
   }

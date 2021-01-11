@@ -14,7 +14,7 @@ function buildHelpMenu () {
         click: () => shell.openExternal('https://plottr.com/demos/')
       }, {
         label: i18n('Documentation'),
-        click: () => shell.openExternal('https://plottr.com/docs/navigating-plottr/')
+        click: () => shell.openExternal('https://docs.plottr.com')
       }, {
         label: i18n('Facebook Group'),
         click: () => shell.openExternal('https://www.facebook.com/groups/367650870614184')
@@ -22,7 +22,7 @@ function buildHelpMenu () {
         type: 'separator'
       }, {
         label: i18n('Report a Problem'),
-        click: () => shell.openExternal('https://plottr.com/support/')
+        click: () => shell.openExternal('https://docs.plottr.com/submit-a-ticket?help=Technical%20Support')
       }, {
         type: 'separator'
       }, {
@@ -30,12 +30,12 @@ function buildHelpMenu () {
         click: () => shell.openExternal('https://feedback.getplottr.com')
       }, {
         label: i18n('Request a Feature'),
-        click: () => shell.openExternal('https://plottr.com/support/?help=Feature%20Request')
+        click: () => shell.openExternal('docs.plottr.com/submit-a-ticket?help=Feature%20Request')
       }, {
         type: 'separator'
       }, {
         label: i18n('FAQ'),
-        click: () => shell.openExternal('https://plottr.com/docs/frequently-asked-questions/')
+        click: () => shell.openExternal('https://docs.plottr.com/frequently-asked-questions')
       }, {
         label: i18n('Roadmap'),
         click: () => shell.openExternal('https://plottr.com/our-roadmap')

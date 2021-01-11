@@ -102,16 +102,9 @@ main.darkmode {
       svg {
         color: $dark-text;
       }
-      &:hover, &.active {
-        svg {
-          color: $dark-gray-1;
-        }
-      }
     }
     &:hover, &.active {
-      background-color: $dark-gray-5;
-      color: $dark-gray-1;
-      box-shadow: none;
+      background-color: $dark-gray-1;
     }
   }
 
@@ -171,9 +164,8 @@ main.darkmode {
         background-color: $dark-gray-1;
         border-color: $dark-gray-2;
         &:hover, &.selected {
-          color: $dark-gray-1;
-          background-color: $dark-gray-5;
-          box-shadow: none;
+          color: $dark-text;
+          background-color: $dark-gray-1;
         }
       }
     }
@@ -192,4 +184,76 @@ main.darkmode {
     }
   }
 
+  /////////////
+  // backups //
+  /////////////
+  .dashboard__backups__item {
+    &.icon {
+      svg {
+        color: $dark-text;
+      }
+      &:hover {
+        svg {
+          color: $dark-text;
+        }
+      }
+    }
+    &:hover {
+      color: $dark-text;
+      background-color: $dark-gray-1;
+    }
+  }
+
+  /////////////
+  // options //
+  /////////////
+  .dashboard__options {
+    h1 {
+      &.secondary-text {
+        color: $dark-gray-6;
+      }
+    }
+    hr {
+      border-top-color: $dark-text;
+    }
+    .option-switch-label:not(.checked) {
+      background-color: $dark-gray-6;
+    }
+    .option-switch-labeltext {
+      color: $dark-gray-6;
+    }
+  }
+  .dashboard__options__item {
+    select {
+      color: $dark-gray-1;
+    }
+    &.disabled {
+      color: $dark-gray-6;
+      .help-block {
+        color: $dark-gray-6;
+      }
+      .form-control {
+        background-color: $dark-gray-1;
+        color: $dark-gray-6;
+      }
+    }
+  }
+
+  //////////
+  // help //
+  //////////
+  .dashboard__help__item {
+    &.links {
+      button.btn-link {
+        color: $dark-orange;
+      }
+    }
+    &.actions {
+      #customerServiceCode {
+        color: $dark-text;
+        background-color: $dark-gray-1;
+        border-color: $dark-gray-2;
+      }
+    }
+  }
 }

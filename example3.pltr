@@ -75,10 +75,54 @@
       "imageId": null,
       "timelineTemplates": []
     },
+    "4": {
+      "id": 4,
+      "title": "",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "5": {
+      "id": 5,
+      "title": "",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "6": {
+      "id": 6,
+      "title": "",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "7": {
+      "id": 7,
+      "title": "",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
     "allIds": [
       1,
+      7,
       2,
-      3
+      3,
+      4,
+      5,
+      6
     ]
   },
   "characters": [
@@ -1591,6 +1635,42 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 77,
+      "bookId": 4,
+      "position": 3,
+      "title": "auto",
+      "time": 0,
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 78,
+      "bookId": 5,
+      "position": 1,
+      "title": "auto",
+      "time": 0,
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 79,
+      "bookId": 6,
+      "position": 1,
+      "title": "auto",
+      "time": 0,
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 80,
+      "bookId": 7,
+      "position": 0,
+      "title": "auto",
+      "time": 0,
       "autoOutlineSort": true,
       "fromTemplateId": null
     }
@@ -10971,6 +11051,42 @@
     }
   ],
   "lines": [
+    {
+      "id": 25,
+      "bookId": 7,
+      "title": "",
+      "color": "#6cace4",
+      "position": 0,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 24,
+      "bookId": 6,
+      "title": "",
+      "color": "#78be20",
+      "position": 1,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 23,
+      "bookId": 5,
+      "title": "",
+      "color": "#78be20",
+      "position": 1,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 22,
+      "bookId": 4,
+      "title": "",
+      "color": "#ff7f32",
+      "position": 3,
+      "expanded": null,
+      "fromTemplateId": null
+    },
     {
       "id": 21,
       "bookId": 6,

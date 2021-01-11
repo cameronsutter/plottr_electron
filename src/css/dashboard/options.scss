@@ -33,6 +33,9 @@
     .help-block {
       color: $gray-5;
     }
+    .form-control {
+      color: $gray-5;
+    }
   }
   .form-control[type="number"] {
     width: 100px;
@@ -61,7 +64,7 @@ input.option-switch-checkbox {
   cursor: pointer;
   width: 100px / $scale-factor;
   height: 50px / $scale-factor;
-  background: $gray-5;
+  background-color: $gray-5;
   border-radius: 100px / $scale-factor;
   position: relative;
   transition: background-color .2s;

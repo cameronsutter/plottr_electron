@@ -26,9 +26,10 @@ export function doesFileExist (filePath) {
 
 function migrateKnownFileStore () {
   // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
-  const filesById = knownFilesStore.get('byIds')
-  if (filesById && Object.keys(filesById).length) {
+  const needsMigration = knownFilesStore.has('byIds') || knownFilesStore.has('allIds')
+  if (needsMigration) {
     // it's in the old format and we need to migrate
+    // const filesById = knownFilesStore.get('byIds')
     const fileIds = knownFilesStore.get('allIds')
     const fileObjects = fileIds.reduce((acc, id, idx) => {
       const key = `byIds.${id.replace('.', '~$~')}`

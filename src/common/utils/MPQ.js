@@ -40,7 +40,6 @@ class MixpanelQueue {
           numOfChapters: state.chapters.length,
           numOfLines: state.lines.length,
           numOfBooks: state.books.allIds.length,
-          zoomLevel: state.ui.zoomIndex,
           numOfCharCategories: state.categories.characters.length,
           avgTagsOnCards: totalTags / numOfCards,
           avgCharsOnCards: totalChars / numOfCards,

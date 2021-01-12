@@ -29,6 +29,12 @@ class BookList extends Component {
   addBook = () => {
     const { actions, books, lineActions, sceneActions } = this.props
     const newBookId = objectId(books.allIds)
+    this.setState({
+      rows: [
+        ...this.state.rows.slice(0, this.state.rows.length - 1),
+        [...this.state.rows[this.state.rows.length - 1], newBookId]
+      ]
+    })
     actions.addBook()
     // add a plotline
     lineActions.addLine(newBookId)

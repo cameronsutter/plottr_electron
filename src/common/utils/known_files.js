@@ -12,7 +12,16 @@ export function addToKnownFiles (filePath) {
   } else {
     // for some reason, .size doesn't work in prod here (but it does in temp_files.js)
     // in prod, it doesn't update in time
-    const newId = Math.max(...Object.keys(knownFilesStore.store).map(Number)) + 1
+    let newId = Math.max(...Object.keys(knownFilesStore.store).map(Number)) + 1
+    // FIX UP: some people's known_files got into a bad state and this fixes that
+    if (knownFilesStore.has('-Infinity')) {
+      let badData = knownFilesStore.get('-Infinity')
+      knownFilesStore.set('1', badData)
+    }
+    // and this prevents it
+    if (newId < 1 || !Object.keys(knownFilesStore.store).length) {
+      newId = 1
+    }
     knownFilesStore.set(`${newId}`, {
       path: filePath,
       lastOpened: Date.now()

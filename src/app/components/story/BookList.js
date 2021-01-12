@@ -71,7 +71,7 @@ class BookList extends Component {
     this.props.actions.reorderBooks(reOrderedIds)
   }
 
-  componentDidMount () {
+  updateLayout = () => {
     let newBookWidth
     if (this.bookRef.current) {
       const { width } = this.bookRef.current.getBoundingClientRect()
@@ -82,13 +82,28 @@ class BookList extends Component {
     }
 
     if (this.dragDropAreaRef.current) {
-      const { width } = this.dragDropAreaRef.current.getBoundingClientRect()
-      const itemsPerRow = Math.floor(width / (newBookWidth || this.state.bookWidth))
+      const { width } = this.dragDropAreaRef.current.querySelector('#book-list').getBoundingClientRect()
+      const style = window.getComputedStyle(this.dragDropAreaRef.current)
+      const leftPadding = parseInt(style.paddingLeft)
+      const rightPadding = parseInt(style.paddingRight)
+      const itemsPerRow = Math.floor(
+        (width - (leftPadding + rightPadding)) /
+        (newBookWidth || this.state.bookWidth)
+      )
       this.setState({
         rows: _.chunk(this.props.books.allIds, itemsPerRow),
         itemsPerRow
       })
     }
+  }
+
+  componentDidMount () {
+    this.updateLayout()
+    window.addEventListener('resize', this.updateLayout)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.updateLayout)
   }
 
   renderBooks (books) {
@@ -123,6 +138,7 @@ class BookList extends Component {
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}
+                  id='book-list'
                   className={cx('book-list__list', {dragging: snapshot.isDraggingOver})}
                   {...provided.droppableProps}
                 >

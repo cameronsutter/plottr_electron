@@ -28,10 +28,9 @@
 
 .book-list__list {
   display: flex;
-  flex-wrap: wrap;
-  overflow: auto;
   padding: 40px 5px;
   padding-top: 0;
+  overflow: hidden;
 
   &.dragging {
     background-color: rgba(218, 226, 236, 0.2); // $gray-8 with alpha

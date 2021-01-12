@@ -11,9 +11,20 @@ import Book from './Book'
 import { Glyphicon } from 'react-bootstrap'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import cx from 'classnames'
+import _ from 'lodash';
 import { objectId } from '../../store/newIds'
 
 class BookList extends Component {
+  dragDropAreaRef = React.createRef();
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      // TODO: temp, this should come from inspecting a book on the DOM
+      bookWidth: 245,
+      rows: [props.books.allIds]
+    }
+  }
 
   addBook = () => {
     const { actions, books, lineActions, sceneActions } = this.props
@@ -42,8 +53,18 @@ class BookList extends Component {
     this.props.actions.reorderBooks(ids)
   }
 
-  renderBooks () {
-    return this.props.books.allIds.map((id, idx) => {
+  componentDidMount () {
+    if (this.dragDropAreaRef.current) {
+      const { width } = this.dragDropAreaRef.current.getBoundingClientRect()
+      const itemsPerRow = Math.floor(width / this.state.bookWidth)
+      this.setState({
+        rows: _.chunk(this.props.books.allIds, itemsPerRow)
+      })
+    }
+  }
+
+  renderBooks (books) {
+    return books.map((id, idx) => {
       return <Draggable key={id} draggableId={id.toString()} index={idx}>
         {(provided, snapshot) => (
           <div
@@ -61,22 +82,30 @@ class BookList extends Component {
   }
 
   render () {
-    return <div className='book-list__container'>
+    return <div className='book-list__container' ref={this.dragDropAreaRef}>
       <h2>{`${i18n('Books')} `}<span onClick={this.addBook}><Glyphicon glyph='plus'/></span></h2>
       <DragDropContext onDragEnd={this.onDragEnd}>
-        <Droppable droppableId='droppable' direction='horizontal'>
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              className={cx('book-list__list', {dragging: snapshot.isDraggingOver})}
-              {...provided.droppableProps}
-            >
-              { this.renderBooks() }
-              {provided.placeholder}
-              <Book addBook={this.addBook}/>
-            </div>
-          )}
-        </Droppable>
+        {
+          this.state.rows.map((row, index) => (
+            <Droppable key={index} droppableId={`droppable-${index}`} direction='horizontal'>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  className={cx('book-list__list', {dragging: snapshot.isDraggingOver})}
+                  {...provided.droppableProps}
+                >
+                  { this.renderBooks(row) }
+                  { index === this.state.rows.length - 1 ? (
+                    <>
+                      {provided.placeholder}
+                      <Book addBook={this.addBook}/>
+                    </>
+                  ) : null}
+                </div>
+              )}
+            </Droppable>
+          ))
+        }
       </DragDropContext>
     </div>
   }

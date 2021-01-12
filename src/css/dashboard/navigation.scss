@@ -33,13 +33,16 @@
   }
 
   &.selected {
-    // background-color: $blue-8;
-    background-color: #FBF7F0;
+    background-color: $gray-9;
+    // background-color: #FBF7F0;
     // color: $blue-4;
-    color: $orange;
+    color: $gray-0;
     border-bottom: none;
     // box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $blue-4;
     // box-shadow: $blue-highlight-box-shadow;
+    svg {
+      color: $orange;
+    }
   }
 
   svg {

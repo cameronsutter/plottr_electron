@@ -16,13 +16,15 @@ import { objectId } from '../../store/newIds'
 
 class BookList extends Component {
   dragDropAreaRef = React.createRef();
+  bookRef = React.createRef();
 
   constructor (props) {
     super(props)
     this.state = {
-      // TODO: temp, this should come from inspecting a book on the DOM
+      // Defaults based on when this was written.  Updated when the
+      // componentmounts.
       bookWidth: 245,
-      itemsPerRow: null,
+      itemsPerRow: 5,
       rows: [props.books.allIds]
     }
   }
@@ -70,9 +72,18 @@ class BookList extends Component {
   }
 
   componentDidMount () {
+    let newBookWidth
+    if (this.bookRef.current) {
+      const { width } = this.bookRef.current.getBoundingClientRect()
+      newBookWidth = width
+      this.setState({
+        bookWidth: width
+      })
+    }
+
     if (this.dragDropAreaRef.current) {
       const { width } = this.dragDropAreaRef.current.getBoundingClientRect()
-      const itemsPerRow = Math.floor(width / this.state.bookWidth)
+      const itemsPerRow = Math.floor(width / (newBookWidth || this.state.bookWidth))
       this.setState({
         rows: _.chunk(this.props.books.allIds, itemsPerRow),
         itemsPerRow
@@ -91,7 +102,11 @@ class BookList extends Component {
             style={provided.draggableProps.style}
             className={cx('book-list__droppable', {dragging: snapshot.isDragging})}
           >
-            <Book bookId={id} bookNumber={idx + 1} />
+            {id === 0 ? (
+              <Book bookId={id} bookNumber={idx + 1} ref={this.bookRef} />
+            ) : (
+              <Book bookId={id} bookNumber={idx + 1} />
+            )}
           </div>
         )}
       </Draggable>

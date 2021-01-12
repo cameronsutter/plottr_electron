@@ -2,7 +2,7 @@ import path from 'path'
 import t from 'format-message'
 import { TEMP_FILES_PATH } from './config_paths'
 import { tempFilesStore } from './store_hooks'
-import { log } from 'electron-log'
+import log from 'electron-log'
 import { shell } from 'electron'
 import { saveFile } from './files'
 

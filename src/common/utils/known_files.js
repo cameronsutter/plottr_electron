@@ -1,5 +1,5 @@
 import { shell } from 'electron'
-import { log } from 'electron-log'
+import log from 'electron-log'
 import path from 'path'
 import { TEMP_FILES_PATH } from './config_paths'
 import { knownFilesStore } from './store_hooks'

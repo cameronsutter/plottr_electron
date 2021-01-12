@@ -22,7 +22,7 @@ class BookList extends Component {
     super(props)
     this.state = {
       // Defaults based on when this was written.  Updated when the
-      // componentmounts.
+      // component mounts.
       bookWidth: 245,
       itemsPerRow: 5,
       rows: [props.books.allIds]
@@ -62,10 +62,12 @@ class BookList extends Component {
     const allIds = _.flatten(this.state.rows)
     // Maintains relative positioning at destination of drop
     const adjustForDownwardMovement = (sourceRow < destinationRow ? -1 : 0)
+    const sourceRowOffset = sourceRow * this.state.itemsPerRow
+    const destinationRowOffset = destinationRow * this.state.itemsPerRow
     const reOrderedIds = this.reorder(
       allIds,
-      source.index + sourceRow * this.state.itemsPerRow,
-      destination.index + destinationRow * this.state.itemsPerRow + adjustForDownwardMovement
+      source.index + sourceRowOffset,
+      destination.index + destinationRowOffset + adjustForDownwardMovement
     )
     this.setState({
       rows: _.chunk(reOrderedIds, this.state.itemsPerRow)
@@ -76,7 +78,10 @@ class BookList extends Component {
   updateLayout = () => {
     let newBookWidth
     if (this.bookRef.current) {
-      const { width } = this.bookRef.current.getBoundingClientRect()
+      const { width } = this
+        .bookRef
+        .current
+        .getBoundingClientRect()
       newBookWidth = width
       this.setState({
         bookWidth: width
@@ -84,7 +89,11 @@ class BookList extends Component {
     }
 
     if (this.dragDropAreaRef.current) {
-      const { width } = this.dragDropAreaRef.current.querySelector('#book-list').getBoundingClientRect()
+      const { width } = this
+        .dragDropAreaRef
+        .current
+        .querySelector('#book-list')
+        .getBoundingClientRect()
       const style = window.getComputedStyle(this.dragDropAreaRef.current)
       const leftPadding = parseInt(style.paddingLeft)
       const rightPadding = parseInt(style.paddingRight)

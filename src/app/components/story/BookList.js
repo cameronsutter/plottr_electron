@@ -60,10 +60,12 @@ class BookList extends Component {
     const sourceRow = +source.droppableId
     const destinationRow = +destination.droppableId
     const allIds = _.flatten(this.state.rows)
+    // Maintains relative positioning at destination of drop
+    const adjustForDownwardMovement = (sourceRow < destinationRow ? -1 : 0)
     const reOrderedIds = this.reorder(
       allIds,
       source.index + sourceRow * this.state.itemsPerRow,
-      destination.index + destinationRow * this.state.itemsPerRow
+      destination.index + destinationRow * this.state.itemsPerRow + adjustForDownwardMovement
     )
     this.setState({
       rows: _.chunk(reOrderedIds, this.state.itemsPerRow)

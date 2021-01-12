@@ -28,10 +28,10 @@ class BookList extends Component {
   reorder = (startIndex, endIndex) => {
     const list = this.props.books.allIds
 
-    const [removed] = list.splice(startIndex, 1);
-    list.splice(endIndex, 0, removed);
+    const [removed] = list.splice(startIndex, 1)
+    list.splice(endIndex, 0, removed)
 
-    return list;
+    return list
   }
 
   onDragEnd = (result) => {

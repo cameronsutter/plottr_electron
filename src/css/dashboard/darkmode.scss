@@ -142,7 +142,8 @@ main.darkmode {
         &:hover, &.selected {
           color: $dark-text;
           .sticky-table-cell:first-child {
-            background-color: $dark-gray-1;
+            // background-color: $dark-gray-1;
+            background-color: hsl(0, 0%, 30%); // in between $dark-gray-1 and $dark-gray-2
           }
         }
       }

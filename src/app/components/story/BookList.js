@@ -22,6 +22,7 @@ class BookList extends Component {
     this.state = {
       // TODO: temp, this should come from inspecting a book on the DOM
       bookWidth: 245,
+      itemsPerRow: null,
       rows: [props.books.allIds]
     }
   }
@@ -56,19 +57,16 @@ class BookList extends Component {
     const { source, destination } = result
     const sourceRow = +source.droppableId
     const destinationRow = +destination.droppableId
-
-    if (sourceRow === destinationRow) {
-      const reOrderedRow = this.reorder(this.state.rows[sourceRow], source.index, destination.index)
-      this.setState({
-        ...this.state.rows.slice(0, sourceRow - 1),
-        reOrderedRow,
-        ...this.state.rows.slice(sourceRow + 1)
-      })
-      const ids = Array.prototype.concat.apply(this.state.rows)
-      this.props.actions.reorderBooks(ids)
-    } else {
-      alert('todo')
-    }
+    const allIds = _.flatten(this.state.rows)
+    const reOrderedIds = this.reorder(
+      allIds,
+      source.index + sourceRow * this.state.itemsPerRow,
+      destination.index + destinationRow * this.state.itemsPerRow
+    )
+    this.setState({
+      rows: _.chunk(reOrderedIds, this.state.itemsPerRow)
+    })
+    this.props.actions.reorderBooks(reOrderedIds)
   }
 
   componentDidMount () {
@@ -76,7 +74,8 @@ class BookList extends Component {
       const { width } = this.dragDropAreaRef.current.getBoundingClientRect()
       const itemsPerRow = Math.floor(width / this.state.bookWidth)
       this.setState({
-        rows: _.chunk(this.props.books.allIds, itemsPerRow)
+        rows: _.chunk(this.props.books.allIds, itemsPerRow),
+        itemsPerRow
       })
     }
   }

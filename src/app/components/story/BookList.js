@@ -42,21 +42,33 @@ class BookList extends Component {
     sceneActions.addScene(newBookId)
   }
 
-  reorder = (startIndex, endIndex) => {
-    const list = this.props.books.allIds
+  reorder = (bookIds, startIndex, endIndex) => {
+    const [removed] = bookIds.splice(startIndex, 1)
+    bookIds.splice(endIndex, 0, removed)
 
-    const [removed] = list.splice(startIndex, 1)
-    list.splice(endIndex, 0, removed)
-
-    return list
+    return bookIds
   }
 
   onDragEnd = (result) => {
     // dropped outside the list
     if (!result.destination) return
 
-    const ids = this.reorder(result.source.index, result.destination.index)
-    this.props.actions.reorderBooks(ids)
+    const { source, destination } = result
+    const sourceRow = +source.droppableId
+    const destinationRow = +destination.droppableId
+
+    if (sourceRow === destinationRow) {
+      const reOrderedRow = this.reorder(this.state.rows[sourceRow], source.index, destination.index)
+      this.setState({
+        ...this.state.rows.slice(0, sourceRow - 1),
+        reOrderedRow,
+        ...this.state.rows.slice(sourceRow + 1)
+      })
+      const ids = Array.prototype.concat.apply(this.state.rows)
+      this.props.actions.reorderBooks(ids)
+    } else {
+      alert('todo')
+    }
   }
 
   componentDidMount () {
@@ -93,7 +105,7 @@ class BookList extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         {
           this.state.rows.map((row, index) => (
-            <Droppable key={index} droppableId={`droppable-${index}`} direction='horizontal'>
+            <Droppable key={index} droppableId={`${index}`} direction='horizontal'>
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}

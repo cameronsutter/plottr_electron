@@ -23,6 +23,8 @@
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  height: 90%;
+  overflow: hidden;
 }
 
 .card-dialog__left-side {
@@ -40,6 +42,14 @@
   font-size: 20px;
   textarea {
     font-size: 20px;
+  }
+  .slate-editor__wrapper {
+    height: calc(100% - 91px);
+    overflow-y: auto;
+  }
+  .slate-editor__editor {
+    height: calc(100% - 38px);
+    overflow-y: auto;
   }
 }
 

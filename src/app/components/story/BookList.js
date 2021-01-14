@@ -15,8 +15,8 @@ import { chunk, flatten } from 'lodash'
 import { objectId } from '../../store/newIds'
 
 class BookList extends Component {
-  dragDropAreaRef = React.createRef();
-  bookRef = React.createRef();
+  dragDropAreaRef = React.createRef()
+  bookRef = React.createRef()
 
   constructor (props) {
     super(props)

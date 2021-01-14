@@ -11,7 +11,7 @@ import Book from './Book'
 import { Glyphicon } from 'react-bootstrap'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import cx from 'classnames'
-import _ from 'lodash';
+import { chunk, flatten } from 'lodash'
 import { objectId } from '../../store/newIds'
 
 class BookList extends Component {
@@ -59,7 +59,7 @@ class BookList extends Component {
     const { source, destination } = result
     const sourceRow = +source.droppableId
     const destinationRow = +destination.droppableId
-    const allIds = _.flatten(this.state.rows)
+    const allIds = flatten(this.state.rows)
     // Maintains relative positioning at destination of drop
     const adjustForDownwardMovement = (sourceRow < destinationRow ? -1 : 0)
     const sourceRowOffset = sourceRow * this.state.itemsPerRow
@@ -70,7 +70,7 @@ class BookList extends Component {
       destination.index + destinationRowOffset + adjustForDownwardMovement
     )
     this.setState({
-      rows: _.chunk(reOrderedIds, this.state.itemsPerRow)
+      rows: chunk(reOrderedIds, this.state.itemsPerRow)
     })
     this.props.actions.reorderBooks(reOrderedIds)
   }
@@ -102,7 +102,7 @@ class BookList extends Component {
         (newBookWidth || this.state.bookWidth)
       )
       this.setState({
-        rows: _.chunk(this.props.books.allIds, itemsPerRow),
+        rows: chunk(this.props.books.allIds, itemsPerRow),
         itemsPerRow
       })
     }

@@ -37,6 +37,14 @@ if (process.env.NODE_ENV !== 'dev') {
   })
 }
 
+if (process.env.NODE_ENV === 'dev') {
+  try {
+    require('electron-reloader')(module)
+  } catch (e) {
+    console.error('Error while instrumenting app for reload.', e)
+  }
+}
+
 app.whenReady().then(() => {
   loadMenu(true)
   openDashboard()

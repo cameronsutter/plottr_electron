@@ -5,7 +5,8 @@ import * as CustomAttributeActions from 'actions/customAttributes'
 import i18n from 'format-message'
 import {
   placeCustomAttributesThatCanChangeSelector,
-  characterCustomAttributesThatCanChangeSelector
+  characterCustomAttributesThatCanChangeSelector,
+  scenesCustomAttributesThatCanChangeSelector
 } from '../../selectors/customAttributes'
 import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal';
 
@@ -28,6 +29,7 @@ function CustomAttributeModal({
       title={i18n('Custom Attributes for { type }', { type })}
       subtitle={i18n('Choose what you want to track about your { type }', { type })}
       addLabel={i18n('Add attribute')}
+      itemType={type}
       items={customAttributes}
       darkMode={darkMode}
       closeDialog={closeDialog}
@@ -54,11 +56,14 @@ function mapStateToProps (state, { type }) {
   let canChangeFn;
   switch (type) {
     case 'characters':
-      canChangeFn = characterCustomAttributesThatCanChangeSelector;
-      break;
+      canChangeFn = characterCustomAttributesThatCanChangeSelector
+      break
     case 'places':
-      canChangeFn = placeCustomAttributesThatCanChangeSelector;
-      break;
+      canChangeFn = placeCustomAttributesThatCanChangeSelector
+      break
+    case 'scenes':
+      canChangeFn = scenesCustomAttributesThatCanChangeSelector
+      break
     default:
       canChangeFn = () => {
         console.warn(`${type}CustomAttributesThatCanChangeSelector not implemented`);
@@ -93,6 +98,14 @@ function mapDispatchToProps (dispatch, { type }) {
         removeAttribute: actions.removePlaceAttr,
         editAttribute: actions.editPlaceAttr,
         reorderAttribute: actions.reorderPlacesAttribute,
+      }
+
+    case 'scenes':
+      return {
+        addAttribute: actions.addSceneAttr,
+        removeAttribute: actions.removeSceneAttr,
+        editAttribute: actions.editSceneAttr,
+        reorderAttribute: actions.reorderSceneAttribute,
       }
 
     default:

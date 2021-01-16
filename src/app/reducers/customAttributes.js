@@ -111,9 +111,13 @@ function scenes (state = [], action) {
     case ADD_SCENES_ATTRIBUTE:
       return [...state, action.attribute]
 
+    case EDIT_SCENES_ATTRIBUTE:
+      let newState = [...state]
+      newState[action.index] = action.newAttribute
+      return newState
+
     case REMOVE_SCENES_ATTRIBUTE:
-      state.splice(state.indexOf(action.attribute), 1)
-      return [...state]
+      return state.filter(attr => attr.name !== action.attribute)
 
     case RESET:
     case NEW_FILE:

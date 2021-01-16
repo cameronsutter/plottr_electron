@@ -4,10 +4,12 @@ import t from 'format-message'
 import { customTemplatesStore } from './store_hooks'
 
 export function addNewCustomTemplate (pltrData, { type, data }) {
-  if (type == 'plotlines') {
+  if (type === 'plotlines') {
     createPlotlineTemplate(pltrData, data)
-  } else if (type == 'characters') {
+  } else if (type === 'characters') {
     createCharacterTemplate(pltrData, data)
+  } else if (type === 'scenes') {
+    createScenesTemplate(pltrData, data)
   }
 
   try {
@@ -65,6 +67,21 @@ function createCharacterTemplate (pltrData, { name, description, link }) {
   const template = {
     id: id,
     type: 'characters',
+    name: name,
+    description: description,
+    link: link,
+    attributes: data.customAttributes.characters,
+  }
+  customTemplatesStore.set(id, template)
+}
+
+function createScenesTemplate (pltrData, { name, description, link }) {
+  const data = cloneDeep(pltrData)
+
+  let id = makeNewId('sc')
+  const template = {
+    id: id,
+    type: 'scenes',
     name: name,
     description: description,
     link: link,

@@ -43,6 +43,7 @@ export default function ItemsManagerModal({
   items,
   darkMode,
   showSaveAsTemplate = false,
+  itemType,
   onAdd,
   renderItem,
   closeDialog,
@@ -51,7 +52,7 @@ export default function ItemsManagerModal({
   const restrictedValues = useMemo(() => new Set(items.map(({ name }) => name)), [items])
 
   const saveAsTemplate = () => {
-    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', 'characters') // sends this message to this same process
+    ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', itemType) // sends this message to this same process
   }
 
   const handleEnterPressed = (e) => {

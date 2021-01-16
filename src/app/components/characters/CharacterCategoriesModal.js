@@ -24,6 +24,7 @@ function CharacterCategoriesModal({
       title={i18n('Character Categories')}
       subtitle={i18n('Choose what categories you want to put your characters into')}
       addLabel={i18n('Add category')}
+      itemType={'characters'}
       items={categories}
       darkMode={darkMode}
       closeDialog={closeDialog}

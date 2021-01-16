@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
 import FilterList from 'components/filterList'
+import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
@@ -29,6 +30,7 @@ class TimelineWrapper extends Component {
     super(props)
     this.state = {
       mounted: false,
+      attributesDialogOpen: false
     }
     this.tableRef = null
   }
@@ -287,10 +289,23 @@ class TimelineWrapper extends Component {
     }
   }
 
+  closeDialog = () => {
+    this.setState({
+      attributesDialogOpen: false
+    })
+  }
+
+  renderCustomAttributes () {
+    if (!this.state.attributesDialogOpen) return null
+
+    return <CustomAttributeModal type='scenes' closeDialog={this.closeDialog} />
+  }
+
   render () {
     const { ui } = this.props
     return <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
       { this.renderSubNav() }
+      { this.renderCustomAttributes() }
       <div id='timelineview__root'>
         <StickyTable leftColumnZ={5} headerZ={5} wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
           { this.renderBody() }

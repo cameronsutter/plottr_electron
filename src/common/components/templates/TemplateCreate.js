@@ -22,6 +22,16 @@ class TemplateCreate extends Component {
     this.props.close()
   }
 
+  titleFor = (type) => {
+    switch (type) {
+      case 'plotlines': return i18n('My Timeline Template')
+      case 'characters': return i18n('My Character Template')
+      case 'scenes': return i18n('My Scene Template')
+    }
+    // This was the old default at the time of refactoring
+    return i18n('My Character Template')
+  }
+
   renderToolBar () {
     return <ButtonToolbar>
       <Button bsStyle='success' onClick={this.saveEdit}>{i18n('Save')}</Button>
@@ -59,7 +69,7 @@ class TemplateCreate extends Component {
   }
 
   render () {
-    let title = this.props.type == 'plotlines' ? i18n('My Timeline Template') : i18n('My Character Template')
+    const title = this.titleFor(this.props.type)
 
     return <Modal show={true} onHide={this.props.close} dialogClassName={cx('book-dialog', {darkmode: this.props.ui.darkMode})}>
       <Modal.Header closeButton>

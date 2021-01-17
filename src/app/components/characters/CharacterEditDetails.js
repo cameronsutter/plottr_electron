@@ -13,6 +13,7 @@ import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
 import { singleCharacterSelector } from '../../selectors/characters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { EditAttribute } from '../EditAttribute'
 
 class CharacterEditDetails extends Component {
   constructor (props) {
@@ -36,6 +37,7 @@ class CharacterEditDetails extends Component {
       templateAttrs: templateAttrs,
       newImageId: null,
       deleting: false,
+      inputRefs: [],
     }
   }
 
@@ -89,6 +91,13 @@ class CharacterEditDetails extends Component {
     this.setState({templateAttrs})
   }
 
+  findChildInput = (id) => {
+    const foundInput = this.state.inputRefs.find(ref => {
+      return ref && ref.props.id === id
+    })
+    return foundInput && findDOMNode(foundInput)
+  }
+
   saveEdit = (close = true) => {
     var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
     var description = findDOMNode(this.refs.descriptionInput).value
@@ -104,7 +113,7 @@ class CharacterEditDetails extends Component {
       if (type == 'paragraph') {
         attrs[name] = this.state.description[name]
       } else {
-        const val = findDOMNode(this.refs[`${name}Input`]).value
+        const val = this.findChildInput(`${name}Input`).value
         attrs[name] = val
       }
     })
@@ -126,6 +135,12 @@ class CharacterEditDetails extends Component {
   changeCategory = (val) => {
     this.setState({categoryId: val})
     this.props.actions.editCharacter(this.props.character.id, {categoryId: val})
+  }
+
+  addInputRef = (ref) => {
+    this.setState({
+      inputRefs: [...this.state.inputRefs, ref]
+    })
   }
 
   renderDelete () {
@@ -154,28 +169,18 @@ class CharacterEditDetails extends Component {
   renderEditingCustomAttributes () {
     const { character, ui, customAttributes } = this.props
     return customAttributes.map((attr, idx) => {
-      const { name, type } = attr
-      if (type == 'paragraph') {
-        return <div key={idx}>
-          <ControlLabel>{name}</ControlLabel>
-          <RichText
-            description={character[name]}
-            onChange={(desc) => this.handleAttrDescriptionChange(name, desc)}
-            editable
-            autofocus={false}
-            darkMode={ui.darkMode}
-          />
-        </div>
-      } else {
-        return <FormGroup key={idx}>
-          <ControlLabel>{name}</ControlLabel>
-          <FormControl
-            type='text' ref={`${name}Input`}
-            defaultValue={character[name]}
-            onKeyDown={this.handleEsc}
-            onKeyPress={this.handleEnter} />
-        </FormGroup>
-      }
+      return (
+        <EditAttribute
+          idx={idx}
+          entity={character}
+          ui={ui}
+          handleLongDescriptionChange={this.handleAttrDescriptionChange}
+          onShortDescriptionKeyDown={this.handleEsc}
+          onShortDescriptionKeyPress={this.handleEnter}
+          withRef={this.addInputRef}
+          {...attr}
+        />
+      )
     })
   }
 

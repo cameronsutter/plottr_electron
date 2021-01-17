@@ -109,6 +109,9 @@ function cards (state = [], action) {
 function scenes (state = [], action) {
   switch (action.type) {
     case ADD_SCENES_ATTRIBUTE:
+      if (state.some(({ name }) => name === action.attribute.name)) {
+        return state
+      }
       return [...state, action.attribute]
 
     case EDIT_SCENES_ATTRIBUTE:

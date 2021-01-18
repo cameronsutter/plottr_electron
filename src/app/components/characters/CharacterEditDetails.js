@@ -138,9 +138,13 @@ class CharacterEditDetails extends Component {
   }
 
   addInputRef = (ref) => {
-    this.setState({
-      inputRefs: [...this.state.inputRefs, ref]
-    })
+    // Set state needs to be queued so that React does not overwrite
+    // the attribute in a merge
+    setTimeout(() => {
+      this.setState({
+        inputRefs: [...this.state.inputRefs, ref],
+      })
+    }, 0)
   }
 
   renderDelete () {

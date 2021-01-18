@@ -18,7 +18,7 @@ export class EditAttribute extends Component {
     } = this.props
 
     return type === 'paragraph' ? (
-      <div key={idx}>
+      <div>
         <ControlLabel>{name}</ControlLabel>
         <RichText
           description={entity[name]}
@@ -45,7 +45,6 @@ export class EditAttribute extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    idx: PropTypes.number.isRequired,
     entity: PropTypes.object.isRequired,
     ui: PropTypes.object.isRequired,
     handleLongDescriptionChange: PropTypes.func.isRequired,

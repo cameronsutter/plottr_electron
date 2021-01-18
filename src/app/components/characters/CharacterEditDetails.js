@@ -170,16 +170,17 @@ class CharacterEditDetails extends Component {
     const { character, ui, customAttributes } = this.props
     return customAttributes.map((attr, idx) => {
       return (
-        <EditAttribute
-          idx={idx}
-          entity={character}
-          ui={ui}
-          handleLongDescriptionChange={this.handleAttrDescriptionChange}
-          onShortDescriptionKeyDown={this.handleEsc}
-          onShortDescriptionKeyPress={this.handleEnter}
-          withRef={this.addInputRef}
-          {...attr}
-        />
+        <React.Fragment key={idx}>
+          <EditAttribute
+            entity={character}
+            ui={ui}
+            handleLongDescriptionChange={this.handleAttrDescriptionChange}
+            onShortDescriptionKeyDown={this.handleEsc}
+            onShortDescriptionKeyPress={this.handleEnter}
+            withRef={this.addInputRef}
+            {...attr}
+          />
+        </React.Fragment>
       )
     })
   }

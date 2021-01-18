@@ -8,7 +8,7 @@ import * as CardActions from 'actions/cards'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
-import { isSeriesSelector } from '../../selectors/ui'
+import { isSeriesSelector, isSmallSelector, isMediumSelector } from '../../selectors/ui'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 
 class BlankCard extends Component {
@@ -287,6 +287,8 @@ BlankCard.propTypes = {
   isSeries: PropTypes.bool,
   positionWithinLine: PropTypes.number,
   onDone: PropTypes.func,
+  isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -294,6 +296,8 @@ function mapStateToProps(state) {
     currentTimeline: state.present.ui.currentTimeline,
     orientation: state.present.ui.orientation,
     isSeries: isSeriesSelector(state.present),
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
   }
 }
 

@@ -11,6 +11,7 @@ import RichText from '../rce/RichText'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
 import { visibleCardsSelector } from '../../selectors/cards'
+import { isSmallSelector, isMediumSelector } from '../../selectors/ui'
 
 class Card extends Component {
   constructor(props) {
@@ -154,13 +155,14 @@ class Card extends Component {
   }
 
   renderTitle() {
-    let title = <div className="card__title">{truncateTitle(this.props.card.title, 150)}</div>
+    const { card, isSmall, ui, chapterPosition, linePosition } = this.props
+    let title = <div className="card__title">{isSmall ? '' : truncateTitle(card.title, 150)}</div>
     if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
-      if (this.props.ui.orientation === 'horizontal') {
-        placement = Number(this.props.chapterPosition) <= 2 ? 'right' : placement
+      if (ui.orientation === 'horizontal') {
+        placement = Number(chapterPosition) <= 2 ? 'right' : placement
       } else {
-        placement = Number(this.props.linePosition) <= 2 ? 'right' : placement
+        placement = Number(linePosition) <= 2 ? 'right' : placement
       }
       title = (
         <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
@@ -172,26 +174,25 @@ class Card extends Component {
     return title
   }
 
-  render() {
+  render () {
+    const { color, isVisible, allowDrop, last } = this.props
     var cardStyle = {
-      borderColor: this.props.color,
+      borderColor: color
     }
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'
     }
-    if (!this.props.isVisible) {
+    if (!isVisible) {
       cardStyle.opacity = '0.1'
     }
 
-    const droppable = this.props.allowDrop
-
     return (
       <div
-        className={cx('card__body-wrapper', { lastOne: this.props.last })}
-        onDragEnter={droppable ? this.handleDragEnter : null}
-        onDragOver={droppable ? this.handleDragOver : null}
-        onDragLeave={droppable ? this.handleDragLeave : null}
-        onDrop={droppable ? this.handleDrop : null}
+        className={cx('card__body-wrapper', { lastOne: last })}
+        onDragEnter={allowDrop ? this.handleDragEnter : null}
+        onDragOver={allowDrop ? this.handleDragOver : null}
+        onDragLeave={allowDrop ? this.handleDragLeave : null}
+        onDrop={allowDrop ? this.handleDrop : null}
       >
         {this.renderDialog()}
         {this.renderDropZone()}
@@ -217,6 +218,7 @@ class Card extends Component {
     if (this.props.isVisible != nextProps.isVisible) return true
     if (this.props.card != nextProps.card) return true
     if (this.props.last != nextProps.last) return true
+    if (this.props.ui.timeline.size != nextProps.ui.timeline.size) return true
 
     return false
   }
@@ -236,6 +238,8 @@ Card.propTypes = {
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
   isVisible: PropTypes.bool.isRequired,
+  isSmall: PropTypes.bool.isRequired,
+  isMedium: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
@@ -243,6 +247,8 @@ function mapStateToProps(state, ownProps) {
     tags: state.present.tags,
     ui: state.present.ui,
     isVisible: visibleCardsSelector(state.present)[ownProps.card.id],
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
   }
 }
 

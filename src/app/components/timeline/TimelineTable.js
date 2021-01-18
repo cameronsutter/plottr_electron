@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+import { findDOMNode } from 'react-dom'
 import { bindActionCreators } from 'redux'
+import * as UIActions from 'actions/ui'
+import * as SceneActions from 'actions/scenes'
+import * as LineActions from 'actions/lines'
+import * as BeatActions from 'actions/beats'
+import * as SeriesLineActions from 'actions/seriesLines'
+import * as CardActions from 'actions/cards'
 import { Row } from 'react-sticky-table'
 import ScenesCell from './ScenesCell'
 import BlankCard from './BlankCard'
@@ -10,21 +17,18 @@ import ChapterInsertCell from './ChapterInsertCell'
 import TopRow from './TopRow'
 import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
-import * as UIActions from 'actions/ui'
-import * as SceneActions from 'actions/scenes'
-import * as BeatActions from 'actions/beats'
-import * as SeriesLineActions from 'actions/seriesLines'
-import * as CardActions from 'actions/cards'
 import { reorderList } from 'helpers/lists'
 import { insertChapter } from 'helpers/chapters'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { findDOMNode } from 'react-dom'
 import { cardMapSelector } from '../../selectors/cards'
-import { isSeriesSelector } from '../../selectors/ui'
+import { isSeriesSelector, isLargeSelector, isSmallSelector, isMediumSelector } from '../../selectors/ui'
 import { actions } from 'pltr/v2'
+import { SmallChapterRow } from './small/SmallChapterRow'
+import { SmallSceneCell } from './small/SmallSceneCell'
+import { SmallBlankCell } from './small/SmallBlankCell'
 
 const LineActions = actions.lineActions
 
@@ -34,9 +38,12 @@ class TimelineTable extends Component {
   }
 
   setLength = () => {
-    const table = findDOMNode(this.props.tableRef)
+    const { tableRef, ui, isSmall } = this.props
+    if (isSmall) return
+
+    const table = findDOMNode(tableRef)
     let newLength = table.scrollWidth
-    if (this.props.ui.orientation != 'horizontal') {
+    if (ui.orientation != 'horizontal') {
       newLength = table.scrollHeight
     }
     if (this.state.tableLength != newLength) {
@@ -132,69 +139,56 @@ class TimelineTable extends Component {
     }
   }
 
-  renderLines() {
+  renderLines () {
+    const { lines, isSmall, ui } = this.props
+
     const chapterMap = this.chapterMapping()
     const chapterMapKeys = Object.keys(chapterMap)
-    return this.props.lines
-      .map((line) => {
-        return (
-          <Row key={`lineId-${line.id}`}>
-            <LineTitleCell
-              line={line}
-              handleReorder={this.handleReorderLines}
-              bookId={this.props.ui.currentTimeline}
-            />
-            {this.renderCardsByChapter(line, chapterMap, chapterMapKeys)}
-          </Row>
-        )
-      })
-      .concat(<AddLineRow key="insert-line" bookId={this.props.ui.currentTimeline} />)
+    const renderedLines = lines.map(line => {
+      if (isSmall) {
+        return <SmallChapterRow
+          key={`lineId-${line.id}`}
+          line={line}
+          handleReorder={this.handleReorderLines}
+          bookId={ui.currentTimeline}
+          renderChapters={() => this.renderCardsByChapter(line, chapterMap, chapterMapKeys) }
+        />
+      } else {
+        return <Row key={`lineId-${line.id}`}>
+          <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={ui.currentTimeline}/>
+          { this.renderCardsByChapter(line, chapterMap, chapterMapKeys) }
+        </Row>
+      }
+    })
+    if (isSmall) {
+      return renderedLines
+    } else {
+      return [].concat(renderedLines, <AddLineRow key='insert-line' bookId={ui.currentTimeline}/>)
+    }
   }
 
   renderChapters() {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
-    const { chapters } = this.props
-    return chapters
-      .map((chapter) => {
-        const inserts = lineMapKeys.flatMap((linePosition) => {
+    const { chapters, isLarge } = this.props
+    return chapters.map(chapter => {
+      let inserts = []
+      if (isLarge) {
+        inserts = lineMapKeys.flatMap(linePosition => {
           const line = lineMap[linePosition]
-          return (
-            <ChapterInsertCell
-              key={`${linePosition}-insert`}
-              isInChapterList={false}
-              chapterPosition={chapter.position}
-              handleInsert={this.handleInsertNewChapter}
-              color={line.color}
-              showLine={chapter.position == 0}
-              tableLength={this.state.tableLength}
-            />
-          )
+          return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} showLine={chapter.position == 0} tableLength={this.state.tableLength}/>
         })
-        return [
-          <Row key={`chapterId-${chapter.id}`}>
-            <ChapterInsertCell
-              isInChapterList={true}
-              chapterPosition={chapter.position}
-              handleInsert={this.handleInsertNewChapter}
-            />
-            {inserts}
-          </Row>,
-          <Row key={`chapterId-${chapter.id}-insert`}>
-            <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
-            {this.renderCardsByLine(chapter, lineMap, lineMapKeys)}
-          </Row>,
-        ]
-      })
-      .concat(
-        <Row key="last-insert">
-          <ChapterInsertCell
-            isInChapterList={true}
-            handleInsert={this.handleAppendChapter}
-            isLast={true}
-          />
+      }
+      return [<Row key={`chapterId-${chapter.id}`}>
+          <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter}/>
+          { inserts }
+        </Row>,
+        <Row key={`chapterId-${chapter.id}-insert`}>
+          <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
+          { this.renderCardsByLine(chapter, lineMap, lineMapKeys) }
         </Row>
-      )
+      ]
+    })
   }
 
   renderRows() {
@@ -205,48 +199,40 @@ class TimelineTable extends Component {
     }
   }
 
-  renderCardsByChapter(line, chapterMap, chapterMapKeys) {
-    const { cardMap } = this.props
-    return chapterMapKeys.flatMap((chapterPosition) => {
+  renderCardsByChapter (line, chapterMap, chapterMapKeys) {
+    const { cardMap, isSmall, isLarge } = this.props
+    return chapterMapKeys.flatMap(chapterPosition => {
       const cells = []
       const chapterId = chapterMap[chapterPosition]
-      cells.push(
-        <ChapterInsertCell
-          key={`${chapterPosition}-insert`}
-          isInChapterList={false}
-          chapterPosition={Number(chapterPosition)}
-          lineId={line.id}
-          handleInsert={this.handleInsertNewChapter}
-          showLine={chapterPosition == 0}
-          color={line.color}
-          tableLength={this.state.tableLength}
-        />
-      )
+      if (isLarge) {
+        cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} showLine={chapterPosition == 0} color={line.color} tableLength={this.state.tableLength}/>)
+      }
       const cards = cardMap[`${line.id}-${chapterId}`]
       const key = `${cards ? 'card' : 'blank'}-${chapterPosition}-${line.position}`
       if (cards) {
-        cells.push(
-          <ScenesCell
-            key={key}
-            cards={cards}
-            chapterId={chapterId}
-            lineId={line.id}
-            chapterPosition={chapterPosition}
-            linePosition={line.position}
-            color={line.color}
-            backgroundColor={line.backgroundColor}
-          />
-        )
+        if (isSmall) {
+          cells.push(<SmallSceneCell
+            key={key} cards={cards}
+            chapterId={chapterId} lineId={line.id}
+            chapterPosition={chapterPosition} linePosition={line.position}
+            color={line.color} />)
+        } else {
+          cells.push(<ScenesCell
+            key={key} cards={cards}
+            chapterId={chapterId} lineId={line.id}
+            chapterPosition={chapterPosition} linePosition={line.position}
+            color={line.color} />)
+        }
       } else {
-        cells.push(
-          <BlankCard
-            chapterId={chapterId}
-            lineId={line.id}
+        if (isSmall) {
+          cells.push(<SmallBlankCell chapterId={chapterId} lineId={line.id}
             key={key}
-            color={line.color}
-            backgroundColor={line.backgroundColor}
-          />
-        )
+            color={line.color} />)
+        } else {
+          cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
+            key={key}
+            color={line.color} />)
+        }
       }
       return cells
     })
@@ -287,10 +273,22 @@ class TimelineTable extends Component {
     })
   }
 
-  render() {
-    const rows = this.renderRows()
+  render () {
 
-    return [<TopRow key="top-row" />, rows]
+    if (this.props.isSmall) {
+      return <div className="small-timeline__wrapper">
+        <table className="table-header-rotated">
+          <TopRow />
+          <tbody>
+            { this.renderRows() }
+          </tbody>
+        </table>
+      </div>
+    } else {
+      const rows = this.renderRows()
+
+      return [<TopRow key="top-row"/>, rows]
+    }
   }
 }
 
@@ -302,6 +300,10 @@ TimelineTable.propTypes = {
   seriesLines: PropTypes.array,
   cardMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  isSeries: PropTypes.bool,
+  isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
+  isLarge: PropTypes.bool,
   tableRef: PropTypes.object,
 }
 
@@ -320,6 +322,9 @@ function mapStateToProps(state) {
     cardMap: cardMapSelector(state.present),
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
+    isLarge: isLargeSelector(state.present),
   }
 }
 

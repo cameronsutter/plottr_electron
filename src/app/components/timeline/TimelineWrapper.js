@@ -23,7 +23,7 @@ import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
-import { timelineFilterIsEmptySelector, currentTimelineSelector } from '../../selectors/ui'
+import { timelineFilterIsEmptySelector, currentTimelineSelector, isSmallSelector } from '../../selectors/ui'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 
@@ -37,12 +37,14 @@ class TimelineWrapper extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      mounted: false,
+      mounted: true,
     }
     this.tableRef = null
   }
 
   componentDidMount() {
+    if (!this.tableRef) return
+
     this.tableRef.onscroll = this.scrollHandler
 
     setTimeout(() => {
@@ -60,19 +62,21 @@ class TimelineWrapper extends Component {
   componentWillReceiveProps(nextProps) {
     const { ui } = this.props
 
-    if (nextProps.ui.currentTimeline != ui.currentTimeline) {
-      this.setState({ mounted: false })
-      setTimeout(() => this.setState({ mounted: true }), 100)
-    }
-    if (nextProps.ui.orientation != ui.orientation) {
-      this.setState({ mounted: false })
-      setTimeout(() => this.setState({ mounted: true }), 100)
-    }
+    // if (nextProps.ui.currentTimeline != ui.currentTimeline) {
+    //   this.setState({mounted: false})
+    //   setTimeout(() => this.setState({mounted: true}), 100)
+    // }
+    // if (nextProps.ui.orientation != ui.orientation) {
+    //   this.setState({mounted: false})
+    //   setTimeout(() => this.setState({mounted: true}), 100)
+    // }
   }
 
-  componentWillUnmount() {
-    this.tableRef.onScroll = null
-    this.tableRef = null
+  componentWillUnmount () {
+    if (this.tableRef) {
+      this.tableRef.onScroll = null
+      this.tableRef = null
+    }
   }
 
   // ///////////////
@@ -280,7 +284,18 @@ class TimelineWrapper extends Component {
 
   renderBody() {
     if (this.state.mounted) {
-      return <TimelineTable tableRef={this.tableRef} />
+      if (this.props.isSmall) {
+        return <TimelineTable tableRef={this.tableRef} />
+      } else {
+        return <StickyTable
+          leftColumnZ={5}
+          headerZ={5}
+          wrapperRef={ref => this.tableRef = ref}
+          className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}
+        >
+          <TimelineTable tableRef={this.tableRef} />
+        </StickyTable>
+      }
     } else {
       return <FunSpinner />
     }
@@ -306,14 +321,7 @@ class TimelineWrapper extends Component {
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
         <div id="timelineview__root">
-          <StickyTable
-            leftColumnZ={5}
-            headerZ={5}
-            wrapperRef={(ref) => (this.tableRef = ref)}
-            className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
-          >
-            {this.renderBody()}
-          </StickyTable>
+          { this.renderBody() }
         </div>
       </div>
     )
@@ -334,6 +342,7 @@ function mapStateToProps(state) {
     ui: state.present.ui,
     filterIsEmpty: timelineFilterIsEmptySelector(state.present),
     canSaveTemplate: currentTimelineSelector(state.present) == 1,
+    isSmall: isSmallSelector(state.present),
   }
 }
 

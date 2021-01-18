@@ -7,6 +7,9 @@ export const characterSortSelector = (state) => state.ui.characterSort
 export const placeFilterSelector = (state) => state.ui.placeFilter
 export const placeSortSelector = (state) => state.ui.placeSort
 export const timelineFilterSelector = (state) => state.ui.timelineFilter
+export const isSmallSelector = (state) => state.ui.timeline.size == 'small'
+export const isMediumSelector = (state) => state.ui.timeline.size == 'medium'
+export const isLargeSelector = (state) => state.ui.timeline.size == 'large'
 
 export const isSeriesSelector = createSelector(
   currentTimelineSelector,

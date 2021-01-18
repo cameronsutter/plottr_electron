@@ -44,14 +44,14 @@ class ChapterInsertCell extends PureComponent {
 
   render() {
     const { isInChapterList, showLine, orientation, isLast } = this.props
-    let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
-    let chapterKlass = 'scene-list__insert'
+    let wrapperKlass = orientedClassName('insert-chapter-wrapper', orientation)
+    let chapterKlass = 'chapter-list__insert'
     let titleText = i18n('Insert Chapter')
-    if (showLine) wrapperKlass += ' insert-scene-spacer'
+    if (showLine) wrapperKlass += ' insert-chapter-spacer'
     if (isLast) {
       titleText = i18n('Add Chapter')
-      wrapperKlass += ' append-scene'
-      chapterKlass += ' append-scene'
+      wrapperKlass += ' append-chapter'
+      chapterKlass += ' append-chapter'
     }
     if (!isInChapterList) titleText = i18n('Insert Chapter and a Card')
     return (

@@ -16,8 +16,9 @@ import orientedClassName from 'helpers/orientedClassName'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { isSeriesSelector } from '../../selectors/ui'
+import { isSeriesSelector, isLargeSelector, isMediumSelector, isSmallSelector } from '../../selectors/ui'
 import { actions } from 'pltr/v2'
+import SmallChapterTitle from './small/SmallChapterTitle'
 
 const LineActions = actions.lineActions
 
@@ -83,73 +84,108 @@ class TopRow extends Component {
     )
   }
 
-  renderChapters() {
-    const { ui, chapters } = this.props
-    const renderedChapters = chapters.flatMap((ch) => {
+  renderChapters () {
+    const { ui, chapters, isLarge, isMedium, isSmall } = this.props
+    const renderedChapters = chapters.flatMap(ch => {
       const cells = []
-      cells.push(
-        <ChapterInsertCell
-          key={`chapterId-${ch.id}-insert`}
-          isInChapterList={true}
-          chapterPosition={ch.position}
-          handleInsert={this.handleInsertNewChapter}
-          orientation={ui.orientation}
-        />
-      )
-      cells.push(
-        <ChapterTitleCell
-          key={`chapterId-${ch.id}`}
-          chapterId={ch.id}
-          handleReorder={this.handleReorderChapters}
-        />
-      )
+      if (isLarge) {
+        cells.push(
+          <ChapterInsertCell
+            key={`chapterId-${ch.id}-insert`}
+            isInChapterList={true}
+            chapterPosition={ch.position}
+            handleInsert={this.handleInsertNewChapter}
+            orientation={ui.orientation}
+          />
+        )
+      }
+      if (isSmall) {
+        cells.push(
+          <SmallChapterTitle
+            key={`chapterId-${ch.id}`}
+            chapterId={ch.id}
+            handleReorder={this.handleReorderChapters}
+          />
+        )
+      } else {
+        cells.push(
+          <ChapterTitleCell
+            key={`chapterId-${ch.id}`}
+            chapterId={ch.id}
+            handleReorder={this.handleReorderChapters}
+          />
+        )
+      }
       return cells
     })
-    return [<Cell key="placeholder" />]
-      .concat(renderedChapters)
-      .concat([this.renderLastInsertChapterCell()])
+    if (isLarge) {
+      return [<Cell key='placeholder'/>]
+        .concat(renderedChapters)
+        .concat([this.renderLastInsertChapterCell()])
+    }
+    if (isMedium) {
+      return [<Cell key='placeholder'/>].concat(renderedChapters)
+    } else {
+      return renderedChapters
+    }
   }
 
-  renderLines() {
-    const renderedLines = this.props.lines.map((line) => (
-      <LineTitleCell
+  renderLines () {
+    const { lines, ui, isLarge } = this.props
+    const renderedLines = lines.map(line => {
+      return <LineTitleCell
         key={`line-${line.id}`}
         line={line}
         handleReorder={this.handleReorderLines}
-        bookId={this.props.ui.currentTimeline}
+        bookId={ui.currentTimeline}
       />
-    ))
-    return [<Cell key="placeholder" />].concat(renderedLines).concat(
-      <Row key="insert-line">
-        <Cell>
-          <div
-            className={orientedClassName('line-list__append-line', this.props.ui.orientation)}
-            onClick={this.handleAppendLine}
-          >
+    })
+    const array = [<Cell key='placeholder'/>].concat(renderedLines)
+    if (isLarge) {
+      array = array.concat(
+        <Row key='insert-line'>
+          <Cell>
             <div
-              className={orientedClassName(
-                'line-list__append-line-wrapper',
-                this.props.ui.orientation
-              )}
+              className={orientedClassName('line-list__append-line', ui.orientation)}
+              onClick={this.handleAppendLine}
             >
-              <Glyphicon glyph="plus" />
+              <div className={orientedClassName('line-list__append-line-wrapper', ui.orientation)}>
+                <Glyphicon glyph='plus' />
+              </div>
             </div>
-          </div>
-        </Cell>
-      </Row>
-    )
+          </Cell>
+        </Row>
+      )
+    }
+    return array
   }
 
   render() {
+    const { ui, isSmall } = this.props
     let body = null
-    if (this.props.ui.orientation === 'horizontal') body = this.renderChapters()
+    if (ui.orientation === 'horizontal') body = this.renderChapters()
     else body = this.renderLines()
-    return <Row>{body}</Row>
+
+    if (isSmall) {
+      return <thead>
+        <tr>
+          <th></th>
+          { body }
+        </tr>
+      </thead>
+    } else {
+      return <Row>{body}</Row>
+    }
+
   }
 }
 
 TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
+  isSeries: PropTypes.bool,
+  isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
+  isLarge: PropTypes.bool,
   chapters: PropTypes.array,
   nextChapterId: PropTypes.number,
   lines: PropTypes.array,
@@ -167,6 +203,9 @@ function mapStateToProps(state) {
   return {
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
+    isLarge: isLargeSelector(state.present),
     chapters: sortedChaptersByBookSelector(state.present),
     nextChapterId: nextChapterId,
     lines: sortedLinesByBookSelector(state.present),

@@ -16,7 +16,7 @@ import * as SceneActions from 'actions/scenes'
 import * as BeatActions from 'actions/beats'
 import orientedClassName from 'helpers/orientedClassName'
 import { editingChapterLabel, chapterPositionTitle } from '../../helpers/chapters'
-import { isSeriesSelector } from '../../selectors/ui'
+import { isSeriesSelector, isSmallSelector, isMediumSelector } from '../../selectors/ui'
 import {
   makeChapterTitleSelector,
   makeChapterSelector,
@@ -149,6 +149,8 @@ class ChapterTitleCell extends PureComponent {
   }
 
   renderHoverOptions() {
+    if (this.props.isSmall) return null
+
     var style = { visibility: 'hidden' }
     if (this.state.hovering) style.visibility = 'visible'
     if (this.props.ui.orientation === 'vertical') {
@@ -212,8 +214,8 @@ class ChapterTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const { chapter, ui, positionOffset, isSeries } = this.props
-    let innerKlass = orientedClassName('scene__body', ui.orientation)
+    const { chapter, ui, positionOffset, isSeries, isSmall } = this.props
+    let innerKlass = orientedClassName('chapter__body', ui.orientation)
     if (this.state.hovering) innerKlass += ' hover'
     if (this.state.dropping) innerKlass += ' dropping'
     return (
@@ -256,6 +258,8 @@ ChapterTitleCell.propTypes = {
   isSeries: PropTypes.bool,
   chapterTitle: PropTypes.string.isRequired,
   positionOffset: PropTypes.number.isRequired,
+  isSmall: PropTypes.bool.isRequired,
+  isMedium: PropTypes.bool.isRequired,
 }
 
 const makeMapState = (state) => {
@@ -270,6 +274,8 @@ const makeMapState = (state) => {
       isSeries: isSeriesSelector(state.present),
       chapterTitle: uniqueChapterTitleSelector(state.present, ownProps.chapterId),
       positionOffset: positionOffsetSelector(state.present),
+      isSmall: isSmallSelector(state.present),
+      isMedium: isMediumSelector(state.present),
     }
   }
 }

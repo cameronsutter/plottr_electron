@@ -7,7 +7,7 @@ import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
 import Card from './Card'
 import cx from 'classnames'
-import { isSeriesSelector } from '../../selectors/ui'
+import { isSeriesSelector, isSmallSelector, isMediumSelector } from '../../selectors/ui'
 import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
 import SceneCardAdd from './SceneCardAdd'
@@ -122,17 +122,18 @@ class ScenesCell extends PureComponent {
   }
 
   renderBody() {
-    const numOfCards = this.props.cards.length
-    const vertical = this.props.ui.orientation == 'vertical'
-    if (this.props.lineIsExpanded || numOfCards == 1) {
+    const { cards, ui, isVisible, color, lineIsExpanded } = this.props
+    const numOfCards = cards.length
+    const vertical = ui.orientation == 'vertical'
+    if (lineIsExpanded || numOfCards == 1) {
       return (
         <div className={cx('card__cell', { multiple: numOfCards > 1, vertical: vertical })}>
           {this.renderCards(true)}
         </div>
       )
     } else {
-      let cardStyle = { borderColor: this.props.color }
-      if (!this.props.isVisible) {
+      let cardStyle = { borderColor: color }
+      if (!isVisible) {
         cardStyle.opacity = '0.1'
       }
       return (
@@ -181,6 +182,8 @@ ScenesCell.propTypes = {
   isSeries: PropTypes.bool.isRequired,
   lineIsExpanded: PropTypes.bool.isRequired,
   isVisible: PropTypes.bool.isRequired,
+  isSmall: PropTypes.bool.isRequired,
+  isMedium: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
 }
 
@@ -192,6 +195,8 @@ function mapStateToProps(state, ownProps) {
     isSeries: isSeriesSelector(state.present),
     lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.lineId],
     isVisible: visible,
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
   }
 }
 

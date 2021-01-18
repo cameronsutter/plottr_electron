@@ -44,13 +44,41 @@
     font-size: 20px;
   }
   .slate-editor__wrapper {
-    height: calc(100% - 91px);
+    height: 100%;
     overflow-y: auto;
   }
   .slate-editor__editor {
-    height: calc(100% - 38px);
+    height: calc(100% - 40px);
     overflow-y: auto;
   }
+}
+
+.card-dialog__details-show-hide-wrapper {
+  height: calc(100% - 95px);
+}
+
+.hidden {
+  display: none;
+}
+
+.card-dialog__tab {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 7px;
+  margin-right: 10px;
+}
+
+.card-dialog__tab:last-child {
+  margin-right: 0;
+}
+
+.card-dialog__tab--selected {
+  color: $blue-2;
+}
+
+.card-dialog__custom-attributes {
+  padding: 10px;
+  padding-top: 0;
 }
 
 .card-dialog__dropdown-wrapper {

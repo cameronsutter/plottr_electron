@@ -11,8 +11,8 @@ export function addNewCardInChapter (newCard, reorderIds) {
   return { type: ADD_CARD_IN_CHAPTER, newCard, reorderIds}
 }
 
-export function editCard (id, title, description) {
-  return { type: EDIT_CARD_DETAILS, id, title, description }
+export function editCard (id, title, description, templates, attrs) {
+  return { type: EDIT_CARD_DETAILS, id, title, description, templates, attrs }
 }
 
 export function editCardCoordinates (id, lineId, chapterId, bookId) {

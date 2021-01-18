@@ -21,11 +21,16 @@ import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 import { truncateTitle } from '../../helpers/cards'
+import { EditAttribute } from '../EditAttribute'
 
 class CardDialog extends Component {
   constructor (props) {
     super(props)
-    this.state = { description: props.card.description, deleting: false }
+    this.state = {
+      description: props.card.description,
+      deleting: false,
+      inputRefs: []
+    }
   }
 
   componentDidMount () {
@@ -57,14 +62,55 @@ class CardDialog extends Component {
     this.props.closeDialog()
   }
 
+  
+  addInputRef = (ref) => {
+    this.setState({
+      inputRefs: [...this.state.inputRefs, ref]
+    })
+  }
+
+  findChildInput = (id) => {
+    const foundInput = this.state.inputRefs.find(ref => {
+      return ref && ref.props.id === id
+    })
+    return foundInput && findDOMNode(foundInput)
+  }
+
   saveEdit = () => {
     var newTitle = findDOMNode(this.refs.titleInput).value
-    this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
+    const attrs = {}
+    this.props.customAttributes.forEach(attr => {
+      const { name, type } = attr
+      if (type == 'paragraph') {
+        attrs[name] = this.state.description[name]
+      } else {
+        const val = this.findChildInput(`${name}Input`).value
+        attrs[name] = val
+      }
+    })
+    const templates = this.props.card.templates.map(t => {
+      t.attributes = t.attributes.map(attr => {
+        if (attr.type == 'paragraph') {
+          attr.value = this.state.templateAttrs[t.id][attr.name]
+        } else {
+          attr.value = findDOMNode(this.refs[`${t.id}-${attr.name}Input`]).value
+        }
+        return attr
+      })
+      return t
+    })
+    this.props.actions.editCard(this.props.card.id, newTitle, this.state.description, templates, attrs)
   }
 
   handleEnter = (event) => {
     if (event.which === 13) {
       this.saveAndClose()
+    }
+  }
+
+  handleEsc = (event) => {
+    if (event.which === 27) {
+      this.saveEdit()
     }
   }
 
@@ -101,6 +147,24 @@ class CardDialog extends Component {
     if (!this.state.deleting) return null
 
     return <DeleteConfirmModal name={this.props.card.title} onDelete={this.deleteCard} onCancel={this.cancelDelete}/>
+  }
+
+  renderEditingCustomAttributes () {
+    const { card, ui, customAttributes } = this.props
+    return customAttributes.map((attr, idx) => {
+      return (
+        <EditAttribute
+          key={idx}
+          entity={card}
+          ui={ui}
+          handleLongDescriptionChange={() => {}}
+          onShortDescriptionKeyDown={this.handleEsc}
+          onShortDescriptionKeyPress={this.handleEnter}
+          withRef={this.addInputRef}
+          {...attr}
+        />
+      )
+    })
   }
 
   renderChapterItems () {
@@ -267,6 +331,7 @@ class CardDialog extends Component {
                 darkMode={ui.darkMode}
                 autofocus
               />
+              {this.renderEditingCustomAttributes()}
             </div>
           </div>
           {this.renderButtonBar()}
@@ -300,6 +365,7 @@ function mapStateToProps (state) {
     tags: sortedTagsSelector(state.present),
     characters: charactersSortedAtoZSelector(state.present),
     places: placesSortedAtoZSelector(state.present),
+    customAttributes: state.present.customAttributes.scenes,
     ui: state.present.ui,
     books: state.present.books,
     isSeries: isSeriesSelector(state.present),

@@ -78,8 +78,9 @@ class Card extends Component {
 
   renderDialog () {
     if (!this.state.dialogOpen) return null
-    const { card, chapterId, lineId } = this.props
+    const { ui, card, chapterId, lineId } = this.props
     return <CardDialog
+      ui={ui}
       card={card}
       chapterId={chapterId}
       lineId={lineId}

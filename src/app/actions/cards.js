@@ -12,7 +12,7 @@ export function addNewCardInChapter (newCard, reorderIds) {
 }
 
 export function editCard (id, title, description, templates, attrs) {
-  return { type: EDIT_CARD_DETAILS, id, title, description, templates, attrs }
+  return { type: EDIT_CARD_DETAILS, id, attributes: { title, description, templates, ...attrs } }
 }
 
 export function editCardCoordinates (id, lineId, chapterId, bookId) {

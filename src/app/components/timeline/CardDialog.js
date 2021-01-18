@@ -31,7 +31,14 @@ class CardDialog extends Component {
       paragraphs: {},
       deleting: false,
       inputRefs: [],
+      selected: 'Description',
     }
+  }
+
+  selectTab = (name) => () => {
+    this.setState({
+      selected: name,
+    })
   }
 
   componentDidMount () {
@@ -332,6 +339,7 @@ class CardDialog extends Component {
 
   render () {
     const { card, ui } = this.props
+    const { selected } = this.state
     return (
       <PlottrModal
         isOpen={true}
@@ -343,15 +351,42 @@ class CardDialog extends Component {
             {this.renderLeftSide()}
             <div className='card-dialog__description'>
               {this.renderTitle()}
-              <p className='card-dialog__details-label text-center'>{i18n('Description')}:</p>
-              <RichText
-                description={card.description}
-                onChange={(desc) => this.setState({description: desc})}
-                editable={true}
-                darkMode={ui.darkMode}
-                autofocus
-              />
-              {this.renderEditingCustomAttributes()}
+              <span
+                className={`card-dialog__details-label card-dialog__tab ${
+                  selected === 'Description' ? 'card-dialog__tab--selected' : ''
+                }`}
+                onClick={this.selectTab('Description')}
+              >
+                {i18n('Description')}
+              </span>
+              <span
+                className={`card-dialog__details-label card-dialog__tab ${
+                  selected === 'Attributes' ? 'card-dialog__tab--selected' : ''
+                }`}
+                onClick={this.selectTab('Attributes')}
+              >
+                {i18n('Attrtibutes')}
+              </span>
+              <div
+                className={`card-dialog__details-show-hide-wrapper ${
+                  selected === 'Description' ? '' : 'hidden'
+                }`}
+              >
+                <RichText
+                  description={card.description}
+                  onChange={(desc) => this.setState({description: desc})}
+                  editable={true}
+                  darkMode={ui.darkMode}
+                  autofocus
+                />
+              </div>
+              <div
+                className={`card-dialog__custom-attributes ${
+                  selected === 'Attributes' ? '' : 'hidden'
+                }`}
+              >
+                {this.renderEditingCustomAttributes()}
+              </div>
             </div>
           </div>
           {this.renderButtonBar()}

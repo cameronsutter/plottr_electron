@@ -128,7 +128,13 @@ class CharacterEditDetails extends Component {
       })
       return t
     })
-    this.props.actions.editCharacter(this.props.character.id, {name, description, notes, templates, ...attrs})
+    this.props.actions.editCharacter(this.props.character.id, {
+      name,
+      description,
+      notes,
+      templates,
+      ...attrs,
+    })
     if (close) this.props.finishEditing()
   }
 

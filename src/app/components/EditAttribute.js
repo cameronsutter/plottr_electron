@@ -14,7 +14,7 @@ export class EditAttribute extends Component {
       handleLongDescriptionChange,
       onShortDescriptionKeyDown,
       onShortDescriptionKeyPress,
-      withRef
+      withRef,
     } = this.props
 
     return type === 'paragraph' ? (
@@ -32,12 +32,13 @@ export class EditAttribute extends Component {
       <FormGroup key={idx}>
         <ControlLabel>{name}</ControlLabel>
         <FormControl
-          type='text'
+          type="text"
           id={`${name}Input`}
           ref={withRef}
           defaultValue={entity[name]}
           onKeyDown={onShortDescriptionKeyDown}
-          onKeyPress={onShortDescriptionKeyPress} />
+          onKeyPress={onShortDescriptionKeyPress}
+        />
       </FormGroup>
     )
   }
@@ -50,6 +51,6 @@ export class EditAttribute extends Component {
     handleLongDescriptionChange: PropTypes.func.isRequired,
     onShortDescriptionKeyDown: PropTypes.func.isRequired,
     onShortDescriptionKeyPress: PropTypes.func.isRequired,
-    withRef: PropTypes.func.isRequired
+    withRef: PropTypes.func.isRequired,
   }
 }

@@ -28,8 +28,9 @@ class CardDialog extends Component {
     super(props)
     this.state = {
       description: props.card.description,
+      paragraphs: {},
       deleting: false,
-      inputRefs: []
+      inputRefs: [],
     }
   }
 
@@ -73,7 +74,7 @@ class CardDialog extends Component {
   }
 
   findChildInput = (id) => {
-    const foundInput = this.state.inputRefs.find(ref => {
+    const foundInput = this.state.inputRefs.find((ref) => {
       return ref && ref.props.id === id
     })
     return foundInput && findDOMNode(foundInput)
@@ -111,7 +112,13 @@ class CardDialog extends Component {
       })
       return t
     })
-    this.props.actions.editCard(this.props.card.id, newTitle, this.state.description, templates, attrs)
+    this.props.actions.editCard(
+      this.props.card.id,
+      newTitle,
+      this.state.description,
+      templates,
+      attrs
+    )
   }
 
   handleEnter = (event) => {

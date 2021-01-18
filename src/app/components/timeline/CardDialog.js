@@ -357,6 +357,7 @@ CardDialog.propTypes = {
   books: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
+  customAttributes: PropTypes.array.isRequired,
 }
 
 function mapStateToProps (state) {

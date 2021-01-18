@@ -76,13 +76,22 @@ class CardDialog extends Component {
     return foundInput && findDOMNode(foundInput)
   }
 
+  handleParagraphAttrChange = (attrName, desc) => {
+    this.setState({
+      paragraphs: {
+        ...this.state.paragraphs,
+        [attrName]: desc,
+      },
+    })
+  }
+
   saveEdit = () => {
     var newTitle = findDOMNode(this.refs.titleInput).value
     const attrs = {}
     this.props.customAttributes.forEach(attr => {
       const { name, type } = attr
       if (type == 'paragraph') {
-        attrs[name] = this.state.description[name]
+        attrs[name] = this.state.paragraphs[name] || this.props.card[name]
       } else {
         const val = this.findChildInput(`${name}Input`).value
         attrs[name] = val

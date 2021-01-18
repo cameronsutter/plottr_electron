@@ -37,12 +37,8 @@ export default function cards (state, action) {
       return [...action.cards]
 
     case EDIT_CARD_DETAILS:
-      var newCardDetails = {
-        title: action.title,
-        description: action.description
-      }
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, newCardDetails) : card
+      return state.map((card) =>
+        card.id === action.id ? Object.assign({}, card, action.attributes) : card
       )
 
     case EDIT_CARD_COORDINATES:

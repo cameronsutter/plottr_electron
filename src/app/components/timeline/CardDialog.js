@@ -153,16 +153,17 @@ class CardDialog extends Component {
     const { card, ui, customAttributes } = this.props
     return customAttributes.map((attr, idx) => {
       return (
-        <EditAttribute
-          key={idx}
-          entity={card}
-          ui={ui}
-          handleLongDescriptionChange={() => {}}
-          onShortDescriptionKeyDown={this.handleEsc}
-          onShortDescriptionKeyPress={this.handleEnter}
-          withRef={this.addInputRef}
-          {...attr}
-        />
+        <React.Fragment key={idx}>
+          <EditAttribute
+            entity={card}
+            ui={ui}
+            handleLongDescriptionChange={this.handleParagraphAttrChange}
+            onShortDescriptionKeyDown={this.handleEsc}
+            onShortDescriptionKeyPress={this.handleEnter}
+            withRef={this.addInputRef}
+            {...attr}
+          />
+        </React.Fragment>
       )
     })
   }

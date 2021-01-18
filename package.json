@@ -29,7 +29,9 @@
     "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" && npm run generate-flipped",
     "generate-flipped": "node ./locales/build-flipped-locale.js",
     "test": "jest src bin shared",
-    "start-redux-dev-tools": "redux-devtools --hostname=localhost --port=8000"
+    "start-redux-dev-tools": "redux-devtools --hostname=localhost --port=8000",
+    "lint-file": "eslint",
+    "lint": "eslint ."
   },
   "dependencies": {
     "acorn": "^6.4.1",
@@ -96,6 +98,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.12.1",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-lodash": "^3.3.4",
@@ -111,6 +114,10 @@
     "electron-reloader": "^1.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
     "file-loader": "^0.8.5",
     "flip": "^1.0.0",
     "format-message-cli": "^6.2.1",
@@ -118,6 +125,7 @@
     "node-sass": "^4.14.1",
     "redux-devtools-cli": "^1.0.0-4",
     "remote-redux-devtools": "^0.5.16",
+    "prettier": "^2.2.1",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.13.0",
     "url-loader": "^2.3.0",

@@ -215,6 +215,9 @@
   "Description": {
     "message": "Descripción"
   },
+  "Attributes": {
+    "message": "Atributos"
+  },
   "Device ID": {
     "message": "Identificación del dispositivo"
   },
@@ -406,6 +409,9 @@
   },
   "My Timeline Template": {
     "message": "Mi plantilla de línea temporal"
+  },
+  "My Scene Template": {
+    "message": "Mi plantilla de escena"
   },
   "Name": {
     "message": "Nombre"

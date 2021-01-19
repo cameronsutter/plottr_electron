@@ -20,6 +20,7 @@ import {
   EDIT_FILENAME,
   OPEN_ATTRIBUTES_DIALOG,
   CLOSE_ATTRIBUTES_DIALOG,
+  SET_TIMELINE_SIZE,
 } from 'constants/ActionTypes'
 
 export function changeCurrentView(view) {
@@ -112,4 +113,8 @@ export function openAttributesDialog() {
 
 export function closeAttributesDialog() {
   return { type: CLOSE_ATTRIBUTES_DIALOG }
+}
+
+export function setTimelineSize (newSize) {
+  return { type: SET_TIMELINE_SIZE, newSize }
 }

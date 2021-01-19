@@ -128,7 +128,7 @@ class TopRow extends Component {
         bookId={ui.currentTimeline}
       />
     })
-    const array = [<Cell key='placeholder'/>].concat(renderedLines)
+    let array = [<Cell key='placeholder'/>].concat(renderedLines)
     if (isLarge) {
       array = array.concat(
         <Row key='insert-line'>

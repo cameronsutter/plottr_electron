@@ -39,6 +39,7 @@ class TimelineTable extends Component {
     if (isSmall) return
 
     const table = findDOMNode(tableRef)
+    if (!table) return
     let newLength = table.scrollWidth
     if (ui.orientation != 'horizontal') {
       newLength = table.scrollHeight
@@ -56,18 +57,8 @@ class TimelineTable extends Component {
     this.setLength()
   }
 
-  componentWillReceiveProps(nextProps) {
-    // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
-    // if (nextProps.ui.orientation != this.props.ui.orientation) {
-    //   this.setState({tableLength: 0})
-    // }
-    // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
-    // if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
-    //   this.setState({tableLength: 0})
-    // }
-    // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
-    //   this.setState({tableLength: 0})
-    // }
+  componentWillReceiveProps (nextProps) {
+
   }
 
   handleReorderChapters = (originalPosition, droppedPosition) => {

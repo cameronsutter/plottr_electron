@@ -5,16 +5,7 @@ import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
-
-const Horizontal = {
-  first: 150,
-  last: 161 + 50,
-}
-
-const Vertical = {
-  first: 100,
-  last: 70 + 40,
-}
+import VisualLine from './VisualLine'
 
 class ChapterInsertCell extends PureComponent {
   insert = () => {
@@ -24,22 +15,7 @@ class ChapterInsertCell extends PureComponent {
 
   renderLine () {
     const { tableLength, orientation, color } = this.props
-
-    let length = tableLength
-    let lineStyle = {
-      borderColor: color,
-    }
-    if (orientation == 'horizontal') {
-      lineStyle.width = `${length - Horizontal.first - Horizontal.last}px`
-    } else {
-      lineStyle.height = `${length - Vertical.first - Vertical.last}px`
-    }
-    return (
-      <div
-        className={orientedClassName('line-title__line-line', orientation)}
-        style={lineStyle}
-      ></div>
-    )
+    return <VisualLine tableLength={tableLength} orientation={orientation} color={color} />
   }
 
   render() {

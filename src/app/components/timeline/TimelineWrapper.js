@@ -23,7 +23,7 @@ import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
-import { timelineFilterIsEmptySelector, currentTimelineSelector, isSmallSelector } from '../../selectors/ui'
+import { timelineFilterIsEmptySelector, currentTimelineSelector, isSmallSelector, isLargeSelector } from '../../selectors/ui'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 
@@ -37,36 +37,53 @@ class TimelineWrapper extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      mounted: true,
+      mounted: false,
     }
     this.tableRef = null
   }
 
   componentDidMount() {
-    if (!this.tableRef) return
+    if (this.props.isSmall) return
 
-    this.tableRef.onscroll = this.scrollHandler
+    if (this.tableRef) this.tableRef.onscroll = this.scrollHandler
 
     setTimeout(() => {
-      this.setState({ mounted: true }, () => {
+      this.setState({mounted: true}, () => {
         if (this.props.ui.timelineScrollPosition == null) return
-        this.tableRef.scrollTo({
-          top: this.props.ui.timelineScrollPosition.y,
-          left: this.props.ui.timelineScrollPosition.x,
-          behavior: 'auto',
-        })
+        if (this.tableRef) {
+          this.tableRef.scrollTo({
+            top: this.props.ui.timelineScrollPosition.y,
+            left: this.props.ui.timelineScrollPosition.x,
+            behavior: 'auto'
+          })
+        }
       })
-    }, 100)
+    }, 10)
   }
 
   componentWillReceiveProps(nextProps) {
     const { ui } = this.props
 
-    // if (nextProps.ui.currentTimeline != ui.currentTimeline) {
+    if (nextProps.ui.currentTimeline != ui.currentTimeline
+      || nextProps.ui.orientation != ui.orientation
+      || nextProps.ui.timeline.size != ui.timeline.size) {
+      this.setState({mounted: false})
+      setTimeout(() => this.setState({mounted: true}, () => {
+        if (nextProps.ui.timelineScrollPosition == null) return
+        if (this.tableRef) {
+          this.tableRef.scrollTo({
+            top: this.props.ui.timelineScrollPosition.y,
+            left: this.props.ui.timelineScrollPosition.x,
+            behavior: 'auto'
+          })
+        }
+      }), 10)
+    }
+    // if () {
     //   this.setState({mounted: false})
     //   setTimeout(() => this.setState({mounted: true}), 100)
     // }
-    // if (nextProps.ui.orientation != ui.orientation) {
+    // if () {
     //   this.setState({mounted: false})
     //   setTimeout(() => this.setState({mounted: true}), 100)
     // }
@@ -187,7 +204,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav() {
-    const { ui, file, filterIsEmpty, canSaveTemplate } = this.props
+    const { ui, file, filterIsEmpty, canSaveTemplate, isSmall, isLarge, actions } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -255,17 +272,29 @@ class TimelineWrapper extends Component {
             </Button>
           </NavItem>
           <NavItem>
-            <span className="subnav__container__label">{i18n('Scroll')}: </span>
-            <ButtonGroup bsSize="small">
-              <Button onClick={this.scrollLeft}>
-                <Glyphicon glyph={scrollDirectionFirst} />
+            <ButtonGroup>
+              <Button bsSize='small' className={cx({active: isSmall})}
+                onClick={() => actions.setTimelineSize('small')}
+                title={i18n('Size: small')}
+              >
+                <Glyphicon glyph='th' />
               </Button>
-              <Button onClick={this.scrollRight}>
-                <Glyphicon glyph={scrollDirectionSecond} />
+              <Button bsSize='small' className={cx({active: isLarge})}
+                onClick={() => actions.setTimelineSize('large')}
+                title={i18n('Size: large')}
+              >
+                <Glyphicon glyph='th-large' />
               </Button>
-              <Button onClick={this.scrollBeginning}>{i18n('Beginning')}</Button>
-              <Button onClick={this.scrollMiddle}>{i18n('Middle')}</Button>
-              <Button onClick={this.scrollEnd}>{i18n('End')}</Button>
+            </ButtonGroup>
+          </NavItem>
+          <NavItem>
+            <span className='subnav__container__label'>{i18n('Scroll')}: </span>
+            <ButtonGroup bsSize='small'>
+              <Button onClick={this.scrollLeft} ><Glyphicon glyph={scrollDirectionFirst} /></Button>
+              <Button onClick={this.scrollRight} ><Glyphicon glyph={scrollDirectionSecond} /></Button>
+              <Button onClick={this.scrollBeginning} >{i18n('Beginning')}</Button>
+              <Button onClick={this.scrollMiddle} >{i18n('Middle')}</Button>
+              <Button onClick={this.scrollEnd} >{i18n('End')}</Button>
             </ButtonGroup>
           </NavItem>
           {canSaveTemplate ? (
@@ -282,22 +311,19 @@ class TimelineWrapper extends Component {
     )
   }
 
-  renderBody() {
-    if (this.state.mounted) {
-      if (this.props.isSmall) {
-        return <TimelineTable tableRef={this.tableRef} />
-      } else {
-        return <StickyTable
-          leftColumnZ={5}
-          headerZ={5}
-          wrapperRef={ref => this.tableRef = ref}
-          className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}
-        >
-          <TimelineTable tableRef={this.tableRef} />
-        </StickyTable>
-      }
+  renderBody () {
+    const { ui, isSmall } = this.props
+    if (isSmall) {
+      return <TimelineTable tableRef={this.tableRef} />
     } else {
-      return <FunSpinner />
+      return <StickyTable
+        leftColumnZ={5}
+        headerZ={5}
+        wrapperRef={ref => this.tableRef = ref}
+        className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
+      >
+        { this.state.mounted ? <TimelineTable tableRef={this.tableRef} /> : <FunSpinner/> }
+      </StickyTable>
     }
   }
 
@@ -331,6 +357,8 @@ class TimelineWrapper extends Component {
 TimelineWrapper.propTypes = {
   file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  isSmall: PropTypes.bool,
+  isLarge: PropTypes.bool,
   filterIsEmpty: PropTypes.bool.isRequired,
   canSaveTemplate: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
@@ -343,6 +371,7 @@ function mapStateToProps(state) {
     filterIsEmpty: timelineFilterIsEmptySelector(state.present),
     canSaveTemplate: currentTimelineSelector(state.present) == 1,
     isSmall: isSmallSelector(state.present),
+    isLarge: isLargeSelector(state.present),
   }
 }
 

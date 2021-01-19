@@ -58,6 +58,9 @@ const ui = {
     x: 0,
     y: 0,
   },
+  timeline: {
+    size: 'large',
+  },
   attributesDialogIsOpen: true,
 }
 

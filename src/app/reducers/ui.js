@@ -22,6 +22,7 @@ import {
   RECORD_SCROLL_POSITION,
   OPEN_ATTRIBUTES_DIALOG,
   CLOSE_ATTRIBUTES_DIALOG,
+  SET_TIMELINE_SIZE,
 } from '../constants/ActionTypes'
 import { ui as defaultUI } from '../../../shared/initialState'
 import { newFileUI } from '../../../shared/newFileState'
@@ -132,6 +133,21 @@ export default function ui(state = defaultUI, action) {
         attributesDialogIsOpen: false,
       }
 
+    case SET_TIMELINE_SIZE:
+      return {
+        ...state,
+        timeline: timeline(state.timeline, action)
+      }
+
+    default:
+      return state
+  }
+}
+
+function timeline (state = defaultUI.timeline, action) {
+  switch (action.type) {
+    case SET_TIMELINE_SIZE:
+      return Object.assign({}, state, {size: action.newSize})
     default:
       return state
   }

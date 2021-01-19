@@ -3,12 +3,12 @@ import { CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, FILE_LOADED, NEW_FILE,
   SET_PLACE_FILTER, ADD_CHARACTER_ATTRIBUTE, ADD_PLACES_ATTRIBUTE,
   REMOVE_CHARACTER_ATTRIBUTE, REMOVE_PLACES_ATTRIBUTE, EDIT_CHARACTER_ATTRIBUTE,
   EDIT_PLACES_ATTRIBUTE, SET_TIMELINE_FILTER, RECORD_SCROLL_POSITION,
-  CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE } from '../constants/ActionTypes'
+  CHANGE_CURRENT_TIMELINE, NAVIGATE_TO_BOOK_TIMELINE, EXPAND_TIMELINE, COLLAPSE_TIMELINE, SET_TIMELINE_SIZE } from '../constants/ActionTypes'
 import { ui as defaultUI } from '../store/initialState'
 import { newFileUI } from '../store/newFileState'
 
 export default function ui (state = defaultUI, action) {
-  let filter;
+  let filter
   switch (action.type) {
     case CHANGE_CURRENT_VIEW:
       return Object.assign({}, state, {currentView: action.view})
@@ -99,8 +99,20 @@ export default function ui (state = defaultUI, action) {
           x: action.x,
           y: action.y,
         }
-      };
+      }
 
+    case SET_TIMELINE_SIZE:
+      return timeline(state, action)
+
+    default:
+      return state
+  }
+}
+
+function timeline (state = defaultUI.timeline, action) {
+  switch (action.type) {
+    case SET_TIMELINE_SIZE:
+      return Object.assign({}, state, {size: action.newSize})
     default:
       return state
   }

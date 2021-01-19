@@ -20,6 +20,7 @@ import i18n from 'format-message'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { lineIsExpandedSelector } from '../../selectors/lines'
+import { isLargeSelector, isMediumSelector, isSmallSelector } from '../../selectors/ui'
 import Floater from 'react-floater'
 import { truncateTitle } from 'helpers/cards'
 import { actions } from 'pltr/v2'
@@ -236,50 +237,62 @@ class LineTitleCell extends PureComponent {
   }
 
   render() {
+    const { line, ui, isSmall } = this.props
     if (this.state.editing) {
       window.SCROLLWITHKEYS = false
     }
 
-    let innerKlass = cx(orientedClassName('line-title__body', this.props.ui.orientation), {
-      hover: this.state.hovering,
-      dropping: this.state.dropping,
-    })
+    if (isSmall) {
+      return <th className='row-header' onDrop={this.handleDrop}>
+        <div
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          draggable
+        >
+          { truncateTitle(line.title, 50) }
+        </div>
+      </th>
+    }
+
+    let innerKlass = cx(
+      orientedClassName('line-title__body', ui.orientation),
+      { hover: this.state.hovering, dropping: this.state.dropping }
+    )
 
     let placement = 'bottom'
-    if (this.props.ui.orientation == 'vertical') placement = 'right'
-    return (
-      <Cell>
-        <div
-          className={orientedClassName('line-title__cell', this.props.ui.orientation)}
-          onMouseEnter={this.startHovering}
-          onMouseLeave={this.stopHovering}
-          onDrop={this.handleDrop}
+    if (ui.orientation == 'vertical') placement = 'right'
+    return <Cell>
+      <div
+        className={orientedClassName('line-title__cell', ui.orientation)}
+        onMouseEnter={this.startHovering}
+        onMouseLeave={this.stopHovering}
+        onDrop={this.handleDrop}
+      >
+        { this.renderDelete() }
+        <Floater
+          component={this.renderHoverOptions}
+          open={this.state.hovering}
+          placement={placement}
+          hideArrow
+          offset={0}
         >
-          {this.renderDelete()}
-          <Floater
-            component={this.renderHoverOptions}
-            open={this.state.hovering}
-            placement={placement}
-            hideArrow
-            offset={0}
-          >
-            <div
-              className={innerKlass}
-              onClick={this.startEditing}
-              onDragStart={this.handleDragStart}
-              onDragEnd={this.handleDragEnd}
-              onDragEnter={this.handleDragEnter}
-              onDragOver={this.handleDragOver}
-              onDragLeave={this.handleDragLeave}
-              draggable={true}
-            >
-              {this.renderTitle()}
-            </div>
-          </Floater>
-        </div>
-        {this.renderColorPicker()}
-      </Cell>
-    )
+          <div className={innerKlass}
+            onClick={this.startEditing}
+            onDragStart={this.handleDragStart}
+            onDragEnd={this.handleDragEnd}
+            onDragEnter={this.handleDragEnter}
+            onDragOver={this.handleDragOver}
+            onDragLeave={this.handleDragLeave}
+            draggable={true}>
+            { this.renderTitle() }
+          </div>
+        </Floater>
+      </div>
+      { this.renderColorPicker() }
+    </Cell>
   }
 }
 
@@ -288,12 +301,18 @@ LineTitleCell.propTypes = {
   bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   actions: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
+  isLarge: PropTypes.bool,
   lineIsExpanded: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
   return {
     ui: state.present.ui,
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
+    isLarge: isLargeSelector(state.present),
     lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.line.id],
   }
 }

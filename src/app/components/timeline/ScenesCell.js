@@ -163,10 +163,24 @@ class ScenesCell extends PureComponent {
     }
   }
 
-  render() {
-    if (!this.props.cards.length) return <Cell></Cell>
+  render () {
+    const { cards, isSmall } = this.props
 
-    return <Cell>{this.renderBody()}</Cell>
+    if (!cards.length) {
+      if (isSmall) return <td></td>
+      return <Cell></Cell>
+    }
+
+    if (isSmall) {
+      return <td>
+        { this.renderCards(false) }
+      </td>
+    } else {
+      return <Cell>
+        { this.renderBody() }
+      </Cell>
+    }
+
   }
 }
 

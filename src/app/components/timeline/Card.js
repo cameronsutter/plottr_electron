@@ -164,6 +164,7 @@ class Card extends Component {
       } else {
         placement = Number(linePosition) <= 2 ? 'right' : placement
       }
+      if (isSmall) placement = 'right'
       title = (
         <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
           {title}
@@ -186,28 +187,50 @@ class Card extends Component {
       cardStyle.opacity = '0.1'
     }
 
-    return (
-      <div
-        className={cx('card__body-wrapper', { lastOne: last })}
+    if (isSmall) {
+      return <div
+        className='card-circle'
+        style={{backgroundColor: color}}
         onDragEnter={allowDrop ? this.handleDragEnter : null}
         onDragOver={allowDrop ? this.handleDragOver : null}
         onDragLeave={allowDrop ? this.handleDragLeave : null}
         onDrop={allowDrop ? this.handleDrop : null}
-      >
-        {this.renderDialog()}
-        {this.renderDropZone()}
+        draggable
+        onDragStart={this.handleDragStart}
+        onDragEnd={this.handleDragEnd}
+        >
+        { this.renderDialog() }
+        { this.renderDropZone() }
         <div
-          className="card__body"
-          style={cardStyle}
-          draggable
-          onDragStart={this.handleDragStart}
-          onDragEnd={this.handleDragEnd}
           onClick={this.openDialog}
         >
-          {this.renderTitle()}
+          { this.renderTitle() }
         </div>
       </div>
-    )
+    } else {
+      return (
+        <div
+          className={cx('card__body-wrapper', { lastOne: last })}
+          onDragEnter={allowDrop ? this.handleDragEnter : null}
+          onDragOver={allowDrop ? this.handleDragOver : null}
+          onDragLeave={allowDrop ? this.handleDragLeave : null}
+          onDrop={allowDrop ? this.handleDrop : null}
+        >
+          {this.renderDialog()}
+          {this.renderDropZone()}
+          <div
+            className="card__body"
+            style={cardStyle}
+            draggable
+            onDragStart={this.handleDragStart}
+            onDragEnd={this.handleDragEnd}
+            onClick={this.openDialog}
+          >
+            {this.renderTitle()}
+          </div>
+        </div>
+      )
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

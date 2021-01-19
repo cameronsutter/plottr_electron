@@ -214,36 +214,51 @@ class ChapterTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const { chapter, ui, positionOffset, isSeries, isSmall } = this.props
+    const { chapter, ui, positionOffset, chapterTitle, isSeries, isSmall } = this.props
     let innerKlass = orientedClassName('chapter__body', ui.orientation)
     if (this.state.hovering) innerKlass += ' hover'
     if (this.state.dropping) innerKlass += ' dropping'
-    return (
-      <Cell>
+
+    if (isSmall) {
+      return <th className='rotate-45'>
         <div
-          className={orientedClassName('scene__cell', ui.orientation)}
           title={chapterPositionTitle(chapter, positionOffset, isSeries)}
           onMouseEnter={this.startHovering}
           onMouseLeave={this.stopHovering}
           onDrop={this.handleDrop}
+          draggable
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
         >
-          {this.renderHoverOptions()}
-          {this.renderDelete()}
-          <div
-            className={innerKlass}
+          <span>{ truncateTitle(chapterTitle, 50) }</span>
+        </div>
+      </th>
+    } else {
+      return <Cell className='chapter-table-cell'>
+        <div
+          className={orientedClassName('chapter__cell', ui.orientation)}
+          title={chapterPositionTitle(chapter, positionOffset, isSeries)}
+          onMouseEnter={this.startHovering}
+          onMouseLeave={this.stopHovering}
+          onDrop={this.handleDrop}>
+          { this.renderHoverOptions() }
+          { this.renderDelete() }
+          <div className={innerKlass}
             onClick={this.startEditing}
-            draggable={true}
+            draggable
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
             onDragEnter={this.handleDragEnter}
             onDragOver={this.handleDragOver}
-            onDragLeave={this.handleDragLeave}
-          >
-            {this.renderTitle()}
+            onDragLeave={this.handleDragLeave}>
+            { this.renderTitle() }
           </div>
         </div>
       </Cell>
-    )
+    }
   }
 }
 

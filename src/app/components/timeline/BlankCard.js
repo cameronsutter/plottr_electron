@@ -62,6 +62,11 @@ class BlankCard extends Component {
     if (this.props.onDone) this.props.onDone()
   }
 
+  createFromSmall = () => {
+    const newCard = this.buildCard('')
+    this.props.actions.addCard(newCard)
+  }
+
   handleFinishCreate = (event) => {
     if (event.which === 13) {
       //enter
@@ -193,41 +198,53 @@ class BlankCard extends Component {
     )
   }
 
-  renderTemplatePicker() {
-    if (!this.state.showTemplatePicker) return null
-
-    return (
-      <TemplatePicker
-        type={['scenes']}
-        modal={true}
-        isOpen={this.state.showTemplatePicker}
-        close={this.closeTemplatePicker}
-        onChooseTemplate={this.handleChooseTemplate}
+  renderBlank () {
+    const { color, isSmall } = this.props
+    const blankCardStyle = { borderColor: color }
+    if (isSmall) {
+      return <td>
+        <div
+          className={cx('blank-circle', {hover: this.state.dropping})}
+          style={blankCardStyle}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
+          onClick={this.createFromSmall}
+        />
+      </td>
+    } else {
+      return <div
+        className={cx('blank-card__body', {hover: this.state.dropping})}
+        style={blankCardStyle}
       />
-    )
+    }
   }
 
-  renderCreateNew() {
-    const cardStyle = {
-      borderColor: this.props.color,
-    }
-    const bodyClass = this.props.verticalInsertion ? 'vertical-card__body' : 'card__body'
-    return (
-      <div className={bodyClass} style={cardStyle}>
-        <FormGroup>
-          <ControlLabel>{i18n('Scene Title')}</ControlLabel>
-          <FormControl
-            type="text"
-            autoFocus
-            ref="titleInput"
-            bsSize="small"
-            onBlur={this.handleBlur}
-            onKeyDown={this.handleCancelCreate}
-            onKeyPress={this.handleFinishCreate}
-          />
-        </FormGroup>
+  renderCreateNew () {
+    const { color, isSmall } = this.props
+    const cardStyle = { borderColor: color }
+    const form = <FormGroup>
+      <ControlLabel>{i18n('Scene Title')}</ControlLabel>
+      <FormControl
+        type='text'
+        autoFocus
+        ref='titleInput'
+        bsSize='small'
+        onBlur={this.handleBlur}
+        onKeyDown={this.handleCancelCreate}
+        onKeyPress={this.handleFinishCreate} />
+    </FormGroup>
+
+    if (isSmall) {
+      return <td>
+        { form }
+      </td>
+    } else {
+      return <div className='card__body' style={cardStyle}>
+        { form }
       </div>
-    )
+    }
   }
 
   render() {
@@ -239,6 +256,8 @@ class BlankCard extends Component {
     } else {
       body = this.renderBlank()
     }
+
+    if (this.props.isSmall) return body
 
     const vertical = this.props.orientation === 'vertical'
     return (

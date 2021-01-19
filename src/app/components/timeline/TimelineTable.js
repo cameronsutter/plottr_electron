@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { findDOMNode } from 'react-dom'
 import { bindActionCreators } from 'redux'
+import cx from 'classnames'
 import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
 import * as LineActions from 'actions/lines'
@@ -25,10 +26,6 @@ import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { cardMapSelector } from '../../selectors/cards'
 import { isSeriesSelector, isLargeSelector, isSmallSelector, isMediumSelector } from '../../selectors/ui'
-import { actions } from 'pltr/v2'
-import { SmallChapterRow } from './small/SmallChapterRow'
-import { SmallSceneCell } from './small/SmallSceneCell'
-import { SmallBlankCell } from './small/SmallBlankCell'
 
 const LineActions = actions.lineActions
 
@@ -145,18 +142,17 @@ class TimelineTable extends Component {
     const chapterMap = this.chapterMapping()
     const chapterMapKeys = Object.keys(chapterMap)
     const renderedLines = lines.map(line => {
+      const lineTitle = <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={ui.currentTimeline}/>
+      const cards = this.renderCardsByChapter(line, chapterMap, chapterMapKeys)
       if (isSmall) {
-        return <SmallChapterRow
-          key={`lineId-${line.id}`}
-          line={line}
-          handleReorder={this.handleReorderLines}
-          bookId={ui.currentTimeline}
-          renderChapters={() => this.renderCardsByChapter(line, chapterMap, chapterMapKeys) }
-        />
+        return <tr key={`lineId-${line.id}`}>
+          { lineTitle }
+          { cards }
+        </tr>
       } else {
         return <Row key={`lineId-${line.id}`}>
-          <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={ui.currentTimeline}/>
-          { this.renderCardsByChapter(line, chapterMap, chapterMapKeys) }
+          { lineTitle }
+          { cards }
         </Row>
       }
     })
@@ -200,7 +196,7 @@ class TimelineTable extends Component {
   }
 
   renderCardsByChapter (line, chapterMap, chapterMapKeys) {
-    const { cardMap, isSmall, isLarge } = this.props
+    const { cardMap, isLarge } = this.props
     return chapterMapKeys.flatMap(chapterPosition => {
       const cells = []
       const chapterId = chapterMap[chapterPosition]
@@ -210,29 +206,15 @@ class TimelineTable extends Component {
       const cards = cardMap[`${line.id}-${chapterId}`]
       const key = `${cards ? 'card' : 'blank'}-${chapterPosition}-${line.position}`
       if (cards) {
-        if (isSmall) {
-          cells.push(<SmallSceneCell
-            key={key} cards={cards}
-            chapterId={chapterId} lineId={line.id}
-            chapterPosition={chapterPosition} linePosition={line.position}
-            color={line.color} />)
-        } else {
-          cells.push(<ScenesCell
-            key={key} cards={cards}
-            chapterId={chapterId} lineId={line.id}
-            chapterPosition={chapterPosition} linePosition={line.position}
-            color={line.color} />)
-        }
+        cells.push(<ScenesCell
+          key={key} cards={cards}
+          chapterId={chapterId} lineId={line.id}
+          chapterPosition={chapterPosition} linePosition={line.position}
+          color={line.color} />)
       } else {
-        if (isSmall) {
-          cells.push(<SmallBlankCell chapterId={chapterId} lineId={line.id}
-            key={key}
-            color={line.color} />)
-        } else {
-          cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
-            key={key}
-            color={line.color} />)
-        }
+        cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
+          key={key}
+          color={line.color} />)
       }
       return cells
     })
@@ -274,10 +256,9 @@ class TimelineTable extends Component {
   }
 
   render () {
-
     if (this.props.isSmall) {
-      return <div className="small-timeline__wrapper">
-        <table className="table-header-rotated">
+      return <div className={cx('small-timeline__wrapper', { darkmode: this.props.ui.darkMode })}>
+        <table className='table-header-rotated'>
           <TopRow />
           <tbody>
             { this.renderRows() }

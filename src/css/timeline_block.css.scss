@@ -86,6 +86,7 @@
     position: sticky;
     left: 0;
     font-size: 12px;
+    cursor: move;
   }
 
   .table-header-rotated tr {
@@ -97,17 +98,17 @@
   .table-header-rotated td {
     width: 20px;
     border-top: 1px solid $gray-8;
-    border-left: 1px solid $gray-8;
     border-right: 1px solid $gray-8;
     vertical-align: middle;
     text-align: center;
+    padding: 2px 0;
 
     div.card-circle {
       height: 10px;
       width: 10px;
       border-radius: 10px;
       background-color: black;
-      margin: auto;
+      margin: 1px auto;
       cursor: pointer;
     }
 
@@ -115,6 +116,16 @@
       @extend div.card-circle;
       visibility: hidden;
       background-color: transparent;
+
+      &.hover {
+        visibility: visible;
+        border-width: 1px;
+        border-style: dotted;
+      }
+    }
+
+    &:nth-child(2) {
+      border-left: 1px solid $gray-8;
     }
 
     &:hover {
@@ -139,17 +150,22 @@
     line-height: 0.8;
   }
 
-  .table-header-rotated th.rotate-45 > div {
-    position: relative;
-    top: 0px;
-    left: 20px;
-    // left: 40px; // 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle
-    height: 100%;
-    transform:skew(-45deg,0deg);
-    overflow: hidden;
-    border-left: 1px solid #dddddd;
-    border-right: 1px solid #dddddd;
-    border-top: 1px solid #dddddd;
+  .table-header-rotated th.rotate-45 {
+    &:nth-child(2) > div {
+      border-left: 1px solid $gray-8;
+    }
+    & > div {
+      position: relative;
+      top: 0px;
+      left: 21px;
+      // left: 40px; // 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle
+      height: 100%;
+      transform:skew(-45deg,0deg);
+      overflow: hidden;
+      border-right: 1px solid $gray-8;
+      border-top: 1px solid $gray-8;
+      cursor: move;
+    }
   }
 
   .table-header-rotated th.rotate-45 span {
@@ -164,5 +180,12 @@
     width: 85px; // 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle
     text-align: left;
     // white-space: nowrap; /*whether to display in one line or not*/
+  }
+
+  .small-timeline__wrapper.darkmode {
+    color: $darkmode-text;
+    .table-header-rotated th.row-header {
+      background-color: $darkmode-background;
+    }
   }
 }

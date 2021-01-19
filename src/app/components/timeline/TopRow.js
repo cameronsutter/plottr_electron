@@ -17,8 +17,6 @@ import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector, isLargeSelector, isMediumSelector, isSmallSelector } from '../../selectors/ui'
-import { actions } from 'pltr/v2'
-import SmallChapterTitle from './small/SmallChapterTitle'
 
 const LineActions = actions.lineActions
 
@@ -85,7 +83,7 @@ class TopRow extends Component {
   }
 
   renderChapters () {
-    const { ui, chapters, isLarge, isMedium, isSmall } = this.props
+    const { ui, chapters, isLarge, isMedium } = this.props
     const renderedChapters = chapters.flatMap(ch => {
       const cells = []
       if (isLarge) {
@@ -99,23 +97,13 @@ class TopRow extends Component {
           />
         )
       }
-      if (isSmall) {
-        cells.push(
-          <SmallChapterTitle
-            key={`chapterId-${ch.id}`}
-            chapterId={ch.id}
-            handleReorder={this.handleReorderChapters}
-          />
-        )
-      } else {
-        cells.push(
-          <ChapterTitleCell
-            key={`chapterId-${ch.id}`}
-            chapterId={ch.id}
-            handleReorder={this.handleReorderChapters}
-          />
-        )
-      }
+      cells.push(
+        <ChapterTitleCell
+          key={`chapterId-${ch.id}`}
+          chapterId={ch.id}
+          handleReorder={this.handleReorderChapters}
+        />
+      )
       return cells
     })
     if (isLarge) {
@@ -176,7 +164,6 @@ class TopRow extends Component {
     } else {
       return <Row>{body}</Row>
     }
-
   }
 }
 

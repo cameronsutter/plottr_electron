@@ -1679,6 +1679,33 @@
   ],
   "cards": [
     {
+      "id": 325,
+      "lineId": 10,
+      "chapterId": 34,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null
+    },
+    {
       "id": 324,
       "lineId": 14,
       "chapterId": 63,

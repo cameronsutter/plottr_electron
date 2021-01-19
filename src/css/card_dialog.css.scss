@@ -48,23 +48,33 @@
     overflow-y: auto;
   }
   .slate-editor__editor {
-    height: calc(100% - 40px);
+    height: calc(100% - 50px);
     overflow-y: auto;
   }
 }
 
 .card-dialog__details-show-hide-wrapper {
-  height: calc(100% - 95px);
+  border: 2px solid #f1f5f8;
+  padding: 15px;
+  padding-top: 10px;
+  height: calc(100% - 115px);
 }
 
 .hidden {
   display: none;
 }
 
+.card-dialog__tab-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
 .card-dialog__tab {
   cursor: pointer;
-  padding: 10px;
-  border-radius: 7px;
+  text-align: center;
+  padding: 7px;
+  border-bottom: 0;
   margin-right: 10px;
 }
 
@@ -74,11 +84,12 @@
 
 .card-dialog__tab--selected {
   color: $blue-2;
+  background: #f1f5f8;
 }
 
 .card-dialog__custom-attributes {
-  padding: 10px;
-  padding-top: 0;
+  border: 2px solid #f1f5f8;
+  padding: 15px 20px;
 }
 
 .card-dialog__dropdown-wrapper {

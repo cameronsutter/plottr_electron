@@ -341,32 +341,31 @@ class CardDialog extends Component {
     const { card, ui } = this.props
     const { selected } = this.state
     return (
-      <PlottrModal
-        isOpen={true}
-        onRequestClose={this.saveAndClose}
-      >
-        { this.renderDelete() }
-        <div className={cx('card-dialog', {darkmode: ui.darkMode})}>
-          <div className='card-dialog__body'>
+      <PlottrModal isOpen={true} onRequestClose={this.saveAndClose}>
+        {this.renderDelete()}
+        <div className={cx('card-dialog', { darkmode: ui.darkMode })}>
+          <div className="card-dialog__body">
             {this.renderLeftSide()}
-            <div className='card-dialog__description'>
+            <div className="card-dialog__description">
               {this.renderTitle()}
-              <span
-                className={`card-dialog__details-label card-dialog__tab ${
-                  selected === 'Description' ? 'card-dialog__tab--selected' : ''
-                }`}
-                onClick={this.selectTab('Description')}
-              >
-                {i18n('Description')}
-              </span>
-              <span
-                className={`card-dialog__details-label card-dialog__tab ${
-                  selected === 'Attributes' ? 'card-dialog__tab--selected' : ''
-                }`}
-                onClick={this.selectTab('Attributes')}
-              >
-                {i18n('Attrtibutes')}
-              </span>
+              <div className="card-dialog__tab-container">
+                <div
+                  className={`card-dialog__details-label card-dialog__tab ${
+                    selected === 'Description' ? 'card-dialog__tab--selected' : ''
+                  }`}
+                  onClick={this.selectTab('Description')}
+                >
+                  {i18n('Description')}
+                </div>
+                <div
+                  className={`card-dialog__details-label card-dialog__tab ${
+                    selected === 'Attributes' ? 'card-dialog__tab--selected' : ''
+                  }`}
+                  onClick={this.selectTab('Attributes')}
+                >
+                  {i18n('Attrtibutes')}
+                </div>
+              </div>
               <div
                 className={`card-dialog__details-show-hide-wrapper ${
                   selected === 'Description' ? '' : 'hidden'
@@ -374,7 +373,7 @@ class CardDialog extends Component {
               >
                 <RichText
                   description={card.description}
-                  onChange={(desc) => this.setState({description: desc})}
+                  onChange={(desc) => this.setState({ description: desc })}
                   editable={true}
                   darkMode={ui.darkMode}
                   autofocus

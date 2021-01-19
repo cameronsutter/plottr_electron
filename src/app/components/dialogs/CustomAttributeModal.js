@@ -6,24 +6,21 @@ import i18n from 'format-message'
 import {
   placeCustomAttributesThatCanChangeSelector,
   characterCustomAttributesThatCanChangeSelector,
-  scenesCustomAttributesThatCanChangeSelector
+  scenesCustomAttributesThatCanChangeSelector,
 } from '../../selectors/customAttributes'
-import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal';
+import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
 
 function CustomAttributeModal({
   type,
   customAttributes,
   customAttributesThatCanChange,
-  ui: {
-    darkMode,
-  },
+  ui: { darkMode },
   closeDialog,
   addAttribute,
   removeAttribute,
   editAttribute,
   reorderAttribute,
 }) {
-
   return (
     <ItemsManagerModal
       title={i18n('Custom Attributes for { type }', { type })}
@@ -34,7 +31,7 @@ function CustomAttributeModal({
       darkMode={darkMode}
       closeDialog={closeDialog}
       showSaveAsTemplate
-      onAdd={(name) => addAttribute({ name, type: 'text'})}
+      onAdd={(name) => addAttribute({ name, type: 'text' })}
       renderItem={(attr, index) => (
         <ListItem
           key={attr.name}
@@ -50,10 +47,10 @@ function CustomAttributeModal({
   )
 }
 
-function mapStateToProps (state, { type }) {
-  const customAttributes = state.present.customAttributes[type];
+function mapStateToProps(state, { type }) {
+  const customAttributes = state.present.customAttributes[type]
 
-  let canChangeFn;
+  let canChangeFn
   switch (type) {
     case 'characters':
       canChangeFn = characterCustomAttributesThatCanChangeSelector
@@ -66,12 +63,11 @@ function mapStateToProps (state, { type }) {
       break
     default:
       canChangeFn = () => {
-        console.warn(`${type}CustomAttributesThatCanChangeSelector not implemented`);
-        return customAttributes.map(({ name }) => name);
-      };
-      break;
+        console.warn(`${type}CustomAttributesThatCanChangeSelector not implemented`)
+        return customAttributes.map(({ name }) => name)
+      }
+      break
   }
-
 
   return {
     customAttributes: state.present.customAttributes[type],
@@ -80,8 +76,8 @@ function mapStateToProps (state, { type }) {
   }
 }
 
-function mapDispatchToProps (dispatch, { type }) {
-  const actions = bindActionCreators(CustomAttributeActions, dispatch);
+function mapDispatchToProps(dispatch, { type }) {
+  const actions = bindActionCreators(CustomAttributeActions, dispatch)
 
   switch (type) {
     case 'characters':
@@ -122,7 +118,4 @@ function mapDispatchToProps (dispatch, { type }) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CustomAttributeModal)
+export default connect(mapStateToProps, mapDispatchToProps)(CustomAttributeModal)

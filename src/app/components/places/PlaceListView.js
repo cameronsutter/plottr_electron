@@ -34,8 +34,6 @@ import { nextId } from '../../store/newIds'
 import { visibleSortedPlacesSelector, placeFilterIsEmptySelector } from '../../selectors/places'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 
-const modalStyles = { content: { width: '50%', marginLeft: '25%' } }
-
 class PlaceListView extends Component {
   constructor(props) {
     super(props)

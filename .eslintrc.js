@@ -17,7 +17,6 @@ module.exports = {
   rules: {
     'no-unused-vars': ['warn', { args: 'none', argsIgnorePattern: 'req|res|next|val' }],
     'prettier/prettier': ['error'],
-    'space-before-function-paren': ['error', 'always'],
   },
   settings: {
     react: {

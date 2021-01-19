@@ -30,6 +30,9 @@
           },
           "Title": {
             "_text": "Notes"
+          },
+          "Children": {
+            "BinderItem": []
           }
         },
         {
@@ -39,6 +42,9 @@
           },
           "Title": {
             "_text": "Trash"
+          },
+          "Children": {
+            "BinderItem": []
           }
         }
       ]

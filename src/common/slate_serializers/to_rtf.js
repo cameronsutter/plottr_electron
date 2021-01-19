@@ -28,13 +28,21 @@ export default function serialize (nodes, doc) {
         doc.addLine()
         return makeList(n, doc)
       case 'heading-one':
-        return doc.addElement([
-          n.children.map(leafInElement)
-        ], styleH1)
       case 'heading-two':
-        return doc.addElement([
-          n.children.map(leafInElement)
-        ], styleH2)
+        const headingStyle = n.type === 'heading-one' ? styleH1 : styleH2
+        return n.children.map(child => {
+          if (child.text != null) {
+            return doc.addElement([
+              leafInElement(child)
+            ], headingStyle)
+          } else {
+            return child.children.map(text => {
+              return doc.addElement([
+                leafInElement(text)
+              ], headingStyle)
+            })
+          }
+        })
       case 'list-item':
         // shouldn't get here because we handle the numbered-list and bulleted-list above
       case 'link':
@@ -91,15 +99,15 @@ const leafInElement = (node) => {
 }
 
 const makeList = (node, doc) => {
-  const items = node.children.map(makeListItem).join(' ')
-
-  const prefix = "\\ls1\\ilvl0\\cf2 \\kerning1\\expnd0\\expndtw0 \\outl0\\strokewidth0 "
-
-  const list = rtf.Utils.makeRtfCmd(prefix, items, '', false)
-  doc.addCommand(list)
+  const items = node.children.map(makeListItem).join('\n')
+  doc.addCommand(items)
 }
 
+// There seems to be one thing about these lists that is weird
+// The first list item has some extra spacing between the left margin
+// and the bullet point. The rest of the items do not have this and I
+// can't figure out why it is there. (Matt)
 const makeListItem = (node) => {
   const text = node.children.flatMap(ch => ch.text).join(' ')
-  return rtf.Utils.makeRtfCmd("{\\listtext	\\uc0\\u8226	}", text, "\\\n", false)
+  return `{\\pard\\fi-300\\li100\\bullet\\tab ${text} \\par}`
 }

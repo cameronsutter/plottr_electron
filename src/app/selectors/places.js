@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect'
 import { sortBy } from 'lodash'
-import { placeSortSelector, placeFilterSelector } from './ui'
+import {
+  placeSortSelector,
+  placeFilterSelector,
+  currentTimelineSelector,
+} from './ui'
 
 export const allPlacesSelector = state => state.places
 // this one also lives in ./customAttributes.js but it causes a circular dependency to import it here
@@ -61,3 +65,14 @@ export const visibleSortedPlacesSelector = createSelector(
     return sorted
   }
 )
+
+export const placesSortedInBookSelector = createSelector(
+  placesSortedAtoZSelector,
+  currentTimelineSelector,
+  (places, bookId) => places.filter(place => {
+    if (place.bookIds.length === 0) return true
+    if (place.bookIds.includes('series')) return true
+    return place.bookIds.includes(bookId)
+  })
+)
+

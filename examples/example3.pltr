@@ -8,7 +8,7 @@
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "vertical",
+    "orientation": "horizontal",
     "placeFilter": {
       "tag": [],
       "book": [],
@@ -7079,7 +7079,7 @@
       "bookId": null,
       "seriesLineId": null,
       "position": 0,
-      "positionWithinLine": 0,
+      "positionWithinLine": 1,
       "positionInChapter": 0,
       "fromTemplateId": null
     },

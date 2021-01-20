@@ -16,30 +16,35 @@ class BlankCard extends Component {
     super(props)
     this.state = {
       creating: false,
-      dropping: false,
       templateHover: false,
       defaultHover: false,
       showTemplatePicker: false,
       templates: [],
+      inDropZone: false,
+      dropDepth: 0,
     }
   }
 
   handleDragEnter = (e) => {
-    this.setState({ dropping: true })
+    this.setState({dropDepth: this.state.dropDepth + 1})
   }
 
   handleDragOver = (e) => {
-    this.setState({ dropping: true })
     e.preventDefault()
+    this.setState({inDropZone: true})
   }
 
   handleDragLeave = (e) => {
-    this.setState({ dropping: false })
+    let dropDepth = this.state.dropDepth
+    --dropDepth
+    this.setState({dropDepth: dropDepth})
+    if (dropDepth > 0) return
+    this.setState({inDropZone: false})
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({ dropping: false })
+    this.setState({inDropZone: false, dropDepth: 0})
 
     const json = e.dataTransfer.getData('text/json')
     const droppedData = JSON.parse(json)
@@ -202,49 +207,40 @@ class BlankCard extends Component {
     const { color, isSmall } = this.props
     const blankCardStyle = { borderColor: color }
     if (isSmall) {
-      return <td>
+
+      return <td
+        onDragEnter={this.handleDragEnter}
+        onDragOver={this.handleDragOver}
+        onDragLeave={this.handleDragLeave}
+        onDrop={this.handleDrop}
+      >
         <div
-          className={cx('blank-circle', {hover: this.state.dropping})}
+          className={cx('blank-circle', {hover: this.state.inDropZone})}
           style={blankCardStyle}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}
-          onDrop={this.handleDrop}
           onClick={this.createFromSmall}
         />
       </td>
     } else {
-      return <div
-        className={cx('blank-card__body', {hover: this.state.dropping})}
-        style={blankCardStyle}
-      />
+      return <div className={cx('blank-card__body', {hover: this.state.inDropZone})} style={blankCardStyle} />
     }
   }
 
   renderCreateNew () {
-    const { color, isSmall } = this.props
+    const { color } = this.props
     const cardStyle = { borderColor: color }
-    const form = <FormGroup>
-      <ControlLabel>{i18n('Scene Title')}</ControlLabel>
-      <FormControl
-        type='text'
-        autoFocus
-        ref='titleInput'
-        bsSize='small'
-        onBlur={this.handleBlur}
-        onKeyDown={this.handleCancelCreate}
-        onKeyPress={this.handleFinishCreate} />
-    </FormGroup>
-
-    if (isSmall) {
-      return <td>
-        { form }
-      </td>
-    } else {
-      return <div className='card__body' style={cardStyle}>
-        { form }
-      </div>
-    }
+    return <div className='card__body' style={cardStyle}>
+      <FormGroup>
+        <ControlLabel>{i18n('Scene Title')}</ControlLabel>
+        <FormControl
+          type='text'
+          autoFocus
+          ref='titleInput'
+          bsSize='small'
+          onBlur={this.handleBlur}
+          onKeyDown={this.handleCancelCreate}
+          onKeyPress={this.handleFinishCreate} />
+      </FormGroup>
+    </div>
   }
 
   render() {
@@ -285,7 +281,7 @@ class BlankCard extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.dropping != nextState.dropping) return true
+    if (this.state.inDropZone != nextState.inDropZone) return true
     if (this.state.creating != nextState.creating) return true
     if (this.props.color != nextProps.color) return true
     if (this.state.templateHover !== nextState.templateHover) return true

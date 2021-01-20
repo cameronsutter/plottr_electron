@@ -127,6 +127,10 @@
       }
     }
 
+    .card__drop-zone {
+      font-size: 8px;
+    }
+
     &:nth-child(2) {
       border-left: 1px solid $gray-8;
     }
@@ -162,9 +166,7 @@
 
     position: sticky;
     top: 0;
-  }
 
-  .table-header-rotated th.rotate-45 {
     &:nth-child(2) {
       background-color: $gray-9;
       z-index: 10;
@@ -188,22 +190,23 @@
       border-right: 1px solid $gray-8;
       border-top: 1px solid $gray-8;
       cursor: move;
+
+      & > span {
+        transform:skew(45deg,0deg) rotate(315deg);
+        font-size: 8px;
+        position: absolute;
+        bottom: 30px; // 40 cos(45) = 28 with an additional 2px margin
+        left: -32px;
+        // left: -25px; // Because it looked good, but there is probably a mathematical link here as well
+        display: inline-block;
+        // width: 100%;
+        width: 85px; // 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle
+        text-align: left;
+        white-space: nowrap; /*whether to display in one line or not*/
+      }
     }
   }
 
-  .table-header-rotated th.rotate-45 span {
-    transform:skew(45deg,0deg) rotate(315deg);
-    font-size: 8px;
-    position: absolute;
-    bottom: 30px; // 40 cos(45) = 28 with an additional 2px margin
-    left: -32px; // Because it looked good, but there is probably a mathematical link here as well
-    // left: -25px; // Because it looked good, but there is probably a mathematical link here as well
-    display: inline-block;
-    // width: 100%;
-    width: 85px; // 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle
-    text-align: left;
-    white-space: nowrap; /*whether to display in one line or not*/
-  }
 
   .small-timeline__wrapper.darkmode {
     color: $darkmode-text;

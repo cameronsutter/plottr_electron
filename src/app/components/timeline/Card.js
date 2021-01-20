@@ -143,15 +143,17 @@ class Card extends Component {
     return <div className="card__popover-labels">{tagLabels}</div>
   }
 
-  renderDropZone() {
-    if (!this.props.allowDrop) return
+  renderDropZone () {
+    const { color, allowDrop, isSmall } = this.props
+    if (!allowDrop) return
     if (!this.state.inDropZone) return
 
-    return (
-      <div className="card__drop-zone">
-        <FaCircle />
-      </div>
-    )
+    let circleStyle = {}
+    if (isSmall) circleStyle = {color: color}
+
+    return <div className='card__drop-zone'>
+      <FaCircle style={circleStyle}/>
+    </div>
   }
 
   renderTitle() {
@@ -189,22 +191,23 @@ class Card extends Component {
 
     if (isSmall) {
       return <div
-        className='card-circle'
-        style={{backgroundColor: color}}
-        onDragEnter={allowDrop ? this.handleDragEnter : null}
-        onDragOver={allowDrop ? this.handleDragOver : null}
-        onDragLeave={allowDrop ? this.handleDragLeave : null}
-        onDrop={allowDrop ? this.handleDrop : null}
-        draggable
-        onDragStart={this.handleDragStart}
-        onDragEnd={this.handleDragEnd}
-        >
-        { this.renderDialog() }
+        onDragEnter={this.handleDragEnter}
+        onDragOver={this.handleDragOver}
+        onDragLeave={this.handleDragLeave}
+        onDrop={this.handleDrop}
+      >
         { this.renderDropZone() }
+        { this.renderDialog() }
         <div
-          onClick={this.openDialog}
+          className='card-circle'
+          style={{backgroundColor: color}}
+          draggable
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
         >
-          { this.renderTitle() }
+          <div onClick={this.openDialog}>
+            { this.renderTitle() }
+          </div>
         </div>
       </div>
     } else {

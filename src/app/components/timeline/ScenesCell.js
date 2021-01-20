@@ -69,51 +69,34 @@ class ScenesCell extends PureComponent {
     }
   }
 
-  renderCards(arentHidden) {
-    const {
-      chapterId,
-      lineId,
-      chapterPosition,
-      linePosition,
-      color,
-      backgroundColor,
-      cards,
-    } = this.props
+  renderCards (arentHidden) {
+    const { chapterId, lineId, chapterPosition, linePosition, color, cards, isSmall } = this.props
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
       const isLastOne = idx == cards.length - 1
-      return (
-        <div key={card.id}>
-          <ErrorBoundary>
-            <Card
-              card={card}
-              chapterId={chapterId}
-              lineId={lineId}
-              idx={idx}
-              chapterPosition={chapterPosition}
-              linePosition={linePosition}
-              color={color}
-              last={idxOfCards == idx}
-              moveCard={this.moveSceneCardAbove}
-              allowDrop={arentHidden}
-            />
-          </ErrorBoundary>
-          {arentHidden ? (
-            <SceneCardAdd
-              color={color}
-              backgroundColor={backgroundColor}
-              positionWithinLine={idx}
-              moveCard={this.moveSceneCard}
-              addCard={this.addSceneCard}
-              allowDrop={isLastOne}
-              dropPosition={cards.length}
-              chapterId={chapterId}
-              lineId={lineId}
-            />
-          ) : null}
-        </div>
-      )
+      return <div key={card.id}>
+        <ErrorBoundary>
+          <Card card={card} chapterId={chapterId} lineId={lineId} idx={idx}
+            chapterPosition={chapterPosition} linePosition={linePosition}
+            color={color} last={idxOfCards == idx} moveCard={this.moveSceneCardAbove}
+            allowDrop={arentHidden || isSmall}
+          />
+        </ErrorBoundary>
+        {arentHidden ?
+          <SceneCardAdd
+            color={color}
+            backgroundColor={backgroundColor}
+            positionWithinLine={idx}
+            moveCard={this.moveSceneCard}
+            addCard={this.addSceneCard}
+            allowDrop={isLastOne}
+            dropPosition={cards.length}
+            chapterId={chapterId}
+            lineId={lineId}
+          />
+        : null}
+      </div>
     })
   }
 

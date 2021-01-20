@@ -230,7 +230,12 @@
       background-color: $darkmode-background;
     }
     .table-header-rotated th.rotate-45 {
-      background-color: $darkmode-background;
+      &:nth-child(2) {
+        background-color: $darkmode-background;
+      }
+      &:nth-child(3) {
+        background-color: $darkmode-background;
+      }
       & > div {
         background-color: $darkmode-background;
       }

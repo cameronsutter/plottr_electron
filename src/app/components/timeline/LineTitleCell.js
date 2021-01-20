@@ -243,7 +243,8 @@ class LineTitleCell extends PureComponent {
     }
 
     if (isSmall) {
-      return <th className='row-header' onDrop={this.handleDrop}>
+      const isHorizontal = ui.orientation == 'horizontal'
+      return <th className={cx({'rotate-45': !isHorizontal, 'row-header': isHorizontal})}>
         <div
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}
@@ -251,8 +252,9 @@ class LineTitleCell extends PureComponent {
           onDragOver={this.handleDragOver}
           onDragLeave={this.handleDragLeave}
           draggable
+          onDrop={this.handleDrop}
         >
-          { truncateTitle(line.title, 50) }
+          <span>{ truncateTitle(line.title, 50) }</span>
         </div>
       </th>
     }

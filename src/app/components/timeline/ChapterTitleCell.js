@@ -220,7 +220,8 @@ class ChapterTitleCell extends PureComponent {
     if (this.state.dropping) innerKlass += ' dropping'
 
     if (isSmall) {
-      return <th className='rotate-45'>
+      const isHorizontal = ui.orientation == 'horizontal'
+      return <th className={cx({'rotate-45': isHorizontal, 'row-header': !isHorizontal})}>
         <div
           title={chapterPositionTitle(chapter, positionOffset, isSeries)}
           onMouseEnter={this.startHovering}

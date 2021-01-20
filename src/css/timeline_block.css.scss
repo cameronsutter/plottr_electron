@@ -73,16 +73,19 @@
   }
 
   .table-header-rotated {
-
+    margin-left: 2px;
   }
-
+  /////////////////////
   // copied and modified from https://www.jimmybonney.com/articles/column_header_rotation_css/
+  /////////////////////
+
   .table-header-rotated th.row-header {
     padding-left: 8px;
     width: 58px; // 50 + 8
     min-width: 58px; // 50 + 8
     background-color: $gray-9;
     border-top: 1px solid $gray-8;
+    border-left: 1px solid $gray-8;
     position: sticky;
     left: 0;
     font-size: 12px;
@@ -137,22 +140,41 @@
     }
   }
 
+  .table-header-rotated thead {
+    th:first-child {
+      background-color: $gray-9;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+  }
+
   .table-header-rotated th.rotate-45 {
     height: 40px;
     // height: 80px;
     width: 20px;
     min-width: 20px;
     max-width: 20px;
-    position: relative;
     vertical-align: bottom;
     padding: 0;
     font-size: 12px;
     line-height: 0.8;
+
+    position: sticky;
+    top: 0;
   }
 
   .table-header-rotated th.rotate-45 {
-    &:nth-child(2) > div {
-      border-left: 1px solid $gray-8;
+    &:nth-child(2) {
+      background-color: $gray-9;
+      z-index: 10;
+      & > div {
+        background-color: $gray-9;
+        border-left: 1px solid $gray-8;
+      }
+    }
+    &:nth-child(3) {
+      background-color: $gray-9;
     }
     & > div {
       position: relative;
@@ -162,6 +184,7 @@
       height: 100%;
       transform:skew(-45deg,0deg);
       overflow: hidden;
+      background-color: $gray-9;
       border-right: 1px solid $gray-8;
       border-top: 1px solid $gray-8;
       cursor: move;
@@ -179,13 +202,38 @@
     // width: 100%;
     width: 85px; // 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle
     text-align: left;
-    // white-space: nowrap; /*whether to display in one line or not*/
+    white-space: nowrap; /*whether to display in one line or not*/
   }
 
   .small-timeline__wrapper.darkmode {
     color: $darkmode-text;
+    .table-header-rotated thead {
+      th:first-child {
+        background-color: $darkmode-background;
+      }
+    }
     .table-header-rotated th.row-header {
       background-color: $darkmode-background;
+    }
+    .table-header-rotated th.rotate-45 {
+      background-color: $darkmode-background;
+      & > div {
+        background-color: $darkmode-background;
+      }
+    }
+  }
+
+  .small-timeline__wrapper.vertical {
+    .table-header-rotated {
+      margin-left: 20px;
+
+      th.row-header {
+        padding-left: 16px;
+        padding-right: 16px;
+        width: 102px; // 70 + 16 + 16
+        min-width: 102px; // 70 + 16 + 16
+        text-align: right;
+      }
     }
   }
 }

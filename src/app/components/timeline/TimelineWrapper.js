@@ -23,7 +23,7 @@ import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
-import { timelineFilterIsEmptySelector, currentTimelineSelector, isSmallSelector, isLargeSelector } from '../../selectors/ui'
+import { timelineFilterIsEmptySelector, currentTimelineSelector, isSmallSelector, isMediumSelector, isLargeSelector } from '../../selectors/ui'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 
@@ -204,7 +204,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav() {
-    const { ui, file, filterIsEmpty, canSaveTemplate, isSmall, isLarge, actions } = this.props
+    const { ui, file, filterIsEmpty, canSaveTemplate, isSmall, isMedium, isLarge, actions } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -278,6 +278,13 @@ class TimelineWrapper extends Component {
                 title={i18n('Size: small')}
               >
                 <Glyphicon glyph='th' />
+              </Button>
+              <Button bsSize='small' className={cx({active: isMedium})}
+                onClick={() => actions.setTimelineSize('medium')}
+                title={i18n('Size: medium')}
+              >
+                <Glyphicon glyph='th-large' />
+                <Glyphicon glyph='th-large' />
               </Button>
               <Button bsSize='small' className={cx({active: isLarge})}
                 onClick={() => actions.setTimelineSize('large')}
@@ -371,6 +378,7 @@ function mapStateToProps(state) {
     filterIsEmpty: timelineFilterIsEmptySelector(state.present),
     canSaveTemplate: currentTimelineSelector(state.present) == 1,
     isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
     isLarge: isLargeSelector(state.present),
   }
 }

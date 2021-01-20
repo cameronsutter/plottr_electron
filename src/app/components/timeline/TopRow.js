@@ -119,15 +119,10 @@ class TopRow extends Component {
   }
 
   renderLines () {
-    const { lines, ui, isLarge } = this.props
-    const renderedLines = lines.map(line => {
-      return <LineTitleCell
-        key={`line-${line.id}`}
-        line={line}
-        handleReorder={this.handleReorderLines}
-        bookId={ui.currentTimeline}
-      />
-    })
+    const { lines, ui, isSmall, isLarge } = this.props
+    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines} bookId={ui.currentTimeline}/>)
+    if (isSmall) return renderedLines
+
     let array = [<Cell key='placeholder'/>].concat(renderedLines)
     if (isLarge) {
       array = array.concat(

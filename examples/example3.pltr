@@ -8,7 +8,7 @@
     "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "horizontal",
+    "orientation": "vertical",
     "placeFilter": {
       "tag": [],
       "book": [],
@@ -25,7 +25,7 @@
       "place": []
     },
     "timelineScrollPosition": {
-      "x": 1466,
+      "x": 0,
       "y": 0
     },
     "timeline": {

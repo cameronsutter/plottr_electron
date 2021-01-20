@@ -157,8 +157,8 @@ class TimelineTable extends Component {
   renderChapters() {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
-    const { chapters, isLarge } = this.props
-    return chapters.map(chapter => {
+    const { chapters, isSmall, isLarge } = this.props
+    const renderedChapters = chapters.map(chapter => {
       let inserts = []
       if (isLarge) {
         inserts = lineMapKeys.flatMap(linePosition => {
@@ -166,16 +166,35 @@ class TimelineTable extends Component {
           return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} showLine={chapter.position == 0} tableLength={this.state.tableLength}/>
         })
       }
-      return [<Row key={`chapterId-${chapter.id}`}>
-          <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter}/>
-          { inserts }
-        </Row>,
-        <Row key={`chapterId-${chapter.id}-insert`}>
-          <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
+
+      const chapterTitle = <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
+
+      if (isSmall) {
+        return <tr key={`chapterId-${chapter.id}`}>
+          { chapterTitle }
           { this.renderCardsByLine(chapter, lineMap, lineMapKeys) }
-        </Row>
-      ]
+        </tr>
+      } else {
+        return [<Row key={`chapterId-${chapter.id}`}>
+            <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter}/>
+            { inserts }
+          </Row>,
+          <Row key={`chapterId-${chapter.id}-insert`}>
+            { chapterTitle }
+            { this.renderCardsByLine(chapter, lineMap, lineMapKeys) }
+          </Row>
+        ]
+      }
     })
+
+    if (isSmall) {
+      return renderedChapters
+    } else {
+      const finalRow = <Row key='last-insert'>
+        <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true}/>
+      </Row>
+      return [].concat(renderedChapters, finalRow)
+    }
   }
 
   renderRows() {
@@ -247,8 +266,9 @@ class TimelineTable extends Component {
   }
 
   render () {
-    if (this.props.isSmall) {
-      return <div className={cx('small-timeline__wrapper', { darkmode: this.props.ui.darkMode })}>
+    const { ui, isSmall } = this.props
+    if (isSmall) {
+      return <div className={cx('small-timeline__wrapper', {darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
         <table className='table-header-rotated'>
           <TopRow />
           <tbody>

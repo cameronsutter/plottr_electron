@@ -36,7 +36,8 @@ class LineTitleCell extends PureComponent {
       hovering: false,
       editing: props.line.title === '',
       dragging: false,
-      dropping: false,
+      inDropZone: false,
+      dropDepth: 0,
       showColorPicker: false,
       deleting: false,
     }
@@ -90,22 +91,27 @@ class LineTitleCell extends PureComponent {
   }
 
   handleDragEnter = (e) => {
-    this.setState({ dropping: true })
+    if (!this.state.dragging) this.setState({dropDepth: this.state.dropDepth + 1})
   }
 
   handleDragOver = (e) => {
-    this.setState({ dropping: true })
     e.preventDefault()
-    return false
+    if (!this.state.dragging) this.setState({inDropZone: true})
   }
 
   handleDragLeave = (e) => {
-    this.setState({ dropping: false })
+    if (!this.state.dragging) {
+      let dropDepth = this.state.dropDepth
+      --dropDepth
+      this.setState({dropDepth: dropDepth})
+      if (dropDepth > 0) return
+      this.setState({inDropZone: false})
+    }
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({ dropping: false })
+    this.setState({inDropZone: false, dropDepth: 0})
 
     var json = e.dataTransfer.getData('text/json')
     var droppedLine = JSON.parse(json)
@@ -238,21 +244,25 @@ class LineTitleCell extends PureComponent {
 
   render() {
     const { line, ui, isSmall } = this.props
-    if (this.state.editing) {
+    const { editing, hovering, inDropZone } = this.state
+    if (editing) {
       window.SCROLLWITHKEYS = false
     }
 
     if (isSmall) {
       const isHorizontal = ui.orientation == 'horizontal'
-      return <th className={cx({'rotate-45': !isHorizontal, 'row-header': isHorizontal})}>
+      const klasses = { 'rotate-45': !isHorizontal, 'row-header': isHorizontal, dropping: inDropZone }
+      return <th
+        className={cx(klasses)}
+        onDragEnter={this.handleDragEnter}
+        onDragOver={this.handleDragOver}
+        onDragLeave={this.handleDragLeave}
+        onDrop={this.handleDrop}
+      >
         <div
+          draggable
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}
-          draggable
-          onDrop={this.handleDrop}
         >
           <span>{ truncateTitle(line.title, 50) }</span>
         </div>
@@ -261,7 +271,7 @@ class LineTitleCell extends PureComponent {
 
     let innerKlass = cx(
       orientedClassName('line-title__body', ui.orientation),
-      { hover: this.state.hovering, dropping: this.state.dropping }
+      { hover: hovering, dropping: inDropZone }
     )
 
     let placement = 'bottom'
@@ -274,13 +284,7 @@ class LineTitleCell extends PureComponent {
         onDrop={this.handleDrop}
       >
         { this.renderDelete() }
-        <Floater
-          component={this.renderHoverOptions}
-          open={this.state.hovering}
-          placement={placement}
-          hideArrow
-          offset={0}
-        >
+        <Floater component={this.renderHoverOptions} open={hovering} placement={placement} hideArrow offset={0}>
           <div className={innerKlass}
             onClick={this.startEditing}
             onDragStart={this.handleDragStart}

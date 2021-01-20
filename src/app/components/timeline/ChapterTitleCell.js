@@ -33,7 +33,8 @@ class ChapterTitleCell extends PureComponent {
       hovering: false,
       editing: editing,
       dragging: false,
-      dropping: false,
+      inDropZone: false,
+      dropDepth: 0,
       deleting: false,
     }
   }
@@ -98,23 +99,28 @@ class ChapterTitleCell extends PureComponent {
   }
 
   handleDragEnter = (e) => {
-    if (!this.state.dragging) this.setState({ dropping: true })
+    if (!this.state.dragging) this.setState({dropDepth: this.state.dropDepth + 1})
   }
 
   handleDragOver = (e) => {
-    if (!this.state.dragging) this.setState({ dropping: true })
     e.preventDefault()
-    return false
+    if (!this.state.dragging) this.setState({inDropZone: true})
   }
 
   handleDragLeave = (e) => {
-    if (!this.state.dragging) this.setState({ dropping: false })
+    if (!this.state.dragging) {
+      let dropDepth = this.state.dropDepth
+      --dropDepth
+      this.setState({dropDepth: dropDepth})
+      if (dropDepth > 0) return
+      this.setState({inDropZone: false})
+    }
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
     if (this.state.dragging) return
-    this.setState({ dropping: false })
+    this.setState({inDropZone: false, dropDepth: 0})
 
     var json = e.dataTransfer.getData('text/json')
     var droppedChapter = JSON.parse(json)
@@ -215,24 +221,26 @@ class ChapterTitleCell extends PureComponent {
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
     const { chapter, ui, positionOffset, chapterTitle, isSeries, isSmall } = this.props
-    let innerKlass = orientedClassName('chapter__body', ui.orientation)
-    if (this.state.hovering) innerKlass += ' hover'
-    if (this.state.dropping) innerKlass += ' dropping'
+    const { hovering, inDropZone, dragging } = this.state
+    let innerKlass = cx(orientedClassName('chapter__body', ui.orientation), {hover: hovering, dropping: inDropZone})
 
     if (isSmall) {
       const isHorizontal = ui.orientation == 'horizontal'
-      return <th className={cx({'rotate-45': isHorizontal, 'row-header': !isHorizontal})}>
+      const klasses = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal, dropping: inDropZone }
+      return <th
+        className={cx(klasses)}
+        onDragEnter={this.handleDragEnter}
+        onDragOver={this.handleDragOver}
+        onDragLeave={this.handleDragLeave}
+        onDrop={this.handleDrop}
+      >
         <div
           title={chapterPositionTitle(chapter, positionOffset, isSeries)}
           onMouseEnter={this.startHovering}
           onMouseLeave={this.stopHovering}
-          onDrop={this.handleDrop}
           draggable
           onDragStart={this.handleDragStart}
           onDragEnd={this.handleDragEnd}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}
         >
           <span>{ truncateTitle(chapterTitle, 50) }</span>
         </div>

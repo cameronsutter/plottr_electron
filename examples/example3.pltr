@@ -1031,6 +1031,42 @@
       "fromTemplateId": null
     },
     {
+      "id": 77,
+      "bookId": 4,
+      "position": 3,
+      "title": "auto",
+      "time": 0,
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 78,
+      "bookId": 5,
+      "position": 1,
+      "title": "auto",
+      "time": 0,
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 79,
+      "bookId": 6,
+      "position": 1,
+      "title": "auto",
+      "time": 0,
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 80,
+      "bookId": 7,
+      "position": 0,
+      "title": "auto",
+      "time": 0,
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
       "id": 1,
       "position": 0,
       "title": "Chapter 1",
@@ -1637,42 +1673,6 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
-      "id": 77,
-      "bookId": 4,
-      "position": 3,
-      "title": "auto",
-      "time": 0,
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
-      "id": 78,
-      "bookId": 5,
-      "position": 1,
-      "title": "auto",
-      "time": 0,
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
-      "id": 79,
-      "bookId": 6,
-      "position": 1,
-      "title": "auto",
-      "time": 0,
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
-      "id": 80,
-      "bookId": 7,
-      "position": 0,
-      "title": "auto",
-      "time": 0,
       "autoOutlineSort": true,
       "fromTemplateId": null
     }

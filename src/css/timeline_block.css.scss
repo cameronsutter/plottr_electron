@@ -90,6 +90,12 @@
     left: 0;
     font-size: 12px;
     cursor: move;
+
+    &.dropping {
+      & > div {
+        border: $new-item-border;
+      }
+    }
   }
 
   .table-header-rotated tr {
@@ -163,9 +169,14 @@
     padding: 0;
     font-size: 12px;
     line-height: 0.8;
-
     position: sticky;
     top: 0;
+
+    &.dropping {
+      & > div {
+        border: 1px dotted #aaa;
+      }
+    }
 
     &:nth-child(2) {
       background-color: $gray-9;

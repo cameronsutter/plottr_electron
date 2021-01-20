@@ -279,12 +279,12 @@ class TimelineWrapper extends Component {
               >
                 <Glyphicon glyph='th' />
               </Button>
-              <Button bsSize='small' className={cx({active: isMedium})}
+              <Button bsSize='small' className={cx({active: isMedium})} style={{marginRight: '-7px'}}
                 onClick={() => actions.setTimelineSize('medium')}
                 title={i18n('Size: medium')}
               >
                 <Glyphicon glyph='th-large' />
-                <Glyphicon glyph='th-large' />
+                <Glyphicon glyph='th-large' style={{left: '-7px'}}/>
               </Button>
               <Button bsSize='small' className={cx({active: isLarge})}
                 onClick={() => actions.setTimelineSize('large')}

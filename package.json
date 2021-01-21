@@ -23,5 +23,10 @@
     "slate": "^0.57.1",
     "slate-hyperscript": "^0.57.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
+  }
 }

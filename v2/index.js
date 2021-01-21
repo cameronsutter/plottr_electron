@@ -37,11 +37,16 @@ import * as tagSelectors from './selectors/tags'
 import * as uiSelectors from './selectors/ui'
 
 import rootReducer from './reducers/root'
+import customAttributesReducer from './reducers/customAttributes'
 
 import * as initialState from './store/initialState'
 import * as lineColors from './store/lineColors'
 import { emptyFile } from './store/newFileState'
 import * as newIds from './store/newIds'
+
+const reducers = {
+  customAttributes: customAttributesReducer
+}
 
 const selectors = {
   ...beatSelectors,
@@ -85,6 +90,7 @@ export {
   listHelpers,
   migrateIfNeeded,
   rootReducer,
+  reducers,
   selectors,
   initialState,
   lineColors,

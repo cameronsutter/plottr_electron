@@ -91,6 +91,18 @@
     font-size: 12px;
     cursor: move;
 
+    .line-list__append-line {
+      .line-list__append-line-wrapper {
+        padding: 2px 0;
+        border: none;
+        margin: 0;
+
+        &:hover {
+          border: 2px dotted $blue-7;
+        }
+      }
+    }
+
     &.dropping {
       & > div {
         border: $new-item-border;
@@ -100,7 +112,13 @@
 
   .table-header-rotated tr {
     &:last-child {
-      border-bottom: 1px solid $gray-8;
+      border-bottom: 1px dashed $gray-8;
+      td {
+        border-style: dashed;
+        border-color: $gray-8;
+        border-width: 1px;
+        border-top: 1px solid $gray-8;
+      }
     }
   }
 
@@ -111,6 +129,12 @@
     vertical-align: middle;
     text-align: center;
     padding: 2px 0;
+
+    &:last-child {
+      border-style: dashed;
+      border-width: 1px;
+      border-color: $gray-8;
+    }
 
     div.card-circle {
       height: 10px;
@@ -201,6 +225,28 @@
       border-right: 1px solid $gray-8;
       border-top: 1px solid $gray-8;
       cursor: move;
+
+      &.chapter-list__insert.append-chapter {
+        font-size: 8px;
+        cursor: pointer;
+
+        div {
+          padding: inherit;
+          border: none;
+          margin-right: 0;
+          & > span {
+            transform: translate(5px) skew(45deg, 0deg);
+          }
+        }
+
+        &:hover {
+          border: 2px solid $blue-7;
+          background-color: $blue-8;
+          // .insert-chapter-wrapper.append-chapter {
+          //   border: 2px dashed $blue-7;
+          // }
+        }
+      }
 
       & > span {
         transform:skew(45deg,0deg) rotate(315deg);

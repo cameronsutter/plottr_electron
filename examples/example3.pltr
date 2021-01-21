@@ -5,7 +5,7 @@
     },
     "characterSort": "name~asc",
     "currentView": "timeline",
-    "darkMode": true,
+    "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
@@ -1673,6 +1673,15 @@
       "bookId": 1,
       "time": 0,
       "templates": [],
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 81,
+      "bookId": 1,
+      "position": 61,
+      "title": "auto",
+      "time": 0,
       "autoOutlineSort": true,
       "fromTemplateId": null
     }
@@ -11093,6 +11102,15 @@
     }
   ],
   "lines": [
+    {
+      "id": 26,
+      "bookId": 1,
+      "title": "",
+      "color": "#0b1117",
+      "position": 13,
+      "expanded": null,
+      "fromTemplateId": null
+    },
     {
       "id": 25,
       "bookId": 7,

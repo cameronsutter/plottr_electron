@@ -132,13 +132,16 @@ class TimelineTable extends Component {
 
     const chapterMap = this.chapterMapping()
     const chapterMapKeys = Object.keys(chapterMap)
+    let howManyCells = 0
     const renderedLines = lines.map(line => {
       const lineTitle = <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={ui.currentTimeline}/>
       const cards = this.renderCardsByChapter(line, chapterMap, chapterMapKeys)
+      howManyCells = cards.length
       if (isSmall) {
         return <tr key={`lineId-${line.id}`}>
           { lineTitle }
           { cards }
+          <td/>
         </tr>
       } else {
         return <Row key={`lineId-${line.id}`}>
@@ -147,11 +150,7 @@ class TimelineTable extends Component {
         </Row>
       }
     })
-    if (isSmall) {
-      return renderedLines
-    } else {
-      return [].concat(renderedLines, <AddLineRow key='insert-line' bookId={ui.currentTimeline}/>)
-    }
+    return [...renderedLines, <AddLineRow key='insert-line' bookId={ui.currentTimeline} howManyCells={howManyCells} />]
   }
 
   renderChapters() {

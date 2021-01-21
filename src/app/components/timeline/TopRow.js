@@ -83,7 +83,7 @@ class TopRow extends Component {
   }
 
   renderChapters () {
-    const { ui, chapters, isLarge, isMedium } = this.props
+    const { ui, chapters, isLarge, isSmall } = this.props
     const renderedChapters = chapters.flatMap(ch => {
       const cells = []
       if (isLarge) {
@@ -106,41 +106,43 @@ class TopRow extends Component {
       )
       return cells
     })
-    if (isLarge) {
-      return [<Cell key='placeholder'/>]
-        .concat(renderedChapters)
-        .concat([this.renderLastInsertChapterCell()])
-    }
-    if (isMedium) {
-      return [<Cell key='placeholder'/>].concat(renderedChapters)
+    if (isSmall) {
+      return [...renderedChapters, this.renderLastInsertChapterCell()]
     } else {
-      return renderedChapters
+      return [<Cell key='placeholder'/>, ...renderedChapters, this.renderLastInsertChapterCell()]
     }
   }
 
   renderLines () {
     const { lines, ui, isSmall, isLarge } = this.props
     const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines} bookId={ui.currentTimeline}/>)
-    if (isSmall) return renderedLines
+    const insertLineDiv = <div
+      className={orientedClassName('line-list__append-line', ui.orientation)}
+      onClick={this.handleAppendLine}
+    >
+      <div className={orientedClassName('line-list__append-line-wrapper', ui.orientation)}>
+        <Glyphicon glyph='plus' />
+      </div>
+    </div>
 
-    let array = [<Cell key='placeholder'/>].concat(renderedLines)
-    if (isLarge) {
-      array = array.concat(
-        <Row key='insert-line'>
-          <Cell>
-            <div
-              className={orientedClassName('line-list__append-line', ui.orientation)}
-              onClick={this.handleAppendLine}
-            >
-              <div className={orientedClassName('line-list__append-line-wrapper', ui.orientation)}>
-                <Glyphicon glyph='plus' />
-              </div>
-            </div>
-          </Cell>
-        </Row>
-      )
+    // TODO: verify that this works
+    if (isSmall) {
+      const insertLineTH = <th key='insert-line' className='rotate-45'>
+        { insertLineDiv }
+      </th>
+      return [...renderedLines, insertLineTH]
     }
-    return array
+
+    let finalArray = [<Cell key='placeholder'/>, ...renderedLines]
+    if (isLarge) {
+      const insertLineCell = <Row key='insert-line'>
+        <Cell>
+          { insertLineDiv }
+        </Cell>
+      </Row>
+      finalArray = [...finalArray, insertLineCell]
+    }
+    return finalArray
   }
 
   render() {

@@ -6,6 +6,7 @@ import { Glyphicon } from 'react-bootstrap'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 import VisualLine from './VisualLine'
+import { isSmallSelector } from '../../selectors/ui'
 
 class ChapterInsertCell extends PureComponent {
   insert = () => {
@@ -19,7 +20,7 @@ class ChapterInsertCell extends PureComponent {
   }
 
   render() {
-    const { isInChapterList, showLine, orientation, isLast } = this.props
+    const { isInChapterList, showLine, orientation, isLast, isSmall } = this.props
     let wrapperKlass = orientedClassName('insert-chapter-wrapper', orientation)
     let chapterKlass = 'chapter-list__insert'
     let titleText = i18n('Insert Chapter')
@@ -30,27 +31,31 @@ class ChapterInsertCell extends PureComponent {
       chapterKlass += ' append-chapter'
     }
     if (!isInChapterList) titleText = i18n('Insert Chapter and a Card')
-    return (
-      <Cell>
-        <div
-          title={titleText}
-          className={orientedClassName(
-            isInChapterList ? chapterKlass : 'line-list__insert-scene',
-            orientation
-          )}
-          onClick={this.insert}
-        >
-          <div className={wrapperKlass}>
-            <Glyphicon glyph="plus" />
-          </div>
-        </div>
+    let insideDiv = <div
+      title={titleText}
+      className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-chapter', orientation)}
+      onClick={this.insert}
+    >
+      <div className={wrapperKlass}>
+        <Glyphicon glyph='plus' />
+      </div>
+    </div>
+
+    if (isSmall) {
+      return <th className='rotate-45'>
+        { insideDiv }
+      </th>
+    } else {
+      return <Cell>
+        { insideDiv }
         {showLine ? this.renderLine() : null}
       </Cell>
-    )
+    }
   }
 
   static propTypes = {
     orientation: PropTypes.string,
+    isSmall: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
     isInChapterList: PropTypes.bool.isRequired,
     chapterPosition: PropTypes.number,
@@ -65,6 +70,7 @@ class ChapterInsertCell extends PureComponent {
 function mapStateToProps(state) {
   return {
     orientation: state.present.ui.orientation,
+    isSmall: isSmallSelector(state.present),
   }
 }
 

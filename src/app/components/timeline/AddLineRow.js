@@ -17,6 +17,7 @@ import {
 import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selectors/chapters'
 import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
 import { nextCardIdSelector } from '../../selectors/cards'
+import { isSmallSelector } from '../../selectors/ui'
 import { actions } from 'pltr/v2'
 
 const LineActions = actions.lineActions
@@ -220,7 +221,20 @@ class AddLineRow extends Component {
   }
 
   renderInsertButton() {
-    const { ui, actions } = this.props
+    const { ui, actions, isSmall } = this.props
+    if (isSmall) {
+      return <th className='row-header'>
+        <div
+          className='line-list__append-line'
+          onClick={() => actions.addLine(ui.currentTimeline)}
+        >
+          <div className='line-list__append-line-wrapper'>
+            <Glyphicon glyph='plus' />
+          </div>
+        </div>
+      </th>
+    }
+
     if (this.props.bookId != 'series') {
       return (
         <div className="line-list__append-line">
@@ -269,17 +283,24 @@ class AddLineRow extends Component {
   }
 
   render() {
-    return (
-      <Row>
-        <Cell
-          onMouseEnter={() => this.setState({ hovering: true })}
-          onMouseLeave={() => this.setState({ hovering: false })}
-        >
+    const { isSmall, howManyCells } = this.props
+    if (isSmall) {
+      const tds = [<td key={howManyCells + 1}/>]
+      for (let i = 0; i < howManyCells; i++) {
+        tds.push(<td key={i}/>)
+      }
+      return <tr>
+        { this.renderInsertButton() }
+        { tds }
+      </tr>
+    } else {
+      return <Row>
+        <Cell onMouseEnter={() => this.setState({hovering: true})} onMouseLeave={() => this.setState({hovering: false})}>
           {this.renderInsertButton()}
           {this.renderTemplatePicker()}
         </Cell>
       </Row>
-    )
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -290,6 +311,7 @@ class AddLineRow extends Component {
 
   static propTypes = {
     ui: PropTypes.object.isRequired,
+    isSmall: PropTypes.bool,
     bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     chapters: PropTypes.array,
     lines: PropTypes.array,
@@ -303,6 +325,7 @@ class AddLineRow extends Component {
 function mapStateToProps(state) {
   return {
     ui: state.present.ui,
+    isSmall: isSmallSelector(state.present),
     chapters: sortedChaptersByBookSelector(state.present),
     lines: linesByBookSelector(state.present),
     cards: state.present.cards,

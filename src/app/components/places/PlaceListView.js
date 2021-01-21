@@ -20,7 +20,7 @@ import {
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import * as PlaceActions from 'actions/places'
-import * as CustomAttributeActions from 'actions/customAttributes'
+import { actions } from 'pltr/v2'
 import * as UIActions from 'actions/ui'
 import PlaceView from 'components/places/placeView'
 import i18n from 'format-message'
@@ -33,6 +33,8 @@ import PlaceItem from './PlaceItem'
 import { nextId } from '../../store/newIds'
 import { visibleSortedPlacesSelector, placeFilterIsEmptySelector } from '../../selectors/places'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
+
+const CustomAttributeActions = actions.customAttributeActions
 
 class PlaceListView extends Component {
   constructor(props) {

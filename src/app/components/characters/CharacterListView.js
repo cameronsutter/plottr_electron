@@ -19,7 +19,7 @@ import {
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import * as CharacterActions from 'actions/characters'
-import * as CustomAttributeActions from 'actions/customAttributes'
+import { actions } from 'pltr/v2'
 import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
 import i18n from 'format-message'
@@ -36,6 +36,8 @@ import CharacterCategoriesModal from './CharacterCategoriesModal'
 import CharacterItem from './CharacterItem'
 import InputModal from '../dialogs/InputModal'
 import { nextId } from '../../store/newIds'
+
+const CustomAttributeActions = actions.customAttributeActions
 
 class CharacterListView extends Component {
   constructor(props) {

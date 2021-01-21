@@ -9,8 +9,12 @@ import { sortBy } from 'lodash'
 import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { nextColor } from 'store/lineColors'
-import { card, chapter as defaultChapter, line as defaultLine } from '../../../../shared/initialState'
+import { nextBackgroundColor, nextColor } from 'store/lineColors'
+import {
+  card,
+  chapter as defaultChapter,
+  line as defaultLine,
+} from '../../../../shared/initialState'
 import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selectors/chapters'
 import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
 import { nextCardIdSelector } from '../../selectors/cards'
@@ -140,12 +144,14 @@ class AddLineRow extends Component {
       const lastLine = this.getLast(this.allLines)
       const lastPosition = lastLine ? lastLine.position : 0
       const color = nextColor(this.allLines.length)
+      const backgroundColor = nextBackgroundColor(this.allLines.length)
       const newLine = {
         ...tL,
         id: id,
         bookId: bookId,
         position: lastPosition + 1 + tL.position,
         color: color,
+        backgroundColor: backgroundColor,
         fromTemplateId: template.id,
       }
       this.allLines.push(newLine)

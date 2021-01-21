@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import * as CardActions from 'actions/cards'
 import i18n from 'format-message'
-import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 import { isSeriesSelector } from '../../selectors/ui'
 
@@ -16,6 +16,8 @@ class BlankCard extends Component {
     this.state = {
       creating: false,
       dropping: false,
+      templateHover: false,
+      defaultHover: false,
     }
   }
 
@@ -89,15 +91,67 @@ class BlankCard extends Component {
     }
   }
 
+  onAddWithTemplateHover = () => {
+    this.setState({
+      templateHover: true,
+    })
+  }
+
+  onAddWithTemplateLeave = () => {
+    this.setState({
+      templateHover: false,
+    })
+  }
+
+  onAddWithDefaultHover = () => {
+    this.setState({
+      defaultHover: true,
+    })
+  }
+
+  onAddWithDefaultLeave = () => {
+    this.setState({
+      defaultHover: false,
+    })
+  }
+
   renderBlank () {
-    var blankCardStyle = {
+    const blankCardStyle = {
       borderColor: this.props.color,
+      color: this.props.color,
     }
+    const addWithTemplateStyle = this.state.templateHover
+      ? {
+          background: this.props.backgroundColor,
+        }
+      : {}
+    const addWithDefaultStyle = this.state.defaultHover
+      ? {
+          background: this.props.backgroundColor,
+        }
+      : {}
     return (
       <div
         className={cx('blank-card__body', { hover: this.state.dropping })}
         style={blankCardStyle}
-      />
+      >
+        <div
+          className="template"
+          onMouseEnter={this.onAddWithTemplateHover}
+          onMouseLeave={this.onAddWithTemplateLeave}
+          style={addWithTemplateStyle}
+        >
+          {i18n('Use Template')}
+        </div>
+        <div
+          className="non-template"
+          onMouseEnter={this.onAddWithDefaultHover}
+          onMouseLeave={this.onAddWithDefaultLeave}
+          style={addWithDefaultStyle}
+        >
+          <Glyphicon glyph="plus" />
+        </div>
+      </div>
     )
   }
 
@@ -156,6 +210,8 @@ class BlankCard extends Component {
     if (this.state.dropping != nextState.dropping) return true
     if (this.state.creating != nextState.creating) return true
     if (this.props.color != nextProps.color) return true
+    if (this.state.templateHover !== nextState.templateHover) return true
+    if (this.state.defaultHover !== nextState.defaultHover) return true
     return false
   }
 }
@@ -164,6 +220,7 @@ BlankCard.propTypes = {
   chapterId: PropTypes.number,
   lineId: PropTypes.number,
   color: PropTypes.string.isRequired,
+  backgroundColor: PropTypes.string.isRequired,
   currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   orientation: PropTypes.string,
   isSeries: PropTypes.bool,

@@ -113,6 +113,22 @@
   border: 3px dashed black;
   visibility: hidden;
   cursor: pointer;
+  margin-left: 5px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    padding: 10px 5px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  div.template {
+    @include application-text;
+    text-align: center;
+  }
 }
 
 .blank-card__body.hover {

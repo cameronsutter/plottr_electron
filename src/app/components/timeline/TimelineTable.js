@@ -235,7 +235,13 @@ class TimelineTable extends Component {
         )
       } else {
         cells.push(
-          <BlankCard chapterId={chapterId} lineId={line.id} key={key} color={line.color} />
+          <BlankCard
+            chapterId={chapterId}
+            lineId={line.id}
+            key={key}
+            color={line.color}
+            backgroundColor={line.backgroundColor}
+          />
         )
       }
       return cells
@@ -263,7 +269,13 @@ class TimelineTable extends Component {
         )
       } else {
         cells.push(
-          <BlankCard chapterId={chapter.id} lineId={line.id} key={key} color={line.color} />
+          <BlankCard
+            chapterId={chapter.id}
+            lineId={line.id}
+            key={key}
+            color={line.color}
+            backgroundColor={line.backgroundColor}
+          />
         )
       }
       return cells

@@ -20,7 +20,7 @@ import {
 import { line } from '../../../shared/initialState'
 import { newFileLines } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
-import { nextColor } from 'store/lineColors'
+import { nextBackgroundColor, nextColor } from 'store/lineColors'
 import { nextPositionInBook, positionReset } from '../helpers/lists'
 
 const initialState = [line]
@@ -35,6 +35,7 @@ export default function lines (state = initialState, action) {
           bookId: action.bookId,
           title: '',
           color: nextColor(linesInBook),
+          backgroundColor: nextBackgroundColor(linesInBook),
           position: nextPositionInBook(state, action.bookId),
           expanded: null,
           fromTemplateId: null,

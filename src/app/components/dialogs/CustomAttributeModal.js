@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as CustomAttributeActions from 'actions/customAttributes'
+import { actions } from 'pltr/v2'
 import i18n from 'format-message'
 import {
   placeCustomAttributesThatCanChangeSelector,
@@ -9,6 +9,8 @@ import {
   scenesCustomAttributesThatCanChangeSelector,
 } from '../../selectors/customAttributes'
 import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
+
+const CustomAttributeActions = actions.customAttributeActions
 
 function CustomAttributeModal({
   type,

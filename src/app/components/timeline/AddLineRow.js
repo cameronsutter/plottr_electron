@@ -6,10 +6,9 @@ import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortBy } from 'lodash'
-import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { nextColor } from 'store/lineColors'
+import { nextBackgroundColor, nextColor } from 'store/lineColors'
 import {
   card,
   chapter as defaultChapter,
@@ -18,6 +17,9 @@ import {
 import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selectors/chapters'
 import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
 import { nextCardIdSelector } from '../../selectors/cards'
+import { actions } from 'pltr/v2'
+
+const LineActions = actions.lineActions
 
 class AddLineRow extends Component {
   state = {
@@ -144,12 +146,14 @@ class AddLineRow extends Component {
       const lastLine = this.getLast(this.allLines)
       const lastPosition = lastLine ? lastLine.position : 0
       const color = nextColor(this.allLines.length)
+      const backgroundColor = nextBackgroundColor(this.allLines.length)
       const newLine = {
         ...tL,
         id: id,
         bookId: bookId,
         position: lastPosition + 1 + tL.position,
         color: color,
+        backgroundColor: backgroundColor,
         fromTemplateId: template.id,
       }
       this.allLines.push(newLine)

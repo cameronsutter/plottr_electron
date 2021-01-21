@@ -90,7 +90,7 @@ function createScenesTemplate(pltrData, { name, description, link }) {
     name: name,
     description: description,
     link: link,
-    attributes: data.customAttributes.characters,
+    attributes: data.customAttributes.scenes,
   }
   customTemplatesStore.set(id, template)
 }

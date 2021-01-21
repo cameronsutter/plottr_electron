@@ -70,7 +70,15 @@ class ScenesCell extends PureComponent {
   }
 
   renderCards(arentHidden) {
-    const { chapterId, lineId, chapterPosition, linePosition, color, cards } = this.props
+    const {
+      chapterId,
+      lineId,
+      chapterPosition,
+      linePosition,
+      color,
+      backgroundColor,
+      cards,
+    } = this.props
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
@@ -94,11 +102,14 @@ class ScenesCell extends PureComponent {
           {arentHidden ? (
             <SceneCardAdd
               color={color}
+              backgroundColor={backgroundColor}
               positionWithinLine={idx}
               moveCard={this.moveSceneCard}
               addCard={this.addSceneCard}
               allowDrop={isLastOne}
               dropPosition={cards.length}
+              chapterId={chapterId}
+              lineId={lineId}
             />
           ) : null}
         </div>
@@ -137,10 +148,13 @@ class ScenesCell extends PureComponent {
             </div>
           </Floater>
           <SceneCardAdd
+            backgroundColor={this.props.backgroundColor}
             color={this.props.color}
             positionWithinLine={numOfCards}
             moveCard={this.moveSceneCard}
             addCard={this.addSceneCard}
+            chapterId={this.props.chapterId}
+            lineId={this.props.lineId}
             allowDrop
           />
         </div>
@@ -160,6 +174,7 @@ ScenesCell.propTypes = {
   chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
+  backgroundColor: PropTypes.string.isRequired,
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   ui: PropTypes.object.isRequired,

@@ -12,6 +12,7 @@ const CustomAttributeActions = actions.customAttributeActions
 const EditAttribute = ({
   name,
   type,
+  inputId,
   value,
   index,
   entityType,
@@ -103,7 +104,7 @@ const EditAttribute = ({
         <div>
           <Label />
           <RichText
-            description={entity[name]}
+            description={value || entity[name]}
             onChange={(desc) => handleLongDescriptionChange(name, desc)}
             editable
             autofocus={false}
@@ -114,9 +115,9 @@ const EditAttribute = ({
         <FormGroup>
           <Label />
           <FormControl
-            value={value || ''}
+            value={value || entity[name]}
             type="text"
-            id={`${name}Input`}
+            id={inputId || `${name}Input`}
             onKeyDown={onShortDescriptionKeyDown}
             onKeyPress={onShortDescriptionKeyPress}
             onChange={(event) => handleShortDescriptionChange(name, event.target.value)}
@@ -132,6 +133,7 @@ EditAttribute.propTypes = {
   type: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   value: PropTypes.string,
+  inputId: PropTypes.string,
   entityType: PropTypes.string.isRequired,
   entity: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,

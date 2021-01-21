@@ -42,11 +42,19 @@ class CardDialog extends Component {
     props.customAttributes.forEach(({ name, type }) => {
       if (type === 'text') shortAttributes[name] = props.card[name]
     })
+    const templateAttrs = props.card.templates.reduce((acc, t) => {
+      acc[t.id] = t.attributes.reduce((obj, attr) => {
+        obj[attr.name] = attr.value
+        return obj
+      }, {})
+      return acc
+    }, {})
     this.state = {
       description: props.card.description,
       paragraphs: {},
       shortAttributes,
       deleting: false,
+      templateAttrs,
       selected: 'Description',
       addingAttribute: false,
       newAttributeType: 'text',
@@ -120,6 +128,17 @@ class CardDialog extends Component {
     })
   }
 
+  handleTemplateAttrDescriptionChange = (id, attr) => (desc) => {
+    let templateAttrs = {
+      ...this.state.templateAttrs,
+      [id]: {
+        ...this.state.templateAttrs[id],
+        [attr]: desc,
+      },
+    }
+    this.setState({ templateAttrs })
+  }
+
   saveEdit = () => {
     var newTitle = findDOMNode(this.refs.titleInput).value
     const attrs = {}
@@ -132,13 +151,9 @@ class CardDialog extends Component {
         attrs[name] = val
       }
     })
-    const templates = (this.props.card.templates || []).map((t) => {
+    const templates = this.props.card.templates.map((t) => {
       t.attributes = t.attributes.map((attr) => {
-        if (attr.type == 'paragraph') {
-          attr.value = this.state.templateAttrs[t.id][attr.name]
-        } else {
-          attr.value = findDOMNode(this.refs[`${t.id}-${attr.name}Input`]).value
-        }
+        attr.value = this.state.templateAttrs[t.id][attr.name]
         return attr
       })
       return t
@@ -251,7 +266,7 @@ class CardDialog extends Component {
     const { card, ui, customAttributes } = this.props
     return customAttributes.map((attr, index) => {
       return (
-        <React.Fragment key={attr.name}>
+        <React.Fragment key={`custom-attribute-${idx}-${attr.name}`}>
           <EditAttribute
             index={index}
             entity={card}
@@ -262,11 +277,30 @@ class CardDialog extends Component {
             handleShortDescriptionChange={this.handleShortAttrChange}
             onShortDescriptionKeyDown={this.handleEsc}
             onShortDescriptionKeyPress={this.handleEnter}
-            withRef={this.addInputRef}
             {...attr}
           />
         </React.Fragment>
       )
+    })
+  }
+
+  renderEditingTemplates() {
+    const { card, ui } = this.props
+    return card.templates.flatMap((t) => {
+      return t.attributes.map((attr, idx) => (
+        <React.Fragment key={`template-attribute-${idx}-${t.id}-${attr.name}`}>
+          <EditAttribute
+            entity={card}
+            ui={ui}
+            inputId={`${t.id}-${attr.name}Input`}
+            handleLongDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
+            handleShortDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
+            onShortDescriptionKeyDown={this.handleEsc}
+            onShortDescriptionKeyPress={this.handleEnter}
+            {...attr}
+          />
+        </React.Fragment>
+      ))
     })
   }
 
@@ -520,6 +554,7 @@ class CardDialog extends Component {
                 })}
               >
                 {this.renderEditingCustomAttributes()}
+                {this.renderEditingTemplates()}
                 <hr />
                 {this.renderAddCustomAttribute()}
               </div>

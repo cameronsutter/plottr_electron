@@ -18,7 +18,7 @@ import {
 import { seriesLine } from '../../../shared/initialState'
 import { newFileSeriesLines } from '../../../shared/newFileState'
 import { nextId } from 'store/newIds'
-import { nextColor } from 'store/lineColors'
+import { nextBackgroundColor, nextColor } from 'store/lineColors'
 import { nextPosition, positionReset } from 'helpers/lists'
 
 const initialState = [seriesLine]
@@ -31,6 +31,7 @@ export default function seriesLines(state = initialState, action) {
           id: nextId(state),
           title: '',
           color: nextColor(state.length),
+          backgroundColor: nextBackgroundColor(state.length),
           position: nextPosition(state),
           expanded: null,
         },
@@ -45,6 +46,7 @@ export default function seriesLines(state = initialState, action) {
             id: l.id,
             title: l.title,
             color: nextColor(state.length + idx),
+            backgroundColor: nextBackgroundColor(state.length + idx),
             position: position + idx,
           }
         }),
@@ -85,6 +87,7 @@ export default function seriesLines(state = initialState, action) {
           id: nextId(state),
           title: i18n('Main Plot'),
           color: nextColor(0),
+          backgroundColor: nextBackgroundColor(0),
           position: 0,
           expanded: null,
         },

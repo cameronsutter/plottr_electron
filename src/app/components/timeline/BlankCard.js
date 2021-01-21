@@ -145,6 +145,7 @@ class BlankCard extends Component {
         </div>
         <div
           className="non-template"
+          onClick={this.startCreating}
           onMouseEnter={this.onAddWithDefaultHover}
           onMouseLeave={this.onAddWithDefaultLeave}
           style={addWithDefaultStyle}
@@ -196,7 +197,6 @@ class BlankCard extends Component {
           onDragOver={this.handleDragOver}
           onDragLeave={this.handleDragLeave}
           onDrop={this.handleDrop}
-          onClick={this.startCreating}
         >
           {/* This div is necessary to match the structure of scene cell cards
               and thus get the styles to apply in the same way (flexbox) */}

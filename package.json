@@ -24,7 +24,7 @@
     "pack": "NODE_ENV=production node_modules/.bin/webpack",
     "pack:windows": "node_modules\\.bin\\webpack",
     "dist": "node build/initEnv.js && npm run pack && electron-builder -ml",
-    "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder",
+    "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder -w",
     "dist:all": "npm run pack && electron-builder -mw",
     "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" && npm run generate-flipped",
     "generate-flipped": "node ./locales/build-flipped-locale.js",

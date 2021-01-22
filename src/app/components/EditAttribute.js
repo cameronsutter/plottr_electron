@@ -7,8 +7,9 @@ export class EditAttribute extends Component {
   render () {
     const {
       name,
+      value,
       type,
-      idx,
+      inputId,
       entity,
       ui,
       handleLongDescriptionChange,
@@ -21,7 +22,7 @@ export class EditAttribute extends Component {
       <div>
         <ControlLabel>{name}</ControlLabel>
         <RichText
-          description={entity[name]}
+          description={value || entity[name]}
           onChange={(desc) => handleLongDescriptionChange(name, desc)}
           editable
           autofocus={false}
@@ -29,13 +30,13 @@ export class EditAttribute extends Component {
         />
       </div>
     ) : (
-      <FormGroup key={idx}>
+      <FormGroup>
         <ControlLabel>{name}</ControlLabel>
         <FormControl
           type="text"
-          id={`${name}Input`}
+          id={inputId || `${name}Input`}
           ref={withRef}
-          defaultValue={entity[name]}
+          defaultValue={value || entity[name]}
           onKeyDown={onShortDescriptionKeyDown}
           onKeyPress={onShortDescriptionKeyPress}
         />
@@ -45,9 +46,13 @@ export class EditAttribute extends Component {
 
   static propTypes = {
     name: PropTypes.string.isRequired,
+    // Templates have values.  Non-template attributes are values on
+    // the entity object.
+    value: PropTypes.string,
     type: PropTypes.string.isRequired,
     entity: PropTypes.object.isRequired,
     ui: PropTypes.object.isRequired,
+    inputId: PropTypes.string,
     handleLongDescriptionChange: PropTypes.func.isRequired,
     onShortDescriptionKeyDown: PropTypes.func.isRequired,
     onShortDescriptionKeyPress: PropTypes.func.isRequired,

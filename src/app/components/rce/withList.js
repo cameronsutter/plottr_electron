@@ -88,19 +88,16 @@ export function withList(editor) {
     if (parentNode.type !== 'list-item') return void insertBreak();
 
     // only do custom insertBreak if the list item has empty text
-    const [node] = Editor.node(editor, editor.selection);
+    const [node, path] = Editor.node(editor, editor.selection);
     if (node.text.length > 0) return void insertBreak();
 
-    Transforms.setNodes(editor, {
-      type: 'paragraph',
-      at: parentPath
+    Transforms.liftNodes(editor, {
+      at: parentPath,
     });
 
-    if (Editor.isInList(editor, editor.selection)) {
-      Transforms.liftNodes(editor, {
-        at: parentPath,
-      });
-    }
+    Transforms.setNodes(editor, {
+      type: 'paragraph'
+    })
   }
 
   editor.deleteBackward = (unit) => {
@@ -120,14 +117,13 @@ export function withList(editor) {
     const [node] = Editor.node(editor, editor.selection);
     if (node.text.length > 0) return void deleteBackward(unit);
 
-    Transforms.setNodes(editor, {
-      type: 'paragraph',
-      at: parentPath,
-    });
-
     Transforms.liftNodes(editor, {
       at: parentPath,
     })
+
+    Transforms.setNodes(editor, {
+      type: 'paragraph',
+    });
   }
 
   return editor;

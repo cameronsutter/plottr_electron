@@ -4,25 +4,20 @@ import { findDOMNode } from 'react-dom'
 import i18n from 'format-message'
 import isHotkey from 'is-hotkey'
 import { ButtonGroup, Overlay, Navbar, Nav, NavItem } from 'react-bootstrap'
-import { createEditor } from 'slate'
-import { Slate, Editable, withReact } from 'slate-react'
-import { withHistory } from 'slate-history'
+import { Slate, Editable } from 'slate-react'
 import { FaBold, FaItalic, FaUnderline, FaQuoteLeft, FaListOl, FaListUl, FaStrikethrough } from 'react-icons/fa'
 import ToolBar from './ToolBar'
 import { MarkButton, toggleMark } from './MarkButton'
 import BlockButton from './BlockButton'
-import { LinkButton, withLinks } from './LinkButton'
-import { ImagesButton, withImages } from './ImagesButton'
+import { LinkButton } from './LinkButton'
+import { ImagesButton } from './ImagesButton'
 import { ColorButton, addColorMark } from './ColorButton'
 import { FontsButton } from './FontsButton'
-import { withHTML } from './withHTML'
 import MiniColorPicker from '../MiniColorPicker'
-import withNormalizer from './Normalizer'
 import Leaf from './Leaf'
 import Element from './Element'
 import cx from 'classnames'
-import { useTextConverter } from './helpers'
-import { withList } from './withList'
+import { useTextConverter, createEditor } from './helpers'
 import { useRegisterEditor } from './editor-registry';
 
 const HOTKEYS = {
@@ -33,7 +28,7 @@ const HOTKEYS = {
 
 const RichTextEditor = (props) => {
   const editor = useMemo(() => {
-    return withList(withNormalizer(withHTML(withImages(withLinks(withHistory(withReact(createEditor())))))))
+    return createEditor()
   }, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
   const renderElement = useCallback(props => <Element {...props} />, [])

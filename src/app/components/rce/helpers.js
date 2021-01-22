@@ -1,7 +1,14 @@
 import { cloneDeep } from 'lodash'
-import { Editor } from 'slate'
+import { Editor, createEditor as createSlateEditor } from 'slate'
+import { withReact } from 'slate-react'
 import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 import { rceDataRepair } from './rceDataRepair'
+import { withHistory } from 'slate-history'
+import { withLinks } from './LinkButton'
+import { withImages } from './ImagesButton'
+import { withHTML } from './withHTML'
+import withNormalizer from './Normalizer'
+import { withList } from './withList'
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list']
 export const HEADING_TYPES = ['heading-one', 'heading-two']
@@ -17,6 +24,10 @@ export function useTextConverter (text) {
   }
 
   return rceDataRepair(rceText)
+}
+
+export function createEditor() {
+  return withList(withNormalizer(withHTML(withImages(withLinks(withHistory(withReact(createSlateEditor())))))))
 }
 
 // Gets the previous sibling node to the provided path at the same depth

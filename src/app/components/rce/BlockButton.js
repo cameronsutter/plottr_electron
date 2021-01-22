@@ -7,84 +7,86 @@ import {
   HEADING_TYPES,
 } from './helpers'
 
-const BlockButton = ({ format, icon }) => {
-  const isBlockActive = (editor, format) => {
-    const [match] = Editor.nodes(editor, {
-      match: n => n.type === format,
-    })
+export const isBlockActive = (editor, format) => {
+  const [match] = Editor.nodes(editor, {
+    match: n => n.type === format,
+  })
 
-    return !!match
-  }
+  return !!match
+}
 
-  const handleList = (editor, format) => {
-    const isInList = Editor.isInList(editor, editor.selection)
+export const handleHeadings = (editor, format) => {
+  const isActive = isBlockActive(editor, format);
 
-    Transforms.unwrapNodes(editor, {
-      match: n => LIST_TYPES.includes(n.type),
-      split: true,
-    })
-
+  // this means that the text is already in the format that
+  // was pressed so we should toggle it out of the heading
+  if (isActive) {
     Transforms.setNodes(editor, {
-      type: 'paragraph',
+      type: 'paragraph'
     })
-
-    if (!isInList) {
-      const block = { type: format, children: [] }
-      Transforms.wrapNodes(editor, block)
-  
-      // all the nodes should have the same parent since we wrapped them
-      const [, parentPath] = Editor.parentOfType(editor, editor.selection, {
-        match: n => LIST_TYPES.includes(n.type)
-      });
-
-      // if the next sibling is the same kind of list we want to merge them
-      // this has to be first because the next operation has the potential of
-      // changing the parent path
-      const nextSibling = Editor.nextSibling(editor, parentPath);
-      if (nextSibling != null && nextSibling[0].type === format) {
-        Transforms.mergeNodes(editor, {
-          at: nextSibling[1],
-        });
-      }
-
-      // if the previous sibling is the same kind of list we want to merge them
-      const previousSibling = Editor.previousSibling(editor, parentPath);
-      if (previousSibling != null && previousSibling[0].type === format) {
-        Transforms.mergeNodes(editor, {
-          at: parentPath,
-        });
-      }
-    }
+    return;
   }
 
-  const handleHeadings = (editor, format) => {
-    const isActive = isBlockActive(editor, format);
-    if (isActive) {
-      Transforms.unwrapNodes(editor, {
-        match: n => n.type === format,
-        split: true
-      });
-      return;
-    }
+  const [isInHeading] = Editor.nodes(editor, {
+    match: n => HEADING_TYPES.includes(n.type),
+  });
 
-    const [isInHeading] = Editor.nodes(editor, {
-      match: n => HEADING_TYPES.includes(n.type),
+  // if the node is in a heading (won't be the same type
+  // since that is handled above) we want to change the heading type
+  // to the new heading type
+  if (Boolean(isInHeading)) {
+    Transforms.setNodes(editor, {
+      type: format
+    })
+    return
+  }
+
+  // wrap in the new heading type
+  Transforms.wrapNodes(editor, { type: format });
+}
+
+export const handleList = (editor, format) => {
+  const isInList = Editor.isInList(editor, editor.selection)
+
+  Transforms.unwrapNodes(editor, {
+    match: n => LIST_TYPES.includes(n.type),
+    split: true,
+  })
+
+  Transforms.setNodes(editor, {
+    type: 'paragraph',
+  })
+
+  if (!isInList) {
+    const block = { type: format, children: [] }
+    Transforms.wrapNodes(editor, block)
+
+    // all the nodes should have the same parent since we wrapped them
+    const [, parentPath] = Editor.parentOfType(editor, editor.selection, {
+      match: n => LIST_TYPES.includes(n.type)
     });
 
-    // if the node is in a heading (won't be the same type
-    // since that is handled above) we have to remove the 
-    // other heading as they can't be nested 
-    if (Boolean(isInHeading)) {
-      Transforms.unwrapNodes(editor, {
-        match: n => HEADING_TYPES.includes(n.type),
-        split: true,
+    // if the next sibling is the same kind of list we want to merge them
+    // this has to be first because the next operation has the potential of
+    // changing the parent path
+    const nextSibling = Editor.nextSibling(editor, parentPath);
+    if (nextSibling != null && nextSibling[0].type === format) {
+      Transforms.mergeNodes(editor, {
+        at: nextSibling[1],
       });
     }
 
-    // wrap in the new heading type
-    Transforms.wrapNodes(editor, { type: format });
+    // if the previous sibling is the same kind of list we want to merge them
+    const previousSibling = Editor.previousSibling(editor, parentPath);
+    if (previousSibling != null && previousSibling[0].type === format) {
+      Transforms.mergeNodes(editor, {
+        at: parentPath,
+      });
+    }
   }
+}
 
+const BlockButton = ({ format, icon }) => {
   const handleBlockQuote = (editor, format) => {
     const isActive = isBlockActive(editor, format)
 

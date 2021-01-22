@@ -31,20 +31,11 @@ const BlockButton = ({ format, icon }) => {
     if (!isInList) {
       const block = { type: format, children: [] }
       Transforms.wrapNodes(editor, block)
-      
-      const nodes = [...Editor.nodes(editor, {
-        match: n => n.type === 'paragraph'
-      })]
-
-      for (const [, path] of nodes) {
-        Transforms.setNodes(editor, {
-          type: 'list-item',
-          at: path,
-        });
-      }
-      
+  
       // all the nodes should have the same parent since we wrapped them
-      const [, parentPath] = Editor.parent(editor, nodes[0][1]);
+      const [, parentPath] = Editor.parentOfType(editor, editor.selection, {
+        match: n => LIST_TYPES.includes(n.type)
+      });
 
       // if the next sibling is the same kind of list we want to merge them
       // this has to be first because the next operation has the potential of

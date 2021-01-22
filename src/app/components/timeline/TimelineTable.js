@@ -127,7 +127,7 @@ class TimelineTable extends Component {
     }
   }
 
-  renderLines () {
+  renderHorizontal () {
     const { lines, isSmall, ui } = this.props
 
     const chapterMap = this.chapterMapping()
@@ -135,7 +135,7 @@ class TimelineTable extends Component {
     let howManyCells = 0
     const renderedLines = lines.map(line => {
       const lineTitle = <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={ui.currentTimeline}/>
-      const cards = this.renderCardsByChapter(line, chapterMap, chapterMapKeys)
+      const cards = this.renderHorizontalCards(line, chapterMap, chapterMapKeys)
       howManyCells = cards.length
       if (isSmall) {
         return <tr key={`lineId-${line.id}`}>
@@ -153,7 +153,7 @@ class TimelineTable extends Component {
     return [...renderedLines, <AddLineRow key='insert-line' bookId={ui.currentTimeline} howManyCells={howManyCells} />]
   }
 
-  renderChapters() {
+  renderVertical () {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
     const { chapters, isSmall, isLarge } = this.props
@@ -171,7 +171,7 @@ class TimelineTable extends Component {
       if (isSmall) {
         return <tr key={`chapterId-${chapter.id}`}>
           { chapterTitle }
-          { this.renderCardsByLine(chapter, lineMap, lineMapKeys) }
+          { this.renderVerticalCards(chapter, lineMap, lineMapKeys) }
         </tr>
       } else {
         return [<Row key={`chapterId-${chapter.id}`}>
@@ -180,31 +180,38 @@ class TimelineTable extends Component {
           </Row>,
           <Row key={`chapterId-${chapter.id}-insert`}>
             { chapterTitle }
-            { this.renderCardsByLine(chapter, lineMap, lineMapKeys) }
+            { this.renderVerticalCards(chapter, lineMap, lineMapKeys) }
           </Row>
         ]
       }
     })
 
+    let finalRow
+
     if (isSmall) {
-      return renderedChapters
+      const tds = lineMapKeys.map(linePosition => <td key={linePosition}/>)
+      finalRow = <tr key='last-insert'>
+        <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true}/>
+        { [...tds, <td key='empty-cell'/>] }
+      </tr>
     } else {
-      const finalRow = <Row key='last-insert'>
+      finalRow = <Row key='last-insert'>
         <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true}/>
       </Row>
-      return [].concat(renderedChapters, finalRow)
     }
+
+    return [...renderedChapters, finalRow]
   }
 
   renderRows() {
     if (this.props.ui.orientation === 'horizontal') {
-      return this.renderLines()
+      return this.renderHorizontal()
     } else {
-      return this.renderChapters()
+      return this.renderVertical()
     }
   }
 
-  renderCardsByChapter (line, chapterMap, chapterMapKeys) {
+  renderHorizontalCards (line, chapterMap, chapterMapKeys) {
     const { cardMap, isLarge } = this.props
     return chapterMapKeys.flatMap(chapterPosition => {
       const cells = []
@@ -229,9 +236,9 @@ class TimelineTable extends Component {
     })
   }
 
-  renderCardsByLine(chapter, lineMap, lineMapKeys) {
-    const { cardMap } = this.props
-    return lineMapKeys.flatMap((linePosition) => {
+  renderVerticalCards (chapter, lineMap, lineMapKeys) {
+    const { cardMap, isSmall } = this.props
+    const renderedCards = lineMapKeys.flatMap(linePosition => {
       const cells = []
       const line = lineMap[linePosition]
       const cards = cardMap[`${line.id}-${chapter.id}`]
@@ -262,6 +269,11 @@ class TimelineTable extends Component {
       }
       return cells
     })
+    if (isSmall) {
+      return [...renderedCards, <td key='empty-cell'/>]
+    } else {
+      return renderedCards
+    }
   }
 
   render () {

@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
+import cx from 'classnames'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 import VisualLine from './VisualLine'
@@ -42,7 +43,9 @@ class ChapterInsertCell extends PureComponent {
     </div>
 
     if (isSmall) {
-      return <th className='rotate-45'>
+      const isHorizontal = orientation == 'horizontal'
+      const klasses = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal }
+      return <th className={cx(klasses)}>
         { insideDiv }
       </th>
     } else {

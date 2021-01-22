@@ -99,6 +99,7 @@
 
         &:hover {
           border: 2px dotted $blue-7;
+          background-color: $blue-8;
         }
       }
     }
@@ -242,9 +243,6 @@
         &:hover {
           border: 2px solid $blue-7;
           background-color: $blue-8;
-          // .insert-chapter-wrapper.append-chapter {
-          //   border: 2px dashed $blue-7;
-          // }
         }
       }
 
@@ -289,6 +287,7 @@
   }
 
   .small-timeline__wrapper.vertical {
+    padding-bottom: 4px;
     .table-header-rotated {
       margin-left: 20px;
 
@@ -298,6 +297,42 @@
         width: 102px; // 70 + 16 + 16
         min-width: 102px; // 70 + 16 + 16
         text-align: right;
+
+        .vertical-chapter-list__insert.append-chapter {
+          height: unset;
+          width: unset;
+          margin: 0;
+          font-size: 8px;
+          .vertical-insert-chapter-wrapper.append-chapter {
+            padding: 2px 0;
+            border: none;
+            margin: 0;
+          }
+
+          &:hover {
+            border: 2px solid $blue-7;
+            background-color: $blue-8;
+          }
+        }
+      }
+
+      th.rotate-45 {
+        .vertical-line-list__append-line {
+          cursor: pointer;
+          font-size: 8px;
+
+          .vertical-line-list__append-line-wrapper {
+            padding: 0;
+            margin: 0;
+            border: none;
+            transform: translate(5px) skew(45deg, 0deg);
+          }
+
+          &:hover {
+            border: 2px solid $blue-7;
+            background-color: $blue-8;
+          }
+        }
       }
     }
   }

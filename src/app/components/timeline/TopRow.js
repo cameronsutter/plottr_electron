@@ -125,7 +125,6 @@ class TopRow extends Component {
       </div>
     </div>
 
-    // TODO: verify that this works
     if (isSmall) {
       const insertLineTH = <th key='insert-line' className='rotate-45'>
         { insertLineDiv }

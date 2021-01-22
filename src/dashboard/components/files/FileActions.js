@@ -77,7 +77,7 @@ export default function FileOptions ({missing, id, filePath, openFile}) {
       <Dropdown.Menu>
         {missing ? null : <MenuItem eventKey='open'>{t('Open')}</MenuItem>}
         {missing ? null : <MenuItem eventKey='show'>{showInMessage}</MenuItem>}
-        {missing ? null : <MenuItem eventKey='rename'>{t('Rename this file')}</MenuItem>}
+        {missing ? null : <MenuItem eventKey='rename'>{t('Rename')}</MenuItem>}
         {isTemp ? null : <MenuItem eventKey='remove'>{t('Remove from this list')}</MenuItem>}
         {missing ? null : <MenuItem eventKey='delete'>{t('Delete')}</MenuItem>}
       </Dropdown.Menu>

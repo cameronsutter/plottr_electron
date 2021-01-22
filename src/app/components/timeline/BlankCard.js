@@ -59,6 +59,7 @@ class BlankCard extends Component {
       creating: false,
       templates: [],
     })
+    if (this.props.onDone) this.props.onDone()
   }
 
   handleFinishCreate = (event) => {
@@ -75,9 +76,14 @@ class BlankCard extends Component {
   buildCard (title) {
     const { chapterId, lineId } = this.props
     if (this.props.isSeries) {
-      return { title, beatId: chapterId, seriesLineId: lineId, positionWithinLine: 0 }
+      return {
+        title,
+        beatId: chapterId,
+        seriesLineId: lineId,
+        positionWithinLine: this.props.positionWithinLine || 0,
+      }
     } else {
-      return { title, chapterId, lineId, positionWithinLine: 0 }
+      return { title, chapterId, lineId, positionWithinLine: this.props.positionWithinLine || 0 }
     }
   }
 
@@ -156,11 +162,11 @@ class BlankCard extends Component {
           background: this.props.backgroundColor,
         }
       : {}
+    const bodyClass = this.props.verticalInsertion
+      ? 'vertical-blank-card__body'
+      : 'blank-card__body'
     return (
-      <div
-        className={cx('blank-card__body', { hover: this.state.dropping })}
-        style={blankCardStyle}
-      >
+      <div className={cx(bodyClass, { hover: this.state.dropping })} style={blankCardStyle}>
         <div
           className="template"
           onClick={this.showTemplatePicker}
@@ -201,8 +207,9 @@ class BlankCard extends Component {
     const cardStyle = {
       borderColor: this.props.color,
     }
+    const bodyClass = this.props.verticalInsertion ? 'vertical-card__body' : 'card__body'
     return (
-      <div className="card__body" style={cardStyle}>
+      <div className={bodyClass} style={cardStyle}>
         <FormGroup>
           <ControlLabel>{i18n('Scene Title')}</ControlLabel>
           <FormControl
@@ -232,19 +239,23 @@ class BlankCard extends Component {
     const vertical = this.props.orientation === 'vertical'
     return (
       <>
-        <Cell>
-          <div
-            className={cx('card__cell', { vertical })}
-            onDragEnter={this.handleDragEnter}
-            onDragOver={this.handleDragOver}
-            onDragLeave={this.handleDragLeave}
-            onDrop={this.handleDrop}
-          >
-            {/* This div is necessary to match the structure of scene cell cards
-               and thus get the styles to apply in the same way (flexbox) */}
-            <div>{body}</div>
-          </div>
-        </Cell>
+        {this.props.verticalInsertion ? (
+          body
+        ) : (
+          <Cell>
+            <div
+              className={cx('card__cell', { vertical })}
+              onDragEnter={this.handleDragEnter}
+              onDragOver={this.handleDragOver}
+              onDragLeave={this.handleDragLeave}
+              onDrop={this.handleDrop}
+            >
+              {/* This div is necessary to match the structure of scene cell cards
+                 and thus get the styles to apply in the same way (flexbox) */}
+              <div>{body}</div>
+            </div>
+          </Cell>
+        )}
         {this.renderTemplatePicker()}
       </>
     )
@@ -264,11 +275,14 @@ class BlankCard extends Component {
 BlankCard.propTypes = {
   chapterId: PropTypes.number,
   lineId: PropTypes.number,
+  verticalInsertion: PropTypes.bool,
   color: PropTypes.string.isRequired,
   backgroundColor: PropTypes.string.isRequired,
   currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   orientation: PropTypes.string,
   isSeries: PropTypes.bool,
+  positionWithinLine: PropTypes.number,
+  onDone: PropTypes.func,
 }
 
 function mapStateToProps (state) {

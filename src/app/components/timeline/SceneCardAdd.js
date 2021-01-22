@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import BlankCard from './BlankCard'
 import PropTypes from 'react-proptypes'
 import i18n from 'format-message'
 import { findDOMNode } from 'react-dom'
@@ -14,6 +15,10 @@ export default class SceneCardAdd extends Component {
     this.setState({ creating: false })
   }
 
+  stopCreating = () => {
+    this.setState({ creating: false })
+  }
+
   handleFinishCreate = (event) => {
     if (event.which === 13) {
       //enter
@@ -24,6 +29,7 @@ export default class SceneCardAdd extends Component {
   handleCancelCreate = (event) => {
     if (event.which === 27) {
       //esc
+      window.removeEventListener('keydown', this.handleCancelCreate)
       this.setState({ creating: false })
     }
   }
@@ -40,6 +46,7 @@ export default class SceneCardAdd extends Component {
   }
 
   startCreating = () => {
+    window.addEventListener('keydown', this.handleCancelCreate)
     this.setState({ creating: true })
   }
 
@@ -76,19 +83,16 @@ export default class SceneCardAdd extends Component {
         borderColor: this.props.color,
       }
       return (
-        <div className="card__body" style={cardStyle}>
-          <FormGroup>
-            <ControlLabel>{i18n('Scene Title')}</ControlLabel>
-            <FormControl
-              type="text"
-              autoFocus
-              ref="titleInput"
-              bsSize="small"
-              onBlur={this.handleBlur}
-              onKeyDown={this.handleCancelCreate}
-              onKeyPress={this.handleFinishCreate}
-            />
-          </FormGroup>
+        <div className="vertical-blank-card__wrapper">
+          <BlankCard
+            verticalInsertion
+            chapterId={this.props.chapterId}
+            lineId={this.props.lineId}
+            positionWithinLine={this.props.positionWithinLine + 1}
+            color={this.props.color}
+            backgroundColor={this.props.backgroundColor}
+            onDone={this.stopCreating}
+          />
         </div>
       )
     } else {
@@ -128,10 +132,13 @@ export default class SceneCardAdd extends Component {
 
   static propTypes = {
     color: PropTypes.string.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
     positionWithinLine: PropTypes.number.isRequired,
     moveCard: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
     allowDrop: PropTypes.bool.isRequired,
+    chapterId: PropTypes.number.isRequired,
+    lineId: PropTypes.number.isRequired,
     dropPosition: PropTypes.number,
   }
 }

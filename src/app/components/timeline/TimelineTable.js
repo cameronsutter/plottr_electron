@@ -233,6 +233,7 @@ class TimelineTable extends Component {
             chapterPosition={chapterPosition}
             linePosition={line.position}
             color={line.color}
+            backgroundColor={line.backgroundColor}
           />
         )
       } else {
@@ -267,6 +268,7 @@ class TimelineTable extends Component {
             chapterPosition={chapter.position}
             linePosition={linePosition}
             color={line.color}
+            backgroundColor={line.backgroundColor}
           />
         )
       } else {

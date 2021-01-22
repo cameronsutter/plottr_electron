@@ -151,11 +151,16 @@ export function isPropertyEmpty(property) {
   // If the array has more than one item it's not empty
   if (property.length > 1) return false
 
-  // OLD: This is to account for old pltr files 
+  // OLD: This is to account for old pltr files
   if (property[0].type == null) return true
 
   // NEW: new files will have an empty paragraph
-  if (property[0].type === 'paragraph' && property[0].children.length === 1 && property[0].children[0].text === '') return true
+  if (
+    property[0].type === 'paragraph' &&
+    property[0].children.length === 1 &&
+    property[0].children[0].text === ''
+  )
+    return true
 
   return false
 }

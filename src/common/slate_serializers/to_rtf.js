@@ -1,3 +1,8 @@
+/*
+ * Some documentation on RTF documents can be found here:
+ * https://www.oreilly.com/library/view/rtf-pocket-guide/9781449302047/ch01.html
+ */
+
 import rtf from 'jsrtf'
 import i18n from 'format-message'
 

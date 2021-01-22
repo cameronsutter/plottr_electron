@@ -260,8 +260,15 @@ describe('scrivener export utils', () => {
       expect(isPropertyEmpty('a')).toEqual(false)
     })
 
-    it('returns true if the value is empty RichContent', () => {
+    it('OLD: returns true if the value is empty RichContent', () => {
       expect(isPropertyEmpty([{}])).toEqual(true)
+    })
+
+    it('NEW: returns true if the only object is an empty paragraph', () => {
+      expect(isPropertyEmpty([{
+        type: 'paragraph',
+        children: [{ text: '' }]
+      }])).toEqual(true)
     })
 
     it('returns false if the value is RichContent', () => {

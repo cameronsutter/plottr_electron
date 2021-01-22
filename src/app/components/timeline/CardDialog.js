@@ -26,11 +26,19 @@ import { EditAttribute } from '../EditAttribute'
 class CardDialog extends Component {
   constructor (props) {
     super(props)
+    const templateAttrs = props.card.templates.reduce((acc, t) => {
+      acc[t.id] = t.attributes.reduce((obj, attr) => {
+        obj[attr.name] = attr.value
+        return obj
+      }, {})
+      return acc
+    }, {})
     this.state = {
       description: props.card.description,
       paragraphs: {},
       deleting: false,
       inputRefs: [],
+      templateAttrs,
       selected: 'Description',
     }
   }
@@ -96,10 +104,21 @@ class CardDialog extends Component {
     })
   }
 
+  handleTemplateAttrDescriptionChange = (id, attr) => (desc) => {
+    let templateAttrs = {
+      ...this.state.templateAttrs,
+      [id]: {
+        ...this.state.templateAttrs[id],
+        [attr]: desc,
+      },
+    }
+    this.setState({ templateAttrs })
+  }
+
   saveEdit = () => {
     var newTitle = findDOMNode(this.refs.titleInput).value
     const attrs = {}
-    this.props.customAttributes.forEach(attr => {
+    this.props.customAttributes.forEach((attr) => {
       const { name, type } = attr
       if (type == 'paragraph') {
         attrs[name] = this.state.paragraphs[name] || this.props.card[name]
@@ -108,12 +127,12 @@ class CardDialog extends Component {
         attrs[name] = val
       }
     })
-    const templates = this.props.card.templates.map(t => {
-      t.attributes = t.attributes.map(attr => {
+    const templates = this.props.card.templates.map((t) => {
+      t.attributes = t.attributes.map((attr) => {
         if (attr.type == 'paragraph') {
           attr.value = this.state.templateAttrs[t.id][attr.name]
         } else {
-          attr.value = findDOMNode(this.refs[`${t.id}-${attr.name}Input`]).value
+          attr.value = this.findChildInput(`${t.id}-${attr.name}Input`).value
         }
         return attr
       })
@@ -191,6 +210,26 @@ class CardDialog extends Component {
           />
         </React.Fragment>
       )
+    })
+  }
+
+  renderEditingTemplates () {
+    const { card, ui } = this.props
+    return card.templates.flatMap((t) => {
+      return t.attributes.map((attr, idx) => (
+        <React.Fragment key={idx}>
+          <EditAttribute
+            entity={card}
+            ui={ui}
+            inputId={`${t.id}-${attr.name}Input`}
+            handleLongDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
+            onShortDescriptionKeyDown={this.handleEsc}
+            onShortDescriptionKeyPress={this.handleEnter}
+            withRef={this.addInputRef}
+            {...attr}
+          />
+        </React.Fragment>
+      ))
     })
   }
 
@@ -385,6 +424,7 @@ class CardDialog extends Component {
                 }`}
               >
                 {this.renderEditingCustomAttributes()}
+                {this.renderEditingTemplates()}
               </div>
             </div>
           </div>

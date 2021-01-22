@@ -9,6 +9,7 @@ import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 import { isSeriesSelector } from '../../selectors/ui'
+import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 
 class BlankCard extends Component {
   constructor (props) {
@@ -18,6 +19,8 @@ class BlankCard extends Component {
       dropping: false,
       templateHover: false,
       defaultHover: false,
+      showTemplatePicker: false,
+      templates: [],
     }
   }
 
@@ -49,8 +52,13 @@ class BlankCard extends Component {
 
   saveCreate = () => {
     const newCard = this.buildCard(findDOMNode(this.refs.titleInput).value)
-    this.props.actions.addCard(newCard)
-    this.setState({ creating: false })
+    this.props.actions.addCard(
+      Object.assign(newCard, this.state.templates ? { templates: this.state.templates } : {})
+    )
+    this.setState({
+      creating: false,
+      templates: [],
+    })
   }
 
   handleFinishCreate = (event) => {
@@ -115,6 +123,24 @@ class BlankCard extends Component {
     })
   }
 
+  showTemplatePicker = () => {
+    this.setState({
+      showTemplatePicker: true,
+    })
+  }
+
+  handleChooseTemplate = (template) => {
+    this.setState({
+      templates: [template, ...this.state.templates],
+      showTemplatePicker: false,
+      creating: true,
+    })
+  }
+
+  closeTemplatePicker = () => {
+    this.setState({ showTemplatePicker: false })
+  }
+
   renderBlank () {
     const blankCardStyle = {
       borderColor: this.props.color,
@@ -137,6 +163,7 @@ class BlankCard extends Component {
       >
         <div
           className="template"
+          onClick={this.showTemplatePicker}
           onMouseEnter={this.onAddWithTemplateHover}
           onMouseLeave={this.onAddWithTemplateLeave}
           style={addWithTemplateStyle}
@@ -153,6 +180,20 @@ class BlankCard extends Component {
           <Glyphicon glyph="plus" />
         </div>
       </div>
+    )
+  }
+
+  renderTemplatePicker() {
+    if (!this.state.showTemplatePicker) return null
+
+    return (
+      <TemplatePicker
+        type={['scenes']}
+        modal={true}
+        isOpen={this.state.showTemplatePicker}
+        close={this.closeTemplatePicker}
+        onChooseTemplate={this.handleChooseTemplate}
+      />
     )
   }
 
@@ -190,19 +231,22 @@ class BlankCard extends Component {
 
     const vertical = this.props.orientation === 'vertical'
     return (
-      <Cell>
-        <div
-          className={cx('card__cell', { vertical })}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}
-          onDrop={this.handleDrop}
-        >
-          {/* This div is necessary to match the structure of scene cell cards
-              and thus get the styles to apply in the same way (flexbox) */}
-          <div>{body}</div>
-        </div>
-      </Cell>
+      <>
+        <Cell>
+          <div
+            className={cx('card__cell', { vertical })}
+            onDragEnter={this.handleDragEnter}
+            onDragOver={this.handleDragOver}
+            onDragLeave={this.handleDragLeave}
+            onDrop={this.handleDrop}
+          >
+            {/* This div is necessary to match the structure of scene cell cards
+               and thus get the styles to apply in the same way (flexbox) */}
+            <div>{body}</div>
+          </div>
+        </Cell>
+        {this.renderTemplatePicker()}
+      </>
     )
   }
 
@@ -212,6 +256,7 @@ class BlankCard extends Component {
     if (this.props.color != nextProps.color) return true
     if (this.state.templateHover !== nextState.templateHover) return true
     if (this.state.defaultHover !== nextState.defaultHover) return true
+    if (this.state.showTemplatePicker !== nextState.showTemplatePicker) return true
     return false
   }
 }

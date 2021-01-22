@@ -27,7 +27,9 @@ import { cardMapSelector } from '../../selectors/cards'
 import { isSeriesSelector } from '../../selectors/ui'
 
 class TimelineTable extends Component {
-  state = { tableLength: 0 }
+  state = {
+    tableLength: 0,
+  }
 
   setLength = () => {
     const table = findDOMNode(this.props.tableRef)

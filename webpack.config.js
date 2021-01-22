@@ -59,7 +59,13 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
-    modules: ['node_modules', 'src/app', 'src/css', 'src/dashboard', 'test'],
+    modules: ['node_modules', 'src/app', 'test'],
+    alias: {
+      app: path.resolve(__dirname, 'src', 'app'),
+      css: path.resolve(__dirname, 'src', 'css'),
+      dashboard: path.resolve(__dirname, 'src', 'dashboard'),
+      test: path.resolve(__dirname, 'test'),
+    },
   },
   target: 'electron-renderer',
   externals: [

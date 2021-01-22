@@ -66,7 +66,7 @@ const serialize = (nodes, doc) => {
         return n.children.map(child => {
           if (child.text != null) {
             return new Paragraph({
-              children: leaf(child),
+              children: [leaf(child)],
               heading: headingLevel
             });
           }
@@ -96,7 +96,9 @@ const serialize = (nodes, doc) => {
       case 'block-quote':
       case 'paragraph':
       default:
-        return new Paragraph({children: children})
+        if (Array.isArray(children)) {
+          return new Paragraph({children: children})
+        }
     }
   })
 }

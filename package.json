@@ -28,7 +28,7 @@
     "dist:all": "npm run pack && electron-builder -mw",
     "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" && npm run generate-flipped",
     "generate-flipped": "node ./locales/build-flipped-locale.js",
-    "test": "jest src bin shared",
+    "test": "jest",
     "start-redux-dev-tools": "redux-devtools --hostname=localhost --port=8000",
     "lint-file": "eslint",
     "lint": "eslint ."

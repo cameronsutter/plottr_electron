@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import * as SceneActions from 'actions/scenes'
-import * as BeatActions from 'actions/beats'
 import * as SeriesLineActions from 'actions/seriesLines'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
@@ -20,6 +19,7 @@ import { isSeriesSelector } from '../../selectors/ui'
 import { actions } from 'pltr/v2'
 
 const LineActions = actions.lineActions
+const BeatActions = actions.beatActions
 
 class TopRow extends Component {
   handleReorderChapters = (originalPosition, droppedPosition) => {

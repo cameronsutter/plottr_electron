@@ -12,7 +12,6 @@ import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
 import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
-import * as BeatActions from 'actions/beats'
 import * as SeriesLineActions from 'actions/seriesLines'
 import * as CardActions from 'actions/cards'
 import { reorderList } from 'helpers/lists'
@@ -27,6 +26,7 @@ import { isSeriesSelector } from '../../selectors/ui'
 import { actions } from 'pltr/v2'
 
 const LineActions = actions.lineActions
+const BeatActions = actions.beatActions
 
 class TimelineTable extends Component {
   state = {

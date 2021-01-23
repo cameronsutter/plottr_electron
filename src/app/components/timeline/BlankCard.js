@@ -136,8 +136,12 @@ class BlankCard extends Component {
   }
 
   handleChooseTemplate = (template) => {
+    const newTemplates = this.state.templates.find(({ id }) => id === template.id)
+      ? this.state.templates
+      : [template, ...this.state.templates]
+
     this.setState({
-      templates: [template, ...this.state.templates],
+      templates: newTemplates,
       showTemplatePicker: false,
       creating: true,
     })

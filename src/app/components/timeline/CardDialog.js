@@ -198,7 +198,7 @@ class CardDialog extends Component {
     const { card, ui, customAttributes } = this.props
     return customAttributes.map((attr, idx) => {
       return (
-        <React.Fragment key={idx}>
+        <React.Fragment key={`custom-attribute-${idx}-${attr.name}`}>
           <EditAttribute
             entity={card}
             ui={ui}
@@ -217,7 +217,7 @@ class CardDialog extends Component {
     const { card, ui } = this.props
     return card.templates.flatMap((t) => {
       return t.attributes.map((attr, idx) => (
-        <React.Fragment key={idx}>
+        <React.Fragment key={`template-attribute-${idx}-${t.id}-${attr.name}`}>
           <EditAttribute
             entity={card}
             ui={ui}

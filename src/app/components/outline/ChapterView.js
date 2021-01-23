@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as CardActions from 'actions/cards'
 import * as SceneActions from 'actions/scenes'
-import * as BeatActions from 'actions/beats'
 import { Glyphicon } from 'react-bootstrap'
 import { Waypoint } from 'react-waypoint'
 import i18n from 'format-message'
@@ -16,6 +15,9 @@ import { isSeriesSelector } from '../../selectors/ui'
 import { sortCardsInChapter } from '../../helpers/cards'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { positionOffsetSelector } from '../../selectors/chapters'
+import { actions } from 'pltr/v2'
+
+const BeatActions = actions.BeatActions
 
 class ChapterView extends Component {
   state = { sortedCards: [] }

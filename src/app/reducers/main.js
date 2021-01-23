@@ -7,7 +7,6 @@ import tags from './tags'
 import characters from './characters'
 import chapters from './chapters'
 import cards from './cards'
-import lines from './lines'
 import notes from './notes'
 import images from './images'
 import beats from './beats'
@@ -16,7 +15,7 @@ import series from './series'
 import seriesLines from './seriesLines'
 import categories from './categories'
 
-const { customAttributes } = reducers
+const { customAttributes, lines } = reducers
 
 const mainReducer = combineReducers({
   ui,

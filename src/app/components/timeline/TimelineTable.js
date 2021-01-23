@@ -12,7 +12,6 @@ import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
 import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
-import * as LineActions from 'actions/lines'
 import * as BeatActions from 'actions/beats'
 import * as SeriesLineActions from 'actions/seriesLines'
 import * as CardActions from 'actions/cards'
@@ -25,6 +24,9 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { findDOMNode } from 'react-dom'
 import { cardMapSelector } from '../../selectors/cards'
 import { isSeriesSelector } from '../../selectors/ui'
+import { actions } from 'pltr/v2'
+
+const LineActions = actions.lineActions
 
 class TimelineTable extends Component {
   state = {

@@ -6,3 +6,4 @@ screenshots/*
 .env
 .DS_Store
 data/*
+*.map

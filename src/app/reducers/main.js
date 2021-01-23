@@ -9,12 +9,11 @@ import chapters from './chapters'
 import cards from './cards'
 import notes from './notes'
 import images from './images'
-import books from './books'
 import series from './series'
 import seriesLines from './seriesLines'
 import categories from './categories'
 
-const { customAttributes, lines, beats } = reducers
+const { customAttributes, lines, beats, books } = reducers
 
 const mainReducer = combineReducers({
   ui,

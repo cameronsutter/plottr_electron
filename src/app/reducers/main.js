@@ -10,9 +10,8 @@ import notes from './notes'
 import images from './images'
 import series from './series'
 import seriesLines from './seriesLines'
-import categories from './categories'
 
-const { customAttributes, lines, beats, books, cards } = reducers
+const { customAttributes, lines, beats, books, cards, categories } = reducers
 
 const mainReducer = combineReducers({
   ui,

@@ -6,14 +6,13 @@ import places from './places'
 import tags from './tags'
 import characters from './characters'
 import chapters from './chapters'
-import cards from './cards'
 import notes from './notes'
 import images from './images'
 import series from './series'
 import seriesLines from './seriesLines'
 import categories from './categories'
 
-const { customAttributes, lines, beats, books } = reducers
+const { customAttributes, lines, beats, books, cards } = reducers
 
 const mainReducer = combineReducers({
   ui,

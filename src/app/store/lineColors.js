@@ -1,3 +1,7 @@
+// TODO: move to pltr.  Some functions create lines manually in
+// plottr_electron and those functions need to be re-thinked for us to
+// migrate this file.
+
 export function nextColor (length) {
   switch (length) {
     case 0:

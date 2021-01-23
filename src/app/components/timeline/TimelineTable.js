@@ -44,15 +44,15 @@ class TimelineTable extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setLength()
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     this.setLength()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
     // if (nextProps.ui.orientation != this.props.ui.orientation) {
     //   this.setState({tableLength: 0})
@@ -83,7 +83,7 @@ class TimelineTable extends Component {
   }
 
   // TODO: this should be a selector
-  chapterMapping () {
+  chapterMapping() {
     return this.props.chapters.reduce((acc, chapter) => {
       acc[chapter.position] = chapter.id
       return acc
@@ -91,7 +91,7 @@ class TimelineTable extends Component {
   }
 
   // TODO: this should be a selector
-  lineMapping () {
+  lineMapping() {
     return this.props.lines.reduce((acc, line) => {
       acc[line.position] = line
       return acc
@@ -117,7 +117,7 @@ class TimelineTable extends Component {
     }
   }
 
-  buildCard (lineId, chapterId) {
+  buildCard(lineId, chapterId) {
     if (this.props.isSeries) {
       return Object.assign({}, card, { beatId: chapterId, seriesLineId: lineId })
     } else {
@@ -133,7 +133,7 @@ class TimelineTable extends Component {
     }
   }
 
-  renderLines () {
+  renderLines() {
     const chapterMap = this.chapterMapping()
     const chapterMapKeys = Object.keys(chapterMap)
     return this.props.lines
@@ -152,7 +152,7 @@ class TimelineTable extends Component {
       .concat(<AddLineRow key="insert-line" bookId={this.props.ui.currentTimeline} />)
   }
 
-  renderChapters () {
+  renderChapters() {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
     const { chapters } = this.props
@@ -198,7 +198,7 @@ class TimelineTable extends Component {
       )
   }
 
-  renderRows () {
+  renderRows() {
     if (this.props.ui.orientation === 'horizontal') {
       return this.renderLines()
     } else {
@@ -206,7 +206,7 @@ class TimelineTable extends Component {
     }
   }
 
-  renderCardsByChapter (line, chapterMap, chapterMapKeys) {
+  renderCardsByChapter(line, chapterMap, chapterMapKeys) {
     const { cardMap } = this.props
     return chapterMapKeys.flatMap((chapterPosition) => {
       const cells = []
@@ -253,7 +253,7 @@ class TimelineTable extends Component {
     })
   }
 
-  renderCardsByLine (chapter, lineMap, lineMapKeys) {
+  renderCardsByLine(chapter, lineMap, lineMapKeys) {
     const { cardMap } = this.props
     return lineMapKeys.flatMap((linePosition) => {
       const cells = []
@@ -288,7 +288,7 @@ class TimelineTable extends Component {
     })
   }
 
-  render () {
+  render() {
     const rows = this.renderRows()
 
     return [<TopRow key="top-row" />, rows]
@@ -306,7 +306,7 @@ TimelineTable.propTypes = {
   tableRef: PropTypes.object,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   let nextChapterId = -1
   const bookId = state.present.ui.currentTimeline
   if (bookId == 'series') {
@@ -324,7 +324,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(UIActions, dispatch),
     sceneActions: bindActionCreators(SceneActions, dispatch),

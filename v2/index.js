@@ -38,6 +38,7 @@ import * as uiSelectors from './selectors/ui'
 
 import rootReducer from './reducers/root'
 import customAttributesReducer from './reducers/customAttributes'
+import linesReducer from './reducers/lines'
 
 import * as initialState from './store/initialState'
 import * as lineColors from './store/lineColors'
@@ -45,7 +46,8 @@ import { emptyFile } from './store/newFileState'
 import * as newIds from './store/newIds'
 
 const reducers = {
-  customAttributes: customAttributesReducer
+  customAttributes: customAttributesReducer,
+  lines: linesReducer
 }
 
 const selectors = {

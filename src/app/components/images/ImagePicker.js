@@ -9,9 +9,13 @@ import cx from 'classnames'
 import { FormGroup, FormControl, ControlLabel, Button, Grid, Row, Col, Glyphicon, ButtonToolbar, ButtonGroup, Nav, NavItem } from 'react-bootstrap'
 import Image from './Image'
 import i18n from 'format-message'
-import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
 import { Spinner } from '../../../common/components/Spinner'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { helpers } from 'pltr/v2'
+
+const {
+  images: { readImage, isImageUrl, readImageFromURL },
+} = helpers
 
 class ImagePicker extends Component {
   state = {}

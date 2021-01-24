@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import { reducers } from 'pltr/v2'
 import ui from './ui'
 import file from './file'
-import places from './places'
 import tags from './tags'
 import series from './series'
 import seriesLines from './seriesLines'
@@ -18,6 +17,7 @@ const {
   characters,
   images,
   notes,
+  places,
 } = reducers
 
 const mainReducer = combineReducers({

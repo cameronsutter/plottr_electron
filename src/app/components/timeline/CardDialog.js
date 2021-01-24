@@ -5,7 +5,6 @@ import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PlottrModal from 'components/PlottrModal'
-import * as CardActions from 'actions/cards'
 import * as UIActions from 'actions/ui'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import SelectList from 'components/selectList'
@@ -20,12 +19,14 @@ import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 import { EditAttribute } from '../EditAttribute'
-import { helpers } from 'pltr/v2'
+import { helpers, actions } from 'pltr/v2'
 
 const {
   card: { truncateTitle },
   chapters: { chapterTitle },
 } = helpers
+
+const CardActions = actions.card
 
 class CardDialog extends Component {
   constructor (props) {

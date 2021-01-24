@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as CardActions from 'actions/cards'
 import * as SceneActions from 'actions/scenes'
 import { Glyphicon } from 'react-bootstrap'
 import { Waypoint } from 'react-waypoint'
@@ -15,6 +14,8 @@ import { positionOffsetSelector } from '../../selectors/chapters'
 import { actions, helpers } from 'pltr/v2'
 
 const BeatActions = actions.Beat
+const CardActions = actions.card
+
 const {
   card: { sortCardsInChapter },
   chapters: { chapterTitle },

@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
 import { Cell } from 'react-sticky-table'
-import * as CardActions from 'actions/cards'
 import Card from './Card'
 import cx from 'classnames'
 import { isSeriesSelector } from '../../selectors/ui'
@@ -13,11 +12,13 @@ import Floater from 'react-floater'
 import SceneCardAdd from './SceneCardAdd'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import { visibleCardsSelector } from '../../selectors/cards'
-import { helpers } from 'pltr/v2'
+import { helpers, actions } from 'pltr/v2'
 
 const {
   lists: { reorderList, moveToAbove },
 } = helpers
+
+const CardActions = actions.card
 
 class ScenesCell extends PureComponent {
 

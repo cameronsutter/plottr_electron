@@ -5,8 +5,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Modal, Form, FormGroup, Col, Row, ControlLabel, FormControl, ButtonToolbar, Button } from 'react-bootstrap'
 import i18n from 'format-message'
-import * as BookActions from 'actions/books'
 import cx from 'classnames'
+import { actions } from 'pltr/v2'
+
+const BookActions = actions.book
 
 class BookDialog extends Component {
   saveEdit = () => {

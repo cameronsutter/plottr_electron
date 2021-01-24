@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as BookActions from 'actions/books'
 import * as SceneActions from 'actions/scenes'
 import i18n from 'format-message'
 import Book from './Book'
@@ -14,6 +13,7 @@ import { chunk, flatten } from 'lodash'
 import { objectId } from '../../store/newIds'
 import { actions } from 'pltr/v2'
 
+const BookActions = actions.book
 const LineActions = actions.line
 
 class BookList extends Component {

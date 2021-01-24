@@ -3,7 +3,6 @@ import { reducers } from 'pltr/v2'
 import ui from './ui'
 import file from './file'
 import tags from './tags'
-import seriesLines from './seriesLines'
 
 const {
   customAttributes,
@@ -18,6 +17,7 @@ const {
   notes,
   places,
   series,
+  seriesLines,
 } = reducers
 
 const mainReducer = combineReducers({

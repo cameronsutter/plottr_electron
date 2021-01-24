@@ -4,7 +4,6 @@ import ui from './ui'
 import file from './file'
 import places from './places'
 import tags from './tags'
-import notes from './notes'
 import series from './series'
 import seriesLines from './seriesLines'
 
@@ -18,6 +17,7 @@ const {
   chapters,
   characters,
   images,
+  notes,
 } = reducers
 
 const mainReducer = combineReducers({

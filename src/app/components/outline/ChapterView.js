@@ -14,7 +14,7 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { positionOffsetSelector } from '../../selectors/chapters'
 import { actions, helpers } from 'pltr/v2'
 
-const BeatActions = actions.BeatActions
+const BeatActions = actions.Beat
 const {
   card: { sortCardsInChapter },
   chapters: { chapterTitle },

@@ -37,7 +37,7 @@ import CharacterItem from './CharacterItem'
 import InputModal from '../dialogs/InputModal'
 import { nextId } from '../../store/newIds'
 
-const CustomAttributeActions = actions.customAttributeActions
+const CustomAttributeActions = actions.customAttribute
 
 class CharacterListView extends Component {
   constructor(props) {

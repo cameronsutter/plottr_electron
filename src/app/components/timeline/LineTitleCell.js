@@ -15,7 +15,7 @@ import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
 import { actions, helpers } from 'pltr/v2'
 
-const LineActions = actions.lineActions
+const LineActions = actions.line
 const {
   card: { truncateTitle },
   orientedClassName: { orientedClassName }

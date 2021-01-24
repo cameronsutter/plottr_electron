@@ -10,7 +10,7 @@ import {
 } from '../../selectors/customAttributes'
 import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
 
-const CustomAttributeActions = actions.customAttributeActions
+const CustomAttributeActions = actions.customAttribute
 
 function CustomAttributeModal({
   type,

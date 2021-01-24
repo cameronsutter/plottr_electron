@@ -19,7 +19,7 @@ import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
 import { nextCardIdSelector } from '../../selectors/cards'
 import { actions } from 'pltr/v2'
 
-const LineActions = actions.lineActions
+const LineActions = actions.line
 
 class AddLineRow extends Component {
   state = {

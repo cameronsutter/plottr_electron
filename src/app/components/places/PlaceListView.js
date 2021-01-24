@@ -34,7 +34,7 @@ import { nextId } from '../../store/newIds'
 import { visibleSortedPlacesSelector, placeFilterIsEmptySelector } from '../../selectors/places'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 
-const CustomAttributeActions = actions.customAttributeActions
+const CustomAttributeActions = actions.customAttribute
 
 class PlaceListView extends Component {
   constructor(props) {

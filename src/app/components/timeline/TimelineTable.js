@@ -21,16 +21,15 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { findDOMNode } from 'react-dom'
 import { cardMapSelector } from '../../selectors/cards'
 import { isSeriesSelector } from '../../selectors/ui'
-import { actions } from 'pltr/v2'
-import { helpers } from 'pltr/v2'
+import { actions, helpers } from 'pltr/v2'
 
 const {
   chapters: { insertChapter },
   lists: { reorderList },
 } = helpers
 
-const LineActions = actions.lineActions
-const BeatActions = actions.beatActions
+const LineActions = actions.line
+const BeatActions = actions.beat
 
 class TimelineTable extends Component {
   state = {

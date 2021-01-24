@@ -14,7 +14,7 @@ import { chunk, flatten } from 'lodash'
 import { objectId } from '../../store/newIds'
 import { actions } from 'pltr/v2'
 
-const LineActions = actions.lineActions
+const LineActions = actions.line
 
 class BookList extends Component {
   dragDropAreaRef = React.createRef()

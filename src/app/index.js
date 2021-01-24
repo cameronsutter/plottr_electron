@@ -76,13 +76,13 @@ function bootFile (filePath, darkMode, numOpenFiles) {
         rollbar.error(err)
         log.error(err)
       }
-      store.dispatch(actions.uiActions.loadFile(filePath, didMigrate, state, state.file.version))
+      store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
       MPQ.projectEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
 
       const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
       if (state.ui && state.ui.darkMode !== darkMode) {
-        store.dispatch(actions.uiActions.setDarkMode(newDarkState))
+        store.dispatch(actions.ui.setDarkMode(newDarkState))
       }
       if (newDarkState) window.document.body.className = 'darkmode'
 
@@ -110,7 +110,7 @@ ipcRenderer.on('reload-from-file', (event, filePath, darkMode, numOpenFiles) => 
 })
 
 ipcRenderer.on('set-dark-mode', (event, isOn) => {
-  store.dispatch(actions.uiActions.setDarkMode(isOn))
+  store.dispatch(actions.ui.setDarkMode(isOn))
   window.document.body.className = isOn ? 'darkmode' : ''
 })
 
@@ -155,7 +155,7 @@ ipcRenderer.on('move-from-temp', () => {
   const newFilePath = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save this file?')})
   if (newFilePath) {
     // change in redux
-    store.dispatch(actions.uiActions.editFileName(newFilePath))
+    store.dispatch(actions.ui.editFileName(newFilePath))
     // remove from tmp store
     removeFromTempFiles(present.file.fileName)
     // update in known files

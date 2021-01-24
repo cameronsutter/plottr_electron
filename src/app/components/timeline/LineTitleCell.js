@@ -8,7 +8,6 @@ import { Cell } from 'react-sticky-table'
 import * as SeriesLineActions from 'actions/seriesLines'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
@@ -19,6 +18,7 @@ import { actions, helpers } from 'pltr/v2'
 const LineActions = actions.lineActions
 const {
   card: { truncateTitle },
+  orientedClassName: { orientedClassName }
 } = helpers
 
 const CELL_WIDTH = 200

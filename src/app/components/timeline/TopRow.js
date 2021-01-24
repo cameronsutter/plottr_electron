@@ -9,7 +9,6 @@ import * as SeriesLineActions from 'actions/seriesLines'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
-import orientedClassName from 'helpers/orientedClassName'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
@@ -20,6 +19,7 @@ import { helpers } from 'pltr/v2'
 const {
   chapters: { insertChapter },
   lists: { reorderList },
+  orientedClassName: { orientedClassName }
 } = helpers
 
 const LineActions = actions.lineActions

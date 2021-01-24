@@ -4,9 +4,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
-import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 import { isZoomed, isZoomedOut, computeZoomMultiplier, computeZoomOutMultiplier } from 'helpers/zoom'
+import { helpers } from 'pltr/v2'
+
+const {
+  orientedClassName: { orientedClassName },
+} = helpers
 
 const Horizontal = {
   first: 150,

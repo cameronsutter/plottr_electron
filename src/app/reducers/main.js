@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import { reducers } from 'pltr/v2'
 import ui from './ui'
 import file from './file'
-import tags from './tags'
 
 const {
   customAttributes,
@@ -18,6 +17,7 @@ const {
   places,
   series,
   seriesLines,
+  tags,
 } = reducers
 
 const mainReducer = combineReducers({

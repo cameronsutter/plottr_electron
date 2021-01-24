@@ -9,7 +9,6 @@ import { Waypoint } from 'react-waypoint'
 import i18n from 'format-message'
 import CardView from 'components/outline/CardView'
 import cx from 'classnames'
-import { moveToAbove } from '../../helpers/lists'
 import { isSeriesSelector } from '../../selectors/ui'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { positionOffsetSelector } from '../../selectors/chapters'
@@ -18,7 +17,8 @@ import { actions, helpers } from 'pltr/v2'
 const BeatActions = actions.BeatActions
 const {
   card: { sortCardsInChapter },
-  chapters: { chapterTitle }
+  chapters: { chapterTitle },
+  lists: { moveToAbove },
 } = helpers
 
 class ChapterView extends Component {

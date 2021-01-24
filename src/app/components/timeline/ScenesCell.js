@@ -11,9 +11,13 @@ import { isSeriesSelector } from '../../selectors/ui'
 import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
 import SceneCardAdd from './SceneCardAdd'
-import { reorderList, moveToAbove } from '../../helpers/lists'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import { visibleCardsSelector } from '../../selectors/cards'
+import { helpers } from 'pltr/v2'
+
+const {
+  lists: { reorderList, moveToAbove },
+} = helpers
 
 class ScenesCell extends PureComponent {
 

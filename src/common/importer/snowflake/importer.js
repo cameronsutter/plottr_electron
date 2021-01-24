@@ -11,8 +11,12 @@ import {
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { nextPositionInBook } from '../../../app/helpers/lists'
 import { nextBackgroundColor, nextColor } from '../../../app/store/lineColors'
+import { helpers } from 'pltr/v2'
+
+const {
+  lists: { nextPositionInBook },
+} = helpers
 
 export default function Importer (path, isNewFile, state) {
   const importedXML = fs.readFileSync(path, 'utf-8')

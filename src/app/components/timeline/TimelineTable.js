@@ -14,7 +14,6 @@ import * as UIActions from 'actions/ui'
 import * as SceneActions from 'actions/scenes'
 import * as SeriesLineActions from 'actions/seriesLines'
 import * as CardActions from 'actions/cards'
-import { reorderList } from 'helpers/lists'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
@@ -27,6 +26,7 @@ import { helpers } from 'pltr/v2'
 
 const {
   chapters: { insertChapter },
+  lists: { reorderList },
 } = helpers
 
 const LineActions = actions.lineActions

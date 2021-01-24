@@ -12,12 +12,14 @@ import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
 import { moveToAbove } from '../../helpers/lists'
 import { isSeriesSelector } from '../../selectors/ui'
-import { sortCardsInChapter } from '../../helpers/cards'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { positionOffsetSelector } from '../../selectors/chapters'
-import { actions } from 'pltr/v2'
+import { actions, helpers } from 'pltr/v2'
 
 const BeatActions = actions.BeatActions
+const {
+  card: { sortCardsInChapter },
+} = helpers
 
 class ChapterView extends Component {
   state = { sortedCards: [] }

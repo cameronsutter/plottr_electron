@@ -11,8 +11,12 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import { cardMapSelector } from '../../selectors/cards'
 import ErrorBoundary from '../../containers/ErrorBoundary'
-import { cardMapping } from '../../helpers/cards'
 import ExportNavItem from '../export/ExportNavItem'
+import { helpers } from 'pltr/v2'
+
+const {
+  card: { cardMapping },
+} = helpers
 
 class OutlineView extends Component {
   constructor (props) {

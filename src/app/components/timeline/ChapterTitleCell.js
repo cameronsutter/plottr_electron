@@ -22,10 +22,14 @@ import {
   positionOffsetSelector,
 } from '../../selectors/chapters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { truncateTitle } from 'helpers/cards'
 import { actions } from 'pltr/v2'
+import { helpers } from 'pltr/v2'
 
 const BeatActions = actions.beatActions
+const {
+  card: { truncateTitle },
+} = helpers
+
 
 class ChapterTitleCell extends PureComponent {
   constructor(props) {

@@ -7,11 +7,15 @@ import CardDialog from 'components/timeline/CardDialog'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
 import { isZoomed } from 'helpers/zoom'
-import { truncateTitle } from 'helpers/cards'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
 import { visibleCardsSelector } from '../../selectors/cards'
+import { helpers } from 'pltr/v2'
+
+const {
+  card: { truncateTitle },
+} = helpers
 
 class Card extends Component {
   constructor (props) {

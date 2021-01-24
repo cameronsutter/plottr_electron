@@ -14,10 +14,12 @@ import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
-import { truncateTitle } from 'helpers/cards'
-import { actions } from 'pltr/v2'
+import { actions, helpers } from 'pltr/v2'
 
 const LineActions = actions.lineActions
+const {
+  card: { truncateTitle },
+} = helpers
 
 const CELL_WIDTH = 200
 

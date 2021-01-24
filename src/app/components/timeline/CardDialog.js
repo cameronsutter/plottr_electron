@@ -20,8 +20,12 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
-import { truncateTitle } from '../../helpers/cards'
 import { EditAttribute } from '../EditAttribute'
+import { helpers } from 'pltr/v2'
+
+const {
+  card: { truncateTitle },
+} = helpers
 
 class CardDialog extends Component {
   constructor (props) {

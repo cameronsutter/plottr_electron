@@ -15,7 +15,6 @@ import * as SceneActions from 'actions/scenes'
 import * as SeriesLineActions from 'actions/seriesLines'
 import * as CardActions from 'actions/cards'
 import { reorderList } from 'helpers/lists'
-import { insertChapter } from 'helpers/chapters'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
@@ -24,6 +23,11 @@ import { findDOMNode } from 'react-dom'
 import { cardMapSelector } from '../../selectors/cards'
 import { isSeriesSelector } from '../../selectors/ui'
 import { actions } from 'pltr/v2'
+import { helpers } from 'pltr/v2'
+
+const {
+  chapters: { insertChapter },
+} = helpers
 
 const LineActions = actions.lineActions
 const BeatActions = actions.beatActions

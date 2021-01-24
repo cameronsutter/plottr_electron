@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
-import { chapterTitle } from '../../helpers/chapters'
 import { helpers } from 'pltr/v2'
 
 const {
   card: { sortCardsInChapter },
+  chapters: { chapterTitle }
 } = helpers
 
 function MiniChapter (props) {

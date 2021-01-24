@@ -12,7 +12,6 @@ import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import cx from 'classnames'
 import RichText from '../rce/RichText'
-import { chapterTitle } from '../../helpers/chapters'
 import { sortedChaptersByBookSelector, positionOffsetSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
@@ -25,6 +24,7 @@ import { helpers } from 'pltr/v2'
 
 const {
   card: { truncateTitle },
+  chapters: { chapterTitle },
 } = helpers
 
 class CardDialog extends Component {

@@ -14,7 +14,6 @@ import {
 import { Cell } from 'react-sticky-table'
 import * as SceneActions from 'actions/scenes'
 import orientedClassName from 'helpers/orientedClassName'
-import { editingChapterLabel, chapterPositionTitle } from '../../helpers/chapters'
 import { isSeriesSelector } from '../../selectors/ui'
 import {
   makeChapterTitleSelector,
@@ -28,8 +27,8 @@ import { helpers } from 'pltr/v2'
 const BeatActions = actions.beatActions
 const {
   card: { truncateTitle },
+  chapters: { editingChapterLabel, chapterPositionTitle },
 } = helpers
-
 
 class ChapterTitleCell extends PureComponent {
   constructor(props) {

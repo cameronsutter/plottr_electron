@@ -2,8 +2,12 @@ import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
 import { currentTimelineSelector, isSeriesSelector } from './ui'
 import { allBeatsSelector } from './beats'
-import { chapterTitle, chapterOneIsPrologue } from '../helpers/chapters'
 import { nextId } from '../store/newIds'
+import { helpers } from 'pltr/v2'
+
+const {
+  chapters: { chapterTitle, chapterOneIsPrologue },
+} = helpers
 
 export const allChaptersSelector = state => state.chapters
 const chapterIdSelector = (state, chapterId) => chapterId

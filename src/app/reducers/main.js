@@ -3,7 +3,6 @@ import { reducers } from 'pltr/v2'
 import ui from './ui'
 import file from './file'
 import tags from './tags'
-import series from './series'
 import seriesLines from './seriesLines'
 
 const {
@@ -18,6 +17,7 @@ const {
   images,
   notes,
   places,
+  series,
 } = reducers
 
 const mainReducer = combineReducers({

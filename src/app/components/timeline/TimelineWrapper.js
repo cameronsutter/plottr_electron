@@ -10,7 +10,6 @@ import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
-import { computeZoom } from 'helpers/zoom'
 import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
@@ -18,6 +17,11 @@ import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { timelineFilterIsEmptySelector, currentTimelineSelector } from '../../selectors/ui'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
+import { helpers } from 'pltr/v2'
+
+const {
+  zoom: { computeZoom },
+} = helpers
 
 const win = remote.getCurrentWindow()
 

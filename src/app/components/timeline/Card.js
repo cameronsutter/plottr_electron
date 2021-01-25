@@ -8,9 +8,9 @@ import TagLabel from 'components/tagLabel'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
-import { visibleCardsSelector } from '../../selectors/cards'
-import { helpers, actions } from 'pltr/v2'
+import { helpers, actions, selectors } from 'pltr/v2'
 
+const { visibleCardsSelector } = selectors
 const CardActions = actions.card
 
 const {

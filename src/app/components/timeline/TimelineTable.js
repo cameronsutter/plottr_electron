@@ -16,14 +16,15 @@ import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { findDOMNode } from 'react-dom'
-import { cardMapSelector } from '../../selectors/cards'
 import { isSeriesSelector } from '../../selectors/ui'
-import { actions, helpers } from 'pltr/v2'
+import { actions, helpers, selectors } from 'pltr/v2'
 
 const {
   chapters: { insertChapter },
   lists: { reorderList },
 } = helpers
+
+const { cardMapSelector } = selectors
 
 const LineActions = actions.line
 const BeatActions = actions.beat

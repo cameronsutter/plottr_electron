@@ -1,12 +1,11 @@
 import { keyBy } from 'lodash'
 import i18n from 'format-message'
 import { sortedChaptersByBookSelector, makeChapterTitleSelector } from 'app/selectors/chapters'
-import { cardMapSelector } from 'app/selectors/cards'
 import { isSeriesSelector } from 'app/selectors/ui'
-import { sortedLinesByBookSelector } from 'app/selectors/lines'
 import { createFolderBinderItem, createTextBinderItem } from '../utils'
-import { helpers } from 'pltr/v2'
+import { helpers, selectors } from 'pltr/v2'
 
+const { sortedLinesByBookSelector, cardMapSelector } = selectors
 const {
   card: { sortCardsInChapter, cardMapping },
 } = helpers

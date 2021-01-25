@@ -9,11 +9,11 @@ import cx from 'classnames'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
-import { cardMapSelector } from '../../selectors/cards'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import ExportNavItem from '../export/ExportNavItem'
-import { helpers } from 'pltr/v2'
+import { helpers, selectors } from 'pltr/v2'
 
+const { cardMapSelector } = selectors
 const {
   card: { cardMapping },
 } = helpers

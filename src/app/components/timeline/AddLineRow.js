@@ -15,9 +15,9 @@ import {
 } from '../../../../shared/initialState'
 import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selectors/chapters'
 import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
-import { nextCardIdSelector } from '../../selectors/cards'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 
+const { nextCardIdSelector } = selectors
 const LineActions = actions.line
 const SeriesLineActions = actions.series
 

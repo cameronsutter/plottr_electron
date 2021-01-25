@@ -14,7 +14,6 @@ import * as UIActions from 'actions/ui'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { findDOMNode } from 'react-dom'
-import { isSeriesSelector } from '../../selectors/ui'
 import { actions, helpers, selectors } from 'pltr/v2'
 
 const {
@@ -22,7 +21,12 @@ const {
   lists: { reorderList },
 } = helpers
 
-const { cardMapSelector, sortedChaptersByBookSelector, sortedLinesByBookSelector } = selectors
+const {
+  cardMapSelector,
+  sortedChaptersByBookSelector,
+  sortedLinesByBookSelector,
+  isSeriesSelector,
+} = selectors
 
 const LineActions = actions.line
 const BeatActions = actions.beat

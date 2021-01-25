@@ -8,7 +8,6 @@ import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
 import { nextId } from '../../store/newIds'
-import { isSeriesSelector } from '../../selectors/ui'
 import { actions, helpers, selectors } from 'pltr/v2'
 
 const {
@@ -22,7 +21,7 @@ const BeatActions = actions.beat
 const SceneActions = actions.scene
 const SeriesLineActions = actions.series
 
-const { sortedChaptersByBookSelector, sortedLinesByBookSelector } = selectors
+const { sortedChaptersByBookSelector, sortedLinesByBookSelector, isSeriesSelector } = selectors
 
 class TopRow extends Component {
   handleReorderChapters = (originalPosition, droppedPosition) => {

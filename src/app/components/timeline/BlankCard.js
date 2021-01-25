@@ -7,11 +7,12 @@ import { Cell } from 'react-sticky-table'
 import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
-import { isSeriesSelector } from '../../selectors/ui'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 
 const CardActions = actions.card
+
+const { isSeriesSelector } = selectors
 
 class BlankCard extends Component {
   constructor (props) {

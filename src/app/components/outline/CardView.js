@@ -11,10 +11,11 @@ import RichText from '../rce/RichText'
 import cx from 'classnames'
 import Image from 'components/images/Image'
 import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
-import { isSeriesSelector } from '../../selectors/ui'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 
 const CardActions = actions.card
+
+const { isSeriesSelector } = selectors
 
 class CardView extends Component {
   constructor (props) {

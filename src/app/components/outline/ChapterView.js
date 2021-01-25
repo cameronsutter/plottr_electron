@@ -7,10 +7,9 @@ import { Waypoint } from 'react-waypoint'
 import i18n from 'format-message'
 import CardView from 'components/outline/CardView'
 import cx from 'classnames'
-import { isSeriesSelector } from '../../selectors/ui'
 import { actions, helpers, selectors } from 'pltr/v2'
 
-const { positionOffsetSelector, sortedLinesByBookSelector } = selectors
+const { positionOffsetSelector, sortedLinesByBookSelector, isSeriesSelector } = selectors
 
 const BeatActions = actions.beat
 const CardActions = actions.card

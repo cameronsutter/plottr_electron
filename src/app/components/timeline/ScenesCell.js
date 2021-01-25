@@ -6,7 +6,6 @@ import i18n from 'format-message'
 import { Cell } from 'react-sticky-table'
 import Card from './Card'
 import cx from 'classnames'
-import { isSeriesSelector } from '../../selectors/ui'
 import Floater from 'react-floater'
 import SceneCardAdd from './SceneCardAdd'
 import ErrorBoundary from '../../containers/ErrorBoundary'
@@ -18,7 +17,7 @@ const {
 
 const CardActions = actions.card
 
-const { visibleCardsSelector, lineIsExpandedSelector } = selectors
+const { visibleCardsSelector, lineIsExpandedSelector, isSeriesSelector } = selectors
 
 class ScenesCell extends PureComponent {
 

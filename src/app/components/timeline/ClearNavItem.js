@@ -6,7 +6,9 @@ import i18n from 'format-message'
 import { NavItem, Button, Popover, OverlayTrigger, Glyphicon } from 'react-bootstrap'
 import * as UIActions from 'actions/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { currentTimelineSelector } from '../../selectors/ui'
+import { selectors } from 'pltr/v2'
+
+const { currentTimelineSelector } = selectors
 
 class ClearNavItem extends Component {
   state = {deleting: false}

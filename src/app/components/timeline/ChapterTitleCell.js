@@ -12,7 +12,6 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, helpers, selectors } from 'pltr/v2'
 
@@ -25,7 +24,12 @@ const {
   orientedClassName: { orientedClassName },
 } = helpers
 
-const { makeChapterTitleSelector, makeChapterSelector, positionOffsetSelector } = selectors
+const {
+  makeChapterTitleSelector,
+  makeChapterSelector,
+  positionOffsetSelector,
+  isSeriesSelector,
+} = selectors
 
 class ChapterTitleCell extends PureComponent {
   constructor(props) {

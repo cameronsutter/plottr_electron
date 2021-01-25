@@ -1,6 +1,5 @@
 import { keyBy } from 'lodash'
 import i18n from 'format-message'
-import { isSeriesSelector } from 'app/selectors/ui'
 import { createFolderBinderItem, createTextBinderItem } from '../utils'
 import { helpers, selectors } from 'pltr/v2'
 
@@ -9,6 +8,7 @@ const {
   cardMapSelector,
   sortedChaptersByBookSelector,
   makeChapterTitleSelector,
+  isSeriesSelector,
 } = selectors
 const {
   card: { sortCardsInChapter, cardMapping },

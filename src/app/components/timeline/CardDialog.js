@@ -11,7 +11,6 @@ import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import cx from 'classnames'
 import RichText from '../rce/RichText'
-import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { EditAttribute } from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
@@ -23,7 +22,7 @@ const {
 
 const CardActions = actions.card
 
-const { sortedTagsSelector } = selectors
+const { sortedTagsSelector, isSeriesSelector } = selectors
 
 const {
   sortedChaptersByBookSelector,

@@ -5,7 +5,9 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
-import { characterSortCAnamesSelector, placeSortCAnamesSelector } from '../selectors/customAttributes'
+import { selectors } from 'pltr/v2'
+
+const { characterSortCAnamesSelector, placeSortCAnamesSelector } = selectors
 
 class SortList extends Component {
   toggle = (attr) => {

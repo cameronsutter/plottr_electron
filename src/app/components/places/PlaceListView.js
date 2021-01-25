@@ -19,19 +19,20 @@ import {
 } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
-import { actions } from 'pltr/v2'
 import * as UIActions from 'actions/ui'
 import PlaceView from 'components/places/placeView'
 import i18n from 'format-message'
-import {
-  placeCustomAttributesThatCanChangeSelector,
-  placeCustomAttributesRestrictedValues,
-} from '../../selectors/customAttributes'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import PlaceItem from './PlaceItem'
 import { nextId } from '../../store/newIds'
 import { visibleSortedPlacesSelector, placeFilterIsEmptySelector } from '../../selectors/places'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
+import { actions, selectors } from 'pltr/v2'
+
+const {
+  placeCustomAttributesThatCanChangeSelector,
+  placeCustomAttributesRestrictedValues,
+} = selectors
 
 const CustomAttributeActions = actions.customAttribute
 const PlaceActions = actions.place

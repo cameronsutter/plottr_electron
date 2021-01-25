@@ -13,13 +13,8 @@ import {
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import { isSeriesSelector } from '../../selectors/ui'
-import {
-  makeChapterTitleSelector,
-  makeChapterSelector,
-  positionOffsetSelector,
-} from '../../selectors/chapters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { actions, helpers } from 'pltr/v2'
+import { actions, helpers, selectors } from 'pltr/v2'
 
 const BeatActions = actions.beat
 const SceneActions = actions.scene
@@ -29,6 +24,8 @@ const {
   chapters: { editingChapterLabel, chapterPositionTitle },
   orientedClassName: { orientedClassName },
 } = helpers
+
+const { makeChapterTitleSelector, makeChapterSelector, positionOffsetSelector } = selectors
 
 class ChapterTitleCell extends PureComponent {
   constructor(props) {

@@ -1,16 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { actions } from 'pltr/v2'
 import i18n from 'format-message'
-import {
+import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
+import { actions, selectors } from 'pltr/v2'
+
+const CustomAttributeActions = actions.customAttribute
+
+const {
   placeCustomAttributesThatCanChangeSelector,
   characterCustomAttributesThatCanChangeSelector,
   scenesCustomAttributesThatCanChangeSelector,
-} from '../../selectors/customAttributes'
-import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
-
-const CustomAttributeActions = actions.customAttribute
+} = selectors
 
 function CustomAttributeModal({
   type,

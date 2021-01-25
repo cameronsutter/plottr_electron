@@ -9,8 +9,9 @@ import CardView from 'components/outline/CardView'
 import cx from 'classnames'
 import { isSeriesSelector } from '../../selectors/ui'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { positionOffsetSelector } from '../../selectors/chapters'
-import { actions, helpers } from 'pltr/v2'
+import { actions, helpers, selectors } from 'pltr/v2'
+
+const { positionOffsetSelector } = selectors
 
 const BeatActions = actions.beat
 const CardActions = actions.card

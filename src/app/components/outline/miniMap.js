@@ -6,13 +6,14 @@ import { keyBy } from 'lodash'
 import { findDOMNode } from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
-import { sortedChaptersByBookSelector, positionOffsetSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import MiniChapter from './MiniChapter'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 
 const CardActions = actions.card
+
+const { sortedChaptersByBookSelector, positionOffsetSelector } = selectors
 
 const targetPosition = 115
 

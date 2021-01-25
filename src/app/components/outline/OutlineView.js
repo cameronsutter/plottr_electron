@@ -6,14 +6,13 @@ import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
 import cx from 'classnames'
-import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import ExportNavItem from '../export/ExportNavItem'
 import { helpers, selectors } from 'pltr/v2'
 
-const { cardMapSelector } = selectors
+const { cardMapSelector, sortedChaptersByBookSelector } = selectors
 const {
   card: { cardMapping },
 } = helpers

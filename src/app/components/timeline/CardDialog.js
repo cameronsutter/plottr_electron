@@ -11,7 +11,6 @@ import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import cx from 'classnames'
 import RichText from '../rce/RichText'
-import { sortedChaptersByBookSelector, positionOffsetSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
@@ -19,7 +18,7 @@ import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 import { EditAttribute } from '../EditAttribute'
-import { helpers, actions } from 'pltr/v2'
+import { helpers, actions, selectors } from 'pltr/v2'
 
 const {
   card: { truncateTitle },
@@ -27,6 +26,8 @@ const {
 } = helpers
 
 const CardActions = actions.card
+
+const { sortedChaptersByBookSelector, positionOffsetSelector } = selectors
 
 class CardDialog extends Component {
   constructor (props) {

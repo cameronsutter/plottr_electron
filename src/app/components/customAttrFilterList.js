@@ -7,10 +7,12 @@ import { Glyphicon } from 'react-bootstrap'
 import * as UIActions from 'actions/ui'
 import cx from 'classnames'
 import i18n from 'format-message'
-import { sortedTagsSelector } from '../selectors/tags'
 import TagFilterList from './filterLists/TagFilterList'
 import BookFilterList from './filterLists/BookFilterList'
 import CharacterCategoryFilterList from './filterLists/CharacterCategoryFilterList'
+import { selectors } from 'pltr/v2'
+
+const { sortedTagsSelector } = selectors
 
 class CustomAttrFilterList extends Component {
   constructor (props) {

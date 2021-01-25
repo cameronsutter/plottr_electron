@@ -12,8 +12,9 @@ import Image from '../images/Image'
 import SelectList from '../selectList'
 import BookSelectList from '../story/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { sortedTagsSelector } from '../../selectors/tags'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
+
+const { sortedTagsSelector } = selectors
 
 const PlaceActions = actions.place
 

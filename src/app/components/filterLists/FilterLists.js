@@ -3,8 +3,10 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
-import { sortedTagsSelector } from '../selectors/tags'
 import TagFilterList from './TagFilterList'
+import { selectors } from 'pltr/v2'
+
+const { sortedTagsSelector } = selectors
 
 export default class FilterLists extends Component {
   constructor (props) {

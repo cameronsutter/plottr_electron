@@ -13,7 +13,6 @@ import cx from 'classnames'
 import RichText from '../rce/RichText'
 import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { sortedTagsSelector } from '../../selectors/tags'
 import { EditAttribute } from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
 
@@ -23,6 +22,8 @@ const {
 } = helpers
 
 const CardActions = actions.card
+
+const { sortedTagsSelector } = selectors
 
 const {
   sortedChaptersByBookSelector,

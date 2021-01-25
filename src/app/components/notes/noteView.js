@@ -12,10 +12,9 @@ import Image from 'components/images/Image'
 import BookSelectList from '../story/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import cx from 'classnames'
-import { sortedTagsSelector } from '../../selectors/tags'
 import { actions, selectors } from 'pltr/v2'
 
-const { charactersSortedAtoZSelector, placesSortedAtoZSelector } = selectors
+const { charactersSortedAtoZSelector, placesSortedAtoZSelector, sortedTagsSelector } = selectors
 
 const NoteActions = actions.note
 

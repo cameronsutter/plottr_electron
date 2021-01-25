@@ -1,9 +1,11 @@
 import { cloneDeep } from 'lodash'
 import { shell } from 'electron'
 import i18n from 'format-message'
-import { allTagsSelector } from '../../../../app/selectors/tags'
 import binderItem from './binderItem.json'
 import bareScrivx from './bare_scrivx.json'
+import { selectors } from 'pltr/v2'
+
+const { allTagsSelector } = selectors
 
 // RTF documents can not properly render characters that are represented by unicode values
 // greater than 255. As such we must convert any unicode characters into the proper RTF

@@ -11,7 +11,6 @@ import TopRow from './TopRow'
 import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
 import * as UIActions from 'actions/ui'
-import * as SeriesLineActions from 'actions/seriesLines'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
@@ -30,6 +29,7 @@ const LineActions = actions.line
 const BeatActions = actions.beat
 const CardActions = actions.card
 const SceneActions = actions.scene
+const SeriesLineActions = actions.series
 
 class TimelineTable extends Component {
   state = {

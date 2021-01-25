@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import * as SeriesLineActions from 'actions/seriesLines'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import i18n from 'format-message'
@@ -16,6 +15,8 @@ import Floater from 'react-floater'
 import { actions, helpers } from 'pltr/v2'
 
 const LineActions = actions.line
+const SeriesLineActions = actions.series
+
 const {
   card: { truncateTitle },
   orientedClassName: { orientedClassName }

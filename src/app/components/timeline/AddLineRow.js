@@ -6,7 +6,6 @@ import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortBy } from 'lodash'
-import * as SeriesLineActions from 'actions/seriesLines'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { nextBackgroundColor, nextColor } from 'store/lineColors'
 import {
@@ -20,6 +19,7 @@ import { nextCardIdSelector } from '../../selectors/cards'
 import { actions } from 'pltr/v2'
 
 const LineActions = actions.line
+const SeriesLineActions = actions.series
 
 class AddLineRow extends Component {
   state = {

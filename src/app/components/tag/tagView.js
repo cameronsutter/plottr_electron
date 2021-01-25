@@ -7,9 +7,11 @@ import { ButtonToolbar, ButtonGroup, Button, FormControl, FormGroup,
   ControlLabel, Glyphicon } from 'react-bootstrap'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import * as TagActions from 'actions/tags'
 import i18n from 'format-message'
 import cx from 'classnames'
+import { actions } from 'pltr/v2'
+
+const TagActions = actions.tag
 
 class TagView extends Component {
   constructor (props) {

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as SceneActions from 'actions/scenes'
 import { Glyphicon } from 'react-bootstrap'
 import { Waypoint } from 'react-waypoint'
 import i18n from 'format-message'
@@ -15,6 +14,7 @@ import { actions, helpers } from 'pltr/v2'
 
 const BeatActions = actions.beat
 const CardActions = actions.card
+const SceneActions = actions.scene
 
 const {
   card: { sortCardsInChapter },

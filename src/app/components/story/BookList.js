@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as SceneActions from 'actions/scenes'
 import i18n from 'format-message'
 import Book from './Book'
 import { Glyphicon } from 'react-bootstrap'
@@ -15,6 +14,7 @@ import { actions } from 'pltr/v2'
 
 const BookActions = actions.book
 const LineActions = actions.line
+const SceneActions = actions.scene
 
 class BookList extends Component {
   dragDropAreaRef = React.createRef()

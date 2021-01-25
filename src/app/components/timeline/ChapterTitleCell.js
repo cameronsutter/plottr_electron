@@ -12,7 +12,6 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import * as SceneActions from 'actions/scenes'
 import { isSeriesSelector } from '../../selectors/ui'
 import {
   makeChapterTitleSelector,
@@ -23,6 +22,7 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, helpers } from 'pltr/v2'
 
 const BeatActions = actions.beat
+const SceneActions = actions.scene
 
 const {
   card: { truncateTitle },

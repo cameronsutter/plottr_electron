@@ -13,7 +13,7 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { positionOffsetSelector } from '../../selectors/chapters'
 import { actions, helpers } from 'pltr/v2'
 
-const BeatActions = actions.Beat
+const BeatActions = actions.beat
 const CardActions = actions.card
 
 const {

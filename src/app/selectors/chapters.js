@@ -1,10 +1,10 @@
 import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
 import { currentTimelineSelector, isSeriesSelector } from './ui'
-import { allBeatsSelector } from './beats'
 import { nextId } from '../store/newIds'
-import { helpers } from 'pltr/v2'
+import { helpers, selectors } from 'pltr/v2'
 
+const { allBeatsSelector } = selectors
 const {
   chapters: { chapterTitle, chapterOneIsPrologue },
 } = helpers

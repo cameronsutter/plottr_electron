@@ -18,7 +18,6 @@ import {
 } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
-import * as CharacterActions from 'actions/characters'
 import { actions } from 'pltr/v2'
 import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
@@ -38,6 +37,7 @@ import InputModal from '../dialogs/InputModal'
 import { nextId } from '../../store/newIds'
 
 const CustomAttributeActions = actions.customAttribute
+const CharacterActions = actions.character
 
 class CharacterListView extends Component {
   constructor(props) {

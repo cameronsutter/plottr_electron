@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup,
   ControlLabel, Tooltip, OverlayTrigger, Glyphicon } from 'react-bootstrap'
-import * as CharacterActions from 'actions/characters'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
@@ -20,6 +19,9 @@ import SelectList from '../selectList'
 import BookSelectList from '../story/BookSelectList'
 import { singleCharacterSelector } from '../../selectors/characters'
 import { sortedTagsSelector } from '../../selectors/tags'
+import { actions } from 'pltr/v2'
+
+const CharacterActions = actions.character
 
 class CharacterView extends Component {
   render () {

@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 import { findDOMNode } from 'react-dom'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import * as CharacterActions from 'actions/characters'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
@@ -14,6 +13,9 @@ import CategoryPicker from '../CategoryPicker'
 import { singleCharacterSelector } from '../../selectors/characters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { EditAttribute } from '../EditAttribute'
+import { actions } from 'pltr/v2'
+
+const CharacterActions = actions.character
 
 class CharacterEditDetails extends Component {
   constructor (props) {

@@ -4,7 +4,6 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
-import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
@@ -16,6 +15,9 @@ import cx from 'classnames'
 import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
+import { actions } from 'pltr/v2'
+
+const NoteActions = actions.note
 
 class NoteView extends Component {
   constructor (props) {

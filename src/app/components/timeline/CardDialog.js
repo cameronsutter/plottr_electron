@@ -11,7 +11,6 @@ import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import cx from 'classnames'
 import RichText from '../rce/RichText'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { sortedTagsSelector } from '../../selectors/tags'
@@ -30,6 +29,7 @@ const {
   sortedChaptersByBookSelector,
   positionOffsetSelector,
   charactersSortedAtoZSelector,
+  sortedLinesByBookSelector,
 } = selectors
 
 class CardDialog extends Component {

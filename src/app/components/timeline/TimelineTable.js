@@ -13,7 +13,6 @@ import AddLineRow from './AddLineRow'
 import * as UIActions from 'actions/ui'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { findDOMNode } from 'react-dom'
 import { isSeriesSelector } from '../../selectors/ui'
 import { actions, helpers, selectors } from 'pltr/v2'
@@ -23,7 +22,7 @@ const {
   lists: { reorderList },
 } = helpers
 
-const { cardMapSelector, sortedChaptersByBookSelector } = selectors
+const { cardMapSelector, sortedChaptersByBookSelector, sortedLinesByBookSelector } = selectors
 
 const LineActions = actions.line
 const BeatActions = actions.beat

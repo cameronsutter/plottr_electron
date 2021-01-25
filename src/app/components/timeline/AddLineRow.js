@@ -13,10 +13,15 @@ import {
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
 import { actions, selectors } from 'pltr/v2'
 
-const { nextCardIdSelector, sortedChaptersByBookSelector, nextChapterIdSelector } = selectors
+const {
+  nextCardIdSelector,
+  sortedChaptersByBookSelector,
+  nextChapterIdSelector,
+  linesByBookSelector,
+  nextLineIdSelector,
+} = selectors
 const LineActions = actions.line
 const SeriesLineActions = actions.series
 

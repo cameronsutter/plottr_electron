@@ -8,10 +8,9 @@ import i18n from 'format-message'
 import CardView from 'components/outline/CardView'
 import cx from 'classnames'
 import { isSeriesSelector } from '../../selectors/ui'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { actions, helpers, selectors } from 'pltr/v2'
 
-const { positionOffsetSelector } = selectors
+const { positionOffsetSelector, sortedLinesByBookSelector } = selectors
 
 const BeatActions = actions.beat
 const CardActions = actions.card

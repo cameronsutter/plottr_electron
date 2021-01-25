@@ -15,7 +15,6 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { sortedTagsSelector } from '../../selectors/tags'
-import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 import { EditAttribute } from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
@@ -27,7 +26,11 @@ const {
 
 const CardActions = actions.card
 
-const { sortedChaptersByBookSelector, positionOffsetSelector } = selectors
+const {
+  sortedChaptersByBookSelector,
+  positionOffsetSelector,
+  charactersSortedAtoZSelector,
+} = selectors
 
 class CardDialog extends Component {
   constructor (props) {

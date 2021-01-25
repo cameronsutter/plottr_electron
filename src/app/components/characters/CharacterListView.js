@@ -23,11 +23,6 @@ import CharacterView from 'components/characters/characterView'
 import i18n from 'format-message'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import cx from 'classnames'
-import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
-import {
-  visibleSortedCharactersByCategorySelector,
-  characterFilterIsEmptySelector,
-} from '../../selectors/characters'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import CharacterCategoriesModal from './CharacterCategoriesModal'
 import CharacterItem from './CharacterItem'
@@ -35,7 +30,12 @@ import InputModal from '../dialogs/InputModal'
 import { nextId } from '../../store/newIds'
 import { actions, selectors } from 'pltr/v2'
 
-const { sortedCharacterCategoriesSelector } = selectors
+const {
+  sortedCharacterCategoriesSelector,
+  characterCustomAttributesThatCanChangeSelector,
+  visibleSortedCharactersByCategorySelector,
+  characterFilterIsEmptySelector,
+} = selectors
 
 const CustomAttributeActions = actions.customAttribute
 const CharacterActions = actions.character

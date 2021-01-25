@@ -17,11 +17,12 @@ import CharacterEditDetails from './CharacterEditDetails'
 import CharacterDetails from './CharacterDetails'
 import SelectList from '../selectList'
 import BookSelectList from '../story/BookSelectList'
-import { singleCharacterSelector } from '../../selectors/characters'
 import { sortedTagsSelector } from '../../selectors/tags'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 
 const CharacterActions = actions.character
+
+const { singleCharacterSelector } = selectors
 
 class CharacterView extends Component {
   render () {

@@ -10,12 +10,13 @@ import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
-import { singleCharacterSelector } from '../../selectors/characters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { EditAttribute } from '../EditAttribute'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 
 const CharacterActions = actions.character
+
+const { singleCharacterSelector } = selectors
 
 class CharacterEditDetails extends Component {
   constructor (props) {

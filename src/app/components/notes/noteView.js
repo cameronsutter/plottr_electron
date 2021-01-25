@@ -13,9 +13,10 @@ import BookSelectList from '../story/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import cx from 'classnames'
 import { sortedTagsSelector } from '../../selectors/tags'
-import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
+
+const { charactersSortedAtoZSelector } = selectors
 
 const NoteActions = actions.note
 

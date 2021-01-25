@@ -7,10 +7,11 @@ import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import Image from '../images/Image'
-import { singleCharacterSelector } from '../../selectors/characters'
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 
 const CharacterActions = actions.character
+
+const { singleCharacterSelector } = selectors
 
 class CharacterDetails extends Component {
   render () {

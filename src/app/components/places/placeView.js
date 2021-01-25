@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, ControlLabel, FormGroup, Glyphicon } from 'react-bootstrap'
-import * as PlaceActions from 'actions/places'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
@@ -14,6 +13,9 @@ import SelectList from '../selectList'
 import BookSelectList from '../story/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { sortedTagsSelector } from '../../selectors/tags'
+import { actions } from 'pltr/v2'
+
+const PlaceActions = actions.place
 
 class PlaceView extends Component {
   constructor (props) {

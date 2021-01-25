@@ -19,7 +19,6 @@ import {
 } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
-import * as PlaceActions from 'actions/places'
 import { actions } from 'pltr/v2'
 import * as UIActions from 'actions/ui'
 import PlaceView from 'components/places/placeView'
@@ -35,6 +34,7 @@ import { visibleSortedPlacesSelector, placeFilterIsEmptySelector } from '../../s
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 
 const CustomAttributeActions = actions.customAttribute
+const PlaceActions = actions.place
 
 class PlaceListView extends Component {
   constructor(props) {

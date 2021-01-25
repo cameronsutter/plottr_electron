@@ -1,6 +1,5 @@
 import i18n from 'format-message'
 import { charactersSortedInBookSelector } from 'app/selectors/characters'
-import { characterCategoriesSelector } from 'app/selectors/categories'
 import {
   createFolderBinderItem,
   createTextBinderItem,
@@ -8,6 +7,9 @@ import {
   buildTemplateProperties,
   buildDescriptionFromObject,
 } from '../utils'
+import { selectors } from 'pltr/v2'
+
+const { characterCategoriesSelector } = selectors
 
 export default function exportCharacters(state, documentContents) {
   const { binderItem } = createFolderBinderItem(i18n('Characters'))

@@ -18,7 +18,6 @@ import {
 } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
-import { actions } from 'pltr/v2'
 import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
 import i18n from 'format-message'
@@ -29,12 +28,14 @@ import {
   visibleSortedCharactersByCategorySelector,
   characterFilterIsEmptySelector,
 } from '../../selectors/characters'
-import { sortedCharacterCategoriesSelector } from '../../selectors/categories'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import CharacterCategoriesModal from './CharacterCategoriesModal'
 import CharacterItem from './CharacterItem'
 import InputModal from '../dialogs/InputModal'
 import { nextId } from '../../store/newIds'
+import { actions, selectors } from 'pltr/v2'
+
+const { sortedCharacterCategoriesSelector } = selectors
 
 const CustomAttributeActions = actions.customAttribute
 const CharacterActions = actions.character

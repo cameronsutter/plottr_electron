@@ -4,10 +4,9 @@ import { connect } from 'react-redux'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortedTagsSelector } from '../selectors/tags'
-import { placesSortedAtoZSelector } from '../selectors/places'
 import { selectors } from 'pltr/v2'
 
-const { charactersSortedAtoZSelector } = selectors
+const { charactersSortedAtoZSelector, placesSortedAtoZSelector } = selectors
 
 class FilterList extends Component {
   constructor (props) {

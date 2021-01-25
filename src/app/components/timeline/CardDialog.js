@@ -14,7 +14,6 @@ import RichText from '../rce/RichText'
 import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { sortedTagsSelector } from '../../selectors/tags'
-import { placesSortedAtoZSelector } from '../../selectors/places'
 import { EditAttribute } from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
 
@@ -30,6 +29,7 @@ const {
   positionOffsetSelector,
   charactersSortedAtoZSelector,
   sortedLinesByBookSelector,
+  placesSortedAtoZSelector,
 } = selectors
 
 class CardDialog extends Component {

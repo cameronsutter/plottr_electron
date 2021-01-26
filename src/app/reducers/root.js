@@ -1,6 +1,8 @@
 import mainReducer from './main'
 import { DELETE_BOOK, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE } from '../constants/ActionTypes'
-import { isSeriesSelector } from '../selectors/ui'
+import { selectors } from 'pltr/v2'
+
+const { isSeriesSelector } = selectors
 
 export default function root (state, action) {
   const isSeries = action.type.includes('@@redux') ? false : isSeriesSelector(state)

@@ -10,6 +10,7 @@ import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
 import { saveFile } from '../../../common/utils/files'
 import { remote } from 'electron'
 import fs from 'fs'
+import log from 'electron-log'
 const { dialog } = remote
 const filters = [{name: 'Plottr file', extensions: ['pltr']}]
 const win = remote.getCurrentWindow()
@@ -39,11 +40,16 @@ export default function FileOptions ({missing, id, filePath, openFile}) {
     console.log('RENAMING')
     const fileName = dialog.showSaveDialogSync(win, {filters, title: t('Give this file a new name'), defaultPath: filePath})
     if (fileName) {
-      let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-      editKnownFilePath(filePath, newFilePath)
-      const contents = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-      saveFile(newFilePath, contents)
-      shell.moveItemToTrash(filePath, true)
+      try {
+        let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+        editKnownFilePath(filePath, newFilePath)
+        const contents = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+        saveFile(newFilePath, contents)
+        shell.moveItemToTrash(filePath, true)
+      } catch (error) {
+        log.error(error)
+        dialog.showErrorBox(t('There was an error doing that. Try again'))
+      }
     }
   }
 

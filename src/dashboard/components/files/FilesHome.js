@@ -6,6 +6,7 @@ import t from 'format-message'
 import TemplatePicker from '../templates/TemplatePicker'
 import { createNew, createFromSnowflake } from '../../utils/window_manager'
 import MPQ from '../../../common/utils/MPQ'
+import log from 'electron-log'
 const { dialog } = remote
 const win = remote.getCurrentWindow()
 
@@ -17,8 +18,8 @@ export default function FilesHome (props) {
     try {
       createNew(template.templateData)
     } catch (error) {
-      // TODO: tell the user something went wrong
-      console.error(error)
+      log.error(error)
+      dialog.showErrorBox(t('There was an error doing that. Try again'))
     }
   }
 
@@ -30,8 +31,8 @@ export default function FilesHome (props) {
         createFromSnowflake(importedPath)
       }
     } catch (error) {
-      // TODO: tell the user something went wrong
-      console.error(error)
+      log.error(error)
+      dialog.showErrorBox(t('There was an error doing that. Try again'))
     }
   }
 

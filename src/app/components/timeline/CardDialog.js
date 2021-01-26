@@ -292,9 +292,9 @@ class CardDialog extends Component {
             htmlFor={lineDropdownID}
           >
             {i18n('Plotline')}:
-            <DropdownButton 
-              id={lineDropdownID} 
-              className='card-dialog__select-line' 
+            <DropdownButton
+              id={lineDropdownID}
+              className='card-dialog__select-line'
               title={truncateTitle(this.getCurrentLine().title, 35)}
             >
               {this.renderLineItems()}
@@ -302,12 +302,12 @@ class CardDialog extends Component {
           </label>
         </div>
         <div className='card-dialog__sdropdown-wrapper'>
-          <label 
-            className='card-dialog__details-label' 
+          <label
+            className='card-dialog__details-label'
             htmlFor={chapterDropdownID}
           >
             {labelText}:
-            <DropdownButton 
+            <DropdownButton
               id={chapterDropdownID}
               className='card-dialog__select-scene'
               title={truncateTitle(currentChapterTitle, 40)}>
@@ -363,13 +363,11 @@ class CardDialog extends Component {
                   }`}
                   onClick={this.selectTab('Attributes')}
                 >
-                  {i18n('Attrtibutes')}
+                  {i18n('Attributes')}
                 </div>
               </div>
               <div
-                className={`card-dialog__details-show-hide-wrapper ${
-                  selected === 'Description' ? '' : 'hidden'
-                }`}
+                className={cx('card-dialog__details-show-hide-wrapper', {hidden: selected !== 'Description'})}
               >
                 <RichText
                   description={card.description}
@@ -380,9 +378,7 @@ class CardDialog extends Component {
                 />
               </div>
               <div
-                className={`card-dialog__custom-attributes ${
-                  selected === 'Attributes' ? '' : 'hidden'
-                }`}
+                className={cx('card-dialog__custom-attributes', {hidden: selected !== 'Attributes'})}
               >
                 {this.renderEditingCustomAttributes()}
               </div>

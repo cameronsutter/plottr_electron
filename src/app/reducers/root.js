@@ -1,6 +1,5 @@
-import mainReducer from './main'
 import { DELETE_BOOK, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE } from '../constants/ActionTypes'
-import { selectors } from 'pltr/v2'
+import { mainReducer, selectors } from 'pltr/v2'
 
 const { isSeriesSelector } = selectors
 

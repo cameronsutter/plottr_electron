@@ -35,10 +35,10 @@
     "zoomIndex": 4
   },
   "file": {
-    "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
+    "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/examples/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2021.1.13"
+    "version": "2021.1.26-beta"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",
@@ -1755,7 +1755,9 @@
       "places": [],
       "templates": [],
       "imageId": null,
-      "fromTemplateId": null
+      "fromTemplateId": null,
+      "Scene Type": "I don't know",
+      "Emotional Change": "Good --> Gooder"
     },
     {
       "id": 321,
@@ -11335,7 +11337,16 @@
       }
     ],
     "cards": [],
-    "scenes": [],
+    "scenes": [
+      {
+        "name": "Scene Type",
+        "type": "text"
+      },
+      {
+        "name": "Emotional Change",
+        "type": "text"
+      }
+    ],
     "lines": []
   },
   "places": [

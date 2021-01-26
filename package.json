@@ -153,8 +153,7 @@
       "!webpack.config.js",
       "!dev-app-update.yml",
       "!bin/*.map",
-      "!example*.pltr",
-      "!example*.docx"
+      "!examples${/*}"
     ],
     "copyright": "Copyright © 2020 Fictional Devices",
     "productName": "Plottr",

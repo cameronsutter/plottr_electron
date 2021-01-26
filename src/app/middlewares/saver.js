@@ -2,8 +2,11 @@ import fs from 'fs'
 import { remote } from 'electron'
 import i18n from 'format-message'
 import log from 'electron-log'
-import { FILE_SAVED, FILE_LOADED } from 'constants/ActionTypes'
 import { saveBackup } from '../../common/utils/backup'
+import { ActionTypes } from 'pltr/v2'
+
+const { FILE_SAVED, FILE_LOADED } = ActionTypes
+
 const dialog = remote.dialog
 const win = remote.getCurrentWindow()
 

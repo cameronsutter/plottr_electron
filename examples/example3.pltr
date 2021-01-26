@@ -5,10 +5,10 @@
     },
     "characterSort": "name~asc",
     "currentView": "timeline",
-    "darkMode": false,
+    "darkMode": true,
     "noteFilter": null,
     "noteSort": "title~asc",
-    "orientation": "vertical",
+    "orientation": "horizontal",
     "placeFilter": {
       "tag": [],
       "book": [],
@@ -36,7 +36,7 @@
   "file": {
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/examples/example3.pltr",
     "loaded": true,
-    "dirty": false,
+    "dirty": true,
     "version": "2021.1.20"
   },
   "series": {

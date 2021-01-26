@@ -272,26 +272,17 @@ class TimelineWrapper extends Component {
             </Button>
           </NavItem>
           <NavItem>
+            <span className='subnav__container__label'>{i18n('Zoom')}: </span>
             <ButtonGroup>
               <Button bsSize='small' className={cx({active: isSmall})}
                 onClick={() => actions.setTimelineSize('small')}
-                title={i18n('Size: small')}
-              >
-                <Glyphicon glyph='th' />
-              </Button>
-              <Button bsSize='small' className={cx({active: isMedium})} style={{marginRight: '-7px'}}
+                title={i18n('Size: small')}>S</Button>
+              <Button bsSize='small' className={cx({active: isMedium})}
                 onClick={() => actions.setTimelineSize('medium')}
-                title={i18n('Size: medium')}
-              >
-                <Glyphicon glyph='th-large' />
-                <Glyphicon glyph='th-large' style={{left: '-7px'}}/>
-              </Button>
+                title={i18n('Size: medium')}>M</Button>
               <Button bsSize='small' className={cx({active: isLarge})}
                 onClick={() => actions.setTimelineSize('large')}
-                title={i18n('Size: large')}
-              >
-                <Glyphicon glyph='th-large' />
-              </Button>
+                title={i18n('Size: large')}>L</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>

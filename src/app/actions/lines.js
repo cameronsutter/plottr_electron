@@ -13,7 +13,11 @@ export function addLine(bookId) {
   return { type: ADD_LINE, bookId }
 }
 
-export function addLinesFromTemplate(cards, lines, chapters, bookId, template) {
+export function addLineWithTitle (title, bookId) {
+  return { type: ADD_LINE_WITH_TITLE, title, bookId }
+}
+
+export function addLinesFromTemplate (cards, lines, chapters, bookId, template) {
   return { type: ADD_LINES_FROM_TEMPLATE, cards, lines, chapters, bookId, template }
 }
 

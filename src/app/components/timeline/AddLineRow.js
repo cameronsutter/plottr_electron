@@ -18,6 +18,7 @@ import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selec
 import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
 import { nextCardIdSelector } from '../../selectors/cards'
 import { isSmallSelector } from '../../selectors/ui'
+import InputModal from '../dialogs/InputModal'
 import { actions } from 'pltr/v2'
 
 const LineActions = actions.lineActions
@@ -26,6 +27,7 @@ class AddLineRow extends Component {
   state = {
     hovering: false,
     showTemplatePicker: false,
+    askingForInput: false,
   }
   allChapters = []
   allLines = []
@@ -220,13 +222,28 @@ class AddLineRow extends Component {
     this.setState({ showTemplatePicker: false })
   }
 
-  renderInsertButton() {
+  simpleAddLine = (title) => {
+    console.log('simpleAddLine')
+    const { ui, actions } = this.props
+    actions.addLineWithTitle(title, ui.currentTimeline)
+    this.setState({askingForInput: false, hovering: false})
+  }
+
+  renderInputModal () {
+    console.log('this.state.askingForInput', this.state.askingForInput)
+    if (!this.state.askingForInput) return null
+
+    return <InputModal isOpen={true} getValue={this.simpleAddLine} title={i18n('Plotline Title:')} type='text' cancel={() => this.setState({askingForInput: false, hovering: false})}/>
+  }
+
+  renderInsertButton () {
     const { ui, actions, isSmall } = this.props
     if (isSmall) {
       return <th className='row-header'>
+        { this.renderInputModal() }
         <div
           className='line-list__append-line'
-          onClick={() => actions.addLine(ui.currentTimeline)}
+          onClick={() => this.setState({askingForInput: true})}
         >
           <div className='line-list__append-line-wrapper'>
             <Glyphicon glyph='plus' />
@@ -236,35 +253,29 @@ class AddLineRow extends Component {
     }
 
     if (this.props.bookId != 'series') {
-      return (
-        <div className="line-list__append-line">
-          {this.state.hovering ? (
-            <div className="line-list__append-line__double">
-              <div
-                onClick={() => this.setState({ showTemplatePicker: true, hovering: false })}
-                className="template"
-              >
-                {i18n('Use Template')}
-              </div>
-              <div onClick={() => actions.addLine(ui.currentTimeline)} className="non-template">
-                <Glyphicon glyph="plus" />
-              </div>
-            </div>
-          ) : (
-            <div className="line-list__append-line-wrapper">
-              <Glyphicon glyph="plus" />
-            </div>
-          )}
-        </div>
-      )
-    } else {
-      return (
-        <div className="line-list__append-line" onClick={() => actions.addLine(ui.currentTimeline)}>
-          <div className="line-list__append-line-wrapper">
-            <Glyphicon glyph="plus" />
+      return <div className='line-list__append-line'>
+        { this.renderInputModal() }
+        {this.state.hovering ?
+          <div className='line-list__append-line__double'>
+            <div onClick={() => this.setState({showTemplatePicker: true, hovering: false})} className='template'>{i18n('Use Template')}</div>
+            <div onClick={() => this.setState({askingForInput: true})} className='non-template'><Glyphicon glyph='plus' /></div>
           </div>
+        :
+          <div className='line-list__append-line-wrapper'>
+            <Glyphicon glyph='plus' />
+          </div>
+        }
+      </div>
+    } else {
+      return <div
+        className='line-list__append-line'
+        onClick={() => this.setState({askingForInput: true})}
+      >
+        { this.renderInputModal() }
+        <div className='line-list__append-line-wrapper'>
+          <Glyphicon glyph='plus' />
         </div>
-      )
+      </div>
     }
   }
 
@@ -306,6 +317,7 @@ class AddLineRow extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.showTemplatePicker != nextState.showTemplatePicker) return true
     if (this.state.hovering != nextState.hovering) return true
+    if (this.state.askingForInput != nextState.askingForInput) return true
     return false
   }
 

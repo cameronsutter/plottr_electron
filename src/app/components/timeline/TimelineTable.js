@@ -288,9 +288,7 @@ class TimelineTable extends Component {
         </table>
       </div>
     } else {
-      const rows = this.renderRows()
-
-      return [<TopRow key="top-row"/>, rows]
+      return [<TopRow key='top-row'/>, this.renderRows()]
     }
   }
 }

@@ -1,5 +1,7 @@
 import rp from 'request-promise-native'
 import log from 'electron-log'
+import setupRollbar from '../utils/rollbar'
+const rollbar = setupRollbar('license_checker')
 import { licenseURL, isActiveLicense, productMapping } from './licensing'
 
 export function checkForActiveLicense (licenseInfo, callback) {
@@ -20,8 +22,6 @@ export function checkForActiveLicense (licenseInfo, callback) {
       callback(null, activeLicense)
     })
     .catch(err => {
-      // we do the require here to avoid circular dependencies
-      const rollbar = require('./rollbar').setupRollbar('license_checker')
       log.error(err)
       rollbar.warn(err)
       // conscious choice not to turn premium off here

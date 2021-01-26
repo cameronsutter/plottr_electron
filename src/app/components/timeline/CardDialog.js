@@ -5,7 +5,6 @@ import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PlottrModal from 'components/PlottrModal'
-import * as UIActions from 'actions/ui'
 import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
@@ -21,6 +20,7 @@ const {
 } = helpers
 
 const CardActions = actions.card
+const UIActions = actions.ui
 
 const { sortedTagsSelector, isSeriesSelector } = selectors
 

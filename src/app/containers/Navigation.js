@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as UIActions from 'actions/ui'
 import { Glyphicon } from 'react-bootstrap'
 import { FaKey } from 'react-icons/fa'
 import BookChooser from '../components/story/BookChooser'
@@ -11,6 +10,9 @@ import cx from 'classnames'
 import { ipcRenderer } from 'electron'
 import Beamer from '../components/Beamer'
 import SETTINGS from '../../common/utils/settings'
+import { actions } from 'pltr/v2'
+
+const UIActions = actions.ui
 
 const trialMode = SETTINGS.get('trialMode')
 

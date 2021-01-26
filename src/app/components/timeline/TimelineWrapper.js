@@ -7,7 +7,6 @@ import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayT
 import { StickyTable } from 'react-sticky-table'
 import FilterList from 'components/filterList'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
-import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
 import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
@@ -16,7 +15,9 @@ import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
-import { helpers, selectors } from 'pltr/v2'
+import { actions, helpers, selectors } from 'pltr/v2'
+
+const UIActions = actions.ui
 
 const {
   zoom: { computeZoom },

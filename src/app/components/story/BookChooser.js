@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as UIActions from 'actions/ui'
 import { NavDropdown, MenuItem } from 'react-bootstrap'
 import i18n from 'format-message'
+import { actions } from 'pltr/v2'
+
+const UIActions = actions.ui
 
 const DISABLED_VIEWS = ['notes', 'characters', 'places', 'tags']
 

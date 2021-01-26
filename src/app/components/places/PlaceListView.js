@@ -19,7 +19,6 @@ import {
 } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
-import * as UIActions from 'actions/ui'
 import PlaceView from 'components/places/placeView'
 import i18n from 'format-message'
 import ErrorBoundary from '../../containers/ErrorBoundary'
@@ -37,6 +36,7 @@ const {
 
 const CustomAttributeActions = actions.customAttribute
 const PlaceActions = actions.place
+const UIActions = actions.ui
 
 class PlaceListView extends Component {
   constructor(props) {

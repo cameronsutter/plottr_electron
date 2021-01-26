@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
 import ImagePicker from '../images/ImagePicker'
-import * as UIActions from 'actions/ui'
 import Image from '../images/Image'
 import BookDialog from './BookDialog'
 import { Glyphicon, ButtonGroup, Button } from 'react-bootstrap'
@@ -13,6 +12,7 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, selectors } from 'pltr/v2'
 
 const BookActions = actions.book
+const UIActions = actions.ui
 const { canDeleteBookSelector } = selectors
 
 class Book extends Component {

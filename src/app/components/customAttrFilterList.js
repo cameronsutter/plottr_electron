@@ -4,14 +4,14 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
-import * as UIActions from 'actions/ui'
 import cx from 'classnames'
 import i18n from 'format-message'
 import TagFilterList from './filterLists/TagFilterList'
 import BookFilterList from './filterLists/BookFilterList'
 import CharacterCategoryFilterList from './filterLists/CharacterCategoryFilterList'
-import { selectors } from 'pltr/v2'
+import { selectors, actions } from 'pltr/v2'
 
+const UIActions = actions.ui
 const { sortedTagsSelector } = selectors
 
 class CustomAttrFilterList extends Component {

@@ -18,7 +18,6 @@ import {
 } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
-import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
 import i18n from 'format-message'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
@@ -39,6 +38,7 @@ const {
 
 const CustomAttributeActions = actions.customAttribute
 const CharacterActions = actions.character
+const UIActions = actions.ui
 
 class CharacterListView extends Component {
   constructor(props) {

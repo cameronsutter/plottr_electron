@@ -10,7 +10,6 @@ import ChapterInsertCell from './ChapterInsertCell'
 import TopRow from './TopRow'
 import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
-import * as UIActions from 'actions/ui'
 import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { findDOMNode } from 'react-dom'
@@ -33,6 +32,7 @@ const BeatActions = actions.beat
 const CardActions = actions.card
 const SceneActions = actions.scene
 const SeriesLineActions = actions.series
+const UIActions = actions.ui
 
 class TimelineTable extends Component {
   state = {

@@ -7,13 +7,12 @@ import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { nextBackgroundColor, nextColor } from 'store/lineColors'
 import {
   card,
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { actions, selectors } from 'pltr/v2'
+import { actions, selectors, nextBackgroundColor, nextColor } from 'pltr/v2'
 
 const {
   nextCardIdSelector,

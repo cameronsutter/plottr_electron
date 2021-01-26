@@ -11,8 +11,7 @@ import {
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { nextBackgroundColor, nextColor } from '../../../app/store/lineColors'
-import { helpers } from 'pltr/v2'
+import { helpers, nextBackgroundColor, nextColor } from 'pltr/v2'
 
 const {
   lists: { nextPositionInBook },

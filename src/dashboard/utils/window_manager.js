@@ -23,6 +23,7 @@ export function openExistingFile () {
   // ask user where it is
   const properties = [ 'openFile', 'createDirectory' ]
   const filters = [{name: t('Plottr project file'), extensions: ['pltr']}]
+  console.log('OPEN EXISTING')
   const files = dialog.showOpenDialogSync(win, { filters: filters, properties: properties })
   if (files && files.length) {
     const id = addToKnownFiles(files[0])

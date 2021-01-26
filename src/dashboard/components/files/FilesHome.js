@@ -58,6 +58,7 @@ function snowflakeImportDialog () {
   const title = t('Choose your Snowflake Pro file')
   const filters = [{name: 'Snowflake Pro file', extensions: ['snowXML']}]
   const properties = [ 'openFile' ]
+  console.log('CHOOSING SNOWFLAKE')
   const files = dialog.showOpenDialogSync(win, {title, filters, properties})
   if (files && files.length) {
     const importedPath = files[0]

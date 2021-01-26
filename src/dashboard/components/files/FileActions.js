@@ -36,16 +36,17 @@ export default function FileOptions ({missing, id, filePath, openFile}) {
   }
 
   const renameFile = () => {
-    const fileName = dialog.showSaveDialogSync(win, {filters, title: t('Where would you like to move it?')})
+    console.log('RENAMING')
+    const fileName = dialog.showSaveDialogSync(win, {filters, title: t('Give this file a new name')})
     if (fileName) {
       let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
       editKnownFilePath (filePath, newFilePath)
       const contents = fs.readFileSync(filePath, 'utf-8')
       saveFile(newFilePath, contents)
-      shell.moveItemToTrash(filePath, true)    
+      shell.moveItemToTrash(filePath, true)
     }
   }
-  
+
   const doTheThing = (eventKey) => {
     switch (eventKey) {
       case 'open':

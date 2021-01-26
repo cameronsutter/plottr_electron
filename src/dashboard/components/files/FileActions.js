@@ -37,7 +37,7 @@ export default function FileOptions ({missing, id, filePath, openFile}) {
 
   const renameFile = () => {
     console.log('RENAMING')
-    const fileName = dialog.showSaveDialogSync(win, {filters, title: t('Give this file a new name')})
+    const fileName = dialog.showSaveDialogSync(win, {filters, title: t('Give this file a new name'), defaultPath: filePath})
     if (fileName) {
       let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
       editKnownFilePath (filePath, newFilePath)

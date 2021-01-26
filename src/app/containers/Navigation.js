@@ -9,8 +9,8 @@ import BookChooser from '../components/story/BookChooser'
 import i18n from 'format-message'
 import cx from 'classnames'
 import { ipcRenderer } from 'electron'
-import Beamer from '../components/Beamer'
 import SETTINGS from '../../common/utils/settings'
+import Beamer from '../../common/components/Beamer'
 
 const trialMode = SETTINGS.get('trialMode')
 
@@ -81,7 +81,7 @@ class Navigation extends Component {
           : null}
         </ul>
         { this.renderTrialLinks() }
-        <Beamer/>
+        <Beamer inNavigation/>
       </div>
     </nav>
   }

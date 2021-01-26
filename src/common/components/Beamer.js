@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import { shell } from 'electron'
+import cx from 'classnames'
 import { FaRegBell } from 'react-icons/fa'
-import USER from '../../common/utils/user_info'
+import USER from '../utils/user_info'
+import { is } from 'electron-util'
 
-function Beamer (props) {
+function Beamer ({ inNavigation }) {
 
   useEffect(() => {
     if (window.Beamer) {
@@ -26,13 +28,20 @@ function Beamer (props) {
 
   if (!window.Beamer) return null
 
-  return <ul className='nav navbar-nav navbar-right' style={{marginRight: '2px'}}>
-    <li>
-      <a id='beamer-bell' href='#'>
-        <FaRegBell/>
-      </a>
-    </li>
-  </ul>
+  const bell = <a id='beamer-bell' href='#'>
+    <FaRegBell/>
+  </a>
+
+  if (inNavigation) {
+
+    return <ul className='nav navbar-nav navbar-right' style={{marginRight: '2px'}}>
+      <li>
+        { bell }
+      </li>
+    </ul>
+  } else {
+    return <div className={cx('beamer-wrapper', {win32: is.windows})}>{ bell }</div>
+  }
 }
 
 export default Beamer

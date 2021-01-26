@@ -6,6 +6,7 @@ import cx from 'classnames'
 import { VscChromeMaximize, VscChromeMinimize, VscChromeClose } from 'react-icons/vsc'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
+import Beamer from '../../../common/components/Beamer'
 const win = remote.getCurrentWindow()
 
 export default function DashboardHeader ({ darkMode }) {
@@ -41,7 +42,9 @@ export default function DashboardHeader ({ darkMode }) {
     </div>
   }
   return <div className={cx('dashboard__header', {darkmode: darkMode})}>
-    <div className='nav-spacer'></div>
+    <div className={cx('nav-spacer', {win32: is.windows})}>
+      {!is.macos ? <Beamer/> : null}
+    </div>
     <div className='nav-right'>
       <span>{t('Plottr')}</span>
       <span className='spacer'>—</span>
@@ -52,5 +55,6 @@ export default function DashboardHeader ({ darkMode }) {
       {message2}
     </div>
     { rightButtons }
+    {is.macos ? <Beamer/> : null}
   </div>
 }

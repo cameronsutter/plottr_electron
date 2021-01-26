@@ -30,6 +30,10 @@ $header-height: 40px;
 
     .nav-spacer {
       width: 100px;
+      &.win32 {
+        display: flex;
+        justify-content: center;
+      }
     }
 
     .nav-right {
@@ -55,6 +59,26 @@ $header-height: 40px;
         &:hover {
           background-color: $neutral-gray-7;
         }
+      }
+    }
+
+    .beamer-wrapper {
+      width: 40px;
+      cursor: pointer;
+      #beamer-bell {
+        cursor: pointer;
+        .beamer_icon {
+          top: -6px;
+          right: -16px;
+        }
+        svg {
+          cursor: pointer;
+          color: $gray-0;
+          vertical-align: bottom;
+        }
+      }
+      &.win32 {
+        width: 80px;
       }
     }
   }

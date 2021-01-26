@@ -5,7 +5,7 @@
     },
     "characterSort": "name~asc",
     "currentView": "timeline",
-    "darkMode": true,
+    "darkMode": false,
     "noteFilter": null,
     "noteSort": "title~asc",
     "orientation": "horizontal",
@@ -18,8 +18,6 @@
     },
     "placeSort": "name~asc",
     "currentTimeline": 1,
-    "zoomState": null,
-    "zoomIndex": 4,
     "timelineIsExpanded": false,
     "timelineFilter": {
       "tag": [],
@@ -29,13 +27,18 @@
     "timelineScrollPosition": {
       "x": 0,
       "y": 0
-    }
+    },
+    "timeline": {
+      "size": "large"
+    },
+    "zoomState": null,
+    "zoomIndex": 4
   },
   "file": {
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2021.1.5"
+    "version": "2021.1.13"
   },
   "series": {
     "name": "Pride & Prejudice \"Series\"",

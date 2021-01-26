@@ -7,8 +7,9 @@ import { Glyphicon } from 'react-bootstrap'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
-import { nextId } from '../../store/newIds'
-import { actions, helpers, selectors } from 'pltr/v2'
+import { newIds, actions, helpers, selectors } from 'pltr/v2'
+
+const { nextId } = newIds
 
 const {
   chapters: { insertChapter },

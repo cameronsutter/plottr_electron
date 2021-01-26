@@ -9,8 +9,9 @@ import { Glyphicon } from 'react-bootstrap'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import cx from 'classnames'
 import { chunk, flatten } from 'lodash'
-import { objectId } from '../../store/newIds'
-import { actions } from 'pltr/v2'
+import { newIds, actions } from 'pltr/v2'
+
+const { objectId } = newIds
 
 const BookActions = actions.book
 const LineActions = actions.line

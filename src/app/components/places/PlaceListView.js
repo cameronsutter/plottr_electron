@@ -23,9 +23,10 @@ import PlaceView from 'components/places/placeView'
 import i18n from 'format-message'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import PlaceItem from './PlaceItem'
-import { nextId } from '../../store/newIds'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
-import { actions, selectors } from 'pltr/v2'
+import { newIds, actions, selectors } from 'pltr/v2'
+
+const { nextId } = newIds
 
 const {
   placeCustomAttributesThatCanChangeSelector,

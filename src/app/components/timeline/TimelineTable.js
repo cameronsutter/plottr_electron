@@ -11,9 +11,10 @@ import TopRow from './TopRow'
 import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
 import { card } from '../../../../shared/initialState'
-import { nextId } from '../../store/newIds'
 import { findDOMNode } from 'react-dom'
-import { actions, helpers, selectors } from 'pltr/v2'
+import { newIds, actions, helpers, selectors } from 'pltr/v2'
+
+const { nextId } = newIds
 
 const {
   chapters: { insertChapter },

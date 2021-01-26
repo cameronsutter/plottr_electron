@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ErrorBoundary from '../../../app/containers/ErrorBoundary'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import Account from '../account/Account'
@@ -11,10 +11,12 @@ import OptionsHome from '../options/OptionsHome'
 import HelpHome from '../help/HelpHome'
 import { ipcRenderer } from 'electron'
 import SETTINGS from '../../../common/utils/settings'
+import { checkForActiveLicense } from '../../../common/licensing/check_license'
 
 export default function DashboardBody ({currentView, setView}) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
   const {started, expired, daysLeft} = useTrialStatus()
+  const [showAccount, setShowAccount] = useState(false)
 
   useEffect(() => {
     ipcRenderer.send('pls-reload-menu')
@@ -24,11 +26,27 @@ export default function DashboardBody ({currentView, setView}) {
     } else {
       SETTINGS.set('trialMode', true)
     }
+
+    // no license and trial hasn't started (first time using the app)
+    // OR no license and trial is expired
+    if (!licenseInfoSize && (!started || expired) && process.env.NODE_ENV !== 'development') {
+      setShowAccount(false)
+    }
+
   }, [licenseInfo, licenseInfoSize, started, expired])
 
-  // no license and trial hasn't started (first time using the app)
-  // OR no license and trial is expired
-  if (!licenseInfoSize && (!started || expired) && process.env.NODE_ENV !== 'development') {
+  useEffect(() => {
+    checkForActiveLicense(licenseInfo, (err, success) => {
+      if (!err) {
+        // conscious choice not to display anything different if the license isn't active
+        // that may change in the future
+        // setShowAccount(!success)
+      }
+    })
+  }, [])
+
+  // only allow these tabs in certain cases (see comment above)
+  if (showAccount) {
     switch (currentView) {
       case 'help':
         return <Body><HelpHome/></Body>

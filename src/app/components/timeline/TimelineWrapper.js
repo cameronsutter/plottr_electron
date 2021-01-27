@@ -3,9 +3,19 @@ import { ipcRenderer, remote } from 'electron'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Navbar, Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  Button,
+  ButtonGroup,
+  Glyphicon,
+  Popover,
+  OverlayTrigger,
+  Alert,
+} from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
-import FilterList from 'components/filterList'
+import CustomAttrFilterList from 'components/customAttrFilterList'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
@@ -22,20 +32,20 @@ import ClearNavItem from './ClearNavItem'
 const win = remote.getCurrentWindow()
 
 // takes into account spacing
-const SCENE_CELL_WIDTH = 175 + 17;
-const SCENE_CELL_HEIGHT = 74 + 40;
+const SCENE_CELL_WIDTH = 175 + 17
+const SCENE_CELL_HEIGHT = 74 + 40
 
 class TimelineWrapper extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       mounted: false,
-      attributesDialogOpen: false
+      attributesDialogOpen: false,
     }
     this.tableRef = null
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.tableRef.onscroll = this.scrollHandler
     const { zoomIndex } = this.props.ui
     if (!zoomIndex) {
@@ -44,18 +54,18 @@ class TimelineWrapper extends Component {
       this.updateZoom(this.props.ui)
     }
     setTimeout(() => {
-      this.setState({mounted: true}, () => {
-        if (this.props.ui.timelineScrollPosition == null) return;
+      this.setState({ mounted: true }, () => {
+        if (this.props.ui.timelineScrollPosition == null) return
         this.tableRef.scrollTo({
           top: this.props.ui.timelineScrollPosition.y,
           left: this.props.ui.timelineScrollPosition.x,
-          behavior: 'auto'
-        });
+          behavior: 'auto',
+        })
       })
     }, 100)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { ui } = this.props
     if (nextProps.ui.zoomState != ui.zoomState) {
       if (nextProps.ui.zoomState != 'fit') this.updateZoom(nextProps.ui)
@@ -64,25 +74,25 @@ class TimelineWrapper extends Component {
     }
 
     if (nextProps.ui.currentTimeline != ui.currentTimeline) {
-      this.setState({mounted: false})
-      setTimeout(() => this.setState({mounted: true}), 100)
+      this.setState({ mounted: false })
+      setTimeout(() => this.setState({ mounted: true }), 100)
     }
     if (nextProps.ui.orientation != ui.orientation) {
-      this.setState({mounted: false})
-      setTimeout(() => this.setState({mounted: true}), 100)
+      this.setState({ mounted: false })
+      setTimeout(() => this.setState({ mounted: true }), 100)
     }
     if (nextProps.ui.zoomIndex != ui.zoomIndex || nextProps.ui.zoomState != ui.zoomState) {
-      this.setState({mounted: false})
+      this.setState({ mounted: false })
       const updateIt = nextProps.ui.zoomState == 'fit' && ui.zoomState == null
       const uiProps = nextProps.ui
       setTimeout(() => {
-        this.setState({mounted: true})
+        this.setState({ mounted: true })
         if (updateIt) this.updateZoom(uiProps)
       }, 100)
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.tableRef.onScroll = null
     this.tableRef = null
   }
@@ -93,7 +103,7 @@ class TimelineWrapper extends Component {
 
   updateZoom = (uiProps) => {
     const zoomScale = computeZoom(this.tableRef, uiProps)
-    this.tableRef.children[0].style.transform = zoomScale;
+    this.tableRef.children[0].style.transform = zoomScale
   }
 
   zoomLabel = () => {
@@ -104,10 +114,6 @@ class TimelineWrapper extends Component {
   // //////////////
   //  filtering  //
   // //////////////
-
-  updateFilter = (filter) => {
-    this.props.actions.setTimelineFilter({...filter})
-  }
 
   clearFilter = () => {
     this.props.actions.setTimelineFilter({ tag: [], character: [], place: [] })
@@ -120,54 +126,54 @@ class TimelineWrapper extends Component {
   scrollTo = (position) => {
     const options = {
       behavior: 'smooth',
-    };
+    }
 
     if (this.props.ui.orientation === 'vertical') {
       options.top = position
     } else {
       options.left = position
     }
-    this.tableRef.scrollTo(options);
+    this.tableRef.scrollTo(options)
   }
 
   scrollDistance = () => {
-    return this.props.ui.orientation === 'vertical' ? 2 * SCENE_CELL_HEIGHT : 2 * SCENE_CELL_WIDTH;
+    return this.props.ui.orientation === 'vertical' ? 2 * SCENE_CELL_HEIGHT : 2 * SCENE_CELL_WIDTH
   }
 
   scrollLeft = () => {
-    const current = this.props.ui.orientation === 'vertical'
-      ? this.tableRef.scrollTop
-      : this.tableRef.scrollLeft;
-    this.scrollTo(current - this.scrollDistance());
+    const current =
+      this.props.ui.orientation === 'vertical' ? this.tableRef.scrollTop : this.tableRef.scrollLeft
+    this.scrollTo(current - this.scrollDistance())
   }
   scrollRight = () => {
-    const current = this.props.ui.orientation === 'vertical'
-      ? this.tableRef.scrollTop
-      : this.tableRef.scrollLeft;
-    this.scrollTo(current + this.scrollDistance());
+    const current =
+      this.props.ui.orientation === 'vertical' ? this.tableRef.scrollTop : this.tableRef.scrollLeft
+    this.scrollTo(current + this.scrollDistance())
   }
-  scrollBeginning = () => this.scrollTo(0);
+  scrollBeginning = () => this.scrollTo(0)
   scrollMiddle = () => {
-    const target = this.props.ui.orientation === 'vertical'
-      ? (this.tableRef.scrollHeight / 2) - (window.innerHeight / 2)
-      : (this.tableRef.scrollWidth / 2) - (window.innerWidth / 2);
-    this.scrollTo(target);
+    const target =
+      this.props.ui.orientation === 'vertical'
+        ? this.tableRef.scrollHeight / 2 - window.innerHeight / 2
+        : this.tableRef.scrollWidth / 2 - window.innerWidth / 2
+    this.scrollTo(target)
   }
   scrollEnd = () => {
-    const target = this.props.ui.orientation === 'vertical'
-      ? this.tableRef.scrollHeight
-      : this.tableRef.scrollWidth;
-    this.scrollTo(target);
+    const target =
+      this.props.ui.orientation === 'vertical'
+        ? this.tableRef.scrollHeight
+        : this.tableRef.scrollWidth
+    this.scrollTo(target)
   }
 
   scrollHandler = (e) => {
     const position = {
       x: e.currentTarget.scrollLeft,
       y: e.currentTarget.scrollTop,
-    };
-    clearTimeout(this.timeout);
+    }
+    clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      this.props.actions.recordScrollPosition(position);
+      this.props.actions.recordScrollPosition(position)
     }, 500)
   }
 
@@ -205,7 +211,7 @@ class TimelineWrapper extends Component {
   //  rendering   //
   // //////////////
 
-  renderSubNav () {
+  renderSubNav() {
     const { ui, file, filterIsEmpty, canSaveTemplate } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
@@ -225,93 +231,137 @@ class TimelineWrapper extends Component {
       scrollDirectionFirst = 'menu-up'
       scrollDirectionSecond = 'menu-down'
     }
-    let popover = <Popover id='filter'>
-      <FilterList filteredItems={this.props.ui.timelineFilter} updateItems={this.updateFilter} />
-    </Popover>
-    let filterDeclaration = <Alert onClick={this.clearFilter} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Timeline is filtered')}</Alert>
+    let popover = (
+      <Popover id="filter">
+        <CustomAttrFilterList type="cards" />
+      </Popover>
+    )
+    let filterDeclaration = (
+      <Alert onClick={this.clearFilter} bsStyle="warning">
+        <Glyphicon glyph="remove-sign" />
+        {'  '}
+        {i18n('Timeline is filtered')}
+      </Alert>
+    )
     if (filterIsEmpty) {
       filterDeclaration = <span></span>
     }
 
     return (
-      <Navbar className={cx('subnav__container', {darkmode: ui.darkMode})}>
-        <Nav bsStyle='pills' >
+      <Navbar className={cx('subnav__container', { darkmode: ui.darkMode })}>
+        <Nav bsStyle="pills">
           <NavItem>
-            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
+            <OverlayTrigger
+              containerPadding={20}
+              trigger="click"
+              rootClose
+              placement="bottom"
+              overlay={popover}
+            >
+              <Button bsSize="small">
+                <Glyphicon glyph="filter" /> {i18n('Filter')}
+              </Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={this.flipOrientation}><Glyphicon glyph={glyph} /> {i18n('Flip')}</Button>
+            <Button bsSize="small" onClick={this.flipOrientation}>
+              <Glyphicon glyph={glyph} /> {i18n('Flip')}
+            </Button>
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={() => this.setState({attributesDialogOpen: true})}><Glyphicon glyph='list' /> {i18n('Attributes')}</Button>
+            <Button bsSize="small" onClick={() => this.setState({ attributesDialogOpen: true })}>
+              <Glyphicon glyph="list" /> {i18n('Attributes')}
+            </Button>
           </NavItem>
           <NavItem>
-            <Button bsSize='small' onClick={this.toggleExpanded}>{expandedIcon}{' '}{expandedText}</Button>
+            <Button bsSize="small" onClick={this.toggleExpanded}>
+              {expandedIcon} {expandedText}
+            </Button>
           </NavItem>
           <NavItem>
-            <span className='subnav__container__label'>{i18n('Zoom')}</span>
-            <span className='subnav__container__label'> ({this.zoomLabel()}): </span>
-            <ButtonGroup bsSize='small'>
-              <Button onClick={this.props.actions.increaseZoom} ><Glyphicon glyph='plus-sign' /></Button>
-              <Button onClick={this.props.actions.decreaseZoom} ><Glyphicon glyph='minus-sign' /></Button>
-              <Button onClick={this.props.actions.fitZoom} >{i18n('Fit')}</Button>
-              <Button onClick={this.props.actions.resetZoom} >{i18n('Reset')}</Button>
+            <span className="subnav__container__label">{i18n('Zoom')}</span>
+            <span className="subnav__container__label"> ({this.zoomLabel()}): </span>
+            <ButtonGroup bsSize="small">
+              <Button onClick={this.props.actions.increaseZoom}>
+                <Glyphicon glyph="plus-sign" />
+              </Button>
+              <Button onClick={this.props.actions.decreaseZoom}>
+                <Glyphicon glyph="minus-sign" />
+              </Button>
+              <Button onClick={this.props.actions.fitZoom}>{i18n('Fit')}</Button>
+              <Button onClick={this.props.actions.resetZoom}>{i18n('Reset')}</Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
-            <span className='subnav__container__label'>{i18n('Scroll')}: </span>
-            <ButtonGroup bsSize='small'>
-              <Button onClick={this.scrollLeft} ><Glyphicon glyph={scrollDirectionFirst} /></Button>
-              <Button onClick={this.scrollRight} ><Glyphicon glyph={scrollDirectionSecond} /></Button>
-              <Button onClick={this.scrollBeginning} >{i18n('Beginning')}</Button>
-              <Button onClick={this.scrollMiddle} >{i18n('Middle')}</Button>
-              <Button onClick={this.scrollEnd} >{i18n('End')}</Button>
+            <span className="subnav__container__label">{i18n('Scroll')}: </span>
+            <ButtonGroup bsSize="small">
+              <Button onClick={this.scrollLeft}>
+                <Glyphicon glyph={scrollDirectionFirst} />
+              </Button>
+              <Button onClick={this.scrollRight}>
+                <Glyphicon glyph={scrollDirectionSecond} />
+              </Button>
+              <Button onClick={this.scrollBeginning}>{i18n('Beginning')}</Button>
+              <Button onClick={this.scrollMiddle}>{i18n('Middle')}</Button>
+              <Button onClick={this.scrollEnd}>{i18n('End')}</Button>
             </ButtonGroup>
           </NavItem>
-          {canSaveTemplate ? <NavItem>
-            <Button bsSize='small' onClick={this.startSaveAsTemplate}><FaSave className='svg-save-template'/> {i18n('Save as Template')}</Button>
-          </NavItem> : null }
+          {canSaveTemplate ? (
+            <NavItem>
+              <Button bsSize="small" onClick={this.startSaveAsTemplate}>
+                <FaSave className="svg-save-template" /> {i18n('Save as Template')}
+              </Button>
+            </NavItem>
+          ) : null}
           <ClearNavItem />
-          <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline}/>
+          <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline} />
         </Nav>
       </Navbar>
     )
   }
 
-  renderBody () {
+  renderBody() {
     if (this.state.mounted) {
       return <TimelineTable tableRef={this.tableRef} />
     } else {
-      return <FunSpinner/>
+      return <FunSpinner />
     }
   }
 
   closeDialog = () => {
     this.setState({
-      attributesDialogOpen: false
+      attributesDialogOpen: false,
     })
   }
 
-  renderCustomAttributes () {
+  renderCustomAttributes() {
     if (!this.state.attributesDialogOpen) return null
 
-    return <CustomAttributeModal type='scenes' closeDialog={this.closeDialog} />
+    return <CustomAttributeModal type="scenes" closeDialog={this.closeDialog} />
   }
 
-  render () {
+  render() {
     const { ui } = this.props
-    return <div id='timelineview__container' className={cx('container-with-sub-nav', {darkmode: ui.darkMode})}>
-      { this.renderSubNav() }
-      { this.renderCustomAttributes() }
-      <div id='timelineview__root'>
-        <StickyTable leftColumnZ={5} headerZ={5} wrapperRef={ref => this.tableRef = ref} className={cx({darkmode: ui.darkMode, vertical: ui.orientation == 'vertical'})}>
-          { this.renderBody() }
-        </StickyTable>
+    return (
+      <div
+        id="timelineview__container"
+        className={cx('container-with-sub-nav', { darkmode: ui.darkMode })}
+      >
+        {this.renderSubNav()}
+        {this.renderCustomAttributes()}
+        <div id="timelineview__root">
+          <StickyTable
+            leftColumnZ={5}
+            headerZ={5}
+            wrapperRef={(ref) => (this.tableRef = ref)}
+            className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
+          >
+            {this.renderBody()}
+          </StickyTable>
+        </div>
       </div>
-    </div>
+    )
   }
 }
 
@@ -322,7 +372,7 @@ TimelineWrapper.propTypes = {
   canSaveTemplate: PropTypes.bool.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     file: state.present.file,
     ui: state.present.ui,
@@ -331,13 +381,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(UIActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TimelineWrapper)
+export default connect(mapStateToProps, mapDispatchToProps)(TimelineWrapper)

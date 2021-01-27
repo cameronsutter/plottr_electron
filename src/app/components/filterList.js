@@ -108,7 +108,7 @@ class FilterList extends Component {
       checked = 'eye-open'
     }
     return (
-      <li onMouseDown={() => this.filterItem(attributeName, '')}>
+      <li key={`${attributeName}-blank`} onMouseDown={() => this.filterItem(attributeName, '')}>
         <Glyphicon glyph={checked} /> <em className="secondary-text">[{i18n('blank')}]</em>
       </li>
     )

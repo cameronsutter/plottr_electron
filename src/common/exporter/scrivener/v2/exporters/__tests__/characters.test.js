@@ -1,6 +1,7 @@
 import exportCharacters from '../characters'
 import { resetId } from '../../utils'
-import { headingTwo, paragraph, state } from './fixtures'
+import { state } from './fixtures'
+import { headingTwo, paragraph } from 'components/rce/__fixtures__'
 
 describe('exportCharacters', () => {
   let documentContents = {}

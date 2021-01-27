@@ -11,9 +11,14 @@ let plugins = [
 // required for test
 if (isTest) {
   plugins.push(["module-resolver", {
-    "root": ["./src/app", "./src/css", "./src/dashboard"],
     "alias": {
       "test-utils": "./test/test-utils",
+      "app": "./src/app",
+      "css": "./src/css",
+      "dashboard": "./src/dashboard",
+      "constants": "./src/app/constants",
+      "actions": "./src/app/actions",
+      "components": "./src/app/components"
     }
   }])
 }

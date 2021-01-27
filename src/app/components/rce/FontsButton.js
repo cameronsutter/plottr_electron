@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'react-proptypes'
 import { Editor } from 'slate'
 import { useSlate } from 'slate-react'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
@@ -19,30 +20,42 @@ export const FontsButton = (props) => {
   }
 
   const renderFont = (f, key) => {
-    return <MenuItem key={`${f}-${key}`} eventKey={f} style={{fontFamily: f}} active={activeFont == f}>{f}</MenuItem>
+    return (
+      <MenuItem key={`${f}-${key}`} eventKey={f} style={{ fontFamily: f }} active={activeFont == f}>
+        {f}
+      </MenuItem>
+    )
   }
 
   const renderFonts = () => {
-    let fontItems = props.recentFonts.map(f => renderFont(f, 'recents'))
+    let fontItems = props.recentFonts.map((f) => renderFont(f, 'recents'))
     if (fontItems.length) {
-      fontItems.push(<MenuItem divider key='divider'/>)
+      fontItems.push(<MenuItem divider key="divider" />)
     }
-    fontItems = [...fontItems, ...props.fonts.map(f => renderFont(f, ''))]
+    fontItems = [...fontItems, ...props.fonts.map((f) => renderFont(f, ''))]
     return fontItems
   }
 
-  return <DropdownButton title={activeFont} onSelect={changeFont} id='font-dropdown' rootCloseEvent='click'>
-    { renderFonts() }
-  </DropdownButton>
+  return (
+    <DropdownButton
+      title={activeFont}
+      onSelect={changeFont}
+      id="font-dropdown"
+      rootCloseEvent="click"
+    >
+      {renderFonts()}
+    </DropdownButton>
+  )
 }
 
-const isFontActive = editor => {
-  const [font] = Editor.nodes(editor, { match: n => n.font })
-  return !!font
+FontsButton.propTypes = {
+  addRecent: PropTypes.func,
+  recentFonts: PropTypes.arrayOf(PropTypes.string),
+  fonts: PropTypes.arrayOf(PropTypes.string),
 }
 
-const getCurrentFont = editor => {
-  const [node] = Editor.nodes(editor, { match: n => n.font })
+const getCurrentFont = (editor) => {
+  const [node] = Editor.nodes(editor, { match: (n) => n.font })
   if (node) {
     return node[0].font
   } else {

@@ -1,10 +1,10 @@
 import { Transforms, Element, Node } from 'slate'
 import { LIST_TYPES, HEADING_TYPES } from './helpers'
 
-const withNormalizer = editor => {
+const withNormalizer = (editor) => {
   const { normalizeNode } = editor
 
-  editor.normalizeNode = entry => {
+  editor.normalizeNode = (entry) => {
     const [node, path] = entry
 
     // Only allow text in headings (no other elements as children)
@@ -29,7 +29,7 @@ const withNormalizer = editor => {
     if (Element.isElement(node) && LIST_TYPES.includes(node.type)) {
       for (const [child, childPath] of Node.children(editor, path)) {
         if (Element.isElement(child) && child.type != 'list-item') {
-          Transforms.setNodes(editor, {type: 'list-item'}, { at: childPath })
+          Transforms.setNodes(editor, { type: 'list-item' }, { at: childPath })
         }
       }
     }
@@ -42,7 +42,6 @@ const withNormalizer = editor => {
         }
       }
     }
-
 
     // Fall back to the original `normalizeNode` to enforce other constraints.
     normalizeNode(entry)

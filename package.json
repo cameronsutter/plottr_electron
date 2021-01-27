@@ -22,7 +22,7 @@
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "maps": "NODE_ENV=production MAPS=true node_modules/.bin/webpack",
     "pack": "NODE_ENV=production node_modules/.bin/webpack",
-    "pack:windows": "node_modules\\.bin\\webpack",
+    "pack:windows": "node_modules\\.bin\\webpack", 
     "dist": "node build/initEnv.js && npm run pack && electron-builder -ml",
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder -w",
     "dist:all": "npm run pack && electron-builder -mw",

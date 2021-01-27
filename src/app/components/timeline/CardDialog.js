@@ -76,7 +76,6 @@ class CardDialog extends Component {
   }
 
   componentWillUnmount() {
-    this.saveEdit()
     window.SCROLLWITHKEYS = true
   }
 

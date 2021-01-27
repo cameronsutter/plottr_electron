@@ -54,6 +54,9 @@ function cardIsVisible(card, filter, filterIsEmpty) {
       if (card.hasOwnProperty(attr)) {
         return card[attr] === val
       }
+      if (val === '' && card[attr] === undefined) {
+        return true
+      }
       if (attr == 'tag') {
         return card.tags.includes(val)
       }

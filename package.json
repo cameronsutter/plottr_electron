@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2021.1.26-beta",
+  "version": "2021.1.27-beta",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -60,7 +60,7 @@
     "mixpanel-browser": "^2.38.0",
     "node-machine-id": "^1.1.12",
     "pagedown": "^1.1.0",
-    "pltr": "https://github.com/Plotinator/pltr.git#9c1e053",
+    "pltr": "https://github.com/Plotinator/pltr.git#a10313d",
     "pretty-date": "^0.2.0",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^13.0.0",

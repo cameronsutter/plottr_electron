@@ -3,12 +3,9 @@ import { sortBy } from 'lodash'
 import { isSeriesSelector, timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
 import { nextId } from '../store/newIds'
 
-export const allCardsSelector = state => state.cards
+export const allCardsSelector = (state) => state.cards
 
-export const nextCardIdSelector = createSelector(
-  allCardsSelector,
-  (cards) => nextId(cards)
-)
+export const nextCardIdSelector = createSelector(allCardsSelector, (cards) => nextId(cards))
 
 export const cardMapSelector = createSelector(
   allCardsSelector,
@@ -34,7 +31,7 @@ export const visibleCardsSelector = createSelector(
   }
 )
 
-function cardReduce (lineAttr, beatAttr) {
+function cardReduce(lineAttr, beatAttr) {
   return (acc, card) => {
     const val = acc[`${card[lineAttr]}-${card[beatAttr]}`]
     if (val && val.length) {
@@ -49,15 +46,17 @@ function cardReduce (lineAttr, beatAttr) {
   }
 }
 
-function cardIsVisible (card, filter, filterIsEmpty) {
+function cardIsVisible(card, filter, filterIsEmpty) {
   if (filterIsEmpty) return true
 
-  return Object.keys(filter).some(attr => {
-    return filter[attr].some(val => {
-      // this is AND logic
-      // return card[`${attr}s`].includes(val)
-
-      // this is OR logic
+  return Object.keys(filter).some((attr) => {
+    return filter[attr].some((val) => {
+      if (card.hasOwnProperty(attr)) {
+        return card[attr] === val
+      }
+      if (val === '' && card[attr] === undefined) {
+        return true
+      }
       if (attr == 'tag') {
         return card.tags.includes(val)
       }

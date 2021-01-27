@@ -85,25 +85,26 @@ function createRTFDocuments(documentContents, basePath) {
   const realBasePath = path.join(basePath, 'Files', 'Docs')
 
   Object.keys(documentContents).forEach((docID) => {
-    // card is {lineTitle: '', description: []}
+    // documentContents is {docTitle: '', description: [], isNotesDoc: true}
     const document = documentContents[docID]
     // NOT DOING: create a {docID}_synopsis.txt file for the line title
 
     // create a {docID}_notes.rtf file for the document description
     let doc = new rtf()
     let data = null
-    if (document.lineTitle) {
-      doc.writeText(document.lineTitle)
+    if (document.docTitle) {
+      doc.writeText(document.docTitle)
       doc.addLine()
       doc.addLine()
-      // fs.writeFileSync(path.join(realBasePath, `${docID}_synopsis.txt`), document.lineTitle)
+      // fs.writeFileSync(path.join(realBasePath, `${docID}_synopsis.txt`), document.docTitle)
     }
     try {
       serialize(document.description, doc)
       data = doc.createDocument()
       data = convertUnicode(data)
       data = Buffer.from(data, 'utf8')
-      fs.writeFileSync(path.join(realBasePath, `${docID}_notes.rtf`), data)
+      const fileName = document.isNotesDoc ? `${docID}_notes.rtf` : `${docID}.rtf`
+      fs.writeFileSync(path.join(realBasePath, fileName), data)
     } catch (error) {
       log.error(error)
       // do nothing, just don't blow up

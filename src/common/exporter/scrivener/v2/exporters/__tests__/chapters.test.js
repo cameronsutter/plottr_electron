@@ -68,15 +68,15 @@ describe('exportChapters', () => {
   it('exports the documentContents', () => {
     expect(documentContents).toEqual({
       4: {
-        lineTitle: 'Plotline: Main Story Arc',
+        docTitle: 'Plotline: Main Story Arc',
         description: [paragraph('So paragraph')],
       },
       5: {
-        lineTitle: 'Plotline: Main Story Arc',
+        docTitle: 'Plotline: Main Story Arc',
         description: [paragraph('Moar paragraph')],
       },
       7: {
-        lineTitle: 'Plotline: Main Story Arc',
+        docTitle: 'Plotline: Main Story Arc',
         description: [paragraph('A paragraph')],
       },
     })

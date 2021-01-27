@@ -1756,8 +1756,8 @@
       "templates": [],
       "imageId": null,
       "fromTemplateId": null,
-      "Scene Type": "I don't know",
-      "Emotional Change": "Good --> Gooder"
+      "Emotional Change": "Good --> Gooder",
+      "Scene Type": "I don't know"
     },
     {
       "id": 321,
@@ -2284,6 +2284,14 @@
               "text": "Though there was a shortage of gentlemen, and Elizabeth Bennet was forced to sit out twice! His poor manners are now known throughout town."
             }
           ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
         }
       ],
       "id": 6,
@@ -2303,7 +2311,9 @@
       "position": 0,
       "positionWithinLine": 0,
       "positionInChapter": 0,
-      "fromTemplateId": null
+      "fromTemplateId": null,
+      "Emotional Change": "something",
+      "Scene Type": ""
     },
     {
       "characters": [],

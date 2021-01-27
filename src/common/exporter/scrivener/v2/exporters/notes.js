@@ -12,7 +12,7 @@ export default function exportNotes(state, documentContents) {
     binderItem.Children.BinderItem.push(noteBinderItem)
 
     documentContents[id] = {
-      lineTitle: i18n('Note: {title}', { title }),
+      docTitle: i18n('Note: {title}', { title }),
       description: content,
     }
   })

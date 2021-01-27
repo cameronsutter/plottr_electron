@@ -40,7 +40,7 @@ export default function exportPlaces(state, documentContents) {
 
     const description = buildDescriptionFromObject(placeProperties)
     documentContents[id] = {
-      lineTitle: i18n('Place: {name}', { name }),
+      docTitle: i18n('Place: {name}', { name }),
       description,
     }
   })

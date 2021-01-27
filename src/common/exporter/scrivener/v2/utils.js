@@ -111,7 +111,7 @@ export function buildDescriptionFromObject(object) {
   const description = []
   for (const [key, value] of Object.entries(object)) {
     // if the user hasn't input a value we won't include it
-    // for rich content the check is abit more involved
+    // for rich content the check is a bit more involved
     if (isPropertyEmpty(value)) {
       continue
     }
@@ -120,7 +120,7 @@ export function buildDescriptionFromObject(object) {
       type: 'heading-two',
       children: [
         {
-          text: key,
+          text: key === 'description' ? i18n('Description') : key,
         },
       ],
     })

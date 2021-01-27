@@ -49,7 +49,7 @@ export default function exportCharacters(state, documentContents) {
 
     const description = buildDescriptionFromObject(characterProperties)
     documentContents[id] = {
-      lineTitle: i18n('Character: {name}', { name }),
+      docTitle: i18n('Character: {name}', { name }),
       description,
     }
   })

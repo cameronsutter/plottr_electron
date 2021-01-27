@@ -36,7 +36,7 @@ describe('exportCharacters', () => {
   it('exports the documentContents', () => {
     expect(documentContents).toEqual({
       4: {
-        lineTitle: 'Character: Father',
+        docTitle: 'Character: Father',
         description: [
           headingTwo('age'),
           paragraph('50s'),

@@ -35,7 +35,7 @@ describe('exportNotes', () => {
   it('exports the documentContents', () => {
     expect(documentContents).toEqual({
       4: {
-        lineTitle: expect.stringContaining('Another Note'),
+        docTitle: expect.stringContaining('Another Note'),
         description: state.notes[0].content,
       },
     })

@@ -36,13 +36,15 @@ export default function DashboardBody ({currentView, setView}) {
   }, [licenseInfo, licenseInfoSize, started, expired])
 
   useEffect(() => {
-    checkForActiveLicense(licenseInfo, (err, success) => {
-      if (!err) {
-        // conscious choice not to display anything different if the license isn't active
-        // that may change in the future
-        // setShowAccount(!success)
-      }
-    })
+    if (process.env.NODE_ENV !== 'development') {
+      checkForActiveLicense(licenseInfo, (err, success) => {
+        if (!err) {
+          // conscious choice not to display anything different if the license isn't active
+          // that may change in the future
+          // setShowAccount(!success)
+        }
+      })
+    }
   }, [])
 
   // only allow these tabs in certain cases (see comment above)

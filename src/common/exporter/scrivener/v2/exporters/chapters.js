@@ -5,7 +5,8 @@ import { cardMapSelector } from 'app/selectors/cards'
 import { sortCardsInChapter, cardMapping } from 'app/helpers/cards'
 import { isSeriesSelector } from 'app/selectors/ui'
 import { sortedLinesByBookSelector } from 'app/selectors/lines'
-import { createFolderBinderItem, createTextBinderItem } from '../utils'
+import { buildDescriptionFromObject, createFolderBinderItem, createTextBinderItem } from '../utils'
+import { scenesCustomAttributesSelector } from 'app/selectors/customAttributes'
 
 export default function exportChapters(state, documentContents) {
   // get current book id and select only those chapters/lines/cards
@@ -15,6 +16,7 @@ export default function exportChapters(state, documentContents) {
   const isSeries = isSeriesSelector(state)
   const chapterCardMapping = cardMapping(chapters, lines, card2Dmap, null)
   const linesById = keyBy(lines, 'id')
+  const customAttrs = scenesCustomAttributesSelector(state)
 
   // create a BinderItem for each chapter (Type: Folder)
   //   create a BinderItem for each card (Type: Text)
@@ -37,9 +39,18 @@ export default function exportChapters(state, documentContents) {
       const line = linesById[lineId]
       if (line) title = line.title
 
-      documentContents[id] = {
-        lineTitle: i18n('Plotline: {title}', { title }),
+      let descObj = {
         description: c.description,
+      }
+      customAttrs.reduce((acc, entry) => {
+        acc[entry.name] = c[entry.name]
+        return acc
+      }, descObj)
+
+      documentContents[id] = {
+        isNotesDoc: true,
+        docTitle: i18n('Plotline: {title}', { title }),
+        description: buildDescriptionFromObject(descObj),
       }
     })
     return binderItem

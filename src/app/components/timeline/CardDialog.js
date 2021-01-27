@@ -50,6 +50,7 @@ class CardDialog extends Component {
       selected: 'Description',
       addingAttribute: false,
       newAttributeType: 'text',
+      cancelling: false,
     }
     this.newAttributeInputRef = React.createRef()
   }
@@ -76,7 +77,7 @@ class CardDialog extends Component {
   }
 
   componentWillUnmount() {
-    this.saveEdit()
+    if (!this.state.cancelling) this.saveEdit()
     window.SCROLLWITHKEYS = true
   }
 
@@ -193,6 +194,14 @@ class CardDialog extends Component {
     this.setState({
       addingAttribute: true,
     })
+
+  closeWithoutSaving = () => {
+    this.setState(
+      {
+        cancelling: true,
+      },
+      this.props.closeDialog
+    )
   }
 
   changeChapter(chapterId) {
@@ -331,7 +340,7 @@ class CardDialog extends Component {
   renderButtonBar() {
     return (
       <ButtonToolbar className="card-dialog__button-bar">
-        <Button onClick={this.props.closeDialog}>{i18n('Cancel')}</Button>
+        <Button onClick={this.closeWithoutSaving}>{i18n('Cancel')}</Button>
         <Button bsStyle="success" onClick={this.saveAndClose}>
           {i18n('Save')}
         </Button>

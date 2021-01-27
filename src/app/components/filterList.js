@@ -36,12 +36,12 @@ class FilterList extends Component {
     this.setState({ filteredItems: filteredItems })
   }
 
-  filterList = (type, list) => {
+  filterList = (type, list, idField = 'id') => {
     var filteredItems = this.state.filteredItems
     if (filteredItems[type].length > 0) {
       filteredItems[type] = []
     } else {
-      filteredItems[type] = list.map((item) => item.id)
+      filteredItems[type] = list.map((item) => item[idField])
     }
     this.props.updateItems(filteredItems)
     this.setState({ filteredItems: filteredItems })
@@ -53,22 +53,22 @@ class FilterList extends Component {
     return this.state.filteredItems[type].indexOf(id) !== -1
   }
 
-  renderFilterList(array, type, attr, extraItems = []) {
+  renderFilterList(array, type, attr, extraItems = [], idField = 'id') {
     const items = array.map((i) => {
-      return this.renderFilterItem(i, type, attr)
+      return this.renderFilterItem(i, type, attr, idField)
     })
     return <ul className="filter-list__list">{[...items, ...extraItems]}</ul>
   }
 
-  renderFilterItem(item, type, attr) {
+  renderFilterItem(item, type, attr, idField = 'id') {
     if (!item) return null
 
     var checked = 'unchecked'
-    if (this.isChecked(type, item.id)) {
+    if (this.isChecked(type, item[idField])) {
       checked = 'eye-open'
     }
     return (
-      <li key={`${type}-${item.id}`} onMouseDown={() => this.filterItem(type, item.id)}>
+      <li key={`${type}-${item.id}`} onMouseDown={() => this.filterItem(type, item[idField])}>
         <Glyphicon glyph={checked} /> {item[attr || type]}
       </li>
     )
@@ -118,7 +118,7 @@ class FilterList extends Component {
     const entitiesWithInterestingValues = entities.filter(
       (v) => v[attributeName] && v[attributeName] != ''
     )
-    return uniqBy(entitiesWithInterestingValues, property('id'))
+    return uniqBy(entitiesWithInterestingValues, property(attributeName))
   }
 
   renderCustomAttributes = (attribute) => {
@@ -127,14 +127,15 @@ class FilterList extends Component {
 
     return (
       <div key={name}>
-        <p onClick={() => this.filterList(name, this.props.customAttributes)}>
+        <p onClick={() => this.filterList(name, this.props.customAttributes, name)}>
           <em>{name}</em>
         </p>
         {this.renderFilterList(
           this.entitiesWithValues(this.props.cards, name),
           name,
           null, // The name is the attribute on the entity.
-          [this.renderBlank(name)]
+          [this.renderBlank(name)],
+          name
         )}
       </div>
     )

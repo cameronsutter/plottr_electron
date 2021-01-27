@@ -1,4 +1,5 @@
 import React from 'react'
+import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actions } from 'pltr/v2'
@@ -47,6 +48,18 @@ function CustomAttributeModal({
       )}
     />
   )
+}
+
+CustomAttributeModal.propTypes = {
+  type: PropTypes.string.isRequired,
+  customAttributes: PropTypes.string.isRequired,
+  customAttributesThatCanChange: PropTypes.array.isRequired,
+  ui: PropTypes.object.isRequired,
+  closeDialog: PropTypes.func.isRequired,
+  addAttribute: PropTypes.func.isRequired,
+  removeAttribute: PropTypes.func.isRequired,
+  editAttribute: PropTypes.func.isRequired,
+  reorderAttribute: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state, { type }) {

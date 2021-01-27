@@ -1,36 +1,60 @@
 import { cloneDeep } from 'lodash'
-import { ADD_CARD, ADD_LINES_FROM_TEMPLATE, EDIT_CARD_DETAILS,
-  DELETE_LINE, DELETE_SCENE, RESET_TIMELINE,
-  EDIT_CARD_COORDINATES, CHANGE_LINE, CHANGE_SCENE, ADD_CARD_IN_CHAPTER,
-  DELETE_CARD, ATTACH_CHARACTER_TO_CARD, CLEAR_TEMPLATE_FROM_TIMELINE,
-  REMOVE_CHARACTER_FROM_CARD, ATTACH_PLACE_TO_CARD, REMOVE_PLACE_FROM_CARD,
-  ATTACH_TAG_TO_CARD, REMOVE_TAG_FROM_CARD, DELETE_TAG, DELETE_CHARACTER,
-  DELETE_PLACE, FILE_LOADED, NEW_FILE, RESET, CHANGE_BOOK,
-  REORDER_CARDS_WITHIN_LINE, REORDER_CARDS_IN_CHAPTER, AUTO_SORT_CHAPTER,
-  DELETE_SERIES_LINE, DELETE_BEAT } from '../constants/ActionTypes'
+import {
+  ADD_CARD,
+  ADD_CARD_IN_CHAPTER,
+  ADD_LINES_FROM_TEMPLATE,
+  ATTACH_CHARACTER_TO_CARD,
+  ATTACH_PLACE_TO_CARD,
+  ATTACH_TAG_TO_CARD,
+  AUTO_SORT_CHAPTER,
+  CHANGE_BOOK,
+  CHANGE_LINE,
+  CHANGE_SCENE,
+  CLEAR_TEMPLATE_FROM_TIMELINE,
+  DELETE_BEAT,
+  DELETE_CARD,
+  DELETE_CHARACTER,
+  DELETE_LINE,
+  DELETE_PLACE,
+  DELETE_SCENE,
+  DELETE_SERIES_LINE,
+  DELETE_TAG,
+  EDIT_CARD_COORDINATES,
+  EDIT_CARD_DETAILS,
+  EDIT_SCENES_ATTRIBUTE,
+  FILE_LOADED,
+  NEW_FILE,
+  REMOVE_CHARACTER_FROM_CARD,
+  REMOVE_PLACE_FROM_CARD,
+  REMOVE_TAG_FROM_CARD,
+  REORDER_CARDS_IN_CHAPTER,
+  REORDER_CARDS_WITHIN_LINE,
+  RESET,
+  RESET_TIMELINE,
+} from '../constants/ActionTypes'
 import { newFileCards } from '../../../shared/newFileState'
 import { card as defaultCard } from '../../../shared/initialState'
 import { nextId } from 'store/newIds'
 
-export default function cards (state, action) {
+export default function cards(state, action) {
   let diffObj
   switch (action.type) {
     case ADD_CARD:
-      return [Object.assign({}, defaultCard, action.card, {id: nextId(state)}), ...state]
+      return [Object.assign({}, defaultCard, action.card, { id: nextId(state) }), ...state]
 
     case ADD_CARD_IN_CHAPTER:
       // add a new card
       // and reorder cards in the chapter
       return [
-        Object.assign({}, defaultCard, action.newCard, {id: nextId(state)}),
-        ...state.map(card => {
+        Object.assign({}, defaultCard, action.newCard, { id: nextId(state) }),
+        ...state.map((card) => {
           const idx = action.reorderIds.indexOf(card.id)
           if (idx != -1) {
-            return Object.assign({}, card, {positionWithinLine: idx})
+            return Object.assign({}, card, { positionWithinLine: idx })
           } else {
             return card
           }
-        })
+        }),
       ]
 
     case ADD_LINES_FROM_TEMPLATE:
@@ -50,9 +74,7 @@ export default function cards (state, action) {
         diffObj.lineId = action.lineId
         diffObj.chapterId = action.chapterId
       }
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, diffObj) : card
-      )
+      return state.map((card) => (card.id === action.id ? Object.assign({}, card, diffObj) : card))
 
     case CHANGE_LINE:
       diffObj = {}
@@ -61,9 +83,7 @@ export default function cards (state, action) {
       } else {
         diffObj.lineId = action.lineId
       }
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, diffObj) : card
-      )
+      return state.map((card) => (card.id === action.id ? Object.assign({}, card, diffObj) : card))
 
     case CHANGE_SCENE:
       diffObj = {}
@@ -72,21 +92,29 @@ export default function cards (state, action) {
       } else {
         diffObj.chapterId = action.chapterId
       }
-      return state.map(card =>
-        card.id === action.id ? Object.assign({}, card, diffObj) : card
-      )
+      return state.map((card) => (card.id === action.id ? Object.assign({}, card, diffObj) : card))
 
     case CHANGE_BOOK:
-      return state.map(card => card.id === action.id ? Object.assign({}, card, {bookId: action.bookId}) : card )
+      return state.map((card) =>
+        card.id === action.id ? Object.assign({}, card, { bookId: action.bookId }) : card
+      )
 
     case REORDER_CARDS_WITHIN_LINE:
-      return state.map(card => {
+      return state.map((card) => {
         const idx = action.ids.indexOf(card.id)
         if (idx != -1) {
           if (action.isSeries) {
-            return Object.assign({}, card, {positionWithinLine: idx, beatId: action.chapterId, seriesLineId: action.lineId})
+            return Object.assign({}, card, {
+              positionWithinLine: idx,
+              beatId: action.chapterId,
+              seriesLineId: action.lineId,
+            })
           } else {
-            return Object.assign({}, card, {positionWithinLine: idx, chapterId: action.chapterId, lineId: action.lineId})
+            return Object.assign({}, card, {
+              positionWithinLine: idx,
+              chapterId: action.chapterId,
+              lineId: action.lineId,
+            })
           }
         } else {
           return card
@@ -94,7 +122,7 @@ export default function cards (state, action) {
       })
 
     case REORDER_CARDS_IN_CHAPTER:
-      return state.map(card => {
+      return state.map((card) => {
         const idxInChapter = action.newOrderInChapter.indexOf(card.id)
         let idxWithinLine = -1
         if (action.newOrderWithinLine) idxWithinLine = action.newOrderWithinLine.indexOf(card.id)
@@ -103,7 +131,7 @@ export default function cards (state, action) {
           return card
         }
 
-        let newCard = {...card}
+        let newCard = { ...card }
         // set chapterId of the new-to-this-chapter card (if any)
         if (card.id == action.newIdInChapter) {
           if (action.isSeries) {
@@ -120,99 +148,127 @@ export default function cards (state, action) {
       })
 
     case AUTO_SORT_CHAPTER:
-      return state.map(card => {
+      return state.map((card) => {
         let idToMatch = card.chapterId
         if (action.isSeries) idToMatch = card.beatId
         if (card.chapterId != idToMatch) return card
 
-        return Object.assign({}, card, {positionInChapter: 0})
+        return Object.assign({}, card, { positionInChapter: 0 })
       })
 
     case DELETE_CARD:
-      return state.filter(card => card.id !== action.id )
+      return state.filter((card) => card.id !== action.id)
 
     case DELETE_SCENE:
-      return state.filter(card => card.chapterId !== action.id )
+      return state.filter((card) => card.chapterId !== action.id)
 
     case DELETE_LINE:
-      return state.filter(card => card.lineId !== action.id )
+      return state.filter((card) => card.lineId !== action.id)
 
     case DELETE_SERIES_LINE:
-      return state.filter(card => card.seriesLineId !== action.id)
+      return state.filter((card) => card.seriesLineId !== action.id)
 
     case DELETE_BEAT:
-      return state.filter(card => card.beatId !== action.id)
+      return state.filter((card) => card.beatId !== action.id)
+
+    case EDIT_SCENES_ATTRIBUTE:
+      if (
+        action.oldAttribute.type !== 'text' &&
+        action.oldAttribute.name === action.newAttribute.name
+      )
+        return state
+
+      return state.map((card) => {
+        const newCard = cloneDeep(card)
+
+        if (action.oldAttribute.name !== action.newAttribute.name) {
+          newCard[action.newAttribute.name] = newCard[action.oldAttribute.name]
+          delete newCard[action.oldAttribute.name]
+        }
+
+        // reset value to blank string
+        // (if changing to something other than text type)
+        // see ../selectors/customAttributes.js for when this is allowed
+        if (action.oldAttribute.type === 'text') {
+          let description = newCard[action.newAttribute.name]
+          if (description && description.length && typeof description !== 'string') {
+            description = ''
+          }
+          newCard[action.newAttribute.name] = description
+        }
+        return newCard
+      })
 
     case ATTACH_CHARACTER_TO_CARD:
-      return state.map(card => {
+      return state.map((card) => {
         let characters = cloneDeep(card.characters)
         characters.push(action.characterId)
-        return card.id === action.id ? Object.assign({}, card, {characters: characters}) : card
+        return card.id === action.id ? Object.assign({}, card, { characters: characters }) : card
       })
 
     case REMOVE_CHARACTER_FROM_CARD:
-      return state.map(card => {
+      return state.map((card) => {
         let characters = cloneDeep(card.characters)
         characters.splice(characters.indexOf(action.characterId), 1)
-        return card.id === action.id ? Object.assign({}, card, {characters: characters}) : card
+        return card.id === action.id ? Object.assign({}, card, { characters: characters }) : card
       })
 
     case ATTACH_PLACE_TO_CARD:
-      return state.map(card => {
+      return state.map((card) => {
         let places = cloneDeep(card.places)
         places.push(action.placeId)
-        return card.id === action.id ? Object.assign({}, card, {places: places}) : card
+        return card.id === action.id ? Object.assign({}, card, { places: places }) : card
       })
 
     case REMOVE_PLACE_FROM_CARD:
-      return state.map(card => {
+      return state.map((card) => {
         let places = cloneDeep(card.places)
         places.splice(places.indexOf(action.placeId), 1)
-        return card.id === action.id ? Object.assign({}, card, {places: places}) : card
+        return card.id === action.id ? Object.assign({}, card, { places: places }) : card
       })
 
     case ATTACH_TAG_TO_CARD:
-      return state.map(card => {
+      return state.map((card) => {
         let tags = cloneDeep(card.tags)
         tags.push(action.tagId)
-        return card.id === action.id ? Object.assign({}, card, {tags: tags}) : card
+        return card.id === action.id ? Object.assign({}, card, { tags: tags }) : card
       })
 
     case REMOVE_TAG_FROM_CARD:
-      return state.map(card => {
+      return state.map((card) => {
         let tags = cloneDeep(card.tags)
         tags.splice(tags.indexOf(action.tagId), 1)
-        return card.id === action.id ? Object.assign({}, card, {tags: tags}) : card
+        return card.id === action.id ? Object.assign({}, card, { tags: tags }) : card
       })
 
     case DELETE_TAG:
-      return state.map(card => {
+      return state.map((card) => {
         if (card.tags.includes(action.id)) {
           let tags = cloneDeep(card.tags)
           tags.splice(tags.indexOf(action.id), 1)
-          return Object.assign({}, card, {tags: tags})
+          return Object.assign({}, card, { tags: tags })
         } else {
           return card
         }
       })
 
     case DELETE_CHARACTER:
-      return state.map(card => {
+      return state.map((card) => {
         if (card.characters.includes(action.id)) {
           let characters = cloneDeep(card.characters)
           characters.splice(characters.indexOf(action.id), 1)
-          return Object.assign({}, card, {characters: characters})
+          return Object.assign({}, card, { characters: characters })
         } else {
           return card
         }
       })
 
     case DELETE_PLACE:
-      return state.map(card => {
+      return state.map((card) => {
         if (card.places.includes(action.id)) {
           let places = cloneDeep(card.places)
           places.splice(places.indexOf(action.id), 1)
-          return Object.assign({}, card, {places: places})
+          return Object.assign({}, card, { places: places })
         } else {
           return card
         }
@@ -221,15 +277,19 @@ export default function cards (state, action) {
     case RESET_TIMELINE:
       // isSeries & chapterIds & lineIds come from root reducer
       if (action.isSeries) {
-        return state.filter(card => !card.seriesLineId && !card.beatId)
+        return state.filter((card) => !card.seriesLineId && !card.beatId)
       } else {
-        return state.filter(card => action.chapterIds[card.chapterId] || action.lineIds[card.lineId])
+        return state.filter(
+          (card) => action.chapterIds[card.chapterId] || action.lineIds[card.lineId]
+        )
       }
 
     case CLEAR_TEMPLATE_FROM_TIMELINE:
       // chapterIds & lineIds come from root reducer
       // they are ones that are NOT being removed
-      return state.filter(card => action.chapterIds[card.chapterId] || action.lineIds[card.lineId])
+      return state.filter(
+        (card) => action.chapterIds[card.chapterId] || action.lineIds[card.lineId]
+      )
 
     case RESET:
     case FILE_LOADED:

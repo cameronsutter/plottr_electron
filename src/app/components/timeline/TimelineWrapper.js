@@ -338,7 +338,7 @@ class TimelineWrapper extends Component {
   renderCustomAttributes() {
     if (!this.state.attributesDialogOpen) return null
 
-    return <CustomAttributeModal type="scenes" closeDialog={this.closeDialog} />
+    return <CustomAttributeModal hideSaveAsTemplate type="scenes" closeDialog={this.closeDialog} />
   }
 
   render() {

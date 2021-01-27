@@ -23,6 +23,7 @@ function CustomAttributeModal({
   removeAttribute,
   editAttribute,
   reorderAttribute,
+  hideSaveAsTemplate,
 }) {
   return (
     <ItemsManagerModal
@@ -33,7 +34,7 @@ function CustomAttributeModal({
       items={customAttributes}
       darkMode={darkMode}
       closeDialog={closeDialog}
-      showSaveAsTemplate
+      showSaveAsTemplate={!hideSaveAsTemplate}
       onAdd={(name) => addAttribute({ name, type: 'text' })}
       renderItem={(attr, index) => (
         <ListItem
@@ -52,7 +53,8 @@ function CustomAttributeModal({
 
 CustomAttributeModal.propTypes = {
   type: PropTypes.string.isRequired,
-  customAttributes: PropTypes.string.isRequired,
+  hideSaveAsTemplate: PropTypes.bool,
+  customAttributes: PropTypes.array.isRequired,
   customAttributesThatCanChange: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   closeDialog: PropTypes.func.isRequired,
@@ -116,7 +118,7 @@ function mapDispatchToProps(dispatch, { type }) {
         addAttribute: actions.addSceneAttr,
         removeAttribute: actions.removeSceneAttr,
         editAttribute: actions.editSceneAttr,
-        reorderAttribute: actions.reorderSceneAttribute,
+        reorderAttribute: actions.reorderScenesAttribute,
       }
 
     default:

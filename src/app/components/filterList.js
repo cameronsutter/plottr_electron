@@ -3,24 +3,29 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
+import { allCardsSelector } from '../selectors/cards'
 import { sortedTagsSelector } from '../selectors/tags'
 import { charactersSortedAtoZSelector } from '../selectors/characters'
 import { placesSortedAtoZSelector } from '../selectors/places'
+import { property, uniqBy } from 'lodash'
 
 class FilterList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
-      filteredItems: props.filteredItems || this.defaultFilteredItemsObj()
+      filteredItems: props.filteredItems || this.defaultFilteredItemsObj(),
     }
   }
 
-  defaultFilteredItemsObj () {
-    return {tag: [], character: [], place: [], book: []}
+  defaultFilteredItemsObj() {
+    return { tag: [], character: [], place: [], book: [] }
   }
 
   filterItem = (type, id) => {
-    var filteredItems = this.state.filteredItems
+    const filteredItems = {
+      ...this.state.filteredItems,
+      ...(!this.state.filteredItems[type] ? { [type]: [] } : {}),
+    }
     if (filteredItems[type].indexOf(id) === -1) {
       filteredItems[type].push(id)
     } else {
@@ -28,7 +33,7 @@ class FilterList extends Component {
       if (index !== -1) filteredItems[type].splice(index, 1)
     }
     this.props.updateItems(filteredItems)
-    this.setState({filteredItems: filteredItems})
+    this.setState({ filteredItems: filteredItems })
   }
 
   filterList = (type, list) => {
@@ -39,42 +44,42 @@ class FilterList extends Component {
       filteredItems[type] = list.map((item) => item.id)
     }
     this.props.updateItems(filteredItems)
-    this.setState({filteredItems: filteredItems})
+    this.setState({ filteredItems: filteredItems })
   }
 
-  isChecked (type, id) {
+  isChecked(type, id) {
+    if (!this.state.filteredItems[type]) return false
+    if (!this.state.filteredItems[type].length) return false
     return this.state.filteredItems[type].indexOf(id) !== -1
   }
 
-  renderFilterList (array, type, attr) {
-    var items = array.map((i) => {
+  renderFilterList(array, type, attr, extraItems = []) {
+    const items = array.map((i) => {
       return this.renderFilterItem(i, type, attr)
     })
-    return (
-      <ul className='filter-list__list'>
-        {items}
-      </ul>
-    )
+    return <ul className="filter-list__list">{[...items, ...extraItems]}</ul>
   }
 
-  renderFilterItem (item, type, attr) {
+  renderFilterItem(item, type, attr) {
     if (!item) return null
 
     var checked = 'unchecked'
     if (this.isChecked(type, item.id)) {
       checked = 'eye-open'
     }
-    return <li key={`${type}-${item.id}`} onMouseDown={() => this.filterItem(type, item.id)}>
-      <Glyphicon glyph={checked} /> {item[attr]}
-    </li>
+    return (
+      <li key={`${type}-${item.id}`} onMouseDown={() => this.filterItem(type, item.id)}>
+        <Glyphicon glyph={checked} /> {item[attr || type]}
+      </li>
+    )
   }
 
-  renderBookList () {
+  renderBookList() {
     if (!this.props.renderBooks) return null
 
     const { books } = this.props
 
-    const renderedBooks = books.allIds.map(id => {
+    const renderedBooks = books.allIds.map((id) => {
       const book = books[id] || books[id.toString()]
       return this.renderFilterItem(book, 'book', 'title')
     })
@@ -84,63 +89,111 @@ class FilterList extends Component {
       checked = 'eye-open'
     }
 
-    return <div>
-      <p>{i18n('Books')}</p>
-      <ul className='filter-list__list'>
-        <li key='book-series' onMouseDown={() => this.filterItem('book', 'series')}>
-          <Glyphicon glyph={checked} /> {i18n('Series')}
-        </li>
-        { renderedBooks }
-      </ul>
-    </div>
+    return (
+      <div>
+        <p>{i18n('Books')}</p>
+        <ul className="filter-list__list">
+          <li key="book-series" onMouseDown={() => this.filterItem('book', 'series')}>
+            <Glyphicon glyph={checked} /> {i18n('Series')}
+          </li>
+          {renderedBooks}
+        </ul>
+      </div>
+    )
   }
 
-  render () {
+  renderBlank(attributeName) {
+    var checked = 'unchecked'
+    if (this.isChecked(attributeName, '')) {
+      checked = 'eye-open'
+    }
     return (
-      <div className='filter-list flex'>
-        { this.renderBookList() }
+      <li onMouseDown={() => this.filterItem(attributeName, '')}>
+        <Glyphicon glyph={checked} /> <em className="secondary-text">[{i18n('blank')}]</em>
+      </li>
+    )
+  }
+
+  entitiesWithValues(entities, attributeName) {
+    const entitiesWithInterestingValues = entities.filter(
+      (v) => v[attributeName] && v[attributeName] != ''
+    )
+    return uniqBy(entitiesWithInterestingValues, property('id'))
+  }
+
+  renderCustomAttributes = (attribute) => {
+    const { name, type } = attribute
+    if (type != 'text') return null
+
+    return (
+      <div key={name}>
+        <p onClick={() => this.filterList(name, this.props.customAttributes)}>
+          <em>{name}</em>
+        </p>
+        {this.renderFilterList(
+          this.entitiesWithValues(this.props.cards, name),
+          name,
+          null, // The name is the attribute on the entity.
+          [this.renderBlank(name)]
+        )}
+      </div>
+    )
+  }
+
+  render() {
+    const customAttributeLists = this.props.customAttributes.map(this.renderCustomAttributes)
+    return (
+      <div className="filter-list flex">
+        {this.renderBookList()}
         <div>
-          <p onClick={() => this.filterList('character', this.props.characters)}><em>{i18n('Characters')}</em></p>
+          <p onClick={() => this.filterList('character', this.props.characters)}>
+            <em>{i18n('Characters')}</em>
+          </p>
           {this.renderFilterList(this.props.characters, 'character', 'name')}
         </div>
         <div>
-          <p onClick={() => this.filterList('place', this.props.places)}><em>{i18n('Places')}</em></p>
+          <p onClick={() => this.filterList('place', this.props.places)}>
+            <em>{i18n('Places')}</em>
+          </p>
           {this.renderFilterList(this.props.places, 'place', 'name')}
         </div>
         <div>
-          <p onClick={() => this.filterList('tag', this.props.tags)}><em>{i18n('Tags')}</em></p>
+          <p onClick={() => this.filterList('tag', this.props.tags)}>
+            <em>{i18n('Tags')}</em>
+          </p>
           {this.renderFilterList(this.props.tags, 'tag', 'title')}
         </div>
+        {customAttributeLists}
       </div>
     )
   }
 }
-
 
 FilterList.propTypes = {
   characters: PropTypes.array.isRequired,
   places: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   books: PropTypes.object.isRequired,
+  cards: PropTypes.array.isRequired,
+  customAttributes: PropTypes.array.isRequired,
   updateItems: PropTypes.func.isRequired,
   renderBooks: PropTypes.bool,
   filteredItems: PropTypes.object,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     characters: charactersSortedAtoZSelector(state.present),
     places: placesSortedAtoZSelector(state.present),
     tags: sortedTagsSelector(state.present),
+    cards: allCardsSelector(state.present),
     books: state.present.books,
+    customAttributes: state.present.customAttributes.scenes,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FilterList)
+export default connect(mapStateToProps, mapDispatchToProps)(FilterList)

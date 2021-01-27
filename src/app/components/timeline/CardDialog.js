@@ -21,7 +21,7 @@ import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 import { truncateTitle } from '../../helpers/cards'
-import { EditAttribute } from '../EditAttribute'
+import EditAttribute from '../EditAttribute'
 
 class CardDialog extends Component {
   constructor(props) {
@@ -188,6 +188,7 @@ class CardDialog extends Component {
         <React.Fragment key={idx}>
           <EditAttribute
             entity={card}
+            entityType={'scene'}
             ui={ui}
             handleLongDescriptionChange={this.handleParagraphAttrChange}
             onShortDescriptionKeyDown={this.handleEsc}

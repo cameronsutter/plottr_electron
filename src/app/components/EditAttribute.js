@@ -2,13 +2,18 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import RichText from './rce/RichText'
 import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { actions } from 'pltr/v2'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-export class EditAttribute extends Component {
-  render () {
+const CustomAttributeActions = actions.customAttributeActions
+
+class EditAttribute extends Component {
+  render() {
     const {
       name,
       type,
-      idx,
+      entityType,
       entity,
       ui,
       handleLongDescriptionChange,
@@ -29,7 +34,7 @@ export class EditAttribute extends Component {
         />
       </div>
     ) : (
-      <FormGroup key={idx}>
+      <FormGroup>
         <ControlLabel>{name}</ControlLabel>
         <FormControl
           type="text"
@@ -46,6 +51,7 @@ export class EditAttribute extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
+    entityType: PropTypes.string.isRequired,
     entity: PropTypes.object.isRequired,
     ui: PropTypes.object.isRequired,
     handleLongDescriptionChange: PropTypes.func.isRequired,
@@ -54,3 +60,47 @@ export class EditAttribute extends Component {
     withRef: PropTypes.func.isRequired,
   }
 }
+
+function mapDispatchToProps(dispatch, { entityType }) {
+  const actions = bindActionCreators(CustomAttributeActions, dispatch)
+
+  switch (entityType) {
+    case 'characters':
+      return {
+        addAttribute: actions.addCharacterAttr,
+        removeAttribute: actions.removeCharacterAttr,
+        editAttribute: actions.editCharacterAttr,
+        reorderAttribute: actions.reorderCharacterAttribute,
+      }
+
+    case 'places':
+      return {
+        addAttribute: actions.addPlaceAttr,
+        removeAttribute: actions.removePlaceAttr,
+        editAttribute: actions.editPlaceAttr,
+        reorderAttribute: actions.reorderPlacesAttribute,
+      }
+
+    case 'scenes':
+      return {
+        addAttribute: actions.addSceneAttr,
+        removeAttribute: actions.removeSceneAttr,
+        editAttribute: actions.editSceneAttr,
+        reorderAttribute: actions.reorderSceneAttribute,
+      }
+
+    default:
+      console.warn(`${entityType} actions not implemented`)
+      return {
+        addAttribute: () => {},
+        removeAttribute: () => {},
+        editAttribute: () => {},
+        reorderAttribute: () => {},
+      }
+  }
+  return {
+    ...bindActionCreators(CustomAttributeActions, dispatch),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(EditAttribute)

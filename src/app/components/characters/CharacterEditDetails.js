@@ -13,7 +13,7 @@ import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
 import { singleCharacterSelector } from '../../selectors/characters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { EditAttribute } from '../EditAttribute'
+import EditAttribute from '../EditAttribute'
 
 class CharacterEditDetails extends Component {
   constructor (props) {
@@ -183,6 +183,7 @@ class CharacterEditDetails extends Component {
         <React.Fragment key={idx}>
           <EditAttribute
             entity={character}
+            entityType={'character'}
             ui={ui}
             handleLongDescriptionChange={this.handleAttrDescriptionChange}
             onShortDescriptionKeyDown={this.handleEsc}

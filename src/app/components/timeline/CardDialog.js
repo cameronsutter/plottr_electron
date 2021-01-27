@@ -97,7 +97,8 @@ class CardDialog extends Component {
   }
 
   saveAndClose = () => {
-    this.saveEdit()
+    // componentWillUnmount saves the data (otherwise we get a
+    // duplicate event).
     this.props.closeDialog()
   }
 
@@ -194,6 +195,7 @@ class CardDialog extends Component {
     this.setState({
       addingAttribute: true,
     })
+  }
 
   closeWithoutSaving = () => {
     this.setState(

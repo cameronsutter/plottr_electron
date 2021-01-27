@@ -33,18 +33,18 @@ class FilterList extends Component {
       if (index !== -1) filteredItems[type].splice(index, 1)
     }
     this.props.updateItems(filteredItems)
-    this.setState({ filteredItems: filteredItems })
+    this.setState({ filteredItems })
   }
 
   filterList = (type, list, idField = 'id') => {
-    var filteredItems = this.state.filteredItems
+    const filteredItems = { ...this.state.filteredItems }
     if (filteredItems[type].length > 0) {
       filteredItems[type] = []
     } else {
       filteredItems[type] = list.map((item) => item[idField])
     }
     this.props.updateItems(filteredItems)
-    this.setState({ filteredItems: filteredItems })
+    this.setState({ filteredItems })
   }
 
   isChecked(type, id) {

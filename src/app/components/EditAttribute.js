@@ -1,64 +1,75 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import RichText from './rce/RichText'
-import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import { actions } from 'pltr/v2'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 const CustomAttributeActions = actions.customAttributeActions
 
-class EditAttribute extends Component {
-  render() {
-    const {
-      name,
-      type,
-      entityType,
-      entity,
-      ui,
-      handleLongDescriptionChange,
-      onShortDescriptionKeyDown,
-      onShortDescriptionKeyPress,
-      withRef,
-    } = this.props
+const EditAttribute = ({
+  name,
+  type,
+  entityType,
+  entity,
+  ui,
+  handleLongDescriptionChange,
+  onShortDescriptionKeyDown,
+  onShortDescriptionKeyPress,
+  withRef,
+}) => {
+  const [editing, setEditing] = useState(false)
 
-    return type === 'paragraph' ? (
-      <div>
-        <ControlLabel>{name}</ControlLabel>
-        <RichText
-          description={entity[name]}
-          onChange={(desc) => handleLongDescriptionChange(name, desc)}
-          editable
-          autofocus={false}
-          darkMode={ui.darkMode}
-        />
-      </div>
-    ) : (
-      <FormGroup>
-        <ControlLabel>{name}</ControlLabel>
-        <FormControl
-          type="text"
-          id={`${name}Input`}
-          ref={withRef}
-          defaultValue={entity[name]}
-          onKeyDown={onShortDescriptionKeyDown}
-          onKeyPress={onShortDescriptionKeyPress}
-        />
-      </FormGroup>
-    )
-  }
+  const Label = () => (
+    <ControlLabel>
+      {name}
+      {!editing ? (
+        <span onClick={() => setEditing(true)}>
+          <Glyphicon glyph="edit" />
+        </span>
+      ) : null}
+    </ControlLabel>
+  )
 
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    entityType: PropTypes.string.isRequired,
-    entity: PropTypes.object.isRequired,
-    ui: PropTypes.object.isRequired,
-    handleLongDescriptionChange: PropTypes.func.isRequired,
-    onShortDescriptionKeyDown: PropTypes.func.isRequired,
-    onShortDescriptionKeyPress: PropTypes.func.isRequired,
-    withRef: PropTypes.func.isRequired,
-  }
+  return type === 'paragraph' ? (
+    <div>
+      <Label />
+      {editing ? 'Editing' : null}
+      <RichText
+        description={entity[name]}
+        onChange={(desc) => handleLongDescriptionChange(name, desc)}
+        editable
+        autofocus={false}
+        darkMode={ui.darkMode}
+      />
+    </div>
+  ) : (
+    <FormGroup>
+      <Label />
+      {editing ? 'Editing' : null}
+      <FormControl
+        type="text"
+        id={`${name}Input`}
+        ref={withRef}
+        defaultValue={entity[name]}
+        onKeyDown={onShortDescriptionKeyDown}
+        onKeyPress={onShortDescriptionKeyPress}
+      />
+    </FormGroup>
+  )
+}
+
+EditAttribute.propTypes = {
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  entityType: PropTypes.string.isRequired,
+  entity: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
+  handleLongDescriptionChange: PropTypes.func.isRequired,
+  onShortDescriptionKeyDown: PropTypes.func.isRequired,
+  onShortDescriptionKeyPress: PropTypes.func.isRequired,
+  withRef: PropTypes.func.isRequired,
 }
 
 function mapDispatchToProps(dispatch, { entityType }) {

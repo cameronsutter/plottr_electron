@@ -1,6 +1,7 @@
 import exportChapters from '../chapters'
 import { resetId } from '../../utils'
-import { state, paragraph } from './fixtures'
+import { state } from './fixtures'
+import { paragraph } from 'components/rce/__fixtures__'
 
 describe('exportChapters', () => {
   let documentContents = {}

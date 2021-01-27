@@ -8,21 +8,23 @@ import RCEBoundary from './RCEBoundary'
 const RichText = (props) => {
   let body = null
   if (props.editable) {
-    body = <RichTextEditor
-      className={props.className}
-      onChange={props.onChange}
-      autoFocus={props.autofocus}
-      text={props.description}
-      darkMode={props.darkMode}
-      fonts={getFonts()}
-      recentFonts={getRecent()}
-      addRecent={addRecent}
-    />
+    body = (
+      <RichTextEditor
+        className={props.className}
+        onChange={props.onChange}
+        autoFocus={props.autofocus}
+        text={props.description}
+        darkMode={props.darkMode}
+        fonts={getFonts()}
+        recentFonts={getRecent()}
+        addRecent={addRecent}
+      />
+    )
   } else {
-    body = <RichTextViewer text={props.description} className={props.className}/>
+    body = <RichTextViewer text={props.description} className={props.className} />
   }
 
-  return <RCEBoundary>{ body }</RCEBoundary>
+  return <RCEBoundary>{body}</RCEBoundary>
 }
 
 RichText.propTypes = {

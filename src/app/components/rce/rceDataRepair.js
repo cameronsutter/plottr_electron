@@ -7,14 +7,14 @@ import { Text } from 'slate'
 
 // @data: a Slate data structure
 // returns a Slate data structure
-export function rceDataRepair (data) {
+export function rceDataRepair(data) {
   if (Array.isArray(data) === false) return data
   let slate = cloneDeep(data)
 
   try {
     walkRichContentTree(slate, (object) => {
       // repair children with numbered key attributes ("0", "1")
-      if (object.children && !Array.isArray(object.children) && object.children["0"]) {
+      if (object.children && !Array.isArray(object.children) && object.children['0']) {
         object.children = Object.values(object.children)
       }
 
@@ -34,7 +34,7 @@ export function rceDataRepair (data) {
 }
 
 function walkRichContentTree(richContent, callback) {
-  richContent.forEach(o => {
+  richContent.forEach((o) => {
     callback(o)
     if (Array.isArray(o.children)) {
       walkRichContentTree(o.children, callback)

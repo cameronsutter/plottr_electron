@@ -1,5 +1,6 @@
 import { shell } from 'electron'
 import React from 'react'
+import PropTypes from 'react-proptypes'
 import { useSelected, useFocused } from 'slate-react'
 import cx from 'classnames'
 
@@ -29,33 +30,56 @@ const Element = ({ attributes, children, element }) => {
       return <ol {...attributes}>{children}</ol>
     case 'link':
       // TODO: show a preview or a little icon to show a preview
-      return <a {...attributes} title={element.url} href='#' onClick={() => handleLinkClick(element.url)}>{children}</a>
+      return (
+        <a
+          {...attributes}
+          title={element.url}
+          href="#"
+          onClick={() => handleLinkClick(element.url)}
+        >
+          {children}
+        </a>
+      )
     case 'image-link':
-      return <div {...attributes}>
-        <div contentEditable={false}>
-          <img
-            src={element.url}
-            className={cx('slate-editor__image-link', {selected: selected && focused})}
-          />
+      return (
+        <div {...attributes}>
+          <div contentEditable={false}>
+            <img
+              src={element.url}
+              className={cx('slate-editor__image-link', { selected: selected && focused })}
+            />
+          </div>
+          {children}
         </div>
-        {children}
-      </div>
+      )
     case 'image-data':
-      return <div {...attributes}>
-        <div contentEditable={false}>
-          <img
-            src={element.data}
-            className={cx('slate-editor__image-link', {selected: selected && focused})}
-          />
+      return (
+        <div {...attributes}>
+          <div contentEditable={false}>
+            <img
+              src={element.data}
+              className={cx('slate-editor__image-link', { selected: selected && focused })}
+            />
+          </div>
+          {children}
         </div>
-        {children}
-      </div>
+      )
     default:
       return <p {...attributes}>{children}</p>
   }
 }
 
-function handleLinkClick (url) {
+Element.propTypes = {
+  attributes: PropTypes.object,
+  children: PropTypes.node,
+  element: PropTypes.shape({
+    type: PropTypes.string,
+    url: PropTypes.string,
+    data: PropTypes.string,
+  }),
+}
+
+function handleLinkClick(url) {
   shell.openExternal(url)
 }
 

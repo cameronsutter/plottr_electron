@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import isUrl from 'is-url'
-import { FaLink } from "react-icons/fa"
+import { FaLink } from 'react-icons/fa'
 import { Editor, Transforms, Range } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
@@ -22,33 +22,41 @@ export const LinkButton = () => {
     if (url) insertLink(editor, url)
     setOpen(false)
   }
-  return <Button
-    bsStyle={isLinkActive(editor) ? 'primary' : 'default'}
-    onMouseDown={event => {
-      event.preventDefault()
-      if (editor.selection) {
-        setSelection(editor.selection)
-      }
-      if (isLinkActive(editor)) {
-        unwrapLink(editor)
-      } else {
-        setOpen(true)
-      }
-    }}
-  >
-    <FaLink/>
-    <InputModal type='text' isOpen={dialogOpen} cancel={() => setOpen(false)} title={i18n('Enter the URL of the link:')} getValue={getLink} />
-  </Button>
+  return (
+    <Button
+      bsStyle={isLinkActive(editor) ? 'primary' : 'default'}
+      onMouseDown={(event) => {
+        event.preventDefault()
+        if (editor.selection) {
+          setSelection(editor.selection)
+        }
+        if (isLinkActive(editor)) {
+          unwrapLink(editor)
+        } else {
+          setOpen(true)
+        }
+      }}
+    >
+      <FaLink />
+      <InputModal
+        type="text"
+        isOpen={dialogOpen}
+        cancel={() => setOpen(false)}
+        title={i18n('Enter the URL of the link:')}
+        getValue={getLink}
+      />
+    </Button>
+  )
 }
 
-export const withLinks = editor => {
+export const withLinks = (editor) => {
   const { insertData, insertText, isInline } = editor
 
-  editor.isInline = element => {
+  editor.isInline = (element) => {
     return element.type === 'link' ? true : isInline(element)
   }
 
-  editor.insertText = text => {
+  editor.insertText = (text) => {
     if (text && isUrl(text)) {
       wrapLink(editor, text)
     } else {
@@ -56,7 +64,7 @@ export const withLinks = editor => {
     }
   }
 
-  editor.insertData = data => {
+  editor.insertData = (data) => {
     const text = data.getData('text/plain')
 
     if (text && isUrl(text)) {
@@ -75,13 +83,13 @@ const insertLink = (editor, url) => {
   }
 }
 
-const isLinkActive = editor => {
-  const [link] = Editor.nodes(editor, { match: n => n.type === 'link' })
+const isLinkActive = (editor) => {
+  const [link] = Editor.nodes(editor, { match: (n) => n.type === 'link' })
   return !!link
 }
 
-const unwrapLink = editor => {
-  Transforms.unwrapNodes(editor, { match: n => n.type === 'link' })
+const unwrapLink = (editor) => {
+  Transforms.unwrapNodes(editor, { match: (n) => n.type === 'link' })
 }
 
 const wrapLink = (editor, url) => {

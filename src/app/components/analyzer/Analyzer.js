@@ -6,7 +6,7 @@ import { get, set, groupBy, pickBy, keys, value } from 'lodash' // get/set will 
 import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
 import Inspector from 'react-json-inspector'
-import 'style-loader!css-loader!sass-loader!../../../../node_modules/react-json-inspector/json-inspector.css'
+import 'react-json-inspector/json-inspector.css'
 import { nextId, objectId } from '../../store/newIds'
 import DevFileDrop from './DevFileDrop'
 import { findDOMNode } from 'react-dom'

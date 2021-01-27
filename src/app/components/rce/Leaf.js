@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'react-proptypes'
 
 const Leaf = ({ attributes, children, leaf }) => {
   if (leaf.bold) {
@@ -18,15 +19,31 @@ const Leaf = ({ attributes, children, leaf }) => {
   }
 
   if (leaf.color) {
-    const colorStyle = {color: leaf.color}
-    attributes.style = attributes.style ? {...attributes.style, ...colorStyle} : colorStyle
+    const colorStyle = { color: leaf.color }
+    attributes.style = attributes.style ? { ...attributes.style, ...colorStyle } : colorStyle
   }
 
   if (leaf.font) {
-    const fontStyle = {fontFamily: `${leaf.font}, Forum, sans-serif`}
-    attributes.style = attributes.style ? {...attributes.style, ...fontStyle} : fontStyle
+    const fontStyle = { fontFamily: `${leaf.font}, Forum, sans-serif` }
+    attributes.style = attributes.style ? { ...attributes.style, ...fontStyle } : fontStyle
   }
 
   return <span {...attributes}>{children}</span>
 }
+
+Leaf.propTypes = {
+  attributes: PropTypes.shape({
+    style: PropTypes.object,
+  }),
+  children: PropTypes.node,
+  leaf: PropTypes.shape({
+    bold: PropTypes.bool,
+    italic: PropTypes.bool,
+    underline: PropTypes.bool,
+    strike: PropTypes.bool,
+    color: PropTypes.string,
+    font: PropTypes.string,
+  }),
+}
+
 export default React.memo(Leaf)

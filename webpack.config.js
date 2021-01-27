@@ -56,8 +56,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: 'css-loader',
-        include: path.resolve(__dirname, 'node_modules', 'react-json-inspector')
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpg|gif)$/,

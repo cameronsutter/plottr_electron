@@ -117,7 +117,6 @@ const EditAttribute = ({
             value={value}
             type="text"
             id={`${name}Input`}
-            defaultValue={entity[name]}
             onKeyDown={onShortDescriptionKeyDown}
             onKeyPress={onShortDescriptionKeyPress}
             onChange={(event) => handleShortDescriptionChange(name, event.target.value)}
@@ -132,7 +131,7 @@ EditAttribute.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   entityType: PropTypes.string.isRequired,
   entity: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,

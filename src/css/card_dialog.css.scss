@@ -67,6 +67,7 @@
 .card-dialog__tab-container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-top: 20px;
 }
 
@@ -90,6 +91,16 @@
 .card-dialog__custom-attributes {
   border: 2px solid #f1f5f8;
   padding: 15px 20px;
+}
+
+.card-dialog__custom-attributes-configuration-link {
+  align-self: flex-end;
+  display: block;
+}
+
+.card-dialog__left-tabs {
+  display: flex;
+  flex-direction: row;
 }
 
 .card-dialog__custom-attributes-label {

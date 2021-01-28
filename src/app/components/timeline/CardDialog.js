@@ -233,7 +233,7 @@ class CardDialog extends Component {
     const { card, ui, customAttributes } = this.props
     return customAttributes.map((attr, index) => {
       return (
-        <React.Fragment key={index}>
+        <React.Fragment key={attr.name}>
           <EditAttribute
             index={index}
             entity={card}
@@ -455,22 +455,31 @@ class CardDialog extends Component {
             <div className="card-dialog__description">
               {this.renderTitle()}
               <div className="card-dialog__tab-container">
-                <div
-                  className={`card-dialog__details-label card-dialog__tab ${
-                    selected === 'Description' ? 'card-dialog__tab--selected' : ''
-                  }`}
-                  onClick={this.selectTab('Description')}
-                >
-                  {i18n('Description')}
+                <div className="card-dialog__left-tabs">
+                  <div
+                    className={`card-dialog__details-label card-dialog__tab ${
+                      selected === 'Description' ? 'card-dialog__tab--selected' : ''
+                    }`}
+                    onClick={this.selectTab('Description')}
+                  >
+                    {i18n('Description')}
+                  </div>
+                  <div
+                    className={`card-dialog__details-label card-dialog__tab ${
+                      selected === 'Attributes' ? 'card-dialog__tab--selected' : ''
+                    }`}
+                    onClick={this.selectTab('Attributes')}
+                  >
+                    {i18n('Attributes')}
+                  </div>
                 </div>
-                <div
-                  className={`card-dialog__details-label card-dialog__tab ${
-                    selected === 'Attributes' ? 'card-dialog__tab--selected' : ''
-                  }`}
-                  onClick={this.selectTab('Attributes')}
+                <a
+                  href="#"
+                  className="card-dialog__custom-attributes-configuration-link"
+                  onClick={this.props.uiActions.openAttributesDialog}
                 >
-                  {i18n('Attributes')}
-                </div>
+                  Configure Attributes
+                </a>
               </div>
               <div
                 className={cx('card-dialog__details-show-hide-wrapper', {
@@ -490,9 +499,6 @@ class CardDialog extends Component {
                   hidden: selected !== 'Attributes',
                 })}
               >
-                <Button onClick={this.props.uiActions.openAttributesDialog}>
-                  <Glyphicon glyph="edit" />
-                </Button>
                 {this.renderEditingCustomAttributes()}
                 <hr />
                 {this.renderAddCustomAttribute()}

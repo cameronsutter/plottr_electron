@@ -169,7 +169,7 @@ class CharacterEditDetails extends Component {
     const { character, ui, customAttributes } = this.props
     return customAttributes.map((attr, index) => {
       return (
-        <React.Fragment key={index}>
+        <React.Fragment key={attr.name}>
           <EditAttribute
             index={index}
             entity={character}

@@ -183,10 +183,11 @@ class CardDialog extends Component {
 
   renderEditingCustomAttributes() {
     const { card, ui, customAttributes } = this.props
-    return customAttributes.map((attr, idx) => {
+    return customAttributes.map((attr, index) => {
       return (
-        <React.Fragment key={idx}>
+        <React.Fragment key={index}>
           <EditAttribute
+            index={index}
             entity={card}
             entityType={'scene'}
             ui={ui}

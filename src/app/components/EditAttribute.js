@@ -12,6 +12,7 @@ const CustomAttributeActions = actions.customAttributeActions
 const EditAttribute = ({
   name,
   type,
+  index,
   entityType,
   entity,
   ui,
@@ -39,6 +40,9 @@ const EditAttribute = ({
     <div className="card-dialog__custom-attributes-label">
       <input
         ref={editTitleRef}
+        onChange={(event) => {
+          editAttribute(index, { name, type }, { name: event.target.value, type })
+        }}
         className={`custom-attr-item__input ${editing ? '' : 'custom-attr-item__input--hidden'}`}
         defaultValue={name}
         onBlur={() => {
@@ -107,6 +111,7 @@ const EditAttribute = ({
 EditAttribute.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   entityType: PropTypes.string.isRequired,
   entity: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
@@ -124,7 +129,7 @@ function mapDispatchToProps(dispatch, { entityType }) {
   const actions = bindActionCreators(CustomAttributeActions, dispatch)
 
   switch (entityType) {
-    case 'characters':
+    case 'character':
       return {
         addAttribute: actions.addCharacterAttr,
         removeAttribute: actions.removeCharacterAttr,
@@ -132,7 +137,7 @@ function mapDispatchToProps(dispatch, { entityType }) {
         reorderAttribute: actions.reorderCharacterAttribute,
       }
 
-    case 'places':
+    case 'place':
       return {
         addAttribute: actions.addPlaceAttr,
         removeAttribute: actions.removePlaceAttr,
@@ -140,7 +145,7 @@ function mapDispatchToProps(dispatch, { entityType }) {
         reorderAttribute: actions.reorderPlacesAttribute,
       }
 
-    case 'scenes':
+    case 'scene':
       return {
         addAttribute: actions.addSceneAttr,
         removeAttribute: actions.removeSceneAttr,

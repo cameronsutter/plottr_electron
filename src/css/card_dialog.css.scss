@@ -92,6 +92,17 @@
   padding: 15px 20px;
 }
 
+.card-dialog__custom-attributes-label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-dialog__custom-attributes-edit-controls {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
 .card-dialog__dropdown-wrapper {
   display: flex;
   flex-direction: column;

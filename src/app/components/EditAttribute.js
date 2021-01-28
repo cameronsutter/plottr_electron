@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import RichText from './rce/RichText'
-import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, Glyphicon, Button } from 'react-bootstrap'
 import { actions } from 'pltr/v2'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -19,23 +19,23 @@ const EditAttribute = ({
   onShortDescriptionKeyPress,
   withRef,
 }) => {
-  const [editing, setEditing] = useState(false)
-
   const Label = () => (
-    <ControlLabel>
-      {name}
-      {!editing ? (
-        <span onClick={() => setEditing(true)}>
+    <div className="card-dialog__custom-attributes-label">
+      <ControlLabel>{name}</ControlLabel>
+      <div className="card-dialog__custom-attributes-edit-controls">
+        <Button bsSize="small" onClick={() => {}}>
           <Glyphicon glyph="edit" />
-        </span>
-      ) : null}
-    </ControlLabel>
+        </Button>
+        <Button bsSize="small" onClick={() => {}}>
+          <Glyphicon glyph="trash" />
+        </Button>
+      </div>
+    </div>
   )
 
   return type === 'paragraph' ? (
     <div>
       <Label />
-      {editing ? 'Editing' : null}
       <RichText
         description={entity[name]}
         onChange={(desc) => handleLongDescriptionChange(name, desc)}
@@ -47,7 +47,6 @@ const EditAttribute = ({
   ) : (
     <FormGroup>
       <Label />
-      {editing ? 'Editing' : null}
       <FormControl
         type="text"
         id={`${name}Input`}

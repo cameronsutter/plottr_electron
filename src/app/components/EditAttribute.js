@@ -31,8 +31,17 @@ const EditAttribute = ({
   const editTitleRef = useRef()
 
   useEffect(() => {
-    if (editing && editTitleRef.current) {
-      editTitleRef.current.focus()
+    if (editTitleRef.current) {
+      if (editing) {
+        editTitleRef.current.focus()
+        editTitleRef.current.classList.add(
+          'card-dialog__custom-attributes-editable-label--with-underline'
+        )
+      } else {
+        editTitleRef.current.classList.remove(
+          'card-dialog__custom-attributes-editable-label--with-underline'
+        )
+      }
     }
   }, [editing])
 
@@ -45,7 +54,9 @@ const EditAttribute = ({
     <div className="card-dialog__custom-attributes-label">
       <input
         ref={editTitleRef}
-        className={`custom-attr-item__input ${editing ? '' : 'custom-attr-item__input--hidden'}`}
+        className={`card-dialog__custom-attributes-editable-label ${
+          editing ? '' : 'custom-attr-item__input--hidden'
+        }`}
         defaultValue={name}
         onBlur={(event) => {
           saveEdits(event.target.value)
@@ -157,7 +168,7 @@ function mapDispatchToProps(dispatch, { entityType }) {
         addAttribute: actions.addSceneAttr,
         removeAttribute: actions.removeSceneAttr,
         editAttribute: actions.editSceneAttr,
-        reorderAttribute: actions.reorderSceneAttribute,
+        reorderAttribute: actions.reorderScenesAttribute,
       }
 
     default:

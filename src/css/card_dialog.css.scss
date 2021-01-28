@@ -94,19 +94,34 @@
 
 .card-dialog__custom-attributes-label {
   width: 100%;
+  height: 39px;
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
 }
 
 .card-dialog__custom-attributes-edit-controls {
   display: inline-block;
   margin-bottom: 5px;
+  height: 100%;
 }
 
 .card-dialog__custom-attributes-editable-label {
+  font-family: 'Lato', sans-serif;
   margin: 0;
+  outline: 0;
+  padding: 0;
   border: 0;
-  padding: 1px 4px;
+  height: 30px;
+  margin-bottom: 3px;
+  border-bottom: 2px solid #f2cb8000;
+  transition: border-bottom 0.5s;
+  font-weight: bold;
+}
+
+.card-dialog__custom-attributes-editable-label--with-underline {
+  border-bottom: 2px solid #f2cb80;
+  margin-bottom: 3px;
 }
 
 .card-dialog__dropdown-wrapper {

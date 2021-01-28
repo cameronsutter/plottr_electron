@@ -64,8 +64,15 @@ class CardDialog extends Component {
     window.SCROLLWITHKEYS = false
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.newAttributeInputRef.current) this.newAttributeInputRef.current.focus()
+    if (this.props.customAttributes != prevProps.customAttributes) {
+      const shortAttributes = {}
+      this.props.customAttributes.forEach(({ name, type }) => {
+        if (type === 'text') shortAttributes[name] = this.props.card[name]
+      })
+      this.setState({ shortAttributes })
+    }
   }
 
   componentWillUnmount() {
@@ -457,17 +464,17 @@ class CardDialog extends Component {
               <div className="card-dialog__tab-container">
                 <div className="card-dialog__left-tabs">
                   <div
-                    className={`card-dialog__details-label card-dialog__tab ${
-                      selected === 'Description' ? 'card-dialog__tab--selected' : ''
-                    }`}
+                    className={cx('card-dialog__details-label card-dialog__tab', {
+                      'card-dialog__tab--selected': selected === 'Description'
+                    })}
                     onClick={this.selectTab('Description')}
                   >
                     {i18n('Description')}
                   </div>
                   <div
-                    className={`card-dialog__details-label card-dialog__tab ${
-                      selected === 'Attributes' ? 'card-dialog__tab--selected' : ''
-                    }`}
+                    className={cx('card-dialog__details-label card-dialog__tab', {
+                      'card-dialog__tab--selected': selected === 'Attributes'
+                    })}
                     onClick={this.selectTab('Attributes')}
                   >
                     {i18n('Attributes')}
@@ -478,7 +485,7 @@ class CardDialog extends Component {
                   className="card-dialog__custom-attributes-configuration-link"
                   onClick={this.props.uiActions.openAttributesDialog}
                 >
-                  Configure Attributes
+                  {i18n('Configure Attributes')}
                 </a>
               </div>
               <div

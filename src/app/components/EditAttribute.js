@@ -114,7 +114,7 @@ const EditAttribute = ({
         <FormGroup>
           <Label />
           <FormControl
-            value={value}
+            value={value || ''}
             type="text"
             id={`${name}Input`}
             onKeyDown={onShortDescriptionKeyDown}

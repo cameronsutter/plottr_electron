@@ -279,7 +279,7 @@ class CardDialog extends Component {
               }
             }}
           >
-            Save
+            Create
           </Button>
           <Button onClick={this.closeNewAttributeSection}>Cancel</Button>
         </ButtonToolbar>

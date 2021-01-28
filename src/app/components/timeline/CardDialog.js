@@ -47,6 +47,7 @@ class CardDialog extends Component {
       addingAttribute: false,
       newAttributeType: 'text',
     }
+    this.newAttributeInputRef = React.createRef()
   }
 
   selectTab = (name) => () => {
@@ -57,6 +58,10 @@ class CardDialog extends Component {
 
   componentDidMount() {
     window.SCROLLWITHKEYS = false
+  }
+
+  componentDidUpdate() {
+    if (this.newAttributeInputRef.current) this.newAttributeInputRef.current.focus()
   }
 
   componentWillUnmount() {
@@ -158,16 +163,26 @@ class CardDialog extends Component {
     this.setState({ newAttributeType: event.target.checked ? 'paragraph' : 'text' })
   }
 
-  handleNewAttributeEnter = (event) => {
-    if (event.which === 13) {
+  addNewCustomAttribute = (name) => {
+    if (name) {
       this.props.customAttributeActions.addSceneAttr({
-        name: event.target.value,
+        name,
         type: this.state.newAttributeType,
       })
-      this.setState({
-        addingAttribute: false,
-        newAttributeType: 'text',
-      })
+    }
+    this.closeNewAttributeSection()
+  }
+
+  closeNewAttributeSection = () => {
+    this.setState({
+      addingAttribute: false,
+      newAttributeType: 'text',
+    })
+  }
+
+  handleNewAttributeEnter = (event) => {
+    if (event.which === 13) {
+      this.addNewCustomAttribute(event.target.value)
     }
   }
 
@@ -244,12 +259,30 @@ class CardDialog extends Component {
       <div>
         <FormGroup>
           <ControlLabel>New Attribute</ControlLabel>
-          <input type="text" onKeyDown={this.handleNewAttributeEnter} />
+          <input
+            ref={this.newAttributeInputRef}
+            className="form-control"
+            type="text"
+            onKeyDown={this.handleNewAttributeEnter}
+          />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>Paragraph</ControlLabel>
+          <ControlLabel>Paragraph &nbsp;</ControlLabel>
           <input type="checkbox" onChange={this.handleNewAttributeTypeChange} />
         </FormGroup>
+        <ButtonToolbar>
+          <Button
+            bsStyle="success"
+            onClick={() => {
+              if (this.newAttributeInputRef.current) {
+                this.addNewCustomAttribute(this.newAttributeInputRef.current.value)
+              }
+            }}
+          >
+            Save
+          </Button>
+          <Button onClick={this.closeNewAttributeSection}>Cancel</Button>
+        </ButtonToolbar>
       </div>
     ) : (
       <Button bsSize="small" onClick={this.onAddAttributeClicked}>
@@ -460,6 +493,7 @@ class CardDialog extends Component {
                 })}
               >
                 {this.renderEditingCustomAttributes()}
+                <hr />
                 {this.renderAddCustomAttribute()}
               </div>
             </div>

@@ -263,7 +263,7 @@ class CardDialog extends Component {
     return this.state.addingAttribute ? (
       <div>
         <FormGroup>
-          <ControlLabel>New Attribute</ControlLabel>
+          <ControlLabel>{i18n('New Attribute')}</ControlLabel>
           <input
             ref={this.newAttributeInputRef}
             className="form-control"
@@ -272,7 +272,7 @@ class CardDialog extends Component {
           />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>Paragraph &nbsp;</ControlLabel>
+          <ControlLabel>{i18n('Paragraph')} &nbsp;</ControlLabel>
           <input type="checkbox" onChange={this.handleNewAttributeTypeChange} />
         </FormGroup>
         <ButtonToolbar>
@@ -284,7 +284,7 @@ class CardDialog extends Component {
               }
             }}
           >
-            Create
+            {i18n('Create')}
           </Button>
           <Button onClick={this.closeNewAttributeSection}>Cancel</Button>
         </ButtonToolbar>
@@ -482,10 +482,12 @@ class CardDialog extends Component {
                 </div>
                 <a
                   href="#"
-                  className="card-dialog__custom-attributes-configuration-link"
+                  className={cx('card-dialog__custom-attributes-configuration-link', {
+                    hidden: selected !== 'Attributes',
+                  })}
                   onClick={this.props.uiActions.openAttributesDialog}
                 >
-                  {i18n('Configure Attributes')}
+                  {i18n('Configure')}
                 </a>
               </div>
               <div

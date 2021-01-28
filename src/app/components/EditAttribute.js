@@ -36,17 +36,24 @@ const EditAttribute = ({
     }
   }, [editing])
 
+  const saveEdits = (newName) => {
+    editAttribute(index, { name, type }, { name: newName, type })
+    setEditing(false)
+  }
+
   const Label = () => (
     <div className="card-dialog__custom-attributes-label">
       <input
         ref={editTitleRef}
-        onChange={(event) => {
-          editAttribute(index, { name, type }, { name: event.target.value, type })
-        }}
         className={`custom-attr-item__input ${editing ? '' : 'custom-attr-item__input--hidden'}`}
         defaultValue={name}
-        onBlur={() => {
-          setEditing(false)
+        onBlur={(event) => {
+          saveEdits(event.target.value)
+        }}
+        onKeyDown={(event) => {
+          if (event.which === 13) {
+            saveEdits(event.target.value)
+          }
         }}
       />
       {!editing ? <ControlLabel>{name}</ControlLabel> : null}

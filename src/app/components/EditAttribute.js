@@ -12,14 +12,15 @@ const CustomAttributeActions = actions.customAttributeActions
 const EditAttribute = ({
   name,
   type,
+  value,
   index,
   entityType,
   entity,
   ui,
   handleLongDescriptionChange,
+  handleShortDescriptionChange,
   onShortDescriptionKeyDown,
   onShortDescriptionKeyPress,
-  withRef,
   addAttribute,
   removeAttribute,
   editAttribute,
@@ -113,12 +114,13 @@ const EditAttribute = ({
         <FormGroup>
           <Label />
           <FormControl
+            value={value}
             type="text"
             id={`${name}Input`}
-            ref={withRef}
             defaultValue={entity[name]}
             onKeyDown={onShortDescriptionKeyDown}
             onKeyPress={onShortDescriptionKeyPress}
+            onChange={(event) => handleShortDescriptionChange(name, event.target.value)}
           />
         </FormGroup>
       )}
@@ -130,13 +132,14 @@ EditAttribute.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  value: PropTypes.string.isRequired,
   entityType: PropTypes.string.isRequired,
   entity: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   handleLongDescriptionChange: PropTypes.func.isRequired,
+  handleShortDescriptionChange: PropTypes.func.isRequired,
   onShortDescriptionKeyDown: PropTypes.func.isRequired,
   onShortDescriptionKeyPress: PropTypes.func.isRequired,
-  withRef: PropTypes.func.isRequired,
   addAttribute: PropTypes.func.isRequired,
   removeAttribute: PropTypes.func.isRequired,
   editAttribute: PropTypes.func.isRequired,

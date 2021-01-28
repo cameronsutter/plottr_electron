@@ -38,11 +38,15 @@ const CustomAttributeActions = actions.customAttributeActions
 class CardDialog extends Component {
   constructor(props) {
     super(props)
+    const shortAttributes = {}
+    props.customAttributes.forEach(({ name, type }) => {
+      if (type === 'text') shortAttributes[name] = props.card[name]
+    })
     this.state = {
       description: props.card.description,
       paragraphs: {},
+      shortAttributes,
       deleting: false,
-      inputRefs: [],
       selected: 'Description',
       addingAttribute: false,
       newAttributeType: 'text',
@@ -89,27 +93,19 @@ class CardDialog extends Component {
     this.props.closeDialog()
   }
 
-  addInputRef = (ref) => {
-    // Set state needs to be queued so that React does not overwrite
-    // the attribute in a merge
-    setTimeout(() => {
-      this.setState({
-        inputRefs: [...this.state.inputRefs, ref],
-      })
-    }, 0)
-  }
-
-  findChildInput = (id) => {
-    const foundInput = this.state.inputRefs.find((ref) => {
-      return ref && ref.current && ref.current.id === id
-    })
-    return foundInput
-  }
-
   handleParagraphAttrChange = (attrName, desc) => {
     this.setState({
       paragraphs: {
         ...this.state.paragraphs,
+        [attrName]: desc,
+      },
+    })
+  }
+
+  handleShortAttrChange = (attrName, desc) => {
+    this.setState({
+      shortAttributes: {
+        ...this.state.shortAttributes,
         [attrName]: desc,
       },
     })
@@ -123,7 +119,7 @@ class CardDialog extends Component {
       if (type == 'paragraph') {
         attrs[name] = this.state.paragraphs[name] || this.props.card[name]
       } else {
-        const val = this.findChildInput(`${name}Input`).value
+        const val = this.state.shortAttributes[name] || this.props.card[name]
         attrs[name] = val
       }
     })
@@ -241,9 +237,11 @@ class CardDialog extends Component {
           <EditAttribute
             index={index}
             entity={card}
+            value={this.state.shortAttributes[attr.name]}
             entityType={'scene'}
             ui={ui}
             handleLongDescriptionChange={this.handleParagraphAttrChange}
+            handleShortDescriptionChange={this.handleShortAttrChange}
             onShortDescriptionKeyDown={this.handleEsc}
             onShortDescriptionKeyPress={this.handleEnter}
             withRef={this.addInputRef}

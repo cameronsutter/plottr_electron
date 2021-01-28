@@ -101,9 +101,9 @@ class CardDialog extends Component {
 
   findChildInput = (id) => {
     const foundInput = this.state.inputRefs.find((ref) => {
-      return ref && ref.props.id === id
+      return ref && ref.current && ref.current.id === id
     })
-    return foundInput && findDOMNode(foundInput)
+    return foundInput
   }
 
   handleParagraphAttrChange = (attrName, desc) => {
@@ -492,6 +492,9 @@ class CardDialog extends Component {
                   hidden: selected !== 'Attributes',
                 })}
               >
+                <Button onClick={this.props.uiActions.openAttributesDialog}>
+                  <Glyphicon glyph="edit" />
+                </Button>
                 {this.renderEditingCustomAttributes()}
                 <hr />
                 {this.renderAddCustomAttribute()}

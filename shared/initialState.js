@@ -60,6 +60,7 @@ const ui = {
     x: 0,
     y: 0,
   },
+  attributesDialogIsOpen: true,
 }
 
 const file = {

@@ -47,7 +47,7 @@ export default function OptionsHome (props) {
         <h4>{t('Auto-save')}</h4>
         <Switch
           disabled
-          isOn={!!settings.user.autoSave}
+          isOn={!!settings.user.autoSave || true}
           handleToggle={() => saveSetting('user.autoSave', !settings.user.autoSave)}
           labelText={t('By default, use auto-save for projects')}
         />

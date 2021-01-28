@@ -7,7 +7,16 @@ import { bindActionCreators } from 'redux'
 import PlottrModal from 'components/PlottrModal'
 import * as CardActions from 'actions/cards'
 import * as UIActions from 'actions/ui'
-import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
+import {
+  ButtonToolbar,
+  Button,
+  DropdownButton,
+  MenuItem,
+  FormControl,
+  Glyphicon,
+  FormGroup,
+  ControlLabel,
+} from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import cx from 'classnames'
@@ -22,6 +31,9 @@ import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 import { truncateTitle } from '../../helpers/cards'
 import EditAttribute from '../EditAttribute'
+import { actions } from 'pltr/v2'
+
+const CustomAttributeActions = actions.customAttributeActions
 
 class CardDialog extends Component {
   constructor(props) {
@@ -32,6 +44,8 @@ class CardDialog extends Component {
       deleting: false,
       inputRefs: [],
       selected: 'Description',
+      addingAttribute: false,
+      newAttributeType: 'text',
     }
   }
 
@@ -140,6 +154,29 @@ class CardDialog extends Component {
     }
   }
 
+  handleNewAttributeTypeChange = (event) => {
+    this.setState({ newAttributeType: event.target.checked ? 'paragraph' : 'text' })
+  }
+
+  handleNewAttributeEnter = (event) => {
+    if (event.which === 13) {
+      this.props.customAttributeActions.addSceneAttr({
+        name: event.target.value,
+        type: this.state.newAttributeType,
+      })
+      this.setState({
+        addingAttribute: false,
+        newAttributeType: 'text',
+      })
+    }
+  }
+
+  onAddAttributeClicked = () => {
+    this.setState({
+      addingAttribute: true,
+    })
+  }
+
   changeChapter(chapterId) {
     this.props.actions.changeScene(this.props.card.id, chapterId, this.props.ui.currentTimeline)
   }
@@ -200,6 +237,25 @@ class CardDialog extends Component {
         </React.Fragment>
       )
     })
+  }
+
+  renderAddCustomAttribute() {
+    return this.state.addingAttribute ? (
+      <div>
+        <FormGroup>
+          <ControlLabel>New Attribute</ControlLabel>
+          <input type="text" onKeyDown={this.handleNewAttributeEnter} />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Paragraph</ControlLabel>
+          <input type="checkbox" onChange={this.handleNewAttributeTypeChange} />
+        </FormGroup>
+      </div>
+    ) : (
+      <Button bsSize="small" onClick={this.onAddAttributeClicked}>
+        <Glyphicon glyph="plus" />
+      </Button>
+    )
   }
 
   renderChapterItems() {
@@ -404,6 +460,7 @@ class CardDialog extends Component {
                 })}
               >
                 {this.renderEditingCustomAttributes()}
+                {this.renderAddCustomAttribute()}
               </div>
             </div>
           </div>
@@ -430,6 +487,8 @@ CardDialog.propTypes = {
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
   customAttributes: PropTypes.array.isRequired,
+  uiActions: PropTypes.object.isRequired,
+  customAttributeActions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -451,6 +510,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(CardActions, dispatch),
     uiActions: bindActionCreators(UIActions, dispatch),
+    customAttributeActions: bindActionCreators(CustomAttributeActions, dispatch),
   }
 }
 

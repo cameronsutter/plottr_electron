@@ -67,6 +67,7 @@
 .card-dialog__tab-container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   margin-top: 20px;
 }
 
@@ -90,6 +91,51 @@
 .card-dialog__custom-attributes {
   border: 2px solid #f1f5f8;
   padding: 15px 20px;
+}
+
+.card-dialog__custom-attributes-configuration-link {
+  align-self: flex-end;
+  display: block;
+}
+
+.card-dialog__left-tabs {
+  display: flex;
+  flex-direction: row;
+}
+
+.card-dialog__custom-attributes-label {
+  width: 100%;
+  height: 39px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.card-dialog__custom-attributes-edit-controls {
+  display: inline-block;
+  margin-bottom: 5px;
+  height: 100%;
+  button {
+    margin-left: 5px;
+  }
+}
+
+.card-dialog__custom-attributes-editable-label {
+  font-family: 'Lato', sans-serif;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  border: 0;
+  height: 30px;
+  margin-bottom: 3px;
+  border-bottom: 2px solid #f2cb8000;
+  transition: border-bottom 0.5s;
+  font-weight: bold;
+}
+
+.card-dialog__custom-attributes-editable-label--with-underline {
+  border-bottom: 2px solid #f2cb80;
+  margin-bottom: 3px;
 }
 
 .card-dialog__dropdown-wrapper {

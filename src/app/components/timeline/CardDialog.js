@@ -7,7 +7,16 @@ import { bindActionCreators } from 'redux'
 import PlottrModal from 'components/PlottrModal'
 import * as CardActions from 'actions/cards'
 import * as UIActions from 'actions/ui'
-import { ButtonToolbar, Button, DropdownButton, MenuItem, FormControl } from 'react-bootstrap'
+import {
+  ButtonToolbar,
+  Button,
+  DropdownButton,
+  MenuItem,
+  FormControl,
+  Glyphicon,
+  FormGroup,
+  ControlLabel,
+} from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import cx from 'classnames'
@@ -21,18 +30,28 @@ import { sortedTagsSelector } from '../../selectors/tags'
 import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 import { truncateTitle } from '../../helpers/cards'
-import { EditAttribute } from '../EditAttribute'
+import EditAttribute from '../EditAttribute'
+import { actions } from 'pltr/v2'
+
+const CustomAttributeActions = actions.customAttributeActions
 
 class CardDialog extends Component {
   constructor(props) {
     super(props)
+    const shortAttributes = {}
+    props.customAttributes.forEach(({ name, type }) => {
+      if (type === 'text') shortAttributes[name] = props.card[name]
+    })
     this.state = {
       description: props.card.description,
       paragraphs: {},
+      shortAttributes,
       deleting: false,
-      inputRefs: [],
       selected: 'Description',
+      addingAttribute: false,
+      newAttributeType: 'text',
     }
+    this.newAttributeInputRef = React.createRef()
   }
 
   selectTab = (name) => () => {
@@ -43,6 +62,10 @@ class CardDialog extends Component {
 
   componentDidMount() {
     window.SCROLLWITHKEYS = false
+  }
+
+  componentDidUpdate() {
+    if (this.newAttributeInputRef.current) this.newAttributeInputRef.current.focus()
   }
 
   componentWillUnmount() {
@@ -70,27 +93,19 @@ class CardDialog extends Component {
     this.props.closeDialog()
   }
 
-  addInputRef = (ref) => {
-    // Set state needs to be queued so that React does not overwrite
-    // the attribute in a merge
-    setTimeout(() => {
-      this.setState({
-        inputRefs: [...this.state.inputRefs, ref],
-      })
-    }, 0)
-  }
-
-  findChildInput = (id) => {
-    const foundInput = this.state.inputRefs.find((ref) => {
-      return ref && ref.props.id === id
-    })
-    return foundInput && findDOMNode(foundInput)
-  }
-
   handleParagraphAttrChange = (attrName, desc) => {
     this.setState({
       paragraphs: {
         ...this.state.paragraphs,
+        [attrName]: desc,
+      },
+    })
+  }
+
+  handleShortAttrChange = (attrName, desc) => {
+    this.setState({
+      shortAttributes: {
+        ...this.state.shortAttributes,
         [attrName]: desc,
       },
     })
@@ -104,7 +119,7 @@ class CardDialog extends Component {
       if (type == 'paragraph') {
         attrs[name] = this.state.paragraphs[name] || this.props.card[name]
       } else {
-        const val = this.findChildInput(`${name}Input`).value
+        const val = this.state.shortAttributes[name] || this.props.card[name]
         attrs[name] = val
       }
     })
@@ -138,6 +153,39 @@ class CardDialog extends Component {
     if (event.which === 27) {
       this.saveEdit()
     }
+  }
+
+  handleNewAttributeTypeChange = (event) => {
+    this.setState({ newAttributeType: event.target.checked ? 'paragraph' : 'text' })
+  }
+
+  addNewCustomAttribute = (name) => {
+    if (name) {
+      this.props.customAttributeActions.addSceneAttr({
+        name,
+        type: this.state.newAttributeType,
+      })
+    }
+    this.closeNewAttributeSection()
+  }
+
+  closeNewAttributeSection = () => {
+    this.setState({
+      addingAttribute: false,
+      newAttributeType: 'text',
+    })
+  }
+
+  handleNewAttributeEnter = (event) => {
+    if (event.which === 13) {
+      this.addNewCustomAttribute(event.target.value)
+    }
+  }
+
+  onAddAttributeClicked = () => {
+    this.setState({
+      addingAttribute: true,
+    })
   }
 
   changeChapter(chapterId) {
@@ -183,13 +231,17 @@ class CardDialog extends Component {
 
   renderEditingCustomAttributes() {
     const { card, ui, customAttributes } = this.props
-    return customAttributes.map((attr, idx) => {
+    return customAttributes.map((attr, index) => {
       return (
-        <React.Fragment key={idx}>
+        <React.Fragment key={attr.name}>
           <EditAttribute
+            index={index}
             entity={card}
+            value={this.state.shortAttributes[attr.name]}
+            entityType={'scene'}
             ui={ui}
             handleLongDescriptionChange={this.handleParagraphAttrChange}
+            handleShortDescriptionChange={this.handleShortAttrChange}
             onShortDescriptionKeyDown={this.handleEsc}
             onShortDescriptionKeyPress={this.handleEnter}
             withRef={this.addInputRef}
@@ -198,6 +250,43 @@ class CardDialog extends Component {
         </React.Fragment>
       )
     })
+  }
+
+  renderAddCustomAttribute() {
+    return this.state.addingAttribute ? (
+      <div>
+        <FormGroup>
+          <ControlLabel>New Attribute</ControlLabel>
+          <input
+            ref={this.newAttributeInputRef}
+            className="form-control"
+            type="text"
+            onKeyDown={this.handleNewAttributeEnter}
+          />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Paragraph &nbsp;</ControlLabel>
+          <input type="checkbox" onChange={this.handleNewAttributeTypeChange} />
+        </FormGroup>
+        <ButtonToolbar>
+          <Button
+            bsStyle="success"
+            onClick={() => {
+              if (this.newAttributeInputRef.current) {
+                this.addNewCustomAttribute(this.newAttributeInputRef.current.value)
+              }
+            }}
+          >
+            Create
+          </Button>
+          <Button onClick={this.closeNewAttributeSection}>Cancel</Button>
+        </ButtonToolbar>
+      </div>
+    ) : (
+      <Button bsSize="small" onClick={this.onAddAttributeClicked}>
+        <Glyphicon glyph="plus" />
+      </Button>
+    )
   }
 
   renderChapterItems() {
@@ -366,22 +455,31 @@ class CardDialog extends Component {
             <div className="card-dialog__description">
               {this.renderTitle()}
               <div className="card-dialog__tab-container">
-                <div
-                  className={`card-dialog__details-label card-dialog__tab ${
-                    selected === 'Description' ? 'card-dialog__tab--selected' : ''
-                  }`}
-                  onClick={this.selectTab('Description')}
-                >
-                  {i18n('Description')}
+                <div className="card-dialog__left-tabs">
+                  <div
+                    className={`card-dialog__details-label card-dialog__tab ${
+                      selected === 'Description' ? 'card-dialog__tab--selected' : ''
+                    }`}
+                    onClick={this.selectTab('Description')}
+                  >
+                    {i18n('Description')}
+                  </div>
+                  <div
+                    className={`card-dialog__details-label card-dialog__tab ${
+                      selected === 'Attributes' ? 'card-dialog__tab--selected' : ''
+                    }`}
+                    onClick={this.selectTab('Attributes')}
+                  >
+                    {i18n('Attributes')}
+                  </div>
                 </div>
-                <div
-                  className={`card-dialog__details-label card-dialog__tab ${
-                    selected === 'Attributes' ? 'card-dialog__tab--selected' : ''
-                  }`}
-                  onClick={this.selectTab('Attributes')}
+                <a
+                  href="#"
+                  className="card-dialog__custom-attributes-configuration-link"
+                  onClick={this.props.uiActions.openAttributesDialog}
                 >
-                  {i18n('Attributes')}
-                </div>
+                  Configure Attributes
+                </a>
               </div>
               <div
                 className={cx('card-dialog__details-show-hide-wrapper', {
@@ -402,6 +500,8 @@ class CardDialog extends Component {
                 })}
               >
                 {this.renderEditingCustomAttributes()}
+                <hr />
+                {this.renderAddCustomAttribute()}
               </div>
             </div>
           </div>
@@ -428,6 +528,8 @@ CardDialog.propTypes = {
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
   customAttributes: PropTypes.array.isRequired,
+  uiActions: PropTypes.object.isRequired,
+  customAttributeActions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -449,6 +551,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(CardActions, dispatch),
     uiActions: bindActionCreators(UIActions, dispatch),
+    customAttributeActions: bindActionCreators(CustomAttributeActions, dispatch),
   }
 }
 

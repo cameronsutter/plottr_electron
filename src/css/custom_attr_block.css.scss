@@ -68,8 +68,11 @@
   align-self: center;
   margin: 0;
   border: 0;
-  width: 60%;
   padding: 1px 4px;
+}
+
+.custom-attr-item__input--hidden {
+  display: none;
 }
 
 .custom-attr-item__checkbox-label {

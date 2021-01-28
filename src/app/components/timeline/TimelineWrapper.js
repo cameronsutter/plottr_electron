@@ -40,7 +40,6 @@ class TimelineWrapper extends Component {
     super(props)
     this.state = {
       mounted: false,
-      attributesDialogOpen: false,
     }
     this.tableRef = null
   }
@@ -95,6 +94,14 @@ class TimelineWrapper extends Component {
   componentWillUnmount() {
     this.tableRef.onScroll = null
     this.tableRef = null
+  }
+
+  // ///////////////
+  //  attributes  //
+  // ///////////////
+
+  openCustomAttributesDialog = () => {
+    this.props.actions.openAttributesDialog()
   }
 
   // ////////////
@@ -270,7 +277,7 @@ class TimelineWrapper extends Component {
             </Button>
           </NavItem>
           <NavItem>
-            <Button bsSize="small" onClick={() => this.setState({ attributesDialogOpen: true })}>
+            <Button bsSize="small" onClick={this.openCustomAttributesDialog}>
               <Glyphicon glyph="list" /> {i18n('Attributes')}
             </Button>
           </NavItem>
@@ -330,13 +337,11 @@ class TimelineWrapper extends Component {
   }
 
   closeDialog = () => {
-    this.setState({
-      attributesDialogOpen: false,
-    })
+    this.props.actions.closeAttributesDialog()
   }
 
   renderCustomAttributes() {
-    if (!this.state.attributesDialogOpen) return null
+    if (!this.props.ui.attributesDialogIsOpen) return null
 
     return <CustomAttributeModal hideSaveAsTemplate type="scenes" closeDialog={this.closeDialog} />
   }
@@ -370,6 +375,7 @@ TimelineWrapper.propTypes = {
   ui: PropTypes.object.isRequired,
   filterIsEmpty: PropTypes.bool.isRequired,
   canSaveTemplate: PropTypes.bool.isRequired,
+  actions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import RichText from './rce/RichText'
+import DeleteConfirmModal from './dialogs/DeleteConfirmModal'
 import { FormControl, FormGroup, ControlLabel, Glyphicon, Button } from 'react-bootstrap'
 import { actions } from 'pltr/v2'
 import { bindActionCreators } from 'redux'
@@ -18,44 +19,88 @@ const EditAttribute = ({
   onShortDescriptionKeyDown,
   onShortDescriptionKeyPress,
   withRef,
+  addAttribute,
+  removeAttribute,
+  editAttribute,
+  reorderAttribute,
 }) => {
+  const [deleting, setDeleting] = useState(false)
+  const [editing, setEditing] = useState(false)
+
+  const editTitleRef = useRef()
+
+  useEffect(() => {
+    if (editing && editTitleRef.current) {
+      editTitleRef.current.focus()
+    }
+  }, [editing])
+
   const Label = () => (
     <div className="card-dialog__custom-attributes-label">
-      <ControlLabel>{name}</ControlLabel>
+      <input
+        ref={editTitleRef}
+        className={`custom-attr-item__input ${editing ? '' : 'custom-attr-item__input--hidden'}`}
+        defaultValue={name}
+        onBlur={() => {
+          setEditing(false)
+        }}
+      />
+      {!editing ? <ControlLabel>{name}</ControlLabel> : null}
       <div className="card-dialog__custom-attributes-edit-controls">
-        <Button bsSize="small" onClick={() => {}}>
+        <Button
+          bsSize="small"
+          onClick={() => {
+            setEditing(!editing)
+          }}
+        >
           <Glyphicon glyph="edit" />
         </Button>
-        <Button bsSize="small" onClick={() => {}}>
+        <Button
+          bsSize="small"
+          onClick={() => {
+            setDeleting(true)
+          }}
+        >
           <Glyphicon glyph="trash" />
         </Button>
       </div>
     </div>
   )
 
-  return type === 'paragraph' ? (
-    <div>
-      <Label />
-      <RichText
-        description={entity[name]}
-        onChange={(desc) => handleLongDescriptionChange(name, desc)}
-        editable
-        autofocus={false}
-        darkMode={ui.darkMode}
-      />
-    </div>
-  ) : (
-    <FormGroup>
-      <Label />
-      <FormControl
-        type="text"
-        id={`${name}Input`}
-        ref={withRef}
-        defaultValue={entity[name]}
-        onKeyDown={onShortDescriptionKeyDown}
-        onKeyPress={onShortDescriptionKeyPress}
-      />
-    </FormGroup>
+  return (
+    <>
+      {deleting ? (
+        <DeleteConfirmModal
+          name={name}
+          onDelete={() => removeAttribute(name)}
+          onCancel={() => setDeleting(false)}
+        />
+      ) : null}
+      {type === 'paragraph' ? (
+        <div>
+          <Label />
+          <RichText
+            description={entity[name]}
+            onChange={(desc) => handleLongDescriptionChange(name, desc)}
+            editable
+            autofocus={false}
+            darkMode={ui.darkMode}
+          />
+        </div>
+      ) : (
+        <FormGroup>
+          <Label />
+          <FormControl
+            type="text"
+            id={`${name}Input`}
+            ref={withRef}
+            defaultValue={entity[name]}
+            onKeyDown={onShortDescriptionKeyDown}
+            onKeyPress={onShortDescriptionKeyPress}
+          />
+        </FormGroup>
+      )}
+    </>
   )
 }
 
@@ -69,6 +114,10 @@ EditAttribute.propTypes = {
   onShortDescriptionKeyDown: PropTypes.func.isRequired,
   onShortDescriptionKeyPress: PropTypes.func.isRequired,
   withRef: PropTypes.func.isRequired,
+  addAttribute: PropTypes.func.isRequired,
+  removeAttribute: PropTypes.func.isRequired,
+  editAttribute: PropTypes.func.isRequired,
+  reorderAttribute: PropTypes.func.isRequired,
 }
 
 function mapDispatchToProps(dispatch, { entityType }) {

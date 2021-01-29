@@ -3,6 +3,7 @@ import {
   ADD_CARD_IN_CHAPTER,
   ADD_LINES_FROM_TEMPLATE,
   EDIT_CARD_DETAILS,
+  EDIT_SCENES_ATTRIBUTE,
 } from '../../constants/ActionTypes'
 import { card as defaultCard } from '../../../../shared/initialState'
 import cardsReducer from '../cards'
@@ -26,6 +27,8 @@ const fourCardState = cardsReducer(undefined, {
   type: ADD_LINES_FROM_TEMPLATE,
   cards: [card1, card2, card3, card4],
 })
+const cardWithStrength = { ...defaultCard, strength: 'You bet!' }
+const strengthState = cardsReducer(undefined, { type: ADD_CARD, card: cardWithStrength })
 
 describe('cardsReducer', () => {
   it('should produce a valid state object when supplied with an unknown event type', () => {
@@ -188,6 +191,62 @@ describe('cardsReducer', () => {
               2
             )
           ).toEqual({ ...card2, best: true })
+        })
+      })
+    })
+  })
+  // TODO: many tests to add.  Adding ones for recent features for
+  // expedience.
+  describe('edit scenes attributes', () => {
+    describe('given an attribute to change', () => {
+      const oldAttribute = { name: 'strength', type: 'text' }
+      const newAttribute = { name: 'do-you-even-lift?', type: 'text' }
+      describe('and the empty state', () => {
+        it('should produce the empty state', () => {
+          expect(
+            cardsReducer(emptyState, {
+              type: EDIT_SCENES_ATTRIBUTE,
+              oldAttribute,
+              newAttribute,
+            })
+          ).toEqual(emptyState)
+        })
+      })
+      describe('and a four card state where no card contains the attribute', () => {
+        it('should add the attribute to those cards', () => {
+          expect(
+            allCardsSelector(
+              mountToState(
+                cardsReducer(fourCardState, {
+                  type: EDIT_SCENES_ATTRIBUTE,
+                  oldAttribute,
+                  newAttribute,
+                })
+              )
+            )
+          ).toEqual(
+            fourCardState.map((card) => ({ ...card, ...{ [newAttribute.name]: undefined } }))
+          )
+        })
+      })
+      describe('and a state where a card has the original attribute', () => {
+        it('should change the name of the attribute', () => {
+          expect(
+            cardIdInState(
+              mountToState(
+                cardsReducer(strengthState, {
+                  type: EDIT_SCENES_ATTRIBUTE,
+                  oldAttribute,
+                  newAttribute,
+                })
+              ),
+              1
+            )
+          ).toEqual({
+            ...cardWithStrength,
+            strength: undefined,
+            'do-you-even-lift?': 'You bet!',
+          })
         })
       })
     })

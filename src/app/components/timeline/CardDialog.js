@@ -476,7 +476,7 @@ class CardDialog extends Component {
                 <div className="card-dialog__left-tabs">
                   <div
                     className={cx('card-dialog__details-label card-dialog__tab', {
-                      'card-dialog__tab--selected': selected === 'Description'
+                      'card-dialog__tab--selected': selected === 'Description',
                     })}
                     onClick={this.selectTab('Description')}
                   >
@@ -484,7 +484,7 @@ class CardDialog extends Component {
                   </div>
                   <div
                     className={cx('card-dialog__details-label card-dialog__tab', {
-                      'card-dialog__tab--selected': selected === 'Attributes'
+                      'card-dialog__tab--selected': selected === 'Attributes',
                     })}
                     onClick={this.selectTab('Attributes')}
                   >

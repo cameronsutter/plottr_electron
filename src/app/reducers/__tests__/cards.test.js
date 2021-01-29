@@ -34,7 +34,7 @@ describe('cardsReducer', () => {
   it('should produce a valid state object when supplied with an unknown event type', () => {
     expect(cardsReducer(emptyState, { type: 'herpa' })).toEqual(emptyState)
   })
-  it('should produce an empty array when given no state object', () => {
+  it('should produce a valid state when given no state object', () => {
     expect(cardsReducer(null, { type: 'derp' })).toEqual(emptyState)
   })
   describe('add card', () => {

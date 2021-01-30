@@ -3,10 +3,10 @@ import { useMemo } from 'react'
 import { sortBy } from 'lodash'
 import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
 
-export function useSortedKnownFiles (searchTerm) {
+export function useSortedKnownFiles(searchTerm) {
   const [files] = useKnownFilesInfo()
   const sortedIds = useMemo(() => {
-    const filteredFileIds = Object.keys(files).filter(id => {
+    const filteredFileIds = Object.keys(files).filter((id) => {
       if (searchTerm && searchTerm.length > 1) {
         const f = files[`${id}`]
         return f.path.toLowerCase().includes(searchTerm)
@@ -20,11 +20,11 @@ export function useSortedKnownFiles (searchTerm) {
   return [sortedIds, files]
 }
 
-export function doesFileExist (filePath) {
+export function doesFileExist(filePath) {
   return fs.existsSync(filePath)
 }
 
-function migrateKnownFileStore () {
+function migrateKnownFileStore() {
   // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
   const needsMigration = knownFilesStore.has('byIds') || knownFilesStore.has('allIds')
   if (needsMigration) {
@@ -39,7 +39,7 @@ function migrateKnownFileStore () {
         const newId = idx + 1
         const entry = {
           path: id,
-          lastOpened: val.lastOpened
+          lastOpened: val.lastOpened,
         }
         acc[newId] = entry
       }

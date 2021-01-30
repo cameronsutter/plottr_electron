@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 
 class RemoveCustomAttribute extends Component {
-
-  render () {
+  render() {
     const item = this.props.item
     let label = ''
     if (item.action.type.includes('PLACES')) {
@@ -17,7 +16,10 @@ class RemoveCustomAttribute extends Component {
     return (
       <div>
         <span>{label}</span>
-        <p>{i18n('Before')}: <span className='history-component__item__before'>{item.action.attribute}</span></p>
+        <p>
+          {i18n('Before')}:{' '}
+          <span className="history-component__item__before">{item.action.attribute}</span>
+        </p>
         <p>{i18n('After')}: </p>
       </div>
     )
@@ -25,20 +27,15 @@ class RemoveCustomAttribute extends Component {
 }
 
 RemoveCustomAttribute.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RemoveCustomAttribute)
+export default connect(mapStateToProps, mapDispatchToProps)(RemoveCustomAttribute)

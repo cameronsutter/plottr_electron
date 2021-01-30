@@ -1,63 +1,60 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plottr</title>
+    <script>
+      var beamer_config = {
+        product_id: 'IgDazaTp8480',
+        selector: '#beamer-bell',
+        lazy: true,
+      }
+    </script>
+    <script type="text/javascript" src="https://app.getbeamer.com/js/beamer-embed.js"></script>
+    <link href="fonts/fonts.css" rel="stylesheet" type="text/css" />
+    <script src="css.bundle.js"></script>
+    <style>
+      body {
+        font-family: 'Lato', sans-serif !important;
+        font-size: 19px !important;
+        font-weight: 400;
+        background: none !important;
+        background-blend-mode: hard-light;
+        background-color: hsl(210, 36%, 96%) !important;
+        padding-top: 0;
+      }
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Plottr</title>
-  <script>
-    var beamer_config = {
-      product_id: 'IgDazaTp8480',
-      selector: '#beamer-bell',
-      lazy: true,
-    }
-  </script>
-  <script type="text/javascript" src="https://app.getbeamer.com/js/beamer-embed.js"></script>
-  <link href='fonts/fonts.css' rel='stylesheet' type='text/css'>
-  <script src="css.bundle.js"></script>
-  <style>
-    body {
-      font-family: 'Lato', sans-serif !important;
-      font-size: 19px !important;
-      font-weight: 400;
-      background: none !important;
-      background-blend-mode: hard-light;
-      background-color: hsl(210, 36%, 96%) !important;
-      padding-top: 0;
-    }
+      h3.panel-title {
+        font-size: 23px;
+      }
 
-    h3.panel-title {
-      font-size: 23px;
-    }
+      #temporary-inner {
+        /* margin-top: -50px; */
+        background: hsl(60, 3%, 94%) url('../icons/mountain_background.jpg');
+        background-size: cover;
+        background-blend-mode: overlay;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-    #temporary-inner {
-      /* margin-top: -50px; */
-      background: hsl(60, 3%, 94%) url("../icons/mountain_background.jpg");
-      background-size: cover;
-      background-blend-mode: overlay;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+      #temporary-inner img {
+        /* animation: fadein 1.5s; */
+        /* margin-top: 10px; */
+      }
+    </style>
+  </head>
 
-    #temporary-inner img {
-      /* animation: fadein 1.5s; */
-      /* margin-top: 10px; */
-    }
-
-  </style>
-</head>
-
-<body>
-  <div id="dashboard__react__root">
-    <div id="temporary-inner">
-      <img src='../icons/logo_28_500.png' height='500' />
+  <body>
+    <div id="dashboard__react__root">
+      <div id="temporary-inner">
+        <img src="../icons/logo_28_500.png" height="500" />
+      </div>
     </div>
-  </div>
-  <script async src="commons.bundle.js"></script>
-  <script async src="reactIcons.bundle.js"></script>
-  <script async src="dashboard.bundle.js"></script>
-</body>
-
+    <script async src="commons.bundle.js"></script>
+    <script async src="reactIcons.bundle.js"></script>
+    <script async src="dashboard.bundle.js"></script>
+  </body>
 </html>

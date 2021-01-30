@@ -1,7 +1,7 @@
 const Store = require('electron-store')
-const licenseStore = new Store({name: 'license_info'})
+const licenseStore = new Store({ name: 'license_info' })
 
-function getLicenseInfo () {
+function getLicenseInfo() {
   return licenseStore.get()
 }
 

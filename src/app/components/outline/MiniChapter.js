@@ -4,7 +4,7 @@ import cx from 'classnames'
 import { chapterTitle } from '../../helpers/chapters'
 import { sortCardsInChapter } from '../../helpers/cards'
 
-function MiniChapter (props) {
+function MiniChapter(props) {
   const { chapter, idx, cards, linesById, sortedLines, isSeries, positionOffset } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
@@ -46,12 +46,12 @@ function MiniChapter (props) {
   }
 
   const acceptCard = (id, lineId) => {
-    let newOrder = []
-
-    const currentIds = sortedCards.map(c => c.id)
+    const currentIds = sortedCards.map((c) => c.id)
     // dropped in from a different chapter
     if (!currentIds.includes(id)) {
-      let cardIdsInLine = sortedCards.filter(c => isSeries ? c.seriesLineId == lineId : c.lineId == lineId).map(c => c.id)
+      let cardIdsInLine = sortedCards
+        .filter((c) => (isSeries ? c.seriesLineId == lineId : c.lineId == lineId))
+        .map((c) => c.id)
       cardIdsInLine.push(id)
       if (chapter.autoOutlineSort) {
         props.reorderCardsWithinLine(chapter.id, lineId, isSeries, cardIdsInLine)
@@ -75,20 +75,33 @@ function MiniChapter (props) {
       let line = findCard(c)
       if (!line) return null
 
-      let style = {backgroundColor: line.color}
-      return <div key={`dot-${line.id}-${c.id}`} title={line.title} style={style} className='outline__minimap__card-dot'></div>
+      let style = { backgroundColor: line.color }
+      return (
+        <div
+          key={`dot-${line.id}-${c.id}`}
+          title={line.title}
+          style={style}
+          className="outline__minimap__card-dot"
+        ></div>
+      )
     })
   }
 
-  return <div className={cx('outline__minimap__chapter-title', {dropping: inDropZone})}
-    onDragEnter={handleDragEnter}
-    onDragOver={handleDragOver}
-    onDragLeave={handleDragLeave}
-    onDrop={handleDrop}
-  >
-    <span><span className='accented-text'>{`${idx + 1}.  `}</span><span>{chapterTitle(chapter, positionOffset, isSeries)}</span></span>
-    <div className='outline__minimap__dots'>{renderCardDots()}</div>
-  </div>
+  return (
+    <div
+      className={cx('outline__minimap__chapter-title', { dropping: inDropZone })}
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      <span>
+        <span className="accented-text">{`${idx + 1}.  `}</span>
+        <span>{chapterTitle(chapter, positionOffset, isSeries)}</span>
+      </span>
+      <div className="outline__minimap__dots">{renderCardDots()}</div>
+    </div>
+  )
 }
 
 MiniChapter.propTypes = {

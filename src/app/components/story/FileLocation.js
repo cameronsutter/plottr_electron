@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { NavItem, Button } from 'react-bootstrap'
 import i18n from 'format-message'
 import { is } from 'electron-util'
@@ -19,15 +18,25 @@ class FileLocation extends Component {
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
   }
 
-  render () {
+  render() {
     const { file } = this.props
-    let button = <Button bsSize='small' onClick={() => shell.showItemInFolder(file.fileName)}>{showInMessage}</Button>
+    let button = (
+      <Button bsSize="small" onClick={() => shell.showItemInFolder(file.fileName)}>
+        {showInMessage}
+      </Button>
+    )
     if (file.fileName.includes(TEMP_FILES_PATH)) {
-      button = <Button bsSize='small' onClick={this.chooseLocation} title={i18n('Choose where to save this file on your computer')}>{i18n('Save File')}</Button>
+      button = (
+        <Button
+          bsSize="small"
+          onClick={this.chooseLocation}
+          title={i18n('Choose where to save this file on your computer')}
+        >
+          {i18n('Save File')}
+        </Button>
+      )
     }
-    return <NavItem>
-      { button }
-    </NavItem>
+    return <NavItem>{button}</NavItem>
   }
 
   static propTypes = {
@@ -35,17 +44,14 @@ class FileLocation extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     file: state.present.file,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FileLocation)
+export default connect(mapStateToProps, mapDispatchToProps)(FileLocation)

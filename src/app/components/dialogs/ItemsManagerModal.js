@@ -1,16 +1,7 @@
 import { ipcRenderer, remote } from 'electron'
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-} from 'react'
-import {
-  Button,
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  Glyphicon,
-} from 'react-bootstrap'
+import React, { useState, useEffect, useMemo } from 'react'
+import PropTypes from 'react-proptypes'
+import { Button, FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import PlottrModal from 'components/PlottrModal'
 import i18n from 'format-message'
 import cx from 'classnames'
@@ -32,7 +23,7 @@ const modalStyles = {
     marginTop: '-60px', // counters some !important style
     minHeight: 500,
     maxHeight: 'calc(100vh - 120px)',
-  }
+  },
 }
 const win = remote.getCurrentWindow()
 
@@ -75,49 +66,55 @@ export default function ItemsManagerModal({
   }
 
   return (
-    <PlottrModal
-        isOpen={true}
-        onRequestClose={closeDialog}
-        style={modalStyles}
-      >
-        <div className={cx('custom-attr__wrapper', { darkmode: darkMode })}>
-          <Button className='pull-right' onClick={closeDialog}>
-            {i18n('Close')}
+    <PlottrModal isOpen={true} onRequestClose={closeDialog} style={modalStyles}>
+      <div className={cx('custom-attr__wrapper', { darkmode: darkMode })}>
+        <Button className="pull-right" onClick={closeDialog}>
+          {i18n('Close')}
+        </Button>
+        {showSaveAsTemplate ? (
+          <Button className="pull-right custom-attr__save-as-template" onClick={saveAsTemplate}>
+            <FaSave className="svg-save-template" /> {i18n('Save as Template')}
           </Button>
-          {showSaveAsTemplate ?
-            <Button className='pull-right custom-attr__save-as-template' onClick={saveAsTemplate}>
-              <FaSave className='svg-save-template'/> {i18n('Save as Template')}
-            </Button>
-          : null }
-          <h3>{title}</h3>
-          <p className='sub-header'>{subtitle}</p>
-          <div className='custom-attr__add-button'>
-            <FormGroup>
-              <ControlLabel>{addLabel}</ControlLabel>
-              <FormControl
-                type='text'
-                value={inputValue}
-                onChange={(e) => setInputValue(e.currentTarget.value)}
-                onKeyDown={handleEnterPressed}
-              />
-            </FormGroup>
-            <Button
-              bsStyle='success'
-              onClick={save}
-            >
-              {i18n('Add')}
-            </Button>
-          </div>
-          <div className='custom-attr__list-wrapper'>
-            {items.map((item, i) => {
-              const element = renderItem(item, i)
-              if (element == null) return null
-              return React.cloneElement(element, { restrictedValues })
-            })}
-          </div>
+        ) : null}
+        <h3>{title}</h3>
+        <p className="sub-header">{subtitle}</p>
+        <div className="custom-attr__add-button">
+          <FormGroup>
+            <ControlLabel>{addLabel}</ControlLabel>
+            <FormControl
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.currentTarget.value)}
+              onKeyDown={handleEnterPressed}
+            />
+          </FormGroup>
+          <Button bsStyle="success" onClick={save}>
+            {i18n('Add')}
+          </Button>
         </div>
-      </PlottrModal>
+        <div className="custom-attr__list-wrapper">
+          {items.map((item, i) => {
+            const element = renderItem(item, i)
+            if (element == null) return null
+            return React.cloneElement(element, { restrictedValues })
+          })}
+        </div>
+      </div>
+    </PlottrModal>
   )
+}
+
+ItemsManagerModal.propTypes = {
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  addLabel: PropTypes.func,
+  items: PropTypes.array,
+  darkMode: PropTypes.bool,
+  showSaveAsTemplate: PropTypes.bool,
+  itemType: PropTypes.string,
+  onAdd: PropTypes.func,
+  renderItem: PropTypes.func,
+  closeDialog: PropTypes.func,
 }
 
 export function ListItem({
@@ -140,7 +137,7 @@ export function ListItem({
     if (item.type == type) return // no changes? no op
     updateItem({
       ...item,
-      type
+      type,
     })
   }, [typeChecked])
 
@@ -161,7 +158,8 @@ export function ListItem({
 
   const updateName = () => {
     const newName = name.trim()
-    if (!newName || restrictedValues.has(newName)) { // is nothing? is a restricted value? no op
+    if (!newName || restrictedValues.has(newName)) {
+      // is nothing? is a restricted value? no op
       return setName(item.name)
     }
     updateItem({
@@ -180,7 +178,7 @@ export function ListItem({
     const checked = item.type == 'paragraph'
     if (canChangeType) {
       return (
-        <label className='custom-attr-item__checkbox-label'>
+        <label className="custom-attr-item__checkbox-label">
           <input
             type="checkbox"
             checked={checked}
@@ -191,9 +189,7 @@ export function ListItem({
       )
     } else {
       return (
-        <label className='custom-attr-item__checkbox-label text-muted'>
-          {i18n('paragraph')}
-        </label>
+        <label className="custom-attr-item__checkbox-label text-muted">{i18n('paragraph')}</label>
       )
     }
   }
@@ -211,22 +207,22 @@ export function ListItem({
 
   return (
     <li
-      className='list-group-item custom-attr-item'
+      className="list-group-item custom-attr-item"
       draggable={draggable}
       onDragStart={onDragStart}
       onDragOver={preventDefault}
       onDragEnter={preventDefault}
       onDrop={onDrop}
     >
-      <div className='custom-attr-item__left-side'>
+      <div className="custom-attr-item__left-side">
         <Glyphicon
-          className='custom-attr-item__drag-handle'
-          glyph='menu-hamburger'
+          className="custom-attr-item__drag-handle"
+          glyph="menu-hamburger"
           onMouseDown={() => setDraggable(true)}
           onMouseOut={() => setDraggable(false)}
         />
         <input
-          className='custom-attr-item__input'
+          className="custom-attr-item__input"
           onChange={(e) => setName(e.currentTarget.value)}
           value={name}
           onBlur={updateName}
@@ -234,14 +230,23 @@ export function ListItem({
         />
       </div>
       <div>
-        { renderParagraphCheckBox() }
-        <Button
-          onClick={() => setDeleting(true)}
-        >
-          <Glyphicon glyph='remove'/>
+        {renderParagraphCheckBox()}
+        <Button onClick={() => setDeleting(true)}>
+          <Glyphicon glyph="remove" />
         </Button>
-        { renderDelete() }
+        {renderDelete()}
       </div>
     </li>
   )
+}
+
+ListItem.propTypes = {
+  item: PropTypes.object,
+  index: PropTypes.number,
+  restrictedValues: PropTypes.array,
+  showType: PropTypes.bool,
+  canChangeType: PropTypes.bool,
+  reorderItem: PropTypes.func,
+  deleteItem: PropTypes.func,
+  updateItem: PropTypes.func,
 }

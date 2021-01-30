@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import Analyzer from './Analyzer'
 
-export default () => {
-  return <ErrorBoundary>
-    <Analyzer />
-  </ErrorBoundary>
+export default function AnalyzerTab() {
+  return (
+    <ErrorBoundary>
+      <Analyzer />
+    </ErrorBoundary>
+  )
 }

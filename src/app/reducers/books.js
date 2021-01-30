@@ -1,10 +1,19 @@
-import { FILE_LOADED, NEW_FILE, RESET, EDIT_BOOK, ADD_BOOK, DELETE_BOOK, REORDER_BOOKS,
-  ADD_LINES_FROM_TEMPLATE, CLEAR_TEMPLATE_FROM_TIMELINE } from '../constants/ActionTypes'
+import {
+  FILE_LOADED,
+  NEW_FILE,
+  RESET,
+  EDIT_BOOK,
+  ADD_BOOK,
+  DELETE_BOOK,
+  REORDER_BOOKS,
+  ADD_LINES_FROM_TEMPLATE,
+  CLEAR_TEMPLATE_FROM_TIMELINE,
+} from '../constants/ActionTypes'
 import { book as defaultBook } from '../../../shared/initialState'
 import { newFileBooks } from '../../../shared/newFileState'
 import { objectId } from '../store/newIds'
 
-export default function books (state = defaultBook, action) {
+export default function books(state = defaultBook, action) {
   switch (action.type) {
     case EDIT_BOOK:
       return {
@@ -12,21 +21,18 @@ export default function books (state = defaultBook, action) {
         [action.id]: {
           ...state[action.id],
           ...action.attributes,
-        }
+        },
       }
 
     case ADD_BOOK:
       const newId = objectId(state.allIds)
       return {
         ...state,
-        allIds: [
-          ...state.allIds,
-          newId,
-        ],
+        allIds: [...state.allIds, newId],
         [newId]: {
           ...action.book,
           id: newId,
-        }
+        },
       }
 
     case REORDER_BOOKS:
@@ -38,12 +44,15 @@ export default function books (state = defaultBook, action) {
     case DELETE_BOOK:
       const newIds = [...state.allIds]
       newIds.splice(newIds.indexOf(action.id), 1)
-      return state.allIds.reduce((acc, id) => {
-        if (id != action.id) {
-          acc[id] = state[id]
-        }
-        return acc
-      }, {allIds: newIds})
+      return state.allIds.reduce(
+        (acc, id) => {
+          if (id != action.id) {
+            acc[id] = state[id]
+          }
+          return acc
+        },
+        { allIds: newIds }
+      )
 
     case ADD_LINES_FROM_TEMPLATE:
       return {
@@ -52,9 +61,9 @@ export default function books (state = defaultBook, action) {
           ...state[action.bookId],
           timelineTemplates: [
             ...state[action.bookId].timelineTemplates,
-            {id: action.template.id, name: action.template.name},
+            { id: action.template.id, name: action.template.name },
           ],
-        }
+        },
       }
 
     case CLEAR_TEMPLATE_FROM_TIMELINE:
@@ -62,8 +71,10 @@ export default function books (state = defaultBook, action) {
         ...state,
         [action.bookId]: {
           ...state[action.bookId],
-          timelineTemplates: state[action.bookId].timelineTemplates.filter(tt => tt.id != action.templateId),
-        }
+          timelineTemplates: state[action.bookId].timelineTemplates.filter(
+            (tt) => tt.id != action.templateId
+          ),
+        },
       }
 
     case RESET:

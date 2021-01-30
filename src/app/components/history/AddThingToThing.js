@@ -5,11 +5,11 @@ import _ from 'lodash'
 import i18n from 'format-message'
 
 class AddThingToThing extends Component {
-  findThing (id, things) {
-    return _.find(things, {id: id})
+  findThing(id, things) {
+    return _.find(things, { id: id })
   }
 
-  render () {
+  render() {
     const item = this.props.item
     let thingType = 'character'
     if (item.action.type.indexOf('PLACE') !== -1) thingType = 'place'
@@ -21,10 +21,8 @@ class AddThingToThing extends Component {
     let afterHowMany = afterThing[`${thingType}s`].length
     let thing = this.findThing(item.action[`${thingType}Id`], item.before[`${thingType}s`])
     let attach = 'attach'
-    let to = 'to'
     if (item.action.type.indexOf('ATTACH') === -1) {
       attach = 'remove'
-      to = 'from'
     }
 
     // type = character | place | tag
@@ -39,26 +37,44 @@ class AddThingToThing extends Component {
         // card
         switch (thingType) {
           case 'character':
-            description = i18n('attach character {characterName} to card {cardName}', {characterName: thing.name, cardName: toThing.title})
+            description = i18n('attach character {characterName} to card {cardName}', {
+              characterName: thing.name,
+              cardName: toThing.title,
+            })
             break
           case 'place':
-            description = i18n('attach place {placeName} to card {cardName}', {placeName: thing.name, cardName: toThing.title})
+            description = i18n('attach place {placeName} to card {cardName}', {
+              placeName: thing.name,
+              cardName: toThing.title,
+            })
             break
           case 'tag':
-            description = i18n('attach tag {tagName} to card {cardName}', {tagName: thing.title, cardName: toThing.title})
+            description = i18n('attach tag {tagName} to card {cardName}', {
+              tagName: thing.title,
+              cardName: toThing.title,
+            })
             break
         }
       } else {
         // note
         switch (thingType) {
           case 'character':
-            description = i18n('attach character {characterName} to note {noteName}', {characterName: thing.name, noteName: toThing.title})
+            description = i18n('attach character {characterName} to note {noteName}', {
+              characterName: thing.name,
+              noteName: toThing.title,
+            })
             break
           case 'place':
-            description = i18n('attach place {placeName} to note {noteName}', {placeName: thing.name, noteName: toThing.title})
+            description = i18n('attach place {placeName} to note {noteName}', {
+              placeName: thing.name,
+              noteName: toThing.title,
+            })
             break
           case 'tag':
-            description = i18n('attach tag {tagName} to note {noteName}', {tagName: thing.title, noteName: toThing.title})
+            description = i18n('attach tag {tagName} to note {noteName}', {
+              tagName: thing.title,
+              noteName: toThing.title,
+            })
             break
         }
       }
@@ -68,26 +84,44 @@ class AddThingToThing extends Component {
         // card
         switch (thingType) {
           case 'character':
-            description = i18n('remove character {characterName} from card {cardName}', {characterName: thing.name, cardName: toThing.title})
+            description = i18n('remove character {characterName} from card {cardName}', {
+              characterName: thing.name,
+              cardName: toThing.title,
+            })
             break
           case 'place':
-            description = i18n('remove place {placeName} from card {cardName}', {placeName: thing.name, cardName: toThing.title})
+            description = i18n('remove place {placeName} from card {cardName}', {
+              placeName: thing.name,
+              cardName: toThing.title,
+            })
             break
           case 'tag':
-            description = i18n('remove tag {tagName} from card {cardName}', {tagName: thing.title, cardName: toThing.title})
+            description = i18n('remove tag {tagName} from card {cardName}', {
+              tagName: thing.title,
+              cardName: toThing.title,
+            })
             break
         }
       } else {
         // note
         switch (thingType) {
           case 'character':
-            description = i18n('remove character {characterName} from note {noteName}', {characterName: thing.name, noteName: toThing.title})
+            description = i18n('remove character {characterName} from note {noteName}', {
+              characterName: thing.name,
+              noteName: toThing.title,
+            })
             break
           case 'place':
-            description = i18n('remove place {placeName} from note {noteName}', {placeName: thing.name, noteName: toThing.title})
+            description = i18n('remove place {placeName} from note {noteName}', {
+              placeName: thing.name,
+              noteName: toThing.title,
+            })
             break
           case 'tag':
-            description = i18n('remove tag {tagName} from note {noteName}', {tagName: thing.title, noteName: toThing.title})
+            description = i18n('remove tag {tagName} from note {noteName}', {
+              tagName: thing.title,
+              noteName: toThing.title,
+            })
             break
         }
       }
@@ -97,68 +131,86 @@ class AddThingToThing extends Component {
     let afterCountStr = ''
     switch (thingType) {
       case 'character':
-        beforeCountStr = i18n(`{
+        beforeCountStr = i18n(
+          `{
           count, plural,
           one {1 character attached}
           other {# characters attached}
-        }`, { count: howMany })
-        afterCountStr = i18n(`{
+        }`,
+          { count: howMany }
+        )
+        afterCountStr = i18n(
+          `{
           count, plural,
           one {1 character attached}
           other {# characters attached}
-        }`, { count: afterHowMany })
+        }`,
+          { count: afterHowMany }
+        )
         break
       case 'place':
-        beforeCountStr = i18n(`{
+        beforeCountStr = i18n(
+          `{
           count, plural,
           one {1 place attached}
           other {# places attached}
-        }`, { count: howMany })
-        afterCountStr = i18n(`{
+        }`,
+          { count: howMany }
+        )
+        afterCountStr = i18n(
+          `{
           count, plural,
           one {1 place attached}
           other {# places attached}
-        }`, { count: afterHowMany })
+        }`,
+          { count: afterHowMany }
+        )
         break
       case 'tag':
-        beforeCountStr = i18n(`{
+        beforeCountStr = i18n(
+          `{
           count, plural,
           one {1 tag attached}
           other {# tags attached}
-        }`, { count: howMany })
-        afterCountStr = i18n(`{
+        }`,
+          { count: howMany }
+        )
+        afterCountStr = i18n(
+          `{
           count, plural,
           one {1 tag attached}
           other {# tags attached}
-        }`, { count: afterHowMany })
+        }`,
+          { count: afterHowMany }
+        )
         break
     }
 
     return (
       <div>
         <span>{description}</span>
-        <p>{i18n('Before')}: <span className='history-component__item__before'>{beforeCountStr}</span></p>
-        <p>{i18n('After')}: <span className='history-component__item__after'>{afterCountStr}</span></p>
+        <p>
+          {i18n('Before')}:{' '}
+          <span className="history-component__item__before">{beforeCountStr}</span>
+        </p>
+        <p>
+          {i18n('After')}: <span className="history-component__item__after">{afterCountStr}</span>
+        </p>
       </div>
     )
   }
 }
 
 AddThingToThing.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddThingToThing)
+export default connect(mapStateToProps, mapDispatchToProps)(AddThingToThing)

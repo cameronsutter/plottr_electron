@@ -8,23 +8,37 @@ import i18n from 'format-message'
 
 const space = 100
 
-const styleH1 = new rtf.Format({ bold : true, paragraph: true, spaceBefore : space, spaceAfter : space, fontSize: 18, alignCenter: true })
-const styleH2 = new rtf.Format({ bold : true, paragraph: true, spaceBefore : space, spaceAfter : space, fontSize: 16, alignCenter: true })
-const styleBold = new rtf.Format({ bold : true })
-const styleItalic = new rtf.Format({ italic : true })
-const styleUnderline = new rtf.Format({ underline : true })
-const styleStrike = new rtf.Format({ strike : true })
-const styleParagraph = new rtf.Format({ paragraph : true, spaceBefore : space, spaceAfter : space })
+const styleH1 = new rtf.Format({
+  bold: true,
+  paragraph: true,
+  spaceBefore: space,
+  spaceAfter: space,
+  fontSize: 18,
+  alignCenter: true,
+})
+const styleH2 = new rtf.Format({
+  bold: true,
+  paragraph: true,
+  spaceBefore: space,
+  spaceAfter: space,
+  fontSize: 16,
+  alignCenter: true,
+})
+const styleBold = new rtf.Format({ bold: true })
+const styleItalic = new rtf.Format({ italic: true })
+const styleUnderline = new rtf.Format({ underline: true })
+const styleStrike = new rtf.Format({ strike: true })
+const styleParagraph = new rtf.Format({ paragraph: true, spaceBefore: space, spaceAfter: space })
 
 // useful functions
 // doc.addTab
 // doc.addLine
 
-export default function serialize (nodes, doc) {
+export default function serialize(nodes, doc) {
   if (!nodes) return doc
   if (typeof nodes === 'string') return doc.writeText(nodes)
 
-  return nodes.flatMap(n => {
+  return nodes.flatMap((n) => {
     if (!n.children) return leaf(n, doc)
 
     switch (n.type) {
@@ -35,21 +49,17 @@ export default function serialize (nodes, doc) {
       case 'heading-one':
       case 'heading-two':
         const headingStyle = n.type === 'heading-one' ? styleH1 : styleH2
-        return n.children.map(child => {
+        return n.children.map((child) => {
           if (child.text != null) {
-            return doc.addElement([
-              leafInElement(child)
-            ], headingStyle)
+            return doc.addElement([leafInElement(child)], headingStyle)
           } else {
-            return child.children.map(text => {
-              return doc.addElement([
-                leafInElement(text)
-              ], headingStyle)
+            return child.children.map((text) => {
+              return doc.addElement([leafInElement(text)], headingStyle)
             })
           }
         })
       case 'list-item':
-        // shouldn't get here because we handle the numbered-list and bulleted-list above
+      // shouldn't get here because we handle the numbered-list and bulleted-list above
       case 'link':
         return doc.writeText(n.url)
       case 'image-link':
@@ -60,9 +70,7 @@ export default function serialize (nodes, doc) {
         return doc.writeText(n.children[0].text, styleParagraph)
       case 'paragraph':
       default:
-        return doc.addElement([
-          n.children.map(leafInElement)
-        ], styleParagraph)
+        return doc.addElement([n.children.map(leafInElement)], styleParagraph)
     }
   })
 }
@@ -113,6 +121,6 @@ const makeList = (node, doc) => {
 // and the bullet point. The rest of the items do not have this and I
 // can't figure out why it is there. (Matt)
 const makeListItem = (node) => {
-  const text = node.children.flatMap(ch => ch.text).join(' ')
+  const text = node.children.flatMap((ch) => ch.text).join(' ')
   return `{\\pard\\fi-300\\li100\\bullet\\tab ${text} \\par}`
 }

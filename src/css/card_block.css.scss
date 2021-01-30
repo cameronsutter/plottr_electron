@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 .card__cell {
   .card__body-wrapper {
@@ -156,7 +156,8 @@
 .sticky-table.darkmode {
   .card__cell {
     background-color: $darkmode-card-background;
-    .card__body, .blank-card__body {
+    .card__body,
+    .blank-card__body {
       background-color: $darkmode-card-background;
       color: $darkmode-text;
     }

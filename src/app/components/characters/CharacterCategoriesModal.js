@@ -1,18 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
-import cx from 'classnames'
 import * as CategoryActions from 'actions/categories'
 import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
 
-
 function CharacterCategoriesModal({
   categories,
-  ui: {
-    darkMode,
-  },
+  ui: { darkMode },
   closeDialog,
   addCharacterCategory,
   deleteCharacterCategory,
@@ -45,20 +41,27 @@ function CharacterCategoriesModal({
   )
 }
 
-function mapStateToProps (state) {
+CharacterCategoriesModal.propTypes = {
+  categories: PropTypes.array,
+  ui: PropTypes.object,
+  closeDialog: PropTypes.func,
+  addCharacterCategory: PropTypes.func,
+  deleteCharacterCategory: PropTypes.func,
+  updateCharacterCategory: PropTypes.func,
+  reorderCharacterCategory: PropTypes.func,
+}
+
+function mapStateToProps(state) {
   return {
     categories: state.present.categories.characters,
     ui: state.present.ui,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     ...bindActionCreators(CategoryActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CharacterCategoriesModal)
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterCategoriesModal)

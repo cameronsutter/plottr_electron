@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 .place-list {
   margin: 10px;
@@ -15,7 +15,8 @@
     .row {
       height: 100%;
     }
-    .col-sm-3, .col-sm-9 {
+    .col-sm-3,
+    .col-sm-9 {
       height: 100%;
       position: relative;
     }

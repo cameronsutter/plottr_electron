@@ -4,7 +4,7 @@ ipcMain.on('open-buy-window', (event) => {
   openBuyWindow()
 })
 
-function openBuyWindow () {
+function openBuyWindow() {
   shell.openExternal('https://plottr.com/pricing/')
 }
 

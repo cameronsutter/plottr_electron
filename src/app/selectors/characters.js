@@ -1,26 +1,21 @@
 import { createSelector } from 'reselect'
 import { sortBy, groupBy } from 'lodash'
-import {
-  characterSortSelector,
-  characterFilterSelector,
-  currentTimelineSelector
-} from './ui'
+import { characterSortSelector, characterFilterSelector, currentTimelineSelector } from './ui'
 
-export const allCharactersSelector = state => state.characters
+export const allCharactersSelector = (state) => state.characters
 // this one also lives in ./customAttributes.js but it causes a circular dependency to import it here
-const characterCustomAttributesSelector = state => state.customAttributes.characters
+const characterCustomAttributesSelector = (state) => state.customAttributes.characters
 
 const selectId = (state, id) => id
 
 export const singleCharacterSelector = createSelector(
   allCharactersSelector,
   selectId,
-  (characters, propId) => characters.find(ch => ch.id == propId)
+  (characters, propId) => characters.find((ch) => ch.id == propId)
 )
 
-export const charactersByCategorySelector = createSelector(
-  allCharactersSelector,
-  (characters) => groupBy(characters, 'categoryId')
+export const charactersByCategorySelector = createSelector(allCharactersSelector, (characters) =>
+  groupBy(characters, 'categoryId')
 )
 
 export const characterFilterIsEmptySelector = createSelector(
@@ -28,8 +23,8 @@ export const characterFilterIsEmptySelector = createSelector(
   characterCustomAttributesSelector,
   (filter, attributes) => {
     if (!filter) return true
-    const allAttributes = [{name:'tag'}, {name:'book'}, {name:'category'}, ...attributes]
-    return !allAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
+    const allAttributes = [{ name: 'tag' }, { name: 'book' }, { name: 'category' }, ...attributes]
+    return !allAttributes.some((attr) => filter[attr.name] && filter[attr.name].length)
   }
 )
 
@@ -45,9 +40,9 @@ export const visibleSortedCharactersByCategorySelector = createSelector(
     let visible = charactersByCategory
     if (!filterIsEmpty) {
       visible = {}
-      allCharacters.forEach(ch => {
-        const matches = Object.keys(filter).some(attr => {
-          return filter[attr].some(val => {
+      allCharacters.forEach((ch) => {
+        const matches = Object.keys(filter).some((attr) => {
+          return filter[attr].some((val) => {
             if (attr == 'tag') {
               return ch.tags.includes(val)
             }
@@ -79,14 +74,13 @@ export const visibleSortedCharactersByCategorySelector = createSelector(
   }
 )
 
-
-function sortEachCategory (visibleByCategory, sort) {
+function sortEachCategory(visibleByCategory, sort) {
   let sortOperands = sort.split('~')
   let attrName = sortOperands[0]
   let direction = sortOperands[1]
   let sortByOperand = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
 
-  Object.keys(visibleByCategory).forEach(k => {
+  Object.keys(visibleByCategory).forEach((k) => {
     let characters = visibleByCategory[k]
 
     let sorted = sortBy(characters, sortByOperand)
@@ -96,17 +90,17 @@ function sortEachCategory (visibleByCategory, sort) {
   return visibleByCategory
 }
 
-export const charactersSortedAtoZSelector = createSelector(
-  allCharactersSelector,
-  (characters) => sortBy(characters, 'name')
+export const charactersSortedAtoZSelector = createSelector(allCharactersSelector, (characters) =>
+  sortBy(characters, 'name')
 )
 
 export const charactersSortedInBookSelector = createSelector(
   charactersSortedAtoZSelector,
   currentTimelineSelector,
-  (characters, bookId) => characters.filter(character => {
-    if (character.bookIds.length === 0) return true
-    if (character.bookIds.includes('series')) return true
-    return character.bookIds.includes(bookId)
-  })
+  (characters, bookId) =>
+    characters.filter((character) => {
+      if (character.bookIds.length === 0) return true
+      if (character.bookIds.includes('series')) return true
+      return character.bookIds.includes(bookId)
+    })
 )

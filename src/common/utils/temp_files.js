@@ -6,9 +6,9 @@ import log from 'electron-log'
 import { shell } from 'electron'
 import { saveFile } from './files'
 
-export function removeFromTempFiles (filePath, doDelete = true) {
+export function removeFromTempFiles(filePath, doDelete = true) {
   const tmpFiles = tempFilesStore.get()
-  const key = Object.keys(tmpFiles).find(id => tmpFiles[id].filePath == filePath)
+  const key = Object.keys(tmpFiles).find((id) => tmpFiles[id].filePath == filePath)
   tempFilesStore.delete(key)
   // delete the real file
   try {
@@ -18,11 +18,11 @@ export function removeFromTempFiles (filePath, doDelete = true) {
   }
 }
 
-export function saveToTempFile (json) {
+export function saveToTempFile(json) {
   const tempId = tempFilesStore.size + 1
   const tempName = `${t('Untitled')}${tempId == 1 ? '' : tempId}.pltr`
   const filePath = path.join(TEMP_FILES_PATH, tempName)
-  tempFilesStore.set(`${tempId}`, {filePath})
+  tempFilesStore.set(`${tempId}`, { filePath })
   saveFile(filePath, json)
   return filePath
 }

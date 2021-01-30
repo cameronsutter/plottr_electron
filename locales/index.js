@@ -28,12 +28,12 @@ function setupI18n(settings) {
     formats: {
       date: {
         monthDay: { month: 'short', day: 'numeric' },
-      }
+      },
     },
   })
 }
 
-function getCurrentLocale (settings) {
+function getCurrentLocale(settings) {
   const userSetLocale = settings ? settings.get('locale') : null
   const appFRD = app || (remote && remote.app)
 

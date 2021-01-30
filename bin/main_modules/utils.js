@@ -8,18 +8,23 @@ const { hasWindows } = require('./windows')
 const SETTINGS = require('./settings')
 const { is } = require('electron-util')
 
-function gracefullyNotSave () {
+function gracefullyNotSave() {
   dialog.showErrorBox(i18n('Saving failed'), i18n("Saving your file didn't work. Try again."))
 }
 
-function gracefullyQuit () {
+function gracefullyQuit() {
   if (!app.isReady() || !hasWindows()) {
-    dialog.showMessageBoxSync({type: 'info', buttons: [i18n('ok')], message: i18n('Plottr ran into a problem. Try opening Plottr again.'), detail: i18n('If you keep seeing this problem, email us at support@plottr.com')})
+    dialog.showMessageBoxSync({
+      type: 'info',
+      buttons: [i18n('ok')],
+      message: i18n('Plottr ran into a problem. Try opening Plottr again.'),
+      detail: i18n('If you keep seeing this problem, email us at support@plottr.com'),
+    })
     app.quit()
   }
 }
 
-function makeBrowserWindow (filePath) {
+function makeBrowserWindow(filePath) {
   // Load the previous state with fallback to defaults
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
@@ -48,7 +53,7 @@ function makeBrowserWindow (filePath) {
       spellcheck: true,
       enableRemoteModule: true,
       webviewTag: true,
-    }
+    },
   }
 
   if (filePath == 'dashboard') {
@@ -60,14 +65,13 @@ function makeBrowserWindow (filePath) {
     config.backgroundColor = '#f7f7f7'
   }
 
-
   // Create the browser window
   let newWindow = new BrowserWindow(config)
 
   // register listeners on the window
   stateKeeper.manage(newWindow)
 
-  newWindow.once('ready-to-show', function() {
+  newWindow.once('ready-to-show', function () {
     this.show() // depends on 'this' being the window
   })
 
@@ -81,10 +85,13 @@ function makeBrowserWindow (filePath) {
     newWindow.webContents.reload()
   })
 
-  newWindow.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-    event.preventDefault()
-    shell.openExternal(url)
-  })
+  newWindow.webContents.on(
+    'new-window',
+    (event, url, frameName, disposition, options, additionalFeatures) => {
+      event.preventDefault()
+      shell.openExternal(url)
+    }
+  )
 
   if (process.env.NODE_ENV === 'dev' || SETTINGS.get('forceDevTools')) {
     newWindow.openDevTools()

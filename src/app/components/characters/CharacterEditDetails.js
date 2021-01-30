@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { findDOMNode } from 'react-dom'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
@@ -38,6 +37,9 @@ class CharacterEditDetails extends Component {
       newImageId: null,
       deleting: false,
     }
+
+    this.nameInputRef = React.createRef()
+    this.descriptionInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -91,8 +93,8 @@ class CharacterEditDetails extends Component {
   }
 
   saveEdit = (close = true) => {
-    var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
-    var description = findDOMNode(this.refs.descriptionInput).value
+    var name = this.nameInputRef.current.value || this.props.character.name
+    var description = this.descriptionInputRef.current.value
     var notes = this.state.notes
     var attrs = {
       categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
@@ -101,7 +103,7 @@ class CharacterEditDetails extends Component {
       attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
     }
     this.props.customAttributes.forEach((attr) => {
-      const { name, type } = attr
+      const { name } = attr
       attrs[name] = this.state.description[name]
     })
     let templates = this.props.character.templates.map((t) => {
@@ -109,7 +111,7 @@ class CharacterEditDetails extends Component {
         if (attr.type == 'paragraph') {
           attr.value = this.state.templateAttrs[t.id][attr.name]
         } else {
-          attr.value = findDOMNode(this.refs[`${t.id}-${attr.name}Input`]).value
+          attr.value = this[`${t.id}-${attr.name}InputRef`].value
         }
         return attr
       })
@@ -210,7 +212,7 @@ class CharacterEditDetails extends Component {
               <ControlLabel>{attr.name}</ControlLabel>
               <FormControl
                 type="text"
-                ref={`${t.id}-${attr.name}Input`}
+                ref={(e) => (this[`${t.id}-${attr.name}InputRef`] = e)}
                 defaultValue={attr.value}
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}
@@ -234,7 +236,7 @@ class CharacterEditDetails extends Component {
                 <ControlLabel>{i18n('Name')}</ControlLabel>
                 <FormControl
                   type="text"
-                  ref="nameInput"
+                  ref={this.nameInputRef}
                   autoFocus
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
@@ -245,7 +247,7 @@ class CharacterEditDetails extends Component {
                 <ControlLabel>{i18n('Short Description')}</ControlLabel>
                 <FormControl
                   type="text"
-                  ref="descriptionInput"
+                  ref={this.descriptionInputRef}
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
                   defaultValue={character.description}

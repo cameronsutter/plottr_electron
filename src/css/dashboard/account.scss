@@ -1,5 +1,5 @@
-@import "../colors";
-@import "../vars";
+@import '../colors';
+@import '../vars';
 
 .dashboard__account {
   height: 100%;
@@ -10,7 +10,7 @@
     border-top: 1px solid $neutral-gray-7;
   }
 
-  div.text-right p.secondary-text{
+  div.text-right p.secondary-text {
     margin-top: 8px;
   }
 }
@@ -39,7 +39,8 @@
   .dashboard__user-info__wrapper {
     display: flex;
 
-    dd, dt {
+    dd,
+    dt {
       padding: 8px 0;
 
       &.lead {
@@ -62,7 +63,8 @@
   .dashboard__about__wrapper {
     display: flex;
 
-    dd, dt {
+    dd,
+    dt {
       padding: 8px 0;
       font-size: large;
     }

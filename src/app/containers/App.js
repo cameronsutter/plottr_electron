@@ -1,7 +1,6 @@
 import { ipcRenderer } from 'electron'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import i18n from 'format-message'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ErrorBoundary from './ErrorBoundary'
@@ -17,11 +16,11 @@ let isTryingToReload = false
 let isTryingToClose = false
 
 export default class App extends Component {
-  state = {showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true}
+  state = { showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true }
 
-  componentDidMount () {
+  componentDidMount() {
     ipcRenderer.on('save-as-template-start', (event, type) => {
-      this.setState({showTemplateCreate: true, type: type})
+      this.setState({ showTemplateCreate: true, type: type })
     })
     ipcRenderer.on('reload', () => {
       isTryingToReload = true
@@ -34,7 +33,7 @@ export default class App extends Component {
     window.addEventListener('beforeunload', this.askToSave)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     ipcRenderer.removeAllListeners('save-as-template-start')
     ipcRenderer.removeAllListeners('reload')
     ipcRenderer.removeAllListeners('wants-to-close')
@@ -49,27 +48,26 @@ export default class App extends Component {
 
     if (focusIsEditable()) {
       // TODO: make this work to save people from closing when they are still editing something
-
       // event.returnValue = 'nope'
       // alert(i18n('Save the work in the open text editor before closing'))
     }
     // no actions yet? doesn't need to save
     if (!hasPreviousAction()) {
-      this.setState({blockClosing: false})
+      this.setState({ blockClosing: false })
       return this.closeOrRefresh(isTryingToClose)
     }
 
     event.returnValue = 'nope'
-    this.setState({showAskToSave: true})
+    this.setState({ showAskToSave: true })
   }
 
   dontSaveAndClose = () => {
-    this.setState({showAskToSave: false, blockClosing: false})
+    this.setState({ showAskToSave: false, blockClosing: false })
     this.closeOrRefresh(true)
   }
 
   saveAndClose = () => {
-    this.setState({showAskToSave: false, blockClosing: false})
+    this.setState({ showAskToSave: false, blockClosing: false })
     const { present } = store.getState()
     saveFile(present.file.fileName, present)
     this.closeOrRefresh(true)
@@ -83,31 +81,48 @@ export default class App extends Component {
     }
   }
 
-  renderTemplateCreate () {
+  renderTemplateCreate() {
     if (!this.state.showTemplateCreate) return null
 
-    return <TemplateCreate type={this.state.type} close={() => this.setState({showTemplateCreate: false})}/>
+    return (
+      <TemplateCreate
+        type={this.state.type}
+        close={() => this.setState({ showTemplateCreate: false })}
+      />
+    )
   }
 
-  renderAskToSave () {
+  renderAskToSave() {
     if (!this.state.showAskToSave) return null
 
-    return <AskToSaveModal dontSave={this.dontSaveAndClose} save={this.saveAndClose} cancel={() => this.setState({showAskToSave: false})}/>
+    return (
+      <AskToSaveModal
+        dontSave={this.dontSaveAndClose}
+        save={this.saveAndClose}
+        cancel={() => this.setState({ showAskToSave: false })}
+      />
+    )
   }
 
-  renderGuidedTour () {
+  renderGuidedTour() {
     if (!this.props.showTour) return null
     return <GuidedTour />
   }
 
-  render () {
-    return <ErrorBoundary>
+  render() {
+    return (
       <ErrorBoundary>
-        <Navigation />
+        <ErrorBoundary>
+          <Navigation />
+        </ErrorBoundary>
+        <Body />
+        {this.renderTemplateCreate()}
+        {this.renderAskToSave()}
       </ErrorBoundary>
-      <Body />
-      { this.renderTemplateCreate() }
-      { this.renderAskToSave() }
-    </ErrorBoundary>
+    )
   }
+}
+
+App.propTypes = {
+  showTour: PropTypes.bool,
 }

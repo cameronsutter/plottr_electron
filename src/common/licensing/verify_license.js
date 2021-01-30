@@ -1,12 +1,20 @@
 import rp from 'request-promise-native'
 import log from 'electron-log'
-import { licenseURL, isActiveLicense, licenseIsForProduct, hasActivationsLeft, PRODUCT_IDS, productMapping } from './licensing'
+import {
+  licenseURL,
+  isActiveLicense,
+  licenseIsForProduct,
+  hasActivationsLeft,
+  PRODUCT_IDS,
+  productMapping,
+} from './licensing'
 
 // callback(isValid, data)
-export function verifyLicense (license, callback) {
+export function verifyLicense(license, callback) {
   // this is going to fire all 3 requests no matter what
-  Promise.allSettled(PRODUCT_IDS.map(id => rp(makeRequest(licenseURL('activate_license', id, license)))))
-  .then(results => {
+  Promise.allSettled(
+    PRODUCT_IDS.map((id) => rp(makeRequest(licenseURL('activate_license', id, license))))
+  ).then((results) => {
     // find the product that this key belongs to
     let productForKey = null
     results.some((res, index) => {
@@ -16,7 +24,7 @@ export function verifyLicense (license, callback) {
       }
       if (res.status == 'fulfilled') {
         const isProductForKey = licenseIsForProduct(res.value)
-        if (isProductForKey) productForKey = {productID, value: res.value}
+        if (isProductForKey) productForKey = { productID, value: res.value }
         return isProductForKey
       } else {
         log.info('license check request failed', productID)
@@ -39,16 +47,19 @@ export function verifyLicense (license, callback) {
         }
         callback(true, data)
       } else {
-        callback(false, {problem: productForKey.value.error, hasActivationsLeft: hasActivationsLeft(productForKey.value)})
+        callback(false, {
+          problem: productForKey.value.error,
+          hasActivationsLeft: hasActivationsLeft(productForKey.value),
+        })
       }
     } else {
       // doesn't belong to any product
-      callback(false, {problem: 'invalid_item_id'})
+      callback(false, { problem: 'invalid_item_id' })
     }
   })
 }
 
-function makeRequest (url) {
+function makeRequest(url) {
   return {
     url: url,
     method: 'GET',

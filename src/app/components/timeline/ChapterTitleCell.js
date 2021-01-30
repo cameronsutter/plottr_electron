@@ -1,27 +1,43 @@
 import React, { PureComponent } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Button, ButtonGroup, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import {
+  Glyphicon,
+  Button,
+  ButtonGroup,
+  FormControl,
+  FormGroup,
+  ControlLabel,
+} from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import * as SceneActions from 'actions/scenes'
 import * as BeatActions from 'actions/beats'
 import orientedClassName from 'helpers/orientedClassName'
 import { editingChapterLabel, chapterPositionTitle } from '../../helpers/chapters'
 import { isSeriesSelector } from '../../selectors/ui'
-import { makeChapterTitleSelector, makeChapterSelector, positionOffsetSelector } from '../../selectors/chapters'
+import {
+  makeChapterTitleSelector,
+  makeChapterSelector,
+  positionOffsetSelector,
+} from '../../selectors/chapters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { truncateTitle } from 'helpers/cards'
 
 class ChapterTitleCell extends PureComponent {
-  constructor (props) {
+  constructor(props) {
     super(props)
     let editing = props.chapter.title == ''
-    this.state = {hovering: false, editing: editing, dragging: false, dropping: false, deleting: false}
+    this.state = {
+      hovering: false,
+      editing: editing,
+      dragging: false,
+      dropping: false,
+      deleting: false,
+    }
   }
 
-  deleteChapter = e => {
+  deleteChapter = (e) => {
     e.stopPropagation()
     if (this.props.isSeries) {
       this.props.beatActions.deleteBeat(this.props.chapter.id)
@@ -30,29 +46,29 @@ class ChapterTitleCell extends PureComponent {
     }
   }
 
-  cancelDelete = e => {
+  cancelDelete = (e) => {
     e.stopPropagation()
-    this.setState({deleting: false})
+    this.setState({ deleting: false })
   }
 
-  handleDelete = e => {
+  handleDelete = (e) => {
     e.stopPropagation()
-    this.setState({deleting: true, hovering: false})
+    this.setState({ deleting: true, hovering: false })
   }
 
   editTitle = () => {
     const id = this.props.chapter.id
-    const ref = findDOMNode(this.refs.titleRef)
+    const ref = this.titleRef
     if (!ref) return null
 
     if (this.props.isSeries) {
       if (ref.value == '') return null // don't allow nothing
       this.props.beatActions.editBeatTitle(id, ref.value)
-      this.setState({editing: false, hovering: false})
+      this.setState({ editing: false, hovering: false })
     } else {
       // if nothing, set to auto
       this.props.actions.editSceneTitle(id, ref.value || 'auto')
-      this.setState({editing: false, hovering: false})
+      this.setState({ editing: false, hovering: false })
     }
   }
 
@@ -67,37 +83,37 @@ class ChapterTitleCell extends PureComponent {
   }
 
   handleEsc = (event) => {
-    if (event.which === 27) this.setState({editing: false})
+    if (event.which === 27) this.setState({ editing: false })
   }
 
   handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify(this.props.chapter))
-    this.setState({dragging: true})
+    this.setState({ dragging: true })
   }
 
   handleDragEnd = () => {
-    this.setState({dragging: false})
+    this.setState({ dragging: false })
   }
 
   handleDragEnter = (e) => {
-    if (!this.state.dragging) this.setState({dropping: true})
+    if (!this.state.dragging) this.setState({ dropping: true })
   }
 
   handleDragOver = (e) => {
-    if (!this.state.dragging) this.setState({dropping: true})
+    if (!this.state.dragging) this.setState({ dropping: true })
     e.preventDefault()
     return false
   }
 
   handleDragLeave = (e) => {
-    if (!this.state.dragging) this.setState({dropping: false})
+    if (!this.state.dragging) this.setState({ dropping: false })
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
     if (this.state.dragging) return
-    this.setState({dropping: false})
+    this.setState({ dropping: false })
 
     var json = e.dataTransfer.getData('text/json')
     var droppedChapter = JSON.parse(json)
@@ -108,87 +124,123 @@ class ChapterTitleCell extends PureComponent {
   }
 
   startEditing = () => {
-    this.setState({editing: true})
+    this.setState({ editing: true })
   }
 
   startHovering = () => {
-    this.setState({hovering: true})
+    this.setState({ hovering: true })
   }
 
   stopHovering = () => {
-    this.setState({hovering: false})
+    this.setState({ hovering: false })
   }
 
-  renderDelete () {
+  renderDelete() {
     if (!this.state.deleting) return null
 
-    return <DeleteConfirmModal name={this.props.chapterTitle} onDelete={this.deleteChapter} onCancel={this.cancelDelete}/>
+    return (
+      <DeleteConfirmModal
+        name={this.props.chapterTitle}
+        onDelete={this.deleteChapter}
+        onCancel={this.cancelDelete}
+      />
+    )
   }
 
-  renderHoverOptions () {
-    var style = {visibility: 'hidden'}
+  renderHoverOptions() {
+    var style = { visibility: 'hidden' }
     if (this.state.hovering) style.visibility = 'visible'
     if (this.props.ui.orientation === 'vertical') {
       return (
-        <div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)} style={style}>
-          <Button block onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-          <Button block onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
+        <div
+          className={orientedClassName(
+            'scene-list__item__hover-options',
+            this.props.ui.orientation
+          )}
+          style={style}
+        >
+          <Button block onClick={this.startEditing}>
+            <Glyphicon glyph="edit" />
+          </Button>
+          <Button block onClick={this.handleDelete}>
+            <Glyphicon glyph="trash" />
+          </Button>
         </div>
       )
     } else {
-      return (<div className={orientedClassName('scene-list__item__hover-options', this.props.ui.orientation)} style={style}>
-        <ButtonGroup>
-          <Button onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-          <Button onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
-        </ButtonGroup>
-      </div>)
+      return (
+        <div
+          className={orientedClassName(
+            'scene-list__item__hover-options',
+            this.props.ui.orientation
+          )}
+          style={style}
+        >
+          <ButtonGroup>
+            <Button onClick={this.startEditing}>
+              <Glyphicon glyph="edit" />
+            </Button>
+            <Button onClick={this.handleDelete}>
+              <Glyphicon glyph="trash" />
+            </Button>
+          </ButtonGroup>
+        </div>
+      )
     }
   }
 
-  renderTitle () {
+  renderTitle() {
     const { chapter, chapterTitle, positionOffset, isSeries } = this.props
     if (!this.state.editing) return <span>{truncateTitle(chapterTitle, 50)}</span>
 
-    return (<FormGroup>
-      <ControlLabel>{editingChapterLabel(chapter, positionOffset, isSeries)}</ControlLabel>
-      <FormControl
-        type='text'
-        defaultValue={chapter.title}
-        ref='titleRef'
-        autoFocus
-        onKeyDown={this.handleEsc}
-        onBlur={this.handleBlur}
-        onKeyPress={this.handleFinishEditing} />
-    </FormGroup>)
+    return (
+      <FormGroup>
+        <ControlLabel>{editingChapterLabel(chapter, positionOffset, isSeries)}</ControlLabel>
+        <FormControl
+          type="text"
+          defaultValue={chapter.title}
+          ref={(e) => (this.titleRef = e)}
+          autoFocus
+          onKeyDown={this.handleEsc}
+          onBlur={this.handleBlur}
+          onKeyPress={this.handleFinishEditing}
+        />
+      </FormGroup>
+    )
   }
 
-  render () {
+  render() {
     window.SCROLLWITHKEYS = !this.state.editing
     const { chapter, ui, positionOffset, isSeries } = this.props
     let innerKlass = orientedClassName('scene__body', ui.orientation)
     if (this.state.hovering) innerKlass += ' hover'
     if (this.state.dropping) innerKlass += ' dropping'
-    return <Cell>
-      <div
-        className={orientedClassName('scene__cell', ui.orientation)}
-        title={chapterPositionTitle(chapter, positionOffset, isSeries)}
-        onMouseEnter={this.startHovering}
-        onMouseLeave={this.stopHovering}
-        onDrop={this.handleDrop}>
-        { this.renderHoverOptions() }
-        { this.renderDelete() }
-        <div className={innerKlass}
-          onClick={this.startEditing}
-          draggable={true}
-          onDragStart={this.handleDragStart}
-          onDragEnd={this.handleDragEnd}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}>
-          { this.renderTitle() }
+    return (
+      <Cell>
+        <div
+          className={orientedClassName('scene__cell', ui.orientation)}
+          title={chapterPositionTitle(chapter, positionOffset, isSeries)}
+          onMouseEnter={this.startHovering}
+          onMouseLeave={this.stopHovering}
+          onDrop={this.handleDrop}
+        >
+          {this.renderHoverOptions()}
+          {this.renderDelete()}
+          <div
+            className={innerKlass}
+            onClick={this.startEditing}
+            draggable={true}
+            onDragStart={this.handleDragStart}
+            onDragEnd={this.handleDragEnd}
+            onDragEnter={this.handleDragEnter}
+            onDragOver={this.handleDragOver}
+            onDragLeave={this.handleDragLeave}
+          >
+            {this.renderTitle()}
+          </div>
         </div>
-      </div>
-    </Cell>
+      </Cell>
+    )
   }
 }
 
@@ -209,7 +261,7 @@ const makeMapState = (state) => {
   const uniqueChapterSelector = makeChapterSelector()
   const uniqueChapterTitleSelector = makeChapterTitleSelector()
 
-  return function mapStateToProps (state, ownProps) {
+  return function mapStateToProps(state, ownProps) {
     return {
       chapters: state.present.chapters,
       chapter: uniqueChapterSelector(state.present, ownProps.chapterId),
@@ -221,14 +273,11 @@ const makeMapState = (state) => {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(SceneActions, dispatch),
     beatActions: bindActionCreators(BeatActions, dispatch),
   }
 }
 
-export default connect(
-  makeMapState,
-  mapDispatchToProps
-)(ChapterTitleCell)
+export default connect(makeMapState, mapDispatchToProps)(ChapterTitleCell)

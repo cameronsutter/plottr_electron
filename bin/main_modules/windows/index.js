@@ -1,17 +1,16 @@
 const { BrowserWindow } = require('electron')
-const { openBuyWindow } = require('./buy') // needed because it sets up an event handler
 
 let windows = []
 
-function hasWindows () {
+function hasWindows() {
   return !!windows.length
 }
 
-function allWindows () {
+function allWindows() {
   return windows
 }
 
-function addNewWindow (browserWindow, filePath) {
+function addNewWindow(browserWindow, filePath) {
   windows.push({
     id: browserWindow.id,
     browserWindow: browserWindow,
@@ -19,22 +18,22 @@ function addNewWindow (browserWindow, filePath) {
   })
 }
 
-function getWindowById (id) {
-  return windows.find(window => window.id == id)
+function getWindowById(id) {
+  return windows.find((window) => window.id == id)
 }
 
-function focusFirstWindow () {
+function focusFirstWindow() {
   if (!windows.length) return
 
   windows[0].browserWindow.focus()
 }
 
-function numberOfWindows () {
+function numberOfWindows() {
   return windows.length
 }
 
-function focusIfOpen (filePath) {
-  const win = windows.find(w => w.filePath == filePath)
+function focusIfOpen(filePath) {
+  const win = windows.find((w) => w.filePath == filePath)
   if (win) {
     win.browserWindow.focus()
     return true
@@ -43,21 +42,21 @@ function focusIfOpen (filePath) {
   }
 }
 
-function reloadWindow () {
+function reloadWindow() {
   let win = BrowserWindow.getFocusedWindow()
   win.webContents.send('reload')
 }
 
-function reloadAllWindows () {
-  windows.forEach(w => w.browserWindow.webContents.send('reload'))
+function reloadAllWindows() {
+  windows.forEach((w) => w.browserWindow.webContents.send('reload'))
 }
 
-function dereferenceWindow (winObj) {
-  const index = windows.findIndex(win => win.id === winObj.id)
+function dereferenceWindow(winObj) {
+  const index = windows.findIndex((win) => win.id === winObj.id)
   windows.splice(index, 1)
 }
 
-function closeWindow (id) {
+function closeWindow(id) {
   let win = getWindowById(id)
   if (win) win.browserWindow.send('close')
 }

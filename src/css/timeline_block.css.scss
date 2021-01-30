@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 #timelineview__root {
   width: 100vw;
@@ -40,7 +40,7 @@
   .sticky-table.vertical {
     .sticky-table-row:first-child {
       .sticky-table-cell:after {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         bottom: 0;

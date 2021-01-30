@@ -1,11 +1,27 @@
 import deep from 'deep-diff'
 import { storageKey } from './helpers'
-import { FILE_LOADED, RESET, NEW_FILE, CHANGE_CURRENT_VIEW, CHANGE_ORIENTATION, ADD_IMAGE, DELETE_IMAGE } from 'constants/ActionTypes'
+import {
+  FILE_LOADED,
+  RESET,
+  NEW_FILE,
+  CHANGE_CURRENT_VIEW,
+  CHANGE_ORIENTATION,
+  ADD_IMAGE,
+  DELETE_IMAGE,
+} from 'constants/ActionTypes'
 
-const BLACKLIST = [FILE_LOADED, NEW_FILE, CHANGE_CURRENT_VIEW, RESET, CHANGE_ORIENTATION, ADD_IMAGE, DELETE_IMAGE]
+const BLACKLIST = [
+  FILE_LOADED,
+  NEW_FILE,
+  CHANGE_CURRENT_VIEW,
+  RESET,
+  CHANGE_ORIENTATION,
+  ADD_IMAGE,
+  DELETE_IMAGE,
+]
 const CLEARHISTORY = [FILE_LOADED, NEW_FILE]
 
-const history = store => next => action => {
+const history = (store) => (next) => (action) => {
   var before = store.getState()
   var key = storageKey(before.file.fileName)
   const result = next(action)
@@ -21,7 +37,13 @@ const history = store => next => action => {
       })
       if (diff.length > 0) {
         var historyList = JSON.parse(window.localStorage.getItem(key)) || []
-        historyList.push({id: nextId.id(), action: action, diff: diff, before: before, after: after})
+        historyList.push({
+          id: nextId.id(),
+          action: action,
+          diff: diff,
+          before: before,
+          after: after,
+        })
         window.localStorage.setItem(key, JSON.stringify(historyList.slice(-15)))
       }
     }
@@ -34,7 +56,7 @@ const history = store => next => action => {
   return result
 }
 
-function NextId () {
+function NextId() {
   var nextId = 0
   this.id = function () {
     return nextId++

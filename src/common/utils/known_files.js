@@ -5,8 +5,10 @@ import { TEMP_FILES_PATH } from './config_paths'
 import { knownFilesStore } from './store_hooks'
 import { removeFromTempFiles } from './temp_files'
 
-export function addToKnownFiles (filePath) {
-  const existingId = Object.keys(knownFilesStore.store).find(id => path.normalize(knownFilesStore.store[id].path) == path.normalize(filePath))
+export function addToKnownFiles(filePath) {
+  const existingId = Object.keys(knownFilesStore.store).find(
+    (id) => path.normalize(knownFilesStore.store[id].path) == path.normalize(filePath)
+  )
   if (existingId) {
     return existingId
   } else {
@@ -24,14 +26,16 @@ export function addToKnownFiles (filePath) {
     }
     knownFilesStore.set(`${newId}`, {
       path: filePath,
-      lastOpened: Date.now()
+      lastOpened: Date.now(),
     })
     return newId
   }
 }
 
-export function editKnownFilePath (oldPath, newPath) {
-  const key = Object.keys(knownFilesStore.store).find(id => path.normalize(knownFilesStore.store[id].path) == path.normalize(oldPath))
+export function editKnownFilePath(oldPath, newPath) {
+  const key = Object.keys(knownFilesStore.store).find(
+    (id) => path.normalize(knownFilesStore.store[id].path) == path.normalize(oldPath)
+  )
   const file = knownFilesStore.get(key)
   knownFilesStore.set(key, {
     ...file,
@@ -39,11 +43,11 @@ export function editKnownFilePath (oldPath, newPath) {
   })
 }
 
-export function removeFromKnownFiles (id) {
+export function removeFromKnownFiles(id) {
   knownFilesStore.delete(id)
 }
 
-export function deleteKnownFile (id, filePath) {
+export function deleteKnownFile(id, filePath) {
   if (!filePath) {
     filePath = knownFilesStore.get(`${id}.path`)
   }
@@ -59,7 +63,7 @@ export function deleteKnownFile (id, filePath) {
 }
 
 // TODO: days left in trial mode?
-export function displayFileName (filePath) {
+export function displayFileName(filePath) {
   const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
   const baseFileName = ` - ${path.basename(filePath)}`
   return `Plottr${baseFileName}${devMessage}`

@@ -4,24 +4,24 @@ import { file as defaultFile } from '../../../shared/initialState'
 const app = remote.app
 const VERSION = app.getVersion()
 
-export default function file (state = defaultFile, action) {
+export default function file(state = defaultFile, action) {
   switch (action.type) {
     case FILE_LOADED:
       return { fileName: action.fileName, loaded: true, dirty: action.dirty, version: VERSION }
 
     case FILE_SAVED:
-      return Object.assign({}, state, {dirty: false})
+      return Object.assign({}, state, { dirty: false })
 
     case NEW_FILE:
       return { fileName: action.fileName, loaded: true, dirty: false, version: VERSION }
 
     case EDIT_FILENAME:
-      return Object.assign({}, state, {fileName: action.newName})
+      return Object.assign({}, state, { fileName: action.newName })
 
     case RESET:
-      return Object.assign({}, action.data.file, {dirty: true})
+      return Object.assign({}, action.data.file, { dirty: true })
 
     default:
-      return Object.assign({}, state, {dirty: true})
+      return Object.assign({}, state, { dirty: true })
   }
 }

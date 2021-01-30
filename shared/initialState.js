@@ -115,7 +115,7 @@ const place = {
 const tag = {
   id: 1,
   title: '',
-  color: null
+  color: null,
 }
 
 const card = {
@@ -189,13 +189,12 @@ const image = {
   data: '',
 }
 
-// example template for reference
-// NOT exported
+/* example template for reference
+ NOT exported
 const templates = [
-  {id: 'ch1', version: '2020.3.4', attributes: [
-    {name: 'Motivation', type: 'text', value: ''},
-  ]}
+  { id: 'ch1', version: '2020.3.4', attributes: [{ name: 'Motivation', type: 'text', value: '' }] },
 ]
+*/
 
 module.exports = {
   image,

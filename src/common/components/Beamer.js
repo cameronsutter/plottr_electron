@@ -5,11 +5,10 @@ import { FaRegBell } from 'react-icons/fa'
 import USER from '../utils/user_info'
 import { is } from 'electron-util'
 
-function Beamer ({ inNavigation }) {
-
+function Beamer({ inNavigation }) {
   useEffect(() => {
     if (window.Beamer) {
-      const options = {callback: getBeamerAlerts, onclick: openBeamerLink}
+      const options = { callback: getBeamerAlerts, onclick: openBeamerLink }
       if (USER.get('payment_id')) {
         options.user_email = USER.get('customer_email')
         options.user_id = USER.get('payment_id')
@@ -28,19 +27,20 @@ function Beamer ({ inNavigation }) {
 
   if (!window.Beamer) return null
 
-  const bell = <a id='beamer-bell' href='#'>
-    <FaRegBell/>
-  </a>
+  const bell = (
+    <a id="beamer-bell" href="#">
+      <FaRegBell />
+    </a>
+  )
 
   if (inNavigation) {
-
-    return <ul className='nav navbar-nav navbar-right' style={{marginRight: '2px'}}>
-      <li>
-        { bell }
-      </li>
-    </ul>
+    return (
+      <ul className="nav navbar-nav navbar-right" style={{ marginRight: '2px' }}>
+        <li>{bell}</li>
+      </ul>
+    )
   } else {
-    return <div className={cx('beamer-wrapper', {win32: is.windows})}>{ bell }</div>
+    return <div className={cx('beamer-wrapper', { win32: is.windows })}>{bell}</div>
   }
 }
 

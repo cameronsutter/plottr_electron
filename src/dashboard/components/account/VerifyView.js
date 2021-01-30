@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { findDOMNode } from 'react-dom'
+import PropTypes from 'react-proptypes'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import t from 'format-message'
@@ -14,12 +14,14 @@ const TOOMANY = 'toomany'
 const RED = 'bg-danger'
 const GREEN = 'bg-success'
 
-export default function VerifyView ({goBack}) {
+export default function VerifyView({ goBack }) {
   const makeAlertText = (value) => {
     if (value === SUCCESS) {
       return t('License Verified. Plottr will start momentarily. Thanks for being patient!')
     } else if (value === OFFLINE) {
-      return t("It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline")
+      return t(
+        "It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline"
+      )
     } else if (value === INVALID) {
       return t("Hmmmm. It looks like that's not a valid license key")
     } else if (value === TOOMANY) {
@@ -29,7 +31,7 @@ export default function VerifyView ({goBack}) {
     }
   }
 
-  const [licenseInfo, licenseInfoSize, setKey, setLicenseInfo] = useLicenseInfo()
+  const [licenseInfo, setLicenseInfo] = useLicenseInfo()
   const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
   const [showAlert, setShowAlert] = useState(!!alertText)
   const [alertClass, setAlertClass] = useState(RED)
@@ -37,7 +39,7 @@ export default function VerifyView ({goBack}) {
   const licenseRef = useRef()
 
   const verify = (license) => {
-    if (license === "!TEST_LICENSE_@NEPHI") {
+    if (license === '!TEST_LICENSE_@NEPHI') {
       ipcRenderer.send('license-verified')
     }
     verifyLicense(license, (isValid, licenseData) => {
@@ -50,12 +52,18 @@ export default function VerifyView ({goBack}) {
         setAlertClass(GREEN)
         setAlertText(makeAlertText(SUCCESS))
         if (process.env.NODE_ENV !== 'development') {
-          setTimeout(() => { setLicenseInfo(licenseData) }, 500)
+          setTimeout(() => {
+            setLicenseInfo(licenseData)
+          }, 500)
         } else {
           console.log('not setting license because of dev mode')
         }
       } else {
-        if (licenseInfo && licenseInfo.problem == 'no_activations_left' && !licenseInfo.hasActivationsLeft) {
+        if (
+          licenseInfo &&
+          licenseInfo.problem == 'no_activations_left' &&
+          !licenseInfo.hasActivationsLeft
+        ) {
           // not valid because of number of activations
           setAlertText(makeAlertText(TOOMANY))
         } else {
@@ -69,7 +77,7 @@ export default function VerifyView ({goBack}) {
 
   const handleVerify = () => {
     if (navigator.onLine) {
-      let input = findDOMNode(licenseRef.current)
+      let input = licenseRef.current
       let license = input.value.trim()
       if (license != '') {
         setSpinnerHidden(false)
@@ -83,24 +91,45 @@ export default function VerifyView ({goBack}) {
 
   const renderAlert = () => {
     if (showAlert && alertText) {
-      return <p id='alert' className={alertClass}>{alertText}</p>
+      return (
+        <p id="alert" className={alertClass}>
+          {alertText}
+        </p>
+      )
     } else {
       return null
     }
   }
 
-  return <div className='verify__wrapper text-center'>
-    <h1>{t('Please verify your license')}</h1>
-    <p className='text-success'>{t('You should have received a license key after your purchase.')}</p>
-    <p className='text-info'>{t('(If not, please email support@plottr.com)')}</p>
-    <div className='text-center' style={{margin: '16px 0'}}>
-      <FormControl type='text' bsSize='large' style={{width: '450px', margin: '12px auto'}} ref={licenseRef} />
-      <Button bsStyle='primary' bsSize='large' onClick={handleVerify}>
-        {t('Verify')}
-        <span style={{marginLeft: '7px'}} className={cx({hidden: spinnerHidden})}><Glyphicon id='spinner' glyph='refresh'/></span>
-      </Button>
-      <Button bsStyle='link' onClick={goBack}>{t('Cancel')}</Button>
+  return (
+    <div className="verify__wrapper text-center">
+      <h1>{t('Please verify your license')}</h1>
+      <p className="text-success">
+        {t('You should have received a license key after your purchase.')}
+      </p>
+      <p className="text-info">{t('(If not, please email support@plottr.com)')}</p>
+      <div className="text-center" style={{ margin: '16px 0' }}>
+        <FormControl
+          type="text"
+          bsSize="large"
+          style={{ width: '450px', margin: '12px auto' }}
+          ref={licenseRef}
+        />
+        <Button bsStyle="primary" bsSize="large" onClick={handleVerify}>
+          {t('Verify')}
+          <span style={{ marginLeft: '7px' }} className={cx({ hidden: spinnerHidden })}>
+            <Glyphicon id="spinner" glyph="refresh" />
+          </span>
+        </Button>
+        <Button bsStyle="link" onClick={goBack}>
+          {t('Cancel')}
+        </Button>
+      </div>
+      {renderAlert()}
     </div>
-    { renderAlert() }
-  </div>
+  )
+}
+
+VerifyView.propTypes = {
+  goBack: PropTypes.func,
 }

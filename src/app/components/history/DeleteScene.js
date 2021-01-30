@@ -5,14 +5,17 @@ import _ from 'lodash'
 import i18n from 'format-message'
 
 class DeleteScene extends Component {
-
-  render () {
+  render() {
     const item = this.props.item
-    var scene = _.find(item.before.scenes, {id: item.action.id}) || {title: ''}
+    var scene = _.find(item.before.scenes, { id: item.action.id }) || { title: '' }
     return (
       <div>
-        <span>{i18n('Scene')}: "{scene.title}"</span>
-        <p>{i18n('Before')}: <span className='history-component__item__before'>{scene.title}</span></p>
+        <span>
+          {i18n('Scene')}: &quot;{scene.title}&quot;
+        </span>
+        <p>
+          {i18n('Before')}: <span className="history-component__item__before">{scene.title}</span>
+        </p>
         <p>{i18n('After')}: </p>
       </div>
     )
@@ -21,21 +24,17 @@ class DeleteScene extends Component {
 
 DeleteScene.propTypes = {
   item: PropTypes.object.isRequired,
-  scenes: PropTypes.array.isRequired
+  scenes: PropTypes.array.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    scenes: state.scenes
+    scenes: state.scenes,
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DeleteScene)
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteScene)

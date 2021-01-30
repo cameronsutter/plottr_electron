@@ -1,8 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import log from 'electron-log'
-import setupRollbar from './rollbar'
-const rollbar = setupRollbar('backup')
 import { BACKUP_BASE_PATH } from './config_paths'
 import SETTINGS from './settings'
 
@@ -32,7 +29,7 @@ function saveFile(filePath, data, callback) {
 
 // make the backup a daily record
 // (with a separate backup for the first time saving a file that day)
-function backupPath () {
+function backupPath() {
   const today = new Date()
 
   var day = today.getDate()
@@ -43,7 +40,7 @@ function backupPath () {
 }
 
 // assumes base path exists
-export function ensureBackupTodayPath () {
+export function ensureBackupTodayPath() {
   if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 

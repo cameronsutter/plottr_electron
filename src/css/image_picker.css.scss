@@ -1,11 +1,11 @@
-@import "vars";
+@import 'vars';
 
 .image-picker__wrapper {
   height: 100%;
   display: grid;
   grid-template-areas:
-    "header"
-    "body";
+    'header'
+    'body';
   grid-template-rows: auto 1fr;
 }
 
@@ -38,7 +38,9 @@
       width: 100%;
       margin-left: 0;
       margin-right: 0;
-      .col-xs-9, .col-xs-3, .col-xs-12 {
+      .col-xs-9,
+      .col-xs-3,
+      .col-xs-12 {
         height: 100%;
         padding-left: 0;
         padding-right: 0;

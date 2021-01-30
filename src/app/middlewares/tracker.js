@@ -4,7 +4,7 @@ import USER from '../../common/utils/user_info'
 
 const WHITE_LIST = [ADD_LINES_FROM_TEMPLATE]
 
-const tracker = store => next => action => {
+const tracker = (store) => (next) => (action) => {
   const result = next(action)
   if (!WHITE_LIST.includes(action.type)) return result
   if (!USER.get('payment_id')) return result
@@ -16,7 +16,8 @@ const tracker = store => next => action => {
       version: state.file.version,
     }
 
-    if (action.type == ADD_LINES_FROM_TEMPLATE) MPQ.push('use_timeline_template', {...attrs, template: action.templateName})
+    if (action.type == ADD_LINES_FROM_TEMPLATE)
+      MPQ.push('use_timeline_template', { ...attrs, template: action.templateName })
   }
 
   return result

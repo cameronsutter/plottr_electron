@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import cx from 'classnames'
 
 class Image extends Component {
-  render () {
+  render() {
     const { size, shape, image, responsive, className } = this.props
     if (!image) return null
 
@@ -12,16 +12,12 @@ class Image extends Component {
       return <img className={cx('img-responsive', className)} src={image.data} />
     } else {
       let klasses = cx(`image-${shape}-${size}`, className)
-      return <div className={klasses} style={{backgroundImage: `url(${image.data})`}} />
+      return <div className={klasses} style={{ backgroundImage: `url(${image.data})` }} />
     }
-
   }
 
   static propTypes = {
-    imageId: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    imageId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     size: PropTypes.oneOf(['xl', 'large', 'small', 'xs']),
     shape: PropTypes.oneOf(['circle', 'rounded', 'square']),
     responsive: PropTypes.bool,
@@ -30,18 +26,14 @@ class Image extends Component {
   }
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     image: state.present.images[ownProps.imageId],
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Image)
+export default connect(mapStateToProps, mapDispatchToProps)(Image)

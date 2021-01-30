@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 .select-list__item-select-list {
   list-style-type: none;
@@ -26,7 +26,6 @@
     }
   }
 }
-
 
 .select-list__details-label {
   @include application-text;

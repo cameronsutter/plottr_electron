@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import PropTypes from 'react-proptypes'
 import Modal from 'react-modal'
 import cx from 'classnames'
 import { connect } from 'react-redux'
@@ -27,6 +28,12 @@ export function PlottrModal({ isDarkMode, children, styles = defaultStyles, ...p
       {children}
     </Modal>
   )
+}
+
+PlottrModal.propTypes = {
+  isDarkMode: PropTypes.bool,
+  children: PropTypes.node,
+  styles: PropTypes.object,
 }
 
 export default connect((state) => ({

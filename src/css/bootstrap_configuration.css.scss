@@ -1,84 +1,81 @@
-@import "colors";
+@import 'colors';
 
-$body-bg:               $gray-9;
-$text-color:            $gray-0;
+$body-bg: $gray-9;
+$text-color: $gray-0;
 
-$brand-primary:         $blue-5;
-$brand-success:         $green-5;
-$brand-info:            $orange-5;
-$brand-warning:         $yellow-5;
-$brand-danger:          $red-5;
-$brand-orange:          $orange-5;
+$brand-primary: $blue-5;
+$brand-success: $green-5;
+$brand-info: $orange-5;
+$brand-warning: $yellow-5;
+$brand-danger: $red-5;
+$brand-orange: $orange-5;
 
-$gray-base:             $gray-0;
-$gray-darker:           $gray-1;
-$gray-dark:             $gray-3;
-$gray:                  $gray-5;
-$gray-light:            $gray-7;
-$gray-lighter:          $gray-9;
+$gray-base: $gray-0;
+$gray-darker: $gray-1;
+$gray-dark: $gray-3;
+$gray: $gray-5;
+$gray-light: $gray-7;
+$gray-lighter: $gray-9;
 
 //=== FontSize
-$font-size-h1:            28pt;
-$font-size-h2:            24pt;
-$font-size-h3:            20pt;
-$font-size-h4:            18pt;
-$font-size-h5:            16pt;
-$font-size-h6:            14pt;
-$headings-font-weight:    400;
-$headings-font-family:    'IBM Plex Serif', serif;
-$font-family-sans-serif:  'Lato', sans-serif;
-$font-family-serif:       'IBM Plex Serif', serif;
-
+$font-size-h1: 28pt;
+$font-size-h2: 24pt;
+$font-size-h3: 20pt;
+$font-size-h4: 18pt;
+$font-size-h5: 16pt;
+$font-size-h6: 14pt;
+$headings-font-weight: 400;
+$headings-font-family: 'IBM Plex Serif', serif;
+$font-family-sans-serif: 'Lato', sans-serif;
+$font-family-serif: 'IBM Plex Serif', serif;
 
 //** Text color for `<input>`s
-$input-color:                    $gray-0;
+$input-color: $gray-0;
 
 //=== Navbar
-$navbar-default-color:             $gray-8;
-$navbar-default-bg:                $gray-8;
-$navbar-default-border:            $gray-6;
+$navbar-default-color: $gray-8;
+$navbar-default-bg: $gray-8;
+$navbar-default-border: $gray-6;
 
-$navbar-default-link-active-color:         $blue-1;
-$navbar-default-link-active-bg:            $gray-9;
+$navbar-default-link-active-color: $blue-1;
+$navbar-default-link-active-bg: $gray-9;
 
 // Navbar brand label
-$navbar-default-brand-color:               $blue-2;
-$navbar-default-brand-hover-color:         $blue-0;
-$navbar-default-brand-hover-bg:            transparent;
-
+$navbar-default-brand-color: $blue-2;
+$navbar-default-brand-hover-color: $blue-0;
+$navbar-default-brand-hover-bg: transparent;
 
 //=== Inverted navbar
 // Reset inverted navbar basics
-$navbar-inverse-color:                      white;
-$navbar-inverse-bg:                         #444;
-$navbar-inverse-border:                     #333;
+$navbar-inverse-color: white;
+$navbar-inverse-bg: #444;
+$navbar-inverse-border: #333;
 
-$navbar-inverse-link-active-color:          $blue-1;
-$navbar-inverse-link-active-bg:             $gray-8;
+$navbar-inverse-link-active-color: $blue-1;
+$navbar-inverse-link-active-bg: $gray-8;
 
 // Inverted navbar brand label
-$navbar-inverse-brand-color:                $blue-8;
-$navbar-inverse-brand-hover-color:          $blue-7;
-$navbar-inverse-brand-hover-bg:             transparent;
+$navbar-inverse-brand-color: $blue-8;
+$navbar-inverse-brand-hover-color: $blue-7;
+$navbar-inverse-brand-hover-bg: transparent;
 
 //=== Buttons
-$btn-default-color:              $text-color;
-$btn-default-bg:                 white;
-$btn-default-border:             $gray-6;
-$btn-default-hover-bg:           $gray-9;
+$btn-default-color: $text-color;
+$btn-default-bg: white;
+$btn-default-border: $gray-6;
+$btn-default-hover-bg: $gray-9;
 
-$btn-success-color:              $green-9;
-$btn-success-bg:                 $brand-success !default;
-$btn-success-border:             $green-6;
-$btn-success-hover-bg:           $green-6;
+$btn-success-color: $green-9;
+$btn-success-bg: $brand-success !default;
+$btn-success-border: $green-6;
+$btn-success-hover-bg: $green-6;
 
-$btn-primary-hover-bg:           $blue-6;
-$btn-danger-hover-bg:            $red-6;
-$btn-warning-hover-bg:           $yellow-6;
-
+$btn-primary-hover-bg: $blue-6;
+$btn-danger-hover-bg: $red-6;
+$btn-warning-hover-bg: $yellow-6;
 
 //=== Popover
-$popover-max-width:   650px;
-$popover-title-bg:    $gray-9;
+$popover-max-width: 650px;
+$popover-title-bg: $gray-9;
 
-@import "_bootstrap";
+@import '_bootstrap';

@@ -3,7 +3,7 @@ const { notarize } = require('electron-notarize')
 exports.default = async function notarizing(context) {
   const { electronPlatformName, appOutDir } = context
   if (electronPlatformName !== 'darwin') {
-    return;
+    return
   }
 
   const start = new Date().getTime()
@@ -15,7 +15,7 @@ exports.default = async function notarizing(context) {
     appPath: `${appOutDir}/${appName}.app`,
     appleId: process.env.APPLEID,
     appleIdPassword: process.env.APPLEIDPASS,
-    ascProvider: "XUSV2KF89D"
+    ascProvider: 'XUSV2KF89D',
   })
 
   console.log('done notarizing', new Date().getTime() - start, 'ms')

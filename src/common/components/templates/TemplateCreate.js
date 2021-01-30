@@ -1,9 +1,7 @@
 import { ipcRenderer, remote } from 'electron'
-import React, { Component } from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'react-proptypes'
-import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import {
   Modal,
   Form,
@@ -19,19 +17,23 @@ import cx from 'classnames'
 
 const win = remote.getCurrentWindow()
 
-class TemplateCreate extends Component {
-  saveEdit = () => {
+function TemplateCreate({ type, close, ui }) {
+  const nameRef = useRef()
+  const descriptionRef = useRef()
+  const linkRef = useRef()
+
+  const saveEdit = () => {
     const data = {
-      name: findDOMNode(this.refs.name).value,
-      description: findDOMNode(this.refs.description).value,
-      link: findDOMNode(this.refs.link).value,
+      name: nameRef.current.value,
+      description: descriptionRef.current.value,
+      link: linkRef.current.value,
     }
 
-    ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', { type: this.props.type, data })
-    this.props.close()
+    ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', { type: type, data })
+    close()
   }
 
-  titleFor = (type) => {
+  const titleFor = (type) => {
     switch (type) {
       case 'plotlines':
         return i18n('My Timeline Template')
@@ -44,7 +46,7 @@ class TemplateCreate extends Component {
     return i18n('My Character Template')
   }
 
-  renderToolBar() {
+  const renderToolBar() {
     return (
       <ButtonToolbar>
         <Button bsStyle="success" onClick={this.saveEdit}>
@@ -55,7 +57,7 @@ class TemplateCreate extends Component {
     )
   }
 
-  renderBody() {
+  const renderBody = () => {
     return (
       <Form horizontal>
         <FormGroup>
@@ -63,7 +65,7 @@ class TemplateCreate extends Component {
             {i18n('Name')}
           </Col>
           <Col sm={8}>
-            <FormControl type="text" ref="name" defaultValue={i18n('Custom Template')} />
+            <FormControl type="text" inputRef={nameRef} defaultValue={i18n('Custom Template')} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -71,7 +73,7 @@ class TemplateCreate extends Component {
             {i18n('Description')}
           </Col>
           <Col sm={8}>
-            <FormControl type="text" ref="description" defaultValue={''} />
+            <FormControl type="text" inputRef={descriptionRef} defaultValue={''} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -81,7 +83,7 @@ class TemplateCreate extends Component {
           <Col sm={8}>
             <FormControl
               type="text"
-              ref="link"
+              inputRef={linkRef}
               defaultValue={''}
               placeholder="https://example.com/"
             />
@@ -91,29 +93,27 @@ class TemplateCreate extends Component {
     )
   }
 
-  render() {
-    const title = this.titleFor(this.props.type)
+  const title = titleFor(type)
 
-    return (
-      <Modal
-        show={true}
-        onHide={this.props.close}
-        dialogClassName={cx('book-dialog', { darkmode: this.props.ui.darkMode })}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{this.renderBody()}</Modal.Body>
-        <Modal.Footer>{this.renderToolBar()}</Modal.Footer>
-      </Modal>
-    )
-  }
+  return (
+    <Modal
+      show={true}
+      onHide={close}
+      dialogClassName={cx('book-dialog', { darkmode: ui.darkMode })}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>{title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{renderBody()}</Modal.Body>
+      <Modal.Footer>{renderToolBar()}</Modal.Footer>
+    </Modal>
+  )
+}
 
-  static propTypes = {
-    close: PropTypes.func.isRequired,
-    type: PropTypes.string,
-    ui: PropTypes.object.isRequired,
-  }
+TemplateCreate.propTypes = {
+  close: PropTypes.func.isRequired,
+  type: PropTypes.string,
+  ui: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

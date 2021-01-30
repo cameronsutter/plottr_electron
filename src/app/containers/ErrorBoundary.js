@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import setupRollbar from '../../common/utils/rollbar'
 import log from 'electron-log'
 import i18n from 'format-message'
@@ -42,7 +43,7 @@ export default class ErrorBoundary extends Component {
           <div className="error-boundary__options">
             <Button
               bsStyle="warning"
-              onClick={() => this.setState({ hasError: false, count: ++this.state.count })}
+              onClick={() => this.setState({ hasError: false, count: this.state.count + 1 })}
             >
               {i18n('Try that again')}
             </Button>
@@ -76,4 +77,8 @@ export default class ErrorBoundary extends Component {
 
     return this.props.children
   }
+}
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.node,
 }

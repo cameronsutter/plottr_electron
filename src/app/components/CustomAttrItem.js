@@ -10,6 +10,13 @@ export default class CustomAttrItem extends Component {
     draggable: false,
   }
 
+  constructor(props) {
+    super(props)
+
+    this.nameInputRef = React.createRef()
+    this.paragraphCheckRef = React.createRef()
+  }
+
   handleEnter = (event) => {
     if (event.which === 13) {
       this.updateName()
@@ -18,10 +25,10 @@ export default class CustomAttrItem extends Component {
 
   updateName = () => {
     const { index, attr, restrictedValues } = this.props
-    const name = this.refs.nameInput.value
+    const name = this.nameInputRef.current.value
     if (name == '' || restrictedValues.includes(name)) {
       // is nothing? is a restricted value? no op
-      this.refs.nameInput.value = attr.name
+      this.nameInput.current.value = attr.name
       return
     }
     if (attr.name == name) return // no changes? no op
@@ -30,7 +37,7 @@ export default class CustomAttrItem extends Component {
 
   updateType = () => {
     const { index, attr } = this.props
-    let type = this.refs.paragraphCheck.checked ? 'paragraph' : 'text'
+    let type = this.paragraphCheckRef.current.checked ? 'paragraph' : 'text'
     if (attr.type == type) return // no changes? no op
     this.props.update(index, attr, { name: attr.name, type })
   }
@@ -54,7 +61,7 @@ export default class CustomAttrItem extends Component {
       return (
         <label className="custom-attr-item__checkbox-label">
           <input
-            ref="paragraphCheck"
+            ref={this.paragraphCheckRef}
             type="checkbox"
             checked={checked}
             onChange={this.updateType}
@@ -111,7 +118,7 @@ export default class CustomAttrItem extends Component {
           />
           <input
             className="custom-attr-item__input"
-            ref="nameInput"
+            ref={this.nameInputRef}
             onBlur={this.updateName}
             onKeyDown={this.handleEnter}
             defaultValue={attr.name}
@@ -135,5 +142,6 @@ export default class CustomAttrItem extends Component {
     delete: PropTypes.func,
     canChangeType: PropTypes.bool,
     restrictedValues: PropTypes.array,
+    reorder: PropTypes.func,
   }
 }

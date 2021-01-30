@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'react-proptypes'
 import t from 'format-message'
 import cx from 'classnames'
 import { FaKey } from 'react-icons/fa'
@@ -35,4 +36,8 @@ export default function TrialInfo({ trialInfo }) {
       {showVerify ? <VerifyView goBack={() => setShowVerify(false)} /> : null}
     </div>
   )
+}
+
+TrialInfo.propTypes = {
+  trialInfo: PropTypes.object,
 }

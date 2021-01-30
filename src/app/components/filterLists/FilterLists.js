@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import TagFilterList from './TagFilterList'
 
 export default class FilterLists extends Component {
@@ -31,4 +32,9 @@ export default class FilterLists extends Component {
       </div>
     )
   }
+}
+
+FilterLists.propTypes = {
+  filteredItems: PropTypes.object,
+  updateItems: PropTypes.func,
 }

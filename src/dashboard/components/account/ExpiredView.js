@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { shell } from 'electron'
 import i18n from 'format-message'
 import AdView from './AdView'

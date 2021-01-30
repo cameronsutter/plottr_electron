@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -177,6 +176,8 @@ class BookList extends Component {
     ui: PropTypes.object.isRequired,
     books: PropTypes.object.isRequired,
     actions: PropTypes.object,
+    lineActions: PropTypes.object,
+    sceneActions: PropTypes.object,
   }
 }
 

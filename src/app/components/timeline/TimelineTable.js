@@ -67,8 +67,6 @@ class TimelineTable extends Component {
     this.setLength()
   }
 
-  componentWillReceiveProps(nextProps) {}
-
   handleReorderChapters = (originalPosition, droppedPosition) => {
     const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
     if (this.props.isSeries) {

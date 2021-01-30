@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'react-proptypes'
 import i18n from 'format-message'
 import { sortBy } from 'lodash'
-import Image from '../../../app/components/images/Image'
 
 export default function ProjectTemplateDetails({ template }) {
   const { templateData } = template

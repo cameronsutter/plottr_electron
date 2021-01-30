@@ -1,25 +1,10 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
-import {
-  ButtonToolbar,
-  Button,
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  Tooltip,
-  OverlayTrigger,
-  Glyphicon,
-} from 'react-bootstrap'
-import i18n from 'format-message'
-import RichText from '../rce/RichText'
-import ImagePicker from '../images/ImagePicker'
-import Image from '../images/Image'
-import CategoryPicker from '../CategoryPicker'
+import * as CharacterActions from 'actions/characters'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import CharacterEditDetails from './CharacterEditDetails'
 import CharacterDetails from './CharacterDetails'

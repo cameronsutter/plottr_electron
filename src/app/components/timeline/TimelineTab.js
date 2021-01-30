@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import PropTypes from 'react-proptypes'
+import React from 'react'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import TimelineWrapper from './TimelineWrapper'
 

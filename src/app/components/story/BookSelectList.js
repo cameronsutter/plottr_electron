@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { difference } from 'lodash'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import i18n from 'format-message'
 import Image from '../images/Image'
@@ -78,7 +77,7 @@ class BookSelectList extends Component {
             placement="right"
             overlay={this.renderUnSelected()}
           >
-            <Button ref="characterList" bsSize="xsmall">
+            <Button bsSize="xsmall">
               <Glyphicon glyph="plus" />
             </Button>
           </OverlayTrigger>

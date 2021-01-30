@@ -1,10 +1,16 @@
-@import "../colors";
-@import "../vars";
+@import '../colors';
+@import '../vars';
 
 @keyframes dot {
-  0% { opacity: 0; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .update-notifier {
@@ -49,7 +55,7 @@
     .one {
       opacity: 0;
       animation: dot 1s infinite;
-      animation-delay: 0.0s;
+      animation-delay: 0s;
     }
 
     .two {

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'react-proptypes'
-import { IoIosBrowsers, IoMdBook, IoIosDocument, IoIosDesktop } from 'react-icons/io'
+import { IoIosBrowsers, IoIosDocument, IoIosDesktop } from 'react-icons/io'
 import { FaRegSnowflake } from 'react-icons/fa'
 import t from 'format-message'
 import cx from 'classnames'

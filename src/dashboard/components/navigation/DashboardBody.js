@@ -16,7 +16,7 @@ import { checkForActiveLicense } from '../../../common/licensing/check_license'
 
 export default function DashboardBody({ currentView, setView }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
-  const { started, expired, daysLeft } = useTrialStatus()
+  const { started, expired } = useTrialStatus()
   const [showAccount, setShowAccount] = useState(false)
 
   useEffect(() => {
@@ -106,5 +106,5 @@ function Body({ children }) {
 }
 
 Body.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.node,
 }

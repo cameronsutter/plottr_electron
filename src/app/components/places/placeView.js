@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -39,6 +38,9 @@ class PlaceView extends Component {
       newImageId: null,
       deleting: false,
     }
+
+    this.nameInputRef = React.createRef()
+    this.descriptionRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -82,8 +84,8 @@ class PlaceView extends Component {
   }
 
   saveEdit = (close = true) => {
-    var name = findDOMNode(this.refs.nameInput).value || this.props.place.name
-    var description = findDOMNode(this.refs.descriptionInput).value
+    var name = this.nameInputRef.current.value || this.props.place.name
+    var description = this.descriptionInputRef.current.value
     var notes = this.state.notes
     var attrs = {}
     if (this.state.newImageId) {
@@ -94,7 +96,7 @@ class PlaceView extends Component {
       if (type == 'paragraph') {
         attrs[name] = this.state.description[name]
       } else {
-        const val = findDOMNode(this.refs[`${name}Input`]).value
+        const val = this[`${name}InputRef`].current.value
         attrs[name] = val
       }
     })
@@ -160,7 +162,7 @@ class PlaceView extends Component {
             <ControlLabel>{name}</ControlLabel>
             <FormControl
               type="text"
-              ref={`${name}Input`}
+              inputRef={this[`${name}InputRef`]}
               defaultValue={place[name]}
               onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}
@@ -182,7 +184,7 @@ class PlaceView extends Component {
                 <ControlLabel>{i18n('Name')}</ControlLabel>
                 <FormControl
                   type="text"
-                  ref="nameInput"
+                  inputRef={this.nameInputRef}
                   autoFocus
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
@@ -193,7 +195,7 @@ class PlaceView extends Component {
                 <ControlLabel>{i18n('Short Description')}</ControlLabel>
                 <FormControl
                   type="text"
-                  ref="descriptionInput"
+                  inputRef={this.descriptionInputRef}
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
                   defaultValue={place.description}
@@ -378,6 +380,7 @@ PlaceView.propTypes = {
   notes: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
+  places: PropTypes.array,
 }
 
 function mapStateToProps(state) {

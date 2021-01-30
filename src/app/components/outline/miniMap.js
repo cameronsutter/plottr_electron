@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
+import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { keyBy } from 'lodash'
-import { findDOMNode } from 'react-dom'
 import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import MiniChapter from './MiniChapter'
@@ -65,7 +65,11 @@ class MiniMap extends Component {
       if (activeFilter && !chapterCards.length) return null
 
       return (
-        <NavItem ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`} eventKey={ch.id}>
+        <NavItem
+          ref={(e) => (this[`chapter-${ch.id}-ref`] = e)}
+          key={`minimap-chapter-${ch.id}`}
+          eventKey={ch.id}
+        >
           <MiniChapter
             chapter={ch}
             idx={idx + positionOffset}
@@ -100,8 +104,8 @@ class MiniMap extends Component {
     if (!this.state.mouseOver) {
       const chapter = this.props.chapters.find((ch) => ch.id === this.props.active)
       let title = ''
-      if (chapter) title = `chapter-${chapter.id}`
-      var domNode = findDOMNode(this.refs[title])
+      if (chapter) title = `chapter-${chapter.id}-ref`
+      var domNode = findDOMNode(this[title])
       if (domNode) {
         domNode.scrollIntoViewIfNeeded()
       }
@@ -123,6 +127,7 @@ MiniMap.propTypes = {
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
+  actions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

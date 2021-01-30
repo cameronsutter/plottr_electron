@@ -1,4 +1,3 @@
-import { shell } from 'electron'
 import { Document, Packer, Paragraph, Media, AlignmentType, HeadingLevel } from 'docx'
 import fs from 'fs'
 import { sortBy, groupBy } from 'lodash'

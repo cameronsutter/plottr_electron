@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash'
 import { newFileBooks, newFileBeats, newFileSeriesLines } from '../../store/newFileState'
 import { series } from '../../store/initialState'
 
-export default function migrate (data) {
+export default function migrate(data) {
   if (data.file && data.file.version === '2020.3.16') return data
 
   var obj = cloneDeep(data)
@@ -27,23 +27,23 @@ export default function migrate (data) {
 
   // scenes -> chapters (with new attrs)
   // -scenes
-  obj.chapters = obj.scenes.map(sc => {
+  obj.chapters = obj.scenes.map((sc) => {
     return {
       ...sc,
       bookId: BOOK_ID,
       time: 0,
-      templates: []
+      templates: [],
     }
   })
   delete obj.scenes
 
   // +character.bookIds (all = [1])
-  obj.characters.forEach(ch => {
+  obj.characters.forEach((ch) => {
     ch.bookIds = [BOOK_ID]
   })
 
   // +place.bookIds     (all = [1])
-  obj.places.forEach(pl => {
+  obj.places.forEach((pl) => {
     pl.bookIds = [BOOK_ID]
   })
 
@@ -53,7 +53,7 @@ export default function migrate (data) {
   // +card.seriesLineId
   // +card.position
   // -card.sceneId
-  obj.cards.forEach(c => {
+  obj.cards.forEach((c) => {
     c.chapterId = c.sceneId
     c.beatId = null
     c.bookId = null
@@ -64,7 +64,7 @@ export default function migrate (data) {
 
   // +line.characterId
   // +line.bookId
-  obj.lines.forEach(l => {
+  obj.lines.forEach((l) => {
     l.characterId = null
     l.bookId = BOOK_ID
   })
@@ -73,7 +73,7 @@ export default function migrate (data) {
   obj.seriesLines = newFileSeriesLines
 
   // +note.bookIds
-  obj.notes.forEach(n => {
+  obj.notes.forEach((n) => {
     n.bookIds = []
   })
 
@@ -81,5 +81,3 @@ export default function migrate (data) {
 
   return obj
 }
-
-

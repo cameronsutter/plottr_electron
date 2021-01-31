@@ -6,18 +6,18 @@ import { character, place } from '../store/initialState'
 const characterKeys = Object.keys(character)
 const placeKeys = Object.keys(place)
 
-export const allCustomAttributesSelector = state => state.customAttributes
-export const characterCustomAttributesSelector = state => state.customAttributes.characters
-export const placeCustomAttributesSelector = state => state.customAttributes.places
+export const allCustomAttributesSelector = (state) => state.customAttributes
+export const characterCustomAttributesSelector = (state) => state.customAttributes.characters
+export const placeCustomAttributesSelector = (state) => state.customAttributes.places
 
 export const characterSortCAnamesSelector = createSelector(
   characterCustomAttributesSelector,
-  (attributes) => attributes.filter(attr => attr.type == 'text').map(attr => attr.name)
+  (attributes) => attributes.filter((attr) => attr.type == 'text').map((attr) => attr.name)
 )
 
 export const placeSortCAnamesSelector = createSelector(
   placeCustomAttributesSelector,
-  (attributes) => attributes.filter(attr => attr.type == 'text').map(attr => attr.name)
+  (attributes) => attributes.filter((attr) => attr.type == 'text').map((attr) => attr.name)
 )
 
 export const characterCustomAttributesThatCanChangeSelector = createSelector(
@@ -30,7 +30,7 @@ export const characterCustomAttributesThatCanChangeSelector = createSelector(
         return acc
       }
 
-      const changeable = characters.every(ch => hasNoValue(ch, attr.name))
+      const changeable = characters.every((ch) => hasNoValue(ch, attr.name))
       if (changeable) acc.push(attr.name)
       return acc
     }, [])
@@ -47,7 +47,7 @@ export const placeCustomAttributesThatCanChangeSelector = createSelector(
         return acc
       }
 
-      const changeable = places.every(pl => hasNoValue(pl, attr.name))
+      const changeable = places.every((pl) => hasNoValue(pl, attr.name))
       if (changeable) acc.push(attr.name)
       return acc
     }, [])
@@ -60,7 +60,7 @@ export const placeCustomAttributesThatCanChangeSelector = createSelector(
 // 3. It's value is the same as RCE_INITIAL_VALUE
 // 4. It's value is an empty paragraph
 // Otherwise, a paragraph type can not be changed back
-function hasNoValue (item, attr) {
+function hasNoValue(item, attr) {
   const val = item[attr]
   if (!val) return true
   if (typeof val === 'string') return true
@@ -74,10 +74,10 @@ function hasNoValue (item, attr) {
 
 export const characterCustomAttributesRestrictedValues = createSelector(
   characterCustomAttributesSelector,
-  (attrs) => characterKeys.concat(attrs.map(a => a.name))
+  (attrs) => characterKeys.concat(attrs.map((a) => a.name))
 )
 
 export const placeCustomAttributesRestrictedValues = createSelector(
   placeCustomAttributesSelector,
-  (attrs) => placeKeys.concat(attrs.map(a => a.name))
+  (attrs) => placeKeys.concat(attrs.map((a) => a.name))
 )

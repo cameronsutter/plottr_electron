@@ -60,7 +60,7 @@ export const ui = {
   },
   timeline: {
     size: 'large',
-  }
+  },
 }
 
 export const file = {
@@ -115,7 +115,7 @@ export const place = {
 export const tag = {
   id: 1,
   title: '',
-  color: null
+  color: null,
 }
 
 export const card = {
@@ -192,7 +192,5 @@ export const image = {
 // example template for reference
 // NOT exported
 const templates = [
-  {id: 'ch1', version: '2020.3.4', attributes: [
-    {name: 'Motivation', type: 'text', value: ''},
-  ]}
+  { id: 'ch1', version: '2020.3.4', attributes: [{ name: 'Motivation', type: 'text', value: '' }] },
 ]

@@ -1,7 +1,7 @@
 const Migrator = require('./migrator')
 
 // callback(error, migrated?, data)
-function migrateIfNeeded (appVersion, json, fileName, backupFunction, callback) {
+function migrateIfNeeded(appVersion, json, fileName, backupFunction, callback) {
   if (!json.file) {
     callback(null, false, json)
     return

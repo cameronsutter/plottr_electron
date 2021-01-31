@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 
-export default function migrate (data) {
+export default function migrate(data) {
   if (data.file && data.file.version === '1.0.0') return data
 
   var obj = cloneDeep(data)
@@ -12,7 +12,7 @@ export default function migrate (data) {
     tags: [],
     characters: [],
     places: [],
-    lastEdited: new Date().getTime()
+    lastEdited: new Date().getTime(),
   }
 
   obj['notes'] = [note]
@@ -29,5 +29,3 @@ export default function migrate (data) {
 
   return obj
 }
-
-

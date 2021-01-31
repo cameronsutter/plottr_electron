@@ -7,11 +7,11 @@ import {
   FILE_LOADED,
   NEW_FILE,
   RESET,
-} from "../constants/ActionTypes"
-import { line } from "../store/initialState"
-import { newFileLines } from "../store/newFileState"
-import { lineId, linePosition } from "../store/newIds"
-import { nextColor } from "../store/lineColors"
+} from '../constants/ActionTypes'
+import { line } from '../store/initialState'
+import { newFileLines } from '../store/newFileState'
+import { lineId, linePosition } from '../store/newIds'
+import { nextColor } from '../store/lineColors'
 
 const initialState = [line]
 
@@ -30,16 +30,12 @@ export default function lines(state = initialState, action) {
 
     case EDIT_LINE_TITLE:
       return state.map((line) =>
-        line.id === action.id
-          ? Object.assign({}, line, { title: action.title })
-          : line
+        line.id === action.id ? Object.assign({}, line, { title: action.title }) : line
       )
 
     case EDIT_LINE_COLOR:
       return state.map((line) =>
-        line.id === action.id
-          ? Object.assign({}, line, { color: action.color })
-          : line
+        line.id === action.id ? Object.assign({}, line, { color: action.color }) : line
       )
 
     case DELETE_LINE:

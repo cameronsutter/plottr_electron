@@ -1,6 +1,6 @@
 var { cloneDeep } = require('lodash')
 
-function migrate (data) {
+function migrate(data) {
   if (data.file && data.file.version === '1.0.0') return data
 
   var obj = cloneDeep(data)
@@ -12,7 +12,7 @@ function migrate (data) {
     tags: [],
     characters: [],
     places: [],
-    lastEdited: new Date().getTime()
+    lastEdited: new Date().getTime(),
   }
 
   obj['notes'] = [note]

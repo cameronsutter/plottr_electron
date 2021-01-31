@@ -22,7 +22,7 @@ const rootReducer = combineReducers({
   cards,
   lines,
   customAttributes,
-  notes
+  notes,
 })
 
 export default rootReducer

@@ -1,4 +1,4 @@
-import _ from "lodash"
+import _ from 'lodash'
 import {
   ADD_PLACE,
   EDIT_PLACE,
@@ -12,10 +12,10 @@ import {
   DELETE_NOTE,
   DELETE_CARD,
   DELETE_PLACE,
-} from "../constants/ActionTypes"
-import { place } from "../store/initialState"
-import { newFilePlaces } from "../store/newFileState"
-import { placeId } from "../store/newIds"
+} from '../constants/ActionTypes'
+import { place } from '../store/initialState'
+import { newFilePlaces } from '../store/newFileState'
+import { placeId } from '../store/newIds'
 
 const initialState = [place]
 
@@ -35,45 +35,35 @@ export default function places(state = initialState, action) {
 
     case EDIT_PLACE:
       return state.map((place) =>
-        place.id === action.id
-          ? Object.assign({}, place, action.attributes)
-          : place
+        place.id === action.id ? Object.assign({}, place, action.attributes) : place
       )
 
     case ATTACH_PLACE_TO_CARD:
       return state.map((place) => {
         let cards = _.cloneDeep(place.cards)
         cards.push(action.id)
-        return place.id === action.placeId
-          ? Object.assign({}, place, { cards: cards })
-          : place
+        return place.id === action.placeId ? Object.assign({}, place, { cards: cards }) : place
       })
 
     case REMOVE_PLACE_FROM_CARD:
       return state.map((place) => {
         let cards = _.cloneDeep(place.cards)
         cards.splice(cards.indexOf(action.id), 1)
-        return place.id === action.placeId
-          ? Object.assign({}, place, { cards: cards })
-          : place
+        return place.id === action.placeId ? Object.assign({}, place, { cards: cards }) : place
       })
 
     case ATTACH_PLACE_TO_NOTE:
       return state.map((place) => {
         let notes = _.cloneDeep(place.noteIds)
         notes.push(action.id)
-        return place.id === action.placeId
-          ? Object.assign({}, place, { noteIds: notes })
-          : place
+        return place.id === action.placeId ? Object.assign({}, place, { noteIds: notes }) : place
       })
 
     case REMOVE_PLACE_FROM_NOTE:
       return state.map((place) => {
         let notes = _.cloneDeep(place.noteIds)
         notes.splice(notes.indexOf(action.id), 1)
-        return place.id === action.placeId
-          ? Object.assign({}, place, { noteIds: notes })
-          : place
+        return place.id === action.placeId ? Object.assign({}, place, { noteIds: notes }) : place
       })
 
     case DELETE_NOTE:

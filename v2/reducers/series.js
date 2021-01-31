@@ -2,9 +2,8 @@ import { FILE_LOADED, NEW_FILE, RESET, EDIT_SERIES } from '../constants/ActionTy
 import { series as defaultSeries } from '../store/initialState'
 import { newFileSeries } from '../store/newFileState'
 
-export default function series (state = defaultSeries, action) {
+export default function series(state = defaultSeries, action) {
   switch (action.type) {
-
     case EDIT_SERIES:
       return {
         ...state,

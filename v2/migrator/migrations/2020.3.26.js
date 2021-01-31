@@ -5,7 +5,7 @@ const md = MarkDown.getSanitizingConverter()
 import DomParser from 'dom-parser'
 const parser = new DomParser()
 
-export default function migrate (data) {
+export default function migrate(data) {
   if (data.file && data.file.version === '2020.3.26') return data
 
   var obj = cloneDeep(data)
@@ -15,19 +15,19 @@ export default function migrate (data) {
   // character notes
   // character custom attributes
   // character templates
-  obj.characters = obj.characters.map(ch => {
+  obj.characters = obj.characters.map((ch) => {
     let newCharacter = {
       ...ch,
       notes: convert(ch.notes),
     }
-    obj.customAttributes.characters.forEach(ca => {
+    obj.customAttributes.characters.forEach((ca) => {
       const parts = ca.split(':#:')
       if (parts[1] && parts[1] == 'paragraph') {
         newCharacter[parts[0]] = convert(newCharacter[parts[0]])
       }
     })
-    newCharacter.templates = newCharacter.templates.map(t => {
-      t.attributes = t.attributes.map(attr => {
+    newCharacter.templates = newCharacter.templates.map((t) => {
+      t.attributes = t.attributes.map((attr) => {
         if (attr.type == 'paragraph') {
           attr.value = convert(attr.value)
         }
@@ -39,26 +39,26 @@ export default function migrate (data) {
   })
 
   // place notes
-  obj.places = obj.places.map(pl => {
+  obj.places = obj.places.map((pl) => {
     return {
       ...pl,
-      notes: convert(pl.notes)
+      notes: convert(pl.notes),
     }
   })
 
   // card description
-  obj.cards = obj.cards.map(c => {
+  obj.cards = obj.cards.map((c) => {
     return {
       ...c,
-      description: convert(c.description)
+      description: convert(c.description),
     }
   })
 
   // note content
-  obj.notes = obj.notes.map(n => {
+  obj.notes = obj.notes.map((n) => {
     return {
       ...n,
-      content: convert(n.content)
+      content: convert(n.content),
     }
   })
 
@@ -78,7 +78,7 @@ function convert(text) {
   return slate
 }
 
-function deserialize (el) {
+function deserialize(el) {
   if (el.nodeType === 3) {
     if (el.textContent == '\n\n') return null
 
@@ -93,52 +93,62 @@ function deserialize (el) {
     case 'body':
       return jsx('fragment', {}, children)
     case 'br':
-      return jsx('element', { type: 'paragraph' }, [{text: ''}])
+      return jsx('element', { type: 'paragraph' }, [{ text: '' }])
     case 'blockquote':
-      return jsx('element', { type: 'block-quote' }, children.filter(node => !node.text))
+      return jsx(
+        'element',
+        { type: 'block-quote' },
+        children.filter((node) => !node.text)
+      )
     case 'p':
       return jsx('element', { type: 'paragraph' }, fixParagraphChildren(children))
     case 'h1':
-      return jsx('element', {type: 'heading-one'}, children)
+      return jsx('element', { type: 'heading-one' }, children)
     case 'h2':
-      return jsx('element', {type: 'heading-two'}, children)
+      return jsx('element', { type: 'heading-two' }, children)
     case 'h3':
-      return jsx('element', {type: 'heading-three'}, children)
+      return jsx('element', { type: 'heading-three' }, children)
     case 'h4':
-      return jsx('element', {type: 'heading-four'}, children)
+      return jsx('element', { type: 'heading-four' }, children)
     case 'h5':
-      return jsx('element', {type: 'heading-five'}, children)
+      return jsx('element', { type: 'heading-five' }, children)
     case 'h6':
-      return jsx('element', {type: 'heading-six'}, children)
+      return jsx('element', { type: 'heading-six' }, children)
     case 'ul':
-      return jsx('element', {type: 'bulleted-list'}, children.filter(node => node != '\n')) // check for \r in windows
+      return jsx(
+        'element',
+        { type: 'bulleted-list' },
+        children.filter((node) => node != '\n')
+      ) // check for \r in windows
     case 'li':
-      return jsx('element', {type: 'list-item'}, fixParagraphChildren(children))
+      return jsx('element', { type: 'list-item' }, fixParagraphChildren(children))
     case 'ol':
-      return jsx('element', {type: 'numbered-list'}, children.filter(node => node != '\n')) // check for \r in windows
+      return jsx(
+        'element',
+        { type: 'numbered-list' },
+        children.filter((node) => node != '\n')
+      ) // check for \r in windows
     case 'em':
-      return jsx('text', {italic: true, text: el.textContent})
+      return jsx('text', { italic: true, text: el.textContent })
     case 'strong':
-      return jsx('text', {bold: true, text: el.textContent})
+      return jsx('text', { bold: true, text: el.textContent })
     case 'u':
-      return jsx('text', {underline: true, text: el.textContent})
+      return jsx('text', { underline: true, text: el.textContent })
     case 'img':
-      return jsx('element', { type: 'image-link', url: el.getAttribute('src') }, children )
+      return jsx('element', { type: 'image-link', url: el.getAttribute('src') }, children)
     case 'a':
-      return jsx('element', { type: 'link', url: el.getAttribute('href') }, children )
+      return jsx('element', { type: 'link', url: el.getAttribute('href') }, children)
     default:
       return el.textContent
   }
 }
 
-function fixParagraphChildren (children) {
+function fixParagraphChildren(children) {
   return children
-    .filter(node => node != null)
-    .map(node => {
-      if (node.type) return node.children.map(child => child.text).join(' ')
+    .filter((node) => node != null)
+    .map((node) => {
+      if (node.type) return node.children.map((child) => child.text).join(' ')
 
       return node
     })
 }
-
-

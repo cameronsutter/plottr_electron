@@ -1,4 +1,4 @@
-import _ from "lodash"
+import _ from 'lodash'
 import {
   ADD_CHARACTER,
   EDIT_CHARACTER,
@@ -12,10 +12,10 @@ import {
   DELETE_NOTE,
   DELETE_CARD,
   DELETE_CHARACTER,
-} from "../constants/ActionTypes"
-import { character } from "../store/initialState"
-import { newFileCharacters } from "../store/newFileState"
-import { characterId } from "../store/newIds"
+} from '../constants/ActionTypes'
+import { character } from '../store/initialState'
+import { newFileCharacters } from '../store/newFileState'
+import { characterId } from '../store/newIds'
 
 const initialState = [character]
 
@@ -35,9 +35,7 @@ export default function characters(state = initialState, action) {
 
     case EDIT_CHARACTER:
       return state.map((character) =>
-        character.id === action.id
-          ? Object.assign({}, character, action.attributes)
-          : character
+        character.id === action.id ? Object.assign({}, character, action.attributes) : character
       )
 
     case ATTACH_CHARACTER_TO_CARD:

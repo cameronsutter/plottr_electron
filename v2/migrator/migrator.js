@@ -4,7 +4,7 @@ import semverCoerce from 'semver/functions/coerce'
 import migrationsList from './migrations_list'
 import migrators from './migrations'
 
-export default function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
+export default function Migrator(data, fileName, fileVersion, appVersion, backupFunction) {
   this.data = data
   this.fileVersion = fileVersion
   this.appVersion = appVersion
@@ -15,14 +15,18 @@ export default function Migrator (data, fileName, fileVersion, appVersion, backu
   this.migrate = function (callback) {
     // save a backup file
     if (this.backupFunction) {
-      this.backupFunction(`${fileName.replace('.pltr', '')}-${this.fileVersion}-backup.pltr`, JSON.stringify(this.data, null, 2), (err) => {
-        if (err) {
-          console.log(err)
-          callback('backup', false)
-        } else {
-          this.startMigrations(callback)
+      this.backupFunction(
+        `${fileName.replace('.pltr', '')}-${this.fileVersion}-backup.pltr`,
+        JSON.stringify(this.data, null, 2),
+        (err) => {
+          if (err) {
+            console.log(err)
+            callback('backup', false)
+          } else {
+            this.startMigrations(callback)
+          }
         }
-      })
+      )
     } else {
       this.startMigrations(callback)
     }
@@ -30,7 +34,7 @@ export default function Migrator (data, fileName, fileVersion, appVersion, backu
 
   this.startMigrations = function (callback) {
     let migrations = this.getMigrations()
-    migrations.forEach(m => {
+    migrations.forEach((m) => {
       this.data = migrators[m](this.data)
     })
     this.data.file.version = this.appVersion
@@ -56,7 +60,7 @@ export default function Migrator (data, fileName, fileVersion, appVersion, backu
       return this.migrations
     }
 
-    this.migrations = migrationsList.filter(version => {
+    this.migrations = migrationsList.filter((version) => {
       if (!this.fileVersion) return true
       const usableVersionString = version.replace('m', '').replace(/_/g, '.')
       return semverGt(semverCoerce(usableVersionString), this.fileVersion)

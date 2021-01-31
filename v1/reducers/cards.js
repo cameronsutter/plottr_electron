@@ -1,4 +1,4 @@
-import _ from "lodash"
+import _ from 'lodash'
 import {
   ADD_CARD,
   EDIT_CARD_DETAILS,
@@ -20,10 +20,10 @@ import {
   FILE_LOADED,
   NEW_FILE,
   RESET,
-} from "../constants/ActionTypes"
-import { card } from "../store/initialState"
-import { newFileCards } from "../store/newFileState"
-import { cardId } from "../store/newIds"
+} from '../constants/ActionTypes'
+import { card } from '../store/initialState'
+import { newFileCards } from '../store/newFileState'
+import { cardId } from '../store/newIds'
 
 const initialState = [card]
 
@@ -65,16 +65,12 @@ export default function cards(state, action) {
 
     case CHANGE_LINE:
       return state.map((card) =>
-        card.id === action.id
-          ? Object.assign({}, card, { lineId: action.lineId })
-          : card
+        card.id === action.id ? Object.assign({}, card, { lineId: action.lineId }) : card
       )
 
     case CHANGE_SCENE:
       return state.map((card) =>
-        card.id === action.id
-          ? Object.assign({}, card, { sceneId: action.sceneId })
-          : card
+        card.id === action.id ? Object.assign({}, card, { sceneId: action.sceneId }) : card
       )
 
     case DELETE_CARD:
@@ -90,54 +86,42 @@ export default function cards(state, action) {
       return state.map((card) => {
         let characters = _.cloneDeep(card.characters)
         characters.push(action.characterId)
-        return card.id === action.id
-          ? Object.assign({}, card, { characters: characters })
-          : card
+        return card.id === action.id ? Object.assign({}, card, { characters: characters }) : card
       })
 
     case REMOVE_CHARACTER_FROM_CARD:
       return state.map((card) => {
         let characters = _.cloneDeep(card.characters)
         characters.splice(characters.indexOf(action.characterId), 1)
-        return card.id === action.id
-          ? Object.assign({}, card, { characters: characters })
-          : card
+        return card.id === action.id ? Object.assign({}, card, { characters: characters }) : card
       })
 
     case ATTACH_PLACE_TO_CARD:
       return state.map((card) => {
         let places = _.cloneDeep(card.places)
         places.push(action.placeId)
-        return card.id === action.id
-          ? Object.assign({}, card, { places: places })
-          : card
+        return card.id === action.id ? Object.assign({}, card, { places: places }) : card
       })
 
     case REMOVE_PLACE_FROM_CARD:
       return state.map((card) => {
         let places = _.cloneDeep(card.places)
         places.splice(places.indexOf(action.placeId), 1)
-        return card.id === action.id
-          ? Object.assign({}, card, { places: places })
-          : card
+        return card.id === action.id ? Object.assign({}, card, { places: places }) : card
       })
 
     case ATTACH_TAG_TO_CARD:
       return state.map((card) => {
         let tags = _.cloneDeep(card.tags)
         tags.push(action.tagId)
-        return card.id === action.id
-          ? Object.assign({}, card, { tags: tags })
-          : card
+        return card.id === action.id ? Object.assign({}, card, { tags: tags }) : card
       })
 
     case REMOVE_TAG_FROM_CARD:
       return state.map((card) => {
         let tags = _.cloneDeep(card.tags)
         tags.splice(tags.indexOf(action.tagId), 1)
-        return card.id === action.id
-          ? Object.assign({}, card, { tags: tags })
-          : card
+        return card.id === action.id ? Object.assign({}, card, { tags: tags }) : card
       })
 
     case DELETE_TAG:

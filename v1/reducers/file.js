@@ -4,8 +4,8 @@ import {
   NEW_FILE,
   RESET,
   CHANGE_CURRENT_VIEW,
-} from "../constants/ActionTypes"
-import { file as defaultFile } from "../store/initialState"
+} from '../constants/ActionTypes'
+import { file as defaultFile } from '../store/initialState'
 
 export default function file(state = defaultFile, action) {
   switch (action.type) {

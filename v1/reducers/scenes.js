@@ -1,4 +1,4 @@
-import _ from "lodash"
+import _ from 'lodash'
 import {
   ADD_SCENE,
   EDIT_SCENE_TITLE,
@@ -7,10 +7,10 @@ import {
   FILE_LOADED,
   NEW_FILE,
   RESET,
-} from "../constants/ActionTypes"
-import { scene } from "../store/initialState"
-import { newFileScenes } from "../store/newFileState"
-import { sceneId, scenePosition } from "../store/newIds"
+} from '../constants/ActionTypes'
+import { scene } from '../store/initialState'
+import { newFileScenes } from '../store/newFileState'
+import { sceneId, scenePosition } from '../store/newIds'
 
 const initialState = [scene]
 
@@ -28,15 +28,13 @@ export default function scenes(state = initialState, action) {
 
     case EDIT_SCENE_TITLE:
       return state.map((scene) =>
-        scene.id === action.id
-          ? Object.assign({}, scene, { title: action.title })
-          : scene
+        scene.id === action.id ? Object.assign({}, scene, { title: action.title }) : scene
       )
 
     case DELETE_SCENE:
       let scenes = state.filter((scene) => scene.id !== action.id)
-      let newScenes = _.sortBy(scenes, "position")
-      newScenes.forEach((s, idx) => (s["position"] = idx))
+      let newScenes = _.sortBy(scenes, 'position')
+      newScenes.forEach((s, idx) => (s['position'] = idx))
       return newScenes
 
     case REORDER_SCENES:

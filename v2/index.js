@@ -45,7 +45,7 @@ import { emptyFile } from './store/newFileState'
 import * as newIds from './store/newIds'
 
 const reducers = {
-  customAttributes: customAttributesReducer
+  customAttributes: customAttributesReducer,
 }
 
 const selectors = {

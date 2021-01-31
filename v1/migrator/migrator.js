@@ -4,7 +4,7 @@ const semverCoerce = require('semver/functions/coerce')
 const migrationsList = require('./migrations_list')
 const migrators = require('./migrations')
 
-function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
+function Migrator(data, fileName, fileVersion, appVersion, backupFunction) {
   this.data = data
   this.fileVersion = fileVersion
   this.appVersion = appVersion
@@ -15,14 +15,18 @@ function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
   this.migrate = function (callback) {
     // save a backup file
     if (this.backupFunction) {
-      this.backupFunction(`${fileName.replace('.pltr', '')}-${this.fileVersion}-backup.pltr`, JSON.stringify(this.data, null, 2), (err) => {
-        if (err) {
-          console.log(err)
-          callback('backup', false)
-        } else {
-          this.startMigrations(callback)
+      this.backupFunction(
+        `${fileName.replace('.pltr', '')}-${this.fileVersion}-backup.pltr`,
+        JSON.stringify(this.data, null, 2),
+        (err) => {
+          if (err) {
+            console.log(err)
+            callback('backup', false)
+          } else {
+            this.startMigrations(callback)
+          }
         }
-      })
+      )
     } else {
       this.startMigrations(callback)
     }
@@ -30,7 +34,7 @@ function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
 
   this.startMigrations = function (callback) {
     let migrations = this.getMigrations()
-    migrations.forEach(m => {
+    migrations.forEach((m) => {
       this.data = migrators[m](this.data)
     })
     this.data.file.version = this.appVersion
@@ -56,7 +60,7 @@ function Migrator (data, fileName, fileVersion, appVersion, backupFunction) {
       return this.migrations
     }
 
-    this.migrations = migrationsList.filter(version => {
+    this.migrations = migrationsList.filter((version) => {
       if (!this.fileVersion) return true
       const usableVersionString = version.replace('m', '').replace(/_/g, '.')
       return semverGt(semverCoerce(usableVersionString), this.fileVersion)

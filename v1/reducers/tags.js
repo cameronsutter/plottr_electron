@@ -5,10 +5,10 @@ import {
   FILE_LOADED,
   NEW_FILE,
   RESET,
-} from "../constants/ActionTypes"
-import { tag } from "../store/initialState"
-import { newFileTags } from "../store/newFileState"
-import { tagId } from "../store/newIds"
+} from '../constants/ActionTypes'
+import { tag } from '../store/initialState'
+import { newFileTags } from '../store/newFileState'
+import { tagId } from '../store/newIds'
 
 const initialState = [tag]
 

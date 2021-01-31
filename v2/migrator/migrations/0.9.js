@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 
-export default function migrate (data) {
+export default function migrate(data) {
   if (data.file && data.file.version === '0.9.0') return data
 
   var obj = cloneDeep(data)
@@ -11,7 +11,7 @@ export default function migrate (data) {
     places: [],
     cards: [],
     scenes: [],
-    lines: []
+    lines: [],
   }
 
   // add scenes (via cards) to characters
@@ -35,8 +35,5 @@ export default function migrate (data) {
   // add the default orientation
   obj['ui']['orientation'] = 'horizontal'
 
-
   return obj
 }
-
-

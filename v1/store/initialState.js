@@ -3,18 +3,18 @@
 export const scene = {
   id: 0,
   title: '',
-  position: 0
+  position: 0,
 }
 
 export const ui = {
   currentView: 'timeline',
-  orientation: 'horizontal'
+  orientation: 'horizontal',
 }
 
 export const file = {
   fileName: '',
   loaded: false,
-  dirty: false
+  dirty: false,
 }
 
 export const storyName = 'My awesome story'
@@ -26,7 +26,7 @@ export const character = {
   notes: '',
   color: null,
   cards: [],
-  noteIds: []
+  noteIds: [],
 }
 
 export const place = {
@@ -36,13 +36,13 @@ export const place = {
   notes: '',
   color: null,
   cards: [],
-  noteIds: []
+  noteIds: [],
 }
 
 export const tag = {
   id: 0,
   title: '',
-  color: null
+  color: null,
 }
 
 export const card = {
@@ -53,14 +53,14 @@ export const card = {
   description: '',
   tags: [],
   characters: [],
-  places: []
+  places: [],
 }
 
 export const line = {
   id: 0,
   color: '#6cace4',
   title: '',
-  position: 0
+  position: 0,
 }
 
 export const customAttributes = {
@@ -68,7 +68,7 @@ export const customAttributes = {
   places: [],
   cards: [],
   scenes: [],
-  lines: []
+  lines: [],
 }
 
 export const note = {
@@ -78,5 +78,5 @@ export const note = {
   tags: [],
   characters: [],
   places: [],
-  lastEdited: new Date().getTime()
+  lastEdited: new Date().getTime(),
 }

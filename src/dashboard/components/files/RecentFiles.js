@@ -10,7 +10,7 @@ import MissingIndicator from './MissingIndicator'
 import FileActions from './FileActions'
 import RecentsHeader from './RecentsHeader'
 
-export default function RecentFiles (props) {
+export default function RecentFiles(props) {
   const [searchTerm, setSearchTerm] = useState('')
   const [sortedIds, filesById] = useSortedKnownFiles(searchTerm)
   const [missingFiles, setMissing] = useState([])
@@ -47,38 +47,52 @@ export default function RecentFiles (props) {
       }
       let missing = null
       if (missingFiles.includes(id)) {
-        missing = <MissingIndicator/>
+        missing = <MissingIndicator />
       }
       const selected = selectedFile == id
-      return <Row key={idx} onDoubleClick={() => openFile(f.path, id)} onClick={() => selectFile(selected ? null : id)} className={cx({'selected': selected})}>
-        <Cell>
-          <div className='dashboard__recent-files__file-cell'>
-            <div>
-              <div className='title'>{missing}{basename.replace('.pltr', '')}</div>
-              <div className='secondary-text'>{formattedPath}</div>
+      return (
+        <Row
+          key={idx}
+          onDoubleClick={() => openFile(f.path, id)}
+          onClick={() => selectFile(selected ? null : id)}
+          className={cx({ selected: selected })}
+        >
+          <Cell>
+            <div className="dashboard__recent-files__file-cell">
+              <div>
+                <div className="title">
+                  {missing}
+                  {basename.replace('.pltr', '')}
+                </div>
+                <div className="secondary-text">{formattedPath}</div>
+              </div>
+              <FileActions missing={!!missing} id={id} filePath={f.path} openFile={openFile} />
             </div>
-            <FileActions missing={!!missing} id={id} filePath={f.path} openFile={openFile}/>
-          </div>
-        </Cell>
-        <Cell>
-          <div className='lastOpen'>{t('{date, date, monthDay}', {date: lastOpen})}</div>
-        </Cell>
-      </Row>
+          </Cell>
+          <Cell>
+            <div className="lastOpen">{t('{date, date, monthDay}', { date: lastOpen })}</div>
+          </Cell>
+        </Row>
+      )
     })
 
-    return <div className='dashboard__recent-files__table'>
-      <StickyTable leftStickyColumnCount={0}>
-        <Row>
-          <Cell>{t('Name')}</Cell>
-          <Cell>{t('Last opened by you')}</Cell>
-        </Row>
-        { renderedFiles }
-      </StickyTable>
-    </div>
+    return (
+      <div className="dashboard__recent-files__table">
+        <StickyTable leftStickyColumnCount={0}>
+          <Row>
+            <Cell>{t('Name')}</Cell>
+            <Cell>{t('Last opened by you')}</Cell>
+          </Row>
+          {renderedFiles}
+        </StickyTable>
+      </div>
+    )
   }
 
-  return <div className='dashboard__recent-files'>
-    <RecentsHeader setSearchTerm={setSearchTerm} />
-    { renderRecents() }
-  </div>
+  return (
+    <div className="dashboard__recent-files">
+      <RecentsHeader setSearchTerm={setSearchTerm} />
+      {renderRecents()}
+    </div>
+  )
 }

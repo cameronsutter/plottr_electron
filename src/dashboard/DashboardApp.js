@@ -10,31 +10,35 @@ import DashboardHeader from './components/navigation/DashboardHeader'
 // import 'style-loader!css-loader!sass-loader!./styles/dashboard.scss'
 
 const darkModeStorageKey = 'darkMode'
-let darkModeStorageValue = {isOn: false}
+let darkModeStorageValue = { isOn: false }
 try {
   darkModeStorageValue = JSON.parse(localStorage.getItem(darkModeStorageKey))
 } catch (error) {
   log.error('DA001', error)
 }
 
-export default function DashboardApp () {
+export default function DashboardApp() {
   const [view, setView] = useState('files')
-  const [darkMode, setDarkMode] = useState(darkModeStorageValue && darkModeStorageValue.isOn || false)
+  const [darkMode, setDarkMode] = useState(
+    (darkModeStorageValue && darkModeStorageValue.isOn) || false
+  )
 
   useEffect(() => {
     ipcRenderer.on('set-dark-mode', (event, isOn) => {
       setDarkMode(isOn)
-      localStorage.setItem(darkModeStorageKey, JSON.stringify({isOn}))
+      localStorage.setItem(darkModeStorageKey, JSON.stringify({ isOn }))
     })
 
     return () => ipcRenderer.removeAllListeners('set-dark-mode')
   }, [])
 
-  return <ErrorBoundary>
-    <DashboardHeader darkMode={darkMode}/>
-    <main className={cx({darkmode: darkMode})}>
-      <DashboardNavigation currentView={view} setView={setView}/>
-      <DashboardBody currentView={view} setView={setView}/>
-    </main>
-  </ErrorBoundary>
+  return (
+    <ErrorBoundary>
+      <DashboardHeader darkMode={darkMode} />
+      <main className={cx({ darkmode: darkMode })}>
+        <DashboardNavigation currentView={view} setView={setView} />
+        <DashboardBody currentView={view} setView={setView} />
+      </main>
+    </ErrorBoundary>
+  )
 }

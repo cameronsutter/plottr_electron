@@ -6,7 +6,12 @@ import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
-import { isZoomed, isZoomedOut, computeZoomMultiplier, computeZoomOutMultiplier } from 'helpers/zoom'
+import {
+  isZoomed,
+  isZoomedOut,
+  computeZoomMultiplier,
+  computeZoomOutMultiplier,
+} from 'helpers/zoom'
 
 const Horizontal = {
   first: 150,
@@ -24,7 +29,7 @@ class ChapterInsertCell extends PureComponent {
     handleInsert(chapterPosition, lineId)
   }
 
-  renderLine () {
+  renderLine() {
     const { tableLength, orientation, color, zoom } = this.props
 
     let length = tableLength
@@ -39,11 +44,15 @@ class ChapterInsertCell extends PureComponent {
     } else {
       lineStyle.height = `${length - Vertical.first - Vertical.last}px`
     }
-    return <div className={orientedClassName('line-title__line-line', orientation)} style={lineStyle}></div>
+    return (
+      <div
+        className={orientedClassName('line-title__line-line', orientation)}
+        style={lineStyle}
+      ></div>
+    )
   }
 
-
-  render () {
+  render() {
     const { isInChapterList, showLine, orientation, isLast } = this.props
     let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
     let chapterKlass = 'scene-list__insert'
@@ -55,18 +64,23 @@ class ChapterInsertCell extends PureComponent {
       chapterKlass += ' append-scene'
     }
     if (!isInChapterList) titleText = i18n('Insert Chapter and a Card')
-    return <Cell>
-      <div
-        title={titleText}
-        className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-scene', orientation)}
-        onClick={this.insert}
-      >
-        <div className={wrapperKlass}>
-          <Glyphicon glyph='plus' />
+    return (
+      <Cell>
+        <div
+          title={titleText}
+          className={orientedClassName(
+            isInChapterList ? chapterKlass : 'line-list__insert-scene',
+            orientation
+          )}
+          onClick={this.insert}
+        >
+          <div className={wrapperKlass}>
+            <Glyphicon glyph="plus" />
+          </div>
         </div>
-      </div>
-      {showLine ? this.renderLine() : null}
-    </Cell>
+        {showLine ? this.renderLine() : null}
+      </Cell>
+    )
   }
 
   static propTypes = {
@@ -83,14 +97,14 @@ class ChapterInsertCell extends PureComponent {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     orientation: state.present.ui.orientation,
-    zoom: {zoomState: state.present.ui.zoomState, zoomIndex: state.present.ui.zoomIndex},
+    zoom: { zoomState: state.present.ui.zoomState, zoomIndex: state.present.ui.zoomIndex },
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 

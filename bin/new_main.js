@@ -6,7 +6,12 @@ const contextMenu = require('electron-context-menu')
 const { setupRollbar } = require('./main_modules/rollbar')
 const { loadMenu } = require('./main_modules/menus')
 const { setupI18n } = require('../locales')
-const { focusFirstWindow, hasWindows, getWindowById, numberOfWindows } = require('./main_modules/windows')
+const {
+  focusFirstWindow,
+  hasWindows,
+  getWindowById,
+  numberOfWindows,
+} = require('./main_modules/windows')
 const { openProjectWindow } = require('./main_modules/windows/projects')
 const { getDarkMode } = require('./main_modules/theme')
 const { gracefullyQuit } = require('./main_modules/utils')
@@ -19,19 +24,19 @@ const SETTINGS = require('./main_modules/settings')
 ////////////////////////////////
 log.info('--------Startup Tasks--------')
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
-require('dotenv').config({path: ENV_FILE_PATH})
+require('dotenv').config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
 setupI18n(SETTINGS)
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
-  prepend: (defaultActions, params, browserWindow) => []
+  prepend: (defaultActions, params, browserWindow) => [],
 })
 
 if (process.env.NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
     log.error(err)
-    rollbar.error(err, function(sendErr, data) {
+    rollbar.error(err, function (sendErr, data) {
       gracefullyQuit()
     })
   })
@@ -39,7 +44,7 @@ if (process.env.NODE_ENV !== 'dev') {
 
 if (process.env.NODE_ENV === 'dev') {
   try {
-    require('electron-reloader')(module, {ignore: ['examples']})
+    require('electron-reloader')(module, { ignore: ['examples'] })
   } catch (e) {
     console.error('Error while instrumenting app for reload.', e)
   }
@@ -59,7 +64,7 @@ app.whenReady().then(() => {
     }
 
     // windows custom protocol link handler
-    log.info("open-url event: " + param)
+    log.info('open-url event: ' + param)
     // const link = param.replace('plottr://')
   }
 
@@ -95,7 +100,7 @@ app.on('open-url', function (event, url) {
   event.preventDefault()
   // mac custom protocol link handler
   // make sure to check that the app is ready
-  log.info("open-url event: " + url)
+  log.info('open-url event: ' + url)
   // const link = param.replace('plottr://')
 })
 

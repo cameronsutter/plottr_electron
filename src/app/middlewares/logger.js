@@ -1,4 +1,4 @@
-const logger = store => next => action => {
+const logger = (store) => (next) => (action) => {
   if (process.env.NODE_ENV === 'development' && process.env.LOGGER === 'true') {
     console.info('----------')
     console.info(`action: ${action.type}, payload: `, action)

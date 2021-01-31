@@ -2,19 +2,25 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Modal, Form, FormGroup, Col, Row, ControlLabel, FormControl, ButtonToolbar, Button } from 'react-bootstrap'
+import {
+  Modal,
+  Form,
+  FormGroup,
+  Col,
+  Row,
+  ControlLabel,
+  FormControl,
+  ButtonToolbar,
+  Button,
+} from 'react-bootstrap'
 import SETTINGS from '../../../common/utils/settings'
 import BookDialog from './BookDialog'
 import EditSeries from './EditSeries'
 import BookList from './BookList'
 import i18n from 'format-message'
 
-
 class Options extends Component {
-
-  render () {
-
-  }
+  render() {}
 
   static propTypes = {
     ui: PropTypes.object.isRequired,
@@ -23,7 +29,7 @@ class Options extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     ui: state.present.ui,
     series: state.present.series,
@@ -31,12 +37,8 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Options)
+export default connect(mapStateToProps, mapDispatchToProps)(Options)

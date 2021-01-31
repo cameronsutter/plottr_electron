@@ -1,4 +1,4 @@
-export function nextColor (length) {
+export function nextColor(length) {
   switch (length) {
     case 0:
       return '#6cace4' // blue

@@ -5,8 +5,16 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
-import { ButtonToolbar, Button, FormControl, FormGroup,
-  ControlLabel, Tooltip, OverlayTrigger, Glyphicon } from 'react-bootstrap'
+import {
+  ButtonToolbar,
+  Button,
+  FormControl,
+  FormGroup,
+  ControlLabel,
+  Tooltip,
+  OverlayTrigger,
+  Glyphicon,
+} from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
@@ -22,35 +30,41 @@ import { singleCharacterSelector } from '../../selectors/characters'
 import { sortedTagsSelector } from '../../selectors/tags'
 
 class CharacterView extends Component {
-  render () {
+  render() {
     const { character, tags, actions, ui } = this.props
 
-    return <div className={cx('character-list__character-view', { darkmode: ui.darkMode })}>
-      <div className='character-list__character-view__left-side'>
-        <BookSelectList
-          selectedBooks={character.bookIds}
-          parentId={character.id}
-          add={actions.addBook}
-          remove={actions.removeBook}
+    return (
+      <div className={cx('character-list__character-view', { darkmode: ui.darkMode })}>
+        <div className="character-list__character-view__left-side">
+          <BookSelectList
+            selectedBooks={character.bookIds}
+            parentId={character.id}
+            add={actions.addBook}
+            remove={actions.removeBook}
           />
-        <SelectList
-          parentId={character.id} type={'Tags'}
-          selectedItems={character.tags}
-          allItems={tags}
-          add={actions.addTag}
-          remove={actions.removeTag}
+          <SelectList
+            parentId={character.id}
+            type={'Tags'}
+            selectedItems={character.tags}
+            allItems={tags}
+            add={actions.addTag}
+            remove={actions.removeTag}
           />
+        </div>
+        <div className="character-list__character-view__right-side">
+          <ErrorBoundary>
+            {this.props.editing ? (
+              <CharacterEditDetails
+                characterId={character.id}
+                finishEditing={this.props.stopEditing}
+              />
+            ) : (
+              <CharacterDetails characterId={character.id} startEditing={this.props.startEditing} />
+            )}
+          </ErrorBoundary>
+        </div>
       </div>
-      <div className='character-list__character-view__right-side'>
-        <ErrorBoundary>
-          { this.props.editing ?
-            <CharacterEditDetails characterId={character.id} finishEditing={this.props.stopEditing} />
-            :
-            <CharacterDetails characterId={character.id} startEditing={this.props.startEditing}/>
-          }
-        </ErrorBoundary>
-      </div>
-    </div>
+    )
   }
 
   static propTypes = {
@@ -65,7 +79,7 @@ class CharacterView extends Component {
   }
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     character: singleCharacterSelector(state.present, ownProps.characterId),
     ui: state.present.ui,
@@ -73,16 +87,13 @@ function mapStateToProps (state, ownProps) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(CharacterActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CharacterView)
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterView)
 
 // renderAssociations () {
 //   let cards = null

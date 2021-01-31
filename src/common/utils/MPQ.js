@@ -2,11 +2,11 @@ import mixpanel from 'mixpanel-browser'
 import USER from './user_info'
 import log from 'electron-log'
 
-const superProps = {platform: process.platform}
+const superProps = { platform: process.platform }
 
 let daysLeft
 let isTrial = false
-export function setTrialInfo (isTrialMode, num) {
+export function setTrialInfo(isTrialMode, num) {
   isTrial = isTrialMode
   daysLeft = num
 }
@@ -14,7 +14,7 @@ export function setTrialInfo (isTrialMode, num) {
 class MixpanelQueue {
   queue = []
 
-  projectEventStats (event, basicAttrs={}, state) {
+  projectEventStats(event, basicAttrs = {}, state) {
     if (!event || process.env.NODE_ENV == 'development') return
     if (!USER.get('payment_id')) return
 
@@ -26,7 +26,7 @@ class MixpanelQueue {
         let totalTags = 0
         let totalChars = 0
         let totalPls = 0
-        state.cards.forEach(c => {
+        state.cards.forEach((c) => {
           totalTags += c.tags.length
           totalChars += c.characters.length
           totalPls += c.places.length
@@ -54,7 +54,7 @@ class MixpanelQueue {
     })
   }
 
-  push (event, attrs={}) {
+  push(event, attrs = {}) {
     if (!event || process.env.NODE_ENV == 'development') return
     if (!USER.get('payment_id')) return
 
@@ -65,13 +65,13 @@ class MixpanelQueue {
       days_left_of_trial: daysLeft,
       trial_mode: isTrial,
     }
-    this.queue.push({title: event, attributes: allAttrs})
+    this.queue.push({ title: event, attributes: allAttrs })
     if (navigator.onLine && mixpanel.__loaded) {
       this.flush()
     }
   }
 
-  flush () {
+  flush() {
     if (process.env.NODE_ENV == 'development') return
 
     // TODO: read from localStorage
@@ -92,4 +92,4 @@ class MixpanelQueue {
 const MPQ = new MixpanelQueue()
 export default MPQ
 
-window.addEventListener('online',  () => MPQ.flush())
+window.addEventListener('online', () => MPQ.flush())

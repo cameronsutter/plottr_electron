@@ -11,7 +11,7 @@ import cx from 'classnames'
 import { isSeriesSelector } from '../../selectors/ui'
 
 class BlankCard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       creating: false,
@@ -20,57 +20,49 @@ class BlankCard extends Component {
   }
 
   handleDragEnter = (e) => {
-    this.setState({dropping: true})
+    this.setState({ dropping: true })
   }
 
   handleDragOver = (e) => {
-    this.setState({dropping: true})
+    this.setState({ dropping: true })
     e.preventDefault()
   }
 
   handleDragLeave = (e) => {
-    this.setState({dropping: false})
+    this.setState({ dropping: false })
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({dropping: false})
+    this.setState({ dropping: false })
 
     const json = e.dataTransfer.getData('text/json')
     const droppedData = JSON.parse(json)
     if (!droppedData.cardId) return
 
-    const {
-      chapterId,
-      lineId,
-      isSeries
-    } = this.props;
+    const { chapterId, lineId, isSeries } = this.props
 
-    this.props.actions.reorderCardsWithinLine(
-      chapterId,
-      lineId,
-      isSeries,
-      [droppedData.cardId],
-    )
+    this.props.actions.reorderCardsWithinLine(chapterId, lineId, isSeries, [droppedData.cardId])
   }
 
   saveCreate = () => {
     const newCard = this.buildCard(findDOMNode(this.refs.titleInput).value)
     this.props.actions.addCard(newCard)
-    this.setState({creating: false})
+    this.setState({ creating: false })
   }
 
   handleFinishCreate = (event) => {
-    if (event.which === 13) { //enter
+    if (event.which === 13) {
+      //enter
       this.saveCreate()
     }
   }
 
   startCreating = () => {
-    this.setState({creating: true})
+    this.setState({ creating: true })
   }
 
-  buildCard (title) {
+  buildCard(title) {
     const { chapterId, lineId } = this.props
     if (this.props.isSeries) {
       return { title, beatId: chapterId, seriesLineId: lineId, positionWithinLine: 0 }
@@ -80,51 +72,58 @@ class BlankCard extends Component {
   }
 
   handleCancelCreate = (event) => {
-    if (event.which === 27) { //esc
-      this.setState({creating: false})
+    if (event.which === 27) {
+      //esc
+      this.setState({ creating: false })
     }
   }
 
   handleBlur = () => {
     var newTitle = findDOMNode(this.refs.titleInput).value
     if (newTitle === '') {
-      this.setState({creating: false})
+      this.setState({ creating: false })
       return false
     } else {
       this.saveCreate()
-      this.setState({creating: false})
+      this.setState({ creating: false })
     }
   }
 
-  renderBlank () {
+  renderBlank() {
     var blankCardStyle = {
-      borderColor: this.props.color
-    }
-    return <div className={cx('blank-card__body', {hover: this.state.dropping})} style={blankCardStyle} />
-  }
-
-  renderCreateNew () {
-    const cardStyle = {
-      borderColor: this.props.color
+      borderColor: this.props.color,
     }
     return (
-      <div className='card__body' style={cardStyle}>
+      <div
+        className={cx('blank-card__body', { hover: this.state.dropping })}
+        style={blankCardStyle}
+      />
+    )
+  }
+
+  renderCreateNew() {
+    const cardStyle = {
+      borderColor: this.props.color,
+    }
+    return (
+      <div className="card__body" style={cardStyle}>
         <FormGroup>
           <ControlLabel>{i18n('Scene Title')}</ControlLabel>
           <FormControl
-            type='text'
+            type="text"
             autoFocus
-            ref='titleInput'
-            bsSize='small'
+            ref="titleInput"
+            bsSize="small"
             onBlur={this.handleBlur}
             onKeyDown={this.handleCancelCreate}
-            onKeyPress={this.handleFinishCreate} />
+            onKeyPress={this.handleFinishCreate}
+          />
         </FormGroup>
       </div>
     )
   }
 
-  render () {
+  render() {
     window.SCROLLWITHKEYS = !this.state.creating
 
     let body = null
@@ -134,7 +133,7 @@ class BlankCard extends Component {
       body = this.renderBlank()
     }
 
-    const vertical = this.props.orientation === 'vertical';
+    const vertical = this.props.orientation === 'vertical'
     return (
       <Cell>
         <div
@@ -147,15 +146,13 @@ class BlankCard extends Component {
         >
           {/* This div is necessary to match the structure of scene cell cards
               and thus get the styles to apply in the same way (flexbox) */}
-          <div>
-            {body}
-          </div>
+          <div>{body}</div>
         </div>
       </Cell>
     )
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (this.state.dropping != nextState.dropping) return true
     if (this.state.creating != nextState.creating) return true
     if (this.props.color != nextProps.color) return true
@@ -172,7 +169,7 @@ BlankCard.propTypes = {
   isSeries: PropTypes.bool,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     currentTimeline: state.present.ui.currentTimeline,
     orientation: state.present.ui.orientation,
@@ -180,13 +177,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(CardActions, dispatch)
+    actions: bindActionCreators(CardActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BlankCard)
+export default connect(mapStateToProps, mapDispatchToProps)(BlankCard)

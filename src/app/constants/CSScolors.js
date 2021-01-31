@@ -139,7 +139,7 @@ export default [
   'white',
   'whitesmoke',
   'yellow',
-  'yellowgreen'
+  'yellowgreen',
 ]
 
 export const reds = [
@@ -163,7 +163,7 @@ export const reds = [
   'Coral',
   'DarkSalmon',
   'LightSalmon',
-  'PeachPuff'
+  'PeachPuff',
 ]
 
 export const oranges = [
@@ -181,7 +181,7 @@ export const oranges = [
   'LemonChiffon',
   'LightYellow',
   'Yellow',
-  'Gold'
+  'Gold',
 ]
 
 export const greens = [
@@ -210,7 +210,7 @@ export const greens = [
   'Honeydew',
   'DarkCyan',
   'Teal',
-  'LightSeaGreen'
+  'LightSeaGreen',
 ]
 
 export const blues = [
@@ -243,7 +243,7 @@ export const blues = [
   'LightSteelBlue',
   'Lavender',
   'MediumSlateBlue',
-  'SlateBlue'
+  'SlateBlue',
 ]
 
 export const purples = [
@@ -261,7 +261,7 @@ export const purples = [
   'Indigo',
   'MediumPurple',
   'Plum',
-  'Thistle'
+  'Thistle',
 ]
 
 export const grays = [
@@ -273,7 +273,7 @@ export const grays = [
   'DimGray',
   'LightSlateGray',
   'SlateGray',
-  'Black'
+  'Black',
 ]
 
 export const whites = [
@@ -290,7 +290,7 @@ export const whites = [
   'Snow',
   'LavenderBlush',
   'White',
-  'WhiteSmoke'
+  'WhiteSmoke',
 ]
 
 export const browns = [
@@ -300,17 +300,10 @@ export const browns = [
   'RosyBrown',
   'SaddleBrown',
   'DarkGoldenrod',
-  'Wheat'
+  'Wheat',
 ]
 
-export const defaults = [
-  '#6cace4',
-  '#78be20',
-  '#e5554f',
-  '#ff7f32',
-  '#ffc72c',
-  '#0b1117'
-]
+export const defaults = ['#6cace4', '#78be20', '#e5554f', '#ff7f32', '#ffc72c', '#0b1117']
 
 export const allcolors = [
   ...reds,
@@ -320,5 +313,5 @@ export const allcolors = [
   ...purples,
   ...grays,
   ...whites,
-  ...browns
+  ...browns,
 ]

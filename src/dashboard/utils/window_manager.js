@@ -9,7 +9,7 @@ import { emptyFile } from 'pltr/v2'
 const win = remote.getCurrentWindow()
 const { dialog, app } = remote
 
-export function openKnownFile (filePath, id) {
+export function openKnownFile(filePath, id) {
   if (id) {
     // update lastOpen, but wait a little so the file doesn't move from under their mouse
     setTimeout(() => {
@@ -19,10 +19,10 @@ export function openKnownFile (filePath, id) {
   ipcRenderer.send('pls-open-window', filePath, false)
 }
 
-export function openExistingFile () {
+export function openExistingFile() {
   // ask user where it is
-  const properties = [ 'openFile', 'createDirectory' ]
-  const filters = [{name: t('Plottr project file'), extensions: ['pltr']}]
+  const properties = ['openFile', 'createDirectory']
+  const filters = [{ name: t('Plottr project file'), extensions: ['pltr'] }]
   console.log('OPEN EXISTING')
   const files = dialog.showOpenDialogSync(win, { filters: filters, properties: properties })
   if (files && files.length) {
@@ -31,7 +31,7 @@ export function openExistingFile () {
   }
 }
 
-export function createNew (templateData) {
+export function createNew(templateData) {
   let json = emptyFile(t('Untitled'), app.getVersion())
 
   if (templateData) {
@@ -46,7 +46,7 @@ export function createNew (templateData) {
   }
 }
 
-export function createFromSnowflake (importedPath) {
+export function createFromSnowflake(importedPath) {
   const storyName = path.basename(importedPath, '.snowXML')
   let json = emptyFile(storyName, app.getVersion())
   // clear chapters and lines

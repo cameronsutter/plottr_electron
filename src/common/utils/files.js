@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-export function saveFile (filePath, jsonData) {
+export function saveFile(filePath, jsonData) {
   let stringData = ''
   if (process.env.NODE_ENV == 'development') {
     stringData = JSON.stringify(jsonData, null, 2)

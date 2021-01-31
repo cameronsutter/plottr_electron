@@ -8,7 +8,7 @@ import About from './About'
 import TrialInfo from './TrialInfo'
 import MPQ from '../../../common/utils/MPQ'
 
-export default function Account (props) {
+export default function Account(props) {
   const trialInfo = useTrialStatus()
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
   const firstTime = !licenseInfoSize && !trialInfo.started
@@ -20,32 +20,36 @@ export default function Account (props) {
 
   const renderUser = () => {
     // first time using the app
-    if (firstTime) return <ChoiceView/>
+    if (firstTime) return <ChoiceView />
 
     // active license
     if (licenseInfoSize) {
-      return <UserInfo licenseInfo={licenseInfo} deleteLicense={deleteLicense}/>
+      return <UserInfo licenseInfo={licenseInfo} deleteLicense={deleteLicense} />
     }
 
     // free trial
     if (trialInfo.expired) {
-      return <ExpiredView/>
+      return <ExpiredView />
     } else {
-      return <TrialInfo trialInfo={trialInfo}/>
+      return <TrialInfo trialInfo={trialInfo} />
     }
   }
 
   const renderBelow = () => {
     if (firstTime) return null
 
-    return <>
-      <hr/>
-      <About/>
-    </>
+    return (
+      <>
+        <hr />
+        <About />
+      </>
+    )
   }
 
-  return <div className='dashboard__account'>
-    { renderUser() }
-    { renderBelow() }
-  </div>
+  return (
+    <div className="dashboard__account">
+      {renderUser()}
+      {renderBelow()}
+    </div>
+  )
 }

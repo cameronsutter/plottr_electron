@@ -10,10 +10,10 @@ import log from 'electron-log'
 const { dialog } = remote
 const win = remote.getCurrentWindow()
 
-export default function FilesHome (props) {
+export default function FilesHome(props) {
   const [view, setView] = useState('recent')
 
-  const createWithTemplate = template => {
+  const createWithTemplate = (template) => {
     MPQ.push('btn_create_with_template')
     try {
       createNew(template.templateData)
@@ -24,7 +24,7 @@ export default function FilesHome (props) {
   }
 
   const createFomImport = () => {
-    MPQ.push('btn_create_from_import', {type: 'snowflake'})
+    MPQ.push('btn_create_from_import', { type: 'snowflake' })
     try {
       const importedPath = snowflakeImportDialog()
       if (importedPath) {
@@ -39,28 +39,34 @@ export default function FilesHome (props) {
   let body = null
   switch (view) {
     case 'templates':
-      body = <TemplatePicker startNew={createWithTemplate}/>
+      body = <TemplatePicker startNew={createWithTemplate} />
       break
     case 'import':
       body = null
       break
     default:
-      body = <RecentFiles/>
+      body = <RecentFiles />
       break
   }
 
-  return <div className='dashboard__files'>
-    <NewFiles activeView={view} toggleView={val => setView(val == view ? 'recent' : val)} doImport={createFomImport}/>
-    { body }
-  </div>
+  return (
+    <div className="dashboard__files">
+      <NewFiles
+        activeView={view}
+        toggleView={(val) => setView(val == view ? 'recent' : val)}
+        doImport={createFomImport}
+      />
+      {body}
+    </div>
+  )
 }
 
-function snowflakeImportDialog () {
+function snowflakeImportDialog() {
   const title = t('Choose your Snowflake Pro file')
-  const filters = [{name: 'Snowflake Pro file', extensions: ['snowXML']}]
-  const properties = [ 'openFile' ]
+  const filters = [{ name: 'Snowflake Pro file', extensions: ['snowXML'] }]
+  const properties = ['openFile']
   console.log('CHOOSING SNOWFLAKE')
-  const files = dialog.showOpenDialogSync(win, {title, filters, properties})
+  const files = dialog.showOpenDialogSync(win, { title, filters, properties })
   if (files && files.length) {
     const importedPath = files[0]
     if (importedPath.includes('.snowXML')) {

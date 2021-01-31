@@ -10,17 +10,18 @@ class CharacterCategoryFilterList extends Component {
     this.props.updateItems('category', ids)
   }
 
-  render () {
-    return <GenericFilterList
-      items={this.props.categories}
-      title={i18n('Categories')}
-      displayAttribute={'name'}
-      updateItems={this.updateItems}
-      filteredItems={this.props.filteredItems}
-    />
+  render() {
+    return (
+      <GenericFilterList
+        items={this.props.categories}
+        title={i18n('Categories')}
+        displayAttribute={'name'}
+        updateItems={this.updateItems}
+        filteredItems={this.props.filteredItems}
+      />
+    )
   }
 }
-
 
 CharacterCategoryFilterList.propTypes = {
   categories: PropTypes.array.isRequired,
@@ -28,17 +29,14 @@ CharacterCategoryFilterList.propTypes = {
   filteredItems: PropTypes.array,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     categories: sortedCharacterCategoriesSelector(state.present),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CharacterCategoryFilterList)
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterCategoryFilterList)

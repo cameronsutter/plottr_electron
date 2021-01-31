@@ -4,28 +4,32 @@ import { Label } from 'react-bootstrap'
 import { getContrastYIQ } from '../../common/utils/colors'
 
 class TagLabel extends Component {
-  render () {
+  render() {
     const { tag } = this.props
     let style = {
       backgroundColor: 'white',
       color: '#16222d',
-      border: '1px solid #16222d'
+      border: '1px solid #16222d',
     }
 
     if (tag.color) {
       const [useBlack, value] = getContrastYIQ(tag.color)
       if (useBlack) style.backgroundColor = tag.color
-      else style = {backgroundColor: tag.color}
+      else style = { backgroundColor: tag.color }
 
       if (value < 200) style.border = 'none'
     }
 
-    return <Label bsStyle='info' style={style}>{tag.title}</Label>
+    return (
+      <Label bsStyle="info" style={style}>
+        {tag.title}
+      </Label>
+    )
   }
 }
 
 TagLabel.propTypes = {
-  tag: PropTypes.object.isRequired
+  tag: PropTypes.object.isRequired,
 }
 
 export default TagLabel

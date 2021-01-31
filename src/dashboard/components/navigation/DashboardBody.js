@@ -13,9 +13,9 @@ import { ipcRenderer } from 'electron'
 import SETTINGS from '../../../common/utils/settings'
 import { checkForActiveLicense } from '../../../common/licensing/check_license'
 
-export default function DashboardBody ({currentView, setView}) {
+export default function DashboardBody({ currentView, setView }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
-  const {started, expired, daysLeft} = useTrialStatus()
+  const { started, expired, daysLeft } = useTrialStatus()
   const [showAccount, setShowAccount] = useState(false)
 
   useEffect(() => {
@@ -32,7 +32,6 @@ export default function DashboardBody ({currentView, setView}) {
     if (!licenseInfoSize && (!started || expired) && process.env.NODE_ENV !== 'development') {
       setShowAccount(false)
     }
-
   }, [licenseInfo, licenseInfoSize, started, expired])
 
   useEffect(() => {
@@ -51,9 +50,17 @@ export default function DashboardBody ({currentView, setView}) {
   if (showAccount) {
     switch (currentView) {
       case 'help':
-        return <Body><HelpHome/></Body>
+        return (
+          <Body>
+            <HelpHome />
+          </Body>
+        )
       default:
-        return <Body><Account/></Body>
+        return (
+          <Body>
+            <Account />
+          </Body>
+        )
     }
   }
 
@@ -69,23 +76,25 @@ export default function DashboardBody ({currentView, setView}) {
       body = <BackupsHome />
       break
     case 'options':
-      body = <OptionsHome/>
+      body = <OptionsHome />
       break
     case 'help':
-      body = <HelpHome/>
+      body = <HelpHome />
       break
     case 'files':
       body = <FilesHome />
       break
   }
 
-  return <Body>{ body }</Body>
+  return <Body>{body}</Body>
 }
 
-function Body ({children}) {
-  return <div className='dashboard__body'>
-    <div className='dashboard__top-border'></div>
-    <UpdateNotifier />
-    <ErrorBoundary>{ children }</ErrorBoundary>
-  </div>
+function Body({ children }) {
+  return (
+    <div className="dashboard__body">
+      <div className="dashboard__top-border"></div>
+      <UpdateNotifier />
+      <ErrorBoundary>{children}</ErrorBoundary>
+    </div>
+  )
 }

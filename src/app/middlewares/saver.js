@@ -10,7 +10,7 @@ const win = remote.getCurrentWindow()
 const BLACKLIST = [FILE_SAVED, FILE_LOADED]
 let itWorkedLastTime = true
 
-const saver = store => next => action => {
+const saver = (store) => (next) => (action) => {
   const result = next(action)
   if (BLACKLIST.includes(action.type)) return result
   const state = store.getState().present
@@ -19,7 +19,7 @@ const saver = store => next => action => {
   return result
 }
 
-function saveFile (filePath, jsonData) {
+function saveFile(filePath, jsonData) {
   let stringData = ''
   if (process.env.NODE_ENV == 'development') {
     stringData = JSON.stringify(jsonData, null, 2)
@@ -31,20 +31,26 @@ function saveFile (filePath, jsonData) {
     saveBackup(filePath, jsonData, (backupErr) => {
       if (backupErr) {
         log.warn('[save state backup]', backupErr)
-        rollbar.error({message: 'BACKUP failed'})
-        rollbar.warn(backupErr, {fileName: filePath})
+        rollbar.error({ message: 'BACKUP failed' })
+        rollbar.warn(backupErr, { fileName: filePath })
       }
     })
     if (saveErr) {
       log.warn(saveErr)
-      rollbar.warn(saveErr, {fileName: filePath})
+      rollbar.warn(saveErr, { fileName: filePath })
       itWorkedLastTime = false
-      dialog.showErrorBox(i18n('Auto-saving failed'), i18n("Saving your file didn't work. Check where it's stored."))
+      dialog.showErrorBox(
+        i18n('Auto-saving failed'),
+        i18n("Saving your file didn't work. Check where it's stored.")
+      )
     } else {
       // didn't work last time, but it did this time
       if (!itWorkedLastTime) {
         itWorkedLastTime = true
-        dialog.showMessageBox(win, {title: i18n('Auto-saving worked'), message: i18n("Saving worked this time 🎉")})
+        dialog.showMessageBox(win, {
+          title: i18n('Auto-saving worked'),
+          message: i18n('Saving worked this time 🎉'),
+        })
       }
     }
   })

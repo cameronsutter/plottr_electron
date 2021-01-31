@@ -6,23 +6,34 @@ import { FormControl } from 'react-bootstrap'
 import i18n from 'format-message'
 
 class CategoryPicker extends Component {
-
   onChange = () => {
     const val = findDOMNode(this.refs.selectRef).value
     this.props.onChange(val == -1 ? null : val)
   }
 
-  renderOptions () {
+  renderOptions() {
     const categories = [...this.props.categories]
-    categories.push({id: -1, name: i18n('Uncategorized')})
-    return categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)
+    categories.push({ id: -1, name: i18n('Uncategorized') })
+    return categories.map((cat) => (
+      <option key={cat.id} value={cat.id}>
+        {cat.name}
+      </option>
+    ))
   }
 
-  render () {
+  render() {
     let val = this.props.selectedId ? this.props.selectedId : -1
-    return <FormControl componentClass="select" placeholder={i18n('Choose')} onChange={this.onChange} ref='selectRef' value={val}>
-      { this.renderOptions() }
-    </FormControl>
+    return (
+      <FormControl
+        componentClass="select"
+        placeholder={i18n('Choose')}
+        onChange={this.onChange}
+        ref="selectRef"
+        value={val}
+      >
+        {this.renderOptions()}
+      </FormControl>
+    )
   }
 
   static propTypes = {
@@ -33,19 +44,15 @@ class CategoryPicker extends Component {
   }
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     categories: state.present.categories[ownProps.type],
     ui: state.present.ui,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CategoryPicker)
-
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryPicker)

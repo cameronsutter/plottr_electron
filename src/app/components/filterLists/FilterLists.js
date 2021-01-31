@@ -7,15 +7,15 @@ import { sortedTagsSelector } from '../selectors/tags'
 import TagFilterList from './TagFilterList'
 
 export default class FilterLists extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
-      filteredItems: props.filteredItems || this.defaultFilteredItemsObj()
+      filteredItems: props.filteredItems || this.defaultFilteredItemsObj(),
     }
   }
 
-  defaultFilteredItemsObj () {
-    return {tag: [], character: [], place: [], book: []}
+  defaultFilteredItemsObj() {
+    return { tag: [], character: [], place: [], book: [] }
   }
 
   updateFilter = (type, ids) => {
@@ -23,12 +23,17 @@ export default class FilterLists extends Component {
     filteredItems[type] = ids
 
     this.props.updateItems(filteredItems)
-    this.setState({filteredItems: filteredItems})
+    this.setState({ filteredItems: filteredItems })
   }
 
-  render () {
-    return <div className='filter-list flex'>
-      <TagFilterList updateItems={this.updateFilter} filteredItems={this.state.filteredItems.tag}/>
-    </div>
+  render() {
+    return (
+      <div className="filter-list flex">
+        <TagFilterList
+          updateItems={this.updateFilter}
+          filteredItems={this.state.filteredItems.tag}
+        />
+      </div>
+    )
   }
 }

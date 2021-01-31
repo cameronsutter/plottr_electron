@@ -3,7 +3,14 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { ButtonToolbar, Button,FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
+import {
+  ButtonToolbar,
+  Button,
+  FormControl,
+  FormGroup,
+  ControlLabel,
+  Glyphicon,
+} from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
@@ -18,7 +25,7 @@ import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import { placesSortedAtoZSelector } from '../../selectors/places'
 
 class NoteView extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       content: props.note.content,
@@ -27,23 +34,23 @@ class NoteView extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.props.editing) this.saveEdit(false)
   }
 
-  deleteNote = e => {
+  deleteNote = (e) => {
     e.stopPropagation()
     this.props.actions.deleteNote(this.props.note.id)
   }
 
-  cancelDelete = e => {
+  cancelDelete = (e) => {
     e.stopPropagation()
-    this.setState({deleting: false})
+    this.setState({ deleting: false })
   }
 
-  handleDelete = e => {
+  handleDelete = (e) => {
     e.stopPropagation()
-    this.setState({deleting: true})
+    this.setState({ deleting: true })
     this.props.stopEditing()
   }
 
@@ -63,7 +70,7 @@ class NoteView extends Component {
     const { note } = this.props
     let title = findDOMNode(this.refs.titleInput).value || note.title
     let content = this.state.content
-    let attrs = {title, content}
+    let attrs = { title, content }
     if (this.state.newImageId) {
       attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
     }
@@ -71,123 +78,154 @@ class NoteView extends Component {
     if (close) this.props.stopEditing()
   }
 
-
-  renderDelete () {
+  renderDelete() {
     if (!this.state.deleting) return null
 
-    return <DeleteConfirmModal name={this.props.note.title || i18n('New Note')} onDelete={this.deleteNote} onCancel={this.cancelDelete}/>
+    return (
+      <DeleteConfirmModal
+        name={this.props.note.title || i18n('New Note')}
+        onDelete={this.deleteNote}
+        onCancel={this.cancelDelete}
+      />
+    )
   }
 
-  renderBookSelectList () {
+  renderBookSelectList() {
     const { note, actions } = this.props
 
-    return <BookSelectList
-      selectedBooks={note.bookIds}
-      parentId={note.id}
-      add={actions.addBook}
-      remove={actions.removeBook}
-    />
+    return (
+      <BookSelectList
+        selectedBooks={note.bookIds}
+        parentId={note.id}
+        add={actions.addBook}
+        remove={actions.removeBook}
+      />
+    )
   }
 
-  renderEditingImage () {
+  renderEditingImage() {
     const { note } = this.props
 
     let imgId = this.state.newImageId || note.imageId
-    return <FormGroup>
-      <ControlLabel>{i18n('Note Image')}</ControlLabel>
-      <div className='note-list__note__edit-image-wrapper'>
-        <div className='note-list__note__edit-image'>
-          <Image size='small' shape='rounded' imageId={imgId}/>
+    return (
+      <FormGroup>
+        <ControlLabel>{i18n('Note Image')}</ControlLabel>
+        <div className="note-list__note__edit-image-wrapper">
+          <div className="note-list__note__edit-image">
+            <Image size="small" shape="rounded" imageId={imgId} />
+          </div>
+          <div>
+            <ImagePicker
+              selectedId={imgId}
+              chooseImage={(id) => this.setState({ newImageId: id })}
+              deleteButton
+            />
+          </div>
         </div>
-        <div>
-          <ImagePicker selectedId={imgId} chooseImage={id => this.setState({newImageId: id})} deleteButton />
-        </div>
-      </div>
-    </FormGroup>
+      </FormGroup>
+    )
   }
 
-  renderContent () {
+  renderContent() {
     const { note, ui } = this.props
     if (this.props.editing) {
-      return <div className='note-list__content editing'>
-        <div className='note-list__note__edit-form'>
-          <FormGroup>
-            <ControlLabel>{i18n('Title')}</ControlLabel>
-            <FormControl
-              type='text' ref='titleInput' autoFocus
-              onKeyDown={this.handleEsc}
-              onKeyPress={this.handleEnter}
-              onChange={() => this.setState({unsaved: true})}
-              defaultValue={note.title} style={{marginBottom: '10px'}}/>
-          </FormGroup>
-          { this.renderEditingImage() }
-          <FormGroup>
-            <ControlLabel>{i18n('Content')}</ControlLabel>
-            <RichText
-              description={note.content}
-              onChange={(desc) => this.setState({content: desc})}
-              editable
-              autofocus={false}
-              darkMode={ui.darkMode}
-            />
-          </FormGroup>
+      return (
+        <div className="note-list__content editing">
+          <div className="note-list__note__edit-form">
+            <FormGroup>
+              <ControlLabel>{i18n('Title')}</ControlLabel>
+              <FormControl
+                type="text"
+                ref="titleInput"
+                autoFocus
+                onKeyDown={this.handleEsc}
+                onKeyPress={this.handleEnter}
+                onChange={() => this.setState({ unsaved: true })}
+                defaultValue={note.title}
+                style={{ marginBottom: '10px' }}
+              />
+            </FormGroup>
+            {this.renderEditingImage()}
+            <FormGroup>
+              <ControlLabel>{i18n('Content')}</ControlLabel>
+              <RichText
+                description={note.content}
+                onChange={(desc) => this.setState({ content: desc })}
+                editable
+                autofocus={false}
+                darkMode={ui.darkMode}
+              />
+            </FormGroup>
+          </div>
+          <ButtonToolbar className="card-dialog__button-bar">
+            <Button bsStyle="success" onClick={this.saveEdit}>
+              {i18n('Save')}
+            </Button>
+            <Button className="card-dialog__delete" onClick={this.handleDelete}>
+              {i18n('Delete')}
+            </Button>
+          </ButtonToolbar>
         </div>
-        <ButtonToolbar className='card-dialog__button-bar'>
-          <Button bsStyle='success' onClick={this.saveEdit}>
-            {i18n('Save')}
-          </Button>
-          <Button className='card-dialog__delete' onClick={this.handleDelete}>
-            {i18n('Delete')}
-          </Button>
-        </ButtonToolbar>
-      </div>
+      )
     } else {
       let img = null
       if (note.imageId) {
-        img = <div className='text-center'>
-          <Image responsive imageId={note.imageId} />
-        </div>
+        img = (
+          <div className="text-center">
+            <Image responsive imageId={note.imageId} />
+          </div>
+        )
       }
-      return <div className='note-list__content' onClick={this.props.startEditing}>
-        <h4 className='secondary-text'>{note.title || i18n('New Note')}</h4>
-        { img }
-        <RichText description={note.content} darkMode={ui.darkMode} />
-        <Glyphicon className='pull-right' glyph='pencil' />
-      </div>
+      return (
+        <div className="note-list__content" onClick={this.props.startEditing}>
+          <h4 className="secondary-text">{note.title || i18n('New Note')}</h4>
+          {img}
+          <RichText description={note.content} darkMode={ui.darkMode} />
+          <Glyphicon className="pull-right" glyph="pencil" />
+        </div>
+      )
     }
   }
 
-  render () {
+  render() {
     const { editing, ui, note, characters, actions, places, tags } = this.props
-    return <div className='note-list__note-wrapper'>
-      { this.renderDelete() }
-      <div className={cx('note-list__note', {editing: editing, darkmode: ui.darkMode})}>
-        <div className='note-list__body'>
-          <div className='note-list__left-side'>
-            { this.renderBookSelectList() }
-            <SelectList
-              parentId={note.id} type={'Characters'}
-              selectedItems={note.characters}
-              allItems={characters}
-              add={actions.addCharacter}
-              remove={actions.removeCharacter} />
-            <SelectList
-              parentId={note.id} type={'Places'}
-              selectedItems={note.places}
-              allItems={places}
-              add={actions.addPlace}
-              remove={actions.removePlace} />
-            <SelectList
-              parentId={note.id} type={'Tags'}
-              selectedItems={note.tags}
-              allItems={tags}
-              add={actions.addTag}
-              remove={actions.removeTag} />
+    return (
+      <div className="note-list__note-wrapper">
+        {this.renderDelete()}
+        <div className={cx('note-list__note', { editing: editing, darkmode: ui.darkMode })}>
+          <div className="note-list__body">
+            <div className="note-list__left-side">
+              {this.renderBookSelectList()}
+              <SelectList
+                parentId={note.id}
+                type={'Characters'}
+                selectedItems={note.characters}
+                allItems={characters}
+                add={actions.addCharacter}
+                remove={actions.removeCharacter}
+              />
+              <SelectList
+                parentId={note.id}
+                type={'Places'}
+                selectedItems={note.places}
+                allItems={places}
+                add={actions.addPlace}
+                remove={actions.removePlace}
+              />
+              <SelectList
+                parentId={note.id}
+                type={'Tags'}
+                selectedItems={note.tags}
+                allItems={tags}
+                add={actions.addTag}
+                remove={actions.removeTag}
+              />
+            </div>
+            {this.renderContent()}
           </div>
-          {this.renderContent()}
         </div>
       </div>
-    </div>
+    )
   }
 }
 
@@ -203,7 +241,7 @@ NoteView.propTypes = {
   ui: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     tags: sortedTagsSelector(state.present),
     characters: charactersSortedAtoZSelector(state.present),
@@ -212,13 +250,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(NoteActions, dispatch)
+    actions: bindActionCreators(NoteActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoteView)
+export default connect(mapStateToProps, mapDispatchToProps)(NoteView)

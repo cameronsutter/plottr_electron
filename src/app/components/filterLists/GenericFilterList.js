@@ -24,42 +24,43 @@ export default class GenericFilterList extends Component {
     this.props.updateItems(filteredItems)
   }
 
-  isChecked (id) {
+  isChecked(id) {
     return this.props.filteredItems.includes(id)
   }
 
-  renderFilterList (items, attr) {
+  renderFilterList(items, attr) {
     var renderedItems = items.map((i) => {
       return this.renderFilterItem(i, attr)
     })
-    return (
-      <ul className='filter-list__list'>
-        { renderedItems }
-      </ul>
-    )
+    return <ul className="filter-list__list">{renderedItems}</ul>
   }
 
-  renderFilterItem (item, attr) {
+  renderFilterItem(item, attr) {
     if (!item) return null
 
     var checked = 'unchecked'
     if (this.isChecked(item.id)) {
       checked = 'eye-open'
     }
-    return <li key={item.id} onMouseDown={() => this.filterItem(item.id)}>
-      <Glyphicon glyph={checked} /> {item[attr]}
-    </li>
+    return (
+      <li key={item.id} onMouseDown={() => this.filterItem(item.id)}>
+        <Glyphicon glyph={checked} /> {item[attr]}
+      </li>
+    )
   }
 
-  render () {
+  render() {
     const { title, items, displayAttribute } = this.props
-    return <div>
-      <p onClick={() => this.filterList(items)}><em>{title}</em></p>
-      {this.renderFilterList(items, displayAttribute)}
-    </div>
+    return (
+      <div>
+        <p onClick={() => this.filterList(items)}>
+          <em>{title}</em>
+        </p>
+        {this.renderFilterList(items, displayAttribute)}
+      </div>
+    )
   }
 }
-
 
 GenericFilterList.propTypes = {
   items: PropTypes.array.isRequired,

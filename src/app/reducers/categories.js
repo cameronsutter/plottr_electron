@@ -1,11 +1,18 @@
-import { FILE_LOADED, NEW_FILE, RESET, ADD_CHARACTER_CATEGORY, DELETE_CHARACTER_CATEGORY,
-  UPDATE_CHARACTER_CATEGORY, REORDER_CHARACTER_CATEGORY } from '../constants/ActionTypes'
+import {
+  FILE_LOADED,
+  NEW_FILE,
+  RESET,
+  ADD_CHARACTER_CATEGORY,
+  DELETE_CHARACTER_CATEGORY,
+  UPDATE_CHARACTER_CATEGORY,
+  REORDER_CHARACTER_CATEGORY,
+} from '../constants/ActionTypes'
 import { newFileCategories } from '../../../shared/newFileState'
 import { categories as defaultCategories } from '../../../shared/initialState'
 import { nextId } from 'store/newIds'
 import { positionReset } from '../helpers/lists'
 
-export default function categories (state = defaultCategories, action) {
+export default function categories(state = defaultCategories, action) {
   switch (action.type) {
     case RESET:
     case FILE_LOADED:
@@ -41,20 +48,17 @@ function addCategory(key, state, action) {
         id,
         name: action.name,
         position: state[key].length,
-      }
-    ]
+      },
+    ],
   }
 }
 
 function deleteCategory(key, state, action) {
-  const index = state[key].findIndex(item => item.id === action.category.id)
+  const index = state[key].findIndex((item) => item.id === action.category.id)
   if (index == -1) return state
 
-  const newArray = [
-    ...state[key].slice(0, index),
-    ...state[key].slice(index + 1),
-  ]
-  newArray.forEach((category, i) => category.position = i)
+  const newArray = [...state[key].slice(0, index), ...state[key].slice(index + 1)]
+  newArray.forEach((category, i) => (category.position = i))
 
   return {
     ...state,
@@ -63,7 +67,7 @@ function deleteCategory(key, state, action) {
 }
 
 function updateCategory(key, state, action) {
-  const index = state[key].findIndex(item => item.id === action.category.id)
+  const index = state[key].findIndex((item) => item.id === action.category.id)
   if (index === -1) return state
 
   const newArray = [...state[key]]
@@ -79,9 +83,7 @@ function updateCategory(key, state, action) {
 }
 
 function reorderCategory(key, state, { toIndex, category }) {
-  const copy = state[key]
-    .slice()
-    .filter(({ id }) => id != category.id)
+  const copy = state[key].slice().filter(({ id }) => id != category.id)
 
   copy.splice(toIndex, 0, category)
   const newList = positionReset(copy) // have to change the value of the position attribute

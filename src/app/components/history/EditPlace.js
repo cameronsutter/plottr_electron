@@ -4,28 +4,46 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 
 class EditPlace extends Component {
-
-  renderDiff (diff, index) {
+  renderDiff(diff, index) {
     if (diff.path[2] === 'color') {
       return (
         <div key={`diff-${index}-${diff.path[1]}`}>
           <span>{diff.path[2]}</span>
-          <p>{i18n('Before')}: <span className='history-component__item__before' style={{color: diff.lhs}}>{diff.lhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.lhs}}></span></p>
-          <p>{i18n('After')}: <span style={{color: diff.rhs}}>{diff.rhs} </span><span className='history-component__item__color' style={{backgroundColor: diff.rhs}}></span></p>
+          <p>
+            {i18n('Before')}:{' '}
+            <span className="history-component__item__before" style={{ color: diff.lhs }}>
+              {diff.lhs}{' '}
+            </span>
+            <span
+              className="history-component__item__color"
+              style={{ backgroundColor: diff.lhs }}
+            ></span>
+          </p>
+          <p>
+            {i18n('After')}: <span style={{ color: diff.rhs }}>{diff.rhs} </span>
+            <span
+              className="history-component__item__color"
+              style={{ backgroundColor: diff.rhs }}
+            ></span>
+          </p>
         </div>
       )
     } else {
       return (
         <div key={`diff-${index}-${diff.path[1]}`}>
           <span>{diff.path[2]}</span>
-          <p>{i18n('Before')}: <span className='history-component__item__before'>{diff.lhs}</span></p>
-          <p>{i18n('After')}: <span className='history-component__item__after'>{diff.rhs}</span></p>
+          <p>
+            {i18n('Before')}: <span className="history-component__item__before">{diff.lhs}</span>
+          </p>
+          <p>
+            {i18n('After')}: <span className="history-component__item__after">{diff.rhs}</span>
+          </p>
         </div>
       )
     }
   }
 
-  render () {
+  render() {
     const item = this.props.item
     const diffs = item.diff.map(this.renderDiff, this)
     var label = item.action.type.indexOf('PLACE') === -1 ? 'character' : 'place'
@@ -34,7 +52,9 @@ class EditPlace extends Component {
     if (item.action && item.action.attributes) value = item.action.attributes.name
     return (
       <div>
-        <span>{label}: "{value}"</span>
+        <span>
+          {label}: "{value}"
+        </span>
         {diffs}
       </div>
     )
@@ -42,20 +62,15 @@ class EditPlace extends Component {
 }
 
 EditPlace.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditPlace)
+export default connect(mapStateToProps, mapDispatchToProps)(EditPlace)

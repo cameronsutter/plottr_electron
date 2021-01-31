@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 
 class AddScene extends Component {
-
-  render () {
+  render() {
     const item = this.props.item
     return (
       <div>
@@ -16,20 +15,15 @@ class AddScene extends Component {
 }
 
 AddScene.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddScene)
+export default connect(mapStateToProps, mapDispatchToProps)(AddScene)

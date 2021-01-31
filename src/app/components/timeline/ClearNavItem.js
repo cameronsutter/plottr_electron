@@ -10,31 +10,37 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { currentTimelineSelector } from '../../selectors/ui'
 
 class ClearNavItem extends Component {
-  state = {deleting: false}
+  state = { deleting: false }
 
   clearTimeline = (e) => {
     e.stopPropagation()
-    this.setState({deleting: false})
+    this.setState({ deleting: false })
     this.props.actions.resetTimeline(this.props.bookId)
   }
 
-  renderDelete () {
+  renderDelete() {
     if (!this.state.deleting) return null
 
     const text = i18n('Are you sure you want to clear everything in this timeline?')
-    return <DeleteConfirmModal
-      onDelete={this.clearTimeline}
-      onCancel={() => this.setState({deleting: false})}
-      customText={text}
-      notSubmit
-    />
+    return (
+      <DeleteConfirmModal
+        onDelete={this.clearTimeline}
+        onCancel={() => this.setState({ deleting: false })}
+        customText={text}
+        notSubmit
+      />
+    )
   }
 
-  render () {
-    return <NavItem>
-      <Button bsSize='small' onClick={() => this.setState({deleting: true})}><Glyphicon glyph='refresh'/>{' '}{i18n('Clear')}</Button>
-      { this.renderDelete() }
-    </NavItem>
+  render() {
+    return (
+      <NavItem>
+        <Button bsSize="small" onClick={() => this.setState({ deleting: true })}>
+          <Glyphicon glyph="refresh" /> {i18n('Clear')}
+        </Button>
+        {this.renderDelete()}
+      </NavItem>
+    )
   }
 }
 
@@ -42,19 +48,16 @@ ClearNavItem.propTypes = {
   bookId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     bookId: currentTimelineSelector(state.present),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(UIActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ClearNavItem)
+export default connect(mapStateToProps, mapDispatchToProps)(ClearNavItem)

@@ -15,20 +15,20 @@ import MiniChapter from './MiniChapter'
 const targetPosition = 115
 
 class MiniMap extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = {mouseOver: false, firstRender: true}
+    this.state = { mouseOver: false, firstRender: true }
     this.firstChapterKey = props.chapters.length ? props.chapters[0].id : 0 // this works since they are sorted
   }
 
-  componentDidMount () {
-    setTimeout(() => this.setState({firstRender: false}), 300)
+  componentDidMount() {
+    setTimeout(() => this.setState({ firstRender: false }), 300)
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
-      this.setState({firstRender: true})
-      setTimeout(() => this.setState({firstRender: false}), 500)
+      this.setState({ firstRender: true })
+      setTimeout(() => this.setState({ firstRender: false }), 500)
     }
   }
 
@@ -42,43 +42,58 @@ class MiniMap extends Component {
     }
   }
 
-  renderChapters () {
-    const { lines, chapters, activeFilter, isSeries, cardMapping, positionOffset, actions } = this.props
+  renderChapters() {
+    const {
+      lines,
+      chapters,
+      activeFilter,
+      isSeries,
+      cardMapping,
+      positionOffset,
+      actions,
+    } = this.props
     const linesById = keyBy(lines, 'id')
     return chapters.map((ch, idx) => {
       if (this.state.firstRender && idx > 20) return null
       const chapterCards = cardMapping[ch.id]
       if (activeFilter && !chapterCards.length) return null
 
-      return <NavItem ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`} eventKey={ch.id}>
-        <MiniChapter
-          chapter={ch} idx={idx + positionOffset} cards={chapterCards} linesById={linesById} isSeries={isSeries}
-          sortedLines={lines} positionOffset={positionOffset}
-          reorderCardsWithinLine={actions.reorderCardsWithinLine}
-          reorderCardsInChapter={actions.reorderCardsInChapter}
-        />
-      </NavItem>
+      return (
+        <NavItem ref={`chapter-${ch.id}`} key={`minimap-chapter-${ch.id}`} eventKey={ch.id}>
+          <MiniChapter
+            chapter={ch}
+            idx={idx + positionOffset}
+            cards={chapterCards}
+            linesById={linesById}
+            isSeries={isSeries}
+            sortedLines={lines}
+            positionOffset={positionOffset}
+            reorderCardsWithinLine={actions.reorderCardsWithinLine}
+            reorderCardsInChapter={actions.reorderCardsInChapter}
+          />
+        </NavItem>
+      )
     })
   }
 
-  render () {
+  render() {
     return (
       <Nav
-        className={cx('outline__minimap', {darkmode: this.props.ui.darkMode})}
+        className={cx('outline__minimap', { darkmode: this.props.ui.darkMode })}
         activeKey={this.props.active}
         onSelect={this.selectNav}
-        onMouseEnter={() => this.setState({mouseOver: true})}
-        onMouseLeave={() => this.setState({mouseOver: false})}
+        onMouseEnter={() => this.setState({ mouseOver: true })}
+        onMouseLeave={() => this.setState({ mouseOver: false })}
       >
-        { this.renderChapters() }
+        {this.renderChapters()}
       </Nav>
     )
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (!this.state.mouseOver) {
-      const chapter = this.props.chapters.find(ch => ch.id === this.props.active)
-      let title = ""
+      const chapter = this.props.chapters.find((ch) => ch.id === this.props.active)
+      let title = ''
       if (chapter) title = `chapter-${chapter.id}`
       var domNode = findDOMNode(this.refs[title])
       if (domNode) {
@@ -87,7 +102,7 @@ class MiniMap extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (nextState.mouseOver != this.state.mouseOver) return false
     return true
   }
@@ -104,7 +119,7 @@ MiniMap.propTypes = {
   positionOffset: PropTypes.number.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     chapters: sortedChaptersByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
@@ -114,13 +129,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(CardActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MiniMap)
+export default connect(mapStateToProps, mapDispatchToProps)(MiniMap)

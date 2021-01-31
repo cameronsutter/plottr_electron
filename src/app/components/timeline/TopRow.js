@@ -20,7 +20,6 @@ import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { isSeriesSelector } from '../../selectors/ui'
 
 class TopRow extends Component {
-
   handleReorderChapters = (originalPosition, droppedPosition) => {
     const { ui, beatActions, sceneActions, isSeries, chapters } = this.props
     const newChapters = reorderList(originalPosition, droppedPosition, chapters)
@@ -69,33 +68,69 @@ class TopRow extends Component {
     }
   }
 
-  renderLastInsertChapterCell () {
+  renderLastInsertChapterCell() {
     const { orientation } = this.props.ui
-    return <ChapterInsertCell key='last-insert' isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true} orientation={orientation}/>
+    return (
+      <ChapterInsertCell
+        key="last-insert"
+        isInChapterList={true}
+        handleInsert={this.handleAppendChapter}
+        isLast={true}
+        orientation={orientation}
+      />
+    )
   }
 
-  renderChapters () {
+  renderChapters() {
     const { ui, chapters } = this.props
-    const renderedChapters = chapters.flatMap(ch => {
+    const renderedChapters = chapters.flatMap((ch) => {
       const cells = []
-      cells.push(<ChapterInsertCell key={`chapterId-${ch.id}-insert`} isInChapterList={true} chapterPosition={ch.position} handleInsert={this.handleInsertNewChapter} orientation={ui.orientation}/>)
-      cells.push(<ChapterTitleCell key={`chapterId-${ch.id}`} chapterId={ch.id} handleReorder={this.handleReorderChapters} />)
+      cells.push(
+        <ChapterInsertCell
+          key={`chapterId-${ch.id}-insert`}
+          isInChapterList={true}
+          chapterPosition={ch.position}
+          handleInsert={this.handleInsertNewChapter}
+          orientation={ui.orientation}
+        />
+      )
+      cells.push(
+        <ChapterTitleCell
+          key={`chapterId-${ch.id}`}
+          chapterId={ch.id}
+          handleReorder={this.handleReorderChapters}
+        />
+      )
       return cells
     })
-    return [<Cell key='placeholder'/>].concat(renderedChapters).concat([this.renderLastInsertChapterCell()])
+    return [<Cell key="placeholder" />]
+      .concat(renderedChapters)
+      .concat([this.renderLastInsertChapterCell()])
   }
 
-  renderLines () {
-    const renderedLines = this.props.lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>)
-    return [<Cell key='placeholder'/>].concat(renderedLines).concat(
-      <Row key='insert-line'>
+  renderLines() {
+    const renderedLines = this.props.lines.map((line) => (
+      <LineTitleCell
+        key={`line-${line.id}`}
+        line={line}
+        handleReorder={this.handleReorderLines}
+        bookId={this.props.ui.currentTimeline}
+      />
+    ))
+    return [<Cell key="placeholder" />].concat(renderedLines).concat(
+      <Row key="insert-line">
         <Cell>
           <div
             className={orientedClassName('line-list__append-line', this.props.ui.orientation)}
             onClick={this.handleAppendLine}
           >
-            <div className={orientedClassName('line-list__append-line-wrapper', this.props.ui.orientation)}>
-              <Glyphicon glyph='plus' />
+            <div
+              className={orientedClassName(
+                'line-list__append-line-wrapper',
+                this.props.ui.orientation
+              )}
+            >
+              <Glyphicon glyph="plus" />
             </div>
           </div>
         </Cell>
@@ -103,7 +138,7 @@ class TopRow extends Component {
     )
   }
 
-  render () {
+  render() {
     let body = null
     if (this.props.ui.orientation === 'horizontal') body = this.renderChapters()
     else body = this.renderLines()
@@ -118,7 +153,7 @@ TopRow.propTypes = {
   lines: PropTypes.array,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   let nextChapterId = -1
   const bookId = state.present.ui.currentTimeline
   if (bookId == 'series') {
@@ -136,7 +171,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),

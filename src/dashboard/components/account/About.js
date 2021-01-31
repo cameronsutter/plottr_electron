@@ -7,7 +7,7 @@ import MPQ from '../../../common/utils/MPQ'
 const { app } = remote
 const autoUpdater = remote.require('electron-differential-updater').autoUpdater
 
-export default function About (props) {
+export default function About(props) {
   const checkForUpdates = () => {
     if (process.env.NODE_ENV == 'development') return
     MPQ.push('btn_check_for_updates')
@@ -23,29 +23,45 @@ export default function About (props) {
 
   const renderUpdater = () => {
     if (SETTINGS.get('canGetUpdates')) {
-      return <dd><Button bsSize='small' onClick={checkForUpdates}>{t('Check for Updates')}</Button></dd>
+      return (
+        <dd>
+          <Button bsSize="small" onClick={checkForUpdates}>
+            {t('Check for Updates')}
+          </Button>
+        </dd>
+      )
     } else {
-      return <dd><span className='text-danger'>{t('Not Receiving Updates')}</span></dd>
+      return (
+        <dd>
+          <span className="text-danger">{t('Not Receiving Updates')}</span>
+        </dd>
+      )
     }
   }
 
-  return <div className='dashboard__about'>
-    <h1>{t('About Plottr')}</h1>
-    <div className='dashboard__about__wrapper'>
-      <dl className='dl-horizontal'>
-        <dt>{t('Version')}</dt>
-        <dd>{app.getVersion()}</dd>
-        <dt>{t('Updates')}</dt>
-        { renderUpdater() }
-        <dt>{t('Changelog')}</dt>
-        <dd><a href='#' onClick={seeChangelog}>{t("See What's New")}</a></dd>
-      </dl>
-      <dl className='dl-horizontal'>
-        <dt>{t('Created By')}</dt>
-        <dd>{t('Fictional Devices LLC')}</dd>
-        <dd>Cameron Sutter</dd>
-        <dd>Ryan Zee</dd>
-      </dl>
+  return (
+    <div className="dashboard__about">
+      <h1>{t('About Plottr')}</h1>
+      <div className="dashboard__about__wrapper">
+        <dl className="dl-horizontal">
+          <dt>{t('Version')}</dt>
+          <dd>{app.getVersion()}</dd>
+          <dt>{t('Updates')}</dt>
+          {renderUpdater()}
+          <dt>{t('Changelog')}</dt>
+          <dd>
+            <a href="#" onClick={seeChangelog}>
+              {t("See What's New")}
+            </a>
+          </dd>
+        </dl>
+        <dl className="dl-horizontal">
+          <dt>{t('Created By')}</dt>
+          <dd>{t('Fictional Devices LLC')}</dd>
+          <dd>Cameron Sutter</dd>
+          <dd>Ryan Zee</dd>
+        </dl>
+      </div>
     </div>
-  </div>
+  )
 }

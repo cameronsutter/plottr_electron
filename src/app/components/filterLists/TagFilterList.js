@@ -10,17 +10,18 @@ class TagFilterList extends Component {
     this.props.updateItems('tag', ids)
   }
 
-  render () {
-    return <GenericFilterList
-      items={this.props.tags}
-      title={i18n('Tags')}
-      displayAttribute={'title'}
-      updateItems={this.updateItems}
-      filteredItems={this.props.filteredItems}
-    />
+  render() {
+    return (
+      <GenericFilterList
+        items={this.props.tags}
+        title={i18n('Tags')}
+        displayAttribute={'title'}
+        updateItems={this.updateItems}
+        filteredItems={this.props.filteredItems}
+      />
+    )
   }
 }
-
 
 TagFilterList.propTypes = {
   tags: PropTypes.array.isRequired,
@@ -28,17 +29,14 @@ TagFilterList.propTypes = {
   filteredItems: PropTypes.array,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     tags: sortedTagsSelector(state.present),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TagFilterList)
+export default connect(mapStateToProps, mapDispatchToProps)(TagFilterList)

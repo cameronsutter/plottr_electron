@@ -1,18 +1,13 @@
 import { createSelector } from 'reselect'
 import { sortBy } from 'lodash'
-import {
-  placeSortSelector,
-  placeFilterSelector,
-  currentTimelineSelector,
-} from './ui'
+import { placeSortSelector, placeFilterSelector, currentTimelineSelector } from './ui'
 
-export const allPlacesSelector = state => state.places
+export const allPlacesSelector = (state) => state.places
 // this one also lives in ./customAttributes.js but it causes a circular dependency to import it here
-export const placeCustomAttributesSelector = state => state.customAttributes.places
+export const placeCustomAttributesSelector = (state) => state.customAttributes.places
 
-export const placesSortedAtoZSelector = createSelector(
-  allPlacesSelector,
-  (places) => sortBy(places, 'name')
+export const placesSortedAtoZSelector = createSelector(allPlacesSelector, (places) =>
+  sortBy(places, 'name')
 )
 
 export const placeFilterIsEmptySelector = createSelector(
@@ -20,8 +15,8 @@ export const placeFilterIsEmptySelector = createSelector(
   placeCustomAttributesSelector,
   (filter, attributes) => {
     if (!filter) return true
-    const allAttributes = [{name:'tag'}, {name:'book'}, ...attributes]
-    return !allAttributes.some(attr => filter[attr.name] && filter[attr.name].length)
+    const allAttributes = [{ name: 'tag' }, { name: 'book' }, ...attributes]
+    return !allAttributes.some((attr) => filter[attr.name] && filter[attr.name].length)
   }
 )
 
@@ -36,9 +31,9 @@ export const visibleSortedPlacesSelector = createSelector(
     let visible = allPlaces
     if (!filterIsEmpty) {
       visible = []
-      visible = allPlaces.filter(pl => {
-        return Object.keys(filter).some(attr => {
-          return filter[attr].some(val => {
+      visible = allPlaces.filter((pl) => {
+        return Object.keys(filter).some((attr) => {
+          return filter[attr].some((val) => {
             if (attr == 'tag') {
               return pl.tags.includes(val)
             }
@@ -69,10 +64,10 @@ export const visibleSortedPlacesSelector = createSelector(
 export const placesSortedInBookSelector = createSelector(
   placesSortedAtoZSelector,
   currentTimelineSelector,
-  (places, bookId) => places.filter(place => {
-    if (place.bookIds.length === 0) return true
-    if (place.bookIds.includes('series')) return true
-    return place.bookIds.includes(bookId)
-  })
+  (places, bookId) =>
+    places.filter((place) => {
+      if (place.bookIds.length === 0) return true
+      if (place.bookIds.includes('series')) return true
+      return place.bookIds.includes(bookId)
+    })
 )
-

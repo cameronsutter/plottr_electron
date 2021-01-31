@@ -8,13 +8,16 @@ export default function getTestIds() {
   if (process.env.NODE_ENV !== 'test') return {}
 
   let ids = new Map()
-  let proxy = new Proxy({}, {
-    get: function(obj, prop) {
-      if (ids.has(prop) === false) {
-        ids.set(prop, uuid())
-      }
-      return ids.get(prop)
+  let proxy = new Proxy(
+    {},
+    {
+      get: function (obj, prop) {
+        if (ids.has(prop) === false) {
+          ids.set(prop, uuid())
+        }
+        return ids.get(prop)
+      },
     }
-  })
+  )
   return proxy
 }

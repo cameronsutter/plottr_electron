@@ -4,12 +4,9 @@ import { currentTimelineSelector, timelineIsExpandedSelector } from './ui'
 import { allSeriesLinesSelector } from './seriesLines'
 import { nextId } from '../store/newIds'
 
-export const allLinesSelector = state => state.lines
+export const allLinesSelector = (state) => state.lines
 
-export const nextLineIdSelector = createSelector(
-  allLinesSelector,
-  (lines) => nextId(lines)
-)
+export const nextLineIdSelector = createSelector(allLinesSelector, (lines) => nextId(lines))
 
 export const linesByBookSelector = createSelector(
   allLinesSelector,
@@ -19,14 +16,13 @@ export const linesByBookSelector = createSelector(
     if (bookId == 'series') {
       return seriesLines
     } else {
-      return lines.filter(l => l && l.bookId == bookId)
+      return lines.filter((l) => l && l.bookId == bookId)
     }
   }
 )
 
-export const sortedLinesByBookSelector = createSelector(
-  linesByBookSelector,
-  (lines) => sortBy(lines, 'position')
+export const sortedLinesByBookSelector = createSelector(linesByBookSelector, (lines) =>
+  sortBy(lines, 'position')
 )
 
 export const lineIsExpandedSelector = createSelector(

@@ -27,8 +27,7 @@ import { cardMapSelector } from '../../selectors/cards'
 import { isSeriesSelector } from '../../selectors/ui'
 
 class TimelineTable extends Component {
-
-  state = {tableLength: 0}
+  state = { tableLength: 0 }
 
   setLength = () => {
     const table = findDOMNode(this.props.tableRef)
@@ -37,19 +36,19 @@ class TimelineTable extends Component {
       newLength = table.scrollHeight
     }
     if (this.state.tableLength != newLength) {
-      this.setState({tableLength: newLength})
+      this.setState({ tableLength: newLength })
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setLength()
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     this.setLength()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     // not necessary since TimelineWrapper is handling this case in componentWillReceiveProps
     // if (nextProps.ui.orientation != this.props.ui.orientation) {
     //   this.setState({tableLength: 0})
@@ -80,7 +79,7 @@ class TimelineTable extends Component {
   }
 
   // TODO: this should be a selector
-  chapterMapping () {
+  chapterMapping() {
     return this.props.chapters.reduce((acc, chapter) => {
       acc[chapter.position] = chapter.id
       return acc
@@ -88,7 +87,7 @@ class TimelineTable extends Component {
   }
 
   // TODO: this should be a selector
-  lineMapping () {
+  lineMapping() {
     return this.props.lines.reduce((acc, line) => {
       acc[line.position] = line
       return acc
@@ -96,7 +95,12 @@ class TimelineTable extends Component {
   }
 
   handleInsertNewChapter = (nextPosition, lineId) => {
-    const chapters = insertChapter(nextPosition, this.props.chapters, this.props.nextChapterId, this.props.ui.currentTimeline)
+    const chapters = insertChapter(
+      nextPosition,
+      this.props.chapters,
+      this.props.nextChapterId,
+      this.props.ui.currentTimeline
+    )
     if (this.props.isSeries) {
       this.props.beatActions.reorderBeats(chapters)
     } else {
@@ -109,7 +113,7 @@ class TimelineTable extends Component {
     }
   }
 
-  buildCard (lineId, chapterId) {
+  buildCard(lineId, chapterId) {
     if (this.props.isSeries) {
       return Object.assign({}, card, { beatId: chapterId, seriesLineId: lineId })
     } else {
@@ -125,43 +129,72 @@ class TimelineTable extends Component {
     }
   }
 
-  renderLines () {
+  renderLines() {
     const chapterMap = this.chapterMapping()
     const chapterMapKeys = Object.keys(chapterMap)
-    return this.props.lines.map(line => {
-      return <Row key={`lineId-${line.id}`}>
-        <LineTitleCell line={line} handleReorder={this.handleReorderLines} bookId={this.props.ui.currentTimeline}/>
-        { this.renderCardsByChapter(line, chapterMap, chapterMapKeys) }
-      </Row>
-    }).concat(<AddLineRow key='insert-line' bookId={this.props.ui.currentTimeline}/>)
+    return this.props.lines
+      .map((line) => {
+        return (
+          <Row key={`lineId-${line.id}`}>
+            <LineTitleCell
+              line={line}
+              handleReorder={this.handleReorderLines}
+              bookId={this.props.ui.currentTimeline}
+            />
+            {this.renderCardsByChapter(line, chapterMap, chapterMapKeys)}
+          </Row>
+        )
+      })
+      .concat(<AddLineRow key="insert-line" bookId={this.props.ui.currentTimeline} />)
   }
 
-  renderChapters () {
+  renderChapters() {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
     const { chapters } = this.props
-    return chapters.map(chapter => {
-      const inserts = lineMapKeys.flatMap(linePosition => {
-        const line = lineMap[linePosition];
-        return <ChapterInsertCell key={`${linePosition}-insert`} isInChapterList={false} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter} color={line.color} showLine={chapter.position == 0} tableLength={this.state.tableLength}/>
+    return chapters
+      .map((chapter) => {
+        const inserts = lineMapKeys.flatMap((linePosition) => {
+          const line = lineMap[linePosition]
+          return (
+            <ChapterInsertCell
+              key={`${linePosition}-insert`}
+              isInChapterList={false}
+              chapterPosition={chapter.position}
+              handleInsert={this.handleInsertNewChapter}
+              color={line.color}
+              showLine={chapter.position == 0}
+              tableLength={this.state.tableLength}
+            />
+          )
+        })
+        return [
+          <Row key={`chapterId-${chapter.id}`}>
+            <ChapterInsertCell
+              isInChapterList={true}
+              chapterPosition={chapter.position}
+              handleInsert={this.handleInsertNewChapter}
+            />
+            {inserts}
+          </Row>,
+          <Row key={`chapterId-${chapter.id}-insert`}>
+            <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
+            {this.renderCardsByLine(chapter, lineMap, lineMapKeys)}
+          </Row>,
+        ]
       })
-      return [<Row key={`chapterId-${chapter.id}`}>
-          <ChapterInsertCell isInChapterList={true} chapterPosition={chapter.position} handleInsert={this.handleInsertNewChapter}/>
-          { inserts }
-        </Row>,
-        <Row key={`chapterId-${chapter.id}-insert`}>
-          <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
-          { this.renderCardsByLine(chapter, lineMap, lineMapKeys) }
+      .concat(
+        <Row key="last-insert">
+          <ChapterInsertCell
+            isInChapterList={true}
+            handleInsert={this.handleAppendChapter}
+            isLast={true}
+          />
         </Row>
-      ]
-    }).concat(
-      <Row key='last-insert'>
-        <ChapterInsertCell isInChapterList={true} handleInsert={this.handleAppendChapter} isLast={true}/>
-      </Row>
-    )
+      )
   }
 
-  renderRows () {
+  renderRows() {
     if (this.props.ui.orientation === 'horizontal') {
       return this.renderLines()
     } else {
@@ -169,55 +202,78 @@ class TimelineTable extends Component {
     }
   }
 
-  renderCardsByChapter (line, chapterMap, chapterMapKeys) {
+  renderCardsByChapter(line, chapterMap, chapterMapKeys) {
     const { cardMap } = this.props
-    return chapterMapKeys.flatMap(chapterPosition => {
+    return chapterMapKeys.flatMap((chapterPosition) => {
       const cells = []
       const chapterId = chapterMap[chapterPosition]
-      cells.push(<ChapterInsertCell key={`${chapterPosition}-insert`} isInChapterList={false} chapterPosition={Number(chapterPosition)} lineId={line.id} handleInsert={this.handleInsertNewChapter} showLine={chapterPosition == 0} color={line.color} tableLength={this.state.tableLength}/>)
+      cells.push(
+        <ChapterInsertCell
+          key={`${chapterPosition}-insert`}
+          isInChapterList={false}
+          chapterPosition={Number(chapterPosition)}
+          lineId={line.id}
+          handleInsert={this.handleInsertNewChapter}
+          showLine={chapterPosition == 0}
+          color={line.color}
+          tableLength={this.state.tableLength}
+        />
+      )
       const cards = cardMap[`${line.id}-${chapterId}`]
       const key = `${cards ? 'card' : 'blank'}-${chapterPosition}-${line.position}`
       if (cards) {
-        cells.push(<ScenesCell
-          key={key} cards={cards}
-          chapterId={chapterId} lineId={line.id}
-          chapterPosition={chapterPosition} linePosition={line.position}
-          color={line.color} />)
+        cells.push(
+          <ScenesCell
+            key={key}
+            cards={cards}
+            chapterId={chapterId}
+            lineId={line.id}
+            chapterPosition={chapterPosition}
+            linePosition={line.position}
+            color={line.color}
+          />
+        )
       } else {
-        cells.push(<BlankCard chapterId={chapterId} lineId={line.id}
-          key={key}
-          color={line.color} />)
+        cells.push(
+          <BlankCard chapterId={chapterId} lineId={line.id} key={key} color={line.color} />
+        )
       }
       return cells
     })
   }
 
-  renderCardsByLine (chapter, lineMap, lineMapKeys) {
+  renderCardsByLine(chapter, lineMap, lineMapKeys) {
     const { cardMap } = this.props
-    return lineMapKeys.flatMap(linePosition => {
+    return lineMapKeys.flatMap((linePosition) => {
       const cells = []
       const line = lineMap[linePosition]
       const cards = cardMap[`${line.id}-${chapter.id}`]
       const key = `${cards ? 'card' : 'blank'}-${chapter.position}-${linePosition}`
       if (cards) {
-        cells.push(<ScenesCell
-          key={key} cards={cards}
-          chapterId={chapter.id} lineId={line.id}
-          chapterPosition={chapter.position} linePosition={linePosition}
-          color={line.color} />)
+        cells.push(
+          <ScenesCell
+            key={key}
+            cards={cards}
+            chapterId={chapter.id}
+            lineId={line.id}
+            chapterPosition={chapter.position}
+            linePosition={linePosition}
+            color={line.color}
+          />
+        )
       } else {
-        cells.push(<BlankCard chapterId={chapter.id} lineId={line.id}
-          key={key}
-          color={line.color} />)
+        cells.push(
+          <BlankCard chapterId={chapter.id} lineId={line.id} key={key} color={line.color} />
+        )
       }
       return cells
     })
   }
 
-  render () {
+  render() {
     const rows = this.renderRows()
 
-    return [<TopRow key='top-row'/>, rows]
+    return [<TopRow key="top-row" />, rows]
   }
 }
 
@@ -232,7 +288,7 @@ TimelineTable.propTypes = {
   tableRef: PropTypes.object,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   let nextChapterId = -1
   const bookId = state.present.ui.currentTimeline
   if (bookId == 'series') {
@@ -250,7 +306,7 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(UIActions, dispatch),
     sceneActions: bindActionCreators(SceneActions, dispatch),
@@ -261,7 +317,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TimelineTable)
+export default connect(mapStateToProps, mapDispatchToProps)(TimelineTable)

@@ -15,7 +15,7 @@ ipcMain.on('pls-open-window', (event, filePath, unknown) => {
   if (unknown) addToKnown(filePath)
 })
 
-function openProjectWindow (filePath) {
+function openProjectWindow(filePath) {
   if (focusIfOpen(filePath)) return
 
   const newWindow = makeBrowserWindow(filePath)
@@ -54,7 +54,7 @@ function openProjectWindow (filePath) {
     addNewWindow(newWindow, filePath)
   } catch (err) {
     log.warn(err)
-    rollbar.warn(err, {filePath: filePath})
+    rollbar.warn(err, { filePath: filePath })
     newWindow.destroy()
   }
 }

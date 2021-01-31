@@ -17,7 +17,7 @@ ipcMain.on('pls-open-dashboard', () => {
   openDashboard()
 })
 
-function openDashboard () {
+function openDashboard() {
   if (dashboardWindow) {
     dashboardWindow.focus()
     return
@@ -42,23 +42,23 @@ function openDashboard () {
   })
 }
 
-function getDashboardId () {
+function getDashboardId() {
   return dashboardWindow ? dashboardWindow.id : null
 }
 
-function setDarkModeForDashboard (darkMode) {
+function setDarkModeForDashboard(darkMode) {
   if (dashboardWindow) dashboardWindow.webContents.send('set-dark-mode', darkMode)
 }
 
-function reloadRecents () {
+function reloadRecents() {
   if (dashboardWindow) dashboardWindow.webContents.send('reload-recents')
 }
 
-function reloadDashboard () {
+function reloadDashboard() {
   if (dashboardWindow) dashboardWindow.webContents.send('reload')
 }
 
-function updateOpenFiles (filePath) {
+function updateOpenFiles(filePath) {
   if (dashboardWindow) dashboardWindow.webContents.send('file-closed', filePath)
 }
 

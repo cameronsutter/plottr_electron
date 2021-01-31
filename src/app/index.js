@@ -30,10 +30,10 @@ import { removeFromTempFiles } from '../common/utils/temp_files'
 
 setupI18n(SETTINGS)
 
-require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')
 
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
   log.error(err)
   rollbar.error(err)
 })
@@ -52,7 +52,7 @@ ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
 })
 
-function bootFile (filePath, darkMode, numOpenFiles) {
+function bootFile(filePath, darkMode, numOpenFiles) {
   initMixpanel()
   win.setTitle(displayFileName(filePath))
   win.setRepresentedFilename(filePath)
@@ -62,8 +62,8 @@ function bootFile (filePath, darkMode, numOpenFiles) {
     saveBackup(filePath, json, (err) => {
       if (err) {
         log.warn('[file open backup]', err)
-        rollbar.error({message: 'BACKUP failed'})
-        rollbar.warn(err, {fileName: filePath})
+        rollbar.error({ message: 'BACKUP failed' })
+        rollbar.warn(err, { fileName: filePath })
       } else {
         log.info('[file open backup]', 'success', filePath)
       }
@@ -75,7 +75,11 @@ function bootFile (filePath, darkMode, numOpenFiles) {
       }
       store.dispatch(actions.uiActions.loadFile(filePath, didMigrate, state, state.file.version))
 
-      MPQ.projectEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: numOpenFiles}, state)
+      MPQ.projectEventStats(
+        'open_file',
+        { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
+        state
+      )
 
       const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
       if (state.ui && state.ui.darkMode !== darkMode) {
@@ -137,8 +141,12 @@ ipcRenderer.on('save', () => {
 ipcRenderer.on('save-as', () => {
   const { present } = store.getState()
   const defaultPath = path.basename(present.file.fileName).replace('.pltr', '')
-  const filters = [{name: 'Plottr file', extensions: ['pltr']}]
-  const fileName = dialog.showSaveDialogSync(win, {filters, title: i18n('Where would you like to save this copy?'), defaultPath})
+  const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+  const fileName = dialog.showSaveDialogSync(win, {
+    filters,
+    title: i18n('Where would you like to save this copy?'),
+    defaultPath,
+  })
   if (fileName) {
     let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
     saveFile(newFilePath, present)
@@ -148,8 +156,11 @@ ipcRenderer.on('save-as', () => {
 
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
-  const filters = [{name: 'Plottr file', extensions: ['pltr']}]
-  const newFilePath = dialog.showSaveDialogSync(win, {filters: filters, title: i18n('Where would you like to save this file?')})
+  const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+  const newFilePath = dialog.showSaveDialogSync(win, {
+    filters: filters,
+    title: i18n('Where would you like to save this file?'),
+  })
   if (newFilePath) {
     // change in redux
     store.dispatch(actions.uiActions.editFileName(newFilePath))
@@ -173,7 +184,7 @@ ipcRenderer.on('move-from-temp', () => {
 ipcRenderer.on('undo', (event) => {
   if (focusIsEditable()) {
     win.webContents.undo()
-    const editor = editorRegistry.getEditor(document.activeElement);
+    const editor = editorRegistry.getEditor(document.activeElement)
     if (editor != null) {
       editor.undo()
     }
@@ -186,9 +197,9 @@ ipcRenderer.on('undo', (event) => {
 ipcRenderer.on('redo', (event) => {
   if (focusIsEditable()) {
     win.webContents.redo()
-    const editor = editorRegistry.getEditor(document.activeElement);
+    const editor = editorRegistry.getEditor(document.activeElement)
     if (editor != null) {
-      editor.redo();
+      editor.redo()
     }
   } else {
     // custom redo function
@@ -202,9 +213,9 @@ window.onerror = function (message, file, line, column, err) {
 }
 
 window.SCROLLWITHKEYS = true
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', (e) => {
   if (window.SCROLLWITHKEYS) {
-    const table = document.querySelector(".sticky-table")
+    const table = document.querySelector('.sticky-table')
     if (table) {
       if (e.key === 'ArrowUp') {
         var amount = 300
@@ -227,6 +238,6 @@ document.addEventListener('keydown', e => {
   }
 })
 
-window.logger = function(which) {
+window.logger = function (which) {
   process.env.LOGGER = which.toString()
 }

@@ -12,13 +12,13 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import prettydate from 'pretty-date'
 
 class PlaceItem extends Component {
-  state = {deleting: false}
+  state = { deleting: false }
 
-  componentDidMount () {
+  componentDidMount() {
     this.scrollIntoView()
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     this.scrollIntoView()
   }
 
@@ -29,19 +29,19 @@ class PlaceItem extends Component {
     }
   }
 
-  deleteNote = e => {
+  deleteNote = (e) => {
     e.stopPropagation()
     this.props.actions.deleteNote(this.props.note.id)
   }
 
-  cancelDelete = e => {
+  cancelDelete = (e) => {
     e.stopPropagation()
-    this.setState({deleting: false})
+    this.setState({ deleting: false })
   }
 
-  handleDelete = e => {
+  handleDelete = (e) => {
     e.stopPropagation()
-    this.setState({deleting: true})
+    this.setState({ deleting: true })
     this.props.stopEdit()
   }
 
@@ -54,46 +54,66 @@ class PlaceItem extends Component {
     }
   }
 
-  startEditing = e => {
+  startEditing = (e) => {
     e.stopPropagation()
     this.props.select(this.props.note.id)
     this.props.startEdit()
   }
 
-  renderDelete () {
+  renderDelete() {
     if (!this.state.deleting) return null
 
-    return <DeleteConfirmModal name={this.props.note.title || i18n('New Note')} onDelete={this.deleteNote} onCancel={this.cancelDelete}/>
+    return (
+      <DeleteConfirmModal
+        name={this.props.note.title || i18n('New Note')}
+        onDelete={this.deleteNote}
+        onCancel={this.cancelDelete}
+      />
+    )
   }
 
-  render () {
+  render() {
     const { note, selected } = this.props
     let img = null
     if (note.imageId) {
-      img = <div className='note-list__item-inner__image-wrapper'>
-        <Image responsive imageId={note.imageId} />
-      </div>
+      img = (
+        <div className="note-list__item-inner__image-wrapper">
+          <Image responsive imageId={note.imageId} />
+        </div>
+      )
     }
     let lastEdited = null
     if (note.lastEdited) {
-      lastEdited = <p className='list-group-item-text secondary-text'>{prettydate.format(new Date(note.lastEdited))}</p>
+      lastEdited = (
+        <p className="list-group-item-text secondary-text">
+          {prettydate.format(new Date(note.lastEdited))}
+        </p>
+      )
     }
-    const klasses = cx('list-group-item', {selected: selected})
-    const buttonKlasses = cx('note-list__item-buttons', {visible: selected})
-    return <div className={klasses} onClick={this.selectNote}>
-      { this.renderDelete() }
-      <div className='note-list__item-inner'>
-        {img}
-        <div>
-          <h6 className={cx('list-group-item-heading', {withImage: !!note.imageId})}>{note.title || i18n('New Note')}</h6>
-          { lastEdited }
+    const klasses = cx('list-group-item', { selected: selected })
+    const buttonKlasses = cx('note-list__item-buttons', { visible: selected })
+    return (
+      <div className={klasses} onClick={this.selectNote}>
+        {this.renderDelete()}
+        <div className="note-list__item-inner">
+          {img}
+          <div>
+            <h6 className={cx('list-group-item-heading', { withImage: !!note.imageId })}>
+              {note.title || i18n('New Note')}
+            </h6>
+            {lastEdited}
+          </div>
+          <ButtonGroup className={buttonKlasses}>
+            <Button bsSize="small" onClick={this.startEditing}>
+              <Glyphicon glyph="edit" />
+            </Button>
+            <Button bsSize="small" onClick={this.handleDelete}>
+              <Glyphicon glyph="trash" />
+            </Button>
+          </ButtonGroup>
         </div>
-        <ButtonGroup className={buttonKlasses}>
-          <Button bsSize='small' onClick={this.startEditing}><Glyphicon glyph='edit' /></Button>
-          <Button bsSize='small' onClick={this.handleDelete}><Glyphicon glyph='trash' /></Button>
-        </ButtonGroup>
       </div>
-    </div>
+    )
   }
 
   static propTypes = {
@@ -106,18 +126,14 @@ class PlaceItem extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(NoteActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PlaceItem)
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceItem)

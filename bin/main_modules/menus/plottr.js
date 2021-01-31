@@ -8,22 +8,21 @@ const SETTINGS = require('../settings')
 const { reloadAllWindows } = require('../windows')
 const { reloadDashboard } = require('../windows/dashboard')
 
-function buildPlottrMenu () {
+function buildPlottrMenu() {
   const submenu = [
     {
       label: i18n('Language'),
-      submenu: Object.entries(localeNames)
-        .map(([locale, name]) => ({
-          label: name,
-          click: () => {
-            SETTINGS.set('locale', locale)
-            setupI18n(SETTINGS)
-            require('./').loadMenu()
-            reloadAllWindows()
-            reloadDashboard()
-          }
-        }))
-    }
+      submenu: Object.entries(localeNames).map(([locale, name]) => ({
+        label: name,
+        click: () => {
+          SETTINGS.set('locale', locale)
+          setupI18n(SETTINGS)
+          require('./').loadMenu()
+          reloadAllWindows()
+          reloadDashboard()
+        },
+      })),
+    },
   ]
 
   if (NODE_ENV === 'dev') {
@@ -31,10 +30,11 @@ function buildPlottrMenu () {
       {
         label: 'View Process Manager',
         visible: NODE_ENV === 'dev',
-        click: () => openProcessManager()
-      }, {
-        type: 'separator'
+        click: () => openProcessManager(),
       },
+      {
+        type: 'separator',
+      }
     )
   }
 
@@ -43,26 +43,26 @@ function buildPlottrMenu () {
       {
         label: i18n('Hide Plottr'),
         accelerator: 'Command+H',
-        role: 'hide'
+        role: 'hide',
       },
       {
         label: i18n('Hide Others'),
         accelerator: 'Command+Alt+H',
-        role: 'hideothers'
+        role: 'hideothers',
       },
       {
         label: i18n('Show All'),
-        role: 'unhide'
+        role: 'unhide',
       },
       {
-        type: 'separator'
+        type: 'separator',
       },
       {
         label: i18n('Quit'),
         accelerator: 'Cmd+Q',
         click: function () {
           app.quit()
-        }
+        },
       }
     )
   } else {
@@ -71,12 +71,12 @@ function buildPlottrMenu () {
       accelerator: 'Alt+F4',
       click: function () {
         app.quit()
-      }
+      },
     })
   }
   return {
     label: 'Plottr',
-    submenu: submenu
+    submenu: submenu,
   }
 }
 

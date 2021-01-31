@@ -15,7 +15,7 @@ autoUpdater.logger = log
 autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
 const updateCheckThreshold = 1000 * 60 * 10 // 10 minutes
 
-export default function UpdateNotifier (props) {
+export default function UpdateNotifier(props) {
   const [shouldCheck, setShouldCheck] = useState(true)
   const [checking, setChecking] = useState(false)
   const [available, setAvailable] = useState(false)
@@ -28,7 +28,7 @@ export default function UpdateNotifier (props) {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
-    autoUpdater.on('error', error => {
+    autoUpdater.on('error', (error) => {
       log.warn(error)
       setError(error)
       setHidden(false)
@@ -37,7 +37,7 @@ export default function UpdateNotifier (props) {
       setAvailable(false)
       setTimeout(() => setFinishedChecking(false), 10000)
     })
-    autoUpdater.on('update-available', info => {
+    autoUpdater.on('update-available', (info) => {
       setHidden(false)
       setChecking(false)
       setAvailable(true)
@@ -61,7 +61,7 @@ export default function UpdateNotifier (props) {
 
       setPercentDownloaded(Math.floor(percent))
     })
-    autoUpdater.on('update-downloaded', info => {
+    autoUpdater.on('update-downloaded', (info) => {
       setHidden(false)
       setDownloadInProgress(false)
       setFinishedDownloading(true)
@@ -107,9 +107,13 @@ export default function UpdateNotifier (props) {
   const renderLoadingDots = () => {
     if (!checking) return null
 
-    return <span className='loading-dots'>
-      <span className='one'>.</span><span className='two'>.</span><span className='three'>.</span>
-    </span>
+    return (
+      <span className="loading-dots">
+        <span className="one">.</span>
+        <span className="two">.</span>
+        <span className="three">.</span>
+      </span>
+    )
   }
 
   const renderStatus = () => {
@@ -117,31 +121,39 @@ export default function UpdateNotifier (props) {
     let text = ''
     // if (checking) text = t('Checking for updates')
     if (finishedChecking && !available) text = t("You're on the latest version")
-    if (available) text = t('Update Available 🎉 (version {version})', {version})
-    if (downloadInProgress) text = t('Downloading version {version}', {version: version})
-    if (finishedDownloading) text = t('Download Complete 🎉 (version {version})', {version})
+    if (available) text = t('Update Available 🎉 (version {version})', { version })
+    if (downloadInProgress) text = t('Downloading version {version}', { version: version })
+    if (finishedDownloading) text = t('Download Complete 🎉 (version {version})', { version })
     if (error) text = t('Update failed. Try again')
 
     if (!text) return null
-    return <span>{ text }</span>
+    return <span>{text}</span>
   }
 
   const renderAction = () => {
     if (!available && !finishedDownloading) return null
     if (downloadInProgress) return null
-    return <Button onClick={finishedDownloading ? quitToInstall : startDownload}>
-      { finishedDownloading ? t('Click to Install') : t('Download Now!') }
-    </Button>
+    return (
+      <Button onClick={finishedDownloading ? quitToInstall : startDownload}>
+        {finishedDownloading ? t('Click to Install') : t('Download Now!')}
+      </Button>
+    )
   }
 
   const renderProgress = () => {
     if (!downloadInProgress) return null
 
     if (is.windows) {
-      return <Spinner/>
+      return <Spinner />
     }
 
-    return <ProgressBar bsStyle='success' now={percentDownloaded || 0} label={t('{val, number, percent}', {val: percentDownloaded / 100})}/>
+    return (
+      <ProgressBar
+        bsStyle="success"
+        now={percentDownloaded || 0}
+        label={t('{val, number, percent}', { val: percentDownloaded / 100 })}
+      />
+    )
   }
 
   const text = renderStatus()
@@ -150,12 +162,19 @@ export default function UpdateNotifier (props) {
 
   const floating = finishedChecking && !available
 
-  return <div className={cx('update-notifier alert alert-info alert-dismissible', {floating})} role='alert'>
-    { text }
-    { renderProgress() }
-    <div className='update-notifier__buttons'>
-      { renderAction() }
-      <button className='close' onClick={hide}><span aria-hidden='true'>&times;</span></button>
+  return (
+    <div
+      className={cx('update-notifier alert alert-info alert-dismissible', { floating })}
+      role="alert"
+    >
+      {text}
+      {renderProgress()}
+      <div className="update-notifier__buttons">
+        {renderAction()}
+        <button className="close" onClick={hide}>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </div>
-  </div>
+  )
 }

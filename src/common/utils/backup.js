@@ -32,7 +32,7 @@ function saveFile(filePath, data, callback) {
 
 // make the backup a daily record
 // (with a separate backup for the first time saving a file that day)
-function backupPath () {
+function backupPath() {
   const today = new Date()
 
   var day = today.getDate()
@@ -43,7 +43,7 @@ function backupPath () {
 }
 
 // assumes base path exists
-export function ensureBackupTodayPath () {
+export function ensureBackupTodayPath() {
   if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 

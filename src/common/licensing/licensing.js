@@ -5,18 +5,23 @@ import SETTINGS from '../utils/settings'
 const BASE_URL = 'https://my.plottr.com'
 const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'
 export const PRODUCT_IDS = [33345, V2_OLD_PRODUCT_ID] // NOTE: if this order changes, change the productMapping array at the bottom too
-export const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mismatch', 'missing']
+export const WRONG_PRODUCT_ERRORS = [
+  'invalid_item_id',
+  'key_mismatch',
+  'item_name_mismatch',
+  'missing',
+]
 
 const GRACE_PERIOD_DAYS = 30
 
-export function licenseURL (action, productID, license) {
+export function licenseURL(action, productID, license) {
   let url = `${BASE_URL}/`
   url += `?edd_action=${action}&item_id=${productID}&license=${license}`
   url += `&url=${machineIdSync(true)}`
   return url
 }
 
-export function isActiveLicense (body) {
+export function isActiveLicense(body) {
   // license could also be:
   // - site_inactive
   // - invalid
@@ -28,15 +33,19 @@ export function isActiveLicense (body) {
   return body.success && body.license == 'valid'
 }
 
-export function licenseIsForProduct (body) {
-  return body.success && !WRONG_PRODUCT_ERRORS.includes(body.error) && !WRONG_PRODUCT_ERRORS.includes(body.license)
+export function licenseIsForProduct(body) {
+  return (
+    body.success &&
+    !WRONG_PRODUCT_ERRORS.includes(body.error) &&
+    !WRONG_PRODUCT_ERRORS.includes(body.license)
+  )
 }
 
-export function hasActivationsLeft (body) {
+export function hasActivationsLeft(body) {
   return body.activations_left && body.activations_left > 0
 }
 
-function mapV2old (isActive) {
+function mapV2old(isActive) {
   if (isActive) {
     SETTINGS.set('trialMode', false)
     SETTINGS.set('canGetUpdates', true)
@@ -52,7 +61,7 @@ function mapV2old (isActive) {
   }
 }
 
-function mapPro (isActive) {
+function mapPro(isActive) {
   if (isActive) {
     SETTINGS.set('trialMode', false)
     SETTINGS.set('canGetUpdates', true)
@@ -79,7 +88,7 @@ function mapPro (isActive) {
   }
 }
 
-function getGracePeriodEnd () {
+function getGracePeriodEnd() {
   let result = new Date()
   result.setDate(result.getDate() + GRACE_PERIOD_DAYS)
   result.setHours(23, 59, 59, 999)
@@ -87,9 +96,9 @@ function getGracePeriodEnd () {
 }
 
 export const productMapping = {
-  '33345': mapPro,
-  '11321': mapV2old,
-  '11322': mapV2old,
+  33345: mapPro,
+  11321: mapV2old,
+  11322: mapV2old,
 }
 
 // NOTE: only needed for non-license api calls

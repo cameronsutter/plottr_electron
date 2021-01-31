@@ -15,14 +15,9 @@ ipcMain.on('pls-reload-menu', () => {
   loadMenu()
 })
 
-function buildMenu (makeItSimple) {
+function buildMenu(makeItSimple) {
   if (makeItSimple) {
-    return [
-      buildPlottrMenu(),
-      buildEditMenu(),
-      buildWindowMenu(),
-      buildHelpMenu()
-    ]
+    return [buildPlottrMenu(), buildEditMenu(), buildWindowMenu(), buildHelpMenu()]
   }
 
   let menus = [buildPlottrMenu()]
@@ -37,25 +32,22 @@ function buildMenu (makeItSimple) {
     }
     menus.push(buildFileMenu(filePath))
   }
-  return [
-    ...menus,
-    buildEditMenu(),
-    buildViewMenu(),
-    buildWindowMenu(),
-    buildHelpMenu(),
-  ]
+  return [...menus, buildEditMenu(), buildViewMenu(), buildWindowMenu(), buildHelpMenu()]
 }
 
-function loadMenu (makeItSimple) {
+function loadMenu(makeItSimple) {
   const template = buildMenu(makeItSimple)
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 
   if (is.macos) {
     const dockMenu = Menu.buildFromTemplate([
-      {label: i18n('Open Dashboard'), click: function () {
-        openDashboard()
-      }},
+      {
+        label: i18n('Open Dashboard'),
+        click: function () {
+          openDashboard()
+        },
+      },
     ])
     app.dock.setMenu(dockMenu)
   }

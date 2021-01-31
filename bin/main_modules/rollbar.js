@@ -24,12 +24,12 @@ function setupRollbar(where, USER) {
           source_map_enabled: true,
           code_version: version,
           guess_uncaught_frames: true,
-        }
+        },
       },
       person: {
         id: USER && USER.payment_id,
         email: USER && USER.customer_email,
-      }
+      },
     },
   })
 }

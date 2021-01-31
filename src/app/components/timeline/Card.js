@@ -14,7 +14,7 @@ import { FaCircle } from 'react-icons/fa'
 import { visibleCardsSelector } from '../../selectors/cards'
 
 class Card extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       dialogOpen: false,
@@ -25,36 +25,36 @@ class Card extends Component {
   }
 
   closeDialog = () => {
-    this.setState({dialogOpen: false})
+    this.setState({ dialogOpen: false })
   }
 
   handleDragStart = (e) => {
-    this.setState({dragging: true})
+    this.setState({ dragging: true })
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/json', JSON.stringify({cardId: this.props.card.id}))
+    e.dataTransfer.setData('text/json', JSON.stringify({ cardId: this.props.card.id }))
   }
 
   handleDragEnd = () => {
-    this.setState({dragging: false})
+    this.setState({ dragging: false })
   }
 
   handleDragEnter = (e) => {
     // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
-    if (!this.state.dragging) this.setState({dropDepth: this.state.dropDepth + 1})
+    if (!this.state.dragging) this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
     e.preventDefault()
-    if (!this.state.dragging) this.setState({inDropZone: true})
+    if (!this.state.dragging) this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
     if (!this.state.dragging) {
       let dropDepth = this.state.dropDepth
       --dropDepth
-      this.setState({dropDepth: dropDepth})
+      this.setState({ dropDepth: dropDepth })
       if (dropDepth > 0) return
-      this.setState({inDropZone: false})
+      this.setState({ inDropZone: false })
     }
   }
 
@@ -63,7 +63,7 @@ class Card extends Component {
     e.preventDefault()
     if (this.state.dragging) return
     if (!this.props.allowDrop) return
-    this.setState({inDropZone: false, dropDepth: 0})
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     const json = e.dataTransfer.getData('text/json')
     const droppedData = JSON.parse(json)
@@ -73,37 +73,41 @@ class Card extends Component {
   }
 
   openDialog = () => {
-    this.setState({dialogOpen: true})
+    this.setState({ dialogOpen: true })
   }
 
-  renderDialog () {
+  renderDialog() {
     if (!this.state.dialogOpen) return null
     const { ui, card, chapterId, lineId } = this.props
-    return <CardDialog
-      ui={ui}
-      card={card}
-      chapterId={chapterId}
-      lineId={lineId}
-      closeDialog={this.closeDialog}
-    />
+    return (
+      <CardDialog
+        ui={ui}
+        card={card}
+        chapterId={chapterId}
+        lineId={lineId}
+        closeDialog={this.closeDialog}
+      />
+    )
   }
 
-  renderPopover () {
-    return <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
-      <div className='card__popover-wrapper'>
-        <RichText
-          description={this.props.card.description}
-          editable={false}
-          className='card__popover-description'
-          darkMode={this.props.ui.darkMode}
-        />
-        {this.renderTags()}
-      </div>
-    </Popover>
+  renderPopover() {
+    return (
+      <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
+        <div className="card__popover-wrapper">
+          <RichText
+            description={this.props.card.description}
+            editable={false}
+            className="card__popover-description"
+            darkMode={this.props.ui.darkMode}
+          />
+          {this.renderTags()}
+        </div>
+      </Popover>
+    )
   }
 
   // TODO: this should be a selector
-  hasDetailsToShow () {
+  hasDetailsToShow() {
     const { card } = this.props
 
     if (card.tags && card.tags.length) return true
@@ -113,41 +117,45 @@ class Card extends Component {
     if (card.description.length > 1) return true
 
     // if it only has one blank paragraph
-    if (card.description.length == 1 && card.description[0] && card.description[0].children
-      && card.description[0].children.length == 1 && card.description[0].children[0]
-      && card.description[0].children[0].text == '') return false
+    if (
+      card.description.length == 1 &&
+      card.description[0] &&
+      card.description[0].children &&
+      card.description[0].children.length == 1 &&
+      card.description[0].children[0] &&
+      card.description[0].children[0].text == ''
+    )
+      return false
 
     return true
   }
 
-  renderTags () {
+  renderTags() {
     const { card, tags } = this.props
     if (!card.tags || !card.tags.length) return null
 
-    const tagLabels = card.tags.map(tId => {
-      const tag = tags.find(t => t.id == tId)
+    const tagLabels = card.tags.map((tId) => {
+      const tag = tags.find((t) => t.id == tId)
       if (!tag) return null
       return <TagLabel tag={tag} key={`taglabel-${tId}`} />
     })
 
-    return <div className='card__popover-labels'>{ tagLabels }</div>
+    return <div className="card__popover-labels">{tagLabels}</div>
   }
 
-  renderDropZone () {
+  renderDropZone() {
     if (!this.props.allowDrop) return
     if (!this.state.inDropZone) return
 
-    return <div className='card__drop-zone'>
-      <FaCircle/>
-    </div>
-  }
-
-  renderTitle () {
-    let title = (
-      <div className='card__title'>
-        {truncateTitle(this.props.card.title, 150)}
+    return (
+      <div className="card__drop-zone">
+        <FaCircle />
       </div>
     )
+  }
+
+  renderTitle() {
+    let title = <div className="card__title">{truncateTitle(this.props.card.title, 150)}</div>
     if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
       if (this.props.ui.orientation === 'horizontal') {
@@ -156,17 +164,19 @@ class Card extends Component {
         placement = Number(this.props.linePosition) <= 2 ? 'right' : placement
       }
       if (isZoomed(this.props.ui)) placement = 'right'
-      title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
-        {title}
-      </OverlayTrigger>
+      title = (
+        <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
+          {title}
+        </OverlayTrigger>
+      )
     }
 
     return title
   }
 
-  render () {
+  render() {
     var cardStyle = {
-      borderColor: this.props.color
+      borderColor: this.props.color,
     }
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'
@@ -177,26 +187,31 @@ class Card extends Component {
 
     const droppable = this.props.allowDrop
 
-    return <div className={cx('card__body-wrapper', {lastOne: this.props.last})}
-      onDragEnter={droppable ? this.handleDragEnter : null}
-      onDragOver={droppable ? this.handleDragOver : null}
-      onDragLeave={droppable ? this.handleDragLeave : null}
-      onDrop={droppable ? this.handleDrop : null}
-    >
-      { this.renderDialog() }
-      { this.renderDropZone() }
-      <div className='card__body' style={cardStyle}
-        draggable
-        onDragStart={this.handleDragStart}
-        onDragEnd={this.handleDragEnd}
-        onClick={this.openDialog}
+    return (
+      <div
+        className={cx('card__body-wrapper', { lastOne: this.props.last })}
+        onDragEnter={droppable ? this.handleDragEnter : null}
+        onDragOver={droppable ? this.handleDragOver : null}
+        onDragLeave={droppable ? this.handleDragLeave : null}
+        onDrop={droppable ? this.handleDrop : null}
       >
-        { this.renderTitle() }
+        {this.renderDialog()}
+        {this.renderDropZone()}
+        <div
+          className="card__body"
+          style={cardStyle}
+          draggable
+          onDragStart={this.handleDragStart}
+          onDragEnd={this.handleDragEnd}
+          onClick={this.openDialog}
+        >
+          {this.renderTitle()}
+        </div>
       </div>
-    </div>
+    )
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (this.state.dragging != nextState.dragging) return true
     if (this.state.dialogOpen != nextState.dialogOpen) return true
     if (this.state.inDropZone != nextState.inDropZone) return true
@@ -225,7 +240,7 @@ Card.propTypes = {
   isVisible: PropTypes.bool.isRequired,
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     tags: state.present.tags,
     ui: state.present.ui,
@@ -233,13 +248,10 @@ function mapStateToProps (state, ownProps) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(CardActions, dispatch)
+    actions: bindActionCreators(CardActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Card)
+export default connect(mapStateToProps, mapDispatchToProps)(Card)

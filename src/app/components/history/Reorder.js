@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 
 class Reorder extends Component {
-
-  render () {
+  render() {
     const item = this.props.item
     let label = ''
     if (item.action.type.includes('SCENES')) {
@@ -22,20 +21,15 @@ class Reorder extends Component {
 }
 
 Reorder.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Reorder)
+export default connect(mapStateToProps, mapDispatchToProps)(Reorder)

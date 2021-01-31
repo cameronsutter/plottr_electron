@@ -7,10 +7,10 @@ const { NODE_ENV } = require('./constants')
 // const SETTINGS = require('./settings')
 // const { getDaysLeftInTrial, getTrialModeStatus } = require('./trial_manager')
 
-function takeScreenshot () {
+function takeScreenshot() {
   let win = BrowserWindow.getFocusedWindow()
   if (win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
-  win.capturePage().then(image => {
+  win.capturePage().then((image) => {
     if (NODE_ENV === 'dev') {
       const folderPath = path.join(app.getPath('home'), 'plottr_screenshots', app.getVersion())
       const date = new Date()
@@ -32,14 +32,14 @@ function takeScreenshot () {
         }
       })
     } else {
-      const filters = [{name: 'PNG file', extensions: ['png']}]
-      const fileName = dialog.showSaveDialogSync(win, {filters})
+      const filters = [{ name: 'PNG file', extensions: ['png'] }]
+      const fileName = dialog.showSaveDialogSync(win, { filters })
       if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
     }
   })
 }
 
-function filePrefix (dirname) {
+function filePrefix(dirname) {
   return is.windows ? dirname : 'file://' + dirname
 }
 

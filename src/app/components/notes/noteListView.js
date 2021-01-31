@@ -3,7 +3,19 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Glyphicon, Nav, Navbar, NavItem, Button, Alert, OverlayTrigger, Popover, Grid, Row, Col } from 'react-bootstrap'
+import {
+  Glyphicon,
+  Nav,
+  Navbar,
+  NavItem,
+  Button,
+  Alert,
+  OverlayTrigger,
+  Popover,
+  Grid,
+  Row,
+  Col,
+} from 'react-bootstrap'
 import * as NoteActions from 'actions/notes'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
@@ -14,7 +26,7 @@ import NoteItem from './NoteItem'
 import { nextId } from '../../store/newIds'
 
 class NoteListView extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       noteDetailId: null,
@@ -24,8 +36,8 @@ class NoteListView extends Component {
     }
   }
 
-  static getDerivedStateFromProps (props, state) {
-    let returnVal = {...state}
+  static getDerivedStateFromProps(props, state) {
+    let returnVal = { ...state }
     const { notes } = props
     const viewableNotes = NoteListView.viewableNotes(notes, state.filter)
     returnVal.viewableNotes = viewableNotes
@@ -34,14 +46,14 @@ class NoteListView extends Component {
     return returnVal
   }
 
-  static detailID (notes, noteDetailId) {
+  static detailID(notes, noteDetailId) {
     if (notes.length == 0) return null
 
     let id = notes[0].id
 
     // check for the currently active one
     if (noteDetailId != null) {
-      let activeNote = notes.find(n => n.id === noteDetailId)
+      let activeNote = notes.find((n) => n.id === noteDetailId)
       if (activeNote) id = activeNote.id
     }
 
@@ -51,7 +63,7 @@ class NoteListView extends Component {
   handleCreateNewNote = () => {
     const id = nextId(this.props.notes)
     this.props.actions.addNote()
-    this.setState({noteDetailId: id, editingSelected: true})
+    this.setState({ noteDetailId: id, editingSelected: true })
   }
 
   updateFilter = (filter) => {
@@ -62,7 +74,7 @@ class NoteListView extends Component {
     this.updateFilter(null)
   }
 
-  static viewableNotes (notes, filter) {
+  static viewableNotes(notes, filter) {
     const filterIsEmpty = NoteListView.staticFilterIsEmpty(filter)
     let viewableNotes = notes
     if (!filterIsEmpty) {
@@ -74,36 +86,40 @@ class NoteListView extends Component {
   }
 
   // this is a hack for now
-  static staticFilterIsEmpty (filter) {
-    return filter == null ||
+  static staticFilterIsEmpty(filter) {
+    return (
+      filter == null ||
       (filter['tag'].length === 0 &&
-      filter['character'].length === 0 &&
-      filter['place'].length === 0 &&
-      filter['book'].length === 0)
+        filter['character'].length === 0 &&
+        filter['place'].length === 0 &&
+        filter['book'].length === 0)
+    )
   }
 
-  filterIsEmpty (filter) {
-    return filter == null ||
+  filterIsEmpty(filter) {
+    return (
+      filter == null ||
       (filter['tag'].length === 0 &&
-      filter['character'].length === 0 &&
-      filter['place'].length === 0 &&
-      filter['book'].length === 0)
+        filter['character'].length === 0 &&
+        filter['place'].length === 0 &&
+        filter['book'].length === 0)
+    )
   }
 
-  static isViewable (filter, note) {
+  static isViewable(filter, note) {
     if (!note) return false
     let visible = false
     if (note.tags) {
-      if (filter['tag'].some(tId => note.tags.includes(tId))) visible = true
+      if (filter['tag'].some((tId) => note.tags.includes(tId))) visible = true
     }
     if (note.characters) {
-      if (filter['character'].some(cId => note.characters.includes(cId))) visible = true
+      if (filter['character'].some((cId) => note.characters.includes(cId))) visible = true
     }
     if (note.places) {
-      if (filter['place'].some(pId => note.places.includes(pId))) visible = true
+      if (filter['place'].some((pId) => note.places.includes(pId))) visible = true
     }
     if (note.bookIds) {
-      if (filter['book'].some(bookId => note.bookIds.includes(bookId))) visible = true
+      if (filter['book'].some((bookId) => note.bookIds.includes(bookId))) visible = true
       // if the filter includes books, and this note has no bookIds,
       // it's considered in all books, so it should be visible
       if (filter['book'].length && !note.bookIds.length) visible = true
@@ -112,64 +128,88 @@ class NoteListView extends Component {
   }
 
   editingSelected = () => {
-    this.setState({editingSelected: true})
+    this.setState({ editingSelected: true })
   }
 
   stopEditing = () => {
-    this.setState({editingSelected: false})
+    this.setState({ editingSelected: false })
   }
 
-  renderVisibleNotes () {
-    return this.state.viewableNotes.map(n => (
-      <NoteItem key={n.id} note={n}
+  renderVisibleNotes() {
+    return this.state.viewableNotes.map((n) => (
+      <NoteItem
+        key={n.id}
+        note={n}
         selected={n.id == this.state.noteDetailId}
         startEdit={this.editingSelected}
         stopEdit={this.stopEditing}
-        select={() => this.setState({noteDetailId: n.id})}
+        select={() => this.setState({ noteDetailId: n.id })}
       />
     ))
   }
 
-  renderNotes () {
-    return <div className={cx('note-list__list', 'list-group', { darkmode: this.props.ui.darkMode })}>
-      { this.renderVisibleNotes() }
-    </div>
-  }
-
-  renderNoteDetails () {
-    if (this.state.noteDetailId == null) return null
-    let note = this.props.notes.find(n =>
-      n.id === this.state.noteDetailId
+  renderNotes() {
+    return (
+      <div className={cx('note-list__list', 'list-group', { darkmode: this.props.ui.darkMode })}>
+        {this.renderVisibleNotes()}
+      </div>
     )
-    if (!note) note = this.state.viewableNotes[0]
-    return <ErrorBoundary>
-      <NoteView key={`note-${note.id}`} note={note}
-        editing={this.state.editingSelected}
-        stopEditing={this.stopEditing}
-        startEditing={this.editingSelected}
-      />
-    </ErrorBoundary>
   }
 
-  renderSubNav () {
+  renderNoteDetails() {
+    if (this.state.noteDetailId == null) return null
+    let note = this.props.notes.find((n) => n.id === this.state.noteDetailId)
+    if (!note) note = this.state.viewableNotes[0]
+    return (
+      <ErrorBoundary>
+        <NoteView
+          key={`note-${note.id}`}
+          note={note}
+          editing={this.state.editingSelected}
+          stopEditing={this.stopEditing}
+          startEditing={this.editingSelected}
+        />
+      </ErrorBoundary>
+    )
+  }
+
+  renderSubNav() {
     let subNavKlasses = 'subnav__container'
     if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
-    let popover = <Popover id='filter'>
-      <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter} renderBooks/>
-    </Popover>
-    let filterDeclaration = <Alert onClick={this.removeFilter} bsStyle="warning"><Glyphicon glyph='remove-sign' />{"  "}{i18n('Notes are filtered')}</Alert>
+    let popover = (
+      <Popover id="filter">
+        <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter} renderBooks />
+      </Popover>
+    )
+    let filterDeclaration = (
+      <Alert onClick={this.removeFilter} bsStyle="warning">
+        <Glyphicon glyph="remove-sign" />
+        {'  '}
+        {i18n('Notes are filtered')}
+      </Alert>
+    )
     if (this.filterIsEmpty(this.state.filter)) {
       filterDeclaration = <span></span>
     }
     return (
       <Navbar className={subNavKlasses}>
-        <Nav bsStyle='pills'>
+        <Nav bsStyle="pills">
           <NavItem>
-            <Button bsSize='small' onClick={this.handleCreateNewNote}><Glyphicon glyph='plus' /> {i18n('New')}</Button>
+            <Button bsSize="small" onClick={this.handleCreateNewNote}>
+              <Glyphicon glyph="plus" /> {i18n('New')}
+            </Button>
           </NavItem>
           <NavItem>
-            <OverlayTrigger containerPadding={20} trigger='click' rootClose placement='bottom' overlay={popover}>
-              <Button bsSize='small'><Glyphicon glyph='filter' /> {i18n('Filter')}</Button>
+            <OverlayTrigger
+              containerPadding={20}
+              trigger="click"
+              rootClose
+              placement="bottom"
+              overlay={popover}
+            >
+              <Button bsSize="small">
+                <Glyphicon glyph="filter" /> {i18n('Filter')}
+              </Button>
             </OverlayTrigger>
             {filterDeclaration}
           </NavItem>
@@ -178,21 +218,24 @@ class NoteListView extends Component {
     )
   }
 
-  render () {
+  render() {
     let klasses = 'secondary-text'
     if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
-      <div className='note-list container-with-sub-nav'>
+      <div className="note-list container-with-sub-nav">
         {this.renderSubNav()}
         <Grid fluid>
           <Row>
             <Col sm={3}>
-              <h1 className={klasses}>{i18n('Notes')}{' '}<Button onClick={this.handleCreateNewNote}><Glyphicon glyph='plus' /></Button></h1>
+              <h1 className={klasses}>
+                {i18n('Notes')}{' '}
+                <Button onClick={this.handleCreateNewNote}>
+                  <Glyphicon glyph="plus" />
+                </Button>
+              </h1>
               {this.renderNotes()}
             </Col>
-            <Col sm={9}>
-              {this.renderNoteDetails()}
-            </Col>
+            <Col sm={9}>{this.renderNoteDetails()}</Col>
           </Row>
         </Grid>
       </div>
@@ -209,7 +252,7 @@ NoteListView.propTypes = {
   ui: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     notes: state.present.notes,
     characters: state.present.characters,
@@ -219,13 +262,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(NoteActions, dispatch)
+    actions: bindActionCreators(NoteActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoteListView)
+export default connect(mapStateToProps, mapDispatchToProps)(NoteListView)

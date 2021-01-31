@@ -5,14 +5,17 @@ import _ from 'lodash'
 import i18n from 'format-message'
 
 class DeleteLine extends Component {
-
-  render () {
+  render() {
     const item = this.props.item
-    var line = _.find(item.before.lines, {id: item.action.id}) || {title: ''}
+    var line = _.find(item.before.lines, { id: item.action.id }) || { title: '' }
     return (
       <div>
-        <span>{i18n('Story line')}: "{line.title}"</span>
-        <p>{i18n('Before')}: <span className='history-component__item__before'>{line.title}</span></p>
+        <span>
+          {i18n('Story line')}: "{line.title}"
+        </span>
+        <p>
+          {i18n('Before')}: <span className="history-component__item__before">{line.title}</span>
+        </p>
         <p>{i18n('After')}: </p>
       </div>
     )
@@ -21,21 +24,17 @@ class DeleteLine extends Component {
 
 DeleteLine.propTypes = {
   item: PropTypes.object.isRequired,
-  lines: PropTypes.array.isRequired
+  lines: PropTypes.array.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    lines: state.lines
+    lines: state.lines,
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DeleteLine)
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteLine)

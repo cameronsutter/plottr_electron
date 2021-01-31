@@ -2,13 +2,13 @@ import mainReducer from './main'
 import { DELETE_BOOK, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE } from '../constants/ActionTypes'
 import { isSeriesSelector } from '../selectors/ui'
 
-export default function root (state, action) {
+export default function root(state, action) {
   const isSeries = action.type.includes('@@redux') ? false : isSeriesSelector(state)
   switch (action.type) {
     case DELETE_BOOK:
       if (state.ui.currentTimeline == action.id) {
-        const nextBookId = state.books.allIds.find(id => id != action.id)
-        let newState = {...state}
+        const nextBookId = state.books.allIds.find((id) => id != action.id)
+        let newState = { ...state }
         newState.ui.currentTimeline = nextBookId
         return mainReducer(newState, action)
       } else {
@@ -31,11 +31,11 @@ export default function root (state, action) {
         }
         return acc
       }, {})
-      const newClearAction = {...action, chapterIds: chapterIdsToClear, lineIds: lineIdsToClear}
+      const newClearAction = { ...action, chapterIds: chapterIdsToClear, lineIds: lineIdsToClear }
       return mainReducer(state, newClearAction)
 
     case RESET_TIMELINE:
-      let newResetAction = {...action, isSeries}
+      let newResetAction = { ...action, isSeries }
       if (!isSeries) {
         // finding chapters that will NOT be removed
         const chapterIdsToReset = state.chapters.reduce((acc, ch) => {
@@ -51,7 +51,11 @@ export default function root (state, action) {
           }
           return acc
         }, {})
-        newResetAction = {...newResetAction, chapterIds: chapterIdsToReset, lineIds: lineIdsToReset}
+        newResetAction = {
+          ...newResetAction,
+          chapterIds: chapterIdsToReset,
+          lineIds: lineIdsToReset,
+        }
       }
       return mainReducer(state, newResetAction)
 

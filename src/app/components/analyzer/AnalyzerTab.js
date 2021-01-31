@@ -3,7 +3,9 @@ import ErrorBoundary from '../../containers/ErrorBoundary'
 import Analyzer from './Analyzer'
 
 export default () => {
-  return <ErrorBoundary>
-    <Analyzer />
-  </ErrorBoundary>
+  return (
+    <ErrorBoundary>
+      <Analyzer />
+    </ErrorBoundary>
+  )
 }

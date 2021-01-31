@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 
 class AddLine extends Component {
-
-  render () {
+  render() {
     const item = this.props.item
     return (
       <div>
@@ -16,20 +15,15 @@ class AddLine extends Component {
 }
 
 AddLine.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddLine)
+export default connect(mapStateToProps, mapDispatchToProps)(AddLine)

@@ -32,7 +32,7 @@ const { getDarkMode } = require('./main_modules/theme')
 const { gracefullyNotSave, gracefullyQuit } = require('./main_modules/utils')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
-require('dotenv').config({path: ENV_FILE_PATH})
+require('dotenv').config({ path: ENV_FILE_PATH })
 
 let USER_INFO = getLicenseInfo()
 let fileToOpen = null
@@ -40,7 +40,7 @@ let fileToOpen = null
 // auto updates
 let lastCheckedForUpdate = Date.now()
 const updateCheckThreshold = 1000 * 60 * 60
-log.transports.file.level = "info"
+log.transports.file.level = 'info'
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -50,7 +50,7 @@ TemplateManager.load()
 checkUpdatesIfAllowed()
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
-  prepend: (defaultActions, params, browserWindow) => []
+  prepend: (defaultActions, params, browserWindow) => [],
 })
 setupI18n(SETTINGS)
 
@@ -60,7 +60,7 @@ setupI18n(SETTINGS)
 if (NODE_ENV !== 'dev') {
   process.on('uncaughtException', function (err) {
     log.error(err)
-    rollbar.error(err, function(sendErr, data) {
+    rollbar.error(err, function (sendErr, data) {
       gracefullyQuit()
     })
   })
@@ -95,7 +95,7 @@ app.on('open-url', function (event, url) {
   event.preventDefault()
   // handle custom protocol links here for mac
   // make sure to check that the app is ready
-  log.info("open-url event: " + url)
+  log.info('open-url event: ' + url)
 })
 
 app.on('activate', () => {
@@ -115,50 +115,76 @@ app.on('browser-window-focus', () => {
 })
 
 ipcMain.on('fetch-state', function (event, id) {
-  var win = windows.find(w => w.id == id)
+  var win = windows.find((w) => w.id == id)
   if (win) {
     win.window.setTitle(displayFileName(win.fileName))
     win.window.setRepresentedFilename(win.fileName)
 
     if (win.importFrom) {
       // clear chapters and lines (they were the default)
-      const json = {...win.state}
+      const json = { ...win.state }
       json.chapters = []
       json.lines = []
-      win.window.webContents.send('import-snowflake', json, win.fileName, win.importFrom, getDarkMode(), windows.length)
+      win.window.webContents.send(
+        'import-snowflake',
+        json,
+        win.fileName,
+        win.importFrom,
+        getDarkMode(),
+        windows.length
+      )
       delete win.importFrom
     } else {
       migrateIfNeeded(win.state, win.fileName, (err, migrated, json) => {
-        if (err) { log.warn(err); rollbar.warn(err) }
+        if (err) {
+          log.warn(err)
+          rollbar.warn(err)
+        }
         if (migrated) FileManager.save(win.fileName, json, () => {})
 
         win.lastSave = json
         win.state = json
         if (win.window.isVisible()) {
-          event.sender.send('state-fetched', json, win.fileName, migrated, getDarkMode(), windows.length)
+          event.sender.send(
+            'state-fetched',
+            json,
+            win.fileName,
+            migrated,
+            getDarkMode(),
+            windows.length
+          )
         } else {
           win.window.on('show', () => {
-            event.sender.send('state-fetched', json, win.fileName, migrated, getDarkMode(), windows.length)
+            event.sender.send(
+              'state-fetched',
+              json,
+              win.fileName,
+              migrated,
+              getDarkMode(),
+              windows.length
+            )
           })
         }
       })
     }
-
   }
 })
 
 ipcMain.on('save-as-template-finish', (event, id, options) => {
-  let winObj = windows.find(w => w.id == id)
+  let winObj = windows.find((w) => w.id == id)
   if (winObj) {
     CustomTemplateManager.addNew(winObj.state, options)
   }
 })
 
 ipcMain.on('reload-window', function (event, id, state) {
-  let winObj = windows.find(w => w.id == id)
+  let winObj = windows.find((w) => w.id == id)
   if (winObj) {
-    FileManager.save(winObj.fileName, state, function(err, data) {
-      if (err) { log.warn(err); rollbar.warn(err) }
+    FileManager.save(winObj.fileName, state, function (err, data) {
+      if (err) {
+        log.warn(err)
+        rollbar.warn(err)
+      }
       winObj.state = state
       winObj.window.webContents.reload()
     })
@@ -170,12 +196,12 @@ ipcMain.on('launch-sent', (event) => {
 })
 
 ipcMain.on('open-buy-window', (event) => {
-  closeExpiredWindow();
+  closeExpiredWindow()
   openBuyWindow()
 })
 
 ipcMain.on('verify-from-expired', () => {
-  closeExpiredWindow();
+  closeExpiredWindow()
   openVerifyWindow()
 })
 
@@ -184,13 +210,13 @@ ipcMain.on('license-verified', () => {
 })
 
 ipcMain.on('export', (event, options, winId) => {
-  var winObj = windows.find(w => w.id == winId)
+  var winObj = windows.find((w) => w.id == winId)
   Exporter(winObj.state, options)
 })
 
 ipcMain.on('start-free-trial', () => {
-  closeVerifyWindow();
-  startTheTrial(daysLeft => {
+  closeVerifyWindow()
+  startTheTrial((daysLeft) => {
     turnOnTrialMode()
     loadMenu()
     askToCreateFile()
@@ -202,7 +228,7 @@ ipcMain.on('extend-trial', (event, days) => {
     closeExpiredWindow()
     loadMenu()
     if (windows.length) {
-      windows.forEach(winObj => {
+      windows.forEach((winObj) => {
         winObj.window.setTitle(displayFileName(winObj.fileName))
       })
     } else {
@@ -245,7 +271,7 @@ app.on('will-quit', () => {
 /////////   LICENSE   //////////
 ////////////////////////////////
 
-function licenseVerified (ask) {
+function licenseVerified(ask) {
   closeVerifyWindow()
   USER_INFO = getLicenseInfo()
   if (getTrialModeStatus()) {
@@ -258,7 +284,7 @@ function licenseVerified (ask) {
   }
 }
 
-function checkLicense (callback) {
+function checkLicense(callback) {
   if (NODE_ENV === 'dev') {
     callback()
     openRecentFiles(fileToOpen)
@@ -281,10 +307,14 @@ function checkLicense (callback) {
     }
   } else {
     // no license yet, check for trial info
-    checkTrialInfo(daysLeft => {
-      turnOnTrialMode()
-      callback()
-      openRecentFiles(fileToOpen)
-    }, openVerifyWindow, openExpiredWindow)
+    checkTrialInfo(
+      (daysLeft) => {
+        turnOnTrialMode()
+        callback()
+        openRecentFiles(fileToOpen)
+      },
+      openVerifyWindow,
+      openExpiredWindow
+    )
   }
 }

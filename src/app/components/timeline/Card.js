@@ -2,16 +2,21 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as CardActions from 'actions/cards'
 import CardDialog from 'components/timeline/CardDialog'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
-import { isZoomed } from 'helpers/zoom'
-import { truncateTitle } from 'helpers/cards'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
-import { visibleCardsSelector } from '../../selectors/cards'
+import { helpers, actions, selectors } from 'pltr/v2'
+
+const { visibleCardsSelector } = selectors
+const CardActions = actions.card
+
+const {
+  card: { truncateTitle },
+  zoom: { isZoomed },
+} = helpers
 
 class Card extends Component {
   constructor(props) {

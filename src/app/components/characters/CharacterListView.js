@@ -18,26 +18,28 @@ import {
 } from 'react-bootstrap'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
-import * as CharacterActions from 'actions/characters'
-import { actions } from 'pltr/v2'
-import * as UIActions from 'actions/ui'
 import CharacterView from 'components/characters/characterView'
 import i18n from 'format-message'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import cx from 'classnames'
-import { characterCustomAttributesThatCanChangeSelector } from '../../selectors/customAttributes'
-import {
-  visibleSortedCharactersByCategorySelector,
-  characterFilterIsEmptySelector,
-} from '../../selectors/characters'
-import { sortedCharacterCategoriesSelector } from '../../selectors/categories'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import CharacterCategoriesModal from './CharacterCategoriesModal'
 import CharacterItem from './CharacterItem'
 import InputModal from '../dialogs/InputModal'
-import { nextId } from '../../store/newIds'
+import { newIds, actions, selectors } from 'pltr/v2'
 
-const CustomAttributeActions = actions.customAttributeActions
+const { nextId } = newIds
+
+const {
+  sortedCharacterCategoriesSelector,
+  characterCustomAttributesThatCanChangeSelector,
+  visibleSortedCharactersByCategorySelector,
+  characterFilterIsEmptySelector,
+} = selectors
+
+const CustomAttributeActions = actions.customAttribute
+const CharacterActions = actions.character
+const UIActions = actions.ui
 
 class CharacterListView extends Component {
   constructor(props) {

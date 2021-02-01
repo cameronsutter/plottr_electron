@@ -2,21 +2,24 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as CardActions from 'actions/cards'
-import * as SceneActions from 'actions/scenes'
-import * as BeatActions from 'actions/beats'
-import { sortBy } from 'lodash'
 import { Glyphicon } from 'react-bootstrap'
 import { Waypoint } from 'react-waypoint'
 import i18n from 'format-message'
 import CardView from 'components/outline/CardView'
 import cx from 'classnames'
-import { chapterTitle } from '../../helpers/chapters'
-import { moveToAbove } from '../../helpers/lists'
-import { isSeriesSelector } from '../../selectors/ui'
-import { sortCardsInChapter } from '../../helpers/cards'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { positionOffsetSelector } from '../../selectors/chapters'
+import { actions, helpers, selectors } from 'pltr/v2'
+
+const { positionOffsetSelector, sortedLinesByBookSelector, isSeriesSelector } = selectors
+
+const BeatActions = actions.beat
+const CardActions = actions.card
+const SceneActions = actions.scene
+
+const {
+  card: { sortCardsInChapter },
+  chapters: { chapterTitle },
+  lists: { moveToAbove },
+} = helpers
 
 class ChapterView extends Component {
   state = { sortedCards: [] }

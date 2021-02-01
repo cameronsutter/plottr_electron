@@ -5,23 +5,26 @@ import { bindActionCreators } from 'redux'
 import { findDOMNode } from 'react-dom'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import * as CharacterActions from 'actions/characters'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
-import { singleCharacterSelector } from '../../selectors/characters'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import EditAttribute from '../EditAttribute'
+import { actions, selectors } from 'pltr/v2'
+
+const CharacterActions = actions.character
+
+const { singleCharacterSelector } = selectors
 
 class CharacterEditDetails extends Component {
   constructor(props) {
     super(props)
-    let description = {}
+    let attributes = {}
     props.customAttributes.forEach((attr) => {
       const { name } = attr
-      description[name] = props.character[name]
+      attributes[name] = props.character[name]
     })
     let templateAttrs = props.character.templates.reduce((acc, t) => {
       acc[t.id] = t.attributes.reduce((obj, attr) => {
@@ -32,7 +35,7 @@ class CharacterEditDetails extends Component {
     }, {})
     this.state = {
       notes: props.character.notes,
-      description: description,
+      attributes: attributes,
       categoryId: props.character.categoryId,
       templateAttrs: templateAttrs,
       newImageId: null,
@@ -71,20 +74,20 @@ class CharacterEditDetails extends Component {
     }
   }
 
-  handleAttrDescriptionChange = (attrName, desc) => {
-    const description = {
-      ...this.state.description,
+  handleAttrChange = (attrName) => (desc) => {
+    const attributes = {
+      ...this.state.attributes,
     }
-    description[attrName] = desc
-    this.setState({ description })
+    attributes[attrName] = desc
+    this.setState({ attributes })
   }
 
-  handleTemplateAttrDescriptionChange = (id, attr) => (desc) => {
+  handleTemplateAttrChange = (id, name) => (desc) => {
     let templateAttrs = {
       ...this.state.templateAttrs,
       [id]: {
         ...this.state.templateAttrs[id],
-        [attr]: desc,
+        [name]: desc,
       },
     }
     this.setState({ templateAttrs })
@@ -92,7 +95,7 @@ class CharacterEditDetails extends Component {
 
   saveEdit = (close = true) => {
     var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
-    var description = findDOMNode(this.refs.descriptionInput).value
+    var attributes = findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
     var attrs = {
       categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
@@ -102,7 +105,7 @@ class CharacterEditDetails extends Component {
     }
     this.props.customAttributes.forEach((attr) => {
       const { name, type } = attr
-      attrs[name] = this.state.description[name]
+      attrs[name] = this.state.attributes[name]
     })
     const templates = this.props.character.templates.map((t) => {
       t.attributes = t.attributes.map((attr) => {
@@ -113,7 +116,7 @@ class CharacterEditDetails extends Component {
     })
     this.props.actions.editCharacter(this.props.character.id, {
       name,
-      description,
+      attributes,
       notes,
       templates,
       ...attrs,
@@ -170,13 +173,13 @@ class CharacterEditDetails extends Component {
             index={index}
             entity={character}
             entityType="character"
-            value={this.state.description[attr.name]}
+            value={this.state.attributes[attr.name]}
             ui={ui}
-            handleLongDescriptionChange={this.handleAttrDescriptionChange}
-            handleShortDescriptionChange={this.handleAttrDescriptionChange}
+            onChange={this.handleAttrChange(attr.name)}
             onShortDescriptionKeyDown={this.handleEsc}
             onShortDescriptionKeyPress={this.handleEnter}
-            {...attr}
+            name={attr.name}
+            type={attr.type}
           />
         </React.Fragment>
       )
@@ -193,13 +196,14 @@ class CharacterEditDetails extends Component {
             index={index}
             entity={character}
             entityType="character"
+            value={this.state.templateAttrs[t.id][attr.name]}
             ui={ui}
             inputId={`${t.id}-${attr.name}Input`}
-            handleLongDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
-            handleShortDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
+            onChange={this.handleTemplateAttrChange(t.id, attr.name)}
             onShortDescriptionKeyDown={this.handleEsc}
             onShortDescriptionKeyPress={this.handleEnter}
-            {...attr}
+            name={attr.name}
+            type={attr.type}
           />
         </React.Fragment>
       ))
@@ -232,7 +236,7 @@ class CharacterEditDetails extends Component {
                   ref="descriptionInput"
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
-                  defaultValue={character.description}
+                  defaultValue={character.attributes}
                 />
               </FormGroup>
             </div>
@@ -252,7 +256,7 @@ class CharacterEditDetails extends Component {
             <FormGroup>
               <ControlLabel>{i18n('Notes')}</ControlLabel>
               <RichText
-                description={character.notes}
+                attributes={character.notes}
                 onChange={(desc) => this.setState({ notes: desc })}
                 editable
                 autofocus={false}

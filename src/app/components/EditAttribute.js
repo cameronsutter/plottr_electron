@@ -7,7 +7,7 @@ import { actions } from 'pltr/v2'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-const CustomAttributeActions = actions.customAttributeActions
+const CustomAttributeActions = actions.customAttribute
 
 const EditAttribute = ({
   templateAttribute,
@@ -19,8 +19,7 @@ const EditAttribute = ({
   entityType,
   entity,
   ui,
-  handleLongDescriptionChange,
-  handleShortDescriptionChange,
+  onChange,
   onShortDescriptionKeyDown,
   onShortDescriptionKeyPress,
   addAttribute,
@@ -107,8 +106,8 @@ const EditAttribute = ({
         <div>
           <Label />
           <RichText
-            description={value || entity[name]}
-            onChange={(desc) => handleLongDescriptionChange(name, desc)}
+            description={value || entity[name] || []}
+            onChange={onChange}
             editable
             autofocus={false}
             darkMode={ui.darkMode}
@@ -118,12 +117,12 @@ const EditAttribute = ({
         <FormGroup>
           <Label />
           <FormControl
-            value={value || entity[name]}
+            value={value || entity[name] || ''}
             type="text"
             id={inputId || `${name}Input`}
             onKeyDown={onShortDescriptionKeyDown}
             onKeyPress={onShortDescriptionKeyPress}
-            onChange={(event) => handleShortDescriptionChange(name, event.target.value)}
+            onChange={(event) => onChange(event.target.value)}
           />
         </FormGroup>
       )}
@@ -136,13 +135,12 @@ EditAttribute.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType(PropTypes.string, PropTypes.array),
   inputId: PropTypes.string,
   entityType: PropTypes.string.isRequired,
   entity: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
-  handleLongDescriptionChange: PropTypes.func.isRequired,
-  handleShortDescriptionChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   onShortDescriptionKeyDown: PropTypes.func.isRequired,
   onShortDescriptionKeyPress: PropTypes.func.isRequired,
   addAttribute: PropTypes.func.isRequired,

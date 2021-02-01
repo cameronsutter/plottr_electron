@@ -1,5 +1,4 @@
 import i18n from 'format-message'
-import { placesSortedInBookSelector } from 'app/selectors/places'
 import {
   createFolderBinderItem,
   createTextBinderItem,
@@ -7,6 +6,9 @@ import {
   buildTemplateProperties,
   buildDescriptionFromObject,
 } from '../utils'
+import { selectors } from 'pltr/v2'
+
+const { placesSortedInBookSelector } = selectors
 
 export default function exportPlaces(state, documentContents) {
   const { binderItem } = createFolderBinderItem(i18n('Places'))

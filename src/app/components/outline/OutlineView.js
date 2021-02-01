@@ -15,13 +15,19 @@ import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
 import cx from 'classnames'
-import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { isSeriesSelector } from '../../selectors/ui'
-import { cardMapSelector } from '../../selectors/cards'
 import ErrorBoundary from '../../containers/ErrorBoundary'
-import { cardMapping } from '../../helpers/cards'
 import ExportNavItem from '../export/ExportNavItem'
+import { helpers, selectors } from 'pltr/v2'
+
+const {
+  cardMapSelector,
+  sortedChaptersByBookSelector,
+  sortedLinesByBookSelector,
+  isSeriesSelector,
+} = selectors
+const {
+  card: { cardMapping },
+} = helpers
 
 class OutlineView extends Component {
   constructor(props) {

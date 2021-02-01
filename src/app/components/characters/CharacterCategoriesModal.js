@@ -4,8 +4,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
 import cx from 'classnames'
-import * as CategoryActions from 'actions/categories'
 import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
+import { actions } from 'pltr/v2'
+
+const CategoryActions = actions.category
 
 function CharacterCategoriesModal({
   categories,

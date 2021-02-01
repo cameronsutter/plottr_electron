@@ -11,7 +11,6 @@ import {
   ControlLabel,
   Glyphicon,
 } from 'react-bootstrap'
-import * as NoteActions from 'actions/notes'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
@@ -20,9 +19,11 @@ import Image from 'components/images/Image'
 import BookSelectList from '../story/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import cx from 'classnames'
-import { sortedTagsSelector } from '../../selectors/tags'
-import { charactersSortedAtoZSelector } from '../../selectors/characters'
-import { placesSortedAtoZSelector } from '../../selectors/places'
+import { actions, selectors } from 'pltr/v2'
+
+const { charactersSortedAtoZSelector, placesSortedAtoZSelector, sortedTagsSelector } = selectors
+
+const NoteActions = actions.note
 
 class NoteView extends Component {
   constructor(props) {

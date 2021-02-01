@@ -3,9 +3,13 @@ import { FaImage } from 'react-icons/fa'
 import { Editor, Transforms } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
-import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
-import { addImage } from '../../actions/images'
 import ImagePicker from '../images/ImagePicker'
+import { helpers, actions } from 'pltr/v2'
+
+const { addImage } = actions.image
+const {
+  lists: { readImage, isImageUrl, readImageFromURL },
+} = helpers
 
 export const ImagesButton = () => {
   const editor = useSlate()

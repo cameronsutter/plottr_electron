@@ -5,8 +5,6 @@ import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PlottrModal from 'components/PlottrModal'
-import * as CardActions from 'actions/cards'
-import * as UIActions from 'actions/ui'
 import {
   ButtonToolbar,
   Button,
@@ -21,26 +19,35 @@ import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import cx from 'classnames'
 import RichText from '../rce/RichText'
-import { chapterTitle } from '../../helpers/chapters'
-import { sortedChaptersByBookSelector, positionOffsetSelector } from '../../selectors/chapters'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { isSeriesSelector } from '../../selectors/ui'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { sortedTagsSelector } from '../../selectors/tags'
-import { charactersSortedAtoZSelector } from '../../selectors/characters'
-import { placesSortedAtoZSelector } from '../../selectors/places'
-import { truncateTitle } from '../../helpers/cards'
 import EditAttribute from '../EditAttribute'
-import { actions } from 'pltr/v2'
+import { helpers, actions, selectors } from 'pltr/v2'
 
-const CustomAttributeActions = actions.customAttributeActions
+const {
+  card: { truncateTitle },
+  chapters: { chapterTitle },
+} = helpers
+
+const CardActions = actions.card
+const UIActions = actions.ui
+const CustomAttributeActions = actions.ui
+
+const { sortedTagsSelector, isSeriesSelector } = selectors
+
+const {
+  sortedChaptersByBookSelector,
+  positionOffsetSelector,
+  charactersSortedAtoZSelector,
+  sortedLinesByBookSelector,
+  placesSortedAtoZSelector,
+} = selectors
 
 class CardDialog extends Component {
   constructor(props) {
     super(props)
-    const shortAttributes = {}
+    const attributes = {}
     props.customAttributes.forEach(({ name, type }) => {
-      if (type === 'text') shortAttributes[name] = props.card[name]
+      attributes[name] = props.card[name]
     })
     const templateAttrs = props.card.templates.reduce((acc, t) => {
       acc[t.id] = t.attributes.reduce((obj, attr) => {
@@ -51,8 +58,7 @@ class CardDialog extends Component {
     }, {})
     this.state = {
       description: props.card.description,
-      paragraphs: {},
-      shortAttributes,
+      attributes,
       deleting: false,
       templateAttrs,
       selected: 'Description',
@@ -76,11 +82,11 @@ class CardDialog extends Component {
   componentDidUpdate(prevProps) {
     if (this.newAttributeInputRef.current) this.newAttributeInputRef.current.focus()
     if (this.props.customAttributes != prevProps.customAttributes) {
-      const shortAttributes = {}
+      const attributes = {}
       this.props.customAttributes.forEach(({ name, type }) => {
-        if (type === 'text') shortAttributes[name] = this.props.card[name]
+        if (type === 'text') attributes[name] = this.props.card[name]
       })
-      this.setState({ shortAttributes })
+      this.setState({ attributes })
     }
   }
 
@@ -110,46 +116,32 @@ class CardDialog extends Component {
     this.props.closeDialog()
   }
 
-  handleParagraphAttrChange = (attrName, desc) => {
+  handleAttrChange = (attrName) => (desc) => {
     this.setState({
-      paragraphs: {
-        ...this.state.paragraphs,
+      attributes: {
+        ...this.state.attributes,
         [attrName]: desc,
       },
     })
   }
 
-  handleShortAttrChange = (attrName, desc) => {
-    this.setState({
-      shortAttributes: {
-        ...this.state.shortAttributes,
-        [attrName]: desc,
-      },
-    })
-  }
-
-  handleTemplateAttrDescriptionChange = (id, attr) => (desc) => {
-    let templateAttrs = {
+  handleTemplateAttrChange = (id, name) => (desc) => {
+    const templateAttrs = {
       ...this.state.templateAttrs,
       [id]: {
         ...this.state.templateAttrs[id],
-        [attr]: desc,
+        [name]: desc,
       },
     }
     this.setState({ templateAttrs })
   }
 
   saveEdit = () => {
-    var newTitle = findDOMNode(this.refs.titleInput).value
+    const newTitle = findDOMNode(this.refs.titleInput).value
     const attrs = {}
     this.props.customAttributes.forEach((attr) => {
       const { name, type } = attr
-      if (type == 'paragraph') {
-        attrs[name] = this.state.paragraphs[name] || this.props.card[name]
-      } else {
-        const val = this.state.shortAttributes[name] || this.props.card[name]
-        attrs[name] = val
-      }
+      attrs[name] = this.state.attributes[name] || this.props.card[name]
     })
     const templates = this.props.card.templates.map((t) => {
       t.attributes = t.attributes.map((attr) => {
@@ -271,13 +263,13 @@ class CardDialog extends Component {
             index={index}
             entity={card}
             entityType="scene"
-            value={this.state.shortAttributes[attr.name]}
+            value={this.state.attributes[attr.name]}
             ui={ui}
-            handleLongDescriptionChange={this.handleParagraphAttrChange}
-            handleShortDescriptionChange={this.handleShortAttrChange}
+            onChange={this.handleAttrChange(attr.name)}
             onShortDescriptionKeyDown={this.handleEsc}
             onShortDescriptionKeyPress={this.handleEnter}
-            {...attr}
+            name={attr.name}
+            type={attr.type}
           />
         </React.Fragment>
       )
@@ -294,13 +286,14 @@ class CardDialog extends Component {
             index={index}
             entity={card}
             entityType="scene"
+            value={this.state.templateAttrs[t.id][attr.name]}
             ui={ui}
             inputId={`${t.id}-${attr.name}Input`}
-            handleLongDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
-            handleShortDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
+            onChange={this.handleTemplateAttrChange(t.id, attr.name)}
             onShortDescriptionKeyDown={this.handleEsc}
             onShortDescriptionKeyPress={this.handleEnter}
-            {...attr}
+            name={attr.name}
+            type={attr.type}
           />
         </React.Fragment>
       ))
@@ -391,7 +384,7 @@ class CardDialog extends Component {
   }
 
   renderTitle() {
-    var title = this.props.card.title
+    const title = this.props.card.title
     return (
       <FormControl
         style={{ fontSize: '24pt', textAlign: 'center', marginBottom: '6px' }}

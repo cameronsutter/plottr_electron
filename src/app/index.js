@@ -9,7 +9,7 @@ import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-import { actions, migrateIfNeeded } from 'pltr/v2'
+import { actions, migrateIfNeeded, helpers } from 'pltr/v2'
 import MPQ from '../common/utils/MPQ'
 import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
@@ -22,11 +22,14 @@ import ScrivenerExporter from '../common/exporter/scrivener/v2/exporter'
 import WordExporter from '../common/exporter/word/exporter'
 import editorRegistry from './components/rce/editor-registry'
 import { setupI18n } from '../../locales'
-import { focusIsEditable } from './helpers/undo'
 import { displayFileName, editKnownFilePath } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { saveFile } from '../common/utils/files'
 import { removeFromTempFiles } from '../common/utils/temp_files'
+
+const {
+  undo: { focusIsEditable },
+} = helpers
 
 setupI18n(SETTINGS)
 
@@ -73,7 +76,7 @@ function bootFile(filePath, darkMode, numOpenFiles) {
         rollbar.error(err)
         log.error(err)
       }
-      store.dispatch(actions.uiActions.loadFile(filePath, didMigrate, state, state.file.version))
+      store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
       MPQ.projectEventStats(
         'open_file',
@@ -83,7 +86,7 @@ function bootFile(filePath, darkMode, numOpenFiles) {
 
       const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
       if (state.ui && state.ui.darkMode !== darkMode) {
-        store.dispatch(actions.uiActions.setDarkMode(newDarkState))
+        store.dispatch(actions.ui.setDarkMode(newDarkState))
       }
       if (newDarkState) window.document.body.className = 'darkmode'
 
@@ -111,7 +114,7 @@ ipcRenderer.on('reload-from-file', (event, filePath, darkMode, numOpenFiles) => 
 })
 
 ipcRenderer.on('set-dark-mode', (event, isOn) => {
-  store.dispatch(actions.uiActions.setDarkMode(isOn))
+  store.dispatch(actions.ui.setDarkMode(isOn))
   window.document.body.className = isOn ? 'darkmode' : ''
 })
 
@@ -163,7 +166,7 @@ ipcRenderer.on('move-from-temp', () => {
   })
   if (newFilePath) {
     // change in redux
-    store.dispatch(actions.uiActions.editFileName(newFilePath))
+    store.dispatch(actions.ui.editFileName(newFilePath))
     // remove from tmp store
     removeFromTempFiles(present.file.fileName)
     // update in known files

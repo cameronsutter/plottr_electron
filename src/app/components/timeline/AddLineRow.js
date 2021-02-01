@@ -223,21 +223,19 @@ class AddLineRow extends Component {
   }
 
   simpleAddLine = (title) => {
-    console.log('simpleAddLine')
     const { ui, actions } = this.props
     actions.addLineWithTitle(title, ui.currentTimeline)
     this.setState({askingForInput: false, hovering: false})
   }
 
   renderInputModal () {
-    console.log('this.state.askingForInput', this.state.askingForInput)
     if (!this.state.askingForInput) return null
 
     return <InputModal isOpen={true} getValue={this.simpleAddLine} title={i18n('Plotline Title:')} type='text' cancel={() => this.setState({askingForInput: false, hovering: false})}/>
   }
 
   renderInsertButton () {
-    const { ui, actions, isSmall } = this.props
+    const { bookId, isSmall } = this.props
     if (isSmall) {
       return <th className='row-header'>
         { this.renderInputModal() }
@@ -252,7 +250,7 @@ class AddLineRow extends Component {
       </th>
     }
 
-    if (this.props.bookId != 'series') {
+    if (bookId != 'series') {
       return <div className='line-list__append-line'>
         { this.renderInputModal() }
         {this.state.hovering ?

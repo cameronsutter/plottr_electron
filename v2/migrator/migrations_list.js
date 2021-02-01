@@ -17,7 +17,6 @@ const list = [
   'm2020_8_28',
   'm2020_11_16',
   'm2021_1_15',
-  'm2021_2_1',
 ]
 
 export default list

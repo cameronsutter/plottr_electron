@@ -1,8 +1,7 @@
 import {
   ADD_TAG,
-  ADD_TAG_WITH_VALUES,
+  ADD_CREATED_TAG,
   EDIT_TAG,
-  CHANGE_TAG_COLOR,
   DELETE_TAG,
   FILE_LOADED,
   NEW_FILE,
@@ -26,20 +25,15 @@ export default function tags(state = initialState, action) {
         },
       ]
 
-    case ADD_TAG_WITH_VALUES:
+    case ADD_CREATED_TAG:
       return [
         ...state,
         {
+          ...tag,
           id: nextId(state),
-          title: action.title,
-          color: action.color || tag.color,
+          ...action.attributes,
         },
       ]
-
-    case CHANGE_TAG_COLOR:
-      return state.map((tag) =>
-        tag.id === action.id ? Object.assign({}, tag, { color: action.color }) : tag
-      )
 
     case EDIT_TAG:
       return state.map((tag) =>

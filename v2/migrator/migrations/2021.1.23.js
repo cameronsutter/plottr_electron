@@ -18,7 +18,7 @@ export function backgroundColorFrom(lineColor) {
 }
 
 function migrate(data) {
-  if (data.file && data.file.version === '2021.2.1') return data
+  if (data.file && data.file.version === '2021.1.23') return data
 
   let obj = cloneDeep(data)
 

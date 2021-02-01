@@ -51,10 +51,12 @@ function cardIsVisible(card, filter, filterIsEmpty) {
 
   return Object.keys(filter).some((attr) => {
     return filter[attr].some((val) => {
-      // this is AND logic
-      // return card[`${attr}s`].includes(val)
-
-      // this is OR logic
+      if (card.hasOwnProperty(attr)) {
+        return card[attr] === val
+      }
+      if (val === '' && card[attr] === undefined) {
+        return true
+      }
       if (attr == 'tag') {
         return card.tags.includes(val)
       }

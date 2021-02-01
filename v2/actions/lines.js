@@ -2,7 +2,6 @@ import {
   ADD_LINE,
   ADD_LINE_WITH_TITLE,
   ADD_LINES_FROM_TEMPLATE,
-  EDIT_LINE,
   EDIT_LINE_TITLE,
   EDIT_LINE_COLOR,
   REORDER_LINES,
@@ -21,10 +20,6 @@ export function addLineWithTitle(title, bookId) {
 
 export function addLinesFromTemplate(cards, lines, chapters, bookId, template) {
   return { type: ADD_LINES_FROM_TEMPLATE, cards, lines, chapters, bookId, template }
-}
-
-export function editLine(id, title, color) {
-  return { type: EDIT_LINE, id, title, color }
 }
 
 export function editLineTitle(id, title) {

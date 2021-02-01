@@ -41,3 +41,8 @@ function sortedChapterCards(sortedLines, chapterId, card2Dmap, currentLine) {
     }
   }, [])
 }
+
+export function truncateTitle(title, maxLength) {
+  if (title.length < maxLength) return title
+  return title.substr(0, maxLength) + '...'
+}

@@ -1,9 +1,9 @@
 import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
 import { currentTimelineSelector, isSeriesSelector } from './ui'
-import { allBeatsSelector } from './beats'
-import { chapterTitle, chapterOneIsPrologue } from '../helpers/chapters'
 import { nextId } from '../store/newIds'
+import { chapterTitle, chapterOneIsPrologue } from '../helpers/chapters'
+import { allBeatsSelector } from '../selectors/beats'
 
 export const allChaptersSelector = (state) => state.chapters
 const chapterIdSelector = (state, chapterId) => chapterId
@@ -54,10 +54,3 @@ export const makeChapterTitleSelector = () =>
       return chapterTitle(chapter, positionOffset, isSeries)
     }
   )
-
-export const chapterPositionMappingSelector = createSelector(chaptersByBookSelector, (chapters) => {
-  return chapters.reduce((acc, chapter) => {
-    acc[chapter.position] = chapter.id
-    return acc
-  }, {})
-})

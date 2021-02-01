@@ -14,7 +14,6 @@ import {
   EDIT_PLACES_ATTRIBUTE,
   REORDER_CHARACTER_ATTRIBUTE,
   REORDER_PLACES_ATTRIBUTE,
-  REORDER_SCENES_ATTRIBUTE,
 } from '../constants/ActionTypes'
 
 export function addCharacterAttr(attribute) {
@@ -82,14 +81,6 @@ export function reorderCharacterAttribute(attribute, toIndex) {
 export function reorderPlacesAttribute(attribute, toIndex) {
   return {
     type: REORDER_PLACES_ATTRIBUTE,
-    attribute,
-    toIndex,
-  }
-}
-
-export function reorderScenesAttribute(attribute, toIndex) {
-  return {
-    type: REORDER_SCENES_ATTRIBUTE,
     attribute,
     toIndex,
   }

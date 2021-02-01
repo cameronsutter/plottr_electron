@@ -2,7 +2,6 @@ import { partition, sortBy } from 'lodash'
 import i18n from 'format-message'
 import {
   ADD_LINE,
-  ADD_LINE_WITH_TITLE,
   ADD_LINES_FROM_TEMPLATE,
   EDIT_LINE_TITLE,
   EXPAND_LINE,
@@ -33,27 +32,14 @@ export default function lines(state = initialState, action) {
       const linesInBook = state.filter((l) => l.bookId == action.bookId).length
       return [
         {
-          ...line,
           id: nextId(state),
           bookId: action.bookId,
+          title: '',
           color: nextColor(linesInBook),
           backgroundColor: nextBackgroundColor(linesInBook),
           position: nextPositionInBook(state, action.bookId),
-        },
-        ...state,
-      ]
-
-    case ADD_LINE_WITH_TITLE:
-      const linesInBook_ = state.filter((l) => l.bookId == action.bookId).length
-      return [
-        {
-          ...line,
-          id: nextId(state),
-          bookId: action.bookId,
-          title: action.title,
-          color: nextColor(linesInBook_),
-          backgroundColor: nextBackgroundColor(linesInBook),
-          position: nextPositionInBook(state, action.bookId),
+          expanded: null,
+          fromTemplateId: null,
         },
         ...state,
       ]

@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash'
 import {
-  ADD_CARD_IN_CHAPTER,
   ADD_CARD,
+  ADD_CARD_IN_CHAPTER,
   ADD_LINES_FROM_TEMPLATE,
   ATTACH_CHARACTER_TO_CARD,
   ATTACH_PLACE_TO_CARD,
@@ -36,7 +36,9 @@ import { newFileCards } from '../store/newFileState'
 import { card as defaultCard } from '../store/initialState'
 import { nextId } from '../store/newIds'
 
-export default function cards(state, action) {
+const INITIAL_STATE = []
+
+export default function cards(state = INITIAL_STATE, action) {
   let diffObj
   switch (action.type) {
     case ADD_CARD:
@@ -46,7 +48,15 @@ export default function cards(state, action) {
       // add a new card
       // and reorder cards in the chapter
       return [
-        Object.assign({}, defaultCard, action.newCard, { id: nextId(state) }),
+        Object.assign(
+          {},
+          defaultCard,
+          {
+            ...action.newCard,
+            ...(action.reorderIds ? { positionWithinLine: action.reorderIds.indexOf(null) } : {}),
+          },
+          { id: nextId(state) }
+        ),
         ...state.map((card) => {
           const idx = action.reorderIds.indexOf(card.id)
           if (idx != -1) {
@@ -299,6 +309,6 @@ export default function cards(state, action) {
       return newFileCards
 
     default:
-      return state || []
+      return state || INITIAL_STATE
   }
 }

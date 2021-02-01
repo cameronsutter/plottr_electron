@@ -9,7 +9,8 @@ import {
 } from '../constants/ActionTypes'
 import { newFileCategories } from '../store/newFileState'
 import { categories as defaultCategories } from '../store/initialState'
-import { nextId } from 'store/newIds'
+import { nextId } from '../store/newIds'
+import { positionReset } from '../helpers/lists'
 
 export default function categories(state = defaultCategories, action) {
   switch (action.type) {
@@ -85,8 +86,9 @@ function reorderCategory(key, state, { toIndex, category }) {
   const copy = state[key].slice().filter(({ id }) => id != category.id)
 
   copy.splice(toIndex, 0, category)
+  const newList = positionReset(copy) // have to change the value of the position attribute
   return {
     ...state,
-    [key]: copy,
+    [key]: newList,
   }
 }

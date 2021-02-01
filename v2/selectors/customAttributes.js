@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { allCharactersSelector } from './characters'
 import { allPlacesSelector } from './places'
+import { allCardsSelector } from './cards'
 import { character, place } from '../store/initialState'
 
 const characterKeys = Object.keys(character)
@@ -9,6 +10,7 @@ const placeKeys = Object.keys(place)
 export const allCustomAttributesSelector = (state) => state.customAttributes
 export const characterCustomAttributesSelector = (state) => state.customAttributes.characters
 export const placeCustomAttributesSelector = (state) => state.customAttributes.places
+export const scenesCustomAttributesSelector = (state) => state.customAttributes.scenes
 
 export const characterSortCAnamesSelector = createSelector(
   characterCustomAttributesSelector,
@@ -20,38 +22,35 @@ export const placeSortCAnamesSelector = createSelector(
   (attributes) => attributes.filter((attr) => attr.type == 'text').map((attr) => attr.name)
 )
 
+const noEntityHasAttributeBound = (entities, attrs) => {
+  return attrs.reduce((acc, attr) => {
+    if (attr.type == 'text') {
+      acc.push(attr.name)
+      return acc
+    }
+
+    const changeable = entities.every((ch) => hasNoValue(ch, attr.name))
+    if (changeable) acc.push(attr.name)
+    return acc
+  }, [])
+}
+
 export const characterCustomAttributesThatCanChangeSelector = createSelector(
   allCharactersSelector,
   characterCustomAttributesSelector,
-  (characters, attrs) => {
-    return attrs.reduce((acc, attr) => {
-      if (attr.type == 'text') {
-        acc.push(attr.name)
-        return acc
-      }
-
-      const changeable = characters.every((ch) => hasNoValue(ch, attr.name))
-      if (changeable) acc.push(attr.name)
-      return acc
-    }, [])
-  }
+  noEntityHasAttributeBound
 )
 
 export const placeCustomAttributesThatCanChangeSelector = createSelector(
   allPlacesSelector,
   placeCustomAttributesSelector,
-  (places, attrs) => {
-    return attrs.reduce((acc, attr) => {
-      if (attr.type == 'text') {
-        acc.push(attr.name)
-        return acc
-      }
+  noEntityHasAttributeBound
+)
 
-      const changeable = places.every((pl) => hasNoValue(pl, attr.name))
-      if (changeable) acc.push(attr.name)
-      return acc
-    }, [])
-  }
+export const scenesCustomAttributesThatCanChangeSelector = createSelector(
+  allCardsSelector,
+  scenesCustomAttributesSelector,
+  noEntityHasAttributeBound
 )
 
 // you can change a paragraph type back to text if:

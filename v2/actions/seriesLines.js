@@ -7,6 +7,8 @@ import {
   EDIT_SERIES_LINE_COLOR,
   REORDER_SERIES_LINES,
   DELETE_SERIES_LINE,
+  EXPAND_SERIES_LINE,
+  COLLAPSE_SERIES_LINE,
 } from '../constants/ActionTypes'
 
 // NOTE: needs to have the same signatures as the lines actions
@@ -41,4 +43,12 @@ export function reorderLines(lines) {
 
 export function deleteLine(id) {
   return { type: DELETE_SERIES_LINE, id }
+}
+
+export function expandLine(id) {
+  return { type: EXPAND_SERIES_LINE, id }
+}
+
+export function collapseLine(id) {
+  return { type: COLLAPSE_SERIES_LINE, id }
 }

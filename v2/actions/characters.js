@@ -1,20 +1,20 @@
 import {
   ADD_CHARACTER,
-  ADD_CHARACTER_WITH_VALUES,
-  ATTACH_TAG_TO_CHARACTER,
-  ATTACH_BOOK_TO_CHARACTER,
-  REMOVE_TAG_FROM_CHARACTER,
-  REMOVE_BOOK_FROM_CHARACTER,
   ADD_CHARACTER_WITH_TEMPLATE,
-  EDIT_CHARACTER,
+  ADD_CHARACTER_WITH_VALUES,
+  ATTACH_BOOK_TO_CHARACTER,
+  ATTACH_TAG_TO_CHARACTER,
   DELETE_CHARACTER,
+  EDIT_CHARACTER,
+  REMOVE_BOOK_FROM_CHARACTER,
+  REMOVE_TAG_FROM_CHARACTER,
 } from '../constants/ActionTypes'
 import { character } from '../store/initialState'
 
-export function addCharacter() {
+export function addCharacter(name) {
   return {
     type: ADD_CHARACTER,
-    name: character.name,
+    name: name || character.name,
     description: character.description,
     notes: character.notes,
   }
@@ -24,10 +24,10 @@ export function addCharacterWithValues(character) {
   return { type: ADD_CHARACTER_WITH_VALUES, character }
 }
 
-export function addCharacterWithTemplate(templateData) {
+export function addCharacterWithTemplate(name, templateData) {
   return {
     type: ADD_CHARACTER_WITH_TEMPLATE,
-    name: character.name,
+    name: name || character.name,
     description: character.description,
     notes: character.notes,
     templateData,

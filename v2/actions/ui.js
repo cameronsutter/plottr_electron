@@ -15,10 +15,16 @@ import {
   COLLAPSE_TIMELINE,
   SET_TIMELINE_FILTER,
   SET_PLACE_FILTER,
+  INCREASE_ZOOM,
+  DECREASE_ZOOM,
+  FIT_ZOOM,
+  RESET_ZOOM,
   RESET_TIMELINE,
   RECORD_SCROLL_POSITION,
   EDIT_FILENAME,
   SET_TIMELINE_SIZE,
+  OPEN_ATTRIBUTES_DIALOG,
+  CLOSE_ATTRIBUTES_DIALOG,
 } from '../constants/ActionTypes'
 
 export function changeCurrentView(view) {
@@ -73,6 +79,22 @@ export function setTimelineFilter(filter) {
   return { type: SET_TIMELINE_FILTER, filter }
 }
 
+export function increaseZoom() {
+  return { type: INCREASE_ZOOM }
+}
+
+export function decreaseZoom() {
+  return { type: DECREASE_ZOOM }
+}
+
+export function fitZoom() {
+  return { type: FIT_ZOOM }
+}
+
+export function resetZoom() {
+  return { type: RESET_ZOOM }
+}
+
 export function changeCurrentTimeline(id) {
   return { type: CHANGE_CURRENT_TIMELINE, id }
 }
@@ -107,4 +129,12 @@ export function editFileName(newName) {
 
 export function setTimelineSize(newSize) {
   return { type: SET_TIMELINE_SIZE, newSize }
+}
+
+export function openAttributesDialog() {
+  return { type: OPEN_ATTRIBUTES_DIALOG }
+}
+
+export function closeAttributesDialog() {
+  return { type: CLOSE_ATTRIBUTES_DIALOG }
 }

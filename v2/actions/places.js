@@ -1,12 +1,12 @@
 import {
   ADD_PLACE,
-  EDIT_PLACE,
-  DELETE_PLACE,
   ADD_PLACE_WITH_VALUES,
-  ATTACH_TAG_TO_PLACE,
   ATTACH_BOOK_TO_PLACE,
-  REMOVE_TAG_FROM_PLACE,
+  ATTACH_TAG_TO_PLACE,
+  DELETE_PLACE,
+  EDIT_PLACE,
   REMOVE_BOOK_FROM_PLACE,
+  REMOVE_TAG_FROM_PLACE,
 } from '../constants/ActionTypes'
 import { place } from '../store/initialState'
 

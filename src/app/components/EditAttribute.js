@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 const CustomAttributeActions = actions.customAttributeActions
 
 const EditAttribute = ({
+  templateAttribute,
   name,
   type,
   inputId,
@@ -70,24 +71,26 @@ const EditAttribute = ({
         }}
       />
       {!editing ? <ControlLabel>{name}</ControlLabel> : null}
-      <div className="card-dialog__custom-attributes-edit-controls">
-        <Button
-          bsSize="small"
-          onClick={() => {
-            setEditing(!editing)
-          }}
-        >
-          <Glyphicon glyph="edit" />
-        </Button>
-        <Button
-          bsSize="small"
-          onClick={() => {
-            setDeleting(true)
-          }}
-        >
-          <Glyphicon glyph="trash" />
-        </Button>
-      </div>
+      {!templateAttribute ? (
+        <div className="card-dialog__custom-attributes-edit-controls">
+          <Button
+            bsSize="small"
+            onClick={() => {
+              setEditing(!editing)
+            }}
+          >
+            <Glyphicon glyph="edit" />
+          </Button>
+          <Button
+            bsSize="small"
+            onClick={() => {
+              setDeleting(true)
+            }}
+          >
+            <Glyphicon glyph="trash" />
+          </Button>
+        </div>
+      ) : null}
     </div>
   )
 
@@ -129,6 +132,7 @@ const EditAttribute = ({
 }
 
 EditAttribute.propTypes = {
+  templateAttribute: PropTypes.bool,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,

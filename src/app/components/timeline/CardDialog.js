@@ -290,6 +290,7 @@ class CardDialog extends Component {
       return t.attributes.map((attr, index) => (
         <React.Fragment key={`template-attribute-${index}-${t.id}-${attr.name}`}>
           <EditAttribute
+            templateAttribute
             index={index}
             entity={card}
             entityType="scene"

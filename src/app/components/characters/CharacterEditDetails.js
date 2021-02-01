@@ -189,6 +189,7 @@ class CharacterEditDetails extends Component {
       return t.attributes.map((attr, index) => (
         <React.Fragment key={index}>
           <EditAttribute
+            templateAttribute
             index={index}
             entity={character}
             entityType="character"

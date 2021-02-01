@@ -169,8 +169,8 @@ class CharacterEditDetails extends Component {
           <EditAttribute
             index={index}
             entity={character}
+            entityType="character"
             value={this.state.description[attr.name]}
-            entityType={'character'}
             ui={ui}
             handleLongDescriptionChange={this.handleAttrDescriptionChange}
             handleShortDescriptionChange={this.handleAttrDescriptionChange}
@@ -186,10 +186,12 @@ class CharacterEditDetails extends Component {
   renderEditingTemplates() {
     const { character, ui } = this.props
     return character.templates.flatMap((t) => {
-      return t.attributes.map((attr, idx) => (
-        <React.Fragment key={idx}>
+      return t.attributes.map((attr, index) => (
+        <React.Fragment key={index}>
           <EditAttribute
+            index={index}
             entity={character}
+            entityType="character"
             ui={ui}
             inputId={`${t.id}-${attr.name}Input`}
             handleLongDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}

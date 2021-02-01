@@ -266,12 +266,12 @@ class CardDialog extends Component {
     const { card, ui, customAttributes } = this.props
     return customAttributes.map((attr, index) => {
       return (
-        <React.Fragment key={`custom-attribute-${idx}-${attr.name}`}>
+        <React.Fragment key={`custom-attribute-${index}-${attr.name}`}>
           <EditAttribute
             index={index}
             entity={card}
+            entityType="scene"
             value={this.state.shortAttributes[attr.name]}
-            entityType={'scene'}
             ui={ui}
             handleLongDescriptionChange={this.handleParagraphAttrChange}
             handleShortDescriptionChange={this.handleShortAttrChange}
@@ -287,10 +287,12 @@ class CardDialog extends Component {
   renderEditingTemplates() {
     const { card, ui } = this.props
     return card.templates.flatMap((t) => {
-      return t.attributes.map((attr, idx) => (
-        <React.Fragment key={`template-attribute-${idx}-${t.id}-${attr.name}`}>
+      return t.attributes.map((attr, index) => (
+        <React.Fragment key={`template-attribute-${index}-${t.id}-${attr.name}`}>
           <EditAttribute
+            index={index}
             entity={card}
+            entityType="scene"
             ui={ui}
             inputId={`${t.id}-${attr.name}Input`}
             handleLongDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}

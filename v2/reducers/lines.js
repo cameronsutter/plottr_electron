@@ -22,7 +22,7 @@ import {
 import { line } from '../store/initialState'
 import { newFileLines } from '../store/newFileState'
 import { nextId } from '../store/newIds'
-import { nextColor } from '../store/lineColors'
+import { nextBackgroundColor, nextColor } from '../store/lineColors'
 import { nextPositionInBook, positionReset } from '../helpers/lists'
 
 const initialState = [line]
@@ -37,6 +37,7 @@ export default function lines(state = initialState, action) {
           id: nextId(state),
           bookId: action.bookId,
           color: nextColor(linesInBook),
+          backgroundColor: nextBackgroundColor(linesInBook),
           position: nextPositionInBook(state, action.bookId),
         },
         ...state,
@@ -51,6 +52,7 @@ export default function lines(state = initialState, action) {
           bookId: action.bookId,
           title: action.title,
           color: nextColor(linesInBook_),
+          backgroundColor: nextBackgroundColor(linesInBook),
           position: nextPositionInBook(state, action.bookId),
         },
         ...state,
@@ -121,6 +123,7 @@ export default function lines(state = initialState, action) {
           bookId: action.bookId,
           title: i18n('Main Plot'),
           color: nextColor(0),
+          backgroundColor: nextBackgroundColor(0),
           position: 0,
           expanded: null,
           fromTemplateId: null,

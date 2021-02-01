@@ -141,6 +141,7 @@ export const line = {
   id: 1,
   bookId: 1,
   color: '#6cace4',
+  backgroundColor: '#6cace419',
   title: '',
   position: 0,
   characterId: null,
@@ -151,6 +152,7 @@ export const line = {
 export const seriesLine = {
   id: 1,
   color: '#6cace4',
+  backgroundColor: '#6cace419',
   title: '',
   position: 0,
   expanded: null,

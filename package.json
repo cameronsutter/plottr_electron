@@ -61,7 +61,7 @@
     "mixpanel-browser": "^2.38.0",
     "node-machine-id": "^1.1.12",
     "pagedown": "^1.1.0",
-    "pltr": "https://github.com/Plotinator/pltr.git#a10313d",
+    "pltr": "https://github.com/Plotinator/pltr.git#aad107f",
     "pretty-date": "^0.2.0",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^13.0.0",

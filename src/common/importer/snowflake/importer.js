@@ -12,7 +12,7 @@ import {
   line as defaultLine,
 } from '../../../../shared/initialState'
 import { nextPositionInBook } from '../../../app/helpers/lists'
-import { nextColor } from '../../../app/store/lineColors'
+import { nextBackgroundColor, nextColor } from '../../../app/store/lineColors'
 
 export default function Importer(path, isNewFile, state) {
   const importedXML = fs.readFileSync(path, 'utf-8')
@@ -365,6 +365,7 @@ function cards(currentState, json, bookId) {
                 position: nextLinePosition,
                 title: characterName,
                 color: nextColor(nextLinePosition),
+                backgroundColor: nextBackgroundColor(nextLinePosition),
               },
               bookId
             )

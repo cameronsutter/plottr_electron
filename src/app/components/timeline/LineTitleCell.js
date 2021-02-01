@@ -12,7 +12,6 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
@@ -23,6 +22,9 @@ import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
 import { truncateTitle } from 'helpers/cards'
+import { actions } from 'pltr/v2'
+
+const LineActions = actions.lineActions
 
 const CELL_WIDTH = 200
 

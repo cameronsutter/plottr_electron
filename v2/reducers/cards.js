@@ -1,35 +1,36 @@
 import { cloneDeep } from 'lodash'
 import {
+  ADD_CARD_IN_CHAPTER,
   ADD_CARD,
   ADD_LINES_FROM_TEMPLATE,
-  EDIT_CARD_DETAILS,
-  DELETE_LINE,
-  DELETE_SCENE,
-  RESET_TIMELINE,
-  EDIT_CARD_COORDINATES,
+  ATTACH_CHARACTER_TO_CARD,
+  ATTACH_PLACE_TO_CARD,
+  ATTACH_TAG_TO_CARD,
+  AUTO_SORT_CHAPTER,
+  CHANGE_BOOK,
   CHANGE_LINE,
   CHANGE_SCENE,
-  ADD_CARD_IN_CHAPTER,
-  DELETE_CARD,
-  ATTACH_CHARACTER_TO_CARD,
   CLEAR_TEMPLATE_FROM_TIMELINE,
-  REMOVE_CHARACTER_FROM_CARD,
-  ATTACH_PLACE_TO_CARD,
-  REMOVE_PLACE_FROM_CARD,
-  ATTACH_TAG_TO_CARD,
-  REMOVE_TAG_FROM_CARD,
-  DELETE_TAG,
+  DELETE_BEAT,
+  DELETE_CARD,
   DELETE_CHARACTER,
+  DELETE_LINE,
   DELETE_PLACE,
+  DELETE_SCENE,
+  DELETE_SERIES_LINE,
+  DELETE_TAG,
+  EDIT_CARD_COORDINATES,
+  EDIT_CARD_DETAILS,
+  EDIT_SCENES_ATTRIBUTE,
   FILE_LOADED,
   NEW_FILE,
-  RESET,
-  CHANGE_BOOK,
-  REORDER_CARDS_WITHIN_LINE,
+  REMOVE_CHARACTER_FROM_CARD,
+  REMOVE_PLACE_FROM_CARD,
+  REMOVE_TAG_FROM_CARD,
   REORDER_CARDS_IN_CHAPTER,
-  AUTO_SORT_CHAPTER,
-  DELETE_SERIES_LINE,
-  DELETE_BEAT,
+  REORDER_CARDS_WITHIN_LINE,
+  RESET,
+  RESET_TIMELINE,
 } from '../constants/ActionTypes'
 import { newFileCards } from '../store/newFileState'
 import { card as defaultCard } from '../store/initialState'
@@ -60,12 +61,8 @@ export default function cards(state, action) {
       return [...action.cards]
 
     case EDIT_CARD_DETAILS:
-      var newCardDetails = {
-        title: action.title,
-        description: action.description,
-      }
       return state.map((card) =>
-        card.id === action.id ? Object.assign({}, card, newCardDetails) : card
+        card.id === action.id ? Object.assign({}, card, action.attributes) : card
       )
 
     case EDIT_CARD_COORDINATES:
@@ -173,6 +170,34 @@ export default function cards(state, action) {
 
     case DELETE_BEAT:
       return state.filter((card) => card.beatId !== action.id)
+
+    case EDIT_SCENES_ATTRIBUTE:
+      if (
+        action.oldAttribute.type !== 'text' &&
+        action.oldAttribute.name === action.newAttribute.name
+      )
+        return state
+
+      return state.map((card) => {
+        const newCard = cloneDeep(card)
+
+        if (action.oldAttribute.name !== action.newAttribute.name) {
+          newCard[action.newAttribute.name] = newCard[action.oldAttribute.name]
+          delete newCard[action.oldAttribute.name]
+        }
+
+        // reset value to blank string
+        // (if changing to something other than text type)
+        // see ../selectors/customAttributes.js for when this is allowed
+        if (action.oldAttribute.type === 'text') {
+          let description = newCard[action.newAttribute.name]
+          if (description && description.length && typeof description !== 'string') {
+            description = ''
+          }
+          newCard[action.newAttribute.name] = description
+        }
+        return newCard
+      })
 
     case ATTACH_CHARACTER_TO_CARD:
       return state.map((card) => {

@@ -81,7 +81,12 @@ module.exports = {
   // ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
-  // moduleNameMapper: {},
+  moduleNameMapper: {
+    '^app(.*)$': '<rootDir>/src/app/$1',
+    '^dashboard(.*)$': '<rootDir>/src/dashboard/$1',
+    '^store(.*)$': '<rootDir>/src/app/store/$1',
+    '^test(.*)$': '<rootDir>/test/$1',
+  },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   modulePathIgnorePatterns: ['__tests__/fixtures/*'],

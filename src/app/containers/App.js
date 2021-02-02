@@ -35,6 +35,10 @@ export default class App extends Component {
       isTryingToClose = true
       this.askToSave({})
     })
+    ipcRenderer.on('reload', () => {
+      isTryingToReload = true
+      this.askToSave({})
+    })
     window.addEventListener('beforeunload', this.askToSave)
   }
 

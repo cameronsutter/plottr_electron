@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import cx from 'classnames'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
-import { helpers } from 'pltr/v2'
+import { selectors, helpers } from 'pltr/v2'
+import VisualLine from './VisualLine'
 
 const {
   orientedClassName: { orientedClassName },
-  zoom: { isZoomed, isZoomedOut, computeZoomMultiplier, computeZoomOutMultiplier },
 } = helpers
 
 const Horizontal = {
@@ -29,62 +29,54 @@ class ChapterInsertCell extends PureComponent {
   }
 
   renderLine() {
-    const { tableLength, orientation, color, zoom } = this.props
-
-    let length = tableLength
-    if (isZoomed(zoom)) length = tableLength * computeZoomMultiplier(orientation, zoom)
-    if (isZoomedOut(zoom)) length = tableLength * computeZoomOutMultiplier(orientation, zoom)
-
-    let lineStyle = {
-      borderColor: color,
-    }
-    if (orientation == 'horizontal') {
-      lineStyle.width = `${length - Horizontal.first - Horizontal.last}px`
-    } else {
-      lineStyle.height = `${length - Vertical.first - Vertical.last}px`
-    }
-    return (
-      <div
-        className={orientedClassName('line-title__line-line', orientation)}
-        style={lineStyle}
-      ></div>
-    )
+    const { tableLength, orientation, color } = this.props
+    return <VisualLine tableLength={tableLength} orientation={orientation} color={color} />
   }
 
   render() {
-    const { isInChapterList, showLine, orientation, isLast } = this.props
-    let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
-    let chapterKlass = 'scene-list__insert'
+    const { isInChapterList, showLine, orientation, isLast, isSmall } = this.props
+    let wrapperKlass = orientedClassName('insert-chapter-wrapper', orientation)
+    let chapterKlass = 'chapter-list__insert'
     let titleText = i18n('Insert Chapter')
-    if (showLine) wrapperKlass += ' insert-scene-spacer'
+    if (showLine) wrapperKlass += ' insert-chapter-spacer'
     if (isLast) {
       titleText = i18n('Add Chapter')
-      wrapperKlass += ' append-scene'
-      chapterKlass += ' append-scene'
+      wrapperKlass += ' append-chapter'
+      chapterKlass += ' append-chapter'
     }
     if (!isInChapterList) titleText = i18n('Insert Chapter and a Card')
-    return (
-      <Cell>
-        <div
-          title={titleText}
-          className={orientedClassName(
-            isInChapterList ? chapterKlass : 'line-list__insert-scene',
-            orientation
-          )}
-          onClick={this.insert}
-        >
-          <div className={wrapperKlass}>
-            <Glyphicon glyph="plus" />
-          </div>
+    let insideDiv = (
+      <div
+        title={titleText}
+        className={orientedClassName(
+          isInChapterList ? chapterKlass : 'line-list__insert-chapter',
+          orientation
+        )}
+        onClick={this.insert}
+      >
+        <div className={wrapperKlass}>
+          <Glyphicon glyph="plus" />
         </div>
-        {showLine ? this.renderLine() : null}
-      </Cell>
+      </div>
     )
+
+    if (isSmall) {
+      const isHorizontal = orientation == 'horizontal'
+      const klasses = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal }
+      return <th className={cx(klasses)}>{insideDiv}</th>
+    } else {
+      return (
+        <Cell>
+          {insideDiv}
+          {showLine ? this.renderLine() : null}
+        </Cell>
+      )
+    }
   }
 
   static propTypes = {
     orientation: PropTypes.string,
-    zoom: PropTypes.object,
+    isSmall: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
     isInChapterList: PropTypes.bool.isRequired,
     chapterPosition: PropTypes.number,
@@ -99,7 +91,7 @@ class ChapterInsertCell extends PureComponent {
 function mapStateToProps(state) {
   return {
     orientation: state.present.ui.orientation,
-    zoom: { zoomState: state.present.ui.zoomState, zoomIndex: state.present.ui.zoomIndex },
+    isSmall: selectors.isSmallSelector(state.present),
   }
 }
 

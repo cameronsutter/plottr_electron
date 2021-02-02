@@ -28,7 +28,7 @@ const {
   orientedClassName: { orientedClassName },
 } = helpers
 
-const { lineIsExpandedSelector } = selectors
+const { lineIsExpandedSelector, isLargeSelector, isMediumSelector, isSmallSelector } = selectors
 
 const CELL_WIDTH = 200
 
@@ -39,7 +39,8 @@ class LineTitleCell extends PureComponent {
       hovering: false,
       editing: props.line.title === '',
       dragging: false,
-      dropping: false,
+      inDropZone: false,
+      dropDepth: 0,
       showColorPicker: false,
       deleting: false,
     }
@@ -93,22 +94,27 @@ class LineTitleCell extends PureComponent {
   }
 
   handleDragEnter = (e) => {
-    this.setState({ dropping: true })
+    if (!this.state.dragging) this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
-    this.setState({ dropping: true })
     e.preventDefault()
-    return false
+    if (!this.state.dragging) this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
-    this.setState({ dropping: false })
+    if (!this.state.dragging) {
+      let dropDepth = this.state.dropDepth
+      --dropDepth
+      this.setState({ dropDepth: dropDepth })
+      if (dropDepth > 0) return
+      this.setState({ inDropZone: false })
+    }
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({ dropping: false })
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     var json = e.dataTransfer.getData('text/json')
     var droppedLine = JSON.parse(json)
@@ -240,21 +246,45 @@ class LineTitleCell extends PureComponent {
   }
 
   render() {
-    if (this.state.editing) {
+    const { line, ui, isSmall } = this.props
+    const { editing, hovering, inDropZone } = this.state
+    if (editing) {
       window.SCROLLWITHKEYS = false
     }
 
-    let innerKlass = cx(orientedClassName('line-title__body', this.props.ui.orientation), {
-      hover: this.state.hovering,
-      dropping: this.state.dropping,
+    if (isSmall) {
+      const isHorizontal = ui.orientation == 'horizontal'
+      const klasses = {
+        'rotate-45': !isHorizontal,
+        'row-header': isHorizontal,
+        dropping: inDropZone,
+      }
+      return (
+        <th
+          className={cx(klasses)}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
+        >
+          <div draggable onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
+            <span>{truncateTitle(line.title, 50)}</span>
+          </div>
+        </th>
+      )
+    }
+
+    let innerKlass = cx(orientedClassName('line-title__body', ui.orientation), {
+      hover: hovering,
+      dropping: inDropZone,
     })
 
     let placement = 'bottom'
-    if (this.props.ui.orientation == 'vertical') placement = 'right'
+    if (ui.orientation == 'vertical') placement = 'right'
     return (
       <Cell>
         <div
-          className={orientedClassName('line-title__cell', this.props.ui.orientation)}
+          className={orientedClassName('line-title__cell', ui.orientation)}
           onMouseEnter={this.startHovering}
           onMouseLeave={this.stopHovering}
           onDrop={this.handleDrop}
@@ -262,7 +292,7 @@ class LineTitleCell extends PureComponent {
           {this.renderDelete()}
           <Floater
             component={this.renderHoverOptions}
-            open={this.state.hovering}
+            open={hovering}
             placement={placement}
             hideArrow
             offset={0}
@@ -290,14 +320,21 @@ class LineTitleCell extends PureComponent {
 LineTitleCell.propTypes = {
   line: PropTypes.object.isRequired,
   bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  actions: PropTypes.object.isRequired,
+  handleReorder: PropTypes.func,
   ui: PropTypes.object.isRequired,
+  isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
+  isLarge: PropTypes.bool,
   lineIsExpanded: PropTypes.bool.isRequired,
+  actions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
   return {
     ui: state.present.ui,
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
+    isLarge: isLargeSelector(state.present),
     lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.line.id],
   }
 }

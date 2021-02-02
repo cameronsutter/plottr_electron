@@ -12,7 +12,8 @@ import {
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { actions, selectors, nextBackgroundColor, nextColor } from 'pltr/v2'
+import { actions, selectors, nextColor } from 'pltr/v2'
+import InputModal from '../dialogs/InputModal'
 
 const {
   nextCardIdSelector,
@@ -20,6 +21,7 @@ const {
   nextChapterIdSelector,
   linesByBookSelector,
   nextLineIdSelector,
+  isSmallSelector,
 } = selectors
 const LineActions = actions.line
 const SeriesLineActions = actions.series
@@ -28,6 +30,7 @@ class AddLineRow extends Component {
   state = {
     hovering: false,
     showTemplatePicker: false,
+    askingForInput: false,
   }
   allChapters = []
   allLines = []
@@ -220,11 +223,48 @@ class AddLineRow extends Component {
     this.setState({ showTemplatePicker: false })
   }
 
-  renderInsertButton() {
+  simpleAddLine = (title) => {
     const { ui, actions } = this.props
-    if (this.props.bookId != 'series') {
+    actions.addLineWithTitle(title, ui.currentTimeline)
+    this.setState({ askingForInput: false, hovering: false })
+  }
+
+  renderInputModal() {
+    if (!this.state.askingForInput) return null
+
+    return (
+      <InputModal
+        isOpen={true}
+        getValue={this.simpleAddLine}
+        title={i18n('Plotline Title:')}
+        type="text"
+        cancel={() => this.setState({ askingForInput: false, hovering: false })}
+      />
+    )
+  }
+
+  renderInsertButton() {
+    const { bookId, isSmall } = this.props
+    if (isSmall) {
+      return (
+        <th className="row-header">
+          {this.renderInputModal()}
+          <div
+            className="line-list__append-line"
+            onClick={() => this.setState({ askingForInput: true })}
+          >
+            <div className="line-list__append-line-wrapper">
+              <Glyphicon glyph="plus" />
+            </div>
+          </div>
+        </th>
+      )
+    }
+
+    if (bookId != 'series') {
       return (
         <div className="line-list__append-line">
+          {this.renderInputModal()}
           {this.state.hovering ? (
             <div className="line-list__append-line__double">
               <div
@@ -233,7 +273,7 @@ class AddLineRow extends Component {
               >
                 {i18n('Use Template')}
               </div>
-              <div onClick={() => actions.addLine(ui.currentTimeline)} className="non-template">
+              <div onClick={() => this.setState({ askingForInput: true })} className="non-template">
                 <Glyphicon glyph="plus" />
               </div>
             </div>
@@ -246,7 +286,11 @@ class AddLineRow extends Component {
       )
     } else {
       return (
-        <div className="line-list__append-line" onClick={() => actions.addLine(ui.currentTimeline)}>
+        <div
+          className="line-list__append-line"
+          onClick={() => this.setState({ askingForInput: true })}
+        >
+          {this.renderInputModal()}
           <div className="line-list__append-line-wrapper">
             <Glyphicon glyph="plus" />
           </div>
@@ -270,27 +314,44 @@ class AddLineRow extends Component {
   }
 
   render() {
-    return (
-      <Row>
-        <Cell
-          onMouseEnter={() => this.setState({ hovering: true })}
-          onMouseLeave={() => this.setState({ hovering: false })}
-        >
+    const { isSmall, howManyCells } = this.props
+    if (isSmall) {
+      const tds = [<td key={howManyCells + 1} />]
+      for (let i = 0; i < howManyCells; i++) {
+        tds.push(<td key={i} />)
+      }
+      return (
+        <tr>
           {this.renderInsertButton()}
-          {this.renderTemplatePicker()}
-        </Cell>
-      </Row>
-    )
+          {tds}
+        </tr>
+      )
+    } else {
+      return (
+        <Row>
+          <Cell
+            onMouseEnter={() => this.setState({ hovering: true })}
+            onMouseLeave={() => this.setState({ hovering: false })}
+          >
+            {this.renderInsertButton()}
+            {this.renderTemplatePicker()}
+          </Cell>
+        </Row>
+      )
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.showTemplatePicker != nextState.showTemplatePicker) return true
     if (this.state.hovering != nextState.hovering) return true
+    if (this.state.askingForInput != nextState.askingForInput) return true
     return false
   }
 
   static propTypes = {
+    howManyCells: PropTypes.number,
     ui: PropTypes.object.isRequired,
+    isSmall: PropTypes.bool,
     bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     chapters: PropTypes.array,
     lines: PropTypes.array,
@@ -298,12 +359,14 @@ class AddLineRow extends Component {
     nextLineId: PropTypes.number,
     nextChapterId: PropTypes.number,
     nextCardId: PropTypes.number,
+    actions: PropTypes.object,
   }
 }
 
 function mapStateToProps(state) {
   return {
     ui: state.present.ui,
+    isSmall: isSmallSelector(state.present),
     chapters: sortedChaptersByBookSelector(state.present),
     lines: linesByBookSelector(state.present),
     cards: state.present.cards,

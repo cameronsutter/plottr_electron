@@ -63,7 +63,7 @@ $title_width: 150px;
 .line-title__hover-options {
 }
 
-.line-list__insert-scene {
+.line-list__insert-chapter {
   height: $title_height;
   display: flex;
   align-items: center;
@@ -75,19 +75,19 @@ $title_width: 150px;
   svg {
     position: absolute;
   }
-  .insert-scene-wrapper {
+  .insert-chapter-wrapper {
     z-index: 3;
   }
-  .insert-scene-wrapper.insert-scene-spacer {
+  .insert-chapter-wrapper.insert-chapter-spacer {
     .glyphicon {
       position: relative;
     }
   }
 }
 
-.line-list__insert-scene:hover {
+.line-list__insert-chapter:hover {
   color: $blue-5;
-  .insert-scene-wrapper {
+  .insert-chapter-wrapper {
     border: 1px dotted $blue-8;
   }
 }
@@ -150,7 +150,7 @@ $title_width: 150px;
       }
     }
   }
-  .line-list__insert-scene:hover {
+  .line-list__insert-chapter:hover {
     color: $blue-7;
   }
 }
@@ -206,7 +206,7 @@ $title_width: 150px;
   }
 }
 
-.vertical-line-list__insert-scene {
+.vertical-line-list__insert-chapter {
   height: 40px;
   display: flex;
   align-items: center;
@@ -221,10 +221,10 @@ $title_width: 150px;
   svg {
     position: absolute;
   }
-  .vertical-insert-scene-wrapper {
+  .vertical-insert-chapter-wrapper {
     z-index: 3;
   }
-  .vertical-insert-scene-wrapper.insert-scene-spacer {
+  .vertical-insert-chapter-wrapper.insert-chapter-spacer {
     display: flex;
     padding: 1px;
     .glyphicon {
@@ -234,9 +234,9 @@ $title_width: 150px;
   }
 }
 
-.vertical-line-list__insert-scene:hover {
+.vertical-line-list__insert-chapter:hover {
   color: $blue-5;
-  .vertical-insert-scene-wrapper {
+  .vertical-insert-chapter-wrapper {
     border: 1px dotted $blue-8;
   }
 }

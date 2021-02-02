@@ -17,7 +17,13 @@ const {
 
 const CardActions = actions.card
 
-const { visibleCardsSelector, lineIsExpandedSelector, isSeriesSelector } = selectors
+const {
+  visibleCardsSelector,
+  lineIsExpandedSelector,
+  isSeriesSelector,
+  isSmallSelector,
+  isMediumSelector,
+} = selectors
 
 class ScenesCell extends PureComponent {
   moveSceneCardAbove = (id, positionWithinLine) => {
@@ -74,7 +80,7 @@ class ScenesCell extends PureComponent {
   }
 
   renderCards(arentHidden) {
-    const { chapterId, lineId, chapterPosition, linePosition, color, cards } = this.props
+    const { chapterId, lineId, chapterPosition, linePosition, color, cards, isSmall } = this.props
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
@@ -92,7 +98,7 @@ class ScenesCell extends PureComponent {
               color={color}
               last={idxOfCards == idx}
               moveCard={this.moveSceneCardAbove}
-              allowDrop={arentHidden}
+              allowDrop={arentHidden || isSmall}
             />
           </ErrorBoundary>
           {arentHidden ? (
@@ -117,17 +123,18 @@ class ScenesCell extends PureComponent {
   }
 
   renderBody() {
-    const numOfCards = this.props.cards.length
-    const vertical = this.props.ui.orientation == 'vertical'
-    if (this.props.lineIsExpanded || numOfCards == 1) {
+    const { cards, ui, isVisible, color, lineIsExpanded } = this.props
+    const numOfCards = cards.length
+    const vertical = ui.orientation == 'vertical'
+    if (lineIsExpanded || numOfCards == 1) {
       return (
         <div className={cx('card__cell', { multiple: numOfCards > 1, vertical: vertical })}>
           {this.renderCards(true)}
         </div>
       )
     } else {
-      let cardStyle = { borderColor: this.props.color }
-      if (!this.props.isVisible) {
+      let cardStyle = { borderColor: color }
+      if (!isVisible) {
         cardStyle.opacity = '0.1'
       }
       return (
@@ -157,9 +164,18 @@ class ScenesCell extends PureComponent {
   }
 
   render() {
-    if (!this.props.cards.length) return <Cell></Cell>
+    const { cards, isSmall } = this.props
 
-    return <Cell>{this.renderBody()}</Cell>
+    if (!cards.length) {
+      if (isSmall) return <td></td>
+      return <Cell></Cell>
+    }
+
+    if (isSmall) {
+      return <td>{this.renderCards(false)}</td>
+    } else {
+      return <Cell>{this.renderBody()}</Cell>
+    }
   }
 }
 
@@ -174,6 +190,8 @@ ScenesCell.propTypes = {
   isSeries: PropTypes.bool.isRequired,
   lineIsExpanded: PropTypes.bool.isRequired,
   isVisible: PropTypes.bool.isRequired,
+  isSmall: PropTypes.bool.isRequired,
+  isMedium: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
 }
 
@@ -185,6 +203,8 @@ function mapStateToProps(state, ownProps) {
     isSeries: isSeriesSelector(state.present),
     lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.lineId],
     isVisible: visible,
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
   }
 }
 

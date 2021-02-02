@@ -98,7 +98,7 @@ function bootFile(filePath, darkMode, numOpenFiles) {
       )
     })
   } catch (error) {
-    // TODO: maybe tell the main process there was en error, and ask the user to try again
+    // TODO: error dialog and ask the user to try again
     log.error(error)
     rollbar.error(error)
   }

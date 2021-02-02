@@ -53,12 +53,13 @@ const ui = {
   placeFilter: null,
   noteSort: 'title~asc',
   noteFilter: null,
-  zoomState: null,
-  zoomIndex: 4,
   timelineFilter: null,
   timelineScrollPosition: {
     x: 0,
     y: 0,
+  },
+  timeline: {
+    size: 'large',
   },
   attributesDialogIsOpen: true,
 }
@@ -115,7 +116,7 @@ const place = {
 const tag = {
   id: 1,
   title: '',
-  color: null
+  color: null,
 }
 
 const card = {
@@ -191,11 +192,9 @@ const image = {
 
 // example template for reference
 // NOT exported
-const templates = [
-  {id: 'ch1', version: '2020.3.4', attributes: [
-    {name: 'Motivation', type: 'text', value: ''},
-  ]}
-]
+// const templates = [
+//   { id: 'ch1', version: '2020.3.4', attributes: [{ name: 'Motivation', type: 'text', value: '' }] },
+// ]
 
 module.exports = {
   image,

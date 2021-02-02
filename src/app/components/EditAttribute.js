@@ -135,7 +135,7 @@ EditAttribute.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
-  value: PropTypes.oneOfType(PropTypes.string, PropTypes.array),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   inputId: PropTypes.string,
   entityType: PropTypes.string.isRequired,
   entity: PropTypes.object.isRequired,

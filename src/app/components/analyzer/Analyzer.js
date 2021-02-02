@@ -9,6 +9,7 @@ import Inspector from 'react-json-inspector'
 import 'react-json-inspector/json-inspector.css'
 import DevFileDrop from './DevFileDrop'
 import { findDOMNode } from 'react-dom'
+// import { saveFile } from '../../../common/utils/files'
 import { newIds } from 'pltr/v2'
 
 const { nextId, objectId } = newIds
@@ -144,11 +145,17 @@ class Analyzer extends Component {
         const { pltr } = this.props
         const re = new RegExp(`bookId\":\s?${idToMove},`, 'g')
         const resultJson = JSON.parse(JSON.stringify(pltr).replace(re, 'bookId":1,'))
+        resultJson.books['1'] = resultJson.books[`${idToMove}`]
+        delete resultJson.books[`${idToMove}`]
+        resultJson.books['1'].id = 1
+        // change allIds
+        // think about currentTimeline
         console.log(
           resultJson.books,
           resultJson.chapters.filter((ch) => ch.bookId == '1'),
           resultJson.lines.filter((ch) => ch.bookId == '1')
         )
+        // saveFile('/Users/sparrowhawk/output.pltr', resultJson)
       }
     }
   }
@@ -332,6 +339,10 @@ class Analyzer extends Component {
       </div>
     )
   }
+}
+
+Analyzer.propTypes = {
+  pltr: PropTypes.object,
 }
 
 function mapStateToProps(state) {

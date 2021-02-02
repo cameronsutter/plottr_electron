@@ -2,11 +2,11 @@
 
 $title_height: 70px;
 
-.scene__cell {
+.chapter__cell {
   width: 175px;
 }
 
-.scene__body {
+.chapter__body {
   @include sub-header-font;
   padding: 20px 10px;
   width: 150px + 6px; // +6px for the 3px border
@@ -23,24 +23,24 @@ $title_height: 70px;
       margin-bottom: 0;
     }
   }
+
+  &.hover {
+    border: 3px dashed $blue-7;
+    cursor: move;
+  }
+  &.dropping {
+    border: $new-item-border;
+  }
 }
 
-.scene__body.hover {
-  border: 3px dashed $blue-7;
-  cursor: move;
-}
 
-.scene__body.dropping {
-  border: $new-item-border;
-}
-
-.scene-list__item__hover-options {
+.chapter-list__item__hover-options {
   text-align: center;
   visibility: hidden;
   margin-bottom: 5px;
 }
 
-.scene-list__insert {
+.chapter-list__insert {
   height: 150px;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@ $title_height: 70px;
   transition: all .4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  .insert-scene-wrapper {
+  .insert-chapter-wrapper {
     display: flex;
     padding: 1px;
     .glyphicon {
@@ -56,7 +56,7 @@ $title_height: 70px;
       margin-right: -1px;
     }
   }
-  .insert-scene-wrapper.append-scene {
+  .insert-chapter-wrapper.append-chapter {
     padding: 30px 70px;
     color: $blue-5;
     border: 3px dotted $blue-8;
@@ -64,19 +64,19 @@ $title_height: 70px;
   }
 }
 
-.scene-list__insert:hover {
+.chapter-list__insert:hover {
   color: $blue-5;
-  .insert-scene-wrapper.append-scene {
+  .insert-chapter-wrapper.append-chapter {
     border: 3px dashed $blue-7;
   }
 }
 
 .sticky-table.darkmode {
-  .scene-list__insert:hover {
+  .chapter-list__insert:hover {
     color: $blue-8;
   }
-  .scene-list__insert {
-    .insert-scene-wrapper.append-scene {
+  .chapter-list__insert {
+    .insert-chapter-wrapper.append-chapter {
       color: $blue-7;
     }
   }
@@ -86,11 +86,11 @@ $title_height: 70px;
 // Vertical
 // ///////////
 
-.vertical-scene__cell {
+.vertical-chapter__cell {
   width: 200px;
 }
 
-.vertical-scene__body {
+.vertical-chapter__body {
   @include sub-header-font;
   display: flex;
   text-align: right;
@@ -111,16 +111,16 @@ $title_height: 70px;
   }
 }
 
-.vertical-scene__body.hover {
+.vertical-chapter__body.hover {
   border: 3px dashed $blue-7;
   cursor: move;
 }
 
-.vertical-scene__body.dropping {
+.vertical-chapter__body.dropping {
   border: $new-item-border;
 }
 
-.vertical-scene-list__item__hover-options {
+.vertical-chapter-list__item__hover-options {
   float: left;
   margin-right: 3px;
   margin-left: 2px;
@@ -130,7 +130,7 @@ $title_height: 70px;
   }
 }
 
-.vertical-scene-list__insert {
+.vertical-chapter-list__insert {
   height: 40px;
   width: 153px;
   margin-left: 50px;
@@ -144,31 +144,31 @@ $title_height: 70px;
   svg {
     position: absolute;
   }
-  .vertical-insert-scene-wrapper.insert-scene-spacer {
+  .vertical-insert-chapter-wrapper.insert-chapter-spacer {
     .glyphicon {
       position: relative;
     }
   }
 }
 
-.vertical-scene-list__insert.append-scene {
-  @extend .vertical-scene-list__insert;
+.vertical-chapter-list__insert.append-chapter {
+  @extend .vertical-chapter-list__insert;
   height: $title_height;
   margin-bottom: 50px;
-  .vertical-insert-scene-wrapper.append-scene {
+  .vertical-insert-chapter-wrapper.append-chapter {
     padding: 20px $title_height;
     color: $blue-5;
     border: 3px dotted $blue-8;
     margin-top: 10px;
   }
-  .vertical-insert-scene-wrapper.append-scene:hover {
+  .vertical-insert-chapter-wrapper.append-chapter:hover {
     border: 3px dashed $blue-7;
   }
 }
 
-.vertical-scene-list__insert:hover {
+.vertical-chapter-list__insert:hover {
   color: $blue-5;
-  .insert-scene-wrapper.append-scene {
+  .insert-chapter-wrapper.append-chapter {
     border: 3px dashed $blue-7;
   }
 }

@@ -19,21 +19,22 @@ import CustomAttrFilterList from 'components/customAttrFilterList'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
-import { FIT_ZOOM_STATE, ZOOM_STATES } from '../../constants/zoom_states'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
-import { actions, helpers, selectors } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 
 const UIActions = actions.ui
 
 const {
-  zoom: { computeZoom },
-} = helpers
-
-const { timelineFilterIsEmptySelector, currentTimelineSelector } = selectors
+  timelineFilterIsEmptySelector,
+  currentTimelineSelector,
+  isSmallSelector,
+  isMediumSelector,
+  isLargeSelector,
+} = selectors
 
 const win = remote.getCurrentWindow()
 
@@ -51,55 +52,63 @@ class TimelineWrapper extends Component {
   }
 
   componentDidMount() {
-    this.tableRef.onscroll = this.scrollHandler
-    const { zoomIndex } = this.props.ui
-    if (!zoomIndex) {
-      this.props.actions.resetZoom()
-    } else {
-      this.updateZoom(this.props.ui)
-    }
+    if (this.props.isSmall) return
+
+    if (this.tableRef) this.tableRef.onscroll = this.scrollHandler
+
     setTimeout(() => {
       this.setState({ mounted: true }, () => {
         if (this.props.ui.timelineScrollPosition == null) return
-        this.tableRef.scrollTo({
-          top: this.props.ui.timelineScrollPosition.y,
-          left: this.props.ui.timelineScrollPosition.x,
-          behavior: 'auto',
-        })
+        if (this.tableRef) {
+          this.tableRef.scrollTo({
+            top: this.props.ui.timelineScrollPosition.y,
+            left: this.props.ui.timelineScrollPosition.x,
+            behavior: 'auto',
+          })
+        }
       })
-    }, 100)
+    }, 10)
   }
 
   componentWillReceiveProps(nextProps) {
     const { ui } = this.props
-    if (nextProps.ui.zoomState != ui.zoomState) {
-      if (nextProps.ui.zoomState != 'fit') this.updateZoom(nextProps.ui)
-    } else {
-      this.updateZoom(nextProps.ui)
-    }
 
-    if (nextProps.ui.currentTimeline != ui.currentTimeline) {
+    if (
+      nextProps.ui.currentTimeline != ui.currentTimeline ||
+      nextProps.ui.orientation != ui.orientation ||
+      nextProps.ui.timeline.size != ui.timeline.size
+    ) {
       this.setState({ mounted: false })
-      setTimeout(() => this.setState({ mounted: true }), 100)
+      setTimeout(
+        () =>
+          this.setState({ mounted: true }, () => {
+            if (nextProps.ui.timelineScrollPosition == null) return
+            if (this.tableRef) {
+              this.tableRef.scrollTo({
+                top: this.props.ui.timelineScrollPosition.y,
+                left: this.props.ui.timelineScrollPosition.x,
+                behavior: 'auto',
+              })
+            }
+          }),
+        10
+      )
     }
-    if (nextProps.ui.orientation != ui.orientation) {
-      this.setState({ mounted: false })
-      setTimeout(() => this.setState({ mounted: true }), 100)
-    }
-    if (nextProps.ui.zoomIndex != ui.zoomIndex || nextProps.ui.zoomState != ui.zoomState) {
-      this.setState({ mounted: false })
-      const updateIt = nextProps.ui.zoomState == 'fit' && ui.zoomState == null
-      const uiProps = nextProps.ui
-      setTimeout(() => {
-        this.setState({ mounted: true })
-        if (updateIt) this.updateZoom(uiProps)
-      }, 100)
-    }
+    // if () {
+    //   this.setState({mounted: false})
+    //   setTimeout(() => this.setState({mounted: true}), 100)
+    // }
+    // if () {
+    //   this.setState({mounted: false})
+    //   setTimeout(() => this.setState({mounted: true}), 100)
+    // }
   }
 
   componentWillUnmount() {
-    this.tableRef.onScroll = null
-    this.tableRef = null
+    if (this.tableRef) {
+      this.tableRef.onScroll = null
+      this.tableRef = null
+    }
   }
 
   // ///////////////
@@ -108,20 +117,6 @@ class TimelineWrapper extends Component {
 
   openCustomAttributesDialog = () => {
     this.props.actions.openAttributesDialog()
-  }
-
-  // ////////////
-  //  zooming  //
-  // ////////////
-
-  updateZoom = (uiProps) => {
-    const zoomScale = computeZoom(this.tableRef, uiProps)
-    this.tableRef.children[0].style.transform = zoomScale
-  }
-
-  zoomLabel = () => {
-    if (this.props.ui.zoomState === FIT_ZOOM_STATE) return 'fit'
-    return `${ZOOM_STATES[this.props.ui.zoomIndex]}x`
   }
 
   // //////////////
@@ -197,7 +192,6 @@ class TimelineWrapper extends Component {
   flipOrientation = () => {
     let orientation = this.props.ui.orientation === 'horizontal' ? 'vertical' : 'horizontal'
     this.props.actions.changeOrientation(orientation)
-    this.props.actions.resetZoom()
   }
 
   // //////////
@@ -225,7 +219,16 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav() {
-    const { ui, file, filterIsEmpty, canSaveTemplate } = this.props
+    const {
+      ui,
+      file,
+      filterIsEmpty,
+      canSaveTemplate,
+      isSmall,
+      isMedium,
+      isLarge,
+      actions,
+    } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -293,17 +296,32 @@ class TimelineWrapper extends Component {
             </Button>
           </NavItem>
           <NavItem>
-            <span className="subnav__container__label">{i18n('Zoom')}</span>
-            <span className="subnav__container__label"> ({this.zoomLabel()}): </span>
-            <ButtonGroup bsSize="small">
-              <Button onClick={this.props.actions.increaseZoom}>
-                <Glyphicon glyph="plus-sign" />
+            <span className="subnav__container__label">{i18n('Zoom')}: </span>
+            <ButtonGroup>
+              <Button
+                bsSize="small"
+                className={cx({ active: isSmall })}
+                onClick={() => actions.setTimelineSize('small')}
+                title={i18n('Size: small')}
+              >
+                S
               </Button>
-              <Button onClick={this.props.actions.decreaseZoom}>
-                <Glyphicon glyph="minus-sign" />
+              <Button
+                bsSize="small"
+                className={cx({ active: isMedium })}
+                onClick={() => actions.setTimelineSize('medium')}
+                title={i18n('Size: medium')}
+              >
+                M
               </Button>
-              <Button onClick={this.props.actions.fitZoom}>{i18n('Fit')}</Button>
-              <Button onClick={this.props.actions.resetZoom}>{i18n('Reset')}</Button>
+              <Button
+                bsSize="small"
+                className={cx({ active: isLarge })}
+                onClick={() => actions.setTimelineSize('large')}
+                title={i18n('Size: large')}
+              >
+                L
+              </Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
@@ -335,10 +353,20 @@ class TimelineWrapper extends Component {
   }
 
   renderBody() {
-    if (this.state.mounted) {
+    const { ui, isSmall } = this.props
+    if (isSmall) {
       return <TimelineTable tableRef={this.tableRef} />
     } else {
-      return <FunSpinner />
+      return (
+        <StickyTable
+          leftColumnZ={5}
+          headerZ={5}
+          wrapperRef={(ref) => (this.tableRef = ref)}
+          className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
+        >
+          {this.state.mounted ? <TimelineTable tableRef={this.tableRef} /> : <FunSpinner />}
+        </StickyTable>
+      )
     }
   }
 
@@ -361,16 +389,7 @@ class TimelineWrapper extends Component {
       >
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        <div id="timelineview__root">
-          <StickyTable
-            leftColumnZ={5}
-            headerZ={5}
-            wrapperRef={(ref) => (this.tableRef = ref)}
-            className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
-          >
-            {this.renderBody()}
-          </StickyTable>
-        </div>
+        <div id="timelineview__root">{this.renderBody()}</div>
       </div>
     )
   }
@@ -379,6 +398,9 @@ class TimelineWrapper extends Component {
 TimelineWrapper.propTypes = {
   file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
+  isLarge: PropTypes.bool,
   filterIsEmpty: PropTypes.bool.isRequired,
   canSaveTemplate: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
@@ -390,6 +412,9 @@ function mapStateToProps(state) {
     ui: state.present.ui,
     filterIsEmpty: timelineFilterIsEmptySelector(state.present),
     canSaveTemplate: currentTimelineSelector(state.present) == 1,
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
+    isLarge: isLargeSelector(state.present),
   }
 }
 

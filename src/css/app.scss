@@ -8,7 +8,7 @@
 @import "line_block";
 @import "outline_block";
 @import "place_list_block";
-@import "scene_block";
+@import "chapter_block";
 @import "tag_list_block";
 @import "color_picker_block";
 @import "image_picker";
@@ -44,9 +44,10 @@
 
 body {
   @include body-text-font;
-  background: $gray-9 url("../../icons/grid_background.jpg");
+  background-color: $gray-9;
+  // background: $gray-9 url("../../icons/grid_background.jpg");
   // background-image: url("../../icons/grid_background.jpg");
-  background-size: 3%;
+  // background-size: 3%;
 }
 
 h1, h2, h3, h4, h5, h6 {

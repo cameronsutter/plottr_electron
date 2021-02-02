@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import cx from 'classnames'
 import {
   Glyphicon,
   Button,
@@ -15,21 +16,11 @@ import { Cell } from 'react-sticky-table'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, helpers, selectors } from 'pltr/v2'
 
-const BeatActions = actions.beat
-const SceneActions = actions.scene
-
 const {
   card: { truncateTitle },
   chapters: { editingChapterLabel, chapterPositionTitle },
   orientedClassName: { orientedClassName },
 } = helpers
-
-const {
-  makeChapterTitleSelector,
-  makeChapterSelector,
-  positionOffsetSelector,
-  isSeriesSelector,
-} = selectors
 
 class ChapterTitleCell extends PureComponent {
   constructor(props) {
@@ -39,7 +30,8 @@ class ChapterTitleCell extends PureComponent {
       hovering: false,
       editing: editing,
       dragging: false,
-      dropping: false,
+      inDropZone: false,
+      dropDepth: 0,
       deleting: false,
     }
   }
@@ -104,23 +96,28 @@ class ChapterTitleCell extends PureComponent {
   }
 
   handleDragEnter = (e) => {
-    if (!this.state.dragging) this.setState({ dropping: true })
+    if (!this.state.dragging) this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
-    if (!this.state.dragging) this.setState({ dropping: true })
     e.preventDefault()
-    return false
+    if (!this.state.dragging) this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
-    if (!this.state.dragging) this.setState({ dropping: false })
+    if (!this.state.dragging) {
+      let dropDepth = this.state.dropDepth
+      --dropDepth
+      this.setState({ dropDepth: dropDepth })
+      if (dropDepth > 0) return
+      this.setState({ inDropZone: false })
+    }
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
     if (this.state.dragging) return
-    this.setState({ dropping: false })
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     var json = e.dataTransfer.getData('text/json')
     var droppedChapter = JSON.parse(json)
@@ -155,13 +152,15 @@ class ChapterTitleCell extends PureComponent {
   }
 
   renderHoverOptions() {
+    if (this.props.isSmall) return null
+
     var style = { visibility: 'hidden' }
     if (this.state.hovering) style.visibility = 'visible'
     if (this.props.ui.orientation === 'vertical') {
       return (
         <div
           className={orientedClassName(
-            'scene-list__item__hover-options',
+            'chapter-list__item__hover-options',
             this.props.ui.orientation
           )}
           style={style}
@@ -178,7 +177,7 @@ class ChapterTitleCell extends PureComponent {
       return (
         <div
           className={orientedClassName(
-            'scene-list__item__hover-options',
+            'chapter-list__item__hover-options',
             this.props.ui.orientation
           )}
           style={style}
@@ -218,36 +217,68 @@ class ChapterTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const { chapter, ui, positionOffset, isSeries } = this.props
-    let innerKlass = orientedClassName('scene__body', ui.orientation)
-    if (this.state.hovering) innerKlass += ' hover'
-    if (this.state.dropping) innerKlass += ' dropping'
-    return (
-      <Cell>
-        <div
-          className={orientedClassName('scene__cell', ui.orientation)}
-          title={chapterPositionTitle(chapter, positionOffset, isSeries)}
-          onMouseEnter={this.startHovering}
-          onMouseLeave={this.stopHovering}
+    const { chapter, ui, positionOffset, chapterTitle, isSeries, isSmall } = this.props
+    const { hovering, inDropZone } = this.state
+    let innerKlass = cx(orientedClassName('chapter__body', ui.orientation), {
+      hover: hovering,
+      dropping: inDropZone,
+    })
+
+    if (isSmall) {
+      const isHorizontal = ui.orientation == 'horizontal'
+      const klasses = {
+        'rotate-45': isHorizontal,
+        'row-header': !isHorizontal,
+        dropping: inDropZone,
+      }
+      return (
+        <th
+          className={cx(klasses)}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
           onDrop={this.handleDrop}
         >
-          {this.renderHoverOptions()}
-          {this.renderDelete()}
           <div
-            className={innerKlass}
-            onClick={this.startEditing}
-            draggable={true}
+            title={chapterPositionTitle(chapter, positionOffset, isSeries)}
+            onMouseEnter={this.startHovering}
+            onMouseLeave={this.stopHovering}
+            draggable
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
-            onDragEnter={this.handleDragEnter}
-            onDragOver={this.handleDragOver}
-            onDragLeave={this.handleDragLeave}
           >
-            {this.renderTitle()}
+            <span>{truncateTitle(chapterTitle, 50)}</span>
           </div>
-        </div>
-      </Cell>
-    )
+        </th>
+      )
+    } else {
+      return (
+        <Cell className="chapter-table-cell">
+          <div
+            className={orientedClassName('chapter__cell', ui.orientation)}
+            title={chapterPositionTitle(chapter, positionOffset, isSeries)}
+            onMouseEnter={this.startHovering}
+            onMouseLeave={this.stopHovering}
+            onDrop={this.handleDrop}
+          >
+            {this.renderHoverOptions()}
+            {this.renderDelete()}
+            <div
+              className={innerKlass}
+              onClick={this.startEditing}
+              draggable
+              onDragStart={this.handleDragStart}
+              onDragEnd={this.handleDragEnd}
+              onDragEnter={this.handleDragEnter}
+              onDragOver={this.handleDragOver}
+              onDragLeave={this.handleDragLeave}
+            >
+              {this.renderTitle()}
+            </div>
+          </div>
+        </Cell>
+      )
+    }
   }
 }
 
@@ -262,28 +293,32 @@ ChapterTitleCell.propTypes = {
   isSeries: PropTypes.bool,
   chapterTitle: PropTypes.string.isRequired,
   positionOffset: PropTypes.number.isRequired,
+  isSmall: PropTypes.bool.isRequired,
+  isMedium: PropTypes.bool.isRequired,
 }
 
 const makeMapState = (state) => {
-  const uniqueChapterSelector = makeChapterSelector()
-  const uniqueChapterTitleSelector = makeChapterTitleSelector()
+  const uniqueChapterSelector = selectors.makeChapterSelector()
+  const uniqueChapterTitleSelector = selectors.makeChapterTitleSelector()
 
   return function mapStateToProps(state, ownProps) {
     return {
       chapters: state.present.chapters,
       chapter: uniqueChapterSelector(state.present, ownProps.chapterId),
       ui: state.present.ui,
-      isSeries: isSeriesSelector(state.present),
+      isSeries: selectors.isSeriesSelector(state.present),
       chapterTitle: uniqueChapterTitleSelector(state.present, ownProps.chapterId),
-      positionOffset: positionOffsetSelector(state.present),
+      positionOffset: selectors.positionOffsetSelector(state.present),
+      isSmall: selectors.isSmallSelector(state.present),
+      isMedium: selectors.isMediumSelector(state.present),
     }
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(SceneActions, dispatch),
-    beatActions: bindActionCreators(BeatActions, dispatch),
+    actions: bindActionCreators(actions.scene, dispatch),
+    beatActions: bindActionCreators(actions.beat, dispatch),
   }
 }
 

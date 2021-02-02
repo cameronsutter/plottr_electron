@@ -12,7 +12,7 @@ import { lineColors, actions, selectors } from 'pltr/v2'
 
 const CardActions = actions.card
 
-const { isSeriesSelector } = selectors
+const { isSeriesSelector, isSmallSelector, isMediumSelector } = selectors
 const { lightBackground } = lineColors
 
 class BlankCard extends Component {
@@ -20,30 +20,35 @@ class BlankCard extends Component {
     super(props)
     this.state = {
       creating: false,
-      dropping: false,
       templateHover: false,
       defaultHover: false,
       showTemplatePicker: false,
       templates: [],
+      inDropZone: false,
+      dropDepth: 0,
     }
   }
 
   handleDragEnter = (e) => {
-    this.setState({ dropping: true })
+    this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
-    this.setState({ dropping: true })
     e.preventDefault()
+    this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
-    this.setState({ dropping: false })
+    let dropDepth = this.state.dropDepth
+    --dropDepth
+    this.setState({ dropDepth: dropDepth })
+    if (dropDepth > 0) return
+    this.setState({ inDropZone: false })
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({ dropping: false })
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     const json = e.dataTransfer.getData('text/json')
     const droppedData = JSON.parse(json)
@@ -64,6 +69,11 @@ class BlankCard extends Component {
       templates: [],
     })
     if (this.props.onDone) this.props.onDone()
+  }
+
+  createFromSmall = () => {
+    const newCard = this.buildCard('')
+    this.props.actions.addCard(newCard)
   }
 
   handleFinishCreate = (event) => {
@@ -156,25 +166,42 @@ class BlankCard extends Component {
   }
 
   renderBlank() {
+    const { color, verticalInsertion, isSmall } = this.props
+    if (isSmall) {
+      const smallStyle = { borderColor: color }
+      return (
+        <td
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
+        >
+          <div
+            className={cx('blank-circle', { hover: this.state.inDropZone })}
+            style={smallStyle}
+            onClick={this.createFromSmall}
+          />
+        </td>
+      )
+    }
+
     const blankCardStyle = {
-      borderColor: this.props.color,
-      color: this.props.color,
+      borderColor: color,
+      color: color,
     }
     const addWithTemplateStyle = this.state.templateHover
       ? {
-          background: lightBackground(this.props.color),
+          background: lightBackground(color),
         }
       : {}
     const addWithDefaultStyle = this.state.defaultHover
       ? {
-          background: lightBackground(this.props.color),
+          background: lightBackground(color),
         }
       : {}
-    const bodyClass = this.props.verticalInsertion
-      ? 'vertical-blank-card__body'
-      : 'blank-card__body'
+    const bodyClass = verticalInsertion ? 'vertical-blank-card__body' : 'blank-card__body'
     return (
-      <div className={cx(bodyClass, { hover: this.state.dropping })} style={blankCardStyle}>
+      <div className={cx(bodyClass, { hover: this.state.inDropZone })} style={blankCardStyle}>
         <div
           className="template"
           onClick={this.showTemplatePicker}
@@ -212,12 +239,10 @@ class BlankCard extends Component {
   }
 
   renderCreateNew() {
-    const cardStyle = {
-      borderColor: this.props.color,
-    }
-    const bodyClass = this.props.verticalInsertion ? 'vertical-card__body' : 'card__body'
+    const { color } = this.props
+    const cardStyle = { borderColor: color }
     return (
-      <div className={bodyClass} style={cardStyle}>
+      <div className="card__body" style={cardStyle}>
         <FormGroup>
           <ControlLabel>{i18n('Scene Title')}</ControlLabel>
           <FormControl
@@ -243,6 +268,8 @@ class BlankCard extends Component {
     } else {
       body = this.renderBlank()
     }
+
+    if (this.props.isSmall) return body
 
     const vertical = this.props.orientation === 'vertical'
     return (
@@ -270,7 +297,7 @@ class BlankCard extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.dropping != nextState.dropping) return true
+    if (this.state.inDropZone != nextState.inDropZone) return true
     if (this.state.creating != nextState.creating) return true
     if (this.props.color != nextProps.color) return true
     if (this.state.templateHover !== nextState.templateHover) return true
@@ -290,6 +317,9 @@ BlankCard.propTypes = {
   isSeries: PropTypes.bool,
   positionWithinLine: PropTypes.number,
   onDone: PropTypes.func,
+  isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
+  actions: PropTypes.object,
 }
 
 function mapStateToProps(state) {
@@ -297,6 +327,8 @@ function mapStateToProps(state) {
     currentTimeline: state.present.ui.currentTimeline,
     orientation: state.present.ui.orientation,
     isSeries: isSeriesSelector(state.present),
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
   }
 }
 

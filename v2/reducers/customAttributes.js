@@ -17,6 +17,7 @@ import {
   NEW_FILE,
   REORDER_CHARACTER_ATTRIBUTE,
   REORDER_PLACES_ATTRIBUTE,
+  REORDER_SCENES_ATTRIBUTE,
 } from '../constants/ActionTypes'
 import { combineReducers } from 'redux'
 import { newFileCustomAttributes } from '../store/newFileState'
@@ -123,6 +124,14 @@ function scenes(state = [], action) {
 
     case REMOVE_SCENES_ATTRIBUTE:
       return state.filter((attr) => attr.name !== action.attribute)
+
+    case REORDER_SCENES_ATTRIBUTE:
+      const { toIndex, attribute } = action
+
+      const copy = state.slice().filter(({ name }) => name != attribute.name)
+
+      copy.splice(toIndex, 0, attribute)
+      return copy
 
     case RESET:
     case NEW_FILE:

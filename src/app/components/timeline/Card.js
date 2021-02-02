@@ -184,7 +184,7 @@ class Card extends Component {
   }
 
   render() {
-    const { color, isVisible, allowDrop, last } = this.props
+    const { color, isVisible, allowDrop, last, isSmall } = this.props
     var cardStyle = {
       borderColor: color,
     }

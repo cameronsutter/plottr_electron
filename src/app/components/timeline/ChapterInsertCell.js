@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+import cx from 'classnames'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'

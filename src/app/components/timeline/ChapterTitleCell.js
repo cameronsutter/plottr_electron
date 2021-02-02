@@ -3,6 +3,7 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import cx from 'classnames'
 import {
   Glyphicon,
   Button,
@@ -15,23 +16,11 @@ import { Cell } from 'react-sticky-table'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, helpers, selectors } from 'pltr/v2'
 
-const BeatActions = actions.beat
-const SceneActions = actions.scene
-
 const {
   card: { truncateTitle },
   chapters: { editingChapterLabel, chapterPositionTitle },
   orientedClassName: { orientedClassName },
 } = helpers
-
-const {
-  makeChapterTitleSelector,
-  makeChapterSelector,
-  positionOffsetSelector,
-  isSeriesSelector,
-  isSmallSelector,
-  isMediumSelector,
-} = selectors
 
 class ChapterTitleCell extends PureComponent {
   constructor(props) {
@@ -171,7 +160,7 @@ class ChapterTitleCell extends PureComponent {
       return (
         <div
           className={orientedClassName(
-            'scene-list__item__hover-options',
+            'chapter-list__item__hover-options',
             this.props.ui.orientation
           )}
           style={style}
@@ -188,7 +177,7 @@ class ChapterTitleCell extends PureComponent {
       return (
         <div
           className={orientedClassName(
-            'scene-list__item__hover-options',
+            'chapter-list__item__hover-options',
             this.props.ui.orientation
           )}
           style={style}
@@ -229,7 +218,7 @@ class ChapterTitleCell extends PureComponent {
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
     const { chapter, ui, positionOffset, chapterTitle, isSeries, isSmall } = this.props
-    const { hovering, inDropZone, dragging } = this.state
+    const { hovering, inDropZone } = this.state
     let innerKlass = cx(orientedClassName('chapter__body', ui.orientation), {
       hover: hovering,
       dropping: inDropZone,
@@ -309,27 +298,27 @@ ChapterTitleCell.propTypes = {
 }
 
 const makeMapState = (state) => {
-  const uniqueChapterSelector = makeChapterSelector()
-  const uniqueChapterTitleSelector = makeChapterTitleSelector()
+  const uniqueChapterSelector = selectors.makeChapterSelector()
+  const uniqueChapterTitleSelector = selectors.makeChapterTitleSelector()
 
   return function mapStateToProps(state, ownProps) {
     return {
       chapters: state.present.chapters,
       chapter: uniqueChapterSelector(state.present, ownProps.chapterId),
       ui: state.present.ui,
-      isSeries: isSeriesSelector(state.present),
+      isSeries: selectors.isSeriesSelector(state.present),
       chapterTitle: uniqueChapterTitleSelector(state.present, ownProps.chapterId),
-      positionOffset: positionOffsetSelector(state.present),
-      isSmall: isSmallSelector(state.present),
-      isMedium: isMediumSelector(state.present),
+      positionOffset: selectors.positionOffsetSelector(state.present),
+      isSmall: selectors.isSmallSelector(state.present),
+      isMedium: selectors.isMediumSelector(state.present),
     }
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(SceneActions, dispatch),
-    beatActions: bindActionCreators(BeatActions, dispatch),
+    actions: bindActionCreators(actions.scene, dispatch),
+    beatActions: bindActionCreators(actions.beat, dispatch),
   }
 }
 

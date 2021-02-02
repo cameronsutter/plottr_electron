@@ -72,5 +72,5 @@ export default function NewFiles({ activeView, toggleView, doImport }) {
 NewFiles.propTypes = {
   activeView: PropTypes.string,
   toggleView: PropTypes.func,
-  doImport: PropTypes.bool,
+  doImport: PropTypes.func,
 }

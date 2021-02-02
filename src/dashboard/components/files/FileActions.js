@@ -14,7 +14,7 @@ if (is.macos) {
   showInMessage = t('Show in Finder')
 }
 
-export default function FileOptions({ missing, id, filePath, openFile }) {
+export default function FileActions({ missing, id, filePath, openFile }) {
   const [deleting, setDeleting] = useState(false)
 
   const deleteFile = () => {
@@ -51,7 +51,7 @@ export default function FileOptions({ missing, id, filePath, openFile }) {
   const isTemp = filePath.includes(TEMP_FILES_PATH)
 
   return (
-    <div className="dashboard__recent-files__file-options">
+    <div className="dashboard__recent-files__file-actions">
       {renderDeleteFile()}
       <Dropdown id={`file-option-${id}`} onSelect={doTheThing}>
         <Dropdown.Toggle noCaret>
@@ -68,9 +68,9 @@ export default function FileOptions({ missing, id, filePath, openFile }) {
   )
 }
 
-FileOptions.propTypes = {
+FileActions.propTypes = {
   missing: PropTypes.bool,
   id: PropTypes.string,
   filePath: PropTypes.string,
-  openFile: PropTypes.bool,
+  openFile: PropTypes.func,
 }

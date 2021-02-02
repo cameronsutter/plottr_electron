@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
-import orientedClassName from '../../helpers/orientedClassName'
+import { helpers } from 'pltr/v2'
+
+const {
+  orientedClassName: { orientedClassName },
+} = helpers
 
 const Horizontal = {
   first: 155,

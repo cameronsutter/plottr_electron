@@ -1,5 +1,5 @@
-@import '../colors';
-@import '../vars';
+@import "../colors";
+@import "../vars";
 
 .dashboard__files {
   height: 100%;
@@ -7,8 +7,8 @@
   padding: 20px 40px;
   display: grid;
   grid-template-areas:
-    'newFiles'
-    'recentProjects';
+    "newFiles"
+    "recentProjects";
   grid-template-rows: auto 1fr;
   overflow: hidden;
 }
@@ -33,21 +33,20 @@
   text-align: center;
   cursor: pointer;
   border-radius: 4px;
-  transition: all 0.1s ease-in;
+  transition: all .1s ease-in;
   font-size: 16pt;
   color: $gray-1;
   background: white;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,.25);
   margin-bottom: 10px;
-  padding: calc(27 * 0.1vw) calc(11 * 0.1vw);
+  padding: calc(27 * .1vw) calc(11 * .1vw);
 
   &.icon {
     svg {
       font-size: 60pt;
       color: $gray-5;
     }
-    &:hover,
-    &.active {
+    &:hover, &.active {
       svg {
         color: $gray-3;
         // transform: scale(1.2);
@@ -55,8 +54,7 @@
     }
   }
 
-  &:hover,
-  &.active {
+  &:hover, &.active {
     // color: $blue-0;
     background-color: $blue-9;
     box-shadow: $blue-highlight-box-shadow;
@@ -153,8 +151,7 @@
         }
       }
 
-      &:hover,
-      &.selected {
+      &:hover, &.selected {
         color: $blue-0;
         background-color: $blue-9;
         // box-shadow: $blue-highlight-box-shadow;

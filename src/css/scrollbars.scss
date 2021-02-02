@@ -1,4 +1,4 @@
-@import 'vars';
+@import "vars";
 
 // https://css-tricks.com/custom-scrollbars-in-webkit/
 // https://webkit.org/blog/363/styling-scrollbars/
@@ -24,10 +24,10 @@
 
 // https://css-tricks.com/snippets/sass/custom-scrollbars-mixin/
 
-@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white, 50%)) {
+@mixin scrollbars($size, $foreground-color, $background-color: mix($foreground-color, white,  50%)) {
   // For Google Chrome
   &::-webkit-scrollbar {
-    width: $size;
+    width:  $size;
     height: $size;
   }
 

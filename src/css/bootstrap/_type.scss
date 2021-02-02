@@ -2,21 +2,12 @@
 // Typography
 // --------------------------------------------------
 
+
 // Headings
 // -------------------------
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: $headings-font-family;
   font-weight: $headings-font-weight;
   line-height: $headings-line-height;
@@ -30,12 +21,9 @@ h6,
   }
 }
 
-h1,
-.h1,
-h2,
-.h2,
-h3,
-.h3 {
+h1, .h1,
+h2, .h2,
+h3, .h3 {
   margin-top: $line-height-computed;
   margin-bottom: ($line-height-computed / 2);
 
@@ -44,12 +32,9 @@ h3,
     font-size: 65%;
   }
 }
-h4,
-.h4,
-h5,
-.h5,
-h6,
-.h6 {
+h4, .h4,
+h5, .h5,
+h6, .h6 {
   margin-top: ($line-height-computed / 2);
   margin-bottom: ($line-height-computed / 2);
 
@@ -59,30 +44,13 @@ h6,
   }
 }
 
-h1,
-.h1 {
-  font-size: $font-size-h1;
-}
-h2,
-.h2 {
-  font-size: $font-size-h2;
-}
-h3,
-.h3 {
-  font-size: $font-size-h3;
-}
-h4,
-.h4 {
-  font-size: $font-size-h4;
-}
-h5,
-.h5 {
-  font-size: $font-size-h5;
-}
-h6,
-.h6 {
-  font-size: $font-size-h6;
-}
+h1, .h1 { font-size: $font-size-h1; }
+h2, .h2 { font-size: $font-size-h2; }
+h3, .h3 { font-size: $font-size-h3; }
+h4, .h4 { font-size: $font-size-h4; }
+h5, .h5 { font-size: $font-size-h5; }
+h6, .h6 { font-size: $font-size-h6; }
+
 
 // Body text
 // -------------------------
@@ -102,6 +70,7 @@ p {
   }
 }
 
+
 // Emphasis & misc
 // -------------------------
 
@@ -114,36 +83,20 @@ small,
 mark,
 .mark {
   background-color: $state-warning-bg;
-  padding: 0.2em;
+  padding: .2em;
 }
 
 // Alignment
-.text-left {
-  text-align: left;
-}
-.text-right {
-  text-align: right;
-}
-.text-center {
-  text-align: center;
-}
-.text-justify {
-  text-align: justify;
-}
-.text-nowrap {
-  white-space: nowrap;
-}
+.text-left           { text-align: left; }
+.text-right          { text-align: right; }
+.text-center         { text-align: center; }
+.text-justify        { text-align: justify; }
+.text-nowrap         { white-space: nowrap; }
 
 // Transformation
-.text-lowercase {
-  text-transform: lowercase;
-}
-.text-uppercase {
-  text-transform: uppercase;
-}
-.text-capitalize {
-  text-transform: capitalize;
-}
+.text-lowercase      { text-transform: lowercase; }
+.text-uppercase      { text-transform: uppercase; }
+.text-capitalize     { text-transform: capitalize; }
 
 // Contextual colors
 .text-muted {
@@ -178,6 +131,7 @@ mark,
 
 @include bg-variant('.bg-danger', $state-danger-bg);
 
+
 // Page header
 // -------------------------
 
@@ -186,6 +140,7 @@ mark,
   margin: ($line-height-computed * 2) 0 $line-height-computed;
   border-bottom: 1px solid $page-header-border-color;
 }
+
 
 // Lists
 // -------------------------
@@ -212,6 +167,7 @@ ol {
 .list-unstyled {
   @include list-unstyled;
 }
+
 
 // Inline turns list items into inline-block
 .list-inline {
@@ -264,6 +220,7 @@ dd {
     }
   }
 }
+
 
 // Misc
 // -------------------------
@@ -326,9 +283,7 @@ blockquote.pull-right {
   footer,
   small,
   .small {
-    &:before {
-      content: '';
-    }
+    &:before { content: ''; }
     &:after {
       content: '\00A0 \2014'; // nbsp, em dash
     }

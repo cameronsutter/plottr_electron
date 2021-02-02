@@ -16,9 +16,8 @@ $dark-gray-7: #dbe2ec;
 
 $dark-orange: #ff7f32;
 $dark-text: $dark-gray-7;
-$white-highlight-box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1),
-  inset 0 -1px 5px 0 $dark-gray-7, inset 0px 1px 1px 0px rgba(0, 0, 0, 0.1),
-  inset 0 1px 5px 0 $dark-gray-7;
+$white-highlight-box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $dark-gray-7, inset 0px 1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 1px 5px 0 $dark-gray-7;
+
 
 .dashboard__header.darkmode {
   background-color: $dark-gray-1 !important;
@@ -105,8 +104,7 @@ main.darkmode {
         color: $dark-gray-5;
       }
     }
-    &:hover,
-    &.active {
+    &:hover, &.active {
       background-color: $dark-gray-2;
       box-shadow: $white-highlight-box-shadow;
     }
@@ -141,8 +139,7 @@ main.darkmode {
           border-color: $dark-gray-1;
         }
 
-        &:hover,
-        &.selected {
+        &:hover, &.selected {
           color: $dark-text;
           .sticky-table-cell:first-child {
             // background-color: $dark-gray-1;
@@ -168,8 +165,7 @@ main.darkmode {
       li.list-group-item {
         background-color: $dark-gray-1;
         border-color: $dark-gray-2;
-        &:hover,
-        &.selected {
+        &:hover, &.selected {
           color: $dark-text;
           background-color: $dark-gray-1;
         }

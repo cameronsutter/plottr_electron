@@ -1,7 +1,9 @@
 import { ipcRenderer, remote } from 'electron'
-import React, { useRef } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
+import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import {
   Modal,
   Form,
@@ -17,23 +19,19 @@ import cx from 'classnames'
 
 const win = remote.getCurrentWindow()
 
-function TemplateCreate({ type, close, ui }) {
-  const nameRef = useRef()
-  const descriptionRef = useRef()
-  const linkRef = useRef()
-
-  const saveEdit = () => {
+class TemplateCreate extends Component {
+  saveEdit = () => {
     const data = {
-      name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      link: linkRef.current.value,
+      name: findDOMNode(this.refs.name).value,
+      description: findDOMNode(this.refs.description).value,
+      link: findDOMNode(this.refs.link).value,
     }
 
-    ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', { type: type, data })
-    close()
+    ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', { type: this.props.type, data })
+    this.props.close()
   }
 
-  const titleFor = (type) => {
+  titleFor = (type) => {
     switch (type) {
       case 'plotlines':
         return i18n('My Timeline Template')
@@ -46,18 +44,18 @@ function TemplateCreate({ type, close, ui }) {
     return i18n('My Character Template')
   }
 
-  const renderToolBar = () => {
+  renderToolBar() {
     return (
       <ButtonToolbar>
-        <Button bsStyle="success" onClick={saveEdit}>
+        <Button bsStyle="success" onClick={this.saveEdit}>
           {i18n('Save')}
         </Button>
-        <Button onClick={close}>{i18n('Cancel')}</Button>
+        <Button onClick={this.props.close}>{i18n('Cancel')}</Button>
       </ButtonToolbar>
     )
   }
 
-  const renderBody = () => {
+  renderBody() {
     return (
       <Form horizontal>
         <FormGroup>
@@ -65,7 +63,7 @@ function TemplateCreate({ type, close, ui }) {
             {i18n('Name')}
           </Col>
           <Col sm={8}>
-            <FormControl type="text" ref={nameRef} defaultValue={i18n('Custom Template')} />
+            <FormControl type="text" ref="name" defaultValue={i18n('Custom Template')} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -73,7 +71,7 @@ function TemplateCreate({ type, close, ui }) {
             {i18n('Description')}
           </Col>
           <Col sm={8}>
-            <FormControl type="text" ref={descriptionRef} defaultValue={''} />
+            <FormControl type="text" ref="description" defaultValue={''} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -83,7 +81,7 @@ function TemplateCreate({ type, close, ui }) {
           <Col sm={8}>
             <FormControl
               type="text"
-              ref={linkRef}
+              ref="link"
               defaultValue={''}
               placeholder="https://example.com/"
             />
@@ -93,27 +91,29 @@ function TemplateCreate({ type, close, ui }) {
     )
   }
 
-  const title = titleFor(type)
+  render() {
+    const title = this.titleFor(this.props.type)
 
-  return (
-    <Modal
-      show={true}
-      onHide={close}
-      dialogClassName={cx('book-dialog', { darkmode: ui.darkMode })}
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{renderBody()}</Modal.Body>
-      <Modal.Footer>{renderToolBar()}</Modal.Footer>
-    </Modal>
-  )
-}
+    return (
+      <Modal
+        show={true}
+        onHide={this.props.close}
+        dialogClassName={cx('book-dialog', { darkmode: this.props.ui.darkMode })}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{this.renderBody()}</Modal.Body>
+        <Modal.Footer>{this.renderToolBar()}</Modal.Footer>
+      </Modal>
+    )
+  }
 
-TemplateCreate.propTypes = {
-  close: PropTypes.func.isRequired,
-  type: PropTypes.string,
-  ui: PropTypes.object.isRequired,
+  static propTypes = {
+    close: PropTypes.func.isRequired,
+    type: PropTypes.string,
+    ui: PropTypes.object.isRequired,
+  }
 }
 
 function mapStateToProps(state) {

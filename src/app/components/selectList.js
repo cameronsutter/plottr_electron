@@ -116,7 +116,7 @@ export default class SelectList extends Component {
             placement="right"
             overlay={this.renderUnSelected()}
           >
-            <Button bsSize="xsmall">
+            <Button ref="characterList" bsSize="xsmall">
               <Glyphicon glyph="plus" />
             </Button>
           </OverlayTrigger>

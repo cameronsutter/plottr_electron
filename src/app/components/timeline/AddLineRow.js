@@ -8,8 +8,12 @@ import i18n from 'format-message'
 import { sortBy } from 'lodash'
 import * as SeriesLineActions from 'actions/seriesLines'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { nextColor } from 'store/lineColors'
-import { card, line as defaultLine } from '../../../../shared/initialState'
+import { nextBackgroundColor, nextColor } from 'store/lineColors'
+import {
+  card,
+  chapter as defaultChapter,
+  line as defaultLine,
+} from '../../../../shared/initialState'
 import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selectors/chapters'
 import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
 import { nextCardIdSelector } from '../../selectors/cards'
@@ -293,7 +297,6 @@ class AddLineRow extends Component {
     nextLineId: PropTypes.number,
     nextChapterId: PropTypes.number,
     nextCardId: PropTypes.number,
-    actions: PropTypes.object,
   }
 }
 

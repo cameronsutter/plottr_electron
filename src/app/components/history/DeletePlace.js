@@ -11,7 +11,7 @@ class DeletePlace extends Component {
     return (
       <div>
         <span>
-          {i18n('Place')}: &quot;{place.title}&quot;
+          {i18n('Place')}: "{place.title}"
         </span>
         <p>
           {i18n('Before')}: <span className="history-component__item__before">{place.title}</span>

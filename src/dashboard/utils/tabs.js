@@ -6,8 +6,9 @@ import {
   IoMdSettings,
   IoIosHelpBuoy,
   IoMdTime,
-  // IoIosBrowsers,
+  IoIosBrowsers,
 } from 'react-icons/io'
+import { is } from 'electron-util'
 
 export const tabs = [
   { name: t('Account'), view: 'account', icon: <IoMdContact /> },

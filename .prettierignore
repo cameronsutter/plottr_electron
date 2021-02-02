@@ -1,6 +1,0 @@
-bin/*.bundle.js
-**/*.scss
-**/*.css
-**/*.yml
-*.yml
-**/*.html

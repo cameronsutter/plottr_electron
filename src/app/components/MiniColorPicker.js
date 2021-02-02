@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import PropTypes from 'react-proptypes'
+import { findDOMNode } from 'react-dom'
 import {
   reds,
   oranges,
@@ -13,13 +13,14 @@ import {
 } from '../constants/CSScolors'
 import { Button } from 'react-bootstrap'
 import i18n from 'format-message'
+import cx from 'classnames'
 
 export default function MiniColorPicker(props) {
   const pickerRef = useRef(null)
   const [coords, setCoords] = useState({})
 
   useEffect(() => {
-    const el = props.el.current
+    const el = findDOMNode(props.el.current)
     setCoords(el.getBoundingClientRect())
   }, [props.el])
 
@@ -128,10 +129,4 @@ export default function MiniColorPicker(props) {
       </div>
     </div>
   )
-}
-
-MiniColorPicker.propTypes = {
-  el: PropTypes.instanceOf(Element),
-  close: PropTypes.func,
-  chooseColor: PropTypes.func,
 }

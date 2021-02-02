@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
+import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
@@ -7,6 +8,7 @@ import {
   Form,
   FormGroup,
   Col,
+  Row,
   ControlLabel,
   FormControl,
   ButtonToolbar,
@@ -17,21 +19,13 @@ import * as BookActions from 'actions/books'
 import cx from 'classnames'
 
 class BookDialog extends Component {
-  constructor(props) {
-    super(props)
-    this.titleRef = React.createRef()
-    this.premiseRef = React.createRef()
-    this.genreRef = React.createRef()
-    this.themeRef = React.createRef()
-  }
-
   saveEdit = () => {
     const { book } = this.props
 
-    let title = this.titleRef.current.value
-    let premise = this.premiseRef.current.value
-    let genre = this.genreRef.current.value
-    let theme = this.themeRef.current.value
+    let title = findDOMNode(this.refs.title).value
+    let premise = findDOMNode(this.refs.premise).value
+    let genre = findDOMNode(this.refs.genre).value
+    let theme = findDOMNode(this.refs.theme).value
     this.props.actions.editBook(book.id, { title, premise, genre, theme })
     this.props.cancel()
   }
@@ -64,7 +58,7 @@ class BookDialog extends Component {
             {i18n('Title')}
           </Col>
           <Col sm={8}>
-            <FormControl type="text" ref={this.titleRef} defaultValue={book.title} />
+            <FormControl type="text" ref="title" defaultValue={book.title} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -72,7 +66,7 @@ class BookDialog extends Component {
             {i18n('Premise')}
           </Col>
           <Col sm={8}>
-            <FormControl type="text" ref={this.premiseRef} defaultValue={book.premise} />
+            <FormControl type="text" ref="premise" defaultValue={book.premise} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -80,7 +74,7 @@ class BookDialog extends Component {
             {i18n('Genre')}
           </Col>
           <Col sm={8}>
-            <FormControl type="text" ref={this.genreRef} defaultValue={book.genre} />
+            <FormControl type="text" ref="genre" defaultValue={book.genre} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -88,7 +82,7 @@ class BookDialog extends Component {
             {i18n('Theme')}
           </Col>
           <Col sm={8}>
-            <FormControl type="text" ref={this.themeRef} defaultValue={book.theme} />
+            <FormControl type="text" ref="theme" defaultValue={book.theme} />
           </Col>
         </FormGroup>
       </Form>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -44,8 +45,6 @@ class PlaceListView extends Component {
       placeDetailId: null,
       editingSelected: false,
     }
-
-    this.attrInputRef = React.createRef()
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -89,7 +88,7 @@ class PlaceListView extends Component {
   }
 
   handleType = () => {
-    const attr = this.attrInputRef.current.value
+    const attr = findDOMNode(this.refs.attrInput).value
     this.setState({ addAttrText: attr })
   }
 
@@ -100,7 +99,7 @@ class PlaceListView extends Component {
   }
 
   saveAttr = () => {
-    const name = this.attrInputRef.current.value
+    const name = findDOMNode(this.refs.attrInput).value
     if (name == '' || this.props.restrictedValues.includes(name)) return // nothing? restricted value? no op
 
     this.props.customAttributeActions.addPlaceAttr({ name, type: 'text' })
@@ -268,7 +267,6 @@ PlaceListView.propTypes = {
   actions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
   uiActions: PropTypes.object.isRequired,
-  places: PropTypes.array,
 }
 
 function mapStateToProps(state) {

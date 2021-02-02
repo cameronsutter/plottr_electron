@@ -1,6 +1,5 @@
-import React from 'react'
-import PropTypes from 'react-proptypes'
-import { IoIosBrowsers, IoIosDocument, IoIosDesktop } from 'react-icons/io'
+import React, { useState } from 'react'
+import { IoIosBrowsers, IoMdBook, IoIosDocument, IoIosDesktop } from 'react-icons/io'
 import { FaRegSnowflake } from 'react-icons/fa'
 import t from 'format-message'
 import cx from 'classnames'
@@ -67,10 +66,4 @@ export default function NewFiles({ activeView, toggleView, doImport }) {
       </Row>
     </Grid>
   )
-}
-
-NewFiles.propTypes = {
-  activeView: PropTypes.string,
-  toggleView: PropTypes.func,
-  doImport: PropTypes.func,
 }

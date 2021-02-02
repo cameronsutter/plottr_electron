@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { findDOMNode } from 'react-dom'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import * as CharacterActions from 'actions/characters'
@@ -37,9 +38,6 @@ class CharacterEditDetails extends Component {
       newImageId: null,
       deleting: false,
     }
-
-    this.nameInputRef = React.createRef()
-    this.descriptionInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -93,8 +91,8 @@ class CharacterEditDetails extends Component {
   }
 
   saveEdit = (close = true) => {
-    var name = this.nameInputRef.current.value || this.props.character.name
-    var description = this.descriptionInputRef.current.value
+    var name = findDOMNode(this.refs.nameInput).value || this.props.character.name
+    var description = findDOMNode(this.refs.descriptionInput).value
     var notes = this.state.notes
     var attrs = {
       categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
@@ -103,7 +101,7 @@ class CharacterEditDetails extends Component {
       attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
     }
     this.props.customAttributes.forEach((attr) => {
-      const { name } = attr
+      const { name, type } = attr
       attrs[name] = this.state.description[name]
     })
     const templates = this.props.character.templates.map((t) => {
@@ -220,7 +218,7 @@ class CharacterEditDetails extends Component {
                 <ControlLabel>{i18n('Name')}</ControlLabel>
                 <FormControl
                   type="text"
-                  ref={this.nameInputRef}
+                  ref="nameInput"
                   autoFocus
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
@@ -231,7 +229,7 @@ class CharacterEditDetails extends Component {
                 <ControlLabel>{i18n('Short Description')}</ControlLabel>
                 <FormControl
                   type="text"
-                  ref={this.descriptionInputRef}
+                  ref="descriptionInput"
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
                   defaultValue={character.description}

@@ -47,7 +47,9 @@
           "version": "2020.3.4"
         }
       ],
-      "bookIds": [1],
+      "bookIds": [
+        1
+      ],
       "superpower": "",
       "stuff": "something"
     },
@@ -81,7 +83,11 @@
         }
       ],
       "race": "",
-      "tags": [12, 8, 3],
+      "tags": [
+        12,
+        8,
+        3
+      ],
       "templates": [
         {
           "attributes": [
@@ -121,7 +127,9 @@
           "version": "2020.3.4"
         }
       ],
-      "bookIds": [2],
+      "bookIds": [
+        2
+      ],
       "superpower": "",
       "stuff": ""
     }
@@ -188,7 +196,9 @@
       "fromTemplateId": null
     },
     {
-      "characters": [1],
+      "characters": [
+        1
+      ],
       "description": [
         {
           "type": "paragraph",
@@ -386,26 +396,26 @@
         }
       ],
       "tags": [1, 4],
-      "templates": [
-        {
-          "attributes": [
-            {
-              "name": "Template attribute",
-              "type": "text",
-              "value": "This is a template attribute"
-            },
-            {
-              "name": "Empty attribute",
-              "type": "text",
-              "value": ""
-            }
-          ],
-          "id": "ch1",
-          "version": "2020.3.4"
-        }
-      ],
+      "templates": [{
+        "attributes": [
+          {
+            "name": "Template attribute",
+            "type": "text",
+            "value": "This is a template attribute"
+          },
+          {
+            "name": "Empty attribute",
+            "type": "text",
+            "value": ""
+          }
+        ],
+        "id": "ch1",
+        "version": "2020.3.4"
+      }],
       "weather": "stormy",
-      "bookIds": [1],
+      "bookIds": [
+        1
+      ],
       "galaxy": ""
     }
   ],
@@ -473,26 +483,34 @@
   ],
   "notes": [
     {
-      "characters": [1],
+      "characters": [
+        1
+      ],
       "content": [
         {
           "type": "paragraph",
-          "children": [
-            {
-              "text": "A note"
-            }
-          ]
+          "children": [{
+            "text": "A note"
+          }]
         }
       ],
       "description": "",
       "id": 0,
       "imageId": null,
       "lastEdited": 1493246501158,
-      "places": [0],
-      "tags": [4, 3, 0],
+      "places": [
+        0
+      ],
+      "tags": [
+        4,
+        3,
+        0
+      ],
       "templates": [],
       "title": "Another Note",
-      "bookIds": [1]
+      "bookIds": [
+        1
+      ]
     }
   ],
   "beats": [],

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'react-proptypes'
 import TagListView from 'components/tag/tagListView'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 

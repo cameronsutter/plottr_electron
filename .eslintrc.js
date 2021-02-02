@@ -15,14 +15,7 @@ module.exports = {
   },
   ignorePatterns: ['/node_modules/**', '/build/**', '**/*.json', '**/*.xml'],
   rules: {
-    'no-unused-vars': [
-      'warn',
-      {
-        args: 'none',
-        argsIgnorePattern: 'req|res|next|val',
-        varsIgnorePattern: '_',
-      },
-    ],
+    'no-unused-vars': ['warn', { args: 'none', argsIgnorePattern: 'req|res|next|val' }],
     'prettier/prettier': ['error'],
   },
   settings: {

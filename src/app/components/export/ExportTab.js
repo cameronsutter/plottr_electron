@@ -1,7 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { Form, FormGroup, Col, ControlLabel, FormControl } from 'react-bootstrap'
+import { bindActionCreators } from 'redux'
+import {
+  Modal,
+  Form,
+  FormGroup,
+  Col,
+  Row,
+  ControlLabel,
+  FormControl,
+  ButtonToolbar,
+  Button,
+} from 'react-bootstrap'
+import SETTINGS from '../../../common/utils/settings'
 import i18n from 'format-message'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 
@@ -22,13 +34,13 @@ class ExportTab extends Component {
                 {i18n('Name')}
               </Col>
               <Col sm={4}>
-                <FormControl type="text" defaultValue={series.name} />
+                <FormControl type="text" ref="name" defaultValue={series.name} />
               </Col>
               <Col componentClass={ControlLabel} sm={1}>
                 {i18n('Premise')}
               </Col>
               <Col sm={4}>
-                <FormControl type="text" defaultValue={series.premise} />
+                <FormControl type="text" ref="premise" defaultValue={series.premise} />
               </Col>
             </FormGroup>
           </Form>

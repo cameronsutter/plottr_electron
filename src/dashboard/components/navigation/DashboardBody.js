@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'react-proptypes'
 import ErrorBoundary from '../../../app/containers/ErrorBoundary'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import Account from '../account/Account'
@@ -16,7 +15,7 @@ import { checkForActiveLicense } from '../../../common/licensing/check_license'
 
 export default function DashboardBody({ currentView, setView }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
-  const { started, expired } = useTrialStatus()
+  const { started, expired, daysLeft } = useTrialStatus()
   const [showAccount, setShowAccount] = useState(false)
 
   useEffect(() => {
@@ -90,11 +89,6 @@ export default function DashboardBody({ currentView, setView }) {
   return <Body>{body}</Body>
 }
 
-DashboardBody.propTypes = {
-  currentView: PropTypes.string,
-  setView: PropTypes.func,
-}
-
 function Body({ children }) {
   return (
     <div className="dashboard__body">
@@ -103,8 +97,4 @@ function Body({ children }) {
       <ErrorBoundary>{children}</ErrorBoundary>
     </div>
   )
-}
-
-Body.propTypes = {
-  children: PropTypes.node,
 }

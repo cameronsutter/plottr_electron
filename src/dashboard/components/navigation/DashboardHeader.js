@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'react-proptypes'
 import { remote } from 'electron'
 import { is } from 'electron-util'
 import t from 'format-message'
@@ -12,7 +11,7 @@ const win = remote.getCurrentWindow()
 
 export default function DashboardHeader({ darkMode }) {
   const { started, daysLeft } = useTrialStatus()
-  const [_, licenseSize] = useLicenseInfo()
+  const [licenseInfo, licenseSize] = useLicenseInfo()
   let spacer = ''
   let message = ''
   let spacer2 = ''
@@ -69,8 +68,4 @@ export default function DashboardHeader({ darkMode }) {
       {is.macos ? <Beamer /> : null}
     </div>
   )
-}
-
-DashboardHeader.propTypes = {
-  darkMode: PropTypes.bool,
 }

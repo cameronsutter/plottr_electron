@@ -1,6 +1,7 @@
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, globalShortcut } = require('electron')
 const path = require('path')
 const log = require('electron-log')
+const i18n = require('format-message')
 const { is } = require('electron-util')
 const contextMenu = require('electron-context-menu')
 const migrateIfNeeded = require('./main_modules/migration_manager')
@@ -13,6 +14,7 @@ const {
   getTrialModeStatus,
   turnOnTrialMode,
 } = require('./main_modules/trial_manager')
+const { backupFile } = require('./main_modules/backup')
 const { rollbar } = require('./main_modules/rollbar')
 const SETTINGS = require('./main_modules/settings')
 const { getLicenseInfo } = require('./main_modules/license_checker')
@@ -27,7 +29,7 @@ const { openBuyWindow } = require('./main_modules/windows/buy')
 const { openVerifyWindow, closeVerifyWindow } = require('./main_modules/windows/verify')
 const { NODE_ENV } = require('./main_modules/constants')
 const { getDarkMode } = require('./main_modules/theme')
-const { gracefullyQuit } = require('./main_modules/utils')
+const { gracefullyNotSave, gracefullyQuit } = require('./main_modules/utils')
 
 const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
 require('dotenv').config({ path: ENV_FILE_PATH })

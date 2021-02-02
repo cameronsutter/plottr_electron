@@ -11,7 +11,7 @@ class DeleteCard extends Component {
     return (
       <div>
         <span>
-          {i18n('Card')}: &quot;{card.title}&quot;
+          {i18n('Card')}: "{card.title}"
         </span>
         <p>
           {i18n('Before')}: <span className="history-component__item__before">{card.title}</span>

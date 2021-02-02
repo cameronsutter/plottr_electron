@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
+import i18n from 'format-message'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ErrorBoundary from './ErrorBoundary'
@@ -121,8 +122,4 @@ export default class App extends Component {
       </ErrorBoundary>
     )
   }
-}
-
-App.propTypes = {
-  showTour: PropTypes.bool,
 }

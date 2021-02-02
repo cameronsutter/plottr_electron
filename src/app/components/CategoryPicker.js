@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { FormControl } from 'react-bootstrap'
 import i18n from 'format-message'
 
 class CategoryPicker extends Component {
-  constructor(props) {
-    super(props)
-    this.selectRef = React.createRef()
-  }
-
   onChange = () => {
-    const val = this.selectRef.current.value
+    const val = findDOMNode(this.refs.selectRef).value
     this.props.onChange(val == -1 ? null : val)
   }
 
@@ -32,7 +28,7 @@ class CategoryPicker extends Component {
         componentClass="select"
         placeholder={i18n('Choose')}
         onChange={this.onChange}
-        ref={this.selectRef}
+        ref="selectRef"
         value={val}
       >
         {this.renderOptions()}

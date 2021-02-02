@@ -4,7 +4,7 @@ const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
 
 export function useTrialStatus() {
-  const [trialInfo, trialInfoSize, _, setTrialInfo] = useTrialInfo()
+  const [trialInfo, trialInfoSize, setAtKey, setTrialInfo] = useTrialInfo()
 
   const startTrial = () => {
     const day = new Date()

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { remote } from 'electron'
+import { shell, remote } from 'electron'
 import log from 'electron-log'
 import t from 'format-message'
 import cx from 'classnames'
@@ -17,7 +17,7 @@ const updateCheckThreshold = 1000 * 60 * 10 // 10 minutes
 
 export default function UpdateNotifier(props) {
   const [shouldCheck, setShouldCheck] = useState(true)
-  const [_, setChecking] = useState(false)
+  const [checking, setChecking] = useState(false)
   const [available, setAvailable] = useState(false)
   const [finishedChecking, setFinishedChecking] = useState(false)
   const [downloadInProgress, setDownloadInProgress] = useState(false)
@@ -86,6 +86,10 @@ export default function UpdateNotifier(props) {
     }
   }, [shouldCheck])
 
+  const goToChangelog = () => {
+    shell.openExternal('https://plottr.com/changelog')
+  }
+
   const startDownload = () => {
     autoUpdater.downloadUpdate()
     setDownloadInProgress(true)
@@ -98,6 +102,18 @@ export default function UpdateNotifier(props) {
   const hide = () => {
     setHidden(true)
     setError(null)
+  }
+
+  const renderLoadingDots = () => {
+    if (!checking) return null
+
+    return (
+      <span className="loading-dots">
+        <span className="one">.</span>
+        <span className="two">.</span>
+        <span className="three">.</span>
+      </span>
+    )
   }
 
   const renderStatus = () => {

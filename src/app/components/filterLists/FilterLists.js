@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
+import { connect } from 'react-redux'
+import { Glyphicon } from 'react-bootstrap'
+import i18n from 'format-message'
+import { sortedTagsSelector } from '../selectors/tags'
 import TagFilterList from './TagFilterList'
 
 export default class FilterLists extends Component {
@@ -32,9 +36,4 @@ export default class FilterLists extends Component {
       </div>
     )
   }
-}
-
-FilterLists.propTypes = {
-  filteredItems: PropTypes.object,
-  updateItems: PropTypes.func,
 }

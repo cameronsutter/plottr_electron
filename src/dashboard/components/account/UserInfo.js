@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import PropTypes from 'react-proptypes'
 import t from 'format-message'
 import { machineIdSync } from 'node-machine-id'
 import { Button } from 'react-bootstrap'
@@ -52,9 +51,4 @@ export default function UserInfo({ licenseInfo, deleteLicense }) {
       </div>
     </div>
   )
-}
-
-UserInfo.propTypes = {
-  licenseInfo: PropTypes.object,
-  deleteLicense: PropTypes.func,
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import BlankCard from './BlankCard'
 import PropTypes from 'react-proptypes'
+import { findDOMNode } from 'react-dom'
 import { Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 
@@ -8,7 +9,7 @@ export default class SceneCardAdd extends Component {
   state = { creating: false, dropping: false }
 
   saveCreate = () => {
-    const title = this.titleInputRef.value
+    const title = findDOMNode(this.refs.titleInput).value
     this.props.addCard({ title, positionWithinLine: this.props.positionWithinLine + 1 })
     this.setState({ creating: false })
   }
@@ -33,7 +34,7 @@ export default class SceneCardAdd extends Component {
   }
 
   handleBlur = () => {
-    var newTitle = this.titleInputRef.value
+    var newTitle = findDOMNode(this.refs.titleInput).value
     if (newTitle == '') {
       this.setState({ creating: false })
       return false
@@ -77,6 +78,9 @@ export default class SceneCardAdd extends Component {
 
   render() {
     if (this.state.creating) {
+      var cardStyle = {
+        borderColor: this.props.color,
+      }
       return (
         <div className="vertical-blank-card__wrapper">
           <BlankCard

@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'react-proptypes'
 import path from 'path'
 import { ipcRenderer, remote } from 'electron'
-import { NavItem, Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+import { NavItem, Button, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
 import i18n from 'format-message'
 import MPQ from '../../../common/utils/MPQ'
 
@@ -59,11 +58,6 @@ function ExportNavItem(props) {
       </OverlayTrigger>
     </NavItem>
   )
-}
-
-ExportNavItem.propTypes = {
-  fileName: PropTypes.string,
-  bookId: PropTypes.string,
 }
 
 export default ExportNavItem

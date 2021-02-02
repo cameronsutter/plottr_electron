@@ -11,7 +11,7 @@ class DeleteLine extends Component {
     return (
       <div>
         <span>
-          {i18n('Story line')}: &quot;{line.title}&quot;
+          {i18n('Story line')}: "{line.title}"
         </span>
         <p>
           {i18n('Before')}: <span className="history-component__item__before">{line.title}</span>

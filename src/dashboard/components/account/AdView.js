@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import PropTypes from 'react-proptypes'
-import { shell } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import i18n from 'format-message'
 
 export default class AdView extends Component {
-  static propTypes = {
-    extendTrial: PropTypes.func,
-  }
-
   state = {
     countdown: 10, //if this changes, you have to change the animation length in dashboard/expired.scss ~ line 70
     timesUp: false,

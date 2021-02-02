@@ -43,7 +43,7 @@ export default function lines(state = initialState, action) {
       ]
 
     case ADD_LINES_FROM_TEMPLATE:
-      const [_, notBook] = partition(state, (l) => l.bookId == action.bookId)
+      const [book, notBook] = partition(state, (l) => l.bookId == action.bookId)
       return [...notBook, ...action.lines]
 
     case EDIT_LINE_TITLE:

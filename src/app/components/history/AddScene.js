@@ -5,6 +5,7 @@ import i18n from 'format-message'
 
 class AddScene extends Component {
   render() {
+    const item = this.props.item
     return (
       <div>
         <span>{i18n('new scene')}</span>

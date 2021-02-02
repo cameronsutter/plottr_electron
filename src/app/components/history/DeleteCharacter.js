@@ -11,7 +11,7 @@ class DeleteCharacter extends Component {
     return (
       <div>
         <span>
-          {i18n('Character')}: &quot;{character.title}&quot;
+          {i18n('Character')}: "{character.title}"
         </span>
         <p>
           {i18n('Before')}:{' '}

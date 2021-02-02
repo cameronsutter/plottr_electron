@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { NavItem, Button } from 'react-bootstrap'
 import i18n from 'format-message'
 import { is } from 'electron-util'

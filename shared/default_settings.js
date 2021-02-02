@@ -15,5 +15,5 @@ module.exports = {
     backupDays: 30,
     backupLocation: 'default',
     darkModeAlways: false,
-  },
+  }
 }

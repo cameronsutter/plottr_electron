@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import orientedClassName from 'helpers/orientedClassName'

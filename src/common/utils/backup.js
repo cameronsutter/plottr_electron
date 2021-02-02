@@ -1,5 +1,8 @@
 import fs from 'fs'
 import path from 'path'
+import log from 'electron-log'
+import setupRollbar from './rollbar'
+const rollbar = setupRollbar('backup')
 import { BACKUP_BASE_PATH } from './config_paths'
 import SETTINGS from './settings'
 

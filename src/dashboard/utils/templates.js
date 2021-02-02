@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { sortBy } from 'lodash'
 
 export function useFilteredSortedTemplates(templatesById, type, searchTerm) {

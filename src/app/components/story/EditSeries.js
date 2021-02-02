@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
+import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
+  Modal,
   Form,
   FormGroup,
   Col,
@@ -19,31 +21,23 @@ import cx from 'classnames'
 class EditSeries extends Component {
   state = { editing: false }
 
-  constructor(props) {
-    super(props)
-    this.nameRef = React.createRef()
-    this.premiseRef = React.createRef()
-    this.genreRef = React.createRef()
-    this.themeRef = React.createRef()
-  }
-
   componentWillUnmount() {
     if (this.state.editing) this.saveEdit()
   }
 
   saveEdit = () => {
-    let name = this.nameRef.current.value
-    let premise = this.premiseRef.current.value
-    let genre = this.genreRef.current.value
-    let theme = this.themeRef.current.value
+    let name = findDOMNode(this.refs.name).value
+    let premise = findDOMNode(this.refs.premise).value
+    let genre = findDOMNode(this.refs.genre).value
+    let theme = findDOMNode(this.refs.theme).value
     this.props.actions.editSeries({ name, premise, genre, theme })
     this.setState({ editing: false })
   }
 
   checkForEdits = () => {
     const { series } = this.props
-    const someEdited = ['name', 'premise', 'genre', 'theme'].some((field) => {
-      return this[`${field}Ref`].value != series[field]
+    const someEdited = Object.keys(this.refs).some((field) => {
+      return findDOMNode(this.refs[field]).value != series[field]
     })
     this.setState({ editing: someEdited })
   }
@@ -69,7 +63,7 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              ref={this.nameRef}
+              ref="name"
               defaultValue={series.name}
               onChange={this.checkForEdits}
             />
@@ -80,7 +74,7 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              ref={this.premiseRef}
+              ref="premise"
               defaultValue={series.premise}
               onChange={this.checkForEdits}
             />
@@ -93,7 +87,7 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              ref={this.genreRef}
+              ref="genre"
               defaultValue={series.genre}
               onChange={this.checkForEdits}
             />
@@ -104,7 +98,7 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              ref={this.themeRef}
+              ref="theme"
               defaultValue={series.theme}
               onChange={this.checkForEdits}
             />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { Form, FormGroup, FormControl, Button, Modal, Col } from 'react-bootstrap'
+import { Form, FormGroup, FormControl, Button, Modal, InputGroup, Col } from 'react-bootstrap'
 import i18n from 'format-message'
 import getTestIds from 'test-utils/getTestIds'
 

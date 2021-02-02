@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -21,8 +22,6 @@ class BlankCard extends Component {
       showTemplatePicker: false,
       templates: [],
     }
-
-    this.titleInputRef = React.createRef()
   }
 
   handleDragEnter = (e) => {
@@ -52,7 +51,7 @@ class BlankCard extends Component {
   }
 
   saveCreate = () => {
-    const newCard = this.buildCard(this.titleInputRef.current.value)
+    const newCard = this.buildCard(findDOMNode(this.refs.titleInput).value)
     this.props.actions.addCard(
       Object.assign(newCard, this.state.templates ? { templates: this.state.templates } : {})
     )
@@ -96,7 +95,7 @@ class BlankCard extends Component {
   }
 
   handleBlur = () => {
-    var newTitle = this.titleInputRef.value
+    var newTitle = findDOMNode(this.refs.titleInput).value
     if (newTitle === '') {
       this.setState({ creating: false })
       return false
@@ -220,7 +219,7 @@ class BlankCard extends Component {
           <FormControl
             type="text"
             autoFocus
-            ref={this.titleInputRef}
+            ref="titleInput"
             bsSize="small"
             onBlur={this.handleBlur}
             onKeyDown={this.handleCancelCreate}
@@ -286,7 +285,6 @@ BlankCard.propTypes = {
   currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   orientation: PropTypes.string,
   isSeries: PropTypes.bool,
-  actions: PropTypes.object,
   positionWithinLine: PropTypes.number,
   onDone: PropTypes.func,
 }

@@ -1,6 +1,16 @@
-const { Paragraph, TextRun, HeadingLevel, Media } = require('docx')
+const {
+  Paragraph,
+  TextRun,
+  AlignmentType,
+  HeadingLevel,
+  Numbering,
+  Hyperlink,
+  HyperlinkType,
+  HyperLinkRef,
+  Media,
+} = require('docx')
 
-/* NONE of this works
+// NONE of this works
 const numbering = new Numbering({
   config: [
     {
@@ -38,7 +48,7 @@ const abstractNum = numbering.createAbstractNumbering([
 // abstractNum.createLevel(0, "decimal", "%1.", "start").addParagraphProperty(new Indent(720, 260))
 const concrete = numbering.createConcreteNumbering(abstractNum)
 
-END NONE of this works */
+// END NONE of this works
 
 const serialize = (nodes, doc) => {
   if (!nodes || !nodes.flatMap) return []

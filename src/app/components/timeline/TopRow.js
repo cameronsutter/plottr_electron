@@ -153,11 +153,6 @@ TopRow.propTypes = {
   chapters: PropTypes.array,
   nextChapterId: PropTypes.number,
   lines: PropTypes.array,
-  beatActions: PropTypes.object,
-  sceneActions: PropTypes.object,
-  isSeries: PropTypes.bool,
-  lineActions: PropTypes.object,
-  seriesLineActions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

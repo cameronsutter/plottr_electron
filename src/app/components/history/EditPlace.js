@@ -53,7 +53,7 @@ class EditPlace extends Component {
     return (
       <div>
         <span>
-          {label}: &quot;{value}&quot;
+          {label}: "{value}"
         </span>
         {diffs}
       </div>

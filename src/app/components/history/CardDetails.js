@@ -89,7 +89,7 @@ class CardDetails extends Component {
     return (
       <div>
         <div className="history-component__item-identifier">
-          {i18n('Card')}: &quot;{card.title}&quot;
+          {i18n('Card')}: "{card.title}"
         </div>
         {diffs}
       </div>

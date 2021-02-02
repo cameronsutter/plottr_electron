@@ -10,7 +10,7 @@
       "windows": {
         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
       },
-      "args": ["."],
+      "args" : ["."],
       "outputCapture": "std"
     },
     {
@@ -22,7 +22,7 @@
       "windows": {
         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
       },
-      "args": ["."],
+      "args" : ["."],
       "env": {
         "NODE_ENV": "dev"
       },

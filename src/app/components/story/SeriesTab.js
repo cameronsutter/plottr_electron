@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import EditSeries from './EditSeries'
 import BookList from './BookList'
 import i18n from 'format-message'

@@ -36,7 +36,7 @@ describe('exportPlaces', () => {
       4: {
         docTitle: 'Place: first place',
         description: [
-          headingTwo('Description'),
+          headingTwo('description'),
           paragraph('my favorite place'),
           headingTwo('notes'),
           ...state.places[0].notes,

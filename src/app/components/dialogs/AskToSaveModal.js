@@ -1,6 +1,5 @@
 import React from 'react'
-import PropTypes from 'react-proptypes'
-import { Button, Modal } from 'react-bootstrap'
+import { Form, FormGroup, Button, Modal, Col } from 'react-bootstrap'
 import i18n from 'format-message'
 import getTestIds from 'test-utils/getTestIds'
 
@@ -22,10 +21,4 @@ export default function AskToSaveModal({ save, dontSave, cancel }) {
       </Modal.Body>
     </Modal>
   )
-}
-
-AskToSaveModal.propTypes = {
-  save: PropTypes.func,
-  dontSave: PropTypes.func,
-  cancel: PropTypes.func,
 }

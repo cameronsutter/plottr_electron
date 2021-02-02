@@ -46,13 +46,13 @@ function TemplateCreate({ type, close, ui }) {
     return i18n('My Character Template')
   }
 
-  const renderToolBar() {
+  const renderToolBar = () => {
     return (
       <ButtonToolbar>
-        <Button bsStyle="success" onClick={this.saveEdit}>
+        <Button bsStyle="success" onClick={saveEdit}>
           {i18n('Save')}
         </Button>
-        <Button onClick={this.props.close}>{i18n('Cancel')}</Button>
+        <Button onClick={close}>{i18n('Cancel')}</Button>
       </ButtonToolbar>
     )
   }

@@ -9,6 +9,7 @@ const {
   sortedChaptersByBookSelector,
   makeChapterTitleSelector,
   isSeriesSelector,
+  scenesCustomAttributesSelector,
 } = selectors
 const {
   card: { sortCardsInChapter, cardMapping },

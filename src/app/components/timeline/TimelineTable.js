@@ -48,6 +48,7 @@ class TimelineTable extends Component {
     const { tableRef, ui, isSmall } = this.props
     if (isSmall) return
 
+    /* eslint-disable-next-line react/no-find-dom-node */
     const table = findDOMNode(tableRef)
     if (!table) return
     let newLength = table.scrollWidth

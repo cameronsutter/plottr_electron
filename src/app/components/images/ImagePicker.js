@@ -350,7 +350,7 @@ ImagePicker.propTypes = {
   modalOnly: PropTypes.bool,
   deleteButton: PropTypes.bool,
   close: PropTypes.func,
-  images: PropTypes.array,
+  images: PropTypes.object,
   modalOnly: PropTypes.bool,
   actions: PropTypes.object,
 }

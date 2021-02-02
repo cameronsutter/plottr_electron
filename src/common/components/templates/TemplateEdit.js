@@ -45,7 +45,7 @@ export default function TemplateEdit({ template, saveEdit, cancel }) {
           {i18n('Name')}
         </Col>
         <Col sm={8}>
-          <FormControl type="text" ref={nameRef} defaultValue={template.name} />
+          <FormControl type="text" inputRef={nameRef} defaultValue={template.name} />
         </Col>
       </FormGroup>
       <FormGroup>
@@ -53,7 +53,7 @@ export default function TemplateEdit({ template, saveEdit, cancel }) {
           {i18n('Description')}
         </Col>
         <Col sm={8}>
-          <FormControl type="text" ref={descriptionRef} defaultValue={template.description} />
+          <FormControl type="text" inputRef={descriptionRef} defaultValue={template.description} />
         </Col>
       </FormGroup>
       <FormGroup>
@@ -63,7 +63,7 @@ export default function TemplateEdit({ template, saveEdit, cancel }) {
         <Col sm={8}>
           <FormControl
             type="text"
-            ref={linkRef}
+            inputRef={linkRef}
             defaultValue={template.link}
             placeholder="https://example.com/"
           />

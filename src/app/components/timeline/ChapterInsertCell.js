@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
+import cx from 'classnames'
 import { selectors, helpers } from 'pltr/v2'
 import VisualLine from './VisualLine'
 
@@ -11,15 +12,15 @@ const {
   orientedClassName: { orientedClassName },
 } = helpers
 
-const Horizontal = {
-  first: 150,
-  last: 161 + 50,
-}
+// const Horizontal = {
+//   first: 150,
+//   last: 161 + 50,
+// }
 
-const Vertical = {
-  first: 100,
-  last: 70 + 40,
-}
+// const Vertical = {
+//   first: 100,
+//   last: 70 + 40,
+// }
 
 class ChapterInsertCell extends PureComponent {
   insert = () => {

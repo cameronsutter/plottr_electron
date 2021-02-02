@@ -90,3 +90,7 @@ export default function ProjectTemplateDetails({ template }) {
     </div>
   )
 }
+
+ProjectTemplateDetails.propTypes = {
+  template: PropTypes.object,
+}

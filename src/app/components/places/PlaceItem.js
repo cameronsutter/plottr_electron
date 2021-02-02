@@ -35,7 +35,7 @@ class PlaceItem extends Component {
   scrollIntoView = () => {
     if (this.props.selected) {
       const node = this.ref.current
-      if (node) node.scrollIntoViewIfNeeded()
+      if (node) node.scrollIntoView()
     }
   }
 

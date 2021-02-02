@@ -107,7 +107,7 @@ class CharacterEditDetails extends Component {
     }
     this.props.customAttributes.forEach((attr) => {
       const { name } = attr
-      attrs[name] = this.state.description[name]
+      attrs[name] = this.state.attributes[name]
     })
     const templates = this.props.character.templates.map((t) => {
       t.attributes = t.attributes.map((attr) => {
@@ -118,7 +118,7 @@ class CharacterEditDetails extends Component {
     })
     this.props.actions.editCharacter(this.props.character.id, {
       name,
-      attributes,
+      description,
       notes,
       templates,
       ...attrs,
@@ -224,7 +224,7 @@ class CharacterEditDetails extends Component {
                 <ControlLabel>{i18n('Name')}</ControlLabel>
                 <FormControl
                   type="text"
-                  ref={this.nameInputRef}
+                  inputRef={this.nameInputRef}
                   autoFocus
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
@@ -235,10 +235,10 @@ class CharacterEditDetails extends Component {
                 <ControlLabel>{i18n('Short Description')}</ControlLabel>
                 <FormControl
                   type="text"
-                  ref={this.descriptionInputRef}
+                  inputRef={this.descriptionInputRef}
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
-                  defaultValue={character.attributes}
+                  defaultValue={character.description}
                 />
               </FormGroup>
             </div>

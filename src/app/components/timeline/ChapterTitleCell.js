@@ -11,6 +11,7 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
+import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, helpers, selectors } from 'pltr/v2'
 

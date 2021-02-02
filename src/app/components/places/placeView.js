@@ -40,7 +40,7 @@ class PlaceView extends Component {
     }
 
     this.nameInputRef = React.createRef()
-    this.descriptionRef = React.createRef()
+    this.descriptionInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -96,7 +96,7 @@ class PlaceView extends Component {
       if (type == 'paragraph') {
         attrs[name] = this.state.description[name]
       } else {
-        const val = this[`${name}InputRef`].current.value
+        const val = this[`${name}InputRef`].value
         attrs[name] = val
       }
     })
@@ -162,7 +162,9 @@ class PlaceView extends Component {
             <ControlLabel>{name}</ControlLabel>
             <FormControl
               type="text"
-              inputRef={this[`${name}InputRef`]}
+              inputRef={(e) => {
+                this[`${name}InputRef`] = e
+              }}
               defaultValue={place[name]}
               onKeyDown={this.handleEsc}
               onKeyPress={this.handleEnter}

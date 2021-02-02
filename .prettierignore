@@ -4,3 +4,5 @@ bin/*.bundle.js
 **/*.yml
 *.yml
 **/*.html
+**/*.json
+**/*.md

@@ -10,7 +10,7 @@ import {
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { newIds, helpers, nextBackgroundColor, nextColor } from 'pltr/v2'
+import { newIds, helpers, nextColor } from 'pltr/v2'
 
 const { nextId, objectId } = newIds
 const {

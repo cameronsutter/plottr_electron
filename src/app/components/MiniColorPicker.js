@@ -123,7 +123,7 @@ export default function MiniColorPicker(props) {
 }
 
 MiniColorPicker.propTypes = {
-  el: PropTypes.instanceOf(Element),
+  el: PropTypes.object,
   close: PropTypes.func,
   chooseColor: PropTypes.func,
 }

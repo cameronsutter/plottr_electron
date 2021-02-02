@@ -40,7 +40,7 @@ class MiniMap extends Component {
 
   selectNav = (key) => {
     const elem = document.querySelector(`#chapter-${key}`)
-    elem.scrollIntoViewIfNeeded()
+    elem.scrollIntoView()
     if (key != this.firstChapterKey) {
       const container = document.querySelector('.outline__container')
       const yPosition = elem.getBoundingClientRect().y
@@ -105,9 +105,10 @@ class MiniMap extends Component {
       const chapter = this.props.chapters.find((ch) => ch.id === this.props.active)
       let title = ''
       if (chapter) title = `chapter-${chapter.id}-ref`
+      /* eslint-disable-next-line react/no-find-dom-node */
       var domNode = findDOMNode(this[title])
       if (domNode) {
-        domNode.scrollIntoViewIfNeeded()
+        domNode.scrollIntoView()
       }
     }
   }

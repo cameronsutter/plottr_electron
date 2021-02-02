@@ -26,7 +26,7 @@
     "dist": "node build/initEnv.js && npm run pack && electron-builder -ml",
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder -w",
     "dist:all": "npm run pack && electron-builder -mw",
-    "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" && npm run generate-flipped",
+    "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/**/*.js\" && npm run generate-flipped",
     "generate-flipped": "node ./locales/build-flipped-locale.js",
     "test": "jest",
     "test:watch": "jest --watch",

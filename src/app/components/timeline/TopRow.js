@@ -4,21 +4,25 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
-import * as SceneActions from 'actions/scenes'
-import * as BeatActions from 'actions/beats'
-import * as SeriesLineActions from 'actions/seriesLines'
 import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
-import { reorderList } from 'helpers/lists'
-import { insertChapter } from 'helpers/chapters'
-import orientedClassName from 'helpers/orientedClassName'
-import { nextId } from '../../store/newIds'
-import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { isSeriesSelector, isLargeSelector, isMediumSelector, isSmallSelector } from '../../selectors/ui'
+import { newIds, actions, helpers, selectors } from 'pltr/v2'
 
-const LineActions = actions.lineActions
+const { nextId } = newIds
+
+const {
+  chapters: { insertChapter },
+  lists: { reorderList },
+  orientedClassName: { orientedClassName },
+} = helpers
+
+const LineActions = actions.line
+const BeatActions = actions.beat
+const SceneActions = actions.scene
+const SeriesLineActions = actions.series
+
+const { sortedChaptersByBookSelector, sortedLinesByBookSelector, isSeriesSelector, isLargeSelector, isMediumSelector, isSmallSelector } = selectors
 
 class TopRow extends Component {
   handleReorderChapters = (originalPosition, droppedPosition) => {

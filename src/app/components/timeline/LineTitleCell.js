@@ -12,20 +12,23 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import * as SeriesLineActions from 'actions/seriesLines'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
-import { lineIsExpandedSelector } from '../../selectors/lines'
-import { isLargeSelector, isMediumSelector, isSmallSelector } from '../../selectors/ui'
 import Floater from 'react-floater'
-import { truncateTitle } from 'helpers/cards'
-import { actions } from 'pltr/v2'
+import { actions, helpers, selectors } from 'pltr/v2'
 
-const LineActions = actions.lineActions
+const LineActions = actions.line
+const SeriesLineActions = actions.series
+
+const {
+  card: { truncateTitle },
+  orientedClassName: { orientedClassName },
+} = helpers
+
+const { lineIsExpandedSelector, isLargeSelector, isMediumSelector, isSmallSelector } = selectors
 
 const CELL_WIDTH = 200
 

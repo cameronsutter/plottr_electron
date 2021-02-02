@@ -1,12 +1,18 @@
 import { keyBy } from 'lodash'
 import i18n from 'format-message'
-import { sortedChaptersByBookSelector, makeChapterTitleSelector } from 'app/selectors/chapters'
-import { cardMapSelector } from 'app/selectors/cards'
-import { sortCardsInChapter, cardMapping } from 'app/helpers/cards'
-import { isSeriesSelector } from 'app/selectors/ui'
-import { sortedLinesByBookSelector } from 'app/selectors/lines'
 import { buildDescriptionFromObject, createFolderBinderItem, createTextBinderItem } from '../utils'
-import { scenesCustomAttributesSelector } from 'app/selectors/customAttributes'
+import { helpers, selectors } from 'pltr/v2'
+
+const {
+  sortedLinesByBookSelector,
+  cardMapSelector,
+  sortedChaptersByBookSelector,
+  makeChapterTitleSelector,
+  isSeriesSelector,
+} = selectors
+const {
+  card: { sortCardsInChapter, cardMapping },
+} = helpers
 
 export default function exportChapters(state, documentContents) {
   // get current book id and select only those chapters/lines/cards

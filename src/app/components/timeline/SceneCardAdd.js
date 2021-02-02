@@ -78,9 +78,6 @@ export default class SceneCardAdd extends Component {
 
   render() {
     if (this.state.creating) {
-      var cardStyle = {
-        borderColor: this.props.color,
-      }
       return (
         <div className="vertical-blank-card__wrapper">
           <BlankCard
@@ -89,7 +86,6 @@ export default class SceneCardAdd extends Component {
             lineId={this.props.lineId}
             positionWithinLine={this.props.positionWithinLine + 1}
             color={this.props.color}
-            backgroundColor={this.props.backgroundColor}
             onDone={this.stopCreating}
           />
         </div>
@@ -131,7 +127,6 @@ export default class SceneCardAdd extends Component {
 
   static propTypes = {
     color: PropTypes.string.isRequired,
-    backgroundColor: PropTypes.string.isRequired,
     positionWithinLine: PropTypes.number.isRequired,
     moveCard: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,

@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import i18n from 'format-message'
-import { charactersSortedAtoZSelector } from '../../selectors/characters'
 import GenericFilterList from './GenericFilterList'
+import { selectors } from 'pltr/v2'
+
+const { charactersSortedAtoZSelector } = selectors
 
 class CharacterFilterList extends Component {
   updateItems = (ids) => {

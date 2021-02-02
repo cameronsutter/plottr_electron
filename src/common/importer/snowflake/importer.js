@@ -2,7 +2,6 @@ import xml from 'xml-js'
 import fs from 'fs'
 import i18n from 'format-message'
 import { cloneDeep, uniq, keyBy, groupBy } from 'lodash'
-import { objectId, nextId } from '../../../app/store/newIds'
 import {
   book as defaultBook,
   note as defaultNote,
@@ -11,8 +10,12 @@ import {
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { nextPositionInBook } from '../../../app/helpers/lists'
-import { nextBackgroundColor, nextColor } from '../../../app/store/lineColors'
+import { newIds, helpers, nextBackgroundColor, nextColor } from 'pltr/v2'
+
+const { nextId, objectId } = newIds
+const {
+  lists: { nextPositionInBook },
+} = helpers
 
 export default function Importer(path, isNewFile, state) {
   const importedXML = fs.readFileSync(path, 'utf-8')
@@ -365,7 +368,6 @@ function cards(currentState, json, bookId) {
                 position: nextLinePosition,
                 title: characterName,
                 color: nextColor(nextLinePosition),
-                backgroundColor: nextBackgroundColor(nextLinePosition),
               },
               bookId
             )

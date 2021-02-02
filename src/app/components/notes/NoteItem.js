@@ -4,12 +4,14 @@ import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
-import * as NoteActions from 'actions/notes'
 import i18n from 'format-message'
 import Image from '../images/Image'
 import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import prettydate from 'pretty-date'
+import { actions } from 'pltr/v2'
+
+const NoteActions = actions.note
 
 class PlaceItem extends Component {
   state = { deleting: false }

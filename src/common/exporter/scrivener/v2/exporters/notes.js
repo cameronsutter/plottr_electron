@@ -1,6 +1,8 @@
 import i18n from 'format-message'
-import { allNotesInBookSelector } from 'app/selectors/notes'
 import { createFolderBinderItem, createTextBinderItem } from '../utils'
+import { selectors } from 'pltr/v2'
+
+const { allNotesInBookSelector } = selectors
 
 export default function exportNotes(state, documentContents) {
   const { binderItem } = createFolderBinderItem(i18n('Notes'))

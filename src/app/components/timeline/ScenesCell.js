@@ -4,16 +4,20 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
 import { Cell } from 'react-sticky-table'
-import * as CardActions from 'actions/cards'
 import Card from './Card'
 import cx from 'classnames'
-import { isSeriesSelector, isSmallSelector, isMediumSelector } from '../../selectors/ui'
-import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
 import SceneCardAdd from './SceneCardAdd'
-import { reorderList, moveToAbove } from '../../helpers/lists'
 import ErrorBoundary from '../../containers/ErrorBoundary'
-import { visibleCardsSelector } from '../../selectors/cards'
+import { helpers, actions, selectors } from 'pltr/v2'
+
+const {
+  lists: { reorderList, moveToAbove },
+} = helpers
+
+const CardActions = actions.card
+
+const { visibleCardsSelector, lineIsExpandedSelector, isSeriesSelector, isSmallSelector, isMediumSelector } = selectors
 
 class ScenesCell extends PureComponent {
   moveSceneCardAbove = (id, positionWithinLine) => {
@@ -69,34 +73,42 @@ class ScenesCell extends PureComponent {
     }
   }
 
-  renderCards (arentHidden) {
+  renderCards(arentHidden) {
     const { chapterId, lineId, chapterPosition, linePosition, color, cards, isSmall } = this.props
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
       const isLastOne = idx == cards.length - 1
-      return <div key={card.id}>
-        <ErrorBoundary>
-          <Card card={card} chapterId={chapterId} lineId={lineId} idx={idx}
-            chapterPosition={chapterPosition} linePosition={linePosition}
-            color={color} last={idxOfCards == idx} moveCard={this.moveSceneCardAbove}
-            allowDrop={arentHidden || isSmall}
-          />
-        </ErrorBoundary>
-        {arentHidden ?
-          <SceneCardAdd
-            color={color}
-            backgroundColor={backgroundColor}
-            positionWithinLine={idx}
-            moveCard={this.moveSceneCard}
-            addCard={this.addSceneCard}
-            allowDrop={isLastOne}
-            dropPosition={cards.length}
-            chapterId={chapterId}
-            lineId={lineId}
-          />
-        : null}
-      </div>
+      return (
+        <div key={card.id}>
+          <ErrorBoundary>
+            <Card
+              card={card}
+              chapterId={chapterId}
+              lineId={lineId}
+              idx={idx}
+              chapterPosition={chapterPosition}
+              linePosition={linePosition}
+              color={color}
+              last={idxOfCards == idx}
+              moveCard={this.moveSceneCardAbove}
+              allowDrop={arentHidden || isSmall}
+            />
+          </ErrorBoundary>
+          {arentHidden ? (
+            <SceneCardAdd
+              color={color}
+              positionWithinLine={idx}
+              moveCard={this.moveSceneCard}
+              addCard={this.addSceneCard}
+              allowDrop={isLastOne}
+              dropPosition={cards.length}
+              chapterId={chapterId}
+              lineId={lineId}
+            />
+          ) : null}
+        </div>
+      )
     })
   }
 
@@ -132,7 +144,6 @@ class ScenesCell extends PureComponent {
             </div>
           </Floater>
           <SceneCardAdd
-            backgroundColor={this.props.backgroundColor}
             color={this.props.color}
             positionWithinLine={numOfCards}
             moveCard={this.moveSceneCard}
@@ -172,7 +183,6 @@ ScenesCell.propTypes = {
   chapterId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
-  backgroundColor: PropTypes.string.isRequired,
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   ui: PropTypes.object.isRequired,

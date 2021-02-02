@@ -4,12 +4,15 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, Navbar, NavItem, Button } from 'react-bootstrap'
-import * as TagActions from 'actions/tags'
 import TagView from 'components/tag/tagView'
 import cx from 'classnames'
 import i18n from 'format-message'
 import { tag } from '../../../../shared/initialState'
-import { sortedTagsSelector } from '../../selectors/tags'
+import { actions, selectors } from 'pltr/v2'
+
+const { sortedTagsSelector } = selectors
+
+const TagActions = actions.tag
 
 class TagListView extends Component {
   state = {

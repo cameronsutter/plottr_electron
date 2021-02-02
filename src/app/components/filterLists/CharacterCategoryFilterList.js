@@ -3,7 +3,9 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import i18n from 'format-message'
 import GenericFilterList from './GenericFilterList'
-import { sortedCharacterCategoriesSelector } from '../../selectors/categories'
+import { selectors } from 'pltr/v2'
+
+const { sortedCharacterCategoriesSelector } = selectors
 
 class CharacterCategoryFilterList extends Component {
   updateItems = (ids) => {

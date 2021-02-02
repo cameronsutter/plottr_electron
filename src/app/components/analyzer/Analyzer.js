@@ -7,10 +7,12 @@ import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
 import Inspector from 'react-json-inspector'
 import 'react-json-inspector/json-inspector.css'
-import { nextId, objectId } from '../../store/newIds'
 import DevFileDrop from './DevFileDrop'
 import { findDOMNode } from 'react-dom'
 import { saveFile } from '../../../common/utils/files'
+import { newIds } from 'pltr/v2'
+
+const { nextId, objectId } = newIds
 
 class Analyzer extends Component {
   state = { tab: 'search', path: null, tree: null }

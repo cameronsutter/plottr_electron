@@ -18,16 +18,33 @@ import ChapterInsertCell from './ChapterInsertCell'
 import TopRow from './TopRow'
 import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
-import { reorderList } from 'helpers/lists'
-import { insertChapter } from 'helpers/chapters'
 import { card } from '../../../../shared/initialState'
-import { nextId } from '../../store/newIds'
-import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { cardMapSelector } from '../../selectors/cards'
-import { isSeriesSelector, isLargeSelector, isSmallSelector, isMediumSelector } from '../../selectors/ui'
+import { findDOMNode } from 'react-dom'
+import { newIds, actions, helpers, selectors } from 'pltr/v2'
 
-const LineActions = actions.lineActions
+const { nextId } = newIds
+
+const {
+  chapters: { insertChapter },
+  lists: { reorderList },
+} = helpers
+
+const {
+  cardMapSelector,
+  sortedChaptersByBookSelector,
+  sortedLinesByBookSelector,
+  isSeriesSelector,
+  isLargeSelector,
+  isSmallSelector,
+  isMediumSelector,
+} = selectors
+
+const LineActions = actions.line
+const BeatActions = actions.beat
+const CardActions = actions.card
+const SceneActions = actions.scene
+const SeriesLineActions = actions.series
+const UIActions = actions.ui
 
 class TimelineTable extends Component {
   state = {
@@ -253,18 +270,11 @@ class TimelineTable extends Component {
             chapterPosition={chapter.position}
             linePosition={linePosition}
             color={line.color}
-            backgroundColor={line.backgroundColor}
           />
         )
       } else {
         cells.push(
-          <BlankCard
-            chapterId={chapter.id}
-            lineId={line.id}
-            key={key}
-            color={line.color}
-            backgroundColor={line.backgroundColor}
-          />
+          <BlankCard chapterId={chapter.id} lineId={line.id} key={key} color={line.color} />
         )
       }
       return cells

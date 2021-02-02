@@ -12,14 +12,17 @@ import {
   Glyphicon,
 } from 'react-bootstrap'
 import _ from 'lodash'
-import * as CardActions from 'actions/cards'
 import TagLabel from 'components/tagLabel'
 import i18n from 'format-message'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
 import Image from 'components/images/Image'
 import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
-import { isSeriesSelector } from '../../selectors/ui'
+import { actions, selectors } from 'pltr/v2'
+
+const CardActions = actions.card
+
+const { isSeriesSelector } = selectors
 
 class CardView extends Component {
   constructor(props) {

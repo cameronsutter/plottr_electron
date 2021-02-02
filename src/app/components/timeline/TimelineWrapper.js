@@ -17,15 +17,19 @@ import {
 import { StickyTable } from 'react-sticky-table'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
-import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
+import { timelineFilterIsEmptySelector, currentTimelineSelector, isSmallSelector, isMediumSelector, isLargeSelector } from '../../selectors/ui'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
-import { timelineFilterIsEmptySelector, currentTimelineSelector, isSmallSelector, isMediumSelector, isLargeSelector } from '../../selectors/ui'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
+import { actions, selectors } from 'pltr/v2'
+
+const UIActions = actions.ui
+
+const { timelineFilterIsEmptySelector, currentTimelineSelector } = selectors
 
 const win = remote.getCurrentWindow()
 

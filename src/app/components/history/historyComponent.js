@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 import deep from 'deep-diff'
 import _ from 'lodash'
 import { storageKey } from 'middlewares/helpers'
-import * as UndoActions from 'actions/undo'
 import HistoryItem from 'components/history/historyItem'
 import i18n from 'format-message'
+import { actions } from 'pltr/v2'
+
+const UndoActions = actions.undo
 
 class HistoryComponent extends Component {
   constructor(props) {

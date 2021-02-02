@@ -3,11 +3,22 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
-import cx from 'classnames'
-import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
-import VisualLine from './VisualLine'
-import { isSmallSelector } from '../../selectors/ui'
+import { selectors, helpers } from 'pltr/v2'
+
+const {
+  orientedClassName: { orientedClassName },
+} = helpers
+
+const Horizontal = {
+  first: 150,
+  last: 161 + 50,
+}
+
+const Vertical = {
+  first: 100,
+  last: 70 + 40,
+}
 
 class ChapterInsertCell extends PureComponent {
   insert = () => {
@@ -73,7 +84,7 @@ class ChapterInsertCell extends PureComponent {
 function mapStateToProps(state) {
   return {
     orientation: state.present.ui.orientation,
-    isSmall: isSmallSelector(state.present),
+    isSmall: selectors.isSmallSelector(state.present),
   }
 }
 

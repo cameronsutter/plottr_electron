@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import BlankCard from './BlankCard'
 import PropTypes from 'react-proptypes'
-import i18n from 'format-message'
-import { Glyphicon, FormGroup, FormControl, ControlLabel } from 'react-bootstrap'
+import { Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 
 export default class SceneCardAdd extends Component {

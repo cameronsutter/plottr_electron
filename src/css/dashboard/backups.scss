@@ -1,5 +1,5 @@
-@import '../colors';
-@import '../vars';
+@import "../colors";
+@import "../vars";
 
 .dashboard__backups {
   height: 100%;
@@ -36,7 +36,7 @@
   justify-content: space-evenly;
   cursor: pointer;
   border-radius: 4px;
-  transition: all 0.1s ease-in;
+  transition: all .1s ease-in;
   position: relative;
 
   .badge {

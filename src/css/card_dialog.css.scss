@@ -1,5 +1,5 @@
-@import 'vars';
-@import 'colors';
+@import "vars";
+@import "colors";
 
 .card-dialog {
   height: 100%;
@@ -149,14 +149,13 @@
   flex-direction: row-reverse;
 }
 
-.card-dialog__select-line,
-.card-dialog__select-scene {
+.card-dialog__select-line, .card-dialog__select-scene {
   margin-left: 5px !important;
   @include user-text;
+
 }
 
-.card-title-editor,
-.card-description-editor {
+.card-title-editor, .card-description-editor {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -168,14 +167,12 @@
   margin-bottom: 20px;
 }
 
-.card-title-editor__display,
-.card-description-editor__display {
+.card-title-editor__display, .card-description-editor__display {
   margin: 0;
   flex-grow: 1;
 }
 
-.card-title-editor__display:hover,
-.card-description-editor__display:hover {
+.card-title-editor__display:hover, .card-description-editor__display:hover {
   cursor: pointer;
 }
 
@@ -211,8 +208,8 @@
   a {
     display: inline-block;
     text-align: center;
-    text-decoration: none !important;
-    color: $gray-2 !important;
+    text-decoration: none!important;
+    color: $gray-2!important;
     width: 30px;
     height: 30px;
     margin: 0;
@@ -222,7 +219,7 @@
   }
   a:hover {
     text-decoration: none;
-    color: $gray-1 !important;
+    color: $gray-1!important;
     border: 1px solid $gray-5;
   }
   .separator {

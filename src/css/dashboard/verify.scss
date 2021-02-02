@@ -1,4 +1,4 @@
-@import '../colors';
+@import "../colors";
 
 #dashboard__react__root {
   #spinner {
@@ -21,6 +21,7 @@
       margin-left: 7px;
     }
   }
+
 
   h1.verify {
     font-family: 'Yellowtail' !important;
@@ -46,7 +47,7 @@
     border: 3px solid $blue-7;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.4s $cubic;
+    transition: all .4s $cubic;
     color: $gray-1;
   }
 

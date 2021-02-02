@@ -1,4 +1,4 @@
-@import 'vars';
+@import "vars";
 
 .template-picker__dialog-wrapper {
   height: 100%;
@@ -86,8 +86,7 @@
 
   .template-picker__list {
     li.list-group-item {
-      &:hover,
-      &.selected {
+      &:hover, &.selected {
         color: $blue-0;
         background-color: $blue-9;
         box-shadow: $blue-highlight-box-shadow;

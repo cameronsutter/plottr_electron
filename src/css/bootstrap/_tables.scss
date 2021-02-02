@@ -2,6 +2,7 @@
 // Tables
 // --------------------------------------------------
 
+
 table {
   background-color: $table-bg;
 }
@@ -14,6 +15,7 @@ caption {
 th {
   text-align: left;
 }
+
 
 // Baseline styles
 
@@ -62,6 +64,7 @@ th {
   }
 }
 
+
 // Condensed table w/ half padding
 
 .table-condensed {
@@ -76,6 +79,7 @@ th {
     }
   }
 }
+
 
 // Bordered version
 //
@@ -101,6 +105,7 @@ th {
   }
 }
 
+
 // Zebra-striping
 //
 // Default zebra-stripe styles (alternating gray and transparent backgrounds)
@@ -110,6 +115,7 @@ th {
     background-color: $table-bg-accent;
   }
 }
+
 
 // Hover effect
 //
@@ -121,11 +127,12 @@ th {
   }
 }
 
+
 // Table cell sizing
 //
 // Reset default table behavior
 
-table col[class*='col-'] {
+table col[class*="col-"] {
   position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
   float: none;
   display: table-column;
@@ -133,13 +140,14 @@ table col[class*='col-'] {
 table {
   td,
   th {
-    &[class*='col-'] {
+    &[class*="col-"] {
       position: static; // Prevent border hiding in Firefox and IE9-11 (see https://github.com/twbs/bootstrap/issues/11623)
       float: none;
       display: table-cell;
     }
   }
 }
+
 
 // Table backgrounds
 //
@@ -152,6 +160,7 @@ table {
 @include table-row-variant('info', $state-info-bg);
 @include table-row-variant('warning', $state-warning-bg);
 @include table-row-variant('danger', $state-danger-bg);
+
 
 // Responsive tables
 //
@@ -219,6 +228,7 @@ table {
           }
         }
       }
+
     }
   }
 }

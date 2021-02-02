@@ -1,6 +1,6 @@
 $blue: $blue-5;
 
-$cubic: cubic-bezier(0.165, 0.84, 0.44, 1);
+$cubic: cubic-bezier(.165,.84,.44,1);
 
 $body-background-color: $gray-9;
 
@@ -55,15 +55,15 @@ $new-item-border: 2px dashed $new-item-border-color;
 }
 
 @mixin secondary-text {
-  color: rgba(22, 34, 45, 0.7); // #16222d
+  color: rgba(22,34,45, 0.7); // #16222d
 }
 
 @mixin disabled-text {
-  color: rgba(22, 34, 45, 0.2); // #16222d
+  color: rgba(22,34,45, 0.2); // #16222d
 }
 
 @mixin accented-text {
-  color: rgba(108, 172, 228, 0.9); // #6cace4
+  color: rgba(108,172,228, 0.9); // #6cace4
 }
 
 @mixin hover-box {

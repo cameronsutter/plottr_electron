@@ -1,4 +1,4 @@
-@import 'vars';
+@import "vars";
 
 $title_height: 70px;
 $title_width: 150px;
@@ -34,7 +34,7 @@ $title_width: 150px;
   min-height: $title_height;
   min-width: 150px;
   padding: 10px;
-  transition: all 0.4s $cubic;
+  transition: all .4s $cubic;
   border: 3px dashed transparent;
   word-break: break-word;
   .form-group {
@@ -68,7 +68,7 @@ $title_width: 150px;
   display: flex;
   align-items: center;
   color: transparent;
-  transition: all 0.4s $cubic;
+  transition: all .4s $cubic;
   border: 1px solid transparent;
   font-size: 12px;
   cursor: pointer;
@@ -171,7 +171,7 @@ $title_width: 150px;
   width: 150px + 6px; // +6px for the 3px border
   margin: auto;
   text-align: center;
-  transition: all 0.4s $cubic;
+  transition: all .4s $cubic;
   border: 3px dashed transparent;
   word-break: break-word;
   .form-group {
@@ -212,7 +212,7 @@ $title_width: 150px;
   align-items: center;
   justify-content: center;
   color: transparent;
-  transition: all 0.4s $cubic;
+  transition: all .4s $cubic;
   border: 1px solid transparent;
   font-size: 12px;
   width: 150px;

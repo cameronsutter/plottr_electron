@@ -1,4 +1,4 @@
-@import 'colors';
+@import "colors";
 
 .container-with-sub-nav {
   margin-top: 50px !important;
@@ -89,8 +89,7 @@ nav.subnav__container {
         padding: 5px 0 5px 0;
         background-color: $gray-9;
 
-        & > a:hover,
-        &:hover {
+        & > a:hover, &:hover {
           background-color: $gray-8;
         }
       }
@@ -116,8 +115,7 @@ nav.subnav__container {
         li:first-child {
           background-color: $darkmode-darker-background;
 
-          & > a:hover,
-          &:hover {
+          & > a:hover, &:hover {
             background-color: $darkmode-background;
           }
         }

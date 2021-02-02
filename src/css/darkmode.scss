@@ -1,4 +1,4 @@
-@import 'vars';
+@import "vars";
 
 body.darkmode {
   background: $darkmode-background;
@@ -6,14 +6,7 @@ body.darkmode {
     background-color: #ddd !important;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  .control-label {
+  h1, h2, h3, h4, h5, h6, p, .control-label {
     color: $darkmode-text;
   }
   .popover {
@@ -50,7 +43,7 @@ body.darkmode {
   }
   .dropdown-menu {
     background-color: $darkmode-background;
-    li > a {
+    li>a {
       color: $darkmode-text;
       &:hover {
         background-color: $darkmode-darker-background;
@@ -71,11 +64,10 @@ body.darkmode {
     color: $darkmode-text;
     background-color: $darkmode-background;
   }
-  .table-striped > tbody > tr:nth-of-type(odd) {
+  .table-striped>tbody>tr:nth-of-type(odd) {
     background-color: $darkmode-darker-background;
   }
-  .ReactModal__Content,
-  .modal-content {
+  .ReactModal__Content, .modal-content {
     color: $darkmode-text;
     background-color: $darkmode-background !important;
   }
@@ -89,8 +81,7 @@ body.darkmode {
     background-color: $darkmode-darker-background;
   }
 
-  .ReactModal__Content,
-  .modal-content {
+  .ReactModal__Content, .modal-content {
     color: $darkmode-text;
     background-color: $darkmode-background !important;
   }

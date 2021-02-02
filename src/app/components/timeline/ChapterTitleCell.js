@@ -12,18 +12,24 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import * as SceneActions from 'actions/scenes'
-import * as BeatActions from 'actions/beats'
-import orientedClassName from 'helpers/orientedClassName'
-import { editingChapterLabel, chapterPositionTitle } from '../../helpers/chapters'
-import { isSeriesSelector } from '../../selectors/ui'
-import {
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { actions, helpers, selectors } from 'pltr/v2'
+
+const BeatActions = actions.beat
+const SceneActions = actions.scene
+
+const {
+  card: { truncateTitle },
+  chapters: { editingChapterLabel, chapterPositionTitle },
+  orientedClassName: { orientedClassName },
+} = helpers
+
+const {
   makeChapterTitleSelector,
   makeChapterSelector,
   positionOffsetSelector,
-} from '../../selectors/chapters'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { truncateTitle } from 'helpers/cards'
+  isSeriesSelector,
+} = selectors
 
 class ChapterTitleCell extends PureComponent {
   constructor(props) {

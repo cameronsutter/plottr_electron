@@ -10,23 +10,30 @@ import ChapterInsertCell from './ChapterInsertCell'
 import TopRow from './TopRow'
 import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
-import * as UIActions from 'actions/ui'
-import * as SceneActions from 'actions/scenes'
-import * as BeatActions from 'actions/beats'
-import * as SeriesLineActions from 'actions/seriesLines'
-import * as CardActions from 'actions/cards'
-import { reorderList } from 'helpers/lists'
-import { insertChapter } from 'helpers/chapters'
 import { card } from '../../../../shared/initialState'
-import { nextId } from '../../store/newIds'
-import { sortedChaptersByBookSelector } from '../../selectors/chapters'
-import { sortedLinesByBookSelector } from '../../selectors/lines'
 import { findDOMNode } from 'react-dom'
-import { cardMapSelector } from '../../selectors/cards'
-import { isSeriesSelector } from '../../selectors/ui'
-import { actions } from 'pltr/v2'
+import { newIds, actions, helpers, selectors } from 'pltr/v2'
 
-const LineActions = actions.lineActions
+const { nextId } = newIds
+
+const {
+  chapters: { insertChapter },
+  lists: { reorderList },
+} = helpers
+
+const {
+  cardMapSelector,
+  sortedChaptersByBookSelector,
+  sortedLinesByBookSelector,
+  isSeriesSelector,
+} = selectors
+
+const LineActions = actions.line
+const BeatActions = actions.beat
+const CardActions = actions.card
+const SceneActions = actions.scene
+const SeriesLineActions = actions.series
+const UIActions = actions.ui
 
 class TimelineTable extends Component {
   state = {

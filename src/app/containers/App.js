@@ -7,11 +7,15 @@ import Body from 'containers/Body'
 import ErrorBoundary from './ErrorBoundary'
 import GuidedTour from '../components/GuidedTour'
 import TemplateCreate from '../../common/components/templates/TemplateCreate'
-import { focusIsEditable } from '../helpers/undo'
 import AskToSaveModal from '../components/dialogs/AskToSaveModal'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { saveFile } from '../../common/utils/files'
 import { store } from '../store/configureStore'
+import { helpers } from 'pltr/v2'
+
+const {
+  undo: { focusIsEditable },
+} = helpers
 
 let isTryingToReload = false
 let isTryingToClose = false

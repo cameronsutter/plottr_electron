@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
 import { NavItem, Button, Popover, OverlayTrigger, Glyphicon } from 'react-bootstrap'
-import * as UIActions from 'actions/ui'
-import { bookTimelineTemplatesSelector } from '../../selectors/books'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { currentTimelineSelector } from '../../selectors/ui'
+import { selectors, actions } from 'pltr/v2'
+
+const { currentTimelineSelector } = selectors
+
+const UIActions = actions.ui
 
 class ClearNavItem extends Component {
   state = { deleting: false }

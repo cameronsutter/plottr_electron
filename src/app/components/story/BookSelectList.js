@@ -3,11 +3,13 @@ import { difference } from 'lodash'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as UIActions from 'actions/ui'
 import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import i18n from 'format-message'
 import Image from '../images/Image'
 import cx from 'classnames'
+import { actions } from 'pltr/v2'
+
+const UIActions = actions.ui
 
 class BookSelectList extends Component {
   renderUnSelected() {

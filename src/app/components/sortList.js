@@ -3,12 +3,11 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
-import * as UIActions from 'actions/ui'
 import i18n from 'format-message'
-import {
-  characterSortCAnamesSelector,
-  placeSortCAnamesSelector,
-} from '../selectors/customAttributes'
+import { selectors, actions } from 'pltr/v2'
+
+const UIActions = actions.ui
+const { characterSortCAnamesSelector, placeSortCAnamesSelector } = selectors
 
 class SortList extends Component {
   toggle = (attr) => {

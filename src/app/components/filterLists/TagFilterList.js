@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import i18n from 'format-message'
-import { sortedTagsSelector } from '../../selectors/tags'
 import GenericFilterList from './GenericFilterList'
+import { selectors } from 'pltr/v2'
+
+const { sortedTagsSelector } = selectors
 
 class TagFilterList extends Component {
   updateItems = (ids) => {

@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as ImageActions from 'actions/images'
 import PlottrModal from 'components/PlottrModal'
 import cx from 'classnames'
 import {
@@ -22,9 +21,14 @@ import {
 } from 'react-bootstrap'
 import Image from './Image'
 import i18n from 'format-message'
-import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
 import { Spinner } from '../../../common/components/Spinner'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { helpers, actions } from 'pltr/v2'
+
+const ImageActions = actions.image
+const {
+  images: { readImage, isImageUrl, readImageFromURL },
+} = helpers
 
 class ImagePicker extends Component {
   state = {}

@@ -2,19 +2,11 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import PlottrModal from 'components/PlottrModal'
-import {
-  reds,
-  oranges,
-  greens,
-  blues,
-  purples,
-  grays,
-  whites,
-  browns,
-  defaults,
-} from '../constants/CSScolors'
 import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bootstrap'
 import i18n from 'format-message'
+import { colors } from 'pltr/v2'
+
+const { reds, oranges, greens, blues, purples, grays, whites, browns, defaults } = colors
 
 class ColorPicker extends Component {
   constructor(props) {

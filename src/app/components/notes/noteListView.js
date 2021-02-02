@@ -16,14 +16,17 @@ import {
   Row,
   Col,
 } from 'react-bootstrap'
-import * as NoteActions from 'actions/notes'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
 import i18n from 'format-message'
 import cx from 'classnames'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import NoteItem from './NoteItem'
-import { nextId } from '../../store/newIds'
+import { newIds, actions } from 'pltr/v2'
+
+const { nextId } = newIds
+
+const NoteActions = actions.note
 
 class NoteListView extends Component {
   constructor(props) {

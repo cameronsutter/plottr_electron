@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'react-proptypes'
 import orientedClassName from '../../helpers/orientedClassName'
 
 const Horizontal = {
@@ -12,10 +13,12 @@ const Vertical = {
 }
 
 const getMargins = (orientation) => {
-  return orientation == 'horizontal' ? Horizontal.first + Horizontal.last : Vertical.first + Vertical.last
+  return orientation == 'horizontal'
+    ? Horizontal.first + Horizontal.last
+    : Vertical.first + Vertical.last
 }
 
-export default function VisualLine ({ color, orientation, tableLength }) {
+export default function VisualLine({ color, orientation, tableLength }) {
   const [margins, setMargins] = useState(getMargins(orientation))
   const [currentLength, setCurrentLength] = useState(0)
   const [maxLength, setMaxLength] = useState(0)
@@ -36,7 +39,7 @@ export default function VisualLine ({ color, orientation, tableLength }) {
     if (intervalId) return
 
     const id = setInterval(() => {
-      setCurrentLength(currentLength => {
+      setCurrentLength((currentLength) => {
         let nextLength = currentLength + 100
         if (nextLength > maxLength) nextLength = maxLength
         return maxLength
@@ -62,5 +65,16 @@ export default function VisualLine ({ color, orientation, tableLength }) {
   } else {
     lineStyle.height = `${currentLength}px`
   }
-  return <div className={orientedClassName('line-title__line-line', orientation)} style={lineStyle}></div>
+  return (
+    <div
+      className={orientedClassName('line-title__line-line', orientation)}
+      style={lineStyle}
+    ></div>
+  )
+}
+
+VisualLine.propTypes = {
+  color: PropTypes.string,
+  orientation: PropTypes.string,
+  tableLength: PropTypes.number,
 }

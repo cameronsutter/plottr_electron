@@ -22,7 +22,14 @@ const BeatActions = actions.beat
 const SceneActions = actions.scene
 const SeriesLineActions = actions.series
 
-const { sortedChaptersByBookSelector, sortedLinesByBookSelector, isSeriesSelector, isLargeSelector, isMediumSelector, isSmallSelector } = selectors
+const {
+  sortedChaptersByBookSelector,
+  sortedLinesByBookSelector,
+  isSeriesSelector,
+  isLargeSelector,
+  isMediumSelector,
+  isSmallSelector,
+} = selectors
 
 class TopRow extends Component {
   handleReorderChapters = (originalPosition, droppedPosition) => {
@@ -86,9 +93,9 @@ class TopRow extends Component {
     )
   }
 
-  renderChapters () {
+  renderChapters() {
     const { ui, chapters, isLarge, isSmall } = this.props
-    const renderedChapters = chapters.flatMap(ch => {
+    const renderedChapters = chapters.flatMap((ch) => {
       const cells = []
       if (isLarge) {
         cells.push(
@@ -113,36 +120,47 @@ class TopRow extends Component {
     if (isSmall) {
       return [...renderedChapters, this.renderLastInsertChapterCell()]
     } else {
-      return [<Cell key='placeholder'/>, ...renderedChapters, this.renderLastInsertChapterCell()]
+      return [<Cell key="placeholder" />, ...renderedChapters, this.renderLastInsertChapterCell()]
     }
   }
 
-  renderLines () {
+  renderLines() {
     const { lines, ui, isSmall, isLarge } = this.props
-    const renderedLines = lines.map(line => <LineTitleCell key={`line-${line.id}`} line={line} handleReorder={this.handleReorderLines} bookId={ui.currentTimeline}/>)
-    const insertLineDiv = <div
-      className={orientedClassName('line-list__append-line', ui.orientation)}
-      onClick={this.handleAppendLine}
-    >
-      <div className={orientedClassName('line-list__append-line-wrapper', ui.orientation)}>
-        <Glyphicon glyph='plus' />
+    const renderedLines = lines.map((line) => (
+      <LineTitleCell
+        key={`line-${line.id}`}
+        line={line}
+        handleReorder={this.handleReorderLines}
+        bookId={ui.currentTimeline}
+      />
+    ))
+    const insertLineDiv = (
+      <div
+        className={orientedClassName('line-list__append-line', ui.orientation)}
+        onClick={this.handleAppendLine}
+      >
+        <div className={orientedClassName('line-list__append-line-wrapper', ui.orientation)}>
+          <Glyphicon glyph="plus" />
+        </div>
       </div>
-    </div>
+    )
 
     if (isSmall) {
-      const insertLineTH = <th key='insert-line' className='rotate-45'>
-        { insertLineDiv }
-      </th>
+      const insertLineTH = (
+        <th key="insert-line" className="rotate-45">
+          {insertLineDiv}
+        </th>
+      )
       return [...renderedLines, insertLineTH]
     }
 
-    let finalArray = [<Cell key='placeholder'/>, ...renderedLines]
+    let finalArray = [<Cell key="placeholder" />, ...renderedLines]
     if (isLarge) {
-      const insertLineCell = <Row key='insert-line'>
-        <Cell>
-          { insertLineDiv }
-        </Cell>
-      </Row>
+      const insertLineCell = (
+        <Row key="insert-line">
+          <Cell>{insertLineDiv}</Cell>
+        </Row>
+      )
       finalArray = [...finalArray, insertLineCell]
     }
     return finalArray
@@ -155,12 +173,14 @@ class TopRow extends Component {
     else body = this.renderLines()
 
     if (isSmall) {
-      return <thead>
-        <tr>
-          <th></th>
-          { body }
-        </tr>
-      </thead>
+      return (
+        <thead>
+          <tr>
+            <th></th>
+            {body}
+          </tr>
+        </thead>
+      )
     } else {
       return <Row>{body}</Row>
     }
@@ -176,6 +196,10 @@ TopRow.propTypes = {
   chapters: PropTypes.array,
   nextChapterId: PropTypes.number,
   lines: PropTypes.array,
+  sceneActions: PropTypes.object,
+  lineActions: PropTypes.object,
+  beatActions: PropTypes.object,
+  seriesLineActions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

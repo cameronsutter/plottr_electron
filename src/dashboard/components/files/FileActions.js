@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'react-proptypes'
 import path from 'path'
 import t from 'format-message'
 import { is } from 'electron-util'
@@ -13,7 +14,7 @@ if (is.macos) {
   showInMessage = t('Show in Finder')
 }
 
-export default function FileOptions ({missing, id, filePath, openFile}) {
+export default function FileOptions({ missing, id, filePath, openFile }) {
   const [deleting, setDeleting] = useState(false)
 
   const deleteFile = () => {
@@ -26,7 +27,9 @@ export default function FileOptions ({missing, id, filePath, openFile}) {
 
     const name = path.basename(filePath)
 
-    return <DeleteConfirmModal name={name} onDelete={deleteFile} onCancel={() => setDeleting(false)}/>
+    return (
+      <DeleteConfirmModal name={name} onDelete={deleteFile} onCancel={() => setDeleting(false)} />
+    )
   }
 
   const doTheThing = (eventKey) => {
@@ -47,18 +50,27 @@ export default function FileOptions ({missing, id, filePath, openFile}) {
 
   const isTemp = filePath.includes(TEMP_FILES_PATH)
 
-  return <div className='dashboard__recent-files__file-options'>
-    { renderDeleteFile() }
-    <Dropdown id={`file-option-${id}`} onSelect={doTheThing}>
-      <Dropdown.Toggle noCaret>
-        <Glyphicon glyph='option-horizontal' />
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        {missing ? null : <MenuItem eventKey='open'>{t('Open')}</MenuItem>}
-        {missing ? null : <MenuItem eventKey='show'>{showInMessage}</MenuItem>}
-        {isTemp ? null : <MenuItem eventKey='remove'>{t('Remove from this list')}</MenuItem>}
-        {missing ? null : <MenuItem eventKey='delete'>{t('Delete')}</MenuItem>}
-      </Dropdown.Menu>
-    </Dropdown>
-  </div>
+  return (
+    <div className="dashboard__recent-files__file-options">
+      {renderDeleteFile()}
+      <Dropdown id={`file-option-${id}`} onSelect={doTheThing}>
+        <Dropdown.Toggle noCaret>
+          <Glyphicon glyph="option-horizontal" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {missing ? null : <MenuItem eventKey="open">{t('Open')}</MenuItem>}
+          {missing ? null : <MenuItem eventKey="show">{showInMessage}</MenuItem>}
+          {isTemp ? null : <MenuItem eventKey="remove">{t('Remove from this list')}</MenuItem>}
+          {missing ? null : <MenuItem eventKey="delete">{t('Delete')}</MenuItem>}
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
+  )
+}
+
+FileOptions.propTypes = {
+  missing: PropTypes.bool,
+  id: PropTypes.string,
+  filePath: PropTypes.string,
+  openFile: PropTypes.bool,
 }

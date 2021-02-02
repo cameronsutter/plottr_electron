@@ -94,27 +94,27 @@ class LineTitleCell extends PureComponent {
   }
 
   handleDragEnter = (e) => {
-    if (!this.state.dragging) this.setState({dropDepth: this.state.dropDepth + 1})
+    if (!this.state.dragging) this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
     e.preventDefault()
-    if (!this.state.dragging) this.setState({inDropZone: true})
+    if (!this.state.dragging) this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
     if (!this.state.dragging) {
       let dropDepth = this.state.dropDepth
       --dropDepth
-      this.setState({dropDepth: dropDepth})
+      this.setState({ dropDepth: dropDepth })
       if (dropDepth > 0) return
-      this.setState({inDropZone: false})
+      this.setState({ inDropZone: false })
     }
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({inDropZone: false, dropDepth: 0})
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     var json = e.dataTransfer.getData('text/json')
     var droppedLine = JSON.parse(json)
@@ -254,66 +254,79 @@ class LineTitleCell extends PureComponent {
 
     if (isSmall) {
       const isHorizontal = ui.orientation == 'horizontal'
-      const klasses = { 'rotate-45': !isHorizontal, 'row-header': isHorizontal, dropping: inDropZone }
-      return <th
-        className={cx(klasses)}
-        onDragEnter={this.handleDragEnter}
-        onDragOver={this.handleDragOver}
-        onDragLeave={this.handleDragLeave}
-        onDrop={this.handleDrop}
-      >
-        <div
-          draggable
-          onDragStart={this.handleDragStart}
-          onDragEnd={this.handleDragEnd}
+      const klasses = {
+        'rotate-45': !isHorizontal,
+        'row-header': isHorizontal,
+        dropping: inDropZone,
+      }
+      return (
+        <th
+          className={cx(klasses)}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
         >
-          <span>{ truncateTitle(line.title, 50) }</span>
-        </div>
-      </th>
+          <div draggable onDragStart={this.handleDragStart} onDragEnd={this.handleDragEnd}>
+            <span>{truncateTitle(line.title, 50)}</span>
+          </div>
+        </th>
+      )
     }
 
-    let innerKlass = cx(
-      orientedClassName('line-title__body', ui.orientation),
-      { hover: hovering, dropping: inDropZone }
-    )
+    let innerKlass = cx(orientedClassName('line-title__body', ui.orientation), {
+      hover: hovering,
+      dropping: inDropZone,
+    })
 
     let placement = 'bottom'
     if (ui.orientation == 'vertical') placement = 'right'
-    return <Cell>
-      <div
-        className={orientedClassName('line-title__cell', ui.orientation)}
-        onMouseEnter={this.startHovering}
-        onMouseLeave={this.stopHovering}
-        onDrop={this.handleDrop}
-      >
-        { this.renderDelete() }
-        <Floater component={this.renderHoverOptions} open={hovering} placement={placement} hideArrow offset={0}>
-          <div className={innerKlass}
-            onClick={this.startEditing}
-            onDragStart={this.handleDragStart}
-            onDragEnd={this.handleDragEnd}
-            onDragEnter={this.handleDragEnter}
-            onDragOver={this.handleDragOver}
-            onDragLeave={this.handleDragLeave}
-            draggable={true}>
-            { this.renderTitle() }
-          </div>
-        </Floater>
-      </div>
-      { this.renderColorPicker() }
-    </Cell>
+    return (
+      <Cell>
+        <div
+          className={orientedClassName('line-title__cell', ui.orientation)}
+          onMouseEnter={this.startHovering}
+          onMouseLeave={this.stopHovering}
+          onDrop={this.handleDrop}
+        >
+          {this.renderDelete()}
+          <Floater
+            component={this.renderHoverOptions}
+            open={hovering}
+            placement={placement}
+            hideArrow
+            offset={0}
+          >
+            <div
+              className={innerKlass}
+              onClick={this.startEditing}
+              onDragStart={this.handleDragStart}
+              onDragEnd={this.handleDragEnd}
+              onDragEnter={this.handleDragEnter}
+              onDragOver={this.handleDragOver}
+              onDragLeave={this.handleDragLeave}
+              draggable={true}
+            >
+              {this.renderTitle()}
+            </div>
+          </Floater>
+        </div>
+        {this.renderColorPicker()}
+      </Cell>
+    )
   }
 }
 
 LineTitleCell.propTypes = {
   line: PropTypes.object.isRequired,
   bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  actions: PropTypes.object.isRequired,
+  handleReorder: PropTypes.func,
   ui: PropTypes.object.isRequired,
   isSmall: PropTypes.bool,
   isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
   lineIsExpanded: PropTypes.bool.isRequired,
+  actions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {

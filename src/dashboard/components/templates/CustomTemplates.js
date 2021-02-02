@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'react-proptypes'
 import t from 'format-message'
 import { useCustomTemplatesInfo } from '../../../common/utils/store_hooks'
 import { useFilteredSortedTemplates } from '../../utils/templates'
@@ -21,4 +22,9 @@ export default function CustomTemplates({ type, searchTerm }) {
       <div className="dashboard__template-section__wrapper">{renderedTemplates}</div>
     </div>
   )
+}
+
+CustomTemplates.propTypes = {
+  type: PropTypes.string,
+  searchTerm: PropTypes.string,
 }

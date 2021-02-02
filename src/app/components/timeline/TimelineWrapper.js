@@ -19,7 +19,6 @@ import CustomAttrFilterList from 'components/customAttrFilterList'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
-import { timelineFilterIsEmptySelector, currentTimelineSelector, isSmallSelector, isMediumSelector, isLargeSelector } from '../../selectors/ui'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
@@ -29,7 +28,13 @@ import { actions, selectors } from 'pltr/v2'
 
 const UIActions = actions.ui
 
-const { timelineFilterIsEmptySelector, currentTimelineSelector } = selectors
+const {
+  timelineFilterIsEmptySelector,
+  currentTimelineSelector,
+  isSmallSelector,
+  isMediumSelector,
+  isLargeSelector,
+} = selectors
 
 const win = remote.getCurrentWindow()
 
@@ -52,13 +57,13 @@ class TimelineWrapper extends Component {
     if (this.tableRef) this.tableRef.onscroll = this.scrollHandler
 
     setTimeout(() => {
-      this.setState({mounted: true}, () => {
+      this.setState({ mounted: true }, () => {
         if (this.props.ui.timelineScrollPosition == null) return
         if (this.tableRef) {
           this.tableRef.scrollTo({
             top: this.props.ui.timelineScrollPosition.y,
             left: this.props.ui.timelineScrollPosition.x,
-            behavior: 'auto'
+            behavior: 'auto',
           })
         }
       })
@@ -68,20 +73,26 @@ class TimelineWrapper extends Component {
   componentWillReceiveProps(nextProps) {
     const { ui } = this.props
 
-    if (nextProps.ui.currentTimeline != ui.currentTimeline
-      || nextProps.ui.orientation != ui.orientation
-      || nextProps.ui.timeline.size != ui.timeline.size) {
-      this.setState({mounted: false})
-      setTimeout(() => this.setState({mounted: true}, () => {
-        if (nextProps.ui.timelineScrollPosition == null) return
-        if (this.tableRef) {
-          this.tableRef.scrollTo({
-            top: this.props.ui.timelineScrollPosition.y,
-            left: this.props.ui.timelineScrollPosition.x,
-            behavior: 'auto'
-          })
-        }
-      }), 10)
+    if (
+      nextProps.ui.currentTimeline != ui.currentTimeline ||
+      nextProps.ui.orientation != ui.orientation ||
+      nextProps.ui.timeline.size != ui.timeline.size
+    ) {
+      this.setState({ mounted: false })
+      setTimeout(
+        () =>
+          this.setState({ mounted: true }, () => {
+            if (nextProps.ui.timelineScrollPosition == null) return
+            if (this.tableRef) {
+              this.tableRef.scrollTo({
+                top: this.props.ui.timelineScrollPosition.y,
+                left: this.props.ui.timelineScrollPosition.x,
+                behavior: 'auto',
+              })
+            }
+          }),
+        10
+      )
     }
     // if () {
     //   this.setState({mounted: false})
@@ -93,7 +104,7 @@ class TimelineWrapper extends Component {
     // }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.tableRef) {
       this.tableRef.onScroll = null
       this.tableRef = null
@@ -208,7 +219,16 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav() {
-    const { ui, file, filterIsEmpty, canSaveTemplate, isSmall, isMedium, isLarge, actions } = this.props
+    const {
+      ui,
+      file,
+      filterIsEmpty,
+      canSaveTemplate,
+      isSmall,
+      isMedium,
+      isLarge,
+      actions,
+    } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -276,27 +296,46 @@ class TimelineWrapper extends Component {
             </Button>
           </NavItem>
           <NavItem>
-            <span className='subnav__container__label'>{i18n('Zoom')}: </span>
+            <span className="subnav__container__label">{i18n('Zoom')}: </span>
             <ButtonGroup>
-              <Button bsSize='small' className={cx({active: isSmall})}
+              <Button
+                bsSize="small"
+                className={cx({ active: isSmall })}
                 onClick={() => actions.setTimelineSize('small')}
-                title={i18n('Size: small')}>S</Button>
-              <Button bsSize='small' className={cx({active: isMedium})}
+                title={i18n('Size: small')}
+              >
+                S
+              </Button>
+              <Button
+                bsSize="small"
+                className={cx({ active: isMedium })}
                 onClick={() => actions.setTimelineSize('medium')}
-                title={i18n('Size: medium')}>M</Button>
-              <Button bsSize='small' className={cx({active: isLarge})}
+                title={i18n('Size: medium')}
+              >
+                M
+              </Button>
+              <Button
+                bsSize="small"
+                className={cx({ active: isLarge })}
                 onClick={() => actions.setTimelineSize('large')}
-                title={i18n('Size: large')}>L</Button>
+                title={i18n('Size: large')}
+              >
+                L
+              </Button>
             </ButtonGroup>
           </NavItem>
           <NavItem>
-            <span className='subnav__container__label'>{i18n('Scroll')}: </span>
-            <ButtonGroup bsSize='small'>
-              <Button onClick={this.scrollLeft} ><Glyphicon glyph={scrollDirectionFirst} /></Button>
-              <Button onClick={this.scrollRight} ><Glyphicon glyph={scrollDirectionSecond} /></Button>
-              <Button onClick={this.scrollBeginning} >{i18n('Beginning')}</Button>
-              <Button onClick={this.scrollMiddle} >{i18n('Middle')}</Button>
-              <Button onClick={this.scrollEnd} >{i18n('End')}</Button>
+            <span className="subnav__container__label">{i18n('Scroll')}: </span>
+            <ButtonGroup bsSize="small">
+              <Button onClick={this.scrollLeft}>
+                <Glyphicon glyph={scrollDirectionFirst} />
+              </Button>
+              <Button onClick={this.scrollRight}>
+                <Glyphicon glyph={scrollDirectionSecond} />
+              </Button>
+              <Button onClick={this.scrollBeginning}>{i18n('Beginning')}</Button>
+              <Button onClick={this.scrollMiddle}>{i18n('Middle')}</Button>
+              <Button onClick={this.scrollEnd}>{i18n('End')}</Button>
             </ButtonGroup>
           </NavItem>
           {canSaveTemplate ? (
@@ -313,19 +352,21 @@ class TimelineWrapper extends Component {
     )
   }
 
-  renderBody () {
+  renderBody() {
     const { ui, isSmall } = this.props
     if (isSmall) {
       return <TimelineTable tableRef={this.tableRef} />
     } else {
-      return <StickyTable
-        leftColumnZ={5}
-        headerZ={5}
-        wrapperRef={ref => this.tableRef = ref}
-        className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
-      >
-        { this.state.mounted ? <TimelineTable tableRef={this.tableRef} /> : <FunSpinner/> }
-      </StickyTable>
+      return (
+        <StickyTable
+          leftColumnZ={5}
+          headerZ={5}
+          wrapperRef={(ref) => (this.tableRef = ref)}
+          className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
+        >
+          {this.state.mounted ? <TimelineTable tableRef={this.tableRef} /> : <FunSpinner />}
+        </StickyTable>
+      )
     }
   }
 
@@ -348,9 +389,7 @@ class TimelineWrapper extends Component {
       >
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        <div id="timelineview__root">
-          { this.renderBody() }
-        </div>
+        <div id="timelineview__root">{this.renderBody()}</div>
       </div>
     )
   }
@@ -360,6 +399,7 @@ TimelineWrapper.propTypes = {
   file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
   filterIsEmpty: PropTypes.bool.isRequired,
   canSaveTemplate: PropTypes.bool.isRequired,

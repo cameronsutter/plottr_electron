@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'react-proptypes'
 import ErrorBoundary from '../../../app/containers/ErrorBoundary'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import Account from '../account/Account'
@@ -75,13 +76,9 @@ export default function DashboardBody({ currentView, setView }) {
     case 'backups':
       body = <BackupsHome />
       break
-<<<<<<< HEAD
     case 'options':
       body = <OptionsHome />
       break
-=======
-    case 'settings':
->>>>>>> backups page
     case 'help':
       body = <HelpHome />
       break
@@ -93,6 +90,11 @@ export default function DashboardBody({ currentView, setView }) {
   return <Body>{body}</Body>
 }
 
+DashboardBody.propTypes = {
+  currentView: PropTypes.string,
+  setView: PropTypes.func,
+}
+
 function Body({ children }) {
   return (
     <div className="dashboard__body">
@@ -101,4 +103,8 @@ function Body({ children }) {
       <ErrorBoundary>{children}</ErrorBoundary>
     </div>
   )
+}
+
+Body.propTypes = {
+  children: PropTypes.element,
 }

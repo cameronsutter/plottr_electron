@@ -17,7 +17,13 @@ const {
 
 const CardActions = actions.card
 
-const { visibleCardsSelector, lineIsExpandedSelector, isSeriesSelector, isSmallSelector, isMediumSelector } = selectors
+const {
+  visibleCardsSelector,
+  lineIsExpandedSelector,
+  isSeriesSelector,
+  isSmallSelector,
+  isMediumSelector,
+} = selectors
 
 class ScenesCell extends PureComponent {
   moveSceneCardAbove = (id, positionWithinLine) => {
@@ -157,7 +163,7 @@ class ScenesCell extends PureComponent {
     }
   }
 
-  render () {
+  render() {
     const { cards, isSmall } = this.props
 
     if (!cards.length) {
@@ -166,15 +172,10 @@ class ScenesCell extends PureComponent {
     }
 
     if (isSmall) {
-      return <td>
-        { this.renderCards(false) }
-      </td>
+      return <td>{this.renderCards(false)}</td>
     } else {
-      return <Cell>
-        { this.renderBody() }
-      </Cell>
+      return <Cell>{this.renderBody()}</Cell>
     }
-
   }
 }
 

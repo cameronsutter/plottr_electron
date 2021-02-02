@@ -147,17 +147,19 @@ class Card extends Component {
     return <div className="card__popover-labels">{tagLabels}</div>
   }
 
-  renderDropZone () {
+  renderDropZone() {
     const { color, allowDrop, isSmall } = this.props
     if (!allowDrop) return
     if (!this.state.inDropZone) return
 
     let circleStyle = {}
-    if (isSmall) circleStyle = {color: color}
+    if (isSmall) circleStyle = { color: color }
 
-    return <div className='card__drop-zone'>
-      <FaCircle style={circleStyle}/>
-    </div>
+    return (
+      <div className="card__drop-zone">
+        <FaCircle style={circleStyle} />
+      </div>
+    )
   }
 
   renderTitle() {
@@ -181,10 +183,10 @@ class Card extends Component {
     return title
   }
 
-  render () {
+  render() {
     const { color, isVisible, allowDrop, last } = this.props
     var cardStyle = {
-      borderColor: color
+      borderColor: color,
     }
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'
@@ -194,26 +196,26 @@ class Card extends Component {
     }
 
     if (isSmall) {
-      return <div
-        onDragEnter={this.handleDragEnter}
-        onDragOver={this.handleDragOver}
-        onDragLeave={this.handleDragLeave}
-        onDrop={this.handleDrop}
-      >
-        { this.renderDropZone() }
-        { this.renderDialog() }
+      return (
         <div
-          className='card-circle'
-          style={{backgroundColor: color}}
-          draggable
-          onDragStart={this.handleDragStart}
-          onDragEnd={this.handleDragEnd}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
         >
-          <div onClick={this.openDialog}>
-            { this.renderTitle() }
+          {this.renderDropZone()}
+          {this.renderDialog()}
+          <div
+            className="card-circle"
+            style={{ backgroundColor: color }}
+            draggable
+            onDragStart={this.handleDragStart}
+            onDragEnd={this.handleDragEnd}
+          >
+            <div onClick={this.openDialog}>{this.renderTitle()}</div>
           </div>
         </div>
-      </div>
+      )
     } else {
       return (
         <div

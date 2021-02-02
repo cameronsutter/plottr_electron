@@ -107,28 +107,28 @@ class ChapterTitleCell extends PureComponent {
   }
 
   handleDragEnter = (e) => {
-    if (!this.state.dragging) this.setState({dropDepth: this.state.dropDepth + 1})
+    if (!this.state.dragging) this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
     e.preventDefault()
-    if (!this.state.dragging) this.setState({inDropZone: true})
+    if (!this.state.dragging) this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
     if (!this.state.dragging) {
       let dropDepth = this.state.dropDepth
       --dropDepth
-      this.setState({dropDepth: dropDepth})
+      this.setState({ dropDepth: dropDepth })
       if (dropDepth > 0) return
-      this.setState({inDropZone: false})
+      this.setState({ inDropZone: false })
     }
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
     if (this.state.dragging) return
-    this.setState({inDropZone: false, dropDepth: 0})
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     var json = e.dataTransfer.getData('text/json')
     var droppedChapter = JSON.parse(json)
@@ -230,51 +230,65 @@ class ChapterTitleCell extends PureComponent {
     window.SCROLLWITHKEYS = !this.state.editing
     const { chapter, ui, positionOffset, chapterTitle, isSeries, isSmall } = this.props
     const { hovering, inDropZone, dragging } = this.state
-    let innerKlass = cx(orientedClassName('chapter__body', ui.orientation), {hover: hovering, dropping: inDropZone})
+    let innerKlass = cx(orientedClassName('chapter__body', ui.orientation), {
+      hover: hovering,
+      dropping: inDropZone,
+    })
 
     if (isSmall) {
       const isHorizontal = ui.orientation == 'horizontal'
-      const klasses = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal, dropping: inDropZone }
-      return <th
-        className={cx(klasses)}
-        onDragEnter={this.handleDragEnter}
-        onDragOver={this.handleDragOver}
-        onDragLeave={this.handleDragLeave}
-        onDrop={this.handleDrop}
-      >
-        <div
-          title={chapterPositionTitle(chapter, positionOffset, isSeries)}
-          onMouseEnter={this.startHovering}
-          onMouseLeave={this.stopHovering}
-          draggable
-          onDragStart={this.handleDragStart}
-          onDragEnd={this.handleDragEnd}
+      const klasses = {
+        'rotate-45': isHorizontal,
+        'row-header': !isHorizontal,
+        dropping: inDropZone,
+      }
+      return (
+        <th
+          className={cx(klasses)}
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
         >
-          <span>{ truncateTitle(chapterTitle, 50) }</span>
-        </div>
-      </th>
-    } else {
-      return <Cell className='chapter-table-cell'>
-        <div
-          className={orientedClassName('chapter__cell', ui.orientation)}
-          title={chapterPositionTitle(chapter, positionOffset, isSeries)}
-          onMouseEnter={this.startHovering}
-          onMouseLeave={this.stopHovering}
-          onDrop={this.handleDrop}>
-          { this.renderHoverOptions() }
-          { this.renderDelete() }
-          <div className={innerKlass}
-            onClick={this.startEditing}
+          <div
+            title={chapterPositionTitle(chapter, positionOffset, isSeries)}
+            onMouseEnter={this.startHovering}
+            onMouseLeave={this.stopHovering}
             draggable
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
-            onDragEnter={this.handleDragEnter}
-            onDragOver={this.handleDragOver}
-            onDragLeave={this.handleDragLeave}>
-            { this.renderTitle() }
+          >
+            <span>{truncateTitle(chapterTitle, 50)}</span>
           </div>
-        </div>
-      </Cell>
+        </th>
+      )
+    } else {
+      return (
+        <Cell className="chapter-table-cell">
+          <div
+            className={orientedClassName('chapter__cell', ui.orientation)}
+            title={chapterPositionTitle(chapter, positionOffset, isSeries)}
+            onMouseEnter={this.startHovering}
+            onMouseLeave={this.stopHovering}
+            onDrop={this.handleDrop}
+          >
+            {this.renderHoverOptions()}
+            {this.renderDelete()}
+            <div
+              className={innerKlass}
+              onClick={this.startEditing}
+              draggable
+              onDragStart={this.handleDragStart}
+              onDragEnd={this.handleDragEnd}
+              onDragEnter={this.handleDragEnter}
+              onDragOver={this.handleDragOver}
+              onDragLeave={this.handleDragLeave}
+            >
+              {this.renderTitle()}
+            </div>
+          </div>
+        </Cell>
+      )
     }
   }
 }

@@ -20,8 +20,6 @@ const {
 let isTryingToReload = false
 let isTryingToClose = false
 
-let isTryingToReload = false
-
 export default class App extends Component {
   state = { showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true }
 

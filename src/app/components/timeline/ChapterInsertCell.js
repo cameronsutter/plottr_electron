@@ -5,6 +5,7 @@ import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { selectors, helpers } from 'pltr/v2'
+import VisualLine from './VisualLine'
 
 const {
   orientedClassName: { orientedClassName },
@@ -26,7 +27,7 @@ class ChapterInsertCell extends PureComponent {
     handleInsert(chapterPosition, lineId)
   }
 
-  renderLine () {
+  renderLine() {
     const { tableLength, orientation, color } = this.props
     return <VisualLine tableLength={tableLength} orientation={orientation} color={color} />
   }
@@ -43,27 +44,32 @@ class ChapterInsertCell extends PureComponent {
       chapterKlass += ' append-chapter'
     }
     if (!isInChapterList) titleText = i18n('Insert Chapter and a Card')
-    let insideDiv = <div
-      title={titleText}
-      className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-chapter', orientation)}
-      onClick={this.insert}
-    >
-      <div className={wrapperKlass}>
-        <Glyphicon glyph='plus' />
+    let insideDiv = (
+      <div
+        title={titleText}
+        className={orientedClassName(
+          isInChapterList ? chapterKlass : 'line-list__insert-chapter',
+          orientation
+        )}
+        onClick={this.insert}
+      >
+        <div className={wrapperKlass}>
+          <Glyphicon glyph="plus" />
+        </div>
       </div>
-    </div>
+    )
 
     if (isSmall) {
       const isHorizontal = orientation == 'horizontal'
       const klasses = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal }
-      return <th className={cx(klasses)}>
-        { insideDiv }
-      </th>
+      return <th className={cx(klasses)}>{insideDiv}</th>
     } else {
-      return <Cell>
-        { insideDiv }
-        {showLine ? this.renderLine() : null}
-      </Cell>
+      return (
+        <Cell>
+          {insideDiv}
+          {showLine ? this.renderLine() : null}
+        </Cell>
+      )
     }
   }
 

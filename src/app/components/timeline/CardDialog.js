@@ -140,7 +140,7 @@ class CardDialog extends Component {
     const newTitle = findDOMNode(this.refs.titleInput).value
     const attrs = {}
     this.props.customAttributes.forEach((attr) => {
-      const { name, type } = attr
+      const { name } = attr
       attrs[name] = this.state.attributes[name] || this.props.card[name]
     })
     const templates = this.props.card.templates.map((t) => {

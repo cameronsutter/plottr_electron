@@ -30,25 +30,25 @@ class BlankCard extends Component {
   }
 
   handleDragEnter = (e) => {
-    this.setState({dropDepth: this.state.dropDepth + 1})
+    this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
     e.preventDefault()
-    this.setState({inDropZone: true})
+    this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
     let dropDepth = this.state.dropDepth
     --dropDepth
-    this.setState({dropDepth: dropDepth})
+    this.setState({ dropDepth: dropDepth })
     if (dropDepth > 0) return
-    this.setState({inDropZone: false})
+    this.setState({ inDropZone: false })
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({inDropZone: false, dropDepth: 0})
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     const json = e.dataTransfer.getData('text/json')
     const droppedData = JSON.parse(json)
@@ -166,25 +166,42 @@ class BlankCard extends Component {
   }
 
   renderBlank() {
+    const { color, verticalInsertion, isSmall } = this.props
+    if (isSmall) {
+      const smallStyle = { borderColor: color }
+      return (
+        <td
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
+        >
+          <div
+            className={cx('blank-circle', { hover: this.state.inDropZone })}
+            style={smallStyle}
+            onClick={this.createFromSmall}
+          />
+        </td>
+      )
+    }
+
     const blankCardStyle = {
-      borderColor: this.props.color,
-      color: this.props.color,
+      borderColor: color,
+      color: color,
     }
     const addWithTemplateStyle = this.state.templateHover
       ? {
-          background: lightBackground(this.props.color),
+          background: lightBackground(color),
         }
       : {}
     const addWithDefaultStyle = this.state.defaultHover
       ? {
-          background: lightBackground(this.props.color),
+          background: lightBackground(color),
         }
       : {}
-    const bodyClass = this.props.verticalInsertion
-      ? 'vertical-blank-card__body'
-      : 'blank-card__body'
+    const bodyClass = verticalInsertion ? 'vertical-blank-card__body' : 'blank-card__body'
     return (
-      <div className={cx(bodyClass, { hover: this.state.dropping })} style={blankCardStyle}>
+      <div className={cx(bodyClass, { hover: this.state.inDropZone })} style={blankCardStyle}>
         <div
           className="template"
           onClick={this.showTemplatePicker}
@@ -207,44 +224,39 @@ class BlankCard extends Component {
     )
   }
 
-  renderBlank () {
-    const { color, isSmall } = this.props
-    const blankCardStyle = { borderColor: color }
-    if (isSmall) {
+  renderTemplatePicker() {
+    if (!this.state.showTemplatePicker) return null
 
-      return <td
-        onDragEnter={this.handleDragEnter}
-        onDragOver={this.handleDragOver}
-        onDragLeave={this.handleDragLeave}
-        onDrop={this.handleDrop}
-      >
-        <div
-          className={cx('blank-circle', {hover: this.state.inDropZone})}
-          style={blankCardStyle}
-          onClick={this.createFromSmall}
-        />
-      </td>
-    } else {
-      return <div className={cx('blank-card__body', {hover: this.state.inDropZone})} style={blankCardStyle} />
-    }
+    return (
+      <TemplatePicker
+        type={['scenes']}
+        modal={true}
+        isOpen={this.state.showTemplatePicker}
+        close={this.closeTemplatePicker}
+        onChooseTemplate={this.handleChooseTemplate}
+      />
+    )
   }
 
-  renderCreateNew () {
+  renderCreateNew() {
     const { color } = this.props
     const cardStyle = { borderColor: color }
-    return <div className='card__body' style={cardStyle}>
-      <FormGroup>
-        <ControlLabel>{i18n('Scene Title')}</ControlLabel>
-        <FormControl
-          type='text'
-          autoFocus
-          ref='titleInput'
-          bsSize='small'
-          onBlur={this.handleBlur}
-          onKeyDown={this.handleCancelCreate}
-          onKeyPress={this.handleFinishCreate} />
-      </FormGroup>
-    </div>
+    return (
+      <div className="card__body" style={cardStyle}>
+        <FormGroup>
+          <ControlLabel>{i18n('Scene Title')}</ControlLabel>
+          <FormControl
+            type="text"
+            autoFocus
+            ref="titleInput"
+            bsSize="small"
+            onBlur={this.handleBlur}
+            onKeyDown={this.handleCancelCreate}
+            onKeyPress={this.handleFinishCreate}
+          />
+        </FormGroup>
+      </div>
+    )
   }
 
   render() {
@@ -307,6 +319,7 @@ BlankCard.propTypes = {
   onDone: PropTypes.func,
   isSmall: PropTypes.bool,
   isMedium: PropTypes.bool,
+  actions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

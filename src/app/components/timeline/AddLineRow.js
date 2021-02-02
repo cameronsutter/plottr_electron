@@ -12,7 +12,8 @@ import {
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { actions, selectors, nextBackgroundColor, nextColor } from 'pltr/v2'
+import { actions, selectors, nextColor } from 'pltr/v2'
+import InputModal from '../dialogs/InputModal'
 
 const {
   nextCardIdSelector,
@@ -225,55 +226,76 @@ class AddLineRow extends Component {
   simpleAddLine = (title) => {
     const { ui, actions } = this.props
     actions.addLineWithTitle(title, ui.currentTimeline)
-    this.setState({askingForInput: false, hovering: false})
+    this.setState({ askingForInput: false, hovering: false })
   }
 
-  renderInputModal () {
+  renderInputModal() {
     if (!this.state.askingForInput) return null
 
-    return <InputModal isOpen={true} getValue={this.simpleAddLine} title={i18n('Plotline Title:')} type='text' cancel={() => this.setState({askingForInput: false, hovering: false})}/>
+    return (
+      <InputModal
+        isOpen={true}
+        getValue={this.simpleAddLine}
+        title={i18n('Plotline Title:')}
+        type="text"
+        cancel={() => this.setState({ askingForInput: false, hovering: false })}
+      />
+    )
   }
 
-  renderInsertButton () {
+  renderInsertButton() {
     const { bookId, isSmall } = this.props
     if (isSmall) {
-      return <th className='row-header'>
-        { this.renderInputModal() }
-        <div
-          className='line-list__append-line'
-          onClick={() => this.setState({askingForInput: true})}
-        >
-          <div className='line-list__append-line-wrapper'>
-            <Glyphicon glyph='plus' />
+      return (
+        <th className="row-header">
+          {this.renderInputModal()}
+          <div
+            className="line-list__append-line"
+            onClick={() => this.setState({ askingForInput: true })}
+          >
+            <div className="line-list__append-line-wrapper">
+              <Glyphicon glyph="plus" />
+            </div>
           </div>
-        </div>
-      </th>
+        </th>
+      )
     }
 
     if (bookId != 'series') {
-      return <div className='line-list__append-line'>
-        { this.renderInputModal() }
-        {this.state.hovering ?
-          <div className='line-list__append-line__double'>
-            <div onClick={() => this.setState({showTemplatePicker: true, hovering: false})} className='template'>{i18n('Use Template')}</div>
-            <div onClick={() => this.setState({askingForInput: true})} className='non-template'><Glyphicon glyph='plus' /></div>
-          </div>
-        :
-          <div className='line-list__append-line-wrapper'>
-            <Glyphicon glyph='plus' />
-          </div>
-        }
-      </div>
-    } else {
-      return <div
-        className='line-list__append-line'
-        onClick={() => this.setState({askingForInput: true})}
-      >
-        { this.renderInputModal() }
-        <div className='line-list__append-line-wrapper'>
-          <Glyphicon glyph='plus' />
+      return (
+        <div className="line-list__append-line">
+          {this.renderInputModal()}
+          {this.state.hovering ? (
+            <div className="line-list__append-line__double">
+              <div
+                onClick={() => this.setState({ showTemplatePicker: true, hovering: false })}
+                className="template"
+              >
+                {i18n('Use Template')}
+              </div>
+              <div onClick={() => this.setState({ askingForInput: true })} className="non-template">
+                <Glyphicon glyph="plus" />
+              </div>
+            </div>
+          ) : (
+            <div className="line-list__append-line-wrapper">
+              <Glyphicon glyph="plus" />
+            </div>
+          )}
         </div>
-      </div>
+      )
+    } else {
+      return (
+        <div
+          className="line-list__append-line"
+          onClick={() => this.setState({ askingForInput: true })}
+        >
+          {this.renderInputModal()}
+          <div className="line-list__append-line-wrapper">
+            <Glyphicon glyph="plus" />
+          </div>
+        </div>
+      )
     }
   }
 
@@ -294,21 +316,28 @@ class AddLineRow extends Component {
   render() {
     const { isSmall, howManyCells } = this.props
     if (isSmall) {
-      const tds = [<td key={howManyCells + 1}/>]
+      const tds = [<td key={howManyCells + 1} />]
       for (let i = 0; i < howManyCells; i++) {
-        tds.push(<td key={i}/>)
+        tds.push(<td key={i} />)
       }
-      return <tr>
-        { this.renderInsertButton() }
-        { tds }
-      </tr>
-    } else {
-      return <Row>
-        <Cell onMouseEnter={() => this.setState({hovering: true})} onMouseLeave={() => this.setState({hovering: false})}>
+      return (
+        <tr>
           {this.renderInsertButton()}
-          {this.renderTemplatePicker()}
-        </Cell>
-      </Row>
+          {tds}
+        </tr>
+      )
+    } else {
+      return (
+        <Row>
+          <Cell
+            onMouseEnter={() => this.setState({ hovering: true })}
+            onMouseLeave={() => this.setState({ hovering: false })}
+          >
+            {this.renderInsertButton()}
+            {this.renderTemplatePicker()}
+          </Cell>
+        </Row>
+      )
     }
   }
 
@@ -320,6 +349,7 @@ class AddLineRow extends Component {
   }
 
   static propTypes = {
+    howManyCells: PropTypes.number,
     ui: PropTypes.object.isRequired,
     isSmall: PropTypes.bool,
     bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -329,6 +359,7 @@ class AddLineRow extends Component {
     nextLineId: PropTypes.number,
     nextChapterId: PropTypes.number,
     nextCardId: PropTypes.number,
+    actions: PropTypes.object,
   }
 }
 

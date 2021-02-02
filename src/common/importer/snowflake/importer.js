@@ -368,7 +368,6 @@ function cards(currentState, json, bookId) {
                 position: nextLinePosition,
                 title: characterName,
                 color: nextColor(nextLinePosition),
-                backgroundColor: nextBackgroundColor(nextLinePosition),
               },
               bookId
             )

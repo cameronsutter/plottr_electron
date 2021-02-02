@@ -21,7 +21,8 @@
     "reselect": "^4.0.0",
     "semver": "^7.1.3",
     "slate": "^0.57.1",
-    "slate-hyperscript": "^0.57.1"
+    "slate-hyperscript": "^0.57.1",
+    "tinycolor2": "^1.4.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

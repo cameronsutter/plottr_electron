@@ -8,11 +8,12 @@ import i18n from 'format-message'
 import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { actions, selectors } from 'pltr/v2'
+import { lineColors, actions, selectors } from 'pltr/v2'
 
 const CardActions = actions.card
 
 const { isSeriesSelector } = selectors
+const { lightBackground } = lineColors
 
 class BlankCard extends Component {
   constructor(props) {
@@ -161,12 +162,12 @@ class BlankCard extends Component {
     }
     const addWithTemplateStyle = this.state.templateHover
       ? {
-          background: this.props.backgroundColor,
+          background: lightBackground(this.props.color),
         }
       : {}
     const addWithDefaultStyle = this.state.defaultHover
       ? {
-          background: this.props.backgroundColor,
+          background: lightBackground(this.props.color),
         }
       : {}
     const bodyClass = this.props.verticalInsertion
@@ -284,7 +285,6 @@ BlankCard.propTypes = {
   lineId: PropTypes.number,
   verticalInsertion: PropTypes.bool,
   color: PropTypes.string.isRequired,
-  backgroundColor: PropTypes.string.isRequired,
   currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   orientation: PropTypes.string,
   isSeries: PropTypes.bool,

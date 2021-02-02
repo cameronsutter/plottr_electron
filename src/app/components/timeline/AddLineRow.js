@@ -149,14 +149,12 @@ class AddLineRow extends Component {
       const lastLine = this.getLast(this.allLines)
       const lastPosition = lastLine ? lastLine.position : 0
       const color = nextColor(this.allLines.length)
-      const backgroundColor = nextBackgroundColor(this.allLines.length)
       const newLine = {
         ...tL,
         id: id,
         bookId: bookId,
         position: lastPosition + 1 + tL.position,
         color: color,
-        backgroundColor: backgroundColor,
         fromTemplateId: template.id,
       }
       this.allLines.push(newLine)

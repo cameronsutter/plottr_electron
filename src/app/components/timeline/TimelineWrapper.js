@@ -26,16 +26,6 @@ import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { actions, selectors } from 'pltr/v2'
 
-const UIActions = actions.ui
-
-const {
-  timelineFilterIsEmptySelector,
-  currentTimelineSelector,
-  isSmallSelector,
-  isMediumSelector,
-  isLargeSelector,
-} = selectors
-
 const win = remote.getCurrentWindow()
 
 // takes into account spacing
@@ -377,7 +367,7 @@ class TimelineWrapper extends Component {
   renderCustomAttributes() {
     if (!this.props.ui.attributesDialogIsOpen) return null
 
-    return <CustomAttributeModal hideSaveAsTemplate type="scenes" closeDialog={this.closeDialog} />
+    return <CustomAttributeModal type="scenes" closeDialog={this.closeDialog} />
   }
 
   render() {
@@ -410,17 +400,17 @@ function mapStateToProps(state) {
   return {
     file: state.present.file,
     ui: state.present.ui,
-    filterIsEmpty: timelineFilterIsEmptySelector(state.present),
-    canSaveTemplate: currentTimelineSelector(state.present) == 1,
-    isSmall: isSmallSelector(state.present),
-    isMedium: isMediumSelector(state.present),
-    isLarge: isLargeSelector(state.present),
+    filterIsEmpty: selectors.timelineFilterIsEmptySelector(state.present),
+    canSaveTemplate: selectors.currentTimelineSelector(state.present) == 1,
+    isSmall: selectors.isSmallSelector(state.present),
+    isMedium: selectors.isMediumSelector(state.present),
+    isLarge: selectors.isLargeSelector(state.present),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(UIActions, dispatch),
+    actions: bindActionCreators(actions.ui, dispatch),
   }
 }
 

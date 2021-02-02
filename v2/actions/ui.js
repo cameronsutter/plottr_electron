@@ -15,10 +15,6 @@ import {
   COLLAPSE_TIMELINE,
   SET_TIMELINE_FILTER,
   SET_PLACE_FILTER,
-  INCREASE_ZOOM,
-  DECREASE_ZOOM,
-  FIT_ZOOM,
-  RESET_ZOOM,
   RESET_TIMELINE,
   RECORD_SCROLL_POSITION,
   EDIT_FILENAME,
@@ -77,22 +73,6 @@ export function setNoteFilter(filter) {
 
 export function setTimelineFilter(filter) {
   return { type: SET_TIMELINE_FILTER, filter }
-}
-
-export function increaseZoom() {
-  return { type: INCREASE_ZOOM }
-}
-
-export function decreaseZoom() {
-  return { type: DECREASE_ZOOM }
-}
-
-export function fitZoom() {
-  return { type: FIT_ZOOM }
-}
-
-export function resetZoom() {
-  return { type: RESET_ZOOM }
 }
 
 export function changeCurrentTimeline(id) {

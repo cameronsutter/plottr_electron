@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
@@ -12,6 +11,11 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 
 class PlaceItem extends Component {
   state = { deleting: false }
+
+  constructor(props) {
+    super(props)
+    this.ref = React.createRef()
+  }
 
   componentDidMount() {
     this.scrollIntoView()
@@ -28,7 +32,7 @@ class PlaceItem extends Component {
 
   scrollIntoView = () => {
     if (this.props.selected) {
-      const node = findDOMNode(this)
+      const node = this.ref.current
       if (node) node.scrollIntoViewIfNeeded()
     }
   }
@@ -95,7 +99,7 @@ class PlaceItem extends Component {
     const klasses = cx('list-group-item', { selected: selected })
     const buttonKlasses = cx('place-list__item-buttons', { visible: selected })
     return (
-      <div className={klasses} onClick={this.selectPlace}>
+      <div className={klasses} ref={this.ref} onClick={this.selectPlace}>
         {this.renderDelete()}
         <div className="place-list__item-inner">
           {img}

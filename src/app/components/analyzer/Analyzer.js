@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { get, set, groupBy, pickBy, keys, value } from 'lodash' // get/set will possibly be used to edit values
+import { groupBy, pickBy, keys } from 'lodash' // get/set will possibly be used to edit values
 import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
 import Inspector from 'react-json-inspector'
 import 'react-json-inspector/json-inspector.css'
 import { nextId, objectId } from '../../store/newIds'
 import DevFileDrop from './DevFileDrop'
-import { findDOMNode } from 'react-dom'
 
 class Analyzer extends Component {
   state = { tab: 'search', path: null, tree: null }
@@ -132,7 +130,7 @@ class Analyzer extends Component {
   }
 
   moveBookToIdOne = () => {
-    const input = findDOMNode(this.idToMove)
+    const input = this.idToMove
     const idToMove = input.value
     if (idToMove) {
       if (idToMove == 'series') {
@@ -329,6 +327,10 @@ class Analyzer extends Component {
         <div></div>
       </div>
     )
+  }
+
+  static propTypes = {
+    pltr: PropTypes.object,
   }
 }
 

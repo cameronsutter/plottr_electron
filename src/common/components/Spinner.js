@@ -1,14 +1,19 @@
 import React from 'react'
+import PropTypes from 'react-proptypes'
 import i18n from 'format-message'
 import { FaSpinner } from 'react-icons/fa'
 
-export const Spinner = (props) => {
-  return <FaSpinner className="fa-spinner" style={props.style || {}} />
+export const Spinner = ({ style = {} }) => {
+  return <FaSpinner className="fa-spinner" style={style} />
 }
 
-export const FunSpinner = (props) => {
+Spinner.propTypes = {
+  style: PropTypes.object,
+}
+
+export const FunSpinner = ({ size }) => {
   let style = {
-    fontSize: props.size || '2.5em',
+    fontSize: size || '2.5em',
   }
   return (
     <div className="fun-spinner">
@@ -16,4 +21,8 @@ export const FunSpinner = (props) => {
       <div>{i18n("Once You Plot, the Fun Don't Stop")}</div>
     </div>
   )
+}
+
+FunSpinner.propTypes = {
+  size: PropTypes.string,
 }

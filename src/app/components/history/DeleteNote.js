@@ -11,7 +11,7 @@ class DeleteNote extends Component {
     return (
       <div>
         <span>
-          {i18n('Note')}: "{note.title}"
+          {i18n('Note')}: &quot;{note.title}&quot;
         </span>
         <p>
           {i18n('Before')}: <span className="history-component__item__before">{note.title}</span>

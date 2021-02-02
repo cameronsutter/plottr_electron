@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import PlottrModal from 'components/PlottrModal'
 import {
@@ -20,6 +19,8 @@ class ColorPicker extends Component {
   constructor(props) {
     super(props)
     this.state = { color: this.props.color }
+
+    this.hexRef = React.createRef()
   }
 
   componentDidMount() {
@@ -35,7 +36,7 @@ class ColorPicker extends Component {
   }
 
   showColor = () => {
-    var newColor = findDOMNode(this.refs.hexRef).value
+    var newColor = this.hexRef.current.value
     var regex = /#?([0123456789abcdef]{6})/
     var matches = regex.exec(newColor)
     if (matches) {
@@ -72,7 +73,7 @@ class ColorPicker extends Component {
                   <ControlLabel>{i18n('hex code or name')}</ControlLabel>
                   <FormControl
                     type="text"
-                    ref="hexRef"
+                    ref={this.hexRef}
                     placeholder="e.g. #ffffff"
                     defaultValue={this.state.color}
                     onKeyDown={(event) => {

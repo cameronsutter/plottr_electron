@@ -46,8 +46,6 @@ function MiniChapter(props) {
   }
 
   const acceptCard = (id, lineId) => {
-    let newOrder = []
-
     const currentIds = sortedCards.map((c) => c.id)
     // dropped in from a different chapter
     if (!currentIds.includes(id)) {

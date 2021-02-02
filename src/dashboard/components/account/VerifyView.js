@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { findDOMNode } from 'react-dom'
+import PropTypes from 'react-proptypes'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import t from 'format-message'
@@ -31,7 +31,7 @@ export default function VerifyView({ goBack }) {
     }
   }
 
-  const [licenseInfo, licenseInfoSize, setKey, setLicenseInfo] = useLicenseInfo()
+  const [licenseInfo, setLicenseInfo] = useLicenseInfo()
   const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
   const [showAlert, setShowAlert] = useState(!!alertText)
   const [alertClass, setAlertClass] = useState(RED)
@@ -77,7 +77,7 @@ export default function VerifyView({ goBack }) {
 
   const handleVerify = () => {
     if (navigator.onLine) {
-      let input = findDOMNode(licenseRef.current)
+      let input = licenseRef.current
       let license = input.value.trim()
       if (license != '') {
         setSpinnerHidden(false)
@@ -128,4 +128,8 @@ export default function VerifyView({ goBack }) {
       {renderAlert()}
     </div>
   )
+}
+
+VerifyView.propTypes = {
+  goBack: PropTypes.func,
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'react-proptypes'
 import path from 'path'
 import t from 'format-message'
 import { is } from 'electron-util'
@@ -101,4 +102,11 @@ export default function FileOptions({ missing, id, filePath, openFile }) {
       </Dropdown>
     </div>
   )
+}
+
+FileOptions.propTypes = {
+  missing: PropTypes.bool,
+  id: PropTypes.string,
+  filePath: PropTypes.string,
+  openFile: PropTypes.func,
 }

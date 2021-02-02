@@ -21,7 +21,6 @@ import { card } from '../../../../shared/initialState'
 import { nextId } from '../../store/newIds'
 import { sortedChaptersByBookSelector } from '../../selectors/chapters'
 import { sortedLinesByBookSelector } from '../../selectors/lines'
-import { findDOMNode } from 'react-dom'
 import { cardMapSelector } from '../../selectors/cards'
 import { isSeriesSelector } from '../../selectors/ui'
 import { actions } from 'pltr/v2'
@@ -34,7 +33,7 @@ class TimelineTable extends Component {
   }
 
   setLength = () => {
-    const table = findDOMNode(this.props.tableRef)
+    const table = this.props.tableRef
     let newLength = table.scrollWidth
     if (this.props.ui.orientation != 'horizontal') {
       newLength = table.scrollHeight
@@ -304,6 +303,12 @@ TimelineTable.propTypes = {
   cardMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   tableRef: PropTypes.object,
+  isSeries: PropTypes.bool,
+  beatActions: PropTypes.object,
+  sceneActions: PropTypes.object,
+  seriesLineActions: PropTypes.object,
+  cardActions: PropTypes.object,
+  lineActions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 import { FormControl } from 'react-bootstrap'
 import t from 'format-message'
 import CustomTemplates from './CustomTemplates'
@@ -6,7 +6,7 @@ import StarterTemplates from './StarterTemplates'
 
 export default function TemplatesHome(props) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [type, setType] = useState('plotlines')
+  const type = useRef('plotlines').current
 
   return (
     <div className="dashboard__templates">

@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -36,6 +35,8 @@ class ChapterTitleCell extends PureComponent {
       dropping: false,
       deleting: false,
     }
+
+    this.titleRef = React.createRef()
   }
 
   deleteChapter = (e) => {
@@ -59,7 +60,7 @@ class ChapterTitleCell extends PureComponent {
 
   editTitle = () => {
     const id = this.props.chapter.id
-    const ref = findDOMNode(this.refs.titleRef)
+    const ref = this.titleRef.current
     if (!ref) return null
 
     if (this.props.isSeries) {
@@ -200,7 +201,7 @@ class ChapterTitleCell extends PureComponent {
         <FormControl
           type="text"
           defaultValue={chapter.title}
-          ref="titleRef"
+          ref={this.titleRef}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}

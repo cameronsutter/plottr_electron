@@ -1,5 +1,6 @@
 import { ipcRenderer, remote } from 'electron'
 import React, { useState, useEffect, useMemo } from 'react'
+import PropTypes from 'react-proptypes'
 import { Button, FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import PlottrModal from 'components/PlottrModal'
 import i18n from 'format-message'
@@ -101,6 +102,19 @@ export default function ItemsManagerModal({
       </div>
     </PlottrModal>
   )
+}
+
+ItemsManagerModal.propTypes = {
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  addLabel: PropTypes.func,
+  items: PropTypes.array,
+  darkMode: PropTypes.bool,
+  showSaveAsTemplate: PropTypes.bool,
+  itemType: PropTypes.string,
+  onAdd: PropTypes.func,
+  renderItem: PropTypes.func,
+  closeDialog: PropTypes.func,
 }
 
 export function ListItem({
@@ -224,4 +238,15 @@ export function ListItem({
       </div>
     </li>
   )
+}
+
+ListItem.propTypes = {
+  item: PropTypes.object,
+  index: PropTypes.number,
+  restrictedValues: PropTypes.array,
+  showType: PropTypes.bool,
+  canChangeType: PropTypes.bool,
+  reorderItem: PropTypes.func,
+  deleteItem: PropTypes.func,
+  updateItem: PropTypes.func,
 }

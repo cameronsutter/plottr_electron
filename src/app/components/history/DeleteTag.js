@@ -11,7 +11,7 @@ class DeleteTag extends Component {
     return (
       <div>
         <span>
-          {i18n('Tag')}: "{tag.title}"
+          {i18n('Tag')}: &quot;{tag.title}&quot;
         </span>
         <p>
           {i18n('Before')}: <span className="history-component__item__before">{tag.title}</span>

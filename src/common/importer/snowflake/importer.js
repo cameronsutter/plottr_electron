@@ -1,7 +1,7 @@
 import xml from 'xml-js'
 import fs from 'fs'
 import i18n from 'format-message'
-import { cloneDeep, uniq, keyBy, groupBy } from 'lodash'
+import { cloneDeep, keyBy, groupBy } from 'lodash'
 import { objectId, nextId } from '../../../app/store/newIds'
 import {
   book as defaultBook,

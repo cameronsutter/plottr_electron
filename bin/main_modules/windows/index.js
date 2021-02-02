@@ -1,5 +1,4 @@
 const { BrowserWindow } = require('electron')
-const { openBuyWindow } = require('./buy') // needed because it sets up an event handler
 
 let windows = []
 

@@ -12,7 +12,7 @@ class EditScene extends Component {
     return (
       <div>
         <span>
-          {i18n('story line')}: "{line.title}"
+          {i18n('story line')}: &quot;{line.title}&quot;
         </span>
         <p>
           {i18n('Before')}:{' '}

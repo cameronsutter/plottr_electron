@@ -1,7 +1,7 @@
 import exportChapters from '../chapters'
 import { resetId } from '../../utils'
 import { state } from './fixtures'
-import { paragraph } from 'components/rce/__fixtures__'
+import { paragraph, headingTwo } from 'components/rce/__fixtures__'
 
 describe('exportChapters', () => {
   let documentContents = {}
@@ -69,15 +69,18 @@ describe('exportChapters', () => {
     expect(documentContents).toEqual({
       4: {
         docTitle: 'Plotline: Main Story Arc',
-        description: [paragraph('So paragraph')],
+        description: [headingTwo('Description'), paragraph('So paragraph')],
+        isNotesDoc: true,
       },
       5: {
         docTitle: 'Plotline: Main Story Arc',
-        description: [paragraph('Moar paragraph')],
+        description: [headingTwo('Description'), paragraph('Moar paragraph')],
+        isNotesDoc: true,
       },
       7: {
         docTitle: 'Plotline: Main Story Arc',
-        description: [paragraph('A paragraph')],
+        description: [headingTwo('Description'), paragraph('A paragraph')],
+        isNotesDoc: true,
       },
     })
   })

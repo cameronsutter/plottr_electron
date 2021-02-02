@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -32,6 +31,8 @@ class NoteView extends Component {
       newImageId: null,
       deleting: false,
     }
+
+    this.titleInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -68,7 +69,7 @@ class NoteView extends Component {
 
   saveEdit = (close = true) => {
     const { note } = this.props
-    let title = findDOMNode(this.refs.titleInput).value || note.title
+    let title = this.titleInputRef.current.value || note.title
     let content = this.state.content
     let attrs = { title, content }
     if (this.state.newImageId) {
@@ -136,7 +137,7 @@ class NoteView extends Component {
               <ControlLabel>{i18n('Title')}</ControlLabel>
               <FormControl
                 type="text"
-                ref="titleInput"
+                ref={this.titleInputRef}
                 autoFocus
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}

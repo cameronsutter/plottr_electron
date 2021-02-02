@@ -21,10 +21,8 @@ class AddThingToThing extends Component {
     let afterHowMany = afterThing[`${thingType}s`].length
     let thing = this.findThing(item.action[`${thingType}Id`], item.before[`${thingType}s`])
     let attach = 'attach'
-    let to = 'to'
     if (item.action.type.indexOf('ATTACH') === -1) {
       attach = 'remove'
-      to = 'from'
     }
 
     // type = character | place | tag

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
@@ -13,6 +12,11 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 class CharacterItem extends Component {
   state = { deleting: false }
 
+  constructor(props) {
+    super(props)
+    this.ref = React.createRef()
+  }
+
   componentDidMount() {
     this.scrollIntoView()
   }
@@ -23,7 +27,7 @@ class CharacterItem extends Component {
 
   scrollIntoView = () => {
     if (this.props.selected) {
-      const node = findDOMNode(this)
+      const node = this.ref.current
       if (node) node.scrollIntoViewIfNeeded()
     }
   }
@@ -84,7 +88,7 @@ class CharacterItem extends Component {
     const klasses = cx('list-group-item', { selected: selected })
     const buttonKlasses = cx('character-list__item-buttons', { visible: selected })
     return (
-      <div className={klasses} onClick={this.selectCharacter}>
+      <div className={klasses} ref={this.ref} onClick={this.selectCharacter}>
         <div className="character-list__item-inner">
           {img}
           <div>

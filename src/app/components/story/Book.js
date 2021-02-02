@@ -166,6 +166,8 @@ class Book extends Component {
     ui: PropTypes.object.isRequired,
     canDelete: PropTypes.bool,
     book: PropTypes.object,
+    actions: PropTypes.object,
+    uiActions: PropTypes.object,
   }
 }
 

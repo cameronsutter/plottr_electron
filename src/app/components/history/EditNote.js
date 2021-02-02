@@ -24,7 +24,7 @@ class EditNote extends Component {
     return (
       <div>
         <span>
-          {i18n('Note')}: "{item.action.title}"
+          {i18n('Note')}: &quot;{item.action.title}&quot;
         </span>
         {diffs}
       </div>

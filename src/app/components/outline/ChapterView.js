@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 import * as CardActions from 'actions/cards'
 import * as SceneActions from 'actions/scenes'
 import * as BeatActions from 'actions/beats'
-import { sortBy } from 'lodash'
 import { Glyphicon } from 'react-bootstrap'
 import { Waypoint } from 'react-waypoint'
 import i18n from 'format-message'
@@ -137,6 +136,9 @@ ChapterView.propTypes = {
   lines: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
+  chapterActions: PropTypes.object,
+  beatActions: PropTypes.object,
+  actions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

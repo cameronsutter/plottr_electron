@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -28,6 +27,8 @@ class TagView extends Component {
       color: null,
       deleting: false,
     }
+
+    this.titleInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -82,7 +83,7 @@ class TagView extends Component {
 
   saveEdit = () => {
     let { title, id, color } = this.props.tag
-    var newTitle = findDOMNode(this.refs.titleInput).value || title
+    var newTitle = this.titleInputRef.current.value || title
     if (this.props.new) {
       this.props.actions.addCreatedTag({ title: newTitle, color: this.state.color })
       this.props.doneCreating()
@@ -137,7 +138,7 @@ class TagView extends Component {
           <ControlLabel>{i18n('Tag Name')}</ControlLabel>
           <FormControl
             type="text"
-            ref="titleInput"
+            ref={this.titleInputRef}
             autoFocus
             onKeyDown={this.handleEsc}
             onKeyPress={this.handleEnter}

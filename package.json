@@ -35,7 +35,7 @@
     "lint": "eslint .",
     "format:check": "prettier . --check",
     "format:write": "prettier . --write",
-    "validate": "npm-run-all format:check lint"
+    "validate": "npm-run-all format:check lint test"
   },
   "dependencies": {
     "acorn": "^6.4.1",

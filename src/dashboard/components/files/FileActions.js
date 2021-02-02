@@ -44,7 +44,6 @@ export default function FileOptions({ missing, id, filePath, openFile }) {
   }
 
   const renameFile = () => {
-    console.log('RENAMING')
     const fileName = dialog.showSaveDialogSync(win, {
       filters,
       title: t('Give this file a new name'),

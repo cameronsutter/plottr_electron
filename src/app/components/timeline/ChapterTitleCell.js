@@ -35,6 +35,8 @@ class ChapterTitleCell extends PureComponent {
       dropping: false,
       deleting: false,
     }
+
+    this.titleRef = React.createRef()
   }
 
   deleteChapter = (e) => {
@@ -58,7 +60,7 @@ class ChapterTitleCell extends PureComponent {
 
   editTitle = () => {
     const id = this.props.chapter.id
-    const ref = this.titleRef
+    const ref = this.titleRef.current
     if (!ref) return null
 
     if (this.props.isSeries) {
@@ -199,7 +201,7 @@ class ChapterTitleCell extends PureComponent {
         <FormControl
           type="text"
           defaultValue={chapter.title}
-          ref={(e) => (this.titleRef = e)}
+          ref={this.titleRef}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}

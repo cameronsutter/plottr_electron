@@ -81,7 +81,7 @@ class CharacterEditDetails extends Component {
     this.setState({ description })
   }
 
-  handleTemplateAttrDescriptionChange = (id, attr, desc) => {
+  handleTemplateAttrDescriptionChange = (id, attr) => (desc) => {
     let templateAttrs = {
       ...this.state.templateAttrs,
       [id]: {
@@ -106,13 +106,9 @@ class CharacterEditDetails extends Component {
       const { name } = attr
       attrs[name] = this.state.description[name]
     })
-    let templates = this.props.character.templates.map((t) => {
+    const templates = this.props.character.templates.map((t) => {
       t.attributes = t.attributes.map((attr) => {
-        if (attr.type == 'paragraph') {
-          attr.value = this.state.templateAttrs[t.id][attr.name]
-        } else {
-          attr.value = this[`${t.id}-${attr.name}InputRef`].value
-        }
+        attr.value = this.state.templateAttrs[t.id][attr.name]
         return attr
       })
       return t
@@ -175,14 +171,13 @@ class CharacterEditDetails extends Component {
           <EditAttribute
             index={index}
             entity={character}
+            entityType="character"
             value={this.state.description[attr.name]}
-            entityType={'character'}
             ui={ui}
             handleLongDescriptionChange={this.handleAttrDescriptionChange}
             handleShortDescriptionChange={this.handleAttrDescriptionChange}
             onShortDescriptionKeyDown={this.handleEsc}
             onShortDescriptionKeyPress={this.handleEnter}
-            withRef={this.addInputRef}
             {...attr}
           />
         </React.Fragment>
@@ -191,36 +186,25 @@ class CharacterEditDetails extends Component {
   }
 
   renderEditingTemplates() {
-    return this.props.character.templates.flatMap((t) => {
-      return t.attributes.map((attr) => {
-        if (attr.type == 'paragraph') {
-          return (
-            <div key={attr.name}>
-              <ControlLabel>{attr.name}</ControlLabel>
-              <RichText
-                description={attr.value}
-                onChange={(desc) => this.handleTemplateAttrDescriptionChange(t.id, attr.name, desc)}
-                editable
-                autofocus={false}
-                darkMode={this.props.ui.darkMode}
-              />
-            </div>
-          )
-        } else {
-          return (
-            <FormGroup key={attr.name}>
-              <ControlLabel>{attr.name}</ControlLabel>
-              <FormControl
-                type="text"
-                ref={(e) => (this[`${t.id}-${attr.name}InputRef`] = e)}
-                defaultValue={attr.value}
-                onKeyDown={this.handleEsc}
-                onKeyPress={this.handleEnter}
-              />
-            </FormGroup>
-          )
-        }
-      })
+    const { character, ui } = this.props
+    return character.templates.flatMap((t) => {
+      return t.attributes.map((attr, index) => (
+        <React.Fragment key={index}>
+          <EditAttribute
+            templateAttribute
+            index={index}
+            entity={character}
+            entityType="character"
+            ui={ui}
+            inputId={`${t.id}-${attr.name}Input`}
+            handleLongDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
+            handleShortDescriptionChange={this.handleTemplateAttrDescriptionChange(t.id, attr.name)}
+            onShortDescriptionKeyDown={this.handleEsc}
+            onShortDescriptionKeyPress={this.handleEnter}
+            {...attr}
+          />
+        </React.Fragment>
+      ))
     })
   }
 

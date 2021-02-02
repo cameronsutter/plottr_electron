@@ -11,7 +11,6 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import * as LineActions from 'actions/lines'
 import * as SeriesLineActions from 'actions/seriesLines'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
@@ -22,6 +21,9 @@ import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { lineIsExpandedSelector } from '../../selectors/lines'
 import Floater from 'react-floater'
 import { truncateTitle } from 'helpers/cards'
+import { actions } from 'pltr/v2'
+
+const LineActions = actions.lineActions
 
 const CELL_WIDTH = 200
 
@@ -37,6 +39,7 @@ class LineTitleCell extends PureComponent {
       deleting: false,
     }
     this.hoverTimeout = null
+    this.titleRef = React.createRef()
   }
 
   deleteLine = (e) => {
@@ -56,7 +59,7 @@ class LineTitleCell extends PureComponent {
 
   editTitle = () => {
     var id = this.props.line.id
-    const ref = this.titleRef
+    const ref = this.titleRef.current
     if (!ref) return
     this.props.actions.editLineTitle(id, ref.value)
     this.setState({ editing: false, hovering: false })
@@ -222,7 +225,7 @@ class LineTitleCell extends PureComponent {
         <FormControl
           type="text"
           defaultValue={this.props.line.title}
-          ref={(e) => (this.titleRef = e)}
+          ref={this.titleRef}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}

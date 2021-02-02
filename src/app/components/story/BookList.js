@@ -3,7 +3,6 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as BookActions from 'actions/books'
-import * as LineActions from 'actions/lines'
 import * as SceneActions from 'actions/scenes'
 import i18n from 'format-message'
 import Book from './Book'
@@ -12,6 +11,9 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import cx from 'classnames'
 import { chunk, flatten } from 'lodash'
 import { objectId } from '../../store/newIds'
+import { actions } from 'pltr/v2'
+
+const LineActions = actions.lineActions
 
 class BookList extends Component {
   dragDropAreaRef = React.createRef()

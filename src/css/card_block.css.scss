@@ -98,6 +98,16 @@
   z-index: 2;
 }
 
+.vertical-card__body {
+  @extend .vertical-blank-card__body;
+  margin-top: 17px;
+
+  .form-group {
+    display: block;
+    padding: 0;
+  }
+}
+
 .card__title {
   padding: 10px;
   flex-grow: 1;
@@ -108,11 +118,52 @@
   stroke-width: $svg-line-width;
 }
 
+.vertical-blank-card__wrapper {
+  margin: auto;
+}
+
 .blank-card__body {
   @extend .card__body;
   border: 3px dashed black;
   visibility: hidden;
   cursor: pointer;
+  margin-left: 5px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    padding: 10px 5px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  div.template {
+    @include application-text;
+    text-align: center;
+  }
+}
+
+.vertical-blank-card__body {
+  @extend .card__body;
+  border: 3px dashed black;
+  margin-top: 17px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    padding: 10px 5px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  div.template {
+    @include application-text;
+    text-align: center;
+  }
 }
 
 .blank-card__body.hover {

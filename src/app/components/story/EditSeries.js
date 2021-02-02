@@ -19,15 +19,23 @@ import cx from 'classnames'
 class EditSeries extends Component {
   state = { editing: false }
 
+  constructor(props) {
+    super(props)
+    this.nameRef = React.createRef()
+    this.premiseRef = React.createRef()
+    this.genreRef = React.createRef()
+    this.themeRef = React.createRef()
+  }
+
   componentWillUnmount() {
     if (this.state.editing) this.saveEdit()
   }
 
   saveEdit = () => {
-    let name = this.nameRef.value
-    let premise = this.premiseRef.value
-    let genre = this.genreRef.value
-    let theme = this.themeRef.value
+    let name = this.nameRef.current.value
+    let premise = this.premiseRef.current.value
+    let genre = this.genreRef.current.value
+    let theme = this.themeRef.current.value
     this.props.actions.editSeries({ name, premise, genre, theme })
     this.setState({ editing: false })
   }
@@ -61,7 +69,7 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              ref={(e) => (this.nameRef = e)}
+              ref={this.nameRef}
               defaultValue={series.name}
               onChange={this.checkForEdits}
             />
@@ -72,7 +80,7 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              ref={(e) => (this.premiseRef = e)}
+              ref={this.premiseRef}
               defaultValue={series.premise}
               onChange={this.checkForEdits}
             />
@@ -85,7 +93,7 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              ref={(e) => (this.genreRef = e)}
+              ref={this.genreRef}
               defaultValue={series.genre}
               onChange={this.checkForEdits}
             />
@@ -96,7 +104,7 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              ref={(e) => (this.themeRef = e)}
+              ref={this.themeRef}
               defaultValue={series.theme}
               onChange={this.checkForEdits}
             />

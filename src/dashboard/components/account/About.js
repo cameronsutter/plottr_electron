@@ -21,7 +21,7 @@ export default function About(props) {
     shell.openExternal('https://plottr.com/changelog')
   }
 
-  const renderUpdater = () => {
+  const UpdateButton = () => {
     if (SETTINGS.get('canGetUpdates')) {
       return (
         <dd>
@@ -47,7 +47,7 @@ export default function About(props) {
           <dt>{t('Version')}</dt>
           <dd>{app.getVersion()}</dd>
           <dt>{t('Updates')}</dt>
-          {renderUpdater()}
+          <UpdateButton />
           <dt>{t('Changelog')}</dt>
           <dd>
             <a href="#" onClick={seeChangelog}>

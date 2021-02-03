@@ -46,13 +46,13 @@ export function handleCustomerServiceCode(code) {
       break
 
     case 'f92d59':
-      // turn off premiumFeatures
-      SETTINGS.set('premiumFeatures', false)
+      // turn off canGetUpdates
+      SETTINGS.set('canGetUpdates', false)
       break
 
     case 'd45e13cf92d59':
-      // turn on premiumFeatures
-      SETTINGS.set('premiumFeatures', true)
+      // turn on canGetUpdates
+      SETTINGS.set('canGetUpdates', true)
       break
 
     case '186e0d':

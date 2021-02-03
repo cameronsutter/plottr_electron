@@ -12,16 +12,6 @@ const {
   orientedClassName: { orientedClassName },
 } = helpers
 
-// const Horizontal = {
-//   first: 150,
-//   last: 161 + 50,
-// }
-
-// const Vertical = {
-//   first: 100,
-//   last: 70 + 40,
-// }
-
 class ChapterInsertCell extends PureComponent {
   insert = () => {
     const { chapterPosition, lineId, handleInsert } = this.props

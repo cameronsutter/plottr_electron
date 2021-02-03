@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import BlankCard from './BlankCard'
 import PropTypes from 'react-proptypes'
 import { Glyphicon } from 'react-bootstrap'
@@ -6,15 +6,40 @@ import cx from 'classnames'
 
 export default class SceneCardAdd extends Component {
   state = { creating: false, dropping: false }
+  titleInputRef = createRef()
+
+  saveCreate = () => {
+    const title = this.titleInputRef.current.value
+    this.props.addCard({ title, positionWithinLine: this.props.positionWithinLine + 1 })
+    this.setState({ creating: false })
+  }
 
   stopCreating = () => {
     this.setState({ creating: false })
+  }
+
+  handleFinishCreate = (event) => {
+    if (event.which === 13) {
+      //enter
+      this.saveCreate()
+    }
   }
 
   handleCancelCreate = (event) => {
     if (event.which === 27) {
       //esc
       window.removeEventListener('keydown', this.handleCancelCreate)
+      this.setState({ creating: false })
+    }
+  }
+
+  handleBlur = () => {
+    var newTitle = this.titleInputRef.current.value
+    if (newTitle == '') {
+      this.setState({ creating: false })
+      return false
+    } else {
+      this.saveCreate()
       this.setState({ creating: false })
     }
   }

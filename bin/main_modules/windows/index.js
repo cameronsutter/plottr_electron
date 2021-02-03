@@ -1,4 +1,9 @@
-const { BrowserWindow } = require('electron')
+const { BrowserWindow, ipcMain } = require('electron')
+const { openBuyWindow } = require('./buy')
+
+ipcMain.on('open-buy-window', (event) => {
+  openBuyWindow()
+})
 
 let windows = []
 

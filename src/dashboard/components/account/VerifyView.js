@@ -31,7 +31,9 @@ export default function VerifyView({ goBack }) {
     }
   }
 
-  const [licenseInfo, setLicenseInfo] = useLicenseInfo()
+  // TODO: refactor useLicenseInfo so it returns functions in an object
+  /* eslint-disable-next-line no-unused-vars */
+  const [licenseInfo, licenseInfoSize, setKey, setLicenseInfo] = useLicenseInfo()
   const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
   const [showAlert, setShowAlert] = useState(!!alertText)
   const [alertClass, setAlertClass] = useState(RED)

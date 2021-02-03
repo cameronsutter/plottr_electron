@@ -140,6 +140,9 @@ ChapterView.propTypes = {
   lines: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
+  chapterActions: PropTypes.object,
+  beatActions: PropTypes.object,
+  actions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

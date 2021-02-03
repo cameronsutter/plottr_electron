@@ -1,16 +1,8 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import {
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  ButtonToolbar,
-  Button,
-  Glyphicon,
-} from 'react-bootstrap'
+import { FormControl, FormGroup, ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import TagLabel from 'components/tagLabel'
 import i18n from 'format-message'
@@ -34,6 +26,8 @@ class CardView extends Component {
       inDropZone: false,
       dropDepth: 0,
     }
+
+    this.titleInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -41,7 +35,7 @@ class CardView extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = findDOMNode(this.refs.titleInput).value || this.props.card.title
+    var newTitle = this.titleInputRef.current.value || this.props.card.title
     this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
     this.setState({ editing: false })
   }
@@ -132,7 +126,7 @@ class CardView extends Component {
           onKeyDown={this.handleEsc}
           type="text"
           autoFocus
-          ref="titleInput"
+          inputRef={this.titleInputRef}
           defaultValue={title}
         />
       </FormGroup>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { licenseStore, useLicenseInfo } from '../../../common/utils/store_hooks'
 import ChoiceView from './ChoiceView'

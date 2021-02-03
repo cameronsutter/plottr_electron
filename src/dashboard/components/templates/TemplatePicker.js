@@ -1,13 +1,12 @@
 import { shell } from 'electron'
 import React, { useState } from 'react'
+import PropTypes from 'react-proptypes'
 import t from 'format-message'
 import cx from 'classnames'
 import { Glyphicon, Button } from 'react-bootstrap'
 import { useCustomTemplatesInfo } from '../../../common/utils/store_hooks'
 import { useTemplatesInfo } from '../../../common/utils/store_hooks'
 import { useFilteredSortedTemplates } from '../../utils/templates'
-import PlotlineTemplateDetails from '../../../common/components/templates/PlotlineTemplateDetails'
-import ProjectTemplateDetails from '../../../common/components/templates/ProjectTemplateDetails'
 
 export default function TemplatePicker({ startNew }) {
   const [selected, selectTemplate] = useState(null)
@@ -85,4 +84,8 @@ export default function TemplatePicker({ startNew }) {
       <div className="template-picker__details">{renderTemplateDetails()}</div>
     </div>
   )
+}
+
+TemplatePicker.propTypes = {
+  startNew: PropTypes.func,
 }

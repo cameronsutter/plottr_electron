@@ -1,7 +1,7 @@
 import xml from 'xml-js'
 import fs from 'fs'
 import i18n from 'format-message'
-import { cloneDeep, uniq, keyBy, groupBy } from 'lodash'
+import { cloneDeep, keyBy, groupBy } from 'lodash'
 import {
   book as defaultBook,
   note as defaultNote,
@@ -10,7 +10,7 @@ import {
   chapter as defaultChapter,
   line as defaultLine,
 } from '../../../../shared/initialState'
-import { newIds, helpers, nextBackgroundColor, nextColor } from 'pltr/v2'
+import { newIds, helpers, nextColor } from 'pltr/v2'
 
 const { nextId, objectId } = newIds
 const {

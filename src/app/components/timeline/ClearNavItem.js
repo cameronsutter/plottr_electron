@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
-import { NavItem, Button, Popover, OverlayTrigger, Glyphicon } from 'react-bootstrap'
+import { NavItem, Button, Glyphicon } from 'react-bootstrap'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { selectors, actions } from 'pltr/v2'
 
@@ -48,6 +48,7 @@ class ClearNavItem extends Component {
 
 ClearNavItem.propTypes = {
   bookId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  actions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

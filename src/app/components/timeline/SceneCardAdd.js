@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import BlankCard from './BlankCard'
 import PropTypes from 'react-proptypes'
-import { findDOMNode } from 'react-dom'
 import { Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 
 export default class SceneCardAdd extends Component {
   state = { creating: false, dropping: false }
+  titleInputRef = createRef()
 
   saveCreate = () => {
-    const title = findDOMNode(this.refs.titleInput).value
+    const title = this.titleInputRef.current.value
     this.props.addCard({ title, positionWithinLine: this.props.positionWithinLine + 1 })
     this.setState({ creating: false })
   }
@@ -34,7 +34,7 @@ export default class SceneCardAdd extends Component {
   }
 
   handleBlur = () => {
-    var newTitle = findDOMNode(this.refs.titleInput).value
+    var newTitle = this.titleInputRef.current.value
     if (newTitle == '') {
       this.setState({ creating: false })
       return false

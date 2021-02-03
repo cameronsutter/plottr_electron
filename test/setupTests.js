@@ -14,3 +14,7 @@ ReactWrapper.prototype.findByTestId = ShallowWrapper.prototype.findByTestId = fu
 }
 
 configure({ adapter: new Adapter() })
+
+jest.mock('electron-util', () => ({
+  is: jest.fn(),
+}))

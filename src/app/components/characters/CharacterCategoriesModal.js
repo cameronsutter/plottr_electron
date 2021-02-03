@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import i18n from 'format-message'
-import cx from 'classnames'
 import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
 import { actions } from 'pltr/v2'
 
@@ -42,6 +41,16 @@ function CharacterCategoriesModal({
       )}
     />
   )
+}
+
+CharacterCategoriesModal.propTypes = {
+  categories: PropTypes.array,
+  ui: PropTypes.object,
+  closeDialog: PropTypes.func,
+  addCharacterCategory: PropTypes.func,
+  deleteCharacterCategory: PropTypes.func,
+  updateCharacterCategory: PropTypes.func,
+  reorderCharacterCategory: PropTypes.func,
 }
 
 function mapStateToProps(state) {

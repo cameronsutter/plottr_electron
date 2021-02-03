@@ -5,7 +5,7 @@ import {
   EDIT_CARD_DETAILS,
   EDIT_SCENES_ATTRIBUTE,
 } from '../../constants/ActionTypes'
-import { card as defaultCard } from '../../../../shared/initialState'
+import { card as defaultCard } from '../../../../../shared/initialState'
 import cardsReducer from '../cards'
 import { isEqual, uniq } from 'lodash'
 import { allCardsSelector } from '../../selectors/cards'

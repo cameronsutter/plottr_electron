@@ -191,6 +191,6 @@ export const image = {
 
 // example template for reference
 // NOT exported
-const templates = [
-  { id: 'ch1', version: '2020.3.4', attributes: [{ name: 'Motivation', type: 'text', value: '' }] },
-]
+// const templates = [
+//   { id: 'ch1', version: '2020.3.4', attributes: [{ name: 'Motivation', type: 'text', value: '' }] },
+// ]

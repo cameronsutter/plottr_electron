@@ -45,18 +45,21 @@ export default function lines(state = initialState, action) {
       ]
 
     case ADD_LINE_WITH_TITLE:
-      const linesInBook_ = state.filter(l => l.bookId == action.bookId).length
-      return [{
-        ...line,
-        id: nextId(state),
-        bookId: action.bookId,
-        title: action.title,
-        color: nextColor(linesInBook_),
-        position: nextPositionInBook(state, action.bookId),
-      }, ...state]
+      const linesInBook_ = state.filter((l) => l.bookId == action.bookId).length
+      return [
+        {
+          ...line,
+          id: nextId(state),
+          bookId: action.bookId,
+          title: action.title,
+          color: nextColor(linesInBook_),
+          position: nextPositionInBook(state, action.bookId),
+        },
+        ...state,
+      ]
 
     case ADD_LINES_FROM_TEMPLATE:
-      const [book, notBook] = partition(state, (l) => l.bookId == action.bookId)
+      const [_, notBook] = partition(state, (l) => l.bookId == action.bookId)
       return [...notBook, ...action.lines]
 
     case EDIT_LINE:

@@ -14,7 +14,6 @@
   "scripts": {},
   "dependencies": {
     "dom-parser": "^0.1.6",
-    "format-message": "^6.2.1",
     "lodash": "^4.17.19",
     "pagedown": "^1.1.0",
     "redux": "^3.5.2",
@@ -24,11 +23,7 @@
     "slate-hyperscript": "^0.57.1",
     "tinycolor2": "^1.4.2"
   },
-  "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.18.0",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.2.1"
+  "peerDependencies": {
+    "format-message": "^6.2.1"
   }
 }

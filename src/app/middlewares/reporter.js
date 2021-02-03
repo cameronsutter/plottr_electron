@@ -1,7 +1,7 @@
-import { setLastAction } from '../../common/utils/error_reporter'
+import { setPreviousAction } from '../../common/utils/error_reporter'
 
-const reporter = store => next => action => {
-  setLastAction(action)
+const reporter = (store) => (next) => (action) => {
+  setPreviousAction(action)
   return next(action)
 }
 

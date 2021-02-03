@@ -5,28 +5,30 @@ import { connect } from 'react-redux'
 import deep from 'deep-diff'
 import _ from 'lodash'
 import { storageKey } from 'middlewares/helpers'
-import * as UndoActions from 'actions/undo'
 import HistoryItem from 'components/history/historyItem'
 import i18n from 'format-message'
+import { actions } from 'pltr/v2'
+
+const UndoActions = actions.undo
 
 class HistoryComponent extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = {history: this.readHistory(), changesToIgnore: []}
+    this.state = { history: this.readHistory(), changesToIgnore: [] }
   }
 
-  componentWillReceiveProps (newProps) {
-    if (newProps.show) this.setState({history: this.readHistory()})
+  componentWillReceiveProps(newProps) {
+    if (newProps.show) this.setState({ history: this.readHistory() })
   }
 
-  readHistory () {
+  readHistory() {
     return JSON.parse(window.localStorage.getItem(storageKey(this.props.file.fileName))) || []
   }
 
   undo = (changeId) => {
     var toIgnore = this.state.changesToIgnore
     toIgnore.push(changeId)
-    this.setState({toIgnore: toIgnore})
+    this.setState({ toIgnore: toIgnore })
 
     this.applyChanges()
   }
@@ -34,19 +36,19 @@ class HistoryComponent extends Component {
   redo = (changeId) => {
     var toIgnore = this.state.changesToIgnore
     toIgnore.splice(toIgnore.indexOf(changeId), 1)
-    this.setState({changesToIgnore: toIgnore})
+    this.setState({ changesToIgnore: toIgnore })
 
     this.applyChanges()
   }
 
-  applyChanges () {
+  applyChanges() {
     var toIgnore = this.state.changesToIgnore
     var history = this.state.history
     if (toIgnore.length > 0) {
       // get the change that has the lowest index
       var lowestIndex = history.length
       toIgnore.forEach((id) => {
-        var index = _.findIndex(history, {id: id})
+        var index = _.findIndex(history, { id: id })
         if (index < lowestIndex) lowestIndex = index
       })
       var change = history[lowestIndex]
@@ -67,18 +69,26 @@ class HistoryComponent extends Component {
     this.props.actions.reset(newState)
   }
 
-  renderHistoryItems () {
+  renderHistoryItems() {
     if (this.state.history.length === 0) return <span>{i18n('No actions to undo')}</span>
     return this.state.history.map((item, index) => {
       var hasBeenUndone = this.state.changesToIgnore.indexOf(item.id) !== -1
-      return <HistoryItem key={index} item={item} undone={hasBeenUndone} undo={this.undo} redo={this.redo} />
+      return (
+        <HistoryItem
+          key={index}
+          item={item}
+          undone={hasBeenUndone}
+          undo={this.undo}
+          redo={this.redo}
+        />
+      )
     })
   }
 
-  render () {
-    var style = this.props.show ? {display: 'flex'} : {}
+  render() {
+    var style = this.props.show ? { display: 'flex' } : {}
     return (
-      <div className='history-component__container' style={style}>
+      <div className="history-component__container" style={style}>
         {this.renderHistoryItems()}
       </div>
     )
@@ -91,22 +101,19 @@ class HistoryComponent extends Component {
 HistoryComponent.propTypes = {
   show: PropTypes.bool.isRequired,
   file: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    file: state.file
+    file: state.file,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(UndoActions, dispatch)
+    actions: bindActionCreators(UndoActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HistoryComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(HistoryComponent)

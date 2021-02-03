@@ -1,15 +1,15 @@
 import React from 'react'
+import PropTypes from 'react-proptypes'
 import path from 'path'
 import { ipcRenderer, remote } from 'electron'
-import { NavItem, Button, Glyphicon, Popover, OverlayTrigger, Alert } from 'react-bootstrap'
+import { NavItem, Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import i18n from 'format-message'
-import { MPQ } from 'middlewares/helpers'
+import MPQ from '../../../common/utils/MPQ'
 
 const win = remote.getCurrentWindow()
 const dialog = remote.dialog
 
-function ExportNavItem (props) {
-
+function ExportNavItem(props) {
   const doWordExport = () => {
     doExport('word')
   }
@@ -24,42 +24,46 @@ function ExportNavItem (props) {
     let filters = []
     switch (type) {
       case 'word':
-        filters = [{name: i18n('MS Word'), extensions: ['docx']}]
+        filters = [{ name: i18n('MS Word'), extensions: ['docx'] }]
         break
       case 'scrivener':
-        filters = [{name: i18n('Scrivener Project'), extensions: ['scriv']}]
+        filters = [{ name: i18n('Scrivener Project'), extensions: ['scriv'] }]
         break
     }
-    const fileName = dialog.showSaveDialogSync(win, {title: label, filters, defaultPath})
+    const fileName = dialog.showSaveDialogSync(win, { title: label, filters, defaultPath })
     if (fileName) {
-      const options = { fileName, bookId: props.bookId }
-      MPQ.push('Export', {export_type: type})
-      switch (type) {
-        case 'word':
-          ipcRenderer.send('export', options, win.id)
-          break
-        case 'scrivener':
-          ipcRenderer.sendTo(win.webContents.id, 'export-scrivener', fileName) // sends this message to this same process
-          break
-      }
+      const options = { fileName, type, bookId: props.bookId }
+      ipcRenderer.sendTo(win.webContents.id, 'export-file', options) // sends this message to this same process
+      MPQ.push('Export', { export_type: type })
     }
   }
 
   const renderPopover = () => {
-    return <Popover id='export-popover'>
-      <ul className='export-list'>
-        <li onClick={doWordExport}>{i18n('MS Word')}</li>
-        <li onClick={doScrivenerExport}>{i18n('Scrivener')}</li>
-      </ul>
-    </Popover>
+    return (
+      <Popover id="export-popover">
+        <ul className="export-list">
+          <li onClick={doWordExport}>{i18n('MS Word')}</li>
+          <li onClick={doScrivenerExport}>{i18n('Scrivener')}</li>
+        </ul>
+      </Popover>
+    )
   }
 
-  return <NavItem>
-    <span className='subnav__container__label'>{i18n('Export')}: </span>
-    <OverlayTrigger trigger='click' rootClose placement='bottom' overlay={renderPopover()}>
-      <Button bsSize='small'><Glyphicon glyph='export' /></Button>
-    </OverlayTrigger>
-  </NavItem>
+  return (
+    <NavItem>
+      <span className="subnav__container__label">{i18n('Export')}: </span>
+      <OverlayTrigger trigger="click" rootClose placement="bottom" overlay={renderPopover()}>
+        <Button bsSize="small">
+          <Glyphicon glyph="export" />
+        </Button>
+      </OverlayTrigger>
+    </NavItem>
+  )
+}
+
+ExportNavItem.propTypes = {
+  fileName: PropTypes.string,
+  bookId: PropTypes.string,
 }
 
 export default ExportNavItem

@@ -9,5 +9,11 @@ module.exports = {
   gracePeriodEnd: 0,
   canEdit: true,
   canExport: true,
-  user: {}
+  user: {
+    autoDownloadUpdate: true,
+    autoSave: true,
+    backupDays: 30,
+    backupLocation: 'default',
+    darkModeAlways: false,
+  },
 }

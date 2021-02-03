@@ -1,0 +1,177 @@
+@import "../colors";
+@import "../vars";
+
+.dashboard__files {
+  height: 100%;
+  width: 100%;
+  padding: 20px 40px;
+  display: grid;
+  grid-template-areas:
+    "newFiles"
+    "recentProjects";
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}
+
+.dashboard__new-files {
+  grid-area: newFiles;
+  width: 95%;
+  padding-bottom: 40px;
+}
+
+.dashboard__new-files__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.dashboard__new-files__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .1s ease-in;
+  font-size: 16pt;
+  color: $gray-1;
+  background: white;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,.25);
+  margin-bottom: 10px;
+  padding: calc(27 * .1vw) calc(11 * .1vw);
+
+  &.icon {
+    svg {
+      font-size: 60pt;
+      color: $gray-5;
+    }
+    &:hover, &.active {
+      svg {
+        color: $gray-3;
+        // transform: scale(1.2);
+      }
+    }
+  }
+
+  &:hover, &.active {
+    // color: $blue-0;
+    background-color: $blue-9;
+    box-shadow: $blue-highlight-box-shadow;
+  }
+}
+
+.dashboard__recent-files {
+  grid-area: recentProjects;
+  position: relative;
+  overflow: hidden;
+
+  h1 {
+    font-size: 20pt;
+    margin: 0;
+  }
+
+  .dashboard__search {
+    // width: 300px;
+    // float: right;
+  }
+}
+
+.dashboard__recent-files__table {
+  margin-top: 16px;
+  width: 100%;
+  height: calc(100% - 52px); // 36 + 16 (grid row + margin)
+  .sticky-table {
+    // border-radius: 4px;
+  }
+
+  .sticky-table-table {
+    width: 100%;
+    // box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+
+    .sticky-table-row:first-child {
+      .sticky-table-cell {
+        height: 40px;
+        padding: 10px 20px;
+        background-color: $orange-6;
+        color: white;
+        border: none;
+        font-size: large;
+        // box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+        &:first-child {
+          border-right: 1px solid white;
+        }
+      }
+    }
+
+    .sticky-table-row .sticky-table-cell:nth-child(2) {
+      width: 17%;
+    }
+
+    .dashboard__recent-files__file-cell {
+      display: flex;
+      align-items: center;
+
+      .title {
+        font-size: large;
+        .glyphicon {
+          margin-right: 8px;
+          color: $red-5;
+        }
+      }
+      .secondary-text {
+        font-size: small;
+        white-space: pre-wrap;
+      }
+      .dashboard__recent-files__file-actions {
+        margin-left: auto;
+        visibility: hidden;
+        button .glyphicon {
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .sticky-table-row:not(:first-child) {
+      border-left: 1px solid #0000001a;
+      .sticky-table-cell {
+        padding: 12px 8px;
+        border: 1px solid #0000001a;
+        cursor: pointer;
+        user-select: none;
+
+        &:first-child {
+          border-width: 0 0 1px 1px;
+        }
+        &:last-child {
+          border-width: 0 1px 1px 1px;
+        }
+
+        .lastOpen {
+        }
+      }
+
+      &:hover, &.selected {
+        color: $blue-0;
+        background-color: $blue-9;
+        // box-shadow: $blue-highlight-box-shadow;
+        .sticky-table-cell:first-child {
+          // background-color: $green-8;
+          color: inherit;
+          background-color: inherit;
+          // this doesn't work because each cell has the border and it doesn't look good
+          // only sorta looks ok with the selector :first-child on the cell
+          box-shadow: inherit;
+        }
+        .dashboard__recent-files__file-actions {
+          visibility: visible;
+        }
+      }
+    }
+    .sticky-table-row:nth-of-type(odd):not(:first-child) {
+      .sticky-table-cell {
+        background-color: $gray-9;
+      }
+    }
+  }
+}

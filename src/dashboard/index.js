@@ -1,41 +1,48 @@
 import path from 'path'
 import log from 'electron-log'
 import React from 'react'
+import { ipcRenderer } from 'electron'
 import { render } from 'react-dom'
-import DashboardMain from './DashboardMain'
-const { remote } = require('electron')
-const app = remote.app
+import { setupI18n } from '../../locales'
+import SETTINGS from '../common/utils/settings'
+import DashboardApp from './DashboardApp'
+import setupRollbar from '../common/utils/rollbar'
+import initMixpanel from '../common/utils/mixpanel'
+import MPQ from '../common/utils/MPQ'
+import TemplateFetcher from './utils/template_fetcher'
+import { ensureBackupFullPath } from '../common/utils/backup'
 
-import i18n from 'format-message'
-i18n.setup({
-  translations: require('../../locales'),
-  locale: app.getLocale() || 'en'
+// necessary SETUP //
+setupI18n(SETTINGS)
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
+const rollbar = setupRollbar('dashboard.html')
+
+process.on('uncaughtException', (err) => {
+  log.error(err)
+  rollbar.error(err)
 })
 
-const envPath = path.resolve(__dirname, '..', '.env')
-require('dotenv').config({path: envPath})
-let environment = process.env.NODE_ENV === 'development' ? 'development' : 'production'
-var Rollbar = require('rollbar')
-let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
-var rollbar = new Rollbar({
-  accessToken: rollbarToken,
-  handleUncaughtExceptions: process.env.NODE_ENV !== 'development',
-  handleUnhandledRejections: true,
-  payload: {
-    environment: environment,
-    version: app.getVersion(),
-    where: 'dashboard.html',
-    os: process.platform
-  }
-})
-
-if (process.env.NODE_ENV !== 'development') {
-  process.on('uncaughtException', function (err) {
-    log.error(err)
-    rollbar.error(err)
-  })
-}
-
+// RENDER //
 const root = document.getElementById('dashboard__react__root')
+render(<DashboardApp />, root)
 
-render(<DashboardMain />, root)
+// Secondary SETUP //
+window.requestIdleCallback(() => {
+  ensureBackupFullPath()
+  TemplateFetcher.fetch()
+  initMixpanel()
+})
+
+ipcRenderer.once('send-launch', (event, version) => {
+  initMixpanel()
+  const settingsWeCareAbout = {
+    auto_download: SETTINGS.get('user.autoDownloadUpdate'),
+    backup_on: SETTINGS.get('backup'),
+    locale: SETTINGS.get('locale'),
+  }
+  MPQ.push('Launch', { online: navigator.onLine, version: version, ...settingsWeCareAbout })
+})
+
+ipcRenderer.on('reload', () => {
+  location.reload()
+})

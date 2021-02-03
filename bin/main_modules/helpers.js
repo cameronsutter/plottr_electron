@@ -1,23 +1,17 @@
 const fs = require('fs')
 const path = require('path')
-const deep = require('deep-diff')
 const log = require('electron-log')
 const { app, BrowserWindow, dialog } = require('electron')
-const emptyFile = require('./empty_file')
+const { is } = require('electron-util')
+const { NODE_ENV } = require('./constants')
+// const SETTINGS = require('./settings')
+// const { getDaysLeftInTrial, getTrialModeStatus } = require('./trial_manager')
 
-function emptyFileContents (name) {
-  return emptyFile(name)
-}
-
-function isDirty (newState, oldState) {
-  return !!deep.diff(oldState, newState)
-}
-
-function takeScreenshot () {
+function takeScreenshot() {
   let win = BrowserWindow.getFocusedWindow()
   if (win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
-  win.capturePage().then(image => {
-    if (process.env.NODE_ENV === 'dev') {
+  win.capturePage().then((image) => {
+    if (NODE_ENV === 'dev') {
       const folderPath = path.join(app.getPath('home'), 'plottr_screenshots', app.getVersion())
       const date = new Date()
       const fileName = `screenshot-${date.getMinutes()}-${date.getSeconds()}.png`
@@ -38,15 +32,18 @@ function takeScreenshot () {
         }
       })
     } else {
-      const filters = [{name: 'PNG file', extensions: ['png']}]
-      const fileName = dialog.showSaveDialogSync(win, {filters})
+      const filters = [{ name: 'PNG file', extensions: ['png'] }]
+      const fileName = dialog.showSaveDialogSync(win, { filters })
       if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
     }
   })
 }
 
+function filePrefix(dirname) {
+  return is.windows ? dirname : 'file://' + dirname
+}
+
 module.exports = {
-  emptyFileContents,
-  isDirty,
   takeScreenshot,
+  filePrefix,
 }

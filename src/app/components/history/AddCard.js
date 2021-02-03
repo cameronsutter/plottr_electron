@@ -4,9 +4,7 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 
 class AddCard extends Component {
-
-  render () {
-    const item = this.props.item
+  render() {
     return (
       <div>
         <span>{i18n('new card')}</span>
@@ -16,20 +14,15 @@ class AddCard extends Component {
 }
 
 AddCard.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddCard)
+export default connect(mapStateToProps, mapDispatchToProps)(AddCard)

@@ -1,22 +1,16 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
-import orientedClassName from 'helpers/orientedClassName'
 import i18n from 'format-message'
-import { isZoomed, isZoomedOut, computeZoomMultiplier, computeZoomOutMultiplier } from 'helpers/zoom'
+import cx from 'classnames'
+import { selectors, helpers } from 'pltr/v2'
+import VisualLine from './VisualLine'
 
-const Horizontal = {
-  first: 150,
-  last: 161 + 50,
-}
-
-const Vertical = {
-  first: 100,
-  last: 70 + 40,
-}
+const {
+  orientedClassName: { orientedClassName },
+} = helpers
 
 class ChapterInsertCell extends PureComponent {
   insert = () => {
@@ -24,54 +18,55 @@ class ChapterInsertCell extends PureComponent {
     handleInsert(chapterPosition, lineId)
   }
 
-  renderLine () {
-    const { tableLength, orientation, color, zoom } = this.props
-
-    let length = tableLength
-    if (isZoomed(zoom)) length = tableLength * computeZoomMultiplier(orientation, zoom)
-    if (isZoomedOut(zoom)) length = tableLength * computeZoomOutMultiplier(orientation, zoom)
-
-    let lineStyle = {
-      borderColor: color,
-    }
-    if (orientation == 'horizontal') {
-      lineStyle.width = `${length - Horizontal.first - Horizontal.last}px`
-    } else {
-      lineStyle.height = `${length - Vertical.first - Vertical.last}px`
-    }
-    return <div className={orientedClassName('line-title__line-line', orientation)} style={lineStyle}></div>
+  renderLine() {
+    const { tableLength, orientation, color } = this.props
+    return <VisualLine tableLength={tableLength} orientation={orientation} color={color} />
   }
 
-
-  render () {
-    const { isInChapterList, showLine, orientation, isLast } = this.props
-    let wrapperKlass = orientedClassName('insert-scene-wrapper', orientation)
-    let chapterKlass = 'scene-list__insert'
+  render() {
+    const { isInChapterList, showLine, orientation, isLast, isSmall } = this.props
+    let wrapperKlass = orientedClassName('insert-chapter-wrapper', orientation)
+    let chapterKlass = 'chapter-list__insert'
     let titleText = i18n('Insert Chapter')
-    if (showLine) wrapperKlass += ' insert-scene-spacer'
+    if (showLine) wrapperKlass += ' insert-chapter-spacer'
     if (isLast) {
       titleText = i18n('Add Chapter')
-      wrapperKlass += ' append-scene'
-      chapterKlass += ' append-scene'
+      wrapperKlass += ' append-chapter'
+      chapterKlass += ' append-chapter'
     }
     if (!isInChapterList) titleText = i18n('Insert Chapter and a Card')
-    return <Cell>
+    let insideDiv = (
       <div
         title={titleText}
-        className={orientedClassName(isInChapterList ? chapterKlass : 'line-list__insert-scene', orientation)}
+        className={orientedClassName(
+          isInChapterList ? chapterKlass : 'line-list__insert-chapter',
+          orientation
+        )}
         onClick={this.insert}
       >
         <div className={wrapperKlass}>
-          <Glyphicon glyph='plus' />
+          <Glyphicon glyph="plus" />
         </div>
       </div>
-      {showLine ? this.renderLine() : null}
-    </Cell>
+    )
+
+    if (isSmall) {
+      const isHorizontal = orientation == 'horizontal'
+      const klasses = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal }
+      return <th className={cx(klasses)}>{insideDiv}</th>
+    } else {
+      return (
+        <Cell>
+          {insideDiv}
+          {showLine ? this.renderLine() : null}
+        </Cell>
+      )
+    }
   }
 
   static propTypes = {
     orientation: PropTypes.string,
-    zoom: PropTypes.object,
+    isSmall: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
     isInChapterList: PropTypes.bool.isRequired,
     chapterPosition: PropTypes.number,
@@ -83,14 +78,14 @@ class ChapterInsertCell extends PureComponent {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     orientation: state.present.ui.orientation,
-    zoom: {zoomState: state.present.ui.zoomState, zoomIndex: state.present.ui.zoomIndex},
+    isSmall: selectors.isSmallSelector(state.present),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 

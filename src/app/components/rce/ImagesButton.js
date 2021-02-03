@@ -3,9 +3,13 @@ import { FaImage } from 'react-icons/fa'
 import { Editor, Transforms } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
-import { readImage, isImageUrl, readImageFromURL } from '../../helpers/images'
-import { addImage } from '../../actions/images'
 import ImagePicker from '../images/ImagePicker'
+import { helpers, actions } from 'pltr/v2'
+
+const { addImage } = actions.image
+const {
+  lists: { readImage, isImageUrl, readImageFromURL },
+} = helpers
 
 export const ImagesButton = () => {
   const editor = useSlate()
@@ -24,27 +28,31 @@ export const ImagesButton = () => {
   }
 
   // TODO: send ImagePicker the selectedId
-  return <Button
-    bsStyle={isImageActive(editor) ? 'primary' : 'default'}
-    onMouseDown={event => {
-      event.preventDefault()
-      setSelection(editor.selection)
-      setOpen(true)
-    }}
-  >
-    <FaImage/>
-    {dialogOpen ? <ImagePicker modalOnly chooseImage={getData} close={() => setOpen(false)} /> : null}
-  </Button>
+  return (
+    <Button
+      bsStyle={isImageActive(editor) ? 'primary' : 'default'}
+      onMouseDown={(event) => {
+        event.preventDefault()
+        setSelection(editor.selection)
+        setOpen(true)
+      }}
+    >
+      <FaImage />
+      {dialogOpen ? (
+        <ImagePicker modalOnly chooseImage={getData} close={() => setOpen(false)} />
+      ) : null}
+    </Button>
+  )
 }
 
-export const withImages = editor => {
+export const withImages = (editor) => {
   const { insertData, isVoid } = editor
 
-  editor.isVoid = element => {
+  editor.isVoid = (element) => {
     return element.type === 'image-link' || element.type === 'image-data' ? true : isVoid(element)
   }
 
-  editor.insertData = data => {
+  editor.insertData = (data) => {
     const text = data.getData('text/plain')
     const { files } = data
 
@@ -53,15 +61,15 @@ export const withImages = editor => {
         const [mime] = file.type.split('/')
 
         if (mime === 'image') {
-          readImage(file, data => {
-            window.specialDelivery(addImage({data, name: file.name, path: file.path}))
+          readImage(file, (data) => {
+            window.specialDelivery(addImage({ data, name: file.name, path: file.path }))
             insertImageData(editor, data)
           })
         }
       }
     } else if (isImageUrl(text)) {
-      readImageFromURL(text, strData => {
-        window.specialDelivery(addImage({data: strData, name: text, path: text}))
+      readImageFromURL(text, (strData) => {
+        window.specialDelivery(addImage({ data: strData, name: text, path: text }))
         insertImageData(editor, strData)
       })
     } else {
@@ -72,15 +80,11 @@ export const withImages = editor => {
   return editor
 }
 
-const isImageActive = editor => {
-  const [link] = Editor.nodes(editor, { match: n => n.type === 'image-link' || n.type === 'image-data' })
+const isImageActive = (editor) => {
+  const [link] = Editor.nodes(editor, {
+    match: (n) => n.type === 'image-link' || n.type === 'image-data',
+  })
   return !!link
-}
-
-const insertImageLink = (editor, url) => {
-  const text = { text: '' }
-  const image = { type: 'image-link', url, children: [text] }
-  Transforms.insertNodes(editor, image)
 }
 
 const insertImageData = (editor, data) => {

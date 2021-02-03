@@ -74,3 +74,34 @@
     }
   }
 }
+
+.dashboard__template-picker {
+  &.template-picker__wrapper {
+    justify-content: flex-start;
+  }
+
+  h2 {
+    font-size: 18pt;
+  }
+
+  .template-picker__list {
+    li.list-group-item {
+      &:hover, &.selected {
+        color: $blue-0;
+        background-color: $blue-9;
+        box-shadow: $blue-highlight-box-shadow;
+      }
+    }
+  }
+
+  .template-picker__details {
+    margin-left: 5%;
+    padding: 24px;
+
+    .panel-heading {
+      .template-picker__link {
+        vertical-align: text-bottom;
+      }
+    }
+  }
+}

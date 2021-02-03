@@ -1,12 +1,21 @@
 {
-  "(If not, please email support@getplottr.com)": {
-    "message": "(If not, please email support@getplottr.com)"
+  "(If not, please email support@plottr.com)": {
+    "message": "(If not, please email support@plottr.com)"
   },
   "About Plottr": {
     "message": "About Plottr"
   },
   "Access to all the features": {
     "message": "Access to all the features"
+  },
+  "Account": {
+    "message": "Account"
+  },
+  "Account Information": {
+    "message": "Account Information"
+  },
+  "Actions": {
+    "message": "Actions"
   },
   "Activate License": {
     "message": "Activate License"
@@ -17,11 +26,14 @@
   "Add Chapter": {
     "message": "Add Chapter"
   },
-  "Add attributes": {
-    "message": "Add attributes"
+  "Add attribute": {
+    "message": "Add attribute"
   },
   "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details": {
     "message": "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details"
+  },
+  "Add category": {
+    "message": "Add category"
   },
   "Add more plotlines here": {
     "message": "Add more plotlines here"
@@ -32,14 +44,41 @@
   "After": {
     "message": "After"
   },
+  "All": {
+    "message": "All"
+  },
   "Are you sure you want to clear everything in this timeline?": {
     "message": "Are you sure you want to clear everything in this timeline?"
   },
   "Are you sure you want to delete { thing }?": {
     "message": "Are you sure you want to delete { thing }?"
   },
+  "Are you sure you want to remove your license?": {
+    "message": "Are you sure you want to remove your license?"
+  },
   "Attributes": {
     "message": "Attributes"
+  },
+  "Auto-save": {
+    "message": "Auto-save"
+  },
+  "Auto-saving failed": {
+    "message": "Auto-saving failed"
+  },
+  "Auto-saving worked": {
+    "message": "Auto-saving worked"
+  },
+  "Automatically save daily backups": {
+    "message": "Automatically save daily backups"
+  },
+  "Backup Location": {
+    "message": "Backup Location"
+  },
+  "Backups": {
+    "message": "Backups"
+  },
+  "Backups older than this will be erased": {
+    "message": "Backups older than this will be erased"
   },
   "Beat": {
     "message": "Beat"
@@ -77,6 +116,9 @@
   "Buy Full Version": {
     "message": "Buy Full Version"
   },
+  "By default, use auto-save for projects": {
+    "message": "By default, use auto-save for projects"
+  },
   "Can I have a few more days?": {
     "message": "Can I have a few more days?"
   },
@@ -91,6 +133,9 @@
   },
   "Category": {
     "message": "Category"
+  },
+  "Changelog": {
+    "message": "Changelog"
   },
   "Chapter": {
     "message": "Chapter"
@@ -107,14 +152,17 @@
   "Character": {
     "message": "Character"
   },
-  "Character Custom Attributes": {
-    "message": "Character Custom Attributes"
+  "Character Categories": {
+    "message": "Character Categories"
   },
   "Character Thumbnail": {
     "message": "Character Thumbnail"
   },
   "Character list is filtered": {
     "message": "Character list is filtered"
+  },
+  "Character: {name}": {
+    "message": "Character: { name }"
   },
   "Characters": {
     "message": "Characters"
@@ -125,9 +173,6 @@
   "Check for Updates": {
     "message": "Check for Updates"
   },
-  "Checking for updates": {
-    "message": "Checking for updates"
-  },
   "Choose": {
     "message": "Choose"
   },
@@ -137,11 +182,17 @@
   "Choose color": {
     "message": "Choose color"
   },
-  "Choose what you want to track about your characters": {
-    "message": "Choose what you want to track about your characters"
+  "Choose what categories you want to put your characters into": {
+    "message": "Choose what categories you want to put your characters into"
   },
-  "Choose what you want to track about your places": {
-    "message": "Choose what you want to track about your places"
+  "Choose what you want to track about your { type }": {
+    "message": "Choose what you want to track about your { type }"
+  },
+  "Choose where to save this file on your computer": {
+    "message": "Choose where to save this file on your computer"
+  },
+  "Choose your Snowflake Pro file": {
+    "message": "Choose your Snowflake Pro file"
   },
   "Choose...": {
     "message": "Choose..."
@@ -152,14 +203,23 @@
   "Click on a color below or type it in": {
     "message": "Click on a color below or type it in"
   },
+  "Click to Install": {
+    "message": "Click to Install"
+  },
   "Close": {
     "message": "Close"
   },
   "Collapse": {
     "message": "Collapse"
   },
-  "Contact": {
-    "message": "Contact"
+  "Coming Soon!": {
+    "message": "Coming Soon!"
+  },
+  "Configuration Options": {
+    "message": "Configuration Options"
+  },
+  "Configure": {
+    "message": "Configure"
   },
   "Content": {
     "message": "Content"
@@ -167,32 +227,29 @@
   "Copy": {
     "message": "Copy"
   },
-  "Could not display license key. Try again": {
-    "message": "Could not display license key. Try again"
+  "Create": {
+    "message": "Create"
   },
-  "Crafted in the Mountains of Utah": {
-    "message": "Crafted in the Mountains of Utah"
+  "Create Blank Project": {
+    "message": "Create Blank Project"
   },
-  "Create a new file": {
-    "message": "Create a new file"
+  "Create From Template": {
+    "message": "Create From Template"
+  },
+  "Create New Project": {
+    "message": "Create New Project"
+  },
+  "Create Report": {
+    "message": "Create Report"
   },
   "Create an Error Report": {
     "message": "Create an Error Report"
   },
-  "Create an error report": {
-    "message": "Create an error report"
+  "Create unlimited project files": {
+    "message": "Create unlimited project files"
   },
-  "Create unlimited story files": {
-    "message": "Create unlimited story files"
-  },
-  "Creates a report to send me": {
-    "message": "Creates a report to send me"
-  },
-  "Creating your file didn't work. Let's try again.": {
-    "message": "Creating your file didn''t work. Let''s try again."
-  },
-  "Credits": {
-    "message": "Credits"
+  "Created By": {
+    "message": "Created By"
   },
   "Current Color": {
     "message": "Current Color"
@@ -200,14 +257,14 @@
   "Custom Attributes": {
     "message": "Custom Attributes"
   },
-  "Custom Attributes for Characters": {
-    "message": "Custom Attributes for Characters"
-  },
-  "Custom Attributes for Places": {
-    "message": "Custom Attributes for Places"
+  "Custom Attributes for { type }": {
+    "message": "Custom Attributes for { type }"
   },
   "Custom Template": {
     "message": "Custom Template"
+  },
+  "Custom Templates": {
+    "message": "Custom Templates"
   },
   "Cut": {
     "message": "Cut"
@@ -218,11 +275,23 @@
   "Dark Mode": {
     "message": "Dark Mode"
   },
+  "Dashboard": {
+    "message": "Dashboard"
+  },
+  "Days Left": {
+    "message": "Days Left"
+  },
+  "Days of Backup": {
+    "message": "Days of Backup"
+  },
   "Default Colors": {
     "message": "Default Colors"
   },
   "Delete": {
     "message": "Delete"
+  },
+  "Demos": {
+    "message": "Demos"
   },
   "Description": {
     "message": "Description"
@@ -239,14 +308,23 @@
   "Don't worry, all your work is saved in plottr_trial.pltr in your Documents folder": {
     "message": "Don''t worry, all your work is saved in plottr_trial.pltr in your Documents folder"
   },
+  "Don't worry, all your work is saved in your files": {
+    "message": "Don''t worry, all your work is saved in your files"
+  },
   "Done": {
     "message": "Done"
   },
-  "Download Complete: Click to Install ({version})": {
-    "message": "Download Complete: Click to Install ({ version })"
+  "Download Complete 🎉 (version {version})": {
+    "message": "Download Complete 🎉 (version { version })"
   },
-  "Downloading {version} ({percent}%)": {
-    "message": "Downloading { version } ({ percent }%)"
+  "Download Now!": {
+    "message": "Download Now!"
+  },
+  "Download updates automatically": {
+    "message": "Download updates automatically"
+  },
+  "Downloading version {version}": {
+    "message": "Downloading version { version }"
   },
   "Drop a File Here": {
     "message": "Drop a File Here"
@@ -257,11 +335,11 @@
   "End": {
     "message": "End"
   },
+  "Ends After": {
+    "message": "Ends After"
+  },
   "Enter a Customer Service Code": {
     "message": "Enter a Customer Service Code"
-  },
-  "Enter a customer service code": {
-    "message": "Enter a customer service code"
   },
   "Enter some text...": {
     "message": "Enter some text..."
@@ -269,23 +347,26 @@
   "Enter the URL of the link:": {
     "message": "Enter the URL of the link:"
   },
-  "Enter your code": {
-    "message": "Enter your code"
-  },
-  "Error": {
-    "message": "Error"
+  "Error Creating Error Report": {
+    "message": "Error Creating Error Report"
   },
   "Error Report created": {
     "message": "Error Report created"
   },
+  "Error: {error}": {
+    "message": "Error: { error }"
+  },
+  "Exit Without Saving": {
+    "message": "Exit Without Saving"
+  },
   "Expand": {
     "message": "Expand"
   },
+  "Expires": {
+    "message": "Expires"
+  },
   "Export": {
     "message": "Export"
-  },
-  "Extending your trial didn't work. Let's try again.": {
-    "message": "Extending your trial didn''t work. Let''s try again."
   },
   "FAQ": {
     "message": "FAQ"
@@ -293,11 +374,20 @@
   "Facebook Group": {
     "message": "Facebook Group"
   },
+  "Fictional Devices LLC": {
+    "message": "Fictional Devices LLC"
+  },
   "File": {
     "message": "File"
   },
   "File Exported": {
     "message": "File Exported"
+  },
+  "File can't be found. Did it move?": {
+    "message": "File can''t be found. Did it move?"
+  },
+  "Files": {
+    "message": "Files"
   },
   "Filter": {
     "message": "Filter"
@@ -305,11 +395,20 @@
   "Filter by Plotline": {
     "message": "Filter by Plotline"
   },
-  "Fit": {
-    "message": "Fit"
-  },
   "Flip": {
     "message": "Flip"
+  },
+  "Folder where backups are stored": {
+    "message": "Folder where backups are stored"
+  },
+  "Force Dark Mode": {
+    "message": "Force Dark Mode"
+  },
+  "Free Trial": {
+    "message": "Free Trial"
+  },
+  "Free Trial Information": {
+    "message": "Free Trial Information"
   },
   "Genre": {
     "message": "Genre"
@@ -325,9 +424,6 @@
   },
   "Help": {
     "message": "Help"
-  },
-  "Here is your license key": {
-    "message": "Here is your license key"
   },
   "Hide Others": {
     "message": "Hide Others"
@@ -347,14 +443,20 @@
   "I want to start the free trial": {
     "message": "I want to start the free trial"
   },
-  "If you keep seeing this problem, email us at support@getplottr.com": {
-    "message": "If you keep seeing this problem, email us at support@getplottr.com"
+  "If you keep seeing this problem, email us at support@plottr.com": {
+    "message": "If you keep seeing this problem, email us at support@plottr.com"
   },
   "Image Details": {
     "message": "Image Details"
   },
   "Image Gallery": {
     "message": "Image Gallery"
+  },
+  "Images": {
+    "message": "Images"
+  },
+  "Import Snowflake Pro": {
+    "message": "Import Snowflake Pro"
   },
   "Insert Chapter": {
     "message": "Insert Chapter"
@@ -380,11 +482,23 @@
   "Keep your character sheets here": {
     "message": "Keep your character sheets here"
   },
+  "Language": {
+    "message": "Language"
+  },
+  "Last opened by you": {
+    "message": "Last opened by you"
+  },
+  "License": {
+    "message": "License"
+  },
   "License Key": {
     "message": "License Key"
   },
   "License Verified. Plottr will start momentarily. Thanks for being patient!": {
     "message": "License Verified. Plottr will start momentarily. Thanks for being patient!"
+  },
+  "Links": {
+    "message": "Links"
   },
   "Long Synopsis": {
     "message": "Long Synopsis"
@@ -401,11 +515,17 @@
   "Manually Sorted": {
     "message": "Manually Sorted"
   },
+  "Manuscript": {
+    "message": "Manuscript"
+  },
   "Middle": {
     "message": "Middle"
   },
   "My Character Template": {
     "message": "My Character Template"
+  },
+  "My Scene Template": {
+    "message": "My Scene Template"
   },
   "My Templates": {
     "message": "My Templates"
@@ -416,17 +536,20 @@
   "Name": {
     "message": "Name"
   },
+  "Never": {
+    "message": "Never"
+  },
   "New": {
     "message": "New"
+  },
+  "New Attribute": {
+    "message": "New Attribute"
   },
   "New Book": {
     "message": "New Book"
   },
   "New Character": {
     "message": "New Character"
-  },
-  "New File": {
-    "message": "New File"
   },
   "New Note": {
     "message": "New Note"
@@ -437,23 +560,14 @@
   "New Plotline": {
     "message": "New Plotline"
   },
-  "New from": {
-    "message": "New from"
-  },
-  "New from Template": {
-    "message": "New from Template"
-  },
   "No actions to undo": {
     "message": "No actions to undo"
   },
   "No color": {
     "message": "No color"
   },
-  "No updates available": {
-    "message": "No updates available"
-  },
-  "Nope. Plottr tried again. But it didn't work. Plottr will ask you next time it opens, but you're verified. Enjoy": {
-    "message": "Nope. Plottr tried again. But it didn''t work. Plottr will ask you next time it opens, but you''re verified. Enjoy"
+  "Not Receiving Updates": {
+    "message": "Not Receiving Updates"
   },
   "Note": {
     "message": "Note"
@@ -461,11 +575,17 @@
   "Note Image": {
     "message": "Note Image"
   },
+  "Note: {title}": {
+    "message": "Note: { title }"
+  },
   "Notes": {
     "message": "Notes"
   },
   "Notes are filtered": {
     "message": "Notes are filtered"
+  },
+  "Number of Days of Rolling Backups to Keep": {
+    "message": "Number of Days of Rolling Backups to Keep"
   },
   "OK": {
     "message": "OK"
@@ -482,8 +602,11 @@
   "Open": {
     "message": "Open"
   },
-  "Open File": {
-    "message": "Open File"
+  "Open Dashboard": {
+    "message": "Open Dashboard"
+  },
+  "Open Existing": {
+    "message": "Open Existing"
   },
   "Or hover here to insert between scenes": {
     "message": "Or hover here to insert between scenes"
@@ -499,6 +622,12 @@
   },
   "Outline is filtered": {
     "message": "Outline is filtered"
+  },
+  "Override your computer's setting and always use dark mode": {
+    "message": "Override your computer''s setting and always use dark mode"
+  },
+  "Paragraph": {
+    "message": "Paragraph"
   },
   "Paste": {
     "message": "Paste"
@@ -518,14 +647,17 @@
   "Place list is filtered": {
     "message": "Place list is filtered"
   },
+  "Place: {name}": {
+    "message": "Place: { name }"
+  },
   "Places": {
     "message": "Places"
   },
   "Places list": {
     "message": "Places list"
   },
-  "Please contact me with any questions at support@getplottr.com": {
-    "message": "Please contact me with any questions at support@getplottr.com"
+  "Please contact me with any questions at support@plottr.com": {
+    "message": "Please contact me with any questions at support@plottr.com"
   },
   "Please verify your license": {
     "message": "Please verify your license"
@@ -533,11 +665,14 @@
   "Plotline": {
     "message": "Plotline"
   },
+  "Plotline Title:": {
+    "message": "Plotline Title:"
+  },
   "Plotline name": {
     "message": "Plotline name"
   },
-  "Plotline: {name}": {
-    "message": "Plotline: { name }"
+  "Plotline: {title}": {
+    "message": "Plotline: { title }"
   },
   "Plotlines": {
     "message": "Plotlines"
@@ -545,14 +680,20 @@
   "Plottr": {
     "message": "Plottr"
   },
-  "Plottr created a file named plottr_error_report.txt in your Documents folder": {
-    "message": "Plottr created a file named plottr_error_report.txt in your Documents folder"
+  "Plottr Support": {
+    "message": "Plottr Support"
+  },
+  "Plottr created a file named {fileName} in your Documents folder": {
+    "message": "Plottr created a file named { fileName } in your Documents folder"
+  },
+  "Plottr project file": {
+    "message": "Plottr project file"
   },
   "Plottr ran into a problem. Try opening Plottr again.": {
     "message": "Plottr ran into a problem. Try opening Plottr again."
   },
-  "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {
-    "message": "Plottr verified your license key successfully, but there was an error saving that. Let''s try one more time"
+  "Preferences": {
+    "message": "Preferences"
   },
   "Premise": {
     "message": "Premise"
@@ -560,14 +701,23 @@
   "Project": {
     "message": "Project"
   },
+  "Project Templates": {
+    "message": "Project Templates"
+  },
   "Prologue": {
     "message": "Prologue"
+  },
+  "Purchase Email": {
+    "message": "Purchase Email"
   },
   "Purples": {
     "message": "Purples"
   },
   "Quit": {
     "message": "Quit"
+  },
+  "Recent Projects": {
+    "message": "Recent Projects"
   },
   "Redo": {
     "message": "Redo"
@@ -584,6 +734,12 @@
   "Remove": {
     "message": "Remove"
   },
+  "Remove License": {
+    "message": "Remove License"
+  },
+  "Remove from this list": {
+    "message": "Remove from this list"
+  },
   "Remove image": {
     "message": "Remove image"
   },
@@ -596,14 +752,17 @@
   "Request a Feature": {
     "message": "Request a Feature"
   },
-  "Reset": {
-    "message": "Reset"
-  },
   "Roadmap": {
     "message": "Roadmap"
   },
   "Save": {
     "message": "Save"
+  },
+  "Save Backups": {
+    "message": "Save Backups"
+  },
+  "Save File": {
+    "message": "Save File"
   },
   "Save as": {
     "message": "Save as"
@@ -611,8 +770,17 @@
   "Save as Template": {
     "message": "Save as Template"
   },
+  "Save before closing?": {
+    "message": "Save before closing?"
+  },
   "Saving failed": {
     "message": "Saving failed"
+  },
+  "Saving worked this time 🎉": {
+    "message": "Saving worked this time 🎉"
+  },
+  "Saving your file didn't work. Check where it's stored.": {
+    "message": "Saving your file didn''t work. Check where it''s stored."
   },
   "Saving your file didn't work. Try again.": {
     "message": "Saving your file didn''t work. Try again."
@@ -638,6 +806,12 @@
   "Scroll": {
     "message": "Scroll"
   },
+  "Search": {
+    "message": "Search"
+  },
+  "See What's New": {
+    "message": "See What''s New"
+  },
   "See the outline here": {
     "message": "See the outline here"
   },
@@ -653,6 +827,12 @@
   "Series View": {
     "message": "Series View"
   },
+  "Session Start": {
+    "message": "Session Start"
+  },
+  "Settings": {
+    "message": "Settings"
+  },
   "Short Description": {
     "message": "Short Description"
   },
@@ -662,14 +842,26 @@
   "Show All": {
     "message": "Show All"
   },
+  "Show in File Explorer": {
+    "message": "Show in File Explorer"
+  },
+  "Show in Finder": {
+    "message": "Show in Finder"
+  },
   "Since this is your first time using Plottr, I'll give you a guided tour if you like.": {
     "message": "Since this is your first time using Plottr, I''ll give you a guided tour if you like."
   },
-  "Snowflake Pro": {
-    "message": "Snowflake Pro"
+  "Size: large": {
+    "message": "Size: large"
   },
-  "Something went wrong.": {
-    "message": "Something went wrong."
+  "Size: medium": {
+    "message": "Size: medium"
+  },
+  "Size: small": {
+    "message": "Size: small"
+  },
+  "Something went wrong,": {
+    "message": "Something went wrong,"
   },
   "Sort": {
     "message": "Sort"
@@ -680,6 +872,9 @@
   "Start my Free Trial": {
     "message": "Start my Free Trial"
   },
+  "Started On": {
+    "message": "Started On"
+  },
   "Starter Templates": {
     "message": "Starter Templates"
   },
@@ -689,14 +884,14 @@
   "Story name": {
     "message": "Story name"
   },
+  "Submit": {
+    "message": "Submit"
+  },
   "Subtitle": {
     "message": "Subtitle"
   },
   "Supporting": {
     "message": "Supporting"
-  },
-  "TRIAL Version": {
-    "message": "TRIAL Version"
   },
   "Tag": {
     "message": "Tag"
@@ -716,11 +911,11 @@
   "Take Screenshot": {
     "message": "Take Screenshot"
   },
-  "Template": {
-    "message": "Template"
-  },
   "Template Saved": {
     "message": "Template Saved"
+  },
+  "Text Error": {
+    "message": "Text Error"
   },
   "Thanks for trying Plottr": {
     "message": "Thanks for trying Plottr"
@@ -728,14 +923,14 @@
   "Theme": {
     "message": "Theme"
   },
+  "There was an error doing that. Try again": {
+    "message": "There was an error doing that. Try again"
+  },
   "This is a plotline": {
     "message": "This is a plotline"
   },
   "This is a scene or chapter. You can change its name by clicking on it": {
     "message": "This is a scene or chapter. You can change its name by clicking on it"
-  },
-  "This is your Device ID": {
-    "message": "This is your Device ID"
   },
   "Timeline": {
     "message": "Timeline"
@@ -749,8 +944,14 @@
   "Toggle navigation": {
     "message": "Toggle navigation"
   },
-  "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem.": {
-    "message": "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem."
+  "Trash": {
+    "message": "Trash"
+  },
+  "Try that again": {
+    "message": "Try that again"
+  },
+  "Tutorials": {
+    "message": "Tutorials"
   },
   "Type": {
     "message": "Type"
@@ -767,14 +968,26 @@
   "Untitled": {
     "message": "Untitled"
   },
-  "Update Available ({version}): Download Now!": {
-    "message": "Update Available ({ version }): Download Now!"
+  "Update Automatically": {
+    "message": "Update Automatically"
+  },
+  "Update Available 🎉 (version {version})": {
+    "message": "Update Available 🎉 (version { version })"
+  },
+  "Update failed. Try again": {
+    "message": "Update failed. Try again"
+  },
+  "Updates": {
+    "message": "Updates"
   },
   "Upload Files": {
     "message": "Upload Files"
   },
   "Use Template": {
     "message": "Use Template"
+  },
+  "Use this to remove your license on this device": {
+    "message": "Use this to remove your license on this device"
   },
   "Verify": {
     "message": "Verify"
@@ -785,17 +998,11 @@
   "View": {
     "message": "View"
   },
-  "View Device ID": {
-    "message": "View Device ID"
-  },
-  "View License Key": {
-    "message": "View License Key"
+  "View Error": {
+    "message": "View Error"
   },
   "View Timeline": {
     "message": "View Timeline"
-  },
-  "View the Tour": {
-    "message": "View the Tour"
   },
   "Welcome to Plottr": {
     "message": "Welcome to Plottr"
@@ -806,8 +1013,8 @@
   "Where would you like to save this copy?": {
     "message": "Where would you like to save this copy?"
   },
-  "Where would you like to start your new file?": {
-    "message": "Where would you like to start your new file?"
+  "Where would you like to save this file?": {
+    "message": "Where would you like to save this file?"
   },
   "Whites": {
     "message": "Whites"
@@ -818,14 +1025,11 @@
   "Word Document": {
     "message": "Word Document"
   },
-  "Would you like to open an existing file or start a new file?": {
-    "message": "Would you like to open an existing file or start a new file?"
-  },
-  "Would you like to save before exiting?": {
-    "message": "Would you like to save before exiting?"
-  },
   "You can change its name or color by hovering over it (disabled for the tour)": {
     "message": "You can change its name or color by hovering over it (disabled for the tour)"
+  },
+  "You can create an error report and report the problem to us at: ": {
+    "message": "You can create an error report and report the problem to us at: "
   },
   "You can export everything to a Word document": {
     "message": "You can export everything to a Word document"
@@ -838,6 +1042,12 @@
   },
   "You'll have 30 days": {
     "message": "You''ll have 30 days"
+  },
+  "You're on the latest version": {
+    "message": "You''re on the latest version"
+  },
+  "Your Backups": {
+    "message": "Your Backups"
   },
   "Your Plottr file was exported to a .docx file": {
     "message": "Your Plottr file was exported to a .docx file"
@@ -884,6 +1094,9 @@
   "blank": {
     "message": "blank"
   },
+  "but don't worry!": {
+    "message": "but don''t worry!"
+  },
   "character": {
     "message": "character"
   },
@@ -926,9 +1139,6 @@
   "no more to add": {
     "message": "no more to add"
   },
-  "no, just exit": {
-    "message": "no, just exit"
-  },
   "ok": {
     "message": "ok"
   },
@@ -962,9 +1172,6 @@
   "story line": {
     "message": "story line"
   },
-  "yes, save!": {
-    "message": "yes, save!"
-  },
   "{\n          count, plural,\n          one {1 character attached}\n          other {# characters attached}\n        }": {
     "message": "{ count, plural,\n    one {1 character attached}\n  other {# characters attached}\n}"
   },
@@ -974,10 +1181,25 @@
   "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {
     "message": "{ count, plural,\n    one {1 tag attached}\n  other {# tags attached}\n}"
   },
-  "{days} days remaining": {
-    "message": "{ days } days remaining"
+  "{date, date, long}": {
+    "message": "{ date, date, long }"
+  },
+  "{date, date, medium}": {
+    "message": "{ date, date, medium }"
+  },
+  "{date, date, monthDay}": {
+    "message": "{ date, date, monthDay }"
+  },
+  "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }": {
+    "message": "{ numOfDays, plural,\n     =0 {# days left}\n    one {# day left}\n  other {# days left}\n}"
   },
   "{num} Scenes": {
     "message": "{ num } Scenes"
+  },
+  "{val, number, percent}": {
+    "message": "{ val, number, percent }"
+  },
+  "{wordCount,number} words": {
+    "message": "{ wordCount, number } words"
   }
 }

@@ -6,19 +6,27 @@ import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortBy } from 'lodash'
-import * as LineActions from 'actions/lines'
-import * as SeriesLineActions from 'actions/seriesLines'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { nextColor } from 'store/lineColors'
-import { card, chapter as defaultChapter, line as defaultLine } from '../../../../shared/initialState'
-import { sortedChaptersByBookSelector, nextChapterIdSelector } from '../../selectors/chapters'
-import { linesByBookSelector, nextLineIdSelector } from '../../selectors/lines'
-import { nextCardIdSelector } from '../../selectors/cards'
+import { card, line as defaultLine } from '../../../../shared/initialState'
+import { actions, selectors, nextColor } from 'pltr/v2'
+import InputModal from '../dialogs/InputModal'
+
+const {
+  nextCardIdSelector,
+  sortedChaptersByBookSelector,
+  nextChapterIdSelector,
+  linesByBookSelector,
+  nextLineIdSelector,
+  isSmallSelector,
+} = selectors
+const LineActions = actions.line
+const SeriesLineActions = actions.series
 
 class AddLineRow extends Component {
   state = {
     hovering: false,
     showTemplatePicker: false,
+    askingForInput: false,
   }
   allChapters = []
   allLines = []
@@ -41,7 +49,7 @@ class AddLineRow extends Component {
   }
 
   addBlankLine = (template, bookId) => {
-    const newLine = Object.assign({}, defaultLine, {title: template.name, bookId: bookId})
+    const newLine = Object.assign({}, defaultLine, { title: template.name, bookId: bookId })
     this.addLines([newLine], bookId, false, template)
   }
 
@@ -49,7 +57,7 @@ class AddLineRow extends Component {
     if (!templateChapters) return
     templateChapters = sortBy(templateChapters, 'position')
 
-    const allAreAuto = templateChapters.every(ch => ch.title == 'auto')
+    const allAreAuto = templateChapters.every((ch) => ch.title == 'auto')
 
     // situations
     // 1. there are < 2 current chapters
@@ -62,7 +70,7 @@ class AddLineRow extends Component {
 
     if (this.allChapters.length < 2) {
       // replace the current chapter with chapters from template
-      this.allChapters = templateChapters.map(tCh => {
+      this.allChapters = templateChapters.map((tCh) => {
         const id = this.nextChapterId
         ++this.nextChapterId
         return {
@@ -76,7 +84,7 @@ class AddLineRow extends Component {
       if (allAreAuto) {
         if (this.allChapters.length < templateChapters.length) {
           // add more auto chapters
-          templateChapters.slice(this.allChapters.length).forEach(tCh => {
+          templateChapters.slice(this.allChapters.length).forEach((tCh) => {
             const id = this.nextChapterId
             ++this.nextChapterId
             const last = this.getLast(this.allChapters)
@@ -94,7 +102,7 @@ class AddLineRow extends Component {
         if (this.allChapters.length < templateChapters.length) {
           // add them to the end
           this.newChapterOffset = this.allChapters.length
-          templateChapters.forEach(tCh => {
+          templateChapters.forEach((tCh) => {
             const id = this.nextChapterId
             ++this.nextChapterId
             const last = this.getLast(this.allChapters)
@@ -112,7 +120,7 @@ class AddLineRow extends Component {
           this.addBlankLine(template, bookId)
           let thisLine = this.getLast(this.allLines)
 
-          templateChapters.forEach(tCh => {
+          templateChapters.forEach((tCh) => {
             const id = this.nextCardId
             ++this.nextCardId
             const newCard = Object.assign({}, card, {
@@ -134,7 +142,7 @@ class AddLineRow extends Component {
     if (!templateLines) return
     templateLines = sortBy(templateLines, 'position')
 
-    templateLines.forEach(tL => {
+    templateLines.forEach((tL) => {
       const id = this.nextLineId
       if (remember) this.newLineMapping[tL.id] = id // remember old line id -> new line id
       const lastLine = this.getLast(this.allLines)
@@ -168,11 +176,13 @@ class AddLineRow extends Component {
       if (lastLine) lineId = lastLine.id
     }
 
-    templateCards.forEach(tC => {
+    templateCards.forEach((tC) => {
       const id = this.nextCardId
       lineId = useLines ? this.newLineMapping[tC.lineId] : lineId
       const chapterPosition = chaptersPositionById[tC.chapterId]
-      const chapter = this.allChapters[chapterPosition + this.newChapterOffset] || this.allChapters[this.allChapters.length - 1] // default to last chapter ... not sure if that's right to do
+      const chapter =
+        this.allChapters[chapterPosition + this.newChapterOffset] ||
+        this.allChapters[this.allChapters.length - 1] // default to last chapter ... not sure if that's right to do
       const chapterId = chapter ? chapter.id : 0 // default to no chapter ... again not sure if that's right
       const newCard = {
         ...tC,
@@ -206,81 +216,153 @@ class AddLineRow extends Component {
     this.addCards(templateData.cards, templateData.chapters, bookId, template)
 
     actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, bookId, template)
-    this.setState({showTemplatePicker: false})
+    this.setState({ showTemplatePicker: false })
   }
 
-  renderInsertButton () {
+  simpleAddLine = (title) => {
     const { ui, actions } = this.props
-    if (this.props.bookId != 'series') {
-      return <div className='line-list__append-line'>
-        {this.state.hovering ?
-          <div className='line-list__append-line__double'>
-            <div onClick={() => this.setState({showTemplatePicker: true, hovering: false})} className='template'>{i18n('Use Template')}</div>
-            <div onClick={() => actions.addLine(ui.currentTimeline)} className='non-template'><Glyphicon glyph='plus' /></div>
+    actions.addLineWithTitle(title, ui.currentTimeline)
+    this.setState({ askingForInput: false, hovering: false })
+  }
+
+  renderInputModal() {
+    if (!this.state.askingForInput) return null
+
+    return (
+      <InputModal
+        isOpen={true}
+        getValue={this.simpleAddLine}
+        title={i18n('Plotline Title:')}
+        type="text"
+        cancel={() => this.setState({ askingForInput: false, hovering: false })}
+      />
+    )
+  }
+
+  renderInsertButton() {
+    const { bookId, isSmall } = this.props
+    if (isSmall) {
+      return (
+        <th className="row-header">
+          {this.renderInputModal()}
+          <div
+            className="line-list__append-line"
+            onClick={() => this.setState({ askingForInput: true })}
+          >
+            <div className="line-list__append-line-wrapper">
+              <Glyphicon glyph="plus" />
+            </div>
           </div>
-        :
-          <div className='line-list__append-line-wrapper'>
-            <Glyphicon glyph='plus' />
-          </div>
-        }
-      </div>
-    } else {
-      return <div
-        className='line-list__append-line'
-        onClick={() => actions.addLine(ui.currentTimeline)}
-      >
-        <div className='line-list__append-line-wrapper'>
-          <Glyphicon glyph='plus' />
+        </th>
+      )
+    }
+
+    if (bookId != 'series') {
+      return (
+        <div className="line-list__append-line">
+          {this.renderInputModal()}
+          {this.state.hovering ? (
+            <div className="line-list__append-line__double">
+              <div
+                onClick={() => this.setState({ showTemplatePicker: true, hovering: false })}
+                className="template"
+              >
+                {i18n('Use Template')}
+              </div>
+              <div onClick={() => this.setState({ askingForInput: true })} className="non-template">
+                <Glyphicon glyph="plus" />
+              </div>
+            </div>
+          ) : (
+            <div className="line-list__append-line-wrapper">
+              <Glyphicon glyph="plus" />
+            </div>
+          )}
         </div>
-      </div>
+      )
+    } else {
+      return (
+        <div
+          className="line-list__append-line"
+          onClick={() => this.setState({ askingForInput: true })}
+        >
+          {this.renderInputModal()}
+          <div className="line-list__append-line-wrapper">
+            <Glyphicon glyph="plus" />
+          </div>
+        </div>
+      )
     }
   }
 
-  renderTemplatePicker () {
+  renderTemplatePicker() {
     if (!this.state.showTemplatePicker) return null
 
-    return <TemplatePicker
-      type={['plotlines']}
-      modal={true}
-      isOpen={this.state.showTemplatePicker}
-      close={() => this.setState({showTemplatePicker: false})}
-      onChooseTemplate={this.handleChooseTemplate}
-    />
+    return (
+      <TemplatePicker
+        type={['plotlines']}
+        modal={true}
+        isOpen={this.state.showTemplatePicker}
+        close={() => this.setState({ showTemplatePicker: false })}
+        onChooseTemplate={this.handleChooseTemplate}
+      />
+    )
   }
 
-  render () {
-    return <Row>
-      <Cell onMouseEnter={() => this.setState({hovering: true})} onMouseLeave={() => this.setState({hovering: false})}>
-        {this.renderInsertButton()}
-        {this.renderTemplatePicker()}
-      </Cell>
-    </Row>
+  render() {
+    const { isSmall, howManyCells } = this.props
+    if (isSmall) {
+      const tds = [<td key={howManyCells + 1} />]
+      for (let i = 0; i < howManyCells; i++) {
+        tds.push(<td key={i} />)
+      }
+      return (
+        <tr>
+          {this.renderInsertButton()}
+          {tds}
+        </tr>
+      )
+    } else {
+      return (
+        <Row>
+          <Cell
+            onMouseEnter={() => this.setState({ hovering: true })}
+            onMouseLeave={() => this.setState({ hovering: false })}
+          >
+            {this.renderInsertButton()}
+            {this.renderTemplatePicker()}
+          </Cell>
+        </Row>
+      )
+    }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (this.state.showTemplatePicker != nextState.showTemplatePicker) return true
     if (this.state.hovering != nextState.hovering) return true
+    if (this.state.askingForInput != nextState.askingForInput) return true
     return false
   }
 
   static propTypes = {
+    howManyCells: PropTypes.number,
     ui: PropTypes.object.isRequired,
-    bookId: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    isSmall: PropTypes.bool,
+    bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     chapters: PropTypes.array,
     lines: PropTypes.array,
     cards: PropTypes.array,
     nextLineId: PropTypes.number,
     nextChapterId: PropTypes.number,
     nextCardId: PropTypes.number,
+    actions: PropTypes.object,
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     ui: state.present.ui,
+    isSmall: isSmallSelector(state.present),
     chapters: sortedChaptersByBookSelector(state.present),
     lines: linesByBookSelector(state.present),
     cards: state.present.cards,
@@ -290,14 +372,11 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   let actions = ownProps.bookId == 'series' ? SeriesLineActions : LineActions
   return {
     actions: bindActionCreators(actions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddLineRow)
+export default connect(mapStateToProps, mapDispatchToProps)(AddLineRow)

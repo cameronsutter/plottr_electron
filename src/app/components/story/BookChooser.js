@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as UIActions from 'actions/ui'
 import { NavDropdown, MenuItem } from 'react-bootstrap'
 import i18n from 'format-message'
+import { actions } from 'pltr/v2'
+
+const UIActions = actions.ui
 
 const DISABLED_VIEWS = ['notes', 'characters', 'places', 'tags']
 
 class BookChooser extends Component {
-
-  handleChange (id) {
+  handleChange(id) {
     this.props.actions.changeCurrentTimeline(id)
     if (this.props.ui.currentView == 'story') {
       this.props.actions.changeCurrentView('timeline')
@@ -25,25 +26,32 @@ class BookChooser extends Component {
     return book.title || i18n('Untitled')
   }
 
-  renderBookList () {
+  renderBookList() {
     const { books } = this.props
-    return books.allIds.map(id => {
+    return books.allIds.map((id) => {
       const book = books[id] || books[`${id}`]
-      return <MenuItem key={id} onSelect={() => this.handleChange(id)}>{this.bookTitle(book)}</MenuItem>
+      return (
+        <MenuItem key={id} onSelect={() => this.handleChange(id)}>
+          {this.bookTitle(book)}
+        </MenuItem>
+      )
     })
   }
 
-  render () {
+  render() {
     const { ui, books, series } = this.props
-    const seriesText = series.name == '' ? i18n('Series View') : `${series.name} (${i18n('Series View')})`
+    const seriesText =
+      series.name == '' ? i18n('Series View') : `${series.name} (${i18n('Series View')})`
     let title = seriesText
     if (ui.currentTimeline != 'series') title = this.bookTitle(books[ui.currentTimeline])
 
-    return <NavDropdown id='book_chooser' title={title} disabled={this.isDisabled()}>
-      <MenuItem onSelect={() => this.handleChange('series')}>{seriesText}</MenuItem>
-      <MenuItem divider />
-      { this.renderBookList() }
-    </NavDropdown>
+    return (
+      <NavDropdown id="book_chooser" title={title} disabled={this.isDisabled()}>
+        <MenuItem onSelect={() => this.handleChange('series')}>{seriesText}</MenuItem>
+        <MenuItem divider />
+        {this.renderBookList()}
+      </NavDropdown>
+    )
   }
 
   static propTypes = {
@@ -54,7 +62,7 @@ class BookChooser extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     ui: state.present.ui,
     books: state.present.books,
@@ -62,13 +70,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(UIActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BookChooser)
+export default connect(mapStateToProps, mapDispatchToProps)(BookChooser)

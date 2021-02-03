@@ -1,7 +1,7 @@
 @import "vars";
 
 body.darkmode {
-  background: $darkmode-background;
+  background-color: $darkmode-background;
   .form-control {
     background-color: #ddd !important;
   }

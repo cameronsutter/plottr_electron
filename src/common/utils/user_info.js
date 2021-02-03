@@ -1,3 +1,4 @@
 import Store from 'electron-store'
-const USER = new Store({name: 'license_info'})
+import { USER_INFO_PATH } from './config_paths'
+const USER = new Store({ name: USER_INFO_PATH })
 export default USER

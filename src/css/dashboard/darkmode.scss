@@ -1,0 +1,261 @@
+// DARK GREY - Sidebar background, Fill in Fields, Table Header background, Boxes behind the Top icons/Nav in the Files Tab.
+$dark-gray-1: #444444;
+// TABLE Row Color 1:
+$dark-gray-2: #555555;
+// LIGHTER GREY - Active tab, Background dashboard
+$dark-gray-3: #666666;
+// TABLE ROW COLOR 2:
+$dark-gray-4: #6a6a6a;
+// TOGGLE GREY - Pasive state, FOLDER ICONS on Backups Tab:
+$dark-gray-5: #9d9898;
+// Coming Soon Font Color:
+$dark-gray-6: #abafb5;
+// SIDEBAR ICONS and FILE TOP NAV ICONS, Backups Folder Icons, HELP TAB - Light Buttons Grey:
+// Regular Font Color + Fill In Fields text color:
+$dark-gray-7: #dbe2ec;
+
+$dark-orange: #ff7f32;
+$dark-text: $dark-gray-7;
+$white-highlight-box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $dark-gray-7, inset 0px 1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 1px 5px 0 $dark-gray-7;
+
+
+.dashboard__header.darkmode {
+  background-color: $dark-gray-1 !important;
+  background-image: none !important;
+  color: $dark-text;
+
+  .nav-3right-buttons svg:hover {
+    background-color: $dark-gray-3 !important;
+  }
+}
+
+main.darkmode {
+  background-color: $dark-gray-3 !important;
+  color: $dark-text;
+
+  .secondary-text {
+    color: $dark-text;
+  }
+
+  .dashboard__top-border {
+    background-color: $dark-gray-3 !important;
+  }
+
+  ////////////////
+  // navigation //
+  ////////////////
+  nav {
+    background-color: $dark-gray-1 !important;
+  }
+  .dashboard__navigation-tab {
+    background-color: $dark-gray-1;
+    border-bottom-color: $dark-gray-3;
+    color: $dark-text;
+
+    &:first-child {
+      border-top-color: $dark-gray-1;
+    }
+
+    &:hover {
+      background-color: $dark-gray-2;
+    }
+
+    &.selected {
+      background-color: $dark-gray-3;
+
+      &:first-child {
+        border-top-color: $dark-gray-3;
+      }
+
+      svg {
+        color: $dark-orange;
+      }
+    }
+  }
+
+  /////////////
+  // account //
+  /////////////
+  .dashboard__about__wrapper {
+    dd {
+      button {
+        color: $dark-text;
+        background-color: $dark-gray-1;
+        border-color: $dark-text;
+
+        &:hover {
+          background-color: $dark-gray-2;
+        }
+      }
+      a {
+        color: $dark-orange;
+      }
+    }
+  }
+
+  ///////////
+  // files //
+  ///////////
+  .dashboard__new-files__item {
+    color: $dark-text;
+    background: $dark-gray-1;
+    &.icon {
+      svg {
+        color: $dark-gray-5;
+      }
+    }
+    &:hover, &.active {
+      background-color: $dark-gray-2;
+      box-shadow: $white-highlight-box-shadow;
+    }
+  }
+
+  .dashboard__recent-files .dashboard__search {
+    color: $dark-text;
+    background-color: $dark-gray-1;
+    border-color: $dark-gray-2;
+    // &::-webkit-input-placeholder {
+    //   color: $dark-text;
+    // }
+  }
+
+  .dashboard__recent-files__table {
+    .sticky-table-table {
+      .sticky-table-row:first-child {
+        .sticky-table-cell {
+          background-color: $dark-gray-1;
+          color: $dark-text;
+          &:first-child {
+            border-right-color: $dark-gray-3;
+          }
+        }
+      }
+      .sticky-table-row:not(:first-child) {
+        border-left-color: $dark-gray-1;
+        .sticky-table-cell:not(:first-child) {
+          border-left-color: $dark-gray-3;
+        }
+        .sticky-table-cell {
+          border-color: $dark-gray-1;
+        }
+
+        &:hover, &.selected {
+          color: $dark-text;
+          .sticky-table-cell:first-child {
+            // background-color: $dark-gray-1;
+            background-color: hsl(0, 0%, 30%); // in between $dark-gray-1 and $dark-gray-2
+          }
+        }
+      }
+      .sticky-table-row:nth-of-type(even) {
+        .sticky-table-cell {
+          background-color: $dark-gray-4;
+        }
+      }
+      .sticky-table-row:nth-of-type(odd):not(:first-child) {
+        .sticky-table-cell {
+          background-color: $dark-gray-2;
+        }
+      }
+    }
+  }
+
+  .dashboard__template-picker {
+    .template-picker__list {
+      li.list-group-item {
+        background-color: $dark-gray-1;
+        border-color: $dark-gray-2;
+        &:hover, &.selected {
+          color: $dark-text;
+          background-color: $dark-gray-1;
+        }
+      }
+    }
+    .template-picker__details {
+      .panel-body {
+        background-color: $dark-gray-4;
+        button {
+          color: $dark-text;
+          background-color: $dark-gray-1;
+          border-color: $dark-text;
+          &:hover {
+            background-color: $dark-gray-2;
+          }
+        }
+      }
+    }
+  }
+
+  /////////////
+  // backups //
+  /////////////
+  .dashboard__backups__item {
+    &.icon {
+      svg {
+        color: $dark-text;
+      }
+      &:hover {
+        svg {
+          color: $dark-text;
+        }
+      }
+    }
+    &:hover {
+      color: $dark-text;
+      background-color: $dark-gray-1;
+    }
+  }
+
+  /////////////
+  // options //
+  /////////////
+  .dashboard__options {
+    h1 {
+      &.secondary-text {
+        color: $dark-gray-6;
+      }
+    }
+    hr {
+      border-top-color: $dark-text;
+    }
+    .option-switch-label:not(.checked) {
+      background-color: $dark-gray-6;
+    }
+    .option-switch-labeltext {
+      color: $dark-gray-6;
+    }
+  }
+  .dashboard__options__item {
+    select {
+      color: $dark-gray-1;
+    }
+    &.disabled {
+      color: $dark-gray-6;
+      .help-block {
+        color: $dark-gray-6;
+      }
+      .form-control {
+        background-color: $dark-gray-1;
+        color: $dark-gray-6;
+      }
+    }
+  }
+
+  //////////
+  // help //
+  //////////
+  .dashboard__help__item {
+    &.links {
+      button.btn-link {
+        color: $dark-orange;
+      }
+    }
+    &.actions {
+      #customerServiceCode {
+        color: $dark-text;
+        background-color: $dark-gray-1;
+        border-color: $dark-gray-2;
+      }
+    }
+  }
+}

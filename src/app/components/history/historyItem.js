@@ -4,10 +4,8 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 import { Glyphicon, Button } from 'react-bootstrap'
 import * as types from 'constants/ActionTypes'
-import StoryName from 'components/history/StoryName'
 import AddScene from 'components/history/AddScene'
 import EditScene from 'components/history/EditScene'
-import DeleteScene from 'components/history/DeleteScene'
 import AddCard from 'components/history/AddCard'
 import CardDetails from 'components/history/CardDetails'
 import CardCoordinates from 'components/history/CardCoordinates'
@@ -15,7 +13,6 @@ import DeleteCard from 'components/history/DeleteCard'
 import AddLine from 'components/history/AddLine'
 import LineTitle from 'components/history/LineTitle'
 import LineColor from 'components/history/LineColor'
-import Reorder from 'components/history/Reorder'
 import DeleteLine from 'components/history/DeleteLine'
 import AddPlace from 'components/history/AddPlace'
 import EditPlace from 'components/history/EditPlace'
@@ -30,47 +27,53 @@ import RemoveCustomAttribute from 'components/history/RemoveCustomAttribute'
 import AddThingToThing from 'components/history/AddThingToThing'
 
 class HistoryItem extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = {showDetails: false, redo: false}
+    this.state = { showDetails: false, redo: false }
   }
 
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.undone) this.setState({redo: true})
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.undone) this.setState({ redo: true })
   }
 
   toggleDetails = (e) => {
-    this.setState({showDetails: !this.state.showDetails})
+    this.setState({ showDetails: !this.state.showDetails })
   }
 
-  undo (e) {
+  undo(e) {
     e.stopPropagation()
-    this.setState({redo: true})
+    this.setState({ redo: true })
     this.props.undo(this.props.item.id)
   }
 
-  redo (e) {
+  redo(e) {
     e.stopPropagation()
-    this.setState({redo: false})
+    this.setState({ redo: false })
     this.props.redo(this.props.item.id)
   }
 
-  renderTypeName (type) {
+  renderTypeName(type) {
     return type.replace(/_/g, ' ').toLowerCase()
   }
 
-  renderButton () {
-    var style = this.state.showDetails ? {alignSelf: 'flex-start'} : {}
+  renderButton() {
+    var style = this.state.showDetails ? { alignSelf: 'flex-start' } : {}
     if (this.state.redo) {
-      return <Button bsStyle='primary' bsSize='small' style={style} onClick={this.redo.bind(this)}>
-        <Glyphicon glyph='repeat' /> {i18n('Redo')}</Button>
+      return (
+        <Button bsStyle="primary" bsSize="small" style={style} onClick={this.redo.bind(this)}>
+          <Glyphicon glyph="repeat" /> {i18n('Redo')}
+        </Button>
+      )
     } else {
-      return <Button bsStyle='danger' bsSize='small' style={style} onClick={this.undo.bind(this)}>
-        <Glyphicon glyph='remove' /> {i18n('Undo')}</Button>
+      return (
+        <Button bsStyle="danger" bsSize="small" style={style} onClick={this.undo.bind(this)}>
+          <Glyphicon glyph="remove" /> {i18n('Undo')}
+        </Button>
+      )
     }
   }
 
-  renderDetailsByType (type, item) {
+  renderDetailsByType(type, item) {
     switch (type) {
       case types.ADD_SCENE:
         return <AddScene item={item} />
@@ -138,18 +141,22 @@ class HistoryItem extends Component {
     }
   }
 
-  render () {
+  render() {
     const type = this.props.item.action.type
     var details = this.renderDetailsByType(type, this.props.item)
     var button = this.renderButton()
-    var detailStyle = this.state.showDetails ? {display: 'block'} : {}
+    var detailStyle = this.state.showDetails ? { display: 'block' } : {}
     var containerClass = 'history-component__item__container'
     containerClass = this.state.redo ? `${containerClass} redo` : containerClass
     return (
-      <div className='history-component__item' onClick={this.toggleDetails}>
+      <div className="history-component__item" onClick={this.toggleDetails}>
         <div className={containerClass}>
-          <div className='history-component__type'><strong>{this.renderTypeName(type)}</strong></div>
-          <div className='history-component__details' style={detailStyle} >{details}</div>
+          <div className="history-component__type">
+            <strong>{this.renderTypeName(type)}</strong>
+          </div>
+          <div className="history-component__details" style={detailStyle}>
+            {details}
+          </div>
         </div>
         {button}
       </div>
@@ -161,20 +168,15 @@ HistoryItem.propTypes = {
   item: PropTypes.object.isRequired,
   undone: PropTypes.bool.isRequired,
   undo: PropTypes.func.isRequired,
-  redo: PropTypes.func.isRequired
+  redo: PropTypes.func.isRequired,
 }
 
-function mapStateToProps (state) {
-  return {
-  }
+function mapStateToProps(state) {
+  return {}
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-  }
+function mapDispatchToProps(dispatch) {
+  return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HistoryItem)
+export default connect(mapStateToProps, mapDispatchToProps)(HistoryItem)

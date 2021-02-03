@@ -2,20 +2,31 @@ import { remote, shell } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import log from 'electron-log'
+import { ActionTypes } from 'pltr/v2'
 import i18n from 'format-message'
 import USER from './user_info'
 const app = remote.app
 
-let lastAction = null
+let previousAction = null
 
-export function setLastAction (action) {
-  lastAction = action
+export function setPreviousAction(action) {
+  previousAction = action
 }
 
-export function createErrorReport (error, errorInfo) {
+export function hasPreviousAction() {
+  if (!previousAction) return false
+  if (previousAction.type == ActionTypes.FILE_LOADED) return false
+  return true
+}
+
+export function getPreviousAction() {
+  return previousAction
+}
+
+export function createErrorReport(error, errorInfo) {
   const body = prepareErrorReport(error, errorInfo)
   const fileName = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
-  fs.writeFile(fileName, body, function(err) {
+  fs.writeFile(fileName, body, function (err) {
     if (err) {
       log.warn(err)
       rollbar.warn(err)
@@ -25,7 +36,7 @@ export function createErrorReport (error, errorInfo) {
   })
 }
 
-function prepareErrorReport (error, errorInfo) {
+function prepareErrorReport(error, errorInfo) {
   const hasLicense = !!USER.get('licenseKey')
   const report = `
 ----------------------------------
@@ -43,16 +54,21 @@ message: ${error.message}
 stack: ${error.stack}
 componentStack: ${errorInfo.componentStack}
 ----------------------------------
-LAST ACTION
+PREVIOUS ACTION
 ----------------------------------
-${JSON.stringify(lastAction)}
+${JSON.stringify(previousAction)}
   `
   return report
 }
 
-function notifyUser (fileName) {
+function notifyUser(fileName) {
   try {
-    new Notification(i18n('Error Report created'), {body: i18n('Plottr created a file named {fileName} in your Documents folder', {fileName: path.basename(fileName)}), silent: true})
+    new Notification(i18n('Error Report created'), {
+      body: i18n('Plottr created a file named {fileName} in your Documents folder', {
+        fileName: path.basename(fileName),
+      }),
+      silent: true,
+    })
   } catch (error) {
     // ignore
     // on windows you need something called an Application User Model ID which may not work

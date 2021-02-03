@@ -1,47 +1,51 @@
+import fs from 'fs'
 import path from 'path'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import i18n from 'format-message'
 import App from 'containers/App'
-import configureStore from 'store/configureStore'
+import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
-const { Menu, MenuItem } = remote
+const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-const app = remote.app
-import { newFile, fileSaved, loadFile, setDarkMode } from 'actions/ui'
-import { MPQ, setTrialInfo } from 'middlewares/helpers'
+import { actions, migrateIfNeeded, helpers } from 'pltr/v2'
+import MPQ from '../common/utils/MPQ'
+import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
 import log from 'electron-log'
-import i18n from 'format-message'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
-import Exporter from '../common/exporter/scrivener/v2/exporter'
-import Importer from '../common/importer/snowflake/importer'
-import { fetchFonts, setFonts } from './helpers/fonts'
-import editorRegistry from './components/rce/editor-registry';
+import ScrivenerExporter from '../common/exporter/scrivener/v2/exporter'
+import WordExporter from '../common/exporter/word/exporter'
+import editorRegistry from './components/rce/editor-registry'
+import { setupI18n } from '../../locales'
+import { displayFileName, editKnownFilePath } from '../common/utils/known_files'
+import { addNewCustomTemplate } from '../common/utils/custom_templates'
+import { saveFile } from '../common/utils/files'
+import { removeFromTempFiles } from '../common/utils/temp_files'
 
-i18n.setup({
-  translations: require('../../locales'),
-  locale: app.getLocale() || 'en'
-})
+const {
+  undo: { focusIsEditable },
+} = helpers
 
-require('dotenv').config({path: path.resolve(__dirname, '..', '.env')})
+setupI18n(SETTINGS)
+
+require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')
 
-if (process.env.NODE_ENV !== 'development') {
-  process.on('uncaughtException', err => {
-    log.error(err)
-    rollbar.error(err)
-  })
-}
+process.on('uncaughtException', (err) => {
+  log.error(err)
+  rollbar.error(err)
+})
 
-initMixpanel()
+ensureBackupTodayPath()
 
 Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
-const store = configureStore()
+// TODO: fix this by exporting store from the configureStore file
 // kind of a hack to enable store dispatches in otherwise hard situations
 window.specialDelivery = (action) => {
   store.dispatch(action)
@@ -51,57 +55,129 @@ ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
 })
 
-function bootFile (state, fileName, dirty, darkMode, openFiles) {
-  store.dispatch(loadFile(fileName, dirty, state))
-  MPQ.defaultEventStats('open_file', {online: navigator.onLine, version: state.file.version, number_open: openFiles}, state)
+function bootFile(filePath, darkMode, numOpenFiles) {
+  initMixpanel()
+  win.setTitle(displayFileName(filePath))
+  win.setRepresentedFilename(filePath)
 
-  const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
-  if (state.ui && state.ui.darkMode !== darkMode) {
-    store.dispatch(setDarkMode(newDarkState))
+  try {
+    const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    saveBackup(filePath, json, (err) => {
+      if (err) {
+        log.warn('[file open backup]', err)
+        rollbar.error({ message: 'BACKUP failed' })
+        rollbar.warn(err, { fileName: filePath })
+      } else {
+        log.info('[file open backup]', 'success', filePath)
+      }
+    })
+    migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
+      if (err) {
+        rollbar.error(err)
+        log.error(err)
+      }
+      store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
+
+      MPQ.projectEventStats(
+        'open_file',
+        { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
+        state
+      )
+
+      const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
+      if (state.ui && state.ui.darkMode !== darkMode) {
+        store.dispatch(actions.ui.setDarkMode(newDarkState))
+      }
+      if (newDarkState) window.document.body.className = 'darkmode'
+
+      render(
+        <Provider store={store}>
+          <App showTour={false} />
+        </Provider>,
+        root
+      )
+    })
+  } catch (error) {
+    // TODO: error dialog and ask the user to try again
+    log.error(error)
+    rollbar.error(error)
   }
-  if (newDarkState) window.document.body.className = 'darkmode'
-
-  render(
-    <Provider store={store}>
-      <App showTour={SETTINGS.get('showTheTour')} />
-    </Provider>,
-    root
-  )
 }
 
-ipcRenderer.send('fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, state, fileName, dirty, darkMode, openFiles) => {
-  bootFile(state, fileName, dirty, darkMode, openFiles)
+ipcRenderer.send('pls-fetch-state', win.id)
+ipcRenderer.on('state-fetched', (event, filePath, darkMode, numOpenFiles) => {
+  bootFile(filePath, darkMode, numOpenFiles)
 })
 
-ipcRenderer.once('send-launch', (event, version, isTrialMode, daysLeftOfTrial) => {
-  setTrialInfo(isTrialMode, daysLeftOfTrial)
-  MPQ.push('Launch', {online: navigator.onLine, version: version})
-  ipcRenderer.send('launch-sent')
+ipcRenderer.on('reload-from-file', (event, filePath, darkMode, numOpenFiles) => {
+  bootFile(filePath, darkMode, numOpenFiles)
 })
 
-ipcRenderer.on('set-dark-mode', (event, on) => {
-  store.dispatch(setDarkMode(on))
-  window.document.body.className = on ? 'darkmode' : ''
+ipcRenderer.on('set-dark-mode', (event, isOn) => {
+  store.dispatch(actions.ui.setDarkMode(isOn))
+  window.document.body.className = isOn ? 'darkmode' : ''
 })
 
-ipcRenderer.on('export-scrivener', (event, filePath) => {
+ipcRenderer.on('export-file', (event, options) => {
   const currentState = store.getState()
-  Exporter(currentState.present, filePath)
+  switch (options.type) {
+    case 'scrivener':
+      ScrivenerExporter(currentState.present, options.fileName)
+      break
+    case 'word':
+    default:
+      WordExporter(currentState.present, options)
+      break
+  }
 })
 
-ipcRenderer.on('import-snowflake', (event, currentState, fileName, importPath, darkMode, openFiles) => {
-  const result = Importer(importPath, true, currentState)
-  bootFile(result, fileName, true, darkMode, openFiles)
+ipcRenderer.on('save-custom-template', (event, options) => {
+  const currentState = store.getState()
+  addNewCustomTemplate(currentState.present, options)
 })
 
-function focusIsEditable () {
-  if (document.activeElement.tagName == 'INPUT') return true
-  if (document.activeElement.dataset.slateEditor
-    && document.activeElement.dataset.slateEditor == "true") return true
+ipcRenderer.on('save', () => {
+  const { present } = store.getState()
+  saveFile(present.file.fileName, present)
+})
 
-  return false
-}
+ipcRenderer.on('save-as', () => {
+  const { present } = store.getState()
+  const defaultPath = path.basename(present.file.fileName).replace('.pltr', '')
+  const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+  const fileName = dialog.showSaveDialogSync(win, {
+    filters,
+    title: i18n('Where would you like to save this copy?'),
+    defaultPath,
+  })
+  if (fileName) {
+    let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+    saveFile(newFilePath, present)
+    ipcRenderer.send('pls-open-window', newFilePath, true)
+  }
+})
+
+ipcRenderer.on('move-from-temp', () => {
+  const { present } = store.getState()
+  const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+  const newFilePath = dialog.showSaveDialogSync(win, {
+    filters: filters,
+    title: i18n('Where would you like to save this file?'),
+  })
+  if (newFilePath) {
+    // change in redux
+    store.dispatch(actions.ui.editFileName(newFilePath))
+    // remove from tmp store
+    removeFromTempFiles(present.file.fileName)
+    // update in known files
+    editKnownFilePath(present.file.fileName, newFilePath)
+    // change the window's title
+    win.setRepresentedFilename(newFilePath)
+    win.setTitle(displayFileName(newFilePath))
+    // send event to dashboard
+    ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
+  }
+})
 
 // for some reason the electron webContents.undo() and redo() don't affect
 // the slate editors. So we use the editorRegistry, which can be used to lookup
@@ -111,9 +187,9 @@ function focusIsEditable () {
 ipcRenderer.on('undo', (event) => {
   if (focusIsEditable()) {
     win.webContents.undo()
-    const editor = editorRegistry.getEditor(document.activeElement);
+    const editor = editorRegistry.getEditor(document.activeElement)
     if (editor != null) {
-      editor.undo();
+      editor.undo()
     }
   } else {
     // custom undo function
@@ -124,9 +200,9 @@ ipcRenderer.on('undo', (event) => {
 ipcRenderer.on('redo', (event) => {
   if (focusIsEditable()) {
     win.webContents.redo()
-    const editor = editorRegistry.getEditor(document.activeElement);
+    const editor = editorRegistry.getEditor(document.activeElement)
     if (editor != null) {
-      editor.redo();
+      editor.redo()
     }
   } else {
     // custom redo function
@@ -135,16 +211,14 @@ ipcRenderer.on('redo', (event) => {
 })
 
 window.onerror = function (message, file, line, column, err) {
-  if (process.env.NODE_ENV !== 'development') {
-    log.error(err)
-    rollbar.error(err)
-  }
+  log.error(err)
+  rollbar.error(err)
 }
 
 window.SCROLLWITHKEYS = true
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', (e) => {
   if (window.SCROLLWITHKEYS) {
-    const table = document.querySelector(".sticky-table")
+    const table = document.querySelector('.sticky-table')
     if (table) {
       if (e.key === 'ArrowUp') {
         var amount = 300
@@ -167,6 +241,6 @@ document.addEventListener('keydown', e => {
   }
 })
 
-window.logger = function(which) {
+window.logger = function (which) {
   process.env.LOGGER = which.toString()
 }

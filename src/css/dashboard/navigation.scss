@@ -1,0 +1,55 @@
+@import "../colors";
+@import "../vars";
+
+#dashboard__react__root {
+  nav {
+    grid-area: nav;
+    user-select: none;
+    width: 100px;
+    background-color: $orange;
+    // background-image: linear-gradient(to right, $orange, $orange-5);
+    // box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    // box-shadow: 3px 0px 1px -2px rgba(0, 0, 0, 0.2), 2px 0px 2px 0px rgba(0, 0, 0, 0.14), 1px 0px 5px 0px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.dashboard__navigation-tab {
+  @include application-text;
+  height: 95px;
+  border-bottom: 1.5px solid $orange-5;
+  // border-left: 4px solid $orange;
+  color: white;
+  padding: 7px;
+  font-size: medium;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all .1s ease-in;
+
+  &:hover {
+    background-color: $orange-7;
+  }
+
+  &.selected {
+    background-color: $gray-9;
+    // background-color: #FBF7F0;
+    // color: $blue-4;
+    color: $gray-0;
+    border-bottom: none;
+    // box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1), inset 0 -1px 5px 0 $blue-4;
+    // box-shadow: $blue-highlight-box-shadow;
+    svg {
+      color: $orange;
+    }
+  }
+
+  svg {
+    font-size: 35px;
+  }
+
+  &:first-child {
+    border-top: 4px solid $orange;
+  }
+}

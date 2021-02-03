@@ -1,0 +1,104 @@
+@import "../colors";
+@import "navigation";
+@import "verify";
+@import "expired";
+@import "update_notifier";
+@import "files";
+@import "templates";
+@import "backups";
+@import "account";
+@import "options";
+@import "help";
+@import "darkmode";
+
+$header-height: 40px;
+
+#dashboard__react__root {
+  @include application-text;
+  height: 100vh;
+
+  .dashboard__header {
+    -webkit-app-region: drag;
+    -webkit-user-select: none;
+    width: 100vw;
+    height: $header-height;
+    background-color: $neutral-gray-9;
+    background-image: linear-gradient(to top, $neutral-gray-7, $neutral-gray-8, $neutral-gray-9);
+    display: flex;
+    align-items: center;
+    // box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+
+    .nav-spacer {
+      width: 100px;
+      &.win32 {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .nav-right {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+
+      .spacer {
+        padding: 0 4px;
+      }
+    }
+
+    .nav-3right-buttons {
+      -webkit-app-region: no-drag;
+      margin-right: 11px;
+      svg {
+        font-size: 22px;
+        margin: 0 5px;
+        vertical-align: bottom;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $neutral-gray-7;
+        }
+      }
+    }
+
+    .beamer-wrapper {
+      width: 40px;
+      cursor: pointer;
+      #beamer-bell {
+        cursor: pointer;
+        .beamer_icon {
+          top: -6px;
+          right: -16px;
+        }
+        svg {
+          cursor: pointer;
+          color: $gray-0;
+          vertical-align: bottom;
+        }
+      }
+      &.win32 {
+        width: 80px;
+      }
+    }
+  }
+
+  main {
+    height: calc(100vh - 40px); // can't use variable here: $header-height
+    width: 100vw;
+    overflow: auto;
+    display: grid;
+    grid-template-areas: 'nav main';
+    grid-template-columns: auto 1fr;
+  }
+
+  .dashboard__body {
+    grid-area: main;
+    overflow: hidden;
+
+    .dashboard__top-border {
+      height: 4px;
+      background-color: $orange;
+    }
+  }
+}

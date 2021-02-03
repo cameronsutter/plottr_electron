@@ -1,0 +1,110 @@
+@import "../colors";
+@import "../vars";
+
+.dashboard__options {
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px 40px;
+
+  h1 {
+    font-size: 20pt;
+    margin-top: 0;
+    margin-bottom: 20px;
+
+    &.secondary-text {
+      color: $gray-5;
+    }
+  }
+
+  hr {
+    border-top: 1px solid $neutral-gray-7;
+  }
+}
+
+.dashboard__options__item {
+  padding: 8px;
+  padding-left: 32px;
+  h4 {
+    font-size: 14pt;
+    margin-left: -32px;
+  }
+  &.disabled {
+    color: $gray-5;
+    .help-block {
+      color: $gray-5;
+    }
+    .form-control {
+      color: $gray-5;
+    }
+  }
+  .form-control[type="number"] {
+    width: 100px;
+  }
+  .form-control[type="text"] {
+    width: 50%;
+  }
+}
+
+
+// copied and adapted from https://upmostly.com/tutorials/build-a-react-switch-toggle-component //
+
+$scale-factor: 2;
+
+input.option-switch-checkbox {
+  height: 0;
+  width: 0;
+  margin: 0;
+  visibility: hidden;
+}
+
+.option-switch-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  width: 100px / $scale-factor;
+  height: 50px / $scale-factor;
+  background-color: $gray-5;
+  border-radius: 100px / $scale-factor;
+  position: relative;
+  transition: background-color .2s;
+
+  &.checked {
+    background-color: $green-5;
+  }
+}
+
+.option-switch-label .option-switch-button {
+  content: '';
+  position: absolute;
+  top: 1px; // adjust with scale factor
+  left: 1px; // adjust with scale factor
+  width: 45px / $scale-factor;
+  height: 45px / $scale-factor;
+  border-radius: 45px / $scale-factor;
+  transition: 0.2s;
+  background: #fff;
+  box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
+}
+
+.option-switch-checkbox:checked + .option-switch-label .option-switch-button {
+  left: calc(100% - 1px); // adjust with scale factor
+  transform: translateX(-100%);
+}
+
+.option-switch-label:active .option-switch-button {
+  width: 60px / $scale-factor;
+}
+
+.option-switch-labeltext {
+  margin-left: 8px;
+}
+
+.option-switch-wrapper {
+  display: flex;
+  align-items: center;
+
+  &.disabled {
+    color: $gray-5;
+  }
+}

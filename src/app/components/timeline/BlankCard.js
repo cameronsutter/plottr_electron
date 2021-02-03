@@ -1,130 +1,266 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Cell } from 'react-sticky-table'
-import * as CardActions from 'actions/cards'
 import i18n from 'format-message'
-import { FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
-import { isSeriesSelector } from '../../selectors/ui'
+import TemplatePicker from '../../../common/components/templates/TemplatePicker'
+import { lineColors, actions, selectors } from 'pltr/v2'
+
+const CardActions = actions.card
+
+const { isSeriesSelector, isSmallSelector, isMediumSelector } = selectors
+const { lightBackground } = lineColors
 
 class BlankCard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       creating: false,
-      dropping: false,
+      templateHover: false,
+      defaultHover: false,
+      showTemplatePicker: false,
+      templates: [],
+      inDropZone: false,
+      dropDepth: 0,
     }
+
+    this.titleInputRef = React.createRef()
   }
 
   handleDragEnter = (e) => {
-    this.setState({dropping: true})
+    this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
-    this.setState({dropping: true})
     e.preventDefault()
+    this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
-    this.setState({dropping: false})
+    let dropDepth = this.state.dropDepth
+    --dropDepth
+    this.setState({ dropDepth: dropDepth })
+    if (dropDepth > 0) return
+    this.setState({ inDropZone: false })
   }
 
   handleDrop = (e) => {
     e.stopPropagation()
-    this.setState({dropping: false})
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     const json = e.dataTransfer.getData('text/json')
     const droppedData = JSON.parse(json)
     if (!droppedData.cardId) return
 
-    const {
-      chapterId,
-      lineId,
-      isSeries
-    } = this.props;
+    const { chapterId, lineId, isSeries } = this.props
 
-    this.props.actions.reorderCardsWithinLine(
-      chapterId,
-      lineId,
-      isSeries,
-      [droppedData.cardId],
-    )
+    this.props.actions.reorderCardsWithinLine(chapterId, lineId, isSeries, [droppedData.cardId])
   }
 
   saveCreate = () => {
-    const newCard = this.buildCard(findDOMNode(this.refs.titleInput).value)
+    const newCard = this.buildCard(this.titleInputRef.current.value)
+    this.props.actions.addCard(
+      Object.assign(newCard, this.state.templates ? { templates: this.state.templates } : {})
+    )
+    this.setState({
+      creating: false,
+      templates: [],
+    })
+    if (this.props.onDone) this.props.onDone()
+  }
+
+  createFromSmall = () => {
+    const newCard = this.buildCard('')
     this.props.actions.addCard(newCard)
-    this.setState({creating: false})
   }
 
   handleFinishCreate = (event) => {
-    if (event.which === 13) { //enter
+    if (event.which === 13) {
+      //enter
       this.saveCreate()
     }
   }
 
   startCreating = () => {
-    this.setState({creating: true})
+    this.setState({ creating: true })
   }
 
-  buildCard (title) {
+  buildCard(title) {
     const { chapterId, lineId } = this.props
     if (this.props.isSeries) {
-      return { title, beatId: chapterId, seriesLineId: lineId, positionWithinLine: 0 }
+      return {
+        title,
+        beatId: chapterId,
+        seriesLineId: lineId,
+        positionWithinLine: this.props.positionWithinLine || 0,
+      }
     } else {
-      return { title, chapterId, lineId, positionWithinLine: 0 }
+      return { title, chapterId, lineId, positionWithinLine: this.props.positionWithinLine || 0 }
     }
   }
 
   handleCancelCreate = (event) => {
-    if (event.which === 27) { //esc
-      this.setState({creating: false})
+    if (event.which === 27) {
+      //esc
+      this.setState({ creating: false })
     }
   }
 
   handleBlur = () => {
-    var newTitle = findDOMNode(this.refs.titleInput).value
+    var newTitle = this.titleInputRef.current.value
     if (newTitle === '') {
-      this.setState({creating: false})
+      this.setState({ creating: false })
       return false
     } else {
       this.saveCreate()
-      this.setState({creating: false})
+      this.setState({ creating: false })
     }
   }
 
-  renderBlank () {
-    var blankCardStyle = {
-      borderColor: this.props.color
-    }
-    return <div className={cx('blank-card__body', {hover: this.state.dropping})} style={blankCardStyle} />
+  onAddWithTemplateHover = () => {
+    this.setState({
+      templateHover: true,
+    })
   }
 
-  renderCreateNew () {
-    const cardStyle = {
-      borderColor: this.props.color
+  onAddWithTemplateLeave = () => {
+    this.setState({
+      templateHover: false,
+    })
+  }
+
+  onAddWithDefaultHover = () => {
+    this.setState({
+      defaultHover: true,
+    })
+  }
+
+  onAddWithDefaultLeave = () => {
+    this.setState({
+      defaultHover: false,
+    })
+  }
+
+  showTemplatePicker = () => {
+    this.setState({
+      showTemplatePicker: true,
+    })
+  }
+
+  handleChooseTemplate = (template) => {
+    const newTemplates = this.state.templates.find(({ id }) => id === template.id)
+      ? this.state.templates
+      : [template, ...this.state.templates]
+
+    this.setState({
+      templates: newTemplates,
+      showTemplatePicker: false,
+      creating: true,
+    })
+  }
+
+  closeTemplatePicker = () => {
+    this.setState({ showTemplatePicker: false })
+  }
+
+  renderBlank() {
+    const { color, verticalInsertion, isSmall } = this.props
+    if (isSmall) {
+      const smallStyle = { borderColor: color }
+      return (
+        <td
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
+        >
+          <div
+            className={cx('blank-circle', { hover: this.state.inDropZone })}
+            style={smallStyle}
+            onClick={this.createFromSmall}
+          />
+        </td>
+      )
     }
+
+    const blankCardStyle = {
+      borderColor: color,
+      color: color,
+    }
+    const addWithTemplateStyle = this.state.templateHover
+      ? {
+          background: lightBackground(color),
+        }
+      : {}
+    const addWithDefaultStyle = this.state.defaultHover
+      ? {
+          background: lightBackground(color),
+        }
+      : {}
+    const bodyClass = verticalInsertion ? 'vertical-blank-card__body' : 'blank-card__body'
     return (
-      <div className='card__body' style={cardStyle}>
+      <div className={cx(bodyClass, { hover: this.state.inDropZone })} style={blankCardStyle}>
+        <div
+          className="template"
+          onClick={this.showTemplatePicker}
+          onMouseEnter={this.onAddWithTemplateHover}
+          onMouseLeave={this.onAddWithTemplateLeave}
+          style={addWithTemplateStyle}
+        >
+          {i18n('Use Template')}
+        </div>
+        <div
+          className="non-template"
+          onClick={this.startCreating}
+          onMouseEnter={this.onAddWithDefaultHover}
+          onMouseLeave={this.onAddWithDefaultLeave}
+          style={addWithDefaultStyle}
+        >
+          <Glyphicon glyph="plus" />
+        </div>
+      </div>
+    )
+  }
+
+  renderTemplatePicker() {
+    if (!this.state.showTemplatePicker) return null
+
+    return (
+      <TemplatePicker
+        type={['scenes']}
+        modal={true}
+        isOpen={this.state.showTemplatePicker}
+        close={this.closeTemplatePicker}
+        onChooseTemplate={this.handleChooseTemplate}
+      />
+    )
+  }
+
+  renderCreateNew() {
+    const { color } = this.props
+    const cardStyle = { borderColor: color }
+    return (
+      <div className="card__body" style={cardStyle}>
         <FormGroup>
           <ControlLabel>{i18n('Scene Title')}</ControlLabel>
           <FormControl
-            type='text'
+            type="text"
             autoFocus
-            ref='titleInput'
-            bsSize='small'
+            inputRef={this.titleInputRef}
+            bsSize="small"
             onBlur={this.handleBlur}
             onKeyDown={this.handleCancelCreate}
-            onKeyPress={this.handleFinishCreate} />
+            onKeyPress={this.handleFinishCreate}
+          />
         </FormGroup>
       </div>
     )
   }
 
-  render () {
+  render() {
     window.SCROLLWITHKEYS = !this.state.creating
 
     let body = null
@@ -134,31 +270,40 @@ class BlankCard extends Component {
       body = this.renderBlank()
     }
 
-    const vertical = this.props.orientation === 'vertical';
+    if (this.props.isSmall) return body
+
+    const vertical = this.props.orientation === 'vertical'
     return (
-      <Cell>
-        <div
-          className={cx('card__cell', { vertical })}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}
-          onDrop={this.handleDrop}
-          onClick={this.startCreating}
-        >
-          {/* This div is necessary to match the structure of scene cell cards
-              and thus get the styles to apply in the same way (flexbox) */}
-          <div>
-            {body}
-          </div>
-        </div>
-      </Cell>
+      <>
+        {this.props.verticalInsertion ? (
+          body
+        ) : (
+          <Cell>
+            <div
+              className={cx('card__cell', { vertical })}
+              onDragEnter={this.handleDragEnter}
+              onDragOver={this.handleDragOver}
+              onDragLeave={this.handleDragLeave}
+              onDrop={this.handleDrop}
+            >
+              {/* This div is necessary to match the structure of scene cell cards
+                 and thus get the styles to apply in the same way (flexbox) */}
+              <div>{body}</div>
+            </div>
+          </Cell>
+        )}
+        {this.renderTemplatePicker()}
+      </>
     )
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.dropping != nextState.dropping) return true
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.inDropZone != nextState.inDropZone) return true
     if (this.state.creating != nextState.creating) return true
     if (this.props.color != nextProps.color) return true
+    if (this.state.templateHover !== nextState.templateHover) return true
+    if (this.state.defaultHover !== nextState.defaultHover) return true
+    if (this.state.showTemplatePicker !== nextState.showTemplatePicker) return true
     return false
   }
 }
@@ -166,27 +311,32 @@ class BlankCard extends Component {
 BlankCard.propTypes = {
   chapterId: PropTypes.number,
   lineId: PropTypes.number,
+  verticalInsertion: PropTypes.bool,
   color: PropTypes.string.isRequired,
   currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   orientation: PropTypes.string,
   isSeries: PropTypes.bool,
+  positionWithinLine: PropTypes.number,
+  onDone: PropTypes.func,
+  isSmall: PropTypes.bool,
+  isMedium: PropTypes.bool,
+  actions: PropTypes.object,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     currentTimeline: state.present.ui.currentTimeline,
     orientation: state.present.ui.orientation,
     isSeries: isSeriesSelector(state.present),
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(CardActions, dispatch)
+    actions: bindActionCreators(CardActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BlankCard)
+export default connect(mapStateToProps, mapDispatchToProps)(BlankCard)

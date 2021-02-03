@@ -9,23 +9,24 @@ class BookFilterList extends Component {
     this.props.updateItems('book', ids)
   }
 
-  render () {
-    let books = this.props.books.allIds.map(id => {
-      let book = {...this.props.books[id.toString()]}
+  render() {
+    let books = this.props.books.allIds.map((id) => {
+      let book = { ...this.props.books[id.toString()] }
       book.title = book.title || i18n('Untitled')
       return book
     })
-    let allItems = [{id: 'series', title: i18n('Series')}, ...books]
-    return <GenericFilterList
-      items={allItems}
-      title={i18n('Books')}
-      displayAttribute={'title'}
-      updateItems={this.updateItems}
-      filteredItems={this.props.filteredItems}
-    />
+    let allItems = [{ id: 'series', title: i18n('Series') }, ...books]
+    return (
+      <GenericFilterList
+        items={allItems}
+        title={i18n('Books')}
+        displayAttribute={'title'}
+        updateItems={this.updateItems}
+        filteredItems={this.props.filteredItems}
+      />
+    )
   }
 }
-
 
 BookFilterList.propTypes = {
   books: PropTypes.object.isRequired,
@@ -33,17 +34,14 @@ BookFilterList.propTypes = {
   filteredItems: PropTypes.array,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     books: state.present.books,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BookFilterList)
+export default connect(mapStateToProps, mapDispatchToProps)(BookFilterList)

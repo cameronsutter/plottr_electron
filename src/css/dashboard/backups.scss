@@ -1,0 +1,69 @@
+@import "../colors";
+@import "../vars";
+
+.dashboard__backups {
+  height: 100%;
+  padding: 20px 40px;
+
+  .dashboard__search {
+    position: absolute;
+    top: 55px;
+    right: 15px;
+    width: 300px;
+  }
+
+  h1 {
+    font-size: 20pt;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+}
+
+.dashboard__backups__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  height: calc(100% - 49px);
+  overflow: auto;
+}
+
+.dashboard__backups__item {
+  width: 200px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .1s ease-in;
+  position: relative;
+
+  .badge {
+    position: absolute;
+    background-color: $blue-5;
+  }
+
+  p {
+    text-align: center;
+  }
+
+  &.icon {
+    svg {
+      font-size: 50pt;
+      color: $gray-7;
+    }
+    &:hover {
+      svg {
+        color: $gray-5;
+        // transform: scale(1.2);
+      }
+    }
+  }
+
+  &:hover {
+    color: $blue-0;
+    background-color: $blue-9;
+    box-shadow: $blue-highlight-box-shadow;
+  }
+}

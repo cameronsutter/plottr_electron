@@ -1,98 +1,129 @@
 import { ipcRenderer, remote } from 'electron'
-import React, { Component } from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'react-proptypes'
-import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { Modal, Form, FormGroup, Col, ControlLabel, FormControl, ButtonToolbar, Button } from 'react-bootstrap'
+import {
+  Modal,
+  Form,
+  FormGroup,
+  Col,
+  ControlLabel,
+  FormControl,
+  ButtonToolbar,
+  Button,
+} from 'react-bootstrap'
 import i18n from 'format-message'
 import cx from 'classnames'
 
 const win = remote.getCurrentWindow()
 
-class TemplateCreate extends Component {
-  saveEdit = () => {
+function TemplateCreate({ type, close, ui }) {
+  const nameRef = useRef()
+  const descriptionRef = useRef()
+  const linkRef = useRef()
+
+  const saveEdit = () => {
     const data = {
-      name: findDOMNode(this.refs.name).value,
-      description: findDOMNode(this.refs.description).value,
-      link: findDOMNode(this.refs.link).value,
+      name: nameRef.current.value,
+      description: descriptionRef.current.value,
+      link: linkRef.current.value,
     }
 
-    ipcRenderer.send('save-as-template-finish', win.id, { type: this.props.type, data })
-    this.props.close()
+    ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', { type: type, data })
+    close()
   }
 
-  renderToolBar () {
-    return <ButtonToolbar>
-      <Button bsStyle='success' onClick={this.saveEdit}>{i18n('Save')}</Button>
-      <Button onClick={this.props.close}>{i18n('Cancel')}</Button>
-    </ButtonToolbar>
+  const titleFor = (type) => {
+    switch (type) {
+      case 'plotlines':
+        return i18n('My Timeline Template')
+      case 'characters':
+        return i18n('My Character Template')
+      case 'scenes':
+        return i18n('My Scene Template')
+    }
+    // This was the old default at the time of refactoring
+    return i18n('My Character Template')
   }
 
-  renderBody () {
-    return <Form horizontal>
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={3}>
-          {i18n('Name')}
-        </Col>
-        <Col sm={8}>
-          <FormControl type='text' ref='name' defaultValue={i18n('Custom Template')} />
-        </Col>
-      </FormGroup>
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={3}>
-          {i18n('Description')}
-        </Col>
-        <Col sm={8}>
-          <FormControl type='text' ref='description' defaultValue={''} />
-        </Col>
-      </FormGroup>
-      <FormGroup>
-        <Col componentClass={ControlLabel} sm={3}>
-          {i18n('Source Link')}
-        </Col>
-        <Col sm={8}>
-          <FormControl type='text' ref='link' defaultValue={''} placeholder='https://example.com/' />
-        </Col>
-      </FormGroup>
-    </Form>
+  const renderToolBar = () => {
+    return (
+      <ButtonToolbar>
+        <Button bsStyle="success" onClick={saveEdit}>
+          {i18n('Save')}
+        </Button>
+        <Button onClick={close}>{i18n('Cancel')}</Button>
+      </ButtonToolbar>
+    )
   }
 
-  render () {
-    let title = this.props.type == 'plotlines' ? i18n('My Timeline Template') : i18n('My Character Template')
+  const renderBody = () => {
+    return (
+      <Form horizontal>
+        <FormGroup>
+          <Col componentClass={ControlLabel} sm={3}>
+            {i18n('Name')}
+          </Col>
+          <Col sm={8}>
+            <FormControl type="text" inputRef={nameRef} defaultValue={i18n('Custom Template')} />
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Col componentClass={ControlLabel} sm={3}>
+            {i18n('Description')}
+          </Col>
+          <Col sm={8}>
+            <FormControl type="text" inputRef={descriptionRef} defaultValue={''} />
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Col componentClass={ControlLabel} sm={3}>
+            {i18n('Source Link')}
+          </Col>
+          <Col sm={8}>
+            <FormControl
+              type="text"
+              inputRef={linkRef}
+              defaultValue={''}
+              placeholder="https://example.com/"
+            />
+          </Col>
+        </FormGroup>
+      </Form>
+    )
+  }
 
-    return <Modal show={true} onHide={this.props.close} dialogClassName={cx('book-dialog', {darkmode: this.props.ui.darkMode})}>
+  const title = titleFor(type)
+
+  return (
+    <Modal
+      show={true}
+      onHide={close}
+      dialogClassName={cx('book-dialog', { darkmode: ui.darkMode })}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        { this.renderBody() }
-      </Modal.Body>
-      <Modal.Footer>
-        { this.renderToolBar() }
-      </Modal.Footer>
+      <Modal.Body>{renderBody()}</Modal.Body>
+      <Modal.Footer>{renderToolBar()}</Modal.Footer>
     </Modal>
-  }
-
-  static propTypes = {
-    close: PropTypes.func.isRequired,
-    type: PropTypes.string,
-    ui: PropTypes.object.isRequired,
-  }
+  )
 }
 
-function mapStateToProps (state) {
+TemplateCreate.propTypes = {
+  close: PropTypes.func.isRequired,
+  type: PropTypes.string,
+  ui: PropTypes.object.isRequired,
+}
+
+function mapStateToProps(state) {
   return {
     ui: state.present.ui,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TemplateCreate)
-
+export default connect(mapStateToProps, mapDispatchToProps)(TemplateCreate)

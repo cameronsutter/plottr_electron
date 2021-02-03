@@ -2,19 +2,23 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as CardActions from 'actions/cards'
 import CardDialog from 'components/timeline/CardDialog'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from 'components/tagLabel'
-import { isZoomed } from 'helpers/zoom'
-import { truncateTitle } from 'helpers/cards'
 import RichText from '../rce/RichText'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
-import { visibleCardsSelector } from '../../selectors/cards'
+import { helpers, actions, selectors } from 'pltr/v2'
+
+const { visibleCardsSelector, isSmallSelector, isMediumSelector } = selectors
+const CardActions = actions.card
+
+const {
+  card: { truncateTitle },
+} = helpers
 
 class Card extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       dialogOpen: false,
@@ -25,36 +29,36 @@ class Card extends Component {
   }
 
   closeDialog = () => {
-    this.setState({dialogOpen: false})
+    this.setState({ dialogOpen: false })
   }
 
   handleDragStart = (e) => {
-    this.setState({dragging: true})
+    this.setState({ dragging: true })
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/json', JSON.stringify({cardId: this.props.card.id}))
+    e.dataTransfer.setData('text/json', JSON.stringify({ cardId: this.props.card.id }))
   }
 
   handleDragEnd = () => {
-    this.setState({dragging: false})
+    this.setState({ dragging: false })
   }
 
   handleDragEnter = (e) => {
     // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
-    if (!this.state.dragging) this.setState({dropDepth: this.state.dropDepth + 1})
+    if (!this.state.dragging) this.setState({ dropDepth: this.state.dropDepth + 1 })
   }
 
   handleDragOver = (e) => {
     e.preventDefault()
-    if (!this.state.dragging) this.setState({inDropZone: true})
+    if (!this.state.dragging) this.setState({ inDropZone: true })
   }
 
   handleDragLeave = (e) => {
     if (!this.state.dragging) {
       let dropDepth = this.state.dropDepth
       --dropDepth
-      this.setState({dropDepth: dropDepth})
+      this.setState({ dropDepth: dropDepth })
       if (dropDepth > 0) return
-      this.setState({inDropZone: false})
+      this.setState({ inDropZone: false })
     }
   }
 
@@ -63,7 +67,7 @@ class Card extends Component {
     e.preventDefault()
     if (this.state.dragging) return
     if (!this.props.allowDrop) return
-    this.setState({inDropZone: false, dropDepth: 0})
+    this.setState({ inDropZone: false, dropDepth: 0 })
 
     const json = e.dataTransfer.getData('text/json')
     const droppedData = JSON.parse(json)
@@ -73,36 +77,41 @@ class Card extends Component {
   }
 
   openDialog = () => {
-    this.setState({dialogOpen: true})
+    this.setState({ dialogOpen: true })
   }
 
-  renderDialog () {
+  renderDialog() {
     if (!this.state.dialogOpen) return null
-    const { card, chapterId, lineId } = this.props
-    return <CardDialog
-      card={card}
-      chapterId={chapterId}
-      lineId={lineId}
-      closeDialog={this.closeDialog}
-    />
+    const { ui, card, chapterId, lineId } = this.props
+    return (
+      <CardDialog
+        ui={ui}
+        card={card}
+        chapterId={chapterId}
+        lineId={lineId}
+        closeDialog={this.closeDialog}
+      />
+    )
   }
 
-  renderPopover () {
-    return <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
-      <div className='card__popover-wrapper'>
-        <RichText
-          description={this.props.card.description}
-          editable={false}
-          className='card__popover-description'
-          darkMode={this.props.ui.darkMode}
-        />
-        {this.renderTags()}
-      </div>
-    </Popover>
+  renderPopover() {
+    return (
+      <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
+        <div className="card__popover-wrapper">
+          <RichText
+            description={this.props.card.description}
+            editable={false}
+            className="card__popover-description"
+            darkMode={this.props.ui.darkMode}
+          />
+          {this.renderTags()}
+        </div>
+      </Popover>
+    )
   }
 
   // TODO: this should be a selector
-  hasDetailsToShow () {
+  hasDetailsToShow() {
     const { card } = this.props
 
     if (card.tags && card.tags.length) return true
@@ -112,90 +121,128 @@ class Card extends Component {
     if (card.description.length > 1) return true
 
     // if it only has one blank paragraph
-    if (card.description.length == 1 && card.description[0] && card.description[0].children
-      && card.description[0].children.length == 1 && card.description[0].children[0]
-      && card.description[0].children[0].text == '') return false
+    if (
+      card.description.length == 1 &&
+      card.description[0] &&
+      card.description[0].children &&
+      card.description[0].children.length == 1 &&
+      card.description[0].children[0] &&
+      card.description[0].children[0].text == ''
+    )
+      return false
 
     return true
   }
 
-  renderTags () {
+  renderTags() {
     const { card, tags } = this.props
     if (!card.tags || !card.tags.length) return null
 
-    const tagLabels = card.tags.map(tId => {
-      const tag = tags.find(t => t.id == tId)
+    const tagLabels = card.tags.map((tId) => {
+      const tag = tags.find((t) => t.id == tId)
       if (!tag) return null
       return <TagLabel tag={tag} key={`taglabel-${tId}`} />
     })
 
-    return <div className='card__popover-labels'>{ tagLabels }</div>
+    return <div className="card__popover-labels">{tagLabels}</div>
   }
 
-  renderDropZone () {
-    if (!this.props.allowDrop) return
+  renderDropZone() {
+    const { color, allowDrop, isSmall } = this.props
+    if (!allowDrop) return
     if (!this.state.inDropZone) return
 
-    return <div className='card__drop-zone'>
-      <FaCircle/>
-    </div>
-  }
+    let circleStyle = {}
+    if (isSmall) circleStyle = { color: color }
 
-  renderTitle () {
-    let title = (
-      <div className='card__title'>
-        {truncateTitle(this.props.card.title, 150)}
+    return (
+      <div className="card__drop-zone">
+        <FaCircle style={circleStyle} />
       </div>
     )
+  }
+
+  renderTitle() {
+    const { card, isSmall, ui, chapterPosition, linePosition } = this.props
+    let title = <div className="card__title">{isSmall ? '' : truncateTitle(card.title, 150)}</div>
     if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
-      if (this.props.ui.orientation === 'horizontal') {
-        placement = Number(this.props.chapterPosition) <= 2 ? 'right' : placement
+      if (ui.orientation === 'horizontal') {
+        placement = Number(chapterPosition) <= 2 ? 'right' : placement
       } else {
-        placement = Number(this.props.linePosition) <= 2 ? 'right' : placement
+        placement = Number(linePosition) <= 2 ? 'right' : placement
       }
-      if (isZoomed(this.props.ui)) placement = 'right'
-      title = <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
-        {title}
-      </OverlayTrigger>
+      if (isSmall) placement = 'right'
+      title = (
+        <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
+          {title}
+        </OverlayTrigger>
+      )
     }
 
     return title
   }
 
-  render () {
+  render() {
+    const { color, isVisible, allowDrop, last, isSmall } = this.props
     var cardStyle = {
-      borderColor: this.props.color
+      borderColor: color,
     }
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'
     }
-    if (!this.props.isVisible) {
+    if (!isVisible) {
       cardStyle.opacity = '0.1'
     }
 
-    const droppable = this.props.allowDrop
-
-    return <div className={cx('card__body-wrapper', {lastOne: this.props.last})}
-      onDragEnter={droppable ? this.handleDragEnter : null}
-      onDragOver={droppable ? this.handleDragOver : null}
-      onDragLeave={droppable ? this.handleDragLeave : null}
-      onDrop={droppable ? this.handleDrop : null}
-    >
-      { this.renderDialog() }
-      { this.renderDropZone() }
-      <div className='card__body' style={cardStyle}
-        draggable
-        onDragStart={this.handleDragStart}
-        onDragEnd={this.handleDragEnd}
-        onClick={this.openDialog}
-      >
-        { this.renderTitle() }
-      </div>
-    </div>
+    if (isSmall) {
+      return (
+        <div
+          onDragEnter={this.handleDragEnter}
+          onDragOver={this.handleDragOver}
+          onDragLeave={this.handleDragLeave}
+          onDrop={this.handleDrop}
+        >
+          {this.renderDropZone()}
+          {this.renderDialog()}
+          <div
+            className="card-circle"
+            style={{ backgroundColor: color }}
+            draggable
+            onDragStart={this.handleDragStart}
+            onDragEnd={this.handleDragEnd}
+          >
+            <div onClick={this.openDialog}>{this.renderTitle()}</div>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div
+          className={cx('card__body-wrapper', { lastOne: last })}
+          onDragEnter={allowDrop ? this.handleDragEnter : null}
+          onDragOver={allowDrop ? this.handleDragOver : null}
+          onDragLeave={allowDrop ? this.handleDragLeave : null}
+          onDrop={allowDrop ? this.handleDrop : null}
+        >
+          {this.renderDialog()}
+          {this.renderDropZone()}
+          <div
+            className="card__body"
+            style={cardStyle}
+            draggable
+            onDragStart={this.handleDragStart}
+            onDragEnd={this.handleDragEnd}
+            onClick={this.openDialog}
+          >
+            {this.renderTitle()}
+          </div>
+        </div>
+      )
+    }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (this.state.dragging != nextState.dragging) return true
     if (this.state.dialogOpen != nextState.dialogOpen) return true
     if (this.state.inDropZone != nextState.inDropZone) return true
@@ -203,6 +250,7 @@ class Card extends Component {
     if (this.props.isVisible != nextProps.isVisible) return true
     if (this.props.card != nextProps.card) return true
     if (this.props.last != nextProps.last) return true
+    if (this.props.ui.timeline.size != nextProps.ui.timeline.size) return true
 
     return false
   }
@@ -222,23 +270,24 @@ Card.propTypes = {
   tags: PropTypes.array,
   ui: PropTypes.object.isRequired,
   isVisible: PropTypes.bool.isRequired,
+  isSmall: PropTypes.bool.isRequired,
+  isMedium: PropTypes.bool.isRequired,
 }
 
-function mapStateToProps (state, ownProps) {
+function mapStateToProps(state, ownProps) {
   return {
     tags: state.present.tags,
     ui: state.present.ui,
     isVisible: visibleCardsSelector(state.present)[ownProps.card.id],
+    isSmall: isSmallSelector(state.present),
+    isMedium: isMediumSelector(state.present),
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(CardActions, dispatch)
+    actions: bindActionCreators(CardActions, dispatch),
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Card)
+export default connect(mapStateToProps, mapDispatchToProps)(Card)

@@ -12,13 +12,13 @@ import ExportTab from '../components/export/ExportTab'
 import AnalyzerTab from '../components/analyzer/AnalyzerTab'
 
 class Body extends Component {
-  render () {
+  render() {
     switch (this.props.currentView) {
       case 'story':
         return <SeriesTab />
 
       case 'timeline':
-        return <TimelineTab/>
+        return <TimelineTab />
 
       case 'outline':
         return <OutlineTab />
@@ -42,26 +42,23 @@ class Body extends Component {
         return <AnalyzerTab />
 
       default:
-        return <TimelineTab/>
+        return <TimelineTab />
     }
   }
 }
 
 Body.propTypes = {
-  currentView: PropTypes.string.isRequired
+  currentView: PropTypes.string.isRequired,
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    currentView: state.present.ui.currentView
+    currentView: state.present.ui.currentView,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Body)
+export default connect(mapStateToProps, mapDispatchToProps)(Body)

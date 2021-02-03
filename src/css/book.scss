@@ -2,7 +2,7 @@
 
 .series__container {
   width: 100vw;
-  height: calc(100% - 50px);
+  height: calc(100% - 105px);
   position: absolute;
   overflow: auto;
 }
@@ -28,10 +28,9 @@
 
 .book-list__list {
   display: flex;
-  flex-wrap: wrap;
-  overflow: auto;
   padding: 40px 5px;
   padding-top: 0;
+  overflow: hidden;
 
   &.dragging {
     background-color: rgba(218, 226, 236, 0.2); // $gray-8 with alpha
@@ -47,7 +46,12 @@
 }
 
 .edit-book__container {
-  padding: 20px;
+  padding: 10px 20px;
+
+  h2 {
+    padding-left: 20px;
+    margin-top: 0;
+  }
 
   .btn-toolbar {
     display: flex;
@@ -272,4 +276,9 @@
   justify-content: center;
   align-items: center;
   width: 150px;
+  max-height: 100%;
+
+  img {
+    max-height: 100%;
+  }
 }

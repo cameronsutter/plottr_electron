@@ -6,57 +6,72 @@ import i18n from 'format-message'
 import Image from './images/Image'
 
 export default class SelectList extends Component {
-
-  renderSelected () {
+  renderSelected() {
     let body
     if (this.props.type === 'Tags') {
       body = this.renderSelectedTags()
     } else {
       body = this.renderSelectedItems()
     }
-    return <div className='chip-cloud'>
-      { body }
-    </div>
+    return <div className="chip-cloud">{body}</div>
   }
 
-  renderSelectedTags () {
+  renderSelectedTags() {
     if (!this.props.selectedItems) return null
 
-    return this.props.selectedItems.map(tId => {
-      var tag = this.props.allItems.find(item => item.id == tId)
+    return this.props.selectedItems.map((tId) => {
+      var tag = this.props.allItems.find((item) => item.id == tId)
       if (!tag) return null
-      return <div key={tId} className='tag-chip'>
-        <TagLabel tag={tag} />
-        <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, tId)}/>
-      </div>
+      return (
+        <div key={tId} className="tag-chip">
+          <TagLabel tag={tag} />
+          <Glyphicon glyph="remove" onClick={() => this.props.remove(this.props.parentId, tId)} />
+        </div>
+      )
     })
   }
 
-  renderSelectedItems () {
+  renderSelectedItems() {
     if (!this.props.selectedItems) return null
 
-    return this.props.selectedItems.map(itemId => {
-      var item = this.props.allItems.find(item => item.id == itemId)
+    return this.props.selectedItems.map((itemId) => {
+      var item = this.props.allItems.find((item) => item.id == itemId)
       if (!item) return null
-      return <div key={itemId} className='chip'>
-        <Image size='xs' shape='circle' imageId={item.imageId}/>
-        <span>{ item.name }</span>
-        <Glyphicon glyph='remove' onClick={() => this.props.remove(this.props.parentId, itemId)}/>
-      </div>
+      return (
+        <div key={itemId} className="chip">
+          <Image size="xs" shape="circle" imageId={item.imageId} />
+          <span>{item.name}</span>
+          <Glyphicon
+            glyph="remove"
+            onClick={() => this.props.remove(this.props.parentId, itemId)}
+          />
+        </div>
+      )
     })
   }
 
-  renderUnSelected () {
+  renderUnSelected() {
     const type = this.props.type
-    const itemsToList = !this.props.selectedItems ? this.props.allItems : this.props.allItems.filter(i => !this.props.selectedItems.includes(i.id))
-    let listItems = <small><i>{i18n('no more to add')}</i></small>
+    const itemsToList = !this.props.selectedItems
+      ? this.props.allItems
+      : this.props.allItems.filter((i) => !this.props.selectedItems.includes(i.id))
+    let listItems = (
+      <small>
+        <i>{i18n('no more to add')}</i>
+      </small>
+    )
     if (itemsToList.length > 0) {
-      listItems = itemsToList.map(i => {
+      listItems = itemsToList.map((i) => {
         let colorSpan = <span></span>
         if (type === 'Tags') {
-          colorSpan = <span className='colored' style={{backgroundColor: i.color}}></span>
+          colorSpan = <span className="colored" style={{ backgroundColor: i.color }}></span>
         }
-        return <li key={`${type}-${i.id}`} onClick={() => this.props.add(this.props.parentId, i.id)}>{colorSpan}{i.name || i.title}</li>
+        return (
+          <li key={`${type}-${i.id}`} onClick={() => this.props.add(this.props.parentId, i.id)}>
+            {colorSpan}
+            {i.name || i.title}
+          </li>
+        )
       })
     }
     let title = ''
@@ -71,12 +86,14 @@ export default class SelectList extends Component {
         title = i18n('Tags list')
         break
     }
-    return <Popover id='list-popover' title={title}>
-      <ul className='select-list__item-select-list'>{listItems}</ul>
-    </Popover>
+    return (
+      <Popover id="list-popover" title={title}>
+        <ul className="select-list__item-select-list">{listItems}</ul>
+      </Popover>
+    )
   }
 
-  render () {
+  render() {
     let label = ''
     switch (this.props.type) {
       case 'Characters':
@@ -90,11 +107,17 @@ export default class SelectList extends Component {
         break
     }
     return (
-      <div className='select-list__wrapper'>
-        <label className='select-list__details-label'>{label}:
-          <OverlayTrigger trigger="click" rootClose placement="right" overlay={this.renderUnSelected()}>
-            <Button ref='characterList' bsSize='xsmall'>
-              <Glyphicon glyph='plus'/>
+      <div className="select-list__wrapper">
+        <label className="select-list__details-label">
+          {label}:
+          <OverlayTrigger
+            trigger="click"
+            rootClose
+            placement="right"
+            overlay={this.renderUnSelected()}
+          >
+            <Button bsSize="xsmall">
+              <Glyphicon glyph="plus" />
             </Button>
           </OverlayTrigger>
         </label>

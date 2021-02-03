@@ -1,11 +1,14 @@
+@import "colors";
+@import "vars";
 @import "bootstrap_configuration";
+
 @import "card_block";
 @import "card_dialog";
 @import "character_list_block";
 @import "line_block";
 @import "outline_block";
 @import "place_list_block";
-@import "scene_block";
+@import "chapter_block";
 @import "tag_list_block";
 @import "color_picker_block";
 @import "image_picker";
@@ -16,8 +19,6 @@
 @import "select_list_block";
 @import "filter_list_block";
 @import "custom_attr_block";
-@import "verify_window";
-@import "expired_window";
 @import "slate";
 @import "template_picker";
 @import "book";
@@ -28,8 +29,7 @@
 @import "export";
 @import "error_boundary";
 
-@import "vars";
-@import "colors";
+@import "dashboard/dashboard";
 
 @keyframes fadein {
   from { opacity: 0; }
@@ -44,9 +44,10 @@
 
 body {
   @include body-text-font;
-  background: $gray-9 url("../../icons/grid_background.jpg");
+  background-color: $gray-9;
+  // background: $gray-9 url("../../icons/grid_background.jpg");
   // background-image: url("../../icons/grid_background.jpg");
-  background-size: 3%;
+  // background-size: 3%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -142,48 +143,6 @@ input[type="file"] {
     font-size: 2.5em;
     margin-bottom: 8px;
   }
-}
-
-@keyframes dot {
-  0% { opacity: 0; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-.update-notifier {
-  @include application-text;
-  position: absolute;
-  right: 50px;
-  height: 30px;
-  top: 10px;
-  border-radius: 100px;
-  padding: 0px 15px;
-  line-height: 28px;
-  border-width: 1px;
-  border-style: solid;
-
-  .loading-dots {
-    .one {
-      opacity: 0;
-      animation: dot 1s infinite;
-      animation-delay: 0.0s;
-    }
-
-    .two {
-      opacity: 0;
-      animation: dot 1s infinite;
-      animation-delay: 0.2s;
-    }
-
-    .three {
-      opacity: 0;
-      animation: dot 1s infinite;
-      animation-delay: 0.3s;
-    }
-  }
-}
-div.update-notifier:hover {
-  background-color: white;
 }
 
 .modal-container {

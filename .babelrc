@@ -1,4 +1,0 @@
-{
-  "presets": [["@babel/preset-react", {"useBuiltIns": true}], ["@babel/preset-env", {"modules": false, "targets": {"node": true}}]],
-  "plugins": ["lodash", "@babel/plugin-proposal-class-properties"]
-}

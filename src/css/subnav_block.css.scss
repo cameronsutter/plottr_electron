@@ -44,6 +44,12 @@ nav.subnav__container {
     .nav li a {
       padding-top: 7px;
       padding-bottom: 7px;
+      .btn {
+        .glyphicon {
+          // TODO: needs to be margin-left on the text of the button
+          // margin-right: 4px;
+        }
+      }
     }
     .nav.navbar-nav {
       height: 50px;

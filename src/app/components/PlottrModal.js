@@ -1,20 +1,14 @@
-import React, {
-  useMemo,
-} from 'react';
-import Modal from 'react-modal';
-import cx from 'classnames';
-import { connect } from 'react-redux';
+import React, { useMemo } from 'react'
+import PropTypes from 'react-proptypes'
+import Modal from 'react-modal'
+import cx from 'classnames'
+import { connect } from 'react-redux'
 
 // prevents the useMemo from getting a new object reference
 // on each render if no styles is passed in
-const defaultStyles = {};
+const defaultStyles = {}
 
-export function PlottrModal({
-  isDarkMode,
-  children,
-  styles = defaultStyles,
-  ...props
-}) {
+export function PlottrModal({ isDarkMode, children, styles = defaultStyles, ...props }) {
   const mergedStyles = useMemo(() => {
     return {
       overlay: {
@@ -25,23 +19,23 @@ export function PlottrModal({
         ...Modal.defaultStyles.content,
         top: '70px',
         ...styles.content,
-      }
+      },
     }
   }, [styles])
 
   return (
-    <Modal
-      {...props}
-      styles={mergedStyles}
-      classNames={cx({ darkmode: isDarkMode })}
-    >
+    <Modal {...props} styles={mergedStyles} classNames={cx({ darkmode: isDarkMode })}>
       {children}
     </Modal>
   )
 }
 
-export default connect(
-  (state) => ({
-    isDarkMode: state.present.ui.darkMode,
-  }),
-)(PlottrModal)
+PlottrModal.propTypes = {
+  isDarkMode: PropTypes.bool,
+  children: PropTypes.node,
+  styles: PropTypes.object,
+}
+
+export default connect((state) => ({
+  isDarkMode: state.present.ui.darkMode,
+}))(PlottrModal)

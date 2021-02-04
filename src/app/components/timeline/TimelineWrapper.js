@@ -4,7 +4,6 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
-  Navbar,
   Nav,
   NavItem,
   Button,

@@ -1,16 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import {
-  Glyphicon,
-  Nav,
-  Navbar,
-  NavItem,
-  Button,
-  OverlayTrigger,
-  Popover,
-  Alert,
-} from 'react-bootstrap'
+import { Glyphicon, Nav, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
 import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'

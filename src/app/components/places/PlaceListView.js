@@ -6,7 +6,6 @@ import cx from 'classnames'
 import {
   Glyphicon,
   Nav,
-  Navbar,
   NavItem,
   Button,
   Popover,

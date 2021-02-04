@@ -63,7 +63,7 @@ function ExportNavItem(props) {
 
 ExportNavItem.propTypes = {
   fileName: PropTypes.string,
-  bookId: PropTypes.string,
+  bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 export default ExportNavItem

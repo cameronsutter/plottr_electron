@@ -1,18 +1,17 @@
-@import "vars";
+@import 'vars';
 
 .tag-list__container {
-  margin: 10px;
   h1 {
     text-align: center;
     @include application-text;
+    width: 99vw;
+    margin-left: 0.5vw;
   }
   .tag-list__wrapper {
     display: flex;
     justify-content: center;
     width: 99vw;
-    height: calc(100% - 170px);
-    position: absolute;
-    top: 160px;
+    margin: auto;
     overflow: auto;
   }
 }

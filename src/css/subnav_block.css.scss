@@ -1,7 +1,15 @@
-@import "colors";
+@import 'colors';
 
 .container-with-sub-nav {
-  margin-top: 50px !important;
+  height: 100%;
+  display: grid;
+  grid-template-areas: 'subnav' 'body';
+  grid-template-rows: auto auto 1fr;
+
+  .tab-body {
+    grid-area: body;
+    overflow: auto;
+  }
 }
 
 .container-with-sub-nav.darkmode {
@@ -9,38 +17,20 @@
 }
 
 .subnav__container {
+  grid-area: subnav;
+  margin-bottom: 0;
   background-color: $gray-8;
   border-radius: 0;
   border-left: none;
   border-right: none;
-  position: fixed;
-  top: 50px;
-  left: 0px;
-  width: 100%;
-  z-index: 1000;
-  min-height: 30px;
-}
+  z-index: 100;
 
-.subnav__container.darkmode {
-  background-color: #444;
-  border-color: #333;
-
-  .subnav__container__label {
-    color: white;
+  button.navbar-toggle {
+    border-color: $gray-6;
   }
 
-  button {
-    border-color: #888;
-    background-color: $darkmode-background;
-    color: $darkmode-text;
-  }
-}
-
-nav.subnav__container {
-  .container {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
+  .container-fluid {
+    padding-left: 0;
     .nav li a {
       padding-top: 7px;
       padding-bottom: 7px;
@@ -51,9 +41,20 @@ nav.subnav__container {
         }
       }
     }
-    .nav.navbar-nav {
-      height: 50px;
-      overflow: auto;
+  }
+
+  &.darkmode {
+    background-color: #444;
+    border-color: #333;
+
+    .subnav__container__label {
+      color: white;
+    }
+
+    button:not(.active):not(.navbar-toggle) {
+      border-color: #888;
+      background-color: $darkmode-background;
+      color: $darkmode-text;
     }
   }
 }
@@ -89,7 +90,8 @@ nav.subnav__container {
         padding: 5px 0 5px 0;
         background-color: $gray-9;
 
-        & > a:hover, &:hover {
+        & > a:hover,
+        &:hover {
           background-color: $gray-8;
         }
       }
@@ -115,7 +117,8 @@ nav.subnav__container {
         li:first-child {
           background-color: $darkmode-darker-background;
 
-          & > a:hover, &:hover {
+          & > a:hover,
+          &:hover {
             background-color: $darkmode-background;
           }
         }

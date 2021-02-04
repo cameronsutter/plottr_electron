@@ -1,25 +1,29 @@
-@import "vars";
+@import 'vars';
 
 .note-list {
-  margin: 10px;
   h1 {
     text-align: center;
     @include application-text;
   }
   .container-fluid {
     width: 100vw;
-    height: calc(100% - 110px);
-    position: absolute;
-    top: 107px;
     overflow: hidden;
     .row {
       height: 100%;
     }
-    .col-sm-3, .col-sm-9 {
+    .col-sm-3,
+    .col-sm-9 {
       height: 100%;
       position: relative;
     }
   }
+}
+
+.note-list__note-wrapper {
+  height: 100%;
+  position: relative;
+  overflow: auto;
+  padding-top: 16px;
 }
 
 .note-list__list {
@@ -93,12 +97,6 @@
 
 .note-list__new:hover {
   background: $new-item-background;
-}
-
-.note-list__note-wrapper {
-  height: 100%;
-  position: relative;
-  overflow: auto;
 }
 
 .note-list__note {
@@ -186,7 +184,6 @@
       background-color: $darkmode-darker-border;
     }
   }
-
 
   h4 {
     color: $darkmode-darker-text;

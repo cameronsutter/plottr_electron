@@ -4,7 +4,6 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
-  Navbar,
   Nav,
   NavItem,
   Button,
@@ -25,6 +24,7 @@ import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { actions, selectors } from 'pltr/v2'
+import SubNav from '../../containers/SubNav'
 
 const win = remote.getCurrentWindow()
 
@@ -255,7 +255,7 @@ class TimelineWrapper extends Component {
     }
 
     return (
-      <Navbar className={cx('subnav__container', { darkmode: ui.darkMode })}>
+      <SubNav>
         <Nav bsStyle="pills">
           <NavItem>
             <OverlayTrigger
@@ -339,7 +339,7 @@ class TimelineWrapper extends Component {
           <ClearNavItem />
           <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline} />
         </Nav>
-      </Navbar>
+      </SubNav>
     )
   }
 
@@ -380,7 +380,9 @@ class TimelineWrapper extends Component {
       >
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        <div id="timelineview__root">{this.renderBody()}</div>
+        <div id="timelineview__root" className="tab-body">
+          {this.renderBody()}
+        </div>
       </div>
     )
   }

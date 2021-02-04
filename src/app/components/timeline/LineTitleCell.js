@@ -20,7 +20,7 @@ import Floater from 'react-floater'
 import { actions, helpers, selectors } from 'pltr/v2'
 
 const LineActions = actions.line
-const SeriesLineActions = actions.series
+const SeriesLineActions = actions.seriesLine
 
 const {
   card: { truncateTitle },

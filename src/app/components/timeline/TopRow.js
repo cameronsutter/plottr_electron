@@ -20,7 +20,7 @@ const {
 const LineActions = actions.line
 const BeatActions = actions.beat
 const SceneActions = actions.scene
-const SeriesLineActions = actions.series
+const SeriesLineActions = actions.seriesLine
 
 const {
   sortedChaptersByBookSelector,

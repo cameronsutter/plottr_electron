@@ -36,7 +36,7 @@ const LineActions = actions.line
 const BeatActions = actions.beat
 const CardActions = actions.card
 const SceneActions = actions.scene
-const SeriesLineActions = actions.series
+const SeriesLineActions = actions.seriesLine
 const UIActions = actions.ui
 
 class TimelineTable extends Component {

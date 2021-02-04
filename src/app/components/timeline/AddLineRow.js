@@ -20,7 +20,7 @@ const {
   isSmallSelector,
 } = selectors
 const LineActions = actions.line
-const SeriesLineActions = actions.series
+const SeriesLineActions = actions.seriesLine
 
 class AddLineRow extends Component {
   state = {

@@ -12,8 +12,9 @@ import ChapterInsertCell from './ChapterInsertCell'
 import TopRow from './TopRow'
 import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
-import { card } from '../../../../shared/initialState'
-import { newIds, actions, helpers, selectors } from 'pltr/v2'
+import { newIds, actions, helpers, selectors, initialState } from 'pltr/v2'
+
+const { card } = initialState
 
 const { nextId } = newIds
 

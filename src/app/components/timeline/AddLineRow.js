@@ -7,9 +7,11 @@ import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { card, line as defaultLine } from '../../../../shared/initialState'
-import { actions, selectors, nextColor } from 'pltr/v2'
+import { actions, selectors, nextColor, initialState } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
+
+const card = initialState.card
+const defaultLine = initialState.line
 
 const {
   nextCardIdSelector,

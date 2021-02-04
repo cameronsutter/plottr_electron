@@ -263,7 +263,7 @@ function mapStateToProps(state, ownProps) {
     tags: state.present.tags,
     characters: state.present.characters,
     places: state.present.places,
-    ui: state.present.ui
+    ui: state.present.ui,
   }
 }
 

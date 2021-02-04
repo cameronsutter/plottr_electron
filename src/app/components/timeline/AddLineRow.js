@@ -215,7 +215,7 @@ class AddLineRow extends Component {
     this.addLines(templateData.lines, bookId, true, template)
     this.addCards(templateData.cards, templateData.chapters, bookId, template)
 
-    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, bookId, template)
+    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, template, bookId)
     this.setState({ showTemplatePicker: false })
   }
 

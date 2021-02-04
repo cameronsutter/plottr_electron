@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux'
 import {
   Glyphicon,
   Nav,
-  Navbar,
   NavItem,
   Button,
   Alert,
@@ -23,6 +22,7 @@ import cx from 'classnames'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import NoteItem from './NoteItem'
 import { newIds, actions } from 'pltr/v2'
+import SubNav from '../../containers/SubNav'
 
 const { nextId } = newIds
 
@@ -177,8 +177,6 @@ class NoteListView extends Component {
   }
 
   renderSubNav() {
-    let subNavKlasses = 'subnav__container'
-    if (this.props.ui.darkMode) subNavKlasses += ' darkmode'
     let popover = (
       <Popover id="filter">
         <FilterList filteredItems={this.state.filter} updateItems={this.updateFilter} renderBooks />
@@ -195,7 +193,7 @@ class NoteListView extends Component {
       filterDeclaration = <span></span>
     }
     return (
-      <Navbar className={subNavKlasses}>
+      <SubNav>
         <Nav bsStyle="pills">
           <NavItem>
             <Button bsSize="small" onClick={this.handleCreateNewNote}>
@@ -217,7 +215,7 @@ class NoteListView extends Component {
             {filterDeclaration}
           </NavItem>
         </Nav>
-      </Navbar>
+      </SubNav>
     )
   }
 
@@ -227,7 +225,7 @@ class NoteListView extends Component {
     return (
       <div className="note-list container-with-sub-nav">
         {this.renderSubNav()}
-        <Grid fluid>
+        <Grid fluid className="tab-body">
           <Row>
             <Col sm={3}>
               <h1 className={klasses}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { shell } from 'electron'
 import cx from 'classnames'
 import { FaRegBell } from 'react-icons/fa'
@@ -6,15 +6,26 @@ import USER from '../utils/user_info'
 import { is } from 'electron-util'
 
 function Beamer({ inNavigation }) {
+  const [isInitialized, setInitialized] = useState(false)
+
+  const initBeamer = () => {
+    if (is.development) return true
+    if (!window.Beamer) return false
+
+    const options = { callback: getBeamerAlerts, onclick: openBeamerLink }
+    if (USER.get('payment_id')) {
+      options.user_email = USER.get('customer_email')
+      options.user_id = USER.get('payment_id')
+    }
+    window.Beamer.update(options)
+    window.Beamer.init()
+    setInitialized(true)
+    return true
+  }
+
   useEffect(() => {
-    if (window.Beamer) {
-      const options = { callback: getBeamerAlerts, onclick: openBeamerLink }
-      if (USER.get('payment_id')) {
-        options.user_email = USER.get('customer_email')
-        options.user_id = USER.get('payment_id')
-      }
-      window.Beamer.update(options)
-      window.Beamer.init()
+    if (!initBeamer()) {
+      setTimeout(() => initBeamer(), 5000)
     }
   }, [])
 
@@ -25,7 +36,7 @@ function Beamer({ inNavigation }) {
     return false
   }
 
-  if (!window.Beamer) return null
+  if (!isInitialized) return null
 
   const bell = (
     <a id="beamer-bell" href="#">

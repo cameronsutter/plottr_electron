@@ -1,45 +1,94 @@
-@import "colors";
-@import "vars";
-@import "bootstrap_configuration";
+@import 'colors';
+@import 'vars';
+@import 'bootstrap_configuration';
 
-@import "card_block";
-@import "card_dialog";
-@import "character_list_block";
-@import "line_block";
-@import "outline_block";
-@import "place_list_block";
-@import "chapter_block";
-@import "tag_list_block";
-@import "color_picker_block";
-@import "image_picker";
-@import "subnav_block";
-@import "timeline_block";
-@import "history_block";
-@import "notes_block";
-@import "select_list_block";
-@import "filter_list_block";
-@import "custom_attr_block";
-@import "slate";
-@import "template_picker";
-@import "book";
-@import "darkmode";
-@import "modals";
-@import "analyzer";
-@import "scrollbars";
-@import "export";
-@import "error_boundary";
+@import 'card_block';
+@import 'card_dialog';
+@import 'character_list_block';
+@import 'line_block';
+@import 'outline_block';
+@import 'place_list_block';
+@import 'chapter_block';
+@import 'tag_list_block';
+@import 'color_picker_block';
+@import 'image_picker';
+@import 'subnav_block';
+@import 'timeline_block';
+@import 'history_block';
+@import 'notes_block';
+@import 'select_list_block';
+@import 'filter_list_block';
+@import 'custom_attr_block';
+@import 'slate';
+@import 'template_picker';
+@import 'book';
+@import 'darkmode';
+@import 'modals';
+@import 'analyzer';
+@import 'scrollbars';
+@import 'export';
+@import 'error_boundary';
 
-@import "dashboard/dashboard";
+@import 'dashboard/dashboard';
 
 @keyframes fadein {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 // Give everything in 'yield' margin to separate it.
 #react-root {
   margin: 0px 0px 0px 0px;
+  height: 100vh;
   // animation: fadein 0.5s;
+
+  display: grid;
+  grid-template-areas: 'navigation' 'main';
+  grid-template-rows: auto 1fr;
+
+  main.project-main {
+    grid-area: main;
+    overflow: hidden;
+  }
+
+  nav.project-nav {
+    grid-area: navigation;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    z-index: 1000;
+    .container-fluid {
+      padding: 0;
+
+      .navbar-collapse {
+        padding-right: 0;
+
+        &.in {
+          margin-left: 0;
+        }
+      }
+
+      .navbar-header {
+        margin-right: 0;
+        margin-left: 0;
+        .navbar-toggle {
+          border-color: $gray-6;
+          margin-left: 16px;
+          float: none;
+        }
+      }
+    }
+
+    &.navbar-inverse {
+      .navbar-toggle {
+        border-color: hsl(0, 0%, 20%);
+      }
+    }
+  }
 }
 
 body {
@@ -50,7 +99,12 @@ body {
   // background-size: 3%;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   @include header-font;
 }
 
@@ -111,7 +165,7 @@ h3.popover-title {
 .control-label {
   @include application-text;
 }
-input[type="file"] {
+input[type='file'] {
   @include application-text;
 }
 
@@ -148,7 +202,8 @@ input[type="file"] {
 .modal-container {
   position: relative;
 }
-.modal-container .modal, .modal-container .modal-backdrop {
+.modal-container .modal,
+.modal-container .modal-backdrop {
   position: absolute;
 }
 
@@ -181,26 +236,27 @@ input[type="file"] {
 }
 
 .tour-helper {
-  padding-right: 60px!important;
-  max-width: 700px!important;
+  padding-right: 60px !important;
+  max-width: 700px !important;
   font-size: 18pt;
 
-  [data-tour-elem="controls"] {
-    margin-top: 40px!important;
+  [data-tour-elem='controls'] {
+    margin-top: 40px !important;
   }
 
-  button:not([data-tour-elem="dot"]) {
-    height: 15px!important;
-    width: 15px!important;
+  button:not([data-tour-elem='dot']) {
+    height: 15px !important;
+    width: 15px !important;
   }
 
-  button[data-tour-elem="left-arrow"], button[data-tour-elem="right-arrow"] {
-    height: 20px!important;
-    width: 20px!important;
+  button[data-tour-elem='left-arrow'],
+  button[data-tour-elem='right-arrow'] {
+    height: 20px !important;
+    width: 20px !important;
   }
 
   .reactour__dot {
-    height: 12px!important;
-    width: 12px!important;
+    height: 12px !important;
+    width: 12px !important;
   }
 }

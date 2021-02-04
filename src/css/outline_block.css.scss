@@ -1,11 +1,9 @@
-@import "vars";
+@import 'vars';
 
 .outline__container {
   display: flex;
   overflow: auto;
   width: 100vw;
-  height: calc(100% - 105px);
-  position: absolute;
 }
 
 .outline__scenes-container {

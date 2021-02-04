@@ -124,7 +124,9 @@ export default class App extends Component {
         <ErrorBoundary>
           <Navigation />
         </ErrorBoundary>
-        <Body />
+        <main className="project-main">
+          <Body />
+        </main>
         {this.renderTemplateCreate()}
         {this.renderAskToSave()}
       </ErrorBoundary>

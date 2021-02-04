@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
@@ -9,6 +8,7 @@ import cx from 'classnames'
 import i18n from 'format-message'
 import { tag } from '../../../../shared/initialState'
 import { actions, selectors } from 'pltr/v2'
+import SubNav from '../../containers/SubNav'
 
 const { sortedTagsSelector } = selectors
 
@@ -36,9 +36,8 @@ class TagListView extends Component {
   }
 
   renderSubNav() {
-    const { ui } = this.props
     return (
-      <Navbar className={cx('subnav__container', { darkmode: ui.darkMode })}>
+      <SubNav>
         <Nav bsStyle="pills">
           <NavItem>
             <Button bsSize="small" onClick={this.appendBlankTag}>
@@ -46,7 +45,7 @@ class TagListView extends Component {
             </Button>
           </NavItem>
         </Nav>
-      </Navbar>
+      </SubNav>
     )
   }
 
@@ -55,19 +54,21 @@ class TagListView extends Component {
     return (
       <div className="tag-list__container container-with-sub-nav">
         {this.renderSubNav()}
-        <h1 className={cx('secondary-text', { darkmode: ui.darkMode })}>{i18n('Tags')}</h1>
-        <div className="tag-list__wrapper">
-          <div className="tag-list__tags">
-            {this.renderTags()}
-            <div className="tag-list__tag-wrapper">
-              {!this.state.appending ? (
-                <div
-                  className={cx('tag-list__new', { darkmode: ui.darkMode })}
-                  onClick={this.appendBlankTag}
-                >
-                  <Glyphicon glyph="plus" />
-                </div>
-              ) : null}
+        <div className="tab-body">
+          <h1 className={cx('secondary-text', { darkmode: ui.darkMode })}>{i18n('Tags')}</h1>
+          <div className="tag-list__wrapper">
+            <div className="tag-list__tags">
+              {this.renderTags()}
+              <div className="tag-list__tag-wrapper">
+                {!this.state.appending ? (
+                  <div
+                    className={cx('tag-list__new', { darkmode: ui.darkMode })}
+                    onClick={this.appendBlankTag}
+                  >
+                    <Glyphicon glyph="plus" />
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

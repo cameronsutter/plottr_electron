@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 import {
   Glyphicon,
   Nav,
-  Navbar,
   NavItem,
   Button,
   ButtonGroup,
@@ -27,6 +26,7 @@ import CharacterCategoriesModal from './CharacterCategoriesModal'
 import CharacterItem from './CharacterItem'
 import InputModal from '../dialogs/InputModal'
 import { newIds, actions, selectors } from 'pltr/v2'
+import SubNav from '../../containers/SubNav'
 
 const { nextId } = newIds
 
@@ -183,7 +183,7 @@ class CharacterListView extends Component {
     let sortGlyph = 'sort-by-attributes'
     if (ui.characterSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
     return (
-      <Navbar className={cx('subnav__container', { darkmode: ui.darkMode })}>
+      <SubNav>
         <Nav bsStyle="pills">
           <NavItem>
             <ButtonGroup>
@@ -233,7 +233,7 @@ class CharacterListView extends Component {
             </OverlayTrigger>
           </NavItem>
         </Nav>
-      </Navbar>
+      </SubNav>
     )
   }
 
@@ -328,7 +328,7 @@ class CharacterListView extends Component {
         {this.renderCategoriesModal()}
         {this.renderTemplatePicker()}
         {this.renderCreateInput()}
-        <Grid fluid>
+        <Grid fluid className="tab-body">
           <Row>
             <Col sm={3}>
               <h1 className={cx('secondary-text', { darkmode: this.props.ui.darkMode })}>

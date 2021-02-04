@@ -46,7 +46,12 @@ class BookChooser extends Component {
     if (ui.currentTimeline != 'series') title = this.bookTitle(books[ui.currentTimeline])
 
     return (
-      <NavDropdown id="book_chooser" title={title} disabled={this.isDisabled()}>
+      <NavDropdown
+        id="book_chooser"
+        title={title}
+        disabled={this.isDisabled()}
+        style={{ marginRight: '16px' }}
+      >
         <MenuItem onSelect={() => this.handleChange('series')}>{seriesText}</MenuItem>
         <MenuItem divider />
         {this.renderBookList()}

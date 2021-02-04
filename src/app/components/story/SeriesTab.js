@@ -1,24 +1,21 @@
 import React from 'react'
-import PropTypes from 'react-proptypes'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import EditSeries from './EditSeries'
 import BookList from './BookList'
 import i18n from 'format-message'
-import cx from 'classnames'
 import ErrorBoundary from '../../containers/ErrorBoundary'
-import { Nav, Navbar, NavItem, Button } from 'react-bootstrap'
+import { Nav, NavItem, Button } from 'react-bootstrap'
 import FileLocation from './FileLocation'
 import { ipcRenderer } from 'electron'
+import SubNav from '../../containers/SubNav'
 
-function SeriesTab({ ui }) {
+export default function SeriesTab() {
   const openDashboard = () => {
     ipcRenderer.send('pls-open-dashboard')
   }
 
-  const renderSubNav = () => {
+  const SubNavigation = () => {
     return (
-      <Navbar className={cx('subnav__container', { darkmode: ui.darkMode })}>
+      <SubNav>
         <Nav bsStyle="pills">
           <NavItem>
             <Button bsSize="small" onClick={openDashboard}>
@@ -27,33 +24,19 @@ function SeriesTab({ ui }) {
           </NavItem>
           <FileLocation />
         </Nav>
-      </Navbar>
+      </SubNav>
     )
   }
 
   return (
     <ErrorBoundary>
       <div className="series__container container-with-sub-nav">
-        {renderSubNav()}
-        <EditSeries />
-        <BookList />
+        <SubNavigation />
+        <div className="tab-body">
+          <EditSeries />
+          <BookList />
+        </div>
       </div>
     </ErrorBoundary>
   )
 }
-
-SeriesTab.propTypes = {
-  ui: PropTypes.object.isRequired,
-}
-
-function mapStateToProps(state) {
-  return {
-    ui: state.present.ui,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SeriesTab)

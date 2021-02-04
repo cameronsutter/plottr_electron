@@ -8,6 +8,7 @@ import {
   CUSTOM_TEMPLATES_PATH,
 } from '../../common/utils/config_paths'
 import { templatesStore, customTemplatesStore } from '../../common/utils/store_hooks'
+import { is } from 'electron-util'
 
 const manifestPath =
   process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
@@ -61,6 +62,8 @@ class TemplateFetcher {
   }
 
   fetch = () => {
+    if (is.development) return
+
     log.info('fetching template manifest')
     request(this.manifestReq(), (err, resp, fetchedManifest) => {
       if (!err && resp && resp.statusCode == 200) {

@@ -14,7 +14,7 @@ import AnalyzerTab from '../components/analyzer/AnalyzerTab'
 class Body extends Component {
   render() {
     switch (this.props.currentView) {
-      case 'story':
+      case 'project':
         return <SeriesTab />
 
       case 'timeline':

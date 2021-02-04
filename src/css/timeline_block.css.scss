@@ -1,9 +1,11 @@
-@import "vars";
+@import 'vars';
 
 #timelineview__root {
   width: 100vw;
-  height: calc(100% - 105px);
-  position: absolute;
+
+  .sticky-table {
+    padding-top: 2px;
+  }
 
   .sticky-table-table {
     white-space: normal !important;
@@ -40,7 +42,7 @@
   .sticky-table.vertical {
     .sticky-table-row:first-child {
       .sticky-table-cell:after {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         bottom: 0;
@@ -220,7 +222,7 @@
       left: 21px;
       // left: 40px; // 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle
       height: 100%;
-      transform:skew(-45deg,0deg);
+      transform: skew(-45deg, 0deg);
       overflow: hidden;
       background-color: $gray-9;
       border-right: 1px solid $gray-8;
@@ -247,7 +249,7 @@
       }
 
       & > span {
-        transform:skew(45deg,0deg) rotate(315deg);
+        transform: skew(45deg, 0deg) rotate(315deg);
         font-size: 8px;
         position: absolute;
         bottom: 30px; // 40 cos(45) = 28 with an additional 2px margin
@@ -261,7 +263,6 @@
       }
     }
   }
-
 
   .small-timeline__wrapper.darkmode {
     color: $darkmode-text;

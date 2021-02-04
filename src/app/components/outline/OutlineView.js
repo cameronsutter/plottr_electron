@@ -18,6 +18,7 @@ import cx from 'classnames'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import ExportNavItem from '../export/ExportNavItem'
 import { helpers, selectors } from 'pltr/v2'
+import SubNav from '../../containers/SubNav'
 
 const {
   cardMapSelector,
@@ -103,7 +104,7 @@ class OutlineView extends Component {
       filterDeclaration = <span></span>
     }
     return (
-      <Navbar className={cx('subnav__container', { darkmode: ui.darkMode })}>
+      <SubNav>
         <Nav bsStyle="pills">
           <NavItem>
             <OverlayTrigger
@@ -124,7 +125,7 @@ class OutlineView extends Component {
         <Nav pullRight>
           <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline} />
         </Nav>
-      </Navbar>
+      </SubNav>
     )
   }
 
@@ -148,7 +149,7 @@ class OutlineView extends Component {
     const { chapters, lines, card2Dmap } = this.props
     const cardMap = cardMapping(chapters, lines, card2Dmap, this.state.currentLine)
     return (
-      <div className="outline__container">
+      <div className="outline__container tab-body">
         <div className="outline__minimap__placeholder">Fish are friends, not food</div>
         <ErrorBoundary>
           <MiniMap

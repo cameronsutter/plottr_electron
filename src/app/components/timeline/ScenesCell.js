@@ -20,14 +20,13 @@ const CardActions = actions.card
 const {
   visibleCardsSelector,
   lineIsExpandedSelector,
-  isSeriesSelector,
   isSmallSelector,
   isMediumSelector,
 } = selectors
 
 class ScenesCell extends PureComponent {
   moveSceneCardAbove = (id, positionWithinLine) => {
-    const { chapterId, lineId, isSeries, cards } = this.props
+    const { chapterId, lineId, cards } = this.props
     let newOrder = []
 
     const currentIds = cards.map((c) => c.id)
@@ -40,11 +39,11 @@ class ScenesCell extends PureComponent {
       newOrder.splice(positionWithinLine, 0, id)
     }
 
-    this.props.actions.reorderCardsWithinLine(chapterId, lineId, isSeries, newOrder)
+    this.props.actions.reorderCardsWithinLine(chapterId, lineId, newOrder)
   }
 
   moveSceneCard = (id, positionWithinLine) => {
-    const { chapterId, lineId, isSeries, cards } = this.props
+    const { chapterId, lineId, cards } = this.props
     let newOrder = []
 
     const currentIds = cards.map((c) => c.id)
@@ -57,7 +56,7 @@ class ScenesCell extends PureComponent {
       newOrder.splice(positionWithinLine, 0, id)
     }
 
-    this.props.actions.reorderCardsWithinLine(chapterId, lineId, isSeries, newOrder)
+    this.props.actions.reorderCardsWithinLine(chapterId, lineId, newOrder)
   }
 
   addSceneCard = (newCardData) => {
@@ -71,12 +70,8 @@ class ScenesCell extends PureComponent {
   }
 
   buildCard(data) {
-    const { chapterId, lineId, isSeries } = this.props
-    if (isSeries) {
-      return Object.assign({}, { beatId: chapterId, seriesLineId: lineId }, data)
-    } else {
-      return Object.assign({}, { chapterId, lineId }, data)
-    }
+    const { chapterId, lineId } = this.props
+    return Object.assign({}, { chapterId, beatId: chapterId, lineId }, data)
   }
 
   renderCards(arentHidden) {
@@ -187,7 +182,6 @@ ScenesCell.propTypes = {
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   ui: PropTypes.object.isRequired,
-  isSeries: PropTypes.bool.isRequired,
   lineIsExpanded: PropTypes.bool.isRequired,
   isVisible: PropTypes.bool.isRequired,
   isSmall: PropTypes.bool.isRequired,
@@ -200,7 +194,6 @@ function mapStateToProps(state, ownProps) {
   const visible = ownProps.cards.some((c) => visibleCards[c.id])
   return {
     ui: state.present.ui,
-    isSeries: isSeriesSelector(state.present),
     lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.lineId],
     isVisible: visible,
     isSmall: isSmallSelector(state.present),

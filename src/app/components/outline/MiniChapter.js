@@ -9,14 +9,14 @@ const {
 } = helpers
 
 function MiniChapter(props) {
-  const { chapter, idx, cards, linesById, sortedLines, isSeries, positionOffset } = props
+  const { chapter, idx, cards, linesById, sortedLines, positionOffset, isSeries } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
   const [inDropZone, setInZone] = useState(false)
   const [dropDepth, setDropDepth] = useState(0)
 
   useEffect(() => {
-    setSortedCards(sortCardsInChapter(chapter.autoOutlineSort, cards, sortedLines, isSeries))
+    setSortedCards(sortCardsInChapter(chapter.autoOutlineSort, cards, sortedLines))
   }, [chapter, cards])
 
   const handleDragEnter = (e) => {
@@ -53,24 +53,19 @@ function MiniChapter(props) {
     const currentIds = sortedCards.map((c) => c.id)
     // dropped in from a different chapter
     if (!currentIds.includes(id)) {
-      let cardIdsInLine = sortedCards
-        .filter((c) => (isSeries ? c.seriesLineId == lineId : c.lineId == lineId))
-        .map((c) => c.id)
+      let cardIdsInLine = sortedCards.filter((c) => c.lineId == lineId).map((c) => c.id)
       cardIdsInLine.push(id)
       if (chapter.autoOutlineSort) {
-        props.reorderCardsWithinLine(chapter.id, lineId, isSeries, cardIdsInLine)
+        props.reorderCardsWithinLine(chapter.id, lineId, cardIdsInLine)
       } else {
         currentIds.push(id)
-        props.reorderCardsInChapter(chapter.id, lineId, isSeries, currentIds, cardIdsInLine, id)
+        props.reorderCardsInChapter(chapter.id, lineId, currentIds, cardIdsInLine, id)
       }
     }
   }
 
   const findCard = (card) => {
-    let id = card.lineId
-    if (isSeries) {
-      id = card.seriesLineId
-    }
+    const id = card.lineId
     return linesById[id]
   }
 

@@ -120,11 +120,7 @@ class TimelineTable extends Component {
   }
 
   buildCard(lineId, chapterId) {
-    if (this.props.isSeries) {
-      return Object.assign({}, card, { beatId: chapterId, seriesLineId: lineId })
-    } else {
-      return Object.assign({}, card, { chapterId, lineId })
-    }
+    return Object.assign({}, card, { beatId: chapterId, chapterId, lineId })
   }
 
   handleAppendChapter = () => {

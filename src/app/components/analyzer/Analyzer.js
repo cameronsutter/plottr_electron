@@ -68,14 +68,12 @@ class Analyzer extends Component {
 
     const lineIds = pltr.lines.map((l) => l.id)
     const chapterIds = pltr.chapters.map((ch) => ch.id)
-    const seriesLineIds = pltr.seriesLines.map((sl) => sl.id)
     const beatIds = pltr.beats.map((b) => b.id)
 
     const visibleCards = cards.filter((c) => {
       return (
         !lineIds.includes(c.lineId) &&
         !chapterIds.includes(c.chapterId) &&
-        !seriesLineIds.includes(c.seriesLineId) &&
         !beatIds.includes(c.beatId)
       )
     })

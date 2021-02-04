@@ -10,11 +10,9 @@ import RichText from '../rce/RichText'
 import cx from 'classnames'
 import Image from 'components/images/Image'
 import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
-import { actions, selectors } from 'pltr/v2'
+import { actions } from 'pltr/v2'
 
 const CardActions = actions.card
-
-const { isSeriesSelector } = selectors
 
 class CardView extends Component {
   constructor(props) {
@@ -54,8 +52,8 @@ class CardView extends Component {
 
   handleDragStart = (e) => {
     this.setState({ dragging: true, editing: false })
-    const { card, index, isSeries } = this.props
-    const lineId = isSeries ? card.seriesLineId : card.lineId
+    const { card, index } = this.props
+    const lineId = card.lineId
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify({ cardId: card.id, lineId, index }))
   }
@@ -256,26 +254,16 @@ CardView.propTypes = {
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   images: PropTypes.object,
-  isSeries: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
-  let line = null
-  let isSeries = isSeriesSelector(state.present)
-  if (isSeries) {
-    // get the right seriesLines
-    line = state.present.seriesLines.find((sl) => sl.id === ownProps.card.seriesLineId)
-  } else {
-    // get the right lines for state.present.ui.currentTimeline (bookId)
-    line = state.present.lines.find((l) => l.id == ownProps.card.lineId)
-  }
+  let line = state.present.lines.find((l) => l.id == ownProps.card.lineId)
   return {
     line: line,
     tags: state.present.tags,
     characters: state.present.characters,
     places: state.present.places,
-    ui: state.present.ui,
-    isSeries: isSeries,
+    ui: state.present.ui
   }
 }
 

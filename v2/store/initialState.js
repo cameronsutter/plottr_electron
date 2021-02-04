@@ -123,7 +123,6 @@ export const card = {
   lineId: null,
   chapterId: null,
   beatId: null,
-  seriesLineId: null,
   bookId: null,
   positionWithinLine: 0,
   positionInChapter: 0,
@@ -149,11 +148,14 @@ export const line = {
 }
 
 export const seriesLine = {
-  id: 1,
+  id: 2,
+  bookId: 'series',
   color: '#6cace4',
   title: '',
   position: 0,
+  characterId: null,
   expanded: null,
+  fromTemplateId: null,
 }
 
 export const customAttributes = {

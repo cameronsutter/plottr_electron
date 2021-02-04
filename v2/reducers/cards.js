@@ -17,7 +17,6 @@ import {
   DELETE_LINE,
   DELETE_PLACE,
   DELETE_SCENE,
-  DELETE_SERIES_LINE,
   DELETE_TAG,
   EDIT_CARD_COORDINATES,
   EDIT_CARD_DETAILS,
@@ -78,21 +77,16 @@ export default function cards(state = INITIAL_STATE, action) {
     case EDIT_CARD_COORDINATES:
       diffObj = {}
       if (action.bookId == 'series') {
-        diffObj.seriesLineId = action.lineId
         diffObj.beatId = action.chapterId
       } else {
-        diffObj.lineId = action.lineId
         diffObj.chapterId = action.chapterId
       }
+      diffObj.lineId = action.lineId
       return state.map((card) => (card.id === action.id ? Object.assign({}, card, diffObj) : card))
 
     case CHANGE_LINE:
       diffObj = {}
-      if (action.bookId == 'series') {
-        diffObj.seriesLineId = action.lineId
-      } else {
-        diffObj.lineId = action.lineId
-      }
+      diffObj.lineId = action.lineId
       return state.map((card) => (card.id === action.id ? Object.assign({}, card, diffObj) : card))
 
     case CHANGE_SCENE:
@@ -113,19 +107,12 @@ export default function cards(state = INITIAL_STATE, action) {
       return state.map((card) => {
         const idx = action.ids.indexOf(card.id)
         if (idx != -1) {
-          if (action.isSeries) {
-            return Object.assign({}, card, {
-              positionWithinLine: idx,
-              beatId: action.chapterId,
-              seriesLineId: action.lineId,
-            })
-          } else {
-            return Object.assign({}, card, {
-              positionWithinLine: idx,
-              chapterId: action.chapterId,
-              lineId: action.lineId,
-            })
-          }
+          return Object.assign({}, card, {
+            positionWithinLine: idx,
+            chapterId: action.chapterId,
+            beatId: action.chapterId,
+            lineId: action.lineId,
+          })
         } else {
           return card
         }
@@ -174,9 +161,6 @@ export default function cards(state = INITIAL_STATE, action) {
 
     case DELETE_LINE:
       return state.filter((card) => card.lineId !== action.id)
-
-    case DELETE_SERIES_LINE:
-      return state.filter((card) => card.seriesLineId !== action.id)
 
     case DELETE_BEAT:
       return state.filter((card) => card.beatId !== action.id)
@@ -286,13 +270,9 @@ export default function cards(state = INITIAL_STATE, action) {
 
     case RESET_TIMELINE:
       // isSeries & chapterIds & lineIds come from root reducer
-      if (action.isSeries) {
-        return state.filter((card) => !card.seriesLineId && !card.beatId)
-      } else {
-        return state.filter(
-          (card) => action.chapterIds[card.chapterId] || action.lineIds[card.lineId]
-        )
-      }
+      return state.filter(
+        (card) => action.chapterIds[card.chapterId] || action.lineIds[card.lineId]
+      )
 
     case CLEAR_TEMPLATE_FROM_TIMELINE:
       // chapterIds & lineIds come from root reducer

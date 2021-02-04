@@ -24,20 +24,28 @@ import { newFileLines } from '../store/newFileState'
 import { nextId } from '../store/newIds'
 import { nextColor } from '../store/lineColors'
 import { nextPositionInBook, positionReset } from '../helpers/lists'
+import { associateWithBroadestScope } from '../helpers/lines'
 
 const initialState = [line]
 
+// bookId is:
+// Union of:
+//  - bookId: Number,
+//  - "series": String literal,
+
 export default function lines(state = initialState, action) {
+  const actionBookId = associateWithBroadestScope(action.bookId)
+
   switch (action.type) {
     case ADD_LINE:
-      const linesInBook = state.filter((l) => l.bookId == action.bookId).length
+      const linesInBook = state.filter((l) => l.bookId == actionBookId).length
       return [
         {
           id: nextId(state),
-          bookId: action.bookId,
+          bookId: actionBookId,
           title: '',
           color: nextColor(linesInBook),
-          position: nextPositionInBook(state, action.bookId),
+          position: nextPositionInBook(state, actionBookId),
           expanded: null,
           fromTemplateId: null,
         },
@@ -45,21 +53,21 @@ export default function lines(state = initialState, action) {
       ]
 
     case ADD_LINE_WITH_TITLE:
-      const linesInBook_ = state.filter((l) => l.bookId == action.bookId).length
+      const linesInBook_ = state.filter((l) => l.bookId == actionBookId).length
       return [
         {
           ...line,
           id: nextId(state),
-          bookId: action.bookId,
+          bookId: actionBookId,
           title: action.title,
           color: nextColor(linesInBook_),
-          position: nextPositionInBook(state, action.bookId),
+          position: nextPositionInBook(state, actionBookId),
         },
         ...state,
       ]
 
     case ADD_LINES_FROM_TEMPLATE:
-      const [_, notBook] = partition(state, (l) => l.bookId == action.bookId)
+      const [_, notBook] = partition(state, (l) => l.bookId == actionBookId)
       return [...notBook, ...action.lines]
 
     case EDIT_LINE:
@@ -81,10 +89,7 @@ export default function lines(state = initialState, action) {
       return state.filter((l) => l.id !== action.id)
 
     case REORDER_LINES:
-      return [
-        ...state.filter((l) => l && l.bookId != action.bookId),
-        ...positionReset(action.lines),
-      ]
+      return [...state.filter((l) => l && l.bookId != actionBookId), ...positionReset(action.lines)]
 
     case EXPAND_LINE:
       return state.map((l) => (l.id === action.id ? Object.assign({}, l, { expanded: true }) : l))
@@ -99,7 +104,7 @@ export default function lines(state = initialState, action) {
     case CLEAR_TEMPLATE_FROM_TIMELINE:
       const values = state.reduce(
         (acc, line) => {
-          if (line.bookId == action.bookId) {
+          if (line.bookId == actionBookId) {
             if (line.fromTemplateId != action.templateId) acc.book.push(line)
           } else {
             acc.notBook.push(line)
@@ -112,15 +117,17 @@ export default function lines(state = initialState, action) {
       return values.notBook.concat(bookLines)
 
     case RESET_TIMELINE:
-      if (action.isSeries) return state
+      if (action.isSeries) {
+        return state.filter((line) => line.bookId !== 'series')
+      }
 
       // remove any from this book
-      const linesToKeep = state.filter((line) => line.bookId != action.bookId)
+      const linesToKeep = state.filter((line) => line.bookId != actionBookId)
       // create a new line in the book so there's 1
       return [
         {
           id: nextId(state),
-          bookId: action.bookId,
+          bookId: actionBookId,
           title: i18n('Main Plot'),
           color: nextColor(0),
           position: 0,

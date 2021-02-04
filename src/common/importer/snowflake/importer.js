@@ -1,16 +1,15 @@
 import xml from 'xml-js'
 import fs from 'fs'
 import i18n from 'format-message'
-import { cloneDeep, uniq, keyBy, groupBy } from 'lodash'
-import {
-  book as defaultBook,
-  note as defaultNote,
-  character as defaultCharacter,
-  card as defaultCard,
-  chapter as defaultChapter,
-  line as defaultLine,
-} from '../../../../shared/initialState'
-import { newIds, helpers, nextBackgroundColor, nextColor } from 'pltr/v2'
+import { cloneDeep, keyBy, groupBy } from 'lodash'
+import { newIds, helpers, nextColor, initialState } from 'pltr/v2'
+
+const defaultBook = initialState.book
+const defaultNote = initialState.note
+const defaultCharacter = initialState.character
+const defaultCard = initialState.card
+const defaultChapter = initialState.chapter
+const defaultLine = initialState.line
 
 const { nextId, objectId } = newIds
 const {

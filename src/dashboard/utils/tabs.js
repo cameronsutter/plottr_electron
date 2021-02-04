@@ -1,14 +1,8 @@
 import React from 'react'
 import t from 'format-message'
-import {
-  IoMdContact,
-  IoIosDocument,
-  IoMdSettings,
-  IoIosHelpBuoy,
-  IoMdTime,
-  IoIosBrowsers,
-} from 'react-icons/io'
-import { is } from 'electron-util'
+import { IoMdContact, IoIosDocument, IoMdSettings, IoIosHelpBuoy, IoMdTime } from 'react-icons/io'
+// IoIosBrowsers
+// (for templates tab)
 
 export const tabs = [
   { name: t('Account'), view: 'account', icon: <IoMdContact /> },

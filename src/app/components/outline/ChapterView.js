@@ -25,8 +25,8 @@ class ChapterView extends Component {
   state = { sortedCards: [] }
 
   static getDerivedStateFromProps(nextProps, nextState) {
-    const { chapter, cards, lines, isSeries } = nextProps
-    const sortedCards = sortCardsInChapter(chapter.autoOutlineSort, cards, lines, isSeries)
+    const { chapter, cards, lines } = nextProps
+    const sortedCards = sortCardsInChapter(chapter.autoOutlineSort, cards, lines)
     return { sortedCards }
   }
 
@@ -43,7 +43,7 @@ class ChapterView extends Component {
     const { sortedCards } = this.state
     const { isSeries, chapter, actions } = this.props
     const currentIds = sortedCards.map((c) => c.id)
-    const currentLineId = isSeries ? current.seriesLineId : current.lineId
+    const currentLineId = current.lineId
     let newOrderInChapter = []
     let newOrderWithinLine = null
 
@@ -53,16 +53,13 @@ class ChapterView extends Component {
       newOrderInChapter = moveToAbove(dropped.index, currentIndex, currentIds)
       if (dropped.lineId == currentLineId) {
         // if same line, also update positionWithinLine
-        const cardIdsInLine = sortedCards
-          .filter((c) => (isSeries ? c.seriesLineId == currentLineId : c.lineId == currentLineId))
-          .map((c) => c.id)
+        const cardIdsInLine = sortedCards.filter((c) => c.lineId == currentLineId).map((c) => c.id)
         const currentPosition = sortedCards.find((c) => c.id == dropped.cardId).positionWithinLine
         newOrderWithinLine = moveToAbove(currentPosition, current.positionWithinLine, cardIdsInLine)
       }
       actions.reorderCardsInChapter(
         chapter.id,
         currentLineId,
-        isSeries,
         newOrderInChapter,
         newOrderWithinLine
       )
@@ -71,10 +68,10 @@ class ChapterView extends Component {
       if (dropped.lineId == currentLineId) {
         // if same line, can just update positionWithinLine
         let cardIdsWithinLine = sortedCards
-          .filter((c) => (isSeries ? c.seriesLineId == currentLineId : c.lineId == currentLineId))
+          .filter((c) => c.lineId == currentLineId)
           .map((c) => c.id)
         cardIdsWithinLine.splice(current.positionWithinLine, 0, dropped.cardId)
-        actions.reorderCardsWithinLine(chapter.id, currentLineId, isSeries, cardIdsWithinLine)
+        actions.reorderCardsWithinLine(chapter.id, currentLineId, cardIdsWithinLine)
       } else {
         // flip to manual sort
         newOrderInChapter = currentIds
@@ -82,7 +79,6 @@ class ChapterView extends Component {
         actions.reorderCardsInChapter(
           chapter.id,
           currentLineId,
-          isSeries,
           newOrderInChapter,
           null,
           dropped.cardId
@@ -140,6 +136,9 @@ ChapterView.propTypes = {
   lines: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
+  chapterActions: PropTypes.object,
+  beatActions: PropTypes.object,
+  actions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

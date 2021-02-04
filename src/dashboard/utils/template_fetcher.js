@@ -2,11 +2,7 @@ import Store from 'electron-store'
 import log from 'electron-log'
 import request from 'request'
 import semverGt from 'semver/functions/gt'
-import {
-  TEMPLATES_MANIFEST_PATH,
-  TEMPLATES_PATH,
-  CUSTOM_TEMPLATES_PATH,
-} from '../../common/utils/config_paths'
+import { TEMPLATES_MANIFEST_PATH } from '../../common/utils/config_paths'
 import { templatesStore, customTemplatesStore } from '../../common/utils/store_hooks'
 import { is } from 'electron-util'
 

@@ -10,7 +10,7 @@ class EditScene extends Component {
     return (
       <div>
         <span>
-          {i18n('Story line')}: "{item.action.title}"
+          {i18n('Story line')}: &quot;{item.action.title}&quot;
         </span>
         <p>
           {i18n('Before')}: <span className="history-component__item__before">{diff.lhs}</span>

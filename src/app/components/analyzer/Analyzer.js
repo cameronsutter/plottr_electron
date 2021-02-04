@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { get, set, groupBy, pickBy, keys, value } from 'lodash' // get/set will possibly be used to edit values
+import { groupBy, pickBy, keys } from 'lodash' // get/set will possibly be used to edit values
 import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
 import Inspector from 'react-json-inspector'
 import 'react-json-inspector/json-inspector.css'
 import DevFileDrop from './DevFileDrop'
-import { findDOMNode } from 'react-dom'
 // import { saveFile } from '../../../common/utils/files'
 import { newIds } from 'pltr/v2'
 
@@ -70,14 +68,12 @@ class Analyzer extends Component {
 
     const lineIds = pltr.lines.map((l) => l.id)
     const chapterIds = pltr.chapters.map((ch) => ch.id)
-    const seriesLineIds = pltr.seriesLines.map((sl) => sl.id)
     const beatIds = pltr.beats.map((b) => b.id)
 
     const visibleCards = cards.filter((c) => {
       return (
         !lineIds.includes(c.lineId) &&
         !chapterIds.includes(c.chapterId) &&
-        !seriesLineIds.includes(c.seriesLineId) &&
         !beatIds.includes(c.beatId)
       )
     })
@@ -135,7 +131,7 @@ class Analyzer extends Component {
   }
 
   moveBookToIdOne = () => {
-    const input = findDOMNode(this.idToMove)
+    const input = this.idToMove
     const idToMove = input.value
     if (idToMove) {
       if (idToMove == 'series') {
@@ -339,10 +335,10 @@ class Analyzer extends Component {
       </div>
     )
   }
-}
 
-Analyzer.propTypes = {
-  pltr: PropTypes.object,
+  static propTypes = {
+    pltr: PropTypes.object,
+  }
 }
 
 function mapStateToProps(state) {

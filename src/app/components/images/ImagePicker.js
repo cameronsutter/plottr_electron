@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -32,6 +31,11 @@ const {
 
 class ImagePicker extends Component {
   state = {}
+
+  constructor(props) {
+    super(props)
+    this.fileNameRef = React.createRef()
+  }
 
   static getDerivedStateFromProps(props, state) {
     const ids = Object.keys(props.images)
@@ -89,7 +93,7 @@ class ImagePicker extends Component {
   }
 
   renameFile = () => {
-    let newName = findDOMNode(this.refs.fileName).value
+    let newName = this.fileNameRef.current.value
     this.props.actions.renameImage(this.state.selectedId, newName)
     this.setState({ editing: false })
   }
@@ -207,7 +211,7 @@ class ImagePicker extends Component {
   }
 
   render() {
-    const { darkMode, selectedId, iconOnly, modalOnly, deleteButton } = this.props
+    const { darkMode, selectedId, iconOnly, deleteButton } = this.props
     if (this.state.open) {
       return (
         <PlottrModal isOpen={true} onRequestClose={this.close}>
@@ -276,7 +280,7 @@ class ImagePicker extends Component {
     if (this.state.editing) {
       return (
         <FormGroup>
-          <FormControl type="text" defaultValue={value} ref="fileName" />
+          <FormControl type="text" defaultValue={value} inputRef={this.fileNameRef} />
           <Button onClick={this.renameFile}>{i18n('Rename')}</Button>
         </FormGroup>
       )
@@ -346,6 +350,9 @@ ImagePicker.propTypes = {
   modalOnly: PropTypes.bool,
   deleteButton: PropTypes.bool,
   close: PropTypes.func,
+  images: PropTypes.object,
+  modalOnly: PropTypes.bool,
+  actions: PropTypes.object,
 }
 
 function mapStateToProps(state) {

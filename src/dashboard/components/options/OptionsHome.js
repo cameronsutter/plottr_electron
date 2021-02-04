@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { is } from 'electron-util'
 import t from 'format-message'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
@@ -13,7 +13,7 @@ if (is.macos) {
 }
 
 export default function OptionsHome(props) {
-  const [settings, settingsSize, saveSetting] = useSettingsInfo()
+  const [settings, _, saveSetting] = useSettingsInfo()
 
   let backupLocation = settings.user.backupLocation
   if (!backupLocation || backupLocation == 'default') backupLocation = BACKUP_BASE_PATH

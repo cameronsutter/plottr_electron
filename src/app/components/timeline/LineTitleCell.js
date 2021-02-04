@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -21,7 +20,6 @@ import Floater from 'react-floater'
 import { actions, helpers, selectors } from 'pltr/v2'
 
 const LineActions = actions.line
-const SeriesLineActions = actions.series
 
 const {
   card: { truncateTitle },
@@ -45,6 +43,7 @@ class LineTitleCell extends PureComponent {
       deleting: false,
     }
     this.hoverTimeout = null
+    this.titleInputRef = React.createRef()
   }
 
   deleteLine = (e) => {
@@ -64,7 +63,7 @@ class LineTitleCell extends PureComponent {
 
   editTitle = () => {
     var id = this.props.line.id
-    const ref = findDOMNode(this.refs.titleRef)
+    const ref = this.titleInputRef.current
     if (!ref) return
     this.props.actions.editLineTitle(id, ref.value)
     this.setState({ editing: false, hovering: false })
@@ -77,7 +76,7 @@ class LineTitleCell extends PureComponent {
   }
 
   handleBlur = () => {
-    if (findDOMNode(this.refs.titleRef).value !== '') {
+    if (this.titleInputRef.current.value !== '') {
       this.editTitle()
       this.setState({ editing: false, hovering: false })
     }
@@ -235,7 +234,7 @@ class LineTitleCell extends PureComponent {
         <FormControl
           type="text"
           defaultValue={this.props.line.title}
-          ref="titleRef"
+          inputRef={this.titleInputRef}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}
@@ -340,9 +339,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  let actions = ownProps.bookId == 'series' ? SeriesLineActions : LineActions
   return {
-    actions: bindActionCreators(actions, dispatch),
+    actions: bindActionCreators(LineActions, dispatch),
   }
 }
 

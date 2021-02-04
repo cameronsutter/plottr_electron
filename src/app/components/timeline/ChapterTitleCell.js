@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import cx from 'classnames'
 import {
   Glyphicon,
   Button,
@@ -13,6 +11,7 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
+import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, helpers, selectors } from 'pltr/v2'
 
@@ -34,6 +33,7 @@ class ChapterTitleCell extends PureComponent {
       dropDepth: 0,
       deleting: false,
     }
+    this.titleInputRef = React.createRef()
   }
 
   deleteChapter = (e) => {
@@ -57,7 +57,7 @@ class ChapterTitleCell extends PureComponent {
 
   editTitle = () => {
     const id = this.props.chapter.id
-    const ref = findDOMNode(this.refs.titleRef)
+    const ref = this.titleInputRef.current
     if (!ref) return null
 
     if (this.props.isSeries) {
@@ -205,7 +205,7 @@ class ChapterTitleCell extends PureComponent {
         <FormControl
           type="text"
           defaultValue={chapter.title}
-          ref="titleRef"
+          inputRef={this.titleInputRef}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}

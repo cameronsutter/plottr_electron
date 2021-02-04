@@ -39,6 +39,7 @@ class TimelineWrapper extends Component {
     this.state = {
       mounted: false,
     }
+    // TODO: refactor this to use createRef
     this.tableRef = null
   }
 

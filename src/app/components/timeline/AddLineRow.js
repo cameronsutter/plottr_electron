@@ -7,13 +7,11 @@ import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import {
-  card,
-  chapter as defaultChapter,
-  line as defaultLine,
-} from '../../../../shared/initialState'
-import { actions, selectors, nextColor } from 'pltr/v2'
+import { actions, selectors, nextColor, initialState } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
+
+const card = initialState.card
+const defaultLine = initialState.line
 
 const {
   nextCardIdSelector,
@@ -24,7 +22,6 @@ const {
   isSmallSelector,
 } = selectors
 const LineActions = actions.line
-const SeriesLineActions = actions.series
 
 class AddLineRow extends Component {
   state = {
@@ -219,7 +216,7 @@ class AddLineRow extends Component {
     this.addLines(templateData.lines, bookId, true, template)
     this.addCards(templateData.cards, templateData.chapters, bookId, template)
 
-    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, bookId, template)
+    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, template, bookId)
     this.setState({ showTemplatePicker: false })
   }
 
@@ -377,9 +374,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  let actions = ownProps.bookId == 'series' ? SeriesLineActions : LineActions
   return {
-    actions: bindActionCreators(actions, dispatch),
+    actions: bindActionCreators(LineActions, dispatch),
   }
 }
 

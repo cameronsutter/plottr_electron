@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import { tabs } from '../../utils/tabs'
 
@@ -20,4 +21,9 @@ export default function DashboardNavigation({ currentView, setView }) {
   }
 
   return <nav>{renderTabs()}</nav>
+}
+
+DashboardNavigation.propTypes = {
+  currentView: PropTypes.string,
+  setView: PropTypes.func,
 }

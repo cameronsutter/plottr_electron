@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'react-proptypes'
 import { Modal, Button, Form } from 'react-bootstrap'
 import i18n from 'format-message'
@@ -29,4 +29,12 @@ export default function DeleteConfirmModal(props) {
       </Modal.Footer>
     </Modal>
   )
+}
+
+DeleteConfirmModal.propTypes = {
+  name: PropTypes.string,
+  customText: PropTypes.string,
+  onDelete: PropTypes.func,
+  onCancel: PropTypes.func,
+  notSubmit: PropTypes.bool,
 }

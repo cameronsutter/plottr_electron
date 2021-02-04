@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
@@ -67,6 +66,7 @@ class CardDialog extends Component {
       cancelling: false,
     }
     this.newAttributeInputRef = React.createRef()
+    this.titleInputRef = React.createRef()
   }
 
   selectTab = (name) => () => {
@@ -137,7 +137,7 @@ class CardDialog extends Component {
   }
 
   saveEdit = () => {
-    const newTitle = findDOMNode(this.refs.titleInput).value
+    var newTitle = this.titleInputRef.current.value
     const attrs = {}
     this.props.customAttributes.forEach((attr) => {
       const { name } = attr
@@ -390,7 +390,7 @@ class CardDialog extends Component {
         style={{ fontSize: '24pt', textAlign: 'center', marginBottom: '6px' }}
         onKeyPress={this.handleEnter}
         type="text"
-        ref="titleInput"
+        inputRef={this.titleInputRef}
         defaultValue={title}
       />
     )

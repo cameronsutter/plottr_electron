@@ -1,16 +1,8 @@
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import {
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  ButtonToolbar,
-  Button,
-  Glyphicon,
-} from 'react-bootstrap'
+import { FormControl, FormGroup, ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
 import TagLabel from 'components/tagLabel'
 import i18n from 'format-message'
@@ -18,11 +10,9 @@ import RichText from '../rce/RichText'
 import cx from 'classnames'
 import Image from 'components/images/Image'
 import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
-import { actions, selectors } from 'pltr/v2'
+import { actions } from 'pltr/v2'
 
 const CardActions = actions.card
-
-const { isSeriesSelector } = selectors
 
 class CardView extends Component {
   constructor(props) {
@@ -34,6 +24,8 @@ class CardView extends Component {
       inDropZone: false,
       dropDepth: 0,
     }
+
+    this.titleInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -41,7 +33,7 @@ class CardView extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = findDOMNode(this.refs.titleInput).value || this.props.card.title
+    var newTitle = this.titleInputRef.current.value || this.props.card.title
     this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
     this.setState({ editing: false })
   }
@@ -60,8 +52,8 @@ class CardView extends Component {
 
   handleDragStart = (e) => {
     this.setState({ dragging: true, editing: false })
-    const { card, index, isSeries } = this.props
-    const lineId = isSeries ? card.seriesLineId : card.lineId
+    const { card, index } = this.props
+    const lineId = card.lineId
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/json', JSON.stringify({ cardId: card.id, lineId, index }))
   }
@@ -132,7 +124,7 @@ class CardView extends Component {
           onKeyDown={this.handleEsc}
           type="text"
           autoFocus
-          ref="titleInput"
+          inputRef={this.titleInputRef}
           defaultValue={title}
         />
       </FormGroup>
@@ -262,26 +254,16 @@ CardView.propTypes = {
   ui: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
   images: PropTypes.object,
-  isSeries: PropTypes.bool.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
-  let line = null
-  let isSeries = isSeriesSelector(state.present)
-  if (isSeries) {
-    // get the right seriesLines
-    line = state.present.seriesLines.find((sl) => sl.id === ownProps.card.seriesLineId)
-  } else {
-    // get the right lines for state.present.ui.currentTimeline (bookId)
-    line = state.present.lines.find((l) => l.id == ownProps.card.lineId)
-  }
+  let line = state.present.lines.find((l) => l.id == ownProps.card.lineId)
   return {
     line: line,
     tags: state.present.tags,
     characters: state.present.characters,
     places: state.present.places,
     ui: state.present.ui,
-    isSeries: isSeries,
   }
 }
 

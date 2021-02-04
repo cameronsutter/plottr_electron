@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { findDOMNode } from 'react-dom'
+import PropTypes from 'react-proptypes'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import t from 'format-message'
@@ -31,6 +31,8 @@ export default function VerifyView({ goBack }) {
     }
   }
 
+  // TODO: refactor useLicenseInfo so it returns functions in an object
+  /* eslint-disable-next-line no-unused-vars */
   const [licenseInfo, licenseInfoSize, setKey, setLicenseInfo] = useLicenseInfo()
   const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
   const [showAlert, setShowAlert] = useState(!!alertText)
@@ -77,7 +79,7 @@ export default function VerifyView({ goBack }) {
 
   const handleVerify = () => {
     if (navigator.onLine) {
-      let input = findDOMNode(licenseRef.current)
+      let input = licenseRef.current
       let license = input.value.trim()
       if (license != '') {
         setSpinnerHidden(false)
@@ -113,7 +115,7 @@ export default function VerifyView({ goBack }) {
           type="text"
           bsSize="large"
           style={{ width: '450px', margin: '12px auto' }}
-          ref={licenseRef}
+          inputRef={licenseRef}
         />
         <Button bsStyle="primary" bsSize="large" onClick={handleVerify}>
           {t('Verify')}
@@ -128,4 +130,8 @@ export default function VerifyView({ goBack }) {
       {renderAlert()}
     </div>
   )
+}
+
+VerifyView.propTypes = {
+  goBack: PropTypes.func,
 }

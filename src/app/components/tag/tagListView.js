@@ -7,10 +7,10 @@ import { Glyphicon, Nav, Navbar, NavItem, Button } from 'react-bootstrap'
 import TagView from 'components/tag/tagView'
 import cx from 'classnames'
 import i18n from 'format-message'
-import { tag } from '../../../../shared/initialState'
-import { actions, selectors } from 'pltr/v2'
+import { actions, selectors, initialState } from 'pltr/v2'
 
 const { sortedTagsSelector } = selectors
+const { tag } = initialState
 
 const TagActions = actions.tag
 

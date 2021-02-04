@@ -8,7 +8,6 @@ const {
   cardMapSelector,
   sortedChaptersByBookSelector,
   makeChapterTitleSelector,
-  isSeriesSelector,
   scenesCustomAttributesSelector,
 } = selectors
 const {
@@ -20,7 +19,6 @@ export default function exportChapters(state, documentContents) {
   const chapters = sortedChaptersByBookSelector(state)
   const lines = sortedLinesByBookSelector(state)
   const card2Dmap = cardMapSelector(state)
-  const isSeries = isSeriesSelector(state)
   const chapterCardMapping = cardMapping(chapters, lines, card2Dmap, null)
   const linesById = keyBy(lines, 'id')
   const customAttrs = scenesCustomAttributesSelector(state)
@@ -35,14 +33,14 @@ export default function exportChapters(state, documentContents) {
 
     // sort cards into chapters by lines (like outline auto-sorting)
     const cards = chapterCardMapping[ch.id]
-    const sortedCards = sortCardsInChapter(ch.autoOutlineSort, cards, lines, isSeries)
+    const sortedCards = sortCardsInChapter(ch.autoOutlineSort, cards, lines)
     sortedCards.forEach((c) => {
       const { id, binderItem: cardItem } = createTextBinderItem(c.title)
       binderItem['Children']['BinderItem'].push(cardItem)
 
       // save card info into documentContents
       let title = ''
-      const lineId = isSeries ? c.seriesLineId : c.lineId
+      const lineId = c.lineId
       const line = linesById[lineId]
       if (line) title = line.title
 

@@ -99,13 +99,10 @@ function chapterParagraphs(chapter, data, namesMapping, bookId, offset, doc) {
   paragraphs.push(new Paragraph('^'))
   let title = chapterTitle(chapter, offset, isSeries)
   paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
-  let lines = data.lines
-  if (isSeries) {
-    lines = data.seriesLines
-  }
+  const lines = data.lines
   const cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, lines, isSeries)
   // console.log('sortedChapterCards', cards)
-  let cardParagraphs = cards.flatMap((c) => card(c, lines, namesMapping, doc, isSeries))
+  let cardParagraphs = cards.flatMap((c) => card(c, lines, namesMapping, doc))
   return paragraphs.concat(cardParagraphs)
 }
 
@@ -130,10 +127,9 @@ function chapterTitle(chapter, offset, isSeries) {
   }
 }
 
-function card(card, lines, namesMapping, doc, isSeries) {
+function card(card, lines, namesMapping, doc) {
   let paragraphs = [new Paragraph('')]
-  const idAttr = isSeries ? 'seriesLineId' : 'lineId'
-  let line = lines.find((l) => card[idAttr] == l.id)
+  let line = lines.find((l) => card.lineId == l.id)
   let titleString = card.title
   if (line) {
     titleString = `${card.title} (${line.title})`
@@ -176,14 +172,13 @@ function sortedChapterCards(autoSort, chapterId, allCards, allLines, isSeries) {
   let cards = findChapterCards(chapterId, allCards, isSeries)
   const sortedLines = sortBy(allLines, 'position')
   if (autoSort) {
-    const idAttr = isSeries ? 'seriesLineId' : 'lineId'
     // group by position within the line
     // for each position, sort those cards by the order of the lines
     const groupedCards = groupBy(cards, 'positionWithinLine')
     const sortedLineIds = sortedLines.map((l) => l.id)
     return Object.keys(groupedCards).flatMap((position) => {
       return groupedCards[position].sort(
-        (a, b) => sortedLineIds.indexOf(a[idAttr]) - sortedLineIds.indexOf(b[idAttr])
+        (a, b) => sortedLineIds.indexOf(a.lineId) - sortedLineIds.indexOf(b.lineId)
       )
     })
   } else {

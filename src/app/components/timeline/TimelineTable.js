@@ -12,8 +12,9 @@ import ChapterInsertCell from './ChapterInsertCell'
 import TopRow from './TopRow'
 import ChapterTitleCell from './ChapterTitleCell'
 import AddLineRow from './AddLineRow'
-import { card } from '../../../../shared/initialState'
-import { newIds, actions, helpers, selectors } from 'pltr/v2'
+import { newIds, actions, helpers, selectors, initialState } from 'pltr/v2'
+
+const { card } = initialState
 
 const { nextId } = newIds
 
@@ -36,7 +37,6 @@ const LineActions = actions.line
 const BeatActions = actions.beat
 const CardActions = actions.card
 const SceneActions = actions.scene
-const SeriesLineActions = actions.series
 const UIActions = actions.ui
 
 class TimelineTable extends Component {
@@ -79,8 +79,7 @@ class TimelineTable extends Component {
 
   handleReorderLines = (originalPosition, droppedPosition) => {
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-    const actions = this.props.isSeries ? this.props.seriesLineActions : this.props.lineActions
-    actions.reorderLines(lines, this.props.ui.currentTimeline)
+    this.props.lineActions.reorderLines(lines, this.props.ui.currentTimeline)
   }
 
   // TODO: this should be a selector
@@ -119,11 +118,7 @@ class TimelineTable extends Component {
   }
 
   buildCard(lineId, chapterId) {
-    if (this.props.isSeries) {
-      return Object.assign({}, card, { beatId: chapterId, seriesLineId: lineId })
-    } else {
-      return Object.assign({}, card, { chapterId, lineId })
-    }
+    return Object.assign({}, card, { beatId: chapterId, chapterId, lineId })
   }
 
   handleAppendChapter = () => {
@@ -364,7 +359,6 @@ TimelineTable.propTypes = {
   nextChapterId: PropTypes.number,
   beats: PropTypes.array,
   lines: PropTypes.array,
-  seriesLines: PropTypes.array,
   cardMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
@@ -377,7 +371,6 @@ TimelineTable.propTypes = {
   lineActions: PropTypes.object,
   cardActions: PropTypes.object,
   beatActions: PropTypes.object,
-  seriesLineActions: PropTypes.object,
 }
 
 function mapStateToProps(state) {
@@ -408,7 +401,6 @@ function mapDispatchToProps(dispatch) {
     lineActions: bindActionCreators(LineActions, dispatch),
     cardActions: bindActionCreators(CardActions, dispatch),
     beatActions: bindActionCreators(BeatActions, dispatch),
-    seriesLineActions: bindActionCreators(SeriesLineActions, dispatch),
   }
 }
 

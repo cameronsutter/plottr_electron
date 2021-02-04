@@ -20,7 +20,6 @@ import Floater from 'react-floater'
 import { actions, helpers, selectors } from 'pltr/v2'
 
 const LineActions = actions.line
-const SeriesLineActions = actions.series
 
 const {
   card: { truncateTitle },
@@ -340,9 +339,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  let actions = ownProps.bookId == 'series' ? SeriesLineActions : LineActions
   return {
-    actions: bindActionCreators(actions, dispatch),
+    actions: bindActionCreators(LineActions, dispatch),
   }
 }
 

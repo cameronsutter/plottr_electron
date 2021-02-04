@@ -11,7 +11,7 @@ import { lineColors, actions, selectors } from 'pltr/v2'
 
 const CardActions = actions.card
 
-const { isSeriesSelector, isSmallSelector, isMediumSelector } = selectors
+const { isSmallSelector, isMediumSelector } = selectors
 const { lightBackground } = lineColors
 
 class BlankCard extends Component {
@@ -55,9 +55,9 @@ class BlankCard extends Component {
     const droppedData = JSON.parse(json)
     if (!droppedData.cardId) return
 
-    const { chapterId, lineId, isSeries } = this.props
+    const { chapterId, lineId } = this.props
 
-    this.props.actions.reorderCardsWithinLine(chapterId, lineId, isSeries, [droppedData.cardId])
+    this.props.actions.reorderCardsWithinLine(chapterId, lineId, [droppedData.cardId])
   }
 
   saveCreate = () => {
@@ -90,15 +90,12 @@ class BlankCard extends Component {
 
   buildCard(title) {
     const { chapterId, lineId } = this.props
-    if (this.props.isSeries) {
-      return {
-        title,
-        beatId: chapterId,
-        seriesLineId: lineId,
-        positionWithinLine: this.props.positionWithinLine || 0,
-      }
-    } else {
-      return { title, chapterId, lineId, positionWithinLine: this.props.positionWithinLine || 0 }
+    return {
+      title,
+      beatId: chapterId,
+      chapterId,
+      lineId,
+      positionWithinLine: this.props.positionWithinLine || 0,
     }
   }
 
@@ -315,7 +312,6 @@ BlankCard.propTypes = {
   color: PropTypes.string.isRequired,
   currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   orientation: PropTypes.string,
-  isSeries: PropTypes.bool,
   positionWithinLine: PropTypes.number,
   onDone: PropTypes.func,
   isSmall: PropTypes.bool,
@@ -327,7 +323,6 @@ function mapStateToProps(state) {
   return {
     currentTimeline: state.present.ui.currentTimeline,
     orientation: state.present.ui.orientation,
-    isSeries: isSeriesSelector(state.present),
     isSmall: isSmallSelector(state.present),
     isMedium: isMediumSelector(state.present),
   }

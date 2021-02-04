@@ -1,7 +1,6 @@
 import { cloneDeep } from 'lodash'
 import { Editor, createEditor as createSlateEditor } from 'slate'
 import { withReact } from 'slate-react'
-import { RCE_INITIAL_VALUE } from '../../../../shared/initialState'
 import { rceDataRepair } from './rceDataRepair'
 import { withHistory } from 'slate-history'
 import { withLinks } from './LinkButton'
@@ -9,6 +8,9 @@ import { withImages } from './ImagesButton'
 import { withHTML } from './withHTML'
 import withNormalizer from './Normalizer'
 import { withList } from './withList'
+import { initialState } from 'pltr/v2'
+
+const { RCE_INITIAL_VALUE } = initialState
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list']
 export const HEADING_TYPES = ['heading-one', 'heading-two']

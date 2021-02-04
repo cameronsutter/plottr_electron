@@ -22,7 +22,6 @@ const {
   isSmallSelector,
 } = selectors
 const LineActions = actions.line
-const SeriesLineActions = actions.seriesLine
 
 class AddLineRow extends Component {
   state = {
@@ -375,9 +374,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  let actions = ownProps.bookId == 'series' ? SeriesLineActions : LineActions
   return {
-    actions: bindActionCreators(actions, dispatch),
+    actions: bindActionCreators(LineActions, dispatch),
   }
 }
 

@@ -20,7 +20,6 @@ const {
 const LineActions = actions.line
 const BeatActions = actions.beat
 const SceneActions = actions.scene
-const SeriesLineActions = actions.seriesLine
 
 const {
   sortedChaptersByBookSelector,
@@ -43,13 +42,9 @@ class TopRow extends Component {
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
-    const { ui, lineActions, seriesLineActions, isSeries, lines } = this.props
+    const { ui, lineActions, lines } = this.props
     const newLines = reorderList(originalPosition, droppedPosition, lines)
-    if (isSeries) {
-      seriesLineActions.reorderLines(newLines)
-    } else {
-      lineActions.reorderLines(newLines, ui.currentTimeline)
-    }
+    lineActions.reorderLines(newLines, ui.currentTimeline)
   }
 
   handleInsertNewChapter = (nextPosition) => {
@@ -72,12 +67,8 @@ class TopRow extends Component {
   }
 
   handleAppendLine = () => {
-    const { ui, lineActions, seriesLineActions, isSeries } = this.props
-    if (isSeries) {
-      seriesLineActions.addLine()
-    } else {
-      lineActions.addLine(ui.currentTimeline)
-    }
+    const { ui, lineActions } = this.props
+    lineActions.addLine(ui.currentTimeline)
   }
 
   renderLastInsertChapterCell() {
@@ -199,7 +190,6 @@ TopRow.propTypes = {
   sceneActions: PropTypes.object,
   lineActions: PropTypes.object,
   beatActions: PropTypes.object,
-  seriesLineActions: PropTypes.object,
 }
 
 function mapStateToProps(state) {
@@ -228,7 +218,6 @@ function mapDispatchToProps(dispatch) {
     sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
     beatActions: bindActionCreators(BeatActions, dispatch),
-    seriesLineActions: bindActionCreators(SeriesLineActions, dispatch),
   }
 }
 

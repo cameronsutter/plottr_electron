@@ -24,10 +24,14 @@ class EditSeries extends Component {
   constructor(props) {
     super(props)
 
-    this.nameRef = React.createRef()
-    this.premiseRef = React.createRef()
-    this.genreRef = React.createRef()
-    this.themeRef = React.createRef()
+    const { series } = props
+    this.state = {
+      editing: false,
+      name: series.name,
+      premise: series.premise,
+      genre: series.genre,
+      theme: series.theme,
+    }
   }
 
   componentWillUnmount() {
@@ -35,20 +39,22 @@ class EditSeries extends Component {
   }
 
   saveEdit = () => {
-    let name = this.nameRef.current.value
-    let premise = this.premiseRef.current.value
-    let genre = this.genreRef.current.value
-    let theme = this.themeRef.current.value
+    const name = this.state.name
+    const premise = this.state.premise
+    const genre = this.state.genre
+    const theme = this.state.theme
     this.props.actions.editSeries({ name, premise, genre, theme })
     this.setState({ editing: false })
   }
 
-  checkForEdits = () => {
+  checkForEdits = (e, which) => {
     const { series } = this.props
-    const someEdited = ['name', 'premise', 'genre', 'theme'].some((field) => {
-      return this[`${field}Ref`].value != series[field]
-    })
-    this.setState({ editing: someEdited })
+
+    let someEdited = ['name', 'premise', 'genre', 'theme']
+      .filter((field) => field != which)
+      .some((field) => this.state[field] != series[field])
+    if (series[which] != e.target.value) someEdited = true
+    this.setState({ editing: someEdited, [which]: e.target.value })
   }
 
   renderToolBar() {
@@ -62,7 +68,6 @@ class EditSeries extends Component {
   }
 
   renderBody() {
-    const { series } = this.props
     return (
       <Form horizontal>
         <FormGroup>
@@ -72,9 +77,8 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              inputRef={this.nameRef}
-              defaultValue={series.name}
-              onChange={this.checkForEdits}
+              value={this.state.name}
+              onChange={(e) => this.checkForEdits(e, 'name')}
             />
           </Col>
           <Col componentClass={ControlLabel} sm={1}>
@@ -83,9 +87,8 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              inputRef={this.premiseRef}
-              defaultValue={series.premise}
-              onChange={this.checkForEdits}
+              value={this.state.premise}
+              onChange={(e) => this.checkForEdits(e, 'premise')}
             />
           </Col>
         </FormGroup>
@@ -96,9 +99,8 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              inputRef={this.genreRef}
-              defaultValue={series.genre}
-              onChange={this.checkForEdits}
+              value={this.state.genre}
+              onChange={(e) => this.checkForEdits(e, 'genre')}
             />
           </Col>
           <Col componentClass={ControlLabel} sm={1}>
@@ -107,9 +109,8 @@ class EditSeries extends Component {
           <Col sm={4}>
             <FormControl
               type="text"
-              inputRef={this.themeRef}
-              defaultValue={series.theme}
-              onChange={this.checkForEdits}
+              value={this.state.theme}
+              onChange={(e) => this.checkForEdits(e, 'theme')}
             />
           </Col>
         </FormGroup>

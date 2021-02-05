@@ -5,9 +5,10 @@
     text-align: center;
     @include application-text;
   }
-  .container-fluid {
+  .tab-body {
     width: 99vw;
     overflow: hidden;
+    padding-bottom: 4px;
     .row {
       height: 100%;
     }
@@ -26,6 +27,7 @@
   overflow: auto;
   height: calc(100% - 77px);
   position: relative;
+  margin-bottom: 0;
 
   .list-group-item {
     padding-right: 4px;

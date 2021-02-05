@@ -3,7 +3,7 @@
     "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/examples/example3.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2021.1.20"
+    "version": "2021.2.4"
   },
   "ui": {
     "characterFilter": {
@@ -275,10 +275,9 @@
     },
     {
       "id": 321,
-      "lineId": null,
+      "lineId": 26,
       "chapterId": null,
       "beatId": 5,
-      "seriesLineId": 2,
       "bookId": null,
       "positionWithinLine": 0,
       "positionInChapter": 0,
@@ -301,10 +300,9 @@
     },
     {
       "id": 320,
-      "lineId": null,
+      "lineId": 26,
       "chapterId": null,
       "beatId": 2,
-      "seriesLineId": 2,
       "bookId": null,
       "positionWithinLine": 0,
       "positionInChapter": 0,
@@ -336,10 +334,9 @@
     },
     {
       "id": 319,
-      "lineId": null,
+      "lineId": 26,
       "chapterId": null,
       "beatId": 2,
-      "seriesLineId": 2,
       "bookId": null,
       "positionWithinLine": 1,
       "positionInChapter": 0,
@@ -362,10 +359,9 @@
     },
     {
       "id": 318,
-      "lineId": null,
+      "lineId": 27,
       "chapterId": null,
       "beatId": 1,
-      "seriesLineId": 1,
       "bookId": null,
       "positionWithinLine": 1,
       "positionInChapter": 0,
@@ -388,10 +384,9 @@
     },
     {
       "id": 317,
-      "lineId": null,
+      "lineId": 27,
       "chapterId": null,
       "beatId": 2,
-      "seriesLineId": 1,
       "bookId": null,
       "positionWithinLine": 0,
       "positionInChapter": 0,
@@ -9553,10 +9548,9 @@
     },
     {
       "id": 286,
-      "lineId": null,
+      "lineId": 27,
       "chapterId": null,
       "beatId": 1,
-      "seriesLineId": 1,
       "bookId": 1,
       "position": 0,
       "title": "Pride & Prejudice",
@@ -11450,6 +11444,26 @@
       "bookId": 1,
       "expanded": null,
       "fromTemplateId": null
+    },
+    {
+      "id": 26,
+      "bookId": "series",
+      "color": "#78be20",
+      "title": "Sub plot",
+      "position": 1,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 27,
+      "bookId": "series",
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
     }
   ],
   "notes": [
@@ -12039,22 +12053,6 @@
       "county": "",
       "owner": "",
       "thing": ""
-    }
-  ],
-  "seriesLines": [
-    {
-      "id": 2,
-      "title": "Sub plot",
-      "color": "#78be20",
-      "position": 1,
-      "expanded": null
-    },
-    {
-      "id": 1,
-      "color": "#6cace4",
-      "title": "Main Plot",
-      "position": 0,
-      "expanded": null
     }
   ],
   "tags": [

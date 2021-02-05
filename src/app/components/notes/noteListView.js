@@ -220,15 +220,13 @@ class NoteListView extends Component {
   }
 
   render() {
-    let klasses = 'secondary-text'
-    if (this.props.ui.darkMode) klasses += ' darkmode'
     return (
       <div className="note-list container-with-sub-nav">
         {this.renderSubNav()}
         <Grid fluid className="tab-body">
           <Row>
             <Col sm={3}>
-              <h1 className={klasses}>
+              <h1 className={cx('secondary-text', { darkmode: this.props.ui.darkMode })}>
                 {i18n('Notes')}{' '}
                 <Button onClick={this.handleCreateNewNote}>
                   <Glyphicon glyph="plus" />

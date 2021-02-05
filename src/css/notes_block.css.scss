@@ -5,9 +5,10 @@
     text-align: center;
     @include application-text;
   }
-  .container-fluid {
+  .tab-body {
     width: 100vw;
     overflow: hidden;
+    padding-bottom: 4px;
     .row {
       height: 100%;
     }
@@ -16,20 +17,17 @@
       height: 100%;
       position: relative;
     }
+    .col-sm-9 {
+      padding-top: 16px;
+    }
   }
-}
-
-.note-list__note-wrapper {
-  height: 100%;
-  position: relative;
-  overflow: auto;
-  padding-top: 16px;
 }
 
 .note-list__list {
   overflow: auto;
-  height: calc(100% - 74px);
+  height: calc(100% - 77px);
   position: relative;
+  margin-bottom: 0;
 
   .list-group-item {
     padding-right: 4px;
@@ -97,6 +95,12 @@
 
 .note-list__new:hover {
   background: $new-item-background;
+}
+
+.note-list__note-wrapper {
+  height: 100%;
+  position: relative;
+  overflow: auto;
 }
 
 .note-list__note {

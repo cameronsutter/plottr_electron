@@ -18,6 +18,9 @@ import cx from 'classnames'
 import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
 import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmModal'
+import getTestIds from 'test-utils/getTestIds'
+
+export const testIds = getTestIds()
 
 const modalStyles = { content: { width: '50%', marginLeft: '25%' } }
 const win = remote.getCurrentWindow()
@@ -39,6 +42,13 @@ export default class TemplatePicker extends Component {
     deleteWhich: null,
   }
 
+  static defaultProps = {
+    showTemplateSaveButton: true,
+    showCancelButton: true,
+    confirmButtonText: i18n('Choose'),
+    close: () => {},
+  }
+
   componentDidMount() {
     let templates = {}
     let customTemplates = []
@@ -53,7 +63,7 @@ export default class TemplatePicker extends Component {
     e.stopPropagation()
     deleteTemplate(this.state.deleteWhich.id)
     this.setState({
-      customTemplates: listCustomTemplates(this.props.type),
+      customTemplates: this.props.type.flatMap(listCustomTemplates),
       deleting: false,
       deleteWhich: null,
     })
@@ -91,7 +101,8 @@ export default class TemplatePicker extends Component {
 
   saveTemplateEdit = (data) => {
     editTemplateDetails(data.id, data)
-    this.setState({ editing: false, customTemplates: listCustomTemplates(this.props.type) })
+    const customTemplates = this.props.type.flatMap((type) => listCustomTemplates(type))
+    this.setState({ editing: false, customTemplates })
   }
 
   chooseTemplate = () => {
@@ -116,6 +127,7 @@ export default class TemplatePicker extends Component {
 
     return (
       <a
+        data-testid={testIds.link}
         className="template-picker__link"
         title={template.link}
         onClick={() => shell.openExternal(template.link)}
@@ -131,10 +143,14 @@ export default class TemplatePicker extends Component {
 
     return (
       <div>
-        <Button bsSize="small" onClick={(e) => this.editTemplate(e)}>
+        <Button data-testid={testIds.edit} bsSize="small" onClick={(e) => this.editTemplate(e)}>
           <Glyphicon glyph="edit" />
         </Button>
-        <Button bsSize="small" onClick={(e) => this.handleDelete(e, template)}>
+        <Button
+          data-testid={testIds.delete}
+          bsSize="small"
+          onClick={(e) => this.handleDelete(e, template)}
+        >
           <Glyphicon glyph="trash" />
         </Button>
       </div>
@@ -178,11 +194,11 @@ export default class TemplatePicker extends Component {
     return (
       <div className="panel panel-primary">
         <div className="panel-heading">
-          <h3 className="panel-title">
+          <h3 data-testid={testIds[`name-${template.id}`]} className="panel-title">
             {template.name}
             {this.renderLink(template)}
           </h3>
-          <p>{template.description}</p>
+          <p data-testid={testIds[`description-${template.id}`]}>{template.description}</p>
         </div>
         {edit}
         {details}
@@ -202,6 +218,7 @@ export default class TemplatePicker extends Component {
       return (
         <li
           key={template.id}
+          data-testid={testIds[`template-${template.id}`]}
           className={klasses}
           onClick={() =>
             this.setState({
@@ -220,11 +237,17 @@ export default class TemplatePicker extends Component {
   }
 
   renderSaveButton(num) {
+    if (!this.props.showTemplateSaveButton) return null
     if (num) return null
-    if (this.props.type == 'characters' && !this.props.canMakeCharacterTemplates) return null
+    if (
+      this.props.type.length === 1 &&
+      this.props.type[0] === 'characters' &&
+      !this.props.canMakeCharacterTemplates
+    )
+      return null
 
     return (
-      <Button bsSize="small" onClick={this.startSaveAsTemplate}>
+      <Button data-testid={testIds.save} bsSize="small" onClick={this.startSaveAsTemplate}>
         <FaSave className="svg-save-template" /> {i18n('Save as Template')}
       </Button>
     )
@@ -260,9 +283,18 @@ export default class TemplatePicker extends Component {
           <div className="template-picker__details">{this.renderTemplateDetails()}</div>
         </div>
         <ButtonToolbar className="card-dialog__button-bar">
-          <Button onClick={this.props.close}>{i18n('Cancel')}</Button>
-          <Button bsStyle="success" onClick={this.chooseTemplate} disabled={!this.state.selectedId}>
-            {i18n('Choose')}
+          {this.props.showCancelButton && (
+            <Button data-testid={testIds.cancel} onClick={this.props.close}>
+              {i18n('Cancel')}
+            </Button>
+          )}
+          <Button
+            data-testid={testIds.confirm}
+            bsStyle="success"
+            onClick={this.chooseTemplate}
+            disabled={!this.state.selectedId}
+          >
+            {this.props.confirmButtonText}
           </Button>
         </ButtonToolbar>
       </div>
@@ -287,11 +319,14 @@ export default class TemplatePicker extends Component {
 
   static propTypes = {
     modal: PropTypes.bool.isRequired,
-    close: PropTypes.func.isRequired,
+    close: PropTypes.func,
     onChooseTemplate: PropTypes.func.isRequired,
     isOpen: PropTypes.bool,
     type: PropTypes.array,
     darkMode: PropTypes.bool,
     canMakeCharacterTemplates: PropTypes.bool,
+    showTemplateSaveButton: PropTypes.bool,
+    showCancelButton: PropTypes.bool,
+    confirmButtonText: PropTypes.string,
   }
 }

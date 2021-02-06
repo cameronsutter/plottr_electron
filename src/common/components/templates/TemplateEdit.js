@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import {
   Form,
@@ -10,18 +10,21 @@ import {
   Button,
 } from 'react-bootstrap'
 import i18n from 'format-message'
+import getTestIds from 'test-utils/getTestIds'
+
+export const testIds = getTestIds()
 
 export default function TemplateEdit({ template, saveEdit, cancel }) {
-  const nameRef = useRef()
-  const linkRef = useRef()
-  const descriptionRef = useRef()
+  const [name, setName] = useState(template.name)
+  const [description, setDescription] = useState(template.description)
+  const [link, setLink] = useState(template.link)
 
   const save = () => {
     const data = {
       id: template.id,
-      name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      link: linkRef.current.value,
+      name,
+      description,
+      link,
     }
 
     saveEdit(data)
@@ -30,10 +33,12 @@ export default function TemplateEdit({ template, saveEdit, cancel }) {
   const renderToolBar = () => {
     return (
       <ButtonToolbar>
-        <Button bsStyle="success" onClick={save}>
+        <Button data-testid={testIds.save} bsStyle="success" onClick={save}>
           {i18n('Save')}
         </Button>
-        <Button onClick={cancel}>{i18n('Cancel')}</Button>
+        <Button data-testid={testIds.cancel} onClick={cancel}>
+          {i18n('Cancel')}
+        </Button>
       </ButtonToolbar>
     )
   }
@@ -45,7 +50,12 @@ export default function TemplateEdit({ template, saveEdit, cancel }) {
           {i18n('Name')}
         </Col>
         <Col sm={8}>
-          <FormControl type="text" inputRef={nameRef} defaultValue={template.name} />
+          <FormControl
+            data-testid={testIds.name}
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.currentTarget.value)}
+          />
         </Col>
       </FormGroup>
       <FormGroup>
@@ -53,7 +63,12 @@ export default function TemplateEdit({ template, saveEdit, cancel }) {
           {i18n('Description')}
         </Col>
         <Col sm={8}>
-          <FormControl type="text" inputRef={descriptionRef} defaultValue={template.description} />
+          <FormControl
+            data-testid={testIds.description}
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.currentTarget.value)}
+          />
         </Col>
       </FormGroup>
       <FormGroup>
@@ -62,9 +77,10 @@ export default function TemplateEdit({ template, saveEdit, cancel }) {
         </Col>
         <Col sm={8}>
           <FormControl
+            data-testid={testIds.link}
             type="text"
-            inputRef={linkRef}
-            defaultValue={template.link}
+            value={link}
+            onChange={(e) => setLink(e.currentTarget.value)}
             placeholder="https://example.com/"
           />
         </Col>

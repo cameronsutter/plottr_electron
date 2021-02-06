@@ -5,7 +5,7 @@ const TEMPLATES_PATH = process.env.NODE_ENV == 'development' ? 'templates_dev' :
 const templateStore = new Store({ name: TEMPLATES_PATH })
 const CUSTOM_TEMPLATES_PATH =
   process.env.NODE_ENV == 'development' ? 'custom_templates_dev' : 'custom_templates'
-const customTemplateStore = new Store({ name: CUSTOM_TEMPLATES_PATH })
+export const customTemplateStore = new Store({ name: CUSTOM_TEMPLATES_PATH })
 
 export function listTemplates(type) {
   const templatesById = templateStore.get()

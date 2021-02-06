@@ -7,14 +7,14 @@
   padding: 20px 40px;
   display: grid;
   grid-template-areas:
-    "newFiles"
-    "recentProjects";
+    "options"
+    "body";
   grid-template-rows: auto 1fr;
   overflow: hidden;
 }
 
 .dashboard__new-files {
-  grid-area: newFiles;
+  grid-area: options;
   width: 95%;
   padding-bottom: 40px;
 }
@@ -61,8 +61,14 @@
   }
 }
 
+.template-picker__dialog-wrapper {
+  grid-area: body;
+  position: relative;
+  overflow: hidden;
+}
+
 .dashboard__recent-files {
-  grid-area: recentProjects;
+  grid-area: body;
   position: relative;
   overflow: hidden;
 

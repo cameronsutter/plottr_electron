@@ -18,3 +18,38 @@ configure({ adapter: new Adapter() })
 jest.mock('electron-util', () => ({
   is: jest.fn(),
 }))
+
+jest.mock('electron', () => ({
+  ipcRenderer: {
+    sendTo: jest.fn(),
+  },
+  remote: {
+    getCurrentWindow: () => ({
+      webContents: {
+        id: '1',
+      },
+    }),
+  },
+  shell: {
+    openExternal: jest.fn(),
+  },
+}))
+
+class MockStore {
+  constructor({ name }) {
+    this.name = name
+    this.store = {}
+  }
+  get(id) {
+    if (id != null) return this.store[id]
+    return this.store
+  }
+  set(id, value) {
+    this.store[id] = value
+  }
+  delete(id) {
+    delete this.store[id]
+  }
+}
+
+jest.mock('electron-store', () => MockStore)

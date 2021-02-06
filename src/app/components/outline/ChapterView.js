@@ -41,7 +41,7 @@ class ChapterView extends Component {
 
   reorderCards = ({ current, currentIndex, dropped }) => {
     const { sortedCards } = this.state
-    const { isSeries, chapter, actions } = this.props
+    const { chapter, actions } = this.props
     const currentIds = sortedCards.map((c) => c.id)
     const currentLineId = current.lineId
     let newOrderInChapter = []

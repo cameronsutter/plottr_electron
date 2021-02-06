@@ -3,7 +3,7 @@ import { remote } from 'electron'
 import NewFiles from './NewFiles'
 import RecentFiles from './RecentFiles'
 import t from 'format-message'
-import TemplatePicker from '../templates/TemplatePicker'
+import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { createNew, createFromSnowflake } from '../../utils/window_manager'
 import MPQ from '../../../common/utils/MPQ'
 import log from 'electron-log'
@@ -39,7 +39,16 @@ export default function FilesHome(props) {
   let body = null
   switch (view) {
     case 'templates':
-      body = <TemplatePicker startNew={createWithTemplate} />
+      body = (
+        <TemplatePicker
+          modal={false}
+          type={['custom', 'project', 'plotlines']}
+          onChooseTemplate={createWithTemplate}
+          showTemplateSaveButton={false}
+          showCancelButton={false}
+          confirmButtonText={t('Create New Project')}
+        />
+      )
       break
     case 'import':
       body = null

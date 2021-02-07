@@ -13,7 +13,7 @@ import {
 import CharacterTemplateDetails from './CharacterTemplateDetails'
 import PlotlineTemplateDetails from './PlotlineTemplateDetails'
 import ProjectTemplateDetails from './ProjectTemplateDetails'
-import SceneTemplateDetails from './SceneTemplateDetails'
+import CardTemplateDetails from './CardTemplateDetails'
 import cx from 'classnames'
 import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
@@ -187,7 +187,7 @@ export default class TemplatePicker extends Component {
         details = <ProjectTemplateDetails template={template} />
         break
       case 'scenes':
-        details = <SceneTemplateDetails template={template} />
+        details = <CardTemplateDetails template={template} />
         break
     }
 

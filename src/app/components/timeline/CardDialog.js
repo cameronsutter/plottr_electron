@@ -24,7 +24,7 @@ import { helpers, actions, selectors } from 'pltr/v2'
 
 const {
   card: { truncateTitle },
-  chapters: { chapterTitle },
+  beats: { beatTitle },
 } = helpers
 
 const CardActions = actions.card
@@ -34,7 +34,7 @@ const CustomAttributeActions = actions.ui
 const { sortedTagsSelector, isSeriesSelector } = selectors
 
 const {
-  sortedChaptersByBookSelector,
+  sortedBeatsByBookSelector,
   positionOffsetSelector,
   charactersSortedAtoZSelector,
   sortedLinesByBookSelector,
@@ -177,7 +177,7 @@ class CardDialog extends Component {
 
   addNewCustomAttribute = (name) => {
     if (name) {
-      this.props.customAttributeActions.addSceneAttr({
+      this.props.customAttributeActions.addCardAttr({
         name,
         type: this.state.newAttributeType,
       })
@@ -213,8 +213,8 @@ class CardDialog extends Component {
     )
   }
 
-  changeChapter(chapterId) {
-    this.props.actions.changeScene(this.props.card.id, chapterId, this.props.ui.currentTimeline)
+  changeBeat(beatId) {
+    this.props.actions.changeBeat(this.props.card.id, beatId, this.props.ui.currentTimeline)
   }
 
   changeLine(lineId) {
@@ -225,8 +225,8 @@ class CardDialog extends Component {
     this.props.actions.changeBook(this.props.card.id, bookId)
   }
 
-  getCurrentChapter() {
-    return this.props.chapters.find((ch) => ch.id == this.props.chapterId)
+  getCurrentBeat() {
+    return this.props.beats.find((beat) => beat.id == this.props.beatId)
   }
 
   getCurrentLine() {
@@ -337,12 +337,12 @@ class CardDialog extends Component {
     )
   }
 
-  renderChapterItems() {
-    const { chapters, positionOffset, isSeries } = this.props
-    return chapters.map((chapter) => {
+  renderBeatItems() {
+    const { beats, positionOffset, isSeries } = this.props
+    return beats.map((beat) => {
       return (
-        <MenuItem key={chapter.id} onSelect={() => this.changeChapter(chapter.id)}>
-          {truncateTitle(chapterTitle(chapter, positionOffset, isSeries), 50)}
+        <MenuItem key={beat.id} onSelect={() => this.changeBeat(beat.id)}>
+          {truncateTitle(beatTitle(beat, positionOffset, isSeries), 50)}
         </MenuItem>
       )
     })
@@ -424,7 +424,7 @@ class CardDialog extends Component {
 
   renderLeftSide() {
     const lineDropdownID = 'select-line'
-    const chapterDropdownID = 'select-chapter'
+    const beatDropdownID = 'select-beat'
 
     const { positionOffset, isSeries } = this.props
 
@@ -434,7 +434,7 @@ class CardDialog extends Component {
       labelText = i18n('Beat')
       bookDropDown = this.renderBookDropdown()
     }
-    const currentChapterTitle = chapterTitle(this.getCurrentChapter(), positionOffset, isSeries)
+    const currentBeatTitle = beatTitle(this.getCurrentBeat(), positionOffset, isSeries)
 
     return (
       <div className="card-dialog__left-side">
@@ -452,14 +452,14 @@ class CardDialog extends Component {
           </label>
         </div>
         <div className="card-dialog__sdropdown-wrapper">
-          <label className="card-dialog__details-label" htmlFor={chapterDropdownID}>
+          <label className="card-dialog__details-label" htmlFor={beatDropdownID}>
             {labelText}:
             <DropdownButton
-              id={chapterDropdownID}
-              className="card-dialog__select-scene"
-              title={truncateTitle(currentChapterTitle, 40)}
+              id={beatDropdownID}
+              className="card-dialog__select-card"
+              title={truncateTitle(currentBeatTitle, 40)}
             >
-              {this.renderChapterItems()}
+              {this.renderBeatItems()}
             </DropdownButton>
           </label>
         </div>
@@ -565,11 +565,11 @@ class CardDialog extends Component {
 
 CardDialog.propTypes = {
   card: PropTypes.object,
-  chapterId: PropTypes.number.isRequired,
+  beatId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   closeDialog: PropTypes.func,
   lines: PropTypes.array.isRequired,
-  chapters: PropTypes.array.isRequired,
+  beats: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
@@ -585,7 +585,7 @@ CardDialog.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    chapters: sortedChaptersByBookSelector(state.present),
+    beats: sortedBeatsByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
     tags: sortedTagsSelector(state.present),
     characters: charactersSortedAtoZSelector(state.present),

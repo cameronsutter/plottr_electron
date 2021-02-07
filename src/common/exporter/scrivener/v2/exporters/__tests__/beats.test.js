@@ -1,14 +1,14 @@
-import exportChapters from '../chapters'
+import exportBeats from '../beats'
 import { resetId } from '../../utils'
 import { state } from './fixtures'
 import { paragraph, headingTwo } from 'components/rce/__fixtures__'
 
-describe('exportChapters', () => {
+describe('exportBeats', () => {
   let documentContents = {}
   beforeEach(() => resetId())
 
-  it('exports chapter binders from state', () => {
-    const binderItems = exportChapters(state, documentContents)
+  it('exports beat binders from state', () => {
+    const binderItems = exportBeats(state, documentContents)
     expect(binderItems).toMatchObject([
       {
         _attributes: {

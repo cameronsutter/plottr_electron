@@ -11,7 +11,7 @@ const CustomAttributeActions = actions.customAttribute
 const {
   placeCustomAttributesThatCanChangeSelector,
   characterCustomAttributesThatCanChangeSelector,
-  scenesCustomAttributesThatCanChangeSelector,
+  cardsCustomAttributesThatCanChangeSelector,
 } = selectors
 
 function CustomAttributeModal({
@@ -77,7 +77,7 @@ function mapStateToProps(state, { type }) {
       canChangeFn = placeCustomAttributesThatCanChangeSelector
       break
     case 'scenes':
-      canChangeFn = scenesCustomAttributesThatCanChangeSelector
+      canChangeFn = cardsCustomAttributesThatCanChangeSelector
       break
     default:
       canChangeFn = () => {
@@ -116,10 +116,10 @@ function mapDispatchToProps(dispatch, { type }) {
 
     case 'scenes':
       return {
-        addAttribute: actions.addSceneAttr,
-        removeAttribute: actions.removeSceneAttr,
-        editAttribute: actions.editSceneAttr,
-        reorderAttribute: actions.reorderScenesAttribute,
+        addAttribute: actions.addCardAttr,
+        removeAttribute: actions.removeCardAttr,
+        editAttribute: actions.editCardAttr,
+        reorderAttribute: actions.reorderCardsAttribute,
       }
 
     default:
@@ -130,9 +130,6 @@ function mapDispatchToProps(dispatch, { type }) {
         editAttribute: () => {},
         reorderAttribute: () => {},
       }
-  }
-  return {
-    ...bindActionCreators(CustomAttributeActions, dispatch),
   }
 }
 

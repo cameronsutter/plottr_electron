@@ -2,11 +2,11 @@
 
 $title_height: 70px;
 
-.chapter__cell {
+.beat__cell {
   width: 175px;
 }
 
-.chapter__body {
+.beat__body {
   @include sub-header-font;
   padding: 20px 10px;
   width: 150px + 6px; // +6px for the 3px border
@@ -33,7 +33,7 @@ $title_height: 70px;
   }
 }
 
-.chapter-list__item__hover-options {
+.beat-list__item__hover-options {
   text-align: center;
   visibility: hidden;
   margin-bottom: 5px;
@@ -50,7 +50,7 @@ $title_height: 70px;
   }
 }
 
-.chapter-list__insert {
+.beat-list__insert {
   height: 150px;
   display: flex;
   align-items: center;
@@ -58,7 +58,7 @@ $title_height: 70px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  .insert-chapter-wrapper {
+  .insert-beat-wrapper {
     display: flex;
     padding: 1px;
     .glyphicon {
@@ -66,7 +66,7 @@ $title_height: 70px;
       margin-right: -1px;
     }
   }
-  .insert-chapter-wrapper.append-chapter {
+  .insert-beat-wrapper.append-beat {
     padding: 30px 70px;
     color: $blue-5;
     border: 3px dotted $blue-8;
@@ -74,19 +74,19 @@ $title_height: 70px;
   }
 }
 
-.chapter-list__insert:hover {
+.beat-list__insert:hover {
   color: $blue-5;
-  .insert-chapter-wrapper.append-chapter {
+  .insert-beat-wrapper.append-beat {
     border: 3px dashed $blue-7;
   }
 }
 
 .sticky-table.darkmode {
-  .chapter-list__insert:hover {
+  .beat-list__insert:hover {
     color: $blue-8;
   }
-  .chapter-list__insert {
-    .insert-chapter-wrapper.append-chapter {
+  .beat-list__insert {
+    .insert-beat-wrapper.append-beat {
       color: $blue-7;
     }
   }
@@ -96,11 +96,11 @@ $title_height: 70px;
 // Vertical
 // ///////////
 
-.vertical-chapter__cell {
+.vertical-beat__cell {
   width: 200px;
 }
 
-.vertical-chapter__body {
+.vertical-beat__body {
   @include sub-header-font;
   display: flex;
   text-align: right;
@@ -121,16 +121,16 @@ $title_height: 70px;
   }
 }
 
-.vertical-chapter__body.hover {
+.vertical-beat__body.hover {
   border: 3px dashed $blue-7;
   cursor: move;
 }
 
-.vertical-chapter__body.dropping {
+.vertical-beat__body.dropping {
   border: $new-item-border;
 }
 
-.vertical-chapter-list__item__hover-options {
+.vertical-beat-list__item__hover-options {
   float: left;
   margin-right: 3px;
   margin-left: 2px;
@@ -148,7 +148,7 @@ $title_height: 70px;
   }
 }
 
-.vertical-chapter-list__insert {
+.vertical-beat-list__insert {
   height: 40px;
   width: 153px;
   margin-left: 50px;
@@ -162,31 +162,31 @@ $title_height: 70px;
   svg {
     position: absolute;
   }
-  .vertical-insert-chapter-wrapper.insert-chapter-spacer {
+  .vertical-insert-beat-wrapper.insert-beat-spacer {
     .glyphicon {
       position: relative;
     }
   }
 }
 
-.vertical-chapter-list__insert.append-chapter {
-  @extend .vertical-chapter-list__insert;
+.vertical-beat-list__insert.append-beat {
+  @extend .vertical-beat-list__insert;
   height: $title_height;
   margin-bottom: 50px;
-  .vertical-insert-chapter-wrapper.append-chapter {
+  .vertical-insert-beat-wrapper.append-beat {
     padding: 20px $title_height;
     color: $blue-5;
     border: 3px dotted $blue-8;
     margin-top: 10px;
   }
-  .vertical-insert-chapter-wrapper.append-chapter:hover {
+  .vertical-insert-beat-wrapper.append-beat:hover {
     border: 3px dashed $blue-7;
   }
 }
 
-.vertical-chapter-list__insert:hover {
+.vertical-beat-list__insert:hover {
   color: $blue-5;
-  .insert-chapter-wrapper.append-chapter {
+  .insert-beat-wrapper.append-beat {
     border: 3px dashed $blue-7;
   }
 }

@@ -47,7 +47,7 @@ export default function serialize(nodes, doc) {
         doc.addLine()
         return makeList(n, doc)
       case 'heading-one':
-      case 'heading-two':
+      case 'heading-two': {
         const headingStyle = n.type === 'heading-one' ? styleH1 : styleH2
         return n.children.map((child) => {
           if (child.text != null) {
@@ -58,8 +58,8 @@ export default function serialize(nodes, doc) {
             })
           }
         })
-      case 'list-item':
-      // shouldn't get here because we handle the numbered-list and bulleted-list above
+      }
+      case 'list-item': // shouldn't get here because we handle the numbered-list and bulleted-list above
       case 'link':
         return doc.writeText(n.url)
       case 'image-link':

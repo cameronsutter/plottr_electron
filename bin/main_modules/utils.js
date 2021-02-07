@@ -29,7 +29,7 @@ function makeBrowserWindow(filePath) {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
   // replacing makes it so it doesn't create the folder structure
-  let stateKeeprFile = filePath.replace(/[\/\\]/g, '~')
+  let stateKeeprFile = filePath.replace(/[/\\]/g, '~')
   const numFileLetters = 100
 
   let multiplier = filePath == 'dashboard' ? 0.8 : 0.9

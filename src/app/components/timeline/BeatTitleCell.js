@@ -19,14 +19,14 @@ import InputModal from '../dialogs/InputModal'
 
 const {
   card: { truncateTitle },
-  chapters: { editingChapterLabel, chapterPositionTitle },
+  beats: { editingBeatLabel, beatPositionTitle },
   orientedClassName: { orientedClassName },
 } = helpers
 
-class ChapterTitleCell extends PureComponent {
+class BeatTitleCell extends PureComponent {
   constructor(props) {
     super(props)
-    let editing = props.chapter.title == ''
+    let editing = props.beat.title == ''
     this.state = {
       hovering: false,
       editing: editing,
@@ -38,13 +38,9 @@ class ChapterTitleCell extends PureComponent {
     this.titleInputRef = React.createRef()
   }
 
-  deleteChapter = (e) => {
+  deleteBeat = (e) => {
     e.stopPropagation()
-    if (this.props.isSeries) {
-      this.props.beatActions.deleteBeat(this.props.chapter.id)
-    } else {
-      this.props.actions.deleteScene(this.props.chapter.id, this.props.ui.currentTimeline)
-    }
+    this.props.actions.deleteBeat(this.props.beat.id, this.props.ui.currentTimeline)
   }
 
   cancelDelete = (e) => {
@@ -58,27 +54,18 @@ class ChapterTitleCell extends PureComponent {
   }
 
   editTitle = () => {
-    const id = this.props.chapter.id
     const ref = this.titleInputRef.current
     if (!ref) return null
 
-    if (this.props.isSeries) {
-      if (ref.value == '') return null // don't allow nothing
-      this.props.beatActions.editBeatTitle(id, ref.value)
-      this.setState({ editing: false, hovering: false })
-    } else {
-      // if nothing, set to auto
-      this.props.actions.editSceneTitle(id, ref.value || 'auto')
-      this.setState({ editing: false, hovering: false })
-    }
+    this.finalizeEdit(ref.value)
+    // For consistency in the return type
+    return null
   }
 
-  // AFTER MERGE-CONFLICTs
-  // editTitle can call this function
   finalizeEdit = (newVal) => {
-    const { chapter, beatActions } = this.props
+    const { beat, actions } = this.props
     // if nothing, set to auto
-    beatActions.editBeatTitle(chapter.id, newVal || 'auto')
+    actions.editBeatTitle(beat.id, newVal || 'auto')
     this.setState({ editing: false, hovering: false })
   }
 
@@ -98,7 +85,7 @@ class ChapterTitleCell extends PureComponent {
 
   handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('text/json', JSON.stringify(this.props.chapter))
+    e.dataTransfer.setData('text/json', JSON.stringify(this.props.beat))
     this.setState({ dragging: true })
   }
 
@@ -131,11 +118,11 @@ class ChapterTitleCell extends PureComponent {
     this.setState({ inDropZone: false, dropDepth: 0 })
 
     var json = e.dataTransfer.getData('text/json')
-    var droppedChapter = JSON.parse(json)
-    if (droppedChapter.id == null) return
-    if (droppedChapter.id == this.props.chapter.id) return
+    var droppedBeat = JSON.parse(json)
+    if (droppedBeat.id == null) return
+    if (droppedBeat.id == this.props.beat.id) return
 
-    this.props.handleReorder(this.props.chapter.position, droppedChapter.position)
+    this.props.handleReorder(this.props.beat.position, droppedBeat.position)
   }
 
   startEditing = () => {
@@ -155,8 +142,8 @@ class ChapterTitleCell extends PureComponent {
 
     return (
       <DeleteConfirmModal
-        name={this.props.chapterTitle}
-        onDelete={this.deleteChapter}
+        name={this.props.beatTitle}
+        onDelete={this.deleteBeat}
         onCancel={this.cancelDelete}
       />
     )
@@ -170,8 +157,8 @@ class ChapterTitleCell extends PureComponent {
         isOpen={true}
         type="text"
         getValue={this.finalizeEdit}
-        defaultValue={this.props.chapter.title}
-        title={i18n('Edit {chapterName}', { chapterName: this.props.chapterTitle })}
+        defaultValue={this.props.beat.title}
+        title={i18n('Edit {beatName}', { beatName: this.props.beatTitle })}
         cancel={() => this.setState({ editing: false, hovering: false })}
       />
     )
@@ -179,7 +166,7 @@ class ChapterTitleCell extends PureComponent {
 
   renderHorizontalHoverOptions(style) {
     const { ui, isSmall } = this.props
-    const klasses = orientedClassName('chapter-list__item__hover-options', ui.orientation)
+    const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <ButtonGroup>
@@ -196,7 +183,7 @@ class ChapterTitleCell extends PureComponent {
 
   renderVerticalHoverOptions(style) {
     const { ui, isSmall } = this.props
-    const klasses = orientedClassName('chapter-list__item__hover-options', ui.orientation)
+    const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <Button bsSize={isSmall ? 'small' : 'medium'} block onClick={this.startEditing}>
@@ -227,15 +214,15 @@ class ChapterTitleCell extends PureComponent {
   }
 
   renderTitle() {
-    const { chapter, chapterTitle, positionOffset, isSeries } = this.props
-    if (!this.state.editing) return <span>{truncateTitle(chapterTitle, 50)}</span>
+    const { beat, beatTitle, positionOffset, isSeries } = this.props
+    if (!this.state.editing) return <span>{truncateTitle(beatTitle, 50)}</span>
 
     return (
       <FormGroup>
-        <ControlLabel>{editingChapterLabel(chapter, positionOffset, isSeries)}</ControlLabel>
+        <ControlLabel>{editingBeatLabel(beat, positionOffset, isSeries)}</ControlLabel>
         <FormControl
           type="text"
-          defaultValue={chapter.title}
+          defaultValue={beat.title}
           inputRef={this.titleInputRef}
           autoFocus
           onKeyDown={this.handleEsc}
@@ -248,9 +235,9 @@ class ChapterTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const { chapter, ui, positionOffset, chapterTitle, isSeries, isSmall } = this.props
+    const { beat, ui, positionOffset, beatTitle, isSeries, isSmall } = this.props
     const { hovering, inDropZone } = this.state
-    let innerKlass = cx(orientedClassName('chapter__body', ui.orientation), {
+    let innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
       hover: hovering,
       dropping: inDropZone,
     })
@@ -274,22 +261,22 @@ class ChapterTitleCell extends PureComponent {
           {this.renderDelete()}
           {this.renderEditInput()}
           <div
-            title={chapterPositionTitle(chapter, positionOffset, isSeries)}
+            title={beatPositionTitle(beat, positionOffset, isSeries)}
             onClick={hovering ? this.stopHovering : this.startHovering}
             draggable
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
           >
-            <span>{truncateTitle(chapterTitle, 50)}</span>
+            <span>{truncateTitle(beatTitle, 50)}</span>
           </div>
         </th>
       )
     } else {
       return (
-        <Cell className="chapter-table-cell">
+        <Cell className="beat-table-cell">
           <div
-            className={orientedClassName('chapter__cell', ui.orientation)}
-            title={chapterPositionTitle(chapter, positionOffset, isSeries)}
+            className={orientedClassName('beat__cell', ui.orientation)}
+            title={beatPositionTitle(beat, positionOffset, isSeries)}
             onMouseEnter={this.startHovering}
             onMouseLeave={this.stopHovering}
             onDrop={this.handleDrop}
@@ -315,32 +302,31 @@ class ChapterTitleCell extends PureComponent {
   }
 }
 
-ChapterTitleCell.propTypes = {
-  chapterId: PropTypes.number.isRequired,
+BeatTitleCell.propTypes = {
+  beatId: PropTypes.number.isRequired,
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
-  beatActions: PropTypes.object.isRequired,
-  chapters: PropTypes.array.isRequired,
-  chapter: PropTypes.object.isRequired,
+  beats: PropTypes.array.isRequired,
+  beat: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
-  chapterTitle: PropTypes.string.isRequired,
+  beatTitle: PropTypes.string.isRequired,
   positionOffset: PropTypes.number.isRequired,
   isSmall: PropTypes.bool.isRequired,
   isMedium: PropTypes.bool.isRequired,
 }
 
 const makeMapState = (state) => {
-  const uniqueChapterSelector = selectors.makeChapterSelector()
-  const uniqueChapterTitleSelector = selectors.makeChapterTitleSelector()
+  const uniqueBeatsSelector = selectors.makeBeatSelector()
+  const uniqueBeatTitleSelector = selectors.makeBeatTitleSelector()
 
   return function mapStateToProps(state, ownProps) {
     return {
-      chapters: state.present.chapters,
-      chapter: uniqueChapterSelector(state.present, ownProps.chapterId),
+      beats: state.present.beats,
+      beat: uniqueBeatsSelector(state.present, ownProps.beatId),
       ui: state.present.ui,
       isSeries: selectors.isSeriesSelector(state.present),
-      chapterTitle: uniqueChapterTitleSelector(state.present, ownProps.chapterId),
+      beatTitle: uniqueBeatTitleSelector(state.present, ownProps.beatId),
       positionOffset: selectors.positionOffsetSelector(state.present),
       isSmall: selectors.isSmallSelector(state.present),
       isMedium: selectors.isMediumSelector(state.present),
@@ -350,9 +336,8 @@ const makeMapState = (state) => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(actions.scene, dispatch),
-    beatActions: bindActionCreators(actions.beat, dispatch),
+    actions: bindActionCreators(actions.beat, dispatch),
   }
 }
 
-export default connect(makeMapState, mapDispatchToProps)(ChapterTitleCell)
+export default connect(makeMapState, mapDispatchToProps)(BeatTitleCell)

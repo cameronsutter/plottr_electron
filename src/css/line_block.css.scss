@@ -63,7 +63,7 @@ $title_width: 150px;
 .line-title__hover-options {
 }
 
-.line-list__insert-chapter {
+.line-list__insert-beat {
   height: $title_height;
   display: flex;
   align-items: center;
@@ -75,19 +75,19 @@ $title_width: 150px;
   svg {
     position: absolute;
   }
-  .insert-chapter-wrapper {
+  .insert-beat-wrapper {
     z-index: 3;
   }
-  .insert-chapter-wrapper.insert-chapter-spacer {
+  .insert-beat-wrapper.insert-beat-spacer {
     .glyphicon {
       position: relative;
     }
   }
 }
 
-.line-list__insert-chapter:hover {
+.line-list__insert-beat:hover {
   color: $blue-5;
-  .insert-chapter-wrapper {
+  .insert-beat-wrapper {
     border: 1px dotted $blue-8;
   }
 }
@@ -150,7 +150,7 @@ $title_width: 150px;
       }
     }
   }
-  .line-list__insert-chapter:hover {
+  .line-list__insert-beat:hover {
     color: $blue-7;
   }
 }
@@ -209,7 +209,7 @@ $title_width: 150px;
   }
 }
 
-.vertical-line-list__insert-chapter {
+.vertical-line-list__insert-beat {
   height: 40px;
   display: flex;
   align-items: center;
@@ -224,10 +224,10 @@ $title_width: 150px;
   svg {
     position: absolute;
   }
-  .vertical-insert-chapter-wrapper {
+  .vertical-insert-beat-wrapper {
     z-index: 3;
   }
-  .vertical-insert-chapter-wrapper.insert-chapter-spacer {
+  .vertical-insert-beat-wrapper.insert-beat-spacer {
     display: flex;
     padding: 1px;
     .glyphicon {
@@ -237,9 +237,9 @@ $title_width: 150px;
   }
 }
 
-.vertical-line-list__insert-chapter:hover {
+.vertical-line-list__insert-beat:hover {
   color: $blue-5;
-  .vertical-insert-chapter-wrapper {
+  .vertical-insert-beat-wrapper {
     border: 1px dotted $blue-8;
   }
 }

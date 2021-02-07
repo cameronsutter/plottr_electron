@@ -4,7 +4,7 @@ import PropTypes from 'react-proptypes'
 import { Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 
-export default class SceneCardAdd extends Component {
+export default class CardAdd extends Component {
   state = { creating: false, dropping: false }
   titleInputRef = createRef()
 
@@ -82,7 +82,7 @@ export default class SceneCardAdd extends Component {
         <div className="vertical-blank-card__wrapper">
           <BlankCard
             verticalInsertion
-            chapterId={this.props.chapterId}
+            beatId={this.props.beatId}
             lineId={this.props.lineId}
             positionWithinLine={this.props.positionWithinLine + 1}
             color={this.props.color}
@@ -131,7 +131,7 @@ export default class SceneCardAdd extends Component {
     moveCard: PropTypes.func.isRequired,
     addCard: PropTypes.func.isRequired,
     allowDrop: PropTypes.bool.isRequired,
-    chapterId: PropTypes.number.isRequired,
+    beatId: PropTypes.number.isRequired,
     lineId: PropTypes.number.isRequired,
     dropPosition: PropTypes.number,
   }

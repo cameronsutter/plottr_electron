@@ -1,9 +1,19 @@
 module.exports = {
-  extends: ['plugin:react/recommended', 'plugin:prettier/recommended'],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:prettier/recommended'],
   env: {
     es6: true,
     node: true,
     browser: true,
+  },
+  globals: {
+    describe: true,
+    beforeEach: true,
+    it: true,
+    expect: true,
+    jest: true,
+    beforeAll: true,
+    rollbar: true,
+    afterAll: true,
   },
   parser: 'babel-eslint',
   parserOptions: {

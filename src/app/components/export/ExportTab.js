@@ -12,6 +12,7 @@ class ExportTab extends Component {
   render() {
     // TODO: ErrorBoundary doesn't work here because it has to be place above the element in the tree.
     // do like the other tabs and make this a container for the tab
+    const { series } = this.props
     return (
       <ErrorBoundary>
         <div>

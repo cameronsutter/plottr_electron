@@ -1,4 +1,10 @@
 {
+  "file": {
+    "fileName": "/home/edward/wip/plottr_electron/examples/example2.pltr",
+    "loaded": true,
+    "dirty": true,
+    "version": "2021.2.8"
+  },
   "ui": {
     "currentView": "timeline",
     "orientation": "horizontal",
@@ -10,15 +16,187 @@
     "noteSort": "title",
     "noteFilter": null,
     "currentTimeline": 1,
-    "zoomState": null,
-    "zoomIndex": 4
+    "timelineIsExpanded": true,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 0
+    },
+    "timeline": {
+      "size": "large"
+    }
   },
-  "file": {
-    "fileName": "/Users/sparrowhawk/github/plottr_electron/example2.pltr",
-    "loaded": true,
-    "dirty": true,
-    "version": "2020.4.9"
+  "series": {
+    "name": "Pizza Planet",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
   },
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "Secret of the Fire Jellies",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "imageId": null,
+      "timelineTemplates": []
+    },
+    "allIds": [
+      1
+    ]
+  },
+  "beats": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "position": 3,
+      "title": "Scene 4",
+      "time": 0,
+      "templates": [],
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 2,
+      "bookId": 1,
+      "position": 0,
+      "title": "new scene",
+      "time": 0,
+      "templates": [],
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 3,
+      "bookId": 1,
+      "position": 1,
+      "title": "new scene",
+      "time": 0,
+      "templates": [],
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 4,
+      "bookId": 1,
+      "position": 2,
+      "title": "new scene",
+      "time": 0,
+      "templates": [],
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    }
+  ],
+  "cards": [
+    {
+      "characters": [],
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "boom"
+            }
+          ]
+        }
+      ],
+      "id": 0,
+      "lineId": 0,
+      "places": [],
+      "tags": [],
+      "title": "a new card",
+      "templates": [],
+      "imageId": null,
+      "chapterId": 0,
+      "beatId": null,
+      "bookId": null,
+      "seriesLineId": null,
+      "position": 0,
+      "positionWithinLine": 0,
+      "positionInChapter": null,
+      "fromTemplateId": null
+    }
+  ],
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      },
+      {
+        "id": 2,
+        "name": "Supporting",
+        "position": 1
+      },
+      {
+        "id": 3,
+        "name": "Other",
+        "position": 2
+      }
+    ],
+    "places": [],
+    "notes": [],
+    "tags": []
+  },
+  "characters": [
+    {
+      "cards": [],
+      "color": null,
+      "description": "she is the coolest",
+      "id": 0,
+      "name": "main character",
+      "noteIds": [],
+      "notes": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "templates": [],
+      "categoryId": null,
+      "tags": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    }
+  ],
+  "customAttributes": {
+    "characters": [],
+    "places": [],
+    "scenes": [],
+    "lines": []
+  },
+  "lines": [
+    {
+      "color": "#000000",
+      "id": 0,
+      "position": 0,
+      "title": "Story Line",
+      "characterId": null,
+      "bookId": 1,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 1,
+      "bookId": "series",
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    }
+  ],
+  "notes": [],
   "places": [
     {
       "cards": [],
@@ -51,140 +229,5 @@
       "title": "First tag :)"
     }
   ],
-  "characters": [
-    {
-      "cards": [],
-      "color": null,
-      "description": "she is the coolest",
-      "id": 0,
-      "name": "main character",
-      "noteIds": [],
-      "notes": [
-        {
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "templates": [],
-      "categoryId": "",
-      "tags": [],
-      "imageId": null,
-      "bookIds": [
-        1
-      ]
-    }
-  ],
-  "chapters": [
-    {
-      "id": 3,
-      "position": 3,
-      "title": "Scene 4",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    {
-      "id": 0,
-      "position": 0,
-      "title": "new scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    {
-      "id": 1,
-      "position": 1,
-      "title": "new scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    },
-    {
-      "id": 2,
-      "position": 2,
-      "title": "new scene",
-      "bookId": 1,
-      "time": 0,
-      "templates": []
-    }
-  ],
-  "cards": [
-    {
-      "characters": [],
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": "boom"
-            }
-          ]
-        }
-      ],
-      "id": 0,
-      "lineId": 0,
-      "places": [],
-      "tags": [],
-      "title": "a new card",
-      "templates": [],
-      "imageId": null,
-      "chapterId": 0,
-      "beatId": null,
-      "bookId": null,
-      "seriesLineId": null,
-      "position": 0
-    }
-  ],
-  "lines": [
-    {
-      "color": "#000000",
-      "id": 0,
-      "position": 0,
-      "title": "Story Line",
-      "characterId": null,
-      "bookId": 1
-    }
-  ],
-  "customAttributes": {
-    "characters": [],
-    "places": [],
-    "cards": [],
-    "scenes": [],
-    "lines": []
-  },
-  "notes": [],
-  "images": {},
-  "beats": [],
-  "books": {
-    "1": {
-      "id": 1,
-      "title": "Secret of the Fire Jellies",
-      "premise": "",
-      "genre": "",
-      "theme": "",
-      "templates": [],
-      "imageId": null
-    },
-    "allIds": [
-      1
-    ]
-  },
-  "series": {
-    "name": "Pizza Planet",
-    "premise": "",
-    "genre": "",
-    "theme": "",
-    "templates": []
-  },
-  "seriesLines": [
-    {
-      "id": 1,
-      "color": "#6cace4",
-      "title": "Main Plot",
-      "position": 0
-    }
-  ]
+  "images": {}
 }

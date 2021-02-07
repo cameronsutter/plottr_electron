@@ -149,7 +149,7 @@
   flex-direction: row-reverse;
 }
 
-.card-dialog__select-line, .card-dialog__select-scene {
+.card-dialog__select-line, .card-dialog__select-card {
   margin-left: 5px !important;
   @include user-text;
 
@@ -234,7 +234,7 @@
   }
 }
 
-// The dropdowns for plotline and chapter cause a horizontal scrollbar
+// The dropdowns for plotline and beat cause a horizontal scrollbar
 // when the titles are very long because the menu items don't wrap
 .card-dialog__left-side {
   .dropdown-menu > li > a {

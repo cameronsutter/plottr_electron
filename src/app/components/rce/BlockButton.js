@@ -32,7 +32,7 @@ export const handleHeadings = (editor, format) => {
   // if the node is in a heading (won't be the same type
   // since that is handled above) we want to change the heading type
   // to the new heading type
-  if (Boolean(isInHeading)) {
+  if (isInHeading) {
     Transforms.setNodes(editor, {
       type: format,
     })

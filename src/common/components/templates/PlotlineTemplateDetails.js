@@ -6,8 +6,8 @@ import _ from 'lodash'
 export default class PlotlineTemplateDetails extends Component {
   renderData(type, data) {
     switch (type) {
-      case 'chapters':
-        return _.sortBy(data, 'position').map((ch) => <li key={ch.id}>{ch.title}</li>)
+      case 'beats':
+        return _.sortBy(data, 'position').map((beat) => <li key={beat.id}>{beat.title}</li>)
       case 'cards':
         return _.sortBy(data, 'id').map((c) => <li key={c.id}>{c.title}</li>)
       case 'lines':
@@ -26,7 +26,7 @@ export default class PlotlineTemplateDetails extends Component {
         let headingText = heading
         if (heading == 'lines') headingText = i18n('Plotlines')
         if (heading == 'cards') headingText = i18n('Scene Cards')
-        if (heading == 'chapters') headingText = i18n('Chapters')
+        if (heading == 'beats') headingText = i18n('Chapters')
 
         return (
           <div key={heading}>

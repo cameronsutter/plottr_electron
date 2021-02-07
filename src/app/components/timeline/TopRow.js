@@ -4,25 +4,24 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
-import ChapterTitleCell from 'components/timeline/ChapterTitleCell'
+import BeatTitleCell from 'components/timeline/BeatTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
-import ChapterInsertCell from 'components/timeline/ChapterInsertCell'
+import BeatInsertCell from 'components/timeline/BeatInsertCell'
 import { newIds, actions, helpers, selectors } from 'pltr/v2'
 
 const { nextId } = newIds
 
 const {
-  chapters: { insertChapter },
+  beats: { insertBeat },
   lists: { reorderList },
   orientedClassName: { orientedClassName },
 } = helpers
 
 const LineActions = actions.line
 const BeatActions = actions.beat
-const SceneActions = actions.scene
 
 const {
-  sortedChaptersByBookSelector,
+  sortedBeatsByBookSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
   isLargeSelector,
@@ -31,14 +30,10 @@ const {
 } = selectors
 
 class TopRow extends Component {
-  handleReorderChapters = (originalPosition, droppedPosition) => {
-    const { ui, beatActions, sceneActions, isSeries, chapters } = this.props
-    const newChapters = reorderList(originalPosition, droppedPosition, chapters)
-    if (isSeries) {
-      beatActions.reorderBeats(newChapters)
-    } else {
-      sceneActions.reorderScenes(newChapters, ui.currentTimeline)
-    }
+  handleReorderBeats = (originalPosition, droppedPosition) => {
+    const { ui, beatActions, beats } = this.props
+    const newBeats = reorderList(originalPosition, droppedPosition, beats)
+    beatActions.reorderBeats(newBeats, ui.currentTimeline)
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
@@ -47,23 +42,15 @@ class TopRow extends Component {
     lineActions.reorderLines(newLines, ui.currentTimeline)
   }
 
-  handleInsertNewChapter = (nextPosition) => {
-    const { ui, beatActions, sceneActions, isSeries, chapters, nextChapterId } = this.props
-    const newChapters = insertChapter(nextPosition, chapters, nextChapterId, ui.currentTimeline)
-    if (isSeries) {
-      beatActions.reorderBeats(newChapters)
-    } else {
-      sceneActions.reorderScenes(newChapters, ui.currentTimeline)
-    }
+  handleInsertNewBeat = (nextPosition) => {
+    const { ui, beatActions, beats, nextBeatId } = this.props
+    const newBeats = insertBeat(nextPosition, beats, nextBeatId, ui.currentTimeline)
+    beatActions.reorderBeats(newBeats, ui.currentTimeline)
   }
 
-  handleAppendChapter = () => {
-    const { ui, beatActions, sceneActions, isSeries } = this.props
-    if (isSeries) {
-      beatActions.addBeat()
-    } else {
-      sceneActions.addScene(ui.currentTimeline)
-    }
+  handleAppendBeat = () => {
+    const { ui, beatActions } = this.props
+    beatActions.addBeat(ui.currentTimeline)
   }
 
   handleAppendLine = () => {
@@ -71,47 +58,47 @@ class TopRow extends Component {
     lineActions.addLine(ui.currentTimeline)
   }
 
-  renderLastInsertChapterCell() {
+  renderLastInsertBeatCell() {
     const { orientation } = this.props.ui
     return (
-      <ChapterInsertCell
+      <BeatInsertCell
         key="last-insert"
-        isInChapterList={true}
-        handleInsert={this.handleAppendChapter}
+        isInBeatList={true}
+        handleInsert={this.handleAppendBeat}
         isLast={true}
         orientation={orientation}
       />
     )
   }
 
-  renderChapters() {
-    const { ui, chapters, isLarge, isSmall } = this.props
-    const renderedChapters = chapters.flatMap((ch) => {
+  renderBeats() {
+    const { ui, beats, isLarge, isSmall } = this.props
+    const renderedBeats = beats.flatMap((beat) => {
       const cells = []
       if (isLarge) {
         cells.push(
-          <ChapterInsertCell
-            key={`chapterId-${ch.id}-insert`}
-            isInChapterList={true}
-            chapterPosition={ch.position}
-            handleInsert={this.handleInsertNewChapter}
+          <BeatInsertCell
+            key={`beatId-${beat.id}-insert`}
+            isInBeatList={true}
+            beatPosition={beat.position}
+            handleInsert={this.handleInsertNewBeat}
             orientation={ui.orientation}
           />
         )
       }
       cells.push(
-        <ChapterTitleCell
-          key={`chapterId-${ch.id}`}
-          chapterId={ch.id}
-          handleReorder={this.handleReorderChapters}
+        <BeatTitleCell
+          key={`beatId-${beat.id}`}
+          beatId={beat.id}
+          handleReorder={this.handleReorderBeats}
         />
       )
       return cells
     })
     if (isSmall) {
-      return [...renderedChapters, this.renderLastInsertChapterCell()]
+      return [...renderedBeats, this.renderLastInsertBeatCell()]
     } else {
-      return [<Cell key="placeholder" />, ...renderedChapters, this.renderLastInsertChapterCell()]
+      return [<Cell key="placeholder" />, ...renderedBeats, this.renderLastInsertBeatCell()]
     }
   }
 
@@ -160,7 +147,7 @@ class TopRow extends Component {
   render() {
     const { ui, isSmall } = this.props
     let body = null
-    if (ui.orientation === 'horizontal') body = this.renderChapters()
+    if (ui.orientation === 'horizontal') body = this.renderBeats()
     else body = this.renderLines()
 
     if (isSmall) {
@@ -184,22 +171,15 @@ TopRow.propTypes = {
   isSmall: PropTypes.bool,
   isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
-  chapters: PropTypes.array,
-  nextChapterId: PropTypes.number,
+  beats: PropTypes.array,
+  nextBeatId: PropTypes.number,
   lines: PropTypes.array,
-  sceneActions: PropTypes.object,
   lineActions: PropTypes.object,
   beatActions: PropTypes.object,
 }
 
 function mapStateToProps(state) {
-  let nextChapterId = -1
-  const bookId = state.present.ui.currentTimeline
-  if (bookId == 'series') {
-    nextChapterId = nextId(state.present.beats)
-  } else {
-    nextChapterId = nextId(state.present.chapters)
-  }
+  const nextBeatId = nextId(state.present.beats)
 
   return {
     ui: state.present.ui,
@@ -207,15 +187,14 @@ function mapStateToProps(state) {
     isSmall: isSmallSelector(state.present),
     isMedium: isMediumSelector(state.present),
     isLarge: isLargeSelector(state.present),
-    chapters: sortedChaptersByBookSelector(state.present),
-    nextChapterId: nextChapterId,
+    beats: sortedBeatsByBookSelector(state.present),
+    nextBeatId: nextBeatId,
     lines: sortedLinesByBookSelector(state.present),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
     beatActions: bindActionCreators(BeatActions, dispatch),
   }

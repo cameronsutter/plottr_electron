@@ -171,10 +171,10 @@ function mapDispatchToProps(dispatch, { entityType }) {
 
     case 'scene':
       return {
-        addAttribute: actions.addSceneAttr,
-        removeAttribute: actions.removeSceneAttr,
-        editAttribute: actions.editSceneAttr,
-        reorderAttribute: actions.reorderScenesAttribute,
+        addAttribute: actions.addCardAttr,
+        removeAttribute: actions.removeCardAttr,
+        editAttribute: actions.editCardAttr,
+        reorderAttribute: actions.reorderCardsAttribute,
       }
 
     default:
@@ -185,9 +185,6 @@ function mapDispatchToProps(dispatch, { entityType }) {
         editAttribute: () => {},
         reorderAttribute: () => {},
       }
-  }
-  return {
-    ...bindActionCreators(CustomAttributeActions, dispatch),
   }
 }
 

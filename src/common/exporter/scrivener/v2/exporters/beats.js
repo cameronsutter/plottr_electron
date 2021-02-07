@@ -6,34 +6,34 @@ import { helpers, selectors } from 'pltr/v2'
 const {
   sortedLinesByBookSelector,
   cardMapSelector,
-  sortedChaptersByBookSelector,
-  makeChapterTitleSelector,
-  scenesCustomAttributesSelector,
+  sortedBeatsByBookSelector,
+  makeBeatTitleSelector,
+  cardsCustomAttributesSelector,
 } = selectors
 const {
-  card: { sortCardsInChapter, cardMapping },
+  card: { sortCardsInBeat, cardMapping },
 } = helpers
 
-export default function exportChapters(state, documentContents) {
-  // get current book id and select only those chapters/lines/cards
-  const chapters = sortedChaptersByBookSelector(state)
+export default function exportBeats(state, documentContents) {
+  // get current book id and select only those beats/lines/cards
+  const beats = sortedBeatsByBookSelector(state)
   const lines = sortedLinesByBookSelector(state)
   const card2Dmap = cardMapSelector(state)
-  const chapterCardMapping = cardMapping(chapters, lines, card2Dmap, null)
+  const beatCardMapping = cardMapping(beats, lines, card2Dmap, null)
   const linesById = keyBy(lines, 'id')
-  const customAttrs = scenesCustomAttributesSelector(state)
+  const customAttrs = cardsCustomAttributesSelector(state)
 
-  // create a BinderItem for each chapter (Type: Folder)
+  // create a BinderItem for each beat (Type: Folder)
   //   create a BinderItem for each card (Type: Text)
 
-  return chapters.map((ch) => {
-    const uniqueChapterTitleSelector = makeChapterTitleSelector(state)
-    const title = uniqueChapterTitleSelector(state, ch.id)
+  return beats.map((beat) => {
+    const uniqueBeatTitleSelector = makeBeatTitleSelector(state)
+    const title = uniqueBeatTitleSelector(state, beat.id)
     const { binderItem } = createFolderBinderItem(title)
 
-    // sort cards into chapters by lines (like outline auto-sorting)
-    const cards = chapterCardMapping[ch.id]
-    const sortedCards = sortCardsInChapter(ch.autoOutlineSort, cards, lines)
+    // sort cards into beats by lines (like outline auto-sorting)
+    const cards = beatCardMapping[beat.id]
+    const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
     sortedCards.forEach((c) => {
       const { id, binderItem: cardItem } = createTextBinderItem(c.title)
       binderItem['Children']['BinderItem'].push(cardItem)

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { FormControl } from 'react-bootstrap'
 import t from 'format-message'
 import CustomTemplates from './CustomTemplates'

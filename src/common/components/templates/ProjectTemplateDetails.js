@@ -9,7 +9,7 @@ export default function ProjectTemplateDetails({ template }) {
   const headingMap = {
     lines: i18n('Plotlines'),
     cards: i18n('Scene Cards'),
-    chapters: i18n('Chapters'),
+    beats: i18n('Chapters'),
     notes: i18n('Notes'),
     tags: i18n('Tags'),
     characters: i18n('Characters'),
@@ -17,8 +17,8 @@ export default function ProjectTemplateDetails({ template }) {
 
   const renderData = (type, data) => {
     switch (type) {
-      case 'chapters':
-        return sortBy(data, 'position').map((ch) => <li key={ch.id}>{ch.title}</li>)
+      case 'beats':
+        return sortBy(data, 'position').map((beat) => <li key={beat.id}>{beat.title}</li>)
       case 'cards':
         return sortBy(data, 'id').map((c) => <li key={c.id}>{c.title}</li>)
       case 'lines':
@@ -40,7 +40,7 @@ export default function ProjectTemplateDetails({ template }) {
     }
   }
 
-  const arrayObjects = ['chapters', 'cards', 'lines', 'notes', 'tags']
+  const arrayObjects = ['beats', 'cards', 'lines', 'notes', 'tags']
     .filter((type) => templateData[type].length)
     .filter((heading) => !templateData[heading].every((item) => item.title == 'auto'))
     .map((heading) => {

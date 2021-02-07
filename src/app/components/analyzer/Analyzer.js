@@ -8,7 +8,11 @@ import Inspector from 'react-json-inspector'
 import 'react-json-inspector/json-inspector.css'
 import DevFileDrop from './DevFileDrop'
 // import { saveFile } from '../../../common/utils/files'
-import { newIds } from 'pltr/v2'
+import { newIds, helpers } from 'pltr/v2'
+
+const {
+  books: { isSeries },
+} = helpers
 
 const { nextId, objectId } = newIds
 
@@ -25,8 +29,8 @@ class Analyzer extends Component {
     this.searchCards([['lineId', e.target.value]])
   }
 
-  searchCardsByChapter = (e) => {
-    this.searchCards([['chapterId', e.target.value]])
+  searchCardsByBeat = (e) => {
+    this.searchCards([['beatId', e.target.value]])
   }
 
   // array of ['key', value]
@@ -46,12 +50,12 @@ class Analyzer extends Component {
     this.setState({ tree: visibleLines, path: 'lines' })
   }
 
-  searchChapters = (e) => {
+  searchBeats = (e) => {
     const { pltr } = this.props
-    const chapters = pltr.chapters
+    const beats = pltr.beats
 
-    const visibleChapters = chapters.filter((c) => c.id == e.target.value)
-    this.setState({ tree: visibleChapters, path: 'chapters' })
+    const visibleBeats = beats.filter((c) => c.id == e.target.value)
+    this.setState({ tree: visibleBeats, path: 'beats' })
   }
 
   searchCardsById = (e) => {
@@ -67,31 +71,26 @@ class Analyzer extends Component {
     const cards = pltr.cards
 
     const lineIds = pltr.lines.map((l) => l.id)
-    const chapterIds = pltr.chapters.map((ch) => ch.id)
-    const beatIds = pltr.beats.map((b) => b.id)
+    const beatIds = pltr.beats.map((beat) => beat.id)
 
     const visibleCards = cards.filter((c) => {
-      return (
-        !lineIds.includes(c.lineId) &&
-        !chapterIds.includes(c.chapterId) &&
-        !beatIds.includes(c.beatId)
-      )
+      return !lineIds.includes(c.lineId) && !beatIds.includes(c.beatId)
     })
     this.setState({ tree: visibleCards, path: 'cards' })
   }
 
-  searchDuplicateChapters = () => {
+  searchDuplicateBeats = () => {
     const { pltr } = this.props
-    const chapterIds = pltr.chapters.map((ch) => ch.id)
-    const duplicateIds = keys(pickBy(groupBy(chapterIds), (x) => x.length > 1)).map(Number)
+    const beatIds = pltr.beats.map((beat) => beat.id)
+    const duplicateIds = keys(pickBy(groupBy(beatIds), (x) => x.length > 1)).map(Number)
     let visible = []
     if (duplicateIds) {
       visible = groupBy(
-        pltr.chapters.filter((ch) => duplicateIds.includes(ch.id)),
+        pltr.beats.filter((beat) => duplicateIds.includes(beat.id)),
         'id'
       )
     }
-    this.setState({ tree: visible, path: 'chapters' })
+    this.setState({ tree: visible, path: 'beats' })
   }
 
   searchDuplicateLines = () => {
@@ -122,24 +121,24 @@ class Analyzer extends Component {
     this.setState({ tree: visible, path: 'cards' })
   }
 
-  searchChaptersByPosition = (e) => {
+  searchBeatsByPosition = (e) => {
     const { pltr } = this.props
-    const chapters = pltr.chapters
+    const beats = pltr.beats
 
-    const visibleChapters = chapters.filter((c) => c.position == e.target.value)
-    this.setState({ tree: visibleChapters, path: 'chapters' })
+    const visibleBeats = beats.filter((c) => c.position == e.target.value)
+    this.setState({ tree: visibleBeats, path: 'beats' })
   }
 
   moveBookToIdOne = () => {
     const input = this.idToMove
     const idToMove = input.value
     if (idToMove) {
-      if (idToMove == 'series') {
+      if (isSeries(idToMove)) {
         // beats -> chapters (bookId 1)
         // seriesLines -> lines (bookId 1)
       } else {
         const { pltr } = this.props
-        const re = new RegExp(`bookId\":\s?${idToMove},`, 'g')
+        const re = new RegExp(`bookId":s?${idToMove},`, 'g')
         const resultJson = JSON.parse(JSON.stringify(pltr).replace(re, 'bookId":1,'))
         resultJson.books['1'] = resultJson.books[`${idToMove}`]
         delete resultJson.books[`${idToMove}`]
@@ -148,8 +147,8 @@ class Analyzer extends Component {
         // think about currentTimeline
         console.log(
           resultJson.books,
-          resultJson.chapters.filter((ch) => ch.bookId == '1'),
-          resultJson.lines.filter((ch) => ch.bookId == '1')
+          resultJson.beats.filter((beat) => beat.bookId == '1'),
+          resultJson.lines.filter((line) => line.bookId == '1')
         )
         // saveFile('/Users/sparrowhawk/output.pltr', resultJson)
       }
@@ -202,7 +201,7 @@ class Analyzer extends Component {
               <div>
                 <input onChange={this.searchCardsById} placeholder="Card Id" />
                 <input onChange={this.searchCardsByLine} placeholder="Line Id" />
-                <input onChange={this.searchCardsByChapter} placeholder="Chapter Id" />
+                <input onChange={this.searchCardsByBeat} placeholder="Beat Id" />
                 <span className="analyzer__sub-option">nextId: {id}</span>
                 <span className="analyzer__sub-option">
                   <a href="#" onClick={this.searchAbandoned}>
@@ -244,18 +243,18 @@ class Analyzer extends Component {
       )
     }
 
-    if (this.state.tab == 'chapters') {
-      const id = nextId(pltr.chapters)
+    if (this.state.tab == 'beats') {
+      const id = nextId(pltr.beats)
       return (
         <Grid fluid>
           <Row>
             <Col sm={12} md={5}>
               <div>
-                <input onChange={this.searchChaptersByPosition} placeholder="Chapter Position" />
-                <input onChange={this.searchChapters} placeholder="Chapter Id" />
+                <input onChange={this.searchBeatsByPosition} placeholder="Beat Position" />
+                <input onChange={this.searchBeats} placeholder="Beat Id" />
                 <span className="analyzer__sub-option">nextId: {id}</span>
                 <span className="analyzer__sub-option">
-                  <a href="#" onClick={this.searchDuplicateChapters}>
+                  <a href="#" onClick={this.searchDuplicateBeats}>
                     Duplicates
                   </a>
                 </span>
@@ -319,9 +318,9 @@ class Analyzer extends Component {
           </span>
           <span
             className="analyzer__tab"
-            onClick={() => this.setState({ tab: 'chapters', tree: null, path: null })}
+            onClick={() => this.setState({ tab: 'beats', tree: null, path: null })}
           >
-            Chapters
+            Beats
           </span>
           <span
             className="analyzer__tab"

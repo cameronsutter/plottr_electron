@@ -37,25 +37,25 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
     templateData: {},
   }
 
-  // only the chapters in book 1
-  const bookChapters = data.chapters.filter((ch) => ch.bookId == bookId) // TODO: make it work for series
-  template.templateData.chapters = bookChapters
+  // only the beats in book 1
+  const beats = data.beats.filter((beat) => beat.bookId === bookId)
+  template.templateData.beats = beats
 
   // only the lines in book 1
   // only if there are more than 1 line
-  const bookLines = data.lines.filter((l) => l.bookId == bookId) // TODO: make it work for series
+  const bookLines = data.lines.filter((beat) => beat.bookId === bookId)
   if (bookLines.length > 1) {
     template.templateData.lines = bookLines
   }
 
-  // only cards in bookChapters
+  // only cards in beats
   if (data.cards.length) {
-    const chapterIds = bookChapters.map((ch) => ch.id)
+    const beatIds = beats.map(({ id }) => id)
     let cards = []
 
-    bookLines.forEach((l) => {
+    bookLines.forEach((line) => {
       const cardsInLine = data.cards.filter(
-        (c) => chapterIds.includes(c.chapterId) && c.lineId == l.id
+        ({ beatId, lineId }) => beatIds.includes(beatId) && lineId == line.id
       )
       cards = cards.concat(cardsInLine)
     })

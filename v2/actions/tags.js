@@ -6,7 +6,6 @@ import {
   DELETE_TAG,
   CHANGE_TAG_COLOR,
 } from '../constants/ActionTypes'
-import { tag } from '../store/initialState'
 
 export function addTag() {
   return { type: ADD_TAG }

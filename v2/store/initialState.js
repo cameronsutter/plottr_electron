@@ -123,7 +123,6 @@ export const card = {
   lineId: null,
   chapterId: null,
   beatId: null,
-  seriesLineId: null,
   bookId: null,
   positionWithinLine: 0,
   positionInChapter: 0,
@@ -141,7 +140,6 @@ export const line = {
   id: 1,
   bookId: 1,
   color: '#6cace4',
-  backgroundColor: '#6cace419',
   title: '',
   position: 0,
   characterId: null,
@@ -150,12 +148,14 @@ export const line = {
 }
 
 export const seriesLine = {
-  id: 1,
+  id: 2,
+  bookId: 'series',
   color: '#6cace4',
-  backgroundColor: '#6cace419',
   title: '',
   position: 0,
+  characterId: null,
   expanded: null,
+  fromTemplateId: null,
 }
 
 export const customAttributes = {
@@ -193,6 +193,6 @@ export const image = {
 
 // example template for reference
 // NOT exported
-const templates = [
-  { id: 'ch1', version: '2020.3.4', attributes: [{ name: 'Motivation', type: 'text', value: '' }] },
-]
+// const templates = [
+//   { id: 'ch1', version: '2020.3.4', attributes: [{ name: 'Motivation', type: 'text', value: '' }] },
+// ]

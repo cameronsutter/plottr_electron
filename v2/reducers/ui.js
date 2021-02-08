@@ -6,20 +6,16 @@ import {
   CHANGE_ORIENTATION,
   CLOSE_ATTRIBUTES_DIALOG,
   COLLAPSE_TIMELINE,
-  DECREASE_ZOOM,
   EDIT_CHARACTER_ATTRIBUTE,
   EDIT_PLACES_ATTRIBUTE,
   EXPAND_TIMELINE,
   FILE_LOADED,
-  FIT_ZOOM,
-  INCREASE_ZOOM,
   NAVIGATE_TO_BOOK_TIMELINE,
   NEW_FILE,
   OPEN_ATTRIBUTES_DIALOG,
   RECORD_SCROLL_POSITION,
   REMOVE_CHARACTER_ATTRIBUTE,
   REMOVE_PLACES_ATTRIBUTE,
-  RESET_ZOOM,
   SET_CHARACTER_FILTER,
   SET_CHARACTER_SORT,
   SET_DARK_MODE,
@@ -28,12 +24,6 @@ import {
   SET_TIMELINE_FILTER,
   SET_TIMELINE_SIZE,
 } from '../constants/ActionTypes'
-import {
-  ZOOM_STATES,
-  INITIAL_ZOOM_INDEX,
-  INITIAL_ZOOM_STATE,
-  FIT_ZOOM_STATE,
-} from '../constants/zoom_states'
 import { ui as defaultUI } from '../store/initialState'
 import { newFileUI } from '../store/newFileState'
 
@@ -116,25 +106,6 @@ export default function ui(state = defaultUI, action) {
     case SET_TIMELINE_FILTER:
       return Object.assign({}, state, { timelineFilter: action.filter })
 
-    case INCREASE_ZOOM:
-      var newIndex = state.zoomIndex || 0
-      if (newIndex < ZOOM_STATES.length - 1) newIndex++
-      return Object.assign({}, state, { zoomState: INITIAL_ZOOM_STATE, zoomIndex: newIndex })
-
-    case DECREASE_ZOOM:
-      var newIndex = state.zoomIndex || 0
-      if (newIndex > 0) newIndex--
-      return Object.assign({}, state, { zoomState: INITIAL_ZOOM_STATE, zoomIndex: newIndex })
-
-    case FIT_ZOOM:
-      return Object.assign({}, state, { zoomState: FIT_ZOOM_STATE, zoomIndex: INITIAL_ZOOM_INDEX })
-
-    case RESET_ZOOM:
-      return Object.assign({}, state, {
-        zoomState: INITIAL_ZOOM_STATE,
-        zoomIndex: INITIAL_ZOOM_INDEX,
-      })
-
     case FILE_LOADED:
       return action.data.ui
 
@@ -150,9 +121,6 @@ export default function ui(state = defaultUI, action) {
         },
       }
 
-    case SET_TIMELINE_SIZE:
-      return timeline(state, action)
-
     case OPEN_ATTRIBUTES_DIALOG:
       return {
         ...state,
@@ -163,6 +131,12 @@ export default function ui(state = defaultUI, action) {
       return {
         ...state,
         attributesDialogIsOpen: false,
+      }
+
+    case SET_TIMELINE_SIZE:
+      return {
+        ...state,
+        timeline: timeline(state.timeline, action),
       }
 
     default:

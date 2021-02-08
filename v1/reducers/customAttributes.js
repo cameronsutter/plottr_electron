@@ -9,7 +9,6 @@ import {
   REMOVE_PLACES_ATTRIBUTE,
   REMOVE_LINES_ATTRIBUTE,
   REMOVE_SCENES_ATTRIBUTE,
-  RESET,
   FILE_LOADED,
   NEW_FILE,
 } from '../constants/ActionTypes'

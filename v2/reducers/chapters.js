@@ -37,7 +37,7 @@ export default function chapters(state = initialState, action) {
       ]
 
     case ADD_LINES_FROM_TEMPLATE:
-      const [tBook, tNotBook] = partition(state, (ch) => ch.bookId == action.bookId)
+      const [_, tNotBook] = partition(state, (ch) => ch.bookId == action.bookId)
       return [...tNotBook, ...action.chapters]
 
     case EDIT_SCENE_TITLE:

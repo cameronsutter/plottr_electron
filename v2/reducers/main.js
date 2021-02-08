@@ -12,27 +12,28 @@ import lines from './lines'
 import notes from './notes'
 import places from './places'
 import series from './series'
-import seriesLines from './seriesLines'
 import tags from './tags'
 import ui from './ui'
 
+// normally it would make more sense to alphabetize them
+// but for customer service, it helps a lot to have them in a specific order
+// to pick out some important things at the top
 const mainReducer = combineReducers({
-  beats,
+  file,
+  ui,
+  series,
   books,
+  beats,
   cards,
   categories,
   chapters,
   characters,
   customAttributes,
-  file,
-  images,
   lines,
   notes,
   places,
-  series,
-  seriesLines,
   tags,
-  ui,
+  images,
 })
 
 export default mainReducer

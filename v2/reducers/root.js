@@ -36,26 +36,24 @@ export default function root(state, action) {
 
     case RESET_TIMELINE:
       let newResetAction = { ...action, isSeries }
-      if (!isSeries) {
-        // finding chapters that will NOT be removed
-        const chapterIdsToReset = state.chapters.reduce((acc, ch) => {
-          if (ch.bookId != action.bookId) {
-            acc[ch.id] = true
-          }
-          return acc
-        }, {})
-        // finding lines that will NOT be removed
-        const lineIdsToReset = state.lines.reduce((acc, l) => {
-          if (l.bookId != action.bookId) {
-            acc[l.id] = true
-          }
-          return acc
-        }, {})
-        newResetAction = {
-          ...newResetAction,
-          chapterIds: chapterIdsToReset,
-          lineIds: lineIdsToReset,
+      // finding chapters that will NOT be removed
+      const chapterIdsToReset = state.chapters.reduce((acc, ch) => {
+        if (ch.bookId != action.bookId) {
+          acc[ch.id] = true
         }
+        return acc
+      }, {})
+      // finding lines that will NOT be removed
+      const lineIdsToReset = state.lines.reduce((acc, l) => {
+        if (l.bookId != action.bookId) {
+          acc[l.id] = true
+        }
+        return acc
+      }, {})
+      newResetAction = {
+        ...newResetAction,
+        chapterIds: chapterIdsToReset,
+        lineIds: lineIdsToReset,
       }
       return mainReducer(state, newResetAction)
 

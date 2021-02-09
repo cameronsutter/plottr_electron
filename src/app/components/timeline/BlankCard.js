@@ -232,6 +232,7 @@ class BlankCard extends Component {
         isOpen={this.state.showTemplatePicker}
         close={this.closeTemplatePicker}
         onChooseTemplate={this.handleChooseTemplate}
+        showTemplateSaveButton={false}
       />
     )
   }

@@ -5,7 +5,6 @@ import { Glyphicon, Nav, NavItem, Button, OverlayTrigger, Popover, Alert } from 
 import ChapterView from 'components/outline/ChapterView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
-import cx from 'classnames'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import ExportNavItem from '../export/ExportNavItem'
 import { helpers, selectors } from 'pltr/v2'

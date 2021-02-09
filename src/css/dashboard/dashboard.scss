@@ -1,15 +1,15 @@
-@import "../colors";
-@import "navigation";
-@import "verify";
-@import "expired";
-@import "update_notifier";
-@import "files";
-@import "templates";
-@import "backups";
-@import "account";
-@import "options";
-@import "help";
-@import "darkmode";
+@import '../colors';
+@import 'navigation';
+@import 'verify';
+@import 'expired';
+@import 'update_notifier';
+@import 'files';
+@import 'templates';
+@import 'backups';
+@import 'account';
+@import 'options';
+@import 'help';
+@import 'darkmode';
 
 $header-height: 40px;
 
@@ -61,24 +61,21 @@ $header-height: 40px;
         }
       }
     }
+  }
 
-    .beamer-wrapper {
-      width: 40px;
+  .beamer-wrapper {
+    width: 40px;
+    cursor: pointer;
+    #beamer-bell {
       cursor: pointer;
-      #beamer-bell {
-        cursor: pointer;
-        .beamer_icon {
-          top: -6px;
-          right: -16px;
-        }
-        svg {
-          cursor: pointer;
-          color: $gray-0;
-          vertical-align: bottom;
-        }
+      .beamer_icon {
+        top: -6px;
+        right: -16px;
       }
-      &.win32 {
-        width: 80px;
+      svg {
+        cursor: pointer;
+        color: $gray-0;
+        vertical-align: bottom;
       }
     }
   }
@@ -99,6 +96,11 @@ $header-height: 40px;
     .dashboard__top-border {
       height: 4px;
       background-color: $orange;
+    }
+    .beamer-wrapper.win32 {
+      position: absolute;
+      right: 0;
+      top: 55px;
     }
   }
 }

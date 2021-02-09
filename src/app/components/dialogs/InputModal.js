@@ -42,7 +42,7 @@ export default class InputModal extends Component {
                   data-testid={testIds.input}
                   type={this.props.type}
                   autoFocus
-                  defaultValue=""
+                  defaultValue={this.props.defaultValue || ''}
                   onChange={this.handleChange}
                 />
               </Col>
@@ -70,5 +70,6 @@ export default class InputModal extends Component {
     cancel: PropTypes.func.isRequired,
     getValue: PropTypes.func.isRequired,
     title: PropTypes.string,
+    defaultValue: PropTypes.any,
   }
 }

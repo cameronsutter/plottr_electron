@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 $title_height: 70px;
 
@@ -12,7 +12,7 @@ $title_height: 70px;
   width: 150px + 6px; // +6px for the 3px border
   margin: auto;
   text-align: center;
-  transition: all .4s $cubic;
+  transition: all 0.4s $cubic;
   border: 3px dashed transparent;
   .form-group {
     text-align: left;
@@ -33,11 +33,21 @@ $title_height: 70px;
   }
 }
 
-
 .chapter-list__item__hover-options {
   text-align: center;
   visibility: hidden;
   margin-bottom: 5px;
+
+  &.small-timeline {
+    visibility: visible;
+    width: 100px;
+    position: absolute !important;
+    top: 41px !important;
+    left: -14px !important;
+    transform: none !important;
+    border: none !important;
+    background-color: transparent !important;
+  }
 }
 
 .chapter-list__insert {
@@ -45,7 +55,7 @@ $title_height: 70px;
   display: flex;
   align-items: center;
   color: transparent;
-  transition: all .4s $cubic;
+  transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
   .insert-chapter-wrapper {
@@ -98,7 +108,7 @@ $title_height: 70px;
   min-height: $title_height;
   min-width: 150px;
   padding: 10px;
-  transition: all .4s $cubic;
+  transition: all 0.4s $cubic;
   border: 3px dashed transparent;
   .form-group {
     text-align: left;
@@ -128,6 +138,14 @@ $title_height: 70px;
   button.btn-block {
     margin-top: 1px;
   }
+
+  &.small-timeline {
+    visibility: visible;
+    float: none !important;
+    position: absolute;
+    top: -1px;
+    left: 100px;
+  }
 }
 
 .vertical-chapter-list__insert {
@@ -138,7 +156,7 @@ $title_height: 70px;
   align-items: center;
   justify-content: center;
   color: transparent;
-  transition: all .4s $cubic;
+  transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
   svg {

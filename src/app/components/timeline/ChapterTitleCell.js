@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import i18n from 'format-message'
 import {
   Glyphicon,
   Button,
@@ -14,6 +15,7 @@ import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, helpers, selectors } from 'pltr/v2'
+import InputModal from '../dialogs/InputModal'
 
 const {
   card: { truncateTitle },
@@ -69,6 +71,15 @@ class ChapterTitleCell extends PureComponent {
       this.props.actions.editSceneTitle(id, ref.value || 'auto')
       this.setState({ editing: false, hovering: false })
     }
+  }
+
+  // AFTER MERGE-CONFLICTs
+  // editTitle can call this function
+  finalizeEdit = (newVal) => {
+    const { chapter, beatActions } = this.props
+    // if nothing, set to auto
+    beatActions.editBeatTitle(chapter.id, newVal || 'auto')
+    this.setState({ editing: false, hovering: false })
   }
 
   handleFinishEditing = (event) => {
@@ -128,7 +139,7 @@ class ChapterTitleCell extends PureComponent {
   }
 
   startEditing = () => {
-    this.setState({ editing: true })
+    this.setState({ editing: true, hovering: false })
   }
 
   startHovering = () => {
@@ -151,47 +162,67 @@ class ChapterTitleCell extends PureComponent {
     )
   }
 
-  renderHoverOptions() {
-    if (this.props.isSmall) return null
+  renderEditInput() {
+    if (!this.state.editing) return null
 
-    var style = { visibility: 'hidden' }
-    if (this.state.hovering) style.visibility = 'visible'
-    if (this.props.ui.orientation === 'vertical') {
-      return (
-        <div
-          className={orientedClassName(
-            'chapter-list__item__hover-options',
-            this.props.ui.orientation
-          )}
-          style={style}
-        >
-          <Button block onClick={this.startEditing}>
+    return (
+      <InputModal
+        isOpen={true}
+        type="text"
+        getValue={this.finalizeEdit}
+        defaultValue={this.props.chapter.title}
+        title={i18n('Edit {chapterName}', { chapterName: this.props.chapterTitle })}
+        cancel={() => this.setState({ editing: false, hovering: false })}
+      />
+    )
+  }
+
+  renderHorizontalHoverOptions(style) {
+    const { ui, isSmall } = this.props
+    const klasses = orientedClassName('chapter-list__item__hover-options', ui.orientation)
+    return (
+      <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
+        <ButtonGroup>
+          <Button bsSize={isSmall ? 'small' : 'medium'} onClick={this.startEditing}>
             <Glyphicon glyph="edit" />
           </Button>
-          <Button block onClick={this.handleDelete}>
+          <Button bsSize={isSmall ? 'small' : 'medium'} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
           </Button>
-        </div>
-      )
+        </ButtonGroup>
+      </div>
+    )
+  }
+
+  renderVerticalHoverOptions(style) {
+    const { ui, isSmall } = this.props
+    const klasses = orientedClassName('chapter-list__item__hover-options', ui.orientation)
+    return (
+      <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
+        <Button bsSize={isSmall ? 'small' : 'medium'} block onClick={this.startEditing}>
+          <Glyphicon glyph="edit" />
+        </Button>
+        <Button bsSize={isSmall ? 'small' : 'medium'} block onClick={this.handleDelete}>
+          <Glyphicon glyph="trash" />
+        </Button>
+      </div>
+    )
+  }
+
+  renderHoverOptions() {
+    let style = {}
+    if (this.props.isSmall) {
+      style = { display: 'none' }
+      if (this.state.hovering) style.display = 'block'
     } else {
-      return (
-        <div
-          className={orientedClassName(
-            'chapter-list__item__hover-options',
-            this.props.ui.orientation
-          )}
-          style={style}
-        >
-          <ButtonGroup>
-            <Button onClick={this.startEditing}>
-              <Glyphicon glyph="edit" />
-            </Button>
-            <Button onClick={this.handleDelete}>
-              <Glyphicon glyph="trash" />
-            </Button>
-          </ButtonGroup>
-        </div>
-      )
+      style = { visibility: 'hidden' }
+      if (this.state.hovering) style.visibility = 'visible'
+    }
+
+    if (this.props.ui.orientation === 'vertical') {
+      return this.renderVerticalHoverOptions(style)
+    } else {
+      return this.renderHorizontalHoverOptions(style)
     }
   }
 
@@ -239,10 +270,12 @@ class ChapterTitleCell extends PureComponent {
           onDragLeave={this.handleDragLeave}
           onDrop={this.handleDrop}
         >
+          {this.renderHoverOptions()}
+          {this.renderDelete()}
+          {this.renderEditInput()}
           <div
             title={chapterPositionTitle(chapter, positionOffset, isSeries)}
-            onMouseEnter={this.startHovering}
-            onMouseLeave={this.stopHovering}
+            onClick={hovering ? this.stopHovering : this.startHovering}
             draggable
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}

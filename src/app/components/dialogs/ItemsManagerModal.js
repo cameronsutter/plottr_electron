@@ -41,6 +41,10 @@ export default function ItemsManagerModal({
 }) {
   const [inputValue, setInputValue] = useState('')
   const restrictedValues = useMemo(() => new Set(items.map(({ name }) => name)), [items])
+  useEffect(() => {
+    window.SCROLLWITHKEYS = false
+    return () => (window.SCROLLWITHKEYS = true)
+  }, [])
 
   const saveAsTemplate = () => {
     ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', itemType) // sends this message to this same process

@@ -86,9 +86,9 @@ class TopRow extends Component {
 
   renderChapters() {
     const { ui, chapters, isLarge, isSmall } = this.props
-    const renderedChapters = chapters.flatMap((ch) => {
+    const renderedChapters = chapters.flatMap((ch, idx) => {
       const cells = []
-      if (isLarge) {
+      if (isLarge || idx == 0) {
         cells.push(
           <ChapterInsertCell
             key={`chapterId-${ch.id}-insert`}

@@ -262,7 +262,7 @@ class TimelineTable extends Component {
     return chapterMapKeys.flatMap((chapterPosition) => {
       const cells = []
       const chapterId = chapterMap[chapterPosition]
-      if (isLarge) {
+      if (isLarge || chapterPosition == 0) {
         cells.push(
           <ChapterInsertCell
             key={`${chapterPosition}-insert`}

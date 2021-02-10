@@ -8,7 +8,7 @@ const defaultBook = initialState.book
 const defaultNote = initialState.note
 const defaultCharacter = initialState.character
 const defaultCard = initialState.card
-const defaultChapter = initialState.chapter
+const defaultBeat = initialState.chapter
 const defaultLine = initialState.line
 
 const { nextId, objectId } = newIds
@@ -68,22 +68,22 @@ function createNewCard(currentCards, values) {
 function createNewLine(currentLines, values, bookId) {
   const nexLineId = nextId(currentLines)
   const position = nextPositionInBook(currentLines, bookId)
-  const newChapter = Object.assign({}, defaultLine, { id: nexLineId, position, bookId, ...values })
-  currentLines.push(newChapter)
+  const newLine = Object.assign({}, defaultLine, { id: nexLineId, position, bookId, ...values })
+  currentLines.push(newLine)
   return nexLineId
 }
 
-function createNewChapter(currentChapters, values, bookId) {
-  const nextChapterId = nextId(currentChapters)
-  const position = nextPositionInBook(currentChapters, bookId)
-  const newChapter = Object.assign({}, defaultChapter, {
-    id: nextChapterId,
+function createNewBeat(currentBeats, values, bookId) {
+  const nextBeatId = nextId(currentBeats)
+  const position = nextPositionInBook(currentBeats, bookId)
+  const newBeat = Object.assign({}, defaultBeat, {
+    id: nextBeatId,
     position,
     bookId,
     ...values,
   })
-  currentChapters.push(newChapter)
-  return nextChapterId
+  currentBeats.push(newBeat)
+  return nextBeatId
 }
 
 function createSlateEditor(paragraphs) {
@@ -267,14 +267,14 @@ function cards(currentState, json, bookId) {
       { position: 0, title: i18n('Main Plot') },
       bookId
     )
-    const scenesByChapter = groupBy(sceneListNode['GContainer'], (scene) => {
+    const scenesByBeat = groupBy(sceneListNode['GContainer'], (scene) => {
       const node = scene['GInteger'].find((n) => n['_attributes']['name'] == 'chapter')
       if (node) return node['_attributes']['value']
       return '1'
     })
-    const chapterNumbers = Object.keys(scenesByChapter)
-    const scenesByChapterByCharacter = chapterNumbers.reduce((acc, num) => {
-      acc[num] = groupBy(scenesByChapter[num], (scene) => {
+    const beatNumbers = Object.keys(scenesByBeat)
+    const scenesByBeatByCharacter = beatNumbers.reduce((acc, num) => {
+      acc[num] = groupBy(scenesByBeat[num], (scene) => {
         const node = scene['GInteger'].find((n) => n['_attributes']['name'] == 'povName')
         if (node) return node['_attributes']['value']
         return ''
@@ -283,19 +283,19 @@ function cards(currentState, json, bookId) {
     }, {})
 
     // idMap is Snowflake id to Plottr id
-    const idMap = chapterNumbers.reduce((acc, id) => {
-      acc[id] = createNewChapter(currentState.chapters, { position: Number(id) - 1 }, bookId)
+    const idMap = beatNumbers.reduce((acc, id) => {
+      acc[id] = createNewBeat(currentState.beats, { position: Number(id) - 1 }, bookId)
       return acc
     }, {})
 
-    let createdScenesByChapter = {}
-    let createdScenesByChapterByCharacter = {}
+    let createdScenesByBeat = {}
+    let createdScenesByBeatByCharacter = {}
     let linesByTitle = {}
     let nextLinePosition = 1
 
     sceneListNode['GContainer'].forEach((sNode) => {
-      // each one is a card in a chapter
-      let chapterId = null
+      // each one is a card in a beat
+      let beatId = null
       let characterName = ''
       let sentence = ''
       let wordCountExpected = 0
@@ -304,8 +304,8 @@ function cards(currentState, json, bookId) {
       function addParagraphs(node) {
         const name = node['_attributes']['name']
         const value = node['_attributes']['value']
-        if (name == 'chapter') {
-          chapterId = value
+        if (name == 'beat') {
+          beatId = value
         } else if (name == 'povName') {
           if (value) characterName = value
         } else if (name == 'wordCountExpected') {
@@ -378,28 +378,26 @@ function cards(currentState, json, bookId) {
 
       const cardLineId = characterLineId || lineId
 
-      // stack any that are in the same chapter and line
+      // stack any that are in the same beat and line
       let positionWithinLine = 0
-      if (character && scenesByChapterByCharacter[chapterId][characterName]) {
-        const numInChapter = scenesByChapterByCharacter[chapterId][characterName].length
-        if (numInChapter > 1) {
-          positionWithinLine = createdScenesByChapterByCharacter[chapterId][characterName]
-            ? createdScenesByChapterByCharacter[chapterId][characterName].length
+      if (character && scenesByBeatByCharacter[beatId][characterName]) {
+        const numInBeat = scenesByBeatByCharacter[beatId][characterName].length
+        if (numInBeat > 1) {
+          positionWithinLine = createdScenesByBeatByCharacter[beatId][characterName]
+            ? createdScenesByBeatByCharacter[beatId][characterName].length
             : 0
         }
       } else {
-        const numInChapter = scenesByChapter[chapterId].length
-        if (numInChapter > 1) {
-          positionWithinLine = createdScenesByChapter[chapterId]
-            ? createdScenesByChapter[chapterId].length
-            : 0
+        const numInBeat = scenesByBeat[beatId].length
+        if (numInBeat > 1) {
+          positionWithinLine = createdScenesByBeat[beatId] ? createdScenesByBeat[beatId].length : 0
         }
       }
 
       let sentenceTitle = sentence.length > 30 ? `${sentence.substr(0, 30)}...` : sentence
 
       const values = {
-        chapterId: idMap[chapterId],
+        chapterId: idMap[beatId],
         lineId: cardLineId,
         description,
         positionWithinLine,
@@ -410,21 +408,21 @@ function cards(currentState, json, bookId) {
       createNewCard(currentState.cards, values)
 
       // mark that we've created scenes
-      createdScenesByChapter[chapterId] = createdScenesByChapter[chapterId]
-        ? [...createdScenesByChapter[chapterId], values]
+      createdScenesByBeat[beatId] = createdScenesByBeat[beatId]
+        ? [...createdScenesByBeat[beatId], values]
         : [values]
       if (character) {
-        if (createdScenesByChapterByCharacter[chapterId]) {
-          if (createdScenesByChapterByCharacter[chapterId][characterName]) {
-            createdScenesByChapterByCharacter[chapterId][characterName] = [
-              ...createdScenesByChapterByCharacter[chapterId][characterName],
+        if (createdScenesByBeatByCharacter[beatId]) {
+          if (createdScenesByBeatByCharacter[beatId][characterName]) {
+            createdScenesByBeatByCharacter[beatId][characterName] = [
+              ...createdScenesByBeatByCharacter[beatId][characterName],
               values,
             ]
           } else {
-            createdScenesByChapterByCharacter[chapterId][characterName] = [values]
+            createdScenesByBeatByCharacter[beatId][characterName] = [values]
           }
         } else {
-          createdScenesByChapterByCharacter[chapterId] = { [characterName]: [values] }
+          createdScenesByBeatByCharacter[beatId] = { [characterName]: [values] }
         }
       }
     })

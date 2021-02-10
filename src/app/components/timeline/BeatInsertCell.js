@@ -12,10 +12,10 @@ const {
   orientedClassName: { orientedClassName },
 } = helpers
 
-class ChapterInsertCell extends PureComponent {
+class BeatInsertCell extends PureComponent {
   insert = () => {
-    const { chapterPosition, lineId, handleInsert } = this.props
-    handleInsert(chapterPosition, lineId)
+    const { beatPosition, lineId, handleInsert } = this.props
+    handleInsert(beatPosition, lineId)
   }
 
   renderLine() {
@@ -24,22 +24,22 @@ class ChapterInsertCell extends PureComponent {
   }
 
   render() {
-    const { isInChapterList, showLine, orientation, isLast, isSmall } = this.props
-    let wrapperKlass = orientedClassName('insert-chapter-wrapper', orientation)
-    let chapterKlass = 'chapter-list__insert'
-    let titleText = i18n('Insert Chapter')
-    if (showLine) wrapperKlass += ' insert-chapter-spacer'
+    const { isInBeatList, showLine, orientation, isLast, isSmall } = this.props
+    let wrapperKlass = orientedClassName('insert-beat-wrapper', orientation)
+    let beatKlass = 'beat-list__insert'
+    let titleText = i18n('Insert Beat')
+    if (showLine) wrapperKlass += ' insert-beat-spacer'
     if (isLast) {
       titleText = i18n('Add Chapter')
-      wrapperKlass += ' append-chapter'
-      chapterKlass += ' append-chapter'
+      wrapperKlass += ' append-beat'
+      beatKlass += ' append-beat'
     }
-    if (!isInChapterList) titleText = i18n('Insert Chapter and a Card')
+    if (!isInBeatList) titleText = i18n('Insert Chapter and a Card')
     let insideDiv = (
       <div
         title={titleText}
         className={orientedClassName(
-          isInChapterList ? chapterKlass : 'line-list__insert-chapter',
+          isInBeatList ? beatKlass : 'line-list__insert-beat',
           orientation
         )}
         onClick={this.insert}
@@ -68,8 +68,8 @@ class ChapterInsertCell extends PureComponent {
     orientation: PropTypes.string,
     isSmall: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
-    isInChapterList: PropTypes.bool.isRequired,
-    chapterPosition: PropTypes.number,
+    isInBeatList: PropTypes.bool.isRequired,
+    beatPosition: PropTypes.number,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,
     color: PropTypes.string,
@@ -89,4 +89,4 @@ function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChapterInsertCell)
+export default connect(mapStateToProps, mapDispatchToProps)(BeatInsertCell)

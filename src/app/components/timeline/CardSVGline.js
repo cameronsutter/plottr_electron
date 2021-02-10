@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 
 export default class CardSVGline extends PureComponent {
@@ -35,35 +35,35 @@ export default class CardSVGline extends PureComponent {
   render() {
     console.log('SVG')
     return null
-    let style = { stroke: this.props.color }
-    const placement = this.linePlacement()
-    const length = this.lineLength()
-    if (this.props.orientation === 'vertical') {
-      return (
-        <svg height={length} width={this.width()}>
-          <line
-            y1="0"
-            x1={placement}
-            y2={length}
-            x2={placement}
-            className="card__svg-line"
-            style={style}
-          />
-        </svg>
-      )
-    } else {
-      return (
-        <svg width={length} height={this.height()}>
-          <line
-            x1="0"
-            y1={placement}
-            x2={length}
-            y2={placement}
-            className="card__svg-line"
-            style={style}
-          />
-        </svg>
-      )
-    }
+    // let style = { stroke: this.props.color }
+    // const placement = this.linePlacement()
+    // const length = this.lineLength()
+    // if (this.props.orientation === 'vertical') {
+    //   return (
+    //     <svg height={length} width={this.width()}>
+    //       <line
+    //         y1="0"
+    //         x1={placement}
+    //         y2={length}
+    //         x2={placement}
+    //         className="card__svg-line"
+    //         style={style}
+    //       />
+    //     </svg>
+    //   )
+    // } else {
+    //   return (
+    //     <svg width={length} height={this.height()}>
+    //       <line
+    //         x1="0"
+    //         y1={placement}
+    //         x2={length}
+    //         y2={placement}
+    //         className="card__svg-line"
+    //         style={style}
+    //       />
+    //     </svg>
+    //   )
+    // }
   }
 }

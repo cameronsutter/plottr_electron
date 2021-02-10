@@ -64,7 +64,7 @@ const serialize = (nodes, doc) => {
       // so we map over all the node's children (ignoring what we serialized above) and serialize
       // them again but as individual headings
       case 'heading-one':
-      case 'heading-two':
+      case 'heading-two': {
         const headingLevel =
           n.type === 'heading-one' ? HeadingLevel.HEADING_4 : HeadingLevel.HEADING_5
         return n.children.map((child) => {
@@ -82,6 +82,7 @@ const serialize = (nodes, doc) => {
             })
           }
         })
+      }
       case 'list-item':
         return children[0] // always an array with 1 TextRun
       case 'numbered-list':
@@ -93,13 +94,14 @@ const serialize = (nodes, doc) => {
         return doc.createHyperlink(n.url, n.url)
       case 'image-link':
         return new Paragraph({ children: [doc.createHyperlink(n.url, n.url), ...children] })
-      case 'image-data':
+      case 'image-data': {
         const imgData = n.data
         const image = Media.addImage(
           doc,
           Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), 'base64')
         )
         return new Paragraph({ children: [image] })
+      }
       case 'block-quote':
       case 'paragraph':
       default:

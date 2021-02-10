@@ -4,6 +4,11 @@ import { sortBy, groupBy } from 'lodash'
 import i18n from 'format-message'
 import serialize from '../../slate_serializers/to_word'
 import { notifyUser } from '../notifier'
+import { helpers } from 'pltr/v2'
+
+const {
+  books: { isSeries },
+} = helpers
 
 export default function Exporter(data, { fileName, bookId }) {
   let doc = new Document()
@@ -54,7 +59,7 @@ function namesMapping(data) {
 }
 
 function seriesNameSection(data, bookId) {
-  let titleText = bookId == 'series' ? data.series.name : data.books[bookId].title
+  let titleText = isSeries(bookId) ? data.series.name : data.books[bookId].title
   const paragraph = new Paragraph({
     text: titleText,
     heading: HeadingLevel.TITLE,
@@ -74,56 +79,50 @@ function outlineSection(data, namesMapping, bookId, doc) {
     })
   )
 
-  let chapters = []
-  if (bookId == 'series') {
-    chapters = sortBy(data.beats, 'position')
-  } else {
-    chapters = sortBy(
-      data.chapters.filter((ch) => ch.bookId == bookId),
-      'position'
-    )
-  }
-  if (!chapters.length) return { children: children }
+  let beats = sortBy(
+    data.beats.filter((beat) => beat.bookId == bookId),
+    'position'
+  )
+  if (!beats.length) return { children: children }
 
-  const offset = positionOffset(chapters)
-  const paragraphs = chapters.flatMap((ch) =>
-    chapterParagraphs(ch, data, namesMapping, bookId, offset, doc)
+  const offset = positionOffset(beats)
+  const paragraphs = beats.flatMap((beat) =>
+    beatParagraphs(beat, data, namesMapping, bookId, offset, doc)
   )
 
   return { children: children.concat(paragraphs) }
 }
 
-function chapterParagraphs(chapter, data, namesMapping, bookId, offset, doc) {
-  const isSeries = bookId == 'series'
+function beatParagraphs(beat, data, namesMapping, bookId, offset, doc) {
+  const beatIsSeries = isSeries(bookId)
   let paragraphs = [new Paragraph('')]
   paragraphs.push(new Paragraph('^'))
-  let title = chapterTitle(chapter, offset, isSeries)
+  let title = beatTitle(beat, offset, beatIsSeries)
   paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
   const lines = data.lines
-  const cards = sortedChapterCards(chapter.autoOutlineSort, chapter.id, data.cards, lines, isSeries)
-  // console.log('sortedChapterCards', cards)
+  const cards = sortedBeatCards(beat.autoOutlineSort, beat.id, data.cards, lines)
+  // console.log('sortedBeatCards', cards)
   let cardParagraphs = cards.flatMap((c) => card(c, lines, namesMapping, doc))
   return paragraphs.concat(cardParagraphs)
 }
 
-// TODO: most of this is copy/pasted from helpers/chapters
+// TODO: most of this is copy/pasted from helpers/beats
 // when we refactor main.js, this can be shared from there
-function positionOffset(sortedChapters) {
-  return sortedChapters[0].title == i18n('Prologue') ? -1 : 0
+function positionOffset(sortedBeats) {
+  return sortedBeats[0].title == i18n('Prologue') ? -1 : 0
 }
 
-// TODO: most of this is copy/pasted from helpers/chapters
+// TODO: most of this is copy/pasted from helpers/beats
 // when we refactor main.js, this can be shared from there
-function chapterTitle(chapter, offset, isSeries) {
+function beatTitle(beat, offset, isSeries) {
   if (isSeries) {
-    // if isSeries, chapters will actually be beats
-    return chapter.title == 'auto'
-      ? i18n('Beat {number}', { number: chapter.position + offset + 1 })
-      : chapter.title
+    return beat.title == 'auto'
+      ? i18n('Beat {number}', { number: beat.position + offset + 1 })
+      : beat.title
   } else {
-    return chapter.title == 'auto'
-      ? i18n('Chapter {number}', { number: chapter.position + offset + 1 })
-      : chapter.title
+    return beat.title == 'auto'
+      ? i18n('Chapter {number}', { number: beat.position + offset + 1 })
+      : beat.title
   }
 }
 
@@ -168,8 +167,8 @@ function attachments(obj, namesMapping) {
 
 // TODO: most of this is copy/pasted from helpers/cards
 // when we refactor main.js, this can be shared from there
-function sortedChapterCards(autoSort, chapterId, allCards, allLines, isSeries) {
-  let cards = findChapterCards(chapterId, allCards, isSeries)
+function sortedBeatCards(autoSort, beatId, allCards, allLines) {
+  let cards = findBeatCards(beatId, allCards)
   const sortedLines = sortBy(allLines, 'position')
   if (autoSort) {
     // group by position within the line
@@ -182,13 +181,12 @@ function sortedChapterCards(autoSort, chapterId, allCards, allLines, isSeries) {
       )
     })
   } else {
-    return sortBy(cards, 'positionInChapter')
+    return sortBy(cards, 'positionInBeat')
   }
 }
 
-function findChapterCards(chapterId, allCards, isSeries) {
-  const idAttr = isSeries ? 'beatId' : 'chapterId'
-  return allCards.filter((c) => c[idAttr] === chapterId)
+function findBeatCards(beatId, allCards) {
+  return allCards.filter((c) => c.beatId === beatId)
 }
 
 function charactersSection(data, doc) {

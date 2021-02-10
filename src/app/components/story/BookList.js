@@ -14,7 +14,7 @@ const { objectId } = newIds
 
 const BookActions = actions.book
 const LineActions = actions.line
-const SceneActions = actions.scene
+const BeatActions = actions.beat
 
 class BookList extends Component {
   dragDropAreaRef = React.createRef()
@@ -32,7 +32,7 @@ class BookList extends Component {
   }
 
   addBook = () => {
-    const { actions, books, lineActions, sceneActions } = this.props
+    const { actions, books, lineActions, beatActions } = this.props
     const newBookId = objectId(books.allIds)
     this.setState({
       rows: [
@@ -43,8 +43,8 @@ class BookList extends Component {
     actions.addBook()
     // add a plotline
     lineActions.addLine(newBookId)
-    // add a chapter
-    sceneActions.addScene(newBookId)
+    // add a beat
+    beatActions.addBeat(newBookId)
   }
 
   reorder = (bookIds, startIndex, endIndex) => {
@@ -177,7 +177,7 @@ class BookList extends Component {
     books: PropTypes.object.isRequired,
     actions: PropTypes.object,
     lineActions: PropTypes.object,
-    sceneActions: PropTypes.object,
+    beatActions: PropTypes.object,
   }
 }
 
@@ -192,7 +192,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(BookActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
-    sceneActions: bindActionCreators(SceneActions, dispatch),
+    beatActions: bindActionCreators(BeatActions, dispatch),
   }
 }
 

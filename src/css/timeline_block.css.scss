@@ -20,7 +20,7 @@
   }
 
   .sticky-table-cell:hover {
-    .line-list__insert-chapter {
+    .line-list__insert-beat {
       color: $blue-5;
     }
   }
@@ -230,7 +230,7 @@
       border-top: 1px solid $gray-8;
       cursor: move;
 
-      &.chapter-list__insert.append-chapter {
+      &.beat-list__insert.append-beat {
         font-size: 8px;
         cursor: pointer;
 
@@ -300,12 +300,12 @@
         min-width: 102px; // 70 + 16 + 16
         text-align: right;
 
-        .vertical-chapter-list__insert.append-chapter {
+        .vertical-beat-list__insert.append-beat {
           height: unset;
           width: unset;
           margin: 0;
           font-size: 8px;
-          .vertical-insert-chapter-wrapper.append-chapter {
+          .vertical-insert-beat-wrapper.append-beat {
             padding: 2px 0;
             border: none;
             margin: 0;

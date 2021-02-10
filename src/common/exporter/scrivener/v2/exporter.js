@@ -5,7 +5,7 @@ import xml from 'xml-js'
 import rtf from 'jsrtf'
 import serialize from '../../../slate_serializers/to_rtf'
 import { notifyUser } from '../../notifier'
-import exportChapters from './exporters/chapters'
+import exportBeats from './exporters/beats'
 import exportCharacters from './exporters/characters'
 import exportNotes from './exporters/notes'
 import exportPlaces from './exporters/places'
@@ -62,8 +62,8 @@ function createScrivx(state, basePath) {
   let scrivx = startNewScrivx()
   let documentContents = {}
 
-  const chapterBinderItems = exportChapters(state, documentContents)
-  addToScrivx(scrivx, chapterBinderItems, 'main')
+  const beatBinderItems = exportBeats(state, documentContents)
+  addToScrivx(scrivx, beatBinderItems, 'main')
 
   const charactersBinderItem = exportCharacters(state, documentContents)
   addToScrivx(scrivx, charactersBinderItem, 'research')

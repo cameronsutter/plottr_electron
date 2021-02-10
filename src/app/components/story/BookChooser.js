@@ -4,7 +4,11 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { NavDropdown, MenuItem } from 'react-bootstrap'
 import i18n from 'format-message'
-import { actions } from 'pltr/v2'
+import { actions, helpers } from 'pltr/v2'
+
+const {
+  books: { isSeries },
+} = helpers
 
 const UIActions = actions.ui
 
@@ -43,7 +47,7 @@ class BookChooser extends Component {
     const seriesText =
       series.name == '' ? i18n('Series View') : `${series.name} (${i18n('Series View')})`
     let title = seriesText
-    if (ui.currentTimeline != 'series') title = this.bookTitle(books[ui.currentTimeline])
+    if (!isSeries(ui.currentTimeline)) title = this.bookTitle(books[ui.currentTimeline])
 
     return (
       <NavDropdown

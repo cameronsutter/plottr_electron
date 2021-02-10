@@ -221,19 +221,19 @@ document.addEventListener('keydown', (e) => {
     const table = document.querySelector('.sticky-table')
     if (table) {
       if (e.key === 'ArrowUp') {
-        var amount = 300
+        let amount = 300
         if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
         table.scrollTop -= amount
       } else if (e.key === 'ArrowRight') {
-        var amount = 400
+        let amount = 400
         if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
         table.scrollLeft += amount
       } else if (e.key === 'ArrowDown') {
-        var amount = 300
+        let amount = 300
         if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
         table.scrollTop += amount
       } else if (e.key === 'ArrowLeft') {
-        var amount = 400
+        let amount = 400
         if (e.metaKey || e.ctrlKey || e.altKey) amount = 800
         table.scrollLeft -= amount
       }

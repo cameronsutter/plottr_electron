@@ -6,6 +6,11 @@ import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import i18n from 'format-message'
 import Image from '../images/Image'
 import cx from 'classnames'
+import { helpers } from 'pltr/v2'
+
+const {
+  books: { isSeries },
+} = helpers
 
 class BookSelectList extends Component {
   renderUnSelected() {
@@ -25,7 +30,7 @@ class BookSelectList extends Component {
         )
       })
     }
-    const showSeries = !selectedBooks.includes('series')
+    const showSeries = !selectedBooks.some(isSeries)
     return (
       <Popover id="list-popover" title="">
         <ul className={cx('select-list__item-select-list', { 'series-select': showSeries })}>
@@ -42,7 +47,7 @@ class BookSelectList extends Component {
 
   renderSelected() {
     return this.props.selectedBooks.map((id) => {
-      if (id == 'series') {
+      if (isSeries(id)) {
         return (
           <div key={id} className="chip">
             <span>{i18n('Series')}</span>

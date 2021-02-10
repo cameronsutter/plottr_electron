@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 import { Glyphicon, Button } from 'react-bootstrap'
 import * as types from 'constants/ActionTypes'
-import AddScene from 'components/history/AddScene'
-import EditScene from 'components/history/EditScene'
+import AddBeat from 'components/history/AddScene'
+import EditBeat from 'components/history/EditScene'
 import AddCard from 'components/history/AddCard'
 import CardDetails from 'components/history/CardDetails'
 import CardCoordinates from 'components/history/CardCoordinates'
@@ -75,16 +75,16 @@ class HistoryItem extends Component {
 
   renderDetailsByType(type, item) {
     switch (type) {
-      case types.ADD_SCENE:
-        return <AddScene item={item} />
-      case types.EDIT_SCENE_TITLE:
-        return <EditScene item={item} />
+      case types.ADD_BEAT:
+        return <AddBeat item={item} />
+      case types.EDIT_BEAT_TITLE:
+        return <EditBeat item={item} />
       case types.ADD_CARD:
         return <AddCard item={item} />
       case types.EDIT_CARD_DETAILS:
         return <CardDetails item={item} />
       case types.CHANGE_LINE:
-      case types.CHANGE_SCENE:
+      case types.CHANGE_BEAT:
       case types.EDIT_CARD_COORDINATES:
         return <CardCoordinates item={item} />
       case types.DELETE_CARD:

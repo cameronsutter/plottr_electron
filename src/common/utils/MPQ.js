@@ -37,7 +37,7 @@ class MixpanelQueue {
           ...basicAttrs,
           numOfCards: numOfCards,
           numOfCharacters: state.characters.length,
-          numOfChapters: state.chapters.length,
+          numOfBeats: state.beats.length,
           numOfLines: state.lines.length,
           numOfBooks: state.books.allIds.length,
           numOfCharCategories: state.categories.characters.length,

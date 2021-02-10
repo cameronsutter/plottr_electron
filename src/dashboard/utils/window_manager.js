@@ -37,28 +37,20 @@ export function createNew(templateData) {
   if (templateData) {
     json = Object.assign({}, json, templateData)
   }
-  try {
-    const filePath = saveToTempFile(json)
-    const fileId = addToKnownFiles(filePath)
-    openKnownFile(filePath, fileId)
-  } catch (error) {
-    throw error
-  }
+  const filePath = saveToTempFile(json)
+  const fileId = addToKnownFiles(filePath)
+  openKnownFile(filePath, fileId)
 }
 
 export function createFromSnowflake(importedPath) {
   const storyName = path.basename(importedPath, '.snowXML')
   let json = emptyFile(storyName, app.getVersion())
-  // clear chapters and lines
-  json.chapters = []
+  // clear beats and lines
+  json.beats = []
   json.lines = []
   const importedJson = Importer(importedPath, true, json)
 
-  try {
-    const filePath = saveToTempFile(importedJson)
-    const fileId = addToKnownFiles(filePath)
-    openKnownFile(filePath, fileId)
-  } catch (error) {
-    throw error
-  }
+  const filePath = saveToTempFile(importedJson)
+  const fileId = addToKnownFiles(filePath)
+  openKnownFile(filePath, fileId)
 }

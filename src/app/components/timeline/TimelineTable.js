@@ -5,12 +5,12 @@ import { findDOMNode } from 'react-dom'
 import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { Row } from 'react-sticky-table'
-import ScenesCell from './ScenesCell'
+import CardCell from './CardCell'
 import BlankCard from './BlankCard'
 import LineTitleCell from './LineTitleCell'
-import ChapterInsertCell from './ChapterInsertCell'
+import BeatInsertCell from './BeatInsertCell'
 import TopRow from './TopRow'
-import ChapterTitleCell from './ChapterTitleCell'
+import BeatTitleCell from './BeatTitleCell'
 import AddLineRow from './AddLineRow'
 import { newIds, actions, helpers, selectors, initialState } from 'pltr/v2'
 
@@ -19,13 +19,13 @@ const { card } = initialState
 const { nextId } = newIds
 
 const {
-  chapters: { insertChapter },
+  beats: { insertBeat },
   lists: { reorderList },
 } = helpers
 
 const {
   cardMapSelector,
-  sortedChaptersByBookSelector,
+  sortedBeatsByBookSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
   isLargeSelector,
@@ -36,7 +36,6 @@ const {
 const LineActions = actions.line
 const BeatActions = actions.beat
 const CardActions = actions.card
-const SceneActions = actions.scene
 const UIActions = actions.ui
 
 class TimelineTable extends Component {
@@ -68,13 +67,9 @@ class TimelineTable extends Component {
     this.setLength()
   }
 
-  handleReorderChapters = (originalPosition, droppedPosition) => {
-    const chapters = reorderList(originalPosition, droppedPosition, this.props.chapters)
-    if (this.props.isSeries) {
-      this.props.beatActions.reorderBeats(chapters)
-    } else {
-      this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
-    }
+  handleReorderBeats = (originalPosition, droppedPosition) => {
+    const beats = reorderList(originalPosition, droppedPosition, this.props.beats)
+    this.props.beatActions.reorderBeats(beats, this.props.ui.currentTimeline)
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
@@ -83,9 +78,9 @@ class TimelineTable extends Component {
   }
 
   // TODO: this should be a selector
-  chapterMapping() {
-    return this.props.chapters.reduce((acc, chapter) => {
-      acc[chapter.position] = chapter.id
+  beatMapping() {
+    return this.props.beats.reduce((acc, beat) => {
+      acc[beat.position] = beat.id
       return acc
     }, {})
   }
@@ -98,42 +93,34 @@ class TimelineTable extends Component {
     }, {})
   }
 
-  handleInsertNewChapter = (nextPosition, lineId) => {
-    const chapters = insertChapter(
+  handleInsertNewBeat = (nextPosition, lineId) => {
+    const beats = insertBeat(
       nextPosition,
-      this.props.chapters,
-      this.props.nextChapterId,
+      this.props.beats,
+      this.props.nextBeatId,
       this.props.ui.currentTimeline
     )
-    if (this.props.isSeries) {
-      this.props.beatActions.reorderBeats(chapters)
-    } else {
-      this.props.sceneActions.reorderScenes(chapters, this.props.ui.currentTimeline)
-    }
+    this.props.beatActions.reorderBeats(beats, this.props.ui.currentTimeline)
 
-    if (lineId && chapters[nextPosition]) {
-      const chapterId = chapters[nextPosition].id
-      this.props.cardActions.addCard(this.buildCard(lineId, chapterId))
+    if (lineId && beats[nextPosition]) {
+      const beatId = beats[nextPosition].id
+      this.props.cardActions.addCard(this.buildCard(lineId, beatId))
     }
   }
 
-  buildCard(lineId, chapterId) {
-    return Object.assign({}, card, { beatId: chapterId, chapterId, lineId })
+  buildCard(lineId, beatId) {
+    return Object.assign({}, card, { beatId, lineId })
   }
 
-  handleAppendChapter = () => {
-    if (this.props.isSeries) {
-      this.props.beatActions.addBeat()
-    } else {
-      this.props.sceneActions.addScene(this.props.ui.currentTimeline)
-    }
+  handleAppendBeat = () => {
+    this.props.beatActions.addBeat(this.props.ui.currentTimeline)
   }
 
   renderHorizontal() {
     const { lines, isSmall, ui } = this.props
 
-    const chapterMap = this.chapterMapping()
-    const chapterMapKeys = Object.keys(chapterMap)
+    const beatMap = this.beatMapping()
+    const beatMapKeys = Object.keys(beatMap)
     let howManyCells = 0
     const renderedLines = lines.map((line) => {
       const lineTitle = (
@@ -143,7 +130,7 @@ class TimelineTable extends Component {
           bookId={ui.currentTimeline}
         />
       )
-      const cards = this.renderHorizontalCards(line, chapterMap, chapterMapKeys)
+      const cards = this.renderHorizontalCards(line, beatMap, beatMapKeys)
       howManyCells = cards.length
       if (isSmall) {
         return (
@@ -171,50 +158,48 @@ class TimelineTable extends Component {
   renderVertical() {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
-    const { chapters, isSmall, isLarge } = this.props
-    const renderedChapters = chapters.map((chapter) => {
+    const { beats, isSmall, isLarge } = this.props
+    const renderedBeats = beats.map((beat) => {
       let inserts = []
       if (isLarge) {
         inserts = lineMapKeys.flatMap((linePosition) => {
           const line = lineMap[linePosition]
           return (
-            <ChapterInsertCell
+            <BeatInsertCell
               key={`${linePosition}-insert`}
-              isInChapterList={false}
-              chapterPosition={chapter.position}
-              handleInsert={this.handleInsertNewChapter}
+              isInBeatList={false}
+              beatPosition={beat.position}
+              handleInsert={this.handleInsertNewBeat}
               color={line.color}
-              showLine={chapter.position == 0}
+              showLine={beat.position == 0}
               tableLength={this.state.tableLength}
             />
           )
         })
       }
 
-      const chapterTitle = (
-        <ChapterTitleCell chapterId={chapter.id} handleReorder={this.handleReorderChapters} />
-      )
+      const beatTitle = <BeatTitleCell beatId={beat.id} handleReorder={this.handleReorderBeats} />
 
       if (isSmall) {
         return (
-          <tr key={`chapterId-${chapter.id}`}>
-            {chapterTitle}
-            {this.renderVerticalCards(chapter, lineMap, lineMapKeys)}
+          <tr key={`beatId-${beat.id}`}>
+            {beatTitle}
+            {this.renderVerticalCards(beat, lineMap, lineMapKeys)}
           </tr>
         )
       } else {
         return [
-          <Row key={`chapterId-${chapter.id}`}>
-            <ChapterInsertCell
-              isInChapterList={true}
-              chapterPosition={chapter.position}
-              handleInsert={this.handleInsertNewChapter}
+          <Row key={`beatId-${beat.id}`}>
+            <BeatInsertCell
+              isInBeatList={true}
+              beatPosition={beat.position}
+              handleInsert={this.handleInsertNewBeat}
             />
             {inserts}
           </Row>,
-          <Row key={`chapterId-${chapter.id}-insert`}>
-            {chapterTitle}
-            {this.renderVerticalCards(chapter, lineMap, lineMapKeys)}
+          <Row key={`beatId-${beat.id}-insert`}>
+            {beatTitle}
+            {this.renderVerticalCards(beat, lineMap, lineMapKeys)}
           </Row>,
         ]
       }
@@ -226,27 +211,19 @@ class TimelineTable extends Component {
       const tds = lineMapKeys.map((linePosition) => <td key={linePosition} />)
       finalRow = (
         <tr key="last-insert">
-          <ChapterInsertCell
-            isInChapterList={true}
-            handleInsert={this.handleAppendChapter}
-            isLast={true}
-          />
+          <BeatInsertCell isInBeatList={true} handleInsert={this.handleAppendBeat} isLast={true} />
           {[...tds, <td key="empty-cell" />]}
         </tr>
       )
     } else {
       finalRow = (
         <Row key="last-insert">
-          <ChapterInsertCell
-            isInChapterList={true}
-            handleInsert={this.handleAppendChapter}
-            isLast={true}
-          />
+          <BeatInsertCell isInBeatList={true} handleInsert={this.handleAppendBeat} isLast={true} />
         </Row>
       )
     }
 
-    return [...renderedChapters, finalRow]
+    return [...renderedBeats, finalRow]
   }
 
   renderRows() {
@@ -257,71 +234,67 @@ class TimelineTable extends Component {
     }
   }
 
-  renderHorizontalCards(line, chapterMap, chapterMapKeys) {
+  renderHorizontalCards(line, beatMap, beatMapKeys) {
     const { cardMap, isLarge } = this.props
-    return chapterMapKeys.flatMap((chapterPosition) => {
+    return beatMapKeys.flatMap((beatPosition) => {
       const cells = []
-      const chapterId = chapterMap[chapterPosition]
+      const beatId = beatMap[beatPosition]
       if (isLarge) {
         cells.push(
-          <ChapterInsertCell
-            key={`${chapterPosition}-insert`}
-            isInChapterList={false}
-            chapterPosition={Number(chapterPosition)}
+          <BeatInsertCell
+            key={`${beatPosition}-insert`}
+            isInBeatList={false}
+            beatPosition={Number(beatPosition)}
             lineId={line.id}
-            handleInsert={this.handleInsertNewChapter}
-            showLine={chapterPosition == 0}
+            handleInsert={this.handleInsertNewBeat}
+            showLine={beatPosition == 0}
             color={line.color}
             tableLength={this.state.tableLength}
           />
         )
       }
-      const cards = cardMap[`${line.id}-${chapterId}`]
-      const key = `${cards ? 'card' : 'blank'}-${chapterPosition}-${line.position}`
+      const cards = cardMap[`${line.id}-${beatId}`]
+      const key = `${cards ? 'card' : 'blank'}-${beatPosition}-${line.position}`
       if (cards) {
         cells.push(
-          <ScenesCell
+          <CardCell
             key={key}
             cards={cards}
-            chapterId={chapterId}
+            beatId={beatId}
             lineId={line.id}
-            chapterPosition={chapterPosition}
+            beatPosition={beatPosition}
             linePosition={line.position}
             color={line.color}
           />
         )
       } else {
-        cells.push(
-          <BlankCard chapterId={chapterId} lineId={line.id} key={key} color={line.color} />
-        )
+        cells.push(<BlankCard beatId={beatId} lineId={line.id} key={key} color={line.color} />)
       }
       return cells
     })
   }
 
-  renderVerticalCards(chapter, lineMap, lineMapKeys) {
+  renderVerticalCards(beat, lineMap, lineMapKeys) {
     const { cardMap, isSmall } = this.props
     const renderedCards = lineMapKeys.flatMap((linePosition) => {
       const cells = []
       const line = lineMap[linePosition]
-      const cards = cardMap[`${line.id}-${chapter.id}`]
-      const key = `${cards ? 'card' : 'blank'}-${chapter.position}-${linePosition}`
+      const cards = cardMap[`${line.id}-${beat.id}`]
+      const key = `${cards ? 'card' : 'blank'}-${beat.position}-${linePosition}`
       if (cards) {
         cells.push(
-          <ScenesCell
+          <CardCell
             key={key}
             cards={cards}
-            chapterId={chapter.id}
+            beatId={beat.id}
             lineId={line.id}
-            chapterPosition={chapter.position}
+            beatPosition={beat.position}
             linePosition={linePosition}
             color={line.color}
           />
         )
       } else {
-        cells.push(
-          <BlankCard chapterId={chapter.id} lineId={line.id} key={key} color={line.color} />
-        )
+        cells.push(<BlankCard beatId={beat.id} lineId={line.id} key={key} color={line.color} />)
       }
       return cells
     })
@@ -355,8 +328,7 @@ class TimelineTable extends Component {
 }
 
 TimelineTable.propTypes = {
-  chapters: PropTypes.array,
-  nextChapterId: PropTypes.number,
+  nextBeatId: PropTypes.number,
   beats: PropTypes.array,
   lines: PropTypes.array,
   cardMap: PropTypes.object.isRequired,
@@ -367,23 +339,16 @@ TimelineTable.propTypes = {
   isLarge: PropTypes.bool,
   tableRef: PropTypes.object,
   actions: PropTypes.object,
-  sceneActions: PropTypes.object,
   lineActions: PropTypes.object,
   cardActions: PropTypes.object,
   beatActions: PropTypes.object,
 }
 
 function mapStateToProps(state) {
-  let nextChapterId = -1
-  const bookId = state.present.ui.currentTimeline
-  if (bookId == 'series') {
-    nextChapterId = nextId(state.present.beats)
-  } else {
-    nextChapterId = nextId(state.present.chapters)
-  }
+  const nextBeatId = nextId(state.present.beats)
   return {
-    chapters: sortedChaptersByBookSelector(state.present),
-    nextChapterId: nextChapterId,
+    beats: sortedBeatsByBookSelector(state.present),
+    nextBeatId: nextBeatId,
     lines: sortedLinesByBookSelector(state.present),
     cardMap: cardMapSelector(state.present),
     ui: state.present.ui,
@@ -397,7 +362,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(UIActions, dispatch),
-    sceneActions: bindActionCreators(SceneActions, dispatch),
     lineActions: bindActionCreators(LineActions, dispatch),
     cardActions: bindActionCreators(CardActions, dispatch),
     beatActions: bindActionCreators(BeatActions, dispatch),

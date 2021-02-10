@@ -3,14 +3,14 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import i18n from 'format-message'
 
-class EditScene extends Component {
+class EditBeat extends Component {
   render() {
     const item = this.props.item
     const diff = item.diff[0]
     return (
       <div>
         <span>
-          {i18n('Scene')}: &quot;{item.action.title}&quot;
+          {i18n('Beat')}: &quot;{item.action.title}&quot;
         </span>
         <p>
           {i18n('Before')}: <span className="history-component__item__before">{diff.lhs}</span>
@@ -23,7 +23,7 @@ class EditScene extends Component {
   }
 }
 
-EditScene.propTypes = {
+EditBeat.propTypes = {
   item: PropTypes.object.isRequired,
 }
 
@@ -35,4 +35,4 @@ function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditScene)
+export default connect(mapStateToProps, mapDispatchToProps)(EditBeat)

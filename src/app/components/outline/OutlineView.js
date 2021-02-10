@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Glyphicon, Nav, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
-import ChapterView from 'components/outline/ChapterView'
+import BeatView from 'components/outline/BeatView'
 import MiniMap from 'components/outline/miniMap'
 import i18n from 'format-message'
 import ErrorBoundary from '../../containers/ErrorBoundary'
@@ -12,7 +12,7 @@ import SubNav from '../../containers/SubNav'
 
 const {
   cardMapSelector,
-  sortedChaptersByBookSelector,
+  sortedBeatsByBookSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
 } = selectors
@@ -119,14 +119,14 @@ class OutlineView extends Component {
     )
   }
 
-  renderChapters(cardMapping) {
-    return this.props.chapters.map((ch, idx) => {
+  renderBeats(cardMapping) {
+    return this.props.beats.map((beat, idx) => {
       if (this.state.firstRender && idx > 2) return null
       return (
-        <ErrorBoundary key={ch.id}>
-          <ChapterView
-            chapter={ch}
-            cards={cardMapping[ch.id]}
+        <ErrorBoundary key={beat.id}>
+          <BeatView
+            beat={beat}
+            cards={cardMapping[beat.id]}
             waypoint={this.setActive}
             activeFilter={!!this.state.currentLine}
           />
@@ -136,8 +136,8 @@ class OutlineView extends Component {
   }
 
   renderBody() {
-    const { chapters, lines, card2Dmap } = this.props
-    const cardMap = cardMapping(chapters, lines, card2Dmap, this.state.currentLine)
+    const { beats, lines, card2Dmap } = this.props
+    const cardMap = cardMapping(beats, lines, card2Dmap, this.state.currentLine)
     return (
       <div className="outline__container tab-body">
         <div className="outline__minimap__placeholder">Fish are friends, not food</div>
@@ -148,7 +148,7 @@ class OutlineView extends Component {
             activeFilter={!!this.state.currentLine}
           />
         </ErrorBoundary>
-        <div className="outline__scenes-container">{this.renderChapters(cardMap)}</div>
+        <div className="outline__scenes-container">{this.renderBeats(cardMap)}</div>
       </div>
     )
   }
@@ -164,7 +164,7 @@ class OutlineView extends Component {
 }
 
 OutlineView.propTypes = {
-  chapters: PropTypes.array.isRequired,
+  beats: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   card2Dmap: PropTypes.object.isRequired,
   file: PropTypes.object.isRequired,
@@ -174,7 +174,7 @@ OutlineView.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    chapters: sortedChaptersByBookSelector(state.present),
+    beats: sortedBeatsByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
     card2Dmap: cardMapSelector(state.present),
     file: state.present.file,

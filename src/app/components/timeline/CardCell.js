@@ -7,7 +7,7 @@ import { Cell } from 'react-sticky-table'
 import Card from './Card'
 import cx from 'classnames'
 import Floater from 'react-floater'
-import SceneCardAdd from './SceneCardAdd'
+import CardAdd from './CardAdd'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import { helpers, actions, selectors } from 'pltr/v2'
 
@@ -24,9 +24,9 @@ const {
   isMediumSelector,
 } = selectors
 
-class ScenesCell extends PureComponent {
+class CardCell extends PureComponent {
   moveSceneCardAbove = (id, positionWithinLine) => {
-    const { chapterId, lineId, cards } = this.props
+    const { beatId, lineId, cards } = this.props
     let newOrder = []
 
     const currentIds = cards.map((c) => c.id)
@@ -34,16 +34,16 @@ class ScenesCell extends PureComponent {
       const currentPosition = cards.find((c) => c.id == id).positionWithinLine
       newOrder = moveToAbove(currentPosition, positionWithinLine, currentIds)
     } else {
-      // dropped in from a different chapter
+      // dropped in from a different beat
       newOrder = currentIds
       newOrder.splice(positionWithinLine, 0, id)
     }
 
-    this.props.actions.reorderCardsWithinLine(chapterId, lineId, newOrder)
+    this.props.actions.reorderCardsWithinLine(beatId, lineId, newOrder)
   }
 
   moveSceneCard = (id, positionWithinLine) => {
-    const { chapterId, lineId, cards } = this.props
+    const { beatId, lineId, cards } = this.props
     let newOrder = []
 
     const currentIds = cards.map((c) => c.id)
@@ -51,12 +51,12 @@ class ScenesCell extends PureComponent {
       const currentPosition = cards.find((c) => c.id == id).positionWithinLine
       newOrder = reorderList(positionWithinLine, currentPosition, currentIds)
     } else {
-      // dropped in from a different chapter
+      // dropped in from a different beat
       newOrder = currentIds
       newOrder.splice(positionWithinLine, 0, id)
     }
 
-    this.props.actions.reorderCardsWithinLine(chapterId, lineId, newOrder)
+    this.props.actions.reorderCardsWithinLine(beatId, lineId, newOrder)
   }
 
   addSceneCard = (newCardData) => {
@@ -66,16 +66,16 @@ class ScenesCell extends PureComponent {
     const reorderIds = this.props.cards.map((c) => c.id)
     reorderIds.splice(newCardData.positionWithinLine, 0, null)
 
-    this.props.actions.addNewCardInChapter(newCard, reorderIds)
+    this.props.actions.addNewCardInBeat(newCard, reorderIds)
   }
 
   buildCard(data) {
-    const { chapterId, lineId } = this.props
-    return Object.assign({}, { chapterId, beatId: chapterId, lineId }, data)
+    const { beatId, lineId } = this.props
+    return Object.assign({}, { beatId, lineId }, data)
   }
 
   renderCards(arentHidden) {
-    const { chapterId, lineId, chapterPosition, linePosition, color, cards, isSmall } = this.props
+    const { beatId, lineId, beatPosition, linePosition, color, cards, isSmall } = this.props
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
@@ -85,10 +85,10 @@ class ScenesCell extends PureComponent {
           <ErrorBoundary>
             <Card
               card={card}
-              chapterId={chapterId}
+              beatId={beatId}
               lineId={lineId}
               idx={idx}
-              chapterPosition={chapterPosition}
+              beatPosition={beatPosition}
               linePosition={linePosition}
               color={color}
               last={idxOfCards == idx}
@@ -97,14 +97,14 @@ class ScenesCell extends PureComponent {
             />
           </ErrorBoundary>
           {arentHidden ? (
-            <SceneCardAdd
+            <CardAdd
               color={color}
               positionWithinLine={idx}
               moveCard={this.moveSceneCard}
               addCard={this.addSceneCard}
               allowDrop={isLastOne}
               dropPosition={cards.length}
-              chapterId={chapterId}
+              beatId={beatId}
               lineId={lineId}
             />
           ) : null}
@@ -144,12 +144,12 @@ class ScenesCell extends PureComponent {
               <div className="card__title">{i18n('{num} Scenes', { num: numOfCards })}</div>
             </div>
           </Floater>
-          <SceneCardAdd
+          <CardAdd
             color={this.props.color}
             positionWithinLine={numOfCards}
             moveCard={this.moveSceneCard}
             addCard={this.addSceneCard}
-            chapterId={this.props.chapterId}
+            beatId={this.props.beatId}
             lineId={this.props.lineId}
             allowDrop
           />
@@ -174,13 +174,13 @@ class ScenesCell extends PureComponent {
   }
 }
 
-ScenesCell.propTypes = {
+CardCell.propTypes = {
   cards: PropTypes.array,
-  chapterId: PropTypes.number.isRequired,
+  beatId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  beatPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   ui: PropTypes.object.isRequired,
   lineIsExpanded: PropTypes.bool.isRequired,
   isVisible: PropTypes.bool.isRequired,
@@ -207,4 +207,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScenesCell)
+export default connect(mapStateToProps, mapDispatchToProps)(CardCell)

@@ -6,13 +6,13 @@ import { bindActionCreators } from 'redux'
 import { keyBy } from 'lodash'
 import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
-import MiniChapter from './MiniChapter'
+import MiniBeat from './MiniBeat'
 import { actions, selectors } from 'pltr/v2'
 
 const CardActions = actions.card
 
 const {
-  sortedChaptersByBookSelector,
+  sortedBeatsByBookSelector,
   positionOffsetSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
@@ -24,7 +24,7 @@ class MiniMap extends Component {
   constructor(props) {
     super(props)
     this.state = { mouseOver: false, firstRender: true }
-    this.firstChapterKey = props.chapters.length ? props.chapters[0].id : 0 // this works since they are sorted
+    this.firstBeatKey = props.beats.length ? props.beats[0].id : 0 // this works since they are sorted
   }
 
   componentDidMount() {
@@ -39,19 +39,19 @@ class MiniMap extends Component {
   }
 
   selectNav = (key) => {
-    const elem = document.querySelector(`#chapter-${key}`)
+    const elem = document.querySelector(`#beat-${key}`)
     elem.scrollIntoView()
-    if (key != this.firstChapterKey) {
+    if (key != this.firstBeatKey) {
       const container = document.querySelector('.outline__container')
       const yPosition = elem.getBoundingClientRect().y
       container.scrollBy(0, yPosition - targetPosition)
     }
   }
 
-  renderChapters() {
+  renderBeats() {
     const {
       lines,
-      chapters,
+      beats,
       activeFilter,
       isSeries,
       cardMapping,
@@ -59,27 +59,27 @@ class MiniMap extends Component {
       actions,
     } = this.props
     const linesById = keyBy(lines, 'id')
-    return chapters.map((ch, idx) => {
+    return beats.map((beat, idx) => {
       if (this.state.firstRender && idx > 20) return null
-      const chapterCards = cardMapping[ch.id]
-      if (activeFilter && !chapterCards.length) return null
+      const beatCards = cardMapping[beat.id]
+      if (activeFilter && !beatCards.length) return null
 
       return (
         <NavItem
-          ref={(e) => (this[`chapter-${ch.id}-ref`] = e)}
-          key={`minimap-chapter-${ch.id}`}
-          eventKey={ch.id}
+          ref={(e) => (this[`beat-${beat.id}-ref`] = e)}
+          key={`minimap-beat-${beat.id}`}
+          eventKey={beat.id}
         >
-          <MiniChapter
-            chapter={ch}
+          <MiniBeat
+            beat={beat}
             idx={idx + positionOffset}
-            cards={chapterCards}
+            cards={beatCards}
             linesById={linesById}
             isSeries={isSeries}
             sortedLines={lines}
             positionOffset={positionOffset}
             reorderCardsWithinLine={actions.reorderCardsWithinLine}
-            reorderCardsInChapter={actions.reorderCardsInChapter}
+            reorderCardsInBeat={actions.reorderCardsInBeat}
           />
         </NavItem>
       )
@@ -95,16 +95,16 @@ class MiniMap extends Component {
         onMouseEnter={() => this.setState({ mouseOver: true })}
         onMouseLeave={() => this.setState({ mouseOver: false })}
       >
-        {this.renderChapters()}
+        {this.renderBeats()}
       </Nav>
     )
   }
 
   componentDidUpdate() {
     if (!this.state.mouseOver) {
-      const chapter = this.props.chapters.find((ch) => ch.id === this.props.active)
+      const beat = this.props.beats.find((beat) => beat.id === this.props.active)
       let title = ''
-      if (chapter) title = `chapter-${chapter.id}-ref`
+      if (beat) title = `beat-${beat.id}-ref`
       /* eslint-disable-next-line react/no-find-dom-node */
       var domNode = findDOMNode(this[title])
       if (domNode) {
@@ -123,7 +123,7 @@ MiniMap.propTypes = {
   active: PropTypes.number.isRequired,
   cardMapping: PropTypes.object.isRequired,
   activeFilter: PropTypes.bool.isRequired,
-  chapters: PropTypes.array.isRequired,
+  beats: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool.isRequired,
@@ -133,7 +133,7 @@ MiniMap.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    chapters: sortedChaptersByBookSelector(state.present),
+    beats: sortedBeatsByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),

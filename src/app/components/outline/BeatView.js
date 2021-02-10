@@ -13,85 +13,69 @@ const { positionOffsetSelector, sortedLinesByBookSelector, isSeriesSelector } = 
 
 const BeatActions = actions.beat
 const CardActions = actions.card
-const SceneActions = actions.scene
 
 const {
-  card: { sortCardsInChapter },
-  chapters: { chapterTitle },
+  card: { sortCardsInBeat },
+  beats: { beatTitle },
   lists: { moveToAbove },
 } = helpers
 
-class ChapterView extends Component {
+class BeatView extends Component {
   state = { sortedCards: [] }
 
   static getDerivedStateFromProps(nextProps, nextState) {
-    const { chapter, cards, lines } = nextProps
-    const sortedCards = sortCardsInChapter(chapter.autoOutlineSort, cards, lines)
+    const { beat, cards, lines } = nextProps
+    const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
     return { sortedCards }
   }
 
-  autoSortChapter = () => {
-    const { chapterActions, beatActions, chapter, isSeries } = this.props
-    if (isSeries) {
-      beatActions.autoSortBeat(chapter.id)
-    } else {
-      chapterActions.autoSortChapter(chapter.id)
-    }
+  autoSortBeat = () => {
+    const { beatActions, beat } = this.props
+    beatActions.autoSortBeat(beat.id)
   }
 
   reorderCards = ({ current, currentIndex, dropped }) => {
     const { sortedCards } = this.state
-    const { chapter, actions } = this.props
+    const { beat, actions } = this.props
     const currentIds = sortedCards.map((c) => c.id)
     const currentLineId = current.lineId
-    let newOrderInChapter = []
+    let newOrderInBeat = []
     let newOrderWithinLine = null
 
-    // already in chapter
+    // already in beat
     if (currentIds.includes(dropped.cardId)) {
       // flip it to manual sort
-      newOrderInChapter = moveToAbove(dropped.index, currentIndex, currentIds)
+      newOrderInBeat = moveToAbove(dropped.index, currentIndex, currentIds)
       if (dropped.lineId == currentLineId) {
         // if same line, also update positionWithinLine
         const cardIdsInLine = sortedCards.filter((c) => c.lineId == currentLineId).map((c) => c.id)
         const currentPosition = sortedCards.find((c) => c.id == dropped.cardId).positionWithinLine
         newOrderWithinLine = moveToAbove(currentPosition, current.positionWithinLine, cardIdsInLine)
       }
-      actions.reorderCardsInChapter(
-        chapter.id,
-        currentLineId,
-        newOrderInChapter,
-        newOrderWithinLine
-      )
+      actions.reorderCardsInBeat(beat.id, currentLineId, newOrderInBeat, newOrderWithinLine)
     } else {
-      // dropped in from a different chapter
+      // dropped in from a different beat
       if (dropped.lineId == currentLineId) {
         // if same line, can just update positionWithinLine
         let cardIdsWithinLine = sortedCards
           .filter((c) => c.lineId == currentLineId)
           .map((c) => c.id)
         cardIdsWithinLine.splice(current.positionWithinLine, 0, dropped.cardId)
-        actions.reorderCardsWithinLine(chapter.id, currentLineId, cardIdsWithinLine)
+        actions.reorderCardsWithinLine(beat.id, currentLineId, cardIdsWithinLine)
       } else {
         // flip to manual sort
-        newOrderInChapter = currentIds
-        newOrderInChapter.splice(currentIndex, 0, dropped.cardId)
-        actions.reorderCardsInChapter(
-          chapter.id,
-          currentLineId,
-          newOrderInChapter,
-          null,
-          dropped.cardId
-        )
+        newOrderInBeat = currentIds
+        newOrderInBeat.splice(currentIndex, 0, dropped.cardId)
+        actions.reorderCardsInBeat(beat.id, currentLineId, newOrderInBeat, null, dropped.cardId)
       }
     }
   }
 
   renderManualSort() {
-    if (this.props.chapter.autoOutlineSort) return null
+    if (this.props.beat.autoOutlineSort) return null
 
     return (
-      <small className="outline__chapter-manual-sort" onClick={this.autoSortChapter}>
+      <small className="outline__beat-manual-sort" onClick={this.autoSortBeat}>
         {i18n('Manually Sorted')} <Glyphicon glyph="remove-sign" />
       </small>
     )
@@ -104,20 +88,20 @@ class ChapterView extends Component {
   }
 
   render() {
-    const { chapter, ui, waypoint, cards, activeFilter, positionOffset, isSeries } = this.props
+    const { beat, ui, waypoint, cards, activeFilter, positionOffset, isSeries } = this.props
     if (activeFilter && !cards.length) return null
 
     const klasses = cx('outline__scene-title', { darkmode: ui.darkMode })
     return (
       <Waypoint
-        onEnter={() => waypoint(chapter.id)}
+        onEnter={() => waypoint(beat.id)}
         scrollableAncestor={window}
         topOffset={'60%'}
         bottomOffset={'60%'}
       >
         <div>
-          <h3 id={`chapter-${chapter.id}`} className={klasses}>
-            {chapterTitle(chapter, positionOffset, isSeries)}
+          <h3 id={`beat-${beat.id}`} className={klasses}>
+            {beatTitle(beat, positionOffset, isSeries)}
             {this.renderManualSort()}
           </h3>
           {this.renderCards()}
@@ -127,8 +111,8 @@ class ChapterView extends Component {
   }
 }
 
-ChapterView.propTypes = {
-  chapter: PropTypes.object.isRequired,
+BeatView.propTypes = {
+  beat: PropTypes.object.isRequired,
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
   activeFilter: PropTypes.bool.isRequired,
@@ -136,7 +120,6 @@ ChapterView.propTypes = {
   lines: PropTypes.array.isRequired,
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
-  chapterActions: PropTypes.object,
   beatActions: PropTypes.object,
   actions: PropTypes.object,
 }
@@ -153,9 +136,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(CardActions, dispatch),
-    chapterActions: bindActionCreators(SceneActions, dispatch),
     beatActions: bindActionCreators(BeatActions, dispatch),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChapterView)
+export default connect(mapStateToProps, mapDispatchToProps)(BeatView)

@@ -1,23 +1,15 @@
 import { createSelector } from 'reselect'
 import { sortBy } from 'lodash'
-import { isSeriesSelector, timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
+import { timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
 import { nextId } from '../store/newIds'
 
 export const allCardsSelector = (state) => state.cards
 
 export const nextCardIdSelector = createSelector(allCardsSelector, (cards) => nextId(cards))
 
-export const cardMapSelector = createSelector(
-  allCardsSelector,
-  isSeriesSelector,
-  (cards, isSeries) => {
-    if (isSeries) {
-      return cards.reduce(cardReduce('lineId', 'beatId'), {})
-    } else {
-      return cards.reduce(cardReduce('lineId', 'chapterId'), {})
-    }
-  }
-)
+export const cardMapSelector = createSelector(allCardsSelector, (cards) => {
+  return cards.reduce(cardReduce('lineId', 'beatId'), {})
+})
 
 export const visibleCardsSelector = createSelector(
   allCardsSelector,
@@ -51,7 +43,7 @@ function cardIsVisible(card, filter, filterIsEmpty) {
 
   return Object.keys(filter).some((attr) => {
     return filter[attr].some((val) => {
-      if (card.hasOwnProperty(attr)) {
+      if (card[attr]) {
         return card[attr] === val
       }
       if (val === '' && card[attr] === undefined) {

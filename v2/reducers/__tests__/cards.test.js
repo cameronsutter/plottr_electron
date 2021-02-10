@@ -1,9 +1,9 @@
 import {
   ADD_CARD,
-  ADD_CARD_IN_CHAPTER,
+  ADD_CARD_IN_BEAT,
   ADD_LINES_FROM_TEMPLATE,
   EDIT_CARD_DETAILS,
-  EDIT_SCENES_ATTRIBUTE,
+  EDIT_CARDS_ATTRIBUTE,
 } from '../../constants/ActionTypes'
 import { card as defaultCard } from '../../store/initialState'
 import cardsReducer from '../cards'
@@ -66,11 +66,11 @@ describe('cardsReducer', () => {
       ).toHaveLength(1)
     })
   })
-  describe('add card in chapter', () => {
-    it('should add a card at position zero to an empty chapter', () => {
+  describe('add card in beat', () => {
+    it('should add a card at position zero to an empty beat', () => {
       expect(
         cardInState(
-          mountToState(cardsReducer(emptyState, { type: ADD_CARD_IN_CHAPTER, card: defaultCard })),
+          mountToState(cardsReducer(emptyState, { type: ADD_CARD_IN_BEAT, card: defaultCard })),
           defaultCard
         )
       ).toEqual(defaultCard)
@@ -82,7 +82,7 @@ describe('cardsReducer', () => {
             allCardsSelector(
               mountToState(
                 cardsReducer(oneCardState, {
-                  type: ADD_CARD_IN_CHAPTER,
+                  type: ADD_CARD_IN_BEAT,
                   card: defaultCard,
                   reorderIds: [null, 1],
                 })
@@ -100,7 +100,7 @@ describe('cardsReducer', () => {
             allCardsSelector(
               mountToState(
                 cardsReducer(oneCardState, {
-                  type: ADD_CARD_IN_CHAPTER,
+                  type: ADD_CARD_IN_BEAT,
                   card: defaultCard,
                   reorderIds: [1, null],
                 })
@@ -205,7 +205,7 @@ describe('cardsReducer', () => {
         it('should produce the empty state', () => {
           expect(
             cardsReducer(emptyState, {
-              type: EDIT_SCENES_ATTRIBUTE,
+              type: EDIT_CARDS_ATTRIBUTE,
               oldAttribute,
               newAttribute,
             })
@@ -218,7 +218,7 @@ describe('cardsReducer', () => {
             allCardsSelector(
               mountToState(
                 cardsReducer(fourCardState, {
-                  type: EDIT_SCENES_ATTRIBUTE,
+                  type: EDIT_CARDS_ATTRIBUTE,
                   oldAttribute,
                   newAttribute,
                 })
@@ -235,7 +235,7 @@ describe('cardsReducer', () => {
             cardIdInState(
               mountToState(
                 cardsReducer(strengthState, {
-                  type: EDIT_SCENES_ATTRIBUTE,
+                  type: EDIT_CARDS_ATTRIBUTE,
                   oldAttribute,
                   newAttribute,
                 })

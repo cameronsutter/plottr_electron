@@ -1,6 +1,6 @@
 import { sortBy, groupBy } from 'lodash'
 
-export function sortCardsInChapter(autoSort, cards, sortedLines) {
+export function sortCardsInBeat(autoSort, cards, sortedLines) {
   if (autoSort) {
     // group by position within the line
     // for each position, sort those cards by the order of the lines
@@ -12,13 +12,13 @@ export function sortCardsInChapter(autoSort, cards, sortedLines) {
       )
     })
   } else {
-    return sortBy(cards, 'positionInChapter')
+    return sortBy(cards, 'positionInBeat')
   }
 }
 
-export function cardMapping(sortedChapters, sortedLines, card2Dmap, currentLine) {
-  return sortedChapters.reduce((acc, ch) => {
-    acc[ch.id] = sortedChapterCards(sortedLines, ch.id, card2Dmap, currentLine)
+export function cardMapping(sortedBeats, sortedLines, card2Dmap, currentLine) {
+  return sortedBeats.reduce((acc, beat) => {
+    acc[beat.id] = sortedBeatCards(sortedLines, beat.id, card2Dmap, currentLine)
     return acc
   }, {})
 }
@@ -28,11 +28,11 @@ function lineIsHidden(line, currentLine) {
   return line.id != currentLine
 }
 
-function sortedChapterCards(sortedLines, chapterId, card2Dmap, currentLine) {
+function sortedBeatCards(sortedLines, beatId, card2Dmap, currentLine) {
   return sortedLines.reduce((acc, l) => {
     if (lineIsHidden(l, currentLine)) return acc
 
-    const cards = card2Dmap[`${l.id}-${chapterId}`]
+    const cards = card2Dmap[`${l.id}-${beatId}`]
     if (cards) {
       return acc.concat(cards)
     } else {

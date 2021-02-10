@@ -38,11 +38,12 @@ export default function notes(state = initialState, action) {
         },
       ]
 
-    case EDIT_NOTE:
+    case EDIT_NOTE: {
       const lastEdited = { lastEdited: new Date().getTime() }
       return state.map((note) =>
         note.id === action.id ? Object.assign({}, note, action.attributes, lastEdited) : note
       )
+    }
 
     case DELETE_NOTE:
       return state.filter((note) => note.id !== action.id)

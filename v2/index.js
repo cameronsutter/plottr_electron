@@ -8,7 +8,6 @@ import * as imageActions from './actions/images'
 import * as lineActions from './actions/lines'
 import * as noteActions from './actions/notes'
 import * as placeActions from './actions/places'
-import * as sceneActions from './actions/scenes'
 import * as seriesActions from './actions/series'
 import * as tagActions from './actions/tags'
 import * as uiActions from './actions/ui'
@@ -19,7 +18,8 @@ import * as colors from './constants/CSScolors'
 
 import * as lineHelpers from './helpers/lines'
 import * as cardHelpers from './helpers/cards'
-import * as chapterHelpers from './helpers/chapters'
+import * as beatHelpers from './helpers/beats'
+import * as bookHelpers from './helpers/books'
 import * as listHelpers from './helpers/lists'
 import * as fontHelpers from './helpers/fonts'
 import * as imageHelpers from './helpers/images'
@@ -28,11 +28,10 @@ import * as undoHelpers from './helpers/undo'
 
 import migrateIfNeeded from './migrator/migration_manager'
 
-import * as beatSelectors from './selectors/beats'
 import * as bookSelectors from './selectors/books'
 import * as cardSelectors from './selectors/cards'
 import * as categorySelectors from './selectors/categories'
-import * as chapterSelectors from './selectors/chapters'
+import * as beatSelectors from './selectors/beats'
 import * as characterSelectors from './selectors/characters'
 import * as customAttributeSelectors from './selectors/customAttributes'
 import * as lineSelectors from './selectors/lines'
@@ -49,7 +48,6 @@ import beatsReducer from './reducers/beats'
 import booksReducer from './reducers/books'
 import cardsReducer from './reducers/cards'
 import categoriesReducer from './reducers/categories'
-import chaptersReducer from './reducers/chapters'
 import charactersReducer from './reducers/characters'
 import imagesReducer from './reducers/images'
 import notesReducer from './reducers/notes'
@@ -71,7 +69,6 @@ const reducers = {
   books: booksReducer,
   cards: cardsReducer,
   categories: categoriesReducer,
-  chapters: chaptersReducer,
   characters: charactersReducer,
   images: imagesReducer,
   notes: notesReducer,
@@ -87,7 +84,6 @@ const selectors = {
   ...bookSelectors,
   ...cardSelectors,
   ...categorySelectors,
-  ...chapterSelectors,
   ...characterSelectors,
   ...customAttributeSelectors,
   ...lineSelectors,
@@ -108,7 +104,6 @@ const actions = {
   line: lineActions,
   note: noteActions,
   place: placeActions,
-  scene: sceneActions,
   series: seriesActions,
   tag: tagActions,
   ui: uiActions,
@@ -117,7 +112,8 @@ const actions = {
 
 const helpers = {
   card: cardHelpers,
-  chapters: chapterHelpers,
+  beats: beatHelpers,
+  books: bookHelpers,
   lists: listHelpers,
   fonts: fontHelpers,
   images: imageHelpers,

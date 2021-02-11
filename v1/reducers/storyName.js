@@ -10,9 +10,10 @@ export default function storyName(state = defaultStoryName, action) {
     case FILE_LOADED:
       return action.data.storyName
 
-    case NEW_FILE:
+    case NEW_FILE: {
       const separator = process.platform === 'darwin' ? '/' : '\\'
       return action.fileName.substr(action.fileName.lastIndexOf(separator) + 1).replace('.pltr', '')
+    }
 
     default:
       return state

@@ -11,13 +11,14 @@ import { imageId } from '../store/newIds'
 
 export default function cards(state, action) {
   switch (action.type) {
-    case ADD_IMAGE:
+    case ADD_IMAGE: {
       const newId = imageId(state)
       const newImage = Object.assign({}, action.image, { id: newId })
       return {
         ...state,
         [newId]: newImage,
       }
+    }
 
     case RENAME_IMAGE:
       return {

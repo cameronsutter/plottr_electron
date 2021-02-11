@@ -2,12 +2,11 @@ import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
 import { currentTimelineSelector, timelineIsExpandedSelector } from './ui'
 import { cardMapSelector } from './cards'
-import { chaptersByBookSelector } from './chapters'
+import { beatsByBookSelector } from './beats'
 import { nextId } from '../store/newIds'
+import { isSeries } from '../helpers/lines'
 
-const isSeriesLine = ({ bookId }) => bookId === 'series'
-
-export const allSeriesLinesSelector = (state) => state.lines.filter(isSeriesLine)
+export const allSeriesLinesSelector = (state) => state.lines.filter(isSeries)
 
 export const allLinesSelector = (state) => state.lines
 
@@ -16,13 +15,8 @@ export const nextLineIdSelector = createSelector(allLinesSelector, (lines) => ne
 export const linesByBookSelector = createSelector(
   allLinesSelector,
   currentTimelineSelector,
-  allSeriesLinesSelector,
-  (lines, bookId, seriesLines) => {
-    if (bookId == 'series') {
-      return seriesLines
-    } else {
-      return lines.filter((l) => l && l.bookId == bookId)
-    }
+  (lines, bookId) => {
+    return lines.filter((l) => l && l.bookId == bookId)
   }
 )
 
@@ -55,12 +49,12 @@ export const linePositionMappingSelector = createSelector(linesByBookSelector, (
 export const lineMaxCardsSelector = createSelector(
   linesByBookSelector,
   cardMapSelector,
-  chaptersByBookSelector,
-  (lines, cardMap, chapters) => {
+  beatsByBookSelector,
+  (lines, cardMap, beats) => {
     return lines.reduce((acc, l) => {
       let max = 0
-      chapters.forEach((ch) => {
-        const cards = cardMap[`${l.id}-${ch.id}`]
+      beats.forEach((beat) => {
+        const cards = cardMap[`${l.id}-${beat.id}`]
         if (cards && cards.length > max) max = cards.length
       })
       acc[l.id] = max

@@ -34,7 +34,7 @@ const Element = ({ attributes, children, element }) => {
         <a
           {...attributes}
           title={element.url}
-          href="#"
+          href={element.url}
           onClick={() => handleLinkClick(element.url)}
         >
           {children}

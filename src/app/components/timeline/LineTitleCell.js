@@ -314,7 +314,7 @@ class LineTitleCell extends PureComponent {
   }
 
   render() {
-    const { ui, isSmall } = this.props
+    const { ui, isSmall, isMedium } = this.props
     const { editing, hovering, inDropZone } = this.state
     if (editing) {
       window.SCROLLWITHKEYS = false
@@ -323,8 +323,12 @@ class LineTitleCell extends PureComponent {
     if (isSmall) return this.renderSmall()
 
     let innerKlass = cx(orientedClassName('line-title__body', ui.orientation), {
+      'medium-timeline': isMedium,
       hover: hovering,
       dropping: inDropZone,
+    })
+    let wrapperKlass = cx(orientedClassName('line-title__cell', ui.orientation), {
+      'medium-timeline': isMedium,
     })
 
     let placement = 'bottom'
@@ -332,7 +336,7 @@ class LineTitleCell extends PureComponent {
     return (
       <Cell>
         <div
-          className={orientedClassName('line-title__cell', ui.orientation)}
+          className={wrapperKlass}
           onMouseEnter={this.startHovering}
           onMouseLeave={this.stopHovering}
           onDrop={this.handleDrop}

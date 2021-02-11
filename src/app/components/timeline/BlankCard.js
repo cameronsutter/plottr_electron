@@ -163,7 +163,7 @@ class BlankCard extends Component {
   }
 
   renderBlank() {
-    const { color, verticalInsertion, isSmall } = this.props
+    const { color, verticalInsertion, isSmall, isMedium } = this.props
     if (isSmall) {
       const smallStyle = { borderColor: color }
       return (
@@ -198,7 +198,10 @@ class BlankCard extends Component {
       : {}
     const bodyClass = verticalInsertion ? 'vertical-blank-card__body' : 'blank-card__body'
     return (
-      <div className={cx(bodyClass, { hover: this.state.inDropZone })} style={blankCardStyle}>
+      <div
+        className={cx(bodyClass, { hover: this.state.inDropZone, 'medium-timeline': isMedium })}
+        style={blankCardStyle}
+      >
         <div
           className="template"
           onClick={this.showTemplatePicker}
@@ -237,10 +240,11 @@ class BlankCard extends Component {
   }
 
   renderCreateNew() {
-    const { color } = this.props
+    const { color, isMedium } = this.props
     const cardStyle = { borderColor: color }
+    const bodyKlass = cx('card__body', { 'medium-timeline': isMedium })
     return (
-      <div className="card__body" style={cardStyle}>
+      <div className={bodyKlass} style={cardStyle}>
         <FormGroup>
           <ControlLabel>{i18n('Scene Title')}</ControlLabel>
           <FormControl

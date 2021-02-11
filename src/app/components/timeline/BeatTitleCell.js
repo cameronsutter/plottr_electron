@@ -235,11 +235,15 @@ class BeatTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const { beat, ui, positionOffset, beatTitle, isSeries, isSmall } = this.props
+    const { beat, ui, positionOffset, beatTitle, isSeries, isSmall, isMedium } = this.props
     const { hovering, inDropZone } = this.state
-    let innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
+    const innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
+      'medium-timeline': isMedium,
       hover: hovering,
       dropping: inDropZone,
+    })
+    const beatKlass = cx(orientedClassName('beat__cell', ui.orientation), {
+      'medium-timeline': isMedium,
     })
 
     if (isSmall) {
@@ -275,7 +279,7 @@ class BeatTitleCell extends PureComponent {
       return (
         <Cell className="beat-table-cell">
           <div
-            className={orientedClassName('beat__cell', ui.orientation)}
+            className={beatKlass}
             title={beatPositionTitle(beat, positionOffset, isSeries)}
             onMouseEnter={this.startHovering}
             onMouseLeave={this.stopHovering}

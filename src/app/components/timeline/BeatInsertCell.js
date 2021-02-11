@@ -19,8 +19,15 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderLine() {
-    const { tableLength, orientation, color } = this.props
-    return <VisualLine tableLength={tableLength} orientation={orientation} color={color} />
+    const { tableLength, orientation, color, isMedium } = this.props
+    return (
+      <VisualLine
+        tableLength={tableLength}
+        orientation={orientation}
+        color={color}
+        isMedium={isMedium}
+      />
+    )
   }
 
   render() {
@@ -67,6 +74,7 @@ class BeatInsertCell extends PureComponent {
   static propTypes = {
     orientation: PropTypes.string,
     isSmall: PropTypes.bool,
+    isMedium: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
     isInBeatList: PropTypes.bool.isRequired,
     beatPosition: PropTypes.number,
@@ -82,6 +90,7 @@ function mapStateToProps(state) {
   return {
     orientation: state.present.ui.orientation,
     isSmall: selectors.isSmallSelector(state.present),
+    isMedium: selectors.isMediumSelector(state.present),
   }
 }
 

@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 .card__cell {
   .card__body-wrapper {
@@ -96,6 +96,14 @@
   cursor: move;
   transition: all 0.6s $cubic;
   z-index: 2;
+
+  &.medium-timeline {
+    width: 80px;
+    .card__title {
+      font-size: 14px;
+      padding: 6px;
+    }
+  }
 }
 
 .vertical-card__body {
@@ -142,6 +150,12 @@
   div.template {
     @include application-text;
     text-align: center;
+  }
+  &.medium-timeline {
+    flex-direction: column;
+    div.template {
+      font-size: 12px;
+    }
   }
 }
 
@@ -207,7 +221,8 @@
 .sticky-table.darkmode {
   .card__cell {
     background-color: $darkmode-card-background;
-    .card__body, .blank-card__body {
+    .card__body,
+    .blank-card__body {
       background-color: $darkmode-card-background;
       color: $darkmode-text;
     }

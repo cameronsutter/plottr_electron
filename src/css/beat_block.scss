@@ -4,6 +4,10 @@ $title_height: 70px;
 
 .beat__cell {
   width: 175px;
+
+  &.medium-timeline {
+    width: 90px;
+  }
 }
 
 .beat__body {
@@ -30,6 +34,20 @@ $title_height: 70px;
   }
   &.dropping {
     border: $new-item-border;
+  }
+  &.medium-timeline {
+    width: 80px + 6px; // +6px for the 3px border
+    font-size: 14px;
+    padding: 12px 4px;
+    .form-group {
+      .control-label {
+        font-size: 12px;
+      }
+      input {
+        font-size: 12px;
+        padding: 6px 2px;
+      }
+    }
   }
 }
 

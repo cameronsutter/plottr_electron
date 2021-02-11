@@ -3,12 +3,18 @@
 $title_height: 70px;
 $title_width: 150px;
 
+$medium_width: 80px;
+
 .line-title__cell {
   width: $title_width;
   border-right: 1px solid $gray-6;
   position: relative;
   margin-left: 5px;
   margin-bottom: 35px;
+
+  &.medium-timeline {
+    width: $medium_width !important;
+  }
 }
 .line-title__line-line {
   position: absolute;
@@ -32,7 +38,7 @@ $title_width: 150px;
   text-align: right;
   justify-content: flex-end;
   min-height: $title_height;
-  min-width: 150px;
+  min-width: $title_width;
   padding: 10px;
   transition: all 0.4s $cubic;
   border: 3px dashed transparent;
@@ -44,6 +50,21 @@ $title_width: 150px;
       font-weight: normal;
       font-size: 16px;
       margin-bottom: 0;
+    }
+  }
+
+  &.medium-timeline {
+    min-width: $medium_width;
+    font-size: 14px;
+    padding: 6px;
+    .form-group {
+      .control-label {
+        font-size: 12px;
+      }
+      input {
+        font-size: 12px;
+        padding: 6px 2px;
+      }
     }
   }
 }
@@ -128,6 +149,28 @@ $title_width: 150px;
     }
     div.non-template {
       border-left: none;
+    }
+  }
+
+  &.medium-timeline {
+    .line-list__append-line-wrapper {
+      padding: 12px 20px;
+    }
+    .line-list__append-line__double {
+      margin-left: 2px;
+      flex-direction: column;
+      div {
+        padding: 10px 2px;
+      }
+      div.template {
+        font-size: 12px;
+        border-bottom: none;
+        border-right: 3px dashed $blue-8;
+      }
+      div.non-template {
+        border-top: none;
+        border-left: 3px dashed $blue-8;
+      }
     }
   }
 }

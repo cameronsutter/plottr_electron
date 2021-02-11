@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Row, Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
+import cx from 'classnames'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { helpers, actions, selectors, nextColor, initialState } from 'pltr/v2'
@@ -16,16 +17,6 @@ const defaultLine = initialState.line
 const {
   books: { isSeries },
 } = helpers
-
-const {
-  nextCardIdSelector,
-  sortedBeatsByBookSelector,
-  nextBeatIdSelector,
-  linesByBookSelector,
-  nextLineIdSelector,
-  isSmallSelector,
-} = selectors
-const LineActions = actions.line
 
 class AddLineRow extends Component {
   state = {
@@ -244,7 +235,7 @@ class AddLineRow extends Component {
   }
 
   renderInsertButton() {
-    const { bookId, isSmall } = this.props
+    const { bookId, isSmall, isMedium } = this.props
     if (isSmall) {
       return (
         <th className="row-header">
@@ -261,9 +252,10 @@ class AddLineRow extends Component {
       )
     }
 
+    const appendKlass = cx('line-list__append-line', { 'medium-timeline': isMedium })
     if (!isSeries(bookId)) {
       return (
-        <div className="line-list__append-line">
+        <div className={appendKlass}>
           {this.renderInputModal()}
           {this.state.hovering ? (
             <div className="line-list__append-line__double">
@@ -286,10 +278,7 @@ class AddLineRow extends Component {
       )
     } else {
       return (
-        <div
-          className="line-list__append-line"
-          onClick={() => this.setState({ askingForInput: true })}
-        >
+        <div className={appendKlass} onClick={() => this.setState({ askingForInput: true })}>
           {this.renderInputModal()}
           <div className="line-list__append-line-wrapper">
             <Glyphicon glyph="plus" />
@@ -352,6 +341,7 @@ class AddLineRow extends Component {
     howManyCells: PropTypes.number,
     ui: PropTypes.object.isRequired,
     isSmall: PropTypes.bool,
+    isMedium: PropTypes.bool,
     bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     beats: PropTypes.array,
     lines: PropTypes.array,
@@ -366,19 +356,20 @@ class AddLineRow extends Component {
 function mapStateToProps(state) {
   return {
     ui: state.present.ui,
-    isSmall: isSmallSelector(state.present),
-    beats: sortedBeatsByBookSelector(state.present),
-    lines: linesByBookSelector(state.present),
+    isSmall: selectors.isSmallSelector(state.present),
+    isMedium: selectors.isMediumSelector(state.present),
+    beats: selectors.sortedBeatsByBookSelector(state.present),
+    lines: selectors.linesByBookSelector(state.present),
     cards: state.present.cards,
-    nextLineId: nextLineIdSelector(state.present),
-    nextBeatId: nextBeatIdSelector(state.present),
-    nextCardId: nextCardIdSelector(state.present),
+    nextLineId: selectors.nextLineIdSelector(state.present),
+    nextBeatId: selectors.nextBeatIdSelector(state.present),
+    nextCardId: selectors.nextCardIdSelector(state.present),
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(LineActions, dispatch),
+    actions: bindActionCreators(actions.line, dispatch),
   }
 }
 

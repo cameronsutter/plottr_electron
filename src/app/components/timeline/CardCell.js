@@ -15,15 +15,6 @@ const {
   lists: { reorderList, moveToAbove },
 } = helpers
 
-const CardActions = actions.card
-
-const {
-  visibleCardsSelector,
-  lineIsExpandedSelector,
-  isSmallSelector,
-  isMediumSelector,
-} = selectors
-
 class CardCell extends PureComponent {
   moveSceneCardAbove = (id, positionWithinLine) => {
     const { beatId, lineId, cards } = this.props
@@ -118,29 +109,35 @@ class CardCell extends PureComponent {
   }
 
   renderBody() {
-    const { cards, ui, isVisible, color, lineIsExpanded } = this.props
+    const { cards, ui, isVisible, color, lineIsExpanded, isMedium } = this.props
     const numOfCards = cards.length
     const vertical = ui.orientation == 'vertical'
     if (lineIsExpanded || numOfCards == 1) {
-      return (
-        <div className={cx('card__cell', { multiple: numOfCards > 1, vertical: vertical })}>
-          {this.renderCards(true)}
-        </div>
-      )
+      const cellKlass = cx('card__cell', {
+        multiple: numOfCards > 1,
+        vertical: vertical,
+        'medium-timeline': isMedium,
+      })
+      return <div className={cellKlass}>{this.renderCards(true)}</div>
     } else {
       let cardStyle = { borderColor: color }
       if (!isVisible) {
         cardStyle.opacity = '0.1'
       }
+      const bodyKlass = cx('card__body', { 'medium-timeline': isMedium })
+      const overviewKlass = cx('card__cell__overview-cell', {
+        vertical: vertical,
+        'medium-timeline': isMedium,
+      })
       return (
-        <div className={cx('card__cell__overview-cell', { vertical: vertical })}>
+        <div className={overviewKlass}>
           <Floater
             component={this.renderHiddenCards}
             placement="right"
             offset={0}
             disableAnimation={true}
           >
-            <div className="card__body" style={cardStyle}>
+            <div className={bodyKlass} style={cardStyle}>
               <div className="card__title">{i18n('{num} Scenes', { num: numOfCards })}</div>
             </div>
           </Floater>
@@ -190,20 +187,20 @@ CardCell.propTypes = {
 }
 
 function mapStateToProps(state, ownProps) {
-  const visibleCards = visibleCardsSelector(state.present)
+  const visibleCards = selectors.visibleCardsSelector(state.present)
   const visible = ownProps.cards.some((c) => visibleCards[c.id])
   return {
     ui: state.present.ui,
-    lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.lineId],
+    lineIsExpanded: selectors.lineIsExpandedSelector(state.present)[ownProps.lineId],
     isVisible: visible,
-    isSmall: isSmallSelector(state.present),
-    isMedium: isMediumSelector(state.present),
+    isSmall: selectors.isSmallSelector(state.present),
+    isMedium: selectors.isMediumSelector(state.present),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(CardActions, dispatch),
+    actions: bindActionCreators(actions.card, dispatch),
   }
 }
 

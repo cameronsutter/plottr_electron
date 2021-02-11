@@ -170,10 +170,10 @@ class BeatTitleCell extends PureComponent {
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <ButtonGroup>
-          <Button bsSize={isSmall ? 'small' : 'medium'} onClick={this.startEditing}>
+          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.startEditing}>
             <Glyphicon glyph="edit" />
           </Button>
-          <Button bsSize={isSmall ? 'small' : 'medium'} onClick={this.handleDelete}>
+          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
           </Button>
         </ButtonGroup>
@@ -186,10 +186,10 @@ class BeatTitleCell extends PureComponent {
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
-        <Button bsSize={isSmall ? 'small' : 'medium'} block onClick={this.startEditing}>
+        <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.startEditing}>
           <Glyphicon glyph="edit" />
         </Button>
-        <Button bsSize={isSmall ? 'small' : 'medium'} block onClick={this.handleDelete}>
+        <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.handleDelete}>
           <Glyphicon glyph="trash" />
         </Button>
       </div>
@@ -235,11 +235,15 @@ class BeatTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const { beat, ui, positionOffset, beatTitle, isSeries, isSmall } = this.props
+    const { beat, ui, positionOffset, beatTitle, isSeries, isSmall, isMedium } = this.props
     const { hovering, inDropZone } = this.state
-    let innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
+    const innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
+      'medium-timeline': isMedium,
       hover: hovering,
       dropping: inDropZone,
+    })
+    const beatKlass = cx(orientedClassName('beat__cell', ui.orientation), {
+      'medium-timeline': isMedium,
     })
 
     if (isSmall) {
@@ -275,7 +279,7 @@ class BeatTitleCell extends PureComponent {
       return (
         <Cell className="beat-table-cell">
           <div
-            className={orientedClassName('beat__cell', ui.orientation)}
+            className={beatKlass}
             title={beatPositionTitle(beat, positionOffset, isSeries)}
             onMouseEnter={this.startHovering}
             onMouseLeave={this.stopHovering}

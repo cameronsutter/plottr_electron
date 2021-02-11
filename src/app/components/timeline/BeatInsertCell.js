@@ -19,29 +19,36 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderLine() {
-    const { tableLength, orientation, color } = this.props
-    return <VisualLine tableLength={tableLength} orientation={orientation} color={color} />
+    const { tableLength, orientation, color, isMedium } = this.props
+    return (
+      <VisualLine
+        tableLength={tableLength}
+        orientation={orientation}
+        color={color}
+        isMedium={isMedium}
+      />
+    )
   }
 
   render() {
-    const { isInBeatList, showLine, orientation, isLast, isSmall } = this.props
-    let wrapperKlass = orientedClassName('insert-beat-wrapper', orientation)
-    let beatKlass = 'beat-list__insert'
-    let titleText = i18n('Insert Beat')
-    if (showLine) wrapperKlass += ' insert-beat-spacer'
-    if (isLast) {
-      titleText = i18n('Add Chapter')
-      wrapperKlass += ' append-beat'
-      beatKlass += ' append-beat'
-    }
+    const { isInBeatList, showLine, orientation, isLast, isSmall, isMedium } = this.props
+    const wrapperKlass = cx(orientedClassName('insert-beat-wrapper', orientation), {
+      'insert-beat-spacer': showLine,
+      'append-beat': isLast,
+    })
+    const beatKlass = cx('beat-list__insert', {
+      'append-beat': isLast,
+      'medium-timeline': isInBeatList && isMedium,
+    })
+    const insertBeatKlass = cx('line-list__insert-beat', {
+      'medium-timeline': isMedium,
+    })
+    let titleText = isLast ? i18n('Add Chapter') : i18n('Insert Chapter')
     if (!isInBeatList) titleText = i18n('Insert Chapter and a Card')
     let insideDiv = (
       <div
         title={titleText}
-        className={orientedClassName(
-          isInBeatList ? beatKlass : 'line-list__insert-beat',
-          orientation
-        )}
+        className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
         onClick={this.insert}
       >
         <div className={wrapperKlass}>
@@ -67,6 +74,7 @@ class BeatInsertCell extends PureComponent {
   static propTypes = {
     orientation: PropTypes.string,
     isSmall: PropTypes.bool,
+    isMedium: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
     isInBeatList: PropTypes.bool.isRequired,
     beatPosition: PropTypes.number,
@@ -82,6 +90,7 @@ function mapStateToProps(state) {
   return {
     orientation: state.present.ui.orientation,
     isSmall: selectors.isSmallSelector(state.present),
+    isMedium: selectors.isMediumSelector(state.present),
   }
 }
 

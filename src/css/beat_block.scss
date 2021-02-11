@@ -1,9 +1,15 @@
 @import 'vars';
 
 $title_height: 70px;
+$cell_width: 175px;
+$medium_width: 80px;
 
 .beat__cell {
-  width: 175px;
+  width: $cell_width;
+
+  &.medium-timeline {
+    width: 90px;
+  }
 }
 
 .beat__body {
@@ -30,6 +36,20 @@ $title_height: 70px;
   }
   &.dropping {
     border: $new-item-border;
+  }
+  &.medium-timeline {
+    width: $medium_width + 6px; // +6px for the 3px border
+    font-size: 14px;
+    padding: 12px 4px;
+    .form-group {
+      .control-label {
+        font-size: 12px;
+      }
+      input {
+        font-size: 12px;
+        padding: 6px 2px;
+      }
+    }
   }
 }
 
@@ -72,6 +92,10 @@ $title_height: 70px;
     border: 3px dotted $blue-8;
     margin-right: 50px;
   }
+
+  &.medium-timeline {
+    height: 123px;
+  }
 }
 
 .beat-list__insert:hover {
@@ -97,7 +121,11 @@ $title_height: 70px;
 // ///////////
 
 .vertical-beat__cell {
-  width: 200px;
+  width: $cell_width + 25px;
+
+  &.medium-timeline {
+    width: $medium_width + 60px;
+  }
 }
 
 .vertical-beat__body {
@@ -117,6 +145,21 @@ $title_height: 70px;
       font-weight: normal;
       font-size: 16px;
       margin-bottom: 0;
+    }
+  }
+  &.medium-timeline {
+    min-width: $medium_width + 6px; // +6px for the 3px border
+    width: $medium_width + 6px; // +6px for the 3px border
+    font-size: 14px;
+    padding: 12px 4px;
+    .form-group {
+      .control-label {
+        font-size: 12px;
+      }
+      input {
+        font-size: 12px;
+        padding: 6px 2px;
+      }
     }
   }
 }
@@ -167,6 +210,11 @@ $title_height: 70px;
       position: relative;
     }
   }
+
+  &.medium-timeline {
+    width: $medium_width;
+    margin-left: 35px;
+  }
 }
 
 .vertical-beat-list__insert.append-beat {
@@ -181,6 +229,13 @@ $title_height: 70px;
   }
   .vertical-insert-beat-wrapper.append-beat:hover {
     border: 3px dashed $blue-7;
+  }
+  &.medium-timeline {
+    width: $medium_width;
+    margin-left: 35px;
+    .vertical-insert-beat-wrapper.append-beat {
+      padding: 12px 35px;
+    }
   }
 }
 

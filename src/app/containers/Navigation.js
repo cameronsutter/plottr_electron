@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Glyphicon, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
+import { Navbar, Nav, NavItem, Button } from 'react-bootstrap'
 import BookChooser from '../components/story/BookChooser'
 import i18n from 'format-message'
 import { ipcRenderer } from 'electron'
 import Beamer from '../../common/components/Beamer'
 import SETTINGS from '../../common/utils/settings'
 import { actions } from 'pltr/v2'
+import { FaKey } from 'react-icons/fa'
 
 const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
@@ -24,7 +25,7 @@ class Navigation extends Component {
     return (
       <Navbar.Form pullRight style={{ marginRight: '15px' }}>
         <Button bsStyle="link" onClick={() => ipcRenderer.send('open-buy-window')}>
-          <Glyphicon glyph="shopping-cart" /> {i18n('Buy Full Version')}
+          <FaKey /> {i18n('Get a License')}
         </Button>
       </Navbar.Form>
     )

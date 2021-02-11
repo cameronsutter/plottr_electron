@@ -1,6 +1,6 @@
 {
   "file": {
-    "fileName": "/home/edward/wip/plottr_electron/examples/example3.pltr",
+    "fileName": "/Users/sparrowhawk/github/Plottr Projects/plottr_electron/examples/example3.pltr",
     "loaded": true,
     "dirty": true,
     "version": "2021.2.8"
@@ -35,7 +35,7 @@
       "y": 0
     },
     "timeline": {
-      "size": "small"
+      "size": "large"
     },
     "attributesDialogIsOpen": false
   },

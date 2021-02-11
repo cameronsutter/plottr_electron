@@ -4,20 +4,20 @@ import cx from 'classnames'
 import { helpers } from 'pltr/v2'
 
 const {
-  card: { sortCardsInChapter },
-  chapters: { chapterTitle },
+  card: { sortCardsInBeat },
+  beats: { beatTitle },
 } = helpers
 
-function MiniChapter(props) {
-  const { chapter, idx, cards, linesById, sortedLines, positionOffset, isSeries } = props
+function MiniBeat(props) {
+  const { beat, idx, cards, linesById, sortedLines, positionOffset, isSeries } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
   const [inDropZone, setInZone] = useState(false)
   const [dropDepth, setDropDepth] = useState(0)
 
   useEffect(() => {
-    setSortedCards(sortCardsInChapter(chapter.autoOutlineSort, cards, sortedLines))
-  }, [chapter, cards])
+    setSortedCards(sortCardsInBeat(beat.autoOutlineSort, cards, sortedLines))
+  }, [beat, cards])
 
   const handleDragEnter = (e) => {
     setDropDepth(dropDepth + 1)
@@ -51,15 +51,15 @@ function MiniChapter(props) {
 
   const acceptCard = (id, lineId) => {
     const currentIds = sortedCards.map((c) => c.id)
-    // dropped in from a different chapter
+    // dropped in from a different beat
     if (!currentIds.includes(id)) {
       let cardIdsInLine = sortedCards.filter((c) => c.lineId == lineId).map((c) => c.id)
       cardIdsInLine.push(id)
-      if (chapter.autoOutlineSort) {
-        props.reorderCardsWithinLine(chapter.id, lineId, cardIdsInLine)
+      if (beat.autoOutlineSort) {
+        props.reorderCardsWithinLine(beat.id, lineId, cardIdsInLine)
       } else {
         currentIds.push(id)
-        props.reorderCardsInChapter(chapter.id, lineId, currentIds, cardIdsInLine, id)
+        props.reorderCardsInBeat(beat.id, lineId, currentIds, cardIdsInLine, id)
       }
     }
   }
@@ -88,7 +88,7 @@ function MiniChapter(props) {
 
   return (
     <div
-      className={cx('outline__minimap__chapter-title', { dropping: inDropZone })}
+      className={cx('outline__minimap__beat-title', { dropping: inDropZone })}
       onDragEnter={handleDragEnter}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -96,15 +96,15 @@ function MiniChapter(props) {
     >
       <span>
         <span className="accented-text">{`${idx + 1}.  `}</span>
-        <span>{chapterTitle(chapter, positionOffset, isSeries)}</span>
+        <span>{beatTitle(beat, positionOffset, isSeries)}</span>
       </span>
       <div className="outline__minimap__dots">{renderCardDots()}</div>
     </div>
   )
 }
 
-MiniChapter.propTypes = {
-  chapter: PropTypes.object.isRequired,
+MiniBeat.propTypes = {
+  beat: PropTypes.object.isRequired,
   idx: PropTypes.number.isRequired,
   cards: PropTypes.array.isRequired,
   sortedLines: PropTypes.array.isRequired,
@@ -112,7 +112,7 @@ MiniChapter.propTypes = {
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
   reorderCardsWithinLine: PropTypes.func.isRequired,
-  reorderCardsInChapter: PropTypes.func.isRequired,
+  reorderCardsInBeat: PropTypes.func.isRequired,
 }
 
-export default MiniChapter
+export default MiniBeat

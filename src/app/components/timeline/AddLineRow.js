@@ -7,16 +7,20 @@ import { Glyphicon } from 'react-bootstrap'
 import i18n from 'format-message'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { actions, selectors, nextColor, initialState } from 'pltr/v2'
+import { helpers, actions, selectors, nextColor, initialState } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 
 const card = initialState.card
 const defaultLine = initialState.line
 
 const {
+  books: { isSeries },
+} = helpers
+
+const {
   nextCardIdSelector,
-  sortedChaptersByBookSelector,
-  nextChapterIdSelector,
+  sortedBeatsByBookSelector,
+  nextBeatIdSelector,
   linesByBookSelector,
   nextLineIdSelector,
   isSmallSelector,
@@ -29,14 +33,14 @@ class AddLineRow extends Component {
     showTemplatePicker: false,
     askingForInput: false,
   }
-  allChapters = []
+  allBeats = []
   allLines = []
   allCards = []
-  nextChapterId = null
+  nextBeatId = null
   nextLineId = null
   nextCardId = null
   newLineMapping = {}
-  newChapterOffset = 0
+  newBeatOffset = 0
 
   getLast = (list) => {
     return list[list.length - 1]
@@ -54,26 +58,26 @@ class AddLineRow extends Component {
     this.addLines([newLine], bookId, false, template)
   }
 
-  addChapters = (templateChapters, bookId, template) => {
-    if (!templateChapters) return
-    templateChapters = sortBy(templateChapters, 'position')
+  addBeats = (templateBeats, bookId, template) => {
+    if (!templateBeats) return
+    templateBeats = sortBy(templateBeats, 'position')
 
-    const allAreAuto = templateChapters.every((ch) => ch.title == 'auto')
+    const allAreAuto = templateBeats.every((beat) => beat.title == 'auto')
 
     // situations
-    // 1. there are < 2 current chapters
-    // 2. there are > 2 current chapters
-    //    a. template has allAuto chapters (doesn't care about names)
+    // 1. there are < 2 current beats
+    // 2. there are > 2 current beats
+    //    a. template has allAuto beats (doesn't care about names)
     //        1. current are less than how many the template needs
-    //    b. template has chapter titles (cares about names)
+    //    b. template has beat titles (cares about names)
     //        1. current are less than how many the template needs
     //        2. current are enough (or more) than how many the template needs
 
-    if (this.allChapters.length < 2) {
-      // replace the current chapter with chapters from template
-      this.allChapters = templateChapters.map((tCh) => {
-        const id = this.nextChapterId
-        ++this.nextChapterId
+    if (this.allBeats.length < 2) {
+      // replace the current beat with beats from template
+      this.allBeats = templateBeats.map((tCh) => {
+        const id = this.nextBeatId
+        ++this.nextBeatId
         return {
           ...tCh,
           id: id,
@@ -83,52 +87,52 @@ class AddLineRow extends Component {
       })
     } else {
       if (allAreAuto) {
-        if (this.allChapters.length < templateChapters.length) {
-          // add more auto chapters
-          templateChapters.slice(this.allChapters.length).forEach((tCh) => {
-            const id = this.nextChapterId
-            ++this.nextChapterId
-            const last = this.getLast(this.allChapters)
-            const newChapter = {
+        if (this.allBeats.length < templateBeats.length) {
+          // add more auto beats
+          templateBeats.slice(this.allBeats.length).forEach((tCh) => {
+            const id = this.nextBeatId
+            ++this.nextBeatId
+            const last = this.getLast(this.allBeats)
+            const newBeat = {
               ...tCh,
               id: id,
               bookId: bookId,
               position: last.position + 1,
               fromTemplateId: template.id,
             }
-            this.allChapters.push(newChapter)
+            this.allBeats.push(newBeat)
           })
         }
       } else {
-        if (this.allChapters.length < templateChapters.length) {
+        if (this.allBeats.length < templateBeats.length) {
           // add them to the end
-          this.newChapterOffset = this.allChapters.length
-          templateChapters.forEach((tCh) => {
-            const id = this.nextChapterId
-            ++this.nextChapterId
-            const last = this.getLast(this.allChapters)
-            const newChapter = {
+          this.newBeatOffset = this.allBeats.length
+          templateBeats.forEach((tCh) => {
+            const id = this.nextBeatId
+            ++this.nextBeatId
+            const last = this.getLast(this.allBeats)
+            const newBeat = {
               ...tCh,
               id: id,
               bookId: bookId,
               position: last.position + 1,
               fromTemplateId: template.id,
             }
-            this.allChapters.push(newChapter)
+            this.allBeats.push(newBeat)
           })
         } else {
-          // add a new line and add chapters as cards
+          // add a new line and add beats as cards
           this.addBlankLine(template, bookId)
           let thisLine = this.getLast(this.allLines)
 
-          templateChapters.forEach((tCh) => {
+          templateBeats.forEach((tCh) => {
             const id = this.nextCardId
             ++this.nextCardId
             const newCard = Object.assign({}, card, {
               id: id,
               bookId: bookId,
               lineId: thisLine.id,
-              chapterId: this.allChapters[tCh.position].id,
+              beatId: this.allBeats[tCh.position].id,
               title: tCh.title,
               fromTemplateId: template.id,
             })
@@ -162,10 +166,10 @@ class AddLineRow extends Component {
     })
   }
 
-  addCards = (templateCards, templateChapters, bookId, template) => {
+  addCards = (templateCards, templateBeats, bookId, template) => {
     if (!templateCards) return
 
-    const chaptersPositionById = this.getPositionById(templateChapters)
+    const beatsPositionById = this.getPositionById(templateBeats)
     let useLines = true
     let lineId = null
 
@@ -180,16 +184,15 @@ class AddLineRow extends Component {
     templateCards.forEach((tC) => {
       const id = this.nextCardId
       lineId = useLines ? this.newLineMapping[tC.lineId] : lineId
-      const chapterPosition = chaptersPositionById[tC.chapterId]
-      const chapter =
-        this.allChapters[chapterPosition + this.newChapterOffset] ||
-        this.allChapters[this.allChapters.length - 1] // default to last chapter ... not sure if that's right to do
-      const chapterId = chapter ? chapter.id : 0 // default to no chapter ... again not sure if that's right
+      const beatPosition = beatsPositionById[tC.beatId]
+      const beat =
+        this.allBeats[beatPosition + this.newBeatOffset] || this.allBeats[this.allBeats.length - 1] // default to last beat ... not sure if that's right to do
+      const beatId = beat ? beat.id : 0 // default to no beat ... again not sure if that's right
       const newCard = {
         ...tC,
         id: id,
         bookId: bookId,
-        chapterId: chapterId,
+        beatId: beatId,
         lineId: lineId,
         fromTemplateId: template.id,
       }
@@ -206,17 +209,17 @@ class AddLineRow extends Component {
 
     this.nextLineId = this.props.nextLineId
     this.nextCardId = this.props.nextCardId
-    this.nextChapterId = this.props.nextChapterId
+    this.nextBeatId = this.props.nextBeatId
 
-    this.allChapters = this.props.chapters
+    this.allBeats = this.props.beats
     this.allLines = this.props.lines
     this.allCards = this.props.cards
 
-    this.addChapters(templateData.chapters, bookId, template)
+    this.addBeats(templateData.beats, bookId, template)
     this.addLines(templateData.lines, bookId, true, template)
-    this.addCards(templateData.cards, templateData.chapters, bookId, template)
+    this.addCards(templateData.cards, templateData.beats, bookId, template)
 
-    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allChapters, template, bookId)
+    actions.addLinesFromTemplate(this.allCards, this.allLines, this.allBeats, template, bookId)
     this.setState({ showTemplatePicker: false })
   }
 
@@ -258,7 +261,7 @@ class AddLineRow extends Component {
       )
     }
 
-    if (bookId != 'series') {
+    if (!isSeries(bookId)) {
       return (
         <div className="line-list__append-line">
           {this.renderInputModal()}
@@ -350,11 +353,11 @@ class AddLineRow extends Component {
     ui: PropTypes.object.isRequired,
     isSmall: PropTypes.bool,
     bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    chapters: PropTypes.array,
+    beats: PropTypes.array,
     lines: PropTypes.array,
     cards: PropTypes.array,
     nextLineId: PropTypes.number,
-    nextChapterId: PropTypes.number,
+    nextBeatId: PropTypes.number,
     nextCardId: PropTypes.number,
     actions: PropTypes.object,
   }
@@ -364,11 +367,11 @@ function mapStateToProps(state) {
   return {
     ui: state.present.ui,
     isSmall: isSmallSelector(state.present),
-    chapters: sortedChaptersByBookSelector(state.present),
+    beats: sortedBeatsByBookSelector(state.present),
     lines: linesByBookSelector(state.present),
     cards: state.present.cards,
     nextLineId: nextLineIdSelector(state.present),
-    nextChapterId: nextChapterIdSelector(state.present),
+    nextBeatId: nextBeatIdSelector(state.present),
     nextCardId: nextCardIdSelector(state.present),
   }
 }

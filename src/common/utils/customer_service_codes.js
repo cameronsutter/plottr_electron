@@ -4,6 +4,7 @@ import log from 'electron-log'
 import { RECENT_FILES_PATH, BACKUP_BASE_PATH } from './config_paths'
 import SETTINGS from './settings'
 import { extendTrialWithReset } from '../licensing/trial_manager'
+import { USER_INFO_PATH } from './config_paths'
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {

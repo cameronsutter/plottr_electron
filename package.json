@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2021.2.4",
+  "version": "2021.2.8",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -24,6 +24,7 @@
     "pack": "NODE_ENV=production node_modules/.bin/webpack",
     "pack:windows": "node_modules\\.bin\\webpack",
     "dist": "node build/initEnv.js && npm run pack && electron-builder -ml",
+    "dist:linux": "node build/initEnv.js && npm run pack && electron-builder -l",
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder -w",
     "dist:all": "npm run pack && electron-builder -mw",
     "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/**/*.js\" && npm run generate-flipped",
@@ -129,6 +130,7 @@
     "node-sass": "^4.14.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
+    "react-test-renderer": "^17.0.1",
     "redux-devtools-cli": "^1.0.0-4",
     "remote-redux-devtools": "^0.5.16",
     "sass-loader": "^7.1.0",

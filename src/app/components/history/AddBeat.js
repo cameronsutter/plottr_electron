@@ -3,17 +3,17 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import i18n from 'format-message'
 
-class AddScene extends Component {
+class AddBeat extends Component {
   render() {
     return (
       <div>
-        <span>{i18n('new scene')}</span>
+        <span>{i18n('new beat')}</span>
       </div>
     )
   }
 }
 
-AddScene.propTypes = {
+AddBeat.propTypes = {
   item: PropTypes.object.isRequired,
 }
 
@@ -25,4 +25,4 @@ function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddScene)
+export default connect(mapStateToProps, mapDispatchToProps)(AddBeat)

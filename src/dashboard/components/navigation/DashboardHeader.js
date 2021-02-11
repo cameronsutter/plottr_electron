@@ -55,7 +55,7 @@ export default function DashboardHeader({ darkMode }) {
   }
   return (
     <div className={cx('dashboard__header', { darkmode: darkMode })}>
-      <div className={cx('nav-spacer', { win32: is.windows })}>{!is.macos ? <Beamer /> : null}</div>
+      <div className={cx('nav-spacer', { win32: is.windows })}></div>
       <div className="nav-right">
         <span>{t('Plottr')}</span>
         <span className="spacer">—</span>

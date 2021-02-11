@@ -82,12 +82,12 @@ class Card extends Component {
 
   renderDialog() {
     if (!this.state.dialogOpen) return null
-    const { ui, card, chapterId, lineId } = this.props
+    const { ui, card, beatId, lineId } = this.props
     return (
       <CardDialog
         ui={ui}
         card={card}
-        chapterId={chapterId}
+        beatId={beatId}
         lineId={lineId}
         closeDialog={this.closeDialog}
       />
@@ -163,12 +163,12 @@ class Card extends Component {
   }
 
   renderTitle() {
-    const { card, isSmall, ui, chapterPosition, linePosition } = this.props
+    const { card, isSmall, ui, beatPosition, linePosition } = this.props
     let title = <div className="card__title">{isSmall ? '' : truncateTitle(card.title, 150)}</div>
     if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
       if (ui.orientation === 'horizontal') {
-        placement = Number(chapterPosition) <= 2 ? 'right' : placement
+        placement = Number(beatPosition) <= 2 ? 'right' : placement
       } else {
         placement = Number(linePosition) <= 2 ? 'right' : placement
       }
@@ -258,12 +258,12 @@ class Card extends Component {
 
 Card.propTypes = {
   card: PropTypes.object.isRequired,
-  chapterId: PropTypes.number.isRequired,
+  beatId: PropTypes.number.isRequired,
   lineId: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
   last: PropTypes.bool.isRequired,
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  chapterPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  beatPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   moveCard: PropTypes.func.isRequired,
   idx: PropTypes.number.isRequired,
   allowDrop: PropTypes.bool.isRequired,

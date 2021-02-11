@@ -16,7 +16,7 @@ var plugins = [
 
 if (process.env.NODE_ENV !== 'dev') {
   plugins.push(new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }))
-  plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/))
+  plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js-beautify/, /ajv/))
   plugins.push(
     new webpack.SourceMapDevToolPlugin({
       append: `\n//# sourceMappingURL=https://raw.githubusercontent.com/Plotinator/pltr_sourcemaps/main/${packageJSON.version}/[url]`,

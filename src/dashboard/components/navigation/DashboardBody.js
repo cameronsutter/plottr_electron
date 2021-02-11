@@ -13,6 +13,8 @@ import HelpHome from '../help/HelpHome'
 import { ipcRenderer } from 'electron'
 import SETTINGS from '../../../common/utils/settings'
 import { checkForActiveLicense } from '../../../common/licensing/check_license'
+import { is } from 'electron-util'
+import Beamer from '../../../common/components/Beamer'
 
 export default function DashboardBody({ currentView, setView }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -99,6 +101,7 @@ function Body({ children }) {
   return (
     <div className="dashboard__body">
       <div className="dashboard__top-border"></div>
+      {!is.macos ? <Beamer /> : null}
       <UpdateNotifier />
       <ErrorBoundary>{children}</ErrorBoundary>
     </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import i18n from 'format-message'
 
-export default class SceneTemplateDetails extends Component {
+export default class CardTemplateDetails extends Component {
   render() {
     const attrs = this.props.template.attributes.map((attr) => {
       return (

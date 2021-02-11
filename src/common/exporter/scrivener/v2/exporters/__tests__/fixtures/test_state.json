@@ -126,7 +126,7 @@
       "stuff": ""
     }
   ],
-  "chapters": [
+  "beats": [
     {
       "bookId": 2,
       "id": 1,
@@ -178,12 +178,11 @@
       "tags": [],
       "templates": [],
       "title": "Back Home: Now for Mom and Dad",
-      "chapterId": 104,
-      "beatId": null,
+      "beatId": 104,
       "bookId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null,
+      "positionInBeat": null,
       "fromTemplateId": null
     },
     {
@@ -205,12 +204,11 @@
       "tags": [],
       "templates": [],
       "title": "Running Away Again",
-      "chapterId": 61,
-      "beatId": null,
+      "beatId": 61,
       "bookId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null,
+      "positionInBeat": null,
       "fromTemplateId": null
     },
     {
@@ -232,12 +230,11 @@
       "tags": [],
       "templates": [],
       "title": "The Last Vizari",
-      "chapterId": 61,
-      "beatId": null,
+      "beatId": 61,
       "bookId": null,
       "position": 0,
       "positionWithinLine": 0,
-      "positionInChapter": null,
+      "positionInBeat": null,
       "fromTemplateId": null
     }
   ],
@@ -492,7 +489,6 @@
       "bookIds": [1]
     }
   ],
-  "beats": [],
   "seriesLines": [
     {
       "id": 1,

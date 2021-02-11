@@ -28,7 +28,7 @@ export function verifyLicense(license, callback) {
         return isProductForKey
       } else {
         log.info('license check request failed', productID)
-        log.error(productID, err)
+        log.error(productID)
         // rollbar.warn(productID, err)
         return false
       }

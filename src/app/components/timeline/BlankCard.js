@@ -55,9 +55,9 @@ class BlankCard extends Component {
     const droppedData = JSON.parse(json)
     if (!droppedData.cardId) return
 
-    const { chapterId, lineId } = this.props
+    const { beatId, lineId } = this.props
 
-    this.props.actions.reorderCardsWithinLine(chapterId, lineId, [droppedData.cardId])
+    this.props.actions.reorderCardsWithinLine(beatId, lineId, [droppedData.cardId])
   }
 
   saveCreate = () => {
@@ -89,11 +89,10 @@ class BlankCard extends Component {
   }
 
   buildCard(title) {
-    const { chapterId, lineId } = this.props
+    const { beatId, lineId } = this.props
     return {
       title,
-      beatId: chapterId,
-      chapterId,
+      beatId,
       lineId,
       positionWithinLine: this.props.positionWithinLine || 0,
     }
@@ -307,7 +306,7 @@ class BlankCard extends Component {
 }
 
 BlankCard.propTypes = {
-  chapterId: PropTypes.number,
+  beatId: PropTypes.number,
   lineId: PropTypes.number,
   verticalInsertion: PropTypes.bool,
   color: PropTypes.string.isRequired,

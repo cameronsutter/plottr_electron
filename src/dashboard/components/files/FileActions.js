@@ -36,6 +36,7 @@ export default function FileActions({ missing, id, filePath, openFile }) {
     switch (eventKey) {
       case 'open':
         openFile(filePath, id)
+        break
       case 'show':
         shell.showItemInFolder(filePath)
         break

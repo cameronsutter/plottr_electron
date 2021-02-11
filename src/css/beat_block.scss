@@ -90,6 +90,10 @@ $title_height: 70px;
     border: 3px dotted $blue-8;
     margin-right: 50px;
   }
+
+  &.medium-timeline {
+    height: 123px;
+  }
 }
 
 .beat-list__insert:hover {

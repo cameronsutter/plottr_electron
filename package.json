@@ -29,9 +29,10 @@
     "dist:all": "npm run pack && electron-builder -mw",
     "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/**/*.js\" && npm run generate-flipped",
     "generate-flipped": "node ./locales/build-flipped-locale.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest '(src.*)|(lib.*)'",
+    "test:watch": "jest '(src.*)|(lib.*)' --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand src/app/components/rce/__tests__/RichTextEditor.test.js",
+    "test:integration": "jest test/integration",
     "start-redux-dev-tools": "redux-devtools --hostname=localhost --port=8000",
     "lint-file": "eslint",
     "lint": "eslint .",
@@ -140,7 +141,8 @@
     "uuid": "^8.3.1",
     "webpack": "^4.35.0",
     "webpack-bundle-analyzer": "^3.7.0",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.5",
+    "xml2js": "^0.4.23"
   },
   "build": {
     "electronVersion": "10.1.5",

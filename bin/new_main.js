@@ -44,7 +44,21 @@ if (process.env.NODE_ENV !== 'dev') {
 
 if (process.env.NODE_ENV === 'dev') {
   try {
-    require('electron-reloader')(module, { ignore: ['examples', 'src', '.*#.*#'], debug: true })
+    require('electron-reloader')(module, {
+      ignore: [
+        'examples',
+        'dist',
+        'src',
+        'lib',
+        'build',
+        'icons',
+        'locales',
+        'shared',
+        'test',
+        '.*#.*#',
+      ],
+      debug: true,
+    })
   } catch (e) {
     console.error('Error while instrumenting app for reload.', e)
   }

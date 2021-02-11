@@ -26,10 +26,13 @@ $medium_width: 80px;
 .vertical-line-title__line-line {
   position: absolute;
   top: 0;
-  left: 98px;
+  left: 98px; // cell width is 146px. padding-left is 25px. (146px / 2) + 25px
   border-right: 3px solid red;
   z-index: 1 !important;
   transition: $cubic;
+  &.medium-timeline {
+    left: 68px; // cell width is 86px. padding-left is 25px. (86px / 2) + 25px
+  }
 }
 
 .line-title__body {
@@ -198,14 +201,20 @@ $medium_width: 80px;
   }
 }
 
-// ///////////
-// Vertical
-// ///////////
+//////////////
+// Vertical //
+//////////////
 
 .vertical-line-title__cell {
   width: 200px;
   min-height: 100px;
   text-align: center;
+
+  &.medium-timeline {
+    min-height: 60px;
+    width: 110px;
+    text-align: right;
+  }
 }
 
 .vertical-line-title__body {
@@ -224,6 +233,21 @@ $medium_width: 80px;
       font-weight: normal;
       font-size: 16px;
       margin-bottom: 0;
+    }
+  }
+
+  &.medium-timeline {
+    width: $medium_width + 6px; // +6px for the 3px border
+    font-size: 14px;
+    padding: 12px 6px;
+    .form-group {
+      .control-label {
+        font-size: 12px;
+      }
+      input {
+        font-size: 12px;
+        padding: 6px 2px;
+      }
     }
   }
 }
@@ -277,6 +301,11 @@ $medium_width: 80px;
       position: relative;
       top: 0;
     }
+  }
+
+  &.medium-timeline {
+    width: 80px;
+    margin-left: 29px;
   }
 }
 

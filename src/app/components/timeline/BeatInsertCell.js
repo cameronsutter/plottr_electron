@@ -40,15 +40,15 @@ class BeatInsertCell extends PureComponent {
       'append-beat': isLast,
       'medium-timeline': isInBeatList && isMedium,
     })
+    const insertBeatKlass = cx('line-list__insert-beat', {
+      'medium-timeline': isMedium,
+    })
     let titleText = isLast ? i18n('Add Chapter') : i18n('Insert Chapter')
     if (!isInBeatList) titleText = i18n('Insert Chapter and a Card')
     let insideDiv = (
       <div
         title={titleText}
-        className={orientedClassName(
-          isInBeatList ? beatKlass : 'line-list__insert-beat',
-          orientation
-        )}
+        className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
         onClick={this.insert}
       >
         <div className={wrapperKlass}>

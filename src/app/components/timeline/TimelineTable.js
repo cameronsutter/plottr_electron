@@ -159,10 +159,10 @@ class TimelineTable extends Component {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
     const { beats, isSmall, isLarge } = this.props
-    const renderedBeats = beats.map((beat) => {
+    const renderedBeats = beats.map((beat, idx) => {
       let inserts = []
-      if (isLarge) {
-        inserts = lineMapKeys.flatMap((linePosition) => {
+      if (isLarge || idx === 0) {
+        inserts = lineMapKeys.flatMap((linePosition, idx) => {
           const line = lineMap[linePosition]
           return (
             <BeatInsertCell
@@ -190,11 +190,13 @@ class TimelineTable extends Component {
       } else {
         return [
           <Row key={`beatId-${beat.id}`}>
-            <BeatInsertCell
-              isInBeatList={true}
-              beatPosition={beat.position}
-              handleInsert={this.handleInsertNewBeat}
-            />
+            {isLarge || idx === 0 ? (
+              <BeatInsertCell
+                isInBeatList={true}
+                beatPosition={beat.position}
+                handleInsert={this.handleInsertNewBeat}
+              />
+            ) : null}
             {inserts}
           </Row>,
           <Row key={`beatId-${beat.id}-insert`}>

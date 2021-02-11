@@ -113,19 +113,24 @@ class CardCell extends PureComponent {
     const numOfCards = cards.length
     const vertical = ui.orientation == 'vertical'
     if (lineIsExpanded || numOfCards == 1) {
-      return (
-        <div className={cx('card__cell', { multiple: numOfCards > 1, vertical: vertical })}>
-          {this.renderCards(true)}
-        </div>
-      )
+      const cellKlass = cx('card__cell', {
+        multiple: numOfCards > 1,
+        vertical: vertical,
+        'medium-timeline': isMedium,
+      })
+      return <div className={cellKlass}>{this.renderCards(true)}</div>
     } else {
       let cardStyle = { borderColor: color }
       if (!isVisible) {
         cardStyle.opacity = '0.1'
       }
       const bodyKlass = cx('card__body', { 'medium-timeline': isMedium })
+      const overviewKlass = cx('card__cell__overview-cell', {
+        vertical: vertical,
+        'medium-timeline': isMedium,
+      })
       return (
-        <div className={cx('card__cell__overview-cell', { vertical: vertical })}>
+        <div className={overviewKlass}>
           <Floater
             component={this.renderHiddenCards}
             placement="right"

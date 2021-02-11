@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { helpers } from 'pltr/v2'
+import cx from 'classnames'
 
 const {
   orientedClassName: { orientedClassName },
@@ -18,7 +19,10 @@ const measurements = {
     },
   },
   vertical: {
-    medium: {},
+    medium: {
+      first: 120,
+      last: 70 + 40,
+    },
     large: {
       first: 100,
       last: 70 + 40,
@@ -79,12 +83,10 @@ export default function VisualLine({ color, orientation, isMedium, tableLength }
   } else {
     lineStyle.height = `${currentLength}px`
   }
-  return (
-    <div
-      className={orientedClassName('line-title__line-line', orientation)}
-      style={lineStyle}
-    ></div>
-  )
+  const lineKlass = cx(orientedClassName('line-title__line-line', orientation), {
+    'medium-timeline': isMedium,
+  })
+  return <div className={lineKlass} style={lineStyle}></div>
 }
 
 VisualLine.propTypes = {

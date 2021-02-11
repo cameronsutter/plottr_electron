@@ -44,6 +44,11 @@
       line-height: 70px;
     }
   }
+  &.vertical.medium-timeline {
+    & > div:first-child {
+      padding-left: 29px;
+    }
+  }
 }
 
 .card__cell__overview-cell {
@@ -65,6 +70,9 @@
     .card__add-card {
       display: block;
     }
+  }
+  &.vertical.medium-timeline {
+    padding-left: 29px;
   }
 }
 
@@ -106,15 +114,16 @@
   }
 }
 
-.vertical-card__body {
-  @extend .vertical-blank-card__body;
-  margin-top: 17px;
+// I don't think this is used anywhere
+// .vertical-card__body {
+//   @extend .vertical-blank-card__body;
+//   margin-top: 17px;
 
-  .form-group {
-    display: block;
-    padding: 0;
-  }
-}
+//   .form-group {
+//     display: block;
+//     padding: 0;
+//   }
+// }
 
 .card__title {
   padding: 10px;
@@ -163,7 +172,7 @@
 .vertical-blank-card__body {
   @extend .card__body;
   border: 3px dashed black;
-  margin-top: 17px;
+  visibility: hidden;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -179,6 +188,13 @@
     @include application-text;
     text-align: center;
   }
+  &.medium-timeline {
+    font-size: 12px;
+    flex-direction: column;
+    div {
+      padding: 6px 4px;
+    }
+  }
 }
 
 .blank-card__body.hover {
@@ -186,7 +202,8 @@
 }
 
 .card__cell:hover {
-  .blank-card__body {
+  .blank-card__body,
+  .vertical-blank-card__body {
     visibility: visible;
   }
 }

@@ -184,7 +184,7 @@ class Card extends Component {
   }
 
   render() {
-    const { color, isVisible, allowDrop, last, isSmall, isMedium } = this.props
+    const { color, isVisible, allowDrop, last, isSmall, isMedium, ui } = this.props
     var cardStyle = {
       borderColor: color,
     }
@@ -217,7 +217,10 @@ class Card extends Component {
         </div>
       )
     } else {
-      const bodyKlass = cx('card__body', { 'medium-timeline': isMedium })
+      const bodyKlass = cx('card__body', {
+        'medium-timeline': isMedium,
+        vertical: ui.orientation == 'vertical',
+      })
       return (
         <div
           className={cx('card__body-wrapper', { lastOne: last })}

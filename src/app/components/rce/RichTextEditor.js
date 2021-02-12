@@ -40,6 +40,7 @@ const RichTextEditor = (props) => {
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
   const renderElement = useCallback((props) => <Element {...props} />, [])
   const [value, setValue] = useState(null)
+  const [editorWrapperRef, setEditorWrapperRef] = useState(null)
   const key = useRef(Math.random().toString(16))
   const toolbarRef = useRef(null)
   const [showColorPicker, toggleColorPicker] = useState(false)
@@ -107,7 +108,15 @@ const RichTextEditor = (props) => {
         </div>
         <div
           // the firstChild will be the contentEditable dom node
-          ref={(e) => registerEditor(e && e.firstChild)}
+          ref={(e) => {
+            registerEditor(e && e.firstChild)
+            setEditorWrapperRef(e)
+          }}
+          onClick={(event) => {
+            if (!editorWrapperRef) return
+            if (editorWrapperRef.firstChild.contains(event.target)) return
+            editorWrapperRef.firstChild.focus()
+          }}
           className={cx('slate-editor__editor', { darkmode: props.darkMode })}
         >
           <Editable

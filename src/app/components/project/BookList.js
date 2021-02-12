@@ -27,13 +27,6 @@ class BookList extends Component {
     }
   }
 
-  // static getDerivedStateFromProps(props, state) {
-  //   return {
-  //     ...state,
-  //     rows: [props.books.allIds],
-  //   }
-  // }
-
   componentDidMount() {
     this.updateLayout()
     window.addEventListener('resize', this.updateLayout)

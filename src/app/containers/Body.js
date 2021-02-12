@@ -7,7 +7,7 @@ import CharactersTab from 'components/characters/CharactersTab'
 import PlacesTab from 'components/places/PlacesTab'
 import NotesTab from 'components/notes/NotesTab'
 import TimelineTab from '../components/timeline/TimelineTab'
-import SeriesTab from '../components/story/SeriesTab'
+import SeriesTab from '../components/project/SeriesTab'
 import ExportTab from '../components/export/ExportTab'
 import AnalyzerTab from '../components/analyzer/AnalyzerTab'
 
@@ -16,9 +16,6 @@ class Body extends Component {
     switch (this.props.currentView) {
       case 'project':
         return <SeriesTab />
-
-      case 'timeline':
-        return <TimelineTab />
 
       case 'outline':
         return <OutlineTab />
@@ -41,6 +38,7 @@ class Body extends Component {
       case 'analyzer':
         return <AnalyzerTab />
 
+      case 'timeline':
       default:
         return <TimelineTab />
     }

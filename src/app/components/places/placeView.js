@@ -16,7 +16,7 @@ import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import SelectList from '../selectList'
-import BookSelectList from '../story/BookSelectList'
+import BookSelectList from '../project/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, selectors } from 'pltr/v2'
 

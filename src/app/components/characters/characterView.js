@@ -8,7 +8,7 @@ import ErrorBoundary from '../../containers/ErrorBoundary'
 import CharacterEditDetails from './CharacterEditDetails'
 import CharacterDetails from './CharacterDetails'
 import SelectList from '../selectList'
-import BookSelectList from '../story/BookSelectList'
+import BookSelectList from '../project/BookSelectList'
 import { actions, selectors } from 'pltr/v2'
 
 const CharacterActions = actions.character

@@ -12,22 +12,33 @@ import { newIds, actions } from 'pltr/v2'
 
 const { objectId } = newIds
 
-const BookActions = actions.book
-const LineActions = actions.line
-const BeatActions = actions.beat
-
 class BookList extends Component {
   dragDropAreaRef = React.createRef()
   bookRef = React.createRef()
 
   constructor(props) {
     super(props)
+    // Defaults based on when this was written.
+    // Updated when the component mounts.
     this.state = {
-      // Defaults based on when this was written.  Updated when the
-      // component mounts.
       bookWidth: 245,
       itemsPerRow: 5,
       rows: [props.books.allIds],
+    }
+  }
+
+  componentDidMount() {
+    this.updateLayout()
+    window.addEventListener('resize', this.updateLayout)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateLayout)
+  }
+
+  componentDidUpdate(previousProps) {
+    if (previousProps.books.allIds.length != this.props.books.allIds.length) {
+      this.updateLayout()
     }
   }
 
@@ -102,15 +113,6 @@ class BookList extends Component {
         itemsPerRow,
       })
     }
-  }
-
-  componentDidMount() {
-    this.updateLayout()
-    window.addEventListener('resize', this.updateLayout)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateLayout)
   }
 
   renderBooks(books) {
@@ -190,9 +192,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(BookActions, dispatch),
-    lineActions: bindActionCreators(LineActions, dispatch),
-    beatActions: bindActionCreators(BeatActions, dispatch),
+    actions: bindActionCreators(actions.book, dispatch),
+    lineActions: bindActionCreators(actions.line, dispatch),
+    beatActions: bindActionCreators(actions.beat, dispatch),
   }
 }
 

@@ -57,7 +57,6 @@ if (process.env.NODE_ENV === 'dev') {
         'test',
         '.*#.*#',
       ],
-      debug: true,
     })
   } catch (e) {
     console.error('Error while instrumenting app for reload.', e)

@@ -59,6 +59,15 @@ path of `/lib`.
     git subtree add --prefix lib/pltr pltr master --squash
 ```
 
+# Debugging Tests
+To debug a test:
+
+1. start the chrome dedicated debugger for node by: running chrome, navigating to `chrome://inspect/`, "Open dedicated DevTools for Node"
+2. add a `debugger` line to the test that you want to debug,
+3. change the path to the test to debug in the script `test:debug` in `package.json` to point at the test that you want to debug.  e.g. `"node --inspect node_modules/.bin/jest --runInBand src/app/components/rce/__tests__/RichTextEditor.test.js"` -> `"node --inspect node_modules/.bin/jest --runInBand <path-to-your-test>"`,
+4. run the script (`npm run test:debug`),
+5. the dedicated debugger should detect the node process and launch a debugging process.
+
 # Copyright Notice
 
 Copyright 2016-2020 Fictional Devices LLC

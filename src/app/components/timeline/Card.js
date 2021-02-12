@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -18,6 +18,8 @@ const {
 } = helpers
 
 class Card extends Component {
+  cardRef = createRef()
+
   constructor(props) {
     super(props)
     this.state = {
@@ -25,6 +27,7 @@ class Card extends Component {
       dragging: false,
       inDropZone: false,
       dropDepth: 0,
+      hovering: false, // forces a rerender to determine where to place the overlay
     }
   }
 
@@ -74,6 +77,14 @@ class Card extends Component {
     if (!droppedData.cardId) return
 
     this.props.moveCard(droppedData.cardId, this.props.idx)
+  }
+
+  startHovering = () => {
+    this.setState({ hovering: true })
+  }
+
+  stopHovering = () => {
+    this.setState({ hovering: false })
   }
 
   openDialog = () => {
@@ -165,14 +176,30 @@ class Card extends Component {
   renderTitle() {
     const { card, isSmall, ui, beatPosition, linePosition } = this.props
     let title = <div className="card__title">{isSmall ? '' : truncateTitle(card.title, 150)}</div>
+
     if (!this.state.dragging && this.hasDetailsToShow()) {
       let placement = 'left'
-      if (ui.orientation === 'horizontal') {
-        placement = Number(beatPosition) <= 2 ? 'right' : placement
+
+      // sane default placements
+      if (isSmall) {
+        placement = 'right'
       } else {
-        placement = Number(linePosition) <= 2 ? 'right' : placement
+        if (ui.orientation === 'horizontal') {
+          placement = Number(beatPosition) <= 2 ? 'right' : placement
+        } else {
+          placement = Number(linePosition) <= 2 ? 'right' : placement
+        }
       }
-      if (isSmall) placement = 'right'
+
+      // use location of the card on the screen if possible
+      const cardPos = this.cardRef.current ? this.cardRef.current.getBoundingClientRect() : null
+      const rootElem = document.querySelector('#react-root').getBoundingClientRect()
+      const midPoint = rootElem.width / 2
+      if (cardPos) {
+        if (cardPos.x > midPoint) placement = 'left'
+        if (cardPos.x < midPoint) placement = 'right'
+      }
+
       title = (
         <OverlayTrigger placement={placement} overlay={this.renderPopover()}>
           {title}
@@ -198,6 +225,7 @@ class Card extends Component {
     if (isSmall) {
       return (
         <div
+          ref={this.cardRef}
           onDragEnter={this.handleDragEnter}
           onDragOver={this.handleDragOver}
           onDragLeave={this.handleDragLeave}
@@ -211,6 +239,8 @@ class Card extends Component {
             draggable
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
+            onMouseOver={this.startHovering}
+            onMouseLeave={this.stopHovering}
           >
             <div onClick={this.openDialog}>{this.renderTitle()}</div>
           </div>
@@ -223,6 +253,7 @@ class Card extends Component {
       })
       return (
         <div
+          ref={this.cardRef}
           className={cx('card__body-wrapper', { lastOne: last })}
           onDragEnter={allowDrop ? this.handleDragEnter : null}
           onDragOver={allowDrop ? this.handleDragOver : null}
@@ -238,6 +269,8 @@ class Card extends Component {
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
             onClick={this.openDialog}
+            onMouseOver={this.startHovering}
+            onMouseLeave={this.stopHovering}
           >
             {this.renderTitle()}
           </div>
@@ -250,6 +283,7 @@ class Card extends Component {
     if (this.state.dragging != nextState.dragging) return true
     if (this.state.dialogOpen != nextState.dialogOpen) return true
     if (this.state.inDropZone != nextState.inDropZone) return true
+    if (this.state.hovering != nextState.hovering) return true
     if (this.props.color != nextProps.color) return true
     if (this.props.isVisible != nextProps.isVisible) return true
     if (this.props.card != nextProps.card) return true

@@ -31,6 +31,7 @@
     "generate-flipped": "node ./locales/build-flipped-locale.js",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand src/app/components/rce/__tests__/RichTextEditor.test.js",
     "start-redux-dev-tools": "redux-devtools --hostname=localhost --port=8000",
     "lint-file": "eslint",
     "lint": "eslint .",

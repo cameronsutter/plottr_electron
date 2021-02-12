@@ -179,7 +179,14 @@ class ImagePicker extends Component {
               <ControlLabel>
                 <h6>{i18n('Enter the URL of the link:')}</h6>
               </ControlLabel>
-              <FormControl placeholder={i18n('URL')} type="text" onChange={this.getFromURL} />
+              <FormControl
+                onClick={(event) => {
+                  event.target.focus()
+                }}
+                placeholder={i18n('URL')}
+                type="text"
+                onChange={this.getFromURL}
+              />
             </FormGroup>
             {this.state.loading ? <Spinner /> : null}
           </div>

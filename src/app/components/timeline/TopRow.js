@@ -72,10 +72,10 @@ class TopRow extends Component {
   }
 
   renderBeats() {
-    const { ui, beats, isLarge, isSmall } = this.props
+    const { ui, beats, isLarge, isMedium, isSmall } = this.props
     const renderedBeats = beats.flatMap((beat, idx) => {
       const cells = []
-      if (isLarge || idx == 0) {
+      if (isLarge || (isMedium && idx == 0)) {
         cells.push(
           <BeatInsertCell
             key={`beatId-${beat.id}-insert`}

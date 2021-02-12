@@ -237,11 +237,11 @@ class TimelineTable extends Component {
   }
 
   renderHorizontalCards(line, beatMap, beatMapKeys) {
-    const { cardMap, isLarge } = this.props
+    const { cardMap, isLarge, isMedium } = this.props
     return beatMapKeys.flatMap((beatPosition) => {
       const cells = []
       const beatId = beatMap[beatPosition]
-      if (isLarge || beatPosition == 0) {
+      if (isLarge || (isMedium && beatPosition == 0)) {
         cells.push(
           <BeatInsertCell
             key={`${beatPosition}-insert`}

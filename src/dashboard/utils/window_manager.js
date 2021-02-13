@@ -37,17 +37,32 @@ const mergeRecursivelyWithArrayConcatStrategy = (object1, object2) => {
     if (isArray(objValue)) {
       return objValue.concat(srcValue)
     }
-    return mergeRecursivelyWithArrayConcatStrategy(objValue, srcValue)
   }
   return mergeWith(object1, object2, concatenateArrays)
 }
 
 export function createNew(templateData) {
   const emptyPlottrFile = emptyFile(t('Untitled'), app.getVersion())
-  const tempTemplateFilePath = saveToTempFile(templateData || { version: app.getVersion() })
+  if (!templateData) {
+    const filePath = saveToTempFile(emptyPlottrFile)
+    const fileId = addToKnownFiles(filePath)
+    openKnownFile(filePath, fileId)
+    return
+  }
+  const tempTemplateFilePath = saveToTempFile({
+    ...templateData,
+    file: {
+      version: templateData.version,
+    },
+  })
   migrateIfNeeded(
     app.getVersion(),
-    templateData,
+    {
+      ...templateData,
+      file: {
+        version: templateData.version,
+      },
+    },
     tempTemplateFilePath,
     null,
     (error, didMigrate, state) => {
@@ -55,10 +70,7 @@ export function createNew(templateData) {
         // Let the top level handler handle it
         throw error
       }
-      const mergedWithEmptyFile = mergeRecursivelyWithArrayConcatStrategy(
-        emptyPlottrFile,
-        templateData
-      )
+      const mergedWithEmptyFile = mergeRecursivelyWithArrayConcatStrategy(emptyPlottrFile, state)
       const filePath = saveToTempFile(mergedWithEmptyFile)
       const fileId = addToKnownFiles(filePath)
       openKnownFile(filePath, fileId)

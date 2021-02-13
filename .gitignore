@@ -7,3 +7,4 @@ screenshots/*
 .DS_Store
 data/*
 *.map
+.prev

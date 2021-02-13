@@ -1,0 +1,1351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScrivenerProject Version="1.5">
+  <Binder>
+    <BinderItem ID="0" Type="DraftFolder">
+      <Title>Manuscript</Title>
+      <Children>
+        <BinderItem ID="3" Type="Folder">
+          <Title>Chapter 1</Title>
+          <Children>
+            <BinderItem ID="4" Type="Text">
+              <Title>Scene 1</Title>
+            </BinderItem>
+            <BinderItem ID="5" Type="Text">
+              <Title>Mr. Darcy</Title>
+            </BinderItem>
+            <BinderItem ID="6" Type="Text">
+              <Title>Netherfield Park is let at last!</Title>
+            </BinderItem>
+            <BinderItem ID="7" Type="Text">
+              <Title>Mrs Bennet instructs Mr Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="8" Type="Text">
+              <Title>Scene 4</Title>
+            </BinderItem>
+            <BinderItem ID="9" Type="Text">
+              <Title>Scene 2</Title>
+            </BinderItem>
+            <BinderItem ID="10" Type="Text">
+              <Title>Scene 2</Title>
+            </BinderItem>
+            <BinderItem ID="11" Type="Text">
+              <Title>Scene 3</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="12" Type="Folder">
+          <Title>Chapter 2</Title>
+          <Children>
+            <BinderItem ID="13" Type="Text">
+              <Title>Mr Bennet meets Mr Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="14" Type="Text">
+              <Title>Mr Bennet meets Mr Bingley</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="15" Type="Folder">
+          <Title>Chapter 3</Title>
+          <Children>
+            <BinderItem ID="16" Type="Text">
+              <Title>Lizzy and Jane talk about the ball</Title>
+            </BinderItem>
+            <BinderItem ID="17" Type="Text">
+              <Title>Scene 1</Title>
+            </BinderItem>
+            <BinderItem ID="18" Type="Text">
+              <Title>Scene 3</Title>
+            </BinderItem>
+            <BinderItem ID="19" Type="Text">
+              <Title>Scene 2</Title>
+            </BinderItem>
+            <BinderItem ID="20" Type="Text">
+              <Title>Scene 4</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="21" Type="Folder">
+          <Title>Chapter 4</Title>
+          <Children>
+            <BinderItem ID="22" Type="Text">
+              <Title>Bennets meet Bingleys at a ball</Title>
+            </BinderItem>
+            <BinderItem ID="23" Type="Text">
+              <Title>Mr Darcy dances just two dances.</Title>
+            </BinderItem>
+            <BinderItem ID="24" Type="Text">
+              <Title>Jane dances with Mr Bingley - twice!</Title>
+            </BinderItem>
+            <BinderItem ID="25" Type="Text">
+              <Title>Mr Bingley dances every dance.</Title>
+            </BinderItem>
+            <BinderItem ID="26" Type="Text">
+              <Title>Lizzy overhears Mr Darcy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="27" Type="Folder">
+          <Title>Chapter 5</Title>
+          <Children>
+            <BinderItem ID="28" Type="Text">
+              <Title>The Bennets and Lucases meet</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="29" Type="Folder">
+          <Title>Chapter 6</Title>
+          <Children>
+            <BinderItem ID="30" Type="Text">
+              <Title>A large party is assembled</Title>
+            </BinderItem>
+            <BinderItem ID="31" Type="Text">
+              <Title>Darcy is interested in Elizabeth</Title>
+            </BinderItem>
+            <BinderItem ID="32" Type="Text">
+              <Title>Jane spends time with the Bingleys</Title>
+            </BinderItem>
+            <BinderItem ID="33" Type="Text">
+              <Title>Miss Bingley befriends Jane</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="34" Type="Folder">
+          <Title>Chapter 7</Title>
+          <Children>
+            <BinderItem ID="35" Type="Text">
+              <Title>A militia arrives; Jane goes to Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="36" Type="Text">
+              <Title>Jane falls ill.</Title>
+            </BinderItem>
+            <BinderItem ID="37" Type="Text">
+              <Title>Lydia is occupied with the officers.</Title>
+            </BinderItem>
+            <BinderItem ID="38" Type="Text">
+              <Title>Mrs Bennet has a plan.</Title>
+            </BinderItem>
+            <BinderItem ID="39" Type="Text">
+              <Title>Lizzy goes to Netherfield.</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="40" Type="Folder">
+          <Title>Chapter 8</Title>
+          <Children>
+            <BinderItem ID="41" Type="Text">
+              <Title>Lizzy remains at Netherfield</Title>
+            </BinderItem>
+            <BinderItem ID="42" Type="Text">
+              <Title>Lizzy bickers with Darcy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="43" Type="Folder">
+          <Title>Chapter 9</Title>
+          <Children>
+            <BinderItem ID="44" Type="Text">
+              <Title>Mrs Bennet goes to Netherfield</Title>
+            </BinderItem>
+            <BinderItem ID="45" Type="Text">
+              <Title>Lizzy is embarrassed</Title>
+            </BinderItem>
+            <BinderItem ID="46" Type="Text">
+              <Title>Darcy clashes with Mrs Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="47" Type="Text">
+              <Title>Jane is told to stay at Netherfield</Title>
+            </BinderItem>
+            <BinderItem ID="48" Type="Text">
+              <Title>Bingley agrees to have a ball</Title>
+            </BinderItem>
+            <BinderItem ID="49" Type="Text">
+              <Title>Lydia asks for a ball at Netherfield</Title>
+            </BinderItem>
+            <BinderItem ID="50" Type="Text">
+              <Title>Mrs Bennet makes a fool of herself</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="51" Type="Folder">
+          <Title>Chapter 10</Title>
+          <Children>
+            <BinderItem ID="52" Type="Text">
+              <Title>Lizzy remains at Netherfield</Title>
+            </BinderItem>
+            <BinderItem ID="53" Type="Text">
+              <Title>Lizzy assumes the worst of Darcy</Title>
+            </BinderItem>
+            <BinderItem ID="54" Type="Text">
+              <Title>Darcy is interested in Lizzy, but prideful</Title>
+            </BinderItem>
+            <BinderItem ID="55" Type="Text">
+              <Title>Miss Bingley fights Darcy's new interest</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="56" Type="Folder">
+          <Title>Chapter 11</Title>
+          <Children>
+            <BinderItem ID="57" Type="Text">
+              <Title>Lizzy remains at Netherfield</Title>
+            </BinderItem>
+            <BinderItem ID="58" Type="Text">
+              <Title>Lizzy is certain Darcy dislikes her</Title>
+            </BinderItem>
+            <BinderItem ID="59" Type="Text">
+              <Title>Darcy worries his interest is too clear</Title>
+            </BinderItem>
+            <BinderItem ID="60" Type="Text">
+              <Title>Jane feels better and comes down</Title>
+            </BinderItem>
+            <BinderItem ID="61" Type="Text">
+              <Title>Miss Bingley works for Darcy's attention</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="62" Type="Folder">
+          <Title>Chapter 12</Title>
+          <Children>
+            <BinderItem ID="63" Type="Text">
+              <Title>Lizzy and Jane go home</Title>
+            </BinderItem>
+            <BinderItem ID="64" Type="Text">
+              <Title>Lizzy is thrilled to go home</Title>
+            </BinderItem>
+            <BinderItem ID="65" Type="Text">
+              <Title>Darcy ignores Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="66" Type="Text">
+              <Title>Mr Bennet is happy to have them home</Title>
+            </BinderItem>
+            <BinderItem ID="67" Type="Text">
+              <Title>Mrs Bennet tries to make them stay</Title>
+            </BinderItem>
+            <BinderItem ID="68" Type="Text">
+              <Title>Miss Bingley is happy they're going</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="69" Type="Folder">
+          <Title>Chapter 13</Title>
+          <Children>
+            <BinderItem ID="70" Type="Text">
+              <Title>Mr Collins comes to Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="71" Type="Text">
+              <Title>Mr Bennet receives Mr Collins' letter</Title>
+            </BinderItem>
+            <BinderItem ID="72" Type="Text">
+              <Title>Mrs Bennet dislikes Mr Collins</Title>
+            </BinderItem>
+            <BinderItem ID="73" Type="Text">
+              <Title>Mr Collins writes and arrives</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="74" Type="Folder">
+          <Title>Chapter 14</Title>
+          <Children>
+            <BinderItem ID="75" Type="Text">
+              <Title>Mr Collins dines at Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="76" Type="Text">
+              <Title>Lydia offends Mr Collins</Title>
+            </BinderItem>
+            <BinderItem ID="77" Type="Text">
+              <Title>Mr Bennet amuses himself</Title>
+            </BinderItem>
+            <BinderItem ID="78" Type="Text">
+              <Title>Mr Collins establishes himself</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="79" Type="Folder">
+          <Title>Chapter 15</Title>
+          <Children>
+            <BinderItem ID="80" Type="Text">
+              <Title>The Bennets go to Meryton</Title>
+            </BinderItem>
+            <BinderItem ID="81" Type="Text">
+              <Title>Darcy sees Wickham and reddens</Title>
+            </BinderItem>
+            <BinderItem ID="82" Type="Text">
+              <Title>Bingley goes to see Jane</Title>
+            </BinderItem>
+            <BinderItem ID="83" Type="Text">
+              <Title>Lydia inspires everyone to town</Title>
+            </BinderItem>
+            <BinderItem ID="84" Type="Text">
+              <Title>Mr Collins accompanies</Title>
+            </BinderItem>
+            <BinderItem ID="85" Type="Text">
+              <Title>Mr Wickham meets the Bennets</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="86" Type="Folder">
+          <Title>Chapter 16</Title>
+          <Children>
+            <BinderItem ID="87" Type="Text">
+              <Title>Dinner at the Phillips'</Title>
+            </BinderItem>
+            <BinderItem ID="88" Type="Text">
+              <Title>Lizzy is interested in Wickham</Title>
+            </BinderItem>
+            <BinderItem ID="89" Type="Text">
+              <Title>Mr Collins meets a good listener</Title>
+            </BinderItem>
+            <BinderItem ID="90" Type="Text">
+              <Title>Wickham tells Lizzy about Darcy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="91" Type="Folder">
+          <Title>Chapter 17</Title>
+          <Children>
+            <BinderItem ID="92" Type="Text">
+              <Title>Invitation to a ball at Netherfield</Title>
+            </BinderItem>
+            <BinderItem ID="93" Type="Text">
+              <Title>Lizzy does not like Mr Collins</Title>
+            </BinderItem>
+            <BinderItem ID="94" Type="Text">
+              <Title>Jane can't believe Wickham's story</Title>
+            </BinderItem>
+            <BinderItem ID="95" Type="Text">
+              <Title>Mrs Bennet sees the ball as for Jane</Title>
+            </BinderItem>
+            <BinderItem ID="96" Type="Text">
+              <Title>Mr Collins pursues Lizzy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="97" Type="Folder">
+          <Title>Chapter 18</Title>
+          <Children>
+            <BinderItem ID="98" Type="Text">
+              <Title>The ball at Netherfield</Title>
+            </BinderItem>
+            <BinderItem ID="99" Type="Text">
+              <Title>Lizzy has an eventful evening</Title>
+            </BinderItem>
+            <BinderItem ID="100" Type="Text">
+              <Title>Darcy dances with Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="101" Type="Text">
+              <Title>Jane dances with Bingley, and asks...</Title>
+            </BinderItem>
+            <BinderItem ID="102" Type="Text">
+              <Title>Bingley dances with Jane</Title>
+            </BinderItem>
+            <BinderItem ID="103" Type="Text">
+              <Title>Mrs Bennet speaks rashly of Jane</Title>
+            </BinderItem>
+            <BinderItem ID="104" Type="Text">
+              <Title>Miss Bingley defends Darcy</Title>
+            </BinderItem>
+            <BinderItem ID="105" Type="Text">
+              <Title>Collins introduces himself to Darcy</Title>
+            </BinderItem>
+            <BinderItem ID="106" Type="Text">
+              <Title>Wickham does not attend</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="107" Type="Folder">
+          <Title>Chapter 19</Title>
+          <Children>
+            <BinderItem ID="108" Type="Text">
+              <Title>Mr Collins proposes to Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="109" Type="Text">
+              <Title>Lizzy refuses Mr Collins' proposal</Title>
+            </BinderItem>
+            <BinderItem ID="110" Type="Text">
+              <Title>Mrs Bennet supports proposing</Title>
+            </BinderItem>
+            <BinderItem ID="111" Type="Text">
+              <Title>Mr Collins proposes to Lizzy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="112" Type="Folder">
+          <Title>Chapter 20</Title>
+          <Children>
+            <BinderItem ID="113" Type="Text">
+              <Title>The proposal is discussed</Title>
+            </BinderItem>
+            <BinderItem ID="114" Type="Text">
+              <Title>Lizzy remains steadfast</Title>
+            </BinderItem>
+            <BinderItem ID="115" Type="Text">
+              <Title>Mr Bennet opposes the match</Title>
+            </BinderItem>
+            <BinderItem ID="116" Type="Text">
+              <Title>Mrs Bennet tries to persuade Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="117" Type="Text">
+              <Title>Mr Collins has doubts</Title>
+            </BinderItem>
+            <BinderItem ID="118" Type="Text">
+              <Title>Miss Lucas arrives to the news</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="119" Type="Folder">
+          <Title>Chapter 21</Title>
+          <Children>
+            <BinderItem ID="120" Type="Text">
+              <Title>The Bingleys (and Darcy) leave</Title>
+            </BinderItem>
+            <BinderItem ID="121" Type="Text">
+              <Title>Lizzy is furious with Miss Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="122" Type="Text">
+              <Title>Jane is heartbroken, but not angry</Title>
+            </BinderItem>
+            <BinderItem ID="123" Type="Text">
+              <Title>Mrs Bennet bemoans their exit</Title>
+            </BinderItem>
+            <BinderItem ID="124" Type="Text">
+              <Title>Miss Bingley tells Jane they left</Title>
+            </BinderItem>
+            <BinderItem ID="125" Type="Text">
+              <Title>Mr Collins moves his interest</Title>
+            </BinderItem>
+            <BinderItem ID="126" Type="Text">
+              <Title>Wickham meets the Bennets in town</Title>
+            </BinderItem>
+            <BinderItem ID="127" Type="Text">
+              <Title>Miss Lucas receives Mr Collins' attention</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="128" Type="Folder">
+          <Title>Chapter 22</Title>
+          <Children>
+            <BinderItem ID="129" Type="Text">
+              <Title>Mr Collins and Miss Lucas are engaged</Title>
+            </BinderItem>
+            <BinderItem ID="130" Type="Text">
+              <Title>Lizzy is upset and surprised</Title>
+            </BinderItem>
+            <BinderItem ID="131" Type="Text">
+              <Title>Mr Collins proposes to Miss Lucas</Title>
+            </BinderItem>
+            <BinderItem ID="132" Type="Text">
+              <Title>Miss Lucas accepts Mr Collins</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="133" Type="Folder">
+          <Title>Chapter 23</Title>
+          <Children>
+            <BinderItem ID="134" Type="Text">
+              <Title>The Bennets learn of the engagement</Title>
+            </BinderItem>
+            <BinderItem ID="135" Type="Text">
+              <Title>Lizzy joins Jane's worries</Title>
+            </BinderItem>
+            <BinderItem ID="136" Type="Text">
+              <Title>Jane worries Bingley is truly gone</Title>
+            </BinderItem>
+            <BinderItem ID="137" Type="Text">
+              <Title>Mrs Bennet is angered</Title>
+            </BinderItem>
+            <BinderItem ID="138" Type="Text">
+              <Title>Mr Collins visits for his engagement</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="139" Type="Folder">
+          <Title>Chapter 24</Title>
+          <Children>
+            <BinderItem ID="140" Type="Text">
+              <Title>Jane and Lizzy speak</Title>
+            </BinderItem>
+            <BinderItem ID="141" Type="Text">
+              <Title>Lizzy hates near everyone but Jane</Title>
+            </BinderItem>
+            <BinderItem ID="142" Type="Text">
+              <Title>Jane is heartbroken</Title>
+            </BinderItem>
+            <BinderItem ID="143" Type="Text">
+              <Title>Mr Bennet jokes about Wickham and Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="144" Type="Text">
+              <Title>Miss Bingley writes Jane</Title>
+            </BinderItem>
+            <BinderItem ID="145" Type="Text">
+              <Title>Wickham is a friend to the Bennets</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="146" Type="Folder">
+          <Title>Chapter 25</Title>
+          <Children>
+            <BinderItem ID="147" Type="Text">
+              <Title>The Gardiners come to visit</Title>
+            </BinderItem>
+            <BinderItem ID="148" Type="Text">
+              <Title>Lizzy's interest in Wickham is clear</Title>
+            </BinderItem>
+            <BinderItem ID="149" Type="Text">
+              <Title>Jane is invited to London</Title>
+            </BinderItem>
+            <BinderItem ID="150" Type="Text">
+              <Title>Mrs Bennet is happy to host them</Title>
+            </BinderItem>
+            <BinderItem ID="151" Type="Text">
+              <Title>Mr Collins returns to await his bride</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="152" Type="Folder">
+          <Title>Chapter 26</Title>
+          <Children>
+            <BinderItem ID="153" Type="Text">
+              <Title>Collins' marriage takes place</Title>
+            </BinderItem>
+            <BinderItem ID="154" Type="Text">
+              <Title>Lizzy is advised against Wickham</Title>
+            </BinderItem>
+            <BinderItem ID="155" Type="Text">
+              <Title>Jane is snubbed by Miss Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="156" Type="Text">
+              <Title>Lydia is angrier with Wickham than Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="157" Type="Text">
+              <Title>Miss Bingley snubs Jane</Title>
+            </BinderItem>
+            <BinderItem ID="158" Type="Text">
+              <Title>Mr Collins is married</Title>
+            </BinderItem>
+            <BinderItem ID="159" Type="Text">
+              <Title>Wickham moves his interest elsewhere</Title>
+            </BinderItem>
+            <BinderItem ID="160" Type="Text">
+              <Title>Charlotte is married</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="161" Type="Folder">
+          <Title>Chapter 27</Title>
+          <Children>
+            <BinderItem ID="162" Type="Text">
+              <Title>Lizzy goes to London</Title>
+            </BinderItem>
+            <BinderItem ID="163" Type="Text">
+              <Title>Lizzy stops in London</Title>
+            </BinderItem>
+            <BinderItem ID="164" Type="Text">
+              <Title>Wickham sees Lizzy off kindly</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="165" Type="Folder">
+          <Title>Chapter 28</Title>
+          <Children>
+            <BinderItem ID="166" Type="Text">
+              <Title>Lizzy visits Miss Lucas in Hunsford</Title>
+            </BinderItem>
+            <BinderItem ID="167" Type="Text">
+              <Title>Lizzy is amused</Title>
+            </BinderItem>
+            <BinderItem ID="168" Type="Text">
+              <Title>Mr Collins gives the group a tour</Title>
+            </BinderItem>
+            <BinderItem ID="169" Type="Text">
+              <Title>Charlotte is happy to see Lizzy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="170" Type="Folder">
+          <Title>Chapter 29</Title>
+          <Children>
+            <BinderItem ID="171" Type="Text">
+              <Title>The group goes to Rosings</Title>
+            </BinderItem>
+            <BinderItem ID="172" Type="Text">
+              <Title>Lizzy butts heads with Lady Catherine</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="173" Type="Folder">
+          <Title>Chapter 30</Title>
+          <Children>
+            <BinderItem ID="174" Type="Text">
+              <Title>Lizzy remains at Hunsford</Title>
+            </BinderItem>
+            <BinderItem ID="175" Type="Text">
+              <Title>Lizzy asks about Jane</Title>
+            </BinderItem>
+            <BinderItem ID="176" Type="Text">
+              <Title>Darcy comes to Rosings</Title>
+            </BinderItem>
+            <BinderItem ID="177" Type="Text">
+              <Title>The Colonel accompanies Darcy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="178" Type="Folder">
+          <Title>Chapter 31</Title>
+          <Children>
+            <BinderItem ID="179" Type="Text">
+              <Title>Rosings again, with Darcy and Colonel</Title>
+            </BinderItem>
+            <BinderItem ID="180" Type="Text">
+              <Title>Lizzy and the Colonel get along</Title>
+            </BinderItem>
+            <BinderItem ID="181" Type="Text">
+              <Title>Darcy confesses his awkwardness</Title>
+            </BinderItem>
+            <BinderItem ID="182" Type="Text">
+              <Title>The Colonel admires Lizzy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="183" Type="Folder">
+          <Title>Chapter 32</Title>
+          <Children>
+            <BinderItem ID="184" Type="Text">
+              <Title>Frequent visits from Darcy and Colonel</Title>
+            </BinderItem>
+            <BinderItem ID="185" Type="Text">
+              <Title>Lizzy does not believe Charlotte</Title>
+            </BinderItem>
+            <BinderItem ID="186" Type="Text">
+              <Title>Darcy visits quite often</Title>
+            </BinderItem>
+            <BinderItem ID="187" Type="Text">
+              <Title>Charlotte tells Lizzy Darcy's in love</Title>
+            </BinderItem>
+            <BinderItem ID="188" Type="Text">
+              <Title>The Colonel visits often</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="189" Type="Folder">
+          <Title>Chapter 33</Title>
+          <Children>
+            <BinderItem ID="190" Type="Text">
+              <Title>The Colonel drops a bombshell</Title>
+            </BinderItem>
+            <BinderItem ID="191" Type="Text">
+              <Title>Lizzy hears the Colonel's story</Title>
+            </BinderItem>
+            <BinderItem ID="192" Type="Text">
+              <Title>Darcy meets Lizzy on her walks</Title>
+            </BinderItem>
+            <BinderItem ID="193" Type="Text">
+              <Title>The Colonel tells Lizzy about Darcy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="194" Type="Folder">
+          <Title>Chapter 34</Title>
+          <Children>
+            <BinderItem ID="195" Type="Text">
+              <Title>Darcy proposes</Title>
+            </BinderItem>
+            <BinderItem ID="196" Type="Text">
+              <Title>Lizzy rejects the proposal</Title>
+            </BinderItem>
+            <BinderItem ID="197" Type="Text">
+              <Title>Darcy proposes to Lizzy, rudely</Title>
+            </BinderItem>
+            <BinderItem ID="198" Type="Text">
+              <Title></Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="199" Type="Folder">
+          <Title>Chapter 35</Title>
+          <Children>
+            <BinderItem ID="200" Type="Text">
+              <Title>Darcy writes a letter</Title>
+            </BinderItem>
+            <BinderItem ID="201" Type="Text">
+              <Title>Lizzy receives Darcy's letter</Title>
+            </BinderItem>
+            <BinderItem ID="202" Type="Text">
+              <Title>Darcy explains himself</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="203" Type="Folder">
+          <Title>Chapter 36</Title>
+          <Children>
+            <BinderItem ID="204" Type="Text">
+              <Title>Lizzy reacts to the letter</Title>
+            </BinderItem>
+            <BinderItem ID="205" Type="Text">
+              <Title>Lizzy realizes her prejudice</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="206" Type="Folder">
+          <Title>Chapter 37</Title>
+          <Children>
+            <BinderItem ID="207" Type="Text">
+              <Title>Darcy and the Colonel leave</Title>
+            </BinderItem>
+            <BinderItem ID="208" Type="Text">
+              <Title>Lizzy worries about her family</Title>
+            </BinderItem>
+            <BinderItem ID="209" Type="Text">
+              <Title>Darcy leaves</Title>
+            </BinderItem>
+            <BinderItem ID="210" Type="Text">
+              <Title>The Colonel leaves</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="211" Type="Folder">
+          <Title>Chapter 38</Title>
+          <Children>
+            <BinderItem ID="212" Type="Text">
+              <Title>Lizzy leaves Hunsford</Title>
+            </BinderItem>
+            <BinderItem ID="213" Type="Text">
+              <Title>Lizzy heads for home</Title>
+            </BinderItem>
+            <BinderItem ID="214" Type="Text">
+              <Title>Jane joins Lizzy on her journey</Title>
+            </BinderItem>
+            <BinderItem ID="215" Type="Text">
+              <Title>Mr Collins sends her off verbosely</Title>
+            </BinderItem>
+            <BinderItem ID="216" Type="Text">
+              <Title>Charlotte sadly sees her off</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="217" Type="Folder">
+          <Title>Chapter 39</Title>
+          <Children>
+            <BinderItem ID="218" Type="Text">
+              <Title>Jane and Lizzy are back at Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="219" Type="Text">
+              <Title>Lizzy arrives at home</Title>
+            </BinderItem>
+            <BinderItem ID="220" Type="Text">
+              <Title>Jane arrives at home</Title>
+            </BinderItem>
+            <BinderItem ID="221" Type="Text">
+              <Title>Lydia catches them up on gossip</Title>
+            </BinderItem>
+            <BinderItem ID="222" Type="Text">
+              <Title>Mr Bennet is happy to have Lizzy home</Title>
+            </BinderItem>
+            <BinderItem ID="223" Type="Text">
+              <Title>Mrs Bennet tries to sway Mr Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="224" Type="Text">
+              <Title>Wickham is no longer attached</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="225" Type="Folder">
+          <Title>Chapter 40</Title>
+          <Children>
+            <BinderItem ID="226" Type="Text">
+              <Title>Lizzy tells Jane about the proposal</Title>
+            </BinderItem>
+            <BinderItem ID="227" Type="Text">
+              <Title>Lizzy tells Jane half the story</Title>
+            </BinderItem>
+            <BinderItem ID="228" Type="Text">
+              <Title>Jane is saddened by the story</Title>
+            </BinderItem>
+            <BinderItem ID="229" Type="Text">
+              <Title>Mrs Bennet asks Lizzy about Jane</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="230" Type="Folder">
+          <Title>Chapter 41</Title>
+          <Children>
+            <BinderItem ID="231" Type="Text">
+              <Title>Lydia receives a invitation</Title>
+            </BinderItem>
+            <BinderItem ID="232" Type="Text">
+              <Title>Lizzy takes Darcy's letter into account</Title>
+            </BinderItem>
+            <BinderItem ID="233" Type="Text">
+              <Title>Lydia is invited to go to Brighton</Title>
+            </BinderItem>
+            <BinderItem ID="234" Type="Text">
+              <Title>Mr Bennet doesn't take Lizzy seriously</Title>
+            </BinderItem>
+            <BinderItem ID="235" Type="Text">
+              <Title>Wickham leaves and bids Lizzy adieu</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="236" Type="Folder">
+          <Title>Chapter 42</Title>
+          <Children>
+            <BinderItem ID="237" Type="Text">
+              <Title>Lizzy departs on her pleasure tour</Title>
+            </BinderItem>
+            <BinderItem ID="238" Type="Text">
+              <Title>Lizzy leaves with the Gardiners</Title>
+            </BinderItem>
+            <BinderItem ID="239" Type="Text">
+              <Title>Lydia goes to Brighton</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="240" Type="Folder">
+          <Title>Chapter 43</Title>
+          <Children>
+            <BinderItem ID="241" Type="Text">
+              <Title>The group goes to Pemberley</Title>
+            </BinderItem>
+            <BinderItem ID="242" Type="Text">
+              <Title>Lizzy takes a tour of Pemberley</Title>
+            </BinderItem>
+            <BinderItem ID="243" Type="Text">
+              <Title>Darcy arrives at his home</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="244" Type="Folder">
+          <Title>Chapter 44</Title>
+          <Children>
+            <BinderItem ID="245" Type="Text">
+              <Title>Mr and Miss Darcy and Bingley call</Title>
+            </BinderItem>
+            <BinderItem ID="246" Type="Text">
+              <Title>Lizzy is very happy</Title>
+            </BinderItem>
+            <BinderItem ID="247" Type="Text">
+              <Title>Darcy is clearly in love with Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="248" Type="Text">
+              <Title>Bingley still has feelings for Jane</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="249" Type="Folder">
+          <Title>Chapter 45</Title>
+          <Children>
+            <BinderItem ID="250" Type="Text">
+              <Title>The group returns to Pemberley </Title>
+            </BinderItem>
+            <BinderItem ID="251" Type="Text">
+              <Title>Lizzy holds her own</Title>
+            </BinderItem>
+            <BinderItem ID="252" Type="Text">
+              <Title>Darcy defends Lizzy against Miss Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="253" Type="Text">
+              <Title>Miss Bingley speaks ill of Lizzy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="254" Type="Folder">
+          <Title>Chapter 46</Title>
+          <Children>
+            <BinderItem ID="255" Type="Text">
+              <Title>Lydia has run off with Wickham</Title>
+            </BinderItem>
+            <BinderItem ID="256" Type="Text">
+              <Title>Lizzy leaves for Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="257" Type="Text">
+              <Title>Darcy is told the story</Title>
+            </BinderItem>
+            <BinderItem ID="258" Type="Text">
+              <Title>Jane writes a woeful letter telling Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="259" Type="Text">
+              <Title>Lydia runs away with Wickham</Title>
+            </BinderItem>
+            <BinderItem ID="260" Type="Text">
+              <Title>Mr Bennet thinks the worst</Title>
+            </BinderItem>
+            <BinderItem ID="261" Type="Text">
+              <Title>Mrs Bennet falls ill with worry</Title>
+            </BinderItem>
+            <BinderItem ID="262" Type="Text">
+              <Title>Wickham runs off with Lydia</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="263" Type="Folder">
+          <Title>Chapter 47</Title>
+          <Children>
+            <BinderItem ID="264" Type="Text">
+              <Title>Lizzy arrives home</Title>
+            </BinderItem>
+            <BinderItem ID="265" Type="Text">
+              <Title>Lizzy is horrified</Title>
+            </BinderItem>
+            <BinderItem ID="266" Type="Text">
+              <Title>Jane reads Lizzy Lydia's letter</Title>
+            </BinderItem>
+            <BinderItem ID="267" Type="Text">
+              <Title>Mr Bennet has gone to London</Title>
+            </BinderItem>
+            <BinderItem ID="268" Type="Text">
+              <Title>Mrs Bennet is in hysterics</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="269" Type="Folder">
+          <Title>Chapter 48</Title>
+          <Children>
+            <BinderItem ID="270" Type="Text">
+              <Title>The Bennets wait for news</Title>
+            </BinderItem>
+            <BinderItem ID="271" Type="Text">
+              <Title>Mr Bennet returns to Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="272" Type="Text">
+              <Title>Mr Collins writes to Mr Bennet</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="273" Type="Folder">
+          <Title>Chapter 49</Title>
+          <Children>
+            <BinderItem ID="274" Type="Text">
+              <Title>The Bennets receive news</Title>
+            </BinderItem>
+            <BinderItem ID="275" Type="Text">
+              <Title>Lydia will be married</Title>
+            </BinderItem>
+            <BinderItem ID="276" Type="Text">
+              <Title>Mr Bennet receives a letter</Title>
+            </BinderItem>
+            <BinderItem ID="277" Type="Text">
+              <Title>Mrs Bennet is overjoyed</Title>
+            </BinderItem>
+            <BinderItem ID="278" Type="Text">
+              <Title>Wickham will marry Lydia</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="279" Type="Folder">
+          <Title>Chapter 50</Title>
+          <Children>
+            <BinderItem ID="280" Type="Text">
+              <Title>The situation is settled</Title>
+            </BinderItem>
+            <BinderItem ID="281" Type="Text">
+              <Title>Lizzy mourns her chance with Darcy</Title>
+            </BinderItem>
+            <BinderItem ID="282" Type="Text">
+              <Title>Jane and Lizzy sway Mr Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="283" Type="Text">
+              <Title>Mr Bennet remains furious</Title>
+            </BinderItem>
+            <BinderItem ID="284" Type="Text">
+              <Title>Mrs Bennet begins making plans</Title>
+            </BinderItem>
+            <BinderItem ID="285" Type="Text">
+              <Title>Wickham will quit the militia</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="286" Type="Folder">
+          <Title>Chapter 51</Title>
+          <Children>
+            <BinderItem ID="287" Type="Text">
+              <Title>Lydia and Wickham arrive at Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="288" Type="Text">
+              <Title>Lizzy hears of Darcy's role</Title>
+            </BinderItem>
+            <BinderItem ID="289" Type="Text">
+              <Title>Lydia is very smug and unembarrassed</Title>
+            </BinderItem>
+            <BinderItem ID="290" Type="Text">
+              <Title>Mrs Bennet is as proud as Lydia</Title>
+            </BinderItem>
+            <BinderItem ID="291" Type="Text">
+              <Title>Wickham is unembarrassed</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="292" Type="Folder">
+          <Title>Chapter 52</Title>
+          <Children>
+            <BinderItem ID="293" Type="Text">
+              <Title>Darcy's role is revealed</Title>
+            </BinderItem>
+            <BinderItem ID="294" Type="Text">
+              <Title>Lizzy receives her aunt's letter</Title>
+            </BinderItem>
+            <BinderItem ID="295" Type="Text">
+              <Title>Darcy had saved the day!</Title>
+            </BinderItem>
+            <BinderItem ID="296" Type="Text">
+              <Title>Wickham approaches Lizzy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="297" Type="Folder">
+          <Title>Chapter 53</Title>
+          <Children>
+            <BinderItem ID="298" Type="Text">
+              <Title>Lydia leaves and Bingley returns</Title>
+            </BinderItem>
+            <BinderItem ID="299" Type="Text">
+              <Title>Lizzy is in agony</Title>
+            </BinderItem>
+            <BinderItem ID="300" Type="Text">
+              <Title>Darcy joins Bingley in visiting</Title>
+            </BinderItem>
+            <BinderItem ID="301" Type="Text">
+              <Title>Jane tries to hide her feelings</Title>
+            </BinderItem>
+            <BinderItem ID="302" Type="Text">
+              <Title>Bingley calls on the Bennets</Title>
+            </BinderItem>
+            <BinderItem ID="303" Type="Text">
+              <Title>Lydia takes leave uncaringly</Title>
+            </BinderItem>
+            <BinderItem ID="304" Type="Text">
+              <Title>Mr Bennet refuses to call on Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="305" Type="Text">
+              <Title>Mrs Bennet resolves to invite Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="306" Type="Text">
+              <Title>Wickham gives a charming goodbye</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="307" Type="Folder">
+          <Title>Chapter 54</Title>
+          <Children>
+            <BinderItem ID="308" Type="Text">
+              <Title>A party at Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="309" Type="Text">
+              <Title>Lizzy hopes Darcy will speak to her</Title>
+            </BinderItem>
+            <BinderItem ID="310" Type="Text">
+              <Title>Darcy speaks very little to anyone.</Title>
+            </BinderItem>
+            <BinderItem ID="311" Type="Text">
+              <Title>Jane is quite happy</Title>
+            </BinderItem>
+            <BinderItem ID="312" Type="Text">
+              <Title>Bingley seems as fond of Jane as ever</Title>
+            </BinderItem>
+            <BinderItem ID="313" Type="Text">
+              <Title>Mrs Bennet hosts a large dinner</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="314" Type="Folder">
+          <Title>Chapter 55</Title>
+          <Children>
+            <BinderItem ID="315" Type="Text">
+              <Title>Bingley and Jane are engaged</Title>
+            </BinderItem>
+            <BinderItem ID="316" Type="Text">
+              <Title>Lizzy is overjoyed for her sister</Title>
+            </BinderItem>
+            <BinderItem ID="317" Type="Text">
+              <Title>Jane is the happiest anyone has been</Title>
+            </BinderItem>
+            <BinderItem ID="318" Type="Text">
+              <Title>Bingley proposes to Jane</Title>
+            </BinderItem>
+            <BinderItem ID="319" Type="Text">
+              <Title>Mr Bennet is happy for Jane</Title>
+            </BinderItem>
+            <BinderItem ID="320" Type="Text">
+              <Title>Mrs Bennet schemes repeatedly</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="321" Type="Folder">
+          <Title>Chapter 56</Title>
+          <Children>
+            <BinderItem ID="322" Type="Text">
+              <Title>Lady Catherine visits Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="323" Type="Text">
+              <Title>Lizzy is confronted and holds strong</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="324" Type="Folder">
+          <Title>Chapter 57</Title>
+          <Children>
+            <BinderItem ID="325" Type="Text">
+              <Title>Mr Bennet receives a letter</Title>
+            </BinderItem>
+            <BinderItem ID="326" Type="Text">
+              <Title>Lizzy cannot be amused</Title>
+            </BinderItem>
+            <BinderItem ID="327" Type="Text">
+              <Title>Mr Bennet reads the letter to Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="328" Type="Text">
+              <Title>Mr Collins warns Mr Bennet by letter</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="329" Type="Folder">
+          <Title>Chapter 58</Title>
+          <Children>
+            <BinderItem ID="330" Type="Text">
+              <Title>Lizzy and Darcy are engaged</Title>
+            </BinderItem>
+            <BinderItem ID="331" Type="Text">
+              <Title>Lizzy confesses her new feelings</Title>
+            </BinderItem>
+            <BinderItem ID="332" Type="Text">
+              <Title>Darcy proposes</Title>
+            </BinderItem>
+            <BinderItem ID="333" Type="Text">
+              <Title>Jane and Bingley go for a walk</Title>
+            </BinderItem>
+            <BinderItem ID="334" Type="Text">
+              <Title>Bingley visits with Darcy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="335" Type="Folder">
+          <Title>Chapter 59</Title>
+          <Children>
+            <BinderItem ID="336" Type="Text">
+              <Title>The Bennets hear of the engagement</Title>
+            </BinderItem>
+            <BinderItem ID="337" Type="Text">
+              <Title>Lizzy tells her parents</Title>
+            </BinderItem>
+            <BinderItem ID="338" Type="Text">
+              <Title>Darcy asks for Mr Bennet's permission</Title>
+            </BinderItem>
+            <BinderItem ID="339" Type="Text">
+              <Title>Jane is surprised but happy</Title>
+            </BinderItem>
+            <BinderItem ID="340" Type="Text">
+              <Title>Bingley is thrilled at the news</Title>
+            </BinderItem>
+            <BinderItem ID="341" Type="Text">
+              <Title>Mr Bennet gives his permission </Title>
+            </BinderItem>
+            <BinderItem ID="342" Type="Text">
+              <Title>Mrs Bennet gives her permission</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="343" Type="Folder">
+          <Title>Chapter 60</Title>
+          <Children>
+            <BinderItem ID="344" Type="Text">
+              <Title>The engagement is settled</Title>
+            </BinderItem>
+            <BinderItem ID="345" Type="Text">
+              <Title>Lizzy writes to the Gardiners</Title>
+            </BinderItem>
+            <BinderItem ID="346" Type="Text">
+              <Title>Darcy writes to Lady Catherine</Title>
+            </BinderItem>
+            <BinderItem ID="347" Type="Text">
+              <Title>Mr Bennet writes to Mr Collins</Title>
+            </BinderItem>
+            <BinderItem ID="348" Type="Text">
+              <Title>Miss Bingley writes to Jane</Title>
+            </BinderItem>
+            <BinderItem ID="349" Type="Text">
+              <Title>Miss Lucas comes to Longbourn</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="350" Type="Folder">
+          <Title>Chapter 61</Title>
+          <Children>
+            <BinderItem ID="351" Type="Text">
+              <Title>And they all live happily ever after!</Title>
+            </BinderItem>
+            <BinderItem ID="352" Type="Text">
+              <Title>Lizzy, in love, continues to tease</Title>
+            </BinderItem>
+            <BinderItem ID="353" Type="Text">
+              <Title>Darcy is happier and forgiving</Title>
+            </BinderItem>
+            <BinderItem ID="354" Type="Text">
+              <Title>Jane and Lizzy are but 30 miles apart</Title>
+            </BinderItem>
+            <BinderItem ID="355" Type="Text">
+              <Title>Bingley buys an estate near Darcy's</Title>
+            </BinderItem>
+            <BinderItem ID="356" Type="Text">
+              <Title>Lydia hopes for money from Lizzy</Title>
+            </BinderItem>
+            <BinderItem ID="357" Type="Text">
+              <Title>Mr Bennet calls often at Pemberley</Title>
+            </BinderItem>
+            <BinderItem ID="358" Type="Text">
+              <Title>Mrs Bennet sees her daughters married</Title>
+            </BinderItem>
+            <BinderItem ID="359" Type="Text">
+              <Title>Miss Bingley makes amends</Title>
+            </BinderItem>
+            <BinderItem ID="360" Type="Text">
+              <Title>Wickham hopes for money from Darcy</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+      </Children>
+    </BinderItem>
+    <BinderItem ID="1" Type="ResearchFolder">
+      <Title>Notes</Title>
+      <Children>
+        <BinderItem ID="361" Type="Folder">
+          <Title>Characters</Title>
+          <Children>
+            <BinderItem ID="362" Type="Text">
+              <Title>Catherine "Kitty" Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="363" Type="Text">
+              <Title>Charles Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="364" Type="Text">
+              <Title>Charlotte Lucas</Title>
+            </BinderItem>
+            <BinderItem ID="365" Type="Text">
+              <Title>Colonel Fitzwilliam</Title>
+            </BinderItem>
+            <BinderItem ID="366" Type="Text">
+              <Title>Elizabeth Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="367" Type="Text">
+              <Title>Fitzwilliam Darcy</Title>
+            </BinderItem>
+            <BinderItem ID="368" Type="Text">
+              <Title>George Wickham</Title>
+            </BinderItem>
+            <BinderItem ID="369" Type="Text">
+              <Title>Georgiana Darcy</Title>
+            </BinderItem>
+            <BinderItem ID="370" Type="Text">
+              <Title>Jane Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="371" Type="Text">
+              <Title>Lady Catherine de Bourgh</Title>
+            </BinderItem>
+            <BinderItem ID="372" Type="Text">
+              <Title>Lydia Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="373" Type="Text">
+              <Title>Mary Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="374" Type="Text">
+              <Title>Miss Bingley</Title>
+            </BinderItem>
+            <BinderItem ID="375" Type="Text">
+              <Title>Mr Gardiner</Title>
+            </BinderItem>
+            <BinderItem ID="376" Type="Text">
+              <Title>Mr. Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="377" Type="Text">
+              <Title>Mr. Collins</Title>
+            </BinderItem>
+            <BinderItem ID="378" Type="Text">
+              <Title>Mrs Gardiner</Title>
+            </BinderItem>
+            <BinderItem ID="379" Type="Text">
+              <Title>Mrs Phillips</Title>
+            </BinderItem>
+            <BinderItem ID="380" Type="Text">
+              <Title>Mrs. Bennet</Title>
+            </BinderItem>
+            <BinderItem ID="381" Type="Text">
+              <Title>Mrs. Hurst</Title>
+            </BinderItem>
+            <BinderItem ID="382" Type="Text">
+              <Title>ne character</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="383" Type="Folder">
+          <Title>Places</Title>
+          <Children>
+            <BinderItem ID="384" Type="Text">
+              <Title>Brighton</Title>
+            </BinderItem>
+            <BinderItem ID="385" Type="Text">
+              <Title>Hunsford</Title>
+            </BinderItem>
+            <BinderItem ID="386" Type="Text">
+              <Title>London</Title>
+            </BinderItem>
+            <BinderItem ID="387" Type="Text">
+              <Title>Longbourn</Title>
+            </BinderItem>
+            <BinderItem ID="388" Type="Text">
+              <Title>Meryton</Title>
+            </BinderItem>
+            <BinderItem ID="389" Type="Text">
+              <Title>Netherfield Park</Title>
+            </BinderItem>
+            <BinderItem ID="390" Type="Text">
+              <Title>Pemberley</Title>
+            </BinderItem>
+            <BinderItem ID="391" Type="Text">
+              <Title>Rosings</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+        <BinderItem ID="392" Type="Folder">
+          <Title>Notes</Title>
+          <Children>
+            <BinderItem ID="393" Type="Text">
+              <Title>ENTAIL - definition and meaning</Title>
+            </BinderItem>
+            <BinderItem ID="394" Type="Text">
+              <Title>BALLS &amp; DANCES - etiquette</Title>
+            </BinderItem>
+            <BinderItem ID="395" Type="Text">
+              <Title>Darcy &amp; Wickham</Title>
+            </BinderItem>
+            <BinderItem ID="396" Type="Text">
+              <Title>Notes on pride</Title>
+            </BinderItem>
+            <BinderItem ID="397" Type="Text">
+              <Title>Notes on prejudice</Title>
+            </BinderItem>
+            <BinderItem ID="398" Type="Text">
+              <Title>Title Ideas</Title>
+            </BinderItem>
+            <BinderItem ID="399" Type="Text">
+              <Title>strikethrough</Title>
+            </BinderItem>
+            <BinderItem ID="400" Type="Text">
+              <Title>cool image</Title>
+            </BinderItem>
+            <BinderItem ID="401" Type="Text">
+              <Title>colored text</Title>
+            </BinderItem>
+            <BinderItem ID="402" Type="Text">
+              <Title>Fonts</Title>
+            </BinderItem>
+          </Children>
+        </BinderItem>
+      </Children>
+    </BinderItem>
+    <BinderItem ID="2" Type="TrashFolder">
+      <Title>Trash</Title>
+      <Children>
+      </Children>
+    </BinderItem>
+  </Binder>
+  <ProjectProperties>
+    <ProjectTitle>Title</ProjectTitle>
+  </ProjectProperties>
+</ScrivenerProject>

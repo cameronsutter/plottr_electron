@@ -1,7 +1,7 @@
 import { createStore } from 'redux'
 import { exec } from 'child_process'
 import fs from 'fs'
-import xml2js from 'xml2js'
+import { xml2json } from 'xml-js'
 import undoable from 'redux-undo'
 
 import wordExporter from '../../src/common/exporter/word/exporter'
@@ -29,7 +29,6 @@ const extract = (filePath, destDir) => {
 }
 
 describe('wordExporter', () => {
-  const parser = new xml2js.Parser()
   copyCurrent('example3.docx')
   const example3 = readExample3()
   const reducer = undoable(rootReducer, { limit: 10, ignoreInitialState: true })
@@ -47,9 +46,9 @@ describe('wordExporter', () => {
     const newUnzippedDirectory = fs.mkdtempSync('word-export-test')
     await extract(targetPath, newUnzippedDirectory)
     const oldDocument = fs.readFileSync(`${oldUnzippedDirectory}/word/document.xml`)
-    const oldDocumentJSON = await parser.parseStringPromise(oldDocument)
+    const oldDocumentJSON = xml2json(oldDocument)
     const newDocument = fs.readFileSync(`${newUnzippedDirectory}/word/document.xml`)
-    const newDocumentJSON = await parser.parseStringPromise(newDocument)
+    const newDocumentJSON = xml2json(newDocument)
     expect(oldDocumentJSON).toEqual(newDocumentJSON)
     console.log(`Deleting ${oldUnzippedDirectory}`)
     fs.rmdir(oldUnzippedDirectory, { recursive: true }, (error) => {

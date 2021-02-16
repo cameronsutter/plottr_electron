@@ -55,17 +55,14 @@ class BeatTitleCell extends PureComponent {
 
   editTitle = () => {
     const ref = this.titleInputRef.current
-    if (!ref) return null
+    if (!ref) return
 
     this.finalizeEdit(ref.value)
-    // For consistency in the return type
-    return null
   }
 
   finalizeEdit = (newVal) => {
     const { beat, actions } = this.props
-    // if nothing, set to auto
-    actions.editBeatTitle(beat.id, newVal || 'auto')
+    actions.editBeatTitle(beat.id, newVal || 'auto') // if nothing, set to auto
     this.setState({ editing: false, hovering: false })
   }
 

@@ -4,7 +4,7 @@ module.exports = {
   allowPrerelease: false,
   forceDevTools: false,
   trialMode: false,
-  canGetUpdates: false,
+  canGetUpdates: true,
   isInGracePeriod: false,
   gracePeriodEnd: 0,
   canEdit: true,

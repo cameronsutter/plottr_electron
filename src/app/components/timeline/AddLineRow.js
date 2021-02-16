@@ -194,7 +194,6 @@ class AddLineRow extends Component {
   }
 
   handleChooseTemplate = (template) => {
-    // NOTE: doesn't work for series lines
     const { ui, actions } = this.props
     const templateData = template.templateData
     let bookId = ui.currentTimeline

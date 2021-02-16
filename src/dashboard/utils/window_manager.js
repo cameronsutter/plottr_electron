@@ -6,7 +6,6 @@ import { saveToTempFile } from '../../common/utils/temp_files'
 import { addToKnownFiles } from '../../common/utils/known_files'
 import Importer from '../../common/importer/snowflake/importer'
 import { emptyFile, migrateIfNeeded } from 'pltr/v2'
-import { mergeWith, isArray } from 'lodash'
 const win = remote.getCurrentWindow()
 const { dialog, app } = remote
 
@@ -30,15 +29,6 @@ export function openExistingFile() {
     const id = addToKnownFiles(files[0])
     openKnownFile(files[0], id)
   }
-}
-
-const mergeRecursivelyWithArrayConcatStrategy = (object1, object2) => {
-  const concatenateArrays = (objValue, srcValue) => {
-    if (isArray(objValue)) {
-      return objValue.concat(srcValue)
-    }
-  }
-  return mergeWith(object1, object2, concatenateArrays)
 }
 
 export function createNew(templateData) {
@@ -70,7 +60,7 @@ export function createNew(templateData) {
         // Let the top level handler handle it
         throw error
       }
-      const mergedWithEmptyFile = mergeRecursivelyWithArrayConcatStrategy(emptyPlottrFile, state)
+      const mergedWithEmptyFile = Object.assign({}, emptyPlottrFile, state)
       const filePath = saveToTempFile(mergedWithEmptyFile)
       const fileId = addToKnownFiles(filePath)
       openKnownFile(filePath, fileId)

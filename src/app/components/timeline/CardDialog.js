@@ -29,7 +29,7 @@ const {
 
 const CardActions = actions.card
 const UIActions = actions.ui
-const CustomAttributeActions = actions.ui
+const CustomAttributeActions = actions.customAttribute
 
 const { sortedTagsSelector, isSeriesSelector } = selectors
 

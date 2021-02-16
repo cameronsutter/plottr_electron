@@ -8,9 +8,10 @@ import i18n from 'format-message'
 import cx from 'classnames'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { helpers, actions, selectors, nextColor, initialState } from 'pltr/v2'
+import { helpers, actions, selectors, lineColors, initialState } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 
+const { nextColor } = lineColors
 const card = initialState.card
 const defaultLine = initialState.line
 

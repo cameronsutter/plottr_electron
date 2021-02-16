@@ -2,8 +2,9 @@ import xml from 'xml-js'
 import fs from 'fs'
 import i18n from 'format-message'
 import { cloneDeep, keyBy, groupBy } from 'lodash'
-import { newIds, helpers, nextColor, initialState } from 'pltr/v2'
+import { newIds, helpers, lineColors, initialState } from 'pltr/v2'
 
+const { nextColor } = lineColors
 const defaultBook = initialState.book
 const defaultNote = initialState.note
 const defaultCharacter = initialState.character

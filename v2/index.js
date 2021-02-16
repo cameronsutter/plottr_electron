@@ -26,6 +26,8 @@ import * as imageHelpers from './helpers/images'
 import * as orientedClassNameHelpers from './helpers/orientedClassName'
 import * as undoHelpers from './helpers/undo'
 
+import * as template from './template'
+
 import migrateIfNeeded from './migrator/migration_manager'
 
 import * as bookSelectors from './selectors/books'
@@ -136,4 +138,5 @@ export {
   lineColors,
   emptyFile,
   newIds,
+  template,
 }

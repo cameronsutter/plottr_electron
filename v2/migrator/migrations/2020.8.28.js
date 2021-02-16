@@ -6,25 +6,35 @@ export default function migrate(data) {
   let obj = cloneDeep(data)
 
   // add timelineTemplates to books
-  obj.books.allIds.forEach((id) => (obj.books[id].timelineTemplates = []))
+  if (obj.books) {
+    if (obj.books.allIds) {
+      obj.books.allIds.forEach((id) => (obj.books[id].timelineTemplates = []))
+    }
+  }
 
   // add fromTemplateId to cards
-  obj.cards = data.cards.map((c) => {
-    c.fromTemplateId = null
-    return c
-  })
+  if (obj.cards) {
+    obj.cards = data.cards.map((c) => {
+      c.fromTemplateId = null
+      return c
+    })
+  }
 
   // add fromTemplateId to chapters
-  obj.chapters = data.chapters.map((ch) => {
-    ch.fromTemplateId = null
-    return ch
-  })
+  if (obj.chapters) {
+    obj.chapters = data.chapters.map((ch) => {
+      ch.fromTemplateId = null
+      return ch
+    })
+  }
 
   // add fromTemplateId to lines
-  obj.lines = data.lines.map((l) => {
-    l.fromTemplateId = null
-    return l
-  })
+  if (obj.lines) {
+    obj.lines = data.lines.map((l) => {
+      l.fromTemplateId = null
+      return l
+    })
+  }
 
   return obj
 }

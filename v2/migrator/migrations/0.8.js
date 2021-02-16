@@ -6,14 +6,18 @@ export default function migrate(data) {
   var obj = cloneDeep(data)
 
   // add notes to places
-  obj.places.forEach((p) => {
-    p['notes'] = p['notes'] || ''
-  })
+  if (obj.places) {
+    obj.places.forEach((p) => {
+      p['notes'] = p['notes'] || ''
+    })
+  }
 
   // add notes to characters
-  obj.characters.forEach((c) => {
-    c['notes'] = c['notes'] || ''
-  })
+  if (obj.characters) {
+    obj.characters.forEach((c) => {
+      c['notes'] = c['notes'] || ''
+    })
+  }
 
   return obj
 }

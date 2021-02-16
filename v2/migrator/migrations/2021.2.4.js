@@ -7,6 +7,7 @@ export default function migrate(data) {
 
   const obj = cloneDeep(data)
   const seriesLines = obj.seriesLines || []
+  obj.seriesLines = seriesLines
   const oldIds = {}
 
   seriesLines.forEach((line) => {
@@ -22,6 +23,7 @@ export default function migrate(data) {
   })
 
   const cards = obj.cards || []
+  obj.cards = cards
 
   cards.forEach((card) => {
     if (card.seriesLineId) {

@@ -5,7 +5,10 @@ import { knownFilesStore } from '../../common/utils/store_hooks'
 import { saveToTempFile } from '../../common/utils/temp_files'
 import { addToKnownFiles } from '../../common/utils/known_files'
 import Importer from '../../common/importer/snowflake/importer'
-import { emptyFile, migrateIfNeeded } from 'pltr/v2'
+import { emptyFile } from 'pltr/v2'
+import { template } from 'pltr/v2'
+
+const { projectFromTemplate } = template
 const win = remote.getCurrentWindow()
 const { dialog, app } = remote
 
@@ -32,40 +35,22 @@ export function openExistingFile() {
 }
 
 export function createNew(templateData) {
-  const emptyPlottrFile = emptyFile(t('Untitled'), app.getVersion())
   if (!templateData) {
+    const emptyPlottrFile = emptyFile(t('Untitled'), app.getVersion())
     const filePath = saveToTempFile(emptyPlottrFile)
     const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)
     return
   }
-  const tempTemplateFilePath = saveToTempFile({
-    ...templateData,
-    file: {
-      version: templateData.version,
-    },
-  })
-  migrateIfNeeded(
-    app.getVersion(),
-    {
-      ...templateData,
-      file: {
-        version: templateData.version,
-      },
-    },
-    tempTemplateFilePath,
-    null,
-    (error, didMigrate, state) => {
-      if (error) {
-        // Let the top level handler handle it
-        throw error
-      }
-      const mergedWithEmptyFile = Object.assign({}, emptyPlottrFile, state)
-      const filePath = saveToTempFile(mergedWithEmptyFile)
-      const fileId = addToKnownFiles(filePath)
-      openKnownFile(filePath, fileId)
+  projectFromTemplate(templateData, app.getVersion(), t('Untitled'), (error, state) => {
+    if (error) {
+      // Let the top level handler handle it
+      throw error
     }
-  )
+    const filePath = saveToTempFile(state)
+    const fileId = addToKnownFiles(filePath)
+    openKnownFile(filePath, fileId)
+  })
 }
 
 export function createFromSnowflake(importedPath) {

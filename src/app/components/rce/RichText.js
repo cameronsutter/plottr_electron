@@ -4,6 +4,7 @@ import RichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
 import RCEBoundary from './RCEBoundary'
 import { helpers } from 'pltr/v2'
+import { is } from 'electron-util'
 
 const {
   fonts: { getFonts, getRecent, addRecent },
@@ -19,7 +20,7 @@ const RichText = (props) => {
         autoFocus={props.autofocus}
         text={props.description}
         darkMode={props.darkMode}
-        fonts={getFonts()}
+        fonts={getFonts(is)}
         recentFonts={getRecent()}
         addRecent={addRecent}
       />

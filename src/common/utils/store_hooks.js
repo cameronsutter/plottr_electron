@@ -8,6 +8,7 @@ import {
   CUSTOM_TEMPLATES_PATH,
   TEMPLATES_PATH,
   TMP_PATH,
+  TEMPLATES_MANIFEST_PATH,
 } from './config_paths'
 import SETTINGS from './settings'
 
@@ -18,6 +19,8 @@ const templatesPath =
 const customTemplatesPath =
   process.env.NODE_ENV == 'development' ? `${CUSTOM_TEMPLATES_PATH}_dev` : CUSTOM_TEMPLATES_PATH
 const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
+const manifestPath =
+  process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
 
 export const trialStore = new Store({ name: TRIAL_INFO_PATH, watch: true })
 export const licenseStore = new Store({ name: USER_INFO_PATH, watch: true })
@@ -25,6 +28,8 @@ export const knownFilesStore = new Store({ name: knownFilesPath, watch: true })
 export const templatesStore = new Store({ name: templatesPath, watch: true })
 export const customTemplatesStore = new Store({ name: customTemplatesPath, watch: true })
 export const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
+export const manifestStore = new Store({ name: manifestPath })
+export const MANIFEST_ROOT = 'manifest'
 
 const checkInterval = 1000 * 60 * 1 // every minute
 

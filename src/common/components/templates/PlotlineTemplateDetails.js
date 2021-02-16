@@ -4,6 +4,12 @@ import i18n from 'format-message'
 import _ from 'lodash'
 
 export default class PlotlineTemplateDetails extends Component {
+  headingMap = {
+    lines: i18n('Plotlines'),
+    cards: i18n('Scene Cards'),
+    beats: i18n('Chapters'),
+  }
+
   renderData(type, data) {
     switch (type) {
       case 'beats':
@@ -23,10 +29,7 @@ export default class PlotlineTemplateDetails extends Component {
       .filter((heading) => heading != 'notes')
       .filter((heading) => !template.templateData[heading].every((item) => item.title == 'auto'))
       .map((heading) => {
-        let headingText = heading
-        if (heading == 'lines') headingText = i18n('Plotlines')
-        if (heading == 'cards') headingText = i18n('Scene Cards')
-        if (heading == 'beats') headingText = i18n('Chapters')
+        let headingText = this.headingMap[heading] || heading
 
         return (
           <div key={heading}>

@@ -34,23 +34,17 @@ export function openExistingFile() {
   }
 }
 
-export function createNew(templateData) {
-  if (!templateData) {
+export function createNew(template) {
+  if (!template) {
     const emptyPlottrFile = emptyFile(t('Untitled'), app.getVersion())
     const filePath = saveToTempFile(emptyPlottrFile)
     const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)
     return
   }
-  projectFromTemplate(templateData, app.getVersion(), t('Untitled'), (error, state) => {
-    if (error) {
-      // Let the top level handler handle it
-      throw error
-    }
-    const filePath = saveToTempFile(state)
-    const fileId = addToKnownFiles(filePath)
-    openKnownFile(filePath, fileId)
-  })
+  const filePath = saveToTempFile(template)
+  const fileId = addToKnownFiles(filePath)
+  openKnownFile(filePath, fileId)
 }
 
 export function createFromSnowflake(importedPath) {

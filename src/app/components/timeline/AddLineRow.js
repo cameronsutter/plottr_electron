@@ -140,6 +140,9 @@ class AddLineRow extends Component {
     templateLines = sortBy(templateLines, 'position')
 
     templateLines.forEach((tL) => {
+      // We do not want to add lines for series.
+      if (tL.bookId === 'series') return
+
       const id = this.nextLineId
       if (remember) this.newLineMapping[tL.id] = id // remember old line id -> new line id
       const lastLine = this.getLast(this.allLines)
@@ -195,7 +198,6 @@ class AddLineRow extends Component {
 
   handleChooseTemplate = (template) => {
     const { ui, actions } = this.props
-    const templateData = template.templateData
     let bookId = ui.currentTimeline
 
     this.nextLineId = this.props.nextLineId
@@ -206,9 +208,9 @@ class AddLineRow extends Component {
     this.allLines = this.props.lines
     this.allCards = this.props.cards
 
-    this.addBeats(templateData.beats, bookId, template)
-    this.addLines(templateData.lines, bookId, true, template)
-    this.addCards(templateData.cards, templateData.beats, bookId, template)
+    this.addBeats(template.beats, bookId, template)
+    this.addLines(template.lines, bookId, true, template)
+    this.addCards(template.cards, template.beats, bookId, template)
 
     actions.addLinesFromTemplate(this.allCards, this.allLines, this.allBeats, template, bookId)
     this.setState({ showTemplatePicker: false })

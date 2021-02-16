@@ -2,8 +2,40 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import i18n from 'format-message'
 import _ from 'lodash'
+import { template } from 'pltr/v2'
+import { remote } from 'electron'
+import { isEmpty } from 'lodash'
+
+const { projectFromTemplate } = template
+const { app } = remote
 
 export default class PlotlineTemplateDetails extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      template: {},
+      migrating: false,
+    }
+  }
+
+  migrateTemplate = () => {
+    projectFromTemplate(this.props.template, app.getVersion(), '', (error, template) => {
+      if (error) {
+        // Allow the top level ErrorBoundary to handle the error
+        throw new Error(error)
+      }
+      this.setState({
+        template: {
+          id: template.id,
+          lines: template.lines,
+          cards: template.cards,
+          beats: template.beats,
+        },
+      })
+    })
+  }
+
   renderData(type, data) {
     switch (type) {
       case 'beats':
@@ -17,11 +49,25 @@ export default class PlotlineTemplateDetails extends Component {
     }
   }
 
+  componentDidMount() {
+    this.migrateTemplate()
+  }
+
+  componentDidUpdate() {
+    if (this.state.template.id === this.props.template.id || isEmpty(this.state.template)) return
+
+    this.setState({
+      template: {},
+    })
+
+    this.migrateTemplate()
+  }
+
   render() {
-    const { template } = this.props
-    const body = Object.keys(template.templateData)
-      .filter((heading) => heading != 'notes')
-      .filter((heading) => !template.templateData[heading].every((item) => item.title == 'auto'))
+    const { template } = this.state
+    const body = Object.keys(template)
+      .filter((heading) => heading !== 'id')
+      .filter((heading) => !template[heading].every((item) => item.title == 'auto'))
       .map((heading) => {
         let headingText = heading
         if (heading == 'lines') headingText = i18n('Plotlines')
@@ -31,7 +77,7 @@ export default class PlotlineTemplateDetails extends Component {
         return (
           <div key={heading}>
             <h5 className="text-center text-capitalize">{headingText}</h5>
-            <ol>{this.renderData(heading, template.templateData[heading])}</ol>
+            <ol>{this.renderData(heading, template[heading])}</ol>
           </div>
         )
       })

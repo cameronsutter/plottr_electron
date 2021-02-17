@@ -21,9 +21,9 @@ export const newFileBooks = {
   1: book,
 }
 
-export const newFileBeats = [Object.assign({}, beat, { title: i18n('Beat 1') })]
+export const newFileBeats = [beat]
 
-export const newFileChapters = [chapter]
+export const newFileChapters = [{ ...chapter, id: 2 }]
 
 export const newFileUI = ui
 
@@ -69,14 +69,13 @@ export function emptyFile(name, version) {
     series: name ? Object.assign({}, newFileSeries, { name: name }) : newFileSeries,
     books: books,
     characters: newFileCharacters,
-    chapters: newFileChapters,
     cards: newFileCards,
     lines: [...newFileLines, ...newFileSeriesLines],
     customAttributes: newFileCustomAttributes,
     places: newFilePlaces,
     tags: newFileTags,
     notes: newFileNotes,
-    beats: newFileBeats,
+    beats: [...newFileBeats, ...newFileChapters],
     categories: newFileCategories,
     images: newFileImages,
   }

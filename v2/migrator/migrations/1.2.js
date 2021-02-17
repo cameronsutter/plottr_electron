@@ -6,7 +6,9 @@ export default function migrate(data) {
   var obj = cloneDeep(data)
 
   // add dark mode
-  obj.ui.darkMode = false
+  if (obj.ui) {
+    obj.ui.darkMode = false
+  }
 
   return obj
 }

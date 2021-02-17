@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { sortBy, groupBy } from 'lodash'
 import { characterSortSelector, characterFilterSelector, currentTimelineSelector } from './ui'
+import { isSeries } from '../helpers/books'
 
 export const allCharactersSelector = (state) => state.characters
 // this one also lives in ./customAttributes.js but it causes a circular dependency to import it here
@@ -100,7 +101,7 @@ export const charactersSortedInBookSelector = createSelector(
   (characters, bookId) =>
     characters.filter((character) => {
       if (character.bookIds.length === 0) return true
-      if (character.bookIds.includes('series')) return true
+      if (character.bookIds.some(isSeries)) return true
       return character.bookIds.includes(bookId)
     })
 )

@@ -23,11 +23,13 @@ export const book = {
 
 export const beat = {
   id: 1,
+  bookId: 'series',
   position: 0,
-  title: '',
+  title: 'auto',
   time: 0, // ? can also be a string
   templates: [],
   autoOutlineSort: true,
+  fromTemplateId: null,
 }
 
 export const chapter = {
@@ -121,11 +123,10 @@ export const tag = {
 export const card = {
   id: 1,
   lineId: null,
-  chapterId: null,
   beatId: null,
   bookId: null,
   positionWithinLine: 0,
-  positionInChapter: 0,
+  positionInBeat: 0,
   title: '',
   description: RCE_INITIAL_VALUE,
   tags: [],

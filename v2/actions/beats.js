@@ -7,20 +7,20 @@ import {
 } from '../constants/ActionTypes'
 import { beat } from '../store/initialState'
 
-export function addBeat() {
-  return { type: ADD_BEAT, title: beat.title }
+export function addBeat(bookId) {
+  return { type: ADD_BEAT, title: beat.title, bookId }
 }
 
 export function editBeatTitle(id, title) {
   return { type: EDIT_BEAT_TITLE, id, title }
 }
 
-export function reorderBeats(beats) {
-  return { type: REORDER_BEATS, beats }
+export function reorderBeats(beats, bookId) {
+  return { type: REORDER_BEATS, beats, bookId }
 }
 
-export function deleteBeat(id) {
-  return { type: DELETE_BEAT, id }
+export function deleteBeat(id, bookId) {
+  return { type: DELETE_BEAT, id, bookId }
 }
 
 export function autoSortBeat(id) {

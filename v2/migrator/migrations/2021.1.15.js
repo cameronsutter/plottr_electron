@@ -5,10 +5,12 @@ function migrate(data) {
 
   let obj = cloneDeep(data)
 
-  delete obj.ui.zoomIndex
-  delete obj.ui.zoomState
+  if (obj.ui) {
+    delete obj.ui.zoomIndex
+    delete obj.ui.zoomState
 
-  obj.ui.timeline = { size: 'large' }
+    obj.ui.timeline = { size: 'large' }
+  }
 
   return obj
 }

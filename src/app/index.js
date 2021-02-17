@@ -84,11 +84,10 @@ function bootFile(filePath, darkMode, numOpenFiles) {
         state
       )
 
-      const newDarkState = state.ui ? state.ui.darkMode || darkMode : darkMode
       if (state.ui && state.ui.darkMode !== darkMode) {
-        store.dispatch(actions.ui.setDarkMode(newDarkState))
+        store.dispatch(actions.ui.setDarkMode(darkMode))
       }
-      if (newDarkState) window.document.body.className = 'darkmode'
+      if (darkMode) window.document.body.className = 'darkmode'
 
       render(
         <Provider store={store}>

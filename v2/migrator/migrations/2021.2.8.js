@@ -8,12 +8,14 @@ export default function migrate(data) {
   const obj = cloneDeep(data)
 
   const beats = obj.beats || []
+  obj.beats = beats
   beats.forEach((beat) => {
     if (beat.bookId) return
     beat.bookId = 'series'
   })
 
   const chapters = obj.chapters || []
+  obj.chapters = chapters
   const oldIds = {}
 
   chapters.forEach((chapter) => {
@@ -27,15 +29,12 @@ export default function migrate(data) {
   })
 
   const cards = obj.cards || []
+  obj.cards = cards
 
   cards.forEach((card) => {
-    if (card.chapterId || card.chapterId === 0) {
+    if (card.chapterId) {
       card.beatId = oldIds[card.chapterId]
       delete card.chapterId
-    }
-    if (card.positionInChapter || card.positionInChapter === 0) {
-      card.positionInBeat = card.positionInChapter
-      delete card.positionInChapter
     }
   })
 

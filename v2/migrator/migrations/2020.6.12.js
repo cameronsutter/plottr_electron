@@ -7,17 +7,21 @@ export default function migrate(data) {
   let obj = cloneDeep(data)
 
   // reset characters' categoryId to null instead of ''
-  obj.characters = obj.characters.map((ch) => {
-    ch.categoryId = ch.categoryId || null
-    return ch
-  })
+  if (obj.characters) {
+    obj.characters = obj.characters.map((ch) => {
+      ch.categoryId = ch.categoryId || null
+      return ch
+    })
+  }
 
   // add categories
   obj.categories = newFileCategories
 
   // reset character and place filters
-  obj.ui.characterFilter = null
-  obj.ui.placeFilter = null
+  if (obj.ui) {
+    obj.ui.characterFilter = null
+    obj.ui.placeFilter = null
+  }
 
   return obj
 }

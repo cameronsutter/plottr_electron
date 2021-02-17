@@ -4,10 +4,14 @@ import t from 'format-message'
 import { Button } from 'react-bootstrap'
 import SETTINGS from '../../../common/utils/settings'
 import MPQ from '../../../common/utils/MPQ'
+import { useTrialStatus } from '../../../common/licensing/trial_manager'
+import { manifestStore } from '../../../common/utils/store_hooks'
 const { app } = remote
 const autoUpdater = remote.require('electron-differential-updater').autoUpdater
 
 export default function About(props) {
+  const { started, expired } = useTrialStatus()
+
   const checkForUpdates = () => {
     if (process.env.NODE_ENV == 'development') return
     MPQ.push('btn_check_for_updates')
@@ -22,7 +26,8 @@ export default function About(props) {
   }
 
   const UpdateButton = () => {
-    if (SETTINGS.get('canGetUpdates')) {
+    if ((started && !expired) || SETTINGS.get('canGetUpdates')) {
+      // in the free trial or valid license
       return (
         <dd>
           <Button bsSize="small" onClick={checkForUpdates}>
@@ -54,6 +59,8 @@ export default function About(props) {
               {t("See What's New")}
             </a>
           </dd>
+          <dt>{t('Templates Version')}</dt>
+          <dd>{manifestStore.get('manifest.version')}</dd>
         </dl>
         <dl className="dl-horizontal">
           <dt>{t('Created By')}</dt>

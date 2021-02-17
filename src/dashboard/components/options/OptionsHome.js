@@ -6,11 +6,7 @@ import Switch from '../../../common/components/Switch'
 import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'
 import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
 import LanguagePicker from '../../../common/components/LanguagePicker'
-
-let title = t('Configuration Options')
-if (is.macos) {
-  title = t('Preferences')
-}
+import DarkOptionsSelect from './DarkOptionsSelect'
 
 export default function OptionsHome(props) {
   const [settings, _, saveSetting] = useSettingsInfo()
@@ -20,7 +16,7 @@ export default function OptionsHome(props) {
 
   return (
     <div className="dashboard__options">
-      <h1>{title}</h1>
+      <h1>{t('Settings')}</h1>
       <div>
         <div className="dashboard__options__item">
           <h4>{t('Save Backups')}</h4>
@@ -41,6 +37,10 @@ export default function OptionsHome(props) {
           />
         </div>
         <div className="dashboard__options__item">
+          <h4>{t('Appearance: Dark/Light')}</h4>
+          <DarkOptionsSelect />
+        </div>
+        <div className="dashboard__options__item">
           <h4>{t('Language')}</h4>
           <LanguagePicker />
         </div>
@@ -53,15 +53,6 @@ export default function OptionsHome(props) {
             isOn={!!settings.user.autoSave || true}
             handleToggle={() => saveSetting('user.autoSave', !settings.user.autoSave)}
             labelText={t('By default, use auto-save for projects')}
-          />
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Force Dark Mode')}</h4>
-          <Switch
-            disabled
-            isOn={!!settings.user.darkModeAlways}
-            handleToggle={() => saveSetting('user.darkModeAlways', !settings.user.darkModeAlways)}
-            labelText={t("Override your computer's setting and always use dark mode")}
           />
         </div>
         <div className="dashboard__options__item disabled">

@@ -39,6 +39,7 @@ ipcRenderer.once('send-launch', (event, version) => {
     auto_download: SETTINGS.get('user.autoDownloadUpdate'),
     backup_on: SETTINGS.get('backup'),
     locale: SETTINGS.get('locale'),
+    dark: SETTINGS.get('user.dark'),
   }
   MPQ.push('Launch', { online: navigator.onLine, version: version, ...settingsWeCareAbout })
 })

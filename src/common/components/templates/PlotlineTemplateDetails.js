@@ -10,6 +10,12 @@ const { projectFromTemplate } = template
 const { app } = remote
 
 export default class PlotlineTemplateDetails extends Component {
+  headingMap = {
+    lines: i18n('Plotlines'),
+    cards: i18n('Scene Cards'),
+    beats: i18n('Chapters'),
+  }
+
   constructor(props) {
     super(props)
 
@@ -69,10 +75,7 @@ export default class PlotlineTemplateDetails extends Component {
       .filter((heading) => heading !== 'id')
       .filter((heading) => !template[heading].every((item) => item.title == 'auto'))
       .map((heading) => {
-        let headingText = heading
-        if (heading == 'lines') headingText = i18n('Plotlines')
-        if (heading == 'cards') headingText = i18n('Scene Cards')
-        if (heading == 'beats') headingText = i18n('Chapters')
+        let headingText = this.headingMap[heading] || heading
 
         return (
           <div key={heading}>

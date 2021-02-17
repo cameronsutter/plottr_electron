@@ -3,12 +3,7 @@ import PropTypes from 'react-proptypes'
 import RichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
 import RCEBoundary from './RCEBoundary'
-import { helpers } from 'pltr/v2'
-import { is } from 'electron-util'
-
-const {
-  fonts: { getFonts, getRecent, addRecent },
-} = helpers
+import { addRecent, getFonts, getRecent } from '../../../common/utils/fonts'
 
 const RichText = (props) => {
   let body = null
@@ -20,7 +15,7 @@ const RichText = (props) => {
         autoFocus={props.autofocus}
         text={props.description}
         darkMode={props.darkMode}
-        fonts={getFonts(is)}
+        fonts={getFonts()}
         recentFonts={getRecent()}
         addRecent={addRecent}
       />

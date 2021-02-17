@@ -1,31 +1,29 @@
-import Store from 'electron-store'
 import log from 'electron-log'
 import request from 'request'
 import semverGt from 'semver/functions/gt'
-import { TEMPLATES_MANIFEST_PATH } from '../../common/utils/config_paths'
-import { templatesStore, customTemplatesStore } from '../../common/utils/store_hooks'
+import {
+  manifestStore,
+  templatesStore,
+  customTemplatesStore,
+  MANIFEST_ROOT,
+} from '../../common/utils/store_hooks'
 import { is } from 'electron-util'
 
-const manifestPath =
-  process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
-const manifestStore = new Store({ name: manifestPath })
-
-const MANIFEST_ROOT = 'manifest'
-const TEMPLATES_ROOT = 'templates'
+const OLD_TEMPLATES_ROOT = 'templates'
 const manifestURL =
   'https://raw.githubusercontent.com/Plotinator/plottr_templates/master/v2/manifest.json'
 
 class TemplateFetcher {
   constructor(props) {
     // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
-    const templates = templatesStore.get(TEMPLATES_ROOT)
+    const templates = templatesStore.get(OLD_TEMPLATES_ROOT)
     if (templates) {
       templatesStore.clear()
       templatesStore.set(templates)
     }
 
     // SAME FOR CUSTOM TEMPLATES (needed after 2020.12.1 for the dashboard)
-    const customTemplates = customTemplatesStore.get(TEMPLATES_ROOT)
+    const customTemplates = customTemplatesStore.get(OLD_TEMPLATES_ROOT)
     if (customTemplates) {
       customTemplatesStore.clear()
       customTemplatesStore.set(customTemplates)
@@ -78,7 +76,8 @@ class TemplateFetcher {
 
   fetchedIsNewer = (fetchedVersion) => {
     if (!manifestStore.get('manifest')) return true
-    return semverGt(fetchedVersion, manifestStore.get('manifest.version')) // is 1st param greater than 2nd?
+    // semverGt checks if 1st > 2nd
+    return semverGt(fetchedVersion, manifestStore.get('manifest.version'))
   }
 
   fetchTemplates = () => {

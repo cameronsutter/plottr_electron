@@ -13,7 +13,7 @@ const {
   numberOfWindows,
 } = require('./main_modules/windows')
 const { openProjectWindow } = require('./main_modules/windows/projects')
-const { getDarkMode } = require('./main_modules/theme')
+const { getDarkMode, setDarkMode, broadcastDarkMode } = require('./main_modules/theme')
 const { gracefullyQuit } = require('./main_modules/utils')
 const { openDashboard } = require('./main_modules/windows/dashboard')
 const { addToKnown } = require('./main_modules/known_files')
@@ -128,4 +128,9 @@ ipcMain.on('pls-fetch-state', function (event, id) {
   if (win) {
     event.sender.send('state-fetched', win.filePath, getDarkMode(), numberOfWindows())
   }
+})
+
+ipcMain.on('pls-set-dark-setting', (_, newValue) => {
+  setDarkMode(newValue)
+  broadcastDarkMode()
 })

@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2021.2.8",
+  "version": "2021.2.17-beta.2",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -59,7 +59,6 @@
     "electron-util": "^0.14.0",
     "electron-window-state": "^5.0.3",
     "format-message": "^6.2.1",
-    "image-extensions": "^1.1.0",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.4",
     "jsrtf": "0.0.3",
@@ -75,7 +74,6 @@
     "react-dom": "^16.8.6",
     "react-floater": "^0.7.2",
     "react-icons": "^3.11.0",
-    "react-image-file-resizer": "^0.2.1",
     "react-json-inspector": "^7.1.1",
     "react-json-view": "^1.19.1",
     "react-modal": "^3.8.1",

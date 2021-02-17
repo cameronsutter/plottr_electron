@@ -1,3 +1,5 @@
+import { is } from 'electron-util'
+
 let darwinFonts = [
   'Andale Mono',
   'Arial',
@@ -30,7 +32,7 @@ let windowsFonts = [
 let plottrFonts = ['Forum', 'IBM Plex Serif', 'Lato', 'Yellowtail']
 let recentlyUsed = ['Forum']
 
-export function getFonts(is) {
+export function getFonts() {
   if (is.macos) return darwinFonts
   if (is.windows) return windowsFonts
 

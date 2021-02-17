@@ -177,17 +177,17 @@ class Card extends Component {
     const { card, isSmall, ui, beatPosition, linePosition } = this.props
     let title = <div className="card__title">{isSmall ? '' : truncateTitle(card.title, 150)}</div>
 
-    if (!this.state.dragging && this.hasDetailsToShow()) {
+    if (!this.state.dragging && (isSmall || this.hasDetailsToShow())) {
       let placement = 'left'
 
       // sane default placements
       if (isSmall) {
         placement = 'right'
       } else {
-        if (ui.orientation === 'horizontal') {
-          placement = Number(beatPosition) <= 2 ? 'right' : placement
-        } else {
-          placement = Number(linePosition) <= 2 ? 'right' : placement
+        if (ui.orientation === 'horizontal' && Number(beatPosition) <= 2) {
+          placement = 'right'
+        } else if (Number(linePosition) <= 2) {
+          placement = 'right'
         }
       }
 

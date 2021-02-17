@@ -5,12 +5,12 @@ import log from 'electron-log'
 import { saveBackup } from '../../common/utils/backup'
 import { ActionTypes } from 'pltr/v2'
 
-const { FILE_SAVED, FILE_LOADED } = ActionTypes
+const { FILE_SAVED, FILE_LOADED, SET_DARK_MODE } = ActionTypes
 
 const dialog = remote.dialog
 const win = remote.getCurrentWindow()
 
-const BLACKLIST = [FILE_SAVED, FILE_LOADED]
+const BLACKLIST = [FILE_SAVED, FILE_LOADED, SET_DARK_MODE]
 let itWorkedLastTime = true
 
 const saver = (store) => (next) => (action) => {

@@ -28,6 +28,7 @@ export default function DashboardBody({ currentView, setView }) {
       SETTINGS.set('trialMode', false)
     } else {
       SETTINGS.set('trialMode', true)
+      SETTINGS.set('canGetUpdates', true)
     }
 
     // no license and trial hasn't started (first time using the app)

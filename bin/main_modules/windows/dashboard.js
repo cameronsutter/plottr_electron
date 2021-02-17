@@ -4,6 +4,7 @@ const { is } = require('electron-util')
 const { filePrefix } = require('../helpers')
 const { hasWindows } = require('./')
 const { makeBrowserWindow } = require('../utils')
+const { getDarkMode } = require('../theme')
 
 // mixpanel tracking
 let launchSent = false
@@ -35,6 +36,7 @@ function openDashboard() {
   })
 
   dashboardWindow.webContents.on('did-finish-load', () => {
+    dashboardWindow.webContents.send('set-dark-mode', getDarkMode())
     if (!launchSent) {
       dashboardWindow.webContents.send('send-launch', app.getVersion())
       launchSent = true
@@ -44,10 +46,6 @@ function openDashboard() {
 
 function getDashboardId() {
   return dashboardWindow ? dashboardWindow.id : null
-}
-
-function setDarkModeForDashboard(darkMode) {
-  if (dashboardWindow) dashboardWindow.webContents.send('set-dark-mode', darkMode)
 }
 
 function reloadRecents() {
@@ -64,7 +62,6 @@ function updateOpenFiles(filePath) {
 
 module.exports = {
   openDashboard,
-  setDarkModeForDashboard,
   reloadRecents,
   updateOpenFiles,
   reloadDashboard,

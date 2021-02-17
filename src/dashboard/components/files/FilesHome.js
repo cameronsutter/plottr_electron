@@ -16,7 +16,7 @@ export default function FilesHome(props) {
   const createWithTemplate = (template) => {
     MPQ.push('btn_create_with_template')
     try {
-      createNew(template.templateData)
+      createNew(template)
     } catch (error) {
       log.error(error)
       dialog.showErrorBox(t('There was an error doing that. Try again'))

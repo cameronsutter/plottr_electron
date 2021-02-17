@@ -14,6 +14,8 @@
   "scripts": {},
   "dependencies": {
     "dom-parser": "^0.1.6",
+    "image-extensions": "^1.1.0",
+    "is-url": "^1.2.4",
     "lodash": "^4.17.19",
     "pagedown": "^1.1.0",
     "react-image-file-resizer": "^0.2.1",

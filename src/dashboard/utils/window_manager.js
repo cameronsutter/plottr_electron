@@ -6,6 +6,9 @@ import { saveToTempFile } from '../../common/utils/temp_files'
 import { addToKnownFiles } from '../../common/utils/known_files'
 import Importer from '../../common/importer/snowflake/importer'
 import { emptyFile } from 'pltr/v2'
+import { template } from 'pltr/v2'
+
+const { projectFromTemplate } = template
 const win = remote.getCurrentWindow()
 const { dialog, app } = remote
 
@@ -31,13 +34,15 @@ export function openExistingFile() {
   }
 }
 
-export function createNew(templateData) {
-  let json = emptyFile(t('Untitled'), app.getVersion())
-
-  if (templateData) {
-    json = Object.assign({}, json, templateData)
+export function createNew(template) {
+  if (!template) {
+    const emptyPlottrFile = emptyFile(t('Untitled'), app.getVersion())
+    const filePath = saveToTempFile(emptyPlottrFile)
+    const fileId = addToKnownFiles(filePath)
+    openKnownFile(filePath, fileId)
+    return
   }
-  const filePath = saveToTempFile(json)
+  const filePath = saveToTempFile(template)
   const fileId = addToKnownFiles(filePath)
   openKnownFile(filePath, fileId)
 }

@@ -19,11 +19,14 @@ import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
 import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmModal'
 import getTestIds from 'test-utils/getTestIds'
+import { template } from 'pltr/v2'
 
 export const testIds = getTestIds()
 
+const { projectFromTemplate } = template
 const modalStyles = { content: { width: '50%', marginLeft: '25%' } }
 const win = remote.getCurrentWindow()
+const { app } = remote
 
 const typeMap = {
   project: i18n('Project Templates'),
@@ -107,7 +110,19 @@ export default class TemplatePicker extends Component {
 
   chooseTemplate = () => {
     if (!this.state.selectedId) return
-    this.props.onChooseTemplate(this.selectedTemplate())
+    const selectedTemplate = this.selectedTemplate()
+    const { type } = selectedTemplate
+    if (type === 'project' || type === 'plotlines') {
+      projectFromTemplate(selectedTemplate, app.getVersion(), '', (error, template) => {
+        if (error) {
+          // Let the ErrorBoundary handle the error
+          throw new Error(error)
+        }
+        this.props.onChooseTemplate(template)
+      })
+    } else {
+      this.props.onChooseTemplate(selectedTemplate)
+    }
   }
 
   renderDelete() {

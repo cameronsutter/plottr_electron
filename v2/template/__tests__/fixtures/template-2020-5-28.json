@@ -1,0 +1,141 @@
+{
+  "id": "pl781977",
+  "type": "plotlines",
+  "name": "2020-5-28",
+  "description": "",
+  "link": "",
+  "templateData": {
+    "chapters": [
+      {
+	"id": 1,
+	"bookId": 1,
+	"position": 0,
+	"title": "auto",
+	"time": 0,
+	"templates": []
+      },
+      {
+	"id": 2,
+	"bookId": 1,
+	"position": 1,
+	"title": "auto",
+	"time": 0
+      }
+    ],
+    "lines": [
+      {
+	"id": 2,
+	"bookId": 1,
+	"title": "Sub Plot",
+	"color": "#78be20",
+	"position": 1
+      },
+      {
+	"id": 1,
+	"bookId": 1,
+	"color": "#6cace4",
+	"title": "Main Plot",
+	"position": 0,
+	"characterId": null
+      }
+    ],
+    "cards": [
+      {
+	"id": 10,
+	"lineId": 2,
+	"chapterId": 1,
+	"beatId": null,
+	"seriesLineId": null,
+	"bookId": null,
+	"position": 0,
+	"title": "Test 1 - 2",
+	"description": [
+	  {
+	    "children": [
+	      {
+		"text": ""
+	      }
+	    ]
+	  }
+	],
+	"tags": [],
+	"characters": [],
+	"places": [],
+	"templates": [],
+	"imageId": null
+      },
+      {
+	"id": 20,
+	"lineId": 2,
+	"chapterId": 2,
+	"beatId": null,
+	"seriesLineId": null,
+	"bookId": null,
+	"position": 0,
+	"title": "Test 2 - 2",
+	"description": [
+	  {
+	    "children": [
+	      {
+		"text": ""
+	      }
+	    ]
+	  }
+	],
+	"tags": [],
+	"characters": [],
+	"places": [],
+	"templates": [],
+	"imageId": null
+      },
+      {
+	"id": 11,
+	"lineId": 1,
+	"chapterId": 1,
+	"beatId": null,
+	"seriesLineId": null,
+	"bookId": null,
+	"position": 0,
+	"title": "Test 1",
+	"description": [
+	  {
+	    "children": [
+	      {
+		"text": ""
+	      }
+	    ]
+	  }
+	],
+	"tags": [],
+	"characters": [],
+	"places": [],
+	"templates": [],
+	"imageId": null
+      },
+      {
+	"id": 22,
+	"lineId": 1,
+	"chapterId": 2,
+	"beatId": null,
+	"seriesLineId": null,
+	"bookId": null,
+	"position": 0,
+	"title": "Test 2",
+	"description": [
+	  {
+	    "children": [
+	      {
+		"text": ""
+	      }
+	    ]
+	  }
+	],
+	"tags": [],
+	"characters": [],
+	"places": [],
+	"templates": [],
+	"imageId": null
+      }
+    ]
+  }
+}

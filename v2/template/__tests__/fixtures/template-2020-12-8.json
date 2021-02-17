@@ -1,0 +1,161 @@
+{
+  "id": "pl299949",
+  "type": "plotlines",
+  "name": "Custom Template 2020-12-8",
+  "description": "",
+  "link": "",
+  "templateData": {
+    "chapters": [
+      {
+	"id": 1,
+	"bookId": 1,
+	"position": 0,
+	"title": "auto",
+	"time": 0,
+	"templates": [],
+	"autoOutlineSort": true,
+	"fromTemplateId": null
+      },
+      {
+	"id": 2,
+	"bookId": 1,
+	"position": 1,
+	"title": "auto",
+	"time": 0,
+	"autoOutlineSort": true,
+	"fromTemplateId": null
+      }
+    ],
+    "lines": [
+      {
+	"id": 2,
+	"bookId": 1,
+	"title": "Line 2",
+	"color": "#78be20",
+	"position": 1,
+	"expanded": null,
+	"fromTemplateId": null
+      },
+      {
+	"id": 1,
+	"bookId": 1,
+	"color": "#6cace4",
+	"title": "Main Plot",
+	"position": 0,
+	"characterId": null,
+	"expanded": null,
+	"fromTemplateId": null
+      }
+    ],
+    "cards": [
+      {
+	"id": 4,
+	"lineId": 2,
+	"chapterId": 2,
+	"beatId": null,
+	"seriesLineId": null,
+	"bookId": null,
+	"positionWithinLine": 0,
+	"positionInChapter": 0,
+	"title": "Test 2 - 2",
+	"description": [
+	  {
+	    "type": "paragraph",
+	    "children": [
+	      {
+		"text": ""
+	      }
+	    ]
+	  }
+	],
+	"tags": [],
+	"characters": [],
+	"places": [],
+	"templates": [],
+	"imageId": null,
+	"fromTemplateId": null
+      },
+      {
+	"id": 3,
+	"lineId": 2,
+	"chapterId": 1,
+	"beatId": null,
+	"seriesLineId": null,
+	"bookId": null,
+	"positionWithinLine": 0,
+	"positionInChapter": 0,
+	"title": "Test 1 - 1",
+	"description": [
+	  {
+	    "type": "paragraph",
+	    "children": [
+	      {
+		"text": ""
+	      }
+	    ]
+	  }
+	],
+	"tags": [],
+	"characters": [],
+	"places": [],
+	"templates": [],
+	"imageId": null,
+	"fromTemplateId": null
+      },
+      {
+	"id": 2,
+	"lineId": 1,
+	"chapterId": 2,
+	"beatId": null,
+	"seriesLineId": null,
+	"bookId": null,
+	"positionWithinLine": 0,
+	"positionInChapter": 0,
+	"title": "Test 2",
+	"description": [
+	  {
+	    "type": "paragraph",
+	    "children": [
+	      {
+		"text": ""
+	      }
+	    ]
+	  }
+	],
+	"tags": [],
+	"characters": [],
+	"places": [],
+	"templates": [],
+	"imageId": null,
+	"fromTemplateId": null
+      },
+      {
+	"id": 1,
+	"lineId": 1,
+	"chapterId": 1,
+	"beatId": null,
+	"seriesLineId": null,
+	"bookId": null,
+	"positionWithinLine": 0,
+	"positionInChapter": 0,
+	"title": "Test 1",
+	"description": [
+	  {
+	    "type": "paragraph",
+	    "children": [
+	      {
+		"text": ""
+	      }
+	    ]
+	  }
+	],
+	"tags": [],
+	"characters": [],
+	"places": [],
+	"templates": [],
+	"imageId": null,
+	"fromTemplateId": null
+      }
+    ]
+  }
+}

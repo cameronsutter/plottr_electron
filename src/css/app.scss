@@ -112,6 +112,16 @@ h3.popover-title {
   font-size: 12pt !important;
 }
 
+// fix an annoying focus-ring that Chromium adds
+.btn:focus,
+.btn.focus,
+.btn:active:focus,
+.btn:active.focus,
+.btn.active:focus,
+.btn.active.focus {
+  outline: 0px auto -webkit-focus-ring-color;
+}
+
 .secondary-text {
   @include secondary-text;
 }

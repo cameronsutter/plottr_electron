@@ -2,6 +2,7 @@ import { cloneDeep } from 'lodash'
 import { Notification } from 'electron'
 import t from 'format-message'
 import { customTemplatesStore } from './store_hooks'
+import { app } from 'electron'
 
 export function addNewCustomTemplate(pltrData, { type, data }) {
   if (type === 'plotlines') {
@@ -30,6 +31,7 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
 
   let template = {
     id: id,
+    version: app.getVersion(),
     type: 'plotlines',
     name: name,
     description: description,
@@ -71,6 +73,7 @@ function createCharacterTemplate(pltrData, { name, description, link }) {
   let id = makeNewId('ch')
   const template = {
     id: id,
+    version: app.getVersion(),
     type: 'characters',
     name: name,
     description: description,
@@ -86,6 +89,7 @@ function createScenesTemplate(pltrData, { name, description, link }) {
   let id = makeNewId('sc')
   const template = {
     id: id,
+    version: app.getVersion(),
     type: 'scenes',
     name: name,
     description: description,

@@ -3,11 +3,7 @@ import PropTypes from 'react-proptypes'
 import RichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
 import RCEBoundary from './RCEBoundary'
-import { helpers } from 'pltr/v2'
-
-const {
-  fonts: { getFonts, getRecent, addRecent },
-} = helpers
+import { addRecent, getFonts, getRecent } from '../../../common/utils/fonts'
 
 const RichText = (props) => {
   let body = null

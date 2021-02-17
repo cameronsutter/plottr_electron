@@ -18,6 +18,7 @@ import {
   FILE_LOADED,
   NEW_FILE,
   RESET,
+  DELETE_BOOK,
 } from '../constants/ActionTypes'
 import { line } from '../store/initialState'
 import { newFileLines } from '../store/newFileState'
@@ -87,6 +88,9 @@ export default function lines(state = initialState, action) {
       return state.map((l) =>
         l.id === action.id ? Object.assign({}, l, { color: action.color }) : l
       )
+
+    case DELETE_BOOK:
+      return state.filter(({ bookId }) => bookId !== action.id)
 
     case DELETE_LINE:
       return state.filter((l) => l.id !== action.id)

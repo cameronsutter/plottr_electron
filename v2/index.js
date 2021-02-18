@@ -21,7 +21,6 @@ import * as cardHelpers from './helpers/cards'
 import * as beatHelpers from './helpers/beats'
 import * as bookHelpers from './helpers/books'
 import * as listHelpers from './helpers/lists'
-import * as imageHelpers from './helpers/images'
 import * as orientedClassNameHelpers from './helpers/orientedClassName'
 import * as undoHelpers from './helpers/undo'
 
@@ -116,7 +115,6 @@ const helpers = {
   beats: beatHelpers,
   books: bookHelpers,
   lists: listHelpers,
-  images: imageHelpers,
   orientedClassName: orientedClassNameHelpers,
   undo: undoHelpers,
   lines: lineHelpers,

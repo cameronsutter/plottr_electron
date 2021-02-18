@@ -291,11 +291,11 @@ class TimelineWrapper extends Component {
             <ButtonGroup>
               <Button
                 bsSize="small"
-                className={cx({ active: isSmall })}
-                onClick={() => actions.setTimelineSize('small')}
-                title={i18n('Size: small')}
+                className={cx({ active: isLarge })}
+                onClick={() => actions.setTimelineSize('large')}
+                title={i18n('Size: large')}
               >
-                S
+                L
               </Button>
               <Button
                 bsSize="small"
@@ -307,11 +307,11 @@ class TimelineWrapper extends Component {
               </Button>
               <Button
                 bsSize="small"
-                className={cx({ active: isLarge })}
-                onClick={() => actions.setTimelineSize('large')}
-                title={i18n('Size: large')}
+                className={cx({ active: isSmall })}
+                onClick={() => actions.setTimelineSize('small')}
+                title={i18n('Size: small')}
               >
-                L
+                S
               </Button>
             </ButtonGroup>
           </NavItem>

@@ -9,7 +9,7 @@ const defaultBook = initialState.book
 const defaultNote = initialState.note
 const defaultCharacter = initialState.character
 const defaultCard = initialState.card
-const defaultBeat = initialState.chapter
+const defaultBeat = initialState.beat
 const defaultLine = initialState.line
 
 const { nextId, objectId } = newIds
@@ -67,11 +67,11 @@ function createNewCard(currentCards, values) {
 }
 
 function createNewLine(currentLines, values, bookId) {
-  const nexLineId = nextId(currentLines)
+  const nextLineId = nextId(currentLines)
   const position = nextPositionInBook(currentLines, bookId)
-  const newLine = Object.assign({}, defaultLine, { id: nexLineId, position, bookId, ...values })
+  const newLine = Object.assign({}, defaultLine, { id: nextLineId, position, bookId, ...values })
   currentLines.push(newLine)
-  return nexLineId
+  return nextLineId
 }
 
 function createNewBeat(currentBeats, values, bookId) {
@@ -269,6 +269,7 @@ function cards(currentState, json, bookId) {
       bookId
     )
     const scenesByBeat = groupBy(sceneListNode['GContainer'], (scene) => {
+      // 'chapter' is a snowflake thing
       const node = scene['GInteger'].find((n) => n['_attributes']['name'] == 'chapter')
       if (node) return node['_attributes']['value']
       return '1'
@@ -305,7 +306,8 @@ function cards(currentState, json, bookId) {
       function addParagraphs(node) {
         const name = node['_attributes']['name']
         const value = node['_attributes']['value']
-        if (name == 'beat') {
+        // 'chapter' is a snowflake thing
+        if (name == 'chapter') {
           beatId = value
         } else if (name == 'povName') {
           if (value) characterName = value
@@ -398,7 +400,7 @@ function cards(currentState, json, bookId) {
       let sentenceTitle = sentence.length > 30 ? `${sentence.substr(0, 30)}...` : sentence
 
       const values = {
-        chapterId: idMap[beatId],
+        beatId: idMap[beatId],
         lineId: cardLineId,
         description,
         positionWithinLine,

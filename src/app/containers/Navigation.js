@@ -34,29 +34,24 @@ class Navigation extends Component {
   render() {
     const { ui } = this.props
     return (
-      <Navbar className="project-nav" fluid collapseOnSelect inverse={ui.darkMode}>
-        <Navbar.Header>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav onSelect={this.handleSelect} activeKey={ui.currentView}>
-            <BookChooser />
-            <NavItem eventKey="project">{i18n('Project')}</NavItem>
-            <NavItem eventKey="timeline">{i18n('Timeline')}</NavItem>
-            <NavItem eventKey="outline">{i18n('Outline')}</NavItem>
-            <NavItem eventKey="notes">{i18n('Notes')}</NavItem>
-            <NavItem eventKey="characters">{i18n('Characters')}</NavItem>
-            <NavItem eventKey="places">{i18n('Places')}</NavItem>
-            <NavItem eventKey="tags">{i18n('Tags')}</NavItem>
-            {isDev ? (
-              <NavItem eventKey="analyzer">
-                Analyzer<sup>(DEV)</sup>
-              </NavItem>
-            ) : null}
-          </Nav>
-          <Beamer inNavigation />
-          {this.renderTrialLinks()}
-        </Navbar.Collapse>
+      <Navbar className="project-nav" fluid inverse={ui.darkMode}>
+        <Nav onSelect={this.handleSelect} activeKey={ui.currentView} bsStyle="pills">
+          <BookChooser />
+          <NavItem eventKey="project">{i18n('Project')}</NavItem>
+          <NavItem eventKey="timeline">{i18n('Timeline')}</NavItem>
+          <NavItem eventKey="outline">{i18n('Outline')}</NavItem>
+          <NavItem eventKey="notes">{i18n('Notes')}</NavItem>
+          <NavItem eventKey="characters">{i18n('Characters')}</NavItem>
+          <NavItem eventKey="places">{i18n('Places')}</NavItem>
+          <NavItem eventKey="tags">{i18n('Tags')}</NavItem>
+          {isDev ? (
+            <NavItem eventKey="analyzer">
+              Analyzer<sup>(DEV)</sup>
+            </NavItem>
+          ) : null}
+        </Nav>
+        <Beamer inNavigation />
+        {this.renderTrialLinks()}
       </Navbar>
     )
   }

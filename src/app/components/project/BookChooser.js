@@ -54,7 +54,7 @@ class BookChooser extends Component {
         id="book_chooser"
         title={title}
         disabled={this.isDisabled()}
-        style={{ marginRight: '16px' }}
+        style={{ margin: '0 16px 0 8px' }}
       >
         <MenuItem onSelect={() => this.handleChange('series')}>{seriesText}</MenuItem>
         <MenuItem divider />

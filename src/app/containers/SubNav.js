@@ -7,10 +7,7 @@ import { Navbar } from 'react-bootstrap'
 function SubNav({ darkMode, children }) {
   return (
     <Navbar fluid className={cx('subnav__container', { darkmode: darkMode })}>
-      <Navbar.Header>
-        <Navbar.Toggle />
-      </Navbar.Header>
-      <Navbar.Collapse>{children}</Navbar.Collapse>
+      {children}
     </Navbar>
   )
 }

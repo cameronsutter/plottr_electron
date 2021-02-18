@@ -31,6 +31,8 @@ const { app } = remote
 const typeMap = {
   project: i18n('Project Templates'),
   plotlines: i18n('Starter Templates'),
+  characters: i18n('Starter Templates'),
+  scenes: i18n('Starter Templates'),
 }
 
 export default class TemplatePicker extends Component {

@@ -9,7 +9,7 @@ import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-import { actions, migrateIfNeeded, helpers } from 'pltr/v2'
+import { actions, migrateIfNeeded } from 'pltr/v2'
 import MPQ from '../common/utils/MPQ'
 import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
@@ -26,10 +26,7 @@ import { displayFileName, editKnownFilePath } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { saveFile } from '../common/utils/files'
 import { removeFromTempFiles } from '../common/utils/temp_files'
-
-const {
-  undo: { focusIsEditable },
-} = helpers
+import { focusIsEditable } from '../common/utils/undo'
 
 setupI18n(SETTINGS)
 

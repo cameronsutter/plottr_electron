@@ -10,11 +10,7 @@ import AskToSaveModal from '../components/dialogs/AskToSaveModal'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { saveFile } from '../../common/utils/files'
 import { store } from '../store/configureStore'
-import { helpers } from 'pltr/v2'
-
-const {
-  undo: { focusIsEditable },
-} = helpers
+import { focusIsEditable } from '../../common/utils/undo'
 
 let isTryingToReload = false
 let isTryingToClose = false

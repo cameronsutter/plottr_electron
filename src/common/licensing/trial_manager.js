@@ -15,7 +15,7 @@ export function useTrialStatus() {
   }
 
   const extendTrial = (days) => {
-    const newEnd = addDays(trialInfo.endsAt, days)
+    const newEnd = addDays(Date.now(), days)
     const info = {
       ...trialInfo,
       endsAt: newEnd.getTime(),

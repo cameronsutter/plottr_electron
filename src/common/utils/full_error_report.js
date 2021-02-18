@@ -17,7 +17,7 @@ export function createErrorReport() {
   fs.writeFile(fileName, body, function (err) {
     if (err) {
       log.warn(err)
-      dialog.showErrorBox(t('Error Creating Error Report'))
+      dialog.showErrorBox(t('Error'), t('Error Creating Error Report'))
     } else {
       notifyUser(fileName)
     }

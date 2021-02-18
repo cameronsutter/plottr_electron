@@ -19,7 +19,7 @@ export default function FilesHome(props) {
       createNew(template)
     } catch (error) {
       log.error(error)
-      dialog.showErrorBox(t('There was an error doing that. Try again'))
+      dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
     }
   }
 
@@ -32,7 +32,7 @@ export default function FilesHome(props) {
       }
     } catch (error) {
       log.error(error)
-      dialog.showErrorBox(t('There was an error doing that. Try again'))
+      dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
     }
   }
 

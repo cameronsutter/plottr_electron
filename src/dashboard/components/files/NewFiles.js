@@ -19,7 +19,7 @@ export default function NewFiles({ activeView, toggleView, doImport }) {
         func()
       } catch (error) {
         log.error(error)
-        dialog.showErrorBox(t('There was an error doing that. Try again'))
+        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
       }
     }
   }

@@ -1,5 +1,4 @@
 import React from 'react'
-import { is } from 'electron-util'
 import t from 'format-message'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import Switch from '../../../common/components/Switch'

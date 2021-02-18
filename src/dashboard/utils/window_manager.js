@@ -6,9 +6,7 @@ import { saveToTempFile } from '../../common/utils/temp_files'
 import { addToKnownFiles } from '../../common/utils/known_files'
 import Importer from '../../common/importer/snowflake/importer'
 import { emptyFile } from 'pltr/v2'
-import { template } from 'pltr/v2'
 
-const { projectFromTemplate } = template
 const win = remote.getCurrentWindow()
 const { dialog, app } = remote
 

@@ -22,12 +22,8 @@ import Image from './Image'
 import i18n from 'format-message'
 import { Spinner } from '../../../common/components/Spinner'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { helpers, actions } from 'pltr/v2'
-
-const ImageActions = actions.image
-const {
-  images: { readImage, isImageUrl, readImageFromURL },
-} = helpers
+import { actions } from 'pltr/v2'
+import { readImage, isImageUrl, readImageFromURL } from '../../../common/utils/images'
 
 class ImagePicker extends Component {
   state = {}
@@ -370,7 +366,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(ImageActions, dispatch),
+    actions: bindActionCreators(actions.image, dispatch),
   }
 }
 

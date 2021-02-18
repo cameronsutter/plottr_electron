@@ -357,8 +357,7 @@ function cards(currentState, json, bookId) {
         character = currentState.characters.find((ch) => ch.name == characterName)
         if (character) {
           // make that caracter a main character
-          // TODO: when categories are customizable, will have to think about this
-          character.categoryId = 1
+          character.categoryId = '1'
           // find or create a line for that character
           if (linesByTitle[characterName]) {
             characterLineId = linesByTitle[characterName]

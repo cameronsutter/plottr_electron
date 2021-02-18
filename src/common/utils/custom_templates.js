@@ -1,8 +1,8 @@
 import { cloneDeep } from 'lodash'
-import { Notification } from 'electron'
+import { remote } from 'electron'
 import t from 'format-message'
 import { customTemplatesStore } from './store_hooks'
-import { app } from 'electron'
+const { app } = remote
 
 export function addNewCustomTemplate(pltrData, { type, data }) {
   if (type === 'plotlines') {

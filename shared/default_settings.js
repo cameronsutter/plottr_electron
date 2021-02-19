@@ -14,6 +14,6 @@ module.exports = {
     autoSave: true,
     backupDays: 30,
     backupLocation: 'default',
-    darkModeAlways: false,
+    dark: 'system',
   },
 }

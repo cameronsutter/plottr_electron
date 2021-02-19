@@ -9,18 +9,18 @@ function getDarkMode() {
 
 function setDarkMode(newValue) {
   switch (newValue) {
-    case 'system':
-      darkMode = nativeTheme.shouldUseDarkColors
-      setThemeListener()
-      break
     case 'dark':
       darkMode = true
       removeThemeListener()
       break
     case 'light':
-    default:
       darkMode = false
       removeThemeListener()
+      break
+    case 'system':
+    default:
+      darkMode = nativeTheme.shouldUseDarkColors
+      setThemeListener()
       break
   }
 }

@@ -43,11 +43,9 @@ class TopRow extends Component {
     lineActions.reorderLines(newLines, ui.currentTimeline)
   }
 
-  // TODO: handle adding a beat by reordering beats
   handleInsertNewBeat = (nextPosition) => {
-    const { ui, beatActions, beats, nextBeatId } = this.props
-    const newBeats = insertBeat(nextPosition, beats, nextBeatId, ui.currentTimeline)
-    beatActions.reorderBeats(newBeats, ui.currentTimeline)
+    const { ui, beatActions, beats } = this.props
+    beatActions.insertBeat(beats[nextPosition].id, ui.currentTimeline)
   }
 
   handleAppendBeat = () => {

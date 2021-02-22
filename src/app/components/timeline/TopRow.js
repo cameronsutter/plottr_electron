@@ -7,12 +7,10 @@ import { Glyphicon } from 'react-bootstrap'
 import BeatTitleCell from 'components/timeline/BeatTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import BeatInsertCell from 'components/timeline/BeatInsertCell'
-import { newIds, actions, helpers, selectors } from 'pltr/v2'
-
-const { nextId } = newIds
+import { actions, helpers, selectors } from 'pltr/v2'
 
 const {
-  beats: { insertBeat },
+  beats: { insertBeat, nextId },
   lists: { reorderList },
   orientedClassName: { orientedClassName },
 } = helpers

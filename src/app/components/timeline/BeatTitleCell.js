@@ -307,7 +307,6 @@ BeatTitleCell.propTypes = {
   beatId: PropTypes.number.isRequired,
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
-  beats: PropTypes.array.isRequired,
   beat: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
@@ -323,7 +322,6 @@ const makeMapState = (state) => {
 
   return function mapStateToProps(state, ownProps) {
     return {
-      beats: state.present.beats,
       beat: uniqueBeatsSelector(state.present, ownProps.beatId),
       ui: state.present.ui,
       isSeries: selectors.isSeriesSelector(state.present),

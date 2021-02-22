@@ -12,14 +12,12 @@ import BeatInsertCell from './BeatInsertCell'
 import TopRow from './TopRow'
 import BeatTitleCell from './BeatTitleCell'
 import AddLineRow from './AddLineRow'
-import { newIds, actions, helpers, selectors, initialState } from 'pltr/v2'
+import { actions, helpers, selectors, initialState } from 'pltr/v2'
 
 const { card } = initialState
 
-const { nextId } = newIds
-
 const {
-  beats: { insertBeat },
+  beats: { insertBeat, nextId },
   lists: { reorderList },
 } = helpers
 
@@ -31,6 +29,7 @@ const {
   isLargeSelector,
   isSmallSelector,
   isMediumSelector,
+  sparceBeatMap,
 } = selectors
 
 const LineActions = actions.line
@@ -78,14 +77,6 @@ class TimelineTable extends Component {
   }
 
   // TODO: this should be a selector
-  beatMapping() {
-    return this.props.beats.reduce((acc, beat) => {
-      acc[beat.position] = beat.id
-      return acc
-    }, {})
-  }
-
-  // TODO: this should be a selector
   lineMapping() {
     return this.props.lines.reduce((acc, line) => {
       acc[line.position] = line
@@ -119,7 +110,7 @@ class TimelineTable extends Component {
   renderHorizontal() {
     const { lines, isSmall, ui } = this.props
 
-    const beatMap = this.beatMapping()
+    const beatMap = this.props.beatMapping
     const beatMapKeys = Object.keys(beatMap)
     let howManyCells = 0
     const renderedLines = lines.map((line) => {
@@ -332,6 +323,7 @@ class TimelineTable extends Component {
 TimelineTable.propTypes = {
   nextBeatId: PropTypes.number,
   beats: PropTypes.array,
+  beatMapping: PropTypes.object,
   lines: PropTypes.array,
   cardMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
@@ -350,6 +342,7 @@ function mapStateToProps(state) {
   const nextBeatId = nextId(state.present.beats)
   return {
     beats: sortedBeatsByBookSelector(state.present),
+    beatMapping: sparceBeatMap(state.present),
     nextBeatId: nextBeatId,
     lines: sortedLinesByBookSelector(state.present),
     cardMap: cardMapSelector(state.present),

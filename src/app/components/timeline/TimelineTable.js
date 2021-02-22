@@ -67,8 +67,12 @@ class TimelineTable extends Component {
   }
 
   handleReorderBeats = (originalPosition, droppedPosition) => {
-    const beats = reorderList(originalPosition, droppedPosition, this.props.beats)
-    this.props.beatActions.reorderBeats(beats, this.props.ui.currentTimeline)
+    const beats = this.props.beats
+    this.props.beatActions.reorderBeats(
+      beats[originalPosition].id,
+      beats[droppedPosition].id,
+      this.props.ui.currentTimeline
+    )
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
@@ -84,6 +88,7 @@ class TimelineTable extends Component {
     }, {})
   }
 
+  // TODO: handle reordering to add a new beat :/
   handleInsertNewBeat = (nextPosition, lineId) => {
     const beats = insertBeat(
       nextPosition,

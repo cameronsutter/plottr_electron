@@ -30,8 +30,11 @@ const {
 class TopRow extends Component {
   handleReorderBeats = (originalPosition, droppedPosition) => {
     const { ui, beatActions, beats } = this.props
-    const newBeats = reorderList(originalPosition, droppedPosition, beats)
-    beatActions.reorderBeats(newBeats, ui.currentTimeline)
+    beatActions.reorderBeats(
+      beats[originalPosition].id,
+      beats[droppedPosition].id,
+      ui.currentTimeline
+    )
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
@@ -40,6 +43,7 @@ class TopRow extends Component {
     lineActions.reorderLines(newLines, ui.currentTimeline)
   }
 
+  // TODO: handle adding a beat by reordering beats
   handleInsertNewBeat = (nextPosition) => {
     const { ui, beatActions, beats, nextBeatId } = this.props
     const newBeats = insertBeat(nextPosition, beats, nextBeatId, ui.currentTimeline)

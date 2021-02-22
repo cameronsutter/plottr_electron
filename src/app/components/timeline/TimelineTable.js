@@ -339,11 +339,10 @@ TimelineTable.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const nextBeatId = nextId(state.present.beats)
   return {
     beats: sortedBeatsByBookSelector(state.present),
     beatMapping: sparceBeatMap(state.present),
-    nextBeatId: nextBeatId,
+    nextBeatId: nextId(state.present.beats),
     lines: sortedLinesByBookSelector(state.present),
     cardMap: cardMapSelector(state.present),
     ui: state.present.ui,

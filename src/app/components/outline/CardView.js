@@ -33,8 +33,9 @@ class CardView extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = this.titleInputRef.current.value || this.props.card.title
-    this.props.actions.editCard(this.props.card.id, newTitle, this.state.description)
+    const { card, actions } = this.props
+    var newTitle = this.titleInputRef.current.value || card.title
+    actions.editCard(card.id, newTitle, this.state.description, card.templates, {})
     this.setState({ editing: false })
   }
 

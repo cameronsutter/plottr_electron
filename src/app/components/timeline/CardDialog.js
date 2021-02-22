@@ -27,20 +27,6 @@ const {
   beats: { beatTitle },
 } = helpers
 
-const CardActions = actions.card
-const UIActions = actions.ui
-const CustomAttributeActions = actions.customAttribute
-
-const { sortedTagsSelector, isSeriesSelector } = selectors
-
-const {
-  sortedBeatsByBookSelector,
-  positionOffsetSelector,
-  charactersSortedAtoZSelector,
-  sortedLinesByBookSelector,
-  placesSortedAtoZSelector,
-} = selectors
-
 class CardDialog extends Component {
   constructor(props) {
     super(props)
@@ -585,24 +571,24 @@ CardDialog.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    beats: sortedBeatsByBookSelector(state.present),
-    lines: sortedLinesByBookSelector(state.present),
-    tags: sortedTagsSelector(state.present),
-    characters: charactersSortedAtoZSelector(state.present),
-    places: placesSortedAtoZSelector(state.present),
+    beats: selectors.sortedBeatsByBookSelector(state.present),
+    lines: selectors.sortedLinesByBookSelector(state.present),
+    tags: selectors.sortedTagsSelector(state.present),
+    characters: selectors.charactersSortedAtoZSelector(state.present),
+    places: selectors.placesSortedAtoZSelector(state.present),
     customAttributes: state.present.customAttributes.scenes,
     ui: state.present.ui,
     books: state.present.books,
-    isSeries: isSeriesSelector(state.present),
-    positionOffset: positionOffsetSelector(state.present),
+    isSeries: selectors.isSeriesSelector(state.present),
+    positionOffset: selectors.positionOffsetSelector(state.present),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(CardActions, dispatch),
-    uiActions: bindActionCreators(UIActions, dispatch),
-    customAttributeActions: bindActionCreators(CustomAttributeActions, dispatch),
+    actions: bindActionCreators(actions.card, dispatch),
+    uiActions: bindActionCreators(actions.ui, dispatch),
+    customAttributeActions: bindActionCreators(actions.customAttribute, dispatch),
   }
 }
 

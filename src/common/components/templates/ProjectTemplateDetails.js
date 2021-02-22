@@ -54,29 +54,35 @@ export default function ProjectTemplateDetails({ template }) {
       )
     })
 
-  const customAttributes = Object.keys(templateData.customAttributes)
-    .filter((type) => templateData.customAttributes[type].length)
-    .map((type) => {
-      let headingText = headingMap[type] || type
+  let customAttributes = []
+  if (templateData.customAttributes) {
+    customAttributes = Object.keys(templateData.customAttributes)
+      .filter((type) => templateData.customAttributes[type].length)
+      .map((type) => {
+        let headingText = headingMap[type] || type
+
+        return (
+          <div key={type}>
+            <p>{headingText}</p>
+            <ol>{renderData(`${type}CA`, templateData.customAttributes[type])}</ol>
+          </div>
+        )
+      })
+  }
+
+  let images = []
+  if (templateData.images) {
+    images = Object.keys(templateData.images).map((id) => {
+      const image = templateData.images[`${id}`]
 
       return (
-        <div key={type}>
-          <p>{headingText}</p>
-          <ol>{renderData(`${type}CA`, templateData.customAttributes[type])}</ol>
+        <div key={id} style={{ width: '50%' }}>
+          <p>{image.name}</p>
+          <img className="img-responsive" src={image.data} />
         </div>
       )
     })
-
-  const images = Object.keys(templateData.images).map((id) => {
-    const image = templateData.images[`${id}`]
-
-    return (
-      <div key={id} style={{ width: '50%' }}>
-        <p>{image.name}</p>
-        <img className="img-responsive" src={image.data} />
-      </div>
-    )
-  })
+  }
 
   return (
     <div className="panel-body">

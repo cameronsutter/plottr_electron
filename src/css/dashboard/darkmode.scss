@@ -171,7 +171,7 @@ main.darkmode {
     }
   }
 
-  .dashboard__template-picker {
+  .template-picker__wrapper {
     .template-picker__list {
       li.list-group-item {
         background-color: $dark-gray-1;
@@ -218,9 +218,9 @@ main.darkmode {
     }
   }
 
-  /////////////
-  // options //
-  /////////////
+  //////////////
+  // settings //
+  //////////////
   .dashboard__options {
     h1 {
       &.secondary-text {

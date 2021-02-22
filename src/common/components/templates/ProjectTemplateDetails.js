@@ -41,7 +41,7 @@ export default function ProjectTemplateDetails({ template }) {
   }
 
   const arrayObjects = ['beats', 'cards', 'lines', 'notes', 'tags']
-    .filter((type) => templateData[type].length)
+    .filter((type) => templateData[type] && templateData[type].length)
     .filter((heading) => !templateData[heading].every((item) => item.title == 'auto'))
     .map((heading) => {
       let headingText = headingMap[heading] || heading

@@ -17,7 +17,7 @@ import { actions, helpers, selectors, initialState } from 'pltr/v2'
 const { card } = initialState
 
 const {
-  beats: { insertBeat, nextId },
+  beats: { nextId },
   lists: { reorderList },
 } = helpers
 
@@ -88,15 +88,11 @@ class TimelineTable extends Component {
     }, {})
   }
 
-  // TODO: handle reordering to add a new beat :/
   handleInsertNewBeat = (nextPosition, lineId) => {
-    const beats = insertBeat(
-      nextPosition,
-      this.props.beats,
-      this.props.nextBeatId,
+    const beats = this.props.beatActions.insertBeat(
+      this.props.beats[nextPosition].id,
       this.props.ui.currentTimeline
     )
-    this.props.beatActions.reorderBeats(beats, this.props.ui.currentTimeline)
 
     if (lineId && beats[nextPosition]) {
       const beatId = beats[nextPosition].id

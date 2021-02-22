@@ -61,8 +61,8 @@ class BeatTitleCell extends PureComponent {
   }
 
   finalizeEdit = (newVal) => {
-    const { beat, actions } = this.props
-    actions.editBeatTitle(beat.id, newVal || 'auto') // if nothing, set to auto
+    const { beat, actions, ui } = this.props
+    actions.editBeatTitle(beat.id, ui.currentTimeline, newVal || 'auto') // if nothing, set to auto
     this.setState({ editing: false, hovering: false })
   }
 

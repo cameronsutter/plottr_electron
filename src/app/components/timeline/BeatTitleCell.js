@@ -123,7 +123,7 @@ class BeatTitleCell extends PureComponent {
     if (droppedBeat.id == null) return
     if (droppedBeat.id == this.props.beat.id) return
 
-    this.props.handleReorder(this.props.beat.position, droppedBeat.position)
+    this.props.handleReorder(this.props.beat.id, droppedBeat.id)
   }
 
   startEditing = () => {

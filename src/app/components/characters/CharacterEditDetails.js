@@ -258,7 +258,7 @@ class CharacterEditDetails extends Component {
             <FormGroup>
               <ControlLabel>{i18n('Notes')}</ControlLabel>
               <RichText
-                attributes={character.notes}
+                description={character.notes}
                 onChange={(desc) => this.setState({ notes: desc })}
                 editable
                 autofocus={false}

@@ -66,11 +66,10 @@ class TimelineTable extends Component {
     this.setLength()
   }
 
-  handleReorderBeats = (droppedPosition, originalPosition) => {
-    const beats = this.props.beats
+  handleReorderBeats = (droppedPositionId, originalPositionId) => {
     this.props.beatActions.reorderBeats(
-      beats[originalPosition].id,
-      beats[droppedPosition].id,
+      originalPositionId,
+      droppedPositionId,
       this.props.ui.currentTimeline
     )
   }

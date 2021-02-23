@@ -28,13 +28,9 @@ const {
 } = selectors
 
 class TopRow extends Component {
-  handleReorderBeats = (droppedPosition, originalPosition) => {
-    const { ui, beatActions, beats } = this.props
-    beatActions.reorderBeats(
-      beats[originalPosition].id,
-      beats[droppedPosition].id,
-      ui.currentTimeline
-    )
+  handleReorderBeats = (droppedPositionId, originalPositionId) => {
+    const { ui, beatActions } = this.props
+    beatActions.reorderBeats(originalPositionId, droppedPositionId, ui.currentTimeline)
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {

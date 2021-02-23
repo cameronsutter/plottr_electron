@@ -30,8 +30,8 @@ class BeatView extends Component {
   }
 
   autoSortBeat = () => {
-    const { beatActions, beat } = this.props
-    beatActions.autoSortBeat(beat.id)
+    const { beatActions, beat, ui } = this.props
+    beatActions.autoSortBeat(beat.id, ui.currentTimeline)
   }
 
   reorderCards = ({ current, currentIndex, dropped }) => {

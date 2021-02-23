@@ -36,7 +36,7 @@ class BeatView extends Component {
 
   reorderCards = ({ current, currentIndex, dropped }) => {
     const { sortedCards } = this.state
-    const { beat, actions } = this.props
+    const { beat, actions, ui } = this.props
     const currentIds = sortedCards.map((c) => c.id)
     const currentLineId = current.lineId
     let newOrderInBeat = []
@@ -52,7 +52,14 @@ class BeatView extends Component {
         const currentPosition = sortedCards.find((c) => c.id == dropped.cardId).positionWithinLine
         newOrderWithinLine = moveToAbove(currentPosition, current.positionWithinLine, cardIdsInLine)
       }
-      actions.reorderCardsInBeat(beat.id, currentLineId, newOrderInBeat, newOrderWithinLine)
+      actions.reorderCardsInBeat(
+        beat.id,
+        currentLineId,
+        newOrderInBeat,
+        newOrderWithinLine,
+        undefined,
+        ui.currentTimeline
+      )
     } else {
       // dropped in from a different beat
       if (dropped.lineId == currentLineId) {
@@ -66,7 +73,14 @@ class BeatView extends Component {
         // flip to manual sort
         newOrderInBeat = currentIds
         newOrderInBeat.splice(currentIndex, 0, dropped.cardId)
-        actions.reorderCardsInBeat(beat.id, currentLineId, newOrderInBeat, null, dropped.cardId)
+        actions.reorderCardsInBeat(
+          beat.id,
+          currentLineId,
+          newOrderInBeat,
+          null,
+          dropped.cardId,
+          ui.currentTimeline
+        )
       }
     }
   }

@@ -57,6 +57,7 @@ class MiniMap extends Component {
       cardMapping,
       positionOffset,
       actions,
+      ui,
     } = this.props
     const linesById = keyBy(lines, 'id')
     return beats.map((beat, idx) => {
@@ -71,6 +72,7 @@ class MiniMap extends Component {
           eventKey={beat.id}
         >
           <MiniBeat
+            bookId={ui.currentTimeline}
             beat={beat}
             idx={idx + positionOffset}
             cards={beatCards}

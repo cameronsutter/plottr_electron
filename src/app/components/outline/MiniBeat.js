@@ -9,7 +9,7 @@ const {
 } = helpers
 
 function MiniBeat(props) {
-  const { beat, idx, cards, linesById, sortedLines, positionOffset, isSeries } = props
+  const { bookId, beat, idx, cards, linesById, sortedLines, positionOffset, isSeries } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
   const [inDropZone, setInZone] = useState(false)
@@ -59,7 +59,7 @@ function MiniBeat(props) {
         props.reorderCardsWithinLine(beat.id, lineId, cardIdsInLine)
       } else {
         currentIds.push(id)
-        props.reorderCardsInBeat(beat.id, lineId, currentIds, cardIdsInLine, id)
+        props.reorderCardsInBeat(beat.id, lineId, currentIds, cardIdsInLine, id, bookId)
       }
     }
   }
@@ -104,6 +104,7 @@ function MiniBeat(props) {
 }
 
 MiniBeat.propTypes = {
+  bookId: PropTypes.string.isRequired,
   beat: PropTypes.object.isRequired,
   idx: PropTypes.number.isRequired,
   cards: PropTypes.array.isRequired,

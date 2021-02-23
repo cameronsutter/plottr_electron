@@ -53,6 +53,10 @@ class BeatTitleCell extends PureComponent {
     this.setState({ deleting: true, hovering: false })
   }
 
+  handleAddChild = (e) => {
+    this.props.actions.addBeat(this.props.ui.currentTimeline, this.props.beat.id)
+  }
+
   editTitle = () => {
     const ref = this.titleInputRef.current
     if (!ref) return
@@ -172,6 +176,9 @@ class BeatTitleCell extends PureComponent {
           </Button>
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
+          </Button>
+          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleAddChild}>
+            <Glyphicon glyph="plus" />
           </Button>
         </ButtonGroup>
       </div>

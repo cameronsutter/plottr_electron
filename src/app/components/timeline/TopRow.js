@@ -10,7 +10,7 @@ import BeatInsertCell from 'components/timeline/BeatInsertCell'
 import { actions, helpers, selectors } from 'pltr/v2'
 
 const {
-  beats: { insertBeat, nextId },
+  beats: { nextId },
   lists: { reorderList },
   orientedClassName: { orientedClassName },
 } = helpers
@@ -28,7 +28,7 @@ const {
 } = selectors
 
 class TopRow extends Component {
-  handleReorderBeats = (originalPosition, droppedPosition) => {
+  handleReorderBeats = (droppedPosition, originalPosition) => {
     const { ui, beatActions, beats } = this.props
     beatActions.reorderBeats(
       beats[originalPosition].id,

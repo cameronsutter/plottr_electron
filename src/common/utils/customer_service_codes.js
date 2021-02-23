@@ -1,7 +1,9 @@
-import { shell } from 'electron'
+import path from 'path'
+import { shell, remote } from 'electron'
+const { app } = remote
 import storage from 'electron-json-storage'
 import log from 'electron-log'
-import { RECENT_FILES_PATH, BACKUP_BASE_PATH } from './config_paths'
+import { RECENT_FILES_PATH, BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './config_paths'
 import SETTINGS from './settings'
 import { extendTrialWithReset } from '../licensing/trial_manager'
 import { USER_INFO_PATH } from './config_paths'
@@ -14,16 +16,9 @@ export function handleCustomerServiceCode(code) {
       extendTrialWithReset(30)
       break
 
-    case 'bafa09':
-      // delete recentFiles file
-      storage.remove(RECENT_FILES_PATH, (error) => {
-        if (error) log.warn(error)
-      })
-      break
-
     case '941ff8':
       // view backups
-      shell.openItem(BACKUP_BASE_PATH)
+      shell.openPath(BACKUP_BASE_PATH)
       break
 
     case '7c6a3a':
@@ -71,6 +66,16 @@ export function handleCustomerServiceCode(code) {
       storage.remove(USER_INFO_PATH, (error) => {
         if (error) log.warn(error)
       })
+      break
+
+    case '16329e':
+      // show the custom templates file
+      shell.showItemInFolder(path.join(app.getPath('userData'), `${CUSTOM_TEMPLATES_PATH}.json`))
+      break
+
+    case '8bb9de':
+      // open the Plottr internal User Data folder
+      shell.openPath(app.getPath('userData'))
       break
 
     default:

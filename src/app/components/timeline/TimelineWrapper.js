@@ -210,16 +210,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav() {
-    const {
-      ui,
-      file,
-      filterIsEmpty,
-      canSaveTemplate,
-      isSmall,
-      isMedium,
-      isLarge,
-      actions,
-    } = this.props
+    const { ui, file, filterIsEmpty, isSmall, isMedium, isLarge, actions } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -329,13 +320,11 @@ class TimelineWrapper extends Component {
               <Button onClick={this.scrollEnd}>{i18n('End')}</Button>
             </ButtonGroup>
           </NavItem>
-          {canSaveTemplate ? (
-            <NavItem>
-              <Button bsSize="small" onClick={this.startSaveAsTemplate}>
-                <FaSave className="svg-save-template" /> {i18n('Save as Template')}
-              </Button>
-            </NavItem>
-          ) : null}
+          <NavItem>
+            <Button bsSize="small" onClick={this.startSaveAsTemplate}>
+              <FaSave className="svg-save-template" /> {i18n('Save as Template')}
+            </Button>
+          </NavItem>
           <ClearNavItem />
           <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline} />
         </Nav>
@@ -395,7 +384,6 @@ TimelineWrapper.propTypes = {
   isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
   filterIsEmpty: PropTypes.bool.isRequired,
-  canSaveTemplate: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
 }
 
@@ -404,7 +392,6 @@ function mapStateToProps(state) {
     file: state.present.file,
     ui: state.present.ui,
     filterIsEmpty: selectors.timelineFilterIsEmptySelector(state.present),
-    canSaveTemplate: selectors.currentTimelineSelector(state.present) == 1,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
     isLarge: selectors.isLargeSelector(state.present),

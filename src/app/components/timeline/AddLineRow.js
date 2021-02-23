@@ -140,9 +140,6 @@ class AddLineRow extends Component {
     templateLines = sortBy(templateLines, 'position')
 
     templateLines.forEach((tL) => {
-      // We do not want to add lines for series.
-      if (tL.bookId === 'series') return
-
       const id = this.nextLineId
       if (remember) this.newLineMapping[tL.id] = id // remember old line id -> new line id
       const lastLine = this.getLast(this.allLines)

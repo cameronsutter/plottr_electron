@@ -26,8 +26,8 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
 
 function createPlotlineTemplate(pltrData, { name, description, link }) {
   const data = cloneDeep(pltrData)
-  let id = makeNewId('pl')
-  let bookId = data.ui.currentTimeline
+  const id = makeNewId('pl')
+  const bookId = data.ui.currentTimeline
 
   let template = {
     id: id,
@@ -39,15 +39,23 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
     templateData: {},
   }
 
-  // only the beats in book 1
+  // only the beats in current book
   const beats = data.beats.filter((beat) => beat.bookId === bookId)
-  template.templateData.beats = beats
+  // change bookId to 1
+  template.templateData.beats = beats.map((b) => {
+    b.bookId = 1
+    return b
+  })
 
-  // only the lines in book 1
+  // only the lines in current book
   // only if there are more than 1 line
-  const bookLines = data.lines.filter((beat) => beat.bookId === bookId)
+  const bookLines = data.lines.filter((line) => line.bookId === bookId)
   if (bookLines.length > 1) {
-    template.templateData.lines = bookLines
+    // change bookId to 1
+    template.templateData.lines = bookLines.map((l) => {
+      l.bookId = 1
+      return l
+    })
   }
 
   // only cards in beats

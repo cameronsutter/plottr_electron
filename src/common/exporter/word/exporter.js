@@ -4,11 +4,13 @@ import { sortBy, groupBy } from 'lodash'
 import { t as i18n } from 'plottr_locales'
 import serialize from '../../slate_serializers/to_word'
 import { notifyUser } from '../notifier'
-import { helpers } from 'pltr/v2'
+import { helpers, selectors } from 'pltr/v2'
 
 const {
   books: { isSeries },
+  beats: { beatTitle },
 } = helpers
+const { sortedBeatsByBookSelector, beatsByBookSelector } = selectors
 
 export default function Exporter(data, { fileName, bookId }) {
   let doc = new Document()
@@ -81,10 +83,7 @@ function outlineSection(data, namesMapping, bookId, doc) {
     })
   )
 
-  let beats = sortBy(
-    data.beats.filter((beat) => beat.bookId == bookId),
-    'position'
-  )
+  const beats = sortedBeatsByBookSelector(data)
   if (!beats.length) return { children: children }
 
   const offset = positionOffset(beats)
@@ -96,15 +95,15 @@ function outlineSection(data, namesMapping, bookId, doc) {
 }
 
 function beatParagraphs(beat, data, namesMapping, bookId, offset, doc) {
-  const beatIsSeries = isSeries(bookId)
-  let paragraphs = [new Paragraph('')]
+  const paragraphs = [new Paragraph('')]
   paragraphs.push(new Paragraph('^'))
-  let title = beatTitle(beat, offset, beatIsSeries)
+  const beats = beatsByBookSelector(data)
+  const title = beatTitle(beats, beat, offset)
   paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
   const lines = data.lines
   const cards = sortedBeatCards(beat.autoOutlineSort, beat.id, data.cards, lines)
   // console.log('sortedBeatCards', cards)
-  let cardParagraphs = cards.flatMap((c) => card(c, lines, namesMapping, doc))
+  const cardParagraphs = cards.flatMap((c) => card(c, lines, namesMapping, doc))
   return paragraphs.concat(cardParagraphs)
 }
 
@@ -116,17 +115,6 @@ function positionOffset(sortedBeats) {
 
 // TODO: most of this is copy/pasted from helpers/beats
 // when we refactor main.js, this can be shared from there
-function beatTitle(beat, offset, isSeries) {
-  if (isSeries) {
-    return beat.title == 'auto'
-      ? i18n('Beat {number}', { number: beat.position + offset + 1 })
-      : beat.title
-  } else {
-    return beat.title == 'auto'
-      ? i18n('Chapter {number}', { number: beat.position + offset + 1 })
-      : beat.title
-  }
-}
 
 function card(card, lines, namesMapping, doc) {
   let paragraphs = [new Paragraph('')]

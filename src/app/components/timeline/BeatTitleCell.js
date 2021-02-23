@@ -211,12 +211,12 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderTitle() {
-    const { beat, beatTitle, positionOffset, isSeries } = this.props
+    const { beats, beat, beatTitle, positionOffset } = this.props
     if (!this.state.editing) return <span>{truncateTitle(beatTitle, 50)}</span>
 
     return (
       <FormGroup>
-        <ControlLabel>{editingBeatLabel(beat, positionOffset, isSeries)}</ControlLabel>
+        <ControlLabel>{editingBeatLabel(beats, beat, positionOffset)}</ControlLabel>
         <FormControl
           type="text"
           defaultValue={beat.title}
@@ -232,7 +232,7 @@ class BeatTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const { beat, ui, positionOffset, beatTitle, isSeries, isSmall, isMedium } = this.props
+    const { beats, beat, ui, positionOffset, beatTitle, isSmall, isMedium } = this.props
     const { hovering, inDropZone } = this.state
     const innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
       'medium-timeline': isMedium,
@@ -262,7 +262,7 @@ class BeatTitleCell extends PureComponent {
           {this.renderDelete()}
           {this.renderEditInput()}
           <div
-            title={beatPositionTitle(beat, positionOffset, isSeries)}
+            title={beatPositionTitle(beats, beat, positionOffset)}
             onClick={hovering ? this.stopHovering : this.startHovering}
             draggable
             onDragStart={this.handleDragStart}
@@ -277,7 +277,7 @@ class BeatTitleCell extends PureComponent {
         <Cell className="beat-table-cell">
           <div
             className={beatKlass}
-            title={beatPositionTitle(beat, positionOffset, isSeries)}
+            title={beatPositionTitle(beats, beat, positionOffset)}
             onMouseEnter={this.startHovering}
             onMouseLeave={this.stopHovering}
             onDrop={this.handleDrop}
@@ -307,9 +307,9 @@ BeatTitleCell.propTypes = {
   beatId: PropTypes.number.isRequired,
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
+  beats: PropTypes.object.isRequired,
   beat: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
-  isSeries: PropTypes.bool,
   beatTitle: PropTypes.string.isRequired,
   positionOffset: PropTypes.number.isRequired,
   isSmall: PropTypes.bool.isRequired,
@@ -322,9 +322,9 @@ const makeMapState = (state) => {
 
   return function mapStateToProps(state, ownProps) {
     return {
+      beats: selectors.beatsByBookSelector(state.present),
       beat: uniqueBeatsSelector(state.present, ownProps.beatId),
       ui: state.present.ui,
-      isSeries: selectors.isSeriesSelector(state.present),
       beatTitle: uniqueBeatTitleSelector(state.present, ownProps.beatId),
       positionOffset: selectors.positionOffsetSelector(state.present),
       isSmall: selectors.isSmallSelector(state.present),

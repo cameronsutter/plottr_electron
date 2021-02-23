@@ -12,10 +12,10 @@ import { actions, selectors } from 'pltr/v2'
 const CardActions = actions.card
 
 const {
+  beatsByBookSelector,
   sortedBeatsByBookSelector,
   positionOffsetSelector,
   sortedLinesByBookSelector,
-  isSeriesSelector,
 } = selectors
 
 const targetPosition = 115
@@ -52,8 +52,8 @@ class MiniMap extends Component {
     const {
       lines,
       beats,
+      beatsTree,
       activeFilter,
-      isSeries,
       cardMapping,
       positionOffset,
       actions,
@@ -74,10 +74,10 @@ class MiniMap extends Component {
           <MiniBeat
             bookId={ui.currentTimeline}
             beat={beat}
+            beats={beatsTree}
             idx={idx + positionOffset}
             cards={beatCards}
             linesById={linesById}
-            isSeries={isSeries}
             sortedLines={lines}
             positionOffset={positionOffset}
             reorderCardsWithinLine={actions.reorderCardsWithinLine}
@@ -125,10 +125,10 @@ MiniMap.propTypes = {
   active: PropTypes.number.isRequired,
   cardMapping: PropTypes.object.isRequired,
   activeFilter: PropTypes.bool.isRequired,
+  beatsTree: PropTypes.object.isRequired,
   beats: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
-  isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
   actions: PropTypes.object,
 }
@@ -136,9 +136,9 @@ MiniMap.propTypes = {
 function mapStateToProps(state) {
   return {
     beats: sortedBeatsByBookSelector(state.present),
+    beatsTree: beatsByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
     ui: state.present.ui,
-    isSeries: isSeriesSelector(state.present),
     positionOffset: positionOffsetSelector(state.present),
   }
 }

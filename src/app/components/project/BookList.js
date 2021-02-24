@@ -53,7 +53,7 @@ class BookList extends Component {
     })
     actions.addBook()
     // add a plotline
-    lineActions.addLine(newBookId)
+    lineActions.addLineWithTitle(i18n('Main Plot'), newBookId)
     // add a beat
     beatActions.addBeat(newBookId)
   }

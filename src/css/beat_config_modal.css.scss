@@ -1,0 +1,43 @@
+.beat-config-modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.beat-config-modal__hierarchy-count-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.beat-config-modal__hierarchy-count-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.beat-config-modal__hierarchy-count-label {
+  font-size: 18px;
+}
+
+.beat-config-modal__hierarchy-count {
+  width: 50px;
+}
+
+.beat-config-modal__hierarchy-count-adjustment-control {
+  background: none;
+  border: none;
+}
+
+.beat-config-modal__levels-table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.beat-config-modal__levels-table-cell {
+  width: 14%;
+}

@@ -16,6 +16,7 @@ import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, helpers, selectors } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
+import BeatConfigModal from 'components/dialogs/BeatConfigModal'
 
 const {
   card: { truncateTitle },
@@ -34,6 +35,7 @@ class BeatTitleCell extends PureComponent {
       inDropZone: false,
       dropDepth: 0,
       deleting: false,
+      beatConfigIsOpen: false,
     }
     this.titleInputRef = React.createRef()
   }
@@ -55,6 +57,18 @@ class BeatTitleCell extends PureComponent {
 
   handleAddChild = (e) => {
     this.props.actions.addBeat(this.props.ui.currentTimeline, this.props.beat.id)
+  }
+
+  closeBeatConfig = () => {
+    this.setState({
+      beatConfigIsOpen: false,
+    })
+  }
+
+  openBeatConfig = () => {
+    this.setState({
+      beatConfigIsOpen: true,
+    })
   }
 
   editTitle = () => {
@@ -138,6 +152,12 @@ class BeatTitleCell extends PureComponent {
     this.setState({ hovering: false })
   }
 
+  renderBeatConfig() {
+    if (!this.state.beatConfigIsOpen) return null
+
+    return <BeatConfigModal closeDialog={this.closeBeatConfig} />
+  }
+
   renderDelete() {
     if (!this.state.deleting) return null
 
@@ -171,6 +191,9 @@ class BeatTitleCell extends PureComponent {
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <ButtonGroup>
+          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.openBeatConfig}>
+            <Glyphicon glyph="cog" />
+          </Button>
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.startEditing}>
             <Glyphicon glyph="edit" />
           </Button>
@@ -258,53 +281,59 @@ class BeatTitleCell extends PureComponent {
         dropping: inDropZone,
       }
       return (
-        <th
-          className={cx(klasses)}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}
-          onDrop={this.handleDrop}
-        >
-          {this.renderHoverOptions()}
-          {this.renderDelete()}
-          {this.renderEditInput()}
-          <div
-            title={beatPositionTitle(beats, beat, positionOffset)}
-            onClick={hovering ? this.stopHovering : this.startHovering}
-            draggable
-            onDragStart={this.handleDragStart}
-            onDragEnd={this.handleDragEnd}
-          >
-            <span>{truncateTitle(beatTitle, 50)}</span>
-          </div>
-        </th>
-      )
-    } else {
-      return (
-        <Cell className="beat-table-cell">
-          <div
-            className={beatKlass}
-            title={beatPositionTitle(beats, beat, positionOffset)}
-            onMouseEnter={this.startHovering}
-            onMouseLeave={this.stopHovering}
+        <>
+          {this.renderBeatConfig()}
+          <th
+            className={cx(klasses)}
+            onDragEnter={this.handleDragEnter}
+            onDragOver={this.handleDragOver}
+            onDragLeave={this.handleDragLeave}
             onDrop={this.handleDrop}
           >
             {this.renderHoverOptions()}
             {this.renderDelete()}
+            {this.renderEditInput()}
             <div
-              className={innerKlass}
-              onClick={this.startEditing}
+              title={beatPositionTitle(beats, beat, positionOffset)}
+              onClick={hovering ? this.stopHovering : this.startHovering}
               draggable
               onDragStart={this.handleDragStart}
               onDragEnd={this.handleDragEnd}
-              onDragEnter={this.handleDragEnter}
-              onDragOver={this.handleDragOver}
-              onDragLeave={this.handleDragLeave}
             >
-              {this.renderTitle()}
+              <span>{truncateTitle(beatTitle, 50)}</span>
             </div>
-          </div>
-        </Cell>
+          </th>
+        </>
+      )
+    } else {
+      return (
+        <>
+          {this.renderBeatConfig()}
+          <Cell className="beat-table-cell">
+            <div
+              className={beatKlass}
+              title={beatPositionTitle(beats, beat, positionOffset)}
+              onMouseEnter={this.startHovering}
+              onMouseLeave={this.stopHovering}
+              onDrop={this.handleDrop}
+            >
+              {this.renderHoverOptions()}
+              {this.renderDelete()}
+              <div
+                className={innerKlass}
+                onClick={this.startEditing}
+                draggable
+                onDragStart={this.handleDragStart}
+                onDragEnd={this.handleDragEnd}
+                onDragEnter={this.handleDragEnter}
+                onDragOver={this.handleDragOver}
+                onDragLeave={this.handleDragLeave}
+              >
+                {this.renderTitle()}
+              </div>
+            </div>
+          </Cell>
+        </>
       )
     }
   }

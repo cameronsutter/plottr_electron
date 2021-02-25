@@ -7,7 +7,7 @@ import i18n from 'format-message'
 import PlottrModal from 'components/PlottrModal'
 import HierarchyLevel from './HierarchyLevel'
 
-import { selectors, actions, initialState, helpers } from 'pltr/v2'
+import { selectors, actions, helpers } from 'pltr/v2'
 
 const {
   hierarchyLevels: { newHierarchyLevel },

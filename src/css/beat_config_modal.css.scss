@@ -50,6 +50,11 @@
 }
 
 .beat-config-modal__levels-table-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
   width: 14%;
   font-family: 'Lato', sans-serif;
   box-shadow: none;

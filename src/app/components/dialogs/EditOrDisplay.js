@@ -5,15 +5,15 @@ import ColorPicker from 'components/colorpicker'
 
 // TODO: switch form control type with type
 const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
-  const controlRef = React.createRef()
-  useEffect(() => {
-    if (controlRef.current) controlRef.current.focus()
-  }, [value, editing])
-
   const [stagedValue, setStagedValue] = useState(value)
   useEffect(() => {
     setStagedValue(value)
   }, [value])
+
+  const controlRef = React.createRef()
+  useEffect(() => {
+    if (controlRef.current) controlRef.current.focus()
+  }, [value, editing, stagedValue])
 
   const extraStyle =
     type === 'color'

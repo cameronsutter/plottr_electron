@@ -22,6 +22,7 @@ const {
   card: { truncateTitle },
   beats: { editingBeatLabel, beatPositionTitle },
   orientedClassName: { orientedClassName },
+  hierarchyLevels: { hierarchyToStyles },
 } = helpers
 
 class BeatTitleCell extends PureComponent {
@@ -320,6 +321,7 @@ class BeatTitleCell extends PureComponent {
               {this.renderHoverOptions()}
               {this.renderDelete()}
               <div
+                style={hierarchyToStyles(this.props.hierarchyLevel)}
                 className={innerKlass}
                 onClick={this.startEditing}
                 draggable
@@ -345,6 +347,7 @@ BeatTitleCell.propTypes = {
   actions: PropTypes.object.isRequired,
   beats: PropTypes.object.isRequired,
   beat: PropTypes.object.isRequired,
+  hierarchyLevel: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   beatTitle: PropTypes.string.isRequired,
   positionOffset: PropTypes.number.isRequired,
@@ -360,6 +363,7 @@ const makeMapState = (state) => {
     return {
       beats: selectors.beatsByBookSelector(state.present),
       beat: uniqueBeatsSelector(state.present, ownProps.beatId),
+      hierarchyLevel: selectors.hierarchyLevelSelector(state.present, ownProps.beatId),
       ui: state.present.ui,
       beatTitle: uniqueBeatTitleSelector(state.present, ownProps.beatId),
       positionOffset: selectors.positionOffsetSelector(state.present),

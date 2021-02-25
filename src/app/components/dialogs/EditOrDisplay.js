@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import ColorPicker from 'components/colorpicker'
 
-// TODO: switch form control type with type
 const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
   const [stagedValue, setStagedValue] = useState(value)
   useEffect(() => {

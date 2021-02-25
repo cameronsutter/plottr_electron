@@ -44,6 +44,16 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
             />
           </>
         )
+      case 'toggle':
+        return (
+          <input
+            className={className}
+            type="checkbox"
+            value={stagedValue}
+            onChange={(event) => setValue(event.target.value)}
+          />
+        )
+      case 'text':
       default:
         return (
           <input
@@ -66,16 +76,36 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
     className: PropTypes.string.isRequired,
   }
 
+  const DisplaySwitch = () => {
+    switch (type) {
+      case 'toggle':
+        return (
+          <input
+            className="beat-config-modal__levels-table-cell"
+            type="checkbox"
+            checked={stagedValue}
+            onChange={(event) => setValue(event.target.checked)}
+          />
+        )
+      case 'color':
+      case 'text':
+      default:
+        return (
+          <div
+            onClick={() => {
+              setEditing(true)
+            }}
+            className="beat-config-modal__levels-table-cell"
+          >
+            {stagedValue}
+            <div style={extraStyle} />
+          </div>
+        )
+    }
+  }
+
   return !editing ? (
-    <div
-      onClick={() => {
-        setEditing(true)
-      }}
-      className="beat-config-modal__levels-table-cell"
-    >
-      {stagedValue}
-      <div style={extraStyle} />
-    </div>
+    <DisplaySwitch />
   ) : (
     <ControlSwitch
       type="text"

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { FormControl } from 'react-bootstrap'
 
 // TODO: switch form control type with type
 const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
-  const [stagedValue, setStagedValue] = useState(value)
+  const controlRef = React.createRef()
+  useEffect(() => {
+    if (controlRef.current) controlRef.current.focus()
+  }, [value, editing])
 
+  const [stagedValue, setStagedValue] = useState(value)
   useEffect(() => {
     setStagedValue(value)
   }, [value])
@@ -20,11 +23,12 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
       {stagedValue}
     </div>
   ) : (
-    <FormControl
+    <input
       className="beat-config-modal__levels-table-cell beat-config-modal__levels-table-cell--editing"
       type="text"
       value={stagedValue}
       onChange={(event) => setStagedValue(event.target.value)}
+      ref={controlRef}
       onBlur={() => {
         setValue(stagedValue)
         setEditing(false)

@@ -252,7 +252,6 @@ class AddLineRow extends Component {
     }
 
     const appendKlass = cx('line-list__append-line', { 'medium-timeline': isMedium })
-    if (!isSeries(bookId)) {
       return (
         <div className={appendKlass}>
           {this.renderInputModal()}
@@ -275,16 +274,6 @@ class AddLineRow extends Component {
           )}
         </div>
       )
-    } else {
-      return (
-        <div className={appendKlass} onClick={() => this.setState({ askingForInput: true })}>
-          {this.renderInputModal()}
-          <div className="line-list__append-line-wrapper">
-            <Glyphicon glyph="plus" />
-          </div>
-        </div>
-      )
-    }
   }
 
   renderTemplatePicker() {

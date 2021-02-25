@@ -59,11 +59,13 @@
   border: 0;
   border-radius: 0;
   height: 30px;
-  transition: border-bottom 0.5s;
   border-bottom: 2px solid #f2cb8000;
+  transition: border-bottom 0.5s;
 }
 
 .beat-config-modal__levels-table-cell--editing {
+  margin-top: -4px;
+  padding: 0;
   border-bottom: 2px solid $orange-6;
 }
 

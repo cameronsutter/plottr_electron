@@ -9,7 +9,12 @@ import CardView from 'components/outline/CardView'
 import cx from 'classnames'
 import { actions, helpers, selectors } from 'pltr/v2'
 
-const { beatsByBookSelector, positionOffsetSelector, sortedLinesByBookSelector } = selectors
+const {
+  beatsByBookSelector,
+  positionOffsetSelector,
+  sortedLinesByBookSelector,
+  sortedHierarchyLevels,
+} = selectors
 
 const BeatActions = actions.beat
 const CardActions = actions.card
@@ -102,7 +107,16 @@ class BeatView extends Component {
   }
 
   render() {
-    const { beat, beats, ui, waypoint, cards, activeFilter, positionOffset } = this.props
+    const {
+      beat,
+      beats,
+      hierarchyLevels,
+      ui,
+      waypoint,
+      cards,
+      activeFilter,
+      positionOffset,
+    } = this.props
     if (activeFilter && !cards.length) return null
 
     const klasses = cx('outline__scene-title', { darkmode: ui.darkMode })
@@ -115,7 +129,7 @@ class BeatView extends Component {
       >
         <div>
           <h3 id={`beat-${beat.id}`} className={klasses}>
-            {beatTitle(beats, beat, positionOffset)}
+            {beatTitle(beats, beat, hierarchyLevels, positionOffset)}
             {this.renderManualSort()}
           </h3>
           {this.renderCards()}
@@ -128,6 +142,7 @@ class BeatView extends Component {
 BeatView.propTypes = {
   beat: PropTypes.object.isRequired,
   beats: PropTypes.object.isRequired,
+  hierarchyLevels: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
   activeFilter: PropTypes.bool.isRequired,
@@ -142,6 +157,7 @@ function mapStateToProps(state) {
   return {
     ui: state.present.ui,
     beats: beatsByBookSelector(state.present),
+    hierarchyLevels: sortedHierarchyLevels(state.present),
     lines: sortedLinesByBookSelector(state.present),
     positionOffset: positionOffsetSelector(state.present),
   }

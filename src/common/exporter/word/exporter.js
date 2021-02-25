@@ -10,7 +10,7 @@ const {
   books: { isSeries },
   beats: { beatTitle },
 } = helpers
-const { sortedBeatsByBookSelector, beatsByBookSelector } = selectors
+const { sortedBeatsByBookSelector, beatsByBookSelector, sortedHierarchyLevels } = selectors
 
 export default function Exporter(data, { fileName, bookId }) {
   let doc = new Document()
@@ -98,7 +98,8 @@ function beatParagraphs(beat, data, namesMapping, bookId, offset, doc) {
   const paragraphs = [new Paragraph('')]
   paragraphs.push(new Paragraph('^'))
   const beats = beatsByBookSelector(data)
-  const title = beatTitle(beats, beat, offset)
+  const hierarchyLevels = sortedHierarchyLevels(data)
+  const title = beatTitle(beats, beat, hierarchyLevels, offset)
   paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
   const lines = data.lines
   const cards = sortedBeatCards(beat.autoOutlineSort, beat.id, data.cards, lines)

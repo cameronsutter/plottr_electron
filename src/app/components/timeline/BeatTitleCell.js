@@ -242,12 +242,14 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderTitle() {
-    const { beats, beat, beatTitle, positionOffset } = this.props
+    const { beats, beat, beatTitle, hierarchyLevels, positionOffset } = this.props
     if (!this.state.editing) return <span>{truncateTitle(beatTitle, 50)}</span>
 
     return (
       <FormGroup>
-        <ControlLabel>{editingBeatLabel(beats, beat, positionOffset)}</ControlLabel>
+        <ControlLabel>
+          {editingBeatLabel(beats, beat, hierarchyLevels, positionOffset)}
+        </ControlLabel>
         <FormControl
           type="text"
           defaultValue={beat.title}
@@ -263,7 +265,16 @@ class BeatTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const { beats, beat, ui, positionOffset, beatTitle, isSmall, isMedium } = this.props
+    const {
+      beats,
+      hierarchyLevels,
+      beat,
+      ui,
+      positionOffset,
+      beatTitle,
+      isSmall,
+      isMedium,
+    } = this.props
     const { hovering, inDropZone } = this.state
     const innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
       'medium-timeline': isMedium,
@@ -295,7 +306,7 @@ class BeatTitleCell extends PureComponent {
             {this.renderDelete()}
             {this.renderEditInput()}
             <div
-              title={beatPositionTitle(beats, beat, positionOffset)}
+              title={beatPositionTitle(beats, beat, hierarchyLevels, positionOffset)}
               onClick={hovering ? this.stopHovering : this.startHovering}
               draggable
               onDragStart={this.handleDragStart}
@@ -313,7 +324,7 @@ class BeatTitleCell extends PureComponent {
           <Cell className="beat-table-cell">
             <div
               className={beatKlass}
-              title={beatPositionTitle(beats, beat, positionOffset)}
+              title={beatPositionTitle(beats, beat, hierarchyLevels, positionOffset)}
               onMouseEnter={this.startHovering}
               onMouseLeave={this.stopHovering}
               onDrop={this.handleDrop}
@@ -346,6 +357,7 @@ BeatTitleCell.propTypes = {
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
   beats: PropTypes.object.isRequired,
+  hierarchyLevels: PropTypes.array.isRequired,
   beat: PropTypes.object.isRequired,
   hierarchyLevel: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
@@ -362,6 +374,7 @@ const makeMapState = (state) => {
   return function mapStateToProps(state, ownProps) {
     return {
       beats: selectors.beatsByBookSelector(state.present),
+      hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
       beat: uniqueBeatsSelector(state.present, ownProps.beatId),
       hierarchyLevel: selectors.hierarchyLevelSelector(state.present, ownProps.beatId),
       ui: state.present.ui,

@@ -1,8 +1,8 @@
 .beat-config-modal {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  justify-content: space-between;
+  height: calc(100vh - 162px);
 }
 
 .beat-config-modal__hierarchy-count-wrapper {
@@ -32,7 +32,18 @@
   border: none;
 }
 
+.beat-config-modal__levels-table {
+  margin-top: 20px;
+  flex-grow: 1;
+}
+
 .beat-config-modal__levels-table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.beat-config-modal__levels-table-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -40,4 +51,13 @@
 
 .beat-config-modal__levels-table-cell {
   width: 14%;
+}
+
+.beat-config-modal__button-bar {
+  margin-top: auto;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+  border-top: 1px solid $gray-8;
+  min-height: 50px;
 }

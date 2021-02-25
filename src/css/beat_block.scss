@@ -14,7 +14,7 @@ $medium_width: 80px;
 
 .beat__body {
   @include sub-header-font;
-  padding: 20px 10px;
+  padding: 30px 10px;
   width: 150px + 6px; // +6px for the 3px border
   margin: auto;
   text-align: center;
@@ -87,6 +87,8 @@ $medium_width: 80px;
     }
   }
   .insert-beat-wrapper.append-beat {
+    margin-top: 12px;
+    margin-left: 20px;
     padding: 30px 70px;
     color: $blue-5;
     border: 3px dotted $blue-8;

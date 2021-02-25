@@ -7,8 +7,11 @@ import i18n from 'format-message'
 import PlottrModal from 'components/PlottrModal'
 import HierarchyLevel from './HierarchyLevel'
 
-import { selectors, actions, initialState } from 'pltr/v2'
+import { selectors, actions, initialState, helpers } from 'pltr/v2'
 
+const {
+  hierarchyLevels: { newHierarchyLevel },
+} = helpers
 const { hierarchyLevelCount, sortedHierarchyLevels } = selectors
 const {
   hierarchyLevels: { setLevelsOfHierarchy, setHierarchyLevels },
@@ -84,10 +87,7 @@ const BeatConfigModal = ({
                 setStagedLevelsOfHierarchy(stagedLevelsOfHierarchy + 1)
                 setStagedHierarchyLevels([
                   ...stagedHierarchyLevels,
-                  {
-                    ...initialState.hierarchyLevel,
-                    level: stagedHierarchyLevels.length,
-                  },
+                  newHierarchyLevel(stagedHierarchyLevels),
                 ])
               }}
             >

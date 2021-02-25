@@ -83,7 +83,13 @@ const BeatConfigModal = ({
               className="beat-config-modal__hierarchy-count-adjustment-control"
               onClick={() => {
                 setStagedLevelsOfHierarchy(stagedLevelsOfHierarchy + 1)
-                setStagedHierarchyLevels([...stagedHierarchyLevels, initialState.hierarchyLevel])
+                setStagedHierarchyLevels([
+                  ...stagedHierarchyLevels,
+                  {
+                    ...initialState.hierarchyLevel,
+                    level: stagedHierarchyLevels.length,
+                  },
+                ])
               }}
             >
               <Glyphicon glyph="plus" />
@@ -100,7 +106,11 @@ const BeatConfigModal = ({
             <div className="beat-config-modal__levels-table-cell">Border Style</div>
             <div className="beat-config-modal__levels-table-cell">Background Color</div>
           </div>
-          {stagedHierarchyLevels.map(HierarchyLevel)}
+          {stagedHierarchyLevels.map((args) => (
+            <React.Fragment key={args.level}>
+              <HierarchyLevel {...args} />
+            </React.Fragment>
+          ))}
         </div>
         <ButtonToolbar className="beat-config-modal__button-bar">
           <Button onClick={closeDialog}>{i18n('Cancel')}</Button>

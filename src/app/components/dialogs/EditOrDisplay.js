@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { DropdownButton, MenuItem } from 'react-bootstrap'
 
 import ColorPicker from 'components/colorpicker'
 
-const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
+const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) => {
   const [stagedValue, setStagedValue] = useState(value)
   useEffect(() => {
     setStagedValue(value)
@@ -43,15 +44,6 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
             />
           </>
         )
-      case 'toggle':
-        return (
-          <input
-            className={`${className} beat-config-modal__toggle-control`}
-            type="checkbox"
-            value={stagedValue}
-            onChange={(event) => setValue(event.target.value)}
-          />
-        )
       case 'text':
       default:
         return (
@@ -85,6 +77,18 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
             checked={stagedValue}
             onChange={(event) => setValue(event.target.checked)}
           />
+        )
+      case 'select':
+        return (
+          <div className="beat-config-modal__levels-table-cell">
+            <DropdownButton bsSize="small" title={value.toLowerCase()}>
+              {options.map((option) => (
+                <MenuItem key={option} eventKey={option} onSelect={(key) => setValue(key)}>
+                  {option.toLowerCase()}
+                </MenuItem>
+              ))}
+            </DropdownButton>
+          </div>
         )
       case 'color':
       case 'text':

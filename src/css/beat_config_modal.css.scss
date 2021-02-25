@@ -8,8 +8,8 @@
 .beat-config-modal__hierarchy-count-wrapper {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .beat-config-modal__hierarchy-count-controls {
@@ -17,10 +17,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-}
-
-.beat-config-modal__hierarchy-count-label {
-  font-size: 18px;
+  margin-left: 20px;
 }
 
 .beat-config-modal__hierarchy-count {
@@ -64,7 +61,7 @@
   padding: 0;
   border: 0;
   border-radius: 0;
-  height: 30px;
+  height: 40px;
   border-bottom: 2px solid #f2cb8000;
   transition: border-bottom 0.5s;
 }

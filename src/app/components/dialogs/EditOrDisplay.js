@@ -47,7 +47,7 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
       case 'toggle':
         return (
           <input
-            className={className}
+            className={`${className} beat-config-modal__toggle-control`}
             type="checkbox"
             value={stagedValue}
             onChange={(event) => setValue(event.target.value)}
@@ -81,7 +81,7 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing }) => {
       case 'toggle':
         return (
           <input
-            className="beat-config-modal__levels-table-cell"
+            className="beat-config-modal__levels-table-cell beat-config-modal__toggle-control"
             type="checkbox"
             checked={stagedValue}
             onChange={(event) => setValue(event.target.checked)}

@@ -29,7 +29,7 @@ const modalStyles = {
     left: 'auto',
     bottom: 'auto',
     right: 'auto',
-    marginTop: '-60px', // counters some !important style
+    marginTop: '160px', // counters some !important style
     minHeight: 500,
     maxHeight: 'calc(100vh - 120px)',
   },

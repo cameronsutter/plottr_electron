@@ -11,6 +11,7 @@ import {
   FormGroup,
   ControlLabel,
 } from 'react-bootstrap'
+import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
@@ -58,6 +59,17 @@ class BeatTitleCell extends PureComponent {
 
   handleAddChild = (e) => {
     this.props.actions.addBeat(this.props.ui.currentTimeline, this.props.beat.id)
+  }
+
+  handleToggleExpanded = (e) => {
+    const {
+      actions: { collapseBeat, expandBeat },
+      beat: { id, expanded },
+      ui: { currentTimeline },
+    } = this.props
+
+    if (expanded) collapseBeat(id, currentTimeline)
+    else expandBeat(id, currentTimeline)
   }
 
   closeBeatConfig = () => {
@@ -187,7 +199,7 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderHorizontalHoverOptions(style) {
-    const { ui, isSmall } = this.props
+    const { ui, isSmall, beat } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
@@ -203,6 +215,9 @@ class BeatTitleCell extends PureComponent {
           </Button>
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleAddChild}>
             <Glyphicon glyph="plus" />
+          </Button>
+          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
+            {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
           </Button>
         </ButtonGroup>
       </div>

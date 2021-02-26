@@ -112,10 +112,7 @@ const BeatConfigModal = ({
           ))}
         </div>
         <ButtonToolbar className="beat-config-modal__button-bar">
-          <Button onClick={closeDialog}>{i18n('Cancel')}</Button>
-          <Button bsStyle="success" onClick={saveChangesAndClose}>
-            {i18n('Save')}
-          </Button>
+          <Button onClick={closeDialog}>{i18n('Done')}</Button>
         </ButtonToolbar>
       </div>
     </PlottrModal>

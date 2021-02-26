@@ -42,10 +42,6 @@ const BeatConfigModal = ({
   setLevelsOfHierarchy,
   setHierarchyLevels,
 }) => {
-  const saveChangesAndClose = () => {
-    closeDialog()
-  }
-
   return (
     <PlottrModal isOpen={true} onRequestClose={closeDialog} style={modalStyles}>
       <div className="beat-config-modal">

@@ -14,8 +14,13 @@ const {
 
 class BeatInsertCell extends PureComponent {
   insert = () => {
-    const { beatPosition, lineId, handleInsert } = this.props
-    handleInsert(beatPosition, lineId)
+    const { beatToLeft, lineId, handleInsert } = this.props
+    handleInsert(beatToLeft.id, lineId)
+  }
+
+  insertChild = () => {
+    const { beatToLeft, handleInsertChild } = this.props
+    handleInsertChild(beatToLeft.id)
   }
 
   renderLine() {
@@ -31,7 +36,15 @@ class BeatInsertCell extends PureComponent {
   }
 
   render() {
-    const { isInBeatList, showLine, orientation, isLast, isSmall, isMedium } = this.props
+    const {
+      handleInsertChild,
+      isInBeatList,
+      showLine,
+      orientation,
+      isLast,
+      isSmall,
+      isMedium,
+    } = this.props
     const wrapperKlass = cx(orientedClassName('insert-beat-wrapper', orientation), {
       'insert-beat-spacer': showLine,
       'append-beat': isLast,
@@ -46,15 +59,28 @@ class BeatInsertCell extends PureComponent {
     let titleText = isLast ? i18n('Add Chapter') : i18n('Insert Chapter')
     if (!isInBeatList) titleText = i18n('Insert Chapter and a Card')
     let insideDiv = (
-      <div
-        title={titleText}
-        className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
-        onClick={this.insert}
-      >
-        <div className={wrapperKlass}>
-          <Glyphicon glyph="plus" />
+      <>
+        <div
+          title={titleText}
+          className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
+          onClick={this.insert}
+        >
+          <div className={wrapperKlass}>
+            <Glyphicon glyph="plus" />
+          </div>
         </div>
-      </div>
+        {handleInsertChild ? (
+          <div
+            title={titleText}
+            className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
+            onClick={this.insertChild}
+          >
+            <div className={wrapperKlass}>
+              <Glyphicon glyph="plus" />
+            </div>
+          </div>
+        ) : null}
+      </>
     )
 
     if (isSmall) {
@@ -76,8 +102,9 @@ class BeatInsertCell extends PureComponent {
     isSmall: PropTypes.bool,
     isMedium: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
+    handleInsertChild: PropTypes.func,
     isInBeatList: PropTypes.bool.isRequired,
-    beatPosition: PropTypes.number,
+    beatToLeft: PropTypes.object,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,
     color: PropTypes.string,

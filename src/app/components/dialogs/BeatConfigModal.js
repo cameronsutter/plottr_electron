@@ -42,18 +42,7 @@ const BeatConfigModal = ({
   setLevelsOfHierarchy,
   setHierarchyLevels,
 }) => {
-  const [stagedLevelsOfHierarchy, setStagedLevelsOfHierarchy] = useState(levelsOfHierarchy)
-  useEffect(() => {
-    setStagedLevelsOfHierarchy(levelsOfHierarchy)
-  }, [levelsOfHierarchy])
-
-  const [stagedHierarchyLevels, setStagedHierarchyLevels] = useState(hierarchyLevels)
-  useEffect(() => {
-    setStagedHierarchyLevels(hierarchyLevels)
-  }, [hierarchyLevels])
-
   const saveChangesAndClose = () => {
-    setHierarchyLevels(stagedHierarchyLevels)
     closeDialog()
   }
 
@@ -67,28 +56,23 @@ const BeatConfigModal = ({
             <button
               className="beat-config-modal__hierarchy-count-adjustment-control"
               onClick={() => {
-                setStagedLevelsOfHierarchy(stagedLevelsOfHierarchy - 1)
-                setStagedHierarchyLevels(
-                  stagedHierarchyLevels.slice(0, stagedHierarchyLevels.length - 1)
-                )
+                setLevelsOfHierarchy(levelsOfHierarchy - 1)
+                setHierarchyLevels(hierarchyLevels.slice(0, hierarchyLevels.length - 1))
               }}
             >
               <Glyphicon glyph="minus" />
             </button>
             <input
               className="beat-config-modal__hierarchy-count"
-              value={stagedLevelsOfHierarchy}
+              value={levelsOfHierarchy}
               type="text"
-              onChange={(event) => setStagedLevelsOfHierarchy(event.target.value)}
+              onChange={(event) => setLevelsOfHierarchy(event.target.value)}
             />
             <button
               className="beat-config-modal__hierarchy-count-adjustment-control"
               onClick={() => {
-                setStagedLevelsOfHierarchy(stagedLevelsOfHierarchy + 1)
-                setStagedHierarchyLevels([
-                  ...stagedHierarchyLevels,
-                  newHierarchyLevel(stagedHierarchyLevels),
-                ])
+                setLevelsOfHierarchy(levelsOfHierarchy + 1)
+                setHierarchyLevels([...hierarchyLevels, newHierarchyLevel(hierarchyLevels)])
               }}
             >
               <Glyphicon glyph="plus" />
@@ -105,7 +89,7 @@ const BeatConfigModal = ({
             <div className="beat-config-modal__levels-table-cell">Border Style</div>
             <div className="beat-config-modal__levels-table-cell">Background Color</div>
           </div>
-          {stagedHierarchyLevels.map((args) => (
+          {hierarchyLevels.map((args) => (
             <React.Fragment key={args.level}>
               <HierarchyLevel {...args} />
             </React.Fragment>

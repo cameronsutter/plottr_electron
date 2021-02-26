@@ -19,7 +19,7 @@ const LineActions = actions.line
 const BeatActions = actions.beat
 
 const {
-  sortedBeatsByBookSelector,
+  visibleSortedBeatsByBookSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
   isLargeSelector,
@@ -183,7 +183,7 @@ function mapStateToProps(state) {
     isSmall: isSmallSelector(state.present),
     isMedium: isMediumSelector(state.present),
     isLarge: isLargeSelector(state.present),
-    beats: sortedBeatsByBookSelector(state.present),
+    beats: visibleSortedBeatsByBookSelector(state.present),
     nextBeatId: nextBeatId,
     lines: sortedLinesByBookSelector(state.present),
   }

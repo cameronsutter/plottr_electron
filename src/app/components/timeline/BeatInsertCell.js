@@ -15,13 +15,13 @@ const {
 } = helpers
 class BeatInsertCell extends PureComponent {
   insert = () => {
-    const { beatToRight, lineId, handleInsert } = this.props
-    handleInsert(beatToRight && beatToRight.id, lineId)
+    const { beatToLeft, handleInsert } = this.props
+    handleInsert(beatToLeft && beatToLeft.id)
   }
 
   insertChild = () => {
-    const { beatToRight, handleInsertChild } = this.props
-    handleInsertChild(beatToRight && beatToRight.id)
+    const { beatToLeft, handleInsertChild } = this.props
+    handleInsertChild(beatToLeft && beatToLeft.id)
   }
 
   renderLine() {
@@ -59,10 +59,20 @@ class BeatInsertCell extends PureComponent {
       'append-beat': isLast,
       'medium-timeline': isInBeatList && isMedium,
     })
+    const wrapperKlassSubIcon = cx(orientedClassName('insert-beat-wrapper', orientation), {
+      'insert-beat-spacer': showLine,
+    })
+    const beatKlassSubIcon = cx('beat-list__insert', {
+      'medium-timeline': isInBeatList && isMedium,
+    })
     const insertBeatKlass = cx('line-list__insert-beat', {
       'medium-timeline': isMedium,
     })
     const orientedClass = orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)
+    const orientedClassSubIcon = orientedClassName(
+      isInBeatList ? beatKlassSubIcon : insertBeatKlass,
+      orientation
+    )
     let titleText = isLast
       ? i18n(`Add ${hierarchyLevelName}`)
       : i18n(`Insert ${hierarchyLevelName}`)
@@ -78,8 +88,8 @@ class BeatInsertCell extends PureComponent {
           </div>
         </div>
         {handleInsertChild && !isFirst ? (
-          <div title={childTitleText} className={orientedClass} onClick={this.insertChild}>
-            <div className={wrapperKlass}>
+          <div title={childTitleText} className={orientedClassSubIcon} onClick={this.insertChild}>
+            <div className={wrapperKlassSubIcon}>
               <TiFlowChildren size={25} />
             </div>
           </div>
@@ -88,11 +98,13 @@ class BeatInsertCell extends PureComponent {
           <div
             onClick={toggleExpanded}
             className={cx(
-              orientedClass,
+              orientedClassSubIcon,
               expanded === false ? 'beat-list__insert--always-visible' : {}
             )}
           >
-            <div className={wrapperKlass}>{expanded ? <FaCompressAlt /> : <FaExpandAlt />}</div>
+            <div className={wrapperKlassSubIcon}>
+              {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+            </div>
           </div>
         ) : null}
       </>
@@ -119,7 +131,7 @@ class BeatInsertCell extends PureComponent {
     handleInsert: PropTypes.func.isRequired,
     handleInsertChild: PropTypes.func,
     isInBeatList: PropTypes.bool.isRequired,
-    beatToRight: PropTypes.object,
+    beatToLeft: PropTypes.object,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,
     color: PropTypes.string,
@@ -134,17 +146,14 @@ class BeatInsertCell extends PureComponent {
 }
 
 function mapStateToProps(state, ownProps) {
-  const beatToRightId = ownProps.beatToRight && ownProps.beatToRight.id
+  const beatToLeftId = ownProps.beatToLeft && ownProps.beatToLeft.id
 
   return {
     orientation: state.present.ui.orientation,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
-    hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToRightId),
-    hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(
-      state.present,
-      beatToRightId
-    ),
+    hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
+    hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
   }
 }
 

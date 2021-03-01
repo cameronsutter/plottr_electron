@@ -40,14 +40,14 @@ class TopRow extends Component {
     lineActions.reorderLines(newLines, ui.currentTimeline)
   }
 
-  handleInsertNewBeat = (beatToRightId) => {
+  handleInsertNewBeat = (peerBeatId) => {
     const { ui, beatActions } = this.props
-    beatActions.insertBeat(beatToRightId, ui.currentTimeline)
+    beatActions.insertBeat(ui.currentTimeline, peerBeatId)
   }
 
-  handleInsertChildBeat = (beatToRightId) => {
+  handleInsertChildBeat = (beatToLeftId) => {
     const { ui, beatActions } = this.props
-    beatActions.addBeat(ui.currentTimeline, beatToRightId)
+    beatActions.addBeat(ui.currentTimeline, beatToLeftId)
   }
 
   handleAppendBeat = () => {
@@ -61,12 +61,27 @@ class TopRow extends Component {
   }
 
   renderLastInsertBeatCell() {
-    const { orientation } = this.props.ui
+    const { ui, booksBeats, beats, beatActions } = this.props
+    const { orientation } = ui
+    const lastBeat = !beats || beats.length === 0 ? null : beats[beats.length - 1]
+    const secondLastBeat = !beats || beats.length < 2 ? null : beats[beats.length - 2]
     return (
       <BeatInsertCell
         key="last-insert"
         isInBeatList={true}
         handleInsert={this.handleAppendBeat}
+        beatToLeft={secondLastBeat}
+        handleInsertChild={
+          lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+            ? undefined
+            : this.handleInsertChildBeat
+        }
+        expanded={lastBeat && lastBeat.expanded}
+        toggleExpanded={() => {
+          if (lastBeat && lastBeat.expanded) {
+            beatActions.collapseBeat(lastBeat.id, ui.currentTimeline)
+          } else beatActions.expandBeat(lastBeat.id, ui.currentTimeline)
+        }}
         isLast={true}
         orientation={orientation}
       />
@@ -89,7 +104,7 @@ class TopRow extends Component {
             isFirst={idx === 0}
             key={`beatId-${beat.id}-insert`}
             isInBeatList={true}
-            beatToRight={beat}
+            beatToLeft={lastBeat}
             handleInsert={this.handleInsertNewBeat}
             handleInsertChild={
               hasChildren(booksBeats, lastBeat && lastBeat.id)

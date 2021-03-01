@@ -60,17 +60,16 @@ class TopRow extends Component {
     lineActions.addLine(ui.currentTimeline)
   }
 
-  renderLastInsertBeatCell() {
+  renderSecondLastInsertBeatCell() {
     const { ui, booksBeats, beats, beatActions } = this.props
     const { orientation } = ui
     const lastBeat = !beats || beats.length === 0 ? null : beats[beats.length - 1]
-    const secondLastBeat = !beats || beats.length < 2 ? null : beats[beats.length - 2]
     return (
       <BeatInsertCell
-        key="last-insert"
+        key="second-last-insert"
         isInBeatList={true}
-        handleInsert={this.handleAppendBeat}
-        beatToLeft={secondLastBeat}
+        handleInsert={this.handleInsertNewBeat}
+        beatToLeft={lastBeat}
         handleInsertChild={
           lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
             ? undefined
@@ -82,6 +81,20 @@ class TopRow extends Component {
             beatActions.collapseBeat(lastBeat.id, ui.currentTimeline)
           } else beatActions.expandBeat(lastBeat.id, ui.currentTimeline)
         }}
+        orientation={orientation}
+      />
+    )
+  }
+
+  renderLastInsertBeatCell() {
+    const {
+      ui: { orientation },
+    } = this.props
+    return (
+      <BeatInsertCell
+        key="last-insert"
+        handleInsert={this.handleAppendBeat}
+        isInBeatList={true}
         isLast={true}
         orientation={orientation}
       />
@@ -130,7 +143,12 @@ class TopRow extends Component {
     if (isSmall) {
       return [...renderedBeats, this.renderLastInsertBeatCell()]
     } else {
-      return [<Cell key="placeholder" />, ...renderedBeats, this.renderLastInsertBeatCell()]
+      return [
+        <Cell key="placeholder" />,
+        ...renderedBeats,
+        this.renderSecondLastInsertBeatCell(),
+        this.renderLastInsertBeatCell(),
+      ]
     }
   }
 

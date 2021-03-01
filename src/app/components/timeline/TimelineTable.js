@@ -213,19 +213,33 @@ class TimelineTable extends Component {
       }
     })
 
-    let finalRow
+    let finalRows
 
     if (isSmall) {
       const tds = lineMapKeys.map((linePosition) => <td key={linePosition} />)
-      finalRow = (
+      finalRows = [
         <tr key="last-insert">
           <BeatInsertCell isInBeatList={true} handleInsert={this.handleAppendBeat} isLast={true} />
           {[...tds, <td key="empty-cell" />]}
-        </tr>
-      )
+        </tr>,
+      ]
     } else {
       const lastBeat = beats[beats.length - 1]
-      finalRow = (
+      finalRows = [
+        <Row key="second-last-insert">
+          <BeatInsertCell
+            isInBeatList={true}
+            handleInsert={this.handleInsertNewBeat}
+            beatToLeft={lastBeat}
+            handleInsertChild={
+              lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+                ? undefined
+                : this.handleInsertChildBeat
+            }
+            expanded={lastBeat && lastBeat.expanded}
+            toggleExpanded={beatToggler(lastBeat)}
+          />
+        </Row>,
         <Row key="last-insert">
           <BeatInsertCell
             isInBeatList={true}
@@ -240,11 +254,11 @@ class TimelineTable extends Component {
             expanded={lastBeat && lastBeat.expanded}
             toggleExpanded={beatToggler(lastBeat)}
           />
-        </Row>
-      )
+        </Row>,
+      ]
     }
 
-    return [...renderedBeats, finalRow]
+    return [...renderedBeats, ...finalRows]
   }
 
   renderRows() {

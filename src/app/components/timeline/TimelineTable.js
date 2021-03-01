@@ -150,6 +150,12 @@ class TimelineTable extends Component {
     const lineMapKeys = Object.keys(lineMap)
     const { beats, beatActions, ui, isSmall, booksBeats, isLarge } = this.props
 
+    const beatToggler = (beat) => () => {
+      if (!beat) return
+      if (beat.expanded) beatActions.collapseBeat(beat.id, ui.currentTimeline)
+      else beatActions.expandBeat(beat.id, ui.currentTimeline)
+    }
+
     const renderedBeats = beats.map((beat, idx) => {
       let inserts = []
       if (isLarge || idx === 0) {
@@ -170,11 +176,6 @@ class TimelineTable extends Component {
       }
 
       const beatTitle = <BeatTitleCell beatId={beat.id} handleReorder={this.handleReorderBeats} />
-      const beatToggler = (beat) => () => {
-        if (!beat) return
-        if (beat.expanded) beatActions.collapseBeat(beat.id, ui.currentTimeline)
-        else beatActions.expandBeat(beat.id, ui.currentTimeline)
-      }
 
       if (isSmall) {
         return (
@@ -223,9 +224,22 @@ class TimelineTable extends Component {
         </tr>
       )
     } else {
+      const lastBeat = beats[beats.length - 1]
       finalRow = (
         <Row key="last-insert">
-          <BeatInsertCell isInBeatList={true} handleInsert={this.handleAppendBeat} isLast={true} />
+          <BeatInsertCell
+            isInBeatList={true}
+            handleInsert={this.handleAppendBeat}
+            isLast={true}
+            beatToLeft={lastBeat}
+            handleInsertChild={
+              lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+                ? undefined
+                : this.handleInsertChildBeat
+            }
+            expanded={lastBeat && lastBeat.expanded}
+            toggleExpanded={beatToggler(lastBeat)}
+          />
         </Row>
       )
     }

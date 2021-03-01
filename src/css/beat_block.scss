@@ -108,14 +108,14 @@ $medium_width: 80px;
   }
 }
 
-.beat-list__insert:hover {
-  color: $blue-5;
-  .insert-beat-wrapper.append-beat {
-    border: 3px dashed $blue-7;
-  }
+.beat-list__interstitial-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.beat-list__insert--always-visible {
+.beat-list__insert:hover {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
     border: 3px dashed $blue-7;
@@ -210,8 +210,6 @@ $medium_width: 80px;
 
 .vertical-beat-list__insert {
   height: 40px;
-  width: 153px;
-  margin-left: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -219,8 +217,17 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
+  &:first-child {
+    margin-left: 50px;
+  }
   svg {
     position: absolute;
+  }
+  .vertical-insert-beat-wrapper {
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
   }
   .vertical-insert-beat-wrapper.insert-beat-spacer {
     .glyphicon {
@@ -257,6 +264,13 @@ $medium_width: 80px;
 }
 
 .vertical-beat-list__insert:hover {
+  color: $blue-5;
+  .insert-beat-wrapper.append-beat {
+    border: 3px dashed $blue-7;
+  }
+}
+
+.beat-list__insert--always-visible {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
     border: 3px dashed $blue-7;

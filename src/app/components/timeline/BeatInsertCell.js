@@ -24,6 +24,78 @@ class BeatInsertCell extends PureComponent {
     handleInsertChild(beatToLeft && beatToLeft.id)
   }
 
+  titleText = () => {
+    const { isLast, hierarchyLevelName, isInBeatList } = this.props
+
+    if (!isInBeatList) return i18n(`Insert ${hierarchyLevelName}`)
+    else return isLast ? i18n(`Add ${hierarchyLevelName}`) : i18n(`Insert ${hierarchyLevelName}`)
+  }
+
+  childTitleText = () => {
+    const { isLast, hierarchyChildLevelName } = this.props
+
+    return isLast
+      ? i18n(`Add ${hierarchyChildLevelName}`)
+      : i18n(`Insert ${hierarchyChildLevelName}`)
+  }
+
+  wrapperClass = () => {
+    const { showLine, isLast, orientation } = this.props
+
+    return cx(orientedClassName('insert-beat-wrapper', orientation), {
+      'insert-beat-spacer': showLine,
+      'append-beat': isLast,
+    })
+  }
+
+  orientedClassSubIcon = () => {
+    const { isInBeatList, orientation } = this.props
+
+    return orientedClassName(
+      isInBeatList ? this.beatClassSubIcon() : this.insertBeatClass(),
+      orientation
+    )
+  }
+
+  orientedClass = () => {
+    const { isInBeatList, orientation } = this.props
+
+    return orientedClassName(isInBeatList ? this.beatClass() : this.insertBeatClass(), orientation)
+  }
+
+  insertBeatClass = () => {
+    const { isMedium } = this.props
+
+    return cx('line-list__insert-beat', {
+      'medium-timeline': isMedium,
+    })
+  }
+
+  beatClassSubIcon = () => {
+    const { isMedium, isInBeatList } = this.props
+
+    return cx('beat-list__insert', {
+      'medium-timeline': isInBeatList && isMedium,
+    })
+  }
+
+  wrapperClassSubIcon = () => {
+    const { showLine, orientation } = this.props
+
+    return cx(orientedClassName('insert-beat-wrapper', orientation), {
+      'insert-beat-spacer': showLine,
+    })
+  }
+
+  beatClass = () => {
+    const { isLast, isInBeatList, isMedium } = this.props
+
+    return cx('beat-list__insert', {
+      'append-beat': isLast,
+      'medium-timeline': isInBeatList && isMedium,
+    })
+  }
+
   renderLine() {
     const { tableLength, orientation, color, isMedium } = this.props
     return (
@@ -36,84 +108,64 @@ class BeatInsertCell extends PureComponent {
     )
   }
 
-  render() {
-    const {
-      isFirst,
-      handleInsertChild,
-      isInBeatList,
-      showLine,
-      orientation,
-      isLast,
-      isSmall,
-      isMedium,
-      expanded,
-      toggleExpanded,
-      hierarchyLevelName,
-      hierarchyChildLevelName,
-    } = this.props
-    const wrapperKlass = cx(orientedClassName('insert-beat-wrapper', orientation), {
-      'insert-beat-spacer': showLine,
-      'append-beat': isLast,
-    })
-    const beatKlass = cx('beat-list__insert', {
-      'append-beat': isLast,
-      'medium-timeline': isInBeatList && isMedium,
-    })
-    const wrapperKlassSubIcon = cx(orientedClassName('insert-beat-wrapper', orientation), {
-      'insert-beat-spacer': showLine,
-    })
-    const beatKlassSubIcon = cx('beat-list__insert', {
-      'medium-timeline': isInBeatList && isMedium,
-    })
-    const insertBeatKlass = cx('line-list__insert-beat', {
-      'medium-timeline': isMedium,
-    })
-    const orientedClass = orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)
-    const orientedClassSubIcon = orientedClassName(
-      isInBeatList ? beatKlassSubIcon : insertBeatKlass,
-      orientation
+  renderToggleCollapse() {
+    const { handleInsertChild, toggleExpanded, expanded } = this.props
+
+    return !handleInsertChild && toggleExpanded ? (
+      <div
+        onClick={toggleExpanded}
+        className={cx(
+          this.orientedClassSubIcon(),
+          expanded === false ? 'beat-list__insert--always-visible' : {}
+        )}
+      >
+        <div className={this.wrapperClassSubIcon()}>
+          {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+        </div>
+      </div>
+    ) : null
+  }
+
+  renderInsertChild() {
+    const { handleInsertChild, isFirst } = this.props
+
+    return handleInsertChild && !isFirst ? (
+      <div
+        title={this.childTitleText()}
+        className={this.orientedClassSubIcon()}
+        onClick={this.insertChild}
+      >
+        <div className={this.wrapperClassSubIcon()}>
+          <TiFlowChildren size={25} />
+        </div>
+      </div>
+    ) : null
+  }
+
+  renderInsertBeat() {
+    return (
+      <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
+        <div className={this.wrapperClass(0)}>
+          <Glyphicon glyph="plus" />
+        </div>
+      </div>
     )
-    let titleText = isLast
-      ? i18n(`Add ${hierarchyLevelName}`)
-      : i18n(`Insert ${hierarchyLevelName}`)
-    let childTitleText = isLast
-      ? i18n(`Add ${hierarchyChildLevelName}`)
-      : i18n(`Insert ${hierarchyChildLevelName}`)
-    if (!isInBeatList) titleText = i18n(`Insert ${hierarchyLevelName}`)
+  }
+
+  render() {
+    const { showLine, orientation, isSmall } = this.props
     let insideDiv = (
       <>
-        <div title={titleText} className={orientedClass} onClick={this.insert}>
-          <div className={wrapperKlass}>
-            <Glyphicon glyph="plus" />
-          </div>
-        </div>
-        {handleInsertChild && !isFirst ? (
-          <div title={childTitleText} className={orientedClassSubIcon} onClick={this.insertChild}>
-            <div className={wrapperKlassSubIcon}>
-              <TiFlowChildren size={25} />
-            </div>
-          </div>
-        ) : null}
-        {!handleInsertChild && toggleExpanded ? (
-          <div
-            onClick={toggleExpanded}
-            className={cx(
-              orientedClassSubIcon,
-              expanded === false ? 'beat-list__insert--always-visible' : {}
-            )}
-          >
-            <div className={wrapperKlassSubIcon}>
-              {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
-            </div>
-          </div>
-        ) : null}
+        {this.renderInsertBeat()}
+        {this.renderInsertChild()}
+        {this.renderToggleCollapse()}
       </>
     )
 
     if (isSmall) {
       const isHorizontal = orientation == 'horizontal'
-      const klasses = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal }
-      return <th className={cx(klasses)}>{insideDiv}</th>
+      const classes = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal }
+      return <th className={cx(classes)}>{insideDiv}</th>
     } else {
       return (
         <Cell>

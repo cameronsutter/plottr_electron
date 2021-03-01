@@ -38,6 +38,7 @@ class BeatInsertCell extends PureComponent {
 
   render() {
     const {
+      isFirst,
       handleInsertChild,
       isInBeatList,
       showLine,
@@ -77,7 +78,7 @@ class BeatInsertCell extends PureComponent {
             <Glyphicon glyph="plus" />
           </div>
         </div>
-        {handleInsertChild ? (
+        {handleInsertChild && !isFirst ? (
           <div
             title={childTitleText}
             className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
@@ -117,6 +118,7 @@ class BeatInsertCell extends PureComponent {
     showLine: PropTypes.bool,
     color: PropTypes.string,
     isLast: PropTypes.bool,
+    isFirst: PropTypes.bool,
     tableLength: PropTypes.number,
     hierarchyChildLevelName: PropTypes.string,
     hierarchyLevelName: PropTypes.string,

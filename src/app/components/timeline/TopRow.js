@@ -77,9 +77,10 @@ class TopRow extends Component {
     let beatToLeft = null
     const renderedBeats = beats.flatMap((beat, idx) => {
       const cells = []
-      if (isLarge || (isMedium && idx == 0)) {
+      if (isLarge || (isMedium && idx === 0)) {
         cells.push(
           <BeatInsertCell
+            isFirst={idx === 0}
             key={`beatId-${beat.id}-insert`}
             isInBeatList={true}
             beatToLeft={beatToLeft}
@@ -91,6 +92,7 @@ class TopRow extends Component {
       }
       cells.push(
         <BeatTitleCell
+          isFirst={idx === 0}
           key={`beatId-${beat.id}`}
           beatId={beat.id}
           handleReorder={this.handleReorderBeats}

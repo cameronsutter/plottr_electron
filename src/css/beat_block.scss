@@ -78,12 +78,13 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
+  &:last-child {
+    margin-left: -5px;
+  }
   &:first-child {
     margin-top: 75px;
     height: 16px;
-  }
-  &:last-child {
-    margin-left: -5px;
+    margin-left: 0px;
   }
   .insert-beat-wrapper {
     display: flex;

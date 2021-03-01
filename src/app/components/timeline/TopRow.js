@@ -39,14 +39,14 @@ class TopRow extends Component {
     lineActions.reorderLines(newLines, ui.currentTimeline)
   }
 
-  handleInsertNewBeat = (beatToLeftId) => {
+  handleInsertNewBeat = (beatToRightId) => {
     const { ui, beatActions } = this.props
-    beatActions.insertBeat(beatToLeftId, ui.currentTimeline)
+    beatActions.insertBeat(beatToRightId, ui.currentTimeline)
   }
 
-  handleInsertChildBeat = (beatToLeftId) => {
+  handleInsertChildBeat = (beatToRightId) => {
     const { ui, beatActions } = this.props
-    beatActions.addBeat(ui.currentTimeline, beatToLeftId)
+    beatActions.addBeat(ui.currentTimeline, beatToRightId)
   }
 
   handleAppendBeat = () => {
@@ -74,7 +74,6 @@ class TopRow extends Component {
 
   renderBeats() {
     const { ui, beats, isLarge, isMedium, isSmall } = this.props
-    let beatToLeft = null
     const renderedBeats = beats.flatMap((beat, idx) => {
       const cells = []
       if (isLarge || (isMedium && idx === 0)) {
@@ -83,7 +82,7 @@ class TopRow extends Component {
             isFirst={idx === 0}
             key={`beatId-${beat.id}-insert`}
             isInBeatList={true}
-            beatToLeft={beatToLeft}
+            beatToRight={beat}
             handleInsert={this.handleInsertNewBeat}
             handleInsertChild={this.handleInsertChildBeat}
             orientation={ui.orientation}
@@ -98,7 +97,6 @@ class TopRow extends Component {
           handleReorder={this.handleReorderBeats}
         />
       )
-      beatToLeft = beat
       return cells
     })
     if (isSmall) {

@@ -23,7 +23,7 @@ const {
 
 const {
   cardMapSelector,
-  sortedBeatsByBookSelector,
+  visibleSortedBeatsByBookSelector,
   beatsByBookSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
@@ -355,7 +355,7 @@ TimelineTable.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    beats: sortedBeatsByBookSelector(state.present),
+    beats: visibleSortedBeatsByBookSelector(state.present),
     booksBeats: beatsByBookSelector(state.present),
     beatMapping: sparceBeatMap(state.present),
     nextBeatId: nextId(state.present.beats),

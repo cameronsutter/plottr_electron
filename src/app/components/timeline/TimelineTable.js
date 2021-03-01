@@ -248,6 +248,7 @@ class TimelineTable extends Component {
             cards={cards}
             beatId={beatId}
             lineId={line.id}
+            beatPosition={beatPosition}
             linePosition={line.position}
             color={line.color}
           />

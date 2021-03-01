@@ -15,13 +15,13 @@ const {
 
 class BeatInsertCell extends PureComponent {
   insert = () => {
-    const { beatToLeft, lineId, handleInsert } = this.props
-    handleInsert(beatToLeft && beatToLeft.id, lineId)
+    const { beatToRight, lineId, handleInsert } = this.props
+    handleInsert(beatToRight && beatToRight.id, lineId)
   }
 
   insertChild = () => {
-    const { beatToLeft, handleInsertChild } = this.props
-    handleInsertChild(beatToLeft && beatToLeft.id)
+    const { beatToRight, handleInsertChild } = this.props
+    handleInsertChild(beatToRight && beatToRight.id)
   }
 
   renderLine() {
@@ -113,7 +113,7 @@ class BeatInsertCell extends PureComponent {
     handleInsert: PropTypes.func.isRequired,
     handleInsertChild: PropTypes.func,
     isInBeatList: PropTypes.bool.isRequired,
-    beatToLeft: PropTypes.object,
+    beatToRight: PropTypes.object,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,
     color: PropTypes.string,
@@ -126,14 +126,17 @@ class BeatInsertCell extends PureComponent {
 }
 
 function mapStateToProps(state, ownProps) {
-  const beatToLeftId = ownProps.beatToLeft && ownProps.beatToLeft.id
+  const beatToRightId = ownProps.beatToRight && ownProps.beatToRight.id
 
   return {
     orientation: state.present.ui.orientation,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
-    hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
-    hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
+    hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToRightId),
+    hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(
+      state.present,
+      beatToRightId
+    ),
   }
 }
 

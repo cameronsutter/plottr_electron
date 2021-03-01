@@ -17,13 +17,14 @@ import { actions, helpers, selectors, initialState } from 'pltr/v2'
 const { card } = initialState
 
 const {
-  beats: { nextId },
+  beats: { nextId, hasChildren },
   lists: { reorderList },
 } = helpers
 
 const {
   cardMapSelector,
   sortedBeatsByBookSelector,
+  beatsByBookSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
   isLargeSelector,
@@ -92,6 +93,11 @@ class TimelineTable extends Component {
     beatActions.insertBeat(ui.currentTimeline, beatToLeftId)
   }
 
+  handleInsertChildBeat = (beatToLeftId) => {
+    const { ui, beatActions } = this.props
+    beatActions.addBeat(ui.currentTimeline, beatToLeftId)
+  }
+
   buildCard(lineId, beatId) {
     return Object.assign({}, card, { beatId, lineId })
   }
@@ -142,7 +148,8 @@ class TimelineTable extends Component {
   renderVertical() {
     const lineMap = this.lineMapping()
     const lineMapKeys = Object.keys(lineMap)
-    const { beats, isSmall, isLarge } = this.props
+    const { beats, beatActions, ui, isSmall, booksBeats, isLarge } = this.props
+
     const renderedBeats = beats.map((beat, idx) => {
       let inserts = []
       if (isLarge || idx === 0) {
@@ -151,9 +158,9 @@ class TimelineTable extends Component {
           return (
             <BeatInsertCell
               key={`${linePosition}-insert`}
+              beatToLeft={beats[idx - 1]}
               isInBeatList={false}
               handleInsert={this.handleInsertNewBeat}
-              beatToLeft={beats[idx - 1]}
               color={line.color}
               showLine={beat.position == 0}
               tableLength={this.state.tableLength}
@@ -163,6 +170,11 @@ class TimelineTable extends Component {
       }
 
       const beatTitle = <BeatTitleCell beatId={beat.id} handleReorder={this.handleReorderBeats} />
+      const beatToggler = (beat) => () => {
+        if (!beat) return
+        if (beat.expanded) beatActions.collapseBeat(beat.id, ui.currentTimeline)
+        else beatActions.expandBeat(beat.id, ui.currentTimeline)
+      }
 
       if (isSmall) {
         return (
@@ -172,12 +184,21 @@ class TimelineTable extends Component {
           </tr>
         )
       } else {
+        const lastBeat = beats[idx - 1]
         return [
           <Row key={`beatId-${beat.id}`}>
             {isLarge || idx === 0 ? (
               <BeatInsertCell
+                isFirst={idx === 0}
                 isInBeatList={true}
                 beatToLeft={beats[idx - 1]}
+                handleInsertChild={
+                  lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+                    ? undefined
+                    : this.handleInsertChildBeat
+                }
+                expanded={lastBeat && lastBeat.expanded}
+                toggleExpanded={beatToggler(lastBeat)}
                 handleInsert={this.handleInsertNewBeat}
               />
             ) : null}
@@ -316,6 +337,7 @@ class TimelineTable extends Component {
 TimelineTable.propTypes = {
   nextBeatId: PropTypes.number,
   beats: PropTypes.array,
+  booksBeats: PropTypes.object,
   beatMapping: PropTypes.object,
   lines: PropTypes.array,
   cardMap: PropTypes.object.isRequired,
@@ -334,6 +356,7 @@ TimelineTable.propTypes = {
 function mapStateToProps(state) {
   return {
     beats: sortedBeatsByBookSelector(state.present),
+    booksBeats: beatsByBookSelector(state.present),
     beatMapping: sparceBeatMap(state.present),
     nextBeatId: nextId(state.present.beats),
     lines: sortedLinesByBookSelector(state.present),

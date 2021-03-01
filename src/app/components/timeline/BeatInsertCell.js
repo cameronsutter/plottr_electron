@@ -153,14 +153,35 @@ class BeatInsertCell extends PureComponent {
   }
 
   render() {
-    const { showLine, orientation, isSmall } = this.props
-    let insideDiv = (
-      <>
-        {this.renderInsertBeat()}
-        {this.renderInsertChild()}
-        {this.renderToggleCollapse()}
-      </>
-    )
+    const { showLine, orientation, isSmall, isLast } = this.props
+    let insideDiv = null
+    if (orientation === 'vertical') {
+      if (isLast) {
+        insideDiv = (
+          <>
+            {this.renderInsertChild()}
+            {this.renderToggleCollapse()}
+            {this.renderInsertBeat()}
+          </>
+        )
+      } else {
+        insideDiv = (
+          <div className="beat-list__interstitial-controls">
+            {this.renderInsertBeat()}
+            {this.renderInsertChild()}
+            {this.renderToggleCollapse()}
+          </div>
+        )
+      }
+    } else {
+      insideDiv = (
+        <>
+          {this.renderInsertBeat()}
+          {this.renderInsertChild()}
+          {this.renderToggleCollapse()}
+        </>
+      )
+    }
 
     if (isSmall) {
       const isHorizontal = orientation == 'horizontal'

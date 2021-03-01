@@ -16,12 +16,12 @@ const {
 class BeatInsertCell extends PureComponent {
   insert = () => {
     const { beatToLeft, lineId, handleInsert } = this.props
-    handleInsert(beatToLeft.id, lineId)
+    handleInsert(beatToLeft && beatToLeft.id, lineId)
   }
 
   insertChild = () => {
     const { beatToLeft, handleInsertChild } = this.props
-    handleInsertChild(beatToLeft.id)
+    handleInsertChild(beatToLeft && beatToLeft.id)
   }
 
   renderLine() {

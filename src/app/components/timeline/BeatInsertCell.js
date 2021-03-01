@@ -5,6 +5,7 @@ import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import { TiFlowChildren } from 'react-icons/ti'
+import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import cx from 'classnames'
 import { selectors, helpers } from 'pltr/v2'
 import VisualLine from './VisualLine'
@@ -12,7 +13,6 @@ import VisualLine from './VisualLine'
 const {
   orientedClassName: { orientedClassName },
 } = helpers
-
 class BeatInsertCell extends PureComponent {
   insert = () => {
     const { beatToRight, lineId, handleInsert } = this.props
@@ -46,6 +46,8 @@ class BeatInsertCell extends PureComponent {
       isLast,
       isSmall,
       isMedium,
+      expanded,
+      toggleExpanded,
       hierarchyLevelName,
       hierarchyChildLevelName,
     } = this.props
@@ -60,6 +62,7 @@ class BeatInsertCell extends PureComponent {
     const insertBeatKlass = cx('line-list__insert-beat', {
       'medium-timeline': isMedium,
     })
+    const orientedClass = orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)
     let titleText = isLast
       ? i18n(`Add ${hierarchyLevelName}`)
       : i18n(`Insert ${hierarchyLevelName}`)
@@ -69,24 +72,27 @@ class BeatInsertCell extends PureComponent {
     if (!isInBeatList) titleText = i18n(`Insert ${hierarchyLevelName} and a Card`)
     let insideDiv = (
       <>
-        <div
-          title={titleText}
-          className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
-          onClick={this.insert}
-        >
+        <div title={titleText} className={orientedClass} onClick={this.insert}>
           <div className={wrapperKlass}>
             <Glyphicon glyph="plus" />
           </div>
         </div>
         {handleInsertChild && !isFirst ? (
-          <div
-            title={childTitleText}
-            className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
-            onClick={this.insertChild}
-          >
+          <div title={childTitleText} className={orientedClass} onClick={this.insertChild}>
             <div className={wrapperKlass}>
               <TiFlowChildren size={25} />
             </div>
+          </div>
+        ) : null}
+        {!handleInsertChild && toggleExpanded ? (
+          <div
+            onClick={toggleExpanded}
+            className={cx(
+              orientedClass,
+              expanded === false ? 'beat-list__insert--always-visible' : {}
+            )}
+          >
+            <div className={wrapperKlass}>{expanded ? <FaCompressAlt /> : <FaExpandAlt />}</div>
           </div>
         ) : null}
       </>
@@ -120,6 +126,8 @@ class BeatInsertCell extends PureComponent {
     isLast: PropTypes.bool,
     isFirst: PropTypes.bool,
     tableLength: PropTypes.number,
+    expanded: PropTypes.bool,
+    toggleExpanded: PropTypes.func,
     hierarchyChildLevelName: PropTypes.string,
     hierarchyLevelName: PropTypes.string,
   }
@@ -140,8 +148,4 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(BeatInsertCell)
+export default connect(mapStateToProps, null)(BeatInsertCell)

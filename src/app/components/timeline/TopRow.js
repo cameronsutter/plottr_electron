@@ -10,7 +10,7 @@ import BeatInsertCell from 'components/timeline/BeatInsertCell'
 import { actions, helpers, selectors } from 'pltr/v2'
 
 const {
-  beats: { nextId },
+  beats: { nextId, hasChildren },
   lists: { reorderList },
   orientedClassName: { orientedClassName },
 } = helpers
@@ -21,6 +21,7 @@ const BeatActions = actions.beat
 const {
   visibleSortedBeatsByBookSelector,
   sortedLinesByBookSelector,
+  beatsByBookSelector,
   isSeriesSelector,
   isLargeSelector,
   isMediumSelector,
@@ -73,7 +74,13 @@ class TopRow extends Component {
   }
 
   renderBeats() {
-    const { ui, beats, isLarge, isMedium, isSmall } = this.props
+    const { ui, booksBeats, beats, beatActions, isLarge, isMedium, isSmall } = this.props
+    let lastBeat = null
+    const beatToggler = (beat) => () => {
+      if (!beat) return
+      if (beat.expanded) beatActions.collapseBeat(beat.id, ui.currentTimeline)
+      else beatActions.expandBeat(beat.id, ui.currentTimeline)
+    }
     const renderedBeats = beats.flatMap((beat, idx) => {
       const cells = []
       if (isLarge || (isMedium && idx === 0)) {
@@ -84,7 +91,13 @@ class TopRow extends Component {
             isInBeatList={true}
             beatToRight={beat}
             handleInsert={this.handleInsertNewBeat}
-            handleInsertChild={this.handleInsertChildBeat}
+            handleInsertChild={
+              hasChildren(booksBeats, lastBeat && lastBeat.id)
+                ? undefined
+                : this.handleInsertChildBeat
+            }
+            expanded={lastBeat && lastBeat.expanded}
+            toggleExpanded={beatToggler(lastBeat)}
             orientation={ui.orientation}
           />
         )
@@ -97,6 +110,7 @@ class TopRow extends Component {
           handleReorder={this.handleReorderBeats}
         />
       )
+      lastBeat = beat
       return cells
     })
     if (isSmall) {
@@ -176,6 +190,7 @@ TopRow.propTypes = {
   isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
   beats: PropTypes.array,
+  booksBeats: PropTypes.object,
   nextBeatId: PropTypes.number,
   lines: PropTypes.array,
   lineActions: PropTypes.object,
@@ -192,6 +207,7 @@ function mapStateToProps(state) {
     isMedium: isMediumSelector(state.present),
     isLarge: isLargeSelector(state.present),
     beats: visibleSortedBeatsByBookSelector(state.present),
+    booksBeats: beatsByBookSelector(state.present),
     nextBeatId: nextBeatId,
     lines: sortedLinesByBookSelector(state.present),
   }

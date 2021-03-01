@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
+import { TiFlowChildren } from 'react-icons/ti'
 import cx from 'classnames'
 import { selectors, helpers } from 'pltr/v2'
 import VisualLine from './VisualLine'
@@ -44,6 +45,8 @@ class BeatInsertCell extends PureComponent {
       isLast,
       isSmall,
       isMedium,
+      hierarchyLevelName,
+      hierarchyChildLevelName,
     } = this.props
     const wrapperKlass = cx(orientedClassName('insert-beat-wrapper', orientation), {
       'insert-beat-spacer': showLine,
@@ -56,8 +59,13 @@ class BeatInsertCell extends PureComponent {
     const insertBeatKlass = cx('line-list__insert-beat', {
       'medium-timeline': isMedium,
     })
-    let titleText = isLast ? i18n('Add Chapter') : i18n('Insert Chapter')
-    if (!isInBeatList) titleText = i18n('Insert Chapter and a Card')
+    let titleText = isLast
+      ? i18n(`Add ${hierarchyLevelName}`)
+      : i18n(`Insert ${hierarchyLevelName}`)
+    let childTitleText = isLast
+      ? i18n(`Add ${hierarchyChildLevelName}`)
+      : i18n(`Insert ${hierarchyChildLevelName}`)
+    if (!isInBeatList) titleText = i18n(`Insert ${hierarchyLevelName} and a Card`)
     let insideDiv = (
       <>
         <div
@@ -71,12 +79,12 @@ class BeatInsertCell extends PureComponent {
         </div>
         {handleInsertChild ? (
           <div
-            title={titleText}
+            title={childTitleText}
             className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
             onClick={this.insertChild}
           >
             <div className={wrapperKlass}>
-              <Glyphicon glyph="plus" />
+              <TiFlowChildren size={25} />
             </div>
           </div>
         ) : null}
@@ -110,14 +118,20 @@ class BeatInsertCell extends PureComponent {
     color: PropTypes.string,
     isLast: PropTypes.bool,
     tableLength: PropTypes.number,
+    hierarchyChildLevelName: PropTypes.string,
+    hierarchyLevelName: PropTypes.string,
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  const beatToLeftId = ownProps.beatToLeft && ownProps.beatToLeft.id
+
   return {
     orientation: state.present.ui.orientation,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
+    hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
+    hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
   }
 }
 

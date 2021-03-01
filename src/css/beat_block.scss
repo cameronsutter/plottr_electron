@@ -71,13 +71,17 @@ $medium_width: 80px;
 }
 
 .beat-list__insert {
-  height: 150px;
+  height: 75px;
   display: flex;
   align-items: center;
   color: transparent;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
+  &:first-child {
+    margin-top: 75px;
+    height: 16px;
+  }
   .insert-beat-wrapper {
     display: flex;
     padding: 1px;

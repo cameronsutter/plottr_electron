@@ -87,7 +87,7 @@ class TimelineTable extends Component {
     }, {})
   }
 
-  handleInsertNewBeat = (lineId, beatToLeftId) => {
+  handleInsertNewBeat = (beatToLeftId) => {
     const { ui, beatActions } = this.props
     beatActions.insertBeat(ui.currentTimeline, beatToLeftId)
   }
@@ -152,7 +152,6 @@ class TimelineTable extends Component {
             <BeatInsertCell
               key={`${linePosition}-insert`}
               isInBeatList={false}
-              beatPosition={beat.position}
               handleInsert={this.handleInsertNewBeat}
               beatToLeft={beats[idx - 1]}
               color={line.color}
@@ -178,7 +177,6 @@ class TimelineTable extends Component {
             {isLarge || idx === 0 ? (
               <BeatInsertCell
                 isInBeatList={true}
-                beatPosition={beat.position}
                 beatToLeft={beats[idx - 1]}
                 handleInsert={this.handleInsertNewBeat}
               />
@@ -232,7 +230,6 @@ class TimelineTable extends Component {
           <BeatInsertCell
             key={`${beatPosition}-insert`}
             isInBeatList={false}
-            beatPosition={Number(beatPosition)}
             lineId={line.id}
             handleInsert={this.handleInsertNewBeat}
             beatToLeft={beats[beatPosition - 1]}
@@ -251,7 +248,6 @@ class TimelineTable extends Component {
             cards={cards}
             beatId={beatId}
             lineId={line.id}
-            beatPosition={beatPosition}
             linePosition={line.position}
             color={line.color}
           />

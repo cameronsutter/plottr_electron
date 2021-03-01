@@ -79,7 +79,7 @@ class BeatInsertCell extends PureComponent {
     let childTitleText = isLast
       ? i18n(`Add ${hierarchyChildLevelName}`)
       : i18n(`Insert ${hierarchyChildLevelName}`)
-    if (!isInBeatList) titleText = i18n(`Insert ${hierarchyLevelName} and a Card`)
+    if (!isInBeatList) titleText = i18n(`Insert ${hierarchyLevelName}`)
     let insideDiv = (
       <>
         <div title={titleText} className={orientedClass} onClick={this.insert}>

@@ -176,12 +176,12 @@ function synopsis(currentState, json, bookTitle, bookId, isNewFile) {
   )
   if (synopsisNode && synopsisNode['GString']) {
     // short synopsis -> in a note (each line of it as a slate paragraph)
-    let paragraphs = synopsisNode['GString'].map((n) => n['_attributes']['value'])
-    if (paragraphs && paragraphs.length) {
+    const shortParagraphs = synopsisParagraphs(synopsisNode['GString'])
+    if (shortParagraphs && shortParagraphs.length) {
       createNewNote(currentState.notes, {
         title: isNewFile ? i18n('Short Synopsis') : `[${bookTitle}] ${i18n('Short Synopsis')}`,
         bookIds: [bookId],
-        content: createSlateEditor(paragraphs),
+        content: createSlateEditor(shortParagraphs),
       })
     }
   }
@@ -190,15 +190,25 @@ function synopsis(currentState, json, bookTitle, bookId, isNewFile) {
   )
   if (synopsisNode && synopsisNode['GString']) {
     // long synopsis -> in a note (each line of it as a slate paragraph)
-    let paragraphs = synopsisNode['GString'].map((n) => n['_attributes']['value'])
-    if (paragraphs && paragraphs.length) {
+    const longParagraphs = synopsisParagraphs(synopsisNode['GString'])
+    if (longParagraphs && longParagraphs.length) {
       createNewNote(currentState.notes, {
         title: isNewFile ? i18n('Long Synopsis') : `[${bookTitle}] ${i18n('Long Synopsis')}`,
         bookIds: [bookId],
-        content: createSlateEditor(paragraphs),
+        content: createSlateEditor(longParagraphs),
       })
     }
   }
+}
+
+function synopsisParagraphs(GStringNode) {
+  let paragraphs = []
+  if (Array.isArray(GStringNode)) {
+    paragraphs = GStringNode.map((n) => n['_attributes']['value'])
+  } else {
+    paragraphs.push(GStringNode['_attributes']['value'])
+  }
+  return paragraphs
 }
 
 function characters(currentState, json, bookId) {

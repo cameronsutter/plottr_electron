@@ -77,7 +77,7 @@ function snowflakeImportDialog() {
   const files = dialog.showOpenDialogSync(win, { title, filters, properties })
   if (files && files.length) {
     const importedPath = files[0]
-    if (importedPath.includes('.snowXML')) {
+    if (importedPath.toLowerCase().includes('.snowxml')) {
       return importedPath
     } else {
       return null

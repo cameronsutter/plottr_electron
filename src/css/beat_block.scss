@@ -82,6 +82,9 @@ $medium_width: 80px;
     margin-top: 75px;
     height: 16px;
   }
+  &:last-child {
+    margin-left: -5px;
+  }
   .insert-beat-wrapper {
     display: flex;
     padding: 1px;

@@ -115,6 +115,13 @@ $medium_width: 80px;
   }
 }
 
+.beat-list__insert--always-visible {
+  color: $blue-5;
+  .insert-beat-wrapper.append-beat {
+    border: 3px dashed $blue-7;
+  }
+}
+
 .sticky-table.darkmode {
   .beat-list__insert:hover {
     color: $blue-8;

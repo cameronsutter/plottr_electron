@@ -90,13 +90,13 @@ class TopRow extends Component {
 
   renderBeats() {
     const { ui, booksBeats, beats, beatActions, isLarge, isMedium, isSmall } = this.props
-    let lastBeat = null
     const beatToggler = (beat) => () => {
       if (!beat) return
       if (beat.expanded) beatActions.collapseBeat(beat.id, ui.currentTimeline)
       else beatActions.expandBeat(beat.id, ui.currentTimeline)
     }
     const renderedBeats = beats.flatMap((beat, idx) => {
+      const lastBeat = beats[idx - 1]
       const cells = []
       if (isLarge || (isMedium && idx === 0)) {
         cells.push(
@@ -107,7 +107,7 @@ class TopRow extends Component {
             beatToLeft={lastBeat}
             handleInsert={this.handleInsertNewBeat}
             handleInsertChild={
-              hasChildren(booksBeats, lastBeat && lastBeat.id)
+              lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
                 ? undefined
                 : this.handleInsertChildBeat
             }
@@ -125,7 +125,6 @@ class TopRow extends Component {
           handleReorder={this.handleReorderBeats}
         />
       )
-      lastBeat = beat
       return cells
     })
     if (isSmall) {

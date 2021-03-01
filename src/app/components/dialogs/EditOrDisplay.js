@@ -53,6 +53,12 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) 
             value={stagedValue}
             onChange={(event) => setStagedValue(event.target.value)}
             ref={controlRef}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                setValue(stagedValue)
+                setEditing(false)
+              }
+            }}
             onBlur={() => {
               setValue(stagedValue)
               setEditing(false)

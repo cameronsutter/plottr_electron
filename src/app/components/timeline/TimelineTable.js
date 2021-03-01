@@ -87,16 +87,9 @@ class TimelineTable extends Component {
     }, {})
   }
 
-  handleInsertNewBeat = (nextPosition, lineId) => {
-    const beats = this.props.beatActions.insertBeat(
-      this.props.beats[nextPosition].id,
-      this.props.ui.currentTimeline
-    )
-
-    if (lineId && beats[nextPosition]) {
-      const beatId = beats[nextPosition].id
-      this.props.cardActions.addCard(this.buildCard(lineId, beatId))
-    }
+  handleInsertNewBeat = (beatToRightId, lineId) => {
+    const { ui, beatActions } = this.props
+    beatActions.insertBeat(beatToRightId, ui.currentTimeline)
   }
 
   buildCard(lineId, beatId) {
@@ -161,6 +154,7 @@ class TimelineTable extends Component {
               isInBeatList={false}
               beatPosition={beat.position}
               handleInsert={this.handleInsertNewBeat}
+              beatToRight={beat}
               color={line.color}
               showLine={beat.position == 0}
               tableLength={this.state.tableLength}
@@ -184,6 +178,7 @@ class TimelineTable extends Component {
             {isLarge || idx === 0 ? (
               <BeatInsertCell
                 isInBeatList={true}
+                beatToRight={beat}
                 beatPosition={beat.position}
                 handleInsert={this.handleInsertNewBeat}
               />
@@ -228,7 +223,7 @@ class TimelineTable extends Component {
   }
 
   renderHorizontalCards(line, beatMap, beatMapKeys) {
-    const { cardMap, isLarge, isMedium } = this.props
+    const { beats, cardMap, isLarge, isMedium } = this.props
     return beatMapKeys.flatMap((beatPosition) => {
       const cells = []
       const beatId = beatMap[beatPosition]
@@ -240,6 +235,7 @@ class TimelineTable extends Component {
             beatPosition={Number(beatPosition)}
             lineId={line.id}
             handleInsert={this.handleInsertNewBeat}
+            beatToRight={beats[beatPosition]}
             showLine={beatPosition == 0}
             color={line.color}
             tableLength={this.state.tableLength}

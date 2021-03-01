@@ -142,7 +142,6 @@ class BeatTitleCell extends PureComponent {
 
   handleDrop = (e) => {
     e.stopPropagation()
-    if (this.state.dragging) return
     this.setState({ inDropZone: false, dropDepth: 0 })
 
     var json = e.dataTransfer.getData('text/json')

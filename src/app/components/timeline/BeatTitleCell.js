@@ -198,17 +198,16 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderHorizontalHoverOptions(style) {
-    const { ui, isSmall, beat } = this.props
+    const { ui, isMedium, isSmall, beat } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <ButtonGroup>
-          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.openBeatConfig}>
-            <Glyphicon glyph="cog" />
-          </Button>
-          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.startEditing}>
-            <Glyphicon glyph="edit" />
-          </Button>
+          {isMedium ? null : (
+            <Button bsSize={isSmall ? 'small' : undefined} onClick={this.startEditing}>
+              <Glyphicon glyph="edit" />
+            </Button>
+          )}
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
           </Button>

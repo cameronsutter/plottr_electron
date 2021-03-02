@@ -21,11 +21,13 @@ import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave } from 'react-icons/fa'
+import { TiFlowChildren } from 'react-icons/ti'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { actions, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 import MPQ from '../../../common/utils/MPQ'
+import BeatConfigModal from 'components/dialogs/BeatConfigModal'
 
 const win = remote.getCurrentWindow()
 
@@ -38,6 +40,7 @@ class TimelineWrapper extends Component {
     super(props)
     this.state = {
       mounted: false,
+      beatConfigIsOpen: false,
     }
     // TODO: refactor this to use createRef
     this.tableRef = null
@@ -100,6 +103,22 @@ class TimelineWrapper extends Component {
       this.tableRef.onScroll = null
       this.tableRef = null
     }
+  }
+
+  // ////////////////
+  //  hierarchies  //
+  // ////////////////
+
+  closeBeatConfig = () => {
+    this.setState({
+      beatConfigIsOpen: false,
+    })
+  }
+
+  openBeatConfig = () => {
+    this.setState({
+      beatConfigIsOpen: true,
+    })
   }
 
   // ///////////////
@@ -270,6 +289,11 @@ class TimelineWrapper extends Component {
             </Button>
           </NavItem>
           <NavItem>
+            <Button bsSize="small" onClick={this.openBeatConfig}>
+              <TiFlowChildren size={16} /> {i18n('Beats')}
+            </Button>
+          </NavItem>
+          <NavItem>
             <span className="subnav__container__label">{i18n('Zoom')}: </span>
             <ButtonGroup>
               <Button
@@ -342,14 +366,20 @@ class TimelineWrapper extends Component {
     }
   }
 
-  closeDialog = () => {
+  closeCustomAttributesDialog = () => {
     this.props.actions.closeAttributesDialog()
   }
 
   renderCustomAttributes() {
     if (!this.props.ui.attributesDialogIsOpen) return null
 
-    return <CustomAttributeModal type="scenes" closeDialog={this.closeDialog} />
+    return <CustomAttributeModal type="scenes" closeDialog={this.closeCustomAttributesDialog} />
+  }
+
+  renderBeatConfig() {
+    if (!this.state.beatConfigIsOpen) return null
+
+    return <BeatConfigModal closeDialog={this.closeBeatConfig} />
   }
 
   render() {
@@ -361,6 +391,7 @@ class TimelineWrapper extends Component {
       >
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
+        {this.renderBeatConfig()}
         <div id="timelineview__root" className="tab-body">
           {this.renderBody()}
         </div>

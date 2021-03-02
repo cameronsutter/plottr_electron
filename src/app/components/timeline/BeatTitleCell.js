@@ -343,7 +343,7 @@ class BeatTitleCell extends PureComponent {
               {this.renderHoverOptions()}
               {this.renderDelete()}
               <div
-                style={hierarchyToStyles(this.props.hierarchyLevel)}
+                style={hierarchyToStyles(this.props.hierarchyLevel, ui.timeline.size)}
                 className={innerKlass}
                 onClick={this.startEditing}
                 draggable

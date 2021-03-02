@@ -79,10 +79,10 @@ $medium_width: 80px;
   font-size: 16px;
   cursor: pointer;
   /* Place the intersticial controls so that + is centred */
-  &:last-child:not(.small-timeline) {
+  &:last-child:not(.small-timeline):not(.medium-timeline) {
     margin-left: -5px;
   }
-  &:first-child:not(.small-timeline) {
+  &:first-child:not(.small-timeline):not(.medium-timeline) {
     margin-top: 75px;
     height: 16px;
     margin-left: 0px;
@@ -96,7 +96,14 @@ $medium_width: 80px;
     }
   }
   .insert-beat-wrapper.append-beat {
-    padding: 30px 70px;
+    &.large-timeline {
+      padding: 30px 70px;
+    }
+    &.medium-timeline {
+      margin-top: 10px;
+      margin-right: 0px;
+      padding: 14px 35px;
+    }
     color: $blue-5;
     border: 3px dotted $blue-8;
     margin-right: 50px;
@@ -256,10 +263,16 @@ $medium_width: 80px;
     width: $medium_width;
     margin-left: 35px;
     .vertical-insert-beat-wrapper.append-beat {
-      padding: 12px 35px;
+      margin-left: 30px;
+      padding: 12px 32px;
     }
   }
 }
+
+.vertical-beat-list__insert.append-beat.medium-timeline {
+  height: 43px;
+}
+
 
 .vertical-beat-list__insert:hover {
   color: $blue-5;

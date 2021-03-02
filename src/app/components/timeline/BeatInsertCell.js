@@ -58,11 +58,13 @@ class BeatInsertCell extends PureComponent {
   }
 
   lastWrapperClass = () => {
-    const { showLine, orientation, isSmall } = this.props
+    const { showLine, orientation, isSmall, isMedium, isLarge } = this.props
 
     return cx(orientedClassName('insert-beat-wrapper', orientation), 'append-beat', {
       'insert-beat-spacer': showLine,
       'small-timeline': isSmall,
+      'medium-timeline': isMedium,
+      'large-timeline': isLarge,
     })
   }
 
@@ -236,6 +238,7 @@ class BeatInsertCell extends PureComponent {
     orientation: PropTypes.string,
     isSmall: PropTypes.bool,
     isMedium: PropTypes.bool,
+    isLarge: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
     handleInsertChild: PropTypes.func,
     isInBeatList: PropTypes.bool.isRequired,
@@ -261,6 +264,7 @@ function mapStateToProps(state, ownProps) {
     orientation: state.present.ui.orientation,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
+    isLarge: selectors.isLargeSelector(state.present),
     hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
     hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
   }

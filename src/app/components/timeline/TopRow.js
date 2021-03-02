@@ -61,8 +61,15 @@ class TopRow extends Component {
   }
 
   renderSecondLastInsertBeatCell() {
-    const { ui, booksBeats, beats, beatActions } = this.props
-    const { orientation } = ui
+    const {
+      ui: { currentTimeline, orientation },
+      isLarge,
+      booksBeats,
+      beats,
+      beatActions,
+    } = this.props
+    if (!isLarge) return null
+
     const lastBeat = !beats || beats.length === 0 ? null : beats[beats.length - 1]
     return (
       <BeatInsertCell
@@ -78,8 +85,8 @@ class TopRow extends Component {
         expanded={lastBeat && lastBeat.expanded}
         toggleExpanded={() => {
           if (lastBeat && lastBeat.expanded) {
-            beatActions.collapseBeat(lastBeat.id, ui.currentTimeline)
-          } else beatActions.expandBeat(lastBeat.id, ui.currentTimeline)
+            beatActions.collapseBeat(lastBeat.id, currentTimeline)
+          } else beatActions.expandBeat(lastBeat.id, currentTimeline)
         }}
         orientation={orientation}
       />

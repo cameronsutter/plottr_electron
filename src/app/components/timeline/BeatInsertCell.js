@@ -58,10 +58,11 @@ class BeatInsertCell extends PureComponent {
   }
 
   lastWrapperClass = () => {
-    const { showLine, orientation } = this.props
+    const { showLine, orientation, isSmall } = this.props
 
     return cx(orientedClassName('insert-beat-wrapper', orientation), 'append-beat', {
       'insert-beat-spacer': showLine,
+      'small-timeline': isSmall,
     })
   }
 
@@ -111,10 +112,11 @@ class BeatInsertCell extends PureComponent {
   }
 
   lastBeatClass = () => {
-    const { isInBeatList, isMedium } = this.props
+    const { isInBeatList, isMedium, isSmall } = this.props
 
     return cx('beat-list__insert', 'append-beat', {
       'medium-timeline': isInBeatList && isMedium,
+      'small-timeline': isInBeatList && isSmall,
     })
   }
 

@@ -78,10 +78,11 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  &:last-child {
+  /* Place the intersticial controls so that + is centred */
+  &:last-child:not(.small-timeline) {
     margin-left: -5px;
   }
-  &:first-child {
+  &:first-child:not(.small-timeline) {
     margin-top: 75px;
     height: 16px;
     margin-left: 0px;
@@ -95,14 +96,11 @@ $medium_width: 80px;
     }
   }
   .insert-beat-wrapper.append-beat {
-    margin-top: 12px;
-    margin-left: 20px;
     padding: 30px 70px;
     color: $blue-5;
     border: 3px dotted $blue-8;
     margin-right: 50px;
   }
-
   &.medium-timeline {
     height: 123px;
   }

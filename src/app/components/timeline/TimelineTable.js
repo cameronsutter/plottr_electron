@@ -225,21 +225,26 @@ class TimelineTable extends Component {
       ]
     } else {
       const lastBeat = beats[beats.length - 1]
-      finalRows = [
-        <Row key="second-last-insert">
-          <BeatInsertCell
-            isInBeatList={true}
-            handleInsert={this.handleInsertNewBeat}
-            beatToLeft={lastBeat}
-            handleInsertChild={
-              lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
-                ? undefined
-                : this.handleInsertChildBeat
-            }
-            expanded={lastBeat && lastBeat.expanded}
-            toggleExpanded={beatToggler(lastBeat)}
-          />
-        </Row>,
+      finalRows = []
+      if (isLarge) {
+        finalRows.push(
+          <Row key="second-last-insert">
+            <BeatInsertCell
+              isInBeatList={true}
+              handleInsert={this.handleInsertNewBeat}
+              beatToLeft={lastBeat}
+              handleInsertChild={
+                lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+                  ? undefined
+                  : this.handleInsertChildBeat
+              }
+              expanded={lastBeat && lastBeat.expanded}
+              toggleExpanded={beatToggler(lastBeat)}
+            />
+          </Row>
+        )
+      }
+      finalRows.push(
         <Row key="last-insert">
           <BeatInsertCell
             isInBeatList={true}
@@ -254,8 +259,8 @@ class TimelineTable extends Component {
             expanded={lastBeat && lastBeat.expanded}
             toggleExpanded={beatToggler(lastBeat)}
           />
-        </Row>,
-      ]
+        </Row>
+      )
     }
 
     return [...renderedBeats, ...finalRows]

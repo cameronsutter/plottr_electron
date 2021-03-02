@@ -170,10 +170,13 @@ $medium_width: 80px;
     }
   }
   &.medium-timeline {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     min-width: $medium_width + 6px; // +6px for the 3px border
     width: $medium_width + 6px; // +6px for the 3px border
     font-size: 14px;
-    padding: 12px 4px;
+    padding: 12px 8px;
     .form-group {
       .control-label {
         font-size: 12px;

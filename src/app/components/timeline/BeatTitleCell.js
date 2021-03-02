@@ -320,7 +320,7 @@ class BeatTitleCell extends PureComponent {
               style={hierarchyToStyles(
                 this.props.hierarchyLevel,
                 ui.timeline.size,
-                this.state.hovering
+                this.state.hovering || this.state.inDropZone
               )}
               className={innerKlass}
               onClick={this.startEditing}

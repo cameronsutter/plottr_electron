@@ -232,7 +232,9 @@ $medium_width: 80px;
     position: absolute;
   }
   .vertical-insert-beat-wrapper {
-    height: 40px;
+    .large-timeline {
+      height: 40px;
+    }
     display: flex;
     flex-direction: column;
     justify-content: space-around;

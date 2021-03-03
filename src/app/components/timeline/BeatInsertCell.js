@@ -161,7 +161,9 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderInsertChild() {
-    const { handleInsertChild, isFirst } = this.props
+    const { handleInsertChild, isFirst, atMaximumDepth } = this.props
+
+    if (atMaximumDepth) return null
 
     return handleInsertChild && !isFirst ? (
       <div
@@ -253,6 +255,7 @@ class BeatInsertCell extends PureComponent {
     toggleExpanded: PropTypes.func,
     hierarchyChildLevelName: PropTypes.string,
     hierarchyLevelName: PropTypes.string,
+    atMaximumDepth: PropTypes.bool,
   }
 }
 
@@ -267,6 +270,7 @@ function mapStateToProps(state, ownProps) {
     isLarge: selectors.isLargeSelector(state.present),
     hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
     hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
+    atMaximumDepth: selectors.atMaximumHierarchyDepthSelector(state.present, beatToLeftId),
   }
 }
 

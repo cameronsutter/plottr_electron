@@ -20,9 +20,10 @@ function ExportNavItem(props) {
 
   const doExport = (type) => {
     let label = i18n('Where would you like to save the export?')
-    const defaultPath = props.bookId !== 'series' 
-      ? props.books[props.bookId].title
-      : props.seriesName + ' (Series View)'
+    const defaultPath =
+      props.bookId !== 'series'
+        ? props.books[props.bookId].title
+        : props.seriesName + ' (Series View)'
 
     let filters = []
     switch (type) {
@@ -67,6 +68,8 @@ function ExportNavItem(props) {
 ExportNavItem.propTypes = {
   fileName: PropTypes.string,
   bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  seriesName: PropTypes.string,
+  books: PropTypes.object,
 }
 
 export default ExportNavItem

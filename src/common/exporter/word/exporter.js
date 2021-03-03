@@ -59,8 +59,8 @@ function namesMapping(data) {
 }
 
 function seriesNameSection(data, bookId) {
-  let titleText = isSeries(bookId) 
-    ? data.series.name + i18n(' (Series View)') 
+  let titleText = isSeries(bookId)
+    ? data.series.name + i18n(' (Series View)')
     : data.books[bookId].title
   const paragraph = new Paragraph({
     text: titleText,

@@ -210,7 +210,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav() {
-    const { ui, file, filterIsEmpty, isSmall, isMedium, isLarge, actions } = this.props
+    const { ui, file, filterIsEmpty, isSmall, isMedium, isLarge, actions, seriesName, books } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -326,7 +326,8 @@ class TimelineWrapper extends Component {
             </Button>
           </NavItem>
           <ClearNavItem />
-          <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline} />
+          <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline} 
+            seriesName={seriesName} books={books}/>
         </Nav>
       </SubNav>
     )
@@ -391,6 +392,8 @@ function mapStateToProps(state) {
   return {
     file: state.present.file,
     ui: state.present.ui,
+    seriesName: state.present.series.name,
+    books: state.present.books,
     filterIsEmpty: selectors.timelineFilterIsEmptySelector(state.present),
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),

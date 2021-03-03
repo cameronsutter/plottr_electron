@@ -20,7 +20,10 @@ function ExportNavItem(props) {
 
   const doExport = (type) => {
     let label = i18n('Where would you like to save the export?')
-    const defaultPath = path.basename(props.fileName).replace('.pltr', '')
+    const defaultPath = props.bookId !== 'series' 
+      ? props.books[props.bookId].title
+      : props.seriesName + ' (Series View)'
+
     let filters = []
     switch (type) {
       case 'word':

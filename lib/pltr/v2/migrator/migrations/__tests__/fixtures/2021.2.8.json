@@ -1,0 +1,123 @@
+{
+  "ui": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "timelineIsExpanded": true,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 0
+    },
+    "timeline": {
+      "size": "large"
+    }
+  },
+  "file": {
+    "fileName": "",
+    "loaded": false,
+    "dirty": false
+  },
+  "series": {
+    "name": "",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "books": {
+    "1": {
+      "id": 1,
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "allIds": [
+      1
+    ]
+  },
+  "characters": [],
+  "cards": [],
+  "lines": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "color": "#6cace4",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 2,
+      "bookId": "series",
+      "color": "#6cace4",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    }
+  ],
+  "customAttributes": {
+    "characters": [],
+    "places": [],
+    "cards": [],
+    "scenes": [],
+    "lines": []
+  },
+  "places": [],
+  "tags": [],
+  "notes": [],
+  "beats": [
+    {
+      "id": 1,
+      "bookId": "series",
+      "position": 0,
+      "title": "auto",
+      "time": 0,
+      "templates": [],
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    },
+    {
+      "id": 2,
+      "bookId": 1,
+      "position": 0,
+      "title": "auto",
+      "time": 0,
+      "templates": [],
+      "autoOutlineSort": true,
+      "fromTemplateId": null
+    }
+  ],
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "position": 0
+      },
+      {
+        "id": 2,
+        "position": 1
+      },
+      {
+        "id": 3,
+        "position": 2
+      }
+    ],
+    "places": [],
+    "notes": [],
+    "tags": []
+  },
+  "images": {}
+}

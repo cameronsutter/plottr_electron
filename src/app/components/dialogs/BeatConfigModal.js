@@ -52,8 +52,7 @@ const BeatConfigModal = ({
             <button
               className="beat-config-modal__hierarchy-count-adjustment-control"
               onClick={() => {
-                setLevelsOfHierarchy(levelsOfHierarchy - 1)
-                setHierarchyLevels(hierarchyLevels.slice(0, hierarchyLevels.length - 1))
+                setHierarchyLevels(hierarchyLevels.slice(1))
               }}
             >
               <Glyphicon glyph="minus" />
@@ -67,8 +66,7 @@ const BeatConfigModal = ({
             <button
               className="beat-config-modal__hierarchy-count-adjustment-control"
               onClick={() => {
-                setLevelsOfHierarchy(levelsOfHierarchy + 1)
-                setHierarchyLevels([...hierarchyLevels, newHierarchyLevel(hierarchyLevels)])
+                setHierarchyLevels([newHierarchyLevel(hierarchyLevels), ...hierarchyLevels])
               }}
             >
               <Glyphicon glyph="plus" />

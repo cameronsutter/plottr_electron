@@ -252,28 +252,28 @@ class AddLineRow extends Component {
     }
 
     const appendKlass = cx('line-list__append-line', { 'medium-timeline': isMedium })
-      return (
-        <div className={appendKlass}>
-          {this.renderInputModal()}
-          {this.state.hovering ? (
-            <div className="line-list__append-line__double">
-              <div
-                onClick={() => this.setState({ showTemplatePicker: true, hovering: false })}
-                className="template"
-              >
-                {i18n('Use Template')}
-              </div>
-              <div onClick={() => this.setState({ askingForInput: true })} className="non-template">
-                <Glyphicon glyph="plus" />
-              </div>
+    return (
+      <div className={appendKlass}>
+        {this.renderInputModal()}
+        {this.state.hovering ? (
+          <div className="line-list__append-line__double">
+            <div
+              onClick={() => this.setState({ showTemplatePicker: true, hovering: false })}
+              className="template"
+            >
+              {i18n('Use Template')}
             </div>
-          ) : (
-            <div className="line-list__append-line-wrapper">
+            <div onClick={() => this.setState({ askingForInput: true })} className="non-template">
               <Glyphicon glyph="plus" />
             </div>
-          )}
-        </div>
-      )
+          </div>
+        ) : (
+          <div className="line-list__append-line-wrapper">
+            <Glyphicon glyph="plus" />
+          </div>
+        )}
+      </div>
+    )
   }
 
   renderTemplatePicker() {

@@ -9,6 +9,8 @@ import RichText from '../rce/RichText'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
 import { helpers, actions, selectors } from 'pltr/v2'
+import { getContrastYIQ } from '../../../common/utils/colors'
+import tinycolor from 'tinycolor2'
 
 const { visibleCardsSelector, isSmallSelector, isMediumSelector } = selectors
 const CardActions = actions.card
@@ -175,7 +177,19 @@ class Card extends Component {
 
   renderTitle() {
     const { card, isSmall, ui, beatPosition, linePosition } = this.props
-    let title = <div className="card__title">{isSmall ? '' : truncateTitle(card.title, 150)}</div>
+    let titleStyle = {}
+    if (!isSmall && card.color) {
+      titleStyle.backgroundColor = card.color
+      const [useBlack, _] = getContrastYIQ(card.color || '#F1F5F8') // $gray-9
+      if (!useBlack) {
+        titleStyle.color = 'white'
+      }
+    }
+    let title = (
+      <div className="card__title" style={titleStyle}>
+        {isSmall ? '' : truncateTitle(card.title, 150)}
+      </div>
+    )
 
     if (!this.state.dragging && (isSmall || this.hasDetailsToShow())) {
       let placement = 'left'
@@ -211,9 +225,9 @@ class Card extends Component {
   }
 
   render() {
-    const { color, isVisible, allowDrop, last, isSmall, isMedium, ui } = this.props
+    const { color, card, isVisible, allowDrop, last, isSmall, isMedium, ui } = this.props
     var cardStyle = {
-      borderColor: color,
+      borderColor: card.color ? tinycolor(card.color).darken(10).toHslString() : color,
     }
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'

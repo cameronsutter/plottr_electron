@@ -13,6 +13,7 @@ import {
   Glyphicon,
   FormGroup,
   ControlLabel,
+  Overlay,
 } from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import i18n from 'format-message'
@@ -21,6 +22,8 @@ import RichText from '../rce/RichText'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import EditAttribute from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
+import ColorPickerColor from '../ColorPickerColor'
+import MiniColorPicker from '../MiniColorPicker'
 
 const {
   card: { truncateTitle },
@@ -50,9 +53,11 @@ class CardDialog extends Component {
       addingAttribute: false,
       newAttributeType: 'text',
       cancelling: false,
+      showColorPicker: false,
     }
     this.newAttributeInputRef = React.createRef()
     this.titleInputRef = React.createRef()
+    this.colorButtonRef = React.createRef()
   }
 
   selectTab = (name) => () => {
@@ -97,9 +102,14 @@ class CardDialog extends Component {
   }
 
   saveAndClose = () => {
-    // componentWillUnmount saves the data (otherwise we get a
-    // duplicate event).
+    // componentWillUnmount saves the data (otherwise we get a duplicate event)
     this.props.closeDialog()
+  }
+
+  openColorPicker = () => {
+    // I wanted to be able to toggle it with one function, but it won't work
+    // because of the `close` callback on MiniColorPicker
+    this.setState({ showColorPicker: true })
   }
 
   handleAttrChange = (attrName) => (desc) => {
@@ -197,6 +207,12 @@ class CardDialog extends Component {
       },
       this.props.closeDialog
     )
+  }
+
+  chooseCardColor = (color) => {
+    const { card, actions } = this.props
+    actions.editCardAttributes(card.id, { color })
+    this.setState({ showColorPicker: false })
   }
 
   changeBeat(beatId) {
@@ -412,7 +428,7 @@ class CardDialog extends Component {
     const lineDropdownID = 'select-line'
     const beatDropdownID = 'select-beat'
 
-    const { positionOffset, isSeries } = this.props
+    const { positionOffset, isSeries, card } = this.props
 
     let labelText = i18n('Chapter')
     let bookDropDown = null
@@ -437,7 +453,7 @@ class CardDialog extends Component {
             </DropdownButton>
           </label>
         </div>
-        <div className="card-dialog__sdropdown-wrapper">
+        <div className="card-dialog__dropdown-wrapper">
           <label className="card-dialog__details-label" htmlFor={beatDropdownID}>
             {labelText}:
             <DropdownButton
@@ -448,6 +464,42 @@ class CardDialog extends Component {
               {this.renderBeatItems()}
             </DropdownButton>
           </label>
+        </div>
+        <div className="color-picker__box">
+          <label className="card-dialog__details-label" style={{ minWidth: '55px' }}>
+            {i18n('Color')}:
+          </label>
+          <ColorPickerColor
+            color={card.color || '#F1F5F8'} // $gray-9
+            choose={this.openColorPicker}
+            style={{ margin: '2px', marginRight: '6px' }}
+            ref={this.colorButtonRef}
+          />
+          <div style={{ alignSelf: 'flex-start' }}>
+            <Button bsSize="xs" block title={i18n('Choose color')} onClick={this.openColorPicker}>
+              <Glyphicon glyph="tint" />
+            </Button>
+            <Button
+              bsSize="xs"
+              block
+              title={i18n('No color')}
+              bsStyle="warning"
+              onClick={() => this.chooseCardColor(null)}
+            >
+              <Glyphicon glyph="ban-circle" />
+            </Button>
+          </div>
+          <Overlay
+            show={this.state.showColorPicker}
+            placement="bottom"
+            container={() => this.colorButtonRef.current}
+          >
+            <MiniColorPicker
+              chooseColor={this.chooseCardColor}
+              el={this.colorButtonRef}
+              close={() => this.setState({ showColorPicker: false })}
+            />
+          </Overlay>
         </div>
         <SelectList
           parentId={this.props.card.id}

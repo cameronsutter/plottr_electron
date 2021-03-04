@@ -4,6 +4,7 @@ import PlottrModal from 'components/PlottrModal'
 import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bootstrap'
 import i18n from 'format-message'
 import { colors } from 'pltr/v2'
+import ColorPickerColor from './ColorPickerColor'
 
 const { reds, oranges, greens, blues, purples, grays, whites, browns, defaults } = colors
 
@@ -99,73 +100,55 @@ class ColorPicker extends Component {
         <p>{i18n('Default Colors')}</p>
         <div className="color-picker__box">
           {defaults.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
         <p>{i18n('Reds')}</p>
         <div className="color-picker__box">
           {reds.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
         <p>{i18n('Oranges')}</p>
         <div className="color-picker__box">
           {oranges.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
         <p>{i18n('Greens')}</p>
         <div className="color-picker__box">
           {greens.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
         <p>{i18n('Blues')}</p>
         <div className="color-picker__box">
           {blues.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
         <p>{i18n('Purples')}</p>
         <div className="color-picker__box">
           {purples.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
         <p>{i18n('Grays')}</p>
         <div className="color-picker__box">
           {grays.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
         <p>{i18n('Whites')}</p>
         <div className="color-picker__box">
           {whites.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
         <p>{i18n('Browns')}</p>
         <div className="color-picker__box">
           {browns.map((c) => (
-            <div key={'color-picker-color-' + c} className="color-picker__choice">
-              {this.renderColor(c)}
-            </div>
+            <ColorPickerColor key={`color-picker-color-${c}`} color={c} choose={this.closeDialog} />
           ))}
         </div>
       </div>

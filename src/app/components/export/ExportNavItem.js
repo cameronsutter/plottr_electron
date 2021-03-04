@@ -22,8 +22,8 @@ function ExportNavItem(props) {
     let label = i18n('Where would you like to save the export?')
     const defaultPath =
       props.bookId !== 'series'
-        ? props.books[props.bookId].title
-        : props.seriesName + ' (Series View)'
+        ? props.books[`${props.bookId}`]
+        : props.seriesName + ' ' + i18n('(Series View)')
 
     let filters = []
     switch (type) {

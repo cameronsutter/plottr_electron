@@ -44,6 +44,16 @@ export default function OptionsHome(props) {
           <LanguagePicker />
         </div>
         <hr />
+        <h1 className="dashboard__options">{t('Beta')}</h1>
+        <div className="dashboard__options__item">
+          <h4>{t('Beat Hierarchy')}</h4>
+          <Switch
+            isOn={!!settings.user.beatHierarchy}
+            handleToggle={() => saveSetting('user.beatHierarchy', !settings.user.beatHierarchy)}
+            labelText={t('Organise your Scene cards into Chapters and Acts')}
+          />
+        </div>
+        <hr />
         <h1 className="secondary-text">{t('Coming Soon!')}</h1>
         <div className="dashboard__options__item disabled">
           <h4>{t('Auto-save')}</h4>

@@ -15,10 +15,11 @@ import {
   ControlLabel,
   Overlay,
 } from 'react-bootstrap'
-import SelectList from 'components/selectList'
 import i18n from 'format-message'
 import cx from 'classnames'
+import tinycolor from 'tinycolor2'
 import RichText from '../rce/RichText'
+import SelectList from 'components/selectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import EditAttribute from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
@@ -437,6 +438,8 @@ class CardDialog extends Component {
       bookDropDown = this.renderBookDropdown()
     }
     const currentBeatTitle = beatTitle(this.getCurrentBeat(), positionOffset, isSeries)
+    const darkened = card.color ? tinycolor(card.color).darken().toHslString() : null
+    const borderColor = card.color ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
 
     return (
       <div className="card-dialog__left-side">
@@ -465,6 +468,30 @@ class CardDialog extends Component {
             </DropdownButton>
           </label>
         </div>
+        <SelectList
+          parentId={this.props.card.id}
+          type={'Characters'}
+          selectedItems={this.props.card.characters}
+          allItems={this.props.characters}
+          add={this.props.actions.addCharacter}
+          remove={this.props.actions.removeCharacter}
+        />
+        <SelectList
+          parentId={this.props.card.id}
+          type={'Places'}
+          selectedItems={this.props.card.places}
+          allItems={this.props.places}
+          add={this.props.actions.addPlace}
+          remove={this.props.actions.removePlace}
+        />
+        <SelectList
+          parentId={this.props.card.id}
+          type={'Tags'}
+          selectedItems={this.props.card.tags}
+          allItems={this.props.tags}
+          add={this.props.actions.addTag}
+          remove={this.props.actions.removeTag}
+        />
         <div className="color-picker__box">
           <label className="card-dialog__details-label" style={{ minWidth: '55px' }}>
             {i18n('Color')}:
@@ -472,10 +499,11 @@ class CardDialog extends Component {
           <ColorPickerColor
             color={card.color || '#F1F5F8'} // $gray-9
             choose={this.openColorPicker}
-            style={{ margin: '2px', marginRight: '6px' }}
+            style={{ margin: '2px', marginRight: '12px' }}
+            buttonStyle={{ border: `1px solid ${borderColor}` }}
             ref={this.colorButtonRef}
           />
-          <div style={{ alignSelf: 'flex-start' }}>
+          <div className="buttons" style={{ alignSelf: 'flex-start' }}>
             <Button bsSize="xs" block title={i18n('Choose color')} onClick={this.openColorPicker}>
               <Glyphicon glyph="tint" />
             </Button>
@@ -501,30 +529,6 @@ class CardDialog extends Component {
             />
           </Overlay>
         </div>
-        <SelectList
-          parentId={this.props.card.id}
-          type={'Characters'}
-          selectedItems={this.props.card.characters}
-          allItems={this.props.characters}
-          add={this.props.actions.addCharacter}
-          remove={this.props.actions.removeCharacter}
-        />
-        <SelectList
-          parentId={this.props.card.id}
-          type={'Places'}
-          selectedItems={this.props.card.places}
-          allItems={this.props.places}
-          add={this.props.actions.addPlace}
-          remove={this.props.actions.removePlace}
-        />
-        <SelectList
-          parentId={this.props.card.id}
-          type={'Tags'}
-          selectedItems={this.props.card.tags}
-          allItems={this.props.tags}
-          add={this.props.actions.addTag}
-          remove={this.props.actions.removeTag}
-        />
       </div>
     )
   }

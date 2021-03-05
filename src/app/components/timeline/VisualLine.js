@@ -41,6 +41,7 @@ export default function VisualLine({ color, orientation, isMedium, tableLength }
   const [currentLength, setCurrentLength] = useState(0)
   const [maxLength, setMaxLength] = useState(0)
   const [intervalId, setId] = useState(null)
+  const [animationStarted, setAnimationStarted] = useState(false)
 
   useEffect(() => {
     setMargins(getMargins(orientation, isMedium))
@@ -48,28 +49,34 @@ export default function VisualLine({ color, orientation, isMedium, tableLength }
 
   useEffect(() => {
     if (tableLength && tableLength > 0) {
-      if (!maxLength) setMaxLength(tableLength - margins)
+      if (!animationStarted) {
+        setMaxLength(tableLength - margins)
+        setAnimationStarted(true)
+      }
     }
   }, [tableLength, margins, maxLength])
 
   useEffect(() => {
+    if (!animationStarted) return
     if (!maxLength) return
-    if (intervalId) return
 
     const id = setInterval(() => {
       setCurrentLength((currentLength) => {
         let nextLength = currentLength + 100
         if (nextLength > maxLength) nextLength = maxLength
-        return maxLength
+        return nextLength
       })
     }, 10)
     setId(id)
 
     return () => clearInterval(id)
-  }, [maxLength])
+  }, [animationStarted])
 
   useEffect(() => {
-    if (currentLength == maxLength) clearInterval(intervalId)
+    if (currentLength == maxLength) {
+      clearInterval(intervalId)
+      setAnimationStarted(false)
+    }
   }, [currentLength])
 
   if (!currentLength) return null

@@ -25,6 +25,7 @@ import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { actions, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
+import MPQ from '../../../common/utils/MPQ'
 
 const win = remote.getCurrentWindow()
 
@@ -140,17 +141,23 @@ class TimelineWrapper extends Component {
   }
 
   scrollLeft = () => {
+    MPQ.push('btn_scroll_left')
     const current =
       this.props.ui.orientation === 'vertical' ? this.tableRef.scrollTop : this.tableRef.scrollLeft
     this.scrollTo(current - this.scrollDistance())
   }
   scrollRight = () => {
+    MPQ.push('btn_scroll_right')
     const current =
       this.props.ui.orientation === 'vertical' ? this.tableRef.scrollTop : this.tableRef.scrollLeft
     this.scrollTo(current + this.scrollDistance())
   }
-  scrollBeginning = () => this.scrollTo(0)
+  scrollBeginning = () => {
+    MPQ.push('btn_scroll_beginning')
+    this.scrollTo(0)
+  }
   scrollMiddle = () => {
+    MPQ.push('btn_scroll_middle')
     const target =
       this.props.ui.orientation === 'vertical'
         ? this.tableRef.scrollHeight / 2 - window.innerHeight / 2
@@ -158,6 +165,7 @@ class TimelineWrapper extends Component {
     this.scrollTo(target)
   }
   scrollEnd = () => {
+    MPQ.push('btn_scroll_end')
     const target =
       this.props.ui.orientation === 'vertical'
         ? this.tableRef.scrollHeight

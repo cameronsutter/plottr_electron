@@ -10,7 +10,7 @@ import { ipcRenderer, remote } from 'electron'
 import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-import { actions, migrateIfNeeded } from 'pltr/v2'
+import { actions, migrateIfNeeded, featureFlags } from 'pltr/v2'
 import MPQ from '../common/utils/MPQ'
 import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
@@ -56,7 +56,7 @@ function bootFile(filePath, options, numOpenFiles) {
   win.setTitle(displayFileName(filePath))
   win.setRepresentedFilename(filePath)
 
-  const { darkMode } = options
+  const { darkMode, beatHierarchy } = options
 
   try {
     const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
@@ -87,6 +87,14 @@ function bootFile(filePath, options, numOpenFiles) {
       }
       if (darkMode) window.document.body.className = 'darkmode'
 
+      if (!state.featureFlags && beatHierarchy) {
+        store.dispatch(actions.featureFlags.setBeatHierarchy())
+      } else if (!state.featureFlags[featureFlags.BEAT_HIERARCHY_FLAG] && beatHierarchy) {
+        store.dispatch(actions.featureFlags.setBeatHierarchy())
+      } else if (state.featureFlags[featureFlags.BEAT_HIERARCHY_FLAG] && !beatHierarchy) {
+        store.dispatch(actions.featureFlags.unSetBeatHierarchy())
+      }
+
       render(
         <Provider store={store}>
           <App showTour={false} />
@@ -113,6 +121,14 @@ ipcRenderer.on('reload-from-file', (event, filePath, options, numOpenFiles) => {
 ipcRenderer.on('set-dark-mode', (event, isOn) => {
   store.dispatch(actions.ui.setDarkMode(isOn))
   window.document.body.className = isOn ? 'darkmode' : ''
+})
+
+ipcRenderer.on('set-beat-hierarchy', (event) => {
+  store.dispatch(actions.featureFlags.setBeatHierarchy())
+})
+
+ipcRenderer.on('unset-beat-hierarchy', (event) => {
+  store.dispatch(actions.featureFlags.unsetBeatHierarchy())
 })
 
 ipcRenderer.on('save-custom-template', (event, options) => {

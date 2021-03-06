@@ -5,7 +5,7 @@ const { is } = require('electron-util')
 const { getWindowById, numberOfWindows } = require('../windows')
 const { NODE_ENV } = require('../constants')
 const { openDashboard } = require('../windows/dashboard')
-const { newFileOptions } = require('../newFileOptions')
+const { newFileOptions } = require('../new_file_options')
 
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 let showInMessage = i18n('Show in File Explorer')

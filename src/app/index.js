@@ -102,12 +102,12 @@ function bootFile(filePath, options, numOpenFiles) {
 }
 
 ipcRenderer.send('pls-fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, filePath, darkMode, numOpenFiles) => {
-  bootFile(filePath, { darkMode }, numOpenFiles)
+ipcRenderer.on('state-fetched', (event, filePath, options, numOpenFiles) => {
+  bootFile(filePath, options, numOpenFiles)
 })
 
-ipcRenderer.on('reload-from-file', (event, filePath, darkMode, numOpenFiles) => {
-  bootFile(filePath, { darkMode }, numOpenFiles)
+ipcRenderer.on('reload-from-file', (event, filePath, options, numOpenFiles) => {
+  bootFile(filePath, options, numOpenFiles)
 })
 
 ipcRenderer.on('set-dark-mode', (event, isOn) => {

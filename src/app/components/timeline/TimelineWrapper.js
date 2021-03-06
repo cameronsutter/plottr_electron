@@ -419,7 +419,7 @@ function mapStateToProps(state) {
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
     isLarge: selectors.isLargeSelector(state.present),
-    beatHierarchyIsOn: selectors.beatsHierarchyIsOn(state.present),
+    beatHierarchyIsOn: selectors.beatHierarchyIsOn(state.present),
   }
 }
 

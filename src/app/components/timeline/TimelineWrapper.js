@@ -24,7 +24,7 @@ import { FaSave } from 'react-icons/fa'
 import { TiFlowChildren } from 'react-icons/ti'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
-import { actions, selectors } from 'pltr/v2'
+import { helpers, actions, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 import MPQ from '../../../common/utils/MPQ'
 import BeatConfigModal from 'components/dialogs/BeatConfigModal'
@@ -241,6 +241,7 @@ class TimelineWrapper extends Component {
       ui,
       file,
       filterIsEmpty,
+      featureFlags,
       isSmall,
       isMedium,
       isLarge,
@@ -248,6 +249,8 @@ class TimelineWrapper extends Component {
       seriesName,
       books,
     } = this.props
+    const gatedByBeatHierarchy = helpers.featureFlags.gatedByBeatHierarchy(featureFlags)
+
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -299,13 +302,13 @@ class TimelineWrapper extends Component {
               <Glyphicon glyph="list" /> {i18n('Attributes')}
             </Button>
           </NavItem>
-          {this.props.beatHierarchyIsOn ? (
+          {gatedByBeatHierarchy(() => (
             <NavItem>
               <Button bsSize="small" onClick={this.openBeatConfig}>
                 <TiFlowChildren size={16} /> {i18n('Beats')}
               </Button>
             </NavItem>
-          ) : null}
+          ))}
           <NavItem>
             <span className="subnav__container__label">{i18n('Zoom')}: </span>
             <ButtonGroup>
@@ -395,9 +398,11 @@ class TimelineWrapper extends Component {
   }
 
   renderBeatConfig() {
-    if (!this.state.beatConfigIsOpen || !this.props.beatHierarchyIsOn) return null
+    return helpers.featureFlags.gatedByBeatHierarchy(this.props.featureFlags)(() => {
+      if (!this.state.beatConfigIsOpen) return null
 
-    return <BeatConfigModal closeDialog={this.closeBeatConfig} />
+      return <BeatConfigModal closeDialog={this.closeBeatConfig} />
+    })
   }
 
   render() {
@@ -424,7 +429,7 @@ TimelineWrapper.propTypes = {
   isSmall: PropTypes.bool,
   isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
-  beatHierarchyIsOn: PropTypes.bool,
+  featureFlags: PropTypes.object.isRequired,
   filterIsEmpty: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
   seriesName: PropTypes.string,
@@ -441,7 +446,7 @@ function mapStateToProps(state) {
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
     isLarge: selectors.isLargeSelector(state.present),
-    beatHierarchyIsOn: selectors.beatHierarchyIsOn(state.present),
+    featureFlags: selectors.featureFlags(state.present),
   }
 }
 

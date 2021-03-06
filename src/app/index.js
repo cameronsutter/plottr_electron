@@ -51,10 +51,12 @@ ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
 })
 
-function bootFile(filePath, darkMode, numOpenFiles) {
+function bootFile(filePath, options, numOpenFiles) {
   initMixpanel()
   win.setTitle(displayFileName(filePath))
   win.setRepresentedFilename(filePath)
+
+  const { darkMode } = options
 
   try {
     const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
@@ -101,11 +103,11 @@ function bootFile(filePath, darkMode, numOpenFiles) {
 
 ipcRenderer.send('pls-fetch-state', win.id)
 ipcRenderer.on('state-fetched', (event, filePath, darkMode, numOpenFiles) => {
-  bootFile(filePath, darkMode, numOpenFiles)
+  bootFile(filePath, { darkMode }, numOpenFiles)
 })
 
 ipcRenderer.on('reload-from-file', (event, filePath, darkMode, numOpenFiles) => {
-  bootFile(filePath, darkMode, numOpenFiles)
+  bootFile(filePath, { darkMode }, numOpenFiles)
 })
 
 ipcRenderer.on('set-dark-mode', (event, isOn) => {

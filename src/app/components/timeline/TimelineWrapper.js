@@ -299,11 +299,13 @@ class TimelineWrapper extends Component {
               <Glyphicon glyph="list" /> {i18n('Attributes')}
             </Button>
           </NavItem>
-          <NavItem>
-            <Button bsSize="small" onClick={this.openBeatConfig}>
-              <TiFlowChildren size={16} /> {i18n('Beats')}
-            </Button>
-          </NavItem>
+          {this.props.beatHierarchyIsOn ? (
+            <NavItem>
+              <Button bsSize="small" onClick={this.openBeatConfig}>
+                <TiFlowChildren size={16} /> {i18n('Beats')}
+              </Button>
+            </NavItem>
+          ) : null}
           <NavItem>
             <span className="subnav__container__label">{i18n('Zoom')}: </span>
             <ButtonGroup>
@@ -393,7 +395,7 @@ class TimelineWrapper extends Component {
   }
 
   renderBeatConfig() {
-    if (!this.state.beatConfigIsOpen) return null
+    if (!this.state.beatConfigIsOpen || !this.props.beatHierarchyIsOn) return null
 
     return <BeatConfigModal closeDialog={this.closeBeatConfig} />
   }
@@ -422,6 +424,7 @@ TimelineWrapper.propTypes = {
   isSmall: PropTypes.bool,
   isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
+  beatHierarchyIsOn: PropTypes.bool,
   filterIsEmpty: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
   seriesName: PropTypes.string,
@@ -438,6 +441,7 @@ function mapStateToProps(state) {
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
     isLarge: selectors.isLargeSelector(state.present),
+    beatHierarchyIsOn: selectors.beatsHierarchyIsOn(state.present),
   }
 }
 

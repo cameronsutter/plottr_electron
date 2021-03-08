@@ -26,6 +26,7 @@ import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { saveFile } from '../common/utils/files'
 import { removeFromTempFiles } from '../common/utils/temp_files'
 import { focusIsEditable } from '../common/utils/undo'
+import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 
 setupI18n(SETTINGS, { electron })
 
@@ -87,13 +88,14 @@ function bootFile(filePath, options, numOpenFiles) {
       }
       if (darkMode) window.document.body.className = 'darkmode'
 
-      if (!state.featureFlags && beatHierarchy) {
-        store.dispatch(actions.featureFlags.setBeatHierarchy())
-      } else if (!state.featureFlags[featureFlags.BEAT_HIERARCHY_FLAG] && beatHierarchy) {
-        store.dispatch(actions.featureFlags.setBeatHierarchy())
-      } else if (state.featureFlags[featureFlags.BEAT_HIERARCHY_FLAG] && !beatHierarchy) {
-        store.dispatch(actions.featureFlags.unSetBeatHierarchy())
-      }
+      const withDispatch = dispatchingToStore(store.dispatch)
+      makeFlagConsistent(
+        state,
+        beatHierarchy,
+        featureFlags.BEAT_HIERARCHY_FLAG,
+        withDispatch(actions.featureFlags.setBeatHierarchy),
+        withDispatch(actions.featureFlags.unsetBeatHierarchy)
+      )
 
       render(
         <Provider store={store}>

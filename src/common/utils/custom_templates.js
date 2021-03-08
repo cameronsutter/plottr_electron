@@ -43,10 +43,12 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
   // only the beats in current book
   const beats = data.beats[bookId]
   // change bookId to 1
-  template.templateData.beats = tree.map(beats, (book) => {
-    book.bookId = 1
-    return book
-  })
+  template.templateData.beats = {
+    1: tree.map(beats, (book) => {
+      book.bookId = 1
+      return book
+    }),
+  }
 
   // only the lines in current book
   const bookLines = data.lines.filter((line) => line.bookId === bookId)

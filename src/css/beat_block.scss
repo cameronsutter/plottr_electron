@@ -6,9 +6,16 @@ $medium_width: 80px;
 
 .beat__cell {
   width: $cell_width;
+  padding-bottom: 45px;
 
   &.medium-timeline {
     width: 90px;
+    padding-bottom: 0;
+  }
+
+  &.small-timeline {
+    width: 90px;
+    padding-bottom: 0;
   }
 }
 

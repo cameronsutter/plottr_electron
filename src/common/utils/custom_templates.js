@@ -58,7 +58,7 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
 
   // only cards in beats
   if (data.cards.length) {
-    const beatIds = beats.map(({ id }) => id)
+    const beatIds = tree.reduce('id')(beats, (acc, { id }) => [...acc, id], [])
     let cards = []
 
     bookLines.forEach((line) => {

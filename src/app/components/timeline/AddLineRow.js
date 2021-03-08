@@ -200,7 +200,8 @@ class AddLineRow extends Component {
     this.allLines = this.props.lines
     this.allCards = this.props.cards
 
-    const templateBeats = selectors.beatsByPosition(() => true)(template.beats[1])
+    const templateBookId = isSeries(bookId) ? bookId : 1
+    const templateBeats = selectors.beatsByPosition(() => true)(template.beats[templateBookId])
     const templateLines = template.lines.filter((line) => line.bookId === bookId)
 
     this.addBeats(templateBeats, bookId, template)

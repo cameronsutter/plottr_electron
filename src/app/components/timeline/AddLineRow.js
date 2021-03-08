@@ -202,7 +202,7 @@ class AddLineRow extends Component {
 
     const templateBookId = isSeries(bookId) ? bookId : 1
     const templateBeats = selectors.beatsByPosition(() => true)(template.beats[templateBookId])
-    const templateLines = template.lines.filter((line) => line.bookId === bookId)
+    const templateLines = template.lines.filter((line) => line.bookId === templateBookId)
 
     this.addBeats(templateBeats, bookId, template)
     this.addLines(templateLines, bookId, true, template)

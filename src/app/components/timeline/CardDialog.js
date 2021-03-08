@@ -429,7 +429,7 @@ class CardDialog extends Component {
     const lineDropdownID = 'select-line'
     const beatDropdownID = 'select-beat'
 
-    const { positionOffset, isSeries, card, beatTree } = this.props
+    const { hierarchyLevels, positionOffset, beatTree, isSeries, card } = this.props
 
     let labelText = i18n('Chapter')
     let bookDropDown = null
@@ -437,7 +437,12 @@ class CardDialog extends Component {
       labelText = i18n('Beat')
       bookDropDown = this.renderBookDropdown()
     }
-    const currentBeatTitle = beatTitle(beatTree, this.getCurrentBeat(), positionOffset)
+    const currentBeatTitle = beatTitle(
+      beatTree,
+      this.getCurrentBeat(),
+      hierarchyLevels,
+      positionOffset
+    )
     const darkened = card.color ? tinycolor(card.color).darken().toHslString() : null
     const borderColor = card.color ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
 

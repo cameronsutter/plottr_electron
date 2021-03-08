@@ -47,8 +47,7 @@ class AddLineRow extends Component {
   }
 
   addBeats = (templateBeats, bookId, template) => {
-    if (!templateBeats) return
-    templateBeats = sortBy(templateBeats, 'position')
+    if (!templateBeats || templateBeats.length === 0) return
 
     const allAreAuto = templateBeats.every((beat) => beat.title == 'auto')
 
@@ -201,9 +200,12 @@ class AddLineRow extends Component {
     this.allLines = this.props.lines
     this.allCards = this.props.cards
 
-    this.addBeats(template.beats, bookId, template)
-    this.addLines(template.lines, bookId, true, template)
-    this.addCards(template.cards, template.beats, bookId, template)
+    const templateBeats = selectors.beatsByPosition(() => true)(template.beats[1])
+    const templateLines = template.lines.filter((line) => line.bookId === bookId)
+
+    this.addBeats(templateBeats, bookId, template)
+    this.addLines(templateLines, bookId, true, template)
+    this.addCards(template.cards, templateBeats, bookId, template)
 
     actions.addLinesFromTemplate(this.allCards, this.allLines, this.allBeats, template, bookId)
     this.setState({ showTemplatePicker: false })

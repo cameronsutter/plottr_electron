@@ -16,6 +16,7 @@ const {
   sortedBeatsByBookSelector,
   positionOffsetSelector,
   sortedLinesByBookSelector,
+  sortedHierarchyLevels,
 } = selectors
 
 const targetPosition = 115
@@ -58,6 +59,7 @@ class MiniMap extends Component {
       positionOffset,
       actions,
       ui,
+      hierarchyLevels,
     } = this.props
     const linesById = keyBy(lines, 'id')
     return beats.map((beat, idx) => {
@@ -75,6 +77,7 @@ class MiniMap extends Component {
             bookId={ui.currentTimeline}
             beat={beat}
             beats={beatsTree}
+            hierarchyLevels={hierarchyLevels}
             idx={idx + positionOffset}
             cards={beatCards}
             linesById={linesById}
@@ -127,6 +130,7 @@ MiniMap.propTypes = {
   activeFilter: PropTypes.bool.isRequired,
   beatsTree: PropTypes.object.isRequired,
   beats: PropTypes.array.isRequired,
+  hierarchyLevels: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
   positionOffset: PropTypes.number.isRequired,
@@ -137,6 +141,7 @@ function mapStateToProps(state) {
   return {
     beats: sortedBeatsByBookSelector(state.present),
     beatsTree: beatsByBookSelector(state.present),
+    hierarchyLevels: sortedHierarchyLevels(state.present),
     lines: sortedLinesByBookSelector(state.present),
     ui: state.present.ui,
     positionOffset: positionOffsetSelector(state.present),

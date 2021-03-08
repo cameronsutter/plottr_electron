@@ -1,4 +1,4 @@
-export const dispatchingToStore = (dispatch) => (action) => {
+export const dispatchingToStore = (dispatch) => (action) => () => {
   dispatch(action())
 }
 

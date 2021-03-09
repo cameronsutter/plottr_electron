@@ -16,7 +16,7 @@ import {
 import { StickyTable } from 'react-sticky-table'
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'

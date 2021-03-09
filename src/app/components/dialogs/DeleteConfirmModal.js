@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
 import { Modal, Button, Form } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 
 export default function DeleteConfirmModal(props) {
   const { name, customText, onDelete, onCancel, notSubmit } = props

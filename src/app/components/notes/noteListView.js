@@ -17,7 +17,7 @@ import {
 } from 'react-bootstrap'
 import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import NoteItem from './NoteItem'

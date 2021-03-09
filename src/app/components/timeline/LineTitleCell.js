@@ -13,7 +13,7 @@ import {
 import { Cell } from 'react-sticky-table'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import Floater from 'react-floater'

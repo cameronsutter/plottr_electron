@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import _ from 'lodash'
 import { template } from 'pltr/v2'
 import { remote } from 'electron'

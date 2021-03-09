@@ -1,6 +1,6 @@
 import React from 'react'
 import { shell, remote } from 'electron'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { Button } from 'react-bootstrap'
 import SETTINGS from '../../../common/utils/settings'
 import MPQ from '../../../common/utils/MPQ'

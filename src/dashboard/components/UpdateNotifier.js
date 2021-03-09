@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { remote } from 'electron'
 import log from 'electron-log'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import cx from 'classnames'
 import SETTINGS from '../../common/utils/settings'
 import { Button, ProgressBar } from 'react-bootstrap'

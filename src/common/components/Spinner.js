@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { FaSpinner } from 'react-icons/fa'
 
 export const Spinner = ({ style = {} }) => {

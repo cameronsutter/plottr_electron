@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import {
   Glyphicon,
   Button,

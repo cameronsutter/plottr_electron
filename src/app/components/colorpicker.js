@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import PlottrModal from 'components/PlottrModal'
 import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { colors } from 'pltr/v2'
 import ColorPickerColor from './ColorPickerColor'
 

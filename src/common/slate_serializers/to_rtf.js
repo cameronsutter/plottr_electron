@@ -4,7 +4,7 @@
  */
 
 import rtf from 'jsrtf'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 
 const space = 100
 

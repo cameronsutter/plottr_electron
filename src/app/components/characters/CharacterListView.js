@@ -18,7 +18,7 @@ import {
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import CharacterView from 'components/characters/characterView'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import cx from 'classnames'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'

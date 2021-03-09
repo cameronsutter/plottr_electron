@@ -12,7 +12,7 @@ import {
   ButtonToolbar,
   Button,
 } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import getTestIds from 'test-utils/getTestIds'
 

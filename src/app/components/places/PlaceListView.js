@@ -18,7 +18,7 @@ import {
 import CustomAttrFilterList from 'components/customAttrFilterList'
 import SortList from 'components/sortList'
 import PlaceView from 'components/places/placeView'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import PlaceItem from './PlaceItem'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'

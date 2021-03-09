@@ -1,5 +1,5 @@
 import path from 'path'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { TEMP_FILES_PATH } from './config_paths'
 import { tempFilesStore } from './store_hooks'
 import log from 'electron-log'

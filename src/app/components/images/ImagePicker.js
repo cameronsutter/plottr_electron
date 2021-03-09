@@ -19,7 +19,7 @@ import {
   NavItem,
 } from 'react-bootstrap'
 import Image from './Image'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { Spinner } from '../../../common/components/Spinner'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions } from 'pltr/v2'

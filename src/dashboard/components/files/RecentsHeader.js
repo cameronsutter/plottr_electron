@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { FormControl } from 'react-bootstrap'
 import { Col, Grid, Row } from 'react-bootstrap'
 

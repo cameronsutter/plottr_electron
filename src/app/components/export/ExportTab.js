@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Form, FormGroup, Col, ControlLabel, FormControl } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 
 class ExportTab extends Component {

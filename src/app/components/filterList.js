@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Glyphicon } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { selectors } from 'pltr/v2'
 
 const { charactersSortedAtoZSelector, placesSortedAtoZSelector, sortedTagsSelector } = selectors

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import TagLabel from './tagLabel'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import Image from './images/Image'
 
 export default class SelectList extends Component {

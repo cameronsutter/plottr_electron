@@ -159,10 +159,14 @@
       "!.vscode${/*}",
       "!**/{.DS_Store,.git,CVS,RCS,SCCS,__pycache__,thumbs.db,.gitignore,.gitattributes,.editorconfig,.flowconfig,.yarn-metadata.json,.idea,appveyor.yml,.travis.yml,circle.yml,npm-debug.log,.nyc_output,yarn.lock,.yarn-integrity}",
       "!src${/*}",
-      "!webpack.config.js",
+      "!*.config.js",
       "!dev-app-update.yml",
       "!bin/*.map",
-      "!examples${/*}"
+      "!examples${/*}",
+      "!package.json",
+      "!test${/*}",
+      "!locales/build-flipped-locale.js",
+      "!lib/${/*}"
     ],
     "copyright": "Copyright © 2020 Fictional Devices",
     "productName": "Plottr",

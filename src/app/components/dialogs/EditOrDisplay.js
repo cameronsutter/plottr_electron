@@ -52,18 +52,19 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) 
             className={className}
             type="text"
             value={stagedValue}
-            onChange={(event) => setStagedValue(event.target.value)}
+            onChange={(event) => {
+              const valueToSet = type === 'number' ? parseInt(event.target.value) : stagedValue
+              if (valueToSet) setStagedValue(valueToSet)
+            }}
             ref={controlRef}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
-                const valueToSet = type === 'number' ? parseInt(stagedValue) : stagedValue
-                setValue(valueToSet)
+                setValue(stagedValue)
                 setEditing(false)
               }
             }}
             onBlur={() => {
-              const valueToSet = type === 'number' ? parseInt(stagedValue) : stagedValue
-              setValue(valueToSet)
+              setValue(stagedValue)
               setEditing(false)
             }}
           />

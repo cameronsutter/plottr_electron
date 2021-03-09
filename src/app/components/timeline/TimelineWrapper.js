@@ -20,7 +20,7 @@ import i18n from 'format-message'
 import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
-import { FaSave, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
+import { FaSave } from 'react-icons/fa'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { actions, selectors } from 'pltr/v2'
@@ -214,16 +214,6 @@ class TimelineWrapper extends Component {
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
-
-    let expandedText = null
-    let expandedIcon = null
-    if (ui.timelineIsExpanded) {
-      expandedText = i18n('Collapse')
-      expandedIcon = <FaCompressAlt />
-    } else {
-      expandedText = i18n('Expand')
-      expandedIcon = <FaExpandAlt />
-    }
     if (ui.orientation === 'vertical') {
       glyph = 'option-horizontal'
       scrollDirectionFirst = 'menu-up'
@@ -270,11 +260,6 @@ class TimelineWrapper extends Component {
           <NavItem>
             <Button bsSize="small" onClick={this.openCustomAttributesDialog}>
               <Glyphicon glyph="list" /> {i18n('Attributes')}
-            </Button>
-          </NavItem>
-          <NavItem>
-            <Button bsSize="small" onClick={this.toggleExpanded}>
-              {expandedIcon} {expandedText}
             </Button>
           </NavItem>
           <NavItem>

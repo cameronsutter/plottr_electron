@@ -21,6 +21,7 @@ import { actions, helpers, selectors } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 
 const LineActions = actions.line
+const uiActions = actions.ui
 
 const {
   card: { truncateTitle },
@@ -163,6 +164,14 @@ class LineTitleCell extends PureComponent {
     }
   }
 
+  toggleExpanded = () => {
+    if (this.props.ui.timelineIsExpanded) {
+      this.props.actions.collapseTimeline()
+    } else {
+      this.props.actions.expandTimeline()
+    }
+  }
+
   renderEditInput() {
     if (!this.state.editing) return null
 
@@ -202,10 +211,16 @@ class LineTitleCell extends PureComponent {
   renderHoverOptions = () => {
     const { lineIsExpanded, ui, isSmall } = this.props
     let expandedIcon = null
+    let expandedText = null
     if (lineIsExpanded) {
       expandedIcon = <FaCompressAlt />
     } else {
       expandedIcon = <FaExpandAlt />
+    }
+    if (ui.timelineIsExpanded) {
+      expandedText = i18n('Collapse All')
+    } else {
+      expandedText = i18n('Expand All')
     }
 
     if (ui.orientation === 'vertical') {
@@ -219,9 +234,14 @@ class LineTitleCell extends PureComponent {
             <Glyphicon glyph="tint" />
           </Button>
           {isSmall ? null : (
-            <Button block bsSize="small" onClick={this.toggleLine}>
-              {expandedIcon}
-            </Button>
+            <ButtonGroup>
+              <Button block bsSize="small" onClick={this.toggleLine}>
+                {expandedIcon}
+              </Button>
+              <Button block bsSize="small" onClick={this.toggleExpanded}>
+                {expandedText}
+              </Button>
+            </ButtonGroup>
           )}
           <Button block bsSize="small" onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
@@ -239,9 +259,14 @@ class LineTitleCell extends PureComponent {
               <Glyphicon glyph="tint" />
             </Button>
             {isSmall ? null : (
-              <Button bsSize="small" onClick={this.toggleLine}>
-                {expandedIcon}
-              </Button>
+              <ButtonGroup>
+                <Button bsSize="small" onClick={this.toggleLine}>
+                  {expandedIcon}
+                </Button>
+                <Button bsSize="small" onClick={this.toggleExpanded}>
+                  {expandedText}
+                </Button>
+              </ButtonGroup>
             )}
             <Button bsSize="small" onClick={this.handleDelete}>
               <Glyphicon glyph="trash" />
@@ -394,7 +419,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
-    actions: bindActionCreators(LineActions, dispatch),
+    actions: bindActionCreators(Object.assign({}, LineActions, uiActions), dispatch),
   }
 }
 

@@ -131,7 +131,7 @@ const EditOrDisplay = ({ id, editing, value, type, setValue, setEditing, options
 EditOrDisplay.propTypes = {
   id: PropTypes.string.isRequired,
   editing: PropTypes.bool.isRequired,
-  value: PropTypes.oneOfType([(PropTypes.string, PropTypes.bool, PropTypes.number)]),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
   type: PropTypes.string.isRequired,
   setValue: PropTypes.func.isRequired,
   setEditing: PropTypes.func.isRequired,

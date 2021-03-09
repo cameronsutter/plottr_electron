@@ -24,7 +24,7 @@ const modalStyles = {
     alignItems: 'center',
   },
   content: {
-    width: '50%',
+    width: '65%',
     position: 'relative',
     left: 'auto',
     bottom: 'auto',

@@ -25,8 +25,11 @@ function openDashboard() {
     return
   }
 
-  const dashboardFile = filePrefix(path.resolve('.', 'bin', 'dashboard.html'))
-  log.info('dashboardFile', dashboardFile)
+  const htmlPath = is.development
+    ? path.join('.', 'bin', 'dashboard.html')
+    : path.join(__dirname, '../../dashboard.html')
+  const dashboardFile = filePrefix(htmlPath)
+  log.info('dashboardFile', htmlPath)
   dashboardWindow = makeBrowserWindow('dashboard')
   dashboardWindow.loadURL(dashboardFile)
 

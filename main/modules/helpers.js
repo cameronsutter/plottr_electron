@@ -5,13 +5,12 @@ const { app, BrowserWindow, dialog } = require('electron')
 const { is } = require('electron-util')
 const { NODE_ENV } = require('./constants')
 // const SETTINGS = require('./settings')
-// const { getDaysLeftInTrial, getTrialModeStatus } = require('./trial_manager')
 
 function takeScreenshot() {
   let win = BrowserWindow.getFocusedWindow()
   if (win.webContents.isDevToolsOpened()) win.webContents.closeDevTools()
   win.capturePage().then((image) => {
-    if (NODE_ENV === 'dev') {
+    if (NODE_ENV === 'development') {
       const folderPath = path.join(app.getPath('home'), 'plottr_screenshots', app.getVersion())
       const date = new Date()
       const fileName = `screenshot-${date.getMinutes()}-${date.getSeconds()}.png`

@@ -18,7 +18,6 @@
     "compile": "NODE_ENV=dev node_modules/.bin/webpack",
     "watch": "echo 'do you have fsevents?' && NODE_ENV=dev node_modules/.bin/webpack",
     "watch-win": "set NODE_ENV=dev&& node_modules\\.bin\\webpack",
-    "createDevLicense": "node bin/main_modules/dev_license.js",
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "maps": "NODE_ENV=production MAPS=true node_modules/.bin/webpack",
     "pack": "NODE_ENV=production node_modules/.bin/webpack",
@@ -146,6 +145,7 @@
     "electronVersion": "10.1.5",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
+    "asar": false,
     "publish": [
       "github"
     ],
@@ -165,9 +165,11 @@
       "!package.json",
       "!test${/*}",
       "!locales/build-flipped-locale.js",
-      "!lib/${/*}"
+      "!lib/${/*}",
+      "!main${/*}",
+      "!node_modules${/*}"
     ],
-    "copyright": "Copyright © 2020 Fictional Devices",
+    "copyright": "Copyright © 2021 Fictional Devices",
     "productName": "Plottr",
     "fileAssociations": [
       {

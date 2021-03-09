@@ -38,6 +38,7 @@ const HierarchyLevel = ({
   return (
     <div className="beat-config-modal__levels-table-row">
       <EditOrDisplay
+        id={`hierarchy-level-name-config-${level}`}
         type="text"
         setValue={setValue('name')}
         setEditing={setEditingName}
@@ -45,6 +46,7 @@ const HierarchyLevel = ({
         value={name}
       />
       <EditOrDisplay
+        id={`hierarchy-level-auto-number-config-${level}`}
         type="toggle"
         setValue={setValue('autoNumber')}
         setEditing={setEditingAutoNumber}
@@ -52,6 +54,7 @@ const HierarchyLevel = ({
         value={autoNumber}
       />
       <EditOrDisplay
+        id={`hierarchy-level-auto-text-color-${level}`}
         type="color"
         setValue={setValue('textColor')}
         setEditing={setEditingTextColor}
@@ -59,6 +62,7 @@ const HierarchyLevel = ({
         value={textColor}
       />
       <EditOrDisplay
+        id={`hierarchy-level-auto-text-size-${level}`}
         type="number"
         setValue={setValue('textSize')}
         setEditing={setEditingTextSize}
@@ -66,6 +70,7 @@ const HierarchyLevel = ({
         value={textSize}
       />
       <EditOrDisplay
+        id={`hierarchy-level-auto-border-color-${level}`}
         type="color"
         setValue={setValue('borderColor')}
         setEditing={setEditingBorderColor}
@@ -73,6 +78,7 @@ const HierarchyLevel = ({
         value={borderColor}
       />
       <EditOrDisplay
+        id={`hierarchy-level-auto-border-style-${level}`}
         type="select"
         options={borderStyles.ALL_STYLES}
         setValue={setValue('borderStyle')}
@@ -81,6 +87,7 @@ const HierarchyLevel = ({
         value={borderStyle}
       />
       <EditOrDisplay
+        id={`hierarchy-level-auto-background-color-${level}`}
         type="color"
         setValue={setValue('backgroundColor')}
         setEditing={setEditingBackgroundColor}

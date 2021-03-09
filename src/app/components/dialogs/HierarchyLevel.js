@@ -59,7 +59,7 @@ const HierarchyLevel = ({
         value={textColor}
       />
       <EditOrDisplay
-        type="textSize"
+        type="number"
         setValue={setValue('textSize')}
         setEditing={setEditingTextSize}
         editing={editingTextSize}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { Glyphicon, ButtonToolbar, Button } from 'react-bootstrap'
@@ -14,7 +14,7 @@ const {
 } = helpers
 const { hierarchyLevelCount, sortedHierarchyLevels } = selectors
 const {
-  hierarchyLevels: { setLevelsOfHierarchy, setHierarchyLevels },
+  hierarchyLevels: { setHierarchyLevels },
 } = actions
 
 const modalStyles = {
@@ -39,9 +39,40 @@ const BeatConfigModal = ({
   closeDialog,
   levelsOfHierarchy,
   hierarchyLevels,
-  setLevelsOfHierarchy,
   setHierarchyLevels,
 }) => {
+  const levelsInputRef = useRef()
+
+  const selectLevelsText = () => {
+    if (levelsInputRef.current) {
+      levelsInputRef.current.setSelectionRange(0, levelsInputRef.current.value.length)
+    }
+  }
+
+  useEffect(() => {
+    if (levelsInputRef.current && levelsInputRef.current === document.activeElement) {
+      selectLevelsText()
+    }
+  }, [levelsOfHierarchy])
+
+  const onLevelsOfHierarchyChanged = (event) => {
+    const unclippedValue = parseInt(event.target.value)
+    if (!unclippedValue) return
+
+    const targetLength = Math.max(0, Math.min(3, unclippedValue))
+    const currentLength = hierarchyLevels.length
+    if (targetLength === currentLength) return
+    else if (targetLength > currentLength) {
+      let newLevels = hierarchyLevels
+      for (let i = 0; i < targetLength - currentLength; ++i) {
+        newLevels = [newHierarchyLevel(newLevels), ...newLevels]
+      }
+      setHierarchyLevels(newLevels)
+    } else {
+      setHierarchyLevels(hierarchyLevels.slice(currentLength - targetLength))
+    }
+  }
+
   return (
     <PlottrModal isOpen={true} onRequestClose={closeDialog} style={modalStyles}>
       <div className="beat-config-modal">
@@ -60,10 +91,17 @@ const BeatConfigModal = ({
               <Glyphicon glyph="minus" />
             </button>
             <input
+              ref={levelsInputRef}
               className="beat-config-modal__hierarchy-count"
-              value={levelsOfHierarchy}
               type="text"
-              onChange={(event) => setLevelsOfHierarchy(event.target.value)}
+              value={levelsOfHierarchy}
+              onChange={onLevelsOfHierarchyChanged}
+              onFocus={selectLevelsText}
+              onKeyDown={(event) => {
+                if (event.which === 13) {
+                  onLevelsOfHierarchyChanged(event)
+                }
+              }}
             />
             <button
               className="beat-config-modal__hierarchy-count-adjustment-control"
@@ -105,7 +143,6 @@ BeatConfigModal.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   levelsOfHierarchy: PropTypes.number.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
-  setLevelsOfHierarchy: PropTypes.func.isRequired,
   setHierarchyLevels: PropTypes.func.isRequired,
 }
 
@@ -114,6 +151,4 @@ const mapStateToProps = (state) => ({
   hierarchyLevels: sortedHierarchyLevels(state.present),
 })
 
-export default connect(mapStateToProps, { setLevelsOfHierarchy, setHierarchyLevels })(
-  BeatConfigModal
-)
+export default connect(mapStateToProps, { setHierarchyLevels })(BeatConfigModal)

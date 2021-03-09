@@ -4,7 +4,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap'
 
 import ColorPicker from 'components/colorpicker'
 
-const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) => {
+const EditOrDisplay = ({ id, editing, value, type, setValue, setEditing, options }) => {
   const [stagedValue, setStagedValue] = useState(value)
   useEffect(() => {
     setStagedValue(value)
@@ -91,7 +91,7 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) 
       case 'select':
         return (
           <div className="beat-config-modal__levels-table-cell">
-            <DropdownButton bsSize="small" title={value.toLowerCase()}>
+            <DropdownButton id={`dropdown-${id}`} bsSize="small" title={value.toLowerCase()}>
               {options.map((option) => (
                 <MenuItem key={option} eventKey={option} onSelect={(key) => setValue(key)}>
                   {option.toLowerCase()}
@@ -129,6 +129,7 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) 
 }
 
 EditOrDisplay.propTypes = {
+  id: PropTypes.string.isRequired,
   editing: PropTypes.bool.isRequired,
   value: PropTypes.oneOfType([(PropTypes.string, PropTypes.bool, PropTypes.number)]),
   type: PropTypes.string.isRequired,

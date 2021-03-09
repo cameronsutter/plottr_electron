@@ -145,7 +145,6 @@
     "electronVersion": "10.2.0",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
-    "asar": false,
     "publish": [
       "github"
     ],

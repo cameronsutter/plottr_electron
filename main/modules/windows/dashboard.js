@@ -28,6 +28,9 @@ function openDashboard() {
   const htmlPath = is.development
     ? path.resolve('.', 'bin', 'dashboard.html')
     : path.resolve('.', 'dashboard.html')
+  log.error('__dirname', __dirname)
+  log.error('dev dashboardFile', path.resolve('.', 'bin', 'dashboard.html'))
+  log.error('prod dashboardFile', path.resolve('.', 'dashboard.html'))
   log.error('dashboardFile', htmlPath)
   const dashboardFile = filePrefix(htmlPath)
   dashboardWindow = makeBrowserWindow('dashboard')

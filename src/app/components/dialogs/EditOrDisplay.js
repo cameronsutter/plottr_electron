@@ -44,6 +44,7 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) 
             />
           </>
         )
+      case 'number':
       case 'text':
       default:
         return (
@@ -55,12 +56,14 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) 
             ref={controlRef}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
-                setValue(stagedValue)
+                const valueToSet = type === 'number' ? parseInt(stagedValue) : stagedValue
+                setValue(valueToSet)
                 setEditing(false)
               }
             }}
             onBlur={() => {
-              setValue(stagedValue)
+              const valueToSet = type === 'number' ? parseInt(stagedValue) : stagedValue
+              setValue(valueToSet)
               setEditing(false)
             }}
           />
@@ -96,6 +99,7 @@ const EditOrDisplay = ({ editing, value, type, setValue, setEditing, options }) 
             </DropdownButton>
           </div>
         )
+      case 'number':
       case 'color':
       case 'text':
       default:

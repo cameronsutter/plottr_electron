@@ -3,6 +3,9 @@ import i18n from 'format-message'
 import { helpers, selectors } from 'pltr/v2'
 import { Paragraph, AlignmentType, HeadingLevel } from 'docx'
 import serialize from '../../../slate_serializers/to_word'
+import exportCustomAttributes from './customAttributes'
+import exportItemTemplates from './itemTemplates'
+import exportItemAttachments from './itemAttachments'
 
 const {
   sortedLinesByBookSelector,
@@ -15,7 +18,7 @@ const {
   card: { sortCardsInBeat, cardMapping },
 } = helpers
 
-export default function exportOutline(state, namesMapping, bookId, doc) {
+export default function exportOutline(state, namesMapping, doc) {
   // get current book id and select only those beats/lines/cards
   const beats = sortedBeatsByBookSelector(state)
   const lines = sortedLinesByBookSelector(state)
@@ -44,7 +47,9 @@ export default function exportOutline(state, namesMapping, bookId, doc) {
     const cards = beatCardMapping[beat.id]
     const customAttrs = cardsCustomAttributesSelector(state)
     const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
-    let cardParagraphs = sortedCards.flatMap((c) => card(c, linesById, namesMapping, doc))
+    let cardParagraphs = sortedCards.flatMap((c) =>
+      card(c, linesById, namesMapping, customAttrs, doc)
+    )
 
     return paragraphs.concat(cardParagraphs)
   })
@@ -52,47 +57,21 @@ export default function exportOutline(state, namesMapping, bookId, doc) {
   return { children: children.concat(beatParagraphs) }
 }
 
-function card(card, linesById, namesMapping, doc) {
+function card(card, linesById, namesMapping, customAttrs, doc) {
   let paragraphs = [new Paragraph('')]
   let line = linesById[card.lineId]
   let titleString = card.title
   if (line) {
     titleString = `${card.title} (${line.title})`
   }
-  let attachmentParagraphs = attachments(card, namesMapping)
   paragraphs.push(new Paragraph({ text: titleString, heading: HeadingLevel.HEADING_3 }))
-  paragraphs = paragraphs.concat(attachmentParagraphs)
-  const descParagraphs = serialize(card.description, doc)
+  paragraphs = [
+    ...paragraphs,
+    ...exportItemAttachments(card, namesMapping),
+    ...serialize(card.description, doc),
+    ...exportCustomAttributes(card, customAttrs, HeadingLevel.HEADING_4, doc),
+    ...exportItemTemplates(card, HeadingLevel.HEADING_4, doc),
+  ]
 
-  // TODO:
-  //   - card custom attributes
-  //   - card template attributes
-  // (use the customAttrs selector above)
-
-  return paragraphs.concat(descParagraphs)
-}
-
-function attachments(obj, namesMapping) {
-  let paragraphs = []
-  let characters = []
-  let places = []
-  let tags = []
-
-  if (obj.characters) characters = obj.characters.map((ch) => namesMapping.characters[ch])
-  if (obj.places) places = obj.places.map((pl) => namesMapping.places[pl])
-  if (obj.tags) tags = obj.tags.map((tg) => namesMapping.tags[tg])
-
-  if (characters.length) {
-    paragraphs.push(new Paragraph(`${i18n('Characters')}: ${characters.join(', ')}`))
-  }
-  if (places.length) {
-    paragraphs.push(new Paragraph(`${i18n('Places')}: ${places.join(', ')}`))
-  }
-  if (tags.length) {
-    paragraphs.push(new Paragraph(`${i18n('Tags')}: ${tags.join(', ')}`))
-  }
-  if (paragraphs.length) {
-    paragraphs.push(new Paragraph(''))
-  }
   return paragraphs
 }

@@ -52,6 +52,16 @@ export default function exportBeats(state, documentContents) {
         return acc
       }, descObj)
 
+      c.templates.forEach((t) => {
+        t.attributes.forEach((attr) => {
+          if (descObj[attr.name]) {
+            descObj[`${t.name}:${attr.name}`] = attr.value
+          } else {
+            descObj[attr.name] = attr.value
+          }
+        })
+      })
+
       documentContents[id] = {
         isNotesDoc: true,
         docTitle: i18n('Plotline: {title}', { title }),

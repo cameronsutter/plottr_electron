@@ -7,7 +7,7 @@ import MPQ from '../../../common/utils/MPQ'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { manifestStore } from '../../../common/utils/store_hooks'
 const { app } = remote
-const autoUpdater = remote.require('electron-updater').autoUpdater
+const autoUpdater = remote.require('electron-differential-updater').autoUpdater
 
 export default function About(props) {
   const { started, expired } = useTrialStatus()

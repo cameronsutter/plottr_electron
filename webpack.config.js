@@ -25,7 +25,30 @@ if (process.env.NODE_ENV !== 'dev') {
   )
 }
 
-module.exports = {
+const mainConfig = {
+  mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
+  watch: process.env.NODE_ENV === 'dev',
+  context: path.resolve(__dirname, 'main'),
+  entry: {
+    main: path.resolve('.', 'main', 'index.js'),
+  },
+  output: {
+    path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
+    filename: 'electron_main.js',
+  },
+  resolve: {
+    extensions: ['.js', '.json'],
+    modules: ['node_modules', 'main'],
+  },
+  target: 'electron-main',
+  plugins: plugins,
+  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
+  node: {
+    __dirname: false,
+  },
+}
+
+const rendererConfig = {
   mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
   watch: process.env.NODE_ENV === 'dev',
   context: path.resolve(__dirname, 'src'),
@@ -111,3 +134,5 @@ module.exports = {
     },
   },
 }
+
+module.exports = [rendererConfig, mainConfig]

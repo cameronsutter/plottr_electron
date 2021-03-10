@@ -7,7 +7,7 @@ import SETTINGS from '../../common/utils/settings'
 import { Button, ProgressBar } from 'react-bootstrap'
 import { is } from 'electron-util'
 import { Spinner } from '../../common/components/Spinner'
-const autoUpdater = remote.require('electron-differential-updater').autoUpdater
+const autoUpdater = remote.require('electron-updater').autoUpdater
 
 // SETUP //
 autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
@@ -72,7 +72,7 @@ export default function UpdateNotifier(props) {
   }, [])
 
   useEffect(() => {
-    if (process.env.NODE_ENV == 'development') return
+    if (is.development) return
     if (shouldCheck && SETTINGS.get('canGetUpdates')) {
       autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
       autoUpdater.checkForUpdates()

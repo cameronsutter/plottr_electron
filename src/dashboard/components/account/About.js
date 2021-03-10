@@ -6,14 +6,15 @@ import SETTINGS from '../../../common/utils/settings'
 import MPQ from '../../../common/utils/MPQ'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { manifestStore } from '../../../common/utils/store_hooks'
+import { is } from 'electron-util'
 const { app } = remote
-const autoUpdater = remote.require('electron-differential-updater').autoUpdater
+const autoUpdater = remote.require('electron-updater').autoUpdater
 
 export default function About(props) {
   const { started, expired } = useTrialStatus()
 
   const checkForUpdates = () => {
-    if (process.env.NODE_ENV == 'development') return
+    if (is.development) return
     MPQ.push('btn_check_for_updates')
     // SETTINGS.set('user.seeCheckingForUpdates', true) // only show the checking when user asks to see it
     autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')

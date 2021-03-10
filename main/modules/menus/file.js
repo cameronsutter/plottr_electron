@@ -105,7 +105,7 @@ function buildFileMenu(filePath) {
     },
     {
       label: i18n('Reload from File'),
-      visible: NODE_ENV === 'dev',
+      visible: NODE_ENV === 'development',
       click: (event, focusedWindow) => {
         const winObj = getWindowById(focusedWindow.id)
         if (winObj) {

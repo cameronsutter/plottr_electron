@@ -1,13 +1,12 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
-import path from 'path'
 import { ipcRenderer, remote } from 'electron'
 import { NavItem, Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import i18n from 'format-message'
 import MPQ from '../../../common/utils/MPQ'
 
 const win = remote.getCurrentWindow()
-const dialog = remote.dialog
+const { dialog } = remote
 
 function ExportNavItem(props) {
   const doWordExport = () => {
@@ -21,9 +20,9 @@ function ExportNavItem(props) {
   const doExport = (type) => {
     let label = i18n('Where would you like to save the export?')
     const defaultPath =
-      props.bookId !== 'series'
-        ? props.books[`${props.bookId}`]
-        : props.seriesName + ' ' + i18n('(Series View)')
+      props.bookId == 'series'
+        ? props.seriesName + ' ' + i18n('(Series View)')
+        : props.books[`${props.bookId}`].title
 
     let filters = []
     switch (type) {

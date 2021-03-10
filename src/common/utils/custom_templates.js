@@ -48,15 +48,12 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
   })
 
   // only the lines in current book
-  // only if there are more than 1 line
   const bookLines = data.lines.filter((line) => line.bookId === bookId)
-  if (bookLines.length > 1) {
-    // change bookId to 1
-    template.templateData.lines = bookLines.map((l) => {
-      l.bookId = 1
-      return l
-    })
-  }
+  // change bookId to 1
+  template.templateData.lines = bookLines.map((l) => {
+    l.bookId = 1
+    return l
+  })
 
   // only cards in beats
   if (data.cards.length) {

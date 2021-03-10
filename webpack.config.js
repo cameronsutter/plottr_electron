@@ -42,6 +42,9 @@ const mainConfig = {
   target: 'electron-main',
   plugins: plugins,
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
+  node: {
+    __dirname: false,
+  },
 }
 
 const rendererConfig = {

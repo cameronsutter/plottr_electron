@@ -33,7 +33,7 @@ contextMenu({
   prepend: (defaultActions, params, browserWindow) => [],
 })
 
-if (process.env.NODE_ENV !== 'development') {
+if (!is.development) {
   process.on('uncaughtException', function (err) {
     log.error(err)
     rollbar.error(err, function (sendErr, data) {
@@ -42,13 +42,14 @@ if (process.env.NODE_ENV !== 'development') {
   })
 }
 
-if (process.env.NODE_ENV === 'development') {
+if (is.development) {
   // try {
   //   require('electron-reloader')(module, {
   //     ignore: [
   //       'examples',
   //       'dist',
   //       'src',
+  //       'main',
   //       'lib',
   //       'build',
   //       'icons',

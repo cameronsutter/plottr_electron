@@ -5,7 +5,6 @@ const { filePrefix } = require('../helpers')
 const { hasWindows } = require('./')
 const { makeBrowserWindow } = require('../utils')
 const { getDarkMode } = require('../theme')
-const log = require('electron-log')
 
 // mixpanel tracking
 let launchSent = false

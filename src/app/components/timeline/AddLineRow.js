@@ -8,16 +8,12 @@ import i18n from 'format-message'
 import cx from 'classnames'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { helpers, actions, selectors, lineColors, initialState } from 'pltr/v2'
+import { actions, selectors, lineColors, initialState } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 
 const { nextColor } = lineColors
 const card = initialState.card
 const defaultLine = initialState.line
-
-const {
-  books: { isSeries },
-} = helpers
 
 class AddLineRow extends Component {
   state = {
@@ -234,7 +230,7 @@ class AddLineRow extends Component {
   }
 
   renderInsertButton() {
-    const { bookId, isSmall, isMedium } = this.props
+    const { isSmall, isMedium } = this.props
     if (isSmall) {
       return (
         <th className="row-header">

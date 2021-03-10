@@ -8,7 +8,7 @@ import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { actions, selectors, lineColors, initialState } from 'pltr/v2'
+import { helpers, actions, selectors, lineColors, initialState } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 
 const { nextColor } = lineColors
@@ -200,7 +200,7 @@ class AddLineRow extends Component {
     this.allLines = this.props.lines
     this.allCards = this.props.cards
 
-    const templateBookId = isSeries(bookId) ? bookId : 1
+    const templateBookId = helpers.books.isSeries(bookId) ? bookId : 1
     const templateBeats = selectors.beatsByPosition(() => true)(template.beats[templateBookId])
     const templateLines = template.lines.filter((line) => line.bookId === templateBookId)
 

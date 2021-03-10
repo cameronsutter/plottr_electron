@@ -34,6 +34,7 @@ const mainConfig = {
   },
   output: {
     path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
+    filename: 'electron_main.js',
   },
   resolve: {
     extensions: ['.js', '.json'],

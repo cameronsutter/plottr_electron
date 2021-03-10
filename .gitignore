@@ -8,4 +8,4 @@ screenshots/*
 data/*
 *.map
 .prev
-bin/main.js
+bin/electron_main.js

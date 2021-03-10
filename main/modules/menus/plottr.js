@@ -25,11 +25,11 @@ function buildPlottrMenu() {
     },
   ]
 
-  if (NODE_ENV === 'dev') {
+  if (NODE_ENV === 'development') {
     submenu.push(
       {
         label: 'View Process Manager',
-        visible: NODE_ENV === 'dev',
+        visible: NODE_ENV === 'development',
         click: () => openProcessManager(),
       },
       {

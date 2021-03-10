@@ -3,27 +3,27 @@ const path = require('path')
 const log = require('electron-log')
 const { is } = require('electron-util')
 const contextMenu = require('electron-context-menu')
-const { setupRollbar } = require('./main_modules/rollbar')
-const { loadMenu } = require('./main_modules/menus')
+const { setupRollbar } = require('./modules/rollbar')
+const { loadMenu } = require('./modules/menus')
 const { setupI18n } = require('../locales')
 const {
   focusFirstWindow,
   hasWindows,
   getWindowById,
   numberOfWindows,
-} = require('./main_modules/windows')
-const { openProjectWindow } = require('./main_modules/windows/projects')
-const { getDarkMode, setDarkMode, broadcastDarkMode } = require('./main_modules/theme')
-const { gracefullyQuit } = require('./main_modules/utils')
-const { openDashboard } = require('./main_modules/windows/dashboard')
-const { addToKnown } = require('./main_modules/known_files')
-const SETTINGS = require('./main_modules/settings')
+} = require('./modules/windows')
+const { openProjectWindow } = require('./modules/windows/projects')
+const { getDarkMode, setDarkMode, broadcastDarkMode } = require('./modules/theme')
+const { gracefullyQuit } = require('./modules/utils')
+const { openDashboard } = require('./modules/windows/dashboard')
+const { addToKnown } = require('./modules/known_files')
+const SETTINGS = require('./modules/settings')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
 ////////////////////////////////
 log.info('--------Startup Tasks--------')
-const ENV_FILE_PATH = path.resolve(__dirname, '..', '.env')
+const ENV_FILE_PATH = path.resolve('.env')
 require('dotenv').config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
 setupI18n(SETTINGS)
@@ -33,7 +33,7 @@ contextMenu({
   prepend: (defaultActions, params, browserWindow) => [],
 })
 
-if (process.env.NODE_ENV !== 'dev') {
+if (process.env.NODE_ENV !== 'development') {
   process.on('uncaughtException', function (err) {
     log.error(err)
     rollbar.error(err, function (sendErr, data) {
@@ -42,25 +42,25 @@ if (process.env.NODE_ENV !== 'dev') {
   })
 }
 
-if (process.env.NODE_ENV === 'dev') {
-  try {
-    require('electron-reloader')(module, {
-      ignore: [
-        'examples',
-        'dist',
-        'src',
-        'lib',
-        'build',
-        'icons',
-        'locales',
-        'shared',
-        'test',
-        '.*#.*#',
-      ],
-    })
-  } catch (e) {
-    console.error('Error while instrumenting app for reload.', e)
-  }
+if (process.env.NODE_ENV === 'development') {
+  // try {
+  //   require('electron-reloader')(module, {
+  //     ignore: [
+  //       'examples',
+  //       'dist',
+  //       'src',
+  //       'lib',
+  //       'build',
+  //       'icons',
+  //       'locales',
+  //       'shared',
+  //       'test',
+  //       '.*#.*#',
+  //     ],
+  //   })
+  // } catch (e) {
+  //   console.error('Error while instrumenting app for reload.', e)
+  // }
 }
 
 app.whenReady().then(() => {

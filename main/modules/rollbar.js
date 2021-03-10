@@ -4,13 +4,13 @@ const { NODE_ENV, ROLLBAR_ACCESS_TOKEN } = require('./constants')
 const { getLicenseInfo } = require('./license_info')
 
 function setupRollbar(where, USER) {
-  let environment = NODE_ENV === 'dev' ? 'development' : 'production'
+  let environment = NODE_ENV === 'development' ? 'development' : 'production'
   let rollbarToken = ROLLBAR_ACCESS_TOKEN || ''
   const version = app.getVersion()
 
   return new Rollbar({
     accessToken: rollbarToken,
-    handleUncaughtExceptions: NODE_ENV !== 'dev',
+    handleUncaughtExceptions: NODE_ENV !== 'development',
     handleUnhandledRejections: true,
     ignoredMessages: [],
     payload: {

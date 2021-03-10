@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { Glyphicon, ButtonToolbar, Button } from 'react-bootstrap'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import i18n from 'format-message'
 
 import PlottrModal from 'components/PlottrModal'
@@ -41,6 +42,8 @@ const BeatConfigModal = ({
   hierarchyLevels,
   setHierarchyLevels,
 }) => {
+  const [stagedHierarchyLevels, setStagedHierarchyLevels] = useState(null)
+
   const levelsInputRef = useRef()
 
   const selectLevelsText = () => {
@@ -69,73 +72,90 @@ const BeatConfigModal = ({
       }
       setHierarchyLevels(newLevels)
     } else {
-      setHierarchyLevels(hierarchyLevels.slice(currentLength - targetLength))
+      setStagedHierarchyLevels(hierarchyLevels.slice(currentLength - targetLength))
     }
   }
 
+  const RemoveLevelConfirmation = () =>
+    stagedHierarchyLevels ? (
+      <DeleteConfirmModal
+        customText={i18n('Are you sure?  (Removing levels may delete beat cards!)')}
+        onDelete={() => {
+          setHierarchyLevels(stagedHierarchyLevels)
+          setStagedHierarchyLevels(null)
+        }}
+        onCancel={() => {
+          setStagedHierarchyLevels(null)
+        }}
+      />
+    ) : null
+
   return (
-    <PlottrModal isOpen={true} onRequestClose={closeDialog} style={modalStyles}>
-      <div className="beat-config-modal">
-        <h3>{i18n('Hierarchy Configuration')}</h3>
-        <div className="beat-config-modal__hierarchy-count-wrapper">
-          <h4>{i18n('Levels of hierarchy')}</h4>
-          <div className="beat-config-modal__hierarchy-count-controls">
-            <button
-              className="beat-config-modal__hierarchy-count-adjustment-control"
-              onClick={() => {
-                if (hierarchyLevels.length > 1) {
-                  setHierarchyLevels(hierarchyLevels.slice(1))
-                }
-              }}
-            >
-              <Glyphicon glyph="minus" />
-            </button>
-            <input
-              ref={levelsInputRef}
-              className="beat-config-modal__hierarchy-count"
-              type="text"
-              value={levelsOfHierarchy}
-              onChange={onLevelsOfHierarchyChanged}
-              onFocus={selectLevelsText}
-              onKeyDown={(event) => {
-                if (event.which === 13) {
-                  onLevelsOfHierarchyChanged(event)
-                }
-              }}
-            />
-            <button
-              className="beat-config-modal__hierarchy-count-adjustment-control"
-              onClick={() => {
-                if (hierarchyLevels.length < 3) {
-                  setHierarchyLevels([newHierarchyLevel(hierarchyLevels), ...hierarchyLevels])
-                }
-              }}
-            >
-              <Glyphicon glyph="plus" />
-            </button>
+    <>
+      <RemoveLevelConfirmation />
+      <PlottrModal isOpen={true} onRequestClose={closeDialog} style={modalStyles}>
+        <div className="beat-config-modal">
+          <h3>{i18n('Hierarchy Configuration')}</h3>
+          <div className="beat-config-modal__hierarchy-count-wrapper">
+            <h4>{i18n('Levels of hierarchy')}</h4>
+            <div className="beat-config-modal__hierarchy-count-controls">
+              <button
+                className="beat-config-modal__hierarchy-count-adjustment-control"
+                onClick={() => {
+                  if (hierarchyLevels.length > 1) {
+                    setStagedHierarchyLevels(hierarchyLevels.slice(1))
+                  }
+                }}
+              >
+                <Glyphicon glyph="minus" />
+              </button>
+              <input
+                ref={levelsInputRef}
+                className="beat-config-modal__hierarchy-count"
+                type="text"
+                value={levelsOfHierarchy}
+                onChange={onLevelsOfHierarchyChanged}
+                onFocus={selectLevelsText}
+                onKeyDown={(event) => {
+                  if (event.which === 13) {
+                    onLevelsOfHierarchyChanged(event)
+                  }
+                }}
+              />
+              <button
+                className="beat-config-modal__hierarchy-count-adjustment-control"
+                onClick={() => {
+                  if (hierarchyLevels.length < 3) {
+                    setHierarchyLevels([newHierarchyLevel(hierarchyLevels), ...hierarchyLevels])
+                  }
+                }}
+              >
+                <Glyphicon glyph="plus" />
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="beat-config-modal__levels-table">
-          <div className="beat-config-modal__levels-table-header">
-            <div className="beat-config-modal__levels-table-cell">Name</div>
-            <div className="beat-config-modal__levels-table-cell">Auto Number</div>
-            <div className="beat-config-modal__levels-table-cell">Text Color</div>
-            <div className="beat-config-modal__levels-table-cell">Text Size</div>
-            <div className="beat-config-modal__levels-table-cell">Border Color</div>
-            <div className="beat-config-modal__levels-table-cell">Border Style</div>
-            <div className="beat-config-modal__levels-table-cell">Background Color</div>
+          <div className="beat-config-modal__levels-table">
+            <div className="beat-config-modal__levels-table-header">
+              <div className="beat-config-modal__levels-table-cell">Name</div>
+              <div className="beat-config-modal__levels-table-cell">Auto Number</div>
+              <div className="beat-config-modal__levels-table-cell">Text Color</div>
+              <div className="beat-config-modal__levels-table-cell">Text Size</div>
+              <div className="beat-config-modal__levels-table-cell">Border Color</div>
+              <div className="beat-config-modal__levels-table-cell">Border Style</div>
+              <div className="beat-config-modal__levels-table-cell">Background Color</div>
+            </div>
+            {hierarchyLevels.map((args) => (
+              <React.Fragment key={args.level}>
+                <HierarchyLevel {...args} />
+              </React.Fragment>
+            ))}
           </div>
-          {hierarchyLevels.map((args) => (
-            <React.Fragment key={args.level}>
-              <HierarchyLevel {...args} />
-            </React.Fragment>
-          ))}
+          <ButtonToolbar className="beat-config-modal__button-bar">
+            <Button onClick={closeDialog}>{i18n('Done')}</Button>
+          </ButtonToolbar>
         </div>
-        <ButtonToolbar className="beat-config-modal__button-bar">
-          <Button onClick={closeDialog}>{i18n('Done')}</Button>
-        </ButtonToolbar>
-      </div>
-    </PlottrModal>
+      </PlottrModal>
+    </>
   )
 }
 

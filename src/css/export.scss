@@ -8,7 +8,15 @@ ul.export-list {
     padding: 3px;
 
     &:hover {
-      background-color: $gray-9;
+      background-color: $body-background-color
+    }
+  }
+}
+
+body.darkmode {
+  .export-list {
+    li:hover {
+      background-color: $darkmode-darker-background;
     }
   }
 }

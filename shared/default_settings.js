@@ -16,4 +16,67 @@ module.exports = {
     backupLocation: 'default',
     dark: 'system',
   },
+  export: {
+    saveSettings: true,
+    savedType: null,
+    scrivener: {
+      general: {},
+      outline: {
+        export: true,
+      },
+      characters: {
+        export: true,
+      },
+      places: {
+        export: true,
+      },
+      notes: {
+        export: true,
+      },
+    },
+    word: {
+      general: {
+        titlePage: true,
+      },
+      outline: {
+        export: true,
+        columns: true,
+        heading: true,
+        sceneCards: true,
+        plotlineInTitle: true,
+        attachments: true,
+        description: true,
+        customAttributes: true,
+        templates: true,
+      },
+      characters: {
+        export: true,
+        heading: true,
+        images: true,
+        descriptionHeading: true,
+        description: true,
+        attachments: true,
+        notes: true,
+        customAttributes: true,
+        templates: true,
+      },
+      places: {
+        export: true,
+        heading: true,
+        images: true,
+        descriptionHeading: true,
+        description: true,
+        attachments: true,
+        notes: true,
+        customAttributes: true,
+      },
+      notes: {
+        export: true,
+        heading: true,
+        images: true,
+        attachments: true,
+        content: true,
+      },
+    },
+  },
 }

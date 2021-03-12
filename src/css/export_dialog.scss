@@ -1,0 +1,73 @@
+@import 'colors';
+@import 'vars';
+
+.export-dialog__wrapper {
+  height: 100%;
+  display: grid;
+  grid-template-areas: 'header' 'body' 'footer';
+  grid-template-rows: auto 1fr auto;
+}
+
+.export-dialog__header {
+  grid-area: header;
+  h3 {
+    margin-top: 0;
+    text-transform: capitalize;
+  }
+}
+
+.export-dialog__body {
+  grid-area: body;
+  height: 100%;
+  overflow: hidden;
+
+  .export-dialog__type-chooser {
+    text-align: center;
+    .btn {
+      margin: 10px;
+    }
+  }
+
+  .export-dialog__option-lists {
+    @include application-text;
+    font-size: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 16px;
+    overflow: auto;
+    height: 100%;
+
+    .list-wrapper {
+      margin: 0 8px 8px 8px;
+      border: 1px solid $gray-9;
+    }
+
+    .list-title {
+      font-size: 21px;
+      background-color: $gray-9;
+      font-variant: small-caps;
+      text-transform: lowercase;
+      text-align: center;
+      padding-bottom: 4px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0 16px;
+    }
+
+    .checkbox input[type='checkbox'],
+    .radio input[type='radio'] {
+      top: 2px;
+    }
+  }
+}
+
+.export-dialog__footer {
+  grid-area: footer;
+  // padding-top: 8px;
+  & > div {
+    display: flex;
+    justify-content: space-between;
+  }
+}

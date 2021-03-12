@@ -114,19 +114,6 @@ ipcRenderer.on('set-dark-mode', (event, isOn) => {
   window.document.body.className = isOn ? 'darkmode' : ''
 })
 
-ipcRenderer.on('export-file', (event, options) => {
-  const currentState = store.getState()
-  switch (options.type) {
-    case 'scrivener':
-      ScrivenerExporter(currentState.present, options.fileName)
-      break
-    case 'word':
-    default:
-      WordExporter(currentState.present, options)
-      break
-  }
-})
-
 ipcRenderer.on('save-custom-template', (event, options) => {
   const currentState = store.getState()
   addNewCustomTemplate(currentState.present, options)

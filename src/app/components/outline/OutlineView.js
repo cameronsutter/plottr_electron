@@ -77,7 +77,6 @@ class OutlineView extends Component {
   }
 
   renderSubNav() {
-    const { ui, file } = this.props
     let popover = (
       <Popover id="filter">
         <div className="filter-list">{this.renderFilterList()}</div>
@@ -113,7 +112,7 @@ class OutlineView extends Component {
           </NavItem>
         </Nav>
         <Nav pullRight>
-          <ExportNavItem fileName={file.fileName} bookId={ui.currentTimeline} />
+          <ExportNavItem />
         </Nav>
       </SubNav>
     )
@@ -167,7 +166,6 @@ OutlineView.propTypes = {
   beats: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   card2Dmap: PropTypes.object.isRequired,
-  file: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
 }
@@ -177,7 +175,6 @@ function mapStateToProps(state) {
     beats: sortedBeatsByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
     card2Dmap: cardMapSelector(state.present),
-    file: state.present.file,
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
   }

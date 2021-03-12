@@ -8,7 +8,6 @@ import PlacesTab from 'components/places/PlacesTab'
 import NotesTab from 'components/notes/NotesTab'
 import TimelineTab from '../components/timeline/TimelineTab'
 import SeriesTab from '../components/project/SeriesTab'
-import ExportTab from '../components/export/ExportTab'
 import AnalyzerTab from '../components/analyzer/AnalyzerTab'
 
 class Body extends Component {
@@ -31,9 +30,6 @@ class Body extends Component {
 
       case 'places':
         return <PlacesTab />
-
-      case 'export':
-        return <ExportTab />
 
       case 'analyzer':
         return <AnalyzerTab />

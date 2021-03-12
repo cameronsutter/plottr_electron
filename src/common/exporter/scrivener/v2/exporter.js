@@ -11,7 +11,7 @@ import exportNotes from './exporters/notes'
 import exportPlaces from './exporters/places'
 import { convertUnicode, addToScrivx, remove, startNewScrivx } from './utils'
 
-export default function Exporter(state, exportPath) {
+export default function Exporter(state, exportPath, options) {
   const realPath = exportPath.includes('.scriv') ? exportPath : `${exportPath}.scriv`
 
   try {

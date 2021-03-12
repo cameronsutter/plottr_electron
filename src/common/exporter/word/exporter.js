@@ -12,12 +12,12 @@ const {
   books: { isSeries },
 } = helpers
 
-export default function Exporter(data, { fileName, bookId }) {
+export default function Exporter(data, fileName, options) {
   let doc = new Document()
-  let names = namesMapping(data)
-  if (!bookId) bookId = data.ui.currentTimeline
+  const names = namesMapping(data)
+  const bookId = data.ui.currentTimeline
 
-  doc.addSection(seriesNameSection(data, bookId))
+  if (options.general.titlePage) doc.addSection(seriesNameSection(data, bookId))
   doc.addSection(exportOutline(data, names, doc))
   doc.addSection(exportCharacters(data, doc))
   doc.addSection(exportPlaces(data, doc))

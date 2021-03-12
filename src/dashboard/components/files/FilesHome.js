@@ -41,6 +41,7 @@ export default function FilesHome(props) {
     case 'templates':
       body = (
         <TemplatePicker
+          newProject
           modal={false}
           type={['custom', 'project', 'plotlines']}
           onChooseTemplate={createWithTemplate}

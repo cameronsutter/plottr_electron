@@ -12,7 +12,18 @@
   grid-area: header;
   h3 {
     margin-top: 0;
-    text-transform: capitalize;
+  }
+  hr {
+    margin-top: 8px;
+  }
+  .export-dialog__type-chooser {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .nav.navbar-nav.nav-pills > li > a {
+      border-radius: 4px;
+    }
   }
 }
 
@@ -20,13 +31,6 @@
   grid-area: body;
   height: 100%;
   overflow: hidden;
-
-  .export-dialog__type-chooser {
-    text-align: center;
-    .btn {
-      margin: 10px;
-    }
-  }
 
   .export-dialog__option-lists {
     @include application-text;
@@ -69,5 +73,8 @@
   & > div {
     display: flex;
     justify-content: space-between;
+  }
+  hr {
+    margin-top: 0;
   }
 }

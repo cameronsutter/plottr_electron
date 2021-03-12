@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import i18n from 'format-message'
 import MPQ from '../../../common/utils/MPQ'
 import { PlottrModal } from '../PlottrModal'
-import { Button, ButtonToolbar } from 'react-bootstrap'
+import { Button, ButtonToolbar, Nav, NavItem } from 'react-bootstrap'
 import ExportBody from './ExportBody'
 import Switch from '../../../common/components/Switch'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
@@ -69,30 +69,21 @@ function ExportDialog(props) {
     }
   }
 
-  const Title = () => {
-    if (type) {
-      return (
-        <h3>
-          {i18n('Export Options')}
-          {' - '}
-          {type}
-          <small>
-            <Button bsStyle="link" bsSize="xs" onClick={() => setType(null)}>
-              {i18n('Start Over')}
-            </Button>
-          </small>
-        </h3>
-      )
-    } else {
-      return <h3>{i18n('Export Options')}</h3>
-    }
-  }
-
   return (
     <PlottrModal isOpen={true} onRequestClose={props.close}>
       <div className="export-dialog__wrapper">
         <div className="export-dialog__header">
-          <Title />
+          <div className="export-dialog__type-chooser">
+            <h3>{i18n('Export Options')}</h3>
+            <Nav bsStyle="pills" activeKey={type} onSelect={(key) => setType(key)}>
+              <NavItem eventKey="word" title={i18n('.docx')}>
+                {i18n('MS Word')}
+              </NavItem>
+              <NavItem eventKey="scrivener" title={i18n('.scriv')}>
+                {i18n('Scrivener')}
+              </NavItem>
+            </Nav>
+          </div>
           <hr />
         </div>
         <div className="export-dialog__body">
@@ -107,7 +98,7 @@ function ExportDialog(props) {
               labelText={i18n('Save these settings for next export?')}
             />
             <ButtonToolbar>
-              <Button bsStyle="primary" disabled={!type} onClick={doExport}>
+              <Button bsStyle="success" disabled={!type} onClick={doExport}>
                 {i18n('Export')}
               </Button>
               <Button onClick={props.close}>{i18n('Cancel')}</Button>

@@ -59,6 +59,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 category="outline"
                 attr="columnOrRow"
                 value="column"
+                disabled={!options.outline.export}
               >
                 <span>{i18n('Column By Column')}</span>
               </RadioOption>
@@ -68,6 +69,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 category="outline"
                 attr="columnOrRow"
                 value="row"
+                disabled={!options.outline.export}
               >
                 <span>{i18n('Row By Row')}</span>
               </RadioOption>
@@ -78,6 +80,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="outline"
                 attr="heading"
+                disabled={!options.outline.export}
               >
                 <span>{i18n('Heading ("Outline")')}</span>
               </CheckOption>
@@ -88,6 +91,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="outline"
                 attr="sceneCards"
+                disabled={!options.outline.export}
               >
                 <span>{i18n('Scene Cards')}</span>
               </CheckOption>
@@ -98,6 +102,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="outline"
                 attr="plotlineInTitle"
+                disabled={!options.outline.export}
               >
                 <div>
                   <span>{i18n('Plotline in Card Title')}</span>
@@ -112,6 +117,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="outline"
                 attr="attachments"
+                disabled={!options.outline.export}
               >
                 <span>{i18n('Tags / Characters / Places')}</span>
               </CheckOption>
@@ -122,6 +128,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="outline"
                 attr="description"
+                disabled={!options.outline.export}
               >
                 <span>{i18n('Description')}</span>
               </CheckOption>
@@ -132,6 +139,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="outline"
                 attr="customAttributes"
+                disabled={!options.outline.export}
               >
                 <span>{i18n('Custom Attributes')}</span>
               </CheckOption>
@@ -142,6 +150,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="outline"
                 attr="templates"
+                disabled={!options.outline.export}
               >
                 <span>{i18n('Templates')}</span>
               </CheckOption>
@@ -167,6 +176,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="characters"
                 attr="heading"
+                disabled={!options.characters.export}
               >
                 <span>{i18n('Heading ("Characters")')}</span>
               </CheckOption>
@@ -177,6 +187,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="characters"
                 attr="images"
+                disabled={!options.characters.export}
               >
                 <span>{i18n('Images')}</span>
               </CheckOption>
@@ -187,6 +198,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="characters"
                 attr="descriptionHeading"
+                disabled={!options.characters.export}
               >
                 <div>
                   <span>{i18n('Description Heading')}</span>
@@ -201,6 +213,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="characters"
                 attr="description"
+                disabled={!options.characters.export}
               >
                 <span>{i18n('Description')}</span>
               </CheckOption>
@@ -211,6 +224,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="characters"
                 attr="attachments"
+                disabled={!options.characters.export}
               >
                 <span>{i18n('Books / Tags')}</span>
               </CheckOption>
@@ -221,6 +235,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="characters"
                 attr="notes"
+                disabled={!options.characters.export}
               >
                 <span>{i18n('Notes')}</span>
               </CheckOption>
@@ -231,6 +246,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="characters"
                 attr="customAttributes"
+                disabled={!options.characters.export}
               >
                 <span>{i18n('Custom Attributes')}</span>
               </CheckOption>
@@ -241,6 +257,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="characters"
                 attr="templates"
+                disabled={!options.characters.export}
               >
                 <span>{i18n('Templates')}</span>
               </CheckOption>
@@ -266,6 +283,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="places"
                 attr="heading"
+                disabled={!options.places.export}
               >
                 <span>{i18n('Heading ("Places")')}</span>
               </CheckOption>
@@ -276,6 +294,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="places"
                 attr="images"
+                disabled={!options.places.export}
               >
                 <span>{i18n('Images')}</span>
               </CheckOption>
@@ -286,6 +305,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="places"
                 attr="descriptionHeading"
+                disabled={!options.places.export}
               >
                 <div>
                   <span>{i18n('Description Heading')}</span>
@@ -300,6 +320,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="places"
                 attr="description"
+                disabled={!options.places.export}
               >
                 <span>{i18n('Description')}</span>
               </CheckOption>
@@ -310,6 +331,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="places"
                 attr="attachments"
+                disabled={!options.places.export}
               >
                 <span>{i18n('Books / Tags')}</span>
               </CheckOption>
@@ -320,6 +342,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="places"
                 attr="notes"
+                disabled={!options.places.export}
               >
                 <span>{i18n('Notes')}</span>
               </CheckOption>
@@ -330,6 +353,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="places"
                 attr="customAttributes"
+                disabled={!options.places.export}
               >
                 <span>{i18n('Custom Attributes')}</span>
               </CheckOption>
@@ -355,6 +379,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="notes"
                 attr="heading"
+                disabled={!options.notes.export}
               >
                 <span>{i18n('Heading ("Notes")')}</span>
               </CheckOption>
@@ -365,6 +390,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="notes"
                 attr="images"
+                disabled={!options.notes.export}
               >
                 <span>{i18n('Images')}</span>
               </CheckOption>
@@ -375,6 +401,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="notes"
                 attr="attachments"
+                disabled={!options.notes.export}
               >
                 <span>{i18n('Tags / Characters / Places')}</span>
               </CheckOption>
@@ -385,6 +412,7 @@ export default function ExportBody({ type, setType, onChange }) {
                 onChange={updateOptions}
                 category="notes"
                 attr="content"
+                disabled={!options.notes.export}
               >
                 <span>{i18n('Content')}</span>
               </CheckOption>

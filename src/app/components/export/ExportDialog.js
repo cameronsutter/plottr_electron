@@ -16,8 +16,8 @@ const win = remote.getCurrentWindow()
 const { dialog } = remote
 
 function ExportDialog(props) {
-  const [type, setType] = useState(null)
   const [settings, _, saveSetting] = useSettingsInfo()
+  const [type, setType] = useState(settings.export.savedType)
   const [saveOptions, setSaveOptions] = useState(settings.export.saveSettings)
   const [options, setOptions] = useState(settings.export)
 
@@ -46,7 +46,14 @@ function ExportDialog(props) {
     const fileName = dialog.showSaveDialogSync(win, { title: label, filters, defaultPath })
     if (fileName) {
       MPQ.push('Export', { export_type: type })
-      console.log('options', options[type])
+
+      if (saveOptions) {
+        saveSetting('export.savedType', type)
+        saveSetting(`export.${type}`, options[type])
+      }
+
+      // TODO: error handling for these
+
       switch (type) {
         case 'scrivener':
           ScrivenerExporter(fullState, fileName, options[type])
@@ -55,12 +62,6 @@ function ExportDialog(props) {
         default:
           WordExporter(fullState, fileName, options[type])
           break
-      }
-
-      // TODO:
-      if (saveOptions) {
-        // save which type was exported
-        // save that type's options
       }
 
       // TODO: TURN THIS BACK ON

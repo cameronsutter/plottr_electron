@@ -40,7 +40,7 @@ module.exports = {
       },
       outline: {
         export: true,
-        columns: true,
+        columnOrRow: 'column',
         heading: true,
         sceneCards: true,
         plotlineInTitle: true,

@@ -166,9 +166,9 @@ class LineTitleCell extends PureComponent {
 
   toggleExpanded = () => {
     if (this.props.ui.timelineIsExpanded) {
-      this.props.actions.collapseTimeline()
+      this.props.uiActions.collapseTimeline()
     } else {
-      this.props.actions.expandTimeline()
+      this.props.uiActions.expandTimeline()
     }
   }
 
@@ -234,14 +234,14 @@ class LineTitleCell extends PureComponent {
             <Glyphicon glyph="tint" />
           </Button>
           {isSmall ? null : (
-            <ButtonGroup>
+            <>
               <Button block bsSize="small" onClick={this.toggleLine}>
                 {expandedIcon}
               </Button>
               <Button block bsSize="small" onClick={this.toggleExpanded}>
                 {expandedText}
               </Button>
-            </ButtonGroup>
+            </>
           )}
           <Button block bsSize="small" onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
@@ -259,14 +259,14 @@ class LineTitleCell extends PureComponent {
               <Glyphicon glyph="tint" />
             </Button>
             {isSmall ? null : (
-              <ButtonGroup>
+              <>
                 <Button bsSize="small" onClick={this.toggleLine}>
                   {expandedIcon}
                 </Button>
                 <Button bsSize="small" onClick={this.toggleExpanded}>
                   {expandedText}
                 </Button>
-              </ButtonGroup>
+              </>
             )}
             <Button bsSize="small" onClick={this.handleDelete}>
               <Glyphicon glyph="trash" />
@@ -405,6 +405,7 @@ LineTitleCell.propTypes = {
   isLarge: PropTypes.bool,
   lineIsExpanded: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
+  uiActions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
@@ -419,7 +420,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
-    actions: bindActionCreators(Object.assign({}, LineActions, uiActions), dispatch),
+    actions: bindActionCreators(LineActions, dispatch),
+    uiActions: bindActionCreators(uiActions, dispatch),
   }
 }
 

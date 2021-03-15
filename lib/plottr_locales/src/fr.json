@@ -1,0 +1,665 @@
+{
+  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
+    "message": "(Si ce n''est pas le cas merci de m''écrire à me @ <a>support@plottr.com</a> ou @StoryPlottr on Twitter)"
+  },
+  "About Plottr": {
+    "message": "A propos de Plottr"
+  },
+  "Actions": {
+    "message": "Actions"
+  },
+  "Add": {
+    "message": "Ajouter"
+  },
+  "Add attributes": {
+    "message": "Ajouter une information"
+  },
+  "After": {
+    "message": "Après"
+  },
+  "Attached to": {
+    "message": "Attaché à"
+  },
+  "Before": {
+    "message": "Avant"
+  },
+  "Beginning": {
+    "message": "Début"
+  },
+  "Blues": {
+    "message": "Bleus"
+  },
+  "Bring All to Front": {
+    "message": "Tout mettre en avant"
+  },
+  "Browns": {
+    "message": "Marrons"
+  },
+  "Buy Full Version": {
+    "message": "Acheter la version complète"
+  },
+  "Buy the Full Version": {
+    "message": "Acheter la version complète"
+  },
+  "Cancel": {
+    "message": "Annuler"
+  },
+  "Card": {
+    "message": "Carte"
+  },
+  "Card Title": {
+    "message": "Titre de la carte"
+  },
+  "Character": {
+    "message": "Personnage"
+  },
+  "character": {
+    "message": "personnage"
+  },
+  "Character list is filtered": {
+    "message": "Liste des personnages triée"
+  },
+  "Characters": {
+    "message": "Personnages"
+  },
+  "Characters list": {
+    "message": "Liste de personnages"
+  },
+  "Choose": {
+    "message": "Choisir"
+  },
+  "Choose color": {
+    "message": "Choisir une couleur"
+  },
+  "Choose what you want to track about your characters": {
+    "message": "Choisir ce que vous voulez suivre chez vos personnages"
+  },
+  "Choose what you want to track about your places": {
+    "message": "Choisir ce que vous voulez suivre dans vos lieux"
+  },
+  "Click here to get the full version": {
+    "message": "Cliquer ici pour obtenir la version intégrale."
+  },
+  "Click on a color below or type it in": {
+    "message": "Cliquer sur une couleur ci dessous ou taper une couleur"
+  },
+  "Close": {
+    "message": "Fermer"
+  },
+  "Contact": {
+    "message": "Contact"
+  },
+  "Content": {
+    "message": "Contenu"
+  },
+  "Copy": {
+    "message": "Copier"
+  },
+  "Crafted in the Mountains of Utah by": {
+    "message": "Cisellé dans les montagnes de l''Utah par"
+  },
+  "Create a new file": {
+    "message": "Créer un nouveau fichier."
+  },
+  "Creates a report to send me": {
+    "message": "Créér un rapport à m''envoyer"
+  },
+  "Creating your file didn't work. Let's try again.": {
+    "message": "La création de votre fichier a échoué. Essayons à nouveau."
+  },
+  "Credits": {
+    "message": "Crédits"
+  },
+  "Current Color": {
+    "message": "Couleur actuelle"
+  },
+  "Custom Attributes": {
+    "message": "Critères personnels"
+  },
+  "Custom Attributes for Characters": {
+    "message": "Information personnalisée pour un personnage"
+  },
+  "Custom Attributes for Places": {
+    "message": "Information personnalisée pour un lieu"
+  },
+  "Cut": {
+    "message": "Couper"
+  },
+  "Dark Mode": {
+    "message": "Mode Noir"
+  },
+  "Delete": {
+    "message": "Effacer"
+  },
+  "Description": {
+    "message": "Description"
+  },
+  "Attributes": {
+    "message": "Les Attributs"
+  },
+  "Do you want to delete this card: { title }?": {
+    "message": "Voulez vous effacer cette carte: { title }?"
+  },
+  "Do you want to delete this character: { character }?": {
+    "message": "Voulez vous effacer ce personnage: { character }?"
+  },
+  "Do you want to delete this note: { title }?": {
+    "message": "Voulez vous effacer cette note: { title }?"
+  },
+  "Do you want to delete this place: { name }?": {
+    "message": "Voulez vous effacer ce lieu: { name }?"
+  },
+  "Do you want to delete this scene: { title }?": {
+    "message": "Voulez vous effacer cette scène: { title }?"
+  },
+  "Do you want to delete this story line: { title }?": {
+    "message": "Voulez vous effacer cette histoire: { title }?"
+  },
+  "Do you want to delete this tag: { title }?": {
+    "message": "Voulez vous effacer cette étiquette: { title }?"
+  },
+  "Edit": {
+    "message": "Édition"
+  },
+  "End": {
+    "message": "Fin"
+  },
+  "Enter License": {
+    "message": "Entrer le numéro de licence"
+  },
+  "Export": {
+    "message": "Export"
+  },
+  "FAQ": {
+    "message": "Questions fréquentes"
+  },
+  "File": {
+    "message": "Fichier"
+  },
+  "Filter": {
+    "message": "Trier"
+  },
+  "Filter by story line": {
+    "message": "Trier par histoire"
+  },
+  "Fit": {
+    "message": "Ajuster"
+  },
+  "Flip": {
+    "message": "Inverser"
+  },
+  "Format with markdown!": {
+    "message": "Formater avec démarquage!"
+  },
+  "Forums": {
+    "message": "Forums"
+  },
+  "Give feedback": {
+    "message": "Faire un retour d'information"
+  },
+  "Grays": {
+    "message": "Gris"
+  },
+  "Greens": {
+    "message": "Verts"
+  },
+  "Help": {
+    "message": "Aide"
+  },
+  "Hide Others": {
+    "message": "Cacher le reste"
+  },
+  "Hide Plottr": {
+    "message": "Cacher Plottr"
+  },
+  "Hmmmm. It looks like that's not a valid license key": {
+    "message": "Hmmm. Il semble que ce n'est pas une clef de licence valable"
+  },
+  "If you keep seeing this problem, email me at support@plottr.com": {
+    "message": "Si le problème se répète, merci de m''écrire à support@plottr.com"
+  },
+  "It looks like you have Plottr on 5 computers already": {
+    "message": "Il semble que vous avez installé Plottr sur 5 ordinateurs"
+  },
+  "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?": {
+    "message": "Il semble que vous avez une version ancienne du fichier. Le logiciel pourrait fonctionner étrangement ou pas du tout. Plottr peut-il faire une mise à jour pour vous?"
+  },
+  "It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline": {
+    "message": "Il semble que vous n'êtes pas en ligne. Vous n'avez pas besoin d'être toujours connecté à internet pour utiliser Plottr mais il faut que vous le soyez pour vérifier votre licence."
+  },
+  "It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again.": {
+    "message": "Il semble que votre fichier a été enregistré avec une version de Plottr plus récente que celle que vous utilisez actuellement. Cela peut causer un souci. Faites une mise à jour de Plottr et essayer à nouveau..."
+  },
+  "It will save a backup first which will be saved to the same folder as this file": {
+    "message": "Une copie de sauvegarde sera enregistrer dans le même dossier que le présent fichier."
+  },
+  "License Verified. Plottr will start momentarily. Thanks for being patient!": {
+    "message": "License vérifiée. Plottr va démarrer rapidement. Merci de votre patience."
+  },
+  "License verification failed": {
+    "message": "La vérification de licence a échoué"
+  },
+  "License verified! You're all set.": {
+    "message": "Licence vérifiée! Tout est en ordre."
+  },
+  "Line": {
+    "message": "Ligne"
+  },
+  "Loading...": {
+    "message": "Chargement en cours."
+  },
+  "Main Plot": {
+    "message": "Intrigue principale"
+  },
+  "Middle": {
+    "message": "Milieu"
+  },
+  "Minimize": {
+    "message": "Réduire"
+  },
+  "My Character Template": {
+    "message": "Mon modèle de personnage"
+  },
+  "My Templates": {
+    "message": "Mes modèles"
+  },
+  "My Timeline Template": {
+    "message": "Mon modèle de chronologie"
+  },
+  "My Scene Template": {
+    "message": "Mon modèle de scène"
+  },
+  "My awesome story": {
+    "message": "Mon histoire faculeuse"
+  },
+  "Name": {
+    "message": "Nom"
+  },
+  "New": {
+    "message": "Nouveau"
+  },
+  "No actions to undo": {
+    "message": "Aucune action à annuler"
+  },
+  "No color": {
+    "message": "Pas de couleur"
+  },
+  "Nope. Plottr tried again. But it didn't work. Plottr will ask you next time it opens, but you're verified. Enjoy": {
+    "message": "Non. Plottr a essayé à nouveau mais cela n'a pas fonctionner. Plottr vous reposera la question à la prochaine ouverture mais votre licence a été vérifiée. Allez y."
+  },
+  "Note": {
+    "message": "Note"
+  },
+  "Notes": {
+    "message": "Notes"
+  },
+  "Notes are filtered": {
+    "message": "Liste des notes triée"
+  },
+  "Now let's get to the good stuff": {
+    "message": "Maintenant passons aux choses sérieuses."
+  },
+  "Open": {
+    "message": "Ouvrir"
+  },
+  "Open the Tour": {
+    "message": "Ouvrir la visite guidée"
+  },
+  "Or feel free to contact me with any questions": {
+    "message": "Ou n'hésitez pas à me contacter si vous avez une question."
+  },
+  "Oranges": {
+    "message": "Oranges"
+  },
+  "Outline": {
+    "message": "Trame"
+  },
+  "Outline is filtered": {
+    "message": "Trame triée"
+  },
+  "Paste": {
+    "message": "Coller"
+  },
+  "Pick a color": {
+    "message": "Choisissez une couleur."
+  },
+  "Place": {
+    "message": "Lieu"
+  },
+  "place": {
+    "message": "lieu"
+  },
+  "Place list is filtered": {
+    "message": "Liste des lieux triée"
+  },
+  "Places": {
+    "message": "Lieux"
+  },
+  "Places list": {
+    "message": "Liste des lieux"
+  },
+  "Please upload the file named plottr_error_report.txt in your Documents folder": {
+    "message": "Merci de m''envoyer le fichier plottr_error_report.txt que vous trouverez dans votre dossier Documents"
+  },
+  "Please verify your license": {
+    "message": "S''il-vous-plait confirmez votre licence."
+  },
+  "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again.": {
+    "message": "Plottr n''a pas pu enregistrer de sauvegarde. Votre fichier n''a pas encore été modifié. Ne vous inquietez pas. Tentez de quitter Plottr et de redémarrer."
+  },
+  "Plottr ran into a problem. Try opening Plottr again.": {
+    "message": "Plottr a eu un problème. Tentez d'ouvrir Plottr à nouveau."
+  },
+  "Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)": {
+    "message": "Plottr a fait une sauvegarde, par prudence, et vous pouvez poursuivre (Pour utiliser la sauvegarde, retirer ''.backup'' du nom du fichier)"
+  },
+  "Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again.": {
+    "message": "Plottr a tenté de faire une sauvegarde, par prudence, mais cela n''a pas fonctionné. Tentez de quitter Plottr et de redémarrer."
+  },
+  "Plottr updated your file without a problem. Don't forget to save your file.": {
+    "message": "Plottr a mis votre ficihier à jour sans problème. N''oubliez pas d''enregistrer votre fichier."
+  },
+  "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {
+    "message": "Plotrr a bien réussi à vérifier votre licence mais il y a eu une erreur pour l''enregistrer. Tentons de le faire à nouveau."
+  },
+  "Problem saving backup": {
+    "message": "Problème rencontré pour l''enregistrement de la sauvegarde."
+  },
+  "Purples": {
+    "message": "Violets"
+  },
+  "Quit": {
+    "message": "Quitter"
+  },
+  "Redo": {
+    "message": "Refaire"
+  },
+  "Reds": {
+    "message": "Rouges"
+  },
+  "Reload": {
+    "message": "Recharger"
+  },
+  "Report a problem": {
+    "message": "Signaler un problème"
+  },
+  "Request a feature": {
+    "message": "Demander une option"
+  },
+  "Reset": {
+    "message": "Réinitialiser"
+  },
+  "Save": {
+    "message": "Enregistrer"
+  },
+  "Save & Close": {
+    "message": "Enregistrer & Fermer"
+  },
+  "Save as": {
+    "message": "Enregistrer sous"
+  },
+  "Saving failed": {
+    "message": "L''enregistrement a échoué."
+  },
+  "Saving your file didn't work. Try again.": {
+    "message": "L''enregistrement de votre fichier a échoué. Essayez à nouveau."
+  },
+  "Scene": {
+    "message": "Scène"
+  },
+  "Scene 1": {
+    "message": "Scène 1"
+  },
+  "Scene {number}": {
+    "message": "Scène { number }"
+  },
+  "Scene {number} name": {
+    "message": "Nom de la scène { number }"
+  },
+  "Scroll": {
+    "message": "Faire défiler"
+  },
+  "Select All": {
+    "message": "Tout sélectionner"
+  },
+  "Short Description": {
+    "message": "Brève description"
+  },
+  "Show All": {
+    "message": "Tout montrer"
+  },
+  "Sort": {
+    "message": "Trier"
+  },
+  "Story line": {
+    "message": "Histoire"
+  },
+  "Story line name": {
+    "message": "Nom de l''histoire"
+  },
+  "Story name": {
+    "message": "Nom de l''histoire"
+  },
+  "TRIAL Version": {
+    "message": "Version d''essai"
+  },
+  "Tag": {
+    "message": "Etiquette"
+  },
+  "Tags": {
+    "message": "Etiquettes"
+  },
+  "Tags list": {
+    "message": "Liste des étiquettes"
+  },
+  "Take Screenshot": {
+    "message": "Prendre photo de l''écran"
+  },
+  "Thanks for trying Plottr": {
+    "message": "Merci d'essayer Plottr"
+  },
+  "Timeline": {
+    "message": "Chronologie"
+  },
+  "Timeline is filtered": {
+    "message": "Chronologie triée"
+  },
+  "Title": {
+    "message": "Titre"
+  },
+  "Toggle navigation": {
+    "message": "Basculer"
+  },
+  "Try again by clicking in the menu: Plottr > Verify License...": {
+    "message": "Essayer encore en cliquant dans le menu : Plottr > Vérifier la licence."
+  },
+  "Undo": {
+    "message": "Annuler"
+  },
+  "Update Plottr": {
+    "message": "Mettre Plottr à jour."
+  },
+  "Upload the file Plottr just exported": {
+    "message": "Upload the file Plottr just exported"
+  },
+  "Use the code \"freetrial\" to get the secret discount": {
+    "message": "Utiliser le code \"freetrial\" pour obtenir la remise secrète"
+  },
+  "Verify": {
+    "message": "Vérifier"
+  },
+  "Verifying your license. Please wait...": {
+    "message": "Vérification de votre licence en cours. Merci de patienter."
+  },
+  "Version": {
+    "message": "Version"
+  },
+  "View": {
+    "message": "Présentation"
+  },
+  "Welcome to Plottr": {
+    "message": "Bienvenu sur Plottr."
+  },
+  "Where would you like to save the export?": {
+    "message": "Où voulez vous enregistrer le document exporté?"
+  },
+  "Where would you like to save this copy?": {
+    "message": "Où voulez vous enregistrer cette copie?"
+  },
+  "Where would you like to start your new file?": {
+    "message": "Où voulez vous commencer votre nouveau fichier?"
+  },
+  "Whites": {
+    "message": "Blancs"
+  },
+  "Window": {
+    "message": "Fenêtre"
+  },
+  "Would you like to open an existing file or start a new file?": {
+    "message": "Voulez vous ouvrir un fichier existant ou en créer un nouveau?"
+  },
+  "Would you like to save before exiting?": {
+    "message": "Voulez vous enregistrer avant de quitter?"
+  },
+  "You should have received a license key from Gumroad.": {
+    "message": "Vous avez du recevoir une clef de licence de Gumroad."
+  },
+  "Your free trial has expired!": {
+    "message": "La période d'essai est parvenue à son terme."
+  },
+  "Zoom": {
+    "message": "Zoomer"
+  },
+  "a lot of scenes moved around": {
+    "message": "déplacement de plusieurs scènes"
+  },
+  "a lot of story lines moved around": {
+    "message": "déplacement de plusieurs histoires"
+  },
+  "a new card": {
+    "message": "une nouvelle carte"
+  },
+  "attach character {characterName} to card {cardName}": {
+    "message": "lier un personnage { characterName } à la carte { cardName }"
+  },
+  "attach character {characterName} to note {noteName}": {
+    "message": "lier un personnage { characterName } à la note { cardName }"
+  },
+  "attach place {placeName} to card {cardName}": {
+    "message": "lier un lieu { placeName } à la carte { cardName }"
+  },
+  "attach place {placeName} to note {noteName}": {
+    "message": "lier un lieu { placeName } à la note { noteName }"
+  },
+  "attach tag {tagName} to card {cardName}": {
+    "message": "lier une étiquette { tagName } à la carte { cardName }"
+  },
+  "attach tag {tagName} to note {noteName}": {
+    "message": "lier une étiquette { tagName } à la note { cardName }"
+  },
+  "custom character attribute": {
+    "message": "information personnalisée pour un personnage"
+  },
+  "custom place attribute": {
+    "message": "information personnalisée pour un lieu"
+  },
+  "description": {
+    "message": "description"
+  },
+  "hex code or name": {
+    "message": "code hex ou nom"
+  },
+  "learn how": {
+    "message": "Apprendre"
+  },
+  "name": {
+    "message": "nom"
+  },
+  "new card": {
+    "message": "nouvelle carte"
+  },
+  "New Card": {
+    "message": "Nouvelle Carte"
+  },
+  "new character": {
+    "message": "nouveau personnage"
+  },
+  "new note": {
+    "message": "nouvelle note"
+  },
+  "new place": {
+    "message": "nouveau lieu"
+  },
+  "new scene": {
+    "message": "nouvelle scène"
+  },
+  "new storyline": {
+    "message": "nouvelle histoire"
+  },
+  "new tag": {
+    "message": "nouvelle étiquette"
+  },
+  "no more to add": {
+    "message": "rien à ajouter"
+  },
+  "no, just exit": {
+    "message": "non, il faut juste quitter."
+  },
+  "no, open the file as-is": {
+    "message": "Non, ouvrir le ficher en l'état."
+  },
+  "ok": {
+    "message": "D''accord"
+  },
+  "remove character {characterName} from card {cardName}": {
+    "message": "retirer un personnage { characterName } de la carte { cardName }"
+  },
+  "remove character {characterName} from note {noteName}": {
+    "message": "retirer un personnage { characterName } de la note { noteName }"
+  },
+  "remove place {placeName} from card {cardName}": {
+    "message": "retirer un lieu { placeName } de la carte { cardName }"
+  },
+  "remove place {placeName} from note {noteName}": {
+    "message": "retirer un lieu { placeName } de la note { noteName }"
+  },
+  "remove tag {tagName} from card {cardName}": {
+    "message": "retirer une étiquette { tagName } de la carte { cardName }"
+  },
+  "remove tag {tagName} from note {noteName}": {
+    "message": "retirer une étiquette { tagName } de la note { noteName }"
+  },
+  "story line": {
+    "message": "histoire"
+  },
+  "tag name": {
+    "message": "nom de l'étiquette"
+  },
+  "title": {
+    "message": "titre"
+  },
+  "yes, save!": {
+    "message": "oui, il faut enregistrer."
+  },
+  "yes, update the file": {
+    "message": "oui, mettre le fichier à jour."
+  },
+  "{\n          count, plural,\n          one {1 character attached}\n          other {# characters attached}\n        }": {
+    "message": "{ count, plural,\n    one {1 personnage lié}\n  other {# personnages liés}\n}"
+  },
+  "{\n          count, plural,\n          one {1 place attached}\n          other {# places attached}\n        }": {
+    "message": "{ count, plural,\n    one {1 lieu lié}\n  other {# lieux liés}\n}"
+  },
+  "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {
+    "message": "{ count, plural,\n    one {1 étiquette liée}\n  other {# étiquettes liées}\n}"
+  },
+  "{\n      count, plural,\n        one {1 carte}\n        other {# cartes}\n    }": {
+    "message": "{ count, plural,\n    one {1 card}\n  other {# cards}\n}"
+  },
+  "{\n      count, plural,\n        one {1 note}\n        other {# notes}\n    }": {
+    "message": "{ count, plural,\n    one {1 note}\n  other {# notes}\n}"
+  },
+  "{days} days remaining": {
+    "message": "{ days } jours restant"
+  }
+}

@@ -67,7 +67,9 @@ export default class ErrorBoundary extends Component {
           ) : null}
           {this.state.viewError ? (
             <div className="error-boundary__view-error well">
-              <h3>{i18n('Error: {error}', { error: this.error.message })}</h3>
+              <h3 className="error-boundary-title">
+                {i18n('Error: {error}', { error: this.error.message })}
+              </h3>
               <div>{this.errorInfo.componentStack}</div>
             </div>
           ) : null}

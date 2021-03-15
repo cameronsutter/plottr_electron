@@ -218,7 +218,6 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav() {
-    throw new Error('a more readable color')
     const {
       ui,
       file,

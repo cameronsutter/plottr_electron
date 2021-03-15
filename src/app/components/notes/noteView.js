@@ -11,7 +11,7 @@ import {
   Glyphicon,
 } from 'react-bootstrap'
 import SelectList from 'components/selectList'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import RichText from '../rce/RichText'
 import ImagePicker from 'components/images/ImagePicker'
 import Image from 'components/images/Image'

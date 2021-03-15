@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { selectors, actions } from 'pltr/v2'
 
 const UIActions = actions.ui

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import path from 'path'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { is } from 'electron-util'
 import { Dropdown, MenuItem, Glyphicon } from 'react-bootstrap'
 import { shell } from 'electron'

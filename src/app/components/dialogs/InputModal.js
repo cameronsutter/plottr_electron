@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { Form, FormGroup, FormControl, Button, Modal, Col } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import getTestIds from 'test-utils/getTestIds'
 
 export const testIds = getTestIds()

@@ -1,7 +1,7 @@
 import { Document, Packer, Paragraph, Media, AlignmentType, HeadingLevel } from 'docx'
 import fs from 'fs'
 import { sortBy, groupBy } from 'lodash'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import serialize from '../../slate_serializers/to_word'
 import { notifyUser } from '../notifier'
 import { helpers } from 'pltr/v2'

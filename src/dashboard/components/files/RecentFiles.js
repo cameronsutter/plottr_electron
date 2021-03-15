@@ -1,6 +1,6 @@
 import path from 'path'
 import React, { useState, useEffect } from 'react'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { doesFileExist, useSortedKnownFiles } from '../../utils/files'
 import { StickyTable, Row, Cell } from 'react-sticky-table'

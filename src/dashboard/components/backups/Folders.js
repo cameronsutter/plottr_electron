@@ -1,5 +1,5 @@
 import React from 'react'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { IoIosFolder } from 'react-icons/io'
 import { useBackupFolders } from '../../utils/backups'
 import { Spinner } from '../../../common/components/Spinner'

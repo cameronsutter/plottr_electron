@@ -1,5 +1,5 @@
 const { shell } = require('electron')
-const i18n = require('format-message')
+const i18n = require('plottr_locales').t
 
 function buildHelpMenu() {
   return {

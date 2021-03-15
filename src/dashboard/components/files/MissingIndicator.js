@@ -1,5 +1,5 @@
 import React from 'react'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { Glyphicon } from 'react-bootstrap'
 
 export default function MissingIndicator(props) {

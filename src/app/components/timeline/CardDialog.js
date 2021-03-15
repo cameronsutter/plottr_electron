@@ -15,7 +15,7 @@ import {
   ControlLabel,
   Overlay,
 } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import tinycolor from 'tinycolor2'
 import RichText from '../rce/RichText'

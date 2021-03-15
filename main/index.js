@@ -6,7 +6,7 @@ require('electron-updater')
 const contextMenu = require('electron-context-menu')
 const { setupRollbar } = require('./modules/rollbar')
 const { loadMenu } = require('./modules/menus')
-const { setupI18n } = require('../locales')
+const { setupI18n } = require('plottr_locales')
 const {
   focusFirstWindow,
   hasWindows,

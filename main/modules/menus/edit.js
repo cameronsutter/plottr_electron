@@ -1,4 +1,4 @@
-const i18n = require('format-message')
+const i18n = require('plottr_locales').t
 const { is } = require('electron-util')
 
 function buildEditMenu() {

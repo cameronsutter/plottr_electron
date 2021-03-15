@@ -1201,5 +1201,14 @@
   },
   "{wordCount,number} words": {
     "message": "{ wordCount, number } words"
+  },
+  "Are you sure?  (Removing levels may delete beat cards!)": {
+    "message": "Are you sure?  (Removing levels may delete beat cards!)"
+  },
+  "Hierarchy Configuration": {
+    "message": "Hierarchy Configuration"
+  },
+  "Levels of hierarchy": {
+    "message": "Levels of hierarchy"
   }
 }

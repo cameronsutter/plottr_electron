@@ -1,5 +1,5 @@
 import React from 'react'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import { ipcRenderer } from 'electron'
 

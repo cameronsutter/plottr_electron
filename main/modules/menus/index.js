@@ -1,5 +1,5 @@
 const { Menu, ipcMain, app, BrowserWindow } = require('electron')
-const i18n = require('format-message')
+const i18n = require('plottr_locales').t
 const { is } = require('electron-util')
 
 const { buildPlottrMenu } = require('./plottr')

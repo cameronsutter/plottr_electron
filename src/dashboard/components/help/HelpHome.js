@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { Button, FormControl, FormGroup } from 'react-bootstrap'
 import { shell } from 'electron'
 import { createErrorReport } from '../../../common/utils/full_error_report'

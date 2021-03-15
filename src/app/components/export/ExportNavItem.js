@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'react-proptypes'
 import { ipcRenderer, remote } from 'electron'
 import { NavItem, Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import MPQ from '../../../common/utils/MPQ'
 
 const win = remote.getCurrentWindow()

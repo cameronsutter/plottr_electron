@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { sortBy } from 'lodash'
 
 export default function ProjectTemplateDetails({ template }) {

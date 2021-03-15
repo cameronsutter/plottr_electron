@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'react-proptypes'
 import { shell, remote, ipcRenderer } from 'electron'
 import PlottrModal from 'components/PlottrModal'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import {
   listTemplates,

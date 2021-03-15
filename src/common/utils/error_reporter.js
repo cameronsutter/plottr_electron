@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import log from 'electron-log'
 import { ActionTypes } from 'pltr/v2'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import USER from './user_info'
 const app = remote.app
 

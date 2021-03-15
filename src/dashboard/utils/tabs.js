@@ -1,5 +1,5 @@
 import React from 'react'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { IoMdContact, IoIosDocument, IoMdSettings, IoIosHelpBuoy, IoMdTime } from 'react-icons/io'
 // IoIosBrowsers
 // (for templates tab)

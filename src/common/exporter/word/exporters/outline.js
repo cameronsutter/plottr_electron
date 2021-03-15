@@ -18,7 +18,7 @@ const {
   card: { sortCardsInBeat, cardMapping },
 } = helpers
 
-export default function exportOutline(state, namesMapping, doc) {
+export default function exportOutline(state, namesMapping, doc, options) {
   // get current book id and select only those beats/lines/cards
   const beats = sortedBeatsByBookSelector(state)
   const lines = sortedLinesByBookSelector(state)
@@ -28,13 +28,15 @@ export default function exportOutline(state, namesMapping, doc) {
 
   let children = []
 
-  children.push(
-    new Paragraph({
-      text: i18n('Outline'),
-      heading: HeadingLevel.HEADING_1,
-      alignment: AlignmentType.CENTER,
-    })
-  )
+  if (options.outline.heading) {
+    children.push(
+      new Paragraph({
+        text: i18n('Outline'),
+        heading: HeadingLevel.HEADING_1,
+        alignment: AlignmentType.CENTER,
+      })
+    )
+  }
 
   if (!beats.length) return { children: children }
 
@@ -44,34 +46,50 @@ export default function exportOutline(state, namesMapping, doc) {
     let paragraphs = [new Paragraph('')]
     paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
 
-    const cards = beatCardMapping[beat.id]
-    const customAttrs = cardsCustomAttributesSelector(state)
-    const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
-    let cardParagraphs = sortedCards.flatMap((c) =>
-      card(c, linesById, namesMapping, customAttrs, doc)
-    )
+    if (options.outline.sceneCards) {
+      const cards = beatCardMapping[beat.id]
+      const customAttrs = cardsCustomAttributesSelector(state)
+      const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
+      let cardParagraphs = sortedCards.flatMap((c) =>
+        card(c, linesById, namesMapping, customAttrs, doc, options)
+      )
+      paragraphs = [...paragraphs, ...cardParagraphs]
+    }
 
-    return paragraphs.concat(cardParagraphs)
+    return paragraphs
   })
 
-  return { children: children.concat(beatParagraphs) }
+  return { children: [...children, ...beatParagraphs] }
 }
 
-function card(card, linesById, namesMapping, customAttrs, doc) {
+function card(card, linesById, namesMapping, customAttrs, doc, options) {
   let paragraphs = [new Paragraph('')]
   let line = linesById[card.lineId]
   let titleString = card.title
   if (line) {
-    titleString = `${card.title} (${line.title})`
+    if (options.outline.plotlineInTitle) {
+      titleString = `${card.title} (${line.title})`
+    } else {
+      titleString = card.title
+    }
   }
   paragraphs.push(new Paragraph({ text: titleString, heading: HeadingLevel.HEADING_3 }))
-  paragraphs = [
-    ...paragraphs,
-    ...exportItemAttachments(card, namesMapping),
-    ...serialize(card.description, doc),
-    ...exportCustomAttributes(card, customAttrs, HeadingLevel.HEADING_4, doc),
-    ...exportItemTemplates(card, HeadingLevel.HEADING_4, doc),
-  ]
+
+  if (options.outline.attachments) {
+    paragraphs = [...paragraphs, ...exportItemAttachments(card, namesMapping)]
+  }
+  if (options.outline.description) {
+    paragraphs = [...paragraphs, ...serialize(card.description, doc)]
+  }
+  if (options.outline.customAttributes) {
+    paragraphs = [
+      ...paragraphs,
+      ...exportCustomAttributes(card, customAttrs, HeadingLevel.HEADING_4, doc),
+    ]
+  }
+  if (options.outline.templates) {
+    paragraphs = [...paragraphs, ...exportItemTemplates(card, HeadingLevel.HEADING_4, doc)]
+  }
 
   return paragraphs
 }

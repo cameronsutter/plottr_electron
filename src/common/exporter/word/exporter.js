@@ -18,10 +18,10 @@ export default function Exporter(data, fileName, options) {
   const bookId = data.ui.currentTimeline
 
   if (options.general.titlePage) doc.addSection(seriesNameSection(data, bookId))
-  doc.addSection(exportOutline(data, names, doc))
-  doc.addSection(exportCharacters(data, doc))
-  doc.addSection(exportPlaces(data, doc))
-  doc.addSection(exportNotes(data, names, doc))
+  if (options.outline.export) doc.addSection(exportOutline(data, names, doc, options))
+  if (options.characters.export) doc.addSection(exportCharacters(data, doc, options))
+  if (options.places.export) doc.addSection(exportPlaces(data, doc, options))
+  if (options.notes.export) doc.addSection(exportNotes(data, names, doc, options))
 
   // finish - save to file
   Packer.toBuffer(doc).then((buffer) => {

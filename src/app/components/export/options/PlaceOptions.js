@@ -72,13 +72,17 @@ export default function PlaceOptions({ type, options, updateOptions }) {
         </li>
         <li>
           <CheckOption
-            checked={options.attachments}
+            checked={options.notesHeading}
             onChange={updateOptions}
             category="places"
-            attr="attachments"
+            attr="notesHeading"
             disabled={!options.export}
           >
-            <span>{i18n('Books / Tags')}</span>
+            <div>
+              <span>{i18n('Notes Heading')}</span>
+              <br />
+              <small>{i18n('("Notes")')}</small>
+            </div>
           </CheckOption>
         </li>
         <li>

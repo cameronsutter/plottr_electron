@@ -28,7 +28,7 @@ log.info('--------Startup Tasks--------')
 const ENV_FILE_PATH = path.resolve('.env')
 require('dotenv').config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
-setupI18n({ SETTINGS, electron })
+setupI18n(SETTINGS, electron)
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({

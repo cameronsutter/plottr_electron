@@ -29,7 +29,7 @@ import { saveFile } from '../common/utils/files'
 import { removeFromTempFiles } from '../common/utils/temp_files'
 import { focusIsEditable } from '../common/utils/undo'
 
-setupI18n({ SETTINGS, electron })
+setupI18n(SETTINGS, electron)
 
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')

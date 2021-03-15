@@ -14,7 +14,7 @@ import TemplateFetcher from './utils/template_fetcher'
 import { ensureBackupFullPath } from '../common/utils/backup'
 
 // necessary SETUP //
-setupI18n({ SETTINGS, electron })
+setupI18n(SETTINGS, electron)
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('dashboard.html')
 

@@ -17,7 +17,7 @@ function buildPlottrMenu() {
         label: name,
         click: () => {
           SETTINGS.set('locale', locale)
-          setupI18n({ SETTINGS, electron })
+          setupI18n(SETTINGS, electron)
           require('./').loadMenu()
           reloadAllWindows()
           reloadDashboard()

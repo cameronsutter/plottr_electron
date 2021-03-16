@@ -1,45 +1,46 @@
 import React from 'react'
 import i18n from 'format-message'
 import PropTypes from 'react-proptypes'
-import { CheckOption, RadioOption } from '../ExportOptions'
+import { CheckOption } from '../ExportOptions'
 
 export default function OutlineOptions({ type, options, updateOptions }) {
+  // TODO: export horizonally (Row by Row instead of Column by Column)
+  // <li>
+  //   <RadioOption
+  //     checked={options.columnOrRow == 'column'}
+  //     onChange={updateOptions}
+  //     category="outline"
+  //     attr="columnOrRow"
+  //     value="column"
+  //     disabled={!options.export}
+  //   >
+  //     <span>{i18n('Column By Column')}</span>
+  //   </RadioOption>
+  //   <RadioOption
+  //     checked={options.columnOrRow == 'row'}
+  //     onChange={updateOptions}
+  //     category="outline"
+  //     attr="columnOrRow"
+  //     value="row"
+  //     disabled={!options.export}
+  //   >
+  //     <span>{i18n('Row By Row')}</span>
+  //   </RadioOption>
+  // </li>
+
   return (
     <div className="list-wrapper">
-      <div className="list-title">{i18n('Outline')}</div>
+      <div className="list-title">
+        <CheckOption
+          checked={options.export}
+          onChange={updateOptions}
+          category="outline"
+          attr="export"
+        >
+          <span>{i18n('Outline')}</span>
+        </CheckOption>
+      </div>
       <ul>
-        <li>
-          <CheckOption
-            checked={options.export}
-            onChange={updateOptions}
-            category="outline"
-            attr="export"
-          >
-            <span>{i18n('Export')}</span>
-          </CheckOption>
-        </li>
-        <li>
-          <RadioOption
-            checked={options.columnOrRow == 'column'}
-            onChange={updateOptions}
-            category="outline"
-            attr="columnOrRow"
-            value="column"
-            disabled={!options.export}
-          >
-            <span>{i18n('Column By Column')}</span>
-          </RadioOption>
-          <RadioOption
-            checked={options.columnOrRow == 'row'}
-            onChange={updateOptions}
-            category="outline"
-            attr="columnOrRow"
-            value="row"
-            disabled={!options.export}
-          >
-            <span>{i18n('Row By Row')}</span>
-          </RadioOption>
-        </li>
         {type == 'word' ? (
           <li>
             <CheckOption

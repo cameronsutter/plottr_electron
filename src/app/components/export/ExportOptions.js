@@ -1,7 +1,8 @@
 import React, { useRef } from 'react'
 import PropTypes from 'react-proptypes'
+import cx from 'classnames'
 
-export function CheckOption({ children, checked, disabled, onChange, category, attr }) {
+export function CheckOption({ children, checked, disabled, onChange, category, attr, inline }) {
   const inputRef = useRef(null)
 
   const valueChange = () => {
@@ -9,7 +10,7 @@ export function CheckOption({ children, checked, disabled, onChange, category, a
   }
 
   return (
-    <div className="checkbox">
+    <div className={cx('checkbox', { inline: inline })}>
       <label onClick={(e) => e.stopPropagation()}>
         <input
           type="checkbox"
@@ -31,6 +32,7 @@ CheckOption.propTypes = {
   category: PropTypes.string,
   attr: PropTypes.string,
   onChange: PropTypes.func,
+  inline: PropTypes.bool,
 }
 
 export function RadioOption({ children, checked, disabled, onChange, category, attr, value }) {

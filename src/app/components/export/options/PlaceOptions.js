@@ -6,18 +6,17 @@ import { CheckOption } from '../ExportOptions'
 export default function PlaceOptions({ type, options, updateOptions }) {
   return (
     <div className="list-wrapper">
-      <div className="list-title">{i18n('Places')}</div>
+      <div className="list-title">
+        <CheckOption
+          checked={options.export}
+          onChange={updateOptions}
+          category="places"
+          attr="export"
+        >
+          <span>{i18n('Places')}</span>
+        </CheckOption>
+      </div>
       <ul>
-        <li>
-          <CheckOption
-            checked={options.export}
-            onChange={updateOptions}
-            category="places"
-            attr="export"
-          >
-            <span>{i18n('Export')}</span>
-          </CheckOption>
-        </li>
         {type == 'word' ? (
           <li>
             <CheckOption

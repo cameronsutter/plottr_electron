@@ -6,18 +6,17 @@ import { CheckOption } from '../ExportOptions'
 export default function CharacterOptions({ type, options, updateOptions }) {
   return (
     <div className="list-wrapper">
-      <div className="list-title">{i18n('Characters')}</div>
+      <div className="list-title">
+        <CheckOption
+          checked={options.export}
+          onChange={updateOptions}
+          category="characters"
+          attr="export"
+        >
+          <span>{i18n('Characters')}</span>
+        </CheckOption>
+      </div>
       <ul>
-        <li>
-          <CheckOption
-            checked={options.export}
-            onChange={updateOptions}
-            category="characters"
-            attr="export"
-          >
-            <span>{i18n('Export')}</span>
-          </CheckOption>
-        </li>
         {type == 'word' ? (
           <li>
             <CheckOption

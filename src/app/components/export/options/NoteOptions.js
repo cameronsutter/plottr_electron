@@ -6,18 +6,17 @@ import { CheckOption } from '../ExportOptions'
 export default function NoteOptions({ type, options, updateOptions }) {
   return (
     <div className="list-wrapper">
-      <div className="list-title">{i18n('Notes')}</div>
+      <div className="list-title">
+        <CheckOption
+          checked={options.export}
+          onChange={updateOptions}
+          category="notes"
+          attr="export"
+        >
+          <span>{i18n('Notes')}</span>
+        </CheckOption>
+      </div>
       <ul>
-        <li>
-          <CheckOption
-            checked={options.export}
-            onChange={updateOptions}
-            category="notes"
-            attr="export"
-          >
-            <span>{i18n('Export')}</span>
-          </CheckOption>
-        </li>
         {type == 'word' ? (
           <li>
             <CheckOption

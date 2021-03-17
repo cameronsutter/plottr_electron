@@ -69,6 +69,23 @@ Both libraries are subtrees so that changes made to them are instantly
 visible in `plottr_electron`.  Use the subtree commands listed in the
 `pltr` section to operate on these libraries as well.
 
+# `plottr_components`
+To use `plottr_components`, you first need to install it's node
+modules and then, minimally, run `npm run compile`.  It's recommended
+that you instead run `npm run start` to start a continuous
+compilation.
+
+## Things You Might Run Into
+
+### Webpack Complains About A Missing Dist
+This will happen if you start Webpack in watch mode and *then* start
+`plottr_components` because `plottr_components` clears the dist folder
+when you start compiling.  `plottr_components` does this once, at
+start up.
+
+*To avoid the problem*: run `npm run start` in `lib/plottr_components`
+before starting Webpack.
+
 # Debugging Tests
 To debug a test:
 

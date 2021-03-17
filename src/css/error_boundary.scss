@@ -43,3 +43,9 @@
   align-items: center;
   max-width: 60%;
 }
+
+body.darkmode {
+  .error-boundary-title {
+    color: $text-color
+  }
+}

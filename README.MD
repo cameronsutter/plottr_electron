@@ -59,6 +59,16 @@ path of `/lib`.
     git subtree add --prefix lib/pltr pltr master --squash
 ```
 
+# Other Libraries
+Plottr also contains other libraries in the same way as `pltr`.  These
+include:
+ - `plottr_locales`, and
+ - `plottr_components`.
+
+Both libraries are subtrees so that changes made to them are instantly
+visible in `plottr_electron`.  Use the subtree commands listed in the
+`pltr` section to operate on these libraries as well.
+
 # Debugging Tests
 To debug a test:
 

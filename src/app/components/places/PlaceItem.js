@@ -6,7 +6,7 @@ import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import Image from '../images/Image'
 import cx from 'classnames'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'plottr_components'
 import { actions } from 'pltr/v2'
 
 const PlaceActions = actions.place

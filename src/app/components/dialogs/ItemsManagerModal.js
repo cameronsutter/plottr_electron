@@ -6,7 +6,7 @@ import PlottrModal from 'components/PlottrModal'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import { FaSave } from 'react-icons/fa'
-import DeleteConfirmModal from './DeleteConfirmModal'
+import { DeleteConfirmModal } from 'plottr_components'
 
 const modalStyles = {
   overlay: {

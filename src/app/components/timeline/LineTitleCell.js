@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import ColorPicker from '../colorpicker'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'plottr_components'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'

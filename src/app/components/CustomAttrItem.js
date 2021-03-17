@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { Glyphicon, Button } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import DeleteConfirmModal from './dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'plottr_components'
 
 export default class CustomAttrItem extends Component {
   state = {

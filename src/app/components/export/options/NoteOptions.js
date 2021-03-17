@@ -17,41 +17,43 @@ export default function NoteOptions({ type, options, updateOptions }) {
         </CheckOption>
       </div>
       <ul>
+        <li>
+          <CheckOption
+            checked={options.heading}
+            onChange={updateOptions}
+            category="notes"
+            attr="heading"
+            disabled={!options.export}
+          >
+            <span>{i18n(type == 'word' ? 'Heading ("Notes")' : 'Note Title')}</span>
+          </CheckOption>
+        </li>
         {type == 'word' ? (
           <li>
             <CheckOption
-              checked={options.heading}
+              checked={options.images}
               onChange={updateOptions}
               category="notes"
-              attr="heading"
+              attr="images"
               disabled={!options.export}
             >
-              <span>{i18n('Heading ("Notes")')}</span>
+              <span>{i18n('Images')}</span>
             </CheckOption>
           </li>
         ) : null}
-        <li>
-          <CheckOption
-            checked={options.images}
-            onChange={updateOptions}
-            category="notes"
-            attr="images"
-            disabled={!options.export}
-          >
-            <span>{i18n('Images')}</span>
-          </CheckOption>
-        </li>
-        <li>
-          <CheckOption
-            checked={options.attachments}
-            onChange={updateOptions}
-            category="notes"
-            attr="attachments"
-            disabled={!options.export}
-          >
-            <span>{i18n('Tags / Characters / Places')}</span>
-          </CheckOption>
-        </li>
+        {type == 'word' ? (
+          <li>
+            <CheckOption
+              checked={options.attachments}
+              onChange={updateOptions}
+              category="notes"
+              attr="attachments"
+              disabled={!options.export}
+            >
+              <span>{i18n('Tags / Characters / Places')}</span>
+            </CheckOption>
+          </li>
+        ) : null}
         <li>
           <CheckOption
             checked={options.content}

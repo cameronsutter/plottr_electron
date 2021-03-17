@@ -4,7 +4,7 @@ import i18n from 'format-message'
 import ExportDialog from './ExportDialog'
 
 export default function ExportNavItem() {
-  const [showDialog, setShowDialog] = useState(true) // TODO: set this back to false
+  const [showDialog, setShowDialog] = useState(false)
 
   const ShowModal = () => {
     if (!showDialog) return null

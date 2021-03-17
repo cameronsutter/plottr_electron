@@ -11,6 +11,7 @@ import Switch from '../../../common/components/Switch'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import ScrivenerExporter from '../../../common/exporter/scrivener/v2/exporter'
 import WordExporter from '../../../common/exporter/word/exporter'
+import log from 'electron-log'
 
 const win = remote.getCurrentWindow()
 const { dialog } = remote
@@ -52,20 +53,22 @@ function ExportDialog(props) {
         saveSetting(`export.${type}`, options[type])
       }
 
-      // TODO: error handling for these
-
-      switch (type) {
-        case 'scrivener':
-          ScrivenerExporter(fullState, fileName, options[type])
-          break
-        case 'word':
-        default:
-          WordExporter(fullState, fileName, options[type])
-          break
+      try {
+        switch (type) {
+          case 'scrivener':
+            ScrivenerExporter(fullState, fileName, options[type])
+            break
+          case 'word':
+          default:
+            WordExporter(fullState, fileName, options[type])
+            break
+        }
+      } catch (error) {
+        log.error(error)
+        // TODO: show the user an error
       }
 
-      // TODO: TURN THIS BACK ON
-      // props.close()
+      props.close()
     }
   }
 

@@ -109,7 +109,10 @@ export function createTextBinderItem(text) {
 // that we create for the object. This function takes an object of key value pairs
 // and generates a rich text document where the keys are headings and the values are
 // paragraphs that can then be used to create a RTF document
-export function buildDescriptionFromObject(object) {
+
+// NOTE: in this case 'options' is only the lowest level object
+// so instead of options.notes.descriptionHeading, it is options.descriptionHeading
+export function buildDescriptionFromObject(object, options) {
   const description = []
   for (const [key, value] of Object.entries(object)) {
     // if the user hasn't input a value we won't include it
@@ -118,22 +121,54 @@ export function buildDescriptionFromObject(object) {
       continue
     }
 
-    description.push({
-      type: 'heading-two',
-      children: [
-        {
-          text: key === 'description' ? i18n('Description') : key,
-        },
-      ],
-    })
-
-    if (typeof value === 'string') {
+    if (key === 'description' && (options.descriptionHeading || options === true)) {
       description.push({
-        type: 'paragraph',
-        children: [{ text: value }],
+        type: 'heading-two',
+        children: [{ text: i18n('Description') }],
       })
-    } else {
-      description.push(...value)
+    }
+
+    if (key === 'notes' && (options.notesHeading || options === true)) {
+      description.push({
+        type: 'heading-two',
+        children: [{ text: i18n('Notes') }],
+      })
+    }
+
+    if (key === 'Tags' && (options.tags || options === true)) {
+      description.push({
+        type: 'heading-two',
+        children: [{ text: key }],
+      })
+    }
+
+    if (
+      key !== 'description' &&
+      key !== 'notes' &&
+      key !== 'Tags' &&
+      (options.customAttributes || options === true)
+    ) {
+      description.push({
+        type: 'heading-two',
+        children: [{ text: key }],
+      })
+    }
+
+    if (
+      (key === 'description' && options.description) ||
+      (key === 'notes' && options.notes) ||
+      (key === 'Tags' && options.tags) ||
+      options.customAttributes ||
+      options === true
+    ) {
+      if (typeof value === 'string') {
+        description.push({
+          type: 'paragraph',
+          children: [{ text: value }],
+        })
+      } else {
+        description.push(...value)
+      }
     }
   }
   return description

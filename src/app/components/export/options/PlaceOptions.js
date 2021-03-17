@@ -17,19 +17,17 @@ export default function PlaceOptions({ type, options, updateOptions }) {
         </CheckOption>
       </div>
       <ul>
-        {type == 'word' ? (
-          <li>
-            <CheckOption
-              checked={options.heading}
-              onChange={updateOptions}
-              category="places"
-              attr="heading"
-              disabled={!options.export}
-            >
-              <span>{i18n('Heading ("Places")')}</span>
-            </CheckOption>
-          </li>
-        ) : null}
+        <li>
+          <CheckOption
+            checked={options.heading}
+            onChange={updateOptions}
+            category="places"
+            attr="heading"
+            disabled={!options.export}
+          >
+            <span>{i18n(type == 'word' ? 'Heading ("Places")' : 'Place Title')}</span>
+          </CheckOption>
+        </li>
         {type == 'word' ? (
           <li>
             <CheckOption
@@ -106,6 +104,19 @@ export default function PlaceOptions({ type, options, updateOptions }) {
             <span>{i18n('Custom Attributes')}</span>
           </CheckOption>
         </li>
+        {type == 'scrivener' ? (
+          <li>
+            <CheckOption
+              checked={options.tags}
+              onChange={updateOptions}
+              category="places"
+              attr="tags"
+              disabled={!options.export}
+            >
+              <span>{i18n('Tags')}</span>
+            </CheckOption>
+          </li>
+        ) : null}
       </ul>
     </div>
   )

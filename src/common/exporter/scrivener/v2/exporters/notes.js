@@ -4,7 +4,7 @@ import { selectors } from 'pltr/v2'
 
 const { allNotesInBookSelector } = selectors
 
-export default function exportNotes(state, documentContents) {
+export default function exportNotes(state, documentContents, options) {
   const { binderItem } = createFolderBinderItem(i18n('Notes'))
   const notes = allNotesInBookSelector(state)
   notes.forEach((note) => {
@@ -14,8 +14,10 @@ export default function exportNotes(state, documentContents) {
     binderItem.Children.BinderItem.push(noteBinderItem)
 
     documentContents[id] = {
-      docTitle: i18n('Note: {title}', { title }),
-      description: content,
+      body: {
+        docTitle: options.notes.heading ? title : null,
+        description: options.notes.content ? content : null,
+      },
     }
   })
 

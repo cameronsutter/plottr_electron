@@ -17,19 +17,17 @@ export default function CharacterOptions({ type, options, updateOptions }) {
         </CheckOption>
       </div>
       <ul>
-        {type == 'word' ? (
-          <li>
-            <CheckOption
-              checked={options.heading}
-              onChange={updateOptions}
-              category="characters"
-              attr="heading"
-              disabled={!options.export}
-            >
-              <span>{i18n('Heading ("Characters")')}</span>
-            </CheckOption>
-          </li>
-        ) : null}
+        <li>
+          <CheckOption
+            checked={options.heading}
+            onChange={updateOptions}
+            category="characters"
+            attr="heading"
+            disabled={!options.export}
+          >
+            <span>{i18n(type == 'word' ? 'Heading ("Characters")' : 'Character Title')}</span>
+          </CheckOption>
+        </li>
         {type == 'word' ? (
           <li>
             <CheckOption
@@ -117,6 +115,32 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             <span>{i18n('Templates')}</span>
           </CheckOption>
         </li>
+        {type == 'scrivener' ? (
+          <li>
+            <CheckOption
+              checked={options.tags}
+              onChange={updateOptions}
+              category="characters"
+              attr="tags"
+              disabled={!options.export}
+            >
+              <span>{i18n('Tags')}</span>
+            </CheckOption>
+          </li>
+        ) : null}
+        {type == 'scrivener' ? (
+          <li>
+            <CheckOption
+              checked={options.tags}
+              onChange={updateOptions}
+              category="characters"
+              attr="category"
+              disabled={!options.export}
+            >
+              <span>{i18n('Category')}</span>
+            </CheckOption>
+          </li>
+        ) : null}
       </ul>
     </div>
   )

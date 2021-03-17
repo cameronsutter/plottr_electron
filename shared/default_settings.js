@@ -28,6 +28,8 @@ module.exports = {
         plotlineInTitle: true,
         attachments: true,
         description: true,
+        descriptionHeading: true,
+        where: 'notes',
         customAttributes: true,
         templates: true,
       },
@@ -39,6 +41,8 @@ module.exports = {
         notes: true,
         customAttributes: true,
         templates: true,
+        tags: true,
+        category: true,
       },
       places: {
         export: true,
@@ -47,6 +51,7 @@ module.exports = {
         attachments: true,
         notes: true,
         customAttributes: true,
+        tags: true,
       },
       notes: {
         export: true,

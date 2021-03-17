@@ -1,6 +1,11 @@
 import { keyBy } from 'lodash'
 import i18n from 'format-message'
-import { buildDescriptionFromObject, createFolderBinderItem, createTextBinderItem } from '../utils'
+import {
+  buildDescriptionFromObject,
+  createFolderBinderItem,
+  createTextBinderItem,
+  buildTemplateProperties,
+} from '../utils'
 import { helpers, selectors } from 'pltr/v2'
 
 const {
@@ -14,7 +19,7 @@ const {
   card: { sortCardsInBeat, cardMapping },
 } = helpers
 
-export default function exportBeats(state, documentContents) {
+export default function exportBeats(state, documentContents, options) {
   // get current book id and select only those beats/lines/cards
   const beats = sortedBeatsByBookSelector(state)
   const lines = sortedLinesByBookSelector(state)
@@ -31,43 +36,74 @@ export default function exportBeats(state, documentContents) {
     const title = uniqueBeatTitleSelector(state, beat.id)
     const { binderItem } = createFolderBinderItem(title)
 
-    // sort cards into beats by lines (like outline auto-sorting)
-    const cards = beatCardMapping[beat.id]
-    const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
-    sortedCards.forEach((c) => {
-      const { id, binderItem: cardItem } = createTextBinderItem(c.title)
-      binderItem['Children']['BinderItem'].push(cardItem)
+    if (options.outline.sceneCards) {
+      // sort cards into beats by lines (like outline auto-sorting)
+      const cards = beatCardMapping[beat.id]
+      const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
+      sortedCards.forEach((c) => {
+        const { id, binderItem: cardItem } = createTextBinderItem(c.title)
+        binderItem['Children']['BinderItem'].push(cardItem)
 
-      // save card info into documentContents
-      let title = ''
-      const lineId = c.lineId
-      const line = linesById[lineId]
-      if (line) title = line.title
+        // save card info into documentContents
+        let title = ''
+        const lineId = c.lineId
+        const line = linesById[lineId]
+        if (line) title = line.title
 
-      let descObj = {
-        description: c.description,
-      }
-      customAttrs.reduce((acc, entry) => {
-        acc[entry.name] = c[entry.name]
-        return acc
-      }, descObj)
+        let descObj = {}
 
-      c.templates.forEach((t) => {
-        t.attributes.forEach((attr) => {
-          if (descObj[attr.name]) {
-            descObj[`${t.name}:${attr.name}`] = attr.value
-          } else {
-            descObj[attr.name] = attr.value
+        if (options.outline.customAttributes) {
+          customAttrs.reduce((acc, entry) => {
+            acc[entry.name] = c[entry.name]
+            return acc
+          }, descObj)
+        }
+
+        if (options.outline.templates) {
+          c.templates.forEach((t) => {
+            t.attributes.forEach((attr) => {
+              if (descObj[attr.name]) {
+                descObj[`${t.name}:${attr.name}`] = attr.value
+              } else {
+                descObj[attr.name] = attr.value
+              }
+            })
+          })
+        }
+
+        if (options.outline.where == 'notes') {
+          descObj.description = c.description
+        }
+
+        let description = buildDescriptionFromObject(descObj, options.outline)
+
+        // handle template properties
+        if (options.outline.templates) {
+          description = [
+            ...description,
+            ...buildDescriptionFromObject(buildTemplateProperties(c.templates), true),
+          ]
+        }
+
+        const contents = {
+          docTitle: options.outline.plotlineInTitle ? i18n('Plotline: {title}', { title }) : null,
+          description: description,
+        }
+        documentContents[id] = {
+          notes: contents,
+        }
+
+        if (options.outline.where != 'notes') {
+          documentContents[id][options.outline.where] = {
+            description: buildDescriptionFromObject(
+              { description: c.description },
+              options.outline
+            ),
           }
-        })
+        }
       })
+    }
 
-      documentContents[id] = {
-        isNotesDoc: true,
-        docTitle: i18n('Plotline: {title}', { title }),
-        description: buildDescriptionFromObject(descObj),
-      }
-    })
     return binderItem
   })
 }

@@ -10,7 +10,7 @@ import { selectors } from 'pltr/v2'
 
 const { placesSortedInBookSelector } = selectors
 
-export default function exportPlaces(state, documentContents) {
+export default function exportPlaces(state, documentContents, options) {
   const { binderItem } = createFolderBinderItem(i18n('Places'))
   const places = placesSortedInBookSelector(state)
   places.forEach((place) => {
@@ -35,15 +35,24 @@ export default function exportPlaces(state, documentContents) {
     binderItem.Children.BinderItem.push(placeBinderItem)
 
     // handle tags
-    placeProperties.Tags = buildTagsString(tags, state)
+    if (options.places.tags) {
+      placeProperties.Tags = buildTagsString(tags, state)
+    }
 
+    let description = buildDescriptionFromObject(placeProperties, options.notes)
     // handle template properties
-    Object.assign(placeProperties, buildTemplateProperties(templates))
+    if (options.places.templates) {
+      description = [
+        ...description,
+        ...buildDescriptionFromObject(buildTemplateProperties(templates), true),
+      ]
+    }
 
-    const description = buildDescriptionFromObject(placeProperties)
     documentContents[id] = {
-      docTitle: i18n('Place: {name}', { name }),
-      description,
+      body: {
+        docTitle: options.places.heading ? name : null,
+        description,
+      },
     }
   })
 

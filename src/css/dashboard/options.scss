@@ -1,5 +1,5 @@
-@import "../colors";
-@import "../vars";
+@import '../colors';
+@import '../vars';
 
 .dashboard__options {
   height: 100%;
@@ -37,14 +37,13 @@
       color: $gray-5;
     }
   }
-  .form-control[type="number"] {
+  .form-control[type='number'] {
     width: 100px;
   }
-  .form-control[type="text"] {
+  .form-control[type='text'] {
     width: 50%;
   }
 }
-
 
 // copied and adapted from https://upmostly.com/tutorials/build-a-react-switch-toggle-component //
 
@@ -67,7 +66,7 @@ input.option-switch-checkbox {
   background-color: $gray-5;
   border-radius: 100px / $scale-factor;
   position: relative;
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 
   &.checked {
     background-color: $green-5;
@@ -87,7 +86,7 @@ input.option-switch-checkbox {
   box-shadow: 0 0 2px 0 rgba(10, 10, 10, 0.29);
 }
 
-.option-switch-checkbox:checked + .option-switch-label .option-switch-button {
+.option-switch-label.checked .option-switch-button {
   left: calc(100% - 1px); // adjust with scale factor
   transform: translateX(-100%);
 }
@@ -97,6 +96,7 @@ input.option-switch-checkbox {
 }
 
 .option-switch-labeltext {
+  cursor: pointer;
   margin-left: 8px;
 }
 

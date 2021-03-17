@@ -3,25 +3,15 @@ import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 
 export default function Switch({ isOn, handleToggle, labelText, disabled }) {
-  const key = useRef(Math.random()).current
-
   return (
     <div className={cx('option-switch-wrapper', { disabled: !!disabled })}>
-      <input
-        checked={isOn}
-        onChange={handleToggle}
-        className="option-switch-checkbox"
-        type="checkbox"
-        id={`option-switch-${key}`}
-        disabled={!!disabled}
-      />
       <label
         className={cx('option-switch-label', { checked: isOn, disabled: !!disabled })}
-        htmlFor={`option-switch-${key}`}
+        onClick={handleToggle}
       >
         <span className={`option-switch-button`} />
       </label>
-      <label htmlFor={`option-switch-${key}`} className="option-switch-labeltext">
+      <label className="option-switch-labeltext" onClick={handleToggle}>
         {labelText}
       </label>
     </div>

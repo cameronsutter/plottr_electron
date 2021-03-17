@@ -10,7 +10,7 @@ import { selectors } from 'pltr/v2'
 
 const { characterCategoriesSelector, charactersSortedInBookSelector } = selectors
 
-export default function exportCharacters(state, documentContents) {
+export default function exportCharacters(state, documentContents, options) {
   const { binderItem } = createFolderBinderItem(i18n('Characters'))
   const characters = charactersSortedInBookSelector(state)
   const allCharacterCategories = Object.values(characterCategoriesSelector(state))
@@ -37,21 +37,35 @@ export default function exportCharacters(state, documentContents) {
     binderItem.Children.BinderItem.push(characterBinderItem)
 
     // handle tags
-    characterProperties.Tags = buildTagsString(tags, state)
-
-    // handle categories
-    if (categoryId != null) {
-      const category = allCharacterCategories.find((category) => String(category.id) === categoryId)
-      characterProperties.Category = category.name
+    if (options.characters.tags) {
+      characterProperties.Tags = buildTagsString(tags, state)
     }
 
-    // handle template properties
-    Object.assign(characterProperties, buildTemplateProperties(templates))
+    // handle categories
+    if (options.characters.category) {
+      if (categoryId != null) {
+        const category = allCharacterCategories.find(
+          (category) => String(category.id) === categoryId
+        )
+        characterProperties.Category = category.name
+      }
+    }
 
-    const description = buildDescriptionFromObject(characterProperties)
+    let description = buildDescriptionFromObject(characterProperties, options.characters)
+
+    // handle template properties
+    if (options.characters.templates) {
+      description = [
+        ...description,
+        ...buildDescriptionFromObject(buildTemplateProperties(templates), true),
+      ]
+    }
+
     documentContents[id] = {
-      docTitle: i18n('Character: {name}', { name }),
-      description,
+      body: {
+        docTitle: options.characters.heading ? name : null,
+        description,
+      },
     }
   })
   return binderItem

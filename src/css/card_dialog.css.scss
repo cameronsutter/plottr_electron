@@ -84,12 +84,12 @@
 }
 
 .card-dialog__tab--selected {
-  color: $blue-2;
-  background: #f1f5f8;
+  color: $blue-1;
+  background: $gray-9;
 }
 
 .card-dialog__custom-attributes {
-  border: 2px solid #f1f5f8;
+  border: 2px solid $gray-9;
   padding: 15px 20px;
 }
 

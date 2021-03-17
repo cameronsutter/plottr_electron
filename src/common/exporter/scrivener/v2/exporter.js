@@ -4,6 +4,7 @@ import log from 'electron-log'
 import xml from 'xml-js'
 import rtf from 'jsrtf'
 import serialize from '../../../slate_serializers/to_rtf'
+import { serialize as serializePlain } from '../../../slate_serializers/to_plain_text'
 import { notifyUser } from '../../notifier'
 import exportBeats from './exporters/beats'
 import exportCharacters from './exporters/characters'
@@ -11,7 +12,7 @@ import exportNotes from './exporters/notes'
 import exportPlaces from './exporters/places'
 import { convertUnicode, addToScrivx, remove, startNewScrivx } from './utils'
 
-export default function Exporter(state, exportPath) {
+export default function Exporter(state, exportPath, options) {
   const realPath = exportPath.includes('.scriv') ? exportPath : `${exportPath}.scriv`
 
   try {
@@ -19,10 +20,10 @@ export default function Exporter(state, exportPath) {
     createProjectStructure(realPath)
 
     // create the .scrivx
-    let documentContents = createScrivx(state, realPath)
+    let documentContents = createScrivx(state, realPath, options)
 
     // create the rtf documents for each scene card
-    createRTFDocuments(documentContents, realPath)
+    createRTFDocuments(documentContents, realPath, options)
   } catch (error) {
     log.error(error)
     // move anything we've made to the trash
@@ -37,9 +38,9 @@ export default function Exporter(state, exportPath) {
 function createProjectStructure(exportPath) {
   // create package folder
   try {
-    // what if it already exists?
     const stat = fs.statSync(exportPath)
 
+    // if it already exists: overwrite (OS should have already asked)
     if (stat.isDirectory()) {
       // delete current
       remove(exportPath)
@@ -58,21 +59,29 @@ function createProjectStructure(exportPath) {
   fs.mkdirSync(path.join(exportPath, 'Settings'))
 }
 
-function createScrivx(state, basePath) {
+function createScrivx(state, basePath, options) {
   let scrivx = startNewScrivx()
   let documentContents = {}
 
-  const beatBinderItems = exportBeats(state, documentContents)
-  addToScrivx(scrivx, beatBinderItems, 'main')
+  if (options.outline.export) {
+    const beatBinderItems = exportBeats(state, documentContents, options)
+    addToScrivx(scrivx, beatBinderItems, 'main')
+  }
 
-  const charactersBinderItem = exportCharacters(state, documentContents)
-  addToScrivx(scrivx, charactersBinderItem, 'research')
+  if (options.characters.export) {
+    const charactersBinderItem = exportCharacters(state, documentContents, options)
+    addToScrivx(scrivx, charactersBinderItem, 'research')
+  }
 
-  const placesBinderItem = exportPlaces(state, documentContents)
-  addToScrivx(scrivx, placesBinderItem, 'research')
+  if (options.places.export) {
+    const placesBinderItem = exportPlaces(state, documentContents, options)
+    addToScrivx(scrivx, placesBinderItem, 'research')
+  }
 
-  const notesBinderItem = exportNotes(state, documentContents)
-  addToScrivx(scrivx, notesBinderItem, 'research')
+  if (options.notes.export) {
+    const notesBinderItem = exportNotes(state, documentContents, options)
+    addToScrivx(scrivx, notesBinderItem, 'research')
+  }
 
   const data = xml.json2xml(scrivx, { compact: true, ignoreComment: true, spaces: 2 })
   const baseName = path.basename(basePath).replace('.scriv', '')
@@ -85,29 +94,51 @@ function createRTFDocuments(documentContents, basePath) {
   const realBasePath = path.join(basePath, 'Files', 'Docs')
 
   Object.keys(documentContents).forEach((docID) => {
-    // documentContents is {docTitle: '', description: [], isNotesDoc: true}
-    const document = documentContents[docID]
-    // NOT DOING: create a {docID}_synopsis.txt file for the line title
-
-    // create a {docID}_notes.rtf file for the document description
-    let doc = new rtf()
-    let data = null
-    if (document.docTitle) {
-      doc.writeText(document.docTitle)
-      doc.addLine()
-      doc.addLine()
-      // fs.writeFileSync(path.join(realBasePath, `${docID}_synopsis.txt`), document.docTitle)
+    // documentContents is {notes: <document>, body: <document>, synopsis: <document>}
+    // document is {docTitle: '', description: []}
+    const documents = documentContents[docID]
+    if (documents.notes) {
+      createRTF(docID, documents.notes, realBasePath, true)
     }
-    try {
-      serialize(document.description, doc)
-      data = doc.createDocument()
-      data = convertUnicode(data)
-      data = Buffer.from(data, 'utf8')
-      const fileName = document.isNotesDoc ? `${docID}_notes.rtf` : `${docID}.rtf`
-      fs.writeFileSync(path.join(realBasePath, fileName), data)
-    } catch (error) {
-      log.error(error)
-      // do nothing, just don't blow up
+
+    if (documents.body) {
+      createRTF(docID, documents.body, realBasePath, false)
+    }
+
+    if (documents.synopsis) {
+      createSynopsis(docID, documents.synopsis, realBasePath)
     }
   })
+}
+
+function createRTF(docID, document, realBasePath, isNotes) {
+  let doc = new rtf()
+  let data = null
+  if (document.docTitle) {
+    doc.writeText(document.docTitle)
+    doc.addLine()
+    doc.addLine()
+  }
+  try {
+    serialize(document.description, doc)
+    data = doc.createDocument()
+    data = convertUnicode(data)
+    data = Buffer.from(data, 'utf8')
+    const fileName = isNotes ? `${docID}_notes.rtf` : `${docID}.rtf`
+    fs.writeFileSync(path.join(realBasePath, fileName), data)
+  } catch (error) {
+    log.error(error)
+    // do nothing, just don't blow up
+  }
+}
+
+function createSynopsis(docID, document, realBasePath) {
+  try {
+    const data = serializePlain(document.description)
+    const fileName = `${docID}_synopsis.txt`
+    fs.writeFileSync(path.join(realBasePath, fileName), data)
+  } catch (error) {
+    log.error(error)
+    // do nothing, just don't blow up
+  }
 }

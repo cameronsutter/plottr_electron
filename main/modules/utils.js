@@ -93,7 +93,7 @@ function makeBrowserWindow(filePath) {
     }
   )
 
-  if (process.env.NODE_ENV === 'development' || SETTINGS.get('forceDevTools')) {
+  if (is.development || SETTINGS.get('forceDevTools')) {
     newWindow.openDevTools()
   }
 

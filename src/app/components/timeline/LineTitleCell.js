@@ -13,7 +13,7 @@ import {
 import { Cell } from 'react-sticky-table'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import Floater from 'react-floater'
@@ -21,6 +21,7 @@ import { actions, helpers, selectors } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 
 const LineActions = actions.line
+const uiActions = actions.ui
 
 const {
   card: { truncateTitle },
@@ -163,6 +164,14 @@ class LineTitleCell extends PureComponent {
     }
   }
 
+  toggleExpanded = () => {
+    if (this.props.ui.timelineIsExpanded) {
+      this.props.uiActions.collapseTimeline()
+    } else {
+      this.props.uiActions.expandTimeline()
+    }
+  }
+
   renderEditInput() {
     if (!this.state.editing) return null
 
@@ -202,10 +211,16 @@ class LineTitleCell extends PureComponent {
   renderHoverOptions = () => {
     const { lineIsExpanded, ui, isSmall } = this.props
     let expandedIcon = null
+    let expandedText = null
     if (lineIsExpanded) {
       expandedIcon = <FaCompressAlt />
     } else {
       expandedIcon = <FaExpandAlt />
+    }
+    if (ui.timelineIsExpanded) {
+      expandedText = i18n('Collapse All')
+    } else {
+      expandedText = i18n('Expand All')
     }
 
     if (ui.orientation === 'vertical') {
@@ -219,9 +234,14 @@ class LineTitleCell extends PureComponent {
             <Glyphicon glyph="tint" />
           </Button>
           {isSmall ? null : (
-            <Button block bsSize="small" onClick={this.toggleLine}>
-              {expandedIcon}
-            </Button>
+            <>
+              <Button block bsSize="small" onClick={this.toggleLine}>
+                {expandedIcon}
+              </Button>
+              <Button block bsSize="small" onClick={this.toggleExpanded}>
+                {expandedText}
+              </Button>
+            </>
           )}
           <Button block bsSize="small" onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
@@ -239,9 +259,14 @@ class LineTitleCell extends PureComponent {
               <Glyphicon glyph="tint" />
             </Button>
             {isSmall ? null : (
-              <Button bsSize="small" onClick={this.toggleLine}>
-                {expandedIcon}
-              </Button>
+              <>
+                <Button bsSize="small" onClick={this.toggleLine}>
+                  {expandedIcon}
+                </Button>
+                <Button bsSize="small" onClick={this.toggleExpanded}>
+                  {expandedText}
+                </Button>
+              </>
             )}
             <Button bsSize="small" onClick={this.handleDelete}>
               <Glyphicon glyph="trash" />
@@ -380,6 +405,7 @@ LineTitleCell.propTypes = {
   isLarge: PropTypes.bool,
   lineIsExpanded: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
+  uiActions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
@@ -395,6 +421,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
   return {
     actions: bindActionCreators(LineActions, dispatch),
+    uiActions: bindActionCreators(uiActions, dispatch),
   }
 }
 

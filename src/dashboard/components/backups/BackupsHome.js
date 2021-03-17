@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import ErrorBoundary from '../../../app/containers/ErrorBoundary'
 import BackupFiles from './BackupFiles'
 import Folders from './Folders'

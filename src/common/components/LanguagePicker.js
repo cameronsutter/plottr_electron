@@ -1,5 +1,5 @@
 import React from 'react'
-import { localeNames, getCurrentLocale } from '../../../locales'
+import { localeNames, getCurrentLocale } from 'plottr_locales'
 import SETTINGS from '../utils/settings'
 
 export default function LanguagePicker(props) {

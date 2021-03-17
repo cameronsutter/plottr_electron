@@ -1,5 +1,5 @@
 import React from 'react'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import Switch from '../../../common/components/Switch'
 import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'

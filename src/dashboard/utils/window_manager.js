@@ -1,6 +1,6 @@
 import path from 'path'
 import { remote, ipcRenderer } from 'electron'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { knownFilesStore } from '../../common/utils/store_hooks'
 import { saveToTempFile } from '../../common/utils/temp_files'
 import { addToKnownFiles } from '../../common/utils/known_files'

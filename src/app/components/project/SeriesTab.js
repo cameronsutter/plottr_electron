@@ -1,7 +1,7 @@
 import React from 'react'
 import EditSeries from './EditSeries'
 import BookList from './BookList'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import { Nav, NavItem, Button } from 'react-bootstrap'
 import FileLocation from './FileLocation'

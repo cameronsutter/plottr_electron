@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { shell } from 'electron'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import AdView from './AdView'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import VerifyView from './VerifyView'

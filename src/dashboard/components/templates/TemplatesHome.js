@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { FormControl } from 'react-bootstrap'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import CustomTemplates from './CustomTemplates'
 import StarterTemplates from './StarterTemplates'
 

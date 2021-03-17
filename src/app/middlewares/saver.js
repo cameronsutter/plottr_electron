@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { remote } from 'electron'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import log from 'electron-log'
 import { saveBackup } from '../../common/utils/backup'
 import { ActionTypes } from 'pltr/v2'

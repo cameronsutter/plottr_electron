@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import _ from 'lodash'
 import { template } from 'pltr/v2'
 import { remote } from 'electron'
 import { isEmpty } from 'lodash'
 
-const { projectFromTemplate } = template
+const { lineFromTemplate } = template
 const { app } = remote
 
 export default class PlotlineTemplateDetails extends Component {
@@ -26,7 +26,7 @@ export default class PlotlineTemplateDetails extends Component {
   }
 
   migrateTemplate = () => {
-    projectFromTemplate(this.props.template, app.getVersion(), '', (error, template) => {
+    lineFromTemplate(this.props.template, app.getVersion(), '', (error, template) => {
       if (error) {
         // Allow the top level ErrorBoundary to handle the error
         throw new Error(error)

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavItem, Button, Glyphicon } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import ExportDialog from './ExportDialog'
 
 export default function ExportNavItem() {

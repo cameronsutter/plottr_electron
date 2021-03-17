@@ -1,5 +1,5 @@
 const path = require('path')
-const i18n = require('format-message')
+const i18n = require('plottr_locales').t
 const { app, dialog, shell } = require('electron')
 const { is } = require('electron-util')
 const { getWindowById, numberOfWindows } = require('../windows')

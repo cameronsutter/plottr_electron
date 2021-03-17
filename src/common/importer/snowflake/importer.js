@@ -1,6 +1,6 @@
 import xml from 'xml-js'
 import fs from 'fs'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { cloneDeep, keyBy, groupBy } from 'lodash'
 import { newIds, helpers, lineColors, initialState } from 'pltr/v2'
 

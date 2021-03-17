@@ -1,5 +1,5 @@
 import { keyBy } from 'lodash'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import {
   buildDescriptionFromObject,
   createFolderBinderItem,

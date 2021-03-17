@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { remote } from 'electron'
 import NewFiles from './NewFiles'
 import RecentFiles from './RecentFiles'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { createNew, createFromSnowflake } from '../../utils/window_manager'
 import MPQ from '../../../common/utils/MPQ'
@@ -41,6 +41,7 @@ export default function FilesHome(props) {
     case 'templates':
       body = (
         <TemplatePicker
+          newProject
           modal={false}
           type={['custom', 'project', 'plotlines']}
           onChooseTemplate={createWithTemplate}

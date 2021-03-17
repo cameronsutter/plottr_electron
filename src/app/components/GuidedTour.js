@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Tour from 'reactour'
 import SETTINGS from '../../common/utils/settings'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 
 export default class GuidedTour extends Component {
   state = {

@@ -26,6 +26,6 @@
     "tinycolor2": "^1.4.2"
   },
   "peerDependencies": {
-    "format-message": "^6.2.1"
+    "plottr_locales": "0.0.1"
   }
 }

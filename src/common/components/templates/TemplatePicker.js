@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'react-proptypes'
 import { shell, remote, ipcRenderer } from 'electron'
 import PlottrModal from 'components/PlottrModal'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import {
   listTemplates,
@@ -23,7 +23,7 @@ import { template } from 'pltr/v2'
 
 export const testIds = getTestIds()
 
-const { projectFromTemplate } = template
+const { lineFromTemplate, projectFromTemplate } = template
 const modalStyles = { content: { width: '50%', marginLeft: '25%' } }
 const win = remote.getCurrentWindow()
 const { app } = remote
@@ -115,7 +115,8 @@ export default class TemplatePicker extends Component {
     const selectedTemplate = this.selectedTemplate()
     const { type } = selectedTemplate
     if (type === 'project' || type === 'plotlines') {
-      projectFromTemplate(selectedTemplate, app.getVersion(), '', (error, template) => {
+      const migrator = this.props.newProject ? projectFromTemplate : lineFromTemplate
+      migrator(selectedTemplate, app.getVersion(), '', (error, template) => {
         if (error) {
           // Let the ErrorBoundary handle the error
           throw new Error(error)
@@ -335,6 +336,7 @@ export default class TemplatePicker extends Component {
   }
 
   static propTypes = {
+    newProject: PropTypes.bool,
     modal: PropTypes.bool.isRequired,
     close: PropTypes.func,
     onChooseTemplate: PropTypes.func.isRequired,

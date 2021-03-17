@@ -1,9 +1,9 @@
-const i18n = require('format-message')
+const i18n = require('plottr_locales').t
 const { app } = require('electron')
 const { openProcessManager } = require('electron-process-manager')
 const { is } = require('electron-util')
 const { NODE_ENV } = require('../constants')
-const { localeNames, setupI18n } = require('../../../locales')
+const { localeNames, setupI18n } = require('plottr_locales')
 const SETTINGS = require('../settings')
 const { reloadAllWindows } = require('../windows')
 const { reloadDashboard } = require('../windows/dashboard')

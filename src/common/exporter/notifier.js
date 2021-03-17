@@ -1,4 +1,4 @@
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { shell } from 'electron'
 
 const messageForType = {

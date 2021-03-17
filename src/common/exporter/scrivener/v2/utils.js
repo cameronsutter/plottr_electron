@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 import { shell } from 'electron'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import binderItem from './binderItem.json'
 import bareScrivx from './bare_scrivx.json'
 import { selectors } from 'pltr/v2'

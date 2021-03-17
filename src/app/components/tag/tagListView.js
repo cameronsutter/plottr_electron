@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, NavItem, Button } from 'react-bootstrap'
 import TagView from 'components/tag/tagView'
 import cx from 'classnames'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { actions, selectors, initialState } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 

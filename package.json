@@ -26,8 +26,8 @@
     "dist:linux": "node build/initEnv.js && npm run pack && electron-builder -l",
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder -w",
     "dist:all": "npm run pack && electron-builder -mw",
-    "extract-strings": "format-message extract -o locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/**/*.js\" && npm run generate-flipped",
-    "generate-flipped": "node ./locales/build-flipped-locale.js",
+    "extract-strings": "format-message extract -o lib/plottr_locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/**/*.js\" && npm run generate-flipped",
+    "generate-flipped": "node ./lib/plottr_locales/build-flipped-locale.js",
     "test": "jest '(src.*)|(lib.*)'",
     "test:watch": "jest '(src.*)|(lib.*)' --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand src/app/components/rce/__tests__/RichTextEditor.test.js",
@@ -51,7 +51,6 @@
     "electron-store": "^5.1.0",
     "electron-util": "^0.14.0",
     "electron-window-state": "^5.0.3",
-    "format-message": "^6.2.1",
     "rollbar": "^2.19.4"
   },
   "devDependencies": {
@@ -100,6 +99,7 @@
     "npm-run-all": "^4.1.5",
     "pagedown": "^1.1.0",
     "pltr": "file:./lib/pltr",
+    "plottr_locales": "file:./lib/plottr_locales",
     "prettier": "^2.2.1",
     "pretty-date": "^0.2.0",
     "react": "^16.8.6",
@@ -161,7 +161,7 @@
       "!examples${/*}",
       "!package.json",
       "!test${/*}",
-      "!locales/build-flipped-locale.js",
+      "!lib/plottr_locales/build-flipped-locale.js",
       "!lib/${/*}",
       "!main${/*}",
       "!node_modules${/*}"

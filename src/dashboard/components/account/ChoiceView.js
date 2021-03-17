@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import VerifyView from './VerifyView'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import AccountHeader from './AccountHeader'

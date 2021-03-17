@@ -1,6 +1,6 @@
 import React from 'react'
 import path from 'path'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { IoIosDocument } from 'react-icons/io'
 import { shell } from 'electron'
 import MPQ from '../../../common/utils/MPQ'

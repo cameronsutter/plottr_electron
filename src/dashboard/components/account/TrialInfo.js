@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { FaKey } from 'react-icons/fa'
 import VerifyView from './VerifyView'

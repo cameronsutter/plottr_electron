@@ -1,7 +1,7 @@
 const path = require('path')
 const { dialog, app, screen, shell, BrowserWindow } = require('electron')
 const windowStateKeeper = require('electron-window-state')
-const i18n = require('format-message')
+const i18n = require('plottr_locales').t
 const log = require('electron-log')
 // const { rollbar } = require('./rollbar')
 const { hasWindows } = require('./windows')

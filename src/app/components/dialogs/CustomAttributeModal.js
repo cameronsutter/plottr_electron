@@ -2,7 +2,7 @@ import React from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
 import { actions, selectors } from 'pltr/v2'
 

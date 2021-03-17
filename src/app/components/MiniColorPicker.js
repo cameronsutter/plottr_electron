@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'react-proptypes'
 import { Button } from 'react-bootstrap'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 import { colors } from 'pltr/v2'
 
 const { reds, oranges, greens, blues, purples, grays, whites, browns, defaults } = colors

@@ -5,7 +5,7 @@ import { Editor, Transforms, Range } from 'slate'
 import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
 import InputModal from '../dialogs/InputModal'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 
 export const LinkButton = () => {
   const editor = useSlate()

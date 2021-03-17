@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 import { remote } from 'electron'
-import t from 'format-message'
+import { t } from 'plottr_locales'
 import { customTemplatesStore } from './store_hooks'
 const { app } = remote
 

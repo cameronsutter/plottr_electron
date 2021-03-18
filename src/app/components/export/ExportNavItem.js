@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavItem, Button, Glyphicon } from 'react-bootstrap'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import ExportDialog from './ExportDialog'
 
 export default function ExportNavItem() {
@@ -14,7 +14,7 @@ export default function ExportNavItem() {
 
   return (
     <NavItem>
-      <span className="subnav__container__label">{i18n('Export')}: </span>
+      <span className="subnav__container__label">{t('Export')}: </span>
       <Button bsSize="small" onClick={() => setShowDialog(true)}>
         <Glyphicon glyph="export" />
       </Button>

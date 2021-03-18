@@ -27,7 +27,9 @@ export default function ExportBody({ type, onChange }) {
 
   return (
     <div className="export-dialog__option-lists">
-      <GeneralOptions type={type} options={options.general} updateOptions={updateOptions} />
+      {type != 'scrivener' ? (
+        <GeneralOptions type={type} options={options.general} updateOptions={updateOptions} />
+      ) : null}
       <OutlineOptions type={type} options={options.outline} updateOptions={updateOptions} />
       <CharacterOptions type={type} options={options.characters} updateOptions={updateOptions} />
       <PlaceOptions type={type} options={options.places} updateOptions={updateOptions} />

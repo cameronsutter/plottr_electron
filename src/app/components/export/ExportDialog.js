@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { remote } from 'electron'
 import { connect } from 'react-redux'
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 import MPQ from '../../../common/utils/MPQ'
 import { PlottrModal } from '../PlottrModal'
 import { Button, ButtonToolbar, Nav, NavItem } from 'react-bootstrap'
@@ -29,19 +29,19 @@ function ExportDialog(props) {
   }
 
   const doExport = () => {
-    let label = i18n('Where would you like to save the export?')
+    let label = t('Where would you like to save the export?')
     const { ui, seriesName, books, fullState } = props
     const bookId = ui.currentTimeline
     const defaultPath =
-      bookId == 'series' ? seriesName + ' ' + i18n('(Series View)') : books[`${bookId}`].title
+      bookId == 'series' ? seriesName + ' ' + t('(Series View)') : books[`${bookId}`].title
 
     let filters = []
     switch (type) {
       case 'word':
-        filters = [{ name: i18n('MS Word'), extensions: ['docx'] }]
+        filters = [{ name: t('MS Word'), extensions: ['docx'] }]
         break
       case 'scrivener':
-        filters = [{ name: i18n('Scrivener Project'), extensions: ['scriv'] }]
+        filters = [{ name: t('Scrivener Project'), extensions: ['scriv'] }]
         break
     }
     const fileName = dialog.showSaveDialogSync(win, { title: label, filters, defaultPath })
@@ -72,25 +72,37 @@ function ExportDialog(props) {
     }
   }
 
+  const Chooser = () => {
+    return (
+      <Nav bsStyle="pills" activeKey={type} onSelect={(key) => setType(key)}>
+        <NavItem eventKey="word" title={t('.docx')}>
+          {t('MS Word')}
+        </NavItem>
+        <NavItem eventKey="scrivener" title={t('.scriv')}>
+          {t('Scrivener')}
+        </NavItem>
+      </Nav>
+    )
+  }
+
   return (
     <PlottrModal isOpen={true} onRequestClose={props.close}>
       <div className="export-dialog__wrapper">
         <div className="export-dialog__header">
           <div className="export-dialog__type-chooser">
-            <h3>{i18n('Export Options')}</h3>
-            <Nav bsStyle="pills" activeKey={type} onSelect={(key) => setType(key)}>
-              <NavItem eventKey="word" title={i18n('.docx')}>
-                {i18n('MS Word')}
-              </NavItem>
-              <NavItem eventKey="scrivener" title={i18n('.scriv')}>
-                {i18n('Scrivener')}
-              </NavItem>
-            </Nav>
+            <h3>{t('Export Options')}</h3>
+            <Chooser />
           </div>
           <hr />
         </div>
         <div className="export-dialog__body">
           <ExportBody type={type} setType={setType} onChange={updateOptions} />
+          {type == null ? (
+            <div className="export-dialog__null-type">
+              <h3>{t('Export to:')}</h3>
+              <Chooser />
+            </div>
+          ) : null}
         </div>
         <div className="export-dialog__footer">
           <hr />
@@ -98,13 +110,13 @@ function ExportDialog(props) {
             <Switch
               isOn={saveOptions}
               handleToggle={() => setSaveOptions(!saveOptions)}
-              labelText={i18n('Save these settings for next export?')}
+              labelText={t('Save these settings for next export?')}
             />
             <ButtonToolbar>
               <Button bsStyle="success" disabled={!type} onClick={doExport}>
-                {i18n('Export')}
+                {t('Export')}
               </Button>
-              <Button onClick={props.close}>{i18n('Cancel')}</Button>
+              <Button onClick={props.close}>{t('Cancel')}</Button>
             </ButtonToolbar>
           </div>
         </div>

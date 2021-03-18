@@ -1,5 +1,5 @@
 import React from 'react'
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 import PropTypes from 'react-proptypes'
 import { CheckOption, RadioOption } from '../ExportOptions'
 
@@ -14,7 +14,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
   //     value="column"
   //     disabled={!options.export}
   //   >
-  //     <span>{i18n('Column By Column')}</span>
+  //     <span>{t('Column By Column')}</span>
   //   </RadioOption>
   //   <RadioOption
   //     checked={options.columnOrRow == 'row'}
@@ -24,7 +24,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
   //     value="row"
   //     disabled={!options.export}
   //   >
-  //     <span>{i18n('Row By Row')}</span>
+  //     <span>{t('Row By Row')}</span>
   //   </RadioOption>
   // </li>
 
@@ -37,7 +37,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
           category="outline"
           attr="export"
         >
-          <span>{i18n('Outline')}</span>
+          <span>{t('Outline')}</span>
         </CheckOption>
       </div>
       <ul>
@@ -50,7 +50,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
               attr="heading"
               disabled={!options.export}
             >
-              <span>{i18n('Heading ("Outline")')}</span>
+              <span>{t('Heading ("Outline")')}</span>
             </CheckOption>
           </li>
         ) : null}
@@ -62,7 +62,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
             attr="sceneCards"
             disabled={!options.export}
           >
-            <span>{i18n('Scene Cards')}</span>
+            <span>{t('Scene Cards')}</span>
           </CheckOption>
           <ul>
             <li>
@@ -74,9 +74,9 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                 disabled={!options.export || !options.sceneCards}
               >
                 <div>
-                  <span>{i18n(type == 'word' ? 'Plotline in Card Title' : 'Plotline Title')}</span>
+                  <span>{t(type == 'word' ? 'Plotline in Card Title' : 'Plotline Title')}</span>
                   <br />
-                  <small>{i18n(type == 'word' ? 'e.g. "(Main Plot)"' : 'e.g. Main Plot')}</small>
+                  <small>{t(type == 'word' ? 'e.g. "(Main Plot)"' : 'e.g. Main Plot')}</small>
                 </div>
               </CheckOption>
             </li>
@@ -89,7 +89,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                   attr="attachments"
                   disabled={!options.export || !options.sceneCards}
                 >
-                  <span>{i18n('Tags / Characters / Places')}</span>
+                  <span>{t('Tags / Characters / Places')}</span>
                 </CheckOption>
               </li>
             ) : null}
@@ -101,14 +101,14 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                 attr="description"
                 disabled={!options.export || !options.sceneCards}
               >
-                <span>{i18n('Description')}</span>
+                <span>{t('Description')}</span>
               </CheckOption>
             </li>
             {type == 'scrivener' ? (
               <li>
                 <ul>
                   <li>
-                    <div>{i18n('Put Description in:')}</div>
+                    <div>{t('Put Description in:')}</div>
                   </li>
                   <li>
                     <RadioOption
@@ -119,7 +119,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                       value="body"
                       disabled={!options.export || !options.sceneCards || !options.description}
                     >
-                      <span>{i18n('Body')}</span>
+                      <span>{t('Body')}</span>
                     </RadioOption>
                   </li>
                   <li>
@@ -131,7 +131,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                       value="synopsis"
                       disabled={!options.export || !options.sceneCards || !options.description}
                     >
-                      <span>{i18n('Synopsis')}</span>
+                      <span>{t('Synopsis')}</span>
                     </RadioOption>
                   </li>
                   <li>
@@ -143,7 +143,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                       value="notes"
                       disabled={!options.export || !options.sceneCards || !options.description}
                     >
-                      <span>{i18n('Notes')}</span>
+                      <span>{t('Notes')}</span>
                     </RadioOption>
                   </li>
                 </ul>
@@ -157,7 +157,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                 attr="customAttributes"
                 disabled={!options.export || !options.sceneCards}
               >
-                <span>{i18n('Custom Attributes')}</span>
+                <span>{t('Custom Attributes')}</span>
               </CheckOption>
             </li>
             <li>
@@ -168,7 +168,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                 attr="templates"
                 disabled={!options.export || !options.sceneCards}
               >
-                <span>{i18n('Templates')}</span>
+                <span>{t('Templates')}</span>
               </CheckOption>
             </li>
           </ul>

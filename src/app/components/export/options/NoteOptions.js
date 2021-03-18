@@ -1,5 +1,5 @@
 import React from 'react'
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 import PropTypes from 'react-proptypes'
 import { CheckOption } from '../ExportOptions'
 
@@ -13,7 +13,7 @@ export default function NoteOptions({ type, options, updateOptions }) {
           category="notes"
           attr="export"
         >
-          <span>{i18n('Notes')}</span>
+          <span>{t('Notes')}</span>
         </CheckOption>
       </div>
       <ul>
@@ -25,7 +25,7 @@ export default function NoteOptions({ type, options, updateOptions }) {
             attr="heading"
             disabled={!options.export}
           >
-            <span>{i18n(type == 'word' ? 'Heading ("Notes")' : 'Note Title')}</span>
+            <span>{t(type == 'word' ? 'Heading ("Notes")' : 'Note Title')}</span>
           </CheckOption>
         </li>
         {type == 'word' ? (
@@ -37,7 +37,7 @@ export default function NoteOptions({ type, options, updateOptions }) {
               attr="images"
               disabled={!options.export}
             >
-              <span>{i18n('Images')}</span>
+              <span>{t('Images')}</span>
             </CheckOption>
           </li>
         ) : null}
@@ -50,7 +50,7 @@ export default function NoteOptions({ type, options, updateOptions }) {
               attr="attachments"
               disabled={!options.export}
             >
-              <span>{i18n('Tags / Characters / Places')}</span>
+              <span>{t('Tags / Characters / Places')}</span>
             </CheckOption>
           </li>
         ) : null}
@@ -62,7 +62,7 @@ export default function NoteOptions({ type, options, updateOptions }) {
             attr="content"
             disabled={!options.export}
           >
-            <span>{i18n('Content')}</span>
+            <span>{t('Content')}</span>
           </CheckOption>
         </li>
       </ul>

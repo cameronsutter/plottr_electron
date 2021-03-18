@@ -72,6 +72,28 @@
       top: 2px;
     }
   }
+
+  .export-dialog__null-type {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+body.darkmode {
+  .export-dialog__body {
+    .export-dialog__option-lists {
+      .list-wrapper {
+        border-color: $darkmode-border;
+      }
+      .list-title {
+        background-color: $darkmode-darker-background;
+        color: $darkmode-text;
+      }
+    }
+  }
 }
 
 .export-dialog__footer {

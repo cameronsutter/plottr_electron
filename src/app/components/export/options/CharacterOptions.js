@@ -1,5 +1,5 @@
 import React from 'react'
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 import PropTypes from 'react-proptypes'
 import { CheckOption } from '../ExportOptions'
 
@@ -13,7 +13,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
           category="characters"
           attr="export"
         >
-          <span>{i18n('Characters')}</span>
+          <span>{t('Characters')}</span>
         </CheckOption>
       </div>
       <ul>
@@ -25,7 +25,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             attr="heading"
             disabled={!options.export}
           >
-            <span>{i18n(type == 'word' ? 'Heading ("Characters")' : 'Character Title')}</span>
+            <span>{t(type == 'word' ? 'Heading ("Characters")' : 'Character Title')}</span>
           </CheckOption>
         </li>
         {type == 'word' ? (
@@ -37,7 +37,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
               attr="images"
               disabled={!options.export}
             >
-              <span>{i18n('Images')}</span>
+              <span>{t('Images')}</span>
             </CheckOption>
           </li>
         ) : null}
@@ -50,9 +50,9 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             disabled={!options.export}
           >
             <div>
-              <span>{i18n('Description Heading')}</span>
+              <span>{t('Description Heading')}</span>
               <br />
-              <small>{i18n('("Description")')}</small>
+              <small>{t('("Description")')}</small>
             </div>
           </CheckOption>
         </li>
@@ -64,7 +64,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             attr="description"
             disabled={!options.export}
           >
-            <span>{i18n('Description')}</span>
+            <span>{t('Description')}</span>
           </CheckOption>
         </li>
         <li>
@@ -76,9 +76,9 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             disabled={!options.export}
           >
             <div>
-              <span>{i18n('Notes Heading')}</span>
+              <span>{t('Notes Heading')}</span>
               <br />
-              <small>{i18n('("Notes")')}</small>
+              <small>{t('("Notes")')}</small>
             </div>
           </CheckOption>
         </li>
@@ -90,7 +90,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             attr="notes"
             disabled={!options.export}
           >
-            <span>{i18n('Notes')}</span>
+            <span>{t('Notes')}</span>
           </CheckOption>
         </li>
         <li>
@@ -101,7 +101,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             attr="customAttributes"
             disabled={!options.export}
           >
-            <span>{i18n('Custom Attributes')}</span>
+            <span>{t('Custom Attributes')}</span>
           </CheckOption>
         </li>
         <li>
@@ -112,7 +112,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             attr="templates"
             disabled={!options.export}
           >
-            <span>{i18n('Templates')}</span>
+            <span>{t('Templates')}</span>
           </CheckOption>
         </li>
         {type == 'scrivener' ? (
@@ -124,7 +124,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
               attr="tags"
               disabled={!options.export}
             >
-              <span>{i18n('Tags')}</span>
+              <span>{t('Tags')}</span>
             </CheckOption>
           </li>
         ) : null}
@@ -137,7 +137,7 @@ export default function CharacterOptions({ type, options, updateOptions }) {
               attr="category"
               disabled={!options.export}
             >
-              <span>{i18n('Category')}</span>
+              <span>{t('Category')}</span>
             </CheckOption>
           </li>
         ) : null}

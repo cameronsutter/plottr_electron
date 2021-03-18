@@ -1,5 +1,5 @@
 import React from 'react'
-import { shell, remote } from 'electron'
+import { shell, remote, ipcRenderer } from 'electron'
 import { t } from 'plottr_locales'
 import { Button } from 'react-bootstrap'
 import SETTINGS from '../../../common/utils/settings'
@@ -8,7 +8,6 @@ import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { manifestStore } from '../../../common/utils/store_hooks'
 import { is } from 'electron-util'
 const { app } = remote
-const autoUpdater = remote.require('electron-updater').autoUpdater
 
 export default function About(props) {
   const { started, expired } = useTrialStatus()
@@ -16,9 +15,7 @@ export default function About(props) {
   const checkForUpdates = () => {
     if (is.development) return
     MPQ.push('btn_check_for_updates')
-    // SETTINGS.set('user.seeCheckingForUpdates', true) // only show the checking when user asks to see it
-    autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
-    autoUpdater.checkForUpdates()
+    ipcRenderer.send('pls-check-for-updates')
   }
 
   const seeChangelog = () => {

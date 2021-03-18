@@ -111,7 +111,7 @@ export default function ItemsManagerModal({
 ItemsManagerModal.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
-  addLabel: PropTypes.func,
+  addLabel: PropTypes.string,
   items: PropTypes.array,
   darkMode: PropTypes.bool,
   showSaveAsTemplate: PropTypes.bool,
@@ -247,7 +247,7 @@ export function ListItem({
 ListItem.propTypes = {
   item: PropTypes.object,
   index: PropTypes.number,
-  restrictedValues: PropTypes.array,
+  restrictedValues: PropTypes.object,
   showType: PropTypes.bool,
   canChangeType: PropTypes.bool,
   reorderItem: PropTypes.func,

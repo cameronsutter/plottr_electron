@@ -6,8 +6,9 @@ import { t } from 'plottr_locales'
 import USER from './user_info'
 import { trialStore } from './store_hooks'
 import SETTINGS from './settings'
+import log from 'electron-log'
+import { is } from 'electron-util'
 const { app, dialog } = remote
-const log = remote.require('electron-log') // necessary to use the transports obj
 
 const machineID = machineIdSync(true)
 
@@ -25,10 +26,21 @@ export function createErrorReport() {
 }
 
 function prepareErrorReport() {
-  const logFile = log.transports.file.findLogPath()
-  let logContents = null
+  let appLogPath = app.getPath('logs')
+  if (is.development) {
+    appLogPath = appLogPath.replace('Electron', 'plottr')
+  }
+  const mainLogFile = path.join(appLogPath, 'main.log')
+  const rendererLogFile = path.join(appLogPath, 'renderer.log')
+  let mainLogContents = null
+  let rendererLogContents = null
   try {
-    logContents = fs.readFileSync(logFile)
+    mainLogContents = fs.readFileSync(mainLogFile)
+  } catch (e) {
+    // no log file, no big deal
+  }
+  try {
+    rendererLogContents = fs.readFileSync(rendererLogFile)
   } catch (e) {
     // no log file, no big deal
   }
@@ -51,9 +63,14 @@ CONFIG:
 ${JSON.stringify(SETTINGS.store)}
 
 ----------------------------------
-ERROR LOG
+ERROR LOG - MAIN
 ----------------------------------
-${logContents}
+${mainLogContents}
+
+----------------------------------
+ERROR LOG - RENDERER
+----------------------------------
+${rendererLogContents}
   `
   return report
 }

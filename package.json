@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2021.3.17-beta.2",
+  "version": "2021.3.18-beta",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -43,12 +43,12 @@
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
     "electron-context-menu": "^2.0.1",
-    "electron-updater": "^4.3.0",
     "electron-json-storage": "^2.0.0",
-    "electron-log": "^2.2.17",
+    "electron-log": "^4.3.2",
     "electron-process-manager": "^1.0.0",
     "electron-prompt": "^1.5.1",
     "electron-store": "^5.1.0",
+    "electron-updater": "^4.3.0",
     "electron-util": "^0.14.0",
     "electron-window-state": "^5.0.3",
     "rollbar": "^2.19.4"
@@ -73,7 +73,7 @@
     "devtron": "^1.2.1",
     "docx": "^5.0.2",
     "electron": "^10.2.0",
-    "electron-builder": "^22.8.0",
+    "electron-builder": "^22.10.5",
     "electron-devtools-installer": "^3.0.0",
     "electron-notarize": "^1.0.0",
     "electron-reload": "^1.5.0",
@@ -142,7 +142,7 @@
     "xml-js": "^1.6.11"
   },
   "build": {
-    "electronVersion": "10.1.5",
+    "electronVersion": "10.2.0",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
     "publish": [

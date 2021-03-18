@@ -36,7 +36,7 @@ describe('exportPlaces', () => {
     expect(documentContents).toEqual({
       4: {
         body: {
-          docTitle: 'Place: first place',
+          docTitle: 'first place',
           description: [
             headingTwo('Description'),
             paragraph('my favorite place'),

@@ -6,7 +6,7 @@
     grid-area: nav;
     user-select: none;
     width: 100px;
-    background-color: $orange;
+    background-color: $gray-5;
     // background-image: linear-gradient(to right, $orange, $orange-5);
     // box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     // box-shadow: 3px 0px 1px -2px rgba(0, 0, 0, 0.2), 2px 0px 2px 0px rgba(0, 0, 0, 0.14), 1px 0px 5px 0px rgba(0, 0, 0, 0.12);
@@ -16,7 +16,8 @@
 .dashboard__navigation-tab {
   @include application-text;
   height: 95px;
-  border-bottom: 1.5px solid $orange-5;
+  border-bottom: 1.5px solid $gray-7;
+  background-color: $gray-5;
   // border-left: 4px solid $orange;
   color: white;
   padding: 7px;
@@ -29,7 +30,7 @@
   transition: all .1s ease-in;
 
   &:hover {
-    background-color: $orange-7;
+    background-color: $gray-7;
   }
 
   &.selected {
@@ -50,6 +51,6 @@
   }
 
   &:first-child {
-    border-top: 4px solid $orange;
+    border-top: 4px solid $gray-5;
   }
 }

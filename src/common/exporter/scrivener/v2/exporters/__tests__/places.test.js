@@ -2,13 +2,16 @@ import exportPlaces from '../places'
 import { resetId } from '../../utils'
 import { state } from './fixtures'
 import { headingTwo, paragraph } from 'components/rce/__fixtures__'
+import default_config from '../../../../default_config'
 
 describe('exportPlaces', () => {
   let documentContents = {}
   beforeEach(() => resetId())
 
+  // console.log('config', default_config.scrivener)
+
   it('exports places binder from state', () => {
-    const binderItem = exportPlaces(state, documentContents)
+    const binderItem = exportPlaces(state, documentContents, default_config.scrivener)
     expect(binderItem).toMatchObject({
       _attributes: {
         Type: 'Folder',
@@ -32,21 +35,24 @@ describe('exportPlaces', () => {
   })
 
   it('exports the documentContents', () => {
+    // documentContents[4].body.description.forEach((arr) => {
+    //   console.log(arr)
+    // })
     expect(documentContents).toEqual({
       4: {
-        docTitle: 'Place: first place',
-        description: [
-          headingTwo('Description'),
-          paragraph('my favorite place'),
-          headingTwo('notes'),
-          ...state.places[0].notes,
-          headingTwo('weather'),
-          paragraph('stormy'),
-          headingTwo('Tags'),
-          paragraph('wonder'),
-          headingTwo('Template attribute'),
-          paragraph('This is a template attribute'),
-        ],
+        body: {
+          docTitle: 'first place',
+          description: [
+            headingTwo('Description'),
+            paragraph('my favorite place'),
+            headingTwo('Notes'),
+            ...state.places[0].notes,
+            headingTwo('weather'),
+            paragraph('stormy'),
+            headingTwo('Tags'),
+            paragraph('wonder'),
+          ],
+        },
       },
     })
   })

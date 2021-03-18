@@ -1,5 +1,5 @@
 import { Paragraph } from 'docx'
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 
 export default function exportItemAttachments(item, namesMapping) {
   let paragraphs = []
@@ -12,13 +12,13 @@ export default function exportItemAttachments(item, namesMapping) {
   if (item.tags) tags = item.tags.map((tg) => namesMapping.tags[tg])
 
   if (characters.length) {
-    paragraphs.push(new Paragraph(`${i18n('Characters')}: ${characters.join(', ')}`))
+    paragraphs.push(new Paragraph(`${t('Characters')}: ${characters.join(', ')}`))
   }
   if (places.length) {
-    paragraphs.push(new Paragraph(`${i18n('Places')}: ${places.join(', ')}`))
+    paragraphs.push(new Paragraph(`${t('Places')}: ${places.join(', ')}`))
   }
   if (tags.length) {
-    paragraphs.push(new Paragraph(`${i18n('Tags')}: ${tags.join(', ')}`))
+    paragraphs.push(new Paragraph(`${t('Tags')}: ${tags.join(', ')}`))
   }
   if (paragraphs.length) {
     paragraphs.push(new Paragraph(''))

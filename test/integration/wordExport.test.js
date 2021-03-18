@@ -7,17 +7,12 @@ import undoable from 'redux-undo'
 import wordExporter from '../../src/common/exporter/word/exporter'
 import { actions, rootReducer } from 'pltr/v2'
 
-import {
-  readExample3,
-  copyCurrent,
-  exportedPath,
-  prevExportedPath,
-  EXAMPLE_3,
-  EXAMPLE_3_FILE_NAME,
-} from './common'
+import { readExample3, copyCurrent, exportedPath, prevExportedPath, EXAMPLE_3 } from './common'
+import default_config from '../../src/common/exporter/default_config'
 
 const extract = (filePath, destDir) => {
   return new Promise((resolve, reject) => {
+    console.log('extract')
     exec(`unzip ${__dirname}/../../${filePath} -d ${__dirname}/../../${destDir}`, (error) => {
       if (error !== null) {
         reject(error)
@@ -36,7 +31,7 @@ describe('wordExporter', () => {
   store.dispatch(actions.ui.loadFile(EXAMPLE_3, false, example3, example3.file.version))
   const oldExportedDocument = prevExportedPath('example3.docx')
   const targetPath = exportedPath('example3.docx')
-  wordExporter(example3, { fileName: targetPath, bookId: 1 })
+  wordExporter(example3, targetPath, default_config.word)
   it('should produce a file', () => {
     expect(fs.existsSync(targetPath)).toEqual(true)
   })

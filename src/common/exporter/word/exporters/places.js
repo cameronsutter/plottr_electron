@@ -1,4 +1,4 @@
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 import { Paragraph, AlignmentType, HeadingLevel, Media } from 'docx'
 import serialize from '../../../slate_serializers/to_word'
 import exportCustomAttributes from './customAttributes'
@@ -9,7 +9,7 @@ export default function exportPlaces(state, doc, options) {
   if (options.places.heading) {
     children.push(
       new Paragraph({
-        text: i18n('Places'),
+        text: t('Places'),
         heading: HeadingLevel.HEADING_1,
         alignment: AlignmentType.CENTER,
       })
@@ -43,13 +43,13 @@ function places(places, customAttributes, images, doc, options) {
       }
     }
     if (options.places.descriptionHeading) {
-      paragraphs.push(new Paragraph({ text: i18n('Description'), heading: HeadingLevel.HEADING_3 }))
+      paragraphs.push(new Paragraph({ text: t('Description'), heading: HeadingLevel.HEADING_3 }))
     }
     if (options.places.description) {
       paragraphs.push(new Paragraph(pl.description))
     }
     if (options.places.notesHeading) {
-      paragraphs.push(new Paragraph({ text: i18n('Notes'), heading: HeadingLevel.HEADING_3 }))
+      paragraphs.push(new Paragraph({ text: t('Notes'), heading: HeadingLevel.HEADING_3 }))
     }
     if (options.places.notes) {
       paragraphs = [...paragraphs, ...serialize(pl.notes, doc)]

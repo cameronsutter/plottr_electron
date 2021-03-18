@@ -1,4 +1,4 @@
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 import { Paragraph, AlignmentType, HeadingLevel, Media } from 'docx'
 import serialize from '../../../slate_serializers/to_word'
 import exportItemAttachments from './itemAttachments'
@@ -9,7 +9,7 @@ export default function exportNotes(state, namesMapping, doc, options) {
   if (options.notes.heading) {
     children.push(
       new Paragraph({
-        text: i18n('Notes'),
+        text: t('Notes'),
         heading: HeadingLevel.HEADING_1,
         alignment: AlignmentType.CENTER,
       })

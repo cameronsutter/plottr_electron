@@ -117,6 +117,7 @@ export function buildDescriptionFromObject(object, options) {
   for (const [key, value] of Object.entries(object)) {
     // if the user hasn't input a value we won't include it
     // for rich content the check is a bit more involved
+
     if (isPropertyEmpty(value)) {
       continue
     }

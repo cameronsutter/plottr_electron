@@ -1,4 +1,4 @@
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import {
   createFolderBinderItem,
   createTextBinderItem,
@@ -11,7 +11,7 @@ import { selectors } from 'pltr/v2'
 const { placesSortedInBookSelector } = selectors
 
 export default function exportPlaces(state, documentContents, options) {
-  const { binderItem } = createFolderBinderItem(i18n('Places'))
+  const { binderItem } = createFolderBinderItem(t('Places'))
   const places = placesSortedInBookSelector(state)
   places.forEach((place) => {
     const {
@@ -39,7 +39,7 @@ export default function exportPlaces(state, documentContents, options) {
       placeProperties.Tags = buildTagsString(tags, state)
     }
 
-    let description = buildDescriptionFromObject(placeProperties, options.notes)
+    let description = buildDescriptionFromObject(placeProperties, options.places)
     // handle template properties
     if (options.places.templates) {
       description = [

@@ -1,5 +1,5 @@
 import { keyBy } from 'lodash'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import {
   buildDescriptionFromObject,
   createFolderBinderItem,
@@ -86,7 +86,7 @@ export default function exportBeats(state, documentContents, options) {
         }
 
         const contents = {
-          docTitle: options.outline.plotlineInTitle ? i18n('Plotline: {title}', { title }) : null,
+          docTitle: options.outline.plotlineInTitle ? t('Plotline: {title}', { title }) : null,
           description: description,
         }
         documentContents[id] = {

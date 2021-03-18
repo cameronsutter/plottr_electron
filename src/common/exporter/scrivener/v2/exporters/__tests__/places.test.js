@@ -8,6 +8,8 @@ describe('exportPlaces', () => {
   let documentContents = {}
   beforeEach(() => resetId())
 
+  // console.log('config', default_config.scrivener)
+
   it('exports places binder from state', () => {
     const binderItem = exportPlaces(state, documentContents, default_config.scrivener)
     expect(binderItem).toMatchObject({
@@ -33,6 +35,9 @@ describe('exportPlaces', () => {
   })
 
   it('exports the documentContents', () => {
+    // documentContents[4].body.description.forEach((arr) => {
+    //   console.log(arr)
+    // })
     expect(documentContents).toEqual({
       4: {
         body: {
@@ -40,14 +45,12 @@ describe('exportPlaces', () => {
           description: [
             headingTwo('Description'),
             paragraph('my favorite place'),
-            headingTwo('notes'),
+            headingTwo('Notes'),
             ...state.places[0].notes,
             headingTwo('weather'),
             paragraph('stormy'),
             headingTwo('Tags'),
             paragraph('wonder'),
-            headingTwo('Template attribute'),
-            paragraph('This is a template attribute'),
           ],
         },
       },

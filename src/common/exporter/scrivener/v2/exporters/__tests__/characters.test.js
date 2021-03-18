@@ -44,7 +44,7 @@ describe('exportCharacters', () => {
             paragraph('50s'),
             headingTwo('Description'),
             paragraph(`He's a character`),
-            headingTwo('notes'),
+            headingTwo('Notes'),
             paragraph(`He's a character`),
             headingTwo('stuff'),
             paragraph('something'),

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { remote } from 'electron'
+import { ipcRenderer } from 'electron'
 import log from 'electron-log'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
@@ -7,13 +7,8 @@ import SETTINGS from '../../common/utils/settings'
 import { Button, ProgressBar } from 'react-bootstrap'
 import { is } from 'electron-util'
 import { Spinner } from '../../common/components/Spinner'
-const autoUpdater = remote.require('electron-updater').autoUpdater
 
-// SETUP //
-autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
-autoUpdater.logger = log
-autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
-const updateCheckThreshold = 1000 * 60 * 10 // 10 minutes
+const updateCheckThreshold = 1000 * 60 * 60 * 3 // 3 hours
 
 export default function UpdateNotifier(props) {
   const [shouldCheck, setShouldCheck] = useState(true)
@@ -28,7 +23,7 @@ export default function UpdateNotifier(props) {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
-    autoUpdater.on('error', (error) => {
+    ipcRenderer.on('udpater-error', (error) => {
       log.warn(error)
       setError(error)
       setHidden(false)
@@ -37,14 +32,14 @@ export default function UpdateNotifier(props) {
       setAvailable(false)
       setTimeout(() => setFinishedChecking(false), 10000)
     })
-    autoUpdater.on('update-available', (info) => {
+    ipcRenderer.on('udpater-update-available', (info) => {
       setHidden(false)
       setChecking(false)
       setAvailable(true)
       setError(null)
       setInfo(info)
     })
-    autoUpdater.on('update-not-available', () => {
+    ipcRenderer.on('udpater-update-not-available', () => {
       setHidden(false)
       setChecking(false)
       setFinishedChecking(true)
@@ -52,30 +47,29 @@ export default function UpdateNotifier(props) {
       setError(null)
       setTimeout(() => setFinishedChecking(false), 5000)
     })
-    autoUpdater.on('download-progress', (progress) => {
+    ipcRenderer.on('udpater-download-progress', (progress) => {
       setHidden(false)
       setDownloadInProgress(true)
 
-      log.info('download-progress', progress)
+      if (SETTINGS.get('diagnoseUpdate')) {
+        log.info('download-progress', progress)
+      }
       const percent = progress.percent || percentDownloaded + 1
 
       setPercentDownloaded(Math.floor(percent))
     })
-    autoUpdater.on('update-downloaded', (info) => {
+    ipcRenderer.on('udpater-update-downloaded', (info) => {
       setHidden(false)
       setDownloadInProgress(false)
       setFinishedDownloading(true)
       setPercentDownloaded(100)
     })
-
-    return () => autoUpdater.removeAllListeners()
   }, [])
 
   useEffect(() => {
     if (is.development) return
     if (shouldCheck && SETTINGS.get('canGetUpdates')) {
-      autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
-      autoUpdater.checkForUpdates()
+      ipcRenderer.send('pls-check-for-updates')
       setError(null)
       setChecking(true)
       setTimeout(() => setChecking(false), 5000) //failsafe in case of no response
@@ -87,12 +81,12 @@ export default function UpdateNotifier(props) {
   }, [shouldCheck])
 
   const startDownload = () => {
-    autoUpdater.downloadUpdate()
+    ipcRenderer.send('pls-download-update')
     setDownloadInProgress(true)
   }
 
   const quitToInstall = () => {
-    autoUpdater.quitAndInstall(true, true)
+    ipcRenderer.send('pls-quit-and-install')
   }
 
   const hide = () => {

@@ -3,7 +3,7 @@ const path = require('path')
 const log = require('electron-log')
 const { is } = require('electron-util')
 // eslint-disable-next-line no-unused-vars
-const autoUpdater = require('electron-updater')
+// const autoUpdater = require('electron-updater')
 const contextMenu = require('electron-context-menu')
 const { setupRollbar } = require('./modules/rollbar')
 const { loadMenu } = require('./modules/menus')

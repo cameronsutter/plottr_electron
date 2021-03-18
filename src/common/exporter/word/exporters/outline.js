@@ -1,5 +1,5 @@
 import { keyBy } from 'lodash'
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 import { helpers, selectors } from 'pltr/v2'
 import { Paragraph, AlignmentType, HeadingLevel } from 'docx'
 import serialize from '../../../slate_serializers/to_word'
@@ -31,7 +31,7 @@ export default function exportOutline(state, namesMapping, doc, options) {
   if (options.outline.heading) {
     children.push(
       new Paragraph({
-        text: i18n('Outline'),
+        text: t('Outline'),
         heading: HeadingLevel.HEADING_1,
         alignment: AlignmentType.CENTER,
       })

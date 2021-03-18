@@ -1,11 +1,11 @@
 // setup file
 import { configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import ReactWrapper from 'enzyme/ReactWrapper'
 import ShallowWrapper from 'enzyme/ShallowWrapper'
 
-i18n.setup({
+t.setup({
   missingTranslation: 'ignore',
 })
 

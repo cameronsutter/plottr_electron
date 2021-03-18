@@ -1,6 +1,6 @@
 import { Document, Packer, Paragraph, AlignmentType, HeadingLevel } from 'docx'
 import fs from 'fs'
-import { t as i18n } from 'plottr_locales'
+import { t as t } from 'plottr_locales'
 import { notifyUser } from '../notifier'
 import { helpers } from 'pltr/v2'
 import exportOutline from './exporters/outline'
@@ -59,7 +59,7 @@ function namesMapping(data) {
 
 function seriesNameSection(data, bookId) {
   let titleText = isSeries(bookId)
-    ? data.series.name + ' ' + i18n('(Series View)')
+    ? data.series.name + ' ' + t('(Series View)')
     : data.books[`${bookId}`].title
   const paragraph = new Paragraph({
     text: titleText,

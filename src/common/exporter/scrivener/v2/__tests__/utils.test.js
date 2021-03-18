@@ -172,19 +172,22 @@ describe('scrivener export utils', () => {
 
   describe('buildDescriptionFromObject', () => {
     it('builds a rich text description from key values', () => {
-      const description = buildDescriptionFromObject({
-        key: 'value',
-        attribute: [
-          {
-            type: 'paragraph',
-            children: [
-              {
-                text: 'property',
-              },
-            ],
-          },
-        ],
-      })
+      const description = buildDescriptionFromObject(
+        {
+          key: 'value',
+          attribute: [
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  text: 'property',
+                },
+              ],
+            },
+          ],
+        },
+        true
+      )
       expect(description).toEqual([
         {
           type: 'heading-two',
@@ -222,11 +225,14 @@ describe('scrivener export utils', () => {
     })
 
     it('does not include empty properties', () => {
-      const description = buildDescriptionFromObject({
-        key: 'value',
-        attribute: [{}],
-        property: '',
-      })
+      const description = buildDescriptionFromObject(
+        {
+          key: 'value',
+          attribute: [{}],
+          property: '',
+        },
+        true
+      )
       expect(description).toEqual([
         {
           type: 'heading-two',

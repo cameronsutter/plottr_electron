@@ -1,4 +1,4 @@
-import i18n from 'format-message'
+import { t } from 'plottr_locales'
 import { Paragraph, AlignmentType, HeadingLevel, Media } from 'docx'
 import serialize from '../../../slate_serializers/to_word'
 import exportCustomAttributes from './customAttributes'
@@ -10,7 +10,7 @@ export default function exportCharacters(state, doc, options) {
   if (options.characters.heading) {
     children.push(
       new Paragraph({
-        text: i18n('Characters'),
+        text: t('Characters'),
         heading: HeadingLevel.HEADING_1,
         alignment: AlignmentType.CENTER,
       })
@@ -44,13 +44,13 @@ function characters(characters, customAttributes, images, doc, options) {
       }
     }
     if (options.characters.descriptionHeading) {
-      paragraphs.push(new Paragraph({ text: i18n('Description'), heading: HeadingLevel.HEADING_3 }))
+      paragraphs.push(new Paragraph({ text: t('Description'), heading: HeadingLevel.HEADING_3 }))
     }
     if (options.characters.description) {
       paragraphs.push(new Paragraph(ch.description))
     }
     if (options.characters.notesHeading) {
-      paragraphs.push(new Paragraph({ text: i18n('Notes'), heading: HeadingLevel.HEADING_3 }))
+      paragraphs.push(new Paragraph({ text: t('Notes'), heading: HeadingLevel.HEADING_3 }))
     }
     if (options.characters.notes) {
       paragraphs = [...paragraphs, ...serialize(ch.notes, doc)]

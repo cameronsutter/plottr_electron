@@ -2,13 +2,14 @@ import exportBeats from '../beats'
 import { resetId } from '../../utils'
 import { state } from './fixtures'
 import { paragraph, headingTwo } from 'components/rce/__fixtures__'
+import default_config from '../../../../default_config'
 
 describe('exportBeats', () => {
   let documentContents = {}
   beforeEach(() => resetId())
 
   it('exports beat binders from state', () => {
-    const binderItems = exportBeats(state, documentContents)
+    const binderItems = exportBeats(state, documentContents, default_config.scrivener)
     expect(binderItems).toMatchObject([
       {
         _attributes: {
@@ -68,19 +69,22 @@ describe('exportBeats', () => {
   it('exports the documentContents', () => {
     expect(documentContents).toEqual({
       4: {
-        docTitle: 'Plotline: Main Story Arc',
-        description: [headingTwo('Description'), paragraph('So paragraph')],
-        isNotesDoc: true,
+        notes: {
+          docTitle: 'Plotline: Main Story Arc',
+          description: [headingTwo('Description'), paragraph('So paragraph')],
+        },
       },
       5: {
-        docTitle: 'Plotline: Main Story Arc',
-        description: [headingTwo('Description'), paragraph('Moar paragraph')],
-        isNotesDoc: true,
+        notes: {
+          docTitle: 'Plotline: Main Story Arc',
+          description: [headingTwo('Description'), paragraph('Moar paragraph')],
+        },
       },
       7: {
-        docTitle: 'Plotline: Main Story Arc',
-        description: [headingTwo('Description'), paragraph('A paragraph')],
-        isNotesDoc: true,
+        notes: {
+          docTitle: 'Plotline: Main Story Arc',
+          description: [headingTwo('Description'), paragraph('A paragraph')],
+        },
       },
     })
   })

@@ -13,7 +13,7 @@ import {
 import { Cell } from 'react-sticky-table'
 import ColorPicker from '../colorpicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import Floater from 'react-floater'
@@ -181,7 +181,7 @@ class LineTitleCell extends PureComponent {
         type="text"
         getValue={this.finalizeEdit}
         defaultValue={this.props.line.title}
-        title={i18n('Edit {lineName}', { lineName: this.props.line.title || i18n('New Plotline') })}
+        title={t('Edit {lineName}', { lineName: this.props.line.title || t('New Plotline') })}
         cancel={() => this.setState({ editing: false, hovering: false })}
       />
     )
@@ -192,7 +192,7 @@ class LineTitleCell extends PureComponent {
 
     return (
       <DeleteConfirmModal
-        name={this.props.line.title || i18n('New Plotline')}
+        name={this.props.line.title || t('New Plotline')}
         onDelete={this.deleteLine}
         onCancel={this.cancelDelete}
       />
@@ -211,16 +211,16 @@ class LineTitleCell extends PureComponent {
   renderHoverOptions = () => {
     const { lineIsExpanded, ui, isSmall } = this.props
     let expandedIcon = null
-    let expandedText = null
+    let allIcon = null
     if (lineIsExpanded) {
       expandedIcon = <FaCompressAlt />
     } else {
       expandedIcon = <FaExpandAlt />
     }
     if (ui.timelineIsExpanded) {
-      expandedText = i18n('Collapse All')
+      allIcon = <FaCompressAlt />
     } else {
-      expandedText = i18n('Expand All')
+      allIcon = <FaExpandAlt />
     }
 
     if (ui.orientation === 'vertical') {
@@ -239,7 +239,7 @@ class LineTitleCell extends PureComponent {
                 {expandedIcon}
               </Button>
               <Button block bsSize="small" onClick={this.toggleExpanded}>
-                {expandedText}
+                {allIcon} {t('All')}
               </Button>
             </>
           )}
@@ -264,7 +264,7 @@ class LineTitleCell extends PureComponent {
                   {expandedIcon}
                 </Button>
                 <Button bsSize="small" onClick={this.toggleExpanded}>
-                  {expandedText}
+                  {allIcon} {t('All')}
                 </Button>
               </>
             )}
@@ -281,7 +281,7 @@ class LineTitleCell extends PureComponent {
     if (!this.state.editing) return truncateTitle(this.props.line.title, 50)
     return (
       <FormGroup>
-        <ControlLabel>{i18n('Plotline name')}</ControlLabel>
+        <ControlLabel>{t('Plotline name')}</ControlLabel>
         <FormControl
           type="text"
           defaultValue={this.props.line.title}

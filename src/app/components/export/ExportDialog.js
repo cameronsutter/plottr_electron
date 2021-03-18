@@ -8,7 +8,7 @@ import { PlottrModal } from '../PlottrModal'
 import { Button, ButtonToolbar, Nav, NavItem } from 'react-bootstrap'
 import ExportBody from './ExportBody'
 import Switch from '../../../common/components/Switch'
-import { useSettingsInfo } from '../../../common/utils/store_hooks'
+import { useExportConfigInfo } from '../../../common/utils/store_hooks'
 import ScrivenerExporter from '../../../common/exporter/scrivener/v2/exporter'
 import WordExporter from '../../../common/exporter/word/exporter'
 import log from 'electron-log'
@@ -17,10 +17,10 @@ const win = remote.getCurrentWindow()
 const { dialog } = remote
 
 function ExportDialog(props) {
-  const [settings, _, saveSetting] = useSettingsInfo()
-  const [type, setType] = useState(settings.export.savedType)
-  const [saveOptions, setSaveOptions] = useState(settings.export.saveSettings)
-  const [options, setOptions] = useState(settings.export)
+  const [exportConfig, _, saveExportConfig] = useExportConfigInfo()
+  const [type, setType] = useState(exportConfig.savedType)
+  const [saveOptions, setSaveOptions] = useState(exportConfig.saveSettings)
+  const [options, setOptions] = useState(exportConfig)
 
   const updateOptions = (newValues) => {
     const newOptions = { ...options }
@@ -49,8 +49,8 @@ function ExportDialog(props) {
       MPQ.push('Export', { export_type: type })
 
       if (saveOptions) {
-        saveSetting('export.savedType', type)
-        saveSetting(`export.${type}`, options[type])
+        saveExportConfig('savedType', type)
+        saveExportConfig(type, options[type])
       }
 
       try {

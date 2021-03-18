@@ -21,7 +21,6 @@ function openProjectWindow(filePath) {
   const newWindow = makeBrowserWindow(filePath)
 
   const entryFile = filePrefix(path.join(__dirname, 'app.html'))
-  log.info('entryFile', entryFile)
   newWindow.loadURL(entryFile)
 
   newWindow.on('closed', function () {

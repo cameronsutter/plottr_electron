@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import i18n from 'format-message'
 import PropTypes from 'react-proptypes'
-import { Button, Nav, NavItem } from 'react-bootstrap'
-import { useSettingsInfo } from '../../../common/utils/store_hooks'
+import { useExportConfigInfo } from '../../../common/utils/store_hooks'
 import OutlineOptions from './options/OutlineOptions'
 import GeneralOptions from './options/GeneralOptions'
 import CharacterOptions from './options/CharacterOptions'
@@ -10,11 +8,11 @@ import PlaceOptions from './options/PlaceOptions'
 import NoteOptions from './options/NoteOptions'
 
 export default function ExportBody({ type, onChange }) {
-  const [settings] = useSettingsInfo()
-  const [options, setOptions] = useState(settings.export[type])
+  const [exportConfig] = useExportConfigInfo()
+  const [options, setOptions] = useState(exportConfig[type])
 
   useEffect(() => {
-    setOptions(settings.export[type])
+    setOptions(exportConfig[type])
   }, [type])
 
   const updateOptions = (newVal, category, attr) => {

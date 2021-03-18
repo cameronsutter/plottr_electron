@@ -11,5 +11,6 @@ export const TEMPLATES_MANIFEST_PATH = 'templates_manifest'
 export const TEMPLATES_PATH = 'templates'
 export const CUSTOM_TEMPLATES_PATH = 'custom_templates'
 export const TMP_PATH = 'tmp'
+export const EXPORT_CONFIG_PATH = 'export_config'
 export const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 export const BACKUP_BASE_PATH = path.join(app.getPath('userData'), 'backups')

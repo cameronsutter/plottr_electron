@@ -9,8 +9,10 @@ import {
   TEMPLATES_PATH,
   TMP_PATH,
   TEMPLATES_MANIFEST_PATH,
+  EXPORT_CONFIG_PATH,
 } from './config_paths'
 import SETTINGS from './settings'
+import export_config from '../exporter/default_config'
 
 const knownFilesPath =
   process.env.NODE_ENV == 'development' ? `${KNOWN_FILES_PATH}_dev` : KNOWN_FILES_PATH
@@ -21,6 +23,8 @@ const customTemplatesPath =
 const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const manifestPath =
   process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
+const exportPath =
+  process.env.NODE_ENV == 'development' ? `${EXPORT_CONFIG_PATH}_dev` : EXPORT_CONFIG_PATH
 
 export const trialStore = new Store({ name: TRIAL_INFO_PATH, watch: true })
 export const licenseStore = new Store({ name: USER_INFO_PATH, watch: true })
@@ -28,6 +32,11 @@ export const knownFilesStore = new Store({ name: knownFilesPath, watch: true })
 export const templatesStore = new Store({ name: templatesPath, watch: true })
 export const customTemplatesStore = new Store({ name: customTemplatesPath, watch: true })
 export const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
+export const exportConfigStore = new Store({
+  name: exportPath,
+  watch: true,
+  defaults: export_config,
+})
 export const manifestStore = new Store({ name: manifestPath })
 export const MANIFEST_ROOT = 'manifest'
 
@@ -102,4 +111,8 @@ export function useCustomTemplatesInfo() {
 
 export function useSettingsInfo() {
   return useJsonStore(SETTINGS)
+}
+
+export function useExportConfigInfo() {
+  return useJsonStore(exportConfigStore)
 }

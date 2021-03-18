@@ -79,10 +79,17 @@ function makeBrowserWindow(filePath) {
     log.warn('webContents became unresponsive')
     newWindow.webContents.reload()
   })
+  newWindow.webContents.on('responsive', () => {
+    log.info('webContents responsive again')
+  })
 
   newWindow.on('unresponsive', () => {
     log.warn('window became unresponsive')
     newWindow.webContents.reload()
+  })
+
+  newWindow.on('responsive', () => {
+    log.info('window responsive again')
   })
 
   newWindow.webContents.on(

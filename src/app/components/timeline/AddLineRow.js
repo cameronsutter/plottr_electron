@@ -29,6 +29,7 @@ class AddLineRow extends Component {
   nextCardId = null
   newLineMapping = {}
   newBeatOffset = 0
+  titleInputRef = React.createRef()
 
   getLast = (list) => {
     return list[list.length - 1]
@@ -230,7 +231,7 @@ class AddLineRow extends Component {
   }
 
   renderInsertButton() {
-    const { isSmall, isMedium } = this.props
+    const { isSmall, isMedium, ui, actions } = this.props
     if (isSmall) {
       return (
         <th className="row-header">
@@ -250,7 +251,6 @@ class AddLineRow extends Component {
     const appendKlass = cx('line-list__append-line', { 'medium-timeline': isMedium })
     return (
       <div className={appendKlass}>
-        {this.renderInputModal()}
         {this.state.hovering ? (
           <div className="line-list__append-line__double">
             <div
@@ -259,7 +259,7 @@ class AddLineRow extends Component {
             >
               {i18n('Use Template')}
             </div>
-            <div onClick={() => this.setState({ askingForInput: true })} className="non-template">
+            <div onClick={() => actions.addLine(ui.currentTimeline)} className="non-template">
               <Glyphicon glyph="plus" />
             </div>
           </div>

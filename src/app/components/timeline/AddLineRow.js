@@ -29,7 +29,6 @@ class AddLineRow extends Component {
   nextCardId = null
   newLineMapping = {}
   newBeatOffset = 0
-  titleInputRef = React.createRef()
 
   getLast = (list) => {
     return list[list.length - 1]

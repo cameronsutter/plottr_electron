@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import { Button } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import { colors } from 'pltr/v2'
+import cx from 'classnames'
 
 const { reds, oranges, greens, blues, purples, grays, whites, browns, defaults } = colors
 
@@ -45,7 +46,11 @@ export default function MiniColorPicker(props) {
   }
 
   return (
-    <div className="mini-color-picker" style={useCoords()} ref={pickerRef}>
+    <div
+      className={cx('mini-color-picker', { darkmode: props.darkMode })}
+      style={useCoords()}
+      ref={pickerRef}
+    >
       <p>{i18n('Default Colors')}</p>
       <div className="color-picker__box">
         {defaults.map((c) => (
@@ -126,4 +131,5 @@ MiniColorPicker.propTypes = {
   el: PropTypes.object,
   close: PropTypes.func,
   chooseColor: PropTypes.func,
+  darkMode: PropTypes.bool,
 }

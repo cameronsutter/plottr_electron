@@ -429,7 +429,7 @@ class CardDialog extends Component {
     const lineDropdownID = 'select-line'
     const beatDropdownID = 'select-beat'
 
-    const { positionOffset, isSeries, card } = this.props
+    const { positionOffset, isSeries, card, ui } = this.props
 
     let labelText = i18n('Chapter')
     let bookDropDown = null
@@ -523,6 +523,7 @@ class CardDialog extends Component {
             container={() => this.colorButtonRef.current}
           >
             <MiniColorPicker
+              darkMode={ui.darkMode}
               chooseColor={this.chooseCardColor}
               el={this.colorButtonRef}
               close={() => this.setState({ showColorPicker: false })}

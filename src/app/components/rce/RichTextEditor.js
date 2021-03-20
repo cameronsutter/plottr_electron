@@ -99,6 +99,7 @@ const RichTextEditor = (props) => {
             </ButtonGroup>
             <Overlay show={showColorPicker} placement="bottom" container={() => toolbarRef.current}>
               <MiniColorPicker
+                darkMode={props.darkMode}
                 chooseColor={changeColor}
                 el={toolbarRef}
                 close={() => toggleColorPicker(false)}

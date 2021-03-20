@@ -131,5 +131,5 @@ MiniColorPicker.propTypes = {
   el: PropTypes.object,
   close: PropTypes.func,
   chooseColor: PropTypes.func,
-  darkMode: PropTypes.bool,
+  darkMode: PropTypes.bool.isRequired,
 }

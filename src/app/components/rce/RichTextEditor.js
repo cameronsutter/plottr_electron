@@ -43,6 +43,7 @@ const RichTextEditor = (props) => {
   const [editorWrapperRef, setEditorWrapperRef] = useState(null)
   const key = useRef(Math.random().toString(16))
   const toolbarRef = useRef(null)
+  const bottomTextAreaRef = useRef(null)
   const [showColorPicker, toggleColorPicker] = useState(false)
   const changeColor = (color) => {
     addColorMark(editor, color)
@@ -65,6 +66,41 @@ const RichTextEditor = (props) => {
     if (value !== newVal) {
       props.onChange(newVal)
     }
+  }
+
+  const scrollToEnd = () => {
+    if (bottomTextAreaRef.current) {
+      bottomTextAreaRef.current.scrollIntoView(
+        {
+          block: 'end',
+        }
+      )
+    }
+  }
+
+  const handleKeyDown = (event) => {
+    for (const hotkey in HOTKEYS) {
+      if (isHotkey(hotkey, event)) {
+        event.preventDefault()
+        const mark = HOTKEYS[hotkey]
+        toggleMark(editor, mark)
+      }
+    }
+    scrollToEnd()
+  }
+
+  const handleClickEditable = (event) => {
+    if (!editorWrapperRef) return
+      if (editorWrapperRef.firstChild.contains(event.target)) return
+
+      // Focus the Editable content
+      // Select all text
+      // Push cursor/focus to last char
+      // Scroll the view to bottom area of Editable
+      editorWrapperRef.firstChild.focus()
+      document.execCommand('selectAll', false, null)
+      document.getSelection().collapseToEnd()
+      scrollToEnd()
   }
 
   const otherProps = {
@@ -112,12 +148,7 @@ const RichTextEditor = (props) => {
             registerEditor(e && e.firstChild)
             setEditorWrapperRef(e)
           }}
-          onClick={(event) => {
-            if (!editorWrapperRef) return
-            if (editorWrapperRef.firstChild.contains(event.target)) return
-            editorWrapperRef.firstChild.focus()
-          }}
-          className={cx('slate-editor__editor', { darkmode: props.darkMode })}
+          onClick={(event) => handleClickEditable(event)}          className={cx('slate-editor__editor', { darkmode: props.darkMode })}
         >
           <Editable
             spellCheck
@@ -125,16 +156,9 @@ const RichTextEditor = (props) => {
             renderLeaf={renderLeaf}
             renderElement={renderElement}
             placeholder={i18n('Enter some text...')}
-            onKeyDown={(event) => {
-              for (const hotkey in HOTKEYS) {
-                if (isHotkey(hotkey, event)) {
-                  event.preventDefault()
-                  const mark = HOTKEYS[hotkey]
-                  toggleMark(editor, mark)
-                }
-              }
-            }}
+            onKeyDown={(event) => handleKeyDown(event)}
           />
+          <div ref={bottomTextAreaRef} />
         </div>
       </div>
     </Slate>

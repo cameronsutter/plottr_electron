@@ -70,11 +70,9 @@ const RichTextEditor = (props) => {
 
   const scrollToEnd = () => {
     if (bottomTextAreaRef.current) {
-      bottomTextAreaRef.current.scrollIntoView(
-        {
-          block: 'end',
-        }
-      )
+      bottomTextAreaRef.current.scrollIntoView({
+        block: 'end',
+      })
     }
   }
 
@@ -91,16 +89,16 @@ const RichTextEditor = (props) => {
 
   const handleClickEditable = (event) => {
     if (!editorWrapperRef) return
-      if (editorWrapperRef.firstChild.contains(event.target)) return
+    if (editorWrapperRef.firstChild.contains(event.target)) return
 
-      // Focus the Editable content
-      // Select all text
-      // Push cursor/focus to last char
-      // Scroll the view to bottom area of Editable
-      editorWrapperRef.firstChild.focus()
-      document.execCommand('selectAll', false, null)
-      document.getSelection().collapseToEnd()
-      scrollToEnd()
+    // Focus the Editable content
+    // Select all text
+    // Push cursor/focus to last char
+    // Scroll the view to bottom area of Editable
+    editorWrapperRef.firstChild.focus()
+    document.execCommand('selectAll', false, null)
+    document.getSelection().collapseToEnd()
+    scrollToEnd()
   }
 
   const otherProps = {
@@ -148,7 +146,8 @@ const RichTextEditor = (props) => {
             registerEditor(e && e.firstChild)
             setEditorWrapperRef(e)
           }}
-          onClick={(event) => handleClickEditable(event)}          className={cx('slate-editor__editor', { darkmode: props.darkMode })}
+          onClick={(event) => handleClickEditable(event)}
+          className={cx('slate-editor__editor', { darkmode: props.darkMode })}
         >
           <Editable
             spellCheck

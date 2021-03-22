@@ -48,7 +48,7 @@ export default function FileActions({ missing, id, filePath, openFile }) {
         shell.moveItemToTrash(filePath, true)
       } catch (error) {
         log.error(error)
-        dialog.showErrorBox(t('There was an error doing that. Try again'))
+        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
       }
     }
   }

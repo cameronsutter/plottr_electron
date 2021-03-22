@@ -1,6 +1,6 @@
 export default {
   saveSettings: true,
-  savedType: null,
+  savedType: 'word',
   scrivener: {
     general: {},
     outline: {
@@ -11,7 +11,7 @@ export default {
       attachments: true,
       description: true,
       descriptionHeading: true,
-      where: 'notes',
+      where: 'synopsis',
       customAttributes: true,
       templates: true,
     },
@@ -72,6 +72,7 @@ export default {
       notes: true,
       customAttributes: true,
       templates: true,
+      category: true,
     },
     places: {
       export: true,

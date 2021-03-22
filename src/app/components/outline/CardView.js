@@ -34,7 +34,7 @@ class CardView extends Component {
 
   saveEdit = () => {
     const { card, actions } = this.props
-    var newTitle = this.titleInputRef.current.value || card.title
+    var newTitle = this.titleInputRef.value || card.title
     actions.editCard(card.id, newTitle, this.state.description, card.templates, {})
     this.setState({ editing: false })
   }
@@ -125,7 +125,9 @@ class CardView extends Component {
           onKeyDown={this.handleEsc}
           type="text"
           autoFocus
-          inputRef={this.titleInputRef}
+          inputRef={(ref) => {
+            this.titleInputRef = ref
+          }}
           defaultValue={title}
         />
       </FormGroup>

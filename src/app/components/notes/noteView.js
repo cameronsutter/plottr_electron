@@ -70,7 +70,7 @@ class NoteView extends Component {
 
   saveEdit = (close = true) => {
     const { note } = this.props
-    let title = this.titleInputRef.current.value || note.title
+    let title = this.titleInputRef.value || note.title
     let content = this.state.content
     let attrs = { title, content }
     if (this.state.newImageId) {
@@ -138,7 +138,9 @@ class NoteView extends Component {
               <ControlLabel>{i18n('Title')}</ControlLabel>
               <FormControl
                 type="text"
-                inputRef={this.titleInputRef}
+                inputRef={(ref) => {
+                  this.titleInputRef = ref
+                }}
                 autoFocus
                 onKeyDown={this.handleEsc}
                 onKeyPress={this.handleEnter}

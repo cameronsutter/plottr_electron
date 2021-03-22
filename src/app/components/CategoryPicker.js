@@ -11,7 +11,7 @@ class CategoryPicker extends Component {
   }
 
   onChange = () => {
-    const val = this.selectRef.current.value
+    const val = this.selectRef.value
     this.props.onChange(val == -1 ? null : val)
   }
 
@@ -32,7 +32,9 @@ class CategoryPicker extends Component {
         componentClass="select"
         placeholder={i18n('Choose')}
         onChange={this.onChange}
-        inputRef={this.selectRef}
+        inputRef={(ref) => {
+          this.selectRef = ref
+        }}
         value={val}
       >
         {this.renderOptions()}

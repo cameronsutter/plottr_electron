@@ -54,7 +54,7 @@ class BeatTitleCell extends PureComponent {
   }
 
   editTitle = () => {
-    const ref = this.titleInputRef.current
+    const ref = this.titleInputRef
     if (!ref) return
 
     this.finalizeEdit(ref.value)
@@ -220,7 +220,9 @@ class BeatTitleCell extends PureComponent {
         <FormControl
           type="text"
           defaultValue={beat.title}
-          inputRef={this.titleInputRef}
+          inputRef={(ref) => {
+            this.titleInputRef = ref
+          }}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}

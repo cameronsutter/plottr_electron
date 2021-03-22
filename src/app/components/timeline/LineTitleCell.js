@@ -64,7 +64,7 @@ class LineTitleCell extends PureComponent {
   }
 
   editTitle = () => {
-    const ref = this.titleInputRef.current
+    const ref = this.titleInputRef
     if (!ref) return
     this.finalizeEdit(ref.value)
   }
@@ -82,7 +82,7 @@ class LineTitleCell extends PureComponent {
   }
 
   handleBlur = () => {
-    if (this.titleInputRef.current.value !== '') {
+    if (this.titleInputRef.value !== '') {
       this.editTitle()
       this.setState({ editing: false, hovering: false })
     }
@@ -285,7 +285,9 @@ class LineTitleCell extends PureComponent {
         <FormControl
           type="text"
           defaultValue={this.props.line.title}
-          inputRef={this.titleInputRef}
+          inputRef={(ref) => {
+            this.titleInputRef = ref
+          }}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}

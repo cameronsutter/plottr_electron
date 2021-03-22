@@ -29,7 +29,7 @@ class ColorPicker extends Component {
   }
 
   showColor = () => {
-    var newColor = this.hexRef.current.value
+    var newColor = this.hexRef.value
     var regex = /#?([0123456789abcdef]{6})/
     var matches = regex.exec(newColor)
     if (matches) {
@@ -66,7 +66,9 @@ class ColorPicker extends Component {
                   <ControlLabel>{i18n('hex code or name')}</ControlLabel>
                   <FormControl
                     type="text"
-                    inputRef={this.hexRef}
+                    inputRef={(ref) => {
+                      this.hexRef = ref
+                    }}
                     placeholder="e.g. #ffffff"
                     defaultValue={this.state.color}
                     onKeyDown={(event) => {

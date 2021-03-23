@@ -26,7 +26,7 @@ export default function OptionsHome(props) {
     switch (backupType) {
       case 'number':
         return (
-          <div className="dashboard__options__item">
+          <div className="backup-type">
             <ControlLabel>{t('Number of Backups to Keep')}</ControlLabel>
             <FormControl
               type="number"
@@ -38,7 +38,7 @@ export default function OptionsHome(props) {
         )
       default:
         return (
-          <div className="dashboard__options__item">
+          <div className="backup-type">
             <ControlLabel>{t('Number of Days of Rolling Backups to Keep')}</ControlLabel>
             <FormControl
               type="number"

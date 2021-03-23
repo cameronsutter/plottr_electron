@@ -4,7 +4,7 @@ import PlottrModal from 'components/PlottrModal'
 import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import { colors } from 'pltr/v2'
-import ColorPickerColor from './ColorPickerColor'
+import { ColorPickerColor } from 'plottr_components'
 
 const { reds, oranges, greens, blues, purples, grays, whites, browns, defaults } = colors
 

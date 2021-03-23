@@ -23,7 +23,7 @@ import SelectList from 'components/selectList'
 import { DeleteConfirmModal } from 'plottr_components'
 import EditAttribute from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
-import ColorPickerColor from '../ColorPickerColor'
+import { ColorPickerColor } from 'plottr_components'
 import MiniColorPicker from '../MiniColorPicker'
 
 const {

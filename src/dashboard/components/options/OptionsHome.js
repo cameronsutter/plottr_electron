@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { t } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import Switch from '../../../common/components/Switch'
@@ -9,9 +9,47 @@ import DarkOptionsSelect from './DarkOptionsSelect'
 
 export default function OptionsHome(props) {
   const [settings, _, saveSetting] = useSettingsInfo()
+  const [backupType, setBackupType] = useState('days')
 
   let backupLocation = settings.user.backupLocation
   if (!backupLocation || backupLocation == 'default') backupLocation = BACKUP_BASE_PATH
+
+  const renderDropdown = () => {
+    return (
+      <select onChange={(event) => setBackupType(event.target.value)}>
+        <option value="days">{t('Days of Backups')}</option>
+        <option value="number">{t('Number of Backups')}</option>
+      </select>
+    )
+  }
+  const displayBackupOption = () => {
+    switch (backupType) {
+      case 'number':
+        return (
+          <div className="dashboard__options__item">
+            <ControlLabel>{t('Number of Backups to Keep')}</ControlLabel>
+            <FormControl
+              type="number"
+              value={settings.user.numberOfBackups || 30}
+              onChange={(event) => saveSetting('user.numberOfBackups', Number(event.target.value))}
+            />
+            <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
+          </div>
+        )
+      default:
+        return (
+          <div className="dashboard__options__item">
+            <ControlLabel>{t('Number of Days of Rolling Backups to Keep')}</ControlLabel>
+            <FormControl
+              type="number"
+              value={settings.user.backupDays || 30}
+              onChange={(event) => saveSetting('user.backupDays', Number(event.target.value))}
+            />
+            <HelpBlock>{t('Backups older than this will be erased')}</HelpBlock>
+          </div>
+        )
+    }
+  }
 
   return (
     <div className="dashboard__options">
@@ -43,6 +81,24 @@ export default function OptionsHome(props) {
           <h4>{t('Language')}</h4>
           <LanguagePicker />
         </div>
+        <div className="dashboard__options__item">
+          <h4>{t('Backup Storage Type')}</h4>
+          <FormGroup controlId="backupDays">
+            {renderDropdown()}
+            {displayBackupOption()}
+          </FormGroup>
+        </div>
+        <div className="dashboard__options__item">
+          <h4>{t('Backup Location')}</h4>
+          <FormGroup controlId="backupLocation">
+            <ControlLabel>{t('Folder where backups are stored')}</ControlLabel>
+            <FormControl
+              type="text"
+              value={backupLocation}
+              onChange={(event) => saveSetting('user.backupLocation', event.target.value)}
+            />
+          </FormGroup>
+        </div>
         <hr />
         <h1 className="secondary-text">{t('Coming Soon!')}</h1>
         <div className="dashboard__options__item disabled">
@@ -53,31 +109,6 @@ export default function OptionsHome(props) {
             handleToggle={() => saveSetting('user.autoSave', !settings.user.autoSave)}
             labelText={t('By default, use auto-save for projects')}
           />
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Days of Backup')}</h4>
-          <FormGroup controlId="backupDays">
-            <ControlLabel>{t('Number of Days of Rolling Backups to Keep')}</ControlLabel>
-            <FormControl
-              disabled
-              type="number"
-              value={settings.user.backupDays || 30}
-              onChange={(event) => saveSetting('user.backupDays', Number(event.target.value))}
-            />
-            <HelpBlock>{t('Backups older than this will be erased')}</HelpBlock>
-          </FormGroup>
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Backup Location')}</h4>
-          <FormGroup controlId="backupLocation">
-            <ControlLabel>{t('Folder where backups are stored')}</ControlLabel>
-            <FormControl
-              disabled
-              type="text"
-              value={backupLocation}
-              onChange={(event) => saveSetting('user.backupLocation', event.target.value)}
-            />
-          </FormGroup>
         </div>
       </div>
     </div>

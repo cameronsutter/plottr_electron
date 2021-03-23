@@ -226,6 +226,7 @@ class Card extends Component {
 
   render() {
     const { color, card, isVisible, allowDrop, last, isSmall, isMedium, ui } = this.props
+    console.log(color,'color')
     var cardStyle = {
       borderColor: card.color ? tinycolor(card.color).darken(10).toHslString() : color,
     }

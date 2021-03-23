@@ -64,7 +64,7 @@ class TimelineWrapper extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { ui } = this.props
-
+    console.log(ui,'props')
     if (
       nextProps.ui.currentTimeline != ui.currentTimeline ||
       nextProps.ui.orientation != ui.orientation ||

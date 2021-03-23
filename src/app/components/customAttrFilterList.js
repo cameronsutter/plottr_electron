@@ -12,7 +12,6 @@ import PlacesFilterList from './filterLists/PlacesFilterList'
 import CharactersFilterList from './filterLists/CharactersFilterList'
 
 import { selectors, actions } from 'pltr/v2'
-import { isSeriesSelector } from 'pltr/v2/selectors/ui'
 
 const UIActions = actions.ui
 const { sortedTagsSelector } = selectors
@@ -213,6 +212,7 @@ function chooseCustomAttributes(state, type) {
 
 function mapStateToProps(state, { type }) {
   const filteredItems = chooseFilteredItems(state, type)
+  console.log(selectors.isSeriesSelector(state.present),'selectors.isSeries')
   return {
     tags: sortedTagsSelector(state.present),
     books: state.present.books,
@@ -222,7 +222,7 @@ function mapStateToProps(state, { type }) {
     showCharacters: type === 'cards',
     showPlaces: type === 'cards',
     showCategory: type === 'characters',
-    isSeries: isSeriesSelector(state.present)
+    isSeries: selectors.isSeriesSelector(state.present)
   }
 }
 

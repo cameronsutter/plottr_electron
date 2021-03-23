@@ -12,6 +12,7 @@ import PlacesFilterList from './filterLists/PlacesFilterList'
 import CharactersFilterList from './filterLists/CharactersFilterList'
 
 import { selectors, actions } from 'pltr/v2'
+import { isSeriesSelector } from 'pltr/v2/selectors/ui'
 
 const UIActions = actions.ui
 const { sortedTagsSelector } = selectors
@@ -31,6 +32,7 @@ class CustomAttrFilterList extends Component {
       if (attr.type == 'text') result[attr.name] = filteredItems[attr.name] || []
       return result
     }, filteredItems)
+    console.log(props,'props')
     return { filteredItems }
   }
 
@@ -129,15 +131,17 @@ class CustomAttrFilterList extends Component {
 
   render() {
     const CAlists = this.props.customAttributes.map(this.renderList)
-    const { showCharacters, showPlaces, showCategory } = this.props
+    const { showCharacters, showPlaces, showCategory, isSeries } = this.props
     const orEmpty = (value) => (value ? value : [])
 
     return (
       <div className="filter-list flex">
-        <BookFilterList
-          updateItems={this.updateFilter}
-          filteredItems={[...orEmpty(this.state.filteredItems.book)]}
-        />
+        {isSeries && 
+          <BookFilterList
+            updateItems={this.updateFilter}
+            filteredItems={[...orEmpty(this.state.filteredItems.book)]}
+          />
+        }
         {showCharacters ? (
           <CharactersFilterList
             updateItems={this.updateFilter}
@@ -218,6 +222,7 @@ function mapStateToProps(state, { type }) {
     showCharacters: type === 'cards',
     showPlaces: type === 'cards',
     showCategory: type === 'characters',
+    isSeries: isSeriesSelector(state.present)
   }
 }
 

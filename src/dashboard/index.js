@@ -1,6 +1,7 @@
 import path from 'path'
 import log from 'electron-log'
 import React from 'react'
+import electron from 'electron'
 import { ipcRenderer } from 'electron'
 import { render } from 'react-dom'
 import { setupI18n } from 'plottr_locales'
@@ -13,7 +14,7 @@ import TemplateFetcher from './utils/template_fetcher'
 import { ensureBackupFullPath } from '../common/utils/backup'
 
 // necessary SETUP //
-setupI18n(SETTINGS)
+setupI18n(SETTINGS, { electron })
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('dashboard.html')
 

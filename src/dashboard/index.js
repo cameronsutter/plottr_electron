@@ -47,3 +47,7 @@ ipcRenderer.once('send-launch', (event, version) => {
 ipcRenderer.on('reload', () => {
   location.reload()
 })
+
+ipcRenderer.on('updater-test', () => {
+  console.log('updater-test event')
+})

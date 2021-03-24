@@ -209,16 +209,6 @@
       "fromTemplateId": null
     },
     {
-      "id": 10,
-      "bookId": 6,
-      "position": 0,
-      "title": "auto",
-      "time": 0,
-      "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
       "id": 11,
       "bookId": 3,
       "position": 0,
@@ -301,16 +291,6 @@
     {
       "id": 19,
       "bookId": 5,
-      "position": 1,
-      "title": "auto",
-      "time": 0,
-      "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
-      "id": 20,
-      "bookId": 6,
       "position": 1,
       "title": "auto",
       "time": 0,
@@ -941,6 +921,39 @@
   ],
   "cards": [
     {
+      "id": 326,
+      "lineId": 20,
+      "beatId": 9,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "some "
+            },
+            {
+              "text": "bold text",
+              "bold": true
+            },
+            {
+              "text": " here"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
       "id": 325,
       "lineId": 10,
       "beatId": 55,
@@ -1030,6 +1043,7 @@
       "title": "Mr. Darcy",
       "description": [
         {
+          "type": "paragraph",
           "children": [
             {
               "text": ""
@@ -1448,6 +1462,43 @@
               "children": [
                 {
                   "text": ""
+                }
+              ],
+              "type": "list-item"
+            }
+          ]
+        },
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "type": "bulleted-list",
+          "children": [
+            {
+              "children": [
+                {
+                  "text": "List of"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "other things"
+                }
+              ],
+              "type": "list-item"
+            },
+            {
+              "children": [
+                {
+                  "text": "right here"
                 }
               ],
               "type": "list-item"
@@ -11246,18 +11297,9 @@
       "fromTemplateId": null
     },
     {
-      "id": 24,
-      "bookId": 6,
-      "title": "",
-      "color": "#78be20",
-      "position": 1,
-      "expanded": null,
-      "fromTemplateId": null
-    },
-    {
       "id": 23,
       "bookId": 5,
-      "title": "",
+      "title": "Sub Plot",
       "color": "#78be20",
       "position": 1,
       "expanded": null,
@@ -11273,18 +11315,9 @@
       "fromTemplateId": null
     },
     {
-      "id": 21,
-      "bookId": 6,
-      "title": "",
-      "color": "#6cace4",
-      "position": 0,
-      "expanded": null,
-      "fromTemplateId": null
-    },
-    {
       "id": 20,
       "bookId": 5,
-      "title": "",
+      "title": "Main Plot",
       "color": "#6cace4",
       "position": 0,
       "expanded": null,

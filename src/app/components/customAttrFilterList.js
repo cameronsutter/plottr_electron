@@ -10,6 +10,7 @@ import BookFilterList from './filterLists/BookFilterList'
 import CharacterCategoryFilterList from './filterLists/CharacterCategoryFilterList'
 import PlacesFilterList from './filterLists/PlacesFilterList'
 import CharactersFilterList from './filterLists/CharactersFilterList'
+import CardColorFilterList from './filterLists/CardColorFilterList'
 
 import { selectors, actions } from 'pltr/v2'
 
@@ -24,14 +25,14 @@ class CustomAttrFilterList extends Component {
 
   static getDerivedStateFromProps(props, state) {
     // TODO: this should be a selector
-    let filteredItems = { tag: [], book: [], category: [] }
+    let filteredItems = { tag: [], book: [], category: [], color: [] }
     if (state.filteredItems)
       filteredItems = Object.assign({}, filteredItems, state.filteredItems, props.filteredItems)
     filteredItems = props.customAttributes.reduce((result, attr) => {
       if (attr.type == 'text') result[attr.name] = filteredItems[attr.name] || []
       return result
     }, filteredItems)
-    console.log(props,'props')
+
     return { filteredItems }
   }
 
@@ -133,6 +134,10 @@ class CustomAttrFilterList extends Component {
     const { showCharacters, showPlaces, showCategory, isSeries } = this.props
     const orEmpty = (value) => (value ? value : [])
 
+    let cardColors = this.props.items.map(item => item.color)
+    let cardColorsSet = new Set(cardColors)
+    let cardColorsToFilterBy = [...cardColorsSet]
+
     return (
       <div className="filter-list flex">
         {isSeries && 
@@ -162,6 +167,11 @@ class CustomAttrFilterList extends Component {
         <TagFilterList
           updateItems={this.updateFilter}
           filteredItems={[...orEmpty(this.state.filteredItems.tag)]}
+        />
+        <CardColorFilterList
+          updateItems={this.updateFilter}
+          colors={cardColorsToFilterBy}
+          filteredItems={[...orEmpty(this.state.filteredItems.color)]}
         />
         {CAlists}
       </div>
@@ -212,7 +222,6 @@ function chooseCustomAttributes(state, type) {
 
 function mapStateToProps(state, { type }) {
   const filteredItems = chooseFilteredItems(state, type)
-  console.log(selectors.isSeriesSelector(state.present),'selectors.isSeries')
   return {
     tags: sortedTagsSelector(state.present),
     books: state.present.books,

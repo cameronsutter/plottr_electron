@@ -24,7 +24,6 @@ export default function UpdateNotifier(props) {
 
   useEffect(() => {
     ipcRenderer.on('updater-error', (error) => {
-      log.info('update-notifier-error')
       log.warn(error)
       setError(error)
       setHidden(false)
@@ -34,7 +33,6 @@ export default function UpdateNotifier(props) {
       setTimeout(() => setFinishedChecking(false), 10000)
     })
     ipcRenderer.on('updater-update-available', (info) => {
-      log.info('update-notifier-update-available')
       setHidden(false)
       setChecking(false)
       setAvailable(true)
@@ -42,7 +40,6 @@ export default function UpdateNotifier(props) {
       setInfo(info)
     })
     ipcRenderer.on('updater-update-not-available', () => {
-      log.info('update-notifier-update-not-available')
       setHidden(false)
       setChecking(false)
       setFinishedChecking(true)
@@ -51,7 +48,6 @@ export default function UpdateNotifier(props) {
       setTimeout(() => setFinishedChecking(false), 5000)
     })
     ipcRenderer.on('updater-download-progress', (progress) => {
-      log.info('update-notifier-download-progress')
       setHidden(false)
       setDownloadInProgress(true)
 
@@ -63,7 +59,6 @@ export default function UpdateNotifier(props) {
       setPercentDownloaded(Math.floor(percent))
     })
     ipcRenderer.on('updater-update-downloaded', (info) => {
-      log.info('update-notifier-update-downloaded')
       setHidden(false)
       setDownloadInProgress(false)
       setFinishedDownloading(true)

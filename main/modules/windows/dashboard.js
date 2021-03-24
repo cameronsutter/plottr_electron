@@ -41,8 +41,6 @@ function openDashboard() {
       dashboardWindow.webContents.send('send-launch', app.getVersion())
       launchSent = true
     }
-
-    sendToDashboard('updater-test')
   })
 }
 

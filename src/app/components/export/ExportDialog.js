@@ -15,7 +15,7 @@ const { dialog } = remote
 
 function ExportDialog(props) {
   const [exportConfig, _, saveExportConfig] = useExportConfigInfo()
-  const [type, setType] = useState(exportConfig.savedType)
+  const [type, setType] = useState(exportConfig.savedType || 'word')
   const [saveOptions, setSaveOptions] = useState(exportConfig.saveSettings)
   const [options, setOptions] = useState(exportConfig)
 

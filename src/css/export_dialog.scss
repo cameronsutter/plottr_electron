@@ -146,4 +146,9 @@ body.darkmode {
       background-color: $darkmode-darker-background;
     }
   }
+  .export-dialog__option-lists {
+    ul {
+      color: $darkmode-text;
+    }
+  }
 }

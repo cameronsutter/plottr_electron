@@ -115,7 +115,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   clearFilter = () => {
-    this.props.actions.setTimelineFilter({ tag: [], character: [], place: [], colors: [] })
+    this.props.actions.setTimelineFilter({ tag: [], character: [], place: [], color: [] })
   }
 
   // //////////////

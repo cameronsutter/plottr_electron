@@ -64,7 +64,6 @@ class TimelineWrapper extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { ui } = this.props
-
     if (
       nextProps.ui.currentTimeline != ui.currentTimeline ||
       nextProps.ui.orientation != ui.orientation ||
@@ -116,7 +115,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   clearFilter = () => {
-    this.props.actions.setTimelineFilter({ tag: [], character: [], place: [] })
+    this.props.actions.setTimelineFilter({ tag: [], character: [], place: [], color: [] })
   }
 
   // //////////////

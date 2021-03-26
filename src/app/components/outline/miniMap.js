@@ -23,12 +23,8 @@ const targetPosition = 115
 class MiniMap extends Component {
   constructor(props) {
     super(props)
-    this.state = { active: 0, mouseOver: false, firstRender: true }
+    this.state = { mouseOver: false, firstRender: true }
     this.firstBeatKey = props.beats.length ? props.beats[0].id : 0 // this works since they are sorted
-  }
-
-  setActive = (id) => {
-    this.setState({ active: id })
   }
 
   componentDidMount() {
@@ -50,7 +46,7 @@ class MiniMap extends Component {
       const yPosition = elem.getBoundingClientRect().y
       container.scrollBy(0, yPosition - targetPosition)
     }
-    this.setActive(key)
+    this.props.handleActive(key)
   }
 
   renderBeats() {
@@ -95,7 +91,7 @@ class MiniMap extends Component {
     return (
       <Nav
         className={cx('outline__minimap', { darkmode: this.props.ui.darkMode })}
-        activeKey={this.state.active}
+        activeKey={this.props.active}
         onSelect={this.selectNav}
         onMouseEnter={() => this.setState({ mouseOver: true })}
         onMouseLeave={() => this.setState({ mouseOver: false })}
@@ -134,6 +130,7 @@ MiniMap.propTypes = {
   isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
   actions: PropTypes.object,
+  handleActive: PropTypes.func,
 }
 
 function mapStateToProps(state) {

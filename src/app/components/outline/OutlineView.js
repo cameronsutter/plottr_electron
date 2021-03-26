@@ -39,6 +39,7 @@ class OutlineView extends Component {
 
   setActive = (id) => {
     this.setState({ active: id })
+    console.log(this.state.active)
   }
 
   filterItem = (id) => {
@@ -143,6 +144,7 @@ class OutlineView extends Component {
         <ErrorBoundary>
           <MiniMap
             active={this.state.active}
+            handleActive={this.setActive}
             cardMapping={cardMap}
             activeFilter={!!this.state.currentLine}
           />

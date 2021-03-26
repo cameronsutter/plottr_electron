@@ -41,19 +41,6 @@ export default function OutlineOptions({ type, options, updateOptions }) {
         </CheckOption>
       </div>
       <ul>
-        {type == 'word' ? (
-          <li>
-            <CheckOption
-              checked={options.heading}
-              onChange={updateOptions}
-              category="outline"
-              attr="heading"
-              disabled={!options.export}
-            >
-              <span>{t('Heading ("Outline")')}</span>
-            </CheckOption>
-          </li>
-        ) : null}
         <li>
           <CheckOption
             checked={options.sceneCards}
@@ -73,11 +60,7 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                 attr="plotlineInTitle"
                 disabled={!options.export || !options.sceneCards}
               >
-                <div>
-                  <span>{t(type == 'word' ? 'Plotline in Card Title' : 'Plotline Title')}</span>
-                  <br />
-                  <small>{t(type == 'word' ? 'e.g. "(Main Plot)"' : 'e.g. Main Plot')}</small>
-                </div>
+                <span>{t('Plotline Title')}</span>
               </CheckOption>
             </li>
             {type == 'word' ? (
@@ -112,18 +95,6 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                   </li>
                   <li>
                     <RadioOption
-                      checked={options.where == 'body'}
-                      onChange={updateOptions}
-                      category="outline"
-                      attr="where"
-                      value="body"
-                      disabled={!options.export || !options.sceneCards || !options.description}
-                    >
-                      <span>{t('Body')}</span>
-                    </RadioOption>
-                  </li>
-                  <li>
-                    <RadioOption
                       checked={options.where == 'synopsis'}
                       onChange={updateOptions}
                       category="outline"
@@ -132,6 +103,18 @@ export default function OutlineOptions({ type, options, updateOptions }) {
                       disabled={!options.export || !options.sceneCards || !options.description}
                     >
                       <span>{t('Synopsis')}</span>
+                    </RadioOption>
+                  </li>
+                  <li>
+                    <RadioOption
+                      checked={options.where == 'body'}
+                      onChange={updateOptions}
+                      category="outline"
+                      attr="where"
+                      value="body"
+                      disabled={!options.export || !options.sceneCards || !options.description}
+                    >
+                      <span>{t('Body')}</span>
                     </RadioOption>
                   </li>
                   <li>

@@ -190,7 +190,7 @@ export function isPropertyEmpty(property) {
   if (property.length > 1) return false
 
   // OLD: This is to account for old pltr files
-  if (property[0].type == null) return true
+  // if (property[0].type == null) return true
 
   // NEW: new files will have an empty paragraph
   if (

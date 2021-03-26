@@ -17,17 +17,19 @@ export default function PlaceOptions({ type, options, updateOptions }) {
         </CheckOption>
       </div>
       <ul>
-        <li>
-          <CheckOption
-            checked={options.heading}
-            onChange={updateOptions}
-            category="places"
-            attr="heading"
-            disabled={!options.export}
-          >
-            <span>{t(type == 'word' ? 'Heading ("Places")' : 'Place Title')}</span>
-          </CheckOption>
-        </li>
+        {type == 'scrivener' ? (
+          <li>
+            <CheckOption
+              checked={options.heading}
+              onChange={updateOptions}
+              category="places"
+              attr="heading"
+              disabled={!options.export}
+            >
+              <span>{t('Place Name')}</span>
+            </CheckOption>
+          </li>
+        ) : null}
         {type == 'word' ? (
           <li>
             <CheckOption
@@ -37,25 +39,10 @@ export default function PlaceOptions({ type, options, updateOptions }) {
               attr="images"
               disabled={!options.export}
             >
-              <span>{t('Images')}</span>
+              <span>{t('Place Image')}</span>
             </CheckOption>
           </li>
         ) : null}
-        <li>
-          <CheckOption
-            checked={options.descriptionHeading}
-            onChange={updateOptions}
-            category="places"
-            attr="descriptionHeading"
-            disabled={!options.export}
-          >
-            <div>
-              <span>{t('Description Heading')}</span>
-              <br />
-              <small>{t('("Description")')}</small>
-            </div>
-          </CheckOption>
-        </li>
         <li>
           <CheckOption
             checked={options.description}
@@ -65,21 +52,6 @@ export default function PlaceOptions({ type, options, updateOptions }) {
             disabled={!options.export}
           >
             <span>{t('Description')}</span>
-          </CheckOption>
-        </li>
-        <li>
-          <CheckOption
-            checked={options.notesHeading}
-            onChange={updateOptions}
-            category="places"
-            attr="notesHeading"
-            disabled={!options.export}
-          >
-            <div>
-              <span>{t('Notes Heading')}</span>
-              <br />
-              <small>{t('("Notes")')}</small>
-            </div>
           </CheckOption>
         </li>
         <li>

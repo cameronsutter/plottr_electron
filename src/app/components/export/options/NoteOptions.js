@@ -17,17 +17,19 @@ export default function NoteOptions({ type, options, updateOptions }) {
         </CheckOption>
       </div>
       <ul>
-        <li>
-          <CheckOption
-            checked={options.heading}
-            onChange={updateOptions}
-            category="notes"
-            attr="heading"
-            disabled={!options.export}
-          >
-            <span>{t(type == 'word' ? 'Heading ("Notes")' : 'Note Title')}</span>
-          </CheckOption>
-        </li>
+        {type == 'scrivener' ? (
+          <li>
+            <CheckOption
+              checked={options.heading}
+              onChange={updateOptions}
+              category="notes"
+              attr="heading"
+              disabled={!options.export}
+            >
+              <span>{t('Note Title')}</span>
+            </CheckOption>
+          </li>
+        ) : null}
         {type == 'word' ? (
           <li>
             <CheckOption
@@ -37,7 +39,7 @@ export default function NoteOptions({ type, options, updateOptions }) {
               attr="images"
               disabled={!options.export}
             >
-              <span>{t('Images')}</span>
+              <span>{t('Note Image')}</span>
             </CheckOption>
           </li>
         ) : null}

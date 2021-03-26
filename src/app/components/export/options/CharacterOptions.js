@@ -17,17 +17,19 @@ export default function CharacterOptions({ type, options, updateOptions }) {
         </CheckOption>
       </div>
       <ul>
-        <li>
-          <CheckOption
-            checked={options.heading}
-            onChange={updateOptions}
-            category="characters"
-            attr="heading"
-            disabled={!options.export}
-          >
-            <span>{t(type == 'word' ? 'Heading ("Characters")' : 'Character Title')}</span>
-          </CheckOption>
-        </li>
+        {type == 'scrivener' ? (
+          <li>
+            <CheckOption
+              checked={options.heading}
+              onChange={updateOptions}
+              category="characters"
+              attr="heading"
+              disabled={!options.export}
+            >
+              <span>{t('Character Name')}</span>
+            </CheckOption>
+          </li>
+        ) : null}
         {type == 'word' ? (
           <li>
             <CheckOption
@@ -37,25 +39,10 @@ export default function CharacterOptions({ type, options, updateOptions }) {
               attr="images"
               disabled={!options.export}
             >
-              <span>{t('Images')}</span>
+              <span>{t('Character Image')}</span>
             </CheckOption>
           </li>
         ) : null}
-        <li>
-          <CheckOption
-            checked={options.descriptionHeading}
-            onChange={updateOptions}
-            category="characters"
-            attr="descriptionHeading"
-            disabled={!options.export}
-          >
-            <div>
-              <span>{t('Description Heading')}</span>
-              <br />
-              <small>{t('("Description")')}</small>
-            </div>
-          </CheckOption>
-        </li>
         <li>
           <CheckOption
             checked={options.description}
@@ -69,21 +56,6 @@ export default function CharacterOptions({ type, options, updateOptions }) {
         </li>
         <li>
           <CheckOption
-            checked={options.notesHeading}
-            onChange={updateOptions}
-            category="characters"
-            attr="notesHeading"
-            disabled={!options.export}
-          >
-            <div>
-              <span>{t('Notes Heading')}</span>
-              <br />
-              <small>{t('("Notes")')}</small>
-            </div>
-          </CheckOption>
-        </li>
-        <li>
-          <CheckOption
             checked={options.notes}
             onChange={updateOptions}
             category="characters"
@@ -93,6 +65,19 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             <span>{t('Notes')}</span>
           </CheckOption>
         </li>
+        {type == 'scrivener' ? (
+          <li>
+            <CheckOption
+              checked={options.tags}
+              onChange={updateOptions}
+              category="characters"
+              attr="category"
+              disabled={!options.export}
+            >
+              <span>{t('Category')}</span>
+            </CheckOption>
+          </li>
+        ) : null}
         <li>
           <CheckOption
             checked={options.customAttributes}
@@ -125,19 +110,6 @@ export default function CharacterOptions({ type, options, updateOptions }) {
               disabled={!options.export}
             >
               <span>{t('Tags')}</span>
-            </CheckOption>
-          </li>
-        ) : null}
-        {type == 'scrivener' ? (
-          <li>
-            <CheckOption
-              checked={options.tags}
-              onChange={updateOptions}
-              category="characters"
-              attr="category"
-              disabled={!options.export}
-            >
-              <span>{t('Category')}</span>
             </CheckOption>
           </li>
         ) : null}

@@ -228,7 +228,7 @@ describe('scrivener export utils', () => {
       const description = buildDescriptionFromObject(
         {
           key: 'value',
-          attribute: [{}],
+          attribute: [{ type: 'paragraph', children: [{ text: '' }] }],
           property: '',
         },
         true
@@ -266,8 +266,8 @@ describe('scrivener export utils', () => {
       expect(isPropertyEmpty('a')).toEqual(false)
     })
 
-    it('OLD: returns true if the value is empty RichContent', () => {
-      expect(isPropertyEmpty([{}])).toEqual(true)
+    it('OLD: returns false if the value is empty RichContent', () => {
+      expect(isPropertyEmpty([{}])).toEqual(false)
     })
 
     it('NEW: returns true if the only object is an empty paragraph', () => {

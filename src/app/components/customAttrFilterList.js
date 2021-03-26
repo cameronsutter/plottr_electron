@@ -10,6 +10,7 @@ import BookFilterList from './filterLists/BookFilterList'
 import CharacterCategoryFilterList from './filterLists/CharacterCategoryFilterList'
 import PlacesFilterList from './filterLists/PlacesFilterList'
 import CharactersFilterList from './filterLists/CharactersFilterList'
+import CardColorFilterList from './filterLists/CardColorFilterList'
 
 import { selectors, actions } from 'pltr/v2'
 
@@ -24,13 +25,14 @@ class CustomAttrFilterList extends Component {
 
   static getDerivedStateFromProps(props, state) {
     // TODO: this should be a selector
-    let filteredItems = { tag: [], book: [], category: [] }
+    let filteredItems = { tag: [], book: [], category: [], color: [] }
     if (state.filteredItems)
       filteredItems = Object.assign({}, filteredItems, state.filteredItems, props.filteredItems)
     filteredItems = props.customAttributes.reduce((result, attr) => {
       if (attr.type == 'text') result[attr.name] = filteredItems[attr.name] || []
       return result
     }, filteredItems)
+
     return { filteredItems }
   }
 
@@ -129,15 +131,21 @@ class CustomAttrFilterList extends Component {
 
   render() {
     const CAlists = this.props.customAttributes.map(this.renderList)
-    const { showCharacters, showPlaces, showCategory } = this.props
+    const { showCharacters, showPlaces, showCategory, isSeries } = this.props
     const orEmpty = (value) => (value ? value : [])
+
+    let cardColors = this.props.items.map(item => item.color)
+    let cardColorsSet = new Set(cardColors)
+    let cardColorsToFilterBy = [...cardColorsSet]
 
     return (
       <div className="filter-list flex">
-        <BookFilterList
-          updateItems={this.updateFilter}
-          filteredItems={[...orEmpty(this.state.filteredItems.book)]}
-        />
+        {isSeries && 
+          <BookFilterList
+            updateItems={this.updateFilter}
+            filteredItems={[...orEmpty(this.state.filteredItems.book)]}
+          />
+        }
         {showCharacters ? (
           <CharactersFilterList
             updateItems={this.updateFilter}
@@ -159,6 +167,11 @@ class CustomAttrFilterList extends Component {
         <TagFilterList
           updateItems={this.updateFilter}
           filteredItems={[...orEmpty(this.state.filteredItems.tag)]}
+        />
+        <CardColorFilterList
+          updateItems={this.updateFilter}
+          colors={cardColorsToFilterBy}
+          filteredItems={[...orEmpty(this.state.filteredItems.color)]}
         />
         {CAlists}
       </div>
@@ -218,6 +231,7 @@ function mapStateToProps(state, { type }) {
     showCharacters: type === 'cards',
     showPlaces: type === 'cards',
     showCategory: type === 'characters',
+    isSeries: selectors.isSeriesSelector(state.present)
   }
 }
 

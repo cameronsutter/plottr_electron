@@ -191,15 +191,6 @@
   margin-right: auto;
 }
 
-.ReactModal__Content--after-open {
-  top: 60px !important;
-}
-
-.ReactModal__Overlay--after-open {
-  background-color: rgba(0, 0, 0, 0.1) !important;
-  z-index: 1000;
-}
-
 .card-dialog__details-label {
   @include application-text;
   min-width: 150px;

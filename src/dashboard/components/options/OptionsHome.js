@@ -23,7 +23,16 @@ export default function OptionsHome(props) {
     )
   }
   const displayBackupOption = () => {
-    switch (backupType) {
+      <div className="backup-type">
+                <ControlLabel>{t('Number of Backups to Keep')}</ControlLabel>
+                <FormControl
+                  type="number"
+                  value={backupType === 'number' ? settings.user.numberOfBackups : settings.user.backupDays}
+                  defaultValue={30}
+                  onChange={(event) => saveSetting(backupType === 'number' ? 'user.numberOfBackups':'user.backupDays', Number(event.target.value))}
+                />
+                <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
+              </div>
       case 'number':
         return (
           <div className="backup-type">

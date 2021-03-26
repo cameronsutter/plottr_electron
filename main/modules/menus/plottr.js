@@ -1,5 +1,6 @@
 const i18n = require('plottr_locales').t
-const { app } = require('electron')
+const electron = require('electron')
+const { app } = electron
 const { openProcessManager } = require('electron-process-manager')
 const { is } = require('electron-util')
 const { NODE_ENV } = require('../constants')
@@ -16,7 +17,7 @@ function buildPlottrMenu() {
         label: name,
         click: () => {
           SETTINGS.set('locale', locale)
-          setupI18n(SETTINGS)
+          setupI18n(SETTINGS, { electron })
           require('./').loadMenu()
           reloadAllWindows()
           reloadDashboard()

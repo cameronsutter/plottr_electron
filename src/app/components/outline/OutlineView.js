@@ -41,6 +41,10 @@ class OutlineView extends Component {
     this.setState({ active: id })
   }
 
+  fixMe = () => {
+    console.warn('OutlineView waypoint needs fixing')
+  }
+
   filterItem = (id) => {
     if (this.state.currentLine === id) {
       this.setState({ currentLine: null })

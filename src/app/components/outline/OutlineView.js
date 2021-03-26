@@ -39,7 +39,6 @@ class OutlineView extends Component {
 
   setActive = (id) => {
     this.setState({ active: id })
-    console.log(this.state.active)
   }
 
   filterItem = (id) => {
@@ -127,7 +126,7 @@ class OutlineView extends Component {
           <BeatView
             beat={beat}
             cards={cardMapping[beat.id]}
-            waypoint={this.setActive}
+            waypoint={this.fixMe}
             activeFilter={!!this.state.currentLine}
           />
         </ErrorBoundary>

@@ -23,41 +23,23 @@ export default function OptionsHome(props) {
     )
   }
   const displayBackupOption = () => {
+    return (
       <div className="backup-type">
-                <ControlLabel>{t('Number of Backups to Keep')}</ControlLabel>
-                <FormControl
-                  type="number"
-                  value={backupType === 'number' ? settings.user.numberOfBackups : settings.user.backupDays}
-                  defaultValue={30}
-                  onChange={(event) => saveSetting(backupType === 'number' ? 'user.numberOfBackups':'user.backupDays', Number(event.target.value))}
-                />
-                <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
-              </div>
-      case 'number':
-        return (
-          <div className="backup-type">
-            <ControlLabel>{t('Number of Backups to Keep')}</ControlLabel>
-            <FormControl
-              type="number"
-              value={settings.user.numberOfBackups || 30}
-              onChange={(event) => saveSetting('user.numberOfBackups', Number(event.target.value))}
-            />
-            <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
-          </div>
-        )
-      default:
-        return (
-          <div className="backup-type">
-            <ControlLabel>{t('Number of Days of Rolling Backups to Keep')}</ControlLabel>
-            <FormControl
-              type="number"
-              value={settings.user.backupDays || 30}
-              onChange={(event) => saveSetting('user.backupDays', Number(event.target.value))}
-            />
-            <HelpBlock>{t('Backups older than this will be erased')}</HelpBlock>
-          </div>
-        )
-    }
+        <ControlLabel>{t('Number of Backups to Keep')}</ControlLabel>
+        <FormControl
+          type="number"
+          value={backupType === 'number' ? settings.user.numberOfBackups : settings.user.backupDays}
+          defaultValue={30}
+          onChange={(event) =>
+            saveSetting(
+              backupType === 'number' ? 'user.numberOfBackups' : 'user.backupDays',
+              Number(event.target.value)
+            )
+          }
+        />
+        <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
+      </div>
+    )
   }
 
   return (

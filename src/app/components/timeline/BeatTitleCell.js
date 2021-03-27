@@ -35,7 +35,7 @@ class BeatTitleCell extends PureComponent {
       dropDepth: 0,
       deleting: false,
     }
-    this.titleInputRef = React.createRef()
+    this.titleInputRef = null
   }
 
   deleteBeat = (e) => {

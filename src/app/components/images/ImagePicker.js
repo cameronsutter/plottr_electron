@@ -30,7 +30,7 @@ class ImagePicker extends Component {
 
   constructor(props) {
     super(props)
-    this.fileNameRef = React.createRef()
+    this.fileNameRef = null
   }
 
   static getDerivedStateFromProps(props, state) {

@@ -21,10 +21,10 @@ const BookActions = actions.book
 class BookDialog extends Component {
   constructor(props) {
     super(props)
-    this.titleRef = React.createRef()
-    this.premiseRef = React.createRef()
-    this.genreRef = React.createRef()
-    this.themeRef = React.createRef()
+    this.titleRef = null
+    this.premiseRef = null
+    this.genreRef = null
+    this.themeRef = null
   }
 
   saveEdit = () => {

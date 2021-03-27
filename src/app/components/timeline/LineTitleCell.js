@@ -45,7 +45,7 @@ class LineTitleCell extends PureComponent {
       deleting: false,
     }
     this.hoverTimeout = null
-    this.titleInputRef = React.createRef()
+    this.titleInputRef = null
   }
 
   deleteLine = (e) => {

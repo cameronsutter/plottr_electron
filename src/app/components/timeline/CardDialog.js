@@ -57,7 +57,7 @@ class CardDialog extends Component {
       showColorPicker: false,
     }
     this.newAttributeInputRef = React.createRef()
-    this.titleInputRef = React.createRef()
+    this.titleInputRef = null
     this.colorButtonRef = React.createRef()
   }
 

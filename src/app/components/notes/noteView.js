@@ -33,7 +33,7 @@ class NoteView extends Component {
       deleting: false,
     }
 
-    this.titleInputRef = React.createRef()
+    this.titleInputRef = null
   }
 
   componentWillUnmount() {

@@ -13,7 +13,7 @@ class ColorPicker extends Component {
     super(props)
     this.state = { color: this.props.color }
 
-    this.hexRef = React.createRef()
+    this.hexRef = null
   }
 
   componentDidMount() {

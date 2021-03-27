@@ -41,8 +41,8 @@ class CharacterEditDetails extends Component {
       deleting: false,
     }
 
-    this.nameInputRef = React.createRef()
-    this.descriptionInputRef = React.createRef()
+    this.nameInputRef = null
+    this.descriptionInputRef = null
   }
 
   componentWillUnmount() {

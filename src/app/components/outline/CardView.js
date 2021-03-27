@@ -25,7 +25,7 @@ class CardView extends Component {
       dropDepth: 0,
     }
 
-    this.titleInputRef = React.createRef()
+    this.titleInputRef = null
   }
 
   componentWillUnmount() {

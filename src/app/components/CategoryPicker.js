@@ -7,7 +7,7 @@ import { t as i18n } from 'plottr_locales'
 class CategoryPicker extends Component {
   constructor(props) {
     super(props)
-    this.selectRef = React.createRef()
+    this.selectRef = null
   }
 
   onChange = () => {

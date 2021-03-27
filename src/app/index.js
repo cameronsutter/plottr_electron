@@ -7,6 +7,7 @@ import { t as i18n } from 'plottr_locales'
 import App from 'containers/App'
 import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
+import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 import { actions, migrateIfNeeded } from 'pltr/v2'
@@ -26,7 +27,7 @@ import { saveFile } from '../common/utils/files'
 import { removeFromTempFiles } from '../common/utils/temp_files'
 import { focusIsEditable } from '../common/utils/undo'
 
-setupI18n(SETTINGS)
+setupI18n(SETTINGS, { electron })
 
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')

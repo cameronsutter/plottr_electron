@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron')
+const electron = require('electron')
+const { app, BrowserWindow, ipcMain, globalShortcut } = electron
 const path = require('path')
 const log = require('electron-log')
 const { is } = require('electron-util')
@@ -27,7 +28,7 @@ log.info('--------Startup Tasks--------')
 const ENV_FILE_PATH = path.resolve('.env')
 require('dotenv').config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
-setupI18n(SETTINGS)
+setupI18n(SETTINGS, { electron })
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({

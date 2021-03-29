@@ -19,6 +19,7 @@ import SelectList from '../selectList'
 import BookSelectList from '../project/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import { actions, selectors } from 'pltr/v2'
+import { preventLeaveOnHotlink } from '../../middlewares/helpers'
 
 const { sortedTagsSelector } = selectors
 
@@ -41,6 +42,14 @@ class PlaceView extends Component {
 
     this.nameInputRef = React.createRef()
     this.descriptionInputRef = React.createRef()
+  }
+
+  componentDidMount() {
+    preventLeaveOnHotlink()
+  }
+
+  componentDidUpdate() {
+    preventLeaveOnHotlink()
   }
 
   componentWillUnmount() {

@@ -23,6 +23,7 @@ import ErrorBoundary from '../../containers/ErrorBoundary'
 import NoteItem from './NoteItem'
 import { newIds, actions } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
+import { preventLeaveOnHotlink } from '../../middlewares/helpers'
 
 const { nextId } = newIds
 
@@ -37,6 +38,14 @@ class NoteListView extends Component {
       viewableNotes: [],
       editingSelected: false,
     }
+  }
+
+  componentDidMount() {
+    preventLeaveOnHotlink()
+  }
+
+  componentDidUpdate() {
+    preventLeaveOnHotlink()
   }
 
   static getDerivedStateFromProps(props, state) {

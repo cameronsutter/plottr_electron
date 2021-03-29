@@ -9,7 +9,6 @@ import ErrorBoundary from '../../containers/ErrorBoundary'
 import ExportNavItem from '../export/ExportNavItem'
 import { helpers, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
-import { preventLeaveOnHotlink } from '../../middlewares/helpers'
 
 const {
   cardMapSelector,
@@ -28,12 +27,7 @@ class OutlineView extends Component {
   }
 
   componentDidMount() {
-    preventLeaveOnHotlink()
     setTimeout(() => this.setState({ firstRender: false }), 500)
-  }
-
-  componentDidUpdate() {
-    preventLeaveOnHotlink()
   }
 
   componentWillReceiveProps(nextProps) {

@@ -10,22 +10,12 @@ import CharacterDetails from './CharacterDetails'
 import SelectList from '../selectList'
 import BookSelectList from '../project/BookSelectList'
 import { actions, selectors } from 'pltr/v2'
-import { preventLeaveOnHotlink } from '../../middlewares/helpers'
 
 const CharacterActions = actions.character
 
 const { singleCharacterSelector, sortedTagsSelector } = selectors
 
 class CharacterView extends Component {
-
-  componentDidMount() {
-    preventLeaveOnHotlink()
-  }
-
-  componentDidUpdate() {
-    preventLeaveOnHotlink()
-  }
-
   render() {
     const { character, tags, actions, ui } = this.props
 

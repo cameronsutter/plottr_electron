@@ -39,8 +39,8 @@ class PlaceView extends Component {
       deleting: false,
     }
 
-    this.nameInputRef = React.createRef()
-    this.descriptionInputRef = React.createRef()
+    this.nameInputRef = null
+    this.descriptionInputRef = null
   }
 
   componentWillUnmount() {
@@ -84,8 +84,8 @@ class PlaceView extends Component {
   }
 
   saveEdit = (close = true) => {
-    var name = this.nameInputRef.current.value || this.props.place.name
-    var description = this.descriptionInputRef.current.value
+    var name = this.nameInputRef.value || this.props.place.name
+    var description = this.descriptionInputRef.value
     var notes = this.state.notes
     var attrs = {}
     if (this.state.newImageId) {
@@ -186,7 +186,9 @@ class PlaceView extends Component {
                 <ControlLabel>{i18n('Name')}</ControlLabel>
                 <FormControl
                   type="text"
-                  inputRef={this.nameInputRef}
+                  inputRef={(ref) => {
+                    this.nameInputRef = ref
+                  }}
                   autoFocus
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
@@ -197,7 +199,9 @@ class PlaceView extends Component {
                 <ControlLabel>{i18n('Short Description')}</ControlLabel>
                 <FormControl
                   type="text"
-                  inputRef={this.descriptionInputRef}
+                  inputRef={(ref) => {
+                    this.descriptionInputRef = ref
+                  }}
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
                   defaultValue={place.description}

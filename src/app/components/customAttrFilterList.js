@@ -134,18 +134,18 @@ class CustomAttrFilterList extends Component {
     const { showCharacters, showPlaces, showCategory, isSeries } = this.props
     const orEmpty = (value) => (value ? value : [])
 
-    let cardColors = this.props.items.map(item => item.color)
+    let cardColors = this.props.items.map((item) => item.color)
     let cardColorsSet = new Set(cardColors)
     let cardColorsToFilterBy = [...cardColorsSet]
 
     return (
       <div className="filter-list flex">
-        {isSeries && 
+        {isSeries && (
           <BookFilterList
             updateItems={this.updateFilter}
             filteredItems={[...orEmpty(this.state.filteredItems.book)]}
           />
-        }
+        )}
         {showCharacters ? (
           <CharactersFilterList
             updateItems={this.updateFilter}
@@ -190,6 +190,7 @@ CustomAttrFilterList.propTypes = {
   showCategory: PropTypes.bool.isRequired,
   showCharacters: PropTypes.bool.isRequired,
   showPlaces: PropTypes.bool.isRequired,
+  isSeries: PropTypes.bool,
 }
 
 function chooseFilteredItems(state, type) {
@@ -231,7 +232,7 @@ function mapStateToProps(state, { type }) {
     showCharacters: type === 'cards',
     showPlaces: type === 'cards',
     showCategory: type === 'characters',
-    isSeries: selectors.isSeriesSelector(state.present)
+    isSeries: selectors.isSeriesSelector(state.present),
   }
 }
 

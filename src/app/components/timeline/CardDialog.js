@@ -57,7 +57,7 @@ class CardDialog extends Component {
       showColorPicker: false,
     }
     this.newAttributeInputRef = React.createRef()
-    this.titleInputRef = React.createRef()
+    this.titleInputRef = null
     this.colorButtonRef = React.createRef()
   }
 
@@ -134,7 +134,7 @@ class CardDialog extends Component {
   }
 
   saveEdit = () => {
-    var newTitle = this.titleInputRef.current.value
+    var newTitle = this.titleInputRef.value
     const attrs = {}
     this.props.customAttributes.forEach((attr) => {
       const { name } = attr
@@ -393,7 +393,9 @@ class CardDialog extends Component {
         style={{ fontSize: '24pt', textAlign: 'center', marginBottom: '6px' }}
         onKeyPress={this.handleEnter}
         type="text"
-        inputRef={this.titleInputRef}
+        inputRef={(ref) => {
+          this.titleInputRef = ref
+        }}
         defaultValue={title}
       />
     )

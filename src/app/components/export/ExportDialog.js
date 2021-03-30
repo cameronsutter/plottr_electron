@@ -67,7 +67,7 @@ function ExportDialog(props) {
       <div className="export-dialog__wrapper">
         <div className="export-dialog__header">
           <div className="export-dialog__type-chooser">
-            <h3>{t('Export Options')}</h3>
+            <h3>{t('Advanced Export Options')}</h3>
             <div className="right-side">
               <Chooser />
               <Button bsStyle="success" disabled={!type} onClick={doExport}>

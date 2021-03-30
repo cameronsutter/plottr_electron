@@ -41,6 +41,10 @@ class OutlineView extends Component {
     this.setState({ active: id })
   }
 
+  fixMe = () => {
+    console.warn('OutlineView waypoint needs fixing')
+  }
+
   filterItem = (id) => {
     if (this.state.currentLine === id) {
       this.setState({ currentLine: null })
@@ -126,7 +130,7 @@ class OutlineView extends Component {
           <BeatView
             beat={beat}
             cards={cardMapping[beat.id]}
-            waypoint={this.setActive}
+            waypoint={this.fixMe}
             activeFilter={!!this.state.currentLine}
           />
         </ErrorBoundary>
@@ -143,6 +147,7 @@ class OutlineView extends Component {
         <ErrorBoundary>
           <MiniMap
             active={this.state.active}
+            handleActive={this.setActive}
             cardMapping={cardMap}
             activeFilter={!!this.state.currentLine}
           />

@@ -47,6 +47,7 @@ class MiniMap extends Component {
       const yPosition = elem.getBoundingClientRect().y
       container.scrollBy(0, yPosition - targetPosition)
     }
+    this.props.handleActive(key)
   }
 
   renderBeats() {
@@ -135,6 +136,7 @@ MiniMap.propTypes = {
   ui: PropTypes.object.isRequired,
   positionOffset: PropTypes.number.isRequired,
   actions: PropTypes.object,
+  handleActive: PropTypes.func,
 }
 
 function mapStateToProps(state) {

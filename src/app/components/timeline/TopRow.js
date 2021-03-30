@@ -7,12 +7,10 @@ import { Glyphicon } from 'react-bootstrap'
 import BeatTitleCell from 'components/timeline/BeatTitleCell'
 import LineTitleCell from 'components/timeline/LineTitleCell'
 import BeatInsertCell from 'components/timeline/BeatInsertCell'
-import { newIds, actions, helpers, selectors } from 'pltr/v2'
-
-const { nextId } = newIds
+import { actions, helpers, selectors } from 'pltr/v2'
 
 const {
-  beats: { insertBeat },
+  beats: { nextId, hasChildren },
   lists: { reorderList },
   orientedClassName: { orientedClassName },
 } = helpers
@@ -21,8 +19,9 @@ const LineActions = actions.line
 const BeatActions = actions.beat
 
 const {
-  sortedBeatsByBookSelector,
+  visibleSortedBeatsByBookSelector,
   sortedLinesByBookSelector,
+  beatsByBookSelector,
   isSeriesSelector,
   isLargeSelector,
   isMediumSelector,
@@ -30,10 +29,9 @@ const {
 } = selectors
 
 class TopRow extends Component {
-  handleReorderBeats = (originalPosition, droppedPosition) => {
-    const { ui, beatActions, beats } = this.props
-    const newBeats = reorderList(originalPosition, droppedPosition, beats)
-    beatActions.reorderBeats(newBeats, ui.currentTimeline)
+  handleReorderBeats = (droppedPositionId, originalPositionId) => {
+    const { ui, beatActions } = this.props
+    beatActions.reorderBeats(originalPositionId, droppedPositionId, ui.currentTimeline)
   }
 
   handleReorderLines = (originalPosition, droppedPosition) => {
@@ -42,10 +40,14 @@ class TopRow extends Component {
     lineActions.reorderLines(newLines, ui.currentTimeline)
   }
 
-  handleInsertNewBeat = (nextPosition) => {
-    const { ui, beatActions, beats, nextBeatId } = this.props
-    const newBeats = insertBeat(nextPosition, beats, nextBeatId, ui.currentTimeline)
-    beatActions.reorderBeats(newBeats, ui.currentTimeline)
+  handleInsertNewBeat = (peerBeatId) => {
+    const { ui, beatActions } = this.props
+    beatActions.insertBeat(ui.currentTimeline, peerBeatId)
+  }
+
+  handleInsertChildBeat = (beatToLeftId) => {
+    const { ui, beatActions } = this.props
+    beatActions.addBeat(ui.currentTimeline, beatToLeftId)
   }
 
   handleAppendBeat = () => {
@@ -58,13 +60,48 @@ class TopRow extends Component {
     lineActions.addLine(ui.currentTimeline)
   }
 
+  renderSecondLastInsertBeatCell() {
+    const {
+      ui: { currentTimeline, orientation },
+      isLarge,
+      booksBeats,
+      beats,
+      beatActions,
+    } = this.props
+    if (!isLarge) return null
+
+    const lastBeat = !beats || beats.length === 0 ? null : beats[beats.length - 1]
+    return (
+      <BeatInsertCell
+        key="second-last-insert"
+        isInBeatList={true}
+        handleInsert={this.handleInsertNewBeat}
+        beatToLeft={lastBeat}
+        handleInsertChild={
+          lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+            ? undefined
+            : this.handleInsertChildBeat
+        }
+        expanded={lastBeat && lastBeat.expanded}
+        toggleExpanded={() => {
+          if (lastBeat && lastBeat.expanded) {
+            beatActions.collapseBeat(lastBeat.id, currentTimeline)
+          } else beatActions.expandBeat(lastBeat.id, currentTimeline)
+        }}
+        orientation={orientation}
+      />
+    )
+  }
+
   renderLastInsertBeatCell() {
-    const { orientation } = this.props.ui
+    const {
+      ui: { orientation },
+    } = this.props
     return (
       <BeatInsertCell
         key="last-insert"
-        isInBeatList={true}
         handleInsert={this.handleAppendBeat}
+        isInBeatList={true}
         isLast={true}
         orientation={orientation}
       />
@@ -72,22 +109,37 @@ class TopRow extends Component {
   }
 
   renderBeats() {
-    const { ui, beats, isLarge, isMedium, isSmall } = this.props
+    const { ui, booksBeats, beats, beatActions, isLarge, isMedium, isSmall } = this.props
+    const beatToggler = (beat) => () => {
+      if (!beat) return
+      if (beat.expanded) beatActions.collapseBeat(beat.id, ui.currentTimeline)
+      else beatActions.expandBeat(beat.id, ui.currentTimeline)
+    }
     const renderedBeats = beats.flatMap((beat, idx) => {
+      const lastBeat = beats[idx - 1]
       const cells = []
-      if (isLarge || (isMedium && idx == 0)) {
+      if (isLarge || (isMedium && idx === 0)) {
         cells.push(
           <BeatInsertCell
+            isFirst={idx === 0}
             key={`beatId-${beat.id}-insert`}
             isInBeatList={true}
-            beatPosition={beat.position}
+            beatToLeft={lastBeat}
             handleInsert={this.handleInsertNewBeat}
+            handleInsertChild={
+              lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+                ? undefined
+                : this.handleInsertChildBeat
+            }
+            expanded={lastBeat && lastBeat.expanded}
+            toggleExpanded={beatToggler(lastBeat)}
             orientation={ui.orientation}
           />
         )
       }
       cells.push(
         <BeatTitleCell
+          isFirst={idx === 0}
           key={`beatId-${beat.id}`}
           beatId={beat.id}
           handleReorder={this.handleReorderBeats}
@@ -98,7 +150,12 @@ class TopRow extends Component {
     if (isSmall) {
       return [...renderedBeats, this.renderLastInsertBeatCell()]
     } else {
-      return [<Cell key="placeholder" />, ...renderedBeats, this.renderLastInsertBeatCell()]
+      return [
+        <Cell key="placeholder" />,
+        ...renderedBeats,
+        this.renderSecondLastInsertBeatCell(),
+        this.renderLastInsertBeatCell(),
+      ]
     }
   }
 
@@ -172,6 +229,7 @@ TopRow.propTypes = {
   isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
   beats: PropTypes.array,
+  booksBeats: PropTypes.object,
   nextBeatId: PropTypes.number,
   lines: PropTypes.array,
   lineActions: PropTypes.object,
@@ -187,7 +245,8 @@ function mapStateToProps(state) {
     isSmall: isSmallSelector(state.present),
     isMedium: isMediumSelector(state.present),
     isLarge: isLargeSelector(state.present),
-    beats: sortedBeatsByBookSelector(state.present),
+    beats: visibleSortedBeatsByBookSelector(state.present),
+    booksBeats: beatsByBookSelector(state.present),
     nextBeatId: nextBeatId,
     lines: sortedLinesByBookSelector(state.present),
   }

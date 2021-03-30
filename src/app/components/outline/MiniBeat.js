@@ -9,7 +9,17 @@ const {
 } = helpers
 
 function MiniBeat(props) {
-  const { beat, idx, cards, linesById, sortedLines, positionOffset, isSeries } = props
+  const {
+    bookId,
+    beat,
+    beats,
+    hierarchyLevels,
+    idx,
+    cards,
+    linesById,
+    sortedLines,
+    positionOffset,
+  } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
   const [inDropZone, setInZone] = useState(false)
@@ -59,7 +69,7 @@ function MiniBeat(props) {
         props.reorderCardsWithinLine(beat.id, lineId, cardIdsInLine)
       } else {
         currentIds.push(id)
-        props.reorderCardsInBeat(beat.id, lineId, currentIds, cardIdsInLine, id)
+        props.reorderCardsInBeat(beat.id, lineId, currentIds, cardIdsInLine, id, bookId)
       }
     }
   }
@@ -96,7 +106,7 @@ function MiniBeat(props) {
     >
       <span>
         <span className="accented-text">{`${idx + 1}.  `}</span>
-        <span>{beatTitle(beat, positionOffset, isSeries)}</span>
+        <span>{beatTitle(beats, beat, hierarchyLevels, positionOffset)}</span>
       </span>
       <div className="outline__minimap__dots">{renderCardDots()}</div>
     </div>
@@ -104,12 +114,14 @@ function MiniBeat(props) {
 }
 
 MiniBeat.propTypes = {
+  bookId: PropTypes.string.isRequired,
   beat: PropTypes.object.isRequired,
+  beats: PropTypes.object.isRequired,
+  hierarchyLevels: PropTypes.array.isRequired,
   idx: PropTypes.number.isRequired,
   cards: PropTypes.array.isRequired,
   sortedLines: PropTypes.array.isRequired,
   linesById: PropTypes.object.isRequired,
-  isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
   reorderCardsWithinLine: PropTypes.func.isRequired,
   reorderCardsInBeat: PropTypes.func.isRequired,

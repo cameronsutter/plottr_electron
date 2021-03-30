@@ -14,6 +14,7 @@ const defaultLine = initialState.line
 
 const { nextId, objectId } = newIds
 const {
+  beats,
   lists: { nextPositionInBook },
 } = helpers
 
@@ -75,8 +76,8 @@ function createNewLine(currentLines, values, bookId) {
 }
 
 function createNewBeat(currentBeats, values, bookId) {
-  const nextBeatId = nextId(currentBeats)
-  const position = nextPositionInBook(currentBeats, bookId)
+  const nextBeatId = beats.nextId(currentBeats)
+  const position = beats.nextPositionInBook(currentBeats, bookId)
   const newBeat = Object.assign({}, defaultBeat, {
     id: nextBeatId,
     position,

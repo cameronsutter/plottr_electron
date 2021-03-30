@@ -127,38 +127,62 @@
       "stuff": ""
     }
   ],
-  "beats": [
-    {
-      "bookId": 2,
-      "id": 1,
-      "position": 0,
-      "templates": [],
-      "time": 0,
-      "title": "The Ordinary World",
-      "autoOutlineSort": true,
-      "fromTemplateId": null
+  "beats": {
+    "2": {
+      "children": {
+        "1": [],
+        "null": [1]
+      },
+      "heap": {
+        "1": null
+      },
+      "index": {
+        "1": {
+          "bookId": 2,
+          "id": 1,
+          "position": 0,
+          "templates": [],
+          "time": 0,
+          "title": "The Ordinary World",
+          "autoOutlineSort": true,
+          "fromTemplateId": null
+        }
+      }
     },
-    {
-      "id": 61,
-      "position": 5,
-      "title": "auto",
-      "bookId": 1,
-      "time": 0,
-      "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
-      "id": 104,
-      "position": 42,
-      "title": "auto",
-      "bookId": 1,
-      "time": 0,
-      "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
+    "1": {
+      "children": {
+        "61": [],
+        "104": [],
+        "null": [61, 104]
+      },
+      "heap": {
+        "61": null,
+        "104": null
+      },
+      "index": {
+        "61": {
+          "id": 61,
+          "position": 5,
+          "title": "auto",
+          "bookId": 1,
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null
+        },
+        "104": {
+          "id": 104,
+          "position": 42,
+          "title": "auto",
+          "bookId": 1,
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null
+        }
+      }
     }
-  ],
+  },
   "cards": [
     {
       "characters": [],
@@ -523,6 +547,18 @@
     "places": [],
     "notes": [],
     "tags": []
+  },
+  "hierarchyLevels": {
+    "0": {
+      "name": "Chapter",
+      "level": 0,
+      "autoNumber": true,
+      "textColor": "#e5554f",
+      "textSize": 24,
+      "borderColor": "#e5554f",
+      "borderStyle": "SOLID",
+      "backgroundColor": "#f1f5f8"
+    }
   },
   "images": {}
 }

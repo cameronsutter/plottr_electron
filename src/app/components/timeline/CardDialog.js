@@ -341,11 +341,11 @@ class CardDialog extends Component {
   }
 
   renderBeatItems() {
-    const { beats, positionOffset, isSeries } = this.props
+    const { beats, beatTree, hierarchyLevels, positionOffset } = this.props
     return beats.map((beat) => {
       return (
         <MenuItem key={beat.id} onSelect={() => this.changeBeat(beat.id)}>
-          {truncateTitle(beatTitle(beat, positionOffset, isSeries), 50)}
+          {truncateTitle(beatTitle(beatTree, beat, hierarchyLevels, positionOffset), 50)}
         </MenuItem>
       )
     })
@@ -431,7 +431,7 @@ class CardDialog extends Component {
     const lineDropdownID = 'select-line'
     const beatDropdownID = 'select-beat'
 
-    const { positionOffset, isSeries, card, ui } = this.props
+    const { hierarchyLevels, positionOffset, isSeries, card, ui, beatTree } = this.props
 
     let labelText = i18n('Chapter')
     let bookDropDown = null
@@ -439,7 +439,12 @@ class CardDialog extends Component {
       labelText = i18n('Beat')
       bookDropDown = this.renderBookDropdown()
     }
-    const currentBeatTitle = beatTitle(this.getCurrentBeat(), positionOffset, isSeries)
+    const currentBeatTitle = beatTitle(
+      beatTree,
+      this.getCurrentBeat(),
+      hierarchyLevels,
+      positionOffset
+    )
     const darkened = card.color ? tinycolor(card.color).darken().toHslString() : null
     const borderColor = card.color ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
 
@@ -614,7 +619,9 @@ CardDialog.propTypes = {
   lineId: PropTypes.number.isRequired,
   closeDialog: PropTypes.func,
   lines: PropTypes.array.isRequired,
+  beatTree: PropTypes.object.isRequired,
   beats: PropTypes.array.isRequired,
+  hierarchyLevels: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   tags: PropTypes.array.isRequired,
   characters: PropTypes.array.isRequired,
@@ -630,7 +637,9 @@ CardDialog.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    beatTree: selectors.beatsByBookSelector(state.present),
     beats: selectors.sortedBeatsByBookSelector(state.present),
+    hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
     lines: selectors.sortedLinesByBookSelector(state.present),
     tags: selectors.sortedTagsSelector(state.present),
     characters: selectors.charactersSortedAtoZSelector(state.present),

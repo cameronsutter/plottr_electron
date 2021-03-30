@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import React from 'react'
 import { t } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
@@ -12,6 +13,12 @@ export default function OptionsHome(props) {
 
   let backupLocation = settings.user.backupLocation
   if (!backupLocation || backupLocation == 'default') backupLocation = BACKUP_BASE_PATH
+
+  const toggleBeatHierarchy = () => {
+    const newValue = !settings.user.beatHierarchy
+    saveSetting('user.beatHierarchy', newValue)
+    ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
+  }
 
   return (
     <div className="dashboard__options">
@@ -42,6 +49,16 @@ export default function OptionsHome(props) {
         <div className="dashboard__options__item">
           <h4>{t('Language')}</h4>
           <LanguagePicker />
+        </div>
+        <hr />
+        <h1 className="dashboard__options">{t('Beta')}</h1>
+        <div className="dashboard__options__item">
+          <h4>{t('Beat Hierarchy')}</h4>
+          <Switch
+            isOn={!!settings.user.beatHierarchy}
+            handleToggle={toggleBeatHierarchy}
+            labelText={t('Organise your Scene cards into Chapters and Acts')}
+          />
         </div>
         <hr />
         <h1 className="secondary-text">{t('Coming Soon!')}</h1>

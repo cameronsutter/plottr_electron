@@ -138,7 +138,7 @@
       border-color: $gray-8;
     }
 
-    div.card-circle {
+    .div-card-circle {
       height: 10px;
       width: 10px;
       border-radius: 10px;
@@ -150,8 +150,12 @@
       }
     }
 
+    div.card-circle {
+      @extend .div-card-circle;
+    }
+
     div.blank-circle {
-      @extend div.card-circle;
+      @extend .div-card-circle;
       visibility: hidden;
       background-color: transparent;
 

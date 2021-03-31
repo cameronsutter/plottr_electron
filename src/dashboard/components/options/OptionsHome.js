@@ -14,14 +14,6 @@ export default function OptionsHome(props) {
   let backupLocation = settings.user.backupLocation
   if (!backupLocation || backupLocation == 'default') backupLocation = BACKUP_BASE_PATH
 
-  const renderDropdown = () => {
-    return (
-      <select onChange={(event) => setBackupType(event.target.value)}>
-        <option value="days">{t('Days of Backups')}</option>
-        <option value="number">{t('Number of Backups')}</option>
-      </select>
-    )
-  }
   const displayBackupOption = () => {
     return (
       <div className="backup-type">
@@ -29,7 +21,6 @@ export default function OptionsHome(props) {
         <FormControl
           type="number"
           value={backupType === 'number' ? settings.user.numberOfBackups : settings.user.backupDays}
-          defaultValue={30}
           onChange={(event) =>
             saveSetting(
               backupType === 'number' ? 'user.numberOfBackups' : 'user.backupDays',
@@ -75,7 +66,10 @@ export default function OptionsHome(props) {
         <div className="dashboard__options__item">
           <h4>{t('Backup Storage Type')}</h4>
           <FormGroup controlId="backupDays">
-            {renderDropdown()}
+            <select onChange={(event) => setBackupType(event.target.value)}>
+              <option value="days">{t('Days of Backups')}</option>
+              <option value="number">{t('Number of Backups')}</option>
+            </select>
             {displayBackupOption()}
           </FormGroup>
         </div>

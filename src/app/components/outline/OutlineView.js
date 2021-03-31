@@ -124,19 +124,22 @@ class OutlineView extends Component {
 
   renderBeats(cardMapping) {
     const { beats } = this.props
-    return !!beats.length && beats.map((beat, idx) => {
-      if ((this.state.firstRender && idx > 2)) return null
-      return (
-        <ErrorBoundary key={beat.id}>
-          <BeatView
-            beat={beat}
-            cards={cardMapping[beat.id]}
-            waypoint={this.fixMe}
-            activeFilter={!!this.state.currentLine}
-          />
-        </ErrorBoundary>
-      )
-    })
+    return (
+      !!beats.length &&
+      beats.map((beat, idx) => {
+        if (this.state.firstRender && idx > 2) return null
+        return (
+          <ErrorBoundary key={beat.id}>
+            <BeatView
+              beat={beat}
+              cards={cardMapping[beat.id]}
+              waypoint={this.fixMe}
+              activeFilter={!!this.state.currentLine}
+            />
+          </ErrorBoundary>
+        )
+      })
+    )
   }
 
   renderBody() {

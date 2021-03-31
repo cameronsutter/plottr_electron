@@ -123,8 +123,9 @@ class OutlineView extends Component {
   }
 
   renderBeats(cardMapping) {
-    return this.props.beats.map((beat, idx) => {
-      if (this.state.firstRender && idx > 2) return null
+    const { beats } = this.props
+    return !!beats.length && beats.map((beat, idx) => {
+      if ((this.state.firstRender && idx > 2)) return null
       return (
         <ErrorBoundary key={beat.id}>
           <BeatView
@@ -158,10 +159,11 @@ class OutlineView extends Component {
   }
 
   render() {
+    const { beats } = this.props
     return (
       <div className="container-with-sub-nav">
         {this.renderSubNav()}
-        {this.renderBody()}
+        {!!beats.length && this.renderBody()}
       </div>
     )
   }

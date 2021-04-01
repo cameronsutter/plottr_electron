@@ -11,7 +11,7 @@ import { is } from 'electron-util'
 
 const OLD_TEMPLATES_ROOT = 'templates'
 const manifestURL =
-  'https://raw.githubusercontent.com/Plotinator/plottr_templates/master/v2/manifest.json'
+  'https://raw.githubusercontent.com/Plotinator/plottr_templates/project-hierarchy/v2/manifest.json'
 
 class TemplateFetcher {
   constructor(props) {

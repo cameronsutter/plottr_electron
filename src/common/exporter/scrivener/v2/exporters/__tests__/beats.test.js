@@ -71,18 +71,27 @@ describe('exportBeats', () => {
       4: {
         notes: {
           docTitle: 'Plotline: Main Story Arc',
+          description: [],
+        },
+        synopsis: {
           description: [headingTwo('Description'), paragraph('So paragraph')],
         },
       },
       5: {
         notes: {
           docTitle: 'Plotline: Main Story Arc',
+          description: [],
+        },
+        synopsis: {
           description: [headingTwo('Description'), paragraph('Moar paragraph')],
         },
       },
       7: {
         notes: {
           docTitle: 'Plotline: Main Story Arc',
+          description: [],
+        },
+        synopsis: {
           description: [headingTwo('Description'), paragraph('A paragraph')],
         },
       },

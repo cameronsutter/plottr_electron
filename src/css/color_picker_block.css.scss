@@ -112,4 +112,7 @@
       }
     }
   }
+  &.darkmode {
+    background-color: $darkmode-card-background;
+  }
 }

@@ -7,9 +7,10 @@ import { t as i18n } from 'plottr_locales'
 import App from 'containers/App'
 import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
+import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-import { actions, migrateIfNeeded } from 'pltr/v2'
+import { actions, migrateIfNeeded, featureFlags } from 'pltr/v2'
 import MPQ from '../common/utils/MPQ'
 import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
@@ -25,8 +26,9 @@ import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { saveFile } from '../common/utils/files'
 import { removeFromTempFiles } from '../common/utils/temp_files'
 import { focusIsEditable } from '../common/utils/undo'
+import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 
-setupI18n(SETTINGS)
+setupI18n(SETTINGS, { electron })
 
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')
@@ -50,10 +52,12 @@ ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
 })
 
-function bootFile(filePath, darkMode, numOpenFiles) {
+function bootFile(filePath, options, numOpenFiles) {
   initMixpanel()
   win.setTitle(displayFileName(filePath))
   win.setRepresentedFilename(filePath)
+
+  const { darkMode, beatHierarchy } = options
 
   try {
     const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
@@ -84,6 +88,15 @@ function bootFile(filePath, darkMode, numOpenFiles) {
       }
       if (darkMode) window.document.body.className = 'darkmode'
 
+      const withDispatch = dispatchingToStore(store.dispatch)
+      makeFlagConsistent(
+        state,
+        beatHierarchy,
+        featureFlags.BEAT_HIERARCHY_FLAG,
+        withDispatch(actions.featureFlags.setBeatHierarchy),
+        withDispatch(actions.featureFlags.unsetBeatHierarchy)
+      )
+
       render(
         <Provider store={store}>
           <App showTour={false} />
@@ -99,17 +112,25 @@ function bootFile(filePath, darkMode, numOpenFiles) {
 }
 
 ipcRenderer.send('pls-fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, filePath, darkMode, numOpenFiles) => {
-  bootFile(filePath, darkMode, numOpenFiles)
+ipcRenderer.on('state-fetched', (event, filePath, options, numOpenFiles) => {
+  bootFile(filePath, options, numOpenFiles)
 })
 
-ipcRenderer.on('reload-from-file', (event, filePath, darkMode, numOpenFiles) => {
-  bootFile(filePath, darkMode, numOpenFiles)
+ipcRenderer.on('reload-from-file', (event, filePath, options, numOpenFiles) => {
+  bootFile(filePath, options, numOpenFiles)
 })
 
 ipcRenderer.on('set-dark-mode', (event, isOn) => {
   store.dispatch(actions.ui.setDarkMode(isOn))
   window.document.body.className = isOn ? 'darkmode' : ''
+})
+
+ipcRenderer.on('set-beat-hierarchy', (event) => {
+  store.dispatch(actions.featureFlags.setBeatHierarchy())
+})
+
+ipcRenderer.on('unset-beat-hierarchy', (event) => {
+  store.dispatch(actions.featureFlags.unsetBeatHierarchy())
 })
 
 ipcRenderer.on('save-custom-template', (event, options) => {

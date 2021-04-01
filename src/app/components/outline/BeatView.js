@@ -9,7 +9,12 @@ import CardView from 'components/outline/CardView'
 import cx from 'classnames'
 import { actions, helpers, selectors } from 'pltr/v2'
 
-const { positionOffsetSelector, sortedLinesByBookSelector, isSeriesSelector } = selectors
+const {
+  beatsByBookSelector,
+  positionOffsetSelector,
+  sortedLinesByBookSelector,
+  sortedHierarchyLevels,
+} = selectors
 
 const BeatActions = actions.beat
 const CardActions = actions.card
@@ -30,13 +35,13 @@ class BeatView extends Component {
   }
 
   autoSortBeat = () => {
-    const { beatActions, beat } = this.props
-    beatActions.autoSortBeat(beat.id)
+    const { beatActions, beat, ui } = this.props
+    beatActions.autoSortBeat(beat.id, ui.currentTimeline)
   }
 
   reorderCards = ({ current, currentIndex, dropped }) => {
     const { sortedCards } = this.state
-    const { beat, actions } = this.props
+    const { beat, actions, ui } = this.props
     const currentIds = sortedCards.map((c) => c.id)
     const currentLineId = current.lineId
     let newOrderInBeat = []
@@ -52,7 +57,14 @@ class BeatView extends Component {
         const currentPosition = sortedCards.find((c) => c.id == dropped.cardId).positionWithinLine
         newOrderWithinLine = moveToAbove(currentPosition, current.positionWithinLine, cardIdsInLine)
       }
-      actions.reorderCardsInBeat(beat.id, currentLineId, newOrderInBeat, newOrderWithinLine)
+      actions.reorderCardsInBeat(
+        beat.id,
+        currentLineId,
+        newOrderInBeat,
+        newOrderWithinLine,
+        undefined,
+        ui.currentTimeline
+      )
     } else {
       // dropped in from a different beat
       if (dropped.lineId == currentLineId) {
@@ -66,7 +78,14 @@ class BeatView extends Component {
         // flip to manual sort
         newOrderInBeat = currentIds
         newOrderInBeat.splice(currentIndex, 0, dropped.cardId)
-        actions.reorderCardsInBeat(beat.id, currentLineId, newOrderInBeat, null, dropped.cardId)
+        actions.reorderCardsInBeat(
+          beat.id,
+          currentLineId,
+          newOrderInBeat,
+          null,
+          dropped.cardId,
+          ui.currentTimeline
+        )
       }
     }
   }
@@ -88,7 +107,16 @@ class BeatView extends Component {
   }
 
   render() {
-    const { beat, ui, waypoint, cards, activeFilter, positionOffset, isSeries } = this.props
+    const {
+      beat,
+      beats,
+      hierarchyLevels,
+      ui,
+      waypoint,
+      cards,
+      activeFilter,
+      positionOffset,
+    } = this.props
     if (activeFilter && !cards.length) return null
 
     const klasses = cx('outline__scene-title', { darkmode: ui.darkMode })
@@ -101,7 +129,7 @@ class BeatView extends Component {
       >
         <div>
           <h3 id={`beat-${beat.id}`} className={klasses}>
-            {beatTitle(beat, positionOffset, isSeries)}
+            {beatTitle(beats, beat, hierarchyLevels, positionOffset)}
             {this.renderManualSort()}
           </h3>
           {this.renderCards()}
@@ -113,12 +141,13 @@ class BeatView extends Component {
 
 BeatView.propTypes = {
   beat: PropTypes.object.isRequired,
+  beats: PropTypes.object.isRequired,
+  hierarchyLevels: PropTypes.array.isRequired,
   cards: PropTypes.array.isRequired,
   waypoint: PropTypes.func.isRequired,
   activeFilter: PropTypes.bool.isRequired,
   ui: PropTypes.object.isRequired,
   lines: PropTypes.array.isRequired,
-  isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
   beatActions: PropTypes.object,
   actions: PropTypes.object,
@@ -127,8 +156,9 @@ BeatView.propTypes = {
 function mapStateToProps(state) {
   return {
     ui: state.present.ui,
+    beats: beatsByBookSelector(state.present),
+    hierarchyLevels: sortedHierarchyLevels(state.present),
     lines: sortedLinesByBookSelector(state.present),
-    isSeries: isSeriesSelector(state.present),
     positionOffset: positionOffsetSelector(state.present),
   }
 }

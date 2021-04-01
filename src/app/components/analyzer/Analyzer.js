@@ -8,11 +8,12 @@ import Inspector from 'react-json-inspector'
 import 'react-json-inspector/json-inspector.css'
 import DevFileDrop from './DevFileDrop'
 // import { saveFile } from '../../../common/utils/files'
-import { newIds, helpers } from 'pltr/v2'
+import { newIds, helpers, selectors } from 'pltr/v2'
 
 const {
   books: { isSeries },
 } = helpers
+const nextBeatId = helpers.beats.nextId
 
 const { nextId, objectId } = newIds
 
@@ -71,7 +72,8 @@ class Analyzer extends Component {
     const cards = pltr.cards
 
     const lineIds = pltr.lines.map((l) => l.id)
-    const beatIds = pltr.beats.map((beat) => beat.id)
+    const beats = selectors.sortedBeatsByBookSelector(pltr)
+    const beatIds = beats.map((beat) => beat.id)
 
     const visibleCards = cards.filter((c) => {
       return !lineIds.includes(c.lineId) && !beatIds.includes(c.beatId)
@@ -81,7 +83,8 @@ class Analyzer extends Component {
 
   searchDuplicateBeats = () => {
     const { pltr } = this.props
-    const beatIds = pltr.beats.map((beat) => beat.id)
+    const beats = selectors.sortedBeatsByBookSelector(pltr)
+    const beatIds = beats.map((beat) => beat.id)
     const duplicateIds = keys(pickBy(groupBy(beatIds), (x) => x.length > 1)).map(Number)
     let visible = []
     if (duplicateIds) {
@@ -244,7 +247,7 @@ class Analyzer extends Component {
     }
 
     if (this.state.tab == 'beats') {
-      const id = nextId(pltr.beats)
+      const id = nextBeatId(pltr.beats)
       return (
         <Grid fluid>
           <Row>

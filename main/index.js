@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron')
+const electron = require('electron')
+const { app, BrowserWindow, ipcMain, globalShortcut } = electron
 const path = require('path')
 const log = require('electron-log')
 const { is } = require('electron-util')
@@ -14,11 +15,16 @@ const {
   numberOfWindows,
 } = require('./modules/windows')
 const { openProjectWindow } = require('./modules/windows/projects')
-const { getDarkMode, setDarkMode, broadcastDarkMode } = require('./modules/theme')
+const { setDarkMode, broadcastDarkMode } = require('./modules/theme')
+const { newFileOptions } = require('./modules/new_file_options')
 const { gracefullyQuit } = require('./modules/utils')
 const { openDashboard } = require('./modules/windows/dashboard')
 const { addToKnown } = require('./modules/known_files')
 const SETTINGS = require('./modules/settings')
+const {
+  broadcastSetBeatHierarchy,
+  broadcastUnsetBeatHierarchy,
+} = require('./modules/feature_flags')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -27,7 +33,7 @@ log.info('--------Startup Tasks--------')
 const ENV_FILE_PATH = path.resolve('.env')
 require('dotenv').config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
-setupI18n(SETTINGS)
+setupI18n(SETTINGS, { electron })
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
@@ -128,11 +134,19 @@ app.on('window-all-closed', function () {
 ipcMain.on('pls-fetch-state', function (event, id) {
   const win = getWindowById(id)
   if (win) {
-    event.sender.send('state-fetched', win.filePath, getDarkMode(), numberOfWindows())
+    event.sender.send('state-fetched', win.filePath, newFileOptions(), numberOfWindows())
   }
 })
 
 ipcMain.on('pls-set-dark-setting', (_, newValue) => {
   setDarkMode(newValue)
   broadcastDarkMode()
+})
+
+ipcMain.on('pls-update-beat-hierarchy-flag', (_, newValue) => {
+  if (newValue) {
+    broadcastSetBeatHierarchy()
+  } else {
+    broadcastUnsetBeatHierarchy()
+  }
 })

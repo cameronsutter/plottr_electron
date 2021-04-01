@@ -17,7 +17,6 @@ export function PlottrModal({ isDarkMode, children, styles = defaultStyles, ...p
       },
       content: {
         ...Modal.defaultStyles.content,
-        top: '70px',
         ...styles.content,
       },
     }

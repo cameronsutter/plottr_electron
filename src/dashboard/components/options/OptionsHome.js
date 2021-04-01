@@ -1,4 +1,7 @@
+
 import React, { useState } from 'react'
+import { ipcRenderer } from 'electron'
+import React from 'react'
 import { t } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import Switch from '../../../common/components/Switch'
@@ -31,6 +34,10 @@ export default function OptionsHome(props) {
         <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
       </div>
     )
+  const toggleBeatHierarchy = () => {
+    const newValue = !settings.user.beatHierarchy
+    saveSetting('user.beatHierarchy', newValue)
+    ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
   }
 
   return (
@@ -65,6 +72,29 @@ export default function OptionsHome(props) {
         </div>
         <div className="dashboard__options__item">
           <h4>{t('Backup Storage Type')}</h4>
+        <hr />
+        <h1 className="dashboard__options">{t('Beta')}</h1>
+        <div className="dashboard__options__item">
+          <h4>{t('Beat Hierarchy')}</h4>
+          <Switch
+            isOn={!!settings.user.beatHierarchy}
+            handleToggle={toggleBeatHierarchy}
+            labelText={t('Organise your Scene cards into Chapters and Acts')}
+          />
+        </div>
+        <hr />
+        <h1 className="secondary-text">{t('Coming Soon!')}</h1>
+        <div className="dashboard__options__item disabled">
+          <h4>{t('Auto-save')}</h4>
+          <Switch
+            disabled
+            isOn={!!settings.user.autoSave || true}
+            handleToggle={() => saveSetting('user.autoSave', !settings.user.autoSave)}
+            labelText={t('By default, use auto-save for projects')}
+          />
+        </div>
+        <div className="dashboard__options__item disabled">
+          <h4>{t('Days of Backup')}</h4>
           <FormGroup controlId="backupDays">
             <select onChange={(event) => setBackupType(event.target.value)}>
               <option value="days">{t('Days of Backups')}</option>

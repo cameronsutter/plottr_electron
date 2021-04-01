@@ -3,22 +3,19 @@ import PropTypes from 'react-proptypes'
 import { remote } from 'electron'
 import { connect } from 'react-redux'
 import { t } from 'plottr_locales'
-import MPQ from '../../../common/utils/MPQ'
 import { PlottrModal } from '../PlottrModal'
-import { Button, ButtonToolbar, Nav, NavItem } from 'react-bootstrap'
+import { Button, ButtonToolbar, Glyphicon, Nav, NavItem } from 'react-bootstrap'
 import ExportBody from './ExportBody'
 import Switch from '../../../common/components/Switch'
 import { useExportConfigInfo } from '../../../common/utils/store_hooks'
-import ScrivenerExporter from '../../../common/exporter/scrivener/v2/exporter'
-import WordExporter from '../../../common/exporter/word/exporter'
 import log from 'electron-log'
+import askToExport from '../../../common/exporter/start_export'
 
-const win = remote.getCurrentWindow()
 const { dialog } = remote
 
 function ExportDialog(props) {
   const [exportConfig, _, saveExportConfig] = useExportConfigInfo()
-  const [type, setType] = useState(exportConfig.savedType)
+  const [type, setType] = useState(exportConfig.savedType || 'word')
   const [saveOptions, setSaveOptions] = useState(exportConfig.saveSettings)
   const [options, setOptions] = useState(exportConfig)
 
@@ -29,47 +26,27 @@ function ExportDialog(props) {
   }
 
   const doExport = () => {
-    let label = t('Where would you like to save the export?')
     const { ui, seriesName, books, fullState } = props
     const bookId = ui.currentTimeline
     const defaultPath =
       bookId == 'series' ? seriesName + ' ' + t('(Series View)') : books[`${bookId}`].title
 
-    let filters = []
-    switch (type) {
-      case 'word':
-        filters = [{ name: t('MS Word'), extensions: ['docx'] }]
-        break
-      case 'scrivener':
-        filters = [{ name: t('Scrivener Project'), extensions: ['scriv'] }]
-        break
-    }
-    const fileName = dialog.showSaveDialogSync(win, { title: label, filters, defaultPath })
-    if (fileName) {
-      MPQ.push('Export', { export_type: type })
-
+    askToExport(defaultPath, fullState, type, options[type], (error, success) => {
       if (saveOptions) {
         saveExportConfig('savedType', type)
         saveExportConfig(type, options[type])
       }
 
-      try {
-        switch (type) {
-          case 'scrivener':
-            ScrivenerExporter(fullState, fileName, options[type])
-            break
-          case 'word':
-          default:
-            WordExporter(fullState, fileName, options[type])
-            break
-        }
-      } catch (error) {
+      if (error) {
         log.error(error)
-        // TODO: show the user an error
+        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+        return
       }
 
-      props.close()
-    }
+      if (success) {
+        props.close()
+      }
+    })
   }
 
   const Chooser = () => {
@@ -91,7 +68,12 @@ function ExportDialog(props) {
         <div className="export-dialog__header">
           <div className="export-dialog__type-chooser">
             <h3>{t('Export Options')}</h3>
-            <Chooser />
+            <div className="right-side">
+              <Chooser />
+              <Button bsStyle="success" disabled={!type} onClick={doExport}>
+                <Glyphicon glyph="export" />
+              </Button>
+            </div>
           </div>
           <hr />
         </div>
@@ -110,12 +92,9 @@ function ExportDialog(props) {
             <Switch
               isOn={saveOptions}
               handleToggle={() => setSaveOptions(!saveOptions)}
-              labelText={t('Save these settings for next export?')}
+              labelText={t('Save these settings across projects?')}
             />
             <ButtonToolbar>
-              <Button bsStyle="success" disabled={!type} onClick={doExport}>
-                {t('Export')}
-              </Button>
               <Button onClick={props.close}>{t('Cancel')}</Button>
             </ButtonToolbar>
           </div>

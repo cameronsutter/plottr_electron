@@ -30,7 +30,7 @@ class ImagePicker extends Component {
 
   constructor(props) {
     super(props)
-    this.fileNameRef = React.createRef()
+    this.fileNameRef = null
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -89,7 +89,7 @@ class ImagePicker extends Component {
   }
 
   renameFile = () => {
-    let newName = this.fileNameRef.current.value
+    let newName = this.fileNameRef.value
     this.props.actions.renameImage(this.state.selectedId, newName)
     this.setState({ editing: false })
   }
@@ -283,7 +283,13 @@ class ImagePicker extends Component {
     if (this.state.editing) {
       return (
         <FormGroup>
-          <FormControl type="text" defaultValue={value} inputRef={this.fileNameRef} />
+          <FormControl
+            type="text"
+            defaultValue={value}
+            inputRef={(ref) => {
+              this.fileNameRef = ref
+            }}
+          />
           <Button onClick={this.renameFile}>{i18n('Rename')}</Button>
         </FormGroup>
       )

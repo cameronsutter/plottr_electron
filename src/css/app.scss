@@ -26,9 +26,9 @@
 @import 'modals';
 @import 'analyzer';
 @import 'scrollbars';
-@import 'export';
 @import 'error_boundary';
 @import 'export_dialog';
+@import 'beat_config_modal';
 
 @import 'dashboard/dashboard';
 
@@ -208,14 +208,6 @@ input[type='file'] {
     font-size: 2.5em;
     margin-bottom: 8px;
   }
-}
-
-.modal-container {
-  position: relative;
-}
-.modal-container .modal,
-.modal-container .modal-backdrop {
-  position: absolute;
 }
 
 .popover {

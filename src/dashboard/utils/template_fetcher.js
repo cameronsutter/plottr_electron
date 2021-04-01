@@ -8,9 +8,14 @@ import {
   MANIFEST_ROOT,
 } from '../../common/utils/store_hooks'
 import { is } from 'electron-util'
+import SETTINGS from '../../common/utils/settings'
 
 const OLD_TEMPLATES_ROOT = 'templates'
 const manifestURL =
+  'https://raw.githubusercontent.com/Plotinator/plottr_templates/master/v2/manifest.json'
+// FIXME: when the beat hierarchy becomes non-beta then we can just
+// use manifest URL.
+const betaManifestURL =
   'https://raw.githubusercontent.com/Plotinator/plottr_templates/project-hierarchy/v2/manifest.json'
 
 class TemplateFetcher {
@@ -43,7 +48,9 @@ class TemplateFetcher {
 
   manifestReq = () => {
     return {
-      url: manifestURL,
+      // FIXME: when the beat hierarchy becomes non-beta then we can
+      // just use manifest URL.
+      url: SETTINGS.store.user.beatHierarchy ? betaManifestURL : manifestURL,
       json: true,
     }
   }
@@ -55,16 +62,16 @@ class TemplateFetcher {
     }
   }
 
-  fetch = () => {
-    if (is.development) return
+  fetch = (force) => {
+    // if (is.development) return
 
     log.info('fetching template manifest')
     request(this.manifestReq(), (err, resp, fetchedManifest) => {
       if (!err && resp && resp.statusCode == 200) {
-        if (this.fetchedIsNewer(fetchedManifest.version)) {
+        if (force || this.fetchedIsNewer(fetchedManifest.version)) {
           log.info('new templates found', fetchedManifest.version)
           manifestStore.set(MANIFEST_ROOT, fetchedManifest)
-          this.fetchTemplates()
+          this.fetchTemplates(force)
         } else {
           log.info('no new template manifest', fetchedManifest.version)
         }
@@ -80,10 +87,10 @@ class TemplateFetcher {
     return semverGt(fetchedVersion, manifestStore.get('manifest.version'))
   }
 
-  fetchTemplates = () => {
+  fetchTemplates = (force) => {
     const templates = manifestStore.get('manifest.templates')
     templates.forEach((template) => {
-      if (this.templateIsNewer(template.id, template.version)) {
+      if (force || this.templateIsNewer(template.id, template.version)) {
         this.fetchTemplate(template.id, template.url)
       }
     })

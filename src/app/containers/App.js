@@ -11,6 +11,7 @@ import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { saveFile } from '../../common/utils/files'
 import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
+import Tour from '../components/intros/Tour'
 
 let isTryingToReload = false
 let isTryingToClose = false
@@ -108,9 +109,13 @@ export default class App extends Component {
     )
   }
 
+  // renderGuidedTour() {
+  //   if (!this.props.showTour) return null
+  //   return <GuidedTour />
+  // }
+
   renderGuidedTour() {
-    if (!this.props.showTour) return null
-    return <GuidedTour />
+    return <Tour />
   }
 
   render() {
@@ -124,6 +129,7 @@ export default class App extends Component {
         </main>
         {this.renderTemplateCreate()}
         {this.renderAskToSave()}
+        {this.renderGuidedTour()}
       </ErrorBoundary>
     )
   }

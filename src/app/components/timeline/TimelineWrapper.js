@@ -35,6 +35,10 @@ const win = remote.getCurrentWindow()
 const SCENE_CELL_WIDTH = 175 + 17
 const SCENE_CELL_HEIGHT = 74 + 40
 
+// const {
+//   tour: { tourNext }
+// } = actions
+
 class TimelineWrapper extends Component {
   constructor(props) {
     super(props)
@@ -119,6 +123,7 @@ class TimelineWrapper extends Component {
     this.setState({
       beatConfigIsOpen: true,
     })
+    this.props.tourActions.tourNext('next')
   }
 
   // ///////////////
@@ -292,11 +297,13 @@ class TimelineWrapper extends Component {
           </NavItem>
           {gatedByBeatHierarchy(() => (
             <NavItem>
-              <Button bsSize="small" onClick={this.openBeatConfig}>
+              <Button bsSize="small" onClick={this.openBeatConfig} className="acts-tour-step1">
+                {/* XXXXXXX */}
                 <TiFlowChildren size={16} /> {i18n('Beats')}
               </Button>
             </NavItem>
           ))}
+          {/* <Tour startStep={0} /> */}
           <NavItem>
             <span className="subnav__container__label">{i18n('Zoom')}: </span>
             <ButtonGroup>
@@ -414,6 +421,7 @@ TimelineWrapper.propTypes = {
   featureFlags: PropTypes.object.isRequired,
   filterIsEmpty: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
+  tourActions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -430,6 +438,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.ui, dispatch),
+    tourActions: bindActionCreators(actions.tour, dispatch)
   }
 }
 

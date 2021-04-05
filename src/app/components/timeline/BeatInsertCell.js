@@ -15,6 +15,7 @@ const {
 } = helpers
 
 class BeatInsertCell extends PureComponent {
+  // XXXXXX - interstitial controls
   insert = () => {
     const { beatToLeft, handleInsert } = this.props
     handleInsert(beatToLeft && beatToLeft.id)

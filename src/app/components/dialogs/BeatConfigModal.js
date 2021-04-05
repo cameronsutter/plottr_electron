@@ -16,6 +16,7 @@ const {
 const { hierarchyLevelCount, sortedHierarchyLevels } = selectors
 const {
   hierarchyLevels: { setHierarchyLevels },
+  tour: { tourNext }
 } = actions
 
 const modalStyles = {
@@ -32,7 +33,7 @@ const modalStyles = {
     right: 'auto',
     marginTop: '160px', // counters some !important style
     minHeight: 500,
-    maxHeight: 'calc(100vh - 120px)',
+    maxHeight: 'calc(100vh - 120px)'
   },
 }
 
@@ -41,7 +42,13 @@ const BeatConfigModal = ({
   levelsOfHierarchy,
   hierarchyLevels,
   setHierarchyLevels,
+  tourNext
 }) => {
+
+  useEffect(() => {
+    // tourNext('next')
+  },[])
+
   const [stagedHierarchyLevels, setStagedHierarchyLevels] = useState(null)
 
   const levelsInputRef = useRef()
@@ -51,7 +58,7 @@ const BeatConfigModal = ({
       levelsInputRef.current.setSelectionRange(0, levelsInputRef.current.value.length)
     }
   }
-
+  
   useEffect(() => {
     if (levelsInputRef.current && levelsInputRef.current === document.activeElement) {
       selectLevelsText()
@@ -100,7 +107,7 @@ const BeatConfigModal = ({
             <h4>{i18n('Levels of hierarchy')}</h4>
             <div className="beat-config-modal__hierarchy-count-controls">
               <button
-                className="beat-config-modal__hierarchy-count-adjustment-control"
+                className="beat-config-modal__hierarchy-count-adjustment-control acts-tour-step3"
                 onClick={() => {
                   if (hierarchyLevels.length > 1) {
                     setStagedHierarchyLevels(hierarchyLevels.slice(1))
@@ -123,7 +130,7 @@ const BeatConfigModal = ({
                 }}
               />
               <button
-                className="beat-config-modal__hierarchy-count-adjustment-control"
+                className="beat-config-modal__hierarchy-count-adjustment-control acts-tour-step2"
                 onClick={() => {
                   if (hierarchyLevels.length < 3) {
                     setHierarchyLevels([newHierarchyLevel(hierarchyLevels), ...hierarchyLevels])
@@ -151,7 +158,7 @@ const BeatConfigModal = ({
             ))}
           </div>
           <ButtonToolbar className="beat-config-modal__button-bar">
-            <Button onClick={closeDialog}>{i18n('Done')}</Button>
+            <Button onClick={closeDialog} className="acts-tour-step5">{i18n('Done')}</Button>
           </ButtonToolbar>
         </div>
       </PlottrModal>
@@ -169,6 +176,7 @@ BeatConfigModal.propTypes = {
 const mapStateToProps = (state) => ({
   levelsOfHierarchy: hierarchyLevelCount(state.present),
   hierarchyLevels: sortedHierarchyLevels(state.present),
+  tourState: selectors.tourSelector(state.present)
 })
 
-export default connect(mapStateToProps, { setHierarchyLevels })(BeatConfigModal)
+export default connect(mapStateToProps, { setHierarchyLevels, tourNext })(BeatConfigModal)

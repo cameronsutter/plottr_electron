@@ -72,6 +72,7 @@ class TopRow extends Component {
 
     const lastBeat = !beats || beats.length === 0 ? null : beats[beats.length - 1]
     return (
+      // XXXXXX - final interstitial control adding a scene
       <BeatInsertCell
         key="second-last-insert"
         isInBeatList={true}
@@ -98,6 +99,7 @@ class TopRow extends Component {
       ui: { orientation },
     } = this.props
     return (
+      // XXXXXX - the cell appended to the end
       <BeatInsertCell
         key="last-insert"
         handleInsert={this.handleAppendBeat}
@@ -120,6 +122,7 @@ class TopRow extends Component {
       const cells = []
       if (isLarge || (isMedium && idx === 0)) {
         cells.push(
+          // XXXXXX - interstitial
           <BeatInsertCell
             isFirst={idx === 0}
             key={`beatId-${beat.id}-insert`}

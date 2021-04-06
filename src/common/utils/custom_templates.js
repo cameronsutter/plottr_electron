@@ -2,6 +2,7 @@ import { cloneDeep } from 'lodash'
 import { remote } from 'electron'
 import { t } from 'plottr_locales'
 import { customTemplatesStore } from './store_hooks'
+import { tree, helpers } from 'pltr/v2'
 const { app } = remote
 
 export function addNewCustomTemplate(pltrData, { type, data }) {
@@ -40,12 +41,14 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
   }
 
   // only the beats in current book
-  const beats = data.beats.filter((beat) => beat.bookId === bookId)
+  const beats = data.beats[bookId]
   // change bookId to 1
-  template.templateData.beats = beats.map((b) => {
-    b.bookId = 1
-    return b
-  })
+  template.templateData.beats = {
+    1: tree.map(beats, (book) => {
+      book.bookId = 1
+      return book
+    }),
+  }
 
   // only the lines in current book
   const bookLines = data.lines.filter((line) => line.bookId === bookId)
@@ -57,7 +60,7 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
 
   // only cards in beats
   if (data.cards.length) {
-    const beatIds = beats.map(({ id }) => id)
+    const beatIds = helpers.beats.beatIds(beats)
     let cards = []
 
     bookLines.forEach((line) => {

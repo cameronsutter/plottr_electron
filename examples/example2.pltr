@@ -3,7 +3,7 @@
     "fileName": "/home/edward/wip/plottr_electron/examples/example2.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2021.2.8"
+    "version": "2021.3.2"
   },
   "ui": {
     "currentView": "timeline",
@@ -48,48 +48,81 @@
       1
     ]
   },
-  "beats": [
-    {
-      "id": 1,
-      "bookId": 1,
-      "position": 3,
-      "title": "Scene 4",
-      "time": 0,
-      "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
+  "beats": {
+    "1": {
+      "children": {
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "null": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "heap": {
+        "1": null,
+        "2": null,
+        "3": null,
+        "4": null
+      },
+      "index": {
+        "1": {
+          "id": 1,
+          "bookId": 1,
+          "position": 3,
+          "title": "Scene 4",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "2": {
+          "id": 2,
+          "bookId": 1,
+          "position": 0,
+          "title": "new scene",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "3": {
+          "id": 3,
+          "bookId": 1,
+          "position": 1,
+          "title": "new scene",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "4": {
+          "id": 4,
+          "bookId": 1,
+          "position": 2,
+          "title": "new scene",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        }
+      }
     },
-    {
-      "id": 2,
-      "bookId": 1,
-      "position": 0,
-      "title": "new scene",
-      "time": 0,
-      "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
-      "id": 3,
-      "bookId": 1,
-      "position": 1,
-      "title": "new scene",
-      "time": 0,
-      "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
-    },
-    {
-      "id": 4,
-      "bookId": 1,
-      "position": 2,
-      "title": "new scene",
-      "time": 0,
-      "templates": [],
-      "autoOutlineSort": true,
-      "fromTemplateId": null
+    "series": {
+      "children": {
+        "null": []
+      },
+      "heap": {},
+      "index": {}
     }
-  ],
+  },
   "cards": [
     {
       "characters": [],
@@ -229,5 +262,17 @@
       "title": "First tag :)"
     }
   ],
-  "images": {}
+  "images": {},
+  "hierarchyLevels": {
+    "0": {
+      "name": "Scene",
+      "level": 0,
+      "autoNumber": true,
+      "textColor": "#6cace4",
+      "textSize": 24,
+      "borderColor": "#6cace4",
+      "borderStyle": "NONE",
+      "backgroundColor": "#f1f5f8"
+    }
+  }
 }

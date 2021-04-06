@@ -14,6 +14,8 @@ const {
   positionOffsetSelector,
   sortedLinesByBookSelector,
   sortedHierarchyLevels,
+  beatHierarchyIsOn,
+  isSeriesSelector,
 } = selectors
 
 const BeatActions = actions.beat
@@ -116,6 +118,8 @@ class BeatView extends Component {
       cards,
       activeFilter,
       positionOffset,
+      hierarchyEnabled,
+      isSeries,
     } = this.props
     if (activeFilter && !cards.length) return null
 
@@ -129,7 +133,7 @@ class BeatView extends Component {
       >
         <div>
           <h3 id={`beat-${beat.id}`} className={klasses}>
-            {beatTitle(beats, beat, hierarchyLevels, positionOffset)}
+            {beatTitle(beats, beat, hierarchyLevels, positionOffset, hierarchyEnabled, isSeries)}
             {this.renderManualSort()}
           </h3>
           {this.renderCards()}
@@ -151,6 +155,8 @@ BeatView.propTypes = {
   positionOffset: PropTypes.number.isRequired,
   beatActions: PropTypes.object,
   actions: PropTypes.object,
+  hierarchyEnabled: PropTypes.bool,
+  isSeries: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -160,6 +166,8 @@ function mapStateToProps(state) {
     hierarchyLevels: sortedHierarchyLevels(state.present),
     lines: sortedLinesByBookSelector(state.present),
     positionOffset: positionOffsetSelector(state.present),
+    hierarchyEnabled: beatHierarchyIsOn(state),
+    isSeries: isSeriesSelector(state),
   }
 }
 

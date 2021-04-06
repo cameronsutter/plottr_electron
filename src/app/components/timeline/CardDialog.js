@@ -341,11 +341,21 @@ class CardDialog extends Component {
   }
 
   renderBeatItems() {
-    const { beats, beatTree, hierarchyLevels, positionOffset } = this.props
+    const {
+      beats,
+      beatTree,
+      hierarchyLevels,
+      positionOffset,
+      hierarchyEnabled,
+      isSeries,
+    } = this.props
     return beats.map((beat) => {
       return (
         <MenuItem key={beat.id} onSelect={() => this.changeBeat(beat.id)}>
-          {truncateTitle(beatTitle(beatTree, beat, hierarchyLevels, positionOffset), 50)}
+          {truncateTitle(
+            beatTitle(beatTree, beat, hierarchyLevels, positionOffset, hierarchyEnabled, isSeries),
+            50
+          )}
         </MenuItem>
       )
     })
@@ -431,7 +441,15 @@ class CardDialog extends Component {
     const lineDropdownID = 'select-line'
     const beatDropdownID = 'select-beat'
 
-    const { hierarchyLevels, positionOffset, isSeries, card, ui, beatTree } = this.props
+    const {
+      hierarchyLevels,
+      positionOffset,
+      isSeries,
+      card,
+      ui,
+      beatTree,
+      hierarchyEnabled,
+    } = this.props
 
     let labelText = i18n('Chapter')
     let bookDropDown = null
@@ -443,7 +461,9 @@ class CardDialog extends Component {
       beatTree,
       this.getCurrentBeat(),
       hierarchyLevels,
-      positionOffset
+      positionOffset,
+      hierarchyEnabled,
+      isSeries
     )
     const darkened = card.color ? tinycolor(card.color).darken().toHslString() : null
     const borderColor = card.color ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
@@ -633,6 +653,7 @@ CardDialog.propTypes = {
   customAttributes: PropTypes.array.isRequired,
   uiActions: PropTypes.object.isRequired,
   customAttributeActions: PropTypes.object.isRequired,
+  hierarchyEnabled: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -649,6 +670,7 @@ function mapStateToProps(state) {
     books: state.present.books,
     isSeries: selectors.isSeriesSelector(state.present),
     positionOffset: selectors.positionOffsetSelector(state.present),
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state),
   }
 }
 

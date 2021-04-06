@@ -7,18 +7,19 @@ import { t as i18n } from 'plottr_locales'
 import { TiFlowChildren } from 'react-icons/ti'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import cx from 'classnames'
-import { selectors, helpers } from 'pltr/v2'
+import { selectors, helpers, actions } from 'pltr/v2'
 import VisualLine from './VisualLine'
+import { bindActionCreators } from 'redux'
 
 const {
   orientedClassName: { orientedClassName },
 } = helpers
 
 class BeatInsertCell extends PureComponent {
-  // XXXXXX - interstitial controls
   insert = () => {
     const { beatToLeft, handleInsert } = this.props
     handleInsert(beatToLeft && beatToLeft.id)
+    if(this.props.tour.run)this.props.tourActions.tourNext('next')
   }
 
   insertChild = () => {
@@ -173,17 +174,19 @@ class BeatInsertCell extends PureComponent {
         onClick={this.insertChild}
       >
         <div className={this.wrapperClassSubIcon()}>
-          <TiFlowChildren size={25} />
+          <TiFlowChildren size={25} className="acts-tour-step7" />
         </div>
       </div>
     ) : null
   }
 
   renderInsertBeat() {
+    const { isFirst } = this.props
+
     return (
       <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
         <div className={this.wrapperClass()}>
-          <Glyphicon glyph="plus" />
+          <Glyphicon glyph="plus" className={!isFirst && "acts-tour-step6"}/>
         </div>
       </div>
     )
@@ -272,7 +275,14 @@ function mapStateToProps(state, ownProps) {
     hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
     hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
     atMaximumDepth: selectors.atMaximumHierarchyDepthSelector(state.present, beatToLeftId),
+    tour: selectors.tourSelector(state.present),
   }
 }
 
-export default connect(mapStateToProps, null)(BeatInsertCell)
+function mapDispatchToProps(dispatch){
+  return {
+    tourActions:bindActionCreators(actions.tour,dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BeatInsertCell)

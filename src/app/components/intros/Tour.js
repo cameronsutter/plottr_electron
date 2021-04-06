@@ -17,6 +17,7 @@ class Tour extends Component {
     steps:this.props.steps,
     stepIndex: this.props.stepIndex,
     transitioning:this.props.transitioning,
+    b2bTransition:this.props.b2bTransition,
     doneTransitioning:false
   };
 
@@ -56,6 +57,7 @@ class Tour extends Component {
     // const transitioning = true
     console.log('callback',this.props.stepIndex,index,'<-index')
     console.log('callback',this.props.transitioning,'<-transitioning')
+    console.log('callback',this.props.b2bTransition,'<-B2B Transitioning')
     console.log('callback',this.state.doneTransitioning,'<-DONE Transitioning')
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status) && this.state.run) {
       // Need to set our running state to false, so we can restart if we click start again.
@@ -82,7 +84,7 @@ class Tour extends Component {
         });
         //   this.props.actions.tourNext(action)        
       }, 2000);
-      this.setState({doneTransitioning: true})
+      if(!this.props.b2bTransition) this.setState({doneTransitioning: true})
     } else if (type === EVENTS.STEP_AFTER) {
       // Update state to advance the tour
       this.setState({ run: false, loading: true, doneTransitioning: false });

@@ -35,10 +35,6 @@ const win = remote.getCurrentWindow()
 const SCENE_CELL_WIDTH = 175 + 17
 const SCENE_CELL_HEIGHT = 74 + 40
 
-// const {
-//   tour: { tourNext }
-// } = actions
-
 class TimelineWrapper extends Component {
   constructor(props) {
     super(props)
@@ -117,7 +113,7 @@ class TimelineWrapper extends Component {
     this.setState({
       beatConfigIsOpen: false,
     })
-    this.props.tourActions.tourNext('next')
+    if(this.props.tour.run)this.props.tourActions.tourNext('next')
   }
 
   openBeatConfig = () => {
@@ -304,7 +300,7 @@ class TimelineWrapper extends Component {
             </NavItem>
           ))}
           <NavItem>
-            <span className="subnav__container__label acts-tour-step6">{i18n('Zoom')}: </span>
+            <span className="subnav__container__label">{i18n('Zoom')}: </span>
             <ButtonGroup>
               <Button
                 bsSize="small"
@@ -333,7 +329,7 @@ class TimelineWrapper extends Component {
             </ButtonGroup>
           </NavItem>
           <NavItem>
-            <span className="subnav__container__label acts-tour-step7">{i18n('Scroll')}: </span>
+            <span className="subnav__container__label">{i18n('Scroll')}: </span>
             <ButtonGroup bsSize="small">
               <Button onClick={this.scrollLeft}>
                 <Glyphicon glyph={scrollDirectionFirst} />
@@ -431,6 +427,7 @@ function mapStateToProps(state) {
     isMedium: selectors.isMediumSelector(state.present),
     isLarge: selectors.isLargeSelector(state.present),
     featureFlags: selectors.featureFlags(state.present),
+    tour: selectors.tourSelector(state.present),
   }
 }
 

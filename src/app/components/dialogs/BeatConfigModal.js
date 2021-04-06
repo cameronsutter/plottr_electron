@@ -45,10 +45,6 @@ const BeatConfigModal = ({
   tourNext
 }) => {
 
-  useEffect(() => {
-    // tourNext('next')
-  },[])
-
   const [stagedHierarchyLevels, setStagedHierarchyLevels] = useState(null)
 
   const levelsInputRef = useRef()

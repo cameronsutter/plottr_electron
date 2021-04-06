@@ -117,6 +117,7 @@ class TimelineWrapper extends Component {
     this.setState({
       beatConfigIsOpen: false,
     })
+    this.props.tourActions.tourNext('next')
   }
 
   openBeatConfig = () => {
@@ -298,14 +299,12 @@ class TimelineWrapper extends Component {
           {gatedByBeatHierarchy(() => (
             <NavItem>
               <Button bsSize="small" onClick={this.openBeatConfig} className="acts-tour-step1">
-                {/* XXXXXXX */}
                 <TiFlowChildren size={16} /> {i18n('Beats')}
               </Button>
             </NavItem>
           ))}
-          {/* <Tour startStep={0} /> */}
           <NavItem>
-            <span className="subnav__container__label">{i18n('Zoom')}: </span>
+            <span className="subnav__container__label acts-tour-step6">{i18n('Zoom')}: </span>
             <ButtonGroup>
               <Button
                 bsSize="small"
@@ -334,7 +333,7 @@ class TimelineWrapper extends Component {
             </ButtonGroup>
           </NavItem>
           <NavItem>
-            <span className="subnav__container__label">{i18n('Scroll')}: </span>
+            <span className="subnav__container__label acts-tour-step7">{i18n('Scroll')}: </span>
             <ButtonGroup bsSize="small">
               <Button onClick={this.scrollLeft}>
                 <Glyphicon glyph={scrollDirectionFirst} />

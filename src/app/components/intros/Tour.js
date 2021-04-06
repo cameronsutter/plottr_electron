@@ -15,7 +15,9 @@ class Tour extends Component {
     loading: this.props.loading,
     run: this.props.run,
     steps:this.props.steps,
-    stepIndex: this.props.stepIndex
+    stepIndex: this.props.stepIndex,
+    transitioning:this.props.transitioning,
+    doneTransitioning:false
   };
 
   static propTypes = {
@@ -48,8 +50,13 @@ class Tour extends Component {
   };
 
   handleJoyrideCallback = data => {
+    
     const { joyride } = this.props;
     const { action, index, type, status } = data;
+    // const transitioning = true
+    console.log('callback',this.props.stepIndex,index,'<-index')
+    console.log('callback',this.props.transitioning,'<-transitioning')
+    console.log('callback',this.state.doneTransitioning,'<-DONE Transitioning')
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status) && this.state.run) {
       // Need to set our running state to false, so we can restart if we click start again.
       console.log(type,'FINISHED/SKIPPED+++++++++++')
@@ -62,7 +69,7 @@ class Tour extends Component {
         });
         //   this.props.actions.tourNext(action)        
       }, 2000);
-    } else if (type === EVENTS.STEP_AFTER && index === 0 && action !== ACTIONS.PREV) {// XXXXXX CHANGE INDEX === 0 HERE TO IF MOUNTING_TRANSITION === TRUE -- use a redux state of mountingTransition (like the 'loading' state) so this is scalable across features, certain features would have certain stepIndexes that would transition between a modal and would therefore run the setTimeout or whatever was necessary to make that transition (put a switch in redux for where each feature's modalTransitions are)
+    } else if (type === EVENTS.STEP_AFTER && this.props.transitioning === true && this.state.doneTransitioning === false) {// XXXXXX CHANGE INDEX === 0 HERE TO IF MOUNTING_TRANSITION === TRUE -- use a redux state of mountingTransition (like the 'loading' state) so this is scalable across features, certain features would have certain stepIndexes that would transition between a modal and would therefore run the setTimeout or whatever was necessary to make that transition (put a switch in redux for where each feature's modalTransitions are)
       console.log(type,'AFTER======111111111111111')    
   
       this.setState({ run: false, loading: true });
@@ -75,8 +82,19 @@ class Tour extends Component {
         });
         //   this.props.actions.tourNext(action)        
       }, 2000);
-    } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
+      this.setState({doneTransitioning: true})
+    } else if (type === EVENTS.STEP_AFTER) {
       // Update state to advance the tour
+      this.setState({ run: false, loading: true, doneTransitioning: false });
+    
+      setTimeout(() => {
+        this.setState({
+          loading: false,
+          run: true,
+        //   stepIndex: index + (action === ACTIONS.PREV ? -1 : 1)
+        });
+        //   this.props.actions.tourNext(action)        
+      }, 2000);
       console.log(type,'AFTER+++++++++++')    
       this.props.actions.tourNext(action)
 

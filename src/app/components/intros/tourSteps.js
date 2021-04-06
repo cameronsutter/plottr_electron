@@ -62,7 +62,29 @@ export const ACTS_TOUR_STEPS = [
       content:'This is step 5',
       event:'hover',
       spotlightClicks: true,
-      placement:'right'
+      placement:'right',
+      styles: {
+        // tooltipFooter: {
+        //   opacity: 0
+        // },
+        buttonNext: {
+          display: "none"
+        }
+      },
+      // disableBeacon:true,
+    },
+    {
+      target:`.acts-tour-step6`,
+      content:'This is step 6',
+      // event:'hover',
+      spotlightClicks: true,
+      // disableBeacon:true,
+    },
+    {
+      target:`.acts-tour-step7`,
+      content:'This is step 7',
+      event:'hover',
+      spotlightClicks: true,
       // disableBeacon:true,
     }
   ]

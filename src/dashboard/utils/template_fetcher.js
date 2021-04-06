@@ -50,7 +50,7 @@ class TemplateFetcher {
     return {
       // FIXME: when the beat hierarchy becomes non-beta then we can
       // just use manifest URL.
-      url: SETTINGS.store.user.beatHierarchy ? betaManifestURL : manifestURL,
+      url: SETTINGS.get('user.beatHierarchy') ? betaManifestURL : manifestURL,
       json: true,
     }
   }

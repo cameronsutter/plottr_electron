@@ -7,6 +7,7 @@ import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap
 import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
 import LanguagePicker from '../../../common/components/LanguagePicker'
 import DarkOptionsSelect from './DarkOptionsSelect'
+import TemplateFetcher from '../../utils/template_fetcher'
 
 export default function OptionsHome(props) {
   const [settings, _, saveSetting] = useSettingsInfo()
@@ -38,6 +39,10 @@ export default function OptionsHome(props) {
     const newValue = !settings.user.beatHierarchy
     saveSetting('user.beatHierarchy', newValue)
     ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
+    // Templates are different for the beat hierarchy feature.
+    // FIXME: when we un-beta this feature then this can be removed safely.
+    // Also See: TemplateFetcher.manifestReq()
+    TemplateFetcher.fetch(true)
   }
 
   return (

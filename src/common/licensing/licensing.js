@@ -4,7 +4,8 @@ import SETTINGS from '../utils/settings'
 
 const BASE_URL = 'https://my.plottr.com'
 const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'
-export const PRODUCT_IDS = [33345, V2_OLD_PRODUCT_ID] // NOTE: if this order changes, change the productMapping array at the bottom too
+// NOTE: if this order changes, change the productMapping array at the bottom too
+export const PRODUCT_IDS = [33347, 33345, V2_OLD_PRODUCT_ID]
 export const WRONG_PRODUCT_ERRORS = [
   'invalid_item_id',
   'key_mismatch',
@@ -96,6 +97,7 @@ function getGracePeriodEnd() {
 }
 
 export const productMapping = {
+  33347: mapPro,
   33345: mapPro,
   11321: mapV2old,
   11322: mapV2old,

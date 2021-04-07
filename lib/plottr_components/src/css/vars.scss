@@ -1,0 +1,99 @@
+@import 'colors';
+
+$blue: $blue-5;
+
+$cubic: cubic-bezier(.165,.84,.44,1);
+
+$body-background-color: $gray-9;
+
+$darkmode-background: #666;
+$darkmode-darker-background: #555;
+$darkmode-card-background: #666;
+$darkmode-text: #eee;
+$darkmode-darker-text: #ccc;
+$darkmode-border: #999;
+$darkmode-darker-border: #777;
+
+$height: 66px;
+$width: 150px;
+
+// $scene-height: $height + 50;
+
+$margin-width: 25px;
+$margin: 0px $margin-width 0px 0px;
+$margin-left: 0px 0px 0px $margin-width;
+$padding: 10px 10px 10px 10px;
+
+$border-radius: 4px;
+
+$card-background: $body-background-color;
+
+$svg-line-width: 3;
+
+$new-item-background: #ddd;
+$new-item-border-color: #aaa;
+$new-item-border: 2px dashed $new-item-border-color;
+
+@mixin header-font {
+  font-family: 'IBM Plex Serif', serif !important;
+}
+
+@mixin sub-header-font {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 20px;
+}
+
+@mixin body-text-font {
+  font-family: 'Forum', sans-serif !important;
+  font-size: 16px !important;
+}
+
+@mixin application-text {
+  font-family: 'Lato', sans-serif !important;
+}
+
+@mixin user-text {
+  font-family: 'Forum', sans-serif !important;
+}
+
+@mixin secondary-text {
+  color: rgba(22,34,45, 0.7); // #16222d
+}
+
+@mixin disabled-text {
+  color: rgba(22,34,45, 0.2); // #16222d
+}
+
+@mixin accented-text {
+  color: rgba(108,172,228, 0.9); // #6cace4
+}
+
+@mixin hover-box {
+  background-color: $new-item-background;
+  border-radius: $border-radius;
+  cursor: pointer;
+}
+
+@mixin well {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  padding: 7px;
+}
+
+@mixin new_item {
+  height: $height;
+  width: $width;
+  min-width: $width;
+  line-height: $height;
+  color: $new-item-border-color;
+  text-align: center;
+  margin: auto;
+  margin-top: 10px;
+}
+
+@mixin new_item_hover {
+  background: $new-item-background;
+  border: $new-item-border;
+  cursor: pointer;
+}

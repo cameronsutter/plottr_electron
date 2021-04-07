@@ -12,9 +12,12 @@ import { actions, selectors } from 'pltr/v2'
 const CardActions = actions.card
 
 const {
+  beatsByBookSelector,
   sortedBeatsByBookSelector,
   positionOffsetSelector,
   sortedLinesByBookSelector,
+  sortedHierarchyLevels,
+  beatHierarchyIsOn,
   isSeriesSelector,
 } = selectors
 
@@ -46,17 +49,22 @@ class MiniMap extends Component {
       const yPosition = elem.getBoundingClientRect().y
       container.scrollBy(0, yPosition - targetPosition)
     }
+    this.props.handleActive(key)
   }
 
   renderBeats() {
     const {
       lines,
       beats,
+      beatsTree,
       activeFilter,
-      isSeries,
       cardMapping,
       positionOffset,
       actions,
+      ui,
+      hierarchyLevels,
+      hierarchyEnabled,
+      isSeries,
     } = this.props
     const linesById = keyBy(lines, 'id')
     return beats.map((beat, idx) => {
@@ -71,15 +79,19 @@ class MiniMap extends Component {
           eventKey={beat.id}
         >
           <MiniBeat
+            bookId={ui.currentTimeline}
             beat={beat}
+            beats={beatsTree}
+            hierarchyLevels={hierarchyLevels}
             idx={idx + positionOffset}
             cards={beatCards}
             linesById={linesById}
-            isSeries={isSeries}
             sortedLines={lines}
             positionOffset={positionOffset}
             reorderCardsWithinLine={actions.reorderCardsWithinLine}
             reorderCardsInBeat={actions.reorderCardsInBeat}
+            hierarchyEnabled={hierarchyEnabled}
+            isSeries={isSeries}
           />
         </NavItem>
       )
@@ -123,21 +135,28 @@ MiniMap.propTypes = {
   active: PropTypes.number.isRequired,
   cardMapping: PropTypes.object.isRequired,
   activeFilter: PropTypes.bool.isRequired,
+  beatsTree: PropTypes.object.isRequired,
   beats: PropTypes.array.isRequired,
+  hierarchyLevels: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
-  isSeries: PropTypes.bool.isRequired,
   positionOffset: PropTypes.number.isRequired,
   actions: PropTypes.object,
+  handleActive: PropTypes.func,
+  hierarchyEnabled: PropTypes.bool,
+  isSeries: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
   return {
     beats: sortedBeatsByBookSelector(state.present),
+    beatsTree: beatsByBookSelector(state.present),
+    hierarchyLevels: sortedHierarchyLevels(state.present),
     lines: sortedLinesByBookSelector(state.present),
     ui: state.present.ui,
-    isSeries: isSeriesSelector(state.present),
     positionOffset: positionOffsetSelector(state.present),
+    hierarchyEnabled: beatHierarchyIsOn(state.present),
+    isSeries: isSeriesSelector(state.present),
   }
 }
 

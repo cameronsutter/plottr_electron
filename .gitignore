@@ -9,3 +9,4 @@ data/*
 *.map
 .prev
 bin/electron_main.js
+dist/

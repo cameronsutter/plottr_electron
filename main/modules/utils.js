@@ -96,7 +96,6 @@ function makeBrowserWindow(filePath) {
     'new-window',
     (event, url, frameName, disposition, options, additionalFeatures) => {
       event.preventDefault()
-      shell.openExternal(url)
     }
   )
 

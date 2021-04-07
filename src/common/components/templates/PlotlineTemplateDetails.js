@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { t as i18n } from 'plottr_locales'
 import _ from 'lodash'
-import { template, selectors } from 'pltr/v2'
+import { template } from 'pltr/v2'
 import { remote } from 'electron'
 import { isEmpty } from 'lodash'
 
@@ -71,15 +71,8 @@ export default class PlotlineTemplateDetails extends Component {
 
   render() {
     const { template } = this.state
-    const beatsToRender = isEmpty(template) ? null : selectors.templateBeatsForBookOne(template)
-    const beatEntry = (
-      <div key="beats">
-        <h5 className="text-center text-capitalize">Beats</h5>
-        <ol>{this.renderData('beats', beatsToRender)}</ol>
-      </div>
-    )
     const body = Object.keys(template)
-      .filter((heading) => heading !== 'id' && heading !== 'beats')
+      .filter((heading) => heading !== 'id')
       .filter((heading) => !template[heading].every((item) => item.title == 'auto'))
       .map((heading) => {
         let headingText = this.headingMap[heading] || heading
@@ -91,7 +84,6 @@ export default class PlotlineTemplateDetails extends Component {
           </div>
         )
       })
-      .concat([beatEntry])
 
     return <div className="panel-body">{body}</div>
   }

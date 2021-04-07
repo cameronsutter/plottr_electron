@@ -7,11 +7,11 @@ import { t as i18n } from 'plottr_locales'
 class CategoryPicker extends Component {
   constructor(props) {
     super(props)
-    this.selectRef = null
+    this.selectRef = React.createRef()
   }
 
   onChange = () => {
-    const val = this.selectRef.value
+    const val = this.selectRef.current.value
     this.props.onChange(val == -1 ? null : val)
   }
 
@@ -32,9 +32,7 @@ class CategoryPicker extends Component {
         componentClass="select"
         placeholder={i18n('Choose')}
         onChange={this.onChange}
-        inputRef={(ref) => {
-          this.selectRef = ref
-        }}
+        inputRef={this.selectRef}
         value={val}
       >
         {this.renderOptions()}

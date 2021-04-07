@@ -28,7 +28,7 @@ class BlankCard extends Component {
       dropDepth: 0,
     }
 
-    this.titleInputRef = null
+    this.titleInputRef = React.createRef()
   }
 
   handleDragEnter = (e) => {
@@ -62,7 +62,7 @@ class BlankCard extends Component {
   }
 
   saveCreate = () => {
-    const newCard = this.buildCard(this.titleInputRef.value)
+    const newCard = this.buildCard(this.titleInputRef.current.value)
     this.props.actions.addCard(
       Object.assign(newCard, this.state.templates ? { templates: this.state.templates } : {})
     )
@@ -107,7 +107,7 @@ class BlankCard extends Component {
   }
 
   handleBlur = () => {
-    var newTitle = this.titleInputRef.value
+    var newTitle = this.titleInputRef.current.value
     if (newTitle === '') {
       this.setState({ creating: false })
       return false
@@ -253,9 +253,7 @@ class BlankCard extends Component {
           <FormControl
             type="text"
             autoFocus
-            inputRef={(ref) => {
-              this.titleInputRef = ref
-            }}
+            inputRef={this.titleInputRef}
             bsSize="small"
             onBlur={this.handleBlur}
             onKeyDown={this.handleCancelCreate}

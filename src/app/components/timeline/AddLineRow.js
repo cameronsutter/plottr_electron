@@ -8,7 +8,7 @@ import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
-import { helpers, actions, selectors, lineColors, initialState } from 'pltr/v2'
+import { actions, selectors, lineColors, initialState } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 
 const { nextColor } = lineColors
@@ -47,7 +47,8 @@ class AddLineRow extends Component {
   }
 
   addBeats = (templateBeats, bookId, template) => {
-    if (!templateBeats || templateBeats.length === 0) return
+    if (!templateBeats) return
+    templateBeats = sortBy(templateBeats, 'position')
 
     const allAreAuto = templateBeats.every((beat) => beat.title == 'auto')
 
@@ -200,13 +201,9 @@ class AddLineRow extends Component {
     this.allLines = this.props.lines
     this.allCards = this.props.cards
 
-    const templateBookId = helpers.books.isSeries(bookId) ? bookId : 1
-    const templateBeats = selectors.beatsByPosition(() => true)(template.beats[templateBookId])
-    const templateLines = template.lines.filter((line) => line.bookId === templateBookId)
-
-    this.addBeats(templateBeats, bookId, template)
-    this.addLines(templateLines, bookId, true, template)
-    this.addCards(template.cards, templateBeats, bookId, template)
+    this.addBeats(template.beats, bookId, template)
+    this.addLines(template.lines, bookId, true, template)
+    this.addCards(template.cards, template.beats, bookId, template)
 
     actions.addLinesFromTemplate(this.allCards, this.allLines, this.allBeats, template, bookId)
     this.setState({ showTemplatePicker: false })
@@ -233,7 +230,7 @@ class AddLineRow extends Component {
   }
 
   renderInsertButton() {
-    const { isSmall, isMedium, ui, actions } = this.props
+    const { isSmall, isMedium } = this.props
     if (isSmall) {
       return (
         <th className="row-header">
@@ -253,6 +250,7 @@ class AddLineRow extends Component {
     const appendKlass = cx('line-list__append-line', { 'medium-timeline': isMedium })
     return (
       <div className={appendKlass}>
+        {this.renderInputModal()}
         {this.state.hovering ? (
           <div className="line-list__append-line__double">
             <div
@@ -261,7 +259,7 @@ class AddLineRow extends Component {
             >
               {i18n('Use Template')}
             </div>
-            <div onClick={() => actions.addLine(ui.currentTimeline)} className="non-template">
+            <div onClick={() => this.setState({ askingForInput: true })} className="non-template">
               <Glyphicon glyph="plus" />
             </div>
           </div>

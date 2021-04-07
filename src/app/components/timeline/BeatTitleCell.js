@@ -11,7 +11,6 @@ import {
   FormGroup,
   ControlLabel,
 } from 'react-bootstrap'
-import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
@@ -22,7 +21,6 @@ const {
   card: { truncateTitle },
   beats: { editingBeatLabel, beatPositionTitle },
   orientedClassName: { orientedClassName },
-  hierarchyLevels: { hierarchyToStyles },
 } = helpers
 
 class BeatTitleCell extends PureComponent {
@@ -37,7 +35,7 @@ class BeatTitleCell extends PureComponent {
       dropDepth: 0,
       deleting: false,
     }
-    this.titleInputRef = null
+    this.titleInputRef = React.createRef()
   }
 
   deleteBeat = (e) => {
@@ -55,31 +53,16 @@ class BeatTitleCell extends PureComponent {
     this.setState({ deleting: true, hovering: false })
   }
 
-  handleAddChild = (e) => {
-    this.props.actions.addBeat(this.props.ui.currentTimeline, this.props.beat.id)
-  }
-
-  handleToggleExpanded = (e) => {
-    const {
-      actions: { collapseBeat, expandBeat },
-      beat: { id, expanded },
-      ui: { currentTimeline },
-    } = this.props
-
-    if (expanded) collapseBeat(id, currentTimeline)
-    else expandBeat(id, currentTimeline)
-  }
-
   editTitle = () => {
-    const ref = this.titleInputRef
+    const ref = this.titleInputRef.current
     if (!ref) return
 
     this.finalizeEdit(ref.value)
   }
 
   finalizeEdit = (newVal) => {
-    const { beat, actions, ui } = this.props
-    actions.editBeatTitle(beat.id, ui.currentTimeline, newVal || 'auto') // if nothing, set to auto
+    const { beat, actions } = this.props
+    actions.editBeatTitle(beat.id, newVal || 'auto') // if nothing, set to auto
     this.setState({ editing: false, hovering: false })
   }
 
@@ -128,6 +111,7 @@ class BeatTitleCell extends PureComponent {
 
   handleDrop = (e) => {
     e.stopPropagation()
+    if (this.state.dragging) return
     this.setState({ inDropZone: false, dropDepth: 0 })
 
     var json = e.dataTransfer.getData('text/json')
@@ -135,7 +119,7 @@ class BeatTitleCell extends PureComponent {
     if (droppedBeat.id == null) return
     if (droppedBeat.id == this.props.beat.id) return
 
-    this.props.handleReorder(this.props.beat.id, droppedBeat.id)
+    this.props.handleReorder(this.props.beat.position, droppedBeat.position)
   }
 
   startEditing = () => {
@@ -178,21 +162,16 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderHorizontalHoverOptions(style) {
-    const { ui, isMedium, isSmall, beat } = this.props
+    const { ui, isSmall } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <ButtonGroup>
-          {isMedium ? null : (
-            <Button bsSize={isSmall ? 'small' : undefined} onClick={this.startEditing}>
-              <Glyphicon glyph="edit" />
-            </Button>
-          )}
+          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.startEditing}>
+            <Glyphicon glyph="edit" />
+          </Button>
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
-          </Button>
-          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
-            {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
           </Button>
         </ButtonGroup>
       </div>
@@ -232,35 +211,16 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderTitle() {
-    const {
-      beats,
-      beat,
-      beatTitle,
-      hierarchyLevels,
-      positionOffset,
-      hierarchyEnabled,
-      isSeries,
-    } = this.props
+    const { beat, beatTitle, positionOffset, isSeries } = this.props
     if (!this.state.editing) return <span>{truncateTitle(beatTitle, 50)}</span>
 
     return (
       <FormGroup>
-        <ControlLabel>
-          {editingBeatLabel(
-            beats,
-            beat,
-            hierarchyLevels,
-            positionOffset,
-            hierarchyEnabled,
-            isSeries
-          )}
-        </ControlLabel>
+        <ControlLabel>{editingBeatLabel(beat, positionOffset, isSeries)}</ControlLabel>
         <FormControl
           type="text"
           defaultValue={beat.title}
-          inputRef={(ref) => {
-            this.titleInputRef = ref
-          }}
+          inputRef={this.titleInputRef}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}
@@ -272,18 +232,7 @@ class BeatTitleCell extends PureComponent {
 
   render() {
     window.SCROLLWITHKEYS = !this.state.editing
-    const {
-      beats,
-      hierarchyLevels,
-      beat,
-      ui,
-      positionOffset,
-      beatTitle,
-      isSmall,
-      isMedium,
-      hierarchyEnabled,
-      isSeries,
-    } = this.props
+    const { beat, ui, positionOffset, beatTitle, isSeries, isSmall, isMedium } = this.props
     const { hovering, inDropZone } = this.state
     const innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
       'medium-timeline': isMedium,
@@ -313,14 +262,7 @@ class BeatTitleCell extends PureComponent {
           {this.renderDelete()}
           {this.renderEditInput()}
           <div
-            title={beatPositionTitle(
-              beats,
-              beat,
-              hierarchyLevels,
-              positionOffset,
-              hierarchyEnabled,
-              isSeries
-            )}
+            title={beatPositionTitle(beat, positionOffset, isSeries)}
             onClick={hovering ? this.stopHovering : this.startHovering}
             draggable
             onDragStart={this.handleDragStart}
@@ -335,14 +277,7 @@ class BeatTitleCell extends PureComponent {
         <Cell className="beat-table-cell">
           <div
             className={beatKlass}
-            title={beatPositionTitle(
-              beats,
-              beat,
-              hierarchyLevels,
-              positionOffset,
-              hierarchyEnabled,
-              isSeries
-            )}
+            title={beatPositionTitle(beat, positionOffset, isSeries)}
             onMouseEnter={this.startHovering}
             onMouseLeave={this.stopHovering}
             onDrop={this.handleDrop}
@@ -350,11 +285,6 @@ class BeatTitleCell extends PureComponent {
             {this.renderHoverOptions()}
             {this.renderDelete()}
             <div
-              style={hierarchyToStyles(
-                this.props.hierarchyLevel,
-                ui.timeline.size,
-                this.state.hovering || this.state.inDropZone
-              )}
               className={innerKlass}
               onClick={this.startEditing}
               draggable
@@ -377,17 +307,14 @@ BeatTitleCell.propTypes = {
   beatId: PropTypes.number.isRequired,
   handleReorder: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired,
-  beats: PropTypes.object.isRequired,
-  hierarchyLevels: PropTypes.array.isRequired,
+  beats: PropTypes.array.isRequired,
   beat: PropTypes.object.isRequired,
-  hierarchyLevel: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  isSeries: PropTypes.bool,
   beatTitle: PropTypes.string.isRequired,
   positionOffset: PropTypes.number.isRequired,
   isSmall: PropTypes.bool.isRequired,
   isMedium: PropTypes.bool.isRequired,
-  hierarchyEnabled: PropTypes.bool.isRequired,
-  isSeries: PropTypes.bool.isRequired,
 }
 
 const makeMapState = (state) => {
@@ -396,11 +323,10 @@ const makeMapState = (state) => {
 
   return function mapStateToProps(state, ownProps) {
     return {
-      beats: selectors.beatsByBookSelector(state.present),
-      hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
+      beats: state.present.beats,
       beat: uniqueBeatsSelector(state.present, ownProps.beatId),
-      hierarchyLevel: selectors.hierarchyLevelSelector(state.present, ownProps.beatId),
       ui: state.present.ui,
+      isSeries: selectors.isSeriesSelector(state.present),
       beatTitle: uniqueBeatTitleSelector(state.present, ownProps.beatId),
       positionOffset: selectors.positionOffsetSelector(state.present),
       isSmall: selectors.isSmallSelector(state.present),

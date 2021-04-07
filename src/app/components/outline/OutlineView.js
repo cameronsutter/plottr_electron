@@ -41,10 +41,6 @@ class OutlineView extends Component {
     this.setState({ active: id })
   }
 
-  fixMe = () => {
-    console.warn('OutlineView waypoint needs fixing')
-  }
-
   filterItem = (id) => {
     if (this.state.currentLine === id) {
       this.setState({ currentLine: null })
@@ -123,23 +119,19 @@ class OutlineView extends Component {
   }
 
   renderBeats(cardMapping) {
-    const { beats } = this.props
-    return (
-      !!beats.length &&
-      beats.map((beat, idx) => {
-        if (this.state.firstRender && idx > 2) return null
-        return (
-          <ErrorBoundary key={beat.id}>
-            <BeatView
-              beat={beat}
-              cards={cardMapping[beat.id]}
-              waypoint={this.fixMe}
-              activeFilter={!!this.state.currentLine}
-            />
-          </ErrorBoundary>
-        )
-      })
-    )
+    return this.props.beats.map((beat, idx) => {
+      if (this.state.firstRender && idx > 2) return null
+      return (
+        <ErrorBoundary key={beat.id}>
+          <BeatView
+            beat={beat}
+            cards={cardMapping[beat.id]}
+            waypoint={this.setActive}
+            activeFilter={!!this.state.currentLine}
+          />
+        </ErrorBoundary>
+      )
+    })
   }
 
   renderBody() {
@@ -151,7 +143,6 @@ class OutlineView extends Component {
         <ErrorBoundary>
           <MiniMap
             active={this.state.active}
-            handleActive={this.setActive}
             cardMapping={cardMap}
             activeFilter={!!this.state.currentLine}
           />
@@ -162,11 +153,10 @@ class OutlineView extends Component {
   }
 
   render() {
-    const { beats } = this.props
     return (
       <div className="container-with-sub-nav">
         {this.renderSubNav()}
-        {!!beats.length && this.renderBody()}
+        {this.renderBody()}
       </div>
     )
   }

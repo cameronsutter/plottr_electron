@@ -1,5 +1,4 @@
 import React from 'react'
-import electron from 'electron'
 import { localeNames, getCurrentLocale } from 'plottr_locales'
 import SETTINGS from '../utils/settings'
 
@@ -16,7 +15,7 @@ export default function LanguagePicker(props) {
     )
   })
   return (
-    <select onChange={onSelect} value={getCurrentLocale(SETTINGS, { electron })}>
+    <select onChange={onSelect} value={getCurrentLocale(SETTINGS)}>
       {renderedOptions}
     </select>
   )

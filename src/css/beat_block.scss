@@ -6,22 +6,15 @@ $medium_width: 80px;
 
 .beat__cell {
   width: $cell_width;
-  padding-bottom: 45px;
 
   &.medium-timeline {
     width: 90px;
-    padding-bottom: 0;
-  }
-
-  &.small-timeline {
-    width: 90px;
-    padding-bottom: 0;
   }
 }
 
 .beat__body {
   @include sub-header-font;
-  padding: 30px 10px;
+  padding: 20px 10px;
   width: 150px + 6px; // +6px for the 3px border
   margin: auto;
   text-align: center;
@@ -78,22 +71,13 @@ $medium_width: 80px;
 }
 
 .beat-list__insert {
-  height: 75px;
+  height: 150px;
   display: flex;
   align-items: center;
   color: transparent;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  /* Place the intersticial controls so that + is centred */
-  &:last-child:not(.small-timeline):not(.medium-timeline) {
-    margin-left: -5px;
-  }
-  &:first-child:not(.small-timeline):not(.medium-timeline) {
-    margin-top: 75px;
-    height: 16px;
-    margin-left: 0px;
-  }
   .insert-beat-wrapper {
     display: flex;
     padding: 1px;
@@ -103,28 +87,15 @@ $medium_width: 80px;
     }
   }
   .insert-beat-wrapper.append-beat {
-    &.large-timeline {
-      padding: 30px 70px;
-    }
-    &.medium-timeline {
-      margin-top: 10px;
-      margin-right: 0px;
-      padding: 14px 35px;
-    }
+    padding: 30px 70px;
     color: $blue-5;
     border: 3px dotted $blue-8;
     margin-right: 50px;
   }
+
   &.medium-timeline {
     height: 123px;
   }
-}
-
-.beat-list__interstitial-controls {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
 }
 
 .beat-list__insert:hover {
@@ -177,13 +148,10 @@ $medium_width: 80px;
     }
   }
   &.medium-timeline {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
     min-width: $medium_width + 6px; // +6px for the 3px border
     width: $medium_width + 6px; // +6px for the 3px border
     font-size: 14px;
-    padding: 12px 8px;
+    padding: 12px 4px;
     .form-group {
       .control-label {
         font-size: 12px;
@@ -225,6 +193,8 @@ $medium_width: 80px;
 
 .vertical-beat-list__insert {
   height: 40px;
+  width: 153px;
+  margin-left: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,19 +202,8 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  &:first-child {
-    margin-left: 50px;
-  }
   svg {
     position: absolute;
-  }
-  .vertical-insert-beat-wrapper {
-    .large-timeline {
-      height: 40px;
-    }
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
   }
   .vertical-insert-beat-wrapper.insert-beat-spacer {
     .glyphicon {
@@ -275,25 +234,12 @@ $medium_width: 80px;
     width: $medium_width;
     margin-left: 35px;
     .vertical-insert-beat-wrapper.append-beat {
-      margin-left: 30px;
-      padding: 12px 32px;
+      padding: 12px 35px;
     }
   }
 }
 
-.vertical-beat-list__insert.append-beat.medium-timeline {
-  height: 43px;
-}
-
-
 .vertical-beat-list__insert:hover {
-  color: $blue-5;
-  .insert-beat-wrapper.append-beat {
-    border: 3px dashed $blue-7;
-  }
-}
-
-.beat-list__insert--always-visible {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
     border: 3px dashed $blue-7;

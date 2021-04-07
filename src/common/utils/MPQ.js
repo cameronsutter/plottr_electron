@@ -1,11 +1,6 @@
 import mixpanel from 'mixpanel-browser'
 import USER from './user_info'
 import log from 'electron-log'
-import { helpers } from 'pltr/v2'
-
-const {
-  beats: { reduce },
-} = helpers
 
 const superProps = { platform: process.platform }
 
@@ -42,7 +37,7 @@ class MixpanelQueue {
           ...basicAttrs,
           numOfCards: numOfCards,
           numOfCharacters: state.characters.length,
-          numOfBeats: reduce(state.beats, (acc, _next) => acc + 1, 0),
+          numOfBeats: state.beats.length,
           numOfLines: state.lines.length,
           numOfBooks: state.books.allIds.length,
           numOfCharCategories: state.categories.characters.length,

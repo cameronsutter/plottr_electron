@@ -30,7 +30,7 @@ class TagView extends Component {
       deleting: false,
     }
 
-    this.titleInputRef = null
+    this.titleInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -85,7 +85,7 @@ class TagView extends Component {
 
   saveEdit = () => {
     let { title, id, color } = this.props.tag
-    var newTitle = this.titleInputRef.value || title
+    var newTitle = this.titleInputRef.current.value || title
     if (this.props.new) {
       this.props.actions.addCreatedTag({ title: newTitle, color: this.state.color })
       this.props.doneCreating()
@@ -140,9 +140,7 @@ class TagView extends Component {
           <ControlLabel>{i18n('Tag Name')}</ControlLabel>
           <FormControl
             type="text"
-            inputRef={(ref) => {
-              this.titleInputRef = ref
-            }}
+            inputRef={this.titleInputRef}
             autoFocus
             onKeyDown={this.handleEsc}
             onKeyPress={this.handleEnter}

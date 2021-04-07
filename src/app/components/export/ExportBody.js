@@ -31,9 +31,9 @@ export default function ExportBody({ type, onChange }) {
         <GeneralOptions type={type} options={options.general} updateOptions={updateOptions} />
       ) : null}
       <OutlineOptions type={type} options={options.outline} updateOptions={updateOptions} />
-      <NoteOptions type={type} options={options.notes} updateOptions={updateOptions} />
       <CharacterOptions type={type} options={options.characters} updateOptions={updateOptions} />
       <PlaceOptions type={type} options={options.places} updateOptions={updateOptions} />
+      <NoteOptions type={type} options={options.notes} updateOptions={updateOptions} />
     </div>
   )
 }

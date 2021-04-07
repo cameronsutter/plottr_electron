@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import { TiFlowChildren } from 'react-icons/ti'
-import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import cx from 'classnames'
 import { selectors, helpers } from 'pltr/v2'
 import VisualLine from './VisualLine'
@@ -16,118 +14,8 @@ const {
 
 class BeatInsertCell extends PureComponent {
   insert = () => {
-    const { beatToLeft, handleInsert } = this.props
-    handleInsert(beatToLeft && beatToLeft.id)
-  }
-
-  insertChild = () => {
-    const { beatToLeft, handleInsertChild } = this.props
-    handleInsertChild(beatToLeft && beatToLeft.id)
-  }
-
-  lastTitleText = () => {
-    const { hierarchyLevelName } = this.props
-
-    return i18n(`Add ${hierarchyLevelName}`)
-  }
-
-  titleText = () => {
-    const { hierarchyLevelName } = this.props
-
-    return i18n(`Insert ${hierarchyLevelName}`)
-  }
-
-  lastChildText = () => {
-    const { hierarchyChildLevelName } = this.props
-
-    return i18n(`Add ${hierarchyChildLevelName}`)
-  }
-
-  childTitleText = () => {
-    const { hierarchyChildLevelName } = this.props
-
-    return i18n(`Insert ${hierarchyChildLevelName}`)
-  }
-
-  wrapperClass = () => {
-    const { showLine, orientation } = this.props
-
-    return cx(orientedClassName('insert-beat-wrapper', orientation), {
-      'insert-beat-spacer': showLine,
-    })
-  }
-
-  lastWrapperClass = () => {
-    const { showLine, orientation, isSmall, isMedium, isLarge } = this.props
-
-    return cx(orientedClassName('insert-beat-wrapper', orientation), 'append-beat', {
-      'insert-beat-spacer': showLine,
-      'small-timeline': isSmall,
-      'medium-timeline': isMedium,
-      'large-timeline': isLarge,
-    })
-  }
-
-  orientedClassSubIcon = () => {
-    const { isInBeatList, orientation } = this.props
-
-    return orientedClassName(
-      isInBeatList ? this.beatClassSubIcon() : this.insertBeatClass(),
-      orientation
-    )
-  }
-
-  orientedClass = () => {
-    const { isInBeatList, orientation } = this.props
-
-    return orientedClassName(isInBeatList ? this.beatClass() : this.insertBeatClass(), orientation)
-  }
-
-  lastOrientedClass = () => {
-    const { orientation } = this.props
-
-    return orientedClassName(this.lastBeatClass(), orientation)
-  }
-
-  insertBeatClass = () => {
-    const { isMedium } = this.props
-
-    return cx('line-list__insert-beat', {
-      'medium-timeline': isMedium,
-    })
-  }
-
-  beatClassSubIcon = () => {
-    const { isMedium, isInBeatList } = this.props
-
-    return cx('beat-list__insert', {
-      'medium-timeline': isInBeatList && isMedium,
-    })
-  }
-
-  wrapperClassSubIcon = () => {
-    const { showLine, orientation } = this.props
-
-    return cx(orientedClassName('insert-beat-wrapper', orientation), {
-      'insert-beat-spacer': showLine,
-    })
-  }
-
-  lastBeatClass = () => {
-    const { isInBeatList, isMedium, isSmall } = this.props
-
-    return cx('beat-list__insert', 'append-beat', {
-      'medium-timeline': isInBeatList && isMedium,
-      'small-timeline': isInBeatList && isSmall,
-    })
-  }
-
-  beatClass = () => {
-    const { isInBeatList, isMedium } = this.props
-
-    return cx('beat-list__insert', {
-      'medium-timeline': isInBeatList && isMedium,
-    })
+    const { beatPosition, lineId, handleInsert } = this.props
+    handleInsert(beatPosition, lineId)
   }
 
   renderLine() {
@@ -142,89 +30,37 @@ class BeatInsertCell extends PureComponent {
     )
   }
 
-  renderToggleCollapse() {
-    const { handleInsertChild, toggleExpanded, expanded } = this.props
-
-    return !handleInsertChild && toggleExpanded ? (
-      <div
-        onClick={toggleExpanded}
-        className={cx(
-          this.orientedClassSubIcon(),
-          expanded === false ? 'beat-list__insert--always-visible' : {}
-        )}
-      >
-        <div className={this.wrapperClassSubIcon()}>
-          {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
-        </div>
-      </div>
-    ) : null
-  }
-
-  renderInsertChild() {
-    const { handleInsertChild, isFirst, atMaximumDepth } = this.props
-
-    if (atMaximumDepth) return null
-
-    return handleInsertChild && !isFirst ? (
-      <div
-        title={this.childTitleText()}
-        className={this.orientedClassSubIcon()}
-        onClick={this.insertChild}
-      >
-        <div className={this.wrapperClassSubIcon()}>
-          <TiFlowChildren size={25} />
-        </div>
-      </div>
-    ) : null
-  }
-
-  renderInsertBeat() {
-    return (
-      <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
-        <div className={this.wrapperClass()}>
-          <Glyphicon glyph="plus" />
-        </div>
-      </div>
-    )
-  }
-
-  renderLastInsertBeat() {
-    return (
-      <div title={this.lastTitleText()} className={this.lastOrientedClass()} onClick={this.insert}>
-        <div className={this.lastWrapperClass()}>
-          <Glyphicon glyph="plus" />
-        </div>
-      </div>
-    )
-  }
-
   render() {
-    const { showLine, orientation, isSmall, isLast } = this.props
-    let insideDiv = null
-    if (isLast) {
-      insideDiv = this.renderLastInsertBeat()
-    } else if (orientation === 'vertical') {
-      insideDiv = (
-        <div className="beat-list__interstitial-controls">
-          {this.renderInsertBeat()}
-          {this.renderInsertChild()}
-          {this.renderToggleCollapse()}
+    const { isInBeatList, showLine, orientation, isLast, isSmall, isMedium } = this.props
+    const wrapperKlass = cx(orientedClassName('insert-beat-wrapper', orientation), {
+      'insert-beat-spacer': showLine,
+      'append-beat': isLast,
+    })
+    const beatKlass = cx('beat-list__insert', {
+      'append-beat': isLast,
+      'medium-timeline': isInBeatList && isMedium,
+    })
+    const insertBeatKlass = cx('line-list__insert-beat', {
+      'medium-timeline': isMedium,
+    })
+    let titleText = isLast ? i18n('Add Chapter') : i18n('Insert Chapter')
+    if (!isInBeatList) titleText = i18n('Insert Chapter and a Card')
+    let insideDiv = (
+      <div
+        title={titleText}
+        className={orientedClassName(isInBeatList ? beatKlass : insertBeatKlass, orientation)}
+        onClick={this.insert}
+      >
+        <div className={wrapperKlass}>
+          <Glyphicon glyph="plus" />
         </div>
-      )
-    } else {
-      insideDiv = (
-        <>
-          {this.renderInsertBeat()}
-          {this.renderInsertChild()}
-          {this.renderToggleCollapse()}
-        </>
-      )
-    }
+      </div>
+    )
 
     if (isSmall) {
       const isHorizontal = orientation == 'horizontal'
-      const classes = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal }
-      return <th className={cx(classes)}>{insideDiv}</th>
+      const klasses = { 'rotate-45': isHorizontal, 'row-header': !isHorizontal }
+      return <th className={cx(klasses)}>{insideDiv}</th>
     } else {
       return (
         <Cell>
@@ -236,42 +72,30 @@ class BeatInsertCell extends PureComponent {
   }
 
   static propTypes = {
-    bookId: PropTypes.number.isRequired,
     orientation: PropTypes.string,
     isSmall: PropTypes.bool,
     isMedium: PropTypes.bool,
-    isLarge: PropTypes.bool,
     handleInsert: PropTypes.func.isRequired,
-    handleInsertChild: PropTypes.func,
     isInBeatList: PropTypes.bool.isRequired,
-    beatToLeft: PropTypes.object,
+    beatPosition: PropTypes.number,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,
     color: PropTypes.string,
     isLast: PropTypes.bool,
-    isFirst: PropTypes.bool,
     tableLength: PropTypes.number,
-    expanded: PropTypes.bool,
-    toggleExpanded: PropTypes.func,
-    hierarchyChildLevelName: PropTypes.string,
-    hierarchyLevelName: PropTypes.string,
-    atMaximumDepth: PropTypes.bool,
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  const beatToLeftId = ownProps.beatToLeft && ownProps.beatToLeft.id
-
+function mapStateToProps(state) {
   return {
-    bookId: state.present.ui.currentTimeline,
     orientation: state.present.ui.orientation,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
-    isLarge: selectors.isLargeSelector(state.present),
-    hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
-    hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
-    atMaximumDepth: selectors.atMaximumHierarchyDepthSelector(state.present, beatToLeftId),
   }
 }
 
-export default connect(mapStateToProps, null)(BeatInsertCell)
+function mapDispatchToProps(dispatch) {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BeatInsertCell)

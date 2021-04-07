@@ -21,13 +21,11 @@ import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave } from 'react-icons/fa'
-import { TiFlowChildren } from 'react-icons/ti'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
-import { helpers, actions, selectors } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 import MPQ from '../../../common/utils/MPQ'
-import BeatConfigModal from 'components/dialogs/BeatConfigModal'
 
 const win = remote.getCurrentWindow()
 
@@ -40,7 +38,6 @@ class TimelineWrapper extends Component {
     super(props)
     this.state = {
       mounted: false,
-      beatConfigIsOpen: false,
     }
     // TODO: refactor this to use createRef
     this.tableRef = null
@@ -67,6 +64,7 @@ class TimelineWrapper extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { ui } = this.props
+
     if (
       nextProps.ui.currentTimeline != ui.currentTimeline ||
       nextProps.ui.orientation != ui.orientation ||
@@ -105,22 +103,6 @@ class TimelineWrapper extends Component {
     }
   }
 
-  // ////////////////
-  //  hierarchies  //
-  // ////////////////
-
-  closeBeatConfig = () => {
-    this.setState({
-      beatConfigIsOpen: false,
-    })
-  }
-
-  openBeatConfig = () => {
-    this.setState({
-      beatConfigIsOpen: true,
-    })
-  }
-
   // ///////////////
   //  attributes  //
   // ///////////////
@@ -134,7 +116,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   clearFilter = () => {
-    this.props.actions.setTimelineFilter({ tag: [], character: [], place: [], color: [] })
+    this.props.actions.setTimelineFilter({ tag: [], character: [], place: [] })
   }
 
   // //////////////
@@ -236,9 +218,7 @@ class TimelineWrapper extends Component {
   // //////////////
 
   renderSubNav() {
-    const { ui, filterIsEmpty, featureFlags, isSmall, isMedium, isLarge, actions } = this.props
-    const gatedByBeatHierarchy = helpers.featureFlags.gatedByBeatHierarchy(featureFlags)
-
+    const { ui, filterIsEmpty, isSmall, isMedium, isLarge, actions } = this.props
     let glyph = 'option-vertical'
     let scrollDirectionFirst = 'menu-left'
     let scrollDirectionSecond = 'menu-right'
@@ -290,13 +270,6 @@ class TimelineWrapper extends Component {
               <Glyphicon glyph="list" /> {i18n('Attributes')}
             </Button>
           </NavItem>
-          {gatedByBeatHierarchy(() => (
-            <NavItem>
-              <Button bsSize="small" onClick={this.openBeatConfig}>
-                <TiFlowChildren size={16} /> {i18n('Beats')}
-              </Button>
-            </NavItem>
-          ))}
           <NavItem>
             <span className="subnav__container__label">{i18n('Zoom')}: </span>
             <ButtonGroup>
@@ -370,22 +343,14 @@ class TimelineWrapper extends Component {
     }
   }
 
-  closeCustomAttributesDialog = () => {
+  closeDialog = () => {
     this.props.actions.closeAttributesDialog()
   }
 
   renderCustomAttributes() {
     if (!this.props.ui.attributesDialogIsOpen) return null
 
-    return <CustomAttributeModal type="scenes" closeDialog={this.closeCustomAttributesDialog} />
-  }
-
-  renderBeatConfig() {
-    return helpers.featureFlags.gatedByBeatHierarchy(this.props.featureFlags)(() => {
-      if (!this.state.beatConfigIsOpen) return null
-
-      return <BeatConfigModal closeDialog={this.closeBeatConfig} />
-    })
+    return <CustomAttributeModal type="scenes" closeDialog={this.closeDialog} />
   }
 
   render() {
@@ -397,7 +362,6 @@ class TimelineWrapper extends Component {
       >
         {this.renderSubNav()}
         {this.renderCustomAttributes()}
-        {this.renderBeatConfig()}
         <div id="timelineview__root" className="tab-body">
           {this.renderBody()}
         </div>
@@ -411,7 +375,6 @@ TimelineWrapper.propTypes = {
   isSmall: PropTypes.bool,
   isMedium: PropTypes.bool,
   isLarge: PropTypes.bool,
-  featureFlags: PropTypes.object.isRequired,
   filterIsEmpty: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
 }
@@ -423,7 +386,6 @@ function mapStateToProps(state) {
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
     isLarge: selectors.isLargeSelector(state.present),
-    featureFlags: selectors.featureFlags(state.present),
   }
 }
 

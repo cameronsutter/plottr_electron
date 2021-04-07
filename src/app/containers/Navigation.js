@@ -20,7 +20,7 @@ class Navigation extends Component {
   }
 
   renderTrialLinks() {
-    if (!trialMode || isDev) return null
+    if (!trialMode) return null
 
     return (
       <Navbar.Form pullRight style={{ marginRight: '15px' }}>

@@ -13,7 +13,7 @@ class ColorPicker extends Component {
     super(props)
     this.state = { color: this.props.color }
 
-    this.hexRef = null
+    this.hexRef = React.createRef()
   }
 
   componentDidMount() {
@@ -29,7 +29,7 @@ class ColorPicker extends Component {
   }
 
   showColor = () => {
-    var newColor = this.hexRef.value
+    var newColor = this.hexRef.current.value
     var regex = /#?([0123456789abcdef]{6})/
     var matches = regex.exec(newColor)
     if (matches) {
@@ -66,9 +66,7 @@ class ColorPicker extends Component {
                   <ControlLabel>{i18n('hex code or name')}</ControlLabel>
                   <FormControl
                     type="text"
-                    inputRef={(ref) => {
-                      this.hexRef = ref
-                    }}
+                    inputRef={this.hexRef}
                     placeholder="e.g. #ffffff"
                     defaultValue={this.state.color}
                     onKeyDown={(event) => {

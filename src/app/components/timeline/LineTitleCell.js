@@ -45,7 +45,7 @@ class LineTitleCell extends PureComponent {
       deleting: false,
     }
     this.hoverTimeout = null
-    this.titleInputRef = null
+    this.titleInputRef = React.createRef()
   }
 
   deleteLine = (e) => {
@@ -64,7 +64,7 @@ class LineTitleCell extends PureComponent {
   }
 
   editTitle = () => {
-    const ref = this.titleInputRef
+    const ref = this.titleInputRef.current
     if (!ref) return
     this.finalizeEdit(ref.value)
   }
@@ -82,7 +82,7 @@ class LineTitleCell extends PureComponent {
   }
 
   handleBlur = () => {
-    if (this.titleInputRef.value !== '') {
+    if (this.titleInputRef.current.value !== '') {
       this.editTitle()
       this.setState({ editing: false, hovering: false })
     }
@@ -285,9 +285,7 @@ class LineTitleCell extends PureComponent {
         <FormControl
           type="text"
           defaultValue={this.props.line.title}
-          inputRef={(ref) => {
-            this.titleInputRef = ref
-          }}
+          inputRef={this.titleInputRef}
           autoFocus
           onKeyDown={this.handleEsc}
           onBlur={this.handleBlur}

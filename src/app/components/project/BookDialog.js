@@ -21,19 +21,19 @@ const BookActions = actions.book
 class BookDialog extends Component {
   constructor(props) {
     super(props)
-    this.titleRef = null
-    this.premiseRef = null
-    this.genreRef = null
-    this.themeRef = null
+    this.titleRef = React.createRef()
+    this.premiseRef = React.createRef()
+    this.genreRef = React.createRef()
+    this.themeRef = React.createRef()
   }
 
   saveEdit = () => {
     const { book } = this.props
 
-    let title = this.titleRef.value
-    let premise = this.premiseRef.value
-    let genre = this.genreRef.value
-    let theme = this.themeRef.value
+    let title = this.titleRef.current.value
+    let premise = this.premiseRef.current.value
+    let genre = this.genreRef.current.value
+    let theme = this.themeRef.current.value
     this.props.actions.editBook(book.id, { title, premise, genre, theme })
     this.props.cancel()
   }
@@ -66,13 +66,7 @@ class BookDialog extends Component {
             {i18n('Title')}
           </Col>
           <Col sm={8}>
-            <FormControl
-              type="text"
-              inputRef={(ref) => {
-                this.titleRef = ref
-              }}
-              defaultValue={book.title}
-            />
+            <FormControl type="text" inputRef={this.titleRef} defaultValue={book.title} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -80,13 +74,7 @@ class BookDialog extends Component {
             {i18n('Premise')}
           </Col>
           <Col sm={8}>
-            <FormControl
-              type="text"
-              inputRef={(ref) => {
-                this.premiseRef = ref
-              }}
-              defaultValue={book.premise}
-            />
+            <FormControl type="text" inputRef={this.premiseRef} defaultValue={book.premise} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -94,13 +82,7 @@ class BookDialog extends Component {
             {i18n('Genre')}
           </Col>
           <Col sm={8}>
-            <FormControl
-              type="text"
-              inputRef={(ref) => {
-                this.genreRef = ref
-              }}
-              defaultValue={book.genre}
-            />
+            <FormControl type="text" inputRef={this.genreRef} defaultValue={book.genre} />
           </Col>
         </FormGroup>
         <FormGroup>
@@ -108,13 +90,7 @@ class BookDialog extends Component {
             {i18n('Theme')}
           </Col>
           <Col sm={8}>
-            <FormControl
-              type="text"
-              inputRef={(ref) => {
-                this.themeRef = ref
-              }}
-              defaultValue={book.theme}
-            />
+            <FormControl type="text" inputRef={this.themeRef} defaultValue={book.theme} />
           </Col>
         </FormGroup>
       </Form>

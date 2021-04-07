@@ -41,8 +41,8 @@ class CharacterEditDetails extends Component {
       deleting: false,
     }
 
-    this.nameInputRef = null
-    this.descriptionInputRef = null
+    this.nameInputRef = React.createRef()
+    this.descriptionInputRef = React.createRef()
   }
 
   componentWillUnmount() {
@@ -96,8 +96,8 @@ class CharacterEditDetails extends Component {
   }
 
   saveEdit = (close = true) => {
-    var name = this.nameInputRef.value || this.props.character.name
-    var description = this.descriptionInputRef.value
+    var name = this.nameInputRef.current.value || this.props.character.name
+    var description = this.descriptionInputRef.current.value
     var notes = this.state.notes
     var attrs = {
       categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
@@ -224,9 +224,7 @@ class CharacterEditDetails extends Component {
                 <ControlLabel>{i18n('Name')}</ControlLabel>
                 <FormControl
                   type="text"
-                  inputRef={(ref) => {
-                    this.nameInputRef = ref
-                  }}
+                  inputRef={this.nameInputRef}
                   autoFocus
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
@@ -237,9 +235,7 @@ class CharacterEditDetails extends Component {
                 <ControlLabel>{i18n('Short Description')}</ControlLabel>
                 <FormControl
                   type="text"
-                  inputRef={(ref) => {
-                    this.descriptionInputRef = ref
-                  }}
+                  inputRef={this.descriptionInputRef}
                   onKeyDown={this.handleEsc}
                   onKeyPress={this.handleEnter}
                   defaultValue={character.description}

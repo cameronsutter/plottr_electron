@@ -115,7 +115,7 @@ export default function VerifyView({ goBack }) {
           type="text"
           bsSize="large"
           style={{ width: '450px', margin: '12px auto' }}
-          inputRef={(ref) => (licenseRef.current = ref)}
+          inputRef={licenseRef}
         />
         <Button bsStyle="primary" bsSize="large" onClick={handleVerify}>
           {t('Verify')}

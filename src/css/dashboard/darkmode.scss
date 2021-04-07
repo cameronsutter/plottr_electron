@@ -241,9 +241,6 @@ main.darkmode {
     select {
       color: $dark-gray-1;
     }
-    .help-block {
-      color: $dark-text;
-    }
     &.disabled {
       color: $dark-gray-6;
       .help-block {

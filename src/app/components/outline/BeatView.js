@@ -166,8 +166,8 @@ function mapStateToProps(state) {
     hierarchyLevels: sortedHierarchyLevels(state.present),
     lines: sortedLinesByBookSelector(state.present),
     positionOffset: positionOffsetSelector(state.present),
-    hierarchyEnabled: beatHierarchyIsOn(state),
-    isSeries: isSeriesSelector(state),
+    hierarchyEnabled: beatHierarchyIsOn(state.present),
+    isSeries: isSeriesSelector(state.present),
   }
 }
 

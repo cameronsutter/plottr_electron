@@ -670,7 +670,7 @@ function mapStateToProps(state) {
     books: state.present.books,
     isSeries: selectors.isSeriesSelector(state.present),
     positionOffset: selectors.positionOffsetSelector(state.present),
-    hierarchyEnabled: selectors.beatHierarchyIsOn(state),
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
   }
 }
 

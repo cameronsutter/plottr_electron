@@ -1,0 +1,5 @@
+.center-modal-vertically {
+  // 70px is half of dialog height
+  // 3 to get it just above the middle
+  margin-top: calc(calc(100vh - 70px) / 3);
+}

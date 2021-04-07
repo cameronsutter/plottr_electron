@@ -1,0 +1,86 @@
+import React from 'react'
+import PropTypes from 'react-proptypes'
+import { t as i18n } from 'plottr_locales'
+import UnconnectedItemsManagerModal, { ListItem } from '../dialogs/ItemsManagerModal'
+
+const CharacterCategoriesModalConnector = (connector) => {
+  const ItemsManagerModal = UnconnectedItemsManagerModal(connector)
+
+  function CharacterCategoriesModal({
+    categories,
+    ui: { darkMode },
+    closeDialog,
+    addCharacterCategory,
+    deleteCharacterCategory,
+    updateCharacterCategory,
+    reorderCharacterCategory,
+    startSaveAsTemplate,
+  }) {
+    return (
+      <ItemsManagerModal
+        title={i18n('Character Categories')}
+        subtitle={i18n('Choose what categories you want to put your characters into')}
+        addLabel={i18n('Add category')}
+        itemType={'characters'}
+        items={categories}
+        darkMode={darkMode}
+        closeDialog={closeDialog}
+        onAdd={addCharacterCategory}
+        renderItem={(item, index) => (
+          <ListItem
+            key={item.id}
+            item={item}
+            index={index}
+            showType={false}
+            canChageType={false}
+            deleteItem={deleteCharacterCategory}
+            updateItem={updateCharacterCategory}
+            reorderItem={reorderCharacterCategory}
+          />
+        )}
+        startSaveAsTemplate={startSaveAsTemplate}
+      />
+    )
+  }
+
+  CharacterCategoriesModal.propTypes = {
+    categories: PropTypes.array.isRequired,
+    ui: PropTypes.object.isRequired,
+    closeDialog: PropTypes.func.isRequired,
+    addCharacterCategory: PropTypes.func.isRequired,
+    deleteCharacterCategory: PropTypes.func.isRequired,
+    updateCharacterCategory: PropTypes.func.isRequired,
+    reorderCharacterCategory: PropTypes.func.isRequired,
+    startSaveAsTemplate: PropTypes.func.isRequired,
+  }
+
+  const {
+    redux,
+    pltr: { actions },
+    platform: {
+      template: { startSaveAsTemplate },
+    },
+  } = connector
+
+  if (redux) {
+    const { connect, bindActionCreators } = redux
+    return connect(
+      (state) => {
+        return {
+          categories: state.present.categories.characters,
+          ui: state.present.ui,
+          startSaveAsTemplate,
+        }
+      },
+      (dispatch) => {
+        return {
+          ...bindActionCreators(actions.category, dispatch),
+        }
+      }
+    )(CharacterCategoriesModal)
+  }
+
+  throw new Error('Cannot connect CharacterCategoriesModal.js')
+}
+
+export default CharacterCategoriesModalConnector

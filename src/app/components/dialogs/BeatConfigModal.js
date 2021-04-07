@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { Glyphicon, ButtonToolbar, Button } from 'react-bootstrap'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import i18n from 'format-message'
 
 import PlottrModal from 'components/PlottrModal'

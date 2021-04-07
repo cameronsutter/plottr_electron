@@ -16,7 +16,7 @@ import RichText from '../rce/RichText'
 import ImagePicker from 'components/images/ImagePicker'
 import Image from 'components/images/Image'
 import BookSelectList from '../project/BookSelectList'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import cx from 'classnames'
 import { actions, selectors } from 'pltr/v2'
 

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import RichText from './rce/RichText'
-import DeleteConfirmModal from './dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import { FormControl, FormGroup, ControlLabel, Glyphicon, Button } from 'react-bootstrap'
 import { actions } from 'pltr/v2'
 import { bindActionCreators } from 'redux'

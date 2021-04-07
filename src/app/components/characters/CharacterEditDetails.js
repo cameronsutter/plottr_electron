@@ -9,7 +9,7 @@ import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import EditAttribute from '../EditAttribute'
 import { actions, selectors } from 'pltr/v2'
 

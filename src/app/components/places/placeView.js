@@ -17,7 +17,7 @@ import ImagePicker from '../images/ImagePicker'
 import Image from '../images/Image'
 import SelectList from '../selectList'
 import BookSelectList from '../project/BookSelectList'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import { actions, selectors } from 'pltr/v2'
 
 const { sortedTagsSelector } = selectors

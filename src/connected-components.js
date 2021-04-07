@@ -1,6 +1,7 @@
 import { connect, bindActionCreators } from 'react-redux'
 import { shell, ipcRenderer, remote } from 'electron'
-import { pltr } from 'plottr_components/connections'
+import { connections } from 'plottr_components'
+import * as pltr from 'pltr/v2'
 
 import {
   listTemplates,
@@ -37,4 +38,4 @@ const connector = {
   },
 }
 
-export default pltr(connector)
+export default connections.pltr(connector)

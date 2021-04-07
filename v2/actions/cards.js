@@ -29,6 +29,10 @@ export function editCard(id, title, description, templates, attrs) {
   return { type: EDIT_CARD_DETAILS, id, attributes: { title, description, templates, ...attrs } }
 }
 
+export function editCardAttributes(id, attributes) {
+  return { type: EDIT_CARD_DETAILS, id, attributes }
+}
+
 export function editCardCoordinates(id, lineId, beatId, bookId) {
   return { type: EDIT_CARD_COORDINATES, id, lineId, beatId, bookId }
 }
@@ -54,7 +58,8 @@ export function reorderCardsInBeat(
   lineId,
   newOrderInBeat,
   newOrderWithinLine,
-  newIdInBeat
+  newIdInBeat,
+  bookId
 ) {
   return {
     type: REORDER_CARDS_IN_BEAT,
@@ -63,6 +68,7 @@ export function reorderCardsInBeat(
     newOrderInBeat,
     newOrderWithinLine,
     newIdInBeat,
+    bookId,
   }
 }
 

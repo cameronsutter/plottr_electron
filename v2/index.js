@@ -12,18 +12,22 @@ import * as seriesActions from './actions/series'
 import * as tagActions from './actions/tags'
 import * as uiActions from './actions/ui'
 import * as undoActions from './actions/undo'
+import * as hierarchyActions from './actions/hierarchy'
+import * as featureFlagActions from './actions/featureFlags'
 
 import * as ActionTypes from './constants/ActionTypes'
 import * as colors from './constants/CSScolors'
+import * as featureFlags from './constants/featureFlags'
 
 import * as lineHelpers from './helpers/lines'
 import * as cardHelpers from './helpers/cards'
 import * as beatHelpers from './helpers/beats'
 import * as bookHelpers from './helpers/books'
 import * as listHelpers from './helpers/lists'
-import * as imageHelpers from './helpers/images'
 import * as orientedClassNameHelpers from './helpers/orientedClassName'
-import * as undoHelpers from './helpers/undo'
+import * as hierarchyHelpers from './helpers/hierarchy'
+import * as featureFlagHelpers from './helpers/featureFlags'
+import * as colorHelpers from './helpers/colors'
 
 import * as template from './template'
 
@@ -40,6 +44,9 @@ import * as notesSelectors from './selectors/notes'
 import * as placeSelectors from './selectors/places'
 import * as tagSelectors from './selectors/tags'
 import * as uiSelectors from './selectors/ui'
+import * as hierarchySelectors from './selectors/hierarchy'
+import * as hierarchyLevelSelectors from './selectors/hierarchyLevel'
+import * as featureFlagSelectors from './selectors/featureFlags'
 
 import rootReducer from './reducers/root'
 import mainReducer from './reducers/main'
@@ -57,11 +64,16 @@ import seriesReducer from './reducers/series'
 import tagsReducer from './reducers/tags'
 import fileReducer from './reducers/file'
 import uiReducer from './reducers/ui'
+import hierarchyReducer from './reducers/hierarchy'
+import featureFlagReducer from './reducers/featureFlags'
 
 import * as initialState from './store/initialState'
 import * as lineColors from './store/lineColors'
 import { emptyFile } from './store/newFileState'
 import * as newIds from './store/newIds'
+import * as borderStyle from './store/borderStyle'
+
+import * as tree from './reducers/tree'
 
 const reducers = {
   customAttributes: customAttributesReducer,
@@ -78,6 +90,8 @@ const reducers = {
   tags: tagsReducer,
   file: fileReducer,
   ui: uiReducer,
+  hierarchyLevels: hierarchyReducer,
+  featureFlags: featureFlagReducer,
 }
 
 const selectors = {
@@ -92,6 +106,9 @@ const selectors = {
   ...placeSelectors,
   ...tagSelectors,
   ...uiSelectors,
+  ...hierarchySelectors,
+  ...hierarchyLevelSelectors,
+  ...featureFlagSelectors,
 }
 
 const actions = {
@@ -109,6 +126,8 @@ const actions = {
   tag: tagActions,
   ui: uiActions,
   undo: undoActions,
+  hierarchyLevels: hierarchyActions,
+  featureFlags: featureFlagActions,
 }
 
 const helpers = {
@@ -116,10 +135,11 @@ const helpers = {
   beats: beatHelpers,
   books: bookHelpers,
   lists: listHelpers,
-  images: imageHelpers,
   orientedClassName: orientedClassNameHelpers,
-  undo: undoHelpers,
   lines: lineHelpers,
+  hierarchyLevels: hierarchyHelpers,
+  featureFlags: featureFlagHelpers,
+  colors: colorHelpers,
 }
 
 export {
@@ -127,6 +147,7 @@ export {
   ActionTypes,
   helpers,
   colors,
+  featureFlags,
   migrateIfNeeded,
   rootReducer,
   mainReducer,
@@ -137,4 +158,6 @@ export {
   emptyFile,
   newIds,
   template,
+  tree,
+  borderStyle,
 }

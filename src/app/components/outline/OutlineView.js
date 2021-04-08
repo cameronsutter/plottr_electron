@@ -24,7 +24,7 @@ const {
 class OutlineView extends Component {
   constructor(props) {
     super(props)
-    this.state = { active: 0, currentLine: null, firstRender: true }
+    this.state = { active: 0, firstRender: true }
   }
 
   componentDidMount() {
@@ -46,10 +46,10 @@ class OutlineView extends Component {
     console.warn('OutlineView waypoint needs fixing')
   }
 
-  filterItem = async (id) => {
+  filterItem = (id) => {
     const { actions, ui } = this.props
     if (Array.isArray(ui.outlineFilter) && ui.outlineFilter.includes(id)) {
-      const outlineItems = await ui.outlineFilter.filter((item) => item !== id)
+      const outlineItems = ui.outlineFilter.filter((item) => item !== id)
       actions.setOutlineFilter(outlineItems)
     } else if (!Array.isArray(ui.outlineFilter) || !ui.outlineFilter) actions.setOutlineFilter([id])
     else if (!!ui.outlineFilter && Array.isArray(ui.outlineFilter))
@@ -76,9 +76,7 @@ class OutlineView extends Component {
     var placeholder = <span className="filter-list__placeholder"></span>
     if (
       (Array.isArray(ui.outlineFilter) && ui.outlineFilter.includes(item.id)) ||
-      (!Array.isArray(ui.outlineFilter) && ui.outlineFilter === item.id) ||
-      this.state.currentLine === item.id
-    ) {
+      (!Array.isArray(ui.outlineFilter) && ui.outlineFilter === item.id)) {
       placeholder = <Glyphicon glyph="eye-open" />
     }
     return (
@@ -104,8 +102,7 @@ class OutlineView extends Component {
     )
     if (
       !ui.outlineFilter ||
-      !ui.outlineFilter.length ||
-      (!ui.outlineFilter && this.state.currentLine === null)
+      !ui.outlineFilter.length
     ) {
       filterDeclaration = <span></span>
     }
@@ -147,7 +144,7 @@ class OutlineView extends Component {
               beat={beat}
               cards={cardMapping[beat.id]}
               waypoint={this.fixMe}
-              activeFilter={!!ui.outlineFilter || !!this.state.currentLine}
+              activeFilter={!!ui.outlineFilter}
             />
           </ErrorBoundary>
         )
@@ -157,8 +154,7 @@ class OutlineView extends Component {
 
   renderBody() {
     const { beats, lines, card2Dmap, ui } = this.props
-    const { currentLine } = this.state
-    const cardMap = cardMapping(beats, lines, card2Dmap, ui.outlineFilter || currentLine)
+    const cardMap = cardMapping(beats, lines, card2Dmap, ui.outlineFilter)
     return (
       <div className="outline__container tab-body">
         <div className="outline__minimap__placeholder">Fish are friends, not food</div>
@@ -167,7 +163,7 @@ class OutlineView extends Component {
             active={this.state.active}
             handleActive={this.setActive}
             cardMapping={cardMap}
-            activeFilter={!!ui.outlineFilter || !!currentLine}
+            activeFilter={!!ui.outlineFilter}
           />
         </ErrorBoundary>
         <div className="outline__scenes-container">{this.renderBeats(cardMap)}</div>

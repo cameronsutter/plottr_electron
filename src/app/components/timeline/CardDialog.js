@@ -19,8 +19,12 @@ import cx from 'classnames'
 import tinycolor from 'tinycolor2'
 import RichText from '../rce/RichText'
 import SelectList from 'components/selectList'
-import { PlottrModal, ColorPickerColor, DeleteConfirmModal } from 'connected-components'
-import EditAttribute from '../EditAttribute'
+import {
+  PlottrModal,
+  ColorPickerColor,
+  DeleteConfirmModal,
+  EditAttribute,
+} from 'connected-components'
 import { helpers, actions, selectors } from 'pltr/v2'
 import MiniColorPicker from '../MiniColorPicker'
 

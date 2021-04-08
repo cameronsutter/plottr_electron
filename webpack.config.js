@@ -98,7 +98,6 @@ const rendererConfig = {
       css: path.resolve(__dirname, 'src', 'css'),
       dashboard: path.resolve(__dirname, 'src', 'dashboard'),
       test: path.resolve(__dirname, 'test'),
-      'connected-components': path.resolve(__dirname, 'src', 'connected-components.js'),
     },
   },
   target: 'electron-renderer',

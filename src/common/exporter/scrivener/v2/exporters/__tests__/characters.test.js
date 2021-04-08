@@ -1,7 +1,7 @@
 import exportCharacters from '../characters'
 import { resetId } from '../../utils'
 import { state } from './fixtures'
-import { headingTwo, paragraph } from 'components/rce/__fixtures__'
+import { headingTwo, paragraph } from 'components/__fixtures__'
 import default_config from '../../../../default_config'
 
 describe('exportCharacters', () => {

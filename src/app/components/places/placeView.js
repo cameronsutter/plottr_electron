@@ -12,10 +12,9 @@ import {
   Glyphicon,
 } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import ImagePicker from '../images/ImagePicker'
 import SelectList from '../selectList'
 import BookSelectList from '../project/BookSelectList'
-import { DeleteConfirmModal, Image, RichText } from 'connected-components'
+import { DeleteConfirmModal, Image, ImagePicker, RichText } from 'connected-components'
 import { actions, selectors } from 'pltr/v2'
 
 const { sortedTagsSelector } = selectors

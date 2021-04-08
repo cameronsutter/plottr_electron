@@ -3,11 +3,10 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { t as i18n } from 'plottr_locales'
-import ImagePicker from '../images/ImagePicker'
 import BookDialog from './BookDialog'
 import { Glyphicon, ButtonGroup, Button } from 'react-bootstrap'
 import cx from 'classnames'
-import { DeleteConfirmModal, Image } from 'connected-components'
+import { DeleteConfirmModal, Image, ImagePicker } from 'connected-components'
 import { actions, selectors } from 'pltr/v2'
 
 const BookActions = actions.book

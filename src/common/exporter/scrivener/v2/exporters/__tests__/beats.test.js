@@ -1,7 +1,7 @@
 import exportBeats from '../beats'
 import { resetId } from '../../utils'
 import { state } from './fixtures'
-import { paragraph, headingTwo } from 'components/rce/__fixtures__'
+import { paragraph, headingTwo } from 'components/__fixtures__'
 import default_config from '../../../../default_config'
 
 describe('exportBeats', () => {

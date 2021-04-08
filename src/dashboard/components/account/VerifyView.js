@@ -6,6 +6,8 @@ import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import { verifyLicense } from '../../../common/licensing/verify_license'
+import { trial90days } from '../../../common/licensing/special_codes'
+import { useTrialStatus } from '../../../common/licensing/trial_manager'
 
 const SUCCESS = 'success'
 const OFFLINE = 'offline'
@@ -34,6 +36,7 @@ export default function VerifyView({ goBack }) {
   // TODO: refactor useLicenseInfo so it returns functions in an object
   /* eslint-disable-next-line no-unused-vars */
   const [licenseInfo, licenseInfoSize, setKey, setLicenseInfo] = useLicenseInfo()
+  const { startTrial } = useTrialStatus()
   const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
   const [showAlert, setShowAlert] = useState(!!alertText)
   const [alertClass, setAlertClass] = useState(RED)
@@ -41,8 +44,13 @@ export default function VerifyView({ goBack }) {
   const licenseRef = useRef()
 
   const verify = (license) => {
-    if (license === '!TEST_LICENSE_@NEPHI') {
-      ipcRenderer.send('license-verified')
+    // TODO: fix this (no longer works)
+    // if (license === '!TEST_LICENSE_@NEPHI') {
+    //   ipcRenderer.send('license-verified')
+    // }
+    if (trial90days.includes(license)) {
+      startTrial(90)
+      return
     }
     verifyLicense(license, (isValid, licenseData) => {
       setSpinnerHidden(false)

@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { t as i18n } from 'plottr_locales'
-import ItemsManagerModal, { ListItem } from 'components/dialogs/ItemsManagerModal'
+import { ItemsManagerModal, ListItem } from 'connected-components'
 import { actions, selectors } from 'pltr/v2'
 
 const CustomAttributeActions = actions.customAttribute

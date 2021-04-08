@@ -18,9 +18,9 @@ const platform = {
     listCustomTemplates,
     deleteTemplate,
     editTemplateDetails,
-    startSaveAsTemplate: () => {
+    startSaveAsTemplate: (itemType) => {
       const win = remote.getCurrentWindow()
-      ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', 'plotlines') // sends this message to this same process
+      ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', itemType) // sends this message to this same process
     },
   },
   settings: SETTINGS,

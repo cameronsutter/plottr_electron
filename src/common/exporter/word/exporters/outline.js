@@ -22,7 +22,7 @@ export default function exportOutline(state, namesMapping, doc, options) {
   // get current book id and select only those beats/lines/cards
   const beats = sortedBeatsByBookSelector(state)
   const lines = sortedLinesByBookSelector(state)
-  let outlineFilter = state.ui.outlineFilter
+  const outlineFilter = state.ui.outlineFilter
   const card2Dmap = cardMapSelector(state)
   const beatCardMapping = cardMapping(beats, lines, card2Dmap, null)
   const linesById = keyBy(lines, 'id')
@@ -50,16 +50,20 @@ export default function exportOutline(state, namesMapping, doc, options) {
     }
 
     if (options.outline.sceneCards) {
-      let cards = beatCardMapping[beat.id]
+      const cards = beatCardMapping[beat.id]
       const customAttrs = cardsCustomAttributesSelector(state)
       const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
-      let cardParagraphs = sortedCards.flatMap((c) => {
-        if (outlineFilter && !outlineFilter.includes(c.lineId)) {
-          return
-        }
+      let flag = 0
+      sortedCards.forEach((c) => {
         if (outlineFilter) {
+          flag++
+          if (flag > 1) return
           paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
         }
+        if (outlineFilter && !outlineFilter.includes(c.lineId)) return
+      })
+
+      const cardParagraphs = sortedCards.flatMap((c, idx) => {
         return card(c, linesById, namesMapping, customAttrs, doc, options)
       })
       paragraphs = [...paragraphs, ...cardParagraphs]

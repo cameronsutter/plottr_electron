@@ -9,7 +9,7 @@ import cx from 'classnames'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { helpers, actions, selectors, lineColors, initialState } from 'pltr/v2'
-import InputModal from '../dialogs/InputModal'
+import { InputModal } from 'connected-components'
 
 const { nextColor } = lineColors
 const card = initialState.card

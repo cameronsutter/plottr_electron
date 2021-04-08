@@ -14,9 +14,8 @@ import {
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
-import { DeleteConfirmModal } from 'connected-components'
+import { DeleteConfirmModal, InputModal } from 'connected-components'
 import { actions, helpers, selectors } from 'pltr/v2'
-import InputModal from '../dialogs/InputModal'
 
 const {
   card: { truncateTitle },

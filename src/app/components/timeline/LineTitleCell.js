@@ -12,13 +12,12 @@ import {
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import ColorPicker from '../colorpicker'
-import { DeleteConfirmModal } from 'connected-components'
+import { DeleteConfirmModal, InputModal } from 'connected-components'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import Floater from 'react-floater'
 import { actions, helpers, selectors } from 'pltr/v2'
-import InputModal from '../dialogs/InputModal'
 
 const LineActions = actions.line
 const uiActions = actions.ui

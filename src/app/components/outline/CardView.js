@@ -6,7 +6,7 @@ import { FormControl, FormGroup, ButtonToolbar, Button, Glyphicon } from 'react-
 import _ from 'lodash'
 import TagLabel from 'components/tagLabel'
 import { t as i18n } from 'plottr_locales'
-import RichText from '../rce/RichText'
+import { RichText } from 'connected-components'
 import cx from 'classnames'
 import Image from 'components/images/Image'
 import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import RichText from '../rce/RichText'
+import { RichText } from 'connected-components'
 import Image from '../images/Image'
 import { actions, selectors } from 'pltr/v2'
 

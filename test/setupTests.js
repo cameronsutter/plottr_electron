@@ -31,6 +31,9 @@ jest.mock('electron', () => ({
     sendTo: jest.fn(),
   },
   remote: {
+    app: {
+      getVersion: jest.fn(),
+    },
     getCurrentWindow: () => ({
       webContents: {
         id: '1',

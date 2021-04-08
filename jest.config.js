@@ -87,6 +87,7 @@ module.exports = {
     '^store(.*)$': '<rootDir>/src/app/store/$1',
     '^test(.*)$': '<rootDir>/test/$1',
     '^connected-components$': '<rootDir>/src/connected-components.js',
+    '^plottr_components$': '<rootDir>/lib/plottr_components/dist/components',
     '^react($|/.+)': '<rootDir>/node_modules/react$1',
     '^react-dom($|/.+)': '<rootDir>/node_modules/react-dom$1',
     '^react-test-renderer($|/.+)': '<rootDir>/node_modules/react-test-renderer$1',

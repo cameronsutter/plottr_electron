@@ -6,9 +6,8 @@ import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import ImagePicker from '../images/ImagePicker'
-import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
-import { DeleteConfirmModal, EditAttribute, RichText } from 'connected-components'
+import { DeleteConfirmModal, EditAttribute, Image, RichText } from 'connected-components'
 import { actions, selectors } from 'pltr/v2'
 
 const CharacterActions = actions.character

@@ -13,10 +13,9 @@ import {
 } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import ImagePicker from '../images/ImagePicker'
-import Image from '../images/Image'
 import SelectList from '../selectList'
 import BookSelectList from '../project/BookSelectList'
-import { DeleteConfirmModal, RichText } from 'connected-components'
+import { DeleteConfirmModal, Image, RichText } from 'connected-components'
 import { actions, selectors } from 'pltr/v2'
 
 const { sortedTagsSelector } = selectors

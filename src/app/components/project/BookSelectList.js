@@ -4,7 +4,7 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import Image from '../images/Image'
+import { Image } from 'connected-components'
 import cx from 'classnames'
 import { helpers } from 'pltr/v2'
 

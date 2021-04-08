@@ -2,10 +2,9 @@ import React, { useRef, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { Glyphicon, ButtonToolbar, Button } from 'react-bootstrap'
-import { DeleteConfirmModal } from 'connected-components'
 import { t as i18n } from 'plottr_locales'
+import { DeleteConfirmModal, PlottrModal } from 'connected-components'
 
-import PlottrModal from 'components/PlottrModal'
 import HierarchyLevel from './HierarchyLevel'
 
 import { selectors, actions, helpers } from 'pltr/v2'

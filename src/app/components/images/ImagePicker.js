@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import PlottrModal from 'components/PlottrModal'
 import cx from 'classnames'
 import {
   FormGroup,
@@ -21,7 +20,7 @@ import {
 import Image from './Image'
 import { t as i18n } from 'plottr_locales'
 import { Spinner } from '../../../common/components/Spinner'
-import { DeleteConfirmModal } from 'connected-components'
+import { PlottrModal, DeleteConfirmModal } from 'connected-components'
 import { actions } from 'pltr/v2'
 import { readImage, isImageUrl, readImageFromURL } from '../../../common/utils/images'
 

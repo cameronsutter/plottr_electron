@@ -51,9 +51,7 @@ class OutlineView extends Component {
     if (Array.isArray(ui.outlineFilter) && ui.outlineFilter.includes(id)) {
       const outlineItems = await ui.outlineFilter.filter((item) => item !== id)
       actions.setOutlineFilter(outlineItems)
-    }
-    else if (!Array.isArray(ui.outlineFilter) || !ui.outlineFilter)
-      actions.setOutlineFilter([id])
+    } else if (!Array.isArray(ui.outlineFilter) || !ui.outlineFilter) actions.setOutlineFilter([id])
     else if (!!ui.outlineFilter && Array.isArray(ui.outlineFilter))
       actions.setOutlineFilter([...ui.outlineFilter, id])
   }
@@ -76,9 +74,11 @@ class OutlineView extends Component {
   renderFilterItem(item) {
     const { ui } = this.props
     var placeholder = <span className="filter-list__placeholder"></span>
-    if (Array.isArray(ui.outlineFilter) && ui.outlineFilter.includes(item.id)
-      || (!Array.isArray(ui.outlineFilter) && ui.outlineFilter === item.id)
-      || (this.state.currentLine === item.id)) {
+    if (
+      (Array.isArray(ui.outlineFilter) && ui.outlineFilter.includes(item.id)) ||
+      (!Array.isArray(ui.outlineFilter) && ui.outlineFilter === item.id) ||
+      this.state.currentLine === item.id
+    ) {
       placeholder = <Glyphicon glyph="eye-open" />
     }
     return (
@@ -102,7 +102,11 @@ class OutlineView extends Component {
         {i18n('Outline is filtered')}
       </Alert>
     )
-    if ((!ui.outlineFilter || !ui.outlineFilter.length) || (!ui.outlineFilter && this.state.currentLine === null)) {
+    if (
+      !ui.outlineFilter ||
+      !ui.outlineFilter.length ||
+      (!ui.outlineFilter && this.state.currentLine === null)
+    ) {
       filterDeclaration = <span></span>
     }
     return (

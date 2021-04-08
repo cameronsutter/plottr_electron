@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { PropTypes } from 'prop-types'
 import { Glyphicon, ButtonToolbar, Button } from 'react-bootstrap'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import i18n from 'format-message'
+import { t as i18n } from 'plottr_locales'
 
 import PlottrModal from 'components/PlottrModal'
 import HierarchyLevel from './HierarchyLevel'

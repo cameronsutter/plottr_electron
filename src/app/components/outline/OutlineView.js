@@ -76,7 +76,8 @@ class OutlineView extends Component {
     var placeholder = <span className="filter-list__placeholder"></span>
     if (
       (Array.isArray(ui.outlineFilter) && ui.outlineFilter.includes(item.id)) ||
-      (!Array.isArray(ui.outlineFilter) && ui.outlineFilter === item.id)) {
+      (!Array.isArray(ui.outlineFilter) && ui.outlineFilter === item.id)
+    ) {
       placeholder = <Glyphicon glyph="eye-open" />
     }
     return (
@@ -100,10 +101,7 @@ class OutlineView extends Component {
         {i18n('Outline is filtered')}
       </Alert>
     )
-    if (
-      !ui.outlineFilter ||
-      !ui.outlineFilter.length
-    ) {
+    if (!ui.outlineFilter || !ui.outlineFilter.length) {
       filterDeclaration = <span></span>
     }
     return (

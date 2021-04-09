@@ -53,7 +53,8 @@ const EditOrDisplay = ({ id, editing, value, type, setValue, setEditing, options
             type="text"
             value={stagedValue}
             onChange={(event) => {
-              const valueToSet = type === 'number' ? parseInt(event.target.value) : stagedValue
+              const valueToSet =
+                type === 'number' ? parseInt(event.target.value) : event.target.value
               if (valueToSet) setStagedValue(valueToSet)
             }}
             ref={controlRef}

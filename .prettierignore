@@ -1,4 +1,5 @@
 bin/*.bundle.js
+bin/electron_main.js
 **/*.scss
 **/*.css
 **/*.yml
@@ -6,3 +7,4 @@ bin/*.bundle.js
 **/*.html
 **/*.json
 **/*.md
+lib/plottr_components/dist/**/*

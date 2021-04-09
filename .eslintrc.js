@@ -23,7 +23,13 @@ module.exports = {
       jsx: true,
     },
   },
-  ignorePatterns: ['/node_modules/**', '/build/**', '**/*.json', '**/*.xml'],
+  ignorePatterns: [
+    '/node_modules/**',
+    '/build/**',
+    '**/*.json',
+    '**/*.xml',
+    'lib/plottr_components/dist/**',
+  ],
   rules: {
     'no-unused-vars': [
       'warn',

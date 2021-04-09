@@ -405,6 +405,8 @@ const makeMapState = (state) => {
       positionOffset: selectors.positionOffsetSelector(state.present),
       isSmall: selectors.isSmallSelector(state.present),
       isMedium: selectors.isMediumSelector(state.present),
+      hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
+      isSeries: selectors.isSeriesSelector(state.present),
     }
   }
 }

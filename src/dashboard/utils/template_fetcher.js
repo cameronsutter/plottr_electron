@@ -7,7 +7,6 @@ import {
   customTemplatesStore,
   MANIFEST_ROOT,
 } from '../../common/utils/store_hooks'
-import { is } from 'electron-util'
 import SETTINGS from '../../common/utils/settings'
 
 const OLD_TEMPLATES_ROOT = 'templates'

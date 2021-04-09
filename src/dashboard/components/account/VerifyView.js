@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'react-proptypes'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
-import { ipcRenderer } from 'electron'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'

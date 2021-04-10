@@ -1,9 +1,9 @@
 {
   "file": {
-    "fileName": "/home/edward/wip/plottr_electron/examples/example2.pltr",
+    "fileName": "/Users/dylan/code/plottr_electron/examples/example2.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2021.3.2"
+    "version": "2021.3.25"
   },
   "ui": {
     "currentView": "timeline",
@@ -25,6 +25,9 @@
     "timeline": {
       "size": "large"
     }
+  },
+  "featureFlags": {
+    "BEAT_HIERARCHY": true
   },
   "series": {
     "name": "Pizza Planet",
@@ -55,18 +58,57 @@
         "2": [],
         "3": [],
         "4": [],
-        "null": [
+        "5": [
           1,
           2,
           3,
           4
+        ],
+        "6": [
+          5
+        ],
+        "8": [
+          9
+        ],
+        "9": [],
+        "10": [
+          11
+        ],
+        "11": [],
+        "12": [
+          13
+        ],
+        "13": [],
+        "14": [
+          15
+        ],
+        "15": [],
+        "16": [],
+        "null": [
+          6,
+          8,
+          10,
+          12,
+          14,
+          16
         ]
       },
       "heap": {
-        "1": null,
-        "2": null,
-        "3": null,
-        "4": null
+        "1": 5,
+        "2": 5,
+        "3": 5,
+        "4": 5,
+        "5": 6,
+        "6": null,
+        "8": null,
+        "9": 8,
+        "10": null,
+        "11": 10,
+        "12": null,
+        "13": 12,
+        "14": null,
+        "15": 14,
+        "16": null
       },
       "index": {
         "1": {
@@ -112,15 +154,172 @@
           "autoOutlineSort": true,
           "fromTemplateId": null,
           "expanded": true
+        },
+        "5": {
+          "id": 5,
+          "bookId": "1",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "6": {
+          "id": 6,
+          "bookId": "1",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": false
+        },
+        "8": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 8,
+          "position": 5,
+          "time": 0,
+          "title": "auto",
+          "expanded": false
+        },
+        "9": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 9,
+          "position": 0,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "10": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 10,
+          "position": 4,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "11": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 11,
+          "position": 0,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "12": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 12,
+          "position": 3,
+          "time": 0,
+          "title": "auto",
+          "expanded": false
+        },
+        "13": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 13,
+          "position": 0,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "14": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 14,
+          "position": 2,
+          "time": 0,
+          "title": "auto"
+        },
+        "15": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 15,
+          "position": 0,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "16": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 16,
+          "position": 1,
+          "time": 0,
+          "title": "auto"
         }
       }
     },
     "series": {
-      "children": {
-        "null": []
+      "index": {
+        "5": {
+          "id": 5,
+          "bookId": "series",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "6": {
+          "id": 6,
+          "bookId": "series",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "7": {
+          "id": 7,
+          "bookId": "series",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        }
       },
-      "heap": {},
-      "index": {}
+      "heap": {
+        "5": 6,
+        "6": 7,
+        "7": null
+      },
+      "children": {
+        "5": [],
+        "6": [
+          5
+        ],
+        "7": [
+          6
+        ],
+        "null": [
+          7
+        ]
+      }
     }
   },
   "cards": [
@@ -262,11 +461,30 @@
       "title": "First tag :)"
     }
   ],
-  "images": {},
   "hierarchyLevels": {
     "0": {
-      "name": "Scene",
+      "name": "Act",
       "level": 0,
+      "autoNumber": true,
+      "textColor": "#e5554f",
+      "textSize": 24,
+      "borderColor": "#e5554f",
+      "borderStyle": "SOLID",
+      "backgroundColor": "#f1f5f8"
+    },
+    "1": {
+      "name": "Chapter",
+      "level": 1,
+      "autoNumber": true,
+      "textColor": "#78be20",
+      "textSize": 24,
+      "borderColor": "#78be20",
+      "borderStyle": "DASHED",
+      "backgroundColor": "#f1f5f8"
+    },
+    "2": {
+      "name": "Scene",
+      "level": 2,
       "autoNumber": true,
       "textColor": "#6cace4",
       "textSize": 24,
@@ -274,5 +492,114 @@
       "borderStyle": "NONE",
       "backgroundColor": "#f1f5f8"
     }
-  }
+  },
+  "tour": {
+    "feature": {
+      "name": "acts",
+      "id": 1
+    },
+    "run": true,
+    "stepIndex": 6,
+    "steps": [
+      {
+        "target": ".acts-tour-step1",
+        "content": "Click here to use and manage act structures in your Plottr project.",
+        "event": "hover",
+        "placement": "bottom",
+        "spotlightClicks": true,
+        "styles": {
+          "buttonNext": {
+            "display": "none"
+          }
+        }
+      },
+      {
+        "target": ".acts-tour-step2",
+        "content": "Add a level to place your timeline top row cards in their own defined sections. You can have up to three (3) levels for optimal visual arrangement, and can even make cards for entire sections. Think of the second level as a way to organize your top row into chapters and the third level to organize your chapters into acts, adding layers of specificity and structure to your Plottr project.",
+        "placement": "bottom",
+        "event": "hover",
+        "spotlightClicks": true,
+        "styles": {
+          "buttonBack": {
+            "display": "none"
+          },
+          "buttonNext": {
+            "display": "visible"
+          }
+        }
+      },
+      {
+        "target": ".acts-tour-step3",
+        "content": "You can remove levels of hierarchy, but BE CAREFUL as the cards within that chapter or act may be deleted. Once you decide to go with multiple levels of hierarchy, we recommend sticking with at least as many as you choose to add.",
+        "event": "hover",
+        "spotlightClicks": true,
+        "disableBeacon": true
+      },
+      {
+        "target": ".acts-tour-step4",
+        "content": "You can manage the settings of each level, including the name of the level that appears on the cards (e.g. \"Act\"), the color and outline of the level, and whether new cards are autonumbered.",
+        "event": "hover",
+        "spotlightClicks": true
+      },
+      {
+        "target": ".acts-tour-step5",
+        "content": "Click here to take you Plottr project to the next level!",
+        "event": "hover",
+        "spotlightClicks": true,
+        "placement": "right",
+        "styles": {
+          "buttonNext": {
+            "display": "none"
+          }
+        }
+      },
+      {
+        "target": ".acts-tour-step6",
+        "content": "Click to the right of higher level cards to add another of that card (e.g. another act). If you just now implemented acts for this project there is only one act (level 3) and/or one chapter (level 2) containing all of your cards. Added cards show up at the end of the timeline.",
+        "event": "hover",
+        "spotlightClicks": true,
+        "placement": "right",
+        "styles": {
+          "buttonBack": {
+            "display": "none"
+          },
+          "buttonNext": {
+            "display": "none"
+          }
+        }
+      },
+      {
+        "target": ".acts-tour-step7",
+        "content": "Click here to add lower-level cards within their parent section. Lower level cards from other sections can be dragged into this section once there are lower-level cards here (e.g. if this act has chapters then other chapter can be dragged into this act).",
+        "event": "hover",
+        "spotlightClicks": true,
+        "styles": {
+          "buttonNext": {
+            "display": "none"
+          }
+        }
+      },
+      {
+        "target": ".acts-tour-step8",
+        "content": "This is step 8",
+        "event": "hover",
+        "spotlightClicks": true
+      }
+    ],
+    "loading": false,
+    "action": "start",
+    "transitioning": true,
+    "b2bTransition": true,
+    "newState": {
+      "feature": {
+        "name": "acts",
+        "id": 1
+      },
+      "loading": false,
+      "run": true,
+      "stepIndex": 6,
+      "transitioning": true
+    }
+  },
+  "images": {}
 }

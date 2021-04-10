@@ -145,7 +145,7 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderToggleCollapse() {
-    const { handleInsertChild, toggleExpanded, expanded } = this.props
+    const { handleInsertChild, toggleExpanded, expanded, tour, isFirst } = this.props
 
     return !handleInsertChild && toggleExpanded ? (
       <div
@@ -156,7 +156,9 @@ class BeatInsertCell extends PureComponent {
         )}
       >
         <div className={this.wrapperClassSubIcon()}>
-          {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+          <div className={tour.run ? "acts-tour-step7" : ""} onClick={() => !isFirst && this.props.tourActions.tourNext('next')}>
+            {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+          </div>
         </div>
       </div>
     ) : null
@@ -174,7 +176,9 @@ class BeatInsertCell extends PureComponent {
         onClick={this.insertChild}
       >
         <div className={this.wrapperClassSubIcon()}>
-          <TiFlowChildren size={25} className="acts-tour-step7" />
+          <div className="acts-tour-step8">
+            <TiFlowChildren size={25} />
+          </div>
         </div>
       </div>
     ) : null

@@ -99,7 +99,7 @@ function bootFile(filePath, options, numOpenFiles) {
 
       render(
         <Provider store={store}>
-          <App showTour={false} />
+          <App />
         </Provider>,
         root
       )

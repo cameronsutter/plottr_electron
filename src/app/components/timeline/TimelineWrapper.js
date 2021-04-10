@@ -48,6 +48,7 @@ class TimelineWrapper extends Component {
 
   componentDidMount() {
     if (this.props.isSmall) return
+    console.log(this.tableRef,'tableRef in TimelineWrapper COMPONENTDIDMOUNT')
 
     if (this.tableRef) this.tableRef.onscroll = this.scrollHandler
 

@@ -55,22 +55,16 @@ class Tour extends Component {
     const { joyride } = this.props;
     const { action, index, type, status } = data;
     // const transitioning = true
-    console.log('callback',this.props.stepIndex,index,'<-index')
-    console.log('callback',this.props.transitioning,'<-transitioning')
-    console.log('callback',this.props.b2bTransition,'<-B2B Transitioning')
-    console.log('callback',this.state.doneTransitioning,'<-DONE Transitioning')
+    // console.log('callback',this.props.stepIndex,index,'<-index')
+    // console.log('callback',this.props.transitioning,'<-transitioning')
+    // console.log('callback',this.props.b2bTransition,'<-B2B Transitioning')
+    // console.log('callback',this.state.doneTransitioning,'<-DONE Transitioning')
+    console.log('callback',this.props.toursTaken,'<-toursTaken')
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status) && this.state.run) {
       // Need to set our running state to false, so we can restart if we click start again.
       console.log(type,'FINISHED/SKIPPED+++++++++++')
-      this.setState({ run: false });
-      setTimeout(() => {
-        this.setState({
-          loading: false,
-          run: true,
-        //   stepIndex: index + (action === ACTIONS.PREV ? -1 : 1)
-        });
-        //   this.props.actions.tourNext(action)        
-      }, 2000);
+      this.props.actions.tourEnd()
+    //   this.setState({ run: false });
     } else if (type === EVENTS.STEP_AFTER && this.props.transitioning === true && this.state.doneTransitioning === false) {// XXXXXX CHANGE INDEX === 0 HERE TO IF MOUNTING_TRANSITION === TRUE -- use a redux state of mountingTransition (like the 'loading' state) so this is scalable across features, certain features would have certain stepIndexes that would transition between a modal and would therefore run the setTimeout or whatever was necessary to make that transition (put a switch in redux for where each feature's modalTransitions are)
       console.log(type,'AFTER======111111111111111')    
   
@@ -155,7 +149,7 @@ function mapStateToProps(state) {
         state.present.tour.steps = ACTS_TOUR_STEPS
         break
       default:
-        state.present.tour.steps = ['BEGINNER_TOUR_STEPS']
+        state.present.tour.run = false
     }
     return tourSelector(state.present)
 }

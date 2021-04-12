@@ -25,6 +25,10 @@ const platform = {
       const win = remote.getCurrentWindow()
       ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', itemType) // sends this message to this same process
     },
+    saveTemplate: (payload) => {
+      const win = remote.getCurrentWindow()
+      ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
+    },
   },
   settings: SETTINGS,
   openExternal: shell.openExternal,

@@ -12,11 +12,10 @@ import {
 import CharacterTemplateDetails from './CharacterTemplateDetails'
 import PlotlineTemplateDetails from './PlotlineTemplateDetails'
 import ProjectTemplateDetails from './ProjectTemplateDetails'
-import CardTemplateDetails from './CardTemplateDetails'
 import cx from 'classnames'
 import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
-import { DeleteConfirmModal, PlottrModal } from 'connected-components'
+import { CardTemplateDetails, DeleteConfirmModal, PlottrModal } from 'connected-components'
 import getTestIds from 'test-utils/getTestIds'
 import { template } from 'pltr/v2'
 

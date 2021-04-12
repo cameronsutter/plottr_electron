@@ -99,7 +99,7 @@ function bootFile(filePath, options, numOpenFiles) {
 
       render(
         <Provider store={store}>
-          <App />
+          <App showTour={state && state.tour && state.tour.showTour}/>
         </Provider>,
         root
       )
@@ -210,6 +210,11 @@ ipcRenderer.on('redo', (event) => {
     // custom redo function
     store.dispatch(ActionCreators.redo())
   }
+})
+
+ipcRenderer.on('acts-tour-start', (event) => {
+  win.reload()
+  store.dispatch(actions.tour.setTourFeature({name:'acts',id:1,endStep:8}))
 })
 
 window.onerror = function (message, file, line, column, err) {

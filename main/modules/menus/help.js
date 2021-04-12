@@ -18,14 +18,10 @@ function buildHelpMenu() {
         label: i18n('Guided Tours'),
         submenu: [
           {
-            label: i18n('Beginners'),
-            //click: () => console.log('open blank file with state = {showTour: true}')
-          },
-          {
-            label: i18n('Acts/Beats'),
-            click: () => {
-              console.log('start by opening their most recent file OR by setting Beat Hierarchy to true OR navigating them to the dashboard settings to toggle Beat Hierarchy')
-            }
+            label: i18n('Acts and Beats'),
+            click: function (event, focusedWindow) {
+              focusedWindow.webContents.send('acts-tour-start')
+            },
           }
         ]
       },

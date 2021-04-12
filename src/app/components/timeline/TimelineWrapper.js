@@ -48,7 +48,6 @@ class TimelineWrapper extends Component {
 
   componentDidMount() {
     if (this.props.isSmall) return
-    console.log(this.tableRef,'tableRef in TimelineWrapper COMPONENTDIDMOUNT')
 
     if (this.tableRef) this.tableRef.onscroll = this.scrollHandler
 
@@ -114,14 +113,14 @@ class TimelineWrapper extends Component {
     this.setState({
       beatConfigIsOpen: false,
     })
-    if(this.props.tour.run)this.props.tourActions.tourNext('next')
+    if(this.props.tour.run && this.props.tour.stepIndex === 4)this.props.tourActions.tourNext('next')
   }
 
   openBeatConfig = () => {
     this.setState({
       beatConfigIsOpen: true,
     })
-    this.props.tourActions.tourNext('next')
+    if(this.props.tour.run && this.props.tour.stepIndex === 0)this.props.tourActions.tourNext('next')
   }
 
   // ///////////////

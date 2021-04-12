@@ -156,7 +156,7 @@ class BeatInsertCell extends PureComponent {
         )}
       >
         <div className={this.wrapperClassSubIcon()}>
-          <div className={tour.run ? "acts-tour-step7" : ""} onClick={() => !isFirst && this.props.tourActions.tourNext('next')}>
+          <div className={tour.run ? "acts-tour-step7" : ""} onClick={() => !isFirst && expanded === true && this.props.tourActions.tourNext('next')}>
             {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
           </div>
         </div>
@@ -176,9 +176,7 @@ class BeatInsertCell extends PureComponent {
         onClick={this.insertChild}
       >
         <div className={this.wrapperClassSubIcon()}>
-          <div className="acts-tour-step8">
-            <TiFlowChildren size={25} />
-          </div>
+            <TiFlowChildren size={25} className="acts-tour-step8" />
         </div>
       </div>
     ) : null

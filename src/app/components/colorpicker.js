@@ -5,6 +5,7 @@ import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bo
 import { t as i18n } from 'plottr_locales'
 import { colors } from 'pltr/v2'
 import ColorPickerColor from './ColorPickerColor'
+import { defaultStyles } from 'react-modal'
 
 const { reds, oranges, greens, blues, purples, grays, whites, browns, defaults } = colors
 
@@ -41,7 +42,7 @@ class ColorPicker extends Component {
 
   render() {
     return (
-      <PlottrModal isOpen={true} onRequestClose={() => this.closeDialog(this.props.color)}>
+      <PlottrModal isOpen={true} onRequestClose={() => this.closeDialog(this.props.color)} styles={defaultStyles,"zIndex:1002"}>
         <div className="color-picker__wrapper">
           <h2 className="color-picker__title">{i18n('Pick a color')}</h2>
           <div className="color-picker__input-box form-horizontal">

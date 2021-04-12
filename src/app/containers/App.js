@@ -4,7 +4,7 @@ import PropTypes from 'react-proptypes'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ErrorBoundary from './ErrorBoundary'
-import Tour from '../components/intros/Tour'
+import ActsTour from '../components/intros/Tour'
 import TemplateCreate from '../../common/components/templates/TemplateCreate'
 import AskToSaveModal from '../components/dialogs/AskToSaveModal'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
@@ -16,7 +16,7 @@ let isTryingToReload = false
 let isTryingToClose = false
 
 export default class App extends Component {
-  state = { showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true, showTour: true }
+  state = { showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true, showTour: this.props.showTour }
 
   componentDidMount() {
     ipcRenderer.on('save-as-template-start', (event, type) => {
@@ -34,9 +34,7 @@ export default class App extends Component {
       isTryingToReload = true
       this.askToSave({})
     })
-    this.setState({showTour:true})// XXXXXX 
     window.addEventListener('beforeunload', this.askToSave)
-    console.log(store.getState())
   }
 
   componentWillUnmount() {
@@ -112,19 +110,11 @@ export default class App extends Component {
 
   renderGuidedTour() {
     let feature = store.getState().present.tour.feature.name
-    // XXXXXX so the tour system could be set up so that the tour only runs when a feature is loaded into the tour.feature redux state
     if(!feature) return null
-    // XXXXXX does this mean that part of the the set-beat-hierarchy ipc action needs to set feature to {name: acts, id: 1}? ALSO the menu tourStart function
-    console.log('FEATURE====================',feature)
-    // THE BELOW LINES ARE ONLY NECESSARY IF THE IPC IN SETTINGS AND HELP MENU CAN'T LOAD A FEATURE INTO THE REDUX FOR TOUR.FEATURE
-    // let toursTaken = Object.keys(store.getState().present.tour.toursTaken)
-    // let tourAutoStart = toursTaken.includes(`${feature.name}`) ? false : true
-    // let tourMenuStart = store.getState().present.tour.menuStart
-    // XXXXXX ^this shouldn't be a redux state, probably an event sent from ipcRenderer
     if(
-      store.getState().present.featureFlags.BEAT_HIERARCHY && //in the future can include a switch(feature) which if case('acts') this would set tourConditions = true --- if tourConditions true then the tour will run
+      store.getState().present.featureFlags.BEAT_HIERARCHY && //in the future can include a switch(feature) which if case('acts') -> tourConditions = true --- if tourConditions true then the tour will run
       feature
-    ) return <Tour />
+    ) return <ActsTour />
     return null
   }
 

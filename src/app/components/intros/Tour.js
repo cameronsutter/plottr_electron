@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { remote } from 'electron'
 import PropTypes from "prop-types";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -7,7 +8,9 @@ import { actions, selectors } from 'pltr/v2'
 import ReactJoyride, { ACTIONS, EVENTS, STATUS } from "react-joyride";
 
 const { tourSelector } = selectors
-import { ACTS_TOUR_STEPS } from './tourSteps'
+import { ACTS_TOUR_STEPS } from './actsTourSteps'
+
+const win = remote.getCurrentWindow()
 
 class Tour extends Component {
   state = {
@@ -54,71 +57,48 @@ class Tour extends Component {
     
     const { joyride } = this.props;
     const { action, index, type, status } = data;
-    // const transitioning = true
-    // console.log('callback',this.props.stepIndex,index,'<-index')
-    // console.log('callback',this.props.transitioning,'<-transitioning')
-    // console.log('callback',this.props.b2bTransition,'<-B2B Transitioning')
-    // console.log('callback',this.state.doneTransitioning,'<-DONE Transitioning')
-    console.log('callback',this.props.toursTaken,'<-toursTaken')
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status) && this.state.run) {
-      // Need to set our running state to false, so we can restart if we click start again.
-      console.log(type,'FINISHED/SKIPPED+++++++++++')
-      this.props.actions.tourEnd()
-    //   this.setState({ run: false });
-    } else if (type === EVENTS.STEP_AFTER && this.props.transitioning === true && this.state.doneTransitioning === false) {// XXXXXX CHANGE INDEX === 0 HERE TO IF MOUNTING_TRANSITION === TRUE -- use a redux state of mountingTransition (like the 'loading' state) so this is scalable across features, certain features would have certain stepIndexes that would transition between a modal and would therefore run the setTimeout or whatever was necessary to make that transition (put a switch in redux for where each feature's modalTransitions are)
-      console.log(type,'AFTER======111111111111111')    
-  
-      this.setState({ run: false, loading: true });
 
+    if (type === EVENTS.STEP_AFTER && this.props.transitioning === true && this.state.doneTransitioning === false) {
+      // IF the next step's component isn't mounted yet
+      // temporarily delay the next step so the component can mount
+      this.setState({ run: false, loading: true });
       setTimeout(() => {
         this.setState({
           loading: false,
           run: true,
-        //   stepIndex: index + (action === ACTIONS.PREV ? -1 : 1)
         });
-        //   this.props.actions.tourNext(action)        
-      }, 2000);
+      }, 400);
+      // DON'T run the redux action TOUR_NEXT, TOUR_NEXT is triggered on click of
+      // the component the previous step targets (e.g. <button className="acts-tour-step1">
+      // in openBeatConfig in TimelineWrapper)
       if(!this.props.b2bTransition) this.setState({doneTransitioning: true})
     } else if (type === EVENTS.STEP_AFTER) {
-      // Update state to advance the tour
       this.setState({ run: false, loading: true, doneTransitioning: false });
-    
       setTimeout(() => {
         this.setState({
           loading: false,
           run: true,
-        //   stepIndex: index + (action === ACTIONS.PREV ? -1 : 1)
         });
-        //   this.props.actions.tourNext(action)        
-      }, 2000);
-      console.log(type,'AFTER+++++++++++')    
+      }, 400);
+      // run the redux action TOUR_NEXT
       this.props.actions.tourNext(action)
-
-    } else if (type === EVENTS.TOOLTIP_CLOSE) {
-      console.log(type,'CLOSE+++++++++++')
-    //   this.props.actions.tourNext(action)
+      if(index === this.props.feature.endStep) win.reload()
     }
 
     if (typeof joyride.callback === "function") {
       joyride.callback(data);
     } else {
-    //   console.group(type,'type');
-    //   console.log(data,'data'); //eslint-disable-line no-console
-      console.groupEnd();
+      // console.group(type,'type');
+      // console.log(data,'data'); //eslint-disable-line no-console
+      // console.groupEnd();
     }
   };
 
   render() {
-    //   console.log('======================== RE-RENDER')
-    //   console.log('======================== RE-RENDER')
-    //   console.log(this.props,'props for joyride')
-    //   console.log('======================== RE-RENDER')
-    //   console.log('======================== RE-RENDER')
+    console.log(this.props,'tour props')
     return (
-      <div className="demo-wrapper">
         <ReactJoyride
           scrollToFirstStep
-          debug
           {...this.props}
           callback={this.handleJoyrideCallback}
           styles={{
@@ -134,7 +114,6 @@ class Tour extends Component {
             }
           }}
         />
-      </div>
     );
   }
 }
@@ -144,6 +123,7 @@ Tour.propTypes = {
 }
 
 function mapStateToProps(state) {
+  // this determines which steps the tour should follow based on which feature is being toured
     switch(state.present.tour.feature.name){
       case('acts'):
         state.present.tour.steps = ACTS_TOUR_STEPS

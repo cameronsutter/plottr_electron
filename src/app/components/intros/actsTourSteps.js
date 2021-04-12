@@ -1,6 +1,7 @@
+import { TiFlowChildren } from 'react-icons/ti'
+
 export const ACTS_TOUR_STEPS = [
     {
-      // target:`[step='step1']`,
       target:'.acts-tour-step1',
       title: "Plottr by Act & Chapter",
       content:'Welcome to the next level of Plottr! Click here to use and manage act structures in your Plottr project.',
@@ -9,16 +10,11 @@ export const ACTS_TOUR_STEPS = [
       spotlightClicks: true,
       hideCloseButton:true,
       disableBeacon:true,
-      // showSkipButton:false,
       styles: {
-        // tooltipFooter: {
-        //   opacity: 0
-        // },
         buttonNext: {
           display: "none"
         }
       },
-      
     },
     {
       target:`.acts-tour-step2`,
@@ -28,9 +24,6 @@ export const ACTS_TOUR_STEPS = [
       event:'hover',
       spotlightClicks: true,
       styles: {
-        // tooltipFooter: {
-        //   opacity: 0
-        // },
         buttonBack: {
           display: "none"
         },
@@ -63,17 +56,16 @@ export const ACTS_TOUR_STEPS = [
       spotlightClicks: true,
       placement:'right',
       styles: {
-        // tooltipFooter: {
-        //   opacity: 0
-        // }
         buttonBack: {
           display: "none"
         },
         buttonNext: {
           display: "none"
+        },
+        options: {
+          zIndex: 0
         }
       },
-      // disableBeacon:true,
     },
     {
       target:`.acts-tour-step6`,
@@ -83,9 +75,6 @@ export const ACTS_TOUR_STEPS = [
       spotlightClicks: true,
       placement:'right',
       styles: {
-        // tooltipFooter: {
-        //   opacity: 0
-        // },
         buttonBack: {
           display: "none"
         },
@@ -100,11 +89,7 @@ export const ACTS_TOUR_STEPS = [
       content:'Click to hide the cards within this section for greater ease of navigation. You can click again to show the cards in this section.',
       event:'hover',
       spotlightClicks: true,
-      // disableBeacon:true,
       styles: {
-        // tooltipFooter: {
-        //   opacity: 0
-        // },
         buttonBack: {
           display: "none"
         },
@@ -116,17 +101,20 @@ export const ACTS_TOUR_STEPS = [
     {
       target:`.acts-tour-step8`,
       title: "Adding Lower-Level Cards",
-      content:'Click here to add lower-level cards within their parent section. Lower level cards from other sections can be dragged into this section once there are lower-level cards here (e.g. if this act has at least one chapter then other chapters can be dragged into this act).',
+      content: `Click here to add lower-level cards within their parent section. Lower level cards from other sections can be dragged into this section once there are lower-level cards here (e.g. if this act has at least one chapter then other chapters can be dragged into this act).`,
       event:'hover',
-      spotlightClicks: false,
-      // disableBeacon:true,
-    },// XXXXXX TOUR_END NOT RUNNING
+      // spotlightClicks: false,
+    },
     {
       target:`.tour-end`,
       content:'Click the help menu to take the acts tour again! Happy plotting!',
-      // event:'hover',
       spotlightClicks: false,
       disableBeacon:true,
-      
+      placement:'center',
+      styles: {
+        buttonBack: {
+          display: "none"
+        },
+      }
     }
   ]

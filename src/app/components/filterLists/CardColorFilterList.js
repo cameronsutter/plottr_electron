@@ -3,9 +3,6 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { t as i18n } from 'plottr_locales'
 import GenericFilterList from './GenericFilterList'
-import { selectors } from 'pltr/v2'
-
-const { sortedTagsSelector, timelineFilterSelector } = selectors
 
 class CardColorFilterList extends Component {
   updateItems = (color) => {

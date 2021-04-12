@@ -153,9 +153,26 @@ class BeatTitleCell extends PureComponent {
   renderDelete() {
     if (!this.state.deleting) return null
 
+    const { hierarchyLevel, beatTitle, hierarchyLevels } = this.props
+
+    const depth =
+      hierarchyLevels.length - hierarchyLevels.findIndex(({ name }) => name === hierarchyLevel.name)
+
+    let warningMessage = null
+    switch (depth) {
+      case 1:
+        break
+      case 2:
+        warningMessage = `Are you sure you want to delete all scene cards in the ${hierarchyLevel.name} "${beatTitle}".`
+        break
+      case 3:
+        warningMessage = `Are you sure you want to delete all chapters and their scene cards in the ${hierarchyLevel.name} "${beatTitle}".`
+        break
+    }
     return (
       <DeleteConfirmModal
-        name={this.props.beatTitle}
+        name={beatTitle}
+        customText={warningMessage && i18n(warningMessage)}
         onDelete={this.deleteBeat}
         onCancel={this.cancelDelete}
       />
@@ -405,6 +422,8 @@ const makeMapState = (state) => {
       positionOffset: selectors.positionOffsetSelector(state.present),
       isSmall: selectors.isSmallSelector(state.present),
       isMedium: selectors.isMediumSelector(state.present),
+      hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
+      isSeries: selectors.isSeriesSelector(state.present),
     }
   }
 }

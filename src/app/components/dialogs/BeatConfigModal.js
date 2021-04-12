@@ -79,7 +79,7 @@ const BeatConfigModal = ({
   const RemoveLevelConfirmation = () =>
     stagedHierarchyLevels ? (
       <DeleteConfirmModal
-        customText={i18n('Are you sure?  (Removing levels may delete beat cards!)')}
+        customText={i18n('Are you sure?  (Removing levels may delete scene cards!)')}
         onDelete={() => {
           setHierarchyLevels(stagedHierarchyLevels)
           setStagedHierarchyLevels(null)
@@ -95,7 +95,7 @@ const BeatConfigModal = ({
       <RemoveLevelConfirmation />
       <PlottrModal isOpen={true} onRequestClose={closeDialog} style={modalStyles}>
         <div className="beat-config-modal">
-          <h3>{i18n('Hierarchy Configuration')}</h3>
+          <h3>{i18n('Act Structure')}</h3>
           <div className="beat-config-modal__hierarchy-count-wrapper">
             <h4>{i18n('Levels of hierarchy')}</h4>
             <div className="beat-config-modal__hierarchy-count-controls">

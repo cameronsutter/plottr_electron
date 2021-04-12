@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { ipcRenderer, shell } from 'electron'
-import { t } from 'plottr_locales'
+import electron, { ipcRenderer, shell } from 'electron'
+import { t, setupI18n } from 'plottr_locales'
+import SETTINGS from '../../../common/utils/settings'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
-import { Switch } from 'connected-components'
+import { Switch, LanguagePicker } from 'connected-components'
 import { FormControl, FormGroup, ControlLabel, HelpBlock, Button } from 'react-bootstrap'
 import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
-import LanguagePicker from '../../../common/components/LanguagePicker'
 import DarkOptionsSelect from './DarkOptionsSelect'
 import TemplateFetcher from '../../utils/template_fetcher'
 
@@ -113,7 +113,12 @@ export default function OptionsHome(props) {
         </div>
         <div className="dashboard__options__item">
           <h4>{t('Language')}</h4>
-          <LanguagePicker />
+          <LanguagePicker
+            onSelectLanguage={(newLanguage) => {
+              SETTINGS.set('locale', newLanguage)
+              setupI18n(SETTINGS, { electron })
+            }}
+          />
         </div>
         <hr />
         <h4>{t('Beta')}</h4>

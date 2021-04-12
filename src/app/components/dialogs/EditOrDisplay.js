@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
+import { DropdownButton, MenuItem, Button, Glyphicon } from 'react-bootstrap'
+import { t } from 'plottr_locales'
 
+import ColorPickerColor from 'components/ColorPickerColor'
 import ColorPicker from 'components/colorpicker'
 
 const EditOrDisplay = ({ id, editing, value, type, setValue, setEditing, options }) => {
@@ -15,34 +17,17 @@ const EditOrDisplay = ({ id, editing, value, type, setValue, setEditing, options
     if (controlRef.current) controlRef.current.focus()
   }, [value, editing, stagedValue])
 
-  const extraStyle =
-    type === 'color'
-      ? {
-          backgroundColor: value,
-          width: '10px',
-          height: '10px',
-          marginLeft: '5px',
-          marginRight: '20px',
-        }
-      : {}
-
   const ControlSwitch = ({ className }) => {
     switch (type) {
       case 'color':
         return (
-          <>
-            <div className="beat-config-modal__levels-table-cell">
-              {stagedValue}
-              <div style={extraStyle} />
-            </div>
-            <ColorPicker
-              color={value}
-              closeDialog={(value) => {
-                setValue(value)
-                setEditing(false)
-              }}
-            />
-          </>
+          <ColorPicker
+            color={value}
+            closeDialog={(value) => {
+              setValue(value)
+              setEditing(false)
+            }}
+          />
         )
       case 'number':
       case 'text':
@@ -101,8 +86,28 @@ const EditOrDisplay = ({ id, editing, value, type, setValue, setEditing, options
             </DropdownButton>
           </div>
         )
-      case 'number':
       case 'color':
+        return (
+          <div className="beat-config-modal__levels-table-cell">
+            <ColorPickerColor
+              color={value || '#F1F5F8'} // $gray-9
+              choose={() => {
+                setEditing(true)
+              }}
+              style={{ margin: '2px' }}
+            />
+            <Button
+              bsSize="xs"
+              block
+              title={t('No color')}
+              bsStyle="warning"
+              onClick={() => setValue('none')}
+            >
+              <Glyphicon glyph="ban-circle" />
+            </Button>
+          </div>
+        )
+      case 'number':
       case 'text':
       default:
         return (
@@ -113,7 +118,6 @@ const EditOrDisplay = ({ id, editing, value, type, setValue, setEditing, options
             className="beat-config-modal__levels-table-cell"
           >
             {stagedValue}
-            <div style={extraStyle} />
           </div>
         )
     }

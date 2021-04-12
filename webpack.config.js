@@ -99,6 +99,7 @@ const rendererConfig = {
       dashboard: path.resolve(__dirname, 'src', 'dashboard'),
       test: path.resolve(__dirname, 'test'),
       'connected-components': path.resolve(__dirname, 'src', 'connected-components.js'),
+      plottr_components: path.resolve(__dirname, 'lib', 'plottr_components', 'dist'),
     },
   },
   target: 'electron-renderer',

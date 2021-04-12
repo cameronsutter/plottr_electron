@@ -12,9 +12,9 @@ import {
 import CharacterTemplateDetails from './CharacterTemplateDetails'
 import ProjectTemplateDetails from './ProjectTemplateDetails'
 import cx from 'classnames'
-import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
 import {
+  TemplateEdit,
   PlotlineTemplateDetails,
   CardTemplateDetails,
   DeleteConfirmModal,

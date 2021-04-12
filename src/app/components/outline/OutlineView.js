@@ -47,13 +47,8 @@ class OutlineView extends Component {
   }
 
   filterItem = (id) => {
-    const { actions, ui } = this.props
-    if (Array.isArray(ui.outlineFilter) && ui.outlineFilter.includes(id)) {
-      const outlineItems = ui.outlineFilter.filter((item) => item !== id)
-      actions.setOutlineFilter(outlineItems)
-    } else if (!Array.isArray(ui.outlineFilter) || !ui.outlineFilter) actions.setOutlineFilter([id])
-    else if (!!ui.outlineFilter && Array.isArray(ui.outlineFilter))
-      actions.setOutlineFilter([...ui.outlineFilter, id])
+    const { actions } = this.props
+    actions.setOutlineFilter(id)
   }
 
   removeFilter = () => {

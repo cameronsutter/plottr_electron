@@ -34,7 +34,7 @@ export default function DashboardBody({ currentView, setView }) {
     // no license and trial hasn't started (first time using the app)
     // OR no license and trial is expired
     if (!licenseInfoSize && (!started || expired) && process.env.NODE_ENV !== 'development') {
-      setShowAccount(false)
+      setShowAccount(true)
     }
   }, [licenseInfo, licenseInfoSize, started, expired])
 

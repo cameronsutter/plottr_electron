@@ -80,11 +80,11 @@ export default function OptionsHome(props) {
           <hr />
           <h1 className="dashboard__options">{t('Beta')}</h1>
           <div className="dashboard__options__item">
-            <h4>{t('Beat Hierarchy')}</h4>
+            <h4>{t('Act Structure')}</h4>
             <Switch
               isOn={!!settings.user.beatHierarchy}
               handleToggle={toggleBeatHierarchy}
-              labelText={t('Organise your Scene cards into Chapters and Acts')}
+              labelText={t('Organize your scene cards into Chapters and Acts')}
             />
           </div>
           <hr />

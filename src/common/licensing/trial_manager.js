@@ -6,10 +6,10 @@ const EXTENSIONS = 2
 export function useTrialStatus() {
   const [trialInfo, trialInfoSize, _, setTrialInfo] = useTrialInfo()
 
-  const startTrial = () => {
+  const startTrial = (numDays = null) => {
     const day = new Date()
     const startsAt = day.getTime()
-    const end = addDays(startsAt, TRIAL_LENGTH)
+    const end = addDays(startsAt, numDays || TRIAL_LENGTH)
     const endsAt = end.getTime()
     setTrialInfo({ startsAt, endsAt, extensions: EXTENSIONS })
   }

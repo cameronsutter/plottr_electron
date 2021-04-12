@@ -35,6 +35,7 @@ const Element = ({ attributes, children, element }) => {
           {...attributes}
           title={element.url}
           href={element.url}
+          rel="noreferrer"
           target="_blank"
           onClick={() => handleLinkClick(element.url)}
         >

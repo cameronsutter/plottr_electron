@@ -21,7 +21,7 @@ import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import { FunSpinner } from '../../../common/components/Spinner'
 import { FaSave } from 'react-icons/fa'
-import { TiFlowChildren } from 'react-icons/ti'
+import { VscSymbolStructure } from 'react-icons/vsc'
 import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { helpers, actions, selectors } from 'pltr/v2'
@@ -293,7 +293,11 @@ class TimelineWrapper extends Component {
           {gatedByBeatHierarchy(() => (
             <NavItem>
               <Button bsSize="small" onClick={this.openBeatConfig}>
-                <TiFlowChildren size={16} /> {i18n('Beats')}
+                <VscSymbolStructure
+                  size={16}
+                  style={{ verticalAlign: 'text-bottom', marginRight: '4px' }}
+                />
+                {i18n('Acts')}
               </Button>
             </NavItem>
           ))}

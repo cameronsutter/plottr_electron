@@ -7,7 +7,7 @@ import cx from 'classnames'
 import { VscChromeMaximize, VscChromeMinimize, VscChromeClose } from 'react-icons/vsc'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
-import Beamer from '../../../common/components/Beamer'
+import { Beamer } from 'connected-components'
 const win = remote.getCurrentWindow()
 
 export default function DashboardHeader({ darkMode }) {

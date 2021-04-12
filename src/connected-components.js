@@ -10,6 +10,8 @@ import {
 import log from 'electron-log'
 import { createErrorReport } from './common/utils/full_error_report'
 import SETTINGS from './common/utils/settings'
+import USER from './common/utils/user_info'
+import { is } from 'electron-util'
 
 const { app } = remote
 const version = app.getVersion()
@@ -31,6 +33,9 @@ const platform = {
     },
   },
   settings: SETTINGS,
+  user: USER,
+  isDevelopment: is.development,
+  isWindows: is.windows,
   openExternal: shell.openExternal,
   createErrorReport,
   log,

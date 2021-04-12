@@ -14,7 +14,7 @@ import { ipcRenderer } from 'electron'
 import SETTINGS from '../../../common/utils/settings'
 import { checkForActiveLicense } from '../../../common/licensing/check_license'
 import { is } from 'electron-util'
-import Beamer from '../../../common/components/Beamer'
+import { Beamer } from 'connected-components'
 
 export default function DashboardBody({ currentView, setView, darkMode }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()

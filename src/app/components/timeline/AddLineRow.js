@@ -7,9 +7,8 @@ import { Glyphicon } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import { sortBy } from 'lodash'
-import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { helpers, actions, selectors, lineColors, initialState } from 'pltr/v2'
-import { InputModal } from 'connected-components'
+import { InputModal, TemplatePicker } from 'connected-components'
 
 const { nextColor } = lineColors
 const card = initialState.card

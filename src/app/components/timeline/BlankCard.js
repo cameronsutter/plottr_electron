@@ -6,7 +6,7 @@ import { Cell } from 'react-sticky-table'
 import { t as i18n } from 'plottr_locales'
 import { FormControl, FormGroup, ControlLabel, Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
-import TemplatePicker from '../../../common/components/templates/TemplatePicker'
+import { TemplatePicker } from 'connected-components'
 import { lineColors, actions, selectors } from 'pltr/v2'
 import { orientedClassName } from 'pltr/v2/helpers/orientedClassName'
 

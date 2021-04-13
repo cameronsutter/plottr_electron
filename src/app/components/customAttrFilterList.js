@@ -137,7 +137,6 @@ class CustomAttrFilterList extends Component {
     let cardColors = this.props.items.map((item) => item.color)
     let cardColorsSet = new Set(cardColors)
     let cardColorsToFilterBy = [...cardColorsSet]
-
     return (
       <div className="filter-list flex">
         {isSeries && (

@@ -17,7 +17,6 @@ import {
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import tinycolor from 'tinycolor2'
-import SelectList from 'components/selectList'
 import {
   ColorPickerColor,
   DeleteConfirmModal,
@@ -25,6 +24,7 @@ import {
   MiniColorPicker,
   PlottrModal,
   RichText,
+  SelectList,
 } from 'connected-components'
 import { helpers, actions, selectors } from 'pltr/v2'
 

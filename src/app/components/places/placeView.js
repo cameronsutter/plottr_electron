@@ -12,13 +12,13 @@ import {
   Glyphicon,
 } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import SelectList from '../selectList'
 import {
   BookSelectList,
   DeleteConfirmModal,
   Image,
   ImagePicker,
   RichText,
+  SelectList,
 } from 'connected-components'
 import { actions, selectors } from 'pltr/v2'
 

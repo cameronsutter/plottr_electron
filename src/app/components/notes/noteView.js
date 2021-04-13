@@ -10,7 +10,6 @@ import {
   ControlLabel,
   Glyphicon,
 } from 'react-bootstrap'
-import SelectList from 'components/selectList'
 import { t as i18n } from 'plottr_locales'
 import {
   BookSelectList,
@@ -18,6 +17,7 @@ import {
   Image,
   ImagePicker,
   RichText,
+  SelectList,
 } from 'connected-components'
 import cx from 'classnames'
 import { actions, selectors } from 'pltr/v2'

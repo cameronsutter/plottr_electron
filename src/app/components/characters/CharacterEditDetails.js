@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import CategoryPicker from '../CategoryPicker'
 import {
+  CategoryPicker,
   DeleteConfirmModal,
   EditAttribute,
   Image,

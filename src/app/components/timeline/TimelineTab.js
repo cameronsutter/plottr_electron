@@ -1,5 +1,5 @@
 import React from 'react'
-import ErrorBoundary from '../../containers/ErrorBoundary'
+import { ErrorBoundary } from 'connected-components'
 import TimelineWrapper from './TimelineWrapper'
 
 const TimelineTab = () => {

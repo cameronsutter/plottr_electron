@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
-import ErrorBoundary from '../../../app/containers/ErrorBoundary'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import Account from '../account/Account'
 import FilesHome from '../files/FilesHome'
@@ -14,7 +13,7 @@ import { ipcRenderer } from 'electron'
 import SETTINGS from '../../../common/utils/settings'
 import { checkForActiveLicense } from '../../../common/licensing/check_license'
 import { is } from 'electron-util'
-import { Beamer } from 'connected-components'
+import { Beamer, ErrorBoundary } from 'connected-components'
 
 export default function DashboardBody({ currentView, setView, darkMode }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()

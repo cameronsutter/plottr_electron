@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
-import ErrorBoundary from '../app/containers/ErrorBoundary'
+import { ErrorBoundary } from 'connected-components'
 import DashboardBody from './components/navigation/DashboardBody'
 import DashboardNavigation from './components/navigation/DashboardNavigation'
 import DashboardHeader from './components/navigation/DashboardHeader'

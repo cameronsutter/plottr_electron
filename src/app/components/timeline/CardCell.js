@@ -7,7 +7,7 @@ import Card from './Card'
 import cx from 'classnames'
 import Floater from 'react-floater'
 import CardAdd from './CardAdd'
-import ErrorBoundary from '../../containers/ErrorBoundary'
+import { ErrorBoundary } from 'connected-components'
 import { helpers, actions, selectors } from 'pltr/v2'
 
 const {

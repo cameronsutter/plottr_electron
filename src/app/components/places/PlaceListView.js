@@ -15,10 +15,9 @@ import {
   Row,
   Col,
 } from 'react-bootstrap'
-import { CustomAttrFilterList, SortList } from 'connected-components'
+import { CustomAttrFilterList, ErrorBoundary, SortList } from 'connected-components'
 import PlaceView from 'components/places/placeView'
 import { t as i18n } from 'plottr_locales'
-import ErrorBoundary from '../../containers/ErrorBoundary'
 import PlaceItem from './PlaceItem'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import { newIds, actions, selectors } from 'pltr/v2'

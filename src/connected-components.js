@@ -1,4 +1,4 @@
-import { remote, shell, ipcRenderer } from 'electron'
+import electron, { remote, shell, ipcRenderer } from 'electron'
 import { connections } from 'plottr_components'
 
 import {
@@ -17,6 +17,7 @@ const { app } = remote
 const version = app.getVersion()
 
 const platform = {
+  electron,
   appVersion: version,
   template: {
     listTemplates,
@@ -40,6 +41,13 @@ const platform = {
   openExternal: shell.openExternal,
   createErrorReport,
   log,
+  node: {
+    env: process.env.NODE_ENV === 'development' ? 'development' : 'production',
+  },
+  rollbar: {
+    rollbarAccessToken: process.env.ROLLBAR_ACCESS_TOKEN || '',
+    platform: process.platform,
+  },
 }
 
 const components = connections.pltr(platform)

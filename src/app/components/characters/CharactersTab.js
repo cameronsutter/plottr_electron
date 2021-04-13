@@ -1,6 +1,5 @@
 import React from 'react'
-import { CharacterListView } from 'connected-components'
-import ErrorBoundary from '../../containers/ErrorBoundary'
+import { CharacterListView, ErrorBoundary } from 'connected-components'
 
 export default function CharactersTab() {
   return (

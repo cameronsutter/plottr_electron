@@ -15,7 +15,7 @@ import {
   Row,
   Col,
 } from 'react-bootstrap'
-import CustomAttrFilterList from 'components/customAttrFilterList'
+import { CustomAttrFilterList } from 'connected-components'
 import SortList from 'components/sortList'
 import PlaceView from 'components/places/placeView'
 import { t as i18n } from 'plottr_locales'

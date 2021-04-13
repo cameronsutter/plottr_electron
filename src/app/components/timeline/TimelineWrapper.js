@@ -14,12 +14,11 @@ import {
   Alert,
 } from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
-import CustomAttrFilterList from 'components/customAttrFilterList'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import { t as i18n } from 'plottr_locales'
 import TimelineTable from './TimelineTable'
 import cx from 'classnames'
-import { FunSpinner } from 'connected-components'
+import { CustomAttrFilterList, FunSpinner } from 'connected-components'
 import { FaSave } from 'react-icons/fa'
 import { VscSymbolStructure } from 'react-icons/vsc'
 import ExportNavItem from '../export/ExportNavItem'

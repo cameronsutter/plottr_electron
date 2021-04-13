@@ -1,0 +1,25 @@
+@keyframes rotateit {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.fa-spinner {
+  animation: rotateit 1.1s linear infinite;
+}
+
+.fun-spinner {
+  margin-top: 100px;
+  width: 100vw;
+  text-align: center;
+  font-size: 25px;
+  @include header-font;
+  .fa-spinner {
+    color: $orange-5;
+    font-size: 2.5em;
+    margin-bottom: 8px;
+  }
+}

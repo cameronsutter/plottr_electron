@@ -19,6 +19,8 @@ function MiniBeat(props) {
     linesById,
     sortedLines,
     positionOffset,
+    hierarchyEnabled,
+    isSeries,
   } = props
   const [sortedCards, setSortedCards] = useState([])
   // https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/
@@ -106,7 +108,9 @@ function MiniBeat(props) {
     >
       <span>
         <span className="accented-text">{`${idx + 1}.  `}</span>
-        <span>{beatTitle(beats, beat, hierarchyLevels, positionOffset)}</span>
+        <span>
+          {beatTitle(beats, beat, hierarchyLevels, positionOffset, hierarchyEnabled, isSeries)}
+        </span>
       </span>
       <div className="outline__minimap__dots">{renderCardDots()}</div>
     </div>
@@ -125,6 +129,8 @@ MiniBeat.propTypes = {
   positionOffset: PropTypes.number.isRequired,
   reorderCardsWithinLine: PropTypes.func.isRequired,
   reorderCardsInBeat: PropTypes.func.isRequired,
+  hierarchyEnabled: PropTypes.bool,
+  isSeries: PropTypes.bool,
 }
 
 export default MiniBeat

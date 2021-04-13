@@ -1,11 +1,12 @@
 import React from 'react'
 import electron from 'electron'
-import { localeNames, getCurrentLocale } from 'plottr_locales'
+import { localeNames, getCurrentLocale, setupI18n } from 'plottr_locales'
 import SETTINGS from '../utils/settings'
 
 export default function LanguagePicker(props) {
   const onSelect = (event) => {
     SETTINGS.set('locale', event.target.value)
+    setupI18n(SETTINGS, { electron })
   }
 
   const renderedOptions = Object.entries(localeNames).map((entry) => {

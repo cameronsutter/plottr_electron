@@ -17,6 +17,8 @@ const {
   positionOffsetSelector,
   sortedLinesByBookSelector,
   sortedHierarchyLevels,
+  beatHierarchyIsOn,
+  isSeriesSelector,
 } = selectors
 
 const targetPosition = 115
@@ -61,6 +63,8 @@ class MiniMap extends Component {
       actions,
       ui,
       hierarchyLevels,
+      hierarchyEnabled,
+      isSeries,
     } = this.props
     const linesById = keyBy(lines, 'id')
     return beats.map((beat, idx) => {
@@ -86,6 +90,8 @@ class MiniMap extends Component {
             positionOffset={positionOffset}
             reorderCardsWithinLine={actions.reorderCardsWithinLine}
             reorderCardsInBeat={actions.reorderCardsInBeat}
+            hierarchyEnabled={hierarchyEnabled}
+            isSeries={isSeries}
           />
         </NavItem>
       )
@@ -137,6 +143,8 @@ MiniMap.propTypes = {
   positionOffset: PropTypes.number.isRequired,
   actions: PropTypes.object,
   handleActive: PropTypes.func,
+  hierarchyEnabled: PropTypes.bool,
+  isSeries: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -147,6 +155,8 @@ function mapStateToProps(state) {
     lines: sortedLinesByBookSelector(state.present),
     ui: state.present.ui,
     positionOffset: positionOffsetSelector(state.present),
+    hierarchyEnabled: beatHierarchyIsOn(state.present),
+    isSeries: isSeriesSelector(state.present),
   }
 }
 

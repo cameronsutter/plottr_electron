@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import { TiFlowChildren } from 'react-icons/ti'
+import { IoIosReturnRight } from 'react-icons/io'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import cx from 'classnames'
 import { selectors, helpers, actions } from 'pltr/v2'
@@ -176,7 +176,7 @@ class BeatInsertCell extends PureComponent {
         onClick={this.insertChild}
       >
         <div className={this.wrapperClassSubIcon()}>
-            <TiFlowChildren size={25} className="acts-tour-step8" />
+          <IoIosReturnRight size={25} className="acts-tour-step8" />
         </div>
       </div>
     ) : null

@@ -1,0 +1,75 @@
+{
+  "name": "plottr_components",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "dependencies": {
+    "net": "^1.0.2",
+    "react-bootstrap": "^0.32.4",
+    "react-scripts": "4.0.3",
+    "slate": "^0.59.0",
+    "slate-history": "^0.59.0",
+    "slate-hyperscript": "^0.59.0",
+    "slate-react": "^0.59.0",
+    "tls": "0.0.1",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "npm-run-all --parallel watch:*",
+    "watch:start": "cross-env NODE_ENV=production babel src/components --watch --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,stories.js,__snapshots__",
+    "watch:sass": "dart-sass --watch src/css/components.scss dist/components.css",
+    "watch:dup-sass": "dart-sass --watch src/css/components.scss src/css/components.css",
+    "watch:copy-fonts": "cd src/css && copy *.woff2 ../../dist/",
+    "eject": "react-scripts eject",
+    "clean": "rimraf dist",
+    "compile": "npm run clean && cross-env NODE_ENV=production babel src/components --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,stories.js,__snapshots__",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "@babel/preset-react": "^7.12.13",
+    "@storybook/addon-actions": "^6.1.21",
+    "@storybook/addon-essentials": "^6.1.21",
+    "@storybook/addon-links": "^6.1.21",
+    "@storybook/node-logger": "^6.1.21",
+    "@storybook/preset-create-react-app": "^3.1.7",
+    "@storybook/react": "^6.1.21",
+    "copy": "^0.3.2",
+    "cross-env": "^7.0.3",
+    "dart-sass": "^1.25.0",
+    "npm-run-all": "^4.1.5",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "pltr": "file:../pltr",
+    "plottr_locales": "file:../plottr_locales",
+    "react-icons": "^3.11.0",
+    "react-image-file-resizer": "^0.2.1",
+    "dom-parser": "^0.1.6",
+    "image-extensions": "^1.1.0",
+    "is-hotkey": "^0.1.6",
+    "is-url": "^1.2.4",
+    "pagedown": "^1.1.0",
+    "react-proptypes": "^1.0.0",
+    "react-modal": "^3.8.1",
+    "rollbar": "^2.19.4",
+    "react-scripts": "4.0.3"
+  }
+}

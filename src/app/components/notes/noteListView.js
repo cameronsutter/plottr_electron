@@ -19,10 +19,9 @@ import NoteView from 'components/notes/noteView'
 import FilterList from 'components/filterList'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
-import { ErrorBoundary } from 'connected-components'
+import { ErrorBoundary, SubNav } from 'connected-components'
 import NoteItem from './NoteItem'
 import { newIds, actions } from 'pltr/v2'
-import SubNav from '../../containers/SubNav'
 
 const { nextId } = newIds
 

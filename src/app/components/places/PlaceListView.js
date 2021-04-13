@@ -20,12 +20,12 @@ import {
   CustomAttrFilterList,
   ErrorBoundary,
   SortList,
+  SubNav,
 } from 'connected-components'
 import PlaceView from 'components/places/placeView'
 import { t as i18n } from 'plottr_locales'
 import PlaceItem from './PlaceItem'
 import { newIds, actions, selectors } from 'pltr/v2'
-import SubNav from '../../containers/SubNav'
 
 const { nextId } = newIds
 

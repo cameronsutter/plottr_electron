@@ -7,7 +7,7 @@ import TagView from 'components/tag/tagView'
 import cx from 'classnames'
 import { t as i18n } from 'plottr_locales'
 import { actions, selectors, initialState } from 'pltr/v2'
-import SubNav from '../../containers/SubNav'
+import { SubNav } from 'connected-components'
 
 const { sortedTagsSelector } = selectors
 const { tag } = initialState

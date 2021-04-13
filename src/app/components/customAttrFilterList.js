@@ -131,7 +131,7 @@ class CustomAttrFilterList extends Component {
 
   render() {
     const CAlists = this.props.customAttributes.map(this.renderList)
-    const { showCharacters, showPlaces, showCategory, isSeries } = this.props
+    const { showCharacters, showPlaces, showCategory, isSeries, showColor } = this.props
     const orEmpty = (value) => (value ? value : [])
 
     let cardColors = this.props.items.map((item) => item.color)
@@ -168,11 +168,13 @@ class CustomAttrFilterList extends Component {
           updateItems={this.updateFilter}
           filteredItems={[...orEmpty(this.state.filteredItems.tag)]}
         />
-        <CardColorFilterList
-          updateItems={this.updateFilter}
-          colors={cardColorsToFilterBy}
-          filteredItems={[...orEmpty(this.state.filteredItems.color)]}
-        />
+        {showColor && 
+          <CardColorFilterList
+            updateItems={this.updateFilter}
+            colors={cardColorsToFilterBy}
+            filteredItems={[...orEmpty(this.state.filteredItems.color)]}
+          />
+        }
         {CAlists}
       </div>
     )

@@ -70,9 +70,6 @@ class CardCell extends PureComponent {
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
-      if (card.color === null) {
-        card.color = 'null'
-      }
       const isLastOne = idx == cards.length - 1
       return (
         <div key={card.id}>

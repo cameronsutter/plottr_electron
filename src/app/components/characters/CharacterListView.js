@@ -21,8 +21,12 @@ import CharacterView from 'components/characters/characterView'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
-import CharacterItem from './CharacterItem'
-import { CharacterCategoriesModal, InputModal, TemplatePicker } from 'connected-components'
+import {
+  CharacterItem,
+  CharacterCategoriesModal,
+  InputModal,
+  TemplatePicker,
+} from 'connected-components'
 import { newIds, actions, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 

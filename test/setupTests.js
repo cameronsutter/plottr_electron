@@ -13,6 +13,13 @@ ReactWrapper.prototype.findByTestId = ShallowWrapper.prototype.findByTestId = fu
   return this.find(`[data-testid="${testId}"]`)
 }
 
+ReactWrapper.prototype.findTypeWithTestId = ShallowWrapper.prototype.findTypeWithTestId = function (
+  type,
+  testId
+) {
+  return this.find(`${type}[data-testid="${testId}"]`)
+}
+
 configure({ adapter: new Adapter() })
 
 jest.mock('electron-util', () => ({
@@ -32,6 +39,11 @@ jest.mock('electron', () => ({
   },
   shell: {
     openExternal: jest.fn(),
+  },
+  app: {
+    getPath: () => '/tmp',
+    getName: jest.fn(),
+    getVersion: jest.fn(),
   },
 }))
 

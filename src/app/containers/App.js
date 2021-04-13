@@ -4,7 +4,7 @@ import PropTypes from 'react-proptypes'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ErrorBoundary from './ErrorBoundary'
-import GuidedTour from '../components/GuidedTour'
+import ActsTour from '../components/intros/Tour'
 import TemplateCreate from '../../common/components/templates/TemplateCreate'
 import AskToSaveModal from '../components/dialogs/AskToSaveModal'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
@@ -16,7 +16,7 @@ let isTryingToReload = false
 let isTryingToClose = false
 
 export default class App extends Component {
-  state = { showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true }
+  state = { showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true, showTour: this.props.showTour }
 
   componentDidMount() {
     ipcRenderer.on('save-as-template-start', (event, type) => {
@@ -109,8 +109,13 @@ export default class App extends Component {
   }
 
   renderGuidedTour() {
-    if (!this.props.showTour) return null
-    return <GuidedTour />
+    let feature = store.getState().present.tour.feature.name
+    if(!feature) return null
+    if(
+      store.getState().present.featureFlags.BEAT_HIERARCHY && //in the future can include a switch(feature) which if case('acts') -> tourConditions = true --- if tourConditions true then the tour will run
+      feature
+    ) return <ActsTour />
+    return null
   }
 
   render() {
@@ -119,11 +124,12 @@ export default class App extends Component {
         <ErrorBoundary>
           <Navigation />
         </ErrorBoundary>
-        <main className="project-main">
+        <main className="project-main tour-end">
           <Body />
         </main>
         {this.renderTemplateCreate()}
         {this.renderAskToSave()}
+        {this.state.showTour && this.renderGuidedTour()}
       </ErrorBoundary>
     )
   }

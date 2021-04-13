@@ -20,6 +20,7 @@ const HierarchyLevel = ({
   backgroundColor,
   editHierarchyLevel,
 }) => {
+  // XXXXXX - beats/hierarchy configuration modal
   const [editingName, setEditingName] = useState(false)
   const [editingAutoNumber, setEditingAutoNumber] = useState(false)
   const [editingTextColor, setEditingTextColor] = useState(false)
@@ -36,7 +37,7 @@ const HierarchyLevel = ({
   }
 
   return (
-    <div className="beat-config-modal__levels-table-row">
+    <div className="beat-config-modal__levels-table-row acts-tour-step4">
       <EditOrDisplay
         id={`hierarchy-level-name-config-${level}`}
         type="text"

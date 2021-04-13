@@ -15,6 +15,17 @@ function buildHelpMenu() {
         click: () => shell.openExternal('https://plottr.com/demos/'),
       },
       {
+        label: i18n('Guided Tours'),
+        submenu: [
+          {
+            label: i18n('Acts and Beats'),
+            click: function (event, focusedWindow) {
+              focusedWindow.webContents.send('acts-tour-start')
+            },
+          }
+        ]
+      },
+      {
         label: i18n('Documentation'),
         click: () => shell.openExternal('https://docs.plottr.com'),
       },

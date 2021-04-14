@@ -42,7 +42,11 @@ class ColorPicker extends Component {
 
   render() {
     return (
-      <PlottrModal isOpen={true} onRequestClose={() => this.closeDialog(this.props.color)} styles={defaultStyles,"zIndex:1002"}>
+      <PlottrModal
+        isOpen={true}
+        onRequestClose={() => this.closeDialog(this.props.color)}
+        styles={(defaultStyles, 'zIndex:1002')}
+      >
         <div className="color-picker__wrapper">
           <h2 className="color-picker__title">{i18n('Pick a color')}</h2>
           <div className="color-picker__input-box form-horizontal">

@@ -22,8 +22,8 @@ function buildHelpMenu() {
             click: function (event, focusedWindow) {
               focusedWindow.webContents.send('acts-tour-start')
             },
-          }
-        ]
+          },
+        ],
       },
       {
         label: i18n('Documentation'),

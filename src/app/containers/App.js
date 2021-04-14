@@ -16,7 +16,13 @@ let isTryingToReload = false
 let isTryingToClose = false
 
 export default class App extends Component {
-  state = { showTemplateCreate: false, type: null, showAskToSave: false, blockClosing: true, showTour: this.props.showTour }
+  state = {
+    showTemplateCreate: false,
+    type: null,
+    showAskToSave: false,
+    blockClosing: true,
+    showTour: this.props.showTour,
+  }
 
   componentDidMount() {
     ipcRenderer.on('save-as-template-start', (event, type) => {
@@ -110,11 +116,12 @@ export default class App extends Component {
 
   renderGuidedTour() {
     let feature = store.getState().present.tour.feature.name
-    if(!feature) return null
-    if(
+    if (!feature) return null
+    if (
       store.getState().present.featureFlags.BEAT_HIERARCHY && //in the future can include a switch(feature) which if case('acts') -> tourConditions = true --- if tourConditions true then the tour will run
       feature
-    ) return <ActsTour />
+    )
+      return <ActsTour />
     return null
   }
 

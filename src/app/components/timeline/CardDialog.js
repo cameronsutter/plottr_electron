@@ -20,10 +20,9 @@ import cx from 'classnames'
 import tinycolor from 'tinycolor2'
 import RichText from '../rce/RichText'
 import SelectList from 'components/selectList'
-import { DeleteConfirmModal } from 'connected-components'
+import { ColorPickerColor, DeleteConfirmModal } from 'connected-components'
 import EditAttribute from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
-import ColorPickerColor from '../ColorPickerColor'
 import MiniColorPicker from '../MiniColorPicker'
 
 const {

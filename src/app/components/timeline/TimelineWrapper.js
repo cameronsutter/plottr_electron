@@ -113,14 +113,16 @@ class TimelineWrapper extends Component {
     this.setState({
       beatConfigIsOpen: false,
     })
-    if(this.props.tour.run && this.props.tour.stepIndex === 4)this.props.tourActions.tourNext('next')
+    if (this.props.tour.run && this.props.tour.stepIndex === 4)
+      this.props.tourActions.tourNext('next')
   }
 
   openBeatConfig = () => {
     this.setState({
       beatConfigIsOpen: true,
     })
-    if(this.props.tour.run && this.props.tour.stepIndex === 0)this.props.tourActions.tourNext('next')
+    if (this.props.tour.run && this.props.tour.stepIndex === 0)
+      this.props.tourActions.tourNext('next')
   }
 
   // ///////////////
@@ -421,6 +423,7 @@ TimelineWrapper.propTypes = {
   filterIsEmpty: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
   tourActions: PropTypes.object.isRequired,
+  tour: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -438,7 +441,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.ui, dispatch),
-    tourActions: bindActionCreators(actions.tour, dispatch)
+    tourActions: bindActionCreators(actions.tour, dispatch),
   }
 }
 

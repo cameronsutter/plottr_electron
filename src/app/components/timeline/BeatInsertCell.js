@@ -19,7 +19,7 @@ class BeatInsertCell extends PureComponent {
   insert = () => {
     const { beatToLeft, handleInsert } = this.props
     handleInsert(beatToLeft && beatToLeft.id)
-    if(this.props.tour.run)this.props.tourActions.tourNext('next')
+    if (this.props.tour.run) this.props.tourActions.tourNext('next')
   }
 
   insertChild = () => {
@@ -156,7 +156,10 @@ class BeatInsertCell extends PureComponent {
         )}
       >
         <div className={this.wrapperClassSubIcon()}>
-          <div className={tour.run ? "acts-tour-step7" : ""} onClick={() => !isFirst && expanded === true && this.props.tourActions.tourNext('next')}>
+          <div
+            className={tour.run ? 'acts-tour-step7' : ''}
+            onClick={() => !isFirst && expanded === true && this.props.tourActions.tourNext('next')}
+          >
             {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
           </div>
         </div>
@@ -188,7 +191,7 @@ class BeatInsertCell extends PureComponent {
     return (
       <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
         <div className={this.wrapperClass()}>
-          <Glyphicon glyph="plus" className={!isFirst && "acts-tour-step6"}/>
+          <Glyphicon glyph="plus" className={!isFirst && 'acts-tour-step6'} />
         </div>
       </div>
     )
@@ -250,6 +253,8 @@ class BeatInsertCell extends PureComponent {
     handleInsert: PropTypes.func.isRequired,
     handleInsertChild: PropTypes.func,
     isInBeatList: PropTypes.bool.isRequired,
+    tour: PropTypes.object.isRequired,
+    tourActions: PropTypes.object.isRequired,
     beatToLeft: PropTypes.object,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,
@@ -281,9 +286,9 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
   return {
-    tourActions:bindActionCreators(actions.tour,dispatch)
+    tourActions: bindActionCreators(actions.tour, dispatch),
   }
 }
 

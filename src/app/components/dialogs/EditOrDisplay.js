@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { DropdownButton, MenuItem, Button, Glyphicon } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 
-import ColorPickerColor from 'components/ColorPickerColor'
+import { ColorPickerColor } from 'connected-components'
 import ColorPicker from 'components/colorpicker'
 
 const EditOrDisplay = ({ id, editing, value, type, setValue, setEditing, options }) => {

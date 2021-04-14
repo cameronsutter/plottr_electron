@@ -253,6 +253,8 @@ class BeatInsertCell extends PureComponent {
     handleInsert: PropTypes.func.isRequired,
     handleInsertChild: PropTypes.func,
     isInBeatList: PropTypes.bool.isRequired,
+    tour: PropTypes.object.isRequired,
+    tourActions: PropTypes.object.isRequired,
     beatToLeft: PropTypes.object,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,

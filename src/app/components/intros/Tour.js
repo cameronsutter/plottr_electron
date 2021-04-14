@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actions, selectors } from 'pltr/v2'
 
-import ReactJoyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride'
+import ReactJoyride, { EVENTS } from 'react-joyride'
 
 const { tourSelector } = selectors
 import { ACTS_TOUR_STEPS } from './actsTourSteps'
@@ -55,7 +55,7 @@ class Tour extends Component {
 
   handleJoyrideCallback = (data) => {
     const { joyride } = this.props
-    const { action, index, type, status } = data
+    const { action, index, type } = data
 
     if (
       type === EVENTS.STEP_AFTER &&
@@ -123,6 +123,14 @@ class Tour extends Component {
 
 Tour.propTypes = {
   tour: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  run: PropTypes.bool.isRequired,
+  steps: PropTypes.array.isRequired,
+  stepIndex: PropTypes.number.isRequired,
+  transitioning: PropTypes.bool,
+  b2bTransition: PropTypes.bool,
+  actions: PropTypes.object.isRequired,
+  feature: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

@@ -423,6 +423,7 @@ TimelineWrapper.propTypes = {
   filterIsEmpty: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
   tourActions: PropTypes.object.isRequired,
+  tour: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

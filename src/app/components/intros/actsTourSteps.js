@@ -1,5 +1,3 @@
-import { TiFlowChildren } from 'react-icons/ti'
-
 export const ACTS_TOUR_STEPS = [
   {
     target: '.acts-tour-step1',

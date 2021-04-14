@@ -168,6 +168,7 @@ BeatConfigModal.propTypes = {
   levelsOfHierarchy: PropTypes.number.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   setHierarchyLevels: PropTypes.func.isRequired,
+  tourNext: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({

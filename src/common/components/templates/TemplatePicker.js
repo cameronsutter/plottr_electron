@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'react-proptypes'
 import { shell, remote, ipcRenderer } from 'electron'
-import PlottrModal from 'components/PlottrModal'
 import { t as i18n } from 'plottr_locales'
 import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import {
@@ -17,7 +16,7 @@ import CardTemplateDetails from './CardTemplateDetails'
 import cx from 'classnames'
 import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
-import { DeleteConfirmModal } from 'connected-components'
+import { DeleteConfirmModal, PlottrModal } from 'connected-components'
 import getTestIds from 'test-utils/getTestIds'
 import { template } from 'pltr/v2'
 

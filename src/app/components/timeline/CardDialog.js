@@ -3,7 +3,6 @@ import PropTypes from 'react-proptypes'
 import PureComponent from 'react.pure.component'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import PlottrModal from 'components/PlottrModal'
 import {
   ButtonToolbar,
   Button,
@@ -20,7 +19,7 @@ import cx from 'classnames'
 import tinycolor from 'tinycolor2'
 import RichText from '../rce/RichText'
 import SelectList from 'components/selectList'
-import { ColorPickerColor, DeleteConfirmModal } from 'connected-components'
+import { PlottrModal, ColorPickerColor, DeleteConfirmModal } from 'connected-components'
 import EditAttribute from '../EditAttribute'
 import { helpers, actions, selectors } from 'pltr/v2'
 import MiniColorPicker from '../MiniColorPicker'

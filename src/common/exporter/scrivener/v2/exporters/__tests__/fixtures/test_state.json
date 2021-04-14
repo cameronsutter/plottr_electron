@@ -560,5 +560,6 @@
       "backgroundColor": "#f1f5f8"
     }
   },
-  "images": {}
+  "images": {},
+  "featureFlags": {}
 }

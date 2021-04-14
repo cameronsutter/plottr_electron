@@ -25,7 +25,7 @@
     "slate-hyperscript": "^0.57.1",
     "tinycolor2": "^1.4.2"
   },
-  "peerDependencies": {
-    "plottr_locales": "0.0.1"
+  "devDependencies": {
+    "plottr_locales": "file:../plottr_locales"
   }
 }

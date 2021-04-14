@@ -21,7 +21,7 @@ import {
 import Image from './Image'
 import { t as i18n } from 'plottr_locales'
 import { Spinner } from '../../../common/components/Spinner'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import { actions } from 'pltr/v2'
 import { readImage, isImageUrl, readImageFromURL } from '../../../common/utils/images'
 

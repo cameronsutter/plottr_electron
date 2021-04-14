@@ -14,7 +14,7 @@ import {
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import { actions, helpers, selectors } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 

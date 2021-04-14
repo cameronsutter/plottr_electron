@@ -17,7 +17,7 @@ import CardTemplateDetails from './CardTemplateDetails'
 import cx from 'classnames'
 import TemplateEdit from './TemplateEdit'
 import { FaSave } from 'react-icons/fa'
-import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import getTestIds from 'test-utils/getTestIds'
 import { template } from 'pltr/v2'
 

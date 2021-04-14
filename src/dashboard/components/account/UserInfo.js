@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import { t } from 'plottr_locales'
 import { machineIdSync } from 'node-machine-id'
 import { Button } from 'react-bootstrap'
-import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 
 const deviceID = machineIdSync(true)
 

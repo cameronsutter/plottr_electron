@@ -86,6 +86,10 @@ module.exports = {
     '^dashboard(.*)$': '<rootDir>/src/dashboard/$1',
     '^store(.*)$': '<rootDir>/src/app/store/$1',
     '^test(.*)$': '<rootDir>/test/$1',
+    '^connected-components$': '<rootDir>/src/connected-components.js',
+    '^react($|/.+)': '<rootDir>/node_modules/react$1',
+    '^react-dom($|/.+)': '<rootDir>/node_modules/react-dom$1',
+    '^react-test-renderer($|/.+)': '<rootDir>/node_modules/react-test-renderer$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

@@ -39,7 +39,7 @@ function buildHelpMenu() {
       },
       {
         label: i18n('Request a Feature'),
-        click: () => shell.openExternal('docs.plottr.com/submit-a-ticket?help=Feature%20Request'),
+        click: () => shell.openExternal('https://docs.plottr.com/submit-a-ticket?help=Feature%20Request'),
       },
       {
         type: 'separator',

@@ -74,6 +74,7 @@
     "devtron": "^1.2.1",
     "docx": "^5.0.2",
     "dom-parser": "^0.1.6",
+    "duplicate-package-checker-webpack-plugin": "^3.0.0",
     "electron": "^10.2.0",
     "electron-builder": "^22.8.0",
     "electron-devtools-installer": "^3.0.0",

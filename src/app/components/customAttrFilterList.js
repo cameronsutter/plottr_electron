@@ -167,13 +167,13 @@ class CustomAttrFilterList extends Component {
           updateItems={this.updateFilter}
           filteredItems={[...orEmpty(this.state.filteredItems.tag)]}
         />
-        {showColor && 
+        {showColor && (
           <CardColorFilterList
             updateItems={this.updateFilter}
             colors={cardColorsToFilterBy}
             filteredItems={[...orEmpty(this.state.filteredItems.color)]}
           />
-        }
+        )}
         {CAlists}
       </div>
     )

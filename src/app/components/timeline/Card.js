@@ -180,7 +180,7 @@ class Card extends Component {
     let titleStyle = {}
     if (!isSmall && card.color) {
       titleStyle.backgroundColor = card.color
-      const [useBlack, _] = getContrastYIQ(card.color !== 'null' && card.color || '#F1F5F8') // $gray-9
+      const [useBlack, _] = getContrastYIQ((card.color !== 'null' && card.color) || '#F1F5F8') // $gray-9
       if (!useBlack) {
         titleStyle.color = 'white'
       }
@@ -227,7 +227,7 @@ class Card extends Component {
   render() {
     const { color, card, isVisible, allowDrop, last, isSmall, isMedium, ui } = this.props
     var cardStyle = {
-      borderColor: card.color !== "null" ? tinycolor(card.color).darken(10).toHslString() : color,
+      borderColor: card.color !== 'null' ? tinycolor(card.color).darken(10).toHslString() : color,
     }
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'

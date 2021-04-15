@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ipcRenderer } from 'electron'
 import { t } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
@@ -20,17 +20,34 @@ export default function OptionsHome(props) {
   const [loading, setLoading] = useState(false)
   const [preloading, setPreloading] = useState(false)
 
+  const [loop, setLoop] = useState()
+  const [message, setMessage] = useState(false)
+
+  useEffect(() => {
+    setLoop(
+      setInterval(() => {
+        if (preloading && loading) {
+          setMessage(true)
+        }
+      }, 5000)
+    )
+    return function cleanup() {
+      clearInterval(loop)
+    }
+  }, [preloading, loading])
+
   const onChangeBackupLocation = (event) => {
-    let file = event.target.files[0];
-    if(file){
+    let file = event.target.files[0]
+    if (file) {
       let folder = file.path.split('/')
-      let folderPath = folder.slice(0,folder.length - 1).join("/")
+      let folderPath = folder.slice(0, folder.length - 1).join('/')
       setBackupLocation(folderPath)
       saveSetting('user.backupLocation', folderPath)
     }
     setLoading(false)
     setPreloading(false)
   }
+
   const displayBackupOption = () => {
     return (
       <div className="backup-type">
@@ -61,7 +78,15 @@ export default function OptionsHome(props) {
   }
 
   return (
-    <div className="dashboard__options" onFocus={() => {if(preloading)setLoading(true)}} onBlur={() => {if(!preloading)setLoading(false)}}>
+    <div
+      className="dashboard__options"
+      onFocus={() => {
+        if (preloading) setLoading(true)
+      }}
+      onBlur={() => {
+        if (!preloading) setLoading(false)
+      }}
+    >
       <h1>{t('Settings')}</h1>
       <div>
         <div className="dashboard__options__item">
@@ -131,9 +156,24 @@ export default function OptionsHome(props) {
                 value={backupLocation}
                 onChange={(event) => saveSetting('user.backupLocation', event.target.value)}
               />
-              <div style={{display:'flex',alignItems:'center'}}>
-                <input type='file' className={'custom-file-input'} accept="text/directory" directory="" webkitdirectory="" onClick={() => setPreloading(!preloading)} onChange={onChangeBackupLocation} style={{color:'transparent',marginRight:10}}/>
-                {preloading && loading && <Spinner style={{marginTop:8}} />}
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="file"
+                  className={'custom-file-input'}
+                  accept="text/directory"
+                  directory=""
+                  webkitdirectory=""
+                  onClick={() => setPreloading(!preloading)}
+                  onChange={onChangeBackupLocation}
+                  style={{ color: 'transparent', marginRight: 10 }}
+                />
+                {preloading && loading && <Spinner style={{ marginTop: 8 }} />}
+                {message && (
+                  <p style={{ fontSize: 12, marginTop: 20, marginLeft: 10 }}>
+                    If the folder you selected is empty, try adding a file to it manually then
+                    trying 'Select folder' again.
+                  </p>
+                )}
               </div>
             </FormGroup>
           </div>

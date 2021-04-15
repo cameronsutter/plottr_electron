@@ -46,7 +46,9 @@ export default function exportOutline(state, namesMapping, doc, options) {
     const title = uniqueBeatTitleSelector(state, beat.id)
     let paragraphs = [new Paragraph('')]
 
-    if (options.outline.sceneCards) {
+    if (!options.outline.sceneCards) {
+      paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
+    } else {
       const cards = beatCardMapping[beat.id]
       const customAttrs = cardsCustomAttributesSelector(state)
       const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)

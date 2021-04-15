@@ -1,4 +1,4 @@
-import { app, shell, ipcRenderer, remote } from 'electron'
+import { remote, shell, ipcRenderer } from 'electron'
 import { connections } from 'plottr_components'
 
 import {
@@ -11,6 +11,7 @@ import log from 'electron-log'
 import { createErrorReport } from './common/utils/full_error_report'
 import SETTINGS from './common/utils/settings'
 
+const { app } = remote
 const version = app.getVersion()
 
 const platform = {

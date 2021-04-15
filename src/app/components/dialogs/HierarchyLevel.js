@@ -10,12 +10,13 @@ const {
 } = actions
 
 const HierarchyLevel = ({
+  isDarkMode,
   name,
   level,
   autoNumber,
-  textColor,
+  dark,
+  light,
   textSize,
-  borderColor,
   borderStyle,
   backgroundColor,
   editHierarchyLevel,
@@ -59,7 +60,7 @@ const HierarchyLevel = ({
         setValue={setValue('textColor')}
         setEditing={setEditingTextColor}
         editing={editingTextColor}
-        value={textColor}
+        value={isDarkMode ? dark.textColor : light.textColor}
       />
       <EditOrDisplay
         id={`hierarchy-level-auto-text-size-${level}`}
@@ -75,7 +76,7 @@ const HierarchyLevel = ({
         setValue={setValue('borderColor')}
         setEditing={setEditingBorderColor}
         editing={editingBorderColor}
-        value={borderColor}
+        value={isDarkMode ? dark.borderColor : light.borderColor}
       />
       <EditOrDisplay
         id={`hierarchy-level-auto-border-style-${level}`}
@@ -99,12 +100,13 @@ const HierarchyLevel = ({
 }
 
 HierarchyLevel.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   level: PropTypes.number.isRequired,
   autoNumber: PropTypes.bool.isRequired,
-  textColor: PropTypes.string.isRequired,
+  dark: PropTypes.object.isRequired,
+  light: PropTypes.object.isRequired,
   textSize: PropTypes.number.isRequired,
-  borderColor: PropTypes.string.isRequired,
   borderStyle: PropTypes.oneOf(borderStyles.ALL_STYLES),
   backgroundColor: PropTypes.string.isRequired,
   editHierarchyLevel: PropTypes.func.isRequired,

@@ -41,6 +41,7 @@ const BeatConfigModal = ({
   levelsOfHierarchy,
   hierarchyLevels,
   setHierarchyLevels,
+  isDarkMode,
 }) => {
   const [stagedHierarchyLevels, setStagedHierarchyLevels] = useState(null)
 
@@ -146,7 +147,7 @@ const BeatConfigModal = ({
             </div>
             {hierarchyLevels.map((args) => (
               <React.Fragment key={args.level}>
-                <HierarchyLevel {...args} />
+                <HierarchyLevel isDarkMode={isDarkMode} {...args} />
               </React.Fragment>
             ))}
           </div>
@@ -164,6 +165,7 @@ BeatConfigModal.propTypes = {
   levelsOfHierarchy: PropTypes.number.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   setHierarchyLevels: PropTypes.func.isRequired,
+  isDarkMode: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => ({

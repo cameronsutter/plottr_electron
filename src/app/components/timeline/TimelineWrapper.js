@@ -388,7 +388,9 @@ class TimelineWrapper extends Component {
     return helpers.featureFlags.gatedByBeatHierarchy(this.props.featureFlags)(() => {
       if (!this.state.beatConfigIsOpen) return null
 
-      return <BeatConfigModal closeDialog={this.closeBeatConfig} />
+      return (
+        <BeatConfigModal isDarkMode={this.props.ui.darkMode} closeDialog={this.closeBeatConfig} />
+      )
     })
   }
 

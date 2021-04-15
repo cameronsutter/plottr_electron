@@ -79,7 +79,7 @@ const BeatConfigModal = ({
   const RemoveLevelConfirmation = () =>
     stagedHierarchyLevels ? (
       <DeleteConfirmModal
-        customText={i18n('Are you sure?  (Removing levels may delete scene cards!)')}
+        customText={i18n('Are you sure?  (Removing levels may delete scene cards in all of the books in this project!)')}
         onDelete={() => {
           setHierarchyLevels(stagedHierarchyLevels)
           setStagedHierarchyLevels(null)

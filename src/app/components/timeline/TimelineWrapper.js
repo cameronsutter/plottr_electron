@@ -27,7 +27,7 @@ import ClearNavItem from './ClearNavItem'
 import { helpers, actions, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 import MPQ from '../../../common/utils/MPQ'
-import BeatConfigModal from 'components/dialogs/BeatConfigModal'
+import ActsConfigModal from 'components/dialogs/ActsConfigModal'
 
 const win = remote.getCurrentWindow()
 
@@ -301,7 +301,7 @@ class TimelineWrapper extends Component {
                   size={16}
                   style={{ verticalAlign: 'text-bottom', marginRight: '4px' }}
                 />
-                {i18n('Acts')}
+                {i18n('Structure')}
               </Button>
             </NavItem>
           ))}
@@ -392,7 +392,7 @@ class TimelineWrapper extends Component {
     return helpers.featureFlags.gatedByBeatHierarchy(this.props.featureFlags)(() => {
       if (!this.state.beatConfigIsOpen) return null
 
-      return <BeatConfigModal closeDialog={this.closeBeatConfig} />
+      return <ActsConfigModal closeDialog={this.closeBeatConfig} />
     })
   }
 

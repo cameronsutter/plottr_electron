@@ -24,6 +24,7 @@ class BeatInsertCell extends PureComponent {
 
   insertChild = () => {
     const { beatToLeft, handleInsertChild } = this.props
+    console.log(beatToLeft)
     handleInsertChild(beatToLeft && beatToLeft.id)
   }
 

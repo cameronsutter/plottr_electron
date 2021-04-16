@@ -118,7 +118,6 @@ export default function OptionsHome(props) {
         <hr />
         <h4>{t('Beta')}</h4>
         <div className="dashboard__options__item">
-<<<<<<< HEAD
           <h4>{t('Backup Storage Type')}</h4>
           <hr />
           <h1 className="dashboard__options">{t('Beta')}</h1>
@@ -185,51 +184,11 @@ export default function OptionsHome(props) {
           <div className="dashboard__options__item disabled">
             <h4>{t('Auto-save')}</h4>
             <Switch
-=======
-          <h4>{t('Act Structure')}</h4>
-          <Switch
-            isOn={!!settings.user.beatHierarchy}
-            handleToggle={toggleBeatHierarchy}
-            labelText={t('Organize your scene cards into Chapters and Acts')}
-          />
-        </div>
-        <hr />
-        <h1 className="secondary-text">{t('Coming Soon!')}</h1>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Auto-save')}</h4>
-          <Switch
-            disabled
-            isOn={!!settings.user.autoSave || true}
-            handleToggle={() => saveSetting('user.autoSave', !settings.user.autoSave)}
-            labelText={t('By default, use auto-save for projects')}
-          />
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Days of Backup')}</h4>
-          <FormGroup controlId="backupDays">
-            <select onChange={(event) => setBackupType(event.target.value)}>
-              <option value="days">{t('Days of Backups')}</option>
-              <option value="number">{t('Number of Backups')}</option>
-            </select>
-            {displayBackupOption()}
-          </FormGroup>
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Backup Location')}</h4>
-          <FormGroup controlId="backupLocation">
-            <ControlLabel>{t('Folder where backups are stored')}</ControlLabel>
-            <FormControl
-              type="text"
->>>>>>> staging
               disabled
               value={backupLocation}
               onChange={(event) => saveSetting('user.backupLocation', event.target.value)}
             />
-<<<<<<< HEAD
           </div> */}
-=======
-          </FormGroup>
->>>>>>> staging
         </div>
       </div>
     </div>

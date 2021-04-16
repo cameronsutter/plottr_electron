@@ -7,8 +7,9 @@ import { t as i18n } from 'plottr_locales'
 import { IoIosReturnRight } from 'react-icons/io'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import cx from 'classnames'
-import { selectors, helpers } from 'pltr/v2'
+import { selectors, helpers, actions } from 'pltr/v2'
 import VisualLine from './VisualLine'
+import { bindActionCreators } from 'redux'
 
 const {
   orientedClassName: { orientedClassName },
@@ -18,6 +19,7 @@ class BeatInsertCell extends PureComponent {
   insert = () => {
     const { beatToLeft, handleInsert } = this.props
     handleInsert(beatToLeft && beatToLeft.id)
+    if (this.props.tour.run) this.props.tourActions.tourNext('next')
   }
 
   insertChild = () => {
@@ -143,7 +145,7 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderToggleCollapse() {
-    const { handleInsertChild, toggleExpanded, expanded } = this.props
+    const { handleInsertChild, toggleExpanded, expanded, tour, isFirst } = this.props
 
     return !handleInsertChild && toggleExpanded ? (
       <div
@@ -154,7 +156,12 @@ class BeatInsertCell extends PureComponent {
         )}
       >
         <div className={this.wrapperClassSubIcon()}>
-          {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+          <div
+            className={tour.run ? 'acts-tour-step7' : ''}
+            onClick={() => !isFirst && expanded === true && this.props.tourActions.tourNext('next')}
+          >
+            {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+          </div>
         </div>
       </div>
     ) : null
@@ -172,17 +179,19 @@ class BeatInsertCell extends PureComponent {
         onClick={this.insertChild}
       >
         <div className={this.wrapperClassSubIcon()}>
-          <IoIosReturnRight size={25} />
+          <IoIosReturnRight size={25} className="acts-tour-step8" />
         </div>
       </div>
     ) : null
   }
 
   renderInsertBeat() {
+    const { isFirst } = this.props
+
     return (
       <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
         <div className={this.wrapperClass()}>
-          <Glyphicon glyph="plus" />
+          <Glyphicon glyph="plus" className={!isFirst && 'acts-tour-step6'} />
         </div>
       </div>
     )
@@ -244,6 +253,8 @@ class BeatInsertCell extends PureComponent {
     handleInsert: PropTypes.func.isRequired,
     handleInsertChild: PropTypes.func,
     isInBeatList: PropTypes.bool.isRequired,
+    tour: PropTypes.object.isRequired,
+    tourActions: PropTypes.object.isRequired,
     beatToLeft: PropTypes.object,
     lineId: PropTypes.number,
     showLine: PropTypes.bool,
@@ -271,7 +282,14 @@ function mapStateToProps(state, ownProps) {
     hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
     hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
     atMaximumDepth: selectors.atMaximumHierarchyDepthSelector(state.present, beatToLeftId),
+    tour: selectors.tourSelector(state.present),
   }
 }
 
-export default connect(mapStateToProps, null)(BeatInsertCell)
+function mapDispatchToProps(dispatch) {
+  return {
+    tourActions: bindActionCreators(actions.tour, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BeatInsertCell)

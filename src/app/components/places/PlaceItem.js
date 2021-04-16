@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import Image from '../images/Image'
 import cx from 'classnames'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal, Image } from 'connected-components'
 import { actions } from 'pltr/v2'
 
 const PlaceActions = actions.place

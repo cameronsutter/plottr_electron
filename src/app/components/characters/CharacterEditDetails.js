@@ -5,12 +5,9 @@ import { bindActionCreators } from 'redux'
 import cx from 'classnames'
 import { ButtonToolbar, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import RichText from '../rce/RichText'
 import ImagePicker from '../images/ImagePicker'
-import Image from '../images/Image'
 import CategoryPicker from '../CategoryPicker'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import EditAttribute from '../EditAttribute'
+import { DeleteConfirmModal, EditAttribute, Image, RichText } from 'connected-components'
 import { actions, selectors } from 'pltr/v2'
 
 const CharacterActions = actions.character

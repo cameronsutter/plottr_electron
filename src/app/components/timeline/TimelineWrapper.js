@@ -27,7 +27,7 @@ import ClearNavItem from './ClearNavItem'
 import { helpers, actions, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 import MPQ from '../../../common/utils/MPQ'
-import BeatConfigModal from 'components/dialogs/BeatConfigModal'
+import ActsConfigModal from 'components/dialogs/ActsConfigModal'
 
 const win = remote.getCurrentWindow()
 
@@ -113,12 +113,16 @@ class TimelineWrapper extends Component {
     this.setState({
       beatConfigIsOpen: false,
     })
+    if (this.props.tour.run && this.props.tour.stepIndex === 4)
+      this.props.tourActions.tourNext('next')
   }
 
   openBeatConfig = () => {
     this.setState({
       beatConfigIsOpen: true,
     })
+    if (this.props.tour.run && this.props.tour.stepIndex === 0)
+      this.props.tourActions.tourNext('next')
   }
 
   // ///////////////
@@ -292,12 +296,12 @@ class TimelineWrapper extends Component {
           </NavItem>
           {gatedByBeatHierarchy(() => (
             <NavItem>
-              <Button bsSize="small" onClick={this.openBeatConfig}>
+              <Button bsSize="small" onClick={this.openBeatConfig} className="acts-tour-step1">
                 <VscSymbolStructure
                   size={16}
                   style={{ verticalAlign: 'text-bottom', marginRight: '4px' }}
                 />
-                {i18n('Acts')}
+                {i18n('Structure')}
               </Button>
             </NavItem>
           ))}
@@ -388,7 +392,7 @@ class TimelineWrapper extends Component {
     return helpers.featureFlags.gatedByBeatHierarchy(this.props.featureFlags)(() => {
       if (!this.state.beatConfigIsOpen) return null
 
-      return <BeatConfigModal closeDialog={this.closeBeatConfig} />
+      return <ActsConfigModal closeDialog={this.closeBeatConfig} />
     })
   }
 
@@ -418,6 +422,8 @@ TimelineWrapper.propTypes = {
   featureFlags: PropTypes.object.isRequired,
   filterIsEmpty: PropTypes.bool.isRequired,
   actions: PropTypes.object.isRequired,
+  tourActions: PropTypes.object.isRequired,
+  tour: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -428,12 +434,14 @@ function mapStateToProps(state) {
     isMedium: selectors.isMediumSelector(state.present),
     isLarge: selectors.isLargeSelector(state.present),
     featureFlags: selectors.featureFlags(state.present),
+    tour: selectors.tourSelector(state.present),
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.ui, dispatch),
+    tourActions: bindActionCreators(actions.tour, dispatch),
   }
 }
 

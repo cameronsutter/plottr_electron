@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { t as i18n } from 'plottr_locales'
 import { NavItem, Button, Glyphicon } from 'react-bootstrap'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import { selectors, actions } from 'pltr/v2'
 
 const { currentTimelineSelector } = selectors

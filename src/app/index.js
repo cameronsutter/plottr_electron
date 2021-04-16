@@ -19,7 +19,7 @@ import log from 'electron-log'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
 import { ActionCreators } from 'redux-undo'
-import editorRegistry from './components/rce/editor-registry'
+import { editorRegistry } from 'connected-components'
 import { setupI18n } from 'plottr_locales'
 import { displayFileName, editKnownFilePath } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
@@ -99,7 +99,7 @@ function bootFile(filePath, options, numOpenFiles) {
 
       render(
         <Provider store={store}>
-          <App showTour={false} />
+          <App showTour={state && state.tour && state.tour.showTour} />
         </Provider>,
         root
       )
@@ -210,6 +210,11 @@ ipcRenderer.on('redo', (event) => {
     // custom redo function
     store.dispatch(ActionCreators.redo())
   }
+})
+
+ipcRenderer.on('acts-tour-start', (event) => {
+  win.reload()
+  store.dispatch(actions.tour.setTourFeature({ name: 'acts', id: 1, endStep: 8 }))
 })
 
 window.onerror = function (message, file, line, column, err) {

@@ -19,7 +19,10 @@ const HierarchyLevel = ({
   borderStyle,
   backgroundColor,
   editHierarchyLevel,
+  isHighest,
+  isLowest,
 }) => {
+  // XXXXXX - beats/hierarchy configuration modal
   const [editingName, setEditingName] = useState(false)
   const [editingAutoNumber, setEditingAutoNumber] = useState(false)
   const [editingTextColor, setEditingTextColor] = useState(false)
@@ -36,7 +39,7 @@ const HierarchyLevel = ({
   }
 
   return (
-    <div className="beat-config-modal__levels-table-row">
+    <div className="acts-modal__levels-table-row acts-tour-step4">
       <EditOrDisplay
         id={`hierarchy-level-name-config-${level}`}
         type="text"
@@ -44,6 +47,8 @@ const HierarchyLevel = ({
         setEditing={setEditingName}
         editing={editingName}
         value={name}
+        hideArrow={isHighest}
+        addSpacer={isLowest}
       />
       <EditOrDisplay
         id={`hierarchy-level-auto-number-config-${level}`}
@@ -68,6 +73,7 @@ const HierarchyLevel = ({
         setEditing={setEditingTextSize}
         editing={editingTextSize}
         value={textSize}
+        hideArrow={true}
       />
       <EditOrDisplay
         id={`hierarchy-level-auto-border-color-${level}`}
@@ -108,6 +114,8 @@ HierarchyLevel.propTypes = {
   borderStyle: PropTypes.oneOf(borderStyles.ALL_STYLES),
   backgroundColor: PropTypes.string.isRequired,
   editHierarchyLevel: PropTypes.func.isRequired,
+  isHighest: PropTypes.bool.isRequired,
+  isLowest: PropTypes.bool.isRequired,
 }
 
 export default connect(null, { editHierarchyLevel })(HierarchyLevel)

@@ -3927,7 +3927,7 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "string … not array"
+              "text": "string … not array"
             }
           ]
         }

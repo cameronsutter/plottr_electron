@@ -1,6 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var packageJSON = require('./package.json')
+var DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const isForMaps = process.env.MAPS == 'true'
 const sourceMapsPath = path.resolve(__dirname, '..', '..', 'pltr_sourcemaps', packageJSON.version)
 
@@ -41,7 +42,7 @@ const mainConfig = {
     modules: ['node_modules', 'main'],
   },
   target: 'electron-main',
-  plugins: plugins,
+  plugins: [...plugins, new DuplicatePackageCheckerPlugin()],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   node: {
     __dirname: false,
@@ -98,6 +99,14 @@ const rendererConfig = {
       css: path.resolve(__dirname, 'src', 'css'),
       dashboard: path.resolve(__dirname, 'src', 'dashboard'),
       test: path.resolve(__dirname, 'test'),
+      'connected-components': path.resolve(__dirname, 'src', 'connected-components.js'),
+      plottr_components: path.resolve(__dirname, 'lib', 'plottr_components', 'dist', 'components'),
+      // Avoid duplicate react in libs problem (see
+      // https://medium.com/@penx/managing-dependencies-in-a-node-package-so-that-they-are-compatible-with-npm-link-61befa5aaca7)
+      // If a better solution arose since this was written then feel
+      // free to replace this! :)
+      react: path.resolve('./node_modules/react'),
+      'react-dom': path.resolve('./node_modules/react-dom'),
     },
   },
   target: 'electron-renderer',

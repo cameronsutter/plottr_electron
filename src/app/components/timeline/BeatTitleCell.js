@@ -14,7 +14,7 @@ import {
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
-import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import { actions, helpers, selectors } from 'pltr/v2'
 import InputModal from '../dialogs/InputModal'
 
@@ -163,10 +163,10 @@ class BeatTitleCell extends PureComponent {
       case 1:
         break
       case 2:
-        warningMessage = `Are you sure you want to delete all scene cards in the ${hierarchyLevel.name} "${beatTitle}".`
+        warningMessage = `Are you sure you want to delete all scene cards in "${beatTitle}".`
         break
       case 3:
-        warningMessage = `Are you sure you want to delete all chapters and their scene cards in the ${hierarchyLevel.name} "${beatTitle}".`
+        warningMessage = `Are you sure you want to delete all chapters and their scene cards in "${beatTitle}".`
         break
     }
     return (

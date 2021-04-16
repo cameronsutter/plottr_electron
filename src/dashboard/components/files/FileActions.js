@@ -10,7 +10,7 @@ import {
   editKnownFilePath,
   removeFromKnownFiles,
 } from '../../../common/utils/known_files'
-import DeleteConfirmModal from '../../../app/components/dialogs/DeleteConfirmModal'
+import { DeleteConfirmModal } from 'connected-components'
 import { TEMP_FILES_PATH } from '../../../common/utils/config_paths'
 import { saveFile } from '../../../common/utils/files'
 import { remote } from 'electron'

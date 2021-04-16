@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ipcRenderer } from 'electron'
 import { t } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
@@ -8,13 +8,45 @@ import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
 import LanguagePicker from '../../../common/components/LanguagePicker'
 import DarkOptionsSelect from './DarkOptionsSelect'
 import TemplateFetcher from '../../utils/template_fetcher'
+import { Spinner } from '../../../common/components/Spinner'
 
 export default function OptionsHome(props) {
   const [settings, _, saveSetting] = useSettingsInfo()
   const [backupType, setBackupType] = useState('days')
 
-  let backupLocation = settings.user.backupLocation
-  if (!backupLocation || backupLocation == 'default') backupLocation = BACKUP_BASE_PATH
+  const [backupLocation, setBackupLocation] = useState(settings.user.backupLocation)
+  if (!backupLocation || backupLocation == 'default') setBackupLocation(BACKUP_BASE_PATH)
+
+  const [loading, setLoading] = useState(false)
+  const [preloading, setPreloading] = useState(false)
+
+  const [loop, setLoop] = useState()
+  const [message, setMessage] = useState(false)
+
+  useEffect(() => {
+    setLoop(
+      setInterval(() => {
+        if (preloading && loading) {
+          setMessage(true)
+        }
+      }, 5000)
+    )
+    return function cleanup() {
+      clearInterval(loop)
+    }
+  }, [preloading, loading])
+
+  const onChangeBackupLocation = (event) => {
+    let file = event.target.files[0]
+    if (file) {
+      let folder = file.path.split('/')
+      let folderPath = folder.slice(0, folder.length - 1).join('/')
+      setBackupLocation(folderPath)
+      saveSetting('user.backupLocation', folderPath)
+    }
+    setLoading(false)
+    setPreloading(false)
+  }
 
   const displayBackupOption = () => {
     return (
@@ -46,7 +78,15 @@ export default function OptionsHome(props) {
   }
 
   return (
-    <div className="dashboard__options">
+    <div
+      className="dashboard__options"
+      onFocus={() => {
+        if (preloading) setLoading(true)
+      }}
+      onBlur={() => {
+        if (!preloading) setLoading(false)
+      }}
+    >
       <h1>{t('Settings')}</h1>
       <div>
         <div className="dashboard__options__item">
@@ -78,45 +118,77 @@ export default function OptionsHome(props) {
         <hr />
         <h4>{t('Beta')}</h4>
         <div className="dashboard__options__item">
-          <h4>{t('Act Structure')}</h4>
-          <Switch
-            isOn={!!settings.user.beatHierarchy}
-            handleToggle={toggleBeatHierarchy}
-            labelText={t('Organize your scene cards into Chapters and Acts')}
-          />
-        </div>
-        <hr />
-        <h1 className="secondary-text">{t('Coming Soon!')}</h1>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Auto-save')}</h4>
-          <Switch
-            disabled
-            isOn={!!settings.user.autoSave || true}
-            handleToggle={() => saveSetting('user.autoSave', !settings.user.autoSave)}
-            labelText={t('By default, use auto-save for projects')}
-          />
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Days of Backup')}</h4>
-          <FormGroup controlId="backupDays">
-            <select onChange={(event) => setBackupType(event.target.value)}>
-              <option value="days">{t('Days of Backups')}</option>
-              <option value="number">{t('Number of Backups')}</option>
-            </select>
-            {displayBackupOption()}
-          </FormGroup>
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Backup Location')}</h4>
-          <FormGroup controlId="backupLocation">
-            <ControlLabel>{t('Folder where backups are stored')}</ControlLabel>
-            <FormControl
-              type="text"
+          <h4>{t('Backup Storage Type')}</h4>
+          <hr />
+          <h1 className="dashboard__options">{t('Beta')}</h1>
+          <div className="dashboard__options__item">
+            <h4>{t('Act Structure')}</h4>
+            <Switch
+              isOn={!!settings.user.beatHierarchy}
+              handleToggle={toggleBeatHierarchy}
+              labelText={t('Organize your scene cards into Chapters and Acts')}
+            />
+          </div>
+          <hr />
+          <h1 className="secondary-text">{t('Auto-Save')}</h1>
+          <div className="dashboard__options__item disabled">
+            <Switch
+              disabled
+              isOn={!!settings.user.autoSave || true}
+              handleToggle={() => saveSetting('user.autoSave', !settings.user.autoSave)}
+              labelText={t('By default, use auto-save for projects')}
+            />
+          </div>
+          <div className="dashboard__options__item disabled">
+            <h4>{t('Days of Backup')}</h4>
+            <FormGroup controlId="backupDays">
+              <select onChange={(event) => setBackupType(event.target.value)}>
+                <option value="days">{t('Days of Backups')}</option>
+                <option value="number">{t('Number of Backups')}</option>
+              </select>
+              {displayBackupOption()}
+            </FormGroup>
+          </div>
+          <div className="dashboard__options__item">
+            <h4>{t('Backup Location')}</h4>
+            <FormGroup controlId="backupLocation">
+              <ControlLabel>{t('Folder where backups are stored')}</ControlLabel>
+              <FormControl
+                type="text"
+                value={backupLocation}
+                onChange={(event) => saveSetting('user.backupLocation', event.target.value)}
+              />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="file"
+                  className={'custom-file-input'}
+                  accept="text/directory"
+                  directory=""
+                  webkitdirectory=""
+                  onClick={() => setPreloading(!preloading)}
+                  onChange={onChangeBackupLocation}
+                  style={{ color: 'transparent', marginRight: 10 }}
+                />
+                {preloading && loading && <Spinner style={{ marginTop: 8 }} />}
+                {message && (
+                  <p style={{ fontSize: 12, marginTop: 20, marginLeft: 10 }}>
+                    If the folder you selected is empty, try adding a file to it manually then
+                    trying 'Select folder' again.
+                  </p>
+                )}
+              </div>
+            </FormGroup>
+          </div>
+          {/* <hr />
+          <h1 className="secondary-text">{t('Coming Soon!')}</h1>
+          <div className="dashboard__options__item disabled">
+            <h4>{t('Auto-save')}</h4>
+            <Switch
               disabled
               value={backupLocation}
               onChange={(event) => saveSetting('user.backupLocation', event.target.value)}
             />
-          </FormGroup>
+          </div> */}
         </div>
       </div>
     </div>

@@ -79,7 +79,7 @@ const ActsConfigModal = ({
   const RemoveLevelConfirmation = () =>
     stagedHierarchyLevels ? (
       <DeleteConfirmModal
-        customText={t('Are you sure?  (Removing levels may delete scene cards!)')}
+        customText={t('Are you sure?  (Removing levels may delete scene cards from all books across the project!)')}
         onDelete={() => {
           setHierarchyLevels(stagedHierarchyLevels)
           setStagedHierarchyLevels(null)
@@ -122,7 +122,7 @@ const ActsConfigModal = ({
                 ) : null}
                 <input
                   ref={levelsInputRef}
-                  className="acts-modal__hierarchy-count"
+                  className="acts-modal__hierarchy-count acts-tour-step2"
                   type="text"
                   value={levelsOfHierarchy}
                   onChange={onLevelsOfHierarchyChanged}
@@ -135,7 +135,7 @@ const ActsConfigModal = ({
                 />
                 {hierarchyLevels.length < 3 ? (
                   <button
-                    className="acts-modal__hierarchy-count-adjustment-control acts-tour-step2"
+                    className="acts-modal__hierarchy-count-adjustment-control"
                     onClick={() => {
                       if (hierarchyLevels.length < 3) {
                         setHierarchyLevels([newHierarchyLevel(hierarchyLevels), ...hierarchyLevels])

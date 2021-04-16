@@ -253,7 +253,7 @@ class TimelineWrapper extends Component {
     }
     let popover = (
       <Popover id="filter">
-        <CustomAttrFilterList type="cards" />
+        <CustomAttrFilterList type="cards" showColor={true} />
       </Popover>
     )
     let filterDeclaration = (

@@ -106,7 +106,7 @@ class Tour extends Component {
         callback={this.handleJoyrideCallback}
         styles={{
           options: {
-            zIndex: 1001,
+            zIndex: 1001
           },
           buttonNext: {
             backgroundColor: '#ff9466',
@@ -115,6 +115,9 @@ class Tour extends Component {
           buttonBack: {
             color: '#ff9466',
           },
+          tooltipTitle:{
+            color:'black'
+          }
         }}
       />
     )

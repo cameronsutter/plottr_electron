@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
 import BeatView from 'components/outline/BeatView'
 import MiniMap from 'components/outline/miniMap'
 import { t as i18n } from 'plottr_locales'
 import ErrorBoundary from '../../containers/ErrorBoundary'
 import ExportNavItem from '../export/ExportNavItem'
-import { helpers, selectors } from 'pltr/v2'
+import { helpers, selectors, actions } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 
 const {
@@ -23,7 +24,7 @@ const {
 class OutlineView extends Component {
   constructor(props) {
     super(props)
-    this.state = { active: 0, currentLine: null, firstRender: true }
+    this.state = { active: 0, firstRender: true }
   }
 
   componentDidMount() {
@@ -46,15 +47,12 @@ class OutlineView extends Component {
   }
 
   filterItem = (id) => {
-    if (this.state.currentLine === id) {
-      this.setState({ currentLine: null })
-    } else {
-      this.setState({ currentLine: id })
-    }
+    const { actions } = this.props
+    actions.setOutlineFilter(id)
   }
 
   removeFilter = () => {
-    this.setState({ currentLine: null })
+    this.props.actions.setOutlineFilter(null)
   }
 
   // ///////////////
@@ -69,8 +67,12 @@ class OutlineView extends Component {
   }
 
   renderFilterItem(item) {
+    const { ui } = this.props
     var placeholder = <span className="filter-list__placeholder"></span>
-    if (this.state.currentLine === item.id) {
+    if (
+      (Array.isArray(ui.outlineFilter) && ui.outlineFilter.includes(item.id)) ||
+      (!Array.isArray(ui.outlineFilter) && ui.outlineFilter === item.id)
+    ) {
       placeholder = <Glyphicon glyph="eye-open" />
     }
     return (
@@ -81,6 +83,7 @@ class OutlineView extends Component {
   }
 
   renderSubNav() {
+    const { ui } = this.props
     let popover = (
       <Popover id="filter">
         <div className="filter-list">{this.renderFilterList()}</div>
@@ -93,7 +96,7 @@ class OutlineView extends Component {
         {i18n('Outline is filtered')}
       </Alert>
     )
-    if (this.state.currentLine == null) {
+    if (!ui.outlineFilter || !ui.outlineFilter.length) {
       filterDeclaration = <span></span>
     }
     return (
@@ -123,7 +126,7 @@ class OutlineView extends Component {
   }
 
   renderBeats(cardMapping) {
-    const { beats } = this.props
+    const { beats, ui } = this.props
     return (
       !!beats.length &&
       beats.map((beat, idx) => {
@@ -134,7 +137,7 @@ class OutlineView extends Component {
               beat={beat}
               cards={cardMapping[beat.id]}
               waypoint={this.fixMe}
-              activeFilter={!!this.state.currentLine}
+              activeFilter={!!ui.outlineFilter}
             />
           </ErrorBoundary>
         )
@@ -143,8 +146,8 @@ class OutlineView extends Component {
   }
 
   renderBody() {
-    const { beats, lines, card2Dmap } = this.props
-    const cardMap = cardMapping(beats, lines, card2Dmap, this.state.currentLine)
+    const { beats, lines, card2Dmap, ui } = this.props
+    const cardMap = cardMapping(beats, lines, card2Dmap, ui.outlineFilter)
     return (
       <div className="outline__container tab-body">
         <div className="outline__minimap__placeholder">Fish are friends, not food</div>
@@ -153,7 +156,7 @@ class OutlineView extends Component {
             active={this.state.active}
             handleActive={this.setActive}
             cardMapping={cardMap}
-            activeFilter={!!this.state.currentLine}
+            activeFilter={!!ui.outlineFilter}
           />
         </ErrorBoundary>
         <div className="outline__scenes-container">{this.renderBeats(cardMap)}</div>
@@ -191,7 +194,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {}
+  return {
+    actions: bindActionCreators(actions.ui, dispatch),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OutlineView)

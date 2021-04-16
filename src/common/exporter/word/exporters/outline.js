@@ -1,4 +1,4 @@
-import { keyBy } from 'lodash'
+import { keyBy, includes } from 'lodash'
 import { t } from 'plottr_locales'
 import { helpers, selectors } from 'pltr/v2'
 import { Paragraph, AlignmentType, HeadingLevel } from 'docx'
@@ -22,6 +22,7 @@ export default function exportOutline(state, namesMapping, doc, options) {
   // get current book id and select only those beats/lines/cards
   const beats = sortedBeatsByBookSelector(state)
   const lines = sortedLinesByBookSelector(state)
+  const outlineFilter = state.ui.outlineFilter
   const card2Dmap = cardMapSelector(state)
   const beatCardMapping = cardMapping(beats, lines, card2Dmap, null)
   const linesById = keyBy(lines, 'id')
@@ -44,15 +45,25 @@ export default function exportOutline(state, namesMapping, doc, options) {
     const uniqueBeatTitleSelector = makeBeatTitleSelector(state)
     const title = uniqueBeatTitleSelector(state, beat.id)
     let paragraphs = [new Paragraph('')]
-    paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
 
-    if (options.outline.sceneCards) {
+    if (!options.outline.sceneCards) {
+      paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
+    } else {
       const cards = beatCardMapping[beat.id]
       const customAttrs = cardsCustomAttributesSelector(state)
       const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
-      let cardParagraphs = sortedCards.flatMap((c) =>
-        card(c, linesById, namesMapping, customAttrs, doc, options)
-      )
+
+      const filteredCards = !outlineFilter
+        ? sortedCards
+        : sortedCards.filter((card) => includes(outlineFilter, card.lineId))
+
+      if (filteredCards.length) {
+        paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))
+      }
+
+      const cardParagraphs = filteredCards.flatMap((c) => {
+        return card(c, linesById, namesMapping, customAttrs, doc, options)
+      })
       paragraphs = [...paragraphs, ...cardParagraphs]
     }
 

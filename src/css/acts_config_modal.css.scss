@@ -55,6 +55,7 @@
 .acts-modal__hierarchy-count {
   width: 50px;
   text-align: center;
+  color: $input-color;
 }
 
 .acts-modal__hierarchy-count-adjustment-control {
@@ -131,6 +132,7 @@
   margin-top: -2px;
   padding: 0;
   border-bottom: 2px solid $orange-6;
+  color: $input-color
 }
 
 input[type='checkbox'].acts-modal__toggle-control {

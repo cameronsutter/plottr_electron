@@ -5,7 +5,7 @@ import { knownFilesStore } from '../../common/utils/store_hooks'
 import { saveToTempFile } from '../../common/utils/temp_files'
 import { addToKnownFiles } from '../../common/utils/known_files'
 import Importer from '../../common/importer/snowflake/importer'
-import { emptyFile } from 'pltr/v2'
+import { emptyFile, tree } from 'pltr/v2'
 
 const win = remote.getCurrentWindow()
 const { dialog, app } = remote
@@ -48,7 +48,9 @@ export function createFromSnowflake(importedPath) {
   const storyName = path.basename(importedPath, '.snowXML')
   let json = emptyFile(storyName, app.getVersion())
   // clear beats and lines
-  json.beats = {}
+  json.beats = {
+    series: tree.newTree('id'),
+  }
   json.lines = []
   const importedJson = Importer(importedPath, true, json)
 

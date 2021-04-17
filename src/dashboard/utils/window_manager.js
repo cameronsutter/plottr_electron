@@ -48,7 +48,7 @@ export function createFromSnowflake(importedPath) {
   const storyName = path.basename(importedPath, '.snowXML')
   let json = emptyFile(storyName, app.getVersion())
   // clear beats and lines
-  json.beats = []
+  json.beats = {}
   json.lines = []
   const importedJson = Importer(importedPath, true, json)
 

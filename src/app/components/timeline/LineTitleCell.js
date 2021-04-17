@@ -278,10 +278,11 @@ class LineTitleCell extends PureComponent {
   }
 
   renderTitle() {
+    const { ui } = this.props
     if (!this.state.editing) return truncateTitle(this.props.line.title, 50)
     return (
       <FormGroup>
-        <ControlLabel>{t('Plotline name')}</ControlLabel>
+        <ControlLabel className={cx({ darkmode: ui.darkMode })}>{t('Plotline name')}</ControlLabel>
         <FormControl
           type="text"
           defaultValue={this.props.line.title}

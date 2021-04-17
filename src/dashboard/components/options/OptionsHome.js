@@ -8,7 +8,6 @@ import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
 import LanguagePicker from '../../../common/components/LanguagePicker'
 import DarkOptionsSelect from './DarkOptionsSelect'
 import TemplateFetcher from '../../utils/template_fetcher'
-import { Spinner } from '../../../common/components/Spinner'
 
 export default function OptionsHome(props) {
   const [settings, _, saveSetting] = useSettingsInfo()

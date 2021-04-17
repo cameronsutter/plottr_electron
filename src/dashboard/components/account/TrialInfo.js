@@ -40,4 +40,5 @@ export default function TrialInfo({ trialInfo, darkMode }) {
 
 TrialInfo.propTypes = {
   trialInfo: PropTypes.object,
+  darkMode: PropTypes.bool,
 }

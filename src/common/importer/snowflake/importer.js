@@ -2,14 +2,13 @@ import xml from 'xml-js'
 import fs from 'fs'
 import { t as i18n } from 'plottr_locales'
 import { cloneDeep, keyBy, groupBy } from 'lodash'
-import { newIds, helpers, lineColors, initialState } from 'pltr/v2'
+import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
 
 const { nextColor } = lineColors
 const defaultBook = initialState.book
 const defaultNote = initialState.note
 const defaultCharacter = initialState.character
 const defaultCard = initialState.card
-const defaultBeat = initialState.beat
 const defaultLine = initialState.line
 
 const { nextId, objectId } = newIds
@@ -75,16 +74,26 @@ function createNewLine(currentLines, values, bookId) {
   return nextLineId
 }
 
-function createNewBeat(currentBeats, values, bookId) {
-  const nextBeatId = beats.nextId(currentBeats)
-  const position = beats.nextPositionInBook(currentBeats, bookId)
-  const newBeat = Object.assign({}, defaultBeat, {
+function createNewBeat(currentState, values, bookId) {
+  if (!currentState.beats[bookId]) {
+    currentState.beats[bookId] = tree.newTree('id')
+  }
+  const nextBeatId = beats.nextId(currentState.beats)
+  const position = beats.nextPositionInBook(currentState, bookId, null)
+  const node = {
+    autoOutlineSort: true,
+    bookId: bookId,
+    fromTemplateId: null,
     id: nextBeatId,
     position,
-    bookId,
+    time: 0,
+    expanded: true,
+    title: 'auto',
     ...values,
-  })
-  currentBeats.push(newBeat)
+  }
+  const beatTree = currentState.beats[bookId]
+  currentState.beats[bookId] = tree.addNode('id')(beatTree, null, node)
+
   return nextBeatId
 }
 
@@ -297,7 +306,7 @@ function cards(currentState, json, bookId) {
 
     // idMap is Snowflake id to Plottr id
     const idMap = beatNumbers.reduce((acc, id) => {
-      acc[id] = createNewBeat(currentState.beats, { position: Number(id) - 1 }, bookId)
+      acc[id] = createNewBeat(currentState, { position: Number(id) - 1 }, bookId)
       return acc
     }, {})
 

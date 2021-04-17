@@ -192,6 +192,7 @@ CustomAttrFilterList.propTypes = {
   showCharacters: PropTypes.bool.isRequired,
   showPlaces: PropTypes.bool.isRequired,
   isSeries: PropTypes.bool,
+  showColor: PropTypes.bool,
 }
 
 function chooseFilteredItems(state, type) {

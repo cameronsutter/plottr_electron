@@ -34,7 +34,10 @@ class MiniMap extends Component {
     setTimeout(() => this.setState({ firstRender: false }), 300)
   }
 
-  componentWillReceiveProps(nextProps) {
+  // Fixme: according to the React docs this will only work until 17
+  // and in their experience is the cause of many errors.
+  // (https://reactjs.org/docs/react-component.html#unsafe_componentwillreceiveprops)
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.ui.currentTimeline != this.props.ui.currentTimeline) {
       this.setState({ firstRender: true })
       setTimeout(() => this.setState({ firstRender: false }), 500)

@@ -65,7 +65,7 @@ class TimelineWrapper extends Component {
     }, 10)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { ui } = this.props
     if (
       nextProps.ui.currentTimeline != ui.currentTimeline ||

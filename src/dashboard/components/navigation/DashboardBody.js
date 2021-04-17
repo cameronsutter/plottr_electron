@@ -96,6 +96,7 @@ export default function DashboardBody({ currentView, setView, darkMode }) {
 DashboardBody.propTypes = {
   currentView: PropTypes.string,
   setView: PropTypes.func,
+  darkMode: PropTypes.bool,
 }
 
 function Body({ children }) {

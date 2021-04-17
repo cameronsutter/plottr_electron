@@ -208,11 +208,11 @@ class BeatTitleCell extends PureComponent {
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
           </Button>
-          {hierarchyLevel.level < 2 &&
+          {hierarchyLevel.level < 2 && (
             <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
               {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
             </Button>
-          }
+          )}
         </ButtonGroup>
       </div>
     )

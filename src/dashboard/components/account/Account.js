@@ -20,7 +20,7 @@ export default function Account(props) {
 
   const renderUser = () => {
     // first time using the app
-    if (firstTime) return <ChoiceView />
+    if (firstTime) return <ChoiceView darkMode={props.darkMode} />
 
     // active license
     if (licenseInfoSize) {
@@ -29,9 +29,9 @@ export default function Account(props) {
 
     // free trial
     if (trialInfo.expired) {
-      return <ExpiredView />
+      return <ExpiredView darkMode={props.darkMode} />
     } else {
-      return <TrialInfo trialInfo={trialInfo} />
+      return <TrialInfo darkMode={props.darkMode} trialInfo={trialInfo} />
     }
   }
 

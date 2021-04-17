@@ -25,7 +25,7 @@ export default function DashboardApp() {
       <DashboardHeader darkMode={darkMode} />
       <main className={cx({ darkmode: darkMode })}>
         <DashboardNavigation currentView={view} setView={setView} />
-        <DashboardBody currentView={view} setView={setView} />
+        <DashboardBody currentView={view} setView={setView} darkMode={darkMode} />
       </main>
     </ErrorBoundary>
   )

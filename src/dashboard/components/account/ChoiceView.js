@@ -23,7 +23,7 @@ export default function ChoiceView(props) {
           </div>
         )
       case 'verify':
-        return <VerifyView goBack={() => setView('chooser')} />
+        return <VerifyView darkMode={props.darkMode} goBack={() => setView('chooser')} />
       case 'explain':
         return (
           <div>

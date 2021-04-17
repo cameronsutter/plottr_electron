@@ -18,6 +18,7 @@ import initMixpanel from '../common/utils/mixpanel'
 import log from 'electron-log'
 import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
+import askToExport from '../common/exporter/start_export'
 import { ActionCreators } from 'redux-undo'
 import { editorRegistry } from 'connected-components'
 import { setupI18n } from 'plottr_locales'
@@ -27,6 +28,7 @@ import { saveFile } from '../common/utils/files'
 import { removeFromTempFiles } from '../common/utils/temp_files'
 import { focusIsEditable } from '../common/utils/undo'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
+import exportConfig from '../common/exporter/default_config'
 
 setupI18n(SETTINGS, { electron })
 
@@ -136,6 +138,26 @@ ipcRenderer.on('unset-beat-hierarchy', (event) => {
 ipcRenderer.on('save-custom-template', (event, options) => {
   const currentState = store.getState()
   addNewCustomTemplate(currentState.present, options)
+})
+
+ipcRenderer.on('export-file-from-menu', (event, { type }) => {
+  const currentState = store.getState()
+  const {
+    ui,
+    series: { name },
+    books,
+  } = currentState.present
+  const bookId = ui.currentTimeline
+  const defaultPath =
+    bookId == 'series' ? name + ' ' + i18n('(Series View)') : books[`${bookId}`].title
+
+  askToExport(defaultPath, currentState.present, type, exportConfig[type], (error, success) => {
+    if (error) {
+      log.error(error)
+      dialog.showErrorBox(i18n('Error'), i18n('There was an error doing that. Try again'))
+      return
+    }
+  })
 })
 
 ipcRenderer.on('save', () => {

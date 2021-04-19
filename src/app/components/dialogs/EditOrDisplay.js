@@ -82,6 +82,7 @@ const EditOrDisplay = ({
         return (
           <div className="acts-modal__levels-table-cell align-left">
             <input
+              disabled
               className="acts-modal__toggle-control"
               type="checkbox"
               checked={stagedValue}

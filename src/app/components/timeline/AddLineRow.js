@@ -233,7 +233,7 @@ class AddLineRow extends Component {
   }
 
   renderInsertButton() {
-    const { isSmall, isMedium, ui, actions } = this.props
+    const { hierarchyEnabled, isSmall, isMedium, ui, actions } = this.props
     if (isSmall) {
       return (
         <th className="row-header">
@@ -256,8 +256,12 @@ class AddLineRow extends Component {
         {this.state.hovering ? (
           <div className="line-list__append-line__double">
             <div
-              onClick={() => this.setState({ showTemplatePicker: true, hovering: false })}
-              className="template"
+              onClick={() => {
+                if (hierarchyEnabled) return
+                this.setState({ showTemplatePicker: true, hovering: false })
+              }}
+              title={hierarchyEnabled ? 'Templates are disabled when Act Structure is on' : null}
+              className={cx('template', { disabled: hierarchyEnabled })}
             >
               {i18n('Use Template')}
             </div>
@@ -324,6 +328,7 @@ class AddLineRow extends Component {
   }
 
   static propTypes = {
+    hierarchyEnabled: PropTypes.bool.isRequired,
     howManyCells: PropTypes.number,
     ui: PropTypes.object.isRequired,
     isSmall: PropTypes.bool,
@@ -341,6 +346,7 @@ class AddLineRow extends Component {
 
 function mapStateToProps(state) {
   return {
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
     ui: state.present.ui,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),

@@ -154,6 +154,11 @@ $medium_width: 80px;
       border-right: none;
       text-align: center;
     }
+    div.disabled {
+      cursor: $cursor-disabled;
+      color: $neutral-gray-5;
+      background-color: transparent;
+    }
     div.non-template {
       border-left: none;
     }
@@ -197,6 +202,11 @@ $medium_width: 80px;
     .line-list__append-line__double {
       div.template:not(:hover) {
         color: white;
+      }
+    }
+    .line-list__append-line__double {
+      div.disabled:not(:hover) {
+        color: $neutral-gray-5;
       }
     }
   }

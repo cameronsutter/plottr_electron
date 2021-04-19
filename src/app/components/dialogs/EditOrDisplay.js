@@ -4,8 +4,7 @@ import { DropdownButton, MenuItem, Button, Glyphicon } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 import { IoIosReturnRight } from 'react-icons/io'
 
-import { ColorPickerColor } from 'connected-components'
-import ColorPicker from 'components/colorpicker'
+import { ColorPicker, ColorPickerColor } from 'connected-components'
 
 const EditOrDisplay = ({
   id,

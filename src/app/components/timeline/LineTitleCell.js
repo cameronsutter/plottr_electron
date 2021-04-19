@@ -11,7 +11,7 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import ColorPicker from '../colorpicker'
+import { ColorPicker } from 'connected-components'
 import { DeleteConfirmModal, InputModal } from 'connected-components'
 import { t } from 'plottr_locales'
 import cx from 'classnames'

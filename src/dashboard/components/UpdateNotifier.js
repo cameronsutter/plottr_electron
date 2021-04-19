@@ -6,7 +6,7 @@ import cx from 'classnames'
 import SETTINGS from '../../common/utils/settings'
 import { Button, ProgressBar } from 'react-bootstrap'
 import { is } from 'electron-util'
-import { Spinner } from '../../common/components/Spinner'
+import { Spinner } from 'connected-components'
 
 const updateCheckThreshold = 1000 * 60 * 60 * 3 // 3 hours
 

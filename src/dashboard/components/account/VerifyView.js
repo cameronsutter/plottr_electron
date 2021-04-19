@@ -143,4 +143,5 @@ export default function VerifyView({ goBack, darkMode }) {
 
 VerifyView.propTypes = {
   goBack: PropTypes.func,
+  darkMode: PropTypes.bool,
 }

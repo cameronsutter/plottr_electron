@@ -9,7 +9,7 @@ import cx from 'classnames'
 import { sortBy } from 'lodash'
 import TemplatePicker from '../../../common/components/templates/TemplatePicker'
 import { helpers, actions, selectors, lineColors, initialState } from 'pltr/v2'
-import InputModal from '../dialogs/InputModal'
+import { InputModal } from 'connected-components'
 
 const { nextColor } = lineColors
 const card = initialState.card
@@ -200,7 +200,7 @@ class AddLineRow extends Component {
     this.allLines = this.props.lines
     this.allCards = this.props.cards
 
-    const templateBookId = helpers.books.isSeries(bookId) ? bookId : 1
+    const templateBookId = helpers.books.isSeries(bookId) && template.beats[bookId] ? bookId : 1
     const templateBeats = selectors.beatsByPosition(() => true)(template.beats[templateBookId])
     const templateLines = template.lines.filter((line) => line.bookId === templateBookId)
 
@@ -233,7 +233,7 @@ class AddLineRow extends Component {
   }
 
   renderInsertButton() {
-    const { isSmall, isMedium, ui, actions } = this.props
+    const { hierarchyEnabled, isSmall, isMedium, ui, actions } = this.props
     if (isSmall) {
       return (
         <th className="row-header">
@@ -256,8 +256,12 @@ class AddLineRow extends Component {
         {this.state.hovering ? (
           <div className="line-list__append-line__double">
             <div
-              onClick={() => this.setState({ showTemplatePicker: true, hovering: false })}
-              className="template"
+              onClick={() => {
+                if (hierarchyEnabled) return
+                this.setState({ showTemplatePicker: true, hovering: false })
+              }}
+              title={hierarchyEnabled ? 'Templates are disabled when Act Structure is on' : null}
+              className={cx('template', { disabled: hierarchyEnabled })}
             >
               {i18n('Use Template')}
             </div>
@@ -324,6 +328,7 @@ class AddLineRow extends Component {
   }
 
   static propTypes = {
+    hierarchyEnabled: PropTypes.bool.isRequired,
     howManyCells: PropTypes.number,
     ui: PropTypes.object.isRequired,
     isSmall: PropTypes.bool,
@@ -341,6 +346,7 @@ class AddLineRow extends Component {
 
 function mapStateToProps(state) {
   return {
+    hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
     ui: state.present.ui,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),

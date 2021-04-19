@@ -11,8 +11,7 @@ import {
   ControlLabel,
   Glyphicon,
 } from 'react-bootstrap'
-import ColorPicker from '../colorpicker'
-import { DeleteConfirmModal } from 'connected-components'
+import { ColorPicker, DeleteConfirmModal } from 'connected-components'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import { actions } from 'pltr/v2'

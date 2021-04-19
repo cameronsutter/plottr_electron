@@ -48,9 +48,9 @@ class CardColorFilterList extends Component {
             id: color,
             name: 'White (default)',
           }
-        case 'null':
+        case null:
           return {
-            id: 'null',
+            id: null,
             name: 'None',
           }
         default:

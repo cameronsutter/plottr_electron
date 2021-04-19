@@ -19,7 +19,7 @@ import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import { t as i18n } from 'plottr_locales'
 import TimelineTable from './TimelineTable'
 import cx from 'classnames'
-import { FunSpinner } from '../../../common/components/Spinner'
+import { FunSpinner } from 'connected-components'
 import { FaSave } from 'react-icons/fa'
 import { VscSymbolStructure } from 'react-icons/vsc'
 import ExportNavItem from '../export/ExportNavItem'
@@ -65,7 +65,7 @@ class TimelineWrapper extends Component {
     }, 10)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { ui } = this.props
     if (
       nextProps.ui.currentTimeline != ui.currentTimeline ||

@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { ipcRenderer } from 'electron'
 import { t } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
-import Switch from '../../../common/components/Switch'
+import { Switch } from 'connected-components'
 import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'
 import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
 import LanguagePicker from '../../../common/components/LanguagePicker'
 import DarkOptionsSelect from './DarkOptionsSelect'
 import TemplateFetcher from '../../utils/template_fetcher'
-import { Spinner } from '../../../common/components/Spinner'
 
 export default function OptionsHome(props) {
   const [settings, _, saveSetting] = useSettingsInfo()

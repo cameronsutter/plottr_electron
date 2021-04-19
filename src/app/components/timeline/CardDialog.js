@@ -22,11 +22,11 @@ import {
   ColorPickerColor,
   DeleteConfirmModal,
   EditAttribute,
+  MiniColorPicker,
   PlottrModal,
   RichText,
 } from 'connected-components'
 import { helpers, actions, selectors } from 'pltr/v2'
-import MiniColorPicker from '../MiniColorPicker'
 
 const {
   card: { truncateTitle },

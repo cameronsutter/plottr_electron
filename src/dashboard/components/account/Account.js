@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'react-proptypes'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { licenseStore, useLicenseInfo } from '../../../common/utils/store_hooks'
 import ChoiceView from './ChoiceView'
@@ -52,4 +53,8 @@ export default function Account(props) {
       {renderBelow()}
     </div>
   )
+}
+
+Account.propTypes = {
+  darkMode: PropTypes.bool,
 }

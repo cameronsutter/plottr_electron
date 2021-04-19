@@ -232,7 +232,7 @@ class PlaceListView extends Component {
     if (!this.state.dialogOpen) {
       return null
     }
-    return <CustomAttributeModal type="places" closeDialog={this.closeDialog} />
+    return <CustomAttributeModal hideSaveAsTemplate type="places" closeDialog={this.closeDialog} />
   }
 
   render() {

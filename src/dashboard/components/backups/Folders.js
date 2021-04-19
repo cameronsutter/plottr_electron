@@ -2,7 +2,7 @@ import React from 'react'
 import { t } from 'plottr_locales'
 import { IoIosFolder } from 'react-icons/io'
 import { useBackupFolders } from '../../utils/backups'
-import { Spinner } from '../../../common/components/Spinner'
+import { Spinner } from 'connected-components'
 import { Badge } from 'react-bootstrap'
 
 export default function Folders({ selectFolder }) {

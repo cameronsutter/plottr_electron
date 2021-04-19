@@ -47,6 +47,7 @@ class TopRow extends Component {
 
   handleInsertChildBeat = (beatToLeftId) => {
     const { ui, beatActions } = this.props
+    beatActions.expandBeat(beatToLeftId, ui.currentTimeline)
     beatActions.addBeat(ui.currentTimeline, beatToLeftId)
   }
 

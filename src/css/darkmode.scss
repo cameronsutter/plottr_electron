@@ -106,6 +106,7 @@ body.darkmode {
       & > a {
         background-color: $darkmode-background;
         border: 1px solid $darkmode-darker-border;
+        color: $darkmode-text;
       }
       ul {
         background-color: $darkmode-background;

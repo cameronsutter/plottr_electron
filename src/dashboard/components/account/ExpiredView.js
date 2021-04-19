@@ -70,6 +70,6 @@ export default function ExpiredView(props) {
   } else if (view == 'ad') {
     return <AdView extendTrial={extend} />
   } else if (view == 'verify') {
-    return <VerifyView goBack={() => setView('chooser')} />
+    return <VerifyView darkMode={props.darkMode} goBack={() => setView('chooser')} />
   }
 }

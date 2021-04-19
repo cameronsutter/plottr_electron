@@ -16,7 +16,7 @@ import { checkForActiveLicense } from '../../../common/licensing/check_license'
 import { is } from 'electron-util'
 import Beamer from '../../../common/components/Beamer'
 
-export default function DashboardBody({ currentView, setView }) {
+export default function DashboardBody({ currentView, setView, darkMode }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
   const { started, expired } = useTrialStatus()
   const [showAccount, setShowAccount] = useState(false)
@@ -62,7 +62,7 @@ export default function DashboardBody({ currentView, setView }) {
       default:
         return (
           <Body>
-            <Account />
+            <Account darkMode={darkMode} />
           </Body>
         )
     }
@@ -71,7 +71,7 @@ export default function DashboardBody({ currentView, setView }) {
   let body
   switch (currentView) {
     case 'account':
-      body = <Account />
+      body = <Account darkMode={darkMode} />
       break
     case 'templates':
       body = <TemplatesHome />
@@ -96,6 +96,7 @@ export default function DashboardBody({ currentView, setView }) {
 DashboardBody.propTypes = {
   currentView: PropTypes.string,
   setView: PropTypes.func,
+  darkMode: PropTypes.bool,
 }
 
 function Body({ children }) {

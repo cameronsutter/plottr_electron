@@ -11,14 +11,13 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import ColorPicker from '../colorpicker'
-import { DeleteConfirmModal } from 'connected-components'
+import { ColorPicker } from 'connected-components'
+import { DeleteConfirmModal, InputModal } from 'connected-components'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import Floater from 'react-floater'
 import { actions, helpers, selectors } from 'pltr/v2'
-import InputModal from '../dialogs/InputModal'
 
 const LineActions = actions.line
 const uiActions = actions.ui
@@ -278,10 +277,11 @@ class LineTitleCell extends PureComponent {
   }
 
   renderTitle() {
+    const { ui } = this.props
     if (!this.state.editing) return truncateTitle(this.props.line.title, 50)
     return (
       <FormGroup>
-        <ControlLabel>{t('Plotline name')}</ControlLabel>
+        <ControlLabel className={cx({ darkmode: ui.darkMode })}>{t('Plotline name')}</ControlLabel>
         <FormControl
           type="text"
           defaultValue={this.props.line.title}

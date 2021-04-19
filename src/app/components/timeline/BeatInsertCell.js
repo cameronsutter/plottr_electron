@@ -245,7 +245,7 @@ class BeatInsertCell extends PureComponent {
   }
 
   static propTypes = {
-    bookId: PropTypes.number.isRequired,
+    bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     orientation: PropTypes.string,
     isSmall: PropTypes.bool,
     isMedium: PropTypes.bool,

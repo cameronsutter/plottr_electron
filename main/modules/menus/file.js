@@ -66,39 +66,15 @@ function buildFileMenu(filePath) {
         {
           label: i18n('MS Word'),
           click: (event, focusedWindow) => {
-            const winObj = getWindowById(focusedWindow.id)
-            if (winObj) {
-              const defaultPath = path.basename(winObj.filePath).replace('.pltr', '')
-              const filters = [{ name: i18n('Word Document'), extensions: ['docx'] }]
-              const fileName = dialog.showSaveDialogSync(focusedWindow, {
-                filters,
-                title: i18n('Where would you like to save the export?'),
-                defaultPath,
-              })
-              if (fileName) {
-                const options = { fileName, type: 'word' }
-                focusedWindow.webContents.send('export-file', options)
-              }
-            }
+            const options = { type: 'word' }
+            focusedWindow.webContents.send('export-file-from-menu', options)
           },
         },
         {
           label: i18n('Scrivener'),
           click: (event, focusedWindow) => {
-            const winObj = getWindowById(focusedWindow.id)
-            if (winObj) {
-              const defaultPath = path.basename(winObj.filePath).replace('.pltr', '')
-              const filters = [{ name: i18n('Scrivener Project'), extensions: ['scriv'] }]
-              const fileName = dialog.showSaveDialogSync(focusedWindow, {
-                filters,
-                title: i18n('Where would you like to save the export?'),
-                defaultPath,
-              })
-              if (fileName) {
-                const options = { fileName, type: 'scrivener' }
-                focusedWindow.webContents.send('export-file', options)
-              }
-            }
+            const options = { type: 'scrivener' }
+            focusedWindow.webContents.send('export-file-from-menu', options)
           },
         },
       ],

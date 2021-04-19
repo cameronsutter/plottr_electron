@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Add DTD information here. -->
+<GContainer type="com.ingermanson.text.snowflake.SnowflakeInfo">
+  <GString name="version" value="Snowflake Pro 1.2.1" description="The version of the software when this file was saved."/>
+  <GString name="title" value="My Test Novel" description="The title of the story."/>
+  <GString name="subtitle" value="A Novel" description="The subtitle of the story, if any."/>
+  <GString name="genre" value="Fake Thriller" description="The genre of the story."/>
+  <GInteger name="roundedWordCount" value="90000" description="The approximate word count of the story."/>
+  <GString name="targetReader" value="2 year olds&#10;&#10;and very old squirrels" description="A short description of the target reader for the story."/>
+  <GBoolean name="showProjections" value="true" description="Flag telling whether to show projected word counts."/>
+  <GInteger name="wordsPerPage" value="250" description="The approximate number of words per manuscript page."/>
+  <GInteger name="pagesPerScene" value="4" description="The approximate number of pages per scene."/>
+  <GInteger name="pagesPerChapter" value="10" description="The ideal number of pages per chapter."/>
+  <GContainer name="authorInfoList" description="List of authors">
+    <GContainer type="com.ingermanson.text.snowflake.AuthorInfo">
+      <GString name="name" value="Primary Author" description="The author&apos;s name."/>
+      <GString name="address" value="" description="The author&apos;s address."/>
+      <GString name="phone" value="" description="The author&apos;s phone number."/>
+      <GString name="email" value="" description="The author&apos;s email address."/>
+      <GContainer name="bio" description="The author&apos;s bio.">
+      </GContainer>
+    </GContainer>
+  </GContainer>
+  <GContainer name="storyLine" type="com.ingermanson.text.snowflake.StoryLine">
+    <GString name="sentence" value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString name="paragraph" value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day.&#10;&#10;A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day.&#10;&#10;A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GContainer name="parts">
+    </GContainer>
+  </GContainer>
+  <GContainer name="shortSynopsis" description="A short synopsis of the story.">
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+  </GContainer>
+  <GContainer name="longSynopsis" description="A long synopsis of the story.">
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day. A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+    <GString value="A rabid squirrel starts an unfortunate chain of events that leads to a baby saving the day."/>
+  </GContainer>
+  <GContainer name="characterInfoList" description="List of characters">
+    <GContainer type="com.ingermanson.text.snowflake.CharacterInfo">
+      <GString name="sentence" value="Sentence Summary"/>
+      <GString name="paragraph" value="Paragraph Summary&#10;&#10;Something else about Steve"/>
+      <GString name="name" value="Steve"/>
+      <GString name="ambition" value="Ambition"/>
+      <GString name="goal" value="Storygoal"/>
+      <GString name="conflict" value="Conflict"/>
+      <GString name="epiphany" value="Epiphany"/>
+      <GString name="synopsis" value="He&apos;s chill"/>
+      <GString name="othersSee" value="How others see character"/>
+      <GString name="birthDate" value="Date of birth"/>
+      <GString name="age" value="Age"/>
+      <GString name="height" value="Height"/>
+      <GString name="weight" value="Weight"/>
+      <GString name="ethnicity" value="Ethnic heritage&#10;2nd line"/>
+      <GString name="hairColor" value="Color of hair"/>
+      <GString name="eyeColor" value="Color of eyes"/>
+      <GString name="physicalDescription" value="Physical description"/>
+      <GString name="dressStyle" value="Style of dressing"/>
+      <GString name="personality" value="Personality type"/>
+      <GString name="senseHumor" value="Sense of humor"/>
+      <GString name="religion" value="Religion"/>
+      <GString name="politics" value="Political party"/>
+      <GString name="hobbies" value="Hobbies"/>
+      <GString name="music" value="Favorite music"/>
+      <GString name="books" value="Favorite books"/>
+      <GString name="movies" value="Favorite movies"/>
+      <GString name="colors" value="Favorite colors"/>
+      <GString name="purseWallet" value="Contents of purse or wallet"/>
+      <GString name="homeDescription" value="Description of home"/>
+      <GString name="education" value="Educational background"/>
+      <GString name="work" value="Work experience"/>
+      <GString name="family" value="Family"/>
+      <GString name="bestFriend" value="Best friend"/>
+      <GString name="maleFriends" value="Male friends"/>
+      <GString name="femaleFriends" value="Female friends"/>
+      <GString name="enemies" value="Enemies"/>
+      <GString name="bestMemory" value="Best childhood memory"/>
+      <GString name="worstMemory" value="Worst childhood memory"/>
+      <GString name="characterization" value="One-line characterization"/>
+      <GString name="strongTrait" value="Strongest character trait"/>
+      <GString name="weakTrait" value="Weakest character trait"/>
+      <GString name="paradox" value="Character&apos;s paradox"/>
+      <GString name="hope" value="Greatest hope"/>
+      <GString name="fear" value="Deepest fear"/>
+      <GString name="philosophy" value="Philosophy of life"/>
+      <GString name="seesSelf" value="How character sees self"/>
+      <GString name="values" value="Values"/>
+      <GString name="change" value="How character will change"/>
+    </GContainer>
+    <GContainer type="com.ingermanson.text.snowflake.CharacterInfo">
+      <GString name="sentence" value=""/>
+      <GString name="paragraph" value=""/>
+      <GString name="name" value="Bob"/>
+      <GString name="ambition" value=""/>
+      <GString name="goal" value=""/>
+      <GString name="conflict" value=""/>
+      <GString name="epiphany" value=""/>
+      <GString name="synopsis" value=""/>
+    </GContainer>
+    <GContainer type="com.ingermanson.text.snowflake.CharacterInfo">
+      <GString name="sentence" value=""/>
+      <GString name="paragraph" value=""/>
+      <GString name="name" value="Sarah"/>
+      <GString name="ambition" value="yay ambition"/>
+      <GString name="goal" value=""/>
+      <GString name="conflict" value=""/>
+      <GString name="epiphany" value=""/>
+      <GString name="synopsis" value="a little synopsis over here"/>
+    </GContainer>
+  </GContainer>
+  <GContainer name="sceneList" description="List of scenes">
+    <GContainer type="com.ingermanson.text.snowflake.StoryScene">
+      <GString name="sentence" value="This is where it all begins"/>
+      <GString name="paragraph" value=""/>
+      <GString name="povName" value="" description="The Point-Of-View character&apos;s name."/>
+      <GLong name="date" value="1589549588191" description="Date of the scene since epoch began."/>
+      <GString name="location" value="" description="The location of the scene."/>
+      <GInteger name="chapter" value="1" description="The chapter in which this scene belongs."/>
+      <GInteger name="pageCountExpected" value="4" description="The expected page count of the scene."/>
+      <GInteger name="wordCountExpected" value="1000" description="The expected word count of the scene."/>
+      <GInteger name="wordCountActual" value="0" description="The actual word count of the scene."/>
+    </GContainer>
+    <GContainer type="com.ingermanson.text.snowflake.StoryScene">
+      <GString name="sentence" value="chapter 3 yay"/>
+      <GString name="paragraph" value=""/>
+      <GString name="povName" value="" description="The Point-Of-View character&apos;s name."/>
+      <GLong name="date" value="1589549588191" description="Date of the scene since epoch began."/>
+      <GString name="location" value="" description="The location of the scene."/>
+      <GInteger name="chapter" value="3" description="The chapter in which this scene belongs."/>
+      <GInteger name="pageCountExpected" value="4" description="The expected page count of the scene."/>
+      <GInteger name="wordCountExpected" value="1000" description="The expected word count of the scene."/>
+      <GInteger name="wordCountActual" value="0" description="The actual word count of the scene."/>
+    </GContainer>
+    <GContainer type="com.ingermanson.text.snowflake.StoryScene">
+      <GString name="sentence" value="chapter 2!"/>
+      <GString name="paragraph" value=""/>
+      <GString name="povName" value="" description="The Point-Of-View character&apos;s name."/>
+      <GLong name="date" value="1589549588191" description="Date of the scene since epoch began."/>
+      <GString name="location" value="" description="The location of the scene."/>
+      <GInteger name="chapter" value="2" description="The chapter in which this scene belongs."/>
+      <GInteger name="pageCountExpected" value="4" description="The expected page count of the scene."/>
+      <GInteger name="wordCountExpected" value="1000" description="The expected word count of the scene."/>
+      <GInteger name="wordCountActual" value="0" description="The actual word count of the scene."/>
+    </GContainer>
+    <GContainer type="com.ingermanson.text.snowflake.StoryScene">
+      <GString name="sentence" value="Things start to heat up"/>
+      <GString name="paragraph" value="More and more squirrels start pouring into his office.&#10;&#10;He&apos;s confused and afraid. His coworkers are all screaming"/>
+      <GString name="povName" value="Steve" description="The Point-Of-View character&apos;s name."/>
+      <GLong name="date" value="1589549588191" description="Date of the scene since epoch began."/>
+      <GString name="location" value="" description="The location of the scene."/>
+      <GInteger name="chapter" value="1" description="The chapter in which this scene belongs."/>
+      <GInteger name="pageCountExpected" value="4" description="The expected page count of the scene."/>
+      <GInteger name="wordCountExpected" value="1000" description="The expected word count of the scene."/>
+      <GInteger name="wordCountActual" value="0" description="The actual word count of the scene."/>
+    </GContainer>
+    <GContainer type="com.ingermanson.text.snowflake.StoryScene">
+      <GString name="sentence" value="Bob is faced with more squirrels"/>
+      <GString name="paragraph" value="Bob can&apos;t believe his eyes as more and more squirrels visit him at his home bringing gifts of wrapped bananas"/>
+      <GString name="povName" value="Bob" description="The Point-Of-View character&apos;s name."/>
+      <GLong name="date" value="1589549588191" description="Date of the scene since epoch began."/>
+      <GString name="location" value="" description="The location of the scene."/>
+      <GInteger name="chapter" value="2" description="The chapter in which this scene belongs."/>
+      <GInteger name="pageCountExpected" value="4" description="The expected page count of the scene."/>
+      <GInteger name="wordCountExpected" value="1000" description="The expected word count of the scene."/>
+      <GInteger name="wordCountActual" value="0" description="The actual word count of the scene."/>
+    </GContainer>
+  </GContainer>
+  <GContainer name="proposalFormatInfo" type="com.ingermanson.text.snowflake.FormatInfo">
+    <GEnum name="pageFormat" value="Letter" className="com.ingermanson.text.snowflake.FormatInfo$PageFormat" description="The page format."/>
+    <GEnum name="synopsisType" value="ShortSynopsis" className="com.ingermanson.text.snowflake.FormatInfo$SynopsisType" description="The synopsis type."/>
+    <GContainer name="styleInfoList" description="List of styles">
+      <GContainer type="com.ingermanson.text.snowflake.StyleInfo">
+        <GString name="name" value="Normal" description="The style name."/>
+        <GString name="fontName" value="Times-Roman" description="The font name."/>
+        <GInteger name="size" value="12" description="The size of the style in points."/>
+        <GBoolean name="isItalic" value="false" description="Flag telling whether to use italics."/>
+        <GBoolean name="isBold" value="false" description="Flag telling whether to use bold."/>
+      </GContainer>
+      <GContainer type="com.ingermanson.text.snowflake.StyleInfo">
+        <GString name="name" value="Title" description="The style name."/>
+        <GString name="fontName" value="Times-Roman" description="The font name."/>
+        <GInteger name="size" value="36" description="The size of the style in points."/>
+        <GBoolean name="isItalic" value="false" description="Flag telling whether to use italics."/>
+        <GBoolean name="isBold" value="false" description="Flag telling whether to use bold."/>
+      </GContainer>
+      <GContainer type="com.ingermanson.text.snowflake.StyleInfo">
+        <GString name="name" value="Header 1" description="The style name."/>
+        <GString name="fontName" value="Times-Roman" description="The font name."/>
+        <GInteger name="size" value="24" description="The size of the style in points."/>
+        <GBoolean name="isItalic" value="false" description="Flag telling whether to use italics."/>
+        <GBoolean name="isBold" value="false" description="Flag telling whether to use bold."/>
+      </GContainer>
+      <GContainer type="com.ingermanson.text.snowflake.StyleInfo">
+        <GString name="name" value="Header 2" description="The style name."/>
+        <GString name="fontName" value="Helvetica" description="The font name."/>
+        <GInteger name="size" value="16" description="The size of the style in points."/>
+        <GBoolean name="isItalic" value="true" description="Flag telling whether to use italics."/>
+        <GBoolean name="isBold" value="true" description="Flag telling whether to use bold."/>
+      </GContainer>
+    </GContainer>
+  </GContainer>
+</GContainer>

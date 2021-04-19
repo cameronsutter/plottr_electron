@@ -115,9 +115,9 @@ class Tour extends Component {
           buttonBack: {
             color: '#ff9466',
           },
-          tooltipTitle:{
-            color:'black'
-          }
+          tooltipTitle: {
+            color: 'black',
+          },
         }}
       />
     )

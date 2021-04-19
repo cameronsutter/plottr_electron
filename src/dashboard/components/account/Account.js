@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'react-proptypes'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
 import { licenseStore, useLicenseInfo } from '../../../common/utils/store_hooks'
 import ChoiceView from './ChoiceView'
@@ -20,7 +21,7 @@ export default function Account(props) {
 
   const renderUser = () => {
     // first time using the app
-    if (firstTime) return <ChoiceView />
+    if (firstTime) return <ChoiceView darkMode={props.darkMode} />
 
     // active license
     if (licenseInfoSize) {
@@ -29,9 +30,9 @@ export default function Account(props) {
 
     // free trial
     if (trialInfo.expired) {
-      return <ExpiredView />
+      return <ExpiredView darkMode={props.darkMode} />
     } else {
-      return <TrialInfo trialInfo={trialInfo} />
+      return <TrialInfo darkMode={props.darkMode} trialInfo={trialInfo} />
     }
   }
 
@@ -52,4 +53,8 @@ export default function Account(props) {
       {renderBelow()}
     </div>
   )
+}
+
+Account.propTypes = {
+  darkMode: PropTypes.bool,
 }

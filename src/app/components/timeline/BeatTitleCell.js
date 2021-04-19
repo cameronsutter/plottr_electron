@@ -14,9 +14,8 @@ import {
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
-import { DeleteConfirmModal } from 'connected-components'
+import { DeleteConfirmModal, InputModal } from 'connected-components'
 import { actions, helpers, selectors } from 'pltr/v2'
-import InputModal from '../dialogs/InputModal'
 
 const {
   card: { truncateTitle },
@@ -195,7 +194,7 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderHorizontalHoverOptions(style) {
-    const { ui, isMedium, isSmall, beat } = this.props
+    const { ui, isMedium, isSmall, beat, hierarchyLevel } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
@@ -208,9 +207,11 @@ class BeatTitleCell extends PureComponent {
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
           </Button>
-          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
-            {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
-          </Button>
+          {hierarchyLevel.level < 2 && (
+            <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
+              {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+            </Button>
+          )}
         </ButtonGroup>
       </div>
     )

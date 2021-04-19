@@ -79,7 +79,9 @@ const ActsConfigModal = ({
   const RemoveLevelConfirmation = () =>
     stagedHierarchyLevels ? (
       <DeleteConfirmModal
-        customText={t('Are you sure?  (Removing levels may delete scene cards!)')}
+        customText={t(
+          'Are you sure?  (Removing levels may delete scene cards from all books across the project!)'
+        )}
         onDelete={() => {
           setHierarchyLevels(stagedHierarchyLevels)
           setStagedHierarchyLevels(null)

@@ -12,9 +12,8 @@ import {
 } from 'react-bootstrap'
 import SelectList from 'components/selectList'
 import { t as i18n } from 'plottr_locales'
-import ImagePicker from 'components/images/ImagePicker'
 import BookSelectList from '../project/BookSelectList'
-import { DeleteConfirmModal, Image, RichText } from 'connected-components'
+import { DeleteConfirmModal, Image, ImagePicker, RichText } from 'connected-components'
 import cx from 'classnames'
 import { actions, selectors } from 'pltr/v2'
 

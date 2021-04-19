@@ -5,7 +5,7 @@ import cx from 'classnames'
 import { FaKey } from 'react-icons/fa'
 import VerifyView from './VerifyView'
 
-export default function TrialInfo({ trialInfo }) {
+export default function TrialInfo({ trialInfo, darkMode }) {
   const { startedOn, endsOn, daysLeft } = trialInfo
   const [showVerify, setShowVerify] = useState(false)
   const startedDate = new Date(startedOn)
@@ -33,11 +33,12 @@ export default function TrialInfo({ trialInfo }) {
           </dd>
         </dl>
       </div>
-      {showVerify ? <VerifyView goBack={() => setShowVerify(false)} /> : null}
+      {showVerify ? <VerifyView darkMode={darkMode} goBack={() => setShowVerify(false)} /> : null}
     </div>
   )
 }
 
 TrialInfo.propTypes = {
   trialInfo: PropTypes.object,
+  darkMode: PropTypes.bool,
 }

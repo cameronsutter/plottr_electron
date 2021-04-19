@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'react-proptypes'
 import { Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 import VerifyView from './VerifyView'
@@ -23,7 +24,7 @@ export default function ChoiceView(props) {
           </div>
         )
       case 'verify':
-        return <VerifyView goBack={() => setView('chooser')} />
+        return <VerifyView darkMode={props.darkMode} goBack={() => setView('chooser')} />
       case 'explain':
         return (
           <div>
@@ -49,4 +50,8 @@ export default function ChoiceView(props) {
       {renderBody()}
     </div>
   )
+}
+
+ChoiceView.propTypes = {
+  darkMode: PropTypes.bool,
 }

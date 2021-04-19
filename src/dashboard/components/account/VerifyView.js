@@ -15,7 +15,7 @@ const TOOMANY = 'toomany'
 const RED = 'bg-danger'
 const GREEN = 'bg-success'
 
-export default function VerifyView({ goBack }) {
+export default function VerifyView({ goBack, darkMode }) {
   const makeAlertText = (value) => {
     if (value === SUCCESS) {
       return t('License Verified. Plottr will start momentarily. Thanks for being patient!')
@@ -113,10 +113,12 @@ export default function VerifyView({ goBack }) {
   return (
     <div className="verify__wrapper text-center">
       <h1>{t('Please verify your license')}</h1>
-      <p className="text-success">
+      <p className={cx('text-success', { darkmode: darkMode })}>
         {t('You should have received a license key after your purchase.')}
       </p>
-      <p className="text-info">{t('(If not, please email support@plottr.com)')}</p>
+      <p className={cx('text-info', { darkmode: darkMode })}>
+        {t('(If not, please email support@plottr.com)')}
+      </p>
       <div className="text-center" style={{ margin: '16px 0' }}>
         <FormControl
           type="text"
@@ -141,4 +143,5 @@ export default function VerifyView({ goBack }) {
 
 VerifyView.propTypes = {
   goBack: PropTypes.func,
+  darkMode: PropTypes.bool,
 }

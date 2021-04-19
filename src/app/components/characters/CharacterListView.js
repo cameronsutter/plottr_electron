@@ -24,7 +24,7 @@ import cx from 'classnames'
 import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import CharacterCategoriesModal from './CharacterCategoriesModal'
 import CharacterItem from './CharacterItem'
-import InputModal from '../dialogs/InputModal'
+import { InputModal } from 'connected-components'
 import { newIds, actions, selectors } from 'pltr/v2'
 import SubNav from '../../containers/SubNav'
 

@@ -112,10 +112,11 @@ class CardCell extends PureComponent {
   }
 
   renderBody() {
-    const { cards, ui, isVisible, color, lineIsExpanded, isMedium } = this.props
+    const { cards, ui, isVisible, color, lineIsExpanded, beatIsExpanded, isMedium } = this.props
     const numOfCards = cards.length
     const vertical = ui.orientation == 'vertical'
-    if (lineIsExpanded || numOfCards == 1) {
+
+    if (beatIsExpanded && (lineIsExpanded || numOfCards == 1)) {
       const cellKlass = cx('card__cell', {
         multiple: numOfCards > 1,
         vertical: vertical,
@@ -127,23 +128,29 @@ class CardCell extends PureComponent {
       if (!isVisible) {
         cardStyle.opacity = '0.1'
       }
-      const bodyKlass = cx('card__body', { 'medium-timeline': isMedium })
+      const bodyKlass = cx('card__body shadow', { 'medium-timeline': isMedium })
       const overviewKlass = cx('card__cell__overview-cell', {
         vertical: vertical,
         'medium-timeline': isMedium,
       })
       return (
         <div className={overviewKlass}>
-          <Floater
-            component={this.renderHiddenCards}
-            placement="right"
-            offset={0}
-            disableAnimation={true}
-          >
-            <div className={bodyKlass} style={cardStyle}>
-              <div className="card__title">{i18n('{num} Scenes', { num: numOfCards })}</div>
-            </div>
-          </Floater>
+          <div>
+            <Floater
+              component={this.renderHiddenCards}
+              placement="right"
+              offset={0}
+              disableAnimation={true}
+              styles={{ wrapper: { cursor: 'pointer' } }}
+            >
+              <>
+                <div className={bodyKlass} style={cardStyle}>
+                  <div className="card__title">{cards[0].title}</div>
+                </div>
+                <div className="card__behind" style={cardStyle}></div>
+              </>
+            </Floater>
+          </div>
           <CardAdd
             color={this.props.color}
             positionWithinLine={numOfCards}
@@ -182,6 +189,7 @@ CardCell.propTypes = {
   linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   beatPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   ui: PropTypes.object.isRequired,
+  beatIsExpanded: PropTypes.bool,
   lineIsExpanded: PropTypes.bool.isRequired,
   isVisible: PropTypes.bool.isRequired,
   isSmall: PropTypes.bool.isRequired,

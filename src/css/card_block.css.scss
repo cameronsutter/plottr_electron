@@ -55,14 +55,31 @@
   @extend .card__cell;
 
   text-align: center;
+  cursor: pointer;
 
   span:first-child {
     text-align: left;
   }
   .card__body {
+    cursor: pointer;
     .card__title {
       font-style: italic;
     }
+  }
+  .card__behind {
+    position: absolute;
+    width: 150px;
+    min-height: 70px;
+    right: 6px;
+    bottom: 29px;
+    border: 3px solid black;
+    border-radius: 4px;
+    z-index: 1;
+    background-color: $body-background-color;
+    cursor: pointer;
+  }
+  .card__add-card {
+    margin-top: 8px;
   }
 
   &.vertical {
@@ -111,6 +128,10 @@
       font-size: 14px;
       padding: 6px;
     }
+  }
+
+  &.shadow {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
   }
 }
 

@@ -41,6 +41,7 @@ const UIActions = actions.ui
 class TimelineTable extends Component {
   state = {
     tableLength: 0,
+    hovering:null
   }
 
   setLength = () => {
@@ -78,6 +79,16 @@ class TimelineTable extends Component {
   handleReorderLines = (originalPosition, droppedPosition) => {
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
     this.props.lineActions.reorderLines(lines, this.props.ui.currentTimeline)
+  }
+
+  startHovering = (beat) => {
+    this.setState({ hovering: beat })
+    return beat
+  }
+
+  stopHovering = () => {
+    this.setState({ hovering: false })
+    return null
   }
 
   // TODO: this should be a selector
@@ -170,13 +181,22 @@ class TimelineTable extends Component {
               color={line.color}
               showLine={beat.position == 0}
               tableLength={this.state.tableLength}
+              hovering={this.state.hovering}
+              onMouseEnter={() => this.startHovering(beat.id)}
+              onMouseLeave={this.stopHovering}
             />
           )
         })
       }
 
-      const beatTitle = <BeatTitleCell beatId={beat.id} handleReorder={this.handleReorderBeats} />
-
+      const beatTitle = <BeatTitleCell 
+        beatId={beat.id} 
+        handleReorder={this.handleReorderBeats} 
+        hovering={this.state.hovering}
+        onMouseEnter={() => this.startHovering(beat.id)}
+        onMouseLeave={this.stopHovering}
+      />
+      
       if (isSmall) {
         return (
           <tr key={`beatId-${beat.id}`}>
@@ -201,6 +221,9 @@ class TimelineTable extends Component {
                 expanded={lastBeat && lastBeat.expanded}
                 toggleExpanded={beatToggler(lastBeat)}
                 handleInsert={this.handleInsertNewBeat}
+                hovering={this.state.hovering}
+                onMouseEnter={() => this.startHovering(beat.id)}
+                onMouseLeave={this.stopHovering}
               />
             ) : null}
             {inserts}
@@ -279,6 +302,7 @@ class TimelineTable extends Component {
     return beatMapKeys.flatMap((beatPosition) => {
       const cells = []
       const beatId = beatMap[beatPosition]
+      const beat = beats[beatPosition]
       if (isLarge || (isMedium && beatPosition == 0)) {
         cells.push(
           <BeatInsertCell
@@ -300,6 +324,7 @@ class TimelineTable extends Component {
           <CardCell
             key={key}
             cards={cards}
+            beatIsExpanded={beat && beat.expanded}
             beatId={beatId}
             lineId={line.id}
             beatPosition={beatPosition}
@@ -326,6 +351,7 @@ class TimelineTable extends Component {
           <CardCell
             key={key}
             cards={cards}
+            beatIsExpanded={beat && beat.expanded}
             beatId={beat.id}
             lineId={line.id}
             beatPosition={beat.position}

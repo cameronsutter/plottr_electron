@@ -17,7 +17,7 @@
     "watch:copy-fonts": "cd src/css && cp *.woff2 ../../dist/components/",
     "eject": "react-scripts eject",
     "clean": "rimraf dist",
-    "compile": "npm run clean && npm-run-all --parallel compile:*",
+    "compile": "npm run clean && npm-run-all compile:*",
     "compile:components": "cross-env NODE_ENV=production babel src/components --out-dir dist/components --ignore **/__tests__,**/__fixtures__",
     "compile:utils": "npm run clean && cross-env NODE_ENV=production babel src/utils --out-dir dist/utils --ignore **/__tests__,**/__fixtures__",
     "compile:connections": "cross-env NODE_ENV=production babel src/connections --out-dir dist/connections --ignore **/__tests__,**/__fixtures__",

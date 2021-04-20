@@ -117,6 +117,7 @@ export default function OptionsHome(props) {
             onSelectLanguage={(newLanguage) => {
               SETTINGS.set('locale', newLanguage)
               setupI18n(SETTINGS, { electron })
+              ipcRenderer.send('pls-update-language', newLanguage)
             }}
           />
         </div>

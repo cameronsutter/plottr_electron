@@ -25,6 +25,8 @@ const {
   broadcastSetBeatHierarchy,
   broadcastUnsetBeatHierarchy,
 } = require('./modules/feature_flags')
+const { reloadAllWindows } = require('./modules/windows')
+const { reloadDashboard } = require('./modules/windows/dashboard')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -149,4 +151,12 @@ ipcMain.on('pls-update-beat-hierarchy-flag', (_, newValue) => {
   } else {
     broadcastUnsetBeatHierarchy()
   }
+})
+
+ipcMain.on('pls-update-language', (_, newLanguage) => {
+  SETTINGS.set('locale', newLanguage)
+  setupI18n(SETTINGS, { electron })
+  require('./modules/menus').loadMenu()
+  reloadAllWindows()
+  reloadDashboard()
 })

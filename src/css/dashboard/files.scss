@@ -59,6 +59,10 @@
     background-color: $blue-9;
     box-shadow: $blue-highlight-box-shadow;
   }
+
+  & div {
+    min-height: 60px;
+  }
 }
 
 .template-picker__dialog-wrapper {

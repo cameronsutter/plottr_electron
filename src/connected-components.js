@@ -1,5 +1,5 @@
 import { remote, shell, ipcRenderer } from 'electron'
-// import { connections } from 'plottr_components'
+import { connections } from 'plottr_components'
 
 import {
   listTemplates,

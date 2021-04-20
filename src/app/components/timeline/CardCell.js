@@ -111,6 +111,7 @@ class CardCell extends PureComponent {
     const { cards, ui, isVisible, color, lineIsExpanded, beatIsExpanded, isMedium } = this.props
     const numOfCards = cards.length
     const vertical = ui.orientation == 'vertical'
+
     if (beatIsExpanded && (lineIsExpanded || numOfCards == 1)) {
       const cellKlass = cx('card__cell', {
         multiple: numOfCards > 1,

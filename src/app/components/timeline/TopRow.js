@@ -29,6 +29,13 @@ const {
 } = selectors
 
 class TopRow extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      hovering: null,
+    }
+  }
+
   handleReorderBeats = (droppedPositionId, originalPositionId) => {
     const { ui, beatActions } = this.props
     beatActions.reorderBeats(originalPositionId, droppedPositionId, ui.currentTimeline)
@@ -38,6 +45,16 @@ class TopRow extends Component {
     const { ui, lineActions, lines } = this.props
     const newLines = reorderList(originalPosition, droppedPosition, lines)
     lineActions.reorderLines(newLines, ui.currentTimeline)
+  }
+
+  startHovering = (beat) => {
+    this.setState({ hovering: beat })
+    return beat
+  }
+
+  stopHovering = () => {
+    this.setState({ hovering: null })
+    return null
   }
 
   handleInsertNewBeat = (peerBeatId) => {
@@ -100,7 +117,6 @@ class TopRow extends Component {
       ui: { orientation },
     } = this.props
     return (
-      // XXXXXX - the cell appended to the end
       <BeatInsertCell
         key="last-insert"
         handleInsert={this.handleAppendBeat}
@@ -123,7 +139,6 @@ class TopRow extends Component {
       const cells = []
       if (isLarge || (isMedium && idx === 0)) {
         cells.push(
-          // XXXXXX - interstitial
           <BeatInsertCell
             isFirst={idx === 0}
             key={`beatId-${beat.id}-insert`}
@@ -138,16 +153,23 @@ class TopRow extends Component {
             expanded={lastBeat && lastBeat.expanded}
             toggleExpanded={beatToggler(lastBeat)}
             orientation={ui.orientation}
+            //this hovering state is the id of the card the user is currently hovering over
+            hovering={this.state.hovering}
+            onMouseEnter={() => this.startHovering(beat.id)}
+            onMouseLeave={this.stopHovering}
           />
         )
       }
       cells.push(
-        <BeatTitleCell
-          isFirst={idx === 0}
-          key={`beatId-${beat.id}`}
-          beatId={beat.id}
-          handleReorder={this.handleReorderBeats}
-        />
+          <BeatTitleCell
+            isFirst={idx === 0}
+            key={`beatId-${beat.id}`}
+            beatId={beat.id}
+            handleReorder={this.handleReorderBeats}
+            hovering={this.state.hovering}
+            onMouseEnter={() => this.startHovering(beat.id)}
+            onMouseLeave={this.stopHovering}
+          />
       )
       return cells
     })

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import { t } from 'plottr_locales'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import { Switch } from 'connected-components'
-import { FormControl, FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'
+import { FormControl, FormGroup, ControlLabel, HelpBlock, Button } from 'react-bootstrap'
 import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
 import LanguagePicker from '../../../common/components/LanguagePicker'
 import DarkOptionsSelect from './DarkOptionsSelect'
@@ -124,6 +124,14 @@ export default function OptionsHome(props) {
             handleToggle={toggleBeatHierarchy}
             labelText={t('Organize your scene cards into Chapters and Acts')}
           />
+          <br />
+          <p>
+            {t('To give feedback on this feature, please visit:')}
+            <br />
+            <Button bsStyle="link" onClick={() => shell.openExternal('https://plottr.com/beta/')}>
+              {t('plottr.com/beta')}
+            </Button>
+          </p>
         </div>
         <hr />
         <h1 className="secondary-text">{t('Coming Soon!')}</h1>

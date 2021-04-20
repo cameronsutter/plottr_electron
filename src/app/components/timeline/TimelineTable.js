@@ -279,6 +279,7 @@ class TimelineTable extends Component {
     return beatMapKeys.flatMap((beatPosition) => {
       const cells = []
       const beatId = beatMap[beatPosition]
+      const beat = beats[beatPosition]
       if (isLarge || (isMedium && beatPosition == 0)) {
         cells.push(
           <BeatInsertCell
@@ -300,6 +301,7 @@ class TimelineTable extends Component {
           <CardCell
             key={key}
             cards={cards}
+            beatIsExpanded={beat && beat.expanded}
             beatId={beatId}
             lineId={line.id}
             beatPosition={beatPosition}

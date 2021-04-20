@@ -331,7 +331,7 @@ class LineTitleCell extends PureComponent {
             placement={placement}
             hideArrow
             offset={isHorizontal ? 0 : 1}
-            style={{ cursor: 'move' }}
+            styles={{ wrapper: { cursor: 'move' } }}
           >
             <span>{truncateTitle(line.title, 50)}</span>
           </Floater>

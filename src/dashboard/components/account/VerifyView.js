@@ -132,7 +132,7 @@ export default function VerifyView({ goBack, darkMode }) {
             <Glyphicon id="spinner" glyph="refresh" />
           </span>
         </Button>
-        <Button bsStyle="link" onClick={goBack}>
+        <Button className={{ darkmode: darkMode }} bsStyle="link" onClick={goBack}>
           {t('Cancel')}
         </Button>
       </div>

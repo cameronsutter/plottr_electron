@@ -100,7 +100,7 @@ const rendererConfig = {
       dashboard: path.resolve(__dirname, 'src', 'dashboard'),
       test: path.resolve(__dirname, 'test'),
       'connected-components': path.resolve(__dirname, 'src', 'connected-components.js'),
-      plottr_components: path.resolve(__dirname, 'lib', 'plottr_components', 'dist', 'components'),
+      // plottr_components: path.resolve(__dirname, 'lib', 'plottr_components', 'dist', 'components'),
       // Avoid duplicate react in libs problem (see
       // https://medium.com/@penx/managing-dependencies-in-a-node-package-so-that-they-are-compatible-with-npm-link-61befa5aaca7)
       // If a better solution arose since this was written then feel

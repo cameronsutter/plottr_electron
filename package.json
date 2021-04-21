@@ -21,7 +21,7 @@
     "changelog": "changelog cameronsutter/plottr_electron all -m > changelog.md",
     "maps": "cross-env NODE_ENV=production MAPS=true node_modules/.bin/webpack",
     "pack": "npm --prefix lib/plottr_components ci && npm --prefix lib/plottr_components run compile && cross-env NODE_ENV=production node_modules/.bin/webpack",
-    "pack:windows": "node_modules\\.bin\\webpack",
+    "pack:windows": "npm --prefix lib/plottr_components ci && npm --prefix lib/plottr_components run compile && cross-env NODE_ENV=production node_modules\\.bin\\webpack",
     "dist": "node build/initEnv.js && npm run pack && electron-builder -ml",
     "dist:linux": "node build/initEnv.js && npm run pack && electron-builder -l",
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder -w",

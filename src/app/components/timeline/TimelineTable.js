@@ -83,9 +83,12 @@ class TimelineTable extends Component {
 
   startHovering = (beat) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     console.log(beat,'beat in starthovering')
 >>>>>>> 183dc9b7... [timeline] interstitial icon hovering bugs fixed, including making all icons appear on hover when ui.orientation is vertical
+=======
+>>>>>>> f8ec7897... [timeline] vbug fixed: vertical lines no longer collapsing automatically, styling bug fixes to timeline
     this.setState({ hovering: beat })
     return beat
   }
@@ -323,6 +326,7 @@ class TimelineTable extends Component {
       }
       const cards = cardMap[`${line.id}-${beatId}`]
       const key = `${cards ? 'card' : 'blank'}-${beatPosition}-${line.position}`
+      console.log(beat.expanded,'TimelineTable beat.expanded')
       if (cards) {
         cells.push(
           <CardCell

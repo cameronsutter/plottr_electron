@@ -14,7 +14,7 @@
     "watch:connections": "cross-env NODE_ENV=production babel src/connections --watch --out-dir dist/connections --ignore **/__tests__,**/__fixtures__",
     "watch:sass": "sass --watch src/css/components.scss dist/components/components.css",
     "watch:dup-sass": "sass --watch src/css/components.scss src/css/components.css",
-    "watch:copy-fonts": "mkdir -p dist/components/ && node bin/copy-files.js",
+    "watch:copy-fonts": "node bin/copy-files.js",
     "eject": "react-scripts eject",
     "clean": "rimraf dist",
     "compile": "npm run clean && npm-run-all --parallel sub-compile:*",
@@ -22,7 +22,7 @@
     "sub-compile:utils": "cross-env NODE_ENV=production babel src/utils --out-dir dist/utils --ignore **/__tests__,**/__fixtures__",
     "sub-compile:connections": "cross-env NODE_ENV=production babel src/connections --out-dir dist/connections --ignore **/__tests__,**/__fixtures__",
     "sub-compile:sass": "sass src/css/components.scss dist/components/components.css",
-    "sub-compile:fonts": "mkdir -p dist/components/ && node bin/copy-files.js",
+    "sub-compile:fonts": "node bin/copy-files.js",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },

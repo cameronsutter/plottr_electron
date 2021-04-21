@@ -93,7 +93,7 @@ const rendererConfig = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
-    modules: ['node_modules', 'src/app', 'lib', 'test'],
+    modules: ['node_modules', 'src/app', 'test'],
     alias: {
       app: path.resolve(__dirname, 'src', 'app'),
       css: path.resolve(__dirname, 'src', 'css'),

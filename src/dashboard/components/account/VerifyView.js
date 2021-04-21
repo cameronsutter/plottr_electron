@@ -81,6 +81,7 @@ export default function VerifyView({ goBack, darkMode }) {
         }
         setShowAlert(true)
       }
+      setSpinnerHidden(true)
     })
   }
 

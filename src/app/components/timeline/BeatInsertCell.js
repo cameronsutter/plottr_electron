@@ -132,8 +132,8 @@ class BeatInsertCell extends PureComponent {
   }
 
   beatClass = () => {
-    const { isInBeatList, isMedium, hovering, beatToLeft } = this.props
-
+    const { isInBeatList, isMedium, hovering, beatToLeft, isHorizontal } = this.props
+    beatToLeft && hovering === beatToLeft.id && console.log(hovering,'beatToLeft')
     return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && 'transparent', {
       'medium-timeline': isInBeatList && isMedium,
     })

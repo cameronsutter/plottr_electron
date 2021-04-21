@@ -131,6 +131,10 @@ $medium_width: 80px;
   align-items: center;
 }
 
+.insert-beat-wrapper:hover {
+  color: $blue-7;
+}
+
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
@@ -228,16 +232,17 @@ $medium_width: 80px;
 }
 
 .vertical-beat-list__insert {
-  height: 40px;
+  // height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: transparent;
+  // color: transparent;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
+  margin:-25px 0 0 0;
   &:first-child {
-    margin: 0 -30px 2px 80px;
+    margin: -25px 0px 2px 80px;
   }
   svg {
     position: absolute;
@@ -260,6 +265,10 @@ $medium_width: 80px;
     width: $medium_width;
     margin-left: 35px;
   }
+}
+
+.vertical-insert-beat-wrapper:hover {
+  color: $blue-7;
 }
 
 .vertical-beat-list__insert.append-beat {

@@ -82,7 +82,6 @@ class TimelineTable extends Component {
   }
 
   startHovering = (beat) => {
-    console.log(beat,'beat in starthovering')
     this.setState({ hovering: beat })
     return beat
   }
@@ -320,6 +319,7 @@ class TimelineTable extends Component {
       }
       const cards = cardMap[`${line.id}-${beatId}`]
       const key = `${cards ? 'card' : 'blank'}-${beatPosition}-${line.position}`
+      console.log(beat.expanded,'TimelineTable beat.expanded')
       if (cards) {
         cells.push(
           <CardCell
@@ -352,6 +352,7 @@ class TimelineTable extends Component {
           <CardCell
             key={key}
             cards={cards}
+            beatIsExpanded={beat && beat.expanded}
             beatId={beat.id}
             lineId={line.id}
             beatPosition={beat.position}

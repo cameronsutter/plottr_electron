@@ -29,7 +29,7 @@ class BeatTitleCell extends PureComponent {
     super(props)
     let editing = props.beat.title == ''
     this.state = {
-      hovering: false,
+      hovering: this.props.hovering,
       editing: editing,
       dragging: false,
       inDropZone: false,
@@ -142,10 +142,12 @@ class BeatTitleCell extends PureComponent {
   }
 
   startHovering = () => {
-    this.setState({ hovering: true })
+    this.props.onMouseEnter()
+    this.setState({ hovering: this.props.onMouseEnter() })
   }
 
   stopHovering = () => {
+    this.props.onMouseLeave()
     this.setState({ hovering: false })
   }
 

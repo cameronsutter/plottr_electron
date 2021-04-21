@@ -16,6 +16,13 @@ const {
 } = helpers
 
 class BeatInsertCell extends PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      hovering: this.props.hovering,
+    }
+  }
+
   insert = () => {
     const { beatToLeft, handleInsert } = this.props
     handleInsert(beatToLeft && beatToLeft.id)
@@ -52,9 +59,9 @@ class BeatInsertCell extends PureComponent {
   }
 
   wrapperClass = () => {
-    const { showLine, orientation } = this.props
-
-    return cx(orientedClassName('insert-beat-wrapper', orientation), {
+    const { showLine, orientation, beatToLeft, hovering } = this.props
+    //if the value of 'hovering' (integer of the card's id passed down from parent) !== the current card's id, add a class that makes the icon transparent, \/ if !beatToLeft then make the first plus icon transparent
+    return cx(orientedClassName('insert-beat-wrapper', orientation), beatToLeft && hovering !== beatToLeft.id && 'transparent', !beatToLeft && 'transparent', {
       'insert-beat-spacer': showLine,
     })
   }
@@ -100,9 +107,9 @@ class BeatInsertCell extends PureComponent {
   }
 
   beatClassSubIcon = () => {
-    const { isMedium, isInBeatList } = this.props
+    const { isMedium, isInBeatList, beatToLeft, hovering } = this.props
 
-    return cx('beat-list__insert', {
+    return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && 'transparent', {
       'medium-timeline': isInBeatList && isMedium,
     })
   }
@@ -125,9 +132,9 @@ class BeatInsertCell extends PureComponent {
   }
 
   beatClass = () => {
-    const { isInBeatList, isMedium } = this.props
+    const { isInBeatList, isMedium, hovering, beatToLeft } = this.props
 
-    return cx('beat-list__insert', {
+    return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && 'transparent', {
       'medium-timeline': isInBeatList && isMedium,
     })
   }

@@ -77,11 +77,15 @@ $medium_width: 80px;
   }
 }
 
+.transparent {
+  color: transparent;
+}
+
 .beat-list__insert {
   height: 75px;
   display: flex;
   align-items: center;
-  color: transparent;
+  // color: transparent;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;

@@ -15,6 +15,14 @@
     #alert {
       padding: 10px;
       margin-top: 5px;
+
+      &.bg-danger {
+        color: $state-danger-text;
+      }
+
+      &.bg-success {
+        color: $state-success-text;
+      }
     }
 
     .btn {

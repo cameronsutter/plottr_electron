@@ -92,6 +92,7 @@ export const SortList = components.SortList
 export const CharacterView = components.CharacterView
 export const BookSelectList = components.BookSelectList
 export const ErrorBoundary = components.ErrorBoundary
+export const DashboardErrorBoundary = components.DashboardErrorBoundary
 export const SelectList = components.SelectList
 export const TagLabel = components.TagLabel
 export const CustomAttributeModal = components.CustomAttributeModal

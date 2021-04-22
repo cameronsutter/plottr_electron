@@ -13,7 +13,7 @@ import { ipcRenderer } from 'electron'
 import SETTINGS from '../../../common/utils/settings'
 import { checkForActiveLicense } from '../../../common/licensing/check_license'
 import { is } from 'electron-util'
-import { Beamer, ErrorBoundary } from 'connected-components'
+import { Beamer, DashboardErrorBoundary } from 'connected-components'
 
 export default function DashboardBody({ currentView, setView, darkMode }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -89,7 +89,7 @@ export default function DashboardBody({ currentView, setView, darkMode }) {
       break
   }
 
-  return <Body>{body}</Body>
+  return <Body darkMode={darkMode}>{body}</Body>
 }
 
 DashboardBody.propTypes = {
@@ -98,17 +98,18 @@ DashboardBody.propTypes = {
   darkMode: PropTypes.bool,
 }
 
-function Body({ children }) {
+function Body({ children, darkMode }) {
   return (
     <div className="dashboard__body">
       <div className="dashboard__top-border"></div>
       {!is.macos ? <Beamer /> : null}
       <UpdateNotifier />
-      <ErrorBoundary>{children}</ErrorBoundary>
+      <DashboardErrorBoundary darkMode={darkMode}>{children}</DashboardErrorBoundary>
     </div>
   )
 }
 
 Body.propTypes = {
   children: PropTypes.node,
+  darkMode: PropTypes.bool,
 }

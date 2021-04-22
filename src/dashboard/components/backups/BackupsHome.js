@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { t } from 'plottr_locales'
-import { ErrorBoundary } from 'connected-components'
+import { DashboardErrorBoundary } from 'connected-components'
+import SETTINGS from '../../../common/utils/settings'
 import BackupFiles from './BackupFiles'
 import Folders from './Folders'
 
@@ -36,7 +37,7 @@ export default function BackupsHome(props) {
       <h1>{t('Your Backups')}</h1>
       {breadcrumb}
       <div className="dashboard__backups__wrapper">
-        <ErrorBoundary>{body}</ErrorBoundary>
+        <DashboardErrorBoundary darMode={SETTINGS.get('user.dark')}>{body}</DashboardErrorBoundary>
       </div>
     </div>
   )

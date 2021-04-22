@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
-import { ErrorBoundary } from 'connected-components'
+import { DashboardErrorBoundary } from 'connected-components'
 import DashboardBody from './components/navigation/DashboardBody'
 import DashboardNavigation from './components/navigation/DashboardNavigation'
 import DashboardHeader from './components/navigation/DashboardHeader'
@@ -21,12 +21,12 @@ export default function DashboardApp() {
   }, [])
 
   return (
-    <ErrorBoundary>
+    <DashboardErrorBoundary darkMode={darkMode}>
       <DashboardHeader darkMode={darkMode} />
       <main className={cx({ darkmode: darkMode })}>
         <DashboardNavigation currentView={view} setView={setView} />
         <DashboardBody currentView={view} setView={setView} darkMode={darkMode} />
       </main>
-    </ErrorBoundary>
+    </DashboardErrorBoundary>
   )
 }

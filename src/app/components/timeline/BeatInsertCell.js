@@ -179,6 +179,8 @@ class BeatInsertCell extends PureComponent {
 
     if (atMaximumDepth) return null
 
+    const addCard = <p className={'acts-tour-step8'} style={{color:'inherit'}}>+ {this.childTitleText().split(" ").pop()}</p>
+    
     return handleInsertChild && !isFirst ? (
       <div
         title={this.childTitleText()}
@@ -186,7 +188,7 @@ class BeatInsertCell extends PureComponent {
         onClick={this.insertChild}
       >
         <div className={this.wrapperClassSubIcon()}>
-          <IoIosReturnRight size={25} className="acts-tour-step8" />
+          {addCard}
         </div>
       </div>
     ) : null
@@ -194,11 +196,12 @@ class BeatInsertCell extends PureComponent {
 
   renderInsertBeat() {
     const { isFirst } = this.props
+    const addCard = <p className={!isFirst && 'acts-tour-step6'} style={{color:'inherit'}}>+ {this.titleText().split(" ").pop()}</p>
 
     return (
       <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
         <div className={this.wrapperClass()}>
-          <Glyphicon glyph="plus" className={!isFirst && 'acts-tour-step6'} />
+          {addCard}
         </div>
       </div>
     )
@@ -224,6 +227,7 @@ class BeatInsertCell extends PureComponent {
         <div className="beat-list__interstitial-controls">
           {this.renderInsertBeat()}
           {this.renderInsertChild()}
+          {this.renderToggleCollapse()}
         </div>
       )
     } else {
@@ -231,6 +235,7 @@ class BeatInsertCell extends PureComponent {
         <>
           {this.renderInsertBeat()}
           {this.renderInsertChild()}
+          {this.renderToggleCollapse()}
         </>
       )
     }

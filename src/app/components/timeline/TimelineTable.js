@@ -319,7 +319,6 @@ class TimelineTable extends Component {
       }
       const cards = cardMap[`${line.id}-${beatId}`]
       const key = `${cards ? 'card' : 'blank'}-${beatPosition}-${line.position}`
-      console.log(beat.expanded,'TimelineTable beat.expanded')
       if (cards) {
         cells.push(
           <CardCell

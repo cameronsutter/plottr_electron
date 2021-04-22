@@ -34,6 +34,7 @@ const platform = {
   },
   settings: SETTINGS,
   user: USER,
+  os: is.windows ? 'windows' : is.macos ? 'macos' : is.linux ? 'linux' : 'unknown',
   isDevelopment: is.development,
   isWindows: is.windows,
   openExternal: shell.openExternal,

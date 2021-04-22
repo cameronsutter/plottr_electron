@@ -194,8 +194,9 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderHorizontalHoverOptions(style) {
-    const { ui, isMedium, isSmall, beat, hierarchyLevel } = this.props
+    const { ui, isMedium, isSmall, beat, hierarchyLevel, hierarchyLevels } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
+    const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <ButtonGroup>
@@ -207,11 +208,11 @@ class BeatTitleCell extends PureComponent {
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
           </Button>
-          {hierarchyLevel.level < 2 && (
+          {showExpandCollapse ? (
             <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
               {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
             </Button>
-          )}
+          ) : null}
         </ButtonGroup>
       </div>
     )

@@ -101,3 +101,4 @@ export const ProjectTemplateDetails = components.ProjectTemplateDetails
 export const CharacterTemplateDetails = components.CharacterTemplateDetails
 export const ActsConfigModal = components.ActsConfigModal
 export const AskToSaveModal = components.AskToSaveModal
+export const FilterList = components.FilterList

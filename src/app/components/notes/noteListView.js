@@ -16,10 +16,9 @@ import {
   Col,
 } from 'react-bootstrap'
 import NoteView from 'components/notes/noteView'
-import FilterList from 'components/filterList'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
-import { ErrorBoundary, SubNav } from 'connected-components'
+import { ErrorBoundary, FilterList, SubNav } from 'connected-components'
 import NoteItem from './NoteItem'
 import { newIds, actions } from 'pltr/v2'
 

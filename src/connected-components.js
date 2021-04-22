@@ -99,3 +99,4 @@ export const CustomAttributeModal = components.CustomAttributeModal
 export const SubNav = components.SubNav
 export const ProjectTemplateDetails = components.ProjectTemplateDetails
 export const CharacterTemplateDetails = components.CharacterTemplateDetails
+export const ActsConfigModal = components.ActsConfigModal

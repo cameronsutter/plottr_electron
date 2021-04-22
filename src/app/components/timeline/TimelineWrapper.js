@@ -18,6 +18,7 @@ import { t as i18n } from 'plottr_locales'
 import TimelineTable from './TimelineTable'
 import cx from 'classnames'
 import {
+  ActsConfigModal,
   CustomAttributeModal,
   CustomAttrFilterList,
   FunSpinner,
@@ -29,7 +30,6 @@ import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { helpers, actions, selectors } from 'pltr/v2'
 import MPQ from '../../../common/utils/MPQ'
-import ActsConfigModal from 'components/dialogs/ActsConfigModal'
 
 const win = remote.getCurrentWindow()
 

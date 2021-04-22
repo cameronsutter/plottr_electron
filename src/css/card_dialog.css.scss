@@ -131,6 +131,9 @@
   border-bottom: 2px solid #f2cb8000;
   transition: border-bottom 0.5s;
   font-weight: bold;
+  &.darkmode {
+    color: $text-color;
+  }
 }
 
 .card-dialog__custom-attributes-editable-label--with-underline {

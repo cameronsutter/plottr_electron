@@ -115,9 +115,8 @@ class CardCell extends PureComponent {
     const { cards, ui, isVisible, color, lineIsExpanded, beatIsExpanded, isMedium } = this.props
     const numOfCards = cards.length
     const vertical = ui.orientation == 'vertical'
-    console.log(beatIsExpanded,'beatIsExpanded')
+
     if (beatIsExpanded && (lineIsExpanded || numOfCards == 1)) {
-      console.log('here')
       const cellKlass = cx('card__cell', {
         multiple: numOfCards > 1,
         vertical: vertical,
@@ -125,7 +124,6 @@ class CardCell extends PureComponent {
       })
       return <div className={cellKlass}>{this.renderCards(true)}</div>
     } else {
-      console.log('there')
       let cardStyle = { borderColor: color }
       if (!isVisible) {
         cardStyle.opacity = '0.1'

@@ -227,6 +227,7 @@ class BeatInsertCell extends PureComponent {
         <div className="beat-list__interstitial-controls">
           {this.renderInsertBeat()}
           {this.renderInsertChild()}
+          {this.renderToggleCollapse()}
         </div>
       )
     } else {
@@ -234,6 +235,7 @@ class BeatInsertCell extends PureComponent {
         <>
           {this.renderInsertBeat()}
           {this.renderInsertChild()}
+          {this.renderToggleCollapse()}
         </>
       )
     }

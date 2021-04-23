@@ -1,5 +1,6 @@
 const { shell } = require('electron')
 const i18n = require('plottr_locales').t
+const { is } = require('electron-util')
 
 function buildHelpMenu() {
   return {
@@ -18,9 +19,10 @@ function buildHelpMenu() {
         label: i18n('Guided Tours'),
         submenu: [
           {
-            label: i18n('Acts and Beats'),
+            label: i18n('Act Structure'),
             click: function (event, focusedWindow) {
-              focusedWindow.webContents.send('acts-tour-start')
+              console.log(is.windows,'os')
+              !is.windows ? focusedWindow.webContents.send('acts-tour-start-windows') : focusedWindow.webContents.send('acts-tour-start')
             },
           },
         ],

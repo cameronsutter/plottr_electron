@@ -29,7 +29,7 @@ class BeatTitleCell extends PureComponent {
     super(props)
     let editing = props.beat.title == ''
     this.state = {
-      hovering: false,
+      hovering: this.props.hovering,
       editing: editing,
       dragging: false,
       inDropZone: false,
@@ -142,10 +142,12 @@ class BeatTitleCell extends PureComponent {
   }
 
   startHovering = () => {
-    this.setState({ hovering: true })
+    this.props.onMouseEnter()
+    this.setState({ hovering: this.props.onMouseEnter() })
   }
 
   stopHovering = () => {
+    this.props.onMouseLeave()
     this.setState({ hovering: false })
   }
 
@@ -219,8 +221,9 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderVerticalHoverOptions(style) {
-    const { ui, isSmall } = this.props
+    const { ui, isSmall, beat, hierarchyLevel, hierarchyLevels } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
+    const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.startEditing}>
@@ -229,6 +232,11 @@ class BeatTitleCell extends PureComponent {
         <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.handleDelete}>
           <Glyphicon glyph="trash" />
         </Button>
+        {showExpandCollapse && (
+          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
+            {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+          </Button>
+        )}
       </div>
     )
   }

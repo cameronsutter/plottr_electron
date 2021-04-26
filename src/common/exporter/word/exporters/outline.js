@@ -53,9 +53,10 @@ export default function exportOutline(state, namesMapping, doc, options) {
       const customAttrs = cardsCustomAttributesSelector(state)
       const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
 
-      const filteredCards = !outlineFilter
-        ? sortedCards
-        : sortedCards.filter((card) => includes(outlineFilter, card.lineId))
+      const filteredCards =
+        !outlineFilter || !outlineFilter.length
+          ? sortedCards
+          : sortedCards.filter((card) => includes(outlineFilter, card.lineId))
 
       if (filteredCards.length) {
         paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))

@@ -103,3 +103,4 @@ export const ActsConfigModal = components.ActsConfigModal
 export const AskToSaveModal = components.AskToSaveModal
 export const FilterList = components.FilterList
 export const TagView = components.TagView
+export const TagListView = components.TagListView

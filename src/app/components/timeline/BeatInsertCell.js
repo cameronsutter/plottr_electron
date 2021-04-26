@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Cell } from 'react-sticky-table'
-import { Glyphicon } from 'react-bootstrap'
+import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import { IoIosReturnRight } from 'react-icons/io'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
@@ -20,6 +20,7 @@ class BeatInsertCell extends PureComponent {
     super(props)
     this.state = {
       hovering: this.props.hovering,
+      localHovering: false
     }
   }
 
@@ -60,8 +61,10 @@ class BeatInsertCell extends PureComponent {
 
   wrapperClass = () => {
     const { showLine, orientation, beatToLeft, hovering } = this.props
+    const { localHovering } = this.state
+
     //if the value of 'hovering' (integer of the card's id passed down from parent) !== the current card's id, add a class that makes the icon transparent, \/ if !beatToLeft then make the first plus icon transparent
-    return cx(orientedClassName('insert-beat-wrapper', orientation), beatToLeft && hovering !== beatToLeft.id && 'transparent', !beatToLeft && 'transparent', {
+    return cx(orientedClassName('insert-beat-wrapper', orientation), beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent', !beatToLeft && 'transparent', {
       'insert-beat-spacer': showLine,
     })
   }
@@ -108,8 +111,9 @@ class BeatInsertCell extends PureComponent {
 
   beatClassSubIcon = () => {
     const { isMedium, isInBeatList, beatToLeft, hovering } = this.props
+    const { localHovering } = this.state
 
-    return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && 'transparent', {
+    return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent', {
       'medium-timeline': isInBeatList && isMedium,
     })
   }
@@ -133,8 +137,9 @@ class BeatInsertCell extends PureComponent {
 
   beatClass = () => {
     const { isInBeatList, isMedium, hovering, beatToLeft } = this.props
+    const { localHovering } = this.state
 
-    return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && 'transparent', {
+    return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent', {
       'medium-timeline': isInBeatList && isMedium,
     })
   }
@@ -164,7 +169,6 @@ class BeatInsertCell extends PureComponent {
       >
         <div className={this.wrapperClassSubIcon()}>
           <div
-            className={tour.run ? 'acts-tour-step7' : ''}
             onClick={() => !isFirst && expanded === true && this.props.tourActions.tourNext('next')}
           >
             {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
@@ -175,11 +179,9 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderInsertChild() {
-    const { handleInsertChild, isFirst, atMaximumDepth } = this.props
+    const { handleInsertChild, isFirst, isSmall, atMaximumDepth } = this.props
 
     if (atMaximumDepth) return null
-
-    const addCard = <p className={'acts-tour-step8'} style={{color:'inherit'}}>+ {this.childTitleText().split(" ").pop()}</p>
     
     return handleInsertChild && !isFirst ? (
       <div
@@ -187,27 +189,30 @@ class BeatInsertCell extends PureComponent {
         className={this.orientedClassSubIcon()}
         onClick={this.insertChild}
       >
-        <div className={this.wrapperClassSubIcon()}>
-          {addCard}
-        </div>
+        <Button className={this.wrapperClassSubIcon()} className={'acts-tour-step8'} bsSize={isSmall ? 'small' : undefined} block>
+          <IoIosReturnRight size={25} style={{margin:'-1px -5px -6px -5px'}} />
+        </Button>
       </div>
     ) : null
   }
 
   renderInsertBeat() {
-    const { isFirst } = this.props
-    const addCard = <p className={!isFirst && 'acts-tour-step6'} style={{color:'inherit'}}>+ {this.titleText().split(" ").pop()}</p>
+    const { isFirst, isSmall } = this.props
 
     return (
       <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
         <div className={this.wrapperClass()}>
-          {addCard}
+          <Button className={!isFirst ? 'acts-tour-step6' : null} bsSize={isSmall ? 'small' : undefined} block>
+            <Glyphicon glyph="plus" />
+          </Button>
         </div>
       </div>
     )
   }
 
   renderLastInsertBeat() {
+    const { isFirst, isSmall, orientation } = this.props
+
     return (
       <div title={this.lastTitleText()} className={this.lastOrientedClass()} onClick={this.insert}>
         <div className={this.lastWrapperClass()}>
@@ -224,19 +229,17 @@ class BeatInsertCell extends PureComponent {
       insideDiv = this.renderLastInsertBeat()
     } else if (orientation === 'vertical') {
       insideDiv = (
-        <div className="beat-list__interstitial-controls">
+        <div className="vertical-beat-list__insert" onMouseEnter={() => this.setState({localHovering:true})} onMouseLeave={() => this.setState({localHovering:false})}>
           {this.renderInsertBeat()}
           {this.renderInsertChild()}
-          {this.renderToggleCollapse()}
         </div>
       )
     } else {
       insideDiv = (
-        <>
+        <div onMouseEnter={() => this.setState({localHovering:true})} onMouseLeave={() => this.setState({localHovering:false})}>
           {this.renderInsertBeat()}
           {this.renderInsertChild()}
-          {this.renderToggleCollapse()}
-        </>
+        </div>
       )
     }
 

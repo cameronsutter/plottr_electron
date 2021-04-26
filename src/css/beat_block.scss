@@ -78,25 +78,24 @@ $medium_width: 80px;
 }
 
 .transparent {
-  color: transparent;
+  visibility: hidden;
 }
 
 .beat-list__insert {
   height: 75px;
   display: flex;
   align-items: center;
-  width:75px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  /* Place the intersticial controls so that + is centred */
   &:last-child:not(.small-timeline):not(.medium-timeline) {
-    margin-top: 8px;
+    margin: 8px 5px 0 -4px;
+    // padding: -5px;
+    width:41px;
   }
   &:first-child:not(.small-timeline):not(.medium-timeline) {
-    margin-top: 78px;
+    margin: 75px 5px 0 -5px;
     height: 16px;
-    margin-left: 0px;
   }
   .insert-beat-wrapper {
     display: flex;
@@ -124,12 +123,12 @@ $medium_width: 80px;
   }
 }
 
-.beat-list__interstitial-controls {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
+// .beat-list__interstitial-controls {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-around;
+//   align-items: center;
+// }
 
 .insert-beat-wrapper:hover {
   color: $blue-7;
@@ -233,26 +232,24 @@ $medium_width: 80px;
 }
 
 .vertical-beat-list__insert {
-  // height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  // color: transparent;
+  width:100px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  &:first-child {
-    margin: 0px 10px 0px 40px;
-  }
-  svg {
-    position: absolute;
+  margin:-5px 0 0 50px;
+  button {
+    width:41px;
+    height:35px;
   }
   .vertical-insert-beat-wrapper {
     .large-timeline {
       height: 40px;
     }
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-around;
   }
   .vertical-insert-beat-wrapper.insert-beat-spacer {

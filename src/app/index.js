@@ -99,6 +99,8 @@ function bootFile(filePath, options, numOpenFiles) {
         withDispatch(actions.featureFlags.unsetBeatHierarchy)
       )
 
+      if(state && state.tour && state.tour.showTour)store.dispatch(actions.ui.changeOrientation('horizontal'))
+
       render(
         <Provider store={store}>
           <App showTour={state && state.tour && state.tour.showTour} />

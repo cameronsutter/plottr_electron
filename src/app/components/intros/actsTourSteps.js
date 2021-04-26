@@ -73,10 +73,9 @@ export const ACTS_TOUR_STEPS = [
     target: `.acts-tour-step6`,
     title: 'Adding Acts and Chapters',
     content:
-      'Click to the right of higher level cards to add another of that card (e.g. another act). If you just now implemented acts for this project there is only one act (level 3) and/or one chapter (level 2) containing all of your cards. Added acts and chapters show up at the end of the timeline.',
+      'Click next to higher level cards to add another of that card (e.g. another act). If you just now implemented acts for this project there is only one act (level 3) and/or one chapter (level 2) containing all of your cards. Added acts and chapters display at the end of the section, which may be at the end of the timeline.',
     event: 'hover',
     spotlightClicks: true,
-    placement: 'right',
     styles: {
       buttonBack: {
         display: 'none',

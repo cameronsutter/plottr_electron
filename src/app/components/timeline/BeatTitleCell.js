@@ -63,7 +63,10 @@ class BeatTitleCell extends PureComponent {
       actions: { collapseBeat, expandBeat },
       beat: { id, expanded },
       ui: { currentTimeline },
+      tour
     } = this.props
+
+    if(expanded === true && tour.run === true) this.props.tourActions.tourNext('next')
 
     if (expanded) collapseBeat(id, currentTimeline)
     else expandBeat(id, currentTimeline)
@@ -196,7 +199,7 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderHorizontalHoverOptions(style) {
-    const { ui, isMedium, isSmall, beat, hierarchyLevel, hierarchyLevels } = this.props
+    const { ui, isMedium, isSmall, beat, hierarchyLevel, hierarchyLevels, tour } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
     return (
@@ -211,7 +214,7 @@ class BeatTitleCell extends PureComponent {
             <Glyphicon glyph="trash" />
           </Button>
           {showExpandCollapse ? (
-            <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
+            <Button bsSize={isSmall ? 'small' : undefined} className={tour.run ? 'acts-tour-step7' : ''} onClick={this.handleToggleExpanded}>
               {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
             </Button>
           ) : null}
@@ -221,7 +224,7 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderVerticalHoverOptions(style) {
-    const { ui, isSmall, beat, hierarchyLevel, hierarchyLevels } = this.props
+    const { ui, isSmall, beat, hierarchyLevel, hierarchyLevels, tour } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
     return (
@@ -233,7 +236,7 @@ class BeatTitleCell extends PureComponent {
           <Glyphicon glyph="trash" />
         </Button>
         {showExpandCollapse && (
-          <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
+          <Button bsSize={isSmall ? 'small' : undefined} className={tour.run ? 'acts-tour-step7' : ''} onClick={this.handleToggleExpanded}>
             {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
           </Button>
         )}
@@ -415,6 +418,8 @@ BeatTitleCell.propTypes = {
   isMedium: PropTypes.bool.isRequired,
   hierarchyEnabled: PropTypes.bool.isRequired,
   isSeries: PropTypes.bool.isRequired,
+  tour: PropTypes.object.isRequired,
+  tourActions: PropTypes.object.isRequired,
 }
 
 const makeMapState = (state) => {
@@ -434,6 +439,7 @@ const makeMapState = (state) => {
       isMedium: selectors.isMediumSelector(state.present),
       hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
       isSeries: selectors.isSeriesSelector(state.present),
+      tour: selectors.tourSelector(state.present),
     }
   }
 }
@@ -441,6 +447,7 @@ const makeMapState = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.beat, dispatch),
+    tourActions: bindActionCreators(actions.tour, dispatch),
   }
 }
 

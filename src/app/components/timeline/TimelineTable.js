@@ -25,6 +25,7 @@ const {
   cardMapSelector,
   visibleSortedBeatsByBookSelector,
   beatsByBookSelector,
+  beatHasChildrenSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
   isLargeSelector,
@@ -41,7 +42,7 @@ const UIActions = actions.ui
 class TimelineTable extends Component {
   state = {
     tableLength: 0,
-    hovering:null
+    hovering: null,
   }
 
   setLength = () => {
@@ -298,7 +299,7 @@ class TimelineTable extends Component {
   }
 
   renderHorizontalCards(line, beatMap, beatMapKeys) {
-    const { beats, cardMap, isLarge, isMedium } = this.props
+    const { beats, cardMap, isLarge, isMedium, beatHasChildrenMap } = this.props
     return beatMapKeys.flatMap((beatPosition) => {
       const cells = []
       const beatId = beatMap[beatPosition]
@@ -324,7 +325,7 @@ class TimelineTable extends Component {
           <CardCell
             key={key}
             cards={cards}
-            beatIsExpanded={beat && beat.expanded}
+            beatIsExpanded={(beat && beat.expanded) || !beatHasChildrenMap.get(beat.id)}
             beatId={beatId}
             lineId={line.id}
             beatPosition={beatPosition}
@@ -396,6 +397,7 @@ class TimelineTable extends Component {
 TimelineTable.propTypes = {
   nextBeatId: PropTypes.number,
   beats: PropTypes.array,
+  beatHasChildrenMap: PropTypes.instanceOf(Map).isRequired,
   booksBeats: PropTypes.object,
   beatMapping: PropTypes.object,
   lines: PropTypes.array,
@@ -416,6 +418,7 @@ function mapStateToProps(state) {
   return {
     beats: visibleSortedBeatsByBookSelector(state.present),
     booksBeats: beatsByBookSelector(state.present),
+    beatHasChildrenMap: beatHasChildrenSelector(state.present),
     beatMapping: sparceBeatMap(state.present),
     nextBeatId: nextId(state.present.beats),
     lines: sortedLinesByBookSelector(state.present),

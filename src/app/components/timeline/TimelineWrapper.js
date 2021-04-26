@@ -21,12 +21,12 @@ import {
   ActsConfigModal,
   CustomAttributeModal,
   CustomAttrFilterList,
+  ExportNavItem,
   FunSpinner,
   SubNav,
 } from 'connected-components'
 import { FaSave } from 'react-icons/fa'
 import { VscSymbolStructure } from 'react-icons/vsc'
-import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { helpers, actions, selectors } from 'pltr/v2'
 import MPQ from '../../../common/utils/MPQ'

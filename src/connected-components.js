@@ -1,6 +1,9 @@
 import electron, { remote, shell, ipcRenderer } from 'electron'
 import { connections } from 'plottr_components'
 
+import { useExportConfigInfo } from './common/utils/store_hooks'
+import askToExport from './common/exporter/start_export'
+import export_config from './common/exporter/default_config'
 import {
   listTemplates,
   listCustomTemplates,
@@ -13,7 +16,7 @@ import SETTINGS from './common/utils/settings'
 import USER from './common/utils/user_info'
 import { is } from 'electron-util'
 
-const { app } = remote
+const { app, dialog } = remote
 const version = app.getVersion()
 
 const platform = {
@@ -41,12 +44,20 @@ const platform = {
   openExternal: shell.openExternal,
   createErrorReport,
   log,
+  dialog,
   node: {
     env: process.env.NODE_ENV === 'development' ? 'development' : 'production',
   },
   rollbar: {
     rollbarAccessToken: process.env.ROLLBAR_ACCESS_TOKEN || '',
     platform: process.platform,
+  },
+  export: {
+    askToExport,
+    export_config,
+  },
+  store: {
+    useExportConfigInfo,
   },
 }
 
@@ -104,3 +115,5 @@ export const AskToSaveModal = components.AskToSaveModal
 export const FilterList = components.FilterList
 export const TagView = components.TagView
 export const TagListView = components.TagListView
+export const ExportDialog = components.ExportDialog
+export const ExportNavItem = components.ExportNavItem

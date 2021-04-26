@@ -6,8 +6,7 @@ import { Glyphicon, Nav, NavItem, Button, OverlayTrigger, Popover, Alert } from 
 import BeatView from 'components/outline/BeatView'
 import MiniMap from 'components/outline/miniMap'
 import { t as i18n } from 'plottr_locales'
-import { ErrorBoundary, SubNav } from 'connected-components'
-import ExportNavItem from '../export/ExportNavItem'
+import { ErrorBoundary, ExportNavItem, SubNav } from 'connected-components'
 import { helpers, selectors, actions } from 'pltr/v2'
 
 const {

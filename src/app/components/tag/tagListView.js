@@ -3,11 +3,10 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Glyphicon, Nav, NavItem, Button } from 'react-bootstrap'
-import TagView from 'components/tag/tagView'
 import cx from 'classnames'
 import { t as i18n } from 'plottr_locales'
 import { actions, selectors, initialState } from 'pltr/v2'
-import { SubNav } from 'connected-components'
+import { SubNav, TagView } from 'connected-components'
 
 const { sortedTagsSelector } = selectors
 const { tag } = initialState

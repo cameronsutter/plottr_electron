@@ -117,3 +117,4 @@ export const TagView = components.TagView
 export const TagListView = components.TagListView
 export const ExportDialog = components.ExportDialog
 export const ExportNavItem = components.ExportNavItem
+export const NoteListView = components.NoteListView

@@ -14,19 +14,22 @@ import {
   Alert,
 } from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
-import CustomAttributeModal from '../dialogs/CustomAttributeModal'
 import { t as i18n } from 'plottr_locales'
 import TimelineTable from './TimelineTable'
 import cx from 'classnames'
-import { CustomAttrFilterList, FunSpinner } from 'connected-components'
+import {
+  ActsConfigModal,
+  CustomAttributeModal,
+  CustomAttrFilterList,
+  ExportNavItem,
+  FunSpinner,
+  SubNav,
+} from 'connected-components'
 import { FaSave } from 'react-icons/fa'
 import { VscSymbolStructure } from 'react-icons/vsc'
-import ExportNavItem from '../export/ExportNavItem'
 import ClearNavItem from './ClearNavItem'
 import { helpers, actions, selectors } from 'pltr/v2'
-import SubNav from '../../containers/SubNav'
 import MPQ from '../../../common/utils/MPQ'
-import ActsConfigModal from 'components/dialogs/ActsConfigModal'
 
 const win = remote.getCurrentWindow()
 

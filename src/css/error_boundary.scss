@@ -46,6 +46,9 @@
 
 body.darkmode {
   .error-boundary-title {
-    color: $text-color
+    color: $text-color;
+  }
+  .error-boundary-body {
+    color: $text-color;
   }
 }

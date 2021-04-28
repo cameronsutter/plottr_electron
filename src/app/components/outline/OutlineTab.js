@@ -1,6 +1,5 @@
 import React from 'react'
-import ErrorBoundary from '../../containers/ErrorBoundary'
-import OutlineView from './OutlineView'
+import { ErrorBoundary, OutlineView } from 'connected-components'
 
 export default function OutlineTab() {
   return (

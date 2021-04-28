@@ -17,7 +17,6 @@ import {
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import tinycolor from 'tinycolor2'
-import SelectList from 'components/selectList'
 import {
   ColorPickerColor,
   DeleteConfirmModal,
@@ -25,6 +24,7 @@ import {
   MiniColorPicker,
   PlottrModal,
   RichText,
+  SelectList,
 } from 'connected-components'
 import { helpers, actions, selectors } from 'pltr/v2'
 
@@ -467,8 +467,9 @@ class CardDialog extends Component {
       hierarchyEnabled,
       isSeries
     )
-    const darkened = card.color ? tinycolor(card.color).darken().toHslString() : null
-    const borderColor = card.color ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
+    const darkened =
+      card.color || card.color === null ? tinycolor(card.color).darken().toHslString() : null
+    const borderColor = card.color || card.color === null ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
 
     return (
       <div className="card-dialog__left-side">
@@ -526,7 +527,7 @@ class CardDialog extends Component {
             {i18n('Color')}:
           </label>
           <ColorPickerColor
-            color={card.color || '#F1F5F8'} // $gray-9
+            color={card.color || card.color === null ? 'none' : '#F1F5F8'} // $gray-9
             choose={this.openColorPicker}
             style={{ margin: '2px', marginRight: '12px' }}
             buttonStyle={{ border: `1px solid ${borderColor}` }}

@@ -99,6 +99,9 @@ function bootFile(filePath, options, numOpenFiles) {
         withDispatch(actions.featureFlags.unsetBeatHierarchy)
       )
 
+      if (state && state.tour && state.tour.showTour)
+        store.dispatch(actions.ui.changeOrientation('horizontal'))
+
       render(
         <Provider store={store}>
           <App showTour={state && state.tour && state.tour.showTour} />
@@ -235,8 +238,11 @@ ipcRenderer.on('redo', (event) => {
 })
 
 ipcRenderer.on('acts-tour-start', (event) => {
-  win.reload()
+  win.close()
+  const { present } = store.getState()
+  const filePath = present.file.fileName
   store.dispatch(actions.tour.setTourFeature({ name: 'acts', id: 1, endStep: 8 }))
+  ipcRenderer.send('pls-open-window', filePath, true)
 })
 
 window.onerror = function (message, file, line, column, err) {

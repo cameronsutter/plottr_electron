@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CardDialog from 'components/timeline/CardDialog'
 import { Popover, OverlayTrigger } from 'react-bootstrap'
-import TagLabel from 'components/tagLabel'
-import { RichText } from 'connected-components'
+import { RichText, TagLabel } from 'connected-components'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
 import { helpers, actions, selectors } from 'pltr/v2'
@@ -180,7 +179,7 @@ class Card extends Component {
     let titleStyle = {}
     if (!isSmall && card.color) {
       titleStyle.backgroundColor = card.color
-      const [useBlack, _] = getContrastYIQ((card.color !== 'null' && card.color) || '#F1F5F8') // $gray-9
+      const [useBlack, _] = getContrastYIQ((card.color && card.color) || '#F1F5F8') // $gray-9
       if (!useBlack) {
         titleStyle.color = 'white'
       }
@@ -227,7 +226,7 @@ class Card extends Component {
   render() {
     const { color, card, isVisible, allowDrop, last, isSmall, isMedium, ui } = this.props
     var cardStyle = {
-      borderColor: card.color !== 'null' ? tinycolor(card.color).darken(10).toHslString() : color,
+      borderColor: card.color ? tinycolor(card.color).darken(10).toHslString() : color,
     }
     if (this.state.dragging) {
       cardStyle.opacity = '0.5'

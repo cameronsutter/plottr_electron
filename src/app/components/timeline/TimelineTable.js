@@ -25,6 +25,7 @@ const {
   cardMapSelector,
   visibleSortedBeatsByBookSelector,
   beatsByBookSelector,
+  beatHasChildrenSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
   isLargeSelector,
@@ -41,6 +42,7 @@ const UIActions = actions.ui
 class TimelineTable extends Component {
   state = {
     tableLength: 0,
+    hovering: null,
   }
 
   setLength = () => {
@@ -78,6 +80,16 @@ class TimelineTable extends Component {
   handleReorderLines = (originalPosition, droppedPosition) => {
     const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
     this.props.lineActions.reorderLines(lines, this.props.ui.currentTimeline)
+  }
+
+  startHovering = (beat) => {
+    this.setState({ hovering: beat })
+    return beat
+  }
+
+  stopHovering = () => {
+    this.setState({ hovering: false })
+    return null
   }
 
   // TODO: this should be a selector
@@ -170,12 +182,23 @@ class TimelineTable extends Component {
               color={line.color}
               showLine={beat.position == 0}
               tableLength={this.state.tableLength}
+              hovering={this.state.hovering}
+              onMouseEnter={() => this.startHovering(beat.id)}
+              onMouseLeave={this.stopHovering}
             />
           )
         })
       }
 
-      const beatTitle = <BeatTitleCell beatId={beat.id} handleReorder={this.handleReorderBeats} />
+      const beatTitle = (
+        <BeatTitleCell
+          beatId={beat.id}
+          handleReorder={this.handleReorderBeats}
+          hovering={this.state.hovering}
+          onMouseEnter={() => this.startHovering(beat.id)}
+          onMouseLeave={this.stopHovering}
+        />
+      )
 
       if (isSmall) {
         return (
@@ -201,6 +224,9 @@ class TimelineTable extends Component {
                 expanded={lastBeat && lastBeat.expanded}
                 toggleExpanded={beatToggler(lastBeat)}
                 handleInsert={this.handleInsertNewBeat}
+                hovering={this.state.hovering}
+                onMouseEnter={() => this.startHovering(beat.id)}
+                onMouseLeave={this.stopHovering}
               />
             ) : null}
             {inserts}
@@ -275,7 +301,7 @@ class TimelineTable extends Component {
   }
 
   renderHorizontalCards(line, beatMap, beatMapKeys) {
-    const { beats, cardMap, isLarge, isMedium } = this.props
+    const { beats, cardMap, isLarge, isMedium, beatHasChildrenMap } = this.props
     return beatMapKeys.flatMap((beatPosition) => {
       const cells = []
       const beatId = beatMap[beatPosition]
@@ -301,7 +327,7 @@ class TimelineTable extends Component {
           <CardCell
             key={key}
             cards={cards}
-            beatIsExpanded={beat && beat.expanded}
+            beatIsExpanded={(beat && beat.expanded) || !beatHasChildrenMap.get(beat.id)}
             beatId={beatId}
             lineId={line.id}
             beatPosition={beatPosition}
@@ -328,6 +354,7 @@ class TimelineTable extends Component {
           <CardCell
             key={key}
             cards={cards}
+            beatIsExpanded={beat && beat.expanded}
             beatId={beat.id}
             lineId={line.id}
             beatPosition={beat.position}
@@ -372,6 +399,7 @@ class TimelineTable extends Component {
 TimelineTable.propTypes = {
   nextBeatId: PropTypes.number,
   beats: PropTypes.array,
+  beatHasChildrenMap: PropTypes.instanceOf(Map).isRequired,
   booksBeats: PropTypes.object,
   beatMapping: PropTypes.object,
   lines: PropTypes.array,
@@ -392,6 +420,7 @@ function mapStateToProps(state) {
   return {
     beats: visibleSortedBeatsByBookSelector(state.present),
     booksBeats: beatsByBookSelector(state.present),
+    beatHasChildrenMap: beatHasChildrenSelector(state.present),
     beatMapping: sparceBeatMap(state.present),
     nextBeatId: nextId(state.present.beats),
     lines: sortedLinesByBookSelector(state.present),

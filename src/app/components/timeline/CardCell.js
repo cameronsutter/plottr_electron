@@ -2,13 +2,12 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { t as i18n } from 'plottr_locales'
 import { Cell } from 'react-sticky-table'
 import Card from './Card'
 import cx from 'classnames'
 import Floater from 'react-floater'
 import CardAdd from './CardAdd'
-import ErrorBoundary from '../../containers/ErrorBoundary'
+import { ErrorBoundary } from 'connected-components'
 import { helpers, actions, selectors } from 'pltr/v2'
 
 const {
@@ -70,9 +69,6 @@ class CardCell extends PureComponent {
     const numOfCards = cards.length
     const idxOfCards = numOfCards - 1
     return cards.map((card, idx) => {
-      if (card.color === null) {
-        card.color = 'null'
-      }
       const isLastOne = idx == cards.length - 1
       return (
         <div key={card.id}>
@@ -115,6 +111,7 @@ class CardCell extends PureComponent {
     const { cards, ui, isVisible, color, lineIsExpanded, beatIsExpanded, isMedium } = this.props
     const numOfCards = cards.length
     const vertical = ui.orientation == 'vertical'
+
     if (beatIsExpanded && (lineIsExpanded || numOfCards == 1)) {
       const cellKlass = cx('card__cell', {
         multiple: numOfCards > 1,

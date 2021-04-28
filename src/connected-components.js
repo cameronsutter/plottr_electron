@@ -1,6 +1,10 @@
-import { remote, shell, ipcRenderer } from 'electron'
+import electron, { remote, shell, ipcRenderer } from 'electron'
 import { connections } from 'plottr_components'
 
+import { TEMP_FILES_PATH } from './common/utils/config_paths'
+import { useExportConfigInfo } from './common/utils/store_hooks'
+import askToExport from './common/exporter/start_export'
+import export_config from './common/exporter/default_config'
 import {
   listTemplates,
   listCustomTemplates,
@@ -13,10 +17,11 @@ import SETTINGS from './common/utils/settings'
 import USER from './common/utils/user_info'
 import { is } from 'electron-util'
 
-const { app } = remote
+const { app, dialog } = remote
 const version = app.getVersion()
 
 const platform = {
+  electron,
   appVersion: version,
   template: {
     listTemplates,
@@ -34,11 +39,35 @@ const platform = {
   },
   settings: SETTINGS,
   user: USER,
+  os: is.windows ? 'windows' : is.macos ? 'macos' : is.linux ? 'linux' : 'unknown',
   isDevelopment: is.development,
   isWindows: is.windows,
   openExternal: shell.openExternal,
   createErrorReport,
   log,
+  dialog,
+  node: {
+    env: process.env.NODE_ENV === 'development' ? 'development' : 'production',
+  },
+  rollbar: {
+    rollbarAccessToken: process.env.ROLLBAR_ACCESS_TOKEN || '',
+    platform: process.platform,
+  },
+  export: {
+    askToExport,
+    export_config,
+  },
+  store: {
+    useExportConfigInfo,
+  },
+  moveFromTemp: () => {
+    const win = remote.getCurrentWindow()
+    ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
+  },
+  showItemInFolder: (fileName) => {
+    shell.showItemInFolder(fileName)
+  },
+  tempFilesPath: TEMP_FILES_PATH,
 }
 
 const components = connections.pltr(platform)
@@ -83,9 +112,24 @@ export const SortList = components.SortList
 export const CharacterView = components.CharacterView
 export const BookSelectList = components.BookSelectList
 export const ErrorBoundary = components.ErrorBoundary
+export const DashboardErrorBoundary = components.DashboardErrorBoundary
 export const SelectList = components.SelectList
 export const TagLabel = components.TagLabel
 export const CustomAttributeModal = components.CustomAttributeModal
 export const SubNav = components.SubNav
 export const ProjectTemplateDetails = components.ProjectTemplateDetails
 export const CharacterTemplateDetails = components.CharacterTemplateDetails
+export const ActsConfigModal = components.ActsConfigModal
+export const AskToSaveModal = components.AskToSaveModal
+export const FilterList = components.FilterList
+export const TagView = components.TagView
+export const TagListView = components.TagListView
+export const ExportDialog = components.ExportDialog
+export const ExportNavItem = components.ExportNavItem
+export const NoteListView = components.NoteListView
+export const OutlineView = components.OutlineView
+export const PlaceListView = components.PlaceListView
+export const BookList = components.BookList
+export const EditSeries = components.EditSeries
+export const FileLocation = components.FileLocation
+export const BookChooser = components.BookChooser

@@ -1,6 +1,5 @@
 import React from 'react'
-import PlaceListView from 'components/places/PlaceListView'
-import ErrorBoundary from '../../containers/ErrorBoundary'
+import { ErrorBoundary, PlaceListView } from 'connected-components'
 
 export default function PlacesTab() {
   return (

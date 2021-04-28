@@ -94,10 +94,9 @@ $medium_width: 80px;
 .line-list__insert-beat {
   height: $title_height;
   display: flex;
+  margin-left: -5px;
   align-items: center;
-  color: transparent;
   transition: all 0.4s $cubic;
-  border: 1px solid transparent;
   font-size: 12px;
   cursor: pointer;
   svg {
@@ -110,13 +109,6 @@ $medium_width: 80px;
     .glyphicon {
       position: relative;
     }
-  }
-}
-
-.line-list__insert-beat:hover {
-  color: $blue-5;
-  .insert-beat-wrapper {
-    border: 1px dotted $blue-8;
   }
 }
 

@@ -18,7 +18,7 @@ function buildHelpMenu() {
         label: i18n('Guided Tours'),
         submenu: [
           {
-            label: i18n('Acts and Beats'),
+            label: i18n('Act Structure'),
             click: function (event, focusedWindow) {
               focusedWindow.webContents.send('acts-tour-start')
             },

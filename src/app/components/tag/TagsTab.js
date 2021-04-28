@@ -1,6 +1,5 @@
 import React from 'react'
-import TagListView from 'components/tag/tagListView'
-import ErrorBoundary from '../../containers/ErrorBoundary'
+import { ErrorBoundary, TagListView } from 'connected-components'
 
 export default function TagsTab() {
   return (

@@ -29,7 +29,7 @@ class BeatTitleCell extends PureComponent {
     super(props)
     let editing = props.beat.title == ''
     this.state = {
-      hovering: false,
+      hovering: this.props.hovering,
       editing: editing,
       dragging: false,
       inDropZone: false,
@@ -63,7 +63,10 @@ class BeatTitleCell extends PureComponent {
       actions: { collapseBeat, expandBeat },
       beat: { id, expanded },
       ui: { currentTimeline },
+      tour,
     } = this.props
+
+    if (expanded === true && tour.run === true) this.props.tourActions.tourNext('next')
 
     if (expanded) collapseBeat(id, currentTimeline)
     else expandBeat(id, currentTimeline)
@@ -142,10 +145,12 @@ class BeatTitleCell extends PureComponent {
   }
 
   startHovering = () => {
-    this.setState({ hovering: true })
+    this.props.onMouseEnter()
+    this.setState({ hovering: this.props.onMouseEnter() })
   }
 
   stopHovering = () => {
+    this.props.onMouseLeave()
     this.setState({ hovering: false })
   }
 
@@ -194,8 +199,9 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderHorizontalHoverOptions(style) {
-    const { ui, isMedium, isSmall, beat, hierarchyLevel } = this.props
+    const { ui, isMedium, isSmall, beat, hierarchyLevel, hierarchyLevels, tour } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
+    const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <ButtonGroup>
@@ -207,19 +213,24 @@ class BeatTitleCell extends PureComponent {
           <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
             <Glyphicon glyph="trash" />
           </Button>
-          {hierarchyLevel.level < 2 && (
-            <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleToggleExpanded}>
+          {showExpandCollapse ? (
+            <Button
+              bsSize={isSmall ? 'small' : undefined}
+              className={tour.run ? 'acts-tour-step7' : ''}
+              onClick={this.handleToggleExpanded}
+            >
               {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
             </Button>
-          )}
+          ) : null}
         </ButtonGroup>
       </div>
     )
   }
 
   renderVerticalHoverOptions(style) {
-    const { ui, isSmall } = this.props
+    const { ui, isSmall, beat, hierarchyLevel, hierarchyLevels, tour } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
+    const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
         <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.startEditing}>
@@ -228,6 +239,15 @@ class BeatTitleCell extends PureComponent {
         <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.handleDelete}>
           <Glyphicon glyph="trash" />
         </Button>
+        {showExpandCollapse && (
+          <Button
+            bsSize={isSmall ? 'small' : undefined}
+            className={tour.run ? 'acts-tour-step7' : ''}
+            onClick={this.handleToggleExpanded}
+          >
+            {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+          </Button>
+        )}
       </div>
     )
   }
@@ -406,6 +426,11 @@ BeatTitleCell.propTypes = {
   isMedium: PropTypes.bool.isRequired,
   hierarchyEnabled: PropTypes.bool.isRequired,
   isSeries: PropTypes.bool.isRequired,
+  tour: PropTypes.object.isRequired,
+  tourActions: PropTypes.object.isRequired,
+  onMouseLeave: PropTypes.func.isRequired,
+  onMouseEnter: PropTypes.func.isRequired,
+  hovering: PropTypes.bool,
 }
 
 const makeMapState = (state) => {
@@ -425,6 +450,7 @@ const makeMapState = (state) => {
       isMedium: selectors.isMediumSelector(state.present),
       hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
       isSeries: selectors.isSeriesSelector(state.present),
+      tour: selectors.tourSelector(state.present),
     }
   }
 }
@@ -432,6 +458,7 @@ const makeMapState = (state) => {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(actions.beat, dispatch),
+    tourActions: bindActionCreators(actions.tour, dispatch),
   }
 }
 

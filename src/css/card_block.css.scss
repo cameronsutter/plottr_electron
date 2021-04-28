@@ -264,4 +264,9 @@
       color: $darkmode-text;
     }
   }
+  .card__cell__overview-cell {
+    .card__behind {
+      background-color: $darkmode-card-background;
+    }
+  }
 }

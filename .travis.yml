@@ -1,7 +1,9 @@
 osx_image: xcode10.2
 os: osx
 language: node_js
-node_js: '10'
+node_js: '14'
+before_install:
+  - npm i -g npm@7.10.0
 env:
   - ELECTRON_CACHE=$HOME/.electron
 cache:

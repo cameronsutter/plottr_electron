@@ -119,3 +119,4 @@ export const ExportDialog = components.ExportDialog
 export const ExportNavItem = components.ExportNavItem
 export const NoteListView = components.NoteListView
 export const OutlineView = components.OutlineView
+export const PlaceListView = components.PlaceListView

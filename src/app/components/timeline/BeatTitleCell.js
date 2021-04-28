@@ -12,6 +12,7 @@ import {
   ControlLabel,
 } from 'react-bootstrap'
 import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
+import { IoIosReturnRight } from 'react-icons/io'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
 import { DeleteConfirmModal, InputModal } from 'connected-components'
@@ -52,6 +53,10 @@ class BeatTitleCell extends PureComponent {
   handleDelete = (e) => {
     e.stopPropagation()
     this.setState({ deleting: true, hovering: false })
+  }
+
+  handleAddBeat = (e) => {
+    this.props.actions.insertBeat(this.props.ui.currentTimeline, this.props.beat.id)
   }
 
   handleAddChild = (e) => {
@@ -223,13 +228,44 @@ class BeatTitleCell extends PureComponent {
     )
   }
 
+  renderLowerHoverOptions(style) {
+    
+    const { ui, isMedium, isSmall, isFirst, beat, hierarchyLevel, hierarchyLevels, tour } = this.props
+    const klasses = orientedClassName('medium-lower-hover-options', ui.orientation)
+    
+    style = { visibility: 'hidden' }
+    if (this.state.hovering) style.visibility = 'visible'
+    const isHigherLevel = hierarchyLevels.length - hierarchyLevel.level > 1
+    if (this.props.ui.orientation === 'horizontal' && !isHigherLevel) style.marginTop = '-14px'
+
+
+    let button1 = <Button className={!isFirst ? 'acts-tour-step6' : null} bsSize={isSmall ? 'small' : undefined} block onClick={this.handleAddBeat} style={isMedium ? isHigherLevel ? {marginTop:'0px'} : {marginTop:'19px'} : null }>
+                    <Glyphicon glyph="plus" />
+                  </Button>
+
+    let button2 = hierarchyLevels.length - hierarchyLevel.level > 1 && <Button className={'acts-tour-step8'} bsSize={isSmall ? 'small' : undefined} block style={{marginTop:'0px'}} onClick={this.handleAddChild}>
+                    <IoIosReturnRight size={25} style={{margin:'-1px -5px -6px -5px'}} />
+                  </Button>
+
+    let extraHoverButtons
+    if(ui.orientation === 'vertical' ) {
+      extraHoverButtons = <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>{button1}{button2}</div>
+    } else {
+      extraHoverButtons = <ButtonGroup className={cx(klasses, { 'small-timeline': isSmall })} style={style}>{button1}{button2}</ButtonGroup>
+    }
+
+    return (
+      extraHoverButtons
+    )
+  }
+
   renderVerticalHoverOptions(style) {
-    const { ui, isSmall, beat, hierarchyLevel, hierarchyLevels, tour } = this.props
+    const { ui, isSmall, isMedium, beat, hierarchyLevel, hierarchyLevels, tour } = this.props
     const klasses = orientedClassName('beat-list__item__hover-options', ui.orientation)
     const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
-        <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.startEditing}>
+        <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.startEditing} style={isMedium ? showExpandCollapse ? {marginTop:'0px'} : {marginTop:'19px'} : showExpandCollapse ? {marginTop:'5px'} : {marginTop:'24px'} }>
           <Glyphicon glyph="edit" />
         </Button>
         <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.handleDelete}>
@@ -396,6 +432,7 @@ class BeatTitleCell extends PureComponent {
             >
               {this.renderTitle()}
             </div>
+            {isMedium && this.renderLowerHoverOptions()}
           </div>
         </Cell>
       )

@@ -197,10 +197,15 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderInsertBeat() {
-    const { isFirst, isSmall } = this.props
+    const { isFirst, isSmall, beatToLeft, hierarchyLevels, orientation, hierarchyLevelName } = this.props
+    
+    let actualHierarchyLevel = hierarchyLevels.find(level => level.name == hierarchyLevelName ? true : null)
+    const isHigherLevel = hierarchyLevels.length - actualHierarchyLevel.level > 1
+
+    console.log(orientation)
 
     return (
-      <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
+      <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert} style={orientation == 'vertical' ? isHigherLevel ? null : {marginTop:'10px'} : null}>
         <div className={this.wrapperClass()}>
           <Button className={!isFirst ? 'acts-tour-step6' : null} bsSize={isSmall ? 'small' : undefined} block>
             <Glyphicon glyph="plus" />
@@ -279,6 +284,8 @@ class BeatInsertCell extends PureComponent {
     toggleExpanded: PropTypes.func,
     hierarchyChildLevelName: PropTypes.string,
     hierarchyLevelName: PropTypes.string,
+    hierarchyLevels: PropTypes.array.isRequired,
+    hierarchyLevel: PropTypes.object.isRequired,
     atMaximumDepth: PropTypes.bool,
   }
 }
@@ -292,6 +299,8 @@ function mapStateToProps(state, ownProps) {
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),
     isLarge: selectors.isLargeSelector(state.present),
+    hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
+    hierarchyLevel: selectors.hierarchyLevelSelector(state.present, ownProps.beatId),
     hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
     hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(state.present, beatToLeftId),
     atMaximumDepth: selectors.atMaximumHierarchyDepthSelector(state.present, beatToLeftId),

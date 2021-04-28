@@ -166,6 +166,12 @@ class TopRow extends Component {
             key={`beatId-${beat.id}`}
             beatId={beat.id}
             handleReorder={this.handleReorderBeats}
+            handleInsert={this.handleInsertNewBeat}
+            handleInsertChild={
+              lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+                ? undefined
+                : this.handleInsertChildBeat
+            }
             hovering={this.state.hovering}
             onMouseEnter={() => this.startHovering(beat.id)}
             onMouseLeave={this.stopHovering}

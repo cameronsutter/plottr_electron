@@ -132,3 +132,4 @@ export const PlaceListView = components.PlaceListView
 export const BookList = components.BookList
 export const EditSeries = components.EditSeries
 export const FileLocation = components.FileLocation
+export const BookChooser = components.BookChooser

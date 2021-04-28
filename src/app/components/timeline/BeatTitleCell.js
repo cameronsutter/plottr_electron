@@ -63,10 +63,10 @@ class BeatTitleCell extends PureComponent {
       actions: { collapseBeat, expandBeat },
       beat: { id, expanded },
       ui: { currentTimeline },
-      tour
+      tour,
     } = this.props
 
-    if(expanded === true && tour.run === true) this.props.tourActions.tourNext('next')
+    if (expanded === true && tour.run === true) this.props.tourActions.tourNext('next')
 
     if (expanded) collapseBeat(id, currentTimeline)
     else expandBeat(id, currentTimeline)
@@ -214,7 +214,11 @@ class BeatTitleCell extends PureComponent {
             <Glyphicon glyph="trash" />
           </Button>
           {showExpandCollapse ? (
-            <Button bsSize={isSmall ? 'small' : undefined} className={tour.run ? 'acts-tour-step7' : ''} onClick={this.handleToggleExpanded}>
+            <Button
+              bsSize={isSmall ? 'small' : undefined}
+              className={tour.run ? 'acts-tour-step7' : ''}
+              onClick={this.handleToggleExpanded}
+            >
               {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
             </Button>
           ) : null}
@@ -236,7 +240,11 @@ class BeatTitleCell extends PureComponent {
           <Glyphicon glyph="trash" />
         </Button>
         {showExpandCollapse && (
-          <Button bsSize={isSmall ? 'small' : undefined} className={tour.run ? 'acts-tour-step7' : ''} onClick={this.handleToggleExpanded}>
+          <Button
+            bsSize={isSmall ? 'small' : undefined}
+            className={tour.run ? 'acts-tour-step7' : ''}
+            onClick={this.handleToggleExpanded}
+          >
             {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
           </Button>
         )}
@@ -420,6 +428,9 @@ BeatTitleCell.propTypes = {
   isSeries: PropTypes.bool.isRequired,
   tour: PropTypes.object.isRequired,
   tourActions: PropTypes.object.isRequired,
+  onMouseLeave: PropTypes.func.isRequired,
+  onMouseEnter: PropTypes.func.isRequired,
+  hovering: PropTypes.bool,
 }
 
 const makeMapState = (state) => {

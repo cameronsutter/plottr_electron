@@ -190,14 +190,16 @@ class TimelineTable extends Component {
         })
       }
 
-      const beatTitle = <BeatTitleCell 
-        beatId={beat.id} 
-        handleReorder={this.handleReorderBeats} 
-        hovering={this.state.hovering}
-        onMouseEnter={() => this.startHovering(beat.id)}
-        onMouseLeave={this.stopHovering}
-      />
-      
+      const beatTitle = (
+        <BeatTitleCell
+          beatId={beat.id}
+          handleReorder={this.handleReorderBeats}
+          hovering={this.state.hovering}
+          onMouseEnter={() => this.startHovering(beat.id)}
+          onMouseLeave={this.stopHovering}
+        />
+      )
+
       if (isSmall) {
         return (
           <tr key={`beatId-${beat.id}`}>

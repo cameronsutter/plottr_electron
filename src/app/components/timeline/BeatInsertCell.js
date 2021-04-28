@@ -20,7 +20,7 @@ class BeatInsertCell extends PureComponent {
     super(props)
     this.state = {
       hovering: this.props.hovering,
-      localHovering: false
+      localHovering: false,
     }
   }
 
@@ -64,9 +64,14 @@ class BeatInsertCell extends PureComponent {
     const { localHovering } = this.state
 
     //if the value of 'hovering' (integer of the card's id passed down from parent) !== the current card's id, add a class that makes the icon transparent, \/ if !beatToLeft then make the first plus icon transparent
-    return cx(orientedClassName('insert-beat-wrapper', orientation), beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent', !beatToLeft && 'transparent', {
-      'insert-beat-spacer': showLine,
-    })
+    return cx(
+      orientedClassName('insert-beat-wrapper', orientation),
+      beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent',
+      !beatToLeft && 'transparent',
+      {
+        'insert-beat-spacer': showLine,
+      }
+    )
   }
 
   lastWrapperClass = () => {
@@ -113,9 +118,13 @@ class BeatInsertCell extends PureComponent {
     const { isMedium, isInBeatList, beatToLeft, hovering } = this.props
     const { localHovering } = this.state
 
-    return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent', {
-      'medium-timeline': isInBeatList && isMedium,
-    })
+    return cx(
+      'beat-list__insert',
+      beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent',
+      {
+        'medium-timeline': isInBeatList && isMedium,
+      }
+    )
   }
 
   wrapperClassSubIcon = () => {
@@ -139,9 +148,13 @@ class BeatInsertCell extends PureComponent {
     const { isInBeatList, isMedium, hovering, beatToLeft } = this.props
     const { localHovering } = this.state
 
-    return cx('beat-list__insert', beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent', {
-      'medium-timeline': isInBeatList && isMedium,
-    })
+    return cx(
+      'beat-list__insert',
+      beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent',
+      {
+        'medium-timeline': isInBeatList && isMedium,
+      }
+    )
   }
 
   renderLine() {
@@ -182,15 +195,20 @@ class BeatInsertCell extends PureComponent {
     const { handleInsertChild, isFirst, isSmall, atMaximumDepth } = this.props
 
     if (atMaximumDepth) return null
-    
+
     return handleInsertChild && !isFirst ? (
       <div
         title={this.childTitleText()}
         className={this.orientedClassSubIcon()}
         onClick={this.insertChild}
       >
-        <Button className={this.wrapperClassSubIcon()} className={'acts-tour-step8'} bsSize={isSmall ? 'small' : undefined} block>
-          <IoIosReturnRight size={25} style={{margin:'-1px -5px -6px -5px'}} />
+        <Button
+          className={this.wrapperClassSubIcon()}
+          className={'acts-tour-step8'}
+          bsSize={isSmall ? 'small' : undefined}
+          block
+        >
+          <IoIosReturnRight size={25} style={{ margin: '-1px -5px -6px -5px' }} />
         </Button>
       </div>
     ) : null
@@ -202,7 +220,11 @@ class BeatInsertCell extends PureComponent {
     return (
       <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
         <div className={this.wrapperClass()}>
-          <Button className={!isFirst ? 'acts-tour-step6' : null} bsSize={isSmall ? 'small' : undefined} block>
+          <Button
+            className={!isFirst ? 'acts-tour-step6' : null}
+            bsSize={isSmall ? 'small' : undefined}
+            block
+          >
             <Glyphicon glyph="plus" />
           </Button>
         </div>
@@ -229,14 +251,21 @@ class BeatInsertCell extends PureComponent {
       insideDiv = this.renderLastInsertBeat()
     } else if (orientation === 'vertical') {
       insideDiv = (
-        <div className="vertical-beat-list__insert" onMouseEnter={() => this.setState({localHovering:true})} onMouseLeave={() => this.setState({localHovering:false})}>
+        <div
+          className="vertical-beat-list__insert"
+          onMouseEnter={() => this.setState({ localHovering: true })}
+          onMouseLeave={() => this.setState({ localHovering: false })}
+        >
           {this.renderInsertBeat()}
           {this.renderInsertChild()}
         </div>
       )
     } else {
       insideDiv = (
-        <div onMouseEnter={() => this.setState({localHovering:true})} onMouseLeave={() => this.setState({localHovering:false})}>
+        <div
+          onMouseEnter={() => this.setState({ localHovering: true })}
+          onMouseLeave={() => this.setState({ localHovering: false })}
+        >
           {this.renderInsertBeat()}
           {this.renderInsertChild()}
         </div>

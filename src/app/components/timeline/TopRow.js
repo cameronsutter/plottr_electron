@@ -161,15 +161,15 @@ class TopRow extends Component {
         )
       }
       cells.push(
-          <BeatTitleCell
-            isFirst={idx === 0}
-            key={`beatId-${beat.id}`}
-            beatId={beat.id}
-            handleReorder={this.handleReorderBeats}
-            hovering={this.state.hovering}
-            onMouseEnter={() => this.startHovering(beat.id)}
-            onMouseLeave={this.stopHovering}
-          />
+        <BeatTitleCell
+          isFirst={idx === 0}
+          key={`beatId-${beat.id}`}
+          beatId={beat.id}
+          handleReorder={this.handleReorderBeats}
+          hovering={this.state.hovering}
+          onMouseEnter={() => this.startHovering(beat.id)}
+          onMouseLeave={this.stopHovering}
+        />
       )
       return cells
     })

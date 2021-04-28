@@ -1,10 +1,7 @@
 import React from 'react'
-import EditSeries from './EditSeries'
-import BookList from './BookList'
 import { t as i18n } from 'plottr_locales'
-import { ErrorBoundary, SubNav } from 'connected-components'
+import { EditSeries, ErrorBoundary, BookList, FileLocation, SubNav } from 'connected-components'
 import { Nav, NavItem, Button } from 'react-bootstrap'
-import FileLocation from './FileLocation'
 import { ipcRenderer } from 'electron'
 
 export default function SeriesTab() {

@@ -1,6 +1,7 @@
 import electron, { remote, shell, ipcRenderer } from 'electron'
 import { connections } from 'plottr_components'
 
+import { TEMP_FILES_PATH } from './common/utils/config_paths'
 import { useExportConfigInfo } from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'
@@ -59,6 +60,14 @@ const platform = {
   store: {
     useExportConfigInfo,
   },
+  moveFromTemp: () => {
+    const win = remote.getCurrentWindow()
+    ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
+  },
+  showItemInFolder: (fileName) => {
+    shell.showItemInFolder(fileName)
+  },
+  tempFilesPath: TEMP_FILES_PATH,
 }
 
 const components = connections.pltr(platform)
@@ -120,3 +129,6 @@ export const ExportNavItem = components.ExportNavItem
 export const NoteListView = components.NoteListView
 export const OutlineView = components.OutlineView
 export const PlaceListView = components.PlaceListView
+export const BookList = components.BookList
+export const EditSeries = components.EditSeries
+export const FileLocation = components.FileLocation

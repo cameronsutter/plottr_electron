@@ -16,6 +16,7 @@ import { createErrorReport } from './common/utils/full_error_report'
 import SETTINGS from './common/utils/settings'
 import USER from './common/utils/user_info'
 import { is } from 'electron-util'
+import MPQ from './common/utils/MPQ'
 
 const { app, dialog } = remote
 const version = app.getVersion()
@@ -68,6 +69,7 @@ const platform = {
     shell.showItemInFolder(fileName)
   },
   tempFilesPath: TEMP_FILES_PATH,
+  mpq: MPQ,
 }
 
 const components = connections.pltr(platform)
@@ -133,3 +135,4 @@ export const BookList = components.BookList
 export const EditSeries = components.EditSeries
 export const FileLocation = components.FileLocation
 export const BookChooser = components.BookChooser
+export const TimelineWrapper = components.TimelineWrapper

@@ -98,7 +98,6 @@ class Tour extends Component {
   }
 
   render() {
-    console.log(this.props, 'tour props')
     return (
       <ReactJoyride
         scrollToFirstStep

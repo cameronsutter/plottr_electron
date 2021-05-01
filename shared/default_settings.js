@@ -16,5 +16,6 @@ module.exports = {
     backupLocation: 'default',
     dark: 'system',
     numberOfBackups: 30,
+    backupType: 'days',
   },
 }

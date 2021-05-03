@@ -98,21 +98,24 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
+  button {
+    width:41px;
+    height:35px;
+  }
   &:last-child:not(.small-timeline):not(.medium-timeline) {
     margin: 8px 5px 0 -4px;
     padding: -5px;
     width:41px;
   }
-  &:last-child:not(.small-timeline):not(.medium-timeline) button {
-    // margin: 8px 5px 0 -4px;
+  &:last-child:not(.small-timeline):not(.medium-timeline) .insert-beat-wrapper {
     display:flex;
     justify-content: center;
     padding: 6px 5px 10px 5px;
-    // width:41px;
   }
   &:first-child:not(.small-timeline):not(.medium-timeline) {
     margin: 75px 5px 0 -5px;
     height: 16px;
+    width:41px;
   }
   .insert-beat-wrapper {
     display: flex;

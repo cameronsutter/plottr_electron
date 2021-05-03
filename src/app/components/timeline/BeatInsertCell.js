@@ -209,7 +209,7 @@ class BeatInsertCell extends PureComponent {
           <IoIosReturnRight
             size={25}
             style={{ margin: '-1px -5px -6px -5px' }}
-            className={tour.run ? 'acts-tour-step8' : null}
+            className={'acts-tour-step8'}
           />
         </Button>
       </div>
@@ -245,6 +245,8 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderLastInsertBeat() {
+    const { isFirst, isSmall, orientation } = this.props
+
     return (
       <div title={this.lastTitleText()} className={this.lastOrientedClass()} onClick={this.insert}>
         <div className={this.lastWrapperClass()}>

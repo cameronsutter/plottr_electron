@@ -15,3 +15,13 @@
 @import 'place_list_block';
 @import 'book';
 @import 'tag_list_block';
+@import 'timeline_block';
+@import 'line_block';
+@import 'card_block';
+@import 'beat_block';
+@import 'card_dialog';
+
+.ReactModalPortal {
+  position: relative;
+  z-index: 6;
+}

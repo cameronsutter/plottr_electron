@@ -52,15 +52,40 @@ class BeatTitleCell extends PureComponent {
 
   handleDelete = (e) => {
     e.stopPropagation()
-    this.setState({ deleting: true, hovering: false })
+    this.setState({ deleting: true, hovering: null })
   }
 
   handleAddBeat = (e) => {
     this.props.actions.insertBeat(this.props.ui.currentTimeline, this.props.beat.id)
+    if (this.props.tour.run === true) this.props.tourActions.tourNext('next')
   }
 
   handleAddChild = (e) => {
+    let SCENE_CELL_WIDTH = this.props.isMedium ? 90 : 175 + 17
+    let SCENE_CELL_HEIGHT = this.props.isMedium ? 85 : 94 + 17
+
+    this.props.actions.expandBeat(this.props.beat.id, this.props.ui.currentTimeline)
     this.props.actions.addBeat(this.props.ui.currentTimeline, this.props.beat.id)
+    if (this.props.tour.run === true) this.props.tourActions.tourNext('next')
+
+    let children = this.props.beats.children[this.props.beat.id]
+    let numChildren = children.length
+
+    let expandedChildren = 0
+    children.forEach((child) => {
+      if (this.props.beats.children[child].length > 0 && this.props.beats.index[child].expanded) {
+        expandedChildren += this.props.beats.children[child].length
+      }
+    })
+    //scroll based on how many children and grandChildren cards there are between clicked card and newly added card
+    const target =
+      this.props.ui.orientation === 'vertical'
+        ? this.props.ui.timelineScrollPosition.y +
+          (numChildren + expandedChildren) * SCENE_CELL_HEIGHT
+        : this.props.ui.timelineScrollPosition.x +
+          (numChildren + expandedChildren) * SCENE_CELL_WIDTH
+
+    this.props.scrollTo(target)
   }
 
   handleToggleExpanded = (e) => {
@@ -68,10 +93,10 @@ class BeatTitleCell extends PureComponent {
       actions: { collapseBeat, expandBeat },
       beat: { id, expanded },
       ui: { currentTimeline },
-      tour
+      tour,
     } = this.props
 
-    if(expanded === true && tour.run === true) this.props.tourActions.tourNext('next')
+    if (expanded === true && tour.run === true) this.props.tourActions.tourNext('next')
 
     if (expanded) collapseBeat(id, currentTimeline)
     else expandBeat(id, currentTimeline)
@@ -87,7 +112,7 @@ class BeatTitleCell extends PureComponent {
   finalizeEdit = (newVal) => {
     const { beat, actions, ui } = this.props
     actions.editBeatTitle(beat.id, ui.currentTimeline, newVal || 'auto') // if nothing, set to auto
-    this.setState({ editing: false, hovering: false })
+    this.setState({ editing: false, hovering: null })
   }
 
   handleFinishEditing = (event) => {
@@ -146,7 +171,7 @@ class BeatTitleCell extends PureComponent {
   }
 
   startEditing = () => {
-    this.setState({ editing: true, hovering: false })
+    this.setState({ editing: true, hovering: null })
   }
 
   startHovering = () => {
@@ -156,7 +181,7 @@ class BeatTitleCell extends PureComponent {
 
   stopHovering = () => {
     this.props.onMouseLeave()
-    this.setState({ hovering: false })
+    this.setState({ hovering: null })
   }
 
   renderDelete() {
@@ -198,7 +223,7 @@ class BeatTitleCell extends PureComponent {
         getValue={this.finalizeEdit}
         defaultValue={this.props.beat.title}
         title={i18n('Edit {beatName}', { beatName: this.props.beatTitle })}
-        cancel={() => this.setState({ editing: false, hovering: false })}
+        cancel={() => this.setState({ editing: false, hovering: null })}
       />
     )
   }
@@ -219,7 +244,11 @@ class BeatTitleCell extends PureComponent {
             <Glyphicon glyph="trash" />
           </Button>
           {showExpandCollapse ? (
-            <Button bsSize={isSmall ? 'small' : undefined} className={tour.run ? 'acts-tour-step7' : ''} onClick={this.handleToggleExpanded}>
+            <Button
+              bsSize={isSmall ? 'small' : undefined}
+              className={tour.run ? 'acts-tour-step7' : ''}
+              onClick={this.handleToggleExpanded}
+            >
               {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
             </Button>
           ) : null}
@@ -229,34 +258,65 @@ class BeatTitleCell extends PureComponent {
   }
 
   renderLowerHoverOptions(style) {
-    
-    const { ui, isMedium, isSmall, isFirst, beat, hierarchyLevel, hierarchyLevels, tour } = this.props
+    const {
+      ui,
+      isMedium,
+      isSmall,
+      isFirst,
+      beatId,
+      hierarchyLevel,
+      hierarchyLevels,
+      tour,
+    } = this.props
     const klasses = orientedClassName('medium-lower-hover-options', ui.orientation)
-    
+
     style = { visibility: 'hidden' }
-    if (this.state.hovering) style.visibility = 'visible'
+    if (this.state.hovering === beatId) style.visibility = 'visible'
     const isHigherLevel = hierarchyLevels.length - hierarchyLevel.level > 1
     if (this.props.ui.orientation === 'horizontal' && !isHigherLevel) style.marginTop = '-14px'
 
+    let button1 = (
+      <Button
+        className={!isFirst && tour.run ? 'acts-tour-step6' : null}
+        bsSize={isSmall ? 'small' : undefined}
+        block
+        onClick={this.handleAddBeat}
+        style={isMedium ? (isHigherLevel ? { marginTop: '0px' } : { marginTop: '19px' }) : null}
+      >
+        <Glyphicon glyph="plus" />
+      </Button>
+    )
 
-    let button1 = <Button className={!isFirst ? 'acts-tour-step6' : null} bsSize={isSmall ? 'small' : undefined} block onClick={this.handleAddBeat} style={isMedium ? isHigherLevel ? {marginTop:'0px'} : {marginTop:'19px'} : null }>
-                    <Glyphicon glyph="plus" />
-                  </Button>
-
-    let button2 = hierarchyLevels.length - hierarchyLevel.level > 1 && <Button className={'acts-tour-step8'} bsSize={isSmall ? 'small' : undefined} block style={{marginTop:'0px'}} onClick={this.handleAddChild}>
-                    <IoIosReturnRight size={25} style={{margin:'-1px -5px -6px -5px'}} />
-                  </Button>
+    let button2 = hierarchyLevels.length - hierarchyLevel.level > 1 && (
+      <Button
+        className={'acts-tour-step8'}
+        bsSize={isSmall ? 'small' : undefined}
+        block
+        style={{ marginTop: '0px' }}
+        onClick={this.handleAddChild}
+      >
+        <IoIosReturnRight size={25} style={{ margin: '-1px -5px -6px -5px' }} />
+      </Button>
+    )
 
     let extraHoverButtons
-    if(ui.orientation === 'vertical' ) {
-      extraHoverButtons = <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>{button1}{button2}</div>
+    if (ui.orientation === 'vertical') {
+      extraHoverButtons = (
+        <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
+          {button1}
+          {button2}
+        </div>
+      )
     } else {
-      extraHoverButtons = <ButtonGroup className={cx(klasses, { 'small-timeline': isSmall })} style={style}>{button1}{button2}</ButtonGroup>
+      extraHoverButtons = (
+        <ButtonGroup className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
+          {button1}
+          {button2}
+        </ButtonGroup>
+      )
     }
 
-    return (
-      extraHoverButtons
-    )
+    return extraHoverButtons
   }
 
   renderVerticalHoverOptions(style) {
@@ -265,14 +325,31 @@ class BeatTitleCell extends PureComponent {
     const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
     return (
       <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
-        <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.startEditing} style={isMedium ? showExpandCollapse ? {marginTop:'0px'} : {marginTop:'19px'} : showExpandCollapse ? {marginTop:'5px'} : {marginTop:'24px'} }>
+        <Button
+          bsSize={isSmall ? 'small' : undefined}
+          block
+          onClick={this.startEditing}
+          style={
+            isMedium
+              ? showExpandCollapse
+                ? { marginTop: '0px' }
+                : { marginTop: '19px' }
+              : showExpandCollapse
+              ? { marginTop: '5px' }
+              : { marginTop: '24px' }
+          }
+        >
           <Glyphicon glyph="edit" />
         </Button>
         <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.handleDelete}>
           <Glyphicon glyph="trash" />
         </Button>
         {showExpandCollapse && (
-          <Button bsSize={isSmall ? 'small' : undefined} className={tour.run ? 'acts-tour-step7' : ''} onClick={this.handleToggleExpanded}>
+          <Button
+            bsSize={isSmall ? 'small' : undefined}
+            className={tour.run ? 'acts-tour-step7' : ''}
+            onClick={this.handleToggleExpanded}
+          >
             {beat.expanded ? <FaCompressAlt /> : <FaExpandAlt />}
           </Button>
         )}
@@ -284,10 +361,10 @@ class BeatTitleCell extends PureComponent {
     let style = {}
     if (this.props.isSmall) {
       style = { display: 'none' }
-      if (this.state.hovering) style.display = 'block'
+      if (this.state.hovering === this.props.beatId) style.display = 'block'
     } else {
       style = { visibility: 'hidden' }
-      if (this.state.hovering) style.visibility = 'visible'
+      if (this.state.hovering === this.props.beatId) style.visibility = 'visible'
     }
 
     if (this.props.ui.orientation === 'vertical') {
@@ -353,7 +430,11 @@ class BeatTitleCell extends PureComponent {
     const { hovering, inDropZone } = this.state
     const innerKlass = cx(orientedClassName('beat__body', ui.orientation), {
       'medium-timeline': isMedium,
-      hover: hovering,
+      hover:
+        hovering === this.props.beat.id ||
+        this.props.beat.id ===
+          Object.values(this.props.beats.index)[Object.values(this.props.beats.index).length - 1]
+            .id,
       dropping: inDropZone,
     })
     const beatKlass = cx(orientedClassName('beat__cell', ui.orientation), {
@@ -419,7 +500,12 @@ class BeatTitleCell extends PureComponent {
               style={hierarchyToStyles(
                 this.props.hierarchyLevel,
                 ui.timeline.size,
-                this.state.hovering || this.state.inDropZone
+                this.props.beat.id ===
+                  Object.values(this.props.beats.index)[
+                    Object.values(this.props.beats.index).length - 1
+                  ].id ||
+                  this.state.hovering === this.props.beat.id ||
+                  this.state.inDropZone
               )}
               className={innerKlass}
               onClick={this.startEditing}
@@ -447,12 +533,17 @@ BeatTitleCell.propTypes = {
   beats: PropTypes.object.isRequired,
   hierarchyLevels: PropTypes.array.isRequired,
   beat: PropTypes.object.isRequired,
-  hierarchyLevel: PropTypes.object.isRequired,
-  ui: PropTypes.object.isRequired,
+  isFirst: PropTypes.bool,
+  hovering: PropTypes.number,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  scrollTo: PropTypes.func.isRequired,
   beatTitle: PropTypes.string.isRequired,
   positionOffset: PropTypes.number.isRequired,
   isSmall: PropTypes.bool.isRequired,
   isMedium: PropTypes.bool.isRequired,
+  hierarchyLevel: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
   hierarchyEnabled: PropTypes.bool.isRequired,
   isSeries: PropTypes.bool.isRequired,
   tour: PropTypes.object.isRequired,

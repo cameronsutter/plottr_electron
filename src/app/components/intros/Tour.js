@@ -98,7 +98,6 @@ class Tour extends Component {
   }
 
   render() {
-    console.log(this.props, 'tour props')
     return (
       <ReactJoyride
         scrollToFirstStep
@@ -125,7 +124,7 @@ class Tour extends Component {
 }
 
 Tour.propTypes = {
-  tour: PropTypes.object.isRequired,
+  tour: PropTypes.object,
   loading: PropTypes.bool.isRequired,
   run: PropTypes.bool.isRequired,
   steps: PropTypes.array.isRequired,

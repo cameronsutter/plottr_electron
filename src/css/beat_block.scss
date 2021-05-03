@@ -100,8 +100,15 @@ $medium_width: 80px;
   cursor: pointer;
   &:last-child:not(.small-timeline):not(.medium-timeline) {
     margin: 8px 5px 0 -4px;
-    // padding: -5px;
+    padding: -5px;
     width:41px;
+  }
+  &:last-child:not(.small-timeline):not(.medium-timeline) button {
+    // margin: 8px 5px 0 -4px;
+    display:flex;
+    justify-content: center;
+    padding: 6px 5px 10px 5px;
+    // width:41px;
   }
   &:first-child:not(.small-timeline):not(.medium-timeline) {
     margin: 75px 5px 0 -5px;
@@ -249,7 +256,7 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  margin:-5px 0 0 50px;
+  margin:-5px 11px 0 52px;
   button {
     width:41px;
     height:35px;

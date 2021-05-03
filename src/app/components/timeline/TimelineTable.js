@@ -88,7 +88,7 @@ class TimelineTable extends Component {
   }
 
   stopHovering = () => {
-    this.setState({ hovering: false })
+    this.setState({ hovering: null })
     return null
   }
 
@@ -108,6 +108,7 @@ class TimelineTable extends Component {
   handleInsertChildBeat = (beatToLeftId) => {
     const { ui, beatActions } = this.props
     beatActions.addBeat(ui.currentTimeline, beatToLeftId)
+    beatActions.expandBeat(beatToLeftId, ui.currentTimeline)
   }
 
   buildCard(lineId, beatId) {
@@ -190,14 +191,17 @@ class TimelineTable extends Component {
         })
       }
 
-      const beatTitle = <BeatTitleCell 
-        beatId={beat.id} 
-        handleReorder={this.handleReorderBeats} 
-        hovering={this.state.hovering}
-        onMouseEnter={() => this.startHovering(beat.id)}
-        onMouseLeave={this.stopHovering}
-      />
-      
+      const beatTitle = (
+        <BeatTitleCell
+          beatId={beat.id}
+          handleReorder={this.handleReorderBeats}
+          scrollTo={(position) => this.props.scrollTo(position)}
+          hovering={this.state.hovering}
+          onMouseEnter={() => this.startHovering(beat.id)}
+          onMouseLeave={this.stopHovering}
+        />
+      )
+
       if (isSmall) {
         return (
           <tr key={`beatId-${beat.id}`}>
@@ -217,7 +221,7 @@ class TimelineTable extends Component {
                 handleInsertChild={
                   lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
                     ? undefined
-                    : this.handleInsertChildBeat
+                    : () => this.handleInsertChildBeat(beats[idx - 1].id)
                 }
                 expanded={lastBeat && lastBeat.expanded}
                 toggleExpanded={beatToggler(lastBeat)}
@@ -260,7 +264,7 @@ class TimelineTable extends Component {
               handleInsertChild={
                 lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
                   ? undefined
-                  : this.handleInsertChildBeat
+                  : () => this.handleInsertChildBeat(lastBeat.id)
               }
               expanded={lastBeat && lastBeat.expanded}
               toggleExpanded={beatToggler(lastBeat)}
@@ -278,7 +282,7 @@ class TimelineTable extends Component {
             handleInsertChild={
               lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
                 ? undefined
-                : this.handleInsertChildBeat
+                : () => this.handleInsertChildBeat(lastBeat.id)
             }
             expanded={lastBeat && lastBeat.expanded}
             toggleExpanded={beatToggler(lastBeat)}
@@ -389,7 +393,10 @@ class TimelineTable extends Component {
         </div>
       )
     } else {
-      return [<TopRow key="top-row" />, this.renderRows()]
+      return [
+        <TopRow key="top-row" scrollTo={(position) => this.props.scrollTo(position)} />,
+        this.renderRows(),
+      ]
     }
   }
 }
@@ -403,6 +410,7 @@ TimelineTable.propTypes = {
   lines: PropTypes.array,
   cardMap: PropTypes.object.isRequired,
   ui: PropTypes.object.isRequired,
+  scrollTo: PropTypes.func.isRequired,
   isSeries: PropTypes.bool,
   isSmall: PropTypes.bool,
   isMedium: PropTypes.bool,

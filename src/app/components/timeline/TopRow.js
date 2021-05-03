@@ -157,25 +157,27 @@ class TopRow extends Component {
             hovering={this.state.hovering}
             onMouseEnter={() => this.startHovering(beat.id)}
             onMouseLeave={this.stopHovering}
+            scrollTo={(position) => this.props.scrollTo(position)}
           />
         )
       }
       cells.push(
-          <BeatTitleCell
-            isFirst={idx === 0}
-            key={`beatId-${beat.id}`}
-            beatId={beat.id}
-            handleReorder={this.handleReorderBeats}
-            handleInsert={this.handleInsertNewBeat}
-            handleInsertChild={
-              lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
-                ? undefined
-                : this.handleInsertChildBeat
-            }
-            hovering={this.state.hovering}
-            onMouseEnter={() => this.startHovering(beat.id)}
-            onMouseLeave={this.stopHovering}
-          />
+        <BeatTitleCell
+          isFirst={idx === 0}
+          key={`beatId-${beat.id}`}
+          beatId={beat.id}
+          handleReorder={this.handleReorderBeats}
+          handleInsert={this.handleInsertNewBeat}
+          handleInsertChild={
+            lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+              ? undefined
+              : this.handleInsertChildBeat
+          }
+          hovering={this.state.hovering}
+          onMouseEnter={() => this.startHovering(beat.id)}
+          onMouseLeave={this.stopHovering}
+          scrollTo={(position) => this.props.scrollTo(position)}
+        />
       )
       return cells
     })
@@ -256,6 +258,7 @@ class TopRow extends Component {
 
 TopRow.propTypes = {
   ui: PropTypes.object.isRequired,
+  scrollTo: PropTypes.func.isRequired,
   isSeries: PropTypes.bool,
   isSmall: PropTypes.bool,
   isMedium: PropTypes.bool,
@@ -263,6 +266,7 @@ TopRow.propTypes = {
   beats: PropTypes.array,
   booksBeats: PropTypes.object,
   nextBeatId: PropTypes.number,
+  hovering: PropTypes.number,
   lines: PropTypes.array,
   lineActions: PropTypes.object,
   beatActions: PropTypes.object,

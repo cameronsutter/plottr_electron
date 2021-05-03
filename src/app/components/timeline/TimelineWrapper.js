@@ -374,7 +374,14 @@ class TimelineWrapper extends Component {
           wrapperRef={(ref) => (this.tableRef = ref)}
           className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
         >
-          {this.state.mounted ? <TimelineTable tableRef={this.tableRef} /> : <FunSpinner />}
+          {this.state.mounted ? (
+            <TimelineTable
+              tableRef={this.tableRef}
+              scrollTo={(position) => this.scrollTo(position)}
+            />
+          ) : (
+            <FunSpinner />
+          )}
         </StickyTable>
       )
     }

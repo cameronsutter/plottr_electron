@@ -43,6 +43,7 @@ const platform = {
   os: is.windows ? 'windows' : is.macos ? 'macos' : is.linux ? 'linux' : 'unknown',
   isDevelopment: is.development,
   isWindows: is.windows,
+  isMacOS: is.macos,
   openExternal: shell.openExternal,
   createErrorReport,
   log,

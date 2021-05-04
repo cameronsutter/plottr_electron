@@ -180,6 +180,7 @@ class TimelineTable extends Component {
               beatToLeft={beats[idx - 1]}
               isInBeatList={false}
               handleInsert={this.handleInsertNewBeat}
+              scrollTo={(position) => this.props.scrollTo(position)}
               color={line.color}
               showLine={beat.position == 0}
               tableLength={this.state.tableLength}
@@ -223,6 +224,7 @@ class TimelineTable extends Component {
                     ? undefined
                     : () => this.handleInsertChildBeat(beats[idx - 1].id)
                 }
+                scrollTo={(position) => this.props.scrollTo(position)}
                 expanded={lastBeat && lastBeat.expanded}
                 toggleExpanded={beatToggler(lastBeat)}
                 handleInsert={this.handleInsertNewBeat}
@@ -267,6 +269,7 @@ class TimelineTable extends Component {
                   : () => this.handleInsertChildBeat(lastBeat.id)
               }
               expanded={lastBeat && lastBeat.expanded}
+              scrollTo={(position) => this.props.scrollTo(position)}
               toggleExpanded={beatToggler(lastBeat)}
             />
           </Row>
@@ -284,6 +287,7 @@ class TimelineTable extends Component {
                 ? undefined
                 : () => this.handleInsertChildBeat(lastBeat.id)
             }
+            scrollTo={(position) => this.props.scrollTo(position)}
             expanded={lastBeat && lastBeat.expanded}
             toggleExpanded={beatToggler(lastBeat)}
           />
@@ -315,6 +319,7 @@ class TimelineTable extends Component {
             isInBeatList={false}
             lineId={line.id}
             handleInsert={this.handleInsertNewBeat}
+            scrollTo={(position) => this.props.scrollTo(position)}
             beatToLeft={beats[beatPosition - 1]}
             showLine={beatPosition == 0}
             color={line.color}

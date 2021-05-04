@@ -27,6 +27,31 @@ class BeatInsertCell extends PureComponent {
   insert = () => {
     const { beatToLeft, handleInsert } = this.props
     handleInsert(beatToLeft && beatToLeft.id)
+
+    let SCENE_CELL_WIDTH = this.props.isMedium ? 90 : 190 + 17
+    let SCENE_CELL_HEIGHT = this.props.isMedium ? 85 : 94 + 17
+
+    if (this.props.tour.run === true) this.props.tourActions.tourNext('next')
+
+    let children =
+      this.props.beats.index[beatToLeft.id].expanded && this.props.beats.children[beatToLeft.id]
+    let numChildren = children.length
+
+    let expandedChildren = 0
+    children.forEach((child) => {
+      if (this.props.beats.children[child].length > 0 && this.props.beats.index[child].expanded) {
+        expandedChildren += this.props.beats.children[child].length
+      }
+    })
+    //scroll based on how many children and grandChildren cards there are between clicked card and newly added card
+    const target =
+      this.props.orientation === 'vertical'
+        ? this.props.ui.timelineScrollPosition.y +
+          (numChildren + expandedChildren) * SCENE_CELL_HEIGHT
+        : this.props.ui.timelineScrollPosition.x +
+          (numChildren + expandedChildren) * SCENE_CELL_WIDTH
+
+    this.props.scrollTo(target)
     if (this.props.tour.run) this.props.tourActions.tourNext('next')
   }
 
@@ -195,7 +220,7 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderInsertChild() {
-    const { handleInsertChild, isFirst, isSmall, atMaximumDepth, tour } = this.props
+    const { handleInsertChild, isFirst, isSmall, atMaximumDepth } = this.props
 
     if (atMaximumDepth) return null
 
@@ -245,8 +270,6 @@ class BeatInsertCell extends PureComponent {
   }
 
   renderLastInsertBeat() {
-    const { isFirst, isSmall, orientation } = this.props
-
     return (
       <div title={this.lastTitleText()} className={this.lastOrientedClass()} onClick={this.insert}>
         <div className={this.lastWrapperClass()}>
@@ -300,6 +323,8 @@ class BeatInsertCell extends PureComponent {
 
   static propTypes = {
     bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    beats: PropTypes.object.isRequired,
+    ui: PropTypes.object.isRequired,
     orientation: PropTypes.string,
     isSmall: PropTypes.bool,
     isMedium: PropTypes.bool,
@@ -320,6 +345,7 @@ class BeatInsertCell extends PureComponent {
     tableLength: PropTypes.number,
     expanded: PropTypes.bool,
     toggleExpanded: PropTypes.func,
+    scrollTo: PropTypes.func,
     hierarchyChildLevelName: PropTypes.string,
     hierarchyLevelName: PropTypes.string,
     hierarchyLevels: PropTypes.array.isRequired,
@@ -333,6 +359,8 @@ function mapStateToProps(state, ownProps) {
 
   return {
     bookId: state.present.ui.currentTimeline,
+    beats: selectors.beatsByBookSelector(state.present),
+    ui: state.present.ui,
     orientation: state.present.ui.orientation,
     isSmall: selectors.isSmallSelector(state.present),
     isMedium: selectors.isMediumSelector(state.present),

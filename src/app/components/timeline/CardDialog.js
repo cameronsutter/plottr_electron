@@ -530,7 +530,7 @@ class CardDialog extends Component {
             color={card.color || card.color === null ? 'none' : '#F1F5F8'} // $gray-9
             choose={this.openColorPicker}
             style={{ margin: '2px', marginRight: '12px' }}
-            buttonStyle={{ border: `1px solid ${borderColor}` }}
+            buttonStyle={{ border: `1px solid ${borderColor}`, backgroundColor: borderColor }}
             ref={this.colorButtonRef}
           />
           <div className="buttons" style={{ alignSelf: 'flex-start' }}>

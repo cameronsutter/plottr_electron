@@ -65,7 +65,9 @@
     "react-image-file-resizer": "^0.2.1",
     "react-modal": "^3.8.1",
     "react-proptypes": "^1.0.0",
+    "react-redux": "^4.4.10",
     "react-scripts": "4.0.3",
+    "redux": "^3.5.2",
     "rollbar": "^2.19.4",
     "sass": "^1.25.0",
     "slate": "^0.59.0",
@@ -74,5 +76,13 @@
     "slate-react": "^0.59.0",
     "tls": "0.0.1",
     "web-vitals": "^1.0.1"
+  },
+  "dependencies": {
+    "pretty-date": "^0.2.0",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-floater": "^0.7.2",
+    "react-sticky-table": "^5.1.11",
+    "react-waypoint": "^10.1.0",
+    "react.pure.component": "^1.2.0"
   }
 }

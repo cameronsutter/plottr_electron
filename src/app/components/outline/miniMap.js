@@ -13,7 +13,7 @@ const CardActions = actions.card
 
 const {
   beatsByBookSelector,
-  sortedBeatsByBookSelector,
+  visibleSortedBeatsByBookSelector,
   positionOffsetSelector,
   sortedLinesByBookSelector,
   sortedHierarchyLevels,
@@ -152,7 +152,7 @@ MiniMap.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    beats: sortedBeatsByBookSelector(state.present),
+    beats: visibleSortedBeatsByBookSelector(state.present),
     beatsTree: beatsByBookSelector(state.present),
     hierarchyLevels: sortedHierarchyLevels(state.present),
     lines: sortedLinesByBookSelector(state.present),

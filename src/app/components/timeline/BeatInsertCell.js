@@ -25,39 +25,39 @@ class BeatInsertCell extends PureComponent {
   }
 
   insert = () => {
-    const { beatToLeft, handleInsert } = this.props
+    const { beatToLeft, handleInsert, isLast } = this.props
     handleInsert(beatToLeft && beatToLeft.id)
+    if(this.props.hierarchyLevels.length > 1 && !isLast) {
+      let SCENE_CELL_WIDTH = this.props.isMedium ? 85 : 190 + 17
+      let SCENE_CELL_HEIGHT = this.props.isMedium ? 85 : 94 + 17
 
-    let SCENE_CELL_WIDTH = this.props.isMedium ? 90 : 190 + 17
-    let SCENE_CELL_HEIGHT = this.props.isMedium ? 85 : 94 + 17
+      if (this.props.tour.run === true) this.props.tourActions.tourNext('next')
 
-    if (this.props.tour.run === true) this.props.tourActions.tourNext('next')
+      let children =
+        this.props.beats.index[beatToLeft.id].expanded && this.props.beats.children[beatToLeft.id]
+      let numChildren = children.length
 
-    let children =
-      this.props.beats.index[beatToLeft.id].expanded && this.props.beats.children[beatToLeft.id]
-    let numChildren = children.length
+      let expandedChildren = 0
+      children.forEach((child) => {
+        if (this.props.beats.children[child].length > 0 && this.props.beats.index[child].expanded) {
+          expandedChildren += this.props.beats.children[child].length
+        }
+      })
+      //scroll based on how many children and grandChildren cards there are between clicked card and newly added card
+      const target =
+        this.props.orientation === 'vertical'
+          ? this.props.ui.timelineScrollPosition.y +
+            (numChildren + expandedChildren) * SCENE_CELL_HEIGHT
+          : this.props.ui.timelineScrollPosition.x +
+            (numChildren + expandedChildren) * SCENE_CELL_WIDTH
 
-    let expandedChildren = 0
-    children.forEach((child) => {
-      if (this.props.beats.children[child].length > 0 && this.props.beats.index[child].expanded) {
-        expandedChildren += this.props.beats.children[child].length
-      }
-    })
-    //scroll based on how many children and grandChildren cards there are between clicked card and newly added card
-    const target =
-      this.props.orientation === 'vertical'
-        ? this.props.ui.timelineScrollPosition.y +
-          (numChildren + expandedChildren) * SCENE_CELL_HEIGHT
-        : this.props.ui.timelineScrollPosition.x +
-          (numChildren + expandedChildren) * SCENE_CELL_WIDTH
-
-    this.props.scrollTo(target)
-    if (this.props.tour.run) this.props.tourActions.tourNext('next')
+      this.props.scrollTo(target)
+      if (this.props.tour.run) this.props.tourActions.tourNext('next')
+    }
   }
 
   insertChild = () => {
     const { beatToLeft, handleInsertChild, bookId } = this.props
-    console.log(beatToLeft && beatToLeft.id, 'insert?')
     handleInsertChild(beatToLeft && beatToLeft.id, bookId)
   }
 

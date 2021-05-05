@@ -11,7 +11,7 @@ import { helpers, selectors, actions } from 'pltr/v2'
 
 const {
   cardMapSelector,
-  sortedBeatsByBookSelector,
+  visibleSortedBeatsByBookSelector,
   sortedLinesByBookSelector,
   isSeriesSelector,
 } = selectors
@@ -187,7 +187,7 @@ OutlineView.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    beats: sortedBeatsByBookSelector(state.present),
+    beats: visibleSortedBeatsByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
     card2Dmap: cardMapSelector(state.present),
     ui: state.present.ui,

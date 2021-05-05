@@ -28,6 +28,12 @@ const modalStyles = {
 const ItemsManagerModelConnector = (connector) => {
   const PlottrModal = UnconnectedPlottrModal(connector)
 
+  const {
+    platform: {
+      template: { startSaveAsTemplate },
+    },
+  } = connector
+
   function ItemsManagerModal({
     title,
     subtitle,
@@ -39,7 +45,6 @@ const ItemsManagerModelConnector = (connector) => {
     onAdd,
     renderItem,
     closeDialog,
-    startSaveAsTemplate,
   }) {
     const [inputValue, setInputValue] = useState('')
     const restrictedValues = useMemo(() => new Set(items.map(({ name }) => name)), [items])
@@ -121,7 +126,6 @@ const ItemsManagerModelConnector = (connector) => {
     onAdd: PropTypes.func.isRequired,
     renderItem: PropTypes.func.isRequired,
     closeDialog: PropTypes.func.isRequired,
-    startSaveAsTemplate: PropTypes.func.isRequired,
   }
 
   return ItemsManagerModal

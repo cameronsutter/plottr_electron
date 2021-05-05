@@ -1,4 +1,4 @@
-import * as pltr from 'pltr'
+import pltr from './pltr'
 
 const connections = {
   pltr,

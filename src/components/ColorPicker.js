@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import { FormControl, FormGroup, ControlLabel, Button, Row, Col } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import { colors } from 'pltr/v2'
+import { defaultStyles } from 'react-modal'
 import UnconnectedPlottrModal from './PlottrModal'
 import ColorPickerColor from './ColorPickerColor'
 
@@ -16,7 +17,7 @@ const ColorPickerConnector = (connector) => {
       super(props)
       this.state = { color: this.props.color }
 
-      this.hexRef = React.createRef()
+      this.hexRef = null
     }
 
     componentDidMount() {
@@ -32,7 +33,7 @@ const ColorPickerConnector = (connector) => {
     }
 
     showColor = () => {
-      var newColor = this.hexRef.current.value
+      var newColor = this.hexRef.value
       var regex = /#?([0123456789abcdef]{6})/
       var matches = regex.exec(newColor)
       if (matches) {
@@ -44,7 +45,11 @@ const ColorPickerConnector = (connector) => {
 
     render() {
       return (
-        <PlottrModal isOpen={true} onRequestClose={() => this.closeDialog(this.props.color)}>
+        <PlottrModal
+          isOpen={true}
+          onRequestClose={() => this.closeDialog(this.props.color)}
+          styles={(defaultStyles, 'zIndex:1002')}
+        >
           <div className="color-picker__wrapper">
             <h2 className="color-picker__title">{i18n('Pick a color')}</h2>
             <div className="color-picker__input-box form-horizontal">
@@ -69,7 +74,9 @@ const ColorPickerConnector = (connector) => {
                     <ControlLabel>{i18n('hex code or name')}</ControlLabel>
                     <FormControl
                       type="text"
-                      inputRef={this.hexRef}
+                      inputRef={(ref) => {
+                        this.hexRef = ref
+                      }}
                       placeholder="e.g. #ffffff"
                       defaultValue={this.state.color}
                       onKeyDown={(event) => {

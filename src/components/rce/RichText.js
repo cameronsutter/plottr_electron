@@ -1,15 +1,16 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
-import RichTextEditor from './RichTextEditor'
+import UnconnectedRichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
 import UnconnectedRCEBoundary from './RCEBoundary'
 import { addRecent, getFonts, getRecent } from './fonts'
 
 const RichTextConnector = (connector) => {
   const RCEBoundary = UnconnectedRCEBoundary(connector)
+  const RichTextEditor = UnconnectedRichTextEditor(connector)
 
   const {
-    platform: { openExternal, log, createErrorReport },
+    platform: { openExternal, log, createErrorReport, os },
   } = connector
 
   const RichText = (props) => {
@@ -22,10 +23,9 @@ const RichTextConnector = (connector) => {
           autoFocus={props.autofocus}
           text={props.description}
           darkMode={props.darkMode}
-          fonts={getFonts(props.os)}
+          fonts={getFonts(os)}
           recentFonts={getRecent()}
           addRecent={addRecent}
-          openExternal={openExternal}
         />
       )
     } else {
@@ -53,7 +53,6 @@ const RichTextConnector = (connector) => {
     autofocus: PropTypes.bool,
     className: PropTypes.string,
     darkMode: PropTypes.bool.isRequired,
-    os: PropTypes.oneOf(['windows', 'linux', 'macos']),
   }
 
   return RichText

@@ -15,21 +15,24 @@ import {
   Nav,
   NavItem,
 } from 'react-bootstrap'
-import Image from './Image'
+import ImageConnector from './Image'
 import { t as i18n } from 'plottr_locales'
 import { Spinner } from '../Spinner'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import PlottrModal from '../PlottrModal'
+import PlottrModalConnector from '../PlottrModal'
 
 import { readImage, isImageUrl, readImageFromURL } from '../images'
 
 const ImagePickerConnector = (connector) => {
+  const PlottrModal = PlottrModalConnector(connector)
+  const Image = ImageConnector(connector)
+
   class ImagePicker extends Component {
     state = {}
 
     constructor(props) {
       super(props)
-      this.fileNameRef = React.createRef()
+      this.fileNameRef = null
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -88,7 +91,7 @@ const ImagePickerConnector = (connector) => {
     }
 
     renameFile = () => {
-      let newName = this.fileNameRef.current.value
+      let newName = this.fileNameRef.value
       this.props.actions.renameImage(this.state.selectedId, newName)
       this.setState({ editing: false })
     }
@@ -284,7 +287,13 @@ const ImagePickerConnector = (connector) => {
       if (this.state.editing) {
         return (
           <FormGroup>
-            <FormControl type="text" defaultValue={value} inputRef={this.fileNameRef} />
+            <FormControl
+              type="text"
+              defaultValue={value}
+              inputRef={(ref) => {
+                this.fileNameRef = ref
+              }}
+            />
             <Button onClick={this.renameFile}>{i18n('Rename')}</Button>
           </FormGroup>
         )
@@ -332,7 +341,7 @@ const ImagePickerConnector = (connector) => {
         body = (
           <div>
             <h6>{i18n('Image Details')}</h6>
-            <Image images={this.props.images} imageId={selectedId} responsive />
+            <Image imageId={selectedId} responsive />
             <div className="image-picker__sidebar-tools">
               {this.renderDelete()}
               {this.renderName(image.name)}

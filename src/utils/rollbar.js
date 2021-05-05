@@ -42,7 +42,7 @@ export default function setupRollbar(
     },
     checkIgnore: function (isUncaught, args, payload) {
       // return true to ignore
-      return environment !== 'development'
+      return environment == 'development'
     },
   })
 }

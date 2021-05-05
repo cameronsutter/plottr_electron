@@ -1,0 +1,311 @@
+@import 'vars';
+
+$title_height: 70px;
+$cell_width: 175px;
+$medium_width: 80px;
+
+.beat__cell {
+  width: $cell_width;
+  padding-bottom: 45px;
+
+  &.medium-timeline {
+    width: 90px;
+    padding-bottom: 0;
+  }
+
+  &.small-timeline {
+    width: 90px;
+    padding-bottom: 0;
+  }
+}
+
+.beat__body {
+  @include sub-header-font;
+  padding: 30px 10px;
+  width: 150px + 6px; // +6px for the 3px border
+  margin: auto;
+  text-align: center;
+  transition: all 0.4s $cubic;
+  border: 3px dashed transparent;
+  .form-group {
+    text-align: left;
+    .control-label {
+      @include secondary-text;
+      font-weight: normal;
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+  }
+
+  &.hover {
+    border: 3px dashed $blue-7;
+    cursor: move;
+  }
+  &.dropping {
+    border: $new-item-border;
+  }
+  &.medium-timeline {
+    width: $medium_width + 6px; // +6px for the 3px border
+    font-size: 14px;
+    padding: 12px 4px;
+    .form-group {
+      .control-label {
+        font-size: 12px;
+      }
+      input {
+        font-size: 12px;
+        padding: 6px 2px;
+      }
+    }
+  }
+}
+
+.beat-list__item__hover-options {
+  text-align: center;
+  visibility: hidden;
+  margin-bottom: 5px;
+
+  &.small-timeline {
+    visibility: visible;
+    width: 100px;
+    position: absolute !important;
+    top: 41px !important;
+    left: -14px !important;
+    transform: none !important;
+    border: none !important;
+    background-color: transparent !important;
+  }
+}
+
+.transparent {
+  visibility: hidden;
+}
+
+.beat-list__insert {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  transition: all 0.4s $cubic;
+  font-size: 16px;
+  cursor: pointer;
+  &:last-child:not(.small-timeline):not(.medium-timeline) {
+    margin: 8px 5px 0 -4px;
+    // padding: -5px;
+    width:41px;
+  }
+  &:first-child:not(.small-timeline):not(.medium-timeline) {
+    margin: 75px 5px 0 -5px;
+    height: 16px;
+  }
+  .insert-beat-wrapper {
+    display: flex;
+    padding: 1px;
+    .glyphicon {
+      margin-top: -1px;
+      margin-right: -1px;
+    }
+  }
+  .insert-beat-wrapper.append-beat {
+    &.large-timeline {
+      padding: 30px 70px;
+    }
+    &.medium-timeline {
+      margin-top: 10px;
+      margin-right: 0px;
+      padding: 14px 35px;
+    }
+    color: $blue-5;
+    border: 3px dotted $blue-8;
+    margin-right: 50px;
+  }
+  &.medium-timeline {
+    height: 123px;
+  }
+}
+
+// .beat-list__interstitial-controls {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-around;
+//   align-items: center;
+// }
+
+.insert-beat-wrapper:hover {
+  color: $blue-7;
+}
+
+.beat-list__insert:hover {
+  color: $blue-5;
+  .insert-beat-wrapper.append-beat {
+    border: 3px dashed $blue-7;
+  }
+}
+
+.sticky-table.darkmode {
+  .beat-list__insert:hover {
+    color: $blue-8;
+  }
+  .beat-list__insert {
+    .insert-beat-wrapper.append-beat {
+      color: $blue-7;
+    }
+  }
+}
+
+// ///////////
+// Vertical
+// ///////////
+
+.vertical-beat__cell {
+  width: $cell_width + 25px;
+
+  &.medium-timeline {
+    width: $medium_width + 60px;
+  }
+}
+
+.vertical-beat__body {
+  @include sub-header-font;
+  display: flex;
+  text-align: right;
+  justify-content: flex-end;
+  min-height: $title_height;
+  min-width: 150px;
+  padding: 10px;
+  transition: all 0.4s $cubic;
+  border: 3px dashed transparent;
+  .form-group {
+    text-align: left;
+    .control-label {
+      @include secondary-text;
+      font-weight: normal;
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+  }
+  &.medium-timeline {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-width: $medium_width + 6px; // +6px for the 3px border
+    width: $medium_width + 6px; // +6px for the 3px border
+    font-size: 14px;
+    padding: 12px 8px;
+    .form-group {
+      .control-label {
+        font-size: 12px;
+      }
+      input {
+        font-size: 12px;
+        padding: 6px 2px;
+      }
+    }
+  }
+}
+
+.vertical-beat__body.hover {
+  border: 3px dashed $blue-7;
+  cursor: move;
+}
+
+.vertical-beat__body.dropping {
+  border: $new-item-border;
+}
+
+.vertical-beat-list__item__hover-options {
+  float: left;
+  margin-right: 3px;
+  margin-left: 2px;
+  margin-top:-15px;
+  visibility: hidden;
+  button.btn-block {
+    margin-top: 1px;
+  }
+
+  &.small-timeline {
+    visibility: visible;
+    float: none !important;
+    position: absolute;
+    top: -1px;
+    left: 100px;
+  }
+}
+
+.vertical-beat-list__insert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width:100px;
+  transition: all 0.4s $cubic;
+  font-size: 16px;
+  cursor: pointer;
+  margin:-5px 0 0 50px;
+  button {
+    width:41px;
+    height:35px;
+  }
+  .vertical-insert-beat-wrapper {
+    .large-timeline {
+      height: 40px;
+    }
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .vertical-insert-beat-wrapper.insert-beat-spacer {
+    .glyphicon {
+      position: relative;
+    }
+  }
+
+  &.medium-timeline {
+    width: $medium_width;
+    margin-left: 35px;
+  }
+}
+
+.vertical-insert-beat-wrapper:hover {
+  color: $blue-7;
+}
+
+.vertical-beat-list__insert.append-beat {
+  @extend .vertical-beat-list__insert;
+  height: $title_height;
+  margin-bottom: 50px;
+  .vertical-insert-beat-wrapper.append-beat {
+    padding: 20px $title_height;
+    color: $blue-5;
+    border: 3px dotted $blue-8;
+    margin-top: 10px;
+  }
+  .vertical-insert-beat-wrapper.append-beat:hover {
+    border: 3px dashed $blue-7;
+  }
+  &.medium-timeline {
+    width: $medium_width;
+    margin-left: 35px;
+    .vertical-insert-beat-wrapper.append-beat {
+      margin-left: 30px;
+      padding: 12px 32px;
+    }
+  }
+}
+
+.vertical-beat-list__insert.append-beat.medium-timeline {
+  height: 43px;
+}
+
+
+.vertical-beat-list__insert:hover {
+  color: $blue-5;
+  .insert-beat-wrapper.append-beat {
+    border: 3px dashed $blue-7;
+  }
+}
+
+.beat-list__insert--always-visible {
+  color: $blue-5;
+  .insert-beat-wrapper.append-beat {
+    border: 3px dashed $blue-7;
+  }
+}

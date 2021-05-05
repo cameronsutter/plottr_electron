@@ -4,9 +4,11 @@ import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import Image from '../images/Image'
+import UnconnectedImage from '../images/Image'
 
 const CharacterItemConnector = (connector) => {
+  const Image = UnconnectedImage(connector)
+
   class CharacterItem extends Component {
     state = { deleting: false }
 

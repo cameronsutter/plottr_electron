@@ -1,0 +1,226 @@
+@import 'vars';
+
+.place-list {
+  h1 {
+    text-align: center;
+    @include application-text;
+  }
+  .tab-body {
+    width: 99vw;
+    overflow: hidden;
+    padding-bottom: 4px;
+    .row {
+      height: 100%;
+    }
+    .col-sm-3,
+    .col-sm-9 {
+      height: 100%;
+      position: relative;
+    }
+    .col-sm-9 {
+      padding-top: 16px;
+    }
+  }
+}
+
+.place-list__list {
+  overflow: auto;
+  height: calc(100% - 77px);
+  position: relative;
+  margin-bottom: 0;
+
+  .list-group-item {
+    padding-right: 4px;
+    cursor: pointer;
+
+    .place-list__item-inner {
+      display: flex;
+      align-items: center;
+
+      .place-list__item-buttons {
+        margin-left: auto;
+        min-width: 71px;
+        visibility: hidden;
+        &.visible {
+          visibility: visible;
+        }
+      }
+
+      .place-list__item-inner__image-wrapper {
+        img {
+          max-width: 75px;
+        }
+        margin-right: 10px;
+      }
+
+      .list-group-item-heading.withImage {
+        font-size: 16px;
+      }
+    }
+    &:hover {
+      background: $new-item-background;
+
+      .place-list__item-buttons {
+        visibility: visible;
+      }
+    }
+    &.selected {
+      border: 2px dashed $blue-7;
+      background-color: $gray-7;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.place-list__list.darkmode {
+  .list-group-item {
+    background-color: $darkmode-darker-background;
+    color: $darkmode-text;
+    border-color: $darkmode-darker-border;
+
+    &:hover {
+      background: $darkmode-background;
+    }
+    &.selected {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-darker-border;
+      margin-bottom: 0;
+    }
+
+    h6 {
+      color: $darkmode-text;
+    }
+    p {
+      color: $darkmode-darker-text;
+    }
+  }
+}
+
+.place-list__new {
+  text-align: center;
+  cursor: pointer;
+  color: $new-item-border-color;
+}
+
+.place-list__new:hover {
+  background: $new-item-background;
+}
+
+.place-list__place-wrapper {
+  height: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+.place-list__place-view {
+  @include well;
+  padding: 20px;
+  max-height: 100%;
+  overflow: auto;
+
+  display: flex;
+  align-items: flex-start;
+
+  .place-list__place-view__left-side {
+    width: 18%;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid #eee;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .place-list__place-view__right-side {
+    width: 79%;
+    height: 100%;
+    padding: 4px;
+    margin-left: 8px;
+    overflow-y: auto;
+  }
+}
+
+.place-list__place {
+  cursor: pointer;
+
+  .place-list__place__edit-form {
+    padding-left: 5px;
+    display: flex;
+    .place-list__inputs__normal {
+      width: 50%;
+      padding-right: 3%;
+      border-right: solid 1px #eee;
+    }
+    .place-list__inputs__custom {
+      width: 50%;
+      padding-right: 3%;
+      padding-left: 3%;
+    }
+  }
+  .btn-toolbar {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  .place-list__place-inner {
+    border: 2px dashed transparent;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    .place-list__right-side {
+      .img-responsive {
+        min-width: fit-content;
+      }
+      .glyphicon {
+        color: $blue-7;
+        visibility: hidden;
+        margin: 5px;
+      }
+    }
+  }
+
+  &:hover {
+    .place-list__place-inner {
+      border: 2px dashed $blue-7;
+      border-radius: 4px;
+      background-color: $gray-9;
+      .place-list__right-side {
+        .glyphicon {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
+
+.place-list__place-view.darkmode {
+  background-color: $darkmode-darker-background;
+  color: $darkmode-text;
+  border-color: $darkmode-darker-border;
+
+  .place-list__place-wrapper:hover {
+    .place-list__place-inner {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-darker-border;
+    }
+  }
+
+  h4 {
+    color: $darkmode-darker-text;
+  }
+}
+
+.place-list__place.editing {
+  cursor: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.place-list__place__edit-image-wrapper {
+  display: flex;
+  align-items: center;
+  .place-list__place__edit-image {
+    max-width: 200px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+}

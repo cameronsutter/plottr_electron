@@ -1,0 +1,111 @@
+@import 'vars';
+
+.tag-list__container {
+  h1 {
+    text-align: center;
+    @include application-text;
+    width: 99vw;
+    margin-left: 0.5vw;
+  }
+  .tag-list__wrapper {
+    display: flex;
+    justify-content: center;
+    width: 99vw;
+    margin: auto;
+    overflow: auto;
+  }
+}
+
+.tag-list__new {
+  @include well;
+  width: 200px;
+  height: 58px;
+  margin-top: 46px; // hover-options on other tags are 36px + margin
+  cursor: pointer;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tag-list__new.darkmode {
+  background-color: $darkmode-darker-background;
+  color: $darkmode-text;
+  border-color: $darkmode-border;
+
+  &:hover {
+    background-color: $darkmode-background;
+  }
+}
+
+.tag-list__new:hover {
+  background: $new-item-background;
+}
+
+.tag-list__tags {
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.tag-list__tag-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3px 20px;
+}
+
+.tag-list__tag {
+  @include well;
+  width: 200px; // 5 per row
+  padding: 7px 14px;
+
+  &:not(.editing):hover {
+    background-color: $gray-8;
+  }
+}
+
+.tag-list__tag.darkmode {
+  background-color: $darkmode-darker-background;
+  color: $darkmode-text;
+  border-color: $darkmode-border;
+
+  &:not(.editing):hover {
+    background-color: $darkmode-background;
+  }
+}
+
+.tag-list__tag__hover-options {
+  margin: 5px 0;
+}
+
+.tag-list__tag-normal {
+  cursor: pointer;
+}
+
+.tag-list__color-edit-container {
+  display: flex;
+  .tag-list__tag-color {
+    width: 40px;
+    height: 38px;
+    float: right;
+    margin: 3px;
+    border-color: #ccc;
+    border-radius: 4px;
+  }
+}
+
+.tag-list__color-label {
+  margin-top: 5px;
+  .label {
+    vertical-align: middle;
+    padding-top: 5px;
+  }
+}
+
+.tag-list__tag__button-bar {
+  display: flex;
+  justify-content: flex-end;
+}

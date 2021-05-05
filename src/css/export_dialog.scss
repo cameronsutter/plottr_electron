@@ -1,0 +1,154 @@
+@import 'colors';
+@import 'vars';
+
+.export-dialog__wrapper {
+  height: 100%;
+  display: grid;
+  grid-template-areas: 'header' 'body' 'footer';
+  grid-template-rows: auto 1fr auto;
+}
+
+.export-dialog__header {
+  grid-area: header;
+  h3 {
+    margin-top: 0;
+  }
+  hr {
+    margin-top: 8px;
+  }
+  .export-dialog__type-chooser {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .nav.navbar-nav.nav-pills > li > a {
+      border-radius: 4px;
+    }
+
+    .right-side {
+      display: flex;
+      align-items: center;
+
+      .btn {
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+.export-dialog__body {
+  grid-area: body;
+  height: 100%;
+  overflow: hidden;
+
+  .export-dialog__option-lists {
+    @include application-text;
+    font-size: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 16px;
+    overflow: auto;
+    height: 100%;
+
+    .list-wrapper {
+      margin: 0 12px 8px 12px;
+      border: 2px solid $gray-9;
+      border-radius: 15px;
+    }
+
+    .list-title {
+      font-size: 25px;
+      font-weight: bold;
+      background-color: $gray-9;
+      font-variant: small-caps;
+      text-transform: lowercase;
+      text-align: center;
+      padding-top: 6px;
+      padding-bottom: 8px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+
+      .checkbox {
+        margin: 0;
+        label {
+          font-weight: bold;
+        }
+        input[type='checkbox'] {
+          top: 9.5px;
+        }
+      }
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0 20px;
+      font-size: 17px;
+      color: $neutral-gray-3;
+    }
+
+    .checkbox input[type='checkbox'],
+    .radio input[type='radio'] {
+      top: 2px;
+    }
+  }
+
+  .export-dialog__null-type {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+body.darkmode {
+  .export-dialog__body {
+    .export-dialog__option-lists {
+      .list-wrapper {
+        border-color: $darkmode-border;
+      }
+      .list-title {
+        background-color: $darkmode-darker-background;
+        color: $darkmode-text;
+      }
+    }
+  }
+}
+
+.export-dialog__footer {
+  grid-area: footer;
+  // padding-top: 8px;
+  & > div {
+    display: flex;
+    justify-content: space-between;
+  }
+  hr {
+    margin-top: 0;
+  }
+}
+
+ul.export-list {
+  list-style: none;
+  padding-left: 0;
+  li {
+    cursor: pointer;
+    padding: 3px;
+
+    &:hover {
+      background-color: $body-background-color;
+    }
+  }
+}
+
+body.darkmode {
+  .export-list {
+    li:hover {
+      background-color: $darkmode-darker-background;
+    }
+  }
+  .export-dialog__option-lists {
+    ul {
+      color: $darkmode-text;
+    }
+  }
+}

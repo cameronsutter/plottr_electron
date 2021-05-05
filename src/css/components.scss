@@ -1,7 +1,27 @@
+@import 'colors';
+@import 'vars';
+@import 'bootstrap_configuration';
+
 @import 'modals';
 @import 'color_picker_block';
-@import 'bootstrap_configuration';
+@import 'acts_config_modal';
 @import 'custom_attr_block';
 @import 'image';
 @import 'spinner';
 @import 'switch';
+@import 'export_dialog';
+@import 'notes_block';
+@import 'outline_block';
+@import 'place_list_block';
+@import 'book';
+@import 'tag_list_block';
+@import 'timeline_block';
+@import 'line_block';
+@import 'card_block';
+@import 'beat_block';
+@import 'card_dialog';
+
+.ReactModalPortal {
+  position: relative;
+  z-index: 6;
+}

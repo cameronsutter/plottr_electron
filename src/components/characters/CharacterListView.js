@@ -13,12 +13,12 @@ import {
   Row,
   Col,
 } from 'react-bootstrap'
-import CustomAttrFilterList from '../CustomAttrFilterList'
-import SortList from '../SortList'
-import CharacterView from './CharacterView'
+import CustomAttrFilterListConnector from '../CustomAttrFilterList'
+import UnconnectedSortList from '../SortList'
+import CharacterViewConnector from './CharacterView'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
-import CustomAttributeModal from '../dialogs/CustomAttributeModal'
+import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
 import CharacterCategoriesModalConnector from './CharacterCategoriesModal'
 import InputModal from '../dialogs/InputModal'
 import CharacterItemConnector from './CharacterItem'
@@ -29,6 +29,10 @@ import { newIds } from 'pltr/v2'
 const { nextId } = newIds
 
 const CharacterListViewConnector = (connector) => {
+  const CustomAttributeModal = UnconnectedCustomAttributeModal(connector)
+  const SortList = UnconnectedSortList(connector)
+  const CustomAttrFilterList = CustomAttrFilterListConnector(connector)
+  const CharacterView = CharacterViewConnector(connector)
   const CharacterItem = CharacterItemConnector(connector)
   const TemplatePicker = TemplatePickerConnector(connector)
   const CharacterCategoriesModal = CharacterCategoriesModalConnector(connector)
@@ -104,7 +108,7 @@ const CharacterListViewConnector = (connector) => {
     }
 
     handleCreateNewCharacter = () => {
-      this.setState({ creating: true })
+      // this.setState({ creating: true })
 
       // going back to old way (without modal) to think it over
       const id = nextId(this.props.characters)
@@ -113,7 +117,7 @@ const CharacterListViewConnector = (connector) => {
     }
 
     handleChooseTemplate = (templateData) => {
-      this.setState({ showTemplatePicker: false, templateData: templateData, creating: true })
+      // this.setState({ showTemplatePicker: false, templateData: templateData, creating: true })
 
       // going back to old way (without modal) to think it over
       const id = nextId(this.props.characters)
@@ -152,14 +156,10 @@ const CharacterListViewConnector = (connector) => {
     }
 
     renderSubNav() {
-      const { filterIsEmpty, ui, uiActions, characters, customAttributes } = this.props
+      const { filterIsEmpty, ui, uiActions } = this.props
       let filterPopover = (
         <Popover id="filter">
-          <CustomAttrFilterList
-            type="characters"
-            characters={characters}
-            customAttributes={customAttributes}
-          />
+          <CustomAttrFilterList type="characters" />
         </Popover>
       )
       let filterDeclaration = (

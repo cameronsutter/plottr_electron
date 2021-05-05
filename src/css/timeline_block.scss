@@ -1,0 +1,347 @@
+@import 'vars';
+
+#timelineview__root {
+  width: 100vw;
+
+  .sticky-table {
+  }
+
+  .sticky-table-table {
+    white-space: normal !important;
+    transform-origin: left top !important;
+  }
+
+  .sticky-table-cell {
+    padding: 0 !important;
+    background-color: $body-background-color !important;
+    vertical-align: top !important;
+    border: none !important;
+  }
+
+  .sticky-table-cell:hover {
+    .line-list__insert-beat {
+      color: $blue-5;
+    }
+  }
+
+  .sticky-table.darkmode {
+    background-color: $darkmode-card-background !important;
+    color: $darkmode-text;
+    .sticky-table-row {
+      background-color: $darkmode-card-background !important;
+      color: $darkmode-text;
+    }
+    .sticky-table-cell {
+      background-color: $darkmode-card-background !important;
+      color: $darkmode-text;
+    }
+  }
+
+  // vertical orientation, border under the plotline titles
+  .sticky-table.vertical {
+    .sticky-table-row:first-child {
+      .sticky-table-cell:after {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 25px;
+        width: 75%;
+        padding-top: 1px;
+        border-bottom: 1px solid $gray-6;
+      }
+      .sticky-table-cell:first-child:after {
+        border: none;
+      }
+    }
+  }
+}
+
+// important that this is here (not nested)
+// if not, it breaks the sticky columns/rows in the timeline
+.sticky-table-cell {
+  position: relative;
+}
+
+////////////////////
+// small timeline //
+////////////////////
+#timelineview__root {
+  .small-timeline__wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .table-header-rotated {
+    margin-left: 2px;
+  }
+  /////////////////////
+  // copied and modified from https://www.jimmybonney.com/articles/column_header_rotation_css/
+  /////////////////////
+
+  .table-header-rotated th.row-header {
+    padding-left: 8px;
+    width: 58px; // 50 + 8
+    min-width: 58px; // 50 + 8
+    background-color: $gray-9;
+    border-top: 1px solid $gray-8;
+    border-left: 1px solid $gray-8;
+    position: sticky;
+    left: 0;
+    font-size: 12px;
+    cursor: move;
+
+    .line-list__append-line {
+      .line-list__append-line-wrapper {
+        padding: 2px 0;
+        border: none;
+        margin: 0;
+
+        &:hover {
+          border: 2px dotted $blue-7;
+          background-color: $blue-8;
+        }
+      }
+    }
+
+    &.dropping {
+      & > div {
+        border: $new-item-border;
+      }
+    }
+  }
+
+  .table-header-rotated tr {
+    &:last-child {
+      border-bottom: 1px dashed $gray-8;
+      td {
+        border-style: dashed;
+        border-color: $gray-8;
+        border-width: 1px;
+        border-top: 1px solid $gray-8;
+      }
+    }
+  }
+
+  .table-header-rotated td {
+    width: 20px;
+    border-top: 1px solid $gray-8;
+    border-right: 1px solid $gray-8;
+    vertical-align: middle;
+    text-align: center;
+    padding: 2px 0;
+
+    &:last-child {
+      border-style: dashed;
+      border-width: 1px;
+      border-color: $gray-8;
+    }
+
+    .div-card-circle {
+      height: 10px;
+      width: 10px;
+      border-radius: 10px;
+      background-color: black;
+      margin: 1px auto;
+      cursor: pointer;
+      .card__title {
+        padding: 6px;
+      }
+    }
+
+    div.card-circle {
+      @extend .div-card-circle;
+    }
+
+    div.blank-circle {
+      @extend .div-card-circle;
+      visibility: hidden;
+      background-color: transparent;
+
+      &.hover {
+        visibility: visible;
+        border-width: 1px;
+        border-style: dotted;
+      }
+    }
+
+    .card__drop-zone {
+      font-size: 8px;
+    }
+
+    &:nth-child(2) {
+      border-left: 1px solid $gray-8;
+    }
+
+    &:hover {
+      div.blank-circle {
+        visibility: visible;
+        border-width: 2px;
+        border-style: dotted;
+      }
+    }
+  }
+
+  .table-header-rotated thead {
+    th:first-child {
+      background-color: $gray-9;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+  }
+
+  .table-header-rotated th.rotate-45 {
+    height: 40px;
+    // height: 80px;
+    width: 20px;
+    min-width: 20px;
+    max-width: 20px;
+    vertical-align: bottom;
+    padding: 0;
+    font-size: 12px;
+    line-height: 0.8;
+    position: sticky;
+    top: 0;
+
+    &.dropping {
+      & > div {
+        border: 1px dotted #aaa;
+      }
+    }
+
+    &:nth-child(2) {
+      background-color: $gray-9;
+      z-index: 10;
+      & > div {
+        background-color: $gray-9;
+        border-left: 1px solid $gray-8;
+      }
+    }
+    &:nth-child(3) {
+      background-color: $gray-9;
+    }
+
+    & > div {
+      position: relative;
+      top: 0px;
+      left: 21px;
+      // left: 40px; // 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle
+      height: 100%;
+      transform: skew(-45deg, 0deg);
+      overflow: hidden;
+      background-color: $gray-9;
+      border-right: 1px solid $gray-8;
+      border-top: 1px solid $gray-8;
+      cursor: move;
+
+      &.beat-list__insert.append-beat {
+        font-size: 8px;
+        cursor: pointer;
+
+        div {
+          padding: inherit;
+          border: none;
+          margin-right: 0;
+          & > span {
+            transform: translate(5px) skew(45deg, 0deg);
+          }
+        }
+
+        &:hover {
+          border: 2px solid $blue-7;
+          background-color: $blue-8;
+        }
+      }
+
+      & > span {
+        transform: skew(45deg, 0deg) rotate(315deg);
+        font-size: 8px;
+        position: absolute;
+        bottom: 30px; // 40 cos(45) = 28 with an additional 2px margin
+        left: -32px;
+        // left: -25px; // Because it looked good, but there is probably a mathematical link here as well
+        display: inline-block;
+        // width: 100%;
+        width: 85px; // 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle
+        text-align: left;
+        white-space: nowrap; /*whether to display in one line or not*/
+      }
+    }
+  }
+
+  .small-timeline__wrapper.darkmode {
+    color: $darkmode-text;
+    .table-header-rotated thead {
+      th:first-child {
+        background-color: $darkmode-background;
+      }
+    }
+    .table-header-rotated th.row-header {
+      background-color: $darkmode-background;
+    }
+    .table-header-rotated th.rotate-45 {
+      &:nth-child(2) {
+        background-color: $darkmode-background;
+      }
+      &:nth-child(3) {
+        background-color: $darkmode-background;
+      }
+      & > div {
+        background-color: $darkmode-background;
+      }
+    }
+  }
+
+  .small-timeline__wrapper.vertical {
+    padding-bottom: 4px;
+    .table-header-rotated {
+      margin-left: 20px;
+
+      th.row-header {
+        padding-left: 16px;
+        padding-right: 16px;
+        width: 102px; // 70 + 16 + 16
+        min-width: 102px; // 70 + 16 + 16
+        text-align: right;
+
+        .vertical-beat-list__insert.append-beat {
+          height: unset;
+          width: unset;
+          margin: 0;
+          font-size: 8px;
+          .vertical-insert-beat-wrapper.append-beat {
+            padding: 2px 0;
+            border: none;
+            margin: 0;
+          }
+
+          &:hover {
+            border: 2px solid $blue-7;
+            background-color: $blue-8;
+          }
+        }
+      }
+
+      th.rotate-45 {
+        .vertical-line-list__append-line {
+          cursor: pointer;
+          font-size: 8px;
+
+          .vertical-line-list__append-line-wrapper {
+            padding: 0;
+            margin: 0;
+            border: none;
+            transform: translate(5px) skew(45deg, 0deg);
+          }
+
+          &:hover {
+            border: 2px solid $blue-7;
+            background-color: $blue-8;
+          }
+        }
+      }
+    }
+  }
+}

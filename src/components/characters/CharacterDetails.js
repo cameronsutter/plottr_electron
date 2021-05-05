@@ -6,10 +6,6 @@ import UnconnectedRichText from '../rce/RichText'
 import UnconnectedImage from '../images/Image'
 
 const CharacterDetailsConnector = (connector) => {
-  const {
-    platform: { log, openExternal },
-  } = connector
-
   const RichText = UnconnectedRichText(connector)
   const Image = UnconnectedImage(connector)
 
@@ -22,12 +18,7 @@ const CharacterDetailsConnector = (connector) => {
         if (type == 'paragraph') {
           desc = (
             <dd>
-              <RichText
-                description={character[name]}
-                darkMode={ui.darkMode}
-                openExternal={openExternal}
-                log={log}
-              />
+              <RichText description={character[name]} darkMode={ui.darkMode} />
             </dd>
           )
         } else {
@@ -46,12 +37,7 @@ const CharacterDetailsConnector = (connector) => {
           if (attr.type == 'paragraph') {
             val = (
               <dd>
-                <RichText
-                  description={attr.value}
-                  darkMode={ui.darkMode}
-                  openExternal={openExternal}
-                  log={log}
-                />
+                <RichText description={attr.value} darkMode={ui.darkMode} />
               </dd>
             )
           } else {

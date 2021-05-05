@@ -1,0 +1,220 @@
+@import 'vars';
+
+.outline__container {
+  display: flex;
+  overflow: auto;
+  width: 100vw;
+}
+
+.outline__scenes-container {
+  width: 80%;
+}
+
+.filter-list__list li {
+  span.filter-list__placeholder {
+    display: inline-block;
+    width: 14px;
+    margin-right: 4px;
+  }
+  span.glyphicon {
+    width: 14px;
+    margin-right: 4px;
+  }
+}
+
+.outline__beat-manual-sort {
+  margin-left: 12px;
+  color: $yellow-3;
+  cursor: pointer;
+  font-size: 14px;
+  &:hover {
+    color: $yellow-1;
+  }
+}
+
+.outline__card-wrapper {
+  margin: 14px 20px;
+
+  .outline__card-drop {
+    text-align: center;
+    margin-bottom: 4px;
+    border: 2px dashed $gray-8;
+    padding-top: 4px;
+    svg {
+      color: $gray-8;
+    }
+  }
+}
+
+.outline__card {
+  @include well;
+  padding: 20px;
+  padding-top: 9px;
+  display: flex;
+  flex-direction: column;
+  .outline__card__inner {
+    display: flex;
+    flex-direction: column;
+    border: 2px dashed transparent;
+    cursor: pointer;
+    &.editing {
+      cursor: default;
+      .card-dialog__button-bar {
+        border-top: none;
+      }
+    }
+    .glyphicon-pencil {
+      color: $blue-7;
+      visibility: hidden;
+      margin: 5px;
+      align-self: flex-end;
+    }
+  }
+
+  .outline__card__grip {
+    display: flex;
+    align-items: center;
+    margin-left: -15px;
+    cursor: move;
+
+    svg {
+      color: $gray-8;
+      // vertical-align: text-top;
+    }
+    h6 {
+      margin-left: 2px;
+      // display: inline-block;
+    }
+    &.editing {
+      display: none;
+    }
+    &.dragging {
+      width: 30%;
+      overflow: hidden;
+      h6 {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .chip-cloud {
+    margin: 8px 0;
+  }
+  .divider {
+    margin: 10px 40px 2px 40px;
+    border-top: 1px solid $gray-8;
+  }
+
+  &:hover {
+    .outline__card__inner:not(.editing) {
+      border: 2px dashed $blue-7;
+      border-radius: 4px;
+      background-color: $gray-9;
+      .glyphicon-pencil {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.outline__card.darkmode {
+  background-color: $darkmode-darker-background;
+  color: $darkmode-text;
+  border-color: $darkmode-border;
+
+  &:hover {
+    .outline__card__inner:not(.editing) {
+      border: 2px dashed $darkmode-border;
+      background-color: $darkmode-background;
+    }
+  }
+}
+
+.outline__card__label-list {
+  margin: 8px 0;
+  .label {
+    margin-right: 5px;
+    padding-top: 4px;
+  }
+}
+
+.outline__minimap {
+  @include well;
+  display: block;
+  position: fixed;
+  left: 0px;
+  top: 102px;
+  width: 20%;
+  height: 88%;
+  overflow-y: auto;
+  padding-top: 5px;
+  padding-right: 5px;
+  margin-right: 10px;
+  margin-top: -5px;
+  border-radius: 0px;
+
+  li {
+    &.active > a {
+      background-color: $new-item-background;
+    }
+    & > a {
+      color: inherit;
+      cursor: pointer;
+      padding: 3px 10px 3px 10px;
+
+      &:hover {
+        background-color: $body-background-color;
+      }
+    }
+  }
+}
+
+.outline__minimap__beat-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .outline__minimap__dots {
+    display: flex;
+    margin-left: 5px;
+  }
+
+  .outline__minimap__card-dot {
+    height: 7px;
+    width: 7px;
+    margin: 1px;
+  }
+
+  &.dropping {
+    border: 2px dashed $gray-8;
+    padding: 2px;
+  }
+}
+
+.outline__minimap.darkmode {
+  background-color: $darkmode-darker-background;
+  color: $darkmode-text;
+  li.active > a {
+    background-color: $darkmode-background;
+    &:focus {
+      background-color: $darkmode-background;
+    }
+  }
+  li > a:hover {
+    background-color: $darkmode-background;
+    color: $darkmode-text;
+  }
+}
+
+.outline__minimap__placeholder {
+  width: 20%;
+  height: 100%;
+  margin-left: 10px;
+}
+
+.outline__scene-title {
+  margin-left: 20px;
+  &.darkmode {
+    color: $darkmode-text;
+  }
+}

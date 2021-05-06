@@ -1,5 +1,26 @@
+@import 'vars';
+
 .center-modal-vertically {
   // 70px is half of dialog height
   // 3 to get it just above the middle
   margin-top: calc(calc(100vh - 70px) / 3);
+}
+
+.ReactModal__Content--after-open {
+  top: 60px !important;
+  border-radius: 25px !important;
+  box-shadow: 0 6px 24px 0 rgba(18, 43, 70, 0.12) !important;
+}
+
+.ReactModal__Overlay--after-open {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  z-index: 1000;
+}
+
+.modal-container {
+  position: relative;
+}
+.modal-container .modal,
+.modal-container .modal-backdrop {
+  position: absolute;
 }

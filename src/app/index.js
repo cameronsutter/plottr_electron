@@ -186,6 +186,11 @@ ipcRenderer.on('save-as', () => {
 
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
+  const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
+  if (!present.file.fileName.includes(TEMP_FILES_PATH)) {
+    saveFile(present.file.fileName, present)
+    return
+  }
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
   const newFilePath = dialog.showSaveDialogSync(win, {
     filters: filters,

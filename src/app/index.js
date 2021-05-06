@@ -29,6 +29,7 @@ import { removeFromTempFiles } from '../common/utils/temp_files'
 import { focusIsEditable } from '../common/utils/undo'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import exportConfig from '../common/exporter/default_config'
+import { TEMP_FILES_PATH } from '../common/utils/config_paths'
 
 setupI18n(SETTINGS, { electron })
 
@@ -186,7 +187,6 @@ ipcRenderer.on('save-as', () => {
 
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
-  const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
   if (!present.file.fileName.includes(TEMP_FILES_PATH)) {
     saveFile(present.file.fileName, present)
     return

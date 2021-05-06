@@ -15,6 +15,9 @@
   width: 100%;
   .btn-toolbar {
     flex-direction: row;
+    .btn-group {
+      display: flex;
+    }
     .btn {
       border-radius: 2px;
       font-size: 14px;
@@ -33,6 +36,33 @@
       ul {
         max-height: 200px;
         overflow: auto;
+      }
+    }
+    .font-size-chooser {
+      font-size: 17px;
+      align-self: center;
+      input {
+        width: 40px;
+        height: 34px;
+        text-align: center;
+        color: $input-color;
+        border: 1px solid $gray-6;
+
+        /* Hide number arrows*/
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        /* Firefox */
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+      }
+
+      button {
+        background: none;
+        border: none;
       }
     }
   }

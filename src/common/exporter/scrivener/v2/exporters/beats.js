@@ -1,4 +1,4 @@
-import { keyBy } from 'lodash'
+import { keyBy, includes } from 'lodash'
 import { t } from 'plottr_locales'
 import {
   buildDescriptionFromObject,
@@ -27,11 +27,28 @@ export default function exportBeats(state, documentContents, options) {
   const beatCardMapping = cardMapping(beats, lines, card2Dmap, null)
   const linesById = keyBy(lines, 'id')
   const customAttrs = cardsCustomAttributesSelector(state)
+  const outlineFilter = state.ui.outlineFilter
+
+  const filteredBeats = beats.filter((beat) => {
+    const cards = beatCardMapping[beat.id]
+    const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
+
+    const filteredCards =
+      !outlineFilter || !outlineFilter.length
+        ? sortedCards
+        : sortedCards.filter((card) => includes(outlineFilter, card.lineId))
+
+    if (filteredCards.length) {
+      return filteredCards
+    }
+
+    return false
+  })
 
   // create a BinderItem for each beat (Type: Folder)
   //   create a BinderItem for each card (Type: Text)
 
-  return beats.map((beat) => {
+  return filteredBeats.map((beat) => {
     const uniqueBeatTitleSelector = makeBeatTitleSelector(state)
     const title = uniqueBeatTitleSelector(state, beat.id)
     const { binderItem } = createFolderBinderItem(title)

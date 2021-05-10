@@ -17,7 +17,7 @@ describe('exportBeats', () => {
           ID: 3,
         },
         Title: {
-          _text: 'Chapter 6',
+          _text: 'Chapter 1',
         },
         Children: {
           BinderItem: [
@@ -48,7 +48,7 @@ describe('exportBeats', () => {
           ID: 6,
         },
         Title: {
-          _text: 'Chapter 43',
+          _text: 'Chapter 2',
         },
         Children: {
           BinderItem: [

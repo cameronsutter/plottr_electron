@@ -103,6 +103,7 @@ const serialize = (nodes, doc) => {
         return new Paragraph({ children: [image] })
       }
       case 'block-quote':
+        return children
       case 'paragraph':
       default:
         if (Array.isArray(children)) {

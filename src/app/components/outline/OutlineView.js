@@ -17,6 +17,7 @@ const {
 } = selectors
 const {
   card: { cardMapping },
+  beats: { resetIndices }
 } = helpers
 
 class OutlineView extends Component {
@@ -128,6 +129,7 @@ class OutlineView extends Component {
 
   renderBeats(cardMapping) {
     const { beats, ui } = this.props
+    resetIndices()
     return (
       !!beats.length &&
       beats.map((beat, idx) => {
@@ -166,6 +168,7 @@ class OutlineView extends Component {
   }
 
   render() {
+    resetIndices()
     const { beats } = this.props
     return (
       <div className="container-with-sub-nav">

@@ -5,7 +5,7 @@ import { helpers } from 'pltr/v2'
 
 const {
   card: { sortCardsInBeat },
-  beats: { beatTitle },
+  beats: { beatTitle, resetIndices },
 } = helpers
 
 function MiniBeat(props) {
@@ -29,6 +29,7 @@ function MiniBeat(props) {
 
   useEffect(() => {
     setSortedCards(sortCardsInBeat(beat.autoOutlineSort, cards, sortedLines))
+    resetIndices()
   }, [beat, cards])
 
   const handleDragEnter = (e) => {

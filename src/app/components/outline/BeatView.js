@@ -23,9 +23,11 @@ const CardActions = actions.card
 
 const {
   card: { sortCardsInBeat },
-  beats: { beatTitle },
+  beats: { beatTitle, resetIndices },
   lists: { moveToAbove },
 } = helpers
+
+let idx
 
 class BeatView extends Component {
   state = { sortedCards: [] }
@@ -34,6 +36,10 @@ class BeatView extends Component {
     const { beat, cards, lines } = nextProps
     const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
     return { sortedCards }
+  }
+
+  componentDidMount() {
+    idx = 0
   }
 
   autoSortBeat = () => {
@@ -124,6 +130,8 @@ class BeatView extends Component {
     if (activeFilter && !cards.length) return null
 
     const klasses = cx('outline__scene-title', { darkmode: ui.darkMode })
+    if (idx === 0) resetIndices()
+    idx++
     return (
       <Waypoint
         onEnter={() => waypoint(beat.id)}

@@ -29,6 +29,7 @@ import { removeFromTempFiles } from '../common/utils/temp_files'
 import { focusIsEditable } from '../common/utils/undo'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import exportConfig from '../common/exporter/default_config'
+import { TEMP_FILES_PATH } from '../common/utils/config_paths'
 
 setupI18n(SETTINGS, { electron })
 
@@ -186,6 +187,10 @@ ipcRenderer.on('save-as', () => {
 
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
+  if (!present.file.fileName.includes(TEMP_FILES_PATH)) {
+    saveFile(present.file.fileName, present)
+    return
+  }
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
   const newFilePath = dialog.showSaveDialogSync(win, {
     filters: filters,

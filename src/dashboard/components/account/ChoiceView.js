@@ -32,7 +32,13 @@ export default function ChoiceView(props) {
             <p>{t('Access to all the features')}</p>
             <p>{t('Create unlimited project files')}</p>
             <div style={{ marginTop: '30px' }}>
-              <Button bsSize="large" bsStyle="default" onClick={startTrial}>
+              <Button
+                bsSize="large"
+                bsStyle="default"
+                onClick={() => {
+                  startTrial()
+                }}
+              >
                 {t('Start my Free Trial')}
               </Button>
               <Button bsStyle="link" onClick={() => setView('chooser')}>

@@ -2,7 +2,7 @@ import { Paragraph } from 'docx'
 import serialize from '../../../slate_serializers/to_word'
 
 export default function exportItemTemplates(item, headingLevel, doc) {
-  return item.templates.flatMap((t) => {
+  return (item.templates || []).flatMap((t) => {
     return t.attributes.flatMap((attr) => {
       let paragraphs = []
       if (!attr.value) return

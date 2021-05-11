@@ -16,7 +16,7 @@
     "dom-parser": "^0.1.6",
     "image-extensions": "^1.1.0",
     "is-url": "^1.2.4",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "pagedown": "^1.1.0",
     "redux": "^3.5.2",
     "reselect": "^4.0.0",

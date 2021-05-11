@@ -8,6 +8,7 @@ import { Nav, NavItem } from 'react-bootstrap'
 import cx from 'classnames'
 import MiniBeat from './MiniBeat'
 import { actions, selectors } from 'pltr/v2'
+import { emptyCard } from 'pltr/v2/helpers/cards'
 
 const CardActions = actions.card
 
@@ -60,6 +61,7 @@ class MiniMap extends Component {
       lines,
       beats,
       beatsTree,
+      allCards,
       activeFilter,
       cardMapping,
       positionOffset,
@@ -70,9 +72,13 @@ class MiniMap extends Component {
       isSeries,
     } = this.props
     const linesById = keyBy(lines, 'id')
+
+    let beatsWithCards = allCards.map((card) => card.beatId)
+
     return beats.map((beat, idx) => {
       if (this.state.firstRender && idx > 20) return null
-      const beatCards = cardMapping[beat.id]
+      let hasCards = beatsWithCards.includes(beat.id)
+      const beatCards = hasCards ? cardMapping[beat.id] : [emptyCard(idx, beat, lines[0])]
       if (activeFilter && !beatCards.length) return null
 
       return (
@@ -82,7 +88,7 @@ class MiniMap extends Component {
           eventKey={beat.id}
         >
           <MiniBeat
-            bookId={ui.currentTimeline}
+            bookId={`${ui.currentTimeline}`}
             beat={beat}
             beats={beatsTree}
             hierarchyLevels={hierarchyLevels}
@@ -140,6 +146,7 @@ MiniMap.propTypes = {
   activeFilter: PropTypes.bool.isRequired,
   beatsTree: PropTypes.object.isRequired,
   beats: PropTypes.array.isRequired,
+  allCards: PropTypes.array,
   hierarchyLevels: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   ui: PropTypes.object.isRequired,
@@ -154,6 +161,7 @@ function mapStateToProps(state) {
   return {
     beats: visibleSortedBeatsByBookSelector(state.present),
     beatsTree: beatsByBookSelector(state.present),
+    allCards: selectors.allCardsSelector(state.present),
     hierarchyLevels: sortedHierarchyLevels(state.present),
     lines: sortedLinesByBookSelector(state.present),
     ui: state.present.ui,

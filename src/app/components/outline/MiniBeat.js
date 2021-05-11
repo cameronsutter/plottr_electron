@@ -88,7 +88,7 @@ function MiniBeat(props) {
       if (!line) return null
 
       let style = { backgroundColor: line.color }
-      return (
+      return c.isEmpty ? null : (
         <div
           key={`dot-${line.id}-${c.id}`}
           title={line.title}

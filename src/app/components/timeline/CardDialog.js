@@ -30,7 +30,7 @@ import { helpers, actions, selectors } from 'pltr/v2'
 
 const {
   card: { truncateTitle },
-  beats: { beatTitle },
+  beats: { beatTitle, resetIndices },
 } = helpers
 
 class CardDialog extends Component {
@@ -351,6 +351,7 @@ class CardDialog extends Component {
       hierarchyEnabled,
       isSeries,
     } = this.props
+    resetIndices()
     return beats.map((beat) => {
       return (
         <MenuItem key={beat.id} onSelect={() => this.changeBeat(beat.id)}>
@@ -489,11 +490,7 @@ class CardDialog extends Component {
         <div className="card-dialog__dropdown-wrapper">
           <label className="card-dialog__details-label" htmlFor={beatDropdownID}>
             {labelText}:
-            <DropdownButton
-              id={beatDropdownID}
-              className="card-dialog__select-card"
-              title={truncateTitle(currentBeatTitle, 40)}
-            >
+            <DropdownButton id={beatDropdownID} className="card-dialog__select-card" title={''}>
               {this.renderBeatItems()}
             </DropdownButton>
           </label>

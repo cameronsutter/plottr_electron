@@ -201,7 +201,7 @@ class CardView extends Component {
   render() {
     const { line, ui, card } = this.props
     const style = { color: line.color }
-    return (
+    return card.isEmpty ? null : (
       <div
         className="outline__card-wrapper"
         onDragEnter={this.handleDragEnter}

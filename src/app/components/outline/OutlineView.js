@@ -8,6 +8,7 @@ import MiniMap from 'components/outline/miniMap'
 import { t as i18n } from 'plottr_locales'
 import { ErrorBoundary, ExportNavItem, SubNav } from 'connected-components'
 import { helpers, selectors, actions } from 'pltr/v2'
+import { emptyCard } from 'pltr/v2/helpers/cards'
 
 const {
   cardMapSelector,
@@ -17,7 +18,7 @@ const {
 } = selectors
 const {
   card: { cardMapping },
-  beats: { resetIndices }
+  beats: { resetIndices },
 } = helpers
 
 class OutlineView extends Component {
@@ -128,17 +129,20 @@ class OutlineView extends Component {
   }
 
   renderBeats(cardMapping) {
-    const { beats, ui } = this.props
-    resetIndices()
+    const { beats, ui, allCards, lines } = this.props
+    let beatsWithCards = allCards.map((card) => card.beatId)
+    // resetIndices()
     return (
       !!beats.length &&
       beats.map((beat, idx) => {
         if (this.state.firstRender && idx > 2) return null
+        let hasCards = beatsWithCards.includes(beat.id)
+        const beatCards = hasCards ? cardMapping[beat.id] : [emptyCard(idx, beat, lines[0])]
         return (
           <ErrorBoundary key={beat.id}>
             <BeatView
               beat={beat}
-              cards={cardMapping[beat.id]}
+              cards={beatCards}
               waypoint={this.fixMe}
               activeFilter={!!ui.outlineFilter}
             />
@@ -183,6 +187,7 @@ OutlineView.propTypes = {
   beats: PropTypes.array.isRequired,
   lines: PropTypes.array.isRequired,
   card2Dmap: PropTypes.object.isRequired,
+  allCards: PropTypes.array,
   ui: PropTypes.object.isRequired,
   isSeries: PropTypes.bool,
   actions: PropTypes.object.isRequired,
@@ -193,6 +198,7 @@ function mapStateToProps(state) {
     beats: visibleSortedBeatsByBookSelector(state.present),
     lines: sortedLinesByBookSelector(state.present),
     card2Dmap: cardMapSelector(state.present),
+    allCards: selectors.allCardsSelector(state.present),
     ui: state.present.ui,
     isSeries: isSeriesSelector(state.present),
   }

@@ -27,7 +27,7 @@ class BeatInsertCell extends PureComponent {
   insert = () => {
     const { beatToLeft, handleInsert, isLast } = this.props
     handleInsert(beatToLeft && beatToLeft.id)
-    if(this.props.hierarchyLevels.length > 1 && !isLast) {
+    if (this.props.hierarchyLevels.length > 1 && !isLast) {
       let SCENE_CELL_WIDTH = this.props.isMedium ? 85 : 190 + 17
       let SCENE_CELL_HEIGHT = this.props.isMedium ? 85 : 94 + 17
 

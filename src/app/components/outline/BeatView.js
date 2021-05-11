@@ -27,7 +27,7 @@ const {
   lists: { moveToAbove },
 } = helpers
 
-let idx
+let startAtZero
 
 class BeatView extends Component {
   state = { sortedCards: [] }
@@ -39,7 +39,11 @@ class BeatView extends Component {
   }
 
   componentDidMount() {
-    idx = 0
+    startAtZero = true
+  }
+
+  componentDidUpdate() {
+    startAtZero = true
   }
 
   autoSortBeat = () => {
@@ -130,8 +134,10 @@ class BeatView extends Component {
     if (activeFilter && !cards.length) return null
 
     const klasses = cx('outline__scene-title', { darkmode: ui.darkMode })
-    if (idx === 0) resetIndices()
-    idx++
+    
+    if (startAtZero) resetIndices()
+    startAtZero = false
+    
     return (
       <Waypoint
         onEnter={() => waypoint(beat.id)}

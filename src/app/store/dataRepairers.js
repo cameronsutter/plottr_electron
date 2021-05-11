@@ -1,5 +1,5 @@
 import { normalize } from 'connected-components'
 
-const dataRepairers = { normalize }
+const dataRepairers = { normalizeRCEContent: normalize }
 
 export default dataRepairers

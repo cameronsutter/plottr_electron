@@ -17,7 +17,7 @@ function takeScreenshot() {
       const filePath = path.join(folderPath, fileName)
       fs.stat(folderPath, (err, stat) => {
         if (err) {
-          fs.mkdir(folderPath, (err) => {
+          fs.mkdir(folderPath, { recursive: true }, (err) => {
             if (err) {
               log.error(err)
             } else {
@@ -33,7 +33,7 @@ function takeScreenshot() {
     } else {
       const filters = [{ name: 'PNG file', extensions: ['png'] }]
       const fileName = dialog.showSaveDialogSync(win, { filters })
-      if (fileName) fs.writeFile(fileName + '.png', image.toPNG(), () => {})
+      if (fileName) fs.writeFile(is.linux ? fileName + '.png' : fileName, image.toPNG(), () => {})
     }
   })
 }

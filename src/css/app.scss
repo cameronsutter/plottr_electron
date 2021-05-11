@@ -4,13 +4,14 @@
 
 @import 'history_block';
 @import 'template_picker';
-@import 'darkmode';
 @import 'analyzer';
 @import 'scrollbars';
 @import 'error_boundary';
 
 @import 'plottr_components/components';
 @import 'dashboard/dashboard';
+
+@import 'darkmode';
 
 @keyframes fadein {
   from {

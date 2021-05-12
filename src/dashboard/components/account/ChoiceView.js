@@ -37,6 +37,7 @@ export default function ChoiceView(props) {
                 bsStyle="default"
                 onClick={() => {
                   startTrial()
+                  window.location.reload()
                 }}
               >
                 {t('Start my Free Trial')}

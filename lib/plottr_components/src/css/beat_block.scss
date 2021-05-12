@@ -80,6 +80,16 @@ $medium_width: 80px;
 .transparent {
   visibility: hidden;
 }
+ 
+.medium-lower-hover-options {
+  display:flex;
+  justify-content:center;
+  margin: 5px 0 10px;
+  button {
+    height:35px;
+    width: 41px;
+  }
+}
 
 .beat-list__insert {
   height: 75px;
@@ -88,14 +98,24 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
+  button {
+    width:41px;
+    height:35px;
+  }
   &:last-child:not(.small-timeline):not(.medium-timeline) {
     margin: 8px 5px 0 -4px;
-    // padding: -5px;
+    padding: -5px;
     width:41px;
+  }
+  &:last-child:not(.small-timeline):not(.medium-timeline) .insert-beat-wrapper {
+    display:flex;
+    justify-content: center;
+    padding: 6px 5px 10px 5px;
   }
   &:first-child:not(.small-timeline):not(.medium-timeline) {
     margin: 75px 5px 0 -5px;
     height: 16px;
+    width:41px;
   }
   .insert-beat-wrapper {
     display: flex;
@@ -160,7 +180,7 @@ $medium_width: 80px;
   width: $cell_width + 25px;
 
   &.medium-timeline {
-    width: $medium_width + 60px;
+    width: $medium_width + 70px;
   }
 }
 
@@ -188,7 +208,7 @@ $medium_width: 80px;
     flex-direction: column;
     justify-content: space-around;
     min-width: $medium_width + 6px; // +6px for the 3px border
-    width: $medium_width + 6px; // +6px for the 3px border
+    width: $medium_width + 16px; // +6px for the 3px border
     font-size: 14px;
     padding: 12px 8px;
     .form-group {
@@ -216,7 +236,7 @@ $medium_width: 80px;
   float: left;
   margin-right: 3px;
   margin-left: 2px;
-  margin-top:-15px;
+  margin-top:-20px;
   visibility: hidden;
   button.btn-block {
     margin-top: 1px;
@@ -239,7 +259,7 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  margin:-5px 0 0 50px;
+  margin:-5px 11px 0 52px;
   button {
     width:41px;
     height:35px;
@@ -261,6 +281,21 @@ $medium_width: 80px;
   &.medium-timeline {
     width: $medium_width;
     margin-left: 35px;
+  }
+}
+
+.vertical-medium-lower-hover-options {
+  float:right;
+  display:flex;
+  justify-content:center;
+  flex-direction: column;
+  margin: -70px -37px 10px 0px;
+  button {
+    height:35px;
+    width: 41px;
+  }
+  &:last-child:not(.small-timeline) {
+    margin-left: 2px;
   }
 }
 

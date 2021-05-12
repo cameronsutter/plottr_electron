@@ -131,6 +131,7 @@ export default function OptionsHome(props) {
             labelText={t('Organize your scene cards into Chapters and Acts')}
           />
           <br />
+          <p className="text-warning">{t("Don't forget to make a backup of your files first.")}</p>
           <p>
             {t('To give feedback on this feature, please visit:')}
             <br />

@@ -2,9 +2,13 @@ name: Validate
 
 on:
   push:
-    branches: [master]
+    branches:
+      - staging
+      - prod
   pull_request:
-    branches: [master]
+    branches:
+      - staging
+      - prod
 
 jobs:
   validate:

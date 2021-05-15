@@ -41,10 +41,9 @@
     .font-size-chooser {
       font-size: 17px;
       align-self: center;
-      width: 70px;
-      & .dropdown, .dropdown-menu, #font-size-dropdown {
-        width: 70px;
-        min-width: max-content;
+      width: 65px;
+      & select {
+        border-radius: 2px;
       }
     }
   }

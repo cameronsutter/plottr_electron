@@ -141,7 +141,7 @@ const leaf = (node) => {
   }
 
   if (node.fontSize) {
-    options.size = node.fontSize
+    options.size = node.fontSize * 2
   }
 
   return new TextRun(options)

@@ -44,6 +44,12 @@
       width: 65px;
       & select {
         border-radius: 2px;
+        border-color: #9eb2c7;
+      }
+      & select.darkmode {
+        background-color: #888 !important;
+        border-color: $darkmode-darker-border;
+        color: $darkmode-text;
       }
     }
   }

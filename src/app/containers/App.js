@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
@@ -9,17 +10,18 @@ import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { saveFile } from '../../common/utils/files'
 import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
+import { showTourSelector } from 'pltr/v2/selectors/tours'
 
 let isTryingToReload = false
 let isTryingToClose = false
 
-export default class App extends Component {
+class App extends Component {
   state = {
     showTemplateCreate: false,
     type: null,
     showAskToSave: false,
     blockClosing: true,
-    showTour: this.props.showTour,
+    // showTour: this.props.showTour,
   }
 
   componentDidMount() {
@@ -114,7 +116,7 @@ export default class App extends Component {
 
   renderGuidedTour() {
     let feature = store.getState().present.tour.feature.name
-    console.log(feature, 'feature')
+    // console.log(feature, 'feature')
     if (!feature) return null
     if (
       store.getState().present.featureFlags.BEAT_HIERARCHY && //in the future can include a switch(feature) which if case('acts') -> tourConditions = true --- if tourConditions true then the tour will run
@@ -125,6 +127,7 @@ export default class App extends Component {
   }
 
   render() {
+    console.log(this.props.showTour, 'this.props.showTour in App')
     return (
       <ErrorBoundary>
         <ErrorBoundary>
@@ -135,7 +138,7 @@ export default class App extends Component {
         </main>
         {this.renderTemplateCreate()}
         {this.renderAskToSave()}
-        {this.state.showTour && this.renderGuidedTour()}
+        {this.props.showTour && this.renderGuidedTour()}
       </ErrorBoundary>
     )
   }
@@ -144,3 +147,9 @@ export default class App extends Component {
 App.propTypes = {
   showTour: PropTypes.bool,
 }
+
+function mapStateToProps(state) {
+  return { showTour: showTourSelector(state.present) }
+}
+
+export default connect(mapStateToProps, null)(App)

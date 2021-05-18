@@ -21,7 +21,6 @@ class App extends Component {
     type: null,
     showAskToSave: false,
     blockClosing: true,
-    // showTour: this.props.showTour,
   }
 
   componentDidMount() {
@@ -116,7 +115,6 @@ class App extends Component {
 
   renderGuidedTour() {
     let feature = store.getState().present.tour.feature.name
-    // console.log(feature, 'feature')
     if (!feature) return null
     if (
       store.getState().present.featureFlags.BEAT_HIERARCHY && //in the future can include a switch(feature) which if case('acts') -> tourConditions = true --- if tourConditions true then the tour will run
@@ -127,7 +125,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props.showTour, 'this.props.showTour in App')
     return (
       <ErrorBoundary>
         <ErrorBoundary>

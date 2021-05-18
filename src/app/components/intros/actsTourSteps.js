@@ -50,25 +50,25 @@ export const ACTS_TOUR_STEPS = [
     spotlightClicks: true,
     disableBeacon: true,
   },
-  {
-    target: `.acts-tour-step5`,
-    title: 'Take Plottr to the next level!',
-    content: 'Make sure you have added levels or the tour will end here.',
-    event: 'hover',
-    spotlightClicks: true,
-    placement: 'right',
-    styles: {
-      buttonBack: {
-        display: 'none',
-      },
-      buttonNext: {
-        display: 'none',
-      },
-      options: {
-        zIndex: 0,
-      },
-    },
-  },
+  // {
+  //   target: `.acts-tour-step5`,
+  //   title: 'Take Plottr to the next level!',
+  //   content: 'Make sure you have added levels or the tour will end here.',
+  //   event: 'hover',
+  //   spotlightClicks: true,
+  //   placement: 'right',
+  //   styles: {
+  //     buttonBack: {
+  //       display: 'none',
+  //     },
+  //     buttonNext: {
+  //       display: 'none',
+  //     },
+  //     options: {
+  //       zIndex: 0,
+  //     },
+  //   },
+  // },
   {
     target: `.acts-tour-step6`,
     title: 'Adding Acts and Chapters',
@@ -82,6 +82,9 @@ export const ACTS_TOUR_STEPS = [
       },
       buttonNext: {
         display: 'none',
+      },
+      options: {
+        zIndex: 10,
       },
     },
   },
@@ -106,7 +109,7 @@ export const ACTS_TOUR_STEPS = [
     title: 'Adding Lower-Level Cards',
     content: `Click here to add lower-level cards within their parent section. Cards can be dragged and dropped onto/next to cards of the same level or one level up.`,
     event: 'hover',
-    // spotlightClicks: false,
+    spotlightClicks: true,
   },
   {
     target: `.tour-end`,

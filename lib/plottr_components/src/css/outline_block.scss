@@ -46,36 +46,56 @@
   }
 }
 
-.outline__card {
+.outline-list__card-view {
   @include well;
   padding: 20px;
-  padding-top: 9px;
+  max-height: 100%;
+  overflow: auto;
   display: flex;
-  flex-direction: column;
-  .outline__card__inner {
+  align-items: flex-start;
+
+  .outline-list__card-view__right-side {
+    width: 79%;
+    height: 100%;
+    padding: 4px;
+    margin-left: 8px;
+    overflow-y: auto;
+
+    .outline__card__inner:not(.editing) {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .glyphicon-pencil {
+      color: $blue-7;
+      visibility: hidden;
+      margin: 5px;
+      align-self: flex-start;
+    }
+  }
+
+  .outline-list__card-view__left-side {
+    width: 18%;
+    position: sticky;
+    top: 0;
+    border-right: 1px solid #eee;
+    padding-top: 10px;
+    padding-bottom: 10px;
     display: flex;
-    flex-direction: column;
-    border: 2px dashed transparent;
-    cursor: pointer;
+
     &.editing {
       cursor: default;
       .card-dialog__button-bar {
         border-top: none;
       }
     }
-    .glyphicon-pencil {
-      color: $blue-7;
-      visibility: hidden;
-      margin: 5px;
-      align-self: flex-end;
-    }
   }
 
   .outline__card__grip {
     display: flex;
-    align-items: center;
-    margin-left: -15px;
+    align-items: flex-start;
     cursor: move;
+    width: 30px;
 
     svg {
       color: $gray-8;
@@ -89,7 +109,8 @@
       display: none;
     }
     &.dragging {
-      width: 30%;
+      height: 30%;
+      z-index: -1;
       overflow: hidden;
       h6 {
         white-space: nowrap;
@@ -117,7 +138,7 @@
   }
 }
 
-.outline__card.darkmode {
+.outline-list__card-view.darkmode {
   background-color: $darkmode-darker-background;
   color: $darkmode-text;
   border-color: $darkmode-border;

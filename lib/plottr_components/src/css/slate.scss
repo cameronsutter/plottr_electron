@@ -15,6 +15,9 @@
   width: 100%;
   .btn-toolbar {
     flex-direction: row;
+    .btn-group {
+      display: flex;
+    }
     .btn {
       border-radius: 2px;
       font-size: 14px;
@@ -33,6 +36,20 @@
       ul {
         max-height: 200px;
         overflow: auto;
+      }
+    }
+    .font-size-chooser {
+      font-size: 17px;
+      align-self: center;
+      width: 65px;
+      & select {
+        border-radius: 2px;
+        border-color: #9eb2c7;
+      }
+      & select.darkmode {
+        background-color: #888 !important;
+        border-color: $darkmode-darker-border;
+        color: $darkmode-text;
       }
     }
   }

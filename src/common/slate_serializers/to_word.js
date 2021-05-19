@@ -140,6 +140,10 @@ const leaf = (node) => {
     options.font = { hint: node.font, name: node.font }
   }
 
+  if (node.fontSize) {
+    options.size = node.fontSize * 2
+  }
+
   return new TextRun(options)
 }
 

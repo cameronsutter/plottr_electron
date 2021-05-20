@@ -16,7 +16,9 @@
 .dashboard__new-files {
   grid-area: options;
   width: 95%;
-  padding-bottom: 40px;
+  // padding-bottom: 40px;
+  height: 30vh;
+  max-height: 30vh;
 }
 
 .dashboard__new-files__wrapper {
@@ -29,22 +31,23 @@
 .dashboard__new-files__item {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
   text-align: center;
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.1s ease-in;
-  font-size: 16pt;
+  font-size: calc(14 * 0.1vw);
   color: $gray-1;
   background: white;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.25);
   margin-bottom: 10px;
-  padding: calc(27 * 0.1vw) calc(11 * 0.1vw);
-  row-gap: 20px;
+  padding: calc(15 * 0.1vw) calc(11 * 0.1vw);
+  height: 20vh;
 
   &.icon {
     svg {
-      font-size: 60pt;
+      font-size: calc(50 * 0.1vw);
       color: $gray-5;
     }
     &:hover,
@@ -62,30 +65,16 @@
     background-color: $blue-9;
     box-shadow: $blue-highlight-box-shadow;
   }
-
-  & div {
-    min-height: 30px;
-  }
 }
 
-@media (min-width: 523px) {
-  .col-md-3 .dashboard__new-files__item div {
-    min-height: 90px;
+@media (max-width: 600px) {
+  .dashboard__new-files__item {
+    height: 10vh;
   }
 }
-@media (min-width: 553px) {
-  .col-md-3 .dashboard__new-files__item div {
-    min-height: 60px;
-  }
-}
-@media (min-width: 992px) {
-  .col-md-3 .dashboard__new-files__item div {
-    min-height: 60px;
-  }
-}
-@media (min-width: 1310px) {
-  .col-md-3 .dashboard__new-files__item div {
-    min-height: 30px;
+@media (max-width: 1050px) {
+  .dashboard__new-files__item {
+    height: 15vh;
   }
 }
 

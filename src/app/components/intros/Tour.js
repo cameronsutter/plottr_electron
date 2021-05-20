@@ -3,49 +3,29 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actions, selectors } from 'pltr/v2'
+import { ACTS_TOUR_STEPS } from './actsTourSteps'
 
 import ReactJoyride, { EVENTS } from 'react-joyride'
 
 const { tourSelector } = selectors
 
 class Tour extends Component {
-  state = {
-    run: this.props.run,
-    steps: this.props.steps,
-    stepIndex: this.props.stepIndex
+  constructor(props) {
+    super(props)
+    this.state = {
+      steps:[]
+    }
   }
 
-  static propTypes = {
-    joyride: PropTypes.shape({
-      callback: PropTypes.func,
-    }),
-  }
-
-  static defaultProps = {
-    joyride: {},
-  }
-
-  handleClickStart = (e) => {
-    e.preventDefault()
-
-    this.setState({
-      run: true,
-      stepIndex: 0,
-    })
-  }
-
-  handleClickNextButton = () => {
-    const { stepIndex } = this.state
-
-    if (this.state.stepIndex === 1) {
-      this.setState({
-        stepIndex: stepIndex + 1,
-      })
+  componentDidMount = () => {
+    switch(this.props.tour.feature.id) {
+      case(1):
+        this.setState({steps: ACTS_TOUR_STEPS})
+        break
     }
   }
 
   handleJoyrideCallback = (data) => {
-    const { joyride } = this.props
     const { action, type } = data
 
     if (type === EVENTS.STEP_AFTER && !this.props.tour.transitioning)
@@ -59,6 +39,7 @@ class Tour extends Component {
       <ReactJoyride
         scrollToFirstStep
         {...this.props.tour}
+        steps={this.state.steps}
         callback={this.handleJoyrideCallback}
         styles={{
           options: {

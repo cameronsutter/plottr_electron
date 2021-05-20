@@ -19,7 +19,7 @@ export const ACTS_TOUR_STEPS = [
     target: `.acts-tour-step2`,
     title: 'Adding Levels of Structure',
     content:
-      "Add levels to place your top row timeline cards in their own defined sections. You can have up to three (3) levels for optimal visual arrangement, and can even make cards for entire sections. Think of the second level as a way to organize your top row cards (which will become 'Scenes') into chapters and the third level to organize your chapters into acts, adding layers of specificity and structure to your Plottr project.",
+      "Click the '+' to add levels. This will place your top row timeline cards in their own defined sections. You can have up to three (3) levels for optimal visual arrangement, and can even make cards for entire sections. Think of the second level as a way to organize your top row cards (which will become 'Scenes') into chapters and the third level to organize your chapters into acts, adding layers of specificity and structure to your Plottr project.",
     placement: 'bottom',
     event: 'hover',
     spotlightClicks: true,
@@ -36,7 +36,7 @@ export const ACTS_TOUR_STEPS = [
     target: `.acts-tour-step3`,
     title: 'Removing Levels [CAUTION]',
     content:
-      "You can remove levels of hierarchy, but BE CAREFUL as the cards within that chapter or act may be deleted. Once you decide to go with multiple levels of hierarchy, we recommend sticking with at least as many as you choose to add. Pro-tip: you can always hit 'undo.'",
+      "You can remove levels of hierarchy, but BE CAREFUL as the cards you place directly under the chapter or act on the timeline will be deleted. Pro-tip: you can always hit 'undo' in the Edit menu at the top of the screen.",
     event: 'hover',
     spotlightClicks: true,
     disableBeacon: true,
@@ -45,7 +45,7 @@ export const ACTS_TOUR_STEPS = [
     target: `.acts-tour-step4`,
     title: 'Naming and Editing Levels',
     content:
-      'You can manage the settings of each level, including the name of the level that appears on the cards (e.g. "Act"), the color and outline of the level, and whether new cards are autonumbered.',
+      'You can manage the settings of each level, including the name of the level that appears on the cards (e.g. "Act") and the styling of the cards.',
     event: 'hover',
     spotlightClicks: true,
     disableBeacon: true,
@@ -73,7 +73,7 @@ export const ACTS_TOUR_STEPS = [
     target: `.acts-tour-step6`,
     title: 'Adding Acts and Chapters',
     content:
-      'Click next to higher level cards to add another of that card (e.g. another act). If you just now implemented acts for this project there is only one act (level 3) and/or one chapter (level 2) containing all of your cards. Added acts and chapters display at the end of the section, which may be at the end of the timeline.',
+      'Click next to higher level cards to add another of that card (e.g. another act). If you just now implemented acts for this project there is only one act (level 3) and/or one chapter (level 2) containing all of your cards. Added acts and chapters display at the end of the section, which may be at the end of the timeline. The timeline will autoscroll to and highlight the card you just added.',
     event: 'hover',
     spotlightClicks: true,
     styles: {
@@ -104,7 +104,7 @@ export const ACTS_TOUR_STEPS = [
   {
     target: `.acts-tour-step8`,
     title: 'Adding Lower-Level Cards',
-    content: `Click here to add lower-level cards within their parent section. Lower level cards from other sections can be dragged into this section once there are lower-level cards here (e.g. if this act has at least one chapter then other chapters can be dragged into this act).`,
+    content: `Click here to add lower-level cards within their parent section. Cards can be dragged and dropped onto/next to cards of the same level or one level up.`,
     event: 'hover',
     // spotlightClicks: false,
   },

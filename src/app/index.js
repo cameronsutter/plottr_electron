@@ -105,7 +105,7 @@ function bootFile(filePath, options, numOpenFiles) {
 
       render(
         <Provider store={store}>
-          <App showTour={state && state.tour && state.tour.showTour} />
+          <App />
         </Provider>,
         root
       )
@@ -243,11 +243,7 @@ ipcRenderer.on('redo', (event) => {
 })
 
 ipcRenderer.on('acts-tour-start', (event) => {
-  win.close()
-  const { present } = store.getState()
-  const filePath = present.file.fileName
   store.dispatch(actions.tour.setTourFeature({ name: 'acts', id: 1, endStep: 8 }))
-  ipcRenderer.send('pls-open-window', filePath, true)
 })
 
 window.onerror = function (message, file, line, column, err) {

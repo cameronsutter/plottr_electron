@@ -81,4 +81,11 @@ $btn-warning-hover-bg:           $yellow-6;
 $popover-max-width:   650px;
 $popover-title-bg:    $gray-9;
 
+
+.dropdown {
+  &.disabled > #book_chooser {
+  color: $neutral-gray-5;
+  }
+}
+
 @import "_bootstrap";

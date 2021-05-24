@@ -19,18 +19,10 @@ export const ACTS_TOUR_STEPS = [
     target: `.acts-tour-step2`,
     title: 'Adding Levels of Structure',
     content:
-      "Click the '+' to add levels. This will place your top row timeline cards in their own defined sections. You can have up to three (3) levels for optimal visual arrangement, and can even make cards for entire sections. Think of the second level as a way to organize your top row cards (which will become 'Scenes') into chapters and the third level to organize your chapters into acts, adding layers of specificity and structure to your Plottr project.",
+      "Click the '+' to add levels. This will place your top row timeline cards in their own defined sections. You can have up to three (3) levels.  You can create scene which correspond to each level. Think of the second level as a way to organize your top row cards (which will become 'Scenes') into chapters and the third level to organize your chapters into acts, adding layers of specificity and structure to your Plottr project.",
     placement: 'bottom',
     event: 'hover',
     spotlightClicks: true,
-    styles: {
-      buttonBack: {
-        display: 'none',
-      },
-      buttonNext: {
-        display: 'none',
-      },
-    },
   },
   {
     target: `.acts-tour-step3`,
@@ -52,20 +44,14 @@ export const ACTS_TOUR_STEPS = [
   },
   {
     target: `.acts-tour-step5`,
-    title: 'Take Plottr to the next level!',
-    content: 'Make sure you have added levels or the tour will end here.',
+    title: 'Adding Acts and Chapters',
+    content: 'Click here to return to the timeline',
     event: 'hover',
     spotlightClicks: true,
-    placement: 'right',
+    disableBeacon: true,
     styles: {
-      buttonBack: {
-        display: 'none',
-      },
       buttonNext: {
         display: 'none',
-      },
-      options: {
-        zIndex: 0,
       },
     },
   },
@@ -77,11 +63,11 @@ export const ACTS_TOUR_STEPS = [
     event: 'hover',
     spotlightClicks: true,
     styles: {
-      buttonBack: {
-        display: 'none',
-      },
       buttonNext: {
         display: 'none',
+      },
+      options: {
+        zIndex: 10,
       },
     },
   },
@@ -93,9 +79,6 @@ export const ACTS_TOUR_STEPS = [
     event: 'hover',
     spotlightClicks: true,
     styles: {
-      buttonBack: {
-        display: 'none',
-      },
       buttonNext: {
         display: 'none',
       },
@@ -106,7 +89,23 @@ export const ACTS_TOUR_STEPS = [
     title: 'Adding Lower-Level Cards',
     content: `Click here to add lower-level cards within their parent section. Cards can be dragged and dropped onto/next to cards of the same level or one level up.`,
     event: 'hover',
-    // spotlightClicks: false,
+    spotlightClicks: true,
+    hideCloseButton: true,
+    styles: {
+      buttonNext: {
+        display: 'none',
+      },
+    },
+  },
+  {
+    target: `body`,
+    title: 'You need at lest one level of structure to continue',
+    content: 'Please mkae sure that you add a level of hierarchy',
+    event: 'hover',
+    placement: 'bottom',
+    spotlightClicks: true,
+    hideCloseButton: true,
+    disableBeacon: true,
   },
   {
     target: `.tour-end`,
@@ -114,10 +113,5 @@ export const ACTS_TOUR_STEPS = [
     spotlightClicks: false,
     disableBeacon: true,
     placement: 'center',
-    styles: {
-      buttonBack: {
-        display: 'none',
-      },
-    },
   },
 ]

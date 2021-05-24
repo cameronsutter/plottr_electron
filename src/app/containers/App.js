@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
-import ActsTour from '../components/intros/Tour'
+import Tour from '../components/intros/Tour'
 import { AskToSaveModal, TemplateCreate, ErrorBoundary } from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { saveFile } from '../../common/utils/files'
@@ -114,14 +114,7 @@ class App extends Component {
   }
 
   renderGuidedTour() {
-    let feature = store.getState().present.tour.feature.name
-    if (!feature) return null
-    if (
-      store.getState().present.featureFlags.BEAT_HIERARCHY && //in the future can include a switch(feature) which if case('acts') -> tourConditions = true --- if tourConditions true then the tour will run
-      feature
-    )
-      return <ActsTour />
-    return null
+    return <Tour />
   }
 
   render() {

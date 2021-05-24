@@ -10,7 +10,7 @@ import { ipcRenderer, remote } from 'electron'
 import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-import { actions, migrateIfNeeded, featureFlags } from 'pltr/v2'
+import { actions, migrateIfNeeded, featureFlags, tourConstants } from 'pltr/v2'
 import MPQ from '../common/utils/MPQ'
 import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
@@ -241,7 +241,7 @@ ipcRenderer.on('redo', (event) => {
 })
 
 ipcRenderer.on('acts-tour-start', (event) => {
-  store.dispatch(actions.tour.setTourFeature({ name: 'acts', id: 1, endStep: 8 }))
+  store.dispatch(actions.tour.setTourFeature(tourConstants.ACTS_TOUR))
 })
 
 window.onerror = function (message, file, line, column, err) {

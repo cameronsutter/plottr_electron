@@ -42,14 +42,28 @@
       font-size: 17px;
       align-self: center;
       width: 65px;
+      display: flex;
+      align-items: center;
       & select {
         border-radius: 2px;
         border-color: #9eb2c7;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        box-shadow: none;
+      }
+      & svg {
+        margin-left: -20px;
+        font-size: 12px;
       }
       & select.darkmode {
         background-color: #888 !important;
         border-color: $darkmode-darker-border;
         color: $darkmode-text;
+        &:hover {
+          background-color: $darkmode-background !important;
+        }
       }
     }
   }

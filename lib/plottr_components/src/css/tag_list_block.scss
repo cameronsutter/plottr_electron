@@ -22,7 +22,7 @@
   height: 58px;
   margin-top: 46px; // hover-options on other tags are 36px + margin
   cursor: pointer;
-
+  width: 200px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -80,10 +80,15 @@
   display: flex;
   flex-flow: wrap;
   width: 100%;
-
+  
   h2 {
     display: flex;
-    width: 100%
+    width: 100%;
+    margin-bottom: -36px;
+  }
+
+  &:hover h2  {
+    opacity: 50%;
   }
 
   &.darkmode {

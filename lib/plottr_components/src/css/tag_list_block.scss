@@ -75,7 +75,6 @@
 }
 
 .tag-list__category-wrapper {
-  @include well;
   margin: 20px;
   display: flex;
   flex-flow: wrap;
@@ -86,12 +85,9 @@
     width: 100%;
     margin-bottom: -26px;
     margin-top: 10px;
+    font-size: 17px;
   }
 
-  &.darkmode {
-    background-color: $darkmode-darker-background;
-    border-color: $darkmode-border;
-  }
 }
 
 .tag-list__tag {

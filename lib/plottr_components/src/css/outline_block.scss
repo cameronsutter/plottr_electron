@@ -53,6 +53,7 @@
   overflow: auto;
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
 
   .outline-list__card-view__right-side {
     width: 79%;
@@ -74,6 +75,18 @@
     }
   }
 
+  .outline__card-top {
+    flex-direction: column;
+  }
+  .outline__card__line-title,
+  .outline__card__grip,
+  .outline-list__card-view__main-content,
+  .outline__card-top {
+    display: flex;
+    width: 100%;
+  }
+
+
   .outline-list__card-view__left-side {
     width: 18%;
     position: sticky;
@@ -93,9 +106,9 @@
 
   .outline__card__grip {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     cursor: move;
-    width: 30px;
+    margin-left: -15px;
 
     svg {
       color: $gray-8;
@@ -109,8 +122,7 @@
       display: none;
     }
     &.dragging {
-      height: 30%;
-      z-index: -1;
+      width: 30%;
       overflow: hidden;
       h6 {
         white-space: nowrap;

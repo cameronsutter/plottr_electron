@@ -18,11 +18,11 @@
 
 .tag-list__new {
   @include well;
-  width: 200px;
+  padding: 6px 12px;
   height: 58px;
   margin-top: 46px; // hover-options on other tags are 36px + margin
   cursor: pointer;
-
+  width: 200px;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -50,11 +50,44 @@
   align-content: flex-start;
 }
 
+.tag-category-list {
+  display: flex;
+  flex-flow: wrap;
+}
+
+.tab-body__title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+
+  h1 {
+    width: auto;
+    margin: 10px;
+  }
+}
+
 .tag-list__tag-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 3px 20px;
+  margin: 3px;
+}
+
+.tag-list__category-wrapper {
+  margin: 20px;
+  display: flex;
+  flex-flow: wrap;
+  width: 100%;
+  
+  h2 {
+    display: flex;
+    width: 100%;
+    margin-bottom: -26px;
+    margin-top: 10px;
+    font-size: 17px;
+  }
+
 }
 
 .tag-list__tag {

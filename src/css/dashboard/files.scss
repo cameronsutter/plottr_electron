@@ -4,7 +4,7 @@
 .dashboard__files {
   height: 100%;
   width: 100%;
-  padding: 20px 40px;
+  padding: 20px 40px 10px 40px;
   display: grid;
   grid-template-areas:
     'options'
@@ -17,7 +17,7 @@
   grid-area: options;
   width: 95%;
   // padding-bottom: 40px;
-  height: 30vh;
+  height: 25vh;
   max-height: 30vh;
 }
 

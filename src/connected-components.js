@@ -83,6 +83,7 @@ export const PlottrModal = components.PlottrModal
 export const EditAttribute = components.EditAttribute
 export const RichText = components.RichText
 export const editorRegistry = components.editorRegistry
+export const normalize = components.normalize
 export const Image = components.Image
 export const ImagePicker = components.ImagePicker
 export const MiniColorPicker = components.MiniColorPicker

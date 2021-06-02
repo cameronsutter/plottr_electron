@@ -6,9 +6,10 @@ import tracker from '../middlewares/tracker'
 import logger from '../middlewares/logger'
 import reporter from '../middlewares/reporter'
 import undoable from 'redux-undo'
+import dataRepairers from './dataRepairers'
 
 function configureStore(initialState) {
-  const reducer = undoable(rootReducer, { limit: 10, ignoreInitialState: true })
+  const reducer = undoable(rootReducer(dataRepairers), { limit: 10, ignoreInitialState: true })
   const middlewares = applyMiddleware(saver, tracker, logger, reporter)
   const enhancers =
     process.env.NODE_ENV === 'production'

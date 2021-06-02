@@ -6,8 +6,31 @@
   width: 100vw;
 }
 
-.outline__scenes-container {
-  width: 80%;
+.outline__grid {
+  width: 100vw;
+  padding-left: 0;
+  .row {
+    height: 100%;
+    overflow: hidden;
+    .outline__grid__minimap {
+      height: 100%;
+      overflow: auto;
+    }
+    .outline__grid__beats {
+      height: 100%;
+      overflow: auto;
+      padding: 0;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .outline__grid__minimap.col-md-3 {
+    width: 20%;
+  }
+  .outline__grid__beats.col-md-9 {
+    width: 80%;
+  }
 }
 
 .filter-list__list li {
@@ -141,15 +164,9 @@
 .outline__minimap {
   @include well;
   display: block;
-  position: fixed;
-  left: 0px;
-  top: 102px;
-  width: 20%;
-  height: 88%;
+  height: calc(100% + 5px);
   overflow-y: auto;
-  padding-top: 5px;
   padding-right: 5px;
-  margin-right: 10px;
   margin-top: -5px;
   border-radius: 0px;
 
@@ -204,12 +221,6 @@
     background-color: $darkmode-background;
     color: $darkmode-text;
   }
-}
-
-.outline__minimap__placeholder {
-  width: 20%;
-  height: 100%;
-  margin-left: 10px;
 }
 
 .outline__scene-title {

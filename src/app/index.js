@@ -16,7 +16,6 @@ import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
 import log from 'electron-log'
-import Modal from 'react-modal'
 import SETTINGS from '../common/utils/settings'
 import askToExport from '../common/exporter/start_export'
 import { ActionCreators } from 'redux-undo'
@@ -43,7 +42,6 @@ process.on('uncaughtException', (err) => {
 
 ensureBackupTodayPath()
 
-Modal.setAppElement('#react-root')
 const root = document.getElementById('react-root')
 // TODO: fix this by exporting store from the configureStore file
 // kind of a hack to enable store dispatches in otherwise hard situations

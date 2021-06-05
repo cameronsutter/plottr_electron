@@ -71,6 +71,7 @@ const platform = {
   },
   tempFilesPath: TEMP_FILES_PATH,
   mpq: MPQ,
+  rootElementSelectors: ['#react-root', '#dashboard__react__root'],
 }
 
 const components = connections.pltr(platform)

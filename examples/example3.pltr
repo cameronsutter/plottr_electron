@@ -1,6 +1,6 @@
 {
   "file": {
-    "fileName": "/Users/dylan/code/plottr_electron/examples/example3.pltr",
+    "fileName": "/home/edward/wip/plottr_electron/examples/example3.pltr",
     "loaded": true,
     "dirty": true,
     "version": "2021.5.17-beta"
@@ -10,7 +10,7 @@
       "In possession of fortune": []
     },
     "characterSort": "name~asc",
-    "currentView": "timeline",
+    "currentView": "notes",
     "darkMode": true,
     "noteFilter": null,
     "noteSort": "title~asc",

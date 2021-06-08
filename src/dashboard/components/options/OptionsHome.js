@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import electron, { ipcRenderer, shell } from 'electron'
 import { t, setupI18n } from 'plottr_locales'
 import SETTINGS from '../../../common/utils/settings'
@@ -15,25 +15,6 @@ export default function OptionsHome(props) {
 
   const [backupLocation, setBackupLocation] = useState(settings.user.backupLocation)
   if (!backupLocation || backupLocation == 'default') setBackupLocation(BACKUP_BASE_PATH)
-
-  const [loading, setLoading] = useState(false)
-  const [preloading, setPreloading] = useState(false)
-
-  const [loop, setLoop] = useState()
-  const [message, setMessage] = useState(false)
-
-  useEffect(() => {
-    setLoop(
-      setInterval(() => {
-        if (preloading && loading) {
-          setMessage(true)
-        }
-      }, 5000)
-    )
-    return function cleanup() {
-      clearInterval(loop)
-    }
-  }, [preloading, loading])
 
   // const onChangeBackupLocation = (event) => {
   //   let file = event.target.files[0]
@@ -78,15 +59,7 @@ export default function OptionsHome(props) {
   }
 
   return (
-    <div
-      className="dashboard__options"
-      onFocus={() => {
-        if (preloading) setLoading(true)
-      }}
-      onBlur={() => {
-        if (!preloading) setLoading(false)
-      }}
-    >
+    <div className="dashboard__options">
       <h1>{t('Settings')}</h1>
       <div>
         <div className="dashboard__options__item">

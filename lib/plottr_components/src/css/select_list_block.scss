@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 .select-list__item-select-list {
   list-style-type: none;
@@ -26,7 +26,6 @@
     }
   }
 }
-
 
 .select-list__details-label {
   @include application-text;
@@ -58,6 +57,19 @@
       button {
         visibility: visible;
       }
+    }
+  }
+
+  &.horizontal {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    .select-list__details-label {
+      min-width: unset;
+      font-weight: normal;
+    }
+    .chip-cloud {
+      margin: 0;
     }
   }
 }

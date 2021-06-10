@@ -1,12 +1,13 @@
 import path from 'path'
 import { shell, remote } from 'electron'
-const { app } = remote
+const { app, dialog } = remote
 import storage from 'electron-json-storage'
 import log from 'electron-log'
-import { RECENT_FILES_PATH, BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './config_paths'
+import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './config_paths'
 import SETTINGS from './settings'
 import { extendTrialWithReset } from '../licensing/trial_manager'
 import { USER_INFO_PATH } from './config_paths'
+import { manifestStore } from './store_hooks'
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {
@@ -76,6 +77,15 @@ export function handleCustomerServiceCode(code) {
     case '8bb9de':
       // open the Plottr internal User Data folder
       shell.openPath(app.getPath('userData'))
+      break
+
+    case 'templates version':
+      dialog.showMessageBox({
+        title: 'Templates Version',
+        type: 'info',
+        message: manifestStore.get('manifest.version'),
+        detail: 'Templates Version',
+      })
       break
 
     default:

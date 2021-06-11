@@ -5,7 +5,6 @@ import { Button } from 'react-bootstrap'
 import SETTINGS from '../../../common/utils/settings'
 import MPQ from '../../../common/utils/MPQ'
 import { useTrialStatus } from '../../../common/licensing/trial_manager'
-import { manifestStore } from '../../../common/utils/store_hooks'
 import { is } from 'electron-util'
 const { app } = remote
 
@@ -57,8 +56,6 @@ export default function About(props) {
               {t("See What's New")}
             </a>
           </dd>
-          <dt>{t('Templates Version')}</dt>
-          <dd>{manifestStore.get('manifest.version')}</dd>
         </dl>
         <dl className="dl-horizontal">
           <dt>{t('Created By')}</dt>

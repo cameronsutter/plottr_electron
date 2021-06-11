@@ -6,7 +6,7 @@ import { t } from 'plottr_locales'
 import cx from 'classnames'
 import { createNew, openExistingFile } from '../../utils/window_manager'
 import MPQ from '../../../common/utils/MPQ'
-import { Col, Grid, Row, Clearfix } from 'react-bootstrap'
+import { Col, Grid, Row } from 'react-bootstrap'
 import log from 'electron-log'
 import { remote } from 'electron'
 const { dialog } = remote

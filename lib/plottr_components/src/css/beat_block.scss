@@ -4,6 +4,11 @@ $title_height: 70px;
 $cell_width: 175px;
 $medium_width: 80px;
 
+.beat-heading__cell {
+  /* Library appears to override this with more specificity. */
+  z-index: 10 !important;
+}
+
 .beat__cell {
   width: $cell_width;
   padding-bottom: 45px;

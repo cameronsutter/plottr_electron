@@ -28,15 +28,23 @@ export default function exportBeats(state, documentContents, options) {
   const linesById = keyBy(lines, 'id')
   const customAttrs = cardsCustomAttributesSelector(state)
   const outlineFilter = state.ui.outlineFilter
+  const outlineExportFilter = options.outline.filter
+
+  const getFilteredCards = (cards) => {
+    if (outlineExportFilter) {
+      return cards.filter((card) => includes(outlineExportFilter, card.lineId))
+    } else if (!outlineExportFilter && outlineFilter) {
+      return cards.filter((card) => includes(outlineFilter, card.lineId))
+    } else {
+      return cards
+    }
+  }
 
   const filteredBeats = beats.filter((beat) => {
     const cards = beatCardMapping[beat.id]
     const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
 
-    const filteredCards =
-      !outlineFilter || !outlineFilter.length
-        ? sortedCards
-        : sortedCards.filter((card) => includes(outlineFilter, card.lineId))
+    const filteredCards = getFilteredCards(sortedCards)
 
     if (filteredCards.length) {
       return filteredCards

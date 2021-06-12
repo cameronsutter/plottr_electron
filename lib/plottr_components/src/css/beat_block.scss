@@ -2,11 +2,33 @@
 
 $title_height: 70px;
 $cell_width: 175px;
+$double_cell_width: 350px;
 $medium_width: 80px;
 
 .beat-heading__cell {
   /* Library appears to override this with more specificity. */
   z-index: 10 !important;
+}
+
+.beat__container {
+  display: flex;
+  flex-direction: row;
+}
+
+.beat__drop-zone {
+  display: flex;
+  width: $cell_width;
+  align-items: center;
+  justify-content: space-around;
+  height: 75px;
+  margin-bottom: 4px;
+  border: 2px dashed $gray-8;
+  padding-top: 4px;
+  font-size: 10px;
+  margin: auto 20px;
+  svg {
+    color: $gray-8;
+  }
 }
 
 .beat__cell {

@@ -78,24 +78,32 @@
   align-items: flex-start;
   flex-direction: column;
 
-  .outline-list__card-view__right-side {
-    width: 79%;
-    height: 100%;
-    padding: 4px;
-    margin-left: 8px;
-    overflow-y: auto;
-
-    .outline__card__inner:not(.editing) {
+  .outline__card__description {
+    &.editing {
+      width: 100%;
+      .glyphicon-pencil {
+        display: none;
+      }
+    }
+    &:not(.editing) {
       display: flex;
       justify-content: space-between;
-    }
+      width: 100%;
+      margin: 4px 0px 4px 4px;
+      cursor: pointer;
 
-    .glyphicon-pencil {
-      color: $blue-7;
-      visibility: hidden;
-      margin: 5px;
-      align-self: flex-start;
+      .glyphicon-pencil {
+        display: block;
+        color: $blue-7;
+        visibility: hidden;
+        margin: 5px;
+        align-self: flex-start;
+      }
     }
+  }
+
+  .outline__card__line-title {
+    margin-left: 4px;
   }
 
   .outline__card-top {
@@ -103,27 +111,9 @@
   }
   .outline__card__line-title,
   .outline__card__grip,
-  .outline-list__card-view__main-content,
   .outline__card-top {
     display: flex;
     width: 100%;
-  }
-
-  .outline-list__card-view__left-side {
-    width: 18%;
-    position: sticky;
-    top: 0;
-    border-right: 1px solid #eee;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: flex;
-
-    &.editing {
-      cursor: default;
-      .card-dialog__button-bar {
-        border-top: none;
-      }
-    }
   }
 
   .outline__card__grip {
@@ -152,16 +142,22 @@
     }
   }
 
+  .outline__card-bottom {
+    margin-top: 8px;
+  }
+
   .chip-cloud {
     margin: 8px 0;
   }
+
   .divider {
     margin: 10px 40px 2px 40px;
     border-top: 1px solid $gray-8;
+    width: 93%;
   }
 
   &:hover {
-    .outline__card__inner:not(.editing) {
+    .outline__card__description:not(.editing) {
       border: 2px dashed $blue-7;
       border-radius: 4px;
       background-color: $gray-9;
@@ -178,7 +174,7 @@
   border-color: $darkmode-border;
 
   &:hover {
-    .outline__card__inner:not(.editing) {
+    .outline__card__description:not(.editing) {
       border: 2px dashed $darkmode-border;
       background-color: $darkmode-background;
     }

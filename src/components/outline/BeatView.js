@@ -115,10 +115,12 @@ const BeatViewConnector = (connector) => {
         positionOffset,
         hierarchyEnabled,
         isSeries,
+        beatIndex,
       } = this.props
       if (activeFilter && !cards.length) return null
 
       const klasses = cx('outline__scene-title', { darkmode: ui.darkMode })
+
       return (
         <Waypoint
           onEnter={() => waypoint(beat.id)}
@@ -128,7 +130,15 @@ const BeatViewConnector = (connector) => {
         >
           <div>
             <h3 id={`beat-${beat.id}`} className={klasses}>
-              {beatTitle(beats, beat, hierarchyLevels, positionOffset, hierarchyEnabled, isSeries)}
+              {beatTitle(
+                beatIndex,
+                beats,
+                beat,
+                hierarchyLevels,
+                positionOffset,
+                hierarchyEnabled,
+                isSeries
+              )}
               {this.renderManualSort()}
             </h3>
             {this.renderCards()}
@@ -141,6 +151,7 @@ const BeatViewConnector = (connector) => {
   BeatView.propTypes = {
     beat: PropTypes.object.isRequired,
     beats: PropTypes.object.isRequired,
+    beatIndex: PropTypes.number.isRequired,
     hierarchyLevels: PropTypes.array.isRequired,
     cards: PropTypes.array.isRequired,
     waypoint: PropTypes.func.isRequired,
@@ -159,6 +170,7 @@ const BeatViewConnector = (connector) => {
     pltr: { selectors, actions },
   } = connector
   const {
+    beatIndexSelector,
     beatsByBookSelector,
     positionOffsetSelector,
     sortedLinesByBookSelector,
@@ -174,10 +186,11 @@ const BeatViewConnector = (connector) => {
     const { connect, bindActionCreators } = redux
 
     return connect(
-      (state) => {
+      (state, ownProps) => {
         return {
           ui: state.present.ui,
           beats: beatsByBookSelector(state.present),
+          beatIndex: beatIndexSelector(state.present, ownProps.beat.id),
           hierarchyLevels: sortedHierarchyLevels(state.present),
           lines: sortedLinesByBookSelector(state.present),
           positionOffset: positionOffsetSelector(state.present),

@@ -16,6 +16,8 @@ const defaultLine = initialState.line
 const AddLineRowConnector = (connector) => {
   const TemplatePicker = UnconnectedTemplatePicker(connector)
 
+  const templatesDisabled = connector.platform.templatesDisabled
+
   class AddLineRow extends Component {
     state = {
       hovering: false,
@@ -203,7 +205,9 @@ const AddLineRowConnector = (connector) => {
       this.allCards = this.props.cards
 
       const templateBookId = helpers.books.isSeries(bookId) && template.beats[bookId] ? bookId : 1
-      const templateBeats = selectors.beatsByPosition(() => true)(template.beats[templateBookId])
+      const templateBeats = helpers.beats.beatsByPosition(() => true)(
+        template.beats[templateBookId]
+      )
       const templateLines = template.lines.filter((line) => line.bookId === templateBookId)
 
       this.addBeats(templateBeats, bookId, template)
@@ -263,7 +267,7 @@ const AddLineRowConnector = (connector) => {
                   this.setState({ showTemplatePicker: true, hovering: false })
                 }}
                 title={hierarchyEnabled ? 'Templates are disabled when Act Structure is on' : null}
-                className={cx('template', { disabled: hierarchyEnabled })}
+                className={cx('template', { disabled: hierarchyEnabled || templatesDisabled })}
               >
                 {i18n('Use Template')}
               </div>

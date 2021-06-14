@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import { t as i18n } from 'plottr_locales'
 import isHotkey from 'is-hotkey'
 import { ButtonGroup, Overlay } from 'react-bootstrap'
-import { Slate, Editable } from 'slate-react'
+import { Slate, Editable, ReactEditor } from 'slate-react'
 import {
   FaBold,
   FaItalic,
@@ -26,6 +26,7 @@ import Element from './Element'
 import cx from 'classnames'
 import { useTextConverter, createEditor } from './helpers'
 import { useRegisterEditor } from './editor-registry'
+import { FontSizeChooser } from './FontSizeChooser'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -53,7 +54,6 @@ const RichTextEditorConnector = (connector) => {
     const [editorWrapperRef, setEditorWrapperRef] = useState(null)
     const key = useRef(Math.random().toString(16))
     const toolbarRef = useRef(null)
-    const bottomTextAreaRef = useRef(null)
     const [showColorPicker, toggleColorPicker] = useState(false)
     const changeColor = (color) => {
       addColorMark(editor, color)
@@ -78,14 +78,6 @@ const RichTextEditorConnector = (connector) => {
       }
     }
 
-    const scrollToEnd = () => {
-      if (bottomTextAreaRef.current) {
-        bottomTextAreaRef.current.scrollIntoView({
-          block: 'end',
-        })
-      }
-    }
-
     const handleKeyDown = (event) => {
       for (const hotkey in HOTKEYS) {
         if (isHotkey(hotkey, event)) {
@@ -94,7 +86,32 @@ const RichTextEditorConnector = (connector) => {
           toggleMark(editor, mark)
         }
       }
-      scrollToEnd()
+    }
+
+    const handleKeyUp = () => {
+      // scroll to the cursor
+      if (editor.selection == null) return
+      try {
+        const domPoint = ReactEditor.toDOMPoint(editor, editor.selection.focus)
+        const node = domPoint[0]
+        let isElem = false
+        let parent = node.parentElement
+        // find the closest parent that is a slate element
+        while (!isElem) {
+          if (parent == null) {
+            isElem = true
+            return
+          }
+          if (parent.dataset.slateNode == 'element') {
+            isElem = true
+          } else {
+            parent = parent.parentElement
+          }
+        }
+        parent.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      } catch (e) {
+        // Do nothing if there is an error.
+      }
     }
 
     const handleClickEditable = (event) => {
@@ -102,13 +119,11 @@ const RichTextEditorConnector = (connector) => {
       if (editorWrapperRef.firstChild.contains(event.target)) return
 
       // Focus the Editable content
+      editorWrapperRef.firstChild.focus()
       // Select all text
       // Push cursor/focus to last char
-      // Scroll the view to bottom area of Editable
-      editorWrapperRef.firstChild.focus()
-      document.execCommand('selectAll', false, null)
-      document.getSelection().collapseToEnd()
-      scrollToEnd()
+      // document.execCommand('selectAll', false, null)
+      // document.getSelection().collapseToEnd()
     }
 
     const otherProps = {
@@ -128,6 +143,7 @@ const RichTextEditorConnector = (connector) => {
                   recentFonts={props.recentFonts}
                   addRecent={props.addRecent}
                 />
+                <FontSizeChooser />
                 <MarkButton mark="bold" icon={<FaBold />} />
                 <MarkButton mark="italic" icon={<FaItalic />} />
                 <MarkButton mark="underline" icon={<FaUnderline />} />
@@ -161,7 +177,7 @@ const RichTextEditorConnector = (connector) => {
               registerEditor(e && e.firstChild)
               setEditorWrapperRef(e)
             }}
-            onClick={(event) => handleClickEditable(event)}
+            onClick={handleClickEditable}
             className={cx('slate-editor__editor', { darkmode: props.darkMode })}
           >
             <Editable
@@ -170,9 +186,9 @@ const RichTextEditorConnector = (connector) => {
               renderLeaf={renderLeaf}
               renderElement={renderElement}
               placeholder={i18n('Enter some text...')}
-              onKeyDown={(event) => handleKeyDown(event)}
+              onKeyDown={handleKeyDown}
+              onKeyUp={handleKeyUp}
             />
-            <div ref={bottomTextAreaRef} />
           </div>
         </div>
       </Slate>

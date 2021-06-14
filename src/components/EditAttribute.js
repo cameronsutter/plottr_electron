@@ -108,7 +108,7 @@ const EditAttributeConnector = (connector) => {
           <div>
             <Label />
             <RichText
-              description={value || entity[name] || []}
+              description={value || []}
               onChange={onChange}
               editable
               autofocus={false}
@@ -120,7 +120,7 @@ const EditAttributeConnector = (connector) => {
           <FormGroup>
             <Label />
             <FormControl
-              value={value || entity[name] || ''}
+              value={value || ''}
               type="text"
               id={inputId || `${name}Input`}
               onKeyDown={onShortDescriptionKeyDown}
@@ -187,6 +187,14 @@ const EditAttributeConnector = (connector) => {
             removeAttribute: customAttributeActions.removeCardAttr,
             editAttribute: customAttributeActions.editCardAttr,
             reorderAttribute: customAttributeActions.reorderCardsAttribute,
+          }
+
+        case 'note':
+          return {
+            addAttribute: customAttributeActions.addNoteAttr,
+            removeAttribute: customAttributeActions.removeNoteAttr,
+            editAttribute: customAttributeActions.editNoteAttr,
+            reorderAttribute: customAttributeActions.reorderNotesAttribute,
           }
 
         default:

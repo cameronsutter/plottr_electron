@@ -13,12 +13,11 @@ const FileLocationConnector = (connector) => {
     showInMessage = i18n('Show in Finder')
   }
 
-
   class FileLocation extends Component {
     chooseLocation = moveFromTemp
 
     render() {
-      const { file } = this.props
+      const { file, state } = this.props
       let button = (
         <Button bsSize="small" onClick={() => showItemInFolder(file.fileName)}>
           {showInMessage}
@@ -28,7 +27,9 @@ const FileLocationConnector = (connector) => {
         button = (
           <Button
             bsSize="small"
-            onClick={this.chooseLocation}
+            onClick={() => {
+              this.chooseLocation(state)
+            }}
             title={i18n('Choose where to save this file on your computer')}
           >
             {i18n('Save File')}
@@ -40,6 +41,7 @@ const FileLocationConnector = (connector) => {
 
     static propTypes = {
       file: PropTypes.object.isRequired,
+      state: PropTypes.object.isRequired,
     }
   }
 
@@ -51,6 +53,7 @@ const FileLocationConnector = (connector) => {
     return connect((state) => {
       return {
         file: state.present.file,
+        state: state.present,
       }
     })(FileLocation)
   }

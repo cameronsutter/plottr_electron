@@ -6,12 +6,14 @@ import { t as i18n } from 'plottr_locales'
 import UnconnectedRichText from '../rce/RichText'
 import TagLabel from '../TagLabel'
 import UnconnectedImage from '../images/Image'
+import UnconnectedSelectList from '../SelectList'
 import cx from 'classnames'
 import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
 
 const CardViewConnector = (connector) => {
   const RichText = UnconnectedRichText(connector)
   const Image = UnconnectedImage(connector)
+  const SelectList = UnconnectedSelectList(connector)
 
   class CardView extends Component {
     constructor(props) {
@@ -200,9 +202,9 @@ const CardViewConnector = (connector) => {
     }
 
     render() {
-      const { line, ui, card } = this.props
+      const { actions, card, line, ui, characters, places, tags } = this.props
       const style = { color: line.color }
-      return (
+      return card.isEmpty ? null : (
         <div
           className="outline__card-wrapper"
           onDragEnter={this.handleDragEnter}
@@ -211,34 +213,62 @@ const CardViewConnector = (connector) => {
           onDrop={this.handleDrop}
         >
           {this.renderDropZone()}
-          <div className={cx('outline__card', { darkmode: ui.darkMode })}>
-            <div style={style} className="outline__card__line-title">
-              {line.title}
+          <div className={cx('outline-list__card-view', { darkmode: ui.darkMode })}>
+            <div className="outline__card-top">
+              <div style={style} className="outline__card__line-title">
+                {line.title}
+              </div>
+              <div
+                className={cx('outline__card__grip', {
+                  editing: this.state.editing,
+                  dragging: this.state.dragging,
+                })}
+                draggable
+                onDragStart={this.handleDragStart}
+                onDragEnd={this.handleDragEnd}
+              >
+                <FaGripLinesVertical />
+                {this.state.editing ? null : <h3>{card.title}</h3>}
+              </div>
             </div>
             <div
-              className={cx('outline__card__grip', {
-                editing: this.state.editing,
-                dragging: this.state.dragging,
-              })}
-              draggable
-              onDragStart={this.handleDragStart}
-              onDragEnd={this.handleDragEnd}
-            >
-              <FaGripLinesVertical />
-              {this.state.editing ? null : <h6>{card.title}</h6>}
-            </div>
-            <div
-              className={cx('outline__card__inner', { editing: this.state.editing })}
+              className={cx('outline__card__description', { editing: this.state.editing })}
               onClick={this.editOnClick}
             >
               {this.renderTitle()}
               {this.renderDescription()}
               <Glyphicon glyph="pencil" />
             </div>
-            {this.renderDivider()}
-            <div className="outline__card__label-list">{this.renderTags()}</div>
-            {this.renderCharacters()}
-            {this.renderPlaces()}
+            <div className="divider" />
+            <div className="outline__card-bottom">
+              <SelectList
+                parentId={card.id}
+                type={'Characters'}
+                selectedItems={card.characters}
+                allItems={characters}
+                add={actions.addCharacter}
+                remove={actions.removeCharacter}
+                horizontal
+              />
+              <SelectList
+                parentId={card.id}
+                type={'Places'}
+                selectedItems={card.places}
+                allItems={places}
+                add={actions.addPlace}
+                remove={actions.removePlace}
+                horizontal
+              />
+              <SelectList
+                parentId={card.id}
+                type={'Tags'}
+                selectedItems={card.tags}
+                allItems={tags}
+                add={actions.addTag}
+                remove={actions.removeTag}
+                horizontal
+              />
+            </div>
           </div>
         </div>
       )
@@ -260,7 +290,10 @@ const CardViewConnector = (connector) => {
 
   const {
     redux,
-    pltr: { actions },
+    pltr: {
+      selectors: { sortedTagsSelector, charactersSortedAtoZSelector, placesSortedAtoZSelector },
+      actions,
+    },
   } = connector
 
   if (redux) {
@@ -273,9 +306,9 @@ const CardViewConnector = (connector) => {
         let line = state.present.lines.find((l) => l.id == ownProps.card.lineId)
         return {
           line: line,
-          tags: state.present.tags,
-          characters: state.present.characters,
-          places: state.present.places,
+          characters: charactersSortedAtoZSelector(state.present),
+          places: placesSortedAtoZSelector(state.present),
+          tags: sortedTagsSelector(state.present),
           ui: state.present.ui,
         }
       },

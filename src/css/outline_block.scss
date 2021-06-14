@@ -6,8 +6,31 @@
   width: 100vw;
 }
 
-.outline__scenes-container {
-  width: 80%;
+.outline__grid {
+  width: 100vw;
+  padding-left: 0;
+  .row {
+    height: 100%;
+    overflow: hidden;
+    .outline__grid__minimap {
+      height: 100%;
+      overflow: auto;
+    }
+    .outline__grid__beats {
+      height: 100%;
+      overflow: auto;
+      padding: 0;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .outline__grid__minimap.col-md-3 {
+    width: 20%;
+  }
+  .outline__grid__beats.col-md-9 {
+    width: 80%;
+  }
 }
 
 .filter-list__list li {
@@ -46,43 +69,65 @@
   }
 }
 
-.outline__card {
+.outline-list__card-view {
   @include well;
   padding: 20px;
-  padding-top: 9px;
+  max-height: 100%;
+  overflow: auto;
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
-  .outline__card__inner {
-    display: flex;
-    flex-direction: column;
-    border: 2px dashed transparent;
-    cursor: pointer;
+
+  .outline__card__description {
     &.editing {
-      cursor: default;
-      .card-dialog__button-bar {
-        border-top: none;
+      width: 100%;
+      .glyphicon-pencil {
+        display: none;
       }
     }
-    .glyphicon-pencil {
-      color: $blue-7;
-      visibility: hidden;
-      margin: 5px;
-      align-self: flex-end;
+    &:not(.editing) {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin: 4px 0px 4px 4px;
+      cursor: pointer;
+
+      .glyphicon-pencil {
+        display: block;
+        color: $blue-7;
+        visibility: hidden;
+        margin: 5px;
+        align-self: flex-start;
+      }
     }
+  }
+
+  .outline__card__line-title {
+    margin-left: 4px;
+  }
+
+  .outline__card-top {
+    flex-direction: column;
+  }
+  .outline__card__line-title,
+  .outline__card__grip,
+  .outline__card-top {
+    display: flex;
+    width: 100%;
   }
 
   .outline__card__grip {
     display: flex;
     align-items: center;
-    margin-left: -15px;
     cursor: move;
+    margin-left: -15px;
 
     svg {
       color: $gray-8;
       // vertical-align: text-top;
     }
-    h6 {
-      margin-left: 2px;
+    h3 {
+      margin: 5px 2px;
       // display: inline-block;
     }
     &.editing {
@@ -91,22 +136,28 @@
     &.dragging {
       width: 30%;
       overflow: hidden;
-      h6 {
+      h3 {
         white-space: nowrap;
       }
     }
   }
 
+  .outline__card-bottom {
+    margin-top: 8px;
+  }
+
   .chip-cloud {
     margin: 8px 0;
   }
+
   .divider {
     margin: 10px 40px 2px 40px;
     border-top: 1px solid $gray-8;
+    width: 93%;
   }
 
   &:hover {
-    .outline__card__inner:not(.editing) {
+    .outline__card__description:not(.editing) {
       border: 2px dashed $blue-7;
       border-radius: 4px;
       background-color: $gray-9;
@@ -117,13 +168,13 @@
   }
 }
 
-.outline__card.darkmode {
+.outline-list__card-view.darkmode {
   background-color: $darkmode-darker-background;
   color: $darkmode-text;
   border-color: $darkmode-border;
 
   &:hover {
-    .outline__card__inner:not(.editing) {
+    .outline__card__description:not(.editing) {
       border: 2px dashed $darkmode-border;
       background-color: $darkmode-background;
     }
@@ -141,15 +192,9 @@
 .outline__minimap {
   @include well;
   display: block;
-  position: fixed;
-  left: 0px;
-  top: 102px;
-  width: 20%;
-  height: 88%;
+  height: calc(100% + 5px);
   overflow-y: auto;
-  padding-top: 5px;
   padding-right: 5px;
-  margin-right: 10px;
   margin-top: -5px;
   border-radius: 0px;
 
@@ -204,12 +249,6 @@
     background-color: $darkmode-background;
     color: $darkmode-text;
   }
-}
-
-.outline__minimap__placeholder {
-  width: 20%;
-  height: 100%;
-  margin-left: 10px;
 }
 
 .outline__scene-title {

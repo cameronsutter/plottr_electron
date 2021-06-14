@@ -1,0 +1,64 @@
+import PropTypes from 'prop-types'
+
+import { helpers } from 'pltr/v2'
+
+const {
+  card: { truncateTitle },
+  beats: { beatTitle },
+} = helpers
+
+const BeatItemTitleConnector = (connector) => {
+  const BeatItemTitle = ({
+    beatIndex,
+    beatTree,
+    beat,
+    hierarchyLevels,
+    positionOffset,
+    hierarchyEnabled,
+    isSeries,
+  }) =>
+    truncateTitle(
+      beatTitle(
+        beatIndex,
+        beatTree,
+        beat,
+        hierarchyLevels,
+        positionOffset,
+        hierarchyEnabled,
+        isSeries
+      ),
+      50
+    )
+
+  BeatItemTitle.propTypes = {
+    isSeries: PropTypes.bool.isRequired,
+    positionOffset: PropTypes.number.isRequired,
+    beatIndex: PropTypes.number.isRequired,
+    beatTree: PropTypes.object.isRequired,
+    beat: PropTypes.object.isRequired,
+    hierarchyLevels: PropTypes.array.isRequired,
+    hierarchyEnabled: PropTypes.bool,
+  }
+
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect((state, ownProps) => ({
+      isSeries: selectors.isSeriesSelector(state.present),
+      positionOffset: selectors.positionOffsetSelector(state.present),
+      beatIndex: selectors.beatIndexSelector(state.present, ownProps.beat.id),
+      beatTree: selectors.beatsByBookSelector(state.present),
+      hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
+      hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
+    }))(BeatItemTitle)
+  }
+
+  throw new Error('Could not connect BeatItemTitle')
+}
+
+export default BeatItemTitleConnector

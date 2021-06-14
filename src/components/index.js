@@ -36,6 +36,7 @@ import FilterList from './filterLists/FilterList'
 // RCE
 import RichText from './rce/RichText'
 import editorRegistry from './rce/editor-registry'
+import { normalize } from './rce/Normalizer'
 
 // Images
 import Image from './images/Image'
@@ -102,6 +103,7 @@ export {
   FilterList,
   RichText,
   editorRegistry,
+  normalize,
   Image,
   ImagePicker,
   MiniColorPicker,

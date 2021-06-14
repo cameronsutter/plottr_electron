@@ -1,0 +1,71 @@
+@import "vars";
+
+.filter-list {
+  overflow-y: scroll;
+  p {
+    margin: 0px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 1px;
+    cursor: pointer;
+    -webkit-user-select: none;
+  }
+  p:hover {
+    background-color: $body-background-color;
+  }
+  .filter-list__list {
+    list-style: none;
+    padding-left: 10px;
+    width: $width + 10; // for padding
+    li {
+      cursor: pointer;
+      -webkit-user-select: none;
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+    li:hover {
+      background-color: $body-background-color;
+    }
+  }
+}
+
+.filter-list.flex {
+  display: flex;
+  overflow: auto;
+}
+
+.sort-list {
+  overflow-y: auto;
+  list-style: none;
+  padding-left: 0px;
+  width: auto;
+  li {
+    cursor: pointer;
+    -webkit-user-select: none;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    span.not-active {
+      margin-left: 20px;
+    }
+  }
+  li:hover {
+    background-color: $body-background-color;
+  }
+}
+
+body.darkmode {
+  .filter-list {
+    p:hover {
+      background-color: $darkmode-darker-background;
+    }
+    li:hover {
+      background-color: $darkmode-darker-background;
+    }
+  }
+
+  .sort-list {
+    li:hover {
+      background-color: $darkmode-darker-background;
+    }
+  }
+}

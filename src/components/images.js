@@ -1,7 +1,7 @@
 import Resizer from 'react-image-file-resizer'
 import imageExtensions from 'image-extensions'
 import isUrl from 'is-url'
-const request = require('request').defaults({ encoding: null })
+import axios from 'axios'
 
 const maxWidth = 700
 const maxHeight = 500
@@ -23,13 +23,13 @@ export function isImageUrl(url) {
 
 export function readImageFromURL(url, callback) {
   // TODO: be able to resize this
-  request(url, (err, response, body) => {
-    if (!err && response.statusCode == 200) {
+  return axios.get(url).then((response) => {
+    if (response.statusCode == 200) {
       const str =
         'data:' +
         response.headers['content-type'] +
         ';base64,' +
-        Buffer.from(body).toString('base64')
+        Buffer.from(response.data).toString('base64')
       callback(str)
     }
   })

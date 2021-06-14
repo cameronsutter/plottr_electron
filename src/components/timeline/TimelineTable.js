@@ -77,7 +77,7 @@ const TimelineTableConnector = (connector) => {
     }
 
     stopHovering = () => {
-      this.setState({ hovering: false })
+      this.setState({ hovering: null })
       return null
     }
 
@@ -97,6 +97,7 @@ const TimelineTableConnector = (connector) => {
     handleInsertChildBeat = (beatToLeftId) => {
       const { ui, beatActions } = this.props
       beatActions.addBeat(ui.currentTimeline, beatToLeftId)
+      beatActions.expandBeat(beatToLeftId, ui.currentTimeline)
     }
 
     buildCard(lineId, beatId) {
@@ -208,7 +209,7 @@ const TimelineTableConnector = (connector) => {
                   handleInsertChild={
                     lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
                       ? undefined
-                      : this.handleInsertChildBeat
+                      : () => this.handleInsertChildBeat(beats[idx - 1].id)
                   }
                   expanded={lastBeat && lastBeat.expanded}
                   toggleExpanded={beatToggler(lastBeat)}
@@ -255,7 +256,7 @@ const TimelineTableConnector = (connector) => {
                 handleInsertChild={
                   lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
                     ? undefined
-                    : this.handleInsertChildBeat
+                    : () => this.handleInsertChildBeat(lastBeat.id)
                 }
                 expanded={lastBeat && lastBeat.expanded}
                 toggleExpanded={beatToggler(lastBeat)}
@@ -273,7 +274,7 @@ const TimelineTableConnector = (connector) => {
               handleInsertChild={
                 lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
                   ? undefined
-                  : this.handleInsertChildBeat
+                  : () => this.handleInsertChildBeat(lastBeat.id)
               }
               expanded={lastBeat && lastBeat.expanded}
               toggleExpanded={beatToggler(lastBeat)}
@@ -336,7 +337,7 @@ const TimelineTableConnector = (connector) => {
     }
 
     renderVerticalCards(beat, lineMap, lineMapKeys) {
-      const { cardMap, isSmall } = this.props
+      const { cardMap, isSmall, beatHasChildrenMap } = this.props
       const renderedCards = lineMapKeys.flatMap((linePosition) => {
         const cells = []
         const line = lineMap[linePosition]
@@ -347,7 +348,7 @@ const TimelineTableConnector = (connector) => {
             <CardCell
               key={key}
               cards={cards}
-              beatIsExpanded={beat && beat.expanded}
+              beatIsExpanded={(beat && beat.expanded) || !beatHasChildrenMap.get(beat.id)}
               beatId={beat.id}
               lineId={line.id}
               beatPosition={beat.position}

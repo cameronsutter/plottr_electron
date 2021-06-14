@@ -1,6 +1,6 @@
 @import 'vars';
 
-.note-list {
+.character-list {
   h1 {
     text-align: center;
     @include application-text;
@@ -22,7 +22,7 @@
   }
 }
 
-.note-list__category-list {
+.character-list__category-list {
   overflow: auto;
   height: calc(100% - 77px);
   position: relative;
@@ -31,16 +31,16 @@
   }
 }
 
-.note-list__list {
+.character-list__list {
   .list-group-item {
     padding-right: 4px;
     cursor: pointer;
 
-    .note-list__item-inner {
+    .character-list__item-inner {
       display: flex;
       align-items: center;
 
-      .note-list__item-buttons {
+      .character-list__item-buttons {
         margin-left: auto;
         min-width: 71px;
         visibility: hidden;
@@ -49,7 +49,7 @@
         }
       }
 
-      .note-list__item-inner__image-wrapper {
+      .character-list__item-inner__image-wrapper {
         img {
           max-width: 75px;
           max-height: 75px;
@@ -64,7 +64,7 @@
     &:hover {
       background: $new-item-background;
 
-      .note-list__item-buttons {
+      .character-list__item-buttons {
         visibility: visible;
       }
     }
@@ -76,7 +76,7 @@
   }
 }
 
-.note-list__list.darkmode {
+.character-list__list.darkmode {
   .list-group-item {
     background-color: $darkmode-darker-background;
     color: $darkmode-text;
@@ -100,23 +100,23 @@
   }
 }
 
-.note-list__new {
+.character-list__new {
   text-align: center;
   cursor: pointer;
   color: $new-item-border-color;
 }
 
-.note-list__new:hover {
+.character-list__new:hover {
   background: $new-item-background;
 }
 
-.note-list__note-wrapper {
+.character-list__character-wrapper {
   height: 100%;
   position: relative;
   overflow: auto;
 }
 
-.note-list__note-view {
+.character-list__character-view {
   @include well;
   padding: 20px;
   max-height: 100%;
@@ -125,7 +125,7 @@
   display: flex;
   align-items: flex-start;
 
-  .note-list__note-view__left-side {
+  .character-list__character-view__left-side {
     width: 18%;
     position: sticky;
     top: 0;
@@ -134,7 +134,7 @@
     padding-bottom: 10px;
   }
 
-  .note-list__note-view__right-side {
+  .character-list__character-view__right-side {
     width: 79%;
     height: 100%;
     padding: 4px;
@@ -143,10 +143,10 @@
   }
 }
 
-.note-list__note {
+.character-list__character {
   cursor: pointer;
 
-  .note-list__note-notes {
+  .character-list__character-notes {
     border: 2px dashed transparent;
     display: flex;
     justify-content: space-between;
@@ -155,7 +155,7 @@
       margin-left: 100px;
       margin-bottom: 20px;
     }
-    .note-list__right-side {
+    .character-list__right-side {
       .glyphicon {
         color: $blue-7;
         visibility: hidden;
@@ -165,7 +165,7 @@
   }
 
   &:hover {
-    .note-list__note-notes {
+    .character-list__character-notes {
       border: 2px dashed $blue-7;
       border-radius: 4px;
       background-color: $gray-9;
@@ -175,15 +175,15 @@
     }
   }
 
-  .note-list__note__edit-form {
+  .character-list__character__edit-form {
     padding-left: 5px;
     display: flex;
-    .note-list__inputs__normal {
+    .character-list__inputs__normal {
       width: 50%;
       padding-right: 3%;
       border-right: solid 1px #eee;
     }
-    .note-list__inputs__custom {
+    .character-list__inputs__custom {
       width: 50%;
       padding-right: 3%;
       padding-left: 3%;
@@ -195,23 +195,23 @@
   }
 }
 
-.note-list__note__edit-image-wrapper {
+.character-list__character__edit-image-wrapper {
   display: flex;
   align-items: center;
-  .note-list__note__edit-image {
+  .character-list__character__edit-image {
     max-width: 200px;
     margin-right: 10px;
     margin-bottom: 10px;
   }
 }
 
-.note-list__note-view.darkmode {
+.character-list__character-view.darkmode {
   background-color: $darkmode-darker-background;
   color: $darkmode-text;
   border-color: $darkmode-darker-border;
 
-  .note-list__note:hover {
-    .note-list__note-notes {
+  .character-list__character:hover {
+    .character-list__character-notes {
       border: 2px dashed $darkmode-border;
       background-color: $darkmode-darker-border;
     }
@@ -222,7 +222,7 @@
   }
 }
 
-.note-list__note.editing {
+.character-list__character.editing {
   cursor: auto;
   display: flex;
   flex-direction: column;

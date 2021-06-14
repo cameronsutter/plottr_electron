@@ -4,6 +4,7 @@ import { Cell } from 'react-sticky-table'
 import { Glyphicon, Button } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import { IoIosReturnRight } from 'react-icons/io'
+import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import cx from 'classnames'
 import { helpers } from 'pltr/v2'
 import VisualLine from './VisualLine'
@@ -23,14 +24,13 @@ const BeatInsertCellConnector = (connector) => {
     }
 
     insert = () => {
-      const { beatToLeft, handleInsert } = this.props
+      const { beatToLeft, handleInsert, isLast } = this.props
       handleInsert(beatToLeft && beatToLeft.id)
-      if (this.props.tour.run) this.props.tourActions.tourNext('next')
     }
 
     insertChild = () => {
-      const { beatToLeft, handleInsertChild } = this.props
-      handleInsertChild(beatToLeft && beatToLeft.id)
+      const { beatToLeft, handleInsertChild, bookId } = this.props
+      handleInsertChild(beatToLeft && beatToLeft.id, bookId)
     }
 
     lastTitleText = () => {
@@ -128,6 +128,14 @@ const BeatInsertCellConnector = (connector) => {
       )
     }
 
+    wrapperClassSubIcon = () => {
+      const { showLine, orientation } = this.props
+
+      return cx(orientedClassName('insert-beat-wrapper', orientation), {
+        'insert-beat-spacer': showLine,
+      })
+    }
+
     lastBeatClass = () => {
       const { isInBeatList, isMedium, isSmall } = this.props
 
@@ -162,6 +170,30 @@ const BeatInsertCellConnector = (connector) => {
       )
     }
 
+    renderToggleCollapse() {
+      const { handleInsertChild, toggleExpanded, expanded, tour, isFirst } = this.props
+
+      return !handleInsertChild && toggleExpanded ? (
+        <div
+          onClick={toggleExpanded}
+          className={cx(
+            this.orientedClassSubIcon(),
+            expanded === false ? 'beat-list__insert--always-visible' : {}
+          )}
+        >
+          <div className={this.wrapperClassSubIcon()}>
+            <div
+              onClick={() =>
+                !isFirst && expanded === true && tour.run && this.props.tourActions.tourNext('next')
+              }
+            >
+              {expanded ? <FaCompressAlt /> : <FaExpandAlt />}
+            </div>
+          </div>
+        </div>
+      ) : null
+    }
+
     renderInsertChild() {
       const { handleInsertChild, isFirst, isSmall, atMaximumDepth } = this.props
 
@@ -173,22 +205,47 @@ const BeatInsertCellConnector = (connector) => {
           className={this.orientedClassSubIcon()}
           onClick={this.insertChild}
         >
-          <Button className={'acts-tour-step8'} bsSize={isSmall ? 'small' : undefined} block>
-            <IoIosReturnRight size={25} style={{ margin: '-1px -5px -6px -5px' }} />
+          <Button
+            className={this.wrapperClassSubIcon()}
+            bsSize={isSmall ? 'small' : undefined}
+            block
+          >
+            <IoIosReturnRight
+              size={25}
+              style={{ margin: '-1px -5px -6px -5px' }}
+              className={'acts-tour-step8'}
+            />
           </Button>
         </div>
       ) : null
     }
 
     renderInsertBeat() {
-      const { isFirst, isSmall } = this.props
+      const {
+        isFirst,
+        isSmall,
+        hierarchyLevels,
+        orientation,
+        hierarchyLevelName,
+        isInBeatList,
+      } = this.props
+
+      let actualHierarchyLevel = hierarchyLevels.find((level) =>
+        level.name == hierarchyLevelName ? true : null
+      )
+      const isHigherLevel = hierarchyLevels.length - actualHierarchyLevel.level > 1
 
       return (
-        <div title={this.titleText()} className={this.orientedClass()} onClick={this.insert}>
+        <div
+          title={this.titleText()}
+          className={this.orientedClass()}
+          onClick={this.insert}
+          style={orientation == 'vertical' ? (isHigherLevel ? null : { marginTop: '10px' }) : null}
+        >
           <div className={this.wrapperClass()}>
             <Button
               className={!isFirst ? 'acts-tour-step6' : null}
-              bsSize={isSmall ? 'small' : undefined}
+              bsSize={isSmall || !isInBeatList ? 'small' : undefined}
               block
             >
               <Glyphicon glyph="plus" />
@@ -256,6 +313,8 @@ const BeatInsertCellConnector = (connector) => {
 
     static propTypes = {
       bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      beats: PropTypes.object.isRequired,
+      ui: PropTypes.object.isRequired,
       orientation: PropTypes.string,
       isSmall: PropTypes.bool,
       isMedium: PropTypes.bool,
@@ -263,6 +322,8 @@ const BeatInsertCellConnector = (connector) => {
       handleInsert: PropTypes.func.isRequired,
       handleInsertChild: PropTypes.func,
       isInBeatList: PropTypes.bool.isRequired,
+      actions: PropTypes.object.isRequired,
+      hovering: PropTypes.number,
       tour: PropTypes.object.isRequired,
       tourActions: PropTypes.object.isRequired,
       beatToLeft: PropTypes.object,
@@ -274,10 +335,12 @@ const BeatInsertCellConnector = (connector) => {
       tableLength: PropTypes.number,
       expanded: PropTypes.bool,
       toggleExpanded: PropTypes.func,
+      scrollTo: PropTypes.func,
       hierarchyChildLevelName: PropTypes.string,
       hierarchyLevelName: PropTypes.string,
+      hierarchyLevels: PropTypes.array.isRequired,
+      hierarchyLevel: PropTypes.object.isRequired,
       atMaximumDepth: PropTypes.bool,
-      hovering: PropTypes.bool,
     }
   }
 
@@ -294,11 +357,14 @@ const BeatInsertCellConnector = (connector) => {
         const beatToLeftId = ownProps.beatToLeft && ownProps.beatToLeft.id
 
         return {
-          bookId: state.present.ui.currentTimeline,
-          orientation: state.present.ui.orientation,
+          bookId: selectors.currentTimelineSelector(state.present),
+          beats: selectors.beatsByBookSelector(state.present),
+          orientation: selectors.orientationSelector(state.present),
           isSmall: selectors.isSmallSelector(state.present),
           isMedium: selectors.isMediumSelector(state.present),
           isLarge: selectors.isLargeSelector(state.present),
+          hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
+          hierarchyLevel: selectors.hierarchyLevelSelector(state.present, ownProps.beatId),
           hierarchyLevelName: selectors.hierarchyLevelNameSelector(state.present, beatToLeftId),
           hierarchyChildLevelName: selectors.hierarchyChildLevelNameSelector(
             state.present,
@@ -310,6 +376,7 @@ const BeatInsertCellConnector = (connector) => {
       },
       (dispatch) => {
         return {
+          actions: bindActionCreators(actions.beat, dispatch),
           tourActions: bindActionCreators(actions.tour, dispatch),
         }
       }

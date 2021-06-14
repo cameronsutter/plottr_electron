@@ -31,8 +31,9 @@ export default function MiniColorPicker(props) {
   const useCoords = () => {
     if (!coords.x) return {}
 
-    // 80 = width of color picker (100) - width of button (20)
-    return { left: coords.x + 80, top: coords.y + 33 }
+    // 375 = length of toolbar up to this button
+    // 35 = height of this button
+    return { left: coords.x + 375, top: coords.y + 35 }
   }
 
   const renderColor = (color) => {

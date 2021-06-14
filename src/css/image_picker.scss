@@ -1,0 +1,247 @@
+@import "vars";
+
+.image-picker__wrapper {
+  height: 100%;
+  display: grid;
+  grid-template-areas:
+    "header"
+    "body";
+  grid-template-rows: auto 1fr;
+}
+
+.image-picker__header {
+  grid-area: header;
+}
+
+.image-picker__title {
+  @include application-text;
+  font-size: $font-size-h6;
+}
+
+.image-picker__inputs-wrapper {
+  padding: 10px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+
+.image-picker__body {
+  grid-area: body;
+  overflow: hidden;
+  .container-fluid {
+    height: 100%;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    .row {
+      height: 100%;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      .col-xs-9, .col-xs-3, .col-xs-12 {
+        height: 100%;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+.image-picker__images-container {
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  padding: 16px;
+}
+
+.image-picker__sidebar {
+  height: 100%;
+  overflow: auto;
+  background-color: $gray-9;
+  padding: 8px;
+}
+
+.image-picker__sidebar-tools {
+  margin-top: 10px;
+  padding: 4px;
+}
+
+.image-picker__dropzone {
+  height: calc(100% - 50px);
+  margin: 16px;
+  border: 3px dashed $gray-7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all $cubic;
+
+  &.dropping {
+    background-color: $gray-9;
+    border: 3px dashed $gray-5;
+  }
+}
+
+#fileUpload {
+  visibility: hidden;
+}
+
+.image-picker__upload-button {
+  border: 1px solid $gray-7;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.image-picker__url-wrapper {
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  .form-group {
+    width: 80%;
+  }
+}
+
+.image-picker__image-wrapper {
+  margin: 0;
+  cursor: pointer;
+  border: 7px solid transparent;
+
+  &.selected {
+    border: 7px solid $green-5;
+  }
+}
+
+.image-picker__wrapper.darkmode {
+  background-color: $darkmode-card-background;
+  .image-picker__title {
+    color: $darkmode-text;
+  }
+  h5.secondary-text {
+    color: $darkmode-darker-text;
+  }
+  p {
+    color: $darkmode-text;
+  }
+
+  .nav-tabs {
+    border-bottom-color: $darkmode-border;
+  }
+
+  .nav-tabs li.active > a {
+    background-color: $darkmode-darker-background;
+
+    &:hover,
+    &:focus {
+      border-bottom-color: transparent;
+    }
+  }
+
+  .nav-tabs li > a {
+    border-color: $darkmode-border;
+    border-bottom-color: transparent;
+
+    &:hover,
+    &:focus {
+      background-color: $darkmode-darker-background;
+      border-bottom-color: $darkmode-border;
+    }
+  }
+
+  .image-picker__sidebar {
+    background-color: $darkmode-darker-background;
+  }
+}
+
+.image-circle {
+  background-size: cover;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 2px 0 hsla(0, 0%, 0%, 0.1), inset 0 -2px 2px 0 hsla(0, 0%, 0%, 0.1);
+}
+
+.image-circle-xl {
+  @extend .image-circle;
+  height: 150px;
+  width: 150px;
+}
+
+.image-circle-large {
+  @extend .image-circle;
+  height: 100px;
+  width: 100px;
+}
+
+.image-circle-small {
+  @extend .image-circle;
+  height: 75px;
+  width: 75px;
+}
+
+.image-circle-xs {
+  @extend .image-circle;
+  height: 25px;
+  width: 25px;
+}
+
+.image-rounded {
+  background-size: cover;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 2px 0 hsla(0, 0%, 0%, 0.1), inset 0 -2px 2px 0 hsla(0, 0%, 0%, 0.1);
+}
+
+.image-rounded-xl {
+  @extend .image-rounded;
+  height: 300px;
+  width: 300px;
+}
+
+.image-rounded-large {
+  @extend .image-rounded;
+  height: 200px;
+  width: 200px;
+}
+
+.image-rounded-small {
+  @extend .image-rounded;
+  height: 75px;
+  width: 75px;
+}
+
+.image-rounded-xs {
+  @extend .image-rounded;
+  height: 25px;
+  width: 25px;
+}
+
+.image-square {
+  background-size: cover;
+  box-shadow: inset 0 2px 2px 0 hsla(0, 0%, 0%, 0.1), inset 0 -2px 2px 0 hsla(0, 0%, 0%, 0.1);
+}
+
+.image-square-xl {
+  @extend .image-square;
+  height: 300px;
+  width: 300px;
+}
+
+.image-square-large {
+  @extend .image-square;
+  height: 200px;
+  width: 200px;
+}
+
+.image-square-small {
+  @extend .image-square;
+  height: 75px;
+  width: 75px;
+}
+
+.image-square-xs {
+  @extend .image-square;
+  height: 25px;
+  width: 25px;
+}

@@ -39,8 +39,9 @@ const TimelineWrapperConnector = (connector) => {
   const ClearNavItem = UnconnectedClearNavItem(connector)
 
   const {
-    platform: { saveAsTemplate, mpq },
+    platform: { mpq, exportDisabled, templatesDisabled },
   } = connector
+  const saveAsTemplate = connector.platform.template.startSaveAsTemplate
 
   class TimelineWrapper extends Component {
     constructor(props) {
@@ -54,17 +55,17 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     componentDidMount() {
-      if (this.props.isSmall) return
+      if (this.props.timelineBundle.isSmall) return
 
       if (this.tableRef) this.tableRef.onscroll = this.scrollHandler
 
       setTimeout(() => {
         this.setState({ mounted: true }, () => {
-          if (this.props.ui.timelineScrollPosition == null) return
+          if (this.props.timelineBundle.timelineScrollPosition == null) return
           if (this.tableRef) {
             this.tableRef.scrollTo({
-              top: this.props.ui.timelineScrollPosition.y,
-              left: this.props.ui.timelineScrollPosition.x,
+              top: this.props.timelineBundle.timelineScrollPosition.y,
+              left: this.props.timelineBundle.timelineScrollPosition.x,
               behavior: 'auto',
             })
           }
@@ -73,21 +74,21 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
-      const { ui } = this.props
+      const { timelineBundle } = this.props
       if (
-        nextProps.ui.currentTimeline != ui.currentTimeline ||
-        nextProps.ui.orientation != ui.orientation ||
-        nextProps.ui.timeline.size != ui.timeline.size
+        nextProps.timelineBundle.currentTimeline != timelineBundle.currentTimeline ||
+        nextProps.timelineBundle.orientation != timelineBundle.orientation ||
+        nextProps.timelineBundle.timelineSize != timelineBundle.timelineSize
       ) {
         this.setState({ mounted: false })
         setTimeout(
           () =>
             this.setState({ mounted: true }, () => {
-              if (nextProps.ui.timelineScrollPosition == null) return
+              if (nextProps.timelineBundle.timelineScrollPosition == null) return
               if (this.tableRef) {
                 this.tableRef.scrollTo({
-                  top: this.props.ui.timelineScrollPosition.y,
-                  left: this.props.ui.timelineScrollPosition.x,
+                  top: this.props.timelineBundle.timelineScrollPosition.y,
+                  left: this.props.timelineBundle.timelineScrollPosition.x,
                   behavior: 'auto',
                 })
               }
@@ -157,7 +158,7 @@ const TimelineWrapperConnector = (connector) => {
         behavior: 'smooth',
       }
 
-      if (this.props.ui.orientation === 'vertical') {
+      if (this.props.timelineBundle.orientation === 'vertical') {
         options.top = position
       } else {
         options.left = position
@@ -166,13 +167,15 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     scrollDistance = () => {
-      return this.props.ui.orientation === 'vertical' ? 2 * SCENE_CELL_HEIGHT : 2 * SCENE_CELL_WIDTH
+      return this.props.timelineBundle.orientation === 'vertical'
+        ? 2 * SCENE_CELL_HEIGHT
+        : 2 * SCENE_CELL_WIDTH
     }
 
     scrollLeft = () => {
       mpq.push('btn_scroll_left')
       const current =
-        this.props.ui.orientation === 'vertical'
+        this.props.timelineBundle.orientation === 'vertical'
           ? this.tableRef.scrollTop
           : this.tableRef.scrollLeft
       this.scrollTo(current - this.scrollDistance())
@@ -180,7 +183,7 @@ const TimelineWrapperConnector = (connector) => {
     scrollRight = () => {
       mpq.push('btn_scroll_right')
       const current =
-        this.props.ui.orientation === 'vertical'
+        this.props.timelineBundle.orientation === 'vertical'
           ? this.tableRef.scrollTop
           : this.tableRef.scrollLeft
       this.scrollTo(current + this.scrollDistance())
@@ -192,7 +195,7 @@ const TimelineWrapperConnector = (connector) => {
     scrollMiddle = () => {
       mpq.push('btn_scroll_middle')
       const target =
-        this.props.ui.orientation === 'vertical'
+        this.props.timelineBundle.orientation === 'vertical'
           ? this.tableRef.scrollHeight / 2 - window.innerHeight / 2
           : this.tableRef.scrollWidth / 2 - window.innerWidth / 2
       this.scrollTo(target)
@@ -200,7 +203,7 @@ const TimelineWrapperConnector = (connector) => {
     scrollEnd = () => {
       mpq.push('btn_scroll_end')
       const target =
-        this.props.ui.orientation === 'vertical'
+        this.props.timelineBundle.orientation === 'vertical'
           ? this.tableRef.scrollHeight
           : this.tableRef.scrollWidth
       this.scrollTo(target)
@@ -222,7 +225,8 @@ const TimelineWrapperConnector = (connector) => {
     // ////////
 
     flipOrientation = () => {
-      let orientation = this.props.ui.orientation === 'horizontal' ? 'vertical' : 'horizontal'
+      let orientation =
+        this.props.timelineBundle.orientation === 'horizontal' ? 'vertical' : 'horizontal'
       this.props.actions.changeOrientation(orientation)
     }
 
@@ -231,7 +235,7 @@ const TimelineWrapperConnector = (connector) => {
     // //////////
 
     toggleExpanded = () => {
-      if (this.props.ui.timelineIsExpanded) {
+      if (this.props.timelineBundle.timelineIsExpanded) {
         this.props.actions.collapseTimeline()
       } else {
         this.props.actions.expandTimeline()
@@ -251,13 +255,13 @@ const TimelineWrapperConnector = (connector) => {
     // //////////////
 
     renderSubNav() {
-      const { ui, filterIsEmpty, featureFlags, isSmall, isMedium, isLarge, actions } = this.props
+      const { timelineBundle, actions, featureFlags } = this.props
       const gatedByBeatHierarchy = helpers.featureFlags.gatedByBeatHierarchy(featureFlags)
 
       let glyph = 'option-vertical'
       let scrollDirectionFirst = 'menu-left'
       let scrollDirectionSecond = 'menu-right'
-      if (ui.orientation === 'vertical') {
+      if (timelineBundle.orientation === 'vertical') {
         glyph = 'option-horizontal'
         scrollDirectionFirst = 'menu-up'
         scrollDirectionSecond = 'menu-down'
@@ -274,7 +278,7 @@ const TimelineWrapperConnector = (connector) => {
           {i18n('Timeline is filtered')}
         </Alert>
       )
-      if (filterIsEmpty) {
+      if (timelineBundle.filterIsEmpty) {
         filterDeclaration = <span></span>
       }
 
@@ -321,7 +325,7 @@ const TimelineWrapperConnector = (connector) => {
               <ButtonGroup>
                 <Button
                   bsSize="small"
-                  className={cx({ active: isLarge })}
+                  className={cx({ active: timelineBundle.isLarge })}
                   onClick={() => actions.setTimelineSize('large')}
                   title={i18n('Size: large')}
                 >
@@ -329,7 +333,7 @@ const TimelineWrapperConnector = (connector) => {
                 </Button>
                 <Button
                   bsSize="small"
-                  className={cx({ active: isMedium })}
+                  className={cx({ active: timelineBundle.isMedium })}
                   onClick={() => actions.setTimelineSize('medium')}
                   title={i18n('Size: medium')}
                 >
@@ -337,7 +341,7 @@ const TimelineWrapperConnector = (connector) => {
                 </Button>
                 <Button
                   bsSize="small"
-                  className={cx({ active: isSmall })}
+                  className={cx({ active: timelineBundle.isSmall })}
                   onClick={() => actions.setTimelineSize('small')}
                   title={i18n('Size: small')}
                 >
@@ -360,20 +364,24 @@ const TimelineWrapperConnector = (connector) => {
               </ButtonGroup>
             </NavItem>
             <NavItem>
-              <Button bsSize="small" onClick={this.startSaveAsTemplate}>
+              <Button
+                bsSize="small"
+                disabled={templatesDisabled}
+                onClick={this.startSaveAsTemplate}
+              >
                 <FaSave className="svg-save-template" /> {i18n('Save as Template')}
               </Button>
             </NavItem>
             <ClearNavItem />
-            <ExportNavItem />
+            {!exportDisabled && <ExportNavItem />}
           </Nav>
         </SubNav>
       )
     }
 
     renderBody() {
-      const { ui, isSmall } = this.props
-      if (isSmall) {
+      const { timelineBundle } = this.props
+      if (timelineBundle.isSmall) {
         return <TimelineTable tableRef={this.tableRef} />
       } else {
         return (
@@ -381,9 +389,19 @@ const TimelineWrapperConnector = (connector) => {
             leftColumnZ={5}
             headerZ={5}
             wrapperRef={(ref) => (this.tableRef = ref)}
-            className={cx({ darkmode: ui.darkMode, vertical: ui.orientation == 'vertical' })}
+            className={cx({
+              darkmode: timelineBundle.darkMode,
+              vertical: timelineBundle.orientation == 'vertical',
+            })}
           >
-            {this.state.mounted ? <TimelineTable tableRef={this.tableRef} /> : <FunSpinner />}
+            {this.state.mounted ? (
+              <TimelineTable
+                tableRef={this.tableRef}
+                scrollTo={(position) => this.scrollTo(position)}
+              />
+            ) : (
+              <FunSpinner />
+            )}
           </StickyTable>
         )
       }
@@ -394,7 +412,7 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     renderCustomAttributes() {
-      if (!this.props.ui.attributesDialogIsOpen) return null
+      if (!this.props.timelineBundle.attributesDialogIsOpen) return null
 
       return <CustomAttributeModal type="scenes" closeDialog={this.closeCustomAttributesDialog} />
     }
@@ -403,16 +421,21 @@ const TimelineWrapperConnector = (connector) => {
       return helpers.featureFlags.gatedByBeatHierarchy(this.props.featureFlags)(() => {
         if (!this.state.beatConfigIsOpen) return null
 
-        return <ActsConfigModal closeDialog={this.closeBeatConfig} />
+        return (
+          <ActsConfigModal
+            isDarkMode={this.props.timelineBundle.darkMode}
+            closeDialog={this.closeBeatConfig}
+          />
+        )
       })
     }
 
     render() {
-      const { ui } = this.props
+      const { timelineBundle } = this.props
       return (
         <div
           id="timelineview__container"
-          className={cx('container-with-sub-nav', { darkmode: ui.darkMode })}
+          className={cx('container-with-sub-nav', { darkmode: timelineBundle.darkMode })}
         >
           {this.renderSubNav()}
           {this.renderCustomAttributes()}
@@ -426,12 +449,8 @@ const TimelineWrapperConnector = (connector) => {
   }
 
   TimelineWrapper.propTypes = {
-    ui: PropTypes.object.isRequired,
-    isSmall: PropTypes.bool,
-    isMedium: PropTypes.bool,
-    isLarge: PropTypes.bool,
+    timelineBundle: PropTypes.object.isRequired,
     featureFlags: PropTypes.object.isRequired,
-    filterIsEmpty: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     tourActions: PropTypes.object.isRequired,
     tour: PropTypes.object.isRequired,
@@ -448,11 +467,7 @@ const TimelineWrapperConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          ui: state.present.ui,
-          filterIsEmpty: selectors.timelineFilterIsEmptySelector(state.present),
-          isSmall: selectors.isSmallSelector(state.present),
-          isMedium: selectors.isMediumSelector(state.present),
-          isLarge: selectors.isLargeSelector(state.present),
+          timelineBundle: selectors.timelineBundleSelector(state.present),
           featureFlags: selectors.featureFlags(state.present),
           tour: selectors.tourSelector(state.present),
         }

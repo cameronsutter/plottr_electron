@@ -11,6 +11,7 @@ import {
   FilterList as UnconnectedFilterList,
   RichText as UnconnectedRichText,
   editorRegistry,
+  normalize,
   Image as UnconnectedImage,
   ImagePicker as UnconnectedImagePicker,
   MiniColorPicker,
@@ -131,6 +132,10 @@ const connector = {
 //   mpq: {
 //     push: String => IO
 //   }
+//   inBrowser: bool,
+//   browserHistory: object,
+//   templatesDisabled: bool,
+//   rootElementSelectors: [String]
 // }
 
 export default (platform) => {
@@ -145,6 +150,7 @@ export default (platform) => {
     FilterList: UnconnectedFilterList(connectorObject),
     RichText: UnconnectedRichText(connectorObject),
     editorRegistry,
+    normalize,
     Image: UnconnectedImage(connectorObject),
     ImagePicker: UnconnectedImagePicker(connectorObject),
     MiniColorPicker,

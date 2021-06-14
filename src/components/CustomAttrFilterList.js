@@ -8,6 +8,7 @@ import BookFilterListConnector from './filterLists/BookFilterList'
 import CharacterCategoryFilterListConnector from './filterLists/CharacterCategoryFilterList'
 import PlacesFilterListConnector from './filterLists/PlacesFilterList'
 import CharactersFilterListConnector from './filterLists/CharactersFilterList'
+import NoteCategoryFilterListConnector from './filterLists/NoteCategoryFilterList'
 import CardColorFilterList from './filterLists/CardColorFilterList'
 
 const CustomAttrFilterListConnector = (connector) => {
@@ -16,6 +17,7 @@ const CustomAttrFilterListConnector = (connector) => {
   const CharacterCategoryFilterList = CharacterCategoryFilterListConnector(connector)
   const PlacesFilterList = PlacesFilterListConnector(connector)
   const CharactersFilterList = CharactersFilterListConnector(connector)
+  const NoteCategoryFilterList = NoteCategoryFilterListConnector(connector)
 
   class CustomAttrFilterList extends Component {
     constructor(props) {
@@ -130,7 +132,15 @@ const CustomAttrFilterListConnector = (connector) => {
 
     render() {
       const CAlists = this.props.customAttributes.map(this.renderList)
-      const { showCharacters, showPlaces, showCategory, isSeries, showColor } = this.props
+      const {
+        showCharacters,
+        showPlaces,
+        showNoteCategory,
+        showCategory,
+        showBook,
+        isSeries,
+        showColor,
+      } = this.props
       const orEmpty = (value) => (value ? value : [])
 
       let cardColors = this.props.items.map((item) => item.color)
@@ -139,7 +149,7 @@ const CustomAttrFilterListConnector = (connector) => {
 
       return (
         <div className="filter-list flex">
-          {isSeries && (
+          {(showBook || isSeries) && (
             <BookFilterList
               updateItems={this.updateFilter}
               filteredItems={[...orEmpty(this.state.filteredItems.book)]}
@@ -161,6 +171,12 @@ const CustomAttrFilterListConnector = (connector) => {
             <CharacterCategoryFilterList
               updateItems={this.updateFilter}
               filteredItems={[...orEmpty(this.state.filteredItems.category)]}
+            />
+          ) : null}
+          {showNoteCategory ? (
+            <NoteCategoryFilterList
+              updateItems={this.updateFilter}
+              filteredItems={[...orEmpty(this.state.filteredItems.noteCategory)]}
             />
           ) : null}
           <TagFilterList
@@ -189,8 +205,10 @@ const CustomAttrFilterListConnector = (connector) => {
     type: PropTypes.string.isRequired,
     update: PropTypes.func.isRequired,
     showCategory: PropTypes.bool.isRequired,
+    showNoteCategory: PropTypes.bool.isRequired,
     showCharacters: PropTypes.bool.isRequired,
     showPlaces: PropTypes.bool.isRequired,
+    showBook: PropTypes.bool.isRequired,
     isSeries: PropTypes.bool,
     showColor: PropTypes.bool,
   }
@@ -214,6 +232,8 @@ const CustomAttrFilterListConnector = (connector) => {
           return state.present.ui.placeFilter
         case 'cards':
           return state.present.ui.timelineFilter
+        case 'notes':
+          return state.present.ui.noteFilter
         default:
           console.error(`Trying to get filter for unsuported filter type: ${type}`)
           return {}
@@ -228,6 +248,8 @@ const CustomAttrFilterListConnector = (connector) => {
           return state.present.customAttributes.places
         case 'cards':
           return state.present.customAttributes.scenes
+        case 'notes':
+          return state.present.customAttributes.notes
         default:
           console.error(`Trying to get custom attributes unsuported type: ${type}`)
           return {}
@@ -242,9 +264,11 @@ const CustomAttrFilterListConnector = (connector) => {
         customAttributes: chooseCustomAttributes(state, type),
         items: state.present[type],
         filteredItems,
-        showCharacters: type === 'cards',
-        showPlaces: type === 'cards',
+        showCharacters: type === 'cards' || type === 'notes',
+        showPlaces: type === 'cards' || type === 'notes',
         showCategory: type === 'characters',
+        showNoteCategory: type === 'notes',
+        showBook: type === 'notes' || type === 'characters' || type === 'places',
         isSeries: isSeriesSelector(state.present),
       }
     }
@@ -258,6 +282,8 @@ const CustomAttrFilterListConnector = (connector) => {
           return uiActions.setPlaceFilter
         case 'cards':
           return uiActions.setTimelineFilter
+        case 'notes':
+          return uiActions.setNoteFilter
         default:
           return (newFilter) => {
             console.error(`Trying to update filter to ${newFilter} for unsuported type: ${type}`)

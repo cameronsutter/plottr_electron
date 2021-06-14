@@ -1,6 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { Glyphicon, Nav, NavItem, Button, OverlayTrigger, Popover, Alert } from 'react-bootstrap'
+import {
+  Glyphicon,
+  Nav,
+  NavItem,
+  Button,
+  OverlayTrigger,
+  Popover,
+  Alert,
+  Grid,
+  Row,
+  Col,
+} from 'react-bootstrap'
 import UnconnectedBeatView from './BeatView'
 import UnconnectedMiniMap from './MiniMap'
 import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
@@ -8,6 +19,7 @@ import UnconnectedExportNavItem from '../export/ExportNavItem'
 import UnconnectedSubNav from '../containers/SubNav'
 import { t as i18n } from 'plottr_locales'
 import { helpers } from 'pltr/v2'
+import { emptyCard } from 'pltr/v2/helpers/cards'
 
 const {
   card: { cardMapping },
@@ -19,6 +31,10 @@ const OutlineViewConnector = (connector) => {
   const ErrorBoundary = UnconnectedErrorBoundary(connector)
   const ExportNavItem = UnconnectedExportNavItem(connector)
   const SubNav = UnconnectedSubNav(connector)
+
+  const {
+    platform: { exportDisabled },
+  } = connector
 
   class OutlineView extends Component {
     constructor(props) {
@@ -120,24 +136,30 @@ const OutlineViewConnector = (connector) => {
               {filterDeclaration}
             </NavItem>
           </Nav>
-          <Nav pullRight>
-            <ExportNavItem />
-          </Nav>
+          {!exportDisabled && (
+            <Nav pullRight>
+              <ExportNavItem />
+            </Nav>
+          )}
         </SubNav>
       )
     }
 
     renderBeats(cardMapping) {
-      const { beats, ui } = this.props
+      const { beats, ui, allCards, lines } = this.props
+      let beatsWithCards = allCards.map((card) => card.beatId)
+
       return (
         !!beats.length &&
         beats.map((beat, idx) => {
           if (this.state.firstRender && idx > 2) return null
+          let hasCards = beatsWithCards.includes(beat.id)
+          const beatCards = hasCards ? cardMapping[beat.id] : [emptyCard(idx, beat, lines[0])]
           return (
             <ErrorBoundary key={beat.id}>
               <BeatView
                 beat={beat}
-                cards={cardMapping[beat.id]}
+                cards={beatCards}
                 waypoint={this.fixMe}
                 activeFilter={!!ui.outlineFilter}
               />
@@ -152,26 +174,32 @@ const OutlineViewConnector = (connector) => {
       const cardMap = cardMapping(beats, lines, card2Dmap, ui.outlineFilter)
       return (
         <div className="outline__container tab-body">
-          <div className="outline__minimap__placeholder">Fish are friends, not food</div>
-          <ErrorBoundary>
-            <MiniMap
-              active={this.state.active}
-              handleActive={this.setActive}
-              cardMapping={cardMap}
-              activeFilter={!!ui.outlineFilter}
-            />
-          </ErrorBoundary>
-          <div className="outline__scenes-container">{this.renderBeats(cardMap)}</div>
+          <Grid fluid className="outline__grid">
+            <Row>
+              <Col xsHidden sm={4} md={3} className="outline__grid__minimap">
+                <ErrorBoundary>
+                  <MiniMap
+                    active={this.state.active}
+                    handleActive={this.setActive}
+                    cardMapping={cardMap}
+                    activeFilter={!!ui.outlineFilter}
+                  />
+                </ErrorBoundary>
+              </Col>
+              <Col xs={12} sm={8} md={9} className="outline__grid__beats">
+                {!!beats.length && this.renderBeats(cardMap)}
+              </Col>
+            </Row>
+          </Grid>
         </div>
       )
     }
 
     render() {
-      const { beats } = this.props
       return (
         <div className="container-with-sub-nav">
           {this.renderSubNav()}
-          {!!beats.length && this.renderBody()}
+          {this.renderBody()}
         </div>
       )
     }
@@ -181,6 +209,7 @@ const OutlineViewConnector = (connector) => {
     beats: PropTypes.array.isRequired,
     lines: PropTypes.array.isRequired,
     card2Dmap: PropTypes.object.isRequired,
+    allCards: PropTypes.array,
     ui: PropTypes.object.isRequired,
     isSeries: PropTypes.bool,
     actions: PropTypes.object.isRequired,
@@ -195,6 +224,7 @@ const OutlineViewConnector = (connector) => {
     sortedBeatsByBookSelector,
     sortedLinesByBookSelector,
     isSeriesSelector,
+    allCardsSelector,
   } = selectors
 
   if (redux) {
@@ -206,6 +236,7 @@ const OutlineViewConnector = (connector) => {
           beats: sortedBeatsByBookSelector(state.present),
           lines: sortedLinesByBookSelector(state.present),
           card2Dmap: cardMapSelector(state.present),
+          allCards: allCardsSelector(state.present),
           ui: state.present.ui,
           isSeries: isSeriesSelector(state.present),
         }

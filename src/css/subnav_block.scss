@@ -1,0 +1,124 @@
+@import 'colors';
+@import 'vars';
+
+.container-with-sub-nav {
+  height: 100%;
+  display: grid;
+  grid-template-areas: 'subnav' 'body';
+  grid-template-rows: auto 1fr;
+
+  .tab-body {
+    grid-area: body;
+    overflow: auto;
+  }
+}
+
+.subnav__container {
+  grid-area: subnav;
+  margin-bottom: 0;
+  background-color: $gray-8;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  z-index: 100;
+
+  button.navbar-toggle {
+    border-color: $gray-6;
+  }
+
+  .container-fluid {
+    padding-left: 0;
+    .nav li a {
+      padding-top: 7px;
+      padding-bottom: 7px;
+      padding-right: 0;
+      .btn {
+        .glyphicon {
+          // TODO: needs to be margin-left on the text of the button
+          // margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  &.darkmode {
+    background-color: #444;
+    border-color: #333;
+
+    .subnav__container__label {
+      color: white;
+    }
+
+    button:not(.active):not(.navbar-toggle) {
+      border-color: #888;
+      background-color: $darkmode-background;
+      color: $darkmode-text;
+    }
+  }
+}
+
+.subnav__container .alert-warning {
+  display: inline;
+  padding: 5px;
+  margin: 0px 0px 0px 3px;
+}
+
+.nav.navbar-nav {
+  &.nav-pills {
+    margin: 0;
+    & > li > a {
+      border-radius: 0;
+    }
+  }
+  li.dropdown {
+    & > a {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      margin-top: 7px;
+      margin-bottom: 6px;
+      border: 1px solid $gray-6;
+      border-radius: 4px;
+      background-color: white;
+    }
+    & > a:hover {
+      background-color: $gray-9;
+    }
+    ul {
+      @include body-text-font;
+      padding-top: 0;
+      li > a {
+        color: $gray-0;
+        font-size: 19px;
+      }
+      li:first-child {
+        padding: 5px 0 5px 0;
+        background-color: $gray-9;
+
+        & > a:hover,
+        &:hover {
+          background-color: $gray-8;
+        }
+      }
+      li.divider {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar-nav .open .dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    text-align: left;
+    background-color: white;
+    border: 1px solid $gray-7;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+  }
+}

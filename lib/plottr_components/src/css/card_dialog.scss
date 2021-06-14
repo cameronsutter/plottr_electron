@@ -38,19 +38,18 @@
 .card-dialog__description {
   width: 80%;
   padding-left: 10px;
-  overflow: hidden;
+  overflow-y: auto;
   font-size: 20px;
   textarea {
     font-size: 20px;
   }
   .slate-editor__wrapper {
     height: 100%;
-    overflow: hidden;
-    margin: 0;
+    overflow-y: auto;
   }
   .slate-editor__editor {
-    // height: calc(100% - 50px);
-    overflow: auto;
+    height: calc(100% - 50px);
+    overflow-y: auto;
   }
 }
 
@@ -59,7 +58,6 @@
   padding: 15px;
   padding-top: 10px;
   height: calc(100% - 115px);
-  overflow: hidden;
 }
 
 .hidden {

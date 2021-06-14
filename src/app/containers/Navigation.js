@@ -43,11 +43,6 @@ class Navigation extends Component {
           <NavItem eventKey="characters">{i18n('Characters')}</NavItem>
           <NavItem eventKey="places">{i18n('Places')}</NavItem>
           <NavItem eventKey="tags">{i18n('Tags')}</NavItem>
-          {isDev ? (
-            <NavItem eventKey="analyzer">
-              Analyzer<sup>(DEV)</sup>
-            </NavItem>
-          ) : null}
         </Nav>
         <Beamer inNavigation />
         {this.renderTrialLinks()}

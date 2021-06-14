@@ -1,7 +1,6 @@
 const i18n = require('plottr_locales').t
 const electron = require('electron')
 const { app } = electron
-const { openProcessManager } = require('electron-process-manager')
 const { is } = require('electron-util')
 const { NODE_ENV } = require('../constants')
 const { localeNames, setupI18n } = require('plottr_locales')
@@ -25,19 +24,6 @@ function buildPlottrMenu() {
       })),
     },
   ]
-
-  if (NODE_ENV === 'development') {
-    submenu.push(
-      {
-        label: 'View Process Manager',
-        visible: NODE_ENV === 'development',
-        click: () => openProcessManager(),
-      },
-      {
-        type: 'separator',
-      }
-    )
-  }
 
   if (is.macos) {
     submenu.push(

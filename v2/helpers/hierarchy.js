@@ -1,6 +1,9 @@
-import { nextColor } from '../../v1/store/lineColors'
+import { nextColor, nextDarkColor } from '../../v2/store/lineColors'
 import { DASHED, DOTTED, nextBorderStyle, NONE, SOLID } from '../store/borderStyle'
 import { hierarchyLevel } from '../store/initialState'
+import { t } from 'plottr_locales'
+
+import { getTextColor } from './colors'
 
 export const borderStyleToCss = (borderStyle) => {
   switch (borderStyle) {
@@ -17,25 +20,29 @@ export const borderStyleToCss = (borderStyle) => {
   }
 }
 
+const nullIfNone = (color) => (color === 'none' ? null : color)
+
 const noneIsTransparent = (borderStyle, borderColor) => {
-  return borderStyle === NONE ? 'transparent' : borderColor
+  return borderStyle === NONE || borderColor === 'none' ? 'transparent' : borderColor
 }
 
 export const hierarchyToStyles = (
-  { level, textColor, textSize, borderColor, borderStyle, backgroundColor },
+  { level, textSize, borderStyle, backgroundColor },
   timelineSize,
-  hovering
+  hovering,
+  theme,
+  isDarkMode
 ) => ({
   ...{
-    color: textColor,
+    color: nullIfNone(getTextColor(theme.textColor, isDarkMode)),
     lineHeight: `${textSize}px`,
-    backgroundColor,
+    backgroundColor: nullIfNone(backgroundColor),
   },
   ...(!hovering
     ? {
         border: `3px ${borderStyleToCss(borderStyle)} ${noneIsTransparent(
           borderStyle,
-          borderColor
+          theme.borderColor
         )}`,
       }
     : {}),
@@ -47,7 +54,7 @@ export const hierarchyToStyles = (
     : {}),
 })
 
-const LEVEL_NAMES = ['Scene', 'Chapter', 'Act']
+const LEVEL_NAMES = [t('Scene'), t('Chapter'), t('Act')]
 
 export const nextLevelName = (depth) => {
   return LEVEL_NAMES[depth] || `Level-${depth + 1}`
@@ -58,8 +65,16 @@ export const newHierarchyLevel = (allHierarchyLevels) => {
     ...hierarchyLevel,
     name: nextLevelName(allHierarchyLevels.length),
     level: 0,
+    borderStyle: nextBorderStyle(allHierarchyLevels.length),
     textColor: nextColor(allHierarchyLevels.length),
     borderColor: nextColor(allHierarchyLevels.length),
-    borderStyle: nextBorderStyle(allHierarchyLevels.length),
+    dark: {
+      textColor: nextDarkColor(allHierarchyLevels.length),
+      borderColor: nextDarkColor(allHierarchyLevels.length),
+    },
+    light: {
+      textColor: nextColor(allHierarchyLevels.length),
+      borderColor: nextColor(allHierarchyLevels.length),
+    },
   }
 }

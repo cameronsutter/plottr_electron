@@ -21,20 +21,20 @@ import {
   DELETE_BOOK,
 } from '../constants/ActionTypes'
 import { line } from '../store/initialState'
-import { newFileLines } from '../store/newFileState'
+import { newFileLines, newFileSeriesLines } from '../store/newFileState'
 import { nextId } from '../store/newIds'
 import { nextColor } from '../store/lineColors'
 import { nextPositionInBook, positionReset } from '../helpers/lists'
 import { associateWithBroadestScope, isNotSeries } from '../helpers/lines'
 
-const initialState = [line]
+const initialState = [...newFileLines, ...newFileSeriesLines]
 
 // bookId is:
 // Union of:
 //  - bookId: Number,
 //  - "series": String literal,
 
-export default function lines(state = initialState, action) {
+const lines = (dataRepairers) => (state = initialState, action) => {
   const actionBookId = associateWithBroadestScope(action.bookId)
 
   switch (action.type) {
@@ -125,12 +125,10 @@ export default function lines(state = initialState, action) {
     }
 
     case RESET_TIMELINE: {
-      if (action.isSeries) {
-        return state.filter(isNotSeries)
-      }
-
       // remove any from this book
-      const linesToKeep = state.filter((line) => line.bookId != actionBookId)
+      const linesToKeep = action.isSeries
+        ? state.filter(isNotSeries)
+        : state.filter((line) => line.bookId != actionBookId)
       // create a new line in the book so there's 1
       return [
         {
@@ -157,3 +155,5 @@ export default function lines(state = initialState, action) {
       return state
   }
 }
+
+export default lines

@@ -3,16 +3,20 @@ import {
   ADD_PLACES_ATTRIBUTE,
   ADD_CARDS_ATTRIBUTE,
   ADD_LINES_ATTRIBUTE,
-  EDIT_CARDS_ATTRIBUTE,
+  ADD_NOTES_ATTRIBUTE,
   REMOVE_CHARACTER_ATTRIBUTE,
   REMOVE_PLACES_ATTRIBUTE,
   REMOVE_CARDS_ATTRIBUTE,
   REMOVE_LINES_ATTRIBUTE,
+  REMOVE_NOTES_ATTRIBUTE,
   EDIT_CHARACTER_ATTRIBUTE,
   EDIT_PLACES_ATTRIBUTE,
+  EDIT_CARDS_ATTRIBUTE,
+  EDIT_NOTES_ATTRIBUTE,
   REORDER_CHARACTER_ATTRIBUTE,
   REORDER_PLACES_ATTRIBUTE,
   REORDER_CARDS_ATTRIBUTE,
+  REORDER_NOTES_ATTRIBUTE,
 } from '../constants/ActionTypes'
 
 export function addCharacterAttr(attribute) {
@@ -66,17 +70,25 @@ export function reorderCardsAttribute(attribute, toIndex) {
 }
 
 export function reorderCharacterAttribute(attribute, toIndex) {
-  return {
-    type: REORDER_CHARACTER_ATTRIBUTE,
-    attribute,
-    toIndex,
-  }
+  return { type: REORDER_CHARACTER_ATTRIBUTE, attribute, toIndex }
 }
 
 export function reorderPlacesAttribute(attribute, toIndex) {
-  return {
-    type: REORDER_PLACES_ATTRIBUTE,
-    attribute,
-    toIndex,
-  }
+  return { type: REORDER_PLACES_ATTRIBUTE, attribute, toIndex }
+}
+
+export function addNoteAttr(attribute) {
+  return { type: ADD_NOTES_ATTRIBUTE, attribute }
+}
+
+export function editNoteAttr(index, oldAttribute, newAttribute) {
+  return { type: EDIT_NOTES_ATTRIBUTE, index, oldAttribute, newAttribute }
+}
+
+export function removeNoteAttr(attribute) {
+  return { type: REMOVE_NOTES_ATTRIBUTE, attribute }
+}
+
+export function reorderNotesAttribute(attribute, toIndex) {
+  return { type: REORDER_NOTES_ATTRIBUTE, attribute, toIndex }
 }

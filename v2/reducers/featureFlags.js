@@ -9,7 +9,7 @@ import { featureFlags } from '../store/initialState'
 
 const INITIAL_STATE = featureFlags
 
-export default (state = INITIAL_STATE, action) => {
+const featureFlagsReducer = (dataRepairers) => (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_FEATURE_FLAG:
       return {
@@ -33,3 +33,5 @@ export default (state = INITIAL_STATE, action) => {
       return state
   }
 }
+
+export default featureFlagsReducer

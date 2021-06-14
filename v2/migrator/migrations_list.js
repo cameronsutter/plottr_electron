@@ -1,3 +1,5 @@
+import { greaterBySemver } from './greaterBySemver'
+
 const list = [
   'm0_6',
   'm0_7',
@@ -19,7 +21,10 @@ const list = [
   'm2021_1_15',
   'm2021_2_4',
   'm2021_2_8',
-  'm2021_3_18',
+  'm2021_4_13',
+  'm2021_6_9',
 ]
 
-export default list
+export default list.sort((thisVersion, thatVersion) =>
+  greaterBySemver(thisVersion, thatVersion) ? 1 : -1
+)

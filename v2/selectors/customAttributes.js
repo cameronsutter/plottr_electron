@@ -2,6 +2,7 @@ import { createSelector } from 'reselect'
 import { allCharactersSelector } from './characters'
 import { allPlacesSelector } from './places'
 import { allCardsSelector } from './cards'
+import { allNotesSelector } from './notes'
 import { character, place } from '../store/initialState'
 
 const characterKeys = Object.keys(character)
@@ -11,6 +12,7 @@ export const allCustomAttributesSelector = (state) => state.customAttributes
 export const characterCustomAttributesSelector = (state) => state.customAttributes.characters
 export const placeCustomAttributesSelector = (state) => state.customAttributes.places
 export const cardsCustomAttributesSelector = (state) => state.customAttributes.scenes
+export const noteCustomAttributesSelector = (state) => state.customAttributes.notes
 
 export const characterSortCAnamesSelector = createSelector(
   characterCustomAttributesSelector,
@@ -20,6 +22,10 @@ export const characterSortCAnamesSelector = createSelector(
 export const placeSortCAnamesSelector = createSelector(
   placeCustomAttributesSelector,
   (attributes) => attributes.filter((attr) => attr.type == 'text').map((attr) => attr.name)
+)
+
+export const noteSortCAnamesSelector = createSelector(noteCustomAttributesSelector, (attributes) =>
+  attributes.filter((attr) => attr.type == 'text').map((attr) => attr.name)
 )
 
 const noEntityHasAttributeBound = (entities, attrs) => {
@@ -53,6 +59,12 @@ export const cardsCustomAttributesThatCanChangeSelector = createSelector(
   noEntityHasAttributeBound
 )
 
+export const notesCustomAttributesThatCanChangeSelector = createSelector(
+  allNotesSelector,
+  noteCustomAttributesSelector,
+  noEntityHasAttributeBound
+)
+
 // you can change a paragraph type back to text if:
 // 1. It has no value
 // 2. It is a string
@@ -78,5 +90,10 @@ export const characterCustomAttributesRestrictedValues = createSelector(
 
 export const placeCustomAttributesRestrictedValues = createSelector(
   placeCustomAttributesSelector,
+  (attrs) => placeKeys.concat(attrs.map((a) => a.name))
+)
+
+export const noteCustomAttributesRestrictedValues = createSelector(
+  noteCustomAttributesSelector,
   (attrs) => placeKeys.concat(attrs.map((a) => a.name))
 )

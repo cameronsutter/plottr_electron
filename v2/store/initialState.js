@@ -2,7 +2,7 @@
 
 import { nextLevelName } from '../helpers/hierarchy'
 import { nextBorderStyle } from './borderStyle'
-import { nextColor } from './lineColors'
+import { nextColor, nextDarkColor } from './lineColors'
 
 export const RCE_INITIAL_VALUE = [{ type: 'paragraph', children: [{ text: '' }] }]
 
@@ -61,6 +61,7 @@ export const ui = {
   placeFilter: null,
   noteSort: 'title~asc',
   noteFilter: null,
+  outlineFilter: null,
   timelineFilter: null,
   timelineScrollPosition: {
     x: 0,
@@ -172,6 +173,7 @@ export const customAttributes = {
   cards: [],
   scenes: [],
   lines: [],
+  notes: [],
 }
 
 export const attribute = {
@@ -209,11 +211,43 @@ export const hierarchyLevel = {
   name: nextLevelName(0),
   level: 0,
   autoNumber: true,
-  textColor: nextColor(0),
   textSize: 24,
-  borderColor: nextColor(0),
   borderStyle: nextBorderStyle(0),
-  backgroundColor: '#f1f5f8', // Same as app canvas
+  backgroundColor: 'none', // Same as app canvas
+  textColor: nextColor(0),
+  borderColor: nextColor(0),
+  dark: {
+    borderColor: nextDarkColor(0),
+    textColor: nextDarkColor(0),
+  },
+  light: {
+    borderColor: nextColor(0),
+    textColor: nextColor(0),
+  },
 }
 
 export const featureFlags = {}
+
+export const tour = {
+  showTour: false,
+  // feature:{
+  //   name:'',
+  //   id:0,
+  //   endstep:null
+  // }, // XXXXXX use this blank object once the user can select the feature to tour
+  feature: {
+    name: 'acts',
+    id: 1,
+    endStep: 8,
+  },
+  run: true,
+  //continuous: true, // won't they all be either continuous or not? - may need to include a continuous key/value in the 'feature' object above depending on which feature, some may not be continuous
+  stepIndex: 0,
+  steps: [],
+  loading: false,
+  action: 'start',
+  transitioning: false,
+  b2bTransition: false,
+  toursTaken: {},
+  // key: new Date(), // may need this to restart tours when more tours are added
+}

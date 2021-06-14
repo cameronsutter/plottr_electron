@@ -6,13 +6,21 @@ import {
   DELETE_CHARACTER_CATEGORY,
   UPDATE_CHARACTER_CATEGORY,
   REORDER_CHARACTER_CATEGORY,
+  ADD_NOTE_CATEGORY,
+  DELETE_NOTE_CATEGORY,
+  UPDATE_NOTE_CATEGORY,
+  REORDER_NOTE_CATEGORY,
+  ADD_TAG_CATEGORY,
+  DELETE_TAG_CATEGORY,
+  UPDATE_TAG_CATEGORY,
+  REORDER_TAG_CATEGORY,
 } from '../constants/ActionTypes'
 import { newFileCategories } from '../store/newFileState'
 import { categories as defaultCategories } from '../store/initialState'
 import { nextId } from '../store/newIds'
 import { positionReset } from '../helpers/lists'
 
-export default function categories(state = defaultCategories, action) {
+const categories = (dataRepairers) => (state = defaultCategories, action) => {
   switch (action.type) {
     case RESET:
     case FILE_LOADED:
@@ -20,6 +28,18 @@ export default function categories(state = defaultCategories, action) {
 
     case NEW_FILE:
       return newFileCategories
+
+    case ADD_NOTE_CATEGORY:
+      return addCategory('notes', state, action)
+
+    case DELETE_NOTE_CATEGORY:
+      return deleteCategory('notes', state, action)
+
+    case UPDATE_NOTE_CATEGORY:
+      return updateCategory('notes', state, action)
+
+    case REORDER_NOTE_CATEGORY:
+      return reorderCategory('notes', state, action)
 
     case ADD_CHARACTER_CATEGORY:
       return addCategory('characters', state, action)
@@ -32,6 +52,18 @@ export default function categories(state = defaultCategories, action) {
 
     case REORDER_CHARACTER_CATEGORY:
       return reorderCategory('characters', state, action)
+
+    case ADD_TAG_CATEGORY:
+      return addCategory('tags', state, action)
+
+    case DELETE_TAG_CATEGORY:
+      return deleteCategory('tags', state, action)
+
+    case UPDATE_TAG_CATEGORY:
+      return updateCategory('tags', state, action)
+
+    case REORDER_TAG_CATEGORY:
+      return reorderCategory('tags', state, action)
 
     default:
       return state
@@ -92,3 +124,5 @@ function reorderCategory(key, state, { toIndex, category }) {
     [key]: newList,
   }
 }
+
+export default categories

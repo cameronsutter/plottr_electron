@@ -54,8 +54,13 @@ export const newFileCharacterCategories = [
   { id: 3, name: i18n('Other'), position: 2 },
 ]
 
+export const newFileNoteCategories = [{ id: 1, name: i18n('Main'), position: 0 }]
+export const newFileTagCategories = [{ id: 1, name: i18n('Main'), position: 0 }]
+
 export const newFileCategories = Object.assign({}, categories, {
   characters: newFileCharacterCategories,
+  notes: newFileNoteCategories,
+  tags: newFileTagCategories,
 })
 
 export const newFileHierarchies = { 0: hierarchyLevel }

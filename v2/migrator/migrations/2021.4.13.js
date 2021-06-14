@@ -2,7 +2,7 @@ import { addNode, newTree } from '../../reducers/tree'
 import { newFileHierarchies } from '../../store/newFileState'
 
 export default function migrate(data) {
-  if (data.file && data.file.version === '2021.3.18') return data
+  if (data.file && data.file.version === '2021.4.13') return data
   if (data.beats.length !== undefined && data.hierarchyLevels !== undefined) return data
 
   const addToBeatTree = addNode('id')

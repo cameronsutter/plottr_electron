@@ -18,14 +18,19 @@ import {
   DELETE_IMAGE,
   ATTACH_BOOK_TO_NOTE,
   REMOVE_BOOK_FROM_NOTE,
+  EDIT_NOTES_ATTRIBUTE,
+  DELETE_NOTE_CATEGORY,
 } from '../constants/ActionTypes'
 import { note } from '../store/initialState'
 import { newFileNotes } from '../store/newFileState'
 import { nextId } from '../store/newIds'
+import { applyToCustomAttributes } from './applyToCustomAttributes'
+import { repairIfPresent } from './repairIfPresent'
 
 const initialState = [note]
 
-export default function notes(state = initialState, action) {
+const notes = (dataRepairers) => (state = initialState, action) => {
+  const repair = repairIfPresent(dataRepairers)
   switch (action.type) {
     case ADD_NOTE:
       return [
@@ -44,6 +49,34 @@ export default function notes(state = initialState, action) {
         note.id === action.id ? Object.assign({}, note, action.attributes, lastEdited) : note
       )
     }
+
+    case EDIT_NOTES_ATTRIBUTE:
+      if (
+        action.oldAttribute.type != 'text' &&
+        action.oldAttribute.name == action.newAttribute.name
+      )
+        return state
+
+      return state.map((n) => {
+        let note = cloneDeep(n)
+
+        if (action.oldAttribute.name != action.newAttribute.name) {
+          note[action.newAttribute.name] = note[action.oldAttribute.name]
+          delete note[action.oldAttribute.name]
+        }
+
+        // reset value to blank string
+        // (if changing to something other than text type)
+        // see ../selectors/customAttributes.js for when this is allowed
+        if (action.oldAttribute.type == 'text') {
+          let desc = note[action.newAttribute.name]
+          if (desc && desc.length && typeof desc !== 'string') {
+            desc = ''
+          }
+          note[action.newAttribute.name] = desc
+        }
+        return note
+      })
 
     case DELETE_NOTE:
       return state.filter((note) => note.id !== action.id)
@@ -67,6 +100,20 @@ export default function notes(state = initialState, action) {
         let places = cloneDeep(note.places)
         places.push(action.placeId)
         return note.id === action.id ? Object.assign({}, note, { places: places }) : note
+      })
+
+    case DELETE_NOTE_CATEGORY:
+      return state.map((note) => {
+        // In one case the ids are strings and the other they are numbers
+        // so just to be safe string them both
+        if (String(note.categoryId) !== String(action.category.id)) {
+          return note
+        }
+
+        return {
+          ...note,
+          categoryId: null,
+        }
       })
 
     case REMOVE_PLACE_FROM_NOTE:
@@ -150,8 +197,22 @@ export default function notes(state = initialState, action) {
       })
 
     case RESET:
-    case FILE_LOADED:
-      return action.data.notes || []
+    case FILE_LOADED: {
+      const notes = action.data.notes || []
+      return notes.map((note) => {
+        const normalizeRCEContent = repair('normalizeRCEContent')
+        return {
+          ...note,
+          description: normalizeRCEContent(note.content),
+          ...applyToCustomAttributes(
+            note,
+            normalizeRCEContent,
+            action.data.customAttributes.notes,
+            'paragraph'
+          ),
+        }
+      })
+    }
 
     case NEW_FILE:
       return newFileNotes
@@ -160,3 +221,5 @@ export default function notes(state = initialState, action) {
       return state
   }
 }
+
+export default notes

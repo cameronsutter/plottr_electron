@@ -1,9 +1,13 @@
-import { sortBy } from 'lodash'
 import { createSelector } from 'reselect'
-import { currentTimelineSelector } from './ui'
-import { maxDepth, nextId } from '../helpers/beats'
+import { currentTimelineSelector, isSeriesSelector } from './ui'
+import {
+  maxDepth,
+  nextId,
+  beatsByPosition,
+  numberOfPriorChildrenAtSameDepth,
+} from '../helpers/beats'
 import { beatTitle, beatOneIsPrologue } from '../helpers/beats'
-import { findNode, children, depth } from '../reducers/tree'
+import { findNode, children, depth, reduce } from '../reducers/tree'
 import { sortedHierarchyLevels } from './hierarchy'
 import { beatHierarchyIsOn } from './featureFlags'
 
@@ -23,16 +27,6 @@ export const beatsByBookSelector = createSelector(
 export const beatsForBookOne = createSelector(allBeatsSelector, (beats) => {
   return beats[1]
 })
-
-export const beatsByPosition = (predicate) => (beats) => {
-  function iter(beats, id) {
-    const currentBeat = id === null ? [] : [findNode(beats, id)]
-    if (currentBeat.length && !predicate(currentBeat[0])) return currentBeat
-    const sortedChildren = sortBy(children(beats, id), 'position')
-    return [...currentBeat, ...sortedChildren.flatMap((child) => iter(beats, child.id))]
-  }
-  return iter(beats, null)
-}
 
 const visibleBeatsByPosition = (beats, beatHierarchyIsOn) =>
   beatsByPosition(({ expanded }) => {
@@ -79,15 +73,44 @@ export const positionOffsetSelector = createSelector(skipPrologueSelector, (skip
 
 export const makeBeatSelector = () => createSelector(beatsByBookSelector, beatIdSelector, findNode)
 
+export const beatHasChildrenSelector = createSelector(beatsByBookSelector, (beats) => {
+  return reduce('id')(
+    beats,
+    (beatsHaveChildren, beat) => {
+      beatsHaveChildren.set(beat.id, children(beats, beat.id).length > 0)
+      return beatsHaveChildren
+    },
+    new Map()
+  )
+})
+
+export const beatIndexSelector = createSelector(
+  beatsByBookSelector,
+  sortedBeatsByBookSelector,
+  beatIdSelector,
+  numberOfPriorChildrenAtSameDepth
+)
+
 export const makeBeatTitleSelector = () =>
   createSelector(
+    beatIndexSelector,
     beatsByBookSelector,
     beatIdSelector,
     sortedHierarchyLevels,
     positionOffsetSelector,
-    (beats, beatId, hierarchyLevels, positionOffset) => {
+    beatHierarchyIsOn,
+    isSeriesSelector,
+    (beatIndex, beats, beatId, hierarchyLevels, positionOffset, hierarchyEnabled, isSeries) => {
       const beat = findNode(beats, beatId)
       if (!beat) return ''
-      return beatTitle(beats, beat, hierarchyLevels, positionOffset)
+      return beatTitle(
+        beatIndex,
+        beats,
+        beat,
+        hierarchyLevels,
+        positionOffset,
+        hierarchyEnabled,
+        isSeries
+      )
     }
   )

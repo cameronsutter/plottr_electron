@@ -30,9 +30,14 @@ import { clone } from 'lodash'
 //  - bookId: Number,
 //  - "series": String literal,
 
-const INITIAL_STATE = [defaultBeat]
-
 const add = addNode('id')
+
+const defaultBeats = add(newTree('id'), null, defaultBeat)
+
+const INITIAL_STATE = {
+  1: defaultBeats,
+  series: defaultBeats,
+}
 
 const addNodeToState = (state, bookId, position, title, parentId) => {
   const node = {
@@ -52,7 +57,7 @@ const addNodeToState = (state, bookId, position, title, parentId) => {
   }
 }
 
-export default function beats(state = INITIAL_STATE, action) {
+const beats = (dataReparires) => (state = INITIAL_STATE, action) => {
   const actionBookId = associateWithBroadestScope(action.bookId)
 
   switch (action.type) {
@@ -118,6 +123,7 @@ export default function beats(state = INITIAL_STATE, action) {
     case INSERT_BEAT: {
       if (!action.peerBeatId) {
         const newState = addNodeToState(state, actionBookId, -0.5, 'auto', null)
+
         return {
           ...newState,
           [actionBookId]: positionReset(newState[actionBookId]),
@@ -125,7 +131,7 @@ export default function beats(state = INITIAL_STATE, action) {
       }
       // If we don't get a parent id then make this a root node
       const parentId = nodeParent(state[actionBookId], action.peerBeatId) || null
-      const position = findNode(state[actionBookId], action.peerBeatId).position + 0.5
+      const position = findNode(state[actionBookId], action.peerBeatId).position + 0.5 // new same-level cards now appear BEFORE so user can see they have been added
       const node = {
         autoOutlineSort: true,
         bookId: actionBookId,
@@ -197,8 +203,27 @@ export default function beats(state = INITIAL_STATE, action) {
       }
 
     case RESET:
-    case FILE_LOADED:
-      return action.data.beats
+    case FILE_LOADED: {
+      const {
+        data: { beats },
+      } = action
+      let fixedBeats = beats
+      if (!beats.series) {
+        fixedBeats = {
+          ...fixedBeats,
+          series: newTree('id'),
+        }
+      }
+      action.data.books.allIds.forEach((id) => {
+        if (!beats[id]) {
+          fixedBeats = {
+            ...fixedBeats,
+            [id]: newTree('id'),
+          }
+        }
+      })
+      return fixedBeats
+    }
 
     case NEW_FILE:
       return newFileBeats
@@ -207,3 +232,5 @@ export default function beats(state = INITIAL_STATE, action) {
       return state
   }
 }
+
+export default beats

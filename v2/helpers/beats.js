@@ -5,33 +5,71 @@ import { isSeries as isSeriesString } from './books'
 import * as tree from '../reducers/tree'
 
 export function beatOneIsPrologue(sortedBookBeats) {
+  if (!sortedBookBeats.length) return false
   return sortedBookBeats[0].title == i18n('Prologue')
 }
 
-export function beatName(beats, beat, sortedHierarchyLevels) {
+export function beatName(beats, beat, sortedHierarchyLevels, hierarchyEnabled, isSeries) {
+  if (!hierarchyEnabled) {
+    if (isSeries) {
+      return 'Beat'
+    } else {
+      return 'Chapter'
+    }
+  }
+
   const depth = tree.depth(beats, beat.id)
   const hierarchyLevel = sortedHierarchyLevels[depth]
   return (hierarchyLevel && hierarchyLevel.name) || `Level-${depth}`
 }
 
-export function beatTitle(beats, beat, sortedHierarchyLevels, offset) {
+export function beatTitle(
+  beatIndex,
+  beats,
+  beat,
+  sortedHierarchyLevels,
+  offset,
+  hierarchyEnabled,
+  isSeries
+) {
+  const level = beatName(beats, beat, sortedHierarchyLevels, hierarchyEnabled, isSeries)
+  const depth = tree.depth(beats, beat.id)
+
   return beat.title == 'auto'
-    ? i18n(`${beatName(beats, beat, sortedHierarchyLevels)} {number}`, {
-        number: beat.position + offset + 1,
+    ? i18n(`${level} {number}`, {
+        number: depth === 0 ? beatIndex + offset : beatIndex,
       })
     : beat.title
 }
 
-export function editingBeatLabel(beats, beat, sortedHierarchyLevels, offset) {
-  return i18n(`${beatName(beats, beat, sortedHierarchyLevels)} {number} title`, {
-    number: beat.position + offset + 1,
-  })
+export function editingBeatLabel(
+  beatIndex,
+  beats,
+  beat,
+  sortedHierarchyLevels,
+  offset,
+  hierarchyEnabled,
+  isSeries
+) {
+  return i18n(
+    `${beatName(beats, beat, sortedHierarchyLevels, hierarchyEnabled, isSeries)} {number} title`,
+    { number: beatIndex }
+  )
 }
 
-export function beatPositionTitle(beats, beat, sortedHierarchyLevels, offset) {
-  return i18n(`${beatName(beats, beat, sortedHierarchyLevels)} {number}`, {
-    number: beat.position + offset + 1,
-  })
+export function beatPositionTitle(
+  beatIndex,
+  beats,
+  beat,
+  sortedHierarchyLevels,
+  offset,
+  hierarchyEnabled,
+  isSeries
+) {
+  return i18n(
+    `${beatName(beats, beat, sortedHierarchyLevels, hierarchyEnabled, isSeries)} {number}`,
+    { number: beatIndex }
+  )
 }
 
 export function insertBeat(position, beats, newId, bookId) {
@@ -80,10 +118,6 @@ export function moveNextToSibling(items, toMove, droppedOntoId) {
   const depthToMove = tree.depth(items, toMove)
   const siblingDepth = tree.depth(items, droppedOntoId)
 
-  if (depthToMove !== siblingDepth) {
-    return items
-  }
-
   const parentId = tree.nodeParent(items, droppedOntoId)
   const sameParent = tree.nodeParent(items, toMove) === parentId
   const siblings = sortBy(tree.children(items, parentId), 'position')
@@ -98,7 +132,17 @@ export function moveNextToSibling(items, toMove, droppedOntoId) {
   }
   const modifiedPosition = positionDroppedOnto + positionModifier
 
-  const withNodeMoved = tree.moveNode(items, toMove, parentId)
+  let withNodeMoved = tree.moveNode(items, toMove, parentId)
+
+  if (depthToMove !== siblingDepth) {
+    if (depthToMove - siblingDepth === 1) {
+      withNodeMoved = tree.moveNode(items, toMove, droppedOntoId)
+      return positionReset(tree.editNode(withNodeMoved, toMove, { position: -0.5 }))
+    } else {
+      return items
+    }
+  }
+
   return positionReset(tree.editNode(withNodeMoved, toMove, { position: modifiedPosition }))
 }
 
@@ -182,4 +226,32 @@ export const adjustHierarchyLevels = (targetHierarchyDepth) => (
 
 export const beatIds = (beatTree) => {
   return tree.reduce('id')(beatTree, (acc, { id }) => [...acc, id], [])
+}
+
+export const beatsByPosition = (predicate) => (beats) => {
+  function iter(beats, id) {
+    const currentBeat = id === null ? [] : [tree.findNode(beats, id)]
+    if (currentBeat.length && !predicate(currentBeat[0])) return currentBeat
+    const sortedChildren = sortBy(tree.children(beats, id), 'position')
+    return [...currentBeat, ...sortedChildren.flatMap((child) => iter(beats, child.id))]
+  }
+  return iter(beats, null)
+}
+
+export const numberOfPriorChildrenAtSameDepth = (beatTree, beats, beatId) => {
+  if (beats.length === 0) return null
+  const beatDepth = tree.depth(beatTree, beatId)
+  let priorChildren = 0
+  let found = false
+  for (let i = 0; i < beats.length; ++i) {
+    const { id } = beats[i]
+    const otherBeatDepth = tree.depth(beatTree, id)
+    if (id === beatId) {
+      found = true
+      break
+    }
+    if (otherBeatDepth === beatDepth) ++priorChildren
+  }
+  if (!found) return null
+  return 1 + priorChildren
 }

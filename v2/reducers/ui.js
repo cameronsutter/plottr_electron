@@ -19,6 +19,9 @@ import {
   SET_CHARACTER_FILTER,
   SET_CHARACTER_SORT,
   SET_DARK_MODE,
+  SET_NOTE_FILTER,
+  SET_NOTE_SORT,
+  SET_OUTLINE_FILTER,
   SET_PLACE_FILTER,
   SET_PLACE_SORT,
   SET_TIMELINE_FILTER,
@@ -27,7 +30,7 @@ import {
 import { ui as defaultUI } from '../store/initialState'
 import { newFileUI } from '../store/newFileState'
 
-export default function ui(state = defaultUI, action) {
+const ui = (dataRepairers) => (state = defaultUI, action) => {
   let filter
   switch (action.type) {
     case CHANGE_CURRENT_VIEW:
@@ -63,6 +66,12 @@ export default function ui(state = defaultUI, action) {
 
     case SET_PLACE_SORT:
       return Object.assign({}, state, { placeSort: `${action.attr}~${action.direction}` })
+
+    case SET_NOTE_SORT:
+      return Object.assign({}, state, { noteSort: `${action.attr}~${action.direction}` })
+
+    case SET_NOTE_FILTER:
+      return Object.assign({}, state, { noteFilter: action.filter })
 
     case SET_CHARACTER_FILTER:
       return Object.assign({}, state, { characterFilter: action.filter })
@@ -105,6 +114,15 @@ export default function ui(state = defaultUI, action) {
 
     case SET_TIMELINE_FILTER:
       return Object.assign({}, state, { timelineFilter: action.filter })
+
+    case SET_OUTLINE_FILTER:
+      if (!action.filter) filter = null
+      else if (Array.isArray(state.outlineFilter) && state.outlineFilter.includes(action.filter))
+        filter = state.outlineFilter.filter((item) => item !== action.filter)
+      else if (!Array.isArray(state.outlineFilter)) filter = [action.filter]
+      else if (Array.isArray(state.outlineFilter)) filter = [...state.outlineFilter, action.filter]
+
+      return Object.assign({}, state, { outlineFilter: filter })
 
     case FILE_LOADED:
       return action.data.ui
@@ -152,3 +170,5 @@ function timeline(state = defaultUI.timeline, action) {
       return state
   }
 }
+
+export default ui

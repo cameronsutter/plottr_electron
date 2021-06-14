@@ -23,9 +23,40 @@ export function cardMapping(sortedBeats, sortedLines, card2Dmap, currentLine) {
   }, {})
 }
 
+export function emptyCard(id, beat, line) {
+  return {
+    beatId: beat.id,
+    bookId: beat.bookId,
+    characters: [],
+    color: null,
+    description: [
+      {
+        0: {
+          children: [{ 0: { text: beat.title } }],
+          type: 'paragraph',
+        },
+      },
+    ],
+    fromTemplateId: null,
+    id,
+    imageId: null,
+    lineId: line.id,
+    places: [],
+    positionInBeat: 0,
+    positionWithinLine: 0,
+    tags: [],
+    templates: [],
+    title: beat.title,
+    isEmpty: true,
+  }
+}
+
 function lineIsHidden(line, currentLine) {
-  if (!currentLine) return false
-  return line.id != currentLine
+  if (Array.isArray(currentLine)) {
+    if (!currentLine.length) return false
+    return !currentLine.includes(line.id)
+  } else if (!currentLine) return false
+  else return line.id !== currentLine
 }
 
 function sortedBeatCards(sortedLines, beatId, card2Dmap, currentLine) {

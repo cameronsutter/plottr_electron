@@ -35,10 +35,14 @@ import {
 import { newFileCards } from '../store/newFileState'
 import { card as defaultCard } from '../store/initialState'
 import { nextId } from '../store/newIds'
+import { applyToCustomAttributes } from './applyToCustomAttributes'
+import { repairIfPresent } from './repairIfPresent'
 
 const INITIAL_STATE = []
 
-export default function cards(state = INITIAL_STATE, action) {
+const cards = (dataRepairers) => (state = INITIAL_STATE, action) => {
+  const repair = repairIfPresent(dataRepairers)
+
   switch (action.type) {
     case ADD_CARD:
       return [Object.assign({}, defaultCard, action.card, { id: nextId(state) }), ...state]
@@ -272,7 +276,19 @@ export default function cards(state = INITIAL_STATE, action) {
 
     case RESET:
     case FILE_LOADED:
-      return action.data.cards
+      return action.data.cards.map((card) => {
+        const normalizeRCEContent = repair('normalizeRCEContent')
+        return {
+          ...card,
+          description: normalizeRCEContent(card.description),
+          ...applyToCustomAttributes(
+            card,
+            normalizeRCEContent,
+            action.data.customAttributes.scenes,
+            'paragraph'
+          ),
+        }
+      })
 
     case NEW_FILE:
       return newFileCards
@@ -281,3 +297,5 @@ export default function cards(state = INITIAL_STATE, action) {
       return state || INITIAL_STATE
   }
 }
+
+export default cards

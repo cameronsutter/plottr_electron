@@ -3,9 +3,13 @@ import { Paragraph, AlignmentType, HeadingLevel, Media } from 'docx'
 import serialize from '../../../slate_serializers/to_word'
 import exportCustomAttributes from './customAttributes'
 import exportItemTemplates from './itemTemplates'
+import { selectors } from 'pltr/v2'
+
+const { characterCategoriesSelector } = selectors
 
 export default function exportCharacters(state, doc, options) {
   let children = [new Paragraph({ text: '', pageBreakBefore: true })]
+  const allCharacterCategories = Object.values(characterCategoriesSelector(state))
 
   if (options.characters.heading) {
     children.push(
@@ -22,13 +26,14 @@ export default function exportCharacters(state, doc, options) {
     state.customAttributes['characters'],
     state.images,
     doc,
-    options
+    options,
+    allCharacterCategories
   )
 
   return { children: children.concat(paragraphs) }
 }
 
-function characters(characters, customAttributes, images, doc, options) {
+function characters(characters, customAttributes, images, doc, options, allCharacterCategories) {
   let paragraphs = []
   characters.forEach((ch) => {
     paragraphs.push(new Paragraph(''))
@@ -48,6 +53,14 @@ function characters(characters, customAttributes, images, doc, options) {
     }
     if (options.characters.description) {
       paragraphs.push(new Paragraph(ch.description))
+    }
+    if (options.characters.category && ch.categoryId) {
+      paragraphs.push(new Paragraph({ text: t('Category'), heading: HeadingLevel.HEADING_3 }))
+
+      const category = allCharacterCategories.find(
+        (category) => String(category.id) === ch.categoryId
+      )
+      paragraphs.push(new Paragraph(category.name))
     }
     if (options.characters.notesHeading) {
       paragraphs.push(new Paragraph({ text: t('Notes'), heading: HeadingLevel.HEADING_3 }))

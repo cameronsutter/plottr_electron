@@ -23,6 +23,7 @@ export default function exportOutline(state, namesMapping, doc, options) {
   const beats = sortedBeatsByBookSelector(state)
   const lines = sortedLinesByBookSelector(state)
   const outlineFilter = state.ui.outlineFilter
+  const outlineExportFilter = options.outline.filter
   const card2Dmap = cardMapSelector(state)
   const beatCardMapping = cardMapping(beats, lines, card2Dmap, null)
   const linesById = keyBy(lines, 'id')
@@ -41,6 +42,16 @@ export default function exportOutline(state, namesMapping, doc, options) {
 
   if (!beats.length) return { children: children }
 
+  const getFilteredCards = (cards) => {
+    if (outlineExportFilter) {
+      return cards.filter((card) => includes(outlineExportFilter, card.lineId))
+    } else if (!outlineExportFilter && outlineFilter) {
+      return cards.filter((card) => includes(outlineFilter, card.lineId))
+    } else {
+      return cards
+    }
+  }
+
   const beatParagraphs = beats.flatMap((beat) => {
     const uniqueBeatTitleSelector = makeBeatTitleSelector(state)
     const title = uniqueBeatTitleSelector(state, beat.id)
@@ -53,10 +64,7 @@ export default function exportOutline(state, namesMapping, doc, options) {
       const customAttrs = cardsCustomAttributesSelector(state)
       const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
 
-      const filteredCards =
-        !outlineFilter || !outlineFilter.length
-          ? sortedCards
-          : sortedCards.filter((card) => includes(outlineFilter, card.lineId))
+      const filteredCards = getFilteredCards(sortedCards)
 
       if (filteredCards.length) {
         paragraphs.push(new Paragraph({ text: title, heading: HeadingLevel.HEADING_2 }))

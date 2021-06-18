@@ -107,6 +107,8 @@ const rendererConfig = {
       // free to replace this! :)
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom'),
+      'react-redux': path.resolve('./node_modules/react-redux'),
+      redux: path.resolve('./node_modules/redux'),
     },
   },
   target: 'electron-renderer',

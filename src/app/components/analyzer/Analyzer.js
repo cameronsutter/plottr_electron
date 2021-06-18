@@ -166,7 +166,7 @@ class Analyzer extends Component {
   }
 
   renderTree() {
-    const { pltr } = this.props
+    // const { pltr } = this.props
     return (
       <div className="analyzer__tree">
         This is where the inspecter should be

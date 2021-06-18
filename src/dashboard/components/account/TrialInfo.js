@@ -19,14 +19,16 @@ export default function TrialInfo({ trialInfo, darkMode }) {
           <dt>{t('Started On')}</dt>
           <dd>{t('{date, date, long}', { date: startedDate })}</dd>
           <dt>{t('Days Left')}</dt>
-          <dd className={cx({ lead: fewDays, 'text-danger': fewDays })}>{daysLeft}</dd>
+          <dd className={cx({ lead: fewDays, 'text-danger': fewDays, darkmode: darkMode })}>
+            {daysLeft}
+          </dd>
         </dl>
         <dl className="dl-horizontal">
           <dt>{t('Ends After')}</dt>
           <dd>{t('{date, date, long}', { date: endsOn })}</dd>
           <dt>{t('License')}</dt>
           <dd>
-            <a href="#" onClick={() => setShowVerify(true)}>
+            <a href="#" onClick={() => setShowVerify(true)} className={cx({ darkmode: darkMode })}>
               <FaKey />
               {t('Activate License')}
             </a>

@@ -111,6 +111,7 @@
     "react-floater": "^0.7.2",
     "react-icons": "^3.11.0",
     "react-image-file-resizer": "^0.2.1",
+    "react-json-view": "^1.21.3",
     "react-modal": "^3.8.1",
     "react-overlays": "^1.2.0",
     "react-proptypes": "^1.0.0",

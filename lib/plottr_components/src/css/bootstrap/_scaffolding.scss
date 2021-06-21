@@ -58,9 +58,6 @@ a {
   &:focus {
     @include tab-focus;
   }
-  &.darkmode {
-    color: $link-color-darkmode;
-  }
 }
 
 

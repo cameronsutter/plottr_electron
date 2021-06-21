@@ -117,8 +117,6 @@ mark,
 
 @include text-emphasis-variant('.text-info.darkmode', $state-info-text-darkmode);
 
-@include text-emphasis-variant('.text-danger.darkmode', $state-danger-text-darkmode);
-
 // Contextual backgrounds
 // For now we'll leave these alongside the text classes until v4 when we can
 // safely shift things around (per SemVer rules).

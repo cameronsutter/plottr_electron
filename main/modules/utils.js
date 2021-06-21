@@ -48,6 +48,7 @@ function makeBrowserWindow(filePath) {
     height: stateKeeper.height,
     fullscreen: stateKeeper.isFullScreen || null,
     show: false,
+    fullscreenable: true,
     webPreferences: {
       nodeIntegration: true,
       spellcheck: true,
@@ -58,6 +59,7 @@ function makeBrowserWindow(filePath) {
 
   if (filePath == 'dashboard') {
     config.titleBarStyle = 'hiddenInset'
+    config.fullscreenable = false
     if (!is.macos) {
       config.frame = false
     }

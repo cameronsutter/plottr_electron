@@ -4,10 +4,7 @@ import { connect } from 'react-redux'
 import { groupBy, pickBy, keys } from 'lodash' // get/set will possibly be used to edit values
 import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
-import Inspector from 'react-json-inspector'
-import 'react-json-inspector/json-inspector.css'
 import DevFileDrop from './DevFileDrop'
-// import { saveFile } from '../../../common/utils/files'
 import { newIds, helpers, selectors } from 'pltr/v2'
 
 const {
@@ -169,10 +166,11 @@ class Analyzer extends Component {
   }
 
   renderTree() {
-    const { pltr } = this.props
+    // const { pltr } = this.props
     return (
       <div className="analyzer__tree">
-        <Inspector data={pltr} onClick={this.handleClick} searchOptions={{ debounceTime: 300 }} />
+        This is where the inspecter should be
+        {/* <Inspector data={pltr} onClick={this.handleClick} searchOptions={{ debounceTime: 300 }} /> */}
       </div>
     )
   }

@@ -14,6 +14,7 @@ export default {
       where: 'synopsis',
       customAttributes: true,
       templates: true,
+      filter: null,
     },
     characters: {
       export: true,
@@ -61,6 +62,7 @@ export default {
       description: true,
       customAttributes: true,
       templates: true,
+      filter: null,
     },
     characters: {
       export: true,

@@ -51,45 +51,16 @@ if (!is.development) {
   })
 }
 
-if (is.development) {
-  // try {
-  //   require('electron-reloader')(module, {
-  //     ignore: [
-  //       'examples',
-  //       'dist',
-  //       'src',
-  //       'main',
-  //       'lib',
-  //       'build',
-  //       'icons',
-  //       'locales',
-  //       'shared',
-  //       'test',
-  //       '.*#.*#',
-  //     ],
-  //   })
-  // } catch (e) {
-  //   console.error('Error while instrumenting app for reload.', e)
-  // }
+// ensure only 1 instance is running
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+  app.quit()
 }
 
 app.whenReady().then(() => {
   loadMenu(true)
   openDashboard()
-
-  // windows open-file event handler
-  if (is.windows && process.argv.length == 2 && process.env.NODE_ENV != 'dev') {
-    const param = process.argv[1]
-
-    if (param.includes('.pltr')) {
-      openProjectWindow(param)
-      addToKnown(param)
-    }
-
-    // windows custom protocol link handler
-    log.info('open-url event: ' + param)
-    // const link = param.replace('plottr://')
-  }
+  windowsOpenFileEventHandler()
 
   // Register the toggleDevTools shortcut listener.
   globalShortcut.register('CommandOrControl+Alt+R', () => {
@@ -108,7 +79,29 @@ app.whenReady().then(() => {
       openDashboard()
     }
   })
+  app.on('second-instance', () => {
+    log.info('second-instance')
+    loadMenu(true)
+    openDashboard()
+    windowsOpenFileEventHandler()
+  })
 })
+
+function windowsOpenFileEventHandler() {
+  log.info('windows open-file event handler')
+  if (is.windows && process.argv.length == 2 && process.env.NODE_ENV != 'dev') {
+    const param = process.argv[1]
+
+    if (param.includes('.pltr')) {
+      openProjectWindow(param)
+      addToKnown(param)
+    }
+
+    // windows custom protocol link handler
+    log.info('open-url event: ' + param)
+    // const link = param.replace('plottr://')
+  }
+}
 
 app.on('open-file', (event, filePath) => {
   event.preventDefault()

@@ -48,6 +48,13 @@
       }
     }
   }
+  .text-danger.darkmode {
+    color: $red-6;
+  }
+
+  a.darkmode {
+    color: $blue-6;
+  }
 }
 
 .dashboard__about {

@@ -50,6 +50,7 @@
 }
 
 .mini-color-picker {
+  position: fixed;
   z-index: 100;
   width: 200px;
   height: 200px;
@@ -58,7 +59,6 @@
   border: 1px solid $gray-9;
   box-shadow: 0 0.25rem 1rem rgba(48, 55, 66, 0.15);
   padding: 4px;
-  position: fixed;
   // &::-webkit-scrollbar { width: 8px; height: 0; }
   // &::-webkit-scrollbar-thumb {
   //   background-color: $gray-7;

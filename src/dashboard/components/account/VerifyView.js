@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import PropTypes from 'react-proptypes'
 import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { t } from 'plottr_locales'
+import { shell } from 'electron'
 import cx from 'classnames'
 import { useLicenseInfo } from '../../../common/utils/store_hooks'
 import { verifyLicense } from '../../../common/licensing/verify_license'
@@ -16,7 +17,11 @@ const RED = 'bg-danger'
 const GREEN = 'bg-success'
 
 export default function VerifyView({ goBack, darkMode }) {
-  const makeAlertText = (value) => {
+  const handleAccountClick = (url) => {
+    shell.openExternal(url)
+  }
+
+  const makeAlertText = (value, paymentId) => {
     if (value === SUCCESS) {
       return t('License Verified. Plottr will start momentarily. Thanks for being patient!')
     } else if (value === OFFLINE) {
@@ -26,7 +31,18 @@ export default function VerifyView({ goBack, darkMode }) {
     } else if (value === INVALID) {
       return t("Hmmmm. It looks like that's not a valid license key")
     } else if (value === TOOMANY) {
-      return t('It looks like you have Plottr on the max number of computers already')
+      const url = `https://my.plottr.com/purchase-history/?action=manage_licenses&payment_id=${paymentId}`
+      return t.rich(
+        "It looks like you've used all your license activations. Manage or upgrade here: <a>My Plottr Account</a>",
+        {
+          // eslint-disable-next-line react/display-name, react/prop-types
+          a: ({ children }) => (
+            <a href="#" onClick={() => handleAccountClick(url)} key="account-link">
+              {children}
+            </a>
+          ),
+        }
+      )
     } else {
       return null
     }
@@ -69,12 +85,12 @@ export default function VerifyView({ goBack, darkMode }) {
         }
       } else {
         if (
-          licenseInfo &&
-          licenseInfo.problem == 'no_activations_left' &&
-          !licenseInfo.hasActivationsLeft
+          licenseData &&
+          licenseData.problem == 'no_activations_left' &&
+          !licenseData.hasActivationsLeft
         ) {
           // not valid because of number of activations
-          setAlertText(makeAlertText(TOOMANY))
+          setAlertText(makeAlertText(TOOMANY, licenseData.payment_id))
         } else {
           // invalid
           setAlertText(makeAlertText(INVALID))

@@ -48,6 +48,7 @@ export function verifyLicense(license, callback) {
         callback(true, data)
       } else {
         callback(false, {
+          ...productForKey.value,
           problem: productForKey.value.error,
           hasActivationsLeft: hasActivationsLeft(productForKey.value),
         })

@@ -35,6 +35,9 @@ export function isActiveLicense(body) {
 }
 
 export function licenseIsForProduct(body) {
+  // for some reason if the right product has no activations left,
+  // all item ids respond with no_activations_left, so check for that
+  if (body.error == 'no_activations_left') return true
   return (
     body.success &&
     !WRONG_PRODUCT_ERRORS.includes(body.error) &&
@@ -43,7 +46,7 @@ export function licenseIsForProduct(body) {
 }
 
 export function hasActivationsLeft(body) {
-  return body.activations_left && body.activations_left > 0
+  return body.activations_left > 0
 }
 
 function mapV2old(isActive) {

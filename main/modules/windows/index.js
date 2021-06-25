@@ -1,5 +1,6 @@
 const { BrowserWindow, ipcMain } = require('electron')
 const { openBuyWindow } = require('./buy')
+const log = require('electron-log')
 
 ipcMain.on('open-buy-window', (event) => {
   openBuyWindow()
@@ -40,9 +41,11 @@ function numberOfWindows() {
 function focusIfOpen(filePath) {
   const win = windows.find((w) => w.filePath == filePath)
   if (win) {
+    log.info('focusIfOpen', true)
     win.browserWindow.focus()
     return true
   } else {
+    log.info('focusIfOpen', false)
     return false
   }
 }

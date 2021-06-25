@@ -16,7 +16,9 @@ ipcMain.on('pls-open-window', (event, filePath, unknown) => {
 })
 
 function openProjectWindow(filePath) {
+  log.info('openProjectWindow', filePath, focusIfOpen(filePath))
   if (focusIfOpen(filePath)) return
+  log.info('openProjectWindow after return')
 
   const newWindow = makeBrowserWindow(filePath)
 

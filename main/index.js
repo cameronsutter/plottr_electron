@@ -89,6 +89,7 @@ app.whenReady().then(() => {
 
 function windowsOpenFileEventHandler() {
   log.info('windows open-file event handler')
+  log.info('args', process.argv.length, process.argv[1])
   if (is.windows && process.argv.length == 2 && process.env.NODE_ENV != 'dev') {
     const param = process.argv[1]
 

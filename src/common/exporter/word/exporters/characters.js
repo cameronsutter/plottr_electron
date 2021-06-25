@@ -54,9 +54,10 @@ function characters(characters, customAttributes, images, doc, options, allChara
     if (options.characters.description) {
       paragraphs.push(new Paragraph(ch.description))
     }
-    if (options.characters.category && ch.categoryId) {
+    if (options.characters.categoryHeading) {
       paragraphs.push(new Paragraph({ text: t('Category'), heading: HeadingLevel.HEADING_3 }))
-
+    }
+    if (options.characters.category) {
       const category = allCharacterCategories.find(
         (category) => String(category.id) === ch.categoryId
       )

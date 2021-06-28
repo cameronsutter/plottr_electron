@@ -1,4 +1,29 @@
-import { backupFiles, backupFolders, sortFileNamesByDate } from '../backup'
+import { backupFiles, backupFolders, isABackupFile, sortFileNamesByDate } from '../backup'
+
+describe('isABackupFile', () => {
+  describe('given an empty file name', () => {
+    it('should produce false', () => {
+      expect(isABackupFile('')).toBeFalsy()
+    })
+  })
+  describe("given a file which isn't in a backup folder", () => {
+    it('should produce false', () => {
+      expect(isABackupFile('test.pltr')).toBeFalsy()
+    })
+  })
+  describe('given a file which is in a backup folder', () => {
+    describe("but doesn't end in 'pltr'", () => {
+      it('should produce false', () => {
+        expect(isABackupFile('6_4_2021/test.txt')).toBeFalsy()
+      })
+    })
+    describe("and ends in 'pltr'", () => {
+      it('should produce true', () => {
+        expect(isABackupFile('6_4_2021/test.pltr')).toBeTruthy()
+      })
+    })
+  })
+})
 
 describe('backupFolders', () => {
   describe('given an empty backup directory', () => {

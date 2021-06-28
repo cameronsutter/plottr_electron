@@ -58,11 +58,11 @@ export function ensureBackupFullPath() {
   ensureBackupTodayPath()
 }
 
-export function backupFolders() {
+export function backupFolders(backupBaseFolder) {
   return []
 }
 
-export function backupFiles() {
+export function backupFiles(backupBaseFolder) {
   return []
 }
 

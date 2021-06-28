@@ -12,6 +12,11 @@ describe('isABackupFile', () => {
     })
   })
   describe('given a file which is in a backup folder', () => {
+    describe('but is also nested in another folder', () => {
+      it('should produce false', () => {
+        expect(isABackupFile('some-folder/6_4_2021/test.pltr')).toBeFalsy()
+      })
+    })
     describe("but doesn't end in 'pltr'", () => {
       it('should produce false', () => {
         expect(isABackupFile('6_4_2021/test.txt')).toBeFalsy()

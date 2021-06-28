@@ -59,7 +59,7 @@ export function ensureBackupFullPath() {
 }
 
 export function backupFolders(backupBaseFolder) {
-  return []
+  return fs.readdirSync(backupBaseFolder)
 }
 
 export function backupFiles(backupBaseFolder) {

@@ -58,6 +58,10 @@ export function ensureBackupFullPath() {
   ensureBackupTodayPath()
 }
 
+export function isABackupFile(fileName) {
+  return false
+}
+
 export function backupFolders(backupBaseFolder) {
   return fs.readdirSync(backupBaseFolder)
 }

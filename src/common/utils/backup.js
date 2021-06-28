@@ -59,7 +59,7 @@ export function ensureBackupFullPath() {
 }
 
 export function isABackupFile(fileName) {
-  return fileName.match(/\.pltr$/)
+  return fileName.match(/\.pltr$/) && fileName.match(/^1?[0-9]_1?[0-9]_[0-9][0-9][0-9][0-9]\//)
 }
 
 export function backupFolders(backupBaseFolder) {

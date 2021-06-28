@@ -57,3 +57,15 @@ export function ensureBackupFullPath() {
 
   ensureBackupTodayPath()
 }
+
+export function backupFolders() {
+  return []
+}
+
+export function backupFiles() {
+  return []
+}
+
+export function sortFileNamesByDate(fileNames) {
+  return fileNames
+}

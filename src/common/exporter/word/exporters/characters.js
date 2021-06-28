@@ -61,7 +61,7 @@ function characters(characters, customAttributes, images, doc, options, allChara
       const category = allCharacterCategories.find(
         (category) => String(category.id) === ch.categoryId
       )
-      paragraphs.push(new Paragraph(category.name))
+      if (category) paragraphs.push(new Paragraph(category.name))
     }
     if (options.characters.notesHeading) {
       paragraphs.push(new Paragraph({ text: t('Notes'), heading: HeadingLevel.HEADING_3 }))

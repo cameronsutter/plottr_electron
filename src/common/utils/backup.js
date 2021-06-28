@@ -63,7 +63,7 @@ export function isABackupFile(fileName) {
 }
 
 export function backupFolders(backupBaseFolder) {
-  return fs.readdirSync(backupBaseFolder)
+  return fs.readdirSync(backupBaseFolder).filter(isABackupFile)
 }
 
 export function backupFiles(backupBaseFolder) {

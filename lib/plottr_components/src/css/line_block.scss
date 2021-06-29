@@ -162,7 +162,7 @@ $medium_width: 80px;
     }
     .line-list__append-line__double {
       margin-left: 2px;
-      flex-direction: column;
+      flex-direction: column-reverse;
       div {
         padding: 10px 2px;
       }

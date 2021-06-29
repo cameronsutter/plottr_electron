@@ -180,7 +180,7 @@
     text-align: center;
   }
   &.medium-timeline {
-    flex-direction: column;
+    flex-direction: column-reverse;
     margin-bottom: 0;
     div.template {
       font-size: 12px;
@@ -209,7 +209,7 @@
   }
   &.medium-timeline {
     font-size: 12px;
-    flex-direction: column;
+    flex-direction: column-reverse;
     div {
       padding: 6px 4px;
     }

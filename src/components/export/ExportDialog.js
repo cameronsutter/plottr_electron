@@ -21,9 +21,10 @@ const ExportDialogConnector = (connector) => {
 
   function ExportDialog(props) {
     const [exportConfig, _, saveExportConfig] = useExportConfigInfo()
-    const [type, setType] = useState(exportConfig.savedType || 'word')
     const [saveOptions, setSaveOptions] = useState(exportConfig.saveSettings)
     const [options, setOptions] = useState(exportConfig)
+    const type = exportConfig.savedType
+    const setType = (type) => saveExportConfig('savedType', type)
 
     const updateOptions = (newValues) => {
       const newOptions = { ...options }
@@ -32,15 +33,20 @@ const ExportDialogConnector = (connector) => {
     }
 
     const doExport = () => {
-      const { ui, seriesName, books, fullState } = props
-      const bookId = ui.currentTimeline
+      const { bookId, seriesName, books, fullState } = props
       const defaultPath =
         bookId == 'series' ? seriesName + ' ' + t('(Series View)') : books[`${bookId}`].title
 
       askToExport(defaultPath, fullState, type, options[type], (error, success) => {
         if (saveOptions) {
           saveExportConfig('savedType', type)
-          saveExportConfig(type, options[type])
+          // We don't want to maintain the filter across projects
+          // because they have different plot lines and different
+          // numbers of plot lines.
+          saveExportConfig(type, {
+            ...options[type],
+            filter: null,
+          })
         }
 
         if (error) {
@@ -57,7 +63,7 @@ const ExportDialogConnector = (connector) => {
 
     const Chooser = () => {
       return (
-        <Nav bsStyle="pills" activeKey={type} onSelect={(key) => setType(key)}>
+        <Nav bsStyle="pills" activeKey={type} onSelect={setType}>
           <NavItem eventKey="word" title={t('.docx')}>
             {t('MS Word')}
           </NavItem>
@@ -84,7 +90,7 @@ const ExportDialogConnector = (connector) => {
             <hr />
           </div>
           <div className="export-dialog__body">
-            <ExportBody type={type} setType={setType} onChange={updateOptions} />
+            <ExportBody type={type} onChange={updateOptions} />
             {type == null ? (
               <div className="export-dialog__null-type">
                 <h3>{t('Export to:')}</h3>
@@ -112,23 +118,36 @@ const ExportDialogConnector = (connector) => {
 
   ExportDialog.propTypes = {
     close: PropTypes.func,
-    ui: PropTypes.object,
+    bookId: PropTypes.string.isRequired,
     seriesName: PropTypes.string,
     books: PropTypes.object,
     fullState: PropTypes.object,
+    actions: PropTypes.object,
   }
 
-  const { redux } = connector
+  const {
+    redux,
+    pltr: { actions, selectors },
+  } = connector
 
   if (redux) {
-    const { connect } = redux
+    const { connect, bindActionCreators } = redux
 
-    return connect((state) => ({
-      ui: state.present.ui,
-      seriesName: state.present.series.name,
-      books: state.present.books,
-      fullState: state.present,
-    }))(ExportDialog)
+    return connect(
+      (state) => {
+        return {
+          bookId: selectors.currentTimelineSelector(state.present),
+          seriesName: state.present.series.name,
+          books: state.present.books,
+          fullState: state.present,
+        }
+      },
+      (dispatch) => {
+        return {
+          actions: bindActionCreators(actions.ui, dispatch),
+        }
+      }
+    )(ExportDialog)
   }
 
   throw new Error('Could not connect ExportDialog')

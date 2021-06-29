@@ -1,20 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  Glyphicon,
-  Nav,
-  NavItem,
-  Button,
-  Alert,
-  OverlayTrigger,
-  Popover,
-  Grid,
-  Row,
-  Col,
-} from 'react-bootstrap'
-import UnconnectedNoteView from './NoteView'
+import { Glyphicon, Nav, NavItem, Button, Alert, Popover, Grid, Row, Col } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
+import OverlayTrigger from '../OverlayTrigger'
+import UnconnectedNoteView from './NoteView'
 import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
 import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
 import UnconnectedSubNav from '../containers/SubNav'
@@ -174,7 +164,7 @@ const NoteListViewConnector = (connector) => {
 
     renderSubNav() {
       const { filterIsEmpty, uiActions, ui } = this.props
-      let popover = (
+      const popover = () => (
         <Popover id="filter">
           <CustomAttrFilterList type="notes" />
         </Popover>
@@ -191,7 +181,7 @@ const NoteListViewConnector = (connector) => {
         filterDeclaration = <span></span>
       }
 
-      let sortPopover = (
+      const sortPopover = () => (
         <Popover id="sort">
           <SortList type={'notes'} />
         </Popover>

@@ -416,7 +416,7 @@ const TimelineTableConnector = (connector) => {
   } = connector
 
   const {
-    cardMapSelector,
+    cardMetaDataMapSelector,
     visibleSortedBeatsByBookSelector,
     beatsByBookSelector,
     beatHasChildrenSelector,
@@ -445,7 +445,7 @@ const TimelineTableConnector = (connector) => {
           beatMapping: sparceBeatMap(state.present),
           nextBeatId: nextId(state.present.beats),
           lines: sortedLinesByBookSelector(state.present),
-          cardMap: cardMapSelector(state.present),
+          cardMap: cardMetaDataMapSelector(state.present),
           ui: state.present.ui,
           isSeries: isSeriesSelector(state.present),
           isSmall: isSmallSelector(state.present),

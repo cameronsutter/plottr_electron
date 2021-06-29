@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Button, Glyphicon, Popover } from 'react-bootstrap'
+import OverlayTrigger from './OverlayTrigger'
 import TagLabel from './TagLabel'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
@@ -10,6 +11,11 @@ const SelectListConnector = (connector) => {
   const Image = UnconnectedImage(connector)
 
   class SelectList extends Component {
+    constructor(props) {
+      super(props)
+      this.renderUnSelected = this.renderUnSelected.bind(this)
+    }
+
     renderSelected() {
       let body
       if (this.props.type === 'Tags') {
@@ -118,7 +124,7 @@ const SelectListConnector = (connector) => {
               trigger="click"
               rootClose
               placement="right"
-              overlay={this.renderUnSelected()}
+              overlay={this.renderUnSelected}
             >
               <Button bsSize="xsmall">
                 <Glyphicon glyph="plus" />

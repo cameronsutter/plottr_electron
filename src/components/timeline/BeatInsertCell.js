@@ -24,11 +24,13 @@ const BeatInsertCellConnector = (connector) => {
     }
 
     insert = () => {
-      const { beatToLeft, handleInsert, isLast } = this.props
+      if (this.props.readOnly) return
+      const { beatToLeft, handleInsert } = this.props
       handleInsert(beatToLeft && beatToLeft.id)
     }
 
     insertChild = () => {
+      if (this.props.readOnly) return
       const { beatToLeft, handleInsertChild, bookId } = this.props
       handleInsertChild(beatToLeft && beatToLeft.id, bookId)
     }
@@ -221,14 +223,8 @@ const BeatInsertCellConnector = (connector) => {
     }
 
     renderInsertBeat() {
-      const {
-        isFirst,
-        isSmall,
-        hierarchyLevels,
-        orientation,
-        hierarchyLevelName,
-        isInBeatList,
-      } = this.props
+      const { isFirst, isSmall, hierarchyLevels, orientation, hierarchyLevelName, isInBeatList } =
+        this.props
 
       let actualHierarchyLevel = hierarchyLevels.find((level) =>
         level.name == hierarchyLevelName ? true : null
@@ -269,6 +265,16 @@ const BeatInsertCellConnector = (connector) => {
       )
     }
 
+    handleMousEnter = () => {
+      if (this.props.readOnly) return
+      this.setState({ localHovering: true })
+    }
+
+    handleMouseLeave = () => {
+      if (this.props.readOnly) return
+      this.setState({ localHovering: false })
+    }
+
     render() {
       const { showLine, orientation, isSmall, isLast } = this.props
       let insideDiv = null
@@ -278,8 +284,8 @@ const BeatInsertCellConnector = (connector) => {
         insideDiv = (
           <div
             className="vertical-beat-list__insert"
-            onMouseEnter={() => this.setState({ localHovering: true })}
-            onMouseLeave={() => this.setState({ localHovering: false })}
+            onMouseEnter={this.handleMousEnter}
+            onMouseLeave={this.hnadleMouseLeave}
           >
             {this.renderInsertBeat()}
             {this.renderInsertChild()}
@@ -287,10 +293,7 @@ const BeatInsertCellConnector = (connector) => {
         )
       } else {
         insideDiv = (
-          <div
-            onMouseEnter={() => this.setState({ localHovering: true })}
-            onMouseLeave={() => this.setState({ localHovering: false })}
-          >
+          <div onMouseEnter={this.handleMousEnter} onMouseLeave={this.handleMouseLeave}>
             {this.renderInsertBeat()}
             {this.renderInsertChild()}
           </div>
@@ -314,7 +317,6 @@ const BeatInsertCellConnector = (connector) => {
     static propTypes = {
       bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       beats: PropTypes.object.isRequired,
-      ui: PropTypes.object.isRequired,
       orientation: PropTypes.string,
       isSmall: PropTypes.bool,
       isMedium: PropTypes.bool,
@@ -341,6 +343,7 @@ const BeatInsertCellConnector = (connector) => {
       hierarchyLevels: PropTypes.array.isRequired,
       hierarchyLevel: PropTypes.object.isRequired,
       atMaximumDepth: PropTypes.bool,
+      readOnly: PropTypes.bool,
     }
   }
 
@@ -372,6 +375,7 @@ const BeatInsertCellConnector = (connector) => {
           ),
           atMaximumDepth: selectors.atMaximumHierarchyDepthSelector(state.present, beatToLeftId),
           tour: selectors.tourSelector(state.present),
+          readOnly: !selectors.canWriteSelector(state.present),
         }
       },
       (dispatch) => {

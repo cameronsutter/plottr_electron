@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { difference } from 'lodash'
 import PropTypes from 'react-proptypes'
-import { Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Button, Glyphicon, Popover } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
+import OverlayTrigger from '../OverlayTrigger'
 import UnconnectedImage from '../images/Image'
 import cx from 'classnames'
 import { helpers } from 'pltr/v2'
@@ -15,6 +16,12 @@ const BookSelectListConnector = (connector) => {
   const Image = UnconnectedImage(connector)
 
   class BookSelectList extends Component {
+    constructor(props) {
+      super(props)
+
+      this.renderUnSelected = this.renderUnSelected.bind(this)
+    }
+
     renderUnSelected() {
       const { selectedBooks, books, parentId, add } = this.props
       const idsToList = difference(books.allIds, selectedBooks)
@@ -85,7 +92,7 @@ const BookSelectListConnector = (connector) => {
               trigger="click"
               rootClose
               placement="right"
-              overlay={this.renderUnSelected()}
+              overlay={this.renderUnSelected}
             >
               <Button bsSize="xsmall">
                 <Glyphicon glyph="plus" />

@@ -7,12 +7,12 @@ import {
   Button,
   ButtonGroup,
   Popover,
-  OverlayTrigger,
   Alert,
   Grid,
   Row,
   Col,
 } from 'react-bootstrap'
+import OverlayTrigger from '../OverlayTrigger'
 import CustomAttrFilterListConnector from '../CustomAttrFilterList'
 import UnconnectedSortList from '../SortList'
 import CharacterViewConnector from './CharacterView'
@@ -159,7 +159,7 @@ const CharacterListViewConnector = (connector) => {
 
     renderSubNav() {
       const { filterIsEmpty, ui, uiActions } = this.props
-      let filterPopover = (
+      const filterPopover = () => (
         <Popover id="filter">
           <CustomAttrFilterList type="characters" />
         </Popover>
@@ -174,7 +174,7 @@ const CharacterListViewConnector = (connector) => {
       if (filterIsEmpty) {
         filterDeclaration = <span></span>
       }
-      let sortPopover = (
+      const sortPopover = () => (
         <Popover id="sort">
           <SortList type={'characters'} />
         </Popover>

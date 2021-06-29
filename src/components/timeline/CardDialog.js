@@ -20,9 +20,9 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import UnconnectedEditAttribute from '../EditAttribute'
 import MiniColorPicker from '../MiniColorPicker'
 import UnconnectedPlottrModal from '../PlottrModal'
-import UnconnectedRichText from '../rce/RichText'
 import UnconnectedSelectList from '../SelectList'
 import UnconnectedBeatItemTitle from './BeatItemTitle'
+import UnconnectedCardDescriptionEditor from './CardDescriptionEditor'
 import { helpers } from 'pltr/v2'
 
 const {
@@ -32,29 +32,15 @@ const {
 const CardDialogConnector = (connector) => {
   const EditAttribute = UnconnectedEditAttribute(connector)
   const PlottrModal = UnconnectedPlottrModal(connector)
-  const RichText = UnconnectedRichText(connector)
   const SelectList = UnconnectedSelectList(connector)
   const BeatItemTitle = UnconnectedBeatItemTitle(connector)
+  const CardDescriptionEditor = UnconnectedCardDescriptionEditor(connector)
 
   class CardDialog extends Component {
     constructor(props) {
       super(props)
-      const attributes = {}
-      props.customAttributes.forEach(({ name, type }) => {
-        attributes[name] = props.card[name]
-      })
-      const templateAttrs = props.card.templates.reduce((acc, t) => {
-        acc[t.id] = t.attributes.reduce((obj, attr) => {
-          obj[attr.name] = attr.value
-          return obj
-        }, {})
-        return acc
-      }, {})
       this.state = {
-        description: props.card.description,
-        attributes,
         deleting: false,
-        templateAttrs,
         selected: 'Description',
         addingAttribute: false,
         newAttributeType: 'text',
@@ -78,13 +64,6 @@ const CardDialogConnector = (connector) => {
 
     componentDidUpdate(prevProps) {
       if (this.newAttributeInputRef.current) this.newAttributeInputRef.current.focus()
-      if (this.props.customAttributes != prevProps.customAttributes) {
-        const attributes = {}
-        this.props.customAttributes.forEach(({ name, type }) => {
-          if (type === 'text') attributes[name] = this.props.card[name]
-        })
-        this.setState({ attributes })
-      }
     }
 
     componentWillUnmount() {
@@ -94,7 +73,7 @@ const CardDialogConnector = (connector) => {
 
     deleteCard = (e) => {
       e.stopPropagation()
-      this.props.actions.deleteCard(this.props.card.id)
+      this.props.actions.deleteCard(this.props.cardId)
     }
 
     cancelDelete = (e) => {
@@ -119,46 +98,18 @@ const CardDialogConnector = (connector) => {
     }
 
     handleAttrChange = (attrName) => (desc) => {
-      this.setState({
-        attributes: {
-          ...this.state.attributes,
-          [attrName]: desc,
-        },
+      this.props.actions.editCardAttributes(this.props.cardId, {
+        [attrName]: desc,
       })
     }
 
-    handleTemplateAttrChange = (id, name) => (desc) => {
-      const templateAttrs = {
-        ...this.state.templateAttrs,
-        [id]: {
-          ...this.state.templateAttrs[id],
-          [name]: desc,
-        },
-      }
-      this.setState({ templateAttrs })
+    handleTemplateAttrChange = (id, name) => (value) => {
+      this.props.actions.editCardTemplateAttributes(id, name, value)
     }
 
     saveEdit = () => {
       var newTitle = this.titleInputRef.value
-      const attrs = {}
-      this.props.customAttributes.forEach((attr) => {
-        const { name } = attr
-        attrs[name] = this.state.attributes[name] || this.props.card[name]
-      })
-      const templates = this.props.card.templates.map((t) => {
-        t.attributes = t.attributes.map((attr) => {
-          attr.value = this.state.templateAttrs[t.id][attr.name]
-          return attr
-        })
-        return t
-      })
-      this.props.actions.editCard(
-        this.props.card.id,
-        newTitle,
-        this.state.description,
-        templates,
-        attrs
-      )
+      this.props.actions.editCardAttributes(this.props.cardId, { title: newTitle })
     }
 
     handleEnter = (event) => {
@@ -216,21 +167,21 @@ const CardDialogConnector = (connector) => {
     }
 
     chooseCardColor = (color) => {
-      const { card, actions } = this.props
-      actions.editCardAttributes(card.id, { color })
+      const { cardId, actions } = this.props
+      actions.editCardAttributes(cardId, { color })
       this.setState({ showColorPicker: false })
     }
 
     changeBeat(beatId) {
-      this.props.actions.changeBeat(this.props.card.id, beatId, this.props.ui.currentTimeline)
+      this.props.actions.changeBeat(this.props.cardId, beatId, this.props.ui.currentTimeline)
     }
 
     changeLine(lineId) {
-      this.props.actions.changeLine(this.props.card.id, lineId, this.props.ui.currentTimeline)
+      this.props.actions.changeLine(this.props.cardId, lineId, this.props.ui.currentTimeline)
     }
 
     changeBook(bookId) {
-      this.props.actions.changeBook(this.props.card.id, bookId)
+      this.props.actions.changeBook(this.props.cardId, bookId)
     }
 
     getCurrentBeat() {
@@ -242,7 +193,7 @@ const CardDialogConnector = (connector) => {
     }
 
     getBookTitle() {
-      const book = this.props.books[this.props.card.bookId]
+      const book = this.props.books[this.props.cardMetaData.bookId]
       if (book) {
         return book.title || i18n('Untitled')
       } else {
@@ -255,7 +206,7 @@ const CardDialogConnector = (connector) => {
 
       return (
         <DeleteConfirmModal
-          name={this.props.card.title}
+          name={this.props.cardMetaData.title}
           onDelete={this.deleteCard}
           onCancel={this.cancelDelete}
         />
@@ -263,15 +214,14 @@ const CardDialogConnector = (connector) => {
     }
 
     renderEditingCustomAttributes() {
-      const { card, ui, customAttributes } = this.props
+      const { cardId, ui, customAttributes } = this.props
       return customAttributes.map((attr, index) => {
         return (
           <React.Fragment key={`custom-attribute-${index}-${attr.name}`}>
             <EditAttribute
               index={index}
-              entity={card}
               entityType="scene"
-              value={this.state.attributes[attr.name]}
+              valueSelector={selectors.attributeValueSelector(cardId, attr.name)}
               ui={ui}
               onChange={this.handleAttrChange(attr.name)}
               onShortDescriptionKeyDown={this.handleEsc}
@@ -285,16 +235,19 @@ const CardDialogConnector = (connector) => {
     }
 
     renderEditingTemplates() {
-      const { card, ui } = this.props
-      return card.templates.flatMap((t) => {
+      const {
+        cardId,
+        cardMetaData: { templates },
+        ui,
+      } = this.props
+      return templates.flatMap((t) => {
         return t.attributes.map((attr, index) => (
           <React.Fragment key={`template-attribute-${index}-${t.id}-${attr.name}`}>
             <EditAttribute
               templateAttribute
               index={index}
-              entity={card}
               entityType="scene"
-              value={this.state.templateAttrs[t.id][attr.name]}
+              valueSelector={selectors.attributeValueSelector(cardId, t.id, attr.name)}
               ui={ui}
               inputId={`${t.id}-${attr.name}Input`}
               onChange={this.handleTemplateAttrChange(t.id, attr.name)}
@@ -392,7 +345,7 @@ const CardDialogConnector = (connector) => {
     }
 
     renderTitle() {
-      const title = this.props.card.title
+      const title = this.props.cardMetaData.title
       return (
         <FormControl
           style={{ fontSize: '24pt', textAlign: 'center', marginBottom: '6px' }}
@@ -408,9 +361,9 @@ const CardDialogConnector = (connector) => {
 
     renderBookDropdown() {
       let bookButton = null
-      if (this.props.card.bookId) {
+      if (this.props.cardMetaData.bookId) {
         const handler = () => {
-          this.props.uiActions.changeCurrentTimeline(this.props.card.bookId)
+          this.props.uiActions.changeCurrentTimeline(this.props.cardMetaData.bookId)
           this.props.closeDialog()
         }
         bookButton = <Button onClick={handler}>{i18n('View Timeline')}</Button>
@@ -436,7 +389,7 @@ const CardDialogConnector = (connector) => {
       const lineDropdownID = 'select-line'
       const beatDropdownID = 'select-beat'
 
-      const { isSeries, card, ui, beats } = this.props
+      const { isSeries, ui, beats } = this.props
 
       let labelText = i18n('Chapter')
       let bookDropDown = null
@@ -445,10 +398,17 @@ const CardDialogConnector = (connector) => {
         bookDropDown = this.renderBookDropdown()
       }
       const darkened =
-        card.color || card.color === null ? tinycolor(card.color).darken().toHslString() : null
-      const borderColor = card.color || card.color === null ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
+        this.props.cardMetaData.color || this.props.cardMetaData.color === null
+          ? tinycolor(this.props.cardMetaData.color).darken().toHslString()
+          : null
+      const borderColor =
+        this.props.cardMetaData.color || this.props.cardMetaData.color === null
+          ? darkened
+          : 'hsl(211, 27%, 70%)' // $gray-6
 
-      const DropDownTitle = <BeatItemTitle beat={beats.find(({ id }) => card.beatId === id)} />
+      const DropDownTitle = (
+        <BeatItemTitle beat={beats.find(({ id }) => this.props.beatId === id)} />
+      )
 
       return (
         <div className="card-dialog__left-side">
@@ -478,25 +438,25 @@ const CardDialogConnector = (connector) => {
             </label>
           </div>
           <SelectList
-            parentId={this.props.card.id}
+            parentId={this.props.cardId}
             type={'Characters'}
-            selectedItems={this.props.card.characters}
+            selectedItems={this.props.cardMetaData.characters}
             allItems={this.props.characters}
             add={this.props.actions.addCharacter}
             remove={this.props.actions.removeCharacter}
           />
           <SelectList
-            parentId={this.props.card.id}
+            parentId={this.props.cardId}
             type={'Places'}
-            selectedItems={this.props.card.places}
+            selectedItems={this.props.cardMetaData.places}
             allItems={this.props.places}
             add={this.props.actions.addPlace}
             remove={this.props.actions.removePlace}
           />
           <SelectList
-            parentId={this.props.card.id}
+            parentId={this.props.cardId}
             type={'Tags'}
-            selectedItems={this.props.card.tags}
+            selectedItems={this.props.cardMetaData.tags}
             allItems={this.props.tags}
             add={this.props.actions.addTag}
             remove={this.props.actions.removeTag}
@@ -506,12 +466,16 @@ const CardDialogConnector = (connector) => {
               {i18n('Color')}:
             </label>
             <ColorPickerColor
-              color={card.color || card.color === null ? 'none' : '#F1F5F8'} // $gray-9
+              color={
+                this.props.cardMetaData.color || this.props.cardMetaData.color === null
+                  ? 'none'
+                  : '#F1F5F8'
+              } // $gray-9
               choose={this.openColorPicker}
               style={{ margin: '2px', marginRight: '12px' }}
               buttonStyle={{
                 border: `1px solid ${borderColor}`,
-                backgroundColor: card.color && borderColor,
+                backgroundColor: this.props.cardMetaData.color && borderColor,
               }}
               ref={this.colorButtonRef}
             />
@@ -547,7 +511,7 @@ const CardDialogConnector = (connector) => {
     }
 
     render() {
-      const { card, ui } = this.props
+      const { cardId, ui } = this.props
       const { selected } = this.state
       return (
         <PlottrModal isOpen={true} onRequestClose={this.saveAndClose}>
@@ -591,13 +555,7 @@ const CardDialogConnector = (connector) => {
                     hidden: selected !== 'Description',
                   })}
                 >
-                  <RichText
-                    description={card.description}
-                    onChange={(desc) => this.setState({ description: desc })}
-                    editable={true}
-                    darkMode={ui.darkMode}
-                    autofocus
-                  />
+                  <CardDescriptionEditor cardId={cardId} />
                 </div>
                 <div
                   className={cx('card-dialog__custom-attributes', {
@@ -619,14 +577,13 @@ const CardDialogConnector = (connector) => {
   }
 
   CardDialog.propTypes = {
-    card: PropTypes.object,
+    cardMetaData: PropTypes.object.isRequired,
+    cardId: PropTypes.number.isRequired,
     beatId: PropTypes.number.isRequired,
     lineId: PropTypes.number.isRequired,
     closeDialog: PropTypes.func,
     lines: PropTypes.array.isRequired,
-    beatTree: PropTypes.object.isRequired,
     beats: PropTypes.array.isRequired,
-    hierarchyLevels: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
     tags: PropTypes.array.isRequired,
     characters: PropTypes.array.isRequired,
@@ -634,11 +591,9 @@ const CardDialogConnector = (connector) => {
     ui: PropTypes.object.isRequired,
     books: PropTypes.object.isRequired,
     isSeries: PropTypes.bool.isRequired,
-    positionOffset: PropTypes.number.isRequired,
     customAttributes: PropTypes.array.isRequired,
     uiActions: PropTypes.object.isRequired,
     customAttributeActions: PropTypes.object.isRequired,
-    hierarchyEnabled: PropTypes.bool,
   }
 
   const Pure = PureComponent(CardDialog)
@@ -652,11 +607,10 @@ const CardDialogConnector = (connector) => {
     const { connect, bindActionCreators } = redux
 
     return connect(
-      (state) => {
+      (state, ownProps) => {
         return {
-          beatTree: selectors.beatsByBookSelector(state.present),
+          cardMetaData: selectors.cardMetaDataSelector(state.present, ownProps.cardId),
           beats: selectors.sortedBeatsByBookSelector(state.present),
-          hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
           lines: selectors.sortedLinesByBookSelector(state.present),
           tags: selectors.sortedTagsSelector(state.present),
           characters: selectors.charactersSortedAtoZSelector(state.present),
@@ -665,8 +619,6 @@ const CardDialogConnector = (connector) => {
           ui: state.present.ui,
           books: state.present.books,
           isSeries: selectors.isSeriesSelector(state.present),
-          positionOffset: selectors.positionOffsetSelector(state.present),
-          hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
         }
       },
       (dispatch) => {

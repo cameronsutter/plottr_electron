@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import { Editor } from 'slate'
-import { ReactEditor, useSlate } from 'slate-react'
+import { ReactEditor } from 'slate-react'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 
-export const FontsButton = (props) => {
-  const editor = useSlate()
-
+const UnMemoisedFontsButton = ({ editor, addRecent, fonts, recentFonts }) => {
   const [activeFont, setActiveFont] = useState(getCurrentFont(editor))
 
   useEffect(() => {
-    ReactEditor.focus(editor)
-    setActiveFont(getCurrentFont(editor))
+    if (ReactEditor.isFocused(editor)) {
+      const timer = setTimeout(() => {
+        const newFont = getCurrentFont(editor)
+        if (newFont !== activeFont) {
+          setActiveFont(newFont)
+        }
+      }, 100)
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+    return () => {}
   }, [editor.selection])
 
   const changeFont = (font) => {
     setActiveFont(font)
     addFontMark(editor, font)
-    props.addRecent(font)
+    addRecent(font)
   }
 
   const renderFont = (f, key) => {
@@ -29,11 +37,11 @@ export const FontsButton = (props) => {
   }
 
   const renderFonts = () => {
-    let fontItems = props.recentFonts.map((f) => renderFont(f, 'recents'))
+    let fontItems = recentFonts.map((f) => renderFont(f, 'recents'))
     if (fontItems.length) {
       fontItems.push(<MenuItem divider key="divider" />)
     }
-    fontItems = [...fontItems, ...props.fonts.map((f) => renderFont(f, ''))]
+    fontItems = [...fontItems, ...fonts.map((f) => renderFont(f, ''))]
     return fontItems
   }
 
@@ -49,11 +57,14 @@ export const FontsButton = (props) => {
   )
 }
 
-FontsButton.propTypes = {
+UnMemoisedFontsButton.propTypes = {
   addRecent: PropTypes.func,
   recentFonts: PropTypes.arrayOf(PropTypes.string),
   fonts: PropTypes.arrayOf(PropTypes.string),
+  editor: PropTypes.object.isRequired,
 }
+
+export const FontsButton = React.memo(UnMemoisedFontsButton)
 
 const getCurrentFont = (editor) => {
   const [node] = Editor.nodes(editor, { match: (n) => n.font })

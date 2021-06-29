@@ -37,6 +37,7 @@ const EXPORT_CONFIG = {
       where: 'synopsis',
       customAttributes: true,
       templates: true,
+      filter: null,
     },
     characters: {
       export: true,
@@ -83,6 +84,7 @@ const EXPORT_CONFIG = {
       description: true,
       customAttributes: true,
       templates: true,
+      filter: null,
     },
     characters: {
       export: true,

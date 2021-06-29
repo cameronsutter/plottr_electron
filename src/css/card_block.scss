@@ -188,6 +188,10 @@
   }
 }
 
+.blank-card__body.disabled {
+  cursor: not-allowed;
+}
+
 .vertical-blank-card__body {
   @extend .card__body;
   border: 3px dashed black;
@@ -214,6 +218,10 @@
       padding: 6px 4px;
     }
   }
+}
+
+.vertical-blank-card__body.disabled {
+  cursor: not-allowed;
 }
 
 .blank-card__body.hover {

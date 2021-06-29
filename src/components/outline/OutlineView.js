@@ -1,17 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  Glyphicon,
-  Nav,
-  NavItem,
-  Button,
-  OverlayTrigger,
-  Popover,
-  Alert,
-  Grid,
-  Row,
-  Col,
-} from 'react-bootstrap'
+import { Glyphicon, Nav, NavItem, Button, Popover, Alert, Grid, Row, Col } from 'react-bootstrap'
+import OverlayTrigger from '../OverlayTrigger'
 import UnconnectedBeatView from './BeatView'
 import UnconnectedMiniMap from './MiniMap'
 import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
@@ -102,7 +92,7 @@ const OutlineViewConnector = (connector) => {
 
     renderSubNav() {
       const { ui } = this.props
-      let popover = (
+      const popover = () => (
         <Popover id="filter">
           <div className="filter-list">{this.renderFilterList()}</div>
         </Popover>

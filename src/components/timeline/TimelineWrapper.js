@@ -1,19 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  Nav,
-  NavItem,
-  Button,
-  ButtonGroup,
-  Glyphicon,
-  Popover,
-  OverlayTrigger,
-  Alert,
-} from 'react-bootstrap'
+import { Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, Alert } from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
 import { t as i18n } from 'plottr_locales'
-import UnconnectedTimelineTable from './TimelineTable'
 import cx from 'classnames'
+import OverlayTrigger from '../OverlayTrigger'
+import UnconnectedTimelineTable from './TimelineTable'
 import UnconnectedActsConfigModal from '../dialogs/ActsConfigModal'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
 import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
@@ -266,7 +258,7 @@ const TimelineWrapperConnector = (connector) => {
         scrollDirectionFirst = 'menu-up'
         scrollDirectionSecond = 'menu-down'
       }
-      let popover = (
+      const popover = () => (
         <Popover id="filter">
           <CustomAttrFilterList type="cards" showColor={true} />
         </Popover>

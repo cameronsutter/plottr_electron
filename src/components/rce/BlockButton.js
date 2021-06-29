@@ -108,7 +108,7 @@ export const handleBlockQuote = (editor, format) => {
   }
 }
 
-const BlockButton = ({ format, icon }) => {
+const BlockButton = ({ editor, format, icon }) => {
   const toggleBlock = (editor, format) => {
     if (LIST_TYPES.includes(format)) {
       return handleList(editor, format)
@@ -122,8 +122,6 @@ const BlockButton = ({ format, icon }) => {
       return handleBlockQuote(editor, format)
     }
   }
-
-  const editor = useSlate()
 
   return (
     <Button
@@ -141,6 +139,7 @@ const BlockButton = ({ format, icon }) => {
 BlockButton.propTypes = {
   format: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,
+  editor: PropTypes.object.isRequired,
 }
 
 export default BlockButton

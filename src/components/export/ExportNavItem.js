@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { NavItem, Button, Glyphicon, Popover, OverlayTrigger } from 'react-bootstrap'
+import { NavItem, Button, Glyphicon, Popover } from 'react-bootstrap'
 import { t } from 'plottr_locales'
+import OverlayTrigger from '../OverlayTrigger'
 import UnconnectedExportDialog from './ExportDialog'
 
 const ExportNavItemConnector = (connector) => {
@@ -17,15 +18,13 @@ const ExportNavItemConnector = (connector) => {
 
   function ExportNavItem(props) {
     const [showDialog, setShowDialog] = useState(false)
-    const overlayRef = useRef(null)
+    const [showMenu, setShowMenu] = useState(false)
 
     const openDialog = () => {
       setShowDialog(true)
-      overlayRef.current.hide()
     }
 
     const doExport = (type) => {
-      overlayRef.current.hide()
       const { ui, seriesName, books, fullState } = props
       const bookId = ui.currentTimeline
       const defaultPath =
@@ -46,16 +45,39 @@ const ExportNavItemConnector = (connector) => {
       return <ExportDialog close={() => setShowDialog(false)} />
     }
 
+    const doWordExport = () => {
+      setShowMenu(false)
+      doExport('word')
+    }
+
+    const doScrivenerExport = () => {
+      setShowMenu(false)
+      doExport('scrivener')
+    }
+
+    const startAdvancedExport = () => {
+      setShowMenu(false)
+      openDialog()
+    }
+
     const renderPopover = () => {
       return (
         <Popover id="export-popover">
           <ul className="export-list">
-            <li onClick={() => doExport('word')}>{t('MS Word')}</li>
-            <li onClick={() => doExport('scrivener')}>{t('Scrivener')}</li>
-            <li onClick={openDialog}>{t('Advanced...')}</li>
+            <li onClick={doWordExport}>{t('MS Word')}</li>
+            <li onClick={doScrivenerExport}>{t('Scrivener')}</li>
+            <li onClick={startAdvancedExport}>{t('Advanced...')}</li>
           </ul>
         </Popover>
       )
+    }
+
+    const openMenu = () => {
+      setShowMenu(true)
+    }
+
+    const hideMenu = () => {
+      setShowMenu(false)
     }
 
     return (
@@ -65,10 +87,11 @@ const ExportNavItemConnector = (connector) => {
           trigger="click"
           rootClose
           placement="bottom"
-          overlay={renderPopover()}
-          ref={overlayRef}
+          overlay={renderPopover}
+          open={showMenu}
+          onHide={hideMenu}
         >
-          <Button bsSize="small">
+          <Button bsSize="small" onClick={openMenu}>
             <Glyphicon glyph="export" />
           </Button>
         </OverlayTrigger>

@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
+import { PropTypes } from 'prop-types'
 import isUrl from 'is-url'
 import { FaLink } from 'react-icons/fa'
 import { Editor, Transforms, Range } from 'slate'
-import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
 import InputModal from '../dialogs/InputModal'
 import { t as i18n } from 'plottr_locales'
 
-export const LinkButton = () => {
-  const editor = useSlate()
+export const LinkButton = ({ editor }) => {
   const [dialogOpen, setOpen] = useState(false)
   const [selection, setSelection] = useState()
   const getLink = (url) => {
@@ -47,6 +46,10 @@ export const LinkButton = () => {
       />
     </Button>
   )
+}
+
+LinkButton.propTypes = {
+  editor: PropTypes.object.isRequired,
 }
 
 export const withLinks = (editor) => {

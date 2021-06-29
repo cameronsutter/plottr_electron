@@ -59,15 +59,29 @@ export function ensureBackupFullPath() {
 }
 
 export function isABackupFile(fileName) {
-  return fileName.match(/\.pltr$/) && fileName.match(/^1?[0-9]_1?[0-9]_[0-9][0-9][0-9][0-9]\//)
+  return fileName.match(/\.pltr$/) && fileName.match(/^1?[0-9]_1?[0-9]_[0-9][0-9][0-9][0-9]/)
 }
 
 export function backupFolders(backupBaseFolder) {
-  return fs.readdirSync(backupBaseFolder).filter(isABackupFile)
+  return fs
+    .readdirSync(backupBaseFolder)
+    .filter(
+      (entry) =>
+        fs.lstatSync(path.join(backupBaseFolder, entry).isDirectory()) &&
+        entry.match(/^1?[0-9]_1?[0-9]_[0-9][0-9][0-9][0-9]/)
+    )
 }
 
 export function backupFiles(backupBaseFolder) {
-  return []
+  fs.readdirSync(backupBaseFolder).flatMap((entry) => {
+    const subPath = path.join(backupBaseFolder, entry)
+    if (fs.lstatSync(subPath).isDirectory()) {
+      return fs
+        .readdirSync(subPath)
+        .filter((file) => isABackupFile(file) && fs.lstatSync(path.join(subPath, file)).isFile())
+    }
+    return []
+  })
 }
 
 export function sortFileNamesByDate(fileNames) {

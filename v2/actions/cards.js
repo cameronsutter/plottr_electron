@@ -15,6 +15,8 @@ import {
   ATTACH_TAG_TO_CARD,
   REMOVE_TAG_FROM_CARD,
   ADD_CARD_IN_BEAT,
+  LOAD_CARDS,
+  EDIT_CARD_TEMPLATE_ATTRIBUTES,
 } from '../constants/ActionTypes'
 
 export function addCard(card) {
@@ -35,6 +37,10 @@ export function editCardAttributes(id, attributes) {
 
 export function editCardCoordinates(id, lineId, beatId, bookId) {
   return { type: EDIT_CARD_COORDINATES, id, lineId, beatId, bookId }
+}
+
+export function editCardTemplateAttributes(id, name, value) {
+  return { type: EDIT_CARD_TEMPLATE_ATTRIBUTES, id, name, value }
 }
 
 export function changeLine(id, lineId, bookId) {
@@ -98,4 +104,8 @@ export function removePlace(id, placeId) {
 
 export function removeTag(id, tagId) {
   return { type: REMOVE_TAG_FROM_CARD, id, tagId }
+}
+
+export function load(patching, cards) {
+  return { type: LOAD_CARDS, patching, cards }
 }

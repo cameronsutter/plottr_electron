@@ -5,6 +5,7 @@ import {
   EDIT_TAG,
   DELETE_TAG,
   CHANGE_TAG_COLOR,
+  LOAD_TAGS,
 } from '../constants/ActionTypes'
 
 export function addTag() {
@@ -29,4 +30,8 @@ export function changeColor(id, color) {
 
 export function deleteTag(id) {
   return { type: DELETE_TAG, id }
+}
+
+export function load(patching, tags) {
+  return { type: LOAD_TAGS, patching, tags }
 }

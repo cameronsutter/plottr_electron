@@ -7,6 +7,7 @@ import {
   INSERT_BEAT,
   EXPAND_BEAT,
   COLLAPSE_BEAT,
+  LOAD_BEATS,
 } from '../constants/ActionTypes'
 import { beat } from '../store/initialState'
 
@@ -40,4 +41,8 @@ export function expandBeat(id, bookId) {
 
 export function collapseBeat(id, bookId) {
   return { type: COLLAPSE_BEAT, id, bookId }
+}
+
+export function load(patching, beats) {
+  return { type: LOAD_BEATS, patching, beats }
 }

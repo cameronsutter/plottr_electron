@@ -1,5 +1,6 @@
 import {
   FILE_LOADED,
+  LOAD_FEATURE_FLAGS,
   NEW_FILE,
   RESET,
   SET_FEATURE_FLAG,
@@ -9,29 +10,34 @@ import { featureFlags } from '../store/initialState'
 
 const INITIAL_STATE = featureFlags
 
-const featureFlagsReducer = (dataRepairers) => (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case SET_FEATURE_FLAG:
-      return {
-        ...state,
-        [action.flagName]: true,
-      }
-    case UNSET_FEATURE_FLAG:
-      return {
-        ...state,
-        [action.flagName]: false,
-      }
+const featureFlagsReducer =
+  (dataRepairers) =>
+  (state = INITIAL_STATE, action) => {
+    switch (action.type) {
+      case SET_FEATURE_FLAG:
+        return {
+          ...state,
+          [action.flagName]: true,
+        }
+      case UNSET_FEATURE_FLAG:
+        return {
+          ...state,
+          [action.flagName]: false,
+        }
 
-    case RESET:
-    case FILE_LOADED:
-      return action.data.featureFlags || INITIAL_STATE
+      case RESET:
+      case FILE_LOADED:
+        return action.data.featureFlags || INITIAL_STATE
 
-    case NEW_FILE:
-      return INITIAL_STATE
+      case NEW_FILE:
+        return INITIAL_STATE
 
-    default:
-      return state
+      case LOAD_FEATURE_FLAGS:
+        return action.featureFlags
+
+      default:
+        return state
+    }
   }
-}
 
 export default featureFlagsReducer

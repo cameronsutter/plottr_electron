@@ -1,4 +1,6 @@
 import { createSelector } from 'reselect'
+import { createSelectorCreator, defaultMemoize } from 'reselect'
+import { isEqual } from 'lodash'
 import { sortBy } from 'lodash'
 import { timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
 import { findNode, nodeParent } from '../reducers/tree'
@@ -7,7 +9,53 @@ import { beatsByBookSelector, sortedBeatsByBookSelector } from './beats'
 
 export const allCardsSelector = (state) => state.cards
 
+const cardMetaData = (card) => {
+  const { id, beatId, lineId, tags, color, places, characters, bookId, title, templates } = card
+
+  return {
+    id,
+    beatId,
+    lineId,
+    tags,
+    color,
+    places,
+    characters,
+    bookId,
+    title,
+    templates,
+  }
+}
+
+export const allCardMetaDataSelector = (state) => state.cards.map(cardMetaData)
+
 export const nextCardIdSelector = createSelector(allCardsSelector, (cards) => nextId(cards))
+
+export const cardIdSelector = (state, cardId) => cardId
+
+export const cardByIdSelector = createSelector(
+  cardIdSelector,
+  allCardsSelector,
+  (cardId, cards) => {
+    return cards.find((card) => card.id === cardId)
+  }
+)
+
+export const cardDescriptionByIdSelector = createSelector(
+  cardByIdSelector,
+  (card) => card && card.description
+)
+
+export const cardMetaDataSelector = createSelector(cardByIdSelector, (card) => {
+  if (!card) return null
+
+  return cardMetaData(card)
+})
+
+export const attributeValueSelector = (cardId, attributeName) => (state) =>
+  cardByIdSelector(state, cardId)[attributeName]
+
+export const templateAttributeValueSelector = (cardId, templateId, attributeName) => (state) =>
+  cardByIdSelector(state, cardId).templates[templateId][attributeName]
 
 export const collapsedBeatSelector = createSelector(
   beatsByBookSelector,
@@ -42,6 +90,20 @@ export const collapsedBeatSelector = createSelector(
 
 export const cardMapSelector = createSelector(
   allCardsSelector,
+  collapsedBeatSelector,
+  sortedBeatsByBookSelector,
+  (cards, collapsedBeats, allSortedBeats) => {
+    const beatIds = allSortedBeats.map(({ id }) => id)
+    const beatPositions = beatIds.map((x) => x)
+    beatIds.forEach((beatId, index) => (beatPositions[beatId] = index))
+    return cards.reduce(cardReduce('lineId', 'beatId', collapsedBeats, beatPositions), {})
+  }
+)
+
+const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual)
+
+export const cardMetaDataMapSelector = createDeepEqualSelector(
+  allCardMetaDataSelector,
   collapsedBeatSelector,
   sortedBeatsByBookSelector,
   (cards, collapsedBeats, allSortedBeats) => {

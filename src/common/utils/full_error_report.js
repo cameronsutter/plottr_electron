@@ -30,6 +30,7 @@ function prepareErrorReport() {
   if (is.development) {
     appLogPath = appLogPath.replace('Electron', 'plottr')
   }
+  log.info('appLogPath', appLogPath)
   const mainLogFile = path.join(appLogPath, 'main.log')
   const rendererLogFile = path.join(appLogPath, 'renderer.log')
   let mainLogContents = null

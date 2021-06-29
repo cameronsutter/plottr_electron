@@ -1,6 +1,7 @@
 import Store from 'electron-store'
 import { ipcRenderer } from 'electron'
 import { useState, useEffect } from 'react'
+import { merge } from 'lodash'
 import {
   TRIAL_INFO_PATH,
   USER_INFO_PATH,
@@ -114,5 +115,6 @@ export function useSettingsInfo() {
 }
 
 export function useExportConfigInfo() {
+  exportConfigStore.store = merge(export_config, exportConfigStore.store)
   return useJsonStore(exportConfigStore)
 }

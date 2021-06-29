@@ -27,6 +27,7 @@ export default {
       customAttributes: true,
       templates: true,
       tags: true,
+      categoryHeading: true,
       category: true,
     },
     places: {
@@ -74,6 +75,7 @@ export default {
       notes: true,
       customAttributes: true,
       templates: true,
+      categoryHeading: true,
       category: true,
     },
     places: {

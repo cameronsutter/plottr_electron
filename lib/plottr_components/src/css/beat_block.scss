@@ -58,6 +58,9 @@ $medium_width: 80px;
       }
     }
   }
+  &.disabled {
+    cursor: not-allowed;
+  }
 }
 
 .beat-list__item__hover-options {

@@ -1,4 +1,11 @@
-import { backupFiles, backupFolders, isABackupFile, sortFileNamesByDate } from '../backup'
+import { DateTime } from 'luxon'
+import {
+  backupFiles,
+  backupFolders,
+  isABackupFile,
+  sortFileNamesByDate,
+  fileIsSoonerThan,
+} from '../backup'
 
 describe('isABackupFile', () => {
   describe('given an empty file name', () => {
@@ -127,6 +134,31 @@ describe('sortFileNamesByDate', () => {
         '6_25_2021/Zelda.pltr',
         '10_15_2021/(start-session)-Goldilocks and The Three Bears.pltr',
       ])
+    })
+  })
+})
+
+describe('fileIsSoonerThan', () => {
+  describe('given the anchor date 12th June 2020', () => {
+    const anchorDate = DateTime.fromObject({
+      day: 12,
+      month: 6,
+      year: 2020,
+    })
+    describe('and a file name with date: 13 June 2020', () => {
+      it('should produce true', () => {
+        expect(fileIsSoonerThan(anchorDate, '6_13_2020/test.pltr')).toEqual(true)
+      })
+    })
+    describe('and a file name with date: 12 June 2020', () => {
+      it('should produce false', () => {
+        expect(fileIsSoonerThan(anchorDate, '6_12_2020/test.pltr')).toEqual(false)
+      })
+    })
+    describe('and a file name with date: 11 June 2020', () => {
+      it('should produce false', () => {
+        expect(fileIsSoonerThan(anchorDate, '6_11_2020/test.pltr')).toEqual(false)
+      })
     })
   })
 })

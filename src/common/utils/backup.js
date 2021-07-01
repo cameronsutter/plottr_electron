@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import { DateTime, Duration } from 'luxon'
 import { BACKUP_BASE_PATH } from './config_paths'
 import SETTINGS from './settings'
 
@@ -116,4 +117,13 @@ const byDateThenFile = (thisFileName, otherFileName) => {
 
 export function sortFileNamesByDate(fileNames) {
   return fileNames.sort(byDateThenFile)
+}
+
+export function nDaysAgo(n, anchorDate = DateTime.now()) {
+  return anchorDate.subtract(Duration.fromObject({ days: n }))
+}
+
+export function fileIsSoonerThan(nDaysAgoDate, fileName) {
+  const [month, day, year] = [...fileName.matchAll(/[0-9]+/g)].map((xs) => Number(xs[0]))
+  return DateTime.fromObject({ day, month, year }) > nDaysAgoDate
 }

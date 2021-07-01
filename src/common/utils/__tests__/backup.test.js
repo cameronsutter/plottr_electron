@@ -101,6 +101,7 @@ describe('sortFileNamesByDate', () => {
           '6_4_2021/Zelda.pltr',
           '5_19_2021/(start-session)-Zelda.pltr',
           '5_19_2021/Zelda.pltr',
+          '10_15_2021/(start-session)-Goldilocks and The Three Bears.pltr',
           '5_15_2021/(start-session)-Goldilocks and The Three Bears.pltr',
           '6_25_2021/(start-session)-Zelda.pltr',
           '6_25_2021/Zelda.pltr',
@@ -118,12 +119,13 @@ describe('sortFileNamesByDate', () => {
         '5_18_2021/Zelda.pltr',
         '5_19_2021/(start-session)-Zelda.pltr',
         '5_19_2021/Zelda.pltr',
-        '6_25_2021/(start-session)-Zelda.pltr',
-        '6_25_2021/Zelda.pltr',
         '6_3_2021/(start-session)-Zelda.pltr',
         '6_3_2021/Zelda.pltr',
         '6_4_2021/(start-session)-Zelda.pltr',
         '6_4_2021/Zelda.pltr',
+        '6_25_2021/(start-session)-Zelda.pltr',
+        '6_25_2021/Zelda.pltr',
+        '10_15_2021/(start-session)-Goldilocks and The Three Bears.pltr',
       ])
     })
   })

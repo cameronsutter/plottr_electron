@@ -88,6 +88,32 @@ export function backupFiles(backupBaseFolder) {
   })
 }
 
+const byDateThenFile = (thisFileName, otherFileName) => {
+  const [thisMonth, thisDay, thisYear] = [...thisFileName.matchAll(/[0-9]+/g)].map((xs) =>
+    Number(xs[0])
+  )
+  const [thatMonth, thatDay, thatYear] = [...otherFileName.matchAll(/[0-9]+/g)].map((xs) =>
+    Number(xs[0])
+  )
+  const thatDateBeforeThis =
+    thatYear < thisYear ||
+    (thatYear === thisYear && thatMonth < thisMonth) ||
+    (thatYear === thisYear && thatMonth === thisMonth && thatDay < thisDay)
+  const thatDateSameAsThis = thatYear === thisYear && thatMonth === thisMonth && thatDay === thisDay
+
+  const thisIsStartFile = thisFileName.match(/start-session/)
+  const thatIsStartFile = otherFileName.match(/start-session/)
+
+  const thatBeforeThis =
+    thatDateBeforeThis || (thatDateSameAsThis && thatIsStartFile && !thisIsStartFile)
+
+  if (thatBeforeThis) return 1
+
+  if (thatDateSameAsThis && thisIsStartFile === thatIsStartFile) return 0
+
+  return -1
+}
+
 export function sortFileNamesByDate(fileNames) {
-  return fileNames
+  return fileNames.sort(byDateThenFile)
 }

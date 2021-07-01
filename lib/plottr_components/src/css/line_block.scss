@@ -168,11 +168,11 @@ $medium_width: 80px;
       }
       div.template {
         font-size: 12px;
-        border-bottom: none;
+        border-top: none;
         border-right: 3px dashed $blue-8;
       }
       div.non-template {
-        border-top: none;
+        border-bottom: none;
         border-left: 3px dashed $blue-8;
       }
     }
@@ -292,7 +292,6 @@ $medium_width: 80px;
   border: 1px solid transparent;
   font-size: 12px;
   width: 150px;
-  margin-left: 25px;
   cursor: pointer;
   svg {
     position: absolute;

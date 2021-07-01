@@ -77,6 +77,7 @@ export function deleteOldBackups(strategy, amount) {
       filesToDelete.forEach((file) => {
         fs.unlinkSync(path.join(BACKUP_BASE_PATH, file))
       })
+      deleteEmptyFolders()
       return
     }
     case 'number': {
@@ -85,6 +86,7 @@ export function deleteOldBackups(strategy, amount) {
       filesToDelete.forEach((file) => {
         fs.unlinkSync(path.join(BACKUP_BASE_PATH, file))
       })
+      deleteEmptyFolders()
       return
     }
     default:
@@ -92,6 +94,16 @@ export function deleteOldBackups(strategy, amount) {
         `Unhandled backup strategy for removing old backups (${strategy}).  Leaving everything as is.`
       )
   }
+}
+
+function deleteEmptyFolders() {
+  fs.readdirSync(BACKUP_BASE_PATH)
+    .filter(
+      (elem) =>
+        fs.lstatSync(path.join(BACKUP_BASE_PATH, elem)).isDirectory() &&
+        fs.readdirSync(path.join(BACKUP_BASE_PATH, elem)).length === 0
+    )
+    .forEach((emptyDirectory) => fs.rmdirSync(path.join(BACKUP_BASE_PATH, emptyDirectory)))
 }
 
 const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/

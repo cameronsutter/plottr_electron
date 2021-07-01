@@ -67,8 +67,8 @@ export function backupFolders(backupBaseFolder) {
     .readdirSync(backupBaseFolder)
     .filter(
       (entry) =>
-        fs.lstatSync(path.join(backupBaseFolder, entry).isDirectory()) &&
-        entry.match(/^1?[0-9]_1?[0-9]_[0-9][0-9][0-9][0-9]/)
+        fs.lstatSync(path.join(backupBaseFolder, entry)).isDirectory() &&
+        entry.match(/^1?[0-9]_[12]?[0-9]_[0-9][0-9][0-9][0-9]/)
     )
 }
 

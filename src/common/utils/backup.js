@@ -8,6 +8,13 @@ export function saveBackup(filePath, data, callback) {
   if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 
+  const backupStrategy = SETTINGS.get('user.backupType')
+  const amount =
+    backupStrategy === 'days'
+      ? SETTINGS.get('user.backupDays')
+      : SETTINGS.get('user.numberOfBackups')
+  deleteOldBackups(backupStrategy, amount)
+
   ensureBackupTodayPath()
   const partialPath = backupPath()
 
@@ -57,6 +64,34 @@ export function ensureBackupFullPath() {
   }
 
   ensureBackupTodayPath()
+}
+
+export function deleteOldBackups(strategy, amount) {
+  const files = sortFileNamesByDate(backupFiles(BACKUP_BASE_PATH))
+
+  switch (strategy) {
+    case 'days': {
+      const anchorDate = nDaysAgo(amount)
+      const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))
+      console.warn('`Removing old backups: ${filesToRemove}')
+      filesToDelete.forEach((file) => {
+        fs.unlinkSync(path.join(BACKUP_BASE_PATH, file))
+      })
+      return
+    }
+    case 'number': {
+      const filesToDelete = files.slice(0, files.length - amount)
+      console.warn(`Removing old backups: ${filesToDelete}`)
+      filesToDelete.forEach((file) => {
+        fs.unlinkSync(path.join(BACKUP_BASE_PATH, file))
+      })
+      return
+    }
+    default:
+      console.warn(
+        `Unhandled backup strategy for removing old backups (${strategy}).  Leaving everything as is.`
+      )
+  }
 }
 
 const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/

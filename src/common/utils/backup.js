@@ -58,8 +58,10 @@ export function ensureBackupFullPath() {
   ensureBackupTodayPath()
 }
 
+const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/
+
 export function isABackupFile(fileName) {
-  return fileName.match(/\.pltr$/) && fileName.match(/^1?[0-9]_1?[0-9]_[0-9][0-9][0-9][0-9]/)
+  return fileName.match(/\.pltr$/) && fileName.match(BACKUP_FOLDER_REGEX)
 }
 
 export function backupFolders(backupBaseFolder) {
@@ -68,17 +70,19 @@ export function backupFolders(backupBaseFolder) {
     .filter(
       (entry) =>
         fs.lstatSync(path.join(backupBaseFolder, entry)).isDirectory() &&
-        entry.match(/^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/)
+        entry.match(BACKUP_FOLDER_REGEX)
     )
 }
 
 export function backupFiles(backupBaseFolder) {
-  return fs.readdirSync(backupBaseFolder).flatMap((entry) => {
-    const subPath = path.join(backupBaseFolder, entry)
+  return backupFolders(backupBaseFolder).flatMap((backupFolder) => {
+    const subPath = path.join(backupBaseFolder, backupFolder)
     if (fs.lstatSync(subPath).isDirectory()) {
       return fs
         .readdirSync(subPath)
-        .filter((file) => isABackupFile(file) && fs.lstatSync(path.join(subPath, file)).isFile())
+        .filter((file) => fs.lstatSync(path.join(subPath, file)).isFile())
+        .map((file) => path.join(backupFolder, file))
+        .filter((file) => isABackupFile(file))
     }
     return []
   })

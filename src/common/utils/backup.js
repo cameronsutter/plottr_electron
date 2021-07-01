@@ -73,7 +73,7 @@ export function backupFolders(backupBaseFolder) {
 }
 
 export function backupFiles(backupBaseFolder) {
-  fs.readdirSync(backupBaseFolder).flatMap((entry) => {
+  return fs.readdirSync(backupBaseFolder).flatMap((entry) => {
     const subPath = path.join(backupBaseFolder, entry)
     if (fs.lstatSync(subPath).isDirectory()) {
       return fs

@@ -101,8 +101,8 @@ const byDateThenFile = (thisFileName, otherFileName) => {
     (thatYear === thisYear && thatMonth === thisMonth && thatDay < thisDay)
   const thatDateSameAsThis = thatYear === thisYear && thatMonth === thisMonth && thatDay === thisDay
 
-  const thisIsStartFile = thisFileName.match(/start-session/)
-  const thatIsStartFile = otherFileName.match(/start-session/)
+  const thisIsStartFile = thisFileName.match(/\(start-session\)/)
+  const thatIsStartFile = otherFileName.match(/\(start-session\)/)
 
   const thatBeforeThis =
     thatDateBeforeThis || (thatDateSameAsThis && thatIsStartFile && !thisIsStartFile)

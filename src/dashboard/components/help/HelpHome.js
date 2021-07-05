@@ -24,6 +24,13 @@ export default function HelpHome(props) {
     }
   }
 
+  const RenderWebView = () => {
+    return React.createElement('webview', {
+      src: 'https://docs.plottr.com',
+      allowpopups: 'true',
+    })
+  }
+
   return (
     <div className="dashboard__help">
       <div style={{ flex: 0.16 }}>
@@ -90,7 +97,7 @@ export default function HelpHome(props) {
       </div>
       <div style={{ flex: 0.67 }}>
         <h1>{t('Documentation')}</h1>
-        <webview src="https://docs.plottr.com"></webview>
+        {RenderWebView()}
       </div>
     </div>
   )

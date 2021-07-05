@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import log from 'electron-log'
+import { shell } from 'electron'
 import { DateTime, Duration } from 'luxon'
 import { BACKUP_BASE_PATH } from './config_paths'
 import SETTINGS from './settings'
@@ -76,7 +77,7 @@ export function deleteOldBackups(strategy, amount) {
       const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))
       log.warn(`Removing old backups: ${filesToDelete}`)
       filesToDelete.forEach((file) => {
-        fs.unlinkSync(path.join(BACKUP_BASE_PATH, file))
+        shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
       })
       deleteEmptyFolders()
       return
@@ -85,7 +86,7 @@ export function deleteOldBackups(strategy, amount) {
       const filesToDelete = files.slice(0, files.length - amount)
       log.warn(`Removing old backups: ${filesToDelete}`)
       filesToDelete.forEach((file) => {
-        fs.unlinkSync(path.join(BACKUP_BASE_PATH, file))
+        shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
       })
       deleteEmptyFolders()
       return

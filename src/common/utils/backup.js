@@ -72,6 +72,10 @@ export function deleteOldBackups(strategy, amount) {
   const files = sortFileNamesByDate(backupFiles(BACKUP_BASE_PATH))
 
   switch (strategy) {
+    case 'never-delete': {
+      log.info('Strategy set to "never-delete".  Keeping all backups.')
+      return
+    }
     case 'days': {
       const anchorDate = nDaysAgo(amount)
       const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))

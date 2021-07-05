@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import log from 'electron-log'
 import { DateTime, Duration } from 'luxon'
 import { BACKUP_BASE_PATH } from './config_paths'
 import SETTINGS from './settings'
@@ -73,7 +74,7 @@ export function deleteOldBackups(strategy, amount) {
     case 'days': {
       const anchorDate = nDaysAgo(amount)
       const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))
-      console.warn('`Removing old backups: ${filesToRemove}')
+      log.warn(`Removing old backups: ${filesToDelete}`)
       filesToDelete.forEach((file) => {
         fs.unlinkSync(path.join(BACKUP_BASE_PATH, file))
       })
@@ -82,7 +83,7 @@ export function deleteOldBackups(strategy, amount) {
     }
     case 'number': {
       const filesToDelete = files.slice(0, files.length - amount)
-      console.warn(`Removing old backups: ${filesToDelete}`)
+      log.warn(`Removing old backups: ${filesToDelete}`)
       filesToDelete.forEach((file) => {
         fs.unlinkSync(path.join(BACKUP_BASE_PATH, file))
       })
@@ -90,7 +91,7 @@ export function deleteOldBackups(strategy, amount) {
       return
     }
     default:
-      console.warn(
+      log.warn(
         `Unhandled backup strategy for removing old backups (${strategy}).  Leaving everything as is.`
       )
   }

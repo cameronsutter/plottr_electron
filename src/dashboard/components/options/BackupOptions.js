@@ -9,8 +9,17 @@ const BackupOptions = () => {
 
   const backupInputRef = useRef()
 
-  const backupSettingValue = (name) =>
-    name === 'days' ? settings.user.numberOfBackups : settings.user.backupDays
+  const backupSettingValue = (name) => {
+    switch (name) {
+      case 'never-delete':
+        return Number.POSITIVE_INFINITY
+      case 'days':
+        return settings.user.backupDays
+      case 'number':
+        return settings.user.numberOfBackups
+    }
+    return Number.POSITIVE_INFINITY
+  }
 
   const onBackupTypeChange = (event) => {
     const newBackupType = event.target.value
@@ -18,11 +27,21 @@ const BackupOptions = () => {
     backupInputRef.current.value = backupSettingValue(newBackupType)
   }
 
-  const currentSetting =
-    settings.user.backupType === 'days' ? 'user.numberOfBackups' : 'user.backupDays'
+  const currentSetting = (() => {
+    switch (settings.user.backupType) {
+      case 'never-delete':
+        return null
+      case 'days':
+        return 'user.backupDays'
+      case 'number':
+        return 'user.numberOfBackups'
+    }
+    return Number.POSITIVE_INFINITY
+  })()
 
-  const onBackupValueChange = () =>
-    saveSetting(currentSetting, Number(backupInputRef.current.value))
+  const onBackupValueChange = () => {
+    if (currentSetting) saveSetting(currentSetting, Number(backupInputRef.current.value))
+  }
 
   const handleBackupBlur = () => {
     if (backupInputRef.current.value <= 0 || backupInputRef.current.value == '') {
@@ -40,10 +59,12 @@ const BackupOptions = () => {
         <select defaultValue={settings.user.backupType} onChange={onBackupTypeChange}>
           <option value="days">{t('Days of Backups')}</option>
           <option value="number">{t('Number of Backups')}</option>
+          <option value="never-delete">{t('Never Delete Backups')}</option>
         </select>
         <div className={'backup-type'}>
           <HelpBlock>{title}</HelpBlock>
           <input
+            disabled={!currentSetting}
             type="number"
             className="backup-input"
             ref={backupInputRef}

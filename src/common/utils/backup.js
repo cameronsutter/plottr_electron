@@ -74,46 +74,67 @@ export function deleteOldBackups(strategy, amount) {
   // sake of efficiency.
   if (strategy === 'never-delete') {
     log.info('Strategy set to "never-delete".  Keeping all backups.')
-    return
+    return Promise.resolve([])
   }
 
-  const files = sortFileNamesByDate(backupFiles(BACKUP_BASE_PATH))
+  return backupFiles(BACKUP_BASE_PATH).then((unsortedFiles) => {
+    const files = sortFileNamesByDate()
 
-  switch (strategy) {
-    case 'days': {
-      const anchorDate = nDaysAgo(amount)
-      const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))
-      log.warn(`Removing old backups: ${filesToDelete}`)
-      filesToDelete.forEach((file) => {
-        shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
-      })
-      deleteEmptyFolders()
-      return
+    switch (strategy) {
+      case 'days': {
+        const anchorDate = nDaysAgo(amount)
+        const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))
+        log.warn(`Removing old backups: ${filesToDelete}`)
+        filesToDelete.forEach((file) => {
+          shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
+        })
+        deleteEmptyFolders()
+        return filesToDelete
+      }
+      case 'number': {
+        const filesToDelete = files.slice(0, files.length - amount)
+        log.warn(`Removing old backups: ${filesToDelete}`)
+        filesToDelete.forEach((file) => {
+          shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
+        })
+        deleteEmptyFolders()
+        return filesToDelete
+      }
+      default:
+        log.warn(
+          `Unhandled backup strategy for removing old backups (${strategy}).  Leaving everything as is.`
+        )
+        return []
     }
-    case 'number': {
-      const filesToDelete = files.slice(0, files.length - amount)
-      log.warn(`Removing old backups: ${filesToDelete}`)
-      filesToDelete.forEach((file) => {
-        shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
-      })
-      deleteEmptyFolders()
-      return
-    }
-    default:
-      log.warn(
-        `Unhandled backup strategy for removing old backups (${strategy}).  Leaving everything as is.`
-      )
-  }
+  })
 }
 
 function deleteEmptyFolders() {
-  fs.readdirSync(BACKUP_BASE_PATH)
-    .filter(
-      (elem) =>
-        fs.lstatSync(path.join(BACKUP_BASE_PATH, elem)).isDirectory() &&
-        fs.readdirSync(path.join(BACKUP_BASE_PATH, elem)).length === 0
+  return readdir(BACKUP_BASE_PATH)
+    .then((elems) =>
+      Promise.all(
+        elems.map((elem) =>
+          lstat(path.join(BACKUP_BASE_PATH, elem)).then((fileStats) =>
+            readdir(path.join(BACKUP_BASE_PATH, elem)).then((contents) => ({
+              keep: fileStats.isDirectory() && contents.length === 0,
+              payload: elem,
+            }))
+          )
+        )
+      ).then((entries) =>
+        // rmdir is a safe way to do this because it will check that a
+        // folder is empty before deleting it.
+        Promise.all(
+          entries
+            .filter(({ keep }) => keep)
+            .map(({ payload }) => payload)
+            .map((emptyDirectory) => shell.rmdir(path.join(BACKUP_BASE_PATH, emptyDirectory)))
+        )
+      )
     )
-    .forEach((emptyDirectory) => fs.rmdirSync(path.join(BACKUP_BASE_PATH, emptyDirectory)))
+    .catch((error) => {
+      log.error('Error while deleting empty folders', error)
+    })
 }
 
 const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/

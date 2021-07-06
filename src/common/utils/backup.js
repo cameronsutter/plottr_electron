@@ -17,6 +17,12 @@ export function saveBackup(filePath, data, callback) {
       ? SETTINGS.get('user.backupDays')
       : SETTINGS.get('user.numberOfBackups')
   deleteOldBackups(backupStrategy, amount)
+    .then((deleted) => {
+      log.info('Deleted old backups: ', deleted)
+    })
+    .catch((error) => {
+      log.error('Error while deleting old backups', error)
+    })
 
   ensureBackupTodayPath()
   const partialPath = backupPath()

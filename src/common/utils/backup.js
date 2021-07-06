@@ -16,6 +16,9 @@ export function saveBackup(filePath, data, callback) {
     backupStrategy === 'days'
       ? SETTINGS.get('user.backupDays')
       : SETTINGS.get('user.numberOfBackups')
+  // Don't involve deletion in the control flow of this function
+  // because it'll slow things down and we don't really mind if it
+  // fails.
   deleteOldBackups(backupStrategy, amount)
     .then((deleted) => {
       log.info('Deleted old backups: ', deleted)

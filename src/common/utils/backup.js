@@ -6,7 +6,7 @@ import { DateTime, Duration } from 'luxon'
 import { BACKUP_BASE_PATH } from './config_paths'
 import SETTINGS from './settings'
 
-const { readdir, lstat } = fs.promises
+const { readdir, lstat, rmdir } = fs.promises
 
 export function saveBackup(filePath, data, callback) {
   if (process.env.NODE_ENV === 'development') return
@@ -144,7 +144,7 @@ function deleteEmptyFolders() {
           entries
             .filter(({ keep }) => keep)
             .map(({ payload }) => payload)
-            .map((emptyDirectory) => fs.rmdir(path.join(BACKUP_BASE_PATH, emptyDirectory)))
+            .map((emptyDirectory) => rmdir(path.join(BACKUP_BASE_PATH, emptyDirectory)))
         )
       )
     )

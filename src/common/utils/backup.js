@@ -88,7 +88,7 @@ export function deleteOldBackups(strategy, amount) {
   }
 
   return backupFiles(BACKUP_BASE_PATH).then((unsortedFiles) => {
-    const files = sortFileNamesByDate()
+    const files = sortFileNamesByDate(unsortedFiles)
 
     switch (strategy) {
       case 'days': {

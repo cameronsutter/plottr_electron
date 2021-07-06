@@ -1,11 +1,12 @@
 import fs from 'fs'
-import { readdir, lstat } from 'fs/promises'
 import path from 'path'
 import log from 'electron-log'
 import { shell } from 'electron'
 import { DateTime, Duration } from 'luxon'
 import { BACKUP_BASE_PATH } from './config_paths'
 import SETTINGS from './settings'
+
+const { readdir, lstat } = fs.promises
 
 export function saveBackup(filePath, data, callback) {
   if (process.env.NODE_ENV === 'development') return

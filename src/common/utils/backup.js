@@ -222,7 +222,7 @@ export function sortFileNamesByDate(fileNames) {
 }
 
 export function nDaysAgo(n, anchorDate = DateTime.now()) {
-  return anchorDate.subtract(Duration.fromObject({ days: n }))
+  return anchorDate.minus(Duration.fromObject({ days: n }))
 }
 
 export function fileIsSoonerThan(nDaysAgoDate, fileName) {

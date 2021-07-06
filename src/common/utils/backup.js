@@ -138,7 +138,7 @@ function deleteEmptyFolders() {
           entries
             .filter(({ keep }) => keep)
             .map(({ payload }) => payload)
-            .map((emptyDirectory) => shell.rmdir(path.join(BACKUP_BASE_PATH, emptyDirectory)))
+            .map((emptyDirectory) => fs.rmdir(path.join(BACKUP_BASE_PATH, emptyDirectory)))
         )
       )
     )

@@ -22,7 +22,11 @@ export function saveBackup(filePath, data, callback) {
   // fails.
   deleteOldBackups(backupStrategy, amount)
     .then((deleted) => {
-      log.info('Deleted old backups: ', deleted)
+      if (deleted.length) {
+        log.info('Deleted old backups: ', deleted)
+      } else {
+        log.info('No old backups to delete')
+      }
     })
     .catch((error) => {
       log.error('Error while deleting old backups', error)
@@ -94,6 +98,7 @@ export function deleteOldBackups(strategy, amount) {
       case 'days': {
         const anchorDate = nDaysAgo(amount)
         const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))
+        if (!filesToDelete.length) return []
         log.warn(`Removing old backups: ${filesToDelete}`)
         filesToDelete.forEach((file) => {
           shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
@@ -103,6 +108,7 @@ export function deleteOldBackups(strategy, amount) {
       }
       case 'number': {
         const filesToDelete = files.slice(0, files.length - amount)
+        if (!filesToDelete.length) return []
         log.warn(`Removing old backups: ${filesToDelete}`)
         filesToDelete.forEach((file) => {
           shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))

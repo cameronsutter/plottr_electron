@@ -70,14 +70,14 @@ describe('backupFolders', () => {
 describe('backupFiles', () => {
   describe('given an empty backup directory', () => {
     const emptyFolder = `${__dirname}/__fixtures__/empty_backups/`
-    it('should produce an empty list', () => {
-      expect(backupFiles(emptyFolder)).toEqual([])
+    it('should produce an empty list', async () => {
+      expect(await backupFiles(emptyFolder)).toEqual([])
     })
   })
   describe('given a non-empty folder', () => {
     const nonEmptyBackupFolder = `${__dirname}/__fixtures__/backups/`
-    it('should produce a list of all of the files contained in that folder', () => {
-      expect(backupFiles(nonEmptyBackupFolder)).toEqual([
+    it('should produce a list of all of the files contained in that folder', async () => {
+      expect(await backupFiles(nonEmptyBackupFolder)).toEqual([
         '5_15_2021/(start-session)-Goldilocks and The Three Bears.pltr',
         '5_15_2021/Goldilocks and The Three Bears.pltr',
         '5_18_2021/(start-session)-Zelda.pltr',

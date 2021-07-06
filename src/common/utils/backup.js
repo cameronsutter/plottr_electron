@@ -136,16 +136,27 @@ export function backupFolders(backupBaseFolder) {
 }
 
 export function backupFiles(backupBaseFolder) {
-  return backupFolders(backupBaseFolder).flatMap((backupFolder) => {
-    const subPath = path.join(backupBaseFolder, backupFolder)
-    if (fs.lstatSync(subPath).isDirectory()) {
-      return fs
-        .readdirSync(subPath)
-        .filter((file) => fs.lstatSync(path.join(subPath, file)).isFile())
-        .map((file) => path.join(backupFolder, file))
-        .filter((file) => isABackupFile(file))
-    }
-    return []
+  return backupFolders(backupBaseFolder).then((folders) => {
+    const folderProbes = folders.map((backupFolder) => {
+      const subPath = path.join(backupBaseFolder, backupFolder)
+      return readdir(subPath).then((subFolderContents) =>
+        Promise.all(
+          subFolderContents.map((entry) =>
+            lstat(path.join(subPath, entry)).then((entryStats) => ({
+              keep: entryStats.isFile(),
+              payload: entry,
+            }))
+          )
+        ).then((files) =>
+          files
+            .filter(({ keep }) => keep)
+            .map(({ payload }) => payload)
+            .map((file) => path.join(backupFolder, file))
+            .filter((file) => isABackupFile(file))
+        )
+      )
+    })
+    return Promise.all(folderProbes).then((subFilesByFolder) => subFilesByFolder.flatMap((x) => x))
   })
 }
 

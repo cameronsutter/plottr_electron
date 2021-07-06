@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { readdir, lstat } from 'fs/promises'
 import path from 'path'
 import log from 'electron-log'
 import { shell } from 'electron'
@@ -122,13 +123,16 @@ export function isABackupFile(fileName) {
 }
 
 export function backupFolders(backupBaseFolder) {
-  return fs
-    .readdirSync(backupBaseFolder)
-    .filter(
-      (entry) =>
-        fs.lstatSync(path.join(backupBaseFolder, entry)).isDirectory() &&
-        entry.match(BACKUP_FOLDER_REGEX)
-    )
+  return readdir(backupBaseFolder).then((entries) => {
+    return Promise.all(
+      entries.map((entry) =>
+        lstat(path.join(backupBaseFolder, entry)).then((folder) => ({
+          keep: folder.isDirectory() && entry.match(BACKUP_FOLDER_REGEX),
+          payload: entry,
+        }))
+      )
+    ).then((results) => results.filter(({ keep }) => keep).map(({ payload }) => payload))
+  })
 }
 
 export function backupFiles(backupBaseFolder) {

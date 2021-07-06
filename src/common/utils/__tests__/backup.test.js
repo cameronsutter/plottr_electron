@@ -40,14 +40,14 @@ describe('isABackupFile', () => {
 describe('backupFolders', () => {
   describe('given an empty backup directory', () => {
     const emptyFolder = `${__dirname}/__fixtures__/empty_backups/`
-    it('should produce an empty list', () => {
-      expect(backupFolders(emptyFolder)).toEqual([])
+    it('should produce an empty list', async () => {
+      expect(await backupFolders(emptyFolder)).toEqual([])
     })
   })
   describe('given a non-empty folder', () => {
     const nonEmptyBackupFolder = `${__dirname}/__fixtures__/backups/`
-    it('should produce the base-names of all those folders', () => {
-      expect(backupFolders(nonEmptyBackupFolder)).toEqual([
+    it('should produce the base-names of all those folders', async () => {
+      expect(await backupFolders(nonEmptyBackupFolder)).toEqual([
         '4_12_2021',
         '4_13_2021',
         '4_21_2021',

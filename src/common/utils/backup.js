@@ -69,13 +69,16 @@ export function ensureBackupFullPath() {
 }
 
 export function deleteOldBackups(strategy, amount) {
+  // Perform this check before any file system interactions for the
+  // sake of efficiency.
+  if (strategy === 'never-delete') {
+    log.info('Strategy set to "never-delete".  Keeping all backups.')
+    return
+  }
+
   const files = sortFileNamesByDate(backupFiles(BACKUP_BASE_PATH))
 
   switch (strategy) {
-    case 'never-delete': {
-      log.info('Strategy set to "never-delete".  Keeping all backups.')
-      return
-    }
     case 'days': {
       const anchorDate = nDaysAgo(amount)
       const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))

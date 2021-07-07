@@ -15,11 +15,18 @@
   .template-picker__list {
     overflow: auto;
     max-width: 34%;
-    h1 {
+    h1, h2 {
       @include application-text;
       font-size: 20pt;
       margin: 0;
       margin-bottom: 10px;
+      &.margin-bottom {
+        margin-bottom: 20px;
+      }
+    }
+    h2 {
+      font-size: 14pt;
+      color: $gray-4;
     }
 
     ul.list-group {

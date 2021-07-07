@@ -32,16 +32,16 @@ export function openExistingFile() {
 }
 
 export function createNew(template) {
-  if (!template) {
+  if (template) {
+    const filePath = saveToTempFile(template)
+    const fileId = addToKnownFiles(filePath)
+    openKnownFile(filePath, fileId)
+  } else {
     const emptyPlottrFile = emptyFile(t('Untitled'), app.getVersion())
     const filePath = saveToTempFile(emptyPlottrFile)
     const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)
-    return
   }
-  const filePath = saveToTempFile(template)
-  const fileId = addToKnownFiles(filePath)
-  openKnownFile(filePath, fileId)
 }
 
 export function createFromSnowflake(importedPath) {

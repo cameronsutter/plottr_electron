@@ -5,7 +5,7 @@ import PropTypes from 'react-proptypes'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
-import { AskToSaveModal, TemplateCreate, ErrorBoundary } from 'connected-components'
+import { AskToSaveModal, TemplateCreate, ErrorBoundary, ExportDialog } from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { saveFile } from '../../common/utils/files'
 import { store } from '../store/configureStore'
@@ -21,6 +21,7 @@ class App extends Component {
     type: null,
     showAskToSave: false,
     blockClosing: true,
+    showExportDialog: false,
   }
 
   componentDidMount() {
@@ -39,6 +40,9 @@ class App extends Component {
       isTryingToReload = true
       this.askToSave({})
     })
+    ipcRenderer.on('advanced-export-file-from-menu', (event) => {
+      this.setState({ showExportDialog: true })
+    })
     window.addEventListener('beforeunload', this.askToSave)
   }
 
@@ -46,6 +50,7 @@ class App extends Component {
     ipcRenderer.removeAllListeners('save-as-template-start')
     ipcRenderer.removeAllListeners('reload')
     ipcRenderer.removeAllListeners('wants-to-close')
+    ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
     window.removeEventListener('beforeunload', this.askToSave)
   }
 
@@ -124,6 +129,11 @@ class App extends Component {
     return null
   }
 
+  renderAdvanceExportModal() {
+    if (!this.state.showExportDialog) return null
+    return <ExportDialog close={() => this.setState({ showExportDialog: false })} />
+  }
+
   render() {
     return (
       <ErrorBoundary>
@@ -136,6 +146,7 @@ class App extends Component {
         {this.renderTemplateCreate()}
         {this.renderAskToSave()}
         {this.props.showTour && this.renderGuidedTour()}
+        {this.renderAdvanceExportModal()}
       </ErrorBoundary>
     )
   }

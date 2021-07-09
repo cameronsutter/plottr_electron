@@ -59,6 +59,7 @@ function openProjectWindow(filePath) {
   try {
     app.addRecentDocument(filePath)
     addNewWindow(newWindow, filePath)
+    log.info('THREAD after addNewWindow', newWindow.id, filePath)
   } catch (err) {
     log.warn(err)
     rollbar.warn(err, { filePath: filePath })

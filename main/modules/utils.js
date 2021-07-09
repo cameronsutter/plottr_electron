@@ -73,9 +73,14 @@ function makeBrowserWindow(filePath) {
   // register listeners on the window
   stateKeeper.manage(newWindow)
 
-  newWindow.once('ready-to-show', function () {
-    log.info('THREAD makeBrowserWindow', newWindow.id, this.id, this.isVisible())
-    this.show() // depends on 'this' being the window
+  newWindow.once('ready-to-show', () => {
+    log.info('THREAD ready-to-show', newWindow.id, newWindow.isVisible())
+    newWindow.show()
+  })
+
+  newWindow.webContents.on('did-finish-load', () => {
+    log.info('THREAD did-finish-load', newWindow.id, newWindow.isVisible())
+    if (!newWindow.isVisible()) newWindow.show()
   })
 
   newWindow.webContents.on('unresponsive', () => {

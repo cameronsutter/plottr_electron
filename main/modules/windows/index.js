@@ -17,6 +17,7 @@ function allWindows() {
 }
 
 function addNewWindow(browserWindow, filePath) {
+  log.info('THREAD addNewWindow', browserWindow.id, filePath)
   windows.push({
     id: browserWindow.id,
     browserWindow: browserWindow,

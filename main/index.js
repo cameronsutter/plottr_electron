@@ -98,7 +98,7 @@ function windowsOpenFileEventHandler() {
     }
 
     // windows custom protocol link handler
-    log.info('open-url event: ' + param)
+    // log.info('open-url event: ' + param)
     // const link = param.replace('plottr://')
   }
 }

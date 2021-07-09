@@ -41,11 +41,11 @@ function numberOfWindows() {
 function focusIfOpen(filePath) {
   const win = windows.find((w) => w.filePath == filePath)
   if (win) {
-    log.info('focusIfOpen', true)
+    log.info('THREAD focusIfOpen', true)
     win.browserWindow.focus()
     return true
   } else {
-    log.info('focusIfOpen', false)
+    log.info('THREAD focusIfOpen', false)
     return false
   }
 }

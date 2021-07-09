@@ -16,14 +16,18 @@ ipcMain.on('pls-open-window', (event, filePath, unknown) => {
 })
 
 function openProjectWindow(filePath) {
-  log.info('openProjectWindow', filePath, focusIfOpen(filePath))
+  log.info('THREAD openProjectWindow', filePath, focusIfOpen(filePath))
   if (focusIfOpen(filePath)) return
-  log.info('openProjectWindow after return')
+  log.info('THREAD openProjectWindow after return')
 
   const newWindow = makeBrowserWindow(filePath)
 
+  log.info('THREAD newWindow', newWindow.id)
+
   const entryFile = filePrefix(path.join(__dirname, 'app.html'))
   newWindow.loadURL(entryFile)
+
+  log.info('THREAD loadURL', newWindow.id)
 
   newWindow.on('closed', function () {
     // doing this here because we can't do the right thing: loadMenu on dashboard focus
@@ -40,6 +44,7 @@ function openProjectWindow(filePath) {
   })
 
   newWindow.on('focus', () => {
+    log.info('THREAD focus', newWindow.id)
     // WHY does it work here, but not in utils (nor windows/dashboard)????
     // in those others, loadMenu is undefined after requiring it
     loadMenu()

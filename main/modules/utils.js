@@ -74,6 +74,7 @@ function makeBrowserWindow(filePath) {
   stateKeeper.manage(newWindow)
 
   newWindow.once('ready-to-show', function () {
+    log.info('THREAD makeBrowserWindow', newWindow.id, this.id, this.isVisible())
     this.show() // depends on 'this' being the window
   })
 

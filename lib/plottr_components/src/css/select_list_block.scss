@@ -62,7 +62,7 @@
 
   &.horizontal {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     flex-wrap: wrap;
     .select-list__details-label {
       min-width: unset;

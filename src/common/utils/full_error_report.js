@@ -30,6 +30,11 @@ function prepareErrorReport() {
   if (is.development) {
     appLogPath = appLogPath.replace('Electron', 'plottr')
   }
+  if (is.windows) {
+    // on windows app.getPath('logs') seems to be adding an extra folder that doesn't exist
+    // to the logs directory that's named `Plottr`
+    appLogPath = appLogPath.replace('Plottr\\', '')
+  }
   log.info('appLogPath', appLogPath)
   const mainLogFile = path.join(appLogPath, 'main.log')
   const rendererLogFile = path.join(appLogPath, 'renderer.log')

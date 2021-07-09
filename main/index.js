@@ -49,12 +49,11 @@ if (!is.development) {
       gracefullyQuit()
     })
   })
-}
-
-// ensure only 1 instance is running
-const gotTheLock = app.requestSingleInstanceLock()
-if (!gotTheLock) {
-  app.quit()
+  // ensure only 1 instance is running
+  const gotTheLock = app.requestSingleInstanceLock()
+  if (!gotTheLock) {
+    app.quit()
+  }
 }
 
 app.whenReady().then(() => {

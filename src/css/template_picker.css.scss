@@ -48,6 +48,11 @@
     li.list-group-item.selected {
       background-color: $gray-8;
     }
+
+    select.form-control {
+      width: auto;
+      margin-bottom: 16px;
+    }
   }
 
   .template-picker__details {

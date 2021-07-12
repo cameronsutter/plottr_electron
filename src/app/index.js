@@ -31,6 +31,7 @@ import exportConfig from '../common/exporter/default_config'
 import { TEMP_FILES_PATH } from '../common/utils/config_paths'
 
 setupI18n(SETTINGS, { electron })
+log.info('THREAD setupI18n')
 
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')
@@ -41,6 +42,7 @@ process.on('uncaughtException', (err) => {
 })
 
 ensureBackupTodayPath()
+log.info('THREAD ensure backup')
 
 const root = document.getElementById('react-root')
 // TODO: fix this by exporting store from the configureStore file
@@ -60,6 +62,7 @@ function bootFile(filePath, options, numOpenFiles) {
 
   const { darkMode, beatHierarchy } = options
 
+  log.info('THREAD bootFile (before try-catch)', filePath)
   try {
     const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
     saveBackup(filePath, json, (err) => {
@@ -76,6 +79,7 @@ function bootFile(filePath, options, numOpenFiles) {
         rollbar.error(err)
         log.error(err)
       }
+      log.info('THREAD bootFile loadFile', filePath)
       store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
       MPQ.projectEventStats(
@@ -89,6 +93,8 @@ function bootFile(filePath, options, numOpenFiles) {
       }
       if (darkMode) window.document.body.className = 'darkmode'
 
+      log.info('THREAD bootFile withDispatch', filePath)
+
       const withDispatch = dispatchingToStore(store.dispatch)
       makeFlagConsistent(
         state,
@@ -101,6 +107,7 @@ function bootFile(filePath, options, numOpenFiles) {
       if (state && state.tour && state.tour.showTour)
         store.dispatch(actions.ui.changeOrientation('horizontal'))
 
+      log.info('THREAD bootFile render', filePath)
       render(
         <Provider store={store}>
           <App />
@@ -117,6 +124,7 @@ function bootFile(filePath, options, numOpenFiles) {
 
 ipcRenderer.send('pls-fetch-state', win.id)
 ipcRenderer.on('state-fetched', (event, filePath, options, numOpenFiles) => {
+  log.info('THREAD state-fetched', filePath)
   bootFile(filePath, options, numOpenFiles)
 })
 

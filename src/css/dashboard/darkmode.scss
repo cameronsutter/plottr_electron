@@ -102,6 +102,12 @@ main.darkmode {
     }
   }
 
+  .dashboard__account {
+    .verify__choice {
+      color: $dark-text !important;
+    }
+  }
+
   ///////////
   // files //
   ///////////

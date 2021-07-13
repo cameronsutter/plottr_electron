@@ -87,9 +87,9 @@ app.whenReady().then(() => {
 })
 
 function windowsOpenFileEventHandler(argv) {
-  log.info('windows open-file event handler')
-  log.info('args', argv.length, argv)
   if (is.windows && process.env.NODE_ENV != 'dev') {
+    log.info('windows open-file event handler')
+    log.info('args', argv.length, argv)
     const param = argv[argv.length - 1]
 
     if (param.includes('.pltr')) {

@@ -1,8 +1,8 @@
-const i18n = require('plottr_locales').t
+const { t } = require('plottr_locales')
 
 function buildWindowMenu() {
   return {
-    label: i18n('Window'),
+    label: t('Window'),
     role: 'windowMenu',
   }
 }

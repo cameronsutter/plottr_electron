@@ -96,6 +96,8 @@ $medium_width: 80px;
   display: flex;
   margin-left: -5px;
   align-items: center;
+  justify-content: center;
+  margin: auto;
   transition: all 0.4s $cubic;
   font-size: 12px;
   cursor: pointer;
@@ -104,6 +106,10 @@ $medium_width: 80px;
   }
   .insert-beat-wrapper {
     z-index: 3;
+
+    .glyphicon {
+      margin-left: 1px;
+    }
   }
   .insert-beat-wrapper.insert-beat-spacer {
     .glyphicon {

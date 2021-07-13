@@ -59,7 +59,7 @@ if (!is.development) {
 app.whenReady().then(() => {
   loadMenu(true)
   openDashboard()
-  windowsOpenFileEventHandler()
+  windowsOpenFileEventHandler(process.argv)
 
   // Register the toggleDevTools shortcut listener.
   globalShortcut.register('CommandOrControl+Alt+R', () => {
@@ -78,19 +78,19 @@ app.whenReady().then(() => {
       openDashboard()
     }
   })
-  app.on('second-instance', () => {
+  app.on('second-instance', (event, argv, workingDirectory) => {
     log.info('second-instance')
     loadMenu(true)
     openDashboard()
-    windowsOpenFileEventHandler()
+    windowsOpenFileEventHandler(argv)
   })
 })
 
-function windowsOpenFileEventHandler() {
+function windowsOpenFileEventHandler(argv) {
   log.info('windows open-file event handler')
-  log.info('args', process.argv.length, process.argv[1])
-  if (is.windows && process.argv.length == 2 && process.env.NODE_ENV != 'dev') {
-    const param = process.argv[1]
+  log.info('args', argv.length, argv)
+  if (is.windows && process.env.NODE_ENV != 'dev') {
+    const param = argv[argv.length - 1]
 
     if (param.includes('.pltr')) {
       openProjectWindow(param)

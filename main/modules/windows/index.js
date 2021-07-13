@@ -17,7 +17,6 @@ function allWindows() {
 }
 
 function addNewWindow(browserWindow, filePath) {
-  log.info('THREAD addNewWindow', browserWindow.id, filePath)
   windows.push({
     id: browserWindow.id,
     browserWindow: browserWindow,
@@ -42,11 +41,9 @@ function numberOfWindows() {
 function focusIfOpen(filePath) {
   const win = windows.find((w) => w.filePath == filePath)
   if (win) {
-    log.info('THREAD focusIfOpen', true)
     win.browserWindow.focus()
     return true
   } else {
-    log.info('THREAD focusIfOpen', false)
     return false
   }
 }

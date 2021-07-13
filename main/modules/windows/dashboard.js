@@ -60,8 +60,14 @@ function updateOpenFiles(filePath) {
   if (dashboardWindow) dashboardWindow.webContents.send('file-closed', filePath)
 }
 
-function sendToDashboard(event, values) {
+function sendToDashboard(event, values, force) {
   if (dashboardWindow) dashboardWindow.webContents.send(event, values)
+  if (!dashboardWindow && force) {
+    openDashboard()
+    setTimeout(() => {
+      if (dashboardWindow) dashboardWindow.webContents.send(event, values)
+    }, 2000)
+  }
 }
 
 module.exports = {

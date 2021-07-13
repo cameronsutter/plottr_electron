@@ -1,24 +1,25 @@
 const { shell } = require('electron')
-const i18n = require('plottr_locales').t
+const { t } = require('plottr_locales')
+const { sendToDashboard } = require('../windows/dashboard')
 
 function buildHelpMenu() {
   return {
-    label: i18n('Help'),
+    label: t('Help'),
     role: 'help',
     submenu: [
       {
-        label: i18n('Tutorials'),
+        label: t('Tutorials'),
         click: () => shell.openExternal('https://learn.plottr.com'),
       },
       {
-        label: i18n('Demos'),
+        label: t('Demos'),
         click: () => shell.openExternal('https://plottr.com/demos/'),
       },
       {
-        label: i18n('Guided Tours'),
+        label: t('Guided Tours'),
         submenu: [
           {
-            label: i18n('Act Structure'),
+            label: t('Act Structure'),
             click: function (event, focusedWindow) {
               focusedWindow.webContents.send('acts-tour-start')
             },
@@ -26,30 +27,34 @@ function buildHelpMenu() {
         ],
       },
       {
-        label: i18n('Documentation'),
+        label: t('Documentation'),
         click: () => shell.openExternal('https://docs.plottr.com'),
       },
       {
-        label: i18n('Facebook Group'),
+        label: t('Facebook Group'),
         click: () => shell.openExternal('https://www.facebook.com/groups/367650870614184'),
       },
       {
         type: 'separator',
       },
       {
-        label: i18n('Report a Problem'),
+        label: t('Report a Problem'),
         click: () =>
           shell.openExternal('https://docs.plottr.com/submit-a-ticket?help=Technical%20Support'),
+      },
+      {
+        label: t('Create an Error Report'),
+        click: () => sendToDashboard('create-error-report', null, true),
       },
       {
         type: 'separator',
       },
       {
-        label: i18n('Give Feedback'),
+        label: t('Give Feedback'),
         click: () => shell.openExternal('https://feedback.getplottr.com'),
       },
       {
-        label: i18n('Request a Feature'),
+        label: t('Request a Feature'),
         click: () =>
           shell.openExternal('https://docs.plottr.com/submit-a-ticket?help=Feature%20Request'),
       },
@@ -57,11 +62,11 @@ function buildHelpMenu() {
         type: 'separator',
       },
       {
-        label: i18n('FAQ'),
+        label: t('FAQ'),
         click: () => shell.openExternal('https://docs.plottr.com/frequently-asked-questions'),
       },
       {
-        label: i18n('Roadmap'),
+        label: t('Roadmap'),
         click: () => shell.openExternal('https://plottr.com/our-roadmap'),
       },
     ],

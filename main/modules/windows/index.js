@@ -1,6 +1,5 @@
 const { BrowserWindow, ipcMain } = require('electron')
 const { openBuyWindow } = require('./buy')
-const log = require('electron-log')
 
 ipcMain.on('open-buy-window', (event) => {
   openBuyWindow()

@@ -94,10 +94,8 @@ $medium_width: 80px;
 .line-list__insert-beat {
   height: $title_height;
   display: flex;
-  margin-left: -5px;
   align-items: center;
   justify-content: center;
-  margin: auto;
   transition: all 0.4s $cubic;
   font-size: 12px;
   cursor: pointer;

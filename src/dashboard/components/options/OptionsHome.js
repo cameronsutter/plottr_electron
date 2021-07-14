@@ -1,51 +1,30 @@
-import React, { useState } from 'react'
-import electron, { ipcRenderer, shell } from 'electron'
+import React from 'react'
+import electron, { ipcRenderer, shell, remote } from 'electron'
 import { t, setupI18n } from 'plottr_locales'
 import SETTINGS from '../../../common/utils/settings'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import { Switch, LanguagePicker } from 'connected-components'
-import { FormControl, FormGroup, ControlLabel, HelpBlock, Button } from 'react-bootstrap'
+import { HelpBlock, Button } from 'react-bootstrap'
 import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
 import DarkOptionsSelect from './DarkOptionsSelect'
 import TemplateFetcher from '../../utils/template_fetcher'
+import BackupOptions from './BackupOptions'
+
+const { dialog } = remote
+
+const win = remote.getCurrentWindow()
 
 export default function OptionsHome(props) {
   const [settings, _, saveSetting] = useSettingsInfo()
-  const [backupType, setBackupType] = useState('days')
 
-  const [backupLocation, setBackupLocation] = useState(settings.user.backupLocation)
-  if (!backupLocation || backupLocation == 'default') setBackupLocation(BACKUP_BASE_PATH)
-
-  // const onChangeBackupLocation = (event) => {
-  //   let file = event.target.files[0]
-  //   if (file) {
-  //     let folder = file.path.split('/')
-  //     let folderPath = folder.slice(0, folder.length - 1).join('/')
-  //     setBackupLocation(folderPath)
-  //     saveSetting('user.backupLocation', folderPath)
-  //   }
-  //   setLoading(false)
-  //   setPreloading(false)
-  // }
-
-  const displayBackupOption = () => {
-    return (
-      <div className="backup-type">
-        <ControlLabel>{t('Number of Backups to Keep')}</ControlLabel>
-        <FormControl
-          disabled
-          type="number"
-          value={backupType === 'number' ? settings.user.numberOfBackups : settings.user.backupDays}
-          onChange={(event) =>
-            saveSetting(
-              backupType === 'number' ? 'user.numberOfBackups' : 'user.backupDays',
-              Number(event.target.value)
-            )
-          }
-        />
-        <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
-      </div>
-    )
+  const onChangeBackupLocation = () => {
+    const title = t('Choose your backup location')
+    const properties = ['openDirectory']
+    const files = dialog.showOpenDialogSync(win, { title, properties })
+    if (files && files.length) {
+      let folderPath = files[0]
+      saveSetting('user.backupLocation', folderPath)
+    }
   }
 
   const toggleBeatHierarchy = () => {
@@ -94,6 +73,21 @@ export default function OptionsHome(props) {
             }}
           />
         </div>
+        <div className="dashboard__options__item">
+          <h4>{t('Backup Location')}</h4>
+          <HelpBlock>{t('Folder where backups are stored')}</HelpBlock>
+          <p>
+            {settings.user.backupLocation === 'default'
+              ? BACKUP_BASE_PATH
+              : settings.user.backupLocation}
+          </p>
+          <Button bsSize="small" onClick={onChangeBackupLocation}>
+            {t('Choose...')}
+          </Button>
+        </div>
+        <div className="dashboard__options__item">
+          <BackupOptions />
+        </div>
         <hr />
         <h4>{t('Beta')}</h4>
         <div className="dashboard__options__item">
@@ -123,23 +117,6 @@ export default function OptionsHome(props) {
             handleToggle={() => saveSetting('user.autoSave', !settings.user.autoSave)}
             labelText={t('By default, use auto-save for projects')}
           />
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Backup Location')}</h4>
-          <FormGroup controlId="backupLocation">
-            <ControlLabel>{t('Folder where backups are stored')}</ControlLabel>
-            <FormControl type="text" value={backupLocation} onChange={() => {}} disabled />
-          </FormGroup>
-        </div>
-        <div className="dashboard__options__item disabled">
-          <h4>{t('Days of Backup')}</h4>
-          <FormGroup controlId="backupDays">
-            <select onChange={(event) => setBackupType(event.target.value)} disabled>
-              <option value="days">{t('Days of Backups')}</option>
-              <option value="number">{t('Number of Backups')}</option>
-            </select>
-            {displayBackupOption()}
-          </FormGroup>
         </div>
       </div>
     </div>

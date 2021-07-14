@@ -353,6 +353,12 @@
   "Days of Backup": {
     "message": "Days of Backup"
   },
+  "Number of Backups": {
+    "message": "Number of Backups"
+  },
+  "Never Delete Backups": {
+    "message": "Never Delete Backups"
+  },
   "Default Colors": {
     "message": "Default Colors"
   },

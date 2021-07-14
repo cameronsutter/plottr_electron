@@ -247,6 +247,9 @@ main.darkmode {
     select {
       color: $dark-gray-1;
     }
+    input {
+      color: $dark-gray-1;
+    }
     .help-block {
       color: $dark-text;
     }

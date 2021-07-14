@@ -35,10 +35,12 @@ export default function setupRollbar(where) {
     },
     transform: function (payload) {
       payload.request.url = requestURL(payload.request.url, version)
-      payload.body.trace.frames = payload.body.trace.frames.map((fr) => {
-        fr.filename = requestURL(fr.filename, version)
-        return fr
-      })
+      if (payload.body.trace) {
+        payload.body.trace.frames = payload.body.trace.frames.map((fr) => {
+          fr.filename = requestURL(fr.filename, version)
+          return fr
+        })
+      }
     },
     checkIgnore: function (isUncaught, args, payload) {
       // return true to ignore

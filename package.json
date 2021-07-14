@@ -49,6 +49,7 @@
     "electron-updater": "^4.3.0",
     "electron-util": "^0.14.0",
     "electron-window-state": "^5.0.3",
+    "luxon": "^1.27.0",
     "react-joyride": "^2.3.0",
     "rollbar": "^2.19.4"
   },

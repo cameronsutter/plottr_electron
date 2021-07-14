@@ -39,6 +39,9 @@
 
   // vertical orientation, border under the plotline titles
   .sticky-table.vertical {
+    .sticky-table-cell {
+      vertical-align: middle !important;
+    }
     .sticky-table-row:first-child {
       .sticky-table-cell:after {
         content: '';

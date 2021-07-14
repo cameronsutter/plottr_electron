@@ -32,7 +32,8 @@
   }
 
   &.vertical {
-    display: flex;
+    display: inline-block;
+    vertical-align: top;
     & > div {
       display: flex;
     }

@@ -77,6 +77,12 @@ function buildFileMenu(filePath) {
             focusedWindow.webContents.send('export-file-from-menu', options)
           },
         },
+        {
+          label: i18n('Advanced...'),
+          click: (event, focusedWindow) => {
+            focusedWindow.webContents.send('advanced-export-file-from-menu')
+          },
+        },
       ],
     },
     {

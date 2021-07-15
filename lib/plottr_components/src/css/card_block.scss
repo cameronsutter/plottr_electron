@@ -83,9 +83,9 @@
   }
 
   &.vertical {
-    padding-left: 25px;
     .card__add-card {
       display: block;
+      z-index: 10;
     }
   }
   &.vertical.medium-timeline {

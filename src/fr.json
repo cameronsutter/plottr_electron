@@ -14,6 +14,9 @@
   "Add attributes": {
     "message": "Ajouter une information"
   },
+  "Advanced Export Options": {
+    "message": "Advanced Export Options"
+  },
   "After": {
     "message": "Après"
   },
@@ -719,8 +722,8 @@
   "Are you sure you want to remove your license?": {
     "message": "Are you sure you want to remove your license?"
   },
-  "Are you sure?  (Removing levels may delete beat cards!)": {
-    "message": "Are you sure?  (Removing levels may delete beat cards!)"
+  "Are you sure?  (Removing levels may delete scene cards!)": {
+    "message": "Are you sure?  (Removing levels may delete scene cards!)"
   },
   "Attach Books": {
     "message": "Attach Books"

@@ -29,6 +29,9 @@
   "Add new scenes or chapters here": {
     "message": "Añade nuevas escenas o capítulos aquí"
   },
+  "Advanced Export Options": {
+    "message": "Advanced Export Options"
+  },
   "After": {
     "message": "Después"
   },
@@ -962,8 +965,8 @@
   "Are you sure you want to remove your license?": {
     "message": "Are you sure you want to remove your license?"
   },
-  "Are you sure?  (Removing levels may delete beat cards!)": {
-    "message": "Are you sure?  (Removing levels may delete beat cards!)"
+  "Are you sure?  (Removing levels may delete scene cards!)": {
+    "message": "Are you sure?  (Removing levels may delete scene cards!)"
   },
   "Attach Books": {
     "message": "Attach Books"

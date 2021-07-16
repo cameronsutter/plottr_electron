@@ -10,12 +10,8 @@ const esKeys = new Set(Object.keys(esTranslations))
 
 const all_keys = new Set(
   Object.keys(enTranslations)
-    .concat(
-      Object.keys(frTranslations)
-    )
-    .concat(
-      Object.keys(esTranslations)
-    )
+    .concat(Object.keys(frTranslations))
+    .concat(Object.keys(esTranslations))
 )
 
 const newEnTranslations = Object.assign({}, enTranslations)
@@ -25,17 +21,17 @@ const newEsTranslations = Object.assign({}, esTranslations)
 all_keys.forEach((key) => {
   if (!enKeys.has(key)) {
     newEnTranslations[key] = {
-      message: key
+      message: key,
     }
   }
   if (!frKeys.has(key)) {
     newFrTranslations[key] = {
-      message: key
+      message: key,
     }
   }
   if (!esKeys.has(key)) {
     newEsTranslations[key] = {
-      message: key
+      message: key,
     }
   }
 })

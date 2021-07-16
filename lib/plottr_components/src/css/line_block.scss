@@ -94,8 +94,8 @@ $medium_width: 80px;
 .line-list__insert-beat {
   height: $title_height;
   display: flex;
-  margin-left: -5px;
   align-items: center;
+  justify-content: center;
   transition: all 0.4s $cubic;
   font-size: 12px;
   cursor: pointer;
@@ -104,6 +104,10 @@ $medium_width: 80px;
   }
   .insert-beat-wrapper {
     z-index: 3;
+
+    .glyphicon {
+      margin-left: 1px;
+    }
   }
   .insert-beat-wrapper.insert-beat-spacer {
     .glyphicon {
@@ -293,6 +297,8 @@ $medium_width: 80px;
   font-size: 12px;
   width: 150px;
   cursor: pointer;
+  margin: 0 !important;
+  margin-left: -5px !important;
   svg {
     position: absolute;
   }

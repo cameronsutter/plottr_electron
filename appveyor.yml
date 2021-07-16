@@ -9,7 +9,7 @@ init:
 install:
   - ps: Install-Product node 14 x64
   - npm i -g npm@7.10.0
-  - npm install
+  - npm ci
 build_script:
   - npm run dist:windows
 test: off

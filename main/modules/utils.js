@@ -74,12 +74,10 @@ function makeBrowserWindow(filePath) {
   stateKeeper.manage(newWindow)
 
   newWindow.once('ready-to-show', () => {
-    log.info('THREAD ready-to-show', newWindow.id, newWindow.isVisible())
     newWindow.show()
   })
 
   newWindow.webContents.on('did-finish-load', () => {
-    log.info('THREAD did-finish-load', newWindow.id, newWindow.isVisible())
     if (!newWindow.isVisible()) newWindow.show()
   })
 

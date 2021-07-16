@@ -12,6 +12,7 @@ import initMixpanel from '../common/utils/mixpanel'
 import MPQ from '../common/utils/MPQ'
 import TemplateFetcher from './utils/template_fetcher'
 import { ensureBackupFullPath } from '../common/utils/backup'
+import { createErrorReport } from '../common/utils/full_error_report'
 
 // necessary SETUP //
 setupI18n(SETTINGS, { electron })
@@ -47,4 +48,8 @@ ipcRenderer.once('send-launch', (event, version) => {
 
 ipcRenderer.on('reload', () => {
   location.reload()
+})
+
+ipcRenderer.on('create-error-report', () => {
+  createErrorReport()
 })

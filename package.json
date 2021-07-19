@@ -26,7 +26,7 @@
     "dist:linux": "node build/initEnv.js && npm run pack && electron-builder -l",
     "dist:windows": "node build/initEnv.js && npm run pack:windows && electron-builder -w",
     "dist:all": "npm run pack && electron-builder -mw",
-    "extract-strings": "format-message extract -o lib/plottr_locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/**/*.js\" && npm run generate-flipped",
+    "extract-strings": "format-message extract -o lib/plottr_locales/en.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/plottr_components/src/**/*.js\" \"lib/pltr/v2/**/*.js\" && npm run generate-flipped",
     "generate-flipped": "node ./lib/plottr_locales/src/build-flipped-locale.js",
     "test": "jest '(src.*)|(lib.*)'",
     "test:watch": "jest \"(src.*)|(lib.*)\" --watch",

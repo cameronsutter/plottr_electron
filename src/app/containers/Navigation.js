@@ -5,10 +5,13 @@ import { connect } from 'react-redux'
 import { Navbar, Nav, NavItem, Button } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import { ipcRenderer } from 'electron'
-import { Beamer, BookChooser } from 'connected-components'
+import { Beamer, BookChooser, OverlayTrigger } from 'connected-components'
 import SETTINGS from '../../common/utils/settings'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
+import { BsThreeDotsVertical } from 'react-icons/bs'
+import { selectors } from 'pltr/v2'
+import cx from 'classnames'
 
 const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
@@ -30,11 +33,24 @@ class Navigation extends Component {
     )
   }
 
-  render() {
-    const { ui } = this.props
+  Menu = () => {
     return (
-      <Navbar className="project-nav" fluid inverse={ui.darkMode}>
-        <Nav onSelect={this.handleSelect} activeKey={ui.currentView} bsStyle="pills">
+      <div className={cx('project-nav__menu-popover', { darkmode: this.props.isDarkMode })}>
+        <Button>Account</Button>
+        <Button>Settings</Button>
+        <Button>License</Button>
+        <Button>Backups</Button>
+        <Button>Help</Button>
+      </div>
+    )
+  }
+
+  render() {
+    const { currentView, isDarkMode } = this.props
+
+    return (
+      <Navbar className="project-nav" fluid inverse={isDarkMode}>
+        <Nav onSelect={this.handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
           <NavItem eventKey="project">{i18n('Project')}</NavItem>
           <NavItem eventKey="timeline">{i18n('Timeline')}</NavItem>
@@ -51,19 +67,34 @@ class Navigation extends Component {
         </Nav>
         <Beamer inNavigation />
         {this.renderTrialLinks()}
+        <Nav pullRight className="project-nav__options">
+          <OverlayTrigger
+            containerPadding={20}
+            trigger="click"
+            rootClose
+            placement="bottom"
+            overlay={this.Menu}
+          >
+            <Button>
+              <BsThreeDotsVertical />
+            </Button>
+          </OverlayTrigger>
+        </Nav>
       </Navbar>
     )
   }
 }
 
 Navigation.propTypes = {
-  ui: PropTypes.object.isRequired,
+  currentView: PropTypes.string.isRequired,
+  isDarkMode: PropTypes.bool,
   actions: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
   return {
-    ui: state.present.ui,
+    currentView: selectors.currentViewSelector(state.present),
+    isDarkMode: selectors.isDarkModeSelector(state.present),
   }
 }
 

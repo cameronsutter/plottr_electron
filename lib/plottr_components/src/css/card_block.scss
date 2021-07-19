@@ -71,7 +71,7 @@
     width: 150px;
     min-height: 70px;
     right: 6px;
-    bottom: 29px;
+    top: 8px;
     border: 3px solid black;
     border-radius: 4px;
     z-index: 1;
@@ -87,9 +87,25 @@
       display: block;
       z-index: 10;
     }
+    .card__behind {
+      right: 18px;
+      bottom: 16px;
+    }
+  }
+  &.medium-timeline {
+    .card__behind {
+      right: -2px;
+      width: 80px;
+      min-height: 70px;
+      max-height: fit-content;
+      top: 8px;
+    }
   }
   &.vertical.medium-timeline {
-    padding-left: 29px;
+    .card__behind {
+      left: 38px;
+      top: 8px;
+    }
   }
 }
 

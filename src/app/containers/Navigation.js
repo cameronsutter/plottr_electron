@@ -18,6 +18,7 @@ const isDev = process.env.NODE_ENV == 'development'
 
 const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
   const [dashboardView, setDashboardView] = useState(null)
+  const [menuIsOpen, setMenuIsOpen] = useState(false)
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
@@ -88,12 +89,25 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
     setDashboardView(null)
   }
 
+  const hideMenu = () => {
+    setMenuIsOpen(false)
+  }
+
+  const showMenu = () => {
+    setMenuIsOpen(true)
+  }
+
+  const selectDashboardView = (view) => {
+    setDashboardView(view)
+    hideMenu()
+  }
+
   return (
     <>
       {dashboardView ? (
         <DashboardModal
           activeView={dashboardView}
-          setActiveView={setDashboardView}
+          setActiveView={selectDashboardView}
           closeDashboard={resetDashboardView}
           darkMode={isDarkMode}
         />
@@ -122,9 +136,11 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
             trigger="click"
             rootClose
             placement="bottom"
+            open={menuIsOpen}
+            onHide={hideMenu}
             overlay={Menu}
           >
-            <Button>
+            <Button onClick={showMenu}>
               <BsThreeDotsVertical />
             </Button>
           </OverlayTrigger>

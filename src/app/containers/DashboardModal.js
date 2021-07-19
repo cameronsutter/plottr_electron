@@ -1,6 +1,9 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
 import { PlottrModal } from 'connected-components'
+import cx from 'classnames'
+import { VscChromeClose } from 'react-icons/vsc'
+
 import DashboardBody from '../../dashboard/components/navigation/DashboardBody'
 import DashboardNavigation from '../../dashboard/components/navigation/DashboardNavigation'
 import DashboardHeader from '../../dashboard/components/navigation/DashboardHeader'
@@ -13,21 +16,31 @@ const modalStyles = {
     alignItems: 'center',
   },
   content: {
-    width: '98%',
+    padding: 0,
+    borderRadius: 0,
+    overflow: 'hidden',
+    width: '100%',
     position: 'relative',
-    left: 'auto',
-    bottom: 'auto',
-    right: 'auto',
-    minHeight: 'calc(100vh - 50px)',
-    maxHeight: 'calc(100vh - 50px)',
+    left: '0',
+    top: '0',
+    minHeight: '100vh',
+    maxHeight: '100vh',
   },
 }
 
 const DashboardModal = ({ activeView, darkMode, closeDashboard, setActiveView }) => (
   <PlottrModal isOpen={true} onRequestClose={closeDashboard} style={modalStyles}>
-    <DashboardHeader darkMode={darkMode} />
-    <DashboardNavigation currentView={activeView} setView={setActiveView} />
-    <DashboardBody currentView={activeView} setView={setActiveView} darkMode={darkMode} />
+    <div id="dashboard__react__root">
+      {/* <DashboardHeader darkMode={darkMode} /> */}
+      <div className={cx('dashboard__main', { darkmode: darkMode })}>
+        <DashboardNavigation currentView={activeView} setView={setActiveView} />
+        <DashboardBody currentView={activeView} setView={setActiveView} darkMode={darkMode}>
+          <div className="dashboard__close-button">
+            <VscChromeClose onClick={closeDashboard} />
+          </div>
+        </DashboardBody>
+      </div>
+    </div>
   </PlottrModal>
 )
 

@@ -34,7 +34,7 @@ $white-highlight-box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1),
   }
 }
 
-main.darkmode {
+.dashboard__main.darkmode {
   background-color: $dark-gray-3 !important;
   color: $dark-text;
 

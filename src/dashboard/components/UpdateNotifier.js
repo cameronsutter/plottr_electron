@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import log from 'electron-log'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
@@ -18,7 +18,7 @@ export default function UpdateNotifier(props) {
   const [downloadInProgress, setDownloadInProgress] = useState(false)
   const [percentDownloaded, setPercentDownloaded] = useState(0)
   const [finishedDownloading, setFinishedDownloading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(false)
   const [info, setInfo] = useState(null)
   const [hidden, setHidden] = useState(false)
 
@@ -69,16 +69,26 @@ export default function UpdateNotifier(props) {
   useEffect(() => {
     if (is.development) return
     if (shouldCheck && SETTINGS.get('canGetUpdates')) {
-      ipcRenderer.send('pls-check-for-updates')
-      setError(null)
-      setChecking(true)
-      setTimeout(() => setChecking(false), 5000) //failsafe in case of no response
-      setHidden(false)
-      // reset to check every 10 minutes
-      setShouldCheck(false)
-      setTimeout(() => setShouldCheck(true), updateCheckThreshold)
+      checkForUpdates()
     }
   }, [shouldCheck])
+
+  const checkForUpdates = () => {
+    ipcRenderer.send('pls-check-for-updates')
+    setError(null)
+    setChecking(true)
+    setTimeout(() => setChecking(false), 5000) //failsafe in case of no response
+    setHidden(false)
+    // reset to check every interval
+    setShouldCheck(false)
+    setTimeout(() => setShouldCheck(true), updateCheckThreshold)
+  }
+
+  const manualDownload = () => {
+    const platform = is.macos ? 'mac' : 'win'
+    const url = `https://api.plottr.com/api/latest?platform=${platform}`
+    shell.openExternal(url)
+  }
 
   const startDownload = () => {
     ipcRenderer.send('pls-download-update')
@@ -102,7 +112,22 @@ export default function UpdateNotifier(props) {
     if (available) text = t('Update Available 🎉 (version {version})', { version })
     if (downloadInProgress) text = t('Downloading version {version}', { version: version })
     if (finishedDownloading) text = t('Download Complete 🎉 (version {version})', { version })
-    if (error) text = t('Update failed. Try again')
+    if (error) {
+      text = t.rich('Update failed. <b>Try again</b> or <a>install manually</a>', {
+        // eslint-disable-next-line react/display-name, react/prop-types
+        a: ({ children }) => (
+          <a href="#" onClick={manualDownload} key="manual-download">
+            {children}
+          </a>
+        ),
+        // eslint-disable-next-line react/display-name, react/prop-types
+        b: ({ children }) => (
+          <a href="#" onClick={checkForUpdates} key="try-again">
+            {children}
+          </a>
+        ),
+      })
+    }
 
     if (!text) return null
     return <span>{text}</span>

@@ -80,8 +80,9 @@ $header-height: 40px;
     }
   }
 
+  .dashboard__main,
   main {
-    height: calc(100vh - 40px); // can't use variable here: $header-height
+    height: 100vh; // can't use variable here: $header-height
     width: 100vw;
     overflow: auto;
     display: grid;
@@ -102,5 +103,14 @@ $header-height: 40px;
       right: 0;
       top: 55px;
     }
+  }
+
+  .dashboard__close-button {
+    position: relative;
+    float: right;
+    display: inline-block;
+    top: 40px;
+    right: 40px;
+    cursor: pointer;
   }
 }

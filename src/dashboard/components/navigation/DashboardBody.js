@@ -15,7 +15,7 @@ import { checkForActiveLicense } from '../../../common/licensing/check_license'
 import { is } from 'electron-util'
 import { Beamer, DashboardErrorBoundary } from 'connected-components'
 
-export default function DashboardBody({ currentView, setView, darkMode }) {
+export default function DashboardBody({ currentView, setView, darkMode, children }) {
   const [licenseInfo, licenseInfoSize] = useLicenseInfo()
   const { started, expired } = useTrialStatus()
   const [showAccount, setShowAccount] = useState(false)
@@ -89,13 +89,19 @@ export default function DashboardBody({ currentView, setView, darkMode }) {
       break
   }
 
-  return <Body darkMode={darkMode}>{body}</Body>
+  return (
+    <Body darkMode={darkMode}>
+      {children}
+      {body}
+    </Body>
+  )
 }
 
 DashboardBody.propTypes = {
   currentView: PropTypes.string,
   setView: PropTypes.func,
   darkMode: PropTypes.bool,
+  children: PropTypes.node,
 }
 
 function Body({ children, darkMode }) {

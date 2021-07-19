@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Navbar, Nav, NavItem, Button } from 'react-bootstrap'
@@ -9,6 +9,7 @@ import SETTINGS from '../../common/utils/settings'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
 import cx from 'classnames'
 
@@ -16,6 +17,8 @@ const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
 
 const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
+  const [dashboardView, setDashboardView] = useState(null)
+
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
   }
@@ -35,48 +38,99 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
   const Menu = () => {
     return (
       <div className={cx('project-nav__menu-popover', { darkmode: isDarkMode })}>
-        <Button>Account</Button>
-        <Button>Settings</Button>
-        <Button>License</Button>
-        <Button>Backups</Button>
-        <Button>Help</Button>
+        <Button
+          onClick={() => {
+            setDashboardView('account')
+          }}
+        >
+          Account
+        </Button>
+        <Button
+          onClick={() => {
+            setDashboardView('options')
+          }}
+        >
+          Settings
+        </Button>
+        <Button
+          onClick={() => {
+            setDashboardView('files')
+          }}
+        >
+          License
+        </Button>
+        <Button
+          onClick={() => {
+            setDashboardView('templates')
+          }}
+        >
+          Templates
+        </Button>
+        <Button
+          onClick={() => {
+            setDashboardView('backups')
+          }}
+        >
+          Backups
+        </Button>
+        <Button
+          onClick={() => {
+            setDashboardView('help')
+          }}
+        >
+          Help
+        </Button>
       </div>
     )
   }
 
+  const resetDashboardView = () => {
+    setDashboardView(null)
+  }
+
   return (
-    <Navbar className="project-nav" fluid inverse={isDarkMode}>
-      <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
-        <BookChooser />
-        <NavItem eventKey="project">{i18n('Project')}</NavItem>
-        <NavItem eventKey="timeline">{i18n('Timeline')}</NavItem>
-        <NavItem eventKey="outline">{i18n('Outline')}</NavItem>
-        <NavItem eventKey="notes">{i18n('Notes')}</NavItem>
-        <NavItem eventKey="characters">{i18n('Characters')}</NavItem>
-        <NavItem eventKey="places">{i18n('Places')}</NavItem>
-        <NavItem eventKey="tags">{i18n('Tags')}</NavItem>
-        {isDev ? (
-          <NavItem eventKey="analyzer">
-            Analyzer<sup>(DEV)</sup>
-          </NavItem>
-        ) : null}
-      </Nav>
-      <Beamer inNavigation />
-      {renderTrialLinks()}
-      <Nav pullRight className="project-nav__options">
-        <OverlayTrigger
-          containerPadding={20}
-          trigger="click"
-          rootClose
-          placement="bottom"
-          overlay={Menu}
-        >
-          <Button>
-            <BsThreeDotsVertical />
-          </Button>
-        </OverlayTrigger>
-      </Nav>
-    </Navbar>
+    <>
+      {dashboardView ? (
+        <DashboardModal
+          activeView={dashboardView}
+          setActiveView={setDashboardView}
+          closeDashboard={resetDashboardView}
+          darkMode={isDarkMode}
+        />
+      ) : null}
+      <Navbar className="project-nav" fluid inverse={isDarkMode}>
+        <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
+          <BookChooser />
+          <NavItem eventKey="project">{i18n('Project')}</NavItem>
+          <NavItem eventKey="timeline">{i18n('Timeline')}</NavItem>
+          <NavItem eventKey="outline">{i18n('Outline')}</NavItem>
+          <NavItem eventKey="notes">{i18n('Notes')}</NavItem>
+          <NavItem eventKey="characters">{i18n('Characters')}</NavItem>
+          <NavItem eventKey="places">{i18n('Places')}</NavItem>
+          <NavItem eventKey="tags">{i18n('Tags')}</NavItem>
+          {isDev ? (
+            <NavItem eventKey="analyzer">
+              Analyzer<sup>(DEV)</sup>
+            </NavItem>
+          ) : null}
+        </Nav>
+        <Beamer inNavigation />
+        {renderTrialLinks()}
+        <Nav pullRight className="project-nav__options">
+          <OverlayTrigger
+            containerPadding={20}
+            trigger="click"
+            rootClose
+            placement="bottom"
+            overlay={Menu}
+          >
+            <Button>
+              <BsThreeDotsVertical />
+            </Button>
+          </OverlayTrigger>
+        </Nav>
+      </Navbar>
+    </>
   )
 }
 

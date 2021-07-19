@@ -45,7 +45,6 @@ export default function FilesHome(props) {
           modal={false}
           type={['custom', 'project', 'plotlines']}
           onChooseTemplate={createWithTemplate}
-          showTemplateSaveButton={false}
           showCancelButton={false}
           confirmButtonText={t('Create New Project')}
         />

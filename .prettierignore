@@ -8,3 +8,4 @@ bin/electron_main.js
 **/*.json
 **/*.md
 lib/plottr_components/dist/**/*
+lib/plottr_locales/lib/**/*

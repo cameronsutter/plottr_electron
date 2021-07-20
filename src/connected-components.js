@@ -142,3 +142,5 @@ export const EditSeries = components.EditSeries
 export const FileLocation = components.FileLocation
 export const BookChooser = components.BookChooser
 export const TimelineWrapper = components.TimelineWrapper
+export const DashboardBody = components.DashboardBody
+export const DashboardNavigation = components.DashboardNavigation

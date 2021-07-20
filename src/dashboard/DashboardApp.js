@@ -1,9 +1,7 @@
 import { ipcRenderer } from 'electron'
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
-import { DashboardErrorBoundary } from 'connected-components'
-import DashboardBody from './components/navigation/DashboardBody'
-import DashboardNavigation from './components/navigation/DashboardNavigation'
+import { DashboardErrorBoundary, DashboardBody, DashboardNavigation } from 'connected-components'
 import DashboardHeader from './components/navigation/DashboardHeader'
 // TODO: when you split out the dashboard styles into their own folder, you'll need this
 // import 'style-loader!css-loader!sass-loader!./styles/dashboard.scss'

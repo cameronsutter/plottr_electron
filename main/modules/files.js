@@ -8,7 +8,7 @@ const { t } = require('plottr_locales')
 
 const { knownFilesStore, addToKnownFiles, addToKnown } = require('./known_files')
 const { Importer } = require('./importer/snowflake/importer')
-const { emptyFile, tree } = require('pltr/v2')
+const { emptyFile, tree, SYSTEM_REDUCER_KEYS } = require('pltr/v2')
 const { openProjectWindow } = require('./windows/projects')
 const { shell } = require('electron')
 const { broadcastToAllWindows } = require('./broadcast')
@@ -20,13 +20,16 @@ const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP
 const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
 
 function saveFile(filePath, jsonData) {
-  let stringData = ''
+  const withoutSystemKeys = {}
+  Object.keys(jsonData).map((key) => {
+    if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
+    withoutSystemKeys[key] = jsonData[key]
+  })
   if (process.env.NODE_ENV == 'development') {
-    stringData = JSON.stringify(jsonData, null, 2)
+    fs.writeFileSync(filePath, JSON.stringify(withoutSystemKeys, null, 2))
   } else {
-    stringData = JSON.stringify(jsonData)
+    fs.writeFileSync(filePath, JSON.stringify(withoutSystemKeys))
   }
-  fs.writeFileSync(filePath, stringData)
 }
 
 function removeFromTempFiles(filePath, doDelete = true) {

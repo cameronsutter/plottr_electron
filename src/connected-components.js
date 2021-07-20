@@ -1,5 +1,6 @@
 import electron, { remote, shell, ipcRenderer } from 'electron'
 import path from 'path'
+import { ActionCreators } from 'redux-undo'
 import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
@@ -38,12 +39,19 @@ import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
+import { store } from './app/store/configureStore'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
 const version = app.getVersion()
 
 const platform = {
+  undo: () => {
+    store.dispatch(ActionCreators.undo())
+  },
+  redo: () => {
+    store.dispatch(ActionCreators.redo())
+  },
   electron,
   appVersion: version,
   defaultBackupLocation: BACKUP_BASE_PATH,

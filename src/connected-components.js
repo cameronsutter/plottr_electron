@@ -1,7 +1,9 @@
 import electron, { remote, shell, ipcRenderer } from 'electron'
+import path from 'path'
 import { connections } from 'plottr_components'
+import { readFileSync } from 'fs'
 
-import { TEMP_FILES_PATH } from './common/utils/config_paths'
+import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import { useExportConfigInfo } from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'
@@ -18,14 +20,101 @@ import SETTINGS from './common/utils/settings'
 import USER from './common/utils/user_info'
 import { is } from 'electron-util'
 import MPQ from './common/utils/MPQ'
+import { useLicenseInfo, licenseStore } from './common/utils/store_hooks'
+import { useTrialStatus } from './common/licensing/trial_manager'
+import { checkForActiveLicense } from './common/licensing/check_license'
+import { verifyLicense } from './common/licensing/verify_license'
+import { trial90days } from './common/licensing/special_codes'
+import {
+  createFromSnowflake,
+  createNew,
+  openExistingFile,
+  openKnownFile,
+} from './dashboard/utils/window_manager'
+import { doesFileExist, useSortedKnownFiles } from './dashboard/utils/files'
+import {
+  deleteKnownFile,
+  editKnownFilePath,
+  removeFromKnownFiles,
+} from './common/utils/known_files'
+import { saveFile } from './common/utils/files'
+import { useCustomTemplatesInfo } from './common/utils/store_hooks'
+import { useFilteredSortedTemplates } from './dashboard/utils/templates'
+import { useBackupFolders } from './dashboard/utils/backups'
+import { useSettingsInfo } from './common/utils/store_hooks'
+import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
+import TemplateFetcher from './dashboard/utils/template_fetcher'
 
+const win = remote.getCurrentWindow()
 const { app, dialog } = remote
 const version = app.getVersion()
 
 const platform = {
   electron,
   appVersion: version,
+  defaultBackupLocation: BACKUP_BASE_PATH,
+  setDarkMode: (value) => {
+    ipcRenderer.send('pls-set-dark-setting', value)
+  },
+  file: {
+    createNew,
+    openExistingFile,
+    doesFileExist,
+    useSortedKnownFiles,
+    isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
+    pathSep: path.sep,
+    basename: path.basename,
+    openKnownFile,
+    deleteKnownFile,
+    editKnownFilePath,
+    removeFromKnownFiles,
+    saveFile,
+    readFileSync,
+    moveItemToTrash: shell.moveItemToTrash,
+    createFromSnowflake,
+  },
+  update: {
+    quitToInstall: () => {
+      ipcRenderer.send('pls-quit-and-install')
+    },
+    downloadUpdate: () => {
+      ipcRenderer.send('pls-download-update')
+    },
+    checkForUpdates: () => {
+      ipcRenderer.send('pls-check-for-updates')
+    },
+    onUpdateError: (cb) => {
+      ipcRenderer.on('updater-error', cb)
+    },
+    onUpdaterUpdateAvailable: (cb) => {
+      ipcRenderer.on('updater-update-available', cb)
+    },
+    onUpdaterUpdateNotAvailable: (cb) => {
+      ipcRenderer.on('updater-update-not-available', cb)
+    },
+    onUpdaterDownloadProgress: (cb) => {
+      ipcRenderer.on('updater-download-progress', cb)
+    },
+    onUpdatorUpdateDownloaded: (cb) => {
+      ipcRenderer.on('updater-update-downloaded', cb)
+    },
+  },
+  license: {
+    useLicenseInfo,
+    checkForActiveLicense,
+    useTrialStatus,
+    licenseStore,
+    verifyLicense,
+    trial90days,
+  },
+  reloadMenu: () => {
+    ipcRenderer.send('pls-reload-menu')
+  },
+  checkForUpdates: () => {
+    ipcRenderer.send('pls-check-for-updates')
+  },
   template: {
+    TemplateFetcher,
     listTemplates,
     listCustomTemplates,
     getTemplateById,
@@ -39,8 +128,11 @@ const platform = {
       const win = remote.getCurrentWindow()
       ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
     },
+    useFilteredSortedTemplates,
+    useCustomTemplatesInfo,
   },
   settings: SETTINGS,
+  useSettingsInfo,
   user: USER,
   os: is.windows ? 'windows' : is.macos ? 'macos' : is.linux ? 'linux' : 'unknown',
   isDevelopment: is.development,
@@ -48,8 +140,11 @@ const platform = {
   isMacOS: is.macos,
   openExternal: shell.openExternal,
   createErrorReport,
+  handleCustomerServiceCode,
   log,
   dialog,
+  showSaveDialogSync: (options) => dialog.showSaveDialogSync(win, options),
+  showOpenDialogSync: (options) => dialog.showOpenDialogSync(win, options),
   node: {
     env: process.env.NODE_ENV === 'development' ? 'development' : 'production',
   },
@@ -64,6 +159,7 @@ const platform = {
   store: {
     useExportConfigInfo,
   },
+  useBackupFolders,
   moveFromTemp: () => {
     const win = remote.getCurrentWindow()
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')

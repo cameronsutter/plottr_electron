@@ -6,7 +6,6 @@ import { VscChromeClose } from 'react-icons/vsc'
 
 import DashboardBody from '../../dashboard/components/navigation/DashboardBody'
 import DashboardNavigation from '../../dashboard/components/navigation/DashboardNavigation'
-import DashboardHeader from '../../dashboard/components/navigation/DashboardHeader'
 
 const modalStyles = {
   overlay: {
@@ -31,7 +30,6 @@ const modalStyles = {
 const DashboardModal = ({ activeView, darkMode, closeDashboard, setActiveView }) => (
   <PlottrModal isOpen={true} onRequestClose={closeDashboard} style={modalStyles}>
     <div id="dashboard__react__root">
-      {/* <DashboardHeader darkMode={darkMode} /> */}
       <div className={cx('dashboard__main', { darkmode: darkMode })}>
         <DashboardNavigation currentView={activeView} setView={setActiveView} />
         <DashboardBody currentView={activeView} setView={setActiveView} darkMode={darkMode}>

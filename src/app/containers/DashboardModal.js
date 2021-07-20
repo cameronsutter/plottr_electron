@@ -2,7 +2,7 @@ import React from 'react'
 import { PropTypes } from 'prop-types'
 import { PlottrModal } from 'connected-components'
 import cx from 'classnames'
-import { FaRegUser } from 'react-icons/fa'
+import { VscChromeClose } from 'react-icons/vsc'
 
 import { DashboardBody, DashboardNavigation } from 'connected-components'
 
@@ -33,7 +33,7 @@ const DashboardModal = ({ activeView, darkMode, closeDashboard, setActiveView })
         <DashboardNavigation currentView={activeView} setView={setActiveView} />
         <DashboardBody currentView={activeView} setView={setActiveView} darkMode={darkMode}>
           <div className="dashboard__close-button">
-            <FaRegUser onClick={closeDashboard} />
+            <VscChromeClose onClick={closeDashboard} />
           </div>
         </DashboardBody>
       </div>

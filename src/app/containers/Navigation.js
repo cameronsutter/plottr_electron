@@ -8,7 +8,7 @@ import { Beamer, BookChooser, OverlayTrigger } from 'connected-components'
 import SETTINGS from '../../common/utils/settings'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
-import { BsThreeDotsVertical } from 'react-icons/bs'
+import { FaRegUser } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
 import cx from 'classnames'
@@ -141,7 +141,7 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
             overlay={Menu}
           >
             <Button onClick={showMenu}>
-              <BsThreeDotsVertical />
+              <FaRegUser />
             </Button>
           </OverlayTrigger>
         </Nav>

@@ -2,10 +2,9 @@ import React from 'react'
 import { PropTypes } from 'prop-types'
 import { PlottrModal } from 'connected-components'
 import cx from 'classnames'
-import { VscChromeClose } from 'react-icons/vsc'
+import { FaRegUser } from 'react-icons/fa'
 
-import DashboardBody from '../../dashboard/components/navigation/DashboardBody'
-import DashboardNavigation from '../../dashboard/components/navigation/DashboardNavigation'
+import { DashboardBody, DashboardNavigation } from 'connected-components'
 
 const modalStyles = {
   overlay: {
@@ -34,7 +33,7 @@ const DashboardModal = ({ activeView, darkMode, closeDashboard, setActiveView })
         <DashboardNavigation currentView={activeView} setView={setActiveView} />
         <DashboardBody currentView={activeView} setView={setActiveView} darkMode={darkMode}>
           <div className="dashboard__close-button">
-            <VscChromeClose onClick={closeDashboard} />
+            <FaRegUser onClick={closeDashboard} />
           </div>
         </DashboardBody>
       </div>

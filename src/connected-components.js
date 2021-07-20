@@ -99,6 +99,12 @@ const platform = {
       ipcRenderer.on('updater-update-downloaded', cb)
     },
   },
+  updateLanguage: (newLanguage) => {
+    ipcRenderer.send('pls-update-language', newLanguage)
+  },
+  updateBeatHierarchyFlag: (newValue) => {
+    ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
+  },
   license: {
     useLicenseInfo,
     checkForActiveLicense,

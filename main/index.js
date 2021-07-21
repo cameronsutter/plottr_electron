@@ -18,15 +18,13 @@ const { openProjectWindow } = require('./modules/windows/projects')
 const { setDarkMode, broadcastDarkMode } = require('./modules/theme')
 const { newFileOptions } = require('./modules/new_file_options')
 const { gracefullyQuit } = require('./modules/utils')
-const { openDashboard } = require('./modules/windows/dashboard')
-const { addToKnown } = require('./modules/known_files')
+const { addToKnown, knownFilesStore } = require('./modules/known_files')
 const SETTINGS = require('./modules/settings')
 const {
   broadcastSetBeatHierarchy,
   broadcastUnsetBeatHierarchy,
 } = require('./modules/feature_flags')
 const { reloadAllWindows } = require('./modules/windows')
-const { reloadDashboard } = require('./modules/windows/dashboard')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -58,7 +56,9 @@ if (!is.development) {
 
 app.whenReady().then(() => {
   loadMenu(true)
-  openDashboard()
+  // TODO: not necesarily latest...
+  const latestFile = knownFilesStore.store[0]
+  openProjectWindow(latestFile.path)
   windowsOpenFileEventHandler(process.argv)
 
   // Register the toggleDevTools shortcut listener.
@@ -75,13 +75,12 @@ app.whenReady().then(() => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
-      openDashboard()
+      reloadAllWindows()
     }
   })
   app.on('second-instance', (event, argv, workingDirectory) => {
     log.info('second-instance')
     loadMenu(true)
-    openDashboard()
     windowsOpenFileEventHandler(argv)
   })
 })
@@ -120,12 +119,6 @@ app.on('open-url', function (event, url) {
   // const link = param.replace('plottr://')
 })
 
-app.on('window-all-closed', function () {
-  if (!is.macos) {
-    openDashboard()
-  }
-})
-
 ipcMain.on('pls-fetch-state', function (event, id) {
   const win = getWindowById(id)
   if (win) {
@@ -151,5 +144,4 @@ ipcMain.on('pls-update-language', (_, newLanguage) => {
   setupI18n(SETTINGS, { electron })
   require('./modules/menus').loadMenu()
   reloadAllWindows()
-  reloadDashboard()
 })

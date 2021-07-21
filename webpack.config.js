@@ -56,7 +56,6 @@ const rendererConfig = {
   entry: {
     app: path.resolve('.', 'src', 'app', 'index.js'),
     css: path.resolve('.', 'src', 'css', 'index'),
-    dashboard: path.resolve('.', 'src', 'dashboard', 'index'),
   },
   output: {
     path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
@@ -97,7 +96,6 @@ const rendererConfig = {
     alias: {
       app: path.resolve(__dirname, 'src', 'app'),
       css: path.resolve(__dirname, 'src', 'css'),
-      dashboard: path.resolve(__dirname, 'src', 'dashboard'),
       test: path.resolve(__dirname, 'test'),
       'connected-components': path.resolve(__dirname, 'src', 'connected-components.js'),
       plottr_components: path.resolve(__dirname, 'lib', 'plottr_components', 'dist', 'components'),

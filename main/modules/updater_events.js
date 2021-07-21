@@ -2,7 +2,7 @@ const { ipcMain } = require('electron')
 const { autoUpdater } = require('electron-updater')
 const log = require('electron-log')
 const SETTINGS = require('./settings')
-const { sendToDashboard } = require('./windows/dashboard')
+const { broadcastToAllWindows } = require('./broadcast')
 
 autoUpdater.logger = log
 autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
@@ -29,21 +29,21 @@ ipcMain.on('pls-check-for-updates', () => {
 // SEND EVENTS //
 /////////////////
 autoUpdater.on('error', (error) => {
-  sendToDashboard('updater-error', error)
+  broadcastToAllWindows('updater-error', error)
 })
 
 autoUpdater.on('update-available', (info) => {
-  sendToDashboard('updater-update-available', info)
+  broadcastToAllWindows('updater-update-available', info)
 })
 
 autoUpdater.on('update-not-available', () => {
-  sendToDashboard('updater-update-not-available', null)
+  broadcastToAllWindows('updater-update-not-available', null)
 })
 
 autoUpdater.on('download-progress', (progress) => {
-  sendToDashboard('updater-download-progress', progress)
+  broadcastToAllWindows('updater-download-progress', progress)
 })
 
 autoUpdater.on('update-downloaded', (info) => {
-  sendToDashboard('updater-update-downloaded', info)
+  broadcastToAllWindows('updater-update-downloaded', info)
 })

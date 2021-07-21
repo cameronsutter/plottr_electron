@@ -8,7 +8,6 @@ const { buildWindowMenu } = require('./window')
 const { buildHelpMenu } = require('./help')
 const { buildFileMenu } = require('./file')
 const { buildViewMenu } = require('./view')
-const { openDashboard, getDashboardId } = require('../windows/dashboard')
 const { getWindowById } = require('../windows')
 
 ipcMain.on('pls-reload-menu', () => {
@@ -24,7 +23,7 @@ function buildMenu(makeItSimple) {
 
   // is dashboard focused?
   const win = BrowserWindow.getFocusedWindow()
-  if (win && win.id != getDashboardId()) {
+  if (win) {
     const winObj = getWindowById(win.id)
     let filePath = null
     if (winObj) {
@@ -39,18 +38,6 @@ function loadMenu(makeItSimple) {
   const template = buildMenu(makeItSimple)
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
-
-  if (is.macos) {
-    const dockMenu = Menu.buildFromTemplate([
-      {
-        label: i18n('Open Dashboard'),
-        click: function () {
-          openDashboard()
-        },
-      },
-    ])
-    app.dock.setMenu(dockMenu)
-  }
 }
 
 module.exports = { loadMenu }

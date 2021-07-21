@@ -6,7 +6,6 @@ const { NODE_ENV } = require('../constants')
 const { localeNames, setupI18n } = require('plottr_locales')
 const SETTINGS = require('../settings')
 const { reloadAllWindows } = require('../windows')
-const { reloadDashboard } = require('../windows/dashboard')
 
 function buildPlottrMenu() {
   const submenu = [
@@ -19,7 +18,6 @@ function buildPlottrMenu() {
           setupI18n(SETTINGS, { electron })
           require('./').loadMenu()
           reloadAllWindows()
-          reloadDashboard()
         },
       })),
     },

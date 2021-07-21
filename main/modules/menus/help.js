@@ -1,6 +1,5 @@
 const { shell } = require('electron')
 const { t } = require('plottr_locales')
-const { sendToDashboard } = require('../windows/dashboard')
 
 function buildHelpMenu() {
   return {

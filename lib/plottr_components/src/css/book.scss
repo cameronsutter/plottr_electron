@@ -86,7 +86,6 @@
     }
   }
   &.add {
-    cursor: pointer;
     padding-top: 36px;
   }
   &.gu-transit {
@@ -108,6 +107,14 @@
       background: linear-gradient(45deg, $gray-4 0%, $gray-5 100%);
       &.add {
         background: linear-gradient(45deg, $gray-6 0%, $gray-7 100%);
+        .book-container__add {
+          .glyphicon:hover {
+            color: $blue-5;
+          }
+          .use-template:hover {
+            color: $blue-5
+          }
+        }
       }
     }
   }
@@ -187,11 +194,19 @@
   .book-container__add {
     height: 95%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
     color: $blue-5;
-    &:hover {
-      .glyphicon {
+    .glyphicon {
+      cursor: pointer;
+      &:hover {
+        color: $blue-7;
+      }
+    }
+    .use-template {
+      cursor: pointer;
+      &:hover {
         color: $blue-7;
       }
     }

@@ -29,6 +29,9 @@ import { focusIsEditable } from '../common/utils/undo'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import exportConfig from '../common/exporter/default_config'
 import { TEMP_FILES_PATH } from '../common/utils/config_paths'
+import { createErrorReport } from '../common/utils/full_error_report'
+import { ensureBackupFullPath } from '../common/utils/backup'
+import TemplateFetcher from '../dashboard/utils/template_fetcher'
 
 setupI18n(SETTINGS, { electron })
 
@@ -38,6 +41,13 @@ const rollbar = setupRollbar('app.html')
 process.on('uncaughtException', (err) => {
   log.error(err)
   rollbar.error(err)
+})
+
+// Secondary SETUP //
+window.requestIdleCallback(() => {
+  ensureBackupFullPath()
+  TemplateFetcher.fetch()
+  initMixpanel()
 })
 
 ensureBackupTodayPath()
@@ -278,3 +288,22 @@ document.addEventListener('keydown', (e) => {
 window.logger = function (which) {
   process.env.LOGGER = which.toString()
 }
+
+ipcRenderer.once('send-launch', (event, version) => {
+  initMixpanel()
+  const settingsWeCareAbout = {
+    auto_download: SETTINGS.get('user.autoDownloadUpdate'),
+    backup_on: SETTINGS.get('backup'),
+    locale: SETTINGS.get('locale'),
+    dark: SETTINGS.get('user.dark'),
+  }
+  MPQ.push('Launch', { online: navigator.onLine, version: version, ...settingsWeCareAbout })
+})
+
+ipcRenderer.on('reload', () => {
+  location.reload()
+})
+
+ipcRenderer.on('create-error-report', () => {
+  createErrorReport()
+})

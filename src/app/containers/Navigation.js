@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Navbar, Nav, NavItem, Button } from 'react-bootstrap'
@@ -19,6 +19,12 @@ const isDev = process.env.NODE_ENV == 'development'
 const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
   const [dashboardView, setDashboardView] = useState(null)
   const [menuIsOpen, setMenuIsOpen] = useState(false)
+
+  useEffect(() => {
+    ipcRenderer.on('open-dashboard', (event) => {
+      setDashboardView('files')
+    })
+  }, [])
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)

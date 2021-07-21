@@ -1,6 +1,6 @@
 const path = require('path')
 const Store = require('electron-store')
-const { reloadRecents } = require('./windows/dashboard')
+const { reloadRecents } = require('./dashboard')
 const knownFilesPath = process.env.NODE_ENV == 'development' ? 'known_files_dev' : 'known_files'
 
 const knownFilesStore = new Store({ name: knownFilesPath })

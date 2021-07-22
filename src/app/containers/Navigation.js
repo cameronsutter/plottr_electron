@@ -61,7 +61,7 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
         </Button>
         <Button
           onClick={() => {
-            setDashboardView('files')
+            setDashboardView('account')
           }}
         >
           License

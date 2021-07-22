@@ -73,6 +73,7 @@ const platform = {
     readFileSync,
     moveItemToTrash: shell.moveItemToTrash,
     createFromSnowflake,
+    joinPath: path.join,
   },
   update: {
     quitToInstall: () => {

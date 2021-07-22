@@ -58,12 +58,13 @@ app.whenReady().then(() => {
   loadMenu(true)
   // TODO: not necesarily latest...
   const files = Object.values(knownFilesStore.store).sort((thisFile, thatFile) => {
-    if (thisFile.lastOpened > thatFile.lastOpened) return 1
-    if (thisFile.lastOpened < thatFile.lastOpened) return -1
+    if (thisFile.lastOpened > thatFile.lastOpened) return -1
+    if (thisFile.lastOpened < thatFile.lastOpened) return 1
     return 0
   })
   const latestFile = files[0]
   openProjectWindow(latestFile.path)
+  // Open the dashboard for the current file...
   windowsOpenFileEventHandler(process.argv)
 
   // Register the toggleDevTools shortcut listener.

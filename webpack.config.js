@@ -55,6 +55,9 @@ const rendererConfig = {
   context: path.resolve(__dirname, 'src'),
   entry: {
     app: path.resolve('.', 'src', 'app', 'index.js'),
+    // Split these out from main so that we can do early
+    // initialisation on things like i18 setup.
+    appDependencies: path.resolve('.', 'src', 'app', '_index.js'),
     css: path.resolve('.', 'src', 'css', 'index'),
   },
   output: {

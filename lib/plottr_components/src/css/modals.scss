@@ -7,13 +7,13 @@
 }
 
 .ReactModal__Content--after-open {
-  top: 60px;
+  top: 60px !important;
   border-radius: 25px;
-  box-shadow: 0 6px 24px 0 rgba(18, 43, 70, 0.12);
+  box-shadow: 0 6px 24px 0 rgba(18, 43, 70, 0.12) !important;
 }
 
 .ReactModal__Overlay--after-open {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1) !important;
   z-index: 1000;
 }
 

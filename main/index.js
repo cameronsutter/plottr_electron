@@ -25,6 +25,7 @@ const {
   broadcastUnsetBeatHierarchy,
 } = require('./modules/feature_flags')
 const { reloadAllWindows } = require('./modules/windows')
+const { ipcRenderer } = require('electron')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -64,7 +65,6 @@ app.whenReady().then(() => {
   })
   const latestFile = files[0]
   openProjectWindow(latestFile.path)
-  // Open the dashboard for the current file...
   windowsOpenFileEventHandler(process.argv)
 
   // Register the toggleDevTools shortcut listener.
@@ -123,6 +123,11 @@ app.on('open-url', function (event, url) {
   // make sure to check that the app is ready
   log.info('open-url event: ' + url)
   // const link = param.replace('plottr://')
+})
+
+ipcMain.once('initial-mount-complete', (event) => {
+  console.log('received initial mount')
+  event.reply('open-dashboard')
 })
 
 ipcMain.on('pls-fetch-state', function (event, id) {

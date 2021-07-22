@@ -2,6 +2,7 @@ import electron, { remote, shell, ipcRenderer } from 'electron'
 import path from 'path'
 import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
+import { machineIdSync } from 'node-machine-id'
 
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import { useExportConfigInfo } from './common/utils/store_hooks'
@@ -176,6 +177,7 @@ const platform = {
   tempFilesPath: TEMP_FILES_PATH,
   mpq: MPQ,
   rootElementSelectors: ['#react-root', '#dashboard__react__root'],
+  machineIdSync,
 }
 
 const components = connections.pltr(platform)

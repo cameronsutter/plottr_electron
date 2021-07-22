@@ -8,6 +8,7 @@ import export_config from './common/exporter/default_config'
 import {
   listTemplates,
   listCustomTemplates,
+  getTemplateById,
   deleteTemplate,
   editTemplateDetails,
 } from './common/utils/templates'
@@ -27,6 +28,7 @@ const platform = {
   template: {
     listTemplates,
     listCustomTemplates,
+    getTemplateById,
     deleteTemplate,
     editTemplateDetails,
     startSaveAsTemplate: (itemType) => {

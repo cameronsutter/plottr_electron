@@ -151,6 +151,9 @@ h3.popover-title {
 .modal-header {
   @include header-font;
 }
+.nav.nav-tabs {
+  @include application-text;
+}
 
 .control-label {
   @include application-text;

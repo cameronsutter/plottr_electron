@@ -159,7 +159,7 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
 Navigation.propTypes = {
   currentView: PropTypes.string.isRequired,
   isDarkMode: PropTypes.bool,
-  changeCurrentView: PropTypes.object.isRequired,
+  changeCurrentView: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

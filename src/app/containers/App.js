@@ -43,6 +43,7 @@ class App extends Component {
     ipcRenderer.on('advanced-export-file-from-menu', (event) => {
       this.setState({ showExportDialog: true })
     })
+    ipcRenderer.send('initial-mount-complete')
     window.addEventListener('beforeunload', this.askToSave)
   }
 

@@ -1,6 +1,4 @@
-const { Menu, ipcMain, app, BrowserWindow } = require('electron')
-const i18n = require('plottr_locales').t
-const { is } = require('electron-util')
+const { Menu, ipcMain, BrowserWindow } = require('electron')
 
 const { buildPlottrMenu } = require('./plottr')
 const { buildEditMenu } = require('./edit')

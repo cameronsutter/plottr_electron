@@ -1,0 +1,64 @@
+* TODO Known Files
+** TODO Add a known file
+** TODO Known files store
+** TODO Mark file as more recent
+** TODO Communicate recent files to all windows
+* TODO License activation
+** TODO Does it register?
+** TODO Can we edit files without registering (oops!)
+** TODO Does the menu update when we activate?
+* TODO Trial
+** TODO Keep track of active trial
+** TODO Activate a trial
+** TODO Activate special trials
+* TODO Second Instance
+** TODO Does it open the new file in its own window
+* TODO Update Language
+** TODO does it work across all windows
+* TODO Menu
+** TODO Do we still have all features
+** TODO Does "Open Dashboard" work?
+* TODO Update
+** TODO Can we update
+** TODO Is update progress indicated correctly
+** TODO Does it indicate errors?
+** TODO Does it indicate that an update is available?
+** TODO Does it indicate that we're on the latest version?
+** TODO Does it indicate that the update completed successfully?
+** TODO Does quitting to install a new update work?
+** TODO Check for updates via menu
+* TODO Open files
+** TODO Keep track of files that are open right now (TODO!)
+* TODO New File
+** TODO Create from Snowflake
+** TODO Create new file
+** TODO Create from template
+* TODO Temp files
+** TODO Move file from temp
+* TODO File Management
+** TODO Delete a file
+** TODO Remove known file (e.g. file deleted outside of Plottr)
+** TODO Are deleted files moved to the trash?
+* TODO Save file
+** TODO Save normally
+** TODO Save as
+* TODO Templates
+** TODO Create from built-in template
+** TODO Create from custom template
+** TODO Create template
+* TODO Backups
+** TODO Are backups created
+** TODO Do we create the backup folders when they don't exist?
+** TODO Can we restore from backup
+* TODO Customer Service
+** TODO What is a customer service code?
+* TODO Dark Mode
+** TODO Does it change across all windows?
+** TODO Does changing it in the system change it for the app?
+* TODO Beta
+** TODO Does updating the beat hierarchy flag work?
+* TODO Settings
+** TODO Does a setting change across all windows (options panel and export are good examples)
+* TODO Dialogs
+** TODO Do open/close dialogs work correctly?
+* TODO 

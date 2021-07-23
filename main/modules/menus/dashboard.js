@@ -1,5 +1,6 @@
-import { ipcRenderer } from 'electron'
+import { BrowserWindow } from 'electron'
 
 export const openDashboard = () => {
-  ipcRenderer.send('open-dashboard')
+  const win = BrowserWindow.getFocusedWindow()
+  win.webContents.send('open-dashboard')
 }

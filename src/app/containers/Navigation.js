@@ -12,6 +12,8 @@ import { FaRegUser } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
 import cx from 'classnames'
+import { useLicenseInfo } from '../../common/utils/store_hooks'
+import { useTrialStatus } from '../../common/licensing/trial_manager'
 
 const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
@@ -19,12 +21,20 @@ const isDev = process.env.NODE_ENV == 'development'
 const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
   const [dashboardView, setDashboardView] = useState(null)
   const [menuIsOpen, setMenuIsOpen] = useState(false)
+  const trialInfo = useTrialStatus()
+  const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
+  const firstTime = !licenseInfoSize && !trialInfo.started
+  const trialExpired = trialInfo.expired
 
   useEffect(() => {
     ipcRenderer.on('open-dashboard', (event) => {
       setDashboardView('files')
     })
   }, [])
+
+  useEffect(() => {
+    if (firstTime || trialExpired) setDashboardView('account')
+  }, [firstTime, trialExpired, dashboardView])
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)

@@ -76,6 +76,6 @@
 ** TODO It seems that changing language from the menu does nothing?
    It still seems to work from the dashboard options...
 ** TODO Open dashboard from menu doesn't seem to work anymore
-** TODO Ad view countdown re-renders the progress bar each time it updates :/
+** DONE Ad view countdown re-renders the progress bar each time it updates :/
 ** TODO Opening a second file resets the darkMode setting of existing windows(!)
-** TODO Files can be edited without activating the license
+** DONE Files can be edited without activating the license

@@ -17,7 +17,7 @@
 ** TODO Activate special trials
 * TODO Menu
 ** TODO Do we still have all features
-** TODO Does "Open Dashboard" work?
+** DONE Does "Open Dashboard" work?
 * TODO Update
 ** TODO Can we update
 ** TODO Is update progress indicated correctly
@@ -75,7 +75,7 @@
    doesn't.
 ** TODO It seems that changing language from the menu does nothing?
    It still seems to work from the dashboard options...
-** TODO Open dashboard from menu doesn't seem to work anymore
+** DONE Open dashboard from menu doesn't seem to work anymore
 ** DONE Ad view countdown re-renders the progress bar each time it updates :/
 ** TODO Opening a second file resets the darkMode setting of existing windows(!)
 ** DONE Files can be edited without activating the license

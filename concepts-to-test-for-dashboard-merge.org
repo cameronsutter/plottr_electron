@@ -79,3 +79,5 @@
 ** DONE Ad view countdown re-renders the progress bar each time it updates :/
 ** TODO Opening a second file resets the darkMode setting of existing windows(!)
 ** DONE Files can be edited without activating the license
+** TODO Create error report errors out with sendToDashboard is not defined
+   In: ~menus/help.js~

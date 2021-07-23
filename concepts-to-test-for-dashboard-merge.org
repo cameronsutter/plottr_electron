@@ -1,8 +1,12 @@
-* TODO Known Files
-** TODO Add a known file
-** TODO Known files store
-** TODO Mark file as more recent
-** TODO Communicate recent files to all windows
+* DONE Known Files
+** DONE Add a known file
+** DONE Known files store
+** DONE Mark file as more recent
+** DONE Communicate recent files to all windows
+* TODO Second Instance
+** TODO Does it open the new file in its own window
+* DONE Update Language
+** DONE does it work across all windows
 * TODO License activation
 ** TODO Does it register?
 ** TODO Can we edit files without registering (oops!)
@@ -11,10 +15,6 @@
 ** TODO Keep track of active trial
 ** TODO Activate a trial
 ** TODO Activate special trials
-* TODO Second Instance
-** TODO Does it open the new file in its own window
-* TODO Update Language
-** TODO does it work across all windows
 * TODO Menu
 ** TODO Do we still have all features
 ** TODO Does "Open Dashboard" work?
@@ -61,4 +61,18 @@
 ** TODO Does a setting change across all windows (options panel and export are good examples)
 * TODO Dialogs
 ** TODO Do open/close dialogs work correctly?
-* TODO 
+
+* TODO BUGS!
+** DONE Third window not opening!?
+   I opened a file and then another with the dashboards open and it
+   didn't open the third??
+
+   False alarm!  It actually tries to focus a file when it's already
+   open and that's what went wrong.
+** TODO It seems that adding a new file to the list of known files doesn't work
+   Remove a file from the list of known files and then open it in a
+   window.  It should appear on the dashboards of all windows, but it
+   doesn't.
+** TODO It seems that changing language from the menu does nothing?
+   It still seems to work from the dashboard options...
+** TODO Open dashboard from menu doesn't seem to work anymore

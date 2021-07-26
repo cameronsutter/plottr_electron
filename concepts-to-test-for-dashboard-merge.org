@@ -77,7 +77,7 @@
    It still seems to work from the dashboard options...
 ** DONE Open dashboard from menu doesn't seem to work anymore
 ** DONE Ad view countdown re-renders the progress bar each time it updates :/
-** TODO Opening a second file resets the darkMode setting of existing windows(!)
+** DONE Opening a second file resets the darkMode setting of existing windows(!)
 ** DONE Files can be edited without activating the license
 ** DONE Create error report errors out with sendToDashboard is not defined
    In: ~menus/help.js~

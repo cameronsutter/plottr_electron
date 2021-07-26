@@ -33,8 +33,8 @@
 ** DONE Create from Snowflake
 ** DONE Create new file
 ** DONE Create from template
-* TODO Temp files
-** TODO Move file from temp
+* DONE Temp files
+** DONE Move file from temp
 * TODO File Management
 ** TODO Delete a file
 ** TODO Remove known file (e.g. file deleted outside of Plottr)

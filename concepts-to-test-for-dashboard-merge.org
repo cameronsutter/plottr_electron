@@ -73,7 +73,7 @@
    Remove a file from the list of known files and then open it in a
    window.  It should appear on the dashboards of all windows, but it
    doesn't.
-** TODO It seems that changing language from the menu does nothing?
+** DONE It seems that changing language from the menu does nothing?
    It still seems to work from the dashboard options...
 ** DONE Open dashboard from menu doesn't seem to work anymore
 ** DONE Ad view countdown re-renders the progress bar each time it updates :/

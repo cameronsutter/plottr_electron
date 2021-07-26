@@ -29,14 +29,14 @@
 ** TODO Check for updates via menu
 * DONE Open files
 ** DONE Keep track of files that are open right now (TODO!)
-* TODO New File
+* DONE New File
 ** DONE Create from Snowflake
 ** DONE Create new file
 ** DONE Create from template
 * DONE Temp files
 ** DONE Move file from temp
 * TODO File Management
-** TODO Delete a file
+** DONE Delete a file
 ** TODO Remove known file (e.g. file deleted outside of Plottr)
 ** TODO Are deleted files moved to the trash?
 * TODO Save file

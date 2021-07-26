@@ -32,7 +32,7 @@
 * TODO New File
 ** DONE Create from Snowflake
 ** DONE Create new file
-** TODO Create from template
+** DONE Create from template
 * TODO Temp files
 ** TODO Move file from temp
 * TODO File Management

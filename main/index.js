@@ -1,4 +1,5 @@
 const electron = require('electron')
+const fs = require('fs')
 const { app, BrowserWindow, ipcMain, globalShortcut } = electron
 const path = require('path')
 const log = require('electron-log')
@@ -58,13 +59,19 @@ if (!is.development) {
 app.whenReady().then(() => {
   loadMenu(true)
   // TODO: not necesarily latest...
-  const files = Object.values(knownFilesStore.store).sort((thisFile, thatFile) => {
-    if (thisFile.lastOpened > thatFile.lastOpened) return -1
-    if (thisFile.lastOpened < thatFile.lastOpened) return 1
-    return 0
-  })
+  const files = Object.values(knownFilesStore.store)
+    .sort((thisFile, thatFile) => {
+      if (thisFile.lastOpened > thatFile.lastOpened) return -1
+      if (thisFile.lastOpened < thatFile.lastOpened) return 1
+      return 0
+    })
+    .filter((file) => fs.existsSync(file.path))
   const latestFile = files[0]
-  openProjectWindow(latestFile.path)
+  if (!latestFile) {
+    console.log('CREATE A NEW FILE HERE!!!')
+  } else {
+    openProjectWindow(latestFile.path)
+  }
   windowsOpenFileEventHandler(process.argv)
 
   // Register the toggleDevTools shortcut listener.

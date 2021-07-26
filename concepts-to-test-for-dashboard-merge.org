@@ -90,3 +90,4 @@
    Add many files.  You can't open the bottom ones.
 ** TODO Opening a link from beamer no longer works
 ** TODO Beamer bell looks out of place on new dashboard
+** TODO If You try to open plottr and the most recent file was deleted then it bombs out...

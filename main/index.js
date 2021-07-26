@@ -126,7 +126,6 @@ app.on('open-url', function (event, url) {
 })
 
 ipcMain.once('initial-mount-complete', (event) => {
-  console.log('received initial mount')
   event.reply('open-dashboard')
 })
 

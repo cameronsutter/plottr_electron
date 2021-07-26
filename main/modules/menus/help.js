@@ -1,4 +1,4 @@
-const { shell } = require('electron')
+const { shell, ipcRenderer } = require('electron')
 const { t } = require('plottr_locales')
 
 function buildHelpMenu() {
@@ -43,7 +43,8 @@ function buildHelpMenu() {
       },
       {
         label: t('Create an Error Report'),
-        click: () => sendToDashboard('create-error-report', null, true),
+        click: (event, focusedWindow) =>
+          focusedWindow.webContents.send('create-error-report', null, true),
       },
       {
         type: 'separator',

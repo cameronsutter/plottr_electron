@@ -25,7 +25,7 @@ const {
   broadcastUnsetBeatHierarchy,
 } = require('./modules/feature_flags')
 const { reloadAllWindows } = require('./modules/windows')
-const { ipcRenderer } = require('electron')
+const { broadcastToAllWindows } = require('./modules/broadcast')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -154,4 +154,8 @@ ipcMain.on('pls-update-language', (_, newLanguage) => {
   setupI18n(SETTINGS, { electron })
   require('./modules/menus').loadMenu()
   reloadAllWindows()
+})
+
+ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
+  broadcastToAllWindows('reload-recents')
 })

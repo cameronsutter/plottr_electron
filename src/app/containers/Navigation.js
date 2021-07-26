@@ -74,10 +74,10 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
         </Button>
         <Button
           onClick={() => {
-            setDashboardView('account')
+            setDashboardView('files')
           }}
         >
-          License
+          Files
         </Button>
         <Button
           onClick={() => {

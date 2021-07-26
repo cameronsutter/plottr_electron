@@ -16,7 +16,7 @@
 ** DONE Activate a trial
 ** TODO Activate special trials
 * TODO Menu
-** TODO Do we still have all features
+** DONE Do we still have all features
 ** DONE Does "Open Dashboard" work?
 * TODO Update
 ** TODO Can we update

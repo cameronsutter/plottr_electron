@@ -81,4 +81,4 @@
 ** DONE Files can be edited without activating the license
 ** DONE Create error report errors out with sendToDashboard is not defined
    In: ~menus/help.js~
-** TODO If we're in the file that we open from the dashboard then it doesn't switch
+** DONE If we're in the file that we open from the dashboard then it doesn't switch

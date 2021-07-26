@@ -41,6 +41,7 @@ function focusIfOpen(filePath) {
   const win = windows.find((w) => w.filePath == filePath)
   if (win) {
     win.browserWindow.focus()
+    win.browserWindow.webContents.send('close-dashboard')
     return true
   } else {
     return false

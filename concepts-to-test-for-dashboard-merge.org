@@ -27,8 +27,8 @@
 ** TODO Does it indicate that the update completed successfully?
 ** TODO Does quitting to install a new update work?
 ** TODO Check for updates via menu
-* TODO Open files
-** TODO Keep track of files that are open right now (TODO!)
+* DONE Open files
+** DONE Keep track of files that are open right now (TODO!)
 * TODO New File
 ** TODO Create from Snowflake
 ** TODO Create new file

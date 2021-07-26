@@ -35,10 +35,10 @@
 ** DONE Create from template
 * DONE Temp files
 ** DONE Move file from temp
-* TODO File Management
+* DONE File Management
 ** DONE Delete a file
-** TODO Remove known file (e.g. file deleted outside of Plottr)
-** TODO Are deleted files moved to the trash?
+** DONE Remove known file (e.g. file deleted outside of Plottr)
+** DONE Are deleted files moved to the trash?
 * TODO Save file
 ** TODO Save normally
 ** TODO Save as

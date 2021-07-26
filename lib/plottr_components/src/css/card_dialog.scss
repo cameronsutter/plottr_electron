@@ -40,6 +40,20 @@
   padding-left: 10px;
   overflow-y: auto;
   font-size: 20px;
+  .card-dialog__tabs {
+    margin-bottom: 16px;
+    .tab-content {
+      padding: 16px;
+      border-left: 1px solid $gray-8;
+      border-right: 1px solid $gray-8;
+      border-bottom: 1px solid $gray-8;
+      & > .tab-pane .template-picker__link {
+        cursor: pointer;
+        margin-left: 4px;
+        vertical-align: middle;
+      }
+    }
+  }
   textarea {
     font-size: 20px;
   }
@@ -53,39 +67,8 @@
   }
 }
 
-.card-dialog__details-show-hide-wrapper {
-  border: 2px solid #f1f5f8;
-  padding: 15px;
-  padding-top: 10px;
-  height: calc(100% - 115px);
-}
-
 .hidden {
   display: none;
-}
-
-.card-dialog__tab-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.card-dialog__tab {
-  cursor: pointer;
-  text-align: center;
-  padding: 7px;
-  border-bottom: 0;
-  margin-right: 10px;
-}
-
-.card-dialog__tab:last-child {
-  margin-right: 0;
-}
-
-.card-dialog__tab--selected {
-  color: $blue-1;
-  background: $gray-9;
 }
 
 .card-dialog__custom-attributes {
@@ -94,13 +77,10 @@
 }
 
 .card-dialog__custom-attributes-configuration-link {
-  align-self: flex-end;
+  float:right;
   display: block;
-}
-
-.card-dialog__left-tabs {
-  display: flex;
-  flex-direction: row;
+  padding: 4px;
+  margin-bottom: 4px;
 }
 
 .card-dialog__custom-attributes-label {

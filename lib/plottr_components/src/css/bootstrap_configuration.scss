@@ -81,4 +81,10 @@ $btn-warning-hover-bg:           $yellow-6;
 $popover-max-width:   650px;
 $popover-title-bg:    $gray-9;
 
+//=== Tabs
+$nav-tabs-border-color: $gray-8;
+$nav-tabs-active-link-hover-color: $blue-0;
+$nav-tabs-active-link-hover-bg: $gray-9;
+$nav-tabs-active-link-hover-border-color: $gray-8;
+
 @import "_bootstrap";

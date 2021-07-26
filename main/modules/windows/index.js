@@ -1,5 +1,6 @@
 const { BrowserWindow, ipcMain } = require('electron')
 const { openBuyWindow } = require('./buy')
+const { newFileOptions } = require('../new_file_options')
 
 ipcMain.on('open-buy-window', (event) => {
   openBuyWindow()
@@ -42,6 +43,14 @@ function focusIfOpen(filePath) {
   if (win) {
     win.browserWindow.focus()
     win.browserWindow.webContents.send('close-dashboard')
+    // If it's this window and we're trying to open a new file, then
+    // we need to refresh the contents.
+    win.browserWindow.webContents.send(
+      'reload-from-file',
+      filePath,
+      newFileOptions(),
+      numberOfWindows()
+    )
     return true
   } else {
     return false

@@ -30,8 +30,8 @@
 * DONE Open files
 ** DONE Keep track of files that are open right now (TODO!)
 * TODO New File
-** TODO Create from Snowflake
-** TODO Create new file
+** DONE Create from Snowflake
+** DONE Create new file
 ** TODO Create from template
 * TODO Temp files
 ** TODO Move file from temp

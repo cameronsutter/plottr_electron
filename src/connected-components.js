@@ -5,7 +5,14 @@ import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
-import { useExportConfigInfo } from './common/utils/store_hooks'
+import {
+  useExportConfigInfo,
+  useTemplatesInfo,
+  useLicenseInfo,
+  licenseStore,
+  useCustomTemplatesInfo,
+  useSettingsInfo,
+} from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'
 import {
@@ -21,7 +28,6 @@ import SETTINGS from './common/utils/settings'
 import USER from './common/utils/user_info'
 import { is } from 'electron-util'
 import MPQ from './common/utils/MPQ'
-import { useLicenseInfo, licenseStore } from './common/utils/store_hooks'
 import { useTrialStatus } from './common/licensing/trial_manager'
 import { checkForActiveLicense } from './common/licensing/check_license'
 import { verifyLicense } from './common/licensing/verify_license'
@@ -39,10 +45,8 @@ import {
   removeFromKnownFiles,
 } from './common/utils/known_files'
 import { saveFile } from './common/utils/files'
-import { useCustomTemplatesInfo } from './common/utils/store_hooks'
 import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
-import { useSettingsInfo } from './common/utils/store_hooks'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 
@@ -138,6 +142,7 @@ const platform = {
     },
     useFilteredSortedTemplates,
     useCustomTemplatesInfo,
+    useTemplatesInfo,
   },
   settings: SETTINGS,
   useSettingsInfo,

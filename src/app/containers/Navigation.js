@@ -30,6 +30,9 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
     ipcRenderer.on('open-dashboard', (event) => {
       setDashboardView('files')
     })
+    ipcRenderer.on('close-dashboard', (event) => {
+      setDashboardView(null)
+    })
   }, [])
 
   useEffect(() => {

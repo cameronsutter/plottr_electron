@@ -82,4 +82,4 @@
 ** DONE Create error report errors out with sendToDashboard is not defined
    In: ~menus/help.js~
 ** DONE If we're in the file that we open from the dashboard then it doesn't switch
-** TODO It seems that the first time that we create a file after saving, it opens the newly saved instead of a new file
+** DONE It seems that the first time that we create a file after saving, it opens the newly saved instead of a new file

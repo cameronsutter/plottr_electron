@@ -32,19 +32,13 @@ import { useTrialStatus } from './common/licensing/trial_manager'
 import { checkForActiveLicense } from './common/licensing/check_license'
 import { verifyLicense } from './common/licensing/verify_license'
 import { trial90days } from './common/licensing/special_codes'
-import {
-  createFromSnowflake,
-  createNew,
-  openExistingFile,
-  openKnownFile,
-} from './dashboard/utils/window_manager'
+import { openExistingFile } from './dashboard/utils/window_manager'
 import { doesFileExist, useSortedKnownFiles } from './dashboard/utils/files'
 import {
   deleteKnownFile,
   editKnownFilePath,
   removeFromKnownFiles,
 } from './common/utils/known_files'
-import { saveFile } from './common/utils/files'
 import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
@@ -62,21 +56,29 @@ const platform = {
     ipcRenderer.send('pls-set-dark-setting', value)
   },
   file: {
-    createNew,
+    createNew: (template) => {
+      ipcRenderer.send('create-new-file', template)
+    },
     openExistingFile,
     doesFileExist,
     useSortedKnownFiles,
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,
-    openKnownFile,
+    openKnownFile: (filePath, id, unknown) => {
+      ipcRenderer.send('open-known-file', filePath, id, unknown)
+    },
     deleteKnownFile,
     editKnownFilePath,
     removeFromKnownFiles,
-    saveFile,
+    saveFile: (filePath, file) => {
+      ipcRenderer.send('save-file', filePath, file)
+    },
     readFileSync,
     moveItemToTrash: shell.moveItemToTrash,
-    createFromSnowflake,
+    createFromSnowflake: (importedPath) => {
+      ipcRenderer.send('create-from-snowflake', importedPath)
+    },
     joinPath: path.join,
   },
   update: {

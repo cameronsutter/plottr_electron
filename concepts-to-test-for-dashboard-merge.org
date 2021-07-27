@@ -90,4 +90,15 @@
    Add many files.  You can't open the bottom ones.
 ** TODO Opening a link from beamer no longer works
 ** TODO Beamer bell looks out of place on new dashboard
-** TODO If You try to open plottr and the most recent file was deleted then it bombs out...
+** DONE If You try to open plottr and the most recent file was deleted then it bombs out...
+** DONE After moving file management to main saving temp files doesn't remove the old file anymore
+** TODO Open a file after just saving as temp and it'll open it in a new window :'(
+** TODO The first time that I tried to save a new file it didn't prompt me
+   It thought that it wasn't a temp file :/
+
+   UPDATE: I can't replicate this anymore.
+
+   UPDATE: after *removing logging* from the function that decides
+   whether the file is temp and then saves in the files menu, I could
+   replicate the problem again(!)
+** DONE Known file store not updated across instances anymore

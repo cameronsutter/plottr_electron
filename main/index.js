@@ -1,4 +1,8 @@
 const electron = require('electron')
+const SETTINGS = require('./modules/settings')
+const { setupI18n } = require('plottr_locales')
+setupI18n(SETTINGS, { electron })
+
 const fs = require('fs')
 const { app, BrowserWindow, ipcMain, globalShortcut } = electron
 const path = require('path')
@@ -8,7 +12,6 @@ require('./modules/updater_events')
 const contextMenu = require('electron-context-menu')
 const { setupRollbar } = require('./modules/rollbar')
 const { loadMenu } = require('./modules/menus')
-const { setupI18n } = require('plottr_locales')
 const {
   focusFirstWindow,
   hasWindows,
@@ -19,14 +22,21 @@ const { openProjectWindow } = require('./modules/windows/projects')
 const { setDarkMode, broadcastDarkMode } = require('./modules/theme')
 const { newFileOptions } = require('./modules/new_file_options')
 const { gracefullyQuit } = require('./modules/utils')
-const { addToKnown, knownFilesStore } = require('./modules/known_files')
-const SETTINGS = require('./modules/settings')
+const { addToKnown, knownFilesStore, addToKnownFiles } = require('./modules/known_files')
 const {
   broadcastSetBeatHierarchy,
   broadcastUnsetBeatHierarchy,
 } = require('./modules/feature_flags')
 const { reloadAllWindows } = require('./modules/windows')
 const { broadcastToAllWindows } = require('./modules/broadcast')
+const {
+  openKnownFile,
+  createNew,
+  createFromSnowflake,
+  saveFile,
+  TEMP_FILES_PATH,
+  removeFromTempFiles,
+} = require('./modules/files')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -35,7 +45,6 @@ log.info('--------Startup Tasks--------')
 const ENV_FILE_PATH = path.resolve('.env')
 require('dotenv').config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
-setupI18n(SETTINGS, { electron })
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
@@ -68,7 +77,7 @@ app.whenReady().then(() => {
     .filter((file) => fs.existsSync(file.path))
   const latestFile = files[0]
   if (!latestFile) {
-    console.log('CREATE A NEW FILE HERE!!!')
+    createNew()
   } else {
     openProjectWindow(latestFile.path)
   }
@@ -165,4 +174,31 @@ ipcMain.on('pls-update-language', (_, newLanguage) => {
 
 ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
   broadcastToAllWindows('reload-recents')
+})
+
+ipcMain.on('add-to-known-files-and-open', (event, file) => {
+  const id = addToKnownFiles(file)
+  openKnownFile(file, id, false)
+})
+
+ipcMain.on('create-new-file', (event, template) => {
+  createNew(template)
+})
+
+ipcMain.on('create-from-snowflake', (event, importedPath) => {
+  createFromSnowflake(importedPath)
+})
+
+ipcMain.on('open-known-file', (event, filePath, id, unknown) => {
+  openKnownFile(filePath, id, unknown)
+})
+
+ipcMain.on('save-file', (event, fileName, file) => {
+  saveFile(fileName, file)
+})
+
+ipcMain.on('remove-from-temp-files-if-temp', (event, filePath) => {
+  if (filePath.includes(TEMP_FILES_PATH)) {
+    removeFromTempFiles(filePath, false)
+  }
 })

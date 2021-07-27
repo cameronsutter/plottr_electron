@@ -23,8 +23,6 @@ import { editorRegistry } from 'connected-components'
 import { setupI18n } from 'plottr_locales'
 import { displayFileName, editKnownFilePath } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
-import { saveFile } from '../common/utils/files'
-import { removeFromTempFiles } from '../common/utils/temp_files'
 import { focusIsEditable } from '../common/utils/undo'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import exportConfig from '../common/exporter/default_config'
@@ -174,7 +172,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
 
 ipcRenderer.on('save', () => {
   const { present } = store.getState()
-  saveFile(present.file.fileName, present)
+  ipcRenderer.send('save-file', present.file.fileName, present)
 })
 
 ipcRenderer.on('save-as', () => {
@@ -188,7 +186,7 @@ ipcRenderer.on('save-as', () => {
   })
   if (fileName) {
     let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-    saveFile(newFilePath, present)
+    ipcRenderer.send('save-file', newFilePath, present)
     ipcRenderer.send('pls-open-window', newFilePath, true)
   }
 })
@@ -196,7 +194,7 @@ ipcRenderer.on('save-as', () => {
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
   if (!present.file.fileName.includes(TEMP_FILES_PATH)) {
-    saveFile(present.file.fileName, present)
+    ipcRenderer.send('save-file', present.file.fileName, present)
     return
   }
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
@@ -208,11 +206,13 @@ ipcRenderer.on('move-from-temp', () => {
     // change in redux
     store.dispatch(actions.ui.editFileName(newFilePath))
     // remove from tmp store
-    removeFromTempFiles(present.file.fileName)
+    ipcRenderer.send('remove-from-temp-files-if-temp', present.file.fileName)
     // update in known files
     editKnownFilePath(present.file.fileName, newFilePath)
+    console.log('Setting the title of this window to', newFilePath)
     // change the window's title
     win.setRepresentedFilename(newFilePath)
+    win.filePath = newFilePath
     win.setTitle(displayFileName(newFilePath))
     // send event to dashboard
     ipcRenderer.send('pls-tell-dashboard-to-reload-recents')

@@ -1,36 +1,7 @@
-import { shell } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import log from 'electron-log'
 import path from 'path'
-import { TEMP_FILES_PATH } from './config_paths'
 import { knownFilesStore } from './store_hooks'
-import { removeFromTempFiles } from './temp_files'
-
-export function addToKnownFiles(filePath) {
-  const existingId = Object.keys(knownFilesStore.store).find(
-    (id) => path.normalize(knownFilesStore.store[id].path) == path.normalize(filePath)
-  )
-  if (existingId) {
-    return existingId
-  } else {
-    // for some reason, .size doesn't work in prod here (but it does in temp_files.js)
-    // in prod, it doesn't update in time
-    let newId = Math.max(...Object.keys(knownFilesStore.store).map(Number)) + 1
-    // FIX UP: some people's known_files got into a bad state and this fixes that
-    if (knownFilesStore.has('-Infinity')) {
-      let badData = knownFilesStore.get('-Infinity')
-      knownFilesStore.set('1', badData)
-    }
-    // and this prevents it
-    if (newId < 1 || !Object.keys(knownFilesStore.store).length) {
-      newId = 1
-    }
-    knownFilesStore.set(`${newId}`, {
-      path: filePath,
-      lastOpened: Date.now(),
-    })
-    return newId
-  }
-}
 
 export function editKnownFilePath(oldPath, newPath) {
   const key = Object.keys(knownFilesStore.store).find(
@@ -54,9 +25,7 @@ export function deleteKnownFile(id, filePath) {
   try {
     removeFromKnownFiles(id)
     shell.moveItemToTrash(filePath, true)
-    if (filePath.includes(TEMP_FILES_PATH)) {
-      removeFromTempFiles(filePath, false)
-    }
+    ipcRenderer.send('remove-from-temp-files-if-temp', filePath)
   } catch (error) {
     log.warn(error)
   }

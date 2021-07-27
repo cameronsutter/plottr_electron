@@ -7,7 +7,6 @@ import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
 import { AskToSaveModal, TemplateCreate, ErrorBoundary, ExportDialog } from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
-import { saveFile } from '../../common/utils/files'
 import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
 import { showTourSelector } from 'pltr/v2/selectors/tours'
@@ -84,7 +83,7 @@ class App extends Component {
   saveAndClose = () => {
     this.setState({ showAskToSave: false, blockClosing: false })
     const { present } = store.getState()
-    saveFile(present.file.fileName, present)
+    ipcRenderer.send('save-file', present.file.fileName, present)
     this.closeOrRefresh(true)
   }
 

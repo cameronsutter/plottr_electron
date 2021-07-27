@@ -1,8 +1,9 @@
-import xml from 'xml-js'
-import fs from 'fs'
-import { t as i18n } from 'plottr_locales'
-import { cloneDeep, keyBy, groupBy } from 'lodash'
-import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
+const xml = require('xml-js')
+const fs = require('fs')
+const { t } = require('plottr_locales')
+const i18n = t
+const { cloneDeep, keyBy, groupBy } = require('lodash')
+const { newIds, helpers, lineColors, initialState, tree } = require('pltr/v2')
 
 const { nextColor } = lineColors
 const defaultBook = initialState.book
@@ -17,7 +18,7 @@ const {
   lists: { nextPositionInBook },
 } = helpers
 
-export default function Importer(path, isNewFile, state) {
+function Importer(path, isNewFile, state) {
   const importedXML = fs.readFileSync(path, 'utf-8')
   const currentState = cloneDeep(state)
 
@@ -559,3 +560,5 @@ const sceneAttrMapping = {
 }
 
 const sceneAttrOrder = ['location', 'paragraph']
+
+module.exports = { Importer }

@@ -138,6 +138,19 @@
   transition: all 0.6s $cubic;
   z-index: 2;
 
+  &.creating {
+    padding: 1px 8px 0 8px;
+    .form-group {
+      margin-bottom: 0;
+      .control-label {
+        margin-bottom: 0;
+      }
+      .form-control {
+        padding: 5px 6px;
+      }
+    }
+  }
+
   &.medium-timeline {
     width: 80px;
     .card__title {
@@ -150,17 +163,6 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
   }
 }
-
-// I don't think this is used anywhere
-// .vertical-card__body {
-//   @extend .vertical-blank-card__body;
-//   margin-top: 17px;
-
-//   .form-group {
-//     display: block;
-//     padding: 0;
-//   }
-// }
 
 .card__title {
   padding: 10px;
@@ -191,18 +193,6 @@
     justify-content: center;
     align-items: center;
   }
-  div.template {
-    @include application-text;
-    text-align: center;
-    font-size: 14px;
-  }
-  &.medium-timeline {
-    flex-direction: column-reverse;
-    margin-bottom: 0;
-    div.template {
-      font-size: 12px;
-    }
-  }
 }
 
 .blank-card__body.disabled {
@@ -223,11 +213,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  div.template {
-    @include application-text;
-    text-align: center;
-    font-size: 14px;
   }
   &.medium-timeline {
     font-size: 12px;

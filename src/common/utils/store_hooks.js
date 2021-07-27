@@ -8,7 +8,6 @@ import {
   KNOWN_FILES_PATH,
   CUSTOM_TEMPLATES_PATH,
   TEMPLATES_PATH,
-  TMP_PATH,
   TEMPLATES_MANIFEST_PATH,
   EXPORT_CONFIG_PATH,
 } from './config_paths'
@@ -21,7 +20,6 @@ const templatesPath =
   process.env.NODE_ENV == 'development' ? `${TEMPLATES_PATH}_dev` : TEMPLATES_PATH
 const customTemplatesPath =
   process.env.NODE_ENV == 'development' ? `${CUSTOM_TEMPLATES_PATH}_dev` : CUSTOM_TEMPLATES_PATH
-const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const manifestPath =
   process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
 const exportPath =
@@ -32,7 +30,6 @@ export const licenseStore = new Store({ name: USER_INFO_PATH, watch: true })
 export const knownFilesStore = new Store({ name: knownFilesPath, watch: true })
 export const templatesStore = new Store({ name: templatesPath, watch: true })
 export const customTemplatesStore = new Store({ name: customTemplatesPath, watch: true })
-export const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
 export const exportConfigStore = new Store({
   name: exportPath,
   watch: true,

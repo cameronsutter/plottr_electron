@@ -1,0 +1,77 @@
+{
+  "cards": [],
+  "characters": [
+    {
+      "cards": [],
+      "color": null,
+      "description": "",
+      "id": 0,
+      "name": "",
+      "noteIds": [],
+      "notes": ""
+    }
+  ],
+  "customAttributes": {
+    "cards": [],
+    "characters": [],
+    "lines": [],
+    "places": [],
+    "scenes": []
+  },
+  "file": {
+    "dirty": true,
+    "fileName": "/Users/csutter/Dropbox (Personal)/C Louis S/shoshol3.pltr",
+    "loaded": true,
+    "version": "1.2.23"
+  },
+  "lines": [
+    {
+      "color": "#6cace4",
+      "id": 0,
+      "position": 0,
+      "title": ""
+    }
+  ],
+  "notes": [
+    {
+      "characters": [],
+      "content": "",
+      "id": 0,
+      "lastEdited": 1519677429653,
+      "places": [],
+      "tags": [],
+      "title": ""
+    }
+  ],
+  "places": [
+    {
+      "cards": [],
+      "color": null,
+      "description": "",
+      "id": 0,
+      "name": "",
+      "noteIds": [],
+      "notes": ""
+    }
+  ],
+  "scenes": [
+    {
+      "id": 0,
+      "position": 0,
+      "title": "Scene 1"
+    }
+  ],
+  "storyName": "My awesome story",
+  "tags": [
+    {
+      "color": null,
+      "id": 0,
+      "title": ""
+    }
+  ],
+  "ui": {
+    "currentView": "timeline",
+    "darkMode": false,
+    "orientation": "horizontal"
+  }
+}

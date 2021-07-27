@@ -9,7 +9,7 @@
 ** DONE does it work across all windows
 * TODO License activation
 ** TODO Does it register?
-** TODO Can we edit files without registering (oops!)
+** DONE Can we edit files without registering (oops!)
 ** TODO Does the menu update when we activate?
 * TODO Trial
 ** DONE Keep track of active trial
@@ -42,10 +42,10 @@
 * DONE Save file
 ** DONE Save normally
 ** DONE Save as
-* TODO Templates
-** TODO Create from built-in template
-** TODO Create from custom template
-** TODO Create template
+* DONE Templates
+** DONE Create from built-in template
+** DONE Create from custom template
+** DONE Create template
 * TODO Backups
 ** TODO Are backups created
 ** TODO Do we create the backup folders when they don't exist?

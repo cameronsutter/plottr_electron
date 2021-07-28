@@ -282,3 +282,13 @@ $white-highlight-box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1),
     }
   }
 }
+
+.update-notifier {
+  &.alert {
+    &.darkmode {
+      color: $dark-text;
+      background-color: $dark-gray-1;
+      border-color: $dark-text;
+    }
+  }
+}

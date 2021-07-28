@@ -10,7 +10,7 @@
 * TODO License activation
 ** TODO Does it register?
 ** DONE Can we edit files without registering (oops!)
-** TODO Does the menu update when we activate?
+** DONE Does the menu update when we activate?
 * DONE Trial
 ** DONE Keep track of active trial
 ** DONE Activate a trial
@@ -104,3 +104,4 @@
 ** DONE Known file store not updated across instances anymore
 ** DONE It doesn't seem to backup anymore
    False alarm! :)
+** TODO All the export options are available without a license

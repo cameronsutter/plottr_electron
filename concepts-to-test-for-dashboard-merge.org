@@ -89,7 +89,8 @@
 ** DONE Overflow style of dashboard is broken
    Add many files.  You can't open the bottom ones.
 ** DONE Opening a link from beamer no longer works
-** TODO Beamer bell looks out of place on new dashboard
+** DONE Beamer bell looks out of place on new dashboard
+   I Removed the bell.
 ** DONE If You try to open plottr and the most recent file was deleted then it bombs out...
 ** DONE After moving file management to main saving temp files doesn't remove the old file anymore
 ** TODO Open a file after just saving as temp and it'll open it in a new window :'(

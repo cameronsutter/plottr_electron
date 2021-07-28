@@ -55,8 +55,8 @@
 * DONE Dark Mode
 ** DONE Does it change across all windows?
 ** DONE Does changing it in the system change it for the app?
-* TODO Beta
-** TODO Does updating the beat hierarchy flag work?
+* DONE Beta
+** DONE Does updating the beat hierarchy flag work?
 * TODO Settings
 ** TODO Does a setting change across all windows (options panel and export are good examples)
 * TODO Dialogs

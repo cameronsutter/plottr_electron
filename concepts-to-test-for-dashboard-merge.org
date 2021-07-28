@@ -46,10 +46,10 @@
 ** DONE Create from built-in template
 ** DONE Create from custom template
 ** DONE Create template
-* TODO Backups
-** TODO Are backups created
-** TODO Do we create the backup folders when they don't exist?
-** TODO Can we restore from backup
+* DONE Backups
+** DONE Are backups created
+** DONE Do we create the backup folders when they don't exist?
+** DONE Can we restore from backup
 * TODO Customer Service
 ** TODO What is a customer service code?
 * TODO Dark Mode

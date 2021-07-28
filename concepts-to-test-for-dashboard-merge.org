@@ -15,7 +15,7 @@
 ** DONE Keep track of active trial
 ** DONE Activate a trial
 ** DONE Activate special trials
-* TODO Menu
+* DONE Menu
 ** DONE Do we still have all features
 ** DONE Does "Open Dashboard" work?
 * TODO Update

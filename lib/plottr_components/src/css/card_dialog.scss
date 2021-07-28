@@ -10,6 +10,12 @@
 
 .card-dialog.darkmode {
   color: $darkmode-text;
+  .nav-tabs > li:not(.active) > a {
+    color: $blue-7;
+    &:hover {
+      color: $blue-1;
+    }
+  }
 }
 
 .card-dialog__title {

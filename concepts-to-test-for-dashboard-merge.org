@@ -102,3 +102,5 @@
    whether the file is temp and then saves in the files menu, I could
    replicate the problem again(!)
 ** DONE Known file store not updated across instances anymore
+** DONE It doesn't seem to backup anymore
+   False alarm! :)

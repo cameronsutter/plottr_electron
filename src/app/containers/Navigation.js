@@ -147,7 +147,6 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
             </NavItem>
           ) : null}
         </Nav>
-        <Beamer inNavigation />
         {renderTrialLinks()}
         <Nav pullRight className="project-nav__options">
           <OverlayTrigger

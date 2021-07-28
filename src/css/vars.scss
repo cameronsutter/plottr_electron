@@ -66,11 +66,11 @@ $new-item-border: 2px dashed $new-item-border-color;
   color: rgba(108,172,228, 0.9); // #6cace4
 }
 
-@mixin hover-box {
-  background-color: $new-item-background;
-  border-radius: $border-radius;
-  cursor: pointer;
-}
+// @mixin hover-box {
+//   background-color: $new-item-background;
+//   border-radius: $border-radius;
+//   cursor: pointer;
+// }
 
 @mixin well {
   border: 1px solid #ddd;
@@ -90,8 +90,8 @@ $new-item-border: 2px dashed $new-item-border-color;
   margin-top: 10px;
 }
 
-@mixin new_item_hover {
-  background: $new-item-background;
-  border: $new-item-border;
-  cursor: pointer;
-}
+// @mixin new_item_hover {
+//   background: $new-item-background;
+//   border: $new-item-border;
+//   cursor: pointer;
+// }

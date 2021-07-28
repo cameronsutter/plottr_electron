@@ -85,7 +85,7 @@
    In: ~menus/help.js~
 ** DONE If we're in the file that we open from the dashboard then it doesn't switch
 ** DONE It seems that the first time that we create a file after saving, it opens the newly saved instead of a new file
-** TODO Update notification styles are broken
+** DONE Update notification styles are broken
 ** TODO Overflow style of dashboard is broken
    Add many files.  You can't open the bottom ones.
 ** TODO Opening a link from beamer no longer works

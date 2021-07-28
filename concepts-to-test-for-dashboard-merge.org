@@ -59,8 +59,8 @@
 ** DONE Does updating the beat hierarchy flag work?
 * DONE Settings
 ** DONE Does a setting change across all windows (options panel and export are good examples)
-* TODO Dialogs
-** TODO Do open/close dialogs work correctly?
+* DONE Dialogs
+** DONE Do open/close dialogs work correctly?
 
 * TODO BUGS!
 ** DONE Third window not opening!?

@@ -11,10 +11,10 @@
 ** TODO Does it register?
 ** DONE Can we edit files without registering (oops!)
 ** TODO Does the menu update when we activate?
-* TODO Trial
+* DONE Trial
 ** DONE Keep track of active trial
 ** DONE Activate a trial
-** TODO Activate special trials
+** DONE Activate special trials
 * TODO Menu
 ** DONE Do we still have all features
 ** DONE Does "Open Dashboard" work?

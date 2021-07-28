@@ -117,6 +117,12 @@
   }
 }
 
+.dropdown {
+  &.disabled > #book_chooser {
+  color: $neutral-gray-5;
+  }
+}
+
 // Open state for the dropdown
 .open {
   // Show the menu

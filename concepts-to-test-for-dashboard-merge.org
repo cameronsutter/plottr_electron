@@ -20,9 +20,9 @@
 ** DONE Does "Open Dashboard" work?
 * TODO Update
 ** TODO Can we update
-** TODO Is update progress indicated correctly
-** TODO Does it indicate errors?
-** TODO Does it indicate that an update is available?
+** DONE Is update progress indicated correctly
+** DONE Does it indicate errors?
+** DONE Does it indicate that an update is available?
 ** TODO Does it indicate that we're on the latest version?
 ** TODO Does it indicate that the update completed successfully?
 ** TODO Does quitting to install a new update work?

@@ -6,6 +6,8 @@ const { getWindowById, numberOfWindows } = require('../windows')
 const { NODE_ENV } = require('../constants')
 const { newFileOptions } = require('../new_file_options')
 const { openDashboard } = require('./dashboard')
+const { getLicenseInfo } = require('../license_info')
+const { getTriaInfo } = require('../trial_info')
 
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 let showInMessage = i18n('Show in File Explorer')
@@ -15,6 +17,8 @@ if (is.macos) {
 
 function buildFileMenu(filePath) {
   const isTemp = filePath && filePath.includes(TEMP_FILES_PATH)
+  const licenseStore = getLicenseInfo()
+  const trialStore = getTriaInfo()
   let submenu = [
     {
       label: i18n('Open Dashboard'),
@@ -62,6 +66,9 @@ function buildFileMenu(filePath) {
     },
     {
       label: i18n('Export'),
+      enabled:
+        (trialStore && !trialStore.expired && trialStore.startsAt) ||
+        (licenseStore && Object.keys(licenseStore).length > 0),
       submenu: [
         {
           label: i18n('MS Word'),

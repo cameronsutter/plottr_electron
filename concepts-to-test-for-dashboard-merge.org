@@ -104,4 +104,4 @@
 ** DONE Known file store not updated across instances anymore
 ** DONE It doesn't seem to backup anymore
    False alarm! :)
-** TODO All the export options are available without a license
+** DONE All the export options are available without a license

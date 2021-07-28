@@ -202,3 +202,7 @@ ipcMain.on('remove-from-temp-files-if-temp', (event, filePath) => {
     removeFromTempFiles(filePath, false)
   }
 })
+
+ipcMain.on('broadcast-reload-options', () => {
+  broadcastToAllWindows('reload-options')
+})

@@ -52,9 +52,9 @@
 ** DONE Can we restore from backup
 * DONE Customer Service
 ** DONE What is a customer service code?
-* TODO Dark Mode
-** TODO Does it change across all windows?
-** TODO Does changing it in the system change it for the app?
+* DONE Dark Mode
+** DONE Does it change across all windows?
+** DONE Does changing it in the system change it for the app?
 * TODO Beta
 ** TODO Does updating the beat hierarchy flag work?
 * TODO Settings

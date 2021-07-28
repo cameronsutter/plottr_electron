@@ -50,8 +50,8 @@
 ** DONE Are backups created
 ** DONE Do we create the backup folders when they don't exist?
 ** DONE Can we restore from backup
-* TODO Customer Service
-** TODO What is a customer service code?
+* DONE Customer Service
+** DONE What is a customer service code?
 * TODO Dark Mode
 ** TODO Does it change across all windows?
 ** TODO Does changing it in the system change it for the app?

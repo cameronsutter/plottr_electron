@@ -11,13 +11,12 @@
   .expired__chooser {
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: stretch;
     margin: 32px 0;
   }
 
   .expired__choice {
     width: 35%;
-    height: 140px;
     padding: 10px;
     border: 3px solid $blue-7;
     border-radius: 4px;

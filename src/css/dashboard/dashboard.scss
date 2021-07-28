@@ -102,11 +102,9 @@ $header-height: 40px;
   }
 
   .dashboard__close-button {
-    position: relative;
-    float: right;
-    display: inline-block;
-    top: 40px;
-    right: 40px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
     cursor: pointer;
   }
 }

@@ -23,10 +23,10 @@
 ** DONE Is update progress indicated correctly
 ** DONE Does it indicate errors?
 ** DONE Does it indicate that an update is available?
-** TODO Does it indicate that we're on the latest version?
+** DONE Does it indicate that we're on the latest version?
 ** TODO Does it indicate that the update completed successfully?
 ** TODO Does quitting to install a new update work?
-** TODO Check for updates via menu
+** DONE Check for updates via menu
 * DONE Open files
 ** DONE Keep track of files that are open right now (TODO!)
 * DONE New File

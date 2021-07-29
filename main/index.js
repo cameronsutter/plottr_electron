@@ -38,7 +38,9 @@ const {
   removeFromTempFiles,
   removeFromKnownFiles,
   deleteKnownFile,
+  editKnownFilePath,
 } = require('./modules/files')
+const { editWindowPath } = require('./modules/windows/index')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -216,5 +218,11 @@ ipcMain.on('remove-from-known-files', (event, fileId) => {
 
 ipcMain.on('delete-known-file', (event, id, filePath) => {
   deleteKnownFile(id, filePath)
+  broadcastToAllWindows('reload-recents')
+})
+
+ipcMain.on('edit-known-file-path', (event, oldFilePath, newFilePath) => {
+  editKnownFilePath(oldFilePath, newFilePath)
+  editWindowPath(oldFilePath, newFilePath)
   broadcastToAllWindows('reload-recents')
 })

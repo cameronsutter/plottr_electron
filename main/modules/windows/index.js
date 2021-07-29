@@ -38,6 +38,13 @@ function numberOfWindows() {
   return windows.length
 }
 
+function editWindowPath(oldFilePath, newFilePath) {
+  const win = windows.find((w) => w.filePath == oldFilePath)
+  if (win) {
+    win.filePath = newFilePath
+  }
+}
+
 function focusIfOpen(filePath) {
   const win = windows.find((w) => w.filePath == filePath)
   if (win) {
@@ -87,5 +94,6 @@ module.exports = {
   getWindowById,
   numberOfWindows,
   focusIfOpen,
+  editWindowPath,
   reloadAllWindows,
 }

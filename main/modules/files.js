@@ -61,6 +61,17 @@ function deleteKnownFile(id, filePath) {
   }
 }
 
+function editKnownFilePath(oldPath, newPath) {
+  const key = Object.keys(knownFilesStore.store).find(
+    (id) => path.normalize(knownFilesStore.store[id].path) == path.normalize(oldPath)
+  )
+  const file = knownFilesStore.get(key)
+  knownFilesStore.set(key, {
+    ...file,
+    path: newPath,
+  })
+}
+
 function saveToTempFile(json) {
   const tempId = tempFilesStore.size + 1
   const tempName = `${t('Untitled')}${tempId == 1 ? '' : tempId}.pltr`
@@ -115,6 +126,7 @@ module.exports = {
   TEMP_FILES_PATH,
   tempFilesStore,
   saveFile,
+  editKnownFilePath,
   removeFromTempFiles,
   removeFromKnownFiles,
   deleteKnownFile,

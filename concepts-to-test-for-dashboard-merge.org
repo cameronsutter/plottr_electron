@@ -93,8 +93,8 @@
    I Removed the bell.
 ** DONE If You try to open plottr and the most recent file was deleted then it bombs out...
 ** DONE After moving file management to main saving temp files doesn't remove the old file anymore
-** TODO Open a file after just saving as temp and it'll open it in a new window :'(
-** TODO The first time that I tried to save a new file it didn't prompt me
+** DONE Open a file after just saving as temp and it'll open it in a new window :'(
+** DONE The first time that I tried to save a new file it didn't prompt me
    It thought that it wasn't a temp file :/
 
    UPDATE: I can't replicate this anymore.

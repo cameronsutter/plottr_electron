@@ -67,7 +67,9 @@ const platform = {
     deleteKnownFile: (id, path) => {
       ipcRenderer.send('delete-known-file', id, path)
     },
-    editKnownFilePath,
+    editKnownFilePath: (oldFilePath, newFilePath) => {
+      ipcRenderer.send('edit-known-file-path', oldFilePath, newFilePath)
+    },
     removeFromKnownFiles: (id) => {
       ipcRenderer.send('remove-from-known-files', id)
     },

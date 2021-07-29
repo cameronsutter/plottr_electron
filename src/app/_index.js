@@ -191,6 +191,13 @@ ipcRenderer.on('save-as', () => {
   }
 })
 
+const ensureEndsInPltr = (filePath) => {
+  if (!filePath.endsWith('.pltr')) {
+    return `${filePath}.pltr`
+  }
+  return filePath
+}
+
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
   if (!present.file.fileName.includes(TEMP_FILES_PATH)) {
@@ -198,18 +205,19 @@ ipcRenderer.on('move-from-temp', () => {
     return
   }
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
-  const newFilePath = dialog.showSaveDialogSync(win, {
-    filters: filters,
-    title: i18n('Where would you like to save this file?'),
-  })
+  const newFilePath = ensureEndsInPltr(
+    dialog.showSaveDialogSync(win, {
+      filters: filters,
+      title: i18n('Where would you like to save this file?'),
+    })
+  )
   if (newFilePath) {
     // change in redux
     store.dispatch(actions.ui.editFileName(newFilePath))
     // remove from tmp store
     ipcRenderer.send('remove-from-temp-files-if-temp', present.file.fileName)
     // update in known files
-    editKnownFilePath(present.file.fileName, newFilePath)
-    console.log('Setting the title of this window to', newFilePath)
+    ipcRenderer.send('edit-known-file-path', present.file.fileName, newFilePath)
     // change the window's title
     win.setRepresentedFilename(newFilePath)
     win.filePath = newFilePath

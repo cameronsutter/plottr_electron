@@ -106,3 +106,4 @@
 ** DONE It doesn't seem to backup anymore
    False alarm! :)
 ** DONE All the export options are available without a license
+** DONE Removing an item from the list doesn't remove it from all dashboards

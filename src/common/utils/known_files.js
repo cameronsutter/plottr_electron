@@ -1,5 +1,3 @@
-import { ipcRenderer, shell } from 'electron'
-import log from 'electron-log'
 import path from 'path'
 import { knownFilesStore } from './store_hooks'
 
@@ -12,23 +10,6 @@ export function editKnownFilePath(oldPath, newPath) {
     ...file,
     path: newPath,
   })
-}
-
-export function removeFromKnownFiles(id) {
-  knownFilesStore.delete(id)
-}
-
-export function deleteKnownFile(id, filePath) {
-  if (!filePath) {
-    filePath = knownFilesStore.get(`${id}.path`)
-  }
-  try {
-    removeFromKnownFiles(id)
-    shell.moveItemToTrash(filePath, true)
-    ipcRenderer.send('remove-from-temp-files-if-temp', filePath)
-  } catch (error) {
-    log.warn(error)
-  }
 }
 
 // TODO: days left in trial mode?

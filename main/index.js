@@ -36,6 +36,8 @@ const {
   saveFile,
   TEMP_FILES_PATH,
   removeFromTempFiles,
+  removeFromKnownFiles,
+  deleteKnownFile,
 } = require('./modules/files')
 
 ////////////////////////////////
@@ -205,4 +207,14 @@ ipcMain.on('remove-from-temp-files-if-temp', (event, filePath) => {
 
 ipcMain.on('broadcast-reload-options', () => {
   broadcastToAllWindows('reload-options')
+})
+
+ipcMain.on('remove-from-known-files', (event, fileId) => {
+  removeFromKnownFiles(fileId)
+  broadcastToAllWindows('reload-recents')
+})
+
+ipcMain.on('delete-known-file', (event, id, filePath) => {
+  deleteKnownFile(id, filePath)
+  broadcastToAllWindows('reload-recents')
 })

@@ -42,6 +42,25 @@ function removeFromTempFiles(filePath, doDelete = true) {
   }
 }
 
+function removeFromKnownFiles(id) {
+  knownFilesStore.delete(id)
+}
+
+function deleteKnownFile(id, filePath) {
+  if (!filePath) {
+    filePath = knownFilesStore.get(`${id}.path`)
+  }
+  try {
+    removeFromKnownFiles(id)
+    shell.moveItemToTrash(filePath, true)
+    if (filePath.includes(TEMP_FILES_PATH)) {
+      removeFromTempFiles(filePath, false)
+    }
+  } catch (error) {
+    log.warn(error)
+  }
+}
+
 function saveToTempFile(json) {
   const tempId = tempFilesStore.size + 1
   const tempName = `${t('Untitled')}${tempId == 1 ? '' : tempId}.pltr`
@@ -97,6 +116,8 @@ module.exports = {
   tempFilesStore,
   saveFile,
   removeFromTempFiles,
+  removeFromKnownFiles,
+  deleteKnownFile,
   saveToTempFile,
   createNew,
   createFromSnowflake,

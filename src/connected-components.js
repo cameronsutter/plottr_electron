@@ -34,11 +34,7 @@ import { verifyLicense } from './common/licensing/verify_license'
 import { trial90days } from './common/licensing/special_codes'
 import { openExistingFile } from './dashboard/utils/window_manager'
 import { doesFileExist, useSortedKnownFiles } from './dashboard/utils/files'
-import {
-  deleteKnownFile,
-  editKnownFilePath,
-  removeFromKnownFiles,
-} from './common/utils/known_files'
+import { editKnownFilePath } from './common/utils/known_files'
 import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
@@ -68,9 +64,13 @@ const platform = {
     openKnownFile: (filePath, id, unknown) => {
       ipcRenderer.send('open-known-file', filePath, id, unknown)
     },
-    deleteKnownFile,
+    deleteKnownFile: (id, path) => {
+      ipcRenderer.send('delete-known-file', id, path)
+    },
     editKnownFilePath,
-    removeFromKnownFiles,
+    removeFromKnownFiles: (id) => {
+      ipcRenderer.send('remove-from-known-files', id)
+    },
     saveFile: (filePath, file) => {
       ipcRenderer.send('save-file', filePath, file)
     },

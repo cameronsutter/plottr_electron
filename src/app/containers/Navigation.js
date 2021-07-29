@@ -33,6 +33,10 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
     ipcRenderer.on('close-dashboard', (event) => {
       setDashboardView(null)
     })
+    return () => {
+      ipcRenderer.removeAllListeners('open-dashboard')
+      ipcRenderer.removeAllListeners('close-dashboard')
+    }
   }, [])
 
   useEffect(() => {

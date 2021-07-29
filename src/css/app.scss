@@ -69,24 +69,6 @@
       }
     }
   }
-
-  .project-nav__options {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    button {
-      border: none;
-      background: none;
-    }
-    .btn:active,
-    button:active {
-      color: white;
-      box-shadow: none;
-      border: 0;
-      background: none;
-    }
-  }
 }
 
 .project-nav__menu-popover {

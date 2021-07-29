@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { Navbar, Nav, NavItem, Button } from 'react-bootstrap'
-import { t as i18n } from 'plottr_locales'
+import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
+import { t } from 'plottr_locales'
 import { ipcRenderer } from 'electron'
-import { Beamer, BookChooser, OverlayTrigger } from 'connected-components'
+import { Beamer, BookChooser } from 'connected-components'
 import SETTINGS from '../../common/utils/settings'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
@@ -20,7 +20,6 @@ const isDev = process.env.NODE_ENV == 'development'
 
 const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
   const [dashboardView, setDashboardView] = useState(null)
-  const [menuIsOpen, setMenuIsOpen] = useState(false)
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   const firstTime = !licenseInfoSize && !trialInfo.started
@@ -53,76 +52,42 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
     return (
       <Navbar.Form pullRight style={{ marginRight: '15px' }}>
         <Button bsStyle="link" onClick={() => ipcRenderer.send('open-buy-window')}>
-          <FaKey /> {i18n('Get a License')}
+          <FaKey /> {t('Get a License')}
         </Button>
       </Navbar.Form>
     )
   }
 
-  const Menu = () => {
-    return (
-      <div className={cx('project-nav__menu-popover', { darkmode: isDarkMode })}>
-        <Button
-          onClick={() => {
-            setDashboardView('account')
-          }}
-        >
-          Account
-        </Button>
-        <Button
-          onClick={() => {
-            setDashboardView('options')
-          }}
-        >
-          Settings
-        </Button>
-        <Button
-          onClick={() => {
-            setDashboardView('files')
-          }}
-        >
-          Files
-        </Button>
-        <Button
-          onClick={() => {
-            setDashboardView('templates')
-          }}
-        >
-          Templates
-        </Button>
-        <Button
-          onClick={() => {
-            setDashboardView('backups')
-          }}
-        >
-          Backups
-        </Button>
-        <Button
-          onClick={() => {
-            setDashboardView('help')
-          }}
-        >
-          Help
-        </Button>
-      </div>
-    )
+  const selectAccount = () => {
+    setDashboardView('account')
+  }
+
+  const selectOptions = () => {
+    setDashboardView('options')
+  }
+
+  const selectFiles = () => {
+    setDashboardView('files')
+  }
+
+  const selectTemplates = () => {
+    setDashboardView('templates')
+  }
+
+  const selectBackups = () => {
+    setDashboardView('backups')
+  }
+
+  const selectHelp = () => {
+    setDashboardView('help')
   }
 
   const resetDashboardView = () => {
     setDashboardView(null)
   }
 
-  const hideMenu = () => {
-    setMenuIsOpen(false)
-  }
-
-  const showMenu = () => {
-    setMenuIsOpen(true)
-  }
-
   const selectDashboardView = (view) => {
     setDashboardView(view)
-    hideMenu()
   }
 
   return (
@@ -138,13 +103,13 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
       <Navbar className="project-nav" fluid inverse={isDarkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
-          <NavItem eventKey="project">{i18n('Project')}</NavItem>
-          <NavItem eventKey="timeline">{i18n('Timeline')}</NavItem>
-          <NavItem eventKey="outline">{i18n('Outline')}</NavItem>
-          <NavItem eventKey="notes">{i18n('Notes')}</NavItem>
-          <NavItem eventKey="characters">{i18n('Characters')}</NavItem>
-          <NavItem eventKey="places">{i18n('Places')}</NavItem>
-          <NavItem eventKey="tags">{i18n('Tags')}</NavItem>
+          <NavItem eventKey="project">{t('Project')}</NavItem>
+          <NavItem eventKey="timeline">{t('Timeline')}</NavItem>
+          <NavItem eventKey="outline">{t('Outline')}</NavItem>
+          <NavItem eventKey="notes">{t('Notes')}</NavItem>
+          <NavItem eventKey="characters">{t('Characters')}</NavItem>
+          <NavItem eventKey="places">{t('Places')}</NavItem>
+          <NavItem eventKey="tags">{t('Tags')}</NavItem>
           {isDev ? (
             <NavItem eventKey="analyzer">
               Analyzer<sup>(DEV)</sup>
@@ -154,19 +119,21 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
         <Beamer inNavigation />
         {renderTrialLinks()}
         <Nav pullRight className="project-nav__options">
-          <OverlayTrigger
-            containerPadding={20}
-            trigger="click"
-            rootClose
-            placement="bottom"
-            open={menuIsOpen}
-            onHide={hideMenu}
-            overlay={Menu}
-          >
-            <Button onClick={showMenu}>
-              <FaRegUser />
-            </Button>
-          </OverlayTrigger>
+          <NavItem>
+            <Dropdown id="dashboard-dropdown-menu">
+              <Dropdown.Toggle noCaret bsSize="small">
+                <FaRegUser />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <MenuItem onSelect={selectAccount}>{t('Account')}</MenuItem>
+                <MenuItem onSelect={selectOptions}>{t('Options')}</MenuItem>
+                <MenuItem onSelect={selectFiles}>{t('Files')}</MenuItem>
+                <MenuItem onSelect={selectTemplates}>{t('Templates')}</MenuItem>
+                <MenuItem onSelect={selectBackups}>{t('Backups')}</MenuItem>
+                <MenuItem onSelect={selectHelp}>{t('Help')}</MenuItem>
+              </Dropdown.Menu>
+            </Dropdown>
+          </NavItem>
         </Nav>
       </Navbar>
     </>

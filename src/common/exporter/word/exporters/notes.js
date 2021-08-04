@@ -1,7 +1,9 @@
 import { t } from 'plottr_locales'
 import { Paragraph, AlignmentType, HeadingLevel, Media } from 'docx'
-import serialize from '../../../slate_serializers/to_word'
+import { slate } from 'pltr/v2'
 import exportItemAttachments from './itemAttachments'
+
+const { serialize } = slate.word
 
 export default function exportNotes(state, namesMapping, doc, options) {
   let children = [new Paragraph({ text: '', pageBreakBefore: true })]

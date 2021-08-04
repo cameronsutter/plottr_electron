@@ -3,14 +3,16 @@ import fs from 'fs'
 import log from 'electron-log'
 import xml from 'xml-js'
 import rtf from 'jsrtf'
-import serialize from '../../../slate_serializers/to_rtf'
-import { serialize as serializePlain } from '../../../slate_serializers/to_plain_text'
+import { slate } from 'pltr/v2'
 import { notifyUser } from '../../notifier'
 import exportBeats from './exporters/beats'
 import exportCharacters from './exporters/characters'
 import exportNotes from './exporters/notes'
 import exportPlaces from './exporters/places'
 import { convertUnicode, addToScrivx, remove, startNewScrivx } from './utils'
+
+const { serialize } = slate.rtf
+const serializePlain = slate.plain.serialize
 
 export default function Exporter(state, exportPath, options, isWindows) {
   const realPath = exportPath.includes('.scriv') ? exportPath : `${exportPath}.scriv`

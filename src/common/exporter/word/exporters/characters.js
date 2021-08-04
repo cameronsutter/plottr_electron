@@ -1,10 +1,10 @@
 import { t } from 'plottr_locales'
 import { Paragraph, AlignmentType, HeadingLevel, Media } from 'docx'
-import serialize from '../../../slate_serializers/to_word'
 import exportCustomAttributes from './customAttributes'
 import exportItemTemplates from './itemTemplates'
-import { selectors } from 'pltr/v2'
+import { selectors, slate } from 'pltr/v2'
 
+const { serialize } = slate.word
 const { characterCategoriesSelector } = selectors
 
 export default function exportCharacters(state, doc, options) {

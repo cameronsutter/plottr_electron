@@ -1,5 +1,7 @@
 import { Paragraph } from 'docx'
-import serialize from '../../../slate_serializers/to_word'
+import { slate } from 'pltr/v2'
+
+const { serialize } = slate.word
 
 export default function exportItemTemplates(item, headingLevel, doc) {
   return (item.templates || []).flatMap((t) => {

@@ -1,12 +1,12 @@
 import { keyBy, includes } from 'lodash'
 import { t } from 'plottr_locales'
-import { helpers, selectors } from 'pltr/v2'
+import { slate, helpers, selectors } from 'pltr/v2'
 import { Paragraph, AlignmentType, HeadingLevel } from 'docx'
-import serialize from '../../../slate_serializers/to_word'
 import exportCustomAttributes from './customAttributes'
 import exportItemTemplates from './itemTemplates'
 import exportItemAttachments from './itemAttachments'
 
+const { serialize } = slate.word
 const {
   sortedLinesByBookSelector,
   cardMapSelector,

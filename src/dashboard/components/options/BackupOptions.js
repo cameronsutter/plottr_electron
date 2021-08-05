@@ -36,7 +36,7 @@ const BackupOptions = () => {
       case 'number':
         return 'user.numberOfBackups'
     }
-    return Number.POSITIVE_INFINITY
+    return null
   })()
 
   const onBackupValueChange = () => {
@@ -52,11 +52,13 @@ const BackupOptions = () => {
 
   const title = settings.user.backupType === 'days' ? t('Days of Backups') : t('Number of Backups')
 
+  const currentBackupType = settings.user.backupType || 'never-delete'
+
   return (
     <>
       <h4>{t('Backup Options')}</h4>
       <FormGroup controlId="backupDays">
-        <select defaultValue={settings.user.backupType} onChange={onBackupTypeChange}>
+        <select defaultValue={currentBackupType} onChange={onBackupTypeChange}>
           <option value="days">{t('Days of Backups')}</option>
           <option value="number">{t('Number of Backups')}</option>
           <option value="never-delete">{t('Never Delete Backups')}</option>

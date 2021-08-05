@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { useState, useEffect } from 'react'
-import { BACKUP_BASE_PATH } from '../../common/utils/config_paths'
+import { backupBasePath } from '../../common/utils/backup'
 import { sortBy } from 'lodash'
 
 export function useBackupFolders() {
@@ -14,13 +14,13 @@ export function useBackupFolders() {
 }
 
 function readBackupsDirectory(setFolders) {
-  fs.readdir(BACKUP_BASE_PATH, (err, directories) => {
+  fs.readdir(backupBasePath(), (err, directories) => {
     const filteredDirs = directories.filter((d) => {
       return d[0] != '.' && !d.includes('.pltr')
     })
     let tempList = []
     filteredDirs.forEach((dir) => {
-      const thisPath = path.join(BACKUP_BASE_PATH, dir)
+      const thisPath = path.join(backupBasePath(), dir)
       fs.readdir(thisPath, (error, backupFiles) => {
         tempList.push({
           path: thisPath,

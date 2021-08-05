@@ -5,7 +5,7 @@ import SETTINGS from '../../../common/utils/settings'
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
 import { Switch, LanguagePicker } from 'connected-components'
 import { HelpBlock, Button } from 'react-bootstrap'
-import { BACKUP_BASE_PATH } from '../../../common/utils/config_paths'
+import { backupBasePath } from '../../../common/utils/backup'
 import DarkOptionsSelect from './DarkOptionsSelect'
 import TemplateFetcher from '../../utils/template_fetcher'
 import BackupOptions from './BackupOptions'
@@ -78,7 +78,7 @@ export default function OptionsHome(props) {
           <HelpBlock>{t('Folder where backups are stored')}</HelpBlock>
           <p>
             {settings.user.backupLocation === 'default'
-              ? BACKUP_BASE_PATH
+              ? backupBasePath()
               : settings.user.backupLocation}
           </p>
           <Button bsSize="small" onClick={onChangeBackupLocation}>

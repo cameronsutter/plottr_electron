@@ -3,7 +3,8 @@ import { shell, remote } from 'electron'
 const { app, dialog } = remote
 import storage from 'electron-json-storage'
 import log from 'electron-log'
-import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './config_paths'
+import { CUSTOM_TEMPLATES_PATH } from './config_paths'
+import { backupBasePath } from './backup'
 import SETTINGS from './settings'
 import { extendTrialWithReset } from '../licensing/trial_manager'
 import { USER_INFO_PATH } from './config_paths'
@@ -19,7 +20,7 @@ export function handleCustomerServiceCode(code) {
 
     case '941ff8':
       // view backups
-      shell.openPath(BACKUP_BASE_PATH)
+      shell.openPath(backupBasePath())
       break
 
     case '7c6a3a':

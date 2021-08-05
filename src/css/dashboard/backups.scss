@@ -5,10 +5,16 @@
   height: 100%;
   padding: 20px 40px;
 
+  .row {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+
   .dashboard__search {
-    position: absolute;
-    top: 55px;
-    right: 15px;
+    // position: absolute;
+    // top: 55px;
+    // right: 15px;
     width: 300px;
   }
 
@@ -25,11 +31,14 @@
   align-content: flex-start;
   height: calc(100% - 49px);
   overflow: auto;
+  padding-bottom: 100px;
 }
 
 .dashboard__backups__item {
   width: 200px;
   height: 150px;
+  margin-right: 2px;
+  margin-bottom: 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,6 +55,7 @@
 
   p {
     text-align: center;
+    overflow-wrap: anywhere;
   }
 
   &.icon {
@@ -58,6 +68,15 @@
         color: $gray-5;
         // transform: scale(1.2);
       }
+    }
+  }
+
+  &.file {
+    justify-content: flex-start;
+    padding-top: 2px;
+    div {
+      padding: 4px;
+      overflow: scroll;
     }
   }
 

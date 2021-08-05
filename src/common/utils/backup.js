@@ -12,7 +12,7 @@ export function saveBackup(filePath, data, callback) {
   if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 
-  const backupStrategy = SETTINGS.get('user.backupType')
+  const backupStrategy = SETTINGS.get('user.backupType') || 'never-delete'
   const amount =
     backupStrategy === 'days'
       ? SETTINGS.get('user.backupDays')

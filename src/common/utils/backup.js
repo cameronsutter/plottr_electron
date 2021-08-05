@@ -84,6 +84,11 @@ export function ensureBackupFullPath() {
 }
 
 export function deleteOldBackups(strategy, amount) {
+  if (!amount) {
+    log.warn(`Invalid quantity for backup (with strategy: ${strategy}): ${amount}`)
+    return Promise.resolve([])
+  }
+
   // Perform this check before any file system interactions for the
   // sake of efficiency.
   if (strategy === 'never-delete') {

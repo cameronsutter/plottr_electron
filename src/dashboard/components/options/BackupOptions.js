@@ -63,20 +63,22 @@ const BackupOptions = () => {
           <option value="number">{t('Number of Backups')}</option>
           <option value="never-delete">{t('Never Delete Backups')}</option>
         </select>
-        <div className={'backup-type'}>
-          <HelpBlock>{title}</HelpBlock>
-          <input
-            disabled={!currentSetting}
-            type="number"
-            className="backup-input"
-            ref={backupInputRef}
-            min="1"
-            defaultValue={backupSettingValue(settings.user.backupType)}
-            onChange={onBackupValueChange}
-            onBlur={handleBackupBlur}
-          />
-          <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
-        </div>
+        {currentBackupType !== 'never-delete' ? (
+          <div className={'backup-type'}>
+            <HelpBlock>{title}</HelpBlock>
+            <input
+              disabled={!currentSetting}
+              type="number"
+              className="backup-input"
+              ref={backupInputRef}
+              min="1"
+              defaultValue={backupSettingValue(settings.user.backupType)}
+              onChange={onBackupValueChange}
+              onBlur={handleBackupBlur}
+            />
+            <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
+          </div>
+        ) : null}
       </FormGroup>
     </>
   )

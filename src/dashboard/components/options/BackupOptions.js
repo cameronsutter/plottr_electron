@@ -65,7 +65,7 @@ const BackupOptions = () => {
         </select>
         {currentBackupType !== 'never-delete' ? (
           <div className={'backup-type'}>
-            <HelpBlock>{title}</HelpBlock>
+            <HelpBlock className="dashboard__options-item-help">{title}</HelpBlock>
             <input
               disabled={!currentSetting}
               type="number"
@@ -76,7 +76,7 @@ const BackupOptions = () => {
               onChange={onBackupValueChange}
               onBlur={handleBackupBlur}
             />
-            <HelpBlock>{t('Backups beyond this will be erased')}</HelpBlock>
+            <p className="text-warning">{t('Backups beyond this will be erased')}</p>
           </div>
         ) : null}
       </FormGroup>

@@ -75,7 +75,9 @@ export default function OptionsHome(props) {
         </div>
         <div className="dashboard__options__item">
           <h4>{t('Backup Location')}</h4>
-          <HelpBlock>{t('Folder where backups are stored')}</HelpBlock>
+          <HelpBlock className="dashboard__options-item-help">
+            {t('Folder where backups are stored')}
+          </HelpBlock>
           <p>
             {settings.user.backupLocation === 'default'
               ? backupBasePath()

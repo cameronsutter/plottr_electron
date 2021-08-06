@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { FormGroup, HelpBlock } from 'react-bootstrap'
 
 import { useSettingsInfo } from '../../../common/utils/store_hooks'
@@ -6,6 +6,17 @@ import { t } from 'plottr_locales'
 
 const BackupOptions = () => {
   const [settings, _, saveSetting] = useSettingsInfo()
+
+  const resetAmounts = () => {
+    saveSetting('user.backupDays', null)
+    saveSetting('user.numberOfBackups', null)
+  }
+
+  useEffect(() => {
+    if (settings.user.backupType === 'never-delete') {
+      resetAmounts()
+    }
+  }, [])
 
   const backupInputRef = useRef()
 
@@ -24,6 +35,9 @@ const BackupOptions = () => {
   const onBackupTypeChange = (event) => {
     const newBackupType = event.target.value
     saveSetting('user.backupType', newBackupType)
+    if (newBackupType === 'never-delete') {
+      resetAmounts()
+    }
     backupInputRef.current.value = backupSettingValue(newBackupType)
   }
 

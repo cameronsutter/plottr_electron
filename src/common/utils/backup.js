@@ -14,7 +14,9 @@ export function saveBackup(filePath, data, callback) {
 
   const backupStrategy = SETTINGS.get('user.backupType') || 'never-delete'
   const amount =
-    backupStrategy === 'days'
+    backupStrategy === 'never-delete'
+      ? null
+      : backupStrategy === 'days'
       ? SETTINGS.get('user.backupDays')
       : SETTINGS.get('user.numberOfBackups')
   // Don't involve deletion in the control flow of this function
@@ -89,15 +91,15 @@ export function ensureBackupFullPath() {
 }
 
 export function deleteOldBackups(strategy, amount) {
-  if (!amount) {
-    log.warn(`Invalid quantity for backup (with strategy: ${strategy}): ${amount}`)
-    return Promise.resolve([])
-  }
-
   // Perform this check before any file system interactions for the
   // sake of efficiency.
   if (strategy === 'never-delete') {
     log.info('Strategy set to "never-delete".  Keeping all backups.')
+    return Promise.resolve([])
+  }
+
+  if (!amount) {
+    log.warn(`Invalid quantity for backup (with strategy: ${strategy}): ${amount}`)
     return Promise.resolve([])
   }
 

@@ -199,6 +199,10 @@
         margin-left: 4px;
         vertical-align: middle;
       }
+      & > .tab-pane .template-tab__details {
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
   .btn-toolbar {

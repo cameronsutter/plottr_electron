@@ -9,16 +9,20 @@ export default function Folders({ selectFolder, folders, searchTerm }) {
   if (!folders.length) return <Spinner />
 
   const renderedFolders = folders.map((f) => {
-    const dateStr = t('{date, date, medium}', { date: new Date(f.date.replace(/_/g, '-')) })
-    return (
-      <div key={f.date} className="dashboard__backups__item icon" onClick={() => selectFolder(f)}>
-        <div>
-          <IoIosFolder />
-          <Badge>{f.backups.length}</Badge>
+    try {
+      const dateStr = t('{date, date, medium}', { date: new Date(f.date.replace(/_/g, '-')) })
+      return (
+        <div key={f.date} className="dashboard__backups__item icon" onClick={() => selectFolder(f)}>
+          <div>
+            <IoIosFolder />
+            <Badge>{f.backups.length}</Badge>
+          </div>
+          <div>{dateStr}</div>
         </div>
-        <div>{dateStr}</div>
-      </div>
-    )
+      )
+    } catch (error) {
+      return null
+    }
   })
 
   return renderedFolders

@@ -96,7 +96,7 @@ export default function OptionsHome(props) {
               <p>
                 <Button onClick={onChangeBackupLocation}>{t('Choose...')}</Button>
                 {'  '}
-                {settings.user.backupLocation === 'default'
+                {!settings.user.backupLocation || settings.user.backupLocation === 'default'
                   ? backupBasePath()
                   : settings.user.backupLocation}
               </p>

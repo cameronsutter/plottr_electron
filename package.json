@@ -7,9 +7,9 @@
   "private": true,
   "readme": "Copyright 2016-2020 Fictional Devices LLC",
   "author": {
-    "name": "C. Louis S.",
+    "name": "Cameron Sutter",
     "email": "cameronsutter0@gmail.com",
-    "url": "https://medium.com/@camsutter"
+    "url": "https://twitter.com/camsutter"
   },
   "main": "bin/electron_main.js",
   "scripts": {

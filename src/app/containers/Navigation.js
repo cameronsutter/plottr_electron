@@ -1,48 +1,115 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Navbar, Nav, NavItem, Button } from 'react-bootstrap'
-import { t as i18n } from 'plottr_locales'
+import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
+import { t } from 'plottr_locales'
 import { ipcRenderer } from 'electron'
 import { Beamer, BookChooser } from 'connected-components'
 import SETTINGS from '../../common/utils/settings'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
+import { FaRegUser } from 'react-icons/fa'
+import DashboardModal from './DashboardModal'
+import { selectors } from 'pltr/v2'
+import { useLicenseInfo } from '../../common/utils/store_hooks'
+import { useTrialStatus } from '../../common/licensing/trial_manager'
 
 const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
 
-class Navigation extends Component {
-  handleSelect = (selectedKey) => {
-    this.props.actions.changeCurrentView(selectedKey)
+const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
+  const [dashboardView, setDashboardView] = useState(null)
+  const trialInfo = useTrialStatus()
+  const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
+  const firstTime = !licenseInfoSize && !trialInfo.started
+  const trialExpired = trialInfo.expired
+
+  useEffect(() => {
+    ipcRenderer.on('open-dashboard', (event) => {
+      setDashboardView('files')
+    })
+    ipcRenderer.on('close-dashboard', (event) => {
+      setDashboardView(null)
+    })
+    return () => {
+      ipcRenderer.removeAllListeners('open-dashboard')
+      ipcRenderer.removeAllListeners('close-dashboard')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (firstTime || trialExpired) setDashboardView('account')
+  }, [firstTime, trialExpired, dashboardView])
+
+  const handleSelect = (selectedKey) => {
+    changeCurrentView(selectedKey)
   }
 
-  renderTrialLinks() {
+  const renderTrialLinks = () => {
     if (!trialMode || isDev) return null
 
     return (
       <Navbar.Form pullRight style={{ marginRight: '15px' }}>
         <Button bsStyle="link" onClick={() => ipcRenderer.send('open-buy-window')}>
-          <FaKey /> {i18n('Get a License')}
+          <FaKey /> {t('Get a License')}
         </Button>
       </Navbar.Form>
     )
   }
 
-  render() {
-    const { ui } = this.props
-    return (
-      <Navbar className="project-nav" fluid inverse={ui.darkMode}>
-        <Nav onSelect={this.handleSelect} activeKey={ui.currentView} bsStyle="pills">
+  const selectAccount = () => {
+    setDashboardView('account')
+  }
+
+  const selectOptions = () => {
+    setDashboardView('options')
+  }
+
+  const selectFiles = () => {
+    setDashboardView('files')
+  }
+
+  const selectTemplates = () => {
+    setDashboardView('templates')
+  }
+
+  const selectBackups = () => {
+    setDashboardView('backups')
+  }
+
+  const selectHelp = () => {
+    setDashboardView('help')
+  }
+
+  const resetDashboardView = () => {
+    if (firstTime || trialExpired) return
+    setDashboardView(null)
+  }
+
+  const selectDashboardView = (view) => {
+    setDashboardView(view)
+  }
+
+  return (
+    <>
+      {dashboardView ? (
+        <DashboardModal
+          activeView={dashboardView}
+          setActiveView={selectDashboardView}
+          closeDashboard={resetDashboardView}
+          darkMode={isDarkMode}
+        />
+      ) : null}
+      <Navbar className="project-nav" fluid inverse={isDarkMode}>
+        <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
-          <NavItem eventKey="project">{i18n('Project')}</NavItem>
-          <NavItem eventKey="timeline">{i18n('Timeline')}</NavItem>
-          <NavItem eventKey="outline">{i18n('Outline')}</NavItem>
-          <NavItem eventKey="notes">{i18n('Notes')}</NavItem>
-          <NavItem eventKey="characters">{i18n('Characters')}</NavItem>
-          <NavItem eventKey="places">{i18n('Places')}</NavItem>
-          <NavItem eventKey="tags">{i18n('Tags')}</NavItem>
+          <NavItem eventKey="project">{t('Project')}</NavItem>
+          <NavItem eventKey="timeline">{t('Timeline')}</NavItem>
+          <NavItem eventKey="outline">{t('Outline')}</NavItem>
+          <NavItem eventKey="notes">{t('Notes')}</NavItem>
+          <NavItem eventKey="characters">{t('Characters')}</NavItem>
+          <NavItem eventKey="places">{t('Places')}</NavItem>
+          <NavItem eventKey="tags">{t('Tags')}</NavItem>
           {isDev ? (
             <NavItem eventKey="analyzer">
               Analyzer<sup>(DEV)</sup>
@@ -50,27 +117,42 @@ class Navigation extends Component {
           ) : null}
         </Nav>
         <Beamer inNavigation />
-        {this.renderTrialLinks()}
+        {renderTrialLinks()}
+        <Nav pullRight className="project-nav__options">
+          <NavItem>
+            <Dropdown id="dashboard-dropdown-menu">
+              <Dropdown.Toggle noCaret bsSize="small">
+                <FaRegUser />
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <MenuItem onSelect={selectAccount}>{t('Account')}</MenuItem>
+                <MenuItem onSelect={selectOptions}>{t('Options')}</MenuItem>
+                <MenuItem onSelect={selectFiles}>{t('Files')}</MenuItem>
+                <MenuItem onSelect={selectTemplates}>{t('Templates')}</MenuItem>
+                <MenuItem onSelect={selectBackups}>{t('Backups')}</MenuItem>
+                <MenuItem onSelect={selectHelp}>{t('Help')}</MenuItem>
+              </Dropdown.Menu>
+            </Dropdown>
+          </NavItem>
+        </Nav>
       </Navbar>
-    )
-  }
+    </>
+  )
 }
 
 Navigation.propTypes = {
-  ui: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired,
+  currentView: PropTypes.string.isRequired,
+  isDarkMode: PropTypes.bool,
+  changeCurrentView: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
   return {
-    ui: state.present.ui,
+    currentView: selectors.currentViewSelector(state.present),
+    isDarkMode: selectors.isDarkModeSelector(state.present),
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actions.ui, dispatch),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation)
+export default connect(mapStateToProps, { changeCurrentView: actions.ui.changeCurrentView })(
+  Navigation
+)

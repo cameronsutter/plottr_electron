@@ -1,8 +1,18 @@
 import electron, { remote, shell, ipcRenderer } from 'electron'
+import path from 'path'
 import { connections } from 'plottr_components'
+import { readFileSync } from 'fs'
+import { machineIdSync } from 'node-machine-id'
 
-import { TEMP_FILES_PATH } from './common/utils/config_paths'
-import { useExportConfigInfo } from './common/utils/store_hooks'
+import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
+import {
+  useExportConfigInfo,
+  useTemplatesInfo,
+  useLicenseInfo,
+  licenseStore,
+  useCustomTemplatesInfo,
+  useSettingsInfo,
+} from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'
 import {
@@ -18,14 +28,112 @@ import SETTINGS from './common/utils/settings'
 import USER from './common/utils/user_info'
 import { is } from 'electron-util'
 import MPQ from './common/utils/MPQ'
+import { useTrialStatus } from './common/licensing/trial_manager'
+import { checkForActiveLicense } from './common/licensing/check_license'
+import { verifyLicense } from './common/licensing/verify_license'
+import { trial90days } from './common/licensing/special_codes'
+import { openExistingFile } from './dashboard/utils/window_manager'
+import { doesFileExist, useSortedKnownFiles } from './dashboard/utils/files'
+import { useFilteredSortedTemplates } from './dashboard/utils/templates'
+import { useBackupFolders } from './dashboard/utils/backups'
+import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
+import TemplateFetcher from './dashboard/utils/template_fetcher'
 
+const win = remote.getCurrentWindow()
 const { app, dialog } = remote
 const version = app.getVersion()
 
 const platform = {
   electron,
   appVersion: version,
+  defaultBackupLocation: BACKUP_BASE_PATH,
+  setDarkMode: (value) => {
+    ipcRenderer.send('pls-set-dark-setting', value)
+  },
+  file: {
+    createNew: (template) => {
+      ipcRenderer.send('create-new-file', template)
+    },
+    openExistingFile,
+    doesFileExist,
+    useSortedKnownFiles,
+    isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
+    pathSep: path.sep,
+    basename: path.basename,
+    openKnownFile: (filePath, id, unknown) => {
+      ipcRenderer.send('open-known-file', filePath, id, unknown)
+    },
+    deleteKnownFile: (id, path) => {
+      ipcRenderer.send('delete-known-file', id, path)
+    },
+    editKnownFilePath: (oldFilePath, newFilePath) => {
+      ipcRenderer.send('edit-known-file-path', oldFilePath, newFilePath)
+    },
+    removeFromKnownFiles: (id) => {
+      ipcRenderer.send('remove-from-known-files', id)
+    },
+    saveFile: (filePath, file) => {
+      ipcRenderer.send('save-file', filePath, file)
+    },
+    readFileSync,
+    moveItemToTrash: shell.moveItemToTrash,
+    createFromSnowflake: (importedPath) => {
+      ipcRenderer.send('create-from-snowflake', importedPath)
+    },
+    joinPath: path.join,
+  },
+  update: {
+    quitToInstall: () => {
+      ipcRenderer.send('pls-quit-and-install')
+    },
+    downloadUpdate: () => {
+      ipcRenderer.send('pls-download-update')
+    },
+    checkForUpdates: () => {
+      ipcRenderer.send('pls-check-for-updates')
+    },
+    onUpdateError: (cb) => {
+      ipcRenderer.on('updater-error', cb)
+    },
+    onUpdaterUpdateAvailable: (cb) => {
+      ipcRenderer.on('updater-update-available', cb)
+    },
+    onUpdaterUpdateNotAvailable: (cb) => {
+      ipcRenderer.on('updater-update-not-available', cb)
+    },
+    onUpdaterDownloadProgress: (cb) => {
+      ipcRenderer.on('updater-download-progress', cb)
+    },
+    onUpdatorUpdateDownloaded: (cb) => {
+      ipcRenderer.on('updater-update-downloaded', cb)
+    },
+    deregisterUpdateListeners: () => {
+      ipcRenderer.removeAllListeners('updater-error')
+      ipcRenderer.removeAllListeners('updater-update-available')
+      ipcRenderer.removeAllListeners('updater-update-not-available')
+      ipcRenderer.removeAllListeners('updater-download-progress')
+      ipcRenderer.removeAllListeners('updater-update-downloaded')
+    },
+  },
+  updateLanguage: (newLanguage) => {
+    ipcRenderer.send('pls-update-language', newLanguage)
+  },
+  updateBeatHierarchyFlag: (newValue) => {
+    ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
+  },
+  license: {
+    useLicenseInfo,
+    checkForActiveLicense,
+    useTrialStatus,
+    licenseStore,
+    verifyLicense,
+    trial90days,
+  },
+  reloadMenu: () => {
+    ipcRenderer.send('pls-reload-menu')
+  },
   template: {
+    TemplateFetcher,
     listTemplates,
     listCustomTemplates,
     getTemplateById,
@@ -39,8 +147,12 @@ const platform = {
       const win = remote.getCurrentWindow()
       ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
     },
+    useFilteredSortedTemplates,
+    useCustomTemplatesInfo,
+    useTemplatesInfo,
   },
   settings: SETTINGS,
+  useSettingsInfo,
   user: USER,
   os: is.windows ? 'windows' : is.macos ? 'macos' : is.linux ? 'linux' : 'unknown',
   isDevelopment: is.development,
@@ -48,8 +160,11 @@ const platform = {
   isMacOS: is.macos,
   openExternal: shell.openExternal,
   createErrorReport,
+  handleCustomerServiceCode,
   log,
   dialog,
+  showSaveDialogSync: (options) => dialog.showSaveDialogSync(win, options),
+  showOpenDialogSync: (options) => dialog.showOpenDialogSync(win, options),
   node: {
     env: process.env.NODE_ENV === 'development' ? 'development' : 'production',
   },
@@ -64,6 +179,7 @@ const platform = {
   store: {
     useExportConfigInfo,
   },
+  useBackupFolders,
   moveFromTemp: () => {
     const win = remote.getCurrentWindow()
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
@@ -74,10 +190,12 @@ const platform = {
   tempFilesPath: TEMP_FILES_PATH,
   mpq: MPQ,
   rootElementSelectors: ['#react-root', '#dashboard__react__root'],
+  machineIdSync,
 }
 
 const components = connections.pltr(platform)
 
+export const OverlayTrigger = components.OverlayTrigger
 export const DeleteConfirmModal = components.DeleteConfirmModal
 export const ColorPickerColor = components.ColorPickerColor
 export const ItemsManagerModal = components.ItemsManagerModal
@@ -141,3 +259,4 @@ export const EditSeries = components.EditSeries
 export const FileLocation = components.FileLocation
 export const BookChooser = components.BookChooser
 export const TimelineWrapper = components.TimelineWrapper
+export const DashboardBody = components.DashboardBody

@@ -80,8 +80,9 @@ $header-height: 40px;
     }
   }
 
+  .dashboard__main,
   main {
-    height: calc(100vh - 40px); // can't use variable here: $header-height
+    height: 100vh; // can't use variable here: $header-height
     width: 100vw;
     overflow: auto;
     display: grid;
@@ -93,14 +94,17 @@ $header-height: 40px;
     grid-area: main;
     overflow: hidden;
 
-    .dashboard__top-border {
-      height: 4px;
-      background-color: $gray-5;
-    }
     .beamer-wrapper.win32 {
       position: absolute;
       right: 0;
       top: 55px;
     }
+  }
+
+  .dashboard__close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
   }
 }

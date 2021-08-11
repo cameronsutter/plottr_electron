@@ -8,7 +8,6 @@ import {
   KNOWN_FILES_PATH,
   CUSTOM_TEMPLATES_PATH,
   TEMPLATES_PATH,
-  TMP_PATH,
   TEMPLATES_MANIFEST_PATH,
   EXPORT_CONFIG_PATH,
 } from './config_paths'
@@ -21,7 +20,6 @@ const templatesPath =
   process.env.NODE_ENV == 'development' ? `${TEMPLATES_PATH}_dev` : TEMPLATES_PATH
 const customTemplatesPath =
   process.env.NODE_ENV == 'development' ? `${CUSTOM_TEMPLATES_PATH}_dev` : CUSTOM_TEMPLATES_PATH
-const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const manifestPath =
   process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
 const exportPath =
@@ -32,7 +30,6 @@ export const licenseStore = new Store({ name: USER_INFO_PATH, watch: true })
 export const knownFilesStore = new Store({ name: knownFilesPath, watch: true })
 export const templatesStore = new Store({ name: templatesPath, watch: true })
 export const customTemplatesStore = new Store({ name: customTemplatesPath, watch: true })
-export const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
 export const exportConfigStore = new Store({
   name: exportPath,
   watch: true,
@@ -43,7 +40,7 @@ export const MANIFEST_ROOT = 'manifest'
 
 const checkInterval = 1000 * 60 * 1 // every minute
 
-function useJsonStore(store, reloadsOnIPC, checksOften) {
+function useJsonStore(store, ipcEventToReloadOn, checksOften) {
   const [info, setInfo] = useState(store.store)
   const [size, setSize] = useState(store.size)
   useEffect(() => {
@@ -54,14 +51,14 @@ function useJsonStore(store, reloadsOnIPC, checksOften) {
     return () => unsubscribe()
   }, [])
   useEffect(() => {
-    if (reloadsOnIPC) {
-      ipcRenderer.on('reload-recents', () => {
+    if (ipcEventToReloadOn) {
+      ipcRenderer.on(ipcEventToReloadOn, () => {
         setInfo(store.get())
         setSize(store.size)
       })
     }
 
-    return () => ipcRenderer.removeAllListeners('reload-recents')
+    return () => ipcRenderer.removeAllListeners(ipcEventToReloadOn)
   }, [])
   useEffect(() => {
     let timeout
@@ -99,7 +96,7 @@ export function useLicenseInfo() {
 }
 
 export function useKnownFilesInfo() {
-  return useJsonStore(knownFilesStore, true, true)
+  return useJsonStore(knownFilesStore, 'reload-recents', true)
 }
 
 export function useTemplatesInfo() {
@@ -111,7 +108,19 @@ export function useCustomTemplatesInfo() {
 }
 
 export function useSettingsInfo() {
-  return useJsonStore(SETTINGS)
+  const [info, size, saveInfoAtKey, saveAllInfo] = useJsonStore(SETTINGS, 'reload-options', true)
+  const alsoAskMainToBroadcastUpdate =
+    (f) =>
+    (...args) => {
+      ipcRenderer.send('broadcast-reload-options')
+      f(...args)
+    }
+  return [
+    info,
+    size,
+    alsoAskMainToBroadcastUpdate(saveInfoAtKey),
+    alsoAskMainToBroadcastUpdate(saveAllInfo),
+  ]
 }
 
 export function useExportConfigInfo() {

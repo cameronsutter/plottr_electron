@@ -1,4 +1,9 @@
 const electron = require('electron')
+const SETTINGS = require('./modules/settings')
+const { setupI18n } = require('plottr_locales')
+setupI18n(SETTINGS, { electron })
+
+const fs = require('fs')
 const { app, BrowserWindow, ipcMain, globalShortcut } = electron
 const path = require('path')
 const log = require('electron-log')
@@ -7,7 +12,6 @@ require('./modules/updater_events')
 const contextMenu = require('electron-context-menu')
 const { setupRollbar } = require('./modules/rollbar')
 const { loadMenu } = require('./modules/menus')
-const { setupI18n } = require('plottr_locales')
 const {
   focusFirstWindow,
   hasWindows,
@@ -18,15 +22,25 @@ const { openProjectWindow } = require('./modules/windows/projects')
 const { setDarkMode, broadcastDarkMode } = require('./modules/theme')
 const { newFileOptions } = require('./modules/new_file_options')
 const { gracefullyQuit } = require('./modules/utils')
-const { openDashboard } = require('./modules/windows/dashboard')
-const { addToKnown } = require('./modules/known_files')
-const SETTINGS = require('./modules/settings')
+const { addToKnown, knownFilesStore, addToKnownFiles } = require('./modules/known_files')
 const {
   broadcastSetBeatHierarchy,
   broadcastUnsetBeatHierarchy,
 } = require('./modules/feature_flags')
 const { reloadAllWindows } = require('./modules/windows')
-const { reloadDashboard } = require('./modules/windows/dashboard')
+const { broadcastToAllWindows } = require('./modules/broadcast')
+const {
+  openKnownFile,
+  createNew,
+  createFromSnowflake,
+  saveFile,
+  TEMP_FILES_PATH,
+  removeFromTempFiles,
+  removeFromKnownFiles,
+  deleteKnownFile,
+  editKnownFilePath,
+} = require('./modules/files')
+const { editWindowPath } = require('./modules/windows/index')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -35,7 +49,6 @@ log.info('--------Startup Tasks--------')
 const ENV_FILE_PATH = path.resolve('.env')
 require('dotenv').config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
-setupI18n(SETTINGS, { electron })
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
@@ -58,7 +71,19 @@ if (!is.development) {
 
 app.whenReady().then(() => {
   loadMenu(true)
-  openDashboard()
+  const files = Object.values(knownFilesStore.store)
+    .sort((thisFile, thatFile) => {
+      if (thisFile.lastOpened > thatFile.lastOpened) return -1
+      if (thisFile.lastOpened < thatFile.lastOpened) return 1
+      return 0
+    })
+    .filter((file) => fs.existsSync(file.path))
+  const latestFile = files[0]
+  if (!latestFile) {
+    createNew()
+  } else {
+    openProjectWindow(latestFile.path)
+  }
   windowsOpenFileEventHandler(process.argv)
 
   // Register the toggleDevTools shortcut listener.
@@ -75,13 +100,12 @@ app.whenReady().then(() => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
-      openDashboard()
+      reloadAllWindows()
     }
   })
   app.on('second-instance', (event, argv, workingDirectory) => {
     log.info('second-instance')
     loadMenu(true)
-    openDashboard()
     windowsOpenFileEventHandler(argv)
   })
 })
@@ -120,10 +144,8 @@ app.on('open-url', function (event, url) {
   // const link = param.replace('plottr://')
 })
 
-app.on('window-all-closed', function () {
-  if (!is.macos) {
-    openDashboard()
-  }
+ipcMain.once('initial-mount-complete', (event) => {
+  event.reply('open-dashboard')
 })
 
 ipcMain.on('pls-fetch-state', function (event, id) {
@@ -151,5 +173,55 @@ ipcMain.on('pls-update-language', (_, newLanguage) => {
   setupI18n(SETTINGS, { electron })
   require('./modules/menus').loadMenu()
   reloadAllWindows()
-  reloadDashboard()
+})
+
+ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
+  broadcastToAllWindows('reload-recents')
+})
+
+ipcMain.on('add-to-known-files-and-open', (event, file) => {
+  const id = addToKnownFiles(file)
+  openKnownFile(file, id, false)
+})
+
+ipcMain.on('create-new-file', (event, template) => {
+  createNew(template)
+})
+
+ipcMain.on('create-from-snowflake', (event, importedPath) => {
+  createFromSnowflake(importedPath)
+})
+
+ipcMain.on('open-known-file', (event, filePath, id, unknown) => {
+  openKnownFile(filePath, id, unknown)
+})
+
+ipcMain.on('save-file', (event, fileName, file) => {
+  saveFile(fileName, file)
+})
+
+ipcMain.on('remove-from-temp-files-if-temp', (event, filePath) => {
+  if (filePath.includes(TEMP_FILES_PATH)) {
+    removeFromTempFiles(filePath, false)
+  }
+})
+
+ipcMain.on('broadcast-reload-options', () => {
+  broadcastToAllWindows('reload-options')
+})
+
+ipcMain.on('remove-from-known-files', (event, fileId) => {
+  removeFromKnownFiles(fileId)
+  broadcastToAllWindows('reload-recents')
+})
+
+ipcMain.on('delete-known-file', (event, id, filePath) => {
+  deleteKnownFile(id, filePath)
+  broadcastToAllWindows('reload-recents')
+})
+
+ipcMain.on('edit-known-file-path', (event, oldFilePath, newFilePath) => {
+  editKnownFilePath(oldFilePath, newFilePath)
+  editWindowPath(oldFilePath, newFilePath)
+  broadcastToAllWindows('reload-recents')
 })

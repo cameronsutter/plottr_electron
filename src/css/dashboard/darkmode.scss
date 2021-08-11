@@ -34,16 +34,12 @@ $white-highlight-box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1),
   }
 }
 
-main.darkmode {
+.dashboard__main.darkmode {
   background-color: $dark-gray-3 !important;
   color: $dark-text;
 
   .secondary-text {
     color: $dark-text;
-  }
-
-  .dashboard__top-border {
-    background-color: $dark-gray-3 !important;
   }
 
   .beamer-wrapper #beamer-bell svg {
@@ -276,10 +272,19 @@ main.darkmode {
     }
     &.actions {
       #customerServiceCode {
-        color: $dark-text;
         background-color: $dark-gray-1;
         border-color: $dark-gray-2;
       }
+    }
+  }
+}
+
+.update-notifier {
+  &.alert {
+    &.darkmode {
+      color: $dark-text;
+      background-color: $dark-gray-1;
+      border-color: $dark-text;
     }
   }
 }

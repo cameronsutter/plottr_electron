@@ -108,11 +108,9 @@
       &.add {
         background: linear-gradient(45deg, $gray-6 0%, $gray-7 100%);
         .book-container__add {
-          .glyphicon:hover {
-            color: $blue-5;
-          }
-          .use-template:hover {
-            color: $blue-5;
+          div:hover {
+            background-color: rgba(108,172,228, 0.3);
+            color: $darkmode-text;
           }
         }
       }

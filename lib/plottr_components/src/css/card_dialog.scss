@@ -10,11 +10,26 @@
 
 .card-dialog.darkmode {
   color: $darkmode-text;
-  .nav-tabs > li:not(.active) > a {
-    color: $blue-7;
-    &:hover {
-      color: $blue-1;
+  .card-dialog__description .card-dialog__tabs {
+    .nav-tabs {
+      border-bottom-color: $darkmode-border;
     }
+    .nav-tabs > li:not(.active) > a:not(:hover) {
+      color: $darkmode-link-text;
+      border-bottom-color: $darkmode-border;
+    }
+    .tab-content {
+      border-color: $darkmode-border;
+      .card-dialog__custom-attributes-configuration-link {
+        color: $darkmode-link-text;
+      }
+    }
+  }
+  .card-dialog__left-side {
+    border-color: $darkmode-border;
+  }
+  .card-dialog__button-bar {
+    border-color: $darkmode-border;
   }
 }
 
@@ -58,6 +73,7 @@
       border-bottom: 1px solid $gray-8;
       & > .tab-pane {
         height: 100%;
+        overflow: auto;
       }
       & > .tab-pane .template-picker__link {
         cursor: pointer;
@@ -79,9 +95,10 @@
   .slate-editor__wrapper {
     height: 100%;
     overflow-y: auto;
+    margin: 0;
   }
   .slate-editor__editor {
-    height: calc(100% - 50px);
+    height: calc(100% - 30px);
     overflow-y: auto;
   }
 }

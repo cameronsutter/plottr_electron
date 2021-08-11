@@ -236,6 +236,26 @@
     }
   }
 
+  .character-list__character__tabs {
+    .nav-tabs {
+      border-bottom-color: $darkmode-border;
+    }
+    .nav-tabs > li:not(.active) > a:not(:hover) {
+      color: $darkmode-link-text;
+      border-bottom-color: $darkmode-border;
+    }
+    .tab-content {
+      border-color: $darkmode-border;
+      .card-dialog__custom-attributes-configuration-link {
+        color: $darkmode-link-text;
+      }
+    }
+  }
+
+  .card-dialog__button-bar {
+    border-color: $darkmode-border;
+  }
+
   h4 {
     color: $darkmode-darker-text;
   }

@@ -71,52 +71,6 @@
   }
 }
 
-.project-nav__menu-popover {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
-  position: absolute;
-  border-radius: 3px;
-  padding: 0px 10px 10px 10px;
-  background-color: $gray-8;
-
-  box-shadow: -4px 0px 24px 0px #00000014;
-
-  button {
-    margin-top: 10px;
-    border: none;
-    background-color: $gray-8;
-  }
-
-  .btn:active,
-  button:active {
-    color: white;
-    box-shadow: none;
-    border: 0;
-    background: none;
-  }
-}
-
-.project-nav__menu-popover.darkmode {
-  background-color: $darkmode-background;
-
-  button {
-    margin-top: 10px;
-    border: none;
-    background-color: $darkmode-background;
-  }
-
-  .btn:active,
-  button:active {
-    color: white;
-    box-shadow: none;
-    border: 0;
-    background: none;
-  }
-}
-
 body {
   @include body-text-font;
   background-color: $gray-9;

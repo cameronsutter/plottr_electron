@@ -82,6 +82,7 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
   }
 
   const resetDashboardView = () => {
+    if (firstTime || trialExpired) return
     setDashboardView(null)
   }
 

@@ -61,7 +61,7 @@
     text-align: left;
   }
   .card__body {
-    cursor: pointer;
+    cursor: move;
     .card__title {
       font-style: italic;
     }
@@ -90,6 +90,9 @@
     .card__behind {
       right: 18px;
       bottom: 16px;
+    }
+    .card__drop-zone {
+      margin: auto;
     }
   }
   &.medium-timeline {

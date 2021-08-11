@@ -62,7 +62,6 @@ ipcRenderer.on('state-saved', (_arg) => {
 })
 
 function bootFile(filePath, options, numOpenFiles) {
-  initMixpanel()
   win.setTitle(displayFileName(filePath))
   win.setRepresentedFilename(filePath)
 
@@ -298,7 +297,6 @@ window.logger = function (which) {
 }
 
 ipcRenderer.once('send-launch', (event, version) => {
-  initMixpanel()
   const settingsWeCareAbout = {
     auto_download: SETTINGS.get('user.autoDownloadUpdate'),
     backup_on: SETTINGS.get('backup'),

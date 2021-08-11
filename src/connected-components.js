@@ -107,6 +107,13 @@ const platform = {
     onUpdatorUpdateDownloaded: (cb) => {
       ipcRenderer.on('updater-update-downloaded', cb)
     },
+    deregisterUpdateListeners: () => {
+      ipcRenderer.removeAllListeners('updater-error')
+      ipcRenderer.removeAllListeners('updater-update-available')
+      ipcRenderer.removeAllListeners('updater-update-not-available')
+      ipcRenderer.removeAllListeners('updater-download-progress')
+      ipcRenderer.removeAllListeners('updater-update-downloaded')
+    },
   },
   updateLanguage: (newLanguage) => {
     ipcRenderer.send('pls-update-language', newLanguage)
@@ -124,9 +131,6 @@ const platform = {
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')
-  },
-  checkForUpdates: () => {
-    ipcRenderer.send('pls-check-for-updates')
   },
   template: {
     TemplateFetcher,

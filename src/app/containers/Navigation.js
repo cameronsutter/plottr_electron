@@ -11,7 +11,6 @@ import { FaKey } from 'react-icons/fa'
 import { FaRegUser } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
-import cx from 'classnames'
 import { useLicenseInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
 

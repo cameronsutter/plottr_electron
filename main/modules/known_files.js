@@ -55,4 +55,4 @@ function addToKnownFiles(filePath) {
   }
 }
 
-module.exports = { knownFilesStore, addToKnown, addToKnownFiles, addToKnownFiles }
+module.exports = { knownFilesStore, addToKnown, addToKnownFiles }

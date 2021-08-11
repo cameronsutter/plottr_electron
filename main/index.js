@@ -71,7 +71,6 @@ if (!is.development) {
 
 app.whenReady().then(() => {
   loadMenu(true)
-  // TODO: not necesarily latest...
   const files = Object.values(knownFilesStore.store)
     .sort((thisFile, thatFile) => {
       if (thisFile.lastOpened > thatFile.lastOpened) return -1

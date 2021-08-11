@@ -7,7 +7,6 @@ import { Switch, LanguagePicker } from 'connected-components'
 import { HelpBlock, Button, Tabs, Tab } from 'react-bootstrap'
 import { backupBasePath } from '../../../common/utils/backup'
 import DarkOptionsSelect from './DarkOptionsSelect'
-import TemplateFetcher from '../../utils/template_fetcher'
 import BackupOptions from './BackupOptions'
 
 const { dialog } = remote
@@ -31,10 +30,6 @@ export default function OptionsHome(props) {
     const newValue = !settings.user.beatHierarchy
     saveSetting('user.beatHierarchy', newValue)
     ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
-    // Templates are different for the beat hierarchy feature.
-    // FIXME: when we un-beta this feature then this can be removed safely.
-    // Also See: TemplateFetcher.manifestReq()
-    TemplateFetcher.fetch(true)
   }
 
   return (

@@ -12,7 +12,7 @@ import exportNotes from './exporters/notes'
 import exportPlaces from './exporters/places'
 import { convertUnicode, addToScrivx, remove, startNewScrivx } from './utils'
 
-export default function Exporter(state, exportPath, options) {
+export default function Exporter(state, exportPath, options, isWindows) {
   const realPath = exportPath.includes('.scriv') ? exportPath : `${exportPath}.scriv`
 
   try {
@@ -23,7 +23,7 @@ export default function Exporter(state, exportPath, options) {
     let documentContents = createScrivx(state, realPath, options)
 
     // create the rtf documents for each scene card
-    createRTFDocuments(documentContents, realPath, options)
+    createRTFDocuments(documentContents, realPath, options, isWindows)
   } catch (error) {
     log.error(error)
     // move anything we've made to the trash
@@ -90,7 +90,7 @@ function createScrivx(state, basePath, options) {
   return documentContents
 }
 
-function createRTFDocuments(documentContents, basePath) {
+function createRTFDocuments(documentContents, basePath, isWindows) {
   const realBasePath = path.join(basePath, 'Files', 'Docs')
 
   Object.keys(documentContents).forEach((docID) => {
@@ -106,7 +106,7 @@ function createRTFDocuments(documentContents, basePath) {
     }
 
     if (documents.synopsis) {
-      createSynopsis(docID, documents.synopsis, realBasePath)
+      createSynopsis(docID, documents.synopsis, realBasePath, isWindows)
     }
   })
 }
@@ -132,9 +132,9 @@ function createRTF(docID, document, realBasePath, isNotes) {
   }
 }
 
-function createSynopsis(docID, document, realBasePath) {
+function createSynopsis(docID, document, realBasePath, isWindows) {
   try {
-    const data = serializePlain(document.description)
+    const data = serializePlain(document.description, isWindows)
     const fileName = `${docID}_synopsis.txt`
     fs.writeFileSync(path.join(realBasePath, fileName), data)
   } catch (error) {

@@ -1,11 +1,10 @@
-import { is } from 'electron-util'
 import { Node } from 'slate'
 
-export const serialize = (nodes) => {
-  const joiner = is.windows ? '\r\n' : '\n'
+export const serialize = (nodes, isWindows) => {
+  const joiner = isWindows ? '\r\n' : '\n'
 
   if (!nodes || !nodes.map) return ''
-  if (typeof nodes === 'string') return is.windows ? nodes.replace(/\n/g, joiner) : nodes
+  if (typeof nodes === 'string') return isWindows ? nodes.replace(/\n/g, joiner) : nodes
 
   return nodes
     .map((n) => {

@@ -7,7 +7,7 @@ import WordExporter from './word/exporter'
 const win = remote.getCurrentWindow()
 const { dialog } = remote
 
-export default function askToExport(defaultPath, fullState, type, options, cb) {
+export default function askToExport(defaultPath, fullState, type, options, isWindows, cb) {
   let label = t('Where would you like to save the export?')
   let filters = []
   switch (type) {
@@ -25,7 +25,7 @@ export default function askToExport(defaultPath, fullState, type, options, cb) {
     try {
       switch (type) {
         case 'scrivener':
-          ScrivenerExporter(fullState, fileName, options)
+          ScrivenerExporter(fullState, fileName, options, isWindows)
           break
         case 'word':
         default:

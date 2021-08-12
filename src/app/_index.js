@@ -7,6 +7,7 @@ import { t as i18n } from 'plottr_locales'
 import App from 'containers/App'
 import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
+import { is } from 'electron-util'
 import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
@@ -160,13 +161,20 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
   const defaultPath =
     bookId == 'series' ? name + ' ' + i18n('(Series View)') : books[`${bookId}`].title
 
-  askToExport(defaultPath, currentState.present, type, exportConfig[type], (error, success) => {
-    if (error) {
-      log.error(error)
-      dialog.showErrorBox(i18n('Error'), i18n('There was an error doing that. Try again'))
-      return
+  askToExport(
+    defaultPath,
+    currentState.present,
+    type,
+    exportConfig[type],
+    is.windows,
+    (error, success) => {
+      if (error) {
+        log.error(error)
+        dialog.showErrorBox(i18n('Error'), i18n('There was an error doing that. Try again'))
+        return
+      }
     }
-  })
+  )
 })
 
 ipcRenderer.on('save', () => {

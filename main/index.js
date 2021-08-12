@@ -56,6 +56,9 @@ if (!is.development) {
   }
 }
 
+app.userAgentFallback =
+  'Firefox Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) plottr/2021.7.29 Chrome/85.0.4183.121 Electron/10.4.7 Safari/537.36'
+
 app.whenReady().then(() => {
   loadMenu(true)
   openDashboard()

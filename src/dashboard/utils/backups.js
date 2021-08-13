@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { backupBasePath } from '../../common/utils/backup'
 import { sortBy } from 'lodash'
 

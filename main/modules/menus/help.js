@@ -1,4 +1,4 @@
-const { shell, ipcRenderer } = require('electron')
+const { shell } = require('electron')
 const { t } = require('plottr_locales')
 
 function buildHelpMenu() {

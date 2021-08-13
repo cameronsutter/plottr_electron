@@ -7,15 +7,10 @@ import {
   customTemplatesStore,
   MANIFEST_ROOT,
 } from '../../common/utils/store_hooks'
-import SETTINGS from '../../common/utils/settings'
 
 const OLD_TEMPLATES_ROOT = 'templates'
 const manifestURL =
   'https://raw.githubusercontent.com/Plotinator/plottr_templates/master/v2/manifest.json'
-// FIXME: when the beat hierarchy becomes non-beta then we can just
-// use manifest URL.
-const betaManifestURL =
-  'https://raw.githubusercontent.com/Plotinator/plottr_templates/project-hierarchy/v2/manifest.json'
 
 class TemplateFetcher {
   constructor(props) {
@@ -47,9 +42,7 @@ class TemplateFetcher {
 
   manifestReq = () => {
     return {
-      // FIXME: when the beat hierarchy becomes non-beta then we can
-      // just use manifest URL.
-      url: SETTINGS.get('user.beatHierarchy') ? betaManifestURL : manifestURL,
+      url: manifestURL,
       json: true,
     }
   }
@@ -106,7 +99,7 @@ class TemplateFetcher {
   templateIsNewer = (templateId, manifestVersion) => {
     const storedTemplate = templatesStore.get(templateId)
     if (!storedTemplate) return true
-    return semverGt(manifestVersion, storedTemplate.version) // is 1st param greater than 2nd?
+    return semverGt(manifestVersion, storedTemplate.version) // is 1st param > 2nd?
   }
 }
 

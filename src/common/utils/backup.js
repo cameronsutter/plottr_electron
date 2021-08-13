@@ -12,9 +12,11 @@ export function saveBackup(filePath, data, callback) {
   if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 
-  const backupStrategy = SETTINGS.get('user.backupType')
+  const backupStrategy = SETTINGS.get('user.backupType') || 'never-delete'
   const amount =
-    backupStrategy === 'days'
+    backupStrategy === 'never-delete'
+      ? null
+      : backupStrategy === 'days'
       ? SETTINGS.get('user.backupDays')
       : SETTINGS.get('user.numberOfBackups')
   // Don't involve deletion in the control flow of this function
@@ -52,6 +54,11 @@ function saveFile(filePath, data, callback) {
   fs.writeFile(filePath, stringState, callback)
 }
 
+export function backupBasePath() {
+  const configuredLocation = SETTINGS.get('user.backupLocation')
+  return (configuredLocation !== 'default' && configuredLocation) || BACKUP_BASE_PATH
+}
+
 // make the backup a daily record
 // (with a separate backup for the first time saving a file that day)
 function backupPath() {
@@ -61,7 +68,7 @@ function backupPath() {
   var month = today.getMonth() + 1
   var year = today.getFullYear()
 
-  return path.join(BACKUP_BASE_PATH, `${month}_${day}_${year}`)
+  return path.join(backupBasePath(), `${month}_${day}_${year}`)
 }
 
 // assumes base path exists
@@ -76,8 +83,8 @@ export function ensureBackupTodayPath() {
 }
 
 export function ensureBackupFullPath() {
-  if (!fs.existsSync(BACKUP_BASE_PATH)) {
-    fs.mkdirSync(BACKUP_BASE_PATH)
+  if (!fs.existsSync(backupBasePath())) {
+    fs.mkdirSync(backupBasePath())
   }
 
   ensureBackupTodayPath()
@@ -91,7 +98,12 @@ export function deleteOldBackups(strategy, amount) {
     return Promise.resolve([])
   }
 
-  return backupFiles(BACKUP_BASE_PATH).then((unsortedFiles) => {
+  if (!amount) {
+    log.warn(`Invalid quantity for backup (with strategy: ${strategy}): ${amount}`)
+    return Promise.resolve([])
+  }
+
+  return backupFiles(backupBasePath()).then((unsortedFiles) => {
     const files = sortFileNamesByDate(unsortedFiles)
 
     switch (strategy) {
@@ -101,7 +113,7 @@ export function deleteOldBackups(strategy, amount) {
         if (!filesToDelete.length) return []
         log.warn(`Removing old backups: ${filesToDelete}`)
         filesToDelete.forEach((file) => {
-          shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
+          shell.moveItemToTrash(path.join(backupBasePath(), file))
         })
         deleteEmptyFolders()
         return filesToDelete
@@ -111,7 +123,7 @@ export function deleteOldBackups(strategy, amount) {
         if (!filesToDelete.length) return []
         log.warn(`Removing old backups: ${filesToDelete}`)
         filesToDelete.forEach((file) => {
-          shell.moveItemToTrash(path.join(BACKUP_BASE_PATH, file))
+          shell.moveItemToTrash(path.join(backupBasePath(), file))
         })
         deleteEmptyFolders()
         return filesToDelete
@@ -126,12 +138,12 @@ export function deleteOldBackups(strategy, amount) {
 }
 
 function deleteEmptyFolders() {
-  return readdir(BACKUP_BASE_PATH)
+  return readdir(backupBasePath())
     .then((elems) =>
       Promise.all(
         elems.map((elem) =>
-          lstat(path.join(BACKUP_BASE_PATH, elem)).then((fileStats) =>
-            readdir(path.join(BACKUP_BASE_PATH, elem)).then((contents) => ({
+          lstat(path.join(backupBasePath(), elem)).then((fileStats) =>
+            readdir(path.join(backupBasePath(), elem)).then((contents) => ({
               keep: fileStats.isDirectory() && contents.length === 0,
               payload: elem,
             }))
@@ -144,7 +156,7 @@ function deleteEmptyFolders() {
           entries
             .filter(({ keep }) => keep)
             .map(({ payload }) => payload)
-            .map((emptyDirectory) => rmdir(path.join(BACKUP_BASE_PATH, emptyDirectory)))
+            .map((emptyDirectory) => rmdir(path.join(backupBasePath(), emptyDirectory)))
         )
       )
     )

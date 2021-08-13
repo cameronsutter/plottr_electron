@@ -46,6 +46,11 @@
   }
 }
 
+.dashboard__options-item-help {
+  font-weight: bold;
+  color: $gray-0;
+}
+
 // copied and adapted from https://upmostly.com/tutorials/build-a-react-switch-toggle-component //
 
 $scale-factor: 2;

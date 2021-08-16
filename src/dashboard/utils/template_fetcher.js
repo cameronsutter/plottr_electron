@@ -1,4 +1,5 @@
 import log from 'electron-log'
+import { is } from 'electron-util'
 import request from 'request'
 import semverGt from 'semver/functions/gt'
 import {
@@ -9,8 +10,8 @@ import {
 } from '../../common/utils/store_hooks'
 
 const OLD_TEMPLATES_ROOT = 'templates'
-const manifestURL =
-  'https://raw.githubusercontent.com/Plotinator/plottr_templates/master/v2/manifest.json'
+const env = is.development ? 'beta' : 'prod'
+const manifestURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}/v2/manifest.json`
 
 class TemplateFetcher {
   constructor(props) {

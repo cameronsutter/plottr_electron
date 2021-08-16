@@ -16,6 +16,8 @@ $dark-gray-7: #dbe2ec;
 
 $dark-orange: #ff7f32;
 $dark-text: $dark-gray-7;
+$dark-link: #c9e6ff;
+$dark-link-active: #002057;
 $white-highlight-box-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.1),
   inset 0 -1px 5px 0 $dark-gray-7, inset 0px 1px 1px 0px rgba(0, 0, 0, 0.1),
   inset 0 1px 5px 0 $dark-gray-7;
@@ -48,6 +50,10 @@ main.darkmode {
 
   .beamer-wrapper #beamer-bell svg {
     color: $dark-text !important;
+  }
+
+  hr {
+    border-color: $darkmode-border;
   }
 
   ////////////////
@@ -87,15 +93,6 @@ main.darkmode {
   /////////////
   .dashboard__about__wrapper {
     dd {
-      button {
-        color: $dark-text;
-        background-color: $dark-gray-1;
-        border-color: $dark-text;
-
-        &:hover {
-          background-color: $dark-gray-2;
-        }
-      }
       a {
         color: $dark-orange;
       }
@@ -233,14 +230,26 @@ main.darkmode {
         color: $dark-gray-6;
       }
     }
-    hr {
-      border-top-color: $dark-text;
-    }
     .option-switch-label:not(.checked) {
       background-color: $dark-gray-6;
     }
     .option-switch-labeltext {
-      color: $dark-gray-6;
+      color: $dark-text;
+    }
+    div#settings-tabs {
+      .nav-tabs {
+        border-bottom-color: $darkmode-border;
+      }
+      .nav-tabs > li:not(.active) > a:not(:hover) {
+        color: $darkmode-link-text;
+        border-bottom-color: $darkmode-border;
+      }
+      .tab-content {
+        border-color: $darkmode-border;
+        .card-dialog__custom-attributes-configuration-link {
+          color: $darkmode-link-text;
+        }
+      }
     }
   }
   .dashboard__options__item {
@@ -252,6 +261,12 @@ main.darkmode {
     }
     .help-block {
       color: $dark-text;
+    }
+    .btn-link {
+      color: $dark-link;
+      &:hover,&:focus {
+        color: $dark-link-active;
+      }
     }
     &.disabled {
       color: $dark-gray-6;
@@ -268,10 +283,18 @@ main.darkmode {
   //////////
   // help //
   //////////
+  .dashboard__help {
+    webview {
+      border-color: $darkmode-border;
+    }
+  }
   .dashboard__help__item {
     &.links {
       button.btn-link {
-        color: $dark-orange;
+        color: $dark-link;
+        &:hover,&:focus {
+          color: $dark-link-active;
+        }
       }
     }
     &.actions {

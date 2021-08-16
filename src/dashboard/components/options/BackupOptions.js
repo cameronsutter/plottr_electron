@@ -90,7 +90,7 @@ const BackupOptions = () => {
               onChange={onBackupValueChange}
               onBlur={handleBackupBlur}
             />
-            <p className="text-warning">{t('Backups beyond this will be erased')}</p>
+            <p className="text-danger">{t('Backups beyond this will be erased')}</p>
           </div>
         ) : null}
       </FormGroup>

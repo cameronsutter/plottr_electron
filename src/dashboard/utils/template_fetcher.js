@@ -10,7 +10,7 @@ import {
 } from '../../common/utils/store_hooks'
 
 const OLD_TEMPLATES_ROOT = 'templates'
-const env = is.development ? 'beta' : 'prod'
+const env = is.development ? 'staging' : 'prod' // TODO: there is also beta env that we can use
 const manifestURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}/v2/manifest.json`
 
 class TemplateFetcher {

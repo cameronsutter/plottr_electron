@@ -4,6 +4,7 @@ import { t as i18n } from 'plottr_locales'
 import log from 'electron-log'
 import { saveBackup } from '../../common/utils/backup'
 import { ActionTypes } from 'pltr/v2'
+import { shouldIgnoreAction } from './shouldIgnoreAction'
 
 const { FILE_SAVED, FILE_LOADED, SET_DARK_MODE } = ActionTypes
 
@@ -15,6 +16,7 @@ let itWorkedLastTime = true
 
 const saver = (store) => (next) => (action) => {
   const result = next(action)
+  if (shouldIgnoreAction(action)) return result
   if (BLACKLIST.includes(action.type)) return result
   const state = store.getState().present
   // save and backup

@@ -234,35 +234,12 @@ ipcRenderer.on('move-from-temp', () => {
   }
 })
 
-// for some reason the electron webContents.undo() and redo() don't affect
-// the slate editors. So we use the editorRegistry, which can be used to lookup
-// editors based on the active dom node, to find the currently active editor and
-// issue an undo/redo on the focused slate editor. If a slate editor is not focused
-// it won't do anything
 ipcRenderer.on('undo', (event) => {
-  if (focusIsEditable()) {
-    win.webContents.undo()
-    const editor = editorRegistry.getEditor(document.activeElement)
-    if (editor != null) {
-      editor.undo()
-    }
-  } else {
-    // custom undo function
-    store.dispatch(ActionCreators.undo())
-  }
+  store.dispatch(ActionCreators.undo())
 })
 
 ipcRenderer.on('redo', (event) => {
-  if (focusIsEditable()) {
-    win.webContents.redo()
-    const editor = editorRegistry.getEditor(document.activeElement)
-    if (editor != null) {
-      editor.redo()
-    }
-  } else {
-    // custom redo function
-    store.dispatch(ActionCreators.redo())
-  }
+  store.dispatch(ActionCreators.redo())
 })
 
 ipcRenderer.on('acts-tour-start', (event) => {

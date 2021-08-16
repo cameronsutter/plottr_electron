@@ -36,11 +36,13 @@ export function handleCustomerServiceCode(code) {
     case '3c66c9':
       // turn off allowPrerelease
       SETTINGS.set('allowPrerelease', false)
+      SETTINGS.set('betatemplates', false)
       break
 
     case 'a56a8a':
       // turn on allowPrerelease
       SETTINGS.set('allowPrerelease', true)
+      SETTINGS.set('betatemplates', true)
       break
 
     case 'f92d59':
@@ -87,6 +89,14 @@ export function handleCustomerServiceCode(code) {
         message: manifestStore.get('manifest.version'),
         detail: 'Templates Version',
       })
+      break
+
+    case 'beta templates':
+      SETTINGS.set('betatemplates', true)
+      break
+
+    case 'beta templates off':
+      SETTINGS.set('betatemplates', false)
       break
 
     default:

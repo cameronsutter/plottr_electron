@@ -194,6 +194,7 @@ export function isPropertyEmpty(property) {
 
   // NEW: new files will have an empty paragraph
   if (
+    property[0] &&
     property[0].type === 'paragraph' &&
     property[0].children.length === 1 &&
     property[0].children[0].text === ''

@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import { useState, useEffect } from 'react'
-import { backupBasePath } from '../../common/utils/backup'
 import { sortBy } from 'lodash'
+import { backupBasePath } from '../../common/utils/backup'
 
 export function useBackupFolders(searchTerm) {
   const [folders, setFolders] = useState([])

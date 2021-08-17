@@ -26,7 +26,8 @@ function saveSwap(filePath, data) {
   const MAX_ATTEMPTS = 10
   let counter = 0
   while (counter < MAX_ATTEMPTS) {
-    if (fs.statSync(swapFilePath)) {
+    const stats = fs.statSync(swapFilePath, { throwIfNoEntry: false })
+    if (stats && stats.size !== 0) {
       fs.renameSync(swapFilePath, filePath)
       return
     }

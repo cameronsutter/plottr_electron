@@ -43,7 +43,6 @@ const {
 } = require('./modules/files')
 const { editWindowPath } = require('./modules/windows/index')
 const { ensureBackupTodayPath, saveBackup } = require('./modules/backup')
-const { ipcRenderer } = require('electron')
 
 ////////////////////////////////
 ////     Startup Tasks    //////

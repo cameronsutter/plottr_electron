@@ -39,8 +39,11 @@ const {
   removeFromKnownFiles,
   deleteKnownFile,
   editKnownFilePath,
+  autoSave,
 } = require('./modules/files')
 const { editWindowPath } = require('./modules/windows/index')
+const { ensureBackupTodayPath, saveBackup } = require('./modules/backup')
+const { ipcRenderer } = require('electron')
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -56,9 +59,9 @@ contextMenu({
 })
 
 if (!is.development) {
-  process.on('uncaughtException', function (err) {
-    log.error(err)
-    rollbar.error(err, function (sendErr, data) {
+  process.on('uncaughtException', function (error) {
+    log.error(error)
+    rollbar.error(error, function (sendErr, data) {
       gracefullyQuit()
     })
   })
@@ -203,6 +206,10 @@ ipcMain.on('save-file', (event, fileName, file) => {
   saveFile(fileName, file)
 })
 
+ipcMain.on('auto-save', (event, filePath, file) => {
+  autoSave(event, filePath, file)
+})
+
 ipcMain.on('remove-from-temp-files-if-temp', (event, filePath) => {
   if (filePath.includes(TEMP_FILES_PATH)) {
     removeFromTempFiles(filePath, false)
@@ -227,4 +234,22 @@ ipcMain.on('edit-known-file-path', (event, oldFilePath, newFilePath) => {
   editKnownFilePath(oldFilePath, newFilePath)
   editWindowPath(oldFilePath, newFilePath)
   broadcastToAllWindows('reload-recents')
+})
+
+ipcMain.on('ensure-backup-full-path', () => {
+  ensureBackupTodayPath()
+})
+
+ipcMain.on('ensure-backup-today-path', () => {
+  ensureBackupTodayPath()
+})
+
+ipcMain.on('save-backup', (event, filePath, file) => {
+  saveBackup(filePath, file, (error) => {
+    if (error) {
+      event.sender.send('save-backup-error', error, filePath)
+    } else {
+      event.sender.send('save-backup-success', filePath)
+    }
+  })
 })

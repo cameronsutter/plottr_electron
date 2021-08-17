@@ -3,7 +3,7 @@ import path from 'path'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import App from 'containers/App'
 import { store } from 'store/configureStore'
 import { ipcRenderer, remote } from 'electron'
@@ -13,23 +13,19 @@ const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 import { actions, migrateIfNeeded, featureFlags } from 'pltr/v2'
 import MPQ from '../common/utils/MPQ'
-import { ensureBackupTodayPath, saveBackup } from '../common/utils/backup'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
 import log from 'electron-log'
 import SETTINGS from '../common/utils/settings'
 import askToExport from '../common/exporter/start_export'
 import { ActionCreators } from 'redux-undo'
-import { editorRegistry } from 'connected-components'
 import { setupI18n } from 'plottr_locales'
 import { displayFileName } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
-import { focusIsEditable } from '../common/utils/undo'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import exportConfig from '../common/exporter/default_config'
 import { TEMP_FILES_PATH } from '../common/utils/config_paths'
 import { createErrorReport } from '../common/utils/full_error_report'
-import { ensureBackupFullPath } from '../common/utils/backup'
 import TemplateFetcher from '../dashboard/utils/template_fetcher'
 
 setupI18n(SETTINGS, { electron })
@@ -44,12 +40,11 @@ process.on('uncaughtException', (err) => {
 
 // Secondary SETUP //
 window.requestIdleCallback(() => {
-  ensureBackupFullPath()
+  ipcRenderer.send('ensure-backup-full-path')
+  ipcRenderer.send('ensure-backup-today-path')
   TemplateFetcher.fetch()
   initMixpanel()
 })
-
-ensureBackupTodayPath()
 
 const root = document.getElementById('react-root')
 // TODO: fix this by exporting store from the configureStore file
@@ -70,15 +65,7 @@ function bootFile(filePath, options, numOpenFiles) {
 
   try {
     const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-    saveBackup(filePath, json, (err) => {
-      if (err) {
-        log.warn('[file open backup]', err)
-        rollbar.error({ message: 'BACKUP failed' })
-        rollbar.warn(err, { fileName: filePath })
-      } else {
-        log.info('[file open backup]', 'success', filePath)
-      }
-    })
+    ipcRenderer.send('save-backup', filePath, json)
     migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
       if (err) {
         rollbar.error(err)
@@ -159,7 +146,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
   } = currentState.present
   const bookId = ui.currentTimeline
   const defaultPath =
-    bookId == 'series' ? name + ' ' + i18n('(Series View)') : books[`${bookId}`].title
+    bookId == 'series' ? name + ' ' + t('(Series View)') : books[`${bookId}`].title
 
   askToExport(
     defaultPath,
@@ -170,7 +157,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     (error, success) => {
       if (error) {
         log.error(error)
-        dialog.showErrorBox(i18n('Error'), i18n('There was an error doing that. Try again'))
+        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
         return
       }
     }
@@ -188,7 +175,7 @@ ipcRenderer.on('save-as', () => {
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
   const fileName = dialog.showSaveDialogSync(win, {
     filters,
-    title: i18n('Where would you like to save this copy?'),
+    title: t('Where would you like to save this copy?'),
     defaultPath,
   })
   if (fileName) {
@@ -215,7 +202,7 @@ ipcRenderer.on('move-from-temp', () => {
   const newFilePath = ensureEndsInPltr(
     dialog.showSaveDialogSync(win, {
       filters: filters,
-      title: i18n('Where would you like to save this file?'),
+      title: t('Where would you like to save this file?'),
     })
   )
   if (newFilePath) {
@@ -297,4 +284,36 @@ ipcRenderer.on('reload', () => {
 
 ipcRenderer.on('create-error-report', () => {
   createErrorReport()
+})
+
+ipcRenderer.on('auto-save-error', (event, filePath, error) => {
+  log.warn(error)
+  rollbar.warn(error, { fileName: filePath })
+  dialog.showErrorBox(
+    t('Auto-saving failed'),
+    t("Saving your file didn't work. Check where it's stored.")
+  )
+})
+
+ipcRenderer.on('auto-save-worked-this-time', (event, filePath) => {
+  dialog.showMessageBox(win, {
+    title: t('Auto-saving worked'),
+    message: t('Saving worked this time 🎉'),
+  })
+})
+
+ipcRenderer.on('auto-save-backup-error', (event, filePath, error) => {
+  log.warn('[save state backup]', error)
+  rollbar.error({ message: 'BACKUP failed' })
+  rollbar.warn(error, { fileName: filePath })
+})
+
+ipcRenderer.on('save-backup-error', (event, error, filePath) => {
+  log.warn('[file open backup]', error)
+  rollbar.error({ message: 'BACKUP failed' })
+  rollbar.warn(error, { fileName: filePath })
+})
+
+ipcRenderer.on('save-backup-success', (event, filePath) => {
+  log.info('[file open backup]', 'success', filePath)
 })

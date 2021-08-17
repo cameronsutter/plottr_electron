@@ -5,6 +5,7 @@ import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 
+import { t } from 'plottr_locales'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
   useExportConfigInfo,
@@ -45,6 +46,20 @@ const win = remote.getCurrentWindow()
 const { app, dialog } = remote
 const version = app.getVersion()
 
+const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+
+const showSaveDialogSync = (options) => dialog.showSaveDialogSync(win, options)
+
+const editKnownFilePath = (oldFilePath, newFilePath) => {
+  ipcRenderer.send('edit-known-file-path', oldFilePath, newFilePath)
+}
+
+const saveFile = (filePath, file) => {
+  ipcRenderer.send('save-file', filePath, file)
+}
+
+const moveItemToTrash = shell.moveItemToTrash
+
 const platform = {
   undo: () => {
     store.dispatch(ActionCreators.undo())
@@ -74,17 +89,32 @@ const platform = {
     deleteKnownFile: (id, path) => {
       ipcRenderer.send('delete-known-file', id, path)
     },
-    editKnownFilePath: (oldFilePath, newFilePath) => {
-      ipcRenderer.send('edit-known-file-path', oldFilePath, newFilePath)
+    editKnownFilePath,
+    renameFile: (filePath) => {
+      const fileName = showSaveDialogSync({
+        filters,
+        title: t('Give this file a new name'),
+        defaultPath: filePath,
+      })
+      if (fileName) {
+        try {
+          let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+          editKnownFilePath(filePath, newFilePath)
+          const contents = JSON.parse(readFileSync(filePath, 'utf-8'))
+          saveFile(newFilePath, contents)
+          moveItemToTrash(filePath, true)
+        } catch (error) {
+          log.error(error)
+          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+        }
+      }
     },
     removeFromKnownFiles: (id) => {
       ipcRenderer.send('remove-from-known-files', id)
     },
-    saveFile: (filePath, file) => {
-      ipcRenderer.send('save-file', filePath, file)
-    },
+    saveFile,
     readFileSync,
-    moveItemToTrash: shell.moveItemToTrash,
+    moveItemToTrash,
     createFromSnowflake: (importedPath) => {
       ipcRenderer.send('create-from-snowflake', importedPath)
     },
@@ -171,7 +201,7 @@ const platform = {
   handleCustomerServiceCode,
   log,
   dialog,
-  showSaveDialogSync: (options) => dialog.showSaveDialogSync(win, options),
+  showSaveDialogSync,
   showOpenDialogSync: (options) => dialog.showOpenDialogSync(win, options),
   node: {
     env: process.env.NODE_ENV === 'development' ? 'development' : 'production',

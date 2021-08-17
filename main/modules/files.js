@@ -71,29 +71,6 @@ function autoSave(event, filePath, file) {
   })
 }
 
-let itWorkedLastTime = true
-
-function autoSave(event, filePath, file) {
-  try {
-    saveFile(filePath, file)
-    // didn't work last time, but it did this time
-    if (!itWorkedLastTime) {
-      itWorkedLastTime = true
-      event.sender.send('auto-save-worked-this-time')
-    }
-  } catch (saveError) {
-    itWorkedLastTime = false
-    event.sender.send('auto-save-error', filePath, saveError)
-  }
-  // either way, save a backup
-  // TODO: move to main modules...
-  saveBackup(filePath, file, (backupError) => {
-    if (backupError) {
-      event.sender.send('auto-save-backup-error', filePath, backupError)
-    }
-  })
-}
-
 function removeFromTempFiles(filePath, doDelete = true) {
   const tmpFiles = tempFilesStore.get()
   const key = Object.keys(tmpFiles).find((id) => tmpFiles[id].filePath == filePath)

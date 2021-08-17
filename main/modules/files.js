@@ -20,6 +20,21 @@ const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
 
+function saveSwap(filePath, data) {
+  const swapFilePath = filePath + '~'
+  fs.writeFileSync(swapFilePath, data)
+  const MAX_ATTEMPTS = 10
+  let counter = 0
+  while (counter < MAX_ATTEMPTS) {
+    if (fs.statSync(swapFilePath)) {
+      fs.renameSync(swapFilePath, filePath)
+      return
+    }
+    ++counter
+  }
+  console.error(Error(`Failed to save to ${filePath}.  Old file is un-touched.`))
+}
+
 function saveFile(filePath, jsonData) {
   const withoutSystemKeys = {}
   Object.keys(jsonData).map((key) => {
@@ -27,9 +42,9 @@ function saveFile(filePath, jsonData) {
     withoutSystemKeys[key] = jsonData[key]
   })
   if (process.env.NODE_ENV == 'development') {
-    fs.writeFileSync(filePath, JSON.stringify(withoutSystemKeys, null, 2))
+    saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))
   } else {
-    fs.writeFileSync(filePath, JSON.stringify(withoutSystemKeys))
+    saveSwap(filePath, JSON.stringify(withoutSystemKeys))
   }
 }
 

@@ -13,11 +13,13 @@ import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
 import { useLicenseInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
+import LoginModal from '../components/LoginModal'
+import { logOut } from 'plottr_firebase'
 
 const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({ isDarkMode, currentView, changeCurrentView, forceProjectDashboard }) => {
+const Navigation = ({ isDarkMode, currentView, changeCurrentView, forceProjectDashboard, userId }) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -90,8 +92,11 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView, forceProjectDa
     setDashboardView(view)
   }
 
+  const closeLoginModal = () => {}
+
   return (
     <>
+      {!userId ? <LoginModal closeLoginModal={closeLoginModal} /> : null}
       {dashboardView ? (
         <DashboardModal
           activeView={dashboardView}
@@ -131,6 +136,7 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView, forceProjectDa
                 <MenuItem onSelect={selectAccount}>{t('Account')}</MenuItem>
                 <MenuItem onSelect={selectBackups}>{t('Backups')}</MenuItem>
                 <MenuItem onSelect={selectHelp}>{t('Help')}</MenuItem>
+                <MenuItem onSelect={logOut}>{t('Logout')}</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
           </NavItem>
@@ -145,12 +151,14 @@ Navigation.propTypes = {
   isDarkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
+  userId: PropTypes.string,
 }
 
 function mapStateToProps(state) {
   return {
     currentView: selectors.currentViewSelector(state.present),
     isDarkMode: selectors.isDarkModeSelector(state.present),
+    userId: selectors.userIdSelector(state.present),
   }
 }
 

@@ -1,0 +1,104 @@
+$font-size: 20px;
+
+.login {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: hsl(60, 3%, 94%) url("/mountain_background.jpg");
+  background-size: cover;
+  background-blend-mode: overlay;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.login__left {
+  align-items: flex-start;
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  padding-right: 40px;
+  width: 50%;
+  height: 100%;
+  display: flex;
+}
+
+.login__right {
+  width: 50%;
+}
+
+.login__controls {
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+
+.login__button {
+  height: 40px;
+  font-size: $font-size;
+  line-height: $font-size;
+  padding: 10px;
+  background-color: $orange;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  margin-top: 20px;
+}
+
+.login__button:disabled {
+  background-color: $neutral-gray-5;
+  cursor: not-allowed;
+}
+
+.login__button:hover, .login__button:focus {
+  color: white;
+}
+
+.login__logo {}
+
+.login__switch-form-type-button {
+  color: $orange;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.login__switch-form-type-button:hover {
+  color: darken($orange, 30);
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+@import "firebase-ui-auth.css";
+
+#firebase-login {
+  margin-top: 20px;
+  width: 100%;
+
+  .firebaseui-page-provider-sign-in {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    .firebaseui-card-content {
+      padding: 0;
+    }
+  }
+}

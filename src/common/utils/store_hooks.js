@@ -1,7 +1,7 @@
 import Store from 'electron-store'
 import { ipcRenderer } from 'electron'
 import { useState, useEffect } from 'react'
-import { merge } from 'lodash'
+import { merge, cloneDeep, isEqual } from 'lodash'
 import {
   TRIAL_INFO_PATH,
   USER_INFO_PATH,
@@ -13,6 +13,7 @@ import {
 } from './config_paths'
 import SETTINGS from './settings'
 import export_config from '../exporter/default_config'
+import { store } from '../../app/store/configureStore'
 
 const knownFilesPath =
   process.env.NODE_ENV == 'development' ? `${KNOWN_FILES_PATH}_dev` : KNOWN_FILES_PATH
@@ -95,8 +96,94 @@ export function useLicenseInfo() {
   return useJsonStore(licenseStore)
 }
 
-export function useKnownFilesInfo() {
+function useKnownFilesFromFirebase() {
+  const {
+    present: { project },
+  } = store.getState()
+
+  const [fileList, setFileList] = useState(project.fileList)
+  const [filesByPosition, setFilesByPosition] = useState({})
+
+  useEffect(() => {
+    const filesByPosition = {}
+    fileList.forEach((file, index) => {
+      filesByPosition[index + 1] = file
+    })
+    const deleteListener = document.addEventListener('delete-file', (event) => {
+      const fileId = event.fileId
+      const filePosition = fileList.findIndex(({ id }) => id === fileId)
+      if (filePosition > 0) {
+        const newFileList = fileList.filter(({ id }) => id !== fileId)
+        setFileList(newFileList)
+        const newFilesByPosition = {}
+        newFileList.forEach((file, index) => {
+          newFilesByPosition[index + 1] = file
+        })
+        setFilesByPosition(newFilesByPosition)
+      }
+    })
+    const renameListener = document.addEventListener('rename-file-to-new-name', (event) => {
+      const fileId = event.fileId
+      const newName = event.newName
+      const newFileList = fileList.map((file) => {
+        if (file.id === fileId) {
+          return {
+            ...file,
+            fileName: newName,
+          }
+        }
+        return file
+      })
+      const newFilesByPosition = {}
+      newFileList.forEach((file, index) => {
+        newFilesByPosition[index + 1] = file
+      })
+      setFileList(newFileList)
+      setFilesByPosition(newFilesByPosition)
+    })
+    setFileList(fileList)
+    setFilesByPosition(filesByPosition)
+    return () => {
+      document.removeEventListener('delete-file', deleteListener)
+      document.removeEventListener('rename-file-to-new-name', renameListener)
+    }
+  }, [project.fileList])
+
+  const nop = () => {}
+  return [filesByPosition, fileList.length, nop, nop]
+}
+
+function useKnownFilesFromHardDisk() {
   return useJsonStore(knownFilesStore, 'reload-recents', true)
+}
+
+export function useKnownFilesInfo() {
+  const [filesByPosition, setFilesByPosition] = useState({})
+  const [fileCount, setFileCount] = useState(0)
+
+  const [firestoreFilesByPosition] = useKnownFilesFromFirebase()
+  const [hardDiskFilesByPosition] = useKnownFilesFromHardDisk()
+
+  useEffect(() => {
+    const newFilesByPosition = cloneDeep(hardDiskFilesByPosition)
+    const maxId = Object.keys(hardDiskFilesByPosition).reduce(
+      (max, next) => Math.max(max, next),
+      Number.NEGATIVE_INFINITY
+    )
+    Object.values(firestoreFilesByPosition).forEach((value, index) => {
+      newFilesByPosition[index + maxId + 1] = {
+        ...value,
+        path: `plottr://${value.id}`,
+      }
+    })
+    if (!isEqual(filesByPosition, newFilesByPosition)) {
+      setFilesByPosition(newFilesByPosition)
+      setFileCount(Object.keys(newFilesByPosition).length)
+    }
+  }, [firestoreFilesByPosition, hardDiskFilesByPosition])
+
+  const nop = () => {}
+  return [filesByPosition, fileCount, nop, nop]
 }
 
 export function useTemplatesInfo() {

@@ -153,7 +153,7 @@ function createFromSnowflake(importedPath) {
 }
 
 function openKnownFile(filePath, id, unknown) {
-  if (id) {
+  if (id && !filePath.startsWith('plottr://')) {
     // update lastOpen, but wait a little so the file doesn't move from under their mouse
     setTimeout(() => {
       knownFilesStore.set(`${id}.lastOpened`, Date.now())

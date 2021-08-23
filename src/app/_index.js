@@ -11,7 +11,8 @@ import { is } from 'electron-util'
 import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-import { actions, migrateIfNeeded, featureFlags } from 'pltr/v2'
+import { actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
+import { initialFetch, overwriteAllKeys, withFileId } from 'plottr_firebase'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
@@ -27,6 +28,9 @@ import exportConfig from '../common/exporter/default_config'
 import { TEMP_FILES_PATH } from '../common/utils/config_paths'
 import { createErrorReport } from '../common/utils/full_error_report'
 import TemplateFetcher from '../dashboard/utils/template_fetcher'
+import { machineIdSync } from 'node-machine-id'
+
+const clientId = machineIdSync()
 
 setupI18n(SETTINGS, { electron })
 
@@ -76,44 +80,95 @@ function bootFile(filePath, options, numOpenFiles) {
   }
 
   try {
-    ipcRenderer.send('save-backup', filePath, json)
-    migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
-      if (err) {
-        rollbar.error(err)
-        log.error(err)
+    if (filePath.startsWith('plottr://')) {
+      const fileId = filePath.split('plottr://')[1]
+      const userId = SETTINGS.get('user.id')
+      if (!userId) {
+        rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
+        return
       }
-      store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
-      MPQ.projectEventStats(
-        'open_file',
-        { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
-        state
-      )
+      initialFetch(userId, fileId, clientId, app.getVersion()).then((json) => {
+        migrateIfNeeded(
+          app.getVersion(),
+          json,
+          json.file.fileName,
+          null,
+          (error, migrated, data) => {
+            if (error) {
+              rollbar.error(error)
+              return
+            }
+            console.log(`Loaded file ${json.file.fileName}.`)
+            if (migrated) {
+              console.log(
+                `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+              )
+            }
+            overwriteAllKeys(fileId, clientId, data).then((results) => {
+              store.dispatch(
+                actions.ui.loadFile(
+                  data.file.fileName,
+                  false,
+                  Object.assign(
+                    {},
+                    emptyFile(data.file.fileName, data.file.version),
+                    withFileId(fileId, data)
+                  ),
+                  data.file.version
+                )
+              )
+            })
+            render(
+              <Provider store={store}>
+                <App />
+              </Provider>,
+              root
+            )
+          }
+        )
+      })
+    } else {
+      const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+      ipcRenderer.send('save-backup', filePath, json)
+      migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
+        if (err) {
+          rollbar.error(err)
+          log.error(err)
+        }
+        store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
-      if (state.ui && state.ui.darkMode !== darkMode) {
-        store.dispatch(actions.ui.setDarkMode(darkMode))
-      }
-      if (darkMode) window.document.body.className = 'darkmode'
+        MPQ.projectEventStats(
+          'open_file',
+          { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
+          state
+        )
 
-      const withDispatch = dispatchingToStore(store.dispatch)
-      makeFlagConsistent(
-        state,
-        beatHierarchy,
-        featureFlags.BEAT_HIERARCHY_FLAG,
-        withDispatch(actions.featureFlags.setBeatHierarchy),
-        withDispatch(actions.featureFlags.unsetBeatHierarchy)
-      )
+        if (state.ui && state.ui.darkMode !== darkMode) {
+          store.dispatch(actions.ui.setDarkMode(darkMode))
+        }
+        if (darkMode) window.document.body.className = 'darkmode'
 
-      if (state && state.tour && state.tour.showTour)
-        store.dispatch(actions.ui.changeOrientation('horizontal'))
+        const withDispatch = dispatchingToStore(store.dispatch)
+        makeFlagConsistent(
+          state,
+          beatHierarchy,
+          featureFlags.BEAT_HIERARCHY_FLAG,
+          withDispatch(actions.featureFlags.setBeatHierarchy),
+          withDispatch(actions.featureFlags.unsetBeatHierarchy)
+        )
 
-      render(
-        <Provider store={store}>
-          <App />
-        </Provider>,
-        root
-      )
-    })
+        if (state && state.tour && state.tour.showTour)
+          store.dispatch(actions.ui.changeOrientation('horizontal'))
+
+        render(
+          <Provider store={store}>
+            <App />
+          </Provider>,
+          root
+        )
+      })
+    }
   } catch (error) {
     // TODO: error dialog and ask the user to try again
     log.error(error)

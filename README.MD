@@ -62,7 +62,6 @@ path of `/lib`.
 # The `plottr_components` Library
 
 The [component library repo](https://github.com/Plotinator/plottr_components) is the new home of our components! :)
-This branch adds `plottr_components` as a `git sub-tree` in the `/lib` folder.
 
 ## Working With the Library
 
@@ -105,6 +104,26 @@ You can start the storybook by running the following commands from the root of t
 ```
 
 The storybook will open in a new tab and changes that you make to components will reflect via Webpack's Hot Module Reloading (HMR) -- i.e. they'll reflect pretty quickly and without refreshing the page.
+
+# The `plottr_firebase` Library
+
+The [firebase library repo](https://github.com/Plotinator/plottr_firebase) is a library of functions for connecting to and using Firebase in Plottr.
+
+## Working With the Library
+
+You change the `plottr_firebase` library the same way you would work with `plottr_locales` or `pltr`.
+i.e. develop `plottr_electron` as though it doesn't contain any subtrees, and push the changes to Github using the subtree commands in the [Readme](https://github.com/cameronsutter/plottr_electron#readme).
+
+## Working Out-Of-Tree
+
+You can also work on the firebase out-of-tree (i.e. checked out to a folder other than `plottr_electron/lib`) as long as the other Plottr libraries are checked out as sibling folders of this library.
+i.e. you can checkout `pltr`, `plottr_locales` and `plottr_components` and `plottr_firebase` to an arbitrary folder on your computer and work with them like they're individual git repositories.
+
+## Usage
+
+To use `plottr_firebase`, simply call one of the functions exposed by the library.  It's been designed to have zero overhead for setup at the expense of some things being hard-wired (such as configuration).
+
+For more detail on what the library provides, please refer to its documentation at: `lib/plottr_firebase/README.md`.
 
 # Debugging Tests
 

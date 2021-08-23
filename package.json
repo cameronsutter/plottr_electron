@@ -13,9 +13,11 @@
   "main": "main.js",
   "scripts": {},
   "dependencies": {
+    "docx": "^6.0.3",
     "dom-parser": "^0.1.6",
     "image-extensions": "^1.1.0",
     "is-url": "^1.2.4",
+    "jsrtf": "^0.0.3",
     "lodash": "^4.17.21",
     "pagedown": "^1.1.0",
     "redux": "^4.1.0",
@@ -23,7 +25,8 @@
     "semver": "^7.1.3",
     "slate": "^0.57.1",
     "slate-hyperscript": "^0.57.1",
-    "tinycolor2": "^1.4.2"
+    "tinycolor2": "^1.4.2",
+    "docx": "^6.0.3"
   },
   "devDependencies": {
     "plottr_locales": "file:../plottr_locales"

@@ -21,17 +21,17 @@ describe('migrator', () => {
             resolve(result)
           })
         )
-        expect(data.file.appliedMigrations).toEqual(['m2021_4_13', 'm2021_6_9'])
+        expect(data.file.appliedMigrations).toEqual(['m2021_4_13', 'm2021_6_9', 'm2021_8_1'])
       })
     })
-    describe('with an `initialVersion` of 2021.6.9', () => {
+    describe('with an `initialVersion` of 2021.8.1', () => {
       it('should not apply any more migrations', async () => {
         const migrator = new Migrator(
           {
             ...state_2021_2_8,
             file: {
               ...state_2021_2_8.file,
-              initialVersion: '2021.6.9',
+              initialVersion: '2021.8.1',
               appliedMigrations: [],
             },
           },
@@ -47,7 +47,7 @@ describe('migrator', () => {
         expect(data.file.appliedMigrations).toEqual([])
       })
     })
-    describe('with an `initialVersion` of 2021.4.13', () => {
+    describe('with an `initialVersion` of 2021.4.13 and 2021.8.1', () => {
       it('should apply 2021.6.9', async () => {
         const migrator = new Migrator(
           {
@@ -67,7 +67,7 @@ describe('migrator', () => {
             resolve(result)
           })
         )
-        expect(data.file.appliedMigrations).toEqual(['m2021_6_9'])
+        expect(data.file.appliedMigrations).toEqual(['m2021_6_9', 'm2021_8_1'])
       })
     })
     describe('with an `initialVersion` of 2021.2.8', () => {

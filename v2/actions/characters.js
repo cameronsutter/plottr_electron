@@ -7,9 +7,13 @@ import {
   DELETE_CHARACTER,
   EDIT_CHARACTER,
   LOAD_CHARACTERS,
+  ADD_TEMPLATE_TO_CHARACTER,
+  REMOVE_TEMPLATE_FROM_CHARACTER,
   REMOVE_BOOK_FROM_CHARACTER,
   REMOVE_TAG_FROM_CHARACTER,
+  EDIT_CHARACTER_TEMPLATE_ATTRIBUTE,
 } from '../constants/ActionTypes'
+import { editorMetadataIfPresent } from '../helpers/editors'
 import { character } from '../store/initialState'
 
 export function addCharacter(name) {
@@ -35,8 +39,23 @@ export function addCharacterWithTemplate(name, templateData) {
   }
 }
 
-export function editCharacter(id, attributes) {
-  return { type: EDIT_CHARACTER, id, attributes }
+export function editCharacter(id, attributes, editorPath, selection) {
+  return { type: EDIT_CHARACTER, id, attributes, ...editorMetadataIfPresent(editorPath, selection) }
+}
+
+export function editCharacterTemplateAttribute(id, templateId, name, value, editorPath, selection) {
+  return {
+    type: EDIT_CHARACTER_TEMPLATE_ATTRIBUTE,
+    id,
+    templateId,
+    name,
+    value,
+    ...editorMetadataIfPresent(editorPath, selection),
+  }
+}
+
+export function addTemplateToCharacter(id, templateData) {
+  return { type: ADD_TEMPLATE_TO_CHARACTER, id, templateData }
 }
 
 export function deleteCharacter(id) {
@@ -57,6 +76,10 @@ export function removeTag(id, tagId) {
 
 export function removeBook(id, bookId) {
   return { type: REMOVE_BOOK_FROM_CHARACTER, id, bookId }
+}
+
+export function removeTemplateFromCharacter(id, templateId) {
+  return { type: REMOVE_TEMPLATE_FROM_CHARACTER, id, templateId }
 }
 
 export function load(patching, characters) {

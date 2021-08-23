@@ -1,7 +1,18 @@
 import unrepairedMainReducer from './main'
-import { DELETE_BOOK, CLEAR_TEMPLATE_FROM_TIMELINE, RESET_TIMELINE } from '../constants/ActionTypes'
+import {
+  ADD_BOOK,
+  DELETE_BOOK,
+  CLEAR_TEMPLATE_FROM_TIMELINE,
+  RESET_TIMELINE,
+  ADD_BOOK_FROM_TEMPLATE,
+  ADD_LINES_FROM_TEMPLATE,
+} from '../constants/ActionTypes'
 import { isSeriesSelector } from '../selectors/ui'
-import { reduce } from '../helpers/beats'
+import { reduce, beatsByPosition, nextId as nextBeatId } from '../helpers/beats'
+import { nextId, objectId } from '../store/newIds'
+import * as tree from './tree'
+import { beat as defaultBeat } from '../store/initialState'
+import { cloneDeep } from 'lodash'
 
 /**
  * `dataRepairers` is an object which contains various repairs to be
@@ -21,15 +32,79 @@ const root = (dataRepairers) => (state, action) => {
   const isSeries = action.type.includes('@@') ? false : isSeriesSelector(state)
   const mainReducer = unrepairedMainReducer(dataRepairers)
   switch (action.type) {
-    case DELETE_BOOK:
+    case ADD_BOOK:
+      return mainReducer(state, { ...action, newBookId: objectId(state.books.allIds) })
+
+    case ADD_BOOK_FROM_TEMPLATE:
+      // cards from the template need to know the new ids of lines and beats from the template
+      // the strategy here is to use the state's next id value + the template id's current value
+      // the card reducer will have access to the state's next id value so it will be able to determine the correct id
+      return mainReducer(state, {
+        ...action,
+        newBookId: objectId(state.books.allIds),
+        nextLineId: nextId(state.lines),
+        nextBeatId: nextBeatId(state.beats),
+        nextCardId: nextId(state.cards),
+      })
+
+    case ADD_LINES_FROM_TEMPLATE: {
+      // cards from the template need to know the new ids of lines (and sometimes beats) from the template
+      // FOR LINES:
+      // the strategy here is to use the state's next id value + the template id's current value
+      // the card reducer will have access to the state's next id value so it will be able to determine the correct id
+      // FOR BEATS:
+      // cards will use the cardToBeatIdMap to use the current book's beat ids
+      // but if more beats are needed, they will be created with subsequent ids
+      const bookId = state.ui.currentTimeline
+      let nextIdForBeats = nextBeatId(state.beats)
+      let beatTree = cloneDeep(state.beats[bookId])
+      let createdNewBeats = false
+      // make a card -> beatId mapping (beatId is from existing beats … augmented with new ones)
+      const beatPositions = beatsByPosition(() => true)(beatTree).map(({ id }) => id)
+      const cardToBeatIdMap = action.templateData.cards.reduce((acc, card) => {
+        const beat = tree.findNode(action.templateData.beats['1'], card.beatId)
+        if (beatPositions[beat.position]) {
+          // a beat in that position exists, so use it's id
+          acc[card.id] = beatPositions[beat.position]
+        } else {
+          // a beat doesn't exist in that position, so create it
+          const nextBeat = {
+            ...defaultBeat,
+            bookId: bookId,
+            id: ++nextIdForBeats,
+            position: beat.position,
+          }
+          beatTree = tree.addNode('id')(beatTree, null, nextBeat)
+          createdNewBeats = true
+          acc[card.id] = nextIdForBeats
+        }
+        return acc
+      }, {})
+
+      return mainReducer(state, {
+        ...action,
+        bookId: bookId,
+        nextLineId: nextId(state.lines),
+        nextBeatId: ++nextIdForBeats,
+        nextCardId: nextId(state.cards),
+        createdNewBeats: createdNewBeats,
+        newTree: beatTree,
+        cardToBeatIdMap: cardToBeatIdMap,
+      })
+    }
+
+    case DELETE_BOOK: {
+      const linesToDelete = state.lines.filter((l) => l.bookId == action.id).map((l) => l.id)
+      const newAction = Object.assign({}, action, { linesToDelete: linesToDelete })
       if (state.ui.currentTimeline == action.id) {
         const nextBookId = state.books.allIds.find((id) => id != action.id)
         let newState = { ...state }
         newState.ui.currentTimeline = nextBookId
-        return mainReducer(newState, action)
+        return mainReducer(newState, newAction)
       } else {
-        return mainReducer(state, action)
+        return mainReducer(state, newAction)
       }
+    }
 
     case CLEAR_TEMPLATE_FROM_TIMELINE: {
       // finding beats that will NOT be removed

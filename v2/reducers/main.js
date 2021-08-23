@@ -16,9 +16,12 @@ import ui from './ui'
 import hierarchyLevels from './hierarchy'
 import featureFlags from './featureFlags'
 import tour from './tours'
+import editors from './editors'
 import error from './error'
 import permission from './permission'
 import project from './project'
+import client from './client'
+import actions from './actions'
 
 // normally it would make more sense to alphabetize them
 // but for customer service, it helps a lot to have them in a specific order
@@ -44,7 +47,10 @@ const mainReducer = (dataRepairers) =>
     images: images(dataRepairers),
     error: error(dataRepairers),
     permission: permission(dataRepairers),
+    editors: editors(dataRepairers),
     project,
+    client,
+    actions,
   })
 
 export default mainReducer

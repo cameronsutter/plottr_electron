@@ -24,7 +24,7 @@ describe('2021.6.9', () => {
       })
       expect(migrated.hierarchyLevels[0].light).toEqual({
         borderColor: '#6cace4',
-        textColor: '#6cace4',
+        textColor: '#0b1117',
       })
     })
   })

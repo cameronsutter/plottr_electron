@@ -10,6 +10,7 @@ export const noteSortSelector = (state) => state.ui.noteSort
 export const placeFilterSelector = (state) => state.ui.placeFilter
 export const placeSortSelector = (state) => state.ui.placeSort
 export const timelineFilterSelector = (state) => state.ui.timelineFilter
+export const outlineFilterSelector = (state) => state.ui.outlineFilter
 export const isSmallSelector = (state) => state.ui.timeline.size == 'small'
 export const isMediumSelector = (state) => state.ui.timeline.size == 'medium'
 export const isLargeSelector = (state) => state.ui.timeline.size == 'large'
@@ -18,6 +19,7 @@ export const timelineScrollPositionSelector = (state) => state.ui.timelineScroll
 export const orientationSelector = (state) => state.ui.orientation
 export const isDarkModeSelector = (state) => state.ui.darkMode
 export const attributesDialogIsOpenSelector = (state) => state.ui.attributesDialogIsOpen
+export const currentViewSelector = (state) => state.ui.currentView
 
 export const isSeriesSelector = createSelector(currentTimelineSelector, isSeries)
 

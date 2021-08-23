@@ -57,7 +57,7 @@ function characters(state = [], action) {
     }
 
     case LOAD_CUSTOM_ATTRIBUTES:
-      return action.customAttributes.characters
+      return action.customAttributes.characters || []
 
     default:
       return state
@@ -95,7 +95,7 @@ function places(state = [], action) {
     }
 
     case LOAD_CUSTOM_ATTRIBUTES:
-      return action.customAttributes.places
+      return action.customAttributes.places || []
 
     default:
       return state
@@ -137,7 +137,7 @@ function scenes(state = [], action) {
       return action.data.customAttributes['scenes'] || []
 
     case LOAD_CUSTOM_ATTRIBUTES:
-      return action.customAttributes.scenes
+      return action.customAttributes.scenes || []
 
     default:
       return state
@@ -175,7 +175,7 @@ function notes(state = [], action) {
     }
 
     case LOAD_CUSTOM_ATTRIBUTES:
-      return action.customAttributes.notes
+      return action.customAttributes.notes || []
 
     default:
       return state || []
@@ -199,7 +199,7 @@ function lines(state = [], action) {
       return action.data.customAttributes['lines'] || []
 
     case LOAD_CUSTOM_ATTRIBUTES:
-      return action.customAttributes.lines
+      return action.customAttributes.lines || []
 
     default:
       return state

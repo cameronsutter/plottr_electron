@@ -202,13 +202,16 @@ export const filter = (tree, f) => {
   }, tree)
 }
 
+// Contract: reduce must process the nodes in the supplied tree, from the root node, down to the children.
+// This is important to the consumers of this function who might want to process the tree, knowing, that all
+// ancestors of the current node were already processed.
 export const reduce = (idProp) => (tree, f, initialValue) => {
-  function iter(acc, nodeId) {
-    const next = nodeId === null ? acc : f(acc, findNode(tree, nodeId))
+  function iter(acc, nodeId, parentId) {
+    const next = nodeId === null ? acc : f(acc, findNode(tree, nodeId), parentId)
     return children(tree, nodeId).reduce((acc, entity) => {
-      return iter(acc, entity[idProp])
+      return iter(acc, entity[idProp], nodeId)
     }, next)
   }
 
-  return iter(initialValue, null)
+  return iter(initialValue, null, null)
 }

@@ -1,0 +1,323 @@
+{
+  "id": "pl1",
+  "name": "7 Point Plot Structure",
+  "cards": [
+    {
+      "id": 1,
+      "lineId": 1,
+      "beatId": 7,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Hook",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 2,
+      "lineId": 1,
+      "beatId": 6,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Plot Turn 1",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 3,
+      "lineId": 1,
+      "beatId": 5,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Pinch 1",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 4,
+      "lineId": 1,
+      "beatId": 4,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Midpoint",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 5,
+      "lineId": 1,
+      "beatId": 3,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Pinch 2",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 6,
+      "lineId": 1,
+      "beatId": 2,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Plot Turn 2",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 7,
+      "lineId": 1,
+      "beatId": 1,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "Resolution",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null
+    }
+  ],
+  "beats": {
+    "1": {
+      "children": {
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "null": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "heap": {
+        "1": null,
+        "2": null,
+        "3": null,
+        "4": null,
+        "5": null,
+        "6": null,
+        "7": null
+      },
+      "index": {
+        "1": {
+          "id": 1,
+          "bookId": 1,
+          "position": 6,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "2": {
+          "id": 2,
+          "bookId": 1,
+          "position": 5,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "3": {
+          "id": 3,
+          "bookId": 1,
+          "position": 4,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "4": {
+          "id": 4,
+          "bookId": 1,
+          "position": 3,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "5": {
+          "id": 5,
+          "bookId": 1,
+          "position": 2,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "6": {
+          "id": 6,
+          "bookId": 1,
+          "position": 1,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "7": {
+          "id": 7,
+          "bookId": 1,
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        }
+      }
+    }
+  },
+  "lines": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    }
+  ],
+  "hierarchyLevels": {
+    "0": {
+      "name": "Scene",
+      "level": 0,
+      "autoNumber": true,
+      "textSize": 24,
+      "borderStyle": "NONE",
+      "backgroundColor": "none",
+      "textColor": "#6cace4",
+      "borderColor": "#6cace4",
+      "dark": {
+        "borderColor": "#c9e6ff",
+        "textColor": "#c9e6ff"
+      },
+      "light": {
+        "borderColor": "#6cace4",
+        "textColor": "#6cace4"
+      }
+    }
+  }
+}

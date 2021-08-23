@@ -1,4 +1,8 @@
-import { EDIT_HIERARCHY_LEVEL, LOAD_HIERARCHY, SET_HIERARCHY_LEVELS } from '../constants/ActionTypes'
+import {
+  EDIT_HIERARCHY_LEVEL,
+  LOAD_HIERARCHY,
+  SET_HIERARCHY_LEVELS,
+} from '../constants/ActionTypes'
 import { newFileHierarchies } from '../store/newFileState'
 import { FILE_LOADED, NEW_FILE, RESET } from '../../v1/constants/ActionTypes'
 

@@ -8,3 +8,5 @@ const gatedBy = (featureFlagName) => (featureFlags) => (thunk) => {
 }
 
 export const gatedByBeatHierarchy = gatedBy(BEAT_HIERARCHY_FLAG)
+
+export const beatHierarchyIsOn = (featureFlags) => featureFlags[BEAT_HIERARCHY_FLAG]

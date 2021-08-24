@@ -56,7 +56,7 @@ export default function exportBeats(state, documentContents, options) {
   // create a BinderItem for each beat (Type: Folder)
   //   create a BinderItem for each card (Type: Text)
 
-  return filteredBeats.map((beat) => {
+  return filteredBeats.flatMap((beat) => {
     const uniqueBeatTitleSelector = makeBeatTitleSelector(state)
     const title = uniqueBeatTitleSelector(state, beat.id)
     const { binderItem } = createFolderBinderItem(title)
@@ -65,7 +65,9 @@ export default function exportBeats(state, documentContents, options) {
       // sort cards into beats by lines (like outline auto-sorting)
       const cards = beatCardMapping[beat.id]
       const sortedCards = sortCardsInBeat(beat.autoOutlineSort, cards, lines)
-      sortedCards.forEach((c) => {
+      const filteredCards = getFilteredCards(sortedCards)
+
+      filteredCards.forEach((c) => {
         const { id, binderItem: cardItem } = createTextBinderItem(c.title)
         binderItem['Children']['BinderItem'].push(cardItem)
 

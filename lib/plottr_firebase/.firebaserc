@@ -1,6 +1,0 @@
-{
-  "projects": {
-    "default": "plottr-ci",
-    "production": "plottr"
-  }
-}

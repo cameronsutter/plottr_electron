@@ -14,7 +14,8 @@ const OLD_TEMPLATES_ROOT = 'templates'
 let env = 'prod'
 if (is.development) env = 'staging'
 if (SETTINGS.get('betatemplates')) env = 'beta'
-const manifestURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}/v2/manifest.json`
+const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
+const manifestURL = `${baseURL}/v2/manifest.json`
 
 class TemplateFetcher {
   constructor(props) {
@@ -93,7 +94,8 @@ class TemplateFetcher {
   }
 
   fetchTemplate = (id, url) => {
-    request(this.templateReq(url), (err, resp, fetchedTemplate) => {
+    const fullURL = `${baseURL}${url}`
+    request(this.templateReq(fullURL), (err, resp, fetchedTemplate) => {
       if (!err && resp && resp.statusCode == 200) {
         templatesStore.set(id, fetchedTemplate)
       }

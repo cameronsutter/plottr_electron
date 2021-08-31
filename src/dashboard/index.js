@@ -31,7 +31,7 @@ render(<DashboardApp />, root)
 // Secondary SETUP //
 window.requestIdleCallback(() => {
   ensureBackupFullPath()
-  TemplateFetcher.fetch()
+  TemplateFetcher.fetch(true) // FORCE it just this one release. TODO: remove the `true`
   initMixpanel()
 })
 

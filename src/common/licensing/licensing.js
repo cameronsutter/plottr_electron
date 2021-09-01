@@ -2,7 +2,7 @@ import { is } from 'electron-util'
 import { machineIdSync } from 'node-machine-id'
 import SETTINGS from '../utils/settings'
 
-const BASE_URL = 'https://my.plottr.com'
+const BASE_URL = 'https://my.plottr.com/edd-api'
 const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'
 // NOTE: if this order changes, change the productMapping array at the bottom too
 export const PRODUCT_IDS = [33347, 33345, V2_OLD_PRODUCT_ID]
@@ -16,7 +16,7 @@ export const WRONG_PRODUCT_ERRORS = [
 const GRACE_PERIOD_DAYS = 30
 
 export function licenseURL(action, productID, license) {
-  let url = `${BASE_URL}/`
+  let url = `${BASE_URL}`
   url += `?edd_action=${action}&item_id=${productID}&license=${license}`
   url += `&url=${machineIdSync(true)}`
   return url
@@ -108,5 +108,5 @@ export const productMapping = {
 
 // NOTE: only needed for non-license api calls
 // function apiURL (path = '') {
-//   return `${BASE_URL}/edd-api${path}?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
+//   return `${BASE_URL}${path}?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
 // }

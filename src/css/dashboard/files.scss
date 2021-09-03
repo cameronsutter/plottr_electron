@@ -4,7 +4,8 @@
 .dashboard__files {
   height: 100%;
   width: 100%;
-  padding: 20px 40px 10px 40px;
+  padding: 32px;
+  padding-bottom: 0;
   display: grid;
   grid-template-areas:
     'options'
@@ -16,7 +17,6 @@
 .dashboard__new-files {
   grid-area: options;
   width: 95%;
-  // padding-bottom: 40px;
   height: 25vh;
   max-height: 30vh;
 }
@@ -103,7 +103,7 @@
 .dashboard__recent-files__table {
   margin-top: 16px;
   width: 100%;
-  height: calc(100% - 52px); // 36 + 16 (grid row + margin)
+  height: calc(100% - 60px); // 36 + 16 + 8 (grid row + margin + extra)
   .sticky-table {
     // border-radius: 4px;
   }

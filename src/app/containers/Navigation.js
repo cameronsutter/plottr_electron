@@ -121,7 +121,7 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView, forceProjectDa
         <Nav pullRight className="project-nav__options">
           <NavItem>
             <Dropdown id="dashboard-dropdown-menu">
-              <Dropdown.Toggle noCaret bsSize="small">
+              <Dropdown.Toggle noCaret bsSize="small" bsStyle="link">
                 <FaRegUser />
               </Dropdown.Toggle>
               <Dropdown.Menu>

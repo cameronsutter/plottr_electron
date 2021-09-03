@@ -138,7 +138,7 @@ class App extends Component {
     return (
       <ErrorBoundary>
         <ErrorBoundary>
-          <Navigation />
+          <Navigation forceProjectDashboard={this.props.forceProjectDashboard} />
         </ErrorBoundary>
         <main className="project-main tour-end">
           <Body />
@@ -154,6 +154,7 @@ class App extends Component {
 
 App.propTypes = {
   showTour: PropTypes.bool,
+  forceProjectDashboard: PropTypes.bool,
 }
 
 function mapStateToProps(state) {

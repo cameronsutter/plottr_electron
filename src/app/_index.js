@@ -63,8 +63,19 @@ function bootFile(filePath, options, numOpenFiles) {
 
   const { darkMode, beatHierarchy } = options
 
+  let json
   try {
-    const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+  } catch (error) {
+    return render(
+      <Provider store={store}>
+        <App forceProjectDashboard />
+      </Provider>,
+      root
+    )
+  }
+
+  try {
     ipcRenderer.send('save-backup', filePath, json)
     migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
       if (err) {

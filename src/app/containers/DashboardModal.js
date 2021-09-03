@@ -15,14 +15,14 @@ const modalStyles = {
   },
   content: {
     padding: 0,
-    borderRadius: 0,
+    borderRadius: 20,
     overflow: 'hidden',
-    width: '100%',
+    width: '95%',
     position: 'relative',
     left: '0',
     top: '0',
-    minHeight: '100vh',
-    maxHeight: '100vh',
+    minHeight: '95vh',
+    maxHeight: '95vh',
   },
 }
 

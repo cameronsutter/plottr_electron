@@ -17,8 +17,8 @@ import { useTrialStatus } from '../../common/licensing/trial_manager'
 const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
-  const [dashboardView, setDashboardView] = useState(null)
+const Navigation = ({ isDarkMode, currentView, changeCurrentView, forceProjectDashboard }) => {
+  const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   const firstTime = !licenseInfoSize && !trialInfo.started
@@ -125,10 +125,10 @@ const Navigation = ({ isDarkMode, currentView, changeCurrentView }) => {
                 <FaRegUser />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <MenuItem onSelect={selectAccount}>{t('Account')}</MenuItem>
-                <MenuItem onSelect={selectOptions}>{t('Options')}</MenuItem>
                 <MenuItem onSelect={selectFiles}>{t('Files')}</MenuItem>
+                <MenuItem onSelect={selectOptions}>{t('Settings')}</MenuItem>
                 <MenuItem onSelect={selectTemplates}>{t('Templates')}</MenuItem>
+                <MenuItem onSelect={selectAccount}>{t('Account')}</MenuItem>
                 <MenuItem onSelect={selectBackups}>{t('Backups')}</MenuItem>
                 <MenuItem onSelect={selectHelp}>{t('Help')}</MenuItem>
               </Dropdown.Menu>
@@ -144,6 +144,7 @@ Navigation.propTypes = {
   currentView: PropTypes.string.isRequired,
   isDarkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
+  forceProjectDashboard: PropTypes.bool,
 }
 
 function mapStateToProps(state) {

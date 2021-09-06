@@ -112,7 +112,7 @@ $medium_width: 80px;
     margin-top: 8px;
   }
   &:first-child:not(.small-timeline):not(.medium-timeline) {
-    margin-top: 75px;
+    margin: 75px 0;
     height: 16px;
   }
   .insert-beat-wrapper {
@@ -124,6 +124,7 @@ $medium_width: 80px;
   .insert-beat-wrapper.append-beat {
     &.large-timeline {
       padding: 30px 70px;
+      margin-left: 35px;
     }
     &.medium-timeline {
       margin-top: 10px;
@@ -131,7 +132,7 @@ $medium_width: 80px;
       padding: 14px 35px;
     }
     color: $blue-5;
-    border: none;
+    border: 3px dotted $blue-8;
     margin-right: 50px;
   }
   &.medium-timeline {
@@ -153,7 +154,7 @@ $medium_width: 80px;
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
-    border: none;
+    border: 3px dashed $blue-7;
   }
 }
 
@@ -306,14 +307,17 @@ $medium_width: 80px;
   @extend .vertical-beat-list__insert;
   height: $title_height;
   margin-bottom: 50px;
+  margin-top: 38px;
+  margin-left: 75px;
+  margin-right: 24px;
   .vertical-insert-beat-wrapper.append-beat {
     padding: 20px $title_height;
     color: $blue-5;
-    border: none;
+    border: 3px dotted $blue-8;
     margin-top: 10px;
   }
   .vertical-insert-beat-wrapper.append-beat:hover {
-    border: none;
+    border: 3px dashed $blue-7;
   }
   &.medium-timeline {
     width: $medium_width;

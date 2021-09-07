@@ -9,6 +9,7 @@
   "scripts": {
     "seed-firestore": "node seed/seed.js",
     "grant-all-permissions": "node seed/grant-all-permissions-to-all-users.js",
+    "grant-collab-permissions": "node seed/grant-collab-permissions-to-all-users.js",
     "grant-test-permissions": "node seed/grant-test-permissions.js",
     "start-emulators": "firebase emulators:start"
   },

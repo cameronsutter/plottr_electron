@@ -2,15 +2,16 @@ import firebase from 'firebase/app'
 import semverGt from 'semver/functions/gt'
 import 'firebase/auth'
 import 'firebase/firestore'
+import 'firebase/storage'
 import { v4 as uuidv4 } from 'uuid'
-import { DateTime } from 'luxon'
+import { DateTime, Duration } from 'luxon'
 
 import { actions, ARRAY_KEYS } from 'pltr/v2'
 
 const firebaseConfig =
   process.env.NEXT_PUBLIC_FIREBASE_ENV === 'production'
     ? {
-        apiKey: 'AIzaSyDyxfuXIrmXyN4YLlIRBkjA82Guh4XGUEE',
+        apiKey: process.env.FIREBASE_KEY || process.env.NEXT_PUBLIC_FIREBASE_KEY,
         authDomain: 'plottr.firebaseapp.com',
         databaseURL: 'https://plottr.firebaseio.com',
         projectId: 'plottr',
@@ -20,7 +21,7 @@ const firebaseConfig =
         measurementId: 'G-V8KKTT2SWE',
       }
     : {
-        apiKey: 'AIzaSyAwvdLWqVoyhEXbT26aTx0HL_qybstxLFY',
+        apiKey: process.env.FIREBASE_KEY || process.env.NEXT_PUBLIC_FIREBASE_KEY,
         authDomain: 'plottr-ci.firebaseapp.com',
         projectId: 'plottr-ci',
         storageBucket: 'plottr-ci.appspot.com',
@@ -70,6 +71,21 @@ const auth = () => {
   return _auth
 }
 
+let _storage = null
+const storage = () => {
+  if (_storage) return _storage
+  if (
+    process.env.NEXT_PUBLIC_NODE_ENV === 'development' ||
+    (window && window.location.hostname === 'plottr.local')
+  ) {
+    _storage = firebase.storage()
+    _storage.useEmulator('localhost', 9199)
+  } else {
+    _storage = firebase.storage()
+  }
+  return _storage
+}
+
 const patchActions = (path) => {
   switch (path) {
     case 'beats':
@@ -86,6 +102,8 @@ const patchActions = (path) => {
       return actions.character
     case 'customAttributes':
       return actions.customAttribute
+    case 'featureFlags':
+      return actions.featureFlags
     case 'lines':
       return actions.line
     case 'notes':
@@ -122,6 +140,11 @@ const onSnapshot =
       return
     }
     if (data.clientId === clientId) return
+    const patchAction = patchActions(path)
+    if (!patchAction) {
+      console.error('No patch action for ', path)
+      return
+    }
     delete data.fileId
     delete data.clientId
     store.dispatch(
@@ -176,6 +199,7 @@ const listenToBooks = listenForObjectAtPath('books')
 const listenToCategories = listenForObjectAtPath('categories')
 const listenToCharacters = listenForArrayAtPath('characters')
 const listenToCustomAttributes = listenForObjectAtPath('customAttributes')
+const listenToFeatureFlags = listenForObjectAtPath('featureFlags')
 const listenToLines = listenForArrayAtPath('lines')
 const listenToNotes = listenForArrayAtPath('notes')
 const listenToPlaces = listenForArrayAtPath('places')
@@ -194,6 +218,7 @@ export const listen = (store, userId, fileId, clientId, fileVersion) => {
     listenToCategories(store, userId, fileId, clientId),
     listenToCharacters(store, userId, fileId, clientId),
     listenToCustomAttributes(store, userId, fileId, clientId),
+    listenToFeatureFlags(store, userId, fileId, clientId),
     listenToLines(store, userId, fileId, clientId),
     listenToNotes(store, userId, fileId, clientId),
     listenToPlaces(store, userId, fileId, clientId),
@@ -257,6 +282,7 @@ const fetchBooks = fetchObjectAtPath('books')
 const fetchCategories = fetchObjectAtPath('categories')
 const fetchCharacters = fetchArrayAtPath('characters')
 const fetchCustomAttributes = fetchObjectAtPath('customAttributes')
+const fetchEditors = fetchObjectAtPath('featureFlags')
 const fetchLines = fetchArrayAtPath('lines')
 const fetchNotes = fetchArrayAtPath('notes')
 const fetchPlaces = fetchArrayAtPath('places')
@@ -301,6 +327,7 @@ export const initialFetch = (userId, fileId, clientId, version) => {
     fetchCategories(userId, fileId, clientId),
     fetchCharacters(userId, fileId, clientId),
     fetchCustomAttributes(userId, fileId, clientId),
+    fetchEditors(userId, fileId, clientId),
     fetchLines(userId, fileId, clientId),
     fetchNotes(userId, fileId, clientId),
     fetchPlaces(userId, fileId, clientId),
@@ -443,24 +470,83 @@ export const shareDocument = (fileId, emailAddress) => {
     })
 }
 
-export const publishRCEOperations = (fileId, editorId, operations) => {
+export const publishRCEOperations = (fileId, editorId, editorKey, operations) => {
   const modificationsRef = database().collection(`rce/${fileId}/editors/${editorId}/changes`)
-  return Promise.all(
-    operations.map((operation) => {
+  const updateEditNumbersJob = operations.length
+    ? database()
+        .doc(`rce/${fileId}/editors/${editorId}/editTimestamps/${editorKey}`)
+        .set(
+          {
+            timeStamp: new Date(),
+            editNumber: operations[operations.length - 1].editNumber,
+            editorKey,
+          },
+          {
+            merge: true,
+          }
+        )
+    : Promise.resolve([])
+  return Promise.all([
+    updateEditNumbersJob,
+    ...operations.map((operation) => {
       modificationsRef.add(operation)
+    }),
+  ])
+}
+
+export const catchupEditsSeen = (fileId, editorId, myEditorKey, otherEditorKey, since) => {
+  database()
+    .doc(`rce/${fileId}/editors/${editorId}/editTimestamps/${myEditorKey}`)
+    .update({
+      timeStamp: new Date(),
+      [otherEditorKey]: since,
     })
-  )
+}
+
+export const listenForChangesToEditor = (fileId, editorId, cb) => {
+  database()
+    .collection(`rce/${fileId}/editors/${editorId}/editTimestamps`)
+    .onSnapshot((documentsRef) => {
+      const documents = []
+      documentsRef.forEach((document) => {
+        documents.push(document.data())
+      })
+      cb(documents)
+    })
+}
+
+const deleteResults = (documentsRef) => {
+  const deleteTasks = []
+  documentsRef.docs.forEach((document) => {
+    deleteTasks.push(document.ref.delete())
+  })
+  return Promise.all(deleteTasks)
+}
+
+export const deleteChangeSignal = (fileId, editorId, editorKey) => {
+  return database().doc(`rce/${fileId}/editors/${editorId}/editTimestamps/${editorKey}`).delete()
+}
+
+const ONE_MINUTE = 60 * 1000
+
+export const deleteOldChanges = (fileId, editorId) => {
+  const aMinuteAgo = DateTime.now().minus(Duration.fromMillis(ONE_MINUTE)).toJSDate()
+
+  return database()
+    .collection(`rce/${fileId}/editors/${editorId}/changes`)
+    .where('created', '<', aMinuteAgo)
+    .get()
+    .then(deleteResults)
 }
 
 // Orders the edits by time, then tries to keep edits from the same
 // editor together while finally ordiring by the number from that
 // editor.
-export const fetchRCEOperations = (fileId, editorId, since, cb) => {
+export const fetchRCEOperations = (fileId, editorId, since, editorKey, cb) => {
   database()
     .collection(`rce/${fileId}/editors/${editorId}/changes`)
-    .where('created', '>', since)
-    .orderBy('created')
-    .orderBy('editorKey')
+    .where('editorKey', '==', editorKey)
+    .where('editNumber', '>', since)
     .orderBy('editNumber')
     .get()
     .then((documentRef) => {
@@ -553,30 +639,36 @@ export const saveBackup = (userId, file) => {
           if (delta < TEN_SECONDS_IN_MILISECONDS) {
             return Promise.resolve({ message: 'Not backed up', delta })
           }
-          return database()
-            .doc(`backup/${userId}/files/${documentRef.id}`)
-            .update({
-              ...document,
-              file,
-              lastModified: new Date(),
-            })
+          return backupToStorage(userId, file, startOfToday, false).then((path) => {
+            return database()
+              .doc(`backup/${userId}/files/${documentRef.id}`)
+              .update({
+                ...document,
+                storagePath: path,
+                lastModified: new Date(),
+              })
+          })
         }
         // Add a non-start-of-session backup.
-        return database().collection(`backup/${userId}/files`).add({
-          backupTime: startOfToday,
-          file,
-          startOfSession: false,
-          fileId,
-          lastModified: new Date(),
+        return backupToStorage(userId, file, startOfToday, false).then((path) => {
+          return database().collection(`backup/${userId}/files`).add({
+            backupTime: startOfToday,
+            storagePath: path,
+            startOfSession: false,
+            fileId,
+            lastModified: new Date(),
+          })
         })
       })
     }
     // Add a start-of-session backup
-    return database().collection(`backup/${userId}/files`).add({
-      backupTime: startOfToday,
-      fileId,
-      file,
-      startOfSession: true,
+    return backupToStorage(userId, file, startOfToday, true).then((path) => {
+      return database().collection(`backup/${userId}/files`).add({
+        backupTime: startOfToday,
+        fileId,
+        storagePath: path,
+        startOfSession: true,
+      })
     })
   })
 }
@@ -587,4 +679,66 @@ export const listenForBackups = (userId, onBackupsChanged) => {
     .onSnapshot((documentRef) => {
       onBackupsChanged(documentRef.data())
     })
+}
+
+const formatDate = (date) => {
+  return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+}
+
+const toBackupPath = (userId, fileId, date, startOfSession) => {
+  return `storage://backups/${userId}/${fileId}/${formatDate(date)}${
+    startOfSession ? '-(start-of-session)' : ''
+  }`
+}
+
+const withoutStorageProtocal = (path) => {
+  const split = path.split(/[a-zA-Z0-9]+:\/\//g)
+  if (split.length > 1) return split[1]
+  return split
+}
+
+const backupToStorage = (userId, file, date, startOfSession) => {
+  const fileId = file.project.selectedFile.id
+  const filePath = toBackupPath(userId, fileId, date, startOfSession)
+  const storageTask = storage()
+    .ref()
+    .child(withoutStorageProtocal(filePath))
+    .putString(JSON.stringify(file))
+  return new Promise((resolve, reject) =>
+    storageTask.then(() => {
+      resolve(filePath)
+    }, reject)
+  )
+}
+
+const toImagePath = (userId, imageName) => {
+  return `storage://images/${userId}/${imageName}`
+}
+
+const imagetoBlob = (imageUrl) => {
+  return fetch(imageUrl).then((response) => response.blob())
+}
+
+export const saveImageToStorageBlob = (userId, imageName, imageBlob) => {
+  const filePath = toImagePath(userId, imageName)
+  const storageTask = storage().ref().child(withoutStorageProtocal(filePath)).put(imageBlob)
+  return new Promise((resolve, reject) => {
+    return storageTask.then(() => {
+      resolve(filePath)
+    }, reject)
+  })
+}
+
+export const saveImageToStorageFromURL = (userId, imageName, imageUrl) => {
+  return imagetoBlob(imageUrl).then((response) => {
+    return saveImageToStorageBlob(userId, imageName, response.blob())
+  })
+}
+
+export const imagePublicURL = (storageProtocolURL) => {
+  return storage().ref().child(withoutStorageProtocal(storageProtocolURL)).getDownloadURL()
+}
+
+export const isStorageURL = (string) => {
+  return string.startsWith('storage://')
 }

@@ -229,6 +229,9 @@ const platform = {
   mpq: MPQ,
   rootElementSelectors: ['#react-root', '#dashboard__react__root'],
   machineIdSync,
+  storage: {
+    // TODO: update when the firebase sync PR is merged!
+  },
 }
 
 const components = connections.pltr(platform)

@@ -53,7 +53,6 @@ export function emptyCard(id, beat, line) {
 
 function lineIsHidden(line, currentLine) {
   if (Array.isArray(currentLine)) {
-    if (!currentLine.length) return false
     return !currentLine.includes(line.id)
   } else if (!currentLine) return false
   else return line.id !== currentLine

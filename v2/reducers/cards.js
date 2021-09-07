@@ -16,7 +16,6 @@ import {
   DELETE_CHARACTER,
   DELETE_LINE,
   DELETE_PLACE,
-  DELETE_SCENE,
   DELETE_TAG,
   EDIT_CARD_COORDINATES,
   EDIT_CARD_DETAILS,
@@ -32,7 +31,10 @@ import {
   RESET_TIMELINE,
   DELETE_BOOK,
   LOAD_CARDS,
-  EDIT_CARD_TEMPLATE_ATTRIBUTES,
+  EDIT_CARD_TEMPLATE_ATTRIBUTE,
+  ADD_TEMPLATE_TO_CARD,
+  REMOVE_TEMPLATE_FROM_CARD,
+  ADD_BOOK_FROM_TEMPLATE,
 } from '../constants/ActionTypes'
 import { newFileCards } from '../store/newFileState'
 import { card as defaultCard } from '../store/initialState'
@@ -74,10 +76,53 @@ const cards =
           }),
         ]
 
-      case ADD_LINES_FROM_TEMPLATE:
-        return [...action.cards]
+      case ADD_LINES_FROM_TEMPLATE: {
+        const newCards = action.templateData.cards.map((c) => {
+          const newCard = cloneDeep(c)
+          newCard.id = newCard.id + action.nextCardId // give it a new id
+          newCard.lineId = action.nextLineId + newCard.lineId // give it the correct lineId
+          newCard.beatId = action.cardToBeatIdMap[c.id] // give it the correct beatId
+          newCard.fromTemplateId = action.templateData.id
+          return newCard
+        })
+
+        return [...state, ...newCards]
+      }
+
+      case ADD_BOOK_FROM_TEMPLATE: {
+        const newCards = action.templateData.cards.map((c) => {
+          const newCard = cloneDeep(c)
+          newCard.id = newCard.id + action.nextCardId // give it a new id
+          newCard.lineId = action.nextLineId + newCard.lineId // give it the correct lineId
+          newCard.beatId = action.nextBeatId + newCard.beatId // give it the correct beatId
+          newCard.fromTemplateId = action.templateData.id
+          return newCard
+        })
+
+        return [...state, ...newCards]
+      }
+
+      case ADD_TEMPLATE_TO_CARD:
+        return state.map((card) => {
+          if (card.id === action.id) {
+            if (card.templates.some(({ id }) => id === action.templateData.id)) {
+              return card
+            }
+            const newCard = Object.assign({}, card)
+            newCard.templates.push({
+              id: action.templateData.id,
+              version: action.templateData.version,
+              attributes: action.templateData.attributes,
+              value: '',
+            })
+            return newCard
+          } else {
+            return card
+          }
+        })
 
       case EDIT_CARD_DETAILS:
+        if (!action.attributes) return state
         return state.map((card) =>
           card.id === action.id ? Object.assign({}, card, action.attributes) : card
         )
@@ -92,15 +137,23 @@ const cards =
         )
       }
 
-      case EDIT_CARD_TEMPLATE_ATTRIBUTES:
+      case EDIT_CARD_TEMPLATE_ATTRIBUTE:
         return state.map((card) => {
           if (card.id === action.id) {
             return {
               ...card,
-              templates: {
-                ...card.templates,
-                [action.name]: action.value,
-              },
+              templates: card.templates.map((template) =>
+                template.id === action.templateId
+                  ? {
+                      ...template,
+                      attributes: template.attributes.map((attribute) =>
+                        attribute.name === action.name
+                          ? { ...attribute, value: action.value }
+                          : attribute
+                      ),
+                    }
+                  : template
+              ),
             }
           }
           return card
@@ -175,7 +228,17 @@ const cards =
         })
 
       case DELETE_BOOK:
-        return state.filter(({ bookId }) => bookId !== action.id)
+        // remove the link for deleted books
+        // and delete cards that are on deleted lines
+        return state.reduce((acc, c) => {
+          if (c.bookId == action.id) {
+            c.bookId = null
+          }
+          if (!action.linesToDelete.includes(c.lineId)) {
+            acc.push(c)
+          }
+          return acc
+        }, [])
 
       case DELETE_CARD:
         return state.filter((card) => card.id !== action.id)
@@ -206,7 +269,10 @@ const cards =
           // see ../selectors/customAttributes.js for when this is allowed
           if (action.oldAttribute.type === 'text') {
             let description = newCard[action.newAttribute.name]
-            if (description && description.length && typeof description !== 'string') {
+            if (
+              !description ||
+              (description && description.length && typeof description !== 'string')
+            ) {
               description = ''
             }
             newCard[action.newAttribute.name] = description
@@ -254,6 +320,13 @@ const cards =
           let tags = cloneDeep(card.tags)
           tags.splice(tags.indexOf(action.tagId), 1)
           return card.id === action.id ? Object.assign({}, card, { tags: tags }) : card
+        })
+
+      case REMOVE_TEMPLATE_FROM_CARD:
+        return state.map((card) => {
+          if (card.id !== action.id) return card
+          const newTemplates = card.templates.filter((t) => t.id != action.templateId)
+          return Object.assign({}, card, { templates: newTemplates })
         })
 
       case DELETE_TAG:

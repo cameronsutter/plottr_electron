@@ -31,10 +31,11 @@ export const hierarchyToStyles = (
   timelineSize,
   hovering,
   theme,
-  isDarkMode
+  isDarkMode,
+  featureFlags
 ) => ({
   ...{
-    color: nullIfNone(getTextColor(theme.textColor, isDarkMode)),
+    color: nullIfNone(getTextColor(theme.textColor, isDarkMode, featureFlags.BEAT_HIERARCHY)),
     lineHeight: `${textSize}px`,
     backgroundColor: nullIfNone(backgroundColor),
   },
@@ -57,6 +58,7 @@ export const hierarchyToStyles = (
 const LEVEL_NAMES = [t('Scene'), t('Chapter'), t('Act')]
 
 export const nextLevelName = (depth) => {
+  if (depth == 'default') return t('Chapter')
   return LEVEL_NAMES[depth] || `Level-${depth + 1}`
 }
 

@@ -9,11 +9,11 @@ import {
   ADD_LINES_FROM_TEMPLATE,
   CLEAR_TEMPLATE_FROM_TIMELINE,
   LOAD_BOOKS,
+  ADD_BOOK_FROM_TEMPLATE,
 } from '../constants/ActionTypes'
 import { isSeries } from '../helpers/books'
 import { book as defaultBook } from '../store/initialState'
 import { newFileBooks } from '../store/newFileState'
-import { objectId } from '../store/newIds'
 
 const initialState = {
   allIds: [1],
@@ -33,17 +33,17 @@ const books =
           },
         }
 
-      case ADD_BOOK: {
-        const newId = objectId(state.allIds)
+      case ADD_BOOK_FROM_TEMPLATE:
+      case ADD_BOOK:
         return {
           ...state,
-          allIds: [...state.allIds, newId],
-          [newId]: {
+          allIds: [...state.allIds, action.newBookId],
+          [action.newBookId]: {
             ...action.book,
-            id: newId,
+            id: action.newBookId,
+            timelineTemplates: action.templateData ? [action.templateData.id] : [],
           },
         }
-      }
 
       case REORDER_BOOKS:
         return {
@@ -71,10 +71,7 @@ const books =
           ...state,
           [action.bookId]: {
             ...state[action.bookId],
-            timelineTemplates: [
-              ...state[action.bookId].timelineTemplates,
-              { id: action.template.id, name: action.template.name },
-            ],
+            timelineTemplates: [...state[action.bookId].timelineTemplates, action.templateData.id],
           },
         }
 

@@ -19,7 +19,9 @@ import {
   REMOVE_TAG_FROM_PLACE,
   ATTACH_BOOK_TO_PLACE,
   REMOVE_BOOK_FROM_PLACE,
+  DELETE_TAG,
   LOAD_PLACES,
+  EDIT_PLACE_TEMPLATE_ATTRIBUTE,
 } from '../constants/ActionTypes'
 import { place } from '../store/initialState'
 import { newFilePlaces } from '../store/newFileState'
@@ -60,6 +62,26 @@ const places =
         return state.map((place) =>
           place.id === action.id ? Object.assign({}, place, action.attributes) : place
         )
+
+      case EDIT_PLACE_TEMPLATE_ATTRIBUTE: {
+        return state.map((place) => {
+          if (place.id === action.id) {
+            return {
+              ...place,
+              templates: place.templates.map((template) => {
+                if (template.id === action.templateId) {
+                  return {
+                    ...template,
+                    [action.name]: action.value,
+                  }
+                }
+                return template
+              }),
+            }
+          }
+          return place
+        })
+      }
 
       case EDIT_PLACES_ATTRIBUTE:
         if (
@@ -129,6 +151,17 @@ const places =
           let tags = cloneDeep(place.tags)
           tags.splice(tags.indexOf(action.tagId), 1)
           return place.id === action.id ? Object.assign({}, place, { tags: tags }) : place
+        })
+
+      case DELETE_TAG:
+        return state.map((place) => {
+          if (place.tags.includes(action.id)) {
+            let tags = cloneDeep(place.tags)
+            tags.splice(tags.indexOf(action.id), 1)
+            return Object.assign({}, place, { tags: tags })
+          } else {
+            return place
+          }
         })
 
       case ATTACH_BOOK_TO_PLACE:

@@ -27,10 +27,14 @@ const card1 = { ...defaultCard, id: 1 }
 const card2 = { ...defaultCard, id: 2 }
 const card3 = { ...defaultCard, id: 3 }
 const card4 = { ...defaultCard, id: 4 }
-const fourCardState = cardsReducer(undefined, {
-  type: ADD_LINES_FROM_TEMPLATE,
-  cards: [card1, card2, card3, card4],
-})
+const fourCardState = [card1, card2, card3, card4]
+
+// cardsReducer(undefined, {
+//   type: ADD_LINES_FROM_TEMPLATE,
+//   templateData: {
+//     cards: [card1, card2, card3, card4],
+//   },
+// })
 const cardWithStrength = { ...defaultCard, strength: 'You bet!' }
 const strengthState = cardsReducer(undefined, { type: ADD_CARD, card: cardWithStrength })
 
@@ -119,17 +123,24 @@ describe('cardsReducer', () => {
     })
   })
   describe('add lines from template', () => {
-    it('should add all given cards to the state', () => {
-      expect(
-        allCardsSelector(
-          mountToState(
-            cardsReducer(emptyState, {
-              type: ADD_LINES_FROM_TEMPLATE,
+    it('should add all given cards to the state with correct ids', () => {
+      const result = allCardsSelector(
+        mountToState(
+          cardsReducer(emptyState, {
+            type: ADD_LINES_FROM_TEMPLATE,
+            templateData: {
               cards: [card1, card2, card3, card4],
-            })
-          )
+            },
+            nextCardId: 5,
+            nextLineId: 2,
+            cardToBeatIdMap: { 1: 10, 2: 11, 3: 12, 4: 13 },
+          })
         )
-      ).toEqual([card1, card2, card3, card4])
+      )
+      expect(result.length).toEqual(4)
+      expect(result[0].id).toEqual(6)
+      expect(result[0].beatId).toEqual(10)
+      expect(result[0].lineId).toEqual(2)
     })
   })
   describe('edit card details', () => {

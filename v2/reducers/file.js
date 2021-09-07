@@ -18,6 +18,9 @@ const file =
           loaded: true,
           dirty: action.dirty,
           version: action.version,
+          id: action.data.file.id || null,
+          appliedMigrations: action.data.file.appliedMigrations || [],
+          initialVersion: action.data.file.initialVersion || action.version,
         }
 
       case FILE_SAVED:

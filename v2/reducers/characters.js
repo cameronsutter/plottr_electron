@@ -21,7 +21,11 @@ import {
   ATTACH_BOOK_TO_CHARACTER,
   REMOVE_BOOK_FROM_CHARACTER,
   DELETE_CHARACTER_CATEGORY,
+  DELETE_TAG,
   LOAD_CHARACTERS,
+  ADD_TEMPLATE_TO_CHARACTER,
+  REMOVE_TEMPLATE_FROM_CHARACTER,
+  EDIT_CHARACTER_TEMPLATE_ATTRIBUTE,
 } from '../constants/ActionTypes'
 import { character } from '../store/initialState'
 import { newFileCharacters } from '../store/newFileState'
@@ -83,6 +87,45 @@ const characters =
         return state.map((character) =>
           character.id === action.id ? Object.assign({}, character, action.attributes) : character
         )
+
+      case EDIT_CHARACTER_TEMPLATE_ATTRIBUTE: {
+        return state.map((character) => {
+          if (character.id === action.id) {
+            return {
+              ...character,
+              templates: character.templates.map((template) => {
+                if (template.id === action.templateId) {
+                  return {
+                    ...template,
+                    [action.name]: action.value,
+                  }
+                }
+                return template
+              }),
+            }
+          }
+          return character
+        })
+      }
+
+      case ADD_TEMPLATE_TO_CHARACTER:
+        return state.map((character) => {
+          if (character.id === action.id) {
+            if (character.templates.some(({ id }) => id === action.templateData.id)) {
+              return character
+            }
+            const newCharacter = Object.assign({}, character)
+            newCharacter.templates.push({
+              id: action.templateData.id,
+              version: action.templateData.version,
+              attributes: action.templateData.attributes,
+              value: '',
+            })
+            return newCharacter
+          } else {
+            return character
+          }
+        })
 
       case EDIT_CHARACTER_ATTRIBUTE:
         if (
@@ -166,6 +209,17 @@ const characters =
             : character
         })
 
+      case DELETE_TAG:
+        return state.map((character) => {
+          if (character.tags.includes(action.id)) {
+            let tags = cloneDeep(character.tags)
+            tags.splice(tags.indexOf(action.id), 1)
+            return Object.assign({}, character, { tags: tags })
+          } else {
+            return character
+          }
+        })
+
       case ATTACH_BOOK_TO_CHARACTER:
         return state.map((character) => {
           let bookIds = cloneDeep(character.bookIds)
@@ -182,6 +236,13 @@ const characters =
           return character.id === action.id
             ? Object.assign({}, character, { bookIds: bookIds })
             : character
+        })
+
+      case REMOVE_TEMPLATE_FROM_CHARACTER:
+        return state.map((character) => {
+          if (character.id !== action.id) return character
+          const newTemplates = character.templates.filter((t) => t.id != action.templateId)
+          return Object.assign({}, character, { templates: newTemplates })
         })
 
       case DELETE_NOTE:

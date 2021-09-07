@@ -17,29 +17,18 @@ const NoteEditDetailsConnector = (connector) => {
   const ImagePicker = UnconnectedImagePicker(connector)
   const Image = UnconnectedImage(connector)
 
+  const {
+    pltr: { helpers },
+  } = connector
+
   class NoteEditDetails extends Component {
     constructor(props) {
       super(props)
-      let attributes = {}
-      props.customAttributes.forEach((attr) => {
-        const { name } = attr
-        attributes[name] = props.note[name]
-      })
-      let templateAttrs = props.note.templates.reduce((acc, t) => {
-        acc[t.id] = t.attributes.reduce((obj, attr) => {
-          obj[attr.name] = attr.value
-          return obj
-        }, {})
-        return acc
-      }, {})
       this.state = {
-        attributes: attributes,
-        noteId: props.note.noteId,
-        templateAttrs: templateAttrs,
-        content: props.note.content,
+        noteId: props.note.id,
         newImageId: null,
         deleting: false,
-        categoryId: props.note.categoryId,
+        categoryId: props.note.categoryId || null,
       }
 
       this.titleInputRef = null
@@ -85,52 +74,58 @@ const NoteEditDetailsConnector = (connector) => {
       }
     }
 
-    handleAttrChange = (attrName) => (desc) => {
-      const attributes = {
-        ...this.state.attributes,
-      }
-      attributes[attrName] = desc
-      this.setState({ attributes })
+    handleAttrChange = (attrName) => (desc, selection) => {
+      const editorPath = helpers.editors.noteCustomAttributeEditorPath(this.props.note.id, attrName)
+      this.props.actions.editNote(
+        this.props.note.id,
+        helpers.editors.attrIfPresent(attrName, desc),
+        editorPath,
+        selection
+      )
     }
 
-    handleTemplateAttrChange = (id, name) => (desc) => {
-      let templateAttrs = {
-        ...this.state.templateAttrs,
-        [id]: {
-          ...this.state.templateAttrs[id],
-          [name]: desc,
-        },
+    handleTemplateAttrChange = (id, name) => (desc, selection) => {
+      const editorPath = helpers.editors.noteTemplateAttributeEditorPath(
+        this.props.note.id,
+        id,
+        name
+      )
+
+      if (!desc) {
+        this.props.actions.editNote(this.props.note.id, {}, editorPath, selection)
+        return
       }
-      this.setState({ templateAttrs })
+      this.props.actions.editNoteTemplateAttribute(
+        this.props.note.id,
+        id,
+        name,
+        desc,
+        editorPath,
+        selection
+      )
     }
 
     saveEdit = (close = true) => {
       var title = this.titleInputRef.value || this.props.note.title
-      var content = this.state.content
-      var attrs = {
-        categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
-      }
+      var attrs = {}
       if (this.state.newImageId) {
         attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
       }
-      this.props.customAttributes.forEach((attr) => {
-        const { name } = attr
-        attrs[name] = this.state.attributes[name]
-      })
-      const templates = this.props.note.templates.map((t) => {
-        t.attributes = t.attributes.map((attr) => {
-          attr.value = this.state.templateAttrs[t.id][attr.name]
-          return attr
-        })
-        return t
-      })
       this.props.actions.editNote(this.props.note.id, {
         title,
-        content,
-        templates,
+        categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
         ...attrs,
       })
       if (close) this.props.finishEditing()
+    }
+
+    handleContentChange = (value, selection) => {
+      this.props.actions.editNote(
+        this.props.note.id,
+        helpers.editors.attrIfPresent('content', value),
+        this.props.editorPath,
+        selection
+      )
     }
 
     changeCategory = (val) => {
@@ -178,17 +173,21 @@ const NoteEditDetailsConnector = (connector) => {
     renderEditingCustomAttributes() {
       const { note, ui, customAttributes } = this.props
       return customAttributes.map((attr, index) => {
+        const editorPath = helpers.editors.cardCustomAttributeEditorPath(
+          this.props.note.id,
+          attr.name
+        )
         return (
           <React.Fragment key={attr.name}>
             <EditAttribute
               index={index}
               entity={note}
               entityType="note"
-              value={this.state.attributes[attr.name]}
+              value={note[attr.name]}
+              editorPath={editorPath}
               ui={ui}
               onChange={this.handleAttrChange(attr.name)}
-              onShortDescriptionKeyDown={this.handleEsc}
-              onShortDescriptionKeyPress={this.handleEnter}
+              onSave={this.saveEdit}
               name={attr.name}
               type={attr.type}
             />
@@ -200,6 +199,7 @@ const NoteEditDetailsConnector = (connector) => {
     renderEditingTemplates() {
       const { note, ui } = this.props
       return note.templates.flatMap((t) => {
+        const templateValues = note.templates.find((template) => template.id === t.id)
         return t.attributes.map((attr, index) => (
           <React.Fragment key={index}>
             <EditAttribute
@@ -207,12 +207,11 @@ const NoteEditDetailsConnector = (connector) => {
               index={index}
               entity={note}
               entityType="note"
-              value={this.state.templateAttrs[t.id][attr.name]}
+              value={templateValues && templateValues[attr.name]}
               ui={ui}
               inputId={`${t.id}-${attr.name}Input`}
               onChange={this.handleTemplateAttrChange(t.id, attr.name)}
-              onShortDescriptionKeyDown={this.handleEsc}
-              onShortDescriptionKeyPress={this.handleEnter}
+              onSave={this.saveEdit}
               name={attr.name}
               type={attr.type}
             />
@@ -260,7 +259,8 @@ const NoteEditDetailsConnector = (connector) => {
                 <ControlLabel>{i18n('Notes')}</ControlLabel>
                 <RichText
                   description={note.content}
-                  onChange={(desc) => this.setState({ content: desc })}
+                  onChange={this.handleContentChange}
+                  selection={this.props.selection}
                   editable
                   autofocus={false}
                   darkMode={this.props.ui.darkMode}
@@ -289,15 +289,14 @@ const NoteEditDetailsConnector = (connector) => {
       customAttributes: PropTypes.array.isRequired,
       ui: PropTypes.object.isRequired,
       finishEditing: PropTypes.func.isRequired,
+      editorPath: PropTypes.string.isRequired,
+      selection: PropTypes.object.isRequired,
     }
   }
 
   const {
     redux,
-    pltr: {
-      selectors: { singleNoteSelector },
-      actions,
-    },
+    pltr: { selectors, actions },
   } = connector
 
   if (redux) {
@@ -305,9 +304,12 @@ const NoteEditDetailsConnector = (connector) => {
 
     return connect(
       (state, ownProps) => {
+        const editorPath = helpers.editors.noteContentEditorPath(ownProps.noteId)
         return {
-          note: singleNoteSelector(state.present, ownProps.noteId),
+          note: selectors.singleNoteSelector(state.present, ownProps.noteId),
           customAttributes: state.present.customAttributes.notes,
+          editorPath,
+          selection: selectors.selectionSelector(state.present, editorPath),
           ui: state.present.ui,
         }
       },

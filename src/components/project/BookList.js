@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import UnconnectedBook from './Book'
 import { Glyphicon } from 'react-bootstrap'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
@@ -43,18 +43,16 @@ const BookListConnector = (connector) => {
       }
     }
 
-    addBook = () => {
-      const { actions, books, lineActions, beatActions } = this.props
+    addBook = (template) => {
+      const { actions, books } = this.props
+      if (template) return actions.addBookFromTemplate(template)
+
       const newBookId = objectId(books.allIds)
       const rows = this.state.rows.filter((row) => row)
       this.setState({
         rows: [...rows.slice(0, rows.length - 1), [...rows[rows.length - 1], newBookId]],
       })
       actions.addBook()
-      // add a plotline
-      lineActions.addLineWithTitle(i18n('Main Plot'), newBookId)
-      // add a beat
-      beatActions.addBeat(newBookId)
     }
 
     reorder = (bookIds, startIndex, endIndex) => {
@@ -106,9 +104,9 @@ const BookListConnector = (connector) => {
       }
 
       if (this.dragDropAreaRef.current) {
-        const { width } = this.dragDropAreaRef.current
-          .querySelector('#book-list')
-          .getBoundingClientRect()
+        const bookList = this.dragDropAreaRef.current.querySelector('#book-list')
+        if (!bookList) return
+        const { width } = bookList.getBoundingClientRect()
         const style = window.getComputedStyle(this.dragDropAreaRef.current)
         const leftPadding = parseInt(style.paddingLeft)
         const rightPadding = parseInt(style.paddingRight)
@@ -150,7 +148,7 @@ const BookListConnector = (connector) => {
       return (
         <div className="book-list__container" ref={this.dragDropAreaRef}>
           <h2>
-            {`${i18n('Books')} `}
+            {`${t('Books')} `}
             <span onClick={this.addBook}>
               <Glyphicon glyph="plus" />
             </span>
@@ -184,6 +182,8 @@ const BookListConnector = (connector) => {
     static propTypes = {
       ui: PropTypes.object.isRequired,
       books: PropTypes.object.isRequired,
+      lines: PropTypes.array.isRequired,
+      cards: PropTypes.array.isRequired,
       actions: PropTypes.object,
       lineActions: PropTypes.object,
       beatActions: PropTypes.object,
@@ -203,6 +203,8 @@ const BookListConnector = (connector) => {
         return {
           ui: state.present.ui,
           books: state.present.books,
+          lines: state.present.lines,
+          cards: state.present.cards,
         }
       },
       (dispatch) => {

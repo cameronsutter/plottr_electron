@@ -11,8 +11,10 @@ import {
   FormGroup,
   ControlLabel,
   Overlay,
+  Tabs,
+  Tab,
 } from 'react-bootstrap'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import cx from 'classnames'
 import tinycolor from 'tinycolor2'
 import ColorPickerColor from '../ColorPickerColor'
@@ -23,6 +25,7 @@ import UnconnectedPlottrModal from '../PlottrModal'
 import UnconnectedSelectList from '../SelectList'
 import UnconnectedBeatItemTitle from './BeatItemTitle'
 import UnconnectedCardDescriptionEditor from './CardDescriptionEditor'
+import TemplatePickerConnector from '../templates/TemplatePicker'
 import { helpers } from 'pltr/v2'
 
 const {
@@ -35,39 +38,44 @@ const CardDialogConnector = (connector) => {
   const SelectList = UnconnectedSelectList(connector)
   const BeatItemTitle = UnconnectedBeatItemTitle(connector)
   const CardDescriptionEditor = UnconnectedCardDescriptionEditor(connector)
+  const TemplatePicker = TemplatePickerConnector(connector)
+
+  const {
+    platform: {
+      templatesDisabled,
+      openExternal,
+      template: { getTemplateById },
+    },
+  } = connector
 
   class CardDialog extends Component {
     constructor(props) {
       super(props)
       this.state = {
         deleting: false,
-        selected: 'Description',
         addingAttribute: false,
         newAttributeType: 'text',
-        cancelling: false,
         showColorPicker: false,
+        showTemplatePicker: false,
+        removing: false,
+        removeWhichTemplate: null,
+        activeTab: 1,
       }
       this.newAttributeInputRef = React.createRef()
       this.titleInputRef = null
       this.colorButtonRef = React.createRef()
     }
 
-    selectTab = (name) => () => {
-      this.setState({
-        selected: name,
-      })
-    }
-
     componentDidMount() {
       window.SCROLLWITHKEYS = false
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
       if (this.newAttributeInputRef.current) this.newAttributeInputRef.current.focus()
     }
 
     componentWillUnmount() {
-      if (!this.state.cancelling) this.saveEdit()
+      this.saveEdit()
       window.SCROLLWITHKEYS = true
     }
 
@@ -86,6 +94,27 @@ const CardDialogConnector = (connector) => {
       this.setState({ deleting: true })
     }
 
+    beginRemoveTemplate = (templateId) => {
+      this.setState({ removing: true, removeWhichTemplate: templateId })
+    }
+
+    finishRemoveTemplate = (e) => {
+      e.stopPropagation()
+      const { actions, cardId } = this.props
+      const { removeWhichTemplate, activeTab } = this.state
+      actions.removeTemplateFromCard(cardId, removeWhichTemplate)
+      this.setState({
+        removing: false,
+        removeWhichTemplate: null,
+        activeTab: activeTab - 1,
+      })
+    }
+
+    cancelRemoveTemplate = (e) => {
+      e.stopPropagation()
+      this.setState({ removing: false, removeWhichTemplate: null })
+    }
+
     saveAndClose = () => {
       // componentWillUnmount saves the data (otherwise we get a duplicate event)
       this.props.closeDialog()
@@ -97,14 +126,37 @@ const CardDialogConnector = (connector) => {
       this.setState({ showColorPicker: true })
     }
 
-    handleAttrChange = (attrName) => (desc) => {
-      this.props.actions.editCardAttributes(this.props.cardId, {
-        [attrName]: desc,
-      })
+    handleAttrChange = (attrName) => (desc, selection) => {
+      const editorPath = helpers.editors.cardCustomAttributeEditorPath(
+        this.props.cardMetaData.id,
+        attrName
+      )
+      this.props.actions.editCardAttributes(
+        this.props.cardId,
+        helpers.editors.attrIfPresent(attrName, desc),
+        editorPath,
+        selection
+      )
     }
 
-    handleTemplateAttrChange = (id, name) => (value) => {
-      this.props.actions.editCardTemplateAttributes(id, name, value)
+    handleTemplateAttrChange = (templateId, name) => (value, selection) => {
+      const editorPath = helpers.editors.cardTemplateAttributeEditorPath(
+        this.props.cardMetaData.id,
+        templateId,
+        name
+      )
+      if (!value) {
+        this.props.actions.editCardAttributes(this.props.cardId, {}, editorPath, selection)
+        return
+      }
+      this.props.actions.editCardTemplateAttribute(
+        this.props.cardId,
+        templateId,
+        name,
+        value,
+        editorPath,
+        selection
+      )
     }
 
     saveEdit = () => {
@@ -157,13 +209,19 @@ const CardDialogConnector = (connector) => {
       })
     }
 
-    closeWithoutSaving = () => {
-      this.setState(
-        {
-          cancelling: true,
-        },
-        this.props.closeDialog
-      )
+    showTemplatePicker = () => {
+      this.setState({ showTemplatePicker: true })
+    }
+
+    handleChooseTemplate = (templateData) => {
+      const { actions, cardMetaData } = this.props
+      const numTemplates = cardMetaData.templates.length
+      actions.addTemplateToCard(cardMetaData.id, templateData)
+      this.setState({ showTemplatePicker: false, activeTab: numTemplates + 3 })
+    }
+
+    closeTemplatePicker = () => {
+      this.setState({ showTemplatePicker: false })
     }
 
     chooseCardColor = (color) => {
@@ -195,9 +253,17 @@ const CardDialogConnector = (connector) => {
     getBookTitle() {
       const book = this.props.books[this.props.cardMetaData.bookId]
       if (book) {
-        return book.title || i18n('Untitled')
+        return book.title || t('Untitled')
       } else {
-        return i18n('Choose...')
+        return t('Choose...')
+      }
+    }
+
+    selectTab = (key) => {
+      if (key == 'new') {
+        this.showTemplatePicker()
+      } else {
+        this.setState({ activeTab: key })
       }
     }
 
@@ -213,9 +279,42 @@ const CardDialogConnector = (connector) => {
       )
     }
 
+    renderRemoveTemplate() {
+      if (!this.state.removing) return null
+      const templateData = getTemplateById(this.state.removeWhichTemplate)
+      return (
+        <DeleteConfirmModal
+          customText={t(
+            'Are you sure you want to remove the {template} template and all its data?',
+            { template: templateData.name }
+          )}
+          onDelete={this.finishRemoveTemplate}
+          onCancel={this.cancelRemoveTemplate}
+        />
+      )
+    }
+
+    renderTemplatePicker() {
+      if (!this.state.showTemplatePicker) return null
+
+      return (
+        <TemplatePicker
+          type={['scenes']}
+          modal={true}
+          isOpen={this.state.showTemplatePicker}
+          close={this.closeTemplatePicker}
+          onChooseTemplate={this.handleChooseTemplate}
+        />
+      )
+    }
+
     renderEditingCustomAttributes() {
       const { cardId, ui, customAttributes } = this.props
       return customAttributes.map((attr, index) => {
+        const editorPath = helpers.editors.cardCustomAttributeEditorPath(
+          this.props.cardMetaData.id,
+          attr.name
+        )
         return (
           <React.Fragment key={`custom-attribute-${index}-${attr.name}`}>
             <EditAttribute
@@ -223,9 +322,10 @@ const CardDialogConnector = (connector) => {
               entityType="scene"
               valueSelector={selectors.attributeValueSelector(cardId, attr.name)}
               ui={ui}
+              editorPath={editorPath}
               onChange={this.handleAttrChange(attr.name)}
-              onShortDescriptionKeyDown={this.handleEsc}
-              onShortDescriptionKeyPress={this.handleEnter}
+              onSave={this.saveEdit}
+              onSaveAndClose={this.saveAndClose}
               name={attr.name}
               type={attr.type}
             />
@@ -240,24 +340,67 @@ const CardDialogConnector = (connector) => {
         cardMetaData: { templates },
         ui,
       } = this.props
-      return templates.flatMap((t) => {
-        return t.attributes.map((attr, index) => (
-          <React.Fragment key={`template-attribute-${index}-${t.id}-${attr.name}`}>
-            <EditAttribute
-              templateAttribute
-              index={index}
-              entityType="scene"
-              valueSelector={selectors.attributeValueSelector(cardId, t.id, attr.name)}
-              ui={ui}
-              inputId={`${t.id}-${attr.name}Input`}
-              onChange={this.handleTemplateAttrChange(t.id, attr.name)}
-              onShortDescriptionKeyDown={this.handleEsc}
-              onShortDescriptionKeyPress={this.handleEnter}
-              name={attr.name}
-              type={attr.type}
-            />
-          </React.Fragment>
-        ))
+      return templates.map((template, idx) => {
+        const templateData = getTemplateById(template.id)
+        const attrs = template.attributes.map((attr, index) => {
+          const editorPath = helpers.editors.cardCustomAttributeEditorPath(
+            this.props.cardMetaData,
+            attr.name,
+            t.id
+          )
+          return (
+            <React.Fragment key={`template-attribute-${index}-${template.id}-${attr.name}`}>
+              <EditAttribute
+                templateAttribute
+                index={index}
+                entityType="scene"
+                editorPath={editorPath}
+                valueSelector={selectors.templateAttributeValueSelector(
+                  cardId,
+                  template.id,
+                  attr.name
+                )}
+                ui={ui}
+                inputId={`${template.id}-${attr.name}Input`}
+                onChange={this.handleTemplateAttrChange(template.id, attr.name)}
+                onSave={this.saveEdit}
+                onSaveAndClose={this.saveAndClose}
+                name={attr.name}
+                type={attr.type}
+              />
+            </React.Fragment>
+          )
+        })
+        let link = null
+        if (templateData.link) {
+          link = (
+            <a
+              className="template-picker__link"
+              title={templateData.link}
+              onClick={() => openExternal(templateData.link)}
+            >
+              <Glyphicon glyph="info-sign" />
+            </a>
+          )
+        }
+        return (
+          <Tab eventKey={idx + 3} title={templateData.name} key={`tab-${idx}`}>
+            <div className="template-tab__details">
+              <p>
+                {templateData.description}
+                {link}
+              </p>
+              <Button
+                bsStyle="link"
+                className="text-danger"
+                onClick={() => this.beginRemoveTemplate(template.id)}
+              >
+                {t('Remove template')}
+              </Button>
+            </div>
+            {attrs}
+          </Tab>
+        )
       })
     }
 
@@ -265,7 +408,7 @@ const CardDialogConnector = (connector) => {
       return this.state.addingAttribute ? (
         <div>
           <FormGroup>
-            <ControlLabel>{i18n('New Attribute')}</ControlLabel>
+            <ControlLabel>{t('New Attribute')}</ControlLabel>
             <input
               ref={this.newAttributeInputRef}
               className="form-control"
@@ -274,7 +417,7 @@ const CardDialogConnector = (connector) => {
             />
           </FormGroup>
           <FormGroup>
-            <ControlLabel>{i18n('Paragraph')} &nbsp;</ControlLabel>
+            <ControlLabel>{t('Paragraph')} &nbsp;</ControlLabel>
             <input type="checkbox" onChange={this.handleNewAttributeTypeChange} />
           </FormGroup>
           <ButtonToolbar>
@@ -286,7 +429,7 @@ const CardDialogConnector = (connector) => {
                 }
               }}
             >
-              {i18n('Create')}
+              {t('Create')}
             </Button>
             <Button onClick={this.closeNewAttributeSection}>Cancel</Button>
           </ButtonToolbar>
@@ -324,7 +467,7 @@ const CardDialogConnector = (connector) => {
       return books.allIds.map((id) => {
         return (
           <MenuItem key={id} onSelect={() => this.changeBook(id)}>
-            {books[id].title || i18n('Untitled')}
+            {books[id].title || t('Untitled')}
           </MenuItem>
         )
       })
@@ -333,12 +476,9 @@ const CardDialogConnector = (connector) => {
     renderButtonBar() {
       return (
         <ButtonToolbar className="card-dialog__button-bar">
-          <Button onClick={this.closeWithoutSaving}>{i18n('Cancel')}</Button>
-          <Button bsStyle="success" onClick={this.saveAndClose}>
-            {i18n('Save')}
-          </Button>
+          <Button onClick={this.saveAndClose}>{t('Close')}</Button>
           <Button className="card-dialog__delete" onClick={this.handleDelete}>
-            {i18n('Delete')}
+            {t('Delete')}
           </Button>
         </ButtonToolbar>
       )
@@ -366,12 +506,12 @@ const CardDialogConnector = (connector) => {
           this.props.uiActions.changeCurrentTimeline(this.props.cardMetaData.bookId)
           this.props.closeDialog()
         }
-        bookButton = <Button onClick={handler}>{i18n('View Timeline')}</Button>
+        bookButton = <Button onClick={handler}>{t('View Timeline')}</Button>
       }
       return (
         <div className="card-dialog__dropdown-wrapper" style={{ marginBottom: '5px' }}>
           <label className="card-dialog__details-label" htmlFor="select-book">
-            {i18n('Book')}:
+            {t('Book')}:
             <DropdownButton
               id="select-book"
               className="card-dialog__select-line"
@@ -391,10 +531,10 @@ const CardDialogConnector = (connector) => {
 
       const { isSeries, ui, beats } = this.props
 
-      let labelText = i18n('Chapter')
+      let labelText = t('Chapter')
       let bookDropDown = null
       if (isSeries) {
-        labelText = i18n('Beat')
+        labelText = t('Beat')
         bookDropDown = this.renderBookDropdown()
       }
       const darkened =
@@ -415,7 +555,7 @@ const CardDialogConnector = (connector) => {
           {bookDropDown}
           <div className="card-dialog__dropdown-wrapper">
             <label className="card-dialog__details-label" htmlFor={lineDropdownID}>
-              {i18n('Plotline')}:
+              {t('Plotline')}:
               <DropdownButton
                 id={lineDropdownID}
                 className="card-dialog__select-line"
@@ -463,7 +603,7 @@ const CardDialogConnector = (connector) => {
           />
           <div className="color-picker__box">
             <label className="card-dialog__details-label" style={{ minWidth: '55px' }}>
-              {i18n('Color')}:
+              {t('Color')}:
             </label>
             <ColorPickerColor
               color={
@@ -480,13 +620,13 @@ const CardDialogConnector = (connector) => {
               ref={this.colorButtonRef}
             />
             <div className="buttons" style={{ alignSelf: 'flex-start' }}>
-              <Button bsSize="xs" block title={i18n('Choose color')} onClick={this.openColorPicker}>
+              <Button bsSize="xs" block title={t('Choose color')} onClick={this.openColorPicker}>
                 <Glyphicon glyph="tint" />
               </Button>
               <Button
                 bsSize="xs"
                 block
-                title={i18n('No color')}
+                title={t('No color')}
                 bsStyle="warning"
                 onClick={() => this.chooseCardColor(null)}
               >
@@ -503,6 +643,7 @@ const CardDialogConnector = (connector) => {
                 chooseColor={this.chooseCardColor}
                 el={this.colorButtonRef}
                 close={() => this.setState({ showColorPicker: false })}
+                position={{ left: 118 }}
               />
             </Overlay>
           </div>
@@ -512,61 +653,38 @@ const CardDialogConnector = (connector) => {
 
     render() {
       const { cardId, ui } = this.props
-      const { selected } = this.state
       return (
         <PlottrModal isOpen={true} onRequestClose={this.saveAndClose}>
           {this.renderDelete()}
+          {this.renderRemoveTemplate()}
+          {this.renderTemplatePicker()}
           <div className={cx('card-dialog', { darkmode: ui.darkMode })}>
             <div className="card-dialog__body">
               {this.renderLeftSide()}
               <div className="card-dialog__description">
                 {this.renderTitle()}
-                <div className="card-dialog__tab-container">
-                  <div className="card-dialog__left-tabs">
-                    <div
-                      className={cx('card-dialog__details-label card-dialog__tab', {
-                        'card-dialog__tab--selected': selected === 'Description',
-                      })}
-                      onClick={this.selectTab('Description')}
-                    >
-                      {i18n('Description')}
-                    </div>
-                    <div
-                      className={cx('card-dialog__details-label card-dialog__tab', {
-                        'card-dialog__tab--selected': selected === 'Attributes',
-                      })}
-                      onClick={this.selectTab('Attributes')}
-                    >
-                      {i18n('Attributes')}
-                    </div>
-                  </div>
-                  <a
-                    href="#"
-                    className={cx('card-dialog__custom-attributes-configuration-link', {
-                      hidden: selected !== 'Attributes',
-                    })}
-                    onClick={this.props.uiActions.openAttributesDialog}
-                  >
-                    {i18n('Configure')}
-                  </a>
-                </div>
-                <div
-                  className={cx('card-dialog__details-show-hide-wrapper', {
-                    hidden: selected !== 'Description',
-                  })}
+                <Tabs
+                  activeKey={this.state.activeTab}
+                  id="tabs"
+                  className="card-dialog__tabs"
+                  onSelect={this.selectTab}
                 >
-                  <CardDescriptionEditor cardId={cardId} />
-                </div>
-                <div
-                  className={cx('card-dialog__custom-attributes', {
-                    hidden: selected !== 'Attributes',
-                  })}
-                >
-                  {this.renderEditingCustomAttributes()}
+                  <Tab eventKey={1} title={t('Description')}>
+                    <CardDescriptionEditor cardId={cardId} />
+                  </Tab>
+                  <Tab eventKey={2} title={t('Attributes')}>
+                    <a
+                      href="#"
+                      className="card-dialog__custom-attributes-configuration-link"
+                      onClick={this.props.uiActions.openAttributesDialog}
+                    >
+                      {t('Configure')}
+                    </a>
+                    {this.renderEditingCustomAttributes()}
+                  </Tab>
                   {this.renderEditingTemplates()}
-                  <hr />
-                  {this.renderAddCustomAttribute()}
-                </div>
+                  {!templatesDisabled && <Tab eventKey="new" title={t('+ Add Template')}></Tab>}
+                </Tabs>
               </div>
             </div>
             {this.renderButtonBar()}

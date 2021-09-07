@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
 import { Editor, Transforms } from 'slate'
-import { useSlate } from 'slate-react'
 import { Button } from 'react-bootstrap'
 import { LIST_TYPES, HEADING_TYPES } from './helpers'
 
@@ -46,13 +45,18 @@ export const handleHeadings = (editor, format) => {
 export const handleList = (editor, format) => {
   const isInList = Editor.isInList(editor, editor.selection)
 
-  Transforms.unwrapNodes(editor, {
-    match: (n) => LIST_TYPES.includes(n.type),
-    split: true,
-  })
+  // Careful!  All interactions with the editor might prompt
+  // normalisation, which could undo the operation that you're trying
+  // to implement.
+  Editor.withoutNormalizing(editor, () => {
+    Transforms.unwrapNodes(editor, {
+      match: (n) => LIST_TYPES.includes(n.type),
+      split: true,
+    })
 
-  Transforms.setNodes(editor, {
-    type: 'paragraph',
+    Transforms.setNodes(editor, {
+      type: 'paragraph',
+    })
   })
 
   // The reason we don't wrap in a list-item is because the Normalizer takes care of making sure that

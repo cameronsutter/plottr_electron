@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
+import { clone } from 'lodash'
+
 import OutlineOptionsConnector from './options/OutlineOptions'
 import GeneralOptions from './options/GeneralOptions'
 import CharacterOptions from './options/CharacterOptions'
@@ -24,8 +26,13 @@ const ExportBodyConnector = (connector) => {
     }, [type])
 
     const updateOptions = (newVal, category, attr) => {
-      const newOptions = { ...options }
-      newOptions[category][attr] = newVal
+      const newOptions = {
+        ...options,
+        [category]: {
+          ...options[category],
+          [attr]: newVal,
+        },
+      }
       setOptions(newOptions)
       onChange(newOptions)
     }

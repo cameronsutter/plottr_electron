@@ -137,7 +137,8 @@ const MiniBeatConnector = (connector) => {
   }
 
   MiniBeat.propTypes = {
-    bookId: PropTypes.string.isRequired,
+    // Could be a bookId or the string 'series'
+    bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     beat: PropTypes.object.isRequired,
     beatIndex: PropTypes.number.isRequired,
     idx: PropTypes.number.isRequired,

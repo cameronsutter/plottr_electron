@@ -854,4 +854,11 @@ export default {
       backgroundColor: '#f1f5f8',
     },
   },
+  actions: {
+    editCount: 0,
+    lastAction: null,
+    lastActionKeys: [],
+    startTimestamp: null,
+    lastActionTimestamp: null,
+  },
 }

@@ -1,9 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'react-proptypes'
-import { t as i18n } from 'plottr_locales'
-import { ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
+import { t } from 'plottr_locales'
+import { ButtonToolbar, Button, Glyphicon, FormControl } from 'react-bootstrap'
 import cx from 'classnames'
-import { FaSave } from 'react-icons/fa'
 import UnconnectedPlottrModal from '../PlottrModal'
 import UnconnectedPlotlineTemplateDetails from './PlotlineTemplateDetails'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
@@ -20,11 +19,23 @@ const { lineFromTemplate, projectFromTemplate } = template
 const modalStyles = { content: { width: '50%', marginLeft: '25%' } }
 
 const typeMap = {
-  project: i18n('Project Templates'),
-  plotlines: i18n('Starter Templates'),
-  characters: i18n('Starter Templates'),
-  scenes: i18n('Starter Templates'),
+  project: t('Project Templates'),
+  plotlines: t('Starter Templates'),
+  characters: t('Starter Templates'),
+  scenes: t('Starter Templates'),
 }
+
+const subCatMap = {
+  all: t('All'),
+  comedy: t('Comedy'),
+  general: t('General'),
+  romance: t('Romance'),
+  mystery: t('Mystery'),
+  action: t('Action'),
+  screenplay: t('Screenplay'),
+}
+
+const subCategories = ['all', 'action', 'general', 'mystery', 'romance', 'screenplay']
 
 const TemplatePickerConnector = (connector) => {
   const PlottrModal = UnconnectedPlottrModal(connector)
@@ -33,7 +44,6 @@ const TemplatePickerConnector = (connector) => {
   const {
     platform: {
       appVersion,
-      startSaveAsTemplate,
       openExternal,
       template: { listTemplates, listCustomTemplates, deleteTemplate, editTemplateDetails },
     },
@@ -49,12 +59,12 @@ const TemplatePickerConnector = (connector) => {
       customTemplates: [],
       deleting: false,
       deleteWhich: null,
+      subCategory: null,
     }
 
     static defaultProps = {
-      showTemplateSaveButton: true,
       showCancelButton: true,
-      confirmButtonText: i18n('Choose'),
+      confirmButtonText: t('Choose'),
       close: () => {},
     }
 
@@ -66,6 +76,11 @@ const TemplatePickerConnector = (connector) => {
         customTemplates = [...customTemplates, ...listCustomTemplates(type)]
       })
       this.setState({ templates, customTemplates })
+    }
+
+    onSubCatChange = (e) => {
+      const val = e.target.value
+      this.setState({ subCategory: val })
     }
 
     deleteTemplate = (e) => {
@@ -256,41 +271,62 @@ const TemplatePickerConnector = (connector) => {
       })
     }
 
-    renderSaveButton(num) {
-      if (!this.props.showTemplateSaveButton) return null
-      if (num) return null
-      if (
-        this.props.type.length === 1 &&
-        this.props.type[0] === 'characters' &&
-        !this.props.canMakeCharacterTemplates
-      )
-        return null
-
-      return (
-        <Button
-          data-testid={testIds.save}
-          bsSize="small"
-          onClick={() => {
-            startSaveAsTemplate(this.props.type)
-          }}
-        >
-          <FaSave className="svg-save-template" /> {i18n('Save as Template')}
-        </Button>
-      )
-    }
-
     renderStarterTemplates() {
       const listTypes = Object.keys(this.state.templates)
       return listTypes.map((type) => {
-        const list = this.state.templates[type]
-        const title = typeMap[type]
-        return (
-          <Fragment key={type}>
-            <h1 className="">{title}</h1>
-            <ul className="list-group">{this.renderTemplateList(list, 'starter', type)}</ul>
-          </Fragment>
-        )
+        if (type == 'plotlines') {
+          if (this.state.subCategory && this.state.subCategory !== 'all') {
+            // only 1 subCategory
+            const subCat = this.state.subCategory
+            let list = this.state.templates[type].filter((t) => {
+              return t.categories && t.categories.includes(subCat)
+            })
+            let title = typeMap[type]
+            return this.renderListFragment(subCat, title, list, 'starter', type)
+          } else {
+            // all
+            let list = this.state.templates[type]
+            let title = typeMap[type]
+            return this.renderListFragment(type, title, list, 'starter', type)
+          }
+        } else {
+          let list = this.state.templates[type]
+          let title = typeMap[type]
+          return this.renderListFragment(type, title, list, 'starter', type)
+        }
       })
+    }
+
+    renderListFragment(key, title, list, category, type) {
+      let chooser = null
+      if (type == 'plotlines') {
+        chooser = this.renderSubCategoryPicker()
+      }
+      return (
+        <Fragment key={key}>
+          <h1>{title}</h1>
+          {chooser}
+          <ul className="list-group">{this.renderTemplateList(list, category, type)}</ul>
+        </Fragment>
+      )
+    }
+
+    renderSubCategoryPicker() {
+      const options = subCategories.map((sc) => (
+        <option value={sc} key={sc}>
+          {subCatMap[sc]}
+        </option>
+      ))
+
+      return (
+        <FormControl
+          componentClass="select"
+          onChange={this.onSubCatChange}
+          value={this.state.subCategory || 'all'}
+        >
+          {options}
+        </FormControl>
+      )
     }
 
     renderBody() {
@@ -299,9 +335,8 @@ const TemplatePickerConnector = (connector) => {
           {this.renderDelete()}
           <div className="template-picker__wrapper">
             <div className="template-picker__list">
-              <h1 className="">{i18n('My Templates')}</h1>
+              <h1>{t('My Templates')}</h1>
               <ul className="list-group">
-                {this.renderSaveButton(this.state.customTemplates.length)}
                 {this.renderTemplateList(this.state.customTemplates, 'custom')}
               </ul>
               {this.renderStarterTemplates()}
@@ -311,7 +346,7 @@ const TemplatePickerConnector = (connector) => {
           <ButtonToolbar className="card-dialog__button-bar">
             {this.props.showCancelButton && (
               <Button data-testid={testIds.cancel} onClick={this.props.close}>
-                {i18n('Cancel')}
+                {t('Cancel')}
               </Button>
             )}
             <Button
@@ -352,7 +387,6 @@ const TemplatePickerConnector = (connector) => {
       type: PropTypes.array,
       darkMode: PropTypes.bool,
       canMakeCharacterTemplates: PropTypes.bool,
-      showTemplateSaveButton: PropTypes.bool,
       showCancelButton: PropTypes.bool,
       confirmButtonText: PropTypes.string,
     }

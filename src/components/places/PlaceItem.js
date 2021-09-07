@@ -19,15 +19,10 @@ const PlaceItemConnector = (connector) => {
 
     componentDidMount() {
       this.scrollIntoView()
-
-      // if (this.props.selected && !this.props.editing) document.addEventListener('keydown', this.deleteWithKeyboard)
     }
 
     componentDidUpdate() {
       this.scrollIntoView()
-
-      // if (this.props.selected && !this.props.editing) document.addEventListener('keydown', this.deleteWithKeyboard)
-      // else document.removeEventListener('keydown', this.deleteWithKeyboard)
     }
 
     scrollIntoView = () => {
@@ -36,12 +31,6 @@ const PlaceItemConnector = (connector) => {
         if (node) node.scrollIntoView()
       }
     }
-
-    // deleteWithKeyboard = e => {
-    //   if (e.keyCode == 8 || e.keyCode == 46) {
-    //     this.setState({deleting: true})
-    //   }
-    // }
 
     deletePlace = (e) => {
       e.stopPropagation()

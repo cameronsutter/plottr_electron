@@ -67,7 +67,7 @@ const BeatInsertCellConnector = (connector) => {
       return cx(
         orientedClassName('insert-beat-wrapper', orientation),
         beatToLeft && hovering !== beatToLeft.id && !localHovering && 'transparent',
-        !beatToLeft && 'transparent',
+        !beatToLeft && !localHovering && 'transparent',
         {
           'insert-beat-spacer': showLine,
         }
@@ -197,7 +197,7 @@ const BeatInsertCellConnector = (connector) => {
     }
 
     renderInsertChild() {
-      const { handleInsertChild, isFirst, isSmall, atMaximumDepth } = this.props
+      const { handleInsertChild, isFirst, atMaximumDepth } = this.props
 
       if (atMaximumDepth) return null
 
@@ -207,11 +207,7 @@ const BeatInsertCellConnector = (connector) => {
           className={this.orientedClassSubIcon()}
           onClick={this.insertChild}
         >
-          <Button
-            className={this.wrapperClassSubIcon()}
-            bsSize={isSmall ? 'small' : undefined}
-            block
-          >
+          <Button className={this.wrapperClassSubIcon()} bsSize="xs" block>
             <IoIosReturnRight
               size={25}
               style={{ margin: '-1px -5px -6px -5px' }}
@@ -223,8 +219,7 @@ const BeatInsertCellConnector = (connector) => {
     }
 
     renderInsertBeat() {
-      const { isFirst, isSmall, hierarchyLevels, orientation, hierarchyLevelName, isInBeatList } =
-        this.props
+      const { isFirst, hierarchyLevels, orientation, hierarchyLevelName } = this.props
 
       let actualHierarchyLevel = hierarchyLevels.find((level) =>
         level.name == hierarchyLevelName ? true : null
@@ -239,11 +234,7 @@ const BeatInsertCellConnector = (connector) => {
           style={orientation == 'vertical' ? (isHigherLevel ? null : { marginTop: '10px' }) : null}
         >
           <div className={this.wrapperClass()}>
-            <Button
-              className={!isFirst ? 'acts-tour-step6' : null}
-              bsSize={isSmall || !isInBeatList ? 'small' : undefined}
-              block
-            >
+            <Button className={!isFirst ? 'acts-tour-step6' : null} bsSize="xs" block>
               <Glyphicon glyph="plus" />
             </Button>
           </div>
@@ -265,7 +256,7 @@ const BeatInsertCellConnector = (connector) => {
       )
     }
 
-    handleMousEnter = () => {
+    handleMouseEnter = () => {
       if (this.props.readOnly) return
       this.setState({ localHovering: true })
     }
@@ -284,8 +275,8 @@ const BeatInsertCellConnector = (connector) => {
         insideDiv = (
           <div
             className="vertical-beat-list__insert"
-            onMouseEnter={this.handleMousEnter}
-            onMouseLeave={this.hnadleMouseLeave}
+            onMouseEnter={this.handleMouseEnter}
+            onMouseLeave={this.handleMouseLeave}
           >
             {this.renderInsertBeat()}
             {this.renderInsertChild()}
@@ -293,7 +284,7 @@ const BeatInsertCellConnector = (connector) => {
         )
       } else {
         insideDiv = (
-          <div onMouseEnter={this.handleMousEnter} onMouseLeave={this.handleMouseLeave}>
+          <div onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
             {this.renderInsertBeat()}
             {this.renderInsertChild()}
           </div>

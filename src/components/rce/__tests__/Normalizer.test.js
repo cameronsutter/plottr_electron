@@ -299,4 +299,182 @@ describe('normalize', () => {
       expect(normalize(content)).toEqual(fixed)
     })
   })
+  describe('given a collection of top-level list-items', () => {
+    const topLevelListItems = [
+      {
+        type: 'list-item',
+        children: [
+          {
+            text: 'Offer clues which hint at the both the physical and',
+          },
+        ],
+      },
+      {
+        type: 'list-item',
+        children: [
+          {
+            text: 'Include clues which will point the Sleuth in the ',
+          },
+        ],
+      },
+      {
+        type: 'list-item',
+        children: [
+          {
+            text: "Do not reveal too much of the Sleuth's character, as",
+          },
+        ],
+      },
+    ]
+    it('should embed them into a bulleted list', () => {
+      const expectedNormalisedContent = [
+        {
+          type: 'bulleted-list',
+          children: [
+            {
+              type: 'list-item',
+              children: [
+                {
+                  text: 'Offer clues which hint at the both the physical and',
+                },
+              ],
+            },
+            {
+              type: 'list-item',
+              children: [
+                {
+                  text: 'Include clues which will point the Sleuth in the ',
+                },
+              ],
+            },
+            {
+              type: 'list-item',
+              children: [
+                {
+                  text: "Do not reveal too much of the Sleuth's character, as",
+                },
+              ],
+            },
+          ],
+        },
+      ]
+      expect(normalize(topLevelListItems)).toEqual(expectedNormalisedContent)
+    })
+  })
+  describe('given a collection of list-items inside another path in the tree', () => {
+    const embeddedListItems = [
+      {
+        type: 'paragraph',
+        children: [
+          {
+            type: 'list-item',
+            children: [
+              {
+                text: 'Offer clues which hint at the both the physical and',
+              },
+            ],
+          },
+          {
+            type: 'list-item',
+            children: [
+              {
+                text: 'Include clues which will point the Sleuth in the ',
+              },
+            ],
+          },
+          {
+            type: 'list-item',
+            children: [
+              {
+                text: "Do not reveal too much of the Sleuth's character, as",
+              },
+            ],
+          },
+        ],
+      },
+    ]
+    it('should embed them into a bulleted list', () => {
+      const expectedNormalisedContent = [
+        {
+          type: 'bulleted-list',
+          children: [
+            {
+              type: 'list-item',
+              children: [
+                {
+                  text: 'Offer clues which hint at the both the physical and',
+                },
+              ],
+            },
+            {
+              type: 'list-item',
+              children: [
+                {
+                  text: 'Include clues which will point the Sleuth in the ',
+                },
+              ],
+            },
+            {
+              type: 'list-item',
+              children: [
+                {
+                  text: "Do not reveal too much of the Sleuth's character, as",
+                },
+              ],
+            },
+          ],
+        },
+      ]
+      expect(normalize(embeddedListItems)).toEqual(expectedNormalisedContent)
+    })
+  })
+  describe('given a collection of bare list items found in the wild', () => {
+    const exampleFromWild = [
+      {
+        type: 'list-item',
+        children: [
+          {
+            text: 'Capture Readers Interest',
+          },
+        ],
+      },
+      {
+        type: 'list-item',
+        children: [
+          {
+            text: 'Introduce Characters.',
+          },
+          {
+            text: '',
+          },
+        ],
+      },
+    ]
+    it('should fix that collection', () => {
+      const exampleFromWildFixed = [
+        {
+          type: 'bulleted-list',
+          children: [
+            {
+              type: 'list-item',
+              children: [
+                {
+                  text: 'Capture Readers Interest',
+                },
+              ],
+            },
+            {
+              type: 'list-item',
+              children: [
+                {
+                  text: 'Introduce Characters.',
+                },
+              ],
+            },
+          ],
+        },
+      ]
+      expect(normalize(exampleFromWild)).toEqual(exampleFromWildFixed)
+    })
+  })
 })

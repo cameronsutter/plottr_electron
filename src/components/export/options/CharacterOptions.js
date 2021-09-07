@@ -65,19 +65,17 @@ export default function CharacterOptions({ type, options, updateOptions }) {
             <span>{t('Notes')}</span>
           </CheckOption>
         </li>
-        {type == 'scrivener' ? (
-          <li>
-            <CheckOption
-              checked={options.category}
-              onChange={updateOptions}
-              category="characters"
-              attr="category"
-              disabled={!options.export}
-            >
-              <span>{t('Category')}</span>
-            </CheckOption>
-          </li>
-        ) : null}
+        <li>
+          <CheckOption
+            checked={options.category}
+            onChange={updateOptions}
+            category="characters"
+            attr="category"
+            disabled={!options.export}
+          >
+            <span>{t('Category')}</span>
+          </CheckOption>
+        </li>
         <li>
           <CheckOption
             checked={options.customAttributes}

@@ -9,7 +9,12 @@ const RichTextConnector = (connector) => {
   const RichTextEditor = UnconnectedRichTextEditor(connector)
 
   const {
-    platform: { openExternal, log, createErrorReport },
+    platform: {
+      storage: { imagePublicURL, isStorageURL },
+      openExternal,
+      log,
+      createErrorReport,
+    },
   } = connector
 
   const RichText = (props) => {
@@ -17,38 +22,49 @@ const RichTextConnector = (connector) => {
     if (props.editable) {
       body = (
         <RichTextEditor
+          id={props.id}
+          fileId={props.fileId}
           className={props.className}
           onChange={props.onChange}
           autoFocus={props.autofocus}
+          selection={props.selection}
           text={props.description}
           darkMode={props.darkMode}
         />
       )
     } else {
+      // TODO: support live watching(?)
       body = (
         <RichTextViewer
           text={props.description}
           className={props.className}
           openExternal={openExternal}
           log={log}
+          imagePublicURL={imagePublicURL}
+          isStorageURL={isStorageURL}
         />
       )
     }
 
     return (
-      <RCEBoundary createErrorReport={createErrorReport} log={log} openExternal={openExternal}>
+      <RCEBoundary createErrorReport={createErrorReport} openExternal={openExternal}>
         {body}
       </RCEBoundary>
     )
   }
 
   RichText.propTypes = {
+    id: PropTypes.string,
+    fileId: PropTypes.string,
     description: PropTypes.any,
+    selection: PropTypes.object,
     onChange: PropTypes.func,
     editable: PropTypes.bool,
     autofocus: PropTypes.bool,
     className: PropTypes.string,
     darkMode: PropTypes.bool.isRequired,
+    isStorageURL: PropTypes.func.isRequired,
+    imagePublicURL: PropTypes.func.isRequired,
   }
 
   return RichText

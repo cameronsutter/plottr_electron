@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as pltr from 'pltr/v2'
 import {
+  OverlayTrigger,
   DeleteConfirmModal,
   ColorPickerColor,
   ItemsManagerModal as UnconnectedItemsManagerModal,
@@ -66,6 +67,7 @@ import {
   SubNav as UnconnectedSubNav,
   ProjectTemplateDetails,
   CharacterTemplateDetails,
+  DashboardBody as UnconnectedDashboardBody,
 } from '../components'
 
 const connector = {
@@ -81,6 +83,8 @@ const connector = {
 //
 // It should provide the following functions:
 // {
+//   undo: () => IO,
+//   redo: () => IO,
 //   electron: Object?,
 //   openExternal: (Url) => IO,
 //   log: {
@@ -88,23 +92,71 @@ const connector = {
 //     error: (String) => IO,
 //     warn: (String) => IO,
 //   },
+//   updateLanguage: String => IO,
+//   license: {
+//     licenseStore: { clear: () => IO },
+//     checkForActiveLicense: (Object, (object, object) => IO) => IO
+//     useLicenseInfo: () => [Object, number],
+//     useTrialStatus: () => { started: bool, expired: bool, startTrial: Number => IO },
+//     verifyLicense: (Object, (bool, Object) => IO) => IO,
+//     trial90days: { includes: Object => bool },
+//   },
+//   reloadMenu: () => IO,
 //   dialog: {
 //     showErrorBox: (string, string) => IO,
 //   }
+//   showSaveDialogSync,
+//   showOpenDialogSync,
 //   createErrorReport: (String) => IO,
 //   appVersion: String,
+//   defaultBackupLocation,
+//   setDarkMode,
+//   file: {
+//     createNew: Object => IO,
+//     openExistingFile: () => IO,
+//     openKnownFile: (String, String) => IO,
+//     doesFileExist: String => IO bool,
+//     useSortedKnownFiles: () => [[String], { String => Object }],
+//     isTempFile: String => bool,
+//     pathSep: String,
+//     basename: String => String,
+//     deleteKnownFile: (String, String) => IO,
+//     editKnownFilePath: (String, String) => IO,
+//     renameFile: (String) => IO,
+//     removeFromKnownFiles: String => IO,
+//     saveFile: (String, Object) => IO,
+//     readFileSync: (String, String) => IO,
+//     createFromSnowflake: (String) => IO,
+//     joinPath: (*String) => String,
+//   },
+//   update: {
+//     onUpdateError: (Object, Object) => IO,
+//     onUpdaterUpdateAvailable: (Object, Object) => IO,
+//     onUpdaterUpdateNotAvailable: () => IO,
+//     onUpdaterDownloadProgress: (Object, Object) => IO,
+//     onUpdatorUpdateDownloaded: (Object, Object) => IO,
+//     checkForUpdates: () => IO,
+//     downloadUpdate: () => IO,
+//     quitToInstall: () => IO,
+//     deregisterUpdateListeners: () => IO,
+//   }
 //   template: {
+//     TemplateFetcher: Class,
 //     listTemplates,
 //     listCustomTemplates,
 //     deleteTemplate,
 //     editTemplateDetails,
 //     startSaveAsTemplate,
 //     saveTemplate,
+//     useFilteredSortedTemplates: () => Object,
+//     useCustomTemplatesInfo: () => [Object],
+//     useTemplatesInfo: () => [Object]
 //   },
 //   electron?: Electron,
 //   settings: {
 //     get: String => Any
 //   },
+//   useSettingsInfo: () => [Object, Any, (String, Any) => IO],
 //   user: {
 //     get: String => Any
 //   },
@@ -126,8 +178,10 @@ const connector = {
 //   store: {
 //     useExportConfigInfo: hook,
 //   }
+//   useBackupFolders: () => [String],
 //   moveFromTemp: () => IO,
-//   showItemInFolder: String => IO
+//   moveItemToTrash: String  => IO,
+//   showItemInFolder: String => IO,
 //   tempFilesPath: String
 //   mpq: {
 //     push: String => IO
@@ -135,12 +189,14 @@ const connector = {
 //   inBrowser: bool,
 //   browserHistory: object,
 //   templatesDisabled: bool,
-//   rootElementSelectors: [String]
+//   rootElementSelectors: [String],
+//   machineIdSync: () => IO String,
 // }
 
 export default (platform) => {
   var connectorObject = { ...connector, platform }
   return {
+    OverlayTrigger,
     DeleteConfirmModal,
     ColorPickerColor,
     ItemsManagerModal: UnconnectedItemsManagerModal(connectorObject),
@@ -205,5 +261,6 @@ export default (platform) => {
     SubNav: UnconnectedSubNav(connectorObject),
     ProjectTemplateDetails,
     CharacterTemplateDetails,
+    DashboardBody: UnconnectedDashboardBody(connectorObject),
   }
 }

@@ -135,6 +135,11 @@ const TagListViewConnector = (connector) => {
         <SubNav>
           <Nav bsStyle="pills">
             <NavItem>
+              <Button bsSize="small" onClick={() => this.appendBlankTag(null)}>
+                <Glyphicon glyph="plus" /> {i18n('New')}
+              </Button>
+            </NavItem>
+            <NavItem>
               <Button bsSize="small" onClick={() => this.setState({ categoriesDialogOpen: true })}>
                 <Glyphicon glyph="list" /> {i18n('Categories')}
               </Button>

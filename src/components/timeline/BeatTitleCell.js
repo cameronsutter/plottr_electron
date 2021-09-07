@@ -220,23 +220,53 @@ const BeatTitleCellConnector = (connector) => {
     }
 
     renderHorizontalHoverOptions(style) {
-      const { orientation, isMedium, isSmall, beat, hierarchyLevel, hierarchyLevels, tour } =
-        this.props
+      const {
+        beatIndex,
+        beats,
+        positionOffset,
+        hierarchyEnabled,
+        isSeries,
+        orientation,
+        isMedium,
+        isSmall,
+        beat,
+        hierarchyLevel,
+        hierarchyLevels,
+        tour,
+      } = this.props
       const klasses = orientedClassName('beat-list__item__hover-options', orientation)
       const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
+      const beatTitle = beatPositionTitle(
+        beatIndex,
+        beats,
+        beat,
+        hierarchyLevels,
+        positionOffset,
+        hierarchyEnabled,
+        isSeries
+      )
       return (
         <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
           <ButtonGroup>
             {isMedium ? null : (
-              <Button bsSize={isSmall ? 'small' : undefined} onClick={this.startEditing}>
+              <Button
+                title={`Edit ${beatTitle}`}
+                bsSize={isSmall ? 'small' : undefined}
+                onClick={this.startEditing}
+              >
                 <Glyphicon glyph="edit" />
               </Button>
             )}
-            <Button bsSize={isSmall ? 'small' : undefined} onClick={this.handleDelete}>
+            <Button
+              title={`Delete ${beatTitle}`}
+              bsSize={isSmall ? 'small' : undefined}
+              onClick={this.handleDelete}
+            >
               <Glyphicon glyph="trash" />
             </Button>
             {showExpandCollapse ? (
               <Button
+                title={`Expand/Collapse ${beatTitle}`}
                 bsSize={isSmall ? 'small' : undefined}
                 className={tour.run ? 'acts-tour-step7' : ''}
                 onClick={this.handleToggleExpanded}
@@ -269,8 +299,9 @@ const BeatTitleCellConnector = (connector) => {
 
       let button1 = (
         <Button
+          title="Insert Peer"
           className={!isFirst && tour.run ? 'acts-tour-step6' : null}
-          bsSize={isSmall ? 'small' : undefined}
+          bsSize="xs"
           block
           onClick={this.handleAddBeat}
           style={isMedium ? (isHigherLevel ? { marginTop: '0px' } : { marginTop: '19px' }) : null}
@@ -281,8 +312,9 @@ const BeatTitleCellConnector = (connector) => {
 
       let button2 = hierarchyLevels.length - hierarchyLevel.level > 1 && (
         <Button
+          title="Insert Child"
           className={'acts-tour-step8'}
-          bsSize={isSmall ? 'small' : undefined}
+          bsSize="xs"
           block
           style={{ marginTop: '0px' }}
           onClick={this.handleAddChild}
@@ -312,13 +344,35 @@ const BeatTitleCellConnector = (connector) => {
     }
 
     renderVerticalHoverOptions(style) {
-      const { orientation, isSmall, isMedium, beat, hierarchyLevel, hierarchyLevels, tour } =
-        this.props
+      const {
+        orientation,
+        isSmall,
+        isMedium,
+        beat,
+        hierarchyLevel,
+        hierarchyLevels,
+        tour,
+        beatIndex,
+        beats,
+        positionOffset,
+        hierarchyEnabled,
+        isSeries,
+      } = this.props
+      const beatTitle = beatPositionTitle(
+        beatIndex,
+        beats,
+        beat,
+        hierarchyLevels,
+        positionOffset,
+        hierarchyEnabled,
+        isSeries
+      )
       const klasses = orientedClassName('beat-list__item__hover-options', orientation)
       const showExpandCollapse = hierarchyLevels.length - hierarchyLevel.level > 1
       return (
         <div className={cx(klasses, { 'small-timeline': isSmall })} style={style}>
           <Button
+            title={`Edit ${beatTitle}`}
             bsSize={isSmall ? 'small' : undefined}
             block
             onClick={this.startEditing}
@@ -334,11 +388,17 @@ const BeatTitleCellConnector = (connector) => {
           >
             <Glyphicon glyph="edit" />
           </Button>
-          <Button bsSize={isSmall ? 'small' : undefined} block onClick={this.handleDelete}>
+          <Button
+            title={`Delete ${beatTitle}`}
+            bsSize={isSmall ? 'small' : undefined}
+            block
+            onClick={this.handleDelete}
+          >
             <Glyphicon glyph="trash" />
           </Button>
           {showExpandCollapse && (
             <Button
+              title={`Expand/Collapse ${beatTitle}`}
               bsSize={isSmall ? 'small' : undefined}
               className={tour.run ? 'acts-tour-step7' : ''}
               onClick={this.handleToggleExpanded}
@@ -377,12 +437,13 @@ const BeatTitleCellConnector = (connector) => {
         hierarchyEnabled,
         isSeries,
         beatIndex,
+        darkMode,
       } = this.props
       if (!this.state.editing) return <span>{truncateTitle(beatTitle, 50)}</span>
 
       return (
         <FormGroup>
-          <ControlLabel>
+          <ControlLabel className={cx({ darkmode: darkMode })}>
             {editingBeatLabel(
               beatIndex,
               beats,
@@ -411,24 +472,21 @@ const BeatTitleCellConnector = (connector) => {
     render() {
       window.SCROLLWITHKEYS = !this.state.editing
       const {
-        beats,
-        beatIndex,
-        hierarchyLevels,
+        hierarchyLevel,
         beat,
-        positionOffset,
         beatTitle,
         isSmall,
         isMedium,
-        hierarchyEnabled,
-        isSeries,
         orientation,
         timelineSize,
         readOnly,
+        featureFlags,
+        darkMode,
       } = this.props
       const { hovering, inDropZone } = this.state
       const innerKlass = cx(orientedClassName('beat__body', orientation), {
         'medium-timeline': isMedium,
-        hover: hovering === this.props.beat.id,
+        hover: hovering === beat.id,
         dropping: inDropZone,
         disabled: readOnly,
       })
@@ -455,15 +513,7 @@ const BeatTitleCellConnector = (connector) => {
             {this.renderDelete()}
             {this.renderEditInput()}
             <div
-              title={beatPositionTitle(
-                beatIndex,
-                beats,
-                beat,
-                hierarchyLevels,
-                positionOffset,
-                hierarchyEnabled,
-                isSeries
-              )}
+              title={beatTitle}
               onClick={hovering ? this.stopHovering : this.startHovering}
               draggable={!readOnly}
               onDragStart={this.handleDragStart}
@@ -478,15 +528,7 @@ const BeatTitleCellConnector = (connector) => {
           <Cell className="beat-table-cell">
             <div
               className={beatKlass}
-              title={beatPositionTitle(
-                beatIndex,
-                beats,
-                beat,
-                hierarchyLevels,
-                positionOffset,
-                hierarchyEnabled,
-                isSeries
-              )}
+              title={beatTitle}
               onMouseEnter={this.startHovering}
               onMouseLeave={this.stopHovering}
               onDrop={this.handleDrop}
@@ -495,13 +537,12 @@ const BeatTitleCellConnector = (connector) => {
               {this.renderDelete()}
               <div
                 style={hierarchyToStyles(
-                  this.props.hierarchyLevel,
+                  hierarchyLevel,
                   timelineSize,
-                  this.state.hovering === this.props.beat.id || this.state.inDropZone,
-                  this.props.darkMode === true
-                    ? this.props.hierarchyLevel.dark
-                    : this.props.hierarchyLevel.light,
-                  this.props.darkMode
+                  hovering === beat.id || inDropZone,
+                  darkMode === true ? hierarchyLevel.dark : hierarchyLevel.light,
+                  darkMode,
+                  featureFlags
                 )}
                 className={innerKlass}
                 onClick={this.startEditing}
@@ -548,6 +589,7 @@ const BeatTitleCellConnector = (connector) => {
     onMouseEnter: PropTypes.func.isRequired,
     hovering: PropTypes.number,
     readOnly: PropTypes.bool,
+    featureFlags: PropTypes.object.isRequired,
   }
 
   const {
@@ -581,6 +623,7 @@ const BeatTitleCellConnector = (connector) => {
           isSeries: selectors.isSeriesSelector(state.present),
           tour: selectors.tourSelector(state.present),
           readOnly: !selectors.canWriteSelector(state.present),
+          featureFlags: selectors.featureFlags(state.present),
         }
       }
     }

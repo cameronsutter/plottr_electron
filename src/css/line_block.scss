@@ -94,8 +94,8 @@ $medium_width: 80px;
 .line-list__insert-beat {
   height: $title_height;
   display: flex;
-  margin-left: -5px;
   align-items: center;
+  justify-content: center;
   transition: all 0.4s $cubic;
   font-size: 12px;
   cursor: pointer;
@@ -104,6 +104,10 @@ $medium_width: 80px;
   }
   .insert-beat-wrapper {
     z-index: 3;
+
+    .glyphicon {
+      margin-left: 1px;
+    }
   }
   .insert-beat-wrapper.insert-beat-spacer {
     .glyphicon {
@@ -162,17 +166,17 @@ $medium_width: 80px;
     }
     .line-list__append-line__double {
       margin-left: 2px;
-      flex-direction: column;
+      flex-direction: column-reverse;
       div {
         padding: 10px 2px;
       }
       div.template {
         font-size: 12px;
-        border-bottom: none;
+        border-top: none;
         border-right: 3px dashed $blue-8;
       }
       div.non-template {
-        border-top: none;
+        border-bottom: none;
         border-left: 3px dashed $blue-8;
       }
     }
@@ -240,6 +244,9 @@ $medium_width: 80px;
       font-size: 16px;
       margin-bottom: 0;
     }
+    .control-label.darkmode {
+      color: $darkmode-darker-text;
+    }
   }
 
   &.medium-timeline {
@@ -292,8 +299,9 @@ $medium_width: 80px;
   border: 1px solid transparent;
   font-size: 12px;
   width: 150px;
-  margin-left: 25px;
   cursor: pointer;
+  margin: 0 !important;
+  margin-left: -5px !important;
   svg {
     position: absolute;
   }

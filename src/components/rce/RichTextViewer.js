@@ -7,13 +7,20 @@ import Element from './Element'
 import { useTextConverter } from './helpers'
 import cx from 'classnames'
 
-const RichTextViewer = ({ openExternal, ...props }) => {
+const RichTextViewer = ({ openExternal, imagePublicURL, isStorageURL, ...props }) => {
   const editor = useMemo(() => {
     return withReact(createEditor())
   }, [])
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
   const renderElement = useCallback(
-    (innerProps) => <Element {...innerProps} openExternal={openExternal} />,
+    (innerProps) => (
+      <Element
+        {...innerProps}
+        openExternal={openExternal}
+        imagePublicURL={imagePublicURL}
+        isStorageURL={isStorageURL}
+      />
+    ),
     [openExternal]
   )
   const value = useTextConverter(props.text, props.log)
@@ -40,6 +47,8 @@ RichTextViewer.propTypes = {
   className: PropTypes.string,
   openExternal: PropTypes.func.isRequired,
   log: PropTypes.object.isRequired,
+  isStorageURL: PropTypes.func.isRequired,
+  imagePublicURL: PropTypes.func.isRequired,
 }
 
 export default RichTextViewer

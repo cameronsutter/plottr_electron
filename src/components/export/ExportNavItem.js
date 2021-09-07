@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { NavItem, Button, Glyphicon, Popover } from 'react-bootstrap'
 import { t } from 'plottr_locales'
@@ -13,6 +13,7 @@ const ExportNavItemConnector = (connector) => {
       export: { askToExport, export_config },
       log,
       dialog,
+      isWindows,
     },
   } = connector
 
@@ -30,13 +31,20 @@ const ExportNavItemConnector = (connector) => {
       const defaultPath =
         bookId == 'series' ? seriesName + ' ' + t('(Series View)') : books[`${bookId}`].title
 
-      askToExport(defaultPath, fullState, type, export_config[type], (error, success) => {
-        if (error) {
-          log.error(error)
-          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-          return
+      askToExport(
+        defaultPath,
+        fullState,
+        type,
+        export_config[type],
+        isWindows,
+        (error, success) => {
+          if (error) {
+            log.error(error)
+            dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+            return
+          }
         }
-      })
+      )
     }
 
     const ShowModal = () => {

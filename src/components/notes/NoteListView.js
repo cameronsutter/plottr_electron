@@ -266,7 +266,7 @@ const NoteListViewConnector = (connector) => {
 
   NoteListView.propTypes = {
     categories: PropTypes.array.isRequired,
-    visibleNotesByCategory: PropTypes.array.isRequired,
+    visibleNotesByCategory: PropTypes.object.isRequired,
     notes: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
     characters: PropTypes.array.isRequired,

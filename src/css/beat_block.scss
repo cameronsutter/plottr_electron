@@ -34,6 +34,10 @@ $medium_width: 80px;
       font-weight: normal;
       font-size: 16px;
       margin-bottom: 0;
+
+    }
+    .control-label.darkmode {
+      color: $darkmode-darker-text;
     }
   }
 
@@ -83,14 +87,13 @@ $medium_width: 80px;
 .transparent {
   visibility: hidden;
 }
- 
+
 .medium-lower-hover-options {
   display:flex;
   justify-content:center;
   margin: 5px 0 10px;
   button {
-    height:35px;
-    width: 41px;
+    width: 27px;
   }
 }
 
@@ -101,28 +104,18 @@ $medium_width: 80px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  button {
-    width:41px;
-    height:35px;
+  &:not(.small-timeline):not(.medium-timeline) {
+    margin-left: 0px;
+    margin-right: 0px;
   }
   &:last-child:not(.small-timeline):not(.medium-timeline) {
-    margin: 8px 5px 0 -4px;
-    padding: -5px;
-    width:41px;
-  }
-  &:last-child:not(.small-timeline):not(.medium-timeline) .insert-beat-wrapper {
-    display:flex;
-    justify-content: center;
-    padding: 6px 5px 10px 5px;
+    margin-top: 8px;
   }
   &:first-child:not(.small-timeline):not(.medium-timeline) {
-    margin: 75px 5px 0 -5px;
+    margin-top: 75px;
     height: 16px;
-    width:41px;
   }
   .insert-beat-wrapper {
-    display: flex;
-    padding: 1px;
     .glyphicon {
       margin-top: -1px;
       margin-right: -1px;
@@ -138,7 +131,7 @@ $medium_width: 80px;
       padding: 14px 35px;
     }
     color: $blue-5;
-    border: 3px dotted $blue-8;
+    border: none;
     margin-right: 50px;
   }
   &.medium-timeline {
@@ -160,7 +153,7 @@ $medium_width: 80px;
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
-    border: 3px dashed $blue-7;
+    border: none;
   }
 }
 
@@ -204,6 +197,9 @@ $medium_width: 80px;
       font-weight: normal;
       font-size: 16px;
       margin-bottom: 0;
+    }
+    .control-label.darkmode {
+      color: $darkmode-darker-text;
     }
   }
   &.medium-timeline {
@@ -313,11 +309,11 @@ $medium_width: 80px;
   .vertical-insert-beat-wrapper.append-beat {
     padding: 20px $title_height;
     color: $blue-5;
-    border: 3px dotted $blue-8;
+    border: none;
     margin-top: 10px;
   }
   .vertical-insert-beat-wrapper.append-beat:hover {
-    border: 3px dashed $blue-7;
+    border: none;
   }
   &.medium-timeline {
     width: $medium_width;

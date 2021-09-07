@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
+import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import { t as i18n } from 'plottr_locales'
@@ -8,8 +8,9 @@ import UnconnectedToolBar from './ToolBar'
 import { toggleMark } from './MarkButton'
 import Leaf from './Leaf'
 import Element from './Element'
-import { useTextConverter, createEditor } from './helpers'
+import { createEditor } from './helpers'
 import { useRegisterEditor } from './editor-registry'
+import { withEditState } from './withEditState'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -19,41 +20,78 @@ const HOTKEYS = {
 
 const RichTextEditorConnector = (connector) => {
   const {
-    platform: { openExternal },
+    platform: {
+      storage: { imagePublicURL, isStorageURL },
+      openExternal,
+      publishRCEOperations,
+      fetchRCEOperations,
+      listenForChangesToEditor,
+      deleteChangeSignal,
+      deleteOldChanges,
+      undo,
+      redo,
+    },
   } = connector
 
   const ToolBar = UnconnectedToolBar(connector)
 
-  const RichTextEditor = ({ ...props }) => {
+  const RichTextEditor = ({
+    id,
+    undoId,
+    text,
+    selection,
+    darkMode,
+    className,
+    autoFocus,
+    onChange,
+    fileId,
+    clientId,
+  }) => {
+    // Editor instance
     const editor = useMemo(() => {
       return createEditor()
     }, [])
-    const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
-    const renderElement = useCallback(
-      (innerProps) => <Element {...innerProps} openExternal={openExternal} />,
-      [openExternal]
-    )
-    const [value, setValue] = useState(null)
-    const [editorWrapperRef, setEditorWrapperRef] = useState(null)
-    const key = useRef(Math.random().toString(16))
-    useEffect(() => {
-      if (!value) {
-        setValue(useTextConverter(props.text)) // eslint-disable-line
-      }
-    }, [props.text])
-
     const registerEditor = useRegisterEditor(editor)
 
-    if (!value) return null
+    // Rendering helpers
+    const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
+    const renderElement = useCallback(
+      (innerProps) => (
+        <Element
+          {...innerProps}
+          openExternal={openExternal}
+          imagePublicURL={imagePublicURL}
+          isStorageURL={isStorageURL}
+        />
+      ),
+      [openExternal]
+    )
 
-    const updateValue = (newVal) => {
-      setValue(newVal)
-      // only update if it changed
-      // (e.g. this event could fire with a selection change, but the text is the same)
-      if (value !== newVal) {
-        props.onChange(newVal)
+    // Focus on first render
+    const [editorWrapperRef, setEditorWrapperRef] = useState(null)
+    useEffect(() => {
+      if (autoFocus && editorWrapperRef && editorWrapperRef.firstChild) {
+        editorWrapperRef.firstChild.focus()
       }
-    }
+    }, [autoFocus, editorWrapperRef])
+
+    // State management
+    const [value, currentSelection, key, onValueChanged, onKeyDown] = withEditState(
+      editor,
+      id,
+      fileId,
+      clientId,
+      onChange,
+      publishRCEOperations,
+      fetchRCEOperations,
+      listenForChangesToEditor,
+      deleteChangeSignal,
+      deleteOldChanges,
+      undo,
+      redo,
+      text,
+      selection
+    )
 
     const handleKeyDown = (event) => {
       for (const hotkey in HOTKEYS) {
@@ -63,6 +101,7 @@ const RichTextEditorConnector = (connector) => {
           toggleMark(editor, mark)
         }
       }
+      onKeyDown(event)
     }
 
     const handleKeyUp = () => {
@@ -91,25 +130,27 @@ const RichTextEditorConnector = (connector) => {
       }
     }
 
+    useEffect(() => {
+      return () => {
+        onValueChanged(null, {})
+      }
+    }, [])
+
     const handleClickEditable = (event) => {
       if (!editorWrapperRef) return
       if (editorWrapperRef.firstChild.contains(event.target)) return
 
       // Focus the Editable content
       editorWrapperRef.firstChild.focus()
-      // Select all text
-      // Push cursor/focus to last char
-      // document.execCommand('selectAll', false, null)
-      // document.getSelection().collapseToEnd()
     }
 
-    const otherProps = {
-      autoFocus: props.autoFocus,
-    }
+    if (!value) return null
+
+    const otherProps = {}
     return (
-      <Slate editor={editor} value={value} onChange={updateValue} key={key.current}>
-        <div className={cx('slate-editor__wrapper', props.className)}>
-          <ToolBar editor={editor} darkMode={props.darkMode} />
+      <Slate editor={editor} value={value} onChange={onValueChanged} key={key.current}>
+        <div className={cx('slate-editor__wrapper', className)}>
+          <ToolBar editor={editor} darkMode={darkMode} selection={currentSelection} />
           <div
             // the firstChild will be the contentEditable dom node
             ref={(e) => {
@@ -117,7 +158,7 @@ const RichTextEditorConnector = (connector) => {
               setEditorWrapperRef(e)
             }}
             onClick={handleClickEditable}
-            className={cx('slate-editor__editor', { darkmode: props.darkMode })}
+            className={cx('slate-editor__editor', { darkmode: darkMode })}
           >
             <Editable
               spellCheck
@@ -136,13 +177,32 @@ const RichTextEditorConnector = (connector) => {
 
   RichTextEditor.propTypes = {
     text: PropTypes.any,
+    id: PropTypes.string,
+    fileId: PropTypes.string,
+    selection: PropTypes.object,
     onChange: PropTypes.func,
     autoFocus: PropTypes.bool,
     darkMode: PropTypes.bool,
     className: PropTypes.string,
+    undoId: PropTypes.string,
+    clientId: PropTypes.string,
   }
 
-  return RichTextEditor
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect((state) => ({
+      undoId: selectors.undoIdSelector(state.present),
+      clientId: selectors.clientIdSelector(state.present),
+    }))(RichTextEditor)
+  }
+
+  throw new Error('Could not connect RichTextEditor')
 }
 
 export default RichTextEditorConnector

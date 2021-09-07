@@ -7,7 +7,7 @@ import { IoIosAlert } from 'react-icons/io'
 
 const RCEBoundaryConnector = (connector) => {
   const {
-    platform: { appVersion, user },
+    platform: { appVersion, log, user },
   } = connector
 
   class RCEBoundary extends Component {
@@ -19,8 +19,10 @@ const RCEBoundaryConnector = (connector) => {
         'ErrorBoundary',
         appVersion,
         user,
-        process.env.NODE_ENV === 'development' ? 'development' : 'production',
-        process.env.ROLLBAR_ACCESS_TOKEN || '',
+        (process.env.NEXT_PUBLIC_NODE_ENV || process.env.NEXT_PUBLIC_NODE_ENV) === 'development'
+          ? 'development'
+          : 'production',
+        process.env.NEXT_PUBLIC_ROLLBAR_ACCESS_TOKEN || process.env.ROLLBAR_ACCESS_TOKEN || '',
         process.platform
       ),
     }
@@ -29,7 +31,6 @@ const RCEBoundaryConnector = (connector) => {
       children: PropTypes.node,
       createErrorReport: PropTypes.func.isRequired,
       openExternal: PropTypes.func.isRequired,
-      log: PropTypes.object.isRequired,
     }
 
     static getDerivedStateFromError(error) {
@@ -39,7 +40,7 @@ const RCEBoundaryConnector = (connector) => {
     componentDidCatch(error, errorInfo) {
       this.error = error
       this.errorInfo = errorInfo
-      this.props.log.error(error, errorInfo)
+      log.error(error, errorInfo)
       this.state.rollbar.error(error, errorInfo)
     }
 

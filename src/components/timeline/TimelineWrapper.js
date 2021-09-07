@@ -1,21 +1,31 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { Nav, NavItem, Button, ButtonGroup, Glyphicon, Popover, Alert } from 'react-bootstrap'
+import {
+  Nav,
+  NavItem,
+  Button,
+  ButtonGroup,
+  Glyphicon,
+  Popover,
+  Alert,
+  Dropdown,
+  MenuItem,
+} from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import cx from 'classnames'
 import OverlayTrigger from '../OverlayTrigger'
 import UnconnectedTimelineTable from './TimelineTable'
 import UnconnectedActsConfigModal from '../dialogs/ActsConfigModal'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
+import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
 import UnconnectedExportNavItem from '../export/ExportNavItem'
 import { FunSpinner } from '../Spinner'
 import UnconnectedSubNav from '../containers/SubNav'
-import { FaSave } from 'react-icons/fa'
-import { VscSymbolStructure } from 'react-icons/vsc'
-import UnconnectedClearNavItem from './ClearNavItem'
 import { helpers } from 'pltr/v2'
+
+const BREAKPOINT = 890
 
 // takes into account spacing
 const SCENE_CELL_WIDTH = 175 + 17
@@ -28,7 +38,6 @@ const TimelineWrapperConnector = (connector) => {
   const CustomAttrFilterList = UnconnectedCustomAttrFilterList(connector)
   const ExportNavItem = UnconnectedExportNavItem(connector)
   const SubNav = UnconnectedSubNav(connector)
-  const ClearNavItem = UnconnectedClearNavItem(connector)
 
   const {
     platform: { mpq, exportDisabled, templatesDisabled },
@@ -41,6 +50,8 @@ const TimelineWrapperConnector = (connector) => {
       this.state = {
         mounted: false,
         beatConfigIsOpen: false,
+        clearing: false,
+        isSmallerThanToolbar: false,
       }
       // TODO: refactor this to use createRef
       this.tableRef = null
@@ -63,6 +74,9 @@ const TimelineWrapperConnector = (connector) => {
           }
         })
       }, 10)
+
+      window.addEventListener('resize', this.handleResize)
+      if (window.innerWidth < BREAKPOINT) this.setState({ isSmallerThanToolbar: true })
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -99,10 +113,21 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     componentWillUnmount() {
+      window.removeEventListener('resize', this.handleResize)
       if (this.tableRef) {
         this.tableRef.onScroll = null
         this.tableRef = null
       }
+    }
+
+    handleResize = () => {
+      this.setState({ isSmallerThanToolbar: window.innerWidth < BREAKPOINT })
+    }
+
+    clearTimeline = (e) => {
+      e.stopPropagation()
+      this.setState({ clearing: false })
+      this.props.actions.resetTimeline(this.props.bookId)
     }
 
     // ////////////////
@@ -246,9 +271,23 @@ const TimelineWrapperConnector = (connector) => {
     //  rendering   //
     // //////////////
 
+    renderDelete() {
+      if (!this.state.clearing) return null
+
+      const text = t('Are you sure you want to clear everything in this timeline?')
+      return (
+        <DeleteConfirmModal
+          onDelete={this.clearTimeline}
+          onCancel={() => this.setState({ clearing: false })}
+          customText={text}
+          notSubmit
+        />
+      )
+    }
+
     renderSubNav() {
       const { timelineBundle, actions, featureFlags } = this.props
-      const gatedByBeatHierarchy = helpers.featureFlags.gatedByBeatHierarchy(featureFlags)
+      const { isSmallerThanToolbar } = this.state
 
       let glyph = 'option-vertical'
       let scrollDirectionFirst = 'menu-left'
@@ -267,12 +306,39 @@ const TimelineWrapperConnector = (connector) => {
         <Alert onClick={this.clearFilter} bsStyle="warning">
           <Glyphicon glyph="remove-sign" />
           {'  '}
-          {i18n('Timeline is filtered')}
+          {t('Timeline is filtered')}
         </Alert>
       )
       if (timelineBundle.filterIsEmpty) {
         filterDeclaration = <span></span>
       }
+
+      const rightItems = [
+        <NavItem key="right-1">
+          <Button bsSize="small" onClick={this.openBeatConfig} className="acts-tour-step1">
+            <Glyphicon glyph="cog" /> {t('Settings')}
+          </Button>
+        </NavItem>,
+        <NavItem key="right-2">
+          <Dropdown id="moar-dropdown">
+            <Dropdown.Toggle noCaret bsSize="small">
+              <Glyphicon glyph="option-vertical" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <MenuItem
+                disabled={templatesDisabled || helpers.featureFlags.beatHierarchyIsOn(featureFlags)}
+                onSelect={this.startSaveAsTemplate}
+              >
+                {t('Save as Template')}
+              </MenuItem>
+              <MenuItem divider />
+              <MenuItem onSelect={() => this.setState({ clearing: true })}>
+                {t('Clear Timeline')}
+              </MenuItem>
+            </Dropdown.Menu>
+          </Dropdown>
+        </NavItem>,
+      ]
 
       return (
         <SubNav>
@@ -286,40 +352,29 @@ const TimelineWrapperConnector = (connector) => {
                 overlay={popover}
               >
                 <Button bsSize="small">
-                  <Glyphicon glyph="filter" /> {i18n('Filter')}
+                  <Glyphicon glyph="filter" /> {t('Filter')}
                 </Button>
               </OverlayTrigger>
               {filterDeclaration}
             </NavItem>
             <NavItem>
               <Button bsSize="small" onClick={this.flipOrientation}>
-                <Glyphicon glyph={glyph} /> {i18n('Flip')}
+                <Glyphicon glyph={glyph} /> {t('Flip')}
               </Button>
             </NavItem>
             <NavItem>
               <Button bsSize="small" onClick={this.openCustomAttributesDialog}>
-                <Glyphicon glyph="list" /> {i18n('Attributes')}
+                <Glyphicon glyph="list" /> {t('Attributes')}
               </Button>
             </NavItem>
-            {gatedByBeatHierarchy(() => (
-              <NavItem>
-                <Button bsSize="small" onClick={this.openBeatConfig} className="acts-tour-step1">
-                  <VscSymbolStructure
-                    size={16}
-                    style={{ verticalAlign: 'text-bottom', marginRight: '4px' }}
-                  />
-                  {i18n('Structure')}
-                </Button>
-              </NavItem>
-            ))}
             <NavItem>
-              <span className="subnav__container__label">{i18n('Zoom')}: </span>
+              <span className="subnav__container__label">{t('Zoom')}: </span>
               <ButtonGroup>
                 <Button
                   bsSize="small"
                   className={cx({ active: timelineBundle.isLarge })}
                   onClick={() => actions.setTimelineSize('large')}
-                  title={i18n('Size: large')}
+                  title={t('Size: large')}
                 >
                   L
                 </Button>
@@ -327,7 +382,7 @@ const TimelineWrapperConnector = (connector) => {
                   bsSize="small"
                   className={cx({ active: timelineBundle.isMedium })}
                   onClick={() => actions.setTimelineSize('medium')}
-                  title={i18n('Size: medium')}
+                  title={t('Size: medium')}
                 >
                   M
                 </Button>
@@ -335,14 +390,14 @@ const TimelineWrapperConnector = (connector) => {
                   bsSize="small"
                   className={cx({ active: timelineBundle.isSmall })}
                   onClick={() => actions.setTimelineSize('small')}
-                  title={i18n('Size: small')}
+                  title={t('Size: small')}
                 >
                   S
                 </Button>
               </ButtonGroup>
             </NavItem>
             <NavItem>
-              <span className="subnav__container__label">{i18n('Scroll')}: </span>
+              <span className="subnav__container__label">{t('Scroll')}: </span>
               <ButtonGroup bsSize="small">
                 <Button onClick={this.scrollLeft}>
                   <Glyphicon glyph={scrollDirectionFirst} />
@@ -350,23 +405,15 @@ const TimelineWrapperConnector = (connector) => {
                 <Button onClick={this.scrollRight}>
                   <Glyphicon glyph={scrollDirectionSecond} />
                 </Button>
-                <Button onClick={this.scrollBeginning}>{i18n('Beginning')}</Button>
-                <Button onClick={this.scrollMiddle}>{i18n('Middle')}</Button>
-                <Button onClick={this.scrollEnd}>{i18n('End')}</Button>
+                <Button onClick={this.scrollBeginning}>{t('Beginning')}</Button>
+                <Button onClick={this.scrollMiddle}>{t('Middle')}</Button>
+                <Button onClick={this.scrollEnd}>{t('End')}</Button>
               </ButtonGroup>
             </NavItem>
-            <NavItem>
-              <Button
-                bsSize="small"
-                disabled={templatesDisabled}
-                onClick={this.startSaveAsTemplate}
-              >
-                <FaSave className="svg-save-template" /> {i18n('Save as Template')}
-              </Button>
-            </NavItem>
-            <ClearNavItem />
             {!exportDisabled && <ExportNavItem />}
+            {isSmallerThanToolbar ? rightItems : null}
           </Nav>
+          {!isSmallerThanToolbar ? <Nav pullRight>{rightItems}</Nav> : null}
         </SubNav>
       )
     }
@@ -410,16 +457,14 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     renderBeatConfig() {
-      return helpers.featureFlags.gatedByBeatHierarchy(this.props.featureFlags)(() => {
-        if (!this.state.beatConfigIsOpen) return null
+      if (!this.state.beatConfigIsOpen) return null
 
-        return (
-          <ActsConfigModal
-            isDarkMode={this.props.timelineBundle.darkMode}
-            closeDialog={this.closeBeatConfig}
-          />
-        )
-      })
+      return (
+        <ActsConfigModal
+          isDarkMode={this.props.timelineBundle.darkMode}
+          closeDialog={this.closeBeatConfig}
+        />
+      )
     }
 
     render() {
@@ -432,6 +477,7 @@ const TimelineWrapperConnector = (connector) => {
           {this.renderSubNav()}
           {this.renderCustomAttributes()}
           {this.renderBeatConfig()}
+          {this.renderDelete()}
           <div id="timelineview__root" className="tab-body">
             {this.renderBody()}
           </div>
@@ -441,6 +487,7 @@ const TimelineWrapperConnector = (connector) => {
   }
 
   TimelineWrapper.propTypes = {
+    bookId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     timelineBundle: PropTypes.object.isRequired,
     featureFlags: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
@@ -459,6 +506,7 @@ const TimelineWrapperConnector = (connector) => {
     return connect(
       (state) => {
         return {
+          bookId: selectors.currentTimelineSelector(state.present),
           timelineBundle: selectors.timelineBundleSelector(state.present),
           featureFlags: selectors.featureFlags(state.present),
           tour: selectors.tourSelector(state.present),

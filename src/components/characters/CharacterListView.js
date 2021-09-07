@@ -291,6 +291,7 @@ const CharacterListViewConnector = (connector) => {
           editing={this.state.editingSelected}
           stopEditing={this.stopEditing}
           startEditing={this.editingSelected}
+          openAttributes={() => this.setState({ attributesDialogOpen: true })}
         />
       )
     }

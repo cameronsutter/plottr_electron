@@ -31,6 +31,16 @@ const BlankCardConnector = (connector) => {
       this.titleInputRef = null
     }
 
+    componentDidUpdate(_, prevState) {
+      const { creating, showTemplatePicker } = this.state
+      // user just chose a template, and now needs to give the card a name
+      if (creating && prevState.showTemplatePicker && !showTemplatePicker) {
+        setTimeout(() => {
+          if (this.titleInputRef) this.titleInputRef.focus()
+        }, 100)
+      }
+    }
+
     handleDragEnter = (e) => {
       this.setState({ dropDepth: this.state.dropDepth + 1 })
     }
@@ -54,11 +64,15 @@ const BlankCardConnector = (connector) => {
 
       const json = e.dataTransfer.getData('text/json')
       const droppedData = JSON.parse(json)
-      if (!droppedData.cardId) return
 
       const { beatId, lineId } = this.props
+      if (droppedData.cardIds) {
+        this.props.actions.reorderCardsWithinLine(beatId, lineId, [...droppedData.cardIds])
+      } else if (droppedData.cardId) {
+        this.props.actions.reorderCardsWithinLine(beatId, lineId, [droppedData.cardId])
+      }
 
-      this.props.actions.reorderCardsWithinLine(beatId, lineId, [droppedData.cardId])
+      return
     }
 
     saveCreate = () => {
@@ -119,34 +133,24 @@ const BlankCardConnector = (connector) => {
     }
 
     onAddWithTemplateHover = () => {
-      this.setState({
-        templateHover: true,
-      })
+      this.setState({ templateHover: true })
     }
 
     onAddWithTemplateLeave = () => {
-      this.setState({
-        templateHover: false,
-      })
+      this.setState({ templateHover: false })
     }
 
     onAddWithDefaultHover = () => {
-      this.setState({
-        defaultHover: true,
-      })
+      this.setState({ defaultHover: true })
     }
 
     onAddWithDefaultLeave = () => {
-      this.setState({
-        defaultHover: false,
-      })
+      this.setState({ defaultHover: false })
     }
 
     showTemplatePicker = () => {
       if (this.props.readOnly) return
-      this.setState({
-        showTemplatePicker: true,
-      })
+      this.setState({ showTemplatePicker: true })
     }
 
     handleChooseTemplate = (template) => {
@@ -167,6 +171,7 @@ const BlankCardConnector = (connector) => {
 
     renderBlank() {
       const { color, verticalInsertion, orientation, isSmall, isMedium, readOnly } = this.props
+      const { templateHover, defaultHover, inDropZone } = this.state
       if (isSmall) {
         const smallStyle = { borderColor: color }
         return (
@@ -177,7 +182,7 @@ const BlankCardConnector = (connector) => {
             onDrop={this.handleDrop}
           >
             <div
-              className={cx('blank-circle', { hover: this.state.inDropZone })}
+              className={cx('blank-circle', { hover: inDropZone })}
               style={smallStyle}
               onClick={this.createFromSmall}
             />
@@ -189,23 +194,15 @@ const BlankCardConnector = (connector) => {
         borderColor: color,
         color: color,
       }
-      const addWithTemplateStyle = this.state.templateHover
-        ? {
-            background: lightBackground(color),
-          }
-        : {}
-      const addWithDefaultStyle = this.state.defaultHover
-        ? {
-            background: lightBackground(color),
-          }
-        : {}
+      const addWithTemplateStyle = templateHover ? { background: lightBackground(color) } : {}
+      const addWithDefaultStyle = defaultHover ? { background: lightBackground(color) } : {}
       const bodyKlass = cx(orientedClassName('blank-card__body', orientation), {
         disabled: readOnly,
         'vertical-blank-card__body': verticalInsertion,
       })
       return (
         <div
-          className={cx(bodyKlass, { hover: this.state.inDropZone, 'medium-timeline': isMedium })}
+          className={cx(bodyKlass, { hover: inDropZone, 'medium-timeline': isMedium })}
           style={blankCardStyle}
         >
           {!templatesDisabled && (
@@ -216,7 +213,7 @@ const BlankCardConnector = (connector) => {
               onMouseLeave={this.onAddWithTemplateLeave}
               style={addWithTemplateStyle}
             >
-              {i18n('Use Template')}
+              {isMedium ? i18n('Templates') : i18n('Use Template')}
             </div>
           )}
           <div
@@ -242,7 +239,6 @@ const BlankCardConnector = (connector) => {
           isOpen={this.state.showTemplatePicker}
           close={this.closeTemplatePicker}
           onChooseTemplate={this.handleChooseTemplate}
-          showTemplateSaveButton={false}
         />
       )
     }
@@ -250,7 +246,7 @@ const BlankCardConnector = (connector) => {
     renderCreateNew() {
       const { color, isMedium } = this.props
       const cardStyle = { borderColor: color }
-      const bodyKlass = cx('card__body', { 'medium-timeline': isMedium })
+      const bodyKlass = cx('card__body creating', { 'medium-timeline': isMedium })
       return (
         <div className={bodyKlass} style={cardStyle}>
           <FormGroup>

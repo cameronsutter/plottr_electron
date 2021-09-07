@@ -11,6 +11,10 @@ const CardAddConnector = (connector) => {
     state = { creating: false, dropping: false }
     titleInputRef = createRef()
 
+    componentWillUnmount() {
+      window.removeEventListener('keydown', this.handleCancelCreate)
+    }
+
     saveCreate = () => {
       const title = this.titleInputRef.current.value
       this.props.addCard({ title, positionWithinLine: this.props.positionWithinLine + 1 })
@@ -29,9 +33,9 @@ const CardAddConnector = (connector) => {
     }
 
     handleCancelCreate = (event) => {
+      window.removeEventListener('keydown', this.handleCancelCreate)
       if (event.which === 27) {
         //esc
-        window.removeEventListener('keydown', this.handleCancelCreate)
         this.setState({ creating: false })
       }
     }

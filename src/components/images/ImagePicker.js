@@ -15,6 +15,8 @@ import {
   Nav,
   NavItem,
 } from 'react-bootstrap'
+import { v4 as uuidv4 } from 'uuid'
+
 import ImageConnector from './Image'
 import { t as i18n } from 'plottr_locales'
 import { Spinner } from '../Spinner'
@@ -26,6 +28,12 @@ import { readImage, isImageUrl, readImageFromURL } from '../images'
 const ImagePickerConnector = (connector) => {
   const PlottrModal = PlottrModalConnector(connector)
   const Image = ImageConnector(connector)
+
+  const {
+    platform: {
+      storage: { saveImageToStorageBlob },
+    },
+  } = connector
 
   class ImagePicker extends Component {
     state = {}
@@ -69,10 +77,17 @@ const ImagePickerConnector = (connector) => {
 
       if (files && files.length > 0) {
         for (const file of files) {
-          readImage(file, (data) => {
-            this.props.actions.addImage({ data, name: file.name, path: file.path })
-            this.setState({ tabId: '1', justAddedImage: true })
-          })
+          if (saveImageToStorageBlob) {
+            saveImageToStorageBlob(file, file.name).then((internalUrl) => {
+              this.props.actions.addImage({ name: file.name, path: internalUrl })
+              this.setState({ tabId: '1', justAddedImage: true })
+            })
+          } else {
+            readImage(file, (data) => {
+              this.props.actions.addImage({ data, name: file.name, path: file.path })
+              this.setState({ tabId: '1', justAddedImage: true })
+            })
+          }
         }
       }
     }
@@ -81,12 +96,24 @@ const ImagePickerConnector = (connector) => {
       const url = e.target.value
       if (isImageUrl(url)) {
         this.setState({ loading: true })
-        readImageFromURL(url, (strData) => {
-          this.props.actions.addImage({ data: strData, name: url, path: url })
-          setTimeout(() => {
-            this.setState({ tabId: '1', justAddedImage: true, loading: false })
-          }, 500)
-        })
+        if (saveImageToStorageBlob) {
+          fetch(url).then((response) => {
+            response.blob().then((image) => {
+              const tempName = uuidv4()
+              saveImageToStorageBlob(image, tempName).then((internalUrl) => {
+                this.props.actions.addImage({ name: tempName, path: internalUrl })
+                this.setState({ tabId: '1', justAddedImage: true })
+              })
+            })
+          })
+        } else {
+          readImageFromURL(url, (strData) => {
+            this.props.actions.addImage({ data: strData, name: url, path: url })
+            setTimeout(() => {
+              this.setState({ tabId: '1', justAddedImage: true, loading: false })
+            }, 500)
+          })
+        }
       }
     }
 
@@ -112,7 +139,7 @@ const ImagePickerConnector = (connector) => {
       const { images } = this.props
       const { selectedId } = this.state
       const idString = `${selectedId}`
-      this.props.chooseImage(idString, images[idString].data)
+      this.props.chooseImage(idString, images[idString].data || images[idString].path)
       this.close()
     }
 
@@ -125,10 +152,17 @@ const ImagePickerConnector = (connector) => {
     uploadNewFile = (event) => {
       if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0]
-        readImage(file, (data) => {
-          this.props.actions.addImage({ data, name: file.name, path: file.path })
-          this.setState({ tabId: '1', justAddedImage: true })
-        })
+        if (saveImageToStorageBlob) {
+          saveImageToStorageBlob(file, file.name).then((internalUrl) => {
+            this.props.actions.addImage({ name: file.name, path: internalUrl })
+            this.setState({ tabId: '1', justAddedImage: true })
+          })
+        } else {
+          readImage(file, (data) => {
+            this.props.actions.addImage({ data, name: file.name, path: file.path })
+            this.setState({ tabId: '1', justAddedImage: true })
+          })
+        }
       }
     }
 

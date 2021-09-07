@@ -15,7 +15,7 @@ import { helpers, initialState } from 'pltr/v2'
 const { card } = initialState
 
 const {
-  beats: { nextId, hasChildren },
+  beats: { nextId },
   lists: { reorderList },
 } = helpers
 
@@ -109,10 +109,9 @@ const TimelineTableConnector = (connector) => {
     }
 
     renderHorizontal() {
-      const { lines, isSmall, ui } = this.props
+      const { lines, isSmall, ui, beatMapping } = this.props
 
-      const beatMap = this.props.beatMapping
-      const beatMapKeys = Object.keys(beatMap)
+      const beatMapKeys = Object.keys(beatMapping)
       let howManyCells = 0
       const renderedLines = lines.map((line) => {
         const lineTitle = (
@@ -122,7 +121,7 @@ const TimelineTableConnector = (connector) => {
             bookId={ui.currentTimeline}
           />
         )
-        const cards = this.renderHorizontalCards(line, beatMap, beatMapKeys)
+        const cards = this.renderHorizontalCards(line, beatMapping, beatMapKeys)
         howManyCells = cards.length
         if (isSmall) {
           return (
@@ -150,7 +149,7 @@ const TimelineTableConnector = (connector) => {
     renderVertical() {
       const lineMap = this.lineMapping()
       const lineMapKeys = Object.keys(lineMap)
-      const { beats, beatActions, ui, isSmall, booksBeats, isLarge } = this.props
+      const { beats, beatActions, ui, isSmall, isLarge } = this.props
 
       const beatToggler = (beat) => () => {
         if (!beat) return
@@ -161,7 +160,7 @@ const TimelineTableConnector = (connector) => {
       const renderedBeats = beats.map((beat, idx) => {
         let inserts = []
         if (isLarge || idx === 0) {
-          inserts = lineMapKeys.flatMap((linePosition, idx) => {
+          inserts = lineMapKeys.flatMap((linePosition) => {
             const line = lineMap[linePosition]
             return (
               <BeatInsertCell
@@ -206,11 +205,7 @@ const TimelineTableConnector = (connector) => {
                   isFirst={idx === 0}
                   isInBeatList={true}
                   beatToLeft={beats[idx - 1]}
-                  handleInsertChild={
-                    lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
-                      ? undefined
-                      : () => this.handleInsertChildBeat(beats[idx - 1].id)
-                  }
+                  handleInsertChild={() => this.handleInsertChildBeat(beats[idx - 1].id)}
                   expanded={lastBeat && lastBeat.expanded}
                   toggleExpanded={beatToggler(lastBeat)}
                   handleInsert={this.handleInsertNewBeat}
@@ -253,34 +248,13 @@ const TimelineTableConnector = (connector) => {
                 isInBeatList={true}
                 handleInsert={this.handleInsertNewBeat}
                 beatToLeft={lastBeat}
-                handleInsertChild={
-                  lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
-                    ? undefined
-                    : () => this.handleInsertChildBeat(lastBeat.id)
-                }
+                handleInsertChild={() => this.handleInsertChildBeat(lastBeat.id)}
                 expanded={lastBeat && lastBeat.expanded}
                 toggleExpanded={beatToggler(lastBeat)}
               />
             </Row>
           )
         }
-        finalRows.push(
-          <Row key="last-insert">
-            <BeatInsertCell
-              isInBeatList={true}
-              handleInsert={this.handleAppendBeat}
-              isLast={true}
-              beatToLeft={lastBeat}
-              handleInsertChild={
-                lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
-                  ? undefined
-                  : () => this.handleInsertChildBeat(lastBeat.id)
-              }
-              expanded={lastBeat && lastBeat.expanded}
-              toggleExpanded={beatToggler(lastBeat)}
-            />
-          </Row>
-        )
       }
 
       return [...renderedBeats, ...finalRows]
@@ -415,50 +389,32 @@ const TimelineTableConnector = (connector) => {
     pltr: { selectors, actions },
   } = connector
 
-  const {
-    cardMetaDataMapSelector,
-    visibleSortedBeatsByBookSelector,
-    beatsByBookSelector,
-    beatHasChildrenSelector,
-    sortedLinesByBookSelector,
-    isSeriesSelector,
-    isLargeSelector,
-    isSmallSelector,
-    isMediumSelector,
-    sparceBeatMap,
-  } = selectors
-
-  const LineActions = actions.line
-  const BeatActions = actions.beat
-  const CardActions = actions.card
-  const UIActions = actions.ui
-
   if (redux) {
     const { connect, bindActionCreators } = redux
 
     return connect(
       (state) => {
         return {
-          beats: visibleSortedBeatsByBookSelector(state.present),
-          booksBeats: beatsByBookSelector(state.present),
-          beatHasChildrenMap: beatHasChildrenSelector(state.present),
-          beatMapping: sparceBeatMap(state.present),
+          beats: selectors.visibleSortedBeatsByBookSelector(state.present),
+          booksBeats: selectors.beatsByBookSelector(state.present),
+          beatHasChildrenMap: selectors.beatHasChildrenSelector(state.present),
+          beatMapping: selectors.sparceBeatMap(state.present),
           nextBeatId: nextId(state.present.beats),
-          lines: sortedLinesByBookSelector(state.present),
-          cardMap: cardMetaDataMapSelector(state.present),
+          lines: selectors.sortedLinesByBookSelector(state.present),
+          cardMap: selectors.cardMetaDataMapSelector(state.present),
           ui: state.present.ui,
-          isSeries: isSeriesSelector(state.present),
-          isSmall: isSmallSelector(state.present),
-          isMedium: isMediumSelector(state.present),
-          isLarge: isLargeSelector(state.present),
+          isSeries: selectors.isSeriesSelector(state.present),
+          isSmall: selectors.isSmallSelector(state.present),
+          isMedium: selectors.isMediumSelector(state.present),
+          isLarge: selectors.isLargeSelector(state.present),
         }
       },
       (dispatch) => {
         return {
-          actions: bindActionCreators(UIActions, dispatch),
-          lineActions: bindActionCreators(LineActions, dispatch),
-          cardActions: bindActionCreators(CardActions, dispatch),
-          beatActions: bindActionCreators(BeatActions, dispatch),
+          actions: bindActionCreators(actions.ui, dispatch),
+          lineActions: bindActionCreators(actions.line, dispatch),
+          cardActions: bindActionCreators(actions.card, dispatch),
+          beatActions: bindActionCreators(actions.beat, dispatch),
         }
       }
     )(TimelineTable)

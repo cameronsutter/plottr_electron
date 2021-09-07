@@ -13,7 +13,7 @@ export default function MiniColorPicker(props) {
 
   useEffect(() => {
     const el = props.el.current
-    setCoords(el.getBoundingClientRect())
+    if (el) setCoords(el.getBoundingClientRect())
   }, [props.el])
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function MiniColorPicker(props) {
   return (
     <div
       className={cx('mini-color-picker', { darkmode: props.darkMode })}
-      style={useCoords()}
+      style={props.position || useCoords()}
       ref={pickerRef}
     >
       <p>{i18n('Default Colors')}</p>
@@ -133,4 +133,5 @@ MiniColorPicker.propTypes = {
   close: PropTypes.func,
   chooseColor: PropTypes.func,
   darkMode: PropTypes.bool.isRequired,
+  position: PropTypes.object,
 }

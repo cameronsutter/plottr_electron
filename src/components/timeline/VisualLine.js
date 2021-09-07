@@ -11,21 +11,21 @@ const measurements = {
   horizontal: {
     medium: {
       first: 85,
-      last: 161 + 50,
+      last: 161,
     },
     large: {
       first: 155,
-      last: 161 + 50,
+      last: 10,
     },
   },
   vertical: {
     medium: {
-      first: 120,
-      last: 70 + 40,
+      first: 35,
+      last: 35,
     },
     large: {
-      first: 100,
-      last: 70 + 40,
+      first: 200,
+      last: 10,
     },
   },
 }

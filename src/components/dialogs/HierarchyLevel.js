@@ -2,11 +2,15 @@ import React, { useState } from 'react'
 import { PropTypes } from 'prop-types'
 
 import UnconnectedEditOrDisplay from './EditOrDisplay'
-import { actions, borderStyle as borderStyles } from 'pltr/v2'
+import { actions, borderStyle as borderStyles, helpers } from 'pltr/v2'
+import { getBorderColor } from 'pltr/v2/helpers/colors'
 
 const {
   hierarchyLevels: { editHierarchyLevel },
 } = actions
+const {
+  colors: { getBackgroundColor },
+} = helpers
 
 const HierarchyLevelConnector = (connector) => {
   const EditOrDisplay = UnconnectedEditOrDisplay(connector)
@@ -15,18 +19,17 @@ const HierarchyLevelConnector = (connector) => {
     isDarkMode,
     name,
     level,
-    autoNumber,
     dark,
     light,
     textSize,
     borderStyle,
+    borderColor,
     backgroundColor,
     editHierarchyLevel,
     isHighest,
     isLowest,
   }) => {
     const [editingName, setEditingName] = useState(false)
-    const [editingAutoNumber, setEditingAutoNumber] = useState(false)
     const [editingTextColor, setEditingTextColor] = useState(false)
     const [editingTextSize, setEditingTextSize] = useState(false)
     const [editingBorderColor, setEditingBorderColor] = useState(false)
@@ -35,7 +38,8 @@ const HierarchyLevelConnector = (connector) => {
 
     const theme = isDarkMode ? 'dark' : 'light'
     const textColor = isDarkMode ? dark.textColor : light.textColor
-    const borderColor = isDarkMode ? dark.borderColor : light.borderColor
+    const usableborderColor = getBorderColor(borderColor, isDarkMode)
+    const usableBackgroundColor = getBackgroundColor(backgroundColor, isDarkMode)
 
     const setValue = (name) => (newValue) => {
       editHierarchyLevel({
@@ -69,14 +73,6 @@ const HierarchyLevelConnector = (connector) => {
           addSpacer={isLowest}
         />
         <EditOrDisplay
-          id={`hierarchy-level-auto-number-config-${level}`}
-          type="toggle"
-          setValue={setValue('autoNumber')}
-          setEditing={setEditingAutoNumber}
-          editing={editingAutoNumber}
-          value={autoNumber}
-        />
-        <EditOrDisplay
           id={`hierarchy-level-auto-text-color-${level}`}
           type="color"
           setValue={setThemedValue('textColor')}
@@ -99,7 +95,7 @@ const HierarchyLevelConnector = (connector) => {
           setValue={setThemedValue('borderColor')}
           setEditing={setEditingBorderColor}
           editing={editingBorderColor}
-          value={isDarkMode ? dark.borderColor : light.borderColor}
+          value={usableborderColor}
         />
         <EditOrDisplay
           id={`hierarchy-level-auto-border-style-${level}`}
@@ -116,7 +112,7 @@ const HierarchyLevelConnector = (connector) => {
           setValue={setValue('backgroundColor')}
           setEditing={setEditingBackgroundColor}
           editing={editingBackgroundColor}
-          value={backgroundColor}
+          value={usableBackgroundColor}
         />
       </div>
     )
@@ -132,6 +128,7 @@ const HierarchyLevelConnector = (connector) => {
     textSize: PropTypes.number.isRequired,
     borderStyle: PropTypes.oneOf(borderStyles.ALL_STYLES),
     backgroundColor: PropTypes.string.isRequired,
+    borderColor: PropTypes.string.isRequired,
     editHierarchyLevel: PropTypes.func.isRequired,
     isHighest: PropTypes.bool.isRequired,
     isLowest: PropTypes.bool.isRequired,

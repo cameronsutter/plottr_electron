@@ -16,6 +16,7 @@ const ExportDialogConnector = (connector) => {
       dialog,
       store: { useExportConfigInfo },
       export: { askToExport },
+      isWindows,
     },
   } = connector
 
@@ -27,8 +28,7 @@ const ExportDialogConnector = (connector) => {
     const setType = (type) => saveExportConfig('savedType', type)
 
     const updateOptions = (newValues) => {
-      const newOptions = { ...options }
-      newOptions[type] = newValues
+      const newOptions = { ...options, [type]: newValues }
       setOptions(newOptions)
     }
 
@@ -37,7 +37,7 @@ const ExportDialogConnector = (connector) => {
       const defaultPath =
         bookId == 'series' ? seriesName + ' ' + t('(Series View)') : books[`${bookId}`].title
 
-      askToExport(defaultPath, fullState, type, options[type], (error, success) => {
+      askToExport(defaultPath, fullState, type, options[type], isWindows, (error, success) => {
         if (saveOptions) {
           saveExportConfig('savedType', type)
           // We don't want to maintain the filter across projects
@@ -63,7 +63,7 @@ const ExportDialogConnector = (connector) => {
 
     const Chooser = () => {
       return (
-        <Nav bsStyle="pills" activeKey={type} onSelect={setType}>
+        <Nav bsStyle="pills" className="navbar-nav" activeKey={type} onSelect={setType}>
           <NavItem eventKey="word" title={t('.docx')}>
             {t('MS Word')}
           </NavItem>

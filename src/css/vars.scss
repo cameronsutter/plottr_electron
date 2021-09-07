@@ -11,6 +11,7 @@ $darkmode-darker-background: #555;
 $darkmode-card-background: #666;
 $darkmode-text: #eee;
 $darkmode-darker-text: #ccc;
+$darkmode-link-text: #c9e6ff;
 $darkmode-border: #999;
 $darkmode-darker-border: #777;
 
@@ -68,11 +69,11 @@ $new-item-border: 2px dashed $new-item-border-color;
   color: rgba(108,172,228, 0.9); // #6cace4
 }
 
-@mixin hover-box {
-  background-color: $new-item-background;
-  border-radius: $border-radius;
-  cursor: pointer;
-}
+// @mixin hover-box {
+//   background-color: $new-item-background;
+//   border-radius: $border-radius;
+//   cursor: pointer;
+// }
 
 @mixin well {
   border: 1px solid #ddd;
@@ -92,8 +93,8 @@ $new-item-border: 2px dashed $new-item-border-color;
   margin-top: 10px;
 }
 
-@mixin new_item_hover {
-  background: $new-item-background;
-  border: $new-item-border;
-  cursor: pointer;
-}
+// @mixin new_item_hover {
+//   background: $new-item-background;
+//   border: $new-item-border;
+//   cursor: pointer;
+// }

@@ -182,15 +182,20 @@ const EditOrDisplayConnector = (connector) => {
     options: PropTypes.array,
     hideArrow: PropTypes.bool,
     addSpacer: PropTypes.bool,
+    featureFlags: PropTypes.object.isRequired,
   }
 
-  const { redux } = connector
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
 
   if (redux) {
     const { connect } = redux
 
     return connect((state) => ({
       isDarkMode: state.present.ui.darkMode,
+      featureFlags: selectors.featureFlags(state.present),
     }))(EditOrDisplay)
   }
 

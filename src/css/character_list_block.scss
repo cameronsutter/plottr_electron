@@ -189,6 +189,25 @@
       padding-left: 3%;
     }
   }
+  .character-list__character__tabs {
+    .tab-content {
+      padding: 16px;
+      border-left: 1px solid $gray-8;
+      border-right: 1px solid $gray-8;
+      & > .tab-pane .template-picker__link {
+        cursor: pointer;
+        margin-left: 4px;
+        vertical-align: middle;
+      }
+      & > .tab-pane .template-tab__details {
+        display: flex;
+        justify-content: space-between;
+        .text-danger {
+          color: $red-5 !important;
+        }
+      }
+    }
+  }
   .btn-toolbar {
     display: flex;
     flex-direction: row-reverse;
@@ -215,6 +234,26 @@
       border: 2px dashed $darkmode-border;
       background-color: $darkmode-darker-border;
     }
+  }
+
+  .character-list__character__tabs {
+    .nav-tabs {
+      border-bottom-color: $darkmode-border;
+    }
+    .nav-tabs > li:not(.active) > a:not(:hover) {
+      color: $darkmode-link-text;
+      border-bottom-color: $darkmode-border;
+    }
+    .tab-content {
+      border-color: $darkmode-border;
+      .card-dialog__custom-attributes-configuration-link {
+        color: $darkmode-link-text;
+      }
+    }
+  }
+
+  .card-dialog__button-bar {
+    border-color: $darkmode-border;
   }
 
   h4 {

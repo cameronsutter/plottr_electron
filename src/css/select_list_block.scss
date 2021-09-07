@@ -62,7 +62,7 @@
 
   &.horizontal {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     flex-wrap: wrap;
     .select-list__details-label {
       min-width: unset;
@@ -82,17 +82,17 @@
 .chip {
   font-size: 14px;
   line-height: 16px;
-  border-radius: 5rem;
+  border-radius: 2rem;
   display: inline-flex;
-  align-items: center;
+  align-items: end;
   justify-content: space-between;
+  min-width: 75px;
   max-width: 300px;
   height: auto;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 8px;
+  padding: 4px 8px;
   margin: 2px;
-  vertical-align: middle;
   white-space: break-spaces;
   cursor: default;
 

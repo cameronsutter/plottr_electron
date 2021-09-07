@@ -5,7 +5,7 @@ import { FaRegBell } from 'react-icons/fa'
 
 const BeamerConnector = (connector) => {
   const {
-    platform: { openExternal, isWindows, isDevelopment, user },
+    platform: { openExternal, isWindows, user },
   } = connector
 
   const paymentId = user.get('payment_id')
@@ -22,7 +22,7 @@ const BeamerConnector = (connector) => {
     }
 
     const initBeamer = () => {
-      if (isDevelopment) return true
+      // if (isDevelopment) return true
       if (!window.Beamer) return false
 
       const options = { callback: getBeamerAlerts, onclick: openBeamerLink }

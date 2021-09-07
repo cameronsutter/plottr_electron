@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import { Editor } from 'slate'
 import { Button } from 'react-bootstrap'
 
-const UnMemoisedMarkButton = ({ mark, icon, editor }) => {
+const UnMemoisedMarkButton = ({ mark, icon, editor, selection }) => {
   return (
     <Button
       bsStyle={isMarkActive(editor, mark) ? 'primary' : 'default'}
@@ -21,6 +21,7 @@ UnMemoisedMarkButton.propTypes = {
   mark: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,
   editor: PropTypes.object.isRequired,
+  selection: PropTypes.object,
 }
 
 export const MarkButton = React.memo(UnMemoisedMarkButton)

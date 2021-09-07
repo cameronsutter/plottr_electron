@@ -1,12 +1,31 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import PropTypes from 'react-proptypes'
 import RichTextConnector from './rce/RichText'
 import DeleteConfirmModal from './dialogs/DeleteConfirmModal'
 import { FormControl, FormGroup, ControlLabel, Glyphicon, Button } from 'react-bootstrap'
 import cx from 'classnames'
 
+const areEqual = (prevProps, nextProps) => {
+  for (const key of Object.keys(prevProps)) {
+    if (
+      key === 'selection' ||
+      ('value' && nextProps.type === prevProps.type && nextProps.type === 'paragraph')
+    ) {
+      continue
+    }
+    if (prevProps[key] !== nextProps[key]) {
+      return false
+    }
+  }
+  return true
+}
+
 const EditAttributeConnector = (connector) => {
   const RichText = RichTextConnector(connector)
+
+  const {
+    platform: { undo, redo },
+  } = connector
 
   const EditAttribute = ({
     templateAttribute,
@@ -16,14 +35,14 @@ const EditAttributeConnector = (connector) => {
     value,
     index,
     ui,
+    selection,
     onChange,
-    onShortDescriptionKeyDown,
-    onShortDescriptionKeyPress,
+    onSave,
+    onSaveAndClose,
     addAttribute,
     removeAttribute,
     editAttribute,
     reorderAttribute,
-    log,
   }) => {
     const [deleting, setDeleting] = useState(false)
     const [editing, setEditing] = useState(false)
@@ -94,6 +113,44 @@ const EditAttributeConnector = (connector) => {
       </div>
     )
 
+    const onShortDescriptionKeyPress = useMemo(
+      () => (event) => {
+        if (event.which === 13) {
+          if (onSaveAndClose) {
+            onSaveAndClose()
+            return
+          }
+          onSave()
+        }
+      },
+      [onSaveAndClose, onSave]
+    )
+
+    const onShortDescriptionKeyDown = useMemo(
+      () => (event) => {
+        if (event.which === 27) {
+          onSave()
+          return
+        }
+        if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+          event.preventDefault()
+          if (event.shiftKey) {
+            redo()
+          } else {
+            undo()
+          }
+          return
+        }
+        // On Linux, redo is CTRL+y
+        if (event.key === 'y' && event.ctrlKey) {
+          event.preventDefault()
+          redo()
+          return
+        }
+      },
+      [onSave]
+    )
+
     return (
       <>
         {deleting ? (
@@ -109,10 +166,10 @@ const EditAttributeConnector = (connector) => {
             <RichText
               description={value || []}
               onChange={onChange}
+              selection={selection}
               editable
               autofocus={false}
               darkMode={ui.darkMode}
-              log={log}
             />
           </div>
         ) : (
@@ -142,20 +199,20 @@ const EditAttributeConnector = (connector) => {
     inputId: PropTypes.string,
     entityType: PropTypes.string.isRequired,
     ui: PropTypes.object.isRequired,
+    editorPath: PropTypes.string,
+    selection: PropTypes.object,
     onChange: PropTypes.func.isRequired,
-    onShortDescriptionKeyDown: PropTypes.func.isRequired,
-    onShortDescriptionKeyPress: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onSaveAndClose: PropTypes.func,
     addAttribute: PropTypes.func.isRequired,
     removeAttribute: PropTypes.func.isRequired,
     editAttribute: PropTypes.func.isRequired,
     reorderAttribute: PropTypes.func.isRequired,
-    log: PropTypes.object.isRequired,
   }
 
   const {
     redux,
-    platform: { log },
-    pltr: { actions },
+    pltr: { actions, selectors },
   } = connector
 
   if (redux) {
@@ -209,11 +266,11 @@ const EditAttributeConnector = (connector) => {
 
     return connect(
       (state, ownProps) => ({
-        log,
         ...(ownProps.valueSelector ? { value: ownProps.valueSelector(state.present) } : {}),
+        selection: selectors.selectionSelector(state.present, ownProps.editorPath),
       }),
       mapDispatchToProps
-    )(EditAttribute)
+    )(React.memo(EditAttribute, areEqual))
   }
 
   throw new Error('No connecter found for EditAttribute')

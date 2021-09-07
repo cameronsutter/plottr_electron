@@ -61,7 +61,7 @@
     text-align: left;
   }
   .card__body {
-    cursor: pointer;
+    cursor: move;
     .card__title {
       font-style: italic;
     }
@@ -71,7 +71,7 @@
     width: 150px;
     min-height: 70px;
     right: 6px;
-    bottom: 29px;
+    top: 8px;
     border: 3px solid black;
     border-radius: 4px;
     z-index: 1;
@@ -83,13 +83,32 @@
   }
 
   &.vertical {
-    padding-left: 25px;
     .card__add-card {
       display: block;
+      z-index: 10;
+    }
+    .card__behind {
+      right: 18px;
+      bottom: 16px;
+    }
+    .card__drop-zone {
+      margin: auto;
+    }
+  }
+  &.medium-timeline {
+    .card__behind {
+      right: -2px;
+      width: 80px;
+      min-height: 70px;
+      max-height: fit-content;
+      top: 8px;
     }
   }
   &.vertical.medium-timeline {
-    padding-left: 29px;
+    .card__behind {
+      left: 38px;
+      top: 8px;
+    }
   }
 }
 
@@ -119,8 +138,21 @@
   position: relative;
   background-color: $body-background-color;
   cursor: move;
-  transition: all 0.6s $cubic;
+  transition: box-shadow 0.6s $cubic, transform 0.6s $cubic;
   z-index: 2;
+
+  &.creating {
+    padding: 1px 8px 0 8px;
+    .form-group {
+      margin-bottom: 0;
+      .control-label {
+        margin-bottom: 0;
+      }
+      .form-control {
+        padding: 5px 6px;
+      }
+    }
+  }
 
   &.medium-timeline {
     width: 80px;
@@ -134,17 +166,6 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
   }
 }
-
-// I don't think this is used anywhere
-// .vertical-card__body {
-//   @extend .vertical-blank-card__body;
-//   margin-top: 17px;
-
-//   .form-group {
-//     display: block;
-//     padding: 0;
-//   }
-// }
 
 .card__title {
   padding: 10px;
@@ -178,9 +199,10 @@
   div.template {
     @include application-text;
     text-align: center;
+    font-size: 14px;
   }
   &.medium-timeline {
-    flex-direction: column;
+    flex-direction: column-reverse;
     margin-bottom: 0;
     div.template {
       font-size: 12px;
@@ -210,10 +232,11 @@
   div.template {
     @include application-text;
     text-align: center;
+    font-size: 14px;
   }
   &.medium-timeline {
     font-size: 12px;
-    flex-direction: column;
+    flex-direction: column-reverse;
     div {
       padding: 6px 4px;
     }

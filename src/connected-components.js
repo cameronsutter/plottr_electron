@@ -231,6 +231,8 @@ const platform = {
   machineIdSync,
   storage: {
     // TODO: update when the firebase sync PR is merged!
+    isStorageURL: () => false,
+    imagePublicURL: () => false,
   },
 }
 

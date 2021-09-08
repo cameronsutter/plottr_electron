@@ -138,15 +138,21 @@ class App extends Component {
     return (
       <ErrorBoundary>
         <ErrorBoundary>
-          <Navigation forceProjectDashboard={this.props.forceProjectDashboard} />
+          <React.StrictMode>
+            <Navigation forceProjectDashboard={this.props.forceProjectDashboard} />
+          </React.StrictMode>
         </ErrorBoundary>
         <main className="project-main tour-end">
-          <Body />
+          <React.StrictMode>
+            <Body />
+          </React.StrictMode>
         </main>
-        {this.renderTemplateCreate()}
-        {this.renderAskToSave()}
-        {this.props.showTour && this.renderGuidedTour()}
-        {this.renderAdvanceExportModal()}
+        <React.StrictMode>
+          {this.renderTemplateCreate()}
+          {this.renderAskToSave()}
+          {this.props.showTour && this.renderGuidedTour()}
+          {this.renderAdvanceExportModal()}
+        </React.StrictMode>
       </ErrorBoundary>
     )
   }

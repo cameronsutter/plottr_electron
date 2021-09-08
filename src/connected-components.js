@@ -228,7 +228,35 @@ const platform = {
   tempFilesPath: TEMP_FILES_PATH,
   mpq: MPQ,
   rootElementSelectors: ['#react-root', '#dashboard__react__root'],
+  templatesDisabled: false,
+  exportDisabled: false,
+  publishRCEOperations: () => {
+    // TODO
+  },
+  fetchRCEOperations: () => {
+    // TODO
+  },
+  listenForChangesToEditor: () => {
+    // TODO
+  },
+  deleteChangeSignal: () => {
+    // TODO
+  },
+  deleteOldChanges: () => {
+    // TODO
+  },
   machineIdSync,
+  storage: {
+    // TODO: update when the firebase sync PR is merged!
+    imagePublicURL: () => Promise.resolve(''),
+    isStorageURL: () => false,
+    resolveToPublicUrl: () => {
+      // TODO
+    },
+    saveImageToStorageBlob: () => {
+      // TODO
+    },
+  },
 }
 
 const components = connections.pltr(platform)

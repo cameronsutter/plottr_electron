@@ -6,6 +6,16 @@ import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 
 import { t } from 'plottr_locales'
+import {
+  publishRCEOperations,
+  fetchRCEOperations,
+  listenForChangesToEditor,
+  deleteChangeSignal,
+  deleteOldChanges,
+  imagePublicURL,
+  isStorageURL,
+  saveImageToStorageBlob as saveImageToStorageBlobInFirebase,
+} from 'plottr_firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
   useExportConfigInfo,
@@ -230,31 +240,25 @@ const platform = {
   rootElementSelectors: ['#react-root', '#dashboard__react__root'],
   templatesDisabled: false,
   exportDisabled: false,
-  publishRCEOperations: () => {
-    // TODO
-  },
-  fetchRCEOperations: () => {
-    // TODO
-  },
-  listenForChangesToEditor: () => {
-    // TODO
-  },
-  deleteChangeSignal: () => {
-    // TODO
-  },
-  deleteOldChanges: () => {
-    // TODO
-  },
+  publishRCEOperations,
+  fetchRCEOperations,
+  listenForChangesToEditor,
+  deleteChangeSignal,
+  deleteOldChanges,
   machineIdSync,
   storage: {
-    // TODO: update when the firebase sync PR is merged!
-    imagePublicURL: () => Promise.resolve(''),
-    isStorageURL: () => false,
-    resolveToPublicUrl: () => {
-      // TODO
+    imagePublicURL,
+    isStorageURL,
+    resolveToPublicUrl: (storageUrl) => {
+      if (!storageUrl) return null
+      return imagePublicURL(storageUrl)
     },
-    saveImageToStorageBlob: () => {
-      // TODO
+    saveImageToStorageBlob: (blob, name) => {
+      const state = store.getState()
+      const {
+        client: { userId },
+      } = state.present
+      return saveImageToStorageBlobInFirebase(userId, name, blob)
     },
   },
 }

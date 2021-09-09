@@ -61,26 +61,17 @@ ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
 })
 
+const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
+
 function bootFile(filePath, options, numOpenFiles) {
   win.setTitle(displayFileName(filePath))
   win.setRepresentedFilename(filePath)
 
   const { darkMode, beatHierarchy } = options
-
-  let json
-  try {
-    json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-  } catch (error) {
-    return render(
-      <Provider store={store}>
-        <App forceProjectDashboard />
-      </Provider>,
-      root
-    )
-  }
+  const isCloudFile = isPlottrCloudFile(filePath)
 
   try {
-    if (filePath.startsWith('plottr://')) {
+    if (isCloudFile) {
       const fileId = filePath.split('plottr://')[1]
       const userId = SETTINGS.get('user.id')
       if (!userId) {
@@ -129,7 +120,17 @@ function bootFile(filePath, options, numOpenFiles) {
         )
       })
     } else {
-      const json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+      let json
+      try {
+        json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+      } catch (error) {
+        return render(
+          <Provider store={store}>
+            <App forceProjectDashboard />
+          </Provider>,
+          root
+        )
+      }
       ipcRenderer.send('save-backup', filePath, json)
       migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
         if (err) {

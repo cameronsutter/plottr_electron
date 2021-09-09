@@ -54,7 +54,7 @@ function saveFile(filePath, jsonData) {
 let itWorkedLastTime = true
 
 function autoSave(event, filePath, file, userId) {
-  const onCloud = isPlottrCloudFile(filePath)
+  const onCloud = file.file.cloudFile
   if (!onCloud) {
     try {
       saveFile(filePath, file)

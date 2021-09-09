@@ -51,6 +51,7 @@ import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
+import { newFile } from './files'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -85,7 +86,16 @@ const platform = {
   },
   file: {
     createNew: (template) => {
-      ipcRenderer.send('create-new-file', template)
+      const state = store.getState()
+      const {
+        client: { emailAddress, userId, clientId },
+        project: { fileList },
+      } = state.present
+      if (userId) {
+        newFile(emailAddress, userId, fileList, state, clientId, template)
+      } else {
+        ipcRenderer.send('create-new-file', template)
+      }
     },
     openExistingFile,
     doesFileExist,

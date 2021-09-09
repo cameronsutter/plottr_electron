@@ -109,6 +109,8 @@ function bootFile(filePath, options, numOpenFiles) {
                   data.file.version
                 )
               )
+              store.dispatch(actions.project.selectFile(json.file))
+              store.dispatch(actions.client.setClientId(clientId))
             })
             render(
               <Provider store={store}>

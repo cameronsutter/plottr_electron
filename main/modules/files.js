@@ -14,7 +14,6 @@ const { openProjectWindow } = require('./windows/projects')
 const { shell } = require('electron')
 const { broadcastToAllWindows } = require('./broadcast')
 const { saveBackup } = require('./backup')
-const { isPlottrCloudFile } = require('./isPlottrFile')
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')

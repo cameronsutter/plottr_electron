@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { t } from 'plottr_locales'
 import { fetchFiles } from 'plottr_firebase'
-import { actions, reducers, emptyFile, migrateIfNeeded } from 'pltr/v2'
+import { actions, reducers, emptyFile } from 'pltr/v2'
 
 import { closeDashboard } from './dashboard'
 import { store } from './app/store/configureStore'
@@ -27,11 +27,7 @@ export const newFile = (emailAddress, userId, fileList, fullState, clientId, tem
   const fileName = t('Untitled') + ` - ${untitledFileList.length}`
   const setFileList = (...args) => store.dispatch(actions.project.setFileList(...args))
   const selectFile = (...args) => store.dispatch(actions.project.selectFile(...args))
-  const newFileState = Object.assign(
-    newEmptyFile(fileName, version(), fullState.present),
-    template || {}
-  )
-  const file = fullState.present
+  const file = Object.assign(newEmptyFile(fileName, version, fullState.present), template || {})
   const newFile = {
     ...file.file,
     none: false,
@@ -43,7 +39,7 @@ export const newFile = (emailAddress, userId, fileList, fullState, clientId, tem
 
   return axios
     .post(
-      '/api/new-file',
+      `${process.env.API_BASE_DOMAIN}/api/new-file`,
       {
         fileRecord: newFile,
         file,

@@ -14,6 +14,7 @@ import {
 import SETTINGS from './settings'
 import export_config from '../exporter/default_config'
 import { store } from '../../app/store/configureStore'
+import { allCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 
 const knownFilesPath =
   process.env.NODE_ENV == 'development' ? `${KNOWN_FILES_PATH}_dev` : KNOWN_FILES_PATH
@@ -188,6 +189,36 @@ export function useKnownFilesInfo() {
 
 export function useTemplatesInfo() {
   return useJsonStore(templatesStore)
+}
+
+const indexById = (array) => {
+  const indexed = {}
+  array.forEach((x) => (indexed[x.id] = x))
+  return indexed
+}
+
+export function useCustomTemplatesFromLocalStorage() {
+  const [templates, setTemplates] = useState(indexById(allCustomTemplates()))
+
+  useEffect(() => {
+    const deleteTemplateListener = document.addEventListener('delete-template', () => {
+      setTemplates(indexById(allCustomTemplates()))
+    })
+    const editTemplateListener = document.addEventListener('edit-template', () => {
+      setTemplates(indexById(allCustomTemplates()))
+    })
+    const saveTemplateListener = document.addEventListener('save-template', () => {
+      setTemplates(indexById(allCustomTemplates()))
+    })
+    return () => {
+      document.removeEventListener('delete-template', deleteTemplateListener)
+      document.removeEventListener('edit-template', editTemplateListener)
+      document.removeEventListener('save-template', saveTemplateListener)
+    }
+  }, [])
+
+  const nop = () => {}
+  return [templates, templates.size, nop, nop]
 }
 
 export function useCustomTemplatesInfo() {

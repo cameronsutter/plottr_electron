@@ -284,6 +284,7 @@ export const ProjectTemplateDetails = components.ProjectTemplateDetails
 export const CharacterTemplateDetails = components.CharacterTemplateDetails
 export const ActsConfigModal = components.ActsConfigModal
 export const AskToSaveModal = components.AskToSaveModal
+export const ActsHelpModal = components.ActsHelpModal
 export const FilterList = components.FilterList
 export const TagView = components.TagView
 export const TagListView = components.TagListView

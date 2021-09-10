@@ -5,7 +5,13 @@ import PropTypes from 'react-proptypes'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
-import { AskToSaveModal, TemplateCreate, ErrorBoundary, ExportDialog } from 'connected-components'
+import {
+  AskToSaveModal,
+  TemplateCreate,
+  ErrorBoundary,
+  ExportDialog,
+  ActsHelpModal,
+} from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
@@ -21,6 +27,7 @@ class App extends Component {
     showAskToSave: false,
     blockClosing: true,
     showExportDialog: false,
+    showActsGuideHelp: false,
   }
 
   componentDidMount() {
@@ -42,6 +49,9 @@ class App extends Component {
     ipcRenderer.on('advanced-export-file-from-menu', (event) => {
       this.setState({ showExportDialog: true })
     })
+    ipcRenderer.on('turn-on-acts-help', (event) => {
+      this.setState({ showActsGuideHelp: true })
+    })
     ipcRenderer.send('initial-mount-complete')
     window.addEventListener('beforeunload', this.askToSave)
   }
@@ -51,6 +61,7 @@ class App extends Component {
     ipcRenderer.removeAllListeners('reload')
     ipcRenderer.removeAllListeners('wants-to-close')
     ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
+    ipcRenderer.removeAllListeners('turn-on-acts-help')
     window.removeEventListener('beforeunload', this.askToSave)
   }
 
@@ -134,6 +145,11 @@ class App extends Component {
     return <ExportDialog close={() => this.setState({ showExportDialog: false })} />
   }
 
+  renderActStructureHelpModal() {
+    if (!this.state.showActsGuideHelp) return null
+    return <ActsHelpModal close={() => this.setState({ showActsGuideHelp: false })} />
+  }
+
   render() {
     return (
       <ErrorBoundary>
@@ -147,6 +163,7 @@ class App extends Component {
         {this.renderAskToSave()}
         {this.props.showTour && this.renderGuidedTour()}
         {this.renderAdvanceExportModal()}
+        {this.renderActStructureHelpModal()}
       </ErrorBoundary>
     )
   }

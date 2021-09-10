@@ -20,7 +20,8 @@ function buildHelpMenu() {
           {
             label: t('Act Structure'),
             click: function (event, focusedWindow) {
-              focusedWindow.webContents.send('acts-tour-start')
+              // focusedWindow.webContents.send('acts-tour-start')
+              focusedWindow.webContents.send('turn-on-acts-help')
             },
           },
         ],

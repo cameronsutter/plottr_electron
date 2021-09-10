@@ -6,13 +6,15 @@ import { tree, helpers } from 'pltr/v2'
 const { app } = remote
 
 export function addNewCustomTemplate(pltrData, { type, data }) {
+  let template = null
   if (type === 'plotlines') {
-    createPlotlineTemplate(pltrData, data)
+    template = createPlotlineTemplate(pltrData, data)
   } else if (type === 'characters') {
-    createCharacterTemplate(pltrData, data)
+    template = createCharacterTemplate(pltrData, data)
   } else if (type === 'scenes') {
-    createScenesTemplate(pltrData, data)
+    template = createScenesTemplate(pltrData, data)
   }
+  customTemplatesStore.set(template.id, template)
 
   try {
     new Notification(t('Template Saved'), {
@@ -72,7 +74,7 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
 
     template.templateData.cards = cards
   }
-  customTemplatesStore.set(id, template)
+  return template
 }
 
 function createCharacterTemplate(pltrData, { name, description, link }) {
@@ -88,7 +90,7 @@ function createCharacterTemplate(pltrData, { name, description, link }) {
     link: link,
     attributes: data.customAttributes.characters,
   }
-  customTemplatesStore.set(id, template)
+  return template
 }
 
 function createScenesTemplate(pltrData, { name, description, link }) {
@@ -104,7 +106,7 @@ function createScenesTemplate(pltrData, { name, description, link }) {
     link: link,
     attributes: data.customAttributes.scenes,
   }
-  customTemplatesStore.set(id, template)
+  return template
 }
 
 function makeNewId(prefix) {

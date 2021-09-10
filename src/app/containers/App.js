@@ -9,9 +9,10 @@ import { AskToSaveModal, TemplateCreate, ErrorBoundary, ExportDialog } from 'con
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
-import { showTourSelector } from 'pltr/v2/selectors/tours'
+import { selectors } from 'pltr/v2'
+import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 
-const App = ({ forceProjectDashboard, showTour }) => {
+const App = ({ forceProjectDashboard, showTour, userId }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
   const [showAskToSave, setShowAskToSave] = useState(false)
@@ -82,6 +83,13 @@ const App = ({ forceProjectDashboard, showTour }) => {
       window.removeEventListener('beforeunload', askToSave)
     }
   }, [])
+
+  useEffect(() => {
+    if (userId) {
+      return listenToCustomTemplates(userId)
+    }
+    return () => {}
+  }, [userId])
 
   const dontSaveAndClose = () => {
     setBlockClosing(false)
@@ -154,12 +162,16 @@ const App = ({ forceProjectDashboard, showTour }) => {
 }
 
 App.propTypes = {
+  userId: PropTypes.string,
   showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
-  return { showTour: showTourSelector(state.present) }
+  return {
+    showTour: selectors.showTourSelector(state.present),
+    userId: selectors.userIdSelector(state.present),
+  }
 }
 
 export default connect(mapStateToProps, null)(App)

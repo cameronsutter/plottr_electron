@@ -6,6 +6,8 @@ import { sortBy } from 'lodash'
 import {
   listenToCustomTemplates as listenToCustomTemplatesFromFirestore,
   saveCustomTemplate as saveCustomTemplateToFirstore,
+  deleteCustomTemplate as deleteCustomTemplateOnFirestore,
+  editCustomTemplate as editCustomTemplateOnFirestore,
 } from 'plottr_firebase'
 import SETTINGS from '../../common/utils/settings'
 
@@ -187,8 +189,13 @@ export const listenToCustomTemplates = (userId) => {
   })
 }
 
-export const deleteCustomTemplate = (templateId) => {
+export const deleteCustomTemplate = (templateId, userId) => {
   window.localStorage.removeItem(customTemplateKey(templateId))
+  deleteCustomTemplateOnFirestore(userId, templateId)
+}
+
+export const editCustomTemplate = (templateId, template) => {
+  return editCustomTemplateOnFirestore(templateId, template)
 }
 
 export const listCustomTemplates = (type) => {

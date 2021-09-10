@@ -1,4 +1,4 @@
-rules_version = '2';
+2rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
     match /backups/{userId} {
@@ -7,6 +7,11 @@ service firebase.storage {
       }
     }
     match /images/{userId} {
+      match /{allPaths=**} {
+        allow read, write: if request.auth.uid == userId;
+      }
+    }
+    match /userTemplates/{userId} {
       match /{allPaths=**} {
         allow read, write: if request.auth.uid == userId;
       }

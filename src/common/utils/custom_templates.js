@@ -3,6 +3,7 @@ import { remote } from 'electron'
 import { t } from 'plottr_locales'
 import { customTemplatesStore } from './store_hooks'
 import { tree, helpers } from 'pltr/v2'
+import { saveCustomTemplate } from '../../dashboard/utils/templates_from_firestore'
 const { app } = remote
 
 export function addNewCustomTemplate(pltrData, { type, data }) {
@@ -14,7 +15,15 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
   } else if (type === 'scenes') {
     template = createScenesTemplate(pltrData, data)
   }
-  customTemplatesStore.set(template.id, template)
+
+  const {
+    client: { userId },
+  } = pltrData
+  if (userId) {
+    saveCustomTemplate(userId, template)
+  } else {
+    customTemplatesStore.set(template.id, template)
+  }
 
   try {
     new Notification(t('Template Saved'), {

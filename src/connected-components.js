@@ -195,7 +195,13 @@ const platform = {
     listTemplates,
     listCustomTemplates,
     getTemplateById,
-    deleteTemplate,
+    deleteTemplate: (templateId) => {
+      const state = store.getState()
+      const {
+        client: { userId },
+      } = state.present
+      deleteTemplate(templateId, userId)
+    },
     editTemplateDetails,
     startSaveAsTemplate: (itemType) => {
       const win = remote.getCurrentWindow()

@@ -1,5 +1,11 @@
 import Store from 'electron-store'
 import { sortBy } from 'lodash'
+import {
+  getCustomTemplateById,
+  listCustomTemplates as listCustomTemplatesFromFirebase,
+  deleteCustomTemplate,
+  editCustomTemplate,
+} from '../../dashboard/utils/templates_from_firestore'
 
 const TEMPLATES_PATH = process.env.NODE_ENV == 'development' ? 'templates_dev' : 'templates'
 const templateStore = new Store({ name: TEMPLATES_PATH })
@@ -13,6 +19,10 @@ export function getTemplateById(id) {
 
   const customById = customTemplateStore.get()
   if (customById && customById[id]) return customById[id]
+
+  const templateFromFirebase = getCustomTemplateById(id)
+  if (templateFromFirebase) return templateFromFirebase
+
   return null
 }
 
@@ -32,22 +42,37 @@ export function listCustomTemplates(type) {
   if (!templatesById) return []
   if (!type) return Object.values(templatesById)
 
-  return sortBy(
-    Object.values(templatesById).filter((t) => t.type == type),
-    'name'
-  )
+  const firebaseTemplates = listCustomTemplatesFromFirebase(type)
+  const localTemplates = Object.values(templatesById).filter((t) => t.type == type)
+
+  return sortBy(firebaseTemplates.concat(localTemplates), 'name')
 }
 
-export function deleteTemplate(id) {
-  customTemplateStore.delete(id)
+const isLocalTemplate = (id) => {
+  const customById = customTemplateStore.get()
+  return customById && customById[id]
+}
+
+export function deleteTemplate(id, userId) {
+  if (isLocalTemplate(id)) {
+    customTemplateStore.delete(id)
+    return
+  }
+
+  deleteCustomTemplate(id, userId)
 }
 
 export function editTemplateDetails(id, { name, description, link }) {
   const info = {
-    ...customTemplateStore.get(id),
+    ...getTemplateById(id),
     name: name,
     description: description,
     link: link,
   }
-  customTemplateStore.set(id, info)
+  if (isLocalTemplate(id)) {
+    customTemplateStore.set(id, info)
+    return
+  }
+
+  editCustomTemplate(id, info)
 }

@@ -132,7 +132,7 @@ $medium_width: 80px;
       padding: 14px 35px;
     }
     color: $blue-5;
-    border: 3px dotted $blue-8;
+    border: none;
     margin-right: 50px;
   }
   &.medium-timeline {
@@ -154,7 +154,7 @@ $medium_width: 80px;
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
-    border: 3px dashed $blue-7;
+    border: none;
   }
 }
 
@@ -313,11 +313,11 @@ $medium_width: 80px;
   .vertical-insert-beat-wrapper.append-beat {
     padding: 20px $title_height;
     color: $blue-5;
-    border: 3px dotted $blue-8;
+    border: none;
     margin-top: 10px;
   }
   .vertical-insert-beat-wrapper.append-beat:hover {
-    border: 3px dashed $blue-7;
+    border: none;
   }
   &.medium-timeline {
     width: $medium_width;

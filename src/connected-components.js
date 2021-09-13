@@ -71,6 +71,10 @@ const saveFile = (filePath, file) => {
 
 const moveItemToTrash = shell.moveItemToTrash
 
+const openFile = (filePath, id, unknown) => {
+  ipcRenderer.send('open-known-file', filePath, id, unknown)
+}
+
 const platform = {
   undo: () => {
     store.dispatch(ActionCreators.undo())
@@ -92,7 +96,7 @@ const platform = {
         project: { fileList },
       } = state.present
       if (userId) {
-        newFile(emailAddress, userId, fileList, state, clientId, template)
+        newFile(emailAddress, userId, fileList, state, clientId, template, openFile)
       } else {
         ipcRenderer.send('create-new-file', template)
       }
@@ -103,9 +107,7 @@ const platform = {
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,
-    openKnownFile: (filePath, id, unknown) => {
-      ipcRenderer.send('open-known-file', filePath, id, unknown)
-    },
+    openKnownFile: openFile,
     deleteKnownFile: (id, path) => {
       ipcRenderer.send('delete-known-file', id, path)
     },

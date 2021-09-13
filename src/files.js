@@ -22,11 +22,18 @@ export const newEmptyFile = (fileName, appVersion, currentFile) => {
   }
 }
 
-export const newFile = (emailAddress, userId, fileList, fullState, clientId, template) => {
+export const newFile = (
+  emailAddress,
+  userId,
+  fileList,
+  fullState,
+  clientId,
+  template,
+  openFile
+) => {
   const untitledFileList = fileList.filter(({ fileName }) => fileName.match(/Untitled/g))
   const fileName = t('Untitled') + ` - ${untitledFileList.length}`
   const setFileList = (...args) => store.dispatch(actions.project.setFileList(...args))
-  const selectFile = (...args) => store.dispatch(actions.project.selectFile(...args))
   const file = Object.assign(newEmptyFile(fileName, version, fullState.present), template || {})
   const newFile = {
     ...file.file,
@@ -49,8 +56,8 @@ export const newFile = (emailAddress, userId, fileList, fullState, clientId, tem
     .then((response) => {
       const fileId = response.data.fileId
       return fetchFiles(userId).then((newFileList) => {
+        openFile(`plottr://${fileId}`, fileId, false)
         setFileList(newFileList.filter(({ deleted }) => !deleted))
-        selectFile({ ...newFile, id: fileId, permission: 'owner' })
         closeDashboard()
       })
     })

@@ -97,24 +97,25 @@ export function useLicenseInfo() {
   return useJsonStore(licenseStore)
 }
 
-function useKnownFilesFromFirebase() {
-  const {
-    present: { project },
-  } = store.getState()
-
-  const [fileList, setFileList] = useState(project.fileList)
+function useKnownFilesFromFirebase(initialFileList) {
+  const [fileList, setFileList] = useState(initialFileList)
   const [filesByPosition, setFilesByPosition] = useState({})
 
   useEffect(() => {
     const filesByPosition = {}
-    fileList.forEach((file, index) => {
+    const receivedNewFileList = !isEqual(fileList, initialFileList)
+    if (receivedNewFileList) {
+      setFileList(initialFileList)
+    }
+    const currentFileList = receivedNewFileList ? initialFileList : fileList
+    currentFileList.forEach((file, index) => {
       filesByPosition[index + 1] = file
     })
     const deleteListener = document.addEventListener('delete-file', (event) => {
       const fileId = event.fileId
-      const filePosition = fileList.findIndex(({ id }) => id === fileId)
+      const filePosition = currentFileList.findIndex(({ id }) => id === fileId)
       if (filePosition > 0) {
-        const newFileList = fileList.filter(({ id }) => id !== fileId)
+        const newFileList = currentFileList.filter(({ id }) => id !== fileId)
         setFileList(newFileList)
         const newFilesByPosition = {}
         newFileList.forEach((file, index) => {
@@ -126,7 +127,7 @@ function useKnownFilesFromFirebase() {
     const renameListener = document.addEventListener('rename-file-to-new-name', (event) => {
       const fileId = event.fileId
       const newName = event.newName
-      const newFileList = fileList.map((file) => {
+      const newFileList = currentFileList.map((file) => {
         if (file.id === fileId) {
           return {
             ...file,
@@ -142,13 +143,12 @@ function useKnownFilesFromFirebase() {
       setFileList(newFileList)
       setFilesByPosition(newFilesByPosition)
     })
-    setFileList(fileList)
     setFilesByPosition(filesByPosition)
     return () => {
       document.removeEventListener('delete-file', deleteListener)
       document.removeEventListener('rename-file-to-new-name', renameListener)
     }
-  }, [project.fileList])
+  }, [initialFileList])
 
   const nop = () => {}
   return [filesByPosition, fileList.length, nop, nop]
@@ -158,11 +158,11 @@ function useKnownFilesFromHardDisk() {
   return useJsonStore(knownFilesStore, 'reload-recents', true)
 }
 
-export function useKnownFilesInfo() {
+export function useKnownFilesInfo(initialFirebaseFileList) {
   const [filesByPosition, setFilesByPosition] = useState({})
   const [fileCount, setFileCount] = useState(0)
 
-  const [firestoreFilesByPosition] = useKnownFilesFromFirebase()
+  const [firestoreFilesByPosition] = useKnownFilesFromFirebase(initialFirebaseFileList)
   const [hardDiskFilesByPosition] = useKnownFilesFromHardDisk()
 
   useEffect(() => {

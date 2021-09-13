@@ -160,7 +160,7 @@ const isCustomTemplateKey = (key) => {
 }
 
 export const allCustomTemplates = () => {
-  return Object.entries(window.localStorage).reduce((acc, [key, templateString]) => {
+  return Object.entries(window.sessionStorage).reduce((acc, [key, templateString]) => {
     if (isCustomTemplateKey(key)) {
       const template = safeParse(templateString)
       if (template) return [...acc, template]
@@ -190,7 +190,7 @@ export const listenToCustomTemplates = (userId) => {
 }
 
 export const deleteCustomTemplate = (templateId, userId) => {
-  window.localStorage.removeItem(customTemplateKey(templateId))
+  window.sessionStorage.removeItem(customTemplateKey(templateId))
   deleteCustomTemplateOnFirestore(userId, templateId)
 }
 

@@ -11,6 +11,8 @@ import { t as i18n } from 'plottr_locales'
 import { helpers } from 'pltr/v2'
 import { emptyCard } from 'pltr/v2/helpers/cards'
 
+import { checkDependencies } from '../checkDependencies'
+
 const {
   card: { cardMapping },
 } = helpers
@@ -25,6 +27,7 @@ const OutlineViewConnector = (connector) => {
   const {
     platform: { exportDisabled },
   } = connector
+  checkDependencies({ exportDisabled })
 
   class OutlineView extends Component {
     constructor(props) {
@@ -141,6 +144,7 @@ const OutlineViewConnector = (connector) => {
 
       return (
         !!beats.length &&
+        !!beatsWithCards.length &&
         beats.map((beat, idx) => {
           if (this.state.firstRender && idx > 2) return null
           let hasCards = beatsWithCards.includes(beat.id)
@@ -168,12 +172,14 @@ const OutlineViewConnector = (connector) => {
             <Row>
               <Col xsHidden sm={4} md={3} className="outline__grid__minimap">
                 <ErrorBoundary>
-                  <MiniMap
-                    active={this.state.active}
-                    handleActive={this.setActive}
-                    cardMapping={cardMap}
-                    activeFilter={!!ui.outlineFilter}
-                  />
+                  {!!lines.length && (
+                    <MiniMap
+                      active={this.state.active}
+                      handleActive={this.setActive}
+                      cardMapping={cardMap}
+                      activeFilter={!!ui.outlineFilter}
+                    />
+                  )}
                 </ErrorBoundary>
               </Col>
               <Col xs={12} sm={8} md={9} className="outline__grid__beats">
@@ -209,6 +215,7 @@ const OutlineViewConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
+  checkDependencies({ redux, selectors, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

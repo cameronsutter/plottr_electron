@@ -70,6 +70,22 @@
       border-radius: 0;
     }
   }
+  &.project-nav__options {
+    padding-right: 0;
+    & > li > a {
+      padding: 5px;
+      padding-top: 11px;
+      &:hover {
+        .dropdown .dropdown-toggle {
+          border-radius: 10px;
+          background-color: white;
+          svg {
+            color: $orange-4;
+          }
+        }
+      }
+    }
+  }
   li.dropdown {
     & > a {
       padding-top: 5px;

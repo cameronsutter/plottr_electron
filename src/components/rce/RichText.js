@@ -4,6 +4,8 @@ import UnconnectedRichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
 import UnconnectedRCEBoundary from './RCEBoundary'
 
+import { checkDependencies } from '../checkDependencies'
+
 const RichTextConnector = (connector) => {
   const RCEBoundary = UnconnectedRCEBoundary(connector)
   const RichTextEditor = UnconnectedRichTextEditor(connector)
@@ -16,6 +18,13 @@ const RichTextConnector = (connector) => {
       createErrorReport,
     },
   } = connector
+  checkDependencies({
+    imagePublicURL,
+    isStorageURL,
+    openExternal,
+    log,
+    createErrorReport,
+  })
 
   const RichText = (props) => {
     let body = null
@@ -23,7 +32,6 @@ const RichTextConnector = (connector) => {
       body = (
         <RichTextEditor
           id={props.id}
-          fileId={props.fileId}
           className={props.className}
           onChange={props.onChange}
           autoFocus={props.autofocus}
@@ -55,7 +63,6 @@ const RichTextConnector = (connector) => {
 
   RichText.propTypes = {
     id: PropTypes.string,
-    fileId: PropTypes.string,
     description: PropTypes.any,
     selection: PropTypes.object,
     onChange: PropTypes.func,

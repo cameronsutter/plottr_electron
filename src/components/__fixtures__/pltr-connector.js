@@ -24,6 +24,9 @@ const connector = {
   },
   pltr,
   platform: {
+    os: 'unknown',
+    undo: () => {},
+    redo: () => {},
     appVersion: '2021.4.6',
     template: {
       listTemplates: () => [],
@@ -40,6 +43,18 @@ const connector = {
       error: () => {},
       warn: () => {},
       info: () => {},
+    },
+    publishRCEOperations: () => {},
+    fetchRCEOperations: () => {},
+    listenForChangesToEditor: () => {},
+    deleteChangeSignal: () => {},
+    deleteOldChanges: () => {},
+    storage: {
+      // TODO: update when the firebase sync PR is merged!
+      imagePublicURL: () => Promise.resolve(''),
+      isStorageURL: () => false,
+      resolveToPublicUrl: () => {},
+      saveImageToStorageBlob: () => {},
     },
   },
 }

@@ -4,6 +4,8 @@ import Modal from 'react-modal'
 import cx from 'classnames'
 import { first } from 'lodash'
 
+import { checkDependencies } from './checkDependencies'
+
 // prevents the useMemo from getting a new object reference
 // on each render if no styles is passed in
 const defaultStyles = {}
@@ -45,6 +47,8 @@ const PlottrModalConnector = (connector) => {
   }
 
   const { redux } = connector
+
+  checkDependencies({ redux })
 
   if (redux) {
     const { connect } = redux

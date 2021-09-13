@@ -2,6 +2,8 @@ import React from 'react'
 import { t } from 'plottr_locales'
 import { Button } from 'react-bootstrap'
 
+import { checkDependencies } from '../../checkDependencies'
+
 const AboutConnector = (connector) => {
   const {
     platform: {
@@ -15,6 +17,18 @@ const AboutConnector = (connector) => {
       os,
     },
   } = connector
+  checkDependencies({
+    useTrialStatus,
+    checkForUpdates,
+    isDevelopment,
+    appVersion,
+    openExternal,
+    mpq,
+    settings,
+    os,
+  })
+
+  const osIsUnknown = os === 'unknown'
 
   const osIsUnknown = os === 'unknown'
 

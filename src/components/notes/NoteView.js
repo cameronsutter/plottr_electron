@@ -7,6 +7,8 @@ import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
 import UnconnectedSelectList from '../SelectList'
 import cx from 'classnames'
 
+import { checkDependencies } from '../checkDependencies'
+
 const NoteViewConnector = (connector) => {
   const BookSelectList = UnconnectedBookSelectList(connector)
   const SelectList = UnconnectedSelectList(connector)
@@ -99,6 +101,14 @@ const NoteViewConnector = (connector) => {
       actions,
     },
   } = connector
+  checkDependencies({
+    redux,
+    singleNoteSelector,
+    sortedTagsSelector,
+    charactersSortedAtoZSelector,
+    placesSortedAtoZSelector,
+    actions,
+  })
 
   const NoteActions = actions.note
 

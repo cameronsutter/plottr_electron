@@ -3,6 +3,8 @@ import PropTypes from 'react-proptypes'
 import { t as i18n } from 'plottr_locales'
 import GenericFilterList from './GenericFilterList'
 
+import { checkDependencies } from '../checkDependencies'
+
 const BookFilterListConnector = (connector) => {
   class BookFilterList extends Component {
     updateItems = (ids) => {
@@ -35,6 +37,7 @@ const BookFilterListConnector = (connector) => {
   }
 
   const { redux } = connector
+  checkDependencies({ redux })
 
   if (redux) {
     const { connect } = redux

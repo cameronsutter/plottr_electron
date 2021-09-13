@@ -7,6 +7,8 @@ import UnconnectedSubNav from '../containers/SubNav'
 import UnconnectedTagView from './TagView'
 import UnconnectedTagCategoriesModal from './TagCategoriesModal'
 
+import { checkDependencies } from '../checkDependencies'
+
 const TagListViewConnector = (connector) => {
   const SubNav = UnconnectedSubNav(connector)
   const TagView = UnconnectedTagView(connector)
@@ -184,6 +186,14 @@ const TagListViewConnector = (connector) => {
     },
   } = connector
   const TagActions = actions.tag
+  checkDependencies({
+    redux,
+    sortedTagsSelector,
+    sortedTagCategoriesSelector,
+    tagsByCategorySelector,
+    actions,
+    TagActions,
+  })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

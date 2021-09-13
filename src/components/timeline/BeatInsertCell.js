@@ -9,6 +9,8 @@ import cx from 'classnames'
 import { helpers } from 'pltr/v2'
 import VisualLine from './VisualLine'
 
+import { checkDependencies } from '../checkDependencies'
+
 const {
   orientedClassName: { orientedClassName },
 } = helpers
@@ -267,9 +269,9 @@ const BeatInsertCellConnector = (connector) => {
     }
 
     render() {
-      const { showLine, orientation, isSmall, isLast } = this.props
+      const { showLine, orientation, isSmall, isLast, isEmpty } = this.props
       let insideDiv = null
-      if (isLast) {
+      if (isLast || (orientation === 'vertical' && isEmpty)) {
         insideDiv = this.renderLastInsertBeat()
       } else if (orientation === 'vertical') {
         insideDiv = (
@@ -335,6 +337,7 @@ const BeatInsertCellConnector = (connector) => {
       hierarchyLevel: PropTypes.object.isRequired,
       atMaximumDepth: PropTypes.bool,
       readOnly: PropTypes.bool,
+      isEmpty: PropTypes.bool,
     }
   }
 
@@ -342,6 +345,7 @@ const BeatInsertCellConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
+  checkDependencies({ redux, selectors, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

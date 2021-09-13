@@ -6,6 +6,7 @@ import { IoIosReturnRight } from 'react-icons/io'
 
 import UnconnectedColorPicker from '../ColorPicker'
 import ColorPickerColor from '../ColorPickerColor'
+import { checkDependencies } from '../checkDependencies'
 
 const EditOrDisplayConnector = (connector) => {
   const ColorPicker = UnconnectedColorPicker(connector)
@@ -17,6 +18,7 @@ const EditOrDisplayConnector = (connector) => {
       },
     },
   } = connector
+  checkDependencies({ getTextColor })
 
   const EditOrDisplay = ({
     id,
@@ -189,6 +191,7 @@ const EditOrDisplayConnector = (connector) => {
     redux,
     pltr: { selectors },
   } = connector
+  checkDependencies({ redux, selectors })
 
   if (redux) {
     const { connect } = redux

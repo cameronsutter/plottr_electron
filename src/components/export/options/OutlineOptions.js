@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { t } from 'plottr_locales'
 import PropTypes from 'react-proptypes'
 import { CheckOption, RadioOption, FilterCheckOption } from '../ExportOptions'
+
+import { checkDependencies } from '../../checkDependencies'
 
 const UnconnectedOutlineOptions = (connector) => {
   const OutlineOptions = ({ lines, options, outlineFilter, type, updateOptions }) => {
@@ -30,6 +32,10 @@ const UnconnectedOutlineOptions = (connector) => {
     // </li>
 
     const [selectedLines, setSelectedLines] = useState(outlineFilter || [])
+
+    useEffect(() => {
+      updateOptions(outlineFilter, 'outline', 'filter')
+    }, [])
 
     const onFilterChange = (isCheck, category, attr, filterId) => {
       let filteredLines = []
@@ -212,6 +218,7 @@ const UnconnectedOutlineOptions = (connector) => {
     redux,
     pltr: { selectors },
   } = connector
+  checkDependencies({ redux, selectors })
 
   const { sortedLinesByBookSelector } = selectors
 

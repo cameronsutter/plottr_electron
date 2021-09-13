@@ -10,6 +10,8 @@ import UnconnectedSelectList from '../SelectList'
 import cx from 'classnames'
 import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
 
+import { checkDependencies } from '../checkDependencies'
+
 const CardViewConnector = (connector) => {
   const RichText = UnconnectedRichText(connector)
   const Image = UnconnectedImage(connector)
@@ -18,6 +20,7 @@ const CardViewConnector = (connector) => {
   const {
     pltr: { helpers },
   } = connector
+  checkDependencies({ helpers })
 
   class CardView extends Component {
     constructor(props) {
@@ -153,6 +156,7 @@ const CardViewConnector = (connector) => {
         <div className="outline__description__editing">
           <RichText
             autofocus
+            id={`card.description-${this.props.card.id}`}
             className="outline__description"
             onChange={this.handleDescriptionChange}
             description={description}
@@ -304,6 +308,7 @@ const CardViewConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
+  checkDependencies({ redux, selectors, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

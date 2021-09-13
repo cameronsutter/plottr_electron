@@ -7,6 +7,8 @@ import UnconnectedLineTitleCell from './LineTitleCell'
 import UnconnectedBeatInsertCell from './BeatInsertCell'
 import { helpers } from 'pltr/v2'
 
+import { checkDependencies } from '../checkDependencies'
+
 const {
   beats: { nextId, hasChildren },
   lists: { reorderList },
@@ -91,6 +93,9 @@ const TopRowConnector = (connector) => {
             } else beatActions.expandBeat(lastBeat.id, currentTimeline)
           }}
           orientation={orientation}
+          hovering={this.state.hovering}
+          onMouseEnter={() => this.startHovering(lastBeat.id)}
+          onMouseLeave={this.stopHovering}
         />
       )
     }
@@ -167,6 +172,8 @@ const TopRowConnector = (connector) => {
       })
       if (isSmall) {
         return [...renderedBeats, this.renderLastInsertBeatCell()]
+      } else if (!beats.length) {
+        return [<Cell key="placeholder" />, this.renderLastInsertBeatCell()]
       } else {
         return [<Cell key="placeholder" />, ...renderedBeats, this.renderSecondLastInsertBeatCell()]
       }
@@ -255,6 +262,7 @@ const TopRowConnector = (connector) => {
     redux,
     pltr: { actions, selectors },
   } = connector
+  checkDependencies({ redux, actions, selectors })
 
   const LineActions = actions.line
   const BeatActions = actions.beat

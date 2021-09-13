@@ -3,10 +3,13 @@ import { FormGroup, HelpBlock } from 'react-bootstrap'
 
 import { t } from 'plottr_locales'
 
+import { checkDependencies } from '../../checkDependencies'
+
 const BackupOptionsConnector = (connector) => {
   const {
     platform: { useSettingsInfo },
   } = connector
+  checkDependencies({ useSettingsInfo })
 
   const BackupOptions = () => {
     // FIXME: Doesn't seem to hear settings changes from other
@@ -96,7 +99,7 @@ const BackupOptionsConnector = (connector) => {
                 onChange={onBackupValueChange}
                 onBlur={handleBackupBlur}
               />
-              <p className="text-warning">{t('Backups beyond this will be erased')}</p>
+              <p className="text-danger">{t('Backups beyond this will be erased')}</p>
             </div>
           ) : null}
         </FormGroup>

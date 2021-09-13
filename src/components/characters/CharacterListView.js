@@ -25,6 +25,7 @@ import CharacterItemConnector from './CharacterItem'
 import TemplatePickerConnector from '../templates/TemplatePicker'
 import SubNavConnector from '../containers/SubNav'
 import { newIds } from 'pltr/v2'
+import { checkDependencies } from '../checkDependencies'
 
 const { nextId } = newIds
 
@@ -39,6 +40,7 @@ const CharacterListViewConnector = (connector) => {
   const SubNav = SubNavConnector(connector)
 
   const templatesDisabled = connector.platform.templatesDisabled
+  checkDependencies({ templatesDisabled })
 
   class CharacterListView extends Component {
     constructor(props) {
@@ -378,6 +380,15 @@ const CharacterListViewConnector = (connector) => {
       },
     },
   } = connector
+
+  checkDependencies({
+    redux,
+    actions,
+    visibleSortedCharactersByCategorySelector,
+    characterFilterIsEmptySelector,
+    sortedCharacterCategoriesSelector,
+    characterCustomAttributesThatCanChangeSelector,
+  })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

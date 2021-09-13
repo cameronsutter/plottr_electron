@@ -3,6 +3,8 @@ import PropTypes from 'react-proptypes'
 import { Glyphicon } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 
+import { checkDependencies } from './checkDependencies'
+
 const SortListConnector = (connector) => {
   class SortList extends Component {
     toggle = (attr) => {
@@ -59,6 +61,14 @@ const SortListConnector = (connector) => {
       },
     },
   } = connector
+
+  checkDependencies({
+    redux,
+    actions,
+    characterSortCAnamesSelector,
+    placeSortCAnamesSelector,
+    noteSortCAnamesSelector,
+  })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

@@ -2,10 +2,13 @@ import React, { useRef } from 'react'
 import { Button, FormControl, FormGroup } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 
+import { checkDependencies } from '../../checkDependencies'
+
 const HelpHomeConnector = (connector) => {
   const {
     platform: { os, mpq, openExternal, createErrorReport, handleCustomerServiceCode },
   } = connector
+  checkDependencies({ os, mpq, openExternal, createErrorReport, handleCustomerServiceCode })
 
   const HelpHome = (props) => {
     const serviceCodeRef = useRef(null)

@@ -17,6 +17,8 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import InputModal from '../dialogs/InputModal'
 import { helpers } from 'pltr/v2'
 
+import { checkDependencies } from '../checkDependencies'
+
 const {
   card: { truncateTitle },
   beats: { editingBeatLabel, beatPositionTitle },
@@ -38,6 +40,12 @@ const BeatTitleCellConnector = (connector) => {
         deleting: false,
       }
       this.titleInputRef = null
+    }
+
+    componentDidUpdate(_prevProps, _prevState) {
+      if (this.state.editing && this.titleInputRef) {
+        this.titleInputRef.select()
+      }
     }
 
     deleteBeat = (e) => {
@@ -596,6 +604,7 @@ const BeatTitleCellConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
+  checkDependencies({ redux, selectors, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

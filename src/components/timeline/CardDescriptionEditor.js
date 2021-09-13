@@ -3,6 +3,8 @@ import { PropTypes } from 'prop-types'
 
 import UnconnectedRichText from '../rce/RichText'
 
+import { checkDependencies } from '../checkDependencies'
+
 const areEqual = (prevProps, nextProps) => {
   return Object.keys(prevProps).reduce((acc, key) => {
     if (key === 'description' || key === 'selection') return acc
@@ -13,6 +15,10 @@ const areEqual = (prevProps, nextProps) => {
 const CardDescriptionEditorConnector = (connector) => {
   const RichText = UnconnectedRichText(connector)
 
+  const {
+    pltr: { helpers, selectors },
+  } = connector
+
   const CardDescriptionEditor = ({
     fileId,
     cardId,
@@ -21,11 +27,8 @@ const CardDescriptionEditorConnector = (connector) => {
     darkMode,
     editCardAttributes,
   }) => {
-    const {
-      pltr: { helpers },
-    } = connector
-
     const editorPath = helpers.editors.cardDescriptionEditorPath(cardId)
+    checkDependencies({ editorPath })
 
     const handleDescriptionChange = (newDescription, selection) => {
       editCardAttributes(
@@ -61,8 +64,9 @@ const CardDescriptionEditorConnector = (connector) => {
 
   const {
     redux,
-    pltr: { selectors, actions, helpers },
+    pltr: { actions },
   } = connector
+  checkDependencies({ redux, selectors, actions, helpers })
 
   if (redux) {
     const { connect } = redux

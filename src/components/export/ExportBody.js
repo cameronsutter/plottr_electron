@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { clone } from 'lodash'
 
 import OutlineOptionsConnector from './options/OutlineOptions'
 import GeneralOptions from './options/GeneralOptions'
 import CharacterOptions from './options/CharacterOptions'
 import PlaceOptions from './options/PlaceOptions'
 import NoteOptions from './options/NoteOptions'
+import { checkDependencies } from '../checkDependencies'
 
 const ExportBodyConnector = (connector) => {
   const {
@@ -14,6 +14,7 @@ const ExportBodyConnector = (connector) => {
       store: { useExportConfigInfo },
     },
   } = connector
+  checkDependencies({ useExportConfigInfo })
 
   const OutlineOptions = OutlineOptionsConnector(connector)
 

@@ -19,6 +19,7 @@ import UnconnectedImagePicker from '../images/ImagePicker'
 import UnconnectedImage from '../images/Image'
 import UnconnectedEditAttribute from '../EditAttribute'
 import TemplatePickerConnector from '../templates/TemplatePicker'
+import { checkDependencies } from '../checkDependencies'
 
 const CharacterEditDetailsConnector = (connector) => {
   const CategoryPicker = UnconnectedCategoryPicker(connector)
@@ -36,6 +37,12 @@ const CharacterEditDetailsConnector = (connector) => {
     },
     pltr: { helpers },
   } = connector
+
+  checkDependencies({
+    templatesDisabled,
+    openExternal,
+    getTemplateById,
+  })
 
   class CharacterEditDetails extends Component {
     constructor(props) {
@@ -111,14 +118,17 @@ const CharacterEditDetailsConnector = (connector) => {
       const numTemplates = character.templates.length
       this.setState({
         showTemplatePicker: false,
-        activeTab: numTemplates + 2,
+        activeTab: numTemplates + 3,
       })
     }
 
-    handleNotesChanged = (value) => {
-      this.props.actions.editCharacter(this.props.character.id, {
-        notes: value,
-      })
+    handleNotesChanged = (value, selection) => {
+      this.props.actions.editCharacter(
+        this.props.character.id,
+        helpers.editors.attrIfPresent('notes', value),
+        this.props.editorPath,
+        selection
+      )
     }
 
     handleAttrChange = (attrName) => (desc, selection) => {
@@ -200,13 +210,18 @@ const CharacterEditDetailsConnector = (connector) => {
     }
 
     renderRemoveTemplate() {
-      if (!this.state.removing) return null
-      const templateData = getTemplateById(this.state.removeWhichTemplate)
+      const { removing, removeWhichTemplate } = this.state
+      const { character } = this.props
+      if (!removing) return null
+      let templateData = getTemplateById(removeWhichTemplate)
+      if (!templateData) {
+        templateData = character.templates.find((t) => t.id == removeWhichTemplate) || {}
+      }
       return (
         <DeleteConfirmModal
           customText={t(
             'Are you sure you want to remove the {template} template and all its data?',
-            { template: templateData.name }
+            { template: templateData.name || t('Template') }
           )}
           onDelete={this.finishRemoveTemplate}
           onCancel={this.cancelRemoveTemplate}
@@ -279,7 +294,7 @@ const CharacterEditDetailsConnector = (connector) => {
     renderEditingTemplates() {
       const { character, ui } = this.props
       return character.templates.map((template, idx) => {
-        const templateData = getTemplateById(template.id)
+        const templateData = getTemplateById(template.id) || template || {}
         const templateValues = character.templates.find((template) => template.id === t.id)
         const attrs = template.attributes.map((attr, index) => {
           const editorPath = helpers.editors.characterTemplateAttributeEditorPath(
@@ -319,7 +334,7 @@ const CharacterEditDetailsConnector = (connector) => {
           )
         }
         return (
-          <Tab eventKey={idx + 3} title={templateData.name} key={`tab-${idx}`}>
+          <Tab eventKey={idx + 3} title={templateData.name || t('Template')} key={`tab-${idx}`}>
             <div className="template-tab__details">
               <p>
                 {templateData.description}
@@ -395,6 +410,7 @@ const CharacterEditDetailsConnector = (connector) => {
             >
               <Tab eventKey={1} title={t('Notes')}>
                 <RichText
+                  id={`character.${character.id}.notes`}
                   description={character.notes}
                   onChange={this.handleNotesChanged}
                   selection={this.props.selection}
@@ -446,6 +462,8 @@ const CharacterEditDetailsConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
+
+  checkDependencies({ redux, selectors, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

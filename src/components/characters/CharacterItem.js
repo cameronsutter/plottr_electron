@@ -6,6 +6,8 @@ import cx from 'classnames'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import UnconnectedImage from '../images/Image'
 
+import { checkDependencies } from '../checkDependencies'
+
 const CharacterItemConnector = (connector) => {
   const Image = UnconnectedImage(connector)
 
@@ -125,6 +127,8 @@ const CharacterItemConnector = (connector) => {
     redux,
     pltr: { actions },
   } = connector
+
+  checkDependencies({ redux, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

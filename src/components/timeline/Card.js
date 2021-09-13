@@ -10,6 +10,8 @@ import { FaCircle } from 'react-icons/fa'
 import { helpers } from 'pltr/v2'
 import tinycolor from 'tinycolor2'
 
+import { checkDependencies } from '../checkDependencies'
+
 const {
   card: { truncateTitle },
   colors: { getContrastYIQ },
@@ -117,6 +119,7 @@ const CardConnector = (connector) => {
         <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
           <div className="card__popover-wrapper">
             <RichText
+              id={`card.${this.props.card.id}.description`}
               description={this.props.cardDescription}
               className="card__popover-description"
               darkMode={this.props.ui.darkMode}
@@ -349,6 +352,16 @@ const CardConnector = (connector) => {
   const { cardDescriptionByIdSelector, visibleCardsSelector, isSmallSelector, isMediumSelector } =
     selectors
   const CardActions = actions.card
+  checkDependencies({
+    redux,
+    selectors,
+    actions,
+    cardDescriptionByIdSelector,
+    visibleCardsSelector,
+    isSmallSelector,
+    isMediumSelector,
+    CardActions,
+  })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

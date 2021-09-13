@@ -6,6 +6,7 @@ import UnconnectedExpiredView from './ExpiredView'
 import UnconnectedUserInfo from './UserInfo'
 import UnconnectedAbout from './About'
 import UnconnectedTrialInfo from './TrialInfo'
+import { checkDependencies } from '../../checkDependencies'
 
 const AccountConnector = (connector) => {
   const {
@@ -14,6 +15,7 @@ const AccountConnector = (connector) => {
       mpq,
     },
   } = connector
+  checkDependencies({ useTrialStatus, licenseStore, useLicenseInfo, mpq })
 
   const ChoiceView = UnconnectedChoiceView(connector)
   const ExpiredView = UnconnectedExpiredView(connector)

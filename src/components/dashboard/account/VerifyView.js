@@ -4,6 +4,8 @@ import { Button, FormControl, Glyphicon } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
 
+import { checkDependencies } from '../../checkDependencies'
+
 const SUCCESS = 'success'
 const OFFLINE = 'offline'
 const INVALID = 'invalid'
@@ -18,6 +20,7 @@ const VerifyViewConnector = (connector) => {
       openExternal,
     },
   } = connector
+  checkDependencies({ verifyLicense, trial90days, useLicenseInfo, useTrialStatus, openExternal })
 
   const VerifyView = ({ goBack, darkMode }) => {
     const handleAccountClick = (url) => {

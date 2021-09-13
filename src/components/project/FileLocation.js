@@ -3,10 +3,15 @@ import PropTypes from 'react-proptypes'
 import { NavItem, Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 
+import { checkDependencies } from '../checkDependencies'
+
 const FileLocationConnector = (connector) => {
   const {
     platform: { tempFilesPath, moveFromTemp, showItemInFolder, isMacOS, os },
   } = connector
+  checkDependencies({ tempFilesPath, moveFromTemp, showItemInFolder, isMacOS, os })
+
+  const osIsUnknown = os === 'unknown'
 
   const osIsUnknown = os === 'unknown'
 
@@ -50,6 +55,7 @@ const FileLocationConnector = (connector) => {
   }
 
   const { redux } = connector
+  checkDependencies({ redux })
 
   if (redux) {
     const { connect } = redux

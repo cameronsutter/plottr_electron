@@ -18,6 +18,8 @@ import UnconnectedImagePicker from '../images/ImagePicker'
 import UnconnectedRichText from '../rce/RichText'
 import UnconnectedSelectList from '../SelectList'
 
+import { checkDependencies } from '../checkDependencies'
+
 const PlaceViewConnector = (connector) => {
   const BookSelectList = UnconnectedBookSelectList(connector)
   const EditAttribute = UnconnectedEditAttribute(connector)
@@ -29,6 +31,7 @@ const PlaceViewConnector = (connector) => {
   const {
     pltr: { helpers },
   } = connector
+  checkDependencies({ helpers })
 
   class PlaceView extends Component {
     constructor(props) {
@@ -204,6 +207,7 @@ const PlaceViewConnector = (connector) => {
                 <FormGroup>
                   <ControlLabel>{i18n('Notes')}</ControlLabel>
                   <RichText
+                    id={`place.${place.id}.notes`}
                     description={place.notes}
                     onChange={this.handleNotesChanged}
                     selection={this.props.selection}
@@ -295,7 +299,11 @@ const PlaceViewConnector = (connector) => {
         if (type == 'paragraph') {
           desc = (
             <dd>
-              <RichText description={place[name]} darkMode={ui.darkMode} />
+              <RichText
+                id={`place.${place.id}.attributes.${name}`}
+                description={place[name]}
+                darkMode={ui.darkMode}
+              />
             </dd>
           )
         }
@@ -321,7 +329,11 @@ const PlaceViewConnector = (connector) => {
                 <dl className="dl-horizontal">
                   <dt>{i18n('Notes')}</dt>
                   <dd>
-                    <RichText description={place.notes} darkMode={this.props.ui.darkMode} />
+                    <RichText
+                      id={`place.${place.id}.notes`}
+                      description={place.notes}
+                      darkMode={this.props.ui.darkMode}
+                    />
                   </dd>
                 </dl>
               </div>
@@ -387,9 +399,10 @@ const PlaceViewConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
-
   const { sortedTagsSelector } = selectors
   const PlaceActions = actions.place
+
+  checkDependencies({ redux, selectors, actions, sortedTagsSelector, PlaceActions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

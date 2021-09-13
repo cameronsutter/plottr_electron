@@ -8,6 +8,8 @@ import UnconnectedImage from '../images/Image'
 import cx from 'classnames'
 import { helpers } from 'pltr/v2'
 
+import { checkDependencies } from '../checkDependencies'
+
 const {
   books: { isSeries },
 } = helpers
@@ -115,6 +117,7 @@ const BookSelectListConnector = (connector) => {
   }
 
   const { redux } = connector
+  checkDependencies({ redux })
 
   if (redux) {
     const { connect } = redux

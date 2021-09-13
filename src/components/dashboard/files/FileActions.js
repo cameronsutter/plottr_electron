@@ -3,21 +3,34 @@ import PropTypes from 'react-proptypes'
 import { t } from 'plottr_locales'
 import { Dropdown, MenuItem, Glyphicon } from 'react-bootstrap'
 import DeleteConfirmModal from '../../dialogs/DeleteConfirmModal'
+import { checkDependencies } from '../../checkDependencies'
 
 const FileActionsConnector = (connector) => {
   const {
     platform: {
       file: { deleteKnownFile, removeFromKnownFiles, isTempFile, basename, renameFile },
-      isMacOs,
+      isMacOS,
       showItemInFolder,
       os,
     },
   } = connector
+  checkDependencies({
+    deleteKnownFile,
+    removeFromKnownFiles,
+    isTempFile,
+    basename,
+    renameFile,
+    isMacOS,
+    showItemInFolder,
+    os,
+  })
+
+  const osIsUnknown = os === 'unknown'
 
   const osIsUnknown = os === 'unknown'
 
   let showInMessage = t('Show in File Explorer')
-  if (isMacOs) {
+  if (isMacOS) {
     showInMessage = t('Show in Finder')
   }
 
@@ -63,7 +76,7 @@ const FileActionsConnector = (connector) => {
       }
     }
 
-    const isTemp = isTempFile(filePath)
+    const isTemp = filePath && isTempFile(filePath)
 
     return (
       <div className="dashboard__recent-files__file-actions">

@@ -258,4 +258,15 @@
   &.darkmode {
     color: $darkmode-text;
   }
+
+  .outline__card-drop {
+    text-align: center;
+    margin-bottom: 4px;
+    border: 2px dashed $gray-8;
+    padding-top: 4px;
+    svg {
+      color: $gray-8;
+      height: 20px;
+    }
+  }
 }

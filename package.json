@@ -90,6 +90,10 @@
     "react-overlays": "^0.9.3",
     "react-sticky-table": "^5.1.11",
     "react-waypoint": "^10.1.0",
-    "react.pure.component": "^1.2.0"
+    "react.pure.component": "^1.2.0",
+    "slate": "^0.65.3",
+    "slate-history": "^0.65.3",
+    "slate-hyperscript": "^0.62.0",
+    "slate-react": "^0.65.3"
   }
 }

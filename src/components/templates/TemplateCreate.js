@@ -14,6 +14,8 @@ import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 import getTestIds from '../getTestIds'
 
+import { checkDependencies } from '../checkDependencies'
+
 export const testIds = getTestIds()
 
 const TemplateCreateConnector = (connector) => {
@@ -131,6 +133,7 @@ const TemplateCreateConnector = (connector) => {
   }
 
   const { redux } = connector
+  checkDependencies({ redux })
 
   if (redux) {
     const { connect } = redux

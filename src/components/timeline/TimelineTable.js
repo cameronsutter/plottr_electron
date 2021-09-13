@@ -11,6 +11,7 @@ import UnconnectedTopRow from './TopRow'
 import UnconnectedBeatTitleCell from './BeatTitleCell'
 import UnconnectedAddLineRow from './AddLineRow'
 import { helpers, initialState } from 'pltr/v2'
+import { checkDependencies } from '../checkDependencies'
 
 const { card } = initialState
 
@@ -251,6 +252,10 @@ const TimelineTableConnector = (connector) => {
                 handleInsertChild={() => this.handleInsertChildBeat(lastBeat.id)}
                 expanded={lastBeat && lastBeat.expanded}
                 toggleExpanded={beatToggler(lastBeat)}
+                hovering={this.state.hovering}
+                onMouseEnter={() => this.startHovering(lastBeat.id)}
+                onMouseLeave={this.stopHovering}
+                isEmpty={!beats.length}
               />
             </Row>
           )
@@ -388,6 +393,7 @@ const TimelineTableConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
+  checkDependencies({ redux, selectors, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

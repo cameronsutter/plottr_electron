@@ -24,6 +24,7 @@ import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import PlottrModalConnector from '../PlottrModal'
 
 import { readImage, isImageUrl, readImageFromURL } from '../images'
+import { checkDependencies } from '../checkDependencies'
 
 const ImagePickerConnector = (connector) => {
   const PlottrModal = PlottrModalConnector(connector)
@@ -34,6 +35,7 @@ const ImagePickerConnector = (connector) => {
       storage: { saveImageToStorageBlob },
     },
   } = connector
+  checkDependencies({ saveImageToStorageBlob })
 
   class ImagePicker extends Component {
     state = {}
@@ -407,6 +409,7 @@ const ImagePickerConnector = (connector) => {
       actions: { image },
     },
   } = connector
+  checkDependencies({ redux, image })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

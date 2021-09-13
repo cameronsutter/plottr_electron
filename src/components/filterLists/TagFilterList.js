@@ -3,6 +3,8 @@ import PropTypes from 'react-proptypes'
 import { t as i18n } from 'plottr_locales'
 import GenericFilterList from './GenericFilterList'
 
+import { checkDependencies } from '../checkDependencies'
+
 const TagFilterListConnector = (connector) => {
   class TagFilterList extends Component {
     updateItems = (ids) => {
@@ -34,6 +36,7 @@ const TagFilterListConnector = (connector) => {
       selectors: { sortedTagsSelector },
     },
   } = connector
+  checkDependencies({ redux, sortedTagsSelector })
 
   if (redux) {
     const { connect } = redux

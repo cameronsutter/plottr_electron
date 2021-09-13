@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types'
 import { t as i18n } from 'plottr_locales'
 import UnconnectedAdView from './AdView'
 import UnconnectedVerifyView from './VerifyView'
+import { checkDependencies } from '../../checkDependencies'
 
 const ExpiredViewConnector = (connector) => {
   const AdView = UnconnectedAdView(connector)
@@ -14,6 +15,7 @@ const ExpiredViewConnector = (connector) => {
       openExternal,
     },
   } = connector
+  checkDependencies({ useTrialStatus, openExternal })
 
   const ExpiredView = (props) => {
     const { canExtend, extendTrial } = useTrialStatus()

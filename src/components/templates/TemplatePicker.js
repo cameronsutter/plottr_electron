@@ -13,6 +13,8 @@ import TemplateEdit from './TemplateEdit'
 import getTestIds from '../getTestIds'
 import { template } from 'pltr/v2'
 
+import { checkDependencies } from '../checkDependencies'
+
 export const testIds = getTestIds()
 
 const { lineFromTemplate, projectFromTemplate } = template
@@ -27,15 +29,30 @@ const typeMap = {
 
 const subCatMap = {
   all: t('All'),
+  children: t('Children'),
   comedy: t('Comedy'),
   general: t('General'),
+  horror: t('Horror'),
   romance: t('Romance'),
   mystery: t('Mystery'),
   action: t('Action'),
   screenplay: t('Screenplay'),
+  shortstory: t('Short Story'),
+  playwriting: t('Playwriting'),
 }
 
-const subCategories = ['all', 'action', 'general', 'mystery', 'romance', 'screenplay']
+const subCategories = [
+  'all',
+  'action',
+  'children',
+  'general',
+  'horror',
+  'mystery',
+  'playwriting',
+  'romance',
+  'screenplay',
+  'shortstory',
+]
 
 const TemplatePickerConnector = (connector) => {
   const PlottrModal = UnconnectedPlottrModal(connector)
@@ -48,6 +65,14 @@ const TemplatePickerConnector = (connector) => {
       template: { listTemplates, listCustomTemplates, deleteTemplate, editTemplateDetails },
     },
   } = connector
+  checkDependencies({
+    appVersion,
+    openExternal,
+    listTemplates,
+    listCustomTemplates,
+    deleteTemplate,
+    editTemplateDetails,
+  })
 
   class TemplatePicker extends Component {
     state = {

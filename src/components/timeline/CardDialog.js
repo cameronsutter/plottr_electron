@@ -28,6 +28,8 @@ import UnconnectedCardDescriptionEditor from './CardDescriptionEditor'
 import TemplatePickerConnector from '../templates/TemplatePicker'
 import { helpers } from 'pltr/v2'
 
+import { checkDependencies } from '../checkDependencies'
+
 const {
   card: { truncateTitle },
 } = helpers
@@ -47,6 +49,7 @@ const CardDialogConnector = (connector) => {
       template: { getTemplateById },
     },
   } = connector
+  checkDependencies({ templatesDisabled, openExternal, getTemplateById })
 
   class CardDialog extends Component {
     constructor(props) {
@@ -280,13 +283,18 @@ const CardDialogConnector = (connector) => {
     }
 
     renderRemoveTemplate() {
-      if (!this.state.removing) return null
-      const templateData = getTemplateById(this.state.removeWhichTemplate)
+      const { removing, removeWhichTemplate } = this.state
+      const { cardMetaData } = this.props
+      if (!removing) return null
+      let templateData = getTemplateById(removeWhichTemplate)
+      if (!templateData) {
+        templateData = cardMetaData.templates.find((t) => t.id == removeWhichTemplate) || {}
+      }
       return (
         <DeleteConfirmModal
           customText={t(
             'Are you sure you want to remove the {template} template and all its data?',
-            { template: templateData.name }
+            { template: templateData.name || t('Template') }
           )}
           onDelete={this.finishRemoveTemplate}
           onCancel={this.cancelRemoveTemplate}
@@ -341,7 +349,7 @@ const CardDialogConnector = (connector) => {
         ui,
       } = this.props
       return templates.map((template, idx) => {
-        const templateData = getTemplateById(template.id)
+        const templateData = getTemplateById(template.id) || template || {}
         const attrs = template.attributes.map((attr, index) => {
           const editorPath = helpers.editors.cardCustomAttributeEditorPath(
             this.props.cardMetaData,
@@ -384,7 +392,7 @@ const CardDialogConnector = (connector) => {
           )
         }
         return (
-          <Tab eventKey={idx + 3} title={templateData.name} key={`tab-${idx}`}>
+          <Tab eventKey={idx + 3} title={templateData.name || t('Template')} key={`tab-${idx}`}>
             <div className="template-tab__details">
               <p>
                 {templateData.description}
@@ -720,6 +728,7 @@ const CardDialogConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
+  checkDependencies({ redux, selectors, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

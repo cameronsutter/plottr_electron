@@ -5,10 +5,13 @@ import { t as i18n } from 'plottr_locales'
 import { Button } from 'react-bootstrap'
 import { IoIosAlert } from 'react-icons/io'
 
+import { checkDependencies } from '../checkDependencies'
+
 const RCEBoundaryConnector = (connector) => {
   const {
     platform: { appVersion, log, user },
   } = connector
+  checkDependencies({ appVersion, log, user })
 
   class RCEBoundary extends Component {
     state = {

@@ -5,6 +5,8 @@ import { t as i18n } from 'plottr_locales'
 import UnconnectedRichText from '../rce/RichText'
 import UnconnectedImage from '../images/Image'
 
+import { checkDependencies } from '../checkDependencies'
+
 const NoteDetailsConnector = (connector) => {
   const RichText = UnconnectedRichText(connector)
   const Image = UnconnectedImage(connector)
@@ -18,7 +20,11 @@ const NoteDetailsConnector = (connector) => {
         if (type == 'paragraph') {
           desc = (
             <dd>
-              <RichText description={note[name]} darkMode={ui.darkMode} />
+              <RichText
+                id={`notes.${note.id}.attributes.${name}`}
+                description={note[name]}
+                darkMode={ui.darkMode}
+              />
             </dd>
           )
         } else {
@@ -37,7 +43,11 @@ const NoteDetailsConnector = (connector) => {
           if (attr.type == 'paragraph') {
             val = (
               <dd>
-                <RichText description={attr.value} darkMode={ui.darkMode} />
+                <RichText
+                  id={`notes.${note.id}.templateAttributes.${attr.name}`}
+                  description={attr.value}
+                  darkMode={ui.darkMode}
+                />
               </dd>
             )
           } else {
@@ -69,7 +79,11 @@ const NoteDetailsConnector = (connector) => {
                   <Image responsive imageId={note.imageId} />
                   <dt>{i18n('Notes')}</dt>
                   <dd>
-                    <RichText description={note.content} darkMode={ui.darkMode} />
+                    <RichText
+                      id={`notes.${note.id}.content`}
+                      description={note.content}
+                      darkMode={ui.darkMode}
+                    />
                   </dd>
                 </dl>
                 {templateNotes}
@@ -101,6 +115,7 @@ const NoteDetailsConnector = (connector) => {
     },
   } = connector
   const noteActions = connector.pltr.actions.note
+  checkDependencies({ redux, singleNoteSelector, noteActions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

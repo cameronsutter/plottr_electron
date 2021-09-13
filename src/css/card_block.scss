@@ -112,6 +112,11 @@
   }
 }
 
+.__floater__body {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
 .card__hidden-cards {
   background-color: white;
   padding: 8px;

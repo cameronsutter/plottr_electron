@@ -5,6 +5,8 @@ import DeleteConfirmModal from './dialogs/DeleteConfirmModal'
 import { FormControl, FormGroup, ControlLabel, Glyphicon, Button } from 'react-bootstrap'
 import cx from 'classnames'
 
+import { checkDependencies } from './checkDependencies'
+
 const areEqual = (prevProps, nextProps) => {
   for (const key of Object.keys(prevProps)) {
     if (
@@ -27,7 +29,10 @@ const EditAttributeConnector = (connector) => {
     platform: { undo, redo },
   } = connector
 
+  checkDependencies({ undo, redo })
+
   const EditAttribute = ({
+    entityType,
     templateAttribute,
     name,
     type,
@@ -164,6 +169,9 @@ const EditAttributeConnector = (connector) => {
           <div>
             <Label />
             <RichText
+              id={`${entityType}.${
+                templateAttribute ? 'templateAttribute' : 'attribute'
+              }.${name}.${inputId}`}
               description={value || []}
               onChange={onChange}
               selection={selection}
@@ -214,6 +222,8 @@ const EditAttributeConnector = (connector) => {
     redux,
     pltr: { actions, selectors },
   } = connector
+
+  checkDependencies({ redux, actions, selectors })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

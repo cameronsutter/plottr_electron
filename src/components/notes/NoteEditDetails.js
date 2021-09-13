@@ -9,6 +9,7 @@ import UnconnectedRichText from '../rce/RichText'
 import UnconnectedEditAttribute from '../EditAttribute'
 import UnconnectedImagePicker from '../images/ImagePicker'
 import UnconnectedImage from '../images/Image'
+import { checkDependencies } from '../checkDependencies'
 
 const NoteEditDetailsConnector = (connector) => {
   const CategoryPicker = UnconnectedCategoryPicker(connector)
@@ -20,6 +21,7 @@ const NoteEditDetailsConnector = (connector) => {
   const {
     pltr: { helpers },
   } = connector
+  checkDependencies({ helpers })
 
   class NoteEditDetails extends Component {
     constructor(props) {
@@ -258,6 +260,7 @@ const NoteEditDetailsConnector = (connector) => {
               <FormGroup>
                 <ControlLabel>{i18n('Notes')}</ControlLabel>
                 <RichText
+                  id={`notes.${note.id}.content`}
                   description={note.content}
                   onChange={this.handleContentChange}
                   selection={this.props.selection}
@@ -298,6 +301,7 @@ const NoteEditDetailsConnector = (connector) => {
     redux,
     pltr: { selectors, actions },
   } = connector
+  checkDependencies({ redux, selectors, actions })
 
   if (redux) {
     const { connect, bindActionCreators } = redux

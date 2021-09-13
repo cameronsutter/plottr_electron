@@ -19,7 +19,13 @@ import { logOut } from 'plottr_firebase'
 const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({ isDarkMode, currentView, changeCurrentView, forceProjectDashboard, userId }) => {
+const Navigation = ({
+  isDarkMode,
+  currentView,
+  changeCurrentView,
+  forceProjectDashboard,
+  userId,
+}) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()

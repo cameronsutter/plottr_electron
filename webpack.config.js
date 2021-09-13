@@ -1,13 +1,15 @@
-var path = require('path')
-var webpack = require('webpack')
-var packageJSON = require('./package.json')
-var DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
+const path = require('path')
+const webpack = require('webpack')
+const packageJSON = require('./package.json')
+const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack-plugin')
 const isForMaps = process.env.MAPS == 'true'
 const sourceMapsPath = path.resolve(__dirname, '..', '..', 'pltr_sourcemaps', packageJSON.version)
+const Dotenv = require('dotenv-webpack')
 
-var plugins = [
+const plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
   new webpack.DefinePlugin({ __REACT_DEVTOOLS_GLOBAL_HOOK__: '({ isDisabled: true })' }),
+  new Dotenv(),
 ]
 
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
@@ -115,7 +117,7 @@ const rendererConfig = {
   target: 'electron-renderer',
   externals: [
     (function () {
-      var IGNORES = ['electron']
+      const IGNORES = ['electron']
       return function (context, request, callback) {
         if (IGNORES.indexOf(request) >= 0) {
           return callback(null, 'require("' + request + '")')

@@ -1,3 +1,16 @@
+# Environment Variables
+This project requires that you specify environment variables in order
+to connect to Firebase.  You may place these into a file called `.env`
+at the root of the project.
+
+At the time of writing this, we require two variables and your `.env`
+file might look something like the following:
+
+```
+FIREBASE_KEY=IM_A_KEY_THAT_YOU_SHOULD_REPLACE
+API_BASE_DOMAIN=plottr-web-alpha.vercel.app
+```
+
 # `Pltr` Library
 
 The core feature set of `Plottr` is modelled using actions, reducers

@@ -9,6 +9,7 @@ const { t } = require('plottr_locales')
 const { knownFilesStore, addToKnownFiles, addToKnown } = require('./known_files')
 const { Importer } = require('./importer/snowflake/importer')
 const { emptyFile, tree, SYSTEM_REDUCER_KEYS } = require('pltr/v2')
+const firebase = require('plottr_firebase')
 const { openProjectWindow } = require('./windows/projects')
 const { shell } = require('electron')
 const { broadcastToAllWindows } = require('./broadcast')
@@ -51,25 +52,31 @@ function saveFile(filePath, jsonData) {
 
 let itWorkedLastTime = true
 
-function autoSave(event, filePath, file) {
-  try {
-    saveFile(filePath, file)
-    // didn't work last time, but it did this time
-    if (!itWorkedLastTime) {
-      itWorkedLastTime = true
-      event.sender.send('auto-save-worked-this-time')
+function autoSave(event, filePath, file, userId) {
+  const onCloud = file.file.cloudFile
+  if (!onCloud) {
+    try {
+      saveFile(filePath, file)
+      // didn't work last time, but it did this time
+      if (!itWorkedLastTime) {
+        itWorkedLastTime = true
+        event.sender.send('auto-save-worked-this-time')
+      }
+    } catch (saveError) {
+      itWorkedLastTime = false
+      event.sender.send('auto-save-error', filePath, saveError)
     }
-  } catch (saveError) {
-    itWorkedLastTime = false
-    event.sender.send('auto-save-error', filePath, saveError)
   }
   // either way, save a backup
-  // TODO: move to main modules...
-  saveBackup(filePath, file, (backupError) => {
-    if (backupError) {
-      event.sender.send('auto-save-backup-error', filePath, backupError)
-    }
-  })
+  if (onCloud) {
+    firebase.saveBackup(userId, file)
+  } else {
+    saveBackup(filePath, file, (backupError) => {
+      if (backupError) {
+        event.sender.send('auto-save-backup-error', filePath, backupError)
+      }
+    })
+  }
 }
 
 function removeFromTempFiles(filePath, doDelete = true) {
@@ -153,7 +160,7 @@ function createFromSnowflake(importedPath) {
 }
 
 function openKnownFile(filePath, id, unknown) {
-  if (id) {
+  if (id && !filePath.startsWith('plottr://')) {
     // update lastOpen, but wait a little so the file doesn't move from under their mouse
     setTimeout(() => {
       knownFilesStore.set(`${id}.lastOpened`, Date.now())

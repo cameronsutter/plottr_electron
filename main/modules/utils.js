@@ -32,7 +32,7 @@ function makeBrowserWindow(filePath) {
   let stateKeeprFile = filePath.replace(/[/\\]/g, '~')
   const numFileLetters = 100
 
-  let multiplier = filePath == 'dashboard' ? 0.8 : 0.9
+  let multiplier = 0.9
 
   let stateKeeper = windowStateKeeper({
     defaultWidth: parseInt(width * multiplier),
@@ -57,15 +57,7 @@ function makeBrowserWindow(filePath) {
     },
   }
 
-  if (filePath == 'dashboard') {
-    config.titleBarStyle = 'hiddenInset'
-    config.fullscreenable = false
-    if (!is.macos) {
-      config.frame = false
-    }
-  } else {
-    config.backgroundColor = '#f7f7f7'
-  }
+  config.backgroundColor = '#f7f7f7'
 
   // Create the browser window
   let newWindow = new BrowserWindow(config)

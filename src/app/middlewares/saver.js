@@ -12,7 +12,11 @@ const saver = (store) => (next) => (action) => {
   if (BLACKLIST.includes(action.type)) return result
   const state = store.getState().present
   // save and backup
-  saveFile(state.file.fileName, state)
+  if (state.file.cloudFile) {
+    saveFile(state.file.id, state)
+  } else if (state.file.fileName !== '') {
+    saveFile(state.file.fileName, state)
+  }
   return result
 }
 
@@ -28,7 +32,7 @@ function saveFile(filePath, jsonData) {
     resetCount++
   }
   function forceSave() {
-    ipcRenderer.send('auto-save', filePath, jsonData)
+    ipcRenderer.send('auto-save', filePath, jsonData, jsonData.client.userId)
     resetCount = 0
     saveTimeout = null
   }

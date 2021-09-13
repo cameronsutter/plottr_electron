@@ -1,5 +1,5 @@
+import React, { useState, useEffect, useRef } from 'react'
 import { ipcRenderer } from 'electron'
-import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 import Navigation from 'containers/Navigation'
@@ -9,55 +9,32 @@ import { AskToSaveModal, TemplateCreate, ErrorBoundary, ExportDialog } from 'con
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
-import { showTourSelector } from 'pltr/v2/selectors/tours'
+import { selectors } from 'pltr/v2'
+import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 
-let isTryingToReload = false
-let isTryingToClose = false
+const App = ({ forceProjectDashboard, showTour, userId }) => {
+  const [showTemplateCreate, setShowTemplateCreate] = useState(false)
+  const [type, setType] = useState(null)
+  const [showAskToSave, setShowAskToSave] = useState(false)
+  const [blockClosing, setBlockClosing] = useState(true)
+  const [showExportDialog, setShowExportDialog] = useState(false)
 
-class App extends Component {
-  state = {
-    showTemplateCreate: false,
-    type: null,
-    showAskToSave: false,
-    blockClosing: true,
-    showExportDialog: false,
+  const isTryingToReload = useRef(false)
+  const isTryingToClose = useRef(false)
+
+  const closeOrRefresh = (shouldClose) => {
+    if (isTryingToReload.current) {
+      location.reload()
+    } else {
+      if (shouldClose) window.close()
+    }
   }
 
-  componentDidMount() {
-    ipcRenderer.on('save-as-template-start', (event, type) => {
-      this.setState({ showTemplateCreate: true, type: type })
-    })
-    ipcRenderer.on('reload', () => {
-      isTryingToReload = true
-      this.askToSave({})
-    })
-    ipcRenderer.on('wants-to-close', () => {
-      isTryingToClose = true
-      this.askToSave({})
-    })
-    ipcRenderer.on('reload', () => {
-      isTryingToReload = true
-      this.askToSave({})
-    })
-    ipcRenderer.on('advanced-export-file-from-menu', (event) => {
-      this.setState({ showExportDialog: true })
-    })
-    ipcRenderer.send('initial-mount-complete')
-    window.addEventListener('beforeunload', this.askToSave)
-  }
-
-  componentWillUnmount() {
-    ipcRenderer.removeAllListeners('save-as-template-start')
-    ipcRenderer.removeAllListeners('reload')
-    ipcRenderer.removeAllListeners('wants-to-close')
-    ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
-    window.removeEventListener('beforeunload', this.askToSave)
-  }
-
-  askToSave = (event) => {
-    if (!this.state.blockClosing) return
+  const askToSave = (event) => {
+    if (!blockClosing) return
     if (process.env.NODE_ENV == 'development') {
-      return this.closeOrRefresh(isTryingToClose)
+      closeOrRefresh(isTryingToClose.current)
+      return
     }
 
     if (focusIsEditable()) {
@@ -67,58 +44,86 @@ class App extends Component {
     }
     // no actions yet? doesn't need to save
     if (!hasPreviousAction()) {
-      this.setState({ blockClosing: false })
-      return this.closeOrRefresh(isTryingToClose)
+      setBlockClosing(false)
+      closeOrRefresh(isTryingToClose.current)
+      return
     }
 
     event.returnValue = 'nope'
-    this.setState({ showAskToSave: true })
+    setShowAskToSave(true)
   }
 
-  dontSaveAndClose = () => {
-    this.setState({ showAskToSave: false, blockClosing: false })
-    this.closeOrRefresh(true)
+  useEffect(() => {
+    ipcRenderer.on('save-as-template-start', (event, type) => {
+      setType(type)
+      setShowTemplateCreate(true)
+    })
+    ipcRenderer.on('reload', () => {
+      isTryingToReload.current = true
+      askToSave({})
+    })
+    ipcRenderer.on('wants-to-close', () => {
+      isTryingToClose.current = true
+      askToSave({})
+    })
+    ipcRenderer.on('reload', () => {
+      isTryingToReload.current = true
+      askToSave({})
+    })
+    ipcRenderer.on('advanced-export-file-from-menu', (event) => {
+      setShowExportDialog(true)
+    })
+    ipcRenderer.send('initial-mount-complete')
+    window.addEventListener('beforeunload', askToSave)
+    return () => {
+      ipcRenderer.removeAllListeners('save-as-template-start')
+      ipcRenderer.removeAllListeners('reload')
+      ipcRenderer.removeAllListeners('wants-to-close')
+      ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
+      window.removeEventListener('beforeunload', askToSave)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (userId) {
+      return listenToCustomTemplates(userId)
+    }
+    return () => {}
+  }, [userId])
+
+  const dontSaveAndClose = () => {
+    setBlockClosing(false)
+    setShowAskToSave(false)
+    closeOrRefresh(true)
   }
 
-  saveAndClose = () => {
-    this.setState({ showAskToSave: false, blockClosing: false })
+  const saveAndClose = () => {
+    setBlockClosing(false)
+    setShowAskToSave(false)
     const { present } = store.getState()
     ipcRenderer.send('save-file', present.file.fileName, present)
-    this.closeOrRefresh(true)
+    closeOrRefresh(true)
   }
 
-  closeOrRefresh = (shouldClose) => {
-    if (isTryingToReload) {
-      location.reload()
-    } else {
-      if (shouldClose) window.close()
-    }
+  const renderTemplateCreate = () => {
+    if (!showTemplateCreate) return null
+
+    return <TemplateCreate type={type} close={() => setShowTemplateCreate(false)} />
   }
 
-  renderTemplateCreate() {
-    if (!this.state.showTemplateCreate) return null
-
-    return (
-      <TemplateCreate
-        type={this.state.type}
-        close={() => this.setState({ showTemplateCreate: false })}
-      />
-    )
-  }
-
-  renderAskToSave() {
-    if (!this.state.showAskToSave) return null
+  const renderAskToSave = () => {
+    if (!showAskToSave) return null
 
     return (
       <AskToSaveModal
-        dontSave={this.dontSaveAndClose}
-        save={this.saveAndClose}
-        cancel={() => this.setState({ showAskToSave: false })}
+        dontSave={dontSaveAndClose}
+        save={saveAndClose}
+        cancel={() => setShowAskToSave(false)}
       />
     )
   }
 
-  renderGuidedTour() {
+  const renderGuidedTour = () => {
     let feature = store.getState().present.tour.feature.name
     if (!feature) return null
     if (
@@ -129,42 +134,44 @@ class App extends Component {
     return null
   }
 
-  renderAdvanceExportModal() {
-    if (!this.state.showExportDialog) return null
-    return <ExportDialog close={() => this.setState({ showExportDialog: false })} />
+  const renderAdvanceExportModal = () => {
+    if (!showExportDialog) return null
+    return <ExportDialog close={() => setShowExportDialog(false)} />
   }
 
-  render() {
-    return (
+  return (
+    <ErrorBoundary>
       <ErrorBoundary>
-        <ErrorBoundary>
-          <React.StrictMode>
-            <Navigation forceProjectDashboard={this.props.forceProjectDashboard} />
-          </React.StrictMode>
-        </ErrorBoundary>
-        <main className="project-main tour-end">
-          <React.StrictMode>
-            <Body />
-          </React.StrictMode>
-        </main>
         <React.StrictMode>
-          {this.renderTemplateCreate()}
-          {this.renderAskToSave()}
-          {this.props.showTour && this.renderGuidedTour()}
-          {this.renderAdvanceExportModal()}
+          <Navigation forceProjectDashboard={forceProjectDashboard} />
         </React.StrictMode>
       </ErrorBoundary>
-    )
-  }
+      <main className="project-main tour-end">
+        <React.StrictMode>
+          <Body />
+        </React.StrictMode>
+      </main>
+      <React.StrictMode>
+        {renderTemplateCreate()}
+        {renderAskToSave()}
+        {showTour && renderGuidedTour()}
+        {renderAdvanceExportModal()}
+      </React.StrictMode>
+    </ErrorBoundary>
+  )
 }
 
 App.propTypes = {
+  userId: PropTypes.string,
   showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
-  return { showTour: showTourSelector(state.present) }
+  return {
+    showTour: selectors.showTourSelector(state.present),
+    userId: selectors.userIdSelector(state.present),
+  }
 }
 
 export default connect(mapStateToProps, null)(App)

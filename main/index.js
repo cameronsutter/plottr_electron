@@ -205,8 +205,8 @@ ipcMain.on('save-file', (event, fileName, file) => {
   saveFile(fileName, file)
 })
 
-ipcMain.on('auto-save', (event, filePath, file) => {
-  autoSave(event, filePath, file)
+ipcMain.on('auto-save', (event, filePath, file, userId) => {
+  autoSave(event, filePath, file, userId)
 })
 
 ipcMain.on('remove-from-temp-files-if-temp', (event, filePath) => {

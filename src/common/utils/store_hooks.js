@@ -97,6 +97,12 @@ export function useLicenseInfo() {
   return useJsonStore(licenseStore)
 }
 
+export function removeFileFromList(fileId) {
+  const removeFileEvent = new Event('delete-file', { bubbles: true, cancelable: false })
+  removeFileEvent.fileId = fileId
+  document.dispatchEvent(removeFileEvent)
+}
+
 function useKnownFilesFromFirebase(initialFileList) {
   const [fileList, setFileList] = useState(initialFileList)
   const [filesByPosition, setFilesByPosition] = useState({})

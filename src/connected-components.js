@@ -15,6 +15,7 @@ import {
   imagePublicURL,
   isStorageURL,
   saveImageToStorageBlob as saveImageToStorageBlobInFirebase,
+  deleteFile,
 } from 'plottr_firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
@@ -24,6 +25,7 @@ import {
   licenseStore,
   useCustomTemplatesInfo,
   useSettingsInfo,
+  removeFileFromList,
 } from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'
@@ -109,7 +111,19 @@ const platform = {
     basename: path.basename,
     openKnownFile: openFile,
     deleteKnownFile: (id, path) => {
-      ipcRenderer.send('delete-known-file', id, path)
+      const {
+        present: {
+          client: { userId, clientId },
+        },
+      } = store.getState()
+      const isOnCloud = path.startsWith('plottr://')
+      if (isOnCloud) {
+        deleteFile(id, userId, clientId).then(() => {
+          removeFileFromList(id)
+        })
+      } else {
+        ipcRenderer.send('delete-known-file', id, path, userId, clientId)
+      }
     },
     editKnownFilePath,
     renameFile: (filePath) => {

@@ -7,6 +7,7 @@ import tracker from '../middlewares/tracker'
 import logger from '../middlewares/logger'
 import reporter from '../middlewares/reporter'
 import actionRecorder from '../middlewares/actionRecorder'
+import firebaseSync from '../middlewares/firebaseSync'
 import undoable, { excludeAction } from 'redux-undo'
 import dataRepairers from './dataRepairers'
 
@@ -40,7 +41,14 @@ function configureStore(initialState) {
     groupBy: sameActionCloseInTime,
     filter: excludeAction([ActionTypes.RESET_ACTION_RECORDER, ActionTypes.RECORD_LAST_ACTION]),
   })
-  const middlewares = applyMiddleware(actionRecorder, saver, tracker, logger, reporter)
+  const middlewares = applyMiddleware(
+    actionRecorder,
+    saver,
+    firebaseSync,
+    tracker,
+    logger,
+    reporter
+  )
   const enhancers =
     process.env.NODE_ENV === 'production'
       ? middlewares

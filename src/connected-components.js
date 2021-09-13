@@ -6,6 +6,17 @@ import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 
 import { t } from 'plottr_locales'
+import {
+  publishRCEOperations,
+  fetchRCEOperations,
+  listenForChangesToEditor,
+  deleteChangeSignal,
+  deleteOldChanges,
+  imagePublicURL,
+  isStorageURL,
+  saveImageToStorageBlob as saveImageToStorageBlobInFirebase,
+  deleteFile,
+} from 'plottr_firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
   useExportConfigInfo,
@@ -14,6 +25,7 @@ import {
   licenseStore,
   useCustomTemplatesInfo,
   useSettingsInfo,
+  removeFileFromList,
 } from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'
@@ -41,6 +53,7 @@ import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
+import { newFile } from './files'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -60,6 +73,10 @@ const saveFile = (filePath, file) => {
 
 const moveItemToTrash = shell.moveItemToTrash
 
+const openFile = (filePath, id, unknown) => {
+  ipcRenderer.send('open-known-file', filePath, id, unknown)
+}
+
 const platform = {
   undo: () => {
     store.dispatch(ActionCreators.undo())
@@ -75,7 +92,16 @@ const platform = {
   },
   file: {
     createNew: (template) => {
-      ipcRenderer.send('create-new-file', template)
+      const state = store.getState()
+      const {
+        client: { emailAddress, userId, clientId },
+        project: { fileList },
+      } = state.present
+      if (userId) {
+        newFile(emailAddress, userId, fileList, state, clientId, template, openFile)
+      } else {
+        ipcRenderer.send('create-new-file', template)
+      }
     },
     openExistingFile,
     doesFileExist,
@@ -83,11 +109,21 @@ const platform = {
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,
-    openKnownFile: (filePath, id, unknown) => {
-      ipcRenderer.send('open-known-file', filePath, id, unknown)
-    },
+    openKnownFile: openFile,
     deleteKnownFile: (id, path) => {
-      ipcRenderer.send('delete-known-file', id, path)
+      const {
+        present: {
+          client: { userId, clientId },
+        },
+      } = store.getState()
+      const isOnCloud = path.startsWith('plottr://')
+      if (isOnCloud) {
+        deleteFile(id, userId, clientId).then(() => {
+          removeFileFromList(id)
+        })
+      } else {
+        ipcRenderer.send('delete-known-file', id, path, userId, clientId)
+      }
     },
     editKnownFilePath,
     renameFile: (filePath) => {
@@ -175,7 +211,13 @@ const platform = {
     listTemplates,
     listCustomTemplates,
     getTemplateById,
-    deleteTemplate,
+    deleteTemplate: (templateId) => {
+      const state = store.getState()
+      const {
+        client: { userId },
+      } = state.present
+      deleteTemplate(templateId, userId)
+    },
     editTemplateDetails,
     startSaveAsTemplate: (itemType) => {
       const win = remote.getCurrentWindow()
@@ -230,31 +272,25 @@ const platform = {
   rootElementSelectors: ['#react-root', '#dashboard__react__root'],
   templatesDisabled: false,
   exportDisabled: false,
-  publishRCEOperations: () => {
-    // TODO
-  },
-  fetchRCEOperations: () => {
-    // TODO
-  },
-  listenForChangesToEditor: () => {
-    // TODO
-  },
-  deleteChangeSignal: () => {
-    // TODO
-  },
-  deleteOldChanges: () => {
-    // TODO
-  },
+  publishRCEOperations,
+  fetchRCEOperations,
+  listenForChangesToEditor,
+  deleteChangeSignal,
+  deleteOldChanges,
   machineIdSync,
   storage: {
-    // TODO: update when the firebase sync PR is merged!
-    imagePublicURL: () => Promise.resolve(''),
-    isStorageURL: () => false,
-    resolveToPublicUrl: () => {
-      // TODO
+    imagePublicURL,
+    isStorageURL,
+    resolveToPublicUrl: (storageUrl) => {
+      if (!storageUrl) return null
+      return imagePublicURL(storageUrl)
     },
-    saveImageToStorageBlob: () => {
-      // TODO
+    saveImageToStorageBlob: (blob, name) => {
+      const state = store.getState()
+      const {
+        client: { userId },
+      } = state.present
+      return saveImageToStorageBlobInFirebase(userId, name, blob)
     },
   },
 }

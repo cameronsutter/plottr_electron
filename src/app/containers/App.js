@@ -5,7 +5,13 @@ import PropTypes from 'react-proptypes'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
-import { AskToSaveModal, TemplateCreate, ErrorBoundary, ExportDialog } from 'connected-components'
+import {
+  AskToSaveModal,
+  TemplateCreate,
+  ErrorBoundary,
+  ExportDialog,
+  ActsHelpModal,
+} from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
@@ -18,6 +24,7 @@ const App = ({ forceProjectDashboard, showTour, userId }) => {
   const [showAskToSave, setShowAskToSave] = useState(false)
   const [blockClosing, setBlockClosing] = useState(true)
   const [showExportDialog, setShowExportDialog] = useState(false)
+  const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
 
   const isTryingToReload = useRef(false)
   const isTryingToClose = useRef(false)
@@ -73,13 +80,18 @@ const App = ({ forceProjectDashboard, showTour, userId }) => {
     ipcRenderer.on('advanced-export-file-from-menu', (event) => {
       setShowExportDialog(true)
     })
+    ipcRenderer.on('turn-on-acts-help', () => {
+      setShowActsGuideHelp(true)
+    })
     ipcRenderer.send('initial-mount-complete')
     window.addEventListener('beforeunload', askToSave)
+
     return () => {
       ipcRenderer.removeAllListeners('save-as-template-start')
       ipcRenderer.removeAllListeners('reload')
       ipcRenderer.removeAllListeners('wants-to-close')
       ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
+      ipcRenderer.removeAllListeners('turn-on-acts-help')
       window.removeEventListener('beforeunload', askToSave)
     }
   }, [])
@@ -139,6 +151,11 @@ const App = ({ forceProjectDashboard, showTour, userId }) => {
     return <ExportDialog close={() => setShowExportDialog(false)} />
   }
 
+  const renderActStructureHelpModal = () => {
+    if (!showActsGuideHelp) return null
+    return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
+  }
+
   return (
     <ErrorBoundary>
       <ErrorBoundary>
@@ -156,6 +173,7 @@ const App = ({ forceProjectDashboard, showTour, userId }) => {
         {renderAskToSave()}
         {showTour && renderGuidedTour()}
         {renderAdvanceExportModal()}
+        {renderActStructureHelpModal()}
       </React.StrictMode>
     </ErrorBoundary>
   )

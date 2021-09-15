@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { PropTypes } from 'prop-types'
 import { PlottrModal } from 'connected-components'
-import { connect } from 'react-redux'
-
-import { actions } from 'pltr/v2'
-import { startUI, firebaseUI, onSessionChange, fetchFiles } from 'plottr_firebase'
-
-import SETTINGS from '../../common/utils/settings'
+import FrbLogin from './FrbLogin'
 
 const modalStyles = {
   overlay: {
@@ -28,41 +23,14 @@ const modalStyles = {
   },
 }
 
-const LoginModal = ({ closeLoginModal, setUserId, setFileList }) => {
-  const [firebaseLoginComponentRef, setFirebaseLoginComponentRef] = useState(null)
-
-  useEffect(() => {
-    if (firebaseLoginComponentRef) {
-      const ui = firebaseUI()
-      startUI(ui, '#firebase_login_root')
-    }
-  }, [firebaseLoginComponentRef])
-
-  useEffect(() => {
-    onSessionChange((user) => {
-      if (user) {
-        SETTINGS.set('user.id', user.uid)
-        setUserId(user.uid)
-        fetchFiles(user.uid).then((files) => {
-          const activeFiles = files.filter(({ deleted }) => !deleted)
-          setFileList(activeFiles)
-        })
-      }
-    })
-  }, [])
-
+export default function LoginModal({ closeLoginModal }) {
   return (
     <PlottrModal isOpen={true} onRequestClose={closeLoginModal} style={modalStyles}>
       <div className="login">
         <div className="login__main">
           <div className="login__left">
             <h1>Welcome to Plottr</h1>
-            <div
-              ref={(ref) => {
-                setFirebaseLoginComponentRef(ref)
-              }}
-              id="firebase_login_root"
-            />
+            <FrbLogin />
           </div>
           <div className="login__right">
             <div className="login__logo">
@@ -77,11 +45,4 @@ const LoginModal = ({ closeLoginModal, setUserId, setFileList }) => {
 
 LoginModal.propTypes = {
   closeLoginModal: PropTypes.func.isRequired,
-  setUserId: PropTypes.func.isRequired,
-  setFileList: PropTypes.func.isRequired,
 }
-
-export default connect(null, {
-  setUserId: actions.client.setUserId,
-  setFileList: actions.project.setFileList,
-})(LoginModal)

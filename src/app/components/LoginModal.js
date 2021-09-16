@@ -1,7 +1,6 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
-import { PlottrModal } from 'connected-components'
-import FrbLogin from './FrbLogin'
+import { PlottrModal, FirebaseLogin } from 'connected-components'
 
 const modalStyles = {
   overlay: {
@@ -30,7 +29,7 @@ export default function LoginModal({ closeLoginModal }) {
         <div className="login__main">
           <div className="login__left">
             <h1>Welcome to Plottr</h1>
-            <FrbLogin />
+            <FirebaseLogin />
           </div>
           <div className="login__right">
             <div className="login__logo">

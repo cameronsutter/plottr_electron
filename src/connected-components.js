@@ -16,6 +16,10 @@ import {
   isStorageURL,
   saveImageToStorageBlob as saveImageToStorageBlobInFirebase,
   deleteFile,
+  startUI,
+  firebaseUI,
+  onSessionChange,
+  fetchFiles,
 } from 'plottr_firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
@@ -278,6 +282,12 @@ const platform = {
   deleteChangeSignal,
   deleteOldChanges,
   machineIdSync,
+  firebase: {
+    startUI,
+    firebaseUI,
+    onSessionChange,
+    fetchFiles,
+  },
   storage: {
     imagePublicURL,
     isStorageURL,
@@ -363,3 +373,4 @@ export const FileLocation = components.FileLocation
 export const BookChooser = components.BookChooser
 export const TimelineWrapper = components.TimelineWrapper
 export const DashboardBody = components.DashboardBody
+export const FirebaseLogin = components.FirebaseLogin

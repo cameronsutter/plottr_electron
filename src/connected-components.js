@@ -20,6 +20,8 @@ import {
   firebaseUI,
   onSessionChange,
   fetchFiles,
+  logOut,
+  saveCustomTemplate,
 } from 'plottr_firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
@@ -287,6 +289,8 @@ const platform = {
     firebaseUI,
     onSessionChange,
     fetchFiles,
+    logOut,
+    saveCustomTemplate,
   },
   storage: {
     imagePublicURL,

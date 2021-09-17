@@ -27,18 +27,32 @@
 
 .step__header {
   padding: 16px;
-  font-size: 24px;
   p {
+    font-size: 20px;
     margin: 16px 0;
+    color: $blue-6;
   }
 }
 
 .step__body {
   padding: 16px;
+  .onboarding__well {
+    padding: 24px 0 24px 15%;
+    font-size: 20px;
+    text-align: left;
+    background-color: $gray-9;
+    border-radius: 20px;
+    .accented-text {
+      color: $orange-4;
+    }
+  }
 }
 
 .step__footer {
   padding: 32px 16px 16px 16px;
+  .large-text {
+    font-size: 20px;
+  }
 }
 
 .onboarding__button-bar {
@@ -56,5 +70,15 @@
     font-size: 24px;
     margin: 0;
     margin-right: 16px;
+  }
+}
+
+.onboarding__settings {
+  text-align: left;
+  padding-left: 15%;
+  .dashboard__options__item {
+    select {
+      font-size: 20px;
+    }
   }
 }

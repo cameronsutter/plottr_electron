@@ -6,23 +6,36 @@ import { actions, selectors } from 'pltr/v2'
 import { listen, stopListening } from 'plottr_firebase'
 import { store } from '../store/configureStore'
 
-const Listener = ({ userId, selectedFile, setPermission, setFileLoaded, patchFile, clientId }) => {
+const Listener = ({
+  userId,
+  selectedFile,
+  setPermission,
+  setFileLoaded,
+  patchFile,
+  clientId,
+  fileLoaded,
+}) => {
   const [unsubscribeFunctions, setUnsubscribeFunctions] = useState([])
 
   useEffect(() => {
     if (!userId || !clientId || !selectedFile || !selectedFile.id) {
       return () => {}
     }
-    setUnsubscribeFunctions(listen(store, userId, selectedFile.id, clientId, selectedFile.version))
-    setPermission(selectedFile.permission)
-    setFileLoaded()
+    if (fileLoaded) {
+      setUnsubscribeFunctions(
+        listen(store, userId, selectedFile.id, clientId, selectedFile.version)
+      )
+      setPermission(selectedFile.permission)
+    } else {
+      setFileLoaded()
+    }
 
     return () => {
       stopListening(unsubscribeFunctions)
       setUnsubscribeFunctions([])
       setPermission('viewer')
     }
-  }, [selectedFile, userId, clientId])
+  }, [selectedFile, userId, clientId, fileLoaded])
 
   return null
 }
@@ -40,6 +53,7 @@ export default connect(
     selectedFile: selectors.selectedFileSelector(state.present),
     userId: selectors.userIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
+    fileLoaded: selectors.fileLoadedSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,

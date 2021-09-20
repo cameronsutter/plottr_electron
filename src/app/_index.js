@@ -29,6 +29,7 @@ import { TEMP_FILES_PATH } from '../common/utils/config_paths'
 import { createErrorReport } from '../common/utils/full_error_report'
 import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
+import Listener from './components/listener'
 
 const clientId = machineIdSync()
 
@@ -114,6 +115,7 @@ function bootFile(filePath, options, numOpenFiles) {
             })
             render(
               <Provider store={store}>
+                <Listener />
                 <App />
               </Provider>,
               root

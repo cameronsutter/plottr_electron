@@ -75,6 +75,7 @@ function bootFile(filePath, options, numOpenFiles) {
     if (isCloudFile) {
       const fileId = filePath.split('plottr://')[1]
       const userId = SETTINGS.get('user.id')
+      const emailAddress = SETTINGS.get('user.email')
       if (!userId) {
         rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
         return
@@ -97,7 +98,6 @@ function bootFile(filePath, options, numOpenFiles) {
                 `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
               )
             }
-            console.log('_index', clientId)
             overwriteAllKeys(fileId, clientId, data).then((results) => {
               store.dispatch(
                 actions.ui.loadFile(
@@ -113,6 +113,7 @@ function bootFile(filePath, options, numOpenFiles) {
               )
               store.dispatch(actions.project.selectFile(json.file))
               store.dispatch(actions.client.setClientId(clientId))
+              store.dispatch(actions.client.setEmailAddress(emailAddress))
             })
             render(
               <Provider store={store}>

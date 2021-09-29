@@ -291,14 +291,7 @@ const platform = {
     fetchFiles,
     logOut,
     saveCustomTemplate,
-    uploadExisting: (fileData) => {
-      const state = store.getState()
-      const {
-        client: { emailAddress, userId },
-      } = state.present
-      console.log('uploadExisting', state, emailAddress, userId)
-      return uploadExisting(emailAddress, userId, fileData)
-    },
+    uploadExisting,
   },
   storage: {
     imagePublicURL,

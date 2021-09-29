@@ -59,7 +59,7 @@ import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
-import { newFile } from './files'
+import { newFile, uploadExisting } from './files'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -291,6 +291,14 @@ const platform = {
     fetchFiles,
     logOut,
     saveCustomTemplate,
+    uploadExisting: (fileData) => {
+      const state = store.getState()
+      const {
+        client: { emailAddress, userId },
+      } = state.present
+      console.log('uploadExisting', state, emailAddress, userId)
+      return uploadExisting(emailAddress, userId, fileData)
+    },
   },
   storage: {
     imagePublicURL,

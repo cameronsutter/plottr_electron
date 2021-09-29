@@ -97,6 +97,7 @@ function bootFile(filePath, options, numOpenFiles) {
                 `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
               )
             }
+            console.log('_index', clientId)
             overwriteAllKeys(fileId, clientId, data).then((results) => {
               store.dispatch(
                 actions.ui.loadFile(

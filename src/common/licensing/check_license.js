@@ -2,7 +2,7 @@ import rp from 'request-promise-native'
 import log from 'electron-log'
 import setupRollbar from '../utils/rollbar'
 const rollbar = setupRollbar('license_checker')
-import { licenseURL, isActiveLicense, productMapping } from './licensing'
+import { licenseURL, isActiveLicense, productMapping, makeRequest } from './licensing'
 
 export function checkForActiveLicense(licenseInfo, callback) {
   if (!licenseInfo || !Object.keys(licenseInfo).length) {
@@ -29,12 +29,4 @@ export function checkForActiveLicense(licenseInfo, callback) {
       log.info('[license_checker]', 'license check request failed')
       callback(err, null)
     })
-}
-
-function makeRequest(url) {
-  return {
-    url: url,
-    method: 'GET',
-    json: true,
-  }
 }

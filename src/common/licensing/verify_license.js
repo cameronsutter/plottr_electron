@@ -7,6 +7,7 @@ import {
   hasActivationsLeft,
   PRODUCT_IDS,
   productMapping,
+  makeRequest,
 } from './licensing'
 
 // callback(isValid, data)
@@ -58,12 +59,4 @@ export function verifyLicense(license, callback) {
       callback(false, { problem: 'invalid_item_id' })
     }
   })
-}
-
-function makeRequest(url) {
-  return {
-    url: url,
-    method: 'GET',
-    json: true,
-  }
 }

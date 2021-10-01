@@ -51,6 +51,7 @@ import MPQ from './common/utils/MPQ'
 import { useTrialStatus } from './common/licensing/trial_manager'
 import { checkForActiveLicense } from './common/licensing/check_license'
 import { verifyLicense } from './common/licensing/verify_license'
+import { checkForPro } from './common/licensing/check_pro'
 import { trial90days } from './common/licensing/special_codes'
 import { openExistingFile } from './dashboard/utils/window_manager'
 import { doesFileExist, useSortedKnownFiles } from './dashboard/utils/files'
@@ -208,6 +209,7 @@ const platform = {
     licenseStore,
     verifyLicense,
     trial90days,
+    checkForPro,
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')

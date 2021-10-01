@@ -62,6 +62,21 @@
       margin-bottom: 0;
     }
   }
+  .list-group {
+    text-align: left;
+    .list-group-item {
+      p.secondary-text {
+        font-size: 12px;
+        margin-left: 20px;
+      }
+      .checkbox {
+        padding-left: 0;
+      }
+      &:hover {
+        background-color: $gray-9;
+      }
+    }
+  }
 }
 
 .step__footer {

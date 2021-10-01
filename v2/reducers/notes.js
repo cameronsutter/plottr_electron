@@ -85,7 +85,8 @@ const notes =
           let note = cloneDeep(n)
 
           if (action.oldAttribute.name != action.newAttribute.name) {
-            note[action.newAttribute.name] = note[action.oldAttribute.name]
+            // Firebase doesn't support undefined, so use null when the attribute isn't set
+            note[action.newAttribute.name] = note[action.oldAttribute.name] || null
             delete note[action.oldAttribute.name]
           }
 
@@ -94,7 +95,7 @@ const notes =
           // see ../selectors/customAttributes.js for when this is allowed
           if (action.oldAttribute.type == 'text') {
             let desc = note[action.newAttribute.name]
-            if (desc && desc.length && typeof desc !== 'string') {
+            if (!desc || (desc && desc.length && typeof desc !== 'string')) {
               desc = ''
             }
             note[action.newAttribute.name] = desc
@@ -227,13 +228,13 @@ const notes =
           const normalizeRCEContent = repair('normalizeRCEContent')
           return {
             ...note,
-            description: normalizeRCEContent(note.content),
             ...applyToCustomAttributes(
               note,
               normalizeRCEContent,
               action.data.customAttributes.notes,
               'paragraph'
             ),
+            content: normalizeRCEContent(note.content),
           }
         })
       }

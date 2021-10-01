@@ -27,13 +27,13 @@ import {
   REMOVE_TEMPLATE_FROM_CHARACTER,
   EDIT_CHARACTER_TEMPLATE_ATTRIBUTE,
 } from '../constants/ActionTypes'
-import { character } from '../store/initialState'
+import { character as defaultCharacter } from '../store/initialState'
 import { newFileCharacters } from '../store/newFileState'
 import { nextId } from '../store/newIds'
 import { applyToCustomAttributes } from './applyToCustomAttributes'
 import { repairIfPresent } from './repairIfPresent'
 
-const initialState = [character]
+const initialState = [defaultCharacter]
 
 const characters =
   (dataRepairers) =>
@@ -45,7 +45,7 @@ const characters =
         return [
           ...state,
           {
-            ...character,
+            ...defaultCharacter,
             id: nextId(state),
             name: action.name,
             description: action.description,
@@ -57,7 +57,7 @@ const characters =
         return [
           ...state,
           {
-            ...character,
+            ...defaultCharacter,
             ...action.character,
             id: nextId(state),
           },
@@ -73,7 +73,7 @@ const characters =
         return [
           ...state,
           {
-            ...character,
+            ...defaultCharacter,
             id: nextId(state),
             name: action.name,
             description: action.description,
@@ -114,7 +114,7 @@ const characters =
             if (character.templates.some(({ id }) => id === action.templateData.id)) {
               return character
             }
-            const newCharacter = Object.assign({}, character)
+            const newCharacter = cloneDeep(character)
             newCharacter.templates.push({
               id: action.templateData.id,
               version: action.templateData.version,
@@ -138,7 +138,8 @@ const characters =
           let ch = cloneDeep(c)
 
           if (action.oldAttribute.name != action.newAttribute.name) {
-            ch[action.newAttribute.name] = ch[action.oldAttribute.name]
+            // Firebase doesn't support undefined, so use null when the attribute isn't set
+            ch[action.newAttribute.name] = ch[action.oldAttribute.name] || null
             delete ch[action.oldAttribute.name]
           }
 
@@ -147,7 +148,7 @@ const characters =
           // see ../selectors/customAttributes.js for when this is allowed
           if (action.oldAttribute.type == 'text') {
             let desc = ch[action.newAttribute.name]
-            if (desc && desc.length && typeof desc !== 'string') {
+            if (!desc || (desc && desc.length && typeof desc !== 'string')) {
               desc = ''
             }
             ch[action.newAttribute.name] = desc
@@ -280,13 +281,13 @@ const characters =
           const normalizeRCEContent = repair('normalizeRCEContent')
           return {
             ...character,
-            notes: normalizeRCEContent(character.notes),
             ...applyToCustomAttributes(
               character,
               normalizeRCEContent,
               action.data.customAttributes.characters,
               'paragraph'
             ),
+            notes: normalizeRCEContent(character.notes),
           }
         })
 

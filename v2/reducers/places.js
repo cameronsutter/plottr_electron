@@ -94,7 +94,8 @@ const places =
           let pl = cloneDeep(p)
 
           if (action.oldAttribute.name != action.newAttribute.name) {
-            pl[action.newAttribute.name] = pl[action.oldAttribute.name]
+            // Firebase doesn't support undefined, so use null when the attribute isn't set
+            pl[action.newAttribute.name] = pl[action.oldAttribute.name] || null
             delete pl[action.oldAttribute.name]
           }
 
@@ -103,7 +104,7 @@ const places =
           // see ../selectors/customAttributes.js for when this is allowed
           if (action.oldAttribute.type == 'text') {
             let desc = pl[action.newAttribute.name]
-            if (desc && desc.length && typeof desc !== 'string') {
+            if (!desc || (desc && desc.length && typeof desc !== 'string')) {
               desc = ''
             }
             pl[action.newAttribute.name] = desc
@@ -215,13 +216,13 @@ const places =
           const normalizeRCEContent = repair('normalizeRCEContent')
           return {
             ...place,
-            notes: normalizeRCEContent(place.notes),
             ...applyToCustomAttributes(
               place,
               normalizeRCEContent,
               action.data.customAttributes.places,
               'paragraph'
             ),
+            notes: normalizeRCEContent(place.notes),
           }
         })
 

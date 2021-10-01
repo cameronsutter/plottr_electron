@@ -21,6 +21,7 @@ const file =
           id: action.data.file.id || null,
           appliedMigrations: action.data.file.appliedMigrations || [],
           initialVersion: action.data.file.initialVersion || action.version,
+          isCloudFile: action.data.file.isCloudFile || false,
         }
 
       case FILE_SAVED:

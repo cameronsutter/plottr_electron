@@ -47,7 +47,7 @@ const database = () => {
   _database = firebase.firestore()
   if (
     process.env.NEXT_PUBLIC_NODE_ENV === 'development' ||
-    (window && window.location.hostname === 'plottr.local')
+    (typeof window !== 'undefined' && window && window.location.hostname === 'plottr.local')
   ) {
     try {
       _database.useEmulator('plottr.local', 8080)
@@ -64,7 +64,7 @@ const auth = () => {
   _auth = firebase.auth()
   if (
     process.env.NEXT_PUBLIC_NODE_ENV === 'development' ||
-    (window && window.location.hostname === 'plottr.local')
+    (typeof window !== 'undefined' && window && window.location.hostname === 'plottr.local')
   ) {
     _auth.useEmulator('http://plottr.local:9099')
   }
@@ -76,7 +76,7 @@ const storage = () => {
   if (_storage) return _storage
   if (
     process.env.NEXT_PUBLIC_NODE_ENV === 'development' ||
-    (window && window.location.hostname === 'plottr.local')
+    (typeof window !== 'undefined' && window && window.location.hostname === 'plottr.local')
   ) {
     _storage = firebase.storage()
     _storage.useEmulator('localhost', 9199)
@@ -156,12 +156,12 @@ const onSnapshot =
   }
 
 const listenToFile = (store, userId, fileId, clientId) => {
-  const identity = (x) => x
+  const withIsCloud = (x) => ({ ...x, isCloudFile: true })
   return database()
     .collection('file')
     .doc(fileId)
     .onSnapshot(
-      onSnapshot(store, fileId, 'file', identity, true, clientId, 'patchFile', (x) => ({
+      onSnapshot(store, fileId, 'file', withIsCloud, true, clientId, 'patchFile', (x) => ({
         id: x.id,
       }))
     )
@@ -274,7 +274,16 @@ const fetchBeats = (userId, fileId, clientId, version) => {
     .then(onFetched(fileId, 'beats', transform, clientId))
 }
 
-const fetchFile = fetchObjectAtPath('file')
+const fetchFile = (userId, fileId, clientId) => {
+  const withIsCloud = (x) => ({ ...x, isCloudFile: true })
+  const path = 'file'
+  return database()
+    .collection(path)
+    .doc(fileId)
+    .get()
+    .then(onFetched(fileId, path, withIsCloud, clientId))
+}
+
 const fetchChapters = fetchArrayAtPath('chapters')
 const fetchCards = fetchArrayAtPath('cards')
 const fetchSeries = fetchObjectAtPath('series')
@@ -343,20 +352,34 @@ export const initialFetch = (userId, fileId, clientId, version) => {
 
 export const deleteFile = (fileId, userId, clientId) => {
   const setDeleted = (path) => patch(path, fileId, { deleted: true }, clientId)
+  const setDeletedfile = () => setDeleted('file')
+  const setDeletedcards = () => setDeleted('cards')
+  const setDeletedseries = () => setDeleted('series')
+  const setDeletedbooks = () => setDeleted('books')
+  const setDeletedcategories = () => setDeleted('categories')
+  const setDeletedcharacters = () => setDeleted('characters')
+  const setDeletedcustomAttributes = () => setDeleted('customAttributes')
+  const setDeletedlines = () => setDeleted('lines')
+  const setDeletednotes = () => setDeleted('notes')
+  const setDeletedplaces = () => setDeleted('places')
+  const setDeletedtags = () => setDeleted('tags')
+  const setDeletedhierarchyLevels = () => setDeleted('hierarchyLevels')
+  const setDeletedimages = () => setDeleted('images')
+
   return Promise.all([
-    setDeleted('file'),
-    setDeleted('cards'),
-    setDeleted('series'),
-    setDeleted('books'),
-    setDeleted('categories'),
-    setDeleted('characters'),
-    setDeleted('customAttributes'),
-    setDeleted('lines'),
-    setDeleted('notes'),
-    setDeleted('places'),
-    setDeleted('tags'),
-    setDeleted('hierarchyLevels'),
-    setDeleted('images'),
+    setDeletedfile(),
+    setDeletedcards(),
+    setDeletedseries(),
+    setDeletedbooks(),
+    setDeletedcategories(),
+    setDeletedcharacters(),
+    setDeletedcustomAttributes(),
+    setDeletedlines(),
+    setDeletednotes(),
+    setDeletedplaces(),
+    setDeletedtags(),
+    setDeletedhierarchyLevels(),
+    setDeletedimages(),
   ])
 }
 
@@ -364,6 +387,43 @@ export const stopListening = (unsubscribeFunctions) => {
   unsubscribeFunctions.forEach((fn) => {
     fn()
   })
+}
+
+export const listenToFiles = (userId, callback) => {
+  return database()
+    .collection(`authorisation/${userId}/granted`)
+    .onSnapshot(
+      (authorisationsRef) => {
+        const authorisedDocuments = []
+        authorisationsRef.forEach((authorisation) => {
+          const document = database()
+            .collection(`file`)
+            .doc(authorisation.id)
+            .get()
+            .then((file) => ({
+              id: file.id,
+              ...file.data(),
+              ...authorisation.data(),
+            }))
+          authorisedDocuments.push(document)
+        })
+        Promise.all(authorisedDocuments)
+          .then((documents) => {
+            return documents.map((document) => {
+              return {
+                ...document,
+                cloudFile: true,
+              }
+            })
+          })
+          .then((authorisedDocuments) => {
+            callback(authorisedDocuments)
+          })
+      },
+      (error) => {
+        console.error('Error listening to files', error)
+      }
+    )
 }
 
 export const fetchFiles = (userId) => {
@@ -384,7 +444,14 @@ export const fetchFiles = (userId) => {
           }))
         authorisedDocuments.push(document)
       })
-      return Promise.all(authorisedDocuments)
+      return Promise.all(authorisedDocuments).then((documents) => {
+        return documents.map((document) => {
+          return {
+            ...document,
+            cloudFile: true,
+          }
+        })
+      })
     })
 }
 
@@ -503,6 +570,27 @@ export const catchupEditsSeen = (fileId, editorId, myEditorKey, otherEditorKey, 
     })
 }
 
+export const lockRCE = (fileId, editorId, clientId, emailAddress = '') => {
+  return database().doc(`rce/${fileId}/editors/${editorId}/locks/current`).set({
+    clientId,
+    emailAddress,
+  })
+}
+
+export const listenForRCELock = (fileId, editorId, clientId, cb) => {
+  return database()
+    .doc(`rce/${fileId}/editors/${editorId}/locks/current`)
+    .onSnapshot((documentRef) => {
+      const data = documentRef.data()
+      if (!data) {
+        console.log("Didn't find a lock for RCE with editorId", editorId)
+        cb({ clientId: null })
+        return
+      }
+      cb(data)
+    })
+}
+
 export const listenForChangesToEditor = (fileId, editorId, cb) => {
   database()
     .collection(`rce/${fileId}/editors/${editorId}/editTimestamps`)
@@ -556,37 +644,6 @@ export const fetchRCEOperations = (fileId, editorId, since, editorKey, cb) => {
       })
       if (documents.length) cb(documents)
     })
-}
-
-export const listenToCustomTemplates = (userId, callback) => {
-  return database()
-    .collection(`templates/${userId}/custom`)
-    .where('deleted', '!=', true)
-    .onSnapshot((documentsRef) => {
-      console.log('Received updated custom templates.')
-      const documents = []
-      documentsRef.forEach((document) => {
-        documents.push(document.data())
-      })
-      callback(documents)
-      return documents
-    })
-}
-
-export const saveCustomTemplate = (userId, template) => {
-  return database().collection(`templates/${userId}/custom`).doc(template.id).set(template)
-}
-
-export const editCustomTemplate = (userId, template) => {
-  return database()
-    .doc(`templates/${userId}/custom/${template.id}`)
-    .update(template, { merge: true })
-}
-
-export const deleteCustomTemplate = (userId, templateId) => {
-  return database()
-    .doc(`templates/${userId}/custom/${templateId}`)
-    .update({ deleted: true }, { merge: true })
 }
 
 const getSingleDocument = (documentRef) => {
@@ -656,6 +713,7 @@ export const saveBackup = (userId, file) => {
             storagePath: path,
             startOfSession: false,
             fileId,
+            fileName: file.project.selectedFile.fileName,
             lastModified: new Date(),
           })
         })
@@ -667,7 +725,9 @@ export const saveBackup = (userId, file) => {
         backupTime: startOfToday,
         fileId,
         storagePath: path,
+        fileName: file.project.selectedFile.fileName,
         startOfSession: true,
+        lastModified: new Date(),
       })
     })
   })
@@ -675,9 +735,13 @@ export const saveBackup = (userId, file) => {
 
 export const listenForBackups = (userId, onBackupsChanged) => {
   return database()
-    .collection('backup/${userId}/files')
-    .onSnapshot((documentRef) => {
-      onBackupsChanged(documentRef.data())
+    .collection(`backup/${userId}/files`)
+    .onSnapshot((documentsRef) => {
+      const documents = []
+      documentsRef.forEach((document) => {
+        documents.push(document.data())
+      })
+      onBackupsChanged(documents)
     })
 }
 
@@ -688,7 +752,7 @@ const formatDate = (date) => {
 const toBackupPath = (userId, fileId, date, startOfSession) => {
   return `storage://backups/${userId}/${fileId}/${formatDate(date)}${
     startOfSession ? '-(start-of-session)' : ''
-  }`
+  }.pltr`
 }
 
 const withoutStorageProtocal = (path) => {
@@ -709,6 +773,53 @@ const backupToStorage = (userId, file, date, startOfSession) => {
       resolve(filePath)
     }, reject)
   )
+}
+
+const toTemplatePath = (userId, templateId) => {
+  return `storage://userTemplates/${userId}/${templateId}`
+}
+
+export const saveCustomTemplate = (userId, template) => {
+  const filePath = toTemplatePath(userId, template.id)
+  const storageTask = storage()
+    .ref()
+    .child(withoutStorageProtocal(filePath))
+    .putString(JSON.stringify(template))
+  return new Promise((resolve, reject) => {
+    return storageTask.then(() => {
+      resolve(filePath)
+    }, reject)
+  })
+}
+
+export const allTemplateUrlsForUser = (userId) => {
+  return storage()
+    .ref()
+    .child(`userTemplates/${userId}`)
+    .listAll()
+    .then((result) => {
+      return Promise.all(result.items.map((result) => result.getDownloadURL()))
+    })
+}
+
+export const listenToCustomTemplates = (userId, callback) => {
+  const interval = setInterval(() => {
+    allTemplateUrlsForUser(userId)
+      .then((urls) =>
+        Promise.all(urls.map((url) => fetch(url).then((response) => response.json())))
+      )
+      .then(callback)
+  }, 5000)
+
+  return () => {
+    clearInterval(interval)
+  }
+}
+
+export const editCustomTemplate = saveCustomTemplate
+
+export const deleteCustomTemplate = (userId, templateId) => {
+  return storage().ref().child(`userTemplates/${templateId}`).delete()
 }
 
 const toImagePath = (userId, imageName) => {
@@ -733,6 +844,10 @@ export const saveImageToStorageFromURL = (userId, imageName, imageUrl) => {
   return imagetoBlob(imageUrl).then((response) => {
     return saveImageToStorageBlob(userId, imageName, response.blob())
   })
+}
+
+export const backupPublicURL = (storageProtocolURL) => {
+  return storage().ref().child(withoutStorageProtocal(storageProtocolURL)).getDownloadURL()
 }
 
 export const imagePublicURL = (storageProtocolURL) => {

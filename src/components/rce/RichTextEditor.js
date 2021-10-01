@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
+import { isEqual } from 'lodash'
+import { Button } from 'react-bootstrap'
 import cx from 'classnames'
 import { t as i18n } from 'plottr_locales'
 import isHotkey from 'is-hotkey'
@@ -9,9 +11,10 @@ import UnconnectedToolBar from './ToolBar'
 import { toggleMark } from './MarkButton'
 import Leaf from './Leaf'
 import Element from './Element'
+import { Spinner } from '../Spinner'
 import { createEditor } from './helpers'
 import { useRegisterEditor } from './editor-registry'
-import { withEditState } from './withEditState'
+import { useEditState } from './withEditState'
 
 import { checkDependencies } from '../checkDependencies'
 
@@ -34,6 +37,8 @@ const RichTextEditorConnector = (connector) => {
       deleteOldChanges,
       undo,
       redo,
+      lockRCE,
+      listenForRCELock,
     },
   } = connector
   checkDependencies({
@@ -63,12 +68,17 @@ const RichTextEditorConnector = (connector) => {
     onChange,
     fileId,
     clientId,
+    isCloudFile,
+    emailAddress,
   }) => {
     // Editor instance
     const editor = useMemo(() => {
       return createEditor()
     }, [])
     const registerEditor = useRegisterEditor(editor)
+
+    const [lock, setLock] = useState(isCloudFile ? null : true)
+    const [stealingLock, setStealingLock] = useState(false)
 
     // Rendering helpers
     const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
@@ -84,6 +94,30 @@ const RichTextEditorConnector = (connector) => {
       [openExternal]
     )
 
+    const stealLock = useCallback(() => {
+      setStealingLock(true)
+      lockRCE(fileId, id, clientId, emailAddress)
+        .then(() => {
+          setStealingLock(false)
+        })
+        .catch((error) => {
+          console.error('Error stealing the lock for editor: ', id)
+          setStealingLock(false)
+        })
+    }, [fileId, id, clientId, emailAddress])
+
+    // Check for edit locks
+    useEffect(() => {
+      return listenForRCELock(fileId, id, clientId, (lockResult) => {
+        if (!isEqual(lockResult, lock)) {
+          setLock(lockResult)
+          if (!lockResult || !lockResult.clientId) {
+            stealLock()
+          }
+        }
+      })
+    }, [setLock, fileId, lock, id, clientId, stealLock])
+
     // Focus on first render
     const [editorWrapperRef, setEditorWrapperRef] = useState(null)
     useEffect(() => {
@@ -93,7 +127,7 @@ const RichTextEditorConnector = (connector) => {
     }, [autoFocus, editorWrapperRef])
 
     // State management
-    const [value, currentSelection, key, onValueChanged, onKeyDown] = withEditState(
+    const [value, currentSelection, key, onValueChanged, onKeyDown] = useEditState(
       editor,
       id,
       fileId,
@@ -173,7 +207,7 @@ const RichTextEditorConnector = (connector) => {
 
     useEffect(() => {
       return () => {
-        onValueChanged(null, {})
+        onValueChanged(null, null)
       }
     }, [])
 
@@ -186,6 +220,21 @@ const RichTextEditorConnector = (connector) => {
     }
 
     if (value === null) return null
+
+    if (!lock) {
+      return <Spinner />
+    }
+
+    if (lock.clientId && lock.clientId !== clientId) {
+      return (
+        <>
+          <p>Editor is currently locked by {lock.emailAddress}.</p>
+          <Button disabled={stealingLock} onClick={stealLock}>
+            Steal lock
+          </Button>
+        </>
+      )
+    }
 
     const otherProps = {}
     return (
@@ -228,6 +277,8 @@ const RichTextEditorConnector = (connector) => {
     className: PropTypes.string,
     undoId: PropTypes.string,
     clientId: PropTypes.string,
+    isCloudFile: PropTypes.bool,
+    emailAddress: PropTypes.string,
   }
 
   const {
@@ -243,6 +294,8 @@ const RichTextEditorConnector = (connector) => {
       undoId: selectors.undoIdSelector(state.present),
       clientId: selectors.clientIdSelector(state.present),
       fileId: selectors.selectedFileIdSelector(state.present),
+      isCloudFile: selectors.isCloudFileSelector(state.present),
+      emailAddress: selectors.emailAddressSelector(state.present),
     }))(RichTextEditor)
   }
 

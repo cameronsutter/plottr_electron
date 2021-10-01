@@ -36,6 +36,18 @@ const CardViewConnector = (connector) => {
       this.titleInputRef = null
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+      const stateChanged = Object.keys(nextState).reduce((acc, key) => {
+        return acc || nextState[key] !== this.state[key]
+      }, false)
+      const propsChanged = Object.keys(nextProps).reduce((acc, key) => {
+        if (key === 'card' || key === 'selection') return acc
+        return acc || nextProps[key] !== this.props[key]
+      }, false)
+      const tagsChanged = this.props.card.tags !== nextProps.card.tags
+      return stateChanged || propsChanged || tagsChanged
+    }
+
     componentWillUnmount() {
       if (this.state.editing) this.saveEdit()
     }
@@ -156,7 +168,7 @@ const CardViewConnector = (connector) => {
         <div className="outline__description__editing">
           <RichText
             autofocus
-            id={`card.description-${this.props.card.id}`}
+            id={this.editorPath}
             className="outline__description"
             onChange={this.handleDescriptionChange}
             description={description}

@@ -45,22 +45,19 @@ const CharacterDetailsConnector = (connector) => {
           </dl>
         )
       })
-      const templateNotes = character.templates.map((template) => {
-        const templateData = getTemplateById(template.id) || {}
-        const attrs = template.attributes.map((attr) => {
+      const templateNotes = character.templates.map((t) => {
+        const templateData = getTemplateById(t.id)
+        const templateValues = character.templates.find((template) => t.id === template.id)
+        const attrs = t.attributes.map((attr) => {
           let val
           if (attr.type == 'paragraph') {
             val = (
               <dd>
-                <RichText
-                  id={`character.${character.id}.templateAttribute.${attr.name}`}
-                  description={attr.value}
-                  darkMode={ui.darkMode}
-                />
+                <RichText description={templateValues[attr.name]} darkMode={ui.darkMode} />
               </dd>
             )
           } else {
-            val = <dd>{attr.value}</dd>
+            val = <dd>{templateValues[attr.name]}</dd>
           }
           return (
             <dl key={attr.name} className="dl-horizontal">

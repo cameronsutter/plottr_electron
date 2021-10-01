@@ -166,7 +166,8 @@ const RecentFilesConnector = (connector) => {
                 </div>
                 <FileActions
                   missing={!!missing}
-                  id={f.id || id}
+                  id={id}
+                  fileName={f.fileName}
                   filePath={f.path || f.id}
                   openFile={openFile}
                 />
@@ -217,6 +218,7 @@ const RecentFilesConnector = (connector) => {
 
   if (redux) {
     const { connect } = redux
+
     return connect((state) => ({
       fileList: selectors.fileListSelector(state.present),
     }))(RecentFiles)

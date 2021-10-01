@@ -20,12 +20,13 @@ const CardDescriptionEditorConnector = (connector) => {
   } = connector
 
   const CardDescriptionEditor = ({
-    fileId,
     cardId,
     description,
     selection,
     darkMode,
     editCardAttributes,
+    // Needed to trigger undo on child components
+    undoId,
   }) => {
     const editorPath = helpers.editors.cardDescriptionEditorPath(cardId)
     checkDependencies({ editorPath })
@@ -41,8 +42,7 @@ const CardDescriptionEditorConnector = (connector) => {
 
     return (
       <RichText
-        id={`card.description-${cardId}`}
-        fileId={fileId}
+        id={editorPath}
         description={description}
         selection={selection}
         onChange={handleDescriptionChange}
@@ -59,7 +59,7 @@ const CardDescriptionEditorConnector = (connector) => {
     selection: PropTypes.object.isRequired,
     editCardAttributes: PropTypes.func.isRequired,
     darkMode: PropTypes.bool.isRequired,
-    fileId: PropTypes.string,
+    undoId: PropTypes.string,
   }
 
   const {
@@ -73,13 +73,13 @@ const CardDescriptionEditorConnector = (connector) => {
 
     return connect(
       (state, ownProps) => ({
+        undoId: selectors.undoIdSelector(state.present),
         description: selectors.cardDescriptionByIdSelector(state.present, ownProps.cardId),
         selection: selectors.selectionSelector(
           state.present,
           helpers.editors.cardDescriptionEditorPath(ownProps.cardId)
         ),
         darkMode: selectors.isDarkModeSelector(state.present),
-        fileId: selectors.selectedFileIdSelector(state.present),
       }),
       { editCardAttributes: actions.card.editCardAttributes }
     )(React.memo(CardDescriptionEditor, areEqual))

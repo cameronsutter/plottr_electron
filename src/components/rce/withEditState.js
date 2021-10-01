@@ -21,11 +21,13 @@ const RECEIVED_OPERATIONS = 'RECEIVED_OPERATIONS'
 const CONTENT_EDITED = 'CONTENT_EDITED'
 const UPDATED_EDIT_TIME_STAMPS = 'UPDATED_EDIT_TIME_STAMPS'
 const UPDATED_FROM_INITIAL_VALUE = 'UPDATED_FROM_INITIAL_VALUE'
+const UNDONE = 'UNDONE'
 const KEY_PRESSED = 'KEY_PRESSED'
 const CONFLICT_DETECTED = 'CONFLICT_DETECTED'
 const RESET_FROM_INITIAL_VALUE = 'RESET_FROM_INITIAL_VALUE'
 
 const ONE_MINUTE = 60 * 1000
+const UNDO = 'UNDO'
 
 const enqueueOperation = (queue, value, selection, operation) => {
   queue.push({ created: operation.created, value, selection, operation })
@@ -203,7 +205,7 @@ export const editsConflict = (editsAfter, operationsToApply) => {
  *   documented it here because I think that this is where it's most
  *   useful to know about it.
  */
-export const withEditState = (
+export const useEditState = (
   editor,
   editorId,
   fileId,
@@ -242,6 +244,7 @@ export const withEditState = (
   const lastPublished = useRef(-1)
   const valueUpdateTimer = useRef(null)
   const deferredOperationsToApply = useRef([])
+  const deferredValuesToUpdate = useRef({ value: null, selection: null })
 
   // # State Updaters
 
@@ -256,7 +259,7 @@ export const withEditState = (
   // # Output Stimuli
 
   const handleContentEdited = () => {
-    if (state.current !== CONTENT_EDITED) return
+    if (state.current !== CONTENT_EDITED && state.current !== UNDONE) return
 
     if (publishOperations && fileId && editorId) {
       const operationsToPublish = editHistory.current.slice(lastPublished.current)
@@ -292,7 +295,13 @@ export const withEditState = (
       }
 
       operationsToApply.forEach((operation) => {
-        editor.apply(operation.operation)
+        if (operation.operation.type == UNDO) {
+          setEditorState(operation.operation.value, operation.operation.selection)
+          editor.selection = operation.operation.selection
+        } else {
+          editor.apply(operation.operation)
+        }
+        editor.operations = []
         if (latestEdits.current[operation.editorKey].read < operation.editNumber) {
           latestEdits.current[operation.editorKey].read = operation.editNumber
         }
@@ -381,8 +390,12 @@ export const withEditState = (
     if (valueUpdateTimer.current) {
       clearTimeout(valueUpdateTimer.current)
     }
+    deferredValuesToUpdate.current.value = value || deferredValuesToUpdate.current.value
+    deferredValuesToUpdate.current.selection = selection || deferredValuesToUpdate.current.selection
     valueUpdateTimer.current = setTimeout(() => {
-      onValueChanged(value, selection)
+      onValueChanged(deferredValuesToUpdate.current.value, deferredValuesToUpdate.current.selection)
+      deferredValuesToUpdate.current.value = null
+      deferredValuesToUpdate.current.selection = null
       valueUpdateTimer.current = null
     }, 500)
   }
@@ -390,7 +403,7 @@ export const withEditState = (
   const updateValueAndSelection = (newValue) => {
     const { value, selection } = valueAndSelection
     if (!isEqual(selection, editor.selection)) {
-      const nextSelection = { ...editor.selection }
+      const nextSelection = editor.selection === null ? null : { ...editor.selection }
       setEditorState(newValue, nextSelection)
       if (value !== newValue) {
         deboundecOnUpdateValue(newValue, nextSelection)
@@ -418,8 +431,19 @@ export const withEditState = (
     })
   }
 
+  const recordUndo = (value, selection) => {
+    enqueueOperation(editHistory.current, value, selection, {
+      editorKey: key.current,
+      operation: { type: UNDO, value, selection },
+      created: new Date(),
+      editNumber: editCount.current++,
+    })
+  }
+
   const handleNewValueFromSlate = (newValue) => {
-    if (state.current !== RECEIVED_OPERATIONS) {
+    if (state.current === UNDONE) {
+      state.current = UPDATED_FROM_INITIAL_VALUE
+    } else if (state.current !== RECEIVED_OPERATIONS) {
       recordHistoryOfEdits()
     }
     updateValueAndSelection(newValue)
@@ -429,10 +453,14 @@ export const withEditState = (
   const handleNewInitialValue = () => {
     const { value, selection } = valueAndSelection
     // undoId goes null when we undo.
-    if (!undoId || !value || !selection) {
+    if (!undoId) {
+      state.current = UNDONE
+      recordUndo(useTextConverter(initialValue), initialSelection)
+    } else if (!value || !selection) {
       state.current = UPDATED_FROM_INITIAL_VALUE
-      setEditorState(initialValue, initialSelection)
     }
+    setEditorState(useTextConverter(initialValue), initialSelection)
+    editor.selection = initialSelection
   }
 
   const handleOtherEditorChange = (latestEditsPerEditor) => {

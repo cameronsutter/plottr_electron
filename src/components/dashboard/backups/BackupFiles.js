@@ -20,7 +20,7 @@ const BackupFilesConnector = (connector) => {
       showItemInFolder(filePath)
     }
 
-    const fileName = (name) => {
+    const fileNameFromPath = (name) => {
       if (name.includes('(start-session)-')) {
         const nameSansStart = name.replace('(start-session)-', '')
         return (
@@ -35,9 +35,26 @@ const BackupFilesConnector = (connector) => {
       }
     }
 
+    const fileNameFromStorageObject = (storageObject) => {
+      if (storageObject.startOfSession) {
+        const nameSansStart = storageObject.fileName
+        return (
+          <p title={nameSansStart}>
+            <strong>{t('Session Start')}</strong>
+            <br />
+            <span>{nameSansStart}</span>
+          </p>
+        )
+      } else {
+        return <p title={storageObject.fileName}>{storageObject.fileName}</p>
+      }
+    }
+
     const renderedFiles = folder.backups.reduce((acc, b) => {
-      if (b.toLowerCase().includes(searchTerm)) {
-        const filePath = joinPath(folder.path, b)
+      const isCloudBackup = b.storagePath
+      const fileName = isCloudBackup ? b.fileName.toLowerCase() : b.toLowerCase()
+      if (fileName.includes(searchTerm)) {
+        const filePath = isCloudBackup ? b.storagePath : joinPath(folder.path, b)
         acc.push(
           <div
             key={b}
@@ -45,7 +62,9 @@ const BackupFilesConnector = (connector) => {
             onClick={() => openInFolder(filePath)}
           >
             <IoIosDocument />
-            <div>{fileName(b)}</div>
+            <div className="dashboard__backups__item__title">
+              {isCloudBackup ? fileNameFromStorageObject(b) : fileNameFromPath(b)}
+            </div>
           </div>
         )
       }

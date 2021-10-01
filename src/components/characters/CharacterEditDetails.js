@@ -294,12 +294,12 @@ const CharacterEditDetailsConnector = (connector) => {
     renderEditingTemplates() {
       const { character, ui } = this.props
       return character.templates.map((template, idx) => {
-        const templateData = getTemplateById(template.id) || template || {}
-        const templateValues = character.templates.find((template) => template.id === t.id)
+        const templateData = getTemplateById(template.id)
+        const templateValues = character.templates.find((t) => t.id === template.id)
         const attrs = template.attributes.map((attr, index) => {
           const editorPath = helpers.editors.characterTemplateAttributeEditorPath(
             this.props.character.id,
-            t.id,
+            template.id,
             attr.name
           )
           return (
@@ -410,7 +410,7 @@ const CharacterEditDetailsConnector = (connector) => {
             >
               <Tab eventKey={1} title={t('Notes')}>
                 <RichText
-                  id={`character.${character.id}.notes`}
+                  id={this.props.editorPath}
                   description={character.notes}
                   onChange={this.handleNotesChanged}
                   selection={this.props.selection}

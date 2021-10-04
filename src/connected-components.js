@@ -27,7 +27,6 @@ import {
   licenseStore,
   useCustomTemplatesInfo,
   useSettingsInfo,
-  removeFileFromList,
 } from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'

@@ -13,7 +13,6 @@ import {
 } from './config_paths'
 import SETTINGS from './settings'
 import export_config from '../exporter/default_config'
-import { store } from '../../app/store/configureStore'
 import { allCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 
 const knownFilesPath =

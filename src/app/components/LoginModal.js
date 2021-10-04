@@ -3,10 +3,7 @@ import { PropTypes } from 'prop-types'
 import { PlottrModal } from 'connected-components'
 import { connect } from 'react-redux'
 
-import { actions } from 'pltr/v2'
-import { startUI, firebaseUI, onSessionChange, fetchFiles } from 'plottr_firebase'
-
-import SETTINGS from '../../common/utils/settings'
+import { startUI, firebaseUI } from 'plottr_firebase'
 
 const modalStyles = {
   overlay: {
@@ -28,7 +25,7 @@ const modalStyles = {
   },
 }
 
-const LoginModal = ({ closeLoginModal, setUserId, setEmailAddress, setFileList }) => {
+const LoginModal = ({ closeLoginModal }) => {
   const [firebaseLoginComponentRef, setFirebaseLoginComponentRef] = useState(null)
 
   useEffect(() => {
@@ -37,20 +34,6 @@ const LoginModal = ({ closeLoginModal, setUserId, setEmailAddress, setFileList }
       startUI(ui, '#firebase_login_root')
     }
   }, [firebaseLoginComponentRef])
-
-  useEffect(() => {
-    onSessionChange((user) => {
-      if (user) {
-        SETTINGS.set('user.id', user.uid)
-        setUserId(user.uid)
-        setEmailAddress(user.email)
-        fetchFiles(user.uid).then((files) => {
-          const activeFiles = files.filter(({ deleted }) => !deleted)
-          setFileList(activeFiles)
-        })
-      }
-    })
-  }, [])
 
   return (
     <PlottrModal isOpen={true} onRequestClose={closeLoginModal} style={modalStyles}>
@@ -78,13 +61,6 @@ const LoginModal = ({ closeLoginModal, setUserId, setEmailAddress, setFileList }
 
 LoginModal.propTypes = {
   closeLoginModal: PropTypes.func.isRequired,
-  setUserId: PropTypes.func.isRequired,
-  setFileList: PropTypes.func.isRequired,
-  setEmailAddress: PropTypes.func.isRequired,
 }
 
-export default connect(null, {
-  setUserId: actions.client.setUserId,
-  setFileList: actions.project.setFileList,
-  setEmailAddress: actions.client.setEmailAddress,
-})(LoginModal)
+export default connect(null)(LoginModal)

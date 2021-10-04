@@ -3,6 +3,7 @@ import semverGt from 'semver/functions/gt'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
+import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
 import { DateTime, Duration } from 'luxon'
 
@@ -35,10 +36,23 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
 }
 
-export const editFileName = (fileId, newName) => {
-  return database().doc(`file/${fileId}`).update({
-    fileName: newName,
+const pingAuth = (userId, fileId) => {
+  // This needs to use the base URL.
+  return axios.post(`${process.env.BASE_URL || ''}/api/ping-auth`, {
+    userId,
+    fileId,
   })
+}
+
+export const editFileName = (userId, fileId, newName) => {
+  return database()
+    .doc(`file/${fileId}`)
+    .update({
+      fileName: newName,
+    })
+    .then(() => {
+      pingAuth(userId, fileId)
+    })
 }
 
 let _database = null
@@ -367,6 +381,7 @@ export const deleteFile = (fileId, userId, clientId) => {
   const setDeletedimages = () => setDeleted('images')
 
   return Promise.all([
+    pingAuth(userId, fileId),
     setDeletedfile(),
     setDeletedcards(),
     setDeletedseries(),

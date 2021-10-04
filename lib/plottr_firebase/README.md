@@ -366,3 +366,21 @@ whose values correspond to the values in `array`.
 Produce `true` if any key or sub key recursively in `object` has value
 `undefined`.  This is useful for debugging update/set requests to
 Firestore that fail because Firestore doesn't support undefined values.
+
+# Tribal Knowledge
+
+This section elucidates details that might help other developers avoid
+deep rabbit holes.
+
+## Informing Clients About Updates to Files
+
+Clients listen to the `authorisation` collection in Firestore for
+changes in the files list.  In order to inform a client that the name
+of a file changed, or that a file was deleted and should no longer be
+displayed, you should change the `authorisation` collection.
+
+This presents a problem because authorisation is read-only to all
+clients.  To update a timestamp on the appropriate record, we instead
+call an API `/api/ping-auth`.  When the API isn't on the same host,
+specify the BASE_URL environment variable to point it at another
+server.

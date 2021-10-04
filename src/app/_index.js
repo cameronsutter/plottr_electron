@@ -95,8 +95,28 @@ function bootFile(filePath, options, numOpenFiles) {
               console.log(
                 `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
               )
-            }
-            overwriteAllKeys(fileId, clientId, data).then((results) => {
+              overwriteAllKeys(fileId, clientId, data).then((results) => {
+                store.dispatch(
+                  actions.ui.loadFile(
+                    data.file.fileName,
+                    false,
+                    Object.assign(
+                      {},
+                      emptyFile(data.file.fileName, data.file.version),
+                      withFileId(fileId, data)
+                    ),
+                    data.file.version
+                  )
+                )
+                store.dispatch(
+                  actions.project.selectFile({
+                    ...json.file,
+                    id: fileId,
+                  })
+                )
+                store.dispatch(actions.client.setClientId(clientId))
+              })
+            } else {
               store.dispatch(
                 actions.ui.loadFile(
                   data.file.fileName,
@@ -109,9 +129,14 @@ function bootFile(filePath, options, numOpenFiles) {
                   data.file.version
                 )
               )
-              store.dispatch(actions.project.selectFile(json.file))
+              store.dispatch(
+                actions.project.selectFile({
+                  ...json.file,
+                  id: fileId,
+                })
+              )
               store.dispatch(actions.client.setClientId(clientId))
-            })
+            }
             render(
               <Provider store={store}>
                 <App />

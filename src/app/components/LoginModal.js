@@ -28,7 +28,7 @@ const modalStyles = {
   },
 }
 
-const LoginModal = ({ closeLoginModal, setUserId, setFileList }) => {
+const LoginModal = ({ closeLoginModal, setUserId, setEmailAddress, setFileList }) => {
   const [firebaseLoginComponentRef, setFirebaseLoginComponentRef] = useState(null)
 
   useEffect(() => {
@@ -43,6 +43,7 @@ const LoginModal = ({ closeLoginModal, setUserId, setFileList }) => {
       if (user) {
         SETTINGS.set('user.id', user.uid)
         setUserId(user.uid)
+        setEmailAddress(user.email)
         fetchFiles(user.uid).then((files) => {
           const activeFiles = files.filter(({ deleted }) => !deleted)
           setFileList(activeFiles)
@@ -79,9 +80,11 @@ LoginModal.propTypes = {
   closeLoginModal: PropTypes.func.isRequired,
   setUserId: PropTypes.func.isRequired,
   setFileList: PropTypes.func.isRequired,
+  setEmailAddress: PropTypes.func.isRequired,
 }
 
 export default connect(null, {
   setUserId: actions.client.setUserId,
   setFileList: actions.project.setFileList,
+  setEmailAddress: actions.client.setEmailAddress,
 })(LoginModal)

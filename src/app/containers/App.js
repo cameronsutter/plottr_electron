@@ -18,7 +18,7 @@ import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
 import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 
-const App = ({ forceProjectDashboard, showTour, userId }) => {
+const App = ({ forceProjectDashboard, showTour, userId, isCloudFile }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
   const [showAskToSave, setShowAskToSave] = useState(false)
@@ -124,7 +124,7 @@ const App = ({ forceProjectDashboard, showTour, userId }) => {
   }
 
   const renderAskToSave = () => {
-    if (!showAskToSave) return null
+    if (!showAskToSave || !isCloudFile) return null
 
     return (
       <AskToSaveModal
@@ -183,12 +183,14 @@ App.propTypes = {
   userId: PropTypes.string,
   showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
+  isCloudFile: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
   return {
     showTour: selectors.showTourSelector(state.present),
     userId: selectors.userIdSelector(state.present),
+    isCloudFile: selectors.isCloudFileSelector(state.present),
   }
 }
 

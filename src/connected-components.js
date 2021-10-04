@@ -120,9 +120,7 @@ const platform = {
       } = store.getState()
       const isOnCloud = path.startsWith('plottr://')
       if (isOnCloud) {
-        deleteFile(id, userId, clientId).then(() => {
-          removeFileFromList(id)
-        })
+        deleteFile(id, userId, clientId)
       } else {
         ipcRenderer.send('delete-known-file', id, path, userId, clientId)
       }

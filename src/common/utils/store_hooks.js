@@ -97,12 +97,6 @@ export function useLicenseInfo() {
   return useJsonStore(licenseStore)
 }
 
-export function removeFileFromList(fileId) {
-  const removeFileEvent = new Event('delete-file', { bubbles: true, cancelable: false })
-  removeFileEvent.fileId = fileId
-  document.dispatchEvent(removeFileEvent)
-}
-
 function useKnownFilesFromFirebase(initialFileList) {
   const [fileList, setFileList] = useState(initialFileList)
   const [filesByPosition, setFilesByPosition] = useState({})
@@ -117,44 +111,8 @@ function useKnownFilesFromFirebase(initialFileList) {
     currentFileList.forEach((file, index) => {
       filesByPosition[index + 1] = file
     })
-    const deleteListener = document.addEventListener('delete-file', (event) => {
-      const fileId = event.fileId
-      const filePosition = currentFileList.findIndex(({ id }) => id === fileId)
-      if (filePosition > 0) {
-        const newFileList = currentFileList.filter(({ id }) => id !== fileId)
-        setFileList(newFileList)
-        const newFilesByPosition = {}
-        newFileList.forEach((file, index) => {
-          newFilesByPosition[index + 1] = file
-        })
-        setFilesByPosition(newFilesByPosition)
-      }
-    })
-    const renameListener = document.addEventListener('rename-file-to-new-name', (event) => {
-      const fileId = event.fileId
-      const newName = event.newName
-      const newFileList = currentFileList.map((file) => {
-        if (file.id === fileId) {
-          return {
-            ...file,
-            fileName: newName,
-          }
-        }
-        return file
-      })
-      const newFilesByPosition = {}
-      newFileList.forEach((file, index) => {
-        newFilesByPosition[index + 1] = file
-      })
-      setFileList(newFileList)
-      setFilesByPosition(newFilesByPosition)
-    })
     setFilesByPosition(filesByPosition)
-    return () => {
-      document.removeEventListener('delete-file', deleteListener)
-      document.removeEventListener('rename-file-to-new-name', renameListener)
-    }
-  }, [initialFileList])
+  }, [initialFileList, fileList])
 
   const nop = () => {}
   return [filesByPosition, fileList.length, nop, nop]

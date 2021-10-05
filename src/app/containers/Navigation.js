@@ -11,7 +11,7 @@ import { FaKey } from 'react-icons/fa'
 import { FaRegUser } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
-import { useLicenseInfo } from '../../common/utils/store_hooks'
+import { useLicenseInfo, useSettingsInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
 import { logOut } from 'plottr_firebase'
@@ -24,9 +24,10 @@ const Navigation = ({
   currentView,
   changeCurrentView,
   forceProjectDashboard,
-  userId,
+  userId, // probably don't need this
 }) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
+  const [settings] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   const firstTime = !licenseInfoSize && !trialInfo.started
@@ -100,9 +101,13 @@ const Navigation = ({
 
   const closeLoginModal = () => {}
 
+  // this used to check for userId first, but there was a slight delay getting that
+  // doing it this way shouldn't cause any problems...
+  const showFrb = settings.user && !settings.user.id
+
   return (
     <>
-      {!userId ? <LoginModal closeLoginModal={closeLoginModal} /> : null}
+      {showFrb ? <LoginModal closeLoginModal={closeLoginModal} /> : null}
       {dashboardView ? (
         <DashboardModal
           activeView={dashboardView}

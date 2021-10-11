@@ -22,6 +22,7 @@ import {
   fetchFiles,
   logOut,
   saveCustomTemplate,
+  currentUser,
 } from 'plottr_firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
@@ -290,6 +291,7 @@ const platform = {
     startUI,
     firebaseUI,
     onSessionChange,
+    currentUser,
     fetchFiles,
     logOut,
     saveCustomTemplate,

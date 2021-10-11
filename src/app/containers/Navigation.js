@@ -103,7 +103,8 @@ const Navigation = ({
 
   // this used to check for userId first, but there was a slight delay getting that
   // doing it this way shouldn't cause any problems...
-  const showFrb = settings.user && !settings.user.id
+  // const showFrb = settings.user && !settings.user.id
+  const showFrb = !userId
 
   return (
     <>

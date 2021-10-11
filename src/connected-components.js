@@ -16,6 +16,13 @@ import {
   isStorageURL,
   saveImageToStorageBlob as saveImageToStorageBlobInFirebase,
   deleteFile,
+  startUI,
+  firebaseUI,
+  onSessionChange,
+  fetchFiles,
+  logOut,
+  saveCustomTemplate,
+  currentUser,
   listenForRCELock,
   lockRCE,
 } from 'plottr_firebase'
@@ -46,6 +53,7 @@ import MPQ from './common/utils/MPQ'
 import { useTrialStatus } from './common/licensing/trial_manager'
 import { checkForActiveLicense } from './common/licensing/check_license'
 import { verifyLicense } from './common/licensing/verify_license'
+import { checkForPro } from './common/licensing/check_pro'
 import { trial90days } from './common/licensing/special_codes'
 import { openExistingFile } from './dashboard/utils/window_manager'
 import { doesFileExist, useSortedKnownFiles } from './dashboard/utils/files'
@@ -54,7 +62,7 @@ import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
-import { newFile } from './files'
+import { newFile, uploadExisting } from './files'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -201,6 +209,7 @@ const platform = {
     licenseStore,
     verifyLicense,
     trial90days,
+    checkForPro,
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')
@@ -279,6 +288,16 @@ const platform = {
   listenForRCELock,
   lockRCE,
   machineIdSync,
+  firebase: {
+    startUI,
+    firebaseUI,
+    onSessionChange,
+    currentUser,
+    fetchFiles,
+    logOut,
+    saveCustomTemplate,
+    uploadExisting,
+  },
   storage: {
     imagePublicURL,
     isStorageURL,
@@ -364,3 +383,4 @@ export const FileLocation = components.FileLocation
 export const BookChooser = components.BookChooser
 export const TimelineWrapper = components.TimelineWrapper
 export const DashboardBody = components.DashboardBody
+export const FirebaseLogin = components.FirebaseLogin

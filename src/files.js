@@ -35,6 +35,22 @@ export const newFile = (
   const fileName = t('Untitled') + ` - ${untitledFileList.length}`
   const setFileList = (...args) => store.dispatch(actions.project.setFileList(...args))
   const file = Object.assign(newEmptyFile(fileName, version, fullState.present), template || {})
+
+  return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
+    const fileId = response.data.fileId
+    return fetchFiles(userId).then((newFileList) => {
+      openFile(`plottr://${fileId}`, fileId, false)
+      setFileList(newFileList.filter(({ deleted }) => !deleted))
+      closeDashboard()
+    })
+  })
+}
+
+export const uploadExisting = (emailAddress, userId, fullState) => {
+  return uploadToFirebase(emailAddress, userId, fullState)
+}
+
+const uploadToFirebase = (emailAddress, userId, file, fileName) => {
   const newFile = {
     ...file.file,
     none: false,
@@ -43,22 +59,12 @@ export const newFile = (
     version: version,
   }
   delete newFile.id
-
-  return axios
-    .post(
-      `${process.env.API_BASE_DOMAIN}/api/new-file`,
-      {
-        fileRecord: newFile,
-        file,
-      },
-      { params: { userId } }
-    )
-    .then((response) => {
-      const fileId = response.data.fileId
-      return fetchFiles(userId).then((newFileList) => {
-        openFile(`plottr://${fileId}`, fileId, false)
-        setFileList(newFileList.filter(({ deleted }) => !deleted))
-        closeDashboard()
-      })
-    })
+  return axios.post(
+    `https://${process.env.API_BASE_DOMAIN}/api/new-file`,
+    {
+      fileRecord: newFile,
+      file,
+    },
+    { params: { userId } }
+  )
 }

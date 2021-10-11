@@ -1,0 +1,514 @@
+{
+  "file": {
+    "id": "oE4YrEnAjHbNuT1Z0r9E",
+    "isCloudFile": true,
+    "fileName": "My Project",
+    "initialVersion": "2021.9.17",
+    "dirty": true,
+    "appliedMigrations": [],
+    "version": "2021.9.17",
+    "loaded": true
+  },
+  "ui": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "timelineIsExpanded": true,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "outlineFilter": null,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 0
+    },
+    "timeline": {
+      "size": "large"
+    }
+  },
+  "featureFlags": {
+    "BEAT_HIERARCHY": false
+  },
+  "series": {
+    "theme": "hmmm f",
+    "name": "Test f",
+    "genre": "Humor",
+    "templates": [],
+    "premise": "Testing of the Tests f"
+  },
+  "books": {
+    "1": {
+      "templates": [],
+      "imageId": null,
+      "title": "Test Book",
+      "timelineTemplates": [],
+      "premise": "",
+      "id": 1,
+      "theme": "",
+      "genre": ""
+    },
+    "2": {
+      "premise": "",
+      "genre": "",
+      "templates": [],
+      "id": 2,
+      "title": "",
+      "timelineTemplates": [],
+      "imageId": null,
+      "theme": ""
+    },
+    "3": {
+      "genre": "",
+      "title": "",
+      "premise": "",
+      "timelineTemplates": [],
+      "theme": "",
+      "templates": [],
+      "id": 3,
+      "imageId": null
+    },
+    "allIds": [
+      1,
+      2,
+      3
+    ]
+  },
+  "beats": {
+    "1": {
+      "children": {
+        "2": [],
+        "5": [],
+        "6": [],
+        "null": [
+          2,
+          5,
+          6
+        ]
+      },
+      "index": {
+        "2": {
+          "title": "auto",
+          "templates": [],
+          "time": 0,
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "id": 2,
+          "expanded": true,
+          "position": 0,
+          "bookId": 1
+        },
+        "5": {
+          "autoOutlineSort": true,
+          "position": 1,
+          "fromTemplateId": null,
+          "title": "auto",
+          "bookId": 1,
+          "time": 0,
+          "id": 5
+        },
+        "6": {
+          "title": "auto",
+          "bookId": 1,
+          "fromTemplateId": null,
+          "time": 0,
+          "position": 2,
+          "id": 6,
+          "autoOutlineSort": true
+        }
+      },
+      "heap": {
+        "2": null,
+        "5": null,
+        "6": null
+      }
+    },
+    "2": {
+      "children": {
+        "8": [],
+        "null": [
+          8
+        ]
+      },
+      "index": {
+        "8": {
+          "position": 0,
+          "id": 8,
+          "bookId": 2,
+          "title": "auto",
+          "autoOutlineSort": true,
+          "expanded": true,
+          "time": 0,
+          "fromTemplateId": null
+        }
+      },
+      "heap": {
+        "8": null
+      }
+    },
+    "3": {
+      "heap": {
+        "9": null
+      },
+      "children": {
+        "9": [],
+        "null": [
+          9
+        ]
+      },
+      "index": {
+        "9": {
+          "id": 9,
+          "bookId": 3,
+          "position": 0,
+          "title": "auto",
+          "fromTemplateId": null,
+          "expanded": true,
+          "autoOutlineSort": true,
+          "time": 0
+        }
+      }
+    },
+    "series": {
+      "heap": {},
+      "index": {},
+      "children": {
+        "null": []
+      }
+    }
+  },
+  "cards": [
+    {
+      "color": null,
+      "positionInBeat": 0,
+      "fromTemplateId": null,
+      "characters": [],
+      "tags": [],
+      "title": "name",
+      "imageId": null,
+      "places": [],
+      "lineId": 1,
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "positionWithinLine": 0,
+      "id": 15,
+      "beatId": 5,
+      "bookId": null,
+      "templates": []
+    },
+    {
+      "positionInBeat": 0,
+      "color": null,
+      "id": 14,
+      "bookId": null,
+      "description": [
+        {
+          "children": [
+            {
+              "text": "fdsfdsf"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "positionWithinLine": 0,
+      "beatId": 9,
+      "templates": [],
+      "fromTemplateId": null,
+      "tags": [],
+      "characters": [],
+      "title": "sfdsf",
+      "places": [],
+      "imageId": null,
+      "lineId": 3
+    },
+    {
+      "imageId": null,
+      "positionWithinLine": 0,
+      "description": [
+        {
+          "children": [
+            {
+              "text": "sdfdsf",
+              "fontSize": 15
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "fromTemplateId": null,
+      "characters": [],
+      "bookId": null,
+      "places": [],
+      "templates": [],
+      "positionInBeat": 0,
+      "beatId": 8,
+      "title": "Test",
+      "color": null,
+      "id": 11,
+      "tags": [],
+      "lineId": 2
+    },
+    {
+      "color": null,
+      "fromTemplateId": null,
+      "places": [],
+      "tags": [],
+      "title": "Test",
+      "characters": [],
+      "positionInBeat": 0,
+      "templates": [],
+      "beatId": 2,
+      "imageId": null,
+      "positionWithinLine": 0,
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "lineId": 1,
+      "bookId": null,
+      "id": 10
+    }
+  ],
+  "categories": {
+    "characters": [
+      {
+        "name": "Main",
+        "position": 0,
+        "type": "text",
+        "id": 1
+      },
+      {
+        "name": "Supporting",
+        "position": 1,
+        "id": 2,
+        "type": "text"
+      },
+      {
+        "position": 2,
+        "id": 3,
+        "type": "text",
+        "name": "Other"
+      }
+    ],
+    "notes": [
+      {
+        "position": 0,
+        "name": "Main",
+        "id": 1,
+        "type": "text"
+      },
+      {
+        "id": 2,
+        "name": "1",
+        "position": 1
+      },
+      {
+        "position": 2,
+        "id": 3,
+        "name": "2",
+        "type": "text"
+      },
+      {
+        "id": 4,
+        "position": 3,
+        "name": "3"
+      }
+    ],
+    "places": [],
+    "tags": [
+      {
+        "position": 0,
+        "name": "Main",
+        "type": "text",
+        "id": 1
+      }
+    ]
+  },
+  "characters": [],
+  "customAttributes": {
+    "characters": [],
+    "places": [],
+    "scenes": [
+      {
+        "name": "1",
+        "type": "text"
+      }
+    ],
+    "lines": [],
+    "notes": [
+      {
+        "name": "123",
+        "type": "text"
+      },
+      {
+        "type": "text",
+        "name": "1"
+      },
+      {
+        "name": "2",
+        "type": "text"
+      },
+      {
+        "type": "text",
+        "name": "3"
+      }
+    ]
+  },
+  "lines": [
+    {
+      "fromTemplateId": null,
+      "id": 4,
+      "bookId": 1,
+      "expanded": null,
+      "position": 1,
+      "title": "plotline",
+      "color": "#78be20"
+    },
+    {
+      "fromTemplateId": null,
+      "position": 0,
+      "title": "Main Plot",
+      "expanded": null,
+      "id": 3,
+      "color": "#6cace4",
+      "characterId": null,
+      "bookId": 3
+    },
+    {
+      "color": "#6cace4",
+      "expanded": null,
+      "bookId": 2,
+      "id": 2,
+      "title": "Main Plot",
+      "position": 0,
+      "fromTemplateId": null,
+      "characterId": null
+    },
+    {
+      "title": "Main Plot",
+      "color": "#6cace4",
+      "id": 1,
+      "fromTemplateId": null,
+      "position": 0,
+      "bookId": 1,
+      "characterId": null,
+      "expanded": null
+    }
+  ],
+  "notes": [],
+  "places": [],
+  "tags": [
+    {
+      "id": 1,
+      "title": "1",
+      "color": "#78be20",
+      "categoryId": 1
+    },
+    {
+      "categoryId": 1,
+      "color": "#ffc72c",
+      "title": "2",
+      "id": 2
+    }
+  ],
+  "hierarchyLevels": {
+    "0": {
+      "autoNumber": true,
+      "textColor": "#0b1117",
+      "borderStyle": "NONE",
+      "light": {
+        "textColor": "#0b1117",
+        "borderColor": "none"
+      },
+      "textSize": 24,
+      "borderColor": "none",
+      "dark": {
+        "textColor": "#c9e6ff",
+        "borderColor": "#c9e6ff"
+      },
+      "level": 0,
+      "name": "Chapter",
+      "backgroundColor": "none"
+    }
+  },
+  "tour": {
+    "showTour": false,
+    "feature": {
+      "name": "acts",
+      "id": 1,
+      "endStep": 8
+    },
+    "run": true,
+    "stepIndex": 0,
+    "steps": [],
+    "loading": false,
+    "action": "start",
+    "transitioning": false,
+    "b2bTransition": false,
+    "toursTaken": {}
+  },
+  "images": {
+    "2": {
+      "path": "storage://images/ryan@plottr.com/New-Golem.jpg",
+      "data": "",
+      "name": "New-Golem.jpg",
+      "id": 2
+    },
+    "3": {
+      "path": "storage://images/ryan@plottr.com/july-2020-update.jpg",
+      "data": "",
+      "name": "july-2020-update.jpg",
+      "id": 3
+    }
+  },
+  "editors": {
+    "cards__16__description": {
+      "anchor": {
+        "path": [
+          0,
+          0
+        ],
+        "offset": 0
+      },
+      "focus": {
+        "path": [
+          0,
+          0
+        ],
+        "offset": 0
+      }
+    }
+  },
+  "client": {
+    "userId": "cameronsutter",
+    "clientId": "89485ba179d7af7c28957a03e13157c03e13b2c19ea3c8730735a7117e3a8494",
+    "emailAddress": null
+  }
+}

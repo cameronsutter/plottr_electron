@@ -47,7 +47,7 @@ const { ensureBackupTodayPath, saveBackup } = require('./modules/backup')
 ////////////////////////////////
 ////     Startup Tasks    //////
 ////////////////////////////////
-log.info('--------Startup Tasks--------')
+log.info(`--------Init (${app.getVersion()})--------`)
 const ENV_FILE_PATH = path.resolve('.env')
 require('dotenv').config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})

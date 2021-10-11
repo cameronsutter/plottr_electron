@@ -29,6 +29,7 @@ import { TEMP_FILES_PATH } from '../common/utils/config_paths'
 import { createErrorReport } from '../common/utils/full_error_report'
 import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
+import Listener from './components/listener'
 
 const clientId = machineIdSync()
 
@@ -74,6 +75,7 @@ function bootFile(filePath, options, numOpenFiles) {
     if (isCloudFile) {
       const fileId = filePath.split('plottr://')[1]
       const userId = SETTINGS.get('user.id')
+      const emailAddress = SETTINGS.get('user.email')
       if (!userId) {
         rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
         return
@@ -136,9 +138,11 @@ function bootFile(filePath, options, numOpenFiles) {
                 })
               )
               store.dispatch(actions.client.setClientId(clientId))
+              store.dispatch(actions.client.setEmailAddress(emailAddress))
             }
             render(
               <Provider store={store}>
+                <Listener />
                 <App />
               </Provider>,
               root

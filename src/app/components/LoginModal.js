@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { PropTypes } from 'prop-types'
-import { PlottrModal } from 'connected-components'
-import { connect } from 'react-redux'
-
-import { startUI, firebaseUI } from 'plottr_firebase'
+import { PlottrModal, FirebaseLogin } from 'connected-components'
 
 const modalStyles = {
   overlay: {
@@ -25,28 +22,14 @@ const modalStyles = {
   },
 }
 
-const LoginModal = ({ closeLoginModal }) => {
-  const [firebaseLoginComponentRef, setFirebaseLoginComponentRef] = useState(null)
-
-  useEffect(() => {
-    if (firebaseLoginComponentRef) {
-      const ui = firebaseUI()
-      startUI(ui, '#firebase_login_root')
-    }
-  }, [firebaseLoginComponentRef])
-
+export default function LoginModal({ closeLoginModal }) {
   return (
     <PlottrModal isOpen={true} onRequestClose={closeLoginModal} style={modalStyles}>
       <div className="login">
         <div className="login__main">
           <div className="login__left">
             <h1>Welcome to Plottr</h1>
-            <div
-              ref={(ref) => {
-                setFirebaseLoginComponentRef(ref)
-              }}
-              id="firebase_login_root"
-            />
+            <FirebaseLogin />
           </div>
           <div className="login__right">
             <div className="login__logo">
@@ -62,5 +45,3 @@ const LoginModal = ({ closeLoginModal }) => {
 LoginModal.propTypes = {
   closeLoginModal: PropTypes.func.isRequired,
 }
-
-export default connect(null)(LoginModal)

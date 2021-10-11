@@ -107,6 +107,19 @@ export const productMapping = {
 }
 
 // NOTE: only needed for non-license api calls
-// function apiURL (path = '') {
-//   return `${BASE_URL}${path}?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}&number=-1`
-// }
+function apiURL(path = '', params = '') {
+  const authParams = `?key=${process.env.EDD_KEY}&token=${process.env.EDD_TOKEN}`
+  return `${BASE_URL}/${path}/${authParams}&number=-1${params}`
+}
+
+export function subscriptionsURL(email) {
+  return apiURL('subscriptions', `&customer=${email}`)
+}
+
+export function makeRequest(url) {
+  return {
+    url: url,
+    method: 'GET',
+    json: true,
+  }
+}

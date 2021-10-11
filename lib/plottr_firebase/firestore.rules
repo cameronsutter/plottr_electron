@@ -97,14 +97,14 @@ service cloud.firestore {
       allow read, write, update: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'collaborator';
       allow read: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'viewer';
     }
-    match /backup/{user} {
+    match /backup/{userId} {
       match /{subDocument=**} {
-        allow read, write, update, create: if request.auth != null && request.auth.uid == user;
+        allow read, write, update, create, list: if request.auth != null && request.auth.uid == userId;
       }
     }
-    match /templates/{user} {
+    match /templates/{userId} {
       match /{subDocument=**} {
-        allow read, write, update, create: if request.auth != null && request.auth.uid == user;
+        allow read, write, update, create: if request.auth != null && request.auth.uid == userId;
       }
     }
     match /rce/{document} {

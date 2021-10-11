@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { ipcRenderer } from 'electron'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
+import { onSessionChange, listenToFiles } from 'plottr_firebase'
+import { actions } from 'pltr/v2'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
@@ -17,8 +19,17 @@ import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
 import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
+import SETTINGS from '../../common/utils/settings'
 
-const App = ({ forceProjectDashboard, showTour, userId }) => {
+const App = ({
+  forceProjectDashboard,
+  showTour,
+  userId,
+  isCloudFile,
+  setUserId,
+  setEmailAddress,
+  setFileList,
+}) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
   const [showAskToSave, setShowAskToSave] = useState(false)
@@ -49,8 +60,10 @@ const App = ({ forceProjectDashboard, showTour, userId }) => {
       // event.returnValue = 'nope'
       // alert(i18n('Save the work in the open text editor before closing'))
     }
-    // no actions yet? doesn't need to save
-    if (!hasPreviousAction()) {
+    // No actions yet? doesn't need to save
+    //
+    // Cloud files are saved as we go.
+    if (!hasPreviousAction() || isCloudFile) {
       setBlockClosing(false)
       closeOrRefresh(isTryingToClose.current)
       return
@@ -59,6 +72,25 @@ const App = ({ forceProjectDashboard, showTour, userId }) => {
     event.returnValue = 'nope'
     setShowAskToSave(true)
   }
+
+  useEffect(() => {
+    let fileListener = null
+    const sessionListener = onSessionChange((user) => {
+      if (user) {
+        SETTINGS.set('user.id', user.uid)
+        setUserId(user.uid)
+        setEmailAddress(user.email)
+        fileListener = listenToFiles(user.uid, (files) => {
+          const activeFiles = files.filter(({ deleted }) => !deleted)
+          setFileList(activeFiles)
+        })
+      }
+    })
+    return () => {
+      if (fileListener) fileListener()
+      sessionListener()
+    }
+  }, [])
 
   useEffect(() => {
     ipcRenderer.on('save-as-template-start', (event, type) => {
@@ -124,7 +156,7 @@ const App = ({ forceProjectDashboard, showTour, userId }) => {
   }
 
   const renderAskToSave = () => {
-    if (!showAskToSave) return null
+    if (!showAskToSave || !isCloudFile) return null
 
     return (
       <AskToSaveModal
@@ -183,13 +215,22 @@ App.propTypes = {
   userId: PropTypes.string,
   showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
+  isCloudFile: PropTypes.bool,
+  setUserId: PropTypes.func.isRequired,
+  setFileList: PropTypes.func.isRequired,
+  setEmailAddress: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
   return {
     showTour: selectors.showTourSelector(state.present),
     userId: selectors.userIdSelector(state.present),
+    isCloudFile: selectors.isCloudFileSelector(state.present),
   }
 }
 
-export default connect(mapStateToProps, null)(App)
+export default connect(mapStateToProps, {
+  setUserId: actions.client.setUserId,
+  setFileList: actions.project.setFileList,
+  setEmailAddress: actions.client.setEmailAddress,
+})(App)

@@ -23,6 +23,8 @@ import {
   logOut,
   saveCustomTemplate,
   currentUser,
+  listenForRCELock,
+  lockRCE,
 } from 'plottr_firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
@@ -32,7 +34,6 @@ import {
   licenseStore,
   useCustomTemplatesInfo,
   useSettingsInfo,
-  removeFileFromList,
 } from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'
@@ -126,9 +127,7 @@ const platform = {
       } = store.getState()
       const isOnCloud = path.startsWith('plottr://')
       if (isOnCloud) {
-        deleteFile(id, userId, clientId).then(() => {
-          removeFileFromList(id)
-        })
+        deleteFile(id, userId, clientId)
       } else {
         ipcRenderer.send('delete-known-file', id, path, userId, clientId)
       }
@@ -286,6 +285,8 @@ const platform = {
   listenForChangesToEditor,
   deleteChangeSignal,
   deleteOldChanges,
+  listenForRCELock,
+  lockRCE,
   machineIdSync,
   firebase: {
     startUI,

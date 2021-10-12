@@ -17,4 +17,10 @@
  * Places:
  *  - any attr at root level
  *  - notes
+ *
+ * Despite tracking down all of the places where the image-data can
+ * live, I still want to create a general solution to the problem.
  */
+export const extractImages = (file) => {
+
+}

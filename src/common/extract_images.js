@@ -99,3 +99,7 @@ export const patchImages = (rceImages, imageDataIndex, urlIndex, file) => {
 
   return newFile
 }
+
+export const uploadImages = (imageDataIndex) => {
+  // Need base 64 to binary converter
+}

@@ -26,5 +26,38 @@ describe('extractImages', () => {
         })
       })
     })
+    describe('that has an array on the root level', () => {
+      describe('that has an object in it', () => {
+        describe('that has a root level attribute name "type" and a value "image-data"', () => {
+          it('should produce a singleton list with a path to the object in the array', () => {
+            expect(
+              extractImages({ a: [2, { type: 'image-data', data: 'z' }], b: { c: 4 } })
+            ).toEqual([{ path: ['a', 1], data: 'z' }])
+          })
+        })
+      })
+    })
+    describe('that has an array on the root level', () => {
+      describe('that has an object in it', () => {
+        describe('that has a root level attribute name "type" and a value "image-data"', () => {
+          describe('and an object on the root level', () => {
+            describe('that has a root level attribute name "type" and a value "image-data"', () => {
+              it('should produce a singleton list with a path to the object in the array', () => {
+                expect(
+                  extractImages({
+                    a: [2, { type: 'image-data', data: 'aa' }],
+                    b: { c: 4 },
+                    c: { type: 'image-data', data: 'bb' },
+                  })
+                ).toEqual([
+                  { path: ['a', 1], data: 'aa' },
+                  { path: ['c'], data: 'bb' },
+                ])
+              })
+            })
+          })
+        })
+      })
+    })
   })
 })

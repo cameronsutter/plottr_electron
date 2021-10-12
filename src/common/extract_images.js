@@ -60,3 +60,7 @@ export const imageIndex = (file) => {
 
   return index
 }
+
+export const patchImages = (urlIndex, file) => {
+  return file
+}

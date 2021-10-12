@@ -22,5 +22,22 @@
  * live, I still want to create a general solution to the problem.
  */
 export const extractImages = (file) => {
-  return []
+  const nodesFound = []
+
+  function walkFile(node, path) {
+    if (Array.isArray(node)) {
+      node.forEach((subNode, idx) => {
+        walkFile(subNode, [...path, idx])
+      })
+    } else if (node?.type === 'image-data' && node.data) {
+      nodesFound.push({ path, data: node.data })
+    } else if (typeof node !== 'string') {
+      Object.keys(node).forEach((key) => {
+        walkFile(node[key], [...path, key])
+      })
+    }
+  }
+  walkFile(file, [])
+
+  return nodesFound
 }

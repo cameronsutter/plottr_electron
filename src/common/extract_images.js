@@ -82,7 +82,7 @@ export const patchImages = (urlIndex, file) => {
 
   delete newFile.images
   newFile.images = {}
-  Object.values(imageDataIndex).forEach(([data, imageId]) => {
+  Object.entries(imageDataIndex).forEach(([data, imageId]) => {
     const imageStorageURL = urlIndex[imageId]
     newFile.images[imageId] = {
       data: '',

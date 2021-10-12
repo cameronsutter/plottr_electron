@@ -71,6 +71,9 @@ export const patchImages = (urlIndex, file) => {
   rceImages.forEach(({ path, data }) => {
     const imageId = imageDataIndex[data]
     const imageStorageURL = urlIndex[imageId]
+    if (!imageStorageURL) {
+      throw new Error(`Couldn't find image storage URL for image { path: ${path}, id: ${imageId} }`)
+    }
     let rceImage = newFile
     cloneDeep(path).forEach((key) => {
       rceImage = rceImage[key]
@@ -84,6 +87,11 @@ export const patchImages = (urlIndex, file) => {
   newFile.images = {}
   Object.entries(imageDataIndex).forEach(([data, imageId]) => {
     const imageStorageURL = urlIndex[imageId]
+    if (!imageStorageURL) {
+      throw new Error(
+        `Couldn't find image storage URL for image { path: ${file.images[imageId].path}, id: ${imageId} }`
+      )
+    }
     newFile.images[imageId] = {
       data: '',
       id: imageId,

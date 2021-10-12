@@ -199,7 +199,7 @@ describe('patchImages', () => {
   describe('given a file with images only present in the image index', () => {
     describe('and a urlIndex that does not cover those files', () => {
       it('should throw an exception', () => {
-        expect(
+        expect(() =>
           patchImages(
             {
               2: 'storage://images/tetttot/blah.jpg',

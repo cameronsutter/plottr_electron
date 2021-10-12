@@ -31,7 +31,9 @@ export const newFile = (
   template,
   openFile
 ) => {
-  const untitledFileList = fileList.filter(({ fileName }) => fileName.match(/Untitled/g))
+  const untitledFileList = fileList.filter(({ fileName }) => {
+    return fileName && fileName.match(/Untitled/g)
+  })
   const fileName = t('Untitled') + ` - ${untitledFileList.length}`
   const setFileList = (...args) => store.dispatch(actions.project.setFileList(...args))
   const file = Object.assign(newEmptyFile(fileName, version, fullState.present), template || {})

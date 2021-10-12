@@ -22,5 +22,5 @@
  * live, I still want to create a general solution to the problem.
  */
 export const extractImages = (file) => {
-
+  return []
 }

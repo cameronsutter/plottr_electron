@@ -113,5 +113,40 @@ describe('imageIndex', () => {
         })
       })
     })
+    describe('and images in the image index', () => {
+      it('should produce an index with both the images from the content and the images in the index', () => {
+        expect(
+          imageIndex({
+            characters: [
+              {
+                id: 1,
+                name: 'Link',
+                description: 'Protagnist',
+                notes: [
+                  {
+                    type: 'image-data',
+                    data: 'This is some data.',
+                  },
+                ],
+              },
+            ],
+            images: {
+              1: {
+                id: 1,
+                data: 'blah',
+              },
+              7: {
+                id: 7,
+                data: 'haha',
+              },
+            },
+          })
+        ).toEqual({
+          blah: 1,
+          haha: 7,
+          'This is some data.': 8,
+        })
+      })
+    })
   })
 })

@@ -54,7 +54,7 @@ export const imageIndex = (file) => {
   })
   imagesInRCEContent.forEach(({ path, data }) => {
     if (!index[data]) {
-      index[data] = maxId++
+      index[data] = ++maxId
     }
   })
 

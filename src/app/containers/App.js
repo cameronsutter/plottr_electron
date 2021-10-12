@@ -78,6 +78,7 @@ const App = ({
     const sessionListener = onSessionChange((user) => {
       if (user) {
         SETTINGS.set('user.id', user.uid)
+        SETTINGS.set('user.email', user.email)
         setUserId(user.uid)
         setEmailAddress(user.email)
         fileListener = listenToFiles(user.uid, (files) => {

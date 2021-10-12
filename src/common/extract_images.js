@@ -78,7 +78,7 @@ export const patchImages = (urlIndex, file) => {
     cloneDeep(path).forEach((key) => {
       rceImage = rceImage[key]
     })
-    delete rceImage[data]
+    delete rceImage.data
     rceImage.storageUrl = imageStorageURL
     rceImage.type = 'image-link'
   })
@@ -95,7 +95,7 @@ export const patchImages = (urlIndex, file) => {
     newFile.images[imageId] = {
       data: '',
       id: imageId,
-      name: file.images[imageId]?.name || '',
+      name: (file.images && file.images[imageId]?.name) || '',
       path: imageStorageURL,
     }
   })

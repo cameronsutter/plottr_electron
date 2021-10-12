@@ -1,4 +1,4 @@
-import { extractImages } from '../extract_images'
+import { extractImages, imageIndex } from '../extract_images'
 
 describe('extractImages', () => {
   describe('given an empty file', () => {
@@ -58,6 +58,14 @@ describe('extractImages', () => {
           })
         })
       })
+    })
+  })
+})
+
+describe('imageIndex', () => {
+  describe('given an empty file', () => {
+    it('should produce an empty object', () => {
+      expect(imageIndex({})).toEqual({})
     })
   })
 })

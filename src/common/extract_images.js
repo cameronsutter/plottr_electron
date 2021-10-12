@@ -41,3 +41,22 @@ export const extractImages = (file) => {
 
   return nodesFound
 }
+
+export const imageIndex = (file) => {
+  const imagesInRCEContent = extractImages(file)
+  const indexedImages = (file.images && Object.values(file.images)) || []
+
+  const index = {}
+  let maxId = Number.NEGATIVE_INFINITY
+  indexedImages.forEach(({ id, name, path, data }) => {
+    index[data] = id
+    maxId = Math.max(id, maxId)
+  })
+  imagesInRCEContent.forEach(({ path, data }) => {
+    if (!index[data]) {
+      index[data] = maxId++
+    }
+  })
+
+  return index
+}

@@ -196,4 +196,40 @@ describe('patchImages', () => {
       expect(patchImages({}, {})).toEqual({ images: {} })
     })
   })
+  describe('given a file with images only present in the image index', () => {
+    describe('and a urlIndex that does not cover those files', () => {
+      it('should throw an exception', () => {
+        expect(
+          patchImages(
+            {
+              2: 'storage://images/tetttot/blah.jpg',
+              4: 'storage://images/tetttot/hehe.jpg',
+            },
+            {
+              images: {
+                1: {
+                  id: 1,
+                  data: 'blah',
+                  path: 'test',
+                  name: 'blah',
+                },
+                7: {
+                  id: 7,
+                  data: 'haha',
+                  path: 'test2',
+                  name: 'haha',
+                },
+                9: {
+                  id: 9,
+                  data: 'This is some data.',
+                  path: 'test3',
+                  name: 'This is some data.',
+                },
+              },
+            }
+          )
+        ).toThrow()
+      })
+    })
+  })
 })

@@ -68,4 +68,25 @@ describe('imageIndex', () => {
       expect(imageIndex({})).toEqual({})
     })
   })
+  describe('given a file with two images in the images key', () => {
+    it('should produce an index of those images data to their ids', () => {
+      expect(
+        imageIndex({
+          images: {
+            1: {
+              id: 1,
+              data: 'blah',
+            },
+            7: {
+              id: 7,
+              data: 'haha',
+            },
+          },
+        })
+      ).toEqual({
+        haha: 7,
+        blah: 1,
+      })
+    })
+  })
 })

@@ -44,8 +44,7 @@ export const extractImages = (file) => {
   return nodesFound
 }
 
-export const imageIndex = (file) => {
-  const imagesInRCEContent = extractImages(file)
+export const imageIndex = (imagesInRCEContent, file) => {
   const indexedImages = (file.images && Object.values(file.images)) || []
 
   const index = {}
@@ -63,10 +62,8 @@ export const imageIndex = (file) => {
   return index
 }
 
-export const patchImages = (urlIndex, file) => {
+export const patchImages = (rceImages, imageDataIndex, urlIndex, file) => {
   const newFile = cloneDeep(file)
-  const imageDataIndex = imageIndex(file)
-  const rceImages = extractImages(file)
 
   rceImages.forEach(({ path, data }) => {
     const imageId = imageDataIndex[data]

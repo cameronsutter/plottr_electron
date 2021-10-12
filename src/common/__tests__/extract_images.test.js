@@ -197,7 +197,7 @@ describe('patchImages', () => {
     })
   })
   describe('given a file with images only present in the image index', () => {
-    describe('and a urlIndex that does not cover those files', () => {
+    describe('and a urlIndex that does not cover those images', () => {
       it('should throw an exception', () => {
         expect(() =>
           patchImages(
@@ -230,6 +230,108 @@ describe('patchImages', () => {
           )
         ).toThrow()
       })
+    })
+    describe('and a urlIndex that covers those images', () => {
+      it('should produce a new file with updated images', () => {
+        expect(
+          patchImages(
+            {
+              1: 'storage://images/tetttot/blah.jpg',
+              7: 'storage://images/tetttot/hehe.jpg',
+              9: 'storage://images/tetttot/erm.jpg',
+            },
+            {
+              images: {
+                1: {
+                  id: 1,
+                  data: 'blah',
+                  path: 'test',
+                  name: 'blah',
+                },
+                7: {
+                  id: 7,
+                  data: 'haha',
+                  path: 'test2',
+                  name: 'haha',
+                },
+                9: {
+                  id: 9,
+                  data: 'This is some data.',
+                  path: 'test3',
+                  name: 'This is some data.',
+                },
+              },
+            }
+          )
+        ).toEqual({
+          images: {
+            1: {
+              id: 1,
+              data: '',
+              path: 'storage://images/tetttot/blah.jpg',
+              name: 'blah',
+            },
+            7: {
+              id: 7,
+              data: '',
+              path: 'storage://images/tetttot/hehe.jpg',
+              name: 'haha',
+            },
+            9: {
+              id: 9,
+              data: '',
+              path: 'storage://images/tetttot/erm.jpg',
+              name: 'This is some data.',
+            },
+          },
+        })
+      })
+    })
+  })
+  describe('given a file with only images present in RCE content', () => {
+    expect(
+      patchImages(
+        {
+          [Number.NEGATIVE_INFINITY + 1]: 'storage://images/tetttot/blah.jpg',
+        },
+        {
+          characters: [
+            {
+              id: 1,
+              name: 'Link',
+              description: 'Protagnist',
+              notes: [
+                {
+                  type: 'image-data',
+                  data: 'This is some data.',
+                },
+              ],
+            },
+          ],
+        }
+      )
+    ).toEqual({
+      characters: [
+        {
+          id: 1,
+          name: 'Link',
+          description: 'Protagnist',
+          notes: [
+            {
+              type: 'image-link',
+              storageUrl: 'storage://images/tetttot/blah.jpg',
+            },
+          ],
+        },
+      ],
+      images: {
+        [Number.NEGATIVE_INFINITY + 1]: {
+          id: Number.NEGATIVE_INFINITY + 1,
+          name: '',
+          data: '',
+          path: 'storage://images/tetttot/blah.jpg',
+        },
+      },
     })
   })
 })

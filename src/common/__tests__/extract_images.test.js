@@ -147,6 +147,45 @@ describe('imageIndex', () => {
           'This is some data.': 8,
         })
       })
+      describe('when there are duplicate images by their content', () => {
+        it('not produce duplicate images', () => {
+          expect(
+            imageIndex({
+              characters: [
+                {
+                  id: 1,
+                  name: 'Link',
+                  description: 'Protagnist',
+                  notes: [
+                    {
+                      type: 'image-data',
+                      data: 'This is some data.',
+                    },
+                  ],
+                },
+              ],
+              images: {
+                1: {
+                  id: 1,
+                  data: 'blah',
+                },
+                7: {
+                  id: 7,
+                  data: 'haha',
+                },
+                9: {
+                  id: 9,
+                  data: 'This is some data.',
+                },
+              },
+            })
+          ).toEqual({
+            blah: 1,
+            haha: 7,
+            'This is some data.': 9,
+          })
+        })
+      })
     })
   })
 })

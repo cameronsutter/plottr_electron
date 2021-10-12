@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash'
+
 /** Places to look for image data:
  *
  * Card:
@@ -62,5 +64,33 @@ export const imageIndex = (file) => {
 }
 
 export const patchImages = (urlIndex, file) => {
-  return file
+  const newFile = cloneDeep(file)
+  const imageDataIndex = imageIndex(file)
+  const rceImages = extractImages(file)
+
+  rceImages.forEach(({ path, data }) => {
+    const imageId = imageDataIndex[data]
+    const imageStorageURL = urlIndex[imageId]
+    let rceImage = newFile
+    cloneDeep(path).forEach((key) => {
+      rceImage = rceImage[key]
+    })
+    delete rceImage[data]
+    rceImage.storageUrl = imageStorageURL
+    rceImage.type = 'image-link'
+  })
+
+  delete newFile.images
+  newFile.images = {}
+  Object.values(imageDataIndex).forEach(([data, imageId]) => {
+    const imageStorageURL = urlIndex[imageId]
+    newFile.images[imageId] = {
+      data: '',
+      id: imageId,
+      name: file.images[imageId]?.name || '',
+      path: imageStorageURL,
+    }
+  })
+
+  return newFile
 }

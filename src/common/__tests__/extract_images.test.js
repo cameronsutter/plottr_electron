@@ -89,4 +89,29 @@ describe('imageIndex', () => {
       })
     })
   })
+  describe('given a file with images in RCE content for a character', () => {
+    describe('and no images in the index', () => {
+      it('should produce a single image index with neg inf + 1 as the id', () => {
+        expect(
+          imageIndex({
+            characters: [
+              {
+                id: 1,
+                name: 'Link',
+                description: 'Protagnist',
+                notes: [
+                  {
+                    type: 'image-data',
+                    data: 'This is some data.',
+                  },
+                ],
+              },
+            ],
+          })
+        ).toEqual({
+          'This is some data.': Number.NEGATIVE_INFINITY + 1,
+        })
+      })
+    })
+  })
 })

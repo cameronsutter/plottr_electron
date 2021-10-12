@@ -1,4 +1,4 @@
-import { extractImages, imageIndex } from '../extract_images'
+import { extractImages, imageIndex, patchImages } from '../extract_images'
 
 describe('extractImages', () => {
   describe('given an empty file', () => {
@@ -186,6 +186,14 @@ describe('imageIndex', () => {
           })
         })
       })
+    })
+  })
+})
+
+describe('patchImages', () => {
+  describe('given the empty file', () => {
+    it('should produce the empty file with an empty image index', () => {
+      expect(patchImages({}, {})).toEqual({ images: {} })
     })
   })
 })

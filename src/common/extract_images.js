@@ -35,7 +35,7 @@ export const extractImages = (file) => {
       })
     } else if (node?.type === 'image-data' && node.data) {
       nodesFound.push({ path, data: node.data })
-    } else if (typeof node !== 'string') {
+    } else if (node && typeof node !== 'string') {
       Object.keys(node).forEach((key) => {
         walkFile(node[key], [...path, key])
       })
@@ -104,7 +104,7 @@ export const patchImages = (rceImages, imageDataIndex, urlIndex, file) => {
 
 export const fileNameIndex = (file) => {
   const nameIndex = {}
-  file.images.forEach(({ id, name }) => {
+  Object.values(file.images).forEach(({ id, name }) => {
     nameIndex[id] = name
   })
   return nameIndex
@@ -114,7 +114,7 @@ export const uploadImages = (imageDataIndex, nameIndex, userId) => {
   const dataIdTuples = Object.entries(imageDataIndex)
   return Promise.all(
     dataIdTuples.map(([data, id]) => {
-      return saveImageToStorageFromURL(userId, fileNameIndex[id] || 'unnamed', data)
+      return saveImageToStorageFromURL(userId, fileNameIndex[id] || `unnamed-${id}`, data)
     })
   ).then((urls) => {
     const imageUrlIndex = {}

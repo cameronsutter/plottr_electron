@@ -1,5 +1,7 @@
 import { cloneDeep } from 'lodash'
 
+import { saveImageToStorageFromURL } from 'plottr_firebase'
+
 /** Places to look for image data:
  *
  * Card:
@@ -100,16 +102,36 @@ export const patchImages = (rceImages, imageDataIndex, urlIndex, file) => {
   return newFile
 }
 
-const base64ToBlob = (base64Data, type) => {
-  const byteString = atob(base64Data)
-  const byteArray = new Array(byteString.length)
-  for (let i = 0; i < byteString.length; ++i) {
-    byteArray[i] = byteString.charCodeAt(i)
-  }
-  const uint8Array = new Uint8Array(byteArray)
-  return new Blob([uint8Array], { type })
+export const fileNameIndex = (file) => {
+  const nameIndex = {}
+  file.images.forEach(({ id, name }) => {
+    nameIndex[id] = name
+  })
+  return nameIndex
 }
 
-export const uploadImages = (imageDataIndex) => {
-  // Need base 64 to binary converter
+export const uploadImages = (imageDataIndex, nameIndex, userId) => {
+  const dataIdTuples = Object.entries(imageDataIndex)
+  return Promise.all(
+    dataIdTuples.map(([data, id]) => {
+      return saveImageToStorageFromURL(userId, fileNameIndex[id] || 'unnamed', data)
+    })
+  ).then((urls) => {
+    const imageUrlIndex = {}
+    urls.forEach((url, index) => {
+      imageUrlIndex[dataIdTuples[index][1]] = url
+    })
+    return imageUrlIndex
+  })
 }
+
+const extractExportAndPatch = (file, userId) => {
+  const nameIndex = fileNameIndex(file)
+  const extractedImages = extractImages(file)
+  const imageDataIndex = imageIndex(extractedImages, file)
+  return uploadImages(imageDataIndex, nameIndex, userId).then((urlIndex) => {
+    return patchImages(extractedImages, imageDataIndex, urlIndex, file)
+  })
+}
+
+export default extractExportAndPatch

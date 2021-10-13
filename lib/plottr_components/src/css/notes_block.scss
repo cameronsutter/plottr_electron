@@ -232,4 +232,13 @@
     background-color: $darkmode-darker-background;
     color: $darkmode-text;
   }
+
+  .lock-icon__wrapper {
+    top: 64%;
+    font-size: 12px;
+    padding: 20px;
+    svg {
+      font-size: 2rem;
+    }
+  }
 }

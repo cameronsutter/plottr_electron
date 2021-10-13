@@ -57,6 +57,12 @@
   }
 }
 
+.book-dialog {
+  .modal-content {
+    border-radius: 20px;
+  }
+}
+
 .book-dialog.darkmode {
   .modal-body,
   .modal-footer,

@@ -154,6 +154,12 @@
       width: 50%;
       padding-right: 3%;
       padding-left: 3%;
+
+      .lock-icon__wrapper {
+        position: absolute;
+        top: 66% !important;
+        left: 50%;
+      }
     }
   }
   .btn-toolbar {
@@ -213,6 +219,16 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  .lock-icon__wrapper {
+    top: 75%;
+    left: 20%;
+    font-size: 12px;
+    padding: 12px;
+    svg {
+      font-size: 2rem;
+    }
+  }
 }
 
 .place-list__place__edit-image-wrapper {

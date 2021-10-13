@@ -100,6 +100,16 @@ export const patchImages = (rceImages, imageDataIndex, urlIndex, file) => {
   return newFile
 }
 
+const base64ToBlob = (base64Data, type) => {
+  const byteString = atob(base64Data)
+  const byteArray = new Array(byteString.length)
+  for (let i = 0; i < byteString.length; ++i) {
+    byteArray[i] = byteString.charCodeAt(i)
+  }
+  const uint8Array = new Uint8Array(byteArray)
+  return new Blob([uint8Array], { type })
+}
+
 export const uploadImages = (imageDataIndex) => {
   // Need base 64 to binary converter
 }

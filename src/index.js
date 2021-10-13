@@ -4,7 +4,6 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 import axios from 'axios'
-import { v4 as uuidv4 } from 'uuid'
 import { DateTime, Duration } from 'luxon'
 
 import { actions, ARRAY_KEYS } from 'pltr/v2'
@@ -37,7 +36,6 @@ if (!firebase.apps.length) {
 }
 
 const pingAuth = (userId, fileId) => {
-  // This needs to use the base URL.
   return axios.post(`${process.env.BASE_URL || ''}/api/ping-auth`, {
     userId,
     fileId,
@@ -427,7 +425,7 @@ export const listenToFiles = (userId, callback) => {
             return documents.map((document) => {
               return {
                 ...document,
-                cloudFile: true,
+                isCloudFile: true,
               }
             })
           })
@@ -463,7 +461,7 @@ export const fetchFiles = (userId) => {
         return documents.map((document) => {
           return {
             ...document,
-            cloudFile: true,
+            isCloudFile: true,
           }
         })
       })
@@ -474,8 +472,25 @@ export const logOut = () => {
   return auth().signOut()
 }
 
+export const mintCookieToken = (user) => {
+  return user.getIdToken().then((idToken) => {
+    return axios.post(`${process.env.BASE_URL || ''}/api/mint-token`, {
+      idToken,
+    })
+  })
+}
+
 export const onSessionChange = (cb) => {
-  return auth().onAuthStateChanged(cb)
+  return auth().onAuthStateChanged((user) => {
+    if (user) {
+      return mintCookieToken(user).then(() => {
+        cb(user)
+        return Promise.resolve(null)
+      })
+    }
+    cb(user)
+    return Promise.resolve(null)
+  })
 }
 
 let _firebaseui
@@ -489,12 +504,19 @@ export const firebaseUI = () => {
 export const startUI = (firebaseUI, queryString) => {
   firebaseUI.start(queryString, {
     signInOptions: [
-      firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-      firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+      {
+        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        disableSignUp: { status: true },
+      },
     ],
+    callbacks: {
+      signInSuccessWithAuthResult: () => false,
+    },
   })
+}
+
+export const currentUser = () => {
+  return firebase.auth().currentUser
 }
 
 // Useful for debugging because Firebase rejects keys with undefined
@@ -538,17 +560,40 @@ export const overwrite = (path, fileId, payload, clientId) => {
     })
 }
 
-export const shareDocument = (fileId, emailAddress) => {
-  const invitationToken = uuidv4()
-  return database()
-    .collection('file')
-    .doc(fileId)
-    .set(
-      { pending: [{ emailAddress, invitationToken, permission: 'collaborator' }] },
-      { merge: true }
-    )
+export const shareDocument = (userId, fileId, emailAddress, permission) => {
+  return axios
+    .post(`${process.env.BASE_URL || ''}/api/share-document`, {
+      fileId,
+      emailAddress,
+      userId,
+      permission,
+    })
     .then(() => {
-      return invitationToken
+      return database()
+        .collection('file')
+        .doc(fileId)
+        .get()
+        .then((documentRef) => {
+          const document = documentRef.data()
+          const existingShareRecord = document.shareRecords.find(
+            (shareRecord) => shareRecord.emailAddress === emailAddress
+          )
+          if (existingShareRecord) {
+            return pingAuth(userId, fileId)
+          }
+          return database()
+            .collection('file')
+            .doc(fileId)
+            .set(
+              {
+                shareRecords: [...document.shareRecords, { emailAddress, permission }],
+              },
+              { merge: true }
+            )
+            .then(() => {
+              return pingAuth(userId, fileId)
+            })
+        })
     })
 }
 

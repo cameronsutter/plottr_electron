@@ -49,7 +49,7 @@ export const newFile = (
 }
 
 export const uploadExisting = (emailAddress, userId, fullState) => {
-  return uploadToFirebase(emailAddress, userId, fullState)
+  return uploadToFirebase(emailAddress, userId, fullState, fullState.file.fileName)
 }
 
 const uploadToFirebase = (emailAddress, userId, file, fileName) => {

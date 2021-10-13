@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash'
+import { v4 as uuid } from 'uuid'
 
 import { saveImageToStorageFromURL } from 'plottr_firebase'
 
@@ -114,7 +115,7 @@ export const uploadImages = (imageDataIndex, nameIndex, userId) => {
   const dataIdTuples = Object.entries(imageDataIndex)
   return Promise.all(
     dataIdTuples.map(([data, id]) => {
-      return saveImageToStorageFromURL(userId, fileNameIndex[id] || `unnamed-${id}`, data)
+      return saveImageToStorageFromURL(userId, nameIndex[id] || `unnamed-${uuid()}`, data)
     })
   ).then((urls) => {
     const imageUrlIndex = {}

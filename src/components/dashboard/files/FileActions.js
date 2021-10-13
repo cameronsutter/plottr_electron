@@ -27,14 +27,12 @@ const FileActionsConnector = (connector) => {
 
   const osIsUnknown = os === 'unknown'
 
-  const osIsUnknown = os === 'unknown'
-
   let showInMessage = t('Show in File Explorer')
   if (isMacOS) {
     showInMessage = t('Show in Finder')
   }
 
-  const FileActions = ({ missing, id, fileName, filePath, openFile }) => {
+  const FileActions = ({ missing, id, fileName, filePath, openFile, permission, isCloudFile }) => {
     const [deleting, setDeleting] = useState(false)
 
     const deleteFile = () => {
@@ -93,7 +91,9 @@ const FileActionsConnector = (connector) => {
             {missing ? null : <MenuItem eventKey="open">{t('Open')}</MenuItem>}
             {osIsUnknown || missing ? null : <MenuItem eventKey="show">{showInMessage}</MenuItem>}
             {missing ? null : <MenuItem eventKey="rename">{t('Rename')}</MenuItem>}
-            {missing ? null : <MenuItem eventKey="delete">{t('Delete')}</MenuItem>}
+            {(isCloudFile && permission !== 'owner') || missing ? null : (
+              <MenuItem eventKey="delete">{t('Delete')}</MenuItem>
+            )}
             {(isTemp || missing) && !osIsUnknown && (
               <MenuItem eventKey="remove">{t('Remove from this list')}</MenuItem>
             )}
@@ -109,6 +109,8 @@ const FileActionsConnector = (connector) => {
     filePath: PropTypes.string,
     fileName: PropTypes.string,
     openFile: PropTypes.func,
+    permission: PropTypes.string,
+    isCloudFile: PropTypes.bool,
   }
 
   return FileActions

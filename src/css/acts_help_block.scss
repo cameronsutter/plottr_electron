@@ -1,0 +1,28 @@
+.acts-help-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .text-steps-wrapper {
+    display: flex;
+    
+  }
+  
+  ol {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-right: 20;
+  }
+  
+  li {
+    display: list-item;
+    font-size: 18px;
+    width: 100%;
+  }
+  
+  img {
+    align-self: center;
+    width: 100%;
+  }
+}

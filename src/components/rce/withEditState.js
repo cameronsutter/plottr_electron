@@ -550,7 +550,9 @@ export const useEditState = (
   const onChange = (newValue) => {
     if (state.current === RESET_FROM_INITIAL_VALUE) return
 
-    deleteOldChanges(fileId, editorId)
+    if (fileId && editorId) {
+      deleteOldChanges(fileId, editorId)
+    }
     handleEvent(NEW_VALUE_FROM_SLATE, newValue)
   }
 

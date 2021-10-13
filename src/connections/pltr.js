@@ -4,6 +4,7 @@ import * as pltr from 'pltr/v2'
 import {
   OverlayTrigger,
   DeleteConfirmModal,
+  ErrorModal,
   ColorPickerColor,
   ItemsManagerModal as UnconnectedItemsManagerModal,
   ListItem,
@@ -68,6 +69,7 @@ import {
   ProjectTemplateDetails,
   CharacterTemplateDetails,
   DashboardBody as UnconnectedDashboardBody,
+  ActsHelpModal as UnconnectedActsHelpModal,
 } from '../components'
 
 const connector = {
@@ -198,6 +200,7 @@ export default (platform) => {
   return {
     OverlayTrigger,
     DeleteConfirmModal,
+    ErrorModal,
     ColorPickerColor,
     ItemsManagerModal: UnconnectedItemsManagerModal(connectorObject),
     ListItem,
@@ -262,5 +265,6 @@ export default (platform) => {
     ProjectTemplateDetails,
     CharacterTemplateDetails,
     DashboardBody: UnconnectedDashboardBody(connectorObject),
+    ActsHelpModal: UnconnectedActsHelpModal(connectorObject),
   }
 }

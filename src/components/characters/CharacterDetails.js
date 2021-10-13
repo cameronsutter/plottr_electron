@@ -67,8 +67,8 @@ const CharacterDetailsConnector = (connector) => {
           )
         })
         return (
-          <React.Fragment key={template.id}>
-            <p>{templateData.name || template.name || t('Template')}</p>
+          <React.Fragment key={t.id}>
+            <p>{templateData.name || t.name || t('Template')}</p>
             {attrs}
           </React.Fragment>
         )

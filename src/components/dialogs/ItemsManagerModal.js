@@ -16,6 +16,7 @@ const modalStyles = {
     alignItems: 'center',
   },
   content: {
+    borderRadius: 20,
     width: '50%',
     position: 'relative',
     left: 'auto',
@@ -57,7 +58,9 @@ const ItemsManagerModelConnector = (connector) => {
     }, [])
 
     const saveAsTemplate = () => {
-      startSaveAsTemplate(itemType)
+      if (items.length) startSaveAsTemplate(itemType)
+
+      return false
     }
 
     const handleEnterPressed = (e) => {
@@ -86,7 +89,11 @@ const ItemsManagerModelConnector = (connector) => {
             {i18n('Close')}
           </Button>
           {showSaveAsTemplate ? (
-            <Button className="pull-right custom-attr__save-as-template" onClick={saveAsTemplate}>
+            <Button
+              className="pull-right custom-attr__save-as-template"
+              onClick={saveAsTemplate}
+              disabled={!items.length}
+            >
               <FaSave className="svg-save-template" /> {i18n('Save as Template')}
             </Button>
           ) : null}

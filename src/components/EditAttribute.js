@@ -167,7 +167,7 @@ const EditAttributeConnector = (connector) => {
           />
         ) : null}
         {type === 'paragraph' ? (
-          <div>
+          <div className="card-dialog__custom-attributes__wrapper">
             <Label />
             <RichText
               id={editorPath}

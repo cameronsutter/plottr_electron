@@ -11,34 +11,6 @@ import UnconnectedFileActions from './FileActions'
 import RecentsHeader from './RecentsHeader'
 import { checkDependencies } from '../../checkDependencies'
 
-const renderPermission = (permission) => {
-  switch (permission) {
-    case 'collaborator':
-      return (
-        <div>
-          <AiOutlineTeam />
-          Collaborator
-        </div>
-      )
-    case 'viewer':
-      return (
-        <div>
-          <AiOutlineRead />
-          Viewer
-        </div>
-      )
-    case 'owner':
-      return (
-        <div>
-          <GiQuillInk />
-          Owner
-        </div>
-      )
-    default:
-      return null
-  }
-}
-
 const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
 
 const renderPermission = (permission) => {
@@ -170,6 +142,8 @@ const RecentFilesConnector = (connector) => {
                   fileName={f.fileName}
                   filePath={f.path || f.id}
                   openFile={openFile}
+                  permission={f.permission}
+                  isCloudFile={f.isCloudFile}
                 />
               </div>
             </Cell>

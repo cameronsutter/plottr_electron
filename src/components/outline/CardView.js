@@ -165,7 +165,7 @@ const CardViewConnector = (connector) => {
     renderDescription() {
       const { description } = this.props.card
       return (
-        <div className="outline__description__editing">
+        <div className="outline__description__editing" onKeyDown={this.handleEsc}>
           <RichText
             autofocus
             id={this.editorPath}
@@ -226,6 +226,12 @@ const CardViewConnector = (connector) => {
       if (!card.tags.length && !card.characters.length && !card.places.length) return null
 
       return <div className="divider" />
+    }
+
+    componentDidUpdate() {
+      if (this.props.isClickedOutside && this.state.editing) {
+        this.saveEdit()
+      }
     }
 
     render() {
@@ -314,6 +320,7 @@ const CardViewConnector = (connector) => {
     ui: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     images: PropTypes.object,
+    isClickedOutside: PropTypes.bool,
   }
 
   const {

@@ -30,8 +30,6 @@ const AboutConnector = (connector) => {
 
   const osIsUnknown = os === 'unknown'
 
-  const osIsUnknown = os === 'unknown'
-
   const About = (props) => {
     const { started, expired } = useTrialStatus()
 
@@ -75,7 +73,7 @@ const AboutConnector = (connector) => {
           <dl className="dl-horizontal">
             <dt>{t('Version')}</dt>
             <dd>{appVersion}</dd>
-            <dt>{t('Updates')}</dt>
+            {osIsUnknown ? null : <dt>{t('Updates')}</dt>}
             <UpdateButton />
             <dt>{t('Changelog')}</dt>
             <dd>

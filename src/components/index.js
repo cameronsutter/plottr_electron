@@ -12,11 +12,13 @@ import TemplatePicker from './templates/TemplatePicker'
 
 // Dialogs
 import DeleteConfirmModal from './dialogs/DeleteConfirmModal'
+import ErrorModal from './dialogs/ErrorModal'
 import CustomAttributeModal from './dialogs/CustomAttributeModal'
 import ItemsManagerModal, { ListItem } from './dialogs/ItemsManagerModal'
 import InputModal from './dialogs/InputModal'
 import ActsConfigModal from './dialogs/ActsConfigModal'
 import AskToSaveModal from './dialogs/AskToSaveModal'
+import ActsHelpModal from './dialogs/ActsHelpModal'
 
 // Containers
 import ErrorBoundary from './containers/ErrorBoundary'
@@ -102,6 +104,7 @@ import DashboardBody from './dashboard/navigation/DashboardBody'
 export {
   OverlayTrigger,
   DeleteConfirmModal,
+  ErrorModal,
   ColorPickerColor,
   ItemsManagerModal,
   ListItem,
@@ -157,6 +160,7 @@ export {
   TimelineWrapper,
   ActsConfigModal,
   AskToSaveModal,
+  ActsHelpModal,
   ErrorBoundary,
   DashboardErrorBoundary,
   SelectList,

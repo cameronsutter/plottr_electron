@@ -266,7 +266,10 @@ const TimelineWrapperConnector = (connector) => {
     // //////////////
 
     startSaveAsTemplate = () => {
-      saveAsTemplate('plotlines')
+      const { allCards } = this.props
+      if (allCards.length) saveAsTemplate('plotlines')
+
+      return false
     }
 
     // ///////////////
@@ -288,7 +291,7 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     renderSubNav() {
-      const { timelineBundle, actions, featureFlags } = this.props
+      const { timelineBundle, actions, featureFlags, allCards } = this.props
       const { isSmallerThanToolbar } = this.state
 
       let glyph = 'option-vertical'
@@ -328,7 +331,11 @@ const TimelineWrapperConnector = (connector) => {
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <MenuItem
-                disabled={templatesDisabled || helpers.featureFlags.beatHierarchyIsOn(featureFlags)}
+                disabled={
+                  !allCards.length ||
+                  templatesDisabled ||
+                  helpers.featureFlags.beatHierarchyIsOn(featureFlags)
+                }
                 onSelect={this.startSaveAsTemplate}
               >
                 {t('Save as Template')}
@@ -489,6 +496,7 @@ const TimelineWrapperConnector = (connector) => {
   }
 
   TimelineWrapper.propTypes = {
+    allCards: PropTypes.array,
     bookId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     timelineBundle: PropTypes.object.isRequired,
     featureFlags: PropTypes.object.isRequired,
@@ -509,6 +517,7 @@ const TimelineWrapperConnector = (connector) => {
     return connect(
       (state) => {
         return {
+          allCards: selectors.allCardsSelector(state.present),
           bookId: selectors.currentTimelineSelector(state.present),
           timelineBundle: selectors.timelineBundleSelector(state.present),
           featureFlags: selectors.featureFlags(state.present),

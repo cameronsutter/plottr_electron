@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { t } from 'plottr_locales'
 import { Button } from 'react-bootstrap'
-import UnconnectedDeleteConfirmModal from '../../dialogs/DeleteConfirmModal'
+import DeleteConfirmModal from '../../dialogs/DeleteConfirmModal'
 import { checkDependencies } from '../../checkDependencies'
 
 const UserInfoConnector = (connector) => {
-  const DeleteConfirmModal = UnconnectedDeleteConfirmModal(connector)
-
   const {
-    platform: { machineIdSync },
+    platform: {
+      machineIdSync,
+      os,
+      firebase: { logOut },
+    },
   } = connector
   checkDependencies({ machineIdSync })
 
@@ -21,6 +23,7 @@ const UserInfoConnector = (connector) => {
       licenseInfo.expires == 'lifetime'
         ? t('Never')
         : t('{date, date, long}', { date: new Date(licenseInfo.expires) })
+    const usableDeviceID = os == 'unknown' ? t('Browser') : deviceID
 
     let deleteModal = false
     if (deleting) {
@@ -42,7 +45,7 @@ const UserInfoConnector = (connector) => {
             <dt>{t('Purchase Email')}</dt>
             <dd>{licenseInfo.customer_email}</dd>
             <dt>{t('Device ID')}</dt>
-            <dd>{deviceID}</dd>
+            <dd>{usableDeviceID}</dd>
           </dl>
           <dl className="dl-horizontal">
             <dt>{t('License Key')}</dt>
@@ -51,13 +54,22 @@ const UserInfoConnector = (connector) => {
             <dd>{expiresDate}</dd>
           </dl>
         </div>
-        <div className="text-right">
-          <Button bsStyle="danger" bsSize="small" onClick={() => setDeleting(true)}>
-            {t('Remove License')}
-          </Button>
-          {deleteModal}
-          <p className="secondary-text">{t('Use this to remove your license on this device')}</p>
-        </div>
+        {os == 'unknown' ? null : (
+          <div className="text-right">
+            <Button bsStyle="danger" bsSize="small" onClick={() => setDeleting(true)}>
+              {t('Remove License')}
+            </Button>
+            {deleteModal}
+            <p className="secondary-text">{t('Use this to remove your license on this device')}</p>
+          </div>
+        )}
+        {os == 'unknown' ? (
+          <div className="text-right">
+            <Button bsStyle="danger" bsSize="small" onClick={logOut}>
+              {t('Log Out')}
+            </Button>
+          </div>
+        ) : null}
       </div>
     )
   }

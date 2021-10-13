@@ -54,6 +54,38 @@
       color: $darkmode-background;
     }
   }
+
+  .rceLocked {
+    pointer-events: none !important;
+  }
+}
+
+.lock-icon__wrapper {
+  position: absolute;
+  cursor: pointer;
+  left: 45%;
+  top: 25%;
+  text-align: center;
+  z-index: 100;
+  width: max-content;
+  border-radius: 50%;
+  border: 1px solid;
+  padding: 30px;
+  opacity: 80%;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  flex-direction: column;
+  
+  svg {
+    font-size: 4rem;
+    margin: auto;
+  }
+
+  span {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .slate-editor__editor {

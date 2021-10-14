@@ -12,7 +12,7 @@ const saver = (store) => (next) => (action) => {
   if (BLACKLIST.includes(action.type)) return result
   const state = store.getState().present
   // save and backup
-  if (state.file.cloudFile) {
+  if (state.file.isCloudFile) {
     saveFile(state.file.id, state)
   } else if (state.file.fileName !== '') {
     saveFile(state.file.fileName, state)

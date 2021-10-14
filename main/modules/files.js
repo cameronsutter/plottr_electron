@@ -53,7 +53,7 @@ function saveFile(filePath, jsonData) {
 let itWorkedLastTime = true
 
 function autoSave(event, filePath, file, userId) {
-  const onCloud = file.file.cloudFile
+  const onCloud = file.file.isCloudFile
   if (!onCloud) {
     try {
       saveFile(filePath, file)

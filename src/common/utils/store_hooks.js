@@ -122,13 +122,10 @@ function useKnownFilesFromHardDisk() {
 }
 
 export function useKnownFilesInfo(initialFirebaseFileList) {
-  const [filesByPosition, setFilesByPosition] = useState({})
-  const [fileCount, setFileCount] = useState(0)
-
   const [firestoreFilesByPosition] = useKnownFilesFromFirebase(initialFirebaseFileList)
   const [hardDiskFilesByPosition] = useKnownFilesFromHardDisk()
 
-  useEffect(() => {
+  const computeNewLists = () => {
     const newFilesByPosition = cloneDeep(hardDiskFilesByPosition)
     const maxId = Object.keys(hardDiskFilesByPosition).reduce(
       (max, next) => Math.max(max, next),
@@ -140,9 +137,19 @@ export function useKnownFilesInfo(initialFirebaseFileList) {
         path: `plottr://${value.id}`,
       }
     })
+    return { newFilesByPosition, newFileCount: Object.keys(newFilesByPosition).length }
+  }
+
+  const { newFilesByPosition, newFileCount } = computeNewLists()
+
+  const [filesByPosition, setFilesByPosition] = useState(newFilesByPosition)
+  const [fileCount, setFileCount] = useState(newFileCount)
+
+  useEffect(() => {
+    const { newFilesByPosition, newFileCount } = computeNewLists()
     if (!isEqual(filesByPosition, newFilesByPosition)) {
       setFilesByPosition(newFilesByPosition)
-      setFileCount(Object.keys(newFilesByPosition).length)
+      setFileCount(newFileCount)
     }
   }, [firestoreFilesByPosition, hardDiskFilesByPosition])
 

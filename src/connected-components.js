@@ -63,6 +63,7 @@ import { handleCustomerServiceCode } from './common/utils/customer_service_codes
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
 import { newFile, uploadExisting } from './files'
+import extractImages from './common/extract_images'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -289,6 +290,7 @@ const platform = {
   listenForRCELock,
   lockRCE,
   machineIdSync,
+  extractImages,
   firebase: {
     startUI,
     firebaseUI,

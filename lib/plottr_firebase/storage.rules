@@ -3,17 +3,18 @@ service firebase.storage {
   match /b/{bucket}/o {
     match /backups/{userId} {
       match /{allPaths=**} {
-        allow read, write: if request.auth.uid == userId;
+        allow read, write: if request.auth && request.auth.uid == userId;
       }
     }
     match /images/{userId} {
       match /{allPaths=**} {
-        allow read, write: if request.auth.uid == userId;
+        allow read, write: if request.auth && request.auth.uid == userId;
       }
     }
     match /userTemplates/{userId} {
+      allow read, write, list: if request.auth && request.auth.uid == userId;
       match /{allPaths=**} {
-        allow read, write: if request.auth.uid == userId;
+        allow read, write, list: if request.auth && request.auth.uid == userId;
       }
     }
   }

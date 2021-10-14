@@ -14,7 +14,6 @@ import { selectors } from 'pltr/v2'
 import { useLicenseInfo, useSettingsInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
-import { logOut } from 'plottr_firebase'
 
 const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
@@ -27,7 +26,7 @@ const Navigation = ({
   userId, // probably don't need this
 }) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
-  const [settings] = useSettingsInfo()
+  // const [settings] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   const firstTime = !licenseInfoSize && !trialInfo.started
@@ -142,13 +141,9 @@ const Navigation = ({
                 <FaRegUser />
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <MenuItem onSelect={selectFiles}>{t('Files')}</MenuItem>
-                <MenuItem onSelect={selectOptions}>{t('Settings')}</MenuItem>
-                <MenuItem onSelect={selectTemplates}>{t('Templates')}</MenuItem>
+                <MenuItem onSelect={selectFiles}>{t('Projects')}</MenuItem>
                 <MenuItem onSelect={selectAccount}>{t('Account')}</MenuItem>
-                <MenuItem onSelect={selectBackups}>{t('Backups')}</MenuItem>
                 <MenuItem onSelect={selectHelp}>{t('Help')}</MenuItem>
-                <MenuItem onSelect={logOut}>{t('Logout')}</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
           </NavItem>

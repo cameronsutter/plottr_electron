@@ -62,7 +62,7 @@ import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
-import { newFile, uploadExisting } from './files'
+import { messageRenameFile, newFile, uploadExisting } from './files'
 import extractImages from './common/extract_images'
 
 const win = remote.getCurrentWindow()
@@ -135,6 +135,16 @@ const platform = {
     },
     editKnownFilePath,
     renameFile: (filePath) => {
+      if (filePath.startsWith('plottr://')) {
+        const {
+          present: {
+            project: { fileList },
+          },
+        } = store.getState()
+        const fileId = fileList.find(({ filePath }) => filePath === filePath)?.id
+        if (fileId) messageRenameFile(fileId)
+        return
+      }
       const fileName = showSaveDialogSync({
         filters,
         title: t('Give this file a new name'),

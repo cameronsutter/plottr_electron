@@ -70,3 +70,9 @@ const uploadToFirebase = (emailAddress, userId, file, fileName) => {
     { params: { userId } }
   )
 }
+
+export const messageRenameFile = (fileId) => {
+  const renameEvent = new Event('rename-file', { bubbles: true, cancelable: false })
+  renameEvent.fileId = fileId
+  document.dispatchEvent(renameEvent)
+}

@@ -30,6 +30,7 @@ import { createErrorReport } from '../common/utils/full_error_report'
 import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
 import Listener from './components/listener'
+import Renamer from './components/Renamer'
 
 const clientId = machineIdSync()
 
@@ -143,6 +144,7 @@ function bootFile(filePath, options, numOpenFiles) {
             render(
               <Provider store={store}>
                 <Listener />
+                <Renamer />
                 <App />
               </Provider>,
               root
@@ -157,6 +159,7 @@ function bootFile(filePath, options, numOpenFiles) {
       } catch (error) {
         return render(
           <Provider store={store}>
+            <Renamer />
             <App forceProjectDashboard />
           </Provider>,
           root
@@ -195,6 +198,7 @@ function bootFile(filePath, options, numOpenFiles) {
 
         render(
           <Provider store={store}>
+            <Renamer />
             <App />
           </Provider>,
           root

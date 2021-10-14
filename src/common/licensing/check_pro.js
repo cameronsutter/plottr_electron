@@ -22,7 +22,7 @@ export function checkForPro(email, callback) {
         const { info } = activeSub
         // TODO: save this info somewhere
         log.info(info.product_id, info.status, info.expiration)
-        callback(true)
+        callback(true, info)
       } else {
         callback(false)
       }

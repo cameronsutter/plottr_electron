@@ -19,6 +19,12 @@
     margin-top: 0;
     margin-bottom: 20px;
   }
+
+  .dashboard__acount__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .dashboard__account__header {
@@ -33,13 +39,19 @@
   }
 }
 
+.dashboard__account__nav-tabs {
+  display: flex;
+  justify-content: center;
+}
+
 .dashboard__user-info {
   margin-bottom: 20px;
 
-  h1 {
-    font-size: 20pt;
+  h2 {
+    font-size: 16pt;
     margin-top: 0;
     margin-bottom: 20px;
+    text-align: center;
   }
 
   .dashboard__user-info__wrapper {

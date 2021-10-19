@@ -69,20 +69,12 @@ const Navigation = ({
     setDashboardView('account')
   }
 
-  const selectOptions = () => {
-    setDashboardView('options')
-  }
-
   const selectFiles = () => {
     setDashboardView('files')
   }
 
   const selectTemplates = () => {
     setDashboardView('templates')
-  }
-
-  const selectBackups = () => {
-    setDashboardView('backups')
   }
 
   const selectHelp = () => {

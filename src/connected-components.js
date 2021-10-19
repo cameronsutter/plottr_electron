@@ -221,7 +221,7 @@ const platform = {
     verifyLicense,
     trial90days,
     checkForPro,
-    hasPro: SETTINGS.get('user.id'),
+    hasPro: () => SETTINGS.get('user.id') || false,
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')

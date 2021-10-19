@@ -26,7 +26,7 @@ const Navigation = ({
   userId, // probably don't need this
 }) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
-  // const [settings] = useSettingsInfo()
+  const [settings] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   const firstTime = !licenseInfoSize && !trialInfo.started
@@ -100,10 +100,9 @@ const Navigation = ({
 
   const closeLoginModal = () => {}
 
-  // this used to check for userId first, but there was a slight delay getting that
-  // doing it this way shouldn't cause any problems...
-  // const showFrb = settings.user && !settings.user.id
-  const showFrb = !userId
+  // don't show the login if user is not on Pro
+  const hasPro = !!settings.user?.id
+  const showFrb = hasPro && !userId
 
   return (
     <>

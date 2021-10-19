@@ -4,7 +4,7 @@ import { subscriptionsURL, makeRequest } from './licensing'
 
 export const PRO_ID = '104900'
 
-// callback(hasPro)
+// callback(hasPro, info)
 export function checkForPro(email, callback) {
   rp(makeRequest(subscriptionsURL(email)))
     .then((response) => {

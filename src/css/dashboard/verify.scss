@@ -40,14 +40,6 @@
     vertical-align: -50%;
   }
 
-  .verify__chooser {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-top: 70px;
-    margin-bottom: 32px;
-  }
-
   .verify__choice {
     width: 35%;
     height: 140px;
@@ -57,6 +49,20 @@
     cursor: pointer;
     transition: all .4s $cubic;
     color: $gray-1;
+  }
+
+  .verify__chooser {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 70px;
+    margin-bottom: 32px;
+
+    &.with-3 {
+      .verify__choice {
+        width: 25%;
+      }
+    }
   }
 
   .verify__choice:hover {

@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 import { sortBy } from 'lodash'
 import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
 
-export function useSortedKnownFiles(searchTerm, initialFilesFromFirebase) {
-  const [files] = useKnownFilesInfo(initialFilesFromFirebase)
+export function useSortedKnownFiles(searchTerm, initialFilesFromFirebase, checkOften = true) {
+  const [files] = useKnownFilesInfo(initialFilesFromFirebase, checkOften)
   const sortedIds = useMemo(() => {
     const filteredFileIds = Object.keys(files).filter((id) => {
       if (searchTerm && searchTerm.length > 1) {

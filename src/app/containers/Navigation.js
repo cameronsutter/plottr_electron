@@ -26,7 +26,7 @@ const Navigation = ({
   userId, // probably don't need this
 }) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
-  const [settings] = useSettingsInfo()
+  const [settings, _size, saveSetting] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   const firstTime = !licenseInfoSize && !trialInfo.started
@@ -53,7 +53,7 @@ const Navigation = ({
     changeCurrentView(selectedKey)
   }
 
-  const renderTrialLinks = () => {
+  const TrialLinks = () => {
     if (!trialMode || isDev) return null
 
     return (
@@ -92,13 +92,18 @@ const Navigation = ({
 
   const closeLoginModal = () => {}
 
+  const setUser = (user) => {
+    saveSetting('user.id', user.uid)
+    saveSetting('user.email', user.email)
+  }
+
   // don't show the login if user is not on Pro
   const hasPro = !!settings.user?.id
   const showFrb = hasPro && !userId
 
   return (
     <>
-      {showFrb ? <LoginModal closeLoginModal={closeLoginModal} /> : null}
+      {showFrb ? <LoginModal closeLoginModal={closeLoginModal} receiveUser={setUser} /> : null}
       {dashboardView ? (
         <DashboardModal
           activeView={dashboardView}
@@ -124,7 +129,7 @@ const Navigation = ({
           ) : null}
         </Nav>
         <Beamer inNavigation />
-        {renderTrialLinks()}
+        <TrialLinks />
         <Nav pullRight className="project-nav__options">
           <NavItem>
             <Dropdown id="dashboard-dropdown-menu">

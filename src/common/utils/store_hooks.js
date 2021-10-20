@@ -54,8 +54,8 @@ function useJsonStore(store, ipcEventToReloadOn, checksOften) {
   useEffect(() => {
     if (ipcEventToReloadOn) {
       ipcRenderer.on(ipcEventToReloadOn, () => {
-        setInfo(store.get())
-        setSize(store.size)
+        if (!isEqual(info, store.get())) setInfo(store.get())
+        if (!isEqual(size, store.size)) setSize(store.size)
       })
     }
 
@@ -65,8 +65,8 @@ function useJsonStore(store, ipcEventToReloadOn, checksOften) {
     let timeout
     if (checksOften) {
       timeout = setTimeout(() => {
-        setInfo(store.get())
-        setSize(store.size)
+        if (!isEqual(info, store.get())) setInfo(store.get())
+        if (!isEqual(size, store.size)) setSize(store.size)
       }, checkInterval)
     }
 
@@ -117,13 +117,13 @@ function useKnownFilesFromFirebase(initialFileList) {
   return [filesByPosition, fileList.length, nop, nop]
 }
 
-function useKnownFilesFromHardDisk() {
-  return useJsonStore(knownFilesStore, 'reload-recents', true)
+function useKnownFilesFromHardDisk(checkOften = true) {
+  return useJsonStore(knownFilesStore, 'reload-recents', checkOften)
 }
 
-export function useKnownFilesInfo(initialFirebaseFileList) {
+export function useKnownFilesInfo(initialFirebaseFileList, checkOften = true) {
   const [firestoreFilesByPosition] = useKnownFilesFromFirebase(initialFirebaseFileList)
-  const [hardDiskFilesByPosition] = useKnownFilesFromHardDisk()
+  const [hardDiskFilesByPosition] = useKnownFilesFromHardDisk(checkOften)
 
   const computeNewLists = () => {
     const newFilesByPosition = cloneDeep(hardDiskFilesByPosition)
@@ -195,8 +195,12 @@ export function useCustomTemplatesInfo() {
   return useJsonStore(customTemplatesStore)
 }
 
-export function useSettingsInfo() {
-  const [info, size, saveInfoAtKey, saveAllInfo] = useJsonStore(SETTINGS, 'reload-options', true)
+export function useSettingsInfo(checkOften = true) {
+  const [info, size, saveInfoAtKey, saveAllInfo] = useJsonStore(
+    SETTINGS,
+    'reload-options',
+    checkOften
+  )
   const alsoAskMainToBroadcastUpdate =
     (f) =>
     (...args) => {

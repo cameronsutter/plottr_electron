@@ -13,9 +13,7 @@ const saver = (store) => (next) => (action) => {
   const state = store.getState().present
   // save and backup
   if (state.file.isCloudFile) {
-    // NOP
-    // saveFile(state.file.id, state)
-    // Don't save to desktop whne it's a cloud file(!)
+    saveFile(state.file.id, state)
   } else if (state.file.fileName !== '') {
     saveFile(state.file.fileName, state)
   }

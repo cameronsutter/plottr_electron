@@ -52,7 +52,11 @@ function saveFile(filePath, jsonData) {
 
 let itWorkedLastTime = true
 
-function autoSave(event, filePath, file, userId) {
+let backupTimeout = null
+let resetCount = 0
+const MAX_ATTEMPTS = 200
+
+function autoSave(event, filePath, file, userId, previousFile) {
   const onCloud = file.file.isCloudFile
   if (!onCloud) {
     try {
@@ -68,15 +72,30 @@ function autoSave(event, filePath, file, userId) {
     }
   }
   // either way, save a backup
-  if (onCloud) {
-    firebase.saveBackup(userId, file)
-  } else {
-    saveBackup(filePath, file, (backupError) => {
-      if (backupError) {
-        event.sender.send('auto-save-backup-error', filePath, backupError)
-      }
-    })
+  function forceBackup() {
+    if (onCloud) {
+      firebase.saveBackup(userId, previousFile || file)
+    } else {
+      saveBackup(filePath, previousFile || file, (backupError) => {
+        if (backupError) {
+          event.sender.send('auto-save-backup-error', filePath, backupError)
+        }
+      })
+    }
+    backupTimeout = null
+    resetCount = 0
   }
+  if (backupTimeout) {
+    clearTimeout(backupTimeout)
+    resetCount++
+  }
+  if (resetCount >= MAX_ATTEMPTS) {
+    forceBackup()
+    return
+  }
+  // NOTE: We want to backup every 60 seconds, but saves only happen
+  // every 10 seconds.
+  backupTimeout = setTimeout(forceBackup, 50000)
 }
 
 function removeFromTempFiles(filePath, doDelete = true) {

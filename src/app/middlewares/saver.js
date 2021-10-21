@@ -22,6 +22,7 @@ const saver = (store) => (next) => (action) => {
 
 let saveTimeout = null
 let resetCount = 0
+let previousFile = null
 // The number of edits within a second of each other before we force a
 // save.
 const MAX_RESETS = 200
@@ -31,16 +32,21 @@ function saveFile(filePath, jsonData) {
     clearTimeout(saveTimeout)
     resetCount++
   }
-  function forceSave() {
-    ipcRenderer.send('auto-save', filePath, jsonData, jsonData.client.userId)
+  if (!previousFile) {
+    previousFile = jsonData
+  }
+  const forceSave = (previousFile) => () => {
+    ipcRenderer.send('auto-save', filePath, jsonData, jsonData.client.userId, previousFile)
     resetCount = 0
     saveTimeout = null
   }
+  const forceSavePrevious = forceSave(previousFile)
+  previousFile = jsonData
   if (resetCount >= MAX_RESETS) {
-    forceSave()
+    forceSavePrevious()
     return
   }
-  saveTimeout = setTimeout(forceSave, 10000)
+  saveTimeout = setTimeout(forceSavePrevious, 10000)
 }
 
 export default saver

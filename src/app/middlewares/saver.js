@@ -38,6 +38,7 @@ function saveFile(filePath, jsonData) {
   }
   if (resetCount >= MAX_RESETS) {
     forceSave()
+    return
   }
   saveTimeout = setTimeout(forceSave, 10000)
 }

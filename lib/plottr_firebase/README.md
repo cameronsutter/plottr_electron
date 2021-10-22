@@ -274,7 +274,7 @@ Strategy is:
  - First, check whether any backups for today exist and if there are
    none, then take a "start of session" backup.
  - Otherwise, update or create the mid-session backup.
- 
+
 The strategy results in at-most two backups per day.  Backups are
 cleared on a 30 day rolling window when they exceed 60 backups.
 
@@ -382,5 +382,5 @@ displayed, you should change the `authorisation` collection.
 This presents a problem because authorisation is read-only to all
 clients.  To update a timestamp on the appropriate record, we instead
 call an API `/api/ping-auth`.  When the API isn't on the same host,
-specify the BASE_URL environment variable to point it at another
+specify the API_BASE_DOMAIN environment variable to point it at another
 server.

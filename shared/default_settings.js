@@ -17,5 +17,6 @@ module.exports = {
     dark: 'system',
     numberOfBackups: 30,
     backupType: 'never-delete',
+    localBackups: false,
   },
 }

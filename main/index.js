@@ -108,7 +108,7 @@ app.whenReady().then(() => {
       reloadAllWindows()
     }
   })
-  app.on('second-instance', (event, argv, workingDirectory) => {
+  app.on('second-instance', (_event, argv) => {
     log.info('second-instance')
     loadMenu(true)
     windowsOpenFileEventHandler(argv)
@@ -160,12 +160,12 @@ ipcMain.on('pls-fetch-state', function (event, id) {
   }
 })
 
-ipcMain.on('pls-set-dark-setting', (_, newValue) => {
+ipcMain.on('pls-set-dark-setting', (_event, newValue) => {
   setDarkMode(newValue)
   broadcastDarkMode()
 })
 
-ipcMain.on('pls-update-beat-hierarchy-flag', (_, newValue) => {
+ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {
   if (newValue) {
     broadcastSetBeatHierarchy()
   } else {
@@ -173,7 +173,7 @@ ipcMain.on('pls-update-beat-hierarchy-flag', (_, newValue) => {
   }
 })
 
-ipcMain.on('pls-update-language', (_, newLanguage) => {
+ipcMain.on('pls-update-language', (_event, newLanguage) => {
   SETTINGS.set('locale', newLanguage)
   setupI18n(SETTINGS, { electron })
   require('./modules/menus').loadMenu()
@@ -184,24 +184,24 @@ ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
   broadcastToAllWindows('reload-recents')
 })
 
-ipcMain.on('add-to-known-files-and-open', (event, file) => {
+ipcMain.on('add-to-known-files-and-open', (_event, file) => {
   const id = addToKnownFiles(file)
   openKnownFile(file, id, false)
 })
 
-ipcMain.on('create-new-file', (event, template) => {
+ipcMain.on('create-new-file', (_event, template) => {
   createNew(template)
 })
 
-ipcMain.on('create-from-snowflake', (event, importedPath) => {
+ipcMain.on('create-from-snowflake', (_event, importedPath) => {
   createFromSnowflake(importedPath)
 })
 
-ipcMain.on('open-known-file', (event, filePath, id, unknown) => {
+ipcMain.on('open-known-file', (_event, filePath, id, unknown) => {
   openKnownFile(filePath, id, unknown)
 })
 
-ipcMain.on('save-file', (event, fileName, file) => {
+ipcMain.on('save-file', (_event, fileName, file) => {
   saveFile(fileName, file)
 })
 
@@ -209,7 +209,7 @@ ipcMain.on('auto-save', (event, filePath, file, userId, previousFile) => {
   autoSave(event, filePath, file, userId, previousFile)
 })
 
-ipcMain.on('remove-from-temp-files-if-temp', (event, filePath) => {
+ipcMain.on('remove-from-temp-files-if-temp', (_event, filePath) => {
   if (filePath.includes(TEMP_FILES_PATH)) {
     removeFromTempFiles(filePath, false)
   }
@@ -219,17 +219,17 @@ ipcMain.on('broadcast-reload-options', () => {
   broadcastToAllWindows('reload-options')
 })
 
-ipcMain.on('remove-from-known-files', (event, fileId) => {
+ipcMain.on('remove-from-known-files', (_event, fileId) => {
   removeFromKnownFiles(fileId)
   broadcastToAllWindows('reload-recents')
 })
 
-ipcMain.on('delete-known-file', (event, id, filePath) => {
+ipcMain.on('delete-known-file', (_event, id, filePath) => {
   deleteKnownFile(id, filePath)
   broadcastToAllWindows('reload-recents')
 })
 
-ipcMain.on('edit-known-file-path', (event, oldFilePath, newFilePath) => {
+ipcMain.on('edit-known-file-path', (_event, oldFilePath, newFilePath) => {
   editKnownFilePath(oldFilePath, newFilePath)
   editWindowPath(oldFilePath, newFilePath)
   broadcastToAllWindows('reload-recents')

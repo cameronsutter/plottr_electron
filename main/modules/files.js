@@ -14,6 +14,7 @@ const { openProjectWindow } = require('./windows/projects')
 const { shell } = require('electron')
 const { broadcastToAllWindows } = require('./broadcast')
 const { saveBackup } = require('./backup')
+const SETTINGS = require('./settings')
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
@@ -75,7 +76,10 @@ function autoSave(event, filePath, file, userId, previousFile) {
   function forceBackup() {
     if (onCloud) {
       firebase.saveBackup(userId, previousFile || file)
-    } else {
+    }
+
+    // save local backup if: 1) not cloud file OR 2) localBackups is on
+    if (!onCloud || (onCloud && SETTINGS.get('user.localBackups'))) {
       saveBackup(filePath, previousFile || file, (backupError) => {
         if (backupError) {
           event.sender.send('auto-save-backup-error', filePath, backupError)

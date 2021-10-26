@@ -36,7 +36,7 @@ function saveFile(filePath, jsonData) {
     previousFile = jsonData
   }
   const forceSave = (previousFile) => () => {
-    ipcRenderer.send('auto-save', filePath, jsonData, jsonData.client.userId, previousFile)
+    ipcRenderer.send('auto-save', filePath, jsonData, jsonData.client?.userId, previousFile)
     resetCount = 0
     saveTimeout = null
   }

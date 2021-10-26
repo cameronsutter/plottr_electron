@@ -45,7 +45,8 @@ import {
   editTemplateDetails,
 } from './common/utils/templates'
 import log from 'electron-log'
-import { createErrorReport } from './common/utils/full_error_report'
+import { createFullErrorReport } from './common/utils/full_error_report'
+import { createErrorReport } from './common/utils/error_reporter'
 import SETTINGS from './common/utils/settings'
 import USER from './common/utils/user_info'
 import { is } from 'electron-util'
@@ -260,6 +261,7 @@ const platform = {
   isMacOS: is.macos,
   openExternal: shell.openExternal,
   createErrorReport,
+  createFullErrorReport,
   handleCustomerServiceCode,
   log,
   dialog,

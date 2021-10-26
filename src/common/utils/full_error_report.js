@@ -12,7 +12,7 @@ const { app, dialog } = remote
 
 const machineID = machineIdSync(true)
 
-export function createErrorReport() {
+export function createFullErrorReport() {
   const body = prepareErrorReport()
   const fileName = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
   fs.writeFile(fileName, body, function (err) {

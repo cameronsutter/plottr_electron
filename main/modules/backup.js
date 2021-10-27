@@ -98,7 +98,7 @@ function deleteOldBackups(strategy, amount) {
   // Perform this check before any file system interactions for the
   // sake of efficiency.
   if (strategy === 'never-delete') {
-    log.info('Strategy set to "never-delete".  Keeping all backups.')
+    // log.info('Strategy set to "never-delete".  Keeping all backups.')
     return Promise.resolve([])
   }
 
@@ -117,7 +117,11 @@ function deleteOldBackups(strategy, amount) {
         if (!filesToDelete.length) return []
         log.warn(`Removing old backups: ${filesToDelete}`)
         filesToDelete.forEach((file) => {
-          shell.moveItemToTrash(path.join(backupBasePath(), file))
+          try {
+            fs.unlinkSync(path.join(backupBasePath(), file))
+          } catch (error) {
+            console.log(error)
+          }
         })
         deleteEmptyFolders()
         return filesToDelete
@@ -127,7 +131,11 @@ function deleteOldBackups(strategy, amount) {
         if (!filesToDelete.length) return []
         log.warn(`Removing old backups: ${filesToDelete}`)
         filesToDelete.forEach((file) => {
-          shell.moveItemToTrash(path.join(backupBasePath(), file))
+          try {
+            fs.unlinkSync(path.join(backupBasePath(), file))
+          } catch (error) {
+            console.log(error)
+          }
         })
         deleteEmptyFolders()
         return filesToDelete

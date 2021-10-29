@@ -2,8 +2,6 @@
 
 .onboarding__wrapper {
   text-align: center;
-  height: 100%;
-  overflow: hidden;
   h1 {
     margin: 16px 0;
   }
@@ -20,14 +18,11 @@
   .progress {
     height: 27px;
     margin-bottom: 0;
-    background-color: white;
-    border: 1px solid $gray-8;
   }
 }
 
 .onboarding__step {
-  max-height: 82%;
-  overflow: auto;
+
 }
 
 .step__header {
@@ -45,7 +40,6 @@
     max-width: 60%;
     border-radius: 20px;
     margin: auto;
-    background-color: $neutral-gray-8-half;
     ol {
       font-size: 20px;
       text-align: left;
@@ -82,22 +76,6 @@
         background-color: $gray-9;
       }
     }
-  }
-  h5.with-links {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    small span,a {
-      padding-right: 2px;
-    }
-    small {
-      font-size: 60%;
-      text-transform: uppercase;
-    }
-  }
-  .progress {
-    background-color: white;
-    border: 1px solid $gray-8;
   }
 }
 
@@ -138,4 +116,3 @@
     }
   }
 }
-

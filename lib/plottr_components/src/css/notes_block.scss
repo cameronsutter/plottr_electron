@@ -238,7 +238,23 @@
     font-size: 12px;
     padding: 20px;
     svg {
-      font-size: 2rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  .note-list__rce__wrapper {
+    position: relative;
+    .lock-icon__wrapper {
+      position: absolute;
+      padding: 20px;
+      top: 50%;
+      font-size: 1.5rem !important;
+
+      svg {
+        font-size: 2rem;
+        margin: auto;
+        display: flex;
+      }
     }
   }
 }

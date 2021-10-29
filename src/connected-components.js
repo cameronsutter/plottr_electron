@@ -15,6 +15,7 @@ import {
   imagePublicURL,
   isStorageURL,
   saveImageToStorageBlob as saveImageToStorageBlobInFirebase,
+  saveImageToStorageFromURL as saveImageToStorageFromURLInFirebase,
   deleteFile,
   startUI,
   firebaseUI,
@@ -65,6 +66,7 @@ import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
 import { messageRenameFile, newFile, uploadExisting } from './files'
 import extractImages from './common/extract_images'
+import { useProLicenseInfo } from './common/utils/checkPro'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -303,6 +305,7 @@ const platform = {
   lockRCE,
   machineIdSync,
   extractImages,
+  useProLicenseInfo,
   firebase: {
     startUI,
     firebaseUI,
@@ -326,6 +329,13 @@ const platform = {
         client: { userId },
       } = state.present
       return saveImageToStorageBlobInFirebase(userId, name, blob)
+    },
+    saveImageToStorageFromURL: (url, name) => {
+      const state = store.getState()
+      const {
+        client: { userId },
+      } = state.present
+      return saveImageToStorageFromURLInFirebase(userId, name, url)
     },
   },
 }

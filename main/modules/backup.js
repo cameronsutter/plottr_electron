@@ -2,7 +2,6 @@ const electron = require('electron')
 const fs = require('fs')
 const path = require('path')
 const log = require('electron-log')
-const { shell } = require('electron')
 const { DateTime, Duration } = require('luxon')
 const SETTINGS = require('./settings')
 

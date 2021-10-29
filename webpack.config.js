@@ -35,6 +35,19 @@ const mainConfig = {
   entry: {
     main: path.resolve('.', 'main', 'index.js'),
   },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'lib', 'pltr'),
+        exclude: /node_modules/,
+        query: {
+          cacheDirectory: true,
+        },
+      },
+    ],
+  },
   output: {
     path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
     filename: 'electron_main.js',
@@ -68,6 +81,15 @@ const rendererConfig = {
   },
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'lib', 'pltr'),
+        exclude: /node_modules/,
+        query: {
+          cacheDirectory: true,
+        },
+      },
       {
         test: /\.js$/,
         loader: 'babel-loader',

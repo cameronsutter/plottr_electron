@@ -1,4 +1,5 @@
 import { ipcRenderer } from 'electron'
+import { saveBackup } from 'plottr_firebase'
 import { ActionTypes } from 'pltr/v2'
 import { shouldIgnoreAction } from './shouldIgnoreAction'
 
@@ -23,9 +24,34 @@ const saver = (store) => (next) => (action) => {
 let saveTimeout = null
 let resetCount = 0
 let previousFile = null
+let backupTimeout = null
+let backupResetCount = 0
 // The number of edits within a second of each other before we force a
 // save.
 const MAX_RESETS = 200
+
+const cloudBackup = (userId, file) => {
+  const onCloud = file.file.isCloudFile
+  const forceBackup = (previousFile) => () => {
+    saveBackup(userId, previousFile || file)
+    backupResetCount = 0
+    backupTimeout = null
+  }
+  const forceBackupPrevious = forceBackup(previousFile)
+  if (onCloud) {
+    if (backupTimeout) {
+      clearTimeout(backupTimeout)
+      ++backupResetCount
+    }
+    if (backupResetCount >= MAX_RESETS) {
+      forceBackupPrevious()
+      return
+    }
+    // NOTE: We want to backup every 60 seconds, but saves only happen
+    // every 10 seconds.
+    backupTimeout = setTimeout(forceBackupPrevious, 50000)
+  }
+}
 
 function saveFile(filePath, jsonData) {
   if (saveTimeout) {
@@ -44,6 +70,7 @@ function saveFile(filePath, jsonData) {
   previousFile = jsonData
   if (resetCount >= MAX_RESETS) {
     forceSavePrevious()
+    cloudBackup(jsonData.client?.userId, jsonData)
     return
   }
   saveTimeout = setTimeout(forceSavePrevious, 10000)

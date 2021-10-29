@@ -74,10 +74,6 @@ function autoSave(event, filePath, file, userId, previousFile) {
   }
   // either way, save a backup
   function forceBackup() {
-    if (onCloud) {
-      firebase.saveBackup(userId, previousFile || file)
-    }
-
     // save local backup if: 1) not cloud file OR 2) localBackups is on
     if (!onCloud || (onCloud && SETTINGS.get('user.localBackups'))) {
       saveBackup(filePath, previousFile || file, (backupError) => {

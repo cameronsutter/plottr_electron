@@ -202,6 +202,7 @@ export const LOAD_TOUR = 'LOAD_TOUR'
 
 // error actions
 export const PERMISSION_ERROR = 'PERMISSION_ERROR'
+export const GENERAL_ERROR = 'GENERAL_ERROR'
 export const CLEAR_ERROR = 'CLEAR_ERROR'
 
 // permission actions

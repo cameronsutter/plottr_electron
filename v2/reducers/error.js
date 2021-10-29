@@ -1,4 +1,4 @@
-import { CLEAR_ERROR, PERMISSION_ERROR } from '../constants/ActionTypes'
+import { CLEAR_ERROR, PERMISSION_ERROR, GENERAL_ERROR } from '../constants/ActionTypes'
 
 const INITIAL_STATE = {
   error: null,
@@ -17,6 +17,11 @@ const errorReducer =
           storeKey: action.storeKey,
         }
       }
+
+      case GENERAL_ERROR:
+        return {
+          error: action.error,
+        }
 
       case CLEAR_ERROR:
         return INITIAL_STATE

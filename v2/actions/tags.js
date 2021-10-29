@@ -21,7 +21,7 @@ export function addCreatedTag(attributes) {
 }
 
 export function editTag(id, title, color, categoryId) {
-  return { type: EDIT_TAG, id, title, color, categoryId }
+  return { type: EDIT_TAG, id, title, color, categoryId: categoryId || null }
 }
 
 export function changeColor(id, color) {

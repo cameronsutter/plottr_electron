@@ -7,6 +7,8 @@ const externalSync = (patch, withData) => (store) => (next) => (action) => {
   const result = next(action)
 
   const { future, present, past } = store.getState()
+  if (!present?.file?.isCloudFile) return result
+
   const fileId = present.file.id
   const clientId = present.client.clientId
   if (fileId) {
@@ -52,8 +54,10 @@ let previous = null
 
 export const externalSyncWithoutHistory = (patch, withData) => (store) => (next) => (action) => {
   const result = next(action)
-
   const present = store.getState()
+
+  if (!present?.file?.isCloudFile) return result
+
   const fileId = present.file && present.file.id
   const clientId = present.client && present.client.clientId
   if (fileId && previous) {

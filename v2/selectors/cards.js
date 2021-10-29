@@ -10,6 +10,12 @@ import { beatHierarchyIsOn } from './featureFlags'
 
 export const allCardsSelector = (state) => state.cards
 
+const selectId = (state, id) => id
+
+export const singleCardSelector = createSelector(allCardsSelector, selectId, (cards, propId) =>
+  cards.find(({ id }) => id === propId)
+)
+
 const templateMetadata = (template) => {
   return {
     ...template,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
-import UnconnectedAccount from '../account/Account'
+import UnconnectedAccountHome from '../account/AccountHome'
 import UnconnectedFilesHome from '../files/FilesHome'
 import UnconnectedUpdateNotifier from '../UpdateNotifier'
 import UnconnectedTemplatesHome from '../templates/TemplatesHome'
@@ -16,12 +16,13 @@ const DashboardBodyConnector = (connector) => {
       license: { useLicenseInfo, checkForActiveLicense, useTrialStatus },
       settings,
       reloadMenu,
+      os,
     },
   } = connector
   checkDependencies({ useLicenseInfo, checkForActiveLicense, useTrialStatus, settings, reloadMenu })
 
   const DashboardErrorBoundary = UnconnectedDashboardErrorBoundary(connector)
-  const Account = UnconnectedAccount(connector)
+  const AccountHome = UnconnectedAccountHome(connector)
   const FilesHome = UnconnectedFilesHome(connector)
   const UpdateNotifier = UnconnectedUpdateNotifier(connector)
   const TemplatesHome = UnconnectedTemplatesHome(connector)
@@ -49,6 +50,8 @@ const DashboardBodyConnector = (connector) => {
     const [showAccount, setShowAccount] = useState(false)
 
     useEffect(() => {
+      if (os == 'unknown') return
+
       reloadMenu()
       // update settings.trialMode
       if (licenseInfoSize) {
@@ -66,15 +69,16 @@ const DashboardBodyConnector = (connector) => {
     }, [licenseInfo, licenseInfoSize, started, expired])
 
     useEffect(() => {
-      if (process.env.NODE_ENV !== 'development') {
-        checkForActiveLicense(licenseInfo, (err, success) => {
-          if (!err) {
-            // conscious choice not to display anything different if the license isn't active
-            // that may change in the future
-            // setShowAccount(!success)
-          }
-        })
-      }
+      if (os == 'unknown') return
+      if (process.env.NODE_ENV == 'development') return
+
+      checkForActiveLicense(licenseInfo, (err, success) => {
+        if (!err) {
+          // conscious choice not to display anything different if the license isn't active
+          // that may change in the future
+          // setShowAccount(!success)
+        }
+      })
     }, [])
 
     // only allow these tabs in certain cases (see comment above)
@@ -89,7 +93,7 @@ const DashboardBodyConnector = (connector) => {
         default:
           return (
             <Body>
-              <Account darkMode={darkMode} />
+              <AccountHome darkMode={darkMode} />
             </Body>
           )
       }
@@ -98,7 +102,7 @@ const DashboardBodyConnector = (connector) => {
     let body
     switch (currentView) {
       case 'account':
-        body = <Account darkMode={darkMode} />
+        body = <AccountHome darkMode={darkMode} />
         break
       case 'templates':
         body = <TemplatesHome />

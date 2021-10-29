@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 
 import { checkDependencies } from '../checkDependencies'
+import { Spinner } from '../Spinner'
 
 const ImageConnector = (connector) => {
   const {
@@ -12,17 +13,16 @@ const ImageConnector = (connector) => {
     },
   } = connector
   checkDependencies({ os, resolveToPublicUrl })
-  const osIsUnknown = os === 'unknown'
 
   const Image = ({ size, shape, image, responsive, className }) => {
     const [imageSrc, setImageSrc] = useState(null)
 
     const isOnStorage = () => {
-      return osIsUnknown && image?.path.startsWith('storage://')
+      return image?.path.startsWith('storage://')
     }
 
     useEffect(() => {
-      if (!image) return
+      if (!image || imageSrc) return
 
       if (isOnStorage()) {
         resolveToPublicUrl(image.path).then((url) => {
@@ -33,7 +33,8 @@ const ImageConnector = (connector) => {
       }
     }, [image, setImageSrc, imageSrc])
 
-    if (!image || !imageSrc) return null
+    if (!image && !imageSrc) return null
+    else if (!image || !imageSrc) return <Spinner style={{ margin: 15 }} />
 
     if (responsive) {
       return <img className={cx('img-responsive', className)} src={imageSrc} />

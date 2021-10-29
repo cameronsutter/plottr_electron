@@ -10,6 +10,7 @@ import MissingIndicator from './MissingIndicator'
 import UnconnectedFileActions from './FileActions'
 import RecentsHeader from './RecentsHeader'
 import { checkDependencies } from '../../checkDependencies'
+import { Spinner } from '../../Spinner'
 
 const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
 
@@ -138,7 +139,7 @@ const RecentFilesConnector = (connector) => {
                 </div>
                 <FileActions
                   missing={!!missing}
-                  id={id}
+                  id={f.id || id}
                   fileName={f.fileName}
                   filePath={f.path || f.id}
                   openFile={openFile}
@@ -176,7 +177,7 @@ const RecentFilesConnector = (connector) => {
     return (
       <div className="dashboard__recent-files">
         <RecentsHeader setSearchTerm={setSearchTerm} />
-        {renderRecents()}
+        {renderRecents() || <Spinner />}
       </div>
     )
   }

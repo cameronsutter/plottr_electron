@@ -52,8 +52,8 @@ const BackupFilesConnector = (connector) => {
 
     const renderedFiles = folder.backups.reduce((acc, b) => {
       const isCloudBackup = b.storagePath
-      const fileName = isCloudBackup ? b.fileName.toLowerCase() : b.toLowerCase()
-      if (fileName.includes(searchTerm)) {
+      const fileName = isCloudBackup ? b.fileName?.toLowerCase() : b.toLowerCase()
+      if (fileName?.includes(searchTerm)) {
         const filePath = isCloudBackup ? b.storagePath : joinPath(folder.path, b)
         acc.push(
           <div

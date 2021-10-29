@@ -257,7 +257,7 @@ const NoteEditDetailsConnector = (connector) => {
               </div>
             </div>
             <div>
-              <FormGroup>
+              <FormGroup className="note-list__rce__wrapper">
                 <ControlLabel>{i18n('Notes')}</ControlLabel>
                 <RichText
                   id={this.props.editorPath}

@@ -68,8 +68,6 @@
   text-align: center;
   z-index: 100;
   width: max-content;
-  border-radius: 50%;
-  border: 1px solid;
   padding: 30px;
   opacity: 80%;
   display: flex;
@@ -79,12 +77,16 @@
   
   svg {
     font-size: 4rem;
-    margin: auto;
   }
 
   span {
+    width: max-content;
+  }
+
+  span, svg {
     display: flex;
     justify-content: center;
+    align-self: center;
   }
 }
 

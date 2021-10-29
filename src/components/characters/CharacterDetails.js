@@ -45,10 +45,12 @@ const CharacterDetailsConnector = (connector) => {
           </dl>
         )
       })
-      const templateNotes = character.templates.map((t) => {
-        const templateData = getTemplateById(t.id)
-        const templateValues = character.templates.find((template) => t.id === template.id)
-        const attrs = t.attributes.map((attr) => {
+      const templateNotes = character.templates.map((thisTemplate) => {
+        const templateData = getTemplateById(thisTemplate.id)
+        const templateValues = character.templates.find(
+          (template) => thisTemplate.id === template.id
+        )
+        const attrs = thisTemplate.attributes.map((attr) => {
           let val
           if (attr.type == 'paragraph') {
             val = (
@@ -67,8 +69,8 @@ const CharacterDetailsConnector = (connector) => {
           )
         })
         return (
-          <React.Fragment key={t.id}>
-            <p>{templateData.name || t.name || t('Template')}</p>
+          <React.Fragment key={thisTemplate.id}>
+            <p>{templateData?.name || thisTemplate.name || t('Template')}</p>
             {attrs}
           </React.Fragment>
         )

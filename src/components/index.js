@@ -101,6 +101,9 @@ import OverlayTrigger from './OverlayTrigger'
 // Dashboard
 import DashboardBody from './dashboard/navigation/DashboardBody'
 
+// Firebase
+import FirebaseLogin from './FirebaseLogin'
+
 export {
   OverlayTrigger,
   DeleteConfirmModal,
@@ -170,5 +173,6 @@ export {
   ProjectTemplateDetails,
   CharacterTemplateDetails,
   DashboardBody,
+  FirebaseLogin,
   connections,
 }

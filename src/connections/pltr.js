@@ -70,6 +70,7 @@ import {
   CharacterTemplateDetails,
   DashboardBody as UnconnectedDashboardBody,
   ActsHelpModal as UnconnectedActsHelpModal,
+  FirebaseLogin as UnconnectedFirebaseLogin,
 } from '../components'
 
 const connector = {
@@ -193,6 +194,12 @@ const connector = {
 //   templatesDisabled: bool,
 //   rootElementSelectors: [String],
 //   machineIdSync: () => IO String,
+//   firebase: {
+//     startUI,
+//     firebaseUI,
+//     onSessionChange,
+//     fetchFiles,
+//   },
 // }
 
 export default (platform) => {
@@ -266,5 +273,6 @@ export default (platform) => {
     CharacterTemplateDetails,
     DashboardBody: UnconnectedDashboardBody(connectorObject),
     ActsHelpModal: UnconnectedActsHelpModal(connectorObject),
+    FirebaseLogin: UnconnectedFirebaseLogin(connectorObject),
   }
 }

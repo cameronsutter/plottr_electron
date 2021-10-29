@@ -6,9 +6,9 @@ import { checkDependencies } from '../../checkDependencies'
 
 const HelpHomeConnector = (connector) => {
   const {
-    platform: { os, mpq, openExternal, createErrorReport, handleCustomerServiceCode },
+    platform: { os, mpq, openExternal, createFullErrorReport, handleCustomerServiceCode },
   } = connector
-  checkDependencies({ os, mpq, openExternal, createErrorReport, handleCustomerServiceCode })
+  checkDependencies({ os, mpq, openExternal, createFullErrorReport, handleCustomerServiceCode })
 
   const HelpHome = (props) => {
     const serviceCodeRef = useRef(null)
@@ -89,7 +89,9 @@ const HelpHomeConnector = (connector) => {
             <Button onClick={l('docs.plottr.com/submit-a-ticket?help=Technical%20Support')}>
               {t('Report a Problem')}
             </Button>
-            <Button onClick={createErrorReport}>{t('Create an Error Report')}</Button>
+            {os === 'unknown' ? null : (
+              <Button onClick={createFullErrorReport}>{t('Create an Error Report')}</Button>
+            )}
             <div>
               <FormGroup controlId="customerServiceCode">
                 <FormControl

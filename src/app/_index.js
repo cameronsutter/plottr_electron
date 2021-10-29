@@ -12,7 +12,7 @@ import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 import { actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
-import { initialFetch, overwriteAllKeys, withFileId } from 'plottr_firebase'
+import { initialFetch, overwriteAllKeys } from 'plottr_firebase'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
@@ -31,6 +31,14 @@ import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
 import Listener from './components/listener'
 import Renamer from './components/Renamer'
+
+const withFileId = (fileId, file) => ({
+  ...file,
+  file: {
+    ...file.file,
+    id: fileId,
+  },
+})
 
 const clientId = machineIdSync()
 

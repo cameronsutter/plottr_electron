@@ -3,6 +3,8 @@ import { v4 as uuid } from 'uuid'
 
 import { saveImageToStorageFromURL } from 'plottr_firebase'
 
+import { resizeImage } from './resizeImage'
+
 /** Places to look for image data:
  *
  * Card:
@@ -48,7 +50,9 @@ export const extractImages = (file) => {
 }
 
 export const imageIndex = (imagesInRCEContent, file) => {
-  const indexedImages = (file.images && Object.values(file.images)) || []
+  const indexedImages = ((file.images && Object.values(file.images)) || []).filter(
+    ({ path }) => !path.startsWith('storage://')
+  )
 
   const index = {}
   let maxId = Number.NEGATIVE_INFINITY
@@ -67,6 +71,10 @@ export const imageIndex = (imagesInRCEContent, file) => {
 
 export const patchImages = (rceImages, imageDataIndex, urlIndex, file) => {
   const newFile = cloneDeep(file)
+
+  const imagesOnStorage = ((file.images && Object.values(file.images)) || []).filter(({ path }) =>
+    path.startsWith('storage://')
+  )
 
   rceImages.forEach(({ path, data }) => {
     const imageId = imageDataIndex[data]
@@ -99,6 +107,9 @@ export const patchImages = (rceImages, imageDataIndex, urlIndex, file) => {
       path: imageStorageURL,
     }
   })
+  imagesOnStorage.map((image) => {
+    newFile.images[image.id] = image
+  })
 
   return newFile
 }
@@ -111,11 +122,40 @@ export const fileNameIndex = (file) => {
   return nameIndex
 }
 
+const sequentially = (promiseThunks) => {
+  return promiseThunks.reduce((accPromise, next) => {
+    return accPromise.then((acc) => {
+      return next().then((result) => {
+        return [...acc, result]
+      })
+    })
+  }, Promise.resolve([]))
+}
+
 export const uploadImages = (imageDataIndex, nameIndex, userId) => {
   const dataIdTuples = Object.entries(imageDataIndex)
-  return Promise.all(
-    dataIdTuples.map(([data, id]) => {
-      return saveImageToStorageFromURL(userId, nameIndex[id] || `unnamed-${uuid()}`, data)
+  return sequentially(
+    dataIdTuples.map(([data, id]) => () => {
+      const fileName = nameIndex[id] || `unnamed-${uuid()}`
+      return fetch(data)
+        .then((response) => {
+          return response.blob()
+        })
+        .then((blob) => {
+          return new File([blob], fileName)
+        })
+        .then((file) => {
+          return new Promise((resolve, reject) => {
+            try {
+              resizeImage(file, resolve)
+            } catch (error) {
+              reject(error)
+            }
+          })
+        })
+        .then((resizedData) => {
+          return saveImageToStorageFromURL(userId, fileName, resizedData)
+        })
     })
   ).then((urls) => {
     const imageUrlIndex = {}

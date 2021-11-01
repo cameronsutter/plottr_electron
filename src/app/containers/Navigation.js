@@ -31,7 +31,8 @@ const Navigation = ({
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   // first time = no license, no trial, no pro
   const firstTime = () => !licenseInfoSize && !trialInfo.started && !settings.user?.id
-  const trialExpired = () => trialInfo.expired
+  // expired trial = no license, no pro, expired trial
+  const trialExpired = () => !licenseInfoSize && !settings.user?.id && trialInfo.expired
 
   useEffect(() => {
     ipcRenderer.on('open-dashboard', (event) => {

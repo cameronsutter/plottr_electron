@@ -1,6 +1,6 @@
 import { useTrialInfo, trialStore } from '../utils/store_hooks'
 
-const TRIAL_LENGTH = 30
+const TRIAL_LENGTH = 14
 const EXTENSIONS = 2
 
 export function useTrialStatus() {

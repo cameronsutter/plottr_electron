@@ -15,7 +15,7 @@ export function handleCustomerServiceCode(code) {
   switch (code) {
     case 'xsu7wb':
       // extend free trial (one time)
-      extendTrialWithReset(30)
+      extendTrialWithReset(14)
       break
 
     case '941ff8':

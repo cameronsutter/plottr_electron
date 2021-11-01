@@ -28,7 +28,7 @@ export default function ChoiceView(props) {
       case 'explain':
         return (
           <div>
-            <p>{t("You'll have 30 days")}</p>
+            <p>{t("You'll have 14 days")}</p>
             <p>{t('Access to all the features')}</p>
             <p>{t('Create unlimited project files')}</p>
             <div style={{ marginTop: '30px' }}>

@@ -29,8 +29,9 @@ const Navigation = ({
   const [settings, _size, saveSetting] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
-  const firstTime = !licenseInfoSize && !trialInfo.started
-  const trialExpired = trialInfo.expired
+  // first time = no license, no trial, no pro
+  const firstTime = () => !licenseInfoSize && !trialInfo.started && !settings.user?.id
+  const trialExpired = () => trialInfo.expired
 
   useEffect(() => {
     ipcRenderer.on('open-dashboard', (event) => {
@@ -46,8 +47,8 @@ const Navigation = ({
   }, [])
 
   useEffect(() => {
-    if (firstTime || trialExpired) setDashboardView('account')
-  }, [firstTime, trialExpired, dashboardView])
+    if (firstTime() || trialExpired()) setDashboardView('account')
+  }, [licenseInfoSize, trialInfo, settings, dashboardView])
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
@@ -82,7 +83,7 @@ const Navigation = ({
   }
 
   const resetDashboardView = () => {
-    if (firstTime || trialExpired) return
+    if (firstTime() || trialExpired()) return
     setDashboardView(null)
   }
 

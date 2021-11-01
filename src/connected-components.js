@@ -67,6 +67,7 @@ import { store } from './app/store/configureStore'
 import { messageRenameFile, newFile, uploadExisting } from './files'
 import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
+import { resizeImage } from './common/resizeImage'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -337,6 +338,7 @@ const platform = {
       } = state.present
       return saveImageToStorageFromURLInFirebase(userId, name, url)
     },
+    resizeImage: resizeImage,
   },
 }
 

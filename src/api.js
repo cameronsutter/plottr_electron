@@ -1,6 +1,7 @@
 import semverGt from 'semver/functions/gt'
 import axios from 'axios'
 import { DateTime, Duration } from 'luxon'
+import { isEqual } from 'lodash'
 
 import { actions, ARRAY_KEYS } from 'pltr/v2'
 
@@ -9,9 +10,15 @@ import { actions, ARRAY_KEYS } from 'pltr/v2'
  * of the correspending firebase objects from either the firebase JS
  * api or the react-native-firebase api.
  */
-const api = (auth, database, storage, baseAPIDomain) => {
+const api = (auth, database, storage, baseAPIDomain, development, log) => {
+  const BASE_API_URL = development || !baseAPIDomain ? '' : `https://${baseAPIDomain || ''}`
+
+  const defaultErrorHandler = (error) => {
+    log.error('Error communicating with Firebase.', error)
+  }
+
   const pingAuth = (userId, fileId) => {
-    return axios.post(`https://${baseAPIDomain || ''}/api/ping-auth`, {
+    return axios.post(`${BASE_API_URL}/api/ping-auth`, {
       userId,
       fileId
     })
@@ -78,13 +85,13 @@ const api = (auth, database, storage, baseAPIDomain) => {
     (documentRef) => {
       const data = documentRef && documentRef.data()
       if (!data) {
-        console.warn(`No data in firestore at key ${path} for file: ${fileId}`)
+        log.warn(`No data in firestore at key ${path} for file: ${fileId}`)
         return
       }
       if (data.clientId === clientId) return
       const patchAction = patchActions(path)
       if (!patchAction) {
-        console.error('No patch action for ', path)
+        log.error('No patch action for ', path)
         return
       }
       delete data.fileId
@@ -97,44 +104,56 @@ const api = (auth, database, storage, baseAPIDomain) => {
       )
     }
 
-  const listenToFile = (store, userId, fileId, clientId) => {
+  const listenToFile = (store, userId, fileId, clientId, errorHandler = defaultErrorHandler) => {
     const withIsCloud = (x) => ({ ...x, isCloudFile: true, id: fileId })
     return database()
       .collection('file')
       .doc(fileId)
       .onSnapshot(
         onSnapshot(store, fileId, 'file', withIsCloud, true, clientId, 'patchFile', (x) => ({
-          id: x.id
-        }))
+          id: x.id,
+        })),
+        errorHandler
       )
   }
 
-  const listenForObjectAtPath = (path) => (store, userId, fileId, clientId) => {
-    const identity = (x) => x
-    return database()
-      .collection(path)
-      .doc(fileId)
-      .onSnapshot(onSnapshot(store, fileId, path, identity, true, clientId))
-  }
+  const listenForObjectAtPath =
+    (path) =>
+    (store, userId, fileId, clientId, errorHandler = defaultErrorHandler) => {
+      const identity = (x) => x
+      return database()
+        .collection(path)
+        .doc(fileId)
+        .onSnapshot(onSnapshot(store, fileId, path, identity, true, clientId), errorHandler)
+    }
 
-  const listenForArrayAtPath = (path) => (store, userId, fileId, clientId) => {
-    const values = (x) => Object.values(x)
-    return database()
-      .collection(path)
-      .doc(fileId)
-      .onSnapshot(onSnapshot(store, fileId, path, values, true, clientId))
-  }
+  const listenForArrayAtPath =
+    (path) =>
+    (store, userId, fileId, clientId, errorHandler = defaultErrorHandler) => {
+      const values = (x) => Object.values(x)
+      return database()
+        .collection(path)
+        .doc(fileId)
+        .onSnapshot(onSnapshot(store, fileId, path, values, true, clientId), errorHandler)
+    }
 
   const WHEN_BEATS_BECAME_AN_OBJECT = '2021.4.13'
 
-  const listenToBeats = (store, userId, fileId, clientId, version) => {
+  const listenToBeats = (
+    store,
+    userId,
+    fileId,
+    clientId,
+    version,
+    errorHandler = defaultErrorHandler
+  ) => {
     const transform = semverGt(version, WHEN_BEATS_BECAME_AN_OBJECT)
       ? (x) => x
       : (x) => Object.values(x)
     return database()
       .collection('beats')
       .doc(fileId)
-      .onSnapshot(onSnapshot(store, fileId, 'beats', transform, true, clientId))
+      .onSnapshot(onSnapshot(store, fileId, 'beats', transform, true, clientId), errorHandler)
   }
 
   const listenToCards = listenForArrayAtPath('cards')
@@ -152,24 +171,31 @@ const api = (auth, database, storage, baseAPIDomain) => {
   const listenToImages = listenForObjectAtPath('images')
   const listenToClient = listenForObjectAtPath('client')
 
-  const listen = (store, userId, fileId, clientId, fileVersion) => {
+  const listen = (
+    store,
+    userId,
+    fileId,
+    clientId,
+    fileVersion,
+    errorHandler = defaultErrorHandler
+  ) => {
     const unsubscribeFunctions = [
-      listenToFile(store, userId, fileId, clientId),
-      listenToBeats(store, userId, fileId, clientId, fileVersion),
-      listenToCards(store, userId, fileId, clientId),
-      listenToSeries(store, userId, fileId, clientId),
-      listenToBooks(store, userId, fileId, clientId),
-      listenToCategories(store, userId, fileId, clientId),
-      listenToCharacters(store, userId, fileId, clientId),
-      listenToCustomAttributes(store, userId, fileId, clientId),
-      listenToFeatureFlags(store, userId, fileId, clientId),
-      listenToLines(store, userId, fileId, clientId),
-      listenToNotes(store, userId, fileId, clientId),
-      listenToPlaces(store, userId, fileId, clientId),
-      listenToTags(store, userId, fileId, clientId),
-      listenTohierarchyLevels(store, userId, fileId, clientId),
-      listenToImages(store, userId, fileId, clientId),
-      listenToClient(store, userId, fileId, clientId)
+      listenToFile(store, userId, fileId, clientId, errorHandler),
+      listenToBeats(store, userId, fileId, clientId, fileVersion, errorHandler),
+      listenToCards(store, userId, fileId, clientId, errorHandler),
+      listenToSeries(store, userId, fileId, clientId, errorHandler),
+      listenToBooks(store, userId, fileId, clientId, errorHandler),
+      listenToCategories(store, userId, fileId, clientId, errorHandler),
+      listenToCharacters(store, userId, fileId, clientId, errorHandler),
+      listenToCustomAttributes(store, userId, fileId, clientId, errorHandler),
+      listenToFeatureFlags(store, userId, fileId, clientId, errorHandler),
+      listenToLines(store, userId, fileId, clientId, errorHandler),
+      listenToNotes(store, userId, fileId, clientId, errorHandler),
+      listenToPlaces(store, userId, fileId, clientId, errorHandler),
+      listenToTags(store, userId, fileId, clientId, errorHandler),
+      listenTohierarchyLevels(store, userId, fileId, clientId, errorHandler),
+      listenToImages(store, userId, fileId, clientId, errorHandler),
+      listenToClient(store, userId, fileId, clientId, errorHandler),
     ]
     return unsubscribeFunctions
   }
@@ -177,7 +203,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
   const onFetched = (fileId, path, withData, clientId) => (documentRef) => {
     const data = documentRef && documentRef.data()
     if (!data) {
-      console.warn(`No entry for ${path} on file ${fileId}`)
+      log.warn(`No entry for ${path} on file ${fileId}`)
       return {}
     }
     delete data.fileId
@@ -220,10 +246,16 @@ const api = (auth, database, storage, baseAPIDomain) => {
     const withIsCloud = (x) => ({ ...x, isCloudFile: true, id: fileId })
     const path = 'file'
     return database()
-      .collection(path)
-      .doc(fileId)
+      .doc(`authorisation/${userId}/granted/${fileId}`)
       .get()
-      .then(onFetched(fileId, path, withIsCloud, clientId))
+      .then((authorisationRef) => {
+        const withAuthorisation = (x) => withIsCloud({ ...x, ...authorisationRef.data() })
+        return database()
+          .collection(path)
+          .doc(fileId)
+          .get()
+          .then(onFetched(fileId, path, withAuthorisation, clientId))
+      })
   }
 
   const fetchChapters = fetchArrayAtPath('chapters')
@@ -252,7 +284,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
       const payload = ARRAY_KEYS.indexOf(key) !== -1 ? toFirestoreArray(state[key]) : state[key]
       results.push(
         overwrite(key, fileId, payload, clientId).catch((error) => {
-          console.error(`Error while force updating file ${fileId}`, error)
+          log.error(`Error while force updating file ${fileId}`, error)
         })
       )
     })
@@ -277,11 +309,29 @@ const api = (auth, database, storage, baseAPIDomain) => {
       fetchTags(userId, fileId, clientId),
       fetchhierarchyLevels(userId, fileId, clientId),
       fetchImages(userId, fileId, clientId),
-      fetchClient(userId, fileId, clientId)
-    ]).then((results) => {
-      const json = Object.assign({}, ...results)
-      return json
-    })
+      fetchClient(userId, fileId, clientId),
+    ])
+      .then((results) => {
+        const newOpenDate = new Date()
+        return patch('file', fileId, { lastOpened: newOpenDate }, clientId).then(() => {
+          return {
+            results,
+            newOpenDate,
+          }
+        })
+      })
+      .then(({ results, newOpenDate }) => {
+        const json = Object.assign({}, ...results)
+        return pingAuth(userId, fileId).then(() => {
+          return {
+            ...json,
+            file: {
+              ...json.file,
+              lastOpened: newOpenDate,
+            },
+          }
+        })
+      })
   }
 
   const deleteFile = (fileId, userId, clientId) => {
@@ -326,7 +376,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
     })
   }
 
-  const listenToFiles = (userId, callback) => {
+  const listenToFiles = (userId, callback, errorHandler = defaultErrorHandler) => {
     return database()
       .collection(`authorisation/${userId}/granted`)
       .onSnapshot(
@@ -340,7 +390,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
               .then((file) => ({
                 id: file.id,
                 ...file.data(),
-                ...authorisation.data()
+                ...authorisation.data(),
               }))
             authorisedDocuments.push(document)
           })
@@ -358,7 +408,8 @@ const api = (auth, database, storage, baseAPIDomain) => {
             })
         },
         (error) => {
-          console.error('Error listening to files', error)
+          log.error('Error listening to files', error)
+          errorHandler(error)
         }
       )
   }
@@ -377,7 +428,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
             .then((file) => ({
               id: file.id,
               ...file.data(),
-              ...authorisation.data()
+              ...authorisation.data(),
             }))
           authorisedDocuments.push(document)
         })
@@ -399,18 +450,18 @@ const api = (auth, database, storage, baseAPIDomain) => {
   const mintCookieToken = (user) => {
     return user.getIdToken().then((idToken) => {
       // do not remove this comment
-      return fetch(`https://${baseAPIDomain || ''}/api/mint-token`, {
+      return fetch(`${BASE_API_URL}/api/mint-token`, {
         method: 'POST',
         body: JSON.stringify({ idToken }),
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       })
     })
   }
 
-  const onSessionChange = (cb) => {
+  const onSessionChange = (cb, errorHandler = defaultErrorHandler) => {
     return auth().onAuthStateChanged((user) => {
       if (user) {
         return mintCookieToken(user).then(() => {
@@ -420,7 +471,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
       }
       cb(user)
       return Promise.resolve(null)
-    })
+    }, errorHandler)
   }
 
   let _firebaseui
@@ -478,7 +529,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
 
   const shareDocument = (userId, fileId, emailAddress, permission) => {
     return axios
-      .post(`https://${baseAPIDomain || ''}/api/share-document`, {
+      .post(`${BASE_API_URL}/api/share-document`, {
         fileId,
         emailAddress,
         userId,
@@ -546,14 +597,40 @@ const api = (auth, database, storage, baseAPIDomain) => {
       })
   }
 
-  const releaseRCELock = (fileId, editorId) => {
-    return database().doc(`rce/${fileId}/editors/${editorId}/locks/current`).delete()
+  const releaseRCELock = (fileId, editorId, expectedLock) => {
+    const lockReference = database().doc(`rce/${fileId}/editors/${editorId}/locks/current`)
+    return database().runTransaction((transactions) => {
+      return transactions.get(lockReference).then((lock) => {
+        if (!lock.exists) {
+          throw new Error(`Lock for file: ${fileId}, and editor: ${editorId} doesn't exist!`)
+        }
+        if (isEqual(lock.data(), expectedLock)) {
+          return transactions.update(lockReference, { clientId: null })
+        }
+        return Promise.resolve('Lock modified by another client or request')
+      })
+    })
   }
 
-  const lockRCE = (fileId, editorId, clientId, emailAddress = '') => {
-    return database().doc(`rce/${fileId}/editors/${editorId}/locks/current`).set({
-      clientId,
-      emailAddress
+  const lockRCE = (fileId, editorId, clientId, expectedLock, emailAddress = '') => {
+    const lockReference = database().doc(`rce/${fileId}/editors/${editorId}/locks/current`)
+    return database().runTransaction((transactions) => {
+      return transactions.get(lockReference).then((lock) => {
+        if (!lock.exists) {
+          return lockReference.set({
+            clientId,
+            emailAddress,
+          })
+        }
+        if (isEqual(lock.data(), expectedLock)) {
+          return transactions.set(lockReference, {
+            clientId,
+            emailAddress,
+          })
+        }
+
+        return Promise.resolve('Lock modified by another client or request')
+      })
     })
   }
 
@@ -563,7 +640,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
       .onSnapshot((documentRef) => {
         const data = documentRef && documentRef.data()
         if (!data) {
-          console.log("Didn't find a lock for RCE with editorId", editorId)
+          log.info("Didn't find a lock for RCE with editorId", editorId)
           cb({ clientId: null })
           return
         }
@@ -786,7 +863,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
     )
   }
 
-  const listenToCustomTemplates = (userId, callback) => {
+  const listenToCustomTemplates = (userId, callback, errorHandler = defaultErrorHandler) => {
     return database()
       .collection(`templates/${userId}/userTemplates`)
       .onSnapshot((documentsRef) => {
@@ -799,7 +876,8 @@ const api = (auth, database, storage, baseAPIDomain) => {
             Promise.all(urls.map((url) => fetch(url).then((response) => response.json())))
           )
           .then(callback)
-      })
+          .catch(errorHandler)
+      }, errorHandler)
   }
 
   const editCustomTemplate = saveCustomTemplate
@@ -807,15 +885,19 @@ const api = (auth, database, storage, baseAPIDomain) => {
   const deleteCustomTemplate = (userId, templateId) => {
     return storage()
       .ref()
-      .child(`userTemplates/${templateId}`)
+      .child(`userTemplates/${userId}/${templateId}`)
       .delete()
       .then((result) => {
         database().doc(`templates/${userId}/userTemplates/${templateId}`).delete()
       })
   }
 
+  const escapeImageName = (imageName) => {
+    return imageName.replace(/\//g, '__').replace(/:/g, '--')
+  }
+
   const toImagePath = (userId, imageName) => {
-    return `storage://images/${userId}/${imageName}`
+    return `storage://images/${userId}/${escapeImageName(imageName)}`
   }
 
   const imagetoBlob = (imageUrl) => {
@@ -834,7 +916,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
 
   const saveImageToStorageFromURL = (userId, imageName, imageUrl) => {
     return imagetoBlob(imageUrl).then((response) => {
-      return saveImageToStorageBlob(userId, imageName, response.blob())
+      return saveImageToStorageBlob(userId, imageName, response)
     })
   }
 
@@ -842,8 +924,17 @@ const api = (auth, database, storage, baseAPIDomain) => {
     return storage().ref().child(withoutStorageProtocal(storageProtocolURL)).getDownloadURL()
   }
 
-  const imagePublicURL = (storageProtocolURL) => {
-    return storage().ref().child(withoutStorageProtocal(storageProtocolURL)).getDownloadURL()
+  const imagePublicURL = (storageProtocolURL, fileId, userId) => {
+    if (development) {
+      return storage().ref().child(withoutStorageProtocal(storageProtocolURL)).getDownloadURL()
+    }
+    return axios
+      .get(
+        `${BASE_API_URL}/api/image-public-url?url=${storageProtocolURL}&fileId=${fileId}&userId=${userId}`
+      )
+      .then((response) => {
+        return response.data.publicURL
+      })
   }
 
   const isStorageURL = (string) => {
@@ -889,7 +980,7 @@ const api = (auth, database, storage, baseAPIDomain) => {
     saveImageToStorageFromURL,
     backupPublicURL,
     imagePublicURL,
-    isStorageURL
+    isStorageURL,
   }
 }
 

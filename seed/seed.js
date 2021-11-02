@@ -64,6 +64,14 @@ function createTestUser() {
     .then(() => {
       console.log('Created user test@test.com')
     })
+    .then(() => {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword('test2@test.com', 'tester')
+        .then(() => {
+          console.log('Created user test2@test.com')
+        })
+    })
 }
 
 seedDatabase().then((results) => {

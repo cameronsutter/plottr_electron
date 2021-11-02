@@ -91,45 +91,58 @@ export const startUI = (firebaseUI, queryString) => {
   })
 }
 
-const wiredUp = api(auth, database, storage, process.env.NEXT_PUBLIC_API_BASE_DOMAIN)
+export const wireUpAPI = (logger) => {
+  const wiredUp = api(
+    auth,
+    database,
+    storage,
+    // For env vars to be read from Next config (on the web) we need to
+    // prefix them with 'NEXT_PUBLIC'
+    process.env.NEXT_PUBLIC_API_BASE_DOMAIN || process.env.API_BASE_DOMAIN,
+    process.env.NODE_ENV === 'development',
+    logger
+  )
 
-export const editFileName = wiredUp.editFileName
-export const listen = wiredUp.listen
-export const withFileId = wiredUp.withFileId
-export const toFirestoreArray = wiredUp.toFirestoreArray
-export const overwriteAllKeys = wiredUp.overwriteAllKeys
-export const initialFetch = wiredUp.initialFetch
-export const deleteFile = wiredUp.deleteFile
-export const stopListening = wiredUp.stopListening
-export const listenToFiles = wiredUp.listenToFiles
-export const fetchFiles = wiredUp.fetchFiles
-export const logOut = wiredUp.logOut
-export const mintCookieToken = wiredUp.mintCookieToken
-export const onSessionChange = wiredUp.onSessionChange
-export const firebaseUI = wiredUp.firebaseUI
-export const currentUser = wiredUp.currentUser
-export const hasUndefinedValue = wiredUp.hasUndefinedValue
-export const patch = wiredUp.patch
-export const overwrite = wiredUp.overwrite
-export const shareDocument = wiredUp.shareDocument
-export const publishRCEOperations = wiredUp.publishRCEOperations
-export const catchupEditsSeen = wiredUp.catchupEditsSeen
-export const releaseRCELock = wiredUp.releaseRCELock
-export const lockRCE = wiredUp.lockRCE
-export const listenForRCELock = wiredUp.listenForRCELock
-export const listenForChangesToEditor = wiredUp.listenForChangesToEditor
-export const deleteChangeSignal = wiredUp.deleteChangeSignal
-export const deleteOldChanges = wiredUp.deleteOldChanges
-export const fetchRCEOperations = wiredUp.fetchRCEOperations
-export const saveBackup = wiredUp.saveBackup
-export const listenForBackups = wiredUp.listenForBackups
-export const saveCustomTemplate = wiredUp.saveCustomTemplate
-export const allTemplateUrlsForUser = wiredUp.allTemplateUrlsForUser
-export const listenToCustomTemplates = wiredUp.listenToCustomTemplates
-export const editCustomTemplate = wiredUp.editCustomTemplate
-export const deleteCustomTemplate = wiredUp.deleteCustomTemplate
-export const saveImageToStorageBlob = wiredUp.saveImageToStorageBlob
-export const saveImageToStorageFromURL = wiredUp.saveImageToStorageFromURL
-export const backupPublicURL = wiredUp.backupPublicURL
-export const imagePublicURL = wiredUp.imagePublicURL
-export const isStorageURL = wiredUp.isStorageURL
+  return {
+    editFileName: wiredUp.editFileName,
+    listen: wiredUp.listen,
+    withFileId: wiredUp.withFileId,
+    toFirestoreArray: wiredUp.toFirestoreArray,
+    overwriteAllKeys: wiredUp.overwriteAllKeys,
+    initialFetch: wiredUp.initialFetch,
+    deleteFile: wiredUp.deleteFile,
+    stopListening: wiredUp.stopListening,
+    listenToFiles: wiredUp.listenToFiles,
+    fetchFiles: wiredUp.fetchFiles,
+    logOut: wiredUp.logOut,
+    mintCookieToken: wiredUp.mintCookieToken,
+    onSessionChange: wiredUp.onSessionChange,
+    firebaseUI: wiredUp.firebaseUI,
+    currentUser: wiredUp.currentUser,
+    hasUndefinedValue: wiredUp.hasUndefinedValue,
+    patch: wiredUp.patch,
+    overwrite: wiredUp.overwrite,
+    shareDocument: wiredUp.shareDocument,
+    publishRCEOperations: wiredUp.publishRCEOperations,
+    catchupEditsSeen: wiredUp.catchupEditsSeen,
+    releaseRCELock: wiredUp.releaseRCELock,
+    lockRCE: wiredUp.lockRCE,
+    listenForRCELock: wiredUp.listenForRCELock,
+    listenForChangesToEditor: wiredUp.listenForChangesToEditor,
+    deleteChangeSignal: wiredUp.deleteChangeSignal,
+    deleteOldChanges: wiredUp.deleteOldChanges,
+    fetchRCEOperations: wiredUp.fetchRCEOperations,
+    saveBackup: wiredUp.saveBackup,
+    listenForBackups: wiredUp.listenForBackups,
+    saveCustomTemplate: wiredUp.saveCustomTemplate,
+    allTemplateUrlsForUser: wiredUp.allTemplateUrlsForUser,
+    listenToCustomTemplates: wiredUp.listenToCustomTemplates,
+    editCustomTemplate: wiredUp.editCustomTemplate,
+    deleteCustomTemplate: wiredUp.deleteCustomTemplate,
+    saveImageToStorageBlob: wiredUp.saveImageToStorageBlob,
+    saveImageToStorageFromURL: wiredUp.saveImageToStorageFromURL,
+    backupPublicURL: wiredUp.backupPublicURL,
+    imagePublicURL: wiredUp.imagePublicURL,
+    isStorageURL: wiredUp.isStorageURL,
+  }
+}

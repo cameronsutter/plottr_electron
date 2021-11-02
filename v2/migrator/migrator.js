@@ -4,7 +4,9 @@ import migrationsList from './migrations_list'
 import migrators from './migrations'
 import { toSemver } from './toSemver'
 
-export default function Migrator(data, fileName, fileVersion, appVersion, backupFunction) {
+export default function Migrator(data, fileName, fileVersion, appVersion, backupFunction, logger) {
+  const logError = (...args) => (logger ? logger.error(...args) : console.error(...args))
+
   this.data = cloneDeep(data)
   this.fileVersion = fileVersion
   this.appVersion = appVersion
@@ -24,7 +26,7 @@ export default function Migrator(data, fileName, fileVersion, appVersion, backup
         JSON.stringify(this.data, null, 2),
         (err) => {
           if (err) {
-            console.log(err)
+            logError(err)
             callback('backup', false)
           } else {
             this.startMigrations(callback)

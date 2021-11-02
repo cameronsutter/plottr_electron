@@ -4,6 +4,7 @@ import {
   SET_FILE_LIST,
   SET_USERNAME_SEARCH_RESULTS,
   SET_FILE_LOADED,
+  SHOW_LOADER,
   UNSET_FILE_LOADED,
 } from '../constants/ActionTypes'
 
@@ -31,4 +32,9 @@ export const setFileLoaded = () => ({
 
 export const unsetFileLoaded = () => ({
   type: UNSET_FILE_LOADED,
+})
+
+export const showLoader = (isLoading) => ({
+  type: SHOW_LOADER,
+  isLoading,
 })

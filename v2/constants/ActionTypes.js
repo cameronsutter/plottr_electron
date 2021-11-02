@@ -1,4 +1,4 @@
-//ui actions
+// ui actions
 export const FILE_LOADED = 'FILE_LOADED'
 export const FILE_SAVED = 'FILE_SAVED'
 export const NEW_FILE = 'NEW_FILE'
@@ -214,6 +214,7 @@ export const SELECT_FILE = 'SELECT_FILE'
 export const SELECT_EMPTY_FILE = 'SELECT_EMPTY_FILE'
 export const SET_FILE_LOADED = 'SET_FILE_LOADED'
 export const UNSET_FILE_LOADED = 'UNSET_FILE_LOADED'
+export const SHOW_LOADER = 'SHOW_LOADER'
 
 // client actions
 export const SET_USER_ID = 'SET_USER_ID'

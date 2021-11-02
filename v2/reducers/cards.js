@@ -108,7 +108,7 @@ const cards =
             if (card.templates.some(({ id }) => id === action.templateData.id)) {
               return card
             }
-            const newCard = Object.assign({}, card)
+            const newCard = cloneDeep(card)
             newCard.templates.push({
               id: action.templateData.id,
               version: action.templateData.version,

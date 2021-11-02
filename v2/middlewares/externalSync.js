@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash'
+import { isEqual, get } from 'lodash'
 import { ARRAY_KEYS } from './array-keys'
 
 import { permissionError } from '../actions/error'
@@ -7,7 +7,7 @@ const externalSync = (patch, withData) => (store) => (next) => (action) => {
   const result = next(action)
 
   const { future, present, past } = store.getState()
-  if (!present?.file?.isCloudFile) return result
+  if (!get(present, 'file.isCloudFile')) return result
 
   const fileId = present.file.id
   const clientId = present.client.clientId
@@ -26,11 +26,15 @@ const externalSync = (patch, withData) => (store) => (next) => (action) => {
         key === 'actions'
       )
         return
+      if (!get(present, 'project.selectedFile')) return
       if (
         key === 'file' &&
         present.project.selectedFile &&
         present.project.selectedFile.permision !== 'owner'
       ) {
+        return
+      }
+      if (present.project.selectedFile.id !== present.file.id) {
         return
       }
       if (action.patching || action.type === 'FILE_LOADED') return
@@ -56,7 +60,7 @@ export const externalSyncWithoutHistory = (patch, withData) => (store) => (next)
   const result = next(action)
   const present = store.getState()
 
-  if (!present?.file?.isCloudFile) return result
+  if (!get(present, 'file.isCloudFile')) return result
 
   const fileId = present.file && present.file.id
   const clientId = present.client && present.client.clientId
@@ -74,11 +78,15 @@ export const externalSyncWithoutHistory = (patch, withData) => (store) => (next)
         key === 'actions'
       )
         return
+      if (!get(present, 'project.selectedFile')) return
       if (
         key === 'file' &&
         present.project.selectedFile &&
         present.project.selectedFile.permision !== 'owner'
       ) {
+        return
+      }
+      if (present.project.selectedFile.id !== present.file.id) {
         return
       }
       if (action.patching || action.type === 'FILE_LOADED') return

@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron'
-import { saveBackup } from 'plottr_firebase'
+import { saveBackup } from 'wired-up-firebase'
 import { ActionTypes } from 'pltr/v2'
 import { shouldIgnoreAction } from './shouldIgnoreAction'
 

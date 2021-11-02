@@ -2,7 +2,7 @@ import { remote } from 'electron'
 import axios from 'axios'
 
 import { t } from 'plottr_locales'
-import { fetchFiles } from 'plottr_firebase'
+import { fetchFiles } from 'wired-up-firebase'
 import { actions, reducers, emptyFile } from 'pltr/v2'
 
 import { closeDashboard } from './dashboard'

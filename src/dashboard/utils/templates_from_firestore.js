@@ -8,7 +8,7 @@ import {
   saveCustomTemplate as saveCustomTemplateToFirstore,
   deleteCustomTemplate as deleteCustomTemplateOnFirestore,
   editCustomTemplate as editCustomTemplateOnFirestore,
-} from 'plottr_firebase'
+} from 'wired-up-firebase'
 import SETTINGS from '../../common/utils/settings'
 
 let env = 'prod'

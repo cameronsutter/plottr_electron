@@ -125,6 +125,7 @@ const rendererConfig = {
       css: path.resolve(__dirname, 'src', 'css'),
       test: path.resolve(__dirname, 'test'),
       'connected-components': path.resolve(__dirname, 'src', 'connected-components.js'),
+      'wired-up-firebase': path.resolve(__dirname, 'src', 'wired-up-firebase.js'),
       plottr_components: path.resolve(__dirname, 'lib', 'plottr_components', 'dist', 'components'),
       // Avoid duplicate react in libs problem (see
       // https://medium.com/@penx/managing-dependencies-in-a-node-package-so-that-they-are-compatible-with-npm-link-61befa5aaca7)

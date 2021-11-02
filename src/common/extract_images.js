@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash'
 import { v4 as uuid } from 'uuid'
 
-import { saveImageToStorageFromURL } from 'plottr_firebase'
+import { saveImageToStorageFromURL } from 'wired-up-firebase'
 
 import { resizeImage } from './resizeImage'
 

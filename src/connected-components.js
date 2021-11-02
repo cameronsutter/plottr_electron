@@ -26,7 +26,8 @@ import {
   currentUser,
   listenForRCELock,
   lockRCE,
-} from 'plottr_firebase'
+  releaseRCELock,
+} from 'wired-up-firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
 import {
   useExportConfigInfo,
@@ -304,6 +305,7 @@ const platform = {
   deleteOldChanges,
   listenForRCELock,
   lockRCE,
+  releaseRCELock,
   machineIdSync,
   extractImages,
   useProLicenseInfo,

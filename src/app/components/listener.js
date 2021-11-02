@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
 import { actions, selectors } from 'pltr/v2'
-import { listen, stopListening } from 'plottr_firebase'
+import { listen, stopListening } from 'wired-up-firebase'
 import { store } from '../store/configureStore'
 
 const Listener = ({

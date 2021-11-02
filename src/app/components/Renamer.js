@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { selectors } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { InputModal } from 'connected-components'
-import { editFileName } from 'plottr_firebase'
+import { editFileName } from 'wired-up-firebase'
 
 const Renamer = ({ userId }) => {
   const [visible, setVisible] = useState(false)

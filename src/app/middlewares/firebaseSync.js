@@ -1,5 +1,5 @@
 import { middlewares, ARRAY_KEYS } from 'pltr/v2'
-import { overwrite, toFirestoreArray } from 'plottr_firebase'
+import { overwrite, toFirestoreArray } from 'wired-up-firebase'
 
 const firebaseSync = (store) => (next) => (action) => {
   const file = store.getState().present && store.getState().present.file

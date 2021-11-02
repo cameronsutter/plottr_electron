@@ -12,7 +12,7 @@ import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 import { actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
-import { initialFetch, overwriteAllKeys } from 'plottr_firebase'
+import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
@@ -157,7 +157,8 @@ function bootFile(filePath, options, numOpenFiles) {
               </Provider>,
               root
             )
-          }
+          },
+          log
         )
       })
     } else {
@@ -174,44 +175,51 @@ function bootFile(filePath, options, numOpenFiles) {
         )
       }
       ipcRenderer.send('save-backup', filePath, json)
-      migrateIfNeeded(app.getVersion(), json, filePath, null, (err, didMigrate, state) => {
-        if (err) {
-          rollbar.error(err)
-          log.error(err)
-        }
-        store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
+      migrateIfNeeded(
+        app.getVersion(),
+        json,
+        filePath,
+        null,
+        (err, didMigrate, state) => {
+          if (err) {
+            rollbar.error(err)
+            log.error(err)
+          }
+          store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
-        MPQ.projectEventStats(
-          'open_file',
-          { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
-          state
-        )
+          MPQ.projectEventStats(
+            'open_file',
+            { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
+            state
+          )
 
-        if (state.ui && state.ui.darkMode !== darkMode) {
-          store.dispatch(actions.ui.setDarkMode(darkMode))
-        }
-        if (darkMode) window.document.body.className = 'darkmode'
+          if (state.ui && state.ui.darkMode !== darkMode) {
+            store.dispatch(actions.ui.setDarkMode(darkMode))
+          }
+          if (darkMode) window.document.body.className = 'darkmode'
 
-        const withDispatch = dispatchingToStore(store.dispatch)
-        makeFlagConsistent(
-          state,
-          beatHierarchy,
-          featureFlags.BEAT_HIERARCHY_FLAG,
-          withDispatch(actions.featureFlags.setBeatHierarchy),
-          withDispatch(actions.featureFlags.unsetBeatHierarchy)
-        )
+          const withDispatch = dispatchingToStore(store.dispatch)
+          makeFlagConsistent(
+            state,
+            beatHierarchy,
+            featureFlags.BEAT_HIERARCHY_FLAG,
+            withDispatch(actions.featureFlags.setBeatHierarchy),
+            withDispatch(actions.featureFlags.unsetBeatHierarchy)
+          )
 
-        if (state && state.tour && state.tour.showTour)
-          store.dispatch(actions.ui.changeOrientation('horizontal'))
+          if (state && state.tour && state.tour.showTour)
+            store.dispatch(actions.ui.changeOrientation('horizontal'))
 
-        render(
-          <Provider store={store}>
-            <Renamer />
-            <App />
-          </Provider>,
-          root
-        )
-      })
+          render(
+            <Provider store={store}>
+              <Renamer />
+              <App />
+            </Provider>,
+            root
+          )
+        },
+        log
+      )
     }
   } catch (error) {
     // TODO: error dialog and ask the user to try again

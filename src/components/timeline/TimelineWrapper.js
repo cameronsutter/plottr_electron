@@ -14,7 +14,7 @@ import {
 import { StickyTable } from 'react-sticky-table'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
-import OverlayTrigger from '../OverlayTrigger'
+import UnconnectedOverlayTrigger from '../OverlayTrigger'
 import UnconnectedTimelineTable from './TimelineTable'
 import UnconnectedActsConfigModal from '../dialogs/ActsConfigModal'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
@@ -39,6 +39,7 @@ const TimelineWrapperConnector = (connector) => {
   const CustomAttrFilterList = UnconnectedCustomAttrFilterList(connector)
   const ExportNavItem = UnconnectedExportNavItem(connector)
   const SubNav = UnconnectedSubNav(connector)
+  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   const {
     platform: { mpq, exportDisabled, templatesDisabled },
@@ -321,7 +322,7 @@ const TimelineWrapperConnector = (connector) => {
       const rightItems = [
         <NavItem key="right-1">
           <Button bsSize="small" onClick={this.openBeatConfig} className="acts-tour-step1">
-            <Glyphicon glyph="cog" /> {t('Settings')}
+            <Glyphicon glyph="cog" /> {t('Structure')}
           </Button>
         </NavItem>,
         <NavItem key="right-2">

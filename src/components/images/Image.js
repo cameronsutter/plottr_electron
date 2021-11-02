@@ -34,7 +34,7 @@ const ImageConnector = (connector) => {
     }, [image, setImageSrc, imageSrc])
 
     if (!image && !imageSrc) return null
-    else if (!image || !imageSrc) return <Spinner style={{ margin: 15 }} />
+    else if (!image || !imageSrc) return <Spinner />
 
     if (responsive) {
       return <img className={cx('img-responsive', className)} src={imageSrc} />

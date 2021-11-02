@@ -18,6 +18,7 @@ const OptionsHomeConnector = (connector) => {
       updateLanguage,
       updateBeatHierarchyFlag,
       os,
+      license: { hasPro },
     },
   } = connector
   const SETTINGS = connector.platform.settings
@@ -30,6 +31,7 @@ const OptionsHomeConnector = (connector) => {
     updateBeatHierarchyFlag,
     os,
     SETTINGS,
+    hasPro,
   })
 
   const LanguagePicker = UnconnectedLanguagePicker(connector)
@@ -55,6 +57,13 @@ const OptionsHomeConnector = (connector) => {
       const newValue = !settings.user.beatHierarchy
       saveSetting('user.beatHierarchy', newValue)
       updateBeatHierarchyFlag(newValue)
+    }
+
+    // show if:
+    // - not web
+    // - not Pro, unless Pro & localBackups
+    const showBackupLocation = () => {
+      return (!osIsUnknown && !hasPro()) || (!osIsUnknown && settings.user.localBackups)
     }
 
     return (

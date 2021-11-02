@@ -3,7 +3,7 @@ import { difference } from 'lodash'
 import PropTypes from 'react-proptypes'
 import { Button, Glyphicon, Popover } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
-import OverlayTrigger from '../OverlayTrigger'
+import UnconnectedOverlayTrigger from '../OverlayTrigger'
 import UnconnectedImage from '../images/Image'
 import cx from 'classnames'
 import { helpers } from 'pltr/v2'
@@ -16,6 +16,7 @@ const {
 
 const BookSelectListConnector = (connector) => {
   const Image = UnconnectedImage(connector)
+  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   class BookSelectList extends Component {
     constructor(props) {

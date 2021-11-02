@@ -1,0 +1,38 @@
+import React, { useState, useRef } from 'react'
+import PropTypes from 'react-proptypes'
+import { Button, FormControl, Glyphicon } from 'react-bootstrap'
+import { t } from 'plottr_locales'
+import cx from 'classnames'
+
+import { checkDependencies } from '../../checkDependencies'
+import OnboardingFlow from '../../onboarding/OnboardingFlow'
+import UnconnectedProStep1 from './proOnboarding/ProStep1'
+
+const VerifyProConnector = (connector) => {
+  // const {
+  //   platform: {
+  //     license: { verifyLicense, trial90days, useLicenseInfo, useTrialStatus },
+  //     openExternal,
+  //   },
+  // } = connector
+  // checkDependencies({  })
+
+  const ProStep1 = UnconnectedProStep1(connector)
+
+  const VerifyPro = ({ goBack, success }) => {
+    return (
+      <OnboardingFlow>
+        <ProStep1 nextStep={success} cancel={goBack} />
+      </OnboardingFlow>
+    )
+  }
+
+  VerifyPro.propTypes = {
+    goBack: PropTypes.func,
+    success: PropTypes.func,
+  }
+
+  return VerifyPro
+}
+
+export default VerifyProConnector

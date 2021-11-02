@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import { Glyphicon, Nav, NavItem, Button, Alert, Popover, Grid, Row, Col } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
-import OverlayTrigger from '../OverlayTrigger'
+import UnconnectedOverlayTrigger from '../OverlayTrigger'
 import UnconnectedNoteView from './NoteView'
 import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
 import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
@@ -26,6 +26,7 @@ const NoteListViewConnector = (connector) => {
   const NoteItem = UnconnectedNoteItem(connector)
   const CustomAttrFilterList = UnconnectedCustomAttrFilterList(connector)
   const CustomAttributeModal = UnconnectedCustomAttributeModal(connector)
+  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   class NoteListView extends Component {
     constructor(props) {

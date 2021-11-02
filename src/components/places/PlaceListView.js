@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import { Glyphicon, Nav, NavItem, Button, Popover, Alert, Grid, Row, Col } from 'react-bootstrap'
-import OverlayTrigger from '../OverlayTrigger'
+import UnconnectedOverlayTrigger from '../OverlayTrigger'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
 import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
 import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
@@ -25,6 +25,7 @@ const PlaceListViewConnector = (connector) => {
   const SubNav = UnconnectedSubNav(connector)
   const PlaceView = UnconnectedPlaceView(connector)
   const PlaceItem = UnconnectedPlaceItem(connector)
+  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   class PlaceListView extends Component {
     constructor(props) {

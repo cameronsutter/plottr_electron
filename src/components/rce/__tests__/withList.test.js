@@ -8,12 +8,18 @@ import {
   numberedList,
 } from '../__fixtures__'
 
+const dummyLog = {
+  info: () => {},
+  warn: () => {},
+  error: () => {},
+}
+
 describe('withList', () => {
-  let editor = createEditor()
+  let editor = createEditor(dummyLog)
 
   describe('insertBreak', () => {
     beforeEach(() => {
-      editor = createEditor()
+      editor = createEditor(dummyLog)
     })
 
     it('inserts a break when at the root of the document', () => {
@@ -43,7 +49,7 @@ describe('withList', () => {
 
   describe('deleteBackward', () => {
     beforeEach(() => {
-      editor = createEditor()
+      editor = createEditor(dummyLog)
     })
 
     it('deletes backwards if we are at the root of the document', () => {

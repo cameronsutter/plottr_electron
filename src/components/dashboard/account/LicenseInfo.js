@@ -20,6 +20,7 @@ const LicenseInfoConnector = (connector) => {
         ? t('Never')
         : t('{date, date, long}', { date: new Date(licenseInfo.expires) })
     const usableDeviceID = os == 'unknown' ? t('Browser') : deviceID
+    const itemName = licenseInfo?.item_name?.replace('&#8211;', '-')
 
     let deleteModal = false
     if (deleting) {
@@ -41,6 +42,8 @@ const LicenseInfoConnector = (connector) => {
           <dl className="dl-horizontal">
             <dt>{t('Purchase Email')}</dt>
             <dd>{licenseInfo.customer_email}</dd>
+            <dt>{t('Product name')}</dt>
+            <dd>{itemName}</dd>
             <dt>{t('Device ID')}</dt>
             <dd>{usableDeviceID}</dd>
           </dl>

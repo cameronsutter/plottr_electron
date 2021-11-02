@@ -28,8 +28,8 @@ export function useTextConverter(text, log) {
   return rceDataRepair(rceText, log)
 }
 
-export function createEditor() {
-  return withList(
+export function createEditor(log) {
+  return withList(log)(
     withNormalizer(withHTML(withImages(withLinks(withHistory(withReact(createSlateEditor()))))))
   )
 }

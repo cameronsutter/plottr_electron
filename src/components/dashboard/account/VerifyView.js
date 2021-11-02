@@ -18,11 +18,19 @@ const VerifyViewConnector = (connector) => {
     platform: {
       license: { verifyLicense, trial90days, useLicenseInfo, useTrialStatus },
       openExternal,
+      log,
     },
   } = connector
-  checkDependencies({ verifyLicense, trial90days, useLicenseInfo, useTrialStatus, openExternal })
+  checkDependencies({
+    verifyLicense,
+    trial90days,
+    useLicenseInfo,
+    useTrialStatus,
+    openExternal,
+    log,
+  })
 
-  const VerifyView = ({ goBack, darkMode }) => {
+  const VerifyView = ({ goBack, success, darkMode }) => {
     const handleAccountClick = (url) => {
       openExternal(url)
     }
@@ -55,8 +63,7 @@ const VerifyViewConnector = (connector) => {
     }
 
     // TODO: refactor useLicenseInfo so it returns functions in an object
-    /* eslint-disable-next-line no-unused-vars */
-    const [licenseInfo, licenseInfoSize, setKey, setLicenseInfo] = useLicenseInfo()
+    const [_licenseInfo, _licenseInfoSize, _setKey, setLicenseInfo] = useLicenseInfo()
     const { startTrial } = useTrialStatus()
     const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
     const [showAlert, setShowAlert] = useState(!!alertText)
@@ -84,7 +91,7 @@ const VerifyViewConnector = (connector) => {
       verifyLicense(license, (isValid, licenseData) => {
         setSpinnerHidden(false)
         if (process.env.NODE_ENV === 'development') {
-          console.log(licenseData)
+          log.info(licenseData)
         }
         if (isValid) {
           setShowAlert(true)
@@ -93,9 +100,14 @@ const VerifyViewConnector = (connector) => {
           if (process.env.NODE_ENV !== 'development') {
             setTimeout(() => {
               setLicenseInfo(licenseData)
+              success()
             }, 500)
           } else {
-            console.log('not setting license because of dev mode')
+            log.info('not setting license because of dev mode')
+            // setTimeout(() => {
+            //   setLicenseInfo(licenseData)
+            //   success()
+            // }, 500)
           }
         } else {
           if (
@@ -174,6 +186,7 @@ const VerifyViewConnector = (connector) => {
 
   VerifyView.propTypes = {
     goBack: PropTypes.func,
+    success: PropTypes.func,
     darkMode: PropTypes.bool,
   }
 

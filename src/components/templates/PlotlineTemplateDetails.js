@@ -11,12 +11,12 @@ const { lineFromTemplate } = template
 
 const PlotlineTemplateDetailsConnector = (connector) => {
   const {
-    platform: { appVersion },
+    platform: { appVersion, log },
     pltr: {
       selectors: { templateBeatsForBookOne },
     },
   } = connector
-  checkDependencies({ appVersion, templateBeatsForBookOne })
+  checkDependencies({ appVersion, log, templateBeatsForBookOne })
 
   class PlotlineTemplateDetails extends Component {
     headingMap = {
@@ -35,20 +35,26 @@ const PlotlineTemplateDetailsConnector = (connector) => {
     }
 
     migrateTemplate = () => {
-      lineFromTemplate(this.props.template, appVersion, '', (error, template) => {
-        if (error) {
-          // Allow the top level ErrorBoundary to handle the error
-          throw new Error(error)
-        }
-        this.setState({
-          template: {
-            id: template.id,
-            lines: template.lines,
-            cards: template.cards,
-            beats: template.beats,
-          },
-        })
-      })
+      lineFromTemplate(
+        this.props.template,
+        appVersion,
+        '',
+        (error, template) => {
+          if (error) {
+            // Allow the top level ErrorBoundary to handle the error
+            throw new Error(error)
+          }
+          this.setState({
+            template: {
+              id: template.id,
+              lines: template.lines,
+              cards: template.cards,
+              beats: template.beats,
+            },
+          })
+        },
+        log
+      )
     }
 
     renderData(type, data) {

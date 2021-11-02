@@ -69,11 +69,17 @@ const MiniMapConnector = (connector) => {
         const beatCards = hasCards ? cardMapping[beat.id] : [emptyCard(idx, beat, lines[0])]
         if (activeFilter && !beatCards.length) return null
 
+        const handleDragStart = (e) => {
+          e.dataTransfer.effectAllowed = 'move'
+          e.dataTransfer.setData('text/json', JSON.stringify({ beat }))
+        }
+
         return (
           <NavItem
             ref={(e) => (this[`beat-${beat.id}-ref`] = e)}
             key={`minimap-beat-${beat.id}`}
             eventKey={beat.id}
+            onDragStart={handleDragStart}
           >
             <MiniBeat
               bookId={ui.currentTimeline}

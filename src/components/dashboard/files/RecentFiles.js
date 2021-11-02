@@ -12,29 +12,29 @@ import RecentsHeader from './RecentsHeader'
 import { checkDependencies } from '../../checkDependencies'
 import { Spinner } from '../../Spinner'
 
-const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
+const isPlottrCloudFile = (filePath) => (filePath && filePath.startsWith('plottr://')) || !filePath
 
 const renderPermission = (permission) => {
   switch (permission) {
     case 'collaborator':
       return (
-        <div>
+        <div className="permissions">
           <AiOutlineTeam />
-          Collaborator
+          {t('Collaborator')}
         </div>
       )
     case 'viewer':
       return (
-        <div>
+        <div className="permissions">
           <AiOutlineRead />
-          Viewer
+          {t('Viewer')}
         </div>
       )
     case 'owner':
       return (
-        <div>
+        <div className="permissions">
           <GiQuillInk />
-          Owner
+          {t('Owner')}
         </div>
       )
     default:
@@ -72,7 +72,7 @@ const RecentFilesConnector = (connector) => {
       sortedIds.forEach((id) => {
         const filePath = filesById[`${id}`].path
         if (!filePath) {
-          log.warn(`File with id: ${id}, doesn't have a "filePath"`)
+          log.warn(`File with id: ${filesById[id].id}, doesn't have a "filePath"`)
           return
         }
         if (isPlottrCloudFile(filePath)) {
@@ -86,25 +86,41 @@ const RecentFilesConnector = (connector) => {
     }, [sortedIds, filesById])
 
     const openFile = (filePath, id) => {
-      if (missingFiles.includes(id)) return
-      openKnownFile(filePath, id)
+      return openKnownFile(filePath, id)
     }
 
     const renderRecents = () => {
       // TODO: if no files, show something different
-      if (!sortedIds.length) return null
+      if (!sortedIds.length) return <span>{t('No files found.')}</span>
 
       const fileWithPermissionsExists = Object.values(filesById).some(
         ({ permission }) => permission
       )
+
+      // cloud files' lastOpened date comes from version ... do we need something better?
+      const makeLastOpen = (fileObj) => {
+        if (fileObj.lastOpened) {
+          return fileObj.lastOpened.toDate
+            ? fileObj.lastOpened.toDate()
+            : new Date(fileObj.lastOpened)
+        }
+
+        try {
+          const splits = fileObj.version.split('.')
+          return new Date(splits[0], parseInt(splits[1]) - 1, splits[2])
+        } catch (error) {
+          // do nothing
+        }
+
+        return new Date()
+      }
 
       const renderedFiles = sortedIds.map((id, idx) => {
         const f = filesById[`${id}`]
         if (!f) return null
 
         const onFirebase = isPlottrCloudFile(f.path)
-        // TODO: where do web last save dates come from?  Backups perhaps?
-        const lastOpen = (f.lastOpened && new Date(f.lastOpened)) || new Date()
+        const lastOpen = makeLastOpen(f)
         const fileBasename = (!onFirebase && f.path && basename(f.path)) || ''
         let formattedPath = ''
         if (f.path && !isTempFile(f.path)) {
@@ -114,7 +130,7 @@ const RecentFilesConnector = (connector) => {
             .filter(Boolean)
             .join(' » ')
         } else {
-          formattedPath = f.fileName
+          formattedPath = onFirebase ? '' : f.fileName
         }
         let missing = null
         if (missingFiles.includes(id)) {
@@ -160,7 +176,7 @@ const RecentFilesConnector = (connector) => {
         )
       })
 
-      return (
+      return renderedFiles ? (
         <div className="dashboard__recent-files__table">
           <StickyTable leftStickyColumnCount={0}>
             <Row>
@@ -171,6 +187,8 @@ const RecentFilesConnector = (connector) => {
             {renderedFiles}
           </StickyTable>
         </div>
+      ) : (
+        <Spinner />
       )
     }
 

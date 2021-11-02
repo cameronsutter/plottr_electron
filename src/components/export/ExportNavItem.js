@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { NavItem, Button, Glyphicon, Popover } from 'react-bootstrap'
 import { t } from 'plottr_locales'
-import OverlayTrigger from '../OverlayTrigger'
+import UnconnectedOverlayTrigger from '../OverlayTrigger'
 import UnconnectedExportDialog from './ExportDialog'
 import { checkDependencies } from '../checkDependencies'
 
 const ExportNavItemConnector = (connector) => {
   const ExportDialog = UnconnectedExportDialog(connector)
+  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   const {
     platform: {

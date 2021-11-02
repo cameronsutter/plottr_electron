@@ -100,7 +100,7 @@ const ImagePickerConnector = (connector) => {
       const url = e.target.value
       if (isImageUrl(url)) {
         this.setState({ loading: true })
-        if (saveImageToStorageFromURL) {
+        if (saveImageToStorageFromURL && this.props.isCloudFile) {
           fetch(url).then((response) => {
             response.blob().then((image) => {
               const tempName = uuidv4()
@@ -158,7 +158,7 @@ const ImagePickerConnector = (connector) => {
     uploadNewFile = (event) => {
       if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0]
-        if (saveImageToStorageFromURL) {
+        if (saveImageToStorageFromURL && this.props.isCloudFile) {
           resizeImage(file, (imageData) => {
             saveImageToStorageFromURL(imageData, file.name).then((internalUrl) => {
               this.props.actions.addImage({ name: file.name, path: internalUrl })

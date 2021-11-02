@@ -89,9 +89,7 @@ const HelpHomeConnector = (connector) => {
             <Button onClick={l('docs.plottr.com/submit-a-ticket?help=Technical%20Support')}>
               {t('Report a Problem')}
             </Button>
-            {os === 'unknown' ? null : (
-              <Button onClick={createFullErrorReport}>{t('Create an Error Report')}</Button>
-            )}
+            <Button onClick={createFullErrorReport}>{t('Create an Error Report')}</Button>
             <div>
               <FormGroup controlId="customerServiceCode">
                 <FormControl

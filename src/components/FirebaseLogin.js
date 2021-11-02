@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { PropTypes } from 'prop-types'
 
+import { checkDependencies } from './checkDependencies'
+
 const FirebaseLoginConnector = (connector) => {
   const {
     platform: {
+      log,
       useSettingsInfo,
       firebase: { startUI, firebaseUI, onSessionChange, fetchFiles },
       isDevelopment,
     },
   } = connector
+  checkDependencies({ log, useSettingsInfo, startUI, firebaseUI, onSessionChange, fetchFiles })
 
   const FirebaseLogin = ({ setUserId, setEmailAddress, setFileList, receiveUser }) => {
     const [_settings, _size, saveSetting] = useSettingsInfo()
@@ -24,7 +28,7 @@ const FirebaseLoginConnector = (connector) => {
     useEffect(() => {
       const unregister = onSessionChange((user) => {
         if (user) {
-          if (isDevelopment) console.log(user)
+          if (isDevelopment) log.info(user)
           saveSetting('user.id', user.uid)
           saveSetting('user.email', user.email)
           setUserId(user.uid)

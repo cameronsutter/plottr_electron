@@ -8,6 +8,12 @@ import { checkDependencies } from '../checkDependencies'
 const CustomAttributeModalConnector = (connector) => {
   const ItemsManagerModal = UnconnectedItemsManagerModal(connector)
 
+  const {
+    platform: { log },
+  } = connector
+
+  checkDependencies({ log })
+
   function CustomAttributeModal({
     type,
     customAttributes,
@@ -88,7 +94,7 @@ const CustomAttributeModalConnector = (connector) => {
             break
           default:
             canChangeFn = () => {
-              console.warn(`${type}CustomAttributesThatCanChangeSelector not implemented`)
+              log.warn(`${type}CustomAttributesThatCanChangeSelector not implemented`)
               return customAttributes.map(({ name }) => name)
             }
             break
@@ -137,7 +143,7 @@ const CustomAttributeModalConnector = (connector) => {
             }
 
           default:
-            console.warn(`${type} actions not implemented`)
+            log.warn(`${type} actions not implemented`)
             return {
               addAttribute: () => {},
               removeAttribute: () => {},

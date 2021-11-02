@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
+
 import { ProgressBar } from 'react-bootstrap'
 import { t } from 'plottr_locales'
+
 import { StepBody, StepFooter, StepHeader } from '../../../onboarding/Step'
+import { checkDependencies } from '../../../checkDependencies'
 
 const typeName = {
   project: t('Project'),
@@ -22,9 +25,23 @@ const UploadingConnector = (connector) => {
     },
     pltr: { migrateIfNeeded },
   } = connector
+  checkDependencies({
+    basename,
+    doesFileExist,
+    readFileSync,
+    removeFromKnownFiles,
+    saveCustomTemplate,
+    uploadExisting,
+    fetchFiles,
+    log,
+    extractImages,
+    useSettingsInfo,
+    appVersion,
+    isDevelopment,
+  })
 
   const Uploading = ({ nextStep, projects, templates }) => {
-    const [settings] = useSettingsInfo()
+    const [settings] = useSettingsInfo(false)
     const [maxItems, setMaxItems] = useState(100)
     const [currentProgress, setCurrentProgress] = useState(0)
     const [currentObj, setCurrentObj] = useState(null)
@@ -77,29 +94,36 @@ const UploadingConnector = (connector) => {
       if (doesFileExist(projObj.path)) {
         const file = JSON.parse(readFileSync(projObj.path))
         // migrate if needed
-        migrateIfNeeded(appVersion, file, file.file.fileName, null, (error, migrated, data) => {
-          if (error) {
-            log.error('Error migrating file: ', error)
-            return
-          }
-          if (migrated) {
-            log.info(
-              `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-            )
-          }
-          extractImages(data, settings.user.id)
-            .then((patchedData) =>
-              uploadExisting(settings.user.email, settings.user.id, patchedData)
-            )
-            .then(() => {
-              log.info('successfull upload', file.file.fileName)
-              removeFromKnownFiles(projObj.id)
-            })
-            .catch((err) => {
-              log.error(file.file.fileName)
-              log.error(err)
-            })
-        })
+        migrateIfNeeded(
+          appVersion,
+          file,
+          file.file.fileName,
+          null,
+          (error, migrated, data) => {
+            if (error) {
+              log.error('Error migrating file: ', error)
+              return
+            }
+            if (migrated) {
+              log.info(
+                `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+              )
+            }
+            extractImages(data, settings.user.id)
+              .then((patchedData) =>
+                uploadExisting(settings.user.email, settings.user.id, patchedData)
+              )
+              .then(() => {
+                log.info('successfull upload', file.file.fileName)
+                removeFromKnownFiles(projObj.id)
+              })
+              .catch((err) => {
+                log.error(file.file.fileName)
+                log.error(err)
+              })
+          },
+          log
+        )
       }
     }
 

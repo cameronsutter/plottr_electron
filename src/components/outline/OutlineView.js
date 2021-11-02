@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { Glyphicon, Nav, NavItem, Button, Popover, Alert, Grid, Row, Col } from 'react-bootstrap'
-import OverlayTrigger from '../OverlayTrigger'
+import UnconnectedOverlayTrigger from '../OverlayTrigger'
 import UnconnectedBeatView from './BeatView'
 import UnconnectedMiniMap from './MiniMap'
 import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
@@ -23,11 +23,12 @@ const OutlineViewConnector = (connector) => {
   const ErrorBoundary = UnconnectedErrorBoundary(connector)
   const ExportNavItem = UnconnectedExportNavItem(connector)
   const SubNav = UnconnectedSubNav(connector)
+  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   const {
-    platform: { exportDisabled },
+    platform: { exportDisabled, log },
   } = connector
-  checkDependencies({ exportDisabled })
+  checkDependencies({ exportDisabled, log })
 
   class OutlineView extends Component {
     constructor(props) {
@@ -54,7 +55,7 @@ const OutlineViewConnector = (connector) => {
     }
 
     fixMe = () => {
-      console.warn('OutlineView waypoint needs fixing')
+      log.warn('OutlineView waypoint needs fixing')
     }
 
     filterItem = (id) => {

@@ -1,47 +1,58 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { t } from 'plottr_locales'
 import { Alert, Button } from 'react-bootstrap'
+
+import { t } from 'plottr_locales'
+
 import OnboardingStep from '../../../onboarding/OnboardingStep'
 import { StepBody, StepHeader } from '../../../onboarding/Step'
 import { Spinner } from '../../../Spinner'
 import UnconnectedFirebaseLogin from '../../../FirebaseLogin'
+import { checkDependencies } from '../../../checkDependencies'
 
 const ProStep1Connector = (connector) => {
   const {
     platform: {
+      useSettingsInfo,
       license: { checkForPro },
       isDevelopment,
+      log,
     },
   } = connector
+  checkDependencies({ useSettingsInfo, checkForPro, isDevelopment, log })
 
   const FirebaseLogin = UnconnectedFirebaseLogin(connector)
 
   const ProStep1 = ({ nextStep, cancel, userId, emailAddress }) => {
+    const [_settings, _size, saveSetting] = useSettingsInfo(false)
     const [checking, setChecking] = useState(false)
     const [noPro, setNoPro] = useState(false)
 
     useEffect(() => {
-      if (isDevelopment) {
+      if (isDevelopment && userId) {
         nextStep()
         return
       }
       if (userId && emailAddress && !checking) {
         setChecking(true)
-        checkForPro(emailAddress, handleCheckPro)
+        checkForPro(emailAddress, handleCheckPro(userId, emailAddress))
       }
     }, [nextStep, userId, emailAddress, setChecking])
 
     const checkUser = (user) => {
+      if (isDevelopment && userId) return
       if (user.email && !checking) {
         setChecking(true)
-        checkForPro(user.email, handleCheckPro)
+        checkForPro(user.email, handleCheckPro(user.uid, user.email))
       }
     }
 
-    const handleCheckPro = (hasPro) => {
+    const handleCheckPro = (uid, email) => (hasPro) => {
+      log.info('checked pro')
       setChecking(false)
       if (hasPro) {
+        saveSetting('user.id', uid)
+        saveSetting('user.email', email)
         nextStep()
       } else {
         setNoPro(true)

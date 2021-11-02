@@ -1,9 +1,15 @@
 import { normalize } from '../Normalizer'
 
+const dummyLog = {
+  info: () => {},
+  warn: () => {},
+  error: () => {},
+}
+
 describe('normalize', () => {
   describe('given empty content', () => {
     it('should produce empty content', () => {
-      expect(normalize([])).toEqual([])
+      expect(normalize(dummyLog)([])).toEqual([])
     })
   })
   describe('given a single paragraph', () => {
@@ -18,7 +24,7 @@ describe('normalize', () => {
       },
     ]
     it('should produce that paragraph', () => {
-      expect(normalize(content)).toEqual(content)
+      expect(normalize(dummyLog)(content)).toEqual(content)
     })
   })
   describe('given a paragraph in a paragraph', () => {
@@ -48,7 +54,7 @@ describe('normalize', () => {
           ],
         },
       ]
-      expect(normalize(content)).toEqual(singlyNestedContent)
+      expect(normalize(dummyLog)(content)).toEqual(singlyNestedContent)
     })
   })
   describe('given a paragraph in a paragraph, in a paragraph', () => {
@@ -83,7 +89,7 @@ describe('normalize', () => {
           ],
         },
       ]
-      expect(normalize(content)).toEqual(singlyNestedContent)
+      expect(normalize(dummyLog)(content)).toEqual(singlyNestedContent)
     })
   })
   describe('given a heading with text in a paragraph in it', () => {
@@ -113,7 +119,7 @@ describe('normalize', () => {
           ],
         },
       ]
-      expect(normalize(content)).toEqual(fixed)
+      expect(normalize(dummyLog)(content)).toEqual(fixed)
     })
   })
   describe('given a heading with text in it', () => {
@@ -128,7 +134,7 @@ describe('normalize', () => {
       },
     ]
     it('should leave it as-is', () => {
-      expect(normalize(content)).toEqual(content)
+      expect(normalize(dummyLog)(content)).toEqual(content)
     })
   })
   describe('given a list', () => {
@@ -144,7 +150,7 @@ describe('normalize', () => {
         },
       ]
       it('should leave it as-is', () => {
-        expect(normalize(content)).toEqual(content)
+        expect(normalize(dummyLog)(content)).toEqual(content)
       })
     })
     describe('with children in it', () => {
@@ -180,7 +186,7 @@ describe('normalize', () => {
               ],
             },
           ]
-          expect(normalize(content)).toEqual(fixed)
+          expect(normalize(dummyLog)(content)).toEqual(fixed)
         })
       })
       describe('which are list-items', () => {
@@ -200,7 +206,7 @@ describe('normalize', () => {
           },
         ]
         it('should leave them as-is', () => {
-          expect(normalize(content)).toEqual(content)
+          expect(normalize(dummyLog)(content)).toEqual(content)
         })
         describe('which have children which are list items', () => {
           const content = [
@@ -239,7 +245,7 @@ describe('normalize', () => {
                 ],
               },
             ]
-            expect(normalize(content)).toEqual(fixed)
+            expect(normalize(dummyLog)(content)).toEqual(fixed)
           })
         })
       })
@@ -272,7 +278,7 @@ describe('normalize', () => {
           },
         ],
       }
-      expect(normalize(content)).toEqual(fixed)
+      expect(normalize(dummyLog)(content)).toEqual(fixed)
     })
   })
   describe('given a paragraph with no type', () => {
@@ -296,7 +302,7 @@ describe('normalize', () => {
           ],
         },
       ]
-      expect(normalize(content)).toEqual(fixed)
+      expect(normalize(dummyLog)(content)).toEqual(fixed)
     })
   })
   describe('given a collection of top-level list-items', () => {
@@ -358,7 +364,7 @@ describe('normalize', () => {
           ],
         },
       ]
-      expect(normalize(topLevelListItems)).toEqual(expectedNormalisedContent)
+      expect(normalize(dummyLog)(topLevelListItems)).toEqual(expectedNormalisedContent)
     })
   })
   describe('given a collection of list-items inside another path in the tree', () => {
@@ -425,7 +431,7 @@ describe('normalize', () => {
           ],
         },
       ]
-      expect(normalize(embeddedListItems)).toEqual(expectedNormalisedContent)
+      expect(normalize(dummyLog)(embeddedListItems)).toEqual(expectedNormalisedContent)
     })
   })
   describe('given a collection of bare list items found in the wild', () => {
@@ -474,7 +480,7 @@ describe('normalize', () => {
           ],
         },
       ]
-      expect(normalize(exampleFromWild)).toEqual(exampleFromWildFixed)
+      expect(normalize(dummyLog)(exampleFromWild)).toEqual(exampleFromWildFixed)
     })
   })
 })

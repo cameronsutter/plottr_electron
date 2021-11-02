@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { Button, Glyphicon, Popover } from 'react-bootstrap'
-import OverlayTrigger from './OverlayTrigger'
+import UnconnectedOverlayTrigger from './OverlayTrigger'
 import TagLabel from './TagLabel'
 import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
@@ -9,6 +9,7 @@ import UnconnectedImage from './images/Image'
 
 const SelectListConnector = (connector) => {
   const Image = UnconnectedImage(connector)
+  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   class SelectList extends Component {
     constructor(props) {

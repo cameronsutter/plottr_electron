@@ -22,7 +22,7 @@ const ProStep2Connector = (connector) => {
 
   const ProStep2 = ({ nextStep }) => {
     const initialFrbFiles = useRef([])
-    const [sortedIds, filesById] = useSortedKnownFiles('', initialFrbFiles.current)
+    const [sortedIds, filesById] = useSortedKnownFiles('', initialFrbFiles.current, false)
     const [templateInfo] = useCustomTemplatesInfo()
     const [nothingToUpload, setNothingToUpload] = useState(null)
     const [view, setView] = useState('choice')

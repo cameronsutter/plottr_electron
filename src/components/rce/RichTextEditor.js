@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
-import { isEqual } from 'lodash'
 import cx from 'classnames'
 import { t } from 'plottr_locales'
 import isHotkey from 'is-hotkey'
@@ -10,13 +9,11 @@ import UnconnectedToolBar from './ToolBar'
 import { toggleMark } from './MarkButton'
 import Leaf from './Leaf'
 import Element from './Element'
-import { Spinner } from '../Spinner'
 import { createEditor } from './helpers'
 import { useRegisterEditor } from './editor-registry'
 import { useEditState } from './withEditState'
 
 import { checkDependencies } from '../checkDependencies'
-import { FaLock } from 'react-icons/fa'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -37,9 +34,6 @@ const RichTextEditorConnector = (connector) => {
       deleteOldChanges,
       undo,
       redo,
-      lockRCE,
-      listenForRCELock,
-      releaseRCELock,
     },
   } = connector
   checkDependencies({
@@ -71,16 +65,14 @@ const RichTextEditorConnector = (connector) => {
     clientId,
     isCloudFile,
     emailAddress,
+    onBlur,
+    onFocus,
   }) => {
     // Editor instance
     const editor = useMemo(() => {
-      return createEditor()
+      return createEditor(log)
     }, [])
     const registerEditor = useRegisterEditor(editor)
-
-    const [lock, setLock] = useState(isCloudFile ? null : true)
-    const [focus, setFocus] = useState(null)
-    const [stealingLock, setStealingLock] = useState(false)
 
     // Rendering helpers
     const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
@@ -96,47 +88,13 @@ const RichTextEditorConnector = (connector) => {
       [openExternal]
     )
 
-    const stealLock = useCallback(() => {
-      setStealingLock(true)
-      lockRCE(fileId, id, clientId, emailAddress)
-        .then(() => {
-          setStealingLock(false)
-        })
-        .catch((error) => {
-          console.error('Error stealing the lock for editor: ', id)
-          setStealingLock(false)
-        })
-    }, [fileId, id, clientId, emailAddress])
-
-    const relinquishLock = useCallback(() => {
-      if (releaseRCELock && lock?.clientId === clientId) {
-        releaseRCELock(fileId, id)
-      }
-    }, [fileId, id, clientId, lock])
-
     const handleOnBlur = () => {
-      setFocus(false)
-      relinquishLock()
+      onBlur && onBlur()
     }
 
     const handleOnFocus = () => {
-      setFocus(true)
-      if (!lock || !lock.clientId) {
-        stealLock()
-      }
+      onFocus && onFocus()
     }
-
-    // Check for edit locks
-    useEffect(() => {
-      return listenForRCELock(fileId, id, clientId, (lockResult) => {
-        if (!isEqual(lockResult, lock)) {
-          setLock(lockResult)
-          if ((focus || focus === null) && (!lockResult || !lockResult.clientId)) {
-            stealLock()
-          }
-        }
-      })
-    }, [setLock, fileId, lock, id, clientId, stealLock, focus])
 
     // Focus on first render
     const [editorWrapperRef, setEditorWrapperRef] = useState(null)
@@ -147,7 +105,7 @@ const RichTextEditorConnector = (connector) => {
     }, [autoFocus, editorWrapperRef])
 
     // State management
-    const [value, currentSelection, key, onValueChanged, onKeyDown] = useEditState(
+    const [value, currentSelection, key, onValueChanged, onKeyDown, onPaste] = useEditState(
       editor,
       id,
       fileId,
@@ -231,14 +189,6 @@ const RichTextEditorConnector = (connector) => {
       }
     }, [])
 
-    useEffect(() => {
-      return () => {
-        if (releaseRCELock && lock?.clientId === clientId) {
-          releaseRCELock(fileId, id)
-        }
-      }
-    }, [lock, fileId, id])
-
     const handleClickEditable = (event) => {
       if (!editorWrapperRef) return
       if (editorWrapperRef.firstChild.contains(event.target)) return
@@ -249,19 +199,9 @@ const RichTextEditorConnector = (connector) => {
 
     if (value === null) return null
 
-    if (!lock) {
-      return <Spinner />
-    }
-
     const otherProps = {}
     return (
       <Slate editor={editor} value={value} onChange={onValueChanged} key={key.current}>
-        {lock.clientId && lock.clientId !== clientId ? (
-          <div className="lock-icon__wrapper" disabled={stealingLock} onClick={stealLock}>
-            <span>{t('Take Control')}</span>
-            <FaLock />
-          </div>
-        ) : null}
         <div className={cx('slate-editor__wrapper', className)}>
           <ToolBar editor={editor} darkMode={darkMode} selection={currentSelection} />
           <div
@@ -271,18 +211,15 @@ const RichTextEditorConnector = (connector) => {
               setEditorWrapperRef(e)
             }}
             onClick={handleClickEditable}
-            className={cx('slate-editor__editor', {
-              darkmode: darkMode,
-              rceLocked: lock.clientId && lock.clientId !== clientId,
-            })}
+            className={cx('slate-editor__editor', { darkmode: darkMode })}
           >
             <Editable
-              disabled={lock.clientId && lock.clientId !== clientId}
               spellCheck
               {...otherProps}
               renderLeaf={renderLeaf}
               renderElement={renderElement}
               placeholder={t('Enter some text...')}
+              onPaste={onPaste}
               onKeyDown={handleKeyDown}
               onKeyUp={handleKeyUp}
               onInput={handleInput}
@@ -308,6 +245,8 @@ const RichTextEditorConnector = (connector) => {
     clientId: PropTypes.string,
     isCloudFile: PropTypes.bool,
     emailAddress: PropTypes.string,
+    onBlur: PropTypes.func,
+    onFocus: PropTypes.func,
   }
 
   const {

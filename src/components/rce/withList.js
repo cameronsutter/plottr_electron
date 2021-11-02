@@ -1,6 +1,6 @@
 import { Editor, Transforms } from 'slate'
 
-export function withList(editor) {
+export const withList = (log) => (editor) => {
   const { insertBreak, deleteBackward } = editor
 
   editor.insertBreak = () => {
@@ -8,7 +8,7 @@ export function withList(editor) {
     try {
       parent = Editor.parent(editor, editor.selection)
     } catch (error) {
-      console.error(error)
+      log.error(error)
     }
 
     if (parent == null) return void insertBreak()
@@ -35,7 +35,7 @@ export function withList(editor) {
     try {
       parent = Editor.parent(editor, editor.selection)
     } catch (error) {
-      console.error(error)
+      log.error(error)
     }
 
     if (parent == null) return void deleteBackward(unit)

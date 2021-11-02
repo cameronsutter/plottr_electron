@@ -85,7 +85,7 @@ import CustomAttrFilterList from './CustomAttrFilterList'
 import PlottrModal from './PlottrModal'
 import EditAttribute from './EditAttribute'
 import MiniColorPicker from './MiniColorPicker'
-import { Spinner, FunSpinner } from './Spinner'
+import { Spinner, FunSpinner, FullPageSpinner } from './Spinner'
 import ColorPicker from './ColorPicker'
 import Switch from './Switch'
 import Beamer from './Beamer'
@@ -122,6 +122,7 @@ export {
   MiniColorPicker,
   Spinner,
   FunSpinner,
+  FullPageSpinner,
   InputModal,
   ColorPicker,
   Switch,

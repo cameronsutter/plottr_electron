@@ -1,4 +1,5 @@
 import { remote, ipcRenderer } from 'electron'
+import path from 'path'
 import axios from 'axios'
 
 import { t } from 'plottr_locales'
@@ -49,7 +50,13 @@ export const newFile = (
 }
 
 export const uploadExisting = (emailAddress, userId, fullState) => {
-  return uploadToFirebase(emailAddress, userId, fullState, fullState.file.fileName)
+  const filePath = fullState.file.fileName
+  return uploadToFirebase(
+    emailAddress,
+    userId,
+    fullState,
+    path.basename(filePath, path.extname(filePath))
+  )
 }
 
 export const uploadToFirebase = (emailAddress, userId, file, fileName) => {

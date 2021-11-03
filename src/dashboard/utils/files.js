@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import fs from 'fs'
 import { useMemo } from 'react'
 import { sortBy } from 'lodash'
@@ -51,3 +52,7 @@ function migrateKnownFileStore() {
 }
 
 migrateKnownFileStore()
+
+export function removeFromKnownFiles(id) {
+  ipcRenderer.send('remove-from-known-files', id)
+}

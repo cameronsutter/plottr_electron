@@ -1,16 +1,18 @@
+import log from 'electron-log'
+
 const CONSOLE_LOGGER = {
   info: (...args) => {
-    console.log(args[0], {
+    log.info(args[0], {
       extraArgs: args.slice(1),
     })
   },
   warn: (...args) => {
-    console.warn(args[0], {
+    log.warn(args[0], {
       extraArgs: args.slice(1),
     })
   },
   error: (...args) => {
-    console.error(args[0], {
+    log.error(args[0], {
       extraArgs: args.slice(1),
     })
   },

@@ -58,14 +58,14 @@ import { checkForActiveLicense } from './common/licensing/check_license'
 import { verifyLicense } from './common/licensing/verify_license'
 import { checkForPro } from './common/licensing/check_pro'
 import { trial90days } from './common/licensing/special_codes'
-import { openExistingFile } from './dashboard/utils/window_manager'
-import { doesFileExist, useSortedKnownFiles } from './dashboard/utils/files'
+import { openExistingFile as _openExistingFile } from './dashboard/utils/window_manager'
+import { doesFileExist, useSortedKnownFiles, removeFromKnownFiles } from './dashboard/utils/files'
 import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
-import { messageRenameFile, newFile, uploadExisting } from './files'
+import { messageRenameFile, newFile, uploadExisting, openFile } from './files'
 import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
 import { resizeImage } from './common/resizeImage'
@@ -87,10 +87,6 @@ const saveFile = (filePath, file) => {
 }
 
 const moveItemToTrash = shell.moveItemToTrash
-
-const openFile = (filePath, id, unknown) => {
-  ipcRenderer.send('open-known-file', filePath, id, unknown)
-}
 
 const platform = {
   undo: () => {
@@ -118,7 +114,13 @@ const platform = {
         ipcRenderer.send('create-new-file', template)
       }
     },
-    openExistingFile,
+    openExistingFile: () => {
+      const state = store.getState()
+      const {
+        client: { userId, emailAddress },
+      } = state.present
+      _openExistingFile(!!userId, userId, emailAddress)
+    },
     doesFileExist,
     useSortedKnownFiles,
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
@@ -168,9 +170,7 @@ const platform = {
         }
       }
     },
-    removeFromKnownFiles: (id) => {
-      ipcRenderer.send('remove-from-known-files', id)
-    },
+    removeFromKnownFiles,
     saveFile,
     readFileSync,
     moveItemToTrash,

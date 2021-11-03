@@ -1,4 +1,4 @@
-import { remote } from 'electron'
+import { remote, ipcRenderer } from 'electron'
 import axios from 'axios'
 
 import { t } from 'plottr_locales'
@@ -52,7 +52,7 @@ export const uploadExisting = (emailAddress, userId, fullState) => {
   return uploadToFirebase(emailAddress, userId, fullState, fullState.file.fileName)
 }
 
-const uploadToFirebase = (emailAddress, userId, file, fileName) => {
+export const uploadToFirebase = (emailAddress, userId, file, fileName) => {
   const newFile = {
     ...file.file,
     none: false,
@@ -75,4 +75,8 @@ export const messageRenameFile = (fileId) => {
   const renameEvent = new Event('rename-file', { bubbles: true, cancelable: false })
   renameEvent.fileId = fileId
   document.dispatchEvent(renameEvent)
+}
+
+export const openFile = (filePath, id, unknown) => {
+  ipcRenderer.send('open-known-file', filePath, id, unknown)
 }

@@ -82,6 +82,7 @@ const Navigation = ({
   const closeLoginModal = () => {}
 
   const setUser = (user) => {
+    // TODO: check that the user has Pro
     saveSetting('user.id', user.uid)
     saveSetting('user.email', user.email)
   }

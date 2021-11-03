@@ -1,23 +1,12 @@
 import React from 'react'
-import { t as i18n } from 'plottr_locales'
 import { EditSeries, ErrorBoundary, BookList, FileLocation, SubNav } from 'connected-components'
-import { Nav, NavItem, Button } from 'react-bootstrap'
-import { ipcRenderer } from 'electron'
+import { Nav } from 'react-bootstrap'
 
 export default function SeriesTab() {
-  const openDashboard = () => {
-    ipcRenderer.send('pls-open-dashboard')
-  }
-
   const SubNavigation = () => {
     return (
       <SubNav>
         <Nav bsStyle="pills">
-          <NavItem>
-            <Button bsSize="small" onClick={openDashboard}>
-              {i18n('Open Dashboard')}
-            </Button>
-          </NavItem>
           <FileLocation />
         </Nav>
       </SubNav>

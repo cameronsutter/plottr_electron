@@ -29,8 +29,11 @@ function openProjectWindow(filePath) {
   })
 
   newWindow.on('close', function (e) {
+    log.info('PWC-01')
     const win = getWindowById(this.id) // depends on 'this' being the window
+    log.info('PWC-02', win)
     if (win) {
+      log.info('PWC-03', win)
       updateOpenFiles(win.filePath)
       dereferenceWindow(win)
     }

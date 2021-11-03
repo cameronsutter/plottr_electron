@@ -396,10 +396,6 @@ ipcRenderer.once('send-launch', (event, version) => {
   MPQ.push('Launch', { online: navigator.onLine, version: version, ...settingsWeCareAbout })
 })
 
-ipcRenderer.on('reload', () => {
-  location.reload()
-})
-
 ipcRenderer.on('create-error-report', () => {
   createErrorReport()
 })

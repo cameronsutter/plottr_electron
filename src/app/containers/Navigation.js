@@ -35,19 +35,6 @@ const Navigation = ({
   const trialExpired = () => !licenseInfoSize && !settings.user?.id && trialInfo.expired
 
   useEffect(() => {
-    ipcRenderer.on('open-dashboard', (event) => {
-      setDashboardView('files')
-    })
-    ipcRenderer.on('close-dashboard', (event) => {
-      setDashboardView(null)
-    })
-    return () => {
-      ipcRenderer.removeAllListeners('open-dashboard')
-      ipcRenderer.removeAllListeners('close-dashboard')
-    }
-  }, [])
-
-  useEffect(() => {
     if (firstTime() || trialExpired()) setDashboardView('account')
   }, [licenseInfoSize, trialInfo, settings, dashboardView])
 

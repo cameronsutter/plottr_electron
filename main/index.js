@@ -155,10 +155,6 @@ app.on('open-url', function (event, url) {
   // const link = param.replace('plottr://')
 })
 
-ipcMain.once('initial-mount-complete', (event) => {
-  event.reply('open-dashboard')
-})
-
 ipcMain.on('pls-fetch-state', function (event, id) {
   const win = getWindowById(id)
   if (win) {

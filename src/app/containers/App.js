@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ipcRenderer } from 'electron'
+import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 import { onSessionChange, listenToFiles } from 'wired-up-firebase'
@@ -103,11 +104,8 @@ const App = ({
       askToSave({})
     })
     ipcRenderer.on('wants-to-close', () => {
+      log.info('received wants-to-close')
       isTryingToClose.current = true
-      askToSave({})
-    })
-    ipcRenderer.on('reload', () => {
-      isTryingToReload.current = true
       askToSave({})
     })
     ipcRenderer.on('advanced-export-file-from-menu', (event) => {
@@ -116,7 +114,6 @@ const App = ({
     ipcRenderer.on('turn-on-acts-help', () => {
       setShowActsGuideHelp(true)
     })
-    ipcRenderer.send('initial-mount-complete')
     window.addEventListener('beforeunload', askToSave)
 
     return () => {

@@ -65,6 +65,7 @@ function useJsonStore(store, ipcEventToReloadOn, checksOften) {
   useEffect(() => {
     let timeout
     if (checksOften) {
+      console.log('checksOften, setting up timeout')
       timeout = setTimeout(() => {
         console.log('checking store')
         if (!isEqual(info, store.get())) setInfo(store.get())

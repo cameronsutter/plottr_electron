@@ -1,18 +1,18 @@
 const path = require('path')
-const i18n = require('plottr_locales').t
+const { t } = require('plottr_locales')
+const log = require('electron-log')
 const { app, shell } = require('electron')
 const { is } = require('electron-util')
 const { getWindowById, numberOfWindows } = require('../windows')
 const { NODE_ENV } = require('../constants')
 const { newFileOptions } = require('../new_file_options')
-const { openDashboard } = require('./dashboard')
 const { getLicenseInfo } = require('../license_info')
 const { getTriaInfo } = require('../trial_info')
 
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
-let showInMessage = i18n('Show in File Explorer')
+let showInMessage = t('Show in File Explorer')
 if (is.macos) {
-  showInMessage = i18n('Show in Finder')
+  showInMessage = t('Show in Finder')
 }
 
 function buildFileMenu(filePath) {
@@ -21,16 +21,7 @@ function buildFileMenu(filePath) {
   const trialStore = getTriaInfo()
   let submenu = [
     {
-      label: i18n('Open Dashboard'),
-      click: function () {
-        openDashboard()
-      },
-    },
-    {
-      type: 'separator',
-    },
-    {
-      label: i18n('Save'),
+      label: t('Save'),
       accelerator: 'CmdOrCtrl+S',
       click: function (event, focusedWindow) {
         if (isTemp) {
@@ -41,7 +32,7 @@ function buildFileMenu(filePath) {
       },
     },
     {
-      label: i18n('Save as') + '...',
+      label: t('Save as') + '...',
       accelerator: 'CmdOrCtrl+Shift+S',
       click: function (event, focusedWindow) {
         focusedWindow.webContents.send('save-as')
@@ -55,9 +46,10 @@ function buildFileMenu(filePath) {
       },
     },
     {
-      label: i18n('Close'),
+      label: t('Close'),
       accelerator: 'CmdOrCtrl+W',
       click: function (event, focusedWindow) {
+        log.info('sending wants-to-close')
         focusedWindow.webContents.send('wants-to-close')
       },
     },
@@ -65,27 +57,27 @@ function buildFileMenu(filePath) {
       type: 'separator',
     },
     {
-      label: i18n('Export'),
+      label: t('Export'),
       enabled:
         (trialStore && !trialStore.expired && trialStore.startsAt) ||
         (licenseStore && Object.keys(licenseStore).length > 0),
       submenu: [
         {
-          label: i18n('MS Word'),
+          label: t('MS Word'),
           click: (event, focusedWindow) => {
             const options = { type: 'word' }
             focusedWindow.webContents.send('export-file-from-menu', options)
           },
         },
         {
-          label: i18n('Scrivener'),
+          label: t('Scrivener'),
           click: (event, focusedWindow) => {
             const options = { type: 'scrivener' }
             focusedWindow.webContents.send('export-file-from-menu', options)
           },
         },
         {
-          label: i18n('Advanced...'),
+          label: t('Advanced...'),
           click: (event, focusedWindow) => {
             focusedWindow.webContents.send('advanced-export-file-from-menu')
           },
@@ -93,7 +85,7 @@ function buildFileMenu(filePath) {
       ],
     },
     {
-      label: i18n('Reload from File'),
+      label: t('Reload from File'),
       visible: NODE_ENV === 'development',
       click: (event, focusedWindow) => {
         const winObj = getWindowById(focusedWindow.id)
@@ -109,7 +101,7 @@ function buildFileMenu(filePath) {
     },
   ]
   return {
-    label: i18n('File'),
+    label: t('File'),
     submenu: submenu,
   }
 }

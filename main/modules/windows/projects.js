@@ -8,7 +8,6 @@ const { rollbar } = require('../rollbar')
 // const { NODE_ENV } = require('../constants')
 const { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } = require('.')
 const { addToKnown } = require('../known_files')
-const { loadMenu } = require('../menus')
 
 ipcMain.on('pls-open-window', (event, filePath, unknown) => {
   openProjectWindow(filePath)
@@ -25,11 +24,12 @@ function openProjectWindow(filePath) {
   newWindow.on('closed', function () {
     // doing this here because we can't do the right thing: loadMenu on dashboard focus
     // see rants below about why not
-    loadMenu()
+    // loadMenu()
+    log.info('PWCC-10', 'CLOSED')
   })
 
   newWindow.on('close', function (e) {
-    log.info('PWC-01')
+    log.info('PWC-01', this)
     const win = getWindowById(this.id) // depends on 'this' being the window
     log.info('PWC-02', win)
     if (win) {
@@ -42,13 +42,13 @@ function openProjectWindow(filePath) {
   newWindow.on('focus', () => {
     // WHY does it work here, but not in utils (nor windows/dashboard)????
     // in those others, loadMenu is undefined after requiring it
-    loadMenu()
+    // loadMenu()
   })
 
   newWindow.on('blur', () => {
     // WHY does it work here, but not in utils (nor windows/dashboard)????
     // in those others, loadMenu is undefined after requiring it
-    loadMenu()
+    // loadMenu()
   })
 
   try {

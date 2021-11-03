@@ -117,7 +117,11 @@ app.whenReady().then(() => {
     if (is.windows) app.quit()
   })
   app.on('will-quit', () => {
+    app.releaseSingleInstanceLock()
     log.info('will-quit')
+  })
+  app.on('quit', () => {
+    log.info('quit')
   })
 })
 

@@ -46,6 +46,7 @@ function buildPlottrMenu() {
         label: i18n('Quit'),
         accelerator: 'Cmd+Q',
         click: function () {
+          console.log('quitting!')
           app.quit()
         },
       }

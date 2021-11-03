@@ -75,9 +75,7 @@ function reloadAllWindows() {
 }
 
 function dereferenceWindow(winObj) {
-  log.info('dereferencing window-01')
   const index = windows.findIndex((win) => win.id === winObj.id)
-  log.info('dereferencing window-02', index)
   windows.splice(index, 1)
 }
 

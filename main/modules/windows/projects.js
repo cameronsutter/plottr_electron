@@ -25,17 +25,14 @@ function openProjectWindow(filePath) {
     // doing this here because we can't do the right thing: loadMenu on dashboard focus
     // see rants below about why not
     // loadMenu()
-    log.info('PWCC-10', 'CLOSED')
   })
 
   newWindow.on('close', function (e) {
-    log.info('PWC-01', this)
-    const win = getWindowById(this.id) // depends on 'this' being the window
-    log.info('PWC-02', win)
+    const win = getWindowById(this.id) || e.sender // depends on 'this' being the window
     if (win) {
-      log.info('PWC-03', win)
       updateOpenFiles(win.filePath)
       dereferenceWindow(win)
+      win.browserWindow.webContents.destroy()
     }
   })
 

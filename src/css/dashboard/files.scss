@@ -99,7 +99,7 @@
     // float: right;
   }
 
-  svg {
+  svg:nth-child(2), span:nth-child(2) {
     margin: 15px;
   }
 }
@@ -183,6 +183,9 @@
         .permissions {
           display: flex;
           align-items: baseline;
+          svg {
+            margin-right: 8px;
+          }
         }
       }
 

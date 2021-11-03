@@ -39,7 +39,8 @@ export const exportConfigStore = new Store({
 export const manifestStore = new Store({ name: manifestPath })
 export const MANIFEST_ROOT = 'manifest'
 
-const checkInterval = 1000 * 60 * 1 // every minute
+// const checkInterval = 1000 * 60 * 1 // every minute
+const checkInterval = 5000 // every 5 seconds
 
 function useJsonStore(store, ipcEventToReloadOn, checksOften) {
   const [info, setInfo] = useState(store.store)
@@ -65,6 +66,7 @@ function useJsonStore(store, ipcEventToReloadOn, checksOften) {
     let timeout
     if (checksOften) {
       timeout = setTimeout(() => {
+        console.log('checking store')
         if (!isEqual(info, store.get())) setInfo(store.get())
         if (!isEqual(size, store.size)) setSize(store.size)
       }, checkInterval)

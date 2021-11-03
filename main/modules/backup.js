@@ -30,7 +30,7 @@ function saveBackup(filePath, data, callback) {
       if (deleted.length) {
         log.info('Deleted old backups: ', deleted)
       } else {
-        log.info('No old backups to delete')
+        // log.info('No old backups to delete')
       }
     })
     .catch((error) => {

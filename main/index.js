@@ -113,6 +113,12 @@ app.whenReady().then(() => {
     loadMenu(true)
     windowsOpenFileEventHandler(argv)
   })
+  app.on('window-all-closed', () => {
+    if (is.windows) app.quit()
+  })
+  app.on('will-quit', () => {
+    log.info('will-quit')
+  })
 })
 
 function windowsOpenFileEventHandler(argv) {

@@ -6,6 +6,7 @@ const { NODE_ENV } = require('../constants')
 const { localeNames, setupI18n } = require('plottr_locales')
 const SETTINGS = require('../settings')
 const { reloadAllWindows } = require('../windows')
+const log = require('electron-log')
 
 function buildPlottrMenu() {
   const submenu = [
@@ -46,7 +47,7 @@ function buildPlottrMenu() {
         label: i18n('Quit'),
         accelerator: 'Cmd+Q',
         click: function () {
-          console.log('quitting!')
+          log.info('quitting!')
           app.quit()
         },
       }

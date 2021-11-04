@@ -8,6 +8,7 @@ import { actions } from 'pltr/v2'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
+import Spinner from '../components/Spinner'
 import {
   AskToSaveModal,
   TemplateCreate,
@@ -199,6 +200,7 @@ const App = ({
         </React.StrictMode>
       </main>
       <React.StrictMode>
+        <Spinner />
         {renderTemplateCreate()}
         {renderAskToSave()}
         {showTour && renderGuidedTour()}

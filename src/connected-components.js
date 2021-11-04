@@ -6,6 +6,7 @@ import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 
 import { t } from 'plottr_locales'
+import { actions } from 'pltr/v2'
 import {
   publishRCEOperations,
   fetchRCEOperations,
@@ -69,6 +70,7 @@ import { messageRenameFile, newFile, uploadExisting, openFile } from './files'
 import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
 import { resizeImage } from './common/resizeImage'
+import { logger } from './logger'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -109,7 +111,16 @@ const platform = {
         project: { fileList },
       } = state.present
       if (userId) {
+        store.dispatch(actions.project.showLoader(true))
         newFile(emailAddress, userId, fileList, state, clientId, template, openFile)
+          .then((fileId) => {
+            logger.info('Created new file.', fileId)
+            store.dispatch(actions.project.showLoader(false))
+          })
+          .catch((error) => {
+            logger.error('Error creating a new file', error)
+            store.dispatch(actions.project.showLoader(false))
+          })
       } else {
         ipcRenderer.send('create-new-file', template)
       }
@@ -423,3 +434,4 @@ export const BookChooser = components.BookChooser
 export const TimelineWrapper = components.TimelineWrapper
 export const DashboardBody = components.DashboardBody
 export const FirebaseLogin = components.FirebaseLogin
+export const FullPageSpinner = components.FullPageSpinner

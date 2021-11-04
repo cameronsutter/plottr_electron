@@ -45,6 +45,7 @@ export const newFile = (
       openFile(`plottr://${fileId}`, fileId, false)
       setFileList(newFileList.filter(({ deleted }) => !deleted))
       closeDashboard()
+      return fileId
     })
   })
 }

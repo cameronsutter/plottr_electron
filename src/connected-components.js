@@ -130,7 +130,16 @@ const platform = {
       const {
         client: { userId, emailAddress },
       } = state.present
+      store.dispatch(actions.project.showLoader(true))
       _openExistingFile(!!userId, userId, emailAddress)
+        .then(() => {
+          logger.info('Opened existing file')
+          store.dispatch(actions.project.showLoader(false))
+        })
+        .catch((error) => {
+          logger.error('Error opening existing file', error)
+          store.dispatch(actions.project.showLoader(false))
+        })
     },
     doesFileExist,
     useSortedKnownFiles,

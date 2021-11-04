@@ -3,21 +3,33 @@ import { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
-import { selectors } from 'pltr/v2'
+import { selectors, actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { InputModal } from 'connected-components'
 import { editFileName } from 'wired-up-firebase'
 
-const Renamer = ({ userId }) => {
+import { logger } from '../../logger'
+
+const Renamer = ({ userId, showLoader }) => {
   const [visible, setVisible] = useState(false)
   const [fileId, setFileId] = useState(null)
 
   const renameFile = (newName) => {
-    if (!userId) return
-    editFileName(userId, fileId, newName).then(() => {
-      setFileId(null)
-      setVisible(false)
-    })
+    if (!userId) {
+      return
+    }
+    showLoader(true)
+    editFileName(userId, fileId, newName)
+      .then(() => {
+        logger.error(`Renamed file with id ${fileId} to ${newName}`)
+        setFileId(null)
+        setVisible(false)
+        showLoader(false)
+      })
+      .catch((error) => {
+        logger.error(`Error renaming file with id ${fileId}`, error)
+        showLoader(false)
+      })
   }
 
   useEffect(() => {
@@ -49,8 +61,12 @@ const Renamer = ({ userId }) => {
 
 Renamer.propTypes = {
   userId: PropTypes.string,
+  showLoader: PropTypes.func.isRequired,
 }
 
-export default connect((state) => ({
-  userId: selectors.userIdSelector(state.present),
-}))(Renamer)
+export default connect(
+  (state) => ({
+    userId: selectors.userIdSelector(state.present),
+  }),
+  { showLoader: actions.project.showLoader }
+)(Renamer)

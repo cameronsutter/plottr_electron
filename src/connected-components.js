@@ -177,7 +177,11 @@ const platform = {
             project: { fileList },
           },
         } = store.getState()
-        const fileId = fileList.find(({ filePath }) => filePath === filePath)?.id
+        const fileId = filePath.replace(/^plottr:\/\//, '')
+        if (!fileList.find(({ id }) => id === fileId)) {
+          logger.error(`Coludn't find file with id: ${fileId} to rename`)
+          return
+        }
         if (fileId) messageRenameFile(fileId)
         return
       }

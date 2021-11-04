@@ -10,7 +10,7 @@ export function useSortedKnownFiles(searchTerm, initialFilesFromFirebase, checkO
     const filteredFileIds = Object.keys(files).filter((id) => {
       if (searchTerm && searchTerm.length > 1) {
         const f = files[`${id}`]
-        return f.path.toLowerCase().includes(searchTerm)
+        return (f.fileName || f.path).toLowerCase().includes(searchTerm.toLowerCase())
       } else {
         return true
       }

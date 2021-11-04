@@ -324,7 +324,18 @@ const platform = {
     isStorageURL,
     resolveToPublicUrl: (storageUrl) => {
       if (!storageUrl) return null
-      return imagePublicURL(storageUrl)
+      const state = store.getState()
+      const {
+        client: { userId },
+        project: { selectedFile },
+      } = state.present
+      const fileId = selectedFile?.id
+      if (!fileId || !userId) {
+        return Promise.reject(
+          'No file or you are not logged in.  Either way we cannot fetch a picture.'
+        )
+      }
+      return imagePublicURL(storageUrl, fileId, userId)
     },
     saveImageToStorageBlob: (blob, name) => {
       const state = store.getState()

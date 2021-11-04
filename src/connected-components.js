@@ -320,7 +320,6 @@ const platform = {
     uploadExisting,
   },
   storage: {
-    imagePublicURL,
     isStorageURL,
     resolveToPublicUrl: (storageUrl) => {
       if (!storageUrl) return null

@@ -155,7 +155,16 @@ const platform = {
       } = store.getState()
       const isOnCloud = path.startsWith('plottr://')
       if (isOnCloud) {
+        store.dispatch(actions.project.showLoader(true))
         deleteFile(id, userId, clientId)
+          .then(() => {
+            logger.info(`Deleted file at path: ${path}`)
+            store.dispatch(actions.project.showLoader(false))
+          })
+          .catch((error) => {
+            logger.error(`Error deleting file at path: ${path}`)
+            store.dispatch(actions.project.showLoader(false))
+          })
       } else {
         ipcRenderer.send('delete-known-file', id, path, userId, clientId)
       }

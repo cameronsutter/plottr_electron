@@ -60,7 +60,11 @@ import { verifyLicense } from './common/licensing/verify_license'
 import { checkForPro } from './common/licensing/check_pro'
 import { trial90days } from './common/licensing/special_codes'
 import { openExistingFile as _openExistingFile } from './dashboard/utils/window_manager'
-import { doesFileExist, useSortedKnownFiles, removeFromKnownFiles } from './dashboard/utils/files'
+import {
+  doesFileExist,
+  useSortedKnownFiles as _useSortedKnownFiles,
+  removeFromKnownFiles,
+} from './dashboard/utils/files'
 import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
@@ -142,7 +146,16 @@ const platform = {
         })
     },
     doesFileExist,
-    useSortedKnownFiles,
+    useSortedKnownFiles: (...args) => {
+      const state = store.getState()
+      const {
+        client: { userId },
+      } = state.present
+      return _useSortedKnownFiles(userId, ...args)
+    },
+    useSortedKnownFilesIgnoringLoggedIn: (...args) => {
+      return _useSortedKnownFiles(null, ...args)
+    },
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,

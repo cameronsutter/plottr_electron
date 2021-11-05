@@ -121,16 +121,18 @@ function useKnownFilesFromHardDisk(checkOften = true) {
   return useJsonStore(knownFilesStore, 'reload-recents', checkOften)
 }
 
-export function useKnownFilesInfo(initialFirebaseFileList, checkOften = true) {
+export function useKnownFilesInfo(userId, initialFirebaseFileList, checkOften = true) {
   const [firestoreFilesByPosition] = useKnownFilesFromFirebase(initialFirebaseFileList)
   const [hardDiskFilesByPosition] = useKnownFilesFromHardDisk(checkOften)
 
   const computeNewLists = () => {
-    const newFilesByPosition = cloneDeep(hardDiskFilesByPosition)
-    const maxId = Object.keys(hardDiskFilesByPosition).reduce(
-      (max, next) => Math.max(max, next),
-      Number.NEGATIVE_INFINITY
-    )
+    const newFilesByPosition = userId ? {} : cloneDeep(hardDiskFilesByPosition)
+    const maxId = userId
+      ? 0
+      : Object.keys(hardDiskFilesByPosition).reduce(
+          (max, next) => Math.max(max, next),
+          Number.NEGATIVE_INFINITY
+        )
     Object.values(firestoreFilesByPosition).forEach((value, index) => {
       newFilesByPosition[index + maxId + 1] = {
         ...value,

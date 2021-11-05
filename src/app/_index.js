@@ -74,9 +74,6 @@ ipcRenderer.on('state-saved', (_arg) => {
 const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
 
 function bootFile(filePath, options, numOpenFiles) {
-  win.setTitle(displayFileName(filePath))
-  win.setRepresentedFilename(filePath)
-
   const { darkMode, beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
 
@@ -102,6 +99,7 @@ function bootFile(filePath, options, numOpenFiles) {
               return
             }
             console.log(`Loaded file ${json.file.fileName}.`)
+            win.setTitle(displayFileName(json.file.fileName))
             if (migrated) {
               console.log(
                 `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
@@ -162,6 +160,8 @@ function bootFile(filePath, options, numOpenFiles) {
         )
       })
     } else {
+      win.setTitle(displayFileName(filePath))
+      win.setRepresentedFilename(filePath)
       let json
       try {
         json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))

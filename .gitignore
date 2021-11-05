@@ -1,5 +1,4 @@
 # Stuff that we ignore
-
 node_modules
 *.bundle.js
 *.bundle.js.map

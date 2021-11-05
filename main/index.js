@@ -84,10 +84,10 @@ app.whenReady().then(() => {
     })
     .filter((file) => fs.existsSync(file.path))
   const latestFile = files[0]
-  if (!latestFile) {
-    createNew()
-  } else {
+  if (latestFile) {
     openProjectWindow(latestFile.path)
+  } else {
+    createNew()
   }
   windowsOpenFileEventHandler(process.argv)
 
@@ -105,7 +105,11 @@ app.whenReady().then(() => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
-      reloadAllWindows()
+      if (latestFile) {
+        openProjectWindow(latestFile.path)
+      } else {
+        createNew()
+      }
     }
   })
   app.on('second-instance', (_event, argv) => {
@@ -118,10 +122,6 @@ app.whenReady().then(() => {
   })
   app.on('will-quit', () => {
     app.releaseSingleInstanceLock()
-    log.info('will-quit')
-  })
-  app.on('quit', () => {
-    log.info('quit')
   })
 })
 

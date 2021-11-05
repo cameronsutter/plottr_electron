@@ -12,14 +12,9 @@ ipcMain.on('pls-reload-menu', () => {
   loadMenu()
 })
 
-function buildMenu(makeItSimple) {
-  if (makeItSimple) {
-    return [buildPlottrMenu(), buildEditMenu(), buildWindowMenu(), buildHelpMenu()]
-  }
-
+function buildMenu() {
   let menus = [buildPlottrMenu()]
 
-  // is dashboard focused?
   const win = BrowserWindow.getFocusedWindow()
   if (win) {
     const winObj = getWindowById(win.id)

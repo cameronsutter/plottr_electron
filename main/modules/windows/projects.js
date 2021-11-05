@@ -5,9 +5,9 @@ const { makeBrowserWindow } = require('../utils')
 const { filePrefix } = require('../helpers')
 const { updateOpenFiles } = require('./files')
 const { rollbar } = require('../rollbar')
-// const { NODE_ENV } = require('../constants')
 const { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } = require('.')
 const { addToKnown } = require('../known_files')
+const { loadMenu } = require('../menus')
 
 ipcMain.on('pls-open-window', (event, filePath, unknown) => {
   openProjectWindow(filePath)
@@ -21,12 +21,6 @@ function openProjectWindow(filePath) {
   const entryFile = filePrefix(path.join(__dirname, 'app.html'))
   newWindow.loadURL(entryFile)
 
-  newWindow.on('closed', function () {
-    // doing this here because we can't do the right thing: loadMenu on dashboard focus
-    // see rants below about why not
-    // loadMenu()
-  })
-
   newWindow.on('close', function (e) {
     const win = getWindowById(this.id) || e.sender // depends on 'this' being the window
     if (win) {
@@ -39,13 +33,13 @@ function openProjectWindow(filePath) {
   newWindow.on('focus', () => {
     // WHY does it work here, but not in utils (nor windows/dashboard)????
     // in those others, loadMenu is undefined after requiring it
-    // loadMenu()
+    loadMenu()
   })
 
   newWindow.on('blur', () => {
     // WHY does it work here, but not in utils (nor windows/dashboard)????
     // in those others, loadMenu is undefined after requiring it
-    // loadMenu()
+    loadMenu()
   })
 
   try {

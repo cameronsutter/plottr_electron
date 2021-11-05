@@ -75,7 +75,7 @@ app.userAgentFallback =
   'Firefox Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) plottr/2021.7.29 Chrome/85.0.4183.121 Electron/10.4.7 Safari/537.36'
 
 app.whenReady().then(() => {
-  loadMenu(true)
+  loadMenu()
   const files = Object.values(knownFilesStore.store)
     .sort((thisFile, thatFile) => {
       if (thisFile.lastOpened > thatFile.lastOpened) return -1
@@ -114,7 +114,7 @@ app.whenReady().then(() => {
   })
   app.on('second-instance', (_event, argv) => {
     log.info('second-instance')
-    loadMenu(true)
+    loadMenu()
     windowsOpenFileEventHandler(argv)
   })
   app.on('window-all-closed', () => {
@@ -203,8 +203,8 @@ ipcMain.on('create-from-snowflake', (_event, importedPath) => {
   createFromSnowflake(importedPath)
 })
 
-ipcMain.on('open-known-file', (_event, filePath, id, unknown) => {
-  openKnownFile(filePath, id, unknown)
+ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName) => {
+  openKnownFile(filePath, id, unknown, headerBarFileName)
 })
 
 ipcMain.on('save-file', (_event, fileName, file) => {

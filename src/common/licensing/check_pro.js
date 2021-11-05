@@ -8,7 +8,7 @@ export const PRO_ID = '104900'
 export function checkForPro(email, callback) {
   rp(makeRequest(subscriptionsURL(email)))
     .then((response) => {
-      log.info('successfull pro request')
+      log.info('successful pro request')
       if (!response.subscriptions) {
         log.info(response)
         return callback(false)

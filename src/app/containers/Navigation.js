@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 import { ipcRenderer } from 'electron'
 import { Beamer, BookChooser } from 'connected-components'
-import SETTINGS from '../../common/utils/settings'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
 import { FaRegUser } from 'react-icons/fa'
@@ -15,7 +14,6 @@ import { useLicenseInfo, useSettingsInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
 
-const trialMode = SETTINGS.get('trialMode')
 const isDev = process.env.NODE_ENV == 'development'
 
 const Navigation = ({
@@ -43,7 +41,7 @@ const Navigation = ({
   }
 
   const TrialLinks = () => {
-    if (!trialMode || isDev) return null
+    if (!settings.trialMode || isDev) return null
 
     return (
       <Navbar.Form pullRight style={{ marginRight: '15px' }}>
@@ -87,6 +85,18 @@ const Navigation = ({
     saveSetting('user.email', user.email)
   }
 
+  const dashbrdModal = useMemo(
+    () => (
+      <DashboardModal
+        activeView={dashboardView}
+        setActiveView={selectDashboardView}
+        closeDashboard={resetDashboardView}
+        darkMode={isDarkMode}
+      />
+    ),
+    [dashboardView, isDarkMode]
+  )
+
   // don't show the login if user is not on Pro
   const hasPro = !!settings.user?.id
   const showFrb = hasPro && !userId
@@ -94,14 +104,7 @@ const Navigation = ({
   return (
     <>
       {showFrb ? <LoginModal closeLoginModal={closeLoginModal} receiveUser={setUser} /> : null}
-      {dashboardView ? (
-        <DashboardModal
-          activeView={dashboardView}
-          setActiveView={selectDashboardView}
-          closeDashboard={resetDashboardView}
-          darkMode={isDarkMode}
-        />
-      ) : null}
+      {dashboardView ? dashbrdModal : null}
       <Navbar className="project-nav" fluid inverse={isDarkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />

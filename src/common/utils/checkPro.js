@@ -9,7 +9,7 @@ export async function userHasPro(email) {
       email: email,
       auth: '*otterbeartreepale*',
     })
-    console.log('successfull pro request')
+    console.log('successful pro request')
     if (!res.data?.subscriptions) {
       console.log(res)
       return [false]

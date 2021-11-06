@@ -37,15 +37,18 @@ export function listTemplates(type) {
   )
 }
 
-export function listCustomTemplates(type) {
+export const listCustomTemplates = (cloudOnly) => (type) => {
+  if (cloudOnly) {
+    return sortBy(listCustomTemplatesFromFirebase(type), 'name')
+  }
+
   const templatesById = customTemplateStore.get()
   if (!templatesById) return []
   if (!type) return Object.values(templatesById)
 
-  const firebaseTemplates = listCustomTemplatesFromFirebase(type)
   const localTemplates = Object.values(templatesById).filter((t) => t.type == type)
 
-  return sortBy(firebaseTemplates.concat(localTemplates), 'name')
+  return sortBy(localTemplates, 'name')
 }
 
 const isLocalTemplate = (id) => {

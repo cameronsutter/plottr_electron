@@ -163,6 +163,10 @@ export function useTemplatesInfo() {
   return useJsonStore(templatesStore)
 }
 
+export function useCustomTemplatesInfo() {
+  return useJsonStore(customTemplatesStore)
+}
+
 const indexById = (array) => {
   const indexed = {}
   array.forEach((x) => (indexed[x.id] = x))
@@ -191,10 +195,6 @@ export function useCustomTemplatesFromLocalStorage() {
 
   const nop = () => {}
   return [templates, templates.size, nop, nop]
-}
-
-export function useCustomTemplatesInfo() {
-  return useJsonStore(customTemplatesStore)
 }
 
 export function useSettingsInfo(checkOften = true) {

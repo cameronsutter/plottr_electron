@@ -35,14 +35,15 @@ import {
   useTemplatesInfo,
   useLicenseInfo,
   licenseStore,
-  useCustomTemplatesInfo,
+  useCustomTemplatesInfo as _useCustomTemplatesInfo,
   useSettingsInfo,
+  useCustomTemplatesFromLocalStorage,
 } from './common/utils/store_hooks'
 import askToExport from './common/exporter/start_export'
 import export_config from './common/exporter/default_config'
 import {
   listTemplates,
-  listCustomTemplates,
+  listCustomTemplates as _listCustomTemplates,
   getTemplateById,
   deleteTemplate,
   editTemplateDetails,
@@ -280,14 +281,20 @@ const platform = {
   template: {
     TemplateFetcher,
     listTemplates,
-    listCustomTemplates,
+    listCustomTemplates: (...args) => {
+      const state = store.getState()
+      const {
+        client: { userId },
+      } = state.present
+      return _listCustomTemplates(userId)(...args)
+    },
     getTemplateById,
     deleteTemplate: (templateId) => {
       const state = store.getState()
       const {
         client: { userId },
       } = state.present
-      deleteTemplate(templateId, userId)
+      return deleteTemplate(templateId, userId)
     },
     editTemplateDetails,
     startSaveAsTemplate: (itemType) => {
@@ -299,7 +306,15 @@ const platform = {
       ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
     },
     useFilteredSortedTemplates,
-    useCustomTemplatesInfo,
+    useCustomTemplatesInfo: (...args) => {
+      const state = store.getState()
+      const {
+        client: { userId },
+      } = state.present
+      if (userId) return useCustomTemplatesFromLocalStorage(...args)
+      return _useCustomTemplatesInfo(...args)
+    },
+    useLocalCustomTemplatesInfo: _useCustomTemplatesInfo,
     useTemplatesInfo,
   },
   settings: SETTINGS,

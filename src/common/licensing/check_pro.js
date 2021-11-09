@@ -1,6 +1,7 @@
 import rp from 'request-promise-native'
 import log from 'electron-log'
 import { subscriptionsURL, makeRequest } from './licensing'
+import { currentUser } from 'wired-up-firebase'
 
 export const PRO_ID = '104900'
 
@@ -11,7 +12,8 @@ export function checkForPro(email, callback) {
       log.info('successful pro request')
       if (!response.subscriptions) {
         log.info(response)
-        return callback(false)
+        callback(false)
+        return
       }
 
       // find the subscription with Pro
@@ -24,7 +26,18 @@ export function checkForPro(email, callback) {
         log.info(info.product_id, info.status, info.expiration)
         callback(true, info)
       } else {
-        callback(false)
+        currentUser()
+          .getIdTokenResult()
+          .then((token) => {
+            if (token?.claims?.beta || token?.claims?.admin) {
+              callback(true)
+            } else {
+              callback(false)
+            }
+          })
+          .catch((error) => {
+            callback(false)
+          })
       }
     })
     .catch((err) => {

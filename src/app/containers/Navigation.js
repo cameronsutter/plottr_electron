@@ -22,6 +22,7 @@ const Navigation = ({
   changeCurrentView,
   forceProjectDashboard,
   userId, // probably don't need this
+  hasCurrentProLicense,
 }) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
   const [settings, _size, saveSetting] = useSettingsInfo()
@@ -33,8 +34,10 @@ const Navigation = ({
   const trialExpired = () => !licenseInfoSize && !settings.user?.id && trialInfo.expired
 
   useEffect(() => {
-    if (firstTime() || trialExpired()) setDashboardView('account')
-  }, [licenseInfoSize, trialInfo, settings, dashboardView])
+    if (firstTime() || trialExpired() || (userId && !hasCurrentProLicense)) {
+      setDashboardView('account')
+    }
+  }, [licenseInfoSize, trialInfo, settings, dashboardView, userId, hasCurrentProLicense])
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
@@ -148,6 +151,7 @@ Navigation.propTypes = {
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
   userId: PropTypes.string,
+  hasCurrentProLicense: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -155,6 +159,7 @@ function mapStateToProps(state) {
     currentView: selectors.currentViewSelector(state.present),
     isDarkMode: selectors.isDarkModeSelector(state.present),
     userId: selectors.userIdSelector(state.present),
+    hasCurrentProLicense: selectors.hasProSelector(state.present),
   }
 }
 

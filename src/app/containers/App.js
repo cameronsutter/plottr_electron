@@ -22,6 +22,7 @@ import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
 import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 import SETTINGS from '../../common/utils/settings'
+import { checkForPro } from '../../common/licensing/check_pro'
 
 const App = ({
   forceProjectDashboard,
@@ -31,6 +32,7 @@ const App = ({
   setUserId,
   setEmailAddress,
   setFileList,
+  setHasPro,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -83,9 +85,14 @@ const App = ({
         SETTINGS.set('user.email', user.email)
         setUserId(user.uid)
         setEmailAddress(user.email)
-        fileListener = listenToFiles(user.uid, (files) => {
-          const activeFiles = files.filter(({ deleted }) => !deleted)
-          setFileList(activeFiles)
+        checkForPro(user.email, (hasPro) => {
+          setHasPro(hasPro)
+          if (hasPro) {
+            fileListener = listenToFiles(user.uid, (files) => {
+              const activeFiles = files.filter(({ deleted }) => !deleted)
+              setFileList(activeFiles)
+            })
+          }
         })
       }
     })
@@ -217,6 +224,7 @@ App.propTypes = {
   forceProjectDashboard: PropTypes.bool,
   isCloudFile: PropTypes.bool,
   setUserId: PropTypes.func.isRequired,
+  setHasPro: PropTypes.func.isRequired,
   setFileList: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
 }
@@ -233,4 +241,5 @@ export default connect(mapStateToProps, {
   setUserId: actions.client.setUserId,
   setFileList: actions.project.setFileList,
   setEmailAddress: actions.client.setEmailAddress,
+  setHasPro: actions.client.setHasPro,
 })(App)

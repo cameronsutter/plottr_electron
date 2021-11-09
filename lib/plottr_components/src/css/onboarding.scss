@@ -50,6 +50,7 @@
       font-size: 20px;
       text-align: left;
       padding-left: 60px;
+      color: $text-color;
       li {
         padding: 4px;
       }
@@ -74,6 +75,7 @@
       p.secondary-text {
         font-size: 12px;
         margin-left: 20px;
+        @include secondary-text;
       }
       .checkbox {
         padding-left: 0;

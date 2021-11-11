@@ -15,10 +15,6 @@ import AnalyzerTab from '../components/analyzer/AnalyzerTab'
 
 class Body extends Component {
   render() {
-    if (!this.props.fileIsLoaded) {
-      return null
-    }
-
     switch (this.props.currentView) {
       case 'project':
         return <SeriesTab />
@@ -50,13 +46,11 @@ class Body extends Component {
 
 Body.propTypes = {
   currentView: PropTypes.string.isRequired,
-  fileIsLoaded: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
   return {
     currentView: selectors.currentViewSelector(state.present),
-    fileIsLoaded: selectors.fileIsLoadedSelector(state.present),
   }
 }
 

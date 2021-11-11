@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+
+import { selectors } from 'pltr/v2'
+
 import OutlineTab from 'components/outline/OutlineTab'
 import TagsTab from 'components/tag/TagsTab'
 import CharactersTab from 'components/characters/CharactersTab'
@@ -12,6 +15,10 @@ import AnalyzerTab from '../components/analyzer/AnalyzerTab'
 
 class Body extends Component {
   render() {
+    if (!this.props.fileIsLoaded) {
+      return null
+    }
+
     switch (this.props.currentView) {
       case 'project':
         return <SeriesTab />
@@ -43,11 +50,13 @@ class Body extends Component {
 
 Body.propTypes = {
   currentView: PropTypes.string.isRequired,
+  fileIsLoaded: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
   return {
-    currentView: state.present.ui.currentView,
+    currentView: selectors.currentViewSelector(state.present),
+    fileIsLoaded: selectors.fileIsLoadedSelector(state.present),
   }
 }
 

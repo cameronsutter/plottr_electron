@@ -24,6 +24,7 @@ const Navigation = ({
   userId, // probably don't need this
   hasCurrentProLicense,
   selectedFile,
+  isCloudFile,
 }) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
   const [settings, _size, saveSetting] = useSettingsInfo()
@@ -44,8 +45,7 @@ const Navigation = ({
   }, [])
 
   useEffect(() => {
-    const isLocalFile = document.location?.protocol === 'file:'
-    if (!selectedFile && !dashboardView && !isLocalFile) {
+    if (!selectedFile && !dashboardView && isCloudFile) {
       setDashboardView('files')
     }
   }, [selectedFile, dashboardView])
@@ -170,6 +170,7 @@ Navigation.propTypes = {
   userId: PropTypes.string,
   hasCurrentProLicense: PropTypes.bool,
   selectedFile: PropTypes.object,
+  isCloudFile: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -179,6 +180,7 @@ function mapStateToProps(state) {
     userId: selectors.userIdSelector(state.present),
     hasCurrentProLicense: selectors.hasProSelector(state.present),
     selectedFile: selectors.selectedFileSelector(state.present),
+    isCloudFile: selectors.isCloudFileSelector(state.present),
   }
 }
 

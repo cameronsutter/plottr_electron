@@ -1,4 +1,5 @@
-import { remote, ipcRenderer } from 'electron'
+import { remote, ipcRenderer, shell } from 'electron'
+import { readFileSync } from 'fs'
 import path from 'path'
 import axios from 'axios'
 
@@ -8,9 +9,13 @@ import { actions, reducers, emptyFile } from 'pltr/v2'
 
 import { closeDashboard } from './dashboard'
 import { store } from './app/store/configureStore'
+import { logger } from './logger'
 
-const { app } = remote
+const { app, dialog } = remote
 const version = app.getVersion()
+const moveItemToTrash = shell.moveItemToTrash
+
+const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
 
 export const newEmptyFile = (fileName, appVersion, currentFile) => {
   const emptyFileState = emptyFile(fileName, appVersion)
@@ -87,4 +92,50 @@ export const messageRenameFile = (fileId) => {
 
 export const openFile = (filePath, id, unknown) => {
   ipcRenderer.send('open-known-file', filePath, id, unknown)
+}
+
+export const saveFile = (filePath, file) => {
+  ipcRenderer.send('save-file', filePath, file)
+}
+
+export const editKnownFilePath = (oldFilePath, newFilePath) => {
+  ipcRenderer.send('edit-known-file-path', oldFilePath, newFilePath)
+}
+
+const win = remote.getCurrentWindow()
+
+export const showSaveDialogSync = (options) => dialog.showSaveDialogSync(win, options)
+
+export const renameFile = (filePath) => {
+  if (filePath.startsWith('plottr://')) {
+    const {
+      present: {
+        project: { fileList },
+      },
+    } = store.getState()
+    const fileId = filePath.replace(/^plottr:\/\//, '')
+    if (!fileList.find(({ id }) => id === fileId)) {
+      logger.error(`Coludn't find file with id: ${fileId} to rename`)
+      return
+    }
+    if (fileId) messageRenameFile(fileId)
+    return
+  }
+  const fileName = showSaveDialogSync({
+    filters,
+    title: t('Give this file a new name'),
+    defaultPath: filePath,
+  })
+  if (fileName) {
+    try {
+      let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+      editKnownFilePath(filePath, newFilePath)
+      const contents = JSON.parse(readFileSync(filePath, 'utf-8'))
+      saveFile(newFilePath, contents)
+      moveItemToTrash(filePath, true)
+    } catch (error) {
+      logger.error(error)
+      dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+    }
+  }
 }

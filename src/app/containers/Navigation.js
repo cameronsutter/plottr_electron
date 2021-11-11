@@ -23,6 +23,7 @@ const Navigation = ({
   forceProjectDashboard,
   userId, // probably don't need this
   hasCurrentProLicense,
+  selectedFile,
 }) => {
   const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
   const [settings, _size, saveSetting] = useSettingsInfo()
@@ -41,6 +42,12 @@ const Navigation = ({
       document.removeEventListener('close-dashboard', listener)
     }
   }, [])
+
+  useEffect(() => {
+    if (!selectedFile && !dashboardView) {
+      setDashboardView('files')
+    }
+  }, [selectedFile, dashboardView])
 
   useEffect(() => {
     if (firstTime() || trialExpired() || (userId && !hasCurrentProLicense)) {
@@ -161,6 +168,7 @@ Navigation.propTypes = {
   forceProjectDashboard: PropTypes.bool,
   userId: PropTypes.string,
   hasCurrentProLicense: PropTypes.bool,
+  selectedFile: PropTypes.object,
 }
 
 function mapStateToProps(state) {
@@ -169,6 +177,7 @@ function mapStateToProps(state) {
     isDarkMode: selectors.isDarkModeSelector(state.present),
     userId: selectors.userIdSelector(state.present),
     hasCurrentProLicense: selectors.hasProSelector(state.present),
+    selectedFile: selectors.selectedFileSelector(state.present),
   }
 }
 

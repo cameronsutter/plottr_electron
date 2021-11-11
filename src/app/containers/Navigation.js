@@ -44,7 +44,8 @@ const Navigation = ({
   }, [])
 
   useEffect(() => {
-    if (!selectedFile && !dashboardView) {
+    const isLocalFile = document.location?.protocol === 'file:'
+    if (!selectedFile && !dashboardView && !isLocalFile) {
       setDashboardView('files')
     }
   }, [selectedFile, dashboardView])

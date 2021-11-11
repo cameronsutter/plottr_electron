@@ -76,6 +76,7 @@ import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
 import { resizeImage } from './common/resizeImage'
 import { logger } from './logger'
+import { closeDashboard } from './dashboard'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -160,7 +161,18 @@ const platform = {
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,
-    openKnownFile: openFile,
+    openKnownFile: (filePath, id, unknown) => {
+      const state = store.getState()
+      const {
+        project: { selectedFile },
+      } = state.present
+      const fileId = selectedFile?.id
+      if (filePath === selectedFile?.path || fileId === filePath?.replace(/^plottr:\/\//, '')) {
+        closeDashboard()
+      } else {
+        openFile(filePath, id, unknown)
+      }
+    },
     deleteKnownFile: (id, path) => {
       const {
         present: {

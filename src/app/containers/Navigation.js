@@ -34,6 +34,15 @@ const Navigation = ({
   const trialExpired = () => !licenseInfoSize && !settings.user?.id && trialInfo.expired
 
   useEffect(() => {
+    const listener = document.addEventListener('close-dashboard', () => {
+      setDashboardView(null)
+    })
+    return () => {
+      document.removeEventListener('close-dashboard', listener)
+    }
+  }, [])
+
+  useEffect(() => {
     if (firstTime() || trialExpired() || (userId && !hasCurrentProLicense)) {
       setDashboardView('account')
     }

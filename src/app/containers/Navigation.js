@@ -21,12 +21,14 @@ const Navigation = ({
   currentView,
   changeCurrentView,
   forceProjectDashboard,
+  showAccount,
   userId, // probably don't need this
   hasCurrentProLicense,
   selectedFile,
   isCloudFile,
 }) => {
-  const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
+  const initialView = showAccount ? 'account' : forceProjectDashboard ? 'files' : null
+  const [dashboardView, setDashboardView] = useState(initialView)
   const [settings, _size, saveSetting] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -167,6 +169,7 @@ Navigation.propTypes = {
   isDarkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
+  showAccount: PropTypes.bool,
   userId: PropTypes.string,
   hasCurrentProLicense: PropTypes.bool,
   selectedFile: PropTypes.object,

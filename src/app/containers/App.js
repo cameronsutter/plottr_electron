@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
+
 import { onSessionChange, listenToFiles } from 'wired-up-firebase'
 import { actions } from 'pltr/v2'
+import { t } from 'plottr_locales'
+
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
@@ -23,6 +26,8 @@ import { selectors } from 'pltr/v2'
 import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 import SETTINGS from '../../common/utils/settings'
 import { checkForPro } from '../../common/licensing/check_pro'
+
+const { dialog } = remote
 
 const App = ({
   forceProjectDashboard,
@@ -76,6 +81,13 @@ const App = ({
     event.returnValue = 'nope'
     setShowAskToSave(true)
   }
+
+  useEffect(() => {
+    if (!userId && isCloudFile) {
+      log.error('Attempting to open a cloud file locally without being logged in.')
+      dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
+    }
+  }, [userId, isCloudFile])
 
   useEffect(() => {
     let fileListener = null
@@ -194,11 +206,16 @@ const App = ({
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
+  const cloudFileWithoutLoggingIn = !userId && isCloudFile
+
   return (
     <ErrorBoundary>
       <ErrorBoundary>
         <React.StrictMode>
-          <Navigation forceProjectDashboard={forceProjectDashboard} />
+          <Navigation
+            forceProjectDashboard={forceProjectDashboard}
+            showAccount={cloudFileWithoutLoggingIn}
+          />
         </React.StrictMode>
       </ErrorBoundary>
       <main className="project-main tour-end">

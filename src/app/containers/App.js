@@ -93,7 +93,9 @@ const App = ({
   useEffect(() => {
     let fileListener = null
     const sessionListener = onSessionChange((user) => {
-      if (user) {
+      if (!user) {
+        setCheckedUser(true)
+      } else {
         SETTINGS.set('user.id', user.uid)
         SETTINGS.set('user.email', user.email)
         setUserId(user.uid)

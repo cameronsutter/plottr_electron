@@ -48,10 +48,16 @@ const Navigation = ({
   }, [])
 
   useEffect(() => {
-    if (!selectedFile && !dashboardView && isCloudFile) {
+    if (dashboardView !== 'account' && showAccount) {
+      setDashboardView('account')
+    }
+  }, [showAccount, dashboardView, setDashboardView])
+
+  useEffect(() => {
+    if (!selectedFile && !dashboardView && isCloudFile && checkedUser && !showAccount) {
       setDashboardView('files')
     }
-  }, [selectedFile, dashboardView])
+  }, [selectedFile, dashboardView, isCloudFile, checkedUser, showAccount])
 
   useEffect(() => {
     if (firstTime() || trialExpired()) {

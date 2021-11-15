@@ -45,6 +45,7 @@ const App = ({
   const [blockClosing, setBlockClosing] = useState(true)
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
+  const [checkedUser, setCheckedUser] = useState(false)
 
   const isTryingToReload = useRef(false)
   const isTryingToClose = useRef(false)
@@ -83,11 +84,11 @@ const App = ({
   }
 
   useEffect(() => {
-    if (!userId && isCloudFile) {
+    if (!userId && isCloudFile && checkedUser) {
       log.error('Attempting to open a cloud file locally without being logged in.')
       dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
     }
-  }, [userId, isCloudFile])
+  }, [userId, isCloudFile, checkedUser])
 
   useEffect(() => {
     let fileListener = null
@@ -99,6 +100,7 @@ const App = ({
         setEmailAddress(user.email)
         checkForPro(user.email, (hasPro) => {
           setHasPro(hasPro)
+          setCheckedUser(true)
           if (hasPro) {
             fileListener = listenToFiles(user.uid, (files) => {
               const activeFiles = files.filter(({ deleted }) => !deleted)
@@ -206,7 +208,7 @@ const App = ({
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
-  const cloudFileWithoutLoggingIn = !userId && isCloudFile
+  const cloudFileWithoutLoggingIn = !userId && isCloudFile && checkedUser
 
   return (
     <ErrorBoundary>
@@ -215,6 +217,7 @@ const App = ({
           <Navigation
             forceProjectDashboard={forceProjectDashboard}
             showAccount={cloudFileWithoutLoggingIn}
+            checkedUser={checkedUser}
           />
         </React.StrictMode>
       </ErrorBoundary>

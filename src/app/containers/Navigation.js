@@ -26,6 +26,7 @@ const Navigation = ({
   hasCurrentProLicense,
   selectedFile,
   isCloudFile,
+  checkedUser,
 }) => {
   const initialView = showAccount ? 'account' : forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
@@ -53,10 +54,21 @@ const Navigation = ({
   }, [selectedFile, dashboardView])
 
   useEffect(() => {
-    if (firstTime() || trialExpired() || (userId && !hasCurrentProLicense)) {
+    if (firstTime() || trialExpired()) {
       setDashboardView('account')
     }
-  }, [licenseInfoSize, trialInfo, settings, dashboardView, userId, hasCurrentProLicense])
+    if (checkedUser && userId && !hasCurrentProLicense) {
+      setDashboardView('account')
+    }
+  }, [
+    licenseInfoSize,
+    trialInfo,
+    settings,
+    dashboardView,
+    userId,
+    hasCurrentProLicense,
+    checkedUser,
+  ])
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
@@ -174,6 +186,7 @@ Navigation.propTypes = {
   hasCurrentProLicense: PropTypes.bool,
   selectedFile: PropTypes.object,
   isCloudFile: PropTypes.bool,
+  checkedUser: PropTypes.bool,
 }
 
 function mapStateToProps(state) {

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { sortBy } from 'lodash'
 import { backupBasePath } from '../../common/utils/backup'
 
-export function useBackupFolders(searchTerm) {
+export function useBackupFolders(userId, searchTerm) {
   const [folders, setFolders] = useState([])
   const [foldersOnDisk, setFoldersOnDisk] = useState([])
   // const foldersOnDisk = useMemo(() => readBackupsDirectory())
@@ -14,9 +14,11 @@ export function useBackupFolders(searchTerm) {
   useEffect(() => {
     if (searchTerm && searchTerm.length > 1) {
       const matchingFolders = foldersOnDisk.reduce((acc, obj) => {
-        const matches = obj.backups.filter((f) => f.toLowerCase().includes(searchTerm))
+        const matches = obj.backups.filter((f) =>
+          f.toLowerCase().includes(searchTerm.toLowerCase())
+        )
         const folderDate = new Date(obj.date.replace(/_/g, '-')).toString().toLowerCase()
-        if (folderDate.includes(searchTerm) || matches.length) {
+        if (folderDate.includes(searchTerm.toLowerCase()) || matches.length) {
           acc.push({ ...obj, backups: matches })
         }
         return acc

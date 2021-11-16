@@ -21,9 +21,15 @@ const Navigation = ({
   currentView,
   changeCurrentView,
   forceProjectDashboard,
+  showAccount,
   userId, // probably don't need this
+  hasCurrentProLicense,
+  selectedFile,
+  isCloudFile,
+  checkedUser,
 }) => {
-  const [dashboardView, setDashboardView] = useState(forceProjectDashboard ? 'files' : null)
+  const initialView = showAccount ? 'account' : forceProjectDashboard ? 'files' : null
+  const [dashboardView, setDashboardView] = useState(initialView)
   const [settings, _size, saveSetting] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
@@ -33,8 +39,42 @@ const Navigation = ({
   const trialExpired = () => !licenseInfoSize && !settings.user?.id && trialInfo.expired
 
   useEffect(() => {
-    if (firstTime() || trialExpired()) setDashboardView('account')
-  }, [licenseInfoSize, trialInfo, settings, dashboardView])
+    const listener = document.addEventListener('close-dashboard', () => {
+      setDashboardView(null)
+    })
+    return () => {
+      document.removeEventListener('close-dashboard', listener)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (dashboardView !== 'account' && showAccount) {
+      setDashboardView('account')
+    }
+  }, [showAccount, dashboardView, setDashboardView])
+
+  useEffect(() => {
+    if (!selectedFile && !dashboardView && isCloudFile && checkedUser && !showAccount) {
+      setDashboardView('files')
+    }
+  }, [selectedFile, dashboardView, isCloudFile, checkedUser, showAccount])
+
+  useEffect(() => {
+    if (firstTime() || trialExpired()) {
+      setDashboardView('account')
+    }
+    if (checkedUser && userId && !hasCurrentProLicense) {
+      setDashboardView('account')
+    }
+  }, [
+    licenseInfoSize,
+    trialInfo,
+    settings,
+    dashboardView,
+    userId,
+    hasCurrentProLicense,
+    checkedUser,
+  ])
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
@@ -147,7 +187,12 @@ Navigation.propTypes = {
   isDarkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
+  showAccount: PropTypes.bool,
   userId: PropTypes.string,
+  hasCurrentProLicense: PropTypes.bool,
+  selectedFile: PropTypes.object,
+  isCloudFile: PropTypes.bool,
+  checkedUser: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -155,6 +200,9 @@ function mapStateToProps(state) {
     currentView: selectors.currentViewSelector(state.present),
     isDarkMode: selectors.isDarkModeSelector(state.present),
     userId: selectors.userIdSelector(state.present),
+    hasCurrentProLicense: selectors.hasProSelector(state.present),
+    selectedFile: selectors.selectedFileSelector(state.present),
+    isCloudFile: selectors.isCloudFileSelector(state.present),
   }
 }
 

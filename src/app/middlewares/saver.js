@@ -73,7 +73,7 @@ function saveFile(filePath, jsonData) {
     cloudBackup(jsonData.client?.userId, jsonData)
     return
   }
-  saveTimeout = setTimeout(forceSavePrevious, 10000)
+  saveTimeout = setTimeout(forceSavePrevious, 1000)
 }
 
 export default saver

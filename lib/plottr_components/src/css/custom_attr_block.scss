@@ -76,11 +76,19 @@
 }
 
 .custom-attr-item__checkbox-label {
-  align-self: center;
-  margin-bottom: 0;
+  margin: 0 !important;
+  align-items: center;
+  display: flex;
+  width: 140px;
   input {
-    margin-right: 8px;
+    margin-right: 8px !important;
+    align-self: center;
   }
+}
+
+.custom-attr-item__checkbox-wrapper {
+  display: flex;
+  justify-content: space-between;
 }
 
 .custom-attr-item__left-side {

@@ -5,7 +5,6 @@ import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 
-import { t } from 'plottr_locales'
 import { actions } from 'pltr/v2'
 import {
   publishRCEOperations,
@@ -71,29 +70,30 @@ import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store/configureStore'
-import { messageRenameFile, newFile, uploadExisting, openFile } from './files'
+import {
+  renameFile,
+  saveFile,
+  editKnownFilePath,
+  showSaveDialogSync,
+  newFile,
+  uploadExisting,
+  openFile,
+} from './files'
 import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
 import { resizeImage } from './common/resizeImage'
 import { logger } from './logger'
+import { closeDashboard } from './dashboard'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
 const version = app.getVersion()
 
-const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
-
-const showSaveDialogSync = (options) => dialog.showSaveDialogSync(win, options)
-
-const editKnownFilePath = (oldFilePath, newFilePath) => {
-  ipcRenderer.send('edit-known-file-path', oldFilePath, newFilePath)
-}
-
-const saveFile = (filePath, file) => {
-  ipcRenderer.send('save-file', filePath, file)
-}
-
 const moveItemToTrash = shell.moveItemToTrash
+
+const idFromPath = (filePath) => {
+  return filePath?.replace(/^plottr:\/\//, '')
+}
 
 const platform = {
   undo: () => {
@@ -160,10 +160,26 @@ const platform = {
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,
-    openKnownFile: openFile,
+    openKnownFile: (filePath, id, unknown) => {
+      const state = store.getState()
+      const {
+        project: { selectedFile },
+      } = state.present
+      const fileId = selectedFile?.id
+      if (filePath === selectedFile?.path || fileId === idFromPath(filePath)) {
+        closeDashboard()
+      } else {
+        if (document.location?.pathname === filePath) {
+          closeDashboard()
+        } else {
+          openFile(filePath, id, unknown)
+        }
+      }
+    },
     deleteKnownFile: (id, path) => {
       const {
         present: {
+          project: { selectedFile },
           client: { userId, clientId },
         },
       } = store.getState()
@@ -172,6 +188,9 @@ const platform = {
         store.dispatch(actions.project.showLoader(true))
         deleteFile(id, userId, clientId)
           .then(() => {
+            if (selectedFile.id === idFromPath(path)) {
+              store.dispatch(actions.project.selectFile(null))
+            }
             logger.info(`Deleted file at path: ${path}`)
             store.dispatch(actions.project.showLoader(false))
           })
@@ -184,39 +203,7 @@ const platform = {
       }
     },
     editKnownFilePath,
-    renameFile: (filePath) => {
-      if (filePath.startsWith('plottr://')) {
-        const {
-          present: {
-            project: { fileList },
-          },
-        } = store.getState()
-        const fileId = filePath.replace(/^plottr:\/\//, '')
-        if (!fileList.find(({ id }) => id === fileId)) {
-          logger.error(`Coludn't find file with id: ${fileId} to rename`)
-          return
-        }
-        if (fileId) messageRenameFile(fileId)
-        return
-      }
-      const fileName = showSaveDialogSync({
-        filters,
-        title: t('Give this file a new name'),
-        defaultPath: filePath,
-      })
-      if (fileName) {
-        try {
-          let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-          editKnownFilePath(filePath, newFilePath)
-          const contents = JSON.parse(readFileSync(filePath, 'utf-8'))
-          saveFile(newFilePath, contents)
-          moveItemToTrash(filePath, true)
-        } catch (error) {
-          log.error(error)
-          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-        }
-      }
-    },
+    renameFile,
     removeFromKnownFiles,
     saveFile,
     readFileSync,

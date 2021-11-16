@@ -16,6 +16,7 @@ if (is.macos) {
 }
 
 function buildFileMenu(filePath) {
+  const isCloudFile = filePath && filePath.startsWith('plottr://')
   const isTemp = filePath && filePath.includes(TEMP_FILES_PATH)
   const licenseStore = getLicenseInfo()
   const trialStore = getTriaInfo()
@@ -35,7 +36,11 @@ function buildFileMenu(filePath) {
       label: t('Save as') + '...',
       accelerator: 'CmdOrCtrl+Shift+S',
       click: function (event, focusedWindow) {
-        focusedWindow.webContents.send('save-as')
+        if (isCloudFile) {
+          focusedWindow.webContents.send('rename-file', filePath.replace(/^plottr:\/\//, ''))
+        } else {
+          focusedWindow.webContents.send('save-as')
+        }
       },
     },
     {

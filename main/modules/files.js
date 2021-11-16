@@ -94,7 +94,7 @@ function autoSave(event, filePath, file, userId, previousFile) {
   }
   // NOTE: We want to backup every 60 seconds, but saves only happen
   // every 10 seconds.
-  backupTimeout = setTimeout(forceBackup, 50000)
+  backupTimeout = setTimeout(forceBackup, 59000)
 }
 
 function removeFromTempFiles(filePath, doDelete = true) {

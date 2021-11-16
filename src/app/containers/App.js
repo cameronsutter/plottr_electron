@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
+
 import { onSessionChange, listenToFiles } from 'wired-up-firebase'
 import { actions } from 'pltr/v2'
+import { t } from 'plottr_locales'
+
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
@@ -22,6 +25,9 @@ import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
 import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 import SETTINGS from '../../common/utils/settings'
+import { checkForPro } from '../../common/licensing/check_pro'
+
+const { dialog } = remote
 
 const App = ({
   forceProjectDashboard,
@@ -31,6 +37,7 @@ const App = ({
   setUserId,
   setEmailAddress,
   setFileList,
+  setHasPro,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -38,6 +45,7 @@ const App = ({
   const [blockClosing, setBlockClosing] = useState(true)
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
+  const [checkedUser, setCheckedUser] = useState(false)
 
   const isTryingToReload = useRef(false)
   const isTryingToClose = useRef(false)
@@ -76,16 +84,31 @@ const App = ({
   }
 
   useEffect(() => {
+    if (!userId && isCloudFile && checkedUser) {
+      log.error('Attempting to open a cloud file locally without being logged in.')
+      dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
+    }
+  }, [userId, isCloudFile, checkedUser])
+
+  useEffect(() => {
     let fileListener = null
     const sessionListener = onSessionChange((user) => {
-      if (user) {
+      if (!user) {
+        setCheckedUser(true)
+      } else {
         SETTINGS.set('user.id', user.uid)
         SETTINGS.set('user.email', user.email)
         setUserId(user.uid)
         setEmailAddress(user.email)
-        fileListener = listenToFiles(user.uid, (files) => {
-          const activeFiles = files.filter(({ deleted }) => !deleted)
-          setFileList(activeFiles)
+        checkForPro(user.email, (hasPro) => {
+          setHasPro(hasPro)
+          setCheckedUser(true)
+          if (hasPro) {
+            fileListener = listenToFiles(user.uid, (files) => {
+              const activeFiles = files.filter(({ deleted }) => !deleted)
+              setFileList(activeFiles)
+            })
+          }
         })
       }
     })
@@ -187,11 +210,17 @@ const App = ({
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
+  const cloudFileWithoutLoggingIn = !userId && isCloudFile && checkedUser
+
   return (
     <ErrorBoundary>
       <ErrorBoundary>
         <React.StrictMode>
-          <Navigation forceProjectDashboard={forceProjectDashboard} />
+          <Navigation
+            forceProjectDashboard={forceProjectDashboard}
+            showAccount={cloudFileWithoutLoggingIn}
+            checkedUser={checkedUser}
+          />
         </React.StrictMode>
       </ErrorBoundary>
       <main className="project-main tour-end">
@@ -217,6 +246,7 @@ App.propTypes = {
   forceProjectDashboard: PropTypes.bool,
   isCloudFile: PropTypes.bool,
   setUserId: PropTypes.func.isRequired,
+  setHasPro: PropTypes.func.isRequired,
   setFileList: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
 }
@@ -233,4 +263,5 @@ export default connect(mapStateToProps, {
   setUserId: actions.client.setUserId,
   setFileList: actions.project.setFileList,
   setEmailAddress: actions.client.setEmailAddress,
+  setHasPro: actions.client.setHasPro,
 })(App)

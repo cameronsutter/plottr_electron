@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
+
+import { selectors } from 'pltr/v2'
+
 import OutlineTab from 'components/outline/OutlineTab'
 import TagsTab from 'components/tag/TagsTab'
 import CharactersTab from 'components/characters/CharactersTab'
@@ -47,7 +50,7 @@ Body.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    currentView: state.present.ui.currentView,
+    currentView: selectors.currentViewSelector(state.present),
   }
 }
 

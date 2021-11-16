@@ -207,7 +207,7 @@
     & > a {
       color: inherit;
       cursor: pointer;
-      padding: 3px 10px 3px 10px;
+      padding: 3px 10px 3px 10px !important;
 
       &:hover {
         background-color: $body-background-color;

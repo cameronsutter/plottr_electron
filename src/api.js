@@ -10,8 +10,9 @@ import { actions, ARRAY_KEYS } from 'pltr/v2'
  * of the correspending firebase objects from either the firebase JS
  * api or the react-native-firebase api.
  */
-const api = (auth, database, storage, baseAPIDomain, development, log) => {
-  const BASE_API_URL = development || !baseAPIDomain ? '' : `https://${baseAPIDomain || ''}`
+const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop) => {
+  const BASE_API_URL =
+    (!isDesktop && development) || !baseAPIDomain ? '' : `https://${baseAPIDomain || ''}`
 
   const defaultErrorHandler = (error) => {
     log.error('Error communicating with Firebase.', error)
@@ -31,7 +32,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log) => {
         fileName: newName
       })
       .then(() => {
-        pingAuth(userId, fileId)
+        return pingAuth(userId, fileId)
       })
   }
 
@@ -602,7 +603,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log) => {
     return database().runTransaction((transactions) => {
       return transactions.get(lockReference).then((lock) => {
         if (!lock.exists) {
-          throw new Error(`Lock for file: ${fileId}, and editor: ${editorId} doesn't exist!`)
+          return Promise.reject(`Lock for file: ${fileId}, and editor: ${editorId} doesn't exist!`)
         }
         if (isEqual(lock.data(), expectedLock)) {
           return transactions.update(lockReference, { clientId: null })
@@ -640,7 +641,6 @@ const api = (auth, database, storage, baseAPIDomain, development, log) => {
       .onSnapshot((documentRef) => {
         const data = documentRef && documentRef.data()
         if (!data) {
-          log.info("Didn't find a lock for RCE with editorId", editorId)
           cb({ clientId: null })
           return
         }

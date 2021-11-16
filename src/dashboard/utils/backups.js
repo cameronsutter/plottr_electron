@@ -67,7 +67,9 @@ export function useBackupFolders(userId, searchTerm) {
   useEffect(() => {
     if (searchTerm && searchTerm.length > 1) {
       const matchingFolders = firebaseFoldersOnDisk.reduce((acc, obj) => {
-        const matches = obj.backups.filter((f) => f.fileName?.toLowerCase()?.includes(searchTerm))
+        const matches = obj.backups.filter((f) =>
+          f.fileName?.toLowerCase()?.includes(searchTerm.toLowerCase())
+        )
         const folderDate = visualDateStringFromDateString(obj.path.toString()).toLowerCase()
         if (folderDate.includes(searchTerm.toLowerCase()) || matches.length) {
           acc.push({ ...obj, backups: matches })

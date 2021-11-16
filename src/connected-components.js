@@ -83,7 +83,7 @@ import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
 import { resizeImage } from './common/resizeImage'
 import { logger } from './logger'
-import { closeDashboard } from './dashboard'
+import { closeDashboard } from './dashboard-events'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote

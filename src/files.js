@@ -7,7 +7,7 @@ import { t } from 'plottr_locales'
 import { fetchFiles } from 'wired-up-firebase'
 import { actions, reducers, emptyFile } from 'pltr/v2'
 
-import { closeDashboard } from './dashboard'
+import { closeDashboard } from './dashboard-events'
 import { store } from './app/store/configureStore'
 import { logger } from './logger'
 

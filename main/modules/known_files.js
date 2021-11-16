@@ -5,6 +5,10 @@ const knownFilesPath = process.env.NODE_ENV == 'development' ? 'known_files_dev'
 
 const knownFilesStore = new Store({ name: knownFilesPath })
 
+function getKnownFilesInfo() {
+  return knownFilesStore.get()
+}
+
 // The difference between `addtoKnown` and `addToKnownFiles` seems to
 // be that `addToKnownFiles` does some fixing to broken stores and
 // `addToKnown` sets the last opened date.
@@ -55,4 +59,4 @@ function addToKnownFiles(filePath) {
   }
 }
 
-module.exports = { knownFilesStore, addToKnown, addToKnownFiles }
+module.exports = { knownFilesStore, getKnownFilesInfo, addToKnown, addToKnownFiles }

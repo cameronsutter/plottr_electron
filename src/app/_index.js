@@ -31,7 +31,12 @@ import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
 import Listener from './components/listener'
 import Renamer from './components/Renamer'
-import { closeDashboard } from '../dashboard'
+import {
+  closeDashboard,
+  createBlankProj,
+  createFromTemplate,
+  openExistingProj,
+} from '../dashboard-events'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -443,3 +448,11 @@ ipcRenderer.on('save-backup-success', (event, filePath) => {
 ipcRenderer.on('close-dashboard', () => {
   closeDashboard()
 })
+
+const reloadMenu = () => ipcRenderer.send('pls-reload-menu')
+window.addEventListener('load', reloadMenu)
+window.addEventListener('focus', reloadMenu)
+
+ipcRenderer.on('new-project', () => createBlankProj())
+ipcRenderer.on('from-template', () => createFromTemplate())
+ipcRenderer.on('open-existing', () => openExistingProj())

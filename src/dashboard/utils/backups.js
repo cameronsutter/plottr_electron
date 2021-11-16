@@ -14,7 +14,7 @@ const visualDateStringFromDateString = (dateString) => {
   })
 }
 
-export function useBackupFolders(userId, searchTerm) {
+export function useBackupFolders(userId, searchTerm, folderSearch) {
   const [localFolders, setLocalFolders] = useState([])
   const [localFoldersOnDisk, setLocalFoldersOnDisk] = useState([])
 
@@ -24,13 +24,13 @@ export function useBackupFolders(userId, searchTerm) {
   useEffect(() => {
     if (searchTerm && searchTerm.length > 1) {
       const matchingFolders = localFoldersOnDisk.reduce((acc, obj) => {
-        const matches = obj.backups.filter((f) =>
-          f.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        const matches = folderSearch
+          ? obj.backups
+          : obj.backups.filter((f) => f.toLowerCase().includes(searchTerm.toLowerCase()))
         const folderDate = new Date(visualDateStringFromDateString(obj.date))
           .toString()
           .toLowerCase()
-        if (folderDate.includes(searchTerm.toLowerCase()) || matches.length) {
+        if (folderDate.includes(searchTerm.toLowerCase()) || (matches.length && !folderSearch)) {
           acc.push({ ...obj, backups: matches })
         }
         return acc
@@ -39,7 +39,7 @@ export function useBackupFolders(userId, searchTerm) {
     } else {
       setLocalFolders(localFoldersOnDisk)
     }
-  }, [localFoldersOnDisk, searchTerm])
+  }, [localFoldersOnDisk, searchTerm, folderSearch])
 
   const [firebaseFolders, setFirebaseFolders] = useState([])
   const [firebaseFoldersOnDisk, setFirebaseFoldersOnDisk] = useState([])
@@ -67,11 +67,11 @@ export function useBackupFolders(userId, searchTerm) {
   useEffect(() => {
     if (searchTerm && searchTerm.length > 1) {
       const matchingFolders = firebaseFoldersOnDisk.reduce((acc, obj) => {
-        const matches = obj.backups.filter((f) =>
-          f.fileName?.toLowerCase()?.includes(searchTerm.toLowerCase())
-        )
+        const matches = folderSearch
+          ? obj.backups
+          : obj.backups.filter((f) => f.fileName?.toLowerCase()?.includes(searchTerm.toLowerCase()))
         const folderDate = visualDateStringFromDateString(obj.path.toString()).toLowerCase()
-        if (folderDate.includes(searchTerm.toLowerCase()) || matches.length) {
+        if (folderDate.includes(searchTerm.toLowerCase()) || (matches.length && !folderSearch)) {
           acc.push({ ...obj, backups: matches })
         }
         return acc
@@ -80,7 +80,7 @@ export function useBackupFolders(userId, searchTerm) {
     } else {
       setFirebaseFolders(firebaseFoldersOnDisk)
     }
-  }, [firebaseFoldersOnDisk, searchTerm])
+  }, [firebaseFoldersOnDisk, searchTerm, folderSearch])
 
   const [folders, setFolders] = useState([])
 

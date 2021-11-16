@@ -62,10 +62,12 @@ const TemplatePickerConnector = (connector) => {
     platform: {
       appVersion,
       openExternal,
+      log,
       template: { listTemplates, listCustomTemplates, deleteTemplate, editTemplateDetails },
     },
   } = connector
   checkDependencies({
+    log,
     appVersion,
     openExternal,
     listTemplates,
@@ -156,13 +158,19 @@ const TemplatePickerConnector = (connector) => {
       const { type } = selectedTemplate
       if (type === 'project' || type === 'plotlines') {
         const migrator = this.props.newProject ? projectFromTemplate : lineFromTemplate
-        migrator(selectedTemplate, appVersion, '', (error, template) => {
-          if (error) {
-            // Let the ErrorBoundary handle the error
-            throw new Error(error)
-          }
-          this.props.onChooseTemplate(template)
-        })
+        migrator(
+          selectedTemplate,
+          appVersion,
+          '',
+          (error, template) => {
+            if (error) {
+              // Let the ErrorBoundary handle the error
+              throw new Error(error)
+            }
+            this.props.onChooseTemplate(template)
+          },
+          log
+        )
       } else {
         this.props.onChooseTemplate(selectedTemplate)
       }

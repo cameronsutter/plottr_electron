@@ -14,13 +14,16 @@ const ProInfoConnector = (connector) => {
   } = connector
   checkDependencies({ logOut, checkForPro })
 
-  const ProInfo = ({ licenseInfo, emailAddress }) => {
+  const ProInfo = ({ licenseInfo, emailAddress, setUserId, setEmailAddress }) => {
     const [checking, setChecking] = useState(!licenseInfo)
+    const [loggingOut, setLoggingOut] = useState(false)
     const [active, setActive] = useState(licenseInfo?.status == 'active')
     const [expiration, setExpiration] = useState(licenseInfo?.expiration)
 
     useEffect(() => {
       if (licenseInfo) return
+
+      // TODO: check for admin first
 
       setChecking(true)
       checkForPro(emailAddress, (hasPro, info) => {
@@ -41,7 +44,22 @@ const ProInfoConnector = (connector) => {
         : t('{date, date, long}', { date: new Date(expiration) })
     }
 
-    if (checking) return <Spinner />
+    const handleLogOut = () => {
+      setLoggingOut(true)
+      logOut().then(() => {
+        setLoggingOut(false)
+        setUserId(null)
+        setEmailAddress(null)
+      })
+    }
+
+    if (checking) {
+      return (
+        <div>
+          <Spinner /> <span>{t('Loading Pro Subscription')}...</span>
+        </div>
+      )
+    }
 
     return (
       <div className="dashboard__user-info">
@@ -60,8 +78,8 @@ const ProInfoConnector = (connector) => {
           </dl>
         </div>
         <div className="text-right">
-          <Button bsStyle="danger" bsSize="small" onClick={logOut}>
-            {t('Log Out')}
+          <Button bsStyle="danger" bsSize="small" onClick={handleLogOut}>
+            {t('Log Out')} {loggingOut ? <Spinner /> : null}
           </Button>
         </div>
       </div>
@@ -71,18 +89,26 @@ const ProInfoConnector = (connector) => {
   ProInfo.propTypes = {
     licenseInfo: PropTypes.object,
     emailAddress: PropTypes.string,
+    setUserId: PropTypes.func.isRequired,
+    setEmailAddress: PropTypes.func.isRequired,
   }
 
   const {
     redux,
-    pltr: { selectors },
+    pltr: { selectors, actions },
   } = connector
 
   if (redux) {
     const { connect } = redux
-    return connect((state) => ({
-      emailAddress: selectors.emailAddressSelector(state.present),
-    }))(ProInfo)
+    return connect(
+      (state) => ({
+        emailAddress: selectors.emailAddressSelector(state.present),
+      }),
+      {
+        setUserId: actions.client.setUserId,
+        setEmailAddress: actions.client.setEmailAddress,
+      }
+    )(ProInfo)
   }
 
   throw new Error('Could not connect ProInfo')

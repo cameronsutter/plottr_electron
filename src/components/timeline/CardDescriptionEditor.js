@@ -55,10 +55,10 @@ const CardDescriptionEditorConnector = (connector) => {
   CardDescriptionEditor.propTypes = {
     cardId: PropTypes.number.isRequired,
     description: PropTypes.array.isRequired,
-    selection: PropTypes.object.isRequired,
+    selection: PropTypes.object,
     editCardAttributes: PropTypes.func.isRequired,
     darkMode: PropTypes.bool.isRequired,
-    undoId: PropTypes.string,
+    undoId: PropTypes.number,
   }
 
   const {

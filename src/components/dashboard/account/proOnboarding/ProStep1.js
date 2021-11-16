@@ -5,10 +5,11 @@ import { Alert, Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 
 import OnboardingStep from '../../../onboarding/OnboardingStep'
-import { StepBody, StepHeader } from '../../../onboarding/Step'
+import { StepBody, StepFooter, StepHeader } from '../../../onboarding/Step'
 import { Spinner } from '../../../Spinner'
 import UnconnectedFirebaseLogin from '../../../FirebaseLogin'
 import { checkDependencies } from '../../../checkDependencies'
+import OnboardingButtonBar from '../../../onboarding/OnboardingButtonBar'
 
 const ProStep1Connector = (connector) => {
   const {
@@ -16,10 +17,10 @@ const ProStep1Connector = (connector) => {
       useSettingsInfo,
       license: { checkForPro },
       isDevelopment,
-      log,
+      firebase: { currentUser },
     },
   } = connector
-  checkDependencies({ useSettingsInfo, checkForPro, isDevelopment, log })
+  checkDependencies({ useSettingsInfo, checkForPro, isDevelopment, currentUser })
 
   const FirebaseLogin = UnconnectedFirebaseLogin(connector)
 
@@ -41,14 +42,22 @@ const ProStep1Connector = (connector) => {
 
     const checkUser = (user) => {
       if (isDevelopment && userId) return
-      if (user.email && !checking) {
-        setChecking(true)
-        checkForPro(user.email, handleCheckPro(user.uid, user.email))
-      }
+
+      currentUser()
+        .getIdTokenResult()
+        .then((token) => {
+          if (token.claims.beta || token.claims.admin) {
+            handleCheckPro(user.uid, user.email)(true)
+          } else {
+            if (user.email && !checking) {
+              setChecking(true)
+              checkForPro(user.email, handleCheckPro(user.uid, user.email))
+            }
+          }
+        })
     }
 
     const handleCheckPro = (uid, email) => (hasPro) => {
-      log.info('checked pro')
       setChecking(false)
       if (hasPro) {
         saveSetting('user.id', uid)
@@ -64,7 +73,7 @@ const ProStep1Connector = (connector) => {
     return (
       <OnboardingStep>
         <StepHeader>
-          <p>{t('Sign in with your my.plottr.com account')}</p>
+          <h2>{t('Sign in with your my.plottr.com account')}</h2>
           {checking ? <Spinner /> : null}
         </StepHeader>
         {noPro ? (
@@ -78,6 +87,13 @@ const ProStep1Connector = (connector) => {
           </StepBody>
         ) : null}
         <StepBody>{showFrb ? <FirebaseLogin receiveUser={checkUser} /> : null}</StepBody>
+        {noPro || checking ? null : (
+          <StepFooter>
+            <OnboardingButtonBar>
+              <Button onClick={cancel}>{t('Cancel')}</Button>
+            </OnboardingButtonBar>
+          </StepFooter>
+        )}
       </OnboardingStep>
     )
   }

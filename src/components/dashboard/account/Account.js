@@ -74,10 +74,10 @@ const AccountConnector = (connector) => {
     }
 
     const handleProClick = () => {
-      openExternal('https://plottr.com/pricing')
+      openExternal('https://m65pkjgw.paperform.co/')
     }
 
-    const proLink = t.rich('Want Plottr Pro? Check out <a>Plottr Pricing</a>', {
+    const proLink = t.rich('Coming soon! <a>Learn more</a>', {
       // eslint-disable-next-line react/display-name, react/prop-types
       a: ({ children }) => (
         <a href="#" onClick={handleProClick} key="pro-link">

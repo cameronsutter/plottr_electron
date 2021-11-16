@@ -72,7 +72,6 @@ const RecentFilesConnector = (connector) => {
       sortedIds.forEach((id) => {
         const filePath = filesById[`${id}`].path
         if (!filePath) {
-          log.warn(`File with id: ${filesById[id].id}, doesn't have a "filePath"`)
           return
         }
         if (isPlottrCloudFile(filePath)) {
@@ -106,7 +105,7 @@ const RecentFilesConnector = (connector) => {
         }
 
         try {
-          const splits = fileObj.version.split('.')
+          const splits = fileObj.version.replace(/-.*$/, '').split('.')
           return new Date(splits[0], parseInt(splits[1]) - 1, splits[2])
         } catch (error) {
           // do nothing
@@ -123,7 +122,7 @@ const RecentFilesConnector = (connector) => {
         const lastOpen = makeLastOpen(f)
         const fileBasename = (!onFirebase && f.path && basename(f.path)) || ''
         let formattedPath = ''
-        if (f.path && !isTempFile(f.path)) {
+        if (!onFirebase && f.path && !isTempFile(f.path)) {
           formattedPath = f.path
             .replace(fileBasename, '')
             .split(pathSep)

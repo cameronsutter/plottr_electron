@@ -24,7 +24,7 @@ const HOTKEYS = {
 const RichTextEditorConnector = (connector) => {
   const {
     platform: {
-      storage: { imagePublicURL, isStorageURL },
+      storage: { resolveToPublicUrl, isStorageURL },
       log,
       openExternal,
       publishRCEOperations,
@@ -37,7 +37,7 @@ const RichTextEditorConnector = (connector) => {
     },
   } = connector
   checkDependencies({
-    imagePublicURL,
+    resolveToPublicUrl,
     isStorageURL,
     log,
     openExternal,
@@ -81,7 +81,7 @@ const RichTextEditorConnector = (connector) => {
         <Element
           {...innerProps}
           openExternal={openExternal}
-          imagePublicURL={imagePublicURL}
+          imagePublicURL={resolveToPublicUrl}
           isStorageURL={isStorageURL}
         />
       ),

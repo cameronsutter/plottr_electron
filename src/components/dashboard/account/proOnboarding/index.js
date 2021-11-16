@@ -11,12 +11,16 @@ import UnconnectedProStep3 from './ProStep3'
 const steps = 3
 
 const ProOnboardingConnector = (connector) => {
+  const {
+    platform: { useSettingsInfo },
+  } = connector
   const ProStep1 = UnconnectedProStep1(connector)
   const ProStep2 = UnconnectedProStep2(connector)
   const ProStep3 = UnconnectedProStep3(connector)
 
   const ProOnboarding = ({ cancel }) => {
-    const [step, setStep] = useState(0)
+    const [settings, _size, _saveSetting] = useSettingsInfo(false)
+    const [step, setStep] = useState(settings.user?.id ? 2 : 0)
 
     const CurrentStep = () => {
       switch (step) {

@@ -46,7 +46,8 @@ const BookChooserConnector = (connector) => {
       const seriesText =
         series.name == '' ? i18n('Series View') : `${series.name} (${i18n('Series View')})`
       let title = seriesText
-      if (!isSeries(ui.currentTimeline)) title = this.bookTitle(books[ui.currentTimeline])
+      const currentBook = books[ui.currentTimeline] || books[books.allIds[0]]
+      if (!isSeries(ui.currentTimeline)) title = this.bookTitle(currentBook)
 
       return (
         <NavDropdown

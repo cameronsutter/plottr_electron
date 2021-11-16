@@ -10,7 +10,7 @@ export default function ProStep0({ nextStep, cancel }) {
   return (
     <OnboardingStep>
       <StepHeader>
-        <p className="accented-text">{t("Let's get you started 🎉")}</p>
+        <h2>{t("Let's set up your Pro account")}</h2>
       </StepHeader>
       <StepBody>
         <Jumbotron>
@@ -19,15 +19,15 @@ export default function ProStep0({ nextStep, cancel }) {
           </p>
           <ol>
             <li>{t('Sign in')}</li>
-            <li>{t('Upload projects and templates to the cloud')}</li>
-            <li>{t('A few easy settings')}</li>
+            <li>{t('Upload your projects and templates')}</li>
+            <li>{t('Configure Pro settings')}</li>
           </ol>
         </Jumbotron>
       </StepBody>
       <StepFooter>
         <OnboardingButtonBar>
           <Button onClick={cancel}>{t('Not Now')}</Button>
-          <Button bsSize="large" onClick={nextStep}>
+          <Button bsSize="large" bsStyle="success" onClick={nextStep}>
             {t('Go!')}
           </Button>
         </OnboardingButtonBar>

@@ -322,7 +322,7 @@ const TimelineWrapperConnector = (connector) => {
       const rightItems = [
         <NavItem key="right-1">
           <Button bsSize="small" onClick={this.openBeatConfig} className="acts-tour-step1">
-            <Glyphicon glyph="cog" /> {t('Structure')}
+            <Glyphicon glyph="cog" /> {t('Settings')}
           </Button>
         </NavItem>,
         <NavItem key="right-2">
@@ -443,14 +443,7 @@ const TimelineWrapperConnector = (connector) => {
               vertical: timelineBundle.orientation == 'vertical',
             })}
           >
-            {this.state.mounted ? (
-              <TimelineTable
-                tableRef={this.tableRef}
-                scrollTo={(position) => this.scrollTo(position)}
-              />
-            ) : (
-              <FunSpinner />
-            )}
+            {this.state.mounted ? <TimelineTable tableRef={this.tableRef} /> : <FunSpinner />}
           </StickyTable>
         )
       }

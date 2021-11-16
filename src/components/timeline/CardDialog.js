@@ -502,7 +502,7 @@ const CardDialogConnector = (connector) => {
       const title = this.props.cardMetaData.title
       return (
         <FormControl
-          style={{ fontSize: '24pt', textAlign: 'center', marginBottom: '6px' }}
+          style={{ fontSize: '24px', textAlign: 'center', marginBottom: '6px' }}
           onKeyPress={this.handleEnter}
           type="text"
           inputRef={(ref) => {

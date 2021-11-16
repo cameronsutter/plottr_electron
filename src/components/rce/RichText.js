@@ -16,7 +16,7 @@ const RichTextConnector = (connector) => {
 
   const {
     platform: {
-      storage: { imagePublicURL, isStorageURL },
+      storage: { resolveToPublicUrl, isStorageURL },
       openExternal,
       log,
       createErrorReport,
@@ -26,7 +26,7 @@ const RichTextConnector = (connector) => {
     },
   } = connector
   checkDependencies({
-    imagePublicURL,
+    resolveToPublicUrl,
     isStorageURL,
     openExternal,
     log,
@@ -50,8 +50,10 @@ const RichTextConnector = (connector) => {
       props.onChange(null, defaultSelection)
     }
 
+    const onCloud = props.isLoggedIn && props.isCloudFile
+
     const stealLock = useCallback(() => {
-      if (stealingLock) return
+      if (!onCloud || stealingLock) return
 
       setFocus(true)
       setStealingLock(true)
@@ -66,7 +68,7 @@ const RichTextConnector = (connector) => {
     }, [props.fileId, props.id, props.clientId, props.emailAddress, lock])
 
     const relinquishLock = useCallback(() => {
-      if (releaseRCELock && lock?.clientId === props.clientId) {
+      if (onCloud && releaseRCELock && lock?.clientId === props.clientId) {
         releaseRCELock(props.fileId, props.id, lock)
       }
     }, [props.fileId, props.id, props.clientId, lock])
@@ -85,6 +87,8 @@ const RichTextConnector = (connector) => {
 
     // Check for edit locks
     useEffect(() => {
+      if (!onCloud) return () => {}
+
       return listenForRCELock(props.fileId, props.id, props.clientId, (lockResult) => {
         if (!isEqual(lockResult, lock)) {
           setLock(lockResult)
@@ -136,7 +140,7 @@ const RichTextConnector = (connector) => {
           className={props.className}
           openExternal={openExternal}
           log={log}
-          imagePublicURL={imagePublicURL}
+          imagePublicURL={resolveToPublicUrl}
           isStorageURL={isStorageURL}
         />
       )
@@ -166,8 +170,8 @@ const RichTextConnector = (connector) => {
     className: PropTypes.string,
     darkMode: PropTypes.bool.isRequired,
     isStorageURL: PropTypes.func.isRequired,
-    imagePublicURL: PropTypes.func.isRequired,
     isCloudFile: PropTypes.bool,
+    isLoggedIn: PropTypes.bool,
   }
 
   const { redux } = connector
@@ -180,6 +184,7 @@ const RichTextConnector = (connector) => {
       clientId: selectors.clientIdSelector(state.present),
       emailAddress: selectors.emailAddressSelector(state.present),
       isCloudFile: selectors.isCloudFileSelector(state.present),
+      isLoggedIn: selectors.isLoggedInSelector(state.present),
     }))(RichText)
   }
 

@@ -6,32 +6,40 @@ import { StepBody } from '../../../onboarding/Step'
 import { Spinner } from '../../../Spinner'
 import UnconnectedUploading from './Uploading'
 import UnconnectedChoose from './Choose'
+import { checkDependencies } from '../../../checkDependencies'
 
 const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
 
 const ProStep2Connector = (connector) => {
   const {
     platform: {
-      file: { useSortedKnownFiles },
-      template: { useCustomTemplatesInfo },
+      file: { useSortedKnownFilesIgnoringLoggedIn },
+      template: { useLocalCustomTemplatesInfo },
     },
   } = connector
+  checkDependencies({
+    useSortedKnownFilesIgnoringLoggedIn,
+    useLocalCustomTemplatesInfo,
+  })
 
   const Uploading = UnconnectedUploading(connector)
   const Choose = UnconnectedChoose(connector)
 
   const ProStep2 = ({ nextStep }) => {
     const initialFrbFiles = useRef([])
-    const [sortedIds, filesById] = useSortedKnownFiles('', initialFrbFiles.current, false)
-    const [templateInfo] = useCustomTemplatesInfo()
+    const [sortedIds, filesById] = useSortedKnownFilesIgnoringLoggedIn(
+      '',
+      initialFrbFiles.current,
+      false
+    )
+    const [templateInfo] = useLocalCustomTemplatesInfo()
     const [nothingToUpload, setNothingToUpload] = useState(null)
     const [view, setView] = useState('choice')
     const [templates, setTemplates] = useState(null)
     const [projects, setProjects] = useState(null)
+    const emptyList = useRef([])
 
     useEffect(() => {
-      // TODO: figure out what to do with templates/projects already in firebase
-
       // discover all templates
       const templatesList = Object.values(templateInfo)
       if (!templates && templatesList.length) {
@@ -80,8 +88,8 @@ const ProStep2Connector = (connector) => {
           <Choose
             cancel={() => setView('choice')}
             finalize={finalizeChoices}
-            projects={projects || []}
-            templates={templates || []}
+            projects={projects || emptyList.current}
+            templates={templates || emptyList.current}
           />
         )
         break

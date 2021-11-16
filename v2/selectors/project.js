@@ -5,4 +5,5 @@ export const selectedFileIdSelector = (state) =>
   state.project && state.project.selectedFile && state.project.selectedFile.id
 export const fileLoadedSelector = (state) => state.project && state.project.fileLoaded
 export const isCloudFileSelector = (state) =>
-  state.project && state.project.selectedFile && state.project.selectedFile.isCloudFile
+  (state.project && state.project.selectedFile && state.project.selectedFile.isCloudFile) ||
+  state.file.isCloudFile

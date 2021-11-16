@@ -40,6 +40,8 @@ const concrete = numbering.createConcreteNumbering(abstractNum)
 
 END NONE of this works */
 
+const MEDIA = new Media()
+
 const serialize = (nodes, doc) => {
   if (!nodes || !nodes.flatMap) return []
   if (typeof nodes === 'string') return [new Paragraph({ children: [leaf({ text: nodes })] })]
@@ -104,7 +106,7 @@ const serialize = (nodes, doc) => {
         return new Paragraph({ children: [doc.createHyperlink(n.url, n.url), ...children] })
       case 'image-data': {
         const imgData = n.data
-        const image = Media.addImage(
+        const image = MEDIA.addImage(
           doc,
           Buffer.from(imgData.replace('data:image/jpeg;base64,', ''), 'base64')
         )

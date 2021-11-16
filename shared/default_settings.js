@@ -18,5 +18,6 @@ module.exports = {
     numberOfBackups: 30,
     backupType: 'never-delete',
     localBackups: false,
+    openDashboardFirst: true,
   },
 }

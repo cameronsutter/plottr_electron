@@ -169,11 +169,7 @@ const platform = {
       if (filePath === selectedFile?.path || fileId === idFromPath(filePath)) {
         closeDashboard()
       } else {
-        if (document.location?.pathname === filePath) {
-          closeDashboard()
-        } else {
-          openFile(filePath, id, unknown)
-        }
+        openFile(filePath, id, unknown)
       }
     },
     deleteKnownFile: (id, path) => {

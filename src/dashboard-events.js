@@ -1,3 +1,7 @@
+export const openDashboard = () => {
+  fireEvent('open-dashboard')
+}
+
 export const closeDashboard = () => {
   fireEvent('close-dashboard')
 }

@@ -39,11 +39,15 @@ const Navigation = ({
   const trialExpired = () => !licenseInfoSize && !settings.user?.id && trialInfo.expired
 
   useEffect(() => {
-    const listener = document.addEventListener('close-dashboard', () => {
+    const openListener = document.addEventListener('open-dashboard', () => {
+      setDashboardView('files')
+    })
+    const closeListener = document.addEventListener('close-dashboard', () => {
       setDashboardView(null)
     })
     return () => {
-      document.removeEventListener('close-dashboard', listener)
+      document.removeEventListener('open-dashboard', openListener)
+      document.removeEventListener('close-dashboard', closeListener)
     }
   }, [])
 

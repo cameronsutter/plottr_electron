@@ -38,7 +38,7 @@ function buildFileMenu(filePath) {
       },
     },
     {
-      label: t('Open Existing from File'),
+      label: t('Open Existing File'),
       accelerator: 'CmdOrCtrl+O',
       click: function (event, focusedWindow) {
         focusedWindow && focusedWindow.webContents.send('open-existing')

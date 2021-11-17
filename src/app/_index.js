@@ -32,6 +32,7 @@ import { machineIdSync } from 'node-machine-id'
 import Listener from './components/listener'
 import Renamer from './components/Renamer'
 import {
+  openDashboard,
   closeDashboard,
   createBlankProj,
   createFromTemplate,
@@ -454,5 +455,8 @@ window.addEventListener('load', reloadMenu)
 window.addEventListener('focus', reloadMenu)
 
 ipcRenderer.on('new-project', () => createBlankProj())
-ipcRenderer.on('from-template', () => createFromTemplate())
 ipcRenderer.on('open-existing', () => openExistingProj())
+ipcRenderer.on('from-template', () => {
+  openDashboard()
+  setTimeout(createFromTemplate, 300)
+})

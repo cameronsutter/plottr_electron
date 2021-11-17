@@ -38,6 +38,7 @@ const App = ({
   setEmailAddress,
   setFileList,
   setHasPro,
+  setOffline,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -82,6 +83,20 @@ const App = ({
     event.returnValue = 'nope'
     setShowAskToSave(true)
   }
+
+  useEffect(() => {
+    setOffline(!window.navigator.onLine)
+    const onlineListener = window.addEventListener('online', () => {
+      setOffline(false)
+    })
+    const offlineListener = window.addEventListener('offline', () => {
+      setOffline(true)
+    })
+    return () => {
+      window.removeEventListener('online', onlineListener)
+      window.removeEventListener('offline', offlineListener)
+    }
+  }, [setOffline])
 
   useEffect(() => {
     if (!userId && isCloudFile && checkedUser) {
@@ -249,6 +264,7 @@ App.propTypes = {
   setHasPro: PropTypes.func.isRequired,
   setFileList: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
+  setOffline: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -264,4 +280,5 @@ export default connect(mapStateToProps, {
   setFileList: actions.project.setFileList,
   setEmailAddress: actions.client.setEmailAddress,
   setHasPro: actions.client.setHasPro,
+  setOffline: actions.project.setOffline,
 })(App)

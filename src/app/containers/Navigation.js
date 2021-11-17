@@ -8,6 +8,7 @@ import { Beamer, BookChooser } from 'connected-components'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
 import { FaRegUser } from 'react-icons/fa'
+import { FaSignal } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
 import { useLicenseInfo, useSettingsInfo } from '../../common/utils/store_hooks'
@@ -27,6 +28,7 @@ const Navigation = ({
   selectedFile,
   isCloudFile,
   checkedUser,
+  isOffline,
 }) => {
   const initialView = showAccount ? 'account' : forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
@@ -147,6 +149,12 @@ const Navigation = ({
     <>
       {showFrb ? <LoginModal closeLoginModal={closeLoginModal} receiveUser={setUser} /> : null}
       {dashboardView ? dashbrdModal : null}
+      {isOffline ? (
+        <div className="offline-mode-banner">
+          Offline Mode!
+          <FaSignal />
+        </div>
+      ) : null}
       <Navbar className="project-nav" fluid inverse={isDarkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
@@ -195,6 +203,7 @@ Navigation.propTypes = {
   selectedFile: PropTypes.object,
   isCloudFile: PropTypes.bool,
   checkedUser: PropTypes.bool,
+  isOffline: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -205,6 +214,7 @@ function mapStateToProps(state) {
     hasCurrentProLicense: selectors.hasProSelector(state.present),
     selectedFile: selectors.selectedFileSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
+    isOffline: selectors.isOfflineSelector(state.present),
   }
 }
 

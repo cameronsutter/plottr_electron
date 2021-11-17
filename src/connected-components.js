@@ -208,6 +208,9 @@ const platform = {
       ipcRenderer.send('create-from-snowflake', importedPath)
     },
     joinPath: path.join,
+    listOfflineFiles: () => {
+      return []
+    },
   },
   update: {
     quitToInstall: () => {

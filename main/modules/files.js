@@ -195,8 +195,12 @@ function openKnownFile(filePath, id, unknown) {
   if (unknown) addToKnown(filePath)
 }
 
+function escapeFileName(fileName) {
+  return escape(fileName.replace(/[/\\]/g, '-'))
+}
+
 function offlineFilePath(file) {
-  const fileName = file.path.replace(/^plottr:\/\//, '')
+  const fileName = escapeFileName(file.file.fileName)
   return path.join(OFFLINE_FILE_FILES_PATH, fileName)
 }
 

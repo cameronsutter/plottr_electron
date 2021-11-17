@@ -17,7 +17,7 @@ const SETTINGS = require('./settings')
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
-const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
+const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
 
 const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
@@ -38,12 +38,16 @@ function saveSwap(filePath, data) {
   console.error(Error(`Failed to save to ${filePath}.  Old file is un-touched.`))
 }
 
-function saveFile(filePath, jsonData) {
+function removeSystemKeys(jsonData) {
   const withoutSystemKeys = {}
   Object.keys(jsonData).map((key) => {
     if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
     withoutSystemKeys[key] = jsonData[key]
   })
+}
+
+function saveFile(filePath, jsonData) {
+  const withoutSystemKeys = removeSystemKeys(jsonData)
   if (process.env.NODE_ENV == 'development') {
     saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))
   } else {
@@ -190,8 +194,22 @@ function openKnownFile(filePath, id, unknown) {
   if (unknown) addToKnown(filePath)
 }
 
+function offlineFilePath(file) {
+  const fileName = file.path.replace(/^plottr:\/\//, '')
+  return path.join(OFFLINE_FILE_FILES_PATH, fileName)
+}
+
 function saveOfflineFile(file) {
-  // TODO
+  if (!fs.existsSync(OFFLINE_FILE_FILES_PATH)) {
+    fs.mkdirSync(OFFLINE_FILE_FILES_PATH)
+  }
+  const filePath = offlineFilePath(file)
+  const withoutSystemKeys = removeSystemKeys(file)
+  if (process.env.NODE_ENV == 'development') {
+    saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))
+  } else {
+    saveSwap(filePath, JSON.stringify(withoutSystemKeys))
+  }
 }
 
 module.exports = {

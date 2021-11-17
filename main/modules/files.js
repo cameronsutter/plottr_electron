@@ -17,6 +17,7 @@ const SETTINGS = require('./settings')
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
+const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 
 const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
@@ -189,6 +190,10 @@ function openKnownFile(filePath, id, unknown) {
   if (unknown) addToKnown(filePath)
 }
 
+function saveOfflineFile(file) {
+  // TODO
+}
+
 module.exports = {
   TMP_PATH,
   TEMP_FILES_PATH,
@@ -203,4 +208,5 @@ module.exports = {
   createNew,
   createFromSnowflake,
   openKnownFile,
+  saveOfflineFile,
 }

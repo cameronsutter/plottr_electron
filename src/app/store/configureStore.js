@@ -8,6 +8,7 @@ import logger from '../middlewares/logger'
 import reporter from '../middlewares/reporter'
 import actionRecorder from '../middlewares/actionRecorder'
 import firebaseSync from '../middlewares/firebaseSync'
+import offlineRecorder from '../middlewares/offlineRecorder'
 import undoable, { excludeAction } from 'redux-undo'
 import dataRepairers from './dataRepairers'
 
@@ -45,6 +46,7 @@ function configureStore(initialState) {
     actionRecorder,
     saver,
     firebaseSync,
+    offlineRecorder,
     tracker,
     logger,
     reporter

@@ -31,6 +31,12 @@ import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
 import Listener from './components/listener'
 import Renamer from './components/Renamer'
+import {
+  closeDashboard,
+  createBlankProj,
+  createFromTemplate,
+  openExistingProj,
+} from '../dashboard-events'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -73,9 +79,16 @@ ipcRenderer.on('state-saved', (_arg) => {
 
 const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
 
+const shouldForceDashboard = (openFirst, numOpenFiles) => {
+  if (numOpenFiles > 1) return false
+  if (openFirst === undefined) return true // the default is always show first
+  return openFirst
+}
+
 function bootFile(filePath, options, numOpenFiles) {
   const { darkMode, beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
+  const forceDashboard = shouldForceDashboard(SETTINGS.get('user.openDashboardFirst'), numOpenFiles)
 
   try {
     if (isCloudFile) {
@@ -151,7 +164,7 @@ function bootFile(filePath, options, numOpenFiles) {
               <Provider store={store}>
                 <Listener />
                 <Renamer />
-                <App />
+                <App forceProjectDashboard={forceDashboard} />
               </Provider>,
               root
             )
@@ -213,7 +226,7 @@ function bootFile(filePath, options, numOpenFiles) {
           render(
             <Provider store={store}>
               <Renamer />
-              <App />
+              <App forceProjectDashboard={forceDashboard} />
             </Provider>,
             root
           )
@@ -431,3 +444,15 @@ ipcRenderer.on('save-backup-error', (event, error, filePath) => {
 ipcRenderer.on('save-backup-success', (event, filePath) => {
   log.info('[file open backup]', 'success', filePath)
 })
+
+ipcRenderer.on('close-dashboard', () => {
+  closeDashboard()
+})
+
+const reloadMenu = () => ipcRenderer.send('pls-reload-menu')
+window.addEventListener('load', reloadMenu)
+window.addEventListener('focus', reloadMenu)
+
+ipcRenderer.on('new-project', () => createBlankProj())
+ipcRenderer.on('from-template', () => createFromTemplate())
+ipcRenderer.on('open-existing', () => openExistingProj())

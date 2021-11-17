@@ -58,7 +58,7 @@ import { useTrialStatus } from './common/licensing/trial_manager'
 import { checkForActiveLicense } from './common/licensing/check_license'
 import { verifyLicense } from './common/licensing/verify_license'
 import { checkForPro } from './common/licensing/check_pro'
-import { trial90days } from './common/licensing/special_codes'
+import { trial90days, trial60days } from './common/licensing/special_codes'
 import { openExistingFile as _openExistingFile } from './dashboard/utils/window_manager'
 import {
   doesFileExist,
@@ -83,7 +83,7 @@ import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
 import { resizeImage } from './common/resizeImage'
 import { logger } from './logger'
-import { closeDashboard } from './dashboard'
+import { closeDashboard } from './dashboard-events'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -169,11 +169,7 @@ const platform = {
       if (filePath === selectedFile?.path || fileId === idFromPath(filePath)) {
         closeDashboard()
       } else {
-        if (document.location?.pathname === filePath) {
-          closeDashboard()
-        } else {
-          openFile(filePath, id, unknown)
-        }
+        openFile(filePath, id, unknown)
       }
     },
     deleteKnownFile: (id, path) => {
@@ -259,6 +255,7 @@ const platform = {
     licenseStore,
     verifyLicense,
     trial90days,
+    trial60days,
     checkForPro,
     hasPro: () => SETTINGS.get('user.id') || false,
   },

@@ -8,27 +8,29 @@ const { buildFileMenu } = require('./file')
 const { buildViewMenu } = require('./view')
 const { getWindowById } = require('../windows')
 
-ipcMain.on('pls-reload-menu', () => {
-  loadMenu()
-})
+ipcMain.on('pls-reload-menu', () => loadMenu())
 
 function buildMenu() {
-  let menus = [buildPlottrMenu()]
-
   const win = BrowserWindow.getFocusedWindow()
+  let filePath = null
   if (win) {
     const winObj = getWindowById(win.id)
-    let filePath = null
     if (winObj) {
       filePath = winObj.filePath
     }
-    menus.push(buildFileMenu(filePath))
   }
-  return [...menus, buildEditMenu(), buildViewMenu(), buildWindowMenu(), buildHelpMenu()]
+  return [
+    buildPlottrMenu(),
+    buildFileMenu(filePath),
+    buildEditMenu(),
+    buildViewMenu(),
+    buildWindowMenu(),
+    buildHelpMenu(),
+  ]
 }
 
-function loadMenu(makeItSimple) {
-  const template = buildMenu(makeItSimple)
+function loadMenu() {
+  const template = buildMenu()
   const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 }

@@ -6,7 +6,7 @@ import { t } from 'plottr_locales'
 
 import { openFile } from '../../files'
 import { logger } from '../../logger'
-import { closeDashboard } from '../../dashboard'
+import { closeDashboard } from '../../dashboard-events'
 import { uploadToFirebase } from '../../files'
 
 const win = remote.getCurrentWindow()

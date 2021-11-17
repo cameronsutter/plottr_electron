@@ -44,6 +44,7 @@ function removeSystemKeys(jsonData) {
     if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
     withoutSystemKeys[key] = jsonData[key]
   })
+  return withoutSystemKeys
 }
 
 function saveFile(filePath, jsonData) {

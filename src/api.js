@@ -19,10 +19,21 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   }
 
   const pingAuth = (userId, fileId) => {
-    return axios.post(`${BASE_API_URL}/api/ping-auth`, {
-      userId,
-      fileId
-    })
+    return axios
+      .post(`${BASE_API_URL}/api/ping-auth`, {
+        userId,
+        fileId,
+      })
+      .catch((error) => {
+        const status = error.response.status
+        log.error(
+          'Error pinging auth (to signal that the file list was updated)',
+          status,
+          error.response
+        )
+        if (status === 401) return mintCookieToken(currentUser())
+        return Promise.reject(error)
+      })
   }
 
   const editFileName = (userId, fileId, newName) => {
@@ -314,12 +325,20 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     ])
       .then((results) => {
         const newOpenDate = new Date()
-        return patch('file', fileId, { lastOpened: newOpenDate }, clientId).then(() => {
-          return {
-            results,
-            newOpenDate,
-          }
-        })
+        return patch('file', fileId, { lastOpened: newOpenDate }, clientId)
+          .catch((error) => {
+            log.info(`Attempted to update file (${fileId}) timestamp and couldn't`, error)
+            return {
+              results,
+              newOpenDate,
+            }
+          })
+          .then(() => {
+            return {
+              results,
+              newOpenDate,
+            }
+          })
       })
       .then(({ results, newOpenDate }) => {
         const json = Object.assign({}, ...results)
@@ -562,6 +581,12 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
                 return pingAuth(userId, fileId)
               })
           })
+      })
+      .catch((error) => {
+        const status = error.response.status
+        log.error('Error sharing document', status, error.response)
+        if (status === 401) return mintCookieToken(currentUser())
+        return Promise.reject(error)
       })
   }
 
@@ -934,6 +959,12 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       )
       .then((response) => {
         return response.data.publicURL
+      })
+      .catch((error) => {
+        const status = error.response.status
+        log.error('Error sharing document', status, error.response)
+        if (status === 401) return mintCookieToken(currentUser())
+        return Promise.reject(error)
       })
   }
 

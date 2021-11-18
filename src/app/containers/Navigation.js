@@ -60,11 +60,13 @@ const Navigation = ({
   }, [selectedFile, dashboardView, isCloudFile, checkedUser, showAccount])
 
   useEffect(() => {
-    if (firstTime() || trialExpired()) {
-      setDashboardView('account')
-    }
-    if (checkedUser && userId && !hasCurrentProLicense) {
-      setDashboardView('account')
+    if (checkedUser) {
+      if ((firstTime() || trialExpired()) && !userId) {
+        setDashboardView('account')
+      }
+      if (userId && !hasCurrentProLicense) {
+        setDashboardView('account')
+      }
     }
   }, [
     licenseInfoSize,

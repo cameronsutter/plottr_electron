@@ -1,8 +1,13 @@
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
+import path from 'path'
 import { useMemo } from 'react'
 import { sortBy } from 'lodash'
 import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
+
+const { app } = remote
+
+const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
 
 export function useSortedKnownFiles(
   userId,
@@ -60,4 +65,8 @@ migrateKnownFileStore()
 
 export function removeFromKnownFiles(id) {
   ipcRenderer.send('remove-from-known-files', id)
+}
+
+export function listOfflineFiles() {
+  // fs.ls OFFLINE_FILE_FILES_PATH
 }

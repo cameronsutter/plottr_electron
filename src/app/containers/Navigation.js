@@ -28,15 +28,18 @@ const Navigation = ({
   isCloudFile,
   checkedUser,
 }) => {
+  const [checked, setChecked] = useState(false)
   const initialView = showAccount ? 'account' : forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
-  const [settings, _size, saveSetting] = useSettingsInfo()
+  const [settings] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
+  // don't show the login if user is not on Pro
+  const [showFrbLogin, setShowFrbLogin] = useState(hasCurrentProLicense && !userId)
   // first time = no license, no trial, no pro
-  const firstTime = () => !licenseInfoSize && !trialInfo.started && !settings.user?.id
+  const firstTime = () => !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
   // expired trial = no license, no pro, expired trial
-  const trialExpired = () => !licenseInfoSize && !settings.user?.id && trialInfo.expired
+  const trialExpired = () => !licenseInfoSize && !hasCurrentProLicense && trialInfo.expired
 
   useEffect(() => {
     const openListener = document.addEventListener('open-dashboard', () => {
@@ -58,27 +61,31 @@ const Navigation = ({
   }, [showAccount, dashboardView, setDashboardView])
 
   useEffect(() => {
-    if (!selectedFile && !dashboardView && isCloudFile && checkedUser && !showAccount) {
+    if (!selectedFile && !dashboardView && isCloudFile && checked && !showAccount) {
       setDashboardView('files')
     }
-  }, [selectedFile, dashboardView, isCloudFile, checkedUser, showAccount])
+  }, [selectedFile, dashboardView, isCloudFile, checked, showAccount])
 
   useEffect(() => {
     if (firstTime() || trialExpired()) {
       setDashboardView('account')
     }
-    if (checkedUser && userId && !hasCurrentProLicense) {
+    if (checked && userId && !hasCurrentProLicense) {
       setDashboardView('account')
     }
-  }, [
-    licenseInfoSize,
-    trialInfo,
-    settings,
-    dashboardView,
-    userId,
-    hasCurrentProLicense,
-    checkedUser,
-  ])
+  }, [licenseInfoSize, trialInfo, dashboardView, userId, hasCurrentProLicense, checked])
+
+  useEffect(() => {
+    setShowFrbLogin(hasCurrentProLicense && !userId)
+  }, [hasCurrentProLicense, userId])
+
+  const toggleChecking = (newVal) => {
+    if (!newVal && !checked) {
+      // finished check
+      setChecked(true)
+      checkedUser(true)
+    }
+  }
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
@@ -123,12 +130,6 @@ const Navigation = ({
 
   const closeLoginModal = () => {}
 
-  const setUser = (user) => {
-    // TODO: check that the user has Pro
-    saveSetting('user.id', user.uid)
-    saveSetting('user.email', user.email)
-  }
-
   const dashbrdModal = useMemo(
     () => (
       <DashboardModal
@@ -141,13 +142,11 @@ const Navigation = ({
     [dashboardView, isDarkMode]
   )
 
-  // don't show the login if user is not on Pro
-  const hasPro = !!settings.user?.id
-  const showFrb = hasPro && !userId
-
   return (
     <>
-      {showFrb ? <LoginModal closeLoginModal={closeLoginModal} receiveUser={setUser} /> : null}
+      {showFrbLogin ? (
+        <LoginModal closeLoginModal={closeLoginModal} setChecking={toggleChecking} />
+      ) : null}
       {dashboardView ? dashbrdModal : null}
       <Navbar className="project-nav" fluid inverse={isDarkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
@@ -196,7 +195,7 @@ Navigation.propTypes = {
   hasCurrentProLicense: PropTypes.bool,
   selectedFile: PropTypes.object,
   isCloudFile: PropTypes.bool,
-  checkedUser: PropTypes.bool,
+  checkedUser: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

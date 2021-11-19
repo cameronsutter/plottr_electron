@@ -22,14 +22,14 @@ const modalStyles = {
   },
 }
 
-export default function LoginModal({ closeLoginModal, receiveUser }) {
+export default function LoginModal({ closeLoginModal, setChecking }) {
   return (
     <PlottrModal isOpen={true} onRequestClose={closeLoginModal} style={modalStyles}>
       <div className="login">
         <div className="login__main">
           <div className="login__left">
             <h1>Welcome to Plottr</h1>
-            <FirebaseLogin receiveUser={receiveUser} />
+            <FirebaseLogin setChecking={setChecking} />
           </div>
           <div className="login__right">
             <div className="login__logo">
@@ -44,5 +44,5 @@ export default function LoginModal({ closeLoginModal, receiveUser }) {
 
 LoginModal.propTypes = {
   closeLoginModal: PropTypes.func.isRequired,
-  receiveUser: PropTypes.func.isRequired,
+  setChecking: PropTypes.func.isRequired,
 }

@@ -4,7 +4,7 @@ import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
-import { onSessionChange, listenToFiles } from 'wired-up-firebase'
+import { listenToFiles } from 'wired-up-firebase'
 import { actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 
@@ -24,21 +24,10 @@ import { store } from '../store/configureStore'
 import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
 import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
-import SETTINGS from '../../common/utils/settings'
-import { checkForPro } from '../../common/licensing/check_pro'
 
 const { dialog } = remote
 
-const App = ({
-  forceProjectDashboard,
-  showTour,
-  userId,
-  isCloudFile,
-  setUserId,
-  setEmailAddress,
-  setFileList,
-  setHasPro,
-}) => {
+const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
   const [showAskToSave, setShowAskToSave] = useState(false)
@@ -91,32 +80,14 @@ const App = ({
   }, [userId, isCloudFile, checkedUser])
 
   useEffect(() => {
-    let fileListener = null
-    const sessionListener = onSessionChange((user) => {
-      if (!user) {
-        setCheckedUser(true)
-      } else {
-        SETTINGS.set('user.id', user.uid)
-        SETTINGS.set('user.email', user.email)
-        setUserId(user.uid)
-        setEmailAddress(user.email)
-        checkForPro(user.email, (hasPro) => {
-          setHasPro(hasPro)
-          setCheckedUser(true)
-          if (hasPro) {
-            fileListener = listenToFiles(user.uid, (files) => {
-              const activeFiles = files.filter(({ deleted }) => !deleted)
-              setFileList(activeFiles)
-            })
-          }
-        })
-      }
-    })
-    return () => {
-      if (fileListener) fileListener()
-      sessionListener()
+    if (checkedUser && userId) {
+      const fileListener = listenToFiles(userId, (files) => {
+        const activeFiles = files.filter(({ deleted }) => !deleted)
+        setFileList(activeFiles)
+      })
+      return () => fileListener()
     }
-  }, [])
+  }, [checkedUser, userId])
 
   useEffect(() => {
     ipcRenderer.on('save-as-template-start', (event, type) => {
@@ -219,7 +190,7 @@ const App = ({
           <Navigation
             forceProjectDashboard={forceProjectDashboard}
             showAccount={cloudFileWithoutLoggingIn}
-            checkedUser={checkedUser}
+            checkedUser={(newVal) => setCheckedUser(newVal)}
           />
         </React.StrictMode>
       </ErrorBoundary>
@@ -245,10 +216,7 @@ App.propTypes = {
   showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
   isCloudFile: PropTypes.bool,
-  setUserId: PropTypes.func.isRequired,
-  setHasPro: PropTypes.func.isRequired,
   setFileList: PropTypes.func.isRequired,
-  setEmailAddress: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

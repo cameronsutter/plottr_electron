@@ -8,7 +8,6 @@ const { NODE_ENV } = require('../constants')
 const { newFileOptions } = require('../new_file_options')
 const { getLicenseInfo } = require('../license_info')
 const { getTriaInfo } = require('../trial_info')
-const SETTINGS = require('../settings')
 const { hasRecents, buildRecents } = require('./recents')
 
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
@@ -20,7 +19,6 @@ if (is.macos) {
 function buildFileMenu(filePath) {
   const isCloudFile = filePath && filePath.startsWith('plottr://')
   const isTemp = filePath && filePath.includes(TEMP_FILES_PATH)
-  const isPro = !!SETTINGS.get('user.id')
   const licenseStore = getLicenseInfo()
   const trialStore = getTriaInfo()
   let submenu = [
@@ -46,7 +44,7 @@ function buildFileMenu(filePath) {
     },
     {
       label: t('Recent Projects'),
-      visible: !isPro && hasRecents(),
+      visible: hasRecents(),
       submenu: buildRecents(),
     },
     {
@@ -78,7 +76,7 @@ function buildFileMenu(filePath) {
     },
     {
       label: showInMessage,
-      visible: !isPro && !isTemp,
+      visible: !isCloudFile && !isTemp,
       click: function () {
         shell.showItemInFolder(filePath)
       },

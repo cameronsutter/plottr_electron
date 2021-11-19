@@ -44,7 +44,7 @@ function buildFileMenu(filePath) {
     },
     {
       label: t('Recent Projects'),
-      visible: hasRecents(),
+      visible: !isCloudFile && hasRecents(),
       submenu: buildRecents(),
     },
     {

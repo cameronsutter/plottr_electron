@@ -87,7 +87,13 @@ export function listOfflineFiles() {
             files.map((file) => {
               return readFile(file).then((jsonString) => {
                 try {
-                  return [JSON.parse(jsonString).file]
+                  const fileData = JSON.parse(jsonString).file
+                  return [
+                    {
+                      ...fileData,
+                      path: file,
+                    },
+                  ]
                 } catch (error) {
                   logger.error(`Error reading offline file: ${file}`, error)
                   return []

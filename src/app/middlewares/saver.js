@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron'
 import { saveBackup } from 'wired-up-firebase'
-import { ActionTypes } from 'pltr/v2'
+import { ActionTypes, selectors } from 'pltr/v2'
 import { shouldIgnoreAction } from './shouldIgnoreAction'
 
 const { FILE_SAVED, FILE_LOADED, SET_DARK_MODE } = ActionTypes
@@ -13,10 +13,11 @@ const saver = (store) => (next) => (action) => {
   if (BLACKLIST.includes(action.type)) return result
   const state = store.getState().present
   // save and backup
-  if (state.file.isCloudFile) {
-    saveFile(state.file.id, state)
+  const isOffline = !selectors.isOfflineSelector(state)
+  if (selectors.isCloudFileSelector(state) && !isOffline) {
+    saveFile(state.file.id, state, isOffline)
   } else if (state.file.fileName !== '') {
-    saveFile(state.file.fileName, state)
+    saveFile(state.file.fileName, state, isOffline)
   }
   return result
 }
@@ -53,7 +54,7 @@ const cloudBackup = (userId, file) => {
   }
 }
 
-function saveFile(filePath, jsonData) {
+function saveFile(filePath, jsonData, isOffline) {
   if (saveTimeout) {
     clearTimeout(saveTimeout)
     resetCount++
@@ -70,7 +71,9 @@ function saveFile(filePath, jsonData) {
   previousFile = jsonData
   if (resetCount >= MAX_RESETS) {
     forceSavePrevious()
-    cloudBackup(jsonData.client?.userId, jsonData)
+    if (!isOffline) {
+      cloudBackup(jsonData.client?.userId, jsonData)
+    }
     return
   }
   saveTimeout = setTimeout(forceSavePrevious, 1000)

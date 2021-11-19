@@ -8,7 +8,7 @@ const { t } = require('plottr_locales')
 
 const { knownFilesStore, addToKnownFiles, addToKnown } = require('./known_files')
 const { Importer } = require('./importer/snowflake/importer')
-const { emptyFile, tree, SYSTEM_REDUCER_KEYS } = require('pltr/v2')
+const { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } = require('pltr/v2')
 const { openProjectWindow } = require('./windows/projects')
 const { shell } = require('electron')
 const { broadcastToAllWindows } = require('./broadcast')
@@ -63,8 +63,9 @@ let resetCount = 0
 const MAX_ATTEMPTS = 200
 
 function autoSave(event, filePath, file, userId, previousFile) {
-  const onCloud = file.file.isCloudFile
-  if (!onCloud) {
+  const onCloud = selectors.isCloudFileSelector(file)
+  const isOffline = selectors.isOfflineSelector(file)
+  if (!onCloud || isOffline) {
     try {
       saveFile(filePath, file)
       // didn't work last time, but it did this time

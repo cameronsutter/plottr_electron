@@ -143,7 +143,7 @@ const Navigation = ({
 
   // don't show the login if user is not on Pro
   const hasPro = !!settings.user?.id
-  const showFrb = hasPro && !userId
+  const showFrb = hasPro && !userId && !isOffline
 
   return (
     <>

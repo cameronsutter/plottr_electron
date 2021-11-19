@@ -64,6 +64,7 @@ import {
   doesFileExist,
   useSortedKnownFiles as _useSortedKnownFiles,
   removeFromKnownFiles,
+  listOfflineFiles,
 } from './dashboard/utils/files'
 import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
@@ -208,9 +209,7 @@ const platform = {
       ipcRenderer.send('create-from-snowflake', importedPath)
     },
     joinPath: path.join,
-    listOfflineFiles: () => {
-      return []
-    },
+    listOfflineFiles,
   },
   update: {
     quitToInstall: () => {

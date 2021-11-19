@@ -4,8 +4,11 @@ import path from 'path'
 import { useMemo } from 'react'
 import { sortBy } from 'lodash'
 import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
+import { logger } from '../../logger'
 
 const { app } = remote
+
+const { readdir, lstat, readFile } = fs.promises
 
 const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
 
@@ -68,5 +71,34 @@ export function removeFromKnownFiles(id) {
 }
 
 export function listOfflineFiles() {
-  // fs.ls OFFLINE_FILE_FILES_PATH
+  return readdir(OFFLINE_FILE_FILES_PATH)
+    .then((entries) => {
+      return Promise.all(
+        entries.map((entry) => {
+          return lstat(path.join(OFFLINE_FILE_FILES_PATH, entry)).then((folder) => ({
+            keep: folder.isFile(),
+            payload: path.join(OFFLINE_FILE_FILES_PATH, entry),
+          }))
+        })
+      )
+        .then((results) => results.filter(({ keep }) => keep).map(({ payload }) => payload))
+        .then((files) => {
+          return Promise.all(
+            files.map((file) => {
+              return readFile(file).then((jsonString) => {
+                try {
+                  return [JSON.parse(jsonString).file]
+                } catch (error) {
+                  logger.error(`Error reading offline file: ${file}`, error)
+                  return []
+                }
+              })
+            })
+          ).then((results) => results.flatMap((x) => x))
+        })
+    })
+    .catch((error) => {
+      logger.error(`Couldn't list the offline files directory: ${OFFLINE_FILE_FILES_PATH}`, error)
+      return Promise.reject(error)
+    })
 }

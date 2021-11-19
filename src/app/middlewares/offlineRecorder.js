@@ -6,7 +6,7 @@ const offlineRecorder = (store) => (next) => (action) => {
   const result = next(action)
 
   const state = store.getState().present
-  if (selectors.isCloudFileSelector(state)) {
+  if (selectors.isCloudFileSelector(state) && !selectors.isOfflineSelector(state)) {
     ipcRenderer.send('record-offline-backup', state)
   }
 

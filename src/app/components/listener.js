@@ -14,11 +14,12 @@ const Listener = ({
   patchFile,
   clientId,
   fileLoaded,
+  isOffline,
 }) => {
   const [unsubscribeFunctions, setUnsubscribeFunctions] = useState([])
 
   useEffect(() => {
-    if (!userId || !clientId || !selectedFile || !selectedFile.id) {
+    if (!userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
       return () => {}
     }
     if (fileLoaded) {
@@ -35,7 +36,14 @@ const Listener = ({
       setUnsubscribeFunctions([])
       setPermission('viewer')
     }
-  }, [selectedFile, userId, clientId, fileLoaded])
+  }, [selectedFile, userId, clientId, fileLoaded, isOffline])
+
+  useEffect(() => {
+    if (isOffline && unsubscribeFunctions.length) {
+      stopListening(unsubscribeFunctions)
+      setUnsubscribeFunctions([])
+    }
+  }, [isOffline, unsubscribeFunctions])
 
   return null
 }
@@ -46,6 +54,7 @@ Listener.propTypes = {
   selectedFile: PropTypes.object,
   setFileLoaded: PropTypes.func.isRequired,
   clientId: PropTypes.string,
+  isOffline: PropTypes.bool,
 }
 
 export default connect(
@@ -54,6 +63,7 @@ export default connect(
     userId: selectors.userIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
     fileLoaded: selectors.fileLoadedSelector(state.present),
+    isOffline: selectors.isOfflineSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,

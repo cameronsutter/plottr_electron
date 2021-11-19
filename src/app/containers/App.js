@@ -39,6 +39,7 @@ const App = ({
   setFileList,
   setHasPro,
   setOffline,
+  isOffline,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -108,7 +109,7 @@ const App = ({
   useEffect(() => {
     let fileListener = null
     const sessionListener = onSessionChange((user) => {
-      if (!user) {
+      if (!user || isOffline) {
         setCheckedUser(true)
       } else {
         SETTINGS.set('user.id', user.uid)
@@ -131,7 +132,7 @@ const App = ({
       if (fileListener) fileListener()
       sessionListener()
     }
-  }, [])
+  }, [isOffline])
 
   useEffect(() => {
     ipcRenderer.on('save-as-template-start', (event, type) => {
@@ -166,11 +167,11 @@ const App = ({
   }, [])
 
   useEffect(() => {
-    if (userId) {
+    if (userId && !isOffline) {
       return listenToCustomTemplates(userId)
     }
     return () => {}
-  }, [userId])
+  }, [userId, isOffline])
 
   const dontSaveAndClose = () => {
     setBlockClosing(false)
@@ -265,6 +266,7 @@ App.propTypes = {
   setFileList: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
   setOffline: PropTypes.func.isRequired,
+  isOffline: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -272,6 +274,7 @@ function mapStateToProps(state) {
     showTour: selectors.showTourSelector(state.present),
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
+    isOffline: selectors.isOfflineSelector(state.present),
   }
 }
 

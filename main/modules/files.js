@@ -205,7 +205,13 @@ function offlineFilePath(file) {
   return path.join(OFFLINE_FILE_FILES_PATH, fileName)
 }
 
+function isAnOfflineFile(file) {
+  return file.file.fileName.startsWith(OFFLINE_FILE_FILES_PATH)
+}
+
 function saveOfflineFile(file) {
+  // Don't save an offline version of an offline file
+  if (isAnOfflineFile(file)) return
   if (!fs.existsSync(OFFLINE_FILE_FILES_PATH)) {
     fs.mkdirSync(OFFLINE_FILE_FILES_PATH)
   }

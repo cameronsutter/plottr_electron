@@ -10,3 +10,4 @@ data/*
 .prev
 bin/electron_main.js
 dist/
+lib/plottr_components/src/css/components.css.map

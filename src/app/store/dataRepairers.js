@@ -1,5 +1,7 @@
-import { normalize } from 'connected-components'
+import { normalize } from 'plottr_components'
 
-const dataRepairers = { normalizeRCEContent: normalize }
+import { logger } from '../../logger'
+
+const dataRepairers = { normalizeRCEContent: normalize(logger) }
 
 export default dataRepairers

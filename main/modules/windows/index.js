@@ -1,7 +1,7 @@
 const { BrowserWindow, ipcMain } = require('electron')
 const { openBuyWindow } = require('./buy')
 const { newFileOptions } = require('../new_file_options')
-const log = require('electron-log')
+const { offlineFilePath } = require('../offlineFilePath')
 
 ipcMain.on('open-buy-window', (event) => {
   openBuyWindow()
@@ -47,7 +47,8 @@ function editWindowPath(oldFilePath, newFilePath) {
 }
 
 function focusIfOpen(filePath) {
-  const win = windows.find((w) => w.filePath == filePath)
+  const offlinePath = offlineFilePath(filePath)
+  const win = windows.find((w) => w.filePath == filePath || w.filePath === offlinePath)
   if (win) {
     win.browserWindow.focus()
     win.browserWindow.webContents.send('close-dashboard')

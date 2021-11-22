@@ -35,7 +35,7 @@ const sameActionCloseInTime = (action, currentState, _previousHistory) => {
   return null
 }
 
-function configureStore(initialState) {
+export function configureStore(initialState) {
   const reducer = undoable(rootReducer(dataRepairers), {
     limit: 40,
     ignoreInitialState: true,
@@ -65,6 +65,3 @@ function configureStore(initialState) {
   const store = createStore(reducer, initialState, enhancers)
   return store
 }
-
-const store = configureStore()
-export { store }

@@ -14,10 +14,10 @@ const { shell } = require('electron')
 const { broadcastToAllWindows } = require('./broadcast')
 const { saveBackup } = require('./backup')
 const SETTINGS = require('./settings')
+const { OFFLINE_FILE_FILES_PATH, offlineFilePath } = require('./offlineFilePath')
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
-const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
 
 const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
@@ -196,15 +196,6 @@ function openKnownFile(filePath, id, unknown) {
   if (unknown) addToKnown(filePath)
 }
 
-function escapeFileName(fileName) {
-  return escape(fileName.replace(/[/\\]/g, '-'))
-}
-
-function offlineFilePath(file) {
-  const fileName = escapeFileName(file.file.fileName)
-  return path.join(OFFLINE_FILE_FILES_PATH, fileName)
-}
-
 function isAnOfflineFile(file) {
   return file.file.fileName.startsWith(OFFLINE_FILE_FILES_PATH)
 }
@@ -215,7 +206,11 @@ function saveOfflineFile(file) {
   if (!fs.existsSync(OFFLINE_FILE_FILES_PATH)) {
     fs.mkdirSync(OFFLINE_FILE_FILES_PATH)
   }
-  const filePath = offlineFilePath(file)
+  if (!file || !file.file || !file.file.fileName) {
+    log.error('Trying to save a file but there is no file record on it.', file)
+    return
+  }
+  const filePath = offlineFilePath(file.file.fileName)
   const withoutSystemKeys = removeSystemKeys(file)
   if (process.env.NODE_ENV == 'development') {
     saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))

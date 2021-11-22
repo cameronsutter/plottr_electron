@@ -70,7 +70,7 @@ import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import TemplateFetcher from './dashboard/utils/template_fetcher'
-import { store } from './app/store/configureStore'
+import { store } from './app/store'
 import {
   renameFile,
   saveFile,
@@ -78,7 +78,6 @@ import {
   showSaveDialogSync,
   newFile,
   uploadExisting,
-  openFile,
 } from './files'
 import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
@@ -91,6 +90,10 @@ const { app, dialog } = remote
 const version = app.getVersion()
 
 const moveItemToTrash = shell.moveItemToTrash
+
+export const openFile = (filePath, id, unknown) => {
+  ipcRenderer.send('open-known-file', filePath, id, unknown)
+}
 
 const idFromPath = (filePath) => {
   return filePath?.replace(/^plottr:\/\//, '')
@@ -412,7 +415,6 @@ export const PlottrModal = components.PlottrModal
 export const EditAttribute = components.EditAttribute
 export const RichText = components.RichText
 export const editorRegistry = components.editorRegistry
-export const normalize = components.normalize
 export const Image = components.Image
 export const ImagePicker = components.ImagePicker
 export const MiniColorPicker = components.MiniColorPicker

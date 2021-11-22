@@ -20,7 +20,7 @@ import {
   ActsHelpModal,
 } from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
-import { store } from '../store/configureStore'
+import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
 import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'

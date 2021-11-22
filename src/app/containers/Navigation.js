@@ -14,6 +14,7 @@ import { selectors } from 'pltr/v2'
 import { useLicenseInfo, useSettingsInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
+import Resume from '../components/Resume'
 
 const isDev = process.env.NODE_ENV == 'development'
 
@@ -155,6 +156,7 @@ const Navigation = ({
           <FaSignal />
         </div>
       ) : null}
+      <Resume />
       <Navbar className="project-nav" fluid inverse={isDarkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />

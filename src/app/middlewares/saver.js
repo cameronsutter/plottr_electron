@@ -11,9 +11,10 @@ const saver = (store) => (next) => (action) => {
   const result = next(action)
   if (shouldIgnoreAction(action)) return result
   if (BLACKLIST.includes(action.type)) return result
-  if (selectors.isResumingSelector(state)) return result
 
   const state = store.getState().present
+  if (selectors.isResumingSelector(state)) return result
+
   // save and backup
   const isOffline = !selectors.isOfflineSelector(state)
   if (selectors.isCloudFileSelector(state) && !isOffline) {

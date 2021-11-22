@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { ipcRenderer } from 'electron'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -19,9 +20,10 @@ const Listener = ({
   isOffline,
   setFileName,
   offlineFilePath,
-  fileName,
+  filePath,
   restoreFileName,
   originalFileName,
+  cloudFilePath,
 }) => {
   const [unsubscribeFunctions, setUnsubscribeFunctions] = useState([])
 
@@ -53,16 +55,22 @@ const Listener = ({
   }, [isOffline, unsubscribeFunctions])
 
   useEffect(() => {
-    if (isOffline) {
-      if (!isEqual(fileName, offlineFilePath)) {
-        setFileName(offlineFilePath)
-      }
-    } else {
-      if (originalFileName) {
-        restoreFileName()
-      }
+    if (isOffline && !originalFileName) {
+      ipcRenderer.send('set-my-file-path', cloudFilePath, offlineFilePath)
+      setFileName(offlineFilePath)
+    } else if (originalFileName) {
+      ipcRenderer.send('set-my-file-path', offlineFilePath, cloudFilePath)
+      restoreFileName()
     }
-  }, [isOffline, offlineFilePath, setFileName, fileName, restoreFileName, originalFileName])
+  }, [
+    isOffline,
+    offlineFilePath,
+    setFileName,
+    filePath,
+    restoreFileName,
+    originalFileName,
+    cloudFilePath,
+  ])
 
   return null
 }
@@ -78,6 +86,7 @@ Listener.propTypes = {
   offlineFilePath: PropTypes.string,
   restoreFileName: PropTypes.func.isRequired,
   originalFileName: PropTypes.string,
+  cloudFilePath: PropTypes.string,
 }
 
 export default connect(
@@ -88,8 +97,9 @@ export default connect(
     fileLoaded: selectors.fileLoadedSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
     offlineFilePath: offlineFilePath(state.present),
-    fileName: selectors.fileNameSelector(state.present),
+    filePath: selectors.filePathSelector(state.present),
     originalFileName: selectors.originalFileNameSelector(state.present),
+    cloudFilePath: selectors.cloudFilePathSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,

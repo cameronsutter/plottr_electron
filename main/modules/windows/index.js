@@ -17,6 +17,26 @@ function allWindows() {
   return windows
 }
 
+function setFilePathForWindowWithFilePath(oldFilePath, newFilePath) {
+  const window = allWindows().find((window) => {
+    return window.filePath === oldFilePath
+  })
+
+  if (window) {
+    window.oldFilePath = window.filePath
+    window.filePath = newFilePath
+    console.info('Renaming window with path: ', oldFilePath, ' to: ', newFilePath)
+  } else {
+    console.warn(
+      'Attempting to rename window with path: ',
+      oldFilePath,
+      ' to: ',
+      newFilePath,
+      'but could not find the window'
+    )
+  }
+}
+
 function addNewWindow(browserWindow, filePath) {
   windows.push({
     id: browserWindow.id,
@@ -86,6 +106,7 @@ function closeWindow(id) {
 }
 
 module.exports = {
+  setFilePathForWindowWithFilePath,
   addNewWindow,
   allWindows,
   reloadWindow,

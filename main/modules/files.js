@@ -63,8 +63,12 @@ let resetCount = 0
 const MAX_ATTEMPTS = 200
 
 function autoSave(event, filePath, file, userId, previousFile) {
+  // Don't auto save while resolving resuming the connection
+  if (selectors.isResumingSelector(file)) return
+
   const onCloud = selectors.isCloudFileSelector(file)
   const isOffline = selectors.isOfflineSelector(file)
+
   if (!onCloud || isOffline) {
     try {
       saveFile(filePath, file)

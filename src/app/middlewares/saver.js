@@ -11,6 +11,8 @@ const saver = (store) => (next) => (action) => {
   const result = next(action)
   if (shouldIgnoreAction(action)) return result
   if (BLACKLIST.includes(action.type)) return result
+  if (selectors.isResumingSelector(state)) return result
+
   const state = store.getState().present
   // save and backup
   const isOffline = !selectors.isOfflineSelector(state)

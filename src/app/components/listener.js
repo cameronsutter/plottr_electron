@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { ipcRenderer } from 'electron'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
@@ -23,13 +23,34 @@ const Listener = ({
   restoreFileName,
   originalFileName,
   cloudFilePath,
+  setResuming,
+  resuming,
 }) => {
   const [unsubscribeFunctions, setUnsubscribeFunctions] = useState([])
+
+  const wasOffline = useRef(isOffline)
+
+  useEffect(() => {
+    if (isOffline) {
+      wasOffline.current = true
+    }
+  }, [isOffline])
 
   useEffect(() => {
     if (!userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
       return () => {}
     }
+
+    if (wasOffline.current) {
+      setResuming(true)
+      wasOffline.current = false
+      return () => {}
+    }
+
+    if (resuming) {
+      return () => {}
+    }
+
     if (fileLoaded) {
       setUnsubscribeFunctions(
         listen(store, userId, selectedFile.id, clientId, selectedFile.version)
@@ -44,7 +65,7 @@ const Listener = ({
       setUnsubscribeFunctions([])
       setPermission('viewer')
     }
-  }, [selectedFile, userId, clientId, fileLoaded, isOffline])
+  }, [selectedFile, userId, clientId, fileLoaded, isOffline, resuming, setResuming])
 
   useEffect(() => {
     if (isOffline && unsubscribeFunctions.length) {
@@ -99,6 +120,7 @@ export default connect(
     filePath: selectors.filePathSelector(state.present),
     originalFileName: selectors.originalFileNameSelector(state.present),
     cloudFilePath: selectors.cloudFilePathSelector(state.present),
+    resuming: selectors.isResumingSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,

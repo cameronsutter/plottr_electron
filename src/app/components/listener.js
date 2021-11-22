@@ -7,7 +7,6 @@ import { actions, selectors } from 'pltr/v2'
 import { listen, stopListening } from 'wired-up-firebase'
 import { store } from '../store'
 import { offlineFilePath } from '../../files'
-import { isEqual } from 'lodash'
 
 const Listener = ({
   userId,

@@ -54,6 +54,7 @@
     "luxon": "^1.27.0",
     "react-is": "^16.13.1",
     "react-joyride": "^2.3.0",
+    "redux-thunk": "^2.3.0",
     "rollbar": "^2.19.4",
     "tiny-invariant": "^1.0.6",
     "tree-changes": "^0.6.1"

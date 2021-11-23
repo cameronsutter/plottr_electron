@@ -1,5 +1,6 @@
 import { isEqual } from 'lodash'
 import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
 import devToolsEnhancer from 'remote-redux-devtools'
 import { rootReducer, ActionTypes } from 'pltr/v2'
 import saver from '../middlewares/saver'
@@ -43,6 +44,7 @@ export function configureStore(initialState) {
     filter: excludeAction([ActionTypes.RESET_ACTION_RECORDER, ActionTypes.RECORD_LAST_ACTION]),
   })
   const middlewares = applyMiddleware(
+    thunk,
     actionRecorder,
     saver,
     firebaseSync,

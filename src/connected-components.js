@@ -408,6 +408,7 @@ const components = connections.pltr(platform)
 
 export const OverlayTrigger = components.OverlayTrigger
 export const DeleteConfirmModal = components.DeleteConfirmModal
+export const MessageModal = components.MessageModal
 export const ColorPickerColor = components.ColorPickerColor
 export const ItemsManagerModal = components.ItemsManagerModal
 export const ListItem = components.ListItem

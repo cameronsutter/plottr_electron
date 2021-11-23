@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { PropTypes } from 'prop-types'
 import { remote } from 'electron'
 import { connect } from 'react-redux'
-import { isEqual } from 'lodash'
 import { Spinner } from 'connected-components'
 
 import { t } from 'plottr_locales'
 import { selectors, actions, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { MessageModal } from 'connected-components'
-import { initialFetch } from 'wired-up-firebase'
+import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import { logger } from '../../logger'
 import { uploadProject } from '../../common/utils/upload_project'
 
@@ -26,6 +25,7 @@ const Resume = ({
   withFullFileState,
 }) => {
   const [checking, setChecking] = useState(false)
+  const [overwriting, setOverwriting] = useState(false)
 
   useEffect(() => {
     if (isResuming) {
@@ -35,25 +35,37 @@ const Resume = ({
         return initialFetch(userId, fileId, clientId, app.getVersion()).then((cloudFile) => {
           withFullFileState((state) => {
             const offlineFile = state.present
-            const keysWithChanges = Object.keys(cloudFile)
-              .filter((key) => SYSTEM_REDUCER_KEYS.indexOf(key) === -1)
-              .reduce((acc, key) => {
-                if (key === 'client') {
-                  return acc
-                } else if (
-                  key === 'file' &&
-                  cloudFile.file.fileName !== offlineFile.file.fileName
-                ) {
-                  return [...acc, key]
-                } else if (key !== 'file' && !isEqual(cloudFile[key], offlineFile[key])) {
-                  return [...acc, key]
-                }
-                return acc
-              }, [])
-            if (keysWithChanges.length) {
+            const originalTimeStamp = offlineFile.file.originalTimeStamp
+            const currentTimeStamp = offlineFile.file.timeStamp
+            const madeOfflineEdits = currentTimeStamp > originalTimeStamp
+            const madeEditsOnline = cloudFile.file.timeStamp.toDate() > originalTimeStamp
+            const doNothing = !madeOfflineEdits && !madeEditsOnline
+            const uploadOurs = madeOfflineEdits && !madeEditsOnline
+            // Doesn't matter whether we edited locally.  We're the
+            // late comer in this case
+            const backupOurs = madeEditsOnline
+            if (doNothing) {
+              logger.info(
+                `After resuming, there are no changes between the local and cloud files for file with id: ${fileId}.`
+              )
+              setChecking(false)
+              setResuming(false)
+              setOverwriting(false)
+              retryCount = 0
+            } else if (uploadOurs) {
+              setChecking(false)
+              setOverwriting(true)
+              logger.info(
+                `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
+              )
+              overwriteAllKeys(fileId, clientId, offlineFile).then(() => {
+                setOverwriting(false)
+                setResuming(false)
+              })
+            } else if (backupOurs) {
               setChecking(false)
               logger.info(
-                `Detected that file ${fileId} has changes at keys ${keysWithChanges}.  Backing up the offline file and switching to the online file.`
+                `Detected that file ${fileId} has changes since ${originalTimeStamp}.  Backing up the offline file and switching to the online file.`
               )
               const date = new Date()
               uploadProject(
@@ -70,15 +82,9 @@ const Resume = ({
                 userId
               ).then(() => {
                 setResuming(false)
+                setOverwriting(false)
                 retryCount = 0
               })
-            } else {
-              logger.info(
-                `After resuming, there are no changes between the local and cloud files for file with id: ${fileId}.`
-              )
-              setChecking(false)
-              setResuming(false)
-              retryCount = 0
             }
           })
         })
@@ -89,6 +95,7 @@ const Resume = ({
         if (retryCount > MAX_RETRIES) {
           setChecking(false)
           setResuming(false)
+          setOverwriting(false)
           dialog.showErrorBox(
             t('Error'),
             t('There was an error reconnecting.  Please save the file and restart Plottr.')
@@ -113,9 +120,10 @@ const Resume = ({
   return (
     <MessageModal message="Reconnecting" onAcknowledge={acknowledge} disabledAcknowledge={checking}>
       {checking ? <Spinner /> : null}
-      {!checking
+      {!checking && !overwriting
         ? `The cloud file is different from your local copy.  We're going to create a duplicate of your local file and switch to the cloud file.`
         : null}
+      {overwriting ? 'Uploading your changes to the cloud.' : null}
     </MessageModal>
   )
 }

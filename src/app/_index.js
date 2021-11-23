@@ -94,7 +94,7 @@ function bootFile(filePath, options, numOpenFiles) {
   try {
     if (isCloudFile) {
       const fileId = filePath.split('plottr://')[1]
-      const userId = SETTINGS.get('user.id')
+      const userId = SETTINGS.get('user.frbId')
       const emailAddress = SETTINGS.get('user.email')
       if (!userId) {
         rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)

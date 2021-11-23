@@ -35,7 +35,7 @@ const Navigation = ({
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   // don't show the login if user is not on Pro
-  const [showFrbLogin, setShowFrbLogin] = useState(hasCurrentProLicense && !userId)
+  const [showFrbLogin, setShowFrbLogin] = useState(settings?.user?.frbId && !userId)
   // first time = no license, no trial, no pro
   const firstTime = () => !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
   // expired trial = no license, no pro, expired trial
@@ -76,8 +76,9 @@ const Navigation = ({
   }, [licenseInfoSize, trialInfo, dashboardView, userId, hasCurrentProLicense, checked])
 
   useEffect(() => {
+    if (!checked) return
     setShowFrbLogin(hasCurrentProLicense && !userId)
-  }, [hasCurrentProLicense, userId])
+  }, [checked, hasCurrentProLicense, userId])
 
   const toggleChecking = (newVal) => {
     if (!newVal && !checked) {

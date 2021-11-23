@@ -73,7 +73,7 @@ const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList
   }
 
   useEffect(() => {
-    if (!userId && isCloudFile && checkedUser) {
+    if (checkedUser && !userId && isCloudFile) {
       log.error('Attempting to open a cloud file locally without being logged in.')
       dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
     }

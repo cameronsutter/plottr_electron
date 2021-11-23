@@ -87,61 +87,96 @@ const shouldForceDashboard = (openFirst, numOpenFiles) => {
   return openFirst
 }
 
+function waitForUser(cb) {
+  const user = currentUser()
+  if (user) {
+    cb(user)
+  } else {
+    setTimeout(() => {
+      waitForUser(cb)
+    }, 1000)
+  }
+}
+
 function bootCloudFile(filePath, forceDashboard) {
   const fileId = filePath.split('plottr://')[1]
-  const userId = currentUser().uid
-  const email = currentUser().email
-  if (!userId) {
-    rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
-    return
-  }
-
-  initialFetch(userId, fileId, clientId, app.getVersion()).then((json) => {
-    const offlineFile = fs.readFileSync(offlineFilePath(json))
-    const originalTimeStamp = offlineFile.file.originalTimeStamp
-    const currentTimeStamp = offlineFile.file.timeStamp
-    const madeOfflineEdits = currentTimeStamp > originalTimeStamp
-    const madeEditsOnline = json.file.timeStamp.toDate() > originalTimeStamp
-    // Doesn't matter whether we edited locally.  We're the
-    // late comer in this case
-    const backupOurs = madeEditsOnline && madeOfflineEdits
-    const beforeLoading = () => {
-      if (backupOurs) {
-        const date = new Date()
-        return uploadProject(
-          {
-            ...offlineFile,
-            file: {
-              ...offlineFile.file,
-              fileName: `${offlineFile.file.fileName} - Resume Backup - ${
-                date.getMonth() + 1
-              }-${date.getDate()}-${date.getFullYear()}`,
-            },
-          },
-          email,
-          userId
-        )
-      }
-      return Promise.resolve(true)
+  waitForUser((user) => {
+    const userId = user.uid
+    const email = user.email
+    if (!userId) {
+      rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
+      return
     }
-    beforeLoading().then(() => {
-      migrateIfNeeded(
-        app.getVersion(),
-        json,
-        json.file.fileName,
-        null,
-        (error, migrated, data) => {
-          if (error) {
-            rollbar.error(error)
-            return
-          }
-          console.log(`Loaded file ${json.file.fileName}.`)
-          win.setTitle(displayFileName(json.file.fileName))
-          if (migrated) {
-            console.log(
-              `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-            )
-            overwriteAllKeys(fileId, clientId, data).then((results) => {
+
+    initialFetch(userId, fileId, clientId, app.getVersion()).then((json) => {
+      const offlinePath = offlineFilePath(json)
+      const exists = fs.existsSync(offlinePath)
+      const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
+      const originalTimeStamp = exists && new Date(offlineFile.file.originalTimeStamp)
+      const currentTimeStamp = exists && new Date(offlineFile.file.timeStamp)
+      const madeOfflineEdits = exists && currentTimeStamp > originalTimeStamp
+      const madeEditsOnline = exists && json.file.timeStamp.toDate() > originalTimeStamp
+      // Doesn't matter whether we edited locally.  We're the
+      // late comer in this case
+      const backupOurs = exists && madeEditsOnline && madeOfflineEdits
+      const beforeLoading = () => {
+        if (backupOurs) {
+          const date = new Date()
+          return uploadProject(
+            {
+              ...offlineFile,
+              file: {
+                ...offlineFile.file,
+                fileName: `${offlineFile.file.fileName} - Resume Backup - ${
+                  date.getMonth() + 1
+                }-${date.getDate()}-${date.getFullYear()}`,
+              },
+            },
+            email,
+            userId
+          )
+        }
+        return Promise.resolve(true)
+      }
+      beforeLoading().then(() => {
+        migrateIfNeeded(
+          app.getVersion(),
+          json,
+          json.file.fileName,
+          null,
+          (error, migrated, data) => {
+            if (error) {
+              rollbar.error(error)
+              return
+            }
+            console.log(`Loaded file ${json.file.fileName}.`)
+            win.setTitle(displayFileName(json.file.fileName))
+            if (migrated) {
+              console.log(
+                `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+              )
+              overwriteAllKeys(fileId, clientId, data).then((results) => {
+                store.dispatch(
+                  actions.ui.loadFile(
+                    data.file.fileName,
+                    false,
+                    Object.assign(
+                      {},
+                      emptyFile(data.file.fileName, data.file.version),
+                      withFileId(fileId, data)
+                    ),
+                    data.file.version
+                  )
+                )
+                store.dispatch(
+                  actions.project.selectFile({
+                    ...json.file,
+                    id: fileId,
+                  })
+                )
+                store.dispatch(actions.client.setClientId(clientId))
+              })
+            } else {
               store.dispatch(
                 actions.ui.loadFile(
                   data.file.fileName,
@@ -161,39 +196,19 @@ function bootCloudFile(filePath, forceDashboard) {
                 })
               )
               store.dispatch(actions.client.setClientId(clientId))
-            })
-          } else {
-            store.dispatch(
-              actions.ui.loadFile(
-                data.file.fileName,
-                false,
-                Object.assign(
-                  {},
-                  emptyFile(data.file.fileName, data.file.version),
-                  withFileId(fileId, data)
-                ),
-                data.file.version
-              )
+            }
+            render(
+              <Provider store={store}>
+                <Listener />
+                <Renamer />
+                <App forceProjectDashboard={forceDashboard} />
+              </Provider>,
+              root
             )
-            store.dispatch(
-              actions.project.selectFile({
-                ...json.file,
-                id: fileId,
-              })
-            )
-            store.dispatch(actions.client.setClientId(clientId))
-          }
-          render(
-            <Provider store={store}>
-              <Listener />
-              <Renamer />
-              <App forceProjectDashboard={forceDashboard} />
-            </Provider>,
-            root
-          )
-        },
-        log
-      )
+          },
+          log
+        )
+      })
     })
   })
 }

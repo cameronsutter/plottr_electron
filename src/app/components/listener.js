@@ -78,7 +78,7 @@ const Listener = ({
     if (isOffline && !originalFileName) {
       ipcRenderer.send('set-my-file-path', cloudFilePath, offlineFilePath)
       setFileName(offlineFilePath)
-    } else if (originalFileName) {
+    } else if (!isOffline && originalFileName) {
       ipcRenderer.send('set-my-file-path', offlineFilePath, cloudFilePath)
       restoreFileName()
     }
@@ -107,6 +107,7 @@ Listener.propTypes = {
   restoreFileName: PropTypes.func.isRequired,
   originalFileName: PropTypes.string,
   cloudFilePath: PropTypes.string,
+  setResuming: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -128,5 +129,6 @@ export default connect(
     setFileLoaded: actions.project.setFileLoaded,
     setFileName: actions.ui.setFileName,
     restoreFileName: actions.ui.restoreFileName,
+    setResuming: actions.project.setResuming,
   }
 )(Listener)

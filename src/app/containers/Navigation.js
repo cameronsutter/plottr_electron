@@ -105,10 +105,6 @@ const Navigation = ({
     setDashboardView('files')
   }
 
-  const selectTemplates = () => {
-    setDashboardView('templates')
-  }
-
   const selectHelp = () => {
     setDashboardView('help')
   }

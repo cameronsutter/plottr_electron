@@ -37,5 +37,5 @@ Resume.propTypes = {
 }
 
 export default connect((state) => ({
-  isresuming: selectors.isResumingSelector(state.present),
+  isResuming: selectors.isResumingSelector(state.present),
 }))(Resume)

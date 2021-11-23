@@ -12,7 +12,7 @@ import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
 import { actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
-import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
+import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
@@ -37,6 +37,8 @@ import {
   createFromTemplate,
   openExistingProj,
 } from '../dashboard-events'
+import { offlineFilePath } from '../files'
+import { uploadProject } from '../common/utils/upload_project'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -85,60 +87,61 @@ const shouldForceDashboard = (openFirst, numOpenFiles) => {
   return openFirst
 }
 
-function bootFile(filePath, options, numOpenFiles) {
-  const { darkMode, beatHierarchy } = options
-  const isCloudFile = isPlottrCloudFile(filePath)
-  const forceDashboard = shouldForceDashboard(SETTINGS.get('user.openDashboardFirst'), numOpenFiles)
+function bootCloudFile(filePath, forceDashboard) {
+  const fileId = filePath.split('plottr://')[1]
+  const userId = currentUser().uid
+  const email = currentUser().email
+  if (!userId) {
+    rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
+    return
+  }
 
-  try {
-    if (isCloudFile) {
-      const fileId = filePath.split('plottr://')[1]
-      const userId = SETTINGS.get('user.id')
-      const emailAddress = SETTINGS.get('user.email')
-      if (!userId) {
-        rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
-        return
+  initialFetch(userId, fileId, clientId, app.getVersion()).then((json) => {
+    const offlineFile = fs.readFileSync(offlineFilePath(json))
+    const originalTimeStamp = offlineFile.file.originalTimeStamp
+    const currentTimeStamp = offlineFile.file.timeStamp
+    const madeOfflineEdits = currentTimeStamp > originalTimeStamp
+    const madeEditsOnline = json.file.timeStamp.toDate() > originalTimeStamp
+    // Doesn't matter whether we edited locally.  We're the
+    // late comer in this case
+    const backupOurs = madeEditsOnline && madeOfflineEdits
+    const beforeLoading = () => {
+      if (backupOurs) {
+        const date = new Date()
+        return uploadProject(
+          {
+            ...offlineFile,
+            file: {
+              ...offlineFile.file,
+              fileName: `${offlineFile.file.fileName} - Resume Backup - ${
+                date.getMonth() + 1
+              }-${date.getDate()}-${date.getFullYear()}`,
+            },
+          },
+          email,
+          userId
+        )
       }
-
-      initialFetch(userId, fileId, clientId, app.getVersion()).then((json) => {
-        migrateIfNeeded(
-          app.getVersion(),
-          json,
-          json.file.fileName,
-          null,
-          (error, migrated, data) => {
-            if (error) {
-              rollbar.error(error)
-              return
-            }
-            console.log(`Loaded file ${json.file.fileName}.`)
-            win.setTitle(displayFileName(json.file.fileName))
-            if (migrated) {
-              console.log(
-                `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-              )
-              overwriteAllKeys(fileId, clientId, data).then((results) => {
-                store.dispatch(
-                  actions.ui.loadFile(
-                    data.file.fileName,
-                    false,
-                    Object.assign(
-                      {},
-                      emptyFile(data.file.fileName, data.file.version),
-                      withFileId(fileId, data)
-                    ),
-                    data.file.version
-                  )
-                )
-                store.dispatch(
-                  actions.project.selectFile({
-                    ...json.file,
-                    id: fileId,
-                  })
-                )
-                store.dispatch(actions.client.setClientId(clientId))
-              })
-            } else {
+      return Promise.resolve(true)
+    }
+    beforeLoading().then(() => {
+      migrateIfNeeded(
+        app.getVersion(),
+        json,
+        json.file.fileName,
+        null,
+        (error, migrated, data) => {
+          if (error) {
+            rollbar.error(error)
+            return
+          }
+          console.log(`Loaded file ${json.file.fileName}.`)
+          win.setTitle(displayFileName(json.file.fileName))
+          if (migrated) {
+            console.log(
+              `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+            )
+            overwriteAllKeys(fileId, clientId, data).then((results) => {
               store.dispatch(
                 actions.ui.loadFile(
                   data.file.fileName,
@@ -158,73 +161,31 @@ function bootFile(filePath, options, numOpenFiles) {
                 })
               )
               store.dispatch(actions.client.setClientId(clientId))
-              store.dispatch(actions.client.setEmailAddress(emailAddress))
-            }
-            render(
-              <Provider store={store}>
-                <Listener />
-                <Renamer />
-                <App forceProjectDashboard={forceDashboard} />
-              </Provider>,
-              root
+            })
+          } else {
+            store.dispatch(
+              actions.ui.loadFile(
+                data.file.fileName,
+                false,
+                Object.assign(
+                  {},
+                  emptyFile(data.file.fileName, data.file.version),
+                  withFileId(fileId, data)
+                ),
+                data.file.version
+              )
             )
-          },
-          log
-        )
-      })
-    } else {
-      win.setTitle(displayFileName(filePath))
-      win.setRepresentedFilename(filePath)
-      let json
-      try {
-        json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-      } catch (error) {
-        return render(
-          <Provider store={store}>
-            <Renamer />
-            <App forceProjectDashboard />
-          </Provider>,
-          root
-        )
-      }
-      ipcRenderer.send('save-backup', filePath, json)
-      migrateIfNeeded(
-        app.getVersion(),
-        json,
-        filePath,
-        null,
-        (err, didMigrate, state) => {
-          if (err) {
-            rollbar.error(err)
-            log.error(err)
+            store.dispatch(
+              actions.project.selectFile({
+                ...json.file,
+                id: fileId,
+              })
+            )
+            store.dispatch(actions.client.setClientId(clientId))
           }
-          store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
-
-          MPQ.projectEventStats(
-            'open_file',
-            { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
-            state
-          )
-
-          if (state.ui && state.ui.darkMode !== darkMode) {
-            store.dispatch(actions.ui.setDarkMode(darkMode))
-          }
-          if (darkMode) window.document.body.className = 'darkmode'
-
-          const withDispatch = dispatchingToStore(store.dispatch)
-          makeFlagConsistent(
-            state,
-            beatHierarchy,
-            featureFlags.BEAT_HIERARCHY_FLAG,
-            withDispatch(actions.featureFlags.setBeatHierarchy),
-            withDispatch(actions.featureFlags.unsetBeatHierarchy)
-          )
-
-          if (state && state.tour && state.tour.showTour)
-            store.dispatch(actions.ui.changeOrientation('horizontal'))
-
           render(
             <Provider store={store}>
+              <Listener />
               <Renamer />
               <App forceProjectDashboard={forceDashboard} />
             </Provider>,
@@ -233,6 +194,84 @@ function bootFile(filePath, options, numOpenFiles) {
         },
         log
       )
+    })
+  })
+}
+
+function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard) {
+  win.setTitle(displayFileName(filePath))
+  win.setRepresentedFilename(filePath)
+  let json
+  try {
+    json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+  } catch (error) {
+    render(
+      <Provider store={store}>
+        <Renamer />
+        <App forceProjectDashboard />
+      </Provider>,
+      root
+    )
+    return
+  }
+  ipcRenderer.send('save-backup', filePath, json)
+  migrateIfNeeded(
+    app.getVersion(),
+    json,
+    filePath,
+    null,
+    (err, didMigrate, state) => {
+      if (err) {
+        rollbar.error(err)
+        log.error(err)
+      }
+      store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
+
+      MPQ.projectEventStats(
+        'open_file',
+        { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
+        state
+      )
+
+      if (state.ui && state.ui.darkMode !== darkMode) {
+        store.dispatch(actions.ui.setDarkMode(darkMode))
+      }
+      if (darkMode) window.document.body.className = 'darkmode'
+
+      const withDispatch = dispatchingToStore(store.dispatch)
+      makeFlagConsistent(
+        state,
+        beatHierarchy,
+        featureFlags.BEAT_HIERARCHY_FLAG,
+        withDispatch(actions.featureFlags.setBeatHierarchy),
+        withDispatch(actions.featureFlags.unsetBeatHierarchy)
+      )
+
+      if (state && state.tour && state.tour.showTour)
+        store.dispatch(actions.ui.changeOrientation('horizontal'))
+
+      render(
+        <Provider store={store}>
+          <Renamer />
+          <App forceProjectDashboard={forceDashboard} />
+        </Provider>,
+        root
+      )
+    },
+    log
+  )
+}
+
+function bootFile(filePath, options, numOpenFiles) {
+  const { darkMode, beatHierarchy } = options
+  const isCloudFile = isPlottrCloudFile(filePath)
+  const forceDashboard = shouldForceDashboard(SETTINGS.get('user.openDashboardFirst'), numOpenFiles)
+
+  try {
+    if (isCloudFile) {
+      bootCloudFile(filePath, forceDashboard)
+    } else {
+      bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard)
     }
   } catch (error) {
     // TODO: error dialog and ask the user to try again

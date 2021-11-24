@@ -47,19 +47,17 @@ const CharacterDetailsConnector = (connector) => {
       })
       const templateNotes = character.templates.map((thisTemplate) => {
         const templateData = getTemplateById(thisTemplate.id)
-        const templateValues = character.templates.find(
-          (template) => thisTemplate.id === template.id
-        )
         const attrs = thisTemplate.attributes.map((attr) => {
+          const attributeValue = this.props.templateAttributeValue(thisTemplate.id, attr.name)
           let val
           if (attr.type == 'paragraph') {
             val = (
               <dd>
-                <RichText description={templateValues[attr.name]} darkMode={ui.darkMode} />
+                <RichText description={attributeValue} darkMode={ui.darkMode} />
               </dd>
             )
           } else {
-            val = <dd>{templateValues[attr.name]}</dd>
+            val = <dd>{attributeValue}</dd>
           }
           return (
             <dl key={attr.name} className="dl-horizontal">
@@ -124,18 +122,24 @@ const CharacterDetailsConnector = (connector) => {
       customAttributes: PropTypes.array.isRequired,
       ui: PropTypes.object.isRequired,
       startEditing: PropTypes.func.isRequired,
+      templateAttributeValue: PropTypes.func.isRequired,
     }
   }
 
   const {
     redux,
     pltr: {
-      selectors: { singleCharacterSelector },
+      selectors: { singleCharacterSelector, characterTemplateAttributeValueSelector },
     },
   } = connector
   const characterActions = connector.pltr.actions.character
 
-  checkDependencies({ redux, singleCharacterSelector, characterActions })
+  checkDependencies({
+    redux,
+    singleCharacterSelector,
+    characterActions,
+    characterTemplateAttributeValueSelector,
+  })
 
   if (redux) {
     const { connect, bindActionCreators } = redux
@@ -147,6 +151,13 @@ const CharacterDetailsConnector = (connector) => {
           categories: state.present.categories.characters,
           customAttributes: state.present.customAttributes.characters,
           ui: state.present.ui,
+          templateAttributeValue: (templateId, attributeName) => {
+            return characterTemplateAttributeValueSelector(
+              ownProps.characterId,
+              templateId,
+              attributeName
+            )
+          },
         }
       },
       (dispatch) => {

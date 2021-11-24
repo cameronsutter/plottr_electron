@@ -66,6 +66,13 @@ const OptionsHomeConnector = (connector) => {
       return (!osIsUnknown && !hasPro()) || (!osIsUnknown && settings.user.localBackups)
     }
 
+    const dashboardFirstText = settings.user.openDashboardFirst
+      ? t("When Plottr opens, the first thing you'll see is the dashboard")
+      : t('Plottr opens your most recent project at start')
+
+    const dashboardFirstIsOn =
+      settings.user.openDashboardFirst === undefined ? true : settings.user.openDashboardFirst
+
     return (
       <div className="dashboard__options">
         <h1>{t('Settings')}</h1>
@@ -96,6 +103,18 @@ const OptionsHomeConnector = (connector) => {
                     setupI18n(SETTINGS, { electron })
                     updateLanguage(newLanguage)
                   }}
+                />
+              </div>
+            </Tab>
+            <Tab eventKey={2} title={t('Dashboard')}>
+              <div className="dashboard__options__item">
+                <h4>{t('Always Open Dashboard First')}</h4>
+                <Switch
+                  isOn={dashboardFirstIsOn}
+                  handleToggle={() =>
+                    saveSetting('user.openDashboardFirst', !settings.user.openDashboardFirst)
+                  }
+                  labelText={dashboardFirstText}
                 />
               </div>
             </Tab>

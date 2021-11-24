@@ -68,7 +68,6 @@ const RichTextEditorConnector = (connector) => {
     onBlur,
     onFocus,
   }) => {
-    // Editor instance
     const editor = useMemo(() => {
       return createEditor(log)
     }, [])
@@ -124,6 +123,30 @@ const RichTextEditorConnector = (connector) => {
     )
 
     const handleKeyDown = (event) => {
+      // If we don't have a selection, then the editor can't support
+      // programatic undo.  This isn't desirable because built-in undo
+      // leads to strange interactions when, e.g. the user undoes
+      // something, selections outside the RCE and then undoes again.
+      // (The result could be that text in the RCE is redone!)
+      //
+      // To ensure that the RCE has a selection, make sure that the on
+      // change handlers create actions that add `editorMetadata`.
+      // See the `editors` reducer for schema.
+      if (selection && event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault()
+        if (event.shiftKey) {
+          redo()
+        } else {
+          undo()
+        }
+        return
+      }
+      // On Linux, redo is CTRL+y
+      if (selection && event.key === 'y' && event.ctrlKey) {
+        event.preventDefault()
+        redo()
+        return
+      }
       for (const hotkey in HOTKEYS) {
         if (isHotkey(hotkey, event)) {
           event.preventDefault()

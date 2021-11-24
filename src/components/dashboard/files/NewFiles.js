@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import { IoIosBrowsers, IoIosDocument } from 'react-icons/io'
 import { FaRegSnowflake } from 'react-icons/fa'
@@ -34,14 +34,25 @@ const NewFilesConnector = (connector) => {
       }
     }
 
+    const createNewProj = wrapFunc('create_new', () => createNew(null))
+    const fromExisting = wrapFunc('open_existing', openExistingFile)
+
+    useEffect(() => {
+      const newProj = document.addEventListener('new-project', createNewProj)
+      const fromTempl = document.addEventListener('from-template', () => toggleView('templates'))
+      const openEx = document.addEventListener('open-existing', fromExisting)
+      return () => {
+        document.removeEventListener('new-project', newProj)
+        document.removeEventListener('from-template', fromTempl)
+        document.removeEventListener('open-existing', openEx)
+      }
+    }, [])
+
     return (
       <Grid fluid className="dashboard__new-files">
         <Row>
           <Col xs={3}>
-            <div
-              className="dashboard__new-files__item icon"
-              onClick={wrapFunc('create_new', () => createNew(null))}
-            >
+            <div className="dashboard__new-files__item icon" onClick={createNewProj}>
               <IoIosDocument />
               <div>{t('Create Blank Project')}</div>
             </div>
@@ -58,12 +69,9 @@ const NewFilesConnector = (connector) => {
             </div>
           </Col>
           <Col xs={3}>
-            <div
-              className="dashboard__new-files__item icon"
-              onClick={wrapFunc('open_existing', openExistingFile)}
-            >
+            <div className="dashboard__new-files__item icon" onClick={fromExisting}>
               <VscCloudUpload />
-              <div>{t('Upload Existing Project')}</div>
+              <div>{os == 'unknown' ? t('Upload Existing Project') : t('Open Existing File')}</div>
             </div>
           </Col>
           {os == 'unknown' ? null : (

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 import { ipcRenderer } from 'electron'
-import { Beamer, BookChooser } from 'connected-components'
+import { Beamer, BookChooser, ErrorBoundary } from 'connected-components'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
 import { FaRegUser } from 'react-icons/fa'
@@ -133,12 +133,14 @@ const Navigation = ({
 
   const dashbrdModal = useMemo(
     () => (
-      <DashboardModal
-        activeView={dashboardView}
-        setActiveView={selectDashboardView}
-        closeDashboard={resetDashboardView}
-        darkMode={isDarkMode}
-      />
+      <ErrorBoundary>
+        <DashboardModal
+          activeView={dashboardView}
+          setActiveView={selectDashboardView}
+          closeDashboard={resetDashboardView}
+          darkMode={isDarkMode}
+        />
+      </ErrorBoundary>
     ),
     [dashboardView, isDarkMode]
   )

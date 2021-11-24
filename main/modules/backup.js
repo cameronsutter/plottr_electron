@@ -82,12 +82,12 @@ function ensureBackupTodayPath() {
   const backupFolder = backupPath()
   if (fs.existsSync(backupFolder)) return
 
-  fs.mkdirSync(backupFolder)
+  fs.mkdirSync(backupFolder, { recursive: true })
 }
 
 function ensureBackupFullPath() {
   if (!fs.existsSync(backupBasePath())) {
-    fs.mkdirSync(backupBasePath())
+    fs.mkdirSync(backupBasePath(), { recursive: true })
   }
 
   ensureBackupTodayPath()

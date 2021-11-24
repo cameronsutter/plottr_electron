@@ -85,7 +85,13 @@ function useJsonStore(store, ipcEventToReloadOn, checksOften) {
     setSize(store.size)
   }
 
-  return [info, size, saveInfoAtKey, saveAllInfo]
+  const deleteKey = (key) => {
+    store.delete(key)
+    setInfo(store.store)
+    setSize(store.size)
+  }
+
+  return [info, size, saveInfoAtKey, saveAllInfo, deleteKey]
 }
 
 export function useTrialInfo() {
@@ -198,7 +204,7 @@ export function useCustomTemplatesFromLocalStorage() {
 }
 
 export function useSettingsInfo(checkOften = true) {
-  const [info, size, saveInfoAtKey, saveAllInfo] = useJsonStore(
+  const [info, size, saveInfoAtKey, saveAllInfo, deleteKey] = useJsonStore(
     SETTINGS,
     'reload-options',
     checkOften
@@ -214,6 +220,7 @@ export function useSettingsInfo(checkOften = true) {
     size,
     alsoAskMainToBroadcastUpdate(saveInfoAtKey),
     alsoAskMainToBroadcastUpdate(saveAllInfo),
+    alsoAskMainToBroadcastUpdate(deleteKey),
   ]
 }
 

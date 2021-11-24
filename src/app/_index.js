@@ -32,6 +32,7 @@ import { machineIdSync } from 'node-machine-id'
 import Listener from './components/listener'
 import Renamer from './components/Renamer'
 import {
+  openDashboard,
   closeDashboard,
   createBlankProj,
   createFromTemplate,
@@ -93,7 +94,7 @@ function bootFile(filePath, options, numOpenFiles) {
   try {
     if (isCloudFile) {
       const fileId = filePath.split('plottr://')[1]
-      const userId = SETTINGS.get('user.id')
+      const userId = SETTINGS.get('user.frbId')
       const emailAddress = SETTINGS.get('user.email')
       if (!userId) {
         rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
@@ -454,5 +455,8 @@ window.addEventListener('load', reloadMenu)
 window.addEventListener('focus', reloadMenu)
 
 ipcRenderer.on('new-project', () => createBlankProj())
-ipcRenderer.on('from-template', () => createFromTemplate())
 ipcRenderer.on('open-existing', () => openExistingProj())
+ipcRenderer.on('from-template', () => {
+  openDashboard()
+  setTimeout(createFromTemplate, 300)
+})

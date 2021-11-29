@@ -27,6 +27,12 @@
   }
 }
 
+.dashboard__about__body {
+  height: calc(100% - 42px); // 42px from height of .dashboard__account__nav-tabs
+  overflow: auto;
+  padding: 32px;
+}
+
 .dashboard__account__header {
   h1 {
     margin-top: 0;

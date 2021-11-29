@@ -1691,15 +1691,15 @@ dicer@^0.3.0:
   dependencies:
     streamsearch "0.1.2"
 
-docx@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/docx/-/docx-6.0.3.tgz#53ccc6bcd0d41adb3e19fbd8c59282c0e2efd9a5"
-  integrity sha512-e9bLznPAnZVNZS+Vddt/atphFy1GZ/ln/Xw1lGn19MIv8HHzP2ivTUUTjGPfpZpHinHdU+zsi8y32q8V8/guow==
+docx@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.npmjs.org/docx/-/docx-5.0.2.tgz"
+  integrity sha512-DKUF8UythW3r36ZpsCYRaeJJgKBoG0A1p8gQWf7D20AwbcqgNC9V02BvsjsLP08Wp60lvLJpqzXr7bPDnS6otg==
   dependencies:
     "@types/jszip" "^3.1.4"
-    "@types/node" "^14.0.5"
+    "@types/node" "^13.1.6"
     jszip "^3.1.5"
-    nanoid "^3.1.20"
+    shortid "^2.2.15"
     xml "^1.0.1"
     xml-js "^1.6.8"
 
@@ -4030,7 +4030,7 @@ picomatch@^2.0.4, picomatch@^2.2.1:
 "pltr@file:../pltr":
   version "2.2.11"
   dependencies:
-    docx "^6.0.3"
+    docx "^5.0.2"
     dom-parser "^0.1.6"
     image-extensions "^1.1.0"
     is-url "^1.2.4"

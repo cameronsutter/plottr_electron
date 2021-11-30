@@ -195,21 +195,33 @@
       "sign": false
     },
     "win": {
-      "target": {
-        "target": [
-          "nsis",
-          "zip"
-        ],
-        "arch": [
-          "x64",
-          "ia32"
-        ]
-      },
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
       "verifyUpdateCodeSignature": false,
       "publisherName": [
         "C Louis S, LLC",
         "Fictional Devices LLC"
       ]
+    },
+    "zip": {
+      "artifactName": "${productName}-${os}-installer-latest.${ext}",
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
     },
     "nsis": {
       "artifactName": "${productName}-${os}-installer-latest.${ext}",

@@ -217,12 +217,6 @@
         "Fictional Devices LLC"
       ]
     },
-    "zip": {
-      "artifactName": "${productName}-${os}-installer-latest.${ext}",
-      "oneClick": false,
-      "perMachine": true,
-      "allowToChangeInstallationDirectory": true
-    },
     "nsis": {
       "artifactName": "${productName}-${os}-installer-latest.${ext}",
       "oneClick": false,

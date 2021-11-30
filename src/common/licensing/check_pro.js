@@ -27,7 +27,7 @@ export function checkForPro(email, callback) {
         callback(true, info)
       } else {
         currentUser()
-          .getIdTokenResult()
+          ?.getIdTokenResult()
           .then((token) => {
             if (token?.claims?.beta || token?.claims?.admin) {
               callback(true)

@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2021.11.29",
+  "version": "2021.12.3",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "axios": "^0.22.0",
-    "docx": "^5.0.2",
+    "docx": "^5.5.0",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
     "electron-context-menu": "^2.0.1",
@@ -202,13 +202,15 @@
       "sign": false
     },
     "win": {
-      "target": {
-        "target": "nsis",
-        "arch": [
-          "x64",
-          "ia32"
-        ]
-      },
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
       "verifyUpdateCodeSignature": false,
       "publisherName": [
         "C Louis S, LLC",

@@ -22,20 +22,22 @@ const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
 
-function saveSwap(filePath, data) {
+function saveSwap(filePath, data, counter = 0) {
   const swapFilePath = filePath + '~'
   fs.writeFileSync(swapFilePath, data)
   const MAX_ATTEMPTS = 10
-  let counter = 0
-  while (counter < MAX_ATTEMPTS) {
+  if (counter < MAX_ATTEMPTS) {
     const stats = fs.statSync(swapFilePath, { throwIfNoEntry: false })
     if (stats && stats.size !== 0) {
       fs.renameSync(swapFilePath, filePath)
       return
     }
-    ++counter
+    setTimeout(() => {
+      saveSwap(filePath, data, counter + 1)
+    }, 100)
+  } else {
+    console.error(Error(`Failed to save to ${filePath}.  Old file is un-touched.`))
   }
-  console.error(Error(`Failed to save to ${filePath}.  Old file is un-touched.`))
 }
 
 function removeSystemKeys(jsonData) {

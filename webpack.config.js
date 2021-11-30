@@ -163,6 +163,7 @@ const rendererConfig = {
       // If a better solution arose since this was written then feel
       // free to replace this! :)
       react: path.resolve('./node_modules/react'),
+      docx: path.resolve('./node_modules/docx'),
       'react-dom': path.resolve('./node_modules/react-dom'),
       'react-redux': path.resolve('./node_modules/react-redux'),
       redux: path.resolve('./node_modules/redux'),

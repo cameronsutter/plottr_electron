@@ -1679,6 +1679,18 @@
   dependencies:
     "streamsearch" "0.1.2"
 
+"docx@^5.5.0":
+  "resolved" "https://registry.npmjs.org/docx/-/docx-5.5.0.tgz"
+  "integrity" sha512-AkJJ3Or0Nup6ESSC+w4kgpVrH+G9pAwKhhRVvlexEv+72vzvllx8iR6yuL3ABmL4/Xlyna/n4Ok7WzhTiMhoqg==
+  "version" "5.5.0"
+  dependencies:
+    "@types/jszip" "^3.1.4"
+    "@types/node" "^14.0.5"
+    "jszip" "^3.1.5"
+    "shortid" "^2.2.15"
+    "xml" "^1.0.1"
+    "xml-js" "^1.6.8"
+
 "dom-storage@2.1.0":
   "integrity" "sha512-g6RpyWXzl0RR6OTElHKBl7nwnK87GUyZMYC7JWsB/IA73vpqK2K6LT39x4VepLxlSsWBFrPVLnsSR5Jyty0+2Q=="
   "resolved" "https://registry.npmjs.org/dom-storage/-/dom-storage-2.1.0.tgz"
@@ -3888,7 +3900,7 @@
   "resolved" "file:../pltr"
   "version" "2.2.11"
   dependencies:
-    "docx" "^5.0.2"
+    "docx" "^5.5.0"
     "dom-parser" "^0.1.6"
     "image-extensions" "^1.1.0"
     "is-url" "^1.2.4"

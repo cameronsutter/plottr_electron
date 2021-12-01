@@ -296,7 +296,7 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
         root
       )
     },
-    log
+    logger
   )
 }
 

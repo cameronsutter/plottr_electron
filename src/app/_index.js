@@ -101,8 +101,14 @@ function waitForUser(cb) {
 function bootCloudFile(filePath, forceDashboard) {
   const fileId = filePath.split('plottr://')[1]
   if (!fileId) {
+    const errorObject = new Error('Could not open cloud file.')
+    rollbar.error(
+      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
+      errorObject
+    )
     logger.error(
-      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`
+      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
+      errorObject
     )
     dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
     return

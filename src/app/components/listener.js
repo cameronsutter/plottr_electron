@@ -7,6 +7,7 @@ import { actions, selectors } from 'pltr/v2'
 import { listen, stopListening } from 'wired-up-firebase'
 import { store } from '../store'
 import { offlineFilePath } from '../../files'
+import { logger } from '../../logger'
 
 const Listener = ({
   userId,
@@ -42,6 +43,9 @@ const Listener = ({
     }
 
     if (wasOffline.current) {
+      logger.info(
+        `Resuming online with file: ${selectedFile.id}, user: ${userId} and clientId: ${clientId}`
+      )
       setResuming(true)
       wasOffline.current = false
       return () => {}

@@ -29,7 +29,10 @@ const Resume = ({
   const [overwriting, setOverwriting] = useState(false)
 
   useEffect(() => {
-    if (isResuming) {
+    // Only resume when we're loaded up and good to go.  The hook
+    // depends on email, userId etc. so we can safely guard the resume
+    // process with this check.
+    if (isResuming && email && userId && clientId && fileId) {
       setChecking(true)
       let retryCount = 0
       const checkAndUploadBackup = () => {
@@ -103,7 +106,7 @@ const Resume = ({
       /* eslint-enable */
       checkAndUploadBackup().catch(handleError)
     }
-  }, [isResuming, userId, fileId, clientId])
+  }, [isResuming, userId, email, fileId, clientId])
 
   const acknowledge = () => {
     if (checking || !isResuming) return

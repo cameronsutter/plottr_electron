@@ -98,6 +98,99 @@ function waitForUser(cb) {
   }
 }
 
+const loadFileIntoRedux = (data, fileId) => {
+  store.dispatch(
+    actions.ui.loadFile(
+      data.file.fileName,
+      false,
+      Object.assign({}, emptyFile(data.file.fileName, data.file.version), withFileId(fileId, data)),
+      data.file.version
+    )
+  )
+  store.dispatch(
+    actions.project.selectFile({
+      ...data.file,
+      id: fileId,
+    })
+  )
+}
+
+const finaliseBoot = (originalFile, fileId, forceDashboard) => (overwrittenFile) => {
+  const json = overwrittenFile || originalFile
+  migrateIfNeeded(
+    app.getVersion(),
+    json,
+    json.file.fileName,
+    null,
+    (error, migrated, data) => {
+      if (error) {
+        rollbar.error(error)
+        return
+      }
+      console.log(`Loaded file ${json.file.fileName}.`)
+      win.setTitle(displayFileName(json.file.fileName))
+      if (migrated) {
+        console.log(
+          `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+        )
+        overwriteAllKeys(fileId, clientId, data).then((results) => {
+          loadFileIntoRedux(data, fileId)
+          store.dispatch(actions.client.setClientId(clientId))
+        })
+      } else {
+        loadFileIntoRedux(data, fileId)
+        store.dispatch(actions.client.setClientId(clientId))
+      }
+      render(
+        <Provider store={store}>
+          <Listener />
+          <Renamer />
+          <App forceProjectDashboard={forceDashboard} />
+        </Provider>,
+        root
+      )
+    },
+    logger
+  )
+}
+
+const beforeLoading = (backupOurs, uploadOurs, fileId, offlineFile, email, userId) => {
+  if (backupOurs) {
+    logger.info(
+      `Backing up a local version of ${fileId} because both offline and online versions changed.`
+    )
+    const date = new Date()
+    return uploadProject(
+      {
+        ...offlineFile,
+        file: {
+          ...offlineFile.file,
+          fileName: `${offlineFile.file.fileName} - Resume Backup - ${
+            date.getMonth() + 1
+          }-${date.getDate()}-${date.getFullYear()}`,
+        },
+      },
+      email,
+      userId
+    )
+  } else if (uploadOurs) {
+    logger.info(
+      `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
+    )
+    const date = new Date()
+    return overwriteAllKeys(fileId, clientId, {
+      ...offlineFile,
+      file: {
+        ...offlineFile.file,
+        fileName: `${offlineFile.file.fileName} - Resume Backup - ${
+          date.getMonth() + 1
+        }-${date.getDate()}-${date.getFullYear()}`,
+      },
+    })
+  }
+  return Promise.resolve(false)
+}
+
 function bootCloudFile(filePath, forceDashboard) {
   const fileId = filePath.split('plottr://')[1]
   if (!fileId) {
@@ -113,6 +206,7 @@ function bootCloudFile(filePath, forceDashboard) {
     dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
     return
   }
+
   waitForUser((user) => {
     const userId = user.uid
     const email = user.email
@@ -121,108 +215,24 @@ function bootCloudFile(filePath, forceDashboard) {
       return
     }
 
-    initialFetch(userId, fileId, clientId, app.getVersion()).then((json) => {
-      const offlinePath = offlineFilePath(json)
-      const exists = fs.existsSync(offlinePath)
-      const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
-      const originalTimeStamp = exists && new Date(offlineFile.file.originalTimeStamp)
-      const currentTimeStamp = exists && new Date(offlineFile.file.timeStamp)
-      const madeOfflineEdits = exists && currentTimeStamp > originalTimeStamp
-      const madeEditsOnline = exists && json.file.timeStamp.toDate() > originalTimeStamp
-      // Doesn't matter whether we edited locally.  We're the
-      // late comer in this case
-      const backupOurs = exists && madeEditsOnline && madeOfflineEdits
-      const beforeLoading = () => {
-        if (backupOurs) {
-          const date = new Date()
-          return uploadProject(
-            {
-              ...offlineFile,
-              file: {
-                ...offlineFile.file,
-                fileName: `${offlineFile.file.fileName} - Resume Backup - ${
-                  date.getMonth() + 1
-                }-${date.getDate()}-${date.getFullYear()}`,
-              },
-            },
-            email,
-            userId
-          )
-        }
-        return Promise.resolve(true)
-      }
-      beforeLoading().then(() => {
-        migrateIfNeeded(
-          app.getVersion(),
-          json,
-          json.file.fileName,
-          null,
-          (error, migrated, data) => {
-            if (error) {
-              rollbar.error(error)
-              return
-            }
-            console.log(`Loaded file ${json.file.fileName}.`)
-            win.setTitle(displayFileName(json.file.fileName))
-            if (migrated) {
-              console.log(
-                `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-              )
-              overwriteAllKeys(fileId, clientId, data).then((results) => {
-                store.dispatch(
-                  actions.ui.loadFile(
-                    data.file.fileName,
-                    false,
-                    Object.assign(
-                      {},
-                      emptyFile(data.file.fileName, data.file.version),
-                      withFileId(fileId, data)
-                    ),
-                    data.file.version
-                  )
-                )
-                store.dispatch(
-                  actions.project.selectFile({
-                    ...json.file,
-                    id: fileId,
-                  })
-                )
-                store.dispatch(actions.client.setClientId(clientId))
-              })
-            } else {
-              store.dispatch(
-                actions.ui.loadFile(
-                  data.file.fileName,
-                  false,
-                  Object.assign(
-                    {},
-                    emptyFile(data.file.fileName, data.file.version),
-                    withFileId(fileId, data)
-                  ),
-                  data.file.version
-                )
-              )
-              store.dispatch(
-                actions.project.selectFile({
-                  ...json.file,
-                  id: fileId,
-                })
-              )
-              store.dispatch(actions.client.setClientId(clientId))
-            }
-            render(
-              <Provider store={store}>
-                <Listener />
-                <Renamer />
-                <App forceProjectDashboard={forceDashboard} />
-              </Provider>,
-              root
-            )
-          },
-          log
-        )
+    initialFetch(userId, fileId, clientId, app.getVersion())
+      .then((json) => {
+        const offlinePath = offlineFilePath(json)
+        const exists = fs.existsSync(offlinePath)
+        const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
+        const originalTimeStamp = exists && new Date(offlineFile.file.originalTimeStamp)
+        const currentTimeStamp = exists && new Date(offlineFile.file.timeStamp)
+        const madeOfflineEdits = exists && currentTimeStamp > originalTimeStamp
+        const madeEditsOnline = exists && json.file.timeStamp.toDate() > originalTimeStamp
+        const backupOurs = exists && madeEditsOnline && madeOfflineEdits
+        const uploadOurs = exists && !madeEditsOnline && madeOfflineEdits
+        beforeLoading(backupOurs, uploadOurs, fileId, offlineFile, email, userId).then(finaliseBoot)
       })
-    })
+      .catch((error) => {
+        logger.error(`Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`, error)
+        rollbar.error(`Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`, error)
+        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+      })
   })
 }
 

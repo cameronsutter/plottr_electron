@@ -41,7 +41,7 @@ const DashboardModal = ({ activeView, darkMode, closeDashboard, setActiveView })
 )
 
 DashboardModal.propTypes = {
-  activeView: PropTypes.string.isRequired,
+  activeView: PropTypes.string,
   closeDashboard: PropTypes.func.isRequired,
   setActiveView: PropTypes.func.isRequired,
   darkMode: PropTypes.bool,

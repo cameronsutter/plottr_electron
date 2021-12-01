@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "axios": "^0.22.0",
+    "docx": "^5.5.0",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
     "electron-context-menu": "^2.0.1",
@@ -75,7 +76,6 @@
     "classnames": "^2.2.6",
     "cross-env": "^7.0.3",
     "css-loader": "^3.0.0",
-    "docx": "^6.0.3",
     "dom-parser": "^0.1.6",
     "dotenv-webpack": "^1.8.0",
     "duplicate-package-checker-webpack-plugin": "^3.0.0",

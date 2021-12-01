@@ -134,7 +134,7 @@ Resume.propTypes = {
   email: PropTypes.string,
   fileId: PropTypes.string,
   clientId: PropTypes.string,
-  withFullFileState: PropTypes.func.isrequired,
+  withFullFileState: PropTypes.func.isRequired,
 }
 
 export default connect(

@@ -79,6 +79,10 @@ const Listener = ({
   }, [isOffline, unsubscribeFunctions])
 
   useEffect(() => {
+    // It's not valid to change a window with an falsy name or set our
+    // name to set our name to something falsy.
+    if (!offlineFilePath || !cloudFilePath) return
+
     if (isOffline && !originalFileName) {
       ipcRenderer.send('set-my-file-path', cloudFilePath, offlineFilePath)
       setFileName(offlineFilePath)

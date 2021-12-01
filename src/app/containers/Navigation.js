@@ -21,7 +21,7 @@ const Navigation = ({
   currentView,
   changeCurrentView,
   forceProjectDashboard,
-  showAccount,
+  needsLogin,
   userId, // probably don't need this
   hasCurrentProLicense,
   selectedFile,
@@ -29,17 +29,21 @@ const Navigation = ({
   checkedUser,
 }) => {
   const [checked, setChecked] = useState(false)
-  const initialView = showAccount ? 'account' : forceProjectDashboard ? 'files' : null
+  const initialView = forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
   const [settings] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   // don't show the login if user is not on Pro
-  const [showFrbLogin, setShowFrbLogin] = useState(settings?.user?.frbId && !userId)
+  const [showFrbLogin, setShowFrbLogin] = useState((needsLogin || settings?.user?.frbId) && !userId)
   // first time = no license, no trial, no pro
-  const firstTime = () => !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
+  const [firstTime, setFirstTime] = useState(
+    !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
+  )
   // expired trial = no license, no pro, expired trial
-  const trialExpired = () => !licenseInfoSize && !hasCurrentProLicense && trialInfo.expired
+  const [trialExpired, setTrialExpired] = useState(
+    !licenseInfoSize && trialInfo.expired && !hasCurrentProLicense
+  )
 
   useEffect(() => {
     const openListener = document.addEventListener('open-dashboard', () => {
@@ -55,19 +59,27 @@ const Navigation = ({
   }, [])
 
   useEffect(() => {
-    if (dashboardView !== 'account' && showAccount) {
-      setDashboardView('account')
-    }
-  }, [showAccount, dashboardView, setDashboardView])
-
-  useEffect(() => {
-    if (!selectedFile && !dashboardView && isCloudFile && checked && !showAccount) {
+    if (!selectedFile && !dashboardView && isCloudFile && checked) {
       setDashboardView('files')
     }
-  }, [selectedFile, dashboardView, isCloudFile, checked, showAccount])
+  }, [selectedFile, dashboardView, isCloudFile, checked])
 
   useEffect(() => {
-    if (firstTime() || trialExpired()) {
+    setFirstTime(!licenseInfoSize && !trialInfo.started && !hasCurrentProLicense)
+  }, [licenseInfoSize, trialInfo.started, hasCurrentProLicense])
+
+  useEffect(() => {
+    setTrialExpired(!licenseInfoSize && !hasCurrentProLicense && trialInfo.expired)
+  }, [licenseInfoSize, trialInfo.expired, hasCurrentProLicense])
+
+  useEffect(() => {
+    if (!firstTime) {
+      setDashboardView(null)
+    }
+  }, [firstTime])
+
+  useEffect(() => {
+    if (firstTime || trialExpired) {
       setDashboardView('account')
     }
     if (checked && userId && !hasCurrentProLicense) {
@@ -77,6 +89,7 @@ const Navigation = ({
 
   useEffect(() => {
     if (!checked) return
+    // setDashboardView(hasCurrentProLicense ? null : dashboardView)
     setShowFrbLogin(hasCurrentProLicense && !userId)
   }, [checked, hasCurrentProLicense, userId])
 
@@ -93,7 +106,7 @@ const Navigation = ({
   }
 
   const TrialLinks = () => {
-    if (!settings.trialMode || isDev) return null
+    if (!settings.trialMode || hasCurrentProLicense || isDev) return null
 
     return (
       <Navbar.Form pullRight style={{ marginRight: '15px' }}>
@@ -121,7 +134,7 @@ const Navigation = ({
   }
 
   const resetDashboardView = () => {
-    if (firstTime() || trialExpired()) return
+    if (firstTime || trialExpired) return
     setDashboardView(null)
   }
 
@@ -131,26 +144,21 @@ const Navigation = ({
 
   const closeLoginModal = () => {}
 
-  const dashbrdModal = useMemo(
-    () => (
-      <ErrorBoundary>
-        <DashboardModal
-          activeView={dashboardView}
-          setActiveView={selectDashboardView}
-          closeDashboard={resetDashboardView}
-          darkMode={isDarkMode}
-        />
-      </ErrorBoundary>
-    ),
-    [dashboardView, isDarkMode]
-  )
-
   return (
     <>
       {showFrbLogin ? (
         <LoginModal closeLoginModal={closeLoginModal} setChecking={toggleChecking} />
       ) : null}
-      {dashboardView ? dashbrdModal : null}
+      {dashboardView ? (
+        <ErrorBoundary>
+          <DashboardModal
+            activeView={dashboardView}
+            setActiveView={selectDashboardView}
+            closeDashboard={resetDashboardView}
+            darkMode={isDarkMode}
+          />
+        </ErrorBoundary>
+      ) : null}
       <Navbar className="project-nav" fluid inverse={isDarkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
@@ -193,7 +201,7 @@ Navigation.propTypes = {
   isDarkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
-  showAccount: PropTypes.bool,
+  needsLogin: PropTypes.bool,
   userId: PropTypes.string,
   hasCurrentProLicense: PropTypes.bool,
   selectedFile: PropTypes.object,

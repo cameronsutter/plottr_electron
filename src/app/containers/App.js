@@ -35,6 +35,7 @@ const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
   const [checkedUser, setCheckedUser] = useState(false)
+  const [needsLogin, setNeedsLogin] = useState(isCloudFile && !userId)
 
   const isTryingToReload = useRef(false)
   const isTryingToClose = useRef(false)
@@ -73,6 +74,7 @@ const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList
   }
 
   useEffect(() => {
+    setNeedsLogin(isCloudFile && !userId)
     if (checkedUser && !userId && isCloudFile) {
       log.error('Attempting to open a cloud file locally without being logged in.')
       dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
@@ -181,15 +183,13 @@ const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
-  const cloudFileWithoutLoggingIn = !userId && isCloudFile && checkedUser
-
   return (
     <ErrorBoundary>
       <ErrorBoundary>
         <React.StrictMode>
           <Navigation
             forceProjectDashboard={forceProjectDashboard}
-            showAccount={cloudFileWithoutLoggingIn}
+            needsLogin={needsLogin}
             checkedUser={(newVal) => setCheckedUser(newVal)}
           />
         </React.StrictMode>

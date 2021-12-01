@@ -14,11 +14,12 @@ import { checkDependencies } from '../../checkDependencies'
 const AccountHomeConnector = (connector) => {
   const {
     platform: {
-      license: { useTrialStatus, useLicenseInfo, hasPro },
+      license: { useTrialStatus, useLicenseInfo },
       mpq,
+      settings,
     },
   } = connector
-  checkDependencies({ useTrialStatus, useLicenseInfo, hasPro, mpq })
+  checkDependencies({ useTrialStatus, useLicenseInfo, mpq })
 
   const About = UnconnectedAbout(connector)
   const OptionsHome = UnconnectedOptionsHome(connector)
@@ -29,16 +30,21 @@ const AccountHomeConnector = (connector) => {
 
   const viewsToHideNav = ['proOnboarding', 'choice']
 
-  const AccountHome = ({ darkMode }) => {
+  const AccountHome = ({ darkMode, hasCurrentProLicense }) => {
     const trialInfo = useTrialStatus()
     const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
-    const isFirstTime = () => !licenseInfoSize && !trialInfo.started && !hasPro()
+    const isFirstTime = () => !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
     const [view, setView] = useState(isFirstTime() ? 'choice' : 'account')
     const [viewIsLocked, setLock] = useState(false)
+    const isOnboardingDone = settings.get('isOnboardingDone')
 
     useEffect(() => {
       setLock(view == 'proOnboarding')
     }, [view])
+
+    useEffect(() => {
+      if (!isOnboardingDone && hasPro()) startOnboarding()
+    }, [isOnboardingDone])
 
     const handleSelect = (selectedKey) => {
       if (viewIsLocked) return
@@ -104,9 +110,25 @@ const AccountHomeConnector = (connector) => {
 
   AccountHome.propTypes = {
     darkMode: PropTypes.bool,
+    hasCurrentProLicense: PropTypes.bool,
   }
 
-  return AccountHome
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+    return connect(
+      (state) => ({
+        hasCurrentProLicense: selectors.hasProSelector(state.present),
+      }),
+      {}
+    )(AccountHome)
+  }
+
+  throw new Error('Could not connect AccountHome')
 }
 
 export default AccountHomeConnector

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { PropTypes } from 'prop-types'
 
 import { checkDependencies } from './checkDependencies'
@@ -7,15 +7,15 @@ const FirebaseLoginConnector = (connector) => {
   const {
     platform: {
       log,
-      useSettingsInfo,
-      firebase: { startUI, firebaseUI, onSessionChange, fetchFiles },
+      firebase: { startUI, firebaseUI, onSessionChange, fetchFiles, currentUser, logOut },
       license: { checkForPro },
       isDevelopment,
     },
   } = connector
-  checkDependencies({ log, useSettingsInfo, startUI, firebaseUI, onSessionChange, fetchFiles })
+  const SETTINGS = connector.platform.settings
+  checkDependencies({ log, startUI, firebaseUI, onSessionChange, fetchFiles, currentUser, logOut })
 
-  const FirebaseLogin = ({ setUserId, setHasPro, setEmailAddress, setFileList, receiveUser }) => {
+  const FirebaseLogin = ({ setUserId, setHasPro, setEmailAddress, setFileList, setChecking }) => {
     const firebaseLoginComponentRef = useRef(null)
 
     useEffect(() => {
@@ -28,23 +28,39 @@ const FirebaseLoginConnector = (connector) => {
     useEffect(() => {
       const unregister = onSessionChange((user) => {
         if (user) {
-          if (isDevelopment) log.info(user)
-          setUserId(user.uid)
-          setEmailAddress(user.email)
-          if (receiveUser) receiveUser(user)
-          checkForPro(user.email, (hasPro) => {
-            if (hasPro) {
-              setHasPro(hasPro)
-              fetchFiles(user.uid).then((files) => {
-                const activeFiles = files.filter(({ deleted }) => !deleted)
-                setFileList(activeFiles)
-              })
-            }
-          })
+          if (setChecking) setChecking(true)
+          if (isDevelopment) log.info('onSessionChange', user)
+          currentUser()
+            .getIdTokenResult()
+            .then((token) => {
+              if (token.claims.beta || token.claims.admin) {
+                handleCheckPro(user.uid, user.email)(true)
+              } else {
+                if (user.email) {
+                  checkForPro(user.email, handleCheckPro(user.uid, user.email))
+                }
+              }
+            })
         }
       })
       return () => unregister()
     }, [])
+
+    const handleCheckPro = (uid, email) => (hasPro) => {
+      if (hasPro) {
+        SETTINGS.set('user.frbId', uid)
+        setHasPro(hasPro)
+        setUserId(uid)
+        setEmailAddress(email)
+        if (setChecking) setChecking(false)
+        fetchFiles(uid).then((files) => {
+          const activeFiles = files.filter(({ deleted }) => !deleted)
+          setFileList(activeFiles)
+        })
+      } else {
+        logOut()
+      }
+    }
 
     return <div ref={firebaseLoginComponentRef} id="firebase_login_root" />
   }
@@ -54,7 +70,7 @@ const FirebaseLoginConnector = (connector) => {
     setHasPro: PropTypes.func.isRequired,
     setEmailAddress: PropTypes.func.isRequired,
     setFileList: PropTypes.func.isRequired,
-    receiveUser: PropTypes.func,
+    setChecking: PropTypes.func,
   }
 
   const {

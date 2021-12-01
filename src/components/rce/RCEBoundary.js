@@ -18,6 +18,7 @@ const RCEBoundaryConnector = (connector) => {
     'Cannot resolve a Slate point from DOM point',
     'Cannot find a descendant at path',
     'Cannot get the start point in the node at path',
+    'Cannot lift node at a path',
   ]
 
   class RCEBoundary extends Component {

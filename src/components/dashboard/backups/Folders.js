@@ -1,7 +1,7 @@
 import React from 'react'
 import { t } from 'plottr_locales'
 import { IoIosFolder } from 'react-icons/io'
-import { Spinner } from 'connected-components'
+import { Spinner } from '../../Spinner'
 import { Badge } from 'react-bootstrap'
 
 const FoldersConnector = (connector) => {

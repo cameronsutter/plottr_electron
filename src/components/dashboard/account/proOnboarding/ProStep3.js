@@ -15,6 +15,11 @@ const ProStep3Connector = (connector) => {
   const ProStep3 = ({ finish }) => {
     const [settings, _size, saveSetting] = useSettingsInfo(false)
 
+    const handleFinishOnboarding = () => {
+      saveSetting('isOnboardingDone', true)
+      return finish()
+    }
+
     return (
       <OnboardingStep>
         <StepHeader>
@@ -43,7 +48,7 @@ const ProStep3Connector = (connector) => {
         </StepBody>
         <StepFooter>
           <OnboardingButtonBar>
-            <Button bsSize="large" bsStyle="success" onClick={finish}>
+            <Button bsSize="large" bsStyle="success" onClick={handleFinishOnboarding}>
               {t("I'm Done!")}
             </Button>
           </OnboardingButtonBar>

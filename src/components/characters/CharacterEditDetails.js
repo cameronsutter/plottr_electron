@@ -295,7 +295,6 @@ const CharacterEditDetailsConnector = (connector) => {
       const { character, ui } = this.props
       return character.templates.map((template, idx) => {
         const templateData = getTemplateById(template.id)
-        const templateValues = character.templates.find((t) => t.id === template.id)
         const attrs = template.attributes.map((attr, index) => {
           const editorPath = helpers.editors.characterTemplateAttributeEditorPath(
             this.props.character.id,
@@ -309,7 +308,7 @@ const CharacterEditDetailsConnector = (connector) => {
                 index={index}
                 entity={character}
                 entityType="character"
-                value={templateValues && templateValues[attr.name]}
+                valueSelector={this.props.templateAttributeValue(template.id, attr.name)}
                 editorPath={editorPath}
                 ui={ui}
                 inputId={`${template.id}-${attr.name}Input`}
@@ -334,7 +333,11 @@ const CharacterEditDetailsConnector = (connector) => {
           )
         }
         return (
-          <Tab eventKey={idx + 3} title={templateData?.name || t('Template')} key={`tab-${idx}`}>
+          <Tab
+            eventKey={idx + 3}
+            title={templateData?.name || template.name || t('Template')}
+            key={`tab-${idx}`}
+          >
             <div className="template-tab__details">
               <p>
                 {templateData?.description}
@@ -455,6 +458,7 @@ const CharacterEditDetailsConnector = (connector) => {
       finishEditing: PropTypes.func.isRequired,
       selection: PropTypes.object.isRequired,
       editorPath: PropTypes.string.isRequired,
+      templateAttributeValue: PropTypes.func.isRequired,
     }
   }
 
@@ -477,6 +481,13 @@ const CharacterEditDetailsConnector = (connector) => {
           selection: selectors.selectionSelector(state.present, editorPath),
           editorPath,
           ui: state.present.ui,
+          templateAttributeValue: (templateId, attributeName) => {
+            return selectors.characterTemplateAttributeValueSelector(
+              ownProps.characterId,
+              templateId,
+              attributeName
+            )
+          },
         }
       },
       (dispatch) => {

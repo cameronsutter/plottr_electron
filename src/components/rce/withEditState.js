@@ -170,7 +170,7 @@ export const useEditState = (
       } else {
         deboundecOnUpdateValue(null, nextSelection)
       }
-    } else if (value !== newValue) {
+    } else if (value !== newValue || selection !== initialSelection) {
       setEditorState(newValue, selection)
       deboundecOnUpdateValue(newValue)
     }

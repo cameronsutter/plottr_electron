@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap'
 import InputModal from '../dialogs/InputModal'
 import { t as i18n } from 'plottr_locales'
 
-export const LinkButton = ({ editor }) => {
+export const LinkButton = ({ editor, logger }) => {
   const [dialogOpen, setOpen] = useState(false)
   const [selection, setSelection] = useState()
   const getLink = (url) => {
@@ -18,18 +18,18 @@ export const LinkButton = ({ editor }) => {
         newProperties: { anchor: selection.anchor, focus: selection.focus },
       })
     }
-    if (url) insertLink(editor, url)
+    if (url) insertLink(editor, url, logger)
     setOpen(false)
   }
   return (
     <Button
-      bsStyle={isLinkActive(editor) ? 'primary' : 'default'}
+      bsStyle={isLinkActive(editor, logger) ? 'primary' : 'default'}
       onMouseDown={(event) => {
         event.preventDefault()
         if (editor.selection) {
           setSelection(editor.selection)
         }
-        if (isLinkActive(editor)) {
+        if (isLinkActive(editor, logger)) {
           unwrapLink(editor)
         } else {
           setOpen(true)
@@ -50,9 +50,10 @@ export const LinkButton = ({ editor }) => {
 
 LinkButton.propTypes = {
   editor: PropTypes.object.isRequired,
+  logger: PropTypes.object.isRequired,
 }
 
-export const withLinks = (editor) => {
+export const withLinks = (editor, logger) => {
   const { insertData, insertText, isInline } = editor
 
   editor.isInline = (element) => {
@@ -71,7 +72,7 @@ export const withLinks = (editor) => {
     const text = data.getData('text/plain')
 
     if (text && isUrl(text)) {
-      wrapLink(editor, text)
+      wrapLink(editor, text, logger)
     } else {
       insertData(data)
     }
@@ -80,23 +81,30 @@ export const withLinks = (editor) => {
   return editor
 }
 
-const insertLink = (editor, url) => {
+const insertLink = (editor, url, logger) => {
   if (editor.selection) {
-    wrapLink(editor, url)
+    wrapLink(editor, url, logger)
   }
 }
 
-const isLinkActive = (editor) => {
-  const [link] = Editor.nodes(editor, { match: (n) => n.type === 'link' })
-  return !!link
+const isLinkActive = (editor, logger) => {
+  try {
+    const [link] = Editor.nodes(editor, { match: (n) => n.type === 'link' })
+    return !!link
+  } catch (error) {
+    if (logger) {
+      logger.error('Error checking whether link is active', error)
+    }
+    return false
+  }
 }
 
 const unwrapLink = (editor) => {
   Transforms.unwrapNodes(editor, { match: (n) => n.type === 'link' })
 }
 
-const wrapLink = (editor, url) => {
-  if (isLinkActive(editor)) {
+const wrapLink = (editor, url, logger) => {
+  if (isLinkActive(editor, logger)) {
     unwrapLink(editor)
   }
 

@@ -11,16 +11,12 @@ import UnconnectedProStep3 from './ProStep3'
 const steps = 3
 
 const ProOnboardingConnector = (connector) => {
-  const {
-    platform: { useSettingsInfo },
-  } = connector
   const ProStep1 = UnconnectedProStep1(connector)
   const ProStep2 = UnconnectedProStep2(connector)
   const ProStep3 = UnconnectedProStep3(connector)
 
-  const ProOnboarding = ({ cancel }) => {
-    const [settings, _size, _saveSetting] = useSettingsInfo(false)
-    const [step, setStep] = useState(settings.user?.id ? 2 : 0)
+  const ProOnboarding = ({ cancel, hasCurrentProLicense }) => {
+    const [step, setStep] = useState(hasCurrentProLicense ? 2 : 0)
 
     const CurrentStep = () => {
       switch (step) {
@@ -46,9 +42,25 @@ const ProOnboardingConnector = (connector) => {
 
   ProOnboarding.propTypes = {
     cancel: PropTypes.func,
+    hasCurrentProLicense: PropTypes.bool,
   }
 
-  return ProOnboarding
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect((state) => {
+      return {
+        hasCurrentProLicense: selectors.hasProSelector(state.present),
+      }
+    })(ProOnboarding)
+  }
+
+  throw new Error('Could not connect ProOnboarding')
 }
 
 export default ProOnboardingConnector

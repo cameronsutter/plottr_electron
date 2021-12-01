@@ -4,13 +4,13 @@ import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 
-const UnMemoisedFontsButton = ({ editor, addRecent, fonts, recentFonts }) => {
-  const [activeFont, setActiveFont] = useState(getCurrentFont(editor))
+const UnMemoisedFontsButton = ({ editor, addRecent, fonts, recentFonts, logger }) => {
+  const [activeFont, setActiveFont] = useState(getCurrentFont(editor, logger))
 
   useEffect(() => {
     if (ReactEditor.isFocused(editor)) {
       const timer = setTimeout(() => {
-        const newFont = getCurrentFont(editor)
+        const newFont = getCurrentFont(editor, logger)
         if (newFont !== activeFont) {
           setActiveFont(newFont)
         }
@@ -62,15 +62,21 @@ UnMemoisedFontsButton.propTypes = {
   recentFonts: PropTypes.arrayOf(PropTypes.string),
   fonts: PropTypes.arrayOf(PropTypes.string),
   editor: PropTypes.object.isRequired,
+  logger: PropTypes.object.isRequired,
 }
 
 export const FontsButton = React.memo(UnMemoisedFontsButton)
 
-const getCurrentFont = (editor) => {
-  const [node] = Editor.nodes(editor, { match: (n) => n.font })
-  if (node) {
-    return node[0].font
-  } else {
+const getCurrentFont = (editor, logger) => {
+  try {
+    const [node] = Editor.nodes(editor, { match: (n) => n.font })
+    if (node) {
+      return node[0].font
+    } else {
+      return 'Forum'
+    }
+  } catch (error) {
+    logger.error('Error attempting to get current fonts.', error)
     return 'Forum'
   }
 }

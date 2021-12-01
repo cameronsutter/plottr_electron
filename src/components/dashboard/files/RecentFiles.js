@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { AiOutlineTeam, AiOutlineRead } from 'react-icons/ai'
 import { GiQuillInk } from 'react-icons/gi'
+import { isEqual, sortBy } from 'lodash'
+import { StickyTable, Row, Cell } from 'react-sticky-table'
+import cx from 'classnames'
 
 import { t } from 'plottr_locales'
-import cx from 'classnames'
-import { StickyTable, Row, Cell } from 'react-sticky-table'
+
 import MissingIndicator from './MissingIndicator'
 import UnconnectedFileActions from './FileActions'
 import RecentsHeader from './RecentsHeader'
 import { checkDependencies } from '../../checkDependencies'
 import { Spinner } from '../../Spinner'
+import prettydate from 'pretty-date'
+
+const oneDay = 1000 * 60 * 60 * 24
 
 const isPlottrCloudFile = (filePath) => (filePath && filePath.startsWith('plottr://')) || !filePath
 
@@ -42,10 +47,40 @@ const renderPermission = (permission) => {
   }
 }
 
+const sortAndSearch = (searchTerm, files) => {
+  if (!files || !files.length) return [[], {}]
+
+  const filesById = files.reduce((acc, next, index) => {
+    return {
+      ...acc,
+      [index]: next,
+    }
+  }, {})
+  const filteredFileIds = Object.keys(filesById).filter((id) => {
+    if (searchTerm && searchTerm.length > 1) {
+      const f = filesById[`${id}`]
+      return (f.fileName || f.path).toLowerCase().includes(searchTerm.toLowerCase())
+    } else {
+      return true
+    }
+  })
+  const sortedFileIds = sortBy(filteredFileIds, (id) => filesById[`${id}`].lastOpened).reverse()
+
+  return [sortedFileIds, filesById]
+}
+
 const RecentFilesConnector = (connector) => {
   const {
     platform: {
-      file: { isTempFile, doesFileExist, useSortedKnownFiles, pathSep, basename, openKnownFile },
+      file: {
+        isTempFile,
+        doesFileExist,
+        useSortedKnownFiles,
+        pathSep,
+        basename,
+        openKnownFile,
+        listOfflineFiles,
+      },
       log,
     },
   } = connector
@@ -57,19 +92,25 @@ const RecentFilesConnector = (connector) => {
     basename,
     openKnownFile,
     log,
+    listOfflineFiles,
   })
 
   const FileActions = UnconnectedFileActions(connector)
 
-  const RecentFiles = ({ fileList }) => {
+  const RecentFiles = ({ fileList, isOffline, resuming }) => {
     const [searchTerm, setSearchTerm] = useState('')
-    const [sortedIds, filesById] = useSortedKnownFiles(searchTerm, fileList)
+    const [onlineSortedIds, onlineFilesById] = useSortedKnownFiles(searchTerm, fileList)
+    const [sortedIds, setSortedIds] = useState(onlineSortedIds)
+    const [filesById, setFilesById] = useState(onlineFilesById)
     const [missingFiles, setMissing] = useState([])
     const [selectedFile, selectFile] = useState(null)
+    const today = new Date()
 
     useEffect(() => {
       let newMissing = [...missingFiles]
       sortedIds.forEach((id) => {
+        if (!filesById[`${id}`]) return
+
         const filePath = filesById[`${id}`].path
         if (!filePath) {
           return
@@ -83,6 +124,27 @@ const RecentFilesConnector = (connector) => {
       })
       setMissing(newMissing)
     }, [sortedIds, filesById])
+
+    useEffect(() => {
+      if (!isOffline && !resuming) {
+        if (!isEqual(onlineSortedIds, sortedIds)) {
+          setSortedIds(onlineSortedIds)
+        }
+        if (!isEqual(onlineFilesById, filesById)) {
+          setFilesById(onlineFilesById)
+        }
+      } else {
+        listOfflineFiles().then((offlineFiles) => {
+          const [offlineSortedIds, offlineFilesById] = sortAndSearch(searchTerm, offlineFiles)
+          if (!isEqual(offlineSortedIds, sortedIds)) {
+            setSortedIds(offlineSortedIds)
+          }
+          if (!isEqual(offlineFilesById, filesById)) {
+            setFilesById(offlineFilesById)
+          }
+        })
+      }
+    }, [isOffline, onlineSortedIds, onlineFilesById, setFilesById, setSortedIds, resuming])
 
     const openFile = (filePath, id) => {
       return openKnownFile(filePath, id)
@@ -112,6 +174,24 @@ const RecentFilesConnector = (connector) => {
         }
 
         return new Date()
+      }
+
+      const renderLastOpenTime = (lastOpened) => {
+        try {
+          // less than a day, show something more helpful
+          if (today.getTime() - lastOpened.getTime() < oneDay) {
+            return prettydate.format(lastOpened)
+          }
+
+          // is exactly at 12 AM
+          if (lastOpened.getHours() == 0) return null
+
+          return t.time(lastOpened, 'medium')
+        } catch (error) {
+          console.log(error)
+          // no time value, do nothing
+          return null
+        }
       }
 
       const renderedFiles = sortedIds.map((id, idx) => {
@@ -169,7 +249,11 @@ const RecentFilesConnector = (connector) => {
               <Cell> </Cell>
             ) : null}
             <Cell>
-              <div className="lastOpen">{t('{date, date, monthDay}', { date: lastOpen })}</div>
+              <div className="lastOpen">
+                <span>{t.date(lastOpen, 'monthDay')}</span>
+                <span> </span>
+                <span>{renderLastOpenTime(lastOpen)}</span>
+              </div>
             </Cell>
           </Row>
         )
@@ -201,6 +285,8 @@ const RecentFilesConnector = (connector) => {
 
   RecentFiles.propTypes = {
     fileList: PropTypes.array.isRequired,
+    isOffline: PropTypes.bool,
+    resuming: PropTypes.bool,
   }
 
   const {
@@ -213,6 +299,8 @@ const RecentFilesConnector = (connector) => {
 
     return connect((state) => ({
       fileList: selectors.fileListSelector(state.present),
+      isOffline: selectors.isOfflineSelector(state.present),
+      resuming: selectors.isResumingSelector(state.present),
     }))(RecentFiles)
   }
 

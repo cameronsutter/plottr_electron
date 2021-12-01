@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'react-proptypes'
 import { t, setupI18n } from 'plottr_locales'
 import { HelpBlock, Button, Tabs, Tab } from 'react-bootstrap'
 import Switch from '../../Switch'
@@ -18,7 +19,6 @@ const OptionsHomeConnector = (connector) => {
       updateLanguage,
       updateBeatHierarchyFlag,
       os,
-      license: { hasPro },
     },
   } = connector
   const SETTINGS = connector.platform.settings
@@ -31,7 +31,6 @@ const OptionsHomeConnector = (connector) => {
     updateBeatHierarchyFlag,
     os,
     SETTINGS,
-    hasPro,
   })
 
   const LanguagePicker = UnconnectedLanguagePicker(connector)
@@ -40,7 +39,7 @@ const OptionsHomeConnector = (connector) => {
 
   const osIsUnknown = os === 'unknown'
 
-  const OptionsHome = (props) => {
+  const OptionsHome = ({ hasCurrentProLicense }) => {
     const [settings, _, saveSetting] = useSettingsInfo()
 
     const onChangeBackupLocation = () => {
@@ -63,8 +62,15 @@ const OptionsHomeConnector = (connector) => {
     // - not web
     // - not Pro, unless Pro & localBackups
     const showBackupLocation = () => {
-      return (!osIsUnknown && !hasPro()) || (!osIsUnknown && settings.user.localBackups)
+      return (!osIsUnknown && !hasCurrentProLicense) || (!osIsUnknown && settings.user.localBackups)
     }
+
+    const dashboardFirstText = settings.user.openDashboardFirst
+      ? t("When Plottr opens, the first thing you'll see is the dashboard")
+      : t('Plottr opens your most recent project at start')
+
+    const dashboardFirstIsOn =
+      settings.user.openDashboardFirst === undefined ? true : settings.user.openDashboardFirst
 
     return (
       <div className="dashboard__options">
@@ -99,6 +105,18 @@ const OptionsHomeConnector = (connector) => {
                 />
               </div>
             </Tab>
+            <Tab eventKey={2} title={t('Dashboard')}>
+              <div className="dashboard__options__item">
+                <h4>{t('Always Open Dashboard First')}</h4>
+                <Switch
+                  isOn={dashboardFirstIsOn}
+                  handleToggle={() =>
+                    saveSetting('user.openDashboardFirst', !settings.user.openDashboardFirst)
+                  }
+                  labelText={dashboardFirstText}
+                />
+              </div>
+            </Tab>
             <Tab eventKey={3} title={t('Backups')}>
               <div className="dashboard__options__item">
                 <h4>{t('Save Backups')}</h4>
@@ -108,7 +126,7 @@ const OptionsHomeConnector = (connector) => {
                   labelText={t('Automatically save daily backups')}
                 />
               </div>
-              {!osIsUnknown && hasPro() ? (
+              {!osIsUnknown && hasCurrentProLicense ? (
                 <div className="dashboard__options__item">
                   <h4>{t('Also save backups on this device')}</h4>
                   <Switch
@@ -175,7 +193,26 @@ const OptionsHomeConnector = (connector) => {
     )
   }
 
-  return OptionsHome
+  OptionsHome.propTypes = {
+    hasCurrentProLicense: PropTypes.bool,
+  }
+
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect((state) => {
+      return {
+        hasCurrentProLicense: selectors.hasProSelector(state.present),
+      }
+    })(OptionsHome)
+  }
+
+  throw new Error('Could not connect OptionsHome')
 }
 
 export default OptionsHomeConnector

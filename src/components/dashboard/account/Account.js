@@ -13,13 +13,13 @@ import { checkDependencies } from '../../checkDependencies'
 const AccountConnector = (connector) => {
   const {
     platform: {
-      license: { useTrialStatus, licenseStore, useLicenseInfo, hasPro },
+      license: { useTrialStatus, licenseStore, useLicenseInfo },
       openExternal,
       os,
       mpq,
     },
   } = connector
-  checkDependencies({ useTrialStatus, licenseStore, useLicenseInfo, hasPro, openExternal, os, mpq })
+  checkDependencies({ useTrialStatus, licenseStore, useLicenseInfo, openExternal, os, mpq })
 
   const TrialInfo = UnconnectedTrialInfo(connector)
   const ExpiredView = UnconnectedExpiredView(connector)
@@ -49,12 +49,12 @@ const AccountConnector = (connector) => {
   // license & Pro
   //  - license
   //  - pro
-  const Account = ({ darkMode, startProOnboarding }) => {
+  const Account = ({ darkMode, startProOnboarding, hasCurrentProLicense }) => {
     const trialInfo = useTrialStatus()
     const [licenseInfo, licenseInfoSize] = useLicenseInfo()
     const checkTrial = () =>
-      trialInfo.started && !trialInfo.expired && !licenseInfoSize && !hasPro()
-    const checkTrialExpired = () => trialInfo.expired && !licenseInfoSize && !hasPro()
+      trialInfo.started && !trialInfo.expired && !licenseInfoSize && !hasCurrentProLicense
+    const checkTrialExpired = () => trialInfo.expired && !licenseInfoSize && !hasCurrentProLicense
     const checkLicense = () => !!licenseInfoSize
     const [isTrial, setIsTrial] = useState(checkTrial())
     const [isTrialExpired, setIsTrialExpired] = useState(checkTrialExpired())
@@ -64,9 +64,9 @@ const AccountConnector = (connector) => {
       setIsTrial(checkTrial())
       setIsTrialExpired(checkTrialExpired())
       setIsLicense(checkLicense())
-    }, [trialInfo, licenseInfo, licenseInfoSize])
+    }, [trialInfo, licenseInfo, licenseInfoSize, hasCurrentProLicense])
 
-    const hideProButton = os == 'unknown' || hasPro() || isTrial
+    const hideProButton = os == 'unknown' || hasCurrentProLicense || isTrial
 
     const deleteLicense = () => {
       mpq.push('btn_remove_license_confirm')
@@ -92,7 +92,7 @@ const AccountConnector = (connector) => {
 
       const body = []
       if (os == 'unknown') body.push(<BetaInfo key="beta" />)
-      if (hasPro()) body.push(<ProInfo key="pro" />)
+      if (hasCurrentProLicense) body.push(<ProInfo key="pro" />)
 
       if (isLicense) {
         body.push(
@@ -122,9 +122,25 @@ const AccountConnector = (connector) => {
   Account.propTypes = {
     darkMode: PropTypes.bool,
     startProOnboarding: PropTypes.func,
+    hasCurrentProLicense: PropTypes.bool,
   }
 
-  return Account
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+    return connect(
+      (state) => ({
+        hasCurrentProLicense: selectors.hasProSelector(state.present),
+      }),
+      {}
+    )(Account)
+  }
+
+  throw new Error('Could not connect Account')
 }
 
 export default AccountConnector

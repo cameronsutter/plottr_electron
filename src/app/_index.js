@@ -16,7 +16,6 @@ import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
-import log from 'electron-log'
 import SETTINGS from '../common/utils/settings'
 import askToExport from '../common/exporter/start_export'
 import { ActionCreators } from 'redux-undo'
@@ -39,6 +38,7 @@ import {
 } from '../dashboard-events'
 import { offlineFilePath } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
+import { logger } from '../logger'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -56,7 +56,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')
 
 process.on('uncaughtException', (err) => {
-  log.error(err)
+  logger.error(err)
   rollbar.error(err)
 })
 
@@ -100,6 +100,13 @@ function waitForUser(cb) {
 
 function bootCloudFile(filePath, forceDashboard) {
   const fileId = filePath.split('plottr://')[1]
+  if (!fileId) {
+    logger.error(
+      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`
+    )
+    dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+    return
+  }
   waitForUser((user) => {
     const userId = user.uid
     const email = user.email
@@ -238,7 +245,7 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
     (err, didMigrate, state) => {
       if (err) {
         rollbar.error(err)
-        log.error(err)
+        logger.error(err)
       }
       store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
@@ -290,7 +297,7 @@ function bootFile(filePath, options, numOpenFiles) {
     }
   } catch (error) {
     // TODO: error dialog and ask the user to try again
-    log.error(error)
+    logger.error(error)
     rollbar.error(error)
   }
 }
@@ -341,7 +348,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     is.windows,
     (error, success) => {
       if (error) {
-        log.error(error)
+        logger.error(error)
         dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
         return
       }
@@ -419,7 +426,7 @@ ipcRenderer.on('acts-tour-start', (event) => {
 })
 
 window.onerror = function (message, file, line, column, err) {
-  log.error(err)
+  logger.error(err)
   rollbar.error(err)
 }
 
@@ -468,7 +475,7 @@ ipcRenderer.on('create-error-report', () => {
 })
 
 ipcRenderer.on('auto-save-error', (event, filePath, error) => {
-  log.warn(error)
+  logger.warn(error)
   rollbar.warn(error, { fileName: filePath })
   dialog.showErrorBox(
     t('Auto-saving failed'),
@@ -484,19 +491,19 @@ ipcRenderer.on('auto-save-worked-this-time', (event, filePath) => {
 })
 
 ipcRenderer.on('auto-save-backup-error', (event, filePath, error) => {
-  log.warn('[save state backup]', error)
+  logger.warn('[save state backup]', error)
   rollbar.error({ message: 'BACKUP failed' })
   rollbar.warn(error, { fileName: filePath })
 })
 
 ipcRenderer.on('save-backup-error', (event, error, filePath) => {
-  log.warn('[file open backup]', error)
+  logger.warn('[file open backup]', error)
   rollbar.error({ message: 'BACKUP failed' })
   rollbar.warn(error, { fileName: filePath })
 })
 
 ipcRenderer.on('save-backup-success', (event, filePath) => {
-  log.info('[file open backup]', 'success', filePath)
+  logger.info('[file open backup]', 'success', filePath)
 })
 
 ipcRenderer.on('close-dashboard', () => {

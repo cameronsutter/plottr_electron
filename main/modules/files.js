@@ -208,7 +208,7 @@ function saveOfflineFile(file) {
   // Don't save an offline version of an offline file
   if (isAnOfflineFile(file)) return
   if (!fs.existsSync(OFFLINE_FILE_FILES_PATH)) {
-    fs.mkdirSync(OFFLINE_FILE_FILES_PATH)
+    fs.mkdirSync(OFFLINE_FILE_FILES_PATH, { recursive: true })
   }
   if (!file || !file.file || !file.file.fileName) {
     log.error('Trying to save a file but there is no file record on it.', file)

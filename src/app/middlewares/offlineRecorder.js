@@ -11,7 +11,13 @@ const offlineRecorder = (store) => (next) => (action) => {
     !selectors.isOfflineSelector(state) &&
     !selectors.isResumingSelector(state)
   ) {
-    ipcRenderer.send('record-offline-backup', state)
+    ipcRenderer.send('record-offline-backup', {
+      ...state,
+      file: {
+        ...state.file,
+        originalTimeStamp: state.file.timeStamp,
+      },
+    })
   }
 
   return result

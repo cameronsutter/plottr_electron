@@ -89,6 +89,7 @@ const Resume = ({
           })
         })
       }
+      /* eslint-disable no-inner-declarations */
       function handleError(error) {
         logger.error('Error trying to resume online mode', error)
         retryCount++
@@ -105,6 +106,7 @@ const Resume = ({
           checkAndUploadBackup().catch(handleError)
         }
       }
+      /* eslint-enable */
       checkAndUploadBackup().catch(handleError)
     }
   }, [isResuming, userId, fileId, clientId])

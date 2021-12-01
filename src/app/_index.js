@@ -11,7 +11,7 @@ import { is } from 'electron-util'
 import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-import { actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
+import { actions, migrateIfNeeded, featureFlags, emptyFile, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
@@ -116,6 +116,15 @@ const loadFileIntoRedux = (data, fileId) => {
   )
 }
 
+function removeSystemKeys(jsonData) {
+  const withoutSystemKeys = {}
+  Object.keys(jsonData).map((key) => {
+    if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
+    withoutSystemKeys[key] = jsonData[key]
+  })
+  return withoutSystemKeys
+}
+
 const finaliseBoot = (originalFile, fileId, forceDashboard) => (overwrittenFile) => {
   const json = overwrittenFile || originalFile
   migrateIfNeeded(
@@ -135,7 +144,7 @@ const finaliseBoot = (originalFile, fileId, forceDashboard) => (overwrittenFile)
           logger.info(
             `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
           )
-          overwriteAllKeys(fileId, clientId, data)
+          overwriteAllKeys(fileId, clientId, removeSystemKeys(data))
             .then((results) => {
               loadFileIntoRedux(data, fileId)
               store.dispatch(actions.client.setClientId(clientId))
@@ -168,26 +177,29 @@ const beforeLoading = (backupOurs, uploadOurs, fileId, offlineFile, email, userI
       `Backing up a local version of ${fileId} because both offline and online versions changed.`
     )
     const date = new Date()
-    return uploadProject(
-      {
-        ...offlineFile,
-        file: {
-          ...offlineFile.file,
-          fileName: `${offlineFile.file.fileName} - Resume Backup - ${
-            date.getMonth() + 1
-          }-${date.getDate()}-${date.getFullYear()}`,
-        },
+    const file = {
+      ...offlineFile,
+      file: {
+        ...offlineFile.file,
+        fileName: `${offlineFile.file.fileName} - Resume Backup - ${
+          date.getMonth() + 1
+        }-${date.getDate()}-${date.getFullYear()}`,
       },
-      email,
-      userId
-    )
+    }
+    return uploadProject(file, email, userId).then((result) => ({
+      ...offlineFile,
+      file: {
+        ...offlineFile.file,
+        id: result.data.fileId,
+      },
+    }))
   } else if (uploadOurs) {
     logger.info(
       `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
     )
     const date = new Date()
     return overwriteAllKeys(fileId, clientId, {
-      ...offlineFile,
+      ...removeSystemKeys(offlineFile),
       file: {
         ...offlineFile.file,
         fileName: `${offlineFile.file.fileName} - Resume Backup - ${

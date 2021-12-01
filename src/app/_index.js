@@ -127,10 +127,10 @@ const finaliseBoot = (originalFile, fileId, forceDashboard) => (overwrittenFile)
         rollbar.error(error)
         return
       }
-      console.log(`Loaded file ${json.file.fileName}.`)
+      logger.info(`Loaded file ${json.file.fileName}.`)
       win.setTitle(displayFileName(json.file.fileName))
       if (migrated) {
-        console.log(
+        logger.info(
           `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
         )
         overwriteAllKeys(fileId, clientId, data).then((results) => {

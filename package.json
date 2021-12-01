@@ -202,13 +202,6 @@
             "x64",
             "ia32"
           ]
-        },
-        {
-          "target": "zip",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
         }
       ],
       "verifyUpdateCodeSignature": false,

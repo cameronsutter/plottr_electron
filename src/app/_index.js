@@ -129,26 +129,33 @@ const finaliseBoot = (originalFile, fileId, forceDashboard) => (overwrittenFile)
       }
       logger.info(`Loaded file ${json.file.fileName}.`)
       win.setTitle(displayFileName(json.file.fileName))
-      if (migrated) {
-        logger.info(
-          `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-        )
-        overwriteAllKeys(fileId, clientId, data).then((results) => {
+      const handleMigration = new Promise((resolve, reject) => {
+        if (migrated) {
+          logger.info(
+            `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+          )
+          overwriteAllKeys(fileId, clientId, data)
+            .then((results) => {
+              loadFileIntoRedux(data, fileId)
+              store.dispatch(actions.client.setClientId(clientId))
+            })
+            .then(resolve, reject)
+        } else {
           loadFileIntoRedux(data, fileId)
           store.dispatch(actions.client.setClientId(clientId))
-        })
-      } else {
-        loadFileIntoRedux(data, fileId)
-        store.dispatch(actions.client.setClientId(clientId))
-      }
-      render(
-        <Provider store={store}>
-          <Listener />
-          <Renamer />
-          <App forceProjectDashboard={forceDashboard} />
-        </Provider>,
-        root
-      )
+          resolve(true)
+        }
+      })
+      handleMigration.then(() => {
+        render(
+          <Provider store={store}>
+            <Listener />
+            <Renamer />
+            <App forceProjectDashboard={forceDashboard} />
+          </Provider>,
+          root
+        )
+      })
     },
     logger
   )

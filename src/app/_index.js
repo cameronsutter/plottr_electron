@@ -39,6 +39,7 @@ import {
 import { offlineFilePath } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { logger } from '../logger'
+import { resumeDirective } from '../resume'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -227,12 +228,9 @@ function bootCloudFile(filePath, forceDashboard) {
         const offlinePath = offlineFilePath(json)
         const exists = fs.existsSync(offlinePath)
         const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
-        const originalTimeStamp = exists && new Date(offlineFile.file.originalTimeStamp)
-        const currentTimeStamp = exists && new Date(offlineFile.file.timeStamp)
-        const madeOfflineEdits = exists && currentTimeStamp > originalTimeStamp
-        const madeEditsOnline = exists && json.file.timeStamp.toDate() > originalTimeStamp
-        const backupOurs = exists && madeEditsOnline && madeOfflineEdits
-        const uploadOurs = exists && !madeEditsOnline && madeOfflineEdits
+        const [uploadOurs, backupOurs] = exists
+          ? resumeDirective(offlineFile, json)
+          : [false, false]
         beforeLoading(backupOurs, uploadOurs, fileId, offlineFile, email, userId).then(
           finaliseBoot(json, fileId, forceDashboard)
         )

@@ -10,6 +10,7 @@ import { MessageModal } from 'connected-components'
 import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import { logger } from '../../logger'
 import { uploadProject } from '../../common/utils/upload_project'
+import { resumeDirective } from '../../resume'
 
 const { app, dialog } = remote
 
@@ -36,14 +37,7 @@ const Resume = ({
           withFullFileState((state) => {
             const offlineFile = state.present
             const originalTimeStamp = new Date(offlineFile.file.originalTimeStamp)
-            const currentTimeStamp = new Date(offlineFile.file.timeStamp)
-            const madeOfflineEdits = currentTimeStamp > originalTimeStamp
-            const madeEditsOnline = cloudFile.file.timeStamp.toDate() > originalTimeStamp
-            const doNothing = !madeOfflineEdits && !madeEditsOnline
-            const uploadOurs = madeOfflineEdits && !madeEditsOnline
-            // Doesn't matter whether we edited locally.  We're the
-            // late comer in this case
-            const backupOurs = madeEditsOnline
+            const [uploadOurs, backupOurs, doNothing] = resumeDirective(offlineFile, cloudFile)
             if (doNothing) {
               logger.info(
                 `After resuming, there are no changes between the local and cloud files for file with id: ${fileId}.`

@@ -25,7 +25,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
         fileId,
       })
       .catch((error) => {
-        const status = error.response.status
+        const status = error && error.response && error.response.status
         log.error(
           'Error pinging auth (to signal that the file list was updated)',
           status,
@@ -40,7 +40,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     return database()
       .doc(`file/${fileId}`)
       .update({
-        fileName: newName
+        fileName: newName,
       })
       .then(() => {
         return pingAuth(userId, fileId)
@@ -221,7 +221,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     delete data.fileId
     delete data.clientId
     return {
-      [path]: withData(data)
+      [path]: withData(data),
     }
   }
 
@@ -290,17 +290,31 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     array.reduce((acc, value, index) => Object.assign(acc, { [index]: value }), {})
 
   const overwriteAllKeys = (fileId, clientId, state) => {
-    const results = []
+    const requests = []
     Object.keys(state).forEach((key) => {
-      if (key === 'error' || key === 'permission' || key === 'ui' || key === 'project') return
+      if (
+        key === 'editors' ||
+        key === 'error' ||
+        key === 'permission' ||
+        key === 'ui' ||
+        key === 'project'
+      ) {
+        return
+      }
       const payload = ARRAY_KEYS.indexOf(key) !== -1 ? toFirestoreArray(state[key]) : state[key]
-      results.push(
-        overwrite(key, fileId, payload, clientId).catch((error) => {
-          log.error(`Error while force updating file ${fileId}`, error)
-        })
+      requests.push(
+        overwrite(key, fileId, payload, clientId)
+          .catch((error) => {
+            log.error(`Error while force updating file ${fileId} at key: ${key}`, error)
+          })
+          .then(() => ({
+            [key]: ARRAY_KEYS.indexOf(key) !== -1 ? Object.values(payload) : payload,
+          }))
       )
     })
-    return Promise.all(results)
+    return Promise.all(requests).then((results) => {
+      return Object.assign({}, ...results)
+    })
   }
 
   const initialFetch = (userId, fileId, clientId, version) => {
@@ -384,7 +398,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           setDeletedplaces(),
           setDeletedtags(),
           setDeletedhierarchyLevels(),
-          setDeletedimages()
+          setDeletedimages(),
         ]).then((results) => [pingAuthResult, deleteFileResult, ...results])
       )
     )
@@ -419,7 +433,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
               return documents.map((document) => {
                 return {
                   ...document,
-                  isCloudFile: true
+                  isCloudFile: true,
                 }
               })
             })
@@ -456,7 +470,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           return documents.map((document) => {
             return {
               ...document,
-              isCloudFile: true
+              isCloudFile: true,
             }
           })
         })
@@ -532,7 +546,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       .update({
         ...payload,
         clientId,
-        fileId
+        fileId,
       })
   }
 
@@ -543,7 +557,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       .set({
         ...payload,
         clientId,
-        fileId
+        fileId,
       })
   }
 
@@ -553,7 +567,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
         fileId,
         emailAddress,
         userId,
-        permission
+        permission,
       })
       .then(() => {
         return database()
@@ -573,7 +587,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
               .doc(fileId)
               .set(
                 {
-                  shareRecords: [...document.shareRecords, { emailAddress, permission }]
+                  shareRecords: [...document.shareRecords, { emailAddress, permission }],
                 },
                 { merge: true }
               )
@@ -599,10 +613,10 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
             {
               timeStamp: new Date(),
               editNumber: operations[operations.length - 1].editNumber,
-              editorKey
+              editorKey,
             },
             {
-              merge: true
+              merge: true,
             }
           )
       : Promise.resolve([])
@@ -610,7 +624,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       updateEditNumbersJob,
       ...operations.map((operation) => {
         modificationsRef.add(operation)
-      })
+      }),
     ])
   }
 
@@ -619,7 +633,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       .doc(`rce/${fileId}/editors/${editorId}/editTimestamps/${myEditorKey}`)
       .update({
         timeStamp: new Date(),
-        [otherEditorKey]: since
+        [otherEditorKey]: since,
       })
   }
 
@@ -788,7 +802,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
                 .update({
                   ...document,
                   storagePath: path,
-                  lastModified: new Date()
+                  lastModified: new Date(),
                 })
             })
           }
@@ -800,7 +814,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
               startOfSession: false,
               fileId,
               fileName: file.project.selectedFile.fileName,
-              lastModified: new Date()
+              lastModified: new Date(),
             })
           })
         })
@@ -813,7 +827,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           storagePath: path,
           fileName: file.project.selectedFile.fileName,
           startOfSession: true,
-          lastModified: new Date()
+          lastModified: new Date(),
         })
       })
     })

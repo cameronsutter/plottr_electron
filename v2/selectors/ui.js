@@ -5,10 +5,11 @@ import { allBookIdsSelector } from './books'
 export const currentTimelineSelector = (state) => {
   const bookIds = allBookIdsSelector(state)
   const currentTimeline = state.ui.currentTimeline
-  if (bookIds.indexOf(currentTimeline) === -1) {
-    return bookIds[0] || 1
-  } else {
+  if (currentTimeline == 'series') return currentTimeline
+  if (bookIds.includes(currentTimeline)) {
     return currentTimeline
+  } else {
+    return bookIds[0] || 1
   }
 }
 export const timelineIsExpandedSelector = (state) => state.ui.timelineIsExpanded

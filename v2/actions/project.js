@@ -6,6 +6,8 @@ import {
   SET_FILE_LOADED,
   SHOW_LOADER,
   UNSET_FILE_LOADED,
+  SET_OFFLINE,
+  SET_RESUMING,
 } from '../constants/ActionTypes'
 
 export const withFullFileState = (cb) => (dispatch, getState) => {
@@ -37,4 +39,14 @@ export const unsetFileLoaded = () => ({
 export const showLoader = (isLoading) => ({
   type: SHOW_LOADER,
   isLoading,
+})
+
+export const setOffline = (isOffline) => ({
+  type: SET_OFFLINE,
+  isOffline,
+})
+
+export const setResuming = (resuming) => ({
+  type: SET_RESUMING,
+  resuming,
 })

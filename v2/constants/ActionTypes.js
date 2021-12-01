@@ -26,6 +26,8 @@ export const CLOSE_ATTRIBUTES_DIALOG = 'CLOSE_ATTRIBUTES_DIALOG'
 export const SET_TIMELINE_SIZE = 'SET_TIMELINE_SIZE'
 export const SET_OUTLINE_FILTER = 'SET_OUTLINE_FILTER'
 export const LOAD_FILE = 'LOAD_FILE'
+export const SET_FILE_NAME = 'SET_FILE_NAME'
+export const RESTORE_FILE_NAME = 'RESTORE_FILE_NAME'
 
 // beat actions
 export const ADD_BEAT = 'ADD_BEAT'
@@ -215,6 +217,8 @@ export const SELECT_EMPTY_FILE = 'SELECT_EMPTY_FILE'
 export const SET_FILE_LOADED = 'SET_FILE_LOADED'
 export const UNSET_FILE_LOADED = 'UNSET_FILE_LOADED'
 export const SHOW_LOADER = 'SHOW_LOADER'
+export const SET_OFFLINE = 'SET_OFFLINE'
+export const SET_RESUMING = 'SET_RESUMING'
 
 // client actions
 export const SET_USER_ID = 'SET_USER_ID'

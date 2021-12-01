@@ -5,12 +5,19 @@ import {
   RESET,
   EDIT_FILENAME,
   LOAD_FILE,
+  SET_FILE_NAME,
+  RESTORE_FILE_NAME,
+  SET_OFFLINE,
 } from '../constants/ActionTypes'
 import { file as defaultFile } from '../store/initialState'
 
 const file =
   (dataRepairers) =>
-  (state = defaultFile, action) => {
+  (stateWithoutTimeStamp = defaultFile, action) => {
+    const state = {
+      ...stateWithoutTimeStamp,
+      timeStamp: new Date(),
+    }
     switch (action.type) {
       case FILE_LOADED:
         return {
@@ -38,6 +45,32 @@ const file =
 
       case LOAD_FILE:
         return action.file
+
+      case SET_FILE_NAME:
+        if (state.originalFileName) return state
+        return {
+          ...state,
+          originalFileName: state.fileName,
+          fileName: action.newFileName,
+        }
+
+      case RESTORE_FILE_NAME:
+        if (!state.originalFileName) return state
+        return {
+          ...state,
+          originalFileName: null,
+          // There's no originalFileName when we boot the app
+          fileName: state.originalFileName,
+        }
+
+      case SET_OFFLINE:
+        if (action.isOffline) {
+          return {
+            ...state,
+            timeStamp: stateWithoutTimeStamp.timeStamp || state.timeStamp,
+            originalTimeStamp: stateWithoutTimeStamp.timeStamp || state.timeStamp,
+          }
+        } else return state
 
       default:
         return Object.assign({}, state, { dirty: true })

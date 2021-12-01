@@ -5,6 +5,8 @@ import {
   SET_FILE_LOADED,
   SHOW_LOADER,
   UNSET_FILE_LOADED,
+  SET_OFFLINE,
+  SET_RESUMING,
 } from '../constants/ActionTypes'
 
 const INITIAL_STATE = {
@@ -13,6 +15,8 @@ const INITIAL_STATE = {
   userNameSearchResults: [],
   fileLoaded: false,
   isLoading: false,
+  isOffline: false,
+  resuming: false,
 }
 
 const NEW_FILE = { fileName: 'New file', none: true, id: -1 }
@@ -49,6 +53,16 @@ const projectReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: action.isLoading,
+      }
+    case SET_OFFLINE:
+      return {
+        ...state,
+        isOffline: action.isOffline,
+      }
+    case SET_RESUMING:
+      return {
+        ...state,
+        resuming: action.resuming,
       }
     default:
       return state

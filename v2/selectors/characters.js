@@ -19,6 +19,17 @@ export const charactersByCategorySelector = createSelector(allCharactersSelector
   groupBy(characters, 'categoryId')
 )
 
+export const characterTemplateAttributeValueSelector =
+  (characterId, templateId, attributeName) => (state) => {
+    const character = singleCharacterSelector(state, characterId)
+    const templateOnCharacter = character && character.templates.find(({ id }) => id === templateId)
+    const valueInAttributes =
+      templateOnCharacter &&
+      templateOnCharacter.attributes.find(({ name }) => name === attributeName).value
+    const valueOnTemplate = templateOnCharacter && templateOnCharacter[attributeName]
+    return valueInAttributes || valueOnTemplate
+  }
+
 export const characterFilterIsEmptySelector = createSelector(
   characterFilterSelector,
   characterCustomAttributesSelector,

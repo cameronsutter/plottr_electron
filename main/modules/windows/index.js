@@ -1,4 +1,5 @@
 const { BrowserWindow, ipcMain } = require('electron')
+const log = require('electron-log')
 const { openBuyWindow } = require('./buy')
 const { newFileOptions } = require('../new_file_options')
 const { offlineFilePath } = require('../offlineFilePath')
@@ -25,9 +26,9 @@ function setFilePathForWindowWithFilePath(oldFilePath, newFilePath) {
   if (window) {
     window.oldFilePath = window.filePath
     window.filePath = newFilePath
-    console.info('Renaming window with path: ', oldFilePath, ' to: ', newFilePath)
+    log.info('Renaming window with path: ', oldFilePath, ' to: ', newFilePath)
   } else {
-    console.warn(
+    log.warn(
       'Attempting to rename window with path: ',
       oldFilePath,
       ' to: ',

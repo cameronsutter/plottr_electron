@@ -226,7 +226,9 @@ function bootCloudFile(filePath, forceDashboard) {
         const madeEditsOnline = exists && json.file.timeStamp.toDate() > originalTimeStamp
         const backupOurs = exists && madeEditsOnline && madeOfflineEdits
         const uploadOurs = exists && !madeEditsOnline && madeOfflineEdits
-        beforeLoading(backupOurs, uploadOurs, fileId, offlineFile, email, userId).then(finaliseBoot)
+        beforeLoading(backupOurs, uploadOurs, fileId, offlineFile, email, userId).then(
+          finaliseBoot(json, fileId, forceDashboard)
+        )
       })
       .catch((error) => {
         logger.error(`Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`, error)

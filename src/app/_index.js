@@ -264,6 +264,7 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
   } catch (error) {
     render(
       <Provider store={store}>
+        <Listener />
         <Renamer />
         <App forceProjectDashboard />
       </Provider>,
@@ -307,8 +308,11 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
       if (state && state.tour && state.tour.showTour)
         store.dispatch(actions.ui.changeOrientation('horizontal'))
 
+      store.dispatch(actions.client.setClientId(clientId))
+
       render(
         <Provider store={store}>
+          <Listener />
           <Renamer />
           <App forceProjectDashboard={forceDashboard} />
         </Provider>,

@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
 import { actions, selectors } from 'pltr/v2'
-import { listen, stopListening } from 'wired-up-firebase'
+import { listen, stopListening, fetchFiles } from 'wired-up-firebase'
 import { store } from '../store'
 import { offlineFilePath } from '../../files'
 import { logger } from '../../logger'
@@ -18,14 +18,17 @@ const Listener = ({
   clientId,
   fileLoaded,
   isOffline,
+  isCloudFile,
   setFileName,
   offlineFilePath,
   filePath,
   restoreFileName,
   originalFileName,
   cloudFilePath,
+  selectFile,
   setResuming,
   resuming,
+  withFullFileState,
 }) => {
   const [unsubscribeFunctions, setUnsubscribeFunctions] = useState([])
 
@@ -36,6 +39,25 @@ const Listener = ({
       wasOffline.current = true
     }
   }, [isOffline])
+
+  useEffect(() => {
+    if (isOffline && isCloudFile && !selectedFile) {
+      withFullFileState((state) => {
+        selectFile(state.present.file)
+      })
+    }
+  }, [isOffline, isCloudFile, selectedFile])
+
+  useEffect(() => {
+    if (!userId || !selectedFile || !selectedFile.id || selectedFile.permission) return
+    fetchFiles(userId).then((fileList) => {
+      const fileInList = fileList.find(({ id }) => selectedFile.id === id)
+      if (fileInList) {
+        setPermission(fileInList.permission)
+        selectFile(fileInList)
+      }
+    })
+  }, [selectedFile, userId])
 
   useEffect(() => {
     if (!userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
@@ -116,6 +138,8 @@ Listener.propTypes = {
   originalFileName: PropTypes.string,
   cloudFilePath: PropTypes.string,
   setResuming: PropTypes.func.isRequired,
+  isCloudFile: PropTypes.bool,
+  withFullFileState: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -130,6 +154,7 @@ export default connect(
     originalFileName: selectors.originalFileNameSelector(state.present),
     cloudFilePath: selectors.cloudFilePathSelector(state.present),
     resuming: selectors.isResumingSelector(state.present),
+    isCloudFile: selectors.isCloudFileSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,
@@ -138,5 +163,7 @@ export default connect(
     setFileName: actions.ui.setFileName,
     restoreFileName: actions.ui.restoreFileName,
     setResuming: actions.project.setResuming,
+    selectFile: actions.project.selectFile,
+    withFullFileState: actions.project.withFullFileState,
   }
 )(Listener)

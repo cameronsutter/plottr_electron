@@ -4,7 +4,7 @@ import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
-import { onSessionChange, listenToFiles } from 'wired-up-firebase'
+import { fetchFile, onSessionChange, listenToFiles, currentUser } from 'wired-up-firebase'
 import { actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 
@@ -40,6 +40,9 @@ const App = ({
   setHasPro,
   setOffline,
   isOffline,
+  fileId,
+  clientId,
+  setPermission,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -97,18 +100,18 @@ const App = ({
       window.removeEventListener('online', onlineListener)
       window.removeEventListener('offline', offlineListener)
     }
-  }, [setOffline])
+  }, [setOffline, fileId, clientId])
 
   useEffect(() => {
-    if (!userId && isCloudFile && checkedUser) {
+    if (!userId && isCloudFile && checkedUser && !isOffline) {
       log.error('Attempting to open a cloud file locally without being logged in.')
       dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
     }
-  }, [userId, isCloudFile, checkedUser])
+  }, [userId, isCloudFile, checkedUser, isOffline])
 
   useEffect(() => {
     let fileListener = null
-    const sessionListener = onSessionChange((user) => {
+    const handleUserChanged = (user) => {
       if (!user || isOffline) {
         setCheckedUser(true)
       } else {
@@ -127,7 +130,12 @@ const App = ({
           }
         })
       }
-    })
+    }
+    const sessionListener = onSessionChange(handleUserChanged)
+    if (!isOffline) {
+      const user = currentUser()
+      handleUserChanged(user)
+    }
     return () => {
       if (fileListener) fileListener()
       sessionListener()
@@ -226,7 +234,7 @@ const App = ({
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
-  const cloudFileWithoutLoggingIn = !userId && isCloudFile && checkedUser
+  const cloudFileWithoutLoggingIn = !userId && isCloudFile && checkedUser && !isOffline
 
   return (
     <ErrorBoundary>
@@ -267,6 +275,9 @@ App.propTypes = {
   setEmailAddress: PropTypes.func.isRequired,
   setOffline: PropTypes.func.isRequired,
   isOffline: PropTypes.bool,
+  fileId: PropTypes.string,
+  clientId: PropTypes.string,
+  setPermission: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -275,6 +286,8 @@ function mapStateToProps(state) {
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
+    fileId: selectors.selectedFileIdSelector(state.present),
+    clientId: selectors.clientIdSelector(state.present),
   }
 }
 
@@ -284,4 +297,5 @@ export default connect(mapStateToProps, {
   setEmailAddress: actions.client.setEmailAddress,
   setHasPro: actions.client.setHasPro,
   setOffline: actions.project.setOffline,
+  setPermission: actions.permission.setPermission,
 })(App)

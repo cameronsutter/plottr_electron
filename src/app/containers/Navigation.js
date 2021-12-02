@@ -57,7 +57,14 @@ const Navigation = ({
   }, [showAccount, dashboardView, setDashboardView])
 
   useEffect(() => {
-    if (!selectedFile && !dashboardView && isCloudFile && checkedUser && !showAccount) {
+    if (
+      !selectedFile &&
+      !dashboardView &&
+      isCloudFile &&
+      checkedUser &&
+      !showAccount &&
+      !isOffline
+    ) {
       setDashboardView('files')
     }
   }, [selectedFile, dashboardView, isCloudFile, checkedUser, showAccount])

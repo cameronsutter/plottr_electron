@@ -1,15 +1,12 @@
 export const resumeDirective = (offlineFile, cloudFile) => {
-  const originalTimeStamp =
-    offlineFile.file.originalTimeStamp && new Date(offlineFile.file.originalTimeStamp)
-  const currentTimeStamp = offlineFile.file.timeStamp && new Date(offlineFile.file.timeStamp)
-  const timestampsExist = currentTimeStamp && originalTimeStamp
-  const madeOfflineEdits =
-    timestampsExist && currentTimeStamp.getTime() !== originalTimeStamp.getTime()
-  const madeEditsOnline =
-    timestampsExist && cloudFile.file.timeStamp.toDate().getTime() !== originalTimeStamp.getTime()
+  const originalVersionStamp = offlineFile.file.originalVersionStamp
+  const currentVersionStamp = offlineFile.file.versionStamp
+  const versionStampsExist = currentVersionStamp && originalVersionStamp
+  const madeOfflineEdits = versionStampsExist && currentVersionStamp !== originalVersionStamp
+  const madeEditsOnline = versionStampsExist && cloudFile.file.versionStamp !== originalVersionStamp
   const doNothing = !madeOfflineEdits
   const uploadOurs = madeOfflineEdits && !madeEditsOnline
-  const backupOurs = !timestampsExist || (madeOfflineEdits && madeEditsOnline)
+  const backupOurs = !versionStampsExist || (madeOfflineEdits && madeEditsOnline)
 
   return [uploadOurs, backupOurs, doNothing]
 }

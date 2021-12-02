@@ -16,6 +16,7 @@ const offlineRecorder = (store) => (next) => (action) => {
       file: {
         ...state.file,
         originalTimeStamp: state.file.timeStamp,
+        originalVersionStamp: state.file.versionStamp,
       },
     })
   }

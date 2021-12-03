@@ -73,7 +73,7 @@ const Navigation = ({
   }, [licenseInfoSize, trialInfo.expired, hasCurrentProLicense])
 
   useEffect(() => {
-    if (!firstTime) {
+    if (!firstTime && !forceProjectDashboard) {
       setDashboardView(null)
     }
   }, [firstTime])

@@ -33,7 +33,15 @@ const Resume = ({
     // Only resume when we're loaded up and good to go.  The hook
     // depends on email, userId etc. so we can safely guard the resume
     // process with this check.
-    if (isResuming && email && userId && clientId && fileId) {
+    if (
+      isResuming &&
+      email &&
+      userId &&
+      clientId &&
+      fileId &&
+      !checkingOfflineDrift &&
+      !overwritingCloudWithBackup
+    ) {
       setCheckingForOfflineDrift(true)
       let retryCount = 0
       const checkAndUploadBackup = () => {
@@ -107,7 +115,15 @@ const Resume = ({
       /* eslint-enable */
       checkAndUploadBackup().catch(handleError)
     }
-  }, [isResuming, userId, email, fileId, clientId])
+  }, [
+    isResuming,
+    userId,
+    email,
+    fileId,
+    clientId,
+    checkingOfflineDrift,
+    overwritingCloudWithBackup,
+  ])
 
   const acknowledge = () => {
     if (checkingOfflineDrift || !isResuming) return

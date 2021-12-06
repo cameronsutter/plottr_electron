@@ -44,7 +44,8 @@ const Resume = ({
       clientId &&
       fileId &&
       !checkingOfflineDrift &&
-      !overwritingCloudWithBackup
+      !overwritingCloudWithBackup &&
+      !backingUpOfflineFile
     ) {
       setCheckingForOfflineDrift(true)
       setShowResumeMessageDialog(true)
@@ -61,25 +62,23 @@ const Resume = ({
               )
               setResuming(false)
               setCheckingForOfflineDrift(false)
-              setOverwritingCloudWithBackup(false)
               retryCount = 0
             } else if (uploadOurs) {
-              setCheckingForOfflineDrift(false)
               setOverwritingCloudWithBackup(true)
+              setCheckingForOfflineDrift(false)
               logger.info(
                 `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
               )
               overwriteAllKeys(fileId, clientId, offlineFile).then(() => {
                 setResuming(false)
-                setOverwritingCloudWithBackup(false)
               })
             } else if (backupOurs) {
+              setBackingUpOfflineFile(true)
               setCheckingForOfflineDrift(false)
               logger.info(
                 `Detected that file ${fileId} has changes since ${originalTimeStamp}.  Backing up the offline file and switching to the online file.`
               )
               const date = new Date()
-              setBackingUpOfflineFile(true)
               uploadProject(
                 {
                   ...offlineFile,
@@ -94,8 +93,6 @@ const Resume = ({
                 userId
               ).then(() => {
                 setResuming(false)
-                setOverwritingCloudWithBackup(false)
-                setBackingUpOfflineFile(false)
                 retryCount = 0
               })
             }
@@ -134,11 +131,15 @@ const Resume = ({
     setShowResumeMessageDialog,
     setResuming,
     setBackingUpOfflineFile,
+    backingUpOfflineFile,
   ])
 
   const acknowledge = () => {
     if (checkingOfflineDrift) return
 
+    setOverwritingCloudWithBackup(false)
+    setOverwritingCloudWithBackup(false)
+    setOverwritingCloudWithBackup(false)
     setShowResumeMessageDialog(false)
   }
 
@@ -150,7 +151,7 @@ const Resume = ({
       onAcknowledge={acknowledge}
       disabledAcknowledge={checkingOfflineDrift}
     >
-      {checkingOfflineDrift ? <Spinner /> : null}
+      {checkingOfflineDrift && !overwritingCloudWithBackup ? <Spinner /> : null}
       {backingUpOfflineFile
         ? `The cloud file is different from your local copy.  We're going to create a duplicate of your local file and switch to the cloud file.`
         : null}

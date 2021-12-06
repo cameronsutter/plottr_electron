@@ -1,5 +1,5 @@
 import { remote, ipcRenderer, shell } from 'electron'
-import { readFileSync } from 'fs'
+import fs, { readFileSync } from 'fs'
 import path from 'path'
 
 import { t } from 'plottr_locales'
@@ -10,6 +10,8 @@ import { closeDashboard } from './dashboard-events'
 import { store } from './app/store'
 import { logger } from './logger'
 import { uploadToFirebase } from './upload-to-firebase'
+
+const fsPromises = fs.promises
 
 const { app, dialog } = remote
 const version = app.getVersion()
@@ -85,6 +87,23 @@ const win = remote.getCurrentWindow()
 
 export const showSaveDialogSync = (options) => dialog.showSaveDialogSync(win, options)
 
+const escapeFileName = (fileName) => {
+  return escape(fileName.replace(/[/\\]/g, '-'))
+}
+
+export const offlineFilePathFromFileName = (filePath) => {
+  const fileName = escapeFileName(filePath)
+  return path.join(OFFLINE_FILE_FILES_PATH, fileName)
+}
+
+export const offlineFilePath = (file) => {
+  if (file.file.fileName.startsWith(OFFLINE_FILE_FILES_PATH)) {
+    return file.file.fileName
+  }
+
+  return offlineFilePathFromFileName(file.file.fileName)
+}
+
 export const renameFile = (filePath) => {
   if (filePath.startsWith('plottr://')) {
     const {
@@ -119,15 +138,19 @@ export const renameFile = (filePath) => {
   }
 }
 
-const escapeFileName = (fileName) => {
-  return escape(fileName.replace(/[/\\]/g, '-'))
+export const renameCloudBackupFile = (fileName, newName) => {
+  return fsPromises
+    .rename(offlineFilePathFromFileName(fileName), offlineFilePathFromFileName(newName))
+    .catch((error) => {
+      // Ignore errors renaming the backup file.
+      return true
+    })
 }
 
-export const offlineFilePath = (file) => {
-  if (file.file.fileName.startsWith(OFFLINE_FILE_FILES_PATH)) {
-    return file.file.fileName
-  }
-
-  const fileName = escapeFileName(file.file.fileName)
-  return path.join(OFFLINE_FILE_FILES_PATH, fileName)
+export const deleteCloudBackupFile = (fileName) => {
+  const filePath = offlineFilePathFromFileName(fileName)
+  return fsPromises.unlink(filePath).catch((error) => {
+    // Ignore errors deleting the backup file.
+    return true
+  })
 }

@@ -5,7 +5,7 @@ import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 
-import { actions } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 import {
   publishRCEOperations,
   fetchRCEOperations,
@@ -78,6 +78,7 @@ import {
   showSaveDialogSync,
   newFile,
   uploadExisting,
+  deleteCloudBackupFile,
 } from './files'
 import extractImages from './common/extract_images'
 import { useProLicenseInfo } from './common/utils/checkPro'
@@ -177,16 +178,21 @@ const platform = {
       }
     },
     deleteKnownFile: (id, path) => {
+      const state = store.getState()
       const {
         present: {
           project: { selectedFile },
           client: { userId, clientId },
         },
-      } = store.getState()
+      } = state
+      const fileName = selectors.fileFromFileIdSelector(state.present, id).fileName
       const isOnCloud = path.startsWith('plottr://')
       if (isOnCloud) {
         store.dispatch(actions.project.showLoader(true))
-        deleteFile(id, userId, clientId)
+        deleteCloudBackupFile(fileName)
+          .then(() => {
+            return deleteFile(id, userId, clientId)
+          })
           .then(() => {
             if (selectedFile.id === idFromPath(path)) {
               store.dispatch(actions.project.selectFile(null))
@@ -195,7 +201,7 @@ const platform = {
             store.dispatch(actions.project.showLoader(false))
           })
           .catch((error) => {
-            logger.error(`Error deleting file at path: ${path}`)
+            logger.error(`Error deleting file at path: ${path}`, error)
             store.dispatch(actions.project.showLoader(false))
           })
       } else {

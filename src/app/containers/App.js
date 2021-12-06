@@ -4,7 +4,7 @@ import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
-import { fetchFile, onSessionChange, listenToFiles, currentUser } from 'wired-up-firebase'
+import { onSessionChange, listenToFiles, currentUser } from 'wired-up-firebase'
 import { actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 

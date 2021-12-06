@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import { remote } from 'electron'
 import { connect } from 'react-redux'
@@ -24,16 +24,17 @@ const Resume = ({
   fileId,
   clientId,
   withFullFileState,
+  overwritingCloudWithBackup,
+  checkingOfflineDrift,
+  setCheckingForOfflineDrift,
+  setOverwritingCloudWithBackup,
 }) => {
-  const [checking, setChecking] = useState(false)
-  const [overwriting, setOverwriting] = useState(false)
-
   useEffect(() => {
     // Only resume when we're loaded up and good to go.  The hook
     // depends on email, userId etc. so we can safely guard the resume
     // process with this check.
     if (isResuming && email && userId && clientId && fileId) {
-      setChecking(true)
+      setCheckingForOfflineDrift(true)
       let retryCount = 0
       const checkAndUploadBackup = () => {
         return initialFetch(userId, fileId, clientId, app.getVersion()).then((cloudFile) => {
@@ -45,22 +46,22 @@ const Resume = ({
               logger.info(
                 `After resuming, there are no changes between the local and cloud files for file with id: ${fileId}.`
               )
-              setChecking(false)
+              setCheckingForOfflineDrift(false)
               setResuming(false)
-              setOverwriting(false)
+              setOverwritingCloudWithBackup(false)
               retryCount = 0
             } else if (uploadOurs) {
-              setChecking(false)
-              setOverwriting(true)
+              setCheckingForOfflineDrift(false)
+              setOverwritingCloudWithBackup(true)
               logger.info(
                 `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
               )
               overwriteAllKeys(fileId, clientId, offlineFile).then(() => {
-                setOverwriting(false)
+                setOverwritingCloudWithBackup(false)
                 setResuming(false)
               })
             } else if (backupOurs) {
-              setChecking(false)
+              setCheckingForOfflineDrift(false)
               logger.info(
                 `Detected that file ${fileId} has changes since ${originalTimeStamp}.  Backing up the offline file and switching to the online file.`
               )
@@ -79,7 +80,7 @@ const Resume = ({
                 userId
               ).then(() => {
                 setResuming(false)
-                setOverwriting(false)
+                setOverwritingCloudWithBackup(false)
                 retryCount = 0
               })
             }
@@ -91,9 +92,9 @@ const Resume = ({
         logger.error('Error trying to resume online mode', error)
         retryCount++
         if (retryCount > MAX_RETRIES) {
-          setChecking(false)
+          setCheckingForOfflineDrift(false)
           setResuming(false)
-          setOverwriting(false)
+          setOverwritingCloudWithBackup(false)
           dialog.showErrorBox(
             t('Error'),
             t('There was an error reconnecting.  Please save the file and restart Plottr.')
@@ -109,7 +110,7 @@ const Resume = ({
   }, [isResuming, userId, email, fileId, clientId])
 
   const acknowledge = () => {
-    if (checking || !isResuming) return
+    if (checkingOfflineDrift || !isResuming) return
 
     setResuming(false)
   }
@@ -117,12 +118,16 @@ const Resume = ({
   if (!isResuming) return null
 
   return (
-    <MessageModal message="Reconnecting" onAcknowledge={acknowledge} disabledAcknowledge={checking}>
-      {checking ? <Spinner /> : null}
-      {!checking && !overwriting
+    <MessageModal
+      message="Reconnecting"
+      onAcknowledge={acknowledge}
+      disabledAcknowledge={checkingOfflineDrift}
+    >
+      {checkingOfflineDrift ? <Spinner /> : null}
+      {!checkingOfflineDrift && !overwritingCloudWithBackup
         ? `The cloud file is different from your local copy.  We're going to create a duplicate of your local file and switch to the cloud file.`
         : null}
-      {overwriting ? 'Uploading your changes to the cloud.' : null}
+      {overwritingCloudWithBackup ? 'Uploading your changes to the cloud.' : null}
     </MessageModal>
   )
 }
@@ -135,15 +140,26 @@ Resume.propTypes = {
   fileId: PropTypes.string,
   clientId: PropTypes.string,
   withFullFileState: PropTypes.func.isRequired,
+  overwritingCloudWithBackup: PropTypes.bool,
+  checkingOfflineDrift: PropTypes.bool,
+  setCheckingForOfflineDrift: PropTypes.func.isRequired,
+  setOverwritingCloudWithBackup: PropTypes.func.isRequired,
 }
 
 export default connect(
   (state) => ({
     isResuming: selectors.isResumingSelector(state.present),
+    overwritingCloudWithBackup: selectors.isCheckingForOfflineDriftSelector(state.present),
+    checkingOfflineDrift: selectors.isOverwritingCloudWithBackupSelector(state.present),
     userId: selectors.userIdSelector(state.present),
     email: selectors.emailAddressSelector(state.present),
     fileId: selectors.fileIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
   }),
-  { withFullFileState: actions.project.withFullFileState, setResuming: actions.project.setResuming }
+  {
+    withFullFileState: actions.project.withFullFileState,
+    setResuming: actions.project.setResuming,
+    setCheckingForOfflineDrift: actions.project.setCheckingForOfflineDrift,
+    setOverwritingCloudWithBackup: actions.project.setOverwritingCloudWithBackup,
+  }
 )(Resume)

@@ -65,13 +65,7 @@ const Navigation = ({
 
   useEffect(() => {
     if (!checked) return
-    if (
-      !selectedFile &&
-      !dashboardView &&
-      isCloudFile &&
-      !showAccount &&
-      !isOffline
-    ) {
+    if (!selectedFile && !dashboardView && isCloudFile && !showAccount && !isOffline) {
       setDashboardView('files')
     }
   }, [selectedFile, dashboardView, isCloudFile, checked, showAccount])
@@ -154,7 +148,7 @@ const Navigation = ({
 
   return (
     <>
-      {showFrbLogin ? (
+      {showFrbLogin && !isOffline ? (
         <LoginModal closeLoginModal={closeLoginModal} setChecking={toggleChecking} />
       ) : null}
       {dashboardView ? dashbrdModal : null}

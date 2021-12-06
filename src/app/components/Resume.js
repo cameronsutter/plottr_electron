@@ -119,7 +119,11 @@ const Resume = ({
           )
           retryCount = 0
         } else {
-          checkAndUploadBackup().catch(handleError)
+          checkAndUploadBackup().catch((error) => {
+            setTimeout(() => {
+              handleError(error)
+            }, 1000)
+          })
         }
       }
       /* eslint-enable */

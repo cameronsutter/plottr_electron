@@ -43,6 +43,7 @@ const App = ({
   fileId,
   clientId,
   setPermission,
+  isResuming,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -103,7 +104,7 @@ const App = ({
   }, [setOffline, fileId, clientId])
 
   useEffect(() => {
-    if (!userId && isCloudFile && checkedUser && !isOffline) {
+    if (!isResuming && !userId && isCloudFile && checkedUser && !isOffline) {
       log.error('Attempting to open a cloud file locally without being logged in.')
       dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
     }
@@ -278,6 +279,7 @@ App.propTypes = {
   fileId: PropTypes.string,
   clientId: PropTypes.string,
   setPermission: PropTypes.func.isRequired,
+  isResuming: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -288,6 +290,7 @@ function mapStateToProps(state) {
     isOffline: selectors.isOfflineSelector(state.present),
     fileId: selectors.selectedFileIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
+    isResuming: selectors.isResumingSelector(state.present),
   }
 }
 

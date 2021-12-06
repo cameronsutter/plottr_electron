@@ -197,14 +197,11 @@ const beforeLoading = (backupOurs, uploadOurs, fileId, offlineFile, email, userI
     logger.info(
       `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
     )
-    const date = new Date()
     return overwriteAllKeys(fileId, clientId, {
       ...removeSystemKeys(offlineFile),
       file: {
         ...offlineFile.file,
-        fileName: `${offlineFile.file.fileName} - Resume Backup - ${
-          date.getMonth() + 1
-        }-${date.getDate()}-${date.getFullYear()}`,
+        fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
       },
     })
   }

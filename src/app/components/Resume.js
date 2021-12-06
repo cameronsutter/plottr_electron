@@ -69,7 +69,13 @@ const Resume = ({
               logger.info(
                 `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
               )
-              overwriteAllKeys(fileId, clientId, offlineFile).then(() => {
+              overwriteAllKeys(fileId, clientId, {
+                ...offlineFile,
+                file: {
+                  ...offlineFile.file,
+                  fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
+                },
+              }).then(() => {
                 setResuming(false)
               })
             } else if (backupOurs) {

@@ -181,7 +181,7 @@ const beforeLoading = (backupOurs, uploadOurs, fileId, offlineFile, email, userI
       ...offlineFile,
       file: {
         ...offlineFile.file,
-        fileName: `${offlineFile.file.fileName} - Resume Backup - ${
+        fileName: `${decodeURI(offlineFile.file.fileName)} - Resume Backup - ${
           date.getMonth() + 1
         }-${date.getDate()}-${date.getFullYear()}`,
       },

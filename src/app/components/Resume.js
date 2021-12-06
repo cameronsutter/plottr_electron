@@ -150,6 +150,7 @@ const Resume = ({
       message="Reconnecting"
       onAcknowledge={acknowledge}
       disabledAcknowledge={checkingOfflineDrift}
+      buttonText={isResuming ? 'Busy' : 'Dismiss'}
     >
       {checkingOfflineDrift && !overwritingCloudWithBackup ? <Spinner /> : null}
       {backingUpOfflineFile

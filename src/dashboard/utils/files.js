@@ -123,3 +123,25 @@ export function listOfflineFiles() {
       return Promise.reject(error)
     })
 }
+
+export const sortAndSearch = (searchTerm, files) => {
+  if (!files || !files.length) return [[], {}]
+
+  const filesById = files.reduce((acc, next, index) => {
+    return {
+      ...acc,
+      [index]: next,
+    }
+  }, {})
+  const filteredFileIds = Object.keys(filesById).filter((id) => {
+    if (searchTerm && searchTerm.length > 1) {
+      const f = filesById[`${id}`]
+      return (f.fileName || f.path).toLowerCase().includes(searchTerm.toLowerCase())
+    } else {
+      return true
+    }
+  })
+  const sortedFileIds = sortBy(filteredFileIds, (id) => getDateValue(filesById[`${id}`])).reverse()
+
+  return [sortedFileIds, filesById]
+}

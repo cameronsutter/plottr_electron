@@ -65,6 +65,7 @@ import {
   useSortedKnownFiles as _useSortedKnownFiles,
   removeFromKnownFiles,
   listOfflineFiles,
+  sortAndSearch,
 } from './dashboard/utils/files'
 import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
@@ -219,6 +220,7 @@ const platform = {
     },
     joinPath: path.join,
     listOfflineFiles,
+    sortAndSearch,
   },
   update: {
     quitToInstall: () => {

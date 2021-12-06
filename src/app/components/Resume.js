@@ -26,8 +26,10 @@ const Resume = ({
   withFullFileState,
   overwritingCloudWithBackup,
   checkingOfflineDrift,
+  showResumeMessageDialog,
   setCheckingForOfflineDrift,
   setOverwritingCloudWithBackup,
+  setShowResumeMessageDialog,
 }) => {
   useEffect(() => {
     // Only resume when we're loaded up and good to go.  The hook
@@ -43,6 +45,7 @@ const Resume = ({
       !overwritingCloudWithBackup
     ) {
       setCheckingForOfflineDrift(true)
+      setShowResumeMessageDialog(true)
       let retryCount = 0
       const checkAndUploadBackup = () => {
         return initialFetch(userId, fileId, clientId, app.getVersion()).then((cloudFile) => {
@@ -126,12 +129,12 @@ const Resume = ({
   ])
 
   const acknowledge = () => {
-    if (checkingOfflineDrift || !isResuming) return
+    if (checkingOfflineDrift) return
 
-    setResuming(false)
+    setShowResumeMessageDialog(false)
   }
 
-  if (!isResuming) return null
+  if (!isResuming && !showResumeMessageDialog) return null
 
   return (
     <MessageModal
@@ -158,8 +161,10 @@ Resume.propTypes = {
   withFullFileState: PropTypes.func.isRequired,
   overwritingCloudWithBackup: PropTypes.bool,
   checkingOfflineDrift: PropTypes.bool,
+  showResumeMessageDialog: PropTypes.bool,
   setCheckingForOfflineDrift: PropTypes.func.isRequired,
   setOverwritingCloudWithBackup: PropTypes.func.isRequired,
+  setShowResumeMessageDialog: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -167,6 +172,7 @@ export default connect(
     isResuming: selectors.isResumingSelector(state.present),
     overwritingCloudWithBackup: selectors.isCheckingForOfflineDriftSelector(state.present),
     checkingOfflineDrift: selectors.isOverwritingCloudWithBackupSelector(state.present),
+    showResumeMessageDialog: selectors.showResumeMessageDialogSelector(state.present),
     userId: selectors.userIdSelector(state.present),
     email: selectors.emailAddressSelector(state.present),
     fileId: selectors.fileIdSelector(state.present),
@@ -177,5 +183,6 @@ export default connect(
     setResuming: actions.project.setResuming,
     setCheckingForOfflineDrift: actions.project.setCheckingForOfflineDrift,
     setOverwritingCloudWithBackup: actions.project.setOverwritingCloudWithBackup,
+    setShowResumeMessageDialog: actions.project.setShowResumeMessageDialog,
   }
 )(Resume)

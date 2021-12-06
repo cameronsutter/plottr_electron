@@ -10,9 +10,11 @@ export function buildRecents() {
     'lastOpened'
   ).reverse()
   return sortedFiles.map((f) => {
+    const basename = path.basename(f.path)
+    const sublabel = path.dirname(f.path).substr(-14)
     return {
-      label: path.basename(f.path),
-      sublabel: f.path,
+      label: basename,
+      sublabel: `...${sublabel}${path.sep}`,
       toolTip: f.path,
       click: () => {
         openProjectWindow(f.path)

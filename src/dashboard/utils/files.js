@@ -28,10 +28,25 @@ export function useSortedKnownFiles(
         return true
       }
     })
-    return sortBy(filteredFileIds, (id) => files[`${id}`].lastOpened).reverse()
+    return sortBy(filteredFileIds, (id) => getDateValue(files[`${id}`])).reverse()
   }, [files, searchTerm, initialFilesFromFirebase])
 
   return [sortedIds, files]
+}
+
+function getDateValue(fileObj) {
+  if (fileObj.lastOpened) {
+    return fileObj.lastOpened.toDate ? fileObj.lastOpened.toDate() : new Date(fileObj.lastOpened)
+  }
+
+  try {
+    const splits = fileObj.version.replace(/-.*$/, '').split('.')
+    return new Date(splits[0], parseInt(splits[1]) - 1, splits[2])
+  } catch (error) {
+    // do nothing
+  }
+
+  return new Date()
 }
 
 export function doesFileExist(filePath) {

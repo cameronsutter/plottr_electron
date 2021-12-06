@@ -268,7 +268,6 @@ const platform = {
     trial90days,
     trial60days,
     checkForPro,
-    hasPro: () => SETTINGS.get('user.id') || false,
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')

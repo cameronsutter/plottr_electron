@@ -7,7 +7,7 @@ export const PRO_ID = '104900'
 
 // callback(hasPro, info)
 export function checkForPro(email, callback) {
-  rp(makeRequest(subscriptionsURL(email)))
+  return rp(makeRequest(subscriptionsURL(email)))
     .then((response) => {
       log.info('successful pro request')
       if (!response.subscriptions) {
@@ -41,7 +41,12 @@ export function checkForPro(email, callback) {
       }
     })
     .catch((err) => {
-      log.error(err)
+      if (err.message === `No customer found for ${email}!`) {
+        callback(false)
+        return Promise.resolve(true)
+      }
+      log.error('Failed to check for pro', err)
+      return Promise.reject(err)
     })
 }
 

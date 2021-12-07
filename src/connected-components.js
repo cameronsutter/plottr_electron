@@ -158,7 +158,14 @@ const platform = {
       const {
         client: { userId },
       } = state.present
-      return _useSortedKnownFiles(userId, ...args)
+      const previouslyLoggedIntoPro = SETTINGS.get('user.frbId')
+      // It's important that the same number of hooks are called per
+      // component per render.  It's an error if it isn't.
+      const hookResults = _useSortedKnownFiles(userId, ...args)
+      if (previouslyLoggedIntoPro && !userId) {
+        return [[], {}]
+      }
+      return hookResults
     },
     useSortedKnownFilesIgnoringLoggedIn: (...args) => {
       return _useSortedKnownFiles(null, ...args)

@@ -1,6 +1,7 @@
 const path = require('path')
 const Store = require('electron-store')
 const { reloadRecents } = require('./dashboard')
+const { OFFLINE_FILE_FILES_PATH } = require('./offlineFilePath')
 const knownFilesPath = process.env.NODE_ENV == 'development' ? 'known_files_dev' : 'known_files'
 
 const knownFilesStore = new Store({ name: knownFilesPath })
@@ -13,6 +14,11 @@ function getKnownFilesInfo() {
 // be that `addToKnownFiles` does some fixing to broken stores and
 // `addToKnown` sets the last opened date.
 function addToKnown(filePath) {
+  // We don't want to track recent files when they're offline files.
+  if (filePath.startsWith(OFFLINE_FILE_FILES_PATH)) return
+  // We also don't want to track recent files that don't have a path.
+  if (!filePath || filePath === '') return
+
   const files = knownFilesStore.store
   const alreadyExists = Object.entries(files).some(
     (entry) => path.normalize(entry[1].path) == path.normalize(filePath)

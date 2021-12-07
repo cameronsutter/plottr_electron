@@ -89,15 +89,24 @@ const shouldForceDashboard = (openFirst, numOpenFiles) => {
   return openFirst
 }
 
+const MAX_ATTEMPTS = 5
+
 function waitForUser(cb) {
-  const user = currentUser()
-  if (user) {
-    cb(user)
-  } else {
-    setTimeout(() => {
-      waitForUser(cb)
-    }, 1000)
+  function iter(attempts) {
+    if (attempts >= MAX_ATTEMPTS) {
+      cb(null)
+      return
+    }
+    const user = currentUser()
+    if (user) {
+      cb(user)
+    } else {
+      setTimeout(() => {
+        iter(attempts + 1)
+      }, 1000)
+    }
   }
+  iter(0)
 }
 
 const loadFileIntoRedux = (data, fileId) => {
@@ -226,6 +235,19 @@ function bootCloudFile(filePath, forceDashboard) {
   }
 
   waitForUser((user) => {
+    if (!user) {
+      logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
+      render(
+        <Provider store={store}>
+          <Listener />
+          <Renamer />
+          <App />
+        </Provider>,
+        root
+      )
+      return
+    }
+
     const userId = user.uid
     const email = user.email
     if (!userId) {

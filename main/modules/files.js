@@ -47,7 +47,9 @@ function removeSystemKeys(jsonData) {
   return withoutSystemKeys
 }
 
-function saveFile(filePath, jsonData) {
+function saveFile(inputFilePath, jsonData) {
+  const isOffline = selectors.isOfflineSelector(jsonData)
+  const filePath = isOffline ? offlineFilePath(inputFilePath) : inputFilePath
   const withoutSystemKeys = removeSystemKeys(jsonData)
   if (process.env.NODE_ENV == 'development') {
     saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))
@@ -200,13 +202,8 @@ function openKnownFile(filePath, id, unknown) {
   if (unknown) addToKnown(filePath)
 }
 
-function isAnOfflineFile(file) {
-  return file.file.fileName.startsWith(OFFLINE_FILE_FILES_PATH)
-}
-
 function saveOfflineFile(file) {
   // Don't save an offline version of an offline file
-  if (isAnOfflineFile(file)) return
   if (!fs.existsSync(OFFLINE_FILE_FILES_PATH)) {
     fs.mkdirSync(OFFLINE_FILE_FILES_PATH, { recursive: true })
   }

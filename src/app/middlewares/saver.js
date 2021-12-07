@@ -16,7 +16,7 @@ const saver = (store) => (next) => (action) => {
   if (selectors.isResumingSelector(state)) return result
 
   // save and backup
-  const isOffline = !selectors.isOfflineSelector(state)
+  const isOffline = selectors.isOfflineSelector(state)
   if (selectors.isCloudFileSelector(state) && !isOffline) {
     saveFile(state.file.id, state, isOffline)
   } else if (state.file.fileName !== '') {

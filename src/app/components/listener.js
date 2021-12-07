@@ -19,10 +19,8 @@ const Listener = ({
   fileLoaded,
   isOffline,
   isCloudFile,
-  setFileName,
   offlineFilePath,
   filePath,
-  restoreFileName,
   originalFileName,
   cloudFilePath,
   selectFile,
@@ -107,20 +105,10 @@ const Listener = ({
 
     if (isOffline && !originalFileName) {
       ipcRenderer.send('set-my-file-path', cloudFilePath, offlineFilePath)
-      setFileName(offlineFilePath)
     } else if (!isOffline && originalFileName) {
       ipcRenderer.send('set-my-file-path', offlineFilePath, cloudFilePath)
-      restoreFileName()
     }
-  }, [
-    isOffline,
-    offlineFilePath,
-    setFileName,
-    filePath,
-    restoreFileName,
-    originalFileName,
-    cloudFilePath,
-  ])
+  }, [isOffline, offlineFilePath, filePath, originalFileName, cloudFilePath])
 
   return null
 }
@@ -132,9 +120,7 @@ Listener.propTypes = {
   setFileLoaded: PropTypes.func.isRequired,
   clientId: PropTypes.string,
   isOffline: PropTypes.bool,
-  setFileName: PropTypes.func.isRequired,
   offlineFilePath: PropTypes.string,
-  restoreFileName: PropTypes.func.isRequired,
   originalFileName: PropTypes.string,
   cloudFilePath: PropTypes.string,
   setResuming: PropTypes.func.isRequired,
@@ -160,8 +146,6 @@ export default connect(
     setPermission: actions.permission.setPermission,
     patchFile: actions.ui.patchFile,
     setFileLoaded: actions.project.setFileLoaded,
-    setFileName: actions.ui.setFileName,
-    restoreFileName: actions.ui.restoreFileName,
     setResuming: actions.project.setResuming,
     selectFile: actions.project.selectFile,
     withFullFileState: actions.project.withFullFileState,

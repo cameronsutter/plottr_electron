@@ -75,10 +75,12 @@ describe('imageIndex', () => {
           1: {
             id: 1,
             data: 'blah',
+            path: '',
           },
           7: {
             id: 7,
             data: 'haha',
+            path: '',
           },
         },
       }
@@ -131,10 +133,12 @@ describe('imageIndex', () => {
             1: {
               id: 1,
               data: 'blah',
+              path: '',
             },
             7: {
               id: 7,
               data: 'haha',
+              path: '',
             },
           },
         }
@@ -164,14 +168,17 @@ describe('imageIndex', () => {
               1: {
                 id: 1,
                 data: 'blah',
+                path: '',
               },
               7: {
                 id: 7,
                 data: 'haha',
+                path: '',
               },
               9: {
                 id: 9,
                 data: 'This is some data.',
+                path: '',
               },
             },
           }

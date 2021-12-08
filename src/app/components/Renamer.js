@@ -8,20 +8,27 @@ import { selectors, actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { InputModal } from 'connected-components'
 import { editFileName } from 'wired-up-firebase'
+import { renameCloudBackupFile } from '../../files'
 
 import { logger } from '../../logger'
 
-const Renamer = ({ userId, showLoader }) => {
+const Renamer = ({ userId, showLoader, fileList }) => {
   const [visible, setVisible] = useState(false)
   const [fileId, setFileId] = useState(null)
   const renameOpenFile = useRef(false)
 
   const renameFile = (newName) => {
+    // This component is for renaming cloud files only.
     if (!userId) {
       return
     }
     showLoader(true)
-    editFileName(userId, fileId, newName)
+    const fileName = fileList.find(({ id }) => id === fileId)?.fileName
+
+    ;(fileName ? renameCloudBackupFile(fileName, newName) : Promise.resolve(true))
+      .then(() => {
+        return editFileName(userId, fileId, newName)
+      })
       .then(() => {
         logger.info(`Renamed file with id ${fileId} to ${newName}`)
         setFileId(null)
@@ -74,11 +81,14 @@ const Renamer = ({ userId, showLoader }) => {
 Renamer.propTypes = {
   userId: PropTypes.string,
   showLoader: PropTypes.func.isRequired,
+  fileList: PropTypes.array.isRequired,
 }
 
 export default connect(
   (state) => ({
     userId: selectors.userIdSelector(state.present),
+    isCloudFile: selectors.isCloudFileSelector(state.present),
+    fileList: selectors.fileListSelector(state.present),
   }),
   { showLoader: actions.project.showLoader }
 )(Renamer)

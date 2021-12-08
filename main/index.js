@@ -40,8 +40,9 @@ const {
   deleteKnownFile,
   editKnownFilePath,
   autoSave,
+  saveOfflineFile,
 } = require('./modules/files')
-const { editWindowPath } = require('./modules/windows/index')
+const { editWindowPath, setFilePathForWindowWithFilePath } = require('./modules/windows/index')
 const { ensureBackupTodayPath, saveBackup } = require('./modules/backup')
 
 ////////////////////////////////
@@ -257,4 +258,12 @@ ipcMain.on('save-backup', (event, filePath, file) => {
       event.sender.send('save-backup-success', filePath)
     }
   })
+})
+
+ipcMain.on('record-offline-backup', (event, file) => {
+  saveOfflineFile(file)
+})
+
+ipcMain.on('set-my-file-path', (event, oldFilePath, newFilePath) => {
+  setFilePathForWindowWithFilePath(oldFilePath, newFilePath)
 })

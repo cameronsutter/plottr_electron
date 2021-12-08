@@ -5,6 +5,7 @@ const DuplicatePackageCheckerPlugin = require('duplicate-package-checker-webpack
 const isForMaps = process.env.MAPS == 'true'
 const sourceMapsPath = path.resolve(__dirname, '..', '..', 'pltr_sourcemaps', packageJSON.version)
 const Dotenv = require('dotenv-webpack')
+const CircularDependencyPlugin = require('circular-dependency-plugin')
 
 const plugins = [
   new webpack.IgnorePlugin(/main/, /bin/),
@@ -27,6 +28,22 @@ if (process.env.NODE_ENV !== 'dev') {
     })
   )
 }
+
+const mainCircularDependencyChecker = new CircularDependencyPlugin({
+  // exclude detection of files based on a RegExp
+  exclude: /node_modules/,
+  // include specific files based on a RegExp
+  include: /main/,
+  // add errors to webpack instead of warnings
+  failOnError: true,
+  // allow import cycles that include an asyncronous import,
+  // e.g. via import(/* webpackMode: "weak" */ './file.js')
+  allowAsyncCycles: false,
+  // set the current working directory for displaying module paths
+  cwd: process.cwd(),
+})
+
+const duplicateDependencyChecker = new DuplicatePackageCheckerPlugin()
 
 const mainConfig = {
   mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
@@ -57,12 +74,26 @@ const mainConfig = {
     modules: ['node_modules', 'main'],
   },
   target: 'electron-main',
-  plugins: [...plugins, new DuplicatePackageCheckerPlugin()],
+  plugins: [...plugins, duplicateDependencyChecker, mainCircularDependencyChecker],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   node: {
     __dirname: false,
   },
 }
+
+const appCircularDependencyChecker = new CircularDependencyPlugin({
+  // exclude detection of files based on a RegExp
+  exclude: /node_modules/,
+  // include specific files based on a RegExp
+  include: /app/,
+  // add errors to webpack instead of warnings
+  failOnError: true,
+  // allow import cycles that include an asyncronous import,
+  // e.g. via import(/* webpackMode: "weak" */ './file.js')
+  allowAsyncCycles: false,
+  // set the current working directory for displaying module paths
+  cwd: process.cwd(),
+})
 
 const rendererConfig = {
   mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
@@ -149,7 +180,7 @@ const rendererConfig = {
       }
     })(),
   ],
-  plugins: plugins,
+  plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: {
     splitChunks: {

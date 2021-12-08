@@ -8,12 +8,13 @@ const { t } = require('plottr_locales')
 
 const { knownFilesStore, addToKnownFiles, addToKnown } = require('./known_files')
 const { Importer } = require('./importer/snowflake/importer')
-const { emptyFile, tree, SYSTEM_REDUCER_KEYS } = require('pltr/v2')
+const { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } = require('pltr/v2')
 const { openProjectWindow } = require('./windows/projects')
 const { shell } = require('electron')
 const { broadcastToAllWindows } = require('./broadcast')
 const { saveBackup } = require('./backup')
 const SETTINGS = require('./settings')
+const { OFFLINE_FILE_FILES_PATH, offlineFilePath } = require('./offlineFilePath')
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
@@ -37,12 +38,19 @@ function saveSwap(filePath, data) {
   console.error(Error(`Failed to save to ${filePath}.  Old file is un-touched.`))
 }
 
-function saveFile(filePath, jsonData) {
+function removeSystemKeys(jsonData) {
   const withoutSystemKeys = {}
   Object.keys(jsonData).map((key) => {
     if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
     withoutSystemKeys[key] = jsonData[key]
   })
+  return withoutSystemKeys
+}
+
+function saveFile(inputFilePath, jsonData) {
+  const isOffline = selectors.isOfflineSelector(jsonData)
+  const filePath = isOffline ? offlineFilePath(inputFilePath) : inputFilePath
+  const withoutSystemKeys = removeSystemKeys(jsonData)
   if (process.env.NODE_ENV == 'development') {
     saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))
   } else {
@@ -57,8 +65,13 @@ let resetCount = 0
 const MAX_ATTEMPTS = 200
 
 function autoSave(event, filePath, file, userId, previousFile) {
-  const onCloud = file.file.isCloudFile
-  if (!onCloud) {
+  // Don't auto save while resolving resuming the connection
+  if (selectors.isResumingSelector(file)) return
+
+  const onCloud = selectors.isCloudFileSelector(file)
+  const isOffline = selectors.isOfflineSelector(file)
+
+  if (!onCloud || isOffline) {
     try {
       saveFile(filePath, file)
       // didn't work last time, but it did this time
@@ -189,6 +202,24 @@ function openKnownFile(filePath, id, unknown) {
   if (unknown) addToKnown(filePath)
 }
 
+function saveOfflineFile(file) {
+  // Don't save an offline version of an offline file
+  if (!fs.existsSync(OFFLINE_FILE_FILES_PATH)) {
+    fs.mkdirSync(OFFLINE_FILE_FILES_PATH, { recursive: true })
+  }
+  if (!file || !file.file || !file.file.fileName) {
+    log.error('Trying to save a file but there is no file record on it.', file)
+    return
+  }
+  const filePath = offlineFilePath(file.file.fileName)
+  const withoutSystemKeys = removeSystemKeys(file)
+  if (process.env.NODE_ENV == 'development') {
+    saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))
+  } else {
+    saveSwap(filePath, JSON.stringify(withoutSystemKeys))
+  }
+}
+
 module.exports = {
   TMP_PATH,
   TEMP_FILES_PATH,
@@ -203,4 +234,5 @@ module.exports = {
   createNew,
   createFromSnowflake,
   openKnownFile,
+  saveOfflineFile,
 }

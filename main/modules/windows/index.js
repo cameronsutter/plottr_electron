@@ -1,6 +1,8 @@
 const { BrowserWindow, ipcMain } = require('electron')
+const log = require('electron-log')
 const { openBuyWindow } = require('./buy')
 const { newFileOptions } = require('../new_file_options')
+const { offlineFilePath } = require('../offlineFilePath')
 
 ipcMain.on('open-buy-window', (event) => {
   openBuyWindow()
@@ -14,6 +16,26 @@ function hasWindows() {
 
 function allWindows() {
   return windows
+}
+
+function setFilePathForWindowWithFilePath(oldFilePath, newFilePath) {
+  const window = allWindows().find((window) => {
+    return window.filePath === oldFilePath
+  })
+
+  if (window) {
+    window.oldFilePath = window.filePath
+    window.filePath = newFilePath
+    log.info('Renaming window with path: ', oldFilePath, ' to: ', newFilePath)
+  } else {
+    log.warn(
+      'Attempting to rename window with path: ',
+      oldFilePath,
+      ' to: ',
+      newFilePath,
+      'but could not find the window'
+    )
+  }
 }
 
 function addNewWindow(browserWindow, filePath) {
@@ -46,7 +68,8 @@ function editWindowPath(oldFilePath, newFilePath) {
 }
 
 function focusIfOpen(filePath) {
-  const win = windows.find((w) => w.filePath == filePath)
+  const offlinePath = offlineFilePath(filePath)
+  const win = windows.find((w) => w.filePath == filePath || w.filePath === offlinePath)
   if (win) {
     win.browserWindow.focus()
     win.browserWindow.webContents.send('close-dashboard')
@@ -84,6 +107,7 @@ function closeWindow(id) {
 }
 
 module.exports = {
+  setFilePathForWindowWithFilePath,
   addNewWindow,
   allWindows,
   reloadWindow,

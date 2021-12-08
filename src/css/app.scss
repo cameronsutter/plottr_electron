@@ -38,6 +38,22 @@
     overflow: hidden;
   }
 
+  .offline-mode-banner {
+    position: absolute;
+    z-index: 9999;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: $red-3;
+    color: $neutral-gray-9;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
   nav.project-nav {
     grid-area: navigation;
     border: none;

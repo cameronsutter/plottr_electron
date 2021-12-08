@@ -5,18 +5,17 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { t } from 'plottr_locales'
 import App from 'containers/App'
-import { store } from 'store/configureStore'
+import { store } from 'store'
 import { ipcRenderer, remote } from 'electron'
 import { is } from 'electron-util'
 import electron from 'electron'
 const { app, dialog } = remote
 const win = remote.getCurrentWindow()
-import { actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
-import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
+import { actions, migrateIfNeeded, featureFlags, emptyFile, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
-import log from 'electron-log'
 import SETTINGS from '../common/utils/settings'
 import askToExport from '../common/exporter/start_export'
 import { ActionCreators } from 'redux-undo'
@@ -38,6 +37,10 @@ import {
   createFromTemplate,
   openExistingProj,
 } from '../dashboard-events'
+import { offlineFilePath } from '../files'
+import { uploadProject } from '../common/utils/upload_project'
+import { logger } from '../logger'
+import { resumeDirective } from '../resume'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -55,7 +58,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')
 
 process.on('uncaughtException', (err) => {
-  log.error(err)
+  logger.error(err)
   rollbar.error(err)
 })
 
@@ -86,6 +89,260 @@ const shouldForceDashboard = (openFirst, numOpenFiles) => {
   return openFirst
 }
 
+const MAX_ATTEMPTS = 5
+
+function waitForUser(cb) {
+  function iter(attempts) {
+    if (attempts >= MAX_ATTEMPTS) {
+      cb(null)
+      return
+    }
+    const user = currentUser()
+    if (user) {
+      cb(user)
+    } else {
+      setTimeout(() => {
+        iter(attempts + 1)
+      }, 1000)
+    }
+  }
+  iter(0)
+}
+
+const loadFileIntoRedux = (data, fileId) => {
+  store.dispatch(
+    actions.ui.loadFile(
+      data.file.fileName,
+      false,
+      Object.assign({}, emptyFile(data.file.fileName, data.file.version), withFileId(fileId, data)),
+      data.file.version
+    )
+  )
+  store.dispatch(
+    actions.project.selectFile({
+      ...data.file,
+      id: fileId,
+    })
+  )
+}
+
+function removeSystemKeys(jsonData) {
+  const withoutSystemKeys = {}
+  Object.keys(jsonData).map((key) => {
+    if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
+    withoutSystemKeys[key] = jsonData[key]
+  })
+  return withoutSystemKeys
+}
+
+const finaliseBoot = (originalFile, fileId, forceDashboard) => (overwrittenFile) => {
+  const json = overwrittenFile || originalFile
+  migrateIfNeeded(
+    app.getVersion(),
+    json,
+    json.file.fileName,
+    null,
+    (error, migrated, data) => {
+      if (error) {
+        rollbar.error(error)
+        return
+      }
+      logger.info(`Loaded file ${json.file.fileName}.`)
+      win.setTitle(displayFileName(json.file.fileName))
+      const handleMigration = new Promise((resolve, reject) => {
+        if (migrated) {
+          logger.info(
+            `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+          )
+          overwriteAllKeys(fileId, clientId, removeSystemKeys(data))
+            .then((results) => {
+              loadFileIntoRedux(data, fileId)
+              store.dispatch(actions.client.setClientId(clientId))
+            })
+            .then(resolve, reject)
+        } else {
+          loadFileIntoRedux(data, fileId)
+          store.dispatch(actions.client.setClientId(clientId))
+          resolve(true)
+        }
+      })
+      handleMigration.then(() => {
+        render(
+          <Provider store={store}>
+            <Listener />
+            <Renamer />
+            <App forceProjectDashboard={forceDashboard} />
+          </Provider>,
+          root
+        )
+      })
+    },
+    logger
+  )
+}
+
+const beforeLoading = (backupOurs, uploadOurs, fileId, offlineFile, email, userId) => {
+  if (backupOurs) {
+    logger.info(
+      `Backing up a local version of ${fileId} because both offline and online versions changed.`
+    )
+    const date = new Date()
+    const file = {
+      ...offlineFile,
+      file: {
+        ...offlineFile.file,
+        fileName: `${decodeURI(offlineFile.file.fileName)} - Resume Backup - ${
+          date.getMonth() + 1
+        }-${date.getDate()}-${date.getFullYear()}`,
+      },
+    }
+    return uploadProject(file, email, userId).then((result) => ({
+      ...offlineFile,
+      file: {
+        ...offlineFile.file,
+        id: result.data.fileId,
+      },
+    }))
+  } else if (uploadOurs) {
+    logger.info(
+      `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
+    )
+    return overwriteAllKeys(fileId, clientId, {
+      ...removeSystemKeys(offlineFile),
+      file: {
+        ...offlineFile.file,
+        fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
+      },
+    })
+  }
+  return Promise.resolve(false)
+}
+
+function bootCloudFile(filePath, forceDashboard) {
+  const fileId = filePath.split('plottr://')[1]
+  if (!fileId) {
+    const errorObject = new Error('Could not open cloud file.')
+    rollbar.error(
+      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
+      errorObject
+    )
+    logger.error(
+      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
+      errorObject
+    )
+    dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+    return
+  }
+
+  waitForUser((user) => {
+    if (!user) {
+      logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
+      render(
+        <Provider store={store}>
+          <Listener />
+          <Renamer />
+          <App />
+        </Provider>,
+        root
+      )
+      return
+    }
+
+    const userId = user.uid
+    const email = user.email
+    if (!userId) {
+      rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
+      return
+    }
+
+    initialFetch(userId, fileId, clientId, app.getVersion())
+      .then((json) => {
+        const offlinePath = offlineFilePath(json)
+        const exists = fs.existsSync(offlinePath)
+        const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
+        const [uploadOurs, backupOurs] = exists
+          ? resumeDirective(offlineFile, json)
+          : [false, false]
+        beforeLoading(backupOurs, uploadOurs, fileId, offlineFile, email, userId).then(
+          finaliseBoot(json, fileId, forceDashboard)
+        )
+      })
+      .catch((error) => {
+        logger.error(`Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`, error)
+        rollbar.error(`Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`, error)
+        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+      })
+  })
+}
+
+function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard) {
+  win.setTitle(displayFileName(filePath))
+  win.setRepresentedFilename(filePath)
+  let json
+  try {
+    json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+  } catch (error) {
+    render(
+      <Provider store={store}>
+        <Listener />
+        <Renamer />
+        <App forceProjectDashboard />
+      </Provider>,
+      root
+    )
+    return
+  }
+  ipcRenderer.send('save-backup', filePath, json)
+  migrateIfNeeded(
+    app.getVersion(),
+    json,
+    filePath,
+    null,
+    (err, didMigrate, state) => {
+      if (err) {
+        rollbar.error(err)
+        logger.error(err)
+      }
+      store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
+
+      MPQ.projectEventStats(
+        'open_file',
+        { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
+        state
+      )
+
+      if (state.ui && state.ui.darkMode !== darkMode) {
+        store.dispatch(actions.ui.setDarkMode(darkMode))
+      }
+      if (darkMode) window.document.body.className = 'darkmode'
+
+      const withDispatch = dispatchingToStore(store.dispatch)
+      makeFlagConsistent(
+        state,
+        beatHierarchy,
+        featureFlags.BEAT_HIERARCHY_FLAG,
+        withDispatch(actions.featureFlags.setBeatHierarchy),
+        withDispatch(actions.featureFlags.unsetBeatHierarchy)
+      )
+
+      if (state && state.tour && state.tour.showTour)
+        store.dispatch(actions.ui.changeOrientation('horizontal'))
+
+      store.dispatch(actions.client.setClientId(clientId))
+
+      render(
+        <Provider store={store}>
+          <Listener />
+          <Renamer />
+          <App forceProjectDashboard={forceDashboard} />
+        </Provider>,
+        root
+      )
+    },
+    logger
+  )
+}
+
 function bootFile(filePath, options, numOpenFiles) {
   const { darkMode, beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
@@ -93,151 +350,13 @@ function bootFile(filePath, options, numOpenFiles) {
 
   try {
     if (isCloudFile) {
-      const fileId = filePath.split('plottr://')[1]
-      const userId = SETTINGS.get('user.frbId')
-      const emailAddress = SETTINGS.get('user.email')
-      if (!userId) {
-        rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
-        return
-      }
-
-      initialFetch(userId, fileId, clientId, app.getVersion()).then((json) => {
-        migrateIfNeeded(
-          app.getVersion(),
-          json,
-          json.file.fileName,
-          null,
-          (error, migrated, data) => {
-            if (error) {
-              rollbar.error(error)
-              return
-            }
-            console.log(`Loaded file ${json.file.fileName}.`)
-            win.setTitle(displayFileName(json.file.fileName))
-            if (migrated) {
-              console.log(
-                `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-              )
-              overwriteAllKeys(fileId, clientId, data).then((results) => {
-                store.dispatch(
-                  actions.ui.loadFile(
-                    data.file.fileName,
-                    false,
-                    Object.assign(
-                      {},
-                      emptyFile(data.file.fileName, data.file.version),
-                      withFileId(fileId, data)
-                    ),
-                    data.file.version
-                  )
-                )
-                store.dispatch(
-                  actions.project.selectFile({
-                    ...json.file,
-                    id: fileId,
-                  })
-                )
-                store.dispatch(actions.client.setClientId(clientId))
-              })
-            } else {
-              store.dispatch(
-                actions.ui.loadFile(
-                  data.file.fileName,
-                  false,
-                  Object.assign(
-                    {},
-                    emptyFile(data.file.fileName, data.file.version),
-                    withFileId(fileId, data)
-                  ),
-                  data.file.version
-                )
-              )
-              store.dispatch(
-                actions.project.selectFile({
-                  ...json.file,
-                  id: fileId,
-                })
-              )
-              store.dispatch(actions.client.setClientId(clientId))
-              store.dispatch(actions.client.setEmailAddress(emailAddress))
-            }
-            render(
-              <Provider store={store}>
-                <Listener />
-                <Renamer />
-                <App forceProjectDashboard={forceDashboard} />
-              </Provider>,
-              root
-            )
-          },
-          log
-        )
-      })
+      bootCloudFile(filePath, forceDashboard)
     } else {
-      win.setTitle(displayFileName(filePath))
-      win.setRepresentedFilename(filePath)
-      let json
-      try {
-        json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-      } catch (error) {
-        return render(
-          <Provider store={store}>
-            <Renamer />
-            <App forceProjectDashboard />
-          </Provider>,
-          root
-        )
-      }
-      ipcRenderer.send('save-backup', filePath, json)
-      migrateIfNeeded(
-        app.getVersion(),
-        json,
-        filePath,
-        null,
-        (err, didMigrate, state) => {
-          if (err) {
-            rollbar.error(err)
-            log.error(err)
-          }
-          store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
-
-          MPQ.projectEventStats(
-            'open_file',
-            { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
-            state
-          )
-
-          if (state.ui && state.ui.darkMode !== darkMode) {
-            store.dispatch(actions.ui.setDarkMode(darkMode))
-          }
-          if (darkMode) window.document.body.className = 'darkmode'
-
-          const withDispatch = dispatchingToStore(store.dispatch)
-          makeFlagConsistent(
-            state,
-            beatHierarchy,
-            featureFlags.BEAT_HIERARCHY_FLAG,
-            withDispatch(actions.featureFlags.setBeatHierarchy),
-            withDispatch(actions.featureFlags.unsetBeatHierarchy)
-          )
-
-          if (state && state.tour && state.tour.showTour)
-            store.dispatch(actions.ui.changeOrientation('horizontal'))
-
-          render(
-            <Provider store={store}>
-              <Renamer />
-              <App forceProjectDashboard={forceDashboard} />
-            </Provider>,
-            root
-          )
-        },
-        log
-      )
+      bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard)
     }
   } catch (error) {
     // TODO: error dialog and ask the user to try again
-    log.error(error)
+    logger.error(error)
     rollbar.error(error)
   }
 }
@@ -288,7 +407,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     is.windows,
     (error, success) => {
       if (error) {
-        log.error(error)
+        logger.error(error)
         dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
         return
       }
@@ -366,7 +485,7 @@ ipcRenderer.on('acts-tour-start', (event) => {
 })
 
 window.onerror = function (message, file, line, column, err) {
-  log.error(err)
+  logger.error(err)
   rollbar.error(err)
 }
 
@@ -415,7 +534,7 @@ ipcRenderer.on('create-error-report', () => {
 })
 
 ipcRenderer.on('auto-save-error', (event, filePath, error) => {
-  log.warn(error)
+  logger.warn(error)
   rollbar.warn(error, { fileName: filePath })
   dialog.showErrorBox(
     t('Auto-saving failed'),
@@ -431,19 +550,19 @@ ipcRenderer.on('auto-save-worked-this-time', (event, filePath) => {
 })
 
 ipcRenderer.on('auto-save-backup-error', (event, filePath, error) => {
-  log.warn('[save state backup]', error)
+  logger.warn('[save state backup]', error)
   rollbar.error({ message: 'BACKUP failed' })
   rollbar.warn(error, { fileName: filePath })
 })
 
 ipcRenderer.on('save-backup-error', (event, error, filePath) => {
-  log.warn('[file open backup]', error)
+  logger.warn('[file open backup]', error)
   rollbar.error({ message: 'BACKUP failed' })
   rollbar.warn(error, { fileName: filePath })
 })
 
 ipcRenderer.on('save-backup-success', (event, filePath) => {
-  log.info('[file open backup]', 'success', filePath)
+  logger.info('[file open backup]', 'success', filePath)
 })
 
 ipcRenderer.on('close-dashboard', () => {

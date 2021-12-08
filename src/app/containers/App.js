@@ -20,14 +20,26 @@ import {
   ActsHelpModal,
 } from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
-import { store } from '../store/configureStore'
+import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
 import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 
 const { dialog } = remote
 
-const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList }) => {
+const App = ({
+  forceProjectDashboard,
+  showTour,
+  userId,
+  isCloudFile,
+  setFileList,
+  setOffline,
+  isOffline,
+  fileId,
+  clientId,
+  setPermission,
+  isResuming,
+}) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
   const [showAskToSave, setShowAskToSave] = useState(false)
@@ -73,11 +85,25 @@ const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList
   }
 
   useEffect(() => {
-    if (checkedUser && !userId && isCloudFile) {
+    setOffline(!window.navigator.onLine)
+    const onlineListener = window.addEventListener('online', () => {
+      setOffline(false)
+    })
+    const offlineListener = window.addEventListener('offline', () => {
+      setOffline(true)
+    })
+    return () => {
+      window.removeEventListener('online', onlineListener)
+      window.removeEventListener('offline', offlineListener)
+    }
+  }, [setOffline, fileId, clientId])
+
+  useEffect(() => {
+    if (!isResuming && !userId && isCloudFile && checkedUser && !isOffline) {
       log.error('Attempting to open a cloud file locally without being logged in.')
       dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
     }
-  }, [userId, isCloudFile, checkedUser])
+  }, [userId, isCloudFile, checkedUser, isOffline])
 
   useEffect(() => {
     if (checkedUser && userId) {
@@ -87,6 +113,7 @@ const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList
       })
       return () => fileListener()
     }
+    return () => {}
   }, [checkedUser, userId])
 
   useEffect(() => {
@@ -122,11 +149,11 @@ const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList
   }, [])
 
   useEffect(() => {
-    if (userId) {
+    if (userId && !isOffline) {
       return listenToCustomTemplates(userId)
     }
     return () => {}
-  }, [userId])
+  }, [userId, isOffline])
 
   const dontSaveAndClose = () => {
     setBlockClosing(false)
@@ -181,7 +208,7 @@ const App = ({ forceProjectDashboard, showTour, userId, isCloudFile, setFileList
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
-  const cloudFileWithoutLoggingIn = !userId && isCloudFile && checkedUser
+  const cloudFileWithoutLoggingIn = !userId && isCloudFile && checkedUser && !isOffline
 
   return (
     <ErrorBoundary>
@@ -217,6 +244,12 @@ App.propTypes = {
   forceProjectDashboard: PropTypes.bool,
   isCloudFile: PropTypes.bool,
   setFileList: PropTypes.func.isRequired,
+  setOffline: PropTypes.func.isRequired,
+  isOffline: PropTypes.bool,
+  fileId: PropTypes.string,
+  clientId: PropTypes.string,
+  setPermission: PropTypes.func.isRequired,
+  isResuming: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -224,6 +257,10 @@ function mapStateToProps(state) {
     showTour: selectors.showTourSelector(state.present),
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
+    isOffline: selectors.isOfflineSelector(state.present),
+    fileId: selectors.selectedFileIdSelector(state.present),
+    clientId: selectors.clientIdSelector(state.present),
+    isResuming: selectors.isResumingSelector(state.present),
   }
 }
 
@@ -232,4 +269,6 @@ export default connect(mapStateToProps, {
   setFileList: actions.project.setFileList,
   setEmailAddress: actions.client.setEmailAddress,
   setHasPro: actions.client.setHasPro,
+  setOffline: actions.project.setOffline,
+  setPermission: actions.permission.setPermission,
 })(App)

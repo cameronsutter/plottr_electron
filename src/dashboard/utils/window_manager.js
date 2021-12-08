@@ -4,13 +4,16 @@ import path from 'path'
 
 import { t } from 'plottr_locales'
 
-import { openFile } from '../../files'
 import { logger } from '../../logger'
 import { closeDashboard } from '../../dashboard-events'
-import { uploadToFirebase } from '../../files'
+import { uploadToFirebase } from '../../upload-to-firebase'
 
 const win = remote.getCurrentWindow()
 const { dialog } = remote
+
+export const openFile = (filePath, id, unknown) => {
+  ipcRenderer.send('open-known-file', filePath, id, unknown)
+}
 
 export function openExistingFile(loggedIn, userId, email) {
   // ask user where it is

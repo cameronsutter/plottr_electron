@@ -8,11 +8,13 @@ import { Beamer, BookChooser, ErrorBoundary } from 'connected-components'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
 import { FaRegUser } from 'react-icons/fa'
+import { FaSignal } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
 import { useLicenseInfo, useSettingsInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
+import Resume from '../components/Resume'
 
 const isDev = process.env.NODE_ENV == 'development'
 
@@ -27,6 +29,7 @@ const Navigation = ({
   selectedFile,
   isCloudFile,
   checkedUser,
+  isOffline,
 }) => {
   const initialView = showAccount ? 'account' : forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
@@ -62,7 +65,7 @@ const Navigation = ({
 
   useEffect(() => {
     if (!checked) return
-    if (!selectedFile && !dashboardView && isCloudFile && !showAccount) {
+    if (!selectedFile && !dashboardView && isCloudFile && !showAccount && !isOffline) {
       setDashboardView('files')
     }
   }, [selectedFile, dashboardView, isCloudFile, checked, showAccount])
@@ -114,10 +117,6 @@ const Navigation = ({
     setDashboardView('files')
   }
 
-  const selectTemplates = () => {
-    setDashboardView('templates')
-  }
-
   const selectHelp = () => {
     setDashboardView('help')
   }
@@ -149,10 +148,17 @@ const Navigation = ({
 
   return (
     <>
-      {showFrbLogin ? (
+      {showFrbLogin && !isOffline ? (
         <LoginModal closeLoginModal={closeLoginModal} setChecking={toggleChecking} />
       ) : null}
       {dashboardView ? dashbrdModal : null}
+      {isOffline ? (
+        <div className="offline-mode-banner">
+          Offline Mode!
+          <FaSignal />
+        </div>
+      ) : null}
+      <Resume />
       <Navbar className="project-nav" fluid inverse={isDarkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
@@ -200,6 +206,7 @@ Navigation.propTypes = {
   hasCurrentProLicense: PropTypes.bool,
   selectedFile: PropTypes.object,
   isCloudFile: PropTypes.bool,
+  isOffline: PropTypes.bool,
   checkedUser: PropTypes.func.isRequired,
 }
 
@@ -211,6 +218,7 @@ function mapStateToProps(state) {
     hasCurrentProLicense: selectors.hasProSelector(state.present),
     selectedFile: selectors.selectedFileSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
+    isOffline: selectors.isOfflineSelector(state.present),
   }
 }
 

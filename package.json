@@ -40,6 +40,7 @@
     "validate": "npm-run-all format:check lint test"
   },
   "dependencies": {
+    "axios": "^0.22.0",
     "docx": "^5.0.2",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
@@ -50,9 +51,14 @@
     "electron-updater": "^4.3.0",
     "electron-util": "^0.14.0",
     "electron-window-state": "^5.0.3",
+    "is-lite": "^0.8.0",
     "luxon": "^1.27.0",
+    "react-is": "^16.13.1",
     "react-joyride": "^2.3.0",
-    "rollbar": "^2.19.4"
+    "redux-thunk": "^2.3.0",
+    "rollbar": "^2.19.4",
+    "tiny-invariant": "^1.0.6",
+    "tree-changes": "^0.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -66,6 +72,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-module-resolver": "^4.0.0",
     "changelog": "^1.4.2",
+    "circular-dependency-plugin": "^5.2.2",
     "classnames": "^2.2.6",
     "cross-env": "^7.0.3",
     "css-loader": "^3.0.0",

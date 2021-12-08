@@ -1,5 +1,6 @@
 import { isEqual } from 'lodash'
 import { createStore, applyMiddleware, compose } from 'redux'
+import thunk from 'redux-thunk'
 import devToolsEnhancer from 'remote-redux-devtools'
 import { rootReducer, ActionTypes } from 'pltr/v2'
 import saver from '../middlewares/saver'
@@ -8,6 +9,7 @@ import logger from '../middlewares/logger'
 import reporter from '../middlewares/reporter'
 import actionRecorder from '../middlewares/actionRecorder'
 import firebaseSync from '../middlewares/firebaseSync'
+import offlineRecorder from '../middlewares/offlineRecorder'
 import undoable, { excludeAction } from 'redux-undo'
 import dataRepairers from './dataRepairers'
 
@@ -34,7 +36,7 @@ const sameActionCloseInTime = (action, currentState, _previousHistory) => {
   return null
 }
 
-function configureStore(initialState) {
+export function configureStore(initialState) {
   const reducer = undoable(rootReducer(dataRepairers), {
     limit: 40,
     ignoreInitialState: true,
@@ -42,9 +44,11 @@ function configureStore(initialState) {
     filter: excludeAction([ActionTypes.RESET_ACTION_RECORDER, ActionTypes.RECORD_LAST_ACTION]),
   })
   const middlewares = applyMiddleware(
+    thunk,
     actionRecorder,
     saver,
     firebaseSync,
+    offlineRecorder,
     tracker,
     logger,
     reporter
@@ -63,6 +67,3 @@ function configureStore(initialState) {
   const store = createStore(reducer, initialState, enhancers)
   return store
 }
-
-const store = configureStore()
-export { store }

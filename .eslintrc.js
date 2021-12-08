@@ -29,6 +29,7 @@ module.exports = {
     '**/*.json',
     '**/*.xml',
     'lib/plottr_components/dist/**',
+    'lib/plottr_check-prop-types/**',
   ],
   rules: {
     'no-unused-vars': [

@@ -1,21 +1,25 @@
 import { remote, ipcRenderer, shell } from 'electron'
-import { readFileSync } from 'fs'
+import fs, { readFileSync } from 'fs'
 import path from 'path'
-import axios from 'axios'
 
 import { t } from 'plottr_locales'
 import { fetchFiles } from 'wired-up-firebase'
 import { actions, reducers, emptyFile } from 'pltr/v2'
 
 import { closeDashboard } from './dashboard-events'
-import { store } from './app/store/configureStore'
+import { store } from './app/store'
 import { logger } from './logger'
+import { uploadToFirebase } from './upload-to-firebase'
+
+const fsPromises = fs.promises
 
 const { app, dialog } = remote
 const version = app.getVersion()
 const moveItemToTrash = shell.moveItemToTrash
 
 const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+
+const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
 
 export const newEmptyFile = (fileName, appVersion, currentFile) => {
   const emptyFileState = emptyFile(fileName, appVersion)
@@ -65,33 +69,10 @@ export const uploadExisting = (emailAddress, userId, fullState) => {
   )
 }
 
-export const uploadToFirebase = (emailAddress, userId, file, fileName) => {
-  const newFile = {
-    ...file.file,
-    none: false,
-    fileName,
-    shareRecords: [{ emailAddress, permission: 'owner' }],
-    version: version,
-  }
-  delete newFile.id
-  return axios.post(
-    `https://${process.env.API_BASE_DOMAIN}/api/new-file`,
-    {
-      fileRecord: newFile,
-      file,
-    },
-    { params: { userId } }
-  )
-}
-
 export const messageRenameFile = (fileId) => {
   const renameEvent = new Event('rename-file', { bubbles: true, cancelable: false })
   renameEvent.fileId = fileId
   document.dispatchEvent(renameEvent)
-}
-
-export const openFile = (filePath, id, unknown) => {
-  ipcRenderer.send('open-known-file', filePath, id, unknown)
 }
 
 export const saveFile = (filePath, file) => {
@@ -105,6 +86,23 @@ export const editKnownFilePath = (oldFilePath, newFilePath) => {
 const win = remote.getCurrentWindow()
 
 export const showSaveDialogSync = (options) => dialog.showSaveDialogSync(win, options)
+
+const escapeFileName = (fileName) => {
+  return escape(fileName.replace(/[/\\]/g, '-'))
+}
+
+export const offlineFilePathFromFileName = (filePath) => {
+  const fileName = escapeFileName(filePath)
+  return path.join(OFFLINE_FILE_FILES_PATH, fileName)
+}
+
+export const offlineFilePath = (file) => {
+  if (file.file.fileName.startsWith(OFFLINE_FILE_FILES_PATH)) {
+    return file.file.fileName
+  }
+
+  return offlineFilePathFromFileName(file.file.fileName)
+}
 
 export const renameFile = (filePath) => {
   if (filePath.startsWith('plottr://')) {
@@ -138,4 +136,21 @@ export const renameFile = (filePath) => {
       dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
     }
   }
+}
+
+export const renameCloudBackupFile = (fileName, newName) => {
+  return fsPromises
+    .rename(offlineFilePathFromFileName(fileName), offlineFilePathFromFileName(newName))
+    .catch((error) => {
+      // Ignore errors renaming the backup file.
+      return true
+    })
+}
+
+export const deleteCloudBackupFile = (fileName) => {
+  const filePath = offlineFilePathFromFileName(fileName)
+  return fsPromises.unlink(filePath).catch((error) => {
+    // Ignore errors deleting the backup file.
+    return true
+  })
 }

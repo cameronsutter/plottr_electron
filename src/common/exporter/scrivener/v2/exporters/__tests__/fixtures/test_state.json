@@ -2,6 +2,19 @@
   "ui": {
     "currentTimeline": 1
   },
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "A Link to the Past",
+      "premise": "same as last time..",
+      "genre": "Adventure",
+      "theme": "SNES",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": "3"
+    },
+    "allIds": [1]
+  },
   "characters": [
     {
       "age": "50s",

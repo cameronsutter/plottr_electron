@@ -51,7 +51,8 @@ function removeSystemKeys(jsonData) {
 
 function saveFile(inputFilePath, jsonData) {
   const isOffline = selectors.isOfflineSelector(jsonData)
-  const filePath = isOffline ? offlineFilePath(inputFilePath) : inputFilePath
+  const onCloud = selectors.isCloudFileSelector(jsonData)
+  const filePath = onCloud && isOffline ? offlineFilePath(inputFilePath) : inputFilePath
   const withoutSystemKeys = removeSystemKeys(jsonData)
   if (process.env.NODE_ENV == 'development') {
     saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))

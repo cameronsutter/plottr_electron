@@ -147,10 +147,10 @@ const Resume = ({
   const acknowledge = () => {
     if (checkingOfflineDrift) return
 
-    setOverwritingCloudWithBackup(false)
-    setOverwritingCloudWithBackup(false)
+    setCheckingForOfflineDrift(false)
     setOverwritingCloudWithBackup(false)
     setShowResumeMessageDialog(false)
+    setBackingUpOfflineFile(false)
   }
 
   if (!isResuming && !showResumeMessageDialog) return null

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
@@ -163,7 +163,7 @@ const Navigation = ({
           Offline Mode!
           <FaSignal />
         </div>
-      ): null}
+      ) : null}
       <Resume />
       <Navbar className="project-nav" fluid inverse={isDarkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">

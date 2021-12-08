@@ -95,7 +95,7 @@ module.exports = {
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  modulePathIgnorePatterns: ['__tests__/fixtures/*'],
+  modulePathIgnorePatterns: ['__tests__/fixtures/.*', 'lib/plottr_check-prop-types/.*'],
 
   // Activates notifications for test results
   // notify: false,

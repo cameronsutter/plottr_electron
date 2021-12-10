@@ -29,7 +29,7 @@ export function checkForPro(email, callback) {
         currentUser()
           ?.getIdTokenResult()
           .then((token) => {
-            if (token?.claims?.beta || token?.claims?.admin) {
+            if (token?.claims?.beta || token?.claims?.admin || token?.claims?.lifetime) {
               callback(true)
             } else {
               callback(false)

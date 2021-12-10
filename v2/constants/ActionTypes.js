@@ -206,9 +206,17 @@ export const LOAD_TOUR = 'LOAD_TOUR'
 export const PERMISSION_ERROR = 'PERMISSION_ERROR'
 export const GENERAL_ERROR = 'GENERAL_ERROR'
 export const CLEAR_ERROR = 'CLEAR_ERROR'
+// IMPORTANT: Please keep this up to date(!).  Impacts our ability to
+// track actual changes to the content of a file as apposed to system
+// data.
+export const ERROR_ACTIONS = [PERMISSION_ERROR, GENERAL_ERROR, CLEAR_ERROR]
 
 // permission actions
 export const SET_PERMISSION = 'SET_PERMISSION'
+// IMPORTANT: Please keep this up to date(!).  Impacts our ability to
+// track actual changes to the content of a file as apposed to system
+// data.
+export const PERMISSION_ACTIONS = [SET_PERMISSION]
 
 // project actions
 export const SET_FILE_LIST = 'SET_FILE_LIST'
@@ -219,15 +227,36 @@ export const UNSET_FILE_LOADED = 'UNSET_FILE_LOADED'
 export const SHOW_LOADER = 'SHOW_LOADER'
 export const SET_OFFLINE = 'SET_OFFLINE'
 export const SET_RESUMING = 'SET_RESUMING'
+// IMPORTANT: Please keep this up to date(!).  Impacts our ability to
+// track actual changes to the content of a file as apposed to system
+// data.
+export const PROJECT_ACTIONS = [
+  SET_FILE_LIST,
+  SELECT_FILE,
+  SELECT_EMPTY_FILE,
+  SET_FILE_LOADED,
+  UNSET_FILE_LOADED,
+  SHOW_LOADER,
+  SET_OFFLINE,
+  SET_RESUMING,
+]
 
 // client actions
 export const SET_USER_ID = 'SET_USER_ID'
 export const SET_CLIENT_ID = 'SET_CLIENT_ID'
 export const SET_EMAIL_ADDRESS = 'SET_EMAIL_ADDRESS'
 export const SET_HAS_PRO = 'SET_HAS_PRO'
+// IMPORTANT: Please keep this up to date(!).  Impacts our ability to
+// track actual changes to the content of a file as apposed to system
+// data.
+export const CLIENT_ACTIONS = [SET_USER_ID, SET_CLIENT_ID, SET_EMAIL_ADDRESS, SET_HAS_PRO]
 
 // action actions (for undo)
 export const RECORD_LAST_ACTION = 'RECORD_LAST_ACTION'
 export const RESET_ACTION_RECORDER = 'RESET_ACTION_RECORDER'
+// IMPORTANT: Please keep this up to date(!).  Impacts our ability to
+// track actual changes to the content of a file as apposed to system
+// data.
+export const ACTION_ACTIONS = [RECORD_LAST_ACTION, RESET_ACTION_RECORDER]
 
 // editor actions

@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import {
   FILE_LOADED,
   FILE_SAVED,
@@ -8,15 +10,26 @@ import {
   SET_FILE_NAME,
   RESTORE_FILE_NAME,
   SET_OFFLINE,
+  SET_RESUMING,
+  RECORD_LAST_ACTION,
 } from '../constants/ActionTypes'
 import { file as defaultFile } from '../store/initialState'
+import { SYSTEM_REDUCER_ACTION_TYPES } from './systemReducers'
 
 const file =
   (dataRepairers) =>
   (stateWithoutTimeStamp = defaultFile, action) => {
+    const shouldUpdateTimestamp =
+      !stateWithoutTimeStamp.versionStamp ||
+      !stateWithoutTimeStamp.timeStamp ||
+      (action.type !== SET_FILE_NAME &&
+        action.type !== RESTORE_FILE_NAME &&
+        SYSTEM_REDUCER_ACTION_TYPES.indexOf(action.type) === -1 &&
+        !stateWithoutTimeStamp.isResuming)
     const state = {
       ...stateWithoutTimeStamp,
-      timeStamp: new Date(),
+      timeStamp: shouldUpdateTimestamp ? new Date() : stateWithoutTimeStamp.timeStamp,
+      versionStamp: shouldUpdateTimestamp ? uuidv4() : stateWithoutTimeStamp.versionStamp,
     }
     switch (action.type) {
       case FILE_LOADED:
@@ -63,14 +76,30 @@ const file =
           fileName: state.originalFileName,
         }
 
+      // We duplicate the resuming state from project here because
+      // it's critical that we don't change timestamps while we resume
+      // and it's possible for other actions to fire in between
+      // setting offline and setting resume.
       case SET_OFFLINE:
         if (action.isOffline) {
           return {
-            ...state,
-            timeStamp: stateWithoutTimeStamp.timeStamp || state.timeStamp,
-            originalTimeStamp: stateWithoutTimeStamp.timeStamp || state.timeStamp,
+            ...stateWithoutTimeStamp,
+            resuming: false,
+            originalVersionStamp: stateWithoutTimeStamp.versionStamp,
+            originalTimeStamp: stateWithoutTimeStamp.timeStamp,
           }
-        } else return state
+        } else {
+          return {
+            ...state,
+            resuming: true,
+          }
+        }
+
+      case SET_RESUMING:
+        return {
+          ...stateWithoutTimeStamp,
+          resuming: action.resuming,
+        }
 
       default:
         return Object.assign({}, state, { dirty: true })

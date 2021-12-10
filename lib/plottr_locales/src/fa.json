@@ -1,1980 +1,1979 @@
 {
   "(If not, please email support@plottr.com)": {
-    "message": "(�� ��� ��� ���ʡ ����� �� support@plottr.com ����� �����)"
+    "message": "(در غير اين صورت، لطفاً به support@plottr.com ايميل بزنيد)"
   },
   "(Logout)": {
-    "message": "(����)"
+    "message": "(خروج)"
   },
   "A verification code was sent to:": {
-    "message": "� �� ����� ����� �� ��:"
+    "message": "يک کد تأييد ارسال شد به:"
   },
   "About Plottr": {
-    "message": "������ �����"
+    "message": "درباره پلاتر"
   },
   "Access to all the features": {
-    "message": "������ �� ��� �펐���"
+    "message": "دسترسي به همه ويژگيها"
   },
   "Account Information": {
-    "message": "Account Information"
+    "message": "اطلاعات حساب"
   },
   "Account": {
-    "message": "Account"
+    "message": "حساب"
   },
   "Actions": {
-    "message": "Actions"
+    "message": "اقدامات"
   },
   "Activate License": {
-    "message": "Activate License"
+    "message": "فعالسازي مجوز"
   },
   "Add Chapter": {
-    "message": "Add Chapter"
+    "message": "افزودن فصل"
   },
   "Add attribute": {
-    "message": "Add attribute"
+    "message": "افزودن ويژگي"
   },
   "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details": {
-    "message": "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details"
+    "message": "کارتهايي به تايم لاين اضافه کنيد تا بتوانيد نکاتي درباره صحنه هاي خود بنويسيد. براي افزودن جزئيات بيشتر، روي کارت کليک کنيد"
   },
   "Add category": {
-    "message": "Add category"
+    "message": "افزودن مقوله"
   },
   "Add more plotlines here": {
-    "message": "Add more plotlines here"
+    "message": "در اينجا خطوط داستان بيشتري اضافه کنيد"
   },
   "Add new scenes or chapters here": {
-    "message": "Add new scenes or chapters here"
+    "message": "در اينجا صحنه ها يا فصلهاي جديد اضافه کنيد"
   },
   "Add": {
-    "message": "Add"
+    "message": "افزودن"
   },
   "Advanced Export Options": {
-    "message": "Advanced Export Options"
+    "message": "گزينه هاي پيشرفته صدور"
   },
   "After": {
-    "message": "After"
+    "message": "بعد از"
   },
   "All": {
-    "message": "All"
+    "message": "همه"
   },
   "App Version: {version}": {
-    "message": "App Version: { version }"
+    "message": "نسخه برنامه: { نسخه }"
   },
   "Are you sure you want to clear everything in this timeline?": {
-    "message": "Are you sure you want to clear everything in this timeline?"
+    "message": "واقعاً مي خواهيد همه چيز را در اين تايم لاين پاک کنيد؟"
   },
   "Are you sure you want to delete { thing }?": {
-    "message": "Are you sure you want to delete { thing }?"
+    "message": "آيا واقعا مي خواهيد { thing } را حذف کنيد؟"
   },
   "Are you sure you want to delete {name}?": {
-    "message": "Are you sure you want to delete \"{ name }\"?"
+    "message": "آيا واقعاً مي خواهيد \"{ name }\" را حذف کنيد؟"
   },
   "Are you sure you want to remove your license?": {
-    "message": "Are you sure you want to remove your license?"
+    "message": "واقعاً مي خواهيد مجوز خود را حذف کنيد؟"
   },
   "Are you sure?  (Removing levels may delete scene cards!)": {
-    "message": "Are you sure?  (Removing levels may delete scene cards!)"
+    "message": "مطمئن هستيد؟  (حذف مراحل ممکن است کارتهاي صحنه را حذف کند!)"
   },
   "Attach Books": {
-    "message": "Attach Books"
+    "message": "الحاق کتابها"
   },
   "Attach Characters": {
-    "message": "Attach Characters"
+    "message": "الحاق شخصيت ها"
   },
   "Attach Places": {
-    "message": "Attach Places"
+    "message": "الحاق مکانها"
   },
   "Attach Tags": {
-    "message": "Attach Tags"
+    "message": "الحاق برچسب ها"
   },
   "Attributes": {
-    "message": "Attributes"
+    "message": "ويژگيها"
   },
   "Auto-save": {
-    "message": "Auto-save"
+    "message": "ذخيره خودکار"
   },
   "Auto-saving failed": {
-    "message": "Auto-saving failed"
+    "message": "ذخيره خودکار انجام نشد"
   },
   "Auto-saving worked": {
-    "message": "Auto-saving worked"
+    "message": "ذخيره خودکار انجام شد"
   },
   "Automatically save daily backups": {
-    "message": "Automatically save daily backups"
+    "message": "پشتيبان هاي روزانه به طور خودکار ذخيره شود"
   },
   "Awesome choice!": {
-    "message": "Awesome choice!"
+    "message": "چه انتخاب خوبي!"
   },
   "Back": {
-    "message": "Back"
+    "message": "بازگشت"
   },
   "Backup Location": {
-    "message": "Backup Location"
+    "message": "محل پشتيبان"
   },
   "Backups older than this will be erased": {
-    "message": "Backups older than this will be erased"
+    "message": "پشتيبان هاي قديمي تر از اين حذف خواهند شد"
   },
   "Backups": {
-    "message": "Backups"
+    "message": "پشتيبان ها"
   },
   "Beat 1": {
-    "message": "Beat 1"
+    "message": "خط سير 1"
   },
   "Beat {number} title": {
-    "message": "Beat { number } title"
+    "message": "عنوان {number} خط سير"
   },
   "Beat {number}": {
-    "message": "Beat { number }"
+    "message": "خط سير { شماره }"
   },
   "Beat": {
-    "message": "Beat"
+    "message": "خط سير"
   },
   "Before": {
-    "message": "Before"
+    "message": "قبل"
   },
   "Beginning": {
-    "message": "Beginning"
+    "message": "شروع"
   },
   "Blues": {
-    "message": "Blues"
+    "message": "آبي ها"
   },
   "Book #": {
-    "message": "Book #"
+    "message": "کتاب #"
   },
   "Book Details": {
-    "message": "Book Details"
+    "message": "جزئيات کتاب"
   },
   "Book": {
-    "message": "Book"
+    "message": "کتاب"
   },
   "Books": {
-    "message": "Books"
+    "message": "کتابها"
   },
   "Browns": {
-    "message": "Browns"
+    "message": "قهوه‌اي ها"
   },
   "Buy Full Version": {
-    "message": "Buy Full Version"
+    "message": "خريد نسخه کامل"
   },
   "By default, use auto-save for projects": {
-    "message": "By default, use auto-save for projects"
+    "message": "به طور پيشفرض از ذخيره خودکار براي پروژه ها استفاده شود"
   },
   "By starting a mobile subscription, you agree to Plottr's": {
-    "message": "By starting a mobile subscription, you agree to Plottr's"
+    "message": "با شروع اشتراک موبايل، با شرايط پلاتر موافقت مي کنيد"
   },
   "CHECK EMAIL": {
-    "message": "CHECK EMAIL"
+    "message": "بررسي ايميل"
   },
   "CHECKING...": {
-    "message": "CHECKING..."
+    "message": "در حال بررسي..."
   },
   "CODE": {
     "message": "CODE"
   },
   "CREATE NEW PROJECT": {
-    "message": "CREATE NEW PROJECT"
+    "message": "ايجاد پروژه جديد"
   },
   "CREATE PROJECT": {
-    "message": "CREATE PROJECT"
+    "message": "ايجاد پروژه"
   },
   "Can I have a few more days?": {
-    "message": "Can I have a few more days?"
+    "message": "مي توانم چند روز ديگر داشته باشم؟"
   },
   "Cancel": {
-    "message": "Cancel"
+    "message": "لغو"
   },
   "Card": {
-    "message": "Card"
+    "message": "کارت"
   },
   "Categories": {
-    "message": "Categories"
+    "message": "دسته‌بندي‌ها"
   },
   "Category": {
-    "message": "Category"
+    "message": "دسته‌بندي"
   },
   "Changelog": {
-    "message": "Changelog"
+    "message": "گزارش تغييرات"
   },
   "Chapter {number} title": {
-    "message": "Chapter { number } title"
+    "message": "عنوان {number} فصل"
   },
   "Chapter {number}": {
-    "message": "Chapter {number}"
+    "message": "فصل {شماره}"
   },
   "Chapter": {
-    "message": "Chapter"
+    "message": "فصل"
   },
   "Chapters": {
-    "message": "Chapters"
+    "message": "فصلها"
   },
   "Character Categories": {
-    "message": "Character Categories"
+    "message": "دسته‌بندي‌هاي شخصيت‌ها"
   },
   "Character Thumbnail": {
-    "message": "Character Thumbnail"
+    "message": "تصوير کوچک شخصيت"
   },
   "Character list is filtered": {
-    "message": "Character list is filtered"
+    "message": "فهرست شخصيت‌ها فيلتر شده"
   },
   "Character": {
-    "message": "Character"
+    "message": "شخصيت"
   },
   "Character: {name}": {
-    "message": "Character: { name }"
+    "message": "شخصيت: { نام }"
   },
   "Characters list": {
-    "message": "Characters list"
+    "message": "فهرست شخصيت‌ها"
   },
   "Characters": {
-    "message": "Characters"
+    "message": "شخصيت‌ها"
   },
   "Check for Updates": {
-    "message": "Check for Updates"
+    "message": "بررسي به‌روزرساني‌ها"
   },
   "Check": {
-    "message": "Check"
+    "message": "بررسي"
   },
   "Choose Color": {
-    "message": "Choose Color"
+    "message": "انتخاب رنگ"
   },
   "Choose an image": {
-    "message": "Choose an image"
+    "message": "انتخاب تصوير"
   },
   "Choose an {platform} mobile subscription": {
-    "message": "Choose an {platform} mobile subscription"
+    "message": "انتخاب يک {پلتفرم} اشتراک موبايل"
   },
   "Choose what categories you want to put your characters into": {
-    "message": "Choose what categories you want to put your characters into"
+    "message": "انتخاب کنيد شخصيت خود را در چه دسته‌بندي‌هايي مي‌خواهيد قرار دهيد"
   },
   "Choose what you want to track about your { type }": {
-    "message": "Choose what you want to track about your { type }"
+    "message": "انتخاب کنيد چه چيز را مي خواهيد درباره { نوع } خود ردگيري کنيد"
   },
   "Choose where to save this file on your computer": {
-    "message": "Choose where to save this file on your computer"
+    "message": "انتخاب کنيد اين فايل در کجاي کامپيوترتان ذخيره شود"
   },
   "Choose your Snowflake Pro file": {
-    "message": "Choose your Snowflake Pro file"
+    "message": "فايل اسنوفليک پرو خود را انتخاب کنيد"
   },
   "Choose": {
-    "message": "Choose"
+    "message": "انتخاب"
   },
   "Choose...": {
-    "message": "Choose..."
+    "message": "انتخاب..."
   },
   "Clear": {
-    "message": "Clear"
+    "message": "پاک کردن"
   },
   "Click on a color below or type it in": {
-    "message": "Click on a color below or type it in"
+    "message": "روي رنگ زير کليک کنيد يا آن را تايپ کنيد"
   },
   "Click to Install": {
-    "message": "Click to Install"
+    "message": "براي نصب کليک کنيد"
   },
   "Close": {
-    "message": "Close"
+    "message": "بستن"
   },
   "Collapse": {
-    "message": "Collapse"
+    "message": "باز کردن"
   },
   "Color Picker": {
-    "message": "Color Picker"
+    "message": "انتخاب رنگ"
   },
   "Color": {
-    "message": "Color"
+    "message": "رنگ"
   },
   "Coming Soon!": {
-    "message": "Coming Soon!"
+    "message": "به زودي!"
   },
   "Configuration Options": {
-    "message": "Configuration Options"
+    "message": "گزينه‌هاي پيکربندي"
   },
   "Configure": {
-    "message": "Configure"
+    "message": "پيکربندي"
   },
   "Content": {
-    "message": "Content"
+    "message": "مطالب"
   },
   "Copy": {
-    "message": "Copy"
+    "message": "کپي"
   },
   "Create Blank Project": {
-    "message": "Create Blank Project"
+    "message": "ايجاد پروژه خالي"
   },
   "Create From Template": {
-    "message": "Create From Template"
+    "message": "ايجاد از الگوها"
   },
   "Create Report": {
-    "message": "Create Report"
+    "message": "ايجاد گزارش"
   },
   "Create a New Plottr Document": {
-    "message": "Create a New Plottr Document"
+    "message": "ايجاد يک سند جديد پلاتر"
   },
   "Create an Error Report": {
-    "message": "Create an Error Report"
+    "message": "ايجاد يک گزارش خطا"
   },
   "Create unlimited project files": {
-    "message": "Create unlimited project files"
+    "message": "ايجاد فايلهاي نامحدود پروژه"
   },
   "Create": {
-    "message": "Create"
+    "message": "ايجاد"
   },
   "Created By": {
-    "message": "Created By"
+    "message": "ايجاد شده توسط"
   },
   "Current Color": {
-    "message": "Current Color"
+    "message": "رنگ کنوني"
   },
   "Custom Attributes for { type }": {
-    "message": "Custom Attributes for { type }"
+    "message": "ويژگي‌هاي سفارشي براي { type }"
   },
   "Custom Attributes": {
-    "message": "Custom Attributes"
+    "message": "ويژگيهاي سفارشي"
   },
   "Custom Template": {
-    "message": "Custom Template"
+    "message": "الگوي سفارشي"
   },
   "Custom Templates": {
-    "message": "Custom Templates"
+    "message": "الگوهاي سفارشي"
   },
   "Cut": {
-    "message": "Cut"
+    "message": "برش"
   },
   "Delete": {
-    "message": "Delete"
+    "message": "حذف"
   },
   "Dark Mode": {
-    "message": "Dark Mode"
+    "message": "حالت تيره"
   },
   "Dashboard": {
-    "message": "Dashboard"
+    "message": "داشبورد"
   },
   "Days Left": {
-    "message": "Days Left"
+    "message": "روز باقيمانده"
   },
   "Days of Backup": {
-    "message": "Days of Backup"
+    "message": "روز پشتيبان"
   },
   "Number of Backups": {
-    "message": "Number of Backups"
+    "message": "تعداد پشتيبان ها"
   },
   "Never Delete Backups": {
-    "message": "Never Delete Backups"
+    "message": "هرگز پشتيبان ها حذف نشود"
   },
   "Default Colors": {
-    "message": "Default Colors"
+    "message": "رنگهاي پيشفرض"
   },
   "Delete Chapter {name}?": {
-    "message": "Delete Chapter \"{name}\"?"
+    "message": "حذف فصل \"{name}\"?"
   },
   "Delete Chapter": {
-    "message": "Delete Chapter"
+    "message": "حذف فصل"
   },
   "Delete Character": {
-    "message": "Delete Character"
+    "message": "حذف شخصيت ها"
   },
   "Delete Plotline {name}?": {
-    "message": "Delete Plotline \"{name}\"?"
+    "message": "حذف خط طرح \"{name}\"؟"
   },
   "Delete Plotline": {
-    "message": "Delete Plotline"
+    "message": "حذف خط طرح"
   },
   "Delete Scene {name}?": {
-    "message": "Delete Scene \"{name}\"?"
+    "message": "حذف صحنه \"{name}\"؟"
   },
   "Delete Scene": {
-    "message": "Delete Scene"
+    "message": "حذف صحنه"
   },
   "Delete Tag": {
-    "message": "Delete Tag"
+    "message": "حذف برچسب"
   },
   "Delete {title} Tag?": {
-    "message": "Delete \"{title}\" Tag?"
+    "message": "حذف برچسب \"{title}\"؟"
   },
   "Demos": {
-    "message": "Demos"
+    "message": "پيش‌نمايش‌ها"
   },
   "Describe the scene": {
-    "message": "Describe the scene"
+    "message": "شرح صحنه"
   },
   "Description": {
-    "message": "Description"
+    "message": "شرح"
   },
   "Details": {
-    "message": "Details"
+    "message": "جزئيات"
   },
   "Device ID": {
-    "message": "Device ID"
+    "message": "شناسه دستگاه"
   },
   "Do you want to remove this image? It will NOT be deleted from your computer": {
-    "message": "Do you want to remove this image? It will NOT be deleted from your computer"
+    "message": "مي‌خواهيد اين تصوير را حذف کنيد؟ از روي کامپيوترتان حذف نخواهد شد"
   },
   "Documentation": {
-    "message": "Documentation"
+    "message": "سند"
   },
   "Don't have a license? Go to our website to learn more": {
-    "message": "Don''t have a license? Go to our website to learn more"
+    "message": "مجوز نداريد؟ به وبسايت ما برويد و اطلاعات بيشتر کسب کنيد"
   },
   "Don't have a license?": {
-    "message": "Don't have a license?"
+    "message": "مجوز نداريد؟"
   },
   "Don't worry, all your work is saved in plottr_trial.pltr in your Documents folder": {
-    "message": "Don''t worry, all your work is saved in plottr_trial.pltr in your Documents folder"
+    "message": "نگران نباشيد، همه کارهايتان در پوشه اسنادتان در plottr_trial.pltr ذخيره شده است"
   },
   "Don't worry, all your work is saved in your files": {
-    "message": "Don''t worry, all your work is saved in your files"
+    "message": "نگران نباشيد، همه کارتان در فايلهاي شما ذخيره شده است"
   },
   "Done": {
-    "message": "Done"
+    "message": "انجام شد"
   },
-  "Download Complete 🎉 (version {version})": {
-    "message": "Download Complete 🎉 (version { version })"
+  "Download Complete ًںژ‰ (version {version})": {
+    "message": "دانلود کامل شد ًںژ‰ (نسخه { version })"
   },
   "Download Now!": {
-    "message": "Download Now!"
+    "message": "اکنون دانلود کنيد!"
   },
   "Download updates automatically": {
-    "message": "Download updates automatically"
+    "message": "دانلود به طور خودکار به روز مي شود"
   },
   "Downloading version {version}": {
-    "message": "Downloading version { version }"
+    "message": "در حال دانلود نسخه { version }"
   },
   "Drop a File Here": {
-    "message": "Drop a File Here"
+    "message": "يک فايل در اينجا بيندازيد"
   },
   "Edit Plotline": {
-    "message": "Edit Plotline"
+    "message": "ويرايش خط طرح"
   },
   "Edit": {
-    "message": "Edit"
+    "message": "ويرايش"
   },
   "Email": {
-    "message": "Email"
+    "message": "ايميل"
   },
   "Email:": {
-    "message": "Email:"
+    "message": "ايميل:"
   },
   "End": {
-    "message": "End"
+    "message": "پايان"
   },
   "Ends After": {
-    "message": "Ends After"
+    "message": "پايان پس از"
   },
   "Enter Chapter's name or enter": {
-    "message": "Enter Chapter's name or enter \"auto\" \n(without quotes) for auto naming."
+    "message": "نام فصل را وارد کنيد يا براي نامگذاري خودکار \"auto\" \n(بدون گيومه) را وارد کنيد."
   },
   "Enter Custom Attribute Title": {
-    "message": "Enter Custom Attribute Title"
+    "message": "عنوان ويژگي سفارشي را وارد کنيد"
   },
   "Enter a Customer Service Code": {
-    "message": "Enter a Customer Service Code"
+    "message": "يک کد خدمات مشتريان وارد کنيد"
   },
   "Enter a new name for {chapter}": {
-    "message": "Enter a new name for \"{chapter}\""
+    "message": "يک نام جديد وارد کنيد براي \"{chapter}\""
   },
   "Enter some text...": {
-    "message": "Enter some text..."
+    "message": "مقداري متن وارد کنيد..."
   },
   "Enter the URL of the link:": {
-    "message": "Enter the URL of the link:"
+    "message": "نشاني پيوند را وارد کنيد:"
   },
   "Enter the name of your project": {
-    "message": "Enter the name of your project"
+    "message": "نام پروژه خود را وارد کنيد"
   },
   "Enter your verification code to activate this device": {
-    "message": "Enter your verification code to activate this device"
+    "message": "کد تأييدتان را براي فعالسازي اين دستگاه وارد کنيد"
   },
   "Enter your verification code": {
-    "message": "Enter your verification code"
+    "message": "کد تأييدتان را وارد کنيد"
   },
   "Error Creating Error Report": {
-    "message": "Error Creating Error Report"
+    "message": "خطا حين ايجاد گزارش خطا"
   },
   "Error Report created": {
-    "message": "Error Report created"
+    "message": "گزارش خطا ايجاد شد"
   },
   "Error reading file": {
-    "message": "Error reading file"
+    "message": "خطا در خواندن فايل"
   },
   "Error sending email! Check your email and Try again.": {
-    "message": "Error sending email! Check your email and Try again."
+    "message": "خطا در ارسال ايميل! ايميل خود را بررسي و دوباره تلاش کنيد."
   },
   "Error: {error}": {
-    "message": "Error: { error }"
+    "message": "خطا: { error }"
   },
   "Exit Without Saving": {
-    "message": "Exit Without Saving"
+    "message": "خروج بدون ذخيره"
   },
   "Expand": {
-    "message": "Expand"
+    "message": "گسترش"
   },
   "Expires": {
-    "message": "Expires"
+    "message": "منقضي مي شود"
   },
   "Export": {
-    "message": "Export"
+    "message": "صدور"
   },
   "FAQ": {
-    "message": "FAQ"
+    "message": "سؤالات متداول"
   },
   "Facebook Group": {
-    "message": "Facebook Group"
+    "message": "گروه فيسبوکي"
   },
   "Fictional Devices LLC": {
     "message": "Fictional Devices LLC"
   },
   "File Exported": {
-    "message": "File Exported"
+    "message": "فايل صادر شد"
   },
   "File can't be found. Did it move?": {
-    "message": "File can''t be found. Did it move?"
+    "message": "فايل يافت نمي شود. جابجا شده؟"
   },
   "File": {
-    "message": "File"
+    "message": "فايل"
   },
   "Files": {
-    "message": "Files"
+    "message": "فايلها"
   },
   "Filter by Plotline": {
-    "message": "Filter by Plotline"
+    "message": "فيلتر طبق خط طرح"
   },
   "Filter": {
-    "message": "Filter"
+    "message": "فيلتر"
   },
   "Flip": {
-    "message": "Flip"
+    "message": "برگرداندن"
   },
   "Folder where backups are stored": {
-    "message": "Folder where backups are stored"
+    "message": "پوشه محل ذخيره نسخه هاي پشتيبان"
   },
   "Force Dark Mode": {
-    "message": "Force Dark Mode"
+    "message": "حالت تيره اجباري"
   },
   "Free Trial Information": {
-    "message": "Free Trial Information"
+    "message": "اطلاعات آزمايش رايگان"
   },
   "Free Trial": {
-    "message": "Free Trial"
+    "message": "آزمايش رايگان"
   },
   "GET A LICENSE": {
-    "message": "GET A LICENSE"
+    "message": "يک مجوز بگيريد"
   },
   "GET STARTED!": {
-    "message": "GET STARTED!"
+    "message": "شروع کنيد!"
   },
   "Genre": {
-    "message": "Genre"
+    "message": "ژانر"
   },
   "Get access to all your projects": {
-    "message": "Get access to all your projects"
+    "message": "به همه پروژه‌هاي خود دسترسي بيابيد"
   },
   "Give Feedback": {
-    "message": "Give Feedback"
+    "message": "بازخورد بدهيد"
   },
   "Give this tag a name": {
-    "message": "Give this tag a name"
+    "message": "براي اين برچسب اسم بگذاريد"
   },
   "Give your scene a title": {
-    "message": "Give your scene a title"
+    "message": "براي صحنه خود اسم بگذاريد"
   },
   "Go Back": {
-    "message": "Go Back"
+    "message": "بازگشت"
   },
   "Go to our website to learn more:": {
-    "message": "Go to our website to learn more:"
+    "message": "براي کسب اطلاعات بيشتر به وبسايت ما مراجعه کنيد:"
   },
   "Grays": {
-    "message": "Grays"
+    "message": "خاکستري‌ها"
   },
   "Greens": {
-    "message": "Greens"
+    "message": "سبزها"
   },
   "Help": {
-    "message": "Help"
+    "message": "راهنما"
   },
   "Hide Others": {
-    "message": "Hide Others"
+    "message": "مخفي کردن ديگران"
   },
   "Hide Plottr": {
-    "message": "Hide Plottr"
+    "message": "مخفي کردن پلاتر"
   },
   "Hierarchy Configuration": {
-    "message": "Hierarchy Configuration"
+    "message": "پيکربندي سلسله مراتب"
   },
   "Hmmmm. It looks like that's not a valid license key": {
-    "message": "Hmmmm. It looks like that''s not a valid license key"
+    "message": "هوم، انگار اين کليد مجوز معتبر نيست"
   },
   "I have a license key": {
-    "message": "I have a license key"
+    "message": "من يک کليد مجوز دارم"
   },
   "I want to buy the full version!": {
-    "message": "I want to buy the full version!"
+    "message": "مي خواهم نسخه کامل را بخرم!"
   },
   "I want to start the free trial": {
-    "message": "I want to start the free trial"
+    "message": "مي خواهم آزمايش رايگان را شروع کنم"
   },
   "If you keep seeing this problem, email us at support@plottr.com": {
-    "message": "If you keep seeing this problem, email us at support@plottr.com"
+    "message": "اگر باز هم با اين مشکل مواجه شديد، با نشاني زير به ما ايميل بزنيد support@plottr.com"
   },
   "Image Details": {
-    "message": "Image Details"
+    "message": "جزئيات تصوير"
   },
   "Image Gallery": {
-    "message": "Image Gallery"
+    "message": "گالري تصاوير"
   },
   "Images": {
-    "message": "Images"
+    "message": "تصاوير"
   },
   "Import Snowflake Pro": {
-    "message": "Import Snowflake Pro"
+    "message": "وارد کردن اسنوفليک پرو"
   },
   "Insert Chapter and a Card": {
-    "message": "Insert Chapter and a Card"
+    "message": "درج فصل و يک کارت"
   },
   "Insert Chapter": {
-    "message": "Insert Chapter"
+    "message": "درج فصل"
   },
   "Insert from URL": {
-    "message": "Insert from URL"
+    "message": "درج از نشاني اينترنتي"
   },
   "It looks like you have Plottr on the max number of computers already": {
-    "message": "It looks like you have Plottr on the max number of computers already"
+    "message": "به نظر مي‌رسد در حال حاضر پلاتر را روي حداکثر تعداد کامپيوترها نصب کرده‌ايد"
   },
   "It looks like you have Plottr on the max number of devices already": {
-    "message": "It looks like you have Plottr on the max number of devices already"
+    "message": "به نظر مي‌رسد در حال حاضر پلاتر را روي حداکثر تعداد دستگاه‌ها داريد"
   },
   "It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline": {
-    "message": "It looks like you''re not online. You don''t always have to be online to user Plottr, but it can''t verify your license offline"
+    "message": "ظاهراً آنلاين نيستيد. لازم نيست براي استفاده از پلاتر هميشه آنلاين باشيد، اما نمي تواند مجوز شما را به صورت آفلاين تأييد کند"
   },
   "Keep all your notes here (brainstorming, world-building, etc.)": {
-    "message": "Keep all your notes here (brainstorming, world-building, etc.)"
+    "message": "همه يادداشت‌هاي خود را اينجا نگه داريد( طوفان مغزي، دنياسازي، و غيره)"
   },
   "Keep info about your locations here": {
-    "message": "Keep info about your locations here"
+    "message": "اطلاعات مربوط به مکان‌هاي خود را در اينجا نگه داريد"
   },
   "Keep your character sheets here": {
-    "message": "Keep your character sheets here"
+    "message": "صفحه‌هاي شخصيت‌هاي خود را در اينجا نگه داريد"
   },
   "LOGOUT": {
-    "message": "LOGOUT"
+    "message": "خروج از سيستم"
   },
   "LOOK OUT!": {
-    "message": "LOOK OUT!"
+    "message": "مراقب باشيد!"
   },
   "Language": {
-    "message": "Language"
+    "message": "زبان"
   },
   "Last opened by you": {
-    "message": "Last opened by you"
+    "message": "آخرين باري که توسط شما باز شده"
   },
   "Learn": {
-    "message": "Learn"
+    "message": "يادگيري"
   },
   "Let's verify your license.": {
-    "message": "Let's verify your license."
+    "message": "بياييد مجوزتان را تأييد کنيم."
   },
   "Levels of hierarchy": {
-    "message": "Levels of hierarchy"
+    "message": "سطوح سلسله مراتب"
   },
   "License Key": {
-    "message": "License Key"
+    "message": "کليد مجوز"
   },
   "License Verified. Plottr will start momentarily. Thanks for being patient!": {
-    "message": "License Verified. Plottr will start momentarily. Thanks for being patient!"
+    "message": "مجوز تأييد شد. پلاتر براي چند لحظه راه‌اندازي مي‌شود. از صبوري شما سپاسگزاريم!"
   },
   "License": {
-    "message": "License"
+    "message": "مجوز"
   },
   "Links": {
-    "message": "Links"
+    "message": "پيوندها"
   },
   "Long Synopsis": {
-    "message": "Long Synopsis"
+    "message": "چکيده بلند"
   },
   "MS Word": {
     "message": "MS Word"
   },
   "Main Plot": {
-    "message": "Main Plot"
+    "message": "طرح اصلي"
   },
   "Main": {
-    "message": "Main"
+    "message": "اصلي"
   },
   "Manually Sorted": {
-    "message": "Manually Sorted"
+    "message": "به صورت دستي ذخيره شده"
   },
   "Manuscript": {
-    "message": "Manuscript"
+    "message": "دستنويس"
   },
   "Menu": {
-    "message": "Menu"
+    "message": "منو"
   },
   "Middle": {
-    "message": "Middle"
+    "message": "ميانه"
   },
   "My Character Template": {
-    "message": "My Character Template"
+    "message": "الگوي شخصيت‌هاي من"
   },
   "My Scene Template": {
-    "message": "My Scene Template"
+    "message": "الگوي صحنه‌هاي من"
   },
   "My Templates": {
-    "message": "My Templates"
+    "message": "الگوهاي من"
   },
   "My Timeline Template": {
-    "message": "My Timeline Template"
+    "message": "الگوي تايم لاين من"
   },
   "Name": {
-    "message": "Name"
+    "message": "نام"
   },
   "Never": {
-    "message": "Never"
+    "message": "هرگز"
   },
   "New Attribute": {
-    "message": "New Attribute"
+    "message": "ويژگي جديد"
   },
   "New Book": {
-    "message": "New Book"
+    "message": "کتاب جديد"
   },
   "New Character": {
-    "message": "New Character"
+    "message": "شخصيت جديد"
   },
   "New Custom Attribute Title": {
-    "message": "New Custom Attribute Title"
+    "message": "عنوان ويژگي سفارشي جديد"
   },
   "New Note": {
-    "message": "New Note"
+    "message": "يادداشت جديد"
   },
   "New Place": {
-    "message": "New Place"
+    "message": "مکان جديد"
   },
   "New Plotline": {
-    "message": "New Plotline"
+    "message": "خط طرح جديد"
   },
   "New Project": {
-    "message": "New Project"
+    "message": "پروژه جديد"
   },
   "New Tag": {
-    "message": "New Tag"
+    "message": "برچسب جديد"
   },
   "New": {
-    "message": "New"
+    "message": "جديد"
   },
   "No Characters": {
-    "message": "No Characters"
+    "message": "بدون شخصيت"
   },
   "No actions to undo": {
-    "message": "No actions to undo"
+    "message": "عملي براي لغو وجود ندارد"
   },
   "No color": {
-    "message": "No color"
+    "message": "بدون رنگ"
   },
   "No": {
-    "message": "No"
+    "message": "خير"
   },
   "No, Discard": {
-    "message": "No, Discard"
+    "message": "خير، دور انداخته شود"
   },
   "None to choose": {
-    "message": "None to choose"
+    "message": "براي انتخاب وجود ندارد"
   },
   "Not Receiving Updates": {
-    "message": "Not Receiving Updates"
+    "message": "به‌روزرساني‌ها دريافت نمي‌شود"
   },
   "Note Details": {
-    "message": "Note Details"
+    "message": "جزئيات يادداشت"
   },
   "Note Image": {
-    "message": "Note Image"
+    "message": "تصوير يادداشت"
   },
   "Note": {
-    "message": "Note"
+    "message": "يادداشت"
   },
   "Note: {title}": {
-    "message": "Note: { title }"
+    "message": "يادداشت: { عنوان }"
   },
   "Notes are filtered": {
-    "message": "Notes are filtered"
+    "message": "يادداشت‌ها فيلتر شده‌اند"
   },
   "Notes": {
-    "message": "Notes"
+    "message": "يادداشت‌ها"
   },
   "Now lets get you writing your next great plot!": {
-    "message": "Now lets get you writing\n your next great plot!"
+    "message": "حالا بياييد برويم سراغ نوشتن\n طرح عالي بعدي‌تان!"
   },
   "Number of Days of Rolling Backups to Keep": {
-    "message": "Number of Days of Rolling Backups to Keep"
+    "message": "تعداد روزهای نگهداشتن نسخه‌های پشتیبان"
   },
   "OK": {
-    "message": "OK"
+    "message": "تأييد"
   },
   "OVERWRITE": {
-    "message": "OVERWRITE"
+    "message": "رونویسی"
   },
   "Once You Plot, the Fun Don't Stop": {
-    "message": "Once You Plot, the Fun Don''t Stop"
+    "message": "وقتي طرح‌نويسي کنيد، لذتش تمام‌نشدني است"
   },
   "One Paragraph Summary": {
-    "message": "One Paragraph Summary"
+    "message": "خلاصه يک‌پاراگرافي"
   },
   "One Sentence Summary": {
-    "message": "One Sentence Summary"
+    "message": "خلاصه يک‌جمله‌اي"
   },
   "Open Dashboard": {
-    "message": "Open Dashboard"
+    "message": "باز کردن داشبورد"
   },
   "Open Existing": {
-    "message": "Open Existing"
+    "message": "باز کردن موجود"
   },
   "Open a Plottr Document": {
-    "message": "Open a Plottr Document"
+    "message": "باز کردن يک سند پلاتر"
   },
   "Open one of your most recent projects": {
-    "message": "Open one of your most recent projects"
+    "message": "باز کردن يکي از جديدترين پروژه‌هايتان"
   },
   "Open": {
-    "message": "Open"
+    "message": "باز کردن"
   },
   "Or hover here to insert between scenes": {
-    "message": "Or hover here to insert between scenes"
+    "message": "یا اینجا مکث کنید تا بین صحنه‌ها وارد شود"
   },
   "Oranges": {
-    "message": "Oranges"
+    "message": "نارنجی‌ها"
   },
   "Other": {
-    "message": "Other"
+    "message": "سایر"
   },
   "Outline is filtered": {
-    "message": "Outline is filtered"
+    "message": "طرح فیلتر شده است"
   },
   "Outline": {
-    "message": "Outline"
+    "message": "طرح"
   },
   "Override your computer's setting and always use dark mode": {
-    "message": "Override your computer''s setting and always use dark mode"
+    "message": "لغو تنظیمات کامپیوتر شما و استفاده دائمی از حالت تاریک"
   },
   "Paragraph": {
-    "message": "Paragraph"
+    "message": "بند"
   },
   "Paragraph?": {
-    "message": "Paragraph?"
+    "message": "بند؟"
   },
   "Paste and Match Style": {
-    "message": "Paste and Match Style"
+    "message": "چسباندن و تطبیق سبک"
   },
   "Paste": {
-    "message": "Paste"
+    "message": "چسباندن"
   },
   "Pick a color": {
-    "message": "Pick a color"
+    "message": "انتخاب یک رنگ"
   },
   "Place Details": {
-    "message": "Place Details"
+    "message": "قرار دادن جزئیات"
   },
   "Place Image": {
-    "message": "Place Image"
+    "message": "قرار دادن تصویر"
   },
   "Place list is filtered": {
-    "message": "Place list is filtered"
+    "message": "لیست مکان‌ها فیلتر شده"
   },
   "Place": {
-    "message": "Place"
+    "message": "مکان"
   },
   "Place: {name}": {
-    "message": "Place: { name }"
+    "message": "مکان: { name }"
   },
   "Places list": {
-    "message": "Places list"
+    "message": "فهرست مکان‌ها"
   },
   "Places": {
-    "message": "Places"
+    "message": "مکان‌ها"
   },
   "Please choose a plotline": {
-    "message": "Please choose a plotline"
+    "message": "لطفً یک خط طری انتخاب کنید"
   },
   "Please contact me with any questions at support@plottr.com": {
-    "message": "Please contact me with any questions at support@plottr.com"
+    "message": "لطفاً هر سوالی دارید با نشانی زیر با من تماس بگیرید support@plottr.com"
   },
   "Please select a valid Plottr file": {
-    "message": "Please select a valid Plottr file."
+    "message": "لطفاً یک فایل معتبر پلاتر انتخاب کنید."
   },
   "Please verify your license": {
-    "message": "Please verify your license"
+    "message": "لطفاً مجوز خود را تأیید کنید"
   },
   "Plotline Details": {
-    "message": "Plotline Details"
+    "message": "جزئیات خط طرح"
   },
   "Plotline Title:": {
-    "message": "Plotline Title:"
+    "message": "عنوان خط طرح:"
   },
   "Plotline name": {
-    "message": "Plotline name"
+    "message": "نام خط طرح"
   },
   "Plotline": {
-    "message": "Plotline"
+    "message": "خط طرح"
   },
   "Plotline: {title}": {
-    "message": "Plotline: { title }"
+    "message": "خط طرح: { title }"
   },
   "Plotlines": {
-    "message": "Plotlines"
+    "message": "خطوط داستان"
   },
   "Plottr Mobile Monthly": {
-    "message": "Plottr Mobile Monthly"
+    "message": "پلاتر موبایل ماهانه"
   },
   "Plottr Mobile Yearly": {
-    "message": "Plottr Mobile Yearly"
+    "message": "پلاتر موبایل سالانه"
   },
   "Plottr Mobile": {
-    "message": "Plottr Mobile"
+    "message": "پلاتر موبایل"
   },
   "Plottr Support": {
-    "message": "Plottr Support"
+    "message": "پشتیبانی پلاتر"
   },
   "Plottr created a file named {fileName} in your Documents folder": {
-    "message": "Plottr created a file named { fileName } in your Documents folder"
+    "message": "پلاتر فایلی با نام { fileName } در پوشه اسناد شما ایجاد کرد"
   },
   "Plottr project file": {
-    "message": "Plottr project file"
+    "message": "فایل پروژه پلاتر"
   },
   "Plottr ran into a problem. Try opening Plottr again.": {
-    "message": "Plottr ran into a problem. Try opening Plottr again."
+    "message": "پلاتر دچار مشکل شد. سعی کنید دوباره آن را باز کنید."
   },
   "Plottr": {
-    "message": "Plottr"
+    "message": "پلاتر"
   },
   "Preferences": {
-    "message": "Preferences"
+    "message": "ترجیحات"
   },
   "Premise": {
-    "message": "Premise"
+    "message": "مبنا"
   },
   "Privacy Policy": {
-    "message": "Privacy Policy"
+    "message": "خط مشی حریم خصوصی"
   },
   "Project Templates": {
-    "message": "Project Templates"
+    "message": "قالب های پروژه"
   },
   "Project": {
-    "message": "Project"
+    "message": "پروژه"
   },
   "Prologue": {
-    "message": "Prologue"
+    "message": "مقدمه"
   },
   "Purchase Email": {
-    "message": "Purchase Email"
+    "message": "ایمیل خرید"
   },
   "Purples": {
-    "message": "Purples"
+    "message": "زرشکی"
   },
   "Quit": {
-    "message": "Quit"
+    "message": "خروج"
   },
   "RESEND EMAIL": {
-    "message": "RESEND EMAIL"
+    "message": "ارسال مجدد ایمیل"
   },
   "RESENDING...": {
-    "message": "RESENDING..."
+    "message": "در حال ارسال مجدد..."
   },
   "Recent Projects": {
-    "message": "Recent Projects"
+    "message": "پروژه‌های اخیر"
   },
   "Redo": {
-    "message": "Redo"
+    "message": "انجام مجدد"
   },
   "Reds": {
-    "message": "Reds"
+    "message": "قرمزها"
   },
   "Reload from File": {
-    "message": "Reload from File"
+    "message": "بارگذاری مجدد از فایل"
   },
   "Reload": {
-    "message": "Reload"
+    "message": "بارگذاری مجدد"
   },
   "Remove License": {
-    "message": "Remove License"
+    "message": "حذف مجوز"
   },
   "Remove from this list": {
-    "message": "Remove from this list"
+    "message": "حذف از این فهرست"
   },
   "Remove image": {
-    "message": "Remove image"
+    "message": "حذف تصویر"
   },
   "Remove": {
-    "message": "Remove"
+    "message": "حذف"
   },
   "Rename Chapter": {
-    "message": "Rename Chapter"
+    "message": "نامگذاری مجدد فصل"
   },
   "Rename": {
-    "message": "Rename"
+    "message": "نامگذاری مجدد"
   },
   "Report a Problem": {
-    "message": "Report a Problem"
+    "message": "گزارش یک مشکل"
   },
   "Request a Feature": {
-    "message": "Request a Feature"
+    "message": "درخواست یک ویژگی"
   },
   "Restore Purchase": {
-    "message": "Restore Purchase"
+    "message": "بازیابی خرید"
   },
   "Roadmap": {
-    "message": "Roadmap"
+    "message": "نقشه مسیر"
   },
   "SELECT A PROJECT FILE": {
-    "message": "SELECT A PROJECT FILE"
+    "message": "یک فایل پروژه انتخاب کنید"
   },
   "SELECT": {
-    "message": "SELECT"
+    "message": "انتخاب"
   },
   "Save Backups": {
-    "message": "Save Backups"
+    "message": "ذخیره نسخه‌های پشتیبان"
   },
   "Save Changes?": {
-    "message": "Save Changes?"
+    "message": "ذخیره تغییرات؟"
   },
   "Save Chapter": {
-    "message": "Save Chapter"
+    "message": "ذخیره فصل"
   },
   "Save File": {
-    "message": "Save File"
+    "message": "ذخیره فایل"
   },
   "Save Plotline": {
-    "message": "Save Plotline"
+    "message": "ذخیره خط داستان"
   },
   "Save as Template": {
-    "message": "Save as Template"
+    "message": "ذخیره به عنوان قالب"
   },
   "Save as": {
-    "message": "Save as"
+    "message": "ذخیره به عنوان"
   },
   "Save before closing?": {
-    "message": "Save before closing?"
+    "message": "ذخیره قبل از بستن؟"
   },
   "Save": {
-    "message": "Save"
+    "message": "ذخیره"
   },
   "Saved": {
-    "message": "Saved"
+    "message": "ذخیره شد"
   },
   "Saving failed": {
-    "message": "Saving failed"
+    "message": "ذخیره انجام نشد"
   },
-  "Saving worked this time 🎉": {
-    "message": "Saving worked this time 🎉"
+  "Saving worked this time": {
+    "message": "ذخیره این بار موفق بود"
   },
   "Saving your file didn't work. Check where it's stored.": {
-    "message": "Saving your file didn''t work. Check where it''s stored."
+    "message": "ذخیره فایل شما موفق نبود. بررسی کنید که کجا نگهداری می شود."
   },
   "Saving your file didn't work. Try again.": {
-    "message": "Saving your file didn''t work. Try again."
+    "message": "ذخیره فایل شما موفق نبود. دوباره تلاش کنید."
   },
   "Scene Cards": {
-    "message": "Scene Cards"
+    "message": "کارتهای صحنه"
   },
   "Scene Details": {
-    "message": "Scene Details"
+    "message": "جزئیات صحنه"
   },
   "Scene Title": {
-    "message": "Scene Title"
+    "message": "عنوان صحنه"
   },
   "Scene {num}": {
-    "message": "Scene { num }"
+    "message": "صحنه { num }"
   },
   "Scene": {
-    "message": "Scene"
+    "message": "صحنه"
   },
   "Scrivener Project": {
-    "message": "Scrivener Project"
+    "message": "پروژۀ اسکریونر"
   },
   "Scrivener": {
     "message": "Scrivener"
   },
   "Scroll": {
-    "message": "Scroll"
+    "message": "پیمایش"
   },
   "Search": {
-    "message": "Search"
+    "message": "جستجو"
   },
   "See What's New": {
-    "message": "See What''s New"
+    "message": "مشاهده تازه‌ها"
   },
   "See the outline here": {
-    "message": "See the outline here"
+    "message": "طرح را اینجا ببینید"
   },
   "Select All": {
-    "message": "Select All"
+    "message": "انتخاب همه"
   },
   "Select a Category": {
-    "message": "Select a Category"
+    "message": "انتخاب یک دسته"
   },
   "Select a Chapter": {
-    "message": "Select a Chapter"
+    "message": "انتخاب یک فصل"
   },
   "Select a File": {
-    "message": "Select a File"
+    "message": "انتخاب یک فایل"
   },
   "Select a Plotline": {
-    "message": "Select a Plotline"
+    "message": "انتخاب یک خط طرح"
   },
   "Series Outline": {
-    "message": "Series Outline"
+    "message": "طرح مجموعه"
   },
   "Series View": {
-    "message": "Series View"
+    "message": "مشاهده مجموعه"
   },
   "Series": {
-    "message": "Series"
+    "message": "مجموعه"
   },
   "Session Start": {
-    "message": "Session Start"
+    "message": "شروع جلسه"
   },
   "Settings": {
-    "message": "Settings"
+    "message": "تنظیمات"
   },
   "Short Description": {
-    "message": "Short Description"
+    "message": "شرح مختصر"
   },
   "Short Synopsis": {
-    "message": "Short Synopsis"
+    "message": "چکیده کوتاه"
   },
   "Show All": {
-    "message": "Show All"
+    "message": "نمایش همه"
   },
   "Show in File Explorer": {
-    "message": "Show in File Explorer"
+    "message": "نمایش در مرورگر فایل"
   },
   "Show in Finder": {
-    "message": "Show in Finder"
+    "message": "نمایش در جستجوگر"
   },
   "Since this is your first time using Plottr, I'll give you a guided tour if you like.": {
-    "message": "Since this is your first time using Plottr, I''ll give you a guided tour if you like."
+    "message": "چون نخستین بار است که از پلاتر استفاده می کنید، اگر مایلید یک تور راهنما برگزار کنیم."
   },
   "Size: large": {
-    "message": "Size: large"
+    "message": "اندازه: بزرگ"
   },
   "Size: medium": {
-    "message": "Size: medium"
+    "message": "اندازه: متوسط"
   },
   "Size: small": {
-    "message": "Size: small"
+    "message": "اندازه: کوچک"
   },
   "Something went wrong,": {
-    "message": "Something went wrong,"
+    "message": "اشکالی پیش آمد،"
   },
   "Something went wrong.": {
-    "message": "Something went wrong."
+    "message": "اشکالی پیش آمد."
   },
   "Sort": {
-    "message": "Sort"
+    "message": "مرتب‌سازی"
   },
   "Source Link": {
-    "message": "Source Link"
+    "message": "پیوند منبع"
   },
   "Start Mobile Subscription": {
-    "message": "Start Mobile Subscription"
+    "message": "شروع اشتراک موبایل"
   },
   "Start my Free Trial": {
-    "message": "Start my Free Trial"
+    "message": "شروع آزمایش رایگان من"
   },
   "Started On": {
-    "message": "Started On"
+    "message": "شروع از"
   },
   "Starter Templates": {
-    "message": "Starter Templates"
+    "message": "قالبهای راه‌انداز"
   },
   "Story line": {
-    "message": "Story line"
+    "message": "خط داستان"
   },
   "Story name": {
-    "message": "Story name"
+    "message": "نام داستان"
   },
   "Submit": {
-    "message": "Submit"
+    "message": "ارسال"
   },
   "Subscription Restored!": {
-    "message": "Subscription Restored!"
+    "message": "اشتراک بازیابی شد!"
   },
   "Subtitle": {
-    "message": "Subtitle"
+    "message": "عنوان فرعی"
   },
   "Success!": {
-    "message": "Success!"
+    "message": "موفق!"
   },
   "Supporting": {
-    "message": "Supporting"
+    "message": "پشتیبان"
   },
   "Tag Details": {
-    "message": "Tag Details"
+    "message": "جزئیات برچسب"
   },
   "Tag Name": {
-    "message": "Tag Name"
+    "message": "نام برچسب"
   },
   "Tag": {
-    "message": "Tag"
+    "message": "برچسب"
   },
   "Tags can be used for organization": {
-    "message": "Tags can be used for organization"
+    "message": "برچسبها را می‌توان برای سازمان‌دهی به کار برد"
   },
   "Tags list": {
-    "message": "Tags list"
+    "message": "فهرست برچسب‌ها"
   },
   "Tags": {
-    "message": "Tags"
+    "message": "برچسب‌ها"
   },
   "Take Screenshot": {
-    "message": "Take Screenshot"
+    "message": "گرفتن عکس از صفحه"
   },
   "Template Saved": {
-    "message": "Template Saved"
+    "message": "قالب ذخیره شد"
   },
   "Terms of Service": {
-    "message": "Terms of Service"
+    "message": "شرایط خدمات"
   },
   "Text Error": {
-    "message": "Text Error"
+    "message": "خطای متن"
   },
   "Thanks for trying Plottr": {
-    "message": "Thanks for trying Plottr"
+    "message": "از اینکه پلاتر را امتحان کردید متشکریم"
   },
   "That code was invalid. Try again.": {
-    "message": "That code was invalid.\nTry again."
+    "message": "آن کد نامعتبر بود.\nدوباره تلاش کنید."
   },
   "That email didn't verify. Try again or try another email.": {
-    "message": "That email didn't verify.\nTry again or try another email."
+    "message": "آن ایمیل تأیید نشد.\nدوباره تلاش کنید یا ایمیل دیگری را امتحان کنید."
   },
   "Theme": {
-    "message": "Theme"
+    "message": "تِم"
   },
   "There was an error activating your license key on this device": {
-    "message": "There was an error activating your license key on this device"
+    "message": "خطایی در فعالسازی کلید مجوز شما روی این دستگاه پیش آمد"
   },
   "There was an error doing that. Try again": {
-    "message": "There was an error doing that. Try again"
+    "message": "خطایی در انجام این کار پیش آمد. دوباره امتحان کنید."
   },
   "This is a plotline": {
-    "message": "This is a plotline"
+    "message": "این یک خط طرح است"
   },
   "This is a scene or chapter. You can change its name by clicking on it": {
-    "message": "This is a scene or chapter. You can change its name by clicking on it"
+    "message": "این یک صحنه یا فصل است. می توانید نام آن را را کلیک کردن روی آن تغییر دهید"
   },
   "This will send you an email with a code": {
-    "message": "This will send you an email with a code"
+    "message": "این یک ایمیل با یک کد برای شما ارسال خواهد کرد"
   },
   "Timeline is filtered": {
-    "message": "Timeline is filtered"
+    "message": "خط زمان فیلتر شده است"
   },
   "Timeline": {
-    "message": "Timeline"
+    "message": "خط زمان"
   },
   "Title": {
-    "message": "Title"
+    "message": "عنوان"
   },
   "Toggle navigation": {
-    "message": "Toggle navigation"
+    "message": "تغییر مرور"
   },
   "Trash": {
-    "message": "Trash"
+    "message": "زباله"
   },
   "Try that again": {
-    "message": "Try that again"
+    "message": "دوباره آن را امتحان کن"
   },
   "Tutorials": {
-    "message": "Tutorials"
+    "message": "آموزش‌ها"
   },
   "Type": {
-    "message": "Type"
+    "message": "نوع"
   },
   "UH-OH!": {
-    "message": "UH-OH!"
+    "message": "ای وای!"
   },
   "URL": {
-    "message": "URL"
+    "message": "نشانی اینترنتی"
   },
   "Uncategorized": {
-    "message": "Uncategorized"
+    "message": "دسته‌بندی نشده"
   },
   "Undo": {
-    "message": "Undo"
+    "message": "لغو انجام"
   },
   "Untitled": {
-    "message": "Untitled"
+    "message": "بی‌نام"
   },
   "Update Automatically": {
-    "message": "Update Automatically"
+    "message": "به‌روزرسانی خودکار"
   },
-  "Update Available 🎉 (version {version})": {
-    "message": "Update Available 🎉 (version { version })"
+  "Update Available (version {version})": {
+    "message": "به‌روزرسانی موجود است (نسخه { version })"
   },
   "Update failed. Try again": {
-    "message": "Update failed. Try again"
+    "message": "به‌روزسانی انجام نشد. دوباره تلاش کنید"
   },
   "Updates": {
-    "message": "Updates"
+    "message": "به‌روزرسانی‌ها"
   },
   "Upload Files": {
-    "message": "Upload Files"
+    "message": "به‌روزرسانی فایل‌ها"
   },
   "Use Template": {
-    "message": "Use Template"
+    "message": "استفاده از قالب"
   },
   "Use a different email": {
-    "message": "Use a different email"
+    "message": "استفاده از یک ایمیل دیگر"
   },
   "Use this to remove your license on this device": {
-    "message": "Use this to remove your license on this device"
+    "message": "با استفاده از این، مجوز خود روی این دستگاه را حذف کنید"
   },
   "VERIFY CODE": {
-    "message": "VERIFY CODE"
+    "message": "تأیید کد"
   },
   "VERIFYING...": {
-    "message": "VERIFYING..."
+    "message": "در حال تأیید..."
   },
   "Verify": {
-    "message": "Verify"
+    "message": "تأیید"
   },
   "Verifying with email: {email}": {
-    "message": "Verifying with email: { email }"
+    "message": "تأیید با ایمیل: { email }"
   },
   "Version": {
-    "message": "Version"
+    "message": "نسخه"
   },
   "View Error": {
-    "message": "View Error"
+    "message": "مشاهده خطا"
   },
   "View Timeline": {
-    "message": "View Timeline"
+    "message": "مشاهده خط زمان"
   },
   "View": {
-    "message": "View"
+    "message": "مشاهده"
   },
   "We found your user session but...": {
-    "message": "We found your user session but your license has expired or is inactive. Please purchase a new license or mobile subscription to continue."
+    "message": "ما جلسه کاربری شما را یافتیم، اما مجوز شما لغو شده یا غیرفعال است. لطفاً یک مجوز جدید یا اشتراک موبایل تهیه کنید تا ادامه دهید."
   },
   "We had a problem creating a new project": {
-    "message": "We had a problem creating a new project. Ensure Plottr has the correct permissions and that you have enough storage space."
+    "message": "ما در ایجاد یک  پروژۀ جدید مشکل داشتیم. مطمئن شوید پلاتر مجوزهای صحیح را دارد و شما فضای کافی دارید."
   },
   "We had a problem processing your file": {
-    "message": "We had a problem processing your file. Ensure Plottr has the correct permissions and try again."
+    "message": "ما در پردازش فایل شما مشکل داشتیم. مطمئن شوید پلاتر مجوزهای صحیح را دارد و دوباره تلاش کنید."
   },
   "We will email you a verification code.": {
-    "message": "We will email you a verification code."
+    "message": "ما یک کد تأیید برای شما ایمیل می کنیم."
   },
   "Welcome to Plottr!": {
-    "message": "Welcome to Plottr!"
+    "message": "به پلاتر خوش آمدید!"
   },
   "Welcome to Plottr": {
-    "message": "Welcome to Plottr"
+    "message": "به پلاتر خوش آمدید"
   },
   "Welcome to": {
-    "message": "Welcome to"
+    "message": "خوش آمدید به"
   },
   "What would you like to do?": {
-    "message": "What would you like to do?"
+    "message": "می‌خواهید چه کار کنید؟"
   },
   "Where would you like to save the export?": {
-    "message": "Where would you like to save the export?"
+    "message": "مایلید محتوای صادر شده کجا ذخیره شود؟"
   },
   "Where would you like to save this copy?": {
-    "message": "Where would you like to save this copy?"
+    "message": "مایلید این نسخه را کجا ذخیره کنید؟"
   },
   "Where would you like to save this file?": {
-    "message": "Where would you like to save this file?"
+    "message": "مایلید این فایل را کجا ذخیره کنید؟"
   },
   "Whites": {
-    "message": "Whites"
+    "message": "سفیدها"
   },
   "Window": {
-    "message": "Window"
+    "message": "پنجره"
   },
   "Word Document": {
-    "message": "Word Document"
+    "message": "سند وُرد"
   },
   "Yes, Delete": {
-    "message": "Yes, Delete"
+    "message": "بله حذف شود"
   },
   "Yes, Save": {
-    "message": "Yes, Save"
+    "message": "بله، ذخیره شود"
   },
   "You already have a file named {file}": {
-    "message": "You already have a file named \n{file}.\nDo you wish to overwrite?"
+    "message": "شما از قبل فایلی به نام \n{file} دارید.\nمایلید روی آن نوشته شود؟"
   },
   "You can change its name or color by hovering over it (disabled for the tour)": {
-    "message": "You can change its name or color by hovering over it (disabled for the tour)"
+    "message": "با مکث روی آن می‌توانید نام یا رنگش را عوض کنید (برای تور غیرفعال شده)"
   },
   "You can create an error report and report the problem to us at: ": {
-    "message": "You can create an error report and report the problem to us at: "
+    "message": "می‌توانید یک گزارش خطا ایجاد کنید و مشکل را به ما از طریق زیر گزارش دهید: "
   },
   "You can export everything to a Word document": {
-    "message": "You can export everything to a Word document"
+    "message": "می‌توانید همه چیز را به یک سند وُرد صادر کنید"
   },
   "You can have 5 more days to try Plottr": {
-    "message": "You can have 5 more days to try Plottr"
+    "message": "می‌توانید ۵ روز دیگر برای امتحان کردن پلاتر داشته باشید"
   },
   "You have unsaved changes": {
-    "message": "You have unsaved changes.\nDo you want to save?"
+    "message": "تغییرات شما ذخیره نشده است..\nمایلید آنها را ذخیره کنید؟"
   },
   "You may create a new project": {
-    "message": "You may create a new project\nor select a project file to begin"
+    "message": "می‌توانید یک پروژه جدید ایجاد کنید\nیا یک فایل پروژه را برای شروع انتخاب کنید"
   },
   "Your email didn't verify. Try again or try another email.": {
-    "message": "Your email didn't verify.\nTry again or try another email."
+    "message": "ایمیل شما تأیید نشد.\nدوباره تلاش کنید یا ایمیل دیگری را امتحان کنید."
   },
   "Your selected license failed verification. Try another one.": {
-    "message": "Your selected license failed verification. Try another one."
+    "message": "مجوز انتخاب شده شما تأیید نشد. مجوز دیگری را امتحان کنید."
   },
   "You should have received a license key after your purchase.": {
-    "message": "You should have received a license key after your purchase."
+    "message": "باید کلید مجوز را پس از خرید خود دریافت کرده باشید."
   },
   "You should have received an email with a code": {
-    "message": "You should have received an email with a code"
+    "message": "باید ایمیلی همراه با یک کد دریافت کرده باشید."
   },
   "You'll have 30 days": {
-    "message": "You''ll have 30 days"
+    "message": "شما ۳۰ روز فرصت خواهید داشت"
   },
   "You're on the latest version": {
-    "message": "You''re on the latest version"
+    "message": "شما در حال استفاده از آخرین نسخه هستید‌"
   },
   "Your Backups": {
-    "message": "Your Backups"
+    "message": "نسخه‌های پشتیبان شما"
   },
   "Your Plottr file was exported to a .docx file": {
-    "message": "Your Plottr file was exported to a .docx file"
+    "message": "فایل پلاتر شما به یک فایل .docx صادر شد"
   },
   "Your Plottr file was exported to a Scrivener project package": {
-    "message": "Your Plottr file was exported to a Scrivener project package"
+    "message": "فایل پلاتر شما به بسته پروژه اسکریونر صادر شد"
   },
   "Your free trial has expired": {
-    "message": "Your free trial has expired"
+    "message": "آزمایش رایگان شما منقضی شد‌"
   },
   "Your template has been saved and is ready to use": {
-    "message": "Your template has been saved and is ready to use"
+    "message": "قالب شما ذخیره شد و آمادۀ استفاده است"
   },
   "Zoom": {
-    "message": "Zoom"
+    "message": "زوم"
   },
   "[image]": {
-    "message": "[image]"
+    "message": "[تصویر]"
   },
   "a lot of scenes moved around": {
-    "message": "a lot of scenes moved around"
+    "message": "صحنه‌های زیادی جابجا شدند"
   },
   "a lot of story lines moved around": {
-    "message": "a lot of story lines moved around"
+    "message": "خطوط قصه زیادی جابجا شدند"
   },
   "and": {
-    "message": "and"
+    "message": "و"
   },
   "attach character {characterName} to card {cardName}": {
-    "message": "attach character { characterName } to card { cardName }"
+    "message": "اتصال شخصیت { characterName } به کارت { cardName }"
   },
   "attach character {characterName} to note {noteName}": {
-    "message": "attach character { characterName } to note { noteName }"
+    "message": "اتصال شخصیت { characterName } به یادداشت { noteName }"
   },
   "attach place {placeName} to card {cardName}": {
-    "message": "attach place { placeName } to card { cardName }"
+    "message": "اتصال مکان { placeName } به کارت { cardName }"
   },
   "attach place {placeName} to note {noteName}": {
-    "message": "attach place { placeName } to note { noteName }"
+    "message": "اتصال مکان { placeName } به یادداشت { noteName }"
   },
   "attach tag {tagName} to card {cardName}": {
-    "message": "attach tag { tagName } to card { cardName }"
+    "message": "اتصال برچسب { tagName } به کارت { cardName }"
   },
   "attach tag {tagName} to note {noteName}": {
-    "message": "attach tag { tagName } to note { noteName }"
+    "message": "اتصال برچسب { tagName } به یادداشت { noteName }"
   },
   "blank": {
-    "message": "blank"
+    "message": "خالی"
   },
   "but don't worry!": {
-    "message": "but don''t worry!"
+    "message": "اما نگران نباشید!"
   },
   "custom character attribute": {
-    "message": "custom character attribute"
+    "message": "ویژگی سفارشی شخصیت"
   },
   "custom place attribute": {
-    "message": "custom place attribute"
+    "message": "ویژگی سفارشی مکان"
   },
   "hex code or name": {
-    "message": "hex code or name"
+    "message": "نام یا کد هکس"
   },
   "new card": {
-    "message": "new card"
+    "message": "کارت جدید"
   },
   "new scene": {
-    "message": "new scene"
+    "message": "صحنه جدید"
   },
   "new storyline": {
-    "message": "new storyline"
+    "message": "خط داستان جدید"
   },
   "no more to add": {
-    "message": "no more to add"
+    "message": "بیشتر اضافه نمی‌شود"
   },
   "or": {
-    "message": "or"
+    "message": "یا"
   },
   "remove character {characterName} from card {cardName}": {
-    "message": "remove character { characterName } from card { cardName }"
+    "message": "حذف شخصیت { characterName } از کارت { cardName }"
   },
   "remove character {characterName} from note {noteName}": {
-    "message": "remove character { characterName } from note { noteName }"
+    "message": "حذف شخصیت { characterName } از یادداشت { noteName }"
   },
   "remove place {placeName} from card {cardName}": {
-    "message": "remove place { placeName } from card { cardName }"
+    "message": "حذف مکان { placeName } از کارت { cardName }"
   },
   "remove place {placeName} from note {noteName}": {
-    "message": "remove place { placeName } from note { noteName }"
+    "message": "حذف مکان { placeName } از یادداشت { noteName }"
   },
   "remove tag {tagName} from card {cardName}": {
-    "message": "remove tag { tagName } from card { cardName }"
+    "message": "حذف برچسب { tagName } از کارت { cardName }"
   },
   "remove tag {tagName} from note {noteName}": {
-    "message": "remove tag { tagName } from note { noteName }"
+    "message": "حذف برچسب { tagName } از یادداشت { noteName }"
   },
   "that best suits your style and needs.": {
-    "message": "that best suits your style and needs."
+    "message": "که بهتر با سبک و نیازهای شما مطابقت دارد."
   },
   "to activate this device.": {
-    "message": "to activate this device."
+    "message": "برای فعال کردن این دستگاه."
   },
   "with an iOS mobile subscription!": {
-    "message": "with an iOS mobile subscription!"
+    "message": "با اشتراک موبایل iOS!"
   },
   "{\n          count, plural,\n          one {1 character attached}\n          other {# characters attached}\n        }": {
-    "message": "{ count, plural,\n    one {1 character attached}\n  other {# characters attached}\n}"
+    "message": "{ شمارش، جمع،\n    یک {1 شخصیت پیوست شده}\n  دیگر {# شخصیت پیوست شده}\n}"
   },
   "{\n          count, plural,\n          one {1 place attached}\n          other {# places attached}\n        }": {
-    "message": "{ count, plural,\n    one {1 place attached}\n  other {# places attached}\n}"
+    "message": "{ شمارش، جمع،\n    یک {1 مکان پیوست شده}\n  دیگر {# مکان پیوست شده}\n}"
   },
   "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {
-    "message": "{ count, plural,\n    one {1 tag attached}\n  other {# tags attached}\n}"
+    "message": "{ شمارش، جمع\n    یک {1 برچسب پیوست شده}\n  دیگر {# برچسب پیوست شده}\n}"
   },
   "{amount} Lifetime": {
-    "message": "${amount}\nLifetime"
+    "message": "${مقدار}\nمادام‌العمر"
   },
   "{amount} Monthly": {
-    "message": "${amount}\nMonthly"
+    "message": "${مقدار}\nماهانه"
   },
   "{amount} Weekly": {
-    "message": "${amount}\nWeekly"
+    "message": "${مقدار}\nهفتگی"
   },
   "{amount} Yearly": {
-    "message": "${amount}\nYearly"
+    "message": "${مقدار}\nسالانه"
   },
   "{date, date, long}": {
-    "message": "{ date, date, long }"
+    "message": "{ تاریخ، تاریخ، طولانی }"
   },
   "{date, date, medium}": {
-    "message": "{ date, date, medium }"
+    "message": "{ تاریخ، تاریخ، متوسط }"
   },
   "{date, date, monthDay}": {
-    "message": "{ date, date, monthDay }"
+    "message": "{ تاریخ، تاریخ، روز ماه }"
   },
   "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }": {
-    "message": "{ numOfDays, plural,\n     =0 {# days left}\n    one {# day left}\n  other {# days left}\n}"
+    "message": "{ تعداد روزها، جمع،\n     =0 {# روز باقیمانده}\n    یک {# روز باقیمانده}\n  دیگر {# روز باقیمانده}\n}"
   },
   "{num} Scenes": {
-    "message": "{ num } Scenes"
+    "message": "{ تعداد } صحنه"
   },
   "{val, number, percent}": {
-    "message": "{ val, number, percent }"
+    "message": "{ مقدار، عدد، درصد }"
   },
   "{wordCount,number} words": {
-    "message": "{ wordCount, number } words"
+    "message": "{ تعداد کلمات، شماره } کلمه"
   },
   "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)"
+    "message": "(در غیر این صورت، با من به نشانی زیر @ <a>support@plottr.com</a> یا @StoryPlottr در Twitter تماس بگیرید)"
   },
   "Add attributes": {
-    "message": "Add attributes"
+    "message": "افزودن ویژگی‌ها"
   },
   "Attached to": {
-    "message": "Attached to"
+    "message": "پیوست شده به"
   },
   "Bring All to Front": {
-    "message": "Bring All to Front"
+    "message": "آوردن همه به جلو"
   },
   "Buy the Full Version": {
-    "message": "Buy the Full Version"
+    "message": "خرید نسخه کامل"
   },
   "Card Title": {
-    "message": "Card Title"
+    "message": "عنوان کارت"
   },
   "character": {
-    "message": "character"
+    "message": "شخصیت"
   },
   "Choose color": {
-    "message": "Choose color"
+    "message": "انتخاب رنگ"
   },
   "Choose what you want to track about your characters": {
-    "message": "Choose what you want to track about your characters"
+    "message": "انتخاب کنید چه چیزی را می‌خواهید دربارۀ شخصیت‌های خود دنبال کنید"
   },
   "Choose what you want to track about your places": {
-    "message": "Choose what you want to track about your places"
+    "message": "انتخاب کنید چه چیز را می‌خواهید دربارۀ مکان‌های خود دنبال کنید"
   },
   "Click here to get the full version": {
-    "message": "Click here to get the full version"
+    "message": "برای دریافت نسخه کامل اینجا کلیک کنید"
   },
   "Contact": {
-    "message": "Contact"
+    "message": "تماس"
   },
   "Crafted in the Mountains of Utah by": {
-    "message": "Crafted in the Mountains of Utah by"
+    "message": "ساخته شده در کوه‌های یوتا توسط"
   },
   "Create a new file": {
-    "message": "Create a new file"
+    "message": "ایجاد یک فایل جدید"
   },
   "Creates a report to send me": {
-    "message": "Creates a report to send me"
+    "message": "یک گزارش برای ارسال به من ایجاد می‌کند"
   },
   "Creating your file didn't work. Let's try again.": {
-    "message": "Creating your file didn't work. Let's try again."
+    "message": "ایجاد فایل شما موفق نبود. بیایید دوباره تلاش کنیم."
   },
   "Credits": {
-    "message": "Credits"
+    "message": "سازندگان"
   },
   "Custom Attributes for Characters": {
-    "message": "Custom Attributes for Characters"
+    "message": "ویژگی‌های سفارشی برای شخصیت‌ها"
   },
   "Custom Attributes for Places": {
-    "message": "Custom Attributes for Places"
+    "message": "ویژگی‌های سفارشی برای مکان‌ها"
   },
   "Do you want to delete this card: { title }?": {
-    "message": "Do you want to delete this card: { title }?"
+    "message": "مایلید این کارت را حذف کنید: { title }?"
   },
   "Do you want to delete this character: { character }?": {
-    "message": "Do you want to delete this character: { character }?"
+    "message": "آیا مایلید این شخصیت را حذف کنید؟: { character }"
   },
   "Do you want to delete this note: { title }?": {
-    "message": "Do you want to delete this note: { title }?"
+    "message": "آیا مایلید این یادداشت را حذف کنید؟: { title }"
   },
   "Do you want to delete this place: { name }?": {
-    "message": "Do you want to delete this place: { name }?"
+    "message": "آیا مایلید این مکان را حذف کنید؟: { name }"
   },
   "Do you want to delete this scene: { title }?": {
-    "message": "Do you want to delete this scene: { title }?"
+    "message": "آیا مایلید این صحنه را حذف کنید: { title }؟"
   },
   "Do you want to delete this story line: { title }?": {
-    "message": "Do you want to delete this story line: { title }?"
+    "message": "آیا مایلید این خط داستان را حذف کنید: { title }؟"
   },
   "Do you want to delete this tag: { title }?": {
-    "message": "Do you want to delete this tag: { title }?"
+    "message": "آیا مایلید این برچسب را حذف کنید: { title }؟"
   },
   "Enter License": {
-    "message": "Enter License"
+    "message": "مجوز را وارد کنید"
   },
   "Filter by story line": {
-    "message": "Filter by story line"
+    "message": "فیلتر بر اساس خط داستان"
   },
   "Fit": {
-    "message": "Fit"
+    "message": "جا دادن"
   },
   "Format with markdown!": {
-    "message": "Format with markdown!"
+    "message": "قالب با کاهش قیمت!"
   },
   "Forums": {
-    "message": "Forums"
+    "message": "انجمن‌ها"
   },
   "Give feedback": {
-    "message": "Give feedback"
+    "message": "دادن بازخورد"
   },
   "If you keep seeing this problem, email me at support@plottr.com": {
-    "message": "If you keep seeing this problem, email me at support@plottr.com"
+    "message": "اگر باز هم این مشکل را دیدید، با نشانی زیر به من ایمیل بزنید support@plottr.com"
   },
   "It looks like you have Plottr on 5 computers already": {
-    "message": "It looks like you have Plottr on 5 computers already"
+    "message": "ظاهراً در حال حاضر پلاتر را روی ۵ کامپیوتر نصب کرده‌اید"
   },
   "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?": {
-    "message": "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?"
+    "message": "ظاهراً شما نسخه فایل قدیمی‌تری دارید. این ممکن است باعث ایجاد مشکل شود یا اصلاً کار نکند. مایلید پلاتر آن را برای شما به‌روزرسانی کند؟"
   },
   "It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again.": {
-    "message": "It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again."
+    "message": "ظاهراً فایل شما با نسخه جدیدتری از پلاتر ذخیره شده که از نسخه فعلی جدیدتر است. این ممکن است باعث ایجاد مشکل شود. سعی کنید پلاتر را به روز کنید و دوباره راه‌اندازی کنید."
   },
   "It will save a backup first which will be saved to the same folder as this file": {
-    "message": "It will save a backup first which will be saved to the same folder as this file"
+    "message": "ابتدا یک نسخه پشتیبان ذخیره خواهد کرد که در همان پوشه این فایل ذخیره خواهد شد"
   },
   "License verification failed": {
-    "message": "License verification failed"
+    "message": "تأیید مجوز انجام نشد"
   },
   "License verified! You're all set.": {
-    "message": "License verified! You're all set."
+    "message": "مجوز تأیید شد! همه چیز جور است."
   },
   "Line": {
-    "message": "Line"
+    "message": "خط"
   },
   "Loading...": {
-    "message": "Loading..."
+    "message": "در حال بارگذاری..."
   },
   "Minimize": {
-    "message": "Minimize"
+    "message": "کوچک‌سازی"
   },
   "My awesome story": {
-    "message": "My awesome story"
+    "message": "داستان عالی من"
   },
   "Nope. Plottr tried again. But it didn't work. Plottr will ask you next time it opens, but you're verified. Enjoy": {
-    "message": "Nope. Plottr tried again. But it didn't work. Plottr will ask you next time it opens, but you're verified. Enjoy"
+    "message": "خیر. پلاتر دوباره تلاش کرد. اما کار نمی‌کند. پلاتر دفعه بعد که باز می‌شود از شما درخواست خواهد کرد، اما تأیید شدید. لذت ببرید"
   },
   "Now let's get to the good stuff": {
-    "message": "Now let's get to the good stuff"
+    "message": "حالا بیایید برویم سراغ چیزهای خوب"
   },
   "Open the Tour": {
-    "message": "Open the Tour"
+    "message": "تور را باز کنید"
   },
   "Or feel free to contact me with any questions": {
-    "message": "Or feel free to contact me with any questions"
+    "message": "یا با خیال راحت هر سؤالی دارید از من بپرسید"
   },
   "place": {
-    "message": "place"
+    "message": "مکان"
   },
   "Please upload the file named plottr_error_report.txt in your Documents folder": {
-    "message": "Please upload the file named plottr_error_report.txt in your Documents folder"
+    "message": "لطفاً فایل موسوم به plottr_error_report.txt را که در پوشه اسناد شماست آپلود کنید"
   },
   "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again.": {
-    "message": "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again."
+    "message": "پلاتر نمی‌تواند یک نسخه پشتیبان ذخیره کند. هنوز فایل شما را دستکاری نکرده، بنابراین نگران نباشید. سعی کنید از پلاتر خارج شوید و دوباره آن را راه اندازی کنید.."
   },
   "Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)": {
-    "message": "Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)"
+    "message": "پلاتر فقط محض احتیاط یک نسخه پشتیبان ذخیره کرد (برای استفاده از نسخه پشتیبان، '.backup' را از نام فایل حذف کنید)"
   },
   "Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again.": {
-    "message": "Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again."
+    "message": "پلاتر سعی کرد محض احتیاط یک نسخه پشتیبان ذخیره کند، اما موفق نشد. سعی کنید از پلاتر خارج شوید و دوباره آن را راه اندازی کنید."
   },
   "Plottr updated your file without a problem. Don't forget to save your file.": {
-    "message": "Plottr updated your file without a problem. Don't forget to save your file."
+    "message": "پلاتر فایل شما را بدون مشکل به روزرسانی کرد. یادتان نرود فایل خود را ذخیره کنید."
   },
   "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {
-    "message": "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time"
+    "message": "پلاتر با موفقیت کلید مجوز شما را تأیید کرد، اما خطایی حین ذخیرۀ آن رخ داد. بیایید یک بار دیگر امتحان کنیم"
   },
   "Problem saving backup": {
-    "message": "Problem saving backup"
+    "message": "مشکل در ذخیره پشتیبان"
   },
   "Report a problem": {
-    "message": "Report a problem"
+    "message": "گزارش یک مشکل"
   },
   "Request a feature": {
-    "message": "Request a feature"
+    "message": "درخواست یک ویژگی"
   },
   "Reset": {
-    "message": "Reset"
+    "message": "بازنشانی"
   },
   "Save & Close": {
-    "message": "Save & Close"
+    "message": "ذخیره و بستن"
   },
   "Scene 1": {
-    "message": "Scene 1"
+    "message": "صحنه ۱"
   },
   "Scene {number}": {
-    "message": "Scene {number}"
+    "message": "صحنه {number}"
   },
   "Scene {number} name": {
-    "message": "Scene {number} name"
+    "message": "نام صحنه {number}"
   },
   "Story line name": {
-    "message": "Story line name"
+    "message": "نام خط داستان"
   },
   "TRIAL Version": {
-    "message": "TRIAL Version"
+    "message": "نسخه آزمایشی"
   },
   "Try again by clicking in the menu: Plottr > Verify License...": {
-    "message": "Try again by clicking in the menu: Plottr > Verify License..."
+    "message": "دوباره با کلیک در منو امتحان کنید: پلاتر > تأیید مجوز..."
   },
   "Update Plottr": {
-    "message": "Update Plottr"
+    "message": "به‌روزسانی پلاتر"
   },
   "Upload the file Plottr just exported": {
-    "message": "Upload the file Plottr just exported"
+    "message": "آپلود فایلی که پلاتر هم اکنون صادر کرد"
   },
   "Use the code \"freetrial\" to get the secret discount": {
-    "message": "Use the code \"freetrial\" to get the secret discount"
+    "message": "از کد \"freetrial\" برای دریافت تخفیف محرمانه استفاده کنید"
   },
   "Verifying your license. Please wait...": {
-    "message": "Verifying your license. Please wait..."
+    "message": "در حال تأیید مجوز شما. لطفاً منتظر بمانید..."
   },
   "Where would you like to start your new file?": {
-    "message": "Where would you like to start your new file?"
+    "message": "می‌خواهید فایل جدیدتان را از کجا شروع کنید؟"
   },
   "Would you like to open an existing file or start a new file?": {
-    "message": "Would you like to open an existing file or start a new file?"
+    "message": "مایلید یک فایل موجود را باز کنید یا یک فایل جدید آغاز کنید؟"
   },
   "Would you like to save before exiting?": {
-    "message": "Would you like to save before exiting?"
+    "message": "مایلید قبل از خروج ذخیره کنید؟"
   },
   "You should have received a license key from Gumroad.": {
-    "message": "You should have received a license key from Gumroad."
+    "message": "باید یک فایل مجوز از گامرود دریافت کرده باشید."
   },
   "Your free trial has expired!": {
-    "message": "Your free trial has expired!"
+    "message": "نسخه آزمایشی رایگان شما منقضی شده!"
   },
   "a new card": {
-    "message": "a new card"
+    "message": "یک کارت جدید"
   },
   "description": {
-    "message": "description"
+    "message": "شرح"
   },
   "learn how": {
-    "message": "learn how"
+    "message": "راهش را یاد بگیرید"
   },
   "name": {
-    "message": "name"
+    "message": "نام"
   },
   "New Card": {
-    "message": "New Card"
+    "message": "کارت جدید"
   },
   "new character": {
-    "message": "new character"
+    "message": "شخصیت جدید"
   },
   "new note": {
-    "message": "new note"
+    "message": "یادداشت جدید"
   },
   "new place": {
-    "message": "new place"
+    "message": "مکان جدید"
   },
   "new tag": {
-    "message": "new tag"
+    "message": "برچسب جدید"
   },
   "no, just exit": {
-    "message": "no, just exit"
+    "message": "نه، فقط خارج شو"
   },
   "no, open the file as-is": {
-    "message": "no, open the file as-is"
+    "message": "نه، فایل را همانطور که هست باز کن"
   },
   "ok": {
-    "message": "ok"
+    "message": "تأیید"
   },
   "story line": {
-    "message": "story line"
+    "message": "خط داستان"
   },
   "tag name": {
-    "message": "tag name"
+    "message": "نام برچسب"
   },
   "title": {
-    "message": "title"
+    "message": "عنوان"
   },
   "yes, save!": {
-    "message": "yes, save!"
+    "message": "بله، ذخیره شود!"
   },
   "yes, update the file": {
-    "message": "yes, update the file"
+    "message": "بله، فایل به روز رسانی شود"
   },
   "{\n      count, plural,\n        one {1 carte}\n        other {# cartes}\n    }": {
-    "message": "{\n      count, plural,\n        one {1 carte}\n        other {# cartes}\n    }"
+    "message": "{\n      شمارش، جمع\n        یک {1 کارت}\n        دیگر {# کارت}\n    }"
   },
   "{\n      count, plural,\n        one {1 note}\n        other {# notes}\n    }": {
-    "message": "{\n      count, plural,\n        one {1 note}\n        other {# notes}\n    }"
+    "message": "{\n      شمارش، جمع\n        یک {1 یادداشت}\n        دیگر {# یادداشت}\n    }"
   },
   "{days} days remaining": {
-    "message": "{days} days remaining"
+    "message": "{days} روز باقی مانده"
   },
   "Are you sure you want to delete {template}?": {
-    "message": "Are you sure you want to delete {template}?"
+    "message": "واقعاً می‌خواهید {template} را حذف کنید؟"
   },
   "Character Custom Attributes": {
-    "message": "Character Custom Attributes"
+    "message": "ویژگیهای سفارشی شخصیت"
   },
   "Check for updates": {
-    "message": "Check for updates"
+    "message": "بررسی به‌روزرسانی‌ها"
   },
   "Checking for updates": {
-    "message": "Checking for updates"
+    "message": "بررسی برای به‌روزرسانی‌ها"
   },
   "Choose an image below or upload a new one": {
-    "message": "Choose an image below or upload a new one"
+    "message": "یک تصویر از زیر انتخاب کنید یا یک تصویر جدید آپلود کنید"
   },
   "Could not display license key. Try again": {
-    "message": "Could not display license key. Try again"
+    "message": "کلید مجوز نمایش داده نمی شود. دوباره تلاش کنید"
   },
   "Crafted in the Mountains of Utah": {
-    "message": "Crafted in the Mountains of Utah"
+    "message": "تولید شده در کوهستان‌های یوتا"
   },
   "Create an error report": {
-    "message": "Create an error report"
+    "message": "ایجاد یک گزارش خطا"
   },
   "Create unlimited story files": {
-    "message": "Create unlimited story files"
+    "message": "ایجاد فایلهای داستان نامحدود"
   },
   "Do you want to delete this book: { book }?": {
-    "message": "Do you want to delete this book: { book }?"
+    "message": "مایلید این کتاب را حذف کنید: { book }؟"
   },
   "Do you want to delete this chapter: { title }?": {
-    "message": "Do you want to delete this chapter: { title }?"
+    "message": "مایلید این فصل را حذف کنید: { title }؟"
   },
   "Download Now": {
-    "message": "Download Now"
+    "message": "اکنون دانلود شود"
   },
   "Downloading ({percent}%)": {
-    "message": "Downloading ({percent}%)"
+    "message": "در حال دانلود ({percent}%)"
   },
   "Enter a customer service code": {
-    "message": "Enter a customer service code"
+    "message": "یک کد خدمات مشتریان وارد کنید"
   },
   "Enter your code": {
-    "message": "Enter your code"
+    "message": "کد خود را وارد کنید"
   },
   "Error": {
-    "message": "Error"
+    "message": "خطا"
   },
   "Extending your trial didn't work. Let's try again.": {
-    "message": "Extending your trial didn't work. Let's try again."
+    "message": "تمدید نسخه آزمایشی انجام نشد. لطفاً دوباره تلاش کنید."
   },
   "Facebook Support Group": {
-    "message": "Facebook Support Group"
+    "message": "گروه پشتیبانی فیسبوک"
   },
   "Here is your license key": {
-    "message": "Here is your license key"
+    "message": "کلید مجوز شما اینجاست"
   },
   "New File": {
-    "message": "New File"
+    "message": "فایل جدید"
   },
   "New from Template": {
-    "message": "New from Template"
+    "message": "جدید از قالب"
   },
   "No updates available": {
-    "message": "No updates available"
+    "message": "به‌روزرسانی موجود نیست"
   },
   "Open File": {
-    "message": "Open File"
+    "message": "باز کردن فایل"
   },
   "Plottr Trial": {
-    "message": "Plottr Trial"
+    "message": "آزمایش پلاتر"
   },
   "Plottr created a file named plottr_error_report.txt in your Documents folder": {
-    "message": "Plottr created a file named plottr_error_report.txt in your Documents folder"
+    "message": "پلاتر فایلی به نام plottr_error_report.txt در پوشه اسناد شما ایجاد کرد"
   },
   "Quit and Install": {
-    "message": "Quit and Install"
+    "message": "خروج و نصب"
   },
   "See the Changelog": {
-    "message": "See the Changelog"
+    "message": "مشاهده گزارش تغییر"
   },
   "This is your Device ID": {
-    "message": "This is your Device ID"
+    "message": "این شناسه دستگاه شماست"
   },
   "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem.": {
-    "message": "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem."
+    "message": "دوباره این را امتحان کنید، اما اگر باز هم رخ داد، از منوی راهنما برای ایجاد یک گزارش خطا استفاده کنید و مشکل را گزارش دهید."
   },
   "Update Ready": {
-    "message": "Update Ready"
+    "message": "به‌روز‌رسانی آماده است"
   },
   "Update available!": {
-    "message": "Update available!"
+    "message": "به‌روزرسانی موجود است!"
   },
   "Upload a new image": {
-    "message": "Upload a new image"
+    "message": "آپلود یک تصویر جدید"
   },
   "View Device ID": {
-    "message": "View Device ID"
+    "message": "مشاهده شناسه دستگاه"
   },
   "View License Key": {
-    "message": "View License Key"
+    "message": "مشاهده کلید مجوز"
   },
   "View the Tour": {
-    "message": "View the Tour"
+    "message": "مشاهده تور"
   },
   "paragraph": {
-    "message": "paragraph"
+    "message": "پاراگراف"
   },
   "selected": {
-    "message": "selected"
+    "message": "انتخاب شده"
   },
   "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
-    "message": "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }"
+    "message": "{\n      شمارش، جمع\n        یک {1 کارت}\n        دیگر {# کارت}\n    }"
   }
 }
-

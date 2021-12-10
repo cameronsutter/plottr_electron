@@ -160,7 +160,7 @@ const Navigation = ({
       ) : null}
       {isOffline ? (
         <div className="offline-mode-banner">
-          Offline Mode!
+          {t('Offline Mode')}
           <FaSignal />
         </div>
       ) : null}

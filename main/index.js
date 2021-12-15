@@ -74,7 +74,7 @@ if (!is.development) {
 app.userAgentFallback =
   'Firefox Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) plottr/2021.7.29 Chrome/85.0.4183.121 Electron/10.4.7 Safari/537.36'
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   loadMenu()
   const files = Object.values(knownFilesStore.store)
     .sort((thisFile, thatFile) => {
@@ -87,7 +87,7 @@ app.whenReady().then(() => {
   if (latestFile) {
     openProjectWindow(latestFile.path)
   } else {
-    createNew()
+    await createNew()
   }
   windowsOpenFileEventHandler(process.argv)
 
@@ -101,14 +101,14 @@ app.whenReady().then(() => {
     app.setAsDefaultProtocolClient('plottr')
   }
 
-  app.on('activate', () => {
+  app.on('activate', async () => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
       if (latestFile) {
         openProjectWindow(latestFile.path)
       } else {
-        createNew()
+        await createNew()
       }
     }
   })

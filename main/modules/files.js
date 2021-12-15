@@ -129,6 +129,7 @@ function checkSave(filePath, data, originalStats = null, counter = 0) {
 
 const fileSaver = () => {
   const saveJobs = new Map()
+  const BLANK_FILE = emptyFile()
 
   return function saveFile(filePath, jsonData) {
     const withoutSystemKeys = {}
@@ -136,6 +137,16 @@ const fileSaver = () => {
       if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
       withoutSystemKeys[key] = jsonData[key]
     })
+    const hasMinimalSetOfKeys = Object.keys(BLANK_FILE).every((key) => key in withoutSystemKeys)
+    if (!hasMinimalSetOfKeys) {
+      const missingKeys = Object.keys(BLANK_FILE).reduce((acc, key) => {
+        if (key in withoutSystemKeys) return acc
+        else return [key, ...acc]
+      }, [])
+      const errorMessage = `Tried to save file at ${filePath} but after removing system keys it lacks the following expected keys: ${missingKeys}`
+      console.error(errorMessage)
+      return Promise.reject(new Error(errorMessage))
+    }
     const payload =
       process.env.NODE_ENV == 'development'
         ? JSON.stringify(withoutSystemKeys, null, 2)

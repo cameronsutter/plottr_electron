@@ -193,9 +193,9 @@ const platform = {
           client: { userId, clientId },
         },
       } = state
-      const fileName = selectors.fileFromFileIdSelector(state.present, id).fileName
       const isOnCloud = path.startsWith('plottr://')
       if (isOnCloud) {
+        const fileName = selectors.fileFromFileIdSelector(state.present, id).fileName
         store.dispatch(actions.project.showLoader(true))
         deleteCloudBackupFile(fileName)
           .then(() => {

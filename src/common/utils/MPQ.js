@@ -1,5 +1,5 @@
 import mixpanel from 'mixpanel-browser'
-import USER from './user_info'
+import { USER } from '../../file-system/stores'
 import log from 'electron-log'
 import { helpers } from 'pltr/v2'
 

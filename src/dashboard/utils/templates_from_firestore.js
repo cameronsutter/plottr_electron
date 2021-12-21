@@ -9,7 +9,8 @@ import {
   deleteCustomTemplate as deleteCustomTemplateOnFirestore,
   editCustomTemplate as editCustomTemplateOnFirestore,
 } from 'wired-up-firebase'
-import SETTINGS from '../../common/utils/settings'
+
+import { SETTINGS } from '../../file-system/stores'
 
 let env = 'prod'
 if (is.development) env = 'staging'

@@ -1,6 +1,6 @@
 import { remote } from 'electron'
 import { t } from 'plottr_locales'
-import MPQ from '../utils/MPQ'
+import MPQ from '../common/utils/MPQ'
 import ScrivenerExporter from './scrivener/v2/exporter'
 import WordExporter from './word/exporter'
 

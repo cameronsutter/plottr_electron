@@ -4,11 +4,11 @@ import fs from 'fs'
 import { xml2json } from 'xml-js'
 import undoable from 'redux-undo'
 
-import wordExporter from '../../src/common/exporter/word/exporter'
+import wordExporter from '../../src/exporter/word/exporter'
 import { actions, rootReducer } from 'pltr/v2'
 
 import { readExample3, copyCurrent, exportedPath, prevExportedPath, EXAMPLE_3 } from './common'
-import default_config from '../../src/common/exporter/default_config'
+import default_config from '../../src/exporter/default_config'
 
 const extract = (filePath, destDir) => {
   return new Promise((resolve, reject) => {

@@ -28,18 +28,18 @@ import {
   lockRCE,
   releaseRCELock,
 } from 'wired-up-firebase'
-import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './common/utils/config_paths'
+import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
+import { SETTINGS, USER, licenseStore } from './file-system/stores'
 import {
   useExportConfigInfo,
   useTemplatesInfo,
   useLicenseInfo,
-  licenseStore,
   useCustomTemplatesInfo as _useCustomTemplatesInfo,
   useSettingsInfo,
   useCustomTemplatesFromLocalStorage,
 } from './common/utils/store_hooks'
-import askToExport from './common/exporter/start_export'
-import export_config from './common/exporter/default_config'
+import askToExport from './exporter/start_export'
+import export_config from './exporter/default_config'
 import {
   listTemplates,
   listCustomTemplates as _listCustomTemplates,
@@ -50,8 +50,6 @@ import {
 import log from 'electron-log'
 import { createFullErrorReport } from './common/utils/full_error_report'
 import { createErrorReport } from './common/utils/error_reporter'
-import SETTINGS from './common/utils/settings'
-import USER from './common/utils/user_info'
 import { is } from 'electron-util'
 import MPQ from './common/utils/MPQ'
 import { useTrialStatus } from './common/licensing/trial_manager'

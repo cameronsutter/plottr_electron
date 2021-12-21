@@ -3,7 +3,8 @@ import fs from 'fs'
 import path from 'path'
 import { useMemo } from 'react'
 import { sortBy } from 'lodash'
-import { useKnownFilesInfo, knownFilesStore } from '../../common/utils/store_hooks'
+import { useKnownFilesInfo } from '../../common/utils/store_hooks'
+import { knownFilesStore } from '../../file-system/stores'
 import { logger } from '../../logger'
 
 const { app } = remote

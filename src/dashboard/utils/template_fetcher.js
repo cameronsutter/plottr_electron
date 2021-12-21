@@ -2,13 +2,13 @@ import log from 'electron-log'
 import { is } from 'electron-util'
 import request from 'request'
 import semverGt from 'semver/functions/gt'
+import { MANIFEST_ROOT } from '../../common/utils/store_hooks'
 import {
   manifestStore,
   templatesStore,
   customTemplatesStore,
-  MANIFEST_ROOT,
-} from '../../common/utils/store_hooks'
-import SETTINGS from '../../common/utils/settings'
+  SETTINGS,
+} from '../../file-system/stores'
 
 const OLD_TEMPLATES_ROOT = 'templates'
 let env = 'prod'

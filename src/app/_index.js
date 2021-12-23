@@ -41,6 +41,7 @@ import { offlineFilePath } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { logger } from '../logger'
 import { resumeDirective } from '../resume'
+import connectListenersToRedux from '../listeners'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -347,6 +348,13 @@ function bootFile(filePath, options, numOpenFiles) {
   const { darkMode, beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
   const forceDashboard = shouldForceDashboard(SETTINGS.get('user.openDashboardFirst'), numOpenFiles)
+
+  // TODO: not sure when/whether we should unsubscribe.  Presumably
+  // when the window is refreshed/closed?
+  //
+  // Could be important to do so because it might set up inotify
+  // listeners and too many of those cause slow-downs.
+  const unsubscribeToListeners = connectListenersToRedux(store)
 
   try {
     if (isCloudFile) {

@@ -17,3 +17,11 @@ export const publishLicenseChangesToRedux = (store) => {
     store.dispatch(action(newValue))
   })
 }
+
+export const publishKnownFilesChangesToRedux = (store) => {
+  const action = actions.knownFiles.setKnownFiles
+  store.dispatch(action(fileSystemAPIs.currentKnownFiles()))
+  return fileSystemAPIs.listenToknownFilesChanges((newValue, oldValue) => {
+    store.dispatch(action(newValue))
+  })
+}

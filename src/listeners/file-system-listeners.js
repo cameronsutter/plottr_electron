@@ -9,3 +9,11 @@ export const publishTrialChangesToRedux = (store) => {
     store.dispatch(action(newValue))
   })
 }
+
+export const publishLicenseChangesToRedux = (store) => {
+  const action = actions.license.setLicenseInfo
+  store.dispatch(action(fileSystemAPIs.currentLicenseValue()))
+  return fileSystemAPIs.listenToLicenseChanges((newValue, oldValue) => {
+    store.dispatch(action(newValue))
+  })
+}

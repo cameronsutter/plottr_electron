@@ -5,6 +5,9 @@ import {
   templatesStore,
   customTemplatesStore,
   manifestStore,
+  exportConfigStore,
+  SETTINGS,
+  USER,
 } from '../file-system/stores'
 
 export const listenToTrialChanges = trialStore.onDidAnyChange.bind(trialStore)
@@ -25,3 +28,13 @@ export const currentCustomTemplates = () => customTemplatesStore.store
 
 export const listenToTemplateManifestChanges = manifestStore.onDidAnyChange.bind(manifestStore)
 export const currentTemplateManifest = () => manifestStore.store
+
+export const listenToExportConfigSettingsChanges =
+  exportConfigStore.onDidAnyChange.bind(exportConfigStore)
+export const currentExportConfig = () => exportConfigStore.store
+
+export const listenToAppSettingsChanges = SETTINGS.onDidAnyChange.bind(SETTINGS)
+export const currentAppSettings = () => SETTINGS.store
+
+export const listenToUserSettingsChanges = USER.onDidAnyChange.bind(USER)
+export const currentUserSettings = () => USER.store

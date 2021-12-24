@@ -9,6 +9,12 @@ const connectListenersToRedux = (store) => {
     fileSystemListeners.publishCustomTemplatesChangesToRedux(store)
   const unsubscribeToTemplateManifestChanges =
     fileSystemListeners.publishTemplateManifestChangesToRedux(store)
+  const unsubscribeToExportConfigChanges =
+    fileSystemListeners.publishExportConfigChangesToRedux(store)
+  const unsubscribetoAppSettingsChanges =
+    fileSystemListeners.publishAppSettingsChangesToRedux(store)
+  const unsubscribeToUserSettingsChanges =
+    fileSystemListeners.publishUserSettingsChangesToRedux(store)
 
   return () => {
     unsubscribeToTrialChanges()
@@ -17,6 +23,9 @@ const connectListenersToRedux = (store) => {
     unsubscribeToTemplatesChanges()
     unsubscribeToCustomTemplatesChanges()
     unsubscribeToTemplateManifestChanges()
+    unsubscribeToExportConfigChanges()
+    unsubscribetoAppSettingsChanges()
+    unsubscribeToUserSettingsChanges()
   }
 }
 

@@ -49,3 +49,27 @@ export const publishTemplateManifestChangesToRedux = (store) => {
     store.dispatch(action(newValue))
   })
 }
+
+export const publishExportConfigChangesToRedux = (store) => {
+  const action = actions.settings.setExportSettings
+  store.dispatch(action(fileSystemAPIs.currentExportConfig()))
+  return fileSystemAPIs.listenToExportConfigSettingsChanges((newValue, oldValue) => {
+    store.dispatch(action(newValue))
+  })
+}
+
+export const publishAppSettingsChangesToRedux = (store) => {
+  const action = actions.settings.setAppSettings
+  store.dispatch(action(fileSystemAPIs.currentAppSettings()))
+  return fileSystemAPIs.listenToAppSettingsChanges((newValue, oldValue) => {
+    store.dispatch(action(newValue))
+  })
+}
+
+export const publishUserSettingsChangesToRedux = (store) => {
+  const action = actions.settings.setUserSettings
+  store.dispatch(action(fileSystemAPIs.currentUserSettings()))
+  return fileSystemAPIs.listenToUserSettingsChanges((newValue, oldValue) => {
+    store.dispatch(action(newValue))
+  })
+}

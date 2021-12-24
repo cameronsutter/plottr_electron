@@ -25,3 +25,27 @@ export const publishKnownFilesChangesToRedux = (store) => {
     store.dispatch(action(newValue))
   })
 }
+
+export const publishTemplatesChangesToRedux = (store) => {
+  const action = actions.templates.setTemplates
+  store.dispatch(action(fileSystemAPIs.currentTemplates()))
+  return fileSystemAPIs.listenToTemplatesChanges((newValue, oldValue) => {
+    store.dispatch(action(newValue))
+  })
+}
+
+export const publishCustomTemplatesChangesToRedux = (store) => {
+  const action = actions.templates.setCustomTemplates
+  store.dispatch(action(fileSystemAPIs.currentCustomTemplates()))
+  return fileSystemAPIs.listenToCustomTemplatesChanges((newValue, oldValue) => {
+    store.dispatch(action(newValue))
+  })
+}
+
+export const publishTemplateManifestChangesToRedux = (store) => {
+  const action = actions.templates.setTemplateManifest
+  store.dispatch(action(fileSystemAPIs.currentTemplateManifest()))
+  return fileSystemAPIs.listenToTemplateManifestChanges((newValue, oldValue) => {
+    store.dispatch(action(newValue))
+  })
+}

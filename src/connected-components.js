@@ -84,6 +84,7 @@ import { useProLicenseInfo } from './common/utils/checkPro'
 import { resizeImage } from './common/resizeImage'
 import { logger } from './logger'
 import { closeDashboard } from './dashboard-events'
+import { fileSystemAPIs } from './api'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -343,6 +344,7 @@ const platform = {
   export: {
     askToExport,
     export_config,
+    setExportConfigSettings: fileSystemAPIs.setExportConfigSettings,
   },
   store: {
     useExportConfigInfo,

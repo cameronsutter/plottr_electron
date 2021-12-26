@@ -199,8 +199,3 @@ export function useSettingsInfo(checkOften = true) {
     alsoAskMainToBroadcastUpdate(deleteKey),
   ]
 }
-
-export function useExportConfigInfo() {
-  exportConfigStore.store = merge(export_config, exportConfigStore.store)
-  return useJsonStore(exportConfigStore)
-}

@@ -32,6 +32,7 @@ export const currentTemplateManifest = () => manifestStore.store
 export const listenToExportConfigSettingsChanges =
   exportConfigStore.onDidAnyChange.bind(exportConfigStore)
 export const currentExportConfigSettings = () => exportConfigStore.store
+export const setExportConfigSettings = (key, value) => exportConfigStore.set(key, value)
 
 export const listenToAppSettingsChanges = SETTINGS.onDidAnyChange.bind(SETTINGS)
 export const currentAppSettings = () => SETTINGS.store

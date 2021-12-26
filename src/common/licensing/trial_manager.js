@@ -1,4 +1,5 @@
-import { useTrialInfo, trialStore } from '../utils/store_hooks'
+import { useTrialInfo } from '../utils/store_hooks'
+import { trialStore } from '../../file-system/stores'
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2

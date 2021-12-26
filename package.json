@@ -104,6 +104,7 @@
     "plottr_components": "file:./lib/plottr_components",
     "plottr_firebase": "file:./lib/plottr_firebase",
     "plottr_locales": "file:./lib/plottr_locales",
+    "plottr_world": "file:./lib/plottr_world",
     "pltr": "file:./lib/pltr",
     "prettier": "^2.2.1",
     "pretty-date": "^0.2.0",

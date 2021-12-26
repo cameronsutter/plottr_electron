@@ -3,12 +3,10 @@ import { shell, remote } from 'electron'
 const { app, dialog } = remote
 import storage from 'electron-json-storage'
 import log from 'electron-log'
-import { CUSTOM_TEMPLATES_PATH } from './config_paths'
+import { USER_INFO_PATH, CUSTOM_TEMPLATES_PATH } from '../../file-system/config_paths'
 import { backupBasePath } from './backup'
-import SETTINGS from './settings'
 import { extendTrialWithReset } from '../licensing/trial_manager'
-import { USER_INFO_PATH } from './config_paths'
-import { manifestStore } from './store_hooks'
+import { manifestStore, SETTINGS } from '../../file-system/stores'
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {

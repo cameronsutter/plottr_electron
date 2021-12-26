@@ -1,0 +1,12 @@
+{
+  "name": "plottr_world",
+  "version": "0.0.1",
+  "description": "A module that describes the APIs for accessing data the data that Plottr needs to opperate in the real world.  The sources of data migth vary, but the APIs provided to the application are unified.  For example, on web, we might get application settings from local storage, but on Desktop we'll get them from the file system.",
+  "main": "src/index.js",
+  "license": "See LICENSE",
+  "private": true,
+  "dependencies": {
+    "plottr_check-prop-types": "file:../plottr_check-prop-types",
+    "prop-types": "^15.8.0"
+  }
+}

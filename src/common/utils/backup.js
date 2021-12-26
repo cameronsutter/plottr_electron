@@ -1,5 +1,5 @@
-import SETTINGS from '../../common/utils/settings'
-import { BACKUP_BASE_PATH } from '../../common/utils/config_paths'
+import { SETTINGS } from '../../file-system/stores'
+import { BACKUP_BASE_PATH } from '../../file-system/config_paths'
 
 export function backupBasePath() {
   const configuredLocation = SETTINGS.get('user.backupLocation')

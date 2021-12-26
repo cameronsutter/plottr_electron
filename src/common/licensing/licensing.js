@@ -1,6 +1,6 @@
 import { is } from 'electron-util'
 import { machineIdSync } from 'node-machine-id'
-import SETTINGS from '../utils/settings'
+import { SETTINGS } from '../../file-system/stores'
 
 const BASE_URL = 'https://my.plottr.com/edd-api'
 const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'

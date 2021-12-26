@@ -16,15 +16,15 @@ import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
-import SETTINGS from '../common/utils/settings'
-import askToExport from '../common/exporter/start_export'
+import askToExport from '../exporter/start_export'
+import exportConfig from '../exporter/default_config'
 import { ActionCreators } from 'redux-undo'
 import { setupI18n } from 'plottr_locales'
 import { displayFileName } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
-import exportConfig from '../common/exporter/default_config'
-import { TEMP_FILES_PATH } from '../common/utils/config_paths'
+import { TEMP_FILES_PATH } from '../file-system/config_paths'
+import { SETTINGS } from '../file-system/stores'
 import { createErrorReport } from '../common/utils/full_error_report'
 import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
@@ -41,6 +41,7 @@ import { offlineFilePath } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { logger } from '../logger'
 import { resumeDirective } from '../resume'
+import world from 'world-api'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -347,6 +348,13 @@ function bootFile(filePath, options, numOpenFiles) {
   const { darkMode, beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
   const forceDashboard = shouldForceDashboard(SETTINGS.get('user.openDashboardFirst'), numOpenFiles)
+
+  // TODO: not sure when/whether we should unsubscribe.  Presumably
+  // when the window is refreshed/closed?
+  //
+  // Could be important to do so because it might set up inotify
+  // listeners and too many of those cause slow-downs.
+  const unsubscribePublishers = world.publishChangesToStore(store)
 
   try {
     if (isCloudFile) {

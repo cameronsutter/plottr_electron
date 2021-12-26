@@ -1,5 +1,5 @@
 import mixpanel from 'mixpanel-browser'
-import USER from './user_info'
+import { USER } from '../../file-system/stores'
 
 export default function initMixpanel() {
   if (mixpanel.__loaded) return

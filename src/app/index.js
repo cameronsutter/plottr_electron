@@ -1,4 +1,4 @@
-import SETTINGS from '../common/utils/settings'
+import { SETTINGS } from '../file-system/stores'
 
 const electron = require('electron')
 const { setupI18n } = require('plottr_locales')

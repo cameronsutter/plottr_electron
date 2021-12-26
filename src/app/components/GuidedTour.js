@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Tour from 'reactour'
-import SETTINGS from '../../common/utils/settings'
+import { SETTINGS } from '../../file-system/stores'
 import { t as i18n } from 'plottr_locales'
 
 export default class GuidedTour extends Component {

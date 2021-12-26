@@ -1,6 +1,6 @@
 import { ActionTypes } from 'pltr/v2'
 import MPQ from '../../common/utils/MPQ'
-import USER from '../../common/utils/user_info'
+import { USER } from '../../file-system/stores'
 import { shouldIgnoreAction } from './shouldIgnoreAction'
 
 const { ADD_LINES_FROM_TEMPLATE, ADD_CARD } = ActionTypes

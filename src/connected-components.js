@@ -344,7 +344,7 @@ const platform = {
   export: {
     askToExport,
     export_config,
-    setExportConfigSettings: fileSystemAPIs.setExportConfigSettings,
+    saveExportConfigSettings: fileSystemAPIs.saveExportConfigSettings,
   },
   store: {
     useExportConfigInfo,

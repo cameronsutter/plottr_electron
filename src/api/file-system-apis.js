@@ -11,10 +11,10 @@ import {
 } from '../file-system/stores'
 
 export const listenToTrialChanges = trialStore.onDidAnyChange.bind(trialStore)
-export const currentTrialValue = () => trialStore.store
+export const currentTrial = () => trialStore.store
 
 export const listenToLicenseChanges = licenseStore.onDidAnyChange.bind(licenseStore)
-export const currentLicenseValue = () => licenseStore.store
+export const currentLicense = () => licenseStore.store
 
 export const listenToknownFilesChanges = knownFilesStore.onDidAnyChange.bind(knownFilesStore)
 export const currentKnownFiles = () => knownFilesStore.store
@@ -31,7 +31,7 @@ export const currentTemplateManifest = () => manifestStore.store
 
 export const listenToExportConfigSettingsChanges =
   exportConfigStore.onDidAnyChange.bind(exportConfigStore)
-export const currentExportConfig = () => exportConfigStore.store
+export const currentExportConfigSettings = () => exportConfigStore.store
 
 export const listenToAppSettingsChanges = SETTINGS.onDidAnyChange.bind(SETTINGS)
 export const currentAppSettings = () => SETTINGS.store

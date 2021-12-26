@@ -41,7 +41,7 @@ import { offlineFilePath } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { logger } from '../logger'
 import { resumeDirective } from '../resume'
-import connectListenersToRedux from '../listeners'
+import world from 'world-api'
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -354,7 +354,7 @@ function bootFile(filePath, options, numOpenFiles) {
   //
   // Could be important to do so because it might set up inotify
   // listeners and too many of those cause slow-downs.
-  const unsubscribeToListeners = connectListenersToRedux(store)
+  const unsubscribePublishers = world.publishChangesToStore(store)
 
   try {
     if (isCloudFile) {

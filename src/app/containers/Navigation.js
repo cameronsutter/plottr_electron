@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 import { ipcRenderer } from 'electron'
-import { Beamer, BookChooser, ErrorBoundary } from 'connected-components'
+import { Beamer, BookChooser } from 'connected-components'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
 import { FaRegUser } from 'react-icons/fa'
@@ -15,6 +15,7 @@ import { useLicenseInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
 import Resume from '../components/Resume'
+import { useCallback } from 'react'
 
 const isDev = process.env.NODE_ENV == 'development'
 
@@ -132,10 +133,10 @@ const Navigation = ({
     setDashboardView('help')
   }
 
-  const resetDashboardView = () => {
+  const resetDashboardView = useCallback(() => {
     if (firstTime || trialExpired) return
     setDashboardView(null)
-  }
+  }, [setDashboardView])
 
   const selectDashboardView = (view) => {
     setDashboardView(view)
@@ -149,14 +150,12 @@ const Navigation = ({
         <LoginModal closeLoginModal={closeLoginModal} setChecking={toggleChecking} />
       ) : null}
       {dashboardView ? (
-        <ErrorBoundary>
-          <DashboardModal
-            activeView={dashboardView}
-            setActiveView={selectDashboardView}
-            closeDashboard={resetDashboardView}
-            darkMode={isDarkMode}
-          />
-        </ErrorBoundary>
+        <DashboardModal
+          activeView={dashboardView}
+          setActiveView={selectDashboardView}
+          closeDashboard={resetDashboardView}
+          darkMode={isDarkMode}
+        />
       ) : null}
       {isOffline ? (
         <div className="offline-mode-banner">

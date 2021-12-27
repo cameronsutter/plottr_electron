@@ -30,13 +30,7 @@ import {
 } from 'wired-up-firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
 import { USER, licenseStore } from './file-system/stores'
-import {
-  useExportConfigInfo,
-  useTemplatesInfo,
-  useLicenseInfo,
-  useCustomTemplatesInfo as _useCustomTemplatesInfo,
-  useCustomTemplatesFromLocalStorage,
-} from './common/utils/store_hooks'
+import { useExportConfigInfo, useTemplatesInfo, useLicenseInfo } from './common/utils/store_hooks'
 import askToExport from './exporter/start_export'
 import export_config from './exporter/default_config'
 import {
@@ -308,15 +302,6 @@ const platform = {
       ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
     },
     useFilteredSortedTemplates,
-    useCustomTemplatesInfo: (...args) => {
-      const state = store.getState()
-      const {
-        client: { userId },
-      } = state.present
-      if (userId) return useCustomTemplatesFromLocalStorage(...args)
-      return _useCustomTemplatesInfo(...args)
-    },
-    useLocalCustomTemplatesInfo: _useCustomTemplatesInfo,
     useTemplatesInfo,
   },
   settings: {

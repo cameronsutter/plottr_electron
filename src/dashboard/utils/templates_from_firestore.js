@@ -4,7 +4,6 @@ import axios from 'axios'
 import semverGt from 'semver/functions/gt'
 import { sortBy } from 'lodash'
 import {
-  listenToCustomTemplates as listenToCustomTemplatesFromFirestore,
   saveCustomTemplate as saveCustomTemplateToFirstore,
   deleteCustomTemplate as deleteCustomTemplateOnFirestore,
   editCustomTemplate as editCustomTemplateOnFirestore,
@@ -183,12 +182,6 @@ export const saveCustomTemplate = (userId, template) => {
 
 export const saveCustomTemplatesToStorage = (templates) => {
   templates.forEach(saveCustomTemplateToStorage)
-}
-
-export const listenToCustomTemplates = (userId) => {
-  return listenToCustomTemplatesFromFirestore(userId, (customTemplates) => {
-    return saveCustomTemplatesToStorage(Object.values(customTemplates))
-  })
 }
 
 export const deleteCustomTemplate = (templateId, userId) => {

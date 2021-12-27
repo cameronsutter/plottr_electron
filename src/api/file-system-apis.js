@@ -22,9 +22,13 @@ export const currentKnownFiles = () => knownFilesStore.store
 export const listenToTemplatesChanges = templatesStore.onDidAnyChange.bind(templatesStore)
 export const currentTemplates = () => templatesStore.store
 
-export const listenToCustomTemplatesChanges =
-  customTemplatesStore.onDidAnyChange.bind(customTemplatesStore)
-export const currentCustomTemplates = () => customTemplatesStore.store
+export const listenToCustomTemplatesChanges = (cb) => {
+  const withTemplatesAsArray = (templates) => {
+    return cb(Object.values(templates))
+  }
+  return customTemplatesStore.onDidAnyChange.bind(customTemplatesStore)(withTemplatesAsArray)
+}
+export const currentCustomTemplates = () => Object.values(customTemplatesStore.store)
 
 export const listenToTemplateManifestChanges = manifestStore.onDidAnyChange.bind(manifestStore)
 export const currentTemplateManifest = () => manifestStore.store

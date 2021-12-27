@@ -23,7 +23,6 @@ import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
-import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 
 const { dialog } = remote
 
@@ -149,13 +148,6 @@ const App = ({
       window.removeEventListener('beforeunload', askToSave)
     }
   }, [])
-
-  useEffect(() => {
-    if (userId && !isOffline) {
-      return listenToCustomTemplates(userId)
-    }
-    return () => {}
-  }, [userId, isOffline])
 
   const dontSaveAndClose = () => {
     setBlockClosing(false)

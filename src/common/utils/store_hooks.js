@@ -1,14 +1,7 @@
 import { ipcRenderer } from 'electron'
 import { useState, useEffect } from 'react'
 import { cloneDeep, isEqual } from 'lodash'
-import { allCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
-import {
-  trialStore,
-  licenseStore,
-  knownFilesStore,
-  templatesStore,
-  customTemplatesStore,
-} from '../../file-system/stores'
+import { trialStore, licenseStore, knownFilesStore, templatesStore } from '../../file-system/stores'
 import export_config from '../../exporter/default_config'
 
 export const MANIFEST_ROOT = 'manifest'
@@ -141,38 +134,4 @@ export function useKnownFilesInfo(userId, initialFirebaseFileList, checkOften = 
 
 export function useTemplatesInfo() {
   return useJsonStore(templatesStore)
-}
-
-export function useCustomTemplatesInfo() {
-  return useJsonStore(customTemplatesStore)
-}
-
-const indexById = (array) => {
-  const indexed = {}
-  array.forEach((x) => (indexed[x.id] = x))
-  return indexed
-}
-
-export function useCustomTemplatesFromLocalStorage() {
-  const [templates, setTemplates] = useState(indexById(allCustomTemplates()))
-
-  useEffect(() => {
-    const deleteTemplateListener = document.addEventListener('delete-template', () => {
-      setTemplates(indexById(allCustomTemplates()))
-    })
-    const editTemplateListener = document.addEventListener('edit-template', () => {
-      setTemplates(indexById(allCustomTemplates()))
-    })
-    const saveTemplateListener = document.addEventListener('save-template', () => {
-      setTemplates(indexById(allCustomTemplates()))
-    })
-    return () => {
-      document.removeEventListener('delete-template', deleteTemplateListener)
-      document.removeEventListener('edit-template', editTemplateListener)
-      document.removeEventListener('save-template', saveTemplateListener)
-    }
-  }, [])
-
-  const nop = () => {}
-  return [templates, templates.size, nop, nop]
 }

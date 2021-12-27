@@ -1,6 +1,6 @@
 import { plottrWorldAPI } from 'plottr_world'
 
-import { fileSystemAPIs } from './api'
+import { fileSystemAPIs, firebaseAPIs } from './api'
 
 const {
   listenToTrialChanges,
@@ -11,8 +11,6 @@ const {
   currentKnownFiles,
   listenToTemplatesChanges,
   currentTemplates,
-  listenToCustomTemplatesChanges,
-  currentCustomTemplates,
   listenToTemplateManifestChanges,
   currentTemplateManifest,
   listenToExportConfigSettingsChanges,
@@ -22,6 +20,26 @@ const {
   listenToUserSettingsChanges,
   currentUserSettings,
 } = fileSystemAPIs
+
+const listenToCustomTemplatesChanges = (cb) => {
+  let unsubscribeFromFirebaseCustomTemplateChanges = () => {}
+  const unsubscribeToFileSystemCustomTemplates = fileSystemAPIs.listenToCustomTemplatesChanges(
+    (customTemplatesFromFileSystem) => {
+      unsubscribeFromFirebaseCustomTemplateChanges = firebaseAPIs.listenToCustomTemplates(
+        (customTemplatesFromFirebase) => {
+          cb(customTemplatesFromFileSystem.concat(customTemplatesFromFirebase))
+        }
+      )
+    }
+  )
+  return () => {
+    unsubscribeToFileSystemCustomTemplates()
+    unsubscribeFromFirebaseCustomTemplateChanges()
+  }
+}
+const currentCustomTemplates = () => {
+  return fileSystemAPIs.currentCustomTemplates().concat(firebaseAPIs.currentCustomTemplates())
+}
 
 const theWorld = {
   license: {

@@ -36,6 +36,7 @@ export const saveExportConfigSettings = (key, value) => exportConfigStore.set(ke
 
 export const listenToAppSettingsChanges = SETTINGS.onDidAnyChange.bind(SETTINGS)
 export const currentAppSettings = () => SETTINGS.store
+export const saveAppSetting = (key, value) => SETTINGS.set(key, value)
 
 export const listenToUserSettingsChanges = USER.onDidAnyChange.bind(USER)
 export const currentUserSettings = () => USER.store

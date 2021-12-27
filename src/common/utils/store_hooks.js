@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron'
 import { useState, useEffect } from 'react'
-import { merge, cloneDeep, isEqual } from 'lodash'
+import { cloneDeep, isEqual } from 'lodash'
 import { allCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 import {
   trialStore,
@@ -8,8 +8,6 @@ import {
   knownFilesStore,
   templatesStore,
   customTemplatesStore,
-  exportConfigStore,
-  SETTINGS,
 } from '../../file-system/stores'
 import export_config from '../../exporter/default_config'
 
@@ -177,25 +175,4 @@ export function useCustomTemplatesFromLocalStorage() {
 
   const nop = () => {}
   return [templates, templates.size, nop, nop]
-}
-
-export function useSettingsInfo(checkOften = true) {
-  const [info, size, saveInfoAtKey, saveAllInfo, deleteKey] = useJsonStore(
-    SETTINGS,
-    'reload-options',
-    checkOften
-  )
-  const alsoAskMainToBroadcastUpdate =
-    (f) =>
-    (...args) => {
-      ipcRenderer.send('broadcast-reload-options')
-      f(...args)
-    }
-  return [
-    info,
-    size,
-    alsoAskMainToBroadcastUpdate(saveInfoAtKey),
-    alsoAskMainToBroadcastUpdate(saveAllInfo),
-    alsoAskMainToBroadcastUpdate(deleteKey),
-  ]
 }

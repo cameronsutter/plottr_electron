@@ -29,13 +29,12 @@ import {
   releaseRCELock,
 } from 'wired-up-firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
-import { SETTINGS, USER, licenseStore } from './file-system/stores'
+import { USER, licenseStore } from './file-system/stores'
 import {
   useExportConfigInfo,
   useTemplatesInfo,
   useLicenseInfo,
   useCustomTemplatesInfo as _useCustomTemplatesInfo,
-  useSettingsInfo,
   useCustomTemplatesFromLocalStorage,
 } from './common/utils/store_hooks'
 import askToExport from './exporter/start_export'
@@ -156,8 +155,9 @@ const platform = {
       const state = store.getState()
       const {
         client: { userId },
+        settings: { appSettings },
       } = state.present
-      const previouslyLoggedIntoPro = SETTINGS.get('user.frbId')
+      const previouslyLoggedIntoPro = appSettings?.user?.frbId
       // It's important that the same number of hooks are called per
       // component per render.  It's an error if it isn't.
       const hookResults = _useSortedKnownFiles(userId, ...args)
@@ -319,8 +319,9 @@ const platform = {
     useLocalCustomTemplatesInfo: _useCustomTemplatesInfo,
     useTemplatesInfo,
   },
-  settings: SETTINGS,
-  useSettingsInfo,
+  settings: {
+    saveAppSetting: fileSystemAPIs.saveAppSetting,
+  },
   user: USER,
   os: is.windows ? 'windows' : is.macos ? 'macos' : is.linux ? 'linux' : 'unknown',
   isDevelopment: is.development,

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Tour from 'reactour'
-import { SETTINGS } from '../../file-system/stores'
+
 import { t as i18n } from 'plottr_locales'
+
+import { fileSystemAPIs } from '../../api'
 
 export default class GuidedTour extends Component {
   state = {
@@ -69,7 +71,7 @@ export default class GuidedTour extends Component {
   ]
 
   closeTheTour = () => {
-    SETTINGS.set('showTheTour', false)
+    fileSystemAPIs.saveAppSetting('showTheTour', false)
     this.setState({ showTour: false })
   }
 

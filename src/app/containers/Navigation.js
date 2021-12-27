@@ -11,7 +11,7 @@ import { FaRegUser } from 'react-icons/fa'
 import { FaSignal } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
-import { useLicenseInfo, useSettingsInfo } from '../../common/utils/store_hooks'
+import { useLicenseInfo } from '../../common/utils/store_hooks'
 import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
 import Resume from '../components/Resume'
@@ -30,11 +30,11 @@ const Navigation = ({
   isCloudFile,
   checkedUser,
   isOffline,
+  settings,
 }) => {
   const [checked, setChecked] = useState(false)
   const initialView = forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
-  const [settings] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   // don't show the login if user is not on Pro
@@ -214,6 +214,7 @@ Navigation.propTypes = {
   isCloudFile: PropTypes.bool,
   isOffline: PropTypes.bool,
   checkedUser: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -225,6 +226,7 @@ function mapStateToProps(state) {
     selectedFile: selectors.selectedFileSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
+    settings: selectors.appSettingsSelector(state.present),
   }
 }
 

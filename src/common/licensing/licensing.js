@@ -1,6 +1,6 @@
 import { is } from 'electron-util'
 import { machineIdSync } from 'node-machine-id'
-import { SETTINGS } from '../../file-system/stores'
+import { fileSystemAPIs } from '../../api'
 
 const BASE_URL = 'https://my.plottr.com/edd-api'
 const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'
@@ -14,6 +14,8 @@ export const WRONG_PRODUCT_ERRORS = [
 ]
 
 const GRACE_PERIOD_DAYS = 30
+
+const { saveAppSetting } = fileSystemAPIs
 
 export function licenseURL(action, productID, license) {
   let url = `${BASE_URL}`
@@ -51,43 +53,45 @@ export function hasActivationsLeft(body) {
 
 function mapV2old(isActive) {
   if (isActive) {
-    SETTINGS.set('trialMode', false)
-    SETTINGS.set('canGetUpdates', true)
-    SETTINGS.set('isInGracePeriod', false)
-    SETTINGS.set('canEdit', true)
-    SETTINGS.set('canExport', true)
+    saveAppSetting('trialMode', false)
+    saveAppSetting('canGetUpdates', true)
+    saveAppSetting('isInGracePeriod', false)
+    saveAppSetting('canEdit', true)
+    saveAppSetting('canExport', true)
   } else {
-    SETTINGS.set('trialMode', false)
-    SETTINGS.set('canGetUpdates', false)
-    SETTINGS.set('isInGracePeriod', false)
-    SETTINGS.set('canEdit', true)
-    SETTINGS.set('canExport', true)
+    saveAppSetting('trialMode', false)
+    saveAppSetting('canGetUpdates', false)
+    saveAppSetting('isInGracePeriod', false)
+    saveAppSetting('canEdit', true)
+    saveAppSetting('canExport', true)
   }
 }
 
 function mapPro(isActive) {
+  const currentAppSettings = fileSystemAPIs.currentAppSettings()
+
   if (isActive) {
-    SETTINGS.set('trialMode', false)
-    SETTINGS.set('canGetUpdates', true)
-    SETTINGS.set('isInGracePeriod', false)
-    SETTINGS.set('canEdit', true)
-    SETTINGS.set('canExport', true)
+    saveAppSetting('trialMode', false)
+    saveAppSetting('canGetUpdates', true)
+    saveAppSetting('isInGracePeriod', false)
+    saveAppSetting('canEdit', true)
+    saveAppSetting('canExport', true)
   } else {
     const timeStamp = Date.now()
-    if (SETTINGS.get('isInGracePeriod') && timeStamp > SETTINGS.get('gracePeriodEnd')) {
-      SETTINGS.set('trialMode', false)
-      SETTINGS.set('canGetUpdates', false)
-      SETTINGS.set('isInGracePeriod', false)
-      SETTINGS.set('canEdit', false)
-      SETTINGS.set('canExport', false)
+    if (currentAppSettings.isInGracePeriod && timeStamp > currentAppSettings.gracePeriodEnd) {
+      saveAppSetting('trialMode', false)
+      saveAppSetting('canGetUpdates', false)
+      saveAppSetting('isInGracePeriod', false)
+      saveAppSetting('canEdit', false)
+      saveAppSetting('canExport', false)
     } else {
       // just expired
-      SETTINGS.set('trialMode', false)
-      SETTINGS.set('canGetUpdates', false)
-      SETTINGS.set('isInGracePeriod', true)
-      SETTINGS.set('gracePeriodEnd', SETTINGS.get('gracePeriodEnd') || getGracePeriodEnd())
-      SETTINGS.set('canEdit', true)
-      SETTINGS.set('canExport', true)
+      saveAppSetting('trialMode', false)
+      saveAppSetting('canGetUpdates', false)
+      saveAppSetting('isInGracePeriod', true)
+      saveAppSetting('gracePeriodEnd', currentAppSettings.gracePeriodEnd || getGracePeriodEnd())
+      saveAppSetting('canEdit', true)
+      saveAppSetting('canExport', true)
     }
   }
 }

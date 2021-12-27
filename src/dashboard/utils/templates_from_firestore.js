@@ -10,11 +10,12 @@ import {
   editCustomTemplate as editCustomTemplateOnFirestore,
 } from 'wired-up-firebase'
 
-import { SETTINGS } from '../../file-system/stores'
+import { fileSystemAPIs } from '../../api'
 
 let env = 'prod'
 if (is.development) env = 'staging'
-if (SETTINGS.get('betatemplates')) env = 'beta'
+const settings = fileSystemAPIs.currentAppSettings()
+if (settings.betatemplates) env = 'beta'
 const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
 const manifestURL = `${baseURL}/v2/manifest.json`
 

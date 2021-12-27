@@ -6,7 +6,10 @@ import log from 'electron-log'
 import { USER_INFO_PATH, CUSTOM_TEMPLATES_PATH } from '../../file-system/config_paths'
 import { backupBasePath } from './backup'
 import { extendTrialWithReset } from '../licensing/trial_manager'
-import { manifestStore, SETTINGS } from '../../file-system/stores'
+import { manifestStore } from '../../file-system/stores'
+import { fileSystemAPIs } from '../../api'
+
+const { saveAppSetting } = fileSystemAPIs
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {
@@ -23,44 +26,44 @@ export function handleCustomerServiceCode(code) {
 
     case '7c6a3a':
       // turn off backup
-      SETTINGS.set('backup', false)
+      saveAppSetting('backup', false)
       break
 
     case 'dbfd51':
       // turn on backup
-      SETTINGS.set('backup', true)
+      saveAppSetting('backup', true)
       break
 
     case '3c66c9':
       // turn off allowPrerelease
-      SETTINGS.set('allowPrerelease', false)
-      SETTINGS.set('betatemplates', false)
+      saveAppSetting('allowPrerelease', false)
+      saveAppSetting('betatemplates', false)
       break
 
     case 'a56a8a':
       // turn on allowPrerelease
-      SETTINGS.set('allowPrerelease', true)
-      SETTINGS.set('betatemplates', true)
+      saveAppSetting('allowPrerelease', true)
+      saveAppSetting('betatemplates', true)
       break
 
     case 'f92d59':
       // turn off canGetUpdates
-      SETTINGS.set('canGetUpdates', false)
+      saveAppSetting('canGetUpdates', false)
       break
 
     case 'd45e13cf92d59':
       // turn on canGetUpdates
-      SETTINGS.set('canGetUpdates', true)
+      saveAppSetting('canGetUpdates', true)
       break
 
     case '186e0d':
       // turn on diagnose update problems
-      SETTINGS.set('diagnoseUpdate', true)
+      saveAppSetting('diagnoseUpdate', true)
       break
 
     case 'd0e681':
       // turn off diagnose update problems
-      SETTINGS.set('diagnoseUpdate', false)
+      saveAppSetting('diagnoseUpdate', false)
       break
 
     case '329fd4391c10d':
@@ -90,11 +93,11 @@ export function handleCustomerServiceCode(code) {
       break
 
     case 'beta templates':
-      SETTINGS.set('betatemplates', true)
+      saveAppSetting('betatemplates', true)
       break
 
     case 'beta templates off':
-      SETTINGS.set('betatemplates', false)
+      saveAppSetting('betatemplates', false)
       break
 
     default:

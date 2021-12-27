@@ -24,7 +24,6 @@ import { displayFileName } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import { TEMP_FILES_PATH } from '../file-system/config_paths'
-import { SETTINGS } from '../file-system/stores'
 import { createErrorReport } from '../common/utils/full_error_report'
 import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
@@ -41,6 +40,7 @@ import { offlineFilePath } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { logger } from '../logger'
 import { resumeDirective } from '../resume'
+import { fileSystemAPIs } from '../api'
 import world from 'world-api'
 
 const withFileId = (fileId, file) => ({
@@ -53,7 +53,7 @@ const withFileId = (fileId, file) => ({
 
 const clientId = machineIdSync()
 
-setupI18n(SETTINGS, { electron })
+setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')
@@ -347,7 +347,8 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
 function bootFile(filePath, options, numOpenFiles) {
   const { darkMode, beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
-  const forceDashboard = shouldForceDashboard(SETTINGS.get('user.openDashboardFirst'), numOpenFiles)
+  const settings = fileSystemAPIs.currentAppSettings()
+  const forceDashboard = shouldForceDashboard(settings.user?.openDashboardFirst, numOpenFiles)
 
   // TODO: not sure when/whether we should unsubscribe.  Presumably
   // when the window is refreshed/closed?
@@ -528,11 +529,12 @@ window.logger = function (which) {
 }
 
 ipcRenderer.once('send-launch', (event, version) => {
+  const settings = fileSystemAPIs.currentAppSettings()
   const settingsWeCareAbout = {
-    auto_download: SETTINGS.get('user.autoDownloadUpdate'),
-    backup_on: SETTINGS.get('backup'),
-    locale: SETTINGS.get('locale'),
-    dark: SETTINGS.get('user.dark'),
+    auto_download: settings.user?.autoDownloadUpdate,
+    backup_on: settings.backup,
+    locale: settings.locale,
+    dark: settings.user?.dark,
   }
   MPQ.push('Launch', { online: navigator.onLine, version: version, ...settingsWeCareAbout })
 })

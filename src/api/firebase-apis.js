@@ -12,12 +12,14 @@ const listenToCustomTemplates = (cb) => {
   let unsubscribeFromCustomTemplates = () => {}
 
   const unsubscribeFromSessionChanges = onSessionChange((user) => {
-    unsubscribeFromCustomTemplates = listenToCustomTemplatesFromFirebase(user.uid).then(
-      (newTemplates) => {
-        const annotatedTemplates = newTemplates.map(annotateTemplate)
-        cb(annotatedTemplates)
-      }
-    )
+    if (user) {
+      unsubscribeFromCustomTemplates = listenToCustomTemplatesFromFirebase(user.uid).then(
+        (newTemplates) => {
+          const annotatedTemplates = newTemplates.map(annotateTemplate)
+          cb(annotatedTemplates)
+        }
+      )
+    }
   })
 
   return () => {

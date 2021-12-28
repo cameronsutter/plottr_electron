@@ -25,17 +25,6 @@ export function getTemplateById(id) {
   return null
 }
 
-export function listTemplates(type) {
-  const templatesById = templateStore.get()
-  if (!templatesById) return []
-  if (!type) return Object.values(templatesById)
-
-  return sortBy(
-    Object.values(templatesById).filter((t) => t.type == type),
-    'name'
-  )
-}
-
 const isLocalTemplate = (id) => {
   const customById = customTemplateStore.get()
   return customById && customById[id]

@@ -33,12 +33,7 @@ import { USER, licenseStore } from './file-system/stores'
 import { useExportConfigInfo, useTemplatesInfo, useLicenseInfo } from './common/utils/store_hooks'
 import askToExport from './exporter/start_export'
 import export_config from './exporter/default_config'
-import {
-  listTemplates,
-  getTemplateById,
-  deleteTemplate,
-  editTemplateDetails,
-} from './common/utils/templates'
+import { getTemplateById, deleteTemplate, editTemplateDetails } from './common/utils/templates'
 import log from 'electron-log'
 import { createFullErrorReport } from './common/utils/full_error_report'
 import { createErrorReport } from './common/utils/error_reporter'
@@ -60,7 +55,6 @@ import {
 import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
-import TemplateFetcher from './dashboard/utils/template_fetcher'
 import { store } from './app/store'
 import {
   renameFile,
@@ -274,8 +268,6 @@ const platform = {
     ipcRenderer.send('pls-reload-menu')
   },
   template: {
-    TemplateFetcher,
-    listTemplates,
     getTemplateById,
     deleteTemplate: (templateId) => {
       const state = store.getState()

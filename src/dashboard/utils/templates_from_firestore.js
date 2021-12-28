@@ -145,13 +145,6 @@ export const getCustomTemplateById = (id) => {
   return allCustomTemplates().find((template) => template.id === id)
 }
 
-export const listTemplates = (type) => {
-  return sortBy(
-    allTemplates().filter((template) => template.type === type),
-    'name'
-  )
-}
-
 const customTemplateKey = (templateId) => {
   return `${CUSTOM_TEMPLATE_PREFIX}${templateId}`
 }

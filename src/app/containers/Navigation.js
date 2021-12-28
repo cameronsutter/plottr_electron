@@ -34,11 +34,13 @@ const Navigation = ({
   const [settings] = useSettingsInfo()
   const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
-  // don't show the login if user is not on Pro
-  const [showFrbLogin, setShowFrbLogin] = useState((needsLogin || settings?.user?.frbId) && !userId)
   // first time = no license, no trial, no pro
   const [firstTime, setFirstTime] = useState(
     !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
+  )
+  // don't show the login if user is not on Pro
+  const [showFrbLogin, setShowFrbLogin] = useState(
+    !firstTime && (needsLogin || settings?.user?.frbId) && !userId
   )
   // expired trial = no license, no pro, expired trial
   const [trialExpired, setTrialExpired] = useState(

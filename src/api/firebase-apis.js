@@ -8,14 +8,17 @@ const annotateTemplate = (template) => ({
   isCloudTemplate: true,
 })
 
+let _currentCustomTemplates = []
 const listenToCustomTemplates = (cb) => {
   let unsubscribeFromCustomTemplates = () => {}
 
   const unsubscribeFromSessionChanges = onSessionChange((user) => {
     if (user) {
-      unsubscribeFromCustomTemplates = listenToCustomTemplatesFromFirebase(user.uid).then(
+      unsubscribeFromCustomTemplates = listenToCustomTemplatesFromFirebase(
+        user.uid,
         (newTemplates) => {
           const annotatedTemplates = newTemplates.map(annotateTemplate)
+          _currentCustomTemplates = annotatedTemplates
           cb(annotatedTemplates)
         }
       )
@@ -28,12 +31,7 @@ const listenToCustomTemplates = (cb) => {
   }
 }
 
-let _currentCustomTemplates = []
 const currentCustomTemplates = () => {
-  listenToCustomTemplates((templates) => {
-    _currentCustomTemplates = templates.map(annotateTemplate)
-  })()
-
   return _currentCustomTemplates
 }
 

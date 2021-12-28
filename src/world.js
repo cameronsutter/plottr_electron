@@ -22,14 +22,19 @@ const {
 } = fileSystemAPIs
 
 const listenToCustomTemplatesChanges = (cb) => {
-  let unsubscribeFromFirebaseCustomTemplateChanges = () => {}
+  let _customTemplatesFromFileSystem = []
+  let _customTemplatesFromFirebase = []
+
   const unsubscribeToFileSystemCustomTemplates = fileSystemAPIs.listenToCustomTemplatesChanges(
     (customTemplatesFromFileSystem) => {
-      unsubscribeFromFirebaseCustomTemplateChanges = firebaseAPIs.listenToCustomTemplates(
-        (customTemplatesFromFirebase) => {
-          cb(customTemplatesFromFileSystem.concat(customTemplatesFromFirebase))
-        }
-      )
+      _customTemplatesFromFileSystem = customTemplatesFromFileSystem
+      cb(customTemplatesFromFileSystem.concat(_customTemplatesFromFirebase))
+    }
+  )
+  const unsubscribeFromFirebaseCustomTemplateChanges = firebaseAPIs.listenToCustomTemplates(
+    (customTemplatesFromFirebase) => {
+      _customTemplatesFromFirebase = customTemplatesFromFirebase
+      cb(_customTemplatesFromFileSystem.concat(customTemplatesFromFirebase))
     }
   )
   return () => {

@@ -35,7 +35,6 @@ import askToExport from './exporter/start_export'
 import export_config from './exporter/default_config'
 import {
   listTemplates,
-  listCustomTemplates as _listCustomTemplates,
   getTemplateById,
   deleteTemplate,
   editTemplateDetails,
@@ -277,13 +276,6 @@ const platform = {
   template: {
     TemplateFetcher,
     listTemplates,
-    listCustomTemplates: (...args) => {
-      const state = store.getState()
-      const {
-        client: { userId },
-      } = state.present
-      return _listCustomTemplates(userId)(...args)
-    },
     getTemplateById,
     deleteTemplate: (templateId) => {
       const state = store.getState()

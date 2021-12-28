@@ -2,7 +2,6 @@ import Store from 'electron-store'
 import { sortBy } from 'lodash'
 import {
   getCustomTemplateById,
-  listCustomTemplates as listCustomTemplatesFromFirebase,
   deleteCustomTemplate,
   editCustomTemplate,
 } from '../../dashboard/utils/templates_from_firestore'
@@ -35,20 +34,6 @@ export function listTemplates(type) {
     Object.values(templatesById).filter((t) => t.type == type),
     'name'
   )
-}
-
-export const listCustomTemplates = (cloudOnly) => (type) => {
-  if (cloudOnly) {
-    return sortBy(listCustomTemplatesFromFirebase(type), 'name')
-  }
-
-  const templatesById = customTemplateStore.get()
-  if (!templatesById) return []
-  if (!type) return Object.values(templatesById)
-
-  const localTemplates = Object.values(templatesById).filter((t) => t.type == type)
-
-  return sortBy(localTemplates, 'name')
 }
 
 const isLocalTemplate = (id) => {

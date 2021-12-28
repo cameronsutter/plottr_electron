@@ -193,13 +193,6 @@ export const editCustomTemplate = (templateId, template) => {
   return editCustomTemplateOnFirestore(templateId, template)
 }
 
-export const listCustomTemplates = (type) => {
-  return sortBy(
-    allCustomTemplates().filter((template) => template.type === type),
-    'name'
-  )
-}
-
 export const startSaveAsTemplate = (type) => {
   const saveEvent = new Event('start-save-as-template', { bubbles: true, cancelable: false })
   saveEvent.templateType = type

@@ -30,10 +30,10 @@ import {
 } from 'wired-up-firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
 import { USER, licenseStore } from './file-system/stores'
-import { useExportConfigInfo, useTemplatesInfo, useLicenseInfo } from './common/utils/store_hooks'
+import { useExportConfigInfo, useLicenseInfo } from './common/utils/store_hooks'
 import askToExport from './exporter/start_export'
 import export_config from './exporter/default_config'
-import { getTemplateById, deleteTemplate, editTemplateDetails } from './common/utils/templates'
+import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
 import log from 'electron-log'
 import { createFullErrorReport } from './common/utils/full_error_report'
 import { createErrorReport } from './common/utils/error_reporter'
@@ -52,7 +52,6 @@ import {
   listOfflineFiles,
   sortAndSearch,
 } from './dashboard/utils/files'
-import { useFilteredSortedTemplates } from './dashboard/utils/templates'
 import { useBackupFolders } from './dashboard/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import { store } from './app/store'
@@ -268,7 +267,6 @@ const platform = {
     ipcRenderer.send('pls-reload-menu')
   },
   template: {
-    getTemplateById,
     deleteTemplate: (templateId) => {
       const state = store.getState()
       const {
@@ -285,8 +283,6 @@ const platform = {
       const win = remote.getCurrentWindow()
       ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
     },
-    useFilteredSortedTemplates,
-    useTemplatesInfo,
   },
   settings: {
     saveAppSetting: fileSystemAPIs.saveAppSetting,

@@ -1,8 +1,6 @@
-import { useMemo } from 'react'
 import { is } from 'electron-util'
 import axios from 'axios'
 import semverGt from 'semver/functions/gt'
-import { sortBy } from 'lodash'
 import {
   saveCustomTemplate as saveCustomTemplateToFirstore,
   deleteCustomTemplate as deleteCustomTemplateOnFirestore,
@@ -208,21 +206,4 @@ export const messageToDeleteTemplate = (templateId) => {
   const deleteEvent = new Event('delete-template', { bubbles: true, cancelable: false })
   deleteEvent.templateId = templateId
   document.dispatchEvent(deleteEvent)
-}
-
-export const useFilteredSortedTemplates = (templatesById, type, searchTerm) => {
-  const filteredTemplates = useMemo(() => {
-    return sortBy(
-      Object.values(templatesById).filter((t) => {
-        if (searchTerm && searchTerm.length > 1) {
-          return t.name.toLowerCase().includes(searchTerm) && t.type == type
-        } else {
-          return t.type == type
-        }
-      }),
-      'name'
-    )
-  }, [templatesById, searchTerm])
-
-  return filteredTemplates
 }

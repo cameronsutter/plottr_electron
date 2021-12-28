@@ -131,7 +131,3 @@ export function useKnownFilesInfo(userId, initialFirebaseFileList, checkOften = 
   const nop = () => {}
   return [filesByPosition, fileCount, nop, nop]
 }
-
-export function useTemplatesInfo() {
-  return useJsonStore(templatesStore)
-}

@@ -5,7 +5,6 @@ import storage from 'electron-json-storage'
 import log from 'electron-log'
 import { USER_INFO_PATH, CUSTOM_TEMPLATES_PATH } from '../../file-system/config_paths'
 import { backupBasePath } from './backup'
-import { extendTrialWithReset } from '../licensing/trial_manager'
 import { manifestStore } from '../../file-system/stores'
 import { fileSystemAPIs } from '../../api'
 
@@ -16,7 +15,7 @@ export function handleCustomerServiceCode(code) {
   switch (code) {
     case 'xsu7wb':
       // extend free trial (one time)
-      extendTrialWithReset(30)
+      fileSystemAPIs.extendTrialWithReset(30)
       break
 
     case '941ff8':

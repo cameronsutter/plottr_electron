@@ -12,7 +12,6 @@ import { FaSignal } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
 import { useLicenseInfo } from '../../common/utils/store_hooks'
-import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
 import Resume from '../components/Resume'
 import { useCallback } from 'react'
@@ -32,21 +31,20 @@ const Navigation = ({
   checkedUser,
   isOffline,
   settings,
+  started,
+  expired,
 }) => {
   const [checked, setChecked] = useState(false)
   const initialView = forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
-  const trialInfo = useTrialStatus()
   const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   // don't show the login if user is not on Pro
   const [showFrbLogin, setShowFrbLogin] = useState((needsLogin || settings?.user?.frbId) && !userId)
   // first time = no license, no trial, no pro
-  const [firstTime, setFirstTime] = useState(
-    !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
-  )
+  const [firstTime, setFirstTime] = useState(!licenseInfoSize && !started && !hasCurrentProLicense)
   // expired trial = no license, no pro, expired trial
   const [trialExpired, setTrialExpired] = useState(
-    !licenseInfoSize && trialInfo.expired && !hasCurrentProLicense
+    !licenseInfoSize && expired && !hasCurrentProLicense
   )
 
   useEffect(() => {
@@ -69,12 +67,12 @@ const Navigation = ({
   }, [selectedFile, dashboardView, isCloudFile, checked])
 
   useEffect(() => {
-    setFirstTime(!licenseInfoSize && !trialInfo.started && !hasCurrentProLicense)
-  }, [licenseInfoSize, trialInfo.started, hasCurrentProLicense])
+    setFirstTime(!licenseInfoSize && !started && !hasCurrentProLicense)
+  }, [licenseInfoSize, started, hasCurrentProLicense])
 
   useEffect(() => {
-    setTrialExpired(!licenseInfoSize && !hasCurrentProLicense && trialInfo.expired)
-  }, [licenseInfoSize, trialInfo.expired, hasCurrentProLicense])
+    setTrialExpired(!licenseInfoSize && !hasCurrentProLicense && expired)
+  }, [licenseInfoSize, expired, hasCurrentProLicense])
 
   useEffect(() => {
     if (!firstTime && !forceProjectDashboard) {
@@ -89,7 +87,7 @@ const Navigation = ({
     if (userId && !hasCurrentProLicense) {
       setDashboardView('account')
     }
-  }, [licenseInfoSize, trialInfo, dashboardView, userId, hasCurrentProLicense, checked])
+  }, [licenseInfoSize, trialExpired, dashboardView, userId, hasCurrentProLicense, checked])
 
   useEffect(() => {
     if (!checked) return
@@ -214,6 +212,8 @@ Navigation.propTypes = {
   isOffline: PropTypes.bool,
   checkedUser: PropTypes.func.isRequired,
   settings: PropTypes.object.isRequired,
+  started: PropTypes.bool,
+  expired: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -226,6 +226,8 @@ function mapStateToProps(state) {
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
     settings: selectors.appSettingsSelector(state.present),
+    started: selectors.trialStartedSelector(state.present),
+    expired: selectors.trialExpiredSelector(state.present),
   }
 }
 

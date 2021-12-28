@@ -39,7 +39,6 @@ import { createFullErrorReport } from './common/utils/full_error_report'
 import { createErrorReport } from './common/utils/error_reporter'
 import { is } from 'electron-util'
 import MPQ from './common/utils/MPQ'
-import { useTrialStatus } from './common/licensing/trial_manager'
 import { checkForActiveLicense } from './common/licensing/check_license'
 import { verifyLicense } from './common/licensing/verify_license'
 import { checkForPro } from './common/licensing/check_pro'
@@ -256,12 +255,13 @@ const platform = {
   license: {
     useLicenseInfo,
     checkForActiveLicense,
-    useTrialStatus,
     licenseStore,
     verifyLicense,
     trial90days,
     trial60days,
     checkForPro,
+    startTrial: fileSystemAPIs.startTrial,
+    extendTrial: fileSystemAPIs.extendTrial,
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')

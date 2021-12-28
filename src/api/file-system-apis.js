@@ -10,8 +10,44 @@ import {
   USER,
 } from '../file-system/stores'
 
+const TRIAL_LENGTH = 30
+const EXTENSIONS = 2
+
+function addDays(date, days) {
+  var result = new Date(date)
+  result.setDate(result.getDate() + days)
+  result.setHours(23, 59, 59, 999)
+  return result
+}
+
 export const listenToTrialChanges = trialStore.onDidAnyChange.bind(trialStore)
 export const currentTrial = () => trialStore.store
+export const startTrial = (numDays = null) => {
+  const day = new Date()
+  const startsAt = day.getTime()
+  const end = addDays(startsAt, numDays || TRIAL_LENGTH)
+  const endsAt = end.getTime()
+  trialStore.set({ startsAt, endsAt, extensions: EXTENSIONS })
+}
+export const extendTrial = (days) => {
+  const newEnd = addDays(Date.now(), days)
+  const trialInfo = currentTrial()
+  const info = {
+    ...trialInfo,
+    endsAt: newEnd.getTime(),
+    extensions: --trialInfo.extensions,
+  }
+  trialStore.set(info)
+}
+export const extendTrialWithReset = (days) => {
+  const currentInfo = currentTrial()
+  if (currentInfo.hasBeenReset) return
+
+  const newEnd = addDays(currentInfo.endsAt, days)
+  trialStore.set('endsAt', newEnd.getTime())
+  trialStore.set('extensions', EXTENSIONS)
+  trialStore.set('hasBeenReset', true)
+}
 
 export const listenToLicenseChanges = licenseStore.onDidAnyChange.bind(licenseStore)
 export const currentLicense = () => licenseStore.store

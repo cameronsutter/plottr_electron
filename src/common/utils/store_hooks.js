@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
 import { useState, useEffect } from 'react'
 import { cloneDeep, isEqual } from 'lodash'
-import { trialStore, licenseStore, knownFilesStore, templatesStore } from '../../file-system/stores'
+import { trialStore, licenseStore, knownFilesStore } from '../../file-system/stores'
 import export_config from '../../exporter/default_config'
 
 export const MANIFEST_ROOT = 'manifest'
@@ -59,10 +59,6 @@ function useJsonStore(store, ipcEventToReloadOn, checksOften) {
   }
 
   return [info, size, saveInfoAtKey, saveAllInfo, deleteKey]
-}
-
-export function useTrialInfo() {
-  return useJsonStore(trialStore)
 }
 
 export function useLicenseInfo() {

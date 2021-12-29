@@ -4,6 +4,8 @@ import { ActionCreators } from 'redux-undo'
 import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
+import log from 'electron-log'
+import { is } from 'electron-util'
 
 import { actions, selectors } from 'pltr/v2'
 import {
@@ -28,26 +30,7 @@ import {
   lockRCE,
   releaseRCELock,
 } from 'wired-up-firebase'
-import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
-import { USER } from './file-system/stores'
-import askToExport from './exporter/start_export'
-import export_config from './exporter/default_config'
-import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
-import log from 'electron-log'
-import { createFullErrorReport } from './common/utils/full_error_report'
-import { createErrorReport } from './common/utils/error_reporter'
-import { is } from 'electron-util'
-import MPQ from './common/utils/MPQ'
-import { openExistingFile as _openExistingFile } from './dashboard/utils/window_manager'
-import {
-  doesFileExist,
-  removeFromKnownFiles,
-  listOfflineFiles,
-  sortAndSearch,
-} from './dashboard/utils/files'
-import { useBackupFolders } from './dashboard/utils/backups'
-import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
-import { store } from './app/store'
+
 import {
   renameFile,
   saveFile,
@@ -57,11 +40,34 @@ import {
   uploadExisting,
   deleteCloudBackupFile,
 } from './files'
-import extractImages from './common/extract_images'
-import { resizeImage } from './common/resizeImage'
 import { logger } from './logger'
 import { closeDashboard } from './dashboard-events'
 import { fileSystemAPIs, licenseServerAPIs } from './api'
+
+import { store } from './app/store'
+
+import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
+import { USER } from './file-system/stores'
+
+import askToExport from './exporter/start_export'
+import export_config from './exporter/default_config'
+
+import extractImages from './common/extract_images'
+import { resizeImage } from './common/resizeImage'
+
+import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
+import { createFullErrorReport } from './common/utils/full_error_report'
+import { createErrorReport } from './common/utils/error_reporter'
+import MPQ from './common/utils/MPQ'
+import { openExistingFile as _openExistingFile } from './common/utils/window_manager'
+import {
+  doesFileExist,
+  removeFromKnownFiles,
+  listOfflineFiles,
+  sortAndSearch,
+} from './common/utils/files'
+import { useBackupFolders } from './common/utils/backups'
+import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote

@@ -1,8 +1,5 @@
 import Store from 'electron-store'
-import {
-  deleteCustomTemplate,
-  editCustomTemplate,
-} from '../../dashboard/utils/templates_from_firestore'
+import { deleteCustomTemplate, editCustomTemplate } from './templates_from_firestore'
 
 const TEMPLATES_PATH = process.env.NODE_ENV == 'development' ? 'templates_dev' : 'templates'
 const CUSTOM_TEMPLATES_PATH =

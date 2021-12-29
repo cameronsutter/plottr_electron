@@ -29,7 +29,7 @@ import {
   releaseRCELock,
 } from 'wired-up-firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
-import { USER, licenseStore } from './file-system/stores'
+import { USER } from './file-system/stores'
 import { useExportConfigInfo } from './common/utils/store_hooks'
 import askToExport from './exporter/start_export'
 import export_config from './exporter/default_config'
@@ -39,10 +39,6 @@ import { createFullErrorReport } from './common/utils/full_error_report'
 import { createErrorReport } from './common/utils/error_reporter'
 import { is } from 'electron-util'
 import MPQ from './common/utils/MPQ'
-import { checkForActiveLicense } from './common/licensing/check_license'
-import { verifyLicense } from './common/licensing/verify_license'
-import { checkForPro } from './common/licensing/check_pro'
-import { trial90days, trial60days } from './common/licensing/special_codes'
 import { openExistingFile as _openExistingFile } from './dashboard/utils/window_manager'
 import {
   doesFileExist,
@@ -64,11 +60,10 @@ import {
   deleteCloudBackupFile,
 } from './files'
 import extractImages from './common/extract_images'
-import { useProLicenseInfo } from './common/utils/checkPro'
 import { resizeImage } from './common/resizeImage'
 import { logger } from './logger'
 import { closeDashboard } from './dashboard-events'
-import { fileSystemAPIs } from './api'
+import { fileSystemAPIs, licenseServerAPIs } from './api'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -253,12 +248,11 @@ const platform = {
     ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
   },
   license: {
-    checkForActiveLicense,
-    licenseStore,
-    verifyLicense,
-    trial90days,
-    trial60days,
-    checkForPro,
+    checkForActiveLicense: licenseServerAPIs.checkForActiveLicense,
+    verifyLicense: licenseServerAPIs.verifyLicense,
+    trial90days: licenseServerAPIs.trial90days,
+    trial60days: licenseServerAPIs.trial60days,
+    checkForPro: licenseServerAPIs.checkForPro,
     startTrial: fileSystemAPIs.startTrial,
     extendTrial: fileSystemAPIs.extendTrial,
     deleteLicense: fileSystemAPIs.deleteLicense,
@@ -339,7 +333,6 @@ const platform = {
   releaseRCELock,
   machineIdSync,
   extractImages,
-  useProLicenseInfo,
   firebase: {
     startUI,
     firebaseUI,

@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron'
 import { useState, useEffect } from 'react'
 import { cloneDeep, isEqual } from 'lodash'
-import { trialStore, licenseStore, knownFilesStore } from '../../file-system/stores'
+import { knownFilesStore } from '../../file-system/stores'
 import export_config from '../../exporter/default_config'
 
 export const MANIFEST_ROOT = 'manifest'

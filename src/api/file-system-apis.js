@@ -51,6 +51,12 @@ export const extendTrialWithReset = (days) => {
 
 export const listenToLicenseChanges = licenseStore.onDidAnyChange.bind(licenseStore)
 export const currentLicense = () => licenseStore.store
+export const deleteLicense = () => {
+  licenseStore.clear()
+}
+export const saveLicenseInfo = (newLicense) => {
+  licenseStore.store = newLicense
+}
 
 export const listenToknownFilesChanges = knownFilesStore.onDidAnyChange.bind(knownFilesStore)
 export const currentKnownFiles = () => knownFilesStore.store

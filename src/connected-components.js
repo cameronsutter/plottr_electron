@@ -30,7 +30,7 @@ import {
 } from 'wired-up-firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
 import { USER, licenseStore } from './file-system/stores'
-import { useExportConfigInfo, useLicenseInfo } from './common/utils/store_hooks'
+import { useExportConfigInfo } from './common/utils/store_hooks'
 import askToExport from './exporter/start_export'
 import export_config from './exporter/default_config'
 import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
@@ -253,7 +253,6 @@ const platform = {
     ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
   },
   license: {
-    useLicenseInfo,
     checkForActiveLicense,
     licenseStore,
     verifyLicense,
@@ -262,6 +261,8 @@ const platform = {
     checkForPro,
     startTrial: fileSystemAPIs.startTrial,
     extendTrial: fileSystemAPIs.extendTrial,
+    deleteLicense: fileSystemAPIs.deleteLicense,
+    saveLicenseInfo: fileSystemAPIs.saveLicenseInfo,
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')

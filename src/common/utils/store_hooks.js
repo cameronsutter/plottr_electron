@@ -61,10 +61,6 @@ function useJsonStore(store, ipcEventToReloadOn, checksOften) {
   return [info, size, saveInfoAtKey, saveAllInfo, deleteKey]
 }
 
-export function useLicenseInfo() {
-  return useJsonStore(licenseStore)
-}
-
 function useKnownFilesFromFirebase(initialFileList) {
   const [fileList, setFileList] = useState(initialFileList)
   const [filesByPosition, setFilesByPosition] = useState({})

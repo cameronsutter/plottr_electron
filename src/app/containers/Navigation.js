@@ -11,7 +11,6 @@ import { FaRegUser } from 'react-icons/fa'
 import { FaSignal } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
-import { useLicenseInfo } from '../../common/utils/store_hooks'
 import LoginModal from '../components/LoginModal'
 import Resume from '../components/Resume'
 import { useCallback } from 'react'
@@ -33,18 +32,18 @@ const Navigation = ({
   settings,
   started,
   expired,
+  hasLicense,
 }) => {
   const [checked, setChecked] = useState(false)
   const initialView = forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
-  const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   // don't show the login if user is not on Pro
   const [showFrbLogin, setShowFrbLogin] = useState((needsLogin || settings?.user?.frbId) && !userId)
   // first time = no license, no trial, no pro
-  const [firstTime, setFirstTime] = useState(!licenseInfoSize && !started && !hasCurrentProLicense)
+  const [firstTime, setFirstTime] = useState(hasLicense && !started && !hasCurrentProLicense)
   // expired trial = no license, no pro, expired trial
   const [trialExpired, setTrialExpired] = useState(
-    !licenseInfoSize && expired && !hasCurrentProLicense
+    !hasLicense && expired && !hasCurrentProLicense
   )
 
   useEffect(() => {
@@ -214,6 +213,7 @@ Navigation.propTypes = {
   settings: PropTypes.object.isRequired,
   started: PropTypes.bool,
   expired: PropTypes.bool,
+  hasLicense: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -228,6 +228,7 @@ function mapStateToProps(state) {
     settings: selectors.appSettingsSelector(state.present),
     started: selectors.trialStartedSelector(state.present),
     expired: selectors.trialExpiredSelector(state.present),
+    hasLicense: selectors.hasLicenseSelector(state.present),
   }
 }
 

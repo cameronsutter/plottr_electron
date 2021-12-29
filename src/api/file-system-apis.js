@@ -51,6 +51,8 @@ export const extendTrialWithReset = (days) => {
 
 export const listenToLicenseChanges = licenseStore.onDidAnyChange.bind(licenseStore)
 export const currentLicense = () => licenseStore.store
+// FIXME: known issue: if we remove the license, then the listener
+// stops firing.  This might be fixed in the next release.
 export const deleteLicense = () => {
   licenseStore.clear()
 }

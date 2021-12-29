@@ -66,7 +66,6 @@ import {
   listOfflineFiles,
   sortAndSearch,
 } from './common/utils/files'
-import { useBackupFolders } from './common/utils/backups'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 
 const win = remote.getCurrentWindow()
@@ -293,7 +292,6 @@ const platform = {
     export_config,
     saveExportConfigSettings: fileSystemAPIs.saveExportConfigSettings,
   },
-  useBackupFolders,
   moveFromTemp: () => {
     const win = remote.getCurrentWindow()
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')

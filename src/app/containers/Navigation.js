@@ -30,22 +30,17 @@ const Navigation = ({
   checkedUser,
   isOffline,
   settings,
-  started,
-  expired,
-  hasLicense,
+  isFirstTime,
+  isInTrialModeWithExpiredTrial,
 }) => {
   const [checked, setChecked] = useState(false)
   const initialView = forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
   // don't show the login if user is not on Pro
+  //
+  // FIXME: this logic looks really compilacetd for what it's doing. :/
+  // It would be better if all of this could be in redux instead.
   const [showFrbLogin, setShowFrbLogin] = useState((needsLogin || settings?.user?.frbId) && !userId)
-  // first time = no license, no trial, no pro
-  const [firstTime, setFirstTime] = useState(hasLicense && !started && !hasCurrentProLicense)
-  // expired trial = no license, no pro, expired trial
-  const [trialExpired, setTrialExpired] = useState(
-    !hasLicense && expired && !hasCurrentProLicense
-  )
-
   useEffect(() => {
     const openListener = document.addEventListener('open-dashboard', () => {
       setDashboardView('files')
@@ -66,27 +61,19 @@ const Navigation = ({
   }, [selectedFile, dashboardView, isCloudFile, checked])
 
   useEffect(() => {
-    setFirstTime(!licenseInfoSize && !started && !hasCurrentProLicense)
-  }, [licenseInfoSize, started, hasCurrentProLicense])
-
-  useEffect(() => {
-    setTrialExpired(!licenseInfoSize && !hasCurrentProLicense && expired)
-  }, [licenseInfoSize, expired, hasCurrentProLicense])
-
-  useEffect(() => {
-    if (!firstTime && !forceProjectDashboard) {
+    if (!isFirstTime && !forceProjectDashboard) {
       setDashboardView(null)
     }
-  }, [firstTime])
+  }, [isFirstTime])
 
   useEffect(() => {
-    if (firstTime || trialExpired) {
+    if (isFirstTime || isInTrialModeWithExpiredTrial) {
       setDashboardView('account')
     }
     if (userId && !hasCurrentProLicense) {
       setDashboardView('account')
     }
-  }, [licenseInfoSize, trialExpired, dashboardView, userId, hasCurrentProLicense, checked])
+  }, [isInTrialModeWithExpiredTrial, dashboardView, userId, hasCurrentProLicense, checked])
 
   useEffect(() => {
     if (!checked) return
@@ -107,6 +94,10 @@ const Navigation = ({
   }
 
   const TrialLinks = () => {
+    // FIXME: why is trialMode in settings?
+    //
+    // We should probably indicate a transitive state in redux and
+    // rely on the value that apears there instead.
     if (!settings.trialMode || hasCurrentProLicense || isDev) return null
 
     return (
@@ -131,7 +122,7 @@ const Navigation = ({
   }
 
   const resetDashboardView = useCallback(() => {
-    if (firstTime || trialExpired) return
+    if (isFirstTime || isInTrialModeWithExpiredTrial) return
     setDashboardView(null)
   }, [setDashboardView])
 
@@ -211,9 +202,8 @@ Navigation.propTypes = {
   isOffline: PropTypes.bool,
   checkedUser: PropTypes.func.isRequired,
   settings: PropTypes.object.isRequired,
-  started: PropTypes.bool,
-  expired: PropTypes.bool,
-  hasLicense: PropTypes.bool,
+  isFirstTime: PropTypes.bool,
+  isInTrialModeWithExpiredTrial: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -226,9 +216,8 @@ function mapStateToProps(state) {
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
     settings: selectors.appSettingsSelector(state.present),
-    started: selectors.trialStartedSelector(state.present),
-    expired: selectors.trialExpiredSelector(state.present),
-    hasLicense: selectors.hasLicenseSelector(state.present),
+    isFirstTime: selectors.isFirstTimeSelector(state.present),
+    isInTrialModeWithExpiredTrial: selectors.isInTrialModeWithExpiredTrialSelector(state.present),
   }
 }
 

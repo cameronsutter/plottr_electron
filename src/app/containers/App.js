@@ -46,6 +46,9 @@ const App = ({
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
   const [checkedUser, setCheckedUser] = useState(false)
+  // FIXME: We need a transitive state tracked in Redux for whether
+  // we've fully-loaded so that we don't show the login modal before
+  // we've booted the file or cehcked whether the user is logged in.
   const [needsLogin, setNeedsLogin] = useState(isCloudFile && !userId)
 
   const isTryingToReload = useRef(false)

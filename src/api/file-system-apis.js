@@ -1,3 +1,7 @@
+import fs from 'fs'
+import path from 'path'
+import { sortBy } from 'lodash'
+
 import {
   licenseStore,
   trialStore,
@@ -9,6 +13,7 @@ import {
   SETTINGS,
   USER,
 } from '../file-system/stores'
+import { backupBasePath } from '../common/utils/backup'
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
@@ -98,3 +103,58 @@ export const saveAppSetting = (key, value) => SETTINGS.set(key, value)
 
 export const listenToUserSettingsChanges = USER.onDidAnyChange.bind(USER)
 export const currentUserSettings = () => USER.store
+
+const withFromFileSystem = (backupFolder) => ({
+  ...backupFolder,
+  fromFileSystem: true,
+})
+
+let _currentBackups = []
+export const listenToBackupsChanges = (cb) => {
+  let watcher = () => {}
+  readBackupsDirectory((initialBackups) => {
+    _currentBackups = initialBackups
+    cb(initialBackups)
+    watcher = fs.watch(backupBasePath(), (event, fileName) => {
+      // Do we care about event and fileName?
+      //
+      // NOTE: event could be 'changed' or 'renamed'.
+      readBackupsDirectory((newBackups) => {
+        _currentBackups = newBackups
+        cb(newBackups)
+      })
+    })
+  })
+
+  return () => {
+    watcher.close()
+  }
+}
+export const currentBackups = () => {
+  readBackupsDirectory((newBackups) => {
+    _currentBackups = newBackups.map(withFromFileSystem)
+  })
+
+  return _currentBackups
+}
+function readBackupsDirectory(cb) {
+  fs.readdir(backupBasePath(), (err, directories) => {
+    const filteredDirs = directories.filter((d) => {
+      return d[0] != '.' && !d.includes('.pltr')
+    })
+    let tempList = []
+    filteredDirs.forEach((dir) => {
+      const thisPath = path.join(backupBasePath(), dir)
+      // FIXME: readdir is async, it doesn't make sense to call the
+      // callback inside of it :/
+      fs.readdir(thisPath, (error, backupFiles) => {
+        tempList.push({
+          path: thisPath,
+          date: dir,
+          backups: backupFiles,
+        })
+        cb(sortBy(tempList, (a) => new Date(a.date.replace(/_/g, '-'))).reverse())
+      })
+    })
+  })
+}

@@ -30,7 +30,6 @@ import {
 } from 'wired-up-firebase'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
 import { USER } from './file-system/stores'
-import { useExportConfigInfo } from './common/utils/store_hooks'
 import askToExport from './exporter/start_export'
 import export_config from './exporter/default_config'
 import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
@@ -42,7 +41,6 @@ import MPQ from './common/utils/MPQ'
 import { openExistingFile as _openExistingFile } from './dashboard/utils/window_manager'
 import {
   doesFileExist,
-  useSortedKnownFiles as _useSortedKnownFiles,
   removeFromKnownFiles,
   listOfflineFiles,
   sortAndSearch,
@@ -131,24 +129,6 @@ const platform = {
         })
     },
     doesFileExist,
-    useSortedKnownFiles: (...args) => {
-      const state = store.getState()
-      const {
-        client: { userId },
-        settings: { appSettings },
-      } = state.present
-      const previouslyLoggedIntoPro = appSettings?.user?.frbId
-      // It's important that the same number of hooks are called per
-      // component per render.  It's an error if it isn't.
-      const hookResults = _useSortedKnownFiles(userId, ...args)
-      if (previouslyLoggedIntoPro && !userId) {
-        return [[], {}]
-      }
-      return hookResults
-    },
-    useSortedKnownFilesIgnoringLoggedIn: (...args) => {
-      return _useSortedKnownFiles(null, ...args)
-    },
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,
@@ -306,9 +286,6 @@ const platform = {
     askToExport,
     export_config,
     saveExportConfigSettings: fileSystemAPIs.saveExportConfigSettings,
-  },
-  store: {
-    useExportConfigInfo,
   },
   useBackupFolders,
   moveFromTemp: () => {

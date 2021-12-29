@@ -2,7 +2,6 @@ import log from 'electron-log'
 import { is } from 'electron-util'
 import request from 'request'
 import semverGt from 'semver/functions/gt'
-import { MANIFEST_ROOT } from '../../common/utils/store_hooks'
 import { manifestStore, templatesStore, customTemplatesStore } from '../../file-system/stores'
 import { fileSystemAPIs } from '../../api'
 
@@ -13,6 +12,8 @@ const settings = fileSystemAPIs.currentAppSettings()
 if (settings.betatemplates) env = 'beta'
 const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
 const manifestURL = `${baseURL}/v2/manifest.json`
+
+export const MANIFEST_ROOT = 'manifest'
 
 class TemplateFetcher {
   constructor(props) {

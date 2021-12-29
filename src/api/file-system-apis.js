@@ -60,7 +60,17 @@ export const saveLicenseInfo = (newLicense) => {
   licenseStore.store = newLicense
 }
 
-export const listenToknownFilesChanges = knownFilesStore.onDidAnyChange.bind(knownFilesStore)
+export const listenToknownFilesChanges = (cb) => {
+  const withFileSystemAsSource = (files) => {
+    return cb(
+      files.map((file) => ({
+        ...file,
+        fromFileSystem: true,
+      }))
+    )
+  }
+  return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
+}
 export const currentKnownFiles = () => knownFilesStore.store
 
 export const listenToTemplatesChanges = templatesStore.onDidAnyChange.bind(templatesStore)

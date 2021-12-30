@@ -9,8 +9,6 @@ const {
   currentTrial,
   listenToLicenseChanges,
   currentLicense,
-  listenToknownFilesChanges,
-  currentKnownFiles,
   listenToTemplatesChanges,
   currentTemplates,
   listenToTemplateManifestChanges,
@@ -23,24 +21,62 @@ const {
   currentUserSettings,
 } = fileSystemAPIs
 
-const listenToCustomTemplatesChanges = (cb) => {
-  let _customTemplatesFromFileSystem = []
-  let _customTemplatesFromFirebase = []
+const listenToknownFilesChanges = (cb) => {
+  let _currentKnownFilesFromFileSystem = null
+  let _currentKnownFilesFromFirebase = null
 
-  const unsubscribeToFileSystemCustomTemplates = fileSystemAPIs.listenToCustomTemplatesChanges(
-    (customTemplatesFromFileSystem) => {
-      _customTemplatesFromFileSystem = customTemplatesFromFileSystem
-      cb(customTemplatesFromFileSystem.concat(_customTemplatesFromFirebase))
+  const unsubscribeFromFileSystemKnownFiles = fileSystemAPIs.listenToknownFilesChanges(
+    (knownFilesFromFileSystem) => {
+      _currentKnownFilesFromFileSystem = knownFilesFromFileSystem
+      if (_currentKnownFilesFromFirebase) {
+        cb(_currentKnownFilesFromFileSystem.concat(_currentKnownFilesFromFirebase))
+      }
     }
   )
+
+  const unsubscribeFromFirebaseKnownFiles = firebaseAPIs.listenToKnownFiles(
+    (knownFilesFromFirebase) => {
+      _currentKnownFilesFromFirebase = knownFilesFromFirebase
+      if (_currentKnownFilesFromFileSystem) {
+        cb(_currentKnownFilesFromFileSystem.concat(_currentKnownFilesFromFirebase))
+      }
+    }
+  )
+
+  return () => {
+    unsubscribeFromFileSystemKnownFiles()
+    unsubscribeFromFirebaseKnownFiles()
+  }
+}
+
+const currentKnownFiles = (cb) => {
+  return fileSystemAPIs.currentKnownFiles().concat(firebaseAPIs.currentKnownFiles())
+}
+
+const listenToCustomTemplatesChanges = (cb) => {
+  let _customTemplatesFromFileSystem = null
+  let _customTemplatesFromFirebase = null
+
+  const unsubscribeFromFileSystemCustomTemplates = fileSystemAPIs.listenToCustomTemplatesChanges(
+    (customTemplatesFromFileSystem) => {
+      _customTemplatesFromFileSystem = customTemplatesFromFileSystem
+      if (_customTemplatesFromFirebase) {
+        cb(_customTemplatesFromFileSystem.concat(_customTemplatesFromFirebase))
+      }
+    }
+  )
+
   const unsubscribeFromFirebaseCustomTemplateChanges = firebaseAPIs.listenToCustomTemplates(
     (customTemplatesFromFirebase) => {
       _customTemplatesFromFirebase = customTemplatesFromFirebase
-      cb(_customTemplatesFromFileSystem.concat(customTemplatesFromFirebase))
+      if (_customTemplatesFromFileSystem) {
+        cb(_customTemplatesFromFileSystem.concat(_customTemplatesFromFirebase))
+      }
     }
   )
+
   return () => {
-    unsubscribeToFileSystemCustomTemplates()
+    unsubscribeFromFileSystemCustomTemplates()
     unsubscribeFromFirebaseCustomTemplateChanges()
   }
 }
@@ -64,16 +100,21 @@ const mergeBackups = (firebaseFolders, localFolders) => {
   return results
 }
 const listenToBackupsChanges = (cb) => {
-  let _backupsFromFileSystem = []
-  let _backupsFromFirebase = []
+  let _backupsFromFileSystem = null
+  let _backupsFromFirebase = null
 
   const unsubscribeFromFileSystemBackups = fileSystemAPIs.listenToBackupsChanges((backups) => {
     _backupsFromFileSystem = backups
-    cb(mergeBackups(_backupsFromFirebase, backups))
+    if (_backupsFromFirebase) {
+      cb(mergeBackups(_backupsFromFirebase, _backupsFromFileSystem))
+    }
   })
+
   const unsubscribeFromFirebaseBackups = firebaseAPIs.listenToBackupsChanges((backups) => {
     _backupsFromFirebase = backups
-    cb(mergeBackups(backups, _backupsFromFileSystem))
+    if (_backupsFromFileSystem) {
+      cb(mergeBackups(_backupsFromFirebase, _backupsFromFileSystem))
+    }
   })
 
   return () => {
@@ -81,6 +122,7 @@ const listenToBackupsChanges = (cb) => {
     unsubscribeFromFirebaseBackups()
   }
 }
+
 const currentBackups = () => {
   return fileSystemAPIs.currentBackups().concat(firebaseAPIs.currentBackups())
 }

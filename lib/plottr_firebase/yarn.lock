@@ -13,9 +13,9 @@
     js-yaml "^4.1.0"
 
 "@babel/runtime@^7.9.2":
-  version "7.16.3"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
-  integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
+  version "7.16.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.5.tgz#7f3e34bf8bdbbadf03fbb7b1ea0d929569c9487a"
+  integrity sha512-TXWihFIS3Pyv5hzR7j6ihmeLkZfrXGxAr5UfSl8CHf+6q/wpiYDkUau0czckpYG8QmnCIuPpdLtuA9VmuGGyMA==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -24,9 +24,9 @@
   resolved "https://registry.npmjs.org/@dabh/diagnostics/-/diagnostics-2.0.2.tgz"
   integrity sha512-+A1YivoVDNNVCdfozHSR8v/jyuuLTMXwjWuxPFlFlUapXoGc+Gj9mDlTDDfrwl7rXCl2tNZ0kE8sIBO6YOn96Q==
   dependencies:
-    "colorspace" "1.1.x"
-    "enabled" "2.0.x"
-    "kuler" "^2.0.0"
+    colorspace "1.1.x"
+    enabled "2.0.x"
+    kuler "^2.0.0"
 
 "@firebase/analytics-types@0.6.0":
   version "0.6.0"
@@ -43,7 +43,7 @@
     "@firebase/installations" "0.4.32"
     "@firebase/logger" "0.2.6"
     "@firebase/util" "1.3.0"
-    "tslib" "^2.1.0"
+    tslib "^2.1.0"
 
 "@firebase/app-check-interop-types@0.1.0":
   version "0.1.0"
@@ -65,7 +65,7 @@
     "@firebase/component" "0.5.6"
     "@firebase/logger" "0.2.6"
     "@firebase/util" "1.3.0"
-    "tslib" "^2.1.0"
+    tslib "^2.1.0"
 
 "@firebase/app-types@0.6.3":
   version "0.6.3"
@@ -81,9 +81,9 @@
     "@firebase/component" "0.5.6"
     "@firebase/logger" "0.2.6"
     "@firebase/util" "1.3.0"
-    "dom-storage" "2.1.0"
-    "tslib" "^2.1.0"
-    "xmlhttprequest" "1.8.0"
+    dom-storage "2.1.0"
+    tslib "^2.1.0"
+    xmlhttprequest "1.8.0"
 
 "@firebase/auth-interop-types@0.1.6":
   version "0.1.6"
@@ -108,7 +108,7 @@
   integrity sha512-L41SdS/4a164jx2iGfakJgaBUPPBI3DI+RrUlmh3oHSUljTeCwfj/Nhcv3S7e2lyXsGFJtAyepfPUx4IQ05crw==
   dependencies:
     "@firebase/util" "1.2.0"
-    "tslib" "^2.1.0"
+    tslib "^2.1.0"
 
 "@firebase/component@0.5.6":
   version "0.5.6"
@@ -116,7 +116,7 @@
   integrity sha512-GyQJ+2lrhsDqeGgd1VdS7W+Y6gNYyI0B51ovNTxeZVG/W8I7t9MwEiCWsCvfm5wQgfsKp9dkzOcJrL5k8oVO/Q==
   dependencies:
     "@firebase/util" "1.3.0"
-    "tslib" "^2.1.0"
+    tslib "^2.1.0"
 
 "@firebase/database-types@0.7.3", "@firebase/database-types@^0.7.2":
   version "0.7.3"
@@ -156,21 +156,8 @@
     "@firebase/database-types" "0.7.3"
     "@firebase/logger" "0.2.6"
     "@firebase/util" "1.2.0"
-    "faye-websocket" "0.11.3"
-    "tslib" "^2.1.0"
-
-"@firebase/database@0.11.0":
-  "integrity" "sha512-b/kwvCubr6G9coPlo48PbieBDln7ViFBHOGeVt/bt82yuv5jYZBEYAac/mtOVSxpf14aMo/tAN+Edl6SWqXApw=="
-  "resolved" "https://registry.npmjs.org/@firebase/database/-/database-0.11.0.tgz"
-  "version" "0.11.0"
-  dependencies:
-    "@firebase/auth-interop-types" "0.1.6"
-    "@firebase/component" "0.5.6"
-    "@firebase/database-types" "0.8.0"
-    "@firebase/logger" "0.2.6"
-    "@firebase/util" "1.3.0"
-    "faye-websocket" "0.11.3"
-    "tslib" "^2.1.0"
+    faye-websocket "0.11.3"
+    tslib "^2.1.0"
 
 "@firebase/firestore-types@2.4.0":
   version "2.4.0"
@@ -189,8 +176,8 @@
     "@firebase/webchannel-wrapper" "0.5.1"
     "@grpc/grpc-js" "^1.3.2"
     "@grpc/proto-loader" "^0.6.0"
-    "node-fetch" "2.6.1"
-    "tslib" "^2.1.0"
+    node-fetch "2.6.1"
+    tslib "^2.1.0"
 
 "@firebase/functions-types@0.4.0":
   version "0.4.0"
@@ -205,8 +192,8 @@
     "@firebase/component" "0.5.6"
     "@firebase/functions-types" "0.4.0"
     "@firebase/messaging-types" "0.5.0"
-    "node-fetch" "2.6.1"
-    "tslib" "^2.1.0"
+    node-fetch "2.6.1"
+    tslib "^2.1.0"
 
 "@firebase/installations-types@0.3.4":
   version "0.3.4"
@@ -221,8 +208,8 @@
     "@firebase/component" "0.5.6"
     "@firebase/installations-types" "0.3.4"
     "@firebase/util" "1.3.0"
-    "idb" "3.0.2"
-    "tslib" "^2.1.0"
+    idb "3.0.2"
+    tslib "^2.1.0"
 
 "@firebase/logger@0.2.6":
   version "0.2.6"
@@ -243,8 +230,8 @@
     "@firebase/installations" "0.4.32"
     "@firebase/messaging-types" "0.5.0"
     "@firebase/util" "1.3.0"
-    "idb" "3.0.2"
-    "tslib" "^2.1.0"
+    idb "3.0.2"
+    tslib "^2.1.0"
 
 "@firebase/performance-types@0.0.13":
   version "0.0.13"
@@ -261,16 +248,16 @@
     "@firebase/logger" "0.2.6"
     "@firebase/performance-types" "0.0.13"
     "@firebase/util" "1.3.0"
-    "tslib" "^2.1.0"
+    tslib "^2.1.0"
 
 "@firebase/polyfill@0.3.36":
   version "0.3.36"
   resolved "https://registry.npmjs.org/@firebase/polyfill/-/polyfill-0.3.36.tgz"
   integrity sha512-zMM9oSJgY6cT2jx3Ce9LYqb0eIpDE52meIzd/oe/y70F+v9u1LDqk5kUF5mf16zovGBWMNFmgzlsh6Wj0OsFtg==
   dependencies:
-    "core-js" "3.6.5"
-    "promise-polyfill" "8.1.3"
-    "whatwg-fetch" "2.0.4"
+    core-js "3.6.5"
+    promise-polyfill "8.1.3"
+    whatwg-fetch "2.0.4"
 
 "@firebase/remote-config-types@0.1.9":
   version "0.1.9"
@@ -287,7 +274,7 @@
     "@firebase/logger" "0.2.6"
     "@firebase/remote-config-types" "0.1.9"
     "@firebase/util" "1.3.0"
-    "tslib" "^2.1.0"
+    tslib "^2.1.0"
 
 "@firebase/storage-types@0.5.0":
   version "0.5.0"
@@ -302,22 +289,22 @@
     "@firebase/component" "0.5.6"
     "@firebase/storage-types" "0.5.0"
     "@firebase/util" "1.3.0"
-    "node-fetch" "2.6.1"
-    "tslib" "^2.1.0"
+    node-fetch "2.6.1"
+    tslib "^2.1.0"
 
 "@firebase/util@1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@firebase/util/-/util-1.2.0.tgz"
   integrity sha512-8W9TTGImXr9cu+oyjBJ7yjoEd/IVAv0pBZA4c1uIuKrpGZi2ee38m+8xlZOBRmsAaOU/tR9DXz1WF/oeM6Fb7Q==
   dependencies:
-    "tslib" "^2.1.0"
+    tslib "^2.1.0"
 
 "@firebase/util@1.3.0":
   version "1.3.0"
   resolved "https://registry.npmjs.org/@firebase/util/-/util-1.3.0.tgz"
   integrity sha512-SESvmYwuKOVCZ1ZxLbberbx+9cnbxpCa4CG2FUSQYqN6Ab8KyltegMDIsqMw5KyIBZ4n1phfHoOa22xo5NzAlQ==
   dependencies:
-    "tslib" "^2.1.0"
+    tslib "^2.1.0"
 
 "@firebase/webchannel-wrapper@0.5.1":
   version "0.5.1"
@@ -331,31 +318,31 @@
   dependencies:
     "@google-cloud/projectify" "^2.0.0"
     "@google-cloud/promisify" "^2.0.0"
-    "arrify" "^2.0.1"
-    "duplexify" "^4.1.1"
-    "ent" "^2.2.0"
-    "extend" "^3.0.2"
-    "google-auth-library" "^7.0.2"
-    "retry-request" "^4.2.2"
-    "teeny-request" "^7.0.0"
+    arrify "^2.0.1"
+    duplexify "^4.1.1"
+    ent "^2.2.0"
+    extend "^3.0.2"
+    google-auth-library "^7.0.2"
+    retry-request "^4.2.2"
+    teeny-request "^7.0.0"
 
 "@google-cloud/firestore@^4.5.0":
   version "4.14.1"
   resolved "https://registry.npmjs.org/@google-cloud/firestore/-/firestore-4.14.1.tgz"
   integrity sha512-ecPxrwsk3IWfyILHhVtRJXFcn+CFnlYRbnM6vwS+eEwHAfSFoy4tNXlsvh7c4YihuojAkvgl4+iBxPMwy5X09A==
   dependencies:
-    "fast-deep-equal" "^3.1.1"
-    "functional-red-black-tree" "^1.0.1"
-    "google-gax" "^2.17.1"
-    "protobufjs" "^6.8.6"
+    fast-deep-equal "^3.1.1"
+    functional-red-black-tree "^1.0.1"
+    google-gax "^2.17.1"
+    protobufjs "^6.8.6"
 
 "@google-cloud/paginator@^3.0.0":
   version "3.0.5"
   resolved "https://registry.npmjs.org/@google-cloud/paginator/-/paginator-3.0.5.tgz"
   integrity sha512-N4Uk4BT1YuskfRhKXBs0n9Lg2YTROZc6IMpkO/8DIHODtm5s3xY8K5vVBo23v/2XulY3azwITQlYWgT4GdLsUw==
   dependencies:
-    "arrify" "^2.0.0"
-    "extend" "^3.0.2"
+    arrify "^2.0.0"
+    extend "^3.0.2"
 
 "@google-cloud/precise-date@^2.0.0":
   version "2.0.3"
@@ -385,13 +372,13 @@
     "@opentelemetry/semantic-conventions" "^0.24.0"
     "@types/duplexify" "^3.6.0"
     "@types/long" "^4.0.0"
-    "arrify" "^2.0.0"
-    "extend" "^3.0.2"
-    "google-auth-library" "^7.0.0"
-    "google-gax" "^2.24.1"
-    "is-stream-ended" "^0.1.4"
-    "lodash.snakecase" "^4.1.1"
-    "p-defer" "^3.0.0"
+    arrify "^2.0.0"
+    extend "^3.0.2"
+    google-auth-library "^7.0.0"
+    google-gax "^2.24.1"
+    is-stream-ended "^0.1.4"
+    lodash.snakecase "^4.1.1"
+    p-defer "^3.0.0"
 
 "@google-cloud/storage@^5.3.0":
   version "5.13.1"
@@ -401,23 +388,23 @@
     "@google-cloud/common" "^3.7.0"
     "@google-cloud/paginator" "^3.0.0"
     "@google-cloud/promisify" "^2.0.0"
-    "arrify" "^2.0.0"
-    "async-retry" "^1.3.1"
-    "compressible" "^2.0.12"
-    "date-and-time" "^2.0.0"
-    "duplexify" "^4.0.0"
-    "extend" "^3.0.2"
-    "gcs-resumable-upload" "^3.3.0"
-    "get-stream" "^6.0.0"
-    "hash-stream-validation" "^0.2.2"
-    "mime" "^2.2.0"
-    "mime-types" "^2.0.8"
-    "onetime" "^5.1.0"
-    "p-limit" "^3.0.1"
-    "pumpify" "^2.0.0"
-    "snakeize" "^0.1.0"
-    "stream-events" "^1.0.1"
-    "xdg-basedir" "^4.0.0"
+    arrify "^2.0.0"
+    async-retry "^1.3.1"
+    compressible "^2.0.12"
+    date-and-time "^2.0.0"
+    duplexify "^4.0.0"
+    extend "^3.0.2"
+    gcs-resumable-upload "^3.3.0"
+    get-stream "^6.0.0"
+    hash-stream-validation "^0.2.2"
+    mime "^2.2.0"
+    mime-types "^2.0.8"
+    onetime "^5.1.0"
+    p-limit "^3.0.1"
+    pumpify "^2.0.0"
+    snakeize "^0.1.0"
+    stream-events "^1.0.1"
+    xdg-basedir "^4.0.0"
 
 "@grpc/grpc-js@^1.3.2", "@grpc/grpc-js@~1.3.0":
   version "1.3.7"
@@ -432,10 +419,10 @@
   integrity sha512-7xvDvW/vJEcmLUltCUGOgWRPM8Oofv0eCFSVMuKqaqWJaXSzmB+m9hiyqe34QofAl4WAzIKUZZlinIF9FOHyTQ==
   dependencies:
     "@types/long" "^4.0.1"
-    "lodash.camelcase" "^4.3.0"
-    "long" "^4.0.0"
-    "protobufjs" "^6.10.0"
-    "yargs" "^16.1.1"
+    lodash.camelcase "^4.3.0"
+    long "^4.0.0"
+    protobufjs "^6.10.0"
+    yargs "^16.1.1"
 
 "@jsdevtools/ono@^7.1.3":
   version "7.1.3"
@@ -447,8 +434,8 @@
   resolved "https://registry.npmjs.org/@npmcli/move-file/-/move-file-1.1.2.tgz"
   integrity sha512-1SUf/Cg2GzGDyaf15aR9St9TWlb+XvbZXWpDx8YKs7MLzMH/BCeopv+y9vzrzgkfykCGuWOlSu3mZhj2+FQcrg==
   dependencies:
-    "mkdirp" "^1.0.4"
-    "rimraf" "^3.0.2"
+    mkdirp "^1.0.4"
+    rimraf "^3.0.2"
 
 "@opentelemetry/api@^1.0.0":
   version "1.0.2"
@@ -528,7 +515,7 @@
   resolved "https://registry.npmjs.org/@szmarczak/http-timer/-/http-timer-1.1.2.tgz"
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
-    "defer-to-connect" "^1.0.1"
+    defer-to-connect "^1.0.1"
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -563,6 +550,11 @@
   integrity sha512-5zOA53RUlzN74bvrSGwjudssD9F3a797sDZQkiYpUOxW+WHaXTCPz4/d5Dgi6FKnOqZ2CpaTo0DhgIfsXAOE/A==
   dependencies:
     "@types/node" "*"
+
+"@types/esrever@^0.2.0":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@types/esrever/-/esrever-0.2.1.tgz#9ff5155ef412848270ead4aaa611a8cdadcb9ab0"
+  integrity sha512-vRLFhQxGVkyUF7opxv66MQHoRSOBkbbitj1OGd6My4XR6HwCorUZxSiJejF3s4OxmEFTjfRRGwm6GUhuQETP6Q==
 
 "@types/express-jwt@0.0.42":
   version "0.0.42"
@@ -639,9 +631,9 @@
   integrity sha512-LSw8TZt12ZudbpHc6EkIyDM3nHVWKYrAvGy6EAJfNfjusbwnThqjqxUKKRwuV3iWYeW/LYMzNgaq3MaLffQ2xA==
 
 "@types/node@^14.0.5":
-  version "14.18.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.0.tgz#98df2397f6936bfbff4f089e40e06fa5dd88d32a"
-  integrity sha512-0GeIl2kmVMXEnx8tg1SlG6Gg8vkqirrW752KqolYo1PHevhhZN3bhJ67qHj+bQaINhX0Ra3TlWwRvMCd9iEfNQ==
+  version "14.18.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.3.tgz#b3682cfd9d5542b025df13233d073cb4347f63f3"
+  integrity sha512-GtTH2crF4MtOIrrAa+jgTV9JX/PfoUCYr6MiZw7O/dkZu5b6gm5dc1nAL0jwGo4ortSBBtGyeVaxdC8X6V+pLg==
 
 "@types/qs@*":
   version "6.9.7"
@@ -1650,31 +1642,9 @@ degenerator@^2.2.0:
   resolved "https://registry.npmjs.org/degenerator/-/degenerator-2.2.0.tgz"
   integrity sha512-aiQcQowF01RxFI4ZLFMpzyotbQonhNpBao6dkI8JPk5a+hmSjR5ErHp2CQySmQe8os3VBqLCIh87nDBgZXvsmg==
   dependencies:
-    "ms" "2.1.2"
-
-"debug@4":
-  "integrity" "sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw=="
-  "resolved" "https://registry.npmjs.org/debug/-/debug-4.3.2.tgz"
-  "version" "4.3.2"
-  dependencies:
-    "ms" "2.1.2"
-
-"decompress-response@^3.3.0":
-  "integrity" "sha1-gKTdMjdIOEv6JICDYirt7Jgq3/M="
-  "resolved" "https://registry.npmjs.org/decompress-response/-/decompress-response-3.3.0.tgz"
-  "version" "3.3.0"
-  dependencies:
-    "mimic-response" "^1.0.0"
-
-"deep-extend@^0.6.0":
-  "integrity" "sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA=="
-  "resolved" "https://registry.npmjs.org/deep-extend/-/deep-extend-0.6.0.tgz"
-  "version" "0.6.0"
-
-"deep-freeze@0.0.1":
-  "integrity" "sha1-OgsABd4YZygZ39OM0x+RF5yJPoQ="
-  "resolved" "https://registry.npmjs.org/deep-freeze/-/deep-freeze-0.0.1.tgz"
-  "version" "0.0.1"
+    ast-types "^0.13.2"
+    escodegen "^1.8.1"
+    esprima "^4.0.0"
 
 delayed-stream@~1.0.0:
   version "1.0.0"
@@ -1713,7 +1683,7 @@ dicer@^0.3.0:
   dependencies:
     streamsearch "0.1.2"
 
-docx@^5.5.0:
+docx@^5.0.2:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/docx/-/docx-5.5.0.tgz#708002eaecf7bfeb07405fd50e15fa01083463ba"
   integrity sha512-AkJJ3Or0Nup6ESSC+w4kgpVrH+G9pAwKhhRVvlexEv+72vzvllx8iR6yuL3ABmL4/Xlyna/n4Ok7WzhTiMhoqg==
@@ -2139,10 +2109,10 @@ firebase-admin@^9.11.1:
     "@firebase/database" "^0.10.0"
     "@firebase/database-types" "^0.7.2"
     "@types/node" ">=12.12.47"
-    "dicer" "^0.3.0"
-    "jsonwebtoken" "^8.5.1"
-    "jwks-rsa" "^2.0.2"
-    "node-forge" "^0.10.0"
+    dicer "^0.3.0"
+    jsonwebtoken "^8.5.1"
+    jwks-rsa "^2.0.2"
+    node-forge "^0.10.0"
   optionalDependencies:
     "@google-cloud/firestore" "^4.5.0"
     "@google-cloud/storage" "^5.3.0"
@@ -2725,7 +2695,7 @@ immediate@~3.0.5:
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   integrity sha1-nbHb0Pr43m++D13V5Wu2BigN5ps=
 
-immer@^8.0.1:
+immer@^8.0.1, immer@^8.0.4:
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.4.tgz#3a21605a4e2dded852fb2afd208ad50969737b7a"
   integrity sha512-jMfL18P+/6P6epANRvRk6q8t+3gGhqsJ9EuJ25AXE+9bNTYtssvzeYbEd0mXRYWCmmXSIbnlpz6vd6iJlmGGGQ==
@@ -3016,15 +2986,15 @@ js-yaml@^3.13.1:
   resolved "https://registry.npmjs.org/js-yaml/-/js-yaml-3.14.1.tgz"
   integrity sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==
   dependencies:
-    "argparse" "^1.0.7"
-    "esprima" "^4.0.0"
+    argparse "^1.0.7"
+    esprima "^4.0.0"
 
 js-yaml@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/js-yaml/-/js-yaml-4.1.0.tgz"
   integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
   dependencies:
-    "argparse" "^2.0.1"
+    argparse "^2.0.1"
 
 jsbn@~0.1.0:
   version "0.1.1"
@@ -3036,7 +3006,7 @@ json-bigint@^1.0.0:
   resolved "https://registry.npmjs.org/json-bigint/-/json-bigint-1.0.0.tgz"
   integrity sha512-SiPv/8VpZuWbvLSMtTDU8hEfrZWg/mH/nV/b4o0CYbSxu1UIQPLdwKOCIyLQX+VIPO5vrLX3i8qtqFyhdPSUSQ==
   dependencies:
-    "bignumber.js" "^9.0.0"
+    bignumber.js "^9.0.0"
 
 json-buffer@3.0.0:
   version "3.0.0"
@@ -3048,14 +3018,14 @@ json-parse-helpfulerror@^1.0.3:
   resolved "https://registry.npmjs.org/json-parse-helpfulerror/-/json-parse-helpfulerror-1.0.3.tgz"
   integrity sha1-E/FM4C7tTpgSl7ZOueO5MuLdE9w=
   dependencies:
-    "jju" "^1.1.0"
+    jju "^1.1.0"
 
 json-ptr@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/json-ptr/-/json-ptr-2.2.0.tgz"
   integrity sha512-w9f6/zhz4kykltXMG7MLJWMajxiPj0q+uzQPR1cggNAE/sXoq/C5vjUb/7QNcC3rJsVIIKy37ALTXy1O+3c8QQ==
   dependencies:
-    "tslib" "^2.2.0"
+    tslib "^2.2.0"
 
 json-schema-traverse@^0.4.1:
   version "0.4.1"
@@ -3583,7 +3553,7 @@ minipass-fetch@^1.3.2:
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
   optionalDependencies:
-    "encoding" "^0.1.12"
+    encoding "^0.1.12"
 
 minipass-flush@^1.0.5:
   version "1.0.5"
@@ -3907,14 +3877,14 @@ p-limit@^3.0.1:
   resolved "https://registry.npmjs.org/p-limit/-/p-limit-3.1.0.tgz"
   integrity sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==
   dependencies:
-    "yocto-queue" "^0.1.0"
+    yocto-queue "^0.1.0"
 
 p-map@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/p-map/-/p-map-4.0.0.tgz"
   integrity sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==
   dependencies:
-    "aggregate-error" "^3.0.0"
+    aggregate-error "^3.0.0"
 
 pac-proxy-agent@^4.1.0:
   version "4.1.0"
@@ -4005,9 +3975,10 @@ picomatch@^2.0.4, picomatch@^2.2.1:
 "pltr@file:../pltr":
   version "2.2.11"
   dependencies:
-    docx "^5.5.0"
+    docx "^5.0.2"
     dom-parser "^0.1.6"
     image-extensions "^1.1.0"
+    immer "^8.0.4"
     is-url "^1.2.4"
     jsrtf "^0.0.3"
     lodash "^4.17.21"

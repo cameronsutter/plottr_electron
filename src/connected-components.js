@@ -4,6 +4,8 @@ import { ActionCreators } from 'redux-undo'
 import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
+import log from 'electron-log'
+import { is } from 'electron-util'
 
 import { actions, selectors } from 'pltr/v2'
 import {
@@ -28,48 +30,7 @@ import {
   lockRCE,
   releaseRCELock,
 } from 'wired-up-firebase'
-import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
-import { SETTINGS, USER, licenseStore } from './file-system/stores'
-import {
-  useExportConfigInfo,
-  useTemplatesInfo,
-  useLicenseInfo,
-  useCustomTemplatesInfo as _useCustomTemplatesInfo,
-  useSettingsInfo,
-  useCustomTemplatesFromLocalStorage,
-} from './common/utils/store_hooks'
-import askToExport from './exporter/start_export'
-import export_config from './exporter/default_config'
-import {
-  listTemplates,
-  listCustomTemplates as _listCustomTemplates,
-  getTemplateById,
-  deleteTemplate,
-  editTemplateDetails,
-} from './common/utils/templates'
-import log from 'electron-log'
-import { createFullErrorReport } from './common/utils/full_error_report'
-import { createErrorReport } from './common/utils/error_reporter'
-import { is } from 'electron-util'
-import MPQ from './common/utils/MPQ'
-import { useTrialStatus } from './common/licensing/trial_manager'
-import { checkForActiveLicense } from './common/licensing/check_license'
-import { verifyLicense } from './common/licensing/verify_license'
-import { checkForPro } from './common/licensing/check_pro'
-import { trial90days, trial60days } from './common/licensing/special_codes'
-import { openExistingFile as _openExistingFile } from './dashboard/utils/window_manager'
-import {
-  doesFileExist,
-  useSortedKnownFiles as _useSortedKnownFiles,
-  removeFromKnownFiles,
-  listOfflineFiles,
-  sortAndSearch,
-} from './dashboard/utils/files'
-import { useFilteredSortedTemplates } from './dashboard/utils/templates'
-import { useBackupFolders } from './dashboard/utils/backups'
-import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
-import TemplateFetcher from './dashboard/utils/template_fetcher'
-import { store } from './app/store'
+
 import {
   renameFile,
   saveFile,
@@ -79,11 +40,33 @@ import {
   uploadExisting,
   deleteCloudBackupFile,
 } from './files'
-import extractImages from './common/extract_images'
-import { useProLicenseInfo } from './common/utils/checkPro'
-import { resizeImage } from './common/resizeImage'
 import { logger } from './logger'
 import { closeDashboard } from './dashboard-events'
+import { fileSystemAPIs, licenseServerAPIs } from './api'
+
+import { store } from './app/store'
+
+import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
+import { USER } from './file-system/stores'
+
+import askToExport from './exporter/start_export'
+import export_config from './exporter/default_config'
+
+import extractImages from './common/extract_images'
+import { resizeImage } from './common/resizeImage'
+
+import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
+import { createFullErrorReport } from './common/utils/full_error_report'
+import { createErrorReport } from './common/utils/error_reporter'
+import MPQ from './common/utils/MPQ'
+import { openExistingFile as _openExistingFile } from './common/utils/window_manager'
+import {
+  doesFileExist,
+  removeFromKnownFiles,
+  listOfflineFiles,
+  sortAndSearch,
+} from './common/utils/files'
+import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -151,23 +134,6 @@ const platform = {
         })
     },
     doesFileExist,
-    useSortedKnownFiles: (...args) => {
-      const state = store.getState()
-      const {
-        client: { userId },
-      } = state.present
-      const previouslyLoggedIntoPro = SETTINGS.get('user.frbId')
-      // It's important that the same number of hooks are called per
-      // component per render.  It's an error if it isn't.
-      const hookResults = _useSortedKnownFiles(userId, ...args)
-      if (previouslyLoggedIntoPro && !userId) {
-        return [[], {}]
-      }
-      return hookResults
-    },
-    useSortedKnownFilesIgnoringLoggedIn: (...args) => {
-      return _useSortedKnownFiles(null, ...args)
-    },
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,
@@ -267,29 +233,20 @@ const platform = {
     ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
   },
   license: {
-    useLicenseInfo,
-    checkForActiveLicense,
-    useTrialStatus,
-    licenseStore,
-    verifyLicense,
-    trial90days,
-    trial60days,
-    checkForPro,
+    checkForActiveLicense: licenseServerAPIs.checkForActiveLicense,
+    verifyLicense: licenseServerAPIs.verifyLicense,
+    trial90days: licenseServerAPIs.trial90days,
+    trial60days: licenseServerAPIs.trial60days,
+    checkForPro: licenseServerAPIs.checkForPro,
+    startTrial: fileSystemAPIs.startTrial,
+    extendTrial: fileSystemAPIs.extendTrial,
+    deleteLicense: fileSystemAPIs.deleteLicense,
+    saveLicenseInfo: fileSystemAPIs.saveLicenseInfo,
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')
   },
   template: {
-    TemplateFetcher,
-    listTemplates,
-    listCustomTemplates: (...args) => {
-      const state = store.getState()
-      const {
-        client: { userId },
-      } = state.present
-      return _listCustomTemplates(userId)(...args)
-    },
-    getTemplateById,
     deleteTemplate: (templateId) => {
       const state = store.getState()
       const {
@@ -306,20 +263,10 @@ const platform = {
       const win = remote.getCurrentWindow()
       ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
     },
-    useFilteredSortedTemplates,
-    useCustomTemplatesInfo: (...args) => {
-      const state = store.getState()
-      const {
-        client: { userId },
-      } = state.present
-      if (userId) return useCustomTemplatesFromLocalStorage(...args)
-      return _useCustomTemplatesInfo(...args)
-    },
-    useLocalCustomTemplatesInfo: _useCustomTemplatesInfo,
-    useTemplatesInfo,
   },
-  settings: SETTINGS,
-  useSettingsInfo,
+  settings: {
+    saveAppSetting: fileSystemAPIs.saveAppSetting,
+  },
   user: USER,
   os: is.windows ? 'windows' : is.macos ? 'macos' : is.linux ? 'linux' : 'unknown',
   isDevelopment: is.development,
@@ -343,11 +290,8 @@ const platform = {
   export: {
     askToExport,
     export_config,
+    saveExportConfigSettings: fileSystemAPIs.saveExportConfigSettings,
   },
-  store: {
-    useExportConfigInfo,
-  },
-  useBackupFolders,
   moveFromTemp: () => {
     const win = remote.getCurrentWindow()
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
@@ -370,7 +314,6 @@ const platform = {
   releaseRCELock,
   machineIdSync,
   extractImages,
-  useProLicenseInfo,
   firebase: {
     startUI,
     firebaseUI,

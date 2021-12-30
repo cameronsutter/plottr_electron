@@ -4,17 +4,16 @@ import { connect } from 'react-redux'
 import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 import { ipcRenderer } from 'electron'
-import { Beamer, BookChooser, ErrorBoundary } from 'connected-components'
+import { Beamer, BookChooser } from 'connected-components'
 import { actions } from 'pltr/v2'
 import { FaKey } from 'react-icons/fa'
 import { FaRegUser } from 'react-icons/fa'
 import { FaSignal } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
-import { useLicenseInfo, useSettingsInfo } from '../../common/utils/store_hooks'
-import { useTrialStatus } from '../../common/licensing/trial_manager'
 import LoginModal from '../components/LoginModal'
 import Resume from '../components/Resume'
+import { useCallback } from 'react'
 
 const isDev = process.env.NODE_ENV == 'development'
 
@@ -30,24 +29,18 @@ const Navigation = ({
   isCloudFile,
   checkedUser,
   isOffline,
+  settings,
+  isFirstTime,
+  isInTrialModeWithExpiredTrial,
 }) => {
   const [checked, setChecked] = useState(false)
   const initialView = forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
-  const [settings] = useSettingsInfo()
-  const trialInfo = useTrialStatus()
-  const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
   // don't show the login if user is not on Pro
+  //
+  // FIXME: this logic looks really compilacetd for what it's doing. :/
+  // It would be better if all of this could be in redux instead.
   const [showFrbLogin, setShowFrbLogin] = useState((needsLogin || settings?.user?.frbId) && !userId)
-  // first time = no license, no trial, no pro
-  const [firstTime, setFirstTime] = useState(
-    !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
-  )
-  // expired trial = no license, no pro, expired trial
-  const [trialExpired, setTrialExpired] = useState(
-    !licenseInfoSize && trialInfo.expired && !hasCurrentProLicense
-  )
-
   useEffect(() => {
     const openListener = document.addEventListener('open-dashboard', () => {
       setDashboardView('files')
@@ -68,27 +61,19 @@ const Navigation = ({
   }, [selectedFile, dashboardView, isCloudFile, checked])
 
   useEffect(() => {
-    setFirstTime(!licenseInfoSize && !trialInfo.started && !hasCurrentProLicense)
-  }, [licenseInfoSize, trialInfo.started, hasCurrentProLicense])
-
-  useEffect(() => {
-    setTrialExpired(!licenseInfoSize && !hasCurrentProLicense && trialInfo.expired)
-  }, [licenseInfoSize, trialInfo.expired, hasCurrentProLicense])
-
-  useEffect(() => {
-    if (!firstTime && !forceProjectDashboard) {
+    if (!isFirstTime && !forceProjectDashboard) {
       setDashboardView(null)
     }
-  }, [firstTime])
+  }, [isFirstTime])
 
   useEffect(() => {
-    if (firstTime || trialExpired) {
+    if (isFirstTime || isInTrialModeWithExpiredTrial) {
       setDashboardView('account')
     }
     if (userId && !hasCurrentProLicense) {
       setDashboardView('account')
     }
-  }, [licenseInfoSize, trialInfo, dashboardView, userId, hasCurrentProLicense, checked])
+  }, [isInTrialModeWithExpiredTrial, dashboardView, userId, hasCurrentProLicense, checked])
 
   useEffect(() => {
     if (!checked) return
@@ -109,6 +94,10 @@ const Navigation = ({
   }
 
   const TrialLinks = () => {
+    // FIXME: why is trialMode in settings?
+    //
+    // We should probably indicate a transitive state in redux and
+    // rely on the value that apears there instead.
     if (!settings.trialMode || hasCurrentProLicense || isDev) return null
 
     return (
@@ -132,10 +121,10 @@ const Navigation = ({
     setDashboardView('help')
   }
 
-  const resetDashboardView = () => {
-    if (firstTime || trialExpired) return
+  const resetDashboardView = useCallback(() => {
+    if (isFirstTime || isInTrialModeWithExpiredTrial) return
     setDashboardView(null)
-  }
+  }, [setDashboardView])
 
   const selectDashboardView = (view) => {
     setDashboardView(view)
@@ -149,14 +138,12 @@ const Navigation = ({
         <LoginModal closeLoginModal={closeLoginModal} setChecking={toggleChecking} />
       ) : null}
       {dashboardView ? (
-        <ErrorBoundary>
-          <DashboardModal
-            activeView={dashboardView}
-            setActiveView={selectDashboardView}
-            closeDashboard={resetDashboardView}
-            darkMode={isDarkMode}
-          />
-        </ErrorBoundary>
+        <DashboardModal
+          activeView={dashboardView}
+          setActiveView={selectDashboardView}
+          closeDashboard={resetDashboardView}
+          darkMode={isDarkMode}
+        />
       ) : null}
       {isOffline ? (
         <div className="offline-mode-banner">
@@ -214,6 +201,9 @@ Navigation.propTypes = {
   isCloudFile: PropTypes.bool,
   isOffline: PropTypes.bool,
   checkedUser: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired,
+  isFirstTime: PropTypes.bool,
+  isInTrialModeWithExpiredTrial: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -225,6 +215,9 @@ function mapStateToProps(state) {
     selectedFile: selectors.selectedFileSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
+    settings: selectors.appSettingsSelector(state.present),
+    isFirstTime: selectors.isFirstTimeSelector(state.present),
+    isInTrialModeWithExpiredTrial: selectors.isInTrialModeWithExpiredTrialSelector(state.present),
   }
 }
 

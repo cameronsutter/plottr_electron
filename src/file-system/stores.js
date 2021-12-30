@@ -37,3 +37,33 @@ export const USER = new Store({ name: USER_INFO_PATH })
 
 const settingsStorePath = process.env.NODE_ENV == 'development' ? 'config_dev' : 'config'
 export const SETTINGS = new Store({ defaults: defaultSettings, name: settingsStorePath })
+
+// ===Migrations===
+
+function migrateKnownFileStore() {
+  // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
+  const needsMigration = knownFilesStore.has('byIds') || knownFilesStore.has('allIds')
+  if (needsMigration) {
+    // it's in the old format and we need to migrate
+    // const filesById = knownFilesStore.get('byIds')
+    const fileIds = knownFilesStore.get('allIds')
+    const fileObjects = fileIds.reduce((acc, id, idx) => {
+      const key = `byIds.${id.replace('.', '~$~')}`
+      const val = knownFilesStore.get(key)
+      if (val) {
+        // create an entry for this file
+        const newId = idx + 1
+        const entry = {
+          path: id,
+          lastOpened: val.lastOpened,
+        }
+        acc[newId] = entry
+      }
+      return acc
+    }, {})
+    knownFilesStore.clear()
+    knownFilesStore.set(fileObjects)
+  }
+}
+
+migrateKnownFileStore()

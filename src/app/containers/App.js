@@ -23,7 +23,6 @@ import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
-import { listenToCustomTemplates } from '../../dashboard/utils/templates_from_firestore'
 
 const { dialog } = remote
 
@@ -47,6 +46,9 @@ const App = ({
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
   const [checkedUser, setCheckedUser] = useState(false)
+  // FIXME: We need a transitive state tracked in Redux for whether
+  // we've fully-loaded so that we don't show the login modal before
+  // we've booted the file or cehcked whether the user is logged in.
   const [needsLogin, setNeedsLogin] = useState(isCloudFile && !userId)
 
   const isTryingToReload = useRef(false)
@@ -149,13 +151,6 @@ const App = ({
       window.removeEventListener('beforeunload', askToSave)
     }
   }, [])
-
-  useEffect(() => {
-    if (userId && !isOffline) {
-      return listenToCustomTemplates(userId)
-    }
-    return () => {}
-  }, [userId, isOffline])
 
   const dontSaveAndClose = () => {
     setBlockClosing(false)

@@ -1,20 +1,18 @@
-import { useMemo } from 'react'
 import { is } from 'electron-util'
 import axios from 'axios'
 import semverGt from 'semver/functions/gt'
-import { sortBy } from 'lodash'
 import {
-  listenToCustomTemplates as listenToCustomTemplatesFromFirestore,
   saveCustomTemplate as saveCustomTemplateToFirstore,
   deleteCustomTemplate as deleteCustomTemplateOnFirestore,
   editCustomTemplate as editCustomTemplateOnFirestore,
 } from 'wired-up-firebase'
 
-import { SETTINGS } from '../../file-system/stores'
+import { fileSystemAPIs } from '../../api'
 
 let env = 'prod'
 if (is.development) env = 'staging'
-if (SETTINGS.get('betatemplates')) env = 'beta'
+const settings = fileSystemAPIs.currentAppSettings()
+if (settings.betatemplates) env = 'beta'
 const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
 const manifestURL = `${baseURL}/v2/manifest.json`
 
@@ -145,13 +143,6 @@ export const getCustomTemplateById = (id) => {
   return allCustomTemplates().find((template) => template.id === id)
 }
 
-export const listTemplates = (type) => {
-  return sortBy(
-    allTemplates().filter((template) => template.type === type),
-    'name'
-  )
-}
-
 const customTemplateKey = (templateId) => {
   return `${CUSTOM_TEMPLATE_PREFIX}${templateId}`
 }
@@ -184,12 +175,6 @@ export const saveCustomTemplatesToStorage = (templates) => {
   templates.forEach(saveCustomTemplateToStorage)
 }
 
-export const listenToCustomTemplates = (userId) => {
-  return listenToCustomTemplatesFromFirestore(userId, (customTemplates) => {
-    return saveCustomTemplatesToStorage(Object.values(customTemplates))
-  })
-}
-
 export const deleteCustomTemplate = (templateId, userId) => {
   window.sessionStorage.removeItem(customTemplateKey(templateId))
   deleteCustomTemplateOnFirestore(userId, templateId)
@@ -197,13 +182,6 @@ export const deleteCustomTemplate = (templateId, userId) => {
 
 export const editCustomTemplate = (templateId, template) => {
   return editCustomTemplateOnFirestore(templateId, template)
-}
-
-export const listCustomTemplates = (type) => {
-  return sortBy(
-    allCustomTemplates().filter((template) => template.type === type),
-    'name'
-  )
 }
 
 export const startSaveAsTemplate = (type) => {
@@ -228,21 +206,4 @@ export const messageToDeleteTemplate = (templateId) => {
   const deleteEvent = new Event('delete-template', { bubbles: true, cancelable: false })
   deleteEvent.templateId = templateId
   document.dispatchEvent(deleteEvent)
-}
-
-export const useFilteredSortedTemplates = (templatesById, type, searchTerm) => {
-  const filteredTemplates = useMemo(() => {
-    return sortBy(
-      Object.values(templatesById).filter((t) => {
-        if (searchTerm && searchTerm.length > 1) {
-          return t.name.toLowerCase().includes(searchTerm) && t.type == type
-        } else {
-          return t.type == type
-        }
-      }),
-      'name'
-    )
-  }, [templatesById, searchTerm])
-
-  return filteredTemplates
 }

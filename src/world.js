@@ -1,5 +1,6 @@
 import { groupBy, flatten } from 'lodash'
 
+import { selectors } from 'pltr/v2'
 import { plottrWorldAPI } from 'plottr_world'
 
 import { fileSystemAPIs, firebaseAPIs } from './api'
@@ -21,26 +22,93 @@ const {
   currentUserSettings,
 } = fileSystemAPIs
 
-// TODO: not sure how to resolve waiting for fs versus waiting for firebase... :/
-const listenToknownFilesChanges = (cb) => {
+// From: https://github.com/reduxjs/redux/issues/303#issuecomment-125184409
+function observeStore(store, select, onChange) {
+  let currentState = select(store.getState().present)
+
+  function handleChange() {
+    let nextState = select(store.getState().present)
+    if (nextState !== currentState) {
+      currentState = nextState
+      onChange(currentState)
+    }
+  }
+
+  let unsubscribe = store.subscribe(handleChange)
+  handleChange()
+  return unsubscribe
+}
+
+const listenToknownFilesChanges = (store, cb) => {
   let _currentKnownFilesFromFileSystem = null
   let _currentKnownFilesFromFirebase = null
 
   const unsubscribeFromFileSystemKnownFiles = fileSystemAPIs.listenToknownFilesChanges(
     (knownFilesFromFileSystem) => {
       _currentKnownFilesFromFileSystem = knownFilesFromFileSystem
-      if (_currentKnownFilesFromFirebase) {
-        cb(_currentKnownFilesFromFileSystem.concat(_currentKnownFilesFromFirebase))
+      const checkingSettings = () => {
+        const appSettingsLoaded = selectors.applicationSettingsAreLoadedSelector(
+          store.getState().present
+        )
+        if (!appSettingsLoaded) {
+          const unsubscribe = observeStore(
+            store,
+            selectors.applicationSettingsAreLoadedSelector,
+            (loaded) => {
+              if (loaded) {
+                unsubscribe()
+                checkingSettings()
+              }
+            }
+          )
+          return
+        }
+
+        const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
+          store.getState().present
+        )
+        if (_currentKnownFilesFromFirebase) {
+          cb(_currentKnownFilesFromFileSystem.concat(_currentKnownFilesFromFirebase))
+        } else if (!previouslyLoggedIntoPro) {
+          cb(_currentKnownFilesFromFileSystem)
+        }
       }
+      checkingSettings()
     }
   )
 
   const unsubscribeFromFirebaseKnownFiles = firebaseAPIs.listenToKnownFiles(
     (knownFilesFromFirebase) => {
       _currentKnownFilesFromFirebase = knownFilesFromFirebase
-      if (_currentKnownFilesFromFileSystem) {
-        cb(_currentKnownFilesFromFileSystem.concat(_currentKnownFilesFromFirebase))
+      const checkingSettings = () => {
+        const appSettingsLoaded = selectors.applicationSettingsAreLoadedSelector(
+          store.getState().present
+        )
+        if (!appSettingsLoaded) {
+          const unsubscribe = observeStore(
+            store,
+            selectors.applicationSettingsAreLoadedSelector,
+            (loaded) => {
+              if (loaded) {
+                unsubscribe()
+                checkingSettings()
+              }
+            }
+          )
+          return
+        }
+
+        const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
+          store.getState().present
+        )
+        if (_currentKnownFilesFromFileSystem) {
+          cb(_currentKnownFilesFromFileSystem.concat(_currentKnownFilesFromFirebase))
+        } else if (previouslyLoggedIntoPro) {
+          cb(_currentKnownFilesFromFirebase)
+        }
       }
+
+      checkingSettings()
     }
   )
 
@@ -54,7 +122,7 @@ const currentKnownFiles = (cb) => {
   return fileSystemAPIs.currentKnownFiles().concat(firebaseAPIs.currentKnownFiles())
 }
 
-const listenToCustomTemplatesChanges = (cb) => {
+const listenToCustomTemplatesChanges = (store, cb) => {
   let _customTemplatesFromFileSystem = null
   let _customTemplatesFromFirebase = null
 
@@ -100,7 +168,7 @@ const mergeBackups = (firebaseFolders, localFolders) => {
   })
   return results
 }
-const listenToBackupsChanges = (cb) => {
+const listenToBackupsChanges = (store, cb) => {
   let _backupsFromFileSystem = null
   let _backupsFromFirebase = null
 
@@ -128,11 +196,13 @@ const currentBackups = () => {
   return fileSystemAPIs.currentBackups().concat(firebaseAPIs.currentBackups())
 }
 
+const ignoringStore = (fn) => (store, cb) => fn(cb)
+
 const theWorld = {
   license: {
-    listenToTrialChanges,
+    listenToTrialChanges: ignoringStore(listenToTrialChanges),
     currentTrial,
-    listenToLicenseChanges,
+    listenToLicenseChanges: ignoringStore(listenToLicenseChanges),
     currentLicense,
   },
   files: {
@@ -144,19 +214,19 @@ const theWorld = {
     currentBackups,
   },
   templates: {
-    listenToTemplatesChanges,
+    listenToTemplatesChanges: ignoringStore(listenToTemplatesChanges),
     currentTemplates,
     listenToCustomTemplatesChanges,
     currentCustomTemplates,
-    listenToTemplateManifestChanges,
+    listenToTemplateManifestChanges: ignoringStore(listenToTemplateManifestChanges),
     currentTemplateManifest,
   },
   settings: {
-    listenToExportConfigSettingsChanges,
+    listenToExportConfigSettingsChanges: ignoringStore(listenToExportConfigSettingsChanges),
     currentExportConfigSettings,
-    listenToAppSettingsChanges,
+    listenToAppSettingsChanges: ignoringStore(listenToAppSettingsChanges),
     currentAppSettings,
-    listenToUserSettingsChanges,
+    listenToUserSettingsChanges: ignoringStore(listenToUserSettingsChanges),
     currentUserSettings,
   },
 }

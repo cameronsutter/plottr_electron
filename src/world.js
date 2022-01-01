@@ -21,6 +21,7 @@ const {
   currentUserSettings,
 } = fileSystemAPIs
 
+// TODO: not sure how to resolve waiting for fs versus waiting for firebase... :/
 const listenToknownFilesChanges = (cb) => {
   let _currentKnownFilesFromFileSystem = null
   let _currentKnownFilesFromFirebase = null

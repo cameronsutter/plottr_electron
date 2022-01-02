@@ -104,14 +104,17 @@ const platform = {
       } = state.present
       if (userId) {
         store.dispatch(actions.project.showLoader(true))
+        store.dispatch(actions.project.startCreatingCloudFile())
         newFile(emailAddress, userId, fileList, state, clientId, template, openFile)
           .then((fileId) => {
             logger.info('Created new file.', fileId)
             store.dispatch(actions.project.showLoader(false))
+            store.dispatch(actions.project.finishCreatingCloudFile())
           })
           .catch((error) => {
             logger.error('Error creating a new file', error)
             store.dispatch(actions.project.showLoader(false))
+            store.dispatch(actions.project.finishCreatingCloudFile())
           })
       } else {
         ipcRenderer.send('create-new-file', template)
@@ -157,8 +160,10 @@ const platform = {
           client: { userId, clientId },
         },
       } = state
-      const isOnCloud = path.startsWith('plottr://')
-      if (isOnCloud) {
+      const isLoggedIn = selectors.isLoggedInSelector(state.present)
+      const file = isLoggedIn && selectors.fileFromFileIdSelector(state.present, id)
+      const isOnCloud = file?.isCloudFile
+      if (isLoggedIn && isOnCloud) {
         const fileName = selectors.fileFromFileIdSelector(state.present, id).fileName
         store.dispatch(actions.project.showLoader(true))
         deleteCloudBackupFile(fileName)

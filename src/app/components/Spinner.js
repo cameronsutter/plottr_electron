@@ -17,5 +17,5 @@ FullPageSpinner.propTypes = {
 }
 
 export default connect((state) => ({
-  isLoading: selectors.loadingFileSelector(state.present),
+  isLoading: selectors.applicationIsBusyAndUninterruptableSelector(state.present),
 }))(FullPageSpinner)

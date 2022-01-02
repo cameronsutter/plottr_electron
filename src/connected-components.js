@@ -125,15 +125,25 @@ const platform = {
       const {
         client: { userId, emailAddress },
       } = state.present
+      const isLoggedIn = selectors.isLoggedInSelector(state.present)
+      if (isLoggedIn) {
+        store.dispatch(actions.applicationState.startUploadingFileToCloud())
+      }
       store.dispatch(actions.project.showLoader(true))
       _openExistingFile(!!userId, userId, emailAddress)
         .then(() => {
           logger.info('Opened existing file')
           store.dispatch(actions.project.showLoader(false))
+          if (isLoggedIn) {
+            store.dispatch(actions.applicationState.finishUploadingFileToCloud())
+          }
         })
         .catch((error) => {
           logger.error('Error opening existing file', error)
           store.dispatch(actions.project.showLoader(false))
+          if (isLoggedIn) {
+            store.dispatch(actions.applicationState.finishUploadingFileToCloud())
+          }
         })
     },
     doesFileExist,

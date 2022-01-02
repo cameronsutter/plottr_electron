@@ -105,6 +105,7 @@ export const offlineFilePath = (file) => {
 }
 
 export const renameFile = (filePath) => {
+  store.dispatch(actions.applicationState.startRenamingFile())
   if (filePath.startsWith('plottr://')) {
     const {
       present: {
@@ -131,8 +132,10 @@ export const renameFile = (filePath) => {
       const contents = JSON.parse(readFileSync(filePath, 'utf-8'))
       saveFile(newFilePath, contents)
       moveItemToTrash(filePath, true)
+      store.dispatch(actions.applicationState.finishRenamingFile())
     } catch (error) {
       logger.error(error)
+      store.dispatch(actions.applicationState.finishRenamingFile())
       dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
     }
   }

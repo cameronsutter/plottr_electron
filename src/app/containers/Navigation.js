@@ -33,7 +33,7 @@ const Navigation = ({
   isInTrialModeWithExpiredTrial,
   checkedSession,
 }) => {
-  const initialView = forceProjectDashboard ? 'files' : null
+  const initialView = needsLogin ? null : forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
   useEffect(() => {
     const openListener = document.addEventListener('open-dashboard', () => {
@@ -47,6 +47,12 @@ const Navigation = ({
       document.removeEventListener('close-dashboard', closeListener)
     }
   }, [])
+
+  useEffect(() => {
+    if (needsLogin) {
+      setDashboardView(null)
+    }
+  }, [needsLogin, setDashboardView])
 
   useEffect(() => {
     if (!selectedFile && !dashboardView && isCloudFile && checkedSession) {

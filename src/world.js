@@ -39,6 +39,24 @@ function observeStore(store, select, onChange) {
   return unsubscribe
 }
 
+const afterSettingsLoad = (store, fn) => {
+  const appSettingsLoaded = selectors.applicationSettingsAreLoadedSelector(store.getState().present)
+  if (!appSettingsLoaded) {
+    const unsubscribe = observeStore(
+      store,
+      selectors.applicationSettingsAreLoadedSelector,
+      (loaded) => {
+        if (loaded) {
+          unsubscribe()
+          afterSettingsLoad(store, fn)
+        }
+      }
+    )
+    return
+  }
+  fn()
+}
+
 const listenToknownFilesChanges = (store, cb) => {
   let _currentKnownFilesFromFileSystem = null
   let _currentKnownFilesFromFirebase = null
@@ -46,24 +64,7 @@ const listenToknownFilesChanges = (store, cb) => {
   const unsubscribeFromFileSystemKnownFiles = fileSystemAPIs.listenToknownFilesChanges(
     (knownFilesFromFileSystem) => {
       _currentKnownFilesFromFileSystem = knownFilesFromFileSystem
-      const checkingSettings = () => {
-        const appSettingsLoaded = selectors.applicationSettingsAreLoadedSelector(
-          store.getState().present
-        )
-        if (!appSettingsLoaded) {
-          const unsubscribe = observeStore(
-            store,
-            selectors.applicationSettingsAreLoadedSelector,
-            (loaded) => {
-              if (loaded) {
-                unsubscribe()
-                checkingSettings()
-              }
-            }
-          )
-          return
-        }
-
+      afterSettingsLoad(store, () => {
         const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
           store.getState().present
         )
@@ -72,32 +73,14 @@ const listenToknownFilesChanges = (store, cb) => {
         } else if (!previouslyLoggedIntoPro) {
           cb(_currentKnownFilesFromFileSystem)
         }
-      }
-      checkingSettings()
+      })
     }
   )
 
   const unsubscribeFromFirebaseKnownFiles = firebaseAPIs.listenToKnownFiles(
     (knownFilesFromFirebase) => {
       _currentKnownFilesFromFirebase = knownFilesFromFirebase
-      const checkingSettings = () => {
-        const appSettingsLoaded = selectors.applicationSettingsAreLoadedSelector(
-          store.getState().present
-        )
-        if (!appSettingsLoaded) {
-          const unsubscribe = observeStore(
-            store,
-            selectors.applicationSettingsAreLoadedSelector,
-            (loaded) => {
-              if (loaded) {
-                unsubscribe()
-                checkingSettings()
-              }
-            }
-          )
-          return
-        }
-
+      afterSettingsLoad(store, () => {
         const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
           store.getState().present
         )
@@ -106,9 +89,7 @@ const listenToknownFilesChanges = (store, cb) => {
         } else if (previouslyLoggedIntoPro) {
           cb(_currentKnownFilesFromFirebase)
         }
-      }
-
-      checkingSettings()
+      })
     }
   )
 

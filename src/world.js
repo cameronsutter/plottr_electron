@@ -57,79 +57,62 @@ const afterSettingsLoad = (store, fn) => {
   fn()
 }
 
-const listenToknownFilesChanges = (store, cb) => {
-  let _currentKnownFilesFromFileSystem = null
-  let _currentKnownFilesFromFirebase = null
+const combineCloudAndFileSystemSources =
+  (fileSystemSource, cloudSource, mergeSources) => (store, cb) => {
+    let _currentFileSystemResult = null
+    let _currentCloudResult = null
 
-  const unsubscribeFromFileSystemKnownFiles = fileSystemAPIs.listenToknownFilesChanges(
-    (knownFilesFromFileSystem) => {
-      _currentKnownFilesFromFileSystem = knownFilesFromFileSystem
+    const unsubscribeFromFileSystemSource = fileSystemSource((fileSystemResult) => {
+      _currentFileSystemResult = fileSystemResult
       afterSettingsLoad(store, () => {
         const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
           store.getState().present
         )
-        if (_currentKnownFilesFromFirebase) {
-          cb(_currentKnownFilesFromFileSystem.concat(_currentKnownFilesFromFirebase))
+        if (_currentCloudResult) {
+          cb(_currentFileSystemResult.concat(_currentCloudResult))
         } else if (!previouslyLoggedIntoPro) {
-          cb(_currentKnownFilesFromFileSystem)
+          cb(_currentFileSystemResult)
         }
       })
-    }
-  )
+    })
 
-  const unsubscribeFromFirebaseKnownFiles = firebaseAPIs.listenToKnownFiles(
-    (knownFilesFromFirebase) => {
-      _currentKnownFilesFromFirebase = knownFilesFromFirebase
+    const unsubscribeFromCloudSource = cloudSource((cloudResult) => {
+      _currentCloudResult = cloudResult
       afterSettingsLoad(store, () => {
         const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
           store.getState().present
         )
-        if (_currentKnownFilesFromFileSystem) {
-          cb(_currentKnownFilesFromFileSystem.concat(_currentKnownFilesFromFirebase))
+        if (_currentFileSystemResult) {
+          cb(_currentFileSystemResult.concat(_currentCloudResult))
         } else if (previouslyLoggedIntoPro) {
-          cb(_currentKnownFilesFromFirebase)
+          cb(_currentCloudResult)
         }
       })
-    }
-  )
+    })
 
-  return () => {
-    unsubscribeFromFileSystemKnownFiles()
-    unsubscribeFromFirebaseKnownFiles()
+    return () => {
+      unsubscribeFromFileSystemSource()
+      unsubscribeFromCloudSource()
+    }
   }
-}
+
+const mergeWithConcat = (source1, source2) => source1.concat(source2)
+
+const listenToknownFilesChanges = combineCloudAndFileSystemSources(
+  fileSystemAPIs.listenToknownFilesChanges,
+  firebaseAPIs.listenToKnownFiles,
+  mergeWithConcat
+)
 
 const currentKnownFiles = (cb) => {
   return fileSystemAPIs.currentKnownFiles().concat(firebaseAPIs.currentKnownFiles())
 }
 
-const listenToCustomTemplatesChanges = (store, cb) => {
-  let _customTemplatesFromFileSystem = null
-  let _customTemplatesFromFirebase = null
-
-  const unsubscribeFromFileSystemCustomTemplates = fileSystemAPIs.listenToCustomTemplatesChanges(
-    (customTemplatesFromFileSystem) => {
-      _customTemplatesFromFileSystem = customTemplatesFromFileSystem
-      if (_customTemplatesFromFirebase) {
-        cb(_customTemplatesFromFileSystem.concat(_customTemplatesFromFirebase))
-      }
-    }
-  )
-
-  const unsubscribeFromFirebaseCustomTemplateChanges = firebaseAPIs.listenToCustomTemplates(
-    (customTemplatesFromFirebase) => {
-      _customTemplatesFromFirebase = customTemplatesFromFirebase
-      if (_customTemplatesFromFileSystem) {
-        cb(_customTemplatesFromFileSystem.concat(_customTemplatesFromFirebase))
-      }
-    }
-  )
-
-  return () => {
-    unsubscribeFromFileSystemCustomTemplates()
-    unsubscribeFromFirebaseCustomTemplateChanges()
-  }
-}
+const listenToCustomTemplatesChanges = combineCloudAndFileSystemSources(
+  fileSystemAPIs.listenToCustomTemplatesChanges,
+  firebaseAPIs.listenToCustomTemplates,
+  mergeWithConcat
+)
 const currentCustomTemplates = () => {
   return fileSystemAPIs.currentCustomTemplates().concat(firebaseAPIs.currentCustomTemplates())
 }
@@ -149,32 +132,14 @@ const mergeBackups = (firebaseFolders, localFolders) => {
   })
   return results
 }
-const listenToBackupsChanges = (store, cb) => {
-  let _backupsFromFileSystem = null
-  let _backupsFromFirebase = null
-
-  const unsubscribeFromFileSystemBackups = fileSystemAPIs.listenToBackupsChanges((backups) => {
-    _backupsFromFileSystem = backups
-    if (_backupsFromFirebase) {
-      cb(mergeBackups(_backupsFromFirebase, _backupsFromFileSystem))
-    }
-  })
-
-  const unsubscribeFromFirebaseBackups = firebaseAPIs.listenToBackupsChanges((backups) => {
-    _backupsFromFirebase = backups
-    if (_backupsFromFileSystem) {
-      cb(mergeBackups(_backupsFromFirebase, _backupsFromFileSystem))
-    }
-  })
-
-  return () => {
-    unsubscribeFromFileSystemBackups()
-    unsubscribeFromFirebaseBackups()
-  }
-}
+const listenToBackupsChanges = combineCloudAndFileSystemSources(
+  fileSystemAPIs.listenToBackupsChanges,
+  firebaseAPIs.listenToBackupsChanges,
+  mergeBackups
+)
 
 const currentBackups = () => {
-  return fileSystemAPIs.currentBackups().concat(firebaseAPIs.currentBackups())
+  return mergeBackups(fileSystemAPIs.currentBackups(), firebaseAPIs.currentBackups())
 }
 
 const ignoringStore = (fn) => (store, cb) => fn(cb)

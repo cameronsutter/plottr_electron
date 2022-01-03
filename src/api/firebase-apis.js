@@ -30,6 +30,22 @@ export const currentKnownFiles = () => {
   return _currentKnownFiles
 }
 
+export const listenForSessionChange = (cb) => {
+  return onSessionChange((user) => {
+    if (user) {
+      cb({
+        email: user.email,
+        uid: user.uid,
+      })
+    } else {
+      cb({
+        email: null,
+        uid: null,
+      })
+    }
+  })
+}
+
 const annotateTemplate = (template) => ({
   ...template,
   isCloudTemplate: true,

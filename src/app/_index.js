@@ -92,22 +92,24 @@ const shouldForceDashboard = (openFirst, numOpenFiles) => {
 
 const MAX_ATTEMPTS = 5
 
-function waitForUser(cb) {
-  function iter(attempts) {
-    if (attempts >= MAX_ATTEMPTS) {
-      cb(null)
-      return
+function waitForUser() {
+  return new Promise((resolve, reject) => {
+    function iter(attempts) {
+      if (attempts >= MAX_ATTEMPTS) {
+        reject(new Error(`Couldn't get the user after 5 seconds of trying.`))
+        return
+      }
+      const user = currentUser()
+      if (user) {
+        resolve(user)
+      } else {
+        setTimeout(() => {
+          iter(attempts + 1)
+        }, 1000)
+      }
     }
-    const user = currentUser()
-    if (user) {
-      cb(user)
-    } else {
-      setTimeout(() => {
-        iter(attempts + 1)
-      }, 1000)
-    }
-  }
-  iter(0)
+    iter(0)
+  })
 }
 
 const loadFileIntoRedux = (data, fileId) => {
@@ -136,7 +138,7 @@ function removeSystemKeys(jsonData) {
   return withoutSystemKeys
 }
 
-const finaliseBoot = (originalFile, fileId, forceDashboard) => (overwrittenFile) => {
+const migrate = (originalFile, fileId, forceDashboard) => (overwrittenFile) => {
   const json = overwrittenFile || originalFile
   return new Promise((resolve, reject) => {
     migrateIfNeeded(
@@ -150,45 +152,38 @@ const finaliseBoot = (originalFile, fileId, forceDashboard) => (overwrittenFile)
           reject(error)
           return
         }
-        logger.info(`Loaded file ${json.file.fileName}.`)
-        win.setTitle(displayFileName(json.file.fileName))
-        const handleMigration = new Promise((resolve, reject) => {
-          if (migrated) {
-            logger.info(
-              `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-            )
-            overwriteAllKeys(fileId, clientId, removeSystemKeys(data))
-              .then((results) => {
-                loadFileIntoRedux(data, fileId)
-                store.dispatch(actions.client.setClientId(clientId))
-              })
-              .then(resolve, reject)
-          } else {
-            loadFileIntoRedux(data, fileId)
-            store.dispatch(actions.client.setClientId(clientId))
-            resolve(true)
-          }
-        })
-        handleMigration
-          .then((result) => {
-            render(
-              <Provider store={store}>
-                <Listener />
-                <Renamer />
-                <App forceProjectDashboard={forceDashboard} />
-              </Provider>,
-              root
-            )
-            resolve(result)
-          })
-          .catch(reject)
+        if (migrated) {
+          logger.info(
+            `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+          )
+          overwriteAllKeys(fileId, clientId, removeSystemKeys(data))
+            .then((results) => {
+              loadFileIntoRedux(data, fileId)
+              store.dispatch(actions.client.setClientId(clientId))
+              return results
+            })
+            .then(resolve, reject)
+        } else {
+          loadFileIntoRedux(data, fileId)
+          store.dispatch(actions.client.setClientId(clientId))
+          resolve(data)
+        }
       },
       logger
     )
   })
 }
 
-const beforeLoading = (backupOurs, uploadOurs, fileId, offlineFile, email, userId) => {
+/* If we find that we had an offline backup, we need to either:
+ *  - Backup the local copy and open the online copy,
+ *  - overwrite the cloud copy, or
+ *  - do nothing (i.e. just load the cloud copy).
+ *
+ * We signal to the caller that we overwrote the cloud copy by
+ * producing the new file for it to load.  Otherwise, we produce false
+ * to signal that it should load the original file.
+ */
+const handleOfflineBackup = (backupOurs, uploadOurs, fileId, offlineFile, email, userId) => {
   if (backupOurs) {
     logger.info(
       `Backing up a local version of ${fileId} because both offline and online versions changed.`
@@ -203,13 +198,17 @@ const beforeLoading = (backupOurs, uploadOurs, fileId, offlineFile, email, userI
         }-${date.getDate()}-${date.getFullYear()}`,
       },
     }
-    return uploadProject(file, email, userId).then((result) => ({
-      ...offlineFile,
-      file: {
-        ...offlineFile.file,
-        id: result.data.fileId,
-      },
-    }))
+    return uploadProject(file, email, userId)
+      .then((result) => ({
+        ...offlineFile,
+        file: {
+          ...offlineFile.file,
+          id: result.data.fileId,
+        },
+      }))
+      .then(() => {
+        return false
+      })
   } else if (uploadOurs) {
     logger.info(
       `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
@@ -225,75 +224,112 @@ const beforeLoading = (backupOurs, uploadOurs, fileId, offlineFile, email, userI
   return Promise.resolve(false)
 }
 
+function handleNoFileId(fileId, filePath) {
+  const errorObject = new Error('Could not open cloud file.')
+  rollbar.error(
+    `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
+    errorObject
+  )
+  logger.error(
+    `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
+    errorObject
+  )
+  dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+  return Promise.reject(new Error(`Cannot open file with id: ${fileId} from filePath: ${filePath}`))
+}
+
+function handleNoUser(filePath) {
+  logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
+  render(
+    <Provider store={store}>
+      <Listener />
+      <Renamer />
+      <App />
+    </Provider>,
+    root
+  )
+  return
+}
+
+function handleNoUserId(filePath) {
+  const errorMessage = `Tried to boot plottr cloud file (${filePath}) without a user id.`
+  rollbar.error(errorMessage)
+  return Promise.reject(new Error(errorMessage))
+}
+
+const handleEroneousUserStates = (filePath) => (user) => {
+  // I'm not sure why this branch came about.  It doesn't look right at all.
+  if (!user) {
+    return handleNoUser(filePath)
+  } else {
+    if (!user.uid) {
+      return handleNoUserId(filePath)
+    }
+    return user
+  }
+}
+
+const computeAndHandleResumeDirectives = (fileId, email, userId, forceDashboard, json) => {
+  const offlinePath = offlineFilePath(json)
+  const exists = fs.existsSync(offlinePath)
+  const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
+  const [uploadOurs, backupOurs] = exists ? resumeDirective(offlineFile, json) : [false, false]
+  return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
+}
+
+const renderCloudFile = (forceDashboard) => () => {
+  render(
+    <Provider store={store}>
+      <Listener />
+      <Renamer />
+      <App forceProjectDashboard={forceDashboard} />
+    </Provider>,
+    root
+  )
+}
+
+const afterLoading = (json) => {
+  logger.info(`Loaded file ${json.file.fileName}.`)
+  win.setTitle(displayFileName(json.file.fileName))
+}
+
+const bootWithUser = (fileId, forceDashboard) => (user) => {
+  const userId = user.uid
+  const email = user.email
+  return initialFetch(userId, fileId, clientId, app.getVersion())
+    .then((fetchedFile) => {
+      return computeAndHandleResumeDirectives(fileId, email, userId, forceDashboard, fetchedFile)
+        .then(migrate(fetchedFile, fileId, forceDashboard))
+        .then(afterLoading)
+        .then(renderCloudFile(forceDashboard))
+    })
+    .catch((error) => {
+      const errorMessage = `Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`
+      logger.error(errorMessage, error)
+      rollbar.error(errorMessage, error)
+      dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+      return Promise.reject(error)
+    })
+}
+
+const handleErrorBootingFile = (fileId) => (error) => {
+  const errorMessage = `Error booting ${fileId} clientId: ${clientId}`
+  logger.error(errorMessage, error)
+  rollbar.error(errorMessage, error)
+  dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+  return Promise.reject(error)
+}
+
 function bootCloudFile(filePath, forceDashboard) {
   const fileId = filePath.split('plottr://')[1]
   if (!fileId) {
-    const errorObject = new Error('Could not open cloud file.')
-    rollbar.error(
-      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
-      errorObject
-    )
-    logger.error(
-      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
-      errorObject
-    )
-    dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-    return Promise.reject(
-      new Error(`Cannot open file with id: ${fileId} from filePath: ${filePath}`)
-    )
+    return handleNoFileId(fileId, filePath)
   }
 
-  return new Promise((resolve, reject) => {
-    waitForUser((user) => {
-      if (!user) {
-        logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
-        render(
-          <Provider store={store}>
-            <Listener />
-            <Renamer />
-            <App />
-          </Provider>,
-          root
-        )
-        resolve()
-        return
-      }
-
-      const userId = user.uid
-      const email = user.email
-      if (!userId) {
-        rollbar.error(`Tried to boot plottr cloud file (${filePath}) without a user id.`)
-        reject(new Error(`Tried to boot plottr cloud file (${filePath}) without a user id.`))
-        return
-      }
-
-      initialFetch(userId, fileId, clientId, app.getVersion())
-        .then((json) => {
-          const offlinePath = offlineFilePath(json)
-          const exists = fs.existsSync(offlinePath)
-          const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
-          const [uploadOurs, backupOurs] = exists
-            ? resumeDirective(offlineFile, json)
-            : [false, false]
-          beforeLoading(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
-            .then(() => {
-              return finaliseBoot(json, fileId, forceDashboard)
-            })
-            .then((result) => {
-              resolve(result)
-            })
-        })
-        .catch((error) => {
-          logger.error(`Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`, error)
-          rollbar.error(
-            `Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`,
-            error
-          )
-          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-          reject(error)
-        })
-    })
-  })
+  return waitForUser()
+    .then(handleEroneousUserStates(filePath))
+    .then(bootWithUser(fileId, forceDashboard))
+    .catch(handleErrorBootingFile(fileId))
 }
 
 function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard) {

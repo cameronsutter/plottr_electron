@@ -39,7 +39,6 @@ const Listener = ({
   setHasPro,
   setUserId,
   setEmailAddress,
-  setFileList,
   startLoadingALicenseType,
   finishLoadingALicenseType,
 }) => {
@@ -189,7 +188,6 @@ Listener.propTypes = {
   setHasPro: PropTypes.func.isRequired,
   setUserId: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
-  setFileList: PropTypes.func.isRequired,
   startLoadingALicenseType: PropTypes.func.isRequired,
   finishLoadingALicenseType: PropTypes.func.isRequired,
 }
@@ -222,7 +220,6 @@ export default connect(
     setHasPro: actions.client.setHasPro,
     setUserId: actions.client.setUserId,
     setEmailAddress: actions.client.setEmailAddress,
-    setFileList: actions.project.setFileList,
     startLoadingALicenseType: actions.applicationState.startLoadingALicenseType,
     finishLoadingALicenseType: actions.applicationState.finishLoadingALicenseType,
   }

@@ -100,8 +100,8 @@ const platform = {
       const state = store.getState()
       const {
         client: { emailAddress, userId, clientId },
-        project: { fileList },
       } = state.present
+      const fileList = selectors.knownFilesSelector(state.present)
       if (userId) {
         store.dispatch(actions.project.showLoader(true))
         store.dispatch(actions.applicationState.startCreatingCloudFile())
@@ -174,7 +174,16 @@ const platform = {
       const file = isLoggedIn && selectors.fileFromFileIdSelector(state.present, id)
       const isOnCloud = file?.isCloudFile
       if (isLoggedIn && isOnCloud) {
-        const fileName = selectors.fileFromFileIdSelector(state.present, id).fileName
+        if (!file) {
+          logger.error(
+            `Error deleting file at path: ${path} with id: ${id}.  File is not known to Plottr`
+          )
+          store.dispatch(actions.error.generalError('file-not-found'))
+          store.dispatch(actions.project.showLoader(false))
+          store.dispatch(actions.applicationState.finishDeletingFile())
+          return
+        }
+        const { fileName } = file
         store.dispatch(actions.project.showLoader(true))
         store.dispatch(actions.applicationState.startDeletingFile())
         deleteCloudBackupFile(fileName)

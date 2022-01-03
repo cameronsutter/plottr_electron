@@ -3,8 +3,7 @@ import fs, { readFileSync } from 'fs'
 import path from 'path'
 
 import { t } from 'plottr_locales'
-import { fetchFiles } from 'wired-up-firebase'
-import { actions, reducers, emptyFile } from 'pltr/v2'
+import { actions, reducers, emptyFile, selectors } from 'pltr/v2'
 
 import { closeDashboard } from './dashboard-events'
 import { store } from './app/store'
@@ -45,17 +44,13 @@ export const newFile = (
     return fileName && fileName.match(/Untitled/g)
   })
   const fileName = t('Untitled') + ` - ${untitledFileList.length}`
-  const setFileList = (...args) => store.dispatch(actions.project.setFileList(...args))
   const file = Object.assign(newEmptyFile(fileName, version, fullState.present), template || {})
 
   return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
     const fileId = response.data.fileId
-    return fetchFiles(userId).then((newFileList) => {
-      openFile(`plottr://${fileId}`, fileId, false)
-      setFileList(newFileList.filter(({ deleted }) => !deleted))
-      closeDashboard()
-      return fileId
-    })
+    openFile(`plottr://${fileId}`, fileId, false)
+    closeDashboard()
+    return fileId
   })
 }
 
@@ -105,13 +100,8 @@ export const offlineFilePath = (file) => {
 }
 
 export const renameFile = (filePath) => {
-  store.dispatch(actions.applicationState.startRenamingFile())
   if (filePath.startsWith('plottr://')) {
-    const {
-      present: {
-        project: { fileList },
-      },
-    } = store.getState()
+    const fileList = selectors.knownFilesSelector(store.getState().present)
     const fileId = filePath.replace(/^plottr:\/\//, '')
     if (!fileList.find(({ id }) => id === fileId)) {
       logger.error(`Coludn't find file with id: ${fileId} to rename`)

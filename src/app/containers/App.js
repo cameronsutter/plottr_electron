@@ -30,7 +30,6 @@ const App = ({
   showTour,
   userId,
   isCloudFile,
-  setFileList,
   setOffline,
   isOffline,
   fileId,
@@ -245,7 +244,6 @@ App.propTypes = {
   showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
   isCloudFile: PropTypes.bool,
-  setFileList: PropTypes.func.isRequired,
   setOffline: PropTypes.func.isRequired,
   isOffline: PropTypes.bool,
   fileId: PropTypes.string,
@@ -274,7 +272,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   setUserId: actions.client.setUserId,
-  setFileList: actions.project.setFileList,
   setEmailAddress: actions.client.setEmailAddress,
   setHasPro: actions.client.setHasPro,
   setOffline: actions.project.setOffline,

@@ -96,7 +96,7 @@ export default connect(
   (state) => ({
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
-    fileList: selectors.fileListSelector(state.present),
+    fileList: selectors.knownFilesSelector(state.present),
   }),
   {
     showLoader: actions.project.showLoader,

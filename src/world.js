@@ -206,7 +206,7 @@ const theWorld = {
     currentLicense,
   },
   session: {
-    listenForSessionChange: firebaseAPIs.listenForSessionChange,
+    listenForSessionChange: ignoringStore(firebaseAPIs.listenForSessionChange),
   },
   files: {
     listenToknownFilesChanges,

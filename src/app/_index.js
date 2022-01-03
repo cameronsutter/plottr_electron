@@ -238,16 +238,20 @@ function handleNoFileId(fileId, filePath) {
   return Promise.reject(new Error(`Cannot open file with id: ${fileId} from filePath: ${filePath}`))
 }
 
-function handleNoUser(filePath) {
-  logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
+const renderCloudFile = (forceDashboard) => () => {
   render(
     <Provider store={store}>
       <Listener />
       <Renamer />
-      <App />
+      <App forceProjectDashboard={forceDashboard} />
     </Provider>,
     root
   )
+}
+
+function handleNoUser(filePath) {
+  logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
+  renderCloudFile()
   return
 }
 
@@ -275,17 +279,6 @@ const computeAndHandleResumeDirectives = (fileId, email, userId, forceDashboard,
   const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
   const [uploadOurs, backupOurs] = exists ? resumeDirective(offlineFile, json) : [false, false]
   return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
-}
-
-const renderCloudFile = (forceDashboard) => () => {
-  render(
-    <Provider store={store}>
-      <Listener />
-      <Renamer />
-      <App forceProjectDashboard={forceDashboard} />
-    </Provider>,
-    root
-  )
 }
 
 const afterLoading = (json) => {

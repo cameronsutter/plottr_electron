@@ -23,7 +23,7 @@ const Navigation = ({
   changeCurrentView,
   forceProjectDashboard,
   needsLogin,
-  userId, // probably don't need this
+  isLoggedIn, // probably don't need this
   hasCurrentProLicense,
   selectedFile,
   isCloudFile,
@@ -65,10 +65,17 @@ const Navigation = ({
     if (isFirstTime || isInTrialModeWithExpiredTrial) {
       setDashboardView('account')
     }
-    if (userId && !hasCurrentProLicense) {
+    if (!isFirstTime && isLoggedIn && !hasCurrentProLicense) {
       setDashboardView('account')
     }
-  }, [isInTrialModeWithExpiredTrial, dashboardView, userId, hasCurrentProLicense, checkedSession])
+  }, [
+    isFirstTime,
+    isInTrialModeWithExpiredTrial,
+    setDashboardView,
+    isLoggedIn,
+    hasCurrentProLicense,
+    checkedSession,
+  ])
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
@@ -174,7 +181,7 @@ Navigation.propTypes = {
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
   needsLogin: PropTypes.bool,
-  userId: PropTypes.string,
+  isLoggedIn: PropTypes.string,
   hasCurrentProLicense: PropTypes.bool,
   selectedFile: PropTypes.object,
   isCloudFile: PropTypes.bool,
@@ -190,7 +197,7 @@ function mapStateToProps(state) {
     currentView: selectors.currentViewSelector(state.present),
     isDarkMode: selectors.isDarkModeSelector(state.present),
     needsLogin: selectors.userNeedsToLoginSelector(state.present),
-    userId: selectors.userIdSelector(state.present),
+    isLoggedIn: selectors.isLoggedInSelector(state.present),
     hasCurrentProLicense: selectors.hasProSelector(state.present),
     selectedFile: selectors.selectedFileSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),

@@ -39,6 +39,8 @@ const Listener = ({
   setUserId,
   setEmailAddress,
   setFileList,
+  startLoadingALicenseType,
+  finishLoadingALicenseType,
 }) => {
   const [unsubscribeFunctions, setUnsubscribeFunctions] = useState([])
 
@@ -129,8 +131,7 @@ const Listener = ({
       setUserId(uid)
       setEmailAddress(email)
       fetchFiles(uid).then((files) => {
-        const activeFiles = files.filter(({ deleted }) => !deleted)
-        setFileList(activeFiles)
+        finishLoadingALicenseType('proSubscription')
       })
     } else {
       logOut().then(() => {
@@ -143,6 +144,7 @@ const Listener = ({
 
   useEffect(() => {
     if (checkedSession && isLoggedIn) {
+      startLoadingALicenseType('proSubscription')
       currentUser()
         .getIdTokenResult()
         .then((token) => {
@@ -155,6 +157,7 @@ const Listener = ({
                 .catch((error) => {
                   // TODO: maybe retry?
                   logger.error('Failed to check for pro', error)
+                  finishLoadingALicenseType('proSubscription')
                 })
             }
           }
@@ -185,6 +188,8 @@ Listener.propTypes = {
   setUserId: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
   setFileList: PropTypes.func.isRequired,
+  startLoadingALicenseType: PropTypes.func.isRequired,
+  finishLoadingALicenseType: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -215,5 +220,7 @@ export default connect(
     setUserId: actions.client.setUserId,
     setEmailAddress: actions.client.setEmailAddress,
     setFileList: actions.project.setFileList,
+    startLoadingALicenseType: actions.applicationState.startLoadingALicenseType,
+    finishLoadingALicenseType: actions.applicationState.finishLoadingALicenseType,
   }
 )(Listener)

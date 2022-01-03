@@ -176,6 +176,7 @@ const platform = {
       if (isLoggedIn && isOnCloud) {
         const fileName = selectors.fileFromFileIdSelector(state.present, id).fileName
         store.dispatch(actions.project.showLoader(true))
+        store.dispatch(actions.applicationState.startDeletingFile())
         deleteCloudBackupFile(fileName)
           .then(() => {
             return deleteFile(id, userId, clientId)
@@ -186,10 +187,12 @@ const platform = {
             }
             logger.info(`Deleted file at path: ${path}`)
             store.dispatch(actions.project.showLoader(false))
+            store.dispatch(actions.applicationState.finishDeletingFile())
           })
           .catch((error) => {
             logger.error(`Error deleting file at path: ${path}`, error)
             store.dispatch(actions.project.showLoader(false))
+            store.dispatch(actions.applicationState.finishDeletingFile())
           })
       } else {
         ipcRenderer.send('delete-known-file', id, path, userId, clientId)

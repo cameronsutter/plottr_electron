@@ -97,7 +97,7 @@ export const listenToBackupsChanges = (cb) => {
           backupFolders.push({
             backups: grouped[key],
             path: key,
-            date: grouped[key][0]?.lastModified?.toDate() || new Date(),
+            date: key,
             isCloudBackup: true,
           })
         })

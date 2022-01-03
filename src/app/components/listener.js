@@ -15,6 +15,7 @@ import { fileSystemAPIs, licenseServerAPIs } from '../../api'
 const { dialog } = remote
 
 const Listener = ({
+  hasPro,
   userId,
   emailAddress,
   selectedFile,
@@ -143,10 +144,10 @@ const Listener = ({
   }
 
   useEffect(() => {
-    if (checkedSession && isLoggedIn) {
+    if (checkedSession && isLoggedIn && !hasPro) {
       startLoadingALicenseType('proSubscription')
       currentUser()
-        .getIdTokenResult()
+        ?.getIdTokenResult()
         .then((token) => {
           if (token.claims.beta || token.claims.admin || token.claims.lifetime) {
             handleCheckPro(userId, emailAddress)(true)
@@ -163,12 +164,13 @@ const Listener = ({
           }
         })
     }
-  }, [isLoggedIn, checkedSession, userId, emailAddress])
+  }, [isLoggedIn, checkedSession, userId, emailAddress, hasPro])
 
   return null
 }
 
 Listener.propTypes = {
+  hasPro: PropTypes.bool,
   userId: PropTypes.string,
   emailAddress: PropTypes.string,
   setPermission: PropTypes.func.isRequired,
@@ -194,6 +196,7 @@ Listener.propTypes = {
 
 export default connect(
   (state) => ({
+    hasPro: selectors.hasProSelector(state.present),
     emailAddress: selectors.emailAddressSelector(state.present),
     selectedFile: selectors.selectedFileSelector(state.present),
     userId: selectors.userIdSelector(state.present),

@@ -39,6 +39,7 @@ const App = ({
   isResuming,
   userNeedsToLogin,
   sessionChecked,
+  busyBooting,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -46,6 +47,14 @@ const App = ({
   const [blockClosing, setBlockClosing] = useState(true)
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
+  const [firstTimeBooting, setFirstTimeBooting] = useState(busyBooting)
+
+  // A latch so that we only show initial loading splash once.
+  useEffect(() => {
+    if (!busyBooting && firstTimeBooting) {
+      setFirstTimeBooting(false)
+    }
+  }, [busyBooting])
 
   const isTryingToReload = useRef(false)
   const isTryingToClose = useRef(false)
@@ -196,6 +205,17 @@ const App = ({
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
+  if (firstTimeBooting) {
+    // TODO: @cameron, @jeana, this is where we can put a more
+    // interesting loading component for users and let them know what
+    // we're loading based on the `applicationState` key in Redux ^_^
+    return (
+      <div id="temporary-inner">
+        <img src="../icons/logo_28_500.png" height="500" />
+      </div>
+    )
+  }
+
   return (
     <ErrorBoundary>
       <ErrorBoundary>
@@ -234,6 +254,7 @@ App.propTypes = {
   isResuming: PropTypes.bool,
   userNeedsToLogin: PropTypes.bool,
   sessionChecked: PropTypes.bool,
+  busyBooting: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -247,6 +268,7 @@ function mapStateToProps(state) {
     isResuming: selectors.isResumingSelector(state.present),
     userNeedsToLogin: selectors.userNeedsToLoginSelector(state.present),
     sessionChecked: selectors.sessionCheckedSelector(state.present),
+    busyBooting: selectors.applicationIsBusyAndUninterruptableSelector(state.present),
   }
 }
 

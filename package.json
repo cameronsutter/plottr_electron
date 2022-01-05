@@ -40,7 +40,7 @@
     "validate": "npm-run-all format:check lint test"
   },
   "dependencies": {
-    "docx": "^5.5.0",
+    "docx": "^5.0.2",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
     "electron-context-menu": "^2.0.1",

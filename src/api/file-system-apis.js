@@ -107,7 +107,7 @@ export const listenToCustomTemplatesChanges = (cb) => {
   const withTemplatesAsArray = (templates) => {
     return cb(Object.values(templates))
   }
-  cb(withTemplatesAsArray(customTemplatesStore.store))
+  cb(Object.values(customTemplatesStore.store))
   return customTemplatesStore.onDidAnyChange.bind(customTemplatesStore)(withTemplatesAsArray)
 }
 export const currentCustomTemplates = () => Object.values(customTemplatesStore.store)

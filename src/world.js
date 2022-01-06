@@ -69,7 +69,7 @@ const combineCloudAndFileSystemSources =
           store.getState().present
         )
         if (_currentCloudResult) {
-          cb(_currentFileSystemResult.concat(_currentCloudResult))
+          cb(mergeSources(_currentFileSystemResult, _currentCloudResult))
         } else if (!previouslyLoggedIntoPro) {
           cb(_currentFileSystemResult)
         }
@@ -83,7 +83,7 @@ const combineCloudAndFileSystemSources =
           store.getState().present
         )
         if (_currentFileSystemResult) {
-          cb(_currentFileSystemResult.concat(_currentCloudResult))
+          cb(mergeSources(_currentFileSystemResult, _currentCloudResult))
         } else if (previouslyLoggedIntoPro) {
           cb(_currentCloudResult)
         }
@@ -118,9 +118,7 @@ const currentCustomTemplates = () => {
 }
 
 const mergeBackups = (firebaseFolders, localFolders) => {
-  const allFolders = firebaseFolders
-    .map((folder) => ({ ...folder, date: folder.path }))
-    .concat(localFolders)
+  const allFolders = firebaseFolders.concat(localFolders)
   const grouped = groupBy(allFolders, 'date')
   const results = []
   Object.entries(grouped).forEach(([key, group]) => {

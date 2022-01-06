@@ -258,3 +258,7 @@ ipcMain.on('save-backup', (event, filePath, file) => {
     }
   })
 })
+
+ipcMain.on('pls-quit', () => {
+  app.quit()
+})

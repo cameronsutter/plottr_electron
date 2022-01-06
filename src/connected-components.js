@@ -108,6 +108,9 @@ const platform = {
   setDarkMode: (value) => {
     ipcRenderer.send('pls-set-dark-setting', value)
   },
+  appQuit: () => {
+    ipcRenderer.send('pls-quit')
+  },
   file: {
     createNew: (template) => {
       const state = store.getState()

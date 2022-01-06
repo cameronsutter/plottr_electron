@@ -191,7 +191,7 @@ const platform = {
             return deleteFile(id, userId, clientId)
           })
           .then(() => {
-            if (selectedFile.id === idFromPath(path)) {
+            if (selectedFile?.id === idFromPath(path)) {
               store.dispatch(actions.project.selectFile(null))
             }
             logger.info(`Deleted file at path: ${path}`)

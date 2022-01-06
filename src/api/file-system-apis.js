@@ -90,7 +90,12 @@ export const listenToknownFilesChanges = (cb) => {
   )
   return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
 }
-export const currentKnownFiles = () => Object.values(knownFilesStore.store)
+export const currentKnownFiles = () =>
+  Object.entries(knownFilesStore.store).map(([key, file]) => ({
+    ...file,
+    fromFileSystem: true,
+    id: key,
+  }))
 
 export const listenToTemplatesChanges = (cb) => {
   cb(templatesStore.store)

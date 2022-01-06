@@ -12,7 +12,7 @@ import { renameCloudBackupFile } from '../../files'
 
 import { logger } from '../../logger'
 
-const Renamer = ({ userId, showLoader, fileList }) => {
+const Renamer = ({ userId, showLoader, fileList, startRenamingFile, finishRenamingFile }) => {
   const [visible, setVisible] = useState(false)
   const [fileId, setFileId] = useState(null)
   const renameOpenFile = useRef(false)
@@ -22,18 +22,23 @@ const Renamer = ({ userId, showLoader, fileList }) => {
     if (!userId) {
       return
     }
+    startRenamingFile()
     showLoader(true)
     const fileName = fileList.find(({ id }) => id === fileId)?.fileName
 
     ;(fileName ? renameCloudBackupFile(fileName, newName) : Promise.resolve(true))
       .then(() => {
-        return editFileName(userId, fileId, newName)
+        return editFileName(userId, fileId, newName).then((result) => {
+          finishRenamingFile()
+          return result
+        })
       })
       .then(() => {
         logger.info(`Renamed file with id ${fileId} to ${newName}`)
         setFileId(null)
         setVisible(false)
         showLoader(false)
+        finishRenamingFile()
         if (renameOpenFile.current) {
           document.title = `Plottr - ${newName}`
         }
@@ -42,6 +47,7 @@ const Renamer = ({ userId, showLoader, fileList }) => {
       .catch((error) => {
         logger.error(`Error renaming file with id ${fileId}`, error)
         showLoader(false)
+        finishRenamingFile()
       })
   }
 
@@ -82,13 +88,19 @@ Renamer.propTypes = {
   userId: PropTypes.string,
   showLoader: PropTypes.func.isRequired,
   fileList: PropTypes.array.isRequired,
+  startRenamingFile: PropTypes.func.isRequired,
+  finishRenamingFile: PropTypes.func.isRequired,
 }
 
 export default connect(
   (state) => ({
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
-    fileList: selectors.fileListSelector(state.present),
+    fileList: selectors.knownFilesSelector(state.present),
   }),
-  { showLoader: actions.project.showLoader }
+  {
+    showLoader: actions.project.showLoader,
+    startRenamingFile: actions.applicationState.startRenamingFile,
+    finishRenamingFile: actions.applicationState.finishRenamingFile,
+  }
 )(Renamer)

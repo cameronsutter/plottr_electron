@@ -4,7 +4,6 @@ import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
-import { listenToFiles } from 'wired-up-firebase'
 import { actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 
@@ -31,13 +30,15 @@ const App = ({
   showTour,
   userId,
   isCloudFile,
-  setFileList,
   setOffline,
   isOffline,
   fileId,
   clientId,
   setPermission,
   isResuming,
+  userNeedsToLogin,
+  sessionChecked,
+  busyBooting,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -45,11 +46,14 @@ const App = ({
   const [blockClosing, setBlockClosing] = useState(true)
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
-  const [checkedUser, setCheckedUser] = useState(false)
-  // FIXME: We need a transitive state tracked in Redux for whether
-  // we've fully-loaded so that we don't show the login modal before
-  // we've booted the file or cehcked whether the user is logged in.
-  const [needsLogin, setNeedsLogin] = useState(isCloudFile && !userId)
+  const [firstTimeBooting, setFirstTimeBooting] = useState(busyBooting)
+
+  // A latch so that we only show initial loading splash once.
+  useEffect(() => {
+    if (!busyBooting && firstTimeBooting) {
+      setFirstTimeBooting(false)
+    }
+  }, [busyBooting])
 
   const isTryingToReload = useRef(false)
   const isTryingToClose = useRef(false)
@@ -102,23 +106,18 @@ const App = ({
   }, [setOffline, fileId, clientId])
 
   useEffect(() => {
-    setNeedsLogin(isCloudFile && !userId)
-    if (!isResuming && !userId && isCloudFile && checkedUser && !isOffline) {
+    if (
+      !isResuming &&
+      !userId &&
+      isCloudFile &&
+      !userNeedsToLogin &&
+      !isOffline &&
+      sessionChecked
+    ) {
       log.error('Attempting to open a cloud file locally without being logged in.')
       dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
     }
-  }, [userId, isCloudFile, checkedUser, isOffline])
-
-  useEffect(() => {
-    if (checkedUser && userId) {
-      const fileListener = listenToFiles(userId, (files) => {
-        const activeFiles = files.filter(({ deleted }) => !deleted)
-        setFileList(activeFiles)
-      })
-      return () => fileListener()
-    }
-    return () => {}
-  }, [checkedUser, userId])
+  }, [isResuming, userId, isCloudFile, userNeedsToLogin, isOffline, sessionChecked])
 
   useEffect(() => {
     ipcRenderer.on('save-as-template-start', (event, type) => {
@@ -205,15 +204,22 @@ const App = ({
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
+  if (firstTimeBooting) {
+    // TODO: @cameron, @jeana, this is where we can put a more
+    // interesting loading component for users and let them know what
+    // we're loading based on the `applicationState` key in Redux ^_^
+    return (
+      <div id="temporary-inner">
+        <img src="../icons/logo_28_500.png" height="500" />
+      </div>
+    )
+  }
+
   return (
     <ErrorBoundary>
       <ErrorBoundary>
         <React.StrictMode>
-          <Navigation
-            forceProjectDashboard={forceProjectDashboard}
-            needsLogin={needsLogin}
-            checkedUser={(newVal) => setCheckedUser(newVal)}
-          />
+          <Navigation forceProjectDashboard={forceProjectDashboard} />
         </React.StrictMode>
       </ErrorBoundary>
       <main className="project-main tour-end">
@@ -238,13 +244,15 @@ App.propTypes = {
   showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
   isCloudFile: PropTypes.bool,
-  setFileList: PropTypes.func.isRequired,
   setOffline: PropTypes.func.isRequired,
   isOffline: PropTypes.bool,
   fileId: PropTypes.string,
   clientId: PropTypes.string,
   setPermission: PropTypes.func.isRequired,
   isResuming: PropTypes.bool,
+  userNeedsToLogin: PropTypes.bool,
+  sessionChecked: PropTypes.bool,
+  busyBooting: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -256,12 +264,14 @@ function mapStateToProps(state) {
     fileId: selectors.selectedFileIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
     isResuming: selectors.isResumingSelector(state.present),
+    userNeedsToLogin: selectors.userNeedsToLoginSelector(state.present),
+    sessionChecked: selectors.sessionCheckedSelector(state.present),
+    busyBooting: selectors.applicationIsBusyAndUninterruptableSelector(state.present),
   }
 }
 
 export default connect(mapStateToProps, {
   setUserId: actions.client.setUserId,
-  setFileList: actions.project.setFileList,
   setEmailAddress: actions.client.setEmailAddress,
   setHasPro: actions.client.setHasPro,
   setOffline: actions.project.setOffline,

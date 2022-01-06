@@ -23,24 +23,18 @@ const Navigation = ({
   changeCurrentView,
   forceProjectDashboard,
   needsLogin,
-  userId, // probably don't need this
+  isLoggedIn, // probably don't need this
   hasCurrentProLicense,
   selectedFile,
   isCloudFile,
-  checkedUser,
   isOffline,
   settings,
   isFirstTime,
   isInTrialModeWithExpiredTrial,
+  checkedSession,
 }) => {
-  const [checked, setChecked] = useState(false)
-  const initialView = forceProjectDashboard ? 'files' : null
+  const initialView = needsLogin ? null : forceProjectDashboard ? 'files' : null
   const [dashboardView, setDashboardView] = useState(initialView)
-  // don't show the login if user is not on Pro
-  //
-  // FIXME: this logic looks really compilacetd for what it's doing. :/
-  // It would be better if all of this could be in redux instead.
-  const [showFrbLogin, setShowFrbLogin] = useState((needsLogin || settings?.user?.frbId) && !userId)
   useEffect(() => {
     const openListener = document.addEventListener('open-dashboard', () => {
       setDashboardView('files')
@@ -55,10 +49,16 @@ const Navigation = ({
   }, [])
 
   useEffect(() => {
-    if (!selectedFile && !dashboardView && isCloudFile && checked) {
+    if (needsLogin) {
+      setDashboardView(null)
+    }
+  }, [needsLogin, setDashboardView])
+
+  useEffect(() => {
+    if (!selectedFile && !dashboardView && isCloudFile && checkedSession) {
       setDashboardView('files')
     }
-  }, [selectedFile, dashboardView, isCloudFile, checked])
+  }, [selectedFile, dashboardView, isCloudFile, checkedSession])
 
   useEffect(() => {
     if (!isFirstTime && !forceProjectDashboard) {
@@ -67,27 +67,21 @@ const Navigation = ({
   }, [isFirstTime])
 
   useEffect(() => {
+    if (!checkedSession) return
     if (isFirstTime || isInTrialModeWithExpiredTrial) {
       setDashboardView('account')
     }
-    if (userId && !hasCurrentProLicense) {
+    if (!isFirstTime && isLoggedIn && !hasCurrentProLicense) {
       setDashboardView('account')
     }
-  }, [isInTrialModeWithExpiredTrial, dashboardView, userId, hasCurrentProLicense, checked])
-
-  useEffect(() => {
-    if (!checked) return
-    // setDashboardView(hasCurrentProLicense ? null : dashboardView)
-    setShowFrbLogin(hasCurrentProLicense && !userId)
-  }, [checked, hasCurrentProLicense, userId])
-
-  const toggleChecking = (newVal) => {
-    if (!newVal && !checked) {
-      // finished check
-      setChecked(true)
-      checkedUser(true)
-    }
-  }
+  }, [
+    isFirstTime,
+    isInTrialModeWithExpiredTrial,
+    setDashboardView,
+    isLoggedIn,
+    hasCurrentProLicense,
+    checkedSession,
+  ])
 
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
@@ -134,9 +128,7 @@ const Navigation = ({
 
   return (
     <>
-      {showFrbLogin && !isOffline ? (
-        <LoginModal closeLoginModal={closeLoginModal} setChecking={toggleChecking} />
-      ) : null}
+      {needsLogin && !isOffline ? <LoginModal closeLoginModal={closeLoginModal} /> : null}
       {dashboardView ? (
         <DashboardModal
           activeView={dashboardView}
@@ -195,22 +187,23 @@ Navigation.propTypes = {
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
   needsLogin: PropTypes.bool,
-  userId: PropTypes.string,
+  isLoggedIn: PropTypes.string,
   hasCurrentProLicense: PropTypes.bool,
   selectedFile: PropTypes.object,
   isCloudFile: PropTypes.bool,
   isOffline: PropTypes.bool,
-  checkedUser: PropTypes.func.isRequired,
   settings: PropTypes.object.isRequired,
   isFirstTime: PropTypes.bool,
   isInTrialModeWithExpiredTrial: PropTypes.bool,
+  checkedSession: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
   return {
     currentView: selectors.currentViewSelector(state.present),
     isDarkMode: selectors.isDarkModeSelector(state.present),
-    userId: selectors.userIdSelector(state.present),
+    needsLogin: selectors.userNeedsToLoginSelector(state.present),
+    isLoggedIn: selectors.isLoggedInSelector(state.present),
     hasCurrentProLicense: selectors.hasProSelector(state.present),
     selectedFile: selectors.selectedFileSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
@@ -218,6 +211,7 @@ function mapStateToProps(state) {
     settings: selectors.appSettingsSelector(state.present),
     isFirstTime: selectors.isFirstTimeSelector(state.present),
     isInTrialModeWithExpiredTrial: selectors.isInTrialModeWithExpiredTrialSelector(state.present),
+    checkedSession: selectors.sessionCheckedSelector(state.present),
   }
 }
 

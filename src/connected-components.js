@@ -100,18 +100,21 @@ const platform = {
       const state = store.getState()
       const {
         client: { emailAddress, userId, clientId },
-        project: { fileList },
       } = state.present
+      const fileList = selectors.knownFilesSelector(state.present)
       if (userId) {
         store.dispatch(actions.project.showLoader(true))
+        store.dispatch(actions.applicationState.startCreatingCloudFile())
         newFile(emailAddress, userId, fileList, state, clientId, template, openFile)
           .then((fileId) => {
             logger.info('Created new file.', fileId)
             store.dispatch(actions.project.showLoader(false))
+            store.dispatch(actions.applicationState.finishCreatingCloudFile())
           })
           .catch((error) => {
             logger.error('Error creating a new file', error)
             store.dispatch(actions.project.showLoader(false))
+            store.dispatch(actions.applicationState.finishCreatingCloudFile())
           })
       } else {
         ipcRenderer.send('create-new-file', template)
@@ -122,15 +125,25 @@ const platform = {
       const {
         client: { userId, emailAddress },
       } = state.present
+      const isLoggedIn = selectors.isLoggedInSelector(state.present)
+      if (isLoggedIn) {
+        store.dispatch(actions.applicationState.startUploadingFileToCloud())
+      }
       store.dispatch(actions.project.showLoader(true))
       _openExistingFile(!!userId, userId, emailAddress)
         .then(() => {
           logger.info('Opened existing file')
           store.dispatch(actions.project.showLoader(false))
+          if (isLoggedIn) {
+            store.dispatch(actions.applicationState.finishUploadingFileToCloud())
+          }
         })
         .catch((error) => {
           logger.error('Error opening existing file', error)
           store.dispatch(actions.project.showLoader(false))
+          if (isLoggedIn) {
+            store.dispatch(actions.applicationState.finishUploadingFileToCloud())
+          }
         })
     },
     doesFileExist,
@@ -157,24 +170,38 @@ const platform = {
           client: { userId, clientId },
         },
       } = state
-      const isOnCloud = path.startsWith('plottr://')
-      if (isOnCloud) {
-        const fileName = selectors.fileFromFileIdSelector(state.present, id).fileName
+      const isLoggedIn = selectors.isLoggedInSelector(state.present)
+      const file = isLoggedIn && selectors.fileFromFileIdSelector(state.present, id)
+      const isOnCloud = file?.isCloudFile
+      if (isLoggedIn && isOnCloud) {
+        if (!file) {
+          logger.error(
+            `Error deleting file at path: ${path} with id: ${id}.  File is not known to Plottr`
+          )
+          store.dispatch(actions.error.generalError('file-not-found'))
+          store.dispatch(actions.project.showLoader(false))
+          store.dispatch(actions.applicationState.finishDeletingFile())
+          return
+        }
+        const { fileName } = file
         store.dispatch(actions.project.showLoader(true))
+        store.dispatch(actions.applicationState.startDeletingFile())
         deleteCloudBackupFile(fileName)
           .then(() => {
             return deleteFile(id, userId, clientId)
           })
           .then(() => {
-            if (selectedFile.id === idFromPath(path)) {
+            if (selectedFile?.id === idFromPath(path)) {
               store.dispatch(actions.project.selectFile(null))
             }
             logger.info(`Deleted file at path: ${path}`)
             store.dispatch(actions.project.showLoader(false))
+            store.dispatch(actions.applicationState.finishDeletingFile())
           })
           .catch((error) => {
             logger.error(`Error deleting file at path: ${path}`, error)
             store.dispatch(actions.project.showLoader(false))
+            store.dispatch(actions.applicationState.finishDeletingFile())
           })
       } else {
         ipcRenderer.send('delete-known-file', id, path, userId, clientId)

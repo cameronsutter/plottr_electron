@@ -1,5 +1,6 @@
 import { groupBy, flatten } from 'lodash'
 
+import { selectors } from 'pltr/v2'
 import { plottrWorldAPI } from 'plottr_world'
 
 import { fileSystemAPIs, firebaseAPIs } from './api'
@@ -9,8 +10,6 @@ const {
   currentTrial,
   listenToLicenseChanges,
   currentLicense,
-  listenToknownFilesChanges,
-  currentKnownFiles,
   listenToTemplatesChanges,
   currentTemplates,
   listenToTemplateManifestChanges,
@@ -23,35 +22,103 @@ const {
   currentUserSettings,
 } = fileSystemAPIs
 
-const listenToCustomTemplatesChanges = (cb) => {
-  let _customTemplatesFromFileSystem = []
-  let _customTemplatesFromFirebase = []
+// From: https://github.com/reduxjs/redux/issues/303#issuecomment-125184409
+function observeStore(store, select, onChange) {
+  let currentState = select(store.getState().present)
 
-  const unsubscribeToFileSystemCustomTemplates = fileSystemAPIs.listenToCustomTemplatesChanges(
-    (customTemplatesFromFileSystem) => {
-      _customTemplatesFromFileSystem = customTemplatesFromFileSystem
-      cb(customTemplatesFromFileSystem.concat(_customTemplatesFromFirebase))
+  function handleChange() {
+    let nextState = select(store.getState().present)
+    if (nextState !== currentState) {
+      currentState = nextState
+      onChange(currentState)
     }
-  )
-  const unsubscribeFromFirebaseCustomTemplateChanges = firebaseAPIs.listenToCustomTemplates(
-    (customTemplatesFromFirebase) => {
-      _customTemplatesFromFirebase = customTemplatesFromFirebase
-      cb(_customTemplatesFromFileSystem.concat(customTemplatesFromFirebase))
-    }
-  )
-  return () => {
-    unsubscribeToFileSystemCustomTemplates()
-    unsubscribeFromFirebaseCustomTemplateChanges()
   }
+
+  let unsubscribe = store.subscribe(handleChange)
+  handleChange()
+  return unsubscribe
 }
+
+const afterSettingsLoad = (store, fn) => {
+  const appSettingsLoaded = selectors.applicationSettingsAreLoadedSelector(store.getState().present)
+  if (!appSettingsLoaded) {
+    const unsubscribe = observeStore(
+      store,
+      selectors.applicationSettingsAreLoadedSelector,
+      (loaded) => {
+        if (loaded) {
+          unsubscribe()
+          afterSettingsLoad(store, fn)
+        }
+      }
+    )
+    return
+  }
+  fn()
+}
+
+const combineCloudAndFileSystemSources =
+  (fileSystemSource, cloudSource, mergeSources) => (store, cb) => {
+    let _currentFileSystemResult = null
+    let _currentCloudResult = null
+
+    const unsubscribeFromFileSystemSource = fileSystemSource((fileSystemResult) => {
+      _currentFileSystemResult = fileSystemResult
+      afterSettingsLoad(store, () => {
+        const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
+          store.getState().present
+        )
+        if (_currentCloudResult) {
+          cb(mergeSources(_currentFileSystemResult, _currentCloudResult))
+        } else if (!previouslyLoggedIntoPro) {
+          cb(_currentFileSystemResult)
+        }
+      })
+    })
+
+    const unsubscribeFromCloudSource = cloudSource((cloudResult) => {
+      _currentCloudResult = cloudResult
+      afterSettingsLoad(store, () => {
+        const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
+          store.getState().present
+        )
+        if (_currentFileSystemResult) {
+          cb(mergeSources(_currentFileSystemResult, _currentCloudResult))
+        } else if (previouslyLoggedIntoPro) {
+          cb(_currentCloudResult)
+        }
+      })
+    })
+
+    return () => {
+      unsubscribeFromFileSystemSource()
+      unsubscribeFromCloudSource()
+    }
+  }
+
+const mergeWithConcat = (source1, source2) => source1.concat(source2)
+
+const listenToknownFilesChanges = combineCloudAndFileSystemSources(
+  fileSystemAPIs.listenToknownFilesChanges,
+  firebaseAPIs.listenToKnownFiles,
+  mergeWithConcat
+)
+
+const currentKnownFiles = (cb) => {
+  return fileSystemAPIs.currentKnownFiles().concat(firebaseAPIs.currentKnownFiles())
+}
+
+const listenToCustomTemplatesChanges = combineCloudAndFileSystemSources(
+  fileSystemAPIs.listenToCustomTemplatesChanges,
+  firebaseAPIs.listenToCustomTemplates,
+  mergeWithConcat
+)
 const currentCustomTemplates = () => {
   return fileSystemAPIs.currentCustomTemplates().concat(firebaseAPIs.currentCustomTemplates())
 }
 
 const mergeBackups = (firebaseFolders, localFolders) => {
-  const allFolders = firebaseFolders
-    .map((folder) => ({ ...folder, date: folder.path }))
-    .concat(localFolders)
+  const allFolders = firebaseFolders.concat(localFolders)
   const grouped = groupBy(allFolders, 'date')
   const results = []
   Object.entries(grouped).forEach(([key, group]) => {
@@ -63,34 +130,27 @@ const mergeBackups = (firebaseFolders, localFolders) => {
   })
   return results
 }
-const listenToBackupsChanges = (cb) => {
-  let _backupsFromFileSystem = []
-  let _backupsFromFirebase = []
+const listenToBackupsChanges = combineCloudAndFileSystemSources(
+  fileSystemAPIs.listenToBackupsChanges,
+  firebaseAPIs.listenToBackupsChanges,
+  mergeBackups
+)
 
-  const unsubscribeFromFileSystemBackups = fileSystemAPIs.listenToBackupsChanges((backups) => {
-    _backupsFromFileSystem = backups
-    cb(mergeBackups(_backupsFromFirebase, backups))
-  })
-  const unsubscribeFromFirebaseBackups = firebaseAPIs.listenToBackupsChanges((backups) => {
-    _backupsFromFirebase = backups
-    cb(mergeBackups(backups, _backupsFromFileSystem))
-  })
-
-  return () => {
-    unsubscribeFromFileSystemBackups()
-    unsubscribeFromFirebaseBackups()
-  }
-}
 const currentBackups = () => {
-  return fileSystemAPIs.currentBackups().concat(firebaseAPIs.currentBackups())
+  return mergeBackups(fileSystemAPIs.currentBackups(), firebaseAPIs.currentBackups())
 }
+
+const ignoringStore = (fn) => (store, cb) => fn(cb)
 
 const theWorld = {
   license: {
-    listenToTrialChanges,
+    listenToTrialChanges: ignoringStore(listenToTrialChanges),
     currentTrial,
-    listenToLicenseChanges,
+    listenToLicenseChanges: ignoringStore(listenToLicenseChanges),
     currentLicense,
+  },
+  session: {
+    listenForSessionChange: ignoringStore(firebaseAPIs.listenForSessionChange),
   },
   files: {
     listenToknownFilesChanges,
@@ -101,19 +161,19 @@ const theWorld = {
     currentBackups,
   },
   templates: {
-    listenToTemplatesChanges,
+    listenToTemplatesChanges: ignoringStore(listenToTemplatesChanges),
     currentTemplates,
     listenToCustomTemplatesChanges,
     currentCustomTemplates,
-    listenToTemplateManifestChanges,
+    listenToTemplateManifestChanges: ignoringStore(listenToTemplateManifestChanges),
     currentTemplateManifest,
   },
   settings: {
-    listenToExportConfigSettingsChanges,
+    listenToExportConfigSettingsChanges: ignoringStore(listenToExportConfigSettingsChanges),
     currentExportConfigSettings,
-    listenToAppSettingsChanges,
+    listenToAppSettingsChanges: ignoringStore(listenToAppSettingsChanges),
     currentAppSettings,
-    listenToUserSettingsChanges,
+    listenToUserSettingsChanges: ignoringStore(listenToUserSettingsChanges),
     currentUserSettings,
   },
 }

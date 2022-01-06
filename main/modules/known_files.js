@@ -39,9 +39,12 @@ function addToKnown(filePath) {
 }
 
 function addToKnownFiles(filePath) {
-  const existingId = Object.keys(knownFilesStore.store).find(
-    (id) => path.normalize(knownFilesStore.store[id].path) == path.normalize(filePath)
-  )
+  const normalisedPath = path.normalize(filePath)
+  const existingId = Object.keys(knownFilesStore.store).find((id) => {
+    const existingPath = knownFilesStore.store[id].path
+    const existingNormalisedPath = existingPath && path.normalize(existingPath)
+    return existingNormalisedPath === normalisedPath
+  })
   if (existingId) {
     return existingId
   } else {

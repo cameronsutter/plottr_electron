@@ -4,7 +4,47 @@ import {
   onSessionChange,
   listenToCustomTemplates as listenToCustomTemplatesFromFirebase,
   listenForBackups as listenForBackupsFromFirebase,
+  listenToFiles,
 } from 'wired-up-firebase'
+
+let _currentKnownFiles = []
+export const listenToKnownFiles = (cb) => {
+  let unsubscribeFromKnownFiles = () => {}
+
+  const unsubscribeFromSessionChanges = onSessionChange((user) => {
+    if (user) {
+      unsubscribeFromKnownFiles = listenToFiles(user.uid, (newFileList) => {
+        _currentKnownFiles = newFileList.filter(({ deleted }) => !deleted)
+        cb(_currentKnownFiles)
+      })
+    }
+  })
+
+  return () => {
+    unsubscribeFromSessionChanges()
+    unsubscribeFromKnownFiles()
+  }
+}
+
+export const currentKnownFiles = () => {
+  return _currentKnownFiles
+}
+
+export const listenForSessionChange = (cb) => {
+  return onSessionChange((user) => {
+    if (user) {
+      cb({
+        email: user.email,
+        uid: user.uid,
+      })
+    } else {
+      cb({
+        email: null,
+        uid: null,
+      })
+    }
+  })
+}
 
 const annotateTemplate = (template) => ({
   ...template,
@@ -57,7 +97,7 @@ export const listenToBackupsChanges = (cb) => {
           backupFolders.push({
             backups: grouped[key],
             path: key,
-            date: grouped[key][0]?.lastModified?.toDate() || new Date(),
+            date: key,
             isCloudBackup: true,
           })
         })

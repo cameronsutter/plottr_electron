@@ -25,7 +25,10 @@ function addDays(date, days) {
   return result
 }
 
-export const listenToTrialChanges = trialStore.onDidAnyChange.bind(trialStore)
+export const listenToTrialChanges = (cb) => {
+  cb(trialStore.store)
+  return trialStore.onDidAnyChange.bind(trialStore)(cb)
+}
 export const currentTrial = () => trialStore.store
 export const startTrial = (numDays = null) => {
   const day = new Date()
@@ -54,7 +57,10 @@ export const extendTrialWithReset = (days) => {
   trialStore.set('hasBeenReset', true)
 }
 
-export const listenToLicenseChanges = licenseStore.onDidAnyChange.bind(licenseStore)
+export const listenToLicenseChanges = (cb) => {
+  cb(licenseStore.store)
+  return licenseStore.onDidAnyChange.bind(licenseStore)
+}
 export const currentLicense = () => licenseStore.store
 // FIXME: known issue: if we remove the license, then the listener
 // stops firing.  This might be fixed in the next release.
@@ -68,40 +74,68 @@ export const saveLicenseInfo = (newLicense) => {
 export const listenToknownFilesChanges = (cb) => {
   const withFileSystemAsSource = (files) => {
     return cb(
-      files.map((file) => ({
+      Object.entries(files).map(([key, file]) => ({
         ...file,
         fromFileSystem: true,
+        id: key,
       }))
     )
   }
+  cb(
+    Object.entries(knownFilesStore.store).map(([key, file]) => ({
+      ...file,
+      fromFileSystem: true,
+      id: key,
+    }))
+  )
   return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
 }
-export const currentKnownFiles = () => knownFilesStore.store
+export const currentKnownFiles = () =>
+  Object.entries(knownFilesStore.store).map(([key, file]) => ({
+    ...file,
+    fromFileSystem: true,
+    id: key,
+  }))
 
-export const listenToTemplatesChanges = templatesStore.onDidAnyChange.bind(templatesStore)
+export const listenToTemplatesChanges = (cb) => {
+  cb(templatesStore.store)
+  return templatesStore.onDidAnyChange.bind(templatesStore)(cb)
+}
 export const currentTemplates = () => templatesStore.store
 
 export const listenToCustomTemplatesChanges = (cb) => {
   const withTemplatesAsArray = (templates) => {
     return cb(Object.values(templates))
   }
+  cb(Object.values(customTemplatesStore.store))
   return customTemplatesStore.onDidAnyChange.bind(customTemplatesStore)(withTemplatesAsArray)
 }
 export const currentCustomTemplates = () => Object.values(customTemplatesStore.store)
 
-export const listenToTemplateManifestChanges = manifestStore.onDidAnyChange.bind(manifestStore)
+export const listenToTemplateManifestChanges = (cb) => {
+  cb(manifestStore.store)
+  return manifestStore.onDidAnyChange.bind(manifestStore)(cb)
+}
 export const currentTemplateManifest = () => manifestStore.store
 
-export const listenToExportConfigSettingsChanges =
-  exportConfigStore.onDidAnyChange.bind(exportConfigStore)
+export const listenToExportConfigSettingsChanges = (cb) => {
+  cb(exportConfigStore.store)
+  return exportConfigStore.onDidAnyChange.bind(exportConfigStore)(cb)
+}
 export const currentExportConfigSettings = () => exportConfigStore.store
 export const saveExportConfigSettings = (key, value) => exportConfigStore.set(key, value)
 
-export const listenToAppSettingsChanges = SETTINGS.onDidAnyChange.bind(SETTINGS)
+export const listenToAppSettingsChanges = (cb) => {
+  cb(SETTINGS.store)
+  return SETTINGS.onDidAnyChange.bind(SETTINGS)(cb)
+}
 export const currentAppSettings = () => SETTINGS.store
 export const saveAppSetting = (key, value) => SETTINGS.set(key, value)
 
-export const listenToUserSettingsChanges = USER.onDidAnyChange.bind(USER)
+export const listenToUserSettingsChanges = (cb) => {
+  cb(USER.store)
+  return USER.onDidAnyChange.bind(USER)(cb)
+}
 export const currentUserSettings = () => USER.store
 
 const withFromFileSystem = (backupFolder) => ({

@@ -1,16 +1,23 @@
 import { useEffect, useState, useRef } from 'react'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
 import { actions, selectors } from 'pltr/v2'
-import { listen, stopListening, fetchFiles } from 'wired-up-firebase'
+import { listen, stopListening, fetchFiles, currentUser, logOut } from 'wired-up-firebase'
+import { t } from 'plottr_locales'
+
 import { store } from '../store'
 import { offlineFilePath } from '../../files'
 import { logger } from '../../logger'
+import { fileSystemAPIs, licenseServerAPIs } from '../../api'
+
+const { dialog } = remote
 
 const Listener = ({
+  hasPro,
   userId,
+  emailAddress,
   selectedFile,
   setPermission,
   setFileLoaded,
@@ -27,6 +34,13 @@ const Listener = ({
   setResuming,
   resuming,
   withFullFileState,
+  isLoggedIn,
+  checkedSession,
+  setHasPro,
+  setUserId,
+  setEmailAddress,
+  startLoadingALicenseType,
+  finishLoadingALicenseType,
 }) => {
   const [unsubscribeFunctions, setUnsubscribeFunctions] = useState([])
 
@@ -110,11 +124,54 @@ const Listener = ({
     }
   }, [isOffline, offlineFilePath, filePath, originalFileName, cloudFilePath])
 
+  const handleCheckPro = (uid, email) => (hasPro) => {
+    if (hasPro) {
+      fileSystemAPIs.saveAppSetting('user.frbId', uid)
+      setHasPro(hasPro)
+      setUserId(uid)
+      setEmailAddress(email)
+      fetchFiles(uid).then((files) => {
+        finishLoadingALicenseType('proSubscription')
+      })
+    } else {
+      logOut().then(() => {
+        setUserId(null)
+        setEmailAddress(null)
+        dialog.showErrorBox(t('Error'), t("It doesn't look like you have a pro license."))
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (checkedSession && isLoggedIn && !hasPro) {
+      startLoadingALicenseType('proSubscription')
+      currentUser()
+        ?.getIdTokenResult()
+        .then((token) => {
+          if (token.claims.beta || token.claims.admin || token.claims.lifetime) {
+            handleCheckPro(userId, emailAddress)(true)
+          } else {
+            if (emailAddress) {
+              licenseServerAPIs
+                .checkForPro(emailAddress, handleCheckPro(userId, emailAddress))
+                .catch((error) => {
+                  // TODO: maybe retry?
+                  logger.error('Failed to check for pro', error)
+                  finishLoadingALicenseType('proSubscription')
+                })
+            }
+          }
+        })
+    }
+  }, [isLoggedIn, checkedSession, userId, emailAddress, hasPro])
+
   return null
 }
 
 Listener.propTypes = {
+  hasPro: PropTypes.bool,
   userId: PropTypes.string,
+  emailAddress: PropTypes.string,
   setPermission: PropTypes.func.isRequired,
   selectedFile: PropTypes.object,
   setFileLoaded: PropTypes.func.isRequired,
@@ -126,10 +183,19 @@ Listener.propTypes = {
   setResuming: PropTypes.func.isRequired,
   isCloudFile: PropTypes.bool,
   withFullFileState: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool,
+  checkedSession: PropTypes.bool,
+  setHasPro: PropTypes.func.isRequired,
+  setUserId: PropTypes.func.isRequired,
+  setEmailAddress: PropTypes.func.isRequired,
+  startLoadingALicenseType: PropTypes.func.isRequired,
+  finishLoadingALicenseType: PropTypes.func.isRequired,
 }
 
 export default connect(
   (state) => ({
+    hasPro: selectors.hasProSelector(state.present),
+    emailAddress: selectors.emailAddressSelector(state.present),
     selectedFile: selectors.selectedFileSelector(state.present),
     userId: selectors.userIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
@@ -141,6 +207,8 @@ export default connect(
     cloudFilePath: selectors.cloudFilePathSelector(state.present),
     resuming: selectors.isResumingSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
+    isLoggedIn: selectors.isLoggedInSelector(state.present),
+    checkedSession: selectors.sessionCheckedSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,
@@ -149,5 +217,10 @@ export default connect(
     setResuming: actions.project.setResuming,
     selectFile: actions.project.selectFile,
     withFullFileState: actions.project.withFullFileState,
+    setHasPro: actions.client.setHasPro,
+    setUserId: actions.client.setUserId,
+    setEmailAddress: actions.client.setEmailAddress,
+    startLoadingALicenseType: actions.applicationState.startLoadingALicenseType,
+    finishLoadingALicenseType: actions.applicationState.finishLoadingALicenseType,
   }
 )(Listener)

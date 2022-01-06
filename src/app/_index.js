@@ -251,7 +251,7 @@ const renderCloudFile = (forceDashboard) => () => {
 
 function handleNoUser(filePath) {
   logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
-  renderCloudFile()
+  renderCloudFile()()
   return
 }
 

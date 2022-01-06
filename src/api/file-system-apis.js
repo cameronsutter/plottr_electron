@@ -74,16 +74,18 @@ export const saveLicenseInfo = (newLicense) => {
 export const listenToknownFilesChanges = (cb) => {
   const withFileSystemAsSource = (files) => {
     return cb(
-      Object.values(files).map((file) => ({
+      Object.entries(files).map(([key, file]) => ({
         ...file,
         fromFileSystem: true,
+        id: key,
       }))
     )
   }
   cb(
-    Object.values(knownFilesStore.store).map((file) => ({
+    Object.entries(knownFilesStore.store).map(([key, file]) => ({
       ...file,
       fromFileSystem: true,
+      id: key,
     }))
   )
   return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)

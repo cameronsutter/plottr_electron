@@ -191,6 +191,9 @@ const autoSaver = () => {
     function forceBackup() {
       // save local backup if: 1) not cloud file OR 2) localBackups is on
       if (!onCloud || (onCloud && SETTINGS.get('user.localBackups'))) {
+        if (onCloud) {
+          filePath = `${file.file.fileName}.pltr`
+        }
         saveBackup(filePath, previousFile || file, (backupError) => {
           if (backupError) {
             event.sender.send('auto-save-backup-error', filePath, backupError)

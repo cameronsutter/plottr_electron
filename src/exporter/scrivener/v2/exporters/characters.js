@@ -45,7 +45,7 @@ export default function exportCharacters(state, documentContents, options) {
     if (options.characters.category) {
       if (categoryId != null) {
         const category = allCharacterCategories.find(
-          (category) => String(category.id) === categoryId
+          (category) => String(category.id) == String(categoryId)
         )
         characterProperties.Category = category.name
       }

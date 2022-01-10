@@ -11,30 +11,13 @@ import { FaRegUser } from 'react-icons/fa'
 import { FaSignal } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import { selectors } from 'pltr/v2'
-import LoginModal from '../components/LoginModal'
 import Resume from '../components/Resume'
 import { useCallback } from 'react'
 
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({
-  isDarkMode,
-  currentView,
-  changeCurrentView,
-  forceProjectDashboard,
-  needsLogin,
-  isLoggedIn, // probably don't need this
-  hasCurrentProLicense,
-  selectedFile,
-  isCloudFile,
-  isOffline,
-  settings,
-  isFirstTime,
-  isInTrialModeWithExpiredTrial,
-  checkedSession,
-}) => {
-  const initialView = needsLogin ? null : forceProjectDashboard ? 'files' : null
-  const [dashboardView, setDashboardView] = useState(initialView)
+const Navigation = ({ isInTrialMode, isDarkMode, currentView, changeCurrentView, isOffline }) => {
+  const [dashboardView, setDashboardView] = useState(null)
   useEffect(() => {
     const openListener = document.addEventListener('open-dashboard', () => {
       setDashboardView('files')
@@ -48,51 +31,12 @@ const Navigation = ({
     }
   }, [])
 
-  useEffect(() => {
-    if (needsLogin) {
-      setDashboardView(null)
-    }
-  }, [needsLogin, setDashboardView])
-
-  useEffect(() => {
-    if (!selectedFile && !dashboardView && isCloudFile && checkedSession) {
-      setDashboardView('files')
-    }
-  }, [selectedFile, dashboardView, isCloudFile, checkedSession])
-
-  useEffect(() => {
-    if (!isFirstTime && !forceProjectDashboard) {
-      setDashboardView(null)
-    }
-  }, [isFirstTime])
-
-  useEffect(() => {
-    if (!checkedSession) return
-    if (isFirstTime || isInTrialModeWithExpiredTrial) {
-      setDashboardView('account')
-    }
-    if (!isFirstTime && isLoggedIn && !hasCurrentProLicense) {
-      setDashboardView('account')
-    }
-  }, [
-    isFirstTime,
-    isInTrialModeWithExpiredTrial,
-    setDashboardView,
-    isLoggedIn,
-    hasCurrentProLicense,
-    checkedSession,
-  ])
-
   const handleSelect = (selectedKey) => {
     changeCurrentView(selectedKey)
   }
 
   const TrialLinks = () => {
-    // FIXME: why is trialMode in settings?
-    //
-    // We should probably indicate a transitive state in redux and
-    // rely on the value that apears there instead.
-    if (!settings.trialMode || hasCurrentProLicense || isDev) return null
+    if (!isInTrialMode) return null
 
     return (
       <Navbar.Form pullRight style={{ marginRight: '15px' }}>
@@ -116,7 +60,6 @@ const Navigation = ({
   }
 
   const resetDashboardView = useCallback(() => {
-    if (isFirstTime || isInTrialModeWithExpiredTrial) return
     setDashboardView(null)
   }, [setDashboardView])
 
@@ -124,11 +67,8 @@ const Navigation = ({
     setDashboardView(view)
   }
 
-  const closeLoginModal = () => {}
-
   return (
     <>
-      {needsLogin && !isOffline ? <LoginModal closeLoginModal={closeLoginModal} /> : null}
       {dashboardView ? (
         <DashboardModal
           activeView={dashboardView}
@@ -182,36 +122,20 @@ const Navigation = ({
 }
 
 Navigation.propTypes = {
+  isInTrialMode: PropTypes.bool,
   currentView: PropTypes.string.isRequired,
   isDarkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
-  needsLogin: PropTypes.bool,
-  isLoggedIn: PropTypes.string,
-  hasCurrentProLicense: PropTypes.bool,
-  selectedFile: PropTypes.object,
-  isCloudFile: PropTypes.bool,
   isOffline: PropTypes.bool,
-  settings: PropTypes.object.isRequired,
-  isFirstTime: PropTypes.bool,
-  isInTrialModeWithExpiredTrial: PropTypes.bool,
-  checkedSession: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
   return {
+    isInTrialMode: selectors.isInTrialModeSelector(state.present),
     currentView: selectors.currentViewSelector(state.present),
     isDarkMode: selectors.isDarkModeSelector(state.present),
-    needsLogin: selectors.userNeedsToLoginSelector(state.present),
-    isLoggedIn: selectors.isLoggedInSelector(state.present),
-    hasCurrentProLicense: selectors.hasProSelector(state.present),
-    selectedFile: selectors.selectedFileSelector(state.present),
-    isCloudFile: selectors.isCloudFileSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
-    settings: selectors.appSettingsSelector(state.present),
-    isFirstTime: selectors.isFirstTimeSelector(state.present),
-    isInTrialModeWithExpiredTrial: selectors.isInTrialModeWithExpiredTrialSelector(state.present),
-    checkedSession: selectors.sessionCheckedSelector(state.present),
   }
 }
 

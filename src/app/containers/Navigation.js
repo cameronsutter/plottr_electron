@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
-import { t } from 'plottr_locales'
 import { ipcRenderer } from 'electron'
-import { Beamer, BookChooser } from 'connected-components'
-import { actions } from 'pltr/v2'
-import { FaKey } from 'react-icons/fa'
-import { FaRegUser } from 'react-icons/fa'
-import { FaSignal } from 'react-icons/fa'
+import { FaRegUser, FaSignal, FaKey } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
-import { selectors } from 'pltr/v2'
 import Resume from '../components/Resume'
-import { useCallback } from 'react'
+
+import { t } from 'plottr_locales'
+import { Beamer, BookChooser } from 'connected-components'
+import { selectors, actions } from 'pltr/v2'
 
 const isDev = process.env.NODE_ENV == 'development'
 
 const Navigation = ({ isInTrialMode, isDarkMode, currentView, changeCurrentView, isOffline }) => {
   const [dashboardView, setDashboardView] = useState(null)
+
   useEffect(() => {
     const openListener = document.addEventListener('open-dashboard', () => {
       setDashboardView('files')

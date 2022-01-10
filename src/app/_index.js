@@ -4,7 +4,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { t } from 'plottr_locales'
-import App from 'containers/App'
+import Main from 'containers/Main'
 import { store } from 'store'
 import { ipcRenderer, remote } from 'electron'
 import { is } from 'electron-util'
@@ -238,12 +238,12 @@ function handleNoFileId(fileId, filePath) {
   return Promise.reject(new Error(`Cannot open file with id: ${fileId} from filePath: ${filePath}`))
 }
 
-const renderCloudFile = (forceDashboard) => () => {
+const renderFile = (forceDashboard) => () => {
   render(
     <Provider store={store}>
       <Listener />
       <Renamer />
-      <App forceProjectDashboard={forceDashboard} />
+      <Main forceProjectDashboard={forceDashboard} />
     </Provider>,
     root
   )
@@ -251,7 +251,7 @@ const renderCloudFile = (forceDashboard) => () => {
 
 function handleNoUser(filePath) {
   logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
-  renderCloudFile()()
+  renderFile()()
   return
 }
 
@@ -294,7 +294,7 @@ const bootWithUser = (fileId, forceDashboard) => (user) => {
       return computeAndHandleResumeDirectives(fileId, email, userId, forceDashboard, fetchedFile)
         .then(migrate(fetchedFile, fileId, forceDashboard))
         .then(afterLoading)
-        .then(renderCloudFile(forceDashboard))
+        .then(renderFile(forceDashboard))
     })
     .catch((error) => {
       const errorMessage = `Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`
@@ -332,15 +332,8 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
   try {
     json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
   } catch (error) {
-    render(
-      <Provider store={store}>
-        <Listener />
-        <Renamer />
-        <App forceProjectDashboard />
-      </Provider>,
-      root
-    )
-    return Promise.reject(error)
+    renderFile(forceDashboard)()
+    return Promise.resolve()
   }
   ipcRenderer.send('save-backup', filePath, json)
   return new Promise((resolve, reject) => {
@@ -382,14 +375,7 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
 
         store.dispatch(actions.client.setClientId(clientId))
 
-        render(
-          <Provider store={store}>
-            <Listener />
-            <Renamer />
-            <App forceProjectDashboard={forceDashboard} />
-          </Provider>,
-          root
-        )
+        renderFile(forceDashboard)()
         resolve()
       },
       logger

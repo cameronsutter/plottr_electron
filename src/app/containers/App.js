@@ -4,7 +4,6 @@ import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
-import { actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 
 import Navigation from 'containers/Navigation'
@@ -30,15 +29,10 @@ const App = ({
   showTour,
   userId,
   isCloudFile,
-  setOffline,
   isOffline,
-  fileId,
-  clientId,
-  setPermission,
   isResuming,
   userNeedsToLogin,
   sessionChecked,
-  busyBooting,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -46,14 +40,6 @@ const App = ({
   const [blockClosing, setBlockClosing] = useState(true)
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
-  const [firstTimeBooting, setFirstTimeBooting] = useState(busyBooting)
-
-  // A latch so that we only show initial loading splash once.
-  useEffect(() => {
-    if (!busyBooting && firstTimeBooting) {
-      setFirstTimeBooting(false)
-    }
-  }, [busyBooting])
 
   const isTryingToReload = useRef(false)
   const isTryingToClose = useRef(false)
@@ -90,20 +76,6 @@ const App = ({
     event.returnValue = 'nope'
     setShowAskToSave(true)
   }
-
-  useEffect(() => {
-    setOffline(!window.navigator.onLine)
-    const onlineListener = window.addEventListener('online', () => {
-      setOffline(false)
-    })
-    const offlineListener = window.addEventListener('offline', () => {
-      setOffline(true)
-    })
-    return () => {
-      window.removeEventListener('online', onlineListener)
-      window.removeEventListener('offline', offlineListener)
-    }
-  }, [setOffline, fileId, clientId])
 
   useEffect(() => {
     if (
@@ -204,17 +176,6 @@ const App = ({
     return <ActsHelpModal close={() => setShowActsGuideHelp(false)} />
   }
 
-  if (firstTimeBooting) {
-    // TODO: @cameron, @jeana, this is where we can put a more
-    // interesting loading component for users and let them know what
-    // we're loading based on the `applicationState` key in Redux ^_^
-    return (
-      <div id="temporary-inner">
-        <img src="../icons/logo_28_500.png" height="500" />
-      </div>
-    )
-  }
-
   return (
     <ErrorBoundary>
       <ErrorBoundary>
@@ -244,15 +205,10 @@ App.propTypes = {
   showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
   isCloudFile: PropTypes.bool,
-  setOffline: PropTypes.func.isRequired,
   isOffline: PropTypes.bool,
-  fileId: PropTypes.string,
-  clientId: PropTypes.string,
-  setPermission: PropTypes.func.isRequired,
   isResuming: PropTypes.bool,
   userNeedsToLogin: PropTypes.bool,
   sessionChecked: PropTypes.bool,
-  busyBooting: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -261,19 +217,10 @@ function mapStateToProps(state) {
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
-    fileId: selectors.selectedFileIdSelector(state.present),
-    clientId: selectors.clientIdSelector(state.present),
     isResuming: selectors.isResumingSelector(state.present),
     userNeedsToLogin: selectors.userNeedsToLoginSelector(state.present),
     sessionChecked: selectors.sessionCheckedSelector(state.present),
-    busyBooting: selectors.applicationIsBusyAndUninterruptableSelector(state.present),
   }
 }
 
-export default connect(mapStateToProps, {
-  setUserId: actions.client.setUserId,
-  setEmailAddress: actions.client.setEmailAddress,
-  setHasPro: actions.client.setHasPro,
-  setOffline: actions.project.setOffline,
-  setPermission: actions.permission.setPermission,
-})(App)
+export default connect(mapStateToProps)(App)

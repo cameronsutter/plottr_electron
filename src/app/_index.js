@@ -8,6 +8,7 @@ const win = remote.getCurrentWindow()
 
 import { actions, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { setupI18n, t } from 'plottr_locales'
+import world from 'world-api'
 
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
@@ -29,7 +30,7 @@ import {
 } from '../dashboard-events'
 import { logger } from '../logger'
 import { fileSystemAPIs } from '../api'
-import { bootFile } from './bootFile'
+import { renderFile } from './bootFile'
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 
@@ -57,15 +58,6 @@ window.specialDelivery = (action) => {
 
 ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
-})
-
-ipcRenderer.send('pls-fetch-state', win.id)
-ipcRenderer.on('state-fetched', (event, filePath, options, numOpenFiles) => {
-  bootFile(filePath, options, numOpenFiles)
-})
-
-ipcRenderer.on('reload-from-file', (event, filePath, options, numOpenFiles) => {
-  bootFile(filePath, options, numOpenFiles)
 })
 
 ipcRenderer.on('set-dark-mode', (event, isOn) => {
@@ -278,3 +270,12 @@ ipcRenderer.on('from-template', () => {
   openDashboard()
   setTimeout(createFromTemplate, 300)
 })
+
+// TODO: not sure when/whether we should unsubscribe.  Presumably
+// when the window is refreshed/closed?
+//
+// Could be important to do so because it might set up inotify
+// listeners and too many of those cause slow-downs.
+const unsubscribeToPublishers = world.publishChangesToStore(store)
+
+renderFile()

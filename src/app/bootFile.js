@@ -8,7 +8,6 @@ import { machineIdSync } from 'node-machine-id'
 import { SYSTEM_REDUCER_KEYS, actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
-import world from 'world-api'
 
 import { displayFileName } from '../common/utils/known_files'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
@@ -198,7 +197,7 @@ function handleNoFileId(fileId, filePath) {
   return Promise.reject(new Error(`Cannot open file with id: ${fileId} from filePath: ${filePath}`))
 }
 
-const renderFile = (forceDashboard) => () => {
+export const renderFile = (forceDashboard) => () => {
   render(
     <Provider store={store}>
       <Listener />
@@ -349,18 +348,12 @@ export function bootFile(filePath, options, numOpenFiles) {
   const settings = fileSystemAPIs.currentAppSettings()
   const forceDashboard = shouldForceDashboard(settings.user?.openDashboardFirst, numOpenFiles)
 
-  // TODO: not sure when/whether we should unsubscribe.  Presumably
-  // when the window is refreshed/closed?
-  //
-  // Could be important to do so because it might set up inotify
-  // listeners and too many of those cause slow-downs.
-  const unsubscribePublishers = world.publishChangesToStore(store)
-
   try {
     store.dispatch(actions.applicationState.startLoadingFile())
-    ;(isCloudFile
-      ? bootCloudFile(filePath, forceDashboard)
-      : bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard)
+    return (
+      isCloudFile
+        ? bootCloudFile(filePath, forceDashboard)
+        : bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard)
     )
       .then(() => {
         store.dispatch(actions.applicationState.finishLoadingFile())

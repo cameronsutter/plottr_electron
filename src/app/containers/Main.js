@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
+import { ipcRenderer, remote } from 'electron'
 
 import { actions, selectors } from 'pltr/v2'
 
+import { bootFile } from '../app/bootFile'
 import App from './App'
 import Choice from './Choice'
 import Login from './Login'
 import ExpiredView from './ExpiredView'
 import Dashboard from './Dashboard'
+
+const win = remote.getCurrentWindow()
 
 const Main = ({
   isFirstTime,
@@ -22,6 +26,19 @@ const Main = ({
   // to the file that's open.
   const [dashboardClosed, setDashboardClosed] = useState(false)
   const [firstTimeBooting, setFirstTimeBooting] = useState(busyBooting)
+
+  // I think that we need another piece of state in the application
+  // state reducer: checking file to load.
+  useEffect(() => {
+    ipcRenderer.send('pls-fetch-state', win.id)
+    ipcRenderer.on('state-fetched', (event, filePath, options, numOpenFiles) => {
+      bootFile(filePath, options, numOpenFiles)
+    })
+
+    ipcRenderer.on('reload-from-file', (event, filePath, options, numOpenFiles) => {
+      bootFile(filePath, options, numOpenFiles)
+    })
+  })
 
   // A latch so that we only show initial loading splash once.
   useEffect(() => {
@@ -85,11 +102,6 @@ const Main = ({
     return <Dashboard closeDashboard={closeDashboard} />
   }
 
-  // This is the case that I need to talk to Cameron about..
-  // if (noFileLoaded) {
-  //
-  // }
-
   return <App forceProjectDashboard={showDashboard} />
 }
 
@@ -105,7 +117,7 @@ Main.propTypes = {
 
 export default connect(
   (state) => ({
-    busyBooting: selectors.applicationIsBusyAndUninterruptableSelector(state.present),
+    busyBooting: selectors.applicationIsBusyButFileCouldBeUnloadedSelector(state.present),
     isFirstTime: selectors.isFirstTimeSelector(state.present),
     needsToLogin: selectors.userNeedsToLoginSelector(state.present),
     isInTrialModeWithExpiredTrial: selectors.isInTrialModeWithExpiredTrialSelector(state.present),

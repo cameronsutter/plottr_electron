@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { actions, selectors } from 'pltr/v2'
 
 import App from './App'
-import ChoiceView from './ChoiceView'
+import Choice from './Choice'
 import Login from './Login'
 import ExpiredView from './ExpiredView'
 import Dashboard from './Dashboard'
@@ -74,7 +74,7 @@ const Main = ({
   }
 
   if (isFirstTime) {
-    return <ChoiceView />
+    return <Choice />
   }
 
   if (isInTrialModeWithExpiredTrial) {

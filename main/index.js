@@ -22,7 +22,7 @@ const { openProjectWindow } = require('./modules/windows/projects')
 const { setDarkMode, broadcastDarkMode } = require('./modules/theme')
 const { newFileOptions } = require('./modules/new_file_options')
 const { gracefullyQuit } = require('./modules/utils')
-const { addToKnown, knownFilesStore, addToKnownFiles } = require('./modules/known_files')
+const { addToKnown, addToKnownFiles } = require('./modules/known_files')
 const {
   broadcastSetBeatHierarchy,
   broadcastUnsetBeatHierarchy,
@@ -42,6 +42,7 @@ const {
   autoSave,
   saveOfflineFile,
 } = require('./modules/files')
+const { lastOpenedFile } = require('./modules/lastOpened')
 const { editWindowPath, setFilePathForWindowWithFilePath } = require('./modules/windows/index')
 const { ensureBackupTodayPath, saveBackup } = require('./modules/backup')
 
@@ -77,19 +78,14 @@ app.userAgentFallback =
 
 app.whenReady().then(() => {
   loadMenu()
-  const files = Object.values(knownFilesStore.store)
-    .sort((thisFile, thatFile) => {
-      if (thisFile.lastOpened > thatFile.lastOpened) return -1
-      if (thisFile.lastOpened < thatFile.lastOpened) return 1
-      return 0
-    })
-    .filter((file) => fs.existsSync(file.path))
-  const latestFile = files[0]
-  if (latestFile) {
-    openProjectWindow(latestFile.path)
-  } else {
-    createNew()
-  }
+  const lastFilePath = lastOpenedFile()
+  setTimeout(() => {
+    if (lastFilePath) {
+      openProjectWindow(lastFilePath)
+    } else {
+      createNew()
+    }
+  }, 3000)
   windowsOpenFileEventHandler(process.argv)
 
   // Register the toggleDevTools shortcut listener.
@@ -106,8 +102,8 @@ app.whenReady().then(() => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
-      if (latestFile) {
-        openProjectWindow(latestFile.path)
+      if (lastFilePath) {
+        openProjectWindow(lastFilePath)
       } else {
         createNew()
       }

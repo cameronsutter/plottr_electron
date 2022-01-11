@@ -9,7 +9,7 @@ import { bootFile } from '../bootFile'
 import App from './App'
 import Choice from './Choice'
 import Login from './Login'
-import ExpiredView from './ExpiredView'
+import Expired from './Expired'
 import Dashboard from './Dashboard'
 
 const win = remote.getCurrentWindow()
@@ -133,7 +133,7 @@ const Main = ({
   }
 
   if (isInTrialModeWithExpiredTrial) {
-    return <ExpiredView />
+    return <Expired />
   }
 
   if (cantShowFile || (showDashboard && !dashboardClosed)) {

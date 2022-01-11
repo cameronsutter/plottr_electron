@@ -37,8 +37,6 @@ const Main = ({
   const [dashboardClosed, setDashboardClosed] = useState(false)
   const [firstTimeBooting, setFirstTimeBooting] = useState(busyBooting)
 
-  // I think that we need another piece of state in the application
-  // state reducer: checking file to load.
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
 

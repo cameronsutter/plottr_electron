@@ -456,3 +456,5 @@ export const TimelineWrapper = components.TimelineWrapper
 export const DashboardBody = components.DashboardBody
 export const FirebaseLogin = components.FirebaseLogin
 export const FullPageSpinner = components.FullPageSpinner
+export const ChoiceView = components.ChoiceView
+export const ExpiredView = components.ExpiredView

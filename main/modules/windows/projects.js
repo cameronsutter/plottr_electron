@@ -7,6 +7,7 @@ const { updateOpenFiles } = require('./files')
 const { rollbar } = require('../rollbar')
 const { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } = require('.')
 const { addToKnown } = require('../known_files')
+const { setLastOpenedFilePath } = require('../lastOpened')
 
 ipcMain.on('pls-open-window', (event, filePath, unknown) => {
   openProjectWindow(filePath)
@@ -32,6 +33,7 @@ function openProjectWindow(filePath) {
   try {
     app.addRecentDocument(filePath)
     addNewWindow(newWindow, filePath)
+    setLastOpenedFilePath(filePath)
   } catch (err) {
     log.warn(err)
     rollbar.warn(err, { filePath: filePath })

@@ -3,7 +3,6 @@ const SETTINGS = require('./modules/settings')
 const { setupI18n } = require('plottr_locales')
 setupI18n(SETTINGS, { electron })
 
-const fs = require('fs')
 const { app, BrowserWindow, ipcMain, globalShortcut } = electron
 const path = require('path')
 const log = require('electron-log')

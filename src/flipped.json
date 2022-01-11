@@ -14,20 +14,17 @@
   "Access to all the features": {
     "message": "(╯°□°）╯︵ sǝɹnʇɐǝɟ ǝɥʇ ʃʃɐ oʇ ssǝɔɔ∀"
   },
-  "Account": {
-    "message": "(╯°□°）╯︵ ʇunoɔɔ∀"
-  },
   "Account Information": {
     "message": "(╯°□°）╯︵ uoıʇɐɯɹoɟuI ʇunoɔɔ∀"
+  },
+  "Account": {
+    "message": "(╯°□°）╯︵ ʇunoɔɔ∀"
   },
   "Actions": {
     "message": "(╯°□°）╯︵ suoıʇɔ∀"
   },
   "Activate License": {
     "message": "(╯°□°）╯︵ ǝsuǝɔı⅂ ǝʇɐʌıʇɔ∀"
-  },
-  "Add": {
-    "message": "(╯°□°）╯︵ pp∀"
   },
   "Add Chapter": {
     "message": "(╯°□°）╯︵ ɹǝʇdɐɥↃ pp∀"
@@ -46,6 +43,9 @@
   },
   "Add new scenes or chapters here": {
     "message": "(╯°□°）╯︵ ǝɹǝɥ sɹǝʇdɐɥɔ ɹo sǝuǝɔs ʍǝu pp∀"
+  },
+  "Add": {
+    "message": "(╯°□°）╯︵ pp∀"
   },
   "Advanced Export Options": {
     "message": "(╯°□°）╯︵ suoıʇdO ʇɹodxƎ pǝɔuɐʌp∀"
@@ -71,8 +71,8 @@
   "Are you sure you want to remove your license?": {
     "message": "(╯°□°）╯︵ ¿ǝsuǝɔıʃ ɹnoʎ ǝʌoɯǝɹ oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀"
   },
-  "Are you sure?  (Removing levels may delete beat cards!)": {
-    "message": "(╯°□°）╯︵ (¡spɹɐɔ ʇɐǝq ǝʇǝʃǝp ʎɐɯ sʃǝʌǝʃ ƃuıʌoɯǝᴚ)  ¿ǝɹns noʎ ǝɹ∀"
+  "Are you sure?  (Removing levels may delete scene cards!)": {
+    "message": "(╯°□°）╯︵ (¡spɹɐɔ ǝuǝɔs ǝʇǝʃǝp ʎɐɯ sʃǝʌǝʃ ƃuıʌoɯǝᴚ)  ¿ǝɹns noʎ ǝɹ∀"
   },
   "Attach Books": {
     "message": "(╯°□°）╯︵ sʞoo၁2 ɥɔɐʇʇ∀"
@@ -296,9 +296,6 @@
   "Copy": {
     "message": "(╯°□°）╯︵ ʎdoↃ"
   },
-  "Create": {
-    "message": "(╯°□°）╯︵ ǝʇɐǝɹↃ"
-  },
   "Create Blank Project": {
     "message": "(╯°□°）╯︵ ʇɔǝɾoɹԀ ʞuɐʃ၁2 ǝʇɐǝɹↃ"
   },
@@ -316,6 +313,9 @@
   },
   "Create unlimited project files": {
     "message": "(╯°□°）╯︵ sǝʃıɟ ʇɔǝɾoɹd pǝʇıɯıʃun ǝʇɐǝɹↃ"
+  },
+  "Create": {
+    "message": "(╯°□°）╯︵ ǝʇɐǝɹↃ"
   },
   "Created By": {
     "message": "(╯°□°）╯︵ ʎ၁2 pǝʇɐǝɹↃ"
@@ -352,6 +352,12 @@
   },
   "Days of Backup": {
     "message": "(╯°□°）╯︵ dnʞɔɐ၁2 ɟo sʎɐ◖"
+  },
+  "Number of Backups": {
+    "message": "(╯°□°）╯︵ sdnʞɔɐ၁2 ɟo ɹǝqɯnᴎ"
+  },
+  "Never Delete Backups": {
+    "message": "(╯°□°）╯︵ sdnʞɔɐ၁2 ǝʇǝʃǝ◖ ɹǝʌǝᴎ"
   },
   "Default Colors": {
     "message": "(╯°□°）╯︵ sɹoʃoↃ ʇʃnɐɟǝ◖"
@@ -420,7 +426,7 @@
     "message": "(╯°□°）╯︵ ǝuo◖"
   },
   "Download Complete 🎉 (version {version})": {
-    "message": "(╯°□°）╯︵ ({ uoısɹǝʌ } uoısɹǝʌ) �� ǝʇǝʃdɯoↃ pɐoʃuʍo◖"
+    "message": "(╯°□°）╯︵ ({ uoısɹǝʌ } uoısɹǝʌ) \udf89\ud83c ǝʇǝʃdɯoↃ pɐoʃuʍo◖"
   },
   "Download Now!": {
     "message": "(╯°□°）╯︵ ¡ʍoᴎ pɐoʃuʍo◖"
@@ -919,7 +925,6 @@
   },
   "Plottr Mobile": {
     "message": "(╯°□°）╯︵ ǝʃıqoW ɹʇʇoʃԀ"
-
   },
   "Plottr Support": {
     "message": "(╯°□°）╯︵ ʇɹoddnS ɹʇʇoʃԀ"
@@ -1054,7 +1059,7 @@
     "message": "(╯°□°）╯︵ pǝʃıɐɟ ƃuıʌɐS"
   },
   "Saving worked this time 🎉": {
-    "message": "(╯°□°）╯︵ �� ǝɯıʇ sıɥʇ pǝʞɹoʍ ƃuıʌɐS"
+    "message": "(╯°□°）╯︵ \udf89\ud83c ǝɯıʇ sıɥʇ pǝʞɹoʍ ƃuıʌɐS"
   },
   "Saving your file didn't work. Check where it's stored.": {
     "message": "(╯°□°）╯︵ ˙pǝɹoʇs s,,ʇı ǝɹǝɥʍ ʞɔǝɥↃ ˙ʞɹoʍ ʇ,,upıp ǝʃıɟ ɹnoʎ ƃuıʌɐS"
@@ -1297,7 +1302,7 @@
     "message": "(╯°□°）╯︵ ʎʃʃɐɔıʇɐɯoʇn∀ ǝʇɐpd∩"
   },
   "Update Available 🎉 (version {version})": {
-    "message": "(╯°□°）╯︵ ({ uoısɹǝʌ } uoısɹǝʌ) �� ǝʃqɐʃıɐʌ∀ ǝʇɐpd∩"
+    "message": "(╯°□°）╯︵ ({ uoısɹǝʌ } uoısɹǝʌ) \udf89\ud83c ǝʃqɐʃıɐʌ∀ ǝʇɐpd∩"
   },
   "Update failed. Try again": {
     "message": "(╯°□°）╯︵ uıɐƃɐ ʎɹ⊥ ˙pǝʃıɐɟ ǝʇɐpd∩"
@@ -1970,5 +1975,215 @@
   },
   "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
     "message": "(╯°□°）╯︵ {    \n{spɹɐɔ #} ɹǝɥʇo        \n{pɹɐɔ 1} ǝuo        \n'ʃɐɹnʃd 'ʇunoɔ      \n}"
+  },
+  "(Series View)": {
+    "message": "(╯°□°）╯︵ (ʍǝıᴧ sǝıɹǝS)"
+  },
+  ".docx": {
+    "message": "(╯°□°）╯︵ xɔop˙"
+  },
+  ".scriv": {
+    "message": "(╯°□°）╯︵ ʌıɹɔs˙"
+  },
+  "Act": {
+    "message": "(╯°□°）╯︵ ʇɔ∀"
+  },
+  "Act Structure": {
+    "message": "(╯°□°）╯︵ ǝɹnʇɔnɹʇS ʇɔ∀"
+  },
+  "Action": {
+    "message": "(╯°□°）╯︵ uoıʇɔ∀"
+  },
+  "Advanced...": {
+    "message": "(╯°□°）╯︵ ˙˙˙pǝɔuɐʌp∀"
+  },
+  "Appearance: Dark/Light": {
+    "message": "(╯°□°）╯︵ ʇɥƃı⅂/ʞɹɐ◖ :ǝɔuɐɹɐǝdd∀"
+  },
+  "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards (from all books across the project).": {
+    "message": "(╯°□°）╯︵ ˙(ʇɔǝɾoɹd ǝɥʇ ssoɹɔɐ sʞooq ʃʃɐ ɯoɹɟ) spɹɐɔ ƃuıpɐǝɥ s,ʃǝʌǝʃ sıɥʇ ɹǝpun ʎʃʇɔǝɹıp spɹɐɔ ǝuıʃǝɯıʇ ǝɥʇ ǝʇǝʃǝp ʃʃıʍ ʃǝʌǝʃ ɐ ƃuıʌoɯǝᴚ ¿ǝɹns noʎ ǝɹ∀"
+  },
+  "Auto Number": {
+    "message": "(╯°□°）╯︵ ɹǝqɯnᴎ oʇn∀"
+  },
+  "Auto-Save": {
+    "message": "(╯°□°）╯︵ ǝʌɐS-oʇn∀"
+  },
+  "Background Color": {
+    "message": "(╯°□°）╯︵ ɹoʃoↃ punoɹƃʞɔɐ၁2"
+  },
+  "Backup Options": {
+    "message": "(╯°□°）╯︵ suoıʇdO dnʞɔɐ၁2"
+  },
+  "Backups beyond this will be erased": {
+    "message": "(╯°□°）╯︵ pǝsɐɹǝ ǝq ʃʃıʍ sıɥʇ puoʎǝq sdnʞɔɐ၁2"
+  },
+  "Beats": {
+    "message": "(╯°□°）╯︵ sʇɐǝ၁2"
+  },
+  "Beta": {
+    "message": "(╯°□°）╯︵ ɐʇǝ၁2"
+  },
+  "Black (default)": {
+    "message": "(╯°□°）╯︵ (ʇʃnɐɟǝp) ʞɔɐʃ၁2"
+  },
+  "Blue (default)": {
+    "message": "(╯°□°）╯︵ (ʇʃnɐɟǝp) ǝnʃ၁2"
+  },
+  "Body": {
+    "message": "(╯°□°）╯︵ ʎpo၁2"
+  },
+  "Border Color": {
+    "message": "(╯°□°）╯︵ ɹoʃoↃ ɹǝpɹo၁2"
+  },
+  "Border Style": {
+    "message": "(╯°□°）╯︵ ǝʃʎʇS ɹǝpɹo၁2"
+  },
+  "Character Image": {
+    "message": "(╯°□°）╯︵ ǝƃɐɯI ɹǝʇɔɐɹɐɥↃ"
+  },
+  "Character Name": {
+    "message": "(╯°□°）╯︵ ǝɯɐᴎ ɹǝʇɔɐɹɐɥↃ"
+  },
+  "Choose what categories you want to put your notes into": {
+    "message": "(╯°□°）╯︵ oʇuı sǝʇou ɹnoʎ ʇnd oʇ ʇuɐʍ noʎ sǝıɹoƃǝʇɐɔ ʇɐɥʍ ǝsooɥↃ"
+  },
+  "Choose what categories you want to put your tags into": {
+    "message": "(╯°□°）╯︵ oʇuı sƃɐʇ ɹnoʎ ʇnd oʇ ʇuɐʍ noʎ sǝıɹoƃǝʇɐɔ ʇɐɥʍ ǝsooɥↃ"
+  },
+  "Choose your backup location": {
+    "message": "(╯°□°）╯︵ uoıʇɐɔoʃ dnʞɔɐq ɹnoʎ ǝsooɥↃ"
+  },
+  "Colors": {
+    "message": "(╯°□°）╯︵ sɹoʃoↃ"
+  },
+  "Comedy": {
+    "message": "(╯°□°）╯︵ ʎpǝɯoↃ"
+  },
+  "Create New Project": {
+    "message": "(╯°□°）╯︵ ʇɔǝɾoɹԀ ʍǝᴎ ǝʇɐǝɹↃ"
+  },
+  "DELETE": {
+    "message": "(╯°□°）╯︵ Ǝ⊥Ǝ⅂Ǝ◖"
+  },
+  "Dark": {
+    "message": "(╯°□°）╯︵ ʞɹɐ◖"
+  },
+  "Days of Backups": {
+    "message": "(╯°□°）╯︵ sdnʞɔɐ၁2 ɟo sʎɐ◖"
+  },
+  "Don't forget to make a backup of your files first.": {
+    "message": "(╯°□°）╯︵ ˙ʇsɹıɟ sǝʃıɟ ɹnoʎ ɟo dnʞɔɐq ɐ ǝʞɐɯ oʇ ʇǝƃɹoɟ ʇ,uo◖"
+  },
+  "Edit {beatName}": {
+    "message": "(╯°□°）╯︵ {ǝɯɐᴎʇɐǝq} ʇıpƎ"
+  },
+  "Edit {lineName}": {
+    "message": "(╯°□°）╯︵ {ǝɯɐᴎǝuıʃ} ʇıpƎ"
+  },
+  "Export to:": {
+    "message": "(╯°□°）╯︵ :oʇ ʇɹodxƎ"
+  },
+  "General": {
+    "message": "(╯°□°）╯︵ ʃɐɹǝuǝ⅁"
+  },
+  "Get a License": {
+    "message": "(╯°□°）╯︵ ǝsuǝɔı⅂ ɐ ʇǝ⅁"
+  },
+  "Give this file a new name": {
+    "message": "(╯°□°）╯︵ ǝɯɐu ʍǝu ɐ ǝʃıɟ sıɥʇ ǝʌı⅁"
+  },
+  "Green (default)": {
+    "message": "(╯°□°）╯︵ (ʇʃnɐɟǝp) uǝǝɹ⅁"
+  },
+  "It looks like you've used all your license activations. Manage or upgrade here: <a>My Plottr Account</a>": {
+    "message": "(╯°□°）╯︵ <ɐ/>ʇunoɔɔ∀ ɹʇʇoʃԀ ʎW<ɐ> :ǝɹǝɥ ǝpɐɹƃdn ɹo ǝƃɐuɐW ˙suoıʇɐʌıʇɔɐ ǝsuǝɔıʃ ɹnoʎ ʃʃɐ pǝsn ǝʌ,noʎ ǝʞıʃ sʞooʃ ʇI"
+  },
+  "Levels": {
+    "message": "(╯°□°）╯︵ sʃǝʌǝ⅂"
+  },
+  "Light": {
+    "message": "(╯°□°）╯︵ ʇɥƃı⅂"
+  },
+  "Mystery": {
+    "message": "(╯°□°）╯︵ ʎɹǝʇsʎW"
+  },
+  "Note Categories": {
+    "message": "(╯°□°）╯︵ sǝıɹoƃǝʇɐↃ ǝʇoᴎ"
+  },
+  "Note Title": {
+    "message": "(╯°□°）╯︵ ǝʃʇı⊥ ǝʇoᴎ"
+  },
+  "Orange (default)": {
+    "message": "(╯°□°）╯︵ (ʇʃnɐɟǝp) ǝƃuɐɹO"
+  },
+  "Organize your scene cards into Chapters and Acts": {
+    "message": "(╯°□°）╯︵ sʇɔ∀ puɐ sɹǝʇdɐɥↃ oʇuı spɹɐɔ ǝuǝɔs ɹnoʎ ǝzıuɐƃɹO"
+  },
+  "Place Name": {
+    "message": "(╯°□°）╯︵ ǝɯɐᴎ ǝɔɐʃԀ"
+  },
+  "Put Description in:": {
+    "message": "(╯°□°）╯︵ :uı uoıʇdıɹɔsǝ◖ ʇnԀ"
+  },
+  "Red (default)": {
+    "message": "(╯°□°）╯︵ (ʇʃnɐɟǝp) pǝᴚ"
+  },
+  "Romance": {
+    "message": "(╯°□°）╯︵ ǝɔuɐɯoᴚ"
+  },
+  "Save these settings across projects?": {
+    "message": "(╯°□°）╯︵ ¿sʇɔǝɾoɹd ssoɹɔɐ sƃuıʇʇǝs ǝsǝɥʇ ǝʌɐS"
+  },
+  "Screenplay": {
+    "message": "(╯°□°）╯︵ ʎɐʃduǝǝɹɔS"
+  },
+  "Structure": {
+    "message": "(╯°□°）╯︵ ǝɹnʇɔnɹʇS"
+  },
+  "Synopsis": {
+    "message": "(╯°□°）╯︵ sısdouʎS"
+  },
+  "System": {
+    "message": "(╯°□°）╯︵ ɯǝʇsʎS"
+  },
+  "Tag Categories": {
+    "message": "(╯°□°）╯︵ sǝıɹoƃǝʇɐↃ ƃɐ⊥"
+  },
+  "Tags / Characters / Places": {
+    "message": "(╯°□°）╯︵ sǝɔɐʃԀ / sɹǝʇɔɐɹɐɥↃ / sƃɐ⊥"
+  },
+  "Templates": {
+    "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝ⊥"
+  },
+  "Text Color": {
+    "message": "(╯°□°）╯︵ ɹoʃoↃ ʇxǝ⊥"
+  },
+  "Text Size": {
+    "message": "(╯°□°）╯︵ ǝzıS ʇxǝ⊥"
+  },
+  "Title Page": {
+    "message": "(╯°□°）╯︵ ǝƃɐԀ ǝʃʇı⊥"
+  },
+  "To give feedback on this feature, please visit:": {
+    "message": "(╯°□°）╯︵ :ʇısıʌ ǝsɐǝʃd 'ǝɹnʇɐǝɟ sıɥʇ uo ʞɔɐqpǝǝɟ ǝʌıƃ o⊥"
+  },
+  "Use Templates": {
+    "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝ⊥ ǝs∩"
+  },
+  "White (default)": {
+    "message": "(╯°□°）╯︵ (ʇʃnɐɟǝp) ǝʇıɥM"
+  },
+  "Yellow (default)": {
+    "message": "(╯°□°）╯︵ (ʇʃnɐɟǝp) ʍoʃʃǝ⅄"
+  },
+  "[Blank]": {
+    "message": "(╯°□°）╯︵ [ʞuɐʃ၁2]"
+  },
+  "last edited": {
+    "message": "(╯°□°）╯︵ pǝʇıpǝ ʇsɐʃ"
+  },
+  "plottr.com/beta": {
+    "message": "(╯°□°）╯︵ ɐʇǝq/ɯoɔ˙ɹʇʇoʃd"
   }
 }

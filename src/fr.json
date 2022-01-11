@@ -1969,5 +1969,221 @@
   },
   "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
     "message": "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }"
+  },
+  "(Series View)": {
+    "message": "(Series View)"
+  },
+  ".docx": {
+    "message": ".docx"
+  },
+  ".scriv": {
+    "message": ".scriv"
+  },
+  "Act": {
+    "message": "Act"
+  },
+  "Act Structure": {
+    "message": "Act Structure"
+  },
+  "Action": {
+    "message": "Action"
+  },
+  "Advanced...": {
+    "message": "Advanced..."
+  },
+  "Appearance: Dark/Light": {
+    "message": "Appearance: Dark/Light"
+  },
+  "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards (from all books across the project).": {
+    "message": "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards (from all books across the project)."
+  },
+  "Auto Number": {
+    "message": "Auto Number"
+  },
+  "Auto-Save": {
+    "message": "Auto-Save"
+  },
+  "Background Color": {
+    "message": "Background Color"
+  },
+  "Backup Options": {
+    "message": "Backup Options"
+  },
+  "Backups beyond this will be erased": {
+    "message": "Backups beyond this will be erased"
+  },
+  "Beats": {
+    "message": "Beats"
+  },
+  "Beta": {
+    "message": "Beta"
+  },
+  "Black (default)": {
+    "message": "Black (default)"
+  },
+  "Blue (default)": {
+    "message": "Blue (default)"
+  },
+  "Body": {
+    "message": "Body"
+  },
+  "Border Color": {
+    "message": "Border Color"
+  },
+  "Border Style": {
+    "message": "Border Style"
+  },
+  "Character Image": {
+    "message": "Character Image"
+  },
+  "Character Name": {
+    "message": "Character Name"
+  },
+  "Choose what categories you want to put your notes into": {
+    "message": "Choose what categories you want to put your notes into"
+  },
+  "Choose what categories you want to put your tags into": {
+    "message": "Choose what categories you want to put your tags into"
+  },
+  "Choose your backup location": {
+    "message": "Choose your backup location"
+  },
+  "Colors": {
+    "message": "Colors"
+  },
+  "Comedy": {
+    "message": "Comedy"
+  },
+  "Create New Project": {
+    "message": "Create New Project"
+  },
+  "DELETE": {
+    "message": "DELETE"
+  },
+  "Dark": {
+    "message": "Dark"
+  },
+  "Days of Backups": {
+    "message": "Days of Backups"
+  },
+  "Don't forget to make a backup of your files first.": {
+    "message": "Don't forget to make a backup of your files first."
+  },
+  "Edit {beatName}": {
+    "message": "Edit {beatName}"
+  },
+  "Edit {lineName}": {
+    "message": "Edit {lineName}"
+  },
+  "Export to:": {
+    "message": "Export to:"
+  },
+  "General": {
+    "message": "General"
+  },
+  "Get a License": {
+    "message": "Get a License"
+  },
+  "Give this file a new name": {
+    "message": "Give this file a new name"
+  },
+  "Green (default)": {
+    "message": "Green (default)"
+  },
+  "It looks like you've used all your license activations. Manage or upgrade here: <a>My Plottr Account</a>": {
+    "message": "It looks like you've used all your license activations. Manage or upgrade here: <a>My Plottr Account</a>"
+  },
+  "Levels": {
+    "message": "Levels"
+  },
+  "Light": {
+    "message": "Light"
+  },
+  "Mystery": {
+    "message": "Mystery"
+  },
+  "Never Delete Backups": {
+    "message": "Never Delete Backups"
+  },
+  "Note Categories": {
+    "message": "Note Categories"
+  },
+  "Note Title": {
+    "message": "Note Title"
+  },
+  "Number of Backups": {
+    "message": "Number of Backups"
+  },
+  "Orange (default)": {
+    "message": "Orange (default)"
+  },
+  "Organize your scene cards into Chapters and Acts": {
+    "message": "Organize your scene cards into Chapters and Acts"
+  },
+  "Place Name": {
+    "message": "Place Name"
+  },
+  "Put Description in:": {
+    "message": "Put Description in:"
+  },
+  "Red (default)": {
+    "message": "Red (default)"
+  },
+  "Romance": {
+    "message": "Romance"
+  },
+  "Save these settings across projects?": {
+    "message": "Save these settings across projects?"
+  },
+  "Screenplay": {
+    "message": "Screenplay"
+  },
+  "Structure": {
+    "message": "Structure"
+  },
+  "Synopsis": {
+    "message": "Synopsis"
+  },
+  "System": {
+    "message": "System"
+  },
+  "Tag Categories": {
+    "message": "Tag Categories"
+  },
+  "Tags / Characters / Places": {
+    "message": "Tags / Characters / Places"
+  },
+  "Templates": {
+    "message": "Templates"
+  },
+  "Text Color": {
+    "message": "Text Color"
+  },
+  "Text Size": {
+    "message": "Text Size"
+  },
+  "Title Page": {
+    "message": "Title Page"
+  },
+  "To give feedback on this feature, please visit:": {
+    "message": "To give feedback on this feature, please visit:"
+  },
+  "Use Templates": {
+    "message": "Use Templates"
+  },
+  "White (default)": {
+    "message": "White (default)"
+  },
+  "Yellow (default)": {
+    "message": "Yellow (default)"
+  },
+  "[Blank]": {
+    "message": "[Blank]"
+  },
+  "last edited": {
+    "message": "last edited"
+  },
+  "plottr.com/beta": {
+    "message": "plottr.com/beta"
   }
 }

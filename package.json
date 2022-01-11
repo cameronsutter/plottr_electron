@@ -4,7 +4,8 @@
   "description": "A repository of all messages in Plottr with their translations into other languages",
   "main": "src/index.js",
   "scripts": {
-    "sync": "node bin/sync_translations.js"
+    "sync": "node bin/sync_translations.js",
+    "postinstall": "npm --prefix lib/babel-plugin-extract-format-message ci && npm --prefix lib/format-message-cli ci && npm --prefix lib/format-message-estree-util ci"
   },
   "keywords": [
     "translation",

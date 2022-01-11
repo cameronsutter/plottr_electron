@@ -4,7 +4,8 @@ import { PlottrModal, FirebaseLogin } from 'connected-components'
 
 const modalStyles = {
   overlay: {
-    zIndex: 1000,
+    // This modal must be ABOVE the others.
+    zIndex: 1001,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

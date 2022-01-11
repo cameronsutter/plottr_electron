@@ -16,6 +16,9 @@
   }
 
   .expired__choice {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 35%;
     padding: 10px;
     border: 3px solid $blue-7;
@@ -23,6 +26,9 @@
     cursor: pointer;
     transition: all .4s $cubic;
     color: $gray-1;
+    h2 {
+      margin: 8px;
+    }
   }
 
   .expired__choice:hover {

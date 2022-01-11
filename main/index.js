@@ -75,16 +75,14 @@ if (!is.development) {
 app.userAgentFallback =
   'Firefox Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) plottr/2021.7.29 Chrome/85.0.4183.121 Electron/10.4.7 Safari/537.36'
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   loadMenu()
   const lastFilePath = lastOpenedFile()
-  setTimeout(() => {
-    if (lastFilePath) {
-      openProjectWindow(lastFilePath)
-    } else {
-      createNew()
-    }
-  }, 3000)
+  if (lastFilePath) {
+    openProjectWindow(lastFilePath)
+  } else {
+    await createNew()
+  }
   windowsOpenFileEventHandler(process.argv)
 
   // Register the toggleDevTools shortcut listener.
@@ -97,14 +95,14 @@ app.whenReady().then(() => {
     app.setAsDefaultProtocolClient('plottr')
   }
 
-  app.on('activate', () => {
+  app.on('activate', async () => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
       if (lastFilePath) {
         openProjectWindow(lastFilePath)
       } else {
-        createNew()
+        await createNew()
       }
     }
   })
@@ -261,4 +259,8 @@ ipcMain.on('record-offline-backup', (event, file) => {
 
 ipcMain.on('set-my-file-path', (event, oldFilePath, newFilePath) => {
   setFilePathForWindowWithFilePath(oldFilePath, newFilePath)
+})
+
+ipcMain.on('pls-quit', () => {
+  app.quit()
 })

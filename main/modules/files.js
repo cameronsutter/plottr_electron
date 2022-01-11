@@ -25,6 +25,15 @@ const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
 
+function removeSystemKeys(jsonData) {
+  const withoutSystemKeys = {}
+  Object.keys(jsonData).map((key) => {
+    if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
+    withoutSystemKeys[key] = jsonData[key]
+  })
+  return withoutSystemKeys
+}
+
 const checkFileJustWritten = (filePath, data, originalStats, counter) => (fileContents) => {
   // Parsing the file could still fail...
   try {
@@ -128,33 +137,37 @@ function checkSave(filePath, data, originalStats = null, counter = 0) {
   }
 }
 
-const fileSaver = () => {
-  const saveJobs = new Map()
+const checkForMinimalSetOfKeys = (file, filePath) => {
   const BLANK_FILE = emptyFile()
 
-  return function saveFile(filePath, jsonData) {
-    const withoutSystemKeys = {}
-    Object.keys(jsonData).map((key) => {
-      if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
-      withoutSystemKeys[key] = jsonData[key]
-    })
-    const hasMinimalSetOfKeys = Object.keys(BLANK_FILE).every((key) => key in withoutSystemKeys)
-    if (!hasMinimalSetOfKeys) {
-      const missingKeys = Object.keys(BLANK_FILE).reduce((acc, key) => {
-        if (key in withoutSystemKeys) return acc
-        else return [key, ...acc]
-      }, [])
-      const errorMessage = `Tried to save file at ${filePath} but after removing system keys it lacks the following expected keys: ${missingKeys}`
-      console.error(errorMessage)
-      return Promise.reject(new Error(errorMessage))
-    }
-    const payload =
-      process.env.NODE_ENV == 'development'
-        ? JSON.stringify(withoutSystemKeys, null, 2)
-        : JSON.stringify(withoutSystemKeys)
-    const existingJob = saveJobs.get(filePath) || Promise.resolve()
+  const hasMinimalSetOfKeys = Object.keys(BLANK_FILE).every((key) => key in file)
+  if (!hasMinimalSetOfKeys) {
+    const missingKeys = Object.keys(BLANK_FILE).reduce((acc, key) => {
+      if (key in file) return acc
+      else return [key, ...acc]
+    }, [])
+    const errorMessage = `Tried to save file at ${filePath} but after removing system keys it lacks the following expected keys: ${missingKeys}`
+    console.error(errorMessage)
+    return Promise.reject(new Error(errorMessage))
+  }
+
+  return Promise.resolve(file)
+}
+
+const fileSaver = () => {
+  const saveJobs = new Map()
+
+  const currentSaveJob = (filePath) => (file) => {
+    return saveJobs.get(filePath) || Promise.resolve()
+  }
+
+  const updateOrCreateSaveJob = (filePath, withoutSystemKeys) => (existingJob) => {
     const newJob = existingJob
       .then(() => {
+        const payload =
+          process.env.NODE_ENV == 'development'
+            ? JSON.stringify(withoutSystemKeys, null, 2)
+            : JSON.stringify(withoutSystemKeys)
         return checkSave(filePath, payload)
       })
       .then(() => {
@@ -162,6 +175,13 @@ const fileSaver = () => {
       })
     saveJobs.set(filePath, newJob)
     return newJob
+  }
+
+  return function saveFile(filePath, jsonData) {
+    const withoutSystemKeys = removeSystemKeys(jsonData)
+    return checkForMinimalSetOfKeys(withoutSystemKeys, filePath)
+      .then(currentSaveJob(filePath))
+      .then(updateOrCreateSaveJob(filePath, withoutSystemKeys))
   }
 }
 const saveFile = fileSaver()
@@ -327,9 +347,9 @@ function saveOfflineFile(file) {
   const filePath = offlineFilePath(file.file.fileName)
   const withoutSystemKeys = removeSystemKeys(file)
   if (process.env.NODE_ENV == 'development') {
-    saveSwap(filePath, JSON.stringify(withoutSystemKeys, null, 2))
+    saveFile(filePath, JSON.stringify(withoutSystemKeys, null, 2))
   } else {
-    saveSwap(filePath, JSON.stringify(withoutSystemKeys))
+    saveFile(filePath, JSON.stringify(withoutSystemKeys))
   }
 }
 

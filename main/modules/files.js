@@ -157,11 +157,12 @@ const checkForMinimalSetOfKeys = (file, filePath) => {
 const fileSaver = () => {
   const saveJobs = new Map()
 
-  const currentSaveJob = (filePath) => (file) => {
+  const currentSaveJob = (filePath) => {
     return saveJobs.get(filePath) || Promise.resolve()
   }
 
-  const updateOrCreateSaveJob = (filePath, withoutSystemKeys) => (existingJob) => {
+  const updateOrCreateSaveJob = (filePath, withoutSystemKeys) => () => {
+    const existingJob = currentSaveJob(filePath)
     const newJob = existingJob
       .then(() => {
         const payload =
@@ -179,9 +180,9 @@ const fileSaver = () => {
 
   return function saveFile(filePath, jsonData) {
     const withoutSystemKeys = removeSystemKeys(jsonData)
-    return checkForMinimalSetOfKeys(withoutSystemKeys, filePath)
-      .then(currentSaveJob(filePath))
-      .then(updateOrCreateSaveJob(filePath, withoutSystemKeys))
+    return checkForMinimalSetOfKeys(withoutSystemKeys, filePath).then(
+      updateOrCreateSaveJob(filePath, withoutSystemKeys)
+    )
   }
 }
 const saveFile = fileSaver()
@@ -296,13 +297,16 @@ async function saveToTempFile(json) {
 }
 
 async function createNew(template) {
+  console.log('test!')
   if (template) {
     const filePath = await saveToTempFile(template)
     const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)
   } else {
     const emptyPlottrFile = emptyFile(t('Untitled'), app.getVersion())
+    console.log('1')
     const filePath = await saveToTempFile(emptyPlottrFile)
+    console.log('2')
     const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)
   }

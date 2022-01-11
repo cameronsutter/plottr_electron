@@ -5,6 +5,9 @@
   "(Logout)": {
     "message": "(Logout)"
   },
+  "********": {
+    "message": "********"
+  },
   "A verification code was sent to:": {
     "message": "A verification code was sent to:"
   },
@@ -43,6 +46,12 @@
   },
   "Add new scenes or chapters here": {
     "message": "Add new scenes or chapters here"
+  },
+  "Add Scene": {
+    "message": "Add Scene"
+  },
+  "Add Another Scene": {
+    "message": "Add Another Scene"
   },
   "Add": {
     "message": "Add"
@@ -293,6 +302,9 @@
   "Content": {
     "message": "Content"
   },
+  "Congratulations": {
+    "message": "Congratulations"
+  },
   "Copy": {
     "message": "Copy"
   },
@@ -353,6 +365,12 @@
   "Days of Backup": {
     "message": "Days of Backup"
   },
+  "Delete Book": {
+    "message": "Delete Book"
+  },
+  "Delete Book {name}?": {
+    "message": "Delete Book \"{name}\"?"
+  },
   "Number of Backups": {
     "message": "Number of Backups"
   },
@@ -367,6 +385,9 @@
   },
   "Delete Chapter": {
     "message": "Delete Chapter"
+  },
+  "Delete Chapter?": {
+    "message": "Delete Chapter?"
   },
   "Delete Character": {
     "message": "Delete Character"
@@ -407,6 +428,9 @@
   "Do you want to remove this image? It will NOT be deleted from your computer": {
     "message": "Do you want to remove this image? It will NOT be deleted from your computer"
   },
+  "Do you want to delete tag {name}?": {
+    "message": "Do you want to delete tag \"{name}\"?"
+  },
   "Documentation": {
     "message": "Documentation"
   },
@@ -446,20 +470,23 @@
   "Edit": {
     "message": "Edit"
   },
+  "Editor is currently locked by {name}.": {
+    "message": "Editor is currently locked by {name}."
+  },
   "Email": {
     "message": "Email"
   },
   "Email:": {
     "message": "Email:"
   },
+  "example@domain.com": {
+    "message": "example@domain.com"
+  },
   "End": {
     "message": "End"
   },
   "Ends After": {
     "message": "Ends After"
-  },
-  "Enter Chapter's name or enter": {
-    "message": "Enter Chapter's name or enter \"auto\" \n(without quotes) for auto naming."
   },
   "Enter Custom Attribute Title": {
     "message": "Enter Custom Attribute Title"
@@ -469,6 +496,9 @@
   },
   "Enter a new name for {chapter}": {
     "message": "Enter a new name for \"{chapter}\""
+  },
+  "Enter Chapter's name or enter": {
+    "message": "Enter Chapter's name or enter \"auto\" \n(without quotes) for auto naming."
   },
   "Enter some text...": {
     "message": "Enter some text..."
@@ -496,6 +526,9 @@
   },
   "Error sending email! Check your email and Try again.": {
     "message": "Error sending email! Check your email and Try again."
+  },
+  "Error sharing file": {
+    "message": "Error sharing file"
   },
   "Error: {error}": {
     "message": "Error: { error }"
@@ -554,6 +587,12 @@
   "Free Trial": {
     "message": "Free Trial"
   },
+  "From File": {
+    "message": "From File"
+  },
+  "From Template": {
+    "message": "From Template"
+  },
   "GET A LICENSE": {
     "message": "GET A LICENSE"
   },
@@ -590,6 +629,9 @@
   "Help": {
     "message": "Help"
   },
+  "Hey, check out my Plottr project \"{project}\"": {
+    "message": "Hey, check out my Plottr project \"{project}\""
+  },
   "Hide Others": {
     "message": "Hide Others"
   },
@@ -601,6 +643,9 @@
   },
   "Hmmmm. It looks like that's not a valid license key": {
     "message": "Hmmmm. It looks like that''s not a valid license key"
+  },
+  "Hold On!": {
+    "message": "Hold On!"
   },
   "I have a license key": {
     "message": "I have a license key"
@@ -653,6 +698,9 @@
   "Keep your character sheets here": {
     "message": "Keep your character sheets here"
   },
+  "Log Out": {
+    "message": "Log Out"
+  },
   "LOGOUT": {
     "message": "LOGOUT"
   },
@@ -670,6 +718,9 @@
   },
   "Let's verify your license.": {
     "message": "Let's verify your license."
+  },
+  "Let's get you started": {
+    "message": "Let's get you started"
   },
   "Levels of hierarchy": {
     "message": "Levels of hierarchy"
@@ -697,6 +748,9 @@
   },
   "Main": {
     "message": "Main"
+  },
+  "Manage the Categories you wish to place your characters in.": {
+    "message": "Manage the Categories you wish to place your characters in."
   },
   "Manually Sorted": {
     "message": "Manually Sorted"
@@ -761,6 +815,9 @@
   "No Characters": {
     "message": "No Characters"
   },
+  "No Documents Found": {
+    "message": "No Documents Found"
+  },
   "No actions to undo": {
     "message": "No actions to undo"
   },
@@ -778,6 +835,9 @@
   },
   "Not Receiving Updates": {
     "message": "Not Receiving Updates"
+  },
+  "NOT NOW": {
+    "message": "NOT NOW"
   },
   "Note Details": {
     "message": "Note Details"
@@ -899,6 +959,9 @@
   "Please verify your license": {
     "message": "Please verify your license"
   },
+  "Please verify your license in {time}": {
+    "message": "Please verify your license in {time}"
+  },
   "Plotline Details": {
     "message": "Plotline Details"
   },
@@ -941,6 +1004,12 @@
   "Plottr": {
     "message": "Plottr"
   },
+  "PLOTTR PRO": {
+    "message": "PLOTTR PRO"
+  },
+  "PLOTTR CLASSIC": {
+    "message": "PLOTTR CLASSIC"
+  },
   "Preferences": {
     "message": "Preferences"
   },
@@ -961,6 +1030,9 @@
   },
   "Purchase Email": {
     "message": "Purchase Email"
+  },
+  "Purchase Pro": {
+    "message": "Purchase Pro"
   },
   "Purples": {
     "message": "Purples"
@@ -1043,6 +1115,9 @@
   "Save as Template": {
     "message": "Save as Template"
   },
+  "Save as\nTemplate": {
+    "message": "Save as\nTemplate"
+  },
   "Save as": {
     "message": "Save as"
   },
@@ -1099,6 +1174,15 @@
   },
   "See the outline here": {
     "message": "See the outline here"
+  },
+  "See More": {
+    "message": "See More"
+  },
+  "See Less": {
+    "message": "See Less"
+  },
+  "See that was painless": {
+    "message": "See that was painless"
   },
   "Select All": {
     "message": "Select All"
@@ -1169,6 +1253,9 @@
   "Source Link": {
     "message": "Source Link"
   },
+  "Start": {
+    "message": "START"
+  },
   "Start Mobile Subscription": {
     "message": "Start Mobile Subscription"
   },
@@ -1180,6 +1267,18 @@
   },
   "Starter Templates": {
     "message": "Starter Templates"
+  },
+  "Start Plottr Pro": {
+    "message": "Start Plottr Pro"
+  },
+  "Plottr Pro Wizard": {
+    "message": "Plottr Pro Wizard"
+  },
+  "START PLOTTING": {
+    "message": "START PLOTTING"
+  },
+  "Step {number}": {
+    "message": "Step {number}"
   },
   "Story line": {
     "message": "Story line"
@@ -1226,6 +1325,12 @@
   "Template Saved": {
     "message": "Template Saved"
   },
+  "Template": {
+    "message": "Template"
+  },
+  "Templates": {
+    "message": "Templates"
+  },
   "Terms of Service": {
     "message": "Terms of Service"
   },
@@ -1250,6 +1355,12 @@
   "There was an error doing that. Try again": {
     "message": "There was an error doing that. Try again"
   },
+  "There was an error while sharing your file. Try Again.": {
+    "message": "There was an error while sharing your file. Try Again."
+  },
+  "There was an error trying to sign you in. Ensure you password and email are correct.": {
+    "message": "There was an error trying to sign you in. Ensure you password and email are correct."
+  },
   "This is a plotline": {
     "message": "This is a plotline"
   },
@@ -1258,6 +1369,15 @@
   },
   "This will send you an email with a code": {
     "message": "This will send you an email with a code"
+  },
+  "This will be quick and painless.": {
+    "message": "This will be quick and painless."
+  },
+  "There are only ": {
+    "message": "There are only "
+  },
+  "{number} steps:": {
+    "message": "{number} steps:"
   },
   "Timeline is filtered": {
     "message": "Timeline is filtered"
@@ -1276,6 +1396,9 @@
   },
   "Try that again": {
     "message": "Try that again"
+  },
+  "Try Plottr Pro today for a seamless cloud experience like you have never imagined.": {
+    "message": "Try Plottr Pro today for a seamless cloud experience like you have never imagined."
   },
   "Tutorials": {
     "message": "Tutorials"
@@ -1298,6 +1421,9 @@
   "Untitled": {
     "message": "Untitled"
   },
+  "Unknown": {
+    "message": "Unknown"
+  },
   "Update Automatically": {
     "message": "Update Automatically"
   },
@@ -1313,14 +1439,38 @@
   "Upload Files": {
     "message": "Upload Files"
   },
+  "Upload projects and templates": {
+    "message": "Upload projects and templates"
+  },
+  "Uploading projects and templates": {
+    "message": "Uploading projects and templates"
+  },
+  "UPLOADING...": {
+    "message": "UPLOADING..."
+  },
+  "Upload Projects": {
+    "message": "Upload Projects"
+  },
   "Use Template": {
     "message": "Use Template"
+  },
+  "Use Book\nTemplate": {
+    "message": "Use Book\nTemplate"
+  },
+  "Use Scene\nTemplate": {
+    "message": "Use Scene\nTemplate"
   },
   "Use a different email": {
     "message": "Use a different email"
   },
   "Use this to remove your license on this device": {
     "message": "Use this to remove your license on this device"
+  },
+  "Use License Code Login": {
+    "message": "Use License Code Login"
+  },
+  "Use Plottr Pro Login": {
+    "message": "Use Plottr Pro Login"
   },
   "VERIFY CODE": {
     "message": "VERIFY CODE"
@@ -1409,11 +1559,20 @@
   "You can have 5 more days to try Plottr": {
     "message": "You can have 5 more days to try Plottr"
   },
+  "You cannot delete the last chapter.": {
+    "message": "You cannot delete the last chapter."
+  },
+  "You cannot delete the last plotline.": {
+    "message": "You cannot delete the last plotline."
+  },
   "You have unsaved changes": {
     "message": "You have unsaved changes.\nDo you want to save?"
   },
   "You may create a new project": {
     "message": "You may create a new project\nor select a project file to begin"
+  },
+  "You need to have an active Plottr Pro account to continue": {
+    "message": "You need to have an active Plottr Pro account to continue"
   },
   "Your email didn't verify. Try again or try another email.": {
     "message": "Your email didn't verify.\nTry again or try another email."
@@ -1447,6 +1606,9 @@
   },
   "Your template has been saved and is ready to use": {
     "message": "Your template has been saved and is ready to use"
+  },
+  "Your next great plot begins with Plottr.": {
+    "message": "Your next great plot begins with Plottr."
   },
   "Zoom": {
     "message": "Zoom"
@@ -1486,6 +1648,9 @@
   },
   "but don't worry!": {
     "message": "but don''t worry!"
+  },
+  "Character's Categories": {
+    "message": "Character's Categories"
   },
   "custom character attribute": {
     "message": "custom character attribute"
@@ -2152,9 +2317,6 @@
   },
   "Tags / Characters / Places": {
     "message": "Tags / Characters / Places"
-  },
-  "Templates": {
-    "message": "Templates"
   },
   "Text Color": {
     "message": "Text Color"

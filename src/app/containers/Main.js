@@ -103,6 +103,30 @@ const Main = ({
     setDashboardClosed(true)
   }
 
+  // If we opened a file then don't show the dashboard all of a sudden
+  // when the user changes the always show dashboard setting.
+  useEffect(() => {
+    // Condition is that it passes by all the other root views and
+    // hits `App`.
+    if (
+      !firstTimeBooting &&
+      !needsToLogin &&
+      !isFirstTime &&
+      !isInTrialModeWithExpiredTrial &&
+      !(cantShowFile || (showDashboard && !dashboardClosed))
+    ) {
+      closeDashboard()
+    }
+  }, [
+    firstTimeBooting,
+    needsToLogin,
+    isFirstTime,
+    isInTrialModeWithExpiredTrial,
+    cantShowFile,
+    showDashboard,
+    dashboardClosed,
+  ])
+
   // IMPORTANT: the order of these return statements is significant.
   // We'll exit at the earliest one that evaluates true for it's
   // guarding if.

@@ -1,0 +1,1979 @@
+{
+  "(If not, please email support@plottr.com)": {
+    "message": "(Если нет, пожалуйста, напишите на почту support@plottr.com)"
+  },
+  "(Logout)": {
+    "message": "(Выйти)"
+  },
+  "A verification code was sent to:": {
+    "message": "Код подтверждения был отправлен на:"
+  },
+  "About Plottr": {
+    "message": "О Plottr"
+  },
+  "Access to all the features": {
+    "message": "Доступ ко всем функциям"
+  },
+  "Account Information": {
+    "message": "Информация об учётной записи"
+  },
+  "Account": {
+    "message": "Учётная запись"
+  },
+  "Actions": {
+    "message": "Действия"
+  },
+  "Activate License": {
+    "message": "Активировать лицензию"
+  },
+  "Add Chapter": {
+    "message": "Добавить главу"
+  },
+  "Add attribute": {
+    "message": "Добавить свойство"
+  },
+  "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details": {
+    "message": "Добавьте карточки в хронологию, чтобы писать заметки к своим сценам. Нажмите на карточку, чтобы добавить больше деталей"
+  },
+  "Add category": {
+    "message": "Добавить категорию"
+  },
+  "Add more plotlines here": {
+    "message": "Добавить больше сюжетных линий"
+  },
+  "Add new scenes or chapters here": {
+    "message": "Добавить здесь новые сцены или главы"
+  },
+  "Add": {
+    "message": "Добавить"
+  },
+  "Advanced Export Options": {
+    "message": "Расширенные параметры экспорта"
+  },
+  "After": {
+    "message": "После"
+  },
+  "All": {
+    "message": "Все"
+  },
+  "App Version: { version }": {
+    "message": "Версия приложения: { version }"
+  },
+  "Are you sure you want to clear everything in this timeline?": {
+    "message": "Вы уверены, что хотите очистить всё в этой хронологии?"
+  },
+  "Are you sure you want to delete { thing }?": {
+    "message": "Вы уверены, что хотите удалить { thing }?"
+  },
+  "Are you sure you want to delete {name}?": {
+    "message": "Вы уверены, что хотите удалить \"{ name }\"?"
+  },
+  "Are you sure you want to remove your license?": {
+    "message": "Вы уверены, что хотите удалить вашу лицензию?"
+  },
+  "Are you sure?  (Removing levels may delete scene cards!)": {
+    "message": "Вы уверены?  (Удаление уровней может привести к удалению карточек сцен!)"
+  },
+  "Attach Books": {
+    "message": "Прикрепить книги"
+  },
+  "Attach Characters": {
+    "message": "Прикрепить персонажей"
+  },
+  "Attach Places": {
+    "message": "Прикрепить локации"
+  },
+  "Attach Tags": {
+    "message": "Прикрепить тэги"
+  },
+  "Attributes": {
+    "message": "Свойства"
+  },
+  "Auto-save": {
+    "message": "Автосохранение"
+  },
+  "Auto-saving failed": {
+    "message": "Ошибка автосохранения"
+  },
+  "Auto-saving worked": {
+    "message": "Автосохранение сработало"
+  },
+  "Automatically save daily backups": {
+    "message": "Автоматически сохранять ежедневные резервные копии"
+  },
+  "Awesome choice!": {
+    "message": "Отличный выбор!"
+  },
+  "Back": {
+    "message": "Назад"
+  },
+  "Backup Location": {
+    "message": "Расположение резервной копии"
+  },
+  "Backups older than this will be erased": {
+    "message": "Более старые резервные копии будут стёрты"
+  },
+  "Backups": {
+    "message": "Резервные копии"
+  },
+  "Beat 1": {
+    "message": "Момент 1"
+  },
+  "Beat {number} title": {
+    "message": "Название { number } момента"
+  },
+  "Beat {number}": {
+    "message": "Момент { number }"
+  },
+  "Beat": {
+    "message": "Момент"
+  },
+  "Before": {
+    "message": "До"
+  },
+  "Beginning": {
+    "message": "Начало"
+  },
+  "Blues": {
+    "message": "Синие"
+  },
+  "Book #": {
+    "message": "Книга #"
+  },
+  "Book Details": {
+    "message": "Детали книги"
+  },
+  "Book": {
+    "message": "Книга"
+  },
+  "Books": {
+    "message": "Книги"
+  },
+  "Browns": {
+    "message": "Коричневые"
+  },
+  "Buy Full Version": {
+    "message": "Купить полную версию"
+  },
+  "By default, use auto-save for projects": {
+    "message": "По умолчанию использовать автосохранение для проектов "
+  },
+  "By starting a mobile subscription, you agree to Plottr's": {
+    "message": "Подключая мобильную подписку, Вы соглашаетесь с Plottr"
+  },
+  "CHECK EMAIL": {
+    "message": "ПРОВЕРИТЬ ПОЧТУ"
+  },
+  "CHECKING...": {
+    "message": "ПРОВЕРКА..."
+  },
+  "CODE": {
+    "message": "КОД"
+  },
+  "CREATE NEW PROJECT": {
+    "message": "СОЗДАТЬ НОВЫЙ ПРОЕКТ"
+  },
+  "CREATE PROJECT": {
+    "message": "СОЗДАТЬ ПРОЕКТ"
+  },
+  "Can I have a few more days?": {
+    "message": "Можно мне ещё несколько дней?"
+  },
+  "Cancel": {
+    "message": "Отмена"
+  },
+  "Card": {
+    "message": "Карточка"
+  },
+  "Categories": {
+    "message": "Категории"
+  },
+  "Category": {
+    "message": "Категория"
+  },
+  "Changelog": {
+    "message": "Журнал изменений"
+  },
+  "Chapter {number} title": {
+    "message": "Название {number} главы"
+  },
+  "Chapter {number}": {
+    "message": "Глава {number}"
+  },
+  "Chapter": {
+    "message": "Глава"
+  },
+  "Chapters": {
+    "message": "Главы"
+  },
+  "Character Categories": {
+    "message": "Категории персонажей"
+  },
+  "Character Thumbnail": {
+    "message": "Миниатюра персонажа"
+  },
+  "Character list is filtered": {
+    "message": "Список персонажей отфильтрован"
+  },
+  "Character": {
+    "message": "Персонаж"
+  },
+  "Character: {name}": {
+    "message": "Персонаж: { name }"
+  },
+  "Characters list": {
+    "message": "Список персонажей"
+  },
+  "Characters": {
+    "message": "Персонажи"
+  },
+  "Check for Updates": {
+    "message": "Проверить обновления"
+  },
+  "Check": {
+    "message": "Проверить"
+  },
+  "Choose Color": {
+    "message": "Выбрать цвет"
+  },
+  "Choose an image": {
+    "message": "Выбрать изображение"
+  },
+  "Choose an {platform} mobile subscription": {
+    "message": "Выбрать мобильную подписку { platform }"
+  },
+  "Choose what categories you want to put your characters into": {
+    "message": "Выбрать, в какие категории вы хотите поместить своих персонажей"
+  },
+  "Choose what you want to track about your { type }": {
+    "message": "Выбрать, что вы хотите отслеживать у { type }"
+  },
+  "Choose where to save this file on your computer": {
+    "message": "Выбрать, где сохранить этот файл на вашем компьютере"
+  },
+  "Choose your Snowflake Pro file": {
+    "message": "Выбрать свой Snowflake Pro файл"
+  },
+  "Choose": {
+    "message": "Выбрать"
+  },
+  "Choose...": {
+    "message": "Выбрать..."
+  },
+  "Clear": {
+    "message": "Очистить"
+  },
+  "Click on a color below or type it in": {
+    "message": "Нажать на цвет ниже или ввести его название"
+  },
+  "Click to Install": {
+    "message": "Нажать, чтобы установить"
+  },
+  "Close": {
+    "message": "Закрыть"
+  },
+  "Collapse": {
+    "message": "Свернуть"
+  },
+  "Color Picker": {
+    "message": "Палитра цветов"
+  },
+  "Color": {
+    "message": "Цвет"
+  },
+  "Coming Soon!": {
+    "message": "Скоро!"
+  },
+  "Configuration Options": {
+    "message": "Параметры настроек"
+  },
+  "Configure": {
+    "message": "Настроить"
+  },
+  "Content": {
+    "message": "Содержание"
+  },
+  "Copy": {
+    "message": "Копировать"
+  },
+  "Create Blank Project": {
+    "message": "Создать пустой проект"
+  },
+  "Create From Template": {
+    "message": "Создать из шаблона"
+  },
+  "Create Report": {
+    "message": "Создать отчет"
+  },
+  "Create a New Plottr Document": {
+    "message": "Создать новый документ Plottr"
+  },
+  "Create an Error Report": {
+    "message": "Создать отчет об ошибке"
+  },
+  "Create unlimited project files": {
+    "message": "Создать неограниченное количество файлов проекта"
+  },
+  "Create": {
+    "message": "Создать"
+  },
+  "Created By": {
+    "message": "Создано"
+  },
+  "Current Color": {
+    "message": "Текущий цвет"
+  },
+  "Custom Attributes for { type }": {
+    "message": "Пользовательские свойста для { type }"
+  },
+  "Custom Attributes": {
+    "message": "Пользовательские свойста"
+  },
+  "Custom Template": {
+    "message": "Пользовательский шаблон"
+  },
+  "Custom Templates": {
+    "message": "Пользовательские шаблоны"
+  },
+  "Cut": {
+    "message": "Вырезать"
+  },
+  "Delete": {
+    "message": "Удалить"
+  },
+  "Dark Mode": {
+    "message": "Тёмный режим"
+  },
+  "Dashboard": {
+    "message": "Панель инструментов"
+  },
+  "Days Left": {
+    "message": "Оставшихся дней"
+  },
+  "Days of Backup": {
+    "message": "Дни резервных копий"
+  },
+  "Number of Backups": {
+    "message": "Количество резервных копий"
+  },
+  "Never Delete Backups": {
+    "message": "Никогда не удалять резервные копии"
+  },
+  "Default Colors": {
+    "message": "Цвета по умолчанию"
+  },
+  "Delete Chapter {name}?": {
+    "message": "Удалить главу \"{название}\"?"
+  },
+  "Delete Chapter": {
+    "message": "Удалить главу"
+  },
+  "Delete Character": {
+    "message": "Удалить персонажа"
+  },
+  "Delete Plotline {name}?": {
+    "message": "Удалить сюжетную линию \"{название}\"?"
+  },
+  "Delete Plotline": {
+    "message": "Удалить сюжетную линию"
+  },
+  "Delete Scene {name}?": {
+    "message": "Удалить сцену \"{название}\"?"
+  },
+  "Delete Scene": {
+    "message": "Удалить сцену"
+  },
+  "Delete Tag": {
+    "message": "Удалить тэг"
+  },
+  "Delete {title} Tag?": {
+    "message": "Удалить тэг \"{название}\"?"
+  },
+  "Demos": {
+    "message": "Демо"
+  },
+  "Describe the scene": {
+    "message": "Описать сцену"
+  },
+  "Description": {
+    "message": "Описание"
+  },
+  "Details": {
+    "message": "Детали"
+  },
+  "Device ID": {
+    "message": "ID устройства"
+  },
+  "Do you want to remove this image? It will NOT be deleted from your computer": {
+    "message": "Вы хотите удалить это изображение? Оно НЕ будет удалено с вашего компьютера"
+  },
+  "Documentation": {
+    "message": "Документация"
+  },
+  "Don't have a license? Go to our website to learn more": {
+    "message": "Нет лицензии? Посетите наш сайт, чтобы узнать больше"
+  },
+  "Don't have a license?": {
+    "message": "Нет лицензии?"
+  },
+  "Don't worry, all your work is saved in plottr_trial.pltr in your Documents folder": {
+    "message": "Не волнуйтесь, вся ваша работа сохранена в plottr_trial.pltr в папке \"Документы\""
+  },
+  "Don't worry, all your work is saved in your files": {
+    "message": "Не волнуйтесь, вся ваша работа сохранена в ваших файлах"
+  },
+  "Done": {
+    "message": "Выполнено"
+  },
+  "Download Complete 🎉 (version {version})": {
+    "message": "Загрузка завершена 🎉 (версия { version })"
+  },
+  "Download Now!": {
+    "message": "Загрузить сейчас!"
+  },
+  "Download updates automatically": {
+    "message": "Автоматически загружать обновления"
+  },
+  "Downloading version {version}": {
+    "message": "Загрузка версии { version }"
+  },
+  "Drop a File Here": {
+    "message": "Перетащить файл сюда"
+  },
+  "Edit Plotline": {
+    "message": "Редактировать сюжетную линию"
+  },
+  "Edit": {
+    "message": "Редактировать"
+  },
+  "Email": {
+    "message": "Почта"
+  },
+  "Email:": {
+    "message": "Почта:"
+  },
+  "End": {
+    "message": "Конец"
+  },
+  "Ends After": {
+    "message": "Заканчивается после"
+  },
+  "Enter Chapter's name or enter": {
+    "message": "Введите название главы или введите \"auto\" \n(без кавычек) для автоматического именования."
+  },
+  "Enter Custom Attribute Title": {
+    "message": "Введите название пользовательского свойства"
+  },
+  "Enter a Customer Service Code": {
+    "message": "Введите код обслуживания клиента"
+  },
+  "Enter a new name for {chapter}": {
+    "message": "Введите новое имя для \"{глава}\""
+  },
+  "Enter some text...": {
+    "message": "Введите текст..."
+  },
+  "Enter the URL of the link:": {
+    "message": "Введите URL ссылки:"
+  },
+  "Enter the name of your project": {
+    "message": "Введите название вашего проекта"
+  },
+  "Enter your verification code to activate this device": {
+    "message": "Введите код подтверждения, чтобы активировать это устройство"
+  },
+  "Enter your verification code": {
+    "message": "Введите код подтверждения"
+  },
+  "Error Creating Error Report": {
+    "message": "Ошибка при создании отчета об ошибке"
+  },
+  "Error Report created": {
+    "message": "Отчет об ошибке создан"
+  },
+  "Error reading file": {
+    "message": "Ошибка чтения файла"
+  },
+  "Error sending email! Check your email and Try again.": {
+    "message": "Ошибка при отправке электронной почты! Проверьте свою электронную почту и попробуйте ещё раз."
+  },
+  "Error: {error}": {
+    "message": "Ошибка: { error }"
+  },
+  "Exit Without Saving": {
+    "message": "Выход без сохранения"
+  },
+  "Expand": {
+    "message": "Расширить"
+  },
+  "Expires": {
+    "message": "Истекает"
+  },
+  "Export": {
+    "message": "Экспорт"
+  },
+  "FAQ": {
+    "message": "FAQ"
+  },
+  "Facebook Group": {
+    "message": "Группа Facebook"
+  },
+  "Fictional Devices LLC": {
+    "message": "Fictional Devices LLC"
+  },
+  "File Exported": {
+    "message": "Файл экспортирован"
+  },
+  "File can't be found. Did it move?": {
+    "message": "Файл не найден. Он был перемещён?"
+  },
+  "File": {
+    "message": "Файл"
+  },
+  "Files": {
+    "message": "Файлы"
+  },
+  "Filter by Plotline": {
+    "message": "Фильтр по сюжетной линии"
+  },
+  "Filter": {
+    "message": "Фильтр"
+  },
+  "Flip": {
+    "message": "Перевернуть"
+  },
+  "Folder where backups are stored": {
+    "message": "Папка, в которой хранятся резервные копии"
+  },
+  "Force Dark Mode": {
+    "message": "Принудительный тёмный режим"
+  },
+  "Free Trial Information": {
+    "message": "Информация о пробной версии"
+  },
+  "Free Trial": {
+    "message": "Пробная версия"
+  },
+  "GET A LICENSE": {
+    "message": "ПОЛУЧИТЬ ЛИЦЕНЗИЮ"
+  },
+  "GET STARTED!": {
+    "message": "НАЧАТЬ!"
+  },
+  "Genre": {
+    "message": "Жанр"
+  },
+  "Get access to all your projects": {
+    "message": "Получите доступ ко всем своим проектам"
+  },
+  "Give Feedback": {
+    "message": "Дать обратную связь"
+  },
+  "Give this tag a name": {
+    "message": "Дать этому тегу название"
+  },
+  "Give your scene a title": {
+    "message": "Дать этой сцене название"
+  },
+  "Go Back": {
+    "message": "Вернуться назад"
+  },
+  "Go to our website to learn more:": {
+    "message": "Посетите наш сайт, чтобы узнать больше:"
+  },
+  "Grays": {
+    "message": "Серые"
+  },
+  "Greens": {
+    "message": "Зеленые"
+  },
+  "Help": {
+    "message": "Помощь"
+  },
+  "Hide Others": {
+    "message": "Скрыть другое"
+  },
+  "Hide Plottr": {
+    "message": "Скрыть Plottr"
+  },
+  "Hierarchy Configuration": {
+    "message": "Иерархия параметров"
+  },
+  "Hmmmm. It looks like that's not a valid license key": {
+    "message": "Хм-м-м. Похоже, это недействительный лицензионный ключ"
+  },
+  "I have a license key": {
+    "message": "У меня есть лицензионный ключ"
+  },
+  "I want to buy the full version!": {
+    "message": "Я хочу купить полную версию!"
+  },
+  "I want to start the free trial": {
+    "message": "Я хочу активировать пробную версию"
+  },
+  "If you keep seeing this problem, email us at support@plottr.com": {
+    "message": "Если вы продолжаете сталкиваться с этой проблемой, напишите нам на почту support@plottr.com"
+  },
+  "Image Details": {
+    "message": "Детали изображения"
+  },
+  "Image Gallery": {
+    "message": "Галерея изображений"
+  },
+  "Images": {
+    "message": "Изображения"
+  },
+  "Import Snowflake Pro": {
+    "message": "Импорт Snowflake Pro"
+  },
+  "Insert Chapter and a Card": {
+    "message": "Вставить главу и карточку"
+  },
+  "Insert Chapter": {
+    "message": "Вставить главу"
+  },
+  "Insert from URL": {
+    "message": "Вставить из URL"
+  },
+  "It looks like you have Plottr on the max number of computers already": {
+    "message": "Похоже, вы уже используете Plottr на максимальном количестве компьютеров"
+  },
+  "It looks like you have Plottr on the max number of devices already": {
+    "message": "Похоже, вы уже используете Plottr на максимальном количестве устройств"
+  },
+  "It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline": {
+    "message": "Похоже, вы не в сети. Вам не обязательно всегда быть в сети для пользователя Plottr, но он не может проверить вашу лицензию в автономном режиме."
+  },
+  "Keep all your notes here (brainstorming, world-building, etc.)": {
+    "message": "Храните здесь все свои заметки (мозговые штурмы, построения мира и т.д.)"
+  },
+  "Keep info about your locations here": {
+    "message": "Храните информацию о своих локациях здесь"
+  },
+  "Keep your character sheets here": {
+    "message": "Храните листы персонажей здесь"
+  },
+  "LOGOUT": {
+    "message": "ВЫЙТИ"
+  },
+  "LOOK OUT!": {
+    "message": "ОСТОРОЖНЕЕ!"
+  },
+  "Language": {
+    "message": "Язык"
+  },
+  "Last opened by you": {
+    "message": "Последний раз открыт вами"
+  },
+  "Learn": {
+    "message": "Изучить"
+  },
+  "Let's verify your license.": {
+    "message": "Давайте проверим вашу лицензию."
+  },
+  "Levels of hierarchy": {
+    "message": "Уровни иерархии"
+  },
+  "License Key": {
+    "message": "Ключ лицензии"
+  },
+  "License Verified. Plottr will start momentarily. Thanks for being patient!": {
+    "message": "Лицензия подтверждена. Plottr сейчас запустится. Спасибо за терпение!"
+  },
+  "License": {
+    "message": "Лицензия"
+  },
+  "Links": {
+    "message": "Ссылки"
+  },
+  "Long Synopsis": {
+    "message": "Длинный синопсис"
+  },
+  "MS Word": {
+    "message": "MS Word"
+  },
+  "Main Plot": {
+    "message": "Главный сюжет"
+  },
+  "Main": {
+    "message": "Главный"
+  },
+  "Manually Sorted": {
+    "message": "Ручная сортировка"
+  },
+  "Manuscript": {
+    "message": "Рукопись"
+  },
+  "Menu": {
+    "message": "Меню"
+  },
+  "Middle": {
+    "message": "Середина"
+  },
+  "My Character Template": {
+    "message": "Шаблон персонажа"
+  },
+  "My Scene Template": {
+    "message": "Шаблон сцены"
+  },
+  "My Templates": {
+    "message": "Мои шаблоны"
+  },
+  "My Timeline Template": {
+    "message": "Шаблон хронологии"
+  },
+  "Name": {
+    "message": "Название"
+  },
+  "Never": {
+    "message": "Никогда"
+  },
+  "New Attribute": {
+    "message": "Новое свойство"
+  },
+  "New Book": {
+    "message": "Новая книга"
+  },
+  "New Character": {
+    "message": "Новый персонаж"
+  },
+  "New Custom Attribute Title": {
+    "message": "Название нового пользовательского свойства"
+  },
+  "New Note": {
+    "message": "Новая заметка"
+  },
+  "New Place": {
+    "message": "Новая локация"
+  },
+  "New Plotline": {
+    "message": "Новая сюжетная линия"
+  },
+  "New Project": {
+    "message": "Новый проект"
+  },
+  "New Tag": {
+    "message": "Новый тэг"
+  },
+  "New": {
+    "message": "Новый"
+  },
+  "No Characters": {
+    "message": "Нет персонажей"
+  },
+  "No actions to undo": {
+    "message": "Нет действий для отмены"
+  },
+  "No color": {
+    "message": "Без цвета"
+  },
+  "No": {
+    "message": "Нет"
+  },
+  "No, Discard": {
+    "message": "Нет, отменить"
+  },
+  "None to choose": {
+    "message": "Нечего выбрать"
+  },
+  "Not Receiving Updates": {
+    "message": "Не получить обновления"
+  },
+  "Note Details": {
+    "message": "Детали заметки"
+  },
+  "Note Image": {
+    "message": "Изображение заметки"
+  },
+  "Note": {
+    "message": "Заметка"
+  },
+  "Note: {title}": {
+    "message": "Заметка: { title }"
+  },
+  "Notes are filtered": {
+    "message": "Заметки отфильтрованы"
+  },
+  "Notes": {
+    "message": "Заметки"
+  },
+  "Now lets get you writing your next great plot!": {
+    "message": "Теперь давайте напишем ваш следующий великий сюжет!"
+  },
+  "Number of Days of Rolling Backups to Keep": {
+    "message": "Количество дней, которое хранятся резервные копии"
+  },
+  "OK": {
+    "message": "OK"
+  },
+  "OVERWRITE": {
+    "message": "ПЕРЕЗАПИСАТЬ"
+  },
+  "Once You Plot, the Fun Don't Stop": {
+    "message": "Стоит лишь начать придумывать, и веселье не заканчивается"
+  },
+  "One Paragraph Summary": {
+    "message": "Один абзац краткого изложения"
+  },
+  "One Sentence Summary": {
+    "message": "Одно предложение краткого изложения"
+  },
+  "Open Dashboard": {
+    "message": "Открыть панель инструментов"
+  },
+  "Open Existing": {
+    "message": "Открыть существующий"
+  },
+  "Open a Plottr Document": {
+    "message": "Открыть документ Plottr"
+  },
+  "Open one of your most recent projects": {
+    "message": "Открыть один из ваших последних проектов"
+  },
+  "Open": {
+    "message": "Открыть"
+  },
+  "Or hover here to insert between scenes": {
+    "message": "Или наведите сюда, чтобы вставить между сценами"
+  },
+  "Oranges": {
+    "message": "Оранжевые"
+  },
+  "Other": {
+    "message": "Другое"
+  },
+  "Outline is filtered": {
+    "message": "План отфильтрован"
+  },
+  "Outline": {
+    "message": "План"
+  },
+  "Override your computer's setting and always use dark mode": {
+    "message": "Переписать настройки вашего компьютера и всегда использовать тёмный режим"
+  },
+  "Paragraph": {
+    "message": "Абзац"
+  },
+  "Paragraph?": {
+    "message": "Абзац?"
+  },
+  "Paste and Match Style": {
+    "message": "Вставить и сопоставить стиль"
+  },
+  "Paste": {
+    "message": "Вставить"
+  },
+  "Pick a color": {
+    "message": "Выбрать цвет"
+  },
+  "Place Details": {
+    "message": "Детали локации"
+  },
+  "Place Image": {
+    "message": "Изображение локации"
+  },
+  "Place list is filtered": {
+    "message": "Список локаций отфильтрован"
+  },
+  "Place": {
+    "message": "Локация"
+  },
+  "Place: {name}": {
+    "message": "Локация: { name }"
+  },
+  "Places list": {
+    "message": "Список локаций"
+  },
+  "Places": {
+    "message": "Локации"
+  },
+  "Please choose a plotline": {
+    "message": "Пожалуйста, выберите сюжетную линию"
+  },
+  "Please contact me with any questions at support@plottr.com": {
+    "message": "Пожалуйста, пишите мне по любым вопросам на адрес support@plottr.com"
+  },
+  "Please select a valid Plottr file": {
+    "message": "Пожалуйста, выберите действующий файл Plottr."
+  },
+  "Please verify your license": {
+    "message": "Пожалуйста, подтвердите вашу лицензию"
+  },
+  "Plotline Details": {
+    "message": "Детали сюжетной линии"
+  },
+  "Plotline Title:": {
+    "message": "Название сюжетной линии:"
+  },
+  "Plotline name": {
+    "message": "Название сюжетной линии"
+  },
+  "Plotline": {
+    "message": "Сюжетная линия"
+  },
+  "Plotline: {title}": {
+    "message": "Сюжетная линия: { title }"
+  },
+  "Plotlines": {
+    "message": "Сюжетные линии"
+  },
+  "Plottr Mobile Monthly": {
+    "message": "Ежемесячный Plottr Mobile"
+  },
+  "Plottr Mobile Yearly": {
+    "message": "Ежегодный Plottr Mobile"
+  },
+  "Plottr Mobile": {
+    "message": "Plottr Mobile"
+  },
+  "Plottr Support": {
+    "message": "Поддержка Plottr"
+  },
+  "Plottr created a file named {fileName} in your Documents folder": {
+    "message": "Plottr создал файл с названием { fileName } в папке \"Документы\""
+  },
+  "Plottr project file": {
+    "message": "Файл проекта Plottr"
+  },
+  "Plottr ran into a problem. Try opening Plottr again.": {
+    "message": "Plottr столкнулся с проблемой. Попробуйте снова открыть Plottr."
+  },
+  "Plottr": {
+    "message": "Plottr"
+  },
+  "Preferences": {
+    "message": "Предпочтения"
+  },
+  "Premise": {
+    "message": "Предпосылка"
+  },
+  "Privacy Policy": {
+    "message": "Политика конфиденциальности"
+  },
+  "Project Templates": {
+    "message": "Шаблоны проекта"
+  },
+  "Project": {
+    "message": "Проект"
+  },
+  "Prologue": {
+    "message": "Пролог"
+  },
+  "Purchase Email": {
+    "message": "Электронная почта покупки"
+  },
+  "Purples": {
+    "message": "Фиолетовые"
+  },
+  "Quit": {
+    "message": "Выход"
+  },
+  "RESEND EMAIL": {
+    "message": "ОТПРАВИТЬ ЭЛЕКТРОННУЮ ПОЧТУ ЗАНОВО"
+  },
+  "RESENDING...": {
+    "message": "ПОВТОРНАЯ ОТПРАВКА..."
+  },
+  "Recent Projects": {
+    "message": "Недавние проекты"
+  },
+  "Redo": {
+    "message": "Повторить"
+  },
+  "Reds": {
+    "message": "Красные"
+  },
+  "Reload from File": {
+    "message": "Перезагрузить из фалйа"
+  },
+  "Reload": {
+    "message": "Перезагрузить"
+  },
+  "Remove License": {
+    "message": "Удалить лицензию"
+  },
+  "Remove from this list": {
+    "message": "Удалить из этого списка"
+  },
+  "Remove image": {
+    "message": "Удалить изображение"
+  },
+  "Remove": {
+    "message": "Удалить"
+  },
+  "Rename Chapter": {
+    "message": "Переименовать главу"
+  },
+  "Rename": {
+    "message": "Переименовать"
+  },
+  "Report a Problem": {
+    "message": "Сообщить о проблеме"
+  },
+  "Request a Feature": {
+    "message": "Запросить новую функцию"
+  },
+  "Restore Purchase": {
+    "message": "Восстановить покупку"
+  },
+  "Roadmap": {
+    "message": "План разработки"
+  },
+  "SELECT A PROJECT FILE": {
+    "message": "ВЫБЕРИТЕ ФАЙЛ ПРОЕКТА"
+  },
+  "SELECT": {
+    "message": "ВЫБРАТЬ"
+  },
+  "Save Backups": {
+    "message": "Сохранить резервные копии"
+  },
+  "Save Changes?": {
+    "message": "Сохранить изменения?"
+  },
+  "Save Chapter": {
+    "message": "Сохранить главу"
+  },
+  "Save File": {
+    "message": "Сохранить файл"
+  },
+  "Save Plotline": {
+    "message": "Сохранить сюжетную линию"
+  },
+  "Save as Template": {
+    "message": "Сохранить как шаблон"
+  },
+  "Save as": {
+    "message": "Сохранить как"
+  },
+  "Save before closing?": {
+    "message": "Сохранить перед закрытием?"
+  },
+  "Save": {
+    "message": "Сохранить"
+  },
+  "Saved": {
+    "message": "Сохранено"
+  },
+  "Saving failed": {
+    "message": "Сохранение не выполнено"
+  },
+  "Saving worked this time 🎉": {
+    "message": "Сохранение успешно завершено 🎉"
+  },
+  "Saving your file didn't work. Check where it's stored.": {
+    "message": "Не удалось сохранить файл. Проверьте его место хранения."
+  },
+  "Saving your file didn't work. Try again.": {
+    "message": "Не удалось сохранить файл. Пожалуйста, попробуйте снова."
+  },
+  "Scene Cards": {
+    "message": "Карточки сцены"
+  },
+  "Scene Details": {
+    "message": "Детали сцены"
+  },
+  "Scene Title": {
+    "message": "Название сцены"
+  },
+  "Scene {num}": {
+    "message": "Сцена { num }"
+  },
+  "Scene": {
+    "message": "Сцена"
+  },
+  "Scrivener Project": {
+    "message": "Проект Scrivener"
+  },
+  "Scrivener": {
+    "message": "Scrivener"
+  },
+  "Scroll": {
+    "message": "Прокрутить"
+  },
+  "Search": {
+    "message": "Поиск"
+  },
+  "See What's New": {
+    "message": "Узнайте, что нового"
+  },
+  "See the outline here": {
+    "message": "Смотрите план здесь"
+  },
+  "Select All": {
+    "message": "Выбрать всё"
+  },
+  "Select a Category": {
+    "message": "Выбрать категорию"
+  },
+  "Select a Chapter": {
+    "message": "Выбрать главу"
+  },
+  "Select a File": {
+    "message": "Выбрать файл"
+  },
+  "Select a Plotline": {
+    "message": "Выбрать сюжетную линию"
+  },
+  "Series Outline": {
+    "message": "План цикла"
+  },
+  "Series View": {
+    "message": "Вид цикла"
+  },
+  "Series": {
+    "message": "Цикл"
+  },
+  "Session Start": {
+    "message": "Начало сеанса"
+  },
+  "Settings": {
+    "message": "Настройки"
+  },
+  "Short Description": {
+    "message": "Краткое описание"
+  },
+  "Short Synopsis": {
+    "message": "Краткий синопсис"
+  },
+  "Show All": {
+    "message": "Показать всё"
+  },
+  "Show in File Explorer": {
+    "message": "Показать в поисковике"
+  },
+  "Show in Finder": {
+    "message": "Показать в проводнике"
+  },
+  "Since this is your first time using Plottr, I'll give you a guided tour if you like.": {
+    "message": "Поскольку вы впервые используете Plottr, я могу провести для вас экскурсию."
+  },
+  "Size: large": {
+    "message": "Размер: большой"
+  },
+  "Size: medium": {
+    "message": "Размер: средний"
+  },
+  "Size: small": {
+    "message": "Размер: маленький"
+  },
+  "Something went wrong,": {
+    "message": "Что-то пошло не так,"
+  },
+  "Something went wrong.": {
+    "message": "Что-то пошло не так."
+  },
+  "Sort": {
+    "message": "Отсортировать"
+  },
+  "Source Link": {
+    "message": "Ссылка на источник"
+  },
+  "Start Mobile Subscription": {
+    "message": "Активировать мобильную подписку"
+  },
+  "Start my Free Trial": {
+    "message": "Активировать пробную версию"
+  },
+  "Started On": {
+    "message": "Начато"
+  },
+  "Starter Templates": {
+    "message": "Стартовые шаблоны"
+  },
+  "Story line": {
+    "message": "Линия сюжета"
+  },
+  "Story name": {
+    "message": "Название сюжета"
+  },
+  "Submit": {
+    "message": "Внести"
+  },
+  "Subscription Restored!": {
+    "message": "Подписка восстановлена!"
+  },
+  "Subtitle": {
+    "message": "Подзаголовок"
+  },
+  "Success!": {
+    "message": "Успех!"
+  },
+  "Supporting": {
+    "message": "Вспомогательный"
+  },
+  "Tag Details": {
+    "message": "Детали тега"
+  },
+  "Tag Name": {
+    "message": "Название тега"
+  },
+  "Tag": {
+    "message": "Тег"
+  },
+  "Tags can be used for organization": {
+    "message": "Теги можно использовать для организации"
+  },
+  "Tags list": {
+    "message": "Список тегов"
+  },
+  "Tags": {
+    "message": "Теги"
+  },
+  "Take Screenshot": {
+    "message": "Сделать скриншот"
+  },
+  "Template Saved": {
+    "message": "Шаблон сохранен"
+  },
+  "Terms of Service": {
+    "message": "Условия обслуживания"
+  },
+  "Text Error": {
+    "message": "Ошибка текста"
+  },
+  "Thanks for trying Plottr": {
+    "message": "Спасибо за использование Plottr"
+  },
+  "That code was invalid. Try again.": {
+    "message": "Этот код недействителен. Попробуйте снова."
+  },
+  "That email didn't verify. Try again or try another email.": {
+    "message": "Этот адрес электронной почты не подтвержден. Попробуйте еще раз или используйте другой адрес электронной почты."
+  },
+  "Theme": {
+    "message": "Тема"
+  },
+  "There was an error activating your license key on this device": {
+    "message": "При активации лицензионного ключа на этом устройстве произошла ошибка"
+  },
+  "There was an error doing that. Try again": {
+    "message": "При этом произошла ошибка. Попробуйте снова"
+  },
+  "This is a plotline": {
+    "message": "Это сюжетная линия"
+  },
+  "This is a scene or chapter. You can change its name by clicking on it": {
+    "message": "Это сцена или глава. Вы можете изменить её название, нажав на него"
+  },
+  "This will send you an email with a code": {
+    "message": "Вам будет отправлено электронное письмо с кодом"
+  },
+  "Timeline is filtered": {
+    "message": "Хронология отфильтрована"
+  },
+  "Timeline": {
+    "message": "Хронология"
+  },
+  "Title": {
+    "message": "Название"
+  },
+  "Toggle navigation": {
+    "message": "Переключить навигацию"
+  },
+  "Trash": {
+    "message": "Корзина"
+  },
+  "Try that again": {
+    "message": "Попробуйте еще раз"
+  },
+  "Tutorials": {
+    "message": "Руководства"
+  },
+  "Type": {
+    "message": "Писать"
+  },
+  "UH-OH!": {
+    "message": "Ой-ёй!"
+  },
+  "URL": {
+    "message": "URL"
+  },
+  "Uncategorized": {
+    "message": "Без категории"
+  },
+  "Undo": {
+    "message": "Отменить"
+  },
+  "Untitled": {
+    "message": "Без названия"
+  },
+  "Update Automatically": {
+    "message": "Обновлять автоматически"
+  },
+  "Update Available 🎉 (version {version})": {
+    "message": "Доступно обновление 🎉 (версия { version })"
+  },
+  "Update failed. Try again": {
+    "message": "Не удалось обновить. Попробуйте снова"
+  },
+  "Updates": {
+    "message": "Обновления"
+  },
+  "Upload Files": {
+    "message": "Загрузить файлы"
+  },
+  "Use Template": {
+    "message": "Использовать шаблон"
+  },
+  "Use a different email": {
+    "message": "Использовать другой адрес электронной почты"
+  },
+  "Use this to remove your license on this device": {
+    "message": "Используйте это, чтобы удалить вашу лицензию на этом устройстве"
+  },
+  "VERIFY CODE": {
+    "message": "ПРОВЕРИТЬ КОД"
+  },
+  "VERIFYING...": {
+    "message": "ПРОВЕРКА..."
+  },
+  "Verify": {
+    "message": "Проверить"
+  },
+  "Verifying with email: {email}": {
+    "message": "Подтверждение по электронной почте: { email }"
+  },
+  "Version": {
+    "message": "Версия"
+  },
+  "View Error": {
+    "message": "Просмотр ошибки"
+  },
+  "View Timeline": {
+    "message": "Просмотр хронологии"
+  },
+  "View": {
+    "message": "Вид"
+  },
+  "We found your user session but...": {
+    "message": "Мы обнаружили ваш сеанс, но ваша лицензия истекла или неактивна. Чтобы продолжить, приобретите новую лицензию или мобильную подписку."
+  },
+  "We had a problem creating a new project": {
+    "message": "У нас возникла проблема с созданием нового проекта. Убедитесь, что у Plottr есть правильные разрешения и достаточно места для хранения."
+  },
+  "We had a problem processing your file": {
+    "message": "У нас возникла проблема с обработкой вашего файла. Убедитесь, что у Plottr есть правильные разрешения, и повторите попытку."
+  },
+  "We will email you a verification code.": {
+    "message": "Мы отправим вам код подтверждения по электронной почте."
+  },
+  "Welcome to Plottr!": {
+    "message": "Добро пожаловать в Plottr!"
+  },
+  "Welcome to Plottr": {
+    "message": "Добро пожаловать в Plottr"
+  },
+  "Welcome to": {
+    "message": "Добро пожаловать в"
+  },
+  "What would you like to do?": {
+    "message": "Чем бы вы хотели заняться?"
+  },
+  "Where would you like to save the export?": {
+    "message": "Где бы вы хотели сохранить экспорт?"
+  },
+  "Where would you like to save this copy?": {
+    "message": "Где бы вы хотели сохранить эту копию?"
+  },
+  "Where would you like to save this file?": {
+    "message": "Где бы вы хотели сохранить этот файл?"
+  },
+  "Whites": {
+    "message": "Белые"
+  },
+  "Window": {
+    "message": "Окно"
+  },
+  "Word Document": {
+    "message": "Документ Word"
+  },
+  "Yes, Delete": {
+    "message": "Да, удалить"
+  },
+  "Yes, Save": {
+    "message": "Да, сохранить"
+  },
+  "You already have a file named {file}": {
+    "message": "У вас уже есть файла с названием {файл}. Вы хотите перезаписать его?"
+  },
+  "You can change its name or color by hovering over it (disabled for the tour)": {
+    "message": "Вы можете изменить его название или цвет, наведя на него курсор (отключено для режима \"экскурсия\")"
+  },
+  "You can create an error report and report the problem to us at: ": {
+    "message": "Вы можете создать отчет об ошибке и сообщить нам о проблеме по адресу: "
+  },
+  "You can export everything to a Word document": {
+    "message": "Вы можете экспортировать всё в документ Word"
+  },
+  "You can have 5 more days to try Plottr": {
+    "message": "Мы добавили вам еще 5 дней, чтобы попробовать Plottr"
+  },
+  "You have unsaved changes": {
+    "message": "У вас есть несохраненные изменения. Вы хотите их сохранить?"
+  },
+  "You may create a new project": {
+    "message": "Вы можете создать новый проект или выбрать файл проекта, чтобы начать"
+  },
+  "Your email didn't verify. Try again or try another email.": {
+    "message": "Ваш адрес электронной почты не подтвержден. Попробуйте еще раз или попробуйте другой адрес электронной почты."
+  },
+  "Your selected license failed verification. Try another one.": {
+    "message": "Выбранная вами лицензия не прошла проверку. Попробуйте другую."
+  },
+  "You should have received a license key after your purchase.": {
+    "message": "После покупки вы должны были получить лицензионный ключ."
+  },
+  "You should have received an email with a code": {
+    "message": "Вы должны были получить письмо с кодом"
+  },
+  "You'll have 30 days": {
+    "message": "У вас будет 30 дней"
+  },
+  "You're on the latest version": {
+    "message": "У вас установлена последняя версия"
+  },
+  "Your Backups": {
+    "message": "Ваши резервные копии"
+  },
+  "Your Plottr file was exported to a .docx file": {
+    "message": "Ваш файл Plottr был экспортирован в файл .docx"
+  },
+  "Your Plottr file was exported to a Scrivener project package": {
+    "message": "Ваш файл Plottr был экспортирован в пакет проекта Scrivener"
+  },
+  "Your free trial has expired": {
+    "message": "Срок действия вашей пробной версии истёк"
+  },
+  "Your template has been saved and is ready to use": {
+    "message": "Ваш шаблон сохранен и готов к использованию"
+  },
+  "Zoom": {
+    "message": "Приблизить"
+  },
+  "[image]": {
+    "message": "[изображение]"
+  },
+  "a lot of scenes moved around": {
+    "message": "много сцен переместилось"
+  },
+  "a lot of story lines moved around": {
+    "message": "много сюжетных линий переместилось"
+  },
+  "and": {
+    "message": "и"
+  },
+  "attach character {characterName} to card {cardName}": {
+    "message": "прикрепить персонажа { characterName } к карточке { cardName }"
+  },
+  "attach character {characterName} to note {noteName}": {
+    "message": "прикрепить персонажа { characterName } к заметке { noteName }"
+  },
+  "attach place {placeName} to card {cardName}": {
+    "message": "прикрепить локацию { placeName } к карточке { cardName }"
+  },
+  "attach place {placeName} to note {noteName}": {
+    "message": "прикрепить локацию { placeName } к заметке { noteName }"
+  },
+  "attach tag {tagName} to card {cardName}": {
+    "message": "прикрепить тег { tagName } к карточке { cardName }"
+  },
+  "attach tag {tagName} to note {noteName}": {
+    "message": "прикрепить тег { tagName } к заметке { noteName }"
+  },
+  "blank": {
+    "message": "пустой"
+  },
+  "but don't worry!": {
+    "message": "но не волнуйтесь!"
+  },
+  "custom character attribute": {
+    "message": "пользовательское свойство персонажа"
+  },
+  "custom place attribute": {
+    "message": "пользовательское свойство локации"
+  },
+  "hex code or name": {
+    "message": "шестнадцатеричный код или имя"
+  },
+  "new card": {
+    "message": "новая карточка"
+  },
+  "new scene": {
+    "message": "новая сцена"
+  },
+  "new storyline": {
+    "message": "новая сюжетная линия"
+  },
+  "no more to add": {
+    "message": "больше нечего добавить"
+  },
+  "or": {
+    "message": "или"
+  },
+  "remove character {characterName} from card {cardName}": {
+    "message": "открепить персонажа {characterName} от карточки {cardName}"
+  },
+  "remove character {characterName} from note {noteName}": {
+    "message": "открепить персонажа {characterName} от заметки {noteName}"
+  },
+  "remove place {placeName} from card {cardName}": {
+    "message": "открепить локацию {placeName} от карточки {cardName}"
+  },
+  "remove place {placeName} from note {noteName}": {
+    "message": "открепить локацию {placeName} от заметки {noteName}"
+  },
+  "remove tag {tagName} from card {cardName}": {
+    "message": "открепить тег {tagName} от карточки {cardName}"
+  },
+  "remove tag {tagName} from note {noteName}": {
+    "message": "открепить тег {tagName} от заметки {noteName}"
+  },
+  "that best suits your style and needs.": {
+    "message": "который лучше всего соответствует вашему стилю и потребностям."
+  },
+  "to activate this device.": {
+    "message": "чтобы активировать это устройство."
+  },
+  "with an iOS mobile subscription!": {
+    "message": "с мобильной подпиской iOS!"
+  },
+  "{\n          count, plural,\n          one {1 character attached}\n          other {# characters attached}\n        }": {
+    "message": "{ count, plural,\n    one {1 персонаж прикреплен}\n  other {# персонажей прикреплено}\n}"
+  },
+  "{\n          count, plural,\n          one {1 place attached}\n          other {# places attached}\n        }": {
+    "message": "{ count, plural,\n    one {1 локация прикреплена}\n  other {# локаций прикреплено}\n}"
+  },
+  "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {
+    "message": "{ count, plural,\n    one {1 тег прикреплен}\n  other {# тегов прикреплено}\n}"
+  },
+  "{amount} Lifetime": {
+    "message": "${amount}\nНавсегда"
+  },
+  "{amount} Monthly": {
+    "message": "${amount}\nЕжемесячно"
+  },
+  "{amount} Weekly": {
+    "message": "${amount}\nЕженедельно"
+  },
+  "{amount} Yearly": {
+    "message": "${amount}\nЕжегодно"
+  },
+  "{date, date, long}": {
+    "message": "{ date, date, long }"
+  },
+  "{date, date, medium}": {
+    "message": "{ date, date, medium }"
+  },
+  "{date, date, monthDay}": {
+    "message": "{ date, date, monthDay }"
+  },
+  "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }": {
+    "message": "{ numOfDays, plural,\n     =0 {# оставшихся дней}\n    one {# оставшихся дней}\n  other {# оставшихся дней}\n}"
+  },
+  "{num} Scenes": {
+    "message": "{num} сцен"
+  },
+  "{val, number, percent}": {
+    "message": "{ val, number, percent }"
+  },
+  "{wordCount,number} words": {
+    "message": "{ wordCount, number } слов"
+  },
+  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
+    "message": "(В противном случае свяжитесь со мной @ <a>support@plottr.com</a> или @StoryPlottr в Twitter.)"
+  },
+  "Add attributes": {
+    "message": "Добавить свойства"
+  },
+  "Attached to": {
+    "message": "Прикреплен к"
+  },
+  "Bring All to Front": {
+    "message": "Вынести всё на передний план"
+  },
+  "Buy the Full Version": {
+    "message": "Купить полную версию"
+  },
+  "Card Title": {
+    "message": "Название карточки"
+  },
+  "character": {
+    "message": "персонаж"
+  },
+  "Choose color": {
+    "message": "Выбрать цвет"
+  },
+  "Choose what you want to track about your characters": {
+    "message": "Выберите, что вы хотите отслеживать у своих персонажей"
+  },
+  "Choose what you want to track about your places": {
+    "message": "Выберите, что вы хотите отслеживать у своих локаций"
+  },
+  "Click here to get the full version": {
+    "message": "Нажмите здесь, чтобы получить полную версию"
+  },
+  "Contact": {
+    "message": "Связаться"
+  },
+  "Crafted in the Mountains of Utah by": {
+    "message": "Создано в горах Юты"
+  },
+  "Create a new file": {
+    "message": "Создать новый файл"
+  },
+  "Creates a report to send me": {
+    "message": "Создаёт отчет для отправки мне"
+  },
+  "Creating your file didn't work. Let's try again.": {
+    "message": "Создание вашего файла не сработало. Давайте попробуем ёще раз."
+  },
+  "Credits": {
+    "message": "Титры"
+  },
+  "Custom Attributes for Characters": {
+    "message": "Пользовательские свойства для персонажей"
+  },
+  "Custom Attributes for Places": {
+    "message": "Пользовательские свойства для локаций"
+  },
+  "Do you want to delete this card: { title }?": {
+    "message": "Вы хотите удалить эту карточку: { title }?"
+  },
+  "Do you want to delete this character: { character }?": {
+    "message": "Вы хотите удалить этого персонажа: { character }?"
+  },
+  "Do you want to delete this note: { title }?": {
+    "message": "Вы хотите удалить эту заметку: { title }?"
+  },
+  "Do you want to delete this place: { name }?": {
+    "message": "Вы хотите удалить эту локацию: { name }?"
+  },
+  "Do you want to delete this scene: { title }?": {
+    "message": "Вы хотите удалить эту сцену: { title }?"
+  },
+  "Do you want to delete this story line: { title }?": {
+    "message": "Вы хотите удалить эту сюжетную линию: { title }?"
+  },
+  "Do you want to delete this tag: { title }?": {
+    "message": "Вы хотите удалить этот тег: { title }?"
+  },
+  "Enter License": {
+    "message": "Введите лицензию"
+  },
+  "Filter by story line": {
+    "message": "Отфильтровать по сюжетной линии"
+  },
+  "Fit": {
+    "message": "Уместить"
+  },
+  "Format with markdown!": {
+    "message": "Издание со скидкой!"
+  },
+  "Forums": {
+    "message": "Форумы"
+  },
+  "Give feedback": {
+    "message": "Дать обратную связь"
+  },
+  "If you keep seeing this problem, email me at support@plottr.com": {
+    "message": "Если вы продолжаете сталкиваться с этой проблемой, напишите мне на почту support@plottr.com"
+  },
+  "It looks like you have Plottr on 5 computers already": {
+    "message": "Похоже, у вас уже есть Plottr на 5 компьютерах"
+  },
+  "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?": {
+    "message": "Похоже, вы используете более старую версию файла. Из-за этого могли возникнуть проблемы в работе. Может ли Plottr обновиться для вас?"
+  },
+  "It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again.": {
+    "message": "Похоже, ваш файл был сохранен на более новой версии Plottr, чем вы используете сейчас. Это могло вызвать проблемы. Попробуйте обновить Plottr и запустить его снова."
+  },
+  "It will save a backup first which will be saved to the same folder as this file": {
+    "message": "Сначала будет сохранена резервная копия, которая сохранится в той же папке, что и этот файл."
+  },
+  "License verification failed": {
+    "message": "Ошибка проверки лицензии"
+  },
+  "License verified! You're all set.": {
+    "message": "Лицензия проверена! Все готово."
+  },
+  "Line": {
+    "message": "Строка"
+  },
+  "Loading...": {
+    "message": "Загрузка..."
+  },
+  "Minimize": {
+    "message": "Минимизировать"
+  },
+  "My awesome story": {
+    "message": "Моя потрясающая история"
+  },
+  "Nope. Plottr tried again. But it didn't work. Plottr will ask you next time it opens, but you're verified. Enjoy": {
+    "message": "Не-а. Plottr попробовал еще раз. Но это не сработало. Plottr спросит вас при следующем открытии, но вы верифицированы. Наслаждайтесь"
+  },
+  "Now let's get to the good stuff": {
+    "message": "Теперь перейдем к интересному"
+  },
+  "Open the Tour": {
+    "message": "Открыть экскурсию"
+  },
+  "Or feel free to contact me with any questions": {
+    "message": "Или не стесняйтесь обращаться ко мне по любым вопросам"
+  },
+  "place": {
+    "message": "локация"
+  },
+  "Please upload the file named plottr_error_report.txt in your Documents folder": {
+    "message": "Пожалуйста, загрузите файл с именем plottr_error_report.txt в папку «Документы»."
+  },
+  "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again.": {
+    "message": "Plottr не смог сохранить резервную копию. Это еще не коснулось вашего файла, так что не волнуйтесь. Попробуйте выйти из Plottr и запустить его снова."
+  },
+  "Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)": {
+    "message": "Plottr сохранил резервную копию на всякий случай, можно продолжать (чтобы использовать резервную копию, удалите '.backup' из имени файла)"
+  },
+  "Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again.": {
+    "message": "Plottr попытался сохранить резервную копию на всякий случай, но это не сработало. Попробуйте выйти из Plottr и запустить его снова."
+  },
+  "Plottr updated your file without a problem. Don't forget to save your file.": {
+    "message": "Plottr обновил ваш файл без проблем. Не забудьте сохранить свой файл."
+  },
+  "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {
+    "message": "Plottr успешно проверил ваш лицензионный ключ, но при его сохранении произошла ошибка. Давай попробуем ещё раз"
+  },
+  "Problem saving backup": {
+    "message": "Проблема с сохранением резервной копии"
+  },
+  "Report a problem": {
+    "message": "Сообщить о проблеме"
+  },
+  "Request a feature": {
+    "message": "Запросить новую функцию"
+  },
+  "Reset": {
+    "message": "Сброс настроек"
+  },
+  "Save & Close": {
+    "message": "Сохранить и закрыть"
+  },
+  "Scene 1": {
+    "message": "Сцена 1"
+  },
+  "Scene {number}": {
+    "message": "Сцена {номер}"
+  },
+  "Scene {number} name": {
+    "message": "Название сцены {номер}"
+  },
+  "Story line name": {
+    "message": "Название сюжетной линии"
+  },
+  "TRIAL Version": {
+    "message": "ПРОБНАЯ версия"
+  },
+  "Try again by clicking in the menu: Plottr > Verify License...": {
+    "message": "Повторите попытку, щелкнув в меню: Plottr> Проверить лицензию ..."
+  },
+  "Update Plottr": {
+    "message": "Обновите Plottr"
+  },
+  "Upload the file Plottr just exported": {
+    "message": "Загрузите только что экспортированный файл Plottr"
+  },
+  "Use the code \"freetrial\" to get the secret discount": {
+    "message": "Используйте код \"freetrial\", чтобы получить секретную скидку."
+  },
+  "Verifying your license. Please wait...": {
+    "message": "Проверка вашей лицензии. Пожалуйста, подождите..."
+  },
+  "Where would you like to start your new file?": {
+    "message": "Где бы вы хотели начать свой новый файл?"
+  },
+  "Would you like to open an existing file or start a new file?": {
+    "message": "Хотите открыть существующий файл или создать новый?"
+  },
+  "Would you like to save before exiting?": {
+    "message": "Хотите сохраниться перед выходом?"
+  },
+  "You should have received a license key from Gumroad.": {
+    "message": "Вы должны были получить лицензионный ключ от Gumroad."
+  },
+  "Your free trial has expired!": {
+    "message": "Срок действия вашей пробной версии истек!"
+  },
+  "a new card": {
+    "message": "новая карточка"
+  },
+  "description": {
+    "message": "описание"
+  },
+  "learn how": {
+    "message": "узнать как"
+  },
+  "name": {
+    "message": "название"
+  },
+  "New Card": {
+    "message": "Новая карточка"
+  },
+  "new character": {
+    "message": "новый персонаж"
+  },
+  "new note": {
+    "message": "новая заметка"
+  },
+  "new place": {
+    "message": "новая локация"
+  },
+  "new tag": {
+    "message": "новый тег"
+  },
+  "no, just exit": {
+    "message": "нет, просто выйти"
+  },
+  "no, open the file as-is": {
+    "message": "нет, открыть файл как есть"
+  },
+  "ok": {
+    "message": "ок"
+  },
+  "story line": {
+    "message": "сюжетная линия"
+  },
+  "tag name": {
+    "message": "название тега"
+  },
+  "title": {
+    "message": "название"
+  },
+  "yes, save!": {
+    "message": "да, сохранить!"
+  },
+  "yes, update the file": {
+    "message": "да, обновить файл"
+  },
+  "{\n      count, plural,\n        one {1 carte}\n        other {# cartes}\n    }": {
+    "message": "{\n      count, plural,\n        one {1 карточка}\n        other {# карточек}\n    }"
+  },
+  "{\n      count, plural,\n        one {1 note}\n        other {# notes}\n    }": {
+    "message": "{\n      count, plural,\n        one {1 заметка}\n        other {# заметок}\n    }"
+  },
+  "{days} days remaining": {
+    "message": "{дней} дней осталось"
+  },
+  "Are you sure you want to delete {template}?": {
+    "message": "Вы уверены, что хотите удалить {шаблон}?"
+  },
+  "Character Custom Attributes": {
+    "message": "Пользовательские свойства персонажа"
+  },
+  "Check for updates": {
+    "message": "Проверить обновления"
+  },
+  "Checking for updates": {
+    "message": "Проверка обновлений"
+  },
+  "Choose an image below or upload a new one": {
+    "message": "Выберите изображение ниже или загрузите новое"
+  },
+  "Could not display license key. Try again": {
+    "message": "Не удалось отобразить лицензионный ключ. Попробуйте снова"
+  },
+  "Crafted in the Mountains of Utah": {
+    "message": "Изготовлено в горах Юты"
+  },
+  "Create an error report": {
+    "message": "Создать отчет об ошибке"
+  },
+  "Create unlimited story files": {
+    "message": "Создавайте неограниченное количество файлов историй"
+  },
+  "Do you want to delete this book: { book }?": {
+    "message": "Вы хотите удалить эту книгу: { book }?"
+  },
+  "Do you want to delete this chapter: { title }?": {
+    "message": "Вы хотите удалить эту главу: { title }?"
+  },
+  "Download Now": {
+    "message": "Загрузить сейчас"
+  },
+  "Downloading ({percent}%)": {
+    "message": "Загрузка ({процент}%)"
+  },
+  "Enter a customer service code": {
+    "message": "Введите код обслуживания клиента"
+  },
+  "Enter your code": {
+    "message": "Введите ваш код"
+  },
+  "Error": {
+    "message": "Ошибка"
+  },
+  "Extending your trial didn't work. Let's try again.": {
+    "message": "Продлить пробную версию не удалось. Давай попробуем ещё раз."
+  },
+  "Facebook Support Group": {
+    "message": "Группа поддержки Facebook"
+  },
+  "Here is your license key": {
+    "message": "Вот ваш лицензионный ключ"
+  },
+  "New File": {
+    "message": "Новый файл"
+  },
+  "New from Template": {
+    "message": "Новое из шаблона"
+  },
+  "No updates available": {
+    "message": "Нет доступных обновлений"
+  },
+  "Open File": {
+    "message": "Открыть файл"
+  },
+  "Plottr Trial": {
+    "message": "Пробный период Plottr"
+  },
+  "Plottr created a file named plottr_error_report.txt in your Documents folder": {
+    "message": "Plottr создал файл с именем plottr_error_report.txt в папке \"Документы\"."
+  },
+  "Quit and Install": {
+    "message": "Выйти и установить"
+  },
+  "See the Changelog": {
+    "message": "Смотреть журнал изменений"
+  },
+  "This is your Device ID": {
+    "message": "Это ID вашего устройство "
+  },
+  "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem.": {
+    "message": "Попробуйте еще раз, но если это повторится, воспользуйтесь меню справки, чтобы создать отчёт об ошибке и сообщить о проблеме."
+  },
+  "Update Ready": {
+    "message": "Готово к обновлению"
+  },
+  "Update available!": {
+    "message": "Доступно обновление!"
+  },
+  "Upload a new image": {
+    "message": "Загрузить новое изображение"
+  },
+  "View Device ID": {
+    "message": "Посмотреть ID устройства"
+  },
+  "View License Key": {
+    "message": "Просмотреть лицензионный ключ"
+  },
+  "View the Tour": {
+    "message": "Посмотреть экскурсию"
+  },
+  "paragraph": {
+    "message": "абзац"
+  },
+  "selected": {
+    "message": "выбрано"
+  },
+  "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
+    "message": "{\n      count, plural,\n        one {1 карточка}\n        other {# карточек}\n    }"
+  }
+}

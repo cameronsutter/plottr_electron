@@ -2,15 +2,21 @@ const i18n = require('format-message')
 
 const locales = {
   en: require('./en.json'),
+  de: require('./de.json'),
   fr: require('./fr.json'),
   es: require('./es.json'),
+  fa: require('./fa.json'),
+  ru: require('./ru.json'),
   flipped: require('./flipped.json'),
 }
 
 const localeNames = {
+  de: 'Deutsch',
   en: 'English',
-  fr: 'Français',
   es: 'Español',
+  fr: 'Français',
+  fa: 'فارسی',
+  ru: 'русский язык',
 }
 
 // The purpose of the flipped locale is to easily see if there are any strings
@@ -33,7 +39,7 @@ function setupI18n(settings, platform) {
 }
 
 function getCurrentLocale(settings, platform) {
-  const userSetLocale = settings ? settings.get('locale') : null
+  const userSetLocale = settings ? settings.locale : null
   const electron = platform.electron
   const appFRD = electron && (electron.app || (electron.remote && electron.remote.app))
 

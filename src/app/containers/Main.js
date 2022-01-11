@@ -5,7 +5,7 @@ import { ipcRenderer, remote } from 'electron'
 
 import { actions, selectors } from 'pltr/v2'
 
-import { bootFile } from '../app/bootFile'
+import { bootFile } from '../bootFile'
 import App from './App'
 import Choice from './Choice'
 import Login from './Login'
@@ -14,13 +14,23 @@ import Dashboard from './Dashboard'
 
 const win = remote.getCurrentWindow()
 
+const isCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
+
 const Main = ({
   isFirstTime,
   busyBooting,
   setOffline,
   needsToLogin,
+  isInProMode,
   isInTrialModeWithExpiredTrial,
   showDashboard,
+  checkingFileToLoad,
+  checkedFileToLoad,
+  readyToCheckFileToLoad,
+  cantShowFile,
+  selectedFileIsCloudFile,
+  startCheckingFileToLoad,
+  finishCheckingFileToLoad,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -30,15 +40,43 @@ const Main = ({
   // I think that we need another piece of state in the application
   // state reducer: checking file to load.
   useEffect(() => {
-    ipcRenderer.send('pls-fetch-state', win.id)
-    ipcRenderer.on('state-fetched', (event, filePath, options, numOpenFiles) => {
-      bootFile(filePath, options, numOpenFiles)
-    })
+    if (!readyToCheckFileToLoad) return () => {}
 
-    ipcRenderer.on('reload-from-file', (event, filePath, options, numOpenFiles) => {
-      bootFile(filePath, options, numOpenFiles)
-    })
-  })
+    const load = (event, filePath, options, numOpenFiles) => {
+      // To boot the file automatically: we must either be running pro
+      // and it's a cloud file, or we must be running classic mode and
+      // it's not a cloud file.
+      if (!!isInProMode === !!isCloudFile(filePath)) {
+        bootFile(filePath, options, numOpenFiles)
+      }
+      finishCheckingFileToLoad()
+    }
+
+    // This might look like unnecessary lambda wrapping, but I've done
+    // it to make sure that we have destinct lambdas to de-register
+    // later.
+    const reloadListener = (event, filePath, options, numOpenFiles) =>
+      load(event, filePath, options, numOpenFiles)
+    ipcRenderer.on('reload-from-file', reloadListener)
+
+    if (checkedFileToLoad || checkingFileToLoad || needsToLogin) {
+      return () => {
+        ipcRenderer.removeListener('reload-from-file', reloadListener)
+      }
+    }
+
+    startCheckingFileToLoad()
+    ipcRenderer.send('pls-fetch-state', win.id)
+    const stateFetchedListener = (event, filePath, options, numOpenFiles) => {
+      load(event, filePath, options, numOpenFiles)
+      ipcRenderer.removeListener('state-fetched', stateFetchedListener)
+    }
+    ipcRenderer.on('state-fetched', stateFetchedListener)
+
+    return () => {
+      ipcRenderer.removeListener('reload-from-file', reloadListener)
+    }
+  }, [readyToCheckFileToLoad, checkingFileToLoad, checkedFileToLoad, needsToLogin])
 
   // A latch so that we only show initial loading splash once.
   useEffect(() => {
@@ -98,7 +136,7 @@ const Main = ({
     return <ExpiredView />
   }
 
-  if (showDashboard && !dashboardClosed) {
+  if (cantShowFile || (showDashboard && !dashboardClosed)) {
     return <Dashboard closeDashboard={closeDashboard} />
   }
 
@@ -110,9 +148,17 @@ Main.propTypes = {
   busyBooting: PropTypes.bool,
   isFirstTime: PropTypes.bool,
   needsToLogin: PropTypes.bool,
+  isInProMode: PropTypes.bool,
   isInTrialModeWithExpiredTrial: PropTypes.bool,
   showDashboard: PropTypes.bool,
+  checkingFileToLoad: PropTypes.bool,
+  checkedFileToLoad: PropTypes.bool,
+  readyToCheckFileToLoad: PropTypes.bool,
+  cantShowFile: PropTypes.bool,
+  selectedFileIsCloudFile: PropTypes.bool,
   setOffline: PropTypes.func.isRequired,
+  startCheckingFileToLoad: PropTypes.func.isRequired,
+  finishCheckingFileToLoad: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -120,8 +166,18 @@ export default connect(
     busyBooting: selectors.applicationIsBusyButFileCouldBeUnloadedSelector(state.present),
     isFirstTime: selectors.isFirstTimeSelector(state.present),
     needsToLogin: selectors.userNeedsToLoginSelector(state.present),
+    isInProMode: selectors.hasProSelector(state.present),
     isInTrialModeWithExpiredTrial: selectors.isInTrialModeWithExpiredTrialSelector(state.present),
     showDashboard: selectors.showDashboardOnBootSelector(state.present),
+    checkingFileToLoad: selectors.checkingFileToLoadSelector(state.present),
+    checkedFileToLoad: selectors.checkedFileToLoadSelector(state.present),
+    readyToCheckFileToLoad: selectors.isInSomeValidLicenseStateSelector(state.present),
+    cantShowFile: selectors.cantShowFileSelector(state.present),
+    selectedFileIsCloudFile: selectors.isCloudFileSelector(state.present),
   }),
-  { setOffline: actions.project.setOffline }
+  {
+    setOffline: actions.project.setOffline,
+    startCheckingFileToLoad: actions.applicationState.startCheckingFileToLoad,
+    finishCheckingFileToLoad: actions.applicationState.finishCheckingFileToLoad,
+  }
 )(Main)

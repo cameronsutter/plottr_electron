@@ -278,4 +278,4 @@ ipcRenderer.on('from-template', () => {
 // listeners and too many of those cause slow-downs.
 const unsubscribeToPublishers = world.publishChangesToStore(store)
 
-renderFile()
+renderFile()()

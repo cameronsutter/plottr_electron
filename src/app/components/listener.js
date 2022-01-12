@@ -39,6 +39,7 @@ const Listener = ({
   setHasPro,
   setUserId,
   setEmailAddress,
+  setProLicenseInfo,
   startLoadingALicenseType,
   finishLoadingALicenseType,
 }) => {
@@ -124,12 +125,17 @@ const Listener = ({
     }
   }, [isOffline, offlineFilePath, filePath, originalFileName, cloudFilePath])
 
-  const handleCheckPro = (uid, email) => (hasPro) => {
+  const handleCheckPro = (uid, email, isLifetime, isAdmin) => (hasPro, info) => {
     if (hasPro) {
       fileSystemAPIs.saveAppSetting('user.frbId', uid)
       setHasPro(hasPro)
       setUserId(uid)
       setEmailAddress(email)
+      setProLicenseInfo({
+        ...info,
+        expiration: isLifetime ? 'lifetime' : info.expiration,
+        admin: isAdmin,
+      })
       fetchFiles(uid).then((files) => {
         finishLoadingALicenseType('proSubscription')
       })
@@ -149,11 +155,24 @@ const Listener = ({
         ?.getIdTokenResult()
         .then((token) => {
           if (token.claims.beta || token.claims.admin || token.claims.lifetime) {
-            handleCheckPro(userId, emailAddress)(true)
+            handleCheckPro(
+              userId,
+              emailAddress,
+              token.claims.lifeTime || token.claims.admin,
+              token.claims.admin
+            )(true)
           } else {
             if (emailAddress) {
               licenseServerAPIs
-                .checkForPro(emailAddress, handleCheckPro(userId, emailAddress))
+                .checkForPro(
+                  emailAddress,
+                  handleCheckPro(
+                    userId,
+                    emailAddress,
+                    token.claims.lifeTime || token.claims.admin,
+                    token.claims.admin
+                  )
+                )
                 .catch((error) => {
                   // TODO: maybe retry?
                   logger.error('Failed to check for pro', error)
@@ -188,6 +207,7 @@ Listener.propTypes = {
   setHasPro: PropTypes.func.isRequired,
   setUserId: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
+  setProLicenseInfo: PropTypes.func.isRequired,
   startLoadingALicenseType: PropTypes.func.isRequired,
   finishLoadingALicenseType: PropTypes.func.isRequired,
 }
@@ -220,6 +240,7 @@ export default connect(
     setHasPro: actions.client.setHasPro,
     setUserId: actions.client.setUserId,
     setEmailAddress: actions.client.setEmailAddress,
+    setProLicenseInfo: actions.license.setProLicenseInfo,
     startLoadingALicenseType: actions.applicationState.startLoadingALicenseType,
     finishLoadingALicenseType: actions.applicationState.finishLoadingALicenseType,
   }

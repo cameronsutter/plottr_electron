@@ -28,7 +28,7 @@
     "dist:all": "npm run pack && electron-builder -mw",
     "extract-strings": "lib/plottr_locales/lib/format-message-cli/format-message extract -o lib/plottr_locales/src/en-extracted.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/plottr_components/src/**/*.js\" \"lib/pltr/v2/**/*.js\" && npm --prefix lib/plottr_locales run sync && npm run generate-flipped",
     "generate-flipped": "node ./lib/plottr_locales/src/build-flipped-locale.js",
-    "test": "jest '(src.*)|(lib.*)|(main.*)'",
+    "test": "jest \"(src.*)|(lib.*)|(main.*)\"",
     "test:watch": "jest \"(src.*)|(lib.*)|(main.*)\" --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand src/app/components/rce/__tests__/RichTextEditor.test.js",
     "test:integration": "jest test/integration",

@@ -87,6 +87,7 @@ module.exports = {
     '^store(.*)$': '<rootDir>/src/app/store/$1',
     '^test(.*)$': '<rootDir>/test/$1',
     '^connected-components$': '<rootDir>/src/connected-components.js',
+    '^wired-up-firebase': '<rootDir>/src/wired-up-firebase.js',
     '^plottr_components$': '<rootDir>/lib/plottr_components/dist/components',
     '^react($|/.+)': '<rootDir>/node_modules/react$1',
     '^react-dom($|/.+)': '<rootDir>/node_modules/react-dom$1',
@@ -94,7 +95,7 @@ module.exports = {
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-  modulePathIgnorePatterns: ['__tests__/fixtures/*'],
+  modulePathIgnorePatterns: ['__tests__/fixtures/.*', 'plottr_check-prop-types/.*'],
 
   // Activates notifications for test results
   // notify: false,

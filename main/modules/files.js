@@ -111,6 +111,9 @@ function checkSave(filePath, data, originalStats = null, counter = 0) {
     return lstat(filePath)
       .then(handleFileStats(filePath, data, originalStats, counter))
       .catch((error) => {
+        if (error.maxAttemptsHit) {
+          return Promise.reject(error)
+        }
         // If the Error code flags that the file didn't exist, then
         // write the file and check that it's what we wanted it to be.
         if (error.code === 'ENOENT') {
@@ -124,7 +127,7 @@ function checkSave(filePath, data, originalStats = null, counter = 0) {
           console.error(`Unhandled error when saving ${filePath}.`, error)
           return new Promise((resolve, reject) => {
             setTimeout(() => {
-              checkSave(filePath, data, counter + 1).then(resolve, reject)
+              checkSave(filePath, data, originalStats, counter + 1).then(resolve, reject)
             }, 500)
           })
         }
@@ -132,6 +135,7 @@ function checkSave(filePath, data, originalStats = null, counter = 0) {
   } else {
     // We ran out of attempts to save the file.
     const error = Error(`Failed to save to ${filePath}.  Old file is un-touched.`)
+    error.maxAttemptsHit = true
     console.error(error)
     return Promise.reject(error)
   }
@@ -346,12 +350,7 @@ function saveOfflineFile(file) {
     return
   }
   const filePath = offlineFilePath(file.file.fileName)
-  const withoutSystemKeys = removeSystemKeys(file)
-  if (process.env.NODE_ENV == 'development') {
-    saveFile(filePath, JSON.stringify(withoutSystemKeys, null, 2))
-  } else {
-    saveFile(filePath, JSON.stringify(withoutSystemKeys))
-  }
+  saveFile(filePath, file)
 }
 
 module.exports = {

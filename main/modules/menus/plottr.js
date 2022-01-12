@@ -7,18 +7,37 @@ const SETTINGS = require('../settings')
 const { reloadAllWindows } = require('../windows')
 
 function buildPlottrMenu() {
+  const notEnglish = { ...localeNames }
+  delete notEnglish.en
+
+  const englishFirst = [
+    {
+      label: 'English',
+      click: () => {
+        SETTINGS.set('locale', 'en')
+        setupI18n(SETTINGS, { electron })
+        require('./').loadMenu()
+        reloadAllWindows()
+      },
+    },
+    {
+      type: 'separator',
+    },
+    ...Object.entries(notEnglish).map(([locale, name]) => ({
+      label: name,
+      click: () => {
+        SETTINGS.set('locale', locale)
+        setupI18n(SETTINGS, { electron })
+        require('./').loadMenu()
+        reloadAllWindows()
+      },
+    })),
+  ]
+
   const submenu = [
     {
       label: i18n('Language'),
-      submenu: Object.entries(localeNames).map(([locale, name]) => ({
-        label: name,
-        click: () => {
-          SETTINGS.set('locale', locale)
-          setupI18n(SETTINGS, { electron })
-          require('./').loadMenu()
-          reloadAllWindows()
-        },
-      })),
+      submenu: englishFirst,
     },
   ]
 

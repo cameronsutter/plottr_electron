@@ -75,12 +75,12 @@ describe('imageIndex', () => {
           1: {
             id: 1,
             data: 'blah',
-            path: '',
+            path: 'some/image.jpg',
           },
           7: {
             id: 7,
             data: 'haha',
-            path: '',
+            path: 'some/image.jpg',
           },
         },
       }
@@ -133,12 +133,12 @@ describe('imageIndex', () => {
             1: {
               id: 1,
               data: 'blah',
-              path: '',
+              path: 'some/image.jpg',
             },
             7: {
               id: 7,
               data: 'haha',
-              path: '',
+              path: 'some/image.jpg',
             },
           },
         }
@@ -168,17 +168,17 @@ describe('imageIndex', () => {
               1: {
                 id: 1,
                 data: 'blah',
-                path: '',
+                path: 'some/image.jpg',
               },
               7: {
                 id: 7,
                 data: 'haha',
-                path: '',
+                path: 'some/image.jpg',
               },
               9: {
                 id: 9,
                 data: 'This is some data.',
-                path: '',
+                path: 'some/image.jpg',
               },
             },
           }

@@ -297,16 +297,13 @@ async function saveToTempFile(json) {
 }
 
 async function createNew(template) {
-  console.log('test!')
   if (template) {
     const filePath = await saveToTempFile(template)
     const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)
   } else {
     const emptyPlottrFile = emptyFile(t('Untitled'), app.getVersion())
-    console.log('1')
     const filePath = await saveToTempFile(emptyPlottrFile)
-    console.log('2')
     const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)
   }

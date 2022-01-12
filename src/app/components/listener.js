@@ -160,7 +160,7 @@ const Listener = ({
               emailAddress,
               token.claims.lifeTime || token.claims.admin,
               token.claims.admin
-            )(true)
+            )(true, { expiration: 'lifetime', admin: true })
           } else {
             if (emailAddress) {
               licenseServerAPIs

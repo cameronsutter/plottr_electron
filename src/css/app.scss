@@ -38,6 +38,23 @@
     overflow: hidden;
   }
 
+  .loading-splash {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .loading-splash__progress {
+    width: 40vw;
+  }
+
+  .loading-splash__progress__bar {
+    position: relative;
+    height: 3px;
+    background: $orange;
+    transition: width 0.4s;
+  }
+
   .offline-mode-banner {
     position: absolute;
     z-index: 9999;

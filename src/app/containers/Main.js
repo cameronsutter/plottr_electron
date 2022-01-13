@@ -28,9 +28,11 @@ const Main = ({
   checkedFileToLoad,
   readyToCheckFileToLoad,
   cantShowFile,
+  loadingState,
   selectedFileIsCloudFile,
   startCheckingFileToLoad,
   finishCheckingFileToLoad,
+  loadingProgress,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -147,7 +149,16 @@ const Main = ({
     // we're loading based on the `applicationState` key in Redux ^_^
     return (
       <div id="temporary-inner">
-        <img src="../icons/logo_28_500.png" height="500" />
+        <div className="loading-splash">
+          <img src="../icons/logo_28_500.png" height="500" />
+          <h3>{loadingState}</h3>
+          <div className="loading-splash__progress">
+            <div
+              className="loading-splash__progress__bar"
+              style={{ width: `${loadingProgress}%` }}
+            />
+          </div>
+        </div>
       </div>
     )
   }
@@ -184,6 +195,8 @@ Main.propTypes = {
   readyToCheckFileToLoad: PropTypes.bool,
   cantShowFile: PropTypes.bool,
   selectedFileIsCloudFile: PropTypes.bool,
+  loadingState: PropTypes.string.isRequired,
+  loadingProgress: PropTypes.number.isRequired,
   setOffline: PropTypes.func.isRequired,
   startCheckingFileToLoad: PropTypes.func.isRequired,
   finishCheckingFileToLoad: PropTypes.func.isRequired,
@@ -202,6 +215,8 @@ export default connect(
     readyToCheckFileToLoad: selectors.isInSomeValidLicenseStateSelector(state.present),
     cantShowFile: selectors.cantShowFileSelector(state.present),
     selectedFileIsCloudFile: selectors.isCloudFileSelector(state.present),
+    loadingState: selectors.loadingStateSelector(state.present),
+    loadingProgress: selectors.loadingProgressSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,

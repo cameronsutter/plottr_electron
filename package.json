@@ -58,7 +58,8 @@
     "redux-thunk": "^2.3.0",
     "rollbar": "^2.19.4",
     "tiny-invariant": "^1.0.6",
-    "tree-changes": "^0.6.1"
+    "tree-changes": "^0.6.1",
+    "rtf.js": "^3.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

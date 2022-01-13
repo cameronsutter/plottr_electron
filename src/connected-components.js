@@ -6,8 +6,9 @@ import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 import log from 'electron-log'
 import { is } from 'electron-util'
+import { find } from 'lodash'
 
-import { actions, selectors } from 'pltr/v2'
+import { actions, selectors, initialState } from 'pltr/v2'
 import {
   publishRCEOperations,
   fetchRCEOperations,
@@ -30,7 +31,6 @@ import {
   lockRCE,
   releaseRCELock,
 } from 'wired-up-firebase'
-
 import {
   renameFile,
   saveFile,
@@ -59,7 +59,10 @@ import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
 import { createFullErrorReport } from './common/utils/full_error_report'
 import { createErrorReport } from './common/utils/error_reporter'
 import MPQ from './common/utils/MPQ'
-import { openExistingFile as _openExistingFile } from './common/utils/window_manager'
+import {
+  importScrivener as _importScrivener,
+  openExistingFile as _openExistingFile,
+} from './common/utils/window_manager'
 import {
   doesFileExist,
   removeFromKnownFiles,
@@ -67,6 +70,7 @@ import {
   sortAndSearch,
 } from './common/utils/files'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
+import { createNotesFromScriv } from './common/exporter/scrivener/importers/notes'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -129,6 +133,8 @@ const platform = {
       if (isLoggedIn) {
         store.dispatch(actions.applicationState.startUploadingFileToCloud())
       }
+
+      console.log('state', state)
       store.dispatch(actions.project.showLoader(true))
       _openExistingFile(!!userId, userId, emailAddress)
         .then(() => {
@@ -145,6 +151,43 @@ const platform = {
             store.dispatch(actions.applicationState.finishUploadingFileToCloud())
           }
         })
+    },
+    importScrivener: () => {
+      let state = store.getState()
+      let defaultNote = initialState.note
+
+      const {
+        client: { emailAddress, userId, clientId },
+      } = state.present
+      const fileList = selectors.knownFilesSelector(state.present)
+      if (userId) {
+        _importScrivener(!!userId, userId, emailAddress)
+          .then((scriveState) => {
+            console.log('scriveState.sections with content', scriveState)
+            const notes = find(scriveState.sections, { title: 'Notes' })
+            console.log('notes missing content :(', notes)
+            const notesState = createNotesFromScriv(defaultNote, scriveState)
+            state.present.notes = notesState
+            store.dispatch(actions.project.showLoader(true))
+            store.dispatch(actions.applicationState.startCreatingCloudFile())
+            newFile(emailAddress, userId, fileList, state, clientId, null, openFile)
+              .then((fileId) => {
+                logger.info('Created new file.', fileId)
+                store.dispatch(actions.project.showLoader(false))
+                store.dispatch(actions.applicationState.finishCreatingCloudFile())
+              })
+              .catch((error) => {
+                logger.error('Error creating a new file', error)
+                store.dispatch(actions.project.showLoader(false))
+                store.dispatch(actions.applicationState.finishCreatingCloudFile())
+              })
+            store.dispatch(actions.project.showLoader(false))
+          })
+          .catch((error) => {
+            logger.error('Error importing scrivener project', error)
+            store.dispatch(actions.project.showLoader(false))
+          })
+      }
     },
     doesFileExist,
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),

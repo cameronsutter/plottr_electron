@@ -47,6 +47,12 @@ const Main = ({
       if (!!isInProMode === !!isCloudFile(filePath)) {
         bootFile(filePath, options, numOpenFiles)
       }
+      // We only want to obey the setting to show the dashboard on
+      // start-up for the first file opened.  All files opened after
+      // that shouldn't have the dashboard opened.
+      if (numOpenFiles > 1) {
+        setDashboardClosed(true)
+      }
       finishCheckingFileToLoad()
     }
 

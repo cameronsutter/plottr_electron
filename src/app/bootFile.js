@@ -16,7 +16,6 @@ import { uploadProject } from '../common/utils/upload_project'
 import { resumeDirective } from '../resume'
 import { logger } from '../logger'
 import { store } from 'store'
-import { fileSystemAPIs } from '../api'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import Main from 'containers/Main'
@@ -42,12 +41,6 @@ const withFileId = (fileId, file) => ({
 })
 
 const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
-
-const shouldForceDashboard = (openFirst, numOpenFiles) => {
-  if (numOpenFiles > 1) return false
-  if (openFirst === undefined) return true // the default is always show first
-  return openFirst
-}
 
 const MAX_ATTEMPTS = 5
 
@@ -97,7 +90,7 @@ function removeSystemKeys(jsonData) {
   return withoutSystemKeys
 }
 
-const migrate = (originalFile, fileId, forceDashboard) => (overwrittenFile) => {
+const migrate = (originalFile, fileId) => (overwrittenFile) => {
   const json = overwrittenFile || originalFile
   return new Promise((resolve, reject) => {
     migrateIfNeeded(
@@ -197,12 +190,12 @@ function handleNoFileId(fileId, filePath) {
   return Promise.reject(new Error(`Cannot open file with id: ${fileId} from filePath: ${filePath}`))
 }
 
-export const renderFile = (forceDashboard) => () => {
+export const renderFile = () => {
   render(
     <Provider store={store}>
       <Listener />
       <Renamer />
-      <Main forceProjectDashboard={forceDashboard} />
+      <Main />
     </Provider>,
     root
   )
@@ -232,7 +225,7 @@ const handleEroneousUserStates = (filePath) => (user) => {
   }
 }
 
-const computeAndHandleResumeDirectives = (fileId, email, userId, forceDashboard, json) => {
+const computeAndHandleResumeDirectives = (fileId, email, userId, json) => {
   const offlinePath = offlineFilePath(json)
   const exists = fs.existsSync(offlinePath)
   const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
@@ -245,15 +238,15 @@ const afterLoading = (json) => {
   win.setTitle(displayFileName(json.file.fileName))
 }
 
-const bootWithUser = (fileId, forceDashboard) => (user) => {
+const bootWithUser = (fileId) => (user) => {
   const userId = user.uid
   const email = user.email
   return initialFetch(userId, fileId, clientId, app.getVersion())
     .then((fetchedFile) => {
-      return computeAndHandleResumeDirectives(fileId, email, userId, forceDashboard, fetchedFile)
-        .then(migrate(fetchedFile, fileId, forceDashboard))
+      return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
+        .then(migrate(fetchedFile, fileId))
         .then(afterLoading)
-        .then(renderFile(forceDashboard))
+        .then(renderFile)
     })
     .catch((error) => {
       const errorMessage = `Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`
@@ -272,7 +265,7 @@ const handleErrorBootingFile = (fileId) => (error) => {
   return Promise.reject(error)
 }
 
-function bootCloudFile(filePath, forceDashboard) {
+function bootCloudFile(filePath) {
   const fileId = filePath.split('plottr://')[1]
   if (!fileId) {
     return handleNoFileId(fileId, filePath)
@@ -280,18 +273,18 @@ function bootCloudFile(filePath, forceDashboard) {
 
   return waitForUser()
     .then(handleEroneousUserStates(filePath))
-    .then(bootWithUser(fileId, forceDashboard))
+    .then(bootWithUser(fileId))
     .catch(handleErrorBootingFile(fileId))
 }
 
-function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard) {
+function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy) {
   win.setTitle(displayFileName(filePath))
   win.setRepresentedFilename(filePath)
   let json
   try {
     json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
   } catch (error) {
-    renderFile(forceDashboard)()
+    renderFile()
     return Promise.resolve()
   }
   ipcRenderer.send('save-backup', filePath, json)
@@ -334,7 +327,7 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
 
         store.dispatch(actions.client.setClientId(clientId))
 
-        renderFile(forceDashboard)()
+        renderFile()
         resolve()
       },
       logger
@@ -345,15 +338,13 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDas
 export function bootFile(filePath, options, numOpenFiles) {
   const { darkMode, beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
-  const settings = fileSystemAPIs.currentAppSettings()
-  const forceDashboard = shouldForceDashboard(settings.user?.openDashboardFirst, numOpenFiles)
 
   try {
     store.dispatch(actions.applicationState.startLoadingFile())
     return (
       isCloudFile
-        ? bootCloudFile(filePath, forceDashboard)
-        : bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy, forceDashboard)
+        ? bootCloudFile(filePath)
+        : bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy)
     )
       .then(() => {
         store.dispatch(actions.applicationState.finishLoadingFile())
@@ -368,5 +359,6 @@ export function bootFile(filePath, options, numOpenFiles) {
     // TODO: error dialog and ask the user to try again
     logger.error(error)
     rollbar.error(error)
+    return Promise.reject(error)
   }
 }

@@ -235,7 +235,7 @@ const computeAndHandleResumeDirectives = (fileId, email, userId, json) => {
 
 const afterLoading = (json) => {
   logger.info(`Loaded file ${json.file.fileName}.`)
-  win.setTitle(displayFileName(json.file.fileName))
+  win.setTitle(displayFileName(json.file.fileName, true))
 }
 
 const bootWithUser = (fileId) => (user) => {
@@ -278,7 +278,7 @@ function bootCloudFile(filePath) {
 }
 
 function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy) {
-  win.setTitle(displayFileName(filePath))
+  win.setTitle(displayFileName(filePath, false))
   win.setRepresentedFilename(filePath)
   let json
   try {

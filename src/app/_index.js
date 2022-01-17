@@ -113,7 +113,7 @@ function bootFile(filePath, options, numOpenFiles) {
               return
             }
             console.log(`Loaded file ${json.file.fileName}.`)
-            win.setTitle(displayFileName(json.file.fileName))
+            win.setTitle(displayFileName(json.file.fileName, true))
             if (migrated) {
               console.log(
                 `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
@@ -174,7 +174,7 @@ function bootFile(filePath, options, numOpenFiles) {
         )
       })
     } else {
-      win.setTitle(displayFileName(filePath))
+      win.setTitle(displayFileName(filePath, false))
       win.setRepresentedFilename(filePath)
       let json
       try {
@@ -347,7 +347,7 @@ ipcRenderer.on('move-from-temp', () => {
     // change the window's title
     win.setRepresentedFilename(newFilePath)
     win.filePath = newFilePath
-    win.setTitle(displayFileName(newFilePath))
+    win.setTitle(displayFileName(newFilePath, false))
     // send event to dashboard
     ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
   }

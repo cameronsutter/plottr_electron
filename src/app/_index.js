@@ -156,7 +156,7 @@ ipcRenderer.on('move-from-temp', () => {
     // change the window's title
     win.setRepresentedFilename(newFilePath)
     win.filePath = newFilePath
-    win.setTitle(displayFileName(newFilePath))
+    win.setTitle(displayFileName(newFilePath, false))
     // send event to dashboard
     ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
   }

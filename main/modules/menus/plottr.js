@@ -7,6 +7,7 @@ const SETTINGS = require('../settings')
 const { reloadAllWindows } = require('../windows')
 
 function buildPlottrMenu() {
+  const isPro = SETTINGS.get('user.frbId')
   const notEnglish = { ...localeNames }
   delete notEnglish.en
 
@@ -78,7 +79,7 @@ function buildPlottrMenu() {
     })
   }
   return {
-    label: 'Plottr',
+    label: isPro ? 'Plottr Pro' : 'Plottr',
     submenu: submenu,
   }
 }

@@ -19,6 +19,12 @@
   width: 95%;
   height: 25vh;
   max-height: 30vh;
+
+  .row {
+    justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+  }
 }
 
 .dashboard__new-files__wrapper {

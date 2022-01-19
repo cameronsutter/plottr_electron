@@ -1,25 +1,25 @@
-const i18n = require('plottr_locales').t
-const { reloadWindow } = require('../windows')
-const { takeScreenshot } = require('../helpers')
+import { t } from 'plottr_locales'
+import { reloadWindow } from '../windows'
+import { takeScreenshot } from '../helpers'
 
 function buildViewMenu() {
   const submenu = [
     {
-      label: i18n('Reload'),
+      label: t('Reload'),
       accelerator: 'CmdOrCtrl+R',
       click: reloadWindow,
     },
     {
-      label: i18n('Take Screenshot') + '...',
+      label: t('Take Screenshot') + '...',
       accelerator: 'CmdOrCtrl+P',
       click: takeScreenshot,
     },
   ]
 
   return {
-    label: i18n('View'),
+    label: t('View'),
     submenu: submenu,
   }
 }
 
-module.exports = { buildViewMenu }
+export { buildViewMenu }

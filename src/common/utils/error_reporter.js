@@ -1,11 +1,11 @@
-import { remote, shell } from 'electron'
+import { shell } from 'electron'
+import { app } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
 import log from 'electron-log'
 import { ActionTypes } from 'pltr/v2'
 import { t as i18n } from 'plottr_locales'
 import { USER } from '../../file-system/stores'
-const app = remote.app
 
 let previousAction = null
 

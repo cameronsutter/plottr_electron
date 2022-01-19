@@ -1,7 +1,7 @@
-const { app } = require('electron')
-const Rollbar = require('rollbar')
-const { NODE_ENV, ROLLBAR_ACCESS_TOKEN } = require('./constants')
-const { getLicenseInfo } = require('./license_info')
+import { app } from 'electron'
+import Rollbar from 'rollbar'
+import { NODE_ENV, ROLLBAR_ACCESS_TOKEN } from './constants'
+import { getLicenseInfo } from './license_info'
 
 function setupRollbar(where, USER) {
   let environment = NODE_ENV === 'development' ? 'development' : 'production'
@@ -37,7 +37,7 @@ function setupRollbar(where, USER) {
 const USER_INFO = getLicenseInfo()
 const rollbar = setupRollbar('main', USER_INFO)
 
-module.exports = {
+export {
   setupRollbar,
   rollbar,
 }

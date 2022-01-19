@@ -1,21 +1,21 @@
-const path = require('path')
-const fs = require('fs')
-const Store = require('electron-store')
-const log = require('electron-log')
-const { app } = require('electron')
-const { isEqual } = require('lodash')
+import path from 'path'
+import fs from 'fs'
+import Store from 'electron-store'
+import log from 'electron-log'
+import { app } from 'electron'
+import { isEqual } from 'lodash'
 
-const { t } = require('plottr_locales')
+import { t } from 'plottr_locales'
 
-const { knownFilesStore, addToKnownFiles, addToKnown } = require('./known_files')
-const { Importer } = require('./importer/snowflake/importer')
-const { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } = require('pltr/v2')
-const { openProjectWindow } = require('./windows/projects')
-const { shell } = require('electron')
-const { broadcastToAllWindows } = require('./broadcast')
-const { saveBackup } = require('./backup')
-const SETTINGS = require('./settings')
-const { OFFLINE_FILE_FILES_PATH, offlineFilePath } = require('./offlineFilePath')
+import { knownFilesStore, addToKnownFiles, addToKnown } from './known_files'
+import { Importer } from './importer/snowflake/importer'
+import { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { openProjectWindow } from './windows/projects'
+import { shell } from 'electron'
+import { broadcastToAllWindows } from './broadcast'
+import { saveBackup } from './backup'
+import SETTINGS from './settings'
+import { OFFLINE_FILE_FILES_PATH, offlineFilePath } from './offlineFilePath'
 
 const { lstat, writeFile, readFile } = fs.promises
 
@@ -353,7 +353,7 @@ function saveOfflineFile(file) {
   saveFile(filePath, file)
 }
 
-module.exports = {
+export {
   TMP_PATH,
   TEMP_FILES_PATH,
   tempFilesStore,

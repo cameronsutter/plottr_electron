@@ -1,5 +1,5 @@
-const { app } = require('electron')
-const path = require('path')
+import { app } from 'electron'
+import path from 'path'
 
 const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
 
@@ -12,7 +12,7 @@ function offlineFilePath(filePath) {
   return path.join(OFFLINE_FILE_FILES_PATH, fileName)
 }
 
-module.exports = {
+export {
   offlineFilePath,
   OFFLINE_FILE_FILES_PATH,
 }

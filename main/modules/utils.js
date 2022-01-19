@@ -1,12 +1,13 @@
-const path = require('path')
-const { dialog, app, screen, BrowserWindow } = require('electron')
-const windowStateKeeper = require('electron-window-state')
-const i18n = require('plottr_locales').t
-const log = require('electron-log')
-// const { rollbar } = require('./rollbar')
-const { hasWindows } = require('./windows')
-const SETTINGS = require('./settings')
-const { is } = require('electron-util')
+import path from 'path'
+import { dialog, app, screen, BrowserWindow } from 'electron'
+import windowStateKeeper from 'electron-window-state'
+import i18n from 'plottr_locales'
+import log from 'electron-log'
+import { enable } from '@electron/remote/main'
+
+import { hasWindows } from './windows'
+import SETTINGS from './settings'
+import { is } from 'electron-util'
 
 function gracefullyNotSave() {
   dialog.showErrorBox(i18n('Saving failed'), i18n("Saving your file didn't work. Try again."))
@@ -52,8 +53,8 @@ function makeBrowserWindow(filePath) {
     webPreferences: {
       nodeIntegration: true,
       spellcheck: true,
-      enableRemoteModule: true,
       webviewTag: true,
+      contextIsolation: false,
     },
   }
 
@@ -61,6 +62,8 @@ function makeBrowserWindow(filePath) {
 
   // Create the browser window
   let newWindow = new BrowserWindow(config)
+  // Enable the remote module.
+  enable(newWindow.webContents)
 
   // register listeners on the window
   stateKeeper.manage(newWindow)
@@ -104,7 +107,7 @@ function makeBrowserWindow(filePath) {
   return newWindow
 }
 
-module.exports = {
+export {
   gracefullyNotSave,
   gracefullyQuit,
   makeBrowserWindow,

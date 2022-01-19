@@ -1,12 +1,12 @@
-const { Menu, ipcMain, BrowserWindow } = require('electron')
+import { Menu, ipcMain, BrowserWindow } from 'electron'
 
-const { buildPlottrMenu } = require('./plottr')
-const { buildEditMenu } = require('./edit')
-const { buildWindowMenu } = require('./window')
-const { buildHelpMenu } = require('./help')
-const { buildFileMenu } = require('./file')
-const { buildViewMenu } = require('./view')
-const { getWindowById } = require('../windows')
+import { buildPlottrMenu } from './plottr'
+import { buildEditMenu } from './edit'
+import { buildWindowMenu } from './window'
+import { buildHelpMenu } from './help'
+import { buildFileMenu } from './file'
+import { buildViewMenu } from './view'
+import { getWindowById } from '../windows'
 
 ipcMain.on('pls-reload-menu', () => loadMenu())
 
@@ -20,7 +20,7 @@ function buildMenu() {
     }
   }
   return [
-    buildPlottrMenu(),
+    buildPlottrMenu(buildMenu),
     buildFileMenu(filePath),
     buildEditMenu(),
     buildViewMenu(),
@@ -35,4 +35,4 @@ function loadMenu() {
   Menu.setApplicationMenu(menu)
 }
 
-module.exports = { loadMenu }
+export { loadMenu }

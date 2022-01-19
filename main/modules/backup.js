@@ -1,9 +1,9 @@
-const electron = require('electron')
-const fs = require('fs')
-const path = require('path')
-const log = require('electron-log')
-const { DateTime, Duration } = require('luxon')
-const SETTINGS = require('./settings')
+import electron from 'electron'
+import fs from 'fs'
+import path from 'path'
+import log from 'electron-log'
+import { DateTime, Duration } from 'luxon'
+import SETTINGS from './settings'
 
 const { readdir, lstat, rmdir } = fs.promises
 
@@ -259,7 +259,7 @@ function fileIsSoonerThan(nDaysAgoDate, fileName) {
   return DateTime.fromObject({ day, month, year }) > nDaysAgoDate
 }
 
-module.exports = {
+export {
   BACKUP_BASE_PATH,
   saveBackup,
   backupBasePath,

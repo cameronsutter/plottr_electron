@@ -1,8 +1,8 @@
-const Store = require('electron-store')
+import Store from 'electron-store'
 const trialStore = new Store({ name: 'trial_info' })
 
 function getTriaInfo() {
   return trialStore.get()
 }
 
-module.exports = { getTriaInfo }
+export { getTriaInfo }

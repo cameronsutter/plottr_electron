@@ -1,8 +1,8 @@
-const Store = require('electron-store')
+import Store from 'electron-store'
 const licenseStore = new Store({ name: 'license_info' })
 
 function getLicenseInfo() {
   return licenseStore.get()
 }
 
-module.exports = { getLicenseInfo }
+export { getLicenseInfo }

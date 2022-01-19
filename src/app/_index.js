@@ -30,7 +30,7 @@ import {
 } from '../dashboard-events'
 import { logger } from '../logger'
 import { fileSystemAPIs } from '../api'
-import { renderFile } from './bootFile'
+import { renderFile } from '../renderFile'
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 
@@ -278,4 +278,6 @@ ipcRenderer.on('from-template', () => {
 // listeners and too many of those cause slow-downs.
 const unsubscribeToPublishers = world.publishChangesToStore(store)
 
-renderFile()
+const root = document.getElementById('react-root')
+
+renderFile(root)

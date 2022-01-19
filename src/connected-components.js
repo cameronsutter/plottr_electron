@@ -1,11 +1,11 @@
-import electron, { remote, shell, ipcRenderer } from 'electron'
+import electron, { shell, ipcRenderer } from 'electron'
+import remote from '@electron/remote'
 import path from 'path'
 import { ActionCreators } from 'redux-undo'
 import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 import log from 'electron-log'
-import { is } from 'electron-util'
 
 import { actions, selectors } from 'pltr/v2'
 import {
@@ -89,7 +89,7 @@ const platform = {
   redo: () => {
     store.dispatch(ActionCreators.redo())
   },
-  electron,
+  electron: { ...electron, remote },
   appVersion: version,
   defaultBackupLocation: BACKUP_BASE_PATH,
   setDarkMode: (value) => {

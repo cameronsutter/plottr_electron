@@ -1,7 +1,7 @@
-const { broadcastToAllWindows } = require('../broadcast')
+import { broadcastToAllWindows } from '../broadcast'
 
 const updateOpenFiles = (filePath) => {
   broadcastToAllWindows('file-closed', filePath)
 }
 
-module.exports = { updateOpenFiles }
+export { updateOpenFiles }

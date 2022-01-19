@@ -26,7 +26,7 @@ import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import exportConfig from '../common/exporter/default_config'
 import { TEMP_FILES_PATH } from '../common/utils/config_paths'
-import { createErrorReport } from '../common/utils/full_error_report'
+import { createFullErrorReport } from '../common/utils/full_error_report'
 import TemplateFetcher from '../dashboard/utils/template_fetcher'
 import { machineIdSync } from 'node-machine-id'
 import Listener from './components/listener'
@@ -411,7 +411,7 @@ ipcRenderer.once('send-launch', (event, version) => {
 })
 
 ipcRenderer.on('create-error-report', () => {
-  createErrorReport()
+  createFullErrorReport()
 })
 
 ipcRenderer.on('auto-save-error', (event, filePath, error) => {

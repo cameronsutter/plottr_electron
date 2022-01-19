@@ -19,7 +19,7 @@ import { ActionCreators } from 'redux-undo'
 import { displayFileName } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { TEMP_FILES_PATH } from '../file-system/config_paths'
-import { createErrorReport } from '../common/utils/full_error_report'
+import { createFullErrorReport } from '../common/utils/full_error_report'
 import TemplateFetcher from '../common/utils/template_fetcher'
 import {
   openDashboard,
@@ -221,7 +221,7 @@ ipcRenderer.once('send-launch', (event, version) => {
 })
 
 ipcRenderer.on('create-error-report', () => {
-  createErrorReport()
+  createFullErrorReport()
 })
 
 ipcRenderer.on('auto-save-error', (event, filePath, error) => {

@@ -17,7 +17,7 @@ import { saveBackup } from './backup'
 import SETTINGS from './settings'
 import { OFFLINE_FILE_FILES_PATH, offlineFilePath } from './offlineFilePath'
 
-const { lstat, writeFile, readFile } = fs.promises
+const { lstat, writeFile, readFile, open } = fs.promises
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
@@ -71,10 +71,20 @@ const checkSaveHandleTimestampChange = (filePath, data, originalStats, counter) 
   }
 }
 
+const writeAndWaitForFlush = (filePath, data) => {
+  return open(filePath, 'w+').then((fileHandle) => {
+    return writeFile(fileHandle, data).then(() => {
+      return fileHandle.sync().then(() => {
+        return fileHandle.close()
+      })
+    })
+  })
+}
+
 const checkSaveHandleNoOriginalStats = (filePath, data, stats, counter) => {
   // Overwrite the file and then leave it to the main function to
   // check that the file actually changed to what we want it to.
-  return writeFile(filePath, data).then(() => {
+  return writeAndWaitForFlush(filePath, data).then(() => {
     // When we recur, lstat should produce different stats.
     return checkSave(filePath, data, stats, counter)
   })
@@ -117,7 +127,7 @@ function checkSave(filePath, data, originalStats = null, counter = 0) {
         // If the Error code flags that the file didn't exist, then
         // write the file and check that it's what we wanted it to be.
         if (error.code === 'ENOENT') {
-          return writeFile(filePath, data).then(
+          return writeAndWaitForFlush(filePath, data).then(
             checkFileJustWritten(filePath, data, originalStats, counter)
           )
         } else {

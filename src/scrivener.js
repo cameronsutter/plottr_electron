@@ -3,12 +3,11 @@ import path from 'path'
 import { convertHTMLString } from 'pltr/v2/slate_serializers/from_html'
 import { EMFJS, RTFJS, WMFJS } from 'rtf.js'
 
-let files = { scrivx: [], contentRtf: [] }
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
-let sectionsArr = []
-let draftArr = []
 
-const parseScrivxData = (data, abs) => {
+const parseScrivxData = (data) => {
+  let sectionsArr = []
+  let draftArr = []
   const parser = new DOMParser()
   const htmlData = parser.parseFromString(data, 'text/html')
   const children = htmlData.querySelectorAll('ScrivenerProject Binder > BinderItem')
@@ -63,7 +62,10 @@ RTFJS.loggingEnabled(false)
 WMFJS.loggingEnabled(false)
 EMFJS.loggingEnabled(false)
 
-export const readScrivContents = (scriv, cb) => {
+export const readScrivContents = (scriv, rtf) => {
+  let contentRtf = rtf || []
+  let scrivx = []
+
   const noteFileContent = ['content.rtf', 'synopsis.txt', 'content.pdf']
   const filesInScriv = readdirSync(scriv)
   filesInScriv.map((file) => {
@@ -72,12 +74,12 @@ export const readScrivContents = (scriv, cb) => {
       file.includes('_notes.rtf') ||
       Number(file.replace('.rtf', ''))
     const absolute = path.join(scriv, file)
-    const fileExt = file.split('.').pop()
+    const fileExt = path.extname(file)
     const isSectionRTF =
       (UUIDFolderRegEx.test(absolute) && noteFileContent.includes(file)) || isVer_2_7
 
     if (statSync(absolute).isDirectory()) {
-      return readScrivContents(absolute)
+      return readScrivContents(absolute, contentRtf)
     } else if (isSectionRTF) {
       const uuid = UUIDFolderRegEx.test(absolute)
         ? absolute.match(UUIDFolderRegEx)[0]
@@ -85,20 +87,24 @@ export const readScrivContents = (scriv, cb) => {
         ? file.match(/\d+/)[0]
         : null
       const notesRTF = readFileSync(absolute)
-
-      return files.contentRtf.push({ uuid, content: String(notesRTF) })
+      if (notesRTF.length) {
+        return contentRtf.push({ uuid, content: String(notesRTF) })
+      }
     } else {
       const scrivxContent = readFileSync(absolute)
-      if (fileExt === 'scrivx') {
+      if (fileExt === '.scrivx') {
         const scrivData = parseScrivxData(scrivxContent, filesInScriv)
         if (scrivData) {
-          return files.scrivx.push(scrivData)
+          return scrivx.push(scrivData)
         }
       }
     }
   })
 
-  return files
+  return {
+    contentRtf,
+    scrivx,
+  }
 }
 
 const parseToHTML = async (noteRtf, title) => {

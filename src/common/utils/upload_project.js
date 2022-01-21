@@ -1,11 +1,9 @@
-import { remote } from 'electron'
 import { migrateIfNeeded } from 'pltr/v2'
+import { app } from '@electron/remote'
 
 import { uploadExisting } from '../../files'
 import extractImages from '../extract_images'
 import { logger } from '../../logger'
-
-const { app } = remote
 
 const appVersion = app.getVersion()
 

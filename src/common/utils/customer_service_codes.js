@@ -1,11 +1,9 @@
 import path from 'path'
-import { shell, remote } from 'electron'
-const { app, dialog } = remote
-import storage from 'electron-json-storage'
-import log from 'electron-log'
+import { shell } from 'electron'
+import { app, dialog } from '@electron/remote'
 import { USER_INFO_PATH, CUSTOM_TEMPLATES_PATH } from '../../file-system/config_paths'
 import { backupBasePath } from './backup'
-import { manifestStore } from '../../file-system/stores'
+import { licenseStore, manifestStore } from '../../file-system/stores'
 import { fileSystemAPIs } from '../../api'
 
 const { saveAppSetting } = fileSystemAPIs
@@ -67,9 +65,7 @@ export function handleCustomerServiceCode(code) {
 
     case '329fd4391c10d':
       // nuke the license info
-      storage.remove(USER_INFO_PATH, (error) => {
-        if (error) log.warn(error)
-      })
+      licenseStore.store = {}
       break
 
     case '16329e':

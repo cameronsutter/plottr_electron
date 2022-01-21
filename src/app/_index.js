@@ -1,10 +1,8 @@
 import path from 'path'
 import { store } from 'store'
-import { ipcRenderer, remote } from 'electron'
-import { is } from 'electron-util'
+import { ipcRenderer } from 'electron'
+import { dialog } from '@electron/remote'
 import electron from 'electron'
-const { dialog } = remote
-const win = remote.getCurrentWindow()
 
 import { actions, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { setupI18n, t } from 'plottr_locales'
@@ -31,6 +29,7 @@ import {
 import { logger } from '../logger'
 import { fileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
+import { isWindows } from '../isOS'
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 
@@ -94,7 +93,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     currentState.present,
     type,
     exportConfig[type],
-    is.windows,
+    isWindows(),
     (error, success) => {
       if (error) {
         logger.error(error)

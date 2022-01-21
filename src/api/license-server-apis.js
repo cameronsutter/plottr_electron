@@ -1,12 +1,12 @@
 import rp from 'request-promise-native'
 import log from 'electron-log'
-import { is } from 'electron-util'
 import { machineIdSync } from 'node-machine-id'
 
 import { currentUser } from 'wired-up-firebase'
 
 import setupRollbar from '../common/utils/rollbar'
 import { fileSystemAPIs } from './'
+import { isMacOS } from '../isOS'
 
 const rollbar = setupRollbar('license_checker')
 
@@ -147,7 +147,7 @@ function isActiveSub(info) {
 }
 
 const BASE_URL = 'https://my.plottr.com/edd-api'
-const V2_OLD_PRODUCT_ID = is.macos ? '11321' : '11322'
+const V2_OLD_PRODUCT_ID = isMacOS() ? '11321' : '11322'
 // NOTE: if this order changes, change the productMapping array at the bottom too
 const PRODUCT_IDS = [33347, 33345, V2_OLD_PRODUCT_ID]
 const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mismatch', 'missing']

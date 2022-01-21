@@ -1,5 +1,6 @@
 import electron, { shell, ipcRenderer } from 'electron'
-import remote from '@electron/remote'
+import { getCurrentWindow, app, dialog } from '@electron/remote'
+import * as remote from '@electron/remote'
 import path from 'path'
 import { ActionCreators } from 'redux-undo'
 import { connections } from 'plottr_components'
@@ -43,6 +44,8 @@ import {
 import { logger } from './logger'
 import { closeDashboard } from './dashboard-events'
 import { fileSystemAPIs, licenseServerAPIs } from './api'
+import { isWindows, isLinux, isMacOS } from './isOS'
+import { isDevelopment } from './isDevelopment'
 
 import { store } from './app/store'
 
@@ -68,11 +71,10 @@ import {
 } from './common/utils/files'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 
-const win = remote.getCurrentWindow()
-const { app, dialog } = remote
+const win = getCurrentWindow()
 const version = app.getVersion()
 
-const moveItemToTrash = shell.moveItemToTrash
+const moveItemToTrash = shell.trashItem
 
 export const openFile = (filePath, id, unknown) => {
   ipcRenderer.send('open-known-file', filePath, id, unknown)
@@ -286,11 +288,11 @@ const platform = {
     },
     editTemplateDetails,
     startSaveAsTemplate: (itemType) => {
-      const win = remote.getCurrentWindow()
+      const win = getCurrentWindow()
       ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', itemType) // sends this message to this same process
     },
     saveTemplate: (payload) => {
-      const win = remote.getCurrentWindow()
+      const win = getCurrentWindow()
       ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
     },
   },
@@ -298,10 +300,10 @@ const platform = {
     saveAppSetting: fileSystemAPIs.saveAppSetting,
   },
   user: USER,
-  os: is.windows ? 'windows' : is.macos ? 'macos' : is.linux ? 'linux' : 'unknown',
-  isDevelopment: is.development,
-  isWindows: is.windows,
-  isMacOS: is.macos,
+  os: isWindows() ? 'windows' : isMacOS() ? 'macos' : isLinux() ? 'linux' : 'unknown',
+  isDevelopment: isDevelopment(),
+  isWindows: !!isWindows(),
+  isMacOS: !!isMacOS(),
   openExternal: shell.openExternal,
   createErrorReport,
   createFullErrorReport,
@@ -311,7 +313,7 @@ const platform = {
   showSaveDialogSync,
   showOpenDialogSync: (options) => dialog.showOpenDialogSync(win, options),
   node: {
-    env: process.env.NODE_ENV === 'development' ? 'development' : 'production',
+    env: isDevelopment() ? 'development' : 'production',
   },
   rollbar: {
     rollbarAccessToken: process.env.ROLLBAR_ACCESS_TOKEN || '',
@@ -323,7 +325,7 @@ const platform = {
     saveExportConfigSettings: fileSystemAPIs.saveExportConfigSettings,
   },
   moveFromTemp: () => {
-    const win = remote.getCurrentWindow()
+    const win = getCurrentWindow()
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
   },
   showItemInFolder: (fileName) => {

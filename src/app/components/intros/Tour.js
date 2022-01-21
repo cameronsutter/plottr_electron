@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { remote } from 'electron'
+import { getCurrentWindow } from '@electron/remote'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -10,7 +10,7 @@ import ReactJoyride, { EVENTS } from 'react-joyride'
 const { tourSelector } = selectors
 import { ACTS_TOUR_STEPS } from './actsTourSteps'
 
-const win = remote.getCurrentWindow()
+const win = getCurrentWindow()
 
 class Tour extends Component {
   state = {

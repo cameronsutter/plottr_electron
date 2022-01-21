@@ -1,11 +1,10 @@
-import { remote } from 'electron'
+import { getCurrentWindow, dialog } from '@electron/remote'
 import { t } from 'plottr_locales'
 import MPQ from '../common/utils/MPQ'
 import ScrivenerExporter from './scrivener/v2/exporter'
 import WordExporter from './word/exporter'
 
-const win = remote.getCurrentWindow()
-const { dialog } = remote
+const win = getCurrentWindow()
 
 export default function askToExport(defaultPath, fullState, type, options, isWindows, cb) {
   let label = t('Where would you like to save the export?')

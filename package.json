@@ -37,8 +37,7 @@
     "lint": "eslint .",
     "format:check": "prettier . --check",
     "format:write": "prettier . --write",
-    "validate": "npm-run-all format:check lint test",
-    "postinstall": "patch-package"
+    "validate": "npm-run-all format:check lint test"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
@@ -47,10 +46,10 @@
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^1.0.0",
     "electron-context-menu": "^2.0.1",
-    "electron-json-storage": "^2.0.0",
     "electron-log": "^4.3.2",
     "electron-store": "^8.0.1",
     "electron-updater": "^4.3.0",
+    "electron-util": "^0.17.2",
     "electron-window-state": "^5.0.3",
     "is-lite": "^0.8.0",
     "luxon": "^1.27.0",

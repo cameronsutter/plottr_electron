@@ -1,5 +1,6 @@
 import fs from 'fs'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
+import { dialog, app, getCurrentWindow } from '@electron/remote'
 import { machineIdSync } from 'node-machine-id'
 
 import { SYSTEM_REDUCER_KEYS, actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
@@ -18,11 +19,9 @@ import setupRollbar from '../common/utils/rollbar'
 
 const clientId = machineIdSync()
 
-const { dialog, app } = remote
-
 const rollbar = setupRollbar('app.html')
 
-const win = remote.getCurrentWindow()
+const win = getCurrentWindow()
 
 const withFileId = (fileId, file) => ({
   ...file,

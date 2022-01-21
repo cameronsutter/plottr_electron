@@ -1,13 +1,11 @@
 import { cloneDeep } from 'lodash'
-import { remote } from 'electron'
+import { app } from '@electron/remote'
 
 import { t } from 'plottr_locales'
 import { tree, helpers } from 'pltr/v2'
 
 import { customTemplatesStore } from '../../file-system/stores'
 import { saveCustomTemplate } from './templates_from_firestore'
-
-const { app } = remote
 
 export function addNewCustomTemplate(pltrData, { type, data }) {
   let template = null

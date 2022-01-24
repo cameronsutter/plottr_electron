@@ -1,13 +1,13 @@
 export const isWindows = () => {
-  return (navigator.platform || navigator.userAgentDate.platform || '')
+  return (navigator.platform || navigator.userAgentData.platform || '')
     .toLowerCase()
     .match('windows')
 }
 
 export const isLinux = () => {
-  return (navigator.platform || navigator.userAgentDate.platform || '').toLowerCase().match('linux')
+  return (navigator.platform || navigator.userAgentData.platform || '').toLowerCase().match('linux')
 }
 
 export const isMacOS = () => {
-  return (navigator.platform || navigator.userAgentDate.platform || '').toLowerCase().match('macos')
+  return (navigator.platform || navigator.userAgentData.platform || '').toLowerCase().match('macos')
 }

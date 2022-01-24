@@ -37,7 +37,4 @@ function setupRollbar(where, USER) {
 const USER_INFO = getLicenseInfo()
 const rollbar = setupRollbar('main', USER_INFO)
 
-export {
-  setupRollbar,
-  rollbar,
-}
+export { setupRollbar, rollbar }

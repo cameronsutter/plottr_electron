@@ -17,8 +17,4 @@ const featureFlags = () => ({
   beatHierarchy: SETTINGS.get('user.beatHierarchy'),
 })
 
-export {
-  broadcastSetBeatHierarchy,
-  broadcastUnsetBeatHierarchy,
-  featureFlags,
-}
+export { broadcastSetBeatHierarchy, broadcastUnsetBeatHierarchy, featureFlags }

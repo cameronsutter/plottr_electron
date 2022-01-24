@@ -44,10 +44,4 @@ function broadcastDarkMode() {
 
 setDarkMode(SETTINGS.get('user.dark'))
 
-export {
-  getDarkMode,
-  setDarkMode,
-  setThemeListener,
-  removeThemeListener,
-  broadcastDarkMode,
-}
+export { getDarkMode, setDarkMode, setThemeListener, removeThemeListener, broadcastDarkMode }

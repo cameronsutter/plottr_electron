@@ -41,7 +41,4 @@ function filePrefix(dirname) {
   return is.windows ? dirname : 'file://' + dirname
 }
 
-export {
-  takeScreenshot,
-  filePrefix,
-}
+export { takeScreenshot, filePrefix }

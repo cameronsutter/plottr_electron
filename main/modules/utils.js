@@ -107,8 +107,4 @@ function makeBrowserWindow(filePath) {
   return newWindow
 }
 
-export {
-  gracefullyNotSave,
-  gracefullyQuit,
-  makeBrowserWindow,
-}
+export { gracefullyNotSave, gracefullyQuit, makeBrowserWindow }

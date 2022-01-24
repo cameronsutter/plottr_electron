@@ -12,7 +12,4 @@ function offlineFilePath(filePath) {
   return path.join(OFFLINE_FILE_FILES_PATH, fileName)
 }
 
-export {
-  offlineFilePath,
-  OFFLINE_FILE_FILES_PATH,
-}
+export { offlineFilePath, OFFLINE_FILE_FILES_PATH }

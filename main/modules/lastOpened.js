@@ -17,7 +17,4 @@ function setLastOpenedFilePath(filePath) {
   lastOpenedFileStore.set('lastOpenedFilePath', filePath)
 }
 
-export {
-  lastOpenedFile,
-  setLastOpenedFilePath,
-}
+export { lastOpenedFile, setLastOpenedFilePath }

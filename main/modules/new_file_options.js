@@ -6,6 +6,4 @@ const newFileOptions = () => ({
   ...featureFlags(),
 })
 
-export {
-  newFileOptions,
-}
+export { newFileOptions }

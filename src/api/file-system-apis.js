@@ -1,11 +1,13 @@
 import fs from 'fs'
 import path from 'path'
+import { ipcRenderer } from 'electron'
 import { sortBy } from 'lodash'
 
 import {
   licenseStore,
   trialStore,
   knownFilesStore,
+  knownFilesPath,
   templatesStore,
   customTemplatesStore,
   manifestStore,
@@ -14,6 +16,7 @@ import {
   USER,
 } from '../file-system/stores'
 import { backupBasePath } from '../common/utils/backup'
+import { logger } from '../logger'
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
@@ -72,22 +75,25 @@ export const saveLicenseInfo = (newLicense) => {
 }
 
 export const listenToknownFilesChanges = (cb) => {
-  const withFileSystemAsSource = (files) => {
-    return cb(
-      Object.entries(files).map(([key, file]) => ({
-        ...file,
-        fromFileSystem: true,
-        id: key,
-      }))
-    )
-  }
-  cb(
-    Object.entries(knownFilesStore.store).map(([key, file]) => ({
+  const transformStore = (store) =>
+    Object.entries(store).map(([key, file]) => ({
       ...file,
       fromFileSystem: true,
       id: key,
     }))
-  )
+
+  const withFileSystemAsSource = (files) => {
+    return cb(transformStore(files))
+  }
+
+  ipcRenderer.on('reload-recents', () => {
+    try {
+      cb(transformStore(JSON.parse(fs.readFileSync(knownFilesStore.path))))
+    } catch (e) {
+      logger.error('Failed to read known files after we were signalled to', e)
+    }
+  })
+  cb(transformStore(knownFilesStore.store))
   return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
 }
 export const currentKnownFiles = () =>

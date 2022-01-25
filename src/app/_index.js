@@ -31,6 +31,7 @@ import { fileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
 import { setOS, isWindows } from '../isOS'
 
+const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
 setOS(osIAmOn)
 
@@ -278,7 +279,7 @@ ipcRenderer.on('from-template', () => {
 //
 // Could be important to do so because it might set up inotify
 // listeners and too many of those cause slow-downs.
-const unsubscribeToPublishers = world.publishChangesToStore(store)
+const _unsubscribeToPublishers = world.publishChangesToStore(store)
 
 const root = document.getElementById('react-root')
 

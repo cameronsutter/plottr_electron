@@ -53,7 +53,10 @@ const checkFileJustWritten = (filePath, data, originalStats, counter) => (fileCo
       })
     }
   } catch (error) {
-    console.error(`Failed to parse contents of file: ${filePath}.  Attempting to write it again.`)
+    console.error(
+      `Failed to parse contents of file: ${filePath}.  Attempting to write it again.`,
+      error
+    )
     return checkSave(filePath, data, null, counter)
   }
 }
@@ -177,7 +180,14 @@ const fileSaver = () => {
 
   const updateOrCreateSaveJob = (filePath, withoutSystemKeys) => () => {
     const existingJob = currentSaveJob(filePath)
+    const chainingTheJob = saveJobs.get(filePath)
     const newJob = existingJob
+      .then((result) => {
+        if (chainingTheJob) {
+          saveJobs.set(filePath, newJob)
+        }
+        return result
+      })
       .then(() => {
         const payload =
           process.env.NODE_ENV == 'development'
@@ -187,6 +197,10 @@ const fileSaver = () => {
       })
       .then(() => {
         saveJobs.delete(filePath)
+      })
+      .catch((error) => {
+        saveJobs.delete(filePath)
+        return Promise.reject(error)
       })
     saveJobs.set(filePath, newJob)
     return newJob

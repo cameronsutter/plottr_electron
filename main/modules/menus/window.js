@@ -1,4 +1,4 @@
-const { t } = require('plottr_locales')
+import { t } from 'plottr_locales'
 
 function buildWindowMenu() {
   return {
@@ -7,4 +7,4 @@ function buildWindowMenu() {
   }
 }
 
-module.exports = { buildWindowMenu }
+export { buildWindowMenu }

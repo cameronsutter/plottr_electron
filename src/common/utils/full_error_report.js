@@ -1,12 +1,13 @@
-import { remote, shell } from 'electron'
+import { shell } from 'electron'
+import { app, dialog } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
 import { machineIdSync } from 'node-machine-id'
 import { t } from 'plottr_locales'
 import { SETTINGS, USER, trialStore } from '../../file-system/stores'
 import log from 'electron-log'
-import { is } from 'electron-util'
-const { app, dialog } = remote
+import { isDevelopment } from '../../isDevelopment'
+import { isWindows } from '../../isOS'
 
 const machineID = machineIdSync(true)
 
@@ -25,10 +26,10 @@ export function createFullErrorReport() {
 
 function prepareErrorReport() {
   let appLogPath = app.getPath('logs')
-  if (is.development) {
+  if (isDevelopment()) {
     appLogPath = appLogPath.replace('Electron', 'plottr')
   }
-  if (is.windows) {
+  if (isWindows()) {
     // on windows app.getPath('logs') seems to be adding an extra folder that doesn't exist
     // to the logs directory that's named `Plottr`
     appLogPath = appLogPath.replace('Plottr\\', '')

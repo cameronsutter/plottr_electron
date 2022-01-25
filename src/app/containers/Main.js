@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
+import { getCurrentWindow } from '@electron/remote'
 
 import { actions, selectors } from 'pltr/v2'
 
@@ -12,7 +13,7 @@ import Login from './Login'
 import Expired from './Expired'
 import Dashboard from './Dashboard'
 
-const win = remote.getCurrentWindow()
+const win = getCurrentWindow()
 
 const isCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
 
@@ -143,6 +144,10 @@ const Main = ({
   // loaded and we can check things like the user's local and pro
   // licenses.
 
+  if (needsToLogin) {
+    return <Login />
+  }
+
   if (firstTimeBooting) {
     // TODO: @cameron, @jeana, this is where we can put a more
     // interesting loading component for users and let them know what
@@ -161,10 +166,6 @@ const Main = ({
         </div>
       </div>
     )
-  }
-
-  if (needsToLogin) {
-    return <Login />
   }
 
   if (isFirstTime) {

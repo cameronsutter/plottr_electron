@@ -1,4 +1,3 @@
-import { is } from 'electron-util'
 import axios from 'axios'
 import semverGt from 'semver/functions/gt'
 import {
@@ -8,9 +7,10 @@ import {
 } from 'wired-up-firebase'
 
 import { fileSystemAPIs } from '../../api'
+import { isDevelopment } from '../../isDevelopment'
 
 let env = 'prod'
-if (is.development) env = 'staging'
+if (isDevelopment()) env = 'staging'
 const settings = fileSystemAPIs.currentAppSettings()
 if (settings.betatemplates) env = 'beta'
 const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`

@@ -1,7 +1,7 @@
-const path = require('path')
-const Store = require('electron-store')
-const { reloadRecents } = require('./dashboard')
-const { OFFLINE_FILE_FILES_PATH } = require('./offlineFilePath')
+import path from 'path'
+import Store from 'electron-store'
+import { reloadRecents } from './dashboard'
+import { OFFLINE_FILE_FILES_PATH } from './offlineFilePath'
 const knownFilesPath = process.env.NODE_ENV == 'development' ? 'known_files_dev' : 'known_files'
 
 const knownFilesStore = new Store({ name: knownFilesPath })
@@ -68,4 +68,4 @@ function addToKnownFiles(filePath) {
   }
 }
 
-module.exports = { knownFilesStore, getKnownFilesInfo, addToKnown, addToKnownFiles }
+export { knownFilesStore, getKnownFilesInfo, addToKnown, addToKnownFiles }

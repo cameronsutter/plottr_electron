@@ -1,7 +1,7 @@
-const { broadcastToAllWindows } = require('./broadcast')
+import { broadcastToAllWindows } from './broadcast'
 
 const reloadRecents = () => {
   broadcastToAllWindows('reload-recents')
 }
 
-module.exports = { reloadRecents }
+export { reloadRecents }

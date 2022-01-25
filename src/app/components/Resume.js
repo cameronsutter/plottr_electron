@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { PropTypes } from 'prop-types'
-import { remote } from 'electron'
+import { app, dialog } from '@electron/remote'
 import { connect } from 'react-redux'
 import { Spinner } from 'connected-components'
 
@@ -11,8 +11,6 @@ import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import { logger } from '../../logger'
 import { uploadProject } from '../../common/utils/upload_project'
 import { resumeDirective } from '../../resume'
-
-const { app, dialog } = remote
 
 const MAX_RETRIES = 5
 

@@ -1,34 +1,29 @@
-const electron = require('electron')
-const SETTINGS = require('./modules/settings')
-const { setupI18n } = require('plottr_locales')
+import electron from 'electron'
+import SETTINGS from './modules/settings'
+import { setupI18n } from 'plottr_locales'
+import { initialize } from '@electron/remote/main'
+
+initialize()
 setupI18n(SETTINGS, { electron })
 
 const { app, BrowserWindow, ipcMain, globalShortcut } = electron
-const path = require('path')
-const log = require('electron-log')
-const { is } = require('electron-util')
-require('./modules/updater_events')
-const contextMenu = require('electron-context-menu')
-const { setupRollbar } = require('./modules/rollbar')
-const { loadMenu } = require('./modules/menus')
-const {
-  focusFirstWindow,
-  hasWindows,
-  getWindowById,
-  numberOfWindows,
-} = require('./modules/windows')
-const { openProjectWindow } = require('./modules/windows/projects')
-const { setDarkMode, broadcastDarkMode } = require('./modules/theme')
-const { newFileOptions } = require('./modules/new_file_options')
-const { gracefullyQuit } = require('./modules/utils')
-const { addToKnown, addToKnownFiles } = require('./modules/known_files')
-const {
-  broadcastSetBeatHierarchy,
-  broadcastUnsetBeatHierarchy,
-} = require('./modules/feature_flags')
-const { reloadAllWindows } = require('./modules/windows')
-const { broadcastToAllWindows } = require('./modules/broadcast')
-const {
+import path from 'path'
+import log from 'electron-log'
+import { is } from 'electron-util'
+import './modules/updater_events'
+import contextMenu from 'electron-context-menu'
+import { setupRollbar } from './modules/rollbar'
+import { loadMenu } from './modules/menus'
+import { focusFirstWindow, hasWindows, getWindowById, numberOfWindows } from './modules/windows'
+import { openProjectWindow } from './modules/windows/projects'
+import { setDarkMode, broadcastDarkMode } from './modules/theme'
+import { newFileOptions } from './modules/new_file_options'
+import { gracefullyQuit } from './modules/utils'
+import { addToKnown, addToKnownFiles } from './modules/known_files'
+import { broadcastSetBeatHierarchy, broadcastUnsetBeatHierarchy } from './modules/feature_flags'
+import { reloadAllWindows } from './modules/windows'
+import { broadcastToAllWindows } from './modules/broadcast'
+import {
   openKnownFile,
   createNew,
   createFromSnowflake,
@@ -40,17 +35,18 @@ const {
   editKnownFilePath,
   autoSave,
   saveOfflineFile,
-} = require('./modules/files')
-const { lastOpenedFile } = require('./modules/lastOpened')
-const { editWindowPath, setFilePathForWindowWithFilePath } = require('./modules/windows/index')
-const { ensureBackupTodayPath, saveBackup } = require('./modules/backup')
+} from './modules/files'
+import { lastOpenedFile } from './modules/lastOpened'
+import { editWindowPath, setFilePathForWindowWithFilePath } from './modules/windows/index'
+import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 
 ////////////////////////////////
 ////     Startup Tasks    //////
 ////////////////////////////////
 log.info(`--------Init (${app.getVersion()})--------`)
 const ENV_FILE_PATH = path.resolve('.env')
-require('dotenv').config({ path: ENV_FILE_PATH })
+import { config } from 'dotenv'
+config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
 
 // https://github.com/sindresorhus/electron-context-menu
@@ -176,7 +172,7 @@ ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {
 ipcMain.on('pls-update-language', (_event, newLanguage) => {
   SETTINGS.set('locale', newLanguage)
   setupI18n(SETTINGS, { electron })
-  require('./modules/menus').loadMenu()
+  loadMenu()
   reloadAllWindows()
 })
 
@@ -263,4 +259,8 @@ ipcMain.on('set-my-file-path', (event, oldFilePath, newFilePath) => {
 
 ipcMain.on('pls-quit', () => {
   app.quit()
+})
+
+ipcMain.on('tell-me-what-os-i-am-on', (event) => {
+  event.returnValue = is.windows ? 'WINDOWS' : is.macos ? 'MACOS' : is.linux ? 'LINUX' : null
 })

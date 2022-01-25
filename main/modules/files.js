@@ -1,23 +1,23 @@
-const path = require('path')
-const fs = require('fs')
-const Store = require('electron-store')
-const log = require('electron-log')
-const { app } = require('electron')
-const { isEqual } = require('lodash')
+import path from 'path'
+import fs from 'fs'
+import Store from 'electron-store'
+import log from 'electron-log'
+import { app } from 'electron'
+import { isEqual } from 'lodash'
 
-const { t } = require('plottr_locales')
+import { t } from 'plottr_locales'
 
-const { knownFilesStore, addToKnownFiles, addToKnown } = require('./known_files')
-const { Importer } = require('./importer/snowflake/importer')
-const { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } = require('pltr/v2')
-const { openProjectWindow } = require('./windows/projects')
-const { shell } = require('electron')
-const { broadcastToAllWindows } = require('./broadcast')
-const { saveBackup } = require('./backup')
-const SETTINGS = require('./settings')
-const { OFFLINE_FILE_FILES_PATH, offlineFilePath } = require('./offlineFilePath')
+import { knownFilesStore, addToKnownFiles, addToKnown } from './known_files'
+import { Importer } from './importer/snowflake/importer'
+import { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { openProjectWindow } from './windows/projects'
+import { shell } from 'electron'
+import { broadcastToAllWindows } from './broadcast'
+import { saveBackup } from './backup'
+import SETTINGS from './settings'
+import { OFFLINE_FILE_FILES_PATH, offlineFilePath } from './offlineFilePath'
 
-const { lstat, writeFile, readFile } = fs.promises
+const { lstat, writeFile, readFile, open } = fs.promises
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
@@ -71,10 +71,20 @@ const checkSaveHandleTimestampChange = (filePath, data, originalStats, counter) 
   }
 }
 
+const writeAndWaitForFlush = (filePath, data) => {
+  return open(filePath, 'w+').then((fileHandle) => {
+    return writeFile(fileHandle, data).then(() => {
+      return fileHandle.sync().then(() => {
+        return fileHandle.close()
+      })
+    })
+  })
+}
+
 const checkSaveHandleNoOriginalStats = (filePath, data, stats, counter) => {
   // Overwrite the file and then leave it to the main function to
   // check that the file actually changed to what we want it to.
-  return writeFile(filePath, data).then(() => {
+  return writeAndWaitForFlush(filePath, data).then(() => {
     // When we recur, lstat should produce different stats.
     return checkSave(filePath, data, stats, counter)
   })
@@ -117,7 +127,7 @@ function checkSave(filePath, data, originalStats = null, counter = 0) {
         // If the Error code flags that the file didn't exist, then
         // write the file and check that it's what we wanted it to be.
         if (error.code === 'ENOENT') {
-          return writeFile(filePath, data).then(
+          return writeAndWaitForFlush(filePath, data).then(
             checkFileJustWritten(filePath, data, originalStats, counter)
           )
         } else {
@@ -353,7 +363,7 @@ function saveOfflineFile(file) {
   saveFile(filePath, file)
 }
 
-module.exports = {
+export {
   TMP_PATH,
   TEMP_FILES_PATH,
   tempFilesStore,

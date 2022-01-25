@@ -1,10 +1,9 @@
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
+import { app } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
 import { sortBy } from 'lodash'
 import { logger } from '../../logger'
-
-const { app } = remote
 
 const { readdir, lstat, readFile } = fs.promises
 

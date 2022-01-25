@@ -1,8 +1,6 @@
 import fs from 'fs'
-import React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
+import { dialog, app, getCurrentWindow } from '@electron/remote'
 import { machineIdSync } from 'node-machine-id'
 
 import { SYSTEM_REDUCER_KEYS, actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
@@ -18,19 +16,12 @@ import { logger } from '../logger'
 import { store } from 'store'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
-import Main from 'containers/Main'
-import Listener from './components/listener'
-import Renamer from './components/Renamer'
 
 const clientId = machineIdSync()
 
-const { dialog, app } = remote
-
 const rollbar = setupRollbar('app.html')
 
-const win = remote.getCurrentWindow()
-
-const root = document.getElementById('react-root')
+const win = getCurrentWindow()
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -190,23 +181,6 @@ function handleNoFileId(fileId, filePath) {
   return Promise.reject(new Error(`Cannot open file with id: ${fileId} from filePath: ${filePath}`))
 }
 
-export const renderFile = () => {
-  render(
-    <Provider store={store}>
-      <Listener />
-      <Renamer />
-      <Main />
-    </Provider>,
-    root
-  )
-}
-
-function handleNoUser(filePath) {
-  logger.warn(`Booting a cloud file at ${filePath} but the user isn't logged in.`)
-  renderFile()()
-  return
-}
-
 function handleNoUserId(filePath) {
   const errorMessage = `Tried to boot plottr cloud file (${filePath}) without a user id.`
   rollbar.error(errorMessage)
@@ -214,15 +188,10 @@ function handleNoUserId(filePath) {
 }
 
 const handleEroneousUserStates = (filePath) => (user) => {
-  // I'm not sure why this branch came about.  It doesn't look right at all.
-  if (!user) {
-    return handleNoUser(filePath)
-  } else {
-    if (!user.uid) {
-      return handleNoUserId(filePath)
-    }
-    return user
+  if (!user.uid) {
+    return handleNoUserId(filePath)
   }
+  return user
 }
 
 const computeAndHandleResumeDirectives = (fileId, email, userId, json) => {
@@ -246,7 +215,6 @@ const bootWithUser = (fileId) => (user) => {
       return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
         .then(migrate(fetchedFile, fileId))
         .then(afterLoading)
-        .then(renderFile)
     })
     .catch((error) => {
       const errorMessage = `Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`
@@ -284,7 +252,6 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy) {
   try {
     json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
   } catch (error) {
-    renderFile()
     return Promise.resolve()
   }
   ipcRenderer.send('save-backup', filePath, json)
@@ -327,7 +294,6 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy) {
 
         store.dispatch(actions.client.setClientId(clientId))
 
-        renderFile()
         resolve()
       },
       logger

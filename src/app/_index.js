@@ -1,10 +1,8 @@
 import path from 'path'
 import { store } from 'store'
-import { ipcRenderer, remote } from 'electron'
-import { is } from 'electron-util'
+import { ipcRenderer } from 'electron'
+import { dialog, getCurrentWindow } from '@electron/remote'
 import electron from 'electron'
-const { dialog } = remote
-const win = remote.getCurrentWindow()
 
 import { actions, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { setupI18n, t } from 'plottr_locales'
@@ -30,7 +28,12 @@ import {
 } from '../dashboard-events'
 import { logger } from '../logger'
 import { fileSystemAPIs } from '../api'
-import { renderFile } from './bootFile'
+import { renderFile } from '../renderFile'
+import { setOS, isWindows } from '../isOS'
+
+const win = getCurrentWindow()
+const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
+setOS(osIAmOn)
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 
@@ -94,7 +97,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     currentState.present,
     type,
     exportConfig[type],
-    is.windows,
+    isWindows(),
     (error, success) => {
       if (error) {
         logger.error(error)
@@ -276,6 +279,8 @@ ipcRenderer.on('from-template', () => {
 //
 // Could be important to do so because it might set up inotify
 // listeners and too many of those cause slow-downs.
-const unsubscribeToPublishers = world.publishChangesToStore(store)
+const _unsubscribeToPublishers = world.publishChangesToStore(store)
 
-renderFile()
+const root = document.getElementById('react-root')
+
+renderFile(root)

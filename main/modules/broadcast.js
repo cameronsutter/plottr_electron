@@ -1,4 +1,4 @@
-const { BrowserWindow } = require('electron')
+import { BrowserWindow } from 'electron'
 
 const broadcastToAllWindows = (event, payload) => {
   BrowserWindow.getAllWindows().forEach((bw) => {
@@ -6,4 +6,4 @@ const broadcastToAllWindows = (event, payload) => {
   })
 }
 
-module.exports = { broadcastToAllWindows }
+export { broadcastToAllWindows }

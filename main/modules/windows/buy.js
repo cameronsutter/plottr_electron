@@ -1,7 +1,7 @@
-const { shell } = require('electron')
+import { shell } from 'electron'
 
 function openBuyWindow() {
   shell.openExternal('https://plottr.com/pricing/')
 }
 
-module.exports = { openBuyWindow }
+export { openBuyWindow }

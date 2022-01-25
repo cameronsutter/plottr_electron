@@ -1,5 +1,5 @@
-const { BrowserWindow } = require('electron')
-const SETTINGS = require('./settings')
+import { BrowserWindow } from 'electron'
+import SETTINGS from './settings'
 
 const broadcastSetBeatHierarchy = () => {
   BrowserWindow.getAllWindows().forEach((bw) => {
@@ -17,8 +17,4 @@ const featureFlags = () => ({
   beatHierarchy: SETTINGS.get('user.beatHierarchy'),
 })
 
-module.exports = {
-  broadcastSetBeatHierarchy,
-  broadcastUnsetBeatHierarchy,
-  featureFlags,
-}
+export { broadcastSetBeatHierarchy, broadcastUnsetBeatHierarchy, featureFlags }

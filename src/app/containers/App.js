@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
+import { dialog } from '@electron/remote'
 import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
@@ -21,8 +22,6 @@ import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
 import { selectors } from 'pltr/v2'
-
-const { dialog } = remote
 
 const App = ({
   forceProjectDashboard,

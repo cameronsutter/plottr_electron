@@ -1,11 +1,9 @@
-const { getDarkMode } = require('./theme')
-const { featureFlags } = require('./feature_flags')
+import { getDarkMode } from './theme'
+import { featureFlags } from './feature_flags'
 
 const newFileOptions = () => ({
   darkMode: getDarkMode(),
   ...featureFlags(),
 })
 
-module.exports = {
-  newFileOptions,
-}
+export { newFileOptions }

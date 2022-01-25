@@ -1,7 +1,5 @@
-import electron from 'electron'
+import { app } from '@electron/remote'
 import path from 'path'
-
-const app = electron.app || electron.remote.app
 
 export const TRIAL_INFO_PATH = 'trial_info'
 export const USER_INFO_PATH = 'license_info'

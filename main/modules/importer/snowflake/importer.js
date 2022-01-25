@@ -1,9 +1,9 @@
-const xml = require('xml-js')
-const fs = require('fs')
-const { t } = require('plottr_locales')
+import xml from 'xml-js'
+import fs from 'fs'
+import { t } from 'plottr_locales'
 const i18n = t
-const { cloneDeep, keyBy, groupBy } = require('lodash')
-const { newIds, helpers, lineColors, initialState, tree } = require('pltr/v2')
+import { cloneDeep, keyBy, groupBy } from 'lodash'
+import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
 
 const { nextColor } = lineColors
 const defaultBook = initialState.book
@@ -561,4 +561,4 @@ const sceneAttrMapping = {
 
 const sceneAttrOrder = ['location', 'paragraph']
 
-module.exports = { Importer }
+export { Importer }

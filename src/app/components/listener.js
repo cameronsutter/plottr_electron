@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
+import { dialog } from '@electron/remote'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -11,8 +12,6 @@ import { store } from '../store'
 import { offlineFilePath } from '../../files'
 import { logger } from '../../logger'
 import { fileSystemAPIs, licenseServerAPIs } from '../../api'
-
-const { dialog } = remote
 
 const Listener = ({
   hasPro,

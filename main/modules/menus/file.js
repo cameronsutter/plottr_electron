@@ -1,14 +1,14 @@
-const path = require('path')
-const { t } = require('plottr_locales')
-const log = require('electron-log')
-const { app, shell } = require('electron')
-const { is } = require('electron-util')
-const { getWindowById, numberOfWindows } = require('../windows')
-const { NODE_ENV } = require('../constants')
-const { newFileOptions } = require('../new_file_options')
-const { getLicenseInfo } = require('../license_info')
-const { getTriaInfo } = require('../trial_info')
-const { hasRecents, buildRecents } = require('./recents')
+import path from 'path'
+import { t } from 'plottr_locales'
+import log from 'electron-log'
+import { app, shell } from 'electron'
+import { is } from 'electron-util'
+import { getWindowById, numberOfWindows } from '../windows'
+import { NODE_ENV } from '../constants'
+import { newFileOptions } from '../new_file_options'
+import { getLicenseInfo } from '../license_info'
+import { getTriaInfo } from '../trial_info'
+import { hasRecents, buildRecents } from './recents'
 
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 let showInMessage = t('Show in File Explorer')
@@ -144,4 +144,4 @@ function buildFileMenu(filePath) {
   }
 }
 
-module.exports = { buildFileMenu }
+export { buildFileMenu }

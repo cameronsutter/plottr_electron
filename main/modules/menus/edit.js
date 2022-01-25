@@ -1,19 +1,19 @@
-const i18n = require('plottr_locales').t
-const { is } = require('electron-util')
+import { t } from 'plottr_locales'
+import { is } from 'electron-util'
 
 function buildEditMenu() {
   return {
-    label: i18n('Edit'),
+    label: t('Edit'),
     submenu: [
       {
-        label: i18n('Undo'),
+        label: t('Undo'),
         accelerator: 'CmdOrCtrl+Z',
         click: (event, focusedWindow) => {
           focusedWindow.webContents.send('undo')
         },
       },
       {
-        label: i18n('Redo'),
+        label: t('Redo'),
         accelerator: is.macos ? 'Cmd+Shift+Z' : 'Ctrl+Y',
         click: (event, focusedWindow) => {
           focusedWindow.webContents.send('redo')
@@ -23,27 +23,27 @@ function buildEditMenu() {
         type: 'separator',
       },
       {
-        label: i18n('Cut'),
+        label: t('Cut'),
         accelerator: 'CmdOrCtrl+X',
         role: 'cut',
       },
       {
-        label: i18n('Copy'),
+        label: t('Copy'),
         accelerator: 'CmdOrCtrl+C',
         role: 'copy',
       },
       {
-        label: i18n('Paste'),
+        label: t('Paste'),
         accelerator: 'CmdOrCtrl+V',
         role: 'paste',
       },
       {
-        label: i18n('Paste and Match Style'),
+        label: t('Paste and Match Style'),
         accelerator: 'CmdOrCtrl+Shift+V',
         role: 'pasteAndMatchStyle',
       },
       {
-        label: i18n('Select All'),
+        label: t('Select All'),
         accelerator: 'CmdOrCtrl+A',
         role: 'selectall',
       },
@@ -51,4 +51,4 @@ function buildEditMenu() {
   }
 }
 
-module.exports = { buildEditMenu }
+export { buildEditMenu }

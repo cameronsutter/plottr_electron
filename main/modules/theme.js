@@ -1,5 +1,5 @@
-const { nativeTheme, BrowserWindow } = require('electron')
-const SETTINGS = require('./settings')
+import { nativeTheme, BrowserWindow } from 'electron'
+import SETTINGS from './settings'
 
 let darkMode = false
 
@@ -44,10 +44,4 @@ function broadcastDarkMode() {
 
 setDarkMode(SETTINGS.get('user.dark'))
 
-module.exports = {
-  getDarkMode,
-  setDarkMode,
-  setThemeListener,
-  removeThemeListener,
-  broadcastDarkMode,
-}
+export { getDarkMode, setDarkMode, setThemeListener, removeThemeListener, broadcastDarkMode }

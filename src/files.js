@@ -14,7 +14,7 @@ import { uploadToFirebase } from './upload-to-firebase'
 const fsPromises = fs.promises
 
 const version = app.getVersion()
-const moveItemToTrash = shell.moveItemToTrash
+const moveItemToTrash = shell.trashItem
 
 const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
 

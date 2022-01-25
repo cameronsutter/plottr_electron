@@ -264,7 +264,7 @@ function removeFromTempFiles(filePath, doDelete = true) {
   tempFilesStore.delete(key)
   // delete the real file
   try {
-    if (doDelete) shell.moveItemToTrash(filePath, true)
+    if (doDelete) shell.trashItem(filePath, true)
     broadcastToAllWindows('reload-recents')
   } catch (error) {
     log.warn(error)
@@ -281,7 +281,7 @@ function deleteKnownFile(id, filePath) {
   }
   try {
     removeFromKnownFiles(id)
-    shell.moveItemToTrash(filePath, true)
+    shell.trashItem(filePath, true)
     if (filePath.includes(TEMP_FILES_PATH)) {
       removeFromTempFiles(filePath, false)
     }

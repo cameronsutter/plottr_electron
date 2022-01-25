@@ -205,7 +205,7 @@ export function isPropertyEmpty(property) {
 }
 
 export function remove(exportPath) {
-  shell.moveItemToTrash(exportPath)
+  shell.trashItem(exportPath)
 }
 
 // This function will create a copy of the bare_scrivx.json to start

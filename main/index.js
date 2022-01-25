@@ -260,3 +260,7 @@ ipcMain.on('set-my-file-path', (event, oldFilePath, newFilePath) => {
 ipcMain.on('pls-quit', () => {
   app.quit()
 })
+
+ipcMain.on('tell-me-what-os-i-am-on', (event) => {
+  event.returnValue = is.windows ? 'WINDOWS' : is.macos ? 'MACOS' : is.linux ? 'LINUX' : null
+})

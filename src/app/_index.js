@@ -1,7 +1,7 @@
 import path from 'path'
 import { store } from 'store'
 import { ipcRenderer } from 'electron'
-import { dialog } from '@electron/remote'
+import { dialog, getCurrentWindow } from '@electron/remote'
 import electron from 'electron'
 
 import { actions, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
@@ -29,7 +29,10 @@ import {
 import { logger } from '../logger'
 import { fileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
-import { isWindows } from '../isOS'
+import { setOS, isWindows } from '../isOS'
+
+const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
+setOS(osIAmOn)
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 

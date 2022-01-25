@@ -44,12 +44,12 @@ export function checkForActiveLicense(licenseInfo, callback) {
 export function verifyLicense(license, callback) {
   // this is going to fire all 3 requests no matter what
   Promise.allSettled(
-    PRODUCT_IDS.map((id) => rp(makeRequest(licenseURL('activate_license', id, license))))
+    productIds().map((id) => rp(makeRequest(licenseURL('activate_license', id, license))))
   ).then((results) => {
     // find the product that this key belongs to
     let productForKey = null
     results.some((res, index) => {
-      const productID = PRODUCT_IDS[index]
+      const productID = productIds()[index]
       if (process.env.NODE_ENV === 'development') {
         log.info(productID, res)
       }
@@ -147,9 +147,9 @@ function isActiveSub(info) {
 }
 
 const BASE_URL = 'https://my.plottr.com/edd-api'
-const V2_OLD_PRODUCT_ID = isMacOS() ? '11321' : '11322'
+const v2OldProductId = () => (isMacOS() ? '11321' : '11322')
 // NOTE: if this order changes, change the productMapping array at the bottom too
-const PRODUCT_IDS = [33347, 33345, V2_OLD_PRODUCT_ID]
+const productIds = () => [33347, 33345, v2OldProductId()]
 const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mismatch', 'missing']
 
 const GRACE_PERIOD_DAYS = 30

@@ -198,11 +198,11 @@ const autoSaver = () => {
         // didn't work last time, but it did this time
         if (!itWorkedLastTime) {
           itWorkedLastTime = true
-          // event.sender.send('auto-save-worked-this-time')
+          event.sender.send('auto-save-worked-this-time')
         }
       } catch (saveError) {
         itWorkedLastTime = false
-        // event.sender.send('auto-save-error', filePath, saveError)
+        event.sender.send('auto-save-error', filePath, saveError)
       }
     }
     // either way, save a backup

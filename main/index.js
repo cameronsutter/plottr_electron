@@ -2,6 +2,9 @@ import electron from 'electron'
 import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import { initialize } from '@electron/remote/main'
+import Store from 'electron-store'
+
+Store.initRenderer()
 
 initialize()
 setupI18n(SETTINGS, { electron })

@@ -459,6 +459,7 @@ export const FileLocation = components.FileLocation
 export const BookChooser = components.BookChooser
 export const TimelineWrapper = components.TimelineWrapper
 export const DashboardBody = components.DashboardBody
+export const DashboardNav = components.DashboardNav
 export const FirebaseLogin = components.FirebaseLogin
 export const FullPageSpinner = components.FullPageSpinner
 export const ChoiceView = components.ChoiceView

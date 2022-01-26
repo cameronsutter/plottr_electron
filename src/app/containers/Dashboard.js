@@ -5,7 +5,7 @@ import cx from 'classnames'
 import { VscChromeClose } from 'react-icons/vsc'
 
 import { selectors } from 'pltr/v2'
-import { DashboardBody } from 'connected-components'
+import { DashboardBody, DashboardNav } from 'connected-components'
 
 const Dashboard = ({ darkMode, closeDashboard }) => {
   const [activeView, setActiveView] = useState('files')
@@ -13,6 +13,7 @@ const Dashboard = ({ darkMode, closeDashboard }) => {
   return (
     <div id="dashboard__react__root">
       <div className={cx('dashboard__main', { darkmode: darkMode })}>
+        <DashboardNav currentView={activeView} setView={setActiveView} />
         <DashboardBody currentView={activeView} setView={setActiveView}>
           <div className="dashboard__close-button">
             <VscChromeClose onClick={closeDashboard} />

@@ -5,7 +5,7 @@ import cx from 'classnames'
 import { VscChromeClose } from 'react-icons/vsc'
 
 import { selectors } from 'pltr/v2'
-import { PlottrModal, ErrorBoundary, DashboardBody } from 'connected-components'
+import { PlottrModal, ErrorBoundary, DashboardBody, DashboardNav } from 'connected-components'
 
 const modalStyles = {
   overlay: {
@@ -35,6 +35,7 @@ const DashboardModal = ({ activeView, darkMode, closeDashboard, setActiveView })
       <ErrorBoundary>
         <div id="dashboard__react__root">
           <div className={cx('dashboard__main', { darkmode: darkMode })}>
+            <DashboardNav currentView={activeView} setView={setActiveView} />
             <DashboardBody currentView={activeView} setView={setActiveView}>
               <div className="dashboard__close-button">
                 <VscChromeClose onClick={closeDashboard} />
@@ -44,7 +45,7 @@ const DashboardModal = ({ activeView, darkMode, closeDashboard, setActiveView })
         </div>
       </ErrorBoundary>
     )
-  }, [darkMode])
+  }, [darkMode, activeView])
 
   return (
     <PlottrModal isOpen={true} onRequestClose={closeDashboard} style={modalStyles}>

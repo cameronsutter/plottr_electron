@@ -103,13 +103,8 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, i
           <NavItem>
             <Dropdown id="dashboard-dropdown-menu">
               <Dropdown.Toggle noCaret bsSize="small" bsStyle="link">
-                <FaRegUser />
+                <FaRegUser onClick={selectFiles} />
               </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <MenuItem onSelect={selectFiles}>{t('Projects')}</MenuItem>
-                <MenuItem onSelect={selectAccount}>{t('Account')}</MenuItem>
-                <MenuItem onSelect={selectHelp}>{t('Help')}</MenuItem>
-              </Dropdown.Menu>
             </Dropdown>
           </NavItem>
         </Nav>

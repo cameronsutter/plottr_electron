@@ -13,7 +13,7 @@ import { selectors, actions } from 'pltr/v2'
 
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({ isInTrialMode, isDarkMode, currentView, changeCurrentView, isOffline }) => {
+const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, isOffline }) => {
   const [dashboardView, setDashboardView] = useState(null)
 
   useEffect(() => {
@@ -72,7 +72,6 @@ const Navigation = ({ isInTrialMode, isDarkMode, currentView, changeCurrentView,
           activeView={dashboardView}
           setActiveView={selectDashboardView}
           closeDashboard={resetDashboardView}
-          darkMode={isDarkMode}
         />
       ) : null}
       {isOffline ? (
@@ -82,7 +81,7 @@ const Navigation = ({ isInTrialMode, isDarkMode, currentView, changeCurrentView,
         </div>
       ) : null}
       <Resume />
-      <Navbar className="project-nav" fluid inverse={isDarkMode}>
+      <Navbar className="project-nav" fluid inverse={darkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
           <NavItem eventKey="project">{t('Project')}</NavItem>
@@ -122,7 +121,7 @@ const Navigation = ({ isInTrialMode, isDarkMode, currentView, changeCurrentView,
 Navigation.propTypes = {
   isInTrialMode: PropTypes.bool,
   currentView: PropTypes.string.isRequired,
-  isDarkMode: PropTypes.bool,
+  darkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
   isOffline: PropTypes.bool,
@@ -132,7 +131,7 @@ function mapStateToProps(state) {
   return {
     isInTrialMode: selectors.isInTrialModeSelector(state.present),
     currentView: selectors.currentViewSelector(state.present),
-    isDarkMode: selectors.isDarkModeSelector(state.present),
+    darkMode: selectors.isDarkModeSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
   }
 }

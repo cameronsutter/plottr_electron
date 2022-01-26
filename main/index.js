@@ -19,7 +19,7 @@ import { setupRollbar } from './modules/rollbar'
 import { loadMenu } from './modules/menus'
 import { focusFirstWindow, hasWindows, getWindowById, numberOfWindows } from './modules/windows'
 import { openProjectWindow } from './modules/windows/projects'
-import { setDarkMode, broadcastDarkMode } from './modules/theme'
+import { setDarkMode } from './modules/theme'
 import { newFileOptions } from './modules/new_file_options'
 import { gracefullyQuit } from './modules/utils'
 import { addToKnown, addToKnownFiles } from './modules/known_files'
@@ -161,7 +161,6 @@ ipcMain.on('pls-fetch-state', function (event, id) {
 
 ipcMain.on('pls-set-dark-setting', (_event, newValue) => {
   setDarkMode(newValue)
-  broadcastDarkMode()
 })
 
 ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {

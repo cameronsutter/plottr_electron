@@ -13,7 +13,7 @@ const Dashboard = ({ darkMode, closeDashboard }) => {
   return (
     <div id="dashboard__react__root">
       <div className={cx('dashboard__main', { darkmode: darkMode })}>
-        <DashboardBody currentView={activeView} setView={setActiveView} darkMode={darkMode}>
+        <DashboardBody currentView={activeView} setView={setActiveView}>
           <div className="dashboard__close-button">
             <VscChromeClose onClick={closeDashboard} />
           </div>

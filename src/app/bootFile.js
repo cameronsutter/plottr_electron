@@ -245,7 +245,7 @@ function bootCloudFile(filePath) {
     .catch(handleErrorBootingFile(fileId))
 }
 
-function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy) {
+function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
   win.setTitle(displayFileName(filePath, false))
   win.setRepresentedFilename(filePath)
   let json
@@ -275,11 +275,6 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy) {
           state
         )
 
-        if (state.ui && state.ui.darkMode !== darkMode) {
-          store.dispatch(actions.ui.setDarkMode(darkMode))
-        }
-        if (darkMode) window.document.body.className = 'darkmode'
-
         const withDispatch = dispatchingToStore(store.dispatch)
         makeFlagConsistent(
           state,
@@ -302,15 +297,13 @@ function bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy) {
 }
 
 export function bootFile(filePath, options, numOpenFiles) {
-  const { darkMode, beatHierarchy } = options
+  const { beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
 
   try {
     store.dispatch(actions.applicationState.startLoadingFile())
     return (
-      isCloudFile
-        ? bootCloudFile(filePath)
-        : bootLocalFile(filePath, numOpenFiles, darkMode, beatHierarchy)
+      isCloudFile ? bootCloudFile(filePath) : bootLocalFile(filePath, numOpenFiles, beatHierarchy)
     )
       .then(() => {
         store.dispatch(actions.applicationState.finishLoadingFile())

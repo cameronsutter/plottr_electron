@@ -63,11 +63,6 @@ ipcRenderer.on('state-saved', (_arg) => {
   // store.dispatch(fileSaved())
 })
 
-ipcRenderer.on('set-dark-mode', (event, isOn) => {
-  store.dispatch(actions.ui.setDarkMode(isOn))
-  window.document.body.className = isOn ? 'darkmode' : ''
-})
-
 ipcRenderer.on('set-beat-hierarchy', (event) => {
   store.dispatch(actions.featureFlags.setBeatHierarchy())
 })

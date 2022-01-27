@@ -45,16 +45,8 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, i
     )
   }
 
-  const selectAccount = () => {
-    setDashboardView('account')
-  }
-
   const selectFiles = () => {
     setDashboardView('files')
-  }
-
-  const selectHelp = () => {
-    setDashboardView('help')
   }
 
   const resetDashboardView = useCallback(() => {
@@ -101,11 +93,7 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, i
         <TrialLinks />
         <Nav pullRight className="project-nav__options">
           <NavItem>
-            <Dropdown id="dashboard-dropdown-menu">
-              <Dropdown.Toggle noCaret bsSize="small" bsStyle="link">
-                <FaRegUser onClick={selectFiles} />
-              </Dropdown.Toggle>
-            </Dropdown>
+            <FaRegUser onClick={selectFiles} />
           </NavItem>
         </Nav>
       </Navbar>

@@ -92,8 +92,8 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, i
         <Beamer inNavigation />
         <TrialLinks />
         <Nav pullRight className="project-nav__options">
-          <NavItem>
-            <FaRegUser onClick={selectFiles} />
+          <NavItem onClick={selectFiles}>
+            <FaRegUser />
           </NavItem>
         </Nav>
       </Navbar>

@@ -34,6 +34,7 @@ const Main = ({
   startCheckingFileToLoad,
   finishCheckingFileToLoad,
   loadingProgress,
+  darkMode,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -105,6 +106,10 @@ const Main = ({
       window.removeEventListener('offline', offlineListener)
     }
   }, [setOffline])
+
+  useEffect(() => {
+    window.document.body.className = darkMode ? 'darkmode' : ''
+  }, [darkMode])
 
   const closeDashboard = () => {
     setDashboardClosed(true)
@@ -201,6 +206,7 @@ Main.propTypes = {
   setOffline: PropTypes.func.isRequired,
   startCheckingFileToLoad: PropTypes.func.isRequired,
   finishCheckingFileToLoad: PropTypes.func.isRequired,
+  darkMode: PropTypes.bool.isRequired,
 }
 
 export default connect(
@@ -218,6 +224,7 @@ export default connect(
     selectedFileIsCloudFile: selectors.isCloudFileSelector(state.present),
     loadingState: selectors.loadingStateSelector(state.present),
     loadingProgress: selectors.loadingProgressSelector(state.present),
+    darkMode: selectors.isDarkModeSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,

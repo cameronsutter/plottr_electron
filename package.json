@@ -169,7 +169,7 @@
       "!main${/*}",
       "!node_modules${/*}"
     ],
-    "copyright": "Copyright © 2021 Fictional Devices",
+    "copyright": "Copyright © 2022 Fictional Devices",
     "productName": "Plottr",
     "fileAssociations": [
       {

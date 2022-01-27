@@ -332,6 +332,10 @@ $medium_width: 80px;
 
 .vertical-line-list__append-line {
   height: 100px;
+  &.medium-timeline {
+    height: 60px;
+    width: 110px;
+  }
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -343,6 +347,10 @@ $medium_width: 80px;
     border: 3px dotted $blue-8;
     width: 135px;
     height: 69px;
+    &.medium-timeline {
+      width: 120px;
+      height: 40px;
+    }
   }
   .vertical-line-list__append-line__double {
     display: flex;

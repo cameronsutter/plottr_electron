@@ -336,10 +336,43 @@ $medium_width: 80px;
   align-items: center;
   cursor: pointer;
   .vertical-line-list__append-line-wrapper {
-    padding: 30px $title_height;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: $blue-5;
     border: 3px dotted $blue-8;
-    margin-right: 50px;
+    width: 135px;
+    height: 69px;
+  }
+  .vertical-line-list__append-line__double {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      padding: 10px 5px;
+      color: $blue-5;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover {
+        background-color: $blue-8;
+      }
+    }
+    div.template {
+      @include application-text;
+      color: $blue-4;
+      border-right: 3px dashed $blue-8;
+      text-align: center;
+    }
+    div.disabled {
+      cursor: $cursor-disabled;
+      color: $neutral-gray-5;
+      background-color: transparent;
+    }
+    div.non-template {
+      border-left: none;
+    }
   }
 }
 

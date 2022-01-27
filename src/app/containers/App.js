@@ -52,6 +52,13 @@ const App = ({
   }
 
   const askToSave = (event) => {
+    console.log(
+      'In ask to save.',
+      event,
+      isTryingToClose.current,
+      isTryingToReload.current,
+      blockClosing
+    )
     if (!blockClosing) return
     if (process.env.NODE_ENV == 'development') {
       closeOrRefresh(isTryingToClose.current)

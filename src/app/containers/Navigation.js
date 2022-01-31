@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { Dropdown, MenuItem, Navbar, Nav, NavItem, Button } from 'react-bootstrap'
+import { Navbar, Nav, NavItem, Button } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import { FaRegUser, FaSignal, FaKey } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'

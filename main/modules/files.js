@@ -17,7 +17,7 @@ import { saveBackup } from './backup'
 import SETTINGS from './settings'
 import { OFFLINE_FILE_FILES_PATH, offlineFilePath } from './offlineFilePath'
 
-const { readdir, lstat, writeFile, readFile, open } = fs.promises
+const { unlink, readdir, lstat, writeFile, readFile, open } = fs.promises
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
@@ -388,8 +388,16 @@ function cleanOfflineBackups(knownFiles) {
     .map(({ fileName }) => offlineFilePath(fileName))
   return listOfflineFiles().then((files) => {
     const filesToClean = files.filter((filePath) => expectedOfflineFiles.indexOf(filePath) === -1)
-    // return Promise.all(filesToClean.map)
-    return true
+    return Promise.all(
+      filesToClean.map((filePath) => {
+        log.info(
+          'Removing offline backup: "',
+          filePath,
+          '" because the online counterpart no longer exists'
+        )
+        return unlink(filePath)
+      })
+    )
   })
 }
 

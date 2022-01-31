@@ -101,7 +101,6 @@ const Listener = ({
     return () => {
       stopListening(unsubscribeFunctions)
       setUnsubscribeFunctions([])
-      setPermission('viewer')
     }
   }, [selectedFile, userId, clientId, fileLoaded, isOffline, resuming, setResuming])
 

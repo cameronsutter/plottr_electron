@@ -87,7 +87,7 @@ const Main = ({
     return () => {
       ipcRenderer.removeListener('reload-from-file', reloadListener)
     }
-  }, [readyToCheckFileToLoad, checkingFileToLoad, checkedFileToLoad, needsToLogin])
+  }, [isOffline, readyToCheckFileToLoad, checkingFileToLoad, checkedFileToLoad, needsToLogin])
 
   // A latch so that we only show initial loading splash once.
   useEffect(() => {

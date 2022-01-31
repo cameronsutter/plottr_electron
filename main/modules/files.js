@@ -17,7 +17,7 @@ import { saveBackup } from './backup'
 import SETTINGS from './settings'
 import { OFFLINE_FILE_FILES_PATH, offlineFilePath } from './offlineFilePath'
 
-const { lstat, writeFile, readFile, open } = fs.promises
+const { readdir, lstat, writeFile, readFile, open } = fs.promises
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
@@ -364,6 +364,35 @@ function openKnownFile(filePath, id, unknown) {
   if (unknown) addToKnown(filePath)
 }
 
+export function listOfflineFiles() {
+  return readdir(OFFLINE_FILE_FILES_PATH)
+    .then((entries) => {
+      return Promise.all(
+        entries.map((entry) => {
+          return lstat(path.join(OFFLINE_FILE_FILES_PATH, entry)).then((folder) => ({
+            keep: folder.isFile(),
+            payload: path.join(OFFLINE_FILE_FILES_PATH, entry),
+          }))
+        })
+      ).then((results) => results.filter(({ keep }) => keep).map(({ payload }) => payload))
+    })
+    .catch((error) => {
+      log.error(`Couldn't list the offline files directory: ${OFFLINE_FILE_FILES_PATH}`, error)
+      return Promise.reject(error)
+    })
+}
+
+function cleanOfflineBackups(knownFiles) {
+  const expectedOfflineFiles = knownFiles
+    .filter(({ isCloudFile, fileName }) => isCloudFile && fileName)
+    .map(({ fileName }) => offlineFilePath(fileName))
+  return listOfflineFiles().then((files) => {
+    const filesToClean = files.filter((filePath) => expectedOfflineFiles.indexOf(filePath) === -1)
+    // return Promise.all(filesToClean.map)
+    return true
+  })
+}
+
 function saveOfflineFile(file) {
   // Don't save an offline version of an offline file
   if (!fs.existsSync(OFFLINE_FILE_FILES_PATH)) {
@@ -374,7 +403,9 @@ function saveOfflineFile(file) {
     return
   }
   const filePath = offlineFilePath(file.file.fileName)
-  saveFile(filePath, file)
+  cleanOfflineBackups(file.knownFiles).then(() => {
+    return saveFile(filePath, file)
+  })
 }
 
 export {

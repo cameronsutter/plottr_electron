@@ -7,6 +7,8 @@ import { getCurrentWindow } from '@electron/remote'
 import { actions, selectors } from 'pltr/v2'
 
 import { bootFile } from '../bootFile'
+import { isOfflineFile } from '../../common/utils/files'
+
 import App from './App'
 import Choice from './Choice'
 import Login from './Login'
@@ -35,6 +37,7 @@ const Main = ({
   finishCheckingFileToLoad,
   loadingProgress,
   darkMode,
+  isOffline,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -48,7 +51,7 @@ const Main = ({
       // To boot the file automatically: we must either be running pro
       // and it's a cloud file, or we must be running classic mode and
       // it's not a cloud file.
-      if (!!isInProMode === !!isCloudFile(filePath)) {
+      if (!!isInProMode === !!isCloudFile(filePath) || (isOffline && isOfflineFile(filePath))) {
         bootFile(filePath, options, numOpenFiles)
       }
       // We only want to obey the setting to show the dashboard on
@@ -207,6 +210,7 @@ Main.propTypes = {
   startCheckingFileToLoad: PropTypes.func.isRequired,
   finishCheckingFileToLoad: PropTypes.func.isRequired,
   darkMode: PropTypes.bool.isRequired,
+  isOffline: PropTypes.bool,
 }
 
 export default connect(
@@ -225,6 +229,7 @@ export default connect(
     loadingState: selectors.loadingStateSelector(state.present),
     loadingProgress: selectors.loadingProgressSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
+    isOffline: selectors.isOfflineSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,

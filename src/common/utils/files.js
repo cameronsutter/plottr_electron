@@ -92,3 +92,7 @@ export const sortAndSearch = (searchTerm, files) => {
 
   return [sortedFileIds, filesById]
 }
+
+export const isOfflineFile = (filePath) => {
+  return filePath.startsWith(OFFLINE_FILE_FILES_PATH)
+}

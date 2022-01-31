@@ -7,7 +7,7 @@ import { VscChromeClose } from 'react-icons/vsc'
 import { selectors } from 'pltr/v2'
 import { DashboardBody, DashboardNav } from 'connected-components'
 
-const Dashboard = ({ darkMode, closeDashboard }) => {
+const Dashboard = ({ darkMode, closeDashboard, cantShowFile }) => {
   const [activeView, setActiveView] = useState('files')
 
   useEffect(() => {
@@ -22,9 +22,11 @@ const Dashboard = ({ darkMode, closeDashboard }) => {
       <div className={cx('dashboard__main', { darkmode: darkMode })}>
         <DashboardNav currentView={activeView} setView={setActiveView} />
         <DashboardBody currentView={activeView} setView={setActiveView}>
-          <div className="dashboard__close-button">
-            <VscChromeClose onClick={closeDashboard} />
-          </div>
+          {cantShowFile ? null : (
+            <div className="dashboard__close-button">
+              <VscChromeClose onClick={closeDashboard} />
+            </div>
+          )}
         </DashboardBody>
       </div>
     </div>
@@ -34,6 +36,7 @@ const Dashboard = ({ darkMode, closeDashboard }) => {
 Dashboard.propTypes = {
   darkMode: PropTypes.bool,
   closeDashboard: PropTypes.func.isRequired,
+  cantShowFile: PropTypes.bool,
 }
 
 export default connect((state) => ({

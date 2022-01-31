@@ -182,7 +182,7 @@ const Main = ({
   }
 
   if (cantShowFile || (showDashboard && !dashboardClosed)) {
-    return <Dashboard closeDashboard={closeDashboard} />
+    return <Dashboard closeDashboard={closeDashboard} cantShowFile={cantShowFile} />
   }
 
   return <App forceProjectDashboard={showDashboard} />

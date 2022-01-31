@@ -15,7 +15,7 @@ import { shell } from 'electron'
 import { broadcastToAllWindows } from './broadcast'
 import { saveBackup } from './backup'
 import SETTINGS from './settings'
-import { OFFLINE_FILE_FILES_PATH, offlineFilePath } from './offlineFilePath'
+import { OFFLINE_FILE_FILES_PATH, offlineFilePath, isOfflineFile } from './offlineFilePath'
 
 const { unlink, readdir, lstat, writeFile, readFile, open } = fs.promises
 
@@ -356,6 +356,10 @@ function openKnownFile(filePath, id, unknown) {
   if (id && !filePath.startsWith('plottr://')) {
     // update lastOpen, but wait a little so the file doesn't move from under their mouse
     setTimeout(() => {
+      if (isOfflineFile(filePath)) {
+        log.info('Opening offline file', filePath)
+        return
+      }
       knownFilesStore.set(`${id}.lastOpened`, Date.now())
       broadcastToAllWindows('reload-recents')
     }, 500)

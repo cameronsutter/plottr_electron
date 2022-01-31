@@ -12,4 +12,8 @@ function offlineFilePath(filePath) {
   return path.join(OFFLINE_FILE_FILES_PATH, fileName)
 }
 
-export { offlineFilePath, OFFLINE_FILE_FILES_PATH }
+function isOfflineFile(filePath) {
+  return filePath.startsWith(OFFLINE_FILE_FILES_PATH)
+}
+
+export { offlineFilePath, isOfflineFile, OFFLINE_FILE_FILES_PATH }

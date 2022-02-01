@@ -1,10 +1,9 @@
 import { readdirSync, readFileSync, statSync } from 'fs'
 import path from 'path'
-import { convertHTMLString } from 'pltr/v2/slate_serializers/from_html'
-import { EMFJS, RTFJS, WMFJS } from 'rtf.js'
+import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
-
+// Object -> { Draft: [Object], Content: [Object] }
 const parseScrivxData = (data) => {
   let sectionsArr = []
   let draftArr = []
@@ -49,127 +48,115 @@ const parseScrivxData = (data) => {
   }
 }
 
-const stringToArrayBuffer = (string) => {
-  const buffer = new ArrayBuffer(string.length)
-  const bufferView = new Uint8Array(buffer)
-  for (let i = 0; i < string.length; i++) {
-    bufferView[i] = string.charCodeAt(i)
-  }
-  return buffer
-}
-
-RTFJS.loggingEnabled(false)
-WMFJS.loggingEnabled(false)
-EMFJS.loggingEnabled(false)
-
-export const readScrivContents = (scriv, rtf) => {
-  let contentRtf = rtf || []
-  let scrivx = []
-
+export const getContentRTF = (scriv) => {
   const noteFileContent = ['content.rtf', 'synopsis.txt', 'content.pdf']
   const filesInScriv = readdirSync(scriv)
-  filesInScriv.map((file) => {
-    const isVer_2_7 =
-      file.includes('_synopsis.txt') ||
-      file.includes('_notes.rtf') ||
-      Number(file.replace('.rtf', ''))
-    const absolute = path.join(scriv, file)
-    const fileExt = path.extname(file)
-    const isSectionRTF =
-      (UUIDFolderRegEx.test(absolute) && noteFileContent.includes(file)) || isVer_2_7
+  return Promise.all(
+    filesInScriv.map((file) => {
+      const isVer_2_7 =
+        file.includes('_synopsis.txt') ||
+        file.includes('_notes.rtf') ||
+        Number(file.replace('.rtf', ''))
+      const absolute = path.join(scriv, file)
+      const isSectionRTF =
+        (UUIDFolderRegEx.test(absolute) && noteFileContent.includes(file)) || isVer_2_7
 
-    if (statSync(absolute).isDirectory()) {
-      return readScrivContents(absolute, contentRtf)
-    } else if (isSectionRTF) {
-      const uuid = UUIDFolderRegEx.test(absolute)
-        ? absolute.match(UUIDFolderRegEx)[0]
-        : isVer_2_7
-        ? file.match(/\d+/)[0]
-        : null
-      const notesRTF = readFileSync(absolute)
-      if (notesRTF.length) {
-        return contentRtf.push({ uuid, content: String(notesRTF) })
-      }
-    } else {
-      const scrivxContent = readFileSync(absolute)
-      if (fileExt === '.scrivx') {
-        const scrivData = parseScrivxData(scrivxContent, filesInScriv)
-        if (scrivData) {
-          return scrivx.push(scrivData)
-        }
-      }
-    }
-  })
+      if (statSync(absolute).isDirectory()) {
+        return getContentRTF(absolute)
+      } else if (isSectionRTF) {
+        const uuid = UUIDFolderRegEx.test(absolute)
+          ? absolute.match(UUIDFolderRegEx)[0]
+          : isVer_2_7
+          ? file.match(/\d+/)[0]
+          : null
+        const notesRTF = readFileSync(absolute)
+        const htmlArr = rtfToHTML(String(notesRTF)).then((res) => {
+          return new Promise((resolve) => {
+            resolve(res)
+          })
+        })
 
-  return {
-    contentRtf,
-    scrivx,
-  }
-}
+        console.log('htmlArr', htmlArr)
 
-const parseToHTML = async (noteRtf, title) => {
-  const content = noteRtf.content.replace(`{${title}}`, '')
-  const doc = new RTFJS.Document(stringToArrayBuffer(String(content)))
-  const htmlArray = await doc
-    .render()
-    .then((htmlElements) => {
-      const spanEl = htmlElements.map((el) => el.querySelectorAll('span'))
-      const textContents = spanEl.map((el) => {
-        if (el && el[0]) {
-          return convertHTMLString(el[0].textContent)
-        }
-      })
-      if (textContents) {
-        return {
-          type: 'paragraph',
-          children: textContents.filter((i) => !!i),
+        if (notesRTF) {
+          return { uuid, content: htmlArr }
         }
       }
     })
-    .catch((error) => console.log(error))
-  return htmlArray
+  )
+    .then((i) => {
+      console.log('i', i)
+      return Object.entries(i).length > 0 ? i : null
+    })
+    .then((i) => {
+      return i?.length ? Promise.all(i.flatMap((i) => i).filter((i) => !!i)) : null
+    })
+    .catch((error) => console.log('error', error))
+}
+
+export const getScrivxData = (scriv) => {
+  const filesInScriv = readdirSync(scriv)
+  const scrivFile = filesInScriv.find((file) => path.extname(file) === '.scrivx')
+  const absolute = path.join(scriv, scrivFile)
+  const scrivxContent = readFileSync(absolute)
+  const scrivData = parseScrivxData(scrivxContent, filesInScriv)
+  if (scrivData) {
+    return scrivData
+  }
+}
+
+const parseToHTML = (noteRtf, title) => {
+  const content = noteRtf.content.replace(`{${title}}`, '')
+  return rtfToHTML(content)
 }
 
 export const generateState = async (contentRtf, scrivx) => {
-  Object.values(scrivx).map(async (item, key) => {
-    const scrivData = await item.map(async (data) => {
-      let childrenRTF = []
-      let childRTF = []
-      if (data.children && data.children.length) {
-        childRTF = await data.children.map(async (child, key) => {
-          let htmlElem = []
-          const noteRtf = contentRtf.find((rtf) => rtf.uuid === child.uuid)
-          if (noteRtf) {
-            const parsed = await parseToHTML(noteRtf, child.title)
-            if (parsed) htmlElem.push(parsed)
-          }
+  console.log('contentRtf', contentRtf)
+  const hello = Object.values(scrivx).map((item, key) => {
+    const scrivData = Promise.all(
+      item.map((data) => {
+        let childrenRTF = []
+        let childRTF = []
+        if (data.children && data.children.length) {
+          childRTF = Promise.all(
+            data.children.map((child, key) => {
+              let htmlElem = []
+              const noteRtf = contentRtf.find((rtf) => rtf.uuid === child.uuid)
+              if (noteRtf) {
+                const parsed = parseToHTML(noteRtf, child.title)
+                if (parsed) htmlElem.push(parsed)
+              }
+              return {
+                id: key + 1,
+                title: child.title,
+                content: htmlElem || [],
+              }
+            })
+          )
+          childrenRTF = Promise.all(childRTF)
           return {
-            id: key + 1,
-            title: child.title,
-            content: htmlElem || [],
+            uuid: data.uuid,
+            title: data.title,
+            children: childrenRTF.length ? childrenRTF : [],
           }
-        })
-        childrenRTF = await Promise.all(childRTF)
-        return {
-          uuid: data.uuid,
-          title: data.title,
-          children: childrenRTF.length ? childrenRTF : [],
+        } else {
+          return {
+            uuid: data.uuid,
+            title: data.title,
+          }
         }
-      } else {
-        return {
-          uuid: data.uuid,
-          title: data.title,
-        }
-      }
-    })
+      })
+    )
 
     // index 0 is the manuscript/draft folder
     if (key > 0) {
-      return (scrivx['sections'] = await Promise.all([...scrivData]))
+      return (scrivx['sections'] = Promise.all([...scrivData]))
     } else {
-      return (scrivx['draft'] = await Promise.all([...scrivData]))
+      return (scrivx['draft'] = Promise.all([...scrivData]))
     }
   })
+
+  console.log('hello', hello)
 
   return scrivx
 }

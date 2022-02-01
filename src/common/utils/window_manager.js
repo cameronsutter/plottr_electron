@@ -7,7 +7,7 @@ import { t } from 'plottr_locales'
 import { logger } from '../../logger'
 import { closeDashboard } from '../../dashboard-events'
 import { uploadProject } from './upload_project'
-import { generateState, readScrivContents } from '../../scrivener'
+import { generateState, getContentRTF, getScrivxData } from '../../scrivener'
 
 const win = remote.getCurrentWindow()
 const { dialog } = remote
@@ -54,15 +54,38 @@ export function openExistingFile(loggedIn, userId, email) {
   return Promise.resolve('No file selected')
 }
 
+function getContentPromise(content) {
+  return new Promise(function (resolve, reject) {
+    return getContentRTF(content)
+      .then((items) => {
+        console.log('items', items)
+        resolve(items)
+      })
+      .catch((error) => reject(error))
+  })
+}
+
 export async function importScrivener(loggedIn, userId, email) {
   const properties = ['openFile', 'createDirectory']
   const filters = [{ name: t('Scrivener file'), extensions: ['scriv'] }]
   const files = dialog.showOpenDialogSync(win, { filters: filters, properties: properties })
   if (files && files.length) {
-    const scrivFile = readScrivContents(files[0])
-    const { scrivx, contentRtf } = scrivFile
-    const state = await generateState(contentRtf, scrivx[0])
-    return Promise.resolve(state)
+    const scrivx = getScrivxData(files[0])
+    const contentRTF = getContentPromise(files[0])
+      .then(function (content) {
+        console.log('cont', content)
+        return content
+      })
+      .catch((err) => console.log(err))
+    console.log('scrivx', scrivx)
+    console.log(
+      'contentRTF promise',
+      contentRTF.then((i) => i)
+    )
+    // const { scrivx, contentRtf } = scrivFile
+    const state = await generateState(contentRTF, scrivx)
+    console.log('state', state)
+    // return Promise.resolve(state)
     // return Promise.resolve(ipcRenderer.send('add-to-known-files-and-open', state))
   }
   return Promise.resolve('No file selected')

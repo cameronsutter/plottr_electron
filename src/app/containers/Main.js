@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { ipcRenderer } from 'electron'
@@ -38,11 +38,20 @@ const Main = ({
   loadingProgress,
   darkMode,
   isOffline,
+  currentAppStateIsDashboard,
+  setCurrentAppStateToDashboard,
+  setCurrentAppStateToApplication,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
   const [dashboardClosed, setDashboardClosed] = useState(false)
   const [firstTimeBooting, setFirstTimeBooting] = useState(busyBooting)
+
+  useEffect(() => {
+    if (showDashboard && !dashboardClosed) {
+      setCurrentAppStateToDashboard()
+    }
+  }, [dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
 
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
@@ -59,6 +68,7 @@ const Main = ({
       // that shouldn't have the dashboard opened.
       if (numOpenFiles > 1) {
         setDashboardClosed(true)
+        setCurrentAppStateToApplication()
       }
       finishCheckingFileToLoad()
     }
@@ -114,9 +124,10 @@ const Main = ({
     window.document.body.className = darkMode ? 'darkmode' : ''
   }, [darkMode])
 
-  const closeDashboard = () => {
+  const closeDashboard = useCallback(() => {
     setDashboardClosed(true)
-  }
+    setCurrentAppStateToApplication()
+  }, [])
 
   // If we opened a file then don't show the dashboard all of a sudden
   // when the user changes the always show dashboard setting.
@@ -128,9 +139,10 @@ const Main = ({
       !needsToLogin &&
       !isFirstTime &&
       !isInTrialModeWithExpiredTrial &&
-      !(cantShowFile || (showDashboard && !dashboardClosed))
+      !(cantShowFile || ((currentAppStateIsDashboard || showDashboard) && !dashboardClosed))
     ) {
       closeDashboard()
+      setCurrentAppStateToDashboard()
     }
   }, [
     firstTimeBooting,
@@ -184,7 +196,7 @@ const Main = ({
     return <Expired />
   }
 
-  if (cantShowFile || (showDashboard && !dashboardClosed)) {
+  if (cantShowFile || ((currentAppStateIsDashboard || showDashboard) && !dashboardClosed)) {
     return <Dashboard closeDashboard={closeDashboard} cantShowFile={cantShowFile} />
   }
 
@@ -211,6 +223,9 @@ Main.propTypes = {
   finishCheckingFileToLoad: PropTypes.func.isRequired,
   darkMode: PropTypes.bool.isRequired,
   isOffline: PropTypes.bool,
+  currentAppStateIsDashboard: PropTypes.string.isRequired,
+  setCurrentAppStateToDashboard: PropTypes.func.isRequired,
+  setCurrentAppStateToApplication: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -230,10 +245,13 @@ export default connect(
     loadingProgress: selectors.loadingProgressSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
+    currentAppStateIsDashboard: selectors.currentAppStateIsDashboardSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,
     startCheckingFileToLoad: actions.applicationState.startCheckingFileToLoad,
     finishCheckingFileToLoad: actions.applicationState.finishCheckingFileToLoad,
+    setCurrentAppStateToDashboard: actions.client.setCurrentAppStateToDashboard,
+    setCurrentAppStateToApplication: actions.client.setCurrentAppStateToApplication,
   }
 )(Main)

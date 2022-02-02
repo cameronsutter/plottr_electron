@@ -46,6 +46,7 @@ const checkFileJustWritten = (filePath, data, originalStats, counter) => (fileCo
       // Somehow, the files are different :/
       //
       // Let's try again...
+      log.warn(`File written to disk at ${filePath} doesn't match the intended file.`)
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           checkSave(filePath, data, originalStats, counter + 1).then(resolve, reject)
@@ -102,7 +103,7 @@ const handleFileStats = (filePath, data, originalStats, counter) => (stats) => {
 
   // Check that the modified time of the stats before saving is
   // different to that which is after.
-  if (stats && stats.mtime.getMilliseconds() !== originalStats.mtime.getMilliseconds()) {
+  if (stats && stats.mtimeMs !== originalStats.mtimeMs) {
     return checkSaveHandleTimestampChange(filePath, data, originalStats, counter)
   }
 

@@ -70,14 +70,6 @@
       border-radius: 0;
     }
   }
-  &.project-nav__options {
-    padding-right: 0;
-    & > li > a {
-      padding: 15px 10px;
-      padding-top: 18px;
-      padding-bottom: 11px;
-    }
-  }
   li.dropdown {
     & > a {
       padding-top: 5px;
@@ -111,6 +103,13 @@
         margin-top: 0;
       }
     }
+  }
+}
+
+.dashboard__navbar-form {
+  padding-right: 0;
+  button svg {
+    margin-right: 4px;
   }
 }
 

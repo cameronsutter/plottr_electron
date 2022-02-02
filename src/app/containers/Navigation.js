@@ -91,13 +91,11 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, i
         </Nav>
         <Beamer inNavigation />
         <TrialLinks />
-        <Nav pullRight className="project-nav__options">
-          <NavItem onClick={openDashboard}>
-            <Button>
-              <FaRegUser /> {t('Dashboard')}
-            </Button>
-          </NavItem>
-        </Nav>
+        <Navbar.Form pullRight className="dashboard__navbar-form">
+          <Button onClick={openDashboard}>
+            <FaRegUser /> {t('Dashboard')}
+          </Button>
+        </Navbar.Form>
       </Navbar>
     </>
   )

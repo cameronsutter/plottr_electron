@@ -16,7 +16,7 @@ const { broadcastToAllWindows } = require('./broadcast')
 const { saveBackup } = require('./backup')
 const SETTINGS = require('./settings')
 
-const { lstat, writeFile, readFile } = fs.promises
+const { lstat, writeFile, readFile, open } = fs.promises
 
 const TMP_PATH = 'tmp'
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
@@ -36,6 +36,7 @@ const checkFileJustWritten = (filePath, data, originalStats, counter) => (fileCo
       // Somehow, the files are different :/
       //
       // Let's try again...
+      log.warn(`File written to disk at ${filePath} doesn't match the intended file.`)
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           checkSave(filePath, data, originalStats, counter + 1).then(resolve, reject)
@@ -64,14 +65,26 @@ const checkSaveHandleTimestampChange = (filePath, data, originalStats, counter) 
   }
 }
 
+const writeAndWaitForFlush = (filePath, data) => {
+  return open(filePath, 'w+').then((fileHandle) => {
+    return writeFile(fileHandle, data).then(() => {
+      return fileHandle.sync().then(() => {
+        return fileHandle.close()
+      })
+    })
+  })
+}
+
 const checkSaveHandleNoOriginalStats = (filePath, data, stats, counter) => {
   // Overwrite the file and then leave it to the main function to
   // check that the file actually changed to what we want it to.
-  return writeFile(filePath, data).then(() => {
+  return writeAndWaitForFlush(filePath, data).then(() => {
     // When we recur, lstat should produce different stats.
     return checkSave(filePath, data, stats, counter)
   })
 }
+
+const MAX_ATTEMPTS = 10
 
 const handleFileStats = (filePath, data, originalStats, counter) => (stats) => {
   // If we don't have original stats, then this is the first
@@ -81,8 +94,13 @@ const handleFileStats = (filePath, data, originalStats, counter) => (stats) => {
   }
 
   // Check that the modified time of the stats before saving is
-  // different to that which is after.
-  if (stats && stats.mtime.getMilliseconds() !== originalStats.mtime.getMilliseconds()) {
+  // different to that which is after.  Or we tried to find a change
+  // in time stamps MAX_ATTEMPTS times.
+  const triedEnoughTimes = counter === MAX_ATTEMPTS - 1
+  if ((stats && stats.mtimeMs !== originalStats.mtimeMs) || triedEnoughTimes) {
+    if (triedEnoughTimes) {
+      log.warn(`Timestamp for ${filePath} didn't change, but we're assuming that it did anyway.`)
+    }
     return checkSaveHandleTimestampChange(filePath, data, originalStats, counter)
   }
 
@@ -96,7 +114,6 @@ const handleFileStats = (filePath, data, originalStats, counter) => (stats) => {
 }
 
 function checkSave(filePath, data, originalStats = null, counter = 0) {
-  const MAX_ATTEMPTS = 10
   if (counter < MAX_ATTEMPTS) {
     // To kick things off, assume that we're overwriting an existing
     // file and (as per Node docs) catch the ENOENT if the file
@@ -110,7 +127,7 @@ function checkSave(filePath, data, originalStats = null, counter = 0) {
         // If the Error code flags that the file didn't exist, then
         // write the file and check that it's what we wanted it to be.
         if (error.code === 'ENOENT') {
-          return writeFile(filePath, data).then(
+          return writeAndWaitForFlush(filePath, data).then(
             checkFileJustWritten(filePath, data, originalStats, counter)
           )
         } else {

@@ -45,7 +45,7 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, i
     )
   }
 
-  const selectFiles = () => {
+  const openDashboard = () => {
     setDashboardView('files')
   }
 
@@ -92,8 +92,10 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, i
         <Beamer inNavigation />
         <TrialLinks />
         <Nav pullRight className="project-nav__options">
-          <NavItem onClick={selectFiles}>
-            <FaRegUser />
+          <NavItem onClick={openDashboard}>
+            <Button>
+              <FaRegUser /> {t('Dashboard')}
+            </Button>
           </NavItem>
         </Nav>
       </Navbar>

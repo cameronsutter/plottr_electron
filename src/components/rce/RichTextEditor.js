@@ -203,7 +203,7 @@ const RichTextEditorConnector = (connector) => {
     return (
       <Slate editor={editor} value={value} onChange={onValueChanged} key={key.current}>
         <div className={cx('slate-editor__wrapper', className)}>
-          <ToolBar editor={editor} darkMode={darkMode} selection={currentSelection} />
+          <ToolBar editor={editor} selection={currentSelection} />
           <div
             // the firstChild will be the contentEditable dom node
             ref={(e) => {
@@ -264,6 +264,7 @@ const RichTextEditorConnector = (connector) => {
       fileId: selectors.selectedFileIdSelector(state.present),
       isCloudFile: selectors.isCloudFileSelector(state.present),
       emailAddress: selectors.emailAddressSelector(state.present),
+      darkMode: selectors.isDarkModeSelector(state.present),
     }))(RichTextEditor)
   }
 

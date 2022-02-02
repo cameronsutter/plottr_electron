@@ -1,4 +1,5 @@
 import React from 'react'
+import { PropTypes } from 'prop-types'
 import { t } from 'plottr_locales'
 import { Button } from 'react-bootstrap'
 
@@ -7,31 +8,25 @@ import { checkDependencies } from '../../checkDependencies'
 const AboutConnector = (connector) => {
   const {
     platform: {
-      license: { useTrialStatus },
       update: { checkForUpdates },
       isDevelopment,
       appVersion,
       openExternal,
       mpq,
-      settings,
       os,
     },
   } = connector
   checkDependencies({
-    useTrialStatus,
     checkForUpdates,
     isDevelopment,
     appVersion,
     openExternal,
     mpq,
-    settings,
     os,
   })
 
-  const osIsUnknown = os === 'unknown'
-
-  const About = (props) => {
-    const { started, expired } = useTrialStatus()
+  const About = ({ settings, started, expired }) => {
+    const osIsUnknown = os() === 'unknown'
 
     const _checkForUpdates = () => {
       if (isDevelopment) return
@@ -48,7 +43,7 @@ const AboutConnector = (connector) => {
       // Can't update an application on an unknown OS (e.g. OS is unknown on web)
       if (osIsUnknown) return null
 
-      if ((started && !expired) || settings.get('canGetUpdates')) {
+      if ((started && !expired) || settings.canGetUpdates) {
         // in the free trial or valid license
         return (
           <dd>
@@ -93,7 +88,27 @@ const AboutConnector = (connector) => {
     )
   }
 
-  return About
+  About.propTypes = {
+    settings: PropTypes.object.isRequired,
+    started: PropTypes.bool,
+    expired: PropTypes.bool,
+  }
+
+  const {
+    pltr: { selectors },
+    redux,
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+    return connect((state) => ({
+      settings: selectors.appSettingsSelector(state.present),
+      started: selectors.trialStartedSelector(state.present),
+      expired: selectors.trialExpiredSelector(state.present),
+    }))(About)
+  }
+
+  throw new Error('Could not connect About')
 }
 
 export default AboutConnector

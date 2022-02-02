@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { t } from 'plottr_locales'
 import { Button } from 'react-bootstrap'
@@ -9,50 +9,23 @@ const ProInfoConnector = (connector) => {
   const {
     platform: {
       firebase: { logOut, currentUser },
-      license: { checkForPro },
+      settings: { saveAppSetting },
     },
   } = connector
-  checkDependencies({ logOut, checkForPro })
+  checkDependencies({ logOut, saveAppSetting, currentUser })
 
   const ProInfo = ({
     emailAddress,
+    hasCurrentProLicense,
+    setHasPro,
     setUserId,
     setEmailAddress,
-    setHasPro,
-    hasCurrentProLicense,
+    resetProLicenseInfo,
+    admin,
+    active,
+    expiration,
   }) => {
-    const [checking, setChecking] = useState(true)
     const [loggingOut, setLoggingOut] = useState(false)
-    const [active, setActive] = useState(false)
-    const [expiration, setExpiration] = useState(null)
-    const [admin, setAdmin] = useState(false)
-
-    useEffect(() => {
-      if (!emailAddress) return
-      if (!hasCurrentProLicense) return
-
-      setChecking(true)
-      currentUser()
-        .getIdTokenResult()
-        .then((token) => {
-          if (token.claims.admin) {
-            setChecking(false)
-            setActive(true)
-            setExpiration('lifetime')
-            setAdmin(true)
-          } else {
-            checkForPro(emailAddress, (hasPro, info) => {
-              setChecking(false)
-              if (hasPro && info) {
-                setActive(true)
-                setExpiration(info.expiration)
-              } else {
-                setActive(false)
-              }
-            })
-          }
-        })
-    }, [emailAddress, hasCurrentProLicense])
 
     const expiresDate = () => {
       if (!expiration) return null
@@ -64,28 +37,14 @@ const ProInfoConnector = (connector) => {
     const handleLogOut = () => {
       setLoggingOut(true)
       logOut().then(() => {
-        setLoggingOut(false)
-        setUserId(null)
-        setEmailAddress(null)
-      })
-    }
-
-    const handleExit = () => {
-      setLoggingOut(true)
-      logOut().then(() => {
+        // the order of these might matter
+        saveAppSetting('user.frbId', null)
+        resetProLicenseInfo()
         setLoggingOut(false)
         setHasPro(false)
         setUserId(null)
         setEmailAddress(null)
       })
-    }
-
-    if (checking) {
-      return (
-        <div>
-          <Spinner /> <span>{t('Loading Pro Subscription')}...</span>
-        </div>
-      )
     }
 
     return (
@@ -115,12 +74,6 @@ const ProInfoConnector = (connector) => {
             {t('Log Out')} {loggingOut ? <Spinner /> : null}
           </Button>
         </div>
-        <div className="text-left">
-          <Button bsStyle="danger" bsSize="small" onClick={handleExit}>
-            {t('Remove Pro on this Device')} {loggingOut ? <Spinner /> : null}
-          </Button>
-          <p className="secondary-text">{t('Use this if you logged into Pro by accident')}</p>
-        </div>
       </div>
     )
   }
@@ -128,10 +81,14 @@ const ProInfoConnector = (connector) => {
   ProInfo.propTypes = {
     licenseInfo: PropTypes.object,
     emailAddress: PropTypes.string,
+    hasCurrentProLicense: PropTypes.bool,
+    admin: PropTypes.bool,
+    active: PropTypes.bool,
+    expiration: PropTypes.string,
+    setHasPro: PropTypes.func.isRequired,
     setUserId: PropTypes.func.isRequired,
     setEmailAddress: PropTypes.func.isRequired,
-    setHasPro: PropTypes.func.isRequired,
-    hasCurrentProLicense: PropTypes.bool,
+    resetProLicenseInfo: PropTypes.func.isRequired,
   }
 
   const {
@@ -145,11 +102,15 @@ const ProInfoConnector = (connector) => {
       (state) => ({
         emailAddress: selectors.emailAddressSelector(state.present),
         hasCurrentProLicense: selectors.hasProSelector(state.present),
+        admin: selectors.proLicenseAdminSelector(state.present),
+        active: selectors.hasProSelector(state.present),
+        expiration: selectors.proLicenseExpirationSelector(state.present),
       }),
       {
+        setHasPro: actions.client.setHasPro,
         setUserId: actions.client.setUserId,
         setEmailAddress: actions.client.setEmailAddress,
-        setHasPro: actions.client.setHasPro,
+        resetProLicenseInfo: actions.license.resetProLicenseInfo,
       }
     )(ProInfo)
   }

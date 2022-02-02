@@ -10,7 +10,7 @@ import { checkDependencies } from '../checkDependencies'
 
 const { addImage } = actions.image
 
-export const ImagesButtonConnector = (connector) => {
+const ImagesButtonConnector = (connector) => {
   const ImagePicker = UnconnectedImagePicker(connector)
 
   const {
@@ -61,6 +61,8 @@ export const ImagesButtonConnector = (connector) => {
 
   return ImagesButton
 }
+
+export default ImagesButtonConnector
 
 export const withImages = (editor) => {
   const { insertData, isVoid } = editor

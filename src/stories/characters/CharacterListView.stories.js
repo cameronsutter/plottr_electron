@@ -128,8 +128,6 @@ const Template = (args) => (
     startSaveAsTemplate={() => {}}
     characterActions={{}}
     createErrorReport={() => {}}
-    listTemplates={() => {}}
-    listCustomTemplates={() => {}}
     deleteTemplate={() => {}}
     editTemplateDetails={() => {}}
     {...args}

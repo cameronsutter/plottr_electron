@@ -124,7 +124,7 @@ const BookDialogConnector = (connector) => {
         <Modal
           show={true}
           onHide={this.props.cancel}
-          dialogClassName={cx('book-dialog', { darkmode: this.props.ui.darkMode })}
+          dialogClassName={cx('book-dialog', { darkmode: this.props.darkMode })}
         >
           <Modal.Body>{this.renderBody()}</Modal.Body>
           <Modal.Footer>{this.renderToolBar()}</Modal.Footer>
@@ -135,7 +135,7 @@ const BookDialogConnector = (connector) => {
     static propTypes = {
       bookId: PropTypes.number.isRequired,
       cancel: PropTypes.func.isRequired,
-      ui: PropTypes.object.isRequired,
+      darkMode: PropTypes.bool,
       book: PropTypes.object,
       bookNumber: PropTypes.number,
       actions: PropTypes.object.isRequired,
@@ -144,7 +144,7 @@ const BookDialogConnector = (connector) => {
 
   const {
     redux,
-    pltr: { actions },
+    pltr: { actions, selectors },
   } = connector
   const BookActions = actions.book
   checkDependencies({ redux, actions, BookActions })
@@ -155,7 +155,7 @@ const BookDialogConnector = (connector) => {
     return connect(
       (state, ownProps) => {
         return {
-          ui: state.present.ui,
+          darkMode: selectors.isDarkModeSelector(state.present),
           book: state.present.books[ownProps.bookId],
           bookNumber: state.present.books.allIds.indexOf(ownProps.bookId) + 1,
         }

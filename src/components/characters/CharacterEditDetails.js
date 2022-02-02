@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import {
@@ -30,188 +30,175 @@ const CharacterEditDetailsConnector = (connector) => {
   const TemplatePicker = TemplatePickerConnector(connector)
 
   const {
-    platform: {
-      templatesDisabled,
-      openExternal,
-      template: { getTemplateById },
-    },
+    platform: { templatesDisabled, openExternal },
     pltr: { helpers },
   } = connector
 
   checkDependencies({
     templatesDisabled,
     openExternal,
-    getTemplateById,
   })
 
-  class CharacterEditDetails extends Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        categoryId: props.character.categoryId || null,
-        newImageId: null,
-        deleting: false,
-        removing: false,
-        removeWhichTemplate: null,
-        activeTab: 1,
+  const CharacterEditDetails = ({
+    finishEditing,
+    character,
+    actions,
+    editorPath,
+    customAttributes,
+    getTemplateById,
+    darkMode,
+    templateAttributeValue,
+    selection,
+    openAttributes,
+  }) => {
+    const [categoryId, setCategoryId] = useState(character.categoryId || null)
+    const [newImageId, setNewImageId] = useState(null)
+    const [deleting, setDeleting] = useState(false)
+    const [removing, setRemoving] = useState(false)
+    const [removeWhichTemplate, setRemoveWhichTemplate] = useState(null)
+    const [activeTab, setActiveTab] = useState(1)
+    const [showTemplatePicker, setShowTemplatePicker] = useState(false)
+
+    const nameInputRef = useRef(null)
+    const descriptionInputRef = useRef(null)
+
+    const saveEdit = (close = true) => {
+      var name = nameInputRef.current.value || character.name
+      var description = descriptionInputRef.current.value
+      var attrs = {}
+      if (newImageId) {
+        attrs.imageId = newImageId == -1 ? null : newImageId
       }
-
-      this.nameInputRef = null
-      this.descriptionInputRef = null
-    }
-
-    componentWillUnmount() {
-      this.saveEdit(false)
-    }
-
-    deleteCharacter = (e) => {
-      e.stopPropagation()
-      this.props.actions.deleteCharacter(this.props.character.id)
-    }
-
-    cancelDelete = (e) => {
-      e.stopPropagation()
-      this.setState({ deleting: false })
-    }
-
-    handleDelete = (e) => {
-      e.stopPropagation()
-      this.setState({ deleting: true })
-    }
-
-    beginRemoveTemplate = (templateId) => {
-      this.setState({ removing: true, removeWhichTemplate: templateId })
-    }
-
-    finishRemoveTemplate = (e) => {
-      e.stopPropagation()
-      const { actions, character } = this.props
-      const { removeWhichTemplate, activeTab } = this.state
-      actions.removeTemplateFromCharacter(character.id, removeWhichTemplate)
-      this.setState({
-        removing: false,
-        removeWhichTemplate: null,
-        activeTab: activeTab - 1,
+      actions.editCharacter(character.id, {
+        name,
+        description,
+        categoryId: categoryId == -1 ? null : categoryId,
+        ...attrs,
       })
+      if (close) finishEditing()
     }
 
-    cancelRemoveTemplate = (e) => {
+    useEffect(() => {
+      return () => {
+        saveEdit()
+      }
+    }, [])
+
+    const deleteCharacter = (e) => {
       e.stopPropagation()
-      this.setState({ removing: false, removeWhichTemplate: null })
+      actions.deleteCharacter(character.id)
     }
 
-    handleEnter = (event) => {
+    const cancelDelete = (e) => {
+      e.stopPropagation()
+      setDeleting(false)
+    }
+
+    const handleDelete = (e) => {
+      e.stopPropagation()
+      setDeleting(true)
+    }
+
+    const beginRemoveTemplate = (templateId) => {
+      setRemoving(true)
+      setRemoveWhichTemplate(templateId)
+    }
+
+    const finishRemoveTemplate = (e) => {
+      e.stopPropagation()
+      setActiveTab(activeTab - 1)
+      actions.removeTemplateFromCharacter(character.id, removeWhichTemplate)
+      setRemoving(false)
+      setRemoveWhichTemplate(null)
+    }
+
+    const cancelRemoveTemplate = (e) => {
+      e.stopPropagation()
+      setRemoving(false)
+      setRemoveWhichTemplate(null)
+    }
+
+    const handleEnter = (event) => {
       if (event.which === 13) {
-        this.saveEdit()
+        saveEdit()
       }
     }
 
-    handleEsc = (event) => {
+    const handleEsc = (event) => {
       if (event.which === 27) {
-        this.saveEdit()
+        saveEdit()
       }
     }
 
-    handleChooseTemplate = (templateData) => {
-      const { actions, character } = this.props
+    const handleChooseTemplate = (templateData) => {
       actions.addTemplateToCharacter(character.id, templateData)
       const numTemplates = character.templates.length
-      this.setState({
-        showTemplatePicker: false,
-        activeTab: numTemplates + 3,
-      })
+      setShowTemplatePicker(false)
+      setActiveTab(numTemplates + 3)
     }
 
-    handleNotesChanged = (value, selection) => {
-      this.props.actions.editCharacter(
-        this.props.character.id,
+    const handleNotesChanged = (value, selection) => {
+      actions.editCharacter(
+        character.id,
         helpers.editors.attrIfPresent('notes', value),
-        this.props.editorPath,
+        editorPath,
         selection
       )
     }
 
-    handleAttrChange = (attrName) => (desc, selection) => {
-      const editorPath = helpers.editors.characterCustomAttributeEditorPath(
-        this.props.character.id,
-        attrName
-      )
-      this.props.actions.editCharacter(
-        this.props.character.id,
+    const handleAttrChange = (attrName) => (desc, selection) => {
+      const editorPath = helpers.editors.characterCustomAttributeEditorPath(character.id, attrName)
+      actions.editCharacter(
+        character.id,
         helpers.editors.attrIfPresent(attrName, desc),
         editorPath,
         selection
       )
     }
 
-    handleTemplateAttrChange = (id, name) => (desc, selection) => {
+    const handleTemplateAttrChange = (id, name) => (desc, selection) => {
       const editorPath = helpers.editors.characterTemplateAttributeEditorPath(
-        this.props.character.id,
+        character.id,
         id,
         name
       )
 
       if (!desc) {
-        this.props.actions.editCharacter(this.props.character.id, {}, editorPath, selection)
+        actions.editCharacter(character.id, {}, editorPath, selection)
         return
       }
-      this.props.actions.editCharacterTemplateAttribute(
-        this.props.character.id,
-        id,
-        name,
-        desc,
-        editorPath,
-        selection
-      )
+      actions.editCharacterTemplateAttribute(character.id, id, name, desc, editorPath, selection)
     }
 
-    saveEdit = (close = true) => {
-      var name = this.nameInputRef.value || this.props.character.name
-      var description = this.descriptionInputRef.value
-      var attrs = {}
-      if (this.state.newImageId) {
-        attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
-      }
-      this.props.actions.editCharacter(this.props.character.id, {
-        name,
-        description,
-        categoryId: this.state.categoryId == -1 ? null : this.state.categoryId,
-        ...attrs,
-      })
-      if (close) this.props.finishEditing()
+    const changeCategory = (val) => {
+      setCategoryId(val)
+      actions.editCharacter(character.id, { categoryId: val })
     }
 
-    changeCategory = (val) => {
-      this.setState({ categoryId: val })
-      this.props.actions.editCharacter(this.props.character.id, { categoryId: val })
-    }
-
-    selectTab = (key) => {
+    const selectTab = (key) => {
       if (key == 'new') {
-        this.setState({ showTemplatePicker: true })
+        setShowTemplatePicker(true)
       } else {
-        this.setState({ activeTab: key })
+        setActiveTab(key)
       }
     }
 
-    renderTemplatePicker() {
-      if (!this.state.showTemplatePicker) return null
+    const renderTemplatePicker = () => {
+      if (!showTemplatePicker) return null
 
       return (
         <TemplatePicker
           modal={true}
-          type={['characters']}
-          isOpen={this.state.showTemplatePicker}
-          close={() => this.setState({ showTemplatePicker: false })}
-          onChooseTemplate={this.handleChooseTemplate}
-          canMakeCharacterTemplates={!!this.props.customAttributes.length}
+          types={['characters']}
+          isOpen={showTemplatePicker}
+          close={() => setShowTemplatePicker(false)}
+          onChooseTemplate={handleChooseTemplate}
+          canMakeCharacterTemplates={!!customAttributes.length}
         />
       )
     }
 
-    renderRemoveTemplate() {
-      const { removing, removeWhichTemplate } = this.state
-      const { character } = this.props
+    const renderRemoveTemplate = () => {
       if (!removing) return null
       let templateData = getTemplateById(removeWhichTemplate)
       if (!templateData) {
@@ -223,28 +210,26 @@ const CharacterEditDetailsConnector = (connector) => {
             'Are you sure you want to remove the {template} template and all its data?',
             { template: templateData?.name || t('Template') }
           )}
-          onDelete={this.finishRemoveTemplate}
-          onCancel={this.cancelRemoveTemplate}
+          onDelete={finishRemoveTemplate}
+          onCancel={cancelRemoveTemplate}
         />
       )
     }
 
-    renderDelete() {
-      if (!this.state.deleting) return null
+    const renderDelete = () => {
+      if (!deleting) return null
 
       return (
         <DeleteConfirmModal
-          name={this.props.character.name || t('New Character')}
-          onDelete={this.deleteCharacter}
-          onCancel={this.cancelDelete}
+          name={character.name || t('New Character')}
+          onDelete={deleteCharacter}
+          onCancel={cancelDelete}
         />
       )
     }
 
-    renderEditingImage() {
-      const { character, ui } = this.props
-
-      let imgId = this.state.newImageId || character.imageId
+    const renderEditingImage = () => {
+      let imgId = newImageId || character.imageId
       return (
         <FormGroup>
           <ControlLabel>{t('Character Thumbnail')}</ControlLabel>
@@ -255,8 +240,7 @@ const CharacterEditDetailsConnector = (connector) => {
             <div>
               <ImagePicker
                 selectedId={imgId}
-                chooseImage={(id) => this.setState({ newImageId: id })}
-                darkMode={ui.darkMode}
+                chooseImage={(id) => setNewImageId(id)}
                 deleteButton
               />
             </div>
@@ -265,11 +249,10 @@ const CharacterEditDetailsConnector = (connector) => {
       )
     }
 
-    renderEditingCustomAttributes() {
-      const { character, ui, customAttributes } = this.props
+    const renderEditingCustomAttributes = () => {
       return customAttributes.map((attr, index) => {
         const editorPath = helpers.editors.characterCustomAttributeEditorPath(
-          this.props.character.id,
+          character.id,
           attr.name
         )
         return (
@@ -280,9 +263,8 @@ const CharacterEditDetailsConnector = (connector) => {
               entityType="character"
               value={character[attr.name]}
               editorPath={editorPath}
-              ui={ui}
-              onChange={this.handleAttrChange(attr.name)}
-              onSave={this.saveEdit}
+              onChange={handleAttrChange(attr.name)}
+              onSave={saveEdit}
               name={attr.name}
               type={attr.type}
             />
@@ -291,13 +273,12 @@ const CharacterEditDetailsConnector = (connector) => {
       })
     }
 
-    renderEditingTemplates() {
-      const { character, ui } = this.props
+    const renderEditingTemplates = () => {
       return character.templates.map((template, idx) => {
         const templateData = getTemplateById(template.id)
         const attrs = template.attributes.map((attr, index) => {
           const editorPath = helpers.editors.characterTemplateAttributeEditorPath(
-            this.props.character.id,
+            character.id,
             template.id,
             attr.name
           )
@@ -308,12 +289,11 @@ const CharacterEditDetailsConnector = (connector) => {
                 index={index}
                 entity={character}
                 entityType="character"
-                valueSelector={this.props.templateAttributeValue(template.id, attr.name)}
+                valueSelector={templateAttributeValue(template.id, attr.name)}
                 editorPath={editorPath}
-                ui={ui}
                 inputId={`${template.id}-${attr.name}Input`}
-                onChange={this.handleTemplateAttrChange(template.id, attr.name)}
-                onSave={this.saveEdit}
+                onChange={handleTemplateAttrChange(template.id, attr.name)}
+                onSave={saveEdit}
                 name={attr.name}
                 type={attr.type}
               />
@@ -346,7 +326,7 @@ const CharacterEditDetailsConnector = (connector) => {
               <Button
                 bsStyle="link"
                 className="text-danger"
-                onClick={() => this.beginRemoveTemplate(template.id)}
+                onClick={() => beginRemoveTemplate(template.id)}
               >
                 {t('Remove template')}
               </Button>
@@ -357,109 +337,106 @@ const CharacterEditDetailsConnector = (connector) => {
       })
     }
 
-    render() {
-      const { character, ui } = this.props
-      return (
-        <div className="character-list__character-wrapper">
-          {this.renderDelete()}
-          {this.renderRemoveTemplate()}
-          {this.renderTemplatePicker()}
-          <div className={cx('character-list__character', 'editing', { darkmode: ui.darkMode })}>
-            <div className="character-list__character__edit-form">
-              <div className="character-list__inputs__normal">
-                <FormGroup>
-                  <ControlLabel>{t('Name')}</ControlLabel>
-                  <FormControl
-                    type="text"
-                    inputRef={(ref) => {
-                      this.nameInputRef = ref
-                    }}
-                    autoFocus
-                    onKeyDown={this.handleEsc}
-                    onKeyPress={this.handleEnter}
-                    defaultValue={character.name}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <ControlLabel>{t('Short Description')}</ControlLabel>
-                  <FormControl
-                    type="text"
-                    inputRef={(ref) => {
-                      this.descriptionInputRef = ref
-                    }}
-                    onKeyDown={this.handleEsc}
-                    onKeyPress={this.handleEnter}
-                    defaultValue={character.description}
-                  />
-                </FormGroup>
-              </div>
-              <div className="character-list__inputs__custom">
-                <FormGroup>
-                  <ControlLabel>{t('Category')}</ControlLabel>
-                  <CategoryPicker
-                    type="characters"
-                    selectedId={this.state.categoryId}
-                    onChange={this.changeCategory}
-                  />
-                </FormGroup>
-                {this.renderEditingImage()}
-              </div>
-            </div>
-            <Tabs
-              activeKey={this.state.activeTab}
-              id="tabs"
-              className="character-list__character__tabs"
-              onSelect={this.selectTab}
-            >
-              <Tab eventKey={1} title={t('Notes')}>
-                <RichText
-                  id={this.props.editorPath}
-                  description={character.notes}
-                  onChange={this.handleNotesChanged}
-                  selection={this.props.selection}
-                  editable
-                  autofocus={false}
-                  darkMode={this.props.ui.darkMode}
+    return (
+      <div className="character-list__character-wrapper">
+        {renderDelete()}
+        {renderRemoveTemplate()}
+        {renderTemplatePicker()}
+        <div className={cx('character-list__character', 'editing', { darkmode: darkMode })}>
+          <div className="character-list__character__edit-form">
+            <div className="character-list__inputs__normal">
+              <FormGroup>
+                <ControlLabel>{t('Name')}</ControlLabel>
+                <FormControl
+                  type="text"
+                  inputRef={(ref) => {
+                    nameInputRef.current = ref
+                  }}
+                  autoFocus
+                  onKeyDown={handleEsc}
+                  onKeyPress={handleEnter}
+                  defaultValue={character.name}
                 />
-              </Tab>
-              <Tab eventKey={2} title={t('Attributes')}>
-                <a
-                  href="#"
-                  className="card-dialog__custom-attributes-configuration-link"
-                  onClick={this.props.openAttributes}
-                >
-                  {t('Configure')}
-                </a>
-                {this.renderEditingCustomAttributes()}
-              </Tab>
-              {this.renderEditingTemplates()}
-              {!templatesDisabled && <Tab eventKey="new" title={t('+ Add Template')}></Tab>}
-            </Tabs>
-            <ButtonToolbar className="card-dialog__button-bar">
-              <Button bsStyle="success" onClick={this.saveEdit}>
-                {t('Save')}
-              </Button>
-              <Button className="card-dialog__delete" onClick={this.handleDelete}>
-                {t('Delete')}
-              </Button>
-            </ButtonToolbar>
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>{t('Short Description')}</ControlLabel>
+                <FormControl
+                  type="text"
+                  inputRef={(ref) => {
+                    descriptionInputRef.current = ref
+                  }}
+                  onKeyDown={handleEsc}
+                  onKeyPress={handleEnter}
+                  defaultValue={character.description}
+                />
+              </FormGroup>
+            </div>
+            <div className="character-list__inputs__custom">
+              <FormGroup>
+                <ControlLabel>{t('Category')}</ControlLabel>
+                <CategoryPicker
+                  type="characters"
+                  selectedId={categoryId}
+                  onChange={changeCategory}
+                />
+              </FormGroup>
+              {renderEditingImage()}
+            </div>
           </div>
+          <Tabs
+            activeKey={activeTab}
+            id="tabs"
+            className="character-list__character__tabs"
+            onSelect={selectTab}
+          >
+            <Tab eventKey={1} title={t('Notes')}>
+              <RichText
+                id={editorPath}
+                description={character.notes}
+                onChange={handleNotesChanged}
+                selection={selection}
+                editable
+                autofocus={false}
+              />
+            </Tab>
+            <Tab eventKey={2} title={t('Attributes')}>
+              <a
+                href="#"
+                className="card-dialog__custom-attributes-configuration-link"
+                onClick={openAttributes}
+              >
+                {t('Configure')}
+              </a>
+              {renderEditingCustomAttributes()}
+            </Tab>
+            {renderEditingTemplates()}
+            {!templatesDisabled && <Tab eventKey="new" title={t('+ Add Template')}></Tab>}
+          </Tabs>
+          <ButtonToolbar className="card-dialog__button-bar">
+            <Button bsStyle="success" onClick={saveEdit}>
+              {t('Save')}
+            </Button>
+            <Button className="card-dialog__delete" onClick={handleDelete}>
+              {t('Delete')}
+            </Button>
+          </ButtonToolbar>
         </div>
-      )
-    }
+      </div>
+    )
+  }
 
-    static propTypes = {
-      characterId: PropTypes.number.isRequired,
-      openAttributes: PropTypes.func,
-      character: PropTypes.object.isRequired,
-      actions: PropTypes.object.isRequired,
-      customAttributes: PropTypes.array.isRequired,
-      ui: PropTypes.object.isRequired,
-      finishEditing: PropTypes.func.isRequired,
-      selection: PropTypes.object.isRequired,
-      editorPath: PropTypes.string.isRequired,
-      templateAttributeValue: PropTypes.func.isRequired,
-    }
+  CharacterEditDetails.propTypes = {
+    characterId: PropTypes.number.isRequired,
+    openAttributes: PropTypes.func,
+    character: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
+    customAttributes: PropTypes.array.isRequired,
+    darkMode: PropTypes.bool,
+    finishEditing: PropTypes.func.isRequired,
+    selection: PropTypes.object.isRequired,
+    editorPath: PropTypes.string.isRequired,
+    getTemplateById: PropTypes.func.isRequired,
+    templateAttributeValue: PropTypes.func.isRequired,
   }
 
   const {
@@ -480,7 +457,9 @@ const CharacterEditDetailsConnector = (connector) => {
           customAttributes: state.present.customAttributes.characters,
           selection: selectors.selectionSelector(state.present, editorPath),
           editorPath,
-          ui: state.present.ui,
+          darkMode: selectors.isDarkModeSelector(state.present),
+          getTemplateById: (templateId) =>
+            selectors.templateByIdSelector(state.present, templateId),
           templateAttributeValue: (templateId, attributeName) => {
             return selectors.characterTemplateAttributeValueSelector(
               ownProps.characterId,

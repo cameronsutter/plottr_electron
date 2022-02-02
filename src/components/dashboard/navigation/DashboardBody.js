@@ -14,13 +14,17 @@ import { checkDependencies } from '../../checkDependencies'
 const DashboardBodyConnector = (connector) => {
   const {
     platform: {
-      license: { useLicenseInfo, checkForActiveLicense, useTrialStatus },
-      settings,
+      license: { checkForActiveLicense },
+      settings: { saveAppSetting },
       reloadMenu,
       os,
     },
   } = connector
-  checkDependencies({ useLicenseInfo, checkForActiveLicense, useTrialStatus, settings, reloadMenu })
+  checkDependencies({
+    checkForActiveLicense,
+    saveAppSetting,
+    reloadMenu,
+  })
 
   const DashboardErrorBoundary = UnconnectedDashboardErrorBoundary(connector)
   const ErrorBoundary = UnconnectedErrorBoundary(connector)
@@ -32,48 +36,55 @@ const DashboardBodyConnector = (connector) => {
   const OptionsHome = UnconnectedOptionsHome(connector)
   const HelpHome = UnconnectedHelpHome(connector)
 
-  function Body({ children, darkMode }) {
+  function Body({ children }) {
     return (
       <div className="dashboard__body">
         <ErrorBoundary>
           <UpdateNotifier />
         </ErrorBoundary>
-        <DashboardErrorBoundary darkMode={darkMode}>{children}</DashboardErrorBoundary>
+        <DashboardErrorBoundary>{children}</DashboardErrorBoundary>
       </div>
     )
   }
 
   Body.propTypes = {
     children: PropTypes.node,
-    darkMode: PropTypes.bool,
   }
 
-  const DashboardBody = ({ currentView, setView, darkMode, children }) => {
-    const [licenseInfo, licenseInfoSize] = useLicenseInfo()
-    const { started, expired } = useTrialStatus()
+  const DashboardBody = ({
+    hasCurrentProLicense,
+    currentView,
+    children,
+    started,
+    expired,
+    hasLicense,
+    licenseInfo,
+  }) => {
     const [showAccount, setShowAccount] = useState(false)
 
     useEffect(() => {
-      if (os == 'unknown') return
+      if (os() == 'unknown') return
+      if (hasCurrentProLicense) return
 
       reloadMenu()
       // update settings.trialMode
-      if (licenseInfoSize) {
-        settings.set('trialMode', false)
+      if (hasLicense) {
+        saveAppSetting('trialMode', false)
       } else {
-        settings.set('trialMode', true)
-        settings.set('canGetUpdates', true)
+        saveAppSetting('trialMode', true)
+        saveAppSetting('canGetUpdates', true)
       }
 
       // no license and trial hasn't started (first time using the app)
       // OR no license and trial is expired
-      if (!licenseInfoSize && (!started || expired) && process.env.NODE_ENV !== 'development') {
+      if (!hasLicense && (!started || expired) && process.env.NODE_ENV !== 'development') {
         setShowAccount(true)
       }
-    }, [licenseInfo, licenseInfoSize, started, expired])
+    }, [licenseInfo, hasLicense, started, expired, hasCurrentProLicense])
 
     useEffect(() => {
-      if (os == 'unknown') return
+      if (os() == 'unknown') return
+      if (hasCurrentProLicense) return
       if (process.env.NODE_ENV == 'development') return
 
       checkForActiveLicense(licenseInfo, (err, success) => {
@@ -97,50 +108,69 @@ const DashboardBodyConnector = (connector) => {
         default:
           return (
             <Body>
-              <AccountHome darkMode={darkMode} />
+              <AccountHome />
             </Body>
           )
       }
     }
 
-    let body
-    switch (currentView) {
-      case 'account':
-        body = <AccountHome darkMode={darkMode} />
-        break
-      case 'templates':
-        body = <TemplatesHome />
-        break
-      case 'backups':
-        body = <BackupsHome />
-        break
-      case 'options':
-        body = <OptionsHome />
-        break
-      case 'help':
-        body = <HelpHome />
-        break
-      case 'files':
-        body = <FilesHome />
-        break
+    const BodySwitch = ({ currentView }) => {
+      switch (currentView) {
+        case 'account':
+          return <AccountHome />
+        case 'templates':
+          return <TemplatesHome />
+        case 'backups':
+          return <BackupsHome />
+        case 'options':
+          return <OptionsHome />
+        case 'help':
+          return <HelpHome />
+        case 'files':
+          return <FilesHome />
+        default:
+          return null
+      }
     }
 
     return (
-      <Body darkMode={darkMode}>
+      <Body>
         {children}
-        {body}
+        <BodySwitch currentView={currentView} />
       </Body>
     )
   }
 
   DashboardBody.propTypes = {
     currentView: PropTypes.string,
-    setView: PropTypes.func,
-    darkMode: PropTypes.bool,
     children: PropTypes.node,
+    hasCurrentProLicense: PropTypes.bool,
+    started: PropTypes.bool,
+    expired: PropTypes.bool,
+    hasLicense: PropTypes.bool,
+    licenseInfo: PropTypes.object,
   }
 
-  return DashboardBody
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+    return connect(
+      (state) => ({
+        hasCurrentProLicense: selectors.hasProSelector(state.present),
+        started: selectors.trialStartedSelector(state.present),
+        expired: selectors.trialExpiredSelector(state.present),
+        hasLicense: selectors.hasLicenseSelector(state.present),
+        licenseInfo: selectors.licenseInfoSelector(state.present),
+      }),
+      {}
+    )(DashboardBody)
+  }
+
+  throw new Error('Could not connect DashboardBody')
 }
 
 export default DashboardBodyConnector

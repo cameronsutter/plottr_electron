@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'react-proptypes'
 import { Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 
-import UnconnectedBetaInfo from './BetaInfo'
 import UnconnectedExpiredView from './ExpiredView'
 import UnconnectedLicenseInfo from './LicenseInfo'
 import UnconnectedProInfo from './ProInfo'
@@ -13,20 +12,21 @@ import { checkDependencies } from '../../checkDependencies'
 const AccountConnector = (connector) => {
   const {
     platform: {
-      license: { useTrialStatus, licenseStore, useLicenseInfo },
+      license: { deleteLicense },
       openExternal,
       os,
       mpq,
     },
   } = connector
-  checkDependencies({ useTrialStatus, licenseStore, useLicenseInfo, openExternal, os, mpq })
+  checkDependencies({ openExternal, os, mpq })
 
   const TrialInfo = UnconnectedTrialInfo(connector)
   const ExpiredView = UnconnectedExpiredView(connector)
   const LicenseInfo = UnconnectedLicenseInfo(connector)
   const ProInfo = UnconnectedProInfo(connector)
-  const BetaInfo = UnconnectedBetaInfo(connector)
 
+  // TODO: Move ALL of this logic into pltr/v2/selectors/license.js
+  //
   // many possible states:
   // choices (handled by AccountHome)
   //  - no trialInfo
@@ -49,68 +49,41 @@ const AccountConnector = (connector) => {
   // license & Pro
   //  - license
   //  - pro
-  const Account = ({ darkMode, startProOnboarding, hasCurrentProLicense }) => {
-    const trialInfo = useTrialStatus()
-    const [licenseInfo, licenseInfoSize] = useLicenseInfo()
-    const checkTrial = () =>
-      trialInfo.started && !trialInfo.expired && !licenseInfoSize && !hasCurrentProLicense
-    const checkTrialExpired = () => trialInfo.expired && !licenseInfoSize && !hasCurrentProLicense
-    const checkLicense = () => !!licenseInfoSize
-    const [isTrial, setIsTrial] = useState(checkTrial())
-    const [isTrialExpired, setIsTrialExpired] = useState(checkTrialExpired())
-    const [isLicense, setIsLicense] = useState(checkLicense())
+  const Account = ({
+    startProOnboarding,
+    hasCurrentProLicense,
+    hasLicense,
+    isInTrialMode,
+    isInTrialModeWithExpiredTrial,
+  }) => {
+    const hideProButton = os() == 'unknown' || hasCurrentProLicense
 
-    useEffect(() => {
-      setIsTrial(checkTrial())
-      setIsTrialExpired(checkTrialExpired())
-      setIsLicense(checkLicense())
-    }, [trialInfo, licenseInfo, licenseInfoSize, hasCurrentProLicense])
-
-    const hideProButton = os == 'unknown' || hasCurrentProLicense || isTrial
-
-    const deleteLicense = () => {
+    const _deleteLicense = () => {
       mpq.push('btn_remove_license_confirm')
-      licenseStore.clear()
+      deleteLicense()
     }
-
-    const handleProClick = () => {
-      openExternal('https://m65pkjgw.paperform.co/')
-    }
-
-    const proLink = t.rich('Coming soon! <a>Learn more</a>', {
-      // eslint-disable-next-line react/display-name, react/prop-types
-      a: ({ children }) => (
-        <a href="#" onClick={handleProClick} key="pro-link">
-          {children}
-        </a>
-      ),
-    })
 
     const AllAccountInfo = () => {
-      if (isTrial) return <TrialInfo darkMode={darkMode} trialInfo={trialInfo} />
-      if (isTrialExpired) return <ExpiredView darkMode={darkMode} />
+      if (isInTrialMode) return <TrialInfo />
+      if (isInTrialModeWithExpiredTrial) return <ExpiredView />
 
       const body = []
-      if (os == 'unknown') body.push(<BetaInfo key="beta" />)
       if (hasCurrentProLicense) body.push(<ProInfo key="pro" />)
 
-      if (isLicense) {
-        body.push(
-          <LicenseInfo key="license" licenseInfo={licenseInfo} deleteLicense={deleteLicense} />
-        )
+      if (hasLicense) {
+        body.push(<LicenseInfo key="license" deleteLicense={_deleteLicense} />)
       }
 
       return <>{body}</>
     }
 
     return (
-      <div className="dashboard__account">
+      <div className="dashboard__account__body">
         <div className="dashboard__acount__top">
           <h1>{t('Account')}</h1>
           {hideProButton ? null : (
             <div className="text-right">
               <Button onClick={startProOnboarding}>{t('Start Plottr Pro')} 🎉</Button>
-              <p className="secondary-text">{proLink}</p>
             </div>
           )}
         </div>
@@ -120,9 +93,11 @@ const AccountConnector = (connector) => {
   }
 
   Account.propTypes = {
-    darkMode: PropTypes.bool,
     startProOnboarding: PropTypes.func,
     hasCurrentProLicense: PropTypes.bool,
+    hasLicense: PropTypes.bool,
+    isInTrialMode: PropTypes.bool,
+    isInTrialModeWithExpiredTrial: PropTypes.bool,
   }
 
   const {
@@ -135,6 +110,11 @@ const AccountConnector = (connector) => {
     return connect(
       (state) => ({
         hasCurrentProLicense: selectors.hasProSelector(state.present),
+        hasLicense: selectors.hasLicenseSelector(state.present),
+        isInTrialMode: selectors.isInTrialModeSelector(state.present),
+        isInTrialModeWithExpiredTrial: selectors.isInTrialModeWithExpiredTrialSelector(
+          state.present
+        ),
       }),
       {}
     )(Account)

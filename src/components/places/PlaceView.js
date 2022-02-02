@@ -147,7 +147,7 @@ const PlaceViewConnector = (connector) => {
     }
 
     renderEditingCustomAttributes() {
-      const { place, ui, customAttributes } = this.props
+      const { place, customAttributes } = this.props
       return customAttributes.map((attr, index) => {
         const editorPath = helpers.editors.placeCustomAttributeEditorPath(place.id, attr.name)
         const { name, type } = attr
@@ -157,7 +157,6 @@ const PlaceViewConnector = (connector) => {
               index={index}
               entityType="place"
               value={place[name]}
-              ui={ui}
               editorPath={editorPath}
               onChange={(desc, selection) =>
                 this.handleAttrDescriptionChange(name, desc, selection)
@@ -172,10 +171,10 @@ const PlaceViewConnector = (connector) => {
     }
 
     renderEditing() {
-      const { place, ui } = this.props
+      const { place, darkMode } = this.props
       return (
         <div className="place-list__place-wrapper">
-          <div className={cx('place-list__place', 'editing', { darkmode: ui.darkMode })}>
+          <div className={cx('place-list__place', 'editing', { darkmode: darkMode })}>
             <div className="place-list__place__edit-form">
               <div className="place-list__inputs__normal">
                 <FormGroup>
@@ -213,7 +212,6 @@ const PlaceViewConnector = (connector) => {
                     selection={this.props.selection}
                     editable
                     autofocus={false}
-                    darkMode={ui.darkMode}
                   />
                 </FormGroup>
               </div>
@@ -291,7 +289,7 @@ const PlaceViewConnector = (connector) => {
     // }
 
     renderPlace() {
-      const { place, customAttributes, ui } = this.props
+      const { place, customAttributes } = this.props
 
       const details = customAttributes.map((attr, idx) => {
         const { name, type } = attr
@@ -299,11 +297,7 @@ const PlaceViewConnector = (connector) => {
         if (type == 'paragraph') {
           desc = (
             <dd>
-              <RichText
-                id={`place.${place.id}.attributes.${name}`}
-                description={place[name]}
-                darkMode={ui.darkMode}
-              />
+              <RichText description={place[name]} />
             </dd>
           )
         }
@@ -329,11 +323,7 @@ const PlaceViewConnector = (connector) => {
                 <dl className="dl-horizontal">
                   <dt>{i18n('Notes')}</dt>
                   <dd>
-                    <RichText
-                      id={`place.${place.id}.notes`}
-                      description={place.notes}
-                      darkMode={this.props.ui.darkMode}
-                    />
+                    <RichText description={place.notes} />
                   </dd>
                 </dl>
               </div>
@@ -351,10 +341,10 @@ const PlaceViewConnector = (connector) => {
       if (this.props.editing) window.SCROLLWITHKEYS = false
       else window.SCROLLWITHKEYS = true
 
-      const { place, tags, actions, ui } = this.props
+      const { darkMode, place, tags, actions } = this.props
 
       return (
-        <div className={cx('place-list__place-view', { darkmode: ui.darkMode })}>
+        <div className={cx('place-list__place-view', { darkmode: darkMode })}>
           <div className="place-list__place-view__left-side">
             <BookSelectList
               selectedBooks={place.bookIds}
@@ -390,7 +380,7 @@ const PlaceViewConnector = (connector) => {
     notes: PropTypes.array.isRequired,
     selection: PropTypes.object.isRequired,
     editorPath: PropTypes.string.isRequired,
-    ui: PropTypes.object.isRequired,
+    darkMode: PropTypes.bool,
     tags: PropTypes.array.isRequired,
     places: PropTypes.array,
   }
@@ -414,7 +404,7 @@ const PlaceViewConnector = (connector) => {
           customAttributes: state.present.customAttributes.places,
           cards: state.present.cards,
           notes: state.present.notes,
-          ui: state.present.ui,
+          darkMode: selectors.isDarkModeSelector(state.present),
           editorPath,
           selection: selectors.selectionSelector(state.present, editorPath),
           tags: sortedTagsSelector(state.present),

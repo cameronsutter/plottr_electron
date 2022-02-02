@@ -75,7 +75,7 @@ const TagListViewConnector = (connector) => {
       if (!appending || categoryId !== newCategoryId) {
         return (
           <div
-            className={cx('tag-list__new', { darkmode: this.props.ui.darkMode })}
+            className={cx('tag-list__new', { darkmode: this.props.darkMode })}
             onClick={() => this.appendBlankTag(categoryId)}
           >
             <Glyphicon glyph="plus" />
@@ -85,7 +85,7 @@ const TagListViewConnector = (connector) => {
         return (
           <TagView
             key={`tag-category-${categoryId}`}
-            new
+            newTag
             tag={{ title: '', categoryId }}
             doneCreating={this.doneCreating}
           />
@@ -104,7 +104,7 @@ const TagListViewConnector = (connector) => {
       const tagsInCategory = this.renderVisibleTag(category)
       return (
         <div
-          className={cx('tag-list__category-wrapper', { darkmode: this.props.ui.darkMode })}
+          className={cx('tag-list__category-wrapper', { darkmode: this.props.darkMode })}
           key={`category-${category.id}`}
         >
           <h2>{category.name}</h2>
@@ -152,14 +152,14 @@ const TagListViewConnector = (connector) => {
     }
 
     render() {
-      const { ui } = this.props
+      const { darkMode } = this.props
       return (
         <div className="tag-list__container container-with-sub-nav">
           {this.renderSubNav()}
           {this.renderCategoriesModal()}
           <div className="tab-body">
             <div className="tab-body__title">
-              <h1 className={cx('secondary-text', { darkmode: ui.darkMode })}>{i18n('Tags')}</h1>
+              <h1 className={cx('secondary-text', { darkmode: darkMode })}>{i18n('Tags')}</h1>
             </div>
             <div className="tag-list__wrapper">
               <div className="tag-category-list">{this.renderTags()}</div>
@@ -173,24 +173,18 @@ const TagListViewConnector = (connector) => {
   TagListView.propTypes = {
     tags: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
-    ui: PropTypes.object.isRequired,
+    darkMode: PropTypes.bool,
     tagsByCategorySelector: PropTypes.object.isRequired,
     categories: PropTypes.array.isRequired,
   }
 
   const { redux } = connector
   const {
-    pltr: {
-      selectors: { sortedTagsSelector, sortedTagCategoriesSelector, tagsByCategorySelector },
-      actions,
-    },
+    pltr: { selectors, actions },
   } = connector
   const TagActions = actions.tag
   checkDependencies({
     redux,
-    sortedTagsSelector,
-    sortedTagCategoriesSelector,
-    tagsByCategorySelector,
     actions,
     TagActions,
   })
@@ -201,10 +195,10 @@ const TagListViewConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          tags: sortedTagsSelector(state.present),
-          ui: state.present.ui,
-          categories: sortedTagCategoriesSelector(state.present),
-          tagsByCategorySelector: tagsByCategorySelector(state.present),
+          tags: selectors.sortedTagsSelector(state.present),
+          darkMode: selectors.isDarkModeSelector(state.present),
+          categories: selectors.sortedTagCategoriesSelector(state.present),
+          tagsByCategorySelector: selectors.tagsByCategorySelector(state.present),
         }
       },
       (dispatch) => {

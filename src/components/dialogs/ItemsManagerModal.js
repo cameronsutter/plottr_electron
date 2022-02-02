@@ -138,7 +138,20 @@ const ItemsManagerModelConnector = (connector) => {
     closeDialog: PropTypes.func.isRequired,
   }
 
-  return ItemsManagerModal
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect((state) => ({
+      darkMode: selectors.isDarkModeSelector(state.present),
+    }))(ItemsManagerModal)
+  }
+
+  throw new Error('Could not connect ItemsManagerModal')
 }
 
 export default ItemsManagerModelConnector

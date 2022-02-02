@@ -101,6 +101,9 @@ import OverlayTrigger from './OverlayTrigger'
 
 // Dashboard
 import DashboardBody from './dashboard/navigation/DashboardBody'
+import DashboardNav from './dashboard/navigation/DashboardNav'
+import ChoiceView from './dashboard/account/ChoiceView'
+import ExpiredView from './dashboard/account/ExpiredView'
 
 // Firebase
 import FirebaseLogin from './FirebaseLogin'
@@ -176,6 +179,9 @@ export {
   ProjectTemplateDetails,
   CharacterTemplateDetails,
   DashboardBody,
+  DashboardNav,
   FirebaseLogin,
+  ChoiceView,
+  ExpiredView,
   connections,
 }

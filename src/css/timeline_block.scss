@@ -332,11 +332,11 @@
       }
 
       th.rotate-45 {
-        .vertical-line-list__append-line {
+        .vertical-line-list__append-line--small {
           cursor: pointer;
           font-size: 8px;
 
-          .vertical-line-list__append-line-wrapper {
+          .vertical-line-list__append-line-wrapper--small {
             padding: 0;
             margin: 0;
             border: none;

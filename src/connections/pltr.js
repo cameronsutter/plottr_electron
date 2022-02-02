@@ -73,8 +73,11 @@ import {
   ProjectTemplateDetails,
   CharacterTemplateDetails,
   DashboardBody as UnconnectedDashboardBody,
+  DashboardNav,
   ActsHelpModal as UnconnectedActsHelpModal,
   FirebaseLogin as UnconnectedFirebaseLogin,
+  ChoiceView as UnconnectedChoiceView,
+  ExpiredView as UnconnectedExpiredView,
 } from '../components'
 
 const connector = {
@@ -92,7 +95,15 @@ const connector = {
 //
 // You can check the platform supplied to this function using the
 // function: `checkPltrConnector`
-
+//
+// The platform can also contain side effects that write data to
+// external systems -- such as telling an API to update the value of a
+// template.
+//
+// IMPORTANT: The platform shouldn't be a source of data!  If you find
+// yourself putting data into platform, then ask yourself why you
+// aren't putting it into Redux instead.  Redux is a much better way
+// of modelling data and maintaing consistency across the application.
 const pltrTypeSpecs = {
   undo: PropTypes.func.isRequired,
   redo: PropTypes.func.isRequired,
@@ -101,11 +112,10 @@ const pltrTypeSpecs = {
   defaultBackupLocation: PropTypes.string.isRequired,
   setDarkMode: PropTypes.func.isRequired,
   file: PropTypes.shape({
+    sortAndSearch: PropTypes.func.isRequired,
     createNew: PropTypes.func.isRequired,
     openExistingFile: PropTypes.func.isRequired,
     doesFileExist: PropTypes.func.isRequired,
-    useSortedKnownFiles: PropTypes.func.isRequired,
-    useSortedKnownFilesIgnoringLoggedIn: PropTypes.func.isRequired,
     isTempFile: PropTypes.func.isRequired,
     pathSep: PropTypes.string.isRequired,
     basename: PropTypes.func.isRequired,
@@ -135,36 +145,30 @@ const pltrTypeSpecs = {
   updateLanguage: PropTypes.func.isRequired,
   updateBeatHierarchyFlag: PropTypes.func.isRequired,
   license: PropTypes.shape({
-    useLicenseInfo: PropTypes.func.isRequired,
     checkForActiveLicense: PropTypes.func.isRequired,
-    useTrialStatus: PropTypes.func.isRequired,
-    licenseStore: PropTypes.object.isRequired,
     verifyLicense: PropTypes.func.isRequired,
     trial90days: PropTypes.array.isRequired,
     checkForPro: PropTypes.func.isRequired,
+    startTrial: PropTypes.func.isRequired,
+    extendTrial: PropTypes.func.isRequired,
+    deleteLicense: PropTypes.func.isRequired,
+    saveLicenseInfo: PropTypes.func.isRequired,
   }),
   reloadMenu: PropTypes.func.isRequired,
   template: PropTypes.shape({
-    TemplateFetcher: PropTypes.object.isRequired,
-    listTemplates: PropTypes.func.isRequired,
-    listCustomTemplates: PropTypes.func.isRequired,
-    getTemplateById: PropTypes.func.isRequired,
     deleteTemplate: PropTypes.func.isRequired,
     editTemplateDetails: PropTypes.func.isRequired,
     startSaveAsTemplate: PropTypes.func.isRequired,
     saveTemplate: PropTypes.func.isRequired,
-    useFilteredSortedTemplates: PropTypes.func.isRequired,
-    useLocalCustomTemplatesInfo: PropTypes.func.isRequired,
-    useCustomTemplatesInfo: PropTypes.func.isRequired,
-    useTemplatesInfo: PropTypes.func.isRequired,
   }),
-  settings: PropTypes.object.isRequired,
-  useSettingsInfo: PropTypes.func.isRequired,
+  settings: PropTypes.shape({
+    saveAppSetting: PropTypes.func.isRequired,
+  }),
   user: PropTypes.object.isRequired,
-  os: PropTypes.string.isRequired,
+  os: PropTypes.func.isRequired,
   isDevelopment: PropTypes.bool.isRequired,
-  isWindows: PropTypes.bool.isRequired,
-  isMacOS: PropTypes.bool.isRequired,
+  isWindows: PropTypes.func.isRequired,
+  isMacOS: PropTypes.func.isRequired,
   openExternal: PropTypes.func.isRequired,
   createErrorReport: PropTypes.func.isRequired,
   createFullErrorReport: PropTypes.func.isRequired,
@@ -187,11 +191,8 @@ const pltrTypeSpecs = {
   export: PropTypes.shape({
     askToExport: PropTypes.func.isRequired,
     export_config: PropTypes.object.isRequired,
+    saveExportConfigSettings: PropTypes.func.isRequired,
   }),
-  store: PropTypes.shape({
-    useExportConfigInfo: PropTypes.func.isRequired,
-  }),
-  useBackupFolders: PropTypes.func.isRequired,
   moveFromTemp: PropTypes.func.isRequired,
   showItemInFolder: PropTypes.func.isRequired,
   tempFilesPath: PropTypes.string.isRequired,
@@ -208,7 +209,6 @@ const pltrTypeSpecs = {
   lockRCE: PropTypes.func.isRequired,
   machineIdSync: PropTypes.func.isRequired,
   extractImages: PropTypes.func.isRequired,
-  useProLicenseInfo: PropTypes.func.isRequired,
   firebase: PropTypes.shape({
     startUI: PropTypes.func.isRequired,
     firebaseUI: PropTypes.func.isRequired,
@@ -307,7 +307,10 @@ export default (platform) => {
     ProjectTemplateDetails,
     CharacterTemplateDetails,
     DashboardBody: UnconnectedDashboardBody(connectorObject),
+    DashboardNav,
     ActsHelpModal: UnconnectedActsHelpModal(connectorObject),
     FirebaseLogin: UnconnectedFirebaseLogin(connectorObject),
+    ChoiceView: UnconnectedChoiceView(connectorObject),
+    ExpiredView: UnconnectedExpiredView(connectorObject),
   }
 }

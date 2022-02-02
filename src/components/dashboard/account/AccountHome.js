@@ -13,13 +13,9 @@ import { checkDependencies } from '../../checkDependencies'
 
 const AccountHomeConnector = (connector) => {
   const {
-    platform: {
-      license: { useTrialStatus, useLicenseInfo },
-      mpq,
-      settings,
-    },
+    platform: { mpq },
   } = connector
-  checkDependencies({ useTrialStatus, useLicenseInfo, mpq })
+  checkDependencies({ mpq })
 
   const About = UnconnectedAbout(connector)
   const OptionsHome = UnconnectedOptionsHome(connector)
@@ -30,21 +26,14 @@ const AccountHomeConnector = (connector) => {
 
   const viewsToHideNav = ['proOnboarding', 'choice']
 
-  const AccountHome = ({ darkMode, hasCurrentProLicense }) => {
-    const trialInfo = useTrialStatus()
-    const [_licenseInfo, licenseInfoSize] = useLicenseInfo()
-    const isFirstTime = () => !licenseInfoSize && !trialInfo.started && !hasCurrentProLicense
-    const [view, setView] = useState(isFirstTime() ? 'choice' : 'account')
+  const AccountHome = ({ settings, isFirstTime }) => {
+    const [view, setView] = useState(isFirstTime ? 'choice' : 'account')
     const [viewIsLocked, setLock] = useState(false)
-    const isOnboardingDone = settings.get('isOnboardingDone')
+    const isOnboardingDone = settings.isOnboardingDone
 
     useEffect(() => {
       setLock(view == 'proOnboarding')
     }, [view])
-
-    useEffect(() => {
-      if (!isOnboardingDone && hasPro()) startOnboarding()
-    }, [isOnboardingDone])
 
     const handleSelect = (selectedKey) => {
       if (viewIsLocked) return
@@ -59,23 +48,20 @@ const AccountHomeConnector = (connector) => {
       setView('account')
     }
 
-    const AccountBody = () => {
-      switch (view) {
-        case 'choice':
-          return <ChoiceView darkMode={darkMode} goToAccount={() => setView('account')} />
-        case 'proOnboarding':
-          return <ProOnboarding cancel={cancelOnboarding} />
-        case 'account':
-          return <Account darkMode={darkMode} startProOnboarding={startOnboarding} />
-        case 'settings':
-          return <OptionsHome />
-        case 'backups':
-          return <BackupsHome />
-        case 'about':
-          return <About />
-        default:
-          null
-      }
+    let body
+    switch (view) {
+      case 'choice':
+        body = <ChoiceView goToAccount={() => setView('account')} />
+        break
+      case 'proOnboarding':
+        body = <ProOnboarding cancel={cancelOnboarding} />
+        break
+      case 'account':
+        body = <Account startProOnboarding={startOnboarding} />
+        break
+      case 'about':
+        body = <About />
+        break
     }
 
     const AccountNav = () => {
@@ -85,12 +71,6 @@ const AccountHomeConnector = (connector) => {
           <Nav bsStyle="pills" activeKey={view} onSelect={handleSelect}>
             <NavItem eventKey="account" disabled={viewIsLocked}>
               {t('Account')}
-            </NavItem>
-            <NavItem eventKey="settings" disabled={viewIsLocked}>
-              {t('Settings')}
-            </NavItem>
-            <NavItem eventKey="backups" disabled={viewIsLocked}>
-              {t('Backups')}
             </NavItem>
             <NavItem eventKey="about" disabled={viewIsLocked}>
               {t('About')}
@@ -103,14 +83,14 @@ const AccountHomeConnector = (connector) => {
     return (
       <div className="dashboard__account">
         <AccountNav />
-        <AccountBody />
+        {body}
       </div>
     )
   }
 
   AccountHome.propTypes = {
-    darkMode: PropTypes.bool,
-    hasCurrentProLicense: PropTypes.bool,
+    settings: PropTypes.object.isRequired,
+    isFirstTime: PropTypes.bool,
   }
 
   const {
@@ -122,7 +102,8 @@ const AccountHomeConnector = (connector) => {
     const { connect } = redux
     return connect(
       (state) => ({
-        hasCurrentProLicense: selectors.hasProSelector(state.present),
+        settings: selectors.appSettingsSelector(state.present),
+        isFirstTime: selectors.isFirstTimeSelector(state.present),
       }),
       {}
     )(AccountHome)

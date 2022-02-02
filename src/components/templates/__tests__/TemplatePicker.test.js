@@ -12,7 +12,6 @@ describe.skip('TemplatePicker', () => {
     onChooseTemplate: jest.fn(),
     isOpen: true,
     type: ['plotlines', 'projects', 'custom'],
-    darkMode: false,
     canMakeCharacterTemplates: true,
     showCancelButton: true,
     confirmButtonText: 'Choose',

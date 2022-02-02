@@ -53,7 +53,7 @@ const RichTextConnector = (connector) => {
     const onCloud = props.isLoggedIn && props.isCloudFile
 
     const stealLock = useCallback(() => {
-      if (!onCloud || stealingLock || props.isOffline || props.isResuming) return
+      if (!props.id || !onCloud || stealingLock || props.isOffline || props.isResuming) return
 
       setFocus(true)
       setStealingLock(true)
@@ -76,7 +76,7 @@ const RichTextConnector = (connector) => {
     ])
 
     const relinquishLock = useCallback(() => {
-      if (onCloud && releaseRCELock && lock?.clientId === props.clientId) {
+      if (props.id && onCloud && releaseRCELock && lock?.clientId === props.clientId) {
         releaseRCELock(props.fileId, props.id, lock)
       }
     }, [props.fileId, props.id, props.clientId, lock])
@@ -95,7 +95,7 @@ const RichTextConnector = (connector) => {
 
     // Check for edit locks
     useEffect(() => {
-      if (!onCloud || props.isOffline || props.isResuming) return () => {}
+      if (!onCloud || props.isOffline || props.isResuming || !props.id) return () => {}
 
       return listenForRCELock(props.fileId, props.id, props.clientId, (lockResult) => {
         if (!isEqual(lockResult, lock)) {
@@ -120,7 +120,7 @@ const RichTextConnector = (connector) => {
     ])
 
     useEffect(() => {
-      if (props.isOffline || props.isResuming) {
+      if (props.isOffline || props.isResuming || !props.id) {
         return () => {}
       }
 
@@ -146,7 +146,6 @@ const RichTextConnector = (connector) => {
           autoFocus={props.autofocus}
           selection={props.selection}
           text={props.description}
-          darkMode={props.darkMode}
         />
       )
     } else {
@@ -190,7 +189,6 @@ const RichTextConnector = (connector) => {
     editable: PropTypes.bool,
     autofocus: PropTypes.bool,
     className: PropTypes.string,
-    darkMode: PropTypes.bool.isRequired,
     isStorageURL: PropTypes.func,
     isCloudFile: PropTypes.bool,
     isLoggedIn: PropTypes.any,

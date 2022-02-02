@@ -5,22 +5,20 @@ import { Col, Grid, Row, FormControl } from 'react-bootstrap'
 import UnconnectedDashboardErrorBoundary from '../../containers/DashboardErrorBoundary'
 import UnconnectedBackupFiles from './BackupFiles'
 import UnconnectedFolders from './Folders'
-import { checkDependencies } from '../../checkDependencies'
 
 const BackupsHomeConnector = (connector) => {
-  const {
-    platform: { settings, useBackupFolders },
-  } = connector
-  checkDependencies({ settings, useBackupFolders })
-
   const BackupFiles = UnconnectedBackupFiles(connector)
   const Folders = UnconnectedFolders(connector)
   const DashboardErrorBoundary = UnconnectedDashboardErrorBoundary(connector)
 
-  const BackupsHome = ({ userId }) => {
+  const BackupsHome = ({ userId, computeFolders }) => {
     const [selectedFolder, selectFolder] = useState(null)
     const [searchTerm, setSearchTerm] = useState('')
-    const folders = useBackupFolders(userId, searchTerm, !selectedFolder)
+    const [folders, setFolders] = useState([])
+
+    useEffect(() => {
+      setFolders(computeFolders(searchTerm, selectedFolder))
+    }, [searchTerm, selectedFolder, setFolders, computeFolders])
 
     useEffect(() => {
       setSearchTerm('')
@@ -71,9 +69,7 @@ const BackupsHomeConnector = (connector) => {
           </Row>
         </Grid>
         <div className="dashboard__backups__wrapper">
-          <DashboardErrorBoundary darMode={settings.get('user.dark')}>
-            {body}
-          </DashboardErrorBoundary>
+          <DashboardErrorBoundary>{body}</DashboardErrorBoundary>
         </div>
       </div>
     )
@@ -81,6 +77,7 @@ const BackupsHomeConnector = (connector) => {
 
   BackupsHome.propTypes = {
     userId: PropTypes.string.isRequired,
+    computeFolders: PropTypes.func.isRequired,
   }
 
   const {
@@ -93,6 +90,8 @@ const BackupsHomeConnector = (connector) => {
 
     return connect((state) => ({
       userId: selectors.userIdSelector(state.present),
+      computeFolders: (searchTerm, selectedFolder) =>
+        selectors.filteredSortedBackupsSelector(state.present, searchTerm, selectedFolder),
     }))(BackupsHome)
   }
 

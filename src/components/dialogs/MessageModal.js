@@ -4,7 +4,7 @@ import { Modal, Button, Form } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 
 export default function MessageModal(props) {
-  const { message, onAcknowledge, disableAcknowledge } = props
+  const { message, onAcknowledge, disableAcknowledge, buttonText } = props
   return (
     <Modal show={true} dialogClassName="center-modal-vertically">
       <Modal.Body>
@@ -24,7 +24,7 @@ export default function MessageModal(props) {
           }}
         >
           <Button onClick={onAcknowledge} disabled={disableAcknowledge}>
-            {i18n('Ok')}
+            {i18n(buttonText) || i18n('Ok')}
           </Button>
         </Form>
       </Modal.Footer>
@@ -37,4 +37,5 @@ MessageModal.propTypes = {
   onAcknowledge: PropTypes.func,
   children: PropTypes.any,
   disableAcknowledge: PropTypes.bool,
+  buttonText: PropTypes.string,
 }

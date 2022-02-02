@@ -24,13 +24,11 @@ const connector = {
   },
   pltr,
   platform: {
-    os: 'unknown',
+    os: () => 'unknown',
     undo: () => {},
     redo: () => {},
     appVersion: '2021.4.6',
     template: {
-      listTemplates: () => [],
-      listCustomTemplates: () => [],
       deleteTemplate: () => {},
       editTemplateDetails: () => {},
       startSaveAsTemplate: () => {},
@@ -59,6 +57,7 @@ const connector = {
       isStorageURL: () => false,
       resolveToPublicUrl: () => {},
       saveImageToStorageBlob: () => {},
+      saveImageToStorageFromURL: () => {},
     },
   },
 }

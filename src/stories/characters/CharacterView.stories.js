@@ -81,9 +81,6 @@ const Template = (args) => (
       removeTag: () => {},
     }}
     tags={[TAG]}
-    ui={{
-      darkMode: false,
-    }}
     createErrorReport={() => {}}
     log={{}}
     {...args}

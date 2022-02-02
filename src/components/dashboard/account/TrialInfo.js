@@ -9,9 +9,9 @@ const TrialInfoConnector = (connector) => {
   const VerifyView = UnconnectedVerifyView(connector)
 
   const TrialInfo = ({ trialInfo, darkMode }) => {
-    const { startedOn, endsOn, daysLeft } = trialInfo
+    const { startsAt, endsAt, daysLeft } = trialInfo
     const [showVerify, setShowVerify] = useState(false)
-    const startedDate = new Date(startedOn)
+    const startedDate = new Date(startsAt)
     const fewDays = daysLeft < 10
 
     return (
@@ -29,7 +29,7 @@ const TrialInfoConnector = (connector) => {
           </dl>
           <dl className="dl-horizontal">
             <dt>{t('Ends After')}</dt>
-            <dd>{t('{date, date, long}', { date: endsOn })}</dd>
+            <dd>{t('{date, date, long}', { date: endsAt })}</dd>
             <dt>{t('License')}</dt>
             <dd>
               <a
@@ -43,7 +43,7 @@ const TrialInfoConnector = (connector) => {
             </dd>
           </dl>
         </div>
-        {showVerify ? <VerifyView darkMode={darkMode} goBack={() => setShowVerify(false)} /> : null}
+        {showVerify ? <VerifyView goBack={() => setShowVerify(false)} /> : null}
       </div>
     )
   }
@@ -53,7 +53,20 @@ const TrialInfoConnector = (connector) => {
     darkMode: PropTypes.bool,
   }
 
-  return TrialInfo
+  const {
+    pltr: { selectors },
+    redux,
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+    return connect((state) => ({
+      trialInfo: selectors.trialInfoSelector(state.present),
+      darkMode: selectors.isDarkModeSelector(state.present),
+    }))(TrialInfo)
+  }
+
+  throw new Error('Could not connect TrialInfo')
 }
 
 export default TrialInfoConnector

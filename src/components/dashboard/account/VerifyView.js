@@ -16,17 +16,16 @@ const GREEN = 'bg-success'
 const VerifyViewConnector = (connector) => {
   const {
     platform: {
-      license: { verifyLicense, trial90days, trial60days, useLicenseInfo, useTrialStatus },
+      license: { saveLicenseInfo, startTrial, verifyLicense, trial90days, trial60days },
       openExternal,
       log,
     },
   } = connector
   checkDependencies({
+    saveLicenseInfo,
     verifyLicense,
     trial90days,
     trial60days,
-    useLicenseInfo,
-    useTrialStatus,
     openExternal,
     log,
   })
@@ -63,9 +62,6 @@ const VerifyViewConnector = (connector) => {
       }
     }
 
-    // TODO: refactor useLicenseInfo so it returns functions in an object
-    const [_licenseInfo, _licenseInfoSize, _setKey, setLicenseInfo] = useLicenseInfo()
-    const { startTrial } = useTrialStatus()
     const [alertText, setAlertText] = useState(makeAlertText(navigator.onLine ? '' : OFFLINE))
     const [showAlert, setShowAlert] = useState(!!alertText)
     const [alertClass, setAlertClass] = useState(RED)
@@ -110,13 +106,13 @@ const VerifyViewConnector = (connector) => {
           setAlertText(makeAlertText(SUCCESS))
           if (process.env.NODE_ENV !== 'development') {
             setTimeout(() => {
-              setLicenseInfo(licenseData)
+              saveLicenseInfo(licenseData)
               success()
             }, 500)
           } else {
             log.info('not setting license because of dev mode')
             // setTimeout(() => {
-            //   setLicenseInfo(licenseData)
+            //   saveLicenseInfo(licenseData)
             //   success()
             // }, 500)
           }
@@ -201,7 +197,20 @@ const VerifyViewConnector = (connector) => {
     darkMode: PropTypes.bool,
   }
 
-  return VerifyView
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect((state) => ({
+      darkMode: selectors.isDarkModeSelector(state.present),
+    }))(VerifyView)
+  }
+
+  throw new Error('Could not connect VerifyView')
 }
 
 export default VerifyViewConnector

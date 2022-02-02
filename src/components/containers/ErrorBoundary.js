@@ -50,7 +50,7 @@ const ErrorBoundaryConnector = (connector) => {
     }
 
     createReport = () => {
-      createErrorReport(this.error, this.errorInfo)
+      createErrorReport(this.error, this.errorInfo, this.props.proInfo, this.props.trialInfo)
     }
 
     goToSupport = () => {
@@ -112,9 +112,14 @@ const ErrorBoundaryConnector = (connector) => {
   ErrorBoundary.propTypes = {
     children: PropTypes.node,
     darkMode: PropTypes.bool,
+    proInfo: PropTypes.object,
+    trialInfo: PropTypes.object,
   }
 
-  const { redux } = connector
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
 
   checkDependencies({ redux })
 
@@ -124,6 +129,8 @@ const ErrorBoundaryConnector = (connector) => {
     return connect((state) => {
       return {
         darkMode: state.present.ui.darkMode,
+        proInfo: selectors.proInfoSelector(state.present),
+        trialInfo: selectors.trialInfoSelector(state.present),
       }
     })(ErrorBoundary)
   }

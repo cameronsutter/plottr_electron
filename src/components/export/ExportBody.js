@@ -6,20 +6,11 @@ import GeneralOptions from './options/GeneralOptions'
 import CharacterOptions from './options/CharacterOptions'
 import PlaceOptions from './options/PlaceOptions'
 import NoteOptions from './options/NoteOptions'
-import { checkDependencies } from '../checkDependencies'
 
 const ExportBodyConnector = (connector) => {
-  const {
-    platform: {
-      store: { useExportConfigInfo },
-    },
-  } = connector
-  checkDependencies({ useExportConfigInfo })
-
   const OutlineOptions = OutlineOptionsConnector(connector)
 
-  function ExportBody({ type, onChange }) {
-    const [exportConfig] = useExportConfigInfo()
+  function ExportBody({ type, onChange, exportConfig }) {
     const [options, setOptions] = useState(exportConfig[type])
 
     useEffect(() => {
@@ -57,9 +48,23 @@ const ExportBodyConnector = (connector) => {
   ExportBody.propTypes = {
     type: PropTypes.string,
     onChange: PropTypes.func,
+    exportConfig: PropTypes.object.isRequired,
   }
 
-  return ExportBody
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect((state) => ({
+      exportConfig: selectors.exportSettingsSelector(state.present),
+    }))(ExportBody)
+  }
+
+  throw new Error('Could not connect ExportBody')
 }
 
 export default ExportBodyConnector

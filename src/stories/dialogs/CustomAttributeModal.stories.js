@@ -16,7 +16,6 @@ const Template = (args) => (
     hideSaveAsTemplate={false}
     customAttributes={[]}
     customAttributesThatCanChange={[]}
-    ui={{ darkMode: false }}
     closeDialog={() => {}}
     addAttribute={() => {}}
     removeAttribute={() => {}}

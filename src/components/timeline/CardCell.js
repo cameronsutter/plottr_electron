@@ -118,7 +118,7 @@ const CardCellConnector = (connector) => {
         // dropped in from a different beat
         newOrder = currentIds
         if (Array.isArray(id) || id.length > 1) {
-          newOrder.splice(-1, 0, ...id)
+          newOrder = id.concat(currentIds)
         } else {
           newOrder.splice(positionWithinLine, 0, id)
         }
@@ -173,11 +173,12 @@ const CardCellConnector = (connector) => {
                 beatId={beatId}
                 lineId={lineId}
                 idx={idx}
+                positionWithinLine={idx}
                 beatPosition={beatPosition}
                 linePosition={linePosition}
                 color={color}
                 last={idxOfCards == idx}
-                moveCard={this.moveSceneCardAbove}
+                moveCard={this.moveSceneCard}
                 allowDrop={arentHidden || isSmall}
               />
             </ErrorBoundary>

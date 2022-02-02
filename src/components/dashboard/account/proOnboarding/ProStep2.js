@@ -6,33 +6,15 @@ import { StepBody } from '../../../onboarding/Step'
 import { Spinner } from '../../../Spinner'
 import UnconnectedUploading from './Uploading'
 import UnconnectedChoose from './Choose'
-import { checkDependencies } from '../../../checkDependencies'
 
 const isPlottrCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
 
 const ProStep2Connector = (connector) => {
-  const {
-    platform: {
-      file: { useSortedKnownFilesIgnoringLoggedIn },
-      template: { useLocalCustomTemplatesInfo },
-    },
-  } = connector
-  checkDependencies({
-    useSortedKnownFilesIgnoringLoggedIn,
-    useLocalCustomTemplatesInfo,
-  })
-
   const Uploading = UnconnectedUploading(connector)
   const Choose = UnconnectedChoose(connector)
 
-  const ProStep2 = ({ nextStep }) => {
-    const initialFrbFiles = useRef([])
-    const [sortedIds, filesById] = useSortedKnownFilesIgnoringLoggedIn(
-      '',
-      initialFrbFiles.current,
-      false
-    )
-    const [templateInfo] = useLocalCustomTemplatesInfo()
+  const ProStep2 = ({ nextStep, fileSystemCustomTemplates, sortedFileSystemKnownFilesById }) => {
+    const [sortedIds, filesById] = sortedFileSystemKnownFilesById
     const [nothingToUpload, setNothingToUpload] = useState(null)
     const [view, setView] = useState('choice')
     const [templates, setTemplates] = useState(null)
@@ -41,7 +23,7 @@ const ProStep2Connector = (connector) => {
 
     useEffect(() => {
       // discover all templates
-      const templatesList = Object.values(templateInfo)
+      const templatesList = fileSystemCustomTemplates
       if (!templates && templatesList.length) {
         setTemplates(templatesList)
       }
@@ -60,12 +42,12 @@ const ProStep2Connector = (connector) => {
       if (!templatesList.length && !sortedIds.length) {
         setNothingToUpload(true)
       }
-    }, [sortedIds, templateInfo])
+    }, [sortedIds, fileSystemCustomTemplates])
 
     useEffect(() => {
       // there's nothing to upload
-      if (templateInfo && sortedIds && nothingToUpload) nextStep()
-    }, [sortedIds, templateInfo, nothingToUpload])
+      if (fileSystemCustomTemplates && sortedIds && nothingToUpload) nextStep()
+    }, [sortedIds, fileSystemCustomTemplates, nothingToUpload])
 
     const finalizeChoices = (selectedProjects, selectedTemplates) => {
       setProjects(selectedProjects)
@@ -118,9 +100,24 @@ const ProStep2Connector = (connector) => {
 
   ProStep2.propTypes = {
     nextStep: PropTypes.func,
+    fileSystemCustomTemplates: PropTypes.array.isRequired,
+    sortedFileSystemKnownFilesById: PropTypes.array.isRequired,
   }
 
-  return ProStep2
+  const {
+    pltr: { selectors },
+    redux,
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+    return connect((state) => ({
+      fileSystemCustomTemplates: selectors.fileSystemCustomTemplatesSelector(state.present),
+      sortedFileSystemKnownFilesById: selectors.sortedFileSystemKnownFilesById(state.present),
+    }))(ProStep2)
+  }
+
+  throw new Error('Could not connect ProStep2')
 }
 
 export default ProStep2Connector

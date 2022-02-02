@@ -25,23 +25,40 @@ const FileActionsConnector = (connector) => {
     os,
   })
 
-  const osIsUnknown = os === 'unknown'
-
-  let showInMessage = t('Show in File Explorer')
-  if (isMacOS) {
-    showInMessage = t('Show in Finder')
-  }
-
-  const FileActions = ({ missing, id, fileName, filePath, openFile, permission, isCloudFile }) => {
+  const FileActions = ({
+    missing,
+    id,
+    fileName,
+    filePath,
+    openFile,
+    permission,
+    isCloudFile,
+    offline,
+  }) => {
     const [deleting, setDeleting] = useState(false)
+
+    const osIsUnknown = os() === 'unknown'
+
+    let showInMessage = t('Show in File Explorer')
+    if (isMacOS()) {
+      showInMessage = t('Show in Finder')
+    }
 
     const deleteFile = () => {
       setDeleting(false)
-      deleteKnownFile(id, filePath)
+      if (isCloudFile) {
+        deleteKnownFile(id, id)
+      } else {
+        deleteKnownFile(id, filePath)
+      }
     }
 
     const _renameFile = () => {
-      renameFile(filePath)
+      if (isCloudFile) {
+        renameFile(id)
+      } else {
+        renameFile(filePath)
+      }
     }
 
     const renderDeleteFile = () => {
@@ -60,9 +77,14 @@ const FileActionsConnector = (connector) => {
 
     const doTheThing = (eventKey) => {
       switch (eventKey) {
-        case 'open':
-          openFile(filePath, id)
+        case 'open': {
+          if (isCloudFile) {
+            openFile(id, id)
+          } else {
+            openFile(filePath, id)
+          }
           break
+        }
         case 'show':
           showItemInFolder(filePath)
           break
@@ -92,7 +114,7 @@ const FileActionsConnector = (connector) => {
             {isCloudFile || osIsUnknown || missing ? null : (
               <MenuItem eventKey="show">{showInMessage}</MenuItem>
             )}
-            {missing ? null : <MenuItem eventKey="rename">{t('Rename')}</MenuItem>}
+            {missing || offline ? null : <MenuItem eventKey="rename">{t('Rename')}</MenuItem>}
             {(isCloudFile && permission !== 'owner') || missing ? null : (
               <MenuItem eventKey="delete">{t('Delete')}</MenuItem>
             )}
@@ -113,6 +135,7 @@ const FileActionsConnector = (connector) => {
     openFile: PropTypes.func,
     permission: PropTypes.string,
     isCloudFile: PropTypes.bool,
+    offline: PropTypes.bool,
   }
 
   return FileActions

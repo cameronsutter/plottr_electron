@@ -1,5 +1,4 @@
 import React from 'react'
-import { PropTypes } from 'react-proptypes'
 
 import UnconnectedCharacterCategoriesModal from '../../components/characters/CharacterCategoriesModal'
 
@@ -11,10 +10,9 @@ export default {
   argTypes: {},
 }
 
-const Template = ({ darkMode, ...args }) => (
+const Template = ({ ...args }) => (
   <CharacterCategoriesModal
     closeDialog={() => {}}
-    ui={{ darkMode }}
     addCharacterCategory={() => {}}
     deleteCharacterCategory={() => {}}
     updateCharacterCategory={() => {}}
@@ -24,9 +22,7 @@ const Template = ({ darkMode, ...args }) => (
   />
 )
 
-Template.propTypes = {
-  darkMode: PropTypes.isRequired,
-}
+Template.propTypes = {}
 
 export const Example = Template.bind({})
 Example.args = {}

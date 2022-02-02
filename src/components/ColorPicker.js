@@ -215,7 +215,6 @@ const ColorPickerConnector = (connector) => {
   ColorPicker.propTypes = {
     closeDialog: PropTypes.func.isRequired,
     color: PropTypes.string,
-    darkMode: PropTypes.bool,
   }
 
   return ColorPicker

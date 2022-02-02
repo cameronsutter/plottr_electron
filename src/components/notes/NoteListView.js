@@ -139,9 +139,7 @@ const NoteListViewConnector = (connector) => {
       return (
         <div key={`category-${category.id}`}>
           <h2>{category.name}</h2>
-          <div
-            className={cx('note-list__list', 'list-group', { darkmode: this.props.ui.darkMode })}
-          >
+          <div className={cx('note-list__list', 'list-group', { darkmode: this.props.darkMode })}>
             {notesInCategory}
           </div>
         </div>
@@ -165,7 +163,7 @@ const NoteListViewConnector = (connector) => {
     }
 
     renderSubNav() {
-      const { filterIsEmpty, uiActions, ui } = this.props
+      const { filterIsEmpty, uiActions, noteSort } = this.props
       const popover = () => (
         <Popover id="filter">
           <CustomAttrFilterList type="notes" />
@@ -189,7 +187,7 @@ const NoteListViewConnector = (connector) => {
         </Popover>
       )
       let sortGlyph = 'sort-by-attributes'
-      if (ui.noteSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
+      if (noteSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
 
       return (
         <SubNav>
@@ -250,7 +248,7 @@ const NoteListViewConnector = (connector) => {
           <Grid fluid className="tab-body">
             <Row>
               <Col sm={3}>
-                <h1 className={cx('secondary-text', { darkmode: this.props.ui.darkMode })}>
+                <h1 className={cx('secondary-text', { darkmode: this.props.darkMode })}>
                   {i18n('Notes')}{' '}
                   <Button onClick={this.handleCreateNewNote}>
                     <Glyphicon glyph="plus" />
@@ -274,28 +272,20 @@ const NoteListViewConnector = (connector) => {
     characters: PropTypes.array.isRequired,
     places: PropTypes.array.isRequired,
     tags: PropTypes.array.isRequired,
-    ui: PropTypes.object.isRequired,
+    darkMode: PropTypes.object.isRequired,
     uiActions: PropTypes.object.isRequired,
     filterIsEmpty: PropTypes.bool.isRequired,
+    noteSort: PropTypes.string.isRequired,
   }
 
   const {
     redux,
-    pltr: {
-      actions,
-      selectors: {
-        sortedNoteCategoriesSelector,
-        visibleSortedNotesByCategorySelector,
-        noteFilterIsEmptySelector,
-      },
-    },
+    pltr: { actions, selectors },
   } = connector
   checkDependencies({
     redux,
     actions,
-    sortedNoteCategoriesSelector,
-    visibleSortedNotesByCategorySelector,
-    noteFilterIsEmptySelector,
+    selectors,
   })
 
   if (redux) {
@@ -308,11 +298,13 @@ const NoteListViewConnector = (connector) => {
           characters: state.present.characters,
           places: state.present.places,
           tags: state.present.tags,
-          ui: state.present.ui,
-          categories: sortedNoteCategoriesSelector(state.present),
-          visibleNotesByCategory: visibleSortedNotesByCategorySelector(state.present),
-          filterIsEmpty: noteFilterIsEmptySelector(state.present),
+          darkMode: selectors.isDarkModeSelector(state.present),
+          categories: selectors.sortedNoteCategoriesSelector(state.present),
+          visibleNotesByCategory: selectors.visibleSortedNotesByCategorySelector(state.present),
+          filterIsEmpty: selectors.noteFilterIsEmptySelector(state.present),
           customAttributes: state.present.customAttributes.characters,
+          noteSortSelector: selectors.noteSortSelector(state.present),
+          noteSort: selectors.noteSortSelector(state.present),
         }
       },
       (dispatch) => {

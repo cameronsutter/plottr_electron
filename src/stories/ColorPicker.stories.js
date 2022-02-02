@@ -8,7 +8,6 @@ export default {
   title: 'Plottr/ColorPicker',
   component: ColorPicker,
   argTypes: {
-    darkMode: { control: 'boolean' },
     color: { control: 'color' },
   },
 }
@@ -17,7 +16,6 @@ const Template = (args) => <ColorPicker {...args} />
 
 export const Example = Template.bind({})
 Example.args = {
-  darkMode: false,
   color: '#00D4DF',
   closeDialog: () => {},
 }

@@ -11,7 +11,6 @@ export default {
   args: {
     title: { control: 'text' },
     subtitle: { control: 'text' },
-    darkMode: { control: 'boolean' },
     showSaveAsTemplate: { control: 'boolean' },
     itemType: { control: 'select' },
   },
@@ -34,7 +33,6 @@ export const Example = Template.bind({})
 Example.args = {
   title: 'A Title',
   subtitle: 'This is a sub title',
-  darkMode: false,
   showSaveAsTemplate: true,
   itemType: 'paragraph',
   items: [

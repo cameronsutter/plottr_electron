@@ -1,20 +1,20 @@
 import React from 'react'
+import { PropTypes } from 'prop-types'
 import { t as i18n } from 'plottr_locales'
 
 import { checkDependencies } from '../../checkDependencies'
 
 const DarkOptionsSelect = (connector) => {
   const {
-    platform: { useSettingsInfo, setDarkMode },
+    platform: {
+      settings: { saveAppSetting },
+    },
   } = connector
-  checkDependencies({ useSettingsInfo, setDarkMode })
+  checkDependencies({ saveAppSetting })
 
-  const DarkOptionsSelect = () => {
-    const [settings, _, saveSetting] = useSettingsInfo()
-
+  const DarkOptionsSelect = ({ settings }) => {
     const changeSetting = (ev) => {
-      saveSetting('user.dark', ev.target.value)
-      setDarkMode(ev.target.value)
+      saveAppSetting('user.dark', ev.target.value)
     }
 
     return (
@@ -26,7 +26,23 @@ const DarkOptionsSelect = (connector) => {
     )
   }
 
-  return DarkOptionsSelect
+  DarkOptionsSelect.propTypes = {
+    settings: PropTypes.object.isRequired,
+  }
+
+  const {
+    pltr: { selectors },
+    redux,
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+    return connect((state) => ({
+      settings: selectors.appSettingsSelector(state.present),
+    }))(DarkOptionsSelect)
+  }
+
+  throw new Error('Could not connect DarkOptionsSelect')
 }
 
 export default DarkOptionsSelect

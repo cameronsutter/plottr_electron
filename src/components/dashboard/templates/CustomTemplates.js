@@ -2,20 +2,8 @@ import React from 'react'
 import PropTypes from 'react-proptypes'
 import { t } from 'plottr_locales'
 
-import { checkDependencies } from '../../checkDependencies'
-
 const CustomTemplatesConnector = (connector) => {
-  const {
-    platform: {
-      template: { useCustomTemplatesInfo, useFilteredSortedTemplates },
-    },
-  } = connector
-  checkDependencies({ useCustomTemplatesInfo, useFilteredSortedTemplates })
-
-  const CustomTemplates = ({ type, searchTerm }) => {
-    const [templateInfo] = useCustomTemplatesInfo()
-    const templates = useFilteredSortedTemplates(templateInfo, type, searchTerm)
-
+  const CustomTemplates = ({ templates }) => {
     const renderedTemplates = templates.map((t) => {
       return (
         <div key={t.id} className="dashboard__template-section__item custom">
@@ -33,11 +21,24 @@ const CustomTemplatesConnector = (connector) => {
   }
 
   CustomTemplates.propTypes = {
+    templates: PropTypes.object.isRequired,
     type: PropTypes.string,
     searchTerm: PropTypes.string,
   }
 
-  return CustomTemplates
+  const {
+    pltr: { selectors },
+    redux,
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+    return connect((state, { type, searchTerm }) => ({
+      templates: selectors.filteredSortedCustomTemplatesSelector(state.present, type, searchTerm),
+    }))(CustomTemplates)
+  }
+
+  throw new Error('Could not connect CustomTemplates')
 }
 
 export default CustomTemplatesConnector

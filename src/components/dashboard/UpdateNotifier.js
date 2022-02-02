@@ -27,7 +27,6 @@ const UpdateNotifierConnector = (connector) => {
       isMacOS,
       isWindows,
       log,
-      settings,
       isDevelopment,
     },
   } = connector
@@ -46,11 +45,10 @@ const UpdateNotifierConnector = (connector) => {
     isMacOS,
     isWindows,
     log,
-    settings,
     isDevelopment,
   })
 
-  const UpdateNotifier = ({ darkMode }) => {
+  const UpdateNotifier = ({ darkMode, settings }) => {
     const [shouldCheck, setShouldCheck] = useState(true)
     const [_, setChecking] = useState(false)
     const [available, setAvailable] = useState(false)
@@ -91,7 +89,7 @@ const UpdateNotifierConnector = (connector) => {
         setHidden(false)
         setDownloadInProgress(true)
 
-        if (settings.get('diagnoseUpdate')) {
+        if (settings.diagnoseUpdate) {
           log.info('download-progress', progress)
         }
         const percent = progress.percent || percentDownloaded + 1
@@ -111,7 +109,7 @@ const UpdateNotifierConnector = (connector) => {
 
     useEffect(() => {
       if (isDevelopment) return
-      if (shouldCheck && settings.get('canGetUpdates')) {
+      if (shouldCheck && settings.canGetUpdates) {
         _checkForUpdates()
       }
     }, [shouldCheck])
@@ -128,7 +126,7 @@ const UpdateNotifierConnector = (connector) => {
     }
 
     const manualDownload = () => {
-      const os = isMacOS ? 'mac' : 'win'
+      const os = isMacOS() ? 'mac' : 'win'
       const url = `https://api.plottr.com/api/latest?platform=${os}`
       openExternal(url)
     }
@@ -185,7 +183,7 @@ const UpdateNotifierConnector = (connector) => {
     const renderProgress = () => {
       if (!downloadInProgress) return null
 
-      if (isWindows) {
+      if (isWindows()) {
         return <Spinner />
       }
 
@@ -226,6 +224,7 @@ const UpdateNotifierConnector = (connector) => {
 
   UpdateNotifier.propTypes = {
     darkMode: PropTypes.bool,
+    settings: PropTypes.object.isRequired,
   }
 
   const {
@@ -239,6 +238,7 @@ const UpdateNotifierConnector = (connector) => {
 
     return connect((state) => ({
       darkMode: selectors.isDarkModeSelector(state.present),
+      settings: selectors.appSettingsSelector(state.present),
     }))(UpdateNotifier)
   }
 

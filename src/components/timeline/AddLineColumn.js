@@ -1,30 +1,28 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { Row, Cell } from 'react-sticky-table'
+import { Cell } from 'react-sticky-table'
 import { Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 
 import { t } from 'plottr_locales'
+import { helpers } from 'pltr/v2'
 
 import InputModal from '../dialogs/InputModal'
 import UnconnectedTemplatePicker from '../templates/TemplatePicker'
 
 import { checkDependencies } from '../checkDependencies'
 
-const AddLineRowConnector = (connector) => {
+const {
+  orientedClassName: { orientedClassName },
+} = helpers
+
+const AddLineColumnConnector = (connector) => {
   const TemplatePicker = UnconnectedTemplatePicker(connector)
 
   const templatesDisabled = connector.platform.templatesDisabled
   checkDependencies({ templatesDisabled })
 
-  const AddLineRow = ({
-    actions,
-    currentTimeline,
-    hierarchyEnabled,
-    isSmall,
-    isMedium,
-    howManyCells,
-  }) => {
+  const AddLineColumn = ({ actions, currentTimeline, hierarchyEnabled, isSmall, isMedium }) => {
     const [hovering, setHovering] = useState(false)
     const [showTemplatePicker, setShowTemplatePicker] = useState(false)
     const [askingForInput, setAskingForInput] = useState(false)
@@ -71,11 +69,17 @@ const AddLineRowConnector = (connector) => {
         )
       }
 
-      const appendKlass = cx('line-list__append-line', { 'medium-timeline': isMedium })
-      return (
+      const appendKlass = cx(orientedClassName('line-list__append-line', 'vertical'), {
+        'medium-timeline': isMedium,
+      })
+      return hovering ? (
         <div className={appendKlass}>
-          {hovering ? (
-            <div className="line-list__append-line__double">
+          <div
+            className={cx(orientedClassName('line-list__append-line-wrapper', 'vertical'), {
+              'medium-timeline': isMedium,
+            })}
+          >
+            <div className={orientedClassName('line-list__append-line__double', 'vertical')}>
               <div
                 onClick={() => {
                   if (hierarchyEnabled) return
@@ -91,11 +95,17 @@ const AddLineRowConnector = (connector) => {
                 <Glyphicon glyph="plus" />
               </div>
             </div>
-          ) : (
-            <div className="line-list__append-line-wrapper">
-              <Glyphicon glyph="plus" />
-            </div>
-          )}
+          </div>
+        </div>
+      ) : (
+        <div className={appendKlass}>
+          <div
+            className={cx(orientedClassName('line-list__append-line-wrapper', 'vertical'), {
+              'medium-timeline': isMedium,
+            })}
+          >
+            <Glyphicon glyph="plus" />
+          </div>
         </div>
       )
     }
@@ -115,71 +125,47 @@ const AddLineRowConnector = (connector) => {
     }
 
     if (isSmall) {
-      const tds = [<td key={howManyCells + 1} />]
-      for (let i = 0; i < howManyCells; i++) {
-        tds.push(<td key={i} />)
-      }
-      return (
-        <tr>
-          {renderInsertButton()}
-          {tds}
-        </tr>
-      )
+      return renderInsertButton()
     } else {
       return (
-        <Row>
-          <Cell onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
-            {renderInsertButton()}
-            {renderTemplatePicker()}
-          </Cell>
-        </Row>
+        <Cell onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
+          {renderInsertButton()}
+          {renderTemplatePicker()}
+        </Cell>
       )
     }
   }
 
-  AddLineRow.propTypes = {
-    hierarchyEnabled: PropTypes.bool.isRequired,
-    howManyCells: PropTypes.number,
+  AddLineColumn.propTypes = {
+    actions: PropTypes.object.isRequired,
     currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    hierarchyEnabled: PropTypes.bool.isRequired,
     isSmall: PropTypes.bool,
     isMedium: PropTypes.bool,
-    bookId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    beats: PropTypes.array,
-    lines: PropTypes.array,
-    cards: PropTypes.array,
-    actions: PropTypes.object,
   }
 
   const {
     redux,
-    pltr: { actions, selectors },
+    pltr: { selectors, actions },
   } = connector
-  checkDependencies({ redux, actions, selectors })
 
   if (redux) {
     const { connect, bindActionCreators } = redux
 
     return connect(
-      (state) => {
-        return {
-          hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
-          currentTimeline: selectors.currentTimelineSelector(state.present),
-          isSmall: selectors.isSmallSelector(state.present),
-          isMedium: selectors.isMediumSelector(state.present),
-          beats: selectors.sortedBeatsByBookSelector(state.present),
-          lines: selectors.linesByBookSelector(state.present),
-          cards: state.present.cards,
-        }
-      },
-      (dispatch) => {
-        return {
-          actions: bindActionCreators(actions.line, dispatch),
-        }
-      }
-    )(AddLineRow)
+      (state) => ({
+        currentTimeline: selectors.currentTimelineSelector(state.present),
+        hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
+        isSmall: selectors.isSmallSelector(state.present),
+        isMedium: selectors.isMediumSelector(state.present),
+      }),
+      (dispatch) => ({
+        actions: bindActionCreators(actions.line, dispatch),
+      })
+    )(AddLineColumn)
   }
 
-  throw new Error('Could not connect AddLineRow')
+  throw new Error('Could not connect AddLineColumn')
 }
 
-export default AddLineRowConnector
+export default AddLineColumnConnector

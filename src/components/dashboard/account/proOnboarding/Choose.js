@@ -96,8 +96,6 @@ const ChooseConnector = (connector) => {
       })
     }
 
-    const isDisabled = !selectedProjects.length && !selectedTemplates.length
-
     return (
       <>
         <StepHeader>
@@ -152,7 +150,7 @@ const ChooseConnector = (connector) => {
         <StepFooter>
           <OnboardingButtonBar>
             <Button onClick={cancel}>{t('Go Back')}</Button>
-            <Button bsSize="large" bsStyle="success" onClick={makeChoices} disabled={isDisabled}>
+            <Button bsSize="large" bsStyle="success" onClick={makeChoices}>
               {t('Upload')}
             </Button>
           </OnboardingButtonBar>

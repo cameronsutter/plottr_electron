@@ -29,7 +29,7 @@ const HelpHomeConnector = (connector) => {
     }
 
     const RenderWebView = () => {
-      if (os === 'unknown') {
+      if (os() === 'unknown') {
         return <iframe src="https://docs.plottr.com" sandbox="allow-forms allow-scripts" />
       }
 

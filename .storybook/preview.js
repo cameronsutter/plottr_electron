@@ -148,8 +148,6 @@ global.connector = {
   platform: {
     appVersion: '2021.4.6',
     template: {
-      listTemplates: () => [],
-      listCustomTemplates: () => [],
       deleteTemplate: () => {},
       editTemplateDetails: () => {},
       startSaveAsTemplate: () => {},
@@ -168,9 +166,10 @@ global.connector = {
     user: {
       get: () => {},
     },
-    os: 'windows',
+    os: () => 'windows',
     isDevelopment: false,
-    isWindows: true,
+    isWindows: () => true,
+    isMacOS: () => false,
     dialog: {},
     node: {
       env: 'production',
@@ -182,9 +181,6 @@ global.connector = {
     export: {
       askToExport: () => {},
       export_config: {},
-    },
-    store: {
-      useExportConfigInfo: () => [EXPORT_CONFIG, {}, {}],
     },
     moveFromTemp: () => {},
     showItemInFolder: () => {},

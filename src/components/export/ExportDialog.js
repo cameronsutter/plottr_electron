@@ -21,19 +21,25 @@ const ExportDialogConnector = (connector) => {
     platform: {
       log,
       dialog,
-      store: { useExportConfigInfo },
-      export: { askToExport },
+      export: { askToExport, saveExportConfigSettings },
       isWindows,
     },
   } = connector
-  checkDependencies({ log, dialog, useExportConfigInfo, askToExport, isWindows })
+  checkDependencies({
+    log,
+    dialog,
+    askToExport,
+    saveExportConfigSettings,
+    isWindows,
+  })
 
   function ExportDialog(props) {
-    const [exportConfig, _, saveExportConfig] = useExportConfigInfo()
+    const { exportConfig } = props
+
     const [saveOptions, setSaveOptions] = useState(exportConfig.saveSettings)
     const [options, setOptions] = useState(exportConfig)
     const type = exportConfig.savedType
-    const setType = (type) => saveExportConfig('savedType', type)
+    const setType = (type) => saveExportConfigSettings('savedType', type)
 
     const updateOptions = (newValues) => {
       const newOptions = { ...options, [type]: newValues }
@@ -45,13 +51,13 @@ const ExportDialogConnector = (connector) => {
       const defaultPath =
         bookId == 'series' ? seriesName + ' ' + t('(Series View)') : books[`${bookId}`].title
 
-      askToExport(defaultPath, fullState, type, options[type], isWindows, (error, success) => {
+      askToExport(defaultPath, fullState, type, options[type], isWindows(), (error, success) => {
         if (saveOptions) {
-          saveExportConfig('savedType', type)
+          saveExportConfigSettings('savedType', type)
           // We don't want to maintain the filter across projects
           // because they have different plot lines and different
           // numbers of plot lines.
-          saveExportConfig(type, {
+          saveExportConfigSettings(type, {
             ...options[type],
             filter: null,
           })
@@ -125,6 +131,7 @@ const ExportDialogConnector = (connector) => {
   }
 
   ExportDialog.propTypes = {
+    exportConfig: PropTypes.object.isRequired,
     close: PropTypes.func,
     bookId: PropTypes.string.isRequired,
     seriesName: PropTypes.string,
@@ -145,6 +152,7 @@ const ExportDialogConnector = (connector) => {
     return connect(
       (state) => {
         return {
+          exportConfig: selectors.exportSettingsSelector(state.present),
           bookId: selectors.currentTimelineSelector(state.present),
           seriesName: state.present.series.name,
           books: state.present.books,

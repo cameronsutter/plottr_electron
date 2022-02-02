@@ -21,7 +21,7 @@ const Template = (args) => <Beamer openExternal={() => {}} {...args} />
 export const Example = Template.bind({})
 Example.args = {
   inNavigation: false,
-  isWindows: false,
+  isWindows: () => false,
   paymentId: '1234',
   customerEmail: 'john@example.doe',
   isDevelopment: false,

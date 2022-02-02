@@ -19,7 +19,10 @@ const SubNavConnector = (connector) => {
     children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
   }
 
-  const { redux } = connector
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
   checkDependencies({ redux })
 
   if (redux) {
@@ -27,7 +30,7 @@ const SubNavConnector = (connector) => {
 
     return connect((state) => {
       return {
-        darkMode: state.present.ui.darkMode,
+        darkMode: selectors.isDarkModeSelector(state.present),
       }
     })(SubNav)
   }

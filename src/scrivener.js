@@ -1,4 +1,5 @@
 import { readdirSync, readFileSync, statSync } from 'fs'
+import { readdir, readFile, stat } from 'fs.promises'
 import path from 'path'
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 
@@ -48,51 +49,107 @@ const parseScrivxData = (data) => {
   }
 }
 
-export const getContentRTF = (scriv) => {
-  const noteFileContent = ['content.rtf', 'synopsis.txt', 'content.pdf']
-  const filesInScriv = readdirSync(scriv)
-  return Promise.all(
-    filesInScriv.map((file) => {
-      const isVer_2_7 =
-        file.includes('_synopsis.txt') ||
-        file.includes('_notes.rtf') ||
-        Number(file.replace('.rtf', ''))
-      const absolute = path.join(scriv, file)
-      const isSectionRTF =
-        (UUIDFolderRegEx.test(absolute) && noteFileContent.includes(file)) || isVer_2_7
+// [{ filePath: String, isSectionRTF: Bool }] -> [String]
+const keepNonSectionRTFFiles = (results) => {
+  return results
+    ?.filter((item) => item)
+    ?.filter(({ isSectionRTF }) => !isSectionRTF)
+    ?.map(({ filePath }) => filePath)
+}
 
-      if (statSync(absolute).isDirectory()) {
-        return getContentRTF(absolute)
-      } else if (isSectionRTF) {
-        const uuid = UUIDFolderRegEx.test(absolute)
-          ? absolute.match(UUIDFolderRegEx)[0]
-          : isVer_2_7
-          ? file.match(/\d+/)[0]
-          : null
-        const notesRTF = readFileSync(absolute)
-        const htmlArr = rtfToHTML(String(notesRTF)).then((res) => {
-          return new Promise((resolve) => {
-            resolve(res)
-          })
-        })
+// [{ filePath: String, isSectionRTF: Bool }] -> [String]
+const keepSectionRTFFiles = (results) => {
+  return results
+    ?.filter((item) => item)
+    ?.filter(({ isSectionRTF }) => isSectionRTF)
+    ?.map(({ filePath }) => filePath)
+}
 
-        console.log('htmlArr', htmlArr)
+// Step 1: find all the RTF files recursively.
+// String -> Promise<[String]>
+export const findRelevantFiles = (directory) => {
+  const filesInDirectory = readdir(directory)
+  const checkedEntries = filesInDirectory.then((files) => {
+    return Promise.all(files.map((file) => isSectionRTF(directory, file)))
+  })
+  const folders = checkedEntries.then(keepNonSectionRTFFiles).then(keepOnlyFolders)
+  console.log('folders ==>', folders)
+  const sectionRTFFiles = checkedEntries.then(keepSectionRTFFiles)
+  const filesForSubFolders = Promise.all(folders?.map((folder) => findRelevantFiles(folder)))
+  return sectionRTFFiles.then((filesForCurrentFolder) =>
+    filesForCurrentFolder.concat(...filesForSubFolders)
+  )
+}
 
-        if (notesRTF) {
-          return { uuid, content: htmlArr }
+// String -> Promise<Bool>
+const isFolder = (filePath) => {
+  return stat(filePath).then((result) => result.isDirectory())
+}
+
+// [String] -> Promise<[String]>
+const keepOnlyFolders = (paths) => {
+  const testedPaths = Promise.all(
+    paths.map((path) => {
+      return isFolder(path).then((isAFolder) => {
+        return {
+          isAFolder,
+          path,
         }
-      }
+      })
     })
   )
-    .then((i) => {
-      console.log('i', i)
-      return Object.entries(i).length > 0 ? i : null
-    })
-    .then((i) => {
-      return i?.length ? Promise.all(i.flatMap((i) => i).filter((i) => !!i)) : null
-    })
-    .catch((error) => console.log('error', error))
+  return testedPaths.then((pathResults) => {
+    return pathResults
+      ?.filter((item) => item)
+      ?.filter(({ isAFolder }) => isAFolder)
+      ?.map(({ path }) => path)
+  })
 }
+
+// Promise<[{uuid: String, content: String}]>
+// export const getContentRTF = (scriv) => {
+//   const noteFileContent = ['content.rtf', 'synopsis.txt', 'content.pdf']
+//   const filesInScriv = readdirSync(scriv)
+//   return Promise.all(
+//     filesInScriv.map((file) => {
+//       const isVer_2_7 =
+//         file.includes('_synopsis.txt') ||
+//         file.includes('_notes.rtf') ||
+//         Number(file.replace('.rtf', ''))
+//       const absolute = path.join(scriv, file)
+//       const isSectionRTF =
+//         (UUIDFolderRegEx.test(absolute) && noteFileContent.includes(file)) || isVer_2_7
+
+//       if (statSync(absolute).isDirectory()) {
+//         return getContentRTF(absolute)
+//       } else if (isSectionRTF) {
+//         const uuid = UUIDFolderRegEx.test(absolute)
+//           ? absolute.match(UUIDFolderRegEx)[0]
+//           : isVer_2_7
+//           ? file.match(/\d+/)[0]
+//           : null
+//         const notesRTF = readFileSync(absolute)
+//         const htmlArr = rtfToHTML(String(notesRTF)).then((res) => {
+//           return new Promise((resolve) => {
+//             resolve(res)
+//           })
+//         })
+
+//         if (notesRTF) {
+//           return { uuid, content: htmlArr }
+//         }
+//       }
+//     })
+//   )
+//     .then((i) => {
+//       console.log('i', i)
+//       return Object.entries(i).length > 0 ? i : null
+//     })
+//     .then((i) => {
+//       return i?.length ? Promise.all(i.flatMap((i) => i).filter((i) => !!i)) : null
+//     })
+//     .catch((error) => console.log('error', error))
+// }
 
 export const getScrivxData = (scriv) => {
   const filesInScriv = readdirSync(scriv)
@@ -105,14 +162,37 @@ export const getScrivxData = (scriv) => {
   }
 }
 
+// String, String -> String
+const toFullPath = (directory, filePath) => {
+  return path.join(directory, filePath)
+}
+
+// String, String -> Promise<{filePath: String, isSectionRTF: Bool}>
+const isSectionRTF = (directory, fileName) => {
+  const filePath = toFullPath(directory, fileName)
+  console.log('UUIDFolderRegEx.test(filePath)', UUIDFolderRegEx.test(filePath))
+  const isVer_2_7 =
+    filePath.endsWith('_synopsis.txt') ||
+    filePath.endsWith('_notes.rtf') ||
+    (Number(filePath.replace('.rtf', '')) ? true : false)
+
+  return readFile(filePath)
+    .then((fileContents) => {
+      return {
+        filePath,
+        isSectionRTF: UUIDFolderRegEx.test(filePath) || isVer_2_7,
+      }
+    })
+    .catch((err) => console.log('Error reading the file', err))
+}
+
 const parseToHTML = (noteRtf, title) => {
   const content = noteRtf.content.replace(`{${title}}`, '')
   return rtfToHTML(content)
 }
 
 export const generateState = async (contentRtf, scrivx) => {
-  console.log('contentRtf', contentRtf)
-  const hello = Object.values(scrivx).map((item, key) => {
+  return Object.values(scrivx).map((item, key) => {
     const scrivData = Promise.all(
       item.map((data) => {
         let childrenRTF = []
@@ -155,10 +235,6 @@ export const generateState = async (contentRtf, scrivx) => {
       return (scrivx['draft'] = Promise.all([...scrivData]))
     }
   })
-
-  console.log('hello', hello)
-
-  return scrivx
 }
 
 const generateChildrenBinderItems = (uuid, title, childTag) => {

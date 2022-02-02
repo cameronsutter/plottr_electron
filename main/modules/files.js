@@ -94,6 +94,8 @@ const checkSaveHandleNoOriginalStats = (filePath, data, stats, counter) => {
   })
 }
 
+const MAX_ATTEMPTS = 10
+
 const handleFileStats = (filePath, data, originalStats, counter) => (stats) => {
   // If we don't have original stats, then this is the first
   // time that we try to save.  Go ahead and save.
@@ -102,8 +104,13 @@ const handleFileStats = (filePath, data, originalStats, counter) => (stats) => {
   }
 
   // Check that the modified time of the stats before saving is
-  // different to that which is after.
-  if (stats && stats.mtimeMs !== originalStats.mtimeMs) {
+  // different to that which is after.  Or we tried to find a change
+  // in time stamps MAX_ATTEMPTS times.
+  const triedEnoughTimes = counter === MAX_ATTEMPTS - 1
+  if ((stats && stats.mtimeMs !== originalStats.mtimeMs) || triedEnoughTimes) {
+    if (triedEnoughTimes) {
+      log.warn(`Timestamp for ${filePath} didn't change, but we're assuming that it did anyway.`)
+    }
     return checkSaveHandleTimestampChange(filePath, data, originalStats, counter)
   }
 
@@ -117,7 +124,6 @@ const handleFileStats = (filePath, data, originalStats, counter) => (stats) => {
 }
 
 function checkSave(filePath, data, originalStats = null, counter = 0) {
-  const MAX_ATTEMPTS = 10
   if (counter < MAX_ATTEMPTS) {
     // To kick things off, assume that we're overwriting an existing
     // file and (as per Node docs) catch the ENOENT if the file

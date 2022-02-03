@@ -51,7 +51,9 @@ const parseScrivxData = (data) => {
 
 // [{ filePath: String, isSectionRTF: Bool }] -> [String]
 const keepNonSectionRTFFiles = (results) => {
-  return results?.filter(({ isSectionRTF }) => !isSectionRTF)?.map(({ filePath }) => filePath)
+  if (results.length) {
+    return results?.filter(({ isSectionRTF }) => !isSectionRTF)?.map(({ filePath }) => filePath)
+  }
 }
 
 // [{ filePath: String, isSectionRTF: Bool }] -> [String]
@@ -69,16 +71,11 @@ export const findRelevantFiles = (directory) => {
     return Promise.all(files.map((file) => isSectionRTF(directory, file)))
   })
   const folders = checkedEntries.then(keepNonSectionRTFFiles).then(keepOnlyFolders)
-  const sectionRTFFiles = checkedEntries?.then(keepSectionRTFFiles)
+  const sectionRTFFiles = checkedEntries.then(keepSectionRTFFiles)
   const filesForSubFolders = folders.then((dir) => {
-    dir.map((folder) => {
-      isFolder(folder).then(() => findRelevantFiles(folder))
-    })
+    return dir?.map((folder) => findRelevantFiles(folder))
   })
   console.log('filesForSubFolders', filesForSubFolders)
-  sectionRTFFiles.then((filesForCurrentFolder) => {
-    filesForCurrentFolder.concat(...filesForSubFolders)
-  })
   return sectionRTFFiles.then((filesForCurrentFolder) =>
     filesForCurrentFolder.concat(...filesForSubFolders)
   )

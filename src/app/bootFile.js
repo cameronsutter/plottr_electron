@@ -251,6 +251,15 @@ function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
   let json
   try {
     json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    // In case this file was downloaded and we want to open it while
+    // logged out, we need to reset the cloud flag.  (This is usually
+    // set when we receive the file from Firebase, but it gets
+    // synchronised back up to the database and if you then download
+    // the file it'll be there.)
+    //
+    // This use case is actually quite common: you might want to
+    // simply open a backup file locally.
+    json.file.isCloudFile = false
   } catch (error) {
     return Promise.resolve()
   }

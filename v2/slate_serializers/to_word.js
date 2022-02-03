@@ -50,10 +50,18 @@ const serialize = (nodes, doc) => {
     const children = serialize(n.children, doc)
 
     switch (n.type) {
+      case 'list-item':
+        return children[0] // always an array with 1 TextRun
+      case 'numbered-list':
+      // make it a bullet list for now
+      // this isn't working for now
+      // return children.map(li => new Paragraph({children: [li.root[1]], numbering: { reference: concrete, level: 0 }}))
+
+      // eslint-disable-next-line no-fallthrough
       case 'bulleted-list':
-        return n.children.map((li) => {
-          if (li.text) {
-            // we have a text child … probably in a bad format
+        return (n.children || []).map((li) => {
+          if (li.text !== undefined) {
+            // we have a text child ... probably in a bad format
             return new Paragraph(li.text)
           }
           return new Paragraph({
@@ -90,18 +98,6 @@ const serialize = (nodes, doc) => {
           }
         })
       }
-      case 'list-item':
-        return children[0] // always an array with 1 TextRun
-      case 'numbered-list':
-        // make it a bullet list for now
-        return (n.children || []).map((li) => {
-          return new Paragraph({
-            children: (li.children || []).map(leaf),
-            bullet: { level: 0 },
-          })
-        })
-      // this isn't working for now
-      // return children.map(li => new Paragraph({children: [li.root[1]], numbering: { reference: concrete, level: 0 }}))
       case 'link':
         return doc.createHyperlink(n.url, n.url)
       case 'image-link':

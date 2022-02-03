@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+
 import { isSeries } from '../helpers/books'
 
 export const allBookIdsSelector = (state) => state.books.allIds

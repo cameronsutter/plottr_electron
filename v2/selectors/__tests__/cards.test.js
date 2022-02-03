@@ -5,6 +5,19 @@ describe('collapsedBeatSelector', () => {
   describe('given an empty beat tree', () => {
     const emptyBeatTree = newTree('id')
     const state = {
+      books: {
+        1: {
+          id: 1,
+          title: 'A Link to the Past',
+          premise: 'same as last time..',
+          genre: 'Adventure',
+          theme: 'SNES',
+          templates: [],
+          timelineTemplates: [],
+          imageId: '3',
+        },
+        allIds: [1],
+      },
       beats: {
         1: emptyBeatTree,
       },
@@ -42,6 +55,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },
@@ -79,6 +105,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },
@@ -132,6 +171,19 @@ describe('collapsedBeatSelector', () => {
           },
         }
         const state = {
+          books: {
+            1: {
+              id: 1,
+              title: 'A Link to the Past',
+              premise: 'same as last time..',
+              genre: 'Adventure',
+              theme: 'SNES',
+              templates: [],
+              timelineTemplates: [],
+              imageId: '3',
+            },
+            allIds: [1],
+          },
           beats: {
             1: tree,
           },
@@ -183,6 +235,19 @@ describe('collapsedBeatSelector', () => {
           },
         }
         const state = {
+          books: {
+            1: {
+              id: 1,
+              title: 'A Link to the Past',
+              premise: 'same as last time..',
+              genre: 'Adventure',
+              theme: 'SNES',
+              templates: [],
+              timelineTemplates: [],
+              imageId: '3',
+            },
+            allIds: [1],
+          },
           beats: {
             1: tree,
           },
@@ -236,6 +301,19 @@ describe('collapsedBeatSelector', () => {
           },
         }
         const state = {
+          books: {
+            1: {
+              id: 1,
+              title: 'A Link to the Past',
+              premise: 'same as last time..',
+              genre: 'Adventure',
+              theme: 'SNES',
+              templates: [],
+              timelineTemplates: [],
+              imageId: '3',
+            },
+            allIds: [1],
+          },
           beats: {
             1: tree,
           },
@@ -287,6 +365,19 @@ describe('collapsedBeatSelector', () => {
           },
         }
         const state = {
+          books: {
+            1: {
+              id: 1,
+              title: 'A Link to the Past',
+              premise: 'same as last time..',
+              genre: 'Adventure',
+              theme: 'SNES',
+              templates: [],
+              timelineTemplates: [],
+              imageId: '3',
+            },
+            allIds: [1],
+          },
           beats: {
             1: tree,
           },
@@ -338,6 +429,19 @@ describe('collapsedBeatSelector', () => {
           },
         }
         const state = {
+          books: {
+            1: {
+              id: 1,
+              title: 'A Link to the Past',
+              premise: 'same as last time..',
+              genre: 'Adventure',
+              theme: 'SNES',
+              templates: [],
+              timelineTemplates: [],
+              imageId: '3',
+            },
+            allIds: [1],
+          },
           beats: {
             1: tree,
           },
@@ -389,6 +493,19 @@ describe('collapsedBeatSelector', () => {
           },
         }
         const state = {
+          books: {
+            1: {
+              id: 1,
+              title: 'A Link to the Past',
+              premise: 'same as last time..',
+              genre: 'Adventure',
+              theme: 'SNES',
+              templates: [],
+              timelineTemplates: [],
+              imageId: '3',
+            },
+            allIds: [1],
+          },
           beats: {
             1: tree,
           },
@@ -456,6 +573,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },
@@ -521,6 +651,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },
@@ -586,6 +729,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },
@@ -651,6 +807,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },
@@ -716,6 +885,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },
@@ -781,6 +963,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },
@@ -887,6 +1082,19 @@ describe('collapsedBeatSelector', () => {
         },
       }
       const state = {
+        books: {
+          1: {
+            id: 1,
+            title: 'A Link to the Past',
+            premise: 'same as last time..',
+            genre: 'Adventure',
+            theme: 'SNES',
+            templates: [],
+            timelineTemplates: [],
+            imageId: '3',
+          },
+          allIds: [1],
+        },
         beats: {
           1: tree,
         },

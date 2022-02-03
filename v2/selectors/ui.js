@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import { isSeries } from '../helpers/books'
 import { allBookIdsSelector } from './books'
+import { isDarkModeSelector } from './settings'
 
 export const currentTimelineSelector = (state) => {
   const bookIds = allBookIdsSelector(state)
@@ -27,7 +28,6 @@ export const isLargeSelector = (state) => state.ui.timeline.size == 'large'
 export const timelineSizeSelector = (state) => state.ui.timeline.size
 export const timelineScrollPositionSelector = (state) => state.ui.timelineScrollPosition
 export const orientationSelector = (state) => state.ui.orientation
-export const isDarkModeSelector = (state) => state.ui.darkMode
 export const attributesDialogIsOpenSelector = (state) => state.ui.attributesDialogIsOpen
 export const currentViewSelector = (state) => state.ui.currentView
 

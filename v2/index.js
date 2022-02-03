@@ -20,6 +20,12 @@ import * as permissionActions from './actions/permission'
 import * as projectActions from './actions/project'
 import * as clientActions from './actions/client'
 import * as editorActions from './actions/editors'
+import * as licenseActions from './actions/license'
+import * as knownFilesActions from './actions/knownFiles'
+import * as templatesActions from './actions/templates'
+import * as settingsActions from './actions/settings'
+import * as backupsActions from './actions/backups'
+import * as applicationStateActions from './actions/applicationState'
 
 import * as ActionTypes from './constants/ActionTypes'
 import * as colors from './constants/CSScolors'
@@ -63,6 +69,12 @@ import * as clientSelectors from './selectors/client'
 import * as actionSelectors from './selectors/actions'
 import * as editorsSelectors from './selectors/editors'
 import * as imageSelectors from './selectors/images'
+import * as licenseSelectors from './selectors/license'
+import * as knownFilesSelectors from './selectors/knownFiles'
+import * as templatesSelectors from './selectors/templates'
+import * as settingsSelectors from './selectors/settings'
+import * as backupsSelectors from './selectors/backups'
+import * as applicationStateSelectors from './selectors/applicationState'
 
 import rootReducer from './reducers/root'
 import mainReducer from './reducers/main'
@@ -88,6 +100,12 @@ import errorReducer from './reducers/error'
 import permissionReducer from './reducers/permission'
 import clientReducer from './reducers/client'
 import editorsReducer from './reducers/editors'
+import licenseReducer from './reducers/license'
+import knownFilesReducer from './reducers/knownFiles'
+import templatesReducer from './reducers/templates'
+import settingsReducer from './reducers/settings'
+import backupsReducer from './reducers/backups'
+import applicationStateReducer from './reducers/applicationState'
 
 import * as initialState from './store/initialState'
 import * as lineColors from './store/lineColors'
@@ -128,6 +146,12 @@ const reducers = {
   permission: permissionReducer,
   client: clientReducer,
   editors: editorsReducer,
+  license: licenseReducer,
+  knownFiles: knownFilesReducer,
+  templates: templatesReducer,
+  settings: settingsReducer,
+  backups: backupsReducer,
+  applicationState: applicationStateReducer,
 }
 
 const selectors = {
@@ -154,6 +178,12 @@ const selectors = {
   ...actionSelectors,
   ...editorsSelectors,
   ...imageSelectors,
+  ...licenseSelectors,
+  ...knownFilesSelectors,
+  ...templatesSelectors,
+  ...settingsSelectors,
+  ...backupsSelectors,
+  ...applicationStateSelectors,
 }
 
 const actions = {
@@ -179,6 +209,12 @@ const actions = {
   project: projectActions,
   client: clientActions,
   editors: editorActions,
+  license: licenseActions,
+  knownFiles: knownFilesActions,
+  templates: templatesActions,
+  settings: settingsActions,
+  backups: backupsActions,
+  applicationState: applicationStateActions,
 }
 
 const helpers = {

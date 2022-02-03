@@ -7,11 +7,10 @@ import {
   RESET,
   EDIT_FILENAME,
   LOAD_FILE,
-  SET_FILE_NAME,
-  RESTORE_FILE_NAME,
   SET_OFFLINE,
   SET_RESUMING,
   RECORD_LAST_ACTION,
+  SELECT_FILE,
 } from '../constants/ActionTypes'
 import { file as defaultFile } from '../store/initialState'
 import { SYSTEM_REDUCER_ACTION_TYPES } from './systemReducers'
@@ -22,10 +21,7 @@ const file =
     const shouldUpdateTimestamp =
       !stateWithoutTimeStamp.versionStamp ||
       !stateWithoutTimeStamp.timeStamp ||
-      (action.type !== SET_FILE_NAME &&
-        action.type !== RESTORE_FILE_NAME &&
-        SYSTEM_REDUCER_ACTION_TYPES.indexOf(action.type) === -1 &&
-        !stateWithoutTimeStamp.isResuming)
+      (SYSTEM_REDUCER_ACTION_TYPES.indexOf(action.type) === -1 && !stateWithoutTimeStamp.isResuming)
     const state = {
       ...stateWithoutTimeStamp,
       timeStamp: shouldUpdateTimestamp ? new Date() : stateWithoutTimeStamp.timeStamp,
@@ -59,23 +55,6 @@ const file =
       case LOAD_FILE:
         return action.file
 
-      case SET_FILE_NAME:
-        if (state.originalFileName) return state
-        return {
-          ...state,
-          originalFileName: state.fileName,
-          fileName: action.newFileName,
-        }
-
-      case RESTORE_FILE_NAME:
-        if (!state.originalFileName) return state
-        return {
-          ...state,
-          originalFileName: null,
-          // There's no originalFileName when we boot the app
-          fileName: state.originalFileName,
-        }
-
       // We duplicate the resuming state from project here because
       // it's critical that we don't change timestamps while we resume
       // and it's possible for other actions to fire in between
@@ -100,6 +79,10 @@ const file =
           ...stateWithoutTimeStamp,
           resuming: action.resuming,
         }
+
+      case SELECT_FILE: {
+        return action.selectedFile
+      }
 
       default:
         return Object.assign({}, state, { dirty: true })

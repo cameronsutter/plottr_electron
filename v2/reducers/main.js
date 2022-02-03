@@ -22,6 +22,12 @@ import permission from './permission'
 import project from './project'
 import client from './client'
 import actions from './actions'
+import license from './license'
+import knownFiles from './knownFiles'
+import templates from './templates'
+import settings from './settings'
+import backups from './backups'
+import applicationState from './applicationState'
 
 // normally it would make more sense to alphabetize them
 // but for customer service, it helps a lot to have them in a specific order
@@ -51,6 +57,12 @@ const mainReducer = (dataRepairers) =>
     project,
     client,
     actions,
+    license,
+    knownFiles,
+    templates,
+    settings,
+    backups,
+    applicationState,
   })
 
 export default mainReducer

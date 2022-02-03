@@ -5,7 +5,6 @@ import {
   NAVIGATE_TO_BOOK_TIMELINE,
   FILE_SAVED,
   NEW_FILE,
-  SET_DARK_MODE,
   CHANGE_CURRENT_TIMELINE,
   CLEAR_TEMPLATE_FROM_TIMELINE,
   SET_CHARACTER_SORT,
@@ -27,8 +26,6 @@ import {
   SET_NOTES_FILTER,
   LOAD_UI,
   LOAD_FILE,
-  SET_FILE_NAME,
-  RESTORE_FILE_NAME,
 } from '../constants/ActionTypes'
 
 export function changeCurrentView(view) {
@@ -49,10 +46,6 @@ export function newFile(fileName) {
 
 export function fileSaved() {
   return { type: FILE_SAVED, dirty: false }
-}
-
-export function setDarkMode(on) {
-  return { type: SET_DARK_MODE, on }
 }
 
 export function setCharacterSort(attr, direction) {
@@ -137,12 +130,4 @@ export function closeAttributesDialog() {
 
 export function patchFile(patching, file) {
   return { type: LOAD_FILE, patching, file }
-}
-
-export function setFileName(newFileName) {
-  return { type: SET_FILE_NAME, newFileName }
-}
-
-export function restoreFileName() {
-  return { type: RESTORE_FILE_NAME }
 }

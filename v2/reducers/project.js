@@ -7,27 +7,29 @@ import {
   UNSET_FILE_LOADED,
   SET_OFFLINE,
   SET_RESUMING,
+  SET_CHECKING_FOR_OFFLINE_DRIFT,
+  SET_OVERWRITING_CLOUD_WITH_BACKUP,
+  SET_SHOW_RESUME_MESSAGE_DIALOG,
+  SET_BACKING_UP_OFFLINE_FILE,
 } from '../constants/ActionTypes'
 
 const INITIAL_STATE = {
-  fileList: [],
   selectedFile: null,
   userNameSearchResults: [],
   fileLoaded: false,
   isLoading: false,
   isOffline: false,
   resuming: false,
+  checkingOfflineDrift: false,
+  overwritingCloudWithBackup: false,
+  showResumeMessageDialog: false,
+  backingUpOfflineFile: false,
 }
 
 const NEW_FILE = { fileName: 'New file', none: true, id: -1 }
 
 const projectReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case SET_FILE_LIST:
-      return {
-        ...state,
-        fileList: action.fileList,
-      }
     case SELECT_FILE:
       return {
         ...state,
@@ -63,6 +65,26 @@ const projectReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         resuming: action.resuming,
+      }
+    case SET_CHECKING_FOR_OFFLINE_DRIFT:
+      return {
+        ...state,
+        checkingOfflineDrift: action.checkingOfflineDrift,
+      }
+    case SET_OVERWRITING_CLOUD_WITH_BACKUP:
+      return {
+        ...state,
+        overwritingCloudWithBackup: action.overwritingCloudWithBackup,
+      }
+    case SET_SHOW_RESUME_MESSAGE_DIALOG:
+      return {
+        ...state,
+        showResumeMessageDialog: action.showResumeMessageDialog,
+      }
+    case SET_BACKING_UP_OFFLINE_FILE:
+      return {
+        ...state,
+        backingUpOfflineFile: action.backingUpOfflineFile,
       }
     default:
       return state

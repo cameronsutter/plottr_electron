@@ -51,18 +51,14 @@ const parseScrivxData = (data) => {
 
 // [{ filePath: String, isSectionRTF: Bool }] -> [String]
 const keepNonSectionRTFFiles = (results) => {
-  return results
-    ?.filter((item) => item)
-    ?.filter(({ isSectionRTF }) => !isSectionRTF)
-    ?.map(({ filePath }) => filePath)
+  return results?.filter(({ isSectionRTF }) => !isSectionRTF)?.map(({ filePath }) => filePath)
 }
 
 // [{ filePath: String, isSectionRTF: Bool }] -> [String]
 const keepSectionRTFFiles = (results) => {
-  return results
-    ?.filter((item) => item)
-    ?.filter(({ isSectionRTF }) => isSectionRTF)
-    ?.map(({ filePath }) => filePath)
+  if (results.length) {
+    return results?.filter(({ isSectionRTF }) => isSectionRTF)?.map(({ filePath }) => filePath)
+  }
 }
 
 // Step 1: find all the RTF files recursively.
@@ -73,9 +69,16 @@ export const findRelevantFiles = (directory) => {
     return Promise.all(files.map((file) => isSectionRTF(directory, file)))
   })
   const folders = checkedEntries.then(keepNonSectionRTFFiles).then(keepOnlyFolders)
-  console.log('folders ==>', folders)
-  const sectionRTFFiles = checkedEntries.then(keepSectionRTFFiles)
-  const filesForSubFolders = Promise.all(folders?.map((folder) => findRelevantFiles(folder)))
+  const sectionRTFFiles = checkedEntries?.then(keepSectionRTFFiles)
+  const filesForSubFolders = folders.then((dir) => {
+    dir.map((folder) => {
+      isFolder(folder).then(() => findRelevantFiles(folder))
+    })
+  })
+  console.log('filesForSubFolders', filesForSubFolders)
+  sectionRTFFiles.then((filesForCurrentFolder) => {
+    filesForCurrentFolder.concat(...filesForSubFolders)
+  })
   return sectionRTFFiles.then((filesForCurrentFolder) =>
     filesForCurrentFolder.concat(...filesForSubFolders)
   )
@@ -170,7 +173,7 @@ const toFullPath = (directory, filePath) => {
 // String, String -> Promise<{filePath: String, isSectionRTF: Bool}>
 const isSectionRTF = (directory, fileName) => {
   const filePath = toFullPath(directory, fileName)
-  console.log('UUIDFolderRegEx.test(filePath)', UUIDFolderRegEx.test(filePath))
+  const isRTF = path.extname(fileName) === '.rtf'
   const isVer_2_7 =
     filePath.endsWith('_synopsis.txt') ||
     filePath.endsWith('_notes.rtf') ||
@@ -183,7 +186,18 @@ const isSectionRTF = (directory, fileName) => {
         isSectionRTF: UUIDFolderRegEx.test(filePath) || isVer_2_7,
       }
     })
-    .catch((err) => console.log('Error reading the file', err))
+    .catch((error) =>
+      isFolder(filePath)
+        .then((isAFolder) => {
+          return {
+            filePath,
+            isSectionRTF: UUIDFolderRegEx.test(filePath) || isVer_2_7,
+          }
+        })
+        .catch(() => {
+          return false
+        })
+    )
 }
 
 const parseToHTML = (noteRtf, title) => {

@@ -78,11 +78,11 @@ export const findRelevantFiles = (directory) => {
       return Promise.all([])
     })
 
-  console.log('filesForSubFolders', filesForSubFolders)
-
   return sectionRTFFiles
     .then((filesForCurrentFolder) => {
-      return filesForCurrentFolder.concat(...filesForSubFolders)
+      return filesForSubFolders.then((subFolderResults) =>
+        filesForCurrentFolder.concat(...subFolderResults)
+      )
     })
     .catch((err) => {
       log.error(err)
@@ -164,7 +164,7 @@ const parseToHTML = (noteRtf, title) => {
   return rtfToHTML(content)
 }
 
-export const generateState = async (contentRtf, scrivx) => {
+export const generateState = (contentRtf, scrivx) => {
   return Object.values(scrivx).map((item, key) => {
     const scrivData = Promise.all(
       item.map((data) => {

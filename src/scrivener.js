@@ -52,14 +52,14 @@ const parseScrivxData = (data) => {
 // [{ filePath: String, isSectionRTF: Bool }] -> [String]
 const keepNonSectionRTFFiles = (results) => {
   if (results.length) {
-    return results?.filter(({ isSectionRTF }) => !isSectionRTF)?.map(({ filePath }) => filePath)
+    return results.filter(({ isSectionRTF }) => !isSectionRTF).map(({ filePath }) => filePath)
   }
 }
 
 // [{ filePath: String, isSectionRTF: Bool }] -> [String]
 const keepSectionRTFFiles = (results) => {
   if (results.length) {
-    return results?.filter(({ isSectionRTF }) => isSectionRTF)?.map(({ filePath }) => filePath)
+    return results.filter(({ isSectionRTF }) => isSectionRTF).map(({ filePath }) => filePath)
   }
 }
 
@@ -72,13 +72,19 @@ export const findRelevantFiles = (directory) => {
   })
   const folders = checkedEntries.then(keepNonSectionRTFFiles).then(keepOnlyFolders)
   const sectionRTFFiles = checkedEntries.then(keepSectionRTFFiles)
-  const filesForSubFolders = folders.then((dir) => {
-    return dir?.map((folder) => findRelevantFiles(folder))
-  })
-  console.log('filesForSubFolders', filesForSubFolders)
-  return sectionRTFFiles.then((filesForCurrentFolder) =>
-    filesForCurrentFolder.concat(...filesForSubFolders)
-  )
+  const filesForSubFolders = folders
+    .then((dirs) => {
+      if (dirs.length) {
+        return Promise.all(dirs.map(findRelevantFiles))
+      }
+    })
+    .catch((err) => console.log('err-subfolder', err))
+
+  return sectionRTFFiles
+    .then((filesForCurrentFolder) => {
+      return filesForCurrentFolder.concat(...filesForSubFolders)
+    })
+    .catch((err) => console.log('err', err))
 }
 
 // String -> Promise<Bool>

@@ -54,19 +54,15 @@ export function openExistingFile(loggedIn, userId, email) {
   return Promise.resolve('No file selected')
 }
 
-export async function importScrivener(loggedIn, userId, email) {
+export function importScrivener(loggedIn, userId, email) {
   const properties = ['openFile', 'createDirectory']
   const filters = [{ name: t('Scrivener file'), extensions: ['scriv'] }]
   const files = dialog.showOpenDialogSync(win, { filters: filters, properties: properties })
   if (files && files.length) {
     const scrivx = getScrivxData(files[0])
     const contentRTF = findRelevantFiles(files[0])
-
-    console.log('contentRTF', contentRTF)
-    // const { scrivx, contentRtf } = scrivFile
-    const state = await generateState(contentRTF, scrivx)
-    console.log('state', state)
-    // return Promise.resolve(state)
+    const state = contentRTF.then((content) => generateState(content, scrivx))
+    return Promise.resolve(state)
     // return Promise.resolve(ipcRenderer.send('add-to-known-files-and-open', state))
   }
   return Promise.resolve('No file selected')

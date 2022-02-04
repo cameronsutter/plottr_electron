@@ -131,7 +131,7 @@ const toFullPath = (directory, filePath) => {
 // String, String -> Promise<{filePath: String, isSectionRTF: Bool}>
 const isSectionRTF = (directory, fileName) => {
   const filePath = toFullPath(directory, fileName)
-  const isRTF = path.extname(fileName) === '.rtf'
+  const isRTF = path.extname(fileName) === '.rtf' || path.extname(fileName) === '.txt'
   const isVer_2_7 =
     filePath.endsWith('_synopsis.txt') ||
     filePath.endsWith('_notes.rtf') ||
@@ -164,50 +164,38 @@ const parseToHTML = (noteRtf, title) => {
   return rtfToHTML(content)
 }
 
+// Array, Object, -> Promise<{ draft: [Any], sections: [Any] }>
 export const generateState = (contentRtf, scrivx) => {
-  return Object.values(scrivx).map((item, key) => {
-    const scrivData = Promise.all(
-      item.map((data) => {
-        let childrenRTF = []
-        let childRTF = []
-        if (data.children && data.children.length) {
-          childRTF = Promise.all(
-            data.children.map((child, key) => {
-              let htmlElem = []
-              const noteRtf = contentRtf.find((rtf) => rtf.uuid === child.uuid)
-              if (noteRtf) {
-                const parsed = parseToHTML(noteRtf, child.title)
-                if (parsed) htmlElem.push(parsed)
-              }
-              return {
-                id: key + 1,
-                title: child.title,
-                content: htmlElem || [],
-              }
-            })
-          )
-          childrenRTF = Promise.all(childRTF)
+  const data = Object.values(scrivx).map((item, key) => {
+    return item.map((data) => {
+      if (data.children && data.children.length) {
+        const children = data.children.map((child, key) => {
+          const noteRtf = contentRtf.filter((rtf) => rtf.includes(child.uuid))
           return {
-            uuid: data.uuid,
-            title: data.title,
-            children: childrenRTF.length ? childrenRTF : [],
+            id: key + 1,
+            title: child.title,
+            contentPath: noteRtf,
           }
-        } else {
-          return {
-            uuid: data.uuid,
-            title: data.title,
-          }
-        }
-      })
-    )
+        })
 
-    // index 0 is the manuscript/draft folder
-    if (key > 0) {
-      return (scrivx['sections'] = Promise.all([...scrivData]))
-    } else {
-      return (scrivx['draft'] = Promise.all([...scrivData]))
-    }
+        return {
+          uuid: data.uuid,
+          title: data.title,
+          children,
+        }
+      } else {
+        return {
+          uuid: data.uuid,
+          title: data.title,
+        }
+      }
+    })
   })
+
+  return {
+    draft: data[0],
+    sections: data[1],
+  }
 }
 
 const generateChildrenBinderItems = (uuid, title, childTag) => {

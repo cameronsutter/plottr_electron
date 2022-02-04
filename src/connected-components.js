@@ -162,12 +162,8 @@ const platform = {
       const fileList = selectors.knownFilesSelector(state.present)
       if (userId) {
         _importScrivener(!!userId, userId, emailAddress)
-          .then((scriveState) => {
-            return Promise.resolve(scriveState)
-          })
           .then((state) => {
             console.log('scriveState.sections with content', state)
-            console.log(state.sections)
             // const parsed = JSON.stringify(JSON.parse(state))
             const notes = find(state.sections, { title: 'Notes' })
             console.log('notes missing content :(', notes)

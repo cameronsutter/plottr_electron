@@ -160,11 +160,15 @@ const isRelevantFile = (directory, fileName) => {
     )
 }
 
-// String ->  Object { plotline: <string> }
+// String ->  Object
 const getPlotline = (data) => {
   if (data && data.children && data.children[0]) {
-    const plotline = data.children[0][0].text
-    return { plotline: plotline.split('Plotline: ').pop() }
+    const textData = data.children[0][0].text
+    if (textData.includes('Plotline: ')) {
+      return { plotline: textData.split('Plotline: ').pop() }
+    }
+  } else {
+    return {}
   }
 }
 
@@ -276,10 +280,16 @@ export const generateState = (contentRtf, scrivx) => {
       })
     })
   ).then((state) => {
-    return {
-      draft: state[0],
-      sections: state[1],
-    }
+    const stateArray = state.map((item, key) => {
+      if (key === 0) {
+        return { draft: item }
+      } else if (key === 1) {
+        return {
+          sections: item,
+        }
+      }
+    })
+    return Object.assign({}, ...stateArray)
   })
 }
 

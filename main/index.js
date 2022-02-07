@@ -183,6 +183,7 @@ ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
 })
 
 ipcMain.on('add-to-known-files-and-open', (_event, file) => {
+  if (!file || file === '') return
   const id = addToKnownFiles(file)
   openKnownFile(file, id, false)
 })

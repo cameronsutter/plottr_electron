@@ -171,18 +171,19 @@ const getPlotline = (data) => {
 // String -> Object
 const readRTF = (filePath) => {
   const isNoteRTF = path.basename(filePath) === 'notes.rtf'
-  const rtfData = readFileSync(filePath)
-  const stringRTF = rtfData.toString()
-  if (isNoteRTF) {
-    return rtfToHTML(stringRTF).then((res) => {
-      const slateData = HTMLToSlateParagraph(res)
-      return getPlotline(slateData)
-    })
-  } else {
-    return rtfToHTML(stringRTF).then((res) => {
-      return HTMLToSlateParagraph(res)
-    })
-  }
+  return readFile(filePath).then((rtfData) => {
+    const stringRTF = rtfData.toString()
+    if (isNoteRTF) {
+      return rtfToHTML(stringRTF).then((res) => {
+        const slateData = HTMLToSlateParagraph(res)
+        return getPlotline(slateData)
+      })
+    } else {
+      return rtfToHTML(stringRTF).then((res) => {
+        return HTMLToSlateParagraph(res)
+      })
+    }
+  })
 }
 
 // String -> String
@@ -194,72 +195,84 @@ const getTxtContent = (path) => {
   return content.split('Click to edit').pop()
 }
 
-// String -> Array
+// String -> Promise<object>
 const parseData = (paths) => {
-  return paths.map((filePath) => {
-    const fileType = path.extname(filePath)
+  return Promise.all(
+    paths.map((filePath) => {
+      const fileType = path.extname(filePath)
 
-    if (fileType === '.txt') {
-      return { synopsis: getTxtContent(filePath) }
-    } else {
-      return readRTF(filePath).then((data) => {
-        return { rtf: data }
-      })
-    }
-  })
+      if (fileType === '.txt') {
+        return Promise.resolve({ synopsis: getTxtContent(filePath) })
+      } else {
+        return readRTF(filePath).then((data) => {
+          return { rtf: data }
+        })
+      }
+    })
+  )
 }
 
 // Array, Object, -> Promise<{ draft: [Any], sections: [Any] }>
 export const generateState = (contentRtf, scrivx) => {
-  const data = Object.values(scrivx).map((item, key) => {
-    return item.map((data) => {
-      if (data.children && data.children.length) {
-        const children = data.children.map((child, key) => {
-          const noteRtf = contentRtf.filter((rtf) => rtf.includes(child.uuid))
-          const parsed = parseData(noteRtf)
-          return {
-            id: key + 1,
-            title: child.title,
-            content: parsed,
+  return Promise.all(
+    Object.values(scrivx).map((item, key) => {
+      return Promise.all(
+        item.map((scrivxFileData) => {
+          if (scrivxFileData.children && scrivxFileData.children.length) {
+            return Promise.all(
+              scrivxFileData.children.map((child, key) => {
+                const noteRtf = contentRtf.filter((rtf) => rtf.includes(child.uuid))
+                return parseData(noteRtf).then((parsed) => {
+                  return {
+                    id: key + 1,
+                    title: child.title,
+                    content: parsed,
+                  }
+                })
+              })
+            ).then((childrenData) => {
+              return {
+                uuid: scrivxFileData.uuid,
+                title: scrivxFileData.title,
+                children: childrenData,
+              }
+            })
+          } else {
+            // if binder has no children but has rtf/txt files
+            const noteRtf = contentRtf.filter((rtf) => rtf.includes(scrivxFileData.uuid))
+            if (noteRtf.length) {
+              return parseData(noteRtf).then((parsed) => {
+                return {
+                  uuid: scrivxFileData.uuid,
+                  title: `Beat ${key + 1}`,
+                  children: [
+                    {
+                      id: key + 1,
+                      title: scrivxFileData.title,
+                      content: parsed,
+                    },
+                  ],
+                }
+              })
+            } else {
+              // if no child and no relevant files
+              return {
+                uuid: scrivxFileData.uuid,
+                title: scrivxFileData.title,
+              }
+            }
           }
         })
-
-        return {
-          uuid: data.uuid,
-          title: data.title,
-          children,
-        }
-      } else {
-        // if binder has no children but has rtf/txt files
-        const noteRtf = contentRtf.filter((rtf) => rtf.includes(data.uuid))
-        if (noteRtf.length) {
-          const parsed = parseData(noteRtf)
-          return {
-            uuid: data.uuid,
-            title: `Beat ${key + 1}`,
-            children: [
-              {
-                id: key + 1,
-                title: data.title,
-                content: parsed,
-              },
-            ],
-          }
-        } else {
-          // if no child and no relevant files
-          return {
-            uuid: data.uuid,
-            title: data.title,
-          }
-        }
-      }
+      ).then((data) => {
+        return data
+      })
     })
+  ).then((state) => {
+    return {
+      draft: state[0],
+      sections: state[1],
+    }
   })
-
-  return {
-    draft: data[0],
-    sections: data[1],
-  }
 }
 
 const generateChildrenBinderItems = (uuid, title, childTag) => {

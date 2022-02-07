@@ -164,9 +164,7 @@ const platform = {
         _importScrivener(!!userId, userId, emailAddress)
           .then((state) => {
             console.log('scriveState.sections with content', state)
-            // const parsed = JSON.stringify(JSON.parse(state))
             const notes = find(state.sections, { title: 'Notes' })
-            console.log('notes missing content :(', notes)
             const notesState = createNotesFromScriv(defaultNote, state)
             store.dispatch(actions.project.showLoader(true))
             store.dispatch(actions.applicationState.startCreatingCloudFile())

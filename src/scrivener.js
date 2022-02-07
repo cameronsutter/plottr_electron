@@ -1,8 +1,9 @@
-import { readdirSync, readFileSync, statSync } from 'fs'
+import { readdirSync, readFileSync } from 'fs'
 import { readdir, readFile, stat } from 'fs.promises'
 import path from 'path'
 import log from 'electron-log'
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
+import { HTMLToSlateParagraph } from 'pltr/v2/slate_serializers/from_html'
 
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
 // Object -> { Draft: [Object], Content: [Object] }
@@ -50,14 +51,14 @@ const parseScrivxData = (data) => {
   }
 }
 
-// [{ filePath: String, isSectionRTF: Bool }] -> [String]
+// [{ filePath: String, isRelevant: Bool }] -> [String]
 const keepNonSectionRTFFiles = (results) => {
-  return results.filter(({ isSectionRTF }) => !isSectionRTF).map(({ filePath }) => filePath)
+  return results.filter(({ isRelevant }) => !isRelevant).map(({ filePath }) => filePath)
 }
 
-// [{ filePath: String, isSectionRTF: Bool }] -> [String]
+// [{ filePath: String, isRelevant: Bool }] -> [String]
 const keepSectionRTFFiles = (results) => {
-  return results.filter(({ isSectionRTF }) => isSectionRTF).map(({ filePath }) => filePath)
+  return results.filter(({ isRelevant }) => isRelevant).map(({ filePath }) => filePath)
 }
 
 // Step 1: find all the RTF files recursively.
@@ -65,7 +66,7 @@ const keepSectionRTFFiles = (results) => {
 export const findRelevantFiles = (directory) => {
   const filesInDirectory = readdir(directory)
   const checkedEntries = filesInDirectory.then((files) => {
-    return Promise.all(files.map((file) => isSectionRTF(directory, file)))
+    return Promise.all(files.map((file) => isRelevantFile(directory, file)))
   })
   const folders = checkedEntries.then(keepNonSectionRTFFiles).then(keepOnlyFolders)
   const sectionRTFFiles = checkedEntries.then(keepSectionRTFFiles)
@@ -128,8 +129,8 @@ const toFullPath = (directory, filePath) => {
   return path.join(directory, filePath)
 }
 
-// String, String -> Promise<{filePath: String, isSectionRTF: Bool}>
-const isSectionRTF = (directory, fileName) => {
+// String, String -> Promise<{filePath: String, isRelevant: Bool}>
+const isRelevantFile = (directory, fileName) => {
   const filePath = toFullPath(directory, fileName)
   const isRTF = path.extname(fileName) === '.rtf' || path.extname(fileName) === '.txt'
   const isVer_2_7 =
@@ -141,7 +142,7 @@ const isSectionRTF = (directory, fileName) => {
     .then((fileContents) => {
       return {
         filePath,
-        isSectionRTF: isRTF ? true : false,
+        isRelevant: isRTF ? true : false,
       }
     })
     .catch((error) =>
@@ -149,7 +150,7 @@ const isSectionRTF = (directory, fileName) => {
         .then((isAFolder) => {
           return {
             filePath,
-            isSectionRTF: false,
+            isRelevant: false,
           }
         })
         .catch((error) => {
@@ -159,9 +160,53 @@ const isSectionRTF = (directory, fileName) => {
     )
 }
 
-const parseToHTML = (noteRtf, title) => {
-  const content = noteRtf.content.replace(`{${title}}`, '')
-  return rtfToHTML(content)
+// String ->  Object { plotline: <string> }
+const getPlotline = (data) => {
+  if (data && data.children && data.children[0]) {
+    const plotline = data.children[0][0].text
+    return { plotline: plotline.split('Plotline: ').pop() }
+  }
+}
+
+// String -> Object
+const readRTF = (filePath) => {
+  const isNoteRTF = path.basename(filePath) === 'notes.rtf'
+  const rtfData = readFileSync(filePath)
+  const stringRTF = rtfData.toString()
+  if (isNoteRTF) {
+    return rtfToHTML(stringRTF).then((res) => {
+      const slateData = HTMLToSlateParagraph(res)
+      return getPlotline(slateData)
+    })
+  } else {
+    return rtfToHTML(stringRTF).then((res) => {
+      return HTMLToSlateParagraph(res)
+    })
+  }
+}
+
+// String -> String
+const getTxtContent = (path) => {
+  const txtContent = readFileSync(path)
+  const content = txtContent.toString()
+
+  // remove `Click to edit`
+  return content.split('Click to edit').pop()
+}
+
+// String -> Array
+const parseData = (paths) => {
+  return paths.map((filePath) => {
+    const fileType = path.extname(filePath)
+
+    if (fileType === '.txt') {
+      return { synopsis: getTxtContent(filePath) }
+    } else {
+      return readRTF(filePath).then((data) => {
+        return { rtf: data }
+      })
+    }
+  })
 }
 
 // Array, Object, -> Promise<{ draft: [Any], sections: [Any] }>
@@ -171,10 +216,11 @@ export const generateState = (contentRtf, scrivx) => {
       if (data.children && data.children.length) {
         const children = data.children.map((child, key) => {
           const noteRtf = contentRtf.filter((rtf) => rtf.includes(child.uuid))
+          const parsed = parseData(noteRtf)
           return {
             id: key + 1,
             title: child.title,
-            contentPath: noteRtf,
+            content: parsed,
           }
         })
 
@@ -184,9 +230,27 @@ export const generateState = (contentRtf, scrivx) => {
           children,
         }
       } else {
-        return {
-          uuid: data.uuid,
-          title: data.title,
+        // if binder has no children but has rtf/txt files
+        const noteRtf = contentRtf.filter((rtf) => rtf.includes(data.uuid))
+        if (noteRtf.length) {
+          const parsed = parseData(noteRtf)
+          return {
+            uuid: data.uuid,
+            title: `Beat ${key + 1}`,
+            children: [
+              {
+                id: key + 1,
+                title: data.title,
+                content: parsed,
+              },
+            ],
+          }
+        } else {
+          // if no child and no relevant files
+          return {
+            uuid: data.uuid,
+            title: data.title,
+          }
         }
       }
     })
@@ -218,6 +282,8 @@ const generateChildrenBinderItems = (uuid, title, childTag) => {
       })
     })
     return noteObj
+  } else {
+    return noteObj
   }
 }
 
@@ -230,9 +296,10 @@ const getBinderContents = (item, key) => {
         const uuid = i.getAttribute('uuid') || i.getAttribute('id')
         const title = i.querySelector('Title')
         const children = i.querySelector('Children')
+        const isTextBinder = i.getAttribute('type') === 'Text'
         const metadata = i.querySelector('MetaData')
 
-        if (children) {
+        if (children || (metadata && isTextBinder)) {
           generateContent = generateChildrenBinderItems(uuid, title, children)
         } else if (metadata) {
           generateContent = []

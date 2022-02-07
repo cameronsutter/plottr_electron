@@ -68,7 +68,7 @@ function buildFileMenu(filePath) {
       visible: !!filePath,
       click: function (event, focusedWindow) {
         if (isCloudFile) {
-          focusedWindow.webContents.send('rename-file', filePath.replace(/^plottr:\/\//, ''))
+          focusedWindow.webContents.send('save-as--pro', filePath.replace(/^plottr:\/\//, ''))
         } else {
           focusedWindow.webContents.send('save-as')
         }

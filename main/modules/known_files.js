@@ -20,9 +20,9 @@ function addToKnown(filePath) {
   if (!filePath || filePath === '') return
 
   const files = knownFilesStore.store
-  const alreadyExists = Object.entries(files).some(
-    (entry) => path.normalize(entry[1].path) == path.normalize(filePath)
-  )
+  const alreadyExists = Object.entries(files)
+    .filter(({ path }) => path)
+    .some((entry) => path.normalize(entry[1].path) == path.normalize(filePath))
   if (alreadyExists) {
     const fileEntry = Object.entries(files).find(
       (entry) => path.normalize(entry[1].path) == path.normalize(filePath)

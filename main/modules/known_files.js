@@ -39,6 +39,8 @@ function addToKnown(filePath) {
 }
 
 function addToKnownFiles(filePath) {
+  // We also don't want to track recent files that don't have a path.
+  if (!filePath || filePath === '') return null
   const normalisedPath = path.normalize(filePath)
   const existingId = Object.keys(knownFilesStore.store).find((id) => {
     const existingPath = knownFilesStore.store[id].path

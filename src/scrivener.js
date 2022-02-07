@@ -231,6 +231,10 @@ export const generateState = (contentRtf, scrivx) => {
                 })
               })
             ).then((childrenData) => {
+              // returns the content/children of the Beat
+              // title represents the chapter/beat
+              // if they are siblings meaning they should render on the same chapter
+              // TODO: if they are siblings and same `plotline` they should stack
               return {
                 uuid: scrivxFileData.uuid,
                 title: scrivxFileData.title,
@@ -239,6 +243,9 @@ export const generateState = (contentRtf, scrivx) => {
             })
           } else {
             // if binder has no children but has rtf/txt files
+            // creates a folder/beat for the content
+            // if has more than 1 child,
+            // `(scrivxFileData.children && scrivxFileData.children.length)` should be true
             const noteRtf = contentRtf.filter((rtf) => rtf.includes(scrivxFileData.uuid))
             if (noteRtf.length) {
               return parseData(noteRtf).then((parsed) => {
@@ -256,6 +263,7 @@ export const generateState = (contentRtf, scrivx) => {
               })
             } else {
               // if no child and no relevant files
+              // only renders the beat title
               return {
                 uuid: scrivxFileData.uuid,
                 title: scrivxFileData.title,

@@ -199,8 +199,10 @@ ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName)
   openKnownFile(filePath, id, unknown, headerBarFileName)
 })
 
-ipcMain.on('save-file', (_event, fileName, file) => {
-  saveFile(fileName, file)
+ipcMain.on('save-file', (event, fileName, file) => {
+  saveFile(fileName, file).then(() => {
+    event.sender.send('file-saved', fileName)
+  })
 })
 
 ipcMain.on('auto-save', (event, filePath, file, userId, previousFile) => {

@@ -163,9 +163,9 @@ const isRelevantFile = (directory, fileName) => {
 // String ->  Object
 const getPlotline = (data) => {
   if (data && data.children && data.children[0]) {
-    const textData = data.children[0][0].text
-    if (textData.includes('Plotline: ')) {
-      return { plotline: textData.split('Plotline: ').pop() }
+    const isPlotline = data.children[0][0].text && data.children[0][0].text.includes('Plotline: ')
+    if (isPlotline) {
+      return { plotline: data.children[0][0].text.split('Plotline: ').pop() }
     }
   } else {
     return {}

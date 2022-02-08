@@ -37,7 +37,7 @@ const Main = ({
   finishCheckingFileToLoad,
   loadingProgress,
   darkMode,
-  isOffline,
+  isInOfflineMode,
   currentAppStateIsDashboard,
   setCurrentAppStateToDashboard,
   setCurrentAppStateToApplication,
@@ -60,7 +60,10 @@ const Main = ({
       // To boot the file automatically: we must either be running pro
       // and it's a cloud file, or we must be running classic mode and
       // it's not a cloud file.
-      if (!!isInProMode === !!isCloudFile(filePath) || (isOffline && isOfflineFile(filePath))) {
+      if (
+        !!isInProMode === !!isCloudFile(filePath) ||
+        (isInOfflineMode && isOfflineFile(filePath))
+      ) {
         bootFile(filePath, options, numOpenFiles)
       }
       // We only want to obey the setting to show the dashboard on
@@ -97,7 +100,7 @@ const Main = ({
     return () => {
       ipcRenderer.removeListener('reload-from-file', reloadListener)
     }
-  }, [isOffline, readyToCheckFileToLoad, checkingFileToLoad, checkedFileToLoad, needsToLogin])
+  }, [isInOfflineMode, readyToCheckFileToLoad, checkingFileToLoad, checkedFileToLoad, needsToLogin])
 
   // A latch so that we only show initial loading splash once.
   useEffect(() => {
@@ -222,7 +225,7 @@ Main.propTypes = {
   startCheckingFileToLoad: PropTypes.func.isRequired,
   finishCheckingFileToLoad: PropTypes.func.isRequired,
   darkMode: PropTypes.bool.isRequired,
-  isOffline: PropTypes.bool,
+  isInOfflineMode: PropTypes.bool,
   currentAppStateIsDashboard: PropTypes.string.isRequired,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,
   setCurrentAppStateToApplication: PropTypes.func.isRequired,
@@ -244,7 +247,7 @@ export default connect(
     loadingState: selectors.loadingStateSelector(state.present),
     loadingProgress: selectors.loadingProgressSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
-    isOffline: selectors.isOfflineSelector(state.present),
+    isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
     currentAppStateIsDashboard: selectors.currentAppStateIsDashboardSelector(state.present),
   }),
   {

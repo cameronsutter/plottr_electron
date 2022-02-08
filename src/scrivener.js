@@ -3,7 +3,7 @@ import { readdir, readFile, stat } from 'fs.promises'
 import path from 'path'
 import log from 'electron-log'
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
-import { HTMLToSlateParagraph } from 'pltr/v2/slate_serializers/from_html'
+import { HTMLToPlotlineParagraph } from 'pltr/v2/slate_serializers/from_html'
 
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
 // Object -> { Draft: [Object], Content: [Object] }
@@ -160,33 +160,13 @@ const isRelevantFile = (directory, fileName) => {
     )
 }
 
-// String ->  Object
-const getPlotline = (data) => {
-  if (data && data.children && data.children[0]) {
-    const isPlotline = data.children[0][0].text && data.children[0][0].text.includes('Plotline: ')
-    if (isPlotline) {
-      return { plotline: data.children[0][0].text.split('Plotline: ').pop() }
-    }
-  } else {
-    return {}
-  }
-}
-
 // String -> Object
 const readRTF = (filePath) => {
-  const isNoteRTF = path.basename(filePath) === 'notes.rtf'
   return readFile(filePath).then((rtfData) => {
     const stringRTF = rtfData.toString()
-    if (isNoteRTF) {
-      return rtfToHTML(stringRTF).then((res) => {
-        const slateData = HTMLToSlateParagraph(res)
-        return getPlotline(slateData)
-      })
-    } else {
-      return rtfToHTML(stringRTF).then((res) => {
-        return HTMLToSlateParagraph(res)
-      })
-    }
+    return rtfToHTML(stringRTF).then((res) => {
+      return HTMLToPlotlineParagraph(res)
+    })
   })
 }
 
@@ -214,6 +194,33 @@ const parseData = (paths) => {
       }
     })
   )
+}
+
+const generateLines = (items) => {
+  const lineArr = []
+  return items
+    .flatMap((item) => {
+      return item.children.flatMap((child) => {
+        return child.content.flatMap((c) => {
+          if (c?.rtf?.plotline && !lineArr.includes(c.rtf.plotline)) {
+            lineArr.push(c.rtf.plotline)
+            return c.rtf.plotline
+          }
+        })
+      })
+    })
+    .filter((line) => line)
+    .map((line, key) => {
+      return {
+        id: key,
+        bookId: 1,
+        title: line,
+        color: '#000',
+        position: 0,
+        expanded: null,
+        fromTemplateId: null,
+      }
+    })
 }
 
 // Array, Object, -> Promise<{ draft: [Any], sections: [Any] }>
@@ -276,13 +283,18 @@ export const generateState = (contentRtf, scrivx) => {
           }
         })
       ).then((data) => {
+        console.log('data', data)
         return data
       })
     })
   ).then((state) => {
     const stateArray = state.map((item, key) => {
       if (key === 0) {
-        return { draft: item }
+        const lines = generateLines(item)
+        return {
+          draft: item,
+          lines,
+        }
       } else if (key === 1) {
         return {
           sections: item,

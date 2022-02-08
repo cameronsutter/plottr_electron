@@ -15,6 +15,7 @@ import {
   listenForChangesToEditor,
   deleteChangeSignal,
   deleteOldChanges,
+  backupPublicURL,
   imagePublicURL,
   isStorageURL,
   saveImageToStorageBlob as saveImageToStorageBlobInFirebase,
@@ -329,7 +330,11 @@ const platform = {
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
   },
   showItemInFolder: (fileName) => {
-    shell.showItemInFolder(fileName)
+    if (!isStorageURL(fileName)) {
+      shell.showItemInFolder(fileName)
+    } else {
+      backupPublicURL(fileName).then((url) => ipcRenderer.send('download-file-and-show', url))
+    }
   },
   tempFilesPath: TEMP_FILES_PATH,
   mpq: MPQ,

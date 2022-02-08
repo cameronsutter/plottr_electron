@@ -1,8 +1,10 @@
-import electron from 'electron'
+import electron, { shell } from 'electron'
 import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import { initialize } from '@electron/remote/main'
 import Store from 'electron-store'
+import https from 'https'
+import fs from 'fs'
 
 Store.initRenderer()
 
@@ -268,4 +270,33 @@ ipcMain.on('pls-quit', () => {
 
 ipcMain.on('tell-me-what-os-i-am-on', (event) => {
   event.returnValue = is.windows ? 'WINDOWS' : is.macos ? 'MACOS' : is.linux ? 'LINUX' : null
+})
+
+ipcMain.on('download-file-and-show', (event, url) => {
+  const downloadDirectory = app.getPath('downloads')
+  const fullPath = path.join(downloadDirectory, 'backup-download.pltr')
+  const outputStream = fs.createWriteStream(fullPath)
+  log.info(`Downloading ${url} to ${downloadDirectory}`)
+  https
+    .get(url, (response) => {
+      if (Math.floor(response.statusCode / 200) !== 1) {
+        log.error(`Error downloading file from ${url}`)
+        return
+      }
+      response.on('data', (data) => {
+        outputStream.write(data)
+      })
+      response.on('close', () => {
+        outputStream.close((error) => {
+          if (error) {
+            log.error(`Error closing write stream for file download: of ${url}`, error)
+          } else {
+            shell.showItemInFolder(fullPath)
+          }
+        })
+      })
+    })
+    .on('error', (error) => {
+      log.error('Error downloading file from ${url}', error)
+    })
 })

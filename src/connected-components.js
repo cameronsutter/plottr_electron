@@ -331,7 +331,7 @@ const platform = {
   },
   showItemInFolder: (fileName) => {
     if (!isStorageURL(fileName)) {
-      shell.showItemInFolder(fileName)
+      ipcRenderer.send('show-item-in-folder', fileName)
     } else {
       backupPublicURL(fileName).then((url) => ipcRenderer.send('download-file-and-show', url))
     }

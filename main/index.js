@@ -256,11 +256,11 @@ ipcMain.on('save-backup', (event, filePath, file) => {
   })
 })
 
-ipcMain.on('record-offline-backup', (event, file) => {
+ipcMain.on('record-offline-backup', (_event, file) => {
   saveOfflineFile(file)
 })
 
-ipcMain.on('set-my-file-path', (event, oldFilePath, newFilePath) => {
+ipcMain.on('set-my-file-path', (_event, oldFilePath, newFilePath) => {
   setFilePathForWindowWithFilePath(oldFilePath, newFilePath)
 })
 
@@ -272,7 +272,7 @@ ipcMain.on('tell-me-what-os-i-am-on', (event) => {
   event.returnValue = is.windows ? 'WINDOWS' : is.macos ? 'MACOS' : is.linux ? 'LINUX' : null
 })
 
-ipcMain.on('download-file-and-show', (event, url) => {
+ipcMain.on('download-file-and-show', (_event, url) => {
   const downloadDirectory = app.getPath('downloads')
   const fullPath = path.join(downloadDirectory, 'backup-download.pltr')
   const outputStream = fs.createWriteStream(fullPath)
@@ -299,4 +299,8 @@ ipcMain.on('download-file-and-show', (event, url) => {
     .on('error', (error) => {
       log.error('Error downloading file from ${url}', error)
     })
+})
+
+ipcMain.on('show-item-in-folder', (_event, fileName) => {
+  shell.showItemInFolder(fileName)
 })

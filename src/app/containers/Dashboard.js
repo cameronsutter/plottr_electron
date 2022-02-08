@@ -7,6 +7,8 @@ import { VscChromeClose } from 'react-icons/vsc'
 import { selectors } from 'pltr/v2'
 import { DashboardBody, DashboardNav } from 'connected-components'
 
+import OfflineBanner from '../components/OfflineBanner'
+
 const Dashboard = ({ darkMode, closeDashboard, cantShowFile }) => {
   const [activeView, setActiveView] = useState('files')
 
@@ -20,6 +22,7 @@ const Dashboard = ({ darkMode, closeDashboard, cantShowFile }) => {
   return (
     <div id="dashboard__react__root">
       <div className={cx('dashboard__main', { darkmode: darkMode })}>
+        <OfflineBanner />
         <DashboardNav currentView={activeView} setView={setActiveView} />
         <DashboardBody currentView={activeView} setView={setActiveView}>
           {cantShowFile ? null : (

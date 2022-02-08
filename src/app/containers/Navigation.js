@@ -3,9 +3,10 @@ import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { Navbar, Nav, NavItem, Button } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
-import { FaRegUser, FaSignal, FaKey } from 'react-icons/fa'
+import { FaRegUser, FaKey } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import Resume from '../components/Resume'
+import OfflineBanner from '../components/OfflineBanner'
 
 import { t } from 'plottr_locales'
 import { Beamer, BookChooser } from 'connected-components'
@@ -13,14 +14,7 @@ import { selectors, actions } from 'pltr/v2'
 
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({
-  isInTrialMode,
-  darkMode,
-  currentView,
-  changeCurrentView,
-  isOffline,
-  hasPro,
-}) => {
+const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView }) => {
   const [dashboardView, setDashboardView] = useState(null)
 
   useEffect(() => {
@@ -73,12 +67,7 @@ const Navigation = ({
           closeDashboard={resetDashboardView}
         />
       ) : null}
-      {isOffline && hasPro ? (
-        <div className="offline-mode-banner">
-          {t('Offline Mode')}
-          <FaSignal />
-        </div>
-      ) : null}
+      <OfflineBanner />
       <Resume />
       <Navbar className="project-nav" fluid inverse={darkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
@@ -114,8 +103,6 @@ Navigation.propTypes = {
   darkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
-  isOffline: PropTypes.bool,
-  hasPro: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -123,8 +110,6 @@ function mapStateToProps(state) {
     isInTrialMode: selectors.isInTrialModeSelector(state.present),
     currentView: selectors.currentViewSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
-    isOffline: selectors.isOfflineSelector(state.present),
-    hasPro: selectors.hasProSelector(state.present),
   }
 }
 

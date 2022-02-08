@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
 import { saveBackup } from 'wired-up-firebase'
+
 import { ActionTypes, selectors } from 'pltr/v2'
 import { shouldIgnoreAction } from './shouldIgnoreAction'
 
@@ -17,10 +18,12 @@ const saver = (store) => (next) => (action) => {
 
   // save and backup
   const isOffline = selectors.isOfflineSelector(state)
+  const fileName = selectors.fileNameSelector(state)
   if (selectors.isCloudFileSelector(state) && !isOffline) {
-    saveFile(state.file.id, state, isOffline)
-  } else if (state.file.fileName !== '') {
-    saveFile(state.file.fileName, state, isOffline)
+    const fileId = selectors.fileIdSelector(state)
+    saveFile(fileId, state, isOffline)
+  } else if (fileName !== '') {
+    saveFile(fileName, state, isOffline)
   }
   return result
 }
@@ -35,7 +38,7 @@ let backupResetCount = 0
 const MAX_RESETS = 200
 
 const cloudBackup = (userId, file) => {
-  const onCloud = file.file.isCloudFile
+  const onCloud = selectors.isCloudFileSelector(file)
   const forceBackup = (previousFile) => () => {
     saveBackup(userId, previousFile || file)
     backupResetCount = 0
@@ -66,17 +69,18 @@ function saveFile(filePath, jsonData, isOffline) {
     previousFile = jsonData
   }
   const forceSave = (previousFile) => () => {
-    ipcRenderer.send('auto-save', filePath, jsonData, jsonData.client?.userId, previousFile)
+    const userId = selectors.userIdSelector(jsonData)
+    ipcRenderer.send('auto-save', filePath, jsonData, userId, previousFile)
     resetCount = 0
     saveTimeout = null
+    if (!isOffline) {
+      cloudBackup(userId, jsonData)
+    }
   }
   const forceSavePrevious = forceSave(previousFile)
   previousFile = jsonData
   if (resetCount >= MAX_RESETS) {
     forceSavePrevious()
-    if (!isOffline) {
-      cloudBackup(jsonData.client?.userId, jsonData)
-    }
     return
   }
   saveTimeout = setTimeout(forceSavePrevious, 1000)

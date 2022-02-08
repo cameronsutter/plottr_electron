@@ -12,7 +12,6 @@ const app = electron.app
 const BACKUP_BASE_PATH = path.join(app.getPath('userData'), 'backups')
 
 function saveBackup(filePath, data, callback) {
-  if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 
   const backupStrategy = SETTINGS.get('user.backupType') || 'never-delete'
@@ -76,7 +75,6 @@ function backupPath() {
 
 // assumes base path exists
 function ensureBackupTodayPath() {
-  if (process.env.NODE_ENV === 'development') return
   if (!SETTINGS.get('backup')) return
 
   const backupFolder = backupPath()

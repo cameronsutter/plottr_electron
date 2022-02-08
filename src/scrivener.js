@@ -51,6 +51,58 @@ const parseScrivxData = (data) => {
   }
 }
 
+const getBinderContents = (item, key) => {
+  if (item) {
+    const binderItem = item.querySelectorAll('BinderItem')
+    return Array.from(binderItem)
+      .map((i) => {
+        let generateContent
+        const uuid = i.getAttribute('uuid') || i.getAttribute('id')
+        const title = i.querySelector('Title')
+        const children = i.querySelector('Children')
+        const isTextBinder = i.getAttribute('type') === 'Text'
+        const metadata = i.querySelector('MetaData')
+
+        if (children || (metadata && isTextBinder)) {
+          generateContent = generateChildrenBinderItems(uuid, title, children)
+        } else if (metadata) {
+          generateContent = []
+          generateContent = {
+            uuid,
+            title: title.textContent,
+          }
+        }
+        return generateContent
+      })
+      .filter((i) => !!i)
+  }
+}
+
+const generateChildrenBinderItems = (uuid, title, childTag) => {
+  let noteObj = { uuid, title: title.textContent || null, children: [] }
+
+  if (childTag) {
+    const childBinderItem = childTag.querySelectorAll('BinderItem')
+    Array.from(childBinderItem).map((c) => {
+      const childUUID = c.getAttribute('uuid') || c.getAttribute('id')
+      const childTitle = c.querySelector('Title')
+      const childChildren = c.querySelector('Children')
+
+      if (childChildren) {
+        return generateChildrenBinderItems(childUUID, childTitle, childChildren)
+      }
+
+      noteObj.children.push({
+        uuid: childUUID,
+        title: childTitle.textContent,
+      })
+    })
+    return noteObj
+  } else {
+    return noteObj
+  }
+}
+
 // [{ filePath: String, isRelevant: Bool }] -> [String]
 const keepNonSectionRTFFiles = (results) => {
   return results.filter(({ isRelevant }) => !isRelevant).map(({ filePath }) => filePath)
@@ -303,56 +355,4 @@ export const generateState = (contentRtf, scrivx) => {
     })
     return Object.assign({}, ...stateArray)
   })
-}
-
-const generateChildrenBinderItems = (uuid, title, childTag) => {
-  let noteObj = { uuid, title: title.textContent || null, children: [] }
-
-  if (childTag) {
-    const childBinderItem = childTag.querySelectorAll('BinderItem')
-    Array.from(childBinderItem).map((c) => {
-      const childUUID = c.getAttribute('uuid') || c.getAttribute('id')
-      const childTitle = c.querySelector('Title')
-      const childChildren = c.querySelector('Children')
-
-      if (childChildren) {
-        return generateChildrenBinderItems(childUUID, childTitle, childChildren)
-      }
-
-      noteObj.children.push({
-        uuid: childUUID,
-        title: childTitle.textContent,
-      })
-    })
-    return noteObj
-  } else {
-    return noteObj
-  }
-}
-
-const getBinderContents = (item, key) => {
-  if (item) {
-    const binderItem = item.querySelectorAll('BinderItem')
-    return Array.from(binderItem)
-      .map((i) => {
-        let generateContent
-        const uuid = i.getAttribute('uuid') || i.getAttribute('id')
-        const title = i.querySelector('Title')
-        const children = i.querySelector('Children')
-        const isTextBinder = i.getAttribute('type') === 'Text'
-        const metadata = i.querySelector('MetaData')
-
-        if (children || (metadata && isTextBinder)) {
-          generateContent = generateChildrenBinderItems(uuid, title, children)
-        } else if (metadata) {
-          generateContent = []
-          generateContent = {
-            uuid,
-            title: title.textContent,
-          }
-        }
-        return generateContent
-      })
-      .filter((i) => !!i)
-  }
 }

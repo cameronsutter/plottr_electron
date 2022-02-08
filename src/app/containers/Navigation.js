@@ -13,7 +13,14 @@ import { selectors, actions } from 'pltr/v2'
 
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, isOffline }) => {
+const Navigation = ({
+  isInTrialMode,
+  darkMode,
+  currentView,
+  changeCurrentView,
+  isOffline,
+  hasPro,
+}) => {
   const [dashboardView, setDashboardView] = useState(null)
 
   useEffect(() => {
@@ -66,7 +73,7 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, i
           closeDashboard={resetDashboardView}
         />
       ) : null}
-      {isOffline ? (
+      {isOffline && hasPro ? (
         <div className="offline-mode-banner">
           {t('Offline Mode')}
           <FaSignal />
@@ -108,6 +115,7 @@ Navigation.propTypes = {
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
   isOffline: PropTypes.bool,
+  hasPro: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -116,6 +124,7 @@ function mapStateToProps(state) {
     currentView: selectors.currentViewSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
+    hasPro: selectors.hasProSelector(state.present),
   }
 }
 

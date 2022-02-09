@@ -4,6 +4,8 @@ import path from 'path'
 import log from 'electron-log'
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { HTMLToPlotlineParagraph } from 'pltr/v2/slate_serializers/from_html'
+import { convertTxtString } from 'pltr/v2/slate_serializers/from_plain_text'
+import { camelCase } from 'lodash'
 
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
 // Object -> { Draft: [Object], Content: [Object] }
@@ -228,7 +230,8 @@ const getTxtContent = (path) => {
   const content = txtContent.toString()
 
   // remove `Click to edit`
-  return content.split('Click to edit').pop()
+  const txtString = content.split('Click to edit').pop()
+  return convertTxtString(txtString)
 }
 
 // String -> Promise<object>
@@ -248,6 +251,46 @@ const parseData = (paths) => {
   )
 }
 
+const generateCharacters = (items) => {
+  return items.children.flatMap((child, parentKey) => {
+    const charAttrib = child.content.flatMap((c) => {
+      const attribKeys = c.rtf?.children
+        .map((char, childKey) => {
+          const textVal = char?.find((i) => i.text)
+          if (childKey % 2 === 0) {
+            return camelCase(textVal?.text) || ''
+          } else {
+            return 'Object value'
+          }
+        })
+        .filter((i) => i !== 'Object value')
+
+      const attribVals = c.rtf?.children
+        .map((char, childKey) => {
+          const textVal = char?.find((i) => i.text)
+          if (childKey % 2 !== 0) {
+            return textVal?.text || ''
+          } else {
+            return 'Object key'
+          }
+        })
+        .filter((i) => i !== 'Object key')
+
+      return Object.assign(...attribKeys.map((k, i) => ({ [k]: attribVals[i] })))
+    })
+
+    const characterIdentity = {
+      id: parentKey + 1,
+      name: child.title,
+    }
+
+    const characterObj = Object.assign({}, characterIdentity, ...charAttrib)
+
+    // remove empty key
+    return JSON.parse(JSON.stringify(characterObj))
+  })
+}
+
 const generateLines = (items) => {
   const lineArr = []
   return items
@@ -264,7 +307,7 @@ const generateLines = (items) => {
     .filter((line) => line)
     .map((line, key) => {
       return {
-        id: key,
+        id: key + 1,
         bookId: 1,
         title: line,
         color: '#000',
@@ -275,7 +318,68 @@ const generateLines = (items) => {
     })
 }
 
-// Array, Object, -> Promise<{ draft: [Any], sections: [Any] }>
+const generateChapters = (items) => {
+  const chapterList = []
+  return items
+    .flatMap((item) => {
+      if (item.title && !chapterList.includes(item.title)) {
+        chapterList.push(item.title)
+        return item.title
+      }
+    })
+    .filter((line) => line)
+    .map((chapter, key) => {
+      return {
+        id: key + 1,
+        bookId: 1,
+        position: 0,
+        title: chapter,
+        time: 0,
+        autoOutlineSort: true,
+      }
+    })
+}
+
+const generateCards = (items, lines, chapters) => {
+  return items
+    .flatMap((item, parentKey) => {
+      const chapter = chapters.find((chapter) => chapter.title === item.title)
+      return item.children.flatMap((child) => {
+        const contents = child.content.flatMap((c) => {
+          if (c?.rtf?.plotline) {
+            const plotline = lines.find((line) => line.title === c?.rtf?.plotline)
+            return {
+              lineId: plotline.id,
+            }
+          } else {
+            return {
+              synopsis: [c?.synopsis] || [],
+            }
+          }
+        })
+        const description = contents.find((c) => c.synopsis)
+        const line = contents.find((c) => c.lineId)
+        return {
+          characters: [],
+          description: description.synopsis || [],
+          id: parentKey + 1,
+          lineId: line.lineId || null,
+          chapterId: chapter.id,
+          places: [],
+          tags: [],
+          templates: [],
+          title: child.title,
+          position: 0,
+          positionWithinLine: 0,
+          positionInChapter: null,
+          fromTemplateId: null,
+        }
+      })
+    })
+    .filter((item) => item)
+}
+
+// Array, Object, -> Promise<{ key: [Any] }>
 export const generateState = (contentRtf, scrivx) => {
   return Promise.all(
     Object.values(scrivx).map((item, key) => {
@@ -335,7 +439,6 @@ export const generateState = (contentRtf, scrivx) => {
           }
         })
       ).then((data) => {
-        console.log('data', data)
         return data
       })
     })
@@ -343,13 +446,19 @@ export const generateState = (contentRtf, scrivx) => {
     const stateArray = state.map((item, key) => {
       if (key === 0) {
         const lines = generateLines(item)
+        const chapters = generateChapters(item)
+        const cards = generateCards(item, lines, chapters)
         return {
           draft: item,
           lines,
+          cards,
         }
       } else if (key === 1) {
+        const charactersObject = item.find((c) => c.title === 'Characters')
+        const characters = generateCharacters(charactersObject)
         return {
           sections: item,
+          characters,
         }
       }
     })

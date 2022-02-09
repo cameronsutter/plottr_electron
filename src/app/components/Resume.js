@@ -167,11 +167,15 @@ const Resume = ({
     >
       {checkingOfflineDrift && !overwritingCloudWithBackup ? <Spinner /> : null}
       {backingUpOfflineFile
-        ? `The cloud file is different from your local copy.  We're going to create a duplicate of your local file and switch to the cloud file.`
+        ? t(
+            'The cloud file is different from your local copy.  We created a duplicate of your local file and switched to the cloud file.'
+          )
         : null}
-      {overwritingCloudWithBackup ? 'Uploading your changes to the cloud.' : null}
+      {overwritingCloudWithBackup ? t('Your changes were uploaded to the cloud.') : null}
       {!checkingOfflineDrift && !backingUpOfflineFile && !overwritingCloudWithBackup
-        ? `No changes were detected between offline backup file and the Plottr cloud version.`
+        ? t(
+            'No changes were detected between the offline backup file and the Plottr cloud version.'
+          )
         : null}
     </MessageModal>
   )

@@ -5,12 +5,11 @@ import cx from 'classnames'
 import { VscChromeClose } from 'react-icons/vsc'
 
 import { selectors } from 'pltr/v2'
-import { DashboardBody, DashboardNav } from 'connected-components'
+import { DashboardBody, DashboardNav, FullPageSpinner as Spinner } from 'connected-components'
 
-import Spinner from '../components/Spinner'
 import OfflineBanner from '../components/OfflineBanner'
 
-const Dashboard = ({ darkMode, closeDashboard, cantShowFile }) => {
+const Dashboard = ({ darkMode, closeDashboard, cantShowFile, busy }) => {
   const [activeView, setActiveView] = useState('files')
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const Dashboard = ({ darkMode, closeDashboard, cantShowFile }) => {
     <div id="dashboard__react__root">
       <div className={cx('dashboard__main', { darkmode: darkMode })}>
         <OfflineBanner />
-        <Spinner />
+        {busy ? <Spinner /> : null}
         <DashboardNav currentView={activeView} setView={setActiveView} />
         <DashboardBody currentView={activeView} setView={setActiveView}>
           {cantShowFile ? null : (
@@ -42,10 +41,12 @@ Dashboard.propTypes = {
   darkMode: PropTypes.bool,
   closeDashboard: PropTypes.func.isRequired,
   cantShowFile: PropTypes.bool,
+  busy: PropTypes.bool,
 }
 
 export default React.memo(
   connect((state) => ({
     darkMode: selectors.isDarkModeSelector(state.present),
+    busy: selectors.manipulatingAFileSelector(state.present),
   }))(Dashboard)
 )

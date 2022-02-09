@@ -68,13 +68,13 @@ const SaveAs = ({
       setFileId(fileId)
       saveFileAs.current = true
     })
-    const renameListener = document.addEventListener('rename-file', (event) => {
+    const renameListener = document.addEventListener('save-as--pro', (event) => {
       setVisible(true)
       setFileId(event.fileId)
     })
     return () => {
-      document.removeEventListener('rename-file', renameListener)
-      ipcRenderer.removeAllListeners('rename-file')
+      document.removeEventListener('save-as--pro', renameListener)
+      ipcRenderer.removeAllListeners('save-as--pro')
     }
   }, [])
 

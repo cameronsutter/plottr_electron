@@ -5,51 +5,44 @@ import log from 'electron-log'
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { HTMLToPlotlineParagraph } from 'pltr/v2/slate_serializers/from_html'
 import { convertTxtString } from 'pltr/v2/slate_serializers/from_plain_text'
-import { camelCase } from 'lodash'
 
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
 // Object -> { Draft: [Object], Content: [Object] }
 const parseScrivxData = (data) => {
-  let sectionsArr = []
-  let draftArr = []
   const parser = new DOMParser()
   const htmlData = parser.parseFromString(data, 'text/html')
   const children = htmlData.querySelectorAll('ScrivenerProject Binder > BinderItem')
 
-  Array.from(children).map((i, key) => {
+  const scrivxData = Array.from(children).map((i, key) => {
     const isDraftFolder = i.closest('BinderItem').getAttribute('type') === 'DraftFolder'
     const isNew = i.querySelectorAll('MetaData')
     if (isDraftFolder) {
-      const draft = getBinderContents(i, key)
-      if (draft.length) {
-        draftArr = draft
-      }
+      return getBinderContents(i, key)
     } else if (!isDraftFolder && !isNew.length) {
-      const sec = getBinderContents(i, key)
-      if (sec.length) {
-        sectionsArr = sec
-      }
+      return getBinderContents(i, key)
     } else if (isNew.length) {
       const children = i.querySelector('children')
 
-      sectionsArr.push({
-        uuid: i.getAttribute('uuid') || i.getAttribute('id'),
-        title: i.querySelector('title').textContent,
-        children: children
-          ? [
-              {
-                uuid: children?.querySelector('binderitem')?.getAttribute('uuid'),
-                title: children?.querySelector('title')?.textContent,
-              },
-            ]
-          : [],
-      })
+      return [
+        {
+          uuid: i.getAttribute('uuid') || i.getAttribute('id'),
+          title: i.querySelector('title').textContent,
+          children: children
+            ? [
+                {
+                  uuid: children?.querySelector('binderitem')?.getAttribute('uuid'),
+                  title: children?.querySelector('title')?.textContent,
+                },
+              ]
+            : [],
+        },
+      ]
     }
   })
-
+  console.log('scrivxData', scrivxData)
   return {
-    draft: draftArr,
-    sections: sectionsArr,
+    draft: scrivxData[0],
+    sections: scrivxData.filter((item, index) => index !== 0),
   }
 }
 
@@ -58,7 +51,6 @@ const getBinderContents = (item, key) => {
     const binderItem = item.querySelectorAll('BinderItem')
     return Array.from(binderItem)
       .map((i) => {
-        let generateContent
         const uuid = i.getAttribute('uuid') || i.getAttribute('id')
         const title = i.querySelector('Title')
         const children = i.querySelector('Children')
@@ -66,26 +58,27 @@ const getBinderContents = (item, key) => {
         const metadata = i.querySelector('MetaData')
 
         if (children || (metadata && isTextBinder)) {
-          generateContent = generateChildrenBinderItems(uuid, title, children)
+          const contentChildren = generateChildrenBinderItems(uuid, title, children)
+          return {
+            uuid,
+            title: title.textContent,
+            children: contentChildren,
+          }
         } else if (metadata) {
-          generateContent = []
-          generateContent = {
+          return {
             uuid,
             title: title.textContent,
           }
         }
-        return generateContent
       })
       .filter((i) => !!i)
   }
 }
 
 const generateChildrenBinderItems = (uuid, title, childTag) => {
-  let noteObj = { uuid, title: title.textContent || null, children: [] }
-
   if (childTag) {
     const childBinderItem = childTag.querySelectorAll('BinderItem')
-    Array.from(childBinderItem).map((c) => {
+    return Array.from(childBinderItem).map((c) => {
       const childUUID = c.getAttribute('uuid') || c.getAttribute('id')
       const childTitle = c.querySelector('Title')
       const childChildren = c.querySelector('Children')
@@ -94,14 +87,11 @@ const generateChildrenBinderItems = (uuid, title, childTag) => {
         return generateChildrenBinderItems(childUUID, childTitle, childChildren)
       }
 
-      noteObj.children.push({
+      return {
         uuid: childUUID,
         title: childTitle.textContent,
-      })
+      }
     })
-    return noteObj
-  } else {
-    return noteObj
   }
 }
 
@@ -115,7 +105,6 @@ const keepSectionRTFFiles = (results) => {
   return results.filter(({ isRelevant }) => isRelevant).map(({ filePath }) => filePath)
 }
 
-// Step 1: find all the RTF files recursively.
 // String -> Promise<[String]>
 export const findRelevantFiles = (directory) => {
   const filesInDirectory = readdir(directory)
@@ -219,7 +208,7 @@ const readRTF = (filePath) => {
   return readFile(filePath).then((rtfData) => {
     const stringRTF = rtfData.toString()
     return rtfToHTML(stringRTF).then((res) => {
-      return HTMLToPlotlineParagraph(res)
+      return Promise.all(HTMLToPlotlineParagraph(res))
     })
   })
 }
@@ -234,9 +223,9 @@ const getTxtContent = (path) => {
   return convertTxtString(txtString)
 }
 
-// String -> Promise<object>
-const parseData = (paths) => {
-  return Promise.all(
+// String -> Promise<[{ synopsis: <Object>, rtf: [Object] }]>
+const parseRelevantFiles = (paths) => {
+  const promise = Promise.all(
     paths.map((filePath) => {
       const fileType = path.extname(filePath)
 
@@ -249,32 +238,58 @@ const parseData = (paths) => {
       }
     })
   )
+
+  return promise.then((parsedFiles) => {
+    const rtf = parsedFiles.filter((file) => file.rtf)
+    const synopsis = parsedFiles.filter((file) => file.synopsis)
+
+    // if draft folder has no rtf files
+    // possibly from original scrivener file
+    if (synopsis.length && !rtf.length) {
+      const autoPlotline = { rtf: [{ plotline: `Plotline` }] }
+      const withPlotline = [...parsedFiles, autoPlotline]
+      return withPlotline
+      // } else if (synopsis.length && rtf.length && parentKey === 0) {
+      // const autoPlotline = { plotline: `Plot ${parentKey + 1}` }
+      // return parsedFiles.map((item) => {
+      //   console.log('item', item)
+      //   return [...item, { rtf: { ...item.rtf, ...autoPlotline } }]
+      // })
+    }
+
+    // possibly from plottr exported to scrivener
+    return parsedFiles
+  })
 }
 
 const generateCharacters = (items) => {
   return items.children.flatMap((child, parentKey) => {
     const charAttrib = child.content.flatMap((c) => {
-      const attribKeys = c.rtf?.children
-        .map((char, childKey) => {
-          const textVal = char?.find((i) => i.text)
-          if (childKey % 2 === 0) {
-            return camelCase(textVal?.text) || ''
-          } else {
-            return 'Object value'
-          }
-        })
-        .filter((i) => i !== 'Object value')
+      const attribKeys = c.rtf?.flatMap((i) => {
+        return i.children
+          .map((char, childKey) => {
+            const textVal = char?.find((i) => i.text)
+            if (childKey % 2 === 0) {
+              return textVal?.text || ''
+            } else {
+              return 'false'
+            }
+          })
+          .filter((i) => i !== 'false')
+      })
 
-      const attribVals = c.rtf?.children
-        .map((char, childKey) => {
-          const textVal = char?.find((i) => i.text)
-          if (childKey % 2 !== 0) {
-            return textVal?.text || ''
-          } else {
-            return 'Object key'
-          }
-        })
-        .filter((i) => i !== 'Object key')
+      const attribVals = c.rtf?.flatMap((i) => {
+        return i.children
+          .map((char, childKey) => {
+            const textVal = char?.find((i) => i.text)
+            if (childKey % 2 !== 0) {
+              return textVal?.text || ''
+            } else {
+              return 'false'
+            }
+          })
+          .filter((i) => i !== 'false')
+      })
 
       return Object.assign(...attribKeys.map((k, i) => ({ [k]: attribVals[i] })))
     })
@@ -296,12 +311,17 @@ const generateLines = (items) => {
   return items
     .flatMap((item) => {
       return item.children.flatMap((child) => {
-        return child.content.flatMap((c) => {
-          if (c?.rtf?.plotline && !lineArr.includes(c.rtf.plotline)) {
-            lineArr.push(c.rtf.plotline)
-            return c.rtf.plotline
-          }
+        const rtf = child.content.filter((content) => {
+          return content.rtf
         })
+        return rtf.flatMap((item) =>
+          item.rtf.flatMap((i) => {
+            if (i.plotline.length && !lineArr.includes(i.plotline)) {
+              lineArr.push(i.plotline)
+              return i.plotline
+            }
+          })
+        )
       })
     })
     .filter((line) => line)
@@ -345,25 +365,24 @@ const generateCards = (items, lines, chapters) => {
     .flatMap((item, parentKey) => {
       const chapter = chapters.find((chapter) => chapter.title === item.title)
       return item.children.flatMap((child) => {
-        const contents = child.content.flatMap((c) => {
-          if (c?.rtf?.plotline) {
-            const plotline = lines.find((line) => line.title === c?.rtf?.plotline)
+        const synopsis = child.content
+          .filter((content) => content.synopsis)
+          .flatMap((item) => item.synopsis)
+        const plotline = child.content
+          .filter((content) => content.rtf)
+          .flatMap((item) => {
+            const plot = item.rtf.find((i) => i.plotline)
+            const line = lines.find((l) => l.title === plot.plotline)
             return {
-              lineId: plotline.id,
+              lineId: line.id,
             }
-          } else {
-            return {
-              synopsis: [c?.synopsis] || [],
-            }
-          }
-        })
-        const description = contents.find((c) => c.synopsis)
-        const line = contents.find((c) => c.lineId)
+          })
+        const line = plotline.find((c) => c.lineId)
         return {
           characters: [],
-          description: description.synopsis || [],
+          description: synopsis || [],
           id: parentKey + 1,
-          lineId: line.lineId || null,
+          lineId: line.lineId || 0,
           chapterId: chapter.id,
           places: [],
           tags: [],
@@ -380,16 +399,87 @@ const generateCards = (items, lines, chapters) => {
 }
 
 // Array, Object, -> Promise<{ key: [Any] }>
-export const generateState = (contentRtf, scrivx) => {
-  return Promise.all(
-    Object.values(scrivx).map((item, key) => {
+export const generateState = (relevantFiles, scrivx) => {
+  const draftFolder = Object.values(scrivx)[0]
+  const sectionFolders = Object.values(scrivx).filter((item, index) => index !== 0)
+  const flatSectionsFolder = sectionFolders.flat()
+
+  const manuscript = Promise.all(
+    draftFolder.map((beats, parentKey) => {
+      if (beats.children && beats.children.length) {
+        return Promise.all(
+          beats.children.map((child, key) => {
+            const noteRtf = relevantFiles.filter((rtf) => rtf.includes(child.uuid))
+            return parseRelevantFiles(noteRtf).then((parsed) => {
+              console.log('parsed', parsed)
+              return {
+                id: key + 1,
+                title: child.title,
+                content: parsed,
+              }
+            })
+          })
+        ).then((childrenData) => {
+          // returns the content/children of the Beat
+          // title represents the chapter/beat
+          // if they are siblings meaning they should render on the same chapter
+          // TODO: if they are siblings and same `plotline` they should stack
+          return {
+            uuid: beats.uuid,
+            title: beats.title,
+            children: childrenData,
+          }
+        })
+      } else {
+        // if binder has no children but has rtf/txt files
+        // creates a folder/beat for the content
+        // if has more than 1 child,
+        // `(beats.children && beats.children.length)` should be true
+        // const noteRtf = relevantFiles.filter((rtf) => rtf.includes(beats.uuid))
+        // if (noteRtf.length) {
+        //   return parseRelevantFiles(noteRtf).then((parsed) => {
+        //     return {
+        //       uuid: beats.uuid,
+        //       title: `Beat ${parentKey + 1}`,
+        //       children: [
+        //         {
+        //           id: parentKey + 1,
+        //           title: beats.title,
+        //           content: parsed,
+        //         },
+        //       ],
+        //     }
+        //   })
+        // } else {
+        //   // if no child and no relevant files
+        //   // only renders the beat title
+        //   return {
+        //     uuid: beats.uuid,
+        //     title: beats.title,
+        //   }
+        // }
+      }
+    })
+  ).then((draftFolderData) => {
+    console.log('draftFolderData', draftFolderData)
+    const lines = generateLines(draftFolderData)
+    const chapters = generateChapters(draftFolderData)
+    const cards = generateCards(draftFolderData, lines, chapters)
+    return {
+      draft: draftFolderData,
+      lines,
+      cards,
+    }
+  })
+  const sections = Promise.all(
+    flatSectionsFolder.flatMap((item) => {
       return Promise.all(
-        item.map((scrivxFileData) => {
-          if (scrivxFileData.children && scrivxFileData.children.length) {
+        item.map((section) => {
+          if (section.children && section.children.length) {
             return Promise.all(
-              scrivxFileData.children.map((child, key) => {
-                const noteRtf = contentRtf.filter((rtf) => rtf.includes(child.uuid))
-                return parseData(noteRtf).then((parsed) => {
+              section.children.map((child, key) => {
+                const noteRtf = relevantFiles.filter((rtf) => rtf.includes(child.uuid))
+                return parseRelevantFiles(noteRtf).then((parsed) => {
                   return {
                     id: key + 1,
                     title: child.title,
@@ -403,65 +493,29 @@ export const generateState = (contentRtf, scrivx) => {
               // if they are siblings meaning they should render on the same chapter
               // TODO: if they are siblings and same `plotline` they should stack
               return {
-                uuid: scrivxFileData.uuid,
-                title: scrivxFileData.title,
+                uuid: section.uuid,
+                title: section.title,
                 children: childrenData,
               }
             })
-          } else {
-            // if binder has no children but has rtf/txt files
-            // creates a folder/beat for the content
-            // if has more than 1 child,
-            // `(scrivxFileData.children && scrivxFileData.children.length)` should be true
-            const noteRtf = contentRtf.filter((rtf) => rtf.includes(scrivxFileData.uuid))
-            if (noteRtf.length) {
-              return parseData(noteRtf).then((parsed) => {
-                return {
-                  uuid: scrivxFileData.uuid,
-                  title: `Beat ${key + 1}`,
-                  children: [
-                    {
-                      id: key + 1,
-                      title: scrivxFileData.title,
-                      content: parsed,
-                    },
-                  ],
-                }
-              })
-            } else {
-              // if no child and no relevant files
-              // only renders the beat title
-              return {
-                uuid: scrivxFileData.uuid,
-                title: scrivxFileData.title,
-              }
-            }
           }
         })
-      ).then((data) => {
-        return data
-      })
+      )
     })
-  ).then((state) => {
-    const stateArray = state.map((item, key) => {
-      if (key === 0) {
-        const lines = generateLines(item)
-        const chapters = generateChapters(item)
-        const cards = generateCards(item, lines, chapters)
-        return {
-          draft: item,
-          lines,
-          cards,
-        }
-      } else if (key === 1) {
-        const charactersObject = item.find((c) => c.title === 'Characters')
-        const characters = generateCharacters(charactersObject)
-        return {
-          sections: item,
-          characters,
-        }
-      }
-    })
-    return Object.assign({}, ...stateArray)
+  ).then((sectionsFolderData) => {
+    const flatSections = sectionsFolderData.flat()
+    const charactersObject = flatSections.find((c) => c.title === 'Characters')
+    const characters = Object.entries(charactersObject).length
+      ? generateCharacters(charactersObject)
+      : []
+    return {
+      sections: flatSections,
+      characters,
+    }
+  })
+
+  return Promise.all([manuscript, sections]).then((data) => {
+    const flattenData = data.flat()
+    return Object.assign({}, ...flattenData)
   })
 }

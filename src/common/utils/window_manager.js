@@ -7,7 +7,7 @@ import { t } from 'plottr_locales'
 import { logger } from '../../logger'
 import { closeDashboard } from '../../dashboard-events'
 import { uploadProject } from './upload_project'
-import { findRelevantFiles, generateState, getContentRTF, getScrivxData } from '../../scrivener'
+import { findRelevantFiles, generateState, getScrivxData } from '../../scrivener'
 
 const win = remote.getCurrentWindow()
 const { dialog } = remote

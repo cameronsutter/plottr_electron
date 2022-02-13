@@ -235,13 +235,13 @@ const parseRelevantFiles = (paths) => {
   })
 }
 
-const generateCharacters = (items) => {
+const generateCharsOrPlaces = (items) => {
   return items.children.flatMap((child, parentKey) => {
-    const charAttrib = child.content.flatMap((c) => {
+    const itemAttrib = child.content.flatMap((c) => {
       const attribKeys = c.rtf?.flatMap((i) => {
         return i.children
-          .map((char, childKey) => {
-            const textVal = char?.find((i) => i.text)
+          .map((child, childKey) => {
+            const textVal = child?.find((i) => i.text)
             if (childKey % 2 === 0) {
               return textVal?.text || ''
             } else {
@@ -253,8 +253,8 @@ const generateCharacters = (items) => {
 
       const attribVals = c.rtf?.flatMap((i) => {
         return i.children
-          .map((char, childKey) => {
-            const textVal = char?.find((i) => i.text)
+          .map((child, childKey) => {
+            const textVal = child?.find((i) => i.text)
             if (childKey % 2 !== 0) {
               return textVal?.text || ''
             } else {
@@ -267,15 +267,15 @@ const generateCharacters = (items) => {
       return Object.assign(...attribKeys.map((k, i) => ({ [k]: attribVals[i] })))
     })
 
-    const characterIdentity = {
+    const itemIdentity = {
       id: parentKey + 1,
       name: child.title,
     }
 
-    const characterObj = Object.assign({}, characterIdentity, ...charAttrib)
+    const itemObj = Object.assign({}, itemIdentity, ...itemAttrib)
 
     // remove empty key
-    return JSON.parse(JSON.stringify(characterObj))
+    return JSON.parse(JSON.stringify(itemObj))
   })
 }
 
@@ -495,11 +495,14 @@ export const generateState = (relevantFiles, scrivx) => {
       const charactersObject =
         flatSections.find((c) => c && c.title && c.title === 'Characters') || {}
       const characters = Object.entries(charactersObject)?.length
-        ? generateCharacters(charactersObject)
+        ? generateCharsOrPlaces(charactersObject)
         : []
+      const placesObj = flatSections.find((c) => c && c.title && c.title === 'Places') || {}
+      const places = Object.entries(placesObj).length ? generateCharsOrPlaces(placesObj) : []
       return {
         sections: flatSections,
         characters,
+        places,
       }
     })
     .catch((error) => {

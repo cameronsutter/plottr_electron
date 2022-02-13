@@ -15,35 +15,44 @@ const parseScrivxData = (data) => {
 
   const scrivxData = Array.from(rootChild).map((i, key) => {
     const child = i.querySelector('children')
+    const isDraftFolder = i.getAttribute('type') == 'DraftFolder'
 
-    if (child.children?.length) {
-      return getBinderContents(child.children, key)
+    if (child && child.children && child.children.length) {
+      if (isDraftFolder) {
+        return {
+          draft: getBinderContents(child.children, key),
+        }
+      } else {
+        return getBinderContents(child.children, key)
+      }
     }
   })
-  console.log('scrivxData', scrivxData)
+
+  const manuscript = scrivxData.find((i) => i.draft)
+
   return {
-    draft: scrivxData[0],
-    sections: scrivxData.filter((item, index) => index !== 0),
+    manuscript: manuscript?.draft || [],
+    sections: scrivxData.filter((item, index) => index !== 0 && item),
   }
 }
 
-const getBinderContents = (root, key) => {
+const getBinderContents = (root, rootKey) => {
   return Array.from(root).map((bindersItem) => {
     const uuid = bindersItem.getAttribute('uuid') || bindersItem.getAttribute('id')
     const title = bindersItem.querySelector('Title')?.textContent || ''
     const binderChildren = bindersItem.querySelector('Children')
 
-    if (binderChildren?.children?.length) {
+    if (binderChildren && binderChildren.children && binderChildren.children.length) {
       const contentChildren = getBinderContents(binderChildren.children)
       return {
         uuid,
-        title: title,
+        title,
         children: contentChildren,
       }
     } else {
       return {
         uuid,
-        title: title,
+        title,
       }
     }
   })
@@ -362,8 +371,21 @@ export const generateState = (relevantFiles, scrivx) => {
       if (beats.children && beats.children.length) {
         return Promise.all(
           beats.children.map((child, key) => {
-            const noteRtf = relevantFiles.filter((rtf) => rtf.includes(child.uuid))
-            return parseRelevantFiles(noteRtf).then((parsed) => {
+            const contentFiles = relevantFiles.filter((file) => {
+              const isVer_3_UUID = UUIDFolderRegEx.test(child.uuid)
+              if (isVer_3_UUID) {
+                return file.includes(child.uuid)
+              } else {
+                const fileName = file.split('/').pop()
+                if (file.endsWith('_synopsis.txt') || file.endsWith('_notes.rtf')) {
+                  return fileName.split('_')[0] == child.uuid
+                } else {
+                  const uuid = fileName.replace('.rtf', '')
+                  return uuid == child.uuid
+                }
+              }
+            })
+            return parseRelevantFiles(contentFiles).then((parsed) => {
               return {
                 id: key + 1,
                 title: child.title,
@@ -376,6 +398,7 @@ export const generateState = (relevantFiles, scrivx) => {
           // title represents the chapter/beat
           // if they are siblings meaning they should render on the same chapter
           // TODO: if they are siblings and same `plotline` they should stack
+
           return {
             uuid: beats.uuid,
             title: beats.title,
@@ -422,6 +445,7 @@ export const generateState = (relevantFiles, scrivx) => {
       cards,
     }
   })
+
   const sections = Promise.all(
     flatSectionsFolder.flatMap((item) => {
       return Promise.all(
@@ -429,8 +453,21 @@ export const generateState = (relevantFiles, scrivx) => {
           if (section.children && section.children.length) {
             return Promise.all(
               section.children.map((child, key) => {
-                const noteRtf = relevantFiles.filter((rtf) => rtf.includes(child.uuid))
-                return parseRelevantFiles(noteRtf).then((parsed) => {
+                const contentFiles = relevantFiles.filter((file) => {
+                  const isVer_3_UUID = UUIDFolderRegEx.test(child.uuid)
+                  if (isVer_3_UUID) {
+                    return file.includes(child.uuid)
+                  } else {
+                    const fileName = file.split('/').pop()
+                    if (file.endsWith('_synopsis.txt') || file.endsWith('_notes.rtf')) {
+                      return fileName.split('_')[0] == child.uuid
+                    } else {
+                      const uuid = fileName.replace('.rtf', '')
+                      return uuid == child.uuid
+                    }
+                  }
+                })
+                return parseRelevantFiles(contentFiles).then((parsed) => {
                   return {
                     id: key + 1,
                     title: child.title,
@@ -453,17 +490,21 @@ export const generateState = (relevantFiles, scrivx) => {
         })
       )
     })
-  ).then((sectionsFolderData) => {
-    const flatSections = sectionsFolderData.flat()
-    const charactersObject = flatSections.find((c) => c.title === 'Characters')
-    const characters = Object.entries(charactersObject).length
-      ? generateCharacters(charactersObject)
-      : []
-    return {
-      sections: flatSections,
-      characters,
-    }
-  })
+  )
+    .then((sectionsFolderData) => {
+      const flatSections = sectionsFolderData.flat()
+      const charactersObject = flatSections.find((c) => c.title === 'Characters')
+      const characters = Object.entries(charactersObject).length
+        ? generateCharacters(charactersObject)
+        : []
+      return {
+        sections: flatSections,
+        characters,
+      }
+    })
+    .catch((error) => {
+      console.log('sections error', error)
+    })
 
   return Promise.all([manuscript, sections]).then((data) => {
     const flattenData = data.flat()

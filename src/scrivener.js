@@ -7,7 +7,7 @@ import { HTMLToPlotlineParagraph } from 'pltr/v2/slate_serializers/from_html'
 import { convertTxtString } from 'pltr/v2/slate_serializers/from_plain_text'
 
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
-// Object -> { Draft: [Object], Content: [Object] }
+// Object -> { manuscript: [Object], Sections: [Object] }
 const parseScrivxData = (data) => {
   const parser = new DOMParser()
   const htmlData = parser.parseFromString(data, 'text/html')
@@ -36,6 +36,7 @@ const parseScrivxData = (data) => {
   }
 }
 
+// Node, Number -> [{ uuid: String, title: string, children: [any] }]
 const getBinderContents = (root, rootKey) => {
   return Array.from(root).map((bindersItem) => {
     const uuid = bindersItem.getAttribute('uuid') || bindersItem.getAttribute('id')
@@ -184,6 +185,16 @@ const getTxtContent = (path) => {
   // remove `Click to edit`
   const txtString = content.split('Click to edit').pop()
   return convertTxtString(txtString)
+}
+// String, Object -> Bool
+const getVer_2_7_match = (file, child) => {
+  const fileName = file.split('/').pop()
+  if (file.endsWith('_synopsis.txt') || file.endsWith('_notes.rtf')) {
+    return fileName.split('_')[0] == child.uuid
+  } else {
+    const uuid = fileName.replace('.rtf', '')
+    return uuid == child.uuid
+  }
 }
 
 // String -> Promise<[{ synopsis: <Object>, rtf: [Object] }]>
@@ -376,13 +387,7 @@ export const generateState = (relevantFiles, scrivx) => {
               if (isVer_3_UUID) {
                 return file.includes(child.uuid)
               } else {
-                const fileName = file.split('/').pop()
-                if (file.endsWith('_synopsis.txt') || file.endsWith('_notes.rtf')) {
-                  return fileName.split('_')[0] == child.uuid
-                } else {
-                  const uuid = fileName.replace('.rtf', '')
-                  return uuid == child.uuid
-                }
+                return getVer_2_7_match(file, child)
               }
             })
             return parseRelevantFiles(contentFiles).then((parsed) => {
@@ -458,13 +463,7 @@ export const generateState = (relevantFiles, scrivx) => {
                   if (isVer_3_UUID) {
                     return file.includes(child.uuid)
                   } else {
-                    const fileName = file.split('/').pop()
-                    if (file.endsWith('_synopsis.txt') || file.endsWith('_notes.rtf')) {
-                      return fileName.split('_')[0] == child.uuid
-                    } else {
-                      const uuid = fileName.replace('.rtf', '')
-                      return uuid == child.uuid
-                    }
+                    return getVer_2_7_match(file, child)
                   }
                 })
                 return parseRelevantFiles(contentFiles).then((parsed) => {
@@ -493,8 +492,9 @@ export const generateState = (relevantFiles, scrivx) => {
   )
     .then((sectionsFolderData) => {
       const flatSections = sectionsFolderData.flat()
-      const charactersObject = flatSections.find((c) => c.title === 'Characters')
-      const characters = Object.entries(charactersObject).length
+      const charactersObject =
+        flatSections.find((c) => c && c.title && c.title === 'Characters') || {}
+      const characters = Object.entries(charactersObject)?.length
         ? generateCharacters(charactersObject)
         : []
       return {

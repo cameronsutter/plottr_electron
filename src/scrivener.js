@@ -11,32 +11,13 @@ const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9
 const parseScrivxData = (data) => {
   const parser = new DOMParser()
   const htmlData = parser.parseFromString(data, 'text/html')
-  const children = htmlData.querySelectorAll('ScrivenerProject Binder > BinderItem')
+  const rootChild = htmlData.querySelectorAll('ScrivenerProject Binder > BinderItem')
 
-  const scrivxData = Array.from(children).map((i, key) => {
-    const isDraftFolder = i.closest('BinderItem').getAttribute('type') === 'DraftFolder'
-    const isNew = i.querySelectorAll('MetaData')
-    if (isDraftFolder) {
-      return getBinderContents(i, key)
-    } else if (!isDraftFolder && !isNew.length) {
-      return getBinderContents(i, key)
-    } else if (isNew.length) {
-      const children = i.querySelector('children')
+  const scrivxData = Array.from(rootChild).map((i, key) => {
+    const child = i.querySelector('children')
 
-      return [
-        {
-          uuid: i.getAttribute('uuid') || i.getAttribute('id'),
-          title: i.querySelector('title').textContent,
-          children: children
-            ? [
-                {
-                  uuid: children?.querySelector('binderitem')?.getAttribute('uuid'),
-                  title: children?.querySelector('title')?.textContent,
-                },
-              ]
-            : [],
-        },
-      ]
+    if (child.children?.length) {
+      return getBinderContents(child.children, key)
     }
   })
   console.log('scrivxData', scrivxData)
@@ -46,53 +27,26 @@ const parseScrivxData = (data) => {
   }
 }
 
-const getBinderContents = (item, key) => {
-  if (item) {
-    const binderItem = item.querySelectorAll('BinderItem')
-    return Array.from(binderItem)
-      .map((i) => {
-        const uuid = i.getAttribute('uuid') || i.getAttribute('id')
-        const title = i.querySelector('Title')
-        const children = i.querySelector('Children')
-        const isTextBinder = i.getAttribute('type') === 'Text'
-        const metadata = i.querySelector('MetaData')
+const getBinderContents = (root, key) => {
+  return Array.from(root).map((bindersItem) => {
+    const uuid = bindersItem.getAttribute('uuid') || bindersItem.getAttribute('id')
+    const title = bindersItem.querySelector('Title')?.textContent || ''
+    const binderChildren = bindersItem.querySelector('Children')
 
-        if (children || (metadata && isTextBinder)) {
-          const contentChildren = generateChildrenBinderItems(uuid, title, children)
-          return {
-            uuid,
-            title: title.textContent,
-            children: contentChildren,
-          }
-        } else if (metadata) {
-          return {
-            uuid,
-            title: title.textContent,
-          }
-        }
-      })
-      .filter((i) => !!i)
-  }
-}
-
-const generateChildrenBinderItems = (uuid, title, childTag) => {
-  if (childTag) {
-    const childBinderItem = childTag.querySelectorAll('BinderItem')
-    return Array.from(childBinderItem).map((c) => {
-      const childUUID = c.getAttribute('uuid') || c.getAttribute('id')
-      const childTitle = c.querySelector('Title')
-      const childChildren = c.querySelector('Children')
-
-      if (childChildren) {
-        return generateChildrenBinderItems(childUUID, childTitle, childChildren)
-      }
-
+    if (binderChildren?.children?.length) {
+      const contentChildren = getBinderContents(binderChildren.children)
       return {
-        uuid: childUUID,
-        title: childTitle.textContent,
+        uuid,
+        title: title,
+        children: contentChildren,
       }
-    })
-  }
+    } else {
+      return {
+        uuid,
+        title: title,
+      }
+    }
+  })
 }
 
 // [{ filePath: String, isRelevant: Bool }] -> [String]
@@ -252,7 +206,6 @@ const parseRelevantFiles = (paths) => {
       // } else if (synopsis.length && rtf.length && parentKey === 0) {
       // const autoPlotline = { plotline: `Plot ${parentKey + 1}` }
       // return parsedFiles.map((item) => {
-      //   console.log('item', item)
       //   return [...item, { rtf: { ...item.rtf, ...autoPlotline } }]
       // })
     }
@@ -411,7 +364,6 @@ export const generateState = (relevantFiles, scrivx) => {
           beats.children.map((child, key) => {
             const noteRtf = relevantFiles.filter((rtf) => rtf.includes(child.uuid))
             return parseRelevantFiles(noteRtf).then((parsed) => {
-              console.log('parsed', parsed)
               return {
                 id: key + 1,
                 title: child.title,
@@ -461,7 +413,6 @@ export const generateState = (relevantFiles, scrivx) => {
       }
     })
   ).then((draftFolderData) => {
-    console.log('draftFolderData', draftFolderData)
     const lines = generateLines(draftFolderData)
     const chapters = generateChapters(draftFolderData)
     const cards = generateCards(draftFolderData, lines, chapters)

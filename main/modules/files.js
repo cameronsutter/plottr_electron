@@ -229,12 +229,13 @@ const autoSaver = () => {
   let resetCount = 0
   const MAX_ATTEMPTS = 200
 
-  return async function autoSave(event, filePath, file, userId, previousFile) {
+  return async function autoSave(event, inputFilePath, file, userId, previousFile) {
     // Don't auto save while resolving resuming the connection
     if (selectors.isResumingSelector(file)) return
 
     const onCloud = selectors.isCloudFileSelector(file)
     const isOffline = selectors.isOfflineSelector(file)
+    const filePath = isOffline ? offlineFilePath(inputFilePath) : inputFilePath
     if (!onCloud || isOffline) {
       try {
         await saveFile(filePath, file)
@@ -252,12 +253,10 @@ const autoSaver = () => {
     function forceBackup() {
       // save local backup if: 1) not cloud file OR 2) localBackups is on
       if (!onCloud || (onCloud && SETTINGS.get('user.localBackups'))) {
-        if (onCloud) {
-          filePath = `${file.file.fileName}.pltr`
-        }
-        saveBackup(filePath, previousFile || file, (backupError) => {
+        const backupFilePath = onCloud ? `${file.file.fileName}.pltr` : filePath
+        saveBackup(backupFilePath, previousFile || file, (backupError) => {
           if (backupError) {
-            event.sender.send('auto-save-backup-error', filePath, backupError)
+            event.sender.send('auto-save-backup-error', backupFilePath, backupError)
           }
         })
       }

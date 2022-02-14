@@ -7,6 +7,7 @@ import { SYSTEM_REDUCER_KEYS, actions, migrateIfNeeded, featureFlags, emptyFile 
 import { t } from 'plottr_locales'
 import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 
+import { fileSystemAPIs } from '../api'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import { offlineFilePath } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
@@ -194,6 +195,10 @@ const handleEroneousUserStates = (filePath) => (user) => {
 }
 
 const computeAndHandleResumeDirectives = (fileId, email, userId, json) => {
+  const settings = fileSystemAPIs.currentAppSettings()
+  if (!settings.user.enableOfflineMode) {
+    return Promise.resolve(false)
+  }
   const offlinePath = offlineFilePath(json)
   const exists = fs.existsSync(offlinePath)
   const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))

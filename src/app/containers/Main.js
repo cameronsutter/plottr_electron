@@ -59,12 +59,12 @@ const Main = ({
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
       if (fileName && fileName.length > 0) {
-        win.setTitle = displayFileName(fileName, isInProMode, false)
+        win.setTitle(displayFileName(fileName, isInProMode, false))
       }
       setCurrentAppStateToDashboard()
     } else {
       if (fileName && fileName.length > 0) {
-        win.setTitle = displayFileName(fileName, isInProMode, true)
+        win.setTitle(displayFileName(fileName, isInProMode, true))
       }
     }
   }, [fileName, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])

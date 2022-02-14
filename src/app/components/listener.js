@@ -73,7 +73,14 @@ const Listener = ({
   }, [selectedFile, userId])
 
   useEffect(() => {
-    if (!offlineModeIsEnabled || !userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
+    if (
+      !offlineModeIsEnabled ||
+      !userId ||
+      !clientId ||
+      !selectedFile ||
+      !selectedFile.id ||
+      isOffline
+    ) {
       return () => {}
     }
 

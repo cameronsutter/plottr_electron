@@ -20,15 +20,15 @@ const parseScrivxData = (data) => {
     if (child && child.children && child.children.length) {
       if (isDraftFolder) {
         return {
-          draft: getBinderContents(child.children, key),
+          draft: getBinderContents(child.children, isDraftFolder),
         }
       } else {
-        return getBinderContents(child.children, key)
+        return getBinderContents(child.children)
       }
     }
   })
 
-  const manuscript = scrivxData.find((i) => i.draft)
+  const manuscript = scrivxData.filter((i) => i).find((i) => i.draft)
 
   return {
     manuscript: manuscript?.draft || [],
@@ -37,8 +37,8 @@ const parseScrivxData = (data) => {
 }
 
 // Node, Number -> [{ uuid: String, title: string, children: [any] }]
-const getBinderContents = (root, rootKey) => {
-  return Array.from(root).map((bindersItem) => {
+const getBinderContents = (root, isDraftFolder) => {
+  return Array.from(root).map((bindersItem, key) => {
     const uuid = bindersItem.getAttribute('uuid') || bindersItem.getAttribute('id')
     const title = bindersItem.querySelector('Title')?.textContent || ''
     const binderChildren = bindersItem.querySelector('Children')
@@ -49,6 +49,17 @@ const getBinderContents = (root, rootKey) => {
         uuid,
         title,
         children: contentChildren,
+      }
+    } else if (isDraftFolder && !binderChildren) {
+      return {
+        uuid,
+        title,
+        children: [
+          {
+            uuid,
+            title: `Chapter ${key + 1}`,
+          },
+        ],
       }
     } else {
       return {

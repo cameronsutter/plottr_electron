@@ -7,7 +7,6 @@ import { SYSTEM_REDUCER_KEYS, actions, migrateIfNeeded, featureFlags, emptyFile 
 import { t } from 'plottr_locales'
 import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 
-import { displayFileName } from '../common/utils/known_files'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import { offlineFilePath } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
@@ -204,7 +203,6 @@ const computeAndHandleResumeDirectives = (fileId, email, userId, json) => {
 
 const afterLoading = (json) => {
   logger.info(`Loaded file ${json.file.fileName}.`)
-  win.setTitle(displayFileName(json.file.fileName, true))
 }
 
 const bootWithUser = (fileId) => (user) => {
@@ -246,7 +244,7 @@ function bootCloudFile(filePath) {
 }
 
 function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
-  win.setTitle(displayFileName(filePath, false))
+  win.setTitle('Plottr')
   win.setRepresentedFilename(filePath)
   let json
   try {

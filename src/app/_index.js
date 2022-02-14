@@ -14,7 +14,6 @@ import initMixpanel from '../common/utils/mixpanel'
 import askToExport from '../exporter/start_export'
 import exportConfig from '../exporter/default_config'
 import { ActionCreators } from 'redux-undo'
-import { displayFileName } from '../common/utils/known_files'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { TEMP_FILES_PATH } from '../file-system/config_paths'
 import { createFullErrorReport } from '../common/utils/full_error_report'
@@ -160,7 +159,6 @@ ipcRenderer.on('move-from-temp', () => {
     // change the window's title
     win.setRepresentedFilename(newFilePath)
     win.filePath = newFilePath
-    win.setTitle(displayFileName(newFilePath, false))
     // send event to dashboard
     ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
   }

@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { ipcRenderer } from 'electron'
 import { getCurrentWindow } from '@electron/remote'
+import path from 'path'
 
 import { actions, selectors } from 'pltr/v2'
 
@@ -18,6 +19,13 @@ import Dashboard from './Dashboard'
 const win = getCurrentWindow()
 
 const isCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
+
+function displayFileName(filePath, isCloudFile, displayFilePath) {
+  const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
+  const baseFileName = displayFilePath ? ` - ${path.basename(filePath)}` : ''
+  const plottr = isCloudFile ? 'Plottr Pro' : 'Plottr'
+  return `${plottr}${baseFileName}${devMessage}`
+}
 
 const Main = ({
   isFirstTime,
@@ -39,6 +47,7 @@ const Main = ({
   darkMode,
   isInOfflineMode,
   currentAppStateIsDashboard,
+  fileName,
   setCurrentAppStateToDashboard,
   setCurrentAppStateToApplication,
 }) => {
@@ -49,9 +58,16 @@ const Main = ({
 
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
+      if (fileName && fileName.length > 0) {
+        win.setTitle = displayFileName(fileName, isInProMode, false)
+      }
       setCurrentAppStateToDashboard()
+    } else {
+      if (fileName && fileName.length > 0) {
+        win.setTitle = displayFileName(fileName, isInProMode, true)
+      }
     }
-  }, [dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
+  }, [fileName, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
 
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
@@ -227,6 +243,7 @@ Main.propTypes = {
   darkMode: PropTypes.bool.isRequired,
   isInOfflineMode: PropTypes.bool,
   currentAppStateIsDashboard: PropTypes.string.isRequired,
+  fileName: PropTypes.string,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,
   setCurrentAppStateToApplication: PropTypes.func.isRequired,
 }
@@ -249,6 +266,7 @@ export default connect(
     darkMode: selectors.isDarkModeSelector(state.present),
     isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
     currentAppStateIsDashboard: selectors.currentAppStateIsDashboardSelector(state.present),
+    fileName: selectors.fileNameSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,

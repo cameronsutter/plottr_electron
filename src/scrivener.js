@@ -312,25 +312,44 @@ const generateLines = (items) => {
 }
 
 const generateChapters = (items) => {
-  const chapterList = []
-  return items
+  const chapterNames = []
+  const beatsChapter = items
     .flatMap((item) => {
-      if (item.title && !chapterList.includes(item.title)) {
-        chapterList.push(item.title)
+      if (item.title && !chapterNames.includes(item.title)) {
+        chapterNames.push(item.title)
         return item.title
       }
     })
     .filter((line) => line)
-    .map((chapter, key) => {
+
+  return {
+    beatsChapter: beatsChapter.map((chapter, key) => {
+      return {
+        [key + 1]: {
+          id: key + 1,
+          bookId: 1,
+          position: key,
+          title: chapter,
+          time: 0,
+          autoOutlineSort: true,
+          templates: [],
+        },
+      }
+    }),
+
+    // used for lookups
+    chapterList: beatsChapter.map((chapter, key) => {
       return {
         id: key + 1,
         bookId: 1,
-        position: 0,
+        position: key,
         title: chapter,
         time: 0,
         autoOutlineSort: true,
+        templates: [],
       }
-    })
+    }),
+  }
 }
 
 const generateCards = (items, lines, chapters) => {
@@ -369,6 +388,24 @@ const generateCards = (items, lines, chapters) => {
       })
     })
     .filter((item) => item)
+}
+
+const generateBeats = (chapters) => {
+  return {
+    1: {
+      children: chapters.map((i) => {
+        return {
+          [Object.keys(i)[0]]: [],
+        }
+      }),
+      heaps: chapters.map((i) => {
+        return {
+          [Object.keys(i)[0]]: null,
+        }
+      }),
+      index: chapters,
+    },
+  }
 }
 
 // Array, Object, -> Promise<{ key: [Any] }>
@@ -442,12 +479,14 @@ export const generateState = (relevantFiles, scrivx) => {
     })
   ).then((draftFolderData) => {
     const lines = generateLines(draftFolderData)
-    const chapters = generateChapters(draftFolderData)
-    const cards = generateCards(draftFolderData, lines, chapters)
+    const chapters = generateChapters(draftFolderData) || { beatsChapter: [], chapterList: [] }
+    const beats = chapters.beatsChapter.length ? generateBeats(chapters.beatsChapter) : []
+    const cards = generateCards(draftFolderData, lines, chapters.chapterList)
     return {
+      beats,
+      cards,
       draft: draftFolderData,
       lines,
-      cards,
     }
   })
 

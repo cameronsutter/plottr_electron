@@ -108,8 +108,11 @@
 
 .dashboard__navbar-form {
   padding-right: 0;
-  button svg {
-    margin-right: 4px;
+  button {
+    font-size: 15px;
+    svg {
+      margin-right: 4px;
+    }
   }
 }
 

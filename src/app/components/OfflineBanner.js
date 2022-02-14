@@ -10,7 +10,7 @@ import { t } from 'plottr_locales'
 const OfflineBanner = ({ isInOfflineMode }) => {
   return isInOfflineMode ? (
     <div className="offline-mode-banner">
-      {t('Offline Mode')}
+      {t('Offline')}
       <FaSignal />
     </div>
   ) : null

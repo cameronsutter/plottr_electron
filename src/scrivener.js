@@ -235,6 +235,25 @@ const parseRelevantFiles = (paths) => {
   })
 }
 
+// right now, the attributes from the Notes tab are not exported
+// not handling them now
+const generateNotes = (items) => {
+  return items.children.flatMap((note, parentKey) => {
+    const noteContent = note.content.flatMap((c) => {
+      return c.rtf?.filter((i) => i)
+    })
+
+    return {
+      id: parentKey + 1,
+      title: note.title,
+      places: [],
+      characters: [],
+      templates: [],
+      content: noteContent,
+    }
+  })
+}
+
 const generateCharsOrPlaces = (items) => {
   return items.children.flatMap((child, parentKey) => {
     const itemAttrib = child.content.flatMap((c) => {
@@ -408,6 +427,49 @@ const generateBeats = (chapters) => {
   }
 }
 
+const getContentsData = (section, relevantFiles) => {
+  const scrivenerDataFiles = relevantFiles
+  return Promise.all(
+    section.children.map((child, key) => {
+      const contentFiles = scrivenerDataFiles.filter((file) => {
+        const isVer_3_UUID = UUIDFolderRegEx.test(child.uuid)
+        if (isVer_3_UUID) {
+          return file.includes(child.uuid)
+        } else {
+          return getVer_2_7_match(file, child)
+        }
+      })
+      return parseRelevantFiles(contentFiles).then((parsed) => {
+        if (child.children?.length) {
+          return {
+            id: key + 1,
+            title: child.title,
+            content: parsed,
+            children: getContentsData(child, scrivenerDataFiles),
+          }
+        }
+        return {
+          id: key + 1,
+          title: child.title,
+          content: parsed,
+        }
+      })
+    })
+  )
+
+  // .then((childrenData) => {
+  // returns the content/children of the Beat
+  // title represents the chapter/beat
+  // if they are siblings meaning they should render on the same chapter
+  // TODO: if they are siblings and same `plotline` they should stack
+  // })
+  // return {
+  //   uuid: section.uuid,
+  //   title: section.title,
+  //   children: childrenData,
+  // }
+}
+
 // Array, Object, -> Promise<{ key: [Any] }>
 export const generateState = (relevantFiles, scrivx) => {
   const draftFolder = Object.values(scrivx)[0]
@@ -495,25 +557,7 @@ export const generateState = (relevantFiles, scrivx) => {
       return Promise.all(
         item.map((section) => {
           if (section.children && section.children.length) {
-            return Promise.all(
-              section.children.map((child, key) => {
-                const contentFiles = relevantFiles.filter((file) => {
-                  const isVer_3_UUID = UUIDFolderRegEx.test(child.uuid)
-                  if (isVer_3_UUID) {
-                    return file.includes(child.uuid)
-                  } else {
-                    return getVer_2_7_match(file, child)
-                  }
-                })
-                return parseRelevantFiles(contentFiles).then((parsed) => {
-                  return {
-                    id: key + 1,
-                    title: child.title,
-                    content: parsed,
-                  }
-                })
-              })
-            ).then((childrenData) => {
+            return getContentsData(section, relevantFiles).then((childrenData) => {
               // returns the content/children of the Beat
               // title represents the chapter/beat
               // if they are siblings meaning they should render on the same chapter
@@ -532,15 +576,18 @@ export const generateState = (relevantFiles, scrivx) => {
     .then((sectionsFolderData) => {
       const flatSections = sectionsFolderData.flat()
       const charactersObject =
-        flatSections.find((c) => c && c.title && c.title === 'Characters') || {}
+        flatSections.find((c) => c && c.title && c.title == 'Characters') || {}
       const characters = Object.entries(charactersObject)?.length
         ? generateCharsOrPlaces(charactersObject)
         : []
-      const placesObj = flatSections.find((c) => c && c.title && c.title === 'Places') || {}
+      const placesObj = flatSections.find((c) => c && c.title && c.title == 'Places') || {}
       const places = Object.entries(placesObj).length ? generateCharsOrPlaces(placesObj) : []
+      const notesObj = flatSections.find((c) => c && c.title && c.title == 'Notes') || {}
+      const notes = Object.entries(notesObj).length ? generateNotes(notesObj) : []
       return {
         sections: flatSections,
         characters,
+        notes,
         places,
       }
     })

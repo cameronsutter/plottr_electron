@@ -19,5 +19,6 @@ module.exports = {
     backupType: 'never-delete',
     localBackups: false,
     openDashboardFirst: true,
+    enableOfflineMode: false,
   },
 }

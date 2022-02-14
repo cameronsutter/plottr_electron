@@ -63,7 +63,6 @@ export function importScrivener(loggedIn, userId, email) {
     const contentRTF = findRelevantFiles(files[0])
     const state = contentRTF.then((content) => generateState(content, scrivx))
     return Promise.resolve(state)
-    // return Promise.resolve(ipcRenderer.send('add-to-known-files-and-open', state))
   }
   return Promise.resolve('No file selected')
 }

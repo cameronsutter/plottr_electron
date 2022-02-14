@@ -31,6 +31,23 @@ export const newEmptyFile = (fileName, appVersion, currentFile) => {
   }
 }
 
+export const importScrivenerState = (fileName, appVersion, currentFile) => {
+  const emptyFileState = emptyFile(fileName, appVersion)
+  return {
+    ...emptyFileState,
+    beats: currentFile.beats || emptyFileState.beats,
+    cards: currentFile.cards.length ? currentFile.cards : emptyFileState.cards,
+    characters: currentFile.characters.length ? currentFile.characters : emptyFileState.characters,
+    lines: currentFile.lines.length ? currentFile.notes : emptyFileState.lines,
+    notes: currentFile.notes.length ? currentFile.notes : emptyFileState.notes,
+    places: currentFile.places.length ? currentFile.places : emptyFileState.places,
+    project: currentFile.project,
+    client: currentFile.client,
+    permission: reducers.permission(),
+    error: reducers.error(),
+  }
+}
+
 export const newFile = (
   emailAddress,
   userId,
@@ -52,6 +69,36 @@ export const newFile = (
     closeDashboard()
     return fileId
   })
+}
+
+export const newFileFromScrivener = (
+  emailAddress,
+  userId,
+  fileList,
+  fullState,
+  clientId,
+  template,
+  openFile
+) => {
+  const untitledFileList = fileList.filter(({ fileName }) => {
+    return fileName && fileName.match(/Untitled/g)
+  })
+  const fileName = t('Untitled') + ` - ${untitledFileList.length}`
+  const file = Object.assign(
+    importScrivenerState(fileName, version, fullState.present),
+    template || {}
+  )
+
+  return uploadToFirebase(emailAddress, userId, file, fileName)
+    .then((response) => {
+      const fileId = response.data.fileId
+      openFile(`plottr://${fileId}`, fileId, false)
+      closeDashboard()
+      return fileId
+    })
+    .catch((error) => {
+      console.log('firebase', error)
+    })
 }
 
 export const uploadExisting = (emailAddress, userId, fullState) => {

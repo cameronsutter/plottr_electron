@@ -220,7 +220,7 @@ const parseRelevantFiles = (paths) => {
     // if draft folder has no rtf files
     // possibly from original scrivener file
     if (synopsis.length && !rtf.length) {
-      const autoPlotline = { rtf: [{ plotline: `Plotline` }] }
+      const autoPlotline = { rtf: [{ plotline: `Main Plot` }] }
       const withPlotline = [...parsedFiles, autoPlotline]
       return withPlotline
       // } else if (synopsis.length && rtf.length && parentKey === 0) {

@@ -6,9 +6,8 @@ import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 import log from 'electron-log'
 import { is } from 'electron-util'
-import { find } from 'lodash'
 
-import { actions, selectors, initialState } from 'pltr/v2'
+import { actions, selectors } from 'pltr/v2'
 import {
   publishRCEOperations,
   fetchRCEOperations,
@@ -39,6 +38,7 @@ import {
   newFile,
   uploadExisting,
   deleteCloudBackupFile,
+  newFileFromScrivener,
 } from './files'
 import { logger } from './logger'
 import { closeDashboard } from './dashboard-events'
@@ -70,7 +70,6 @@ import {
   sortAndSearch,
 } from './common/utils/files'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
-import { createNotesFromScriv } from './common/exporter/scrivener/importers/notes'
 
 const win = remote.getCurrentWindow()
 const { app, dialog } = remote
@@ -134,7 +133,6 @@ const platform = {
         store.dispatch(actions.applicationState.startUploadingFileToCloud())
       }
 
-      console.log('state', state)
       store.dispatch(actions.project.showLoader(true))
       _openExistingFile(!!userId, userId, emailAddress)
         .then(() => {
@@ -154,21 +152,23 @@ const platform = {
     },
     importScrivener: () => {
       let state = store.getState()
-      let defaultNote = initialState.note
-
       const {
         client: { emailAddress, userId, clientId },
       } = state.present
+      const isLoggedIn = selectors.isLoggedInSelector(state.present)
       const fileList = selectors.knownFilesSelector(state.present)
       if (userId) {
         _importScrivener(!!userId, userId, emailAddress)
-          .then((state) => {
-            console.log('scriveState.sections with content', state)
-            const notes = find(state.sections, { title: 'Notes' })
-            const notesState = createNotesFromScriv(defaultNote, state)
+          .then((scrivenerState) => {
             store.dispatch(actions.project.showLoader(true))
             store.dispatch(actions.applicationState.startCreatingCloudFile())
-            newFile(emailAddress, userId, fileList, state, clientId, null, openFile)
+            state.present['beats'] = scrivenerState.beats
+            state.present['cards'] = scrivenerState.cards
+            state.present['characters'] = scrivenerState.characters
+            state.present['notes'] = scrivenerState.notes
+            state.present['lines'] = scrivenerState.lines
+            state.present['places'] = scrivenerState.places
+            newFileFromScrivener(emailAddress, userId, fileList, state, clientId, null, openFile)
               .then((fileId) => {
                 logger.info('Created new file.', fileId)
                 store.dispatch(actions.project.showLoader(false))
@@ -177,7 +177,9 @@ const platform = {
               .catch((error) => {
                 logger.error('Error creating a new file', error)
                 store.dispatch(actions.project.showLoader(false))
-                store.dispatch(actions.applicationState.finishCreatingCloudFile())
+                if (isLoggedIn) {
+                  store.dispatch(actions.applicationState.finishUploadingFileToCloud())
+                }
               })
             store.dispatch(actions.project.showLoader(false))
           })

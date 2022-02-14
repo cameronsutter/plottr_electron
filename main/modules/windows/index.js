@@ -89,11 +89,11 @@ function focusIfOpen(filePath) {
 
 function reloadWindow() {
   let win = BrowserWindow.getFocusedWindow()
-  win.webContents.send('reload')
+  win.webContents.reload()
 }
 
 function reloadAllWindows() {
-  windows.forEach((w) => w.browserWindow.webContents.send('reload'))
+  windows.forEach((w) => w.browserWindow.webContents.reload())
 }
 
 function dereferenceWindow(winObj) {

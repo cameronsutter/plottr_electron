@@ -38,7 +38,7 @@ export const importScrivenerState = (fileName, appVersion, currentFile) => {
     beats: currentFile.beats || emptyFileState.beats,
     cards: currentFile.cards.length ? currentFile.cards : emptyFileState.cards,
     characters: currentFile.characters.length ? currentFile.characters : emptyFileState.characters,
-    lines: currentFile.lines.length ? currentFile.notes : emptyFileState.lines,
+    lines: currentFile.lines.length ? currentFile.lines : emptyFileState.lines,
     notes: currentFile.notes.length ? currentFile.notes : emptyFileState.notes,
     places: currentFile.places.length ? currentFile.places : emptyFileState.places,
     project: currentFile.project,

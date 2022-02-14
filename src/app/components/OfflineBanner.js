@@ -7,8 +7,8 @@ import { selectors } from 'pltr/v2'
 
 import { t } from 'plottr_locales'
 
-const OfflineBanner = ({ isInOfflineMode }) => {
-  return isInOfflineMode ? (
+const OfflineBanner = ({ isOffline }) => {
+  return isOffline ? (
     <div className="offline-mode-banner">
       {t('Offline')}
       <FaSignal />
@@ -17,9 +17,9 @@ const OfflineBanner = ({ isInOfflineMode }) => {
 }
 
 OfflineBanner.propTypes = {
-  isInOfflineMode: PropTypes.bool,
+  isOffline: PropTypes.bool,
 }
 
 export default connect((state) => ({
-  isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
+  isOffline: selectors.isOfflineSelector(state.present),
 }))(OfflineBanner)

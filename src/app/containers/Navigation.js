@@ -14,7 +14,13 @@ import { selectors, actions } from 'pltr/v2'
 
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView }) => {
+const Navigation = ({
+  isInTrialMode,
+  darkMode,
+  currentView,
+  changeCurrentView,
+  offlineModeEnabled,
+}) => {
   const [dashboardView, setDashboardView] = useState(null)
 
   useEffect(() => {
@@ -68,7 +74,7 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView })
         />
       ) : null}
       <OfflineBanner />
-      <Resume />
+      {offlineModeEnabled ? <Resume /> : null}
       <Navbar className="project-nav" fluid inverse={darkMode}>
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
@@ -103,6 +109,7 @@ Navigation.propTypes = {
   darkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
+  offlineModeEnabled: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -110,6 +117,7 @@ function mapStateToProps(state) {
     isInTrialMode: selectors.isInTrialModeSelector(state.present),
     currentView: selectors.currentViewSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
+    offlineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
   }
 }
 

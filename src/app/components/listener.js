@@ -30,6 +30,7 @@ const Listener = ({
   originalFileName,
   cloudFilePath,
   selectFile,
+  offlineModeIsEnabled,
   setResuming,
   resuming,
   withFullFileState,
@@ -72,7 +73,7 @@ const Listener = ({
   }, [selectedFile, userId])
 
   useEffect(() => {
-    if (!userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
+    if (!offlineModeIsEnabled || !userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
       return () => {}
     }
 
@@ -102,7 +103,16 @@ const Listener = ({
       stopListening(unsubscribeFunctions)
       setUnsubscribeFunctions([])
     }
-  }, [selectedFile, userId, clientId, fileLoaded, isOffline, resuming, setResuming])
+  }, [
+    offlineModeIsEnabled,
+    selectedFile,
+    userId,
+    clientId,
+    fileLoaded,
+    isOffline,
+    resuming,
+    setResuming,
+  ])
 
   useEffect(() => {
     if (isOffline && unsubscribeFunctions.length) {
@@ -202,6 +212,7 @@ Listener.propTypes = {
   withFullFileState: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool,
   checkedSession: PropTypes.bool,
+  offlineModeIsEnabled: PropTypes.bool,
   setHasPro: PropTypes.func.isRequired,
   setUserId: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
@@ -227,6 +238,7 @@ export default connect(
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isLoggedIn: selectors.isLoggedInSelector(state.present),
     checkedSession: selectors.sessionCheckedSelector(state.present),
+    offlineModeIsEnabled: selectors.offlineModeEnabledSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,

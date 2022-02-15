@@ -5,6 +5,7 @@ import log from 'electron-log'
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { HTMLToPlotlineParagraph } from 'pltr/v2/slate_serializers/from_html'
 import { convertTxtString } from 'pltr/v2/slate_serializers/from_plain_text'
+import { isPlainObject } from 'lodash'
 
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
 // Object -> { manuscript: [Object], Sections: [Object] }
@@ -14,13 +15,23 @@ const parseScrivxData = (data) => {
   const rootChild = htmlData.querySelectorAll('ScrivenerProject Binder > BinderItem')
 
   const scrivxData = Array.from(rootChild).map((i, key) => {
+    const uuid = i.getAttribute('uuid') || i.getAttribute('id')
+    const title = i.querySelector('Title')?.textContent || ''
     const child = i.querySelector('children')
     const isDraftFolder = i.getAttribute('type') == 'DraftFolder'
+    // scrivener v3
+    const hasMetaData = i.querySelector('metadata')
 
     if (child && child.children && child.children.length) {
       if (isDraftFolder) {
         return {
           draft: getBinderContents(child.children, isDraftFolder),
+        }
+      } else if (!isDraftFolder && hasMetaData) {
+        return {
+          uuid,
+          title,
+          children: getBinderContents(child.children),
         }
       } else {
         return getBinderContents(child.children)
@@ -29,10 +40,12 @@ const parseScrivxData = (data) => {
   })
 
   const manuscript = scrivxData.filter((i) => i).find((i) => i.draft)
+  const filteredSections = scrivxData.filter((item, index) => index !== 0 && item)
+  const isSectionflatten = filteredSections.some((p) => isPlainObject(p))
 
   return {
     manuscript: manuscript?.draft || [],
-    sections: scrivxData.filter((item, index) => index !== 0 && item),
+    sections: isSectionflatten ? filteredSections.flat() : filteredSections,
   }
 }
 
@@ -485,7 +498,6 @@ const getContentsData = (section, relevantFiles) => {
 export const generateState = (relevantFiles, scrivx) => {
   const draftFolder = Object.values(scrivx)[0]
   const sectionFolders = Object.values(scrivx).filter((item, index) => index !== 0)
-  const flatSectionsFolder = sectionFolders.flat()
 
   const manuscript = Promise.all(
     draftFolder.map((beats, parentKey) => {
@@ -553,7 +565,7 @@ export const generateState = (relevantFiles, scrivx) => {
   ).then((draftFolderData) => {
     const lines = generateLines(draftFolderData)
     const chapters = generateChapters(draftFolderData) || { beatsChapter: [], chapterList: [] }
-    const beats = chapters.beatsChapter.length ? generateBeats(chapters.beatsChapter) : []
+    const beats = chapters.beatsChapter?.length ? generateBeats(chapters.beatsChapter) : []
     const cards = generateCards(draftFolderData, lines, chapters.chapterList)
     return {
       beats,
@@ -564,7 +576,7 @@ export const generateState = (relevantFiles, scrivx) => {
   })
 
   const sections = Promise.all(
-    flatSectionsFolder.flatMap((item) => {
+    sectionFolders.flatMap((item) => {
       return Promise.all(
         item.map((section) => {
           if (section.children && section.children.length) {

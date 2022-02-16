@@ -20,16 +20,16 @@ export function deleteTemplate(id, userId) {
   deleteCustomTemplate(id, userId)
 }
 
-export function editTemplateDetails(id, { name, description, link }) {
+export function editTemplateDetails(id, templateData, userId) {
   const info = {
-    name: name,
-    description: description,
-    link: link,
+    name: templateData.name,
+    description: templateData.description,
+    link: templateData.link,
   }
   if (isLocalTemplate(id)) {
     customTemplateStore.set(id, info)
     return
   }
 
-  editCustomTemplate(id, info)
+  editCustomTemplate(userId, { ...templateData, id })
 }

@@ -287,7 +287,11 @@ const platform = {
       } = state.present
       return deleteTemplate(templateId, userId)
     },
-    editTemplateDetails,
+    editTemplateDetails: (templateId, templateDetails) => {
+      const state = store.getState()
+      const userId = selectors.userIdSelector(state.present)
+      editTemplateDetails(templateId, templateDetails, userId)
+    },
     startSaveAsTemplate: (itemType) => {
       const win = getCurrentWindow()
       ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', itemType) // sends this message to this same process

@@ -45,7 +45,7 @@ const parseScrivxData = (data) => {
 
   return {
     manuscript: manuscript?.draft || [],
-    sections: isSectionflatten ? filteredSections.flat() : filteredSections,
+    sections: isSectionflatten ? filteredSections : filteredSections.flat(),
   }
 }
 
@@ -497,7 +497,7 @@ const getContentsData = (section, relevantFiles) => {
 // Array, Object, -> Promise<{ key: [Any] }>
 export const generateState = (relevantFiles, scrivx) => {
   const draftFolder = Object.values(scrivx)[0]
-  const sectionFolders = Object.values(scrivx).filter((item, index) => index !== 0)
+  const restOfFolders = Object.values(scrivx).filter((item, index) => index !== 0)
 
   const manuscript = Promise.all(
     draftFolder.map((beats, parentKey) => {
@@ -576,7 +576,7 @@ export const generateState = (relevantFiles, scrivx) => {
   })
 
   const sections = Promise.all(
-    sectionFolders.flatMap((item) => {
+    restOfFolders.flatMap((item) => {
       return Promise.all(
         item.map((section) => {
           if (section.children && section.children.length) {
@@ -597,18 +597,20 @@ export const generateState = (relevantFiles, scrivx) => {
     })
   )
     .then((sectionsFolderData) => {
-      const flatSections = sectionsFolderData.flat()
+      const flattenSectionsData = sectionsFolderData.some((p) => isPlainObject(p))
+        ? sectionsFolderData
+        : sectionsFolderData.flat()
       const charactersObject =
-        flatSections.find((c) => c && c.title && c.title == 'Characters') || {}
+        flattenSectionsData.find((c) => c && c.title && c.title == 'Characters') || {}
       const characters = Object.entries(charactersObject)?.length
         ? generateCharsOrPlaces(charactersObject)
         : []
-      const placesObj = flatSections.find((c) => c && c.title && c.title == 'Places') || {}
+      const placesObj = flattenSectionsData.find((c) => c && c.title && c.title == 'Places') || {}
       const places = Object.entries(placesObj).length ? generateCharsOrPlaces(placesObj) : []
-      const notesObj = flatSections.find((c) => c && c.title && c.title == 'Notes') || {}
+      const notesObj = flattenSectionsData.find((c) => c && c.title && c.title == 'Notes') || {}
       const notes = Object.entries(notesObj).length ? generateNotes(notesObj) : []
       return {
-        sections: flatSections,
+        sections: flattenSectionsData,
         characters,
         notes,
         places,

@@ -14,6 +14,10 @@
   overflow: hidden;
 }
 
+.ReactModal__Content > #dashboard__react__root > .dashboard__main > .dashboard__body > .dashboard__files {
+  height: 90%;
+}
+
 .dashboard__new-files {
   grid-area: options;
   width: 95%;

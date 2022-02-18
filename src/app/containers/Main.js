@@ -15,6 +15,7 @@ import Choice from './Choice'
 import Login from './Login'
 import Expired from './Expired'
 import Dashboard from './Dashboard'
+import ProOnboarding from './ProOnboarding'
 
 const win = getCurrentWindow()
 
@@ -48,6 +49,7 @@ const Main = ({
   isInOfflineMode,
   currentAppStateIsDashboard,
   fileName,
+  isOnboarding,
   setCurrentAppStateToDashboard,
   setCurrentAppStateToApplication,
 }) => {
@@ -183,6 +185,10 @@ const Main = ({
   // loaded and we can check things like the user's local and pro
   // licenses.
 
+  if (isOnboarding) {
+    return <ProOnboarding />
+  }
+
   if (needsToLogin) {
     return <Login />
   }
@@ -244,6 +250,7 @@ Main.propTypes = {
   isInOfflineMode: PropTypes.bool,
   currentAppStateIsDashboard: PropTypes.string.isRequired,
   fileName: PropTypes.string,
+  isOnboarding: PropTypes.bool,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,
   setCurrentAppStateToApplication: PropTypes.func.isRequired,
 }
@@ -267,6 +274,7 @@ export default connect(
     isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
     currentAppStateIsDashboard: selectors.currentAppStateIsDashboardSelector(state.present),
     fileName: selectors.fileNameSelector(state.present),
+    isOnboarding: selectors.isOnboardingToProFromRootSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,

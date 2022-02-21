@@ -32,17 +32,11 @@ function Importer(path, isNewFile, state) {
 
   const bookTitle = bookAttributes(currentState.books, json, bookId)
 
-  console.log('first state', JSON.stringify(currentState, null, 2))
   storyLine(currentState, json, bookTitle, bookId, isNewFile)
-  console.log('storyLine', JSON.stringify(currentState, null, 2))
   synopsis(currentState, json, bookTitle, bookId, isNewFile)
-  console.log('synopsis', JSON.stringify(currentState, null, 2))
-
   characters(currentState, json, bookId)
-  // console.log('characters', JSON.stringify(currentState, null, 2))
 
   cards(currentState, json, bookId)
-  // console.log('cards', JSON.stringify(currentState, null, 2))
 
   return currentState
 }
@@ -290,7 +284,6 @@ function cards(currentState, json, bookId) {
   const sceneListNode = json['GContainer']['GContainer'].find(
     (n) => n['_attributes']['name'] == 'sceneList'
   )
-  // create new line if chapter has subfolder :)
   if (sceneListNode && sceneListNode['GContainer'] && sceneListNode['GContainer'].length) {
     const lineId = createNewLine(
       currentState.lines,

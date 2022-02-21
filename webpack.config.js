@@ -171,17 +171,6 @@ const rendererConfig = {
     },
   },
   target: 'electron-renderer',
-  externals: [
-    (function () {
-      const IGNORES = ['electron']
-      return function (context, request, callback) {
-        if (IGNORES.indexOf(request) >= 0) {
-          return callback(null, 'require("' + request + '")')
-        }
-        return callback()
-      }
-    })(),
-  ],
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: {

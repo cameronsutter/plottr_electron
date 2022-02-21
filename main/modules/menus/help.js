@@ -1,5 +1,5 @@
-const { shell } = require('electron')
-const { t } = require('plottr_locales')
+import { shell } from 'electron'
+import { t } from 'plottr_locales'
 
 function buildHelpMenu() {
   return {
@@ -73,4 +73,4 @@ function buildHelpMenu() {
   }
 }
 
-module.exports = { buildHelpMenu }
+export { buildHelpMenu }

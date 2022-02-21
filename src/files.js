@@ -1,4 +1,5 @@
-import { remote, ipcRenderer, shell } from 'electron'
+import { ipcRenderer, shell } from 'electron'
+import { getCurrentWindow, app, dialog } from '@electron/remote'
 import fs, { readFileSync } from 'fs'
 import path from 'path'
 
@@ -12,9 +13,8 @@ import { uploadToFirebase } from './upload-to-firebase'
 
 const fsPromises = fs.promises
 
-const { app, dialog } = remote
 const version = app.getVersion()
-const moveItemToTrash = shell.moveItemToTrash
+const moveItemToTrash = shell.trashItem
 
 const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
 
@@ -125,7 +125,7 @@ export const editKnownFilePath = (oldFilePath, newFilePath) => {
   ipcRenderer.send('edit-known-file-path', oldFilePath, newFilePath)
 }
 
-const win = remote.getCurrentWindow()
+const win = getCurrentWindow()
 
 export const showSaveDialogSync = (options) => dialog.showSaveDialogSync(win, options)
 

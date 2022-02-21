@@ -1,35 +1,34 @@
-const electron = require('electron')
-const SETTINGS = require('./modules/settings')
-const { setupI18n } = require('plottr_locales')
+import electron, { shell } from 'electron'
+import SETTINGS from './modules/settings'
+import { setupI18n } from 'plottr_locales'
+import { initialize } from '@electron/remote/main'
+import Store from 'electron-store'
+import https from 'https'
+import fs from 'fs'
+
+Store.initRenderer()
+
+initialize()
 setupI18n(SETTINGS, { electron })
 
-const fs = require('fs')
 const { app, BrowserWindow, ipcMain, globalShortcut } = electron
-const path = require('path')
-const log = require('electron-log')
-const { is } = require('electron-util')
-require('./modules/updater_events')
-const contextMenu = require('electron-context-menu')
-const { setupRollbar } = require('./modules/rollbar')
-const { loadMenu } = require('./modules/menus')
-const {
-  focusFirstWindow,
-  hasWindows,
-  getWindowById,
-  numberOfWindows,
-} = require('./modules/windows')
-const { openProjectWindow } = require('./modules/windows/projects')
-const { setDarkMode, broadcastDarkMode } = require('./modules/theme')
-const { newFileOptions } = require('./modules/new_file_options')
-const { gracefullyQuit } = require('./modules/utils')
-const { addToKnown, knownFilesStore, addToKnownFiles } = require('./modules/known_files')
-const {
-  broadcastSetBeatHierarchy,
-  broadcastUnsetBeatHierarchy,
-} = require('./modules/feature_flags')
-const { reloadAllWindows } = require('./modules/windows')
-const { broadcastToAllWindows } = require('./modules/broadcast')
-const {
+import path from 'path'
+import log from 'electron-log'
+import { is } from 'electron-util'
+import './modules/updater_events'
+import contextMenu from 'electron-context-menu'
+import { setupRollbar } from './modules/rollbar'
+import { loadMenu } from './modules/menus'
+import { focusFirstWindow, hasWindows, getWindowById, numberOfWindows } from './modules/windows'
+import { openProjectWindow } from './modules/windows/projects'
+import { setDarkMode } from './modules/theme'
+import { newFileOptions } from './modules/new_file_options'
+import { gracefullyQuit } from './modules/utils'
+import { addToKnown, addToKnownFiles } from './modules/known_files'
+import { broadcastSetBeatHierarchy, broadcastUnsetBeatHierarchy } from './modules/feature_flags'
+import { reloadAllWindows } from './modules/windows'
+import { broadcastToAllWindows } from './modules/broadcast'
+import {
   openKnownFile,
   createNew,
   createFromSnowflake,
@@ -41,16 +40,18 @@ const {
   editKnownFilePath,
   autoSave,
   saveOfflineFile,
-} = require('./modules/files')
-const { editWindowPath, setFilePathForWindowWithFilePath } = require('./modules/windows/index')
-const { ensureBackupTodayPath, saveBackup } = require('./modules/backup')
+} from './modules/files'
+import { lastOpenedFile } from './modules/lastOpened'
+import { editWindowPath, setFilePathForWindowWithFilePath } from './modules/windows/index'
+import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 
 ////////////////////////////////
 ////     Startup Tasks    //////
 ////////////////////////////////
 log.info(`--------Init (${app.getVersion()})--------`)
 const ENV_FILE_PATH = path.resolve('.env')
-require('dotenv').config({ path: ENV_FILE_PATH })
+import { config } from 'dotenv'
+config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
 
 // https://github.com/sindresorhus/electron-context-menu
@@ -75,20 +76,13 @@ if (!is.development) {
 app.userAgentFallback =
   'Firefox Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) plottr/2021.7.29 Chrome/85.0.4183.121 Electron/10.4.7 Safari/537.36'
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   loadMenu()
-  const files = Object.values(knownFilesStore.store)
-    .sort((thisFile, thatFile) => {
-      if (thisFile.lastOpened > thatFile.lastOpened) return -1
-      if (thisFile.lastOpened < thatFile.lastOpened) return 1
-      return 0
-    })
-    .filter((file) => fs.existsSync(file.path))
-  const latestFile = files[0]
-  if (latestFile) {
-    openProjectWindow(latestFile.path)
+  const lastFilePath = lastOpenedFile()
+  if (lastFilePath) {
+    openProjectWindow(lastFilePath)
   } else {
-    createNew()
+    await createNew()
   }
   windowsOpenFileEventHandler(process.argv)
 
@@ -102,14 +96,14 @@ app.whenReady().then(() => {
     app.setAsDefaultProtocolClient('plottr')
   }
 
-  app.on('activate', () => {
+  app.on('activate', async () => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
-      if (latestFile) {
-        openProjectWindow(latestFile.path)
+      if (lastFilePath) {
+        openProjectWindow(lastFilePath)
       } else {
-        createNew()
+        await createNew()
       }
     }
   })
@@ -169,7 +163,6 @@ ipcMain.on('pls-fetch-state', function (event, id) {
 
 ipcMain.on('pls-set-dark-setting', (_event, newValue) => {
   setDarkMode(newValue)
-  broadcastDarkMode()
 })
 
 ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {
@@ -183,7 +176,7 @@ ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {
 ipcMain.on('pls-update-language', (_event, newLanguage) => {
   SETTINGS.set('locale', newLanguage)
   setupI18n(SETTINGS, { electron })
-  require('./modules/menus').loadMenu()
+  loadMenu()
   reloadAllWindows()
 })
 
@@ -192,6 +185,7 @@ ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
 })
 
 ipcMain.on('add-to-known-files-and-open', (_event, file) => {
+  if (!file || file === '') return
   const id = addToKnownFiles(file)
   openKnownFile(file, id, false)
 })
@@ -208,8 +202,10 @@ ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName)
   openKnownFile(filePath, id, unknown, headerBarFileName)
 })
 
-ipcMain.on('save-file', (_event, fileName, file) => {
-  saveFile(fileName, file)
+ipcMain.on('save-file', (event, fileName, file) => {
+  saveFile(fileName, file).then(() => {
+    event.sender.send('file-saved', fileName)
+  })
 })
 
 ipcMain.on('auto-save', (event, filePath, file, userId, previousFile) => {
@@ -260,10 +256,51 @@ ipcMain.on('save-backup', (event, filePath, file) => {
   })
 })
 
-ipcMain.on('record-offline-backup', (event, file) => {
+ipcMain.on('record-offline-backup', (_event, file) => {
   saveOfflineFile(file)
 })
 
-ipcMain.on('set-my-file-path', (event, oldFilePath, newFilePath) => {
+ipcMain.on('set-my-file-path', (_event, oldFilePath, newFilePath) => {
   setFilePathForWindowWithFilePath(oldFilePath, newFilePath)
+})
+
+ipcMain.on('pls-quit', () => {
+  app.quit()
+})
+
+ipcMain.on('tell-me-what-os-i-am-on', (event) => {
+  event.returnValue = is.windows ? 'WINDOWS' : is.macos ? 'MACOS' : is.linux ? 'LINUX' : null
+})
+
+ipcMain.on('download-file-and-show', (_event, url) => {
+  const downloadDirectory = app.getPath('downloads')
+  const fullPath = path.join(downloadDirectory, 'backup-download.pltr')
+  const outputStream = fs.createWriteStream(fullPath)
+  log.info(`Downloading ${url} to ${downloadDirectory}`)
+  https
+    .get(url, (response) => {
+      if (Math.floor(response.statusCode / 200) !== 1) {
+        log.error(`Error downloading file from ${url}`)
+        return
+      }
+      response.on('data', (data) => {
+        outputStream.write(data)
+      })
+      response.on('close', () => {
+        outputStream.close((error) => {
+          if (error) {
+            log.error(`Error closing write stream for file download: of ${url}`, error)
+          } else {
+            shell.showItemInFolder(fullPath)
+          }
+        })
+      })
+    })
+    .on('error', (error) => {
+      log.error('Error downloading file from ${url}', error)
+    })
+})
+
+ipcMain.on('show-item-in-folder', (_event, fileName) => {
+  shell.showItemInFolder(fileName)
 })

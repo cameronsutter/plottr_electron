@@ -1,6 +1,5 @@
-const Rollbar = require('rollbar')
-import { remote } from 'electron'
-const app = remote.app
+import Rollbar from 'rollbar'
+import { app } from '@electron/remote'
 import { USER } from '../../file-system/stores'
 
 export default function setupRollbar(where) {

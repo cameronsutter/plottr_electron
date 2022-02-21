@@ -1,12 +1,13 @@
-const path = require('path')
-const { app, ipcMain } = require('electron')
-const log = require('electron-log')
-const { makeBrowserWindow } = require('../utils')
-const { filePrefix } = require('../helpers')
-const { updateOpenFiles } = require('./files')
-const { rollbar } = require('../rollbar')
-const { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } = require('.')
-const { addToKnown } = require('../known_files')
+import path from 'path'
+import { app, ipcMain } from 'electron'
+import log from 'electron-log'
+import { makeBrowserWindow } from '../utils'
+import { filePrefix } from '../helpers'
+import { updateOpenFiles } from './files'
+import { rollbar } from '../rollbar'
+import { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } from '.'
+import { addToKnown } from '../known_files'
+import { setLastOpenedFilePath } from '../lastOpened'
 
 ipcMain.on('pls-open-window', (event, filePath, unknown) => {
   openProjectWindow(filePath)
@@ -32,6 +33,7 @@ function openProjectWindow(filePath) {
   try {
     app.addRecentDocument(filePath)
     addNewWindow(newWindow, filePath)
+    setLastOpenedFilePath(filePath)
   } catch (err) {
     log.warn(err)
     rollbar.warn(err, { filePath: filePath })
@@ -39,4 +41,4 @@ function openProjectWindow(filePath) {
   }
 }
 
-module.exports = { openProjectWindow }
+export { openProjectWindow }

@@ -1,10 +1,9 @@
-const fs = require('fs')
-const path = require('path')
-const log = require('electron-log')
-const { app, BrowserWindow, dialog } = require('electron')
-const { is } = require('electron-util')
-const { NODE_ENV } = require('./constants')
-// const SETTINGS = require('./settings')
+import fs from 'fs'
+import path from 'path'
+import log from 'electron-log'
+import { app, BrowserWindow, dialog } from 'electron'
+import { is } from 'electron-util'
+import { NODE_ENV } from './constants'
 
 function takeScreenshot() {
   let win = BrowserWindow.getFocusedWindow()
@@ -42,7 +41,4 @@ function filePrefix(dirname) {
   return is.windows ? dirname : 'file://' + dirname
 }
 
-module.exports = {
-  takeScreenshot,
-  filePrefix,
-}
+export { takeScreenshot, filePrefix }

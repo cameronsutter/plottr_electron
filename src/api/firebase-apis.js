@@ -10,18 +10,35 @@ import {
 let _currentKnownFiles = []
 export const listenToKnownFiles = (cb) => {
   let unsubscribeFromKnownFiles = () => {}
+  let unsubscribeFromSessionChanges = () => {}
 
-  const unsubscribeFromSessionChanges = onSessionChange((user) => {
-    if (user) {
-      unsubscribeFromKnownFiles = listenToFiles(user.uid, (newFileList) => {
-        _currentKnownFiles = newFileList.filter(({ deleted }) => !deleted)
-        cb(_currentKnownFiles)
-      })
+  const startListening = () => {
+    unsubscribeFromSessionChanges = onSessionChange((user) => {
+      if (user) {
+        unsubscribeFromKnownFiles = listenToFiles(user.uid, (newFileList) => {
+          _currentKnownFiles = newFileList.filter(({ deleted }) => !deleted)
+          cb(_currentKnownFiles)
+        })
+      }
+    })
+  }
+
+  if (navigator.onLine) {
+    startListening()
+  }
+
+  window.addEventListener('online', () => {
+    startListening()
+  })
+  window.addEventListener('offline', () => {
+    if (unsubscribeFromSessionChanges) {
+      unsubscribeFromSessionChanges()
+      unsubscribeFromSessionChanges = null
     }
   })
 
   return () => {
-    unsubscribeFromSessionChanges()
+    if (unsubscribeFromSessionChanges) unsubscribeFromSessionChanges()
     unsubscribeFromKnownFiles()
   }
 }
@@ -31,19 +48,39 @@ export const currentKnownFiles = () => {
 }
 
 export const listenForSessionChange = (cb) => {
-  return onSessionChange((user) => {
-    if (user) {
-      cb({
-        email: user.email,
-        uid: user.uid,
-      })
-    } else {
-      cb({
-        email: null,
-        uid: null,
-      })
+  const listenOnline = (innerCB) =>
+    onSessionChange((user) => {
+      if (user) {
+        innerCB({
+          email: user.email,
+          uid: user.uid,
+        })
+      } else {
+        innerCB({
+          email: null,
+          uid: null,
+        })
+      }
+    })
+
+  let listener = listenOnline((user) => {
+    cb(user)
+    if (!navigator.onLine) {
+      listener()
+      listener = null
     }
   })
+
+  window.addEventListener('online', () => {
+    listener = listenOnline(cb)
+  })
+  window.addEventListener('offline', () => {
+    if (listener) listener()
+  })
+
+  return () => {
+    if (listener) listener()
+  }
 }
 
 const annotateTemplate = (template) => ({
@@ -54,22 +91,39 @@ const annotateTemplate = (template) => ({
 let _currentCustomTemplates = []
 export const listenToCustomTemplates = (cb) => {
   let unsubscribeFromCustomTemplates = () => {}
+  let unsubscribeFromSessionChanges = () => {}
 
-  const unsubscribeFromSessionChanges = onSessionChange((user) => {
-    if (user) {
-      unsubscribeFromCustomTemplates = listenToCustomTemplatesFromFirebase(
-        user.uid,
-        (newTemplates) => {
-          const annotatedTemplates = newTemplates.map(annotateTemplate)
-          _currentCustomTemplates = annotatedTemplates
-          cb(annotatedTemplates)
-        }
-      )
+  const startListening = () => {
+    unsubscribeFromSessionChanges = onSessionChange((user) => {
+      if (user) {
+        unsubscribeFromCustomTemplates = listenToCustomTemplatesFromFirebase(
+          user.uid,
+          (newTemplates) => {
+            const annotatedTemplates = newTemplates.map(annotateTemplate)
+            _currentCustomTemplates = annotatedTemplates
+            cb(annotatedTemplates)
+          }
+        )
+      }
+    })
+  }
+
+  if (navigator.onLine) {
+    startListening()
+  }
+
+  window.addEventListener('online', () => {
+    startListening()
+  })
+  window.addEventListener('offline', () => {
+    if (unsubscribeFromSessionChanges) {
+      unsubscribeFromSessionChanges()
+      unsubscribeFromSessionChanges = null
     }
   })
 
   return () => {
-    unsubscribeFromSessionChanges()
+    if (unsubscribeFromSessionChanges) unsubscribeFromSessionChanges()
     unsubscribeFromCustomTemplates()
   }
 }
@@ -84,31 +138,48 @@ export const currentBackups = () => {
 }
 export const listenToBackupsChanges = (cb) => {
   let unsubscribeFromBackupsChanges = () => {}
+  let unsubscribeFromSessionChanges = () => {}
 
-  const unsubscribeFromSessionChanges = onSessionChange((user) => {
-    if (user) {
-      unsubscribeFromBackupsChanges = listenForBackupsFromFirebase(user.uid, (backups) => {
-        const grouped = groupBy(backups, (backup) => {
-          const date = backup?.lastModified?.toDate() || new Date()
-          return `${date.getMonth() + 1}_${date.getDate()}_${date.getFullYear()}`
-        })
-        const backupFolders = []
-        Object.keys(grouped).forEach((key) => {
-          backupFolders.push({
-            backups: grouped[key],
-            path: key,
-            date: key,
-            isCloudBackup: true,
+  const startListening = () => {
+    unsubscribeFromSessionChanges = onSessionChange((user) => {
+      if (user) {
+        unsubscribeFromBackupsChanges = listenForBackupsFromFirebase(user.uid, (backups) => {
+          const grouped = groupBy(backups, (backup) => {
+            const date = backup?.lastModified?.toDate() || new Date()
+            return `${date.getMonth() + 1}_${date.getDate()}_${date.getFullYear()}`
           })
-        })
+          const backupFolders = []
+          Object.keys(grouped).forEach((key) => {
+            backupFolders.push({
+              backups: grouped[key],
+              path: key,
+              date: key,
+              isCloudBackup: true,
+            })
+          })
 
-        cb(backupFolders)
-      })
+          cb(backupFolders)
+        })
+      }
+    })
+  }
+
+  if (navigator.onLine) {
+    startListening()
+  }
+
+  window.addEventListener('online', () => {
+    startListening()
+  })
+  window.addEventListener('offline', () => {
+    if (unsubscribeFromSessionChanges) {
+      unsubscribeFromSessionChanges()
+      unsubscribeFromSessionChanges = null
     }
   })
 
   return () => {
-    unsubscribeFromSessionChanges()
+    if (unsubscribeFromSessionChanges) unsubscribeFromSessionChanges()
     unsubscribeFromBackupsChanges()
   }
 }

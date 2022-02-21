@@ -1,4 +1,4 @@
-var storage = require('electron-json-storage')
+import storage from 'electron-json-storage'
 
 const USER_INFO_PATH = 'license_info'
 const fakeData = {

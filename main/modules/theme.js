@@ -1,25 +1,21 @@
-const { nativeTheme, BrowserWindow } = require('electron')
-const SETTINGS = require('./settings')
-
-let darkMode = false
-
-function getDarkMode() {
-  return darkMode
-}
+import { nativeTheme } from 'electron'
+import SETTINGS from './settings'
 
 function setDarkMode(newValue) {
   switch (newValue) {
     case 'dark':
-      darkMode = true
+      SETTINGS.user.dark = 'dark'
       removeThemeListener()
       break
     case 'light':
-      darkMode = false
+      SETTINGS.user.dark = 'light'
       removeThemeListener()
       break
     case 'system':
     default:
-      darkMode = nativeTheme.shouldUseDarkColors
+      if (nativeTheme.shouldUseDarkColors) {
+        SETTINGS.user.dark = 'dark'
+      }
       setThemeListener()
       break
   }
@@ -27,8 +23,7 @@ function setDarkMode(newValue) {
 
 function setThemeListener() {
   nativeTheme.on('updated', () => {
-    darkMode = nativeTheme.shouldUseDarkColors
-    broadcastDarkMode()
+    SETTINGS.user.dark = 'dark'
   })
 }
 
@@ -36,18 +31,4 @@ function removeThemeListener() {
   nativeTheme.removeAllListeners('updated')
 }
 
-function broadcastDarkMode() {
-  BrowserWindow.getAllWindows().forEach((bw) => {
-    bw.webContents.send('set-dark-mode', darkMode)
-  })
-}
-
-setDarkMode(SETTINGS.get('user.dark'))
-
-module.exports = {
-  getDarkMode,
-  setDarkMode,
-  setThemeListener,
-  removeThemeListener,
-  broadcastDarkMode,
-}
+export { setDarkMode, setThemeListener, removeThemeListener }

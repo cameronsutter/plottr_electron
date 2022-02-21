@@ -6,6 +6,7 @@ import {
   sortFileNamesByDate,
   fileIsSoonerThan,
 } from '../backup'
+import { sep } from 'path'
 
 describe('isABackupFile', () => {
   describe('given an empty file name', () => {
@@ -78,18 +79,18 @@ describe('backupFiles', () => {
     const nonEmptyBackupFolder = `${__dirname}/__fixtures__/backups/`
     it('should produce a list of all of the files contained in that folder', async () => {
       expect(await backupFiles(nonEmptyBackupFolder)).toEqual([
-        '5_15_2021/(start-session)-Goldilocks and The Three Bears.pltr',
-        '5_15_2021/Goldilocks and The Three Bears.pltr',
-        '5_18_2021/(start-session)-Zelda.pltr',
-        '5_18_2021/Zelda.pltr',
-        '5_19_2021/(start-session)-Zelda.pltr',
-        '5_19_2021/Zelda.pltr',
-        '6_25_2021/(start-session)-Zelda.pltr',
-        '6_25_2021/Zelda.pltr',
-        '6_3_2021/(start-session)-Zelda.pltr',
-        '6_3_2021/Zelda.pltr',
-        '6_4_2021/(start-session)-Zelda.pltr',
-        '6_4_2021/Zelda.pltr',
+        `5_15_2021${sep}(start-session)-Goldilocks and The Three Bears.pltr`,
+        `5_15_2021${sep}Goldilocks and The Three Bears.pltr`,
+        `5_18_2021${sep}(start-session)-Zelda.pltr`,
+        `5_18_2021${sep}Zelda.pltr`,
+        `5_19_2021${sep}(start-session)-Zelda.pltr`,
+        `5_19_2021${sep}Zelda.pltr`,
+        `6_25_2021${sep}(start-session)-Zelda.pltr`,
+        `6_25_2021${sep}Zelda.pltr`,
+        `6_3_2021${sep}(start-session)-Zelda.pltr`,
+        `6_3_2021${sep}Zelda.pltr`,
+        `6_4_2021${sep}(start-session)-Zelda.pltr`,
+        `6_4_2021${sep}Zelda.pltr`,
       ])
     })
   })

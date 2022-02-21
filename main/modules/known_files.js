@@ -1,7 +1,7 @@
-const path = require('path')
-const Store = require('electron-store')
-const { reloadRecents } = require('./dashboard')
-const { OFFLINE_FILE_FILES_PATH } = require('./offlineFilePath')
+import path from 'path'
+import Store from 'electron-store'
+import { reloadRecents } from './dashboard'
+import { OFFLINE_FILE_FILES_PATH } from './offlineFilePath'
 const knownFilesPath = process.env.NODE_ENV == 'development' ? 'known_files_dev' : 'known_files'
 
 const knownFilesStore = new Store({ name: knownFilesPath })
@@ -20,9 +20,9 @@ function addToKnown(filePath) {
   if (!filePath || filePath === '') return
 
   const files = knownFilesStore.store
-  const alreadyExists = Object.entries(files).some(
-    (entry) => path.normalize(entry[1].path) == path.normalize(filePath)
-  )
+  const alreadyExists = Object.entries(files)
+    .filter(({ path }) => path)
+    .some((entry) => path.normalize(entry[1].path) == path.normalize(filePath))
   if (alreadyExists) {
     const fileEntry = Object.entries(files).find(
       (entry) => path.normalize(entry[1].path) == path.normalize(filePath)
@@ -39,6 +39,8 @@ function addToKnown(filePath) {
 }
 
 function addToKnownFiles(filePath) {
+  // We also don't want to track recent files that don't have a path.
+  if (!filePath || filePath === '') return null
   const normalisedPath = path.normalize(filePath)
   const existingId = Object.keys(knownFilesStore.store).find((id) => {
     const existingPath = knownFilesStore.store[id].path
@@ -68,4 +70,4 @@ function addToKnownFiles(filePath) {
   }
 }
 
-module.exports = { knownFilesStore, getKnownFilesInfo, addToKnown, addToKnownFiles }
+export { knownFilesStore, getKnownFilesInfo, addToKnown, addToKnownFiles }

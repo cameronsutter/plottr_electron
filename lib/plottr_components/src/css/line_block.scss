@@ -332,10 +332,78 @@ $medium_width: 80px;
 
 .vertical-line-list__append-line {
   height: 100px;
+  &.medium-timeline {
+    height: 60px;
+    width: 110px;
+  }
   display: flex;
   align-items: center;
   cursor: pointer;
   .vertical-line-list__append-line-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $blue-5;
+    border: 3px dotted $blue-8;
+    width: 135px;
+    height: 69px;
+    &.medium-timeline {
+      width: 120px;
+      height: 40px;
+    }
+  }
+  .vertical-line-list__append-line__double {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      padding: 10px 5px;
+      color: $blue-5;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:hover {
+        background-color: $blue-8;
+      }
+    }
+    div.template {
+      @include application-text;
+      color: $blue-4;
+      border-right: 3px dashed $blue-8;
+      text-align: center;
+    }
+    div.disabled {
+      cursor: $cursor-disabled;
+      color: $neutral-gray-5;
+      background-color: transparent;
+    }
+    div.non-template {
+      border-left: none;
+    }
+  }
+}
+
+.vertical-line-list__append-line:hover {
+  color: $blue-5;
+  .vertical-line-list__append-line-wrapper {
+    border: 3px dashed $blue-7;
+  }
+}
+
+.vertical-line-list__insert-beat--small:hover {
+  color: $blue-5;
+  .vertical-insert-beat-wrapper--small {
+    border: 1px dotted $blue-8;
+  }
+}
+
+.vertical-line-list__append-line--small {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  .vertical-line-list__append-line-wrapper--small {
     padding: 30px $title_height;
     color: $blue-5;
     border: 3px dotted $blue-8;
@@ -343,9 +411,9 @@ $medium_width: 80px;
   }
 }
 
-.vertical-line-list__append-line:hover {
+.vertical-line-list__append-line--small:hover {
   color: $blue-5;
-  .vertical-line-list__append-line-wrapper {
+  .vertical-line-list__append-line-wrapper--small {
     border: 3px dashed $blue-7;
   }
 }

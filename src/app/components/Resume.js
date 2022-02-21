@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { PropTypes } from 'prop-types'
-import { remote } from 'electron'
+import { app, dialog } from '@electron/remote'
 import { connect } from 'react-redux'
 import { Spinner } from 'connected-components'
 
@@ -11,8 +11,6 @@ import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import { logger } from '../../logger'
 import { uploadProject } from '../../common/utils/upload_project'
 import { resumeDirective } from '../../resume'
-
-const { app, dialog } = remote
 
 const MAX_RETRIES = 5
 
@@ -52,56 +50,61 @@ const Resume = ({
       let retryCount = 0
       const checkAndUploadBackup = () => {
         return initialFetch(userId, fileId, clientId, app.getVersion()).then((cloudFile) => {
-          withFullFileState((state) => {
-            const offlineFile = state.present
-            const originalTimeStamp = new Date(offlineFile.file.originalTimeStamp)
-            const [uploadOurs, backupOurs, doNothing] = resumeDirective(offlineFile, cloudFile)
-            if (doNothing) {
-              logger.info(
-                `After resuming, there are no changes between the local and cloud files for file with id: ${fileId}.`
-              )
-              setResuming(false)
-              setCheckingForOfflineDrift(false)
-              retryCount = 0
-            } else if (uploadOurs) {
-              setOverwritingCloudWithBackup(true)
-              setCheckingForOfflineDrift(false)
-              logger.info(
-                `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
-              )
-              overwriteAllKeys(fileId, clientId, {
-                ...offlineFile,
-                file: {
-                  ...offlineFile.file,
-                  fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
-                },
-              }).then(() => {
+          return new Promise((resolve, reject) => {
+            withFullFileState((state) => {
+              const offlineFile = state.present
+              const originalTimeStamp = new Date(offlineFile.file.originalTimeStamp)
+              const [uploadOurs, backupOurs, doNothing] = resumeDirective(offlineFile, cloudFile)
+              if (doNothing) {
+                logger.info(
+                  `After resuming, there are no changes between the local and cloud files for file with id: ${fileId}.`
+                )
                 setResuming(false)
-              })
-            } else if (backupOurs) {
-              setBackingUpOfflineFile(true)
-              setCheckingForOfflineDrift(false)
-              logger.info(
-                `Detected that file ${fileId} has changes since ${originalTimeStamp}.  Backing up the offline file and switching to the online file.`
-              )
-              const date = new Date()
-              uploadProject(
-                {
+                setCheckingForOfflineDrift(false)
+                retryCount = 0
+                resolve(false)
+              } else if (uploadOurs) {
+                logger.info(
+                  `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
+                )
+                overwriteAllKeys(fileId, clientId, {
                   ...offlineFile,
                   file: {
                     ...offlineFile.file,
-                    fileName: `${decodeURI(offlineFile.file.fileName)} - Resume Backup - ${
-                      date.getMonth() + 1
-                    }-${date.getDate()}-${date.getFullYear()}`,
+                    fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
                   },
-                },
-                email,
-                userId
-              ).then(() => {
-                setResuming(false)
-                retryCount = 0
-              })
-            }
+                }).then(() => {
+                  setOverwritingCloudWithBackup(true)
+                  setCheckingForOfflineDrift(false)
+                  setResuming(false)
+                  resolve(true)
+                })
+              } else if (backupOurs) {
+                logger.info(
+                  `Detected that file ${fileId} has changes since ${originalTimeStamp}.  Backing up the offline file and switching to the online file.`
+                )
+                const date = new Date()
+                uploadProject(
+                  {
+                    ...offlineFile,
+                    file: {
+                      ...offlineFile.file,
+                      fileName: `${decodeURI(offlineFile.file.fileName)} - Resume Backup - ${
+                        date.getMonth() + 1
+                      }-${date.getDate()}-${date.getFullYear()}`,
+                    },
+                  },
+                  email,
+                  userId
+                ).then(() => {
+                  setBackingUpOfflineFile(true)
+                  setCheckingForOfflineDrift(false)
+                  setResuming(false)
+                  retryCount = 0
+                  resolve(true)
+                })
+              }
+            })
           })
         })
       }
@@ -164,11 +167,15 @@ const Resume = ({
     >
       {checkingOfflineDrift && !overwritingCloudWithBackup ? <Spinner /> : null}
       {backingUpOfflineFile
-        ? `The cloud file is different from your local copy.  We're going to create a duplicate of your local file and switch to the cloud file.`
+        ? t(
+            'The cloud file is different from your local copy.  We created a duplicate of your local file and switched to the cloud file.'
+          )
         : null}
-      {overwritingCloudWithBackup ? 'Uploading your changes to the cloud.' : null}
+      {overwritingCloudWithBackup ? t('Your changes were uploaded to the cloud.') : null}
       {!checkingOfflineDrift && !backingUpOfflineFile && !overwritingCloudWithBackup
-        ? `No changes were detected between offline backup file and the Plottr cloud version.`
+        ? t(
+            'No changes were detected between the offline backup file and the Plottr cloud version.'
+          )
         : null}
     </MessageModal>
   )

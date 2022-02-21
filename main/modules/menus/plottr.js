@@ -1,48 +1,67 @@
-const i18n = require('plottr_locales').t
-const electron = require('electron')
+import electron from 'electron'
 const { app } = electron
-const { is } = require('electron-util')
-const { localeNames, setupI18n } = require('plottr_locales')
-const SETTINGS = require('../settings')
-const { reloadAllWindows } = require('../windows')
+import { is } from 'electron-util'
+import { t, localeNames, setupI18n } from 'plottr_locales'
+import SETTINGS from '../settings'
+import { reloadAllWindows } from '../windows'
 
-function buildPlottrMenu() {
+function buildPlottrMenu(loadMenu) {
+  const isPro = SETTINGS.get('user.frbId')
+  const notEnglish = { ...localeNames }
+  delete notEnglish.en
+
+  const englishFirst = [
+    {
+      label: 'English',
+      click: () => {
+        SETTINGS.set('locale', 'en')
+        setupI18n(SETTINGS, { electron })
+        loadMenu()
+        reloadAllWindows()
+      },
+    },
+    {
+      type: 'separator',
+    },
+    ...Object.entries(notEnglish).map(([locale, name]) => ({
+      label: name,
+      click: () => {
+        SETTINGS.set('locale', locale)
+        setupI18n(SETTINGS, { electron })
+        loadMenu()
+        reloadAllWindows()
+      },
+    })),
+  ]
+
   const submenu = [
     {
-      label: i18n('Language'),
-      submenu: Object.entries(localeNames).map(([locale, name]) => ({
-        label: name,
-        click: () => {
-          SETTINGS.set('locale', locale)
-          setupI18n(SETTINGS, { electron })
-          require('./').loadMenu()
-          reloadAllWindows()
-        },
-      })),
+      label: t('Language'),
+      submenu: englishFirst,
     },
   ]
 
   if (is.macos) {
     submenu.push(
       {
-        label: i18n('Hide Plottr'),
+        label: t('Hide Plottr'),
         accelerator: 'Command+H',
         role: 'hide',
       },
       {
-        label: i18n('Hide Others'),
+        label: t('Hide Others'),
         accelerator: 'Command+Alt+H',
         role: 'hideothers',
       },
       {
-        label: i18n('Show All'),
+        label: t('Show All'),
         role: 'unhide',
       },
       {
         type: 'separator',
       },
       {
-        label: i18n('Quit'),
+        label: t('Quit'),
         accelerator: 'Cmd+Q',
         click: function () {
           app.quit()
@@ -51,7 +70,7 @@ function buildPlottrMenu() {
     )
   } else {
     submenu.push({
-      label: i18n('Close'),
+      label: t('Close'),
       accelerator: 'Alt+F4',
       click: function () {
         app.quit()
@@ -59,9 +78,9 @@ function buildPlottrMenu() {
     })
   }
   return {
-    label: 'Plottr',
+    label: isPro ? 'Plottr Pro' : 'Plottr',
     submenu: submenu,
   }
 }
 
-module.exports = { buildPlottrMenu }
+export { buildPlottrMenu }

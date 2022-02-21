@@ -1,8 +1,8 @@
-const { ipcMain } = require('electron')
-const { autoUpdater } = require('electron-updater')
-const log = require('electron-log')
-const SETTINGS = require('./settings')
-const { broadcastToAllWindows } = require('./broadcast')
+import { ipcMain } from 'electron'
+import { autoUpdater } from 'electron-updater'
+import log from 'electron-log'
+import SETTINGS from './settings'
+import { broadcastToAllWindows } from './broadcast'
 
 autoUpdater.logger = log
 autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')

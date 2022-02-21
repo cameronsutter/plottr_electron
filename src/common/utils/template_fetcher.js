@@ -1,13 +1,13 @@
 import log from 'electron-log'
-import { is } from 'electron-util'
 import request from 'request'
 import semverGt from 'semver/functions/gt'
 import { manifestStore, templatesStore, customTemplatesStore } from '../../file-system/stores'
 import { fileSystemAPIs } from '../../api'
+import { isDevelopment } from '../../isDevelopment'
 
 const OLD_TEMPLATES_ROOT = 'templates'
 let env = 'prod'
-if (is.development) env = 'staging'
+if (isDevelopment()) env = 'staging'
 const settings = fileSystemAPIs.currentAppSettings()
 if (settings.betatemplates) env = 'beta'
 const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`

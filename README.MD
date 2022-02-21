@@ -138,6 +138,26 @@ To use `plottr_firebase`, simply call one of the functions exposed by the librar
 
 For more detail on what the library provides, please refer to its documentation at: `lib/plottr_firebase/README.md`.
 
+# Features
+
+## Offline Mode
+Offline mode is there for people to continue working on Pro files when their Internet connection goes down.
+
+Here's what I wrote about it when I asked for help testing it:
+
+The easiest way to test it is to go to the network tab on the inspector and select “offline” on the throttle drop down.
+What you should see is the following:
+ - A bar appears at the bottom to indicate that offline mode is on (I haven’t paid a lot of attention to styling it, and the last time I posted a screenshot we all seemed happy with it),
+ - The current file should become associated with a file in <appFolder>/offline/<encoded-file-name>.pltr, (e.g. /Users/edward/Library/Application Support/plottr/offline/my%20file.pltr).  When you save etc. this file should be updated.
+ - When you open the dashboard, it should list the files in the offline directory (as above).
+ - When you resume the Internet connection, it should show a busy dialog and prevent you from interacting with the app.
+ - It’ll resolve the dialog when it determines what needs to happen.  There are four possibilities:
+   1. It detects no changes and simply switches back to the online file.
+   2. It detects that you changed the local file, and the online file didn’t change.  In which case, it should overwrite the online file with your changes.
+   3. It detects that you didn’t change the local file, and the online file did change.  In which case, it should switch to the online file and you should see the updates that were made online.
+   4. It detects that both the online and the offline file changed.  In which case, it should warn you that it’s making a backup of your file and switching to the online file.  You should find the backup on the dashboard.
+ - After it’s finished “resuming” (there’s state in redux and a component which track this state) it should have switched to online mode and changes you make should be reflected on Plottr cloud again.
+
 # Debugging Tests
 
 To debug a test:

@@ -70,13 +70,6 @@
       border-radius: 0;
     }
   }
-  &.project-nav__options {
-    padding-right: 0;
-    & > li > a {
-      padding: 5px;
-      padding-top: 11px;
-    }
-  }
   li.dropdown {
     & > a {
       padding-top: 5px;
@@ -109,6 +102,16 @@
       li.divider {
         margin-top: 0;
       }
+    }
+  }
+}
+
+.dashboard__navbar-form {
+  padding-right: 0;
+  button {
+    font-size: 15px;
+    svg {
+      margin-right: 4px;
     }
   }
 }

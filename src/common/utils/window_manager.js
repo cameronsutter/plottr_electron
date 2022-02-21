@@ -1,4 +1,5 @@
-import { remote, ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron'
+import { dialog, getCurrentWindow } from '@electron/remote'
 import { readFileSync } from 'fs'
 import path from 'path'
 
@@ -9,8 +10,7 @@ import { closeDashboard } from '../../dashboard-events'
 import { uploadProject } from './upload_project'
 import { findRelevantFiles, generateState, getScrivxData } from '../../scrivener'
 
-const win = remote.getCurrentWindow()
-const { dialog } = remote
+const win = getCurrentWindow()
 
 export const openFile = (filePath, id, unknown) => {
   ipcRenderer.send('open-known-file', filePath, id, unknown)

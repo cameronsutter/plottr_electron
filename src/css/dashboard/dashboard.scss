@@ -82,7 +82,7 @@ $header-height: 40px;
 
   .dashboard__main,
   main {
-    height: 100%; // can't use variable here: $header-height
+    height: 100vh; // can't use variable here: $header-height
     width: 100%;
     background-color: $gray-9;
     overflow: auto;

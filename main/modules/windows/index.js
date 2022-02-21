@@ -1,8 +1,8 @@
-const { BrowserWindow, ipcMain } = require('electron')
-const log = require('electron-log')
-const { openBuyWindow } = require('./buy')
-const { newFileOptions } = require('../new_file_options')
-const { offlineFilePath } = require('../offlineFilePath')
+import { BrowserWindow, ipcMain } from 'electron'
+import log from 'electron-log'
+import { openBuyWindow } from './buy'
+import { newFileOptions } from '../new_file_options'
+import { offlineFilePath } from '../offlineFilePath'
 
 ipcMain.on('open-buy-window', (event) => {
   openBuyWindow()
@@ -89,11 +89,11 @@ function focusIfOpen(filePath) {
 
 function reloadWindow() {
   let win = BrowserWindow.getFocusedWindow()
-  win.webContents.send('reload')
+  win.webContents.reload()
 }
 
 function reloadAllWindows() {
-  windows.forEach((w) => w.browserWindow.webContents.send('reload'))
+  windows.forEach((w) => w.browserWindow.webContents.reload())
 }
 
 function dereferenceWindow(winObj) {
@@ -106,7 +106,7 @@ function closeWindow(id) {
   if (win) win.browserWindow.send('close')
 }
 
-module.exports = {
+export {
   setFilePathForWindowWithFilePath,
   addNewWindow,
   allWindows,

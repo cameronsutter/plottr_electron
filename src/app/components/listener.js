@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
+import { dialog } from '@electron/remote'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -11,8 +12,6 @@ import { store } from '../store'
 import { offlineFilePath } from '../../files'
 import { logger } from '../../logger'
 import { fileSystemAPIs, licenseServerAPIs } from '../../api'
-
-const { dialog } = remote
 
 const Listener = ({
   hasPro,
@@ -31,6 +30,7 @@ const Listener = ({
   originalFileName,
   cloudFilePath,
   selectFile,
+  offlineModeIsEnabled,
   setResuming,
   resuming,
   withFullFileState,
@@ -39,6 +39,7 @@ const Listener = ({
   setHasPro,
   setUserId,
   setEmailAddress,
+  setProLicenseInfo,
   startLoadingALicenseType,
   finishLoadingALicenseType,
 }) => {
@@ -72,7 +73,14 @@ const Listener = ({
   }, [selectedFile, userId])
 
   useEffect(() => {
-    if (!userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
+    if (
+      !offlineModeIsEnabled ||
+      !userId ||
+      !clientId ||
+      !selectedFile ||
+      !selectedFile.id ||
+      isOffline
+    ) {
       return () => {}
     }
 
@@ -101,9 +109,17 @@ const Listener = ({
     return () => {
       stopListening(unsubscribeFunctions)
       setUnsubscribeFunctions([])
-      setPermission('viewer')
     }
-  }, [selectedFile, userId, clientId, fileLoaded, isOffline, resuming, setResuming])
+  }, [
+    offlineModeIsEnabled,
+    selectedFile,
+    userId,
+    clientId,
+    fileLoaded,
+    isOffline,
+    resuming,
+    setResuming,
+  ])
 
   useEffect(() => {
     if (isOffline && unsubscribeFunctions.length) {
@@ -124,12 +140,17 @@ const Listener = ({
     }
   }, [isOffline, offlineFilePath, filePath, originalFileName, cloudFilePath])
 
-  const handleCheckPro = (uid, email) => (hasPro) => {
+  const handleCheckPro = (uid, email, isLifetime, isAdmin) => (hasPro, info) => {
     if (hasPro) {
       fileSystemAPIs.saveAppSetting('user.frbId', uid)
       setHasPro(hasPro)
       setUserId(uid)
       setEmailAddress(email)
+      setProLicenseInfo({
+        ...info,
+        expiration: isLifetime ? 'lifetime' : info.expiration,
+        admin: isAdmin,
+      })
       fetchFiles(uid).then((files) => {
         finishLoadingALicenseType('proSubscription')
       })
@@ -149,11 +170,24 @@ const Listener = ({
         ?.getIdTokenResult()
         .then((token) => {
           if (token.claims.beta || token.claims.admin || token.claims.lifetime) {
-            handleCheckPro(userId, emailAddress)(true)
+            handleCheckPro(
+              userId,
+              emailAddress,
+              token.claims.lifeTime || token.claims.admin,
+              token.claims.admin
+            )(true, { expiration: 'lifetime', admin: true })
           } else {
             if (emailAddress) {
               licenseServerAPIs
-                .checkForPro(emailAddress, handleCheckPro(userId, emailAddress))
+                .checkForPro(
+                  emailAddress,
+                  handleCheckPro(
+                    userId,
+                    emailAddress,
+                    token.claims.lifeTime || token.claims.admin,
+                    token.claims.admin
+                  )
+                )
                 .catch((error) => {
                   // TODO: maybe retry?
                   logger.error('Failed to check for pro', error)
@@ -185,9 +219,11 @@ Listener.propTypes = {
   withFullFileState: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool,
   checkedSession: PropTypes.bool,
+  offlineModeIsEnabled: PropTypes.bool,
   setHasPro: PropTypes.func.isRequired,
   setUserId: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
+  setProLicenseInfo: PropTypes.func.isRequired,
   startLoadingALicenseType: PropTypes.func.isRequired,
   finishLoadingALicenseType: PropTypes.func.isRequired,
 }
@@ -209,6 +245,7 @@ export default connect(
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isLoggedIn: selectors.isLoggedInSelector(state.present),
     checkedSession: selectors.sessionCheckedSelector(state.present),
+    offlineModeIsEnabled: selectors.offlineModeEnabledSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,
@@ -220,6 +257,7 @@ export default connect(
     setHasPro: actions.client.setHasPro,
     setUserId: actions.client.setUserId,
     setEmailAddress: actions.client.setEmailAddress,
+    setProLicenseInfo: actions.license.setProLicenseInfo,
     startLoadingALicenseType: actions.applicationState.startLoadingALicenseType,
     finishLoadingALicenseType: actions.applicationState.finishLoadingALicenseType,
   }

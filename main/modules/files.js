@@ -9,6 +9,8 @@ import { t } from 'plottr_locales'
 
 import { knownFilesStore, addToKnownFiles, addToKnown } from './known_files'
 import { Importer } from './importer/snowflake/importer'
+const { ScrivenerImporter } = require('./importer/scrivener/importer')
+
 import { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { openProjectWindow } from './windows/projects'
 import { shell } from 'electron'
@@ -358,6 +360,21 @@ async function createFromSnowflake(importedPath) {
   openKnownFile(filePath, fileId)
 }
 
+function createFromScrivener(importedPath) {
+  const storyName = path.basename(importedPath, '.scriv')
+  let json = emptyFile(storyName, app.getVersion())
+  json.beats = {
+    series: tree.newTree('id'),
+  }
+  json.lines = []
+  console.log('json', json)
+  const importedJson = ScrivenerImporter(importedPath, true, json)
+
+  // const filePath = saveToTempFile(importedJson)
+  // const fileId = addToKnownFiles(filePath)
+  // openKnownFile(filePath, fileId)
+}
+
 function openKnownFile(filePath, id, unknown) {
   if (id && !filePath.startsWith('plottr://')) {
     // update lastOpen, but wait a little so the file doesn't move from under their mouse
@@ -438,6 +455,7 @@ export {
   deleteKnownFile,
   createNew,
   createFromSnowflake,
+  createFromScrivener,
   openKnownFile,
   saveOfflineFile,
 }

@@ -265,6 +265,9 @@ const platform = {
     createFromSnowflake: (importedPath) => {
       ipcRenderer.send('create-from-snowflake', importedPath)
     },
+    createFromScrivener: (importedPath) => {
+      ipcRenderer.send('create-from-scrivener', importedPath)
+    },
     joinPath: path.join,
     listOfflineFiles,
     sortAndSearch,

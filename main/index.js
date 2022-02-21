@@ -40,6 +40,7 @@ import {
   editKnownFilePath,
   autoSave,
   saveOfflineFile,
+  createFromScrivener,
 } from './modules/files'
 import { lastOpenedFile } from './modules/lastOpened'
 import { editWindowPath, setFilePathForWindowWithFilePath } from './modules/windows/index'
@@ -196,6 +197,10 @@ ipcMain.on('create-new-file', (_event, template) => {
 
 ipcMain.on('create-from-snowflake', (_event, importedPath) => {
   createFromSnowflake(importedPath)
+})
+
+ipcMain.on('create-from-scrivener', (_event, importedPath) => {
+  createFromScrivener(importedPath)
 })
 
 ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName) => {

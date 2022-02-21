@@ -6,6 +6,7 @@ import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { HTMLToPlotlineParagraph } from 'pltr/v2/slate_serializers/from_html'
 import { convertTxtString } from 'pltr/v2/slate_serializers/from_plain_text'
 import { isPlainObject } from 'lodash'
+import { xml2json } from 'xml-js'
 
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
 // Object -> { manuscript: [Object], Sections: [Object] }
@@ -148,11 +149,16 @@ export const getScrivxData = (scriv) => {
   const filesInScriv = readdirSync(scriv)
   const scrivFile = filesInScriv.find((file) => path.extname(file) === '.scrivx')
   const absolute = path.join(scriv, scrivFile)
-  const scrivxContent = readFileSync(absolute)
-  const scrivData = parseScrivxData(scrivxContent, filesInScriv)
-  if (scrivData) {
-    return scrivData
-  }
+  // const scrivxContent = readFileSync(absolute)
+  // const scrivData = parseScrivxData(scrivxContent, filesInScriv)
+
+  const scrivxContent = readFileSync(absolute, 'utf-8')
+  const json = JSON.parse(xml2json(scrivxContent, { compact: true, spaces: 2 }))
+
+  console.log('xml to json', json)
+  // if (scrivData) {
+  //   return scrivData
+  // }
 }
 
 // String, String -> String

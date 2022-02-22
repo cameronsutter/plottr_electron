@@ -1,17 +1,16 @@
-const fs = require('fs')
-const { readFile } = fs.promises
-const xml = require('xml-js')
-const { t } = require('plottr_locales')
-const path = require('path')
-const log = require('electron-log')
-const DomParser = require('dom-parser')
-const i18n = t
-const { cloneDeep, keyBy, groupBy, isPlainObject } = require('lodash')
-const { newIds, helpers, lineColors, initialState, tree } = require('pltr/v2')
-const { rtfConverter } = require('pltr/v2/slate_serializers/to_html')
-const { HTMLToPlotlineParagraph } = require('pltr/v2/slate_serializers/from_html')
-const { func } = require('react-proptypes')
+import fs, { readFileSync } from 'fs'
+import xml from 'xml-js'
+import { t } from 'plottr_locales'
+import path from 'path'
+import log from 'electron-log'
+import DomParser from 'dom-parser'
+import { cloneDeep, keyBy, groupBy, isPlainObject } from 'lodash'
+import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
+import { convertHTMLString } from 'pltr/v2/slate_serializers/from_html'
+import rtfToHTML from '@iarna/rtf-to-html'
 
+const i18n = t
+const { readFile } = fs.promises
 const { nextColor } = lineColors
 const defaultBook = initialState.book
 const defaultNote = initialState.note
@@ -41,28 +40,14 @@ function ScrivenerImporter(filePath, isNewFile, state) {
 
   const bookTitle = path.basename(filePath, '.scriv')
 
-  console.log('scrivxJSON', scrivxJSON)
-  const parsedFiles = parseRelevantFiles(relevantFiles)
+  // const parsedFiles = parseRelevantFiles(relevantFiles)
+  // console.log('parsedFiles', parsedFiles)
   storyLine(currentState, scrivxJSON, bookTitle, bookId, isNewFile, relevantFiles)
   // synopsis(currentState, json, bookTitle, bookId, isNewFile)
   // characters(currentState, json, bookId)
   // cards(currentState, json, bookId)
   // console.log('currentState', currentState)
   return currentState
-}
-
-function parseRelevantFiles(files) {
-  return files.map(function (file) {
-    const isRTFFile = path.extname(file) == '.rtf'
-    if (isRTFFile) {
-      return readFile(file).then(function (raw) {
-        const stringRTF = raw.toString()
-        return rtfConverter(stringRTF).then(function (res) {
-          return res
-        })
-      })
-    }
-  })
 }
 
 function getScrivxJson(filePath) {
@@ -245,10 +230,6 @@ function createNewBeat(currentState, values, bookId) {
   return nextBeatId
 }
 
-function createSlateEditor(paragraphs) {
-  return paragraphs.map(createSlateParagraph)
-}
-
 function createSlateParagraph(value) {
   return { children: [{ text: value }] }
 }
@@ -257,14 +238,28 @@ function createSlateParagraphWithMark(value, mark) {
   return { children: [{ text: value, [mark]: true }] }
 }
 
-function getVer_2_7_match(file, child) {
-  const fileName = file.split('/').pop()
-  if (file.endsWith('_synopsis.txt') || file.endsWith('_notes.rtf')) {
-    return fileName.split('_')[0] == child.uuid
+function getVer_2_7_match(file, childId) {
+  const fileName = path.basename(file)
+  if (fileName.endsWith('_synopsis.txt') || fileName.endsWith('_notes.rtf')) {
+    return fileName.split('_')[0] == childId
   } else {
-    const uuid = fileName.replace('.rtf', '')
-    return uuid == child.uuid
+    const uuid = fileName.replace('.rtf', '') || fileName.replace('.txt', '')
+    return uuid == childId
   }
+}
+
+function readTxtFile(file) {
+  const raw = readFileSync(file)
+  if (raw.toString()) {
+    return createSlateParagraph(raw.toString())
+  }
+}
+
+function readRTFFile(file) {
+  const rawRTF = readFileSync(file)
+  return rtfToHTML.fromString(String(rawRTF), (err, html) => {
+    return convertHTMLString(html)
+  })
 }
 
 function storyLine(currentState, json, bookTitle, bookId, isNewFile, relevantFiles) {
@@ -278,8 +273,10 @@ function storyLine(currentState, json, bookTitle, bookId, isNewFile, relevantFil
     storyLineNode['Children']['BinderItem'].length
   ) {
     const chapters = storyLineNode['Children']['BinderItem']
+    let description = ''
+    let rtfContent = []
     chapters.map((chapter, beatKey) => {
-      const id = chapter['_attributes']['UUID']
+      const id = chapter['_attributes']['UUID'] || chapter['_attributes']['ID']
       const title = chapter['Title']['_text']
       const position = beatKey
       if (
@@ -289,24 +286,37 @@ function storyLine(currentState, json, bookTitle, bookId, isNewFile, relevantFil
       ) {
         let beatChildren = chapter['Children']['BinderItem']
         beatChildren.map((child, key) => {
-          const childId = child['_attributes']['UUID']
+          const childId = child['_attributes']['UUID'] || child['_attributes']['ID']
           const childTitle = child['Title']['_text']
           const childPosition = key
-          const matchFiles = relevantFiles.find((file) => file.includes(childId))
-          // const isVer_3_UUID = UUIDFolderRegEx.test(child.uuid)
-          // if (isVer_3_UUID) {
-          //   return file.includes(child.uuid)
-          // } else {
-          //   return getVer_2_7_match(file, child)
-          // }
-          // console.log('matchFiles', JSON.stringify(matchFiles, null, 2))
+          const matchFiles = relevantFiles.filter((file) => {
+            const isVer_3_UUID = UUIDFolderRegEx.test(file)
+            if (isVer_3_UUID) {
+              return file.includes(childId)
+            } else {
+              return getVer_2_7_match(file, childId)
+            }
+          })
+          if (matchFiles.length) {
+            return matchFiles.map((file) => {
+              const isTxt = path.extname(file) == '.txt'
+              const isRTF = path.extname(file) == '.rtf'
+              if (isTxt && path.basename(file).endsWith('synopsis.txt')) {
+                description = readTxtFile(file)
+              } else if (isRTF) {
+                rtfContent = readRTFFile(file)
+                console.log('rtfContent', rtfContent)
+              }
+            })
+          }
+          console.log('description', description)
         })
         // const lines = beatChildren['BinderItem']
-        console.log('lines', JSON.stringify(beatChildren, null, 2))
+        // console.log('lines', JSON.stringify(beatChildren, null, 2))
       }
       createNewBeat(currentState, { id, title, position })
     })
   }
 }
 
-module.exports = { ScrivenerImporter }
+export { ScrivenerImporter }

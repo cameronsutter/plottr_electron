@@ -257,7 +257,7 @@ function readTxtFile(file) {
 
 function readRTFFile(file) {
   const rawRTF = readFileSync(file)
-  return rtfToHTML.fromString(String(rawRTF), (err, html) => {
+  return rtfToHTML.fromString(rawRTF.toString(), (err, html) => {
     return convertHTMLString(html)
   })
 }

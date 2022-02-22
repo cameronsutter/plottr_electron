@@ -4,7 +4,7 @@ import { ipcRenderer } from 'electron'
 import { dialog, getCurrentWindow } from '@electron/remote'
 import electron from 'electron'
 
-import { actions, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { setupI18n, t } from 'plottr_locales'
 import world from 'world-api'
 
@@ -29,6 +29,7 @@ import { logger } from '../logger'
 import { fileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
 import { setOS, isWindows } from '../isOS'
+import { uploadToFirebase } from '../upload-to-firebase'
 
 const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
@@ -260,6 +261,13 @@ ipcRenderer.on('save-backup-success', (event, filePath) => {
 
 ipcRenderer.on('close-dashboard', () => {
   closeDashboard()
+})
+
+ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName) => {
+  const state = store.getState().present
+  const emailAddress = selectors.emailAddressSelector(state)
+  const userId = selectors.userIdSelector(state)
+  uploadToFirebase(emailAddress, userId, json, fileName)
 })
 
 const reloadMenu = () => ipcRenderer.send('pls-reload-menu')

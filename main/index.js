@@ -199,8 +199,8 @@ ipcMain.on('create-from-snowflake', (_event, importedPath) => {
   createFromSnowflake(importedPath)
 })
 
-ipcMain.on('create-from-scrivener', (_event, importedPath) => {
-  createFromScrivener(importedPath)
+ipcMain.on('create-from-scrivener', (event, importedPath, isLoggedIntoPro) => {
+  createFromScrivener(importedPath, event.sender, isLoggedIntoPro)
 })
 
 ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName) => {

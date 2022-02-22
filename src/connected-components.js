@@ -266,7 +266,9 @@ const platform = {
       ipcRenderer.send('create-from-snowflake', importedPath)
     },
     createFromScrivener: (importedPath) => {
-      ipcRenderer.send('create-from-scrivener', importedPath)
+      const state = store.getState().present
+      const isLoggedIntoPro = selectors.hasProSelector(state)
+      ipcRenderer.send('create-from-scrivener', importedPath, isLoggedIntoPro)
     },
     joinPath: path.join,
     listOfflineFiles,

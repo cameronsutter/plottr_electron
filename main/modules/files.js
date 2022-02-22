@@ -360,7 +360,7 @@ async function createFromSnowflake(importedPath) {
   openKnownFile(filePath, fileId)
 }
 
-function createFromScrivener(importedPath) {
+function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
   const storyName = path.basename(importedPath, '.scriv')
   let json = emptyFile(storyName, app.getVersion())
   json.beats = {
@@ -370,9 +370,15 @@ function createFromScrivener(importedPath) {
   console.log('json', json)
   const importedJson = ScrivenerImporter(importedPath, true, json)
 
-  // const filePath = saveToTempFile(importedJson)
-  // const fileId = addToKnownFiles(filePath)
-  // openKnownFile(filePath, fileId)
+  if (isLoggedIntoPro) {
+    sender.send('create-plottr-cloud-file', importedJson, storyName)
+    return
+  }
+
+  saveToTempFile(importedJson).then((filePath) => {
+    const fileId = addToKnownFiles(filePath)
+    openKnownFile(filePath, fileId)
+  })
 }
 
 function openKnownFile(filePath, id, unknown) {

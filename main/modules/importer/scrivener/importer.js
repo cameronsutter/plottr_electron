@@ -3,7 +3,6 @@ import xml from 'xml-js'
 import { t } from 'plottr_locales'
 import path from 'path'
 import log from 'electron-log'
-import DomParser from 'dom-parser'
 import { cloneDeep, keyBy, groupBy, isPlainObject } from 'lodash'
 import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
 import { convertHTMLString } from 'pltr/v2/slate_serializers/from_html'
@@ -40,13 +39,22 @@ function ScrivenerImporter(filePath, isNewFile, state) {
 
   const bookTitle = path.basename(filePath, '.scriv')
 
-  // const parsedFiles = parseRelevantFiles(relevantFiles)
-  // console.log('parsedFiles', parsedFiles)
-  storyLine(currentState, scrivxJSON, bookTitle, bookId, isNewFile, relevantFiles)
+  // manuscript folder from the scrivener is where we get the beats
+  const manuscript = scrivxJSON['ScrivenerProject']['Binder']['BinderItem'].find(
+    (n) => n['_attributes']['Type'] == 'DraftFolder' || n['Title']['_text'] == 'Manuscript'
+  )
+
+  if (
+    manuscript['Children'] &&
+    manuscript['Children']['BinderItem'] &&
+    manuscript['Children']['BinderItem'].length
+  ) {
+    storyLine(currentState, manuscript, bookTitle, bookId, isNewFile, relevantFiles, true)
+  }
   // synopsis(currentState, json, bookTitle, bookId, isNewFile)
   // characters(currentState, json, bookId)
   // cards(currentState, json, bookId)
-  // console.log('currentState', currentState)
+  console.log('currentState', JSON.stringify(currentState, null, 2))
   return currentState
 }
 
@@ -59,52 +67,6 @@ function getScrivxJson(filePath) {
 
   return json
 }
-
-function parseScrivxData(data) {
-  const parser = new DomParser()
-  const htmlData = parser.parseFromString('<body>' + data + '</body>')
-  const scrivXML = htmlData.rawHTML
-  const rootChild = scrivXML.getElementsByTagName('BinderItem')[0]
-}
-
-// Node, Number -> [{ uuid: String, title: string, children: [any] }]
-// function getBinderContents(root, isDraftFolder) {
-//   return Array.from(root).map((bindersItem, key) => {
-//     const uuid = bindersItem.getAttribute('uuid') || bindersItem.getAttribute('id')
-//     const titleElement = bindersItem.querySelector('Title')
-//     const binderChildren = bindersItem.querySelector('Children')
-//     let title = ''
-
-//     if (titleElement && titleElement.length && titleElement.textContent) {
-//       title = titleElement.textContent
-//     }
-
-//     if (binderChildren && binderChildren.children && binderChildren.children.length) {
-//       const contentChildren = getBinderContents(binderChildren.children)
-//       return {
-//         uuid,
-//         title,
-//         children: contentChildren,
-//       }
-//     } else if (isDraftFolder && !binderChildren) {
-//       return {
-//         uuid,
-//         title,
-//         children: [
-//           {
-//             uuid,
-//             title: `Chapter ${key + 1}`,
-//           },
-//         ],
-//       }
-//     } else {
-//       return {
-//         uuid,
-//         title,
-//       }
-//     }
-//   })
-// }
 
 // [{ filePath: String, isRelevant: Bool }] -> [String]
 function keepNonSectionRTFFiles(results) {
@@ -234,10 +196,6 @@ function createSlateParagraph(value) {
   return { children: [{ text: value }] }
 }
 
-function createSlateParagraphWithMark(value, mark) {
-  return { children: [{ text: value, [mark]: true }] }
-}
-
 function getVer_2_7_match(file, childId) {
   const fileName = path.basename(file)
   if (fileName.endsWith('_synopsis.txt') || fileName.endsWith('_notes.rtf')) {
@@ -248,75 +206,115 @@ function getVer_2_7_match(file, childId) {
   }
 }
 
+// String, -> Object
 function readTxtFile(file) {
   const raw = readFileSync(file)
-  if (raw.toString()) {
+  if (raw && raw.toString()) {
     return createSlateParagraph(raw.toString())
   }
 }
 
+// String, -> Promise<any>
 function readRTFFile(file) {
   const rawRTF = readFileSync(file)
-  return rtfToHTML.fromString(rawRTF.toString(), (err, html) => {
-    return convertHTMLString(html)
-  })
+  return new Promise((resolve, reject) =>
+    rtfToHTML.fromString(rawRTF.toString(), (err, html) => {
+      if (err) {
+        return reject(err)
+      } else {
+        return resolve(convertHTMLString(html))
+      }
+    })
+  )
 }
 
-function storyLine(currentState, json, bookTitle, bookId, isNewFile, relevantFiles) {
-  const storyLineNode = json['ScrivenerProject']['Binder']['BinderItem'].find(
-    (n) => n['_attributes']['Type'] == 'DraftFolder' || n['Title']['_text'] == 'Manuscript'
-  )
+function storyLine(
+  currentState,
+  storyLineNode,
+  bookTitle,
+  bookId,
+  isNewFile,
+  relevantFiles,
+  currentLineId
+) {
+  const chapters = storyLineNode['Children']['BinderItem']
+  let description = {}
 
-  if (
-    storyLineNode['Children'] &&
-    storyLineNode['Children']['BinderItem'] &&
-    storyLineNode['Children']['BinderItem'].length
-  ) {
-    const chapters = storyLineNode['Children']['BinderItem']
-    let description = ''
-    let rtfContent = []
-    chapters.map((chapter, beatKey) => {
-      const id = chapter['_attributes']['UUID'] || chapter['_attributes']['ID']
-      const title = chapter['Title']['_text']
-      const position = beatKey
-      if (
-        chapter['Children'] &&
-        chapter['Children']['BinderItem'] &&
-        chapter['Children']['BinderItem'].length
-      ) {
-        let beatChildren = chapter['Children']['BinderItem']
-        beatChildren.map((child, key) => {
-          const childId = child['_attributes']['UUID'] || child['_attributes']['ID']
-          const childTitle = child['Title']['_text']
-          const childPosition = key
-          const matchFiles = relevantFiles.filter((file) => {
-            const isVer_3_UUID = UUIDFolderRegEx.test(file)
-            if (isVer_3_UUID) {
-              return file.includes(childId)
-            } else {
-              return getVer_2_7_match(file, childId)
+  // if not newBook it means that it is a subfolder,
+  // TODO: create new line fromm the subfolder
+  // no subfolder means default plotline || `Main Plot`
+  const lineId = currentLineId
+    ? createNewLine(currentState.lines, { position: 0, title: i18n('Main Plot') }, bookId)
+    : createNewLine(
+        currentState.lines,
+        { position: currentLineId, title: i18n('Subfolder title') },
+        bookId
+      )
+
+  chapters.map((chapter, beatKey) => {
+    const id = chapter['_attributes']['UUID'] || chapter['_attributes']['ID']
+    const title = chapter['Title']['_text']
+    const position = beatKey
+    if (
+      chapter['Children'] &&
+      chapter['Children']['BinderItem'] &&
+      chapter['Children']['BinderItem'].length
+    ) {
+      let beatChildren = chapter['Children']['BinderItem']
+      beatChildren.map((child, beatChildKey) => {
+        const childId = child['_attributes']['UUID'] || child['_attributes']['ID']
+        const childTitle = child['Title']['_text']
+        const childPosition = beatChildKey
+        if (
+          child['Children'] &&
+          child['Children']['BinderItem'] &&
+          child['Children']['BinderItem'].length
+        ) {
+          return storyLine(
+            currentState,
+            child['Children']['BinderItem'],
+            bookTitle,
+            bookId,
+            isNewFile,
+            relevantFiles,
+            lineId
+          )
+        }
+        const matchFiles = relevantFiles.filter((file) => {
+          const isVer_3_UUID = UUIDFolderRegEx.test(file)
+          if (isVer_3_UUID) {
+            return file.includes(childId)
+          } else {
+            return getVer_2_7_match(file, childId)
+          }
+        })
+        if (matchFiles.length) {
+          matchFiles.map((file) => {
+            const isTxt = path.extname(file) == '.txt'
+            const isRTF = path.extname(file) == '.rtf'
+            if (isTxt && path.basename(file).endsWith('synopsis.txt')) {
+              description = readTxtFile(file)
+            } else if (isRTF) {
+              // rtfContent = readRTFFile(file)
+              //   .then((data) => console.log('rtfdata', data))
+              //   .catch((error) => {
+              //     console.log('RTF Error', error)
+              //   })
             }
           })
-          if (matchFiles.length) {
-            return matchFiles.map((file) => {
-              const isTxt = path.extname(file) == '.txt'
-              const isRTF = path.extname(file) == '.rtf'
-              if (isTxt && path.basename(file).endsWith('synopsis.txt')) {
-                description = readTxtFile(file)
-              } else if (isRTF) {
-                rtfContent = readRTFFile(file)
-                console.log('rtfContent', rtfContent)
-              }
-            })
-          }
-          console.log('description', description)
+        }
+        createNewCard(currentState.cards, {
+          uuid: childId,
+          title: childTitle || i18n('Scene {num}', { num: beatKey + 1 }),
+          position: childPosition,
+          description,
+          beatId: beatKey,
+          lineId,
         })
-        // const lines = beatChildren['BinderItem']
-        // console.log('lines', JSON.stringify(beatChildren, null, 2))
-      }
-      createNewBeat(currentState, { id, title, position })
-    })
-  }
+      })
+    }
+    createNewBeat(currentState, { id, title, position })
+  })
 }
 
 export { ScrivenerImporter }

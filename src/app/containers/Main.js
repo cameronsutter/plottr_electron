@@ -248,7 +248,7 @@ Main.propTypes = {
   finishCheckingFileToLoad: PropTypes.func.isRequired,
   darkMode: PropTypes.bool.isRequired,
   isInOfflineMode: PropTypes.bool,
-  currentAppStateIsDashboard: PropTypes.string.isRequired,
+  currentAppStateIsDashboard: PropTypes.bool.isRequired,
   fileName: PropTypes.string,
   isOnboarding: PropTypes.bool,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,

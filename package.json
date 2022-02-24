@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
-    "@iarna/rtf-to-html": "^1.1.0",
     "axios": "^0.22.0",
     "docx": "^5.5.0",
     "dotenv": "^4.0.0",
@@ -54,6 +53,7 @@
     "electron-window-state": "^5.0.3",
     "fs.promises": "^0.1.2",
     "is-lite": "^0.8.0",
+    "jsdom": "^16.7.0",
     "luxon": "^1.27.0",
     "react-is": "^16.13.1",
     "react-joyride": "^2.3.0",

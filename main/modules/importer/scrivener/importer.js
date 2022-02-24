@@ -1,12 +1,13 @@
 import fs, { readFileSync } from 'fs'
 import xml from 'xml-js'
 import { t } from 'plottr_locales'
-import path from 'path'
 import log from 'electron-log'
+import path from 'path'
 import { cloneDeep, keyBy, groupBy, isPlainObject } from 'lodash'
+
 import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
-import { convertHTMLString } from 'pltr/v2/slate_serializers/from_html'
-import rtfToHTML from '@iarna/rtf-to-html'
+import { convertHTMLString } from './from_html'
+import { runRtfjs } from './to_html'
 
 const i18n = t
 const { readFile } = fs.promises
@@ -34,13 +35,15 @@ function ScrivenerImporter(filePath, isNewFile, state) {
       if (path.extname(filePath) === '.txt') {
         return readFile(filePath).then((contents) => ({
           filePath,
-          contents,
+          contents: createSlateParagraph(contents.toString()),
         }))
       } else if (path.extname(filePath) === '.rtf') {
-        return readRTFFile(filePath).then((contents) => ({
-          filePath,
-          contents,
-        }))
+        return readRTFFile(filePath).then((contents) => {
+          return {
+            filePath,
+            contents,
+          }
+        })
       } else {
         return readFile(filePath).then((contents) => ({
           filePath,
@@ -49,7 +52,6 @@ function ScrivenerImporter(filePath, isNewFile, state) {
       }
     })
   )
-  // const state = contentRTF.then((content) => generateState(content, scrivx))
   const currentState = cloneDeep(state)
   // const books
   // create a new book (if not new file)
@@ -81,7 +83,7 @@ function withStoryLineIfItExists(manuscript, json, bookTitle, bookId, isNewFile,
     manuscript['Children']['BinderItem'] &&
     manuscript['Children']['BinderItem'].length
   ) {
-    return extractStoryLines(json, manuscript, bookTitle, bookId, isNewFile, files, true)
+    return extractStoryLines(json, manuscript, bookTitle, bookId, isNewFile, files)
   } else {
     return json
   }
@@ -244,18 +246,21 @@ function readTxtFile(file) {
   }
 }
 
-// String, -> Promise<any>
+// String, -> Callback
 function readRTFFile(file) {
   const rawRTF = readFileSync(file)
-  return new Promise((resolve, reject) =>
-    rtfToHTML.fromString(rawRTF.toString(), (err, html) => {
-      if (err) {
-        return reject(err)
-      } else {
-        return resolve(convertHTMLString(html))
+  return new Promise((resolve, reject) => {
+    runRtfjs(
+      rawRTF.toString(),
+      (meta, html) => {
+        resolve(convertHTMLString(html))
+      },
+      (error) => {
+        log.error(error)
+        reject(error)
       }
-    })
-  )
+    )
+  })
 }
 
 function extractStoryLines(
@@ -268,9 +273,9 @@ function extractStoryLines(
   currentLineId
 ) {
   const chapters = storyLineNode['Children']['BinderItem']
-  const lineId = currentLineId
+  const lineId = !currentLineId
     ? createNewLine(json.lines, { position: 0, title: i18n('Main Plot') }, bookId)
-    : createNewLine(json.lines, { position: currentLineId, title: i18n('Subfolder title') }, bookId)
+    : currentLineId + 1
 
   const withNewBeats = chapters.reduce((acc, chapter, beatKey) => {
     const id = chapter['_attributes']['UUID'] || chapter['_attributes']['ID']
@@ -302,6 +307,8 @@ function extractStoryLines(
       })
       const withChildStoryLinesAdded = beatChildrenWithStoryLines.reduce(
         (newJson, child, beatChildKey) => {
+          const childTitle = child['Title']['_text']
+          createNewLine(json.lines, { position: currentLineId, title: childTitle }, bookId)
           return extractStoryLines(
             newJson,
             child['Children']['BinderItem'],
@@ -336,15 +343,15 @@ function extractStoryLines(
           }
         })
         let description = {}
-        let rtfContent = null
         if (matchFiles.length) {
           matchFiles.map((file) => {
             const isTxt = path.extname(file.filePath) == '.txt'
             const isRTF = path.extname(file.filePath) == '.rtf'
             if (isTxt && path.basename(file.filePath).endsWith('synopsis.txt')) {
-              description = file.content
+              description = file.contents
             } else if (isRTF) {
-              rtfContent = file.content
+              const rtfContents = getRTFContents(json.lines, file, lineId, bookId)
+              // console.log('rtfContents', JSON.stringify(rtfContents, null, 2))
             }
           })
         }
@@ -364,6 +371,31 @@ function extractStoryLines(
     }, withNewBeats)
 
   return withNewCardsAndNewBeats
+}
+
+function getRTFContents(lines, rtf, lineId, bookId) {
+  let plotlines = []
+  if (rtf.contents && rtf.contents.length) {
+    return rtf.contents.map((content) => {
+      if (content.type == 'plotline') {
+        const plotlineValue = content.children[0].text
+        if (!plotlineValue.includes(plotlines)) {
+          createNewLine(
+            lines,
+            {
+              position: lineId,
+              title: content.children[0].text,
+              color: nextColor(lineId),
+            },
+            bookId
+          )
+          plotlines.push(plotlineValue)
+        }
+      } else if (content.type == 'text') {
+        // TODO custom attrib
+      }
+    })
+  }
 }
 
 export { ScrivenerImporter }

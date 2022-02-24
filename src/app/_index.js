@@ -5,6 +5,8 @@ import { dialog, getCurrentWindow } from '@electron/remote'
 import electron from 'electron'
 
 import { actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
+import { convertHTMLNodeList } from 'pltr/v2/slate_serializers/from_html'
 import { setupI18n, t } from 'plottr_locales'
 import world from 'world-api'
 
@@ -268,6 +270,12 @@ ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName) => {
   const emailAddress = selectors.emailAddressSelector(state)
   const userId = selectors.userIdSelector(state)
   uploadToFirebase(emailAddress, userId, json, fileName)
+})
+
+ipcRenderer.on('convert-rtf-string-to-slate', (event, rtfString, conversionId) => {
+  rtfToHTML(rtfString).then((html) => {
+    ipcRenderer.send(conversionId, convertHTMLNodeList(html))
+  })
 })
 
 const reloadMenu = () => ipcRenderer.send('pls-reload-menu')

@@ -2,8 +2,9 @@ import path from 'path'
 import fs from 'fs'
 import Store from 'electron-store'
 import log from 'electron-log'
-import { app } from 'electron'
+import { app, ipcMain } from 'electron'
 import { isEqual } from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 
 import { t } from 'plottr_locales'
 
@@ -360,6 +361,18 @@ async function createFromSnowflake(importedPath) {
   openKnownFile(filePath, fileId)
 }
 
+function createRTFConversionFunction(sender) {
+  return function (rtfString) {
+    return new Promise((resolve, reject) => {
+      const conversionId = uuidv4()
+      sender.send('convert-rtf-string-to-slate', rtfString, conversionId)
+      ipcMain.once(conversionId, (_event, slate) => {
+        resolve(slate)
+      })
+    })
+  }
+}
+
 function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
   const storyName = path.basename(importedPath, '.scriv')
   let json = emptyFile(storyName, app.getVersion())
@@ -368,16 +381,25 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
   }
   json.lines = []
   console.log('json', json)
-  const importedJson = ScrivenerImporter(importedPath, true, json)
+  const importedJsonPromise = ScrivenerImporter(
+    importedPath,
+    true,
+    json,
+    createRTFConversionFunction(sender)
+  )
 
   if (isLoggedIntoPro) {
-    sender.send('create-plottr-cloud-file', importedJson, storyName)
+    importedJsonPromise.then((importedJson) => {
+      sender.send('create-plottr-cloud-file', importedJson, storyName)
+    })
     return
   }
 
-  saveToTempFile(importedJson).then((filePath) => {
-    const fileId = addToKnownFiles(filePath)
-    openKnownFile(filePath, fileId)
+  importedJsonPromise.then((importedJson) => {
+    saveToTempFile(importedJson).then((filePath) => {
+      const fileId = addToKnownFiles(filePath)
+      openKnownFile(filePath, fileId)
+    })
   })
 }
 

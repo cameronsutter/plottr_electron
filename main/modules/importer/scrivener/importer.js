@@ -6,8 +6,6 @@ import path from 'path'
 import { cloneDeep, keyBy, groupBy, isPlainObject } from 'lodash'
 
 import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
-import { convertHTMLString } from './from_html'
-import { runRtfjs } from './to_html'
 
 const i18n = t
 const { readFile } = fs.promises
@@ -27,7 +25,7 @@ const {
 const UUIDFolderRegEx = /[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/
 
 // String, Bool, Object -> Promise<Object>
-function ScrivenerImporter(filePath, isNewFile, state) {
+function ScrivenerImporter(filePath, isNewFile, state, convertRTFToSlate) {
   const scrivxJSON = getScrivxJson(filePath)
   const relevantFiles = findRelevantFiles(filePath)
   const inMemoryFiles = Promise.all(
@@ -38,11 +36,13 @@ function ScrivenerImporter(filePath, isNewFile, state) {
           contents: createSlateParagraph(contents.toString()),
         }))
       } else if (path.extname(filePath) === '.rtf') {
-        return readRTFFile(filePath).then((contents) => {
-          return {
-            filePath,
-            contents,
-          }
+        return readFile(filePath).then((contents) => {
+          return convertRTFToSlate(contents).then((slateContent) => {
+            return {
+              filePath,
+              contents: slateContent,
+            }
+          })
         })
       } else {
         return readFile(filePath).then((contents) => ({
@@ -201,11 +201,9 @@ function createNewLine(currentLines, values, bookId) {
 }
 
 function createNewBeat(currentState, values, bookId) {
-  if (!currentState.beats[bookId]) {
-    currentState.beats[bookId] = tree.newTree('id')
-  }
-  const nextBeatId = beats.nextId(currentState.beats)
-  const position = beats.nextPositionInBook(currentState, bookId, null)
+  const beatTree = currentState.beats[bookId] || tree.newTree('id')
+  const nextBeatId = beats.nextIdForBook(beatTree)
+  const position = beats.nextPositionInTree(beatTree, null)
   const node = {
     autoOutlineSort: true,
     bookId: bookId,
@@ -217,7 +215,6 @@ function createNewBeat(currentState, values, bookId) {
     title: 'auto',
     ...values,
   }
-  const beatTree = currentState.beats[bookId]
   return {
     ...currentState.beats,
     [bookId]: tree.addNode('id')(beatTree, null, node),
@@ -246,23 +243,6 @@ function readTxtFile(file) {
   }
 }
 
-// String, -> Callback
-function readRTFFile(file) {
-  const rawRTF = readFileSync(file)
-  return new Promise((resolve, reject) => {
-    runRtfjs(
-      rawRTF.toString(),
-      (meta, html) => {
-        resolve(convertHTMLString(html))
-      },
-      (error) => {
-        log.error(error)
-        reject(error)
-      }
-    )
-  })
-}
-
 function extractStoryLines(
   json,
   storyLineNode,
@@ -282,7 +262,7 @@ function extractStoryLines(
     const title = chapter['Title']['_text']
     const position = beatKey
 
-    const newBeats = createNewBeat(json, { id, title, position }, bookId)
+    const newBeats = createNewBeat(acc, { id, title, position }, bookId)
     return {
       ...acc,
       beats: newBeats,

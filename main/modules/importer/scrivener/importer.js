@@ -77,7 +77,6 @@ function ScrivenerImporter(filePath, isNewFile, state, convertRTFToSlate) {
   const places = getSection(sectionsJSON, 'Places')
 
   return inMemoryFiles.then((files) => {
-    // console.log('files', JSON.stringify(files, null, 2))
     withStoryLineIfItExists(manuscript, currentState, bookTitle, bookId, isNewFile, files)
 
     if (notes && notes.length && notes[0]['Children'] && notes[0]['Children']['BinderItem']) {
@@ -105,7 +104,6 @@ function ScrivenerImporter(filePath, isNewFile, state, convertRTFToSlate) {
         : [characters[0]['Children']['BinderItem']]
       generateCharacters(currentState, charactersBinderItem, bookId, files, isNewFile)
     }
-    // console.log('currentState', JSON.stringify(currentState, null, 2))
   })
   // TODO:
   // .then
@@ -353,15 +351,15 @@ function extractStoryLines(
           const childTitle = child['Title']['_text']
           createNewLine(json.lines, { position: nextLinePosition, title: childTitle }, bookId)
           lineId = childId
-          // return extractStoryLines(
-          //   newJson,
-          //   child['Children']['BinderItem'],
-          //   bookTitle,
-          //   bookId,
-          //   isNewFile,
-          //   relevantFiles,
-          //   lineId
-          // )
+          return extractStoryLines(
+            newJson,
+            child['Children']['BinderItem'],
+            bookTitle,
+            bookId,
+            isNewFile,
+            relevantFiles,
+            lineId
+          )
         },
         acc
       )
@@ -373,8 +371,7 @@ function extractStoryLines(
           child['Children']['BinderItem'].length
         )
       })
-      const noLines = beatChildrenWithoutStoryLines.reduce((newJson, child, cardPositiin) => {
-        console.log('newJSON', JSON.stringify(newJson.cards, null, 2))
+      return beatChildrenWithoutStoryLines.reduce((newJson, child, cardPosition) => {
         const cardId = child['_attributes']['UUID'] || child['_attributes']['ID']
         const cardTitle = child['Title']['_text']
 
@@ -402,22 +399,19 @@ function extractStoryLines(
           lineId = createNewLine(json.lines, { position: 0, title: i18n('Main Plot') }, bookId)
         }
 
-        // console.log('cardId', cardId, 'cardTitle', cardTitle, 'lineId', lineId, 'beatId', beatId)
-
         return {
           ...newJson,
           cards: createNewCard(newJson.cards, {
             uuid: cardId,
             title: cardTitle || i18n('Scene {num}', { num: beatId + 1 }),
-            position: cardPositiin,
+            positionWithinLine: cardPosition,
             description: fileContents.txtContent,
+            positionInBeat: beatId,
             beatId,
             lineId,
           }),
         }
       }, withChildStoryLinesAdded)
-      // console.log('no lines', JSON.stringify(noLines, null, 2))
-      return noLines
     }, withNewBeats)
 
   return withNewCardsAndNewBeats

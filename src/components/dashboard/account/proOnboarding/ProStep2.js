@@ -113,7 +113,9 @@ const ProStep2Connector = (connector) => {
     const { connect } = redux
     return connect((state) => ({
       fileSystemCustomTemplates: selectors.fileSystemCustomTemplatesSelector(state.present),
-      sortedFileSystemKnownFilesById: selectors.sortedFileSystemKnownFilesById(state.present),
+      sortedFileSystemKnownFilesById: selectors.sortedFileSystemKnownFilesByIdSelector(
+        state.present
+      ),
     }))(ProStep2)
   }
 

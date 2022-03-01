@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import { Button } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 
+import UnconnectedAbout from './About'
 import UnconnectedExpiredView from './ExpiredView'
 import UnconnectedLicenseInfo from './LicenseInfo'
 import UnconnectedProInfo from './ProInfo'
@@ -20,6 +21,7 @@ const AccountConnector = (connector) => {
   } = connector
   checkDependencies({ openExternal, os, mpq })
 
+  const About = UnconnectedAbout(connector)
   const TrialInfo = UnconnectedTrialInfo(connector)
   const ExpiredView = UnconnectedExpiredView(connector)
   const LicenseInfo = UnconnectedLicenseInfo(connector)
@@ -88,6 +90,7 @@ const AccountConnector = (connector) => {
           )}
         </div>
         <AllAccountInfo />
+        <About />
       </div>
     )
   }

@@ -34,7 +34,6 @@ $medium_width: 80px;
       font-weight: normal;
       font-size: 16px;
       margin-bottom: 0;
-
     }
     .control-label.darkmode {
       color: $darkmode-darker-text;
@@ -89,8 +88,8 @@ $medium_width: 80px;
 }
 
 .medium-lower-hover-options {
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   margin: 5px 0 10px;
   button {
     width: 27px;
@@ -236,7 +235,7 @@ $medium_width: 80px;
   float: left;
   margin-right: 3px;
   margin-left: 2px;
-  margin-top:-20px;
+  margin-top: -20px;
   visibility: hidden;
   button.btn-block {
     margin-top: 1px;
@@ -255,14 +254,14 @@ $medium_width: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width:100px;
+  width: 100px;
   transition: all 0.4s $cubic;
   font-size: 16px;
   cursor: pointer;
-  margin:-5px 11px 0 52px;
+  margin: -5px 11px 0 52px;
   button {
-    width:41px;
-    height:35px;
+    width: 41px;
+    height: 35px;
   }
   .vertical-insert-beat-wrapper {
     .large-timeline {
@@ -285,13 +284,13 @@ $medium_width: 80px;
 }
 
 .vertical-medium-lower-hover-options {
-  float:right;
-  display:flex;
-  justify-content:center;
+  float: right;
+  display: flex;
+  justify-content: center;
   flex-direction: column;
   margin: -70px -37px 10px 0px;
   button {
-    height:35px;
+    height: 35px;
     width: 41px;
   }
   &:last-child:not(.small-timeline) {
@@ -332,7 +331,6 @@ $medium_width: 80px;
 .vertical-beat-list__insert.append-beat.medium-timeline {
   height: 43px;
 }
-
 
 .vertical-beat-list__insert:hover {
   color: $blue-5;

@@ -25,7 +25,11 @@ const LicenseInfoConnector = (connector) => {
         <DeleteConfirmModal
           notSubmit
           customText={t('Are you sure you want to remove your license?')}
-          onDelete={deleteLicense}
+          onDelete={() => {
+            deleteLicense()
+            setDeleting(false)
+            window.location.reload()
+          }}
           onCancel={() => setDeleting(false)}
         />
       )

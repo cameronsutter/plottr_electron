@@ -25,6 +25,7 @@ import { FunSpinner } from '../Spinner'
 import UnconnectedSubNav from '../containers/SubNav'
 import { helpers } from 'pltr/v2'
 import { checkDependencies } from '../checkDependencies'
+import { VscSymbolStructure } from 'react-icons/vsc'
 
 const BREAKPOINT = 890
 
@@ -297,7 +298,11 @@ const TimelineWrapperConnector = (connector) => {
       const rightItems = [
         <NavItem key="right-1">
           <Button bsSize="small" onClick={openBeatConfig} className="acts-tour-step1">
-            <Glyphicon glyph="cog" /> {t('Settings')}
+            <VscSymbolStructure
+              size={16}
+              style={{ verticalAlign: 'text-bottom', marginRight: '4px' }}
+            />
+            {t('Structure')}
           </Button>
         </NavItem>,
         <NavItem key="right-2">

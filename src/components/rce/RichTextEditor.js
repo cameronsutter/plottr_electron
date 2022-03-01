@@ -67,8 +67,9 @@ const RichTextEditorConnector = (connector) => {
     emailAddress,
     onBlur,
     onFocus,
+    imageCache,
+    cacheImage,
   }) => {
-    // Editor instance
     const editor = useMemo(() => {
       return createEditor(log)
     }, [])
@@ -83,9 +84,11 @@ const RichTextEditorConnector = (connector) => {
           openExternal={openExternal}
           imagePublicURL={resolveToPublicUrl}
           isStorageURL={isStorageURL}
+          imageCache={imageCache}
+          cacheImage={cacheImage}
         />
       ),
-      [openExternal]
+      [openExternal, resolveToPublicUrl, imageCache, cacheImage]
     )
 
     const handleOnBlur = () => {
@@ -247,25 +250,31 @@ const RichTextEditorConnector = (connector) => {
     emailAddress: PropTypes.string,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
+    imageCache: PropTypes.object.isRequired,
+    cacheImage: PropTypes.func.isRequired,
   }
 
   const {
     redux,
-    pltr: { selectors },
+    pltr: { selectors, actions },
   } = connector
   checkDependencies({ redux, selectors })
 
   if (redux) {
     const { connect } = redux
 
-    return connect((state) => ({
-      undoId: selectors.undoIdSelector(state.present),
-      clientId: selectors.clientIdSelector(state.present),
-      fileId: selectors.selectedFileIdSelector(state.present),
-      isCloudFile: selectors.isCloudFileSelector(state.present),
-      emailAddress: selectors.emailAddressSelector(state.present),
-      darkMode: selectors.isDarkModeSelector(state.present),
-    }))(RichTextEditor)
+    return connect(
+      (state) => ({
+        undoId: selectors.undoIdSelector(state.present),
+        clientId: selectors.clientIdSelector(state.present),
+        fileId: selectors.selectedFileIdSelector(state.present),
+        isCloudFile: selectors.isCloudFileSelector(state.present),
+        emailAddress: selectors.emailAddressSelector(state.present),
+        darkMode: selectors.isDarkModeSelector(state.present),
+        imageCache: selectors.imageCacheSelector(state.present),
+      }),
+      { cacheImage: actions.imageCache.cacheImage }
+    )(RichTextEditor)
   }
 
   throw new Error('Could not connect RichTextEditor')

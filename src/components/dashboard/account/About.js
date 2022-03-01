@@ -64,6 +64,7 @@ const AboutConnector = (connector) => {
     return (
       <div className="dashboard__about">
         <h1>{t('About Plottr')}</h1>
+        <hr />
         <div className="dashboard__about__wrapper">
           <dl className="dl-horizontal">
             <dt>{t('Version')}</dt>

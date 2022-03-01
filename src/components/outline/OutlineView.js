@@ -219,12 +219,12 @@ const OutlineViewConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          beats: selectors.sortedBeatsByBookSelector(state.present),
+          beats: selectors.visibleSortedBeatsByBookIgnoringCollapsedSelector(state.present),
           lines: selectors.sortedLinesByBookSelector(state.present),
           beatMapping: selectors.sparceBeatMap(state.present),
           card2Dmap: selectors.cardMapSelector(state.present),
+          outlineFilter: selectors.outlineFilterSelector(state.present),
           allCards: selectors.allCardsSelector(state.present),
-          ui: state.present.ui,
           isSeries: selectors.isSeriesSelector(state.present),
         }
       },

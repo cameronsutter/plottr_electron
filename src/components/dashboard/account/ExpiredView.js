@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { PropTypes } from 'prop-types'
+import { Button } from 'react-bootstrap'
+
 import { t } from 'plottr_locales'
+
 import UnconnectedVerifyView from './VerifyView'
 import { checkDependencies } from '../../checkDependencies'
 
@@ -11,12 +14,15 @@ const ExpiredViewConnector = (connector) => {
     platform: {
       license: { extendTrial },
       openExternal,
+      os,
     },
   } = connector
   checkDependencies({ extendTrial, openExternal })
 
-  const ExpiredView = ({ canExtend }) => {
+  const ExpiredView = ({ canExtend, startProOnboardingFromRoot }) => {
     const [view, setView] = useState('chooser')
+
+    const hideProButton = os() == 'unknown'
 
     const buy = () => {
       openExternal('https://plottr.com/pricing/')
@@ -43,17 +49,29 @@ const ExpiredViewConnector = (connector) => {
       )
     }
 
-    if (view == 'chooser') {
+    if (view === 'chooser') {
       return (
         <div className="text-center">
           <h1 className="expired">{t('Thanks for trying Plottr')}</h1>
+          {hideProButton ? null : (
+            <div className="text-right">
+              <Button onClick={startProOnboardingFromRoot}>{t('Start Plottr Pro')} 🎉</Button>
+            </div>
+          )}
           <h2>{t('Your free trial has expired')} 😭</h2>
           {renderChoices()}
           <p>{t('Please contact me with any questions at support@plottr.com')}</p>
         </div>
       )
-    } else if (view == 'verify') {
-      return <VerifyView goBack={() => setView('chooser')} />
+    } else if (view === 'verify') {
+      return (
+        <VerifyView
+          goBack={() => setView('chooser')}
+          success={() => {
+            window.location.reload()
+          }}
+        />
+      )
     }
     // Better than undefined! :P
     return null
@@ -61,18 +79,24 @@ const ExpiredViewConnector = (connector) => {
 
   ExpiredView.propTypes = {
     canExtend: PropTypes.bool,
+    startProOnboardingFromRoot: PropTypes.func.isRequired,
   }
 
   const {
-    pltr: { selectors },
+    pltr: { selectors, actions },
     redux,
   } = connector
 
   if (redux) {
     const { connect } = redux
-    return connect((state) => ({
-      canExtend: selectors.canExtendSelector(state.present),
-    }))(ExpiredView)
+    return connect(
+      (state) => ({
+        canExtend: selectors.canExtendSelector(state.present),
+      }),
+      {
+        startProOnboardingFromRoot: actions.applicationState.startProOnboardingFromRoot,
+      }
+    )(ExpiredView)
   }
 
   throw new Error('Could not connect ExpiredView')

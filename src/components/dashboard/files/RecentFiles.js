@@ -86,11 +86,12 @@ const RecentFilesConnector = (connector) => {
 
   const RecentFiles = ({
     fileList,
-    isOffline,
+    isInOfflineMode,
     resuming,
     sortedKnownFiles,
     loadingFileList,
-    isCloudFile,
+    shouldBeInPro,
+    offlineModeEnabled,
   }) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [onlineSortedIds, onlineFilesById] = sortedKnownFiles
@@ -121,14 +122,14 @@ const RecentFilesConnector = (connector) => {
     }, [sortedIds, filesById])
 
     useEffect(() => {
-      if (!isOffline && !resuming) {
+      if ((!isInOfflineMode && !resuming) || !shouldBeInPro) {
         if (!isEqual(onlineSortedIds, sortedIds)) {
           setSortedIds(onlineSortedIds)
         }
         if (!isEqual(onlineFilesById, filesById)) {
           setFilesById(onlineFilesById)
         }
-      } else {
+      } else if (offlineModeEnabled && isInOfflineMode) {
         listOfflineFiles().then((offlineFiles) => {
           const [offlineSortedIds, offlineFilesById] = sortAndSearch(
             searchTerm,
@@ -142,7 +143,15 @@ const RecentFilesConnector = (connector) => {
           }
         })
       }
-    }, [isOffline, onlineSortedIds, onlineFilesById, setFilesById, setSortedIds, resuming])
+    }, [
+      offlineModeEnabled,
+      isInOfflineMode,
+      onlineSortedIds,
+      onlineFilesById,
+      setFilesById,
+      setSortedIds,
+      resuming,
+    ])
 
     const openFile = (filePath, id) => {
       return openKnownFile(filePath, id)
@@ -150,7 +159,7 @@ const RecentFilesConnector = (connector) => {
 
     const renderRecents = () => {
       // TODO: if no files, show something different
-      if (!isOffline && loadingFileList) return <Spinner />
+      if (!isInOfflineMode && loadingFileList) return <Spinner />
       if (!sortedIds.length) return <span>{t('No files found.')}</span>
 
       const fileWithPermissionsExists = Object.values(filesById).some(
@@ -224,7 +233,7 @@ const RecentFilesConnector = (connector) => {
         return (
           <Row
             key={idx}
-            onDoubleClick={() => (isCloudFile ? openFile(f.id, id) : openFile(f.path, id))}
+            onDoubleClick={() => openFile(f.isCloudFile ? f.id : f.path, id)}
             onClick={() => selectFile(selected ? null : id)}
             className={cx({ selected: selected })}
           >
@@ -270,7 +279,7 @@ const RecentFilesConnector = (connector) => {
         )
       })
 
-      return (isOffline || !loadingFileList) && renderedFiles ? (
+      return (isInOfflineMode || !loadingFileList) && renderedFiles ? (
         <div className="dashboard__recent-files__table">
           <StickyTable leftStickyColumnCount={0}>
             <Row>
@@ -296,11 +305,12 @@ const RecentFilesConnector = (connector) => {
 
   RecentFiles.propTypes = {
     fileList: PropTypes.array.isRequired,
-    isOffline: PropTypes.bool,
+    isInOfflineMode: PropTypes.bool,
     resuming: PropTypes.bool,
     sortedKnownFiles: PropTypes.array.isRequired,
     loadingFileList: PropTypes.bool,
-    isCloudFile: PropTypes.bool,
+    shouldBeInPro: PropTypes.bool,
+    offlineModeEnabled: PropTypes.bool,
   }
 
   const {
@@ -313,11 +323,12 @@ const RecentFilesConnector = (connector) => {
 
     return connect((state) => ({
       fileList: selectors.knownFilesSelector(state.present),
-      isOffline: selectors.isOfflineSelector(state.present),
+      isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
       resuming: selectors.isResumingSelector(state.present),
       sortedKnownFiles: selectors.sortedKnownFilesSelector(state.present),
       loadingFileList: selectors.fileListIsLoadingSelector(state.present),
-      isCloudFile: selectors.isCloudFileSelector(state.present),
+      shouldBeInPro: selectors.shouldBeInProSelector(state.present),
+      offlineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
     }))(RecentFiles)
   }
 

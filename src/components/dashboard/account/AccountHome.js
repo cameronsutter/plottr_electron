@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { Nav, NavItem } from 'react-bootstrap'
-import { t } from 'plottr_locales'
 
-import UnconnectedAbout from './About'
 import UnconnectedAccount from './Account'
-import UnconnectedOptionsHome from '../options/OptionsHome'
-import UnconnectedBackupsHome from '../backups/BackupsHome'
 import UnconnectedProOnboarding from './proOnboarding/index'
 import UnconnectedChoiceView from './ChoiceView'
 import { checkDependencies } from '../../checkDependencies'
@@ -17,34 +12,22 @@ const AccountHomeConnector = (connector) => {
   } = connector
   checkDependencies({ mpq })
 
-  const About = UnconnectedAbout(connector)
-  const OptionsHome = UnconnectedOptionsHome(connector)
-  const BackupsHome = UnconnectedBackupsHome(connector)
   const Account = UnconnectedAccount(connector)
   const ProOnboarding = UnconnectedProOnboarding(connector)
   const ChoiceView = UnconnectedChoiceView(connector)
 
-  const viewsToHideNav = ['proOnboarding', 'choice']
-
-  const AccountHome = ({ settings, isFirstTime }) => {
-    const [view, setView] = useState(isFirstTime ? 'choice' : 'account')
-    const [viewIsLocked, setLock] = useState(false)
-    const isOnboardingDone = settings.isOnboardingDone
-
-    useEffect(() => {
-      setLock(view == 'proOnboarding')
-    }, [view])
-
-    const handleSelect = (selectedKey) => {
-      if (viewIsLocked) return
-      setView(selectedKey)
-    }
+  const AccountHome = ({ isFirstTime, isOnboarding, startProOnboarding, finishProOnboarding }) => {
+    const [view, setView] = useState(
+      isOnboarding ? 'proOnboarding' : isFirstTime ? 'choice' : 'account'
+    )
 
     const startOnboarding = () => {
+      startProOnboarding()
       setView('proOnboarding')
     }
 
     const cancelOnboarding = () => {
+      finishProOnboarding()
       setView('account')
     }
 
@@ -59,53 +42,34 @@ const AccountHomeConnector = (connector) => {
       case 'account':
         body = <Account startProOnboarding={startOnboarding} />
         break
-      case 'about':
-        body = <About />
-        break
     }
 
-    const AccountNav = () => {
-      if (viewsToHideNav.includes(view)) return null
-      return (
-        <div className="dashboard__account__nav-tabs">
-          <Nav bsStyle="pills" activeKey={view} onSelect={handleSelect}>
-            <NavItem eventKey="account" disabled={viewIsLocked}>
-              {t('Account')}
-            </NavItem>
-            <NavItem eventKey="about" disabled={viewIsLocked}>
-              {t('About')}
-            </NavItem>
-          </Nav>
-        </div>
-      )
-    }
-
-    return (
-      <div className="dashboard__account">
-        <AccountNav />
-        {body}
-      </div>
-    )
+    return <div className="dashboard__account">{body}</div>
   }
 
   AccountHome.propTypes = {
-    settings: PropTypes.object.isRequired,
     isFirstTime: PropTypes.bool,
+    isOnboarding: PropTypes.bool,
+    startProOnboarding: PropTypes.func.isRequired,
+    finishProOnboarding: PropTypes.func.isRequired,
   }
 
   const {
     redux,
-    pltr: { selectors },
+    pltr: { selectors, actions },
   } = connector
 
   if (redux) {
     const { connect } = redux
     return connect(
       (state) => ({
-        settings: selectors.appSettingsSelector(state.present),
         isFirstTime: selectors.isFirstTimeSelector(state.present),
+        isOnboarding: selectors.isOnboardingToProSelector(state.present),
       }),
-      {}
+      {
+        startProOnboarding: actions.applicationState.startProOnboarding,
+        finishProOnboarding: actions.applicationState.finishProOnboarding,
+      }
     )(AccountHome)
   }
 

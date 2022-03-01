@@ -38,6 +38,16 @@ const CardConnector = (connector) => {
       this.renderPopover = this.renderPopover.bind(this)
     }
 
+    componentDidMount() {
+      // We attach the listener to the concrete HTML component because
+      // the React API doesn't attach the listener at all when the
+      // component that we want to drop onto is inside of a
+      // floater/popover.
+      if (this.cardRef.current) {
+        this.cardRef.current.ondrop = this.handleDrop
+      }
+    }
+
     closeDialog = () => {
       this.setState({ dialogOpen: false })
     }
@@ -83,7 +93,7 @@ const CardConnector = (connector) => {
       const droppedData = JSON.parse(json)
 
       if (droppedData.cardIds) {
-        this.props.moveCard(droppedData.cardIds)
+        this.props.moveCardAbove(droppedData.cardIds, this.props.positionWithinLine)
       } else if (droppedData.cardId) {
         this.props.moveCard(droppedData.cardId, this.props.positionWithinLine)
       } else return
@@ -335,8 +345,10 @@ const CardConnector = (connector) => {
     linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     beatPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     moveCard: PropTypes.func.isRequired,
+    moveCardAbove: PropTypes.func.isRequired,
     idx: PropTypes.number.isRequired,
     allowDrop: PropTypes.bool.isRequired,
+    showControls: PropTypes.bool,
     tags: PropTypes.array,
     timelineSize: PropTypes.string.isRequired,
     orientation: PropTypes.string.isRequired,

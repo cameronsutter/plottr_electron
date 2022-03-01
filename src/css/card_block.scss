@@ -252,8 +252,10 @@
   cursor: not-allowed;
 }
 
-.blank-card__body.hover {
-  visibility: visible;
+.blank-card__body, .vertical-blank-card__body {
+  &.hover {
+    visibility: visible;
+  }
 }
 
 .card__cell:hover {

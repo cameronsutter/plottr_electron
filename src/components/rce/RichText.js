@@ -2,8 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 import { isEqual } from 'lodash'
 
-import { selectors } from 'pltr/v2'
-
 import UnconnectedRichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
 import UnconnectedRCEBoundary from './RCEBoundary'
@@ -45,6 +43,7 @@ const RichTextConnector = (connector) => {
 
     let body = null
     const disabled = lock && lock.clientId && lock.clientId !== props.clientId
+    const showEditor = props.editable
 
     const reset = () => {
       props.onChange(null, defaultSelection)
@@ -53,7 +52,15 @@ const RichTextConnector = (connector) => {
     const onCloud = props.isLoggedIn && props.isCloudFile
 
     const stealLock = useCallback(() => {
-      if (!props.id || !onCloud || stealingLock || props.isOffline || props.isResuming) return
+      if (
+        !showEditor ||
+        !props.id ||
+        !onCloud ||
+        stealingLock ||
+        props.isOffline ||
+        props.isResuming
+      )
+        return
 
       setFocus(true)
       setStealingLock(true)
@@ -76,7 +83,10 @@ const RichTextConnector = (connector) => {
     ])
 
     const relinquishLock = useCallback(() => {
-      if (props.id && onCloud && releaseRCELock && lock?.clientId === props.clientId) {
+      if (
+        !showEditor ||
+        (props.id && onCloud && releaseRCELock && lock?.clientId === props.clientId)
+      ) {
         releaseRCELock(props.fileId, props.id, lock)
       }
     }, [props.fileId, props.id, props.clientId, lock])
@@ -95,7 +105,8 @@ const RichTextConnector = (connector) => {
 
     // Check for edit locks
     useEffect(() => {
-      if (!onCloud || props.isOffline || props.isResuming || !props.id) return () => {}
+      if (!showEditor || !onCloud || props.isOffline || props.isResuming || !props.id)
+        return () => {}
 
       return listenForRCELock(props.fileId, props.id, props.clientId, (lockResult) => {
         if (!isEqual(lockResult, lock)) {
@@ -120,7 +131,7 @@ const RichTextConnector = (connector) => {
     ])
 
     useEffect(() => {
-      if (props.isOffline || props.isResuming || !props.id) {
+      if (!showEditor || props.isOffline || props.isResuming || !props.id) {
         return () => {}
       }
 
@@ -135,7 +146,7 @@ const RichTextConnector = (connector) => {
       return <Spinner />
     }
 
-    if (props.editable && !disabled) {
+    if (showEditor) {
       body = (
         <RichTextEditor
           id={props.id}
@@ -163,6 +174,8 @@ const RichTextConnector = (connector) => {
           log={log}
           imagePublicURL={resolveToPublicUrl}
           isStorageURL={isStorageURL}
+          imageCache={props.imageCache}
+          cacheImage={props.cacheImage}
         />
       )
     }
@@ -194,22 +207,33 @@ const RichTextConnector = (connector) => {
     isLoggedIn: PropTypes.any,
     isOffline: PropTypes.bool,
     isResuming: PropTypes.bool,
+    imageCache: PropTypes.object.isRequired,
+    cacheImage: PropTypes.func.isRequired,
   }
 
-  const { redux } = connector
+  const {
+    redux,
+    pltr: { selectors, actions },
+  } = connector
 
   if (redux) {
     const { connect } = redux
 
-    return connect((state) => ({
-      fileId: selectors.selectedFileIdSelector(state.present),
-      clientId: selectors.clientIdSelector(state.present),
-      emailAddress: selectors.emailAddressSelector(state.present),
-      isCloudFile: selectors.isCloudFileSelector(state.present),
-      isLoggedIn: selectors.isLoggedInSelector(state.present),
-      isOffline: selectors.isOfflineSelector(state.present),
-      isResuming: selectors.isResumingSelector(state.present),
-    }))(RichText)
+    return connect(
+      (state) => ({
+        fileId: selectors.selectedFileIdSelector(state.present),
+        clientId: selectors.clientIdSelector(state.present),
+        emailAddress: selectors.emailAddressSelector(state.present),
+        isCloudFile: selectors.isCloudFileSelector(state.present),
+        isLoggedIn: selectors.isLoggedInSelector(state.present),
+        isOffline: selectors.isOfflineSelector(state.present),
+        isResuming: selectors.isResumingSelector(state.present),
+        imageCache: selectors.imageCacheSelector(state.present),
+      }),
+      {
+        cacheImage: actions.imageCache.cacheImage,
+      }
+    )(RichText)
   }
 
   throw new Error("Couldn't connect RichText")

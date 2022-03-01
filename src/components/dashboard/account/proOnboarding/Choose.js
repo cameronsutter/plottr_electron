@@ -20,7 +20,9 @@ const ChooseConnector = (connector) => {
   } = connector
 
   const Choose = ({ cancel, finalize, projects, templates }) => {
-    const [selectedProjects, setSelectedProjects] = useState(projects.map((p) => p.id))
+    const [selectedProjects, setSelectedProjects] = useState(
+      projects.filter(({ path }) => path).map((p) => p.id)
+    )
     const [selectedTemplates, setSelectedTemplates] = useState(templates.map((t) => t.id))
 
     const makeChoices = () => {
@@ -68,18 +70,20 @@ const ChooseConnector = (connector) => {
     }
 
     const ListProjects = () => {
-      return projects.map((proj) => {
-        const name = basename(proj.path)
-        const isChecked = selectedProjects.includes(proj.id)
-        return (
-          <ListGroupItem key={proj.id} onClick={() => toggleProject(!isChecked, proj.id)}>
-            <Checkbox inline checked={isChecked} onChange={(val) => toggleProject(val, proj.id)}>
-              <span>{name}</span>
-            </Checkbox>
-            <p className="secondary-text">{proj.path}</p>
-          </ListGroupItem>
-        )
-      })
+      return projects
+        .filter(({ path }) => path)
+        .map((proj) => {
+          const name = basename(proj.path)
+          const isChecked = selectedProjects.includes(proj.id)
+          return (
+            <ListGroupItem key={proj.id} onClick={() => toggleProject(!isChecked, proj.id)}>
+              <Checkbox inline checked={isChecked} onChange={(val) => toggleProject(val, proj.id)}>
+                <span>{name}</span>
+              </Checkbox>
+              <p className="secondary-text">{proj.path}</p>
+            </ListGroupItem>
+          )
+        })
     }
 
     const ListTemplates = () => {

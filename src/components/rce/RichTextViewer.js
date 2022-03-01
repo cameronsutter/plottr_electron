@@ -17,6 +17,8 @@ const RichTextViewer = ({
   openExternal,
   imagePublicURL,
   isStorageURL,
+  imageCache,
+  cacheImage,
   ...props
 }) => {
   const editor = useMemo(() => {
@@ -30,9 +32,11 @@ const RichTextViewer = ({
         openExternal={openExternal}
         imagePublicURL={imagePublicURL}
         isStorageURL={isStorageURL}
+        imageCache={imageCache}
+        cacheImage={cacheImage}
       />
     ),
-    [openExternal]
+    [openExternal, cacheImage, imageCache]
   )
   const value = useTextConverter(props.text, props.log)
   const key = useRef(Math.random().toString(16))
@@ -72,6 +76,8 @@ RichTextViewer.propTypes = {
   clientId: PropTypes.string,
   stealingLock: PropTypes.bool,
   stealLock: PropTypes.func,
+  imageCache: PropTypes.object.isRequired,
+  cacheImage: PropTypes.func.isRequired,
 }
 
 export default RichTextViewer

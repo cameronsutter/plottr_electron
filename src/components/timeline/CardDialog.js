@@ -620,7 +620,7 @@ const CardDialogConnector = (connector) => {
       (state, ownProps) => {
         return {
           cardMetaData: selectors.cardMetaDataSelector(state.present, ownProps.cardId),
-          beats: selectors.sortedBeatsByBookSelector(state.present),
+          beats: selectors.visibleSortedBeatsByBookIgnoringCollapsedSelector(state.present),
           lines: selectors.sortedLinesByBookSelector(state.present),
           tags: selectors.sortedTagsSelector(state.present),
           characters: selectors.charactersSortedAtoZSelector(state.present),

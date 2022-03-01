@@ -57,7 +57,7 @@ const FileActionsConnector = (connector) => {
       if (isCloudFile) {
         renameFile(id)
       } else {
-        renameFile(filePath)
+        renameFile(id)
       }
     }
 

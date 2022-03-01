@@ -167,21 +167,11 @@ const MiniMapConnector = (connector) => {
   } = connector
   const CardActions = actions.card
   const BeatActions = actions.beat
-  const {
-    sortedBeatsByBookSelector,
-    positionOffsetSelector,
-    sortedLinesByBookSelector,
-    allCardsSelector,
-  } = selectors
   checkDependencies({
     redux,
     actions,
     CardActions,
     BeatActions,
-    sortedBeatsByBookSelector,
-    positionOffsetSelector,
-    sortedLinesByBookSelector,
-    allCardsSelector,
   })
 
   if (redux) {
@@ -190,12 +180,12 @@ const MiniMapConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          beats: sortedBeatsByBookSelector(state.present),
-          lines: sortedLinesByBookSelector(state.present),
-          allCards: allCardsSelector(state.present),
+          beats: selectors.visibleSortedBeatsByBookIgnoringCollapsedSelector(state.present),
+          lines: selectors.sortedLinesByBookSelector(state.present),
+          allCards: selectors.allCardsSelector(state.present),
           currentTimeline: selectors.currentTimelineSelector(state.present),
           darkMode: selectors.isDarkModeSelector(state.present),
-          positionOffset: positionOffsetSelector(state.present),
+          positionOffset: selectors.positionOffsetSelector(state.present),
         }
       },
       (dispatch) => {

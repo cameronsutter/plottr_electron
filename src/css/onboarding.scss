@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 .onboarding__wrapper {
   text-align: center;
@@ -89,7 +89,8 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    small span,a {
+    small span,
+    a {
       padding-right: 2px;
     }
     small {

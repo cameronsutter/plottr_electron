@@ -1,4 +1,4 @@
-@import "vars";
+@import 'vars';
 
 .template-picker__dialog-wrapper {
   height: 100%;
@@ -15,7 +15,8 @@
   .template-picker__list {
     overflow: auto;
     max-width: 34%;
-    h1, h2 {
+    h1,
+    h2 {
       @include application-text;
       font-size: 20pt;
       margin: 0;
@@ -98,7 +99,8 @@
 
   .template-picker__list {
     li.list-group-item {
-      &:hover, &.selected {
+      &:hover,
+      &.selected {
         color: $blue-0;
         background-color: $blue-9;
         box-shadow: $blue-highlight-box-shadow;

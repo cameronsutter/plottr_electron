@@ -13,7 +13,6 @@
     "watch:utils": "cross-env NODE_ENV=production babel src/utils --watch --out-dir dist/utils --ignore **/__tests__,**/__fixtures__",
     "watch:connections": "cross-env NODE_ENV=production babel src/connections --watch --out-dir dist/connections --ignore **/__tests__,**/__fixtures__",
     "watch:sass": "sass --watch src/css/components.scss dist/components/components.css",
-    "watch:tailwind": "postcss src/css/components-tailwind.css -o dist/components/components-tailwind.css --watch",
     "watch:dup-sass": "sass --watch src/css/components.scss src/css/components.css",
     "watch:copy-fonts": "node bin/copy-files.js",
     "clean": "rimraf dist",
@@ -22,7 +21,6 @@
     "sub-compile:utils": "cross-env NODE_ENV=production babel src/utils --out-dir dist/utils --ignore **/__tests__,**/__fixtures__",
     "sub-compile:connections": "cross-env NODE_ENV=production babel src/connections --out-dir dist/connections --ignore **/__tests__,**/__fixtures__",
     "sub-compile:sass": "sass src/css/components.scss dist/components/components.css",
-    "sub-compile:tailwind": "postcss src/css/components-tailwind.css -o dist/components/components-tailwind.css",
     "sub-compile:fonts": "node bin/copy-files.js",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
@@ -61,8 +59,6 @@
     "plottr_check-prop-types": "file:../plottr_check-prop-types",
     "plottr_locales": "file:../plottr_locales",
     "pltr": "file:../pltr",
-    "postcss": "^8.3.5",
-    "postcss-cli": "^8.3.1",
     "react-bootstrap": "^0.32.4",
     "react-icons": "^3.11.0",
     "react-image-file-resizer": "^0.4.7",
@@ -72,7 +68,6 @@
     "redux": "^4.1.0",
     "rollbar": "^2.19.4",
     "sass": "^1.25.0",
-    "tailwindcss": "^2.2.4",
     "tls": "0.0.1",
     "web-vitals": "^1.0.1"
   },

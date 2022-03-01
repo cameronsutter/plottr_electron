@@ -1,4 +1,4 @@
-@use "sass:math";
+@use 'sass:math';
 // copied and adapted from https://upmostly.com/tutorials/build-a-react-switch-toggle-component //
 
 $scale-factor: 2;
@@ -20,7 +20,7 @@ input.option-switch-checkbox {
   background-color: $gray-5;
   border-radius: math.div(100px, $scale-factor);
   position: relative;
-  transition: background-color .2s;
+  transition: background-color 0.2s;
 
   &.checked {
     background-color: $green-5;

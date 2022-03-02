@@ -75,6 +75,13 @@ const Main = ({
     if (!readyToCheckFileToLoad) return () => {}
 
     const load = (event, filePath, options, numOpenFiles) => {
+      // We wont load a file at all on boot if this is supposed to be
+      // the dashboard.
+      if (showDashboard && numOpenFiles <= 1) {
+        finishCheckingFileToLoad()
+        return
+      }
+
       // To boot the file automatically: we must either be running pro
       // and it's a cloud file, or we must be running classic mode and
       // it's not a cloud file.

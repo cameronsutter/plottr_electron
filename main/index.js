@@ -42,7 +42,11 @@ import {
   saveOfflineFile,
 } from './modules/files'
 import { lastOpenedFile } from './modules/lastOpened'
-import { editWindowPath, setFilePathForWindowWithFilePath } from './modules/windows/index'
+import {
+  editWindowPath,
+  setFilePathForWindowWithFilePath,
+  setFilePathForWindowWithId,
+} from './modules/windows/index'
 import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 
 ////////////////////////////////
@@ -149,9 +153,15 @@ app.on('open-url', function (event, url) {
 })
 
 ipcMain.on('pls-fetch-state', function (event, id) {
+  const lastFile = lastOpenedFile()
   const win = getWindowById(id)
   if (win) {
-    event.sender.send('state-fetched', win.filePath, newFileOptions(), numberOfWindows())
+    event.sender.send(
+      'state-fetched',
+      win.filePath || lastFile,
+      newFileOptions(),
+      numberOfWindows()
+    )
   }
 })
 

@@ -38,6 +38,20 @@ function setFilePathForWindowWithFilePath(oldFilePath, newFilePath) {
   }
 }
 
+function setFilePathForWindowWithId(id, filePath) {
+  const window = allWindows().find((window) => {
+    return window.id === id
+  })
+
+  if (window) {
+    window.oldFilePath = window.filePath
+    window.filePath = filePath
+    log.info(`Setting file path for window with id: ${id} to: ${filePath}`)
+  } else {
+    log.error(`Could not find window with id: ${id} to set to path: ${filePath}`)
+  }
+}
+
 function addNewWindow(browserWindow, filePath) {
   windows.push({
     id: browserWindow.id,
@@ -122,4 +136,5 @@ export {
   focusIfOpen,
   editWindowPath,
   reloadAllWindows,
+  setFilePathForWindowWithId,
 }

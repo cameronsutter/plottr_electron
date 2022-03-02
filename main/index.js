@@ -155,10 +155,10 @@ app.on('open-url', function (event, url) {
 ipcMain.on('pls-fetch-state', function (event, id, proMode) {
   const lastFile = lastOpenedFile()
   const lastFileIsValid =
-    (proMode && lastFile?.startsWith('plottr://')) ||
-    (!proMode && !lastFile.startsWith('plottr://'))
-  const filePath = win.filePath || (lastFileIsValid ? lastFile : null)
+    (proMode && lastFile && lastFile.startsWith('plottr://')) ||
+    (!proMode && lastFile && !lastFile.startsWith('plottr://'))
   const win = getWindowById(id)
+  const filePath = win.filePath || (lastFileIsValid ? lastFile : null)
   if (win) {
     event.sender.send('state-fetched', filePath, newFileOptions(), numberOfWindows())
   }

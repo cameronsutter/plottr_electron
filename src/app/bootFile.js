@@ -309,6 +309,11 @@ function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
 }
 
 export function bootFile(filePath, options, numOpenFiles) {
+  // Now that we know what the file path for this window should be,
+  // tell the main process.
+  ipcRenderer.send('pls-set-my-file-path', filePath)
+
+  // And then boot the file.
   const { beatHierarchy } = options
   const isCloudFile = isPlottrCloudFile(filePath)
 

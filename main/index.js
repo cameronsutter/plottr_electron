@@ -298,3 +298,7 @@ ipcMain.on('download-file-and-show', (_event, url) => {
 ipcMain.on('show-item-in-folder', (_event, fileName) => {
   shell.showItemInFolder(fileName)
 })
+
+ipcMain.on('pls-set-my-file-path', (event, filePath) => {
+  setFilePathForWindowWithId(event.sender.id, filePath)
+})

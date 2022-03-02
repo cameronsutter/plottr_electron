@@ -68,6 +68,8 @@ function editWindowPath(oldFilePath, newFilePath) {
 }
 
 function focusIfOpen(filePath) {
+  if (!filePath) return false
+
   const offlinePath = offlineFilePath(filePath)
   const win = windows.find((w) => w.filePath == filePath || w.filePath === offlinePath)
   if (win) {

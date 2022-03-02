@@ -76,15 +76,10 @@ if (!is.development) {
 app.userAgentFallback =
   'Firefox Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) plottr/2021.7.29 Chrome/85.0.4183.121 Electron/10.4.7 Safari/537.36'
 
-app.whenReady().then(async () => {
+app.whenReady().then(() => {
   loadMenu()
-  const lastFilePath = lastOpenedFile()
-  if (lastFilePath) {
-    openProjectWindow(lastFilePath)
-  } else {
-    await createNew()
-  }
-  windowsOpenFileEventHandler(process.argv)
+  const fileLaunchedOn = fileToLoad(process.argv)
+  openProjectWindow(fileLaunchedOn)
 
   // Register the toggleDevTools shortcut listener.
   globalShortcut.register('CommandOrControl+Alt+R', () => {
@@ -100,41 +95,40 @@ app.whenReady().then(async () => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
-      if (lastFilePath) {
-        openProjectWindow(lastFilePath)
-      } else {
-        await createNew()
-      }
+      openProjectWindow(fileLaunchedOn)
     }
   })
+
   app.on('second-instance', (_event, argv) => {
     log.info('second-instance')
     loadMenu()
-    windowsOpenFileEventHandler(argv)
+    const newFileToLoad = fileToLoad(process.argv)
+    openProjectWindow(newFileToLoad)
   })
+
   app.on('window-all-closed', () => {
     if (is.windows) app.quit()
   })
+
   app.on('will-quit', () => {
     app.releaseSingleInstanceLock()
   })
 })
 
-function windowsOpenFileEventHandler(argv) {
+function fileToLoad(argv) {
   if (is.windows && process.env.NODE_ENV != 'dev') {
     log.info('windows open-file event handler')
     log.info('args', argv.length, argv)
     const param = argv[argv.length - 1]
 
     if (param.includes('.pltr')) {
-      openProjectWindow(param)
-      addToKnown(param)
+      return param
+    } else {
+      log.error(`Could not open file with path ${param}`)
     }
-
-    // windows custom protocol link handler
-    // log.info('open-url event: ' + param)
-    // const link = param.replace('plottr://')
   }
+  log.info(`Opening Plottr without booting a file and arguments: ${argv}`)
+  return null
 }
 
 app.on('open-file', (event, filePath) => {

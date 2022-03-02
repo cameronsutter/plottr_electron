@@ -1,4 +1,5 @@
 import path from 'path'
+import { v4 as uuidv4 } from 'uuid'
 import { dialog, app, screen, BrowserWindow } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 import i18n from 'plottr_locales'
@@ -30,7 +31,7 @@ function makeBrowserWindow(filePath) {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
   // replacing makes it so it doesn't create the folder structure
-  let stateKeeprFile = filePath.replace(/[/\\]/g, '~')
+  let stateKeeprFile = (filePath || uuidv4()).replace(/[/\\]/g, '~')
   const numFileLetters = 100
 
   let multiplier = 0.9

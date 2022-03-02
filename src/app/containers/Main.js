@@ -108,7 +108,7 @@ const Main = ({
     }
 
     startCheckingFileToLoad()
-    ipcRenderer.send('pls-fetch-state', win.id)
+    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
     const stateFetchedListener = (event, filePath, options, numOpenFiles) => {
       // There are valid possibilities for filePath to be null.
       //

@@ -126,6 +126,7 @@ function fileToLoad(argv) {
     const param = argv[argv.length - 1]
 
     if (param.includes('.pltr')) {
+      log.info(`Opening file with path ${param}`)
       return param
     } else {
       log.error(`Could not open file with path ${param}`)
@@ -160,7 +161,7 @@ ipcMain.on('pls-fetch-state', function (event, id, proMode) {
   const win = getWindowById(id)
   const filePath = win.filePath || (lastFileIsValid ? lastFile : null)
   if (win) {
-    event.sender.send('state-fetched', filePath, newFileOptions(), numberOfWindows())
+    event.sender.send('state-fetched', filePath, newFileOptions(), numberOfWindows(), win.filePath)
   }
 })
 

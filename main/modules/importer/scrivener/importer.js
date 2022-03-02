@@ -1,9 +1,9 @@
-import fs, { readFileSync } from 'fs'
+import fs from 'fs'
 import xml from 'xml-js'
 import { t } from 'plottr_locales'
 import log from 'electron-log'
 import path from 'path'
-import { cloneDeep, keyBy, groupBy, isPlainObject } from 'lodash'
+import { cloneDeep } from 'lodash'
 
 import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
 
@@ -72,25 +72,32 @@ function ScrivenerImporter(filePath, isNewFile, state, convertRTFToSlate) {
     (n) => n['_attributes']['Type'] != 'DraftFolder' && n['_attributes']['Type'] != 'TrashFolder'
   )
 
-  const notes = getSection(sectionsJSON, 'Notes')
-  const characters = getSection(sectionsJSON, 'Characters')
-  const places = getSection(sectionsJSON, 'Places')
+  const notes = getSection(sectionsJSON, 'Notes').filter((i) => i)
+  const characters = getSection(sectionsJSON, 'Characters').filter((i) => i)
+  const places = getSection(sectionsJSON, 'Places').filter((i) => i)
 
   return inMemoryFiles.then((files) => {
-    withStoryLineIfItExists(manuscript, currentState, bookTitle, bookId, isNewFile, files)
+    const newJson = withStoryLineIfItExists(
+      manuscript,
+      currentState,
+      bookTitle,
+      bookId,
+      isNewFile,
+      files
+    )
 
     if (notes && notes.length && notes[0]['Children'] && notes[0]['Children']['BinderItem']) {
       const notesBinderItem = Array.isArray(notes[0]['Children']['BinderItem'])
         ? notes[0]['Children']['BinderItem']
         : [notes[0]['Children']['BinderItem']]
-      generateNotes(currentState, notesBinderItem, bookId, files, isNewFile)
+      generateNotes(newJson, notesBinderItem, bookId, files, isNewFile)
     }
 
     if (places && places.length && places[0]['Children'] && places[0]['Children']['BinderItem']) {
       const placesBinderItem = Array.isArray(places[0]['Children']['BinderItem'])
         ? places[0]['Children']['BinderItem']
         : [places[0]['Children']['BinderItem']]
-      generatePlaces(currentState, placesBinderItem, bookId, files, isNewFile)
+      generatePlaces(newJson, placesBinderItem, bookId, files, isNewFile)
     }
 
     if (
@@ -102,14 +109,10 @@ function ScrivenerImporter(filePath, isNewFile, state, convertRTFToSlate) {
       const charactersBinderItem = Array.isArray(characters[0]['Children']['BinderItem'])
         ? characters[0]['Children']['BinderItem']
         : [characters[0]['Children']['BinderItem']]
-      generateCharacters(currentState, charactersBinderItem, bookId, files, isNewFile)
+      generateCharacters(newJson, charactersBinderItem, bookId, files, isNewFile)
     }
+    return newJson
   })
-  // TODO:
-  // .then
-  // synopsis(currentState, json, bookTitle, bookId, isNewFile)
-  // characters(currentState, json, bookId)
-  // cards(currentState, json, bookId)
 }
 
 const getSection = (sections, sectionName) => {
@@ -118,15 +121,19 @@ const getSection = (sections, sectionName) => {
     if (
       n['_attributes']['Type'] == 'ResearchFolder' &&
       n['Children'] &&
-      n['Children']['BinderItem'] &&
-      n['Children']['BinderItem'].length
+      n['Children']['BinderItem']
     ) {
-      const section = n['Children']['BinderItem'].find(
+      const BinderItemsArr = Array.isArray(n['Children']['BinderItem'])
+        ? n['Children']['BinderItem']
+        : [n['Children']['BinderItem']]
+      const section = BinderItemsArr.find(
         (childBinderItem) =>
           childBinderItem['_attributes']['Type'] == 'Folder' &&
           childBinderItem['Title']['_text'] == sectionName
       )
-      return section
+      if (section) {
+        return section
+      }
     } else if (
       n['_attributes']['Type'] == 'Folder' &&
       n['Children'] &&
@@ -136,8 +143,6 @@ const getSection = (sections, sectionName) => {
       return n
     } else {
       // TODO other folder structure to find notes, chars and places
-      // console.log('else =>', n['Children']['BinderItem'])
-      // console.log('else type =>', n['_attributes']['Type'])
     }
   })
 }
@@ -260,7 +265,14 @@ function createNewCharacter(currentCharacters, values) {
 function createNewCard(currentCards, values) {
   const nextCardId = nextId(currentCards)
   const newCard = Object.assign({}, defaultCard, { id: nextCardId, ...values })
-  return [...currentCards, newCard]
+  const cardExist = currentCards.find(
+    (card) => card.id == newCard.id && card.title == newCard.title
+  )
+  if (!cardExist) {
+    return [...currentCards, newCard]
+  } else {
+    return currentCards
+  }
 }
 
 function createNewLine(currentLines, values, bookId) {
@@ -296,13 +308,37 @@ function createSlateParagraph(value) {
   return { children: [{ text: value }] }
 }
 
-function getVer_2_7_match(file, childId) {
+// Sting, string -> Bool
+function getVer_2_7_matchedFiles(file, childId) {
   const fileName = path.basename(file)
   if (fileName.endsWith('_synopsis.txt') || fileName.endsWith('_notes.rtf')) {
     return fileName.split('_')[0] == childId
   } else {
     const uuid = fileName.replace('.rtf', '') || fileName.replace('.txt', '')
     return uuid == childId
+  }
+}
+
+// String -> String
+function getVer_2_7_matchName(file) {
+  const fileName = path.basename(file)
+  if (fileName.endsWith('_synopsis.txt') || fileName.endsWith('_notes.rtf')) {
+    return fileName.split('_')[0]
+  } else {
+    const uuid = fileName.replace('.rtf', '') || fileName.replace('.txt', '')
+    return uuid
+  }
+}
+
+function nextPositionInLine(cards, lineId, beatId) {
+  if (
+    cards.length &&
+    cards[cards.length - 1].beatId == beatId &&
+    cards[cards.length - 1].lineId == lineId
+  ) {
+    return cards[cards.length - 1].positionWithinLine + 1
+  } else {
+    return 0
   }
 }
 
@@ -331,90 +367,171 @@ function extractStoryLines(
 
   const withNewCardsAndNewBeats = chapters
     .filter((chapter) => {
-      return (
-        chapter['Children'] &&
-        chapter['Children']['BinderItem'] &&
-        chapter['Children']['BinderItem'].length
-      )
+      return chapter['_attributes']['Type'] == 'Folder'
     })
-    .reduce((acc, chapter, beatId) => {
-      const beatChildrenWithStoryLines = chapter['Children']['BinderItem'].filter((child) => {
-        return (
-          child['Children'] &&
-          child['Children']['BinderItem'] &&
-          child['Children']['BinderItem'].length
-        )
+    .reduce((acc, chapter, beatKey) => {
+      const beatId = chapter['_attributes']['UUID'] || chapter['_attributes']['ID']
+      const chaptersArray = Array.isArray(chapter['Children']['BinderItem'])
+        ? chapter['Children']['BinderItem']
+        : [chapter['Children']['BinderItem']]
+      const beatChildrenWithStoryLines = chaptersArray.filter((child) => {
+        return child['_attributes']['Type'] == 'Folder'
       })
+      // if has 1 child, json parser converted it an object
+
       const withChildStoryLinesAdded = beatChildrenWithStoryLines.reduce(
-        (newJson, child, nextLinePosition) => {
+        (newJsonWithBeats, child, nextLinePosition) => {
           const childId = child['_attributes']['UUID'] || child['_attributes']['ID']
           const childTitle = child['Title']['_text']
-          createNewLine(json.lines, { position: nextLinePosition, title: childTitle }, bookId)
-          lineId = childId
-          return extractStoryLines(
-            newJson,
-            child['Children']['BinderItem'],
-            bookTitle,
+
+          createNewLine(newJsonWithBeats.lines, {
+            title: childTitle,
+            color: nextColor(newJsonWithBeats.lines.length + 1),
+            id: childId,
             bookId,
-            isNewFile,
-            relevantFiles,
-            lineId
-          )
+          })
+
+          if (child['_attributes']['Type'] == 'Folder') {
+            const withPlotlineSubFolderChildrenArray = Array.isArray(
+              child['Children']['BinderItem']
+            )
+              ? child['Children']['BinderItem']
+              : [child['Children']['BinderItem']]
+
+            let fileContents = {
+              txtContent: createSlateParagraph(''),
+              rtfContents: {
+                lineId: childId,
+              },
+            }
+
+            return withPlotlineSubFolderChildrenArray.reduce(
+              (jsonWithPlotlineSubfolderCards, subfolder, idx) => {
+                const cardId = subfolder['_attributes']['UUID'] || subfolder['_attributes']['ID']
+                const cardTitle = subfolder['Title']['_text']
+
+                const matchFiles = getMatchedRelevantFiles(relevantFiles, cardId)
+                if (matchFiles && matchFiles.length) {
+                  fileContents = mapMatchedFiles(
+                    newJsonWithBeats,
+                    matchFiles,
+                    fileContents,
+                    childId,
+                    bookId
+                  )
+                }
+
+                return {
+                  ...jsonWithPlotlineSubfolderCards,
+                  cards: createNewCard(jsonWithPlotlineSubfolderCards.cards, {
+                    id: cardId,
+                    title: cardTitle || i18n('Scene {num}', { num: beatId + 1 }),
+                    positionWithinLine: nextPositionInLine(
+                      jsonWithPlotlineSubfolderCards.cards,
+                      lineId,
+                      beatId
+                    ),
+                    description: fileContents.txtContent,
+                    positionInBeat: beatId,
+                    beatId,
+                    lineId: childId,
+                    bookId,
+                  }),
+                }
+              },
+              newJsonWithBeats
+            )
+          }
+          return newJsonWithBeats
         },
         acc
       )
 
-      const beatChildrenWithoutStoryLines = chapter['Children']['BinderItem'].filter((child) => {
-        return !(
-          child['Children'] &&
-          child['Children']['BinderItem'] &&
-          child['Children']['BinderItem'].length
-        )
+      const beatChildrenWithoutStoryLines = chaptersArray.filter((child) => {
+        return child['_attributes']['Type'] == 'Text' && child['Title']['_text']
       })
-      return beatChildrenWithoutStoryLines.reduce((newJson, child, cardPosition) => {
+
+      const beatChildrenWithoutStoryLinesArr = Array.isArray(beatChildrenWithoutStoryLines)
+        ? beatChildrenWithoutStoryLines
+        : [beatChildrenWithoutStoryLines]
+
+      return beatChildrenWithoutStoryLinesArr.reduce((newJson, child, key) => {
         const cardId = child['_attributes']['UUID'] || child['_attributes']['ID']
         const cardTitle = child['Title']['_text']
 
+        // files same filename prefix with the cards (v2.7)
+        // same filename parent directory (v3)
         const matchFiles = getMatchedRelevantFiles(relevantFiles, cardId)
-        const fileContents = { txtContent: createSlateParagraph(''), rtfContents: {} }
+        let fileContents = { txtContent: createSlateParagraph(''), rtfContents: { lineId: 1 } }
         if (matchFiles && matchFiles.length) {
-          matchFiles.map((file) => {
-            const isTxt = path.extname(file.filePath) == '.txt'
-            const isRTF = path.extname(file.filePath) == '.rtf'
-            if (isTxt && path.basename(file.filePath).endsWith('synopsis.txt')) {
-              Object.assign(fileContents.txtContent, file.contents)
-            } else if (isRTF) {
-              if (path.basename(file.filePath).endsWith('notes.rtf')) {
-                const rtfContents = getRTFContents(json.lines, file, lineId, bookId)
-                Object.assign(fileContents.rtfContents, rtfContents)
-                // rtfContents.lineId
-                if (rtfContents.lineId > lineId) {
-                  lineId = rtfContents.lineId
-                }
-              }
-            }
-          })
-        } else if (!json.lines.length) {
+          fileContents = mapMatchedFiles(newJson, matchFiles, fileContents, cardId, bookId)
+        } else if (!newJson.lines.length) {
           // if no plotline from rtf
-          lineId = createNewLine(json.lines, { position: 0, title: i18n('Main Plot') }, bookId)
+          createNewLine(newJson.lines, { position: 0, title: i18n('Main Plot'), bookId })
         }
 
         return {
           ...newJson,
           cards: createNewCard(newJson.cards, {
-            uuid: cardId,
+            id: cardId,
             title: cardTitle || i18n('Scene {num}', { num: beatId + 1 }),
-            positionWithinLine: cardPosition,
+            positionWithinLine: nextPositionInLine(newJson.cards, lineId, beatId),
             description: fileContents.txtContent,
             positionInBeat: beatId,
             beatId,
-            lineId,
+            lineId: fileContents.rtfContents.lineId,
+            bookId,
           }),
         }
       }, withChildStoryLinesAdded)
     }, withNewBeats)
 
   return withNewCardsAndNewBeats
+}
+// Object, Array <any>, Object, Int, Int -> Object { txtContent: {}, rtfContent: {} }
+function mapMatchedFiles(newJson, matchFiles, fileContents, cardId, bookId) {
+  matchFiles.flatMap((file) => {
+    const noRTF = !file.filePath.includes(file.filePath.endsWith('.rtf'))
+    const isTxt = path.extname(file.filePath) == '.txt'
+    const isRTF = path.extname(file.filePath) == '.rtf'
+    const matchedFileId =
+      (Array.isArray(file.filePath.match(UUIDFolderRegEx))
+        ? file.filePath.match(UUIDFolderRegEx)[0]
+        : file.filePath.match(UUIDFolderRegEx)) || getVer_2_7_matchName(file.filePath)
+    if (noRTF && !newJson.lines.length) {
+      // TODO: check if rtf on manuscript can contain other rtfs
+      // other than the rtf files created by Plottr on `notes.rtf`
+      fileContents.rtfContents.lineId = createNewLine(
+        newJson.lines,
+        { position: 0, title: i18n('Main Plot') },
+        bookId
+      )
+    }
+    if (!matchedFileId) {
+      fileContents.rtfContents.lineId = 1
+    }
+    if (isTxt && path.basename(file.filePath).endsWith('synopsis.txt')) {
+      Object.assign(fileContents.txtContent, file.contents)
+    }
+    if (isRTF) {
+      if (path.basename(file.filePath).endsWith('notes.rtf')) {
+        const newRTFContent = getRTFContents(newJson.lines, file, matchedFileId, bookId)
+        Object.assign(fileContents.rtfContents, newRTFContent)
+        if (newRTFContent.lineId) {
+          fileContents.rtfContents.lineId = Array.isArray(newRTFContent.lineId)
+            ? newRTFContent.lineId[0]
+            : newRTFContent.lineId
+        } else if (!newJson.lines.length) {
+          fileContents.rtfContents.lineId = createNewLine(
+            newJson.lines,
+            { position: 0, title: i18n('Main Plot') },
+            bookId
+          )
+        }
+      }
+    }
+  })
+  return fileContents
 }
 
 function getMatchedRelevantFiles(relevantFiles, childId) {
@@ -423,15 +540,15 @@ function getMatchedRelevantFiles(relevantFiles, childId) {
     if (isVer_3_UUID) {
       return filePath.includes(childId)
     } else {
-      return getVer_2_7_match(filePath, childId)
+      return getVer_2_7_matchedFiles(filePath, childId)
     }
   })
 }
 
 // Object, Array <[{}]>, int, int, int -> Object { nextLineId }
-function getRTFContents(lines, rtf, lineId, bookId) {
+function getRTFContents(lines, rtf, matchId, bookId) {
+  let nextLineId = Array.isArray(matchId) ? matchId[0] : matchId
   if (rtf.contents && rtf.contents.length) {
-    let nextLineId = lineId
     const rtfContents = rtf.contents.flatMap((content) => {
       if (content.children && content.children.length) {
         return content.children.flatMap((childContent) => {
@@ -442,25 +559,30 @@ function getRTFContents(lines, rtf, lineId, bookId) {
             )
             if (plotlineValue) {
               const lineTitle = plotlineValue.split('Plotline: ').pop()
-              const isPlotlineExist = lines.find((line) => line.title == lineTitle)
-              if (!isPlotlineExist) {
-                nextLineId = createNewLine(
+              const existingPlotline = lines.find((line) => line.title == lineTitle)
+              if (!existingPlotline) {
+                createNewLine(
                   lines,
                   {
-                    position: nextLineId,
+                    id: nextLineId,
                     title: lineTitle,
-                    color: nextColor(nextLineId),
+                    color: nextColor(lines.length + 1),
                   },
                   bookId
                 )
+              } else {
+                nextLineId = existingPlotline.id
               }
               return { lineId: nextLineId }
+            } else {
+              // return default lineId if no plotline found
+              return { lineId: 1 }
             }
           }
         })
       }
     })
-    return { lineId: rtfContents[0] && rtfContents[0].lineId ? rtfContents[0].lineId : nextLineId }
+    return { lineId: rtfContents[0] && rtfContents[0].lineId ? rtfContents[0].lineId : 1 }
   }
 }
 
@@ -552,7 +674,9 @@ function getSectionRelevantFiles(matchFiles, bookId, isNotCharactersJson) {
 }
 
 function generateCustomAttribute(fileContents) {
-  const flatAttributes = fileContents.contents
+  const isContentsArray = Array.isArray(fileContents.contents)
+  const fileContentsArr = isContentsArray ? fileContents.contents : [fileContents.contents]
+  const flatAttributes = fileContentsArr
     .flatMap((i) => {
       if (i.children && i.children.length) {
         return i.children.flatMap((c) => {
@@ -562,10 +686,10 @@ function generateCustomAttribute(fileContents) {
         })
       }
     })
-    .filter((i, idx) => !!idx)
+    .filter((i, idx) => (isContentsArray ? !!idx : i))
 
   return flatAttributes
-    .map((item, index) => ({ [item]: flatAttributes[index + 1] }))
+    .map((item, index) => ({ [item]: flatAttributes[index + 1] || '' }))
     .filter((item, idx) => idx % 2 == 0)
 }
 

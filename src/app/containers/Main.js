@@ -117,6 +117,8 @@ const Main = ({
       // and we're in classic mode.
       if (filePath) {
         load(event, filePath, options, numOpenFiles)
+      } else {
+        finishCheckingFileToLoad()
       }
       ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }

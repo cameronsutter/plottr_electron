@@ -110,7 +110,14 @@ const Main = ({
     startCheckingFileToLoad()
     ipcRenderer.send('pls-fetch-state', win.id)
     const stateFetchedListener = (event, filePath, options, numOpenFiles) => {
-      load(event, filePath, options, numOpenFiles)
+      // There are valid possibilities for filePath to be null.
+      //
+      // i.e. no file has ever been opened or the last opened file was
+      // in a mode that doesn't match current. e.g. it's a pro file
+      // and we're in classic mode.
+      if (filePath) {
+        load(event, filePath, options, numOpenFiles)
+      }
       ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }
     ipcRenderer.on('state-fetched', stateFetchedListener)

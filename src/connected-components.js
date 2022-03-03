@@ -40,7 +40,6 @@ import {
   newFile,
   uploadExisting,
   deleteCloudBackupFile,
-  newFileFromScrivener,
 } from './files'
 import { logger } from './logger'
 import { closeDashboard } from './dashboard-events'
@@ -63,10 +62,7 @@ import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
 import { createFullErrorReport } from './common/utils/full_error_report'
 import { createErrorReport } from './common/utils/error_reporter'
 import MPQ from './common/utils/MPQ'
-import {
-  importScrivener as _importScrivener,
-  openExistingFile as _openExistingFile,
-} from './common/utils/window_manager'
+import { openExistingFile as _openExistingFile } from './common/utils/window_manager'
 import {
   doesFileExist,
   removeFromKnownFiles,
@@ -155,45 +151,6 @@ const platform = {
             store.dispatch(actions.applicationState.finishUploadingFileToCloud())
           }
         })
-    },
-    importScrivener: () => {
-      let state = store.getState()
-      const {
-        client: { emailAddress, userId, clientId },
-      } = state.present
-      const isLoggedIn = selectors.isLoggedInSelector(state.present)
-      const fileList = selectors.knownFilesSelector(state.present)
-      if (userId) {
-        _importScrivener(!!userId, userId, emailAddress)
-          .then((scrivenerState) => {
-            store.dispatch(actions.project.showLoader(true))
-            store.dispatch(actions.applicationState.startCreatingCloudFile())
-            state.present['beats'] = scrivenerState.beats
-            state.present['cards'] = scrivenerState.cards
-            state.present['characters'] = scrivenerState.characters
-            state.present['notes'] = scrivenerState.notes
-            state.present['lines'] = scrivenerState.lines
-            state.present['places'] = scrivenerState.places
-            newFileFromScrivener(emailAddress, userId, fileList, state, clientId, null, openFile)
-              .then((fileId) => {
-                logger.info('Created new file.', fileId)
-                store.dispatch(actions.project.showLoader(false))
-                store.dispatch(actions.applicationState.finishCreatingCloudFile())
-              })
-              .catch((error) => {
-                logger.error('Error creating a new file', error)
-                store.dispatch(actions.project.showLoader(false))
-                if (isLoggedIn) {
-                  store.dispatch(actions.applicationState.finishUploadingFileToCloud())
-                }
-              })
-            store.dispatch(actions.project.showLoader(false))
-          })
-          .catch((error) => {
-            logger.error('Error importing scrivener project', error)
-            store.dispatch(actions.project.showLoader(false))
-          })
-      }
     },
     doesFileExist,
     isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),

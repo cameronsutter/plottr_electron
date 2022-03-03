@@ -72,9 +72,9 @@ function ScrivenerImporter(filePath, isNewFile, state, convertRTFToSlate) {
     (n) => n['_attributes']['Type'] != 'DraftFolder' && n['_attributes']['Type'] != 'TrashFolder'
   )
 
-  const notes = getSection(sectionsJSON, 'Notes').filter((i) => i)
-  const characters = getSection(sectionsJSON, 'Characters').filter((i) => i)
-  const places = getSection(sectionsJSON, 'Places').filter((i) => i)
+  const notes = getSection(sectionsJSON, i18n('Notes')).filter((i) => i)
+  const characters = getSection(sectionsJSON, i18n('Characters')).filter((i) => i)
+  const places = getSection(sectionsJSON, i18n('Places')).filter((i) => i)
 
   return inMemoryFiles.then((files) => {
     const newJson = withStoryLineIfItExists(

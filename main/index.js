@@ -80,10 +80,24 @@ if (!is.development) {
 app.userAgentFallback =
   'Firefox Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) plottr/2021.7.29 Chrome/85.0.4183.121 Electron/10.4.7 Safari/537.36'
 
+// On MacOS, opening a file from finder is signalled to the app as an
+// event (rather than by args).  So we want to make sure that when the
+// app boots, it only opens a window corresponding to that event.
+let openedFile = false
+
 app.whenReady().then(() => {
   loadMenu()
   const fileLaunchedOn = fileToLoad(process.argv)
-  openProjectWindow(fileLaunchedOn)
+
+  // Wait a little bit in case the app was launched by double clicking
+  // on a file.
+  setTimeout(() => {
+    if (!openedFile && !(fileLaunchedOn && is.macos)) {
+      openedFile = true
+      log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
+      openProjectWindow(fileLaunchedOn)
+    }
+  }, 1000)
 
   // Register the toggleDevTools shortcut listener.
   globalShortcut.register('CommandOrControl+Alt+R', () => {
@@ -106,7 +120,7 @@ app.whenReady().then(() => {
   app.on('second-instance', (_event, argv) => {
     log.info('second-instance')
     loadMenu()
-    const newFileToLoad = fileToLoad(process.argv)
+    const newFileToLoad = fileToLoad(argv)
     openProjectWindow(newFileToLoad)
   })
 
@@ -137,6 +151,9 @@ function fileToLoad(argv) {
 }
 
 app.on('open-file', (event, filePath) => {
+  // Prevent the app from opening a default window as well as the file.
+  openedFile = true
+  log.info(`Opening <${filePath}> from open file`)
   event.preventDefault()
   // mac/linux open-file event handler
   app.whenReady().then(() => {

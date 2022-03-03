@@ -8,7 +8,6 @@ import { t } from 'plottr_locales'
 import { logger } from '../../logger'
 import { closeDashboard } from '../../dashboard-events'
 import { uploadProject } from './upload_project'
-import { findRelevantFiles, generateState, getScrivxData } from '../../scrivener'
 
 const win = getCurrentWindow()
 
@@ -50,19 +49,6 @@ export function openExistingFile(loggedIn, userId, email) {
       }
     }
     return Promise.resolve(ipcRenderer.send('add-to-known-files-and-open', files[0]))
-  }
-  return Promise.resolve('No file selected')
-}
-
-export function importScrivener(loggedIn, userId, email) {
-  const properties = ['openFile', 'createDirectory']
-  const filters = [{ name: t('Scrivener file'), extensions: ['scriv'] }]
-  const files = dialog.showOpenDialogSync(win, { filters: filters, properties: properties })
-  if (files && files.length) {
-    const scrivx = getScrivxData(files[0])
-    const contentRTF = findRelevantFiles(files[0])
-    const state = contentRTF.then((content) => generateState(content, scrivx))
-    return Promise.resolve(state)
   }
   return Promise.resolve('No file selected')
 }

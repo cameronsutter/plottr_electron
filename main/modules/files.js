@@ -387,12 +387,12 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
     createRTFConversionFunction(sender)
   )
 
-  // if (isLoggedIntoPro) {
-  //   importedJsonPromise.then((importedJson) => {
-  //     sender.send('create-plottr-cloud-file', importedJson, storyName)
-  //   })
-  //   return
-  // }
+  if (isLoggedIntoPro) {
+    importedJsonPromise.then((importedJson) => {
+      sender.send('create-plottr-cloud-file', importedJson, storyName)
+    })
+    return
+  }
 
   importedJsonPromise.then((importedJson) => {
     saveToTempFile(importedJson).then((filePath) => {

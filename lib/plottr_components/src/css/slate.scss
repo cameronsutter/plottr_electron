@@ -74,7 +74,7 @@
   justify-content: center;
   align-self: center;
   flex-direction: column;
-  
+
   svg {
     font-size: 4rem;
   }
@@ -83,7 +83,8 @@
     width: max-content;
   }
 
-  span, svg {
+  span,
+  svg {
     display: flex;
     justify-content: center;
     align-self: center;

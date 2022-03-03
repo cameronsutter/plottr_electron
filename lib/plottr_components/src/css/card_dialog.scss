@@ -103,19 +103,18 @@
           padding: 40px;
           opacity: 80%;
 
-
           svg {
             font-size: 4rem;
             display: flex;
           }
 
-          span, svg {
+          span,
+          svg {
             display: flex;
             justify-content: center;
             align-self: center;
           }
         }
-
       }
       & > .tab-pane .template-picker__link {
         cursor: pointer;
@@ -153,7 +152,7 @@
   }
 }
 
-.outline__description__editing  {
+.outline__description__editing {
   position: relative;
 }
 

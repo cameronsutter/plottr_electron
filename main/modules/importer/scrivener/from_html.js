@@ -10,35 +10,6 @@ export function convertHTMLString(html) {
   return slate
 }
 
-export const HTMLToParagraph = (elems) => {
-  if (elems) {
-    const textContent = elems.map((el) => {
-      if (el.length) {
-        // to test if each each attribute is stored on an array, separately -> [attrib]
-        // except the first attribute that has the title [title][attrib]
-        // only picking the last element to skip the title and get the right attribute
-        const HTMLString = convertHTMLString(el[el.length - 1].textContent)
-        if (HTMLString.length) {
-          return HTMLString
-        }
-      }
-    })
-    if (textContent) {
-      const isPlotline = textContent[0][0].text.includes('Plotline: ')
-      if (isPlotline) {
-        return [
-          {
-            type: 'plotline',
-            children: textContent[0][0].text.split('Plotline: ').pop(),
-          },
-        ]
-      } else {
-        return textContent
-      }
-    }
-  }
-}
-
 function deserialize(el) {
   if (el.nodeType === 3) {
     // if it's only a bunch of white space, ignore it

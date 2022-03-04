@@ -384,12 +384,15 @@ function extractStoryLines(
           const childId = child['_attributes']['UUID'] || child['_attributes']['ID']
           const childTitle = child['Title']['_text']
 
-          createNewLine(newJsonWithBeats.lines, {
-            title: childTitle,
-            color: nextColor(newJsonWithBeats.lines.length + 1),
-            id: childId,
-            bookId,
-          })
+          createNewLine(
+            newJsonWithBeats.lines,
+            {
+              title: childTitle,
+              color: nextColor(newJsonWithBeats.lines.length + 1),
+              id: childId,
+            },
+            bookId
+          )
 
           if (child['_attributes']['Type'] == 'Folder') {
             const withPlotlineSubFolderChildrenArray = Array.isArray(
@@ -416,7 +419,6 @@ function extractStoryLines(
                     newJsonWithBeats,
                     matchFiles,
                     fileContents,
-                    childId,
                     bookId
                   )
                   fileContents = {
@@ -471,14 +473,14 @@ function extractStoryLines(
         const matchFiles = getMatchedRelevantFiles(relevantFiles, cardId)
         let fileContents = { txtContent: createSlateParagraph(''), rtfContents: { lineId: 1 } }
         if (matchFiles && matchFiles.length) {
-          const mappedFiles = mapMatchedFiles(newJson, matchFiles, fileContents, cardId, bookId)
+          const mappedFiles = mapMatchedFiles(newJson, matchFiles, fileContents, bookId)
           fileContents = {
             rtfContents: mappedFiles.rtfContents,
             txtContent: createSlateEditor(mappedFiles.txtContent),
           }
         } else if (!newJson.lines.length) {
           // if no plotline from rtf
-          createNewLine(newJson.lines, { position: 0, title: i18n('Main Plot'), bookId })
+          createNewLine(newJson.lines, { position: 0, title: i18n('Main Plot') }, bookId)
         }
 
         const descriptionArr = Array.isArray(fileContents.txtContent)
@@ -639,7 +641,7 @@ function generatePlaces(currentState, json, bookId, files, isNewFile) {
     const matchFiles = getMatchedRelevantFiles(files, id)
     if (matchFiles && matchFiles.length) {
       let fileContents = { txtContent: createSlateParagraph(''), rtfContents: [] }
-      const mappedFiles = mapMatchedFiles(currentState, matchFiles, fileContents, null, bookId)
+      const mappedFiles = mapMatchedFiles(currentState, matchFiles, fileContents, bookId)
       fileContents = {
         rtfContents: mappedFiles.rtfContents,
         txtContent: createSlateEditor(mappedFiles.txtContent),

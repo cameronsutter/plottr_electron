@@ -388,7 +388,7 @@ function extractStoryLines(
             newJsonWithBeats.lines,
             {
               title: childTitle,
-              color: nextColor(newJsonWithBeats.lines.length + 1),
+              color: nextColor(newJsonWithBeats.lines.length),
               id: childId,
             },
             bookId
@@ -590,7 +590,7 @@ function getRTFContents(lines, rtf, matchId, bookId, isSection) {
                   {
                     id: nextLineId,
                     title: lineTitle,
-                    color: nextColor(lines.length + 1),
+                    color: nextColor(lines.length),
                   },
                   bookId
                 )

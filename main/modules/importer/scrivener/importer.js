@@ -412,14 +412,21 @@ function extractStoryLines(
 
                 const matchFiles = getMatchedRelevantFiles(relevantFiles, cardId)
                 if (matchFiles && matchFiles.length) {
-                  fileContents = mapMatchedFiles(
+                  const mappedFiles = mapMatchedFiles(
                     newJsonWithBeats,
                     matchFiles,
                     fileContents,
                     childId,
                     bookId
                   )
+                  fileContents = {
+                    rtfContents: mappedFiles.rtfContents,
+                    txtContent: createSlateEditor(mappedFiles.txtContent),
+                  }
                 }
+                const descriptionArr = Array.isArray(fileContents.txtContent)
+                  ? fileContents.txtContent
+                  : [fileContents.txtContent]
 
                 return {
                   ...jsonWithPlotlineSubfolderCards,
@@ -431,7 +438,7 @@ function extractStoryLines(
                       lineId,
                       beatId
                     ),
-                    description: fileContents.txtContent,
+                    description: descriptionArr,
                     positionInBeat: beatId,
                     beatId,
                     lineId: childId,
@@ -464,11 +471,19 @@ function extractStoryLines(
         const matchFiles = getMatchedRelevantFiles(relevantFiles, cardId)
         let fileContents = { txtContent: createSlateParagraph(''), rtfContents: { lineId: 1 } }
         if (matchFiles && matchFiles.length) {
-          fileContents = mapMatchedFiles(newJson, matchFiles, fileContents, cardId, bookId)
+          const mappedFiles = mapMatchedFiles(newJson, matchFiles, fileContents, cardId, bookId)
+          fileContents = {
+            rtfContents: mappedFiles.rtfContents,
+            txtContent: createSlateEditor(mappedFiles.txtContent),
+          }
         } else if (!newJson.lines.length) {
           // if no plotline from rtf
           createNewLine(newJson.lines, { position: 0, title: i18n('Main Plot'), bookId })
         }
+
+        const descriptionArr = Array.isArray(fileContents.txtContent)
+          ? fileContents.txtContent
+          : [fileContents.txtContent]
 
         return {
           ...newJson,
@@ -476,7 +491,7 @@ function extractStoryLines(
             id: cardId,
             title: cardTitle || i18n('Scene {num}', { num: beatId + 1 }),
             positionWithinLine: nextPositionInLine(newJson.cards, lineId, beatId),
-            description: fileContents.txtContent,
+            description: descriptionArr,
             positionInBeat: beatId,
             beatId,
             lineId: fileContents.rtfContents.lineId,
@@ -488,8 +503,8 @@ function extractStoryLines(
 
   return withNewCardsAndNewBeats
 }
-// Object, Array <any>, Object, Int, Int -> Object { txtContent: {}, rtfContent: {} }
-function mapMatchedFiles(newJson, matchFiles, fileContents, cardId, bookId) {
+// Object, Array <any>, Object, Int -> Object { txtContent: {}, rtfContent: {} }
+function mapMatchedFiles(newJson, matchFiles, fileContents, bookId, isSection) {
   matchFiles.flatMap((file) => {
     const noRTF = !file.filePath.includes(file.filePath.endsWith('.rtf'))
     const isTxt = path.extname(file.filePath) == '.txt'
@@ -528,6 +543,9 @@ function mapMatchedFiles(newJson, matchFiles, fileContents, cardId, bookId) {
             bookId
           )
         }
+      } else {
+        const newRTFContent = getRTFContents(newJson.lines, file, matchedFileId, bookId, isSection)
+        Object.assign(fileContents.rtfContents, newRTFContent)
       }
     }
   })
@@ -545,20 +563,24 @@ function getMatchedRelevantFiles(relevantFiles, childId) {
   })
 }
 
+function createSlateEditor(value) {
+  return {
+    type: 'paragraph',
+    children: value && value.children ? value.children : [{ text: '' }],
+  }
+}
+
 // Object, Array <[{}]>, int, int, int -> Object { nextLineId }
-function getRTFContents(lines, rtf, matchId, bookId) {
+function getRTFContents(lines, rtf, matchId, bookId, isSection) {
   let nextLineId = Array.isArray(matchId) ? matchId[0] : matchId
-  if (rtf.contents && rtf.contents.length) {
+  if (!isSection && rtf.contents && rtf.contents.length) {
     const rtfContents = rtf.contents.flatMap((content) => {
       if (content.children && content.children.length) {
         return content.children.flatMap((childContent) => {
           // checks for plotlines in rtf
-          if (childContent.text && Array.isArray(childContent.text)) {
-            const plotlineValue = childContent.text.find((textList) =>
-              textList.includes('Plotline: ')
-            )
-            if (plotlineValue) {
-              const lineTitle = plotlineValue.split('Plotline: ').pop()
+          if (childContent.text) {
+            if (childContent.text.includes('Plotline: ')) {
+              const lineTitle = childContent.text.split('Plotline: ').pop()
               const existingPlotline = lines.find((line) => line.title == lineTitle)
               if (!existingPlotline) {
                 createNewLine(
@@ -583,6 +605,8 @@ function getRTFContents(lines, rtf, matchId, bookId) {
       }
     })
     return { lineId: rtfContents[0] && rtfContents[0].lineId ? rtfContents[0].lineId : 1 }
+  } else if (isSection && rtf.contents && rtf.contents.length) {
+    return rtf.contents
   }
 }
 
@@ -592,11 +616,16 @@ function generateNotes(currentState, json, bookId, files, isNewFile) {
     const title = item['Title']['_text']
     const matchFiles = getMatchedRelevantFiles(files, id)
     if (matchFiles && matchFiles.length) {
-      const content = getSectionRelevantFiles(matchFiles, bookId, true)
+      let fileContents = { txtContent: createSlateParagraph(''), rtfContents: [] }
+      const mappedFiles = mapMatchedFiles(currentState, matchFiles, fileContents, bookId, true)
+      fileContents = {
+        rtfContents: mappedFiles.rtfContents,
+        txtContent: createSlateEditor(mappedFiles.txtContent),
+      }
       const values = {
         title,
         bookIds: [bookId],
-        content,
+        content: fileContents.rtfContents,
       }
       createNewNote(currentState.notes, values)
     }
@@ -609,11 +638,27 @@ function generatePlaces(currentState, json, bookId, files, isNewFile) {
     const name = item['Title']['_text']
     const matchFiles = getMatchedRelevantFiles(files, id)
     if (matchFiles && matchFiles.length) {
-      const content = getSectionRelevantFiles(matchFiles, bookId, true)
-      const values = {
+      let fileContents = { txtContent: createSlateParagraph(''), rtfContents: [] }
+      const mappedFiles = mapMatchedFiles(currentState, matchFiles, fileContents, null, bookId)
+      fileContents = {
+        rtfContents: mappedFiles.rtfContents,
+        txtContent: createSlateEditor(mappedFiles.txtContent),
+      }
+      const content = generateCustomAttribute({ contents: fileContents.rtfContents }, name)
+      const customAttributes = content.reduce(
+        (obj, item) => Object.assign(obj, { [Object.keys(item)[0]]: Object.values(item)[0] }),
+        {}
+      )
+
+      let values = {
         name,
         bookIds: [bookId],
-        content,
+      }
+      if (content && content.length) {
+        values = {
+          ...values,
+          ...customAttributes,
+        }
       }
       createNewPlace(currentState.places, values)
     }
@@ -626,7 +671,7 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
     const name = item['Title']['_text']
     const matchFile = getMatchedRelevantFiles(files, id)
     if (matchFile && matchFile.length) {
-      const content = generateCustomAttribute(matchFile[0], currentState)
+      const content = generateCustomAttribute(matchFile[0], name)
       const characterAttributes = content.reduce(
         (obj, item) => Object.assign(obj, { [Object.keys(item)[0]]: Object.values(item)[0] }),
         {}
@@ -673,24 +718,23 @@ function getSectionRelevantFiles(matchFiles, bookId, isNotCharactersJson) {
   })
 }
 
-function generateCustomAttribute(fileContents) {
-  const isContentsArray = Array.isArray(fileContents.contents)
-  const fileContentsArr = isContentsArray ? fileContents.contents : [fileContents.contents]
+function generateCustomAttribute(fileContents, name) {
+  const fileContentsArr = Array.isArray(fileContents.contents)
+    ? fileContents.contents
+    : [fileContents.contents]
   const flatAttributes = fileContentsArr
-    .flatMap((i) => {
+    .flatMap((i, idx) => {
       if (i.children && i.children.length) {
-        return i.children.flatMap((c) => {
-          if (c.text) {
-            return c.text
-          }
-        })
+        return i.children.filter((child, idx) => child.text != name)
       }
     })
-    .filter((i, idx) => (isContentsArray ? !!idx : i))
+    .filter((item) => Object.entries(item).length)
 
   return flatAttributes
-    .map((item, index) => ({ [item]: flatAttributes[index + 1] || '' }))
-    .filter((item, idx) => idx % 2 == 0)
+    .map((item, index) => ({
+      [item.text]: flatAttributes[index + 1] ? flatAttributes[index + 1].text : '',
+    }))
+    .filter((item, index) => index % 2 == 0)
 }
 
 function createCustomCharacterAttributes(currentState, characterAttributes) {

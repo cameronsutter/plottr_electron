@@ -1,4 +1,5 @@
 import path from 'path'
+import log from 'electron-log'
 import Store from 'electron-store'
 import { reloadRecents } from './dashboard'
 import { OFFLINE_FILE_FILES_PATH } from './offlineFilePath'
@@ -20,10 +21,38 @@ function addToKnown(filePath) {
   if (!filePath || filePath === '') return
 
   const files = knownFilesStore.store
-  const alreadyExists = Object.entries(files)
+  const matches = Object.values(files)
     .filter(({ path }) => path)
-    .some((entry) => path.normalize(entry[1].path) == path.normalize(filePath))
-  if (alreadyExists) {
+    .filter((value) => path.normalize(value.path) == path.normalize(filePath))
+  if (matches.length > 1) {
+    log.info(
+      `Found <${matches.length}> matches for known files for path: ${filePath}.  Eliminating all but one.`
+    )
+    const firstMatch = Object.entries(files).find((entry) => {
+      return entry[1].path === filePath
+    })
+    try {
+      const withoutHits = Object.entries(files).reduce(
+        (acc, entry) => {
+          const key = entry[0]
+          const value = entry[1]
+          if (path.normalize(value.path) === path.normalize(filePath)) {
+            return acc
+          }
+          return {
+            ...acc,
+            [key]: value,
+          }
+        },
+        {
+          [firstMatch[0]]: firstMatch[1],
+        }
+      )
+      knownFilesStore.store = withoutHits
+    } catch (error) {
+      log.error('Failed to remove file', error)
+    }
+  } else if (matches.length > 0) {
     const fileEntry = Object.entries(files).find(
       (entry) => path.normalize(entry[1].path) == path.normalize(filePath)
     )

@@ -158,6 +158,42 @@ What you should see is the following:
    4. It detects that both the online and the offline file changed.  In which case, it should warn you that it’s making a backup of your file and switching to the online file.  You should find the backup on the dashboard.
  - After it’s finished “resuming” (there’s state in redux and a component which track this state) it should have switched to online mode and changes you make should be reflected on Plottr cloud again.
 
+## File Bootup Sequence
+Here's how booting a file works.
+1. `app.whenReady` create a new window with **no file path**.
+2. `BrowserWindow` **starts**.
+3. After loading settings, checking pro session etc. as described by
+   the selector: `applicationIsBusyButFileCouldBeUnloadedSelector` we
+   **ask the main process** for state using `pls-fetch-state`.
+4. The main process finds that the file has no file path and checks
+   whether there is a **valid latest file** (i.e. if we're on pro then
+   latest file must be a cloud file).
+5. Main process replies with **either the latest file or null** along
+   with the number of open windows and new file options.
+6. The window receives the payload back and checks the settings to see
+   whether the **dashboard should load** on the first window.
+
+   a. If the window count is **1**, and the setting **is on**, then
+   the dashboard is loaded and whatever is in **the latest file slot
+   is ignored**.  According to the main process, this window will
+   remain with a null file path forever.
+
+   b. If the window count is **2**, or the settings **is off**, and
+   there is a **non-null latest file**, then we load that file and ask
+   the main process to associate it's file path with the receiving
+   window's corresponding window object on the main process.
+
+   c. If the window count is **2**, or the settings **is off**, and
+   there is a **null latest file**, then we don't load any file and we
+   don't let the user exit the full-screen dashboard.
+
+ - In the alternative flow, we're opening a file that we **just
+   created** or a **pre-existing file**.
+ - In both instances the change is that the `filePath` **is known**
+   and stored on the window object on the main process.
+ - So we'll reply with that path and **ignore conditions 6.a-c** so
+   that we simply open the file.
+
 # Debugging Tests
 
 To debug a test:

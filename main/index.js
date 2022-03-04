@@ -42,7 +42,11 @@ import {
   saveOfflineFile,
 } from './modules/files'
 import { lastOpenedFile } from './modules/lastOpened'
-import { editWindowPath, setFilePathForWindowWithFilePath } from './modules/windows/index'
+import {
+  editWindowPath,
+  setFilePathForWindowWithFilePath,
+  setFilePathForWindowWithId,
+} from './modules/windows/index'
 import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 
 ////////////////////////////////
@@ -76,15 +80,24 @@ if (!is.development) {
 app.userAgentFallback =
   'Firefox Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) plottr/2021.7.29 Chrome/85.0.4183.121 Electron/10.4.7 Safari/537.36'
 
-app.whenReady().then(async () => {
+// On MacOS, opening a file from finder is signalled to the app as an
+// event (rather than by args).  So we want to make sure that when the
+// app boots, it only opens a window corresponding to that event.
+let openedFile = false
+
+app.whenReady().then(() => {
   loadMenu()
-  const lastFilePath = lastOpenedFile()
-  if (lastFilePath) {
-    openProjectWindow(lastFilePath)
-  } else {
-    await createNew()
-  }
-  windowsOpenFileEventHandler(process.argv)
+  const fileLaunchedOn = fileToLoad(process.argv)
+
+  // Wait a little bit in case the app was launched by double clicking
+  // on a file.
+  setTimeout(() => {
+    if (!openedFile && !(fileLaunchedOn && is.macos)) {
+      openedFile = true
+      log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
+      openProjectWindow(fileLaunchedOn)
+    }
+  }, 1000)
 
   // Register the toggleDevTools shortcut listener.
   globalShortcut.register('CommandOrControl+Alt+R', () => {
@@ -100,44 +113,47 @@ app.whenReady().then(async () => {
     if (hasWindows()) {
       focusFirstWindow()
     } else {
-      if (lastFilePath) {
-        openProjectWindow(lastFilePath)
-      } else {
-        await createNew()
-      }
+      openProjectWindow(fileLaunchedOn)
     }
   })
+
   app.on('second-instance', (_event, argv) => {
     log.info('second-instance')
     loadMenu()
-    windowsOpenFileEventHandler(argv)
+    const newFileToLoad = fileToLoad(argv)
+    openProjectWindow(newFileToLoad)
   })
+
   app.on('window-all-closed', () => {
     if (is.windows) app.quit()
   })
+
   app.on('will-quit', () => {
     app.releaseSingleInstanceLock()
   })
 })
 
-function windowsOpenFileEventHandler(argv) {
+function fileToLoad(argv) {
   if (is.windows && process.env.NODE_ENV != 'dev') {
     log.info('windows open-file event handler')
     log.info('args', argv.length, argv)
     const param = argv[argv.length - 1]
 
     if (param.includes('.pltr')) {
-      openProjectWindow(param)
-      addToKnown(param)
+      log.info(`Opening file with path ${param}`)
+      return param
+    } else {
+      log.error(`Could not open file with path ${param}`)
     }
-
-    // windows custom protocol link handler
-    // log.info('open-url event: ' + param)
-    // const link = param.replace('plottr://')
   }
+  log.info(`Opening Plottr without booting a file and arguments: ${argv}`)
+  return null
 }
 
 app.on('open-file', (event, filePath) => {
+  // Prevent the app from opening a default window as well as the file.
+  openedFile = true
+  log.info(`Opening <${filePath}> from open file`)
   event.preventDefault()
   // mac/linux open-file event handler
   app.whenReady().then(() => {
@@ -154,10 +170,15 @@ app.on('open-url', function (event, url) {
   // const link = param.replace('plottr://')
 })
 
-ipcMain.on('pls-fetch-state', function (event, id) {
+ipcMain.on('pls-fetch-state', function (event, id, proMode) {
+  const lastFile = lastOpenedFile()
+  const lastFileIsValid =
+    (proMode && lastFile && lastFile.startsWith('plottr://')) ||
+    (!proMode && lastFile && !lastFile.startsWith('plottr://'))
   const win = getWindowById(id)
+  const filePath = win.filePath || (lastFileIsValid ? lastFile : null)
   if (win) {
-    event.sender.send('state-fetched', win.filePath, newFileOptions(), numberOfWindows())
+    event.sender.send('state-fetched', filePath, newFileOptions(), numberOfWindows(), win.filePath)
   }
 })
 
@@ -303,4 +324,8 @@ ipcMain.on('download-file-and-show', (_event, url) => {
 
 ipcMain.on('show-item-in-folder', (_event, fileName) => {
   shell.showItemInFolder(fileName)
+})
+
+ipcMain.on('pls-set-my-file-path', (event, filePath) => {
+  setFilePathForWindowWithId(event.sender.id, filePath)
 })

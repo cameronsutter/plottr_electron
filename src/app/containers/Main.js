@@ -74,7 +74,14 @@ const Main = ({
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
 
-    const load = (event, filePath, options, numOpenFiles) => {
+    const load = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) => {
+      // We wont load a file at all on boot if this is supposed to be
+      // the dashboard.
+      if (!windowOpenedWithKnownPath && showDashboard && numOpenFiles <= 1) {
+        finishCheckingFileToLoad()
+        return
+      }
+
       // To boot the file automatically: we must either be running pro
       // and it's a cloud file, or we must be running classic mode and
       // it's not a cloud file.
@@ -87,7 +94,7 @@ const Main = ({
       // We only want to obey the setting to show the dashboard on
       // start-up for the first file opened.  All files opened after
       // that shouldn't have the dashboard opened.
-      if (numOpenFiles > 1) {
+      if (windowOpenedWithKnownPath || numOpenFiles > 1) {
         setDashboardClosed(true)
         setCurrentAppStateToApplication()
       }
@@ -97,8 +104,8 @@ const Main = ({
     // This might look like unnecessary lambda wrapping, but I've done
     // it to make sure that we have destinct lambdas to de-register
     // later.
-    const reloadListener = (event, filePath, options, numOpenFiles) =>
-      load(event, filePath, options, numOpenFiles)
+    const reloadListener = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) =>
+      load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
     ipcRenderer.on('reload-from-file', reloadListener)
 
     if (checkedFileToLoad || checkingFileToLoad || needsToLogin) {
@@ -108,9 +115,24 @@ const Main = ({
     }
 
     startCheckingFileToLoad()
-    ipcRenderer.send('pls-fetch-state', win.id)
-    const stateFetchedListener = (event, filePath, options, numOpenFiles) => {
-      load(event, filePath, options, numOpenFiles)
+    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
+    const stateFetchedListener = (
+      event,
+      filePath,
+      options,
+      numOpenFiles,
+      windowOpenedWithKnownPath
+    ) => {
+      // There are valid possibilities for filePath to be null.
+      //
+      // i.e. no file has ever been opened or the last opened file was
+      // in a mode that doesn't match current. e.g. it's a pro file
+      // and we're in classic mode.
+      if (filePath) {
+        load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
+      } else {
+        finishCheckingFileToLoad()
+      }
       ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }
     ipcRenderer.on('state-fetched', stateFetchedListener)
@@ -248,7 +270,7 @@ Main.propTypes = {
   finishCheckingFileToLoad: PropTypes.func.isRequired,
   darkMode: PropTypes.bool.isRequired,
   isInOfflineMode: PropTypes.bool,
-  currentAppStateIsDashboard: PropTypes.string.isRequired,
+  currentAppStateIsDashboard: PropTypes.bool.isRequired,
   fileName: PropTypes.string,
   isOnboarding: PropTypes.bool,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,

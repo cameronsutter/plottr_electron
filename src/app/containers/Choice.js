@@ -6,14 +6,16 @@ import cx from 'classnames'
 import { selectors } from 'pltr/v2'
 import { ChoiceView } from 'connected-components'
 
-const nop = () => {}
+const reload = () => {
+  window.location.reload()
+}
 
 const Choice = ({ darkMode }) => {
   return (
     <div id="dashboard__react__root">
       <div className={cx('dashboard__main', { darkmode: darkMode })}>
         <div className="dashboard__account" style={{ width: '100vw' }}>
-          <ChoiceView goToAccount={nop} />
+          <ChoiceView goToAccount={reload} />
         </div>
       </div>
     </div>

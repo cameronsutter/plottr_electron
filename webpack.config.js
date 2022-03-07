@@ -13,13 +13,19 @@ const plugins = [
   new Dotenv(),
 ]
 
+const defineConfig = [
+  {
+    global: {},
+  },
+]
+
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 // if (process.env.NODE_ENV == 'dev') {
 //   plugins.push(new BundleAnalyzerPlugin())
 // }
 
 if (process.env.NODE_ENV !== 'dev') {
-  plugins.push(new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }))
+  defineConfig.push({ 'process.env.NODE_ENV': JSON.stringify('production') })
   plugins.push(
     new webpack.IgnorePlugin({
       resourceRegExp: /regenerator|nodent|js-beautify/,
@@ -33,6 +39,8 @@ if (process.env.NODE_ENV !== 'dev') {
     })
   )
 }
+
+plugins.push(new webpack.DefinePlugin(defineConfig))
 
 const mainCircularDependencyChecker = new CircularDependencyPlugin({
   // exclude detection of files based on a RegExp

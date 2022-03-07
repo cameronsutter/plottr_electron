@@ -1,4 +1,5 @@
 import {
+  ADVANCE_PRO_ONBOARDING,
   FINISH_CHECKING_FILE_TO_LOAD,
   FINISH_CHECKING_SESSION,
   FINISH_CREATING_CLOUD_FILE,
@@ -8,7 +9,9 @@ import {
   FINISH_LOADING_FILE,
   FINISH_LOADING_FILE_LIST,
   FINISH_LOGGING_IN,
+  FINISH_ONBOARDING,
   FINISH_RENAMING_FILE,
+  FINISH_SAVING_FILE_AS,
   FINISH_UPLOADING_FILE_TO_CLOUD,
   START_CHECKING_FILE_TO_LOAD,
   START_CHECKING_SESSION,
@@ -19,7 +22,10 @@ import {
   START_LOADING_FILE,
   START_LOADING_FILE_LIST,
   START_LOGGING_IN,
+  START_ONBOARDING,
+  START_ONBOARDING_FROM_ROOT,
   START_RENAMING_FILE,
+  START_SAVING_FILE_AS,
   START_UPLOADING_FILE_TO_CLOUD,
 } from '../constants/ActionTypes'
 
@@ -68,6 +74,12 @@ export const startDeletingFile = () => ({
 export const finishDeletingFile = () => ({
   type: FINISH_DELETING_FILE,
 })
+export const startSavingFileAs = () => ({
+  type: START_SAVING_FILE_AS,
+})
+export const finishSavingFileAs = () => ({
+  type: FINISH_SAVING_FILE_AS,
+})
 
 // Session states
 export const startLoggingIn = () => ({
@@ -101,4 +113,18 @@ export const startLoadingASettingsType = (settingsType) => ({
 export const finishLoadingASettingsType = (settingsType) => ({
   type: FINISH_LOADING_A_SETTINGS_TYPE,
   settingsType,
+})
+
+// Pro Onboarding
+export const advanceProOnboarding = () => ({
+  type: ADVANCE_PRO_ONBOARDING,
+})
+export const startProOnboarding = () => ({
+  type: START_ONBOARDING,
+})
+export const finishProOnboarding = () => ({
+  type: FINISH_ONBOARDING,
+})
+export const startProOnboardingFromRoot = () => ({
+  type: START_ONBOARDING_FROM_ROOT,
 })

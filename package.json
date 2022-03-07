@@ -16,7 +16,7 @@
     "docx": "^5.5.0",
     "dom-parser": "^0.1.6",
     "image-extensions": "^1.1.0",
-    "immer": "^8.0.4",
+    "immer": "^9.0.6",
     "is-url": "^1.2.4",
     "jsrtf": "^0.0.3",
     "lodash": "^4.17.21",

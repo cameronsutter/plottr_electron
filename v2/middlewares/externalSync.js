@@ -72,6 +72,7 @@ export const externalSyncWithoutHistory = (patch, withData) => (store) => (next)
   const clientId = present.client && present.client.clientId
   if (fileId && previous) {
     Object.keys(present).forEach((key) => {
+      if (SYSTEM_REDUCER_KEYS.indexOf(key) > -1) return
       if (
         action.type === 'RECORD_LAST_ACTION' ||
         action.type === 'PERMISSION_ERROR' ||

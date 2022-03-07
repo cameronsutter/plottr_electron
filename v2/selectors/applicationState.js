@@ -1,12 +1,21 @@
 import { createSelector } from 'reselect'
 import { hasProSelector, isLoggedInSelector } from './client'
-import { hasLicenseSelector, isInTrialModeSelector } from './license'
+import {
+  hasLicenseSelector,
+  isFirstTimeSelector,
+  isInTrialModeSelector,
+  isInTrialModeWithExpiredTrialSelector,
+} from './license'
 import {
   isCloudFileSelector,
   isOfflineSelector,
+  isResumingSelector,
   loadingFileSelector as deprecatedLoadingFileSelector,
 } from './project'
+import { offlineModeEnabledSelector } from './settings'
 import { shouldBeInProSelector } from './shouldBeInPro'
+
+export { shouldBeInProSelector }
 
 export const applicationStateSelector = (state) => state.applicationState
 
@@ -77,6 +86,10 @@ export const deletingFileSelector = createSelector(
   fileStateSelector,
   ({ deletingFile }) => deletingFile
 )
+export const savingFileAsSelector = createSelector(
+  fileStateSelector,
+  ({ savingFileAs }) => savingFileAs
+)
 
 export const sessionStateSelector = createSelector(
   applicationStateSelector,
@@ -120,6 +133,23 @@ export const checkingProSubscriptionSelector = createSelector(
   ({ checkingProSubscription }) => checkingProSubscription
 )
 
+export const proOnboardingStateSelector = createSelector(
+  applicationStateSelector,
+  ({ proOnboarding }) => proOnboarding
+)
+export const currentProOnboardingStepSelector = createSelector(
+  proOnboardingStateSelector,
+  ({ onboardingStep }) => onboardingStep
+)
+export const isOnboardingToProSelector = createSelector(
+  proOnboardingStateSelector,
+  ({ isOnboarding }) => isOnboarding
+)
+export const isOnboardingToProFromRootSelector = createSelector(
+  proOnboardingStateSelector,
+  ({ isOnboardingFromRoot }) => isOnboardingFromRoot
+)
+
 export const needToCheckProSubscriptionSelector = createSelector(
   shouldBeInProSelector,
   checkedProSubscriptionSelector,
@@ -145,21 +175,34 @@ const checkingWhatToLoadOrNeedToCheckWhatToLoadSelector = createSelector(
   }
 )
 
-const manipulatingAFileSelector = createSelector(
+export const manipulatingAFileSelector = createSelector(
   isRenamingFileSelector,
   creatingCloudFileSelector,
   uploadingFileToCloudSelector,
   deletingFileSelector,
-  (isRenamingFile, creatingCloudFile, uploadingFileToCloud, deletingFile) => {
-    return isRenamingFile || creatingCloudFile || uploadingFileToCloud || deletingFile
+  savingFileAsSelector,
+  (isRenamingFile, creatingCloudFile, uploadingFileToCloud, deletingFile, savingFileAs) => {
+    return (
+      isRenamingFile || creatingCloudFile || uploadingFileToCloud || deletingFile || savingFileAs
+    )
+  }
+)
+
+export const isInOfflineModeSelector = createSelector(
+  isOfflineSelector,
+  shouldBeInProSelector,
+  offlineModeEnabledSelector,
+  (isOffline, shouldBeInPro, offlineModeEnabled) => {
+    return isOffline && shouldBeInPro && offlineModeEnabled
   }
 )
 
 const checkingSessionOrNeedToCheckSessionSelector = createSelector(
   sessionCheckedSelector,
   checkingSessionSelector,
-  (sessionChecked, checkingSession) => {
-    return checkingSession || !sessionChecked
+  isInOfflineModeSelector,
+  (sessionChecked, checkingSession, isInOfflineMode) => {
+    return !isInOfflineMode && (checkingSession || !sessionChecked)
   }
 )
 
@@ -200,15 +243,9 @@ export const applicationIsBusyAndUninterruptableSelector = createSelector(
   }
 )
 
-export const isInOfflineModeSelector = createSelector(
-  isOfflineSelector,
-  shouldBeInProSelector,
-  (isOffline, shouldBeInPro) => {
-    return isOffline && shouldBeInPro
-  }
-)
-
 export const applicationIsBusyButFileCouldBeUnloadedSelector = createSelector(
+  isFirstTimeSelector,
+  isInTrialModeWithExpiredTrialSelector,
   checkingWhatToLoadOrNeedToCheckWhatToLoadSelector,
   loadingFileSelector,
   manipulatingAFileSelector,
@@ -221,6 +258,8 @@ export const applicationIsBusyButFileCouldBeUnloadedSelector = createSelector(
   checkedLicenseSelector,
   checkedTrialSelector,
   (
+    firstTime,
+    isInTrialModeWithExpiredTrial,
     checkingWhatToLoadOrNeedToCheckWhatToLoad,
     loadingFile,
     manipulatingAFile,
@@ -234,7 +273,10 @@ export const applicationIsBusyButFileCouldBeUnloadedSelector = createSelector(
     checkedTrial
   ) => {
     return (
-      checkingWhatToLoadOrNeedToCheckWhatToLoad ||
+      // We only check what to load when we're in a valid license
+      // state.  So we need to account for there being no license or
+      // there being an expired trial.
+      (!firstTime && !isInTrialModeWithExpiredTrial && checkingWhatToLoadOrNeedToCheckWhatToLoad) ||
       loadingFile ||
       manipulatingAFile ||
       !applicationSettingsAreLoaded ||
@@ -388,7 +430,24 @@ export const cantShowFileSelector = createSelector(
   fileIsLoadedSelector,
   hasProSelector,
   isCloudFileSelector,
-  (fileLoaded, hasActiveProSubscription, selectedFileIsACloudFile) => {
-    return !fileLoaded || !!hasActiveProSubscription !== !!selectedFileIsACloudFile
+  isResumingSelector,
+  isOfflineSelector,
+  isInOfflineModeSelector,
+  shouldBeInProSelector,
+  (
+    fileLoaded,
+    hasActiveProSubscription,
+    selectedFileIsACloudFile,
+    isResuming,
+    isOffline,
+    isInOfflineMode,
+    shouldBeInPro
+  ) => {
+    return (
+      !isResuming &&
+      (!fileLoaded ||
+        (!isInOfflineMode && isOffline && shouldBeInPro) ||
+        !!hasActiveProSubscription !== !!selectedFileIsACloudFile)
+    )
   }
 )

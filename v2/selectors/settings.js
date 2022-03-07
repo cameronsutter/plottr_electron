@@ -18,3 +18,7 @@ export const isDarkModeSelector = createSelector(
   appUserSettingsSelector,
   ({ dark }) => dark === 'dark'
 )
+export const offlineModeEnabledSelector = createSelector(
+  appUserSettingsSelector,
+  ({ enableOfflineMode }) => enableOfflineMode
+)

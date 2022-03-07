@@ -5,10 +5,7 @@
     "dirty": true,
     "version": "2022.1.12-beta.7",
     "id": null,
-    "appliedMigrations": [
-      "m2021_6_9",
-      "m2021_8_1"
-    ],
+    "appliedMigrations": ["m2021_6_9", "m2021_8_1"],
     "initialVersion": "2021.5.19",
     "isCloudFile": false
   },
@@ -56,9 +53,7 @@
       "imageId": "7",
       "timelineTemplates": []
     },
-    "allIds": [
-      1
-    ]
+    "allIds": [1]
   },
   "beats": {
     "1": {
@@ -68,13 +63,7 @@
         "4": [],
         "5": [],
         "6": [],
-        "null": [
-          2,
-          3,
-          4,
-          5,
-          6
-        ]
+        "null": [2, 3, 4, 5, 6]
       },
       "heap": {
         "2": null,
@@ -144,9 +133,7 @@
     "series": {
       "children": {
         "1": [],
-        "null": [
-          1
-        ]
+        "null": [1]
       },
       "heap": {
         "1": null
@@ -178,28 +165,18 @@
         "title": "They discover Goldilocks in bed",
         "description": [
           {
-          "children": [
-            {
-            "text": ""
+            "children": [
+              {
+                "text": ""
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        7,
-        1
-      ],
-      "characters": [
-        2,
-        1,
-        4,
-        3
-      ],
-      "places": [
-        2
-      ],
+      "tags": [7, 1],
+      "characters": [2, 1, 4, 3],
+      "places": [2],
       "templates": [],
       "imageId": null,
       "fromTemplateId": null
@@ -216,19 +193,16 @@
         "title": "They discover their chairs have been used",
         "description": [
           {
-          "children": [
-            {
-            "text": ""
+            "children": [
+              {
+                "text": ""
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        6,
-        1
-      ],
+      "tags": [6, 1],
       "characters": [],
       "places": [],
       "templates": [],
@@ -247,19 +221,16 @@
         "title": "They discover their porridge has been eaten",
         "description": [
           {
-          "children": [
-            {
-            "text": ""
+            "children": [
+              {
+                "text": ""
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        8,
-        1
-      ],
+      "tags": [8, 1],
       "characters": [],
       "places": [],
       "templates": [],
@@ -277,55 +248,50 @@
         "title": "She tries three beds until she finds the right one",
         "description": [
           {
-          "children": [
-            {
-            "text": "Very tired, Goldilocks goes upstairs to the bedroom..."
-          }
-          ]
-        },
+            "children": [
+              {
+                "text": "Very tired, Goldilocks goes upstairs to the bedroom..."
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The first bed is too hard. "
-          }
-          ]
-        },
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The first bed is too hard. "
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The second bed is too soft."
-          }
-          ]
-        },
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The second bed is too soft."
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The third bed is just right!"
-          }
-          ]
-        },
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The third bed is just right!"
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "And then she falls asleep."
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "And then she falls asleep."
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        3,
-        7
-      ],
+      "tags": [3, 7],
       "characters": [],
-      "places": [
-        2
-      ],
+      "places": [2],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -343,57 +309,50 @@
         "title": "She tries three chairs until she finds the right one",
         "description": [
           {
-          "children": [
-            {
-            "text": "Tired, Golidocks decides to sit on a chair..."
-          }
-          ]
-        },
+            "children": [
+              {
+                "text": "Tired, Golidocks decides to sit on a chair..."
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The first chair is too big. "
-          }
-          ]
-        },
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The first chair is too big. "
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The second chair is also too big."
-          }
-          ]
-        },
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The second chair is also too big."
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The third (and smallest) chair is just right!"
-          }
-          ]
-        },
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The third (and smallest) chair is just right!"
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "But as she sits on the chair, it breaks into pieces."
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "But as she sits on the chair, it breaks into pieces."
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        3,
-        6
-      ],
-      "characters": [
-        1
-      ],
-      "places": [
-        2
-      ],
+      "tags": [3, 6],
+      "characters": [1],
+      "places": [2],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -411,39 +370,34 @@
         "title": "She tries each bowl until she finds the right one",
         "description": [
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The first bowl is too hot. "
-          }
-          ]
-        },
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The first bowl is too hot. "
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The second bowl is too cold."
-          }
-          ]
-        },
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The second bowl is too cold."
+              }
+            ]
+          },
           {
-          "type": "paragraph",
-          "children": [
-            {
-            "text": "The third bowl is just right!"
+            "type": "paragraph",
+            "children": [
+              {
+                "text": "The third bowl is just right!"
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        3,
-        8
-      ],
-      "characters": [
-        1
-      ],
+      "tags": [3, 8],
+      "characters": [1],
       "places": [],
       "templates": [],
       "imageId": null,
@@ -462,26 +416,18 @@
         "title": "Goldilocks runs away, never to return again",
         "description": [
           {
-          "children": [
-            {
-            "text": "She runs out the door, into the forest."
+            "children": [
+              {
+                "text": "She runs out the door, into the forest."
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        1,
-        4
-      ],
-      "characters": [
-        1
-      ],
-      "places": [
-        2,
-        1
-      ],
+      "tags": [1, 4],
+      "characters": [1],
+      "places": [2, 1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -499,27 +445,18 @@
         "title": "Goldilocks wakes up to realize she's in the bears' home",
         "description": [
           {
-          "children": [
-            {
-            "text": "She sees the bears, screams for help, and runs out of the room."
+            "children": [
+              {
+                "text": "She sees the bears, screams for help, and runs out of the room."
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        1
-      ],
-      "characters": [
-        1,
-        2,
-        4,
-        3
-      ],
-      "places": [
-        2
-      ],
+      "tags": [1],
+      "characters": [1, 2, 4, 3],
+      "places": [2],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -537,27 +474,18 @@
         "title": "The three bears come home",
         "description": [
           {
-          "children": [
-            {
-            "text": "They are not pleased by what they discover."
+            "children": [
+              {
+                "text": "They are not pleased by what they discover."
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        1
-      ],
-      "characters": [
-        1,
-        4,
-        3,
-        2
-      ],
-      "places": [
-        2
-      ],
+      "tags": [1],
+      "characters": [1, 4, 3, 2],
+      "places": [2],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -575,25 +503,18 @@
         "title": "Goldilocks enters and finds three bowls of porridge",
         "description": [
           {
-          "children": [
-            {
-            "text": "Goldilocks is hungry."
+            "children": [
+              {
+                "text": "Goldilocks is hungry."
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        3,
-        8
-      ],
-      "characters": [
-        1
-      ],
-      "places": [
-        2
-      ],
+      "tags": [3, 8],
+      "characters": [1],
+      "places": [2],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -611,25 +532,18 @@
         "title": "Goldilocks takes a walk in the forest and finds a cottage",
         "description": [
           {
-          "children": [
-            {
-            "text": "She knocks on the door and walks right in when nobody answers."
+            "children": [
+              {
+                "text": "She knocks on the door and walks right in when nobody answers."
+              }
+            ]
           }
-          ]
-        }
         ]
       },
       "description": [],
-      "tags": [
-        2,
-        5
-      ],
-      "characters": [
-        1
-      ],
-      "places": [
-        1
-      ],
+      "tags": [2, 5],
+      "characters": [1],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -674,16 +588,7 @@
         }
       ],
       "color": null,
-      "cards": [
-        1,
-        2,
-        6,
-        7,
-        3,
-        4,
-        5,
-        11
-      ],
+      "cards": [1, 2, 6, 7, 3, 4, 5, 11],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -706,11 +611,7 @@
         }
       ],
       "color": null,
-      "cards": [
-        3,
-        4,
-        11
-      ],
+      "cards": [3, 4, 11],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -733,11 +634,7 @@
         }
       ],
       "color": null,
-      "cards": [
-        3,
-        4,
-        11
-      ],
+      "cards": [3, 4, 11],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -760,11 +657,7 @@
         }
       ],
       "color": null,
-      "cards": [
-        3,
-        4,
-        11
-      ],
+      "cards": [3, 4, 11],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -886,9 +779,7 @@
           ]
         }
       ],
-      "tags": [
-        4
-      ],
+      "tags": [4],
       "characters": [],
       "places": [],
       "lastEdited": 1597213167350,
@@ -922,9 +813,7 @@
           ]
         }
       ],
-      "tags": [
-        2
-      ],
+      "tags": [2],
       "characters": [],
       "places": [],
       "lastEdited": 1597183091866,
@@ -965,9 +854,7 @@
           ]
         }
       ],
-      "tags": [
-        1
-      ],
+      "tags": [1],
       "characters": [],
       "places": [],
       "lastEdited": 1597186957639,
@@ -1001,9 +888,7 @@
           ]
         }
       ],
-      "tags": [
-        3
-      ],
+      "tags": [3],
       "characters": [],
       "places": [],
       "lastEdited": 1597186607532,
@@ -1045,9 +930,7 @@
           ]
         }
       ],
-      "tags": [
-        5
-      ],
+      "tags": [5],
       "characters": [],
       "places": [],
       "lastEdited": 1597183102925,
@@ -1071,10 +954,7 @@
         }
       ],
       "color": null,
-      "cards": [
-        1,
-        5
-      ],
+      "cards": [1, 5],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -1095,15 +975,7 @@
         }
       ],
       "color": null,
-      "cards": [
-        7,
-        2,
-        8,
-        3,
-        4,
-        5,
-        11
-      ],
+      "cards": [7, 2, 8, 3, 4, 5, 11],
       "noteIds": [],
       "templates": [],
       "tags": [],

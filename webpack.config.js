@@ -8,7 +8,7 @@ const Dotenv = require('dotenv-webpack')
 const CircularDependencyPlugin = require('circular-dependency-plugin')
 
 const plugins = [
-  new webpack.IgnorePlugin(/main/, /bin/),
+  new webpack.IgnorePlugin({ resourceRegExp: /main/, contextRegExp: /bin/ }),
   new webpack.DefinePlugin({ __REACT_DEVTOOLS_GLOBAL_HOOK__: '({ isDisabled: true })' }),
   new Dotenv(),
 ]
@@ -20,7 +20,12 @@ const plugins = [
 
 if (process.env.NODE_ENV !== 'dev') {
   plugins.push(new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('production') }))
-  plugins.push(new webpack.IgnorePlugin(/regenerator|nodent|js-beautify/, /ajv/))
+  plugins.push(
+    new webpack.IgnorePlugin({
+      resourceRegExp: /regenerator|nodent|js-beautify/,
+      contextRegExp: /ajv/,
+    })
+  )
   plugins.push(
     new webpack.SourceMapDevToolPlugin({
       append: `\n//# sourceMappingURL=https://raw.githubusercontent.com/Plotinator/pltr_sourcemaps/main/${packageJSON.version}/[url]`,
@@ -59,9 +64,6 @@ const mainConfig = {
         loader: 'babel-loader',
         include: path.resolve(__dirname, 'lib', 'pltr'),
         exclude: /node_modules/,
-        query: {
-          cacheDirectory: true,
-        },
       },
     ],
   },
@@ -117,18 +119,12 @@ const rendererConfig = {
         loader: 'babel-loader',
         include: path.resolve(__dirname, 'lib', 'pltr'),
         exclude: /node_modules/,
-        query: {
-          cacheDirectory: true,
-        },
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
-        query: {
-          cacheDirectory: true,
-        },
       },
       {
         test: /\.scss$/,
@@ -142,9 +138,6 @@ const rendererConfig = {
       {
         test: /\.(png|jpg|gif)$/,
         loader: 'url-loader',
-        query: {
-          limit: 1048576,
-        },
       },
     ],
   },
